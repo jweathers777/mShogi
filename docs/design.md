@@ -1,15 +1,14 @@
-# mShogi design baseline 0.1
+# mShogi design
 
-Prepared on 2026-10-22 from the accepted product vision, source review, technology direction and LinguaSift working model.
+This document holds the accepted product requirements (P), architectural
+boundaries (A) and decisions (D). How agents work is in
+[AGENTS.md](../AGENTS.md); engine-strength work follows the
+[strength roadmap](m5/strength-roadmap.md). Earlier dated handoffs and
+milestone narratives are in Git history.
 
-This document records accepted product direction, architecture and dated decisions. All six games and both Tenjiku profiles passed M4; current development improves engine strength and execution. See accepted delivery and the [current strength roadmap](m5/strength-roadmap.md). Earlier milestone plans and dated handoffs below retain their original scope; they are not current feature-status reports.
-
-## Current development line
-
-`main` is the default and integration branch. The history-preserving promotion
-keeps `master`, `main_v2` and the annotated `legacy-cpp` tag. Mini Shogi, legacy
-save import and old search/Force controls are outside current requirements.
-MSH-172 (Two-Human Desktop Play) is separate follow-up work.
+`main` is the integration branch. `master`, `main_v2` and the annotated
+`legacy-cpp` tag preserve the earlier implementations. Mini Shogi, legacy save
+import and the old search and Force controls are outside current requirements.
 
 ## 1. Product requirements
 
@@ -22,40 +21,38 @@ MSH-172 (Two-Human Desktop Play) is separate follow-up work.
 | P-05 | Make engine behavior inspectable and failures reproducible. Verification, diagnostics, and performance/strength measurements are development infrastructure. |
 | P-06 | Keep design and product decisions in ChatGPT, implementation in Codex or Claude Code, and durable instructions and Backlog.md work records in Git. |
 
-Full product scope is distinct from milestone scope. An early milestone may support only part of a game's rules, provided the coverage is explicit and the application does not present that implementation as complete. Deferred requirements remain requirements.
+Deferred requirements remain requirements. A partial implementation must state
+its coverage and must not present itself as complete.
 
-The initial product can operate locally. A hosted service, mobile application, public online play service, arbitrary user-defined variant language, and distributed training platform are outside the initial delivery plan. They are not prerequisites for the requested desktop product.
+The product runs locally. A hosted service, mobile application, public online
+play, a user-defined variant language and a distributed training platform are
+outside the delivery plan.
 
-<a id="prospective-variant-completeness--owner-clarification-2026-11-01"></a>
+### Variant completeness
 
-## Prospective variant completeness — project clarification 2026-11-01
+mShogi is a game-playing engine, not a historical reconstruction project.
+Delivering a game means a clearly identified, coherent, complete playable rules
+profile; independently verified rules and history; a functional native engine;
+and integration into the application. Historical research resolves material
+gameplay uncertainty; acquiring every historical edition is not a requirement.
+Distinguish sourced rules from necessary software conventions. A material
+conflict in ordinary play or outcomes needs an explicit decision; a coherent
+convention for a rare edge case may be selected with distinguishing fixtures
+and honest attribution. Uncommon adjudication must have explicit semantics.
+Expensive optional analysis or exact proofs do not become delivery gates by
+themselves.
 
-mShogi is a game-playing engine, not a historical reconstruction project. Tori,
-Chu and Tenjiku delivery means a clearly identified, coherent, complete playable
-rules profile, independently verified rules/history, a functional native engine
-and integration into the accepted application. Historical research resolves
-material gameplay uncertainty; acquiring every historical edition or scholarly
-article is not an independent product requirement. Distinguish sourced modern
-rules from explicit necessary software conventions. Material ordinary-play or
-outcome conflicts require an explicit decision; coherent rare-edge conventions may be selected
-within authorized scope with distinguishing fixtures and honest attribution.
+Selected profiles: Standard Shogi [CSA36](m4/shogi-profile.md) (D-13),
+Xiangqi [WXF2018](m4/xiangqi/profile-proposal.md) (D-15), modern
+[Tori](m4/tori/profile.md), modern JCSA [Chu](m4/chu/profile.md) (D-20), and
+the two Tenjiku profiles [Adams 1999 and Muller](m4/tenjiku/profile.md)
+(D-21). Chu uses capture-based admission, finite immediate royal-threat mate,
+native must-vary admission before the fourth repetition, and narrow material
+exhaustion with actual replies or agreed draws; it adds no Chess self-check,
+unrestricted forced-mate search, repetition forfeit or general bare-royal award
+([decisions](m4/chu/decisions.md)).
 
-Uncommon adjudication must have explicit semantics. Expensive optional analysis
-or exact proofs do not automatically become delivery gates for intellectual
-completeness. This applies prospectively to Tori/Chu/Tenjiku planning; it does not
-remove or reinterpret completed Xiangqi's selected WXF profile, exact verifier,
-fixtures, evidence or product capabilities. Existing complete-delivery acceptance,
-six-game scope, R1–R6 ownership, saveability and shared shell remain required.
-See [modern Tori profile](m4/tori/profile.md) and the selected
-[modern JCSA Chu profile](m4/chu/profile.md). Chu uses capture-based admission,
-finite immediate royal-threat mate, native must-vary admission before fourth
-repetition, and narrow material exhaustion with actual replies/agreed draws.
-It adds no Chess self-check, unrestricted forced-mate search, repetition forfeit
-or general bare-royal award. [Project direction and interpretation](m4/chu/decisions.md)
-separate gameplay decisions from deterministic implementation. This authorizes no implementation
-of inactive variant tasks.
-
-## 2. Accepted technology direction
+## 2. Technology
 
 | Layer | Direction |
 | --- | --- |
@@ -65,755 +62,320 @@ of inactive variant tasks.
 | Board and surrounding interface | SVG board presentation with HTML/CSS controls |
 | Local collections and metadata | SQLite when persistence requirements warrant it |
 | Learning experiments | Python/PyTorch, with bindings to the same Rust rules implementation |
-| First search and learning path | A verifiable conventional search baseline, then learned evaluation; NNUE-style evaluation is the initial candidate |
-| Later search research | Policy/value models and MCTS remain available as a separate research path |
+| Search and learning path | Conventional search first, then learned evaluation; NNUE-style evaluation is the initial candidate |
+| Later search research | Policy/value models and MCTS stay a separate research path |
 | Tracking | Repository-resident Backlog.md records |
 
-This is not a requirement to scaffold every technology in the first commit. Introduce each dependency when its component is implemented. The first executable milestone needs a Rust library and console only.
+Add a dependency when its component is implemented, not before.
 
 ## 3. Architectural boundaries
 
 ### A-01. One authoritative rules implementation
 
-The rules library owns legal complete actions, action resolution, promotion choices, turn progression, and rule-dependent outcomes. Search, console, GUI, match runner, and training tools use it.
-
-The frontend can manage selection and presentation. It must not contain a second implementation of legality. Training code must not implement a separate approximation of the game.
+The rules library owns legal complete actions, action resolution, promotion
+choices, turn progression, and rule-dependent outcomes. Search, console, GUI,
+match runner, and training tools use it. The frontend manages selection and
+presentation and must not contain a second implementation of legality.
+Training code must not implement a separate approximation of the game.
 
 ### A-02. Explicit state and complete actions
 
-An action is one complete player choice for one turn. It can require multiple movement steps or distinguish routes with the same starting and ending squares. Drops, promotions, capture choices, and other rule-dependent options must remain representable.
+An action is one complete player choice for one turn. It can require multiple
+movement steps or distinguish routes with the same start and end squares.
+Drops, promotions, capture choices and other rule-dependent options must be
+representable.
 
-Distinguish the player's action from its rule-derived effects. The rules implementation determines captures and other effects; a client-provided victim list is not authoritative. Resolution can contain ordered internal effects while appearing atomic to callers. Rejecting an invalid external action must leave the state unchanged.
+The rules implementation determines captures and other effects from the
+player's action; a client-provided victim list is not authoritative.
+Resolution can contain ordered internal effects while appearing atomic to
+callers. Rejecting an invalid external action leaves the state unchanged.
+Partial UI selection is not a committed partial turn. A match command such as
+resignation or a draw claim is not a board move.
 
-Partial UI selection is not an already committed partial game turn. A match command such as resignation or a draw claim is not automatically an ordinary board move.
-
-The exact Rust types, action encoding, board representation, and trait structure remain implementation decisions. These semantic requirements do not require a universal event interpreter or one board representation for all games.
+Rust types, action encoding, board representation and trait structure are
+implementation decisions. These requirements do not need a universal event
+interpreter or one board representation for all games.
 
 ### A-03. Position, history, and match state
 
-Specify the boundary between the current position, history needed by rules, and match state such as clocks and player assignments. A board diagram alone may not determine an outcome.
+Specify the boundary between the current position, the history the rules need,
+and match state such as clocks and player assignments. A board diagram alone
+may not determine an outcome.
 
-Saved-state identity, repetition identity, and search-cache identity are separate concepts. A convenient hash is not a complete semantic specification. In particular, a result that depends on history must not be reused solely because a board key matches.
+Saved-state identity, repetition identity and search-cache identity are
+separate concepts. A result that depends on history must not be reused only
+because a board key matches.
 
-Project clarification, 2026-11-13: this rule governs the real game, its saved state and its adjudication. An engine's private analysis can key its transposition table on the board state alone and detect repetition and move-count rules on the search path, as classical engines do. Such analysis can be inexact in rare history-dependent cases. It never decides a real game result; the native rules do.
+This rule governs the real game, its saved state and its adjudication. An
+engine's private analysis can key its transposition table on the board state
+alone and detect repetition and move-count rules on the search path, as
+classical engines do. Such analysis can be inexact in rare history-dependent
+cases. It never decides a real game result; the native rules do (2026-11-13).
 
-An undo record restores every affected field and incremental cache. Public saved-game records must not depend on the engine's private undo layout.
+An undo record restores every affected field and incremental cache. Public
+saved-game records must not depend on the engine's private undo layout.
 
 ### A-04. Ruleset identity and honest coverage
 
-Every implemented rules profile has an explicit identity and version. Record authoritative references, consequential interpretations, and unresolved cases. Do not silently treat an implementation shortcut as the rules of a game.
-
-Rule-dependent legality and outcomes belong to the profile. Do not impose a universal assumption of one royal piece or conventional chess check semantics on every variant.
-
-Distinguish automatic outcomes from claimable outcomes. Keep full adjudication obligations visible even where an early milestone implements a narrower position-level classification.
+Every rules profile has an explicit identity and version. Record authoritative
+references, consequential interpretations and unresolved cases. Do not treat an
+implementation shortcut as the rules of a game. Legality and outcomes belong to
+the profile; do not assume one royal piece or chess check semantics for every
+variant. Distinguish automatic outcomes from claimable outcomes.
 
 ### A-05. Search and interface isolation
 
-Search uses private working state or equivalent isolation. A search request and every result identify the request and its base position/version. Superseded results cannot change the current game. Cancellation must not corrupt the game or block behind unbounded progress messages.
+Search uses private working state or equivalent isolation. A search request
+and every result identify the request and its base position and version.
+Superseded results cannot change the current game. Cancellation must not
+corrupt the game or block behind unbounded progress messages.
 
-The desktop application supervises the native engine executable for substantial search work. Quick rules queries may call the same rules library in process. Move generation, evaluation, and individual search nodes remain native; they do not make frontend or Python round trips.
+The desktop application supervises the native engine executable for
+substantial search work. Quick rules queries may call the rules library in
+process. Move generation, evaluation and search nodes stay native, with no
+frontend or Python round trips.
 
-The console remains independently usable. Human interaction and machine protocol modes have distinct output contracts. Diagnostics must not corrupt protocol stdout.
+The console stays independently usable. Human interaction and machine protocol
+modes have distinct output contracts. Diagnostics must not corrupt protocol
+stdout.
 
 ### A-06. Interoperability and persistence
 
-Use standard engine adapters where appropriate, including UCI, USI, CECP/XBoard, and UCCI when a selected opponent requires it. Preserve a structured mShogi interface for complete internal functionality. Design its concrete schema when a real consumer is implemented.
+Use standard engine adapters where appropriate (UCI, USI, CECP/XBoard, and
+UCCI when a selected opponent needs it). Keep a structured mShogi interface for
+complete internal functionality.
 
-The canonical game record must preserve the rules profile, initial state and necessary history, and complete actions. Imported/exported notation is an adapter. Do not force every game's canonical state into a chess-specific notation.
+The canonical game record preserves the rules profile, the initial state and
+necessary history, and complete actions. Imported and exported notation is an
+adapter. Do not force every game into a chess-specific notation.
 
-Use external engines as independent opponents, reference implementations where appropriate, and optional analysis providers. They do not replace P-01 or P-02.
+External engines serve as independent opponents, reference implementations
+where appropriate, and optional analysis providers. They do not replace P-01 or
+P-02, and they are never rules oracles or ordinary build, test or CI
+dependencies ([conformance policy](testing/conformance-policy.md)).
 
 ### A-07. Presentation
 
-The desktop UI must eventually accommodate large boards, square and intersection geometry, multi-stage action entry, promotions, different piece sets, readable labels, keyboard play, and useful textual game records.
-
-Validate the real packaged application on all three target systems. Keep engine progress and expensive work off the UI event path. Test a large-board and compound-action interaction early in desktop development.
-
-Approved shared movement-inspection wording (2026-10-29, MSH-101): the
-ordinary visible status is exactly **`Inspecting {side} {piece} · Esc clears`**.
-The native inspection label supplies game-specific side/piece terminology
-(including promotion or hand provenance where applicable); a small shared
-presentation formatter owns the surrounding interaction language. Chess, Shogi,
-Xiangqi and subsequent Tori/Chu/Tenjiku consumers follow this convention.
-Do not append Read-only/Hollow rings explanations to this visible status.
-Native non-actionable inspection, distinct hollow markers, accessible read-only
-announcements, token freshness and keyboard/Escape behavior remain required.
-
-Approved piece presentation (2026-11-02, MSH-42 visual checkpoint):
-**Traditional, variant-appropriate kanji are the default for every shogi-family
-game.** Use the selected variant's actual native glyphs, not an assumption that
-standard Shogi characters name every variant piece. Bundle licensed glyph assets
-for consistent cross-platform rendering. Original bird artwork may be retained
-as an inactive alternative for a future piece-set option; this does not require
-a new chooser or preference system now, and does not change native identities,
-promotion, ownership or rules.
-
-Human console board diagrams follow the selected
-[compact presentation convention](console-presentation.md): case-based ownership
-for Chess, Standard Shogi and Xiangqi, with aligned Shogi promotion markers.
-Future multi-character native abbreviations use lowercase native owner prefixes
-without colons and stable cells sized for their tokens. This display policy does
-not change native rules, notation, records or game-specific board geometry.
-
-Future boards beyond the six-game delivery scope follow the deferred
-[large-board UX direction](#deferred-larger-historical-shogi-expansion-2026-11-05).
-It does not change current full-board presentation or minimum-window policy.
-
-### A-08. Learning remains an independently measurable track
-
-Establish a correct rules implementation, a search baseline, and reproducible matches before substantial training. Training and deployed inference must agree on ruleset, feature encoding, and model identity.
-
-Start with separate game-specific evaluators and shared experiment infrastructure. Network architecture, model sizes, features, quantization, runtime representation, and compute budgets remain empirical decisions.
-
-Keep Python outside the shipped application unless a later explicit requirement justifies it. Rust bindings and native data generation must reuse the product rules.
-
-### A-09. Pre-release internal compatibility policy
-
-Project decision, 2026-10-30 (MSH-115): mShogi is an **unreleased greenfield
-rewrite**. There are no external consumers of its internal APIs and no
-obligation to reopen development-era saved documents. Internal Rust APIs,
-IPC, hooks, controllers, adapters, document schemas and their interface tests
-are project-controlled. Breaking or deleting obsolete development interfaces,
-archive readers and compatibility layers is acceptable when it produces a
-cleaner final architecture. Their earlier existence or passing tests alone is
-not a reason to retain them.
-
-Preserve the functional requirements: correct complete native game semantics;
-authoritative histories/adjudication and atomic operations; safe execution,
-cancellation and stale-result rejection; lossless save/reopen for the selected
-current format; cross-game product consistency; required external protocol
-interoperability; independent rules conformance and meaningful verification.
-Changing a development encoding does not authorize changing the selected rules
-profile, silently losing accepted history/observations/Take back lineage, or
-weakening current-format persistence/admission and failure guarantees.
-
-Preserve historical Git, task and verification evidence. Re-express behavioral
-and independently expected fixtures against replacement boundaries; retire tests
-whose only purpose is preserving a removed development interface. Historical
-evidence is not a mandate to keep obsolete production code. External UCI/USI
-and other actually required standard interoperability remain functional contracts.
-This policy supersedes contrary compatibility assumptions in earlier internal
-plans/reviews, including MSH-106, without rewriting their historical records.
-The MSH-115 reassessment is a proposal;
-recording this policy does not authorize its production refactors.
-
-### A-10. Approved application architecture and shared product UI
-
-Project approval, 2026-10-30: select MSH-115's coherent staged target—one
-application/runtime controller, exactly one active native-tagged document, one
-current internal execution contract, one current desktop envelope with native
-payloads, one frontend session/operation owner and one shared board interaction
-controller. Remove obsolete development-era APIs, transports, archive readers,
-compatibility adapters and duplicate implementation paths. Native game rules,
-actions, histories, adjudication, search and justified optimized structures
-remain independent. A-09 applies; external required protocols remain supported.
-
-There is **one product interface**, not three applications under common chrome.
-The application owns layout/visual hierarchy, dark responsive composition,
-document and lifecycle controls, player/turn/status, analysis/history/Game
-Actions/Technical Details, dialogs/notices/errors/recovery, common language and
-control placement, and shared keyboard/focus/accessibility conventions.
-Game-specific capability content composes into those sections: Chess claims,
-Shogi declarations and Xiangqi warnings retain their semantics without owning
-separate application layouts or repeated panel/lifecycle implementations.
-
-Game renderers supply topology/geometry/coordinates/decorations, piece art/
-typography/orientation, hands or other genuine board-adjacent native content,
-and promotion/compound-route/specialized completion views. One common native-
-choice interaction lifetime owns agreed selection/cancellation/inspection/
-completion behavior. This does not require a universal board renderer, native
-rules model or frontend rules interpreter.
-
-The approved implementation plan maps R1–R6
-and separate P9 to native tasks. R4 owns the shared application sections and
-single frontend owner; R5 owns board interaction and specialized renderer/
-completion integration, with no unassigned UI gap. The R1/R2 observation/codec
-coordination and finite bridge/deletion endpoints remain. Recording approval
-and creating future tasks authorizes no execution in this planning assignment;
-routine internal choices need no artificial owner checkpoint.
-
-<a id="a-11-owner-approved-desktop-ux-after-r4"></a>
-
-### A-11. Approved desktop UX after R4
-
-Project direction, 2026-10-31: retain the single application and accepted dark
-shell delivered by MSH-119. The post-R4 UX contract
-refines A-10's visible sections to **Analysis → Game Actions → Moves**, with
-diagnostics and required notices available through nonintrusive support/About
-access outside the ordinary game sidebar. Historical evidence of earlier
-section order and controls remains valid for its recorded source, not a veto on
-this approved future presentation.
-
-New Game shows a compact dropdown of **implemented playable games only**;
-unsupported/future variants are absent, even as disabled entries. Preserve the
-existing side-button visual treatment and native White/Black, Sente/Gote,
-Red/Black and Random labels. Use the existing Shogi selector character for the
-application brand. Remove implementation narration while preserving meaningful
-uncertainty, result, capacity and recovery information.
-
-Moves are actual native complete board actions in sourced game-appropriate
-notation, in two player columns. Native warnings, claims and other non-move
-events remain exact authoritative history, associated with their move/position
-rather than extra move rows. Preserve exact selectable event prefixes, historical
-analysis provenance and native origin/ordered-path/destination geometry. The
-last completed action highlights origin and a stronger destination throughout
-thinking and historical navigation; drops have destination only. This belongs
-to MSH-123 after R5, without expanding MSH-120's controller criteria.
-
-Ordinary document actions are Save and Load, with first Save choosing a path
-and no ordinary Save As. New Game/Load intentionally replace without a separate
-unsaved warning, **only on valid atomic success**; cancellation, failure and stale
-admission preserve the current document. Unsaved Quit retains concise Save /
-Discard / Cancel protection. Resign submits directly without confirmation and
-displays the actual native conclusion or unscored uncertainty. One-step Return
-to live restores play suspended solely by browsing using fresh native admission;
-pre-existing stopped Load/Take back/cancellation/failure remains explicitly
-stopped. Native retirement, atomicity, complete saveability, current envelope,
-game profiles and stale-result protections remain unchanged requirements.
-
-MSH-123/124/125 own these bounded product changes; MSH-121 additionally depends
-on them and retains final three-platform packaged acceptance. This records
-approved direction and future work only; MSH-119 remains Done, R5/R6 unstarted,
-and M4 open. No later variant or M5 gate changes.
-
-Current delivery handoff (MSH-123, 2026-10-31): R5 is complete; the native
-Moves projection and readonly completed-action cues are implemented for Chess,
-Shogi and Xiangqi. The MSH-123 review records exact
-history boundaries, sourced notation, the approved WXF ordinal+file
-extension and packaged evidence. The preceding approval paragraph remains the
-historical planning record.
-
-Current shared-shell handoff (MSH-124, 2026-10-31): the application owns
-Analysis → Game Actions → Moves, a supported-game dropdown with unchanged
-native side buttons, shared 歩 branding and header About/license/diagnostics
-access. Outward Moves focus rings remain visible through nested minimum-size
-scroll boundaries. The MSH-124 review identifies actual
-normal/minimum three-game packages, independent visual/accessibility review,
-source revisions, original failures and final CI. At that completion, MSH-125
-and R6 remained open and existing document/Resign/Return behavior was unchanged.
-
-Current workflow handoff (MSH-125, 2026-10-31): one shared New game / Save / Load
-workflow admits intentional replacement atomically; native never-saved/dirty Quit
-protection uses Save / Discard / Cancel. Direct Resign preserves native outcomes
-and unresolved/unscored meaning. One native Return to live restores play only
-from browse-only suspension with fresh execution; Load, Take back, cancellation,
-failure, conclusion and capacity stops retain explicit Resume/Retry. See the
-workflow review for exact source, normal/QA package
-identities, actual platform interactions, independent review and retained failures.
-Archive formats, capacity, native rules and engine policy remain unchanged.
-MSH-121/R6 owns subsequent integrated architecture/product acceptance; M4 remains open.
-
-Current integrated acceptance handoff (MSH-121/R6, 2026-10-31): fresh independent
-source/caller/native/interaction reviews accept the approved single-owner target
-and completed123/124/125 UX. Actual Chess/Shogi/Xiangqi packaged journeys and
-normal/minimum comparisons are recorded separately for Windows, macOS and Linux
-in the final acceptance report. Fixed
-normal/QA/synthetic macOS launch slots replace per-fixture application identities;
-actual approval reuse across rebuilds is observed, not guaranteed for future
-platform policy. Existing game semantics, capacity and complete-save guarantees
-remain unchanged. MSH-112 and M4/46/47 remain open; no next task starts.
-
-## 4. Milestone definitions and historical sequencing
-
-### M0. Repository workflow bootstrap
-
-Import this baseline into an isolated rewrite branch/worktree, preserve existing work and legacy history, validate native Backlog.md records, establish the shared agent entry point, and commit a concrete starting point. MSH-1 records this work.
-
-The recommended repository is the existing `jweathers777/mShogi` repository, with a dedicated `rewrite` branch. An isolated orphan worktree is the preferred fresh-tree arrangement when no rewrite already exists. Existing work takes precedence over this default. The initial bootstrap does not change the default branch or erase the legacy implementation.
-
-### M1. Chess rules kernel and verification console
-
-The first implementation milestone establishes a useful correctness loop before search strength and GUI integration add additional causes of failure.
-
-Included scope is an explicit orthodox-chess position profile; FEN parsing/serialization under a documented validation policy; attack detection; legal moves including castling, en passant, and all promotion choices; exact apply/undo; position-level check/checkmate/stalemate classification; perft and divide; and a headless inspection console.
-
-The milestone includes an independently sourced reference corpus, deterministic state properties, a bounded differential comparison, and a small synthetic compound-action exercise that challenges future interfaces without claiming another variant is implemented.
-
-Deferred from M1 are complete draw and match adjudication, clocks, competitive search, external engine protocols, GUI implementation, the remaining game implementations, and neural infrastructure. Record each gap in the rules coverage ledger. In particular, a small insufficient-material recognizer must not be presented as a complete dead-position implementation.
-
-FEN does not become the universal mShogi position format. The chess parser contract must distinguish syntax/structural validation from claims about historical reachability and match-history information.
-
-#### M1 exit criteria
-
-1. The promised move categories and position-level classifications have independent expected fixtures.
-2. Legal move sets and perft results match the selected corpus at documented depths.
-3. Apply/undo restores the full position, relevant counters and rights, and any derived caches exactly.
-4. Fixed-seed legal sequences exercise restoration and round trips; failing cases can be preserved as compact regression fixtures.
-5. The console can inspect a position, list legal moves, apply/undo a sequence, and run perft/divide with documented output and errors.
-6. The action-boundary review traces a synthetic compound-action exercise to the actual position/transition interfaces. Its reviewed mapping preserves route identity and multiple effects, and any incompatible contract is resolved or explicitly blocks closure. It does not require a universal representation.
-7. Actual build/test/smoke evidence exists for Windows, macOS, and Linux. Missing evidence remains visible and blocks the corresponding completion claim.
-8. Independent review has no unresolved correctness issue within the promised scope, and another session can reproduce the evidence.
-9. The rules coverage ledger clearly separates implemented, deferred, and unresolved requirements. M1 completion is not labeled complete chess or strong play.
-
-Do not invent a nodes-per-second target before measuring the first correct implementation. Record a baseline with its hardware and build configuration.
-
-## 5. Subsequent roadmap
-
-| Milestone | Intended outcome |
-| --- | --- |
-| M2. Search and match baseline | Complete the needed chess match semantics; add a transparent evaluator, independently checked full-width search, cancellation, replayable self-play and independent-engine matches, and UCI as the first protocol adapter. The bounded match policy is specified by MSH-15; MSH-25 closes the actual integrated M2 path. |
-| M3. Desktop vertical slice | Play and inspect a game through the actual native engine; test cancellation/stale results, save/reload, an 8x8 and 16x16 presentation, compound-action selection, and packaged installation on all three systems. |
-| M4. Variant expansion and conformance | Complete the remaining games with sourced rules profiles and coverage evidence; validate materially different state/move semantics before deep common-engine optimization. |
-| M5. Strength and learned evaluation | Build mature conventional Chess, then Shogi/Xiangqi and the historical-variant engines; conduct approved major strength evaluations, principally equal-time unrestricted Stockfish for Chess; then demonstrate a reproducible improvement from an initial Chess learned evaluator. |
-| M6. Further engine research and polish | Deliver required analysis/accessibility, product-quality and distribution polish; keep policy/value search and budgeted learning as optional research. |
-
-The milestone names establish direction, not an obligation to serialize every independent activity. An early bounded desktop or variant-contract experiment can resolve a concrete risk. Do not turn that allowance into an unbounded second implementation effort.
-
-Project strength direction, 2026-11-08: follow the concise
-[conventional-engine roadmap](m5/strength-roadmap.md). Build mature conventional
-Chess in coherent increments, measure it against unrestricted Stockfish under
-comparable resources principally equal thinking time, then adapt conventional
-techniques to Shogi/Xiangqi and the historical variants. Initial learned evaluation
-returns to Chess after the conventional engines are established; other-game
-learned extensions follow. Routine technical decisions are autonomous, routine
-local matches have a 15-minute cumulative compute allowance per task, and
-substantial/formal studies or multi-hour benchmarks require explicit owner
-approval at substantially complete engine/new-evaluation milestones. The old
-MSH-49 weak-baseline study is stopped with its evidence retained.
-
-Project refinement, 2026-11-08: MSH-49.2 establishes an initial practical
-conventional Chess baseline with8–12 paired-opening games against full-strength
-Stockfish19 at equal one-second thinking time, within30 minutes total match work.
-Report actual results, depths, performance limits and representative losses;
-do not conduct a significance study or estimate Elo from this sample. Then
-prioritize conventional Shogi/Xiangqi development. Deeper Chess strength analysis
-returns during learned-evaluation research. This supersedes the unapproved
-32-game formal proposal, without changing the six-game scope or authorizing
-additional formal studies.
-
-Project correction after MSH-136 (2026-11-08): that completed cost checkpoint does
-not establish conventional Chess maturity. MSH-137 continues native overhead,
-history-safe transposition reuse, selective-search efficiency and classical
-evaluation refinement as a coherent practical engine. Gate Shogi/Xiangqi transfer
-on an independent evidence-based practical-maturity assessment, not an algorithm
-inventory. Preserve completed work and the initial Stockfish diagnostic. No new
-formal study is authorized; routine matches remain bounded by the existing
-15-minute cumulative allowance without subtask resets. See the updated
-[roadmap](m5/strength-roadmap.md).
-
-Project revision, 2026-11-09: MSH-138 (Desktop Search Limits) supplies ordinary
-time-primary Chess play. MSH-137 (Chess Search Refinement) remains a completed
-engineering checkpoint. MSH-139 (Chess Strength Assessment) is now authorized to
-establish current playing strength, with adaptive full-strength rated opponents,
-equal thinking time, meaningful uncertainty, independent tactical/endgame checks
-and fresh confirmation against two independent families. It has no predetermined
-strength target, fixed tournament size or arbitrary campaign-hour allocation.
-Use operational safeguards and actual cost accounting; escalate substantial
-resource requirements. Stop after reporting the evidence to select the
-next objective together with the implementer. Do not declare Chess sufficiently
-strong, choose a final target, improve the engine or transfer to Shogi/Xiangqi
-within the assessment. This supersedes the unapproved qualification proposal;
-completed correctness/evidence and the later learned-evaluation sequence remain
-intact. See the [roadmap](m5/strength-roadmap.md).
-
-M2 is refined in MSH-15–25 against the actual M1 implementation. The [match/history profile](rules/chess-match-v1.md) records the approved 2026-10-24 policy; MSH-26 supplies an opt-in exact dead-position/side-specific reachability algorithm, with explicit resource uncertainty and unchanged M2 defaults. M2 is closed with its integration evidence. M3 is delivered through MSH-27–39 and persistence follow-up MSH-61 against the desktop contract, including all eleven desktop work areas and the historical initial untimed play batch (MSH-27–32). Its integration verdict and MSH-39 record the independent review, actual three-platform application evidence and final closure checks. Next work is M4 scope refinement; all six games and strong engines remain the product target.
-
-The approved [desktop Take back contract](desktop/take-back.md) restores native human decision points atomically across Chess, Shogi and Xiangqi, preserving complete archive evidence and retiring abandoned execution. The common Game Actions label is **Take back**; restored play requires explicit Resume.
-
-
-### Remaining scope and closure policy (planning correction, 2026-10-25)
-
-Backlog.md's milestone percentage is **Done assigned tasks / currently assigned
-tasks**, not a verdict that the milestone's promised outcome is delivered. An
-incomplete breakdown can display 100% while substantial scope is absent. M4 did
-so when its only assigned task was the completed MSH-26. Preserve that task's
-Done status, M4 assignment and evidence; adding missing work corrects the board
-without reopening completed work. A zero-task milestone is unplanned work, not
-an absence of obligations. Counts are neither effort estimates nor a measure of
-how much implementation remains.
-
-The following scope-level tickets represent the accepted remaining roadmap.
-They are unassigned **To Do** work, to be refined against the then-current
-implementation and recorded design questions before execution. No estimates,
-research outcomes, rules interpretations or detailed implementation plans are
-approved by creating them. This correction leaves MSH-27–39 and the current M3
-implementation batch unchanged and does not authorize starting future games.
-
-| Milestone | Scope and owning tasks | Required closure gate |
-| --- | --- | --- |
-| M4 | MSH-26: completed chess completeness; MSH-41: shogi; MSH-42: tori shogi; MSH-43: chu shogi; MSH-44: tenjiku shogi; MSH-45: xiangqi; MSH-46: shared six-game integration; MSH-106–108: architectural health diagnostics | MSH-47 depends on MSH-26, MSH-39, every MSH-41–46 deliverable and MSH-108 (including MSH-106/107). |
-| M5 | MSH-48: shared reproducible strength/learning experiment infrastructure; MSH-49: chess strength; MSH-50: shogi strength; MSH-51: tori shogi strength; MSH-52: chu shogi strength; MSH-53: tenjiku shogi strength; MSH-54: xiangqi strength; MSH-55: initial learned evaluator, training/export/native inference and demonstrated improvement; MSH-104: per-game opening-knowledge experiment; MSH-109: pre-optimization architecture diagnostic | MSH-56 depends on M4 closure, every MSH-48–55 deliverable and MSH-104 experiment completion, inheriting MSH-109 through MSH-49–55/104; opening mechanism adoption is optional. |
-| M6 required product delivery | MSH-57: six-game analysis, accessibility and product polish; MSH-58: release policy and three-platform distribution | MSH-60 depends on M5 closure and MSH-57–58. |
-| M6 optional research | MSH-59: policy/value search and budgeted learning experiments | Explicitly excluded from required MSH-60 closure dependencies. Research may remain To Do when required product delivery closes. |
-
-Each M4 game scope owns its complete sourced/versioned profile, authoritative
-state/actions/history/adjudication, independent verification, game-specific
-library and console interfaces, functional native mShogi engine support,
-canonical saved records and actual desktop adaptation. Required rules questions
-(D-07) remain in the relevant game task; shortcuts cannot become the profile by
-accident. These tickets are complete game deliveries, not movement-only kernels.
-
-Shared boundary extensions, game/profile dispatch, complete-action transport,
-engine/session supervision, common record evolution/compatibility, reusable
-presentation and cross-game packaged acceptance are owned **once**, by MSH-46.
-Game-specific adapters and conformance examples stay with the corresponding game
-ticket. Work on shared mechanisms can coordinate with those tickets; MSH-46's
-dependencies gate its final integrated acceptance. MSH-47 verifies the combined
-result on Windows, macOS and Linux. A shared capability or synthetic fixture is
-not evidence that a real game has been delivered.
-
-M4 engine support means legal, history-aware functional search/play, safe
-requests/cancellation and product integration. Measured playing strength belongs
-to the six explicit M5 game tasks. Targets, opponent pools and fair comparison
-conditions remain game-specific D-09 questions; no numeric targets are invented
-here. MSH-55 requires an initial Chess learned evaluator's reproducible improvement
-after conventional development across all six games, not one predetermined
-architecture for all six games. Features, model/export choices and compute
-budget remain empirical decisions.
-NNUE-style evaluation remains a candidate; optional policy/value/MCTS research
-is not a prerequisite for the promised engines or product delivery.
-
-Required M6 product gaps must be inventoried and closed against P-03–P-05;
-release licensing, redistribution, minimum OS, signing and update arrangements
-remain D-10 decisions in MSH-58. Optional experiments cannot substitute for these
-requirements. An M6 board percentage below 100% can coexist with required-scope
-closure if only explicitly optional research remains; record that distinction.
-
-A milestone closes only when its **complete promised scope**, required task
-criteria, applicable independent review and integrated verification have an
-explicit evidence-based verdict in its closure task. Refine dependencies when
-scope is split, keeping the closure gate connected to every required deliverable.
-Missing game implementations, unresolved required rules or required integration
-block M4 closure regardless of its percentage. The same rule applies to required
-M5/M6 outcomes. Do not erase gaps by renaming scope, archiving unfinished required
-work or moving it into optional research. MSH-40 records this planning correction
-and its verification, separately from future product delivery.
-
-### Shogi-first M4 planning refinement (2026-10-26)
-
-MSH-62 supplies the bounded implementation and rules proposals.
-Standard shogi is the first additional game; the provisional later delivery
-order is xiangqi, tori shogi, chu shogi and tenjiku shogi. Independent source
-research can proceed separately; an evidence-based order change must be recorded.
-This planning batch implements no game and closes no M4 delivery.
-
-The task/ownership map preserves MSH-41–47 and all their
-original criteria, and adds bounded tasks MSH-63–89. Early shared MSH-69/72/73
-are prerequisites for concrete shogi consumers without depending on completed
-MSH-41 or MSH-46. Later real-game extensions and final all-game/platform review
-retain the full shared integration and M4 closure obligations.
-
-The selected profile is option A **SHOGI-P1**, `mshogi.shogi.csa36.v1`, on
-2026-10-26 against integration `6db8500e92129b95e502e7b4d5c4a26072e38652`.
-Its coherent CSA software-event convention and explicit untimed/import/request
-adaptations are accepted; other event conventions remain unselected alternatives.
-MSH-66 supplies full local legality. MSH-67 adds the
-native game/history and canonical record contract with
-independently expected history/outcome fixtures and a
-[reviewed mutual-check impossibility argument](m4/mutual-check-resolution.md).
-This game-owned work does not implement later engine, transport or desktop consumers.
-Independent board fixtures/state/legality can proceed without settling every
-later game's profile. Existing chess documents, exact history, cancellation and
-MSH-61 lossless capacity admission remain compatibility requirements. Current
-chess search/archive limits are defaults to evaluate for each new consumer.
-
-### Next-game boundary and accepted shared shell (2026-10-27)
-
-The accepted decision covers Standard Shogi as fully delivered under MSH-41; MSH-41 and
-MSH-75 remain Done. M4 and MSH-42–47 remain open. The next primary task is
-MSH-80 source/profile/refinement for Xiangqi, with independent research81–83
-permitted. The subsequent decision selected **XIANGQI-P1**,
-`mshogi.xiangqi.wxf2018.v1`, under official bilingual WXF2018. The
-Xiangqi dossier records per-case interpretations without
-blanket language precedence, independent expectations, audited references and
-future tasks. Third warning/fourth continuation loss or applicable WXF draw,
-untimed claim handling and required two-level3.2A verification are selected.
-Named G-CYCLE/G-NOWIN questions gate affected later history/proof work;
-unavailable complete alternative corpora do not block the settled91/92 queue.
-This planning batch does not authorize starting substantive native implementation.
-
-The shared shell accepted in MSH-74 is a product requirement for future games:
-one application theme, document controls, live/status hierarchy, board/sidebar
-spatial grammar and analysis/history/actions structure. Common controls stay in
-the same slots; game-specific content does not rearrange unrelated controls.
-Xiangqi requires intersections, river, palaces and its own native pieces/labels,
-with the whole board visible at supported desktop sizes without board scrolling
-or zooming. Native read-only opponent inspection remains authoritative; frontend
-code does not recreate movement rules. Real consumers may justify small explicit
-dispatch/metadata extensions, not a uniform rules or board representation.
-
-### Approved M5 opening-knowledge experiment (2026-10-27)
-
-MSH-104 adds a required experiment to MSH-56 closure,
-with evidence-supported per-game non-adoption a valid result. Existing six-game
-strength and MSH-55 learned-evaluator improvement requirements remain intact.
-A dedicated compact opening-policy model distilled from expensive offline teacher
-search/self-play is a first-class arm distinct from the learned evaluator and
-optional full policy/value engine59. Compare direct selection, search ordering,
-book-policy hybrids and no learned prior where practical. Include sparse-corpus
-Chu/Tenjiku search-distillation research, regeneration provenance and full cost/
-strength/work-saving metrics. No training implementation, mandatory model/book
-shipping or Python product-runtime dependency is introduced by this plan.
-
-### Architectural health checkpoints (2026-10-27)
-
-The architectural health roadmap adds future
-diagnostic reviews after complete Xiangqi (MSH-106) and Chu Shogi (MSH-107),
-then an all-six-game review (MSH-108) before MSH-47 closes M4. MSH-109 reassesses
-architecture with MSH-48 experiment/pilot evidence before substantial M5 strength,
-learned-evaluator or opening-knowledge optimization in MSH-49–55/MSH-104.
-MSH-48 and earlier game implementation retain their existing prerequisites.
-
-Generalize when multiple real consumers demonstrate the same semantics, not
-merely similar-looking code. Reviews assess coherent, independently testable
-responsibilities rather than identical filenames/layouts, and examine both
-duplication and premature abstractions. Reports include source-backed findings,
-severity/risk, acceptable areas, benefits/consumers, regression risks and bounded
-follow-ups. No material changes recommended is valid; material refactors require
-separate behavior-preserving tasks and focused differential/regression evidence.
-The reviews do not replace game delivery, independent conformance or milestone
-acceptance, and create no current refactor obligation.
-
-### Deferred larger historical Shogi expansion (2026-11-05)
-
-The roadmap includes eventual expansion beyond the current six games. **Deferred,
-non-actionable direction; future owner authorization is required.** The immediate
-priority remains completing M4, then improving actual playing strength,
-efficiency and engine quality for all six existing games through M5. Existing
-M4/M5 scope, tasks, acceptance criteria, dependencies, milestone ownership and
-critical path remain unchanged, as do required M6 delivery commitments. This
-initiative is outside those committed milestones, without a delivery date,
-new milestone, implementation tickets or additional closure gate.
-
-The exploratory sequence and board dimensions below are provisional planning
-assumptions recorded for the project, not ratified historical rules, approved
-playing profiles, supported games or fixed delivery commitments:
-
-| Provisional order | Prospective historical variant | Provisional board |
-| --- | --- | --- |
-| 1 | Dai Shogi | 15×15 |
-| 2 | Dai Dai Shogi | 17×17 |
-| 3 | Maka Dai Dai Shogi | 19×19 |
-| 4 | Tai Shogi | 25×25 |
-| 5, conditional | Taikyoku Shogi | 36×36; subject to feasibility and future explicit approval |
-
-Future decisions may change the order based on available historical rules,
-implementation complexity, usability and engine performance. Recording this
-intent authorizes no historical source acquisition or rules research, game
-implementation, UX prototype, engine optimization or architectural restructuring.
-Do not add these variants to the normal game selector or advertise support before
-playable implementation and appropriate verification.
-
-#### Prospective large-board UX
-
-Start from the existing shared application shell, game-session architecture and
-shared native-choice interaction controller (A-10/A-11). Investigate these
-approximate presentation bands only when expansion is authorized:
-
-- Up to approximately 16×16: retain the existing full-board presentation.
-- Approximately 17×17 through 19×19: investigate maximizing the window,
-  responsive layout and optional zoom and panning.
-- 25×25 and larger: investigate a full-board overview alongside a magnified,
-  navigable playing region, with a clear indication of the visible region and
-  click or drag navigation through the overview. Provide accessible zoom/pan
-  controls and keyboard access; show native legal destinations, including
-  destinations outside the detailed viewport, and enable reliable selection of
-  long-range targets. Investigate optional follow-last-move behavior, easy
-  return to the last move or selected piece, and clear piece names and movement
-  information. Preserve native complete-action identities throughout navigation
-  and selection, including distinct routes with identical endpoints.
-
-A maximized window is acceptable for sufficiently large
-future variants. Maximizing alone is unlikely to make 25×25 or 36×36 comfortably
-readable; the entire board need not be readable at full detail simultaneously.
-Exact thresholds and interaction design require future usability testing and
-explicit approval. This direction changes neither the current minimum-window
-policy nor any existing game's accepted presentation, including Tenjiku.
-
-#### Native and shared ownership
-
-Each game owns authoritative rules, legal complete actions, derived effects,
-history and adjudication. Shared application infrastructure owns session
-lifecycle, persistence, execution supervision and presentation. The frontend
-consumes native legal choices and metadata; navigation, zoom and viewport
-transformations must not duplicate movement rules. New variants should extend
-the existing shared owners rather than require independent application shells
-or session owners. Explicit immutable rules profiles remain available for
-historically disputed conventions; profile selection must preserve history and
-complete-action identity.
-
-This direction designs no universal variant-rules framework. Large historical
-games need not share identical native position, action or search implementations.
-Justify future reuse with real shared semantics and measured consumer needs,
-consistent with A-01–A-05 and A-10 and the architecture health review contract.
-
-#### Engine and resource investigations
-
-Prospective demands include hundreds or thousands of squares, large initial
-piece populations, many distinct piece identities, high branching factors,
-long-range movement, complex capture/promotion rules, expensive history and
-repetition reconstruction, large records and memory footprints, increased
-inspection/presentation costs, and search cancellation/responsiveness challenges.
-Evaluate these against the actual results of M5 engine work before selecting
-future engineering changes.
-
-Potential investigations include incremental state transitions, efficient move
-generation, search ordering, selective search, evaluation architecture, memory
-allocation and bounded resource admission. These are investigation topics,
-not authorized changes, new performance requirements or optimization tasks for
-the existing six games. No representation, search algorithm or resource limit
-is selected here.
-
-#### Future rules profiles and complete delivery
-
-Surviving historical rules may be incomplete, disputed or inconsistent. Each
-future game delivery will require a coherent named/versioned playing profile,
-explicit treatment of consequential historical alternatives and project decisions
-where appropriate; independently expected conformance fixtures; authoritative
-native rules and complete actions; honest functional native engine support;
-actual playable desktop integration; and appropriate product/platform verification.
-These are prospective delivery expectations, not a new rules-research campaign.
-
-Retain the [engine-independent conformance policy](testing/conformance-policy.md),
-including meaningful property, metamorphic and negative checks and independent
-review. No mandatory third-party engine comparison, original-facsimile acquisition
-gate or historical reconstruction obligation is introduced into current
-milestones. Any future activation must be separately scoped and authorized;
-no existing task waits on this initiative.
-
-## 6. Verification contract
-
-Project correction, 2026-11-09: the durable risk-based verification policy
-sets three levels: routine local verification and independent review for ordinary
-platform-independent engineering; targeted operating-system checks for actual
-platform-sensitive risks; comprehensive native/desktop verification at significant
-integration, migration and release checkpoints. Changing production Rust does not
-itself require the full matrix. Local completion is valid at Level 1; deferred
-platform checks are explicitly not run, never inferred passed. Tests, independent
-expectations and historical acceptance remain unchanged.
-
-
-Project correction2026-11-01: all six games must be independently verifiable from
-their selected profiles and independently established expectations. Required
-fixtures/history, deterministic regression, exact reversal/replay, meaningful
-property/metamorphic/adversarial tests and independent review cannot depend on
-another game engine. External engines are optional investigative aids, never
-normal build/test/CI/conformance/milestone/release dependencies or rules oracles.
-Preserve historical comparisons without reopening completed games. This
-supersedes earlier mandatory prospective comparator wording; see the binding
-[conformance policy](testing/conformance-policy.md).
-
-
-| Evidence category | What it establishes |
-| --- | --- |
-| Curated rules fixtures | A selected interpretation is implemented correctly in a specific case. |
-| State properties | Transitions, reversibility, derived state, and serialization remain consistent. |
-| Perft and differential comparison | Move generation agrees with independent expectations over specified positions/depths. |
-| Search oracle tests | A search algorithm returns the intended result on independently solvable positions or trees. |
-| Performance benchmarks | The effect of a change on time, throughput, or memory under recorded conditions. |
-| Match experiments | Playing performance for a particular game, opponent pool, limits, and starting-position distribution. |
-| Application integration | Commands, progress, cancellation, state changes, persistence, and presentation remain coherent. |
-
-Perft is not evidence of correct search, complete adjudication, strength, or GUI behavior. A speedup is not evidence of stronger play. Generated tests must not be the only source of expected rule behavior.
-
-Use `cargo test` and deliberately selected fixtures from the first behavior change. Add property testing, parser fuzzing, and Criterion measurements where they address concrete risk. Keep fast local checks separate from deeper verification runs. Record tool versions, seeds, relevant ruleset/profile identifiers, code revisions, and fixture provenance.
-
-For search, use small independently solvable positions or synthetic trees before relying on pruning or transposition reuse. Test score perspective, terminal scoring, and returned action legality. Add targeted regressions when an optimization introduces a new failure mode.
-
-For matches, preserve executable/model identity, parameters, resource limits, opening positions, colors, results, and failures. Define strength separately per game. Where possible, pair starting positions with reversed colors and test against multiple baselines.
-
-For desktop integration, include starting a search, changing the position, cancelling, and receiving a delayed result. Include persistence and compound action entry. Use real application evidence rather than treating a browser-only test as proof of native packaging behavior.
-
-## 7. Development workflow
-
-`AGENTS.md` is the shared execution policy. `CLAUDE.md` imports it. Backlog.md is the work ledger and human-visible board; there is no parallel issue system.
-
-Each task has a concrete goal, scope, dependencies, requirement references, observable acceptance criteria, and expected verification. A worker researches and records an implementation plan when the task becomes active. Completion includes evidence, review results, integration context, and follow-up work.
-
-Use one primary builder and bounded independent review. Run focused verification per change and broader integrated verification at the appropriate boundary. Reuse still-applicable evidence rather than mechanically repeating costly checks.
-
-When code reveals a design problem, report the specific conflict and a proposed resolution. Routine internal design choices are autonomous. Product-scope changes, disputed rule conventions, or public semantic changes return here for a documented decision.
-
-## 8. Decision register
-
-| ID | State | Decision and provenance |
-| --- | --- | --- |
-| D-01 | Accepted | All six named games, own capable engines, console interoperability, and three desktop platforms, from the accepted product vision. |
-| D-02 | Accepted | Rust core/console; Tauri 2, React/TypeScript/Vite desktop direction; native rules reused by learning tools, from the technology discussion accepted on 2026-10-22. |
-| D-03 | Accepted | Design in ChatGPT, implementation in Codex or Claude Code, and Backlog.md in the repo, explicitly requested on 2026-10-22. |
-| D-04 | Working default | One shared agent policy, disposable bounded sessions, a primary builder, independent review, routine non-destructive Git integration, and repository-resident evidence, carried forward from the requested LinguaSift workflow. |
-| D-05 | Working default | Isolated rewrite branch/worktree in the existing repository, preserving legacy history. Confirm actual repository state during bootstrap; do not manufacture an empty starting state over existing work. |
-| D-06 | Working default | M0 and M1 sequencing and the initial ticket decomposition in this package. Refine technical task boundaries without weakening their outcomes. |
-| D-07 | Deferred | Exact disputed historical rules, versioned conventions, and full conformance criteria for each game. Resolve before implementing affected behavior or claiming conformance. |
-| D-08 | Deferred | Specific public API/ABI, board and action encodings, generic trait hierarchy, and complete wire/save schemas. Implement only the needed stable semantic contracts. |
-| D-09 | Revised project direction, 2026-11-08 | [Conventional engines first](m5/strength-roadmap.md): mature Chess engineering, then an approved equal-thinking-time unrestricted Stockfish milestone; adapt to the other five games before initial Chess learned evaluation and later learned extensions. The earlier weak-baseline/depth2 study and pending4hour request are stopped, with evidence preserved. Routine local matches:15minutes cumulative compute/task unless explicitly extended; no substantial/formal studies or multi-hour benchmarks without approval at a complete engine/new-evaluation milestone. Algorithms are implementer decisions; future material study/training budgets and release criteria require an explicit decision. |
-| D-11 | Accepted | 2026-10-24 decision: optional core claims with recorded unattended auto-claim policy, FEN-limited known history, sound incomplete M2 dead recognition with MSH-26 M4 completion, explicit unscored mating uncertainty, untimed/increment clocks and ordered replayable match events. Evaluation adjudication stays disabled. UCI plus an independent-engine match and focused MSH-25 integration closure are required in M2. See [match v1](rules/chess-match-v1.md). |
-| D-10 | Deferred | Release licensing, redistribution choices, minimum OS policy, and signing/update arrangements. Preserve existing notices; resolve applicable choices before copying restricted dependencies or distributing releases. |
-| D-12 | Accepted | 2026-10-26 decision: bounded M4 planning only, standard shogi first; provisional later order xiangqi, tori, chu, tenjiku with independent source research possible. Preserve complete MSH-41–47 obligations and closed M2/M3; stop for concrete profile discussion before affected implementation. |
-| D-13 | Accepted, SHOGI-P1, 2026-10-26 | The recorded approval covers option A `mshogi.shogi.csa36.v1` against integration `6db8500e92129b95e502e7b4d5c4a26072e38652`, including untimed local play, advisory/committed declarations, atomic rejection and declared-counter/bounded-history adaptations. JSA professional and other event conventions remain separate unselected alternatives. See [selected profile](m4/shogi-profile.md) and coverage; approval is not delivery evidence. |
-| D-14 | Accepted delivery/shell boundary, 2026-10-27 | The accepted decision covers Standard Shogi under MSH-41/75 and requires the MSH-74 common shell for future games. MSH-80 is next planning/refinement;81–83 may research independently. No Xiangqi rules profile is selected by this instruction; resolve material sourced decisions before native implementation. See current dossier. |
-| D-15 | Accepted XIANGQI-P1, 2026-10-27 | The selected profile is `mshogi.xiangqi.wxf2018.v1`, official bilingual WXF2018 with individual discrepancy reconciliation and no blanket language precedence; third-occurrence warning/fourth continued unilateral loss or applicable WXF draw; untimed native claims and scoped AXF/CXA research; required sound fast plus bounded/terminable exact3.2A path. G-CYCLE/G-NOWIN gate affected work, not settled91/92. MSH-80 closes planning only; stop before implementation. See project decisions. |
-| D-16 | Accepted future M5 experiment, 2026-10-27 | The accepted scope adds MSH-104 per-game opening knowledge to56 closure while adoption remains optional. Dedicated compact teacher-distilled opening policy, learned evaluator55 and optional full policy/value59 are distinct. Compare practical direct/order/book-hybrid/no-prior uses, sparse Chu/Tenjiku generation, provenance/regeneration and total benefit/cost; no product Python or mandatory opening mechanism. See scope. |
-| D-17 | Accepted pre-release compatibility policy, 2026-10-30 | Decision: unreleased greenfield rewrite; no external internal-API consumers or development-save compatibility obligation. Obsolete APIs/IPC/adapters/readers and interface-only tests may be replaced/deleted; preserve native semantics/history/atomicity, execution safety, current-format losslessness, shared product consistency, external interoperability and independent conformance. See A-09 and MSH-115. No refactor implementation authorized by this review. |
-| D-18 | Accepted MSH-115 target and shared product UI, 2026-10-30 | The approved architecture is the coherent R1–R6 migration: one controller/active native document/current execution/current envelope/frontend owner/interaction controller, deletion of obsolete development layers, native semantics independent. One application owns common sections and conventions; game capabilities/renderers supply only genuine native content. See A-10 and the approved migration plan. This assignment creates planning tasks only, with P9 triage intended first and no automatic M4 gate changes. |
-| D-19 | Accepted post-R4 desktop UX, 2026-10-31 | The approved scope includes sourced two-column Moves/native event mapping, origin/destination last-move cues, Analysis/Game Actions/Moves order, supported-only dropdown with unchanged native side buttons, Shogi branding, nonintrusive support, Save/Load and intentional atomic replacement, concise Quit, direct Resign and one-step browse-only Return to live. Five supplemental clarifications supersede conflicting attachment wording. See A-11 and the bounded contract;123/124/125 are future tasks and121 gains their completion gates. No implementation starts by recording approval. |
-| D-20 | Accepted Chu direction, 2026-11-02 | The selected direction requires faithful modern JCSA `mshogi.chu.jcsa2019.v1`: capture-based movement and finite immediate-threat mate; responsible side must vary before fourth through admission; narrow sourced material exhaustion, immediate response and agreement-based draw. Withdraw automatic-forfeit/automatic-draw/quiet-immobility-loss proposals. Resolve faithful deterministic details from independent sources/fixtures, escalate only material remaining conflicts. See [decision record](m4/chu/decisions.md). MSH-82 ratifies profile/data only;86→78→43 retain actual implementation and delivery ownership. |
-| D-21 | Accepted Tenjiku profile selection, 2026-11-04 | The accepted scope requires support for choosing option1 Adams1999 Modern or option2 Muller. MSH-83 ratifies two distinct immutable whole profiles, with explicit source differences, Adams general-game supplements for Muller and labelled software completions. New Game selects the profile; records/replay/search preserve it. No independent rule toggles or in-place reinterpretation of game history. See profile family and [decisions](m4/tenjiku/decisions.md). Native87, shared79 and finished44 delivery remain unimplemented here. |
-| D-22 | Accepted deferred direction only, 2026-11-05 | The roadmap includes prospective Dai → Dai Dai → Maka Dai Dai → Tai, with Taikyoku conditional on feasibility and future explicit approval. Ordering, board dimensions and UX bands are provisional; no rules profile, implementation, research or restructuring is approved. Complete M4 then prioritize six-game M5 strength, efficiency and quality; preserve current milestones, dependencies, six-game contracts and minimum-window policy. See [deferred roadmap](#deferred-larger-historical-shogi-expansion-2026-11-05). |
-
-Accepted records reflect actual project direction. Working defaults are implementation proposals consistent with it, not fabricated project decisions. Deferred questions only block work that depends on their resolution. A routine choice within accepted requirements does not need a new approval ceremony.
-
-## 9. References and provenance
-
-- Original project: https://github.com/jweathers777/mShogi
-- Current Backlog.md baseline used for this package: https://github.com/MrLesk/Backlog.md/tree/v1.55.3
-- Backlog.md CLI reference: https://github.com/MrLesk/Backlog.md/blob/v1.55.3/CLI-INSTRUCTIONS.md
-- Backlog.md configuration: https://github.com/MrLesk/Backlog.md/blob/v1.55.3/ADVANCED-CONFIG.md
-- Future rule fixtures must add their own precise primary rule references. This design is not a substitute for the rules of any game.
+The desktop UI accommodates large boards, square and intersection geometry,
+multi-stage action entry, promotions, different piece sets, readable labels,
+keyboard play and useful textual game records. Engine progress and expensive
+work stay off the UI event path. Validate the real packaged application on all
+three target systems.
+
+- **Movement inspection** (MSH-101): the visible status is exactly
+  **`Inspecting {side} {piece} · Esc clears`**. The native inspection label
+  supplies game-specific side and piece terms; a shared formatter owns the
+  surrounding words. Native non-actionable inspection, distinct hollow markers,
+  accessible read-only announcements and keyboard/Escape behavior stay
+  required.
+- **Pieces** (MSH-42): traditional, variant-appropriate kanji are the default
+  for every shogi-family game, using the variant's own native glyphs and
+  bundled licensed glyph assets. Bird artwork may stay as an inactive
+  alternative.
+- **Console diagrams** follow the
+  [compact convention](console-presentation.md): case-based ownership for
+  Chess, Standard Shogi and Xiangqi, aligned Shogi promotion markers, and
+  lowercase native owner prefixes for multi-character abbreviations.
+- **Xiangqi** shows intersections, river, palaces and its own pieces, with the
+  whole board visible at supported desktop sizes without scrolling or zooming.
 
 <a id="owner-acceptance-of-tenjiku-visuals-and-shared-identification-2026-11-05"></a>
 
-### Project acceptance of Tenjiku visuals and shared identification (2026-11-05)
+- **Piece identification and capture marks** (2026-11-05): selecting a
+  playable friendly piece shows its native piece name in the board footer in
+  all six games, including during compound selection. Legal capture indicators
+  paint above occupied destination pieces as outlined overlays; native
+  inspection stays distinct.
+- **Window size**: the application minimum is 760×650. The whole Tenjiku board
+  fits there, though not every kanji or route badge is comfortably readable;
+  about 960×1000 is the recommended playing size, not a minimum.
 
-The approved scope includes the overall Tenjiku traditional-kanji board design and existing
-shared presentation. Selecting a playable friendly piece must display its native
-piece name in the existing board footer across all six games, including during
-compound selection. Legal capture indicators paint above occupied destination
-pieces as outlined decorative overlays; native inspection remains distinct.
-These refinements reuse the one shared interaction owner and native labels.
+### A-08. Learning is a separately measured track
 
-The application minimum remains760×650. The entire Tenjiku board fits there,
-but not every kanji or secondary route badge is comfortably readable. Around
-960×1000 is a recommended playing size when the display permits, not a hard
-minimum. Piece-name identification helps and does not resolve every small-window
-accessibility limitation. Normal activation of both immutable profiles and final
-three-platform packaged verification are authorized as the remainder of MSH-44;
-no artwork redesign, rules change, architecture refactor or M5 work is implied.
+Establish correct rules, a search baseline and reproducible matches before
+substantial training. Training and deployed inference agree on ruleset,
+feature encoding and model identity. Start with separate game-specific
+evaluators and shared experiment infrastructure; architectures, features,
+quantization and compute budgets are empirical decisions. Python stays outside
+the shipped application unless a later requirement justifies it; bindings and
+data generation reuse the product rules.
 
-MSH-44's final technical acceptance is recorded in the
-product evidence at production source
-`eca9f9cfd43cf83ff4e3489292f6c25f8951bb30`: normal two-profile selection, both
-shared presentation refinements, all six required CI jobs and actual packaged
-gameplay on all three platforms are supported by independent review. The project
-decisions and reading limitations above are unchanged. Shared M4 integration
-and milestone closure remain separate work.
+### A-09. Pre-release internal compatibility
 
-<a id="owner-continuation-after-chess-assessment-2026-11-09"></a>
+mShogi is an unreleased rewrite (MSH-115, 2026-10-30). Internal Rust APIs, IPC,
+hooks, controllers, adapters, document schemas and their interface tests are
+project-controlled. Breaking or deleting obsolete interfaces, archive readers
+and compatibility layers is acceptable when it gives a cleaner architecture;
+earlier existence or passing tests are not reasons to keep them. Re-express
+behavioral and independently expected fixtures against the replacement; retire
+tests whose only purpose is a removed interface.
 
-### Project continuation after Chess assessment (2026-11-09)
+Preserve the functional requirements: correct complete native game semantics;
+authoritative histories, adjudication and atomic operations; safe execution,
+cancellation and stale-result rejection; lossless save and reopen for the
+current format; cross-game product consistency; required external protocol
+interoperability (UCI, USI and others actually required); independent rules
+conformance. A changed development encoding never authorizes changing a
+selected rules profile, losing accepted history, observations or Take back
+lineage, or weakening current-format persistence and failure guarantees.
 
-MSH-139 (Chess Strength Assessment) established a conditional local index around
-1900, not conventional maturity. The approved scope permits further substantial classical
-Chess engineering, first explaining and correcting the depth1/295113-visit
-Goldfish incident, then addressing general search/frontier, native-query and safe
-TT costs, specialized endgame knowledge and classical evaluation. Use independent
-correctness/tactical checks and bounded profiling, preserving rules/history and
-product contracts. No arbitrary rating target, learned evaluation or automatic
-Shogi/Xiangqi transfer. Routine technical choices remain autonomous; fresh adaptive
-strength reassessment follows meaningful progress rather than each optimization.
-See the current [roadmap](m5/strength-roadmap.md).
+### A-10. Application architecture and shared product UI
 
-<a id="owner-course-correction-after-chess-progress-assessment-2026-11-09"></a>
+One application/runtime controller, exactly one active native-tagged document,
+one internal execution contract
+([internal-execution-v4](desktop/internal-execution-v4.md)), one desktop
+envelope with native payloads, one frontend session/operation owner and one
+shared board interaction controller (2026-10-30). Native rules, actions,
+histories, adjudication, search and justified optimized structures stay
+independent per game.
 
-### Project course correction after Chess progress assessment (2026-11-09)
+There is **one product interface**, not separate applications under common
+chrome. The application owns layout and visual hierarchy, the dark responsive
+composition, document and lifecycle controls, player/turn/status,
+analysis/history/actions, technical details, dialogs, notices, errors and
+recovery, common language and control placement, and shared keyboard, focus and
+accessibility conventions. Common controls stay in the same slots for every
+game; game-specific content (Chess claims, Shogi declarations, Xiangqi
+warnings) composes into those sections without its own layout.
 
-MSH-144 (Chess Progress Assessment) did not demonstrate a strength gain from the
-previous conventional increments. Investigate general search effectiveness,
-classical evaluation and computational costs before automatically prioritizing
-MSH-145 (Pawn Threat and Exchange Judgment). Compare representative positions at
-increasing thinking time and use controlled comparisons to distinguish overhead,
-frontier/selectivity, transposition effectiveness and evaluation. Then implement
-coherent, evidence-led conventional improvements autonomously and reassess only
-after substantial progress. Preserve native authority/history/restoration and
-cancellation. No learned evaluation, arbitrary target or cross-game transfer is
-approved; satisfactory practical strength remains to be demonstrated.
+Game renderers supply topology, geometry, coordinates and decorations; piece
+art, typography and orientation; hands and other genuine board-adjacent native
+content; and promotion, compound-route and specialized completion views. One
+common native-choice interaction owns selection, cancellation, inspection and
+completion. This does not require a universal board renderer, native rules
+model or frontend rules interpreter.
+
+### A-11. Desktop UX
+
+(2026-10-31)
+
+- Sidebar sections in this order: **Analysis → Game Actions → Moves**.
+  Diagnostics and required notices are reachable through a nonintrusive
+  support/About entry, outside the game sidebar.
+- New Game shows a compact dropdown of **implemented playable games only**,
+  with the existing side buttons and native White/Black, Sente/Gote, Red/Black
+  and Random labels. The application brand uses the Shogi selector character
+  (歩). No implementation narration; keep meaningful uncertainty, result,
+  capacity and recovery information.
+- Moves are native complete board actions in sourced game-appropriate notation,
+  in two player columns. Native warnings, claims and other non-move events stay
+  in the exact history, attached to their move, not as extra rows. Event
+  prefixes stay selectable, with historical analysis provenance. The last
+  completed action highlights its origin and a stronger destination (drops:
+  destination only), also during thinking and history browsing.
+- Document actions are Save and Load; the first Save chooses a path; there is
+  no ordinary Save As. New Game and Load replace the document without an
+  unsaved-changes warning, **only on valid atomic success**; cancellation,
+  failure and stale admission keep the current document. Quit with unsaved
+  changes asks Save / Discard / Cancel ([macOS Quit](desktop/macos-quit.md)).
+- Resign submits directly and shows the native conclusion or unscored
+  uncertainty. One-step Return to live restores play suspended only by
+  browsing, with fresh native admission; play stopped by Load, Take back,
+  cancellation or failure stays explicitly stopped (Resume or Retry).
+- [Take back](desktop/take-back.md) restores native human decision points
+  atomically, keeps complete archive evidence and retires abandoned execution;
+  restored play needs an explicit Resume.
+
+## 4. Milestones
+
+| Milestone | Outcome | State |
+| --- | --- | --- |
+| M0–M3 | Bootstrap; Chess rules kernel and console; search and match baseline with UCI; desktop vertical slice | Done |
+| M4 | All six games with sourced profiles, conformance, native engines, records and desktop integration (MSH-41–46, closure MSH-47) | Done |
+| M5 | Per-game classical engine strength (MSH-48–54), initial learned evaluator (MSH-55), per-game opening-knowledge experiment (MSH-104); closure MSH-56 | In progress ([roadmap](m5/strength-roadmap.md)) |
+| M6 | Required: analysis, accessibility and product polish (MSH-57), release policy and three-platform distribution (MSH-58); closure MSH-60. Optional: policy/value search and learning research (MSH-59) | Not started |
+
+A milestone closes only when its complete promised scope, required task
+criteria and integrated verification have an explicit evidence-based verdict
+in its closure task. A Backlog percentage is not that verdict. Do not erase a
+gap by renaming scope, archiving unfinished required work or moving it into
+optional research. For MSH-104, adopting an opening mechanism is optional; an
+evidence-supported per-game non-adoption is a valid result.
+
+## 5. Engineering principles
+
+- Generalize when several real consumers show the same semantics, not merely
+  similar-looking code. Examine both duplication and premature abstraction.
+- Measure before setting performance targets. A speedup is not stronger play;
+  perft is not evidence of correct search, adjudication, strength or GUI
+  behavior; generated tests must not be the only source of expected rule
+  behavior.
+
+| Evidence | What it establishes |
+| --- | --- |
+| Curated rules fixtures | A selected interpretation is implemented correctly in a specific case. |
+| State properties | Transitions, reversibility, derived state and serialization stay consistent. |
+| Perft and differential comparison | Move generation agrees with independent expectations over specified positions and depths. |
+| Search oracle tests | Search returns the intended result on independently solvable positions or trees. |
+| Performance benchmarks | The effect of a change on time, throughput or memory under recorded conditions. |
+| Match experiments | Playing performance for a game, opponent pool, limits and starting positions. |
+| Application integration | Commands, progress, cancellation, state changes, persistence and presentation stay coherent. |
+
+- Search: test small independently solvable positions or synthetic trees before
+  relying on pruning or transposition reuse; test score perspective, terminal
+  scoring and returned-action legality.
+- Matches: preserve executable and model identity, parameters, limits, openings,
+  colors, results and failures. Pair openings with reversed colors.
+- Desktop: test starting a search, changing the position, cancelling and
+  receiving a delayed result, plus persistence and compound action entry, in
+  the real packaged application.
+
+Each game's conformance must be verifiable from its selected profile and
+independently established expectations, without another engine
+([conformance policy](testing/conformance-policy.md)). Where and how often
+checks run is in [AGENTS.md](../AGENTS.md#checks).
+
+## 6. Future direction: larger historical Shogi variants
+
+Deferred; needs John's authorization before any work (D-22). Provisional order
+and boards: Dai Shogi (15×15), Dai Dai Shogi (17×17), Maka Dai Dai Shogi
+(19×19), Tai Shogi (25×25), and conditionally Taikyoku Shogi (36×36). Do not add
+them to the game selector before a playable, verified implementation.
+
+When authorized, start from the shared shell and interaction controller. Up to
+about 16×16 keep the full-board view; 17×17 to 19×19 investigate a maximized
+window, responsive layout and optional zoom and pan; 25×25 and larger
+investigate a full-board overview with a magnified, navigable playing region,
+accessible zoom/pan and keyboard controls, native legal destinations outside
+the detailed view, and preserved complete-action identities. Each game owns its
+rules; shared infrastructure owns session, persistence, execution and
+presentation; no universal variant-rules framework. Each such game needs a
+named, versioned playing profile, independently expected fixtures, native
+rules and complete actions, a functional engine, desktop integration and
+platform verification.
+
+## 7. Decision register
+
+| ID | State | Decision |
+| --- | --- | --- |
+| D-01 | Accepted | All six named games, own capable engines, console interoperability, and three desktop platforms. |
+| D-02 | Accepted | Rust core and console; Tauri 2 with React/TypeScript/Vite desktop; native rules reused by learning tools (2026-10-22). |
+| D-03 | Accepted | Design in ChatGPT, implementation in Codex or Claude Code, and Backlog.md in the repository (2026-10-22). |
+| D-04 | Superseded | The agent workflow is in AGENTS.md (revised 2026-11-20). |
+| D-05 | Done | Rewrite in the existing repository, preserving legacy history (`master`, `main_v2`, `legacy-cpp`). |
+| D-06 | Done | M0/M1 sequencing. |
+| D-07 | Open per game | Disputed historical rules, versioned conventions and full conformance criteria are resolved per game before affected behavior is implemented or conformance is claimed. |
+| D-08 | Implementer choice | Public API/ABI, board and action encodings, trait hierarchy and wire/save schemas: implement only the needed stable semantic contracts. |
+| D-09 | Accepted, 2026-11-18 | Engine strength follows the per-game classical [strength program](m5/strength-roadmap.md), then learned evaluation (MSH-55, MSH-135). Fast predecessor game tests have standing authorization; long campaigns and rating studies need approval. |
+| D-10 | Deferred | Release licensing, redistribution, minimum OS policy, signing and updates (MSH-58). Preserve existing notices; resolve before copying restricted dependencies or distributing releases. |
+| D-11 | Accepted, 2026-10-24 | Chess match semantics: optional core claims with a recorded unattended auto-claim policy, FEN-limited known history, explicit unscored mating uncertainty, untimed and increment clocks, ordered replayable match events, evaluation adjudication disabled. See [match v1](rules/chess-match-v1.md). |
+| D-12 | Done | Standard Shogi first, then Xiangqi, Tori, Chu and Tenjiku. |
+| D-13 | Accepted, 2026-10-26 | Standard Shogi profile `mshogi.shogi.csa36.v1` (SHOGI-P1), with untimed local play, advisory/committed declarations, atomic rejection and declared-counter/bounded-history adaptations. JSA professional and other event conventions are unselected alternatives. See [profile](m4/shogi-profile.md). |
+| D-14 | Accepted, 2026-10-27 | Every game uses the common application shell (A-10). |
+| D-15 | Accepted, 2026-10-27 | Xiangqi profile `mshogi.xiangqi.wxf2018.v1` (XIANGQI-P1): official bilingual WXF2018 with per-case discrepancy reconciliation and no blanket language precedence; third-occurrence warning and fourth continued unilateral loss, or the applicable WXF draw; untimed native claims; a sound fast check plus a bounded, terminable exact Article 3.2A path. See [profile](m4/xiangqi/profile-proposal.md). |
+| D-16 | Accepted, 2026-10-27 | MSH-104 per-game opening-knowledge experiment is part of M5 closure; adoption is optional. A compact teacher-distilled opening policy, the learned evaluator (MSH-55) and full policy/value search (MSH-59) are distinct. No product Python and no mandatory opening mechanism. |
+| D-17 | Accepted, 2026-10-30 | Pre-release compatibility policy: see A-09. |
+| D-18 | Accepted, 2026-10-30 | Application architecture and shared product UI: see A-10. |
+| D-19 | Accepted, 2026-10-31 | Desktop UX: see A-11. |
+| D-20 | Accepted, 2026-11-02 | Chu profile `mshogi.chu.jcsa2019.v1` (modern JCSA): capture-based movement and finite immediate-threat mate; the responsible side must vary before the fourth repetition; narrow sourced material exhaustion, immediate response and agreement-based draw. No automatic forfeit, automatic draw or quiet-immobility loss. See [decisions](m4/chu/decisions.md). |
+| D-21 | Accepted, 2026-11-04 | Tenjiku offers two immutable whole profiles, Adams 1999 Modern and Muller, chosen at New Game and preserved by records, replay and search. No independent rule toggles or in-place reinterpretation of a game. See [decisions](m4/tenjiku/decisions.md). |
+| D-22 | Deferred direction, 2026-11-05 | Larger historical variants (section 6); nothing approved beyond recording the direction. |
+
+Deferred questions block only the work that depends on them. A routine choice
+within accepted requirements needs no new approval.
+
+## 8. References
+
+- Original project: https://github.com/jweathers777/mShogi
+- Rule fixtures carry their own primary rule references. This design is not a
+  substitute for the rules of any game.

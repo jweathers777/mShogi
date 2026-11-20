@@ -129,7 +129,10 @@ fn schema_one_record_with_a_third_occurrence_is_refused_at_that_command() {
             "envelope_version": 1, "game_kind": "tori", "rules_profile": "mshogi.tori.modern.v1",
             "profile_edition": edition, "native_schema_version": schema, "payload": payload,
         });
-        assert!(CanonicalRecord::from_json(&envelope.to_string()).is_err());
+        assert!(matches!(
+            CanonicalRecord::from_json(&envelope.to_string()),
+            Err(mshogi_core::native::EnvelopeError::Identity)
+        ));
     }
     // A schema-1 body under the current edition or schema number is refused.
     let mut wrong: Value = serde_json::from_str(&v1("tori-contract")).unwrap();

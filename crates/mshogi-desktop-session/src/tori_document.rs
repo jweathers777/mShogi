@@ -18,12 +18,15 @@ use std::fmt;
 pub const MAX_TORI_DOCUMENT_WORK: u64 = 1_048_576;
 // A native root admission/serialization costs work even without any events.
 const ROOT_WORK: u64 = 128;
-/// Modelled work of one native board action, calibrated in units of about one
-/// microsecond: the earlier model charged 65,341 units for a 360-ply record that
-/// replayed in about 65 ms (release, macOS arm64), and since MSH-208 (Tori
-/// Repetition Rule) a 1,022-ply record replays in about 94 ms, about 92 us per
-/// ply. 128 per action keeps the model conservative.
-const PLAY_WORK: u64 = 128;
+/// Modelled work of one native board action, in units of about one
+/// microsecond of release replay (macOS arm64): the earlier model charged
+/// 65,341 units for a 360-ply record that replayed in about 65 ms; since
+/// MSH-208 (Tori Repetition Rule) a full-length record replays in about
+/// 120-140 ms, about 137 us per ply at 1,022 plies, and the cost per ply still
+/// rises with length. 192 is about 1.4 times the measured cost at full length,
+/// and the document budget still holds full-length records and the aggregate
+/// event limit (4,096 retained events) binds before it.
+const PLAY_WORK: u64 = 192;
 /// Upper bound of one record's modelled replay work (all events are plays).
 const MAX_RECORD_WORK: u64 = ROOT_WORK + PLAY_WORK * t::MAX_GAME_EVENTS as u64;
 const NATIVE_RESERVED_BYTES: usize = 8192;

@@ -1,11 +1,11 @@
 ---
 id: MSH-208
 title: Tori Repetition Rule
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-11-20T07:34:00Z'
-updated_date: '2026-11-20T08:48:00Z'
+updated_date: '2026-11-20T08:59:00Z'
 labels:
   - handle:tori-repetition-rule
   - tori
@@ -33,20 +33,20 @@ Handle: Tori Repetition Rule
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 T06 states John's rule and its sources: the same position is board, both hands and side to move, anywhere in the known history; a move that would create the third occurrence is refused without changing state; if every otherwise legal action would create a third occurrence, the side to move loses
-- [ ] #2 Native tests with independently established expectations cover: refusal of the third-occurrence move, occurrences separated by unrelated play, cycles through capture and drop, check and non-check cycles, the forced loss, imported roots (no inferred earlier history), undo/redo and exact prefixes
-- [ ] #3 The native check uses a per-position 64-bit hash with full-key confirmation on a match; a differential test against the full-key scan agrees on random and constructed games
-- [ ] #4 The separate Tori replay-work count is removed; entry limit 1,024 with the 512 KiB record limit kept (the shared 1 MiB native envelope and engine request bound all games; raising them belongs to MSH-209), with exact boundary tests; records that load before the change and contain no third-occurrence event still load; any record that no longer replays is identified and the reason recorded
-- [ ] #5 Conformance fixtures, desktop document/runtime evidence and engine validation are updated to the new rule; affected desktop checks pass at the level the change requires
-- [ ] #6 The engine search follows the rule; any search-scan change is accepted on the program's checks (correctness, game test against the predecessor)
+- [x] #1 T06 states John's rule and its sources: the same position is board, both hands and side to move, anywhere in the known history; a move that would create the third occurrence is refused without changing state; if every otherwise legal action would create a third occurrence, the side to move loses
+- [x] #2 Native tests with independently established expectations cover: refusal of the third-occurrence move, occurrences separated by unrelated play, cycles through capture and drop, check and non-check cycles, the forced loss, imported roots (no inferred earlier history), undo/redo and exact prefixes
+- [x] #3 The native check uses a per-position 64-bit hash with full-key confirmation on a match; a differential test against the full-key scan agrees on random and constructed games
+- [x] #4 The separate Tori replay-work count is removed; entry limit 1,024 with the 512 KiB record limit kept (the shared 1 MiB native envelope and engine request bound all games; raising them belongs to MSH-209), with exact boundary tests; records that load before the change and contain no third-occurrence event still load; any record that no longer replays is identified and the reason recorded
+- [x] #5 Conformance fixtures, desktop document/runtime evidence and engine validation are updated to the new rule; affected desktop checks pass at the level the change requires
+- [x] #6 The engine search follows the rule; any search-scan change is accepted on the program's checks (correctness, game test against the predecessor)
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -70,4 +70,12 @@ Branch codex/msh-208-tori-repetition, stacked on codex/msh-204-tori-harness (sha
 2026-11-20 implementation at 9d06871d (Level 2: native rule, record schema, desktop document/presentation, frontend). Checks (macOS arm64, release): cargo test --workspace --no-fail-fast 1,303 passed, 0 Tori failures; one Chess process test (mshogi-console desktop_play actual_missing_response_and_failed_process_pause_without_a_chess_score) failed once under full parallel load and passed 4 of 4 reruns alone, unrelated files; Clippy clean; fmt clean; desktop vitest 609 passed; tsc clean; desktop/scripts test_gui_smoke.py 133 passed; tools/strength tests 146 passed. New evidence: hand-derived fixtures TORI-H-COUNT/INITIATOR/CHECK/FORCED-QUIET/SEPARATED/REPLAY-UNDO/FORCED-FULL/CAPTURE-DROP/C-HISTORY (713 executed, 713 passed, 14 pending, 0 failed); digest-vs-full-key differential (64 seeded games, 1,310 restricted positions, 1 forced loss, all equal); schema-1 records from the earlier desktop QA documents (4 load, tori-obligation8 refused at event 7); exact 1,024-event boundary with Stop/Resign reservations. Desktop documents of the earlier edition are refused (identity mismatch); QA documents regenerated (forced-prefix6, repetition7). Packaged GUI journey (gui-smoke.py Tori repetition section) updated but NOT run; deferred to the next packaged GUI checkpoint. Search: root uses the native restriction; in-search third occurrence is a loss for the mover; the full-history scan experiment is deferred to MSH-205 (Tori Selectivity Round), whose predecessor is this engine, because a game test across a rule change has no valid predecessor.
 
 2026-11-20 independent review of 9d06871d (fresh reviewer): nothing blocking; fixture expectations re-derived independently and confirmed. Should-fix resolved at c7e013a2: (1) envelope accepted mismatched Tori schema/edition labels -> payload labels must equal envelope labels, tests for both directions; (2) per-action history scan made replay superlinear and the desktop model understated it -> native position index (digest -> indices), desktop PLAY_WORK=128 calibrated (old: 65,341 units for a 360-ply record replaying in about 65 ms release; new: 1,022-ply record about 94 ms), MAX_TORI_DOCUMENT_WORK 262,144 -> 1,048,576 so full-length records fit. Note for John: TORI-H-INITIATOR restricts the player whose move would create the third occurrence (Gote in the 4-ply cycle Sente starts), per John's wording; the 2022 rule book and PyChess say the player who started the sequence must vary. Checks at c7e013a2: cargo test --workspace --release 1,305 passed 0 failed; Clippy clean; vitest 609; tsc clean; gui-smoke tests 133; tools/strength tests 146.
+
+2026-11-20 second review round (both fresh reviewers re-reviewed c7e013a2): nothing blocking. Index equals full-key scan (reviewer's own 17,626 checks incl. undo/redo/record_prefix). Calibration corrected: long-test figure is two replays (about 140 ms per 1,022-ply replay, 137 us/ply); PLAY_WORK set to 192 (about 1.4x measured at full length; 256 made the work budget bind before the 4,096 aggregate event limit). Envelope test now matches EnvelopeError::Identity. All 10 committed clocked MSH-186 reports replay. Integrated: merge b40422e2 into main; post-merge core/runner/engine 588 passed 0 failed.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Tori repetition now follows John's decision (2026-11-20): the same position (board, both hands, side to move) anywhere in the known history may not occur a third time; the move that would create it is refused, and a side whose every board-legal action would create it loses (T05 mate/stalemate precedence). The native check uses a 64-bit digest with full-key confirmation and a position index; the separate replay-work count (65,536, which ended games at about 360 plies) is removed; limits are 1,024 events and the existing 512 KiB record (the shared 1 MiB envelope binds all games; MSH-209). Records are schema 2 under edition MSH208-MODERN-2026-11-20; schema-1 records load by replay unless they contain a now-refused third occurrence; earlier-edition desktop documents are refused and the QA documents were regenerated. Repetition fixtures were re-derived by hand and independently re-checked; search, desktop presentation/document cost model (calibrated against measured release replay), frontend notice and GUI script follow the rule. Verification Level 2, macOS arm64: workspace 1,305 passed, vitest 609, gui-smoke tests 133, tools 146, Clippy clean; two independent review rounds, nothing blocking. Not run: packaged GUI journey (deferred to the next packaged GUI checkpoint). Deferred: full-history search scan experiment to MSH-205. Open for John: the restricted side is the one whose move would make the third occurrence (TORI-H-INITIATOR), while the 2022 rule book and PyChess word it as the player who started the sequence.
+<!-- SECTION:FINAL_SUMMARY:END -->

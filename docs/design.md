@@ -19,7 +19,7 @@ import and the old search and Force controls are outside current requirements.
 | P-03 | Provide a console application for interactive use, control by other interfaces, self-play, and matches against other programs. |
 | P-04 | Provide a polished desktop application supporting every implemented game on Windows, macOS, and Linux. |
 | P-05 | Make engine behavior inspectable and failures reproducible. Verification, diagnostics, and performance/strength measurements are development infrastructure. |
-| P-06 | Keep design and product decisions in ChatGPT, implementation in Codex or Claude Code, and durable instructions and Backlog.md work records in Git. |
+| P-06 | John makes design and product decisions. Any coding agent that follows AGENTS.md (for example Claude Code or Codex) implements them. Durable instructions and Backlog.md work records live in Git. |
 
 Deferred requirements remain requirements. A partial implementation must state
 its coverage and must not present itself as complete.
@@ -350,7 +350,7 @@ platform verification.
 | --- | --- | --- |
 | D-01 | Accepted | All six named games, own capable engines, console interoperability, and three desktop platforms. |
 | D-02 | Accepted | Rust core and console; Tauri 2 with React/TypeScript/Vite desktop; native rules reused by learning tools (2026-10-22). |
-| D-03 | Accepted | Design in ChatGPT, implementation in Codex or Claude Code, and Backlog.md in the repository (2026-10-22). |
+| D-03 | Accepted, revised 2026-11-21 | John decides design and product; any coding agent that follows AGENTS.md implements; Backlog.md in the repository. Replaces the 2026-10-22 role of ChatGPT for design. |
 | D-04 | Superseded | The agent workflow is in AGENTS.md (revised 2026-11-20). |
 | D-05 | Done | Rewrite in the existing repository, preserving legacy history (`master`, `main_v2`, `legacy-cpp`). |
 | D-06 | Done | M0/M1 sequencing. |

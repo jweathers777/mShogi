@@ -4,7 +4,7 @@ title: Tori Search Speed
 status: Ready
 assignee: []
 created_date: '2026-11-19T07:12:00Z'
-updated_date: '2026-11-20T23:02:00Z'
+updated_date: '2026-11-20T23:28:00Z'
 labels:
   - tori
   - search
@@ -12,6 +12,7 @@ milestone: m-5
 dependencies: []
 references:
   - docs/m5/strength-roadmap.md
+priority: high
 ordinal: 207000
 ---
 

@@ -35,7 +35,7 @@ from pathlib import Path
 
 PREFIX = 'build'
 CAMPAIGN_SECONDS = 3600
-COMPUTE_USD = 1
+COMPUTE_USD = 2
 TARGET = re.compile(r'(mshogi-[a-z-]+):(bin|example):([a-z0-9_-]+)')
 
 

@@ -4,7 +4,7 @@ title: Tori Search Speed
 status: Ready
 assignee: []
 created_date: '2026-11-19T07:12:00Z'
-updated_date: '2026-11-20T22:49:00Z'
+updated_date: '2026-11-20T23:02:00Z'
 labels:
   - tori
   - search
@@ -43,4 +43,6 @@ Native rules stay the authority. The search-side position must agree with them i
 2026-11-20 measurements (cloud c3-standard-4, build e6df0d79, job msh200-movegen-1, 106 s, about US$0.01, cleanup verified; evidence docs/m5/evidence/msh200): real game positions have 57 candidate moves, 64% drops; generate-all 234 ns (4 ns/move); per-piece 3-4 ns (step pieces), 10-18 ns (Eagle, Quails); attacked(Phoenix) 20 ns, called twice per make; make+unmake 59-71 ns; perft 94 ns/leaf; search depth 6 1.22 M nodes/s. Finding: trying moves (two attack tests per make) dominates, not generation. Options A-E and recommendation in docs/m5/tori-move-generation.md; awaiting John's decision.
 
 2026-11-20, John: rescoped from a discussion task to an ordinary speed task. The options questions in the note need no answer; agents choose the techniques and measurements decide. Branch codex/msh-200-tori-movegen holds the cost profile tooling and the note; it is merged with main and pushed. Measurement data: gs://mshogi-experiments-216675633801/runs/msh-200/.
+
+2026-11-21: the cost-profile tooling (tori::movegen_profile, tori_strength movegen, tori_cloud movegen task) and docs/m5/tori-move-generation.md are merged to main (d50c082); branch codex/msh-200-tori-movegen is deleted. Start a new branch from main.
 <!-- SECTION:NOTES:END -->

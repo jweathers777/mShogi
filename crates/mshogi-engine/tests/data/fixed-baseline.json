@@ -1,0 +1,93 @@
+[
+  {
+    "action": "b1c3",
+    "nodes": 128,
+    "profile": "mshogi.chess.match.v1",
+    "score": 0
+  },
+  {
+    "action": {
+      "action": "5i6h",
+      "kind": "move"
+    },
+    "nodes": 121,
+    "profile": "mshogi.shogi.csa36.v1",
+    "score": 10
+  },
+  {
+    "action": {
+      "action": "a3a4",
+      "kind": "move"
+    },
+    "nodes": 313,
+    "profile": "mshogi.xiangqi.wxf2018.v1",
+    "score": 10
+  },
+  {
+    "action": {
+      "from": "3d",
+      "kind": "move",
+      "result_face": "swallow",
+      "to": "3c"
+    },
+    "nodes": 125,
+    "profile": "mshogi.tori.modern.v1",
+    "score": 10
+  },
+  {
+    "action": {
+      "from": [
+        7,
+        10
+      ],
+      "promote": false,
+      "route": [
+        [
+          7,
+          8
+        ]
+      ]
+    },
+    "nodes": 173,
+    "profile": "mshogi.chu.jcsa2019.v1",
+    "score": 10
+  },
+  {
+    "action": {
+      "from": [
+        5,
+        11
+      ],
+      "kind": "travel",
+      "promote": false,
+      "route": [
+        [
+          5,
+          10
+        ]
+      ]
+    },
+    "nodes": 426,
+    "profile": "mshogi.tenjiku.adams1999-modern.v1",
+    "score": 10
+  },
+  {
+    "action": {
+      "from": [
+        5,
+        11
+      ],
+      "kind": "travel",
+      "promote": false,
+      "route": [
+        [
+          5,
+          10
+        ]
+      ]
+    },
+    "nodes": 579,
+    "profile": "mshogi.tenjiku.muller-completed.v1",
+    "score": 10
+  }
+]

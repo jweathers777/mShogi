@@ -1,300 +1,174 @@
 # mShogi agent instructions
 
-These instructions apply to Codex, Claude Code, and bounded review or QA sessions. The repository must be sufficient to resume work without private conversation history.
+These instructions apply to every coding agent (Claude Code, Codex and others).
+The repository and its Backlog are the complete project state. A new session
+must be able to start the next task without chat history and without help.
 
-## Authority and scope
+## The project
 
-1. Follow the current user's instructions and explicitly recorded project decisions.
-2. Preserve the accepted product requirements and architectural boundaries in `docs/design.md`.
-3. Follow the selected task's scope and acceptance criteria within that design.
-4. Treat tool guidance, examples, older source, and implementation conventions as subordinate to the above.
+- mShogi is a native Rust engine and desktop application for six games: Chess,
+  Standard Shogi, Xiangqi, Tori Shogi, Chu Shogi and Tenjiku Shogi. It is not
+  released. John is the sole owner.
+- Product requirements: `docs/design.md`. Game behavior: the native rules in
+  `mshogi-core`, following the selected rules profiles in `docs/rules/`.
+- Never change a game rule, drop a game, or loosen a rules test to make code
+  pass. Write the problem and a proposed decision in the task and ask John.
 
-Ordinary implementation choices belong to the implementer. A ticket, implementation plan, ADR, or tool-recommended review checkpoint does not by itself require another permission request. When the user asks to work on a task or the next available task, carry that bounded work through implementation, appropriate verification, review, and normal integration. Ask only about a material product/rules ambiguity or an action outside existing authorization. Continue unaffected work when possible.
+## Start a session
 
-Never change a game rule, remove a promised variant, weaken acceptance criteria, or reinterpret a public semantic contract merely to make code or tests pass. Record the issue and request a decision on a concrete proposed change with evidence.
+1. Run `git status`, `git branch`, `git worktree list`. Do not touch another
+   worker's branch, worktree or uncommitted work.
+2. Choose the work, in this order:
+   - the task John named;
+   - your own task that is In Progress;
+   - the first task from `backlog task list --status Ready --ready --plain`
+     that has no assignee and no `needs-john` label. Highest priority first.
+3. Claim it before you change code: set yourself as assignee, set the status to
+   In Progress, create the branch and push it. Skip any task that another worker
+   claimed.
+4. Read the task, the code that it changes, and the parts of `docs/design.md`
+   that apply. Also read every document that John, the task or the design
+   tells you to read. You do not have to read all of `docs/`.
 
-## Communication preference
+## Do the work
 
-Communication convention, 2026-11-11: Use ASD-STE100 Simplified Technical English in all future communications.
+- Branch from `main` as `<agent-name>/<task-id>-<short-name>`, for example
+  `claude/msh-205-tori-selectivity` or `codex/msh-205-tori-selectivity`. A
+  small documentation change can go directly on `main`.
+- Make engineering decisions yourself. Use measurements to decide. Do not write
+  option papers or wait for John on an engineering choice.
+- Ask John only about: game rules or product behavior, spending above the cap
+  below, destructive Git operations (history rewrite, force-push, deletion of a
+  branch that is not yours), and work outside the task.
+- How to ask John:
+  - If John is active in your conversation, ask him there. Record the question
+    and his answer in the task notes.
+  - If he is not active, or does not answer: write the question and your
+    recommendation in the task notes, add the label `needs-john`, push, and
+    send a notification if your environment can. Then continue with other
+    work.
+- If you find work outside the task, create a new task. Do not expand the
+  current task.
 
-## Change direction when evidence shows little progress
+## Engineering quality
 
-Project direction, 2026-11-14, after review of MSH-163 (Engine Strength Test
-Harness) and MSH-164 (Shared Search Core):
+- Do not repeat yourself. This applies to all code, not only to code shared
+  between games. When two places do the same thing, put it in one function,
+  type or generic implementation behind a trait. When you touch duplicated
+  code, prefer to merge it.
+- Use judgment. Do not force an abstraction that makes a hot path slower or the
+  code harder to read. Search code can keep a specialized form when a
+  measurement shows that it matters.
+- Write code that is consistent with the code around it: naming, module
+  layout, error handling, test style and documentation comments. Read the
+  nearby code before you write. Do not copy a pattern that this file says to
+  remove, such as duplicated per-game modules.
+- Build the simplest thing that works. Internal APIs have no compatibility duty.
+  Saved-game formats keep their recorded compatibility.
 
-- Before a coherent improvement round, record the baseline, intended practical
-  benefit, comparison method, resource limit, and decision checkpoint in the task.
-  Select measures that test the objective. For engine strength, combine relevant
-  correctness checks with speed/depth measurements, decision tests, and a bounded
-  predecessor comparison when authorized. Faster execution alone is not stronger
-  play; a changed move alone is not a better move.
-- At the checkpoint, compare the measured benefit with the stated objective.
-  If the benefit is small, absent, or confined to selected cases, reconsider the
-  approach before another round of local fixes. Record a decision to continue,
-  change direction, or stop, with its evidence. Repeating the same approach after
-  repeated weak results requires new evidence, not another explanation of an
-  isolated failure. Test ordinary cases as well as the cases that motivated a fix.
-- Inspect the full path that limits the objective. For search, include board
-  representation, move generation, state updates, cache identity and capacity,
-  cache lifetime, and process lifetime. Ask whether the current design prevents
-  useful progress. Do not treat existing code, internal APIs, exact node counts,
-  or earlier implementation choices as product requirements.
-- Separate public correctness requirements from private implementation choices.
-  Native rules must remain authoritative for actual moves, histories, claims,
-  and outcomes. This does not by itself require the search to use the same data
-  representation or perform the same work at every node. Validate alternative
-  implementations with independent correctness and differential checks.
-- If an explicit architectural constraint blocks a promising approach, identify
-  its exact source and purpose. Present a concrete alternative, expected benefit,
-  risks, and a bounded validation plan for approval. Request the necessary decision
-  instead of silently weakening the contract or treating it as permanently fixed.
-  Continue changes already within authorization without another permission gate.
-- A controlled experiment can test a useful engineering hypothesis before every
-  individual mistake has a complete causal explanation. Prefer coherent,
-  conventional improvements with measurable outcomes. Keep a frozen predecessor;
-  retain or reject the change on evidence. Do not substitute more diagnosis,
-  infrastructure, or evidence collection for improvement without a specific need.
-- Compare like cases and include the relevant baseline. When diagnosing gameplay,
-  compare both players under the same definitions and conditions. Check whether
-  an apparent weakness is common at that level, and whether controller behavior
-  or selection affects the comparison. Separate descriptive findings from causes.
-- Correctness tests, reviews, and detailed records support the result; they do
-  not establish practical progress by themselves. Report unchanged outcomes and
-  regressions plainly. These rules do not authorize extra spending, studies,
-  changed game rules, or work outside the authorized scope.
+## Checks
 
-## Per-game strength program
+Every change:
 
-Project direction, 2026-11-18: every game follows the per-game classical
-strength program in `docs/m5/strength-roadmap.md` (harness, selectivity round,
-evaluation round, approved anchor, blunder screen, stop decision). The target is
-competent play without obvious blunders from classical techniques at bounded
-effort, as a baseline for later learned evaluation. Adjust only for available
-opponents, known techniques and rules, and record the reason in the task.
-Where no public rating list exists, measure with a fixed reference ladder and
-judged move quality (roadmap, "Measurement without a rating list"). For games
-after Xiangqi, do not look for external opponents (John, 2026-11-19).
+```bash
+cargo fmt --all -- --check
+cargo clippy --workspace --all-targets --locked -- -D warnings
+cargo test --workspace --locked
+```
 
-## Long tests run in the cloud
+Also, by type of change:
 
-Project direction, 2026-11-16: run long measurement work (game tests, rating
-studies, large suites; roughly more than one hour of local wall time) in the
-cloud by default, to get results sooner. Reuse the existing Google Cloud Batch
-path (`tools/experiments/gcp.py`, `docs/experiments/parallel-runner.md`); do not
-build new cloud infrastructure per task. Use one machine type per comparison,
-record machine type, CPU, VM-hours and estimated cost, and verify cleanup. This
-changes where tests run, not what they need: approval and spending rules for
-each kind of test stay as written above and in `docs/m5/strength-roadmap.md`.
-Short focused checks during implementation may stay local.
+- **Rules (`mshogi-core`):** perft and tests whose expected results come from
+  the rules, not from running the code. External engines are not rules oracles.
+- **Search-side positions:** perft and differential tests against the native
+  rules.
+- **Engine strength:** the blunder suite and an SPRT match against the frozen
+  predecessor at a fast time control. This match has standing authorization.
+  Keep a change only when it wins, or when it is neutral and makes the code
+  simpler. Faster search is not stronger play. Node counts and PVs do not have
+  to stay the same.
+- **Platform-sensitive code** (processes, files and persistence, Tauri,
+  toolchain, dependencies): run CI on the affected operating systems. Full
+  three-platform and packaged GUI checks are for releases only.
+- **Review:** rules changes, saved-format changes and large refactors get one
+  review by a fresh agent session or subagent, given the diff and the task. Fix
+  the real findings. Other changes need no separate review.
 
-## Session startup
+Report results honestly: say what passed, what failed and what did not run.
 
-- Inspect Git status, branch, remotes, worktrees, recent relevant commits, and active ownership before editing. Preserve existing dirty and untracked work. Apply the branch and checkout rules below before making changes; a clean checkout can still belong to an active worker.
-- Read `docs/design.md`, the selected task, its dependencies, and the relevant implementation. Read only additional material needed for the work.
-- Run `backlog instructions overview` and the relevant creation, execution, or finalization guide when using that operation.
-- Check the installed Backlog.md version against the recorded project baseline. Resolve a compatibility difference before mutating records with an incompatible version.
-- Resume your own active task when appropriate. Otherwise select a dependency-ready task from `backlog task list --status Ready --ready --plain`, respecting the user's stated priority.
-- A session must not claim another active worker's task. Record the actual owner and branch/worktree before substantive implementation.
+## Heavy compute and run data
 
-## One bounded work item
+- John's Mac is not for heavy compute. A job that uses many cores for more than
+  a few minutes runs on Google Cloud Batch through `tools/experiments/gcp.py`,
+  with one machine type per comparison. Check that the VMs are deleted after.
+- Spending cap: up to US$10 per task without asking. Ask John before more.
+- Never commit run output: game records, logs, JSON reports, screenshots,
+  archives. Write it under `runs/` (ignored by Git). Upload what can help a
+  later diagnosis to `gs://mshogi-experiments-216675633801/runs/<task-id>/`.
+  A lifecycle rule deletes objects under `runs/` after 60 days. Delete local
+  run data when the task is integrated.
+- In the task notes, record a short result: the commits compared, the command,
+  the machine, the result (for example SPRT wins/losses/draws and Elo
+  estimate), the cost and the GCS path.
 
-Use one primary builder responsible for integration. Delegate independent research, review, or clearly isolated implementation when useful; do not run competing builders over the same files or task.
+## Finish
 
-Before coding, inspect the code and put a short current implementation plan in the active task. Future tasks contain intent, constraints, acceptance criteria, dependencies, and verification expectations, not speculative detailed implementation plans.
+1. Merge `main` into the branch, run the checks again, then merge the branch
+   into `main` and push.
+2. Check the acceptance criteria that have evidence. Write a final summary of a
+   few lines: what changed, why, results, follow-up tasks. Set the status to
+   Done.
+3. Clean up everything that you created: your feature branch, your worktree
+   with its build output, temporary files, local run data and local caches.
+   Disk space must not grow silently. Keep temporary files in one place that
+   you can delete (`runs/` or your tool's scratch directory).
 
-Work on one bounded task per session by default. An explicitly requested queue or batch may continue through multiple tasks while preserving a separate plan, review, evidence, and completion record for each. Record newly discovered work as separate tasks when it falls outside the active scope. Do not silently expand the task.
+If you stop before the task is done, for any reason, write a handoff note:
+what is done, what is next, and the branch name. Push the branch and leave the
+task In Progress. A stop can come without warning (for example when your
+context or usage capacity runs out), so update the handoff note at each
+checkpoint, not only at the end.
 
-## Backlog.md usage
+## Tasks
 
-- Use the supported Backlog.md CLI for task creation and updates. MCP may be used if already configured and compatible; it is not a requirement for this project.
-- Keep status, ownership, dependencies, acceptance criteria, implementation notes, and final summaries in the task records.
-- Structure new and active task descriptions as **Problem**, **Objective**, **Approach**, **Completion**. Keep them concise and understandable on their own; link detailed findings, conditions and receipts instead of accumulating chronology in the description. Preserve historical records and stable handles.
-- Use `--append-notes` to preserve prior findings. Use `--notes` only when intentionally replacing notes.
-- Editing dependencies sets the intended list; pass the complete dependency set, not just the newest dependency.
-- Keep custom project instructions outside Backlog.md's managed instruction block.
-- Do not create GitHub Issues as an additional task system. A PR may carry a concise summary and link to a repository ticket.
-- Preserve IDs and evidence. Archive completed or cancelled work deliberately; do not delete task history as routine cleanup.
-- Give every new task a concise, stable, descriptive handle (preferably two to five words). Record `Handle: ...` in its description and a `handle:<kebab-case>` label through the CLI. For useful existing tasks, append `Stable task handle: ...` without rewriting historical records. The handle remains stable if the longer title changes.
-- In new conversational reports, development summaries, plans and task references, write `MSH-138 (Desktop Search Limits)`, `MSH-137 (Chess Search Refinement)` or `MSH-49.2 (Stockfish Baseline)`: always ID plus handle. CLI arguments, filenames, machine identities and the managed examples below retain their native syntax. Do not rewrite old evidence just to retrofit handles.
+- A new task has a title, a goal of one to three sentences, and acceptance
+  criteria that say when it is done. Add notes only when they help the next
+  session.
+- Add a dependency only on a task that directly blocks it.
+- Refer to a task by ID and title, for example "MSH-205 (Tori Selectivity
+  Round)".
 
-The configured statuses are `To Do`, `Ready`, `In Progress`, `In Review`, and `Done`, with `Done` last.
+## Documentation
 
-- `To Do` means the task still needs sufficient scoping or resolution of a recorded blocker.
-- `Ready` means the task has actionable scope; dependencies may still prevent execution.
-- `In Progress` means a named worker owns the active work.
-- `In Review` means implementation evidence is ready for independent assessment.
-- `Done` means the acceptance criteria and applicable completion checklist are satisfied, review findings are resolved, and the result is integrated into the recorded integration branch.
+- `docs/` holds durable knowledge: the design, rules profiles, how-to guides,
+  and a short design note when a technique is worth explaining (for example how
+  the Lion or the Fire Demon is generated).
+- `docs/` does not hold task reports, verification records, reviews of
+  reviews, or run data.
+- Only John can change the process. Do not change this file on your own
+  authority. Propose a change to John; when he approves it, edit the rule in
+  place. Do not add dated direction blocks. Git keeps the history.
 
-If blocked, record the specific blocker and the next action, leave the task unfinished, and take other authorized work if available. Do not treat a dependency-ready task as proof that a material unresolved design question has been answered.
+## Engine strength program
 
-## Verification and review
+Each game follows the same steps: strength harness, selectivity round,
+evaluation round, reference-ladder anchor, blunder screen, then a stop
+decision. The target is competent play without obvious blunders, from
+classical techniques, as a baseline for later learned evaluation. See
+`docs/m5/strength-roadmap.md`. Games after Xiangqi use no external opponents.
+Texel tuning of evaluation weights is allowed. Neural-network evaluation is
+future work and is out of scope now. Do not start it without John's approval.
 
-Write meaningful correctness tests with the behavior they exercise. Use independently established expected results; tests that merely repeat the implementation's assumptions are insufficient for rules conformance.
+## Code defaults
 
-Distinguish rule correctness, search correctness, execution performance, playing strength, and application integration. Passing one category does not establish the others.
+- Stable Rust. No `unsafe` in product code.
+- Rules and search do not depend on UI, console I/O or Python.
+- All six games stay in the design.
 
-Follow [risk-based verification](docs/testing/verification-levels.md), the durable project policy of 2026-11-09:
+## Communication
 
-- **Level 1 — routine local (default):** platform-independent search/evaluation, pruning, ordering, algorithmic optimization and isolated native correctness. Run relevant local tests, independent regressions, profiling and review; broaden local coverage for shared rules/consumers. Applicable local checks and independent review permit completion and integration. Production Rust changes alone do not require three-platform CI.
-- **Level 2 — targeted platforms:** material portability, process supervision, concurrency, filesystem/persistence, protocol, dependency/toolchain or platform-sensitive application changes. Select relevant operating systems and the smallest sufficient native/consumer suites from the actual risk; no automatic unrelated packaging or GUI campaign.
-- **Level 3 — full integration/release:** significant integration milestones, major architectural migrations, release candidates and releases. Establish actual supported-platform native and desktop compatibility on Linux, macOS and Windows; reuse earlier valid source/scope evidence honestly.
-
-Record the level, reason, actual environment/source/checks and explicitly deferred broader compatibility checkpoint in the active task. A Level 1 task is not blocked on unrelated hosted-runner capacity. Reconcile obsolete blanket platform obligations explicitly in unfinished task records; preserve historical failures and completed acceptance. Never present deferred or unperformed checks as passed. Ordinary verification selection needs no explicit approval.
-
-Use an independent reviewer or fresh review session for meaningful behavior changes and milestone closure. Give the reviewer a bounded diff or question, relevant requirements, and existing evidence. The author rereading their own work is useful but is not independent review. Documentation-only and mechanical changes need proportionate review, not invented test suites.
-
-Record the actual commands, outcomes, environment, and code revision used for verification. Distinguish passed, failed, and not run. Never infer success on an operating system from a build on another operating system.
-
-Backlog.md allows a task to be marked Done with unchecked criteria. Project policy does not. Check only criteria supported by evidence; leave the task unfinished if required verification is unavailable.
-
-Conformance must follow `docs/testing/conformance-policy.md`: selected rules and
-independently established expectations, meaningful property/metamorphic/negative
-checks and independent review. External game engines are optional investigations,
-never rules oracles or ordinary build/test/CI/conformance dependencies. An explicit
-approved playing-strength qualification may require independent opponents
-for that measurement gate; it does not make them product or rules dependencies. Preserve
-historical observations without requiring another engine for future variants.
-Requested opponent strength comparisons, such as MSH-49.2 (Stockfish Baseline), are separate
-measurement tasks; they do not make an external engine a normal product, rules
-conformance or CI dependency.
-
-For engine-strength development, implement established classical techniques
-directly. Accept an engine change on three checks: move-generation correctness
-(perft and differential tests against the native rules), the development blunder
-suite, and a game test of the new version against the frozen predecessor. A
-change does not have to keep identical search output, node counts or PVs.
-Project decision, 2026-11-13: predecessor-against-current game tests at a fast
-time control have a standing authorization, with a sequential stopping rule and
-recorded actual compute. This replaces the earlier 15-minute match allowance.
-Process bounds, failure records and reproducible execution stay required. A
-rating study against external engines, or a campaign with substantial cost,
-still needs explicit approval. Follow `docs/m5/strength-roadmap.md`.
-
-For macOS GUI verification, reuse the fixed normal/QA/synthetic application slots
-and identities documented in `docs/desktop/packaged-gui-verification.md`, using
-the helper in the primary integration checkout even for worktree builds. Never
-create a bundle identifier, app name or launch directory per fixture, task or
-revision. Change a QA scenario through the external fixture selector while its
-application is stopped; do not rewrite or re-sign the bundle per scenario.
-Inspect existing saved approvals read-only when diagnosing access. Never edit
-approval stores or security policy, self-grant access, or promise that an app
-rebuild cannot trigger a platform-controlled prompt. Record actual identity,
-signature and reuse observations.
-
-## Execution efficiency within an assignment
-
-Apply the approved improvements in
-`docs/review/tori-codex-execution-bottlenecks.md` without weakening correctness,
-independent review, acceptance criteria or required platform evidence.
-
-- Before broad tests or CI, inspect affected production consumers and separate
-  workspaces. Check tagged dispatch exhaustiveness, the standalone Tauri host,
-  relevant frontend consumers and changed test assertions early.
-- Use focused checks during implementation, then broad relevant regressions at
-  a coherent source checkpoint. Minor changes need only their affected checks
-  unless they invalidate the broader evidence.
-- Separate mandatory successful representative resource journeys from near-limit
-  operations whose contract permits precise typed refusal. Always assert accepted
-  state, history, identities, dirty state and prior-file integrity as applicable.
-- Start independent review early when useful; re-review substantive changes and
-  final source evidence while other required work proceeds.
-- Declare the task's verification level and any risk-required CI jobs explicitly.
-  Level 1 local checks/review can complete ordinary native engineering; preserve
-  targeted Level 2 and full Level 3 obligations where their actual risks apply.
-  Full packaged GUI campaigns belong at integration/release boundaries.
-- Use one completion-aware CI monitor. Stop when the required condition is met;
-  check available completion before another timed wait. Cancel superseded
-  campaigns when appropriate and preserve their failures and provenance.
-- Maintain one structured verification record per tested source revision and
-  reference it from concise Backlog notes and acceptance summaries. Reuse prior
-  records rather than copying their results into competing evidence ledgers.
-- Before completion, establish that the exact tested revision passed its required
-  checks. Reuse unchanged source/scope evidence; never infer unperformed checks.
-
-## Current Chess strength direction
-
-Project direction, 2026-11-13, after MSH-161 (Competitive Gameplay Diagnosis) and
-its independent review (`docs/m5/evidence/msh161/cloud-primary/independent-review-fable/review.md`):
-
-- The main limit is search depth. Build strength with classical engineering:
-  a fast search-internal position, a large board-keyed transposition table kept
-  for the full game, standard selectivity, time management, then evaluation.
-- A direct rewrite of the search is authorized when it addresses the main cause.
-  Do not replace this work with position-by-position diagnosis, isolated
-  edge-case corrections or new assessment campaigns.
-- Build one game-independent search core that the games share. Each game supplies
-  its fast position, move generation, evaluation and special rules. Prove the
-  boundary with Chess first and a second, different game early. Do not add a
-  separate search implementation per game.
-- The native rules stay the single authority for the real game, its history and
-  its result. Private analysis can use board-keyed approximation (design A-03).
-- Tuning the weights of handwritten evaluation terms by regression on labeled
-  positions (Texel tuning) is authorized as classical engineering. "Learned
-  evaluation" means neural networks that learn evaluation features. That work
-  stays a later, separate subject and needs explicit approval. It may later serve
-  games such as Chu and Tenjiku Shogi, which have no strong opponents or theory.
-- Earlier directives for completed Chess rounds are in the Git history of this file.
-
-## Git and routine autonomy
-
-The established workflow permits ordinary local commits, non-destructive integration, normal pushes to the configured project remote, and cleanup of the agent's own completed disposable branches/worktrees. Use `main` as the integration target. Preserve the original `master` and `main_v2` histories and the `legacy-cpp` tag. The approved MSH-171 (Rewrite Main Promotion) transition replaces the former `codex/rewrite` integration/default policy; do not rewrite published history.
-
-Do not force-push, rewrite published history, discard unrelated edits, delete ambiguous worktrees, bypass hooks or protections, change repository access, or switch the remote/default branch as routine task work. Inspect existing state before integration. Resolve ordinary conflicts within scope; escalate a conflict in product intent with a concrete explanation.
-
-Prefer coherent commits that include code, associated tests, and ticket evidence. Do not put credentials, local databases, large generated training sets, private machine settings, or build output into Git. Record reproducible references for large evidence instead.
-
-## Checkout and worktree lifecycle
-
-For every new work item, create a new feature branch before making changes.
-Use the `codex/` prefix for agent branches. Implement and verify the work on that
-branch, then merge the reviewed result into `main`. Never implement product code
-or tests directly on `main`.
-
-The only exception is a small documentation change or a similar small non-code
-change: it may be made directly on `main` when that checkout is free of other
-active work. This exception does not cover code, tests, dependencies, build or
-runtime configuration, or a larger implementation task that also changes docs.
-
-Choose the checkout by its actual ownership:
-
-- If the primary project directory is free of other active work, create and
-  check out the new feature branch there. A separate worktree is not required.
-- If the primary project directory is on a branch being used by the user or
-  another agent, leave that branch and checkout untouched. Create a temporary
-  worktree with a new feature branch for this task. Do not switch their branch,
-  reuse it, or move their edits to make room for your work.
-- Check ownership even when Git reports a clean working tree. If ownership is
-  unclear, treat the checkout as occupied until ownership is established.
-
-`main` is the integration branch; it does not have to remain checked out in the
-primary directory during feature work. Preserve the original `master` branch
-and history; a separate permanent checkout is not required to preserve them.
-
-After the task is verified, independently reviewed where applicable,
-integrated and pushed, remove its worktree before finishing. First confirm
-that its commits are integrated, preserve any uncommitted or needed untracked
-or ignored files, and check that no running task or process still needs it.
-Archive app-managed worktrees with the app tool; remove ordinary Git worktrees
-with Git. Leave a worktree only when it has an explicit ongoing purpose, and
-record that purpose in the handoff. Reusable build caches may live in the main
-checkout; completed task checkouts are not permanent build locations.
-
-## Completion and handoff
-
-The active task's final summary must state what changed, why, acceptance/evidence coverage, important decisions or limitations, and linked follow-up work. Record the integration branch and relevant commit references without fabricating a future commit hash.
-
-Before yielding, leave enough information in the task for a new session to continue. Report the completed task, meaningful verification, remaining blocker if any, and next eligible task. Do not maintain a second competing status spreadsheet or long chronological diary.
-
-## Engineering defaults
-
-- Keep rules and search independent of UI frameworks, console I/O, and Python.
-- Use stable Rust for product code; separately scoped fuzzing tools may require a different recorded toolchain.
-- Start with safe, understandable code and a representation appropriate to the implemented game. Add unsafe code, SIMD, or representation compression only for a measured need and with corresponding checks.
-- Treat the old implementation as historical evidence and a source of regression ideas, not as the rules oracle.
-- Preserve all six target games in the design. Chess-first sequencing does not authorize a chess-only product.
-- Build the minimum implementation that satisfies the active contract. Do not prebuild a universal variant DSL, plugin ABI, distributed trainer, or speculative abstraction framework.
-- mShogi is not released. Internal APIs have no backward-compatibility duty; change or remove them when that gives a simpler design. Saved-game formats and native rules keep their recorded requirements.
-- Reuse shared mechanisms across games. Do not implement the same feature again in a different way for each game.
+- Use ASD-STE100 Simplified Technical English.
+- End a session with: what changed, check results, and the next task.
 
 <!-- BACKLOG.MD GUIDELINES START -->
 <!-- backlog.md-instructions-version: 1.55.3 -->

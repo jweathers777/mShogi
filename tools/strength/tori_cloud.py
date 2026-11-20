@@ -341,7 +341,7 @@ def collect(raw, out):
         result[label] = entry
     suite_path = Path(__file__).resolve().parents[2] / 'tools/strength/data/tori-tactics-v1.json'
     suite_bytes = suite_path.read_bytes()
-    frozen = json.loads((Path(__file__).resolve().parents[2] / 'docs/m5/evidence/msh204/cloud/data-files.json')
+    frozen = json.loads((Path(__file__).resolve().parents[2] / 'tools/strength/data/tori-cloud-data-files.json')
                         .read_text())['files']['tori-tactics-v1.json']
     if hashlib.sha256(suite_bytes).hexdigest() != frozen:
         raise SystemExit('suite differs from the frozen cloud data')

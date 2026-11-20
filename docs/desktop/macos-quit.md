@@ -28,29 +28,15 @@ The existing bounded child-shutdown observation still runs after approval.
 Cancel keeps the window and the paused game. Save failure leaves close pending.
 Forced process termination/crashes cannot promise an interactive dialog.
 
-## Source provenance and review boundary
+## Source
 
-`desktop/src-tauri/vendor/tao` is the complete cached crates.io Tao 0.37.2
-package, including its license and package metadata. Original crate checksum:
-`d5777b06fe6435126ae8d816eba269e050e1e10d302cf5461e9c49eccabc3548`.
-Its packaged VCS metadata names commit
-`2d9b2ba15247879787878ae565e350bcc1b9f622` (the upstream package itself records
-`dirty: true`). The standalone desktop manifest selects it with
-`[patch.crates-io]`; the root workspace lock/dependencies are independent.
-
-Byte comparison against all 119 files in the cached upstream package found one
-changed file: `src/platform_impl/macos/app_delegate.rs`. All other files are
-unchanged. The change adds imports, selector registration and one callback; it
-adds no unsafe block and does not weaken the host's `unsafe_code = "forbid"`.
-Review the callback delta against the original package rather than treating the
-unchanged upstream source as new application code.
-
-The callback compiles on macOS with Rust 1.90. Actual packaged native Cocoa
-termination, Cmd-Q and window-close Save/Discard/Cancel evidence is required
-separately; compilation alone does not establish the native UI behavior. A
-direct Dock click and the native Cocoa entry probe below are distinct evidence
-labels, even though both invoke the same termination entry. Linux/Windows
-compilation is also checked independently because the package remains shared.
+The patch lives on John's fork of Tao, branch
+[`mshogi/v0.37.2-should-terminate`](https://github.com/jweathers777/tao/tree/mshogi/v0.37.2-should-terminate):
+one commit on the upstream `tao-v0.37.2` tag that changes only
+`src/platform_impl/macos/app_delegate.rs`. `desktop/src-tauri/Cargo.toml`
+selects it with `[patch.crates-io]` at a pinned revision. The change adds no
+unsafe block. The same change is offered upstream; when a Tao release with it
+reaches Tauri, remove the patch entry.
 
 The separate macOS `desktop-verification` build includes a predefined menu item
 labeled `Native Cocoa Quit (verification)`. Unlike the application's custom

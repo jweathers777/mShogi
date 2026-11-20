@@ -1,8 +1,9 @@
 """Write tools/strength/data/tori-openings-v1.json (MSH-204, Tori Strength Harness).
 
-Inputs are the committed generator outputs in docs/m5/evidence/msh204/openings/
-(candidates.json from `tori_openings candidates 300 8 6 50 204`, screen.json from
-`tori_openings screen ... 12`, crates/mshogi-search/examples/tori_openings.rs).
+Inputs are generator outputs and are not kept in Git. Regenerate them with
+crates/mshogi-search/examples/tori_openings.rs: candidates.json from
+`tori_openings candidates 300 8 6 50 204`, screen.json from
+`tori_openings screen ... 12`.
 Admission rule, fixed before screening: |depth-12 score| <= 100 Swallow hundredths.
 Admitted rows are shuffled with random.Random(204).
 

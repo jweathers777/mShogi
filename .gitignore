@@ -6,3 +6,6 @@
 
 # Run logs under docs (evidence stdout/stderr and driver logs).
 docs/**/*.log
+
+# Local run output; never committed (see AGENTS.md)
+/runs/

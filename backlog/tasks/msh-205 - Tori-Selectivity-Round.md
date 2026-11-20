@@ -4,6 +4,7 @@ title: Tori Selectivity Round
 status: Ready
 assignee: []
 created_date: '2026-11-19T19:43:00Z'
+updated_date: '2026-11-20T16:50:00Z'
 labels:
   - handle:tori-selectivity-round
   - tori
@@ -11,6 +12,7 @@ labels:
 milestone: m-5
 dependencies:
   - MSH-204
+  - MSH-200
 references:
   - docs/m5/strength-roadmap.md
 ordinal: 212000
@@ -44,3 +46,9 @@ Handle: Tori Selectivity Round
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+2026-11-20 (John): MSH-205 depends on MSH-200 (Tori Move Generation Deep Dive): move generation, especially drops, limits search speed, and selectivity results measured on the current generator could need repeating after an MSH-200 change.
+<!-- SECTION:NOTES:END -->

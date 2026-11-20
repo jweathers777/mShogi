@@ -4,7 +4,7 @@ title: Establish and meet measured tenjiku shogi engine strength criteria
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-19T07:12:00Z'
+updated_date: '2026-11-20T16:50:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -14,6 +14,7 @@ dependencies:
   - MSH-50
   - MSH-54
   - MSH-183
+  - MSH-202
 documentation:
   - docs/design.md
   - docs/m5/strength-roadmap.md
@@ -61,4 +62,6 @@ Direction, 2026-11-18 (John): this game follows the per-game classical strength 
 Direction, 2026-11-19 (John): do not look for external opponents or judges for this game. Optimize the search as far as classical techniques allow, adapted to the game. Evidence: frozen-predecessor tests, tactical suites, a scaling curve (strength against depth or time) and blunder rates judged by a much deeper mShogi search (same-family, weaker evidence; say so). See docs/m5/strength-roadmap.md, 'Games after Xiangqi: no opponent search'. This replaces the anchor step of the 2026-11-18 note.
 
 Move generation discussion slot: MSH-202 (Tenjiku Move Generation Deep Dive).
+
+2026-11-20 (John): depends on MSH-202 (Tenjiku Move Generation Deep Dive). Tenjiku program step tasks (selectivity and later), when created, depend on MSH-202.
 <!-- SECTION:NOTES:END -->

@@ -85,7 +85,11 @@ and range-jumping Generals) has a discussion task with John to explore the
 best move generation for those pieces: MSH-200 (Tori Move Generation Deep
 Dive), MSH-201 (Chu Move Generation Deep Dive), MSH-202 (Tenjiku Move
 Generation Deep Dive). Native rules stay the authority; a faster search-side
-generator is validated by perft and differential tests against them.
+generator is validated by perft and differential tests against them. The
+selectivity step and later steps of a game depend on its deep dive (John,
+2026-11-20): MSH-205 (Tori Selectivity Round) depends on MSH-200; MSH-52 and
+MSH-53 depend on MSH-201 and MSH-202, and the Chu and Tenjiku step tasks
+depend on them when they are created.
 
 **Current game: Xiangqi** (John, 2026-11-18): MSH-194 (Xiangqi Strength
 Harness), MSH-195 (Xiangqi Selectivity Round), MSH-196 (Xiangqi Evaluation

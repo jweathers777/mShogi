@@ -62,6 +62,25 @@ def validate_manifest(m):
     require(m.get('bins') == [[0]], 'one build task')
 
 
+def build_paths(revision):
+    """Workspace files plus every file outside `crates` that the Rust sources
+    embed at compile time (`include_str!` / `include_bytes!`), at `revision`."""
+    files = subprocess.run(['git', 'ls-tree', '-r', '--name-only', revision, '--', 'crates'], check=True,
+                           capture_output=True, text=True).stdout.split()
+    embedded = set()
+    for name in files:
+        if not name.endswith('.rs'):
+            continue
+        text = subprocess.run(['git', 'show', f'{revision}:{name}'], check=True, capture_output=True,
+                              text=True).stdout
+        for target in re.findall(r'include_(?:str|bytes)!\(\s*"([^"]+)"', text):
+            path = (Path('/root') / name).parent.joinpath(target).resolve()
+            relative = path.relative_to('/root')
+            if relative.parts[0] != 'crates':
+                embedded.add(str(relative))
+    return ['Cargo.toml', 'Cargo.lock', 'rust-toolchain.toml', 'crates', *sorted(embedded)]
+
+
 def pack(args):
     """Upload the commit and its vendored dependencies; write the manifest."""
     from tools.experiments import gcp
@@ -73,7 +92,8 @@ def pack(args):
     with tempfile.TemporaryDirectory(prefix='build-') as tmp:
         src = Path(tmp) / 'src'
         src.mkdir()
-        archive = subprocess.run(['git', 'archive', revision], check=True, capture_output=True).stdout
+        archive = subprocess.run(['git', 'archive', revision, '--', *build_paths(revision)], check=True,
+                                 capture_output=True).stdout
         subprocess.run(['tar', '-x', '-C', str(src)], input=archive, check=True)
         config = subprocess.run(['cargo', 'vendor', '--locked', '--versioned-dirs', 'vendor'], cwd=src,
                                 check=True, capture_output=True, text=True).stdout
@@ -122,7 +142,8 @@ def worker(manifest_uri, store_uri):
             for t in m['targets']:
                 package, kind, name = TARGET.fullmatch(t).groups()
                 command += ['-p', package, '--' + kind, name]
-            env = dict(os.environ, RUSTFLAGS='-C target-cpu=x86-64', CARGO_TARGET_DIR=str(Path(tmp) / 'target'))
+            env = dict(os.environ, RUSTFLAGS='-C target-cpu=x86-64', CARGO_TARGET_DIR=str(Path(tmp) / 'target'),
+                       MSHOGI_SOURCE_REVISION=m['revision'])
             started = time.time()
             done = subprocess.run(command, cwd=src, env=env, capture_output=True, text=True)
             receipt['build_seconds'] = time.time() - started

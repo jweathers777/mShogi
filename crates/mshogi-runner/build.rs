@@ -12,32 +12,45 @@ fn output(program: &str, args: &[&str]) -> String {
         .unwrap_or_else(|| "unavailable".into())
 }
 fn main() {
+    // A build from an exact commit archive without Git data (cloud build,
+    // MSH-204) names its commit here; such a source tree is clean, so its diff
+    // fingerprint is that of an empty diff, as Git reports for a clean tree.
+    let archived = env::var("MSHOGI_SOURCE_REVISION")
+        .ok()
+        .filter(|r| r.len() == 40 && r.bytes().all(|b| b.is_ascii_hexdigit()));
+    println!("cargo:rerun-if-env-changed=MSHOGI_SOURCE_REVISION");
     println!("cargo:rerun-if-changed=../../.git/HEAD");
     println!("cargo:rerun-if-changed=../../.git/index");
     println!("cargo:rerun-if-changed=../../crates");
     for (key, value) in [
         (
             "EXPERIMENT_BUILD_REVISION",
-            output("git", &["rev-parse", "HEAD"]),
+            archived
+                .clone()
+                .unwrap_or_else(|| output("git", &["rev-parse", "HEAD"])),
         ),
         (
             "EXPERIMENT_BUILD_DIRTY_SHA256",
             format!(
                 "{:x}",
                 Sha256::digest(
-                    output(
-                        "git",
-                        &[
-                            "diff",
-                            "--binary",
-                            "HEAD",
-                            "--",
-                            "../../crates",
-                            "../../Cargo.toml",
-                            "../../Cargo.lock",
-                            "../../rust-toolchain.toml"
-                        ]
-                    )
+                    if archived.is_some() {
+                        String::new()
+                    } else {
+                        output(
+                            "git",
+                            &[
+                                "diff",
+                                "--binary",
+                                "HEAD",
+                                "--",
+                                "../../crates",
+                                "../../Cargo.toml",
+                                "../../Cargo.lock",
+                                "../../rust-toolchain.toml",
+                            ],
+                        )
+                    }
                     .as_bytes()
                 )
             ),

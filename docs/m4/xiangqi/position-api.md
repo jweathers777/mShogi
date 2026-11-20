@@ -4,7 +4,7 @@ MSH-92 foundation for selected `mshogi.xiangqi.wxf2018.v1`, governing edition
 `WXF-2018+XIANGQI-P1-2026-10-27`. Rust module `mshogi_core::xiangqi` is independent
 of Chess/Shogi types, console I/O, Tauri, Python and comparator code. This
 document distinguishes the state foundation from the verified MSH-93 local
-legal-action boundary in [local-legality.md](local-legality.md); neither is
+legal-action boundary in local-legality.md; neither is
 complete-game delivery evidence.
 
 ## Native state and construction domains

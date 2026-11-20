@@ -65,7 +65,7 @@ Tori, Chu and both Tenjiku payloads retain their concrete native initial/current
 records, full complete actions and derived effects, settings, selected prefixes,
 administrative journals, observations and abandoned Take back branches. Their
 native replay and resource admission remain game-specific. The
-[current six-game map](../m4/shared-integration/README.md) links each accepted
+current six-game map links each accepted
 native/shared/product contract; the earlier three-game examples below remain
 valid for their stated game scope. Tenjiku retains its1MiB/1,024-event/512M native
 limits,160M document reconstruction budget,15-second worker and ending/Close

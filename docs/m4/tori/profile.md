@@ -4,8 +4,8 @@
 earlier edition MSH81-MODERN-2026-11-01 differed only in T06 (see T06).
 This is the complete rules contract selected by the recorded 2026-11-01
 modern-playing decision. Native support and delivered consumers are recorded in
-the [delivery review](delivery-review.md). The earlier reserved `mshogi.tori.bunsei11.v1` was never
-adopted and is not an alias. Preserve the [historical checkpoint](archive/2026-10-31/profile.md);
+the delivery review. The earlier reserved `mshogi.tori.bunsei11.v1` was never
+adopted and is not an alias. Preserve the historical checkpoint;
 its acquisition questions no longer gate this profile.
 
 ## Basis and decision authority
@@ -236,7 +236,7 @@ obligations/conclusions with their exact selected event prefix.
 Initial functional native search uses the full selected history/obligations and
 reports real results, incomplete/cancelled/failure unscored. No new exact graph
 analysis/dead-position proof is required for this profile. Functional M4 engine
-and measured M5 strength remain distinct. See [handoff](handoff.md) for actual
+and measured M5 strength remain distinct. See handoff for actual
 R1–R6 consumers and minimum required dispatch extensions.
 
 ## Disagreement and resolved gate ledger

@@ -10,7 +10,7 @@ Options B/C remain separately named unselected alternatives, outside this batch.
 
 The original MSH-62 proposal and independent planning reviews remain in Git and
 in their historical review records. Approval does not certify implementation or
-close MSH-41. The [clause coverage ledger](shogi-coverage.md) identifies the exact
+close MSH-41. The clause coverage ledger identifies the exact
 fixture owners and deferred research gates.
 
 ## Recommendation and authority
@@ -276,12 +276,12 @@ history/conclusion/command/timing/runner evidence. Pinned external engines are
 bounded comparison tools, not rules authorities. The full standard-shogi scope
 remains MSH-41; this profile and a passing kernel test cannot close it.
 
-Current MSH-67 evidence: the [native game/history contract](history-state.md)
+Current MSH-67 evidence: the native game/history contract
 implements the selected untimed conclusions and strict canonical game/match
 records. [The independently reviewed impossibility argument](mutual-check-resolution.md)
 resolves the mutual-check research obligation for admitted live roots without
 adding an outcome or changing this profile. The original incomplete review,
 source research and failed proof repairs remain traceable. Exact implementation
-verification/integration is recorded in [history validation](history-validation.md)
+verification/integration is recorded in history validation
 and the task record. Later engine, console, shared and desktop consumers remain
 separate delivery obligations.

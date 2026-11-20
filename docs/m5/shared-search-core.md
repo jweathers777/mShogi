@@ -101,7 +101,7 @@ Fixed-limit requests use fresh state and leave the retained state unchanged.
 The core owns clock allocation and iteration timing. Non-Chess adapters use
 shared `RequestTime` accounting for setup and native result work. Chess keeps
 its earlier fixed search-time semantics. See the [protocol contract](../desktop/internal-execution-v4.md)
-and [verification](evidence/msh179/README.md). Desktop defaults do not change.
+and verification. Desktop defaults do not change.
 
 ## Bounded ordering history
 
@@ -139,7 +139,7 @@ so original identity remains distinct even when movement faces agree. The
 MSH-178 estimate used 29 movement faces; the cap accommodates the implemented
 index without a core change. Tenjiku uses side × 44 movement faces × 256
 destinations. The cap needs no game-specific
-core branch or new trait method. See [history verification](evidence/msh178/README.md).
+core branch or new trait method. See history verification.
 
 ## Acceptance of engine changes
 
@@ -250,13 +250,13 @@ Private analysis uses these approximations:
   Bishop or Rook promotion. In check, only interposing drops are generated.
 - A root df-pn mate search uses at most 1/8 of the budget; the alpha-beta
   result is preferred when its mate is no longer. Mate probes inside the tree
-  were measured and rejected. See [Shogi selectivity round](shogi-selectivity-round.md).
+  were measured and rejected. See Shogi selectivity round.
 - Evaluation (MSH-188, Shogi Evaluation Round) is linear in 133 Texel-tuned
   weights: board and hand values, rank tables, King placement, slider mobility
   and King safety. Static terms are incremental; mobility and King safety are
   computed per node. Fitting uses the shared Texel tool
   (`examples/support/texel.rs`, trait `texel::TexelModel`), which Chess also
-  uses. See [Shogi evaluation round](shogi-evaluation-round.md).
+  uses. See Shogi evaluation round.
 
 Limits are depth 1–64 and at most 5,000,000 nodes. Desktop play and bare USI
 `go` use 1,000 ms with those depth/node safety ceilings; a reported line has at
@@ -307,9 +307,9 @@ depth. The earlier Shogi material function remains available for historical
 arithmetic, but no private full-width search remains.
 
 Verification and the predecessor comparison are recorded in
-[evidence/msh180/README.md](evidence/msh180/README.md). The later search round's
+evidence/msh180/README.md. The later search round's
 before/after probes, game-test decision and limits are in
-[Shogi strength round](shogi-strength-round.md).
+Shogi strength round.
 
 ## Xiangqi on the core
 
@@ -354,7 +354,7 @@ session policy above. Saved full-width observations retain their old identities,
 limits and checks through the shared identity helper. Current identities are
 `mshogi.xiangqi.shared-core.v1` and `mshogi.xiangqi.material-placement.v1`.
 
-See [verification and predecessor evidence](evidence/msh181/README.md).
+See verification and predecessor evidence.
 
 ## Chu Shogi on the core
 
@@ -608,13 +608,13 @@ of these games moves, not in a copy for each game.
   late-move pruning, internal iterative reduction, singular extensions and an
   improving modifier to the shared core for Chess and Tori. The combined set
   passed its sequential predecessor test (+40 -3 =17) and improved the development
-  blunder result from 86 to 98 of 146. See [evidence](evidence/msh166/combined/README.md).
+  blunder result from 86 to 98 of 146. See evidence.
   Static pruning remains a private approximation; native roots and real outcomes
   retain their authority. Low-material LMR remains enabled.
 - MSH-167 (Engine Time Management) adds shared clock allocation and adaptive
   soft targets, with a hard response budget. Chess UCI uses it; fixed move-time
   diagnostics and desktop defaults retain their policy. See the
-  [bounded comparison](evidence/msh167/README.md).
+  bounded comparison.
 - The evaluation has the same arithmetic as before. MSH-168 (Classical Endgame
   and King Evaluation) owns its improvement.
 - All six games support time budgets and retained state through the internal
@@ -625,5 +625,5 @@ of these games moves, not in a copy for each game.
   search is unchanged) and adds two opt-in core features: a bounded quiescence
   check stage (`QUIESCENCE_CHECKS`, `generate_checks`) and a root mate search
   (`MATE_SEARCH`). Only Shogi enables them so far; another game enables them
-  after its own game test. See [Shogi selectivity round](shogi-selectivity-round.md).
+  after its own game test. See Shogi selectivity round.
 - The search is single-threaded.

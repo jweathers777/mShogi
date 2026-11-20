@@ -4,7 +4,7 @@ This is the consumer-readiness boundary of the existing
 `mshogi_core::xiangqi` public module plus the concrete `native` record/command
 adapter. It composes completed MSH-91–95/105 contracts; it introduces no new
 rules profile, universal interface, engine, console or desktop implementation.
-The [selected profile](profile-proposal.md), [recorded decisions](owner-decisions.md)
+The [selected profile](profile-proposal.md), recorded decisions
 and independently reviewed fixtures remain authoritative. MSH-45/M4 stay open.
 
 ## Entry points and responsibility
@@ -27,9 +27,9 @@ or proof-key helpers. Related public types have deliberately different roles:
 | Explicit exact assessment | `ExactAnalysis::{new,select,begin}`, `ExactRequest::run`, `ExactAnalysis::accept` | Native read-only purpose/target/history-bound work. Retain `ExactObservation` and `ExactReport`, not only the projected `assessment()`. No engine process is launched. |
 | Shared context/capabilities | `CanonicalRecord`, `NativeCommand`, `SharedRequest` / `SharedResponse`, `execution_capabilities` | Existing MSH-95 routing consumes actual native payloads. Xiangqi shared execution is unsupported/unscored with empty capabilities until MSH-97. Native exact analysis is not a Chess Full or shared-engine operation. |
 
-[`position-api.md`](position-api.md), [`local-legality.md`](local-legality.md),
-[`history-contract.md`](history-contract.md), [`shared-routing.md`](shared-routing.md)
-and [`exact-verification.md`](exact-verification.md) provide detailed contracts.
+[`position-api.md`](position-api.md), `local-legality.md`,
+[`history-contract.md`](history-contract.md), `shared-routing.md`
+and `exact-verification.md` provide detailed contracts.
 The handoff requires no consumer to rebuild private classifiers or duplicate
 movement rules in TypeScript or another engine.
 
@@ -162,7 +162,7 @@ measurements and limits; no general feasibility conclusion is added here.
 
 ## Verification and remaining owners
 
-The [MSH-84 evidence](native-handoff-evidence.md) maps focused integrated journeys
+The MSH-84 evidence maps focused integrated journeys
 and reused independently reviewed fixtures/references to this contract. No
 production refactor or shared framework was necessary. MSH-96 owns the real
 console; MSH-97 owns functional evaluator/search/child execution and its exact

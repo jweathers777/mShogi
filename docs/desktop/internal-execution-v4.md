@@ -2,7 +2,7 @@
 
 This is the sole supported internal engine boundary. Development transports
 v1/v2/v3 are retired. External UCI, USI and Xiangqi interoperability are separate,
-unchanged functional contracts. See [R1 evidence](../review/execution-migration-116.md).
+unchanged functional contracts. See R1 evidence.
 
 ## Ownership and encoding
 
@@ -103,7 +103,7 @@ engine turns and read-only move analysis. Native complete ordered routes,
 stationary captures, promotion/refusal rights, derived effects and conclusions
 remain game/profile-owned. Both Tenjiku whole profiles retain exact identity at
 every node and observation; cancellation, cross-game or cross-profile replacement
-cannot reuse a request. See the [current shared integration map](../m4/shared-integration/README.md)
+cannot reuse a request. See the current shared integration map
 and linked game contracts for native scoring, limits and accepted evidence.
 The earlier Chess/Shogi/Xiangqi result descriptions are examples, not an exclusion
 of the three subsequently delivered games.

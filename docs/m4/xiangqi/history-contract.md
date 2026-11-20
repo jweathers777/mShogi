@@ -1,8 +1,8 @@
 # Native Xiangqi history and canonical game contract (MSH-94)
 
 Selected rules: `mshogi.xiangqi.wxf2018.v1`, governing WXF2018 edition;
-see [sources](sources.md), [owner decisions](owner-decisions.md) and
-[executed evidence](history-evidence.md). This adds a game-owned Rust API to
+see [sources](sources.md), owner decisions and
+executed evidence. This adds a game-owned Rust API to
 the existing complete local board contract. It does not add a console, engine,
 shared transport, archive or desktop consumer. Those existing task owners remain.
 
@@ -147,7 +147,7 @@ and preserve MSH-61; this native limit is not approval of future desktop limits.
 ## MSH-105 explicit exact assessment extension
 
 The fast-only canonical behavior above remains unchanged. The native
-[exact-verification API](exact-verification.md) now supplies separate bounded
+exact-verification API now supplies separate bounded
 read-only proof work and `ExactReport::assessment`, including an explicit
 `UnknownExactIncomplete` with reason. It binds full native context while its
 intrinsic proof key uses board/turn only. Exact acceptance cannot install a

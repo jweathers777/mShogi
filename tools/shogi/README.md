@@ -3,7 +3,7 @@
 `reference.py` is an optional developer tool. It executes pinned cshogi in a
 separate Python environment. No Python, cshogi source, GPL reference binary or
 reference dependency is linked into or shipped with mShogi. See the
-[actual admission evidence](../../docs/m4/reference/README.md) for the source,
+actual admission evidence for the source,
 license, compiler, flags, hashes and reproducible build.
 
 Run the admitted reference fixtures and intentional failure demonstrations:

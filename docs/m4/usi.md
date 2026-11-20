@@ -167,11 +167,11 @@ git -C /private/tmp/msh71-yaneuraou checkout --detach 0f421391ae311df9df57dcfcb2
 make -C /private/tmp/msh71-yaneuraou/source -j4 YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1 TARGET_CPU=APPLEM1 COMPILER=clang++
 ```
 
-[Admission](usi/opponent-admission.json) retains compiler/build flags, license hash,
+Admission retains compiler/build flags, license hash,
 actual complete handshake/options and readiness/search traffic. The initial
 sandbox DNS-denied fetch and successful authorized fetch are retained; the
 unmodified build succeeded first attempt with an obsolete linker `-s` warning.
-[Supplement](usi/opponent-admission-supplement.json) records additional controls,
+Supplement records additional controls,
 actual stop/quit and the known valid declaration fixture. An admission-only
 `gameover draw` probe is explicitly a notice, not an adjudicated game.
 
@@ -206,7 +206,7 @@ with no move/score/conclusion. [Late-reply report](usi/late-fixture.report.json)
 retains2 separately labeled injected watchdog/retired-reply failures from the
 verification executable; it is excluded from normal packages. Earlier exploratory
 success reports remain under `usi/exploratory/`. The
-[execution manifest](usi/execution-manifest.json) identifies actual source-file,
+execution manifest identifies actual source-file,
 engine/runner/fixture binary and report hashes, environment and scope. These
 opponent/experiment executions occurred on macOS arm64 only. Three-platform CI
 executes product/fixtures and packages; it does not imply three-platform opponent
@@ -229,7 +229,7 @@ It found two material boundary defects, both corrected with actual-process tests
    retains2 rejected candidates with their native games unchanged.
 
 The independent [pre-fix reproduction](usi/review-findings/cleanup-before-fix.json)
-and [external probe](usi/review-findings/cleanup-probe.py) preserve the failed check.
+and external probe preserve the failed check.
 That old full experiment report is deliberately rejected by final replay; its
 underlying accepted native record remains inspectable. It is a regression
 counterexample, not current successful experiment evidence. All8 supported

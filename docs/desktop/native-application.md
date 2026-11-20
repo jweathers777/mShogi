@@ -2,7 +2,7 @@
 
 MSH-118/R3 replaced the always-present Chess session and optional Shogi/Xiangqi
 overlays. Subsequent delivered games extend the same owner; the
-[current six-game map](../m4/shared-integration/README.md) records their accepted
+current six-game map records their accepted
 adaptations. Native rules, profiles, histories, actions and results remain owned
 by their existing game implementations. Historical R3/R4/R5 staging references
 below retain their original source scope.
@@ -124,13 +124,13 @@ command DTO and QA `native_contract_*` aliases are removed. The synthetic QA
 harness also uses the current native close authority. The one product guard
 subscribes to `game-close-requested` and approves `game_finish_close` with the
 exact native Open token. Native reservations, dirty receipts, replay and stopped
-installation are unchanged. See the [R4 contract/evidence](../review/frontend-application-119.md).
+installation are unchanged. See the R4 contract/evidence.
 Board selection/inspection-state consolidation remains separately owned by R5.
 
 ## Evidence
 
 Source, tests, independent review, exact package identities and actual platform
-results are recorded in the MSH-118 task and [completion evidence](../review/native-application-118.md). R6 owns
+results are recorded in the MSH-118 task and completion evidence. R6 owns
 final integrated Chess/Shogi/Xiangqi packaged GUI acceptance on all three systems;
 native tests or package construction do not establish that later criterion.
 

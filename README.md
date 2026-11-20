@@ -10,7 +10,7 @@ read-only analysis, Save/Open, Take back and history inspection through one shar
 interface. Large
 boards, drops, promotions and compound routes use the selected game's rules.
 The six-game integration milestone is complete; see the
-[accepted delivery record](docs/m4/final-delivery.md). This is an unreleased
+accepted delivery record. This is an unreleased
 product. Signing, distribution policy and release qualification remain separate
 work. Functional game support does not establish competitive playing strength.
 
@@ -22,8 +22,7 @@ work. Functional game support does not establish competitive playing strength.
 - [Current search core](docs/m5/shared-search-core.md), [Chess evaluation](docs/evaluation.md)
   and [strength roadmap](docs/m5/strength-roadmap.md).
 - [Agent workflow](AGENTS.md) and the repository Backlog task records.
-- [Rules conformance policy](docs/testing/conformance-policy.md) and
-  [risk-based verification](docs/testing/verification-levels.md).
+- [Rules conformance policy](docs/testing/conformance-policy.md).
 
 ## Build and check
 

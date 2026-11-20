@@ -152,7 +152,7 @@ requiring zoom/pan; no common renderer/layout imposes the harness's scrolling.
 
 ## Xiangqi extension (MSH-99)
 
-The [Xiangqi native archive contract](xiangqi/desktop-archive.md) adds an explicit
+The Xiangqi native archive contract adds an explicit
 Xiangqi payload to the existing v2 dispatcher. It preserves the frozen Chessv1
 writer and existing Chess/Shogiv2 payloads. Its measured native replay admission,
 complete event prefixes and historical exact evidence remain game-specific;

@@ -63,7 +63,7 @@ python3 -m tools.strength.cli blunders --engine ENGINE --movetime 1000 --out FIL
   games where the 500k Stockfish screen gives a root expected score from .30 to .70
   and a played expected score below .15, and the 20M confirmation status is
   `supported_finite`. This is the definition of the
-  [independent review](evidence/msh161/cloud-primary/independent-review-fable/review.md)
+  independent review
   (its "146 have 20M support"). `tools/strength/extract_blunders.py` made the file
   from the saved evidence; it needs the Git-ignored local evidence mirror.
 - Each position has the initial FEN, the full move history before the error,
@@ -119,7 +119,7 @@ from 65887fb0 (Rust 1.99.1, release), SHA-256
 `167cd1407abcfbf1f0595643e3c069bc1022040b011c0386a709d40932578b98`. The search
 and evaluation source is the same as f1b64300. Machine: Apple M1 Pro
 (8 performance cores), macOS 27.0, Python 3.11.0. Results apply to this machine
-only. Evidence: [baseline-65887fb0](evidence/msh163/baseline-65887fb0/).
+only. Evidence: baseline-65887fb0.
 
 | Part | Result |
 |---|---|
@@ -152,7 +152,7 @@ three of four games, near ply 60. The engine uses its reserve down to about 50 m
 (`go wtime 50 winc 50` searches 50 ms). The native controller records these as
 unresolved, so they are not scored. For this reason the game test uses fixed time
 per move by default. MSH-167 (Engine Time Management) corrects clock allocation
-and accounts for setup/delivery. Its [recorded test](evidence/msh167/README.md)
+and accounts for setup/delivery. Its recorded test
 compares the managed policy with fixed50ms under equal5s+50ms clocks. A fixed100ms
 control still spends down its balance and caused three unscored flag falls; that
 failed comparison is preserved and not pooled with the valid result.
@@ -167,4 +167,4 @@ the native-summary cross-check, and one real paired game through
 `mshogi-match run` when the release binaries exist. The native controller
 accepted all 90 openings as legal during the smoke runs.
 
-MSH-186 (Shogi Strength Harness): see the [Shogi tools, baseline and limits](shogi-strength-harness.md) and [external opponent proposal](shogi-opponent-proposal.md).
+MSH-186 (Shogi Strength Harness): see the Shogi tools, baseline and limits and external opponent proposal.

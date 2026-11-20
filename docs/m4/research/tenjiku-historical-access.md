@@ -13,13 +13,13 @@ Repository baseline: `8676cbb774c5837b839772a731868a720aaab43f`.
 | Kyoto, 象戯圖式, 和/780/64, material119040343, bib305666 | Live integrated catalogue: one manuscript, unknown copyist/date, rare-book storage. Exact material-ID/acquisition annotation also documented in an institutional reference response. No facsimile acquired. | Prior inquiry to the rare-books desk: confirm Tenjiku leaves, existing scans, eligible reproduction method and remote delivery. |
 | Harvard-Yenching, 諸象戯図式, J6871.8-0226 | New copy-specific NIJL record: handwritten, one volume/book, an 1833 annotation. No images in the consulted record. | Confirm current HOLLIS identity with Yenching; request digitization quotation through HOLLIS Special Request. |
 
-Japanese and English inquiry drafts are in [requests.md](tenjiku-historical-access/requests.md). **None has been sent; no form submitted, account created, order placed or cost incurred.** All prices below are published rate categories, not quotations for these copies.
+Japanese and English inquiry drafts are in requests.md. **None has been sent; no form submitted, account created, order placed or cost incurred.** All prices below are published rate categories, not quotations for these copies.
 
 This report does not change or gate MSH-83's approved modern playable profiles. No MSH-83 status, ownership, acceptance criteria, fixtures, dependencies, production code or MSH-87 work is changed.
 
 ## 2. Existing research and evidence boundaries
 
-Read before new research: [27 October Tenjiku handoff](tenjiku.md), [its provenance](tenjiku-provenance.json), [later-game inventory](../later-game-sources.md), current MSH-83 and its active source notes, and the design's modern-playable clarification. Preserve the earlier documents as dated findings.
+Read before new research: [27 October Tenjiku handoff](tenjiku.md), [its provenance](tenjiku-provenance.json), later-game inventory, current MSH-83 and its active source notes, and the design's modern-playable clarification. Preserve the earlier documents as dated findings.
 
 The earlier investigation already inspected the National Archives catalogue, both exhibition JPEGs, Adams1999's edition/rules/Appendix A and Muller's author page. It acquired no copy-identified Tenjiku folio. This investigation reused those observations rather than downloading the exhibition again. It rechecked the live archive identity/access controls, added current Kyoto catalogue/procedures and the Harvard manuscript identity, and re-inspected Appendix A specifically for source attribution.
 
@@ -112,7 +112,7 @@ The [earlier dispute ledger](tenjiku.md) remains useful. Obtaining Japanese diag
 
 ## 7. Acquired bytes and provenance
 
-The [machine-readable manifest](tenjiku-historical-access/provenance.json) records URLs, access dates, hashes, successful downloads, browser-only catalogue observations and failed acquisitions separately. Original bytes are kept locally under `docs/m4/research/tenjiku-historical-access/originals/` in the primary checkout; that directory is Git-ignored. No scans/PDFs/HTML snapshots are added to Git. Retention is local to this machine, not a remote backup or redistribution grant.
+The machine-readable manifest records URLs, access dates, hashes, successful downloads, browser-only catalogue observations and failed acquisitions separately. Original bytes are kept locally under `docs/m4/research/tenjiku-historical-access/originals/` in the primary checkout; that directory is Git-ignored. No scans/PDFs/HTML snapshots are added to Git. Retention is local to this machine, not a remote backup or redistribution grant.
 
 | Material | Retrieval/inspection | SHA-256 |
 | --- | --- | --- |
@@ -139,4 +139,4 @@ Research plan: reuse prior evidence → inspect exact target records/public facs
 
 Startup checked status/branch/remotes/worktrees/recent commits and active ownership. Primary `codex/rewrite` had dirty MSH-83 and untracked `docs/m4/tenjiku/`; all were preserved. Work used isolated `codex/tenjiku-historical-access`. Backlog overview read; global1.55.0 used read-only, project baseline1.55.1 located; **no task mutation**. As an exploratory investigation, no competing task/plan hierarchy was created.
 
-Required CI jobs: **none** for this documentation-only investigation, as requested. No native game tests, CI or GUI campaign run. Verification comprises live catalogue/official-policy inspection, complete relevant PDF rendering, checksum/JSON/link-path checks, diff scope and independent review. Final review/integration details are recorded in [review.md](tenjiku-historical-access/review.md). MSH-83 remains with its existing worker; no next implementation task is selected by this investigation.
+Required CI jobs: **none** for this documentation-only investigation, as requested. No native game tests, CI or GUI campaign run. Verification comprises live catalogue/official-policy inspection, complete relevant PDF rendering, checksum/JSON/link-path checks, diff scope and independent review. Final review/integration details are recorded in review.md. MSH-83 remains with its existing worker; no next implementation task is selected by this investigation.

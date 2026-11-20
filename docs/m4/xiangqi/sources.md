@@ -76,7 +76,7 @@ using both texts and WXF context, with predecessor evidence kept separate:
   events cannot casually serve as a proof goal, making3.2A vacuous. Bring a
   material residual interpretation for an explicit decision with concrete sources/fixtures.
 
-These are explicit affected-work gates in [coverage](coverage.md), not omitted
+These are explicit affected-work gates in coverage, not omitted
 rules or claims of executed conformance. MSH-80 can close its planning scope
 under the supplied project decisions; MSH-84/103/45 cannot close without actual
 required3.2A implementation105. Source research and first board/kernel work
@@ -87,14 +87,14 @@ remain independent of unavailable unrelated alternative corpora.
 
 G-CYCLE/R-CLASS now have independent bilingual/pixel review, concrete legal
 histories and completed native-boundary review. See
-[contract](history-contract.md), [evidence](history-evidence.md), and preserved
-[source review](history-reviews/independent-source-review.md). This retains the
+[contract](history-contract.md), evidence, and preserved
+source review. This retains the
 correction trail for diagrams109/110, protected-Rook geometry and open-prefix
 warning retirement. No reference outcome is a WXF oracle.
 
 The recorded decision resolved G-NOWIN to existential **natural board-win only** (WXF3.1A
 checkmate/stalemate), excluding repetition penalties and other non-board awards.
-[Project decision](owner-decisions.md#g-nowin-resolution-during-msh-94-2026-10-27)
+Project decision
 supersedes the research workers' initial proposal to include repetition wins.
 Full game history still governs actual penalties/claims, not a positive natural
 win witness. Sound fast proof/unknown is94; required exact backend105 remains

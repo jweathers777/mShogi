@@ -1,6 +1,6 @@
 # Chess coverage ledger
 
-Contract: [`mshogi.chess.position.v1`](chess-position-v1.md). Established by MSH-2 on 2026-10-23 and maintained through the M1 tasks MSH-3 to MSH-14 (see [the M1 closure review](../review/m1-closure.md)).
+Contract: [`mshogi.chess.position.v1`](chess-position-v1.md). Established by MSH-2 on 2026-10-23 and maintained through the M1 tasks MSH-3 to MSH-14 (see the M1 closure review).
 
 State values:
 
@@ -19,7 +19,7 @@ State values:
 | Perft/divide | Implemented | Explicit depth semantics, deterministic order, counter-independent traversal. 38 corpus perft totals and 14 ordered divides match; three Stockfish depth-5 totals reproduce in the opt-in release baseline. A speed baseline is recorded, not a strength claim | MSH-10 |
 | Headless inspection console | Implemented | `mshogi shell`: load/inspect, legal list, atomic apply/undo, classification, perft/divide, with documented output, errors and exit status. Process-tested and smoke-run in native CI. Diagnostic only | MSH-11 |
 | State properties, sequence and differential checks | Implemented | Fixed-seed sequences from 92 start positions check every ply (6,720 plies in CI, 316,880 deep). Replayable regression family. Optional differential with pinned python-chess: bounded agreement, not proof. No derived caches exist yet | MSH-12 |
-| Broader complete-action semantics | Implemented (review) | [Action-boundary review](../review/m1-action-boundary.md). Chess boundaries are intentionally chess-specific; a synthetic test-only compound-action fixture is mapped to future adapters. No A-02/A-03 conflict | MSH-13 |
+| Broader complete-action semantics | Implemented (review) | Action-boundary review. Chess boundaries are intentionally chess-specific; a synthetic test-only compound-action fixture is mapped to future adapters. No A-02/A-03 conflict | MSH-13 |
 | Headless kernel on Windows, macOS and Linux | Implemented | Native CI build, test and console smoke on `ubuntu-24.04`, `macos-15` and `windows-2022` for every behavior task; the integrated-revision run is recorded in MSH-14 | MSH-3 to MSH-14 |
 | Packaged desktop application on three systems | Deferred | Not started | M3 |
 | Rules-owned game history and record (profile ID, initial state, complete actions, repetition identity, history-restoring undo) | Implemented | [Game/history record contract](chess-history-record-v1.md): exact known occurrences, imported-history provenance, policy, owned undo; ordered command/clock observations replay with action context. Console reloads move-only M2 records and refuses mode loss. Live/match replay adjudicates commands/clocks; diagnostic replay alone does not | MSH-16; MSH-17/18/23 semantic replay, MSH-25 integration closure |
@@ -35,7 +35,7 @@ State values:
 | Competitive strength | Deferred | No playing-strength claim from the correctness tests | M5 |
 | UCI chess engine protocol | Implemented (subset) | [UCI adapter](../uci.md): separate machine mode, private history-sensitive search, depth/node/basic clock limits, cancellation and protocol-only stdout. Real child-process tests and recorded complete Stockfish19 matches | MSH-22/23 |
 | Self-play and independent-engine experiments | Implemented | [Runner](../match-runner.md): authoritative rules, paired openings, bounded UCI supervision, executable/model/config identities, explicit unscored failures and complete canonical match replay. Actual standard-start/forced-ending self-play and Stockfish19 games, conditional work-limited reruns and timed observations | MSH-23; MSH-25 integration closure |
-| Integrated M2 search/match baseline | Implemented (review) | [Focused M2 closure](../review/m2-closure.md): fresh independent integration review, 21 recorded games, actual outstanding-search clock termination, conditional reruns and native three-platform process/replay evidence. Reuses unchanged M1 evidence | MSH-25 |
+| Integrated M2 search/match baseline | Implemented (review) | Focused M2 closure: fresh independent integration review, 21 recorded games, actual outstanding-search clock termination, conditional reruns and native three-platform process/replay evidence. Reuses unchanged M1 evidence | MSH-25 |
 | Other engine protocols | Deferred | USI, CECP/XBoard and UCCI remain available when their game/opponent requires them | Future variant/opponent tasks |
 | Learned evaluation and neural infrastructure | Deferred | Not started | M5 |
 | Other five promised games | Deferred | Requirements remain; none implemented or certified by this corpus | M4 |

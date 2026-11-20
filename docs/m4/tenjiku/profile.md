@@ -15,7 +15,7 @@ Adams's general setup/promotion/history/ending contract where M gives none. A
 means Adams main chapters1/3; M means Muller's Tenjiku page/table; S identifies
 our narrow deterministic completion. Sources/precise differences are in
 [sources.md](sources.md). AppendixA does not silently override A's main rules.
-[Machine-readable data](profile.json), [fixtures](fixtures.json), [handoff](handoff.md).
+[Machine-readable data](profile.json), [fixtures](fixtures.json), handoff.
 No native rules, engine, console or product implementation exists from83.
 
 ## T01 — board, sides, setup and identity
@@ -330,5 +330,5 @@ remain safe through immutable binding and exact context admission; representatio
 of any new token field remains an implementer choice.
 
 Detailed87/79/44 handoff and MSH-107 replay/cancellation/inspection measurement
-obligations are in[handoff.md](handoff.md). No refactor, higher capacity constant,
+obligations are inhandoff.md. No refactor, higher capacity constant,
 competitive-strength optimization or implementation is authorized by83.

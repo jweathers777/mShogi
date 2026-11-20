@@ -36,7 +36,7 @@ competitive-strength claim. See the current [shared search core](../docs/m5/shar
 cancellation/Retry, exact history, Take back, native outcomes and Save/Load share
 the existing owners. Load stops work until explicit **Resume play**. The desktop
 exposes Take back; one-event Undo remains in the native API and console.
-[MSH-42 acceptance](../docs/m4/tori/delivery-review.md) records actual normal
+MSH-42 acceptance records actual normal
 macOS/Windows/Linux gameplay, separate QA instrumentation and exact limits.
 
 Chu Shogi uses the approved traditional kanji, King/Prince identities and
@@ -50,17 +50,17 @@ claim. Load retains complete native history and observations and stops work
 until **Resume play**. Take back retires execution and preserves its historical
 observations; native/console Undo remains separate. Capacity refusals preserve
 a complete save path and never imply a chess result. See the
-[Chu visual approval](../docs/m4/chu/desktop-visual-checkpoint.md),
-[engine contract](../docs/m4/chu/engine-v1.md) and
+Chu visual approval,
+engine contract and
 [native notation](../docs/m4/chu/notation.md).
 
 Tenjiku Shogi uses a complete 16×16 board, traditional kanji and complete native
 routes and effects. Choose the Adams or Muller rules profile when starting a
 new game; the profile remains bound to its saved history. The same shell provides
 engine play, analysis, stopped Open, history and Take back. See the
-[Tenjiku product coverage](../docs/m4/tenjiku/product-coverage.md) and
+Tenjiku product coverage and
 [notation](../docs/m4/tenjiku/notation.md). All six games and both Tenjiku profiles
-passed the [M4 integration milestone](../docs/m4/final-delivery.md). Current
+passed the M4 integration milestone. Current
 promotion evidence is recorded separately at its actual source revision.
 
 For chess:
@@ -99,7 +99,7 @@ semantics, contrast and layouts at both supported sizes; screen-reader audio and
 formal accessibility conformance have not been tested. Actual Windows, macOS
 and Linux packaged GUI journeys passed MSH-38; see the
 [platform evidence and exact environment limits](../docs/desktop/packaged-gui-verification.md).
-The [M3 integration review](../docs/review/m3-closure.md) records the milestone
+The M3 integration review records the milestone
 verdict and the next planning boundary.
 
 Shogi has its own warm grid, pentagonal kanji pieces and counted hands beside
@@ -129,7 +129,7 @@ status row distinguishes live play, exact historical position, pause and conclus
 MSH-74's product evidence and screenshot review (task record MSH-74)
 record the exact revision, actual platform journeys, independent reviews and
 the recorded approval. This historical game-specific evidence is supplemented
-by the completed [M4 delivery gate](../docs/m4/final-delivery.md).
+by the completed M4 delivery gate.
 
 Build a normal distributable with the platform's supported bundle format:
 
@@ -262,7 +262,7 @@ is displayed as analysis only. Cancellation has no fabricated solver counts;
 resource exhaustion and process failure never invent a chess outcome.
 
 The [current execution contract](../docs/desktop/internal-execution-v4.md) documents
-purpose-specific acceptance, retained engine sessions and limits. The [batch evidence](../docs/desktop/second-batch-evidence.md)
+purpose-specific acceptance, retained engine sessions and limits. The batch evidence
 distinguishes controller, frontend and actual packaged GUI verification.
 
 ## Saving and inspecting games
@@ -312,4 +312,4 @@ labeled `shared-contract` verification fixture exercises the native shogi sessio
 hands/complete-choice selection and read-only analysis boundary. It has no shogi
 archive support and is not the finished shogi application. See the
 [contract and launch instructions](../docs/m4/desktop-session.md) and
-[scoped evidence](../docs/m4/desktop-session-validation.md).
+scoped evidence.

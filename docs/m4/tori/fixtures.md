@@ -55,7 +55,7 @@ malformed boundary probes; no otherwise valid current Tori envelope is claimed.
 ## Native implementation ownership after MSH-85 refinement
 
 The103 immutable specs now have an explicit [ownership manifest](native-fixture-ownership.json)
-and [bounded native queue](native-plan.md).126 supplies executable infrastructure
+and bounded native queue.126 supplies executable infrastructure
 for all IDs,127/128/129 implement structural/local/game assertions. Real process
 acceptance, desktop preservation and human notation assertions remain explicit
 77/42 obligations; a native-only pass cannot claim those future journeys. The
@@ -63,7 +63,7 @@ selected fixture bytes and independently expected outcomes are unchanged.
 
 ## Executable machinery — MSH-126
 
-[The engine-independent Rust harness](harness.md) now loads this unchanged corpus
+The engine-independent Rust harness now loads this unchanged corpus
 and the full owner manifest. Fixture-data admission passes separately from native
 assertions: without actual native observations all727 assertions are pending,
 with0executed/passed; four prose proofs are annotations and83 consumer requirements
@@ -74,7 +74,7 @@ that does not claim native legality or replay. No external comparator is require
 ## Current native local execution — MSH-128
 
 The immutable specification file and its original data-only metadata remain
-unchanged. Actual execution is recorded separately in [native local evidence](native-local-evidence.md):
+unchanged. Actual execution is recorded separately in native local evidence:
 483fields pass across83rows (all14primary127 and69primary128),244history/record/
 consumer assertions pending,83later-consumer requirements pending. The four prose
 proof annotations are not automatic passes. Local status and legal choices are
@@ -84,7 +84,7 @@ remain129/85/77/42. No expectation was generated from native or external output.
 
 ## MSH-129 native Game handoff
 
-The [native game evidence](native-game-evidence.md) records the actual authoritative
+The native game evidence records the actual authoritative
 T05/T06 Game, exact full context/retirement/reversal, immutable history and complete
 prefix records, strict native schema1 replay and typed core dispatch. All713native
 assertions execute and pass (202127+281128+230129),14genuinely later assertions and

@@ -3,16 +3,16 @@
 **Selected by recorded decision on 2026-10-27: `mshogi.xiangqi.wxf2018.v1`.**
 Game identity `xiangqi`; immutable governing edition **World Xiangqi Rules2018**,
 published by WXF as an official **bilingual Chinese/English publication**.
-The [project decision record](owner-decisions.md) supersedes the
-[historical unselected proposal](profile-proposal-before-xiangqi-p1.md), including
+The project decision record supersedes the
+historical unselected proposal, including
 its fourth-occurrence warning and language-precedence suggestions. The filename
 is retained so existing task/document references remain valid.
 
 Selection itself was a planning/profile contract, not an implemented capability.
 Current implementation: MSH-91/92/93 board rules and MSH-94 native history,
 canonical records and sound fast assessment; see [history contract](history-contract.md)
-and [evidence](history-evidence.md). MSH-105 now supplies the explicit bounded
-read-only [native exact path](exact-verification.md); product consumers remain
+and evidence. MSH-105 now supplies the explicit bounded
+read-only native exact path; product consumers remain
 outstanding, and this is not general ordinary-play WXF completeness. The selection-stage claims below are preserved history.
 Native schema and transport versions remain separately identified. No public
 profile constant, native rule implementation, runtime reference or UI support
@@ -134,7 +134,7 @@ the no-win draw itself. Article3 separates natural board losses from later
 penalty clauses. Full history still governs actual game outcomes; a penalty
 award cannot prove intrinsic natural winning capability. F002's possible Black
 repetition award is specifically not a positive Black natural-win witness.
-See the [explicit owner resolution](owner-decisions.md#g-nowin-resolution-during-msh-94-2026-10-27).
+See the explicit owner resolution.
 The earlier recommendation to include repetition awards was rejected. Exact
 algorithm, proof/resource evidence and MSH-105 delivery remain required, not
 claimed by this semantic decision. A missed fast proof remains unknown.
@@ -163,7 +163,7 @@ uninstantiated source families and decision-dependent expected outcomes.
 ## Planning completion and implementation boundary
 
 XIANGQI-P1 settles the material profile choices for the first native queue.
-The [coverage ledger](coverage.md) assigns every required area and residual gate;
+The coverage ledger assigns every required area and residual gate;
 the [fixture plan](fixtures.md) retains independently reasoned expectations and
 separates executable future evidence from planning. G-CYCLE/G-NOWIN remain
 blocking **affected history/adjudication work**, not hidden missing requirements
@@ -177,7 +177,7 @@ MSH-46/47, and measured strength MSH-54 in M5.
 
 The current [native history contract](history-contract.md) resolves G-CYCLE and
 records the consequence-relevant classification/admission software policy.
-[History evidence](history-evidence.md) traces actual fixtures, review and tests.
+History evidence traces actual fixtures, review and tests.
 The planning-boundary text above is preserved history; G-NOWIN semantics now have
 the explicit owner resolution above. MSH-94 does not implement the required
 exact backend105 or any future Xiangqi consumer. Complete M4 delivery still waits

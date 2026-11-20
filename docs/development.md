@@ -1,176 +1,94 @@
-# Native development and verification
+# Development
 
-Current verification follows the permanent [three-level risk-based policy](testing/verification-levels.md). The workspace has seven native crates plus the separate Tauri host. The following scaffold history is retained as historical context, not a description of current product completeness.
+How to build, test and check mShogi. The checks each change needs are in
+[AGENTS.md](../AGENTS.md#checks). Desktop development is in
+[desktop/README.md](../desktop/README.md).
 
-MSH-3 originally established two active packages: `mshogi-core` (reusable library) and `mshogi-console` (binary name `mshogi`). MSH-4 adds explicit chess position state and validated FEN parsing/serialization; MSH-5 adds checked ordinary moves/captures, promotions and exact undo; MSH-6 adds geometric attack queries; MSH-7 adds pseudo-legal ordinary candidates; MSH-8 adds checked castling/en passant through `Position::apply` and special candidates; MSH-9 adds the legal-action list and position classification; MSH-10 adds perft and divide. MSH-11 adds the `mshogi shell` command session (see the README) over those APIs; the console provides help, version and coverage metadata as well. MSH-19 adds `mshogi-search`, a material-only static evaluator with no outcome semantics (see [evaluation](evaluation.md)). MSH-16 adds rules-owned Game/history and [versioned chess records](rules/chess-history-record-v1.md); the console delegates apply/undo and record reload to that layer. MSH-17/18 add live adjudication and semantic match/clock records; MSH-20 adds full-width native search. MSH-21 adds [bounded request coordination](search-coordination.md); MSH-22 adds the [first UCI adapter](uci.md) as `mshogi uci`. MSH-23 adds `mshogi-runner` / `mshogi-match` for [recorded UCI experiments](match-runner.md). The current desktop supports all six games; this paragraph describes the earlier bootstrap sequence, not current coverage. See [desktop development](../desktop/README.md) and [accepted six-game delivery](m4/final-delivery.md).
+## Setup
 
-## Clean checkout
-
-Prerequisites are Git, [rustup](https://rustup.rs/), and the host native linker/build tools. On macOS use the Xcode command-line tools; on Windows use the MSVC C++ build tools/Windows SDK with the rustup MSVC host; on Linux install a system C compiler/linker (for example the distribution's build-essential package). GitHub-hosted runners provide these prerequisites. This is a native Rust application; no Node, GUI framework, database or Python environment is needed for its Rust checks.
+You need Git, [rustup](https://rustup.rs/) and the host's native build tools:
+the Xcode command-line tools on macOS, the MSVC C++ build tools on Windows, a C
+compiler and linker on Linux.
 
 ```sh
 git clone --branch main https://github.com/jweathers777/mShogi.git
 cd mShogi
-rustup show
-rustc --version
-cargo --version
 cargo build --workspace --locked
 cargo run --locked --bin mshogi -- --help
-cargo run --locked --bin mshogi -- --version
-cargo run --locked --bin mshogi -- profile
 ```
 
-`rust-toolchain.toml` currently selects **stable release 1.99.1**, minimal
-profile, rustfmt and Clippy; shared package metadata declares `rust-version =
-"1.99"` and edition 2024. Check the committed files when reproducing older
-receipts, which retain their original toolchains. Toolchain changes are Level 2:
-select relevant platform/build checks and record actual outcomes rather than
-assuming portability from a local build. Do not change the user's global default.
+`rust-toolchain.toml` pins stable Rust 1.99.1 with rustfmt and Clippy; the
+workspace uses edition 2024. A `cargo +toolchain` or rustup override takes
+precedence over the pin, so check `rustc --version` when results differ.
 
-Rustup environment/directory overrides or `cargo +...` can take precedence over the repository pin. Check `rustup show` and `rustc --version` when reproducing evidence. The host installation and compiler version are not proof of successful tests on another platform.
+## Workspace
 
-## Repeatable checks
+The root is a virtual Cargo workspace. `desktop/src-tauri` is a separate
+package outside it.
 
-Choose checks for the changed behavior. For a platform-independent conventional
-Chess search/evaluation change, a typical Level 1 set is:
+| Crate | Role |
+| --- | --- |
+| `mshogi-core` | Native rules, positions, histories and records of all six games |
+| `mshogi-conformance` | Development-only conformance machinery for the fixtures; no rules |
+| `mshogi-search` | Shared alpha-beta core and per-game search positions and evaluation |
+| `mshogi-engine` | Internal engine protocol and process |
+| `mshogi-console` | The `mshogi` binary: shell, UCI and other adapters |
+| `mshogi-runner` | `mshogi-match`: recorded and clocked engine matches and experiments |
+| `mshogi-desktop-session` | Desktop session state between the native rules and the UI |
 
-```sh
-cargo fmt --all -- --check
-cargo clippy --locked -p mshogi-search --all-targets -- -D warnings
-cargo test --release --locked -p mshogi-search --lib chess_
-```
+Rules and search must not depend on UI, console I/O or Python. Product code
+forbids `unsafe`; Clippy treats warnings as errors.
 
-Add the relevant native history/action/property tests if that boundary changed,
-and real process/consumer tests when execution is affected. Independent review
-and independently established expected behavior remain required. Broaden local
-coverage where the risk warrants it. Do not infer other operating systems passed.
+## Dependencies
 
-The following broader workspace commands remain available for integration or
-shared changes; they are not a mandatory per-optimization checklist:
+`Cargo.lock` is committed, and builds, tests and lints use `--locked`. A new
+dependency must serve the task, keep the rules and search boundary, and have a
+reviewed license (the workspace uses MIT or Apache-2.0 dependencies). Say why in
+the task. Use `cargo tree --workspace --locked --edges normal` to inspect the
+graph. After `cargo fetch --locked`, builds and tests can run with `--offline`.
 
-```sh
-cargo fmt --all -- --check
-cargo clippy --workspace --all-targets --locked -- -D warnings
-cargo test --workspace --locked
-cargo build --workspace --locked
-```
+## CI
 
-Use `cargo fmt --all` to apply formatting. The active crates inherit a forbid-unsafe-code lint and documentation warnings; Clippy treats all warnings as failures. Do not suppress all warnings to make this baseline green. The core crate may use Rust standard data structures, but rules/search must not depend on console or file I/O, UI or Python. Printing and argument/process handling belong to the console or future adapters.
-
-The console subprocess tests run the real binary from the system temporary directory. With stdin closed they verify help/default invocation, version, honest profile status and usage failures (exit 2, empty stdout, diagnostic stderr); a Unix-only case rejects a non-Unicode argument without a panic. With piped stdin they run `mshogi shell` sessions: the full load/show/legal/move/undo/status/perft/divide workflow with exact stdout, a rejected action and malformed FEN with preserved state and exact stderr, every argument error, exit statuses, invalid UTF-8 input, `quit`, and the README example reproduced byte for byte. The core FEN integration suite now consumes all MSH-2 FEN contracts and canonical starting states, and tests error precedence, failed replacement, state identity, local king safety and bounded malformed inputs. To isolate it, run `cargo test -p mshogi-core --test fen_corpus --locked`. The FEN suite itself does not exercise the corpus move, perft or classification expectations; the later suites below do. MSH-5 adds `cargo test -p mshogi-core --test ordinary_actions --locked`: exact independently expected before/after sequences, complete LIFO restoration, atomic invalid-action/overflow rejection, explicit refusal of special actions at the ordinary-only boundary and checked undo mismatch tests. MSH-6 adds `cargo test -p mshogi-core --test attacks --locked`: exact attacker sets and complete per-color attacked-square maps for the independent attack fixtures, the original corpus attack queries, pinned-attacker and occupancy-change cases. MSH-7 adds `cargo test -p mshogi-core --test ordinary_candidates --locked`: exact independent candidate sets, duplicate/own-capture/king-capture absence, distinct promotion transitions, a counter-bound case and an exhaustive comparison of every bounded action with `apply_ordinary` across the fixtures and the 35 corpus positions. MSH-8 adds `cargo test -p mshogi-core --test special_actions --locked`: exact special candidates and complete legal sets for independent positions, exact castling/en passant sequences with reverse undo, expected atomic rejections, the exhaustive candidate contract for `apply`, and the full legal sets of all 35 corpus positions. MSH-9 adds `cargo test -p mshogi-core --test legal_actions --locked`: exact legal sets and classifications for all 35 corpus positions and the independent classification fixtures, legal sets for the special-action and candidate families, apply/undo of every legal action (except `CounterOverflow` at the u32 limit) with atomic rejection of every other bounded action, empty legal sets in and out of check, and the counter-domain decision. MSH-10 adds `cargo test -p mshogi-core --test perft --locked`: the corpus perft totals, the independent ordered divides with a first-disagreement locator, depth/error semantics, state preservation and counter-independent traversal. Its three depth-4 divides are `#[ignore]`d; run them with `cargo test --release --locked -p mshogi-core --test perft -- --ignored`. MSH-12 adds `cargo test -p mshogi-core --test sequences --locked`: fixed-seed legal sequences with exact reversal, FEN round trips, independently restated transition effects, the candidate rejection contract, and replay of saved regression sequences. MSH-13 adds `cargo test -p mshogi-core --test action_boundary --locked`: production chess boundary checks and the explicitly synthetic compound-action fixture of the [action-boundary review](review/m1-action-boundary.md). All nine suites run in the workspace CI without Python.
-
-The UCI subset has two parser/stream unit tests and eleven real child-process tests in `cargo test -p mshogi-console --locked`; isolate the process boundary with `cargo test -p mshogi-console --test uci --locked`. These check handshake, readiness while thinking, rules-owned history and atomic position replacement, work/clock limits, optional/auto policy, legal bestmoves, stop/quit, stale suppression and protocol stdout purity. Build a release engine with `cargo build --release --locked --bin mshogi`, then launch `target/release/mshogi uci` (`mshogi.exe uci` on Windows). See [UCI compatibility and limitations](uci.md) before connecting a controller.
-
-## Workspace and dependency policy
-
-The root is a virtual Cargo workspace with resolver 3. Its committed `Cargo.lock` covers the four active packages and their test dependency graph. Search depends on the local core; the console depends on local core and search, including its native request coordinator. The UCI adapter adds no new registry dependencies. MSH-16 adds production `serde = 1.0.229` (derive) and promotes exact `serde_json = 1.0.145` from test-only to production for the real chess-record consumer; their existing transitive versions and registry checksums remain locked. Local manifests and license texts were reviewed (`MIT OR Apache-2.0`); see the [record contract](rules/chess-history-record-v1.md). Core tests also use that JSON reader for the independent corpus. These dependencies add no console, filesystem, network, UI or Python I/O to the rules boundary. Keep the lockfile committed for reproducible application builds. CI/build/test/lint use `--locked` so unexpected lock changes fail. New dependencies must address the selected task, preserve the library boundary, and receive a license/provenance review; record the reason and update/check the lockfile deliberately. Do not add a frontend, training framework or unused future subsystem here. Packages are `publish = false`; existing notices remain intact and release-licensing decisions remain deferred in the design.
-
-MSH-23 adds exact `sha2 = 0.10.9` for streaming executable/model fingerprints in the runner, without changing the core/search boundary. Cached registry manifests, license texts and incremental API source were reviewed: RustCrypto sha2, digest, block-buffer, crypto-common and cpufeatures use MIT OR Apache-2.0; cfg-if, libc and typenum do likewise; generic-array 0.14.7 uses MIT and version_check uses MIT/Apache-2.0. The locked dependency graph compiles on the pinned Rust 1.89; declared transitive minimums are older. No cryptographic implementation was copied or written locally. The `mshogi-runner-fixture` target under runner tests is portable process-test support, not an independent chess engine or a shipped desktop component.
-
-`cargo tree --workspace --locked --edges normal` shows the production Serde/JSON dependency boundary and its locked support packages. `cargo metadata --locked --offline --format-version 1 --no-deps` reports the active package/target inventory. Fetch the locked registry dependencies with `cargo fetch --locked`; once those and the pinned toolchain are cached, both builds and tests can use Cargo's `--offline` flag.
-
-The aborted Rust prototype is no longer part of the active tree. Consult [historical Rust revision `fd280dff02fa7ef73809e20b28bdec83fa9c955f`](https://github.com/jweathers777/mShogi/tree/fd280dff02fa7ef73809e20b28bdec83fa9c955f) for its files. The original `main_v2` and C++ `master` branches and their history remain intact; `workspace.exclude` keeps the separate desktop package outside the root workspace.
-
-The [Python fixture checker](../tests/fixtures/chess/README.md) is optional research infrastructure outside the Rust dependency graph.
-
-## CI and evidence
-
-Use the [verification levels](testing/verification-levels.md) to decide what is
-required. Ordinary pushes to `main` or `codex/**` and pull requests targeting `main`
-run the lightweight `Routine checks` context. It is emitted even for documentation
-changes; expensive native/frontend steps are conditional on the complete changed
-path set and relevant shared dependencies. A mixed change exercises both affected
-areas. This automation does not replace task-specific local regressions/review.
-
-The existing [Rust workflow](../.github/workflows/rust.yml) provides explicit
-manual selection of `suite=configuration|search|process|persistence|fixtures|full` and
-`platform=ubuntu-24.04|macos-15|windows-2022|all`. The
-[Desktop workflow](../.github/workflows/desktop.yml) is manual, with
-`operation=configuration|host|package` and the same platform choices. Configuration is
-the safe default. Full native and package commands/tests remain available; their
-historical `Rust (OS)` and `Desktop (OS)` job names are preserved. Targeted and
-lightweight jobs use different names so their success cannot masquerade as full
-verification. A manual package check is not required for ordinary engine work.
-
-The workflows are available on the default `main` branch. Use their registered
-IDs or filenames with an explicit source ref; the web UI also supports dispatch:
+Pushes to any branch, and pull requests to `main`, run the
+lightweight `Routine checks`; expensive steps run only for the changed areas.
+The Rust and Desktop workflows also run on demand:
 
 ```sh
-# Cheap workflow/trigger configuration checks; no engine or GUI campaign.
-gh workflow run 393975947 --ref main -f suite=configuration
-gh workflow run 395991468 --ref main -f operation=configuration
-
-# Example Level 2 selection: choose actual systems based on the process risk.
+# Rust: suite=configuration|search|process|persistence|fixtures|full
+#       platform=ubuntu-24.04|macos-15|windows-2022|all
 gh workflow run 393975947 --ref main -f suite=process -f platform=all
 
-# Level 2 example: excluded Tauri host checks without installers or GUI journeys.
+# Desktop: operation=configuration|host|package, same platforms
 gh workflow run 395991468 --ref main -f operation=host -f platform=ubuntu-24.04
-
-# Level 3 only: full native and desktop compatibility checkpoint.
-gh workflow run 393975947 --ref main -f suite=full -f platform=all
-gh workflow run 395991468 --ref main -f operation=package -f platform=all
 ```
 
-Record the resolved source SHA, selected scope, real job outcomes and actual runner
-platforms. A configured or skipped matrix is not a passed run. Level 1 tasks may
-complete locally with review, explicitly deferring broad compatibility to the
-next significant integration/release checkpoint. Historical MSH-3/M1 and later
-completed matrices remain evidence only at their recorded sources and scopes.
+Use them for platform-sensitive changes on the affected systems. The full
+three-platform `suite=full` and `operation=package` runs are for releases.
+A skipped or configured-only job is not a pass.
 
-MSH-146 (Risk-Based Verification) inspected live `codex/rewrite` protection:
-GitHub returned `Branch not protected`; repository rulesets were empty. No
-protection or default-branch setting was changed. If requirements are added later,
-use a consistently emitted ordinary check rather than a filtered/manual workflow
-as the routine integration gate; preserve actual milestone platform obligations.
+## Rules verification tools
 
-Current official references: [workflow dispatch events](https://github.com/github/docs/blob/main/content/actions/reference/workflows-and-actions/events-that-trigger-workflows.md#workflow_dispatch),
-[REST workflow dispatch](https://docs.github.com/en/rest/actions/workflows#create-a-workflow-dispatch-event),
-[required-check skipping behavior](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks#handling-skipped-but-required-checks).
+**Perft baseline.** `cargo run --release --locked -p mshogi-core --example
+perft_baseline` times Chess perft to depth 4 on three reference positions and
+asserts their independent totals. It measures a correctness tool, not search
+speed.
 
-## Perft performance baseline
+**Sequences.** `cargo test -p mshogi-core --test sequences --locked` plays
+fixed-seed legal sequences from every fixture start position with exact
+reversal, FEN round trips and replay of saved regressions (in every test run).
+Add `--release ... -- --ignored` for the deeper run.
 
-`cargo run --release --locked -p mshogi-core --example perft_baseline` times depth-4 perft of three reference positions and asserts their independent totals. Adding the `upstream` argument also runs three Stockfish sf_17.1 depth-5 totals.
+**Chess differential.** `python tools/differential_chess.py --mshogi
+target/release/mshogi` compares the real `mshogi shell` binary with pinned
+python-chess: perft 2 at every start position, then legal sets, classification
+and FEN at every ply of seeded playouts. Build the binary first with
+`cargo build --release --locked --bin mshogi`. Options: `--seed`, `--playouts`,
+`--plies`, `--perft-depth`; `--save FILE` writes disagreements as replayable
+cases and `--fill FILE` adds oracle expectations. Add a failing case to
+[sequence-regressions.json](../tests/fixtures/chess/sequence-regressions.json);
+the Rust test replays it. python-chess (GPL-3.0-or-later) runs only as a
+separate optional process and is never linked or shipped. See the
+[fixture README](../tests/fixtures/chess/README.md).
 
-These numbers record the speed of a correctness diagnostic. They are not a search-speed or playing-strength claim, and they are not a target. The implementation deliberately uses full-snapshot undo and candidate filtering by checked application, without bitboards, caches or unsafe code. Only depth-1 leaves are bulk-counted from the legal list.
-
-Recorded on 2026-10-23 for MSH-10 (Apple M1 Pro, 10 cores, 32 GiB, macOS 27.0.1, rustc 1.89.0 / LLVM 20.1.7, `aarch64-apple-darwin`, default release profile, single thread):
-
-| Case | Depth | Nodes | Seconds | Nodes/s |
-| --- | --- | --- | --- | --- |
-| initial | 4 | 197,281 | 0.064 | 3,066,081 |
-| kiwipete | 4 | 4,085,603 | 1.284 | 3,181,688 |
-| promotion-castling | 4 | 422,333 | 0.132 | 3,194,548 |
-| kiwipete-sf (`upstream`) | 5 | 193,690,690 | 59.474 | 3,256,737 |
-| tactical-sf (`upstream`) | 5 | 89,941,194 | 27.700 | 3,247,007 |
-| middlegame-sf (`upstream`) | 5 | 164,075,551 | 50.024 | 3,279,967 |
-
-Timings vary with host load; rerun the command to compare like with like.
-
-## Sequence and differential verification
-
-The purpose and limits of each command:
-
-| Command | Purpose | Limits | Where it runs |
-| --- | --- | --- | --- |
-| `cargo test -p mshogi-core --test sequences --locked` | Fast default: SplitMix64 seed `0x6D53686F67690001`, 2 playouts of up to 40 plies from each of the 92 distinct start positions of the corpus, attack, special-action, classification and ordinary-candidate families; replays every saved regression | 6,720 plies (asserted), about 4 s in debug | Every workspace test run, including native CI |
-| `cargo test --release --locked -p mshogi-core --test sequences -- --ignored` | Deeper fixed-seed run: seeds 1 to 8, 4 playouts of up to 120 plies per start | 316,880 plies (asserted), about 10 s in release | On request (not in CI) |
-| `python tools/differential_chess.py --mshogi target/release/mshogi` | Independent differential: the real `mshogi shell` binary against pinned `chess==1.11.2`. Compares perft 2 at every start position, then the full legal set, classification and after-FEN at every ply of seeded oracle-chosen playouts | Default seed 20261024, 3 playouts × 60 plies per start (15,008 plies, a few seconds). Use `--seed`, `--playouts`, `--plies`, `--perft-depth` for larger bounded runs | On request, in a separate Python environment (see the fixture README); not in CI |
-
-Build the binary first with `cargo build --release --locked --bin mshogi`. Agreement in any of these runs is bounded evidence about the sampled positions only. It is not a proof of complete chess rules or of behaviour on a platform where it was not run.
-
-Every start position at the u32 counter limit is played with ordinary counters. At the limit, legal actions are rejected as `CounterOverflow`, as the approved profile requires, and the legal-actions suite already covers that.
-
-**Saving and replaying failures.**
-
-- The pinned ply counts are a trajectory canary: a mismatch means the generated legal sets differ from the pinned run; run the differential to locate the difference.
-- A failing Rust sequence prints a replay record: the start FEN and the action prefix up to the first failing ply. Add it to [sequence-regressions.json](../tests/fixtures/chess/sequence-regressions.json).
-- `python tools/differential_chess.py --fill <file>` adds oracle expectations to cases that lack them.
-- `--save <file>` writes every distinct differential disagreement there as a case with oracle expectations. The failing ply is located from the first missing or differing console line, so a rejected action, a crash or a timeout still yields a replayable prefix, with the full diagnostic text kept as the reason. A perft disagreement is first localized through `divide`, descending to the shallowest node whose legal set differs, so its case replays without a perft comparison.
-- The Rust test replays every saved case, checking all invariants and expectations, without the original random run.
-
-Licensing: python-chess is GPL-3.0-or-later and runs only as a separate optional research process that talks to mShogi through its console text. It is not linked into, vendored in, or shipped with mShogi, and no Rust dependency was added.
-
-The `fixtures` native suite regenerates and checks the committed desktop snapshots,
-then runs the full workflow's build and console smoke commands. It supports
-fixture-only refreshes with explicitly retained unchanged full-suite evidence;
-it is not a replacement for the full native test suite.
+Agreement in these runs is evidence about the sampled positions only. The
+conformance rules are in [conformance-policy.md](testing/conformance-policy.md).

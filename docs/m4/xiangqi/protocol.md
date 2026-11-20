@@ -39,9 +39,9 @@ generic UCI1-10 dialect is advertised or silently converted.
   as a native participant resignation; mShogi does not choose heuristic
   resignations or evaluation-based draws.
 
-[The unchanged source audit](comparator-audit.md) distinguishes Pikafish's
+The unchanged source audit distinguishes Pikafish's
 UCI0-9 from Fairy generic UCI1-10/UCCI0-9. Its planning-only verdict is
-historical; [the MSH-100 admission evidence](protocol/opponent-admission.md)
+historical; the MSH-100 admission evidence
 records the new actual playing-engine build/network and runtime admission.
 Pikafish's banner before `id` is accepted only during handshake, retained in
 traffic, and bounded with all other handshake lines.

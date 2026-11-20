@@ -9,8 +9,8 @@ profile, including explanations/annotations: **not1018 executed assertions**.
 At MSH-83 completion, native Tenjiku was **0 executed/0 passed**. MSH-87 now
 executes all204 native rows with621 expected-field assertions perprofile and
 zero failures. The129 annotations and17 future-consumer rows remain separate
-accounting categories; see[native evidence](native-verification.json) and the
-[native contract](native-v1.md). Frozen expectation bytes are unchanged.
+accounting categories; seenative evidence and the
+native contract. Frozen expectation bytes are unchanged.
 
 [Profile data](profile.json) preserves156 setup placements,36 originals,30
 once-only promotion pairs and44 named movement faces. Fixture coordinates use
@@ -61,7 +61,7 @@ LegalAll must additionally enforce profile, turn, rights, history and outcome.
 
 The129 annotations describe supplementary native/property requirements and rare
 clause summaries that do not yet have an executable input. They are not presented
-as204/350 passed native cases. The[direct handoff](handoff.md) requires real
+as204/350 passed native cases. Thedirect handoff requires real
 snapshot sequences, reversal of all caches/rights, canonical replay, rejection
 atomicity and valid metamorphic/property cases. Rotations preserve route order;
 canonical simultaneous burn batches require re-sorting after transformation.
@@ -75,7 +75,7 @@ profile applicability, rotations, coverage and reviewed byte hashes. Twenty-five
 negative/mutation tests exercise the data boundary:
 `python3 -m unittest discover -s docs/m4/tenjiku -p test_validate.py`.
 The958275-byte corpus uses a2MiB **development-data** bound; no native/transport/archive
-constant changes. The[audit lock](audit-lock.json) binds raw data bytes and
+constant changes. Theaudit lock binds raw data bytes and
 separate per-profile expected projections. Changing expectations requires review
 and deliberate lock update, never automatic regeneration from native output.
 

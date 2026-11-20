@@ -2,7 +2,7 @@ name: Rust workspace
 
 on:
   push:
-    branches: ["main", "codex/**"]
+    branches: ["**"]
   pull_request:
     branches: ["main"]
   workflow_dispatch:

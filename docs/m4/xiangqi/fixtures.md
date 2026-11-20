@@ -91,7 +91,7 @@ a passing test. Stable IDs are obligations to carry into the corpus ledger.
 
 ## Reference comparison and failure evidence
 
-The [source audit](comparator-audit.md) nominates two **unadmitted** restricted
+The source audit nominates two **unadmitted** restricted
 board comparators. Future admission builds pinned sources in isolation, records
 toolchain/flags/patches/binary hash and separately pinned weights if any, then
 executes positive/negative sentinels. Require complete LegalAll-equivalent sets,
@@ -134,7 +134,7 @@ pretending the rules implementation already exists.
 
 ## Executed MSH-94 native history extension
 
-Current [contract](history-contract.md) / [evidence](history-evidence.md) supersede
+Current [contract](history-contract.md) / evidence supersede
 planning-only gate/status statements above. Independently expected corpus facts
 were frozen before native adjudication; their original proposal status strings
 remain as provenance. Acceptance is established by the independent source review

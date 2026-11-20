@@ -278,7 +278,7 @@ Codex will check the configuration without changing it.
 Codex will then record the exact image and build identities before the pilot starts.
 If the required setup has an important difference, Codex will ask you about the change.
 
-The prepared configuration is [mshogi-pilot-config.json](mshogi-pilot-config.json).
+The prepared configuration is mshogi-pilot-config.json.
 The first pilot runs one complete opening pair, native replay, screening and confirmation analysis.
 Codex must review those results before the eight-worker run.
 

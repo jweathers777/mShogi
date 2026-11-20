@@ -8,14 +8,14 @@ of human rules review. The first fixture review is retained with the then-unmerg
 That partial implementation and its reviews remain historical evidence. The
 subsequent [complete-chain and supplement resolution](mutual-check-resolution.md)
 now discharges the mutual-check gate. Native final verification and integration
-are recorded separately in MSH-67 and [history validation](history-validation.md).
+are recorded separately in MSH-67 and history validation.
 
 ## Authority, editions and method
 
 The governing sources are [CSA WCSC36 rules](https://www.computer-shogi.org/wcsc36/rule.pdf),
 effective 2023-11-27, [JSA rules](https://www.shogi.or.jp/match/taikyoku_rules/taikyoku_rules.pdf),
 corrected 2025-10-01, and the approved [software import/mode contract](shogi-profile.md).
-The existing [source manifest](reference/rule-source-manifest.json) remains intact.
+The existing source manifest remains intact.
 The archived CSA/JSA PDF bytes were checked again with `shasum -a 256`:
 
 - CSA: `9387db362c1eb1aa87b294c314c68be6f54d7f9a8165b8a3bb69e7b80a1b5bed`.

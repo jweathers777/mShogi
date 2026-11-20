@@ -69,17 +69,15 @@ serialized public records need not expose private undo memory. Include caches in
 internal restoration tests. Rejected commands must preserve state and history;
 semantic undo/reopen must not revive retired execution identities.
 
-The current [Tori harness](../m4/tori/harness.md) supplies strict admission,
+The current Tori harness supplies strict admission,
 independently fixed expectations, mutation tests and native property interfaces.
 MSH-127/128/129 later supply actual kernel observations; MSH-77/42 retain real
 execution/document/notation consumers. External engines are not needed to run it.
 
 ## Verification frequency and platform scope
 
-The permanent [three-level risk-based policy](verification-levels.md) determines
-where and how often these checks run. Level 1 local tests and independent review
-can complete platform-independent engineering. Level 2 targets actual platform
-risks; Level 3 retains full supported-platform evidence at integration/release
-checkpoints. This changes neither the independent expectations above nor their
-assertions. Explicitly record unperformed/deferred checks rather than inferring
-cross-platform success. Historical evidence and completed decisions remain intact.
+The checks section of [AGENTS.md](../../AGENTS.md#checks) sets where and how
+often these checks run: locally for every change, on the affected operating
+systems for platform-sensitive changes, and on all supported platforms for
+releases. This changes neither the independent expectations above nor their
+assertions. Record checks that did not run; never infer cross-platform success.

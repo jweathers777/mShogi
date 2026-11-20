@@ -2,7 +2,7 @@
 
 Prepared on 2026-10-22 from the accepted product vision, source review, technology direction and LinguaSift working model.
 
-This document records accepted product direction, architecture and dated decisions. All six games and both Tenjiku profiles passed M4; current development improves engine strength and execution. See [accepted delivery](m4/final-delivery.md) and the [current strength roadmap](m5/strength-roadmap.md). Earlier milestone plans and dated handoffs below retain their original scope; they are not current feature-status reports.
+This document records accepted product direction, architecture and dated decisions. All six games and both Tenjiku profiles passed M4; current development improves engine strength and execution. See accepted delivery and the [current strength roadmap](m5/strength-roadmap.md). Earlier milestone plans and dated handoffs below retain their original scope; they are not current feature-status reports.
 
 ## Current development line
 
@@ -194,7 +194,7 @@ evidence is not a mandate to keep obsolete production code. External UCI/USI
 and other actually required standard interoperability remain functional contracts.
 This policy supersedes contrary compatibility assumptions in earlier internal
 plans/reviews, including MSH-106, without rewriting their historical records.
-The [MSH-115 reassessment](review/architecture-target-115.md) is a proposal;
+The MSH-115 reassessment is a proposal;
 recording this policy does not authorize its production refactors.
 
 ### A-10. Approved application architecture and shared product UI
@@ -224,7 +224,7 @@ choice interaction lifetime owns agreed selection/cancellation/inspection/
 completion behavior. This does not require a universal board renderer, native
 rules model or frontend rules interpreter.
 
-The [approved implementation plan](architecture-migration-plan.md) maps R1–R6
+The approved implementation plan maps R1–R6
 and separate P9 to native tasks. R4 owns the shared application sections and
 single frontend owner; R5 owns board interaction and specialized renderer/
 completion integration, with no unassigned UI gap. The R1/R2 observation/codec
@@ -237,7 +237,7 @@ routine internal choices need no artificial owner checkpoint.
 ### A-11. Approved desktop UX after R4
 
 Project direction, 2026-10-31: retain the single application and accepted dark
-shell delivered by MSH-119. The [post-R4 UX contract](desktop/post-r4-ux.md)
+shell delivered by MSH-119. The post-R4 UX contract
 refines A-10's visible sections to **Analysis → Game Actions → Moves**, with
 diagnostics and required notices available through nonintrusive support/About
 access outside the ordinary game sidebar. Historical evidence of earlier
@@ -278,7 +278,7 @@ and M4 open. No later variant or M5 gate changes.
 
 Current delivery handoff (MSH-123, 2026-10-31): R5 is complete; the native
 Moves projection and readonly completed-action cues are implemented for Chess,
-Shogi and Xiangqi. The [MSH-123 review](review/moves-123.md) records exact
+Shogi and Xiangqi. The MSH-123 review records exact
 history boundaries, sourced notation, the approved WXF ordinal+file
 extension and packaged evidence. The preceding approval paragraph remains the
 historical planning record.
@@ -287,7 +287,7 @@ Current shared-shell handoff (MSH-124, 2026-10-31): the application owns
 Analysis → Game Actions → Moves, a supported-game dropdown with unchanged
 native side buttons, shared 歩 branding and header About/license/diagnostics
 access. Outward Moves focus rings remain visible through nested minimum-size
-scroll boundaries. The [MSH-124 review](review/shell-124.md) identifies actual
+scroll boundaries. The MSH-124 review identifies actual
 normal/minimum three-game packages, independent visual/accessibility review,
 source revisions, original failures and final CI. At that completion, MSH-125
 and R6 remained open and existing document/Resign/Return behavior was unchanged.
@@ -298,7 +298,7 @@ protection uses Save / Discard / Cancel. Direct Resign preserves native outcomes
 and unresolved/unscored meaning. One native Return to live restores play only
 from browse-only suspension with fresh execution; Load, Take back, cancellation,
 failure, conclusion and capacity stops retain explicit Resume/Retry. See the
-[workflow review](review/workflows-125.md) for exact source, normal/QA package
+workflow review for exact source, normal/QA package
 identities, actual platform interactions, independent review and retained failures.
 Archive formats, capacity, native rules and engine policy remain unchanged.
 MSH-121/R6 owns subsequent integrated architecture/product acceptance; M4 remains open.
@@ -307,7 +307,7 @@ Current integrated acceptance handoff (MSH-121/R6, 2026-10-31): fresh independen
 source/caller/native/interaction reviews accept the approved single-owner target
 and completed123/124/125 UX. Actual Chess/Shogi/Xiangqi packaged journeys and
 normal/minimum comparisons are recorded separately for Windows, macOS and Linux
-in the [final acceptance report](review/architecture-acceptance-121.md). Fixed
+in the final acceptance report. Fixed
 normal/QA/synthetic macOS launch slots replace per-fixture application identities;
 actual approval reuse across rebuilds is observed, not guaranteed for future
 platform policy. Existing game semantics, capacity and complete-save guarantees
@@ -406,7 +406,7 @@ within the assessment. This supersedes the unapproved qualification proposal;
 completed correctness/evidence and the later learned-evaluation sequence remain
 intact. See the [roadmap](m5/strength-roadmap.md).
 
-M2 is refined in MSH-15–25 against the actual M1 implementation. The [match/history profile](rules/chess-match-v1.md) records the approved 2026-10-24 policy; MSH-26 supplies an opt-in exact dead-position/side-specific reachability algorithm, with explicit resource uncertainty and unchanged M2 defaults. M2 is closed with its [integration evidence](review/m2-closure.md). M3 is delivered through MSH-27–39 and persistence follow-up MSH-61 against the [desktop contract](desktop/m3-design.md), including all eleven desktop work areas and the historical initial untimed play batch (MSH-27–32). Its [integration verdict](review/m3-closure.md) and MSH-39 record the independent review, actual three-platform application evidence and final closure checks. Next work is M4 scope refinement; all six games and strong engines remain the product target.
+M2 is refined in MSH-15–25 against the actual M1 implementation. The [match/history profile](rules/chess-match-v1.md) records the approved 2026-10-24 policy; MSH-26 supplies an opt-in exact dead-position/side-specific reachability algorithm, with explicit resource uncertainty and unchanged M2 defaults. M2 is closed with its integration evidence. M3 is delivered through MSH-27–39 and persistence follow-up MSH-61 against the desktop contract, including all eleven desktop work areas and the historical initial untimed play batch (MSH-27–32). Its integration verdict and MSH-39 record the independent review, actual three-platform application evidence and final closure checks. Next work is M4 scope refinement; all six games and strong engines remain the product target.
 
 The approved [desktop Take back contract](desktop/take-back.md) restores native human decision points atomically across Chess, Shogi and Xiangqi, preserving complete archive evidence and retiring abandoned execution. The common Game Actions label is **Take back**; restored play requires explicit Resume.
 
@@ -481,13 +481,13 @@ and its verification, separately from future product delivery.
 
 ### Shogi-first M4 planning refinement (2026-10-26)
 
-MSH-62 supplies the [bounded implementation and rules proposals](m4/README.md).
+MSH-62 supplies the bounded implementation and rules proposals.
 Standard shogi is the first additional game; the provisional later delivery
 order is xiangqi, tori shogi, chu shogi and tenjiku shogi. Independent source
 research can proceed separately; an evidence-based order change must be recorded.
 This planning batch implements no game and closes no M4 delivery.
 
-The [task/ownership map](m4/delivery-plan.md) preserves MSH-41–47 and all their
+The task/ownership map preserves MSH-41–47 and all their
 original criteria, and adds bounded tasks MSH-63–89. Early shared MSH-69/72/73
 are prerequisites for concrete shogi consumers without depending on completed
 MSH-41 or MSH-46. Later real-game extensions and final all-game/platform review
@@ -498,7 +498,7 @@ The selected profile is option A **SHOGI-P1**, `mshogi.shogi.csa36.v1`, on
 Its coherent CSA software-event convention and explicit untimed/import/request
 adaptations are accepted; other event conventions remain unselected alternatives.
 MSH-66 supplies full local legality. MSH-67 adds the
-[native game/history and canonical record contract](m4/history-state.md) with
+native game/history and canonical record contract with
 independently expected history/outcome fixtures and a
 [reviewed mutual-check impossibility argument](m4/mutual-check-resolution.md).
 This game-owned work does not implement later engine, transport or desktop consumers.
@@ -514,7 +514,7 @@ MSH-75 remain Done. M4 and MSH-42–47 remain open. The next primary task is
 MSH-80 source/profile/refinement for Xiangqi, with independent research81–83
 permitted. The subsequent decision selected **XIANGQI-P1**,
 `mshogi.xiangqi.wxf2018.v1`, under official bilingual WXF2018. The
-[Xiangqi dossier](m4/xiangqi/README.md) records per-case interpretations without
+Xiangqi dossier records per-case interpretations without
 blanket language precedence, independent expectations, audited references and
 future tasks. Third warning/fourth continuation loss or applicable WXF draw,
 untimed claim handling and required two-level3.2A verification are selected.
@@ -534,7 +534,7 @@ dispatch/metadata extensions, not a uniform rules or board representation.
 
 ### Approved M5 opening-knowledge experiment (2026-10-27)
 
-[MSH-104](m5/opening-knowledge.md) adds a required experiment to MSH-56 closure,
+MSH-104 adds a required experiment to MSH-56 closure,
 with evidence-supported per-game non-adoption a valid result. Existing six-game
 strength and MSH-55 learned-evaluator improvement requirements remain intact.
 A dedicated compact opening-policy model distilled from expensive offline teacher
@@ -547,7 +547,7 @@ shipping or Python product-runtime dependency is introduced by this plan.
 
 ### Architectural health checkpoints (2026-10-27)
 
-The [architectural health roadmap](architecture-health-roadmap.md) adds future
+The architectural health roadmap adds future
 diagnostic reviews after complete Xiangqi (MSH-106) and Chu Shogi (MSH-107),
 then an all-six-game review (MSH-108) before MSH-47 closes M4. MSH-109 reassesses
 architecture with MSH-48 experiment/pilot evidence before substantial M5 strength,
@@ -673,7 +673,7 @@ no existing task waits on this initiative.
 
 ## 6. Verification contract
 
-Project correction, 2026-11-09: the durable [risk-based verification policy](testing/verification-levels.md)
+Project correction, 2026-11-09: the durable risk-based verification policy
 sets three levels: routine local verification and independent review for ordinary
 platform-independent engineering; targeted operating-system checks for actual
 platform-sensitive risks; comprehensive native/desktop verification at significant
@@ -740,15 +740,15 @@ When code reveals a design problem, report the specific conflict and a proposed 
 | D-11 | Accepted | 2026-10-24 decision: optional core claims with recorded unattended auto-claim policy, FEN-limited known history, sound incomplete M2 dead recognition with MSH-26 M4 completion, explicit unscored mating uncertainty, untimed/increment clocks and ordered replayable match events. Evaluation adjudication stays disabled. UCI plus an independent-engine match and focused MSH-25 integration closure are required in M2. See [match v1](rules/chess-match-v1.md). |
 | D-10 | Deferred | Release licensing, redistribution choices, minimum OS policy, and signing/update arrangements. Preserve existing notices; resolve applicable choices before copying restricted dependencies or distributing releases. |
 | D-12 | Accepted | 2026-10-26 decision: bounded M4 planning only, standard shogi first; provisional later order xiangqi, tori, chu, tenjiku with independent source research possible. Preserve complete MSH-41–47 obligations and closed M2/M3; stop for concrete profile discussion before affected implementation. |
-| D-13 | Accepted, SHOGI-P1, 2026-10-26 | The recorded approval covers option A `mshogi.shogi.csa36.v1` against integration `6db8500e92129b95e502e7b4d5c4a26072e38652`, including untimed local play, advisory/committed declarations, atomic rejection and declared-counter/bounded-history adaptations. JSA professional and other event conventions remain separate unselected alternatives. See [selected profile](m4/shogi-profile.md) and [coverage](m4/shogi-coverage.md); approval is not delivery evidence. |
-| D-14 | Accepted delivery/shell boundary, 2026-10-27 | The accepted decision covers Standard Shogi under MSH-41/75 and requires the MSH-74 common shell for future games. MSH-80 is next planning/refinement;81–83 may research independently. No Xiangqi rules profile is selected by this instruction; resolve material sourced decisions before native implementation. See [current dossier](m4/xiangqi/README.md). |
-| D-15 | Accepted XIANGQI-P1, 2026-10-27 | The selected profile is `mshogi.xiangqi.wxf2018.v1`, official bilingual WXF2018 with individual discrepancy reconciliation and no blanket language precedence; third-occurrence warning/fourth continued unilateral loss or applicable WXF draw; untimed native claims and scoped AXF/CXA research; required sound fast plus bounded/terminable exact3.2A path. G-CYCLE/G-NOWIN gate affected work, not settled91/92. MSH-80 closes planning only; stop before implementation. See [project decisions](m4/xiangqi/owner-decisions.md). |
-| D-16 | Accepted future M5 experiment, 2026-10-27 | The accepted scope adds MSH-104 per-game opening knowledge to56 closure while adoption remains optional. Dedicated compact teacher-distilled opening policy, learned evaluator55 and optional full policy/value59 are distinct. Compare practical direct/order/book-hybrid/no-prior uses, sparse Chu/Tenjiku generation, provenance/regeneration and total benefit/cost; no product Python or mandatory opening mechanism. See [scope](m5/opening-knowledge.md). |
+| D-13 | Accepted, SHOGI-P1, 2026-10-26 | The recorded approval covers option A `mshogi.shogi.csa36.v1` against integration `6db8500e92129b95e502e7b4d5c4a26072e38652`, including untimed local play, advisory/committed declarations, atomic rejection and declared-counter/bounded-history adaptations. JSA professional and other event conventions remain separate unselected alternatives. See [selected profile](m4/shogi-profile.md) and coverage; approval is not delivery evidence. |
+| D-14 | Accepted delivery/shell boundary, 2026-10-27 | The accepted decision covers Standard Shogi under MSH-41/75 and requires the MSH-74 common shell for future games. MSH-80 is next planning/refinement;81–83 may research independently. No Xiangqi rules profile is selected by this instruction; resolve material sourced decisions before native implementation. See current dossier. |
+| D-15 | Accepted XIANGQI-P1, 2026-10-27 | The selected profile is `mshogi.xiangqi.wxf2018.v1`, official bilingual WXF2018 with individual discrepancy reconciliation and no blanket language precedence; third-occurrence warning/fourth continued unilateral loss or applicable WXF draw; untimed native claims and scoped AXF/CXA research; required sound fast plus bounded/terminable exact3.2A path. G-CYCLE/G-NOWIN gate affected work, not settled91/92. MSH-80 closes planning only; stop before implementation. See project decisions. |
+| D-16 | Accepted future M5 experiment, 2026-10-27 | The accepted scope adds MSH-104 per-game opening knowledge to56 closure while adoption remains optional. Dedicated compact teacher-distilled opening policy, learned evaluator55 and optional full policy/value59 are distinct. Compare practical direct/order/book-hybrid/no-prior uses, sparse Chu/Tenjiku generation, provenance/regeneration and total benefit/cost; no product Python or mandatory opening mechanism. See scope. |
 | D-17 | Accepted pre-release compatibility policy, 2026-10-30 | Decision: unreleased greenfield rewrite; no external internal-API consumers or development-save compatibility obligation. Obsolete APIs/IPC/adapters/readers and interface-only tests may be replaced/deleted; preserve native semantics/history/atomicity, execution safety, current-format losslessness, shared product consistency, external interoperability and independent conformance. See A-09 and MSH-115. No refactor implementation authorized by this review. |
 | D-18 | Accepted MSH-115 target and shared product UI, 2026-10-30 | The approved architecture is the coherent R1–R6 migration: one controller/active native document/current execution/current envelope/frontend owner/interaction controller, deletion of obsolete development layers, native semantics independent. One application owns common sections and conventions; game capabilities/renderers supply only genuine native content. See A-10 and the approved migration plan. This assignment creates planning tasks only, with P9 triage intended first and no automatic M4 gate changes. |
-| D-19 | Accepted post-R4 desktop UX, 2026-10-31 | The approved scope includes sourced two-column Moves/native event mapping, origin/destination last-move cues, Analysis/Game Actions/Moves order, supported-only dropdown with unchanged native side buttons, Shogi branding, nonintrusive support, Save/Load and intentional atomic replacement, concise Quit, direct Resign and one-step browse-only Return to live. Five supplemental clarifications supersede conflicting attachment wording. See A-11 and the [bounded contract](desktop/post-r4-ux.md);123/124/125 are future tasks and121 gains their completion gates. No implementation starts by recording approval. |
+| D-19 | Accepted post-R4 desktop UX, 2026-10-31 | The approved scope includes sourced two-column Moves/native event mapping, origin/destination last-move cues, Analysis/Game Actions/Moves order, supported-only dropdown with unchanged native side buttons, Shogi branding, nonintrusive support, Save/Load and intentional atomic replacement, concise Quit, direct Resign and one-step browse-only Return to live. Five supplemental clarifications supersede conflicting attachment wording. See A-11 and the bounded contract;123/124/125 are future tasks and121 gains their completion gates. No implementation starts by recording approval. |
 | D-20 | Accepted Chu direction, 2026-11-02 | The selected direction requires faithful modern JCSA `mshogi.chu.jcsa2019.v1`: capture-based movement and finite immediate-threat mate; responsible side must vary before fourth through admission; narrow sourced material exhaustion, immediate response and agreement-based draw. Withdraw automatic-forfeit/automatic-draw/quiet-immobility-loss proposals. Resolve faithful deterministic details from independent sources/fixtures, escalate only material remaining conflicts. See [decision record](m4/chu/decisions.md). MSH-82 ratifies profile/data only;86→78→43 retain actual implementation and delivery ownership. |
-| D-21 | Accepted Tenjiku profile selection, 2026-11-04 | The accepted scope requires support for choosing option1 Adams1999 Modern or option2 Muller. MSH-83 ratifies two distinct immutable whole profiles, with explicit source differences, Adams general-game supplements for Muller and labelled software completions. New Game selects the profile; records/replay/search preserve it. No independent rule toggles or in-place reinterpretation of game history. See [profile family](m4/tenjiku/README.md) and [decisions](m4/tenjiku/decisions.md). Native87, shared79 and finished44 delivery remain unimplemented here. |
+| D-21 | Accepted Tenjiku profile selection, 2026-11-04 | The accepted scope requires support for choosing option1 Adams1999 Modern or option2 Muller. MSH-83 ratifies two distinct immutable whole profiles, with explicit source differences, Adams general-game supplements for Muller and labelled software completions. New Game selects the profile; records/replay/search preserve it. No independent rule toggles or in-place reinterpretation of game history. See profile family and [decisions](m4/tenjiku/decisions.md). Native87, shared79 and finished44 delivery remain unimplemented here. |
 | D-22 | Accepted deferred direction only, 2026-11-05 | The roadmap includes prospective Dai → Dai Dai → Maka Dai Dai → Tai, with Taikyoku conditional on feasibility and future explicit approval. Ordering, board dimensions and UX bands are provisional; no rules profile, implementation, research or restructuring is approved. Complete M4 then prioritize six-game M5 strength, efficiency and quality; preserve current milestones, dependencies, six-game contracts and minimum-window policy. See [deferred roadmap](#deferred-larger-historical-shogi-expansion-2026-11-05). |
 
 Accepted records reflect actual project direction. Working defaults are implementation proposals consistent with it, not fabricated project decisions. Deferred questions only block work that depends on their resolution. A routine choice within accepted requirements does not need a new approval ceremony.
@@ -781,7 +781,7 @@ three-platform packaged verification are authorized as the remainder of MSH-44;
 no artwork redesign, rules change, architecture refactor or M5 work is implied.
 
 MSH-44's final technical acceptance is recorded in the
-[product evidence](m4/tenjiku/product-verification.json) at production source
+product evidence at production source
 `eca9f9cfd43cf83ff4e3489292f6c25f8951bb30`: normal two-profile selection, both
 shared presentation refinements, all six required CI jobs and actual packaged
 gameplay on all three platforms are supported by independent review. The project

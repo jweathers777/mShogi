@@ -13,7 +13,7 @@ identity and stable count, and reconstructs the complete JSON before validating
 native context. It bounds each response and the total collection; it must not
 parse just page one or substitute a historical archive for current runtime
 identity. Keep this observer synchronized with the ordinary support surface.
-The [Chu product evidence](../m4/chu/evidence/playable-product.json) preserves the
+The Chu product evidence preserves the
 actual Windows renderer OOM that motivated this correction, its screenshot,
 independent review and subsequent platform results. Do not relabel that failure
 as a mere driver timeout or infer its resolution from component tests.
@@ -212,9 +212,9 @@ GUI interaction. The frontend run passed 78 tests in 13 files.
 
 | Actual application environment | Package and interaction evidence | Result |
 | --- | --- | --- |
-| Ubuntu 24.04.5 amd64, GTK 3.24.41, WebKitGTK 2.52.6; X11/Xvfb 1440 × 1100, Openbox, recorded software-compositing override | [Linux report, identities and retained-file hashes](evidence/m3-platforms/linux-final/evidence.json); apt-installed normal Debian package, separately extracted labeled verification package | All six phases passed; native Save/Open, window-close Cancel and Quit verified. Host and engine absent before teardown in every phase. |
-| Windows Server 2022 interactive Default desktop, installed WebView2 and matching signed driver recorded in report | [Windows report, identities and retained-file hashes](evidence/m3-platforms/windows-final/evidence.json); actual normal and separate verification NSIS installations | All six phases passed, including native pickers, window-close Cancel and actual mouse selection of native Quit. Host and engine absent before teardown in every phase. |
-| macOS 27.0.1 build 26A434, arm64, native WKWebView | [Final normal package](evidence/m3-platforms/macos-final-normal/gui-report.json), [capacity visibility/save regression](evidence/m3-platforms/macos-capacity-focus/gui-report.json), [completed-message regression](evidence/m3-platforms/macos-status/gui-report.json), [broader current normal journey](evidence/m3-platforms/macos-current/gui-report.json), and [unchanged earlier complete journeys](completion-batch-evidence.md) | Actual normal and labeled QA application interaction passed. Final normal package played human Black; clean guarded Quit was checked by separate process inspection. Earlier play, analysis, recovery, history, claims, promotion and synthetic evidence is reused with its original source/package identities. |
+| Ubuntu 24.04.5 amd64, GTK 3.24.41, WebKitGTK 2.52.6; X11/Xvfb 1440 × 1100, Openbox, recorded software-compositing override | Linux report, identities and retained-file hashes; apt-installed normal Debian package, separately extracted labeled verification package | All six phases passed; native Save/Open, window-close Cancel and Quit verified. Host and engine absent before teardown in every phase. |
+| Windows Server 2022 interactive Default desktop, installed WebView2 and matching signed driver recorded in report | Windows report, identities and retained-file hashes; actual normal and separate verification NSIS installations | All six phases passed, including native pickers, window-close Cancel and actual mouse selection of native Quit. Host and engine absent before teardown in every phase. |
+| macOS 27.0.1 build 26A434, arm64, native WKWebView | Final normal package, capacity visibility/save regression, completed-message regression, broader current normal journey, and unchanged earlier complete journeys | Actual normal and labeled QA application interaction passed. Final normal package played human Black; clean guarded Quit was checked by separate process inspection. Earlier play, analysis, recovery, history, claims, promotion and synthetic evidence is reused with its original source/package identities. |
 
 Linux and Windows each completed normal play, active analysis cancellation and
 replacement, complete Save/Open, exact historical-prefix analysis, Return to
@@ -249,18 +249,18 @@ First external Windows/Linux run: source
 `9b7a2a6b29c30b8d417d75cb4393dd6ba43f6ad0`,
 [desktop CI 40228382037](https://github.com/jweathers777/mShogi/actions/runs/40228382037).
 The first Linux attempt failed on SVG group interactability and produced a blank
-native window under Xvfb with DRI3 warnings. Its [failed evidence](evidence/m3-platforms/linux-attempt-1/attempt.json)
+native window under Xvfb with DRI3 warnings. Its failed evidence
 is retained, separately from any corrected rerun. Real W3C pointer input and a
 recorded CI-only `WEBKIT_DISABLE_COMPOSITING_MODE=1` override address these
 observed issues; [WebKit documents the override](https://trac.webkit.org/wiki/EnvironmentVariables).
 These are failed attempts, not GUI passes. Later results are recorded separately. Earlier macOS actual interaction
-is recorded in [the completion-batch evidence](completion-batch-evidence.md).
+is recorded in the completion-batch evidence.
 
 
 The first Windows attempt established actual NSIS-installed play on an
 interactive desktop. It then exposed a verifier input problem: Element Clear
 left React's previous node-budget state, so typing appended to it and the
-frontend correctly rejected the invalid budget. The [failed attempt](evidence/m3-platforms/windows-attempt-1/attempt.json)
+frontend correctly rejected the invalid budget. The failed attempt
 is preserved. The correction uses real Ctrl-A/Backspace/typing and checks the
 observed field value; it does not set DOM values or bypass validation.
 
@@ -270,13 +270,13 @@ confirmed a readable native desktop, real bundled-engine play, active analysis
 cancellation and bounded replacement. Its native Save wrote the complete
 archive, but the verifier left GTK's default extension after the supplied name,
 producing `normal-complete.mshogi.mshogi`. The exact-path check correctly failed;
-the [partial attempt](evidence/m3-platforms/linux-attempt-2/attempt.json) remains
+the partial attempt remains
 failed. The adapter now selects the entire native path field, captures it before
 acceptance and requires the exact requested file. The next attempt reran this correction; the doubled-extension file was never accepted as the target.
 
 The second Windows attempt in that run also passed real play, active analysis
 cancellation and bounded replacement, then saved the picker's default
-`game.mshogi` instead of the requested path. Its [failed evidence](evidence/m3-platforms/windows-attempt-2/attempt.json)
+`game.mshogi` instead of the requested path. Its failed evidence
 also exposed a genuine product focus defect: a newly spawned bundled engine
 created a visible Windows console during analysis. The supervised internal
 engine launch now uses Windows `CREATE_NO_WINDOW` with its existing pipes;
@@ -289,7 +289,7 @@ adapter also needs exact-PID ownerless-modal handling and observed real filename
 input. These findings led to the subsequent corrected packaged application runs.
 
 The current-source macOS normal package was rebuilt and exercised separately;
-its [report](evidence/m3-platforms/macos-current/gui-report.json) records the
+its report records the
 exact package hashes, real play/cancellation, complete Save, clean Quit, fresh
 Open, history, Return to live/Resume and guarded native window close. It reuses
 the unchanged earlier macOS QA journeys explicitly. Fresh process inspection is
@@ -306,14 +306,14 @@ The third Linux attempt at `f0c8dd654cb151621ea95582bdce1b1b374faaa9`
 ([run 40231293207](https://github.com/jweathers777/mShogi/actions/runs/40231293207))
 saved the exact requested complete archive successfully. The native GTK Open
 picker then retained the correctly entered absolute path after Return, with its
-Open button enabled. The [failed partial evidence](evidence/m3-platforms/linux-attempt-3/attempt.json)
+Open button enabled. The failed partial evidence
 is preserved. The adapter now uses the actual Open mnemonic after a bounded
 wait when Return only resolves the location, parallel to its existing Save
 mnemonic. It records the pre-accept native screen and key; controller restoration,
 history and lifecycle results are recorded in the later runs.
 
 The completed-message correction was also checked in a new normal macOS build;
-its [focused actual GUI report](evidence/m3-platforms/macos-status/gui-report.json)
+its focused actual GUI report
 records Open, historical inspection, Return to live, Resume and native guarded
 Quit with separate process absence. This supplements the earlier broader macOS
 journeys rather than relabeling their source or package identities.
@@ -322,7 +322,7 @@ The third Windows attempt in the same run also saved the exact requested
 complete archive. Its nine native captures recorded no visible bundled-engine
 console, and the ownerless native pickers remained readable in the foreground.
 Open then found three UIA controls named Open: two dropdowns and the uniquely
-identified acceptance button. The [failed partial evidence](evidence/m3-platforms/windows-attempt-3/attempt.json)
+identified acceptance button. The failed partial evidence
 remains failed. The corrected adapter prioritizes the unique native title/ID
 intersection; replaying the actual captured UIA tree selected button ID `1`.
 Actual Open/history/lifecycle and fixture results are recorded in the later runs.
@@ -335,8 +335,8 @@ these reporting rules; they are not application GUI evidence.
 
 The fourth run at `e313ef011d7b62c6ee32748b605b013b8771c935`
 ([40232694201](https://github.com/jweathers777/mShogi/actions/runs/40232694201))
-retains [Linux](evidence/m3-platforms/linux-attempt-4/attempt.json) and
-[Windows](evidence/m3-platforms/windows-attempt-4/attempt.json) phase verdicts.
+retains Linux and
+Windows phase verdicts.
 Linux standard recovery, promotion and capacity passed including native exit
 before teardown. Normal Save/Open/history/Resume/close Cancel passed, but final
 Quit's click closed the webview before its HTTP reply; claim had the same final
@@ -356,7 +356,7 @@ screen. Failure cleanup is never substituted for either platform's Quit proof.
 The Linux capacity screenshot also exposed an offscreen explanation above the
 disabled work controls. New native capacity pauses now focus their alert once,
 revealing it without stealing later focus on unchanged polls. The current
-[macOS packaged regression](evidence/m3-platforms/macos-capacity-focus/gui-report.json)
+macOS packaged regression
 visibly verifies that behavior and a complete 256-observation Save. The corrected
 Windows/Linux journeys require a focused, visible alert. Native screenshots
 follow webview capture and a bounded 150 ms presentation settle; the full raw

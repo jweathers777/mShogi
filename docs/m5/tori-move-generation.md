@@ -1,6 +1,6 @@
 # MSH-200 (Tori Move Generation Deep Dive): discussion paper
 
-A discussion task with John (2026-11-19). It must be decided before MSH-205 (Tori Selectivity Round), which depends on it (John, 2026-11-20). This paper lists the Tori pieces and drops with their native rules, measures what the search spends on them, and proposes options. Native rules stay the authority. Any faster search-side code is accepted only with perft and native differential tests. Evidence: [evidence/msh200](evidence/msh200/).
+A discussion task with John (2026-11-19). It must be decided before MSH-205 (Tori Selectivity Round), which depends on it (John, 2026-11-20). This paper lists the Tori pieces and drops with their native rules, measures what the search spends on them, and proposes options. Native rules stay the authority. Any faster search-side code is accepted only with perft and native differential tests. Evidence: evidence/msh200.
 
 ## How the search generates moves today
 

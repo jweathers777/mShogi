@@ -1,4 +1,4 @@
-//! MSH-13 action-boundary review evidence (see docs/review/m1-action-boundary.md).
+//! MSH-13 action-boundary review evidence (review record in Git history).
 //!
 //! Part 1 exercises the real production chess boundaries directly. Part 2 is an
 //! explicitly synthetic, test-only fixture: invented rules on a 16x16 board

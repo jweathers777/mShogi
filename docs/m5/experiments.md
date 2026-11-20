@@ -130,7 +130,7 @@ stored in a file, and no hash substitutes for native admission.
 
 JSONL projection still replays native transitions to construct before/after
 states. It reuses the validated report for its source digest and does not repeat
-whole-report validation. See [measurements and review](evidence/msh184/README.md).
+whole-report validation. See measurements and review.
 
 JSONL rows bind the exact source-report SHA/config identity, participant/executable,
 opening/pair/split/lineage, before/after complete native roots, actual request and
@@ -177,7 +177,7 @@ is established by MSH-48. Those are explicit blockers for affected later
 experiments, not fabricated successful comparisons. MSH-55 owns learned evaluator
 lifecycle; MSH-104 owns later research exploration. No substantial training ran.
 
-See [the structured MSH-48 verification record](evidence/msh48/verification.json)
+See the structured MSH-48 verification record
 for exact tested source, measured pilot conditions/outcomes, platform receipts and
 independent review. It is the single acceptance evidence ledger.
 
@@ -212,7 +212,7 @@ These mix standard/tactical roots, colors and effective work, and include proces
 launch/transport/search/receipt. They are neither pure search benchmarks nor
 cross-game strength comparisons. Exact individual limits, work and timing are
 in the replayable reports; descriptive aggregates are in
-[pilot-metrics.json](evidence/msh48/pilot-metrics.json).
+pilot-metrics.json.
 
 Because 128/512 visits did not finish the selected Tenjiku tactical iteration, an
 explicit eight-game supplement used the existing 2,000 visit native ceiling with

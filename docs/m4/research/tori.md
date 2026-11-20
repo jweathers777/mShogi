@@ -1,4 +1,4 @@
-> Current follow-up,2026-10-31: [MSH-81 dossier](../tori/README.md) now records
+> Current follow-up,2026-10-31: MSH-81 dossier now records
 > an acquired15-image Tohoku facsimile with internally dated1828 rules, newOUC
 > holdings, actual modernPDF comparisons and independent seeds. The copy date,
 > complete promotion/history/endings and profile selection remain unresolved.

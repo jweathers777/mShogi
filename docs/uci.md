@@ -51,7 +51,7 @@ Clock requests charge queue and native setup time and leave up to 10ms (at most
 half the budget) for response delivery. Their search polls every128 nodes.
 `movetime` overrides clock allocation and retains the fixed-time policy: it does
 not use these adaptive targets or clock-specific deductions. Desktop defaults
-are unchanged. See [MSH-167 evidence](m5/evidence/msh167/README.md).
+are unchanged. See MSH-167 evidence.
 If own-side time is missing, a clock-only request is rejected; an explicit
 depth/node limit (or infinite) remains independently meaningful. Zero time
 imposes zero search nodes. Depth/node/time combinations stop at their earliest

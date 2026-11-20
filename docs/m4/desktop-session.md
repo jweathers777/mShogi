@@ -150,7 +150,7 @@ builds. Frontend build guards and package inventory/host marker checks enforce
 instrumentation exclusion.
 
 Verification and independent-review results belong to
-[the MSH-72 evidence record](desktop-session-validation.md). Earlier M2/M3,
+the MSH-72 evidence record. Earlier M2/M3,
 MSH-63–71 research, fixtures and platform evidence are reused only for unchanged
 behavior. MSH-73 is next; MSH-74/75 and MSH-41–47 stay open.
 
@@ -202,7 +202,7 @@ capability demonstrations must not be read as requiring either technique.
 ## MSH-74 normal product surface
 
 The approved implementation direction is recorded in
-[the shogi product design](shogi-desktop-product.md). It introduces actual normal
+the shogi product design. It introduces actual normal
 Chess/Shogi New Game selection and a distinct shogi board/player/hand layout,
 keeping the MSH-72/73 harness verification-only. Full9x9 visibility is required
 at1180×820 and the760×650 content minimum. Future12x12/16x16 entire-board fit must

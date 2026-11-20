@@ -5,7 +5,7 @@
 # Tori acquisition and authority ledger
 
 Retrieved 2026-10-31. Source IDs below are stable fixture references. Exact public
-URLs, bytes and SHA256 are in [source manifests](evidence/). Original modern
+URLs, bytes and SHA256 are in source manifests. Original modern
 copyrighted sheets are retained locally for examination, not copied into Git.
 Public retrieval is not a redistribution licence. No institution was contacted,
 account accessed, paywall bypassed or purchase made.
@@ -169,7 +169,7 @@ against the previous manifests; bytes unchanged.
 **T-S1 — comparator source audit only.** Fairy-Stockfish source commit
 `53c1f2bd14a2d3b685904ccf8ec9dec8401800ff`, inspected2026-11-01 in isolated
 `/private/tmp/msh81-comparator-fairy`. Actual config and implementation were read;
-see [audit](comparator-audit.md). No build, run, reference admission or differential
+see audit. No build, run, reference admission or differential
 result is claimed. PyChess's FAQ identifies this engine as its rules dependency,
 so its public description is not a second independent implementation.
 

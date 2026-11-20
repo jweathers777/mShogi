@@ -299,7 +299,7 @@ unsupported/incomplete failures remain distinct and unscored.
 
 ## C11 — real consumers and verification boundary
 
-[Handoff](handoff.md) preserves86(native),78(shared) and43(functional product)
+Handoff preserves86(native),78(shared) and43(functional product)
 ownership. Current execution envelope/context/controller/document/interaction
 owners suffice with explicit Chu dispatch. Add only native-specific state,
 actions/effects, royal/status metadata and a12×12 renderer; no universal rules

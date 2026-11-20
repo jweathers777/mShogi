@@ -1,15 +1,16 @@
 ---
 id: MSH-202
 title: Tenjiku Search Speed
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-11-19T07:12:00Z'
-updated_date: '2026-11-20T22:49:00Z'
+updated_date: '2026-11-20T22:52:00Z'
 labels:
   - tenjiku
   - search
 milestone: m-5
-dependencies: []
+dependencies:
+  - MSH-214
 references:
   - docs/m5/strength-roadmap.md
 ordinal: 209000
@@ -35,4 +36,6 @@ Native rules stay the authority. A faster search-side position must agree with t
 
 <!-- SECTION:NOTES:BEGIN -->
 2026-11-20, John: rescoped from a discussion task to an ordinary speed task; agents choose the techniques. Blocker: Tenjiku has no strength harness yet (opening set, blunder suite, game test against the predecessor; see MSH-204 (Tori Strength Harness) and docs/m5/strength-roadmap.md). Speed profiling and perft/differential work can start; AC 3 needs the harness.
+
+Harness blocker is now the dependency MSH-214 (Tenjiku Strength Harness).
 <!-- SECTION:NOTES:END -->

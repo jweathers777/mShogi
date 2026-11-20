@@ -32,9 +32,10 @@ struct Known {
     refuted: Option<u8>,
 }
 
-/// Exact identity: board, both hands and side to move (Debug form of the key).
-fn key(position: &LocalPosition) -> String {
-    format!("{:?}", RepetitionKey::from_position(position.position()))
+/// Exact identity: board, both hands and side to move. Memo entries are
+/// filed under the key's 64-bit digest and confirmed on the full key.
+fn key(position: &LocalPosition) -> RepetitionKey {
+    RepetitionKey::from_position(position.position())
 }
 
 /// Legal actions of the side to move with their native successors.
@@ -53,7 +54,7 @@ pub fn successors(position: &LocalPosition, only_checks: bool) -> Vec<(Action, L
 
 /// Memoized bounded AND-OR proof search.
 pub struct Prover {
-    memo: HashMap<(String, bool), Known>,
+    memo: HashMap<(u64, bool), Vec<(RepetitionKey, Known)>>,
     /// Attacker plays every legal action instead of only checks.
     pub full: bool,
     /// Node visits so far.
@@ -101,6 +102,13 @@ impl Prover {
         self.node(position, plies, false)
     }
 
+    fn known(&self, key: &RepetitionKey, attacking: bool) -> Known {
+        self.memo
+            .get(&(key.digest(), attacking))
+            .and_then(|v| v.iter().find(|(k, _)| k == key))
+            .map_or(Known::default(), |(_, known)| *known)
+    }
+
     fn node(
         &mut self,
         position: &LocalPosition,
@@ -111,56 +119,89 @@ impl Prover {
         if self.visits > self.cap {
             return Err(Exhausted);
         }
+        let actions = position.legal_actions();
         if !attacking {
-            let replies = successors(position, false);
-            if replies.is_empty() {
+            if actions.is_empty() {
                 return Ok(true);
             }
             if plies == 0 {
                 return Ok(false);
             }
-            let key = (key(position), false);
-            let known = self.memo.get(&key).copied().unwrap_or_default();
+            let key = key(position);
+            let known = self.known(&key, false);
             if known.proven.is_some_and(|d| d <= plies) {
                 return Ok(true);
             }
             if known.refuted.is_some_and(|d| d >= plies) {
                 return Ok(false);
             }
+            // Children are built one at a time: one escape settles the node.
             let mut result = true;
-            for (_, next) in replies {
+            for a in actions {
+                let mut next = position.clone();
+                next.apply(a).expect("legal action");
                 if !self.node(&next, plies - 1, true)? {
                     result = false;
                     break;
                 }
             }
-            self.remember(key, plies, result);
+            self.remember(key, false, plies, result);
             return Ok(result);
         }
         if plies == 0 {
             return Ok(false);
         }
-        let key = (key(position), true);
-        let known = self.memo.get(&key).copied().unwrap_or_default();
+        let key = key(position);
+        let known = self.known(&key, true);
         if known.proven.is_some_and(|d| d <= plies) {
             return Ok(true);
         }
         if known.refuted.is_some_and(|d| d >= plies) {
             return Ok(false);
         }
+        // Checks first (they decide most mates), then, in full mode, the
+        // quiet actions; children are built one at a time.
         let mut result = false;
-        for (_, next) in successors(position, !self.full) {
+        let mut quiet = vec![];
+        for a in actions {
+            let mut next = position.clone();
+            next.apply(a).expect("legal action");
+            let side = next.position().side_to_move();
+            if !next.is_in_check(side) {
+                if self.full {
+                    quiet.push(a);
+                }
+                continue;
+            }
             if self.node(&next, plies - 1, false)? {
                 result = true;
                 break;
             }
         }
-        self.remember(key, plies, result);
+        if !result {
+            for a in quiet {
+                let mut next = position.clone();
+                next.apply(a).expect("legal action");
+                if self.node(&next, plies - 1, false)? {
+                    result = true;
+                    break;
+                }
+            }
+        }
+        self.remember(key, true, plies, result);
         Ok(result)
     }
 
-    fn remember(&mut self, key: (String, bool), plies: u8, result: bool) {
-        let entry = self.memo.entry(key).or_default();
+    fn remember(&mut self, key: RepetitionKey, attacking: bool, plies: u8, result: bool) {
+        let entries = self.memo.entry((key.digest(), attacking)).or_default();
+        let index = match entries.iter().position(|(k, _)| *k == key) {
+            Some(i) => i,
+            None => {
+                entries.push((key, Known::default()));
+                entries.len() - 1
+            }
+        };
+        let entry = &mut entries[index].1;
         if result {
             entry.proven = Some(entry.proven.map_or(plies, |d| d.min(plies)));
         } else {

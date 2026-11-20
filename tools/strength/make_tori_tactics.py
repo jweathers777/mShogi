@@ -10,7 +10,7 @@ gives several consecutive rows, so each source game keeps at most PER_GAME
 rows, longest wins first. The split into development and held-out parts is by
 source report (SHA-256 of the report digest), so positions of one game, or of
 the two games of one opening pair, never cross the split. `tori_strength
-complete` then adds the complete answer sets (any first action).
+finalize` then drops positions with a one-ply win.
 
 Usage: python3 -m tools.strength.make_tori_tactics OUT.json MINED.jsonl [MINED.jsonl ...]
 """
@@ -60,14 +60,15 @@ def main():
            'license': 'Project-generated native self-play data, BSD-LICENSE',
            'notation': 'native Tori notation (mshogi_core::tori::notation)',
            'metric': ('pass when the chosen action wins (checkmate or quiet immobility, both losses for the side '
-                      'without a legal action) within mate_plies; expected_moves is the complete set of such first '
-                      'actions from the native full-width prover; checking_answers are the checking actions among '
-                      'them; mate_plies is the shortest checking win (3-7 plies) and shortest_win_plies the shortest '
-                      'win with any actions; positions with a one-ply win are excluded; answers come from the native '
-                      'prover, not from search output'),
+                      'without a legal action) within mate_plies, the shortest checking win (3-7 plies). '
+                      'checking_answers lists every checking first action that wins with a checking attacker; an '
+                      'action outside it passes only when the native full-width prover (every attacker action, '
+                      'every defender reply) proves it wins within mate_plies, at scoring time '
+                      '(tori_strength probe). Positions with a one-ply win are excluded (tori_strength finalize). '
+                      'Answers come from the native prover, not from search output.'),
            'split_rule': 'held-out when sha256(report digest)[0] % 4 == 0; never cross a game or an opening pair',
-           'complete_answer_rule': ('native full-width prover (crates/mshogi-runner/examples/support/'
-                                    'tori_mate_proof.rs), every attacker action, every defender reply'),
+           'answer_rule': ('native prover (crates/mshogi-runner/examples/support/tori_mate_proof.rs); a checking '
+                           'attacker for the stored answers, a full-width attacker for any other played action'),
            'per_game': PER_GAME,
            'positions': rows}
     with open(sys.argv[1], 'x') as f:

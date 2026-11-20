@@ -125,7 +125,7 @@ def desktop_document_payload(document, game_kind):
         "chess": ("mshogi.chess.match.v1", "FIDE-2023-01-01+mshogi.chess.match.v1"),
         "shogi": ("mshogi.shogi.csa36.v1", "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026"),
         "xiangqi": ("mshogi.xiangqi.wxf2018.v1", "WXF-2018+XIANGQI-P1-2026-10-27"),
-        "tori": ("mshogi.tori.modern.v1", "MSH81-MODERN-2026-11-01"),
+        "tori": ("mshogi.tori.modern.v1", "MSH208-MODERN-2026-11-20"),
         "chu": ("mshogi.chu.jcsa2019.v1", "JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02"),
     }
     if game_kind == 'tenjiku':
@@ -3285,29 +3285,31 @@ class Journey:
         quiet = self.native_diagnostics()
         assert quiet['context']['payload']['conclusion'] == {'kind':'stalemate_loss','loser':'gote'}
         self.capture('TORI-O-QUIET-native-stalemate-loss')
-        self.tori_load_fixture('forced-prefix7'); self.tori_events(7)
+        # MSH-208: Gote's Eagle returns; Sente's only escape would make a third occurrence.
+        self.tori_load_fixture('forced-prefix6'); self.tori_events(6)
         w.click(self.shogi_square('5d')); w.click(self.shogi_square('4d'))
-        self.tori_events(8)
+        self.tori_events(7)
         forced = self.native_diagnostics()
         assert forced['context']['payload']['conclusion'] == {'kind':'repetition_forfeit','loser':'sente'}
-        assert forced['context']['payload']['events'][-1]['occurrences'] == [0,4,8]
+        assert forced['context']['payload']['events'][-1]['occurrences'] == [3,7]
         assert w.has('.outcome-card')
         self.capture('TORI-H-FORCED-FULL-terminal-third-occurrence')
         self.tori_save(self.args.output / 'normal-tori-repetition-forfeit.mshogi')
-        self.tori_load_fixture('obligation8'); self.tori_events(8)
+        # MSH-208: Gote may not play 5a-4a, which would make a third occurrence.
+        self.tori_load_fixture('repetition7'); self.tori_events(7)
         obligation = self.native_diagnostics()
-        assert obligation['context']['payload']['obligation']['occurrences'] == [0,4,8]
+        assert obligation['context']['payload']['events'][-1]['occurrences'] == [3,7]
         assert obligation['context']['payload']['conclusion'] is None
-        assert 'Repetition obligation' in w.text('.shell-notices')
-        w.click(self.shogi_square('4g'))
-        assert not w.read(f"document.querySelector({json.dumps(self.shogi_square('5g'))}).classList.contains('target')"), 'native forbidden departure cannot be entered'
-        w.key('\ue00c'); self.tori_events(8)
-        w.click('.shogi-history [data-event="4"]'); self.tori_events(8, selected=4, historical=True)
+        assert 'Repetition limit' in w.text('.shell-notices')
+        w.click(self.shogi_square('5a'))
+        assert not w.read(f"document.querySelector({json.dumps(self.shogi_square('4a'))}).classList.contains('target')"), 'native third-occurrence move cannot be entered'
+        w.key('\ue00c'); self.tori_events(7)
+        w.click('.shogi-history [data-event="4"]'); self.tori_events(7, selected=4, historical=True)
         prefix = self.native_diagnostics()
         assert len(prefix['context']['payload']['events']) == 4
-        assert prefix['context']['payload']['obligation'] is None
-        self.capture('TORI-H-COUNT-exact-prefix-without-future-obligation')
-        w.button('Return to live'); self.tori_events(8, selected=8)
+        assert 'Repetition limit' not in w.text('.shell-notices')
+        self.capture('TORI-H-COUNT-exact-prefix-without-future-repetition-limit')
+        w.button('Return to live'); self.tori_events(7, selected=7)
         assert self.native_diagnostics()['context'] == obligation['context']
         path = self.args.output / 'normal-tori-obligation.mshogi'
         self.tori_save(path)

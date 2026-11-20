@@ -29,20 +29,23 @@ fn rejection(g: &mut Game, actor: Side, command: GameCommand, error: GameError) 
     assert_eq!(bytes, record(g));
 }
 #[test]
-fn independent_forced8_and_unequal16_integrate_board_choices_history_and_precedence() {
+fn independent_forced_loss_and_capture_drop_cycle_integrate_board_choices_history_and_precedence() {
+    // MSH-208: Sente, in check with one board-legal reply, would create the
+    // third occurrence of the root key and so loses.
     let mut forced = sequence(&fixture("TORI-H-FORCED-FULL"));
-    assert_eq!(forced.occurrences(), [0, 4, 8]);
-    assert_eq!(forced.obligation().unwrap().occurrences, [0, 4, 8]);
-    assert_eq!(
-        forced.conclusion(),
-        Some(Conclusion::RepetitionForfeit { loser: Side::Sente })
-    );
-    assert!(forced.local_position().is_in_check(Side::Sente));
+    assert_eq!(forced.occurrences(), [3, 7]);
     let only = Action::Move {
         from: sq("4a"),
         to: sq("5a"),
         result_face: Face::Phoenix,
     };
+    assert_eq!(forced.repetition().unwrap().forbidden, [only]);
+    assert_eq!(forced.repetition().unwrap().side, Side::Sente);
+    assert_eq!(
+        forced.conclusion(),
+        Some(Conclusion::RepetitionForfeit { loser: Side::Sente })
+    );
+    assert!(forced.local_position().is_in_check(Side::Sente));
     assert_eq!(forced.local_position().legal_actions(), [only]);
     assert!(forced.legal_actions().is_empty());
     rejection(
@@ -51,31 +54,37 @@ fn independent_forced8_and_unequal16_integrate_board_choices_history_and_precede
         GameCommand::Play { action: only },
         GameError::Concluded,
     );
-    let mut unequal = sequence(&fixture("TORI-H-UNEQUAL-FULL"));
-    let at10 = unequal.event_prefix(10).unwrap();
-    assert_eq!(at10.obligation.as_ref().unwrap().occurrences, [0, 4, 10]);
-    assert_eq!(unequal.obligation().unwrap().occurrences, [4, 10, 16]);
-    assert!(unequal.obligation().unwrap().permits(Action::Move {
-        from: sq("4g"),
-        to: sq("5g"),
-        result_face: Face::Phoenix
-    }));
-    assert!(!at10.obligation.as_ref().unwrap().permits(Action::Move {
-        from: sq("4g"),
-        to: sq("5g"),
-        result_face: Face::Phoenix
-    }));
+    // A cycle through captures and drops: the hands are part of the key.
+    let mut cycle = sequence(&fixture("TORI-H-CAPTURE-DROP"));
+    assert_eq!(cycle.event_prefix(6).unwrap().occurrences, [0, 6]);
+    assert_eq!(cycle.occurrences(), [5, 11]);
+    assert_eq!(cycle.position().hand(Side::Gote).count(Face::Swallow), 1);
+    let redrop = Action::Drop {
+        face: Face::Swallow,
+        to: sq("2e"),
+    };
+    assert_eq!(cycle.repetition().unwrap().side, Side::Gote);
+    assert_eq!(cycle.repetition().unwrap().forbidden, [redrop]);
+    assert!(cycle.local_position().is_legal(redrop));
+    assert!(!cycle.legal_actions().contains(&redrop));
+    rejection(
+        &mut cycle,
+        Side::Gote,
+        GameCommand::Play { action: redrop },
+        GameError::ThirdOccurrence,
+    );
     assert!(
         play(
-            &mut unequal,
+            &mut cycle,
             Action::Move {
-                from: sq("4g"),
-                to: sq("5g"),
+                from: sq("5c"),
+                to: sq("5b"),
                 result_face: Face::Phoenix
             }
         )
         .is_ok()
     );
+    assert!(cycle.repetition().is_none());
     for (id, expected) in [
         (
             "TORI-O-MATE",
@@ -108,14 +117,20 @@ fn repetition_equality_and_semantic_context_are_distinct_and_root_counters_are_n
     let f = fixture("TORI-H-COUNT");
     let a = Game::from_root(root(&f["root"]).unwrap()).unwrap();
     let mut b = sequence(&f);
-    assert_eq!(a.repetition_key(), b.repetition_key());
+    // The key at ply 3 occurs again at ply 7; the root key occurred at 0 and 4.
+    let at3 = b.event_prefix(3).unwrap().local_position();
+    assert_eq!(
+        &RepetitionKey::from_position(at3.position()),
+        b.repetition_key()
+    );
+    assert_ne!(a.repetition_key(), b.repetition_key());
     assert!(!a.context().same_semantics(&b.context()));
-    let forbidden = action(&f["actions"][0]);
+    let forbidden = action(&f["forbidden_attempt"]);
     rejection(
         &mut b,
-        Side::Sente,
+        Side::Gote,
         GameCommand::Play { action: forbidden },
-        GameError::RepetitionDeparture,
+        GameError::ThirdOccurrence,
     );
     let p = b.position();
     let entries = Square::all()
@@ -128,11 +143,13 @@ fn repetition_equality_and_semantic_context_are_distinct_and_root_counters_are_n
         RootMetadata::imported("independent diagram; earlier play absent".into(), 900).unwrap(),
     )
     .unwrap();
-    let imported = Game::from_root(imported).unwrap();
+    let mut imported = Game::from_root(imported).unwrap();
     assert_eq!(imported.repetition_key(), b.repetition_key());
     assert_eq!(imported.occurrences(), [0]);
-    assert!(imported.obligation().is_none());
+    assert!(imported.repetition().is_none());
     assert_eq!(imported.position().declared_total_plies(), 900);
+    // No earlier history is inferred for an imported root.
+    assert!(play(&mut imported, forbidden).is_ok());
     assert_ne!(record(&a), record(&imported));
 }
 #[test]
@@ -186,7 +203,6 @@ fn native_commands_are_atomic_out_of_turn_resignation_and_unscored_stops_preserv
         assert_eq!(g.snapshot().incomplete, Some(reason));
         assert_ne!(g.context(), old);
         assert_eq!(g.events()[0].effects, None);
-        assert_eq!(g.events()[0].replay_work, 2);
         rejection(
             &mut g,
             Side::Gote,
@@ -225,7 +241,7 @@ fn native_commands_are_atomic_out_of_turn_resignation_and_unscored_stops_preserv
 }
 #[test]
 fn exact_reversal_every_prefix_replay_and_selection_never_restore_native_authority() {
-    let given = fixture("TORI-H-UNEQUAL-FULL");
+    let given = fixture("TORI-H-CAPTURE-DROP");
     let mut g = Game::from_root(root(&given["root"]).unwrap()).unwrap();
     let mut undos = vec![];
     let mut snapshots = vec![g.cache_snapshot()];
@@ -247,8 +263,8 @@ fn exact_reversal_every_prefix_replay_and_selection_never_restore_native_authori
     assert_eq!(g.record_prefix(9999).unwrap_err(), RecordError::Prefix);
     let live_snapshot = g.cache_snapshot();
     let prefix = g.select_prefix(4).unwrap();
-    assert_eq!(prefix.occurrences, [0, 4]);
-    assert!(prefix.obligation.is_none());
+    assert_eq!(prefix.occurrences, [4]);
+    assert!(prefix.repetition.is_none());
     assert_eq!(prefix.board_ply, 4);
     assert_eq!(g.cache_snapshot(), live_snapshot);
     assert_ne!(g.context(), live);
@@ -285,7 +301,7 @@ fn exact_reversal_every_prefix_replay_and_selection_never_restore_native_authori
     assert_eq!(before, g.context());
     assert!(
         !g.local_position()
-            .inspect(InspectionOrigin::Board(sq("4a")))
+            .inspect(InspectionOrigin::Board(sq("2f")))
             .is_empty()
     );
 }
@@ -334,7 +350,7 @@ fn rotate_action(a: Action) -> Action {
 }
 #[test]
 fn native_rotation_metamorphism_preserves_repetition_responsibility_and_forced_loss() {
-    for id in ["TORI-H-FORCED-FULL", "TORI-H-UNEQUAL-FULL"] {
+    for id in ["TORI-H-FORCED-FULL", "TORI-H-CAPTURE-DROP"] {
         let f = fixture(id);
         let original = root(&f["root"]).unwrap();
         let entries = Square::all()
@@ -365,8 +381,8 @@ fn native_rotation_metamorphism_preserves_repetition_responsibility_and_forced_l
             play(&mut b, rotate_action(action)).unwrap();
             assert_eq!(a.occurrences(), b.occurrences());
             assert_eq!(
-                a.obligation().map(|o| o.side.opponent()),
-                b.obligation().map(|o| o.side)
+                a.repetition().map(|r| r.side.opponent()),
+                b.repetition().map(|r| r.side)
             );
             for square in Square::all() {
                 assert_eq!(
@@ -392,7 +408,7 @@ fn native_rotation_metamorphism_preserves_repetition_responsibility_and_forced_l
 }
 #[test]
 fn strict_record_all_fields_nested_duplicates_missing_tampering_and_resources() {
-    let g = sequence(&fixture("TORI-H-UNEQUAL-FULL"));
+    let g = sequence(&fixture("TORI-H-CAPTURE-DROP"));
     let good = record(&g);
     let original: Value = serde_json::from_str(&good).unwrap();
     let context = g.context();
@@ -477,7 +493,8 @@ fn strict_record_all_fields_nested_duplicates_missing_tampering_and_resources() 
         ("game", json!("shogi")),
         ("profile", json!("mshogi.tori.bunsei11.v1")),
         ("edition", json!("new")),
-        ("schema_version", json!(2)),
+        ("schema_version", json!(1)),
+        ("schema_version", json!(3)),
         ("mode", json!("timed")),
         ("invented", json!(true)),
     ] {
@@ -488,9 +505,10 @@ fn strict_record_all_fields_nested_duplicates_missing_tampering_and_resources() 
     for (index, key, value) in [
         (0, "board_ply", json!(0)),
         (9, "occurrences", json!([0, 10])),
+        // Schema-1 fields are unknown in schema 2.
         (9, "obligation", Value::Null),
         (
-            15,
+            10,
             "conclusion",
             json!({"kind":"resignation","winner":"gote"}),
         ),
@@ -565,8 +583,7 @@ fn counter_refusal_is_unscored_saveable_and_does_not_manufacture_no_actions() {
     submit(&mut g, Side::Gote, GameCommand::Resign).unwrap();
 }
 #[test]
-fn long_deterministic_real_history_reaches_replay_admission_bound_and_retains_stop_resign_headroom()
-{
+fn long_deterministic_real_history_reaches_admission_bound_and_retains_stop_resign_headroom() {
     // Fixed-seed ordinary complete legal moves, favouring previously unseen keys
     // to exercise a long real game rather than a fabricated event array.
     let mut g = Game::standard();
@@ -587,7 +604,7 @@ fn long_deterministic_real_history_reaches_replay_admission_bound_and_retains_st
                 assert_eq!(g.events().len(), accepted);
                 assert_eq!(g.position().declared_total_plies(), accepted as u64);
             }
-            Err(GameError::Capacity(Resource::ReplayWork)) => {
+            Err(GameError::Capacity(Resource::Events)) => {
                 assert_eq!(before, g.context());
                 assert_eq!(bytes, record(&g));
                 break;
@@ -595,7 +612,8 @@ fn long_deterministic_real_history_reaches_replay_admission_bound_and_retains_st
             Err(e) => panic!("unexpected admission error:{e:?}"),
         }
     }
-    assert_eq!(accepted, 360); // root1 + sum(2..361)=65,341; next adds362 >65,534.
+    // MSH-208: no replay-work count; the event bound reserves Stop and Resign.
+    assert_eq!(accepted, MAX_GAME_EVENTS - 2);
     let captures = g
         .events()
         .iter()
@@ -632,7 +650,6 @@ fn long_deterministic_real_history_reaches_replay_admission_bound_and_retains_st
     assert!(captures > 0 && drops > 0 && promotions > 0);
     let admission_ms = started.elapsed().as_millis();
     let before = g.capacity_usage().unwrap();
-    assert_eq!(before.replay_work, 65_341);
     assert!(before.encoded_bytes < MAX_GAME_RECORD_BYTES - 8192);
     let long = record(&g);
     let replay_started = std::time::Instant::now();
@@ -681,13 +698,12 @@ fn long_deterministic_real_history_reaches_replay_admission_bound_and_retains_st
         assert_eq!(restored.cache_snapshot(), snapshots[i + 1]);
     }
     eprintln!(
-        "TORI129 capacity real: {accepted}board/{events}events/{bytes}bytes/{work}units; captures{captures}/drops{drops}/promotions{promotions}; generation+candidate probes {admission_ms}ms; strict parse+two replays {replay_ms}ms; stopped {stopped:?}; resigned {final_usage:?}",
+        "TORI208 capacity real: {accepted}board/{events}events/{bytes}bytes; captures{captures}/drops{drops}/promotions{promotions}; generation+candidate probes {admission_ms}ms; strict parse+two replays {replay_ms}ms; stopped {stopped:?}; resigned {final_usage:?}",
         events = before.events,
         bytes = before.encoded_bytes,
-        work = before.replay_work
     );
     if let Ok(path) = std::env::var("MSH_TORI_129_CAPACITY_REPORT") {
-        std::fs::write(path,serde_json::to_vec_pretty(&json!({"seed":"0x129ca11ab1e5","board_actions":accepted,"events":before.events,"captures":captures,"drops":drops,"promotions":promotions,"encoded_bytes":before.encoded_bytes,"replay_work":before.replay_work,"generation_with_candidate_probes_ms":admission_ms,"strict_parse_plus_two_replays_ms":replay_ms,"stop_bytes":stopped.encoded_bytes,"resignation_bytes":final_usage.encoded_bytes,"record":serde_json::from_str::<Value>(&long).unwrap()})).unwrap()).unwrap();
+        std::fs::write(path,serde_json::to_vec_pretty(&json!({"seed":"0x129ca11ab1e5","board_actions":accepted,"events":before.events,"captures":captures,"drops":drops,"promotions":promotions,"encoded_bytes":before.encoded_bytes,"generation_with_candidate_probes_ms":admission_ms,"strict_parse_plus_two_replays_ms":replay_ms,"stop_bytes":stopped.encoded_bytes,"resignation_bytes":final_usage.encoded_bytes,"record":serde_json::from_str::<Value>(&long).unwrap()})).unwrap()).unwrap();
     }
 }
 
@@ -722,7 +738,7 @@ fn choose_live(g: &Game, seed: &mut u64) -> Action {
 fn real_event_limit_preserves_two_slots_for_stop_and_resignation() {
     let mut g = Game::standard();
     let mut seed = 0x129c_a11a_b1e5_u64;
-    for _ in 0..255 {
+    for _ in 0..(MAX_GAME_EVENTS - 2) / 2 {
         submit(
             &mut g,
             Side::Sente,
@@ -734,8 +750,8 @@ fn real_event_limit_preserves_two_slots_for_stop_and_resignation() {
         let a = choose_live(&g, &mut seed);
         play(&mut g, a).unwrap();
     }
-    assert_eq!(g.events().len(), 510);
-    assert_eq!(g.snapshot().board_ply, 255);
+    assert_eq!(g.events().len(), MAX_GAME_EVENTS - 2);
+    assert_eq!(g.snapshot().board_ply, (MAX_GAME_EVENTS - 2) / 2);
     assert!(g.conclusion().is_none());
     let a = choose_live(&g, &mut seed);
     let actor = g.position().side_to_move();
@@ -754,11 +770,11 @@ fn real_event_limit_preserves_two_slots_for_stop_and_resignation() {
         },
     )
     .unwrap();
-    assert_eq!(g.events().len(), 511);
+    assert_eq!(g.events().len(), MAX_GAME_EVENTS - 1);
     assert!(g.conclusion().is_none());
     submit(&mut g, Side::Sente, GameCommand::Resign).unwrap();
-    assert_eq!(g.events().len(), 512);
-    assert_eq!(g.snapshot().board_ply, 255);
+    assert_eq!(g.events().len(), MAX_GAME_EVENTS);
+    assert_eq!(g.snapshot().board_ply, (MAX_GAME_EVENTS - 2) / 2);
     assert_eq!(
         record(
             &GameRecord::from_json(&record(&g))
@@ -772,4 +788,171 @@ fn real_event_limit_preserves_two_slots_for_stop_and_resignation() {
         "TORI129 real event boundary:{ordinary:?}; final {:?}",
         g.capacity_usage().unwrap()
     );
+}
+
+#[test]
+fn cached_encoded_length_equals_full_encoding_after_every_operation() {
+    // MSH-204: admission computes encoded bytes from cached event lengths
+    // instead of encoding the history again. Compare with the real encoding
+    // after plays (captures, drops, promotions), undo, redo, prefixes,
+    // repetition obligations and unscored stops on seeded random games.
+    let exact = |g: &Game| {
+        assert_eq!(
+            g.capacity_usage().unwrap().encoded_bytes,
+            record::encode(g).unwrap().len()
+        );
+    };
+    for seed in 1..=6u64 {
+        let mut state = seed.wrapping_mul(0x9E37_79B9_7F4A_7C15) | 1;
+        let mut next = move || {
+            state ^= state << 13;
+            state ^= state >> 7;
+            state ^= state << 17;
+            state
+        };
+        let mut g = Game::standard();
+        exact(&g);
+        for ply in 0..160 {
+            let legal = g.legal_actions();
+            if legal.is_empty() {
+                break;
+            }
+            let action = legal[(next() % legal.len() as u64) as usize];
+            let side = g.position().side_to_move();
+            let mut undo = submit(&mut g, side, GameCommand::Play { action }).unwrap();
+            exact(&g);
+            if ply % 7 == 3 {
+                let mut redo = g.undo(&mut undo).unwrap();
+                exact(&g);
+                g.redo(&mut redo).unwrap();
+                exact(&g);
+            }
+            if ply % 31 == 0 {
+                let count = (next() % (g.events().len() as u64 + 1)) as usize;
+                let prefix = g.record_prefix(count).unwrap().to_game().unwrap();
+                exact(&prefix);
+            }
+            if g.conclusion().is_some() {
+                break;
+            }
+        }
+        if g.conclusion().is_none() {
+            let side = g.position().side_to_move();
+            submit(
+                &mut g,
+                side,
+                GameCommand::Stop {
+                    reason: StopReason::WorkLimit,
+                },
+            )
+            .unwrap();
+            exact(&g);
+            submit(&mut g, side.opponent(), GameCommand::Resign).unwrap();
+            exact(&g);
+        }
+    }
+}
+
+#[test]
+fn digest_scan_agrees_with_full_key_scan_on_repetition_heavy_games() {
+    // MSH-208: occurrences and the third-occurrence restriction come from a
+    // digest scan with full-key confirmation. Recompute both by comparing full
+    // keys of every prefix, on seeded games that prefer returning to earlier
+    // positions (captures, drops and promotions included).
+    let key_at = |g: &Game, ply: usize| {
+        RepetitionKey::from_position(g.event_prefix(ply).unwrap().local_position().position())
+    };
+    let mut restricted = 0;
+    let mut forced = 0;
+    let roots = [
+        Position::standard(),
+        root(&fixture("TORI-H-COUNT")["root"]).unwrap(),
+        root(&fixture("TORI-H-CAPTURE-DROP")["root"]).unwrap(),
+        root(&fixture("TORI-H-FORCED-FULL")["root"]).unwrap(),
+    ];
+    for seed in 1..=64u64 {
+        let mut state = seed.wrapping_mul(0x9E37_79B9_7F4A_7C15) | 1;
+        let mut next = move || {
+            state ^= state << 13;
+            state ^= state >> 7;
+            state ^= state << 17;
+            state
+        };
+        let mut g = Game::from_root(roots[seed as usize % roots.len()].clone()).unwrap();
+        let mut keys = vec![key_at(&g, 0)];
+        for _ in 0..240 {
+            if g.conclusion().is_some() {
+                if matches!(g.conclusion(), Some(Conclusion::RepetitionForfeit { .. })) {
+                    forced += 1;
+                }
+                break;
+            }
+            let local = g.local_position().legal_actions();
+            let side = g.position().side_to_move();
+            // Independent restriction: actions whose resulting full key occurred twice.
+            let expected: Vec<Action> = local
+                .iter()
+                .copied()
+                .filter(|&a| {
+                    let mut after = g.local_position().clone();
+                    after.apply(a).unwrap();
+                    let k = RepetitionKey::from_position(after.position());
+                    keys.iter().filter(|x| **x == k).count() >= 2
+                })
+                .collect();
+            assert_eq!(
+                g.repetition().map(|r| (r.side, r.forbidden.clone())),
+                (!expected.is_empty()).then(|| (side, expected.clone()))
+            );
+            if !expected.is_empty() {
+                restricted += 1;
+            }
+            let allowed: Vec<Action> = local
+                .iter()
+                .copied()
+                .filter(|a| !expected.contains(a))
+                .collect();
+            if allowed.is_empty() {
+                break;
+            }
+            // Prefer an allowed action that returns to an earlier position.
+            let returning: Vec<Action> = allowed
+                .iter()
+                .copied()
+                .filter(|&a| {
+                    let mut after = g.local_position().clone();
+                    after.apply(a).unwrap();
+                    keys.contains(&RepetitionKey::from_position(after.position()))
+                })
+                .collect();
+            let pool = if !returning.is_empty() && next() % 8 != 0 {
+                &returning
+            } else {
+                &allowed
+            };
+            let a = pool[(next() % pool.len() as u64) as usize];
+            play(&mut g, a).unwrap();
+            let k = key_at(&g, g.snapshot().board_ply);
+            let occurrences: Vec<usize> = keys
+                .iter()
+                .enumerate()
+                .filter_map(|(i, x)| (*x == k).then_some(i))
+                .chain([keys.len()])
+                .collect();
+            assert!(occurrences.len() <= 2, "third occurrence admitted");
+            assert_eq!(g.occurrences(), occurrences);
+            keys.push(k);
+        }
+        // The record replays to the same derived facts.
+        let replay = GameRecord::from_json(&record(&g))
+            .unwrap()
+            .to_game()
+            .unwrap();
+        assert_eq!(replay.cache_snapshot(), g.cache_snapshot());
+    }
+    assert!(
+        restricted > 50,
+        "too few restricted positions: {restricted}"
+    );
+    eprintln!("MSH208 differential: {restricted} restricted positions, {forced} forced losses");
 }

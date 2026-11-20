@@ -515,7 +515,7 @@ class CurrentDocumentInspectionTests(unittest.TestCase):
             "chess": ("mshogi.chess.match.v1", "FIDE-2023-01-01+mshogi.chess.match.v1"),
             "shogi": ("mshogi.shogi.csa36.v1", "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026"),
             "xiangqi": ("mshogi.xiangqi.wxf2018.v1", "WXF-2018+XIANGQI-P1-2026-10-27"),
-            "tori": ("mshogi.tori.modern.v1", "MSH81-MODERN-2026-11-01"),
+            "tori": ("mshogi.tori.modern.v1", "MSH208-MODERN-2026-11-20"),
             "chu": ("mshogi.chu.jcsa2019.v1", "JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02"),
         }[game]
         return {"envelope_version": 1, "format": "mshogi.desktop.document.v1",
@@ -1586,25 +1586,26 @@ class ToriNormalProductEvidenceTests(unittest.TestCase):
         fixtures = Path(__file__).with_name('fixtures')
         bodies = {name: module.desktop_document_payload(json.loads(
             (fixtures / f'tori-{name}.mshogi').read_text()), 'tori')
-            for name in ('contract','mate-in-one','quiet-loss','forced-prefix7','obligation8')}
+            for name in ('contract','mate-in-one','quiet-loss','forced-prefix6','repetition7')}
         for body in bodies.values():
             self.assertEqual(body['initial'], body['current'])
             self.assertEqual(body['observations'], [])
             self.assertEqual(body['controls'], [])
             self.assertFalse(body['current']['payload']['root']['historical_reachability_proven'])
             self.assertTrue(body['current']['payload']['root']['earlier_history_unknown'])
-        forced = bodies['forced-prefix7']['current']['payload']
-        self.assertEqual(len(forced['events']), 7)
+        # MSH-208 (Tori Repetition Rule): records hold occurrences, not a stored restriction.
+        forced = bodies['forced-prefix6']['current']['payload']
+        self.assertEqual(len(forced['events']), 6)
         self.assertIsNone(forced['conclusion'])
         self.assertEqual(forced['events'][-1]['command']['action'],
                          {'kind':'move','from':'5a','to':'4a','result_face':'phoenix'})
-        obligation = bodies['obligation8']['current']['payload']
-        self.assertEqual(len(obligation['events']), 8)
-        self.assertIsNone(obligation['conclusion'])
-        self.assertEqual(obligation['obligation']['side'], 'sente')
-        self.assertEqual(obligation['obligation']['occurrences'], [0,4,8])
-        self.assertEqual(obligation['obligation']['forbidden_departures'],
-                         [{'kind':'move','from':'4g','to':'5g','result_face':'phoenix'}])
+        repetition = bodies['repetition7']['current']['payload']
+        self.assertEqual(len(repetition['events']), 7)
+        self.assertIsNone(repetition['conclusion'])
+        self.assertEqual(repetition['events'][-1]['occurrences'], [3,7])
+        self.assertNotIn('obligation', repetition)
+        self.assertEqual(repetition['events'][-1]['command']['action'],
+                         {'kind':'move','from':'5g','to':'4g','result_face':'phoenix'})
         self.assertEqual(bodies['quiet-loss']['current']['payload']['conclusion'],
                          {'kind':'stalemate_loss','loser':'gote'})
         mate = bodies['mate-in-one']['current']['payload']

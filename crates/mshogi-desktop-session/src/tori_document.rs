@@ -13,9 +13,22 @@ use serde_json::value::RawValue;
 use std::fmt;
 
 /// Whole-document deterministic validation allowance, distinct from native caps.
-pub const MAX_TORI_DOCUMENT_WORK: u64 = 262_144;
+/// About one second of native replay at the measured rate below; raised from
+/// 262,144 by MSH-208 so a document can hold full-length (1,024-event) records.
+pub const MAX_TORI_DOCUMENT_WORK: u64 = 1_048_576;
 // A native root admission/serialization costs work even without any events.
 const ROOT_WORK: u64 = 128;
+/// Modelled work of one native board action, in units of about one
+/// microsecond of release replay (macOS arm64): the earlier model charged
+/// 65,341 units for a 360-ply record that replayed in about 65 ms; since
+/// MSH-208 (Tori Repetition Rule) a full-length record replays in about
+/// 120-140 ms, about 137 us per ply at 1,022 plies, and the cost per ply still
+/// rises with length. 192 is about 1.4 times the measured cost at full length,
+/// and the document budget still holds full-length records and the aggregate
+/// event limit (4,096 retained events) binds before it.
+const PLAY_WORK: u64 = 192;
+/// Upper bound of one record's modelled replay work (all events are plays).
+const MAX_RECORD_WORK: u64 = ROOT_WORK + PLAY_WORK * t::MAX_GAME_EVENTS as u64;
 const NATIVE_RESERVED_BYTES: usize = 8192;
 const CLOSE_RESERVED_BYTES: usize = 1024;
 const NATIVE_RESERVED_WORK: u64 = 512;
@@ -429,11 +442,6 @@ pub(crate) fn native_error(e: t::GameError) -> ToriDocumentError {
                 t::MAX_GAME_EVENTS as u64,
                 ResourceUnit::Events,
             ),
-            t::Resource::ReplayWork => (
-                ResourceCategory::ReplayWork,
-                t::MAX_REPLAY_WORK,
-                ResourceUnit::ReplayUnits,
-            ),
             t::Resource::Counter => (
                 ResourceCategory::IdentityHeadroom,
                 u64::MAX,
@@ -624,27 +632,13 @@ fn record_charge(raw: &RawValue) -> Result<(usize, u64), ToriDocumentError> {
             ResourceUnit::Events,
         ));
     }
-    let mut boards = 0u64;
     let mut work = ROOT_WORK;
     for e in &record.events {
-        work += 1;
-        match e.command.kind.as_str() {
-            "play" => {
-                boards += 1;
-                work += boards;
-            }
-            "resign" | "stop" => {}
+        work += match e.command.kind.as_str() {
+            "play" => PLAY_WORK,
+            "resign" | "stop" => 1,
             _ => return Err(invalid("unsupported native command in record")),
-        }
-    }
-    if work - ROOT_WORK + 1 > t::MAX_REPLAY_WORK {
-        return Err(limit(
-            ResourceCategory::ReplayWork,
-            work - ROOT_WORK + 1,
-            t::MAX_REPLAY_WORK,
-            0,
-            ResourceUnit::ReplayUnits,
-        ));
+        };
     }
     Ok((record.events.len(), work))
 }
@@ -699,25 +693,14 @@ fn preflight(
     if p.retired_execution_floor == 0 {
         return Err(invalid("zero retired execution floor"));
     }
-    for (category, count, cap, extra, unit) in [
-        (
+    if current_events as u64 + reserve.native as u64 > t::MAX_GAME_EVENTS as u64 {
+        return Err(limit(
             ResourceCategory::NativeEvents,
             current_events as u64,
             t::MAX_GAME_EVENTS as u64,
             reserve.native as u64,
             ResourceUnit::Events,
-        ),
-        (
-            ResourceCategory::ReplayWork,
-            current_work - ROOT_WORK + 1,
-            t::MAX_REPLAY_WORK,
-            reserve.native as u64,
-            ResourceUnit::ReplayUnits,
-        ),
-    ] {
-        if count + extra > cap {
-            return Err(limit(category, count, cap, extra, unit));
-        }
+        ));
     }
     let e: ProbeEnvelope = serde_json::from_str(p.current.get()).map_err(invalid)?;
     let native_bytes = e.payload.get().len();
@@ -739,15 +722,6 @@ fn preflight(
         usage.retained_events += n;
         usage.replay_work += w;
     }
-    let mut board_ply = 0u64;
-    // Upper bound includes the imported initial history; never rely on stored work.
-    let initial: ProbeEnvelope = serde_json::from_str(p.initial.get()).map_err(invalid)?;
-    let initial: ProbeRecord = serde_json::from_str(initial.payload.get()).map_err(invalid)?;
-    board_ply += initial
-        .events
-        .iter()
-        .filter(|e| e.command.kind == "play")
-        .count() as u64;
     for c in &p.controls {
         check(stopped)?;
         let c: ToriControl = serde_json::from_str(c.get()).map_err(invalid)?;
@@ -757,13 +731,12 @@ fn preflight(
                 command: t::GameCommand::Play { .. },
                 ..
             } => {
-                board_ply += 1;
-                usage.replay_work += board_ply + 1;
+                usage.replay_work += PLAY_WORK;
             }
             ToriControl::Rewind { .. } => {
                 // Conservative: every rewind may reconstruct any admitted native
                 // record. Does not trust the target or cached retired ledger.
-                usage.replay_work += 2 * ROOT_WORK + t::MAX_REPLAY_WORK;
+                usage.replay_work += 2 * ROOT_WORK + MAX_RECORD_WORK;
             }
             _ => {}
         }

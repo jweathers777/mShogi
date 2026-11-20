@@ -2,7 +2,7 @@
 //! exact distance, and the reported line.
 use super::*;
 use mshogi_core::tori::{Hand, Piece, RootMetadata};
-use serde_json::Value;
+use serde_json::{Value, json};
 fn face(v: &str) -> Face {
     Face::ALL.into_iter().find(|f| f.code() == v).unwrap()
 }
@@ -64,10 +64,18 @@ fn seq(id: &str) -> Game {
     let mut g = Game::from_root(root(&v["root"])).unwrap();
     if let Some(actions) = v["actions"].as_array() {
         for a in actions {
-            let action = Action::Move {
-                from: a["from"].as_str().unwrap().parse().unwrap(),
-                to: a["to"].as_str().unwrap().parse().unwrap(),
-                result_face: face(a["result_face"].as_str().unwrap()),
+            let to = a["to"].as_str().unwrap().parse().unwrap();
+            let action = if a["kind"] == "drop" {
+                Action::Drop {
+                    face: face(a["piece"].as_str().unwrap()),
+                    to,
+                }
+            } else {
+                Action::Move {
+                    from: a["from"].as_str().unwrap().parse().unwrap(),
+                    to,
+                    result_face: face(a["result_face"].as_str().unwrap()),
+                }
             };
             play(&mut g, action);
         }
@@ -161,19 +169,46 @@ fn independently_expected_terminal_and_t06_history_not_board_only() {
         );
         assert_eq!(g.snapshot().clone(), before);
     }
+    // MSH-208: Gote's 5a-4a would make the start key's third occurrence.
+    // The same move is legal from a fresh root with the same position.
     let history = seq("TORI-H-COUNT");
-    let fresh = Game::from_root(root(&fixture("TORI-H-COUNT")["root"])).unwrap();
+    let fresh = Game::from_root(root(&json!({
+        "root_kind": "diagram",
+        "provenance": {"earlier_history": "unknown", "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"},
+        "side_to_move": "gote", "declared_completed_plies": 0,
+        "board": ["s:Ph:4g", "g:Ph:5a"], "hands": {"s": {}, "g": {}}, "known_events": []
+    })))
+    .unwrap();
     assert_eq!(history.repetition_key(), fresh.repetition_key());
-    assert!(fresh.legal_actions().contains(&Action::Move {
-        from: "4g".parse().unwrap(),
-        to: "5g".parse().unwrap(),
-        result_face: Face::Phoenix
-    }));
+    let back = Action::Move {
+        from: "5a".parse().unwrap(),
+        to: "4a".parse().unwrap(),
+        result_face: Face::Phoenix,
+    };
+    assert!(fresh.legal_actions().contains(&back));
+    assert!(!history.legal_actions().contains(&back));
     let before = history.snapshot().clone();
+    for depth in 1..=4 {
+        let r = search(
+            &history,
+            Limits {
+                depth,
+                nodes: MAX_NODES,
+            },
+        )
+        .unwrap();
+        let Some(Decision::Choose(a)) = r.decision else {
+            panic!()
+        };
+        assert!(history.repetition().unwrap().permits(a), "depth {depth}");
+    }
+    assert_eq!(history.snapshot().clone(), before);
+    let cycle = seq("TORI-H-CAPTURE-DROP");
     let r = search(
-        &history,
+        &cycle,
         Limits {
-            depth: 2,
+            depth: 3,
             nodes: MAX_NODES,
         },
     )
@@ -181,21 +216,7 @@ fn independently_expected_terminal_and_t06_history_not_board_only() {
     let Some(Decision::Choose(a)) = r.decision else {
         panic!()
     };
-    assert!(history.obligation().unwrap().permits(a));
-    assert_eq!(history.snapshot().clone(), before);
-    let unequal = seq("TORI-H-UNEQUAL-FULL");
-    let r = search(
-        &unequal,
-        Limits {
-            depth: 1,
-            nodes: 100,
-        },
-    )
-    .unwrap();
-    let Some(Decision::Choose(a)) = r.decision else {
-        panic!()
-    };
-    assert!(unequal.obligation().unwrap().permits(a));
+    assert!(cycle.repetition().unwrap().permits(a));
 }
 #[test]
 fn independently_proved_native_mate_in_one_uses_descendant_terminal_distance() {
@@ -445,7 +466,7 @@ fn self_play_gives_only_native_legal_actions_and_native_playable_lines() {
         assert_eq!(r.principal_variation.first(), Some(&action));
         assert!(r.principal_variation.len() <= MAX_LINE);
         assert_eq!(r.perspective, g.position().side_to_move());
-        let mut line = GameRecord::from_game(&g).unwrap().to_game().unwrap();
+        let mut line = g.fork().unwrap();
         for a in &r.principal_variation {
             play(&mut line, *a);
         }

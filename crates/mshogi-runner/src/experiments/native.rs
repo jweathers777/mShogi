@@ -257,6 +257,20 @@ impl NativeState {
         }
     }
 
+    /// Exact transaction copy. Games with a native fork copy without replay
+    /// (MSH-204); the others replay their complete root.
+    pub fn fork(&self) -> Result<Self, String> {
+        match self {
+            Self::Xiangqi(game) => Ok(Self::Xiangqi(Box::new(
+                game.fork().map_err(|e| e.to_string())?,
+            ))),
+            Self::Tori(game) => Ok(Self::Tori(Box::new(
+                game.fork().map_err(|e| e.to_string())?,
+            ))),
+            _ => Self::from_root(&self.root()?),
+        }
+    }
+
     /// Capture complete native history and the additional Chess match ledger.
     pub fn root(&self) -> Result<Root, String> {
         let (record, chess_match) = match self {

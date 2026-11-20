@@ -21,7 +21,7 @@ const HELP: &str = "Untimed Tori Shogi diagnostic console (not USI/SFEN):
   resign sente|gote                 Native resignation, including out of turn
   stop cancelled|resource|engine|work  Recorded incomplete/unscored reason
   undo [n]                         Exact event undo, including Stop/resignation
-  history                          Native event ordering, conclusions/obligations
+  history                          Native event ordering, conclusions, repetition limits
   record print                     Complete canonical envelope, not display text
   record save <path>                Atomic new-file save; never overwrite
   record load-file <path>           Strict bounded replay before replacement
@@ -196,7 +196,7 @@ impl Session {
                         .map_err(diagnostic)?,
                         _ => format!("{:?}", event.command),
                     };
-                    writeln!(out,"event {} board-ply {} actor {} action {} occurrences {:?} obligation {:?} conclusion {:?} incomplete {:?}",event.index+1,event.board_ply,side_text(event.actor),label,event.occurrences,event.obligation,event.conclusion,event.incomplete).unwrap();
+                    writeln!(out,"event {} board-ply {} actor {} action {} occurrences {:?} conclusion {:?} incomplete {:?}",event.index+1,event.board_ply,side_text(event.actor),label,event.occurrences,event.conclusion,event.incomplete).unwrap();
                 }
             }
             "record" => {
@@ -322,7 +322,7 @@ impl Session {
         )
         .unwrap();
         writeln!(out,"root {:?} source {:?} declared-root-plies {} earlier-history-unknown {} reachability-proven {}",root.kind(),root.source(),root.declared_completed_plies(),root.earlier_history_unknown(),root.historical_reachability_proven()).unwrap();
-        writeln!(out,"side {} known-events {} known-board-actions {} occurrences {:?} obligation {:?} conclusion {:?} incomplete {:?}",side_text(self.game.position().side_to_move()),self.game.events().len(),self.game.snapshot().board_ply,self.game.occurrences(),self.game.obligation(),self.game.conclusion(),self.game.snapshot().incomplete).unwrap();
+        writeln!(out,"side {} known-events {} known-board-actions {} occurrences {:?} repetition {:?} conclusion {:?} incomplete {:?}",side_text(self.game.position().side_to_move()),self.game.events().len(),self.game.snapshot().board_ply,self.game.occurrences(),self.game.repetition(),self.game.conclusion(),self.game.snapshot().incomplete).unwrap();
         if self.game.snapshot().incomplete.is_some() {
             writeln!(
                 out,

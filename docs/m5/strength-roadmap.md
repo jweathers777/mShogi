@@ -503,3 +503,17 @@ records the failed broad-decision gate and the revised diagnosis above; the usef
 exact cost repair is not presented as a strength improvement.
 
 MSH-186 (Shogi Strength Harness): see the [Shogi tools, baseline and limits](shogi-strength-harness.md) and [external opponent proposal](shogi-opponent-proposal.md).
+
+## Clock allocation policy of the native experiment runner
+
+Added by MSH-204 (Tori Strength Harness), 2026-11-20. A clocked experiment
+configuration records how the runner turns the remaining clock into the fixed
+move time it gives the engine (`clock.allocation`):
+
+- `hard` (default when absent): three times the nominal allocation. All clocked
+  Shogi native-route evidence (MSH-186 onward) used it, and it stays the default
+  so that those reports replay and later Shogi runs stay comparable. It spends
+  the base time within a few moves, so games are decided mostly on increment.
+- `nominal`: the nominal allocation. Tori runs (`native_match.py --game tori`)
+  select it. A game that changes its policy must say so in its task and must not
+  compare results across the change.

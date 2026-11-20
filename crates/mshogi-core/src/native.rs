@@ -141,8 +141,8 @@ pub enum NativeSchema {
     ShogiV1,
     /// Xiangqi native history/command/event schema one.
     XiangqiV1,
-    /// Complete modern Tori native history schema one.
-    ToriV1,
+    /// Complete modern Tori native history schema two (MSH-208 repetition rule).
+    ToriV2,
     /// Complete native Chu history schema one.
     ChuV1,
     /// Tenjiku native schema one, qualified independently by either whole profile.
@@ -156,7 +156,7 @@ impl NativeSchema {
             Self::ChessFull => chess::CHESS_FULL_RECORD_SCHEMA_VERSION,
             Self::ShogiV1 => shogi::SHOGI_RECORD_SCHEMA_VERSION,
             Self::XiangqiV1 => xiangqi::GAME_RECORD_SCHEMA_VERSION,
-            Self::ToriV1 => tori::GAME_RECORD_SCHEMA_VERSION,
+            Self::ToriV2 => tori::GAME_RECORD_SCHEMA_VERSION,
             Self::ChuV1 => chu::GAME_RECORD_SCHEMA_VERSION,
             Self::TenjikuV1 => tenjiku::GAME_RECORD_SCHEMA_VERSION,
         }
@@ -256,7 +256,7 @@ impl CanonicalRecord {
             Self::Chess(_) => NativeSchema::ChessFull,
             Self::Shogi(_) => NativeSchema::ShogiV1,
             Self::Xiangqi(_) => NativeSchema::XiangqiV1,
-            Self::Tori(_) => NativeSchema::ToriV1,
+            Self::Tori(_) => NativeSchema::ToriV2,
             Self::Chu(_) => NativeSchema::ChuV1,
             Self::Tenjiku(_) => NativeSchema::TenjikuV1,
         }
@@ -281,13 +281,35 @@ impl CanonicalRecord {
         }
         let wire: WireRecord = serde_json::from_str(text).map_err(EnvelopeError::encoding)?;
         check_stop(stop)?;
+        // A schema-1 Tori record (earlier edition) is read by replay under the
+        // current rule and re-encoded as the current schema (MSH-208).
+        let tori_v1 = wire.game_kind == GameKind::Tori
+            && wire.native_schema_version == 1
+            && wire.profile_edition == tori::PROFILE_EDITION_V1;
         if wire.envelope_version != RECORD_ENVELOPE_VERSION
             || wire.rules_profile.game() != wire.game_kind
-            || wire.profile_edition != wire.rules_profile.edition()
+            || (wire.profile_edition != wire.rules_profile.edition() && !tori_v1)
             || wire.game_kind == GameKind::Tenjiku
                 && wire.native_schema_version != tenjiku::GAME_RECORD_SCHEMA_VERSION
         {
             return Err(EnvelopeError::Identity);
+        }
+        if wire.game_kind == GameKind::Tori {
+            // The payload's own schema and edition must equal the envelope
+            // labels; schema 1 is upgraded on read (MSH-208), so the parsed
+            // record alone cannot show which schema the payload had.
+            #[derive(Deserialize)]
+            struct Labels {
+                schema_version: u32,
+                edition: String,
+            }
+            let labels: Labels =
+                serde_json::from_str(wire.payload.get()).map_err(EnvelopeError::encoding)?;
+            if labels.schema_version != wire.native_schema_version
+                || labels.edition != wire.profile_edition
+            {
+                return Err(EnvelopeError::Identity);
+            }
         }
         let record = match wire.game_kind {
             GameKind::Chess => Self::chess(
@@ -319,7 +341,7 @@ impl CanonicalRecord {
             ),
         };
         check_stop(stop)?;
-        if record.native_schema().version() != wire.native_schema_version
+        if (record.native_schema().version() != wire.native_schema_version && !tori_v1)
             || record.profile() != wire.rules_profile
         {
             return Err(EnvelopeError::Identity);

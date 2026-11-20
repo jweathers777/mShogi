@@ -216,11 +216,12 @@ fn exact_prefix_repetition_obligations_and_forfeit_are_native_not_inferred() {
     let mut c = controller();
     replace(&mut c, &sequence(&given("TORI-H-COUNT")), t::Side::Sente);
     let live = c.shared_snapshot();
-    assert_eq!(live.tori.as_ref().unwrap().selected.occurrences, [0, 4, 8]);
-    assert!(live.tori.as_ref().unwrap().selected.obligation.is_some());
+    // MSH-208: the position at ply 7 first occurred at ply 3.
+    assert_eq!(live.tori.as_ref().unwrap().selected.occurrences, [3, 7]);
+    assert!(live.tori.as_ref().unwrap().selected.repetition.is_some());
     assert!(!live.status.concluded);
     let before = c.shared_token();
-    let old = send(&mut c, SessionOperation::Inspect { event_index: 4 }).unwrap();
+    let old = send(&mut c, SessionOperation::Inspect { event_index: 3 }).unwrap();
     assert_eq!(
         old.pieces
             .iter()
@@ -231,7 +232,7 @@ fn exact_prefix_repetition_obligations_and_forfeit_are_native_not_inferred() {
             .map(|p| (&p.square, &p.kind))
             .collect::<Vec<_>>()
     );
-    assert!(old.tori.unwrap().selected.obligation.is_none());
+    assert!(old.tori.unwrap().selected.repetition.is_none());
     assert!(
         c.shared_inspection(MovementInspectionQuery {
             expected: before,
@@ -239,7 +240,7 @@ fn exact_prefix_repetition_obligations_and_forfeit_are_native_not_inferred() {
         })
         .is_err()
     );
-    assert_eq!(old.moves.last_action.unwrap().event_index, 4);
+    assert_eq!(old.moves.last_action.unwrap().event_index, 3);
     replace(
         &mut c,
         &sequence(&given("TORI-H-FORCED-FULL")),
@@ -247,11 +248,11 @@ fn exact_prefix_repetition_obligations_and_forfeit_are_native_not_inferred() {
     );
     let s = c.shared_snapshot();
     assert!(s.status.label.contains("repetition forfeit"));
-    // TORI-H-FORCED-FULL explicitly expects in_check_at8=true: the Gote
-    // Eagle on4d attacks4a along its backward ray. This is a repetition
-    // forfeit despite a locally legal escape, not a checkmate.
+    // TORI-H-FORCED-FULL expects in_check=true after seven plies: the Gote
+    // Eagle on 4d attacks 4a along its backward ray. Sente's only escape would
+    // make a third occurrence (MSH-208): a repetition forfeit, not checkmate.
     assert!(s.tori.unwrap().selected.in_check);
-    assert_eq!(s.moves.entries.len(), 8);
+    assert_eq!(s.moves.entries.len(), 7);
 }
 #[test]
 fn large_declared_counter_is_decimal_metadata_not_lossy_frontend_number() {

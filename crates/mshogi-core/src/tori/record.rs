@@ -8,7 +8,9 @@ use serde_json::value::RawValue;
 use std::collections::BTreeSet;
 
 /// Native schema, independent of the immutable profile and shared transport/envelope.
-pub const GAME_RECORD_SCHEMA_VERSION: u32 = 1;
+/// Schema 2 (MSH-208): T06 third-occurrence refusal; no stored obligation or
+/// replay-work fields. Schema 1 records are read by replay (see `replay_v1`).
+pub const GAME_RECORD_SCHEMA_VERSION: u32 = 2;
 /// Native payload bound, leaving room inside the existing 1MiB shared envelope.
 pub const MAX_GAME_RECORD_BYTES: usize = 512 * 1024;
 /// Bounded complete native record with replay-validated cached metadata.
@@ -19,6 +21,126 @@ pub struct GameRecord {
     board_plies: usize,
     side: Side,
     conclusion: Option<Conclusion>,
+    /// Root and event ledger kept for prefix identity and suffixes, so an
+    /// incremental transport neither re-parses nor replays the record.
+    root: WirePosition,
+    root_conclusion: Option<Conclusion>,
+    ledger: Vec<GameEvent>,
+}
+
+/// New native events after an exact transport-bound retained state (MSH-204).
+/// Deserialization checks syntax only; admission occurs in a native
+/// incremental session. This is not a saved-game format or a root identity.
+#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct GameDelta {
+    start_event: usize,
+    events: Vec<GameEvent>,
+    #[serde(deserialize_with = "required_option")]
+    conclusion: Option<Conclusion>,
+}
+impl GameDelta {
+    /// Number of accepted events at the required base. Not a history identity.
+    pub fn start_event(&self) -> usize {
+        self.start_event
+    }
+    /// Number of newly supplied events.
+    pub fn event_count(&self) -> usize {
+        self.events.len()
+    }
+    /// Strict duplicate-free typed parsing, bounded as native records.
+    pub fn from_json(text: &str) -> Result<Self, RecordError> {
+        strict(text, MAX_GAME_RECORD_BYTES)?;
+        let delta: Self = serde_json::from_str(text).map_err(|_| RecordError::Json)?;
+        delta.check_capacity()?;
+        Ok(delta)
+    }
+    /// Compact transport encoding.
+    pub fn to_json(&self) -> Result<String, RecordError> {
+        self.check_capacity()?;
+        let text = serde_json::to_string(self).map_err(|_| RecordError::Json)?;
+        if text.len() > MAX_GAME_RECORD_BYTES {
+            return Err(RecordError::Capacity);
+        }
+        Ok(text)
+    }
+    fn check_capacity(&self) -> Result<(), RecordError> {
+        if self
+            .start_event
+            .checked_add(self.events.len())
+            .is_none_or(|end| end > MAX_GAME_EVENTS)
+        {
+            return Err(RecordError::Capacity);
+        }
+        Ok(())
+    }
+    /// Admit every new command natively and check each derived event and the
+    /// final conclusion. On any failure the undo tokens restore the same
+    /// semantic game (events and state); the runtime revision still advances.
+    fn apply(&self, game: &mut Game) -> Result<(), RecordError> {
+        self.check_capacity()?;
+        if self.start_event != game.events.len() {
+            return Err(RecordError::Prefix);
+        }
+        let mut undo: Vec<GameUndo> = Vec::with_capacity(self.events.len());
+        let mut failure = None;
+        for (offset, event) in self.events.iter().enumerate() {
+            let index = self.start_event + offset;
+            if event.index != index {
+                failure = Some(RecordError::Command(index));
+                break;
+            }
+            match game.submit(GameRequest {
+                expected: game.context(),
+                actor: event.actor,
+                command: event.command,
+            }) {
+                Ok(token) => undo.push(token),
+                Err(GameError::Capacity(_)) => {
+                    failure = Some(RecordError::Capacity);
+                    break;
+                }
+                Err(_) => {
+                    failure = Some(RecordError::Command(index));
+                    break;
+                }
+            }
+            if game.events.last() != Some(event) {
+                failure = Some(RecordError::Derived);
+                break;
+            }
+        }
+        if failure.is_none() && self.conclusion != game.conclusion() {
+            failure = Some(RecordError::Derived);
+        }
+        match failure {
+            None => Ok(()),
+            Some(error) => {
+                while let Some(mut token) = undo.pop() {
+                    game.undo(&mut token).expect("restore the retained game");
+                }
+                Err(error)
+            }
+        }
+    }
+}
+impl crate::native::incremental::IncrementalRecord for GameRecord {
+    type Game = Game;
+    type Delta = GameDelta;
+    type Error = RecordError;
+    fn reconstruct(&self) -> Result<Game, RecordError> {
+        self.to_game()
+    }
+    fn append(game: &mut Game, delta: &GameDelta) -> Result<(), RecordError> {
+        delta.apply(game)
+    }
+}
+// Nullable fields are still mandatory: plain Option decoding would accept
+// an omitted field as null.
+fn required_option<'de, D: serde::Deserializer<'de>, T: Deserialize<'de>>(
+    d: D,
+) -> Result<Option<T>, D::Error> {
+    Option::<T>::deserialize(d)
 }
 /// Malformed/capacity/semantic rejection, never a game result.
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -141,11 +263,16 @@ struct WireRecord {
     events: Vec<GameEvent>,
     current_position: WirePosition,
     conclusion: Option<Conclusion>,
-    obligation: Option<Obligation>,
     incomplete: Option<StopReason>,
 }
 impl WireRecord {
     fn from_game(game: &Game) -> Self {
+        Self {
+            events: game.events.clone(),
+            ..Self::without_events(game)
+        }
+    }
+    fn without_events(game: &Game) -> Self {
         Self {
             format: "mshogi.tori.game".into(),
             game: "tori".into(),
@@ -155,16 +282,30 @@ impl WireRecord {
             mode: "untimed".into(),
             root: WirePosition::from_state(&game.root),
             root_conclusion: game.event_prefix(0).expect("root").conclusion,
-            events: game.events.clone(),
+            events: vec![],
             current_position: WirePosition::from_state(game.position().state()),
             conclusion: game.conclusion(),
-            obligation: game.obligation().cloned(),
             incomplete: game.snapshot().incomplete,
         }
     }
 }
 pub(super) fn encode(game: &Game) -> Result<String, RecordError> {
     serde_json::to_string(&WireRecord::from_game(game)).map_err(|_| RecordError::Json)
+}
+/// Exact length of [`encode`] without encoding the history again (MSH-204).
+/// Compact JSON writes the event list as `[e1,e2,...]`, so the length is the
+/// record with an empty list plus each event's own encoding and the commas.
+pub(super) fn encoded_len(game: &Game, event_bytes: usize) -> Result<usize, RecordError> {
+    let empty = serde_json::to_vec(&WireRecord::without_events(game))
+        .map_err(|_| RecordError::Json)?
+        .len();
+    Ok(empty + event_bytes + game.events.len().saturating_sub(1))
+}
+/// Compact encoded length of one event inside the record.
+pub(super) fn event_len(event: &GameEvent) -> Result<usize, RecordError> {
+    serde_json::to_vec(event)
+        .map(|v| v.len())
+        .map_err(|_| RecordError::Json)
 }
 impl GameRecord {
     /// Encode all accepted history without truncation. Admission guarantees this bound.
@@ -179,6 +320,32 @@ impl GameRecord {
             board_plies: game.snapshot().board_ply,
             side: game.position().side_to_move(),
             conclusion: game.conclusion(),
+            root: WirePosition::from_state(&game.root),
+            root_conclusion: game.event_prefix(0).expect("root").conclusion,
+            ledger: game.events.clone(),
+        })
+    }
+    /// Whether an already validated record is an exact prefix of this record:
+    /// same root and root result and the earlier events in order. Both records
+    /// were replay-validated, so equal roots and events imply equal derived
+    /// state. Cache identity only; nothing is admitted or reconstructed.
+    pub fn has_prefix(&self, earlier: &Self) -> bool {
+        let count = earlier.ledger.len();
+        count <= self.ledger.len()
+            && self.root == earlier.root
+            && self.root_conclusion == earlier.root_conclusion
+            && self.ledger[..count] == earlier.ledger[..]
+    }
+    /// Copy only new events for an incremental transport. The host must first
+    /// establish the previous record with `has_prefix`.
+    pub fn suffix(&self, start_event: usize) -> Result<GameDelta, RecordError> {
+        if start_event > self.ledger.len() {
+            return Err(RecordError::Prefix);
+        }
+        Ok(GameDelta {
+            start_event,
+            events: self.ledger[start_event..].to_vec(),
+            conclusion: self.conclusion,
         })
     }
     /// Actual native bytes; runtime identities are deliberately excluded.
@@ -215,6 +382,21 @@ impl GameRecord {
     }
     fn replay(text: &str) -> Result<(Game, Vec<GameUndo>), RecordError> {
         strict(text, MAX_GAME_RECORD_BYTES)?;
+        #[derive(Deserialize)]
+        struct Version {
+            schema_version: u32,
+        }
+        #[derive(Deserialize)]
+        struct Probe {
+            #[serde(flatten)]
+            version: Version,
+            #[serde(flatten)]
+            _rest: serde_json::Map<String, serde_json::Value>,
+        }
+        let probe: Probe = serde_json::from_str(text).map_err(|_| RecordError::Json)?;
+        if probe.version.schema_version == 1 {
+            return Self::replay_v1(text);
+        }
         let wire: WireRecord = serde_json::from_str(text).map_err(|_| RecordError::Json)?;
         if wire.format != "mshogi.tori.game"
             || wire.game != "tori"
@@ -256,6 +438,104 @@ impl GameRecord {
         let expected =
             serde_json::to_value(WireRecord::from_game(&game)).map_err(|_| RecordError::Json)?;
         if actual != expected {
+            return Err(RecordError::Derived);
+        }
+        Ok((game, undo))
+    }
+}
+/// Schema-1 event: the earlier T06 obligation and replay-work fields are
+/// rule-dependent and ignored; every other field must equal the replay.
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct EventV1 {
+    index: usize,
+    board_ply: usize,
+    actor: Side,
+    command: GameCommand,
+    #[serde(deserialize_with = "required_option")]
+    effects: Option<Effects>,
+    occurrences: Vec<usize>,
+    #[serde(rename = "obligation", deserialize_with = "required_option")]
+    _obligation: Option<serde_json::Value>,
+    #[serde(deserialize_with = "required_option")]
+    conclusion: Option<Conclusion>,
+    #[serde(deserialize_with = "required_option")]
+    incomplete: Option<StopReason>,
+    #[serde(rename = "replay_work")]
+    _replay_work: u64,
+}
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct WireRecordV1 {
+    format: String,
+    game: String,
+    profile: String,
+    edition: String,
+    schema_version: u32,
+    mode: String,
+    root: WirePosition,
+    #[serde(deserialize_with = "required_option")]
+    root_conclusion: Option<Conclusion>,
+    events: Vec<EventV1>,
+    current_position: WirePosition,
+    #[serde(deserialize_with = "required_option")]
+    conclusion: Option<Conclusion>,
+    #[serde(rename = "obligation", deserialize_with = "required_option")]
+    _obligation: Option<serde_json::Value>,
+    #[serde(deserialize_with = "required_option")]
+    incomplete: Option<StopReason>,
+}
+impl GameRecord {
+    /// Read a schema-1 record (earlier T06 rule, MSH-129) by replaying its
+    /// commands under the current rule (MSH-208). A record whose history now
+    /// contains a refused third occurrence, or whose derived facts differ, is
+    /// refused (`Command` or `Derived`). The result encodes as the current schema.
+    fn replay_v1(text: &str) -> Result<(Game, Vec<GameUndo>), RecordError> {
+        let wire: WireRecordV1 = serde_json::from_str(text).map_err(|_| RecordError::Json)?;
+        if wire.format != "mshogi.tori.game"
+            || wire.game != "tori"
+            || wire.profile != PROFILE_ID
+            || wire.edition != PROFILE_EDITION_V1
+            || wire.schema_version != 1
+            || wire.mode != "untimed"
+        {
+            return Err(RecordError::Identity);
+        }
+        if wire.events.len() > MAX_GAME_EVENTS {
+            return Err(RecordError::Capacity);
+        }
+        let mut game = Game::from_root(wire.root.root()?).map_err(|_| RecordError::Root)?;
+        if wire.root_conclusion != game.conclusion() {
+            return Err(RecordError::Derived);
+        }
+        let mut undo = Vec::with_capacity(wire.events.len());
+        for (i, event) in wire.events.iter().enumerate() {
+            undo.push(
+                game.submit(GameRequest {
+                    expected: game.context(),
+                    actor: event.actor,
+                    command: event.command,
+                })
+                .map_err(|e| match e {
+                    GameError::Capacity(_) => RecordError::Capacity,
+                    _ => RecordError::Command(i),
+                })?,
+            );
+            let actual = game.events.last().expect("accepted event");
+            if actual.index != event.index
+                || actual.board_ply != event.board_ply
+                || actual.effects != event.effects
+                || actual.occurrences != event.occurrences
+                || actual.conclusion != event.conclusion
+                || actual.incomplete != event.incomplete
+            {
+                return Err(RecordError::Derived);
+            }
+        }
+        if WirePosition::from_state(game.position().state()) != wire.current_position
+            || game.conclusion() != wire.conclusion
+            || game.snapshot().incomplete != wire.incomplete
+        {
             return Err(RecordError::Derived);
         }
         Ok((game, undo))

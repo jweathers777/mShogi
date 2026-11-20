@@ -3,7 +3,7 @@ use crate::observation_identity::{Identity, Profile, SearchKind};
 use crate::{ExecutionContext, ExecutionPurpose, StopReason};
 use mshogi_core::{
     native::CanonicalRecord,
-    tori::{Action, Conclusion, Game, GameCommand, GameRecord, GameRequest, Side},
+    tori::{Action, Conclusion, Game, GameCommand, GameRequest, Side},
 };
 use mshogi_search::tori as search;
 /// Current bounded interactive Tori defaults, shared by native consumers.
@@ -200,9 +200,8 @@ impl ToriResult {
                 {
                     return Err("Tori choice has no completed live-root iteration".into());
                 }
-                let mut branch = GameRecord::from_game(game)
-                    .and_then(|r| r.to_game())
-                    .map_err(|e| e.to_string())?;
+                // Exact copy without replaying the history (MSH-204).
+                let mut branch = game.fork().map_err(|e| e.to_string())?;
                 for action in &t.principal_variation {
                     branch
                         .submit(GameRequest {

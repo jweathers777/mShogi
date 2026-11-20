@@ -1,7 +1,7 @@
 //! Compact transport for a retained native session. Saved observations still
 //! contain the complete original context; only process traffic is incremental.
 use crate::*;
-use mshogi_core::{native::CanonicalRecord, shogi};
+use mshogi_core::{native::CanonicalRecord, shogi, tori};
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
@@ -66,6 +66,8 @@ impl Metadata {
 pub enum Delta {
     /// Exact native Shogi commands and derived event expectations.
     Shogi(shogi::GameDelta),
+    /// Exact native Tori commands and derived event expectations (MSH-204).
+    Tori(tori::GameDelta),
 }
 /// A full validated reset or a suffix of one exact acknowledged endpoint.
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -137,11 +139,17 @@ impl Client {
     /// Only adopted game families use incremental timed traffic.
     pub fn supports(request: &ExecutionRequest) -> bool {
         request.context.limits.time_ms.is_some()
-            && matches!(request.context.game, CanonicalRecord::Shogi(_))
-            && !matches!(
-                request.context.purpose,
-                ExecutionPurpose::ChessFullReachability { .. }
-            )
+            && match request.context.game {
+                CanonicalRecord::Shogi(_) => !matches!(
+                    request.context.purpose,
+                    ExecutionPurpose::ChessFullReachability { .. }
+                ),
+                // Tori adopts engine turns; analysis keeps full requests.
+                CanonicalRecord::Tori(_) => {
+                    matches!(request.context.purpose, ExecutionPurpose::EngineTurn {})
+                }
+                _ => false,
+            }
     }
     /// Prepare bytes without advancing the acknowledged endpoint.
     pub fn encode(&self, request: &ExecutionRequest) -> Result<Vec<u8>, serde_json::Error> {
@@ -152,20 +160,30 @@ impl Client {
             .previous
             .as_ref()
             .and_then(|previous| {
-                let (CanonicalRecord::Shogi(current), CanonicalRecord::Shogi(old)) =
-                    (&request.context.game, &previous.context.game)
-                else {
-                    return None;
-                };
-                if !current.has_prefix(old) {
-                    return None;
+                let base = |events| Metadata::from_context(&previous.context).stamp(events);
+                match (&request.context.game, &previous.context.game) {
+                    (CanonicalRecord::Shogi(current), CanonicalRecord::Shogi(old))
+                        if current.has_prefix(old) =>
+                    {
+                        Some(Update::Advance {
+                            base: base(old.event_count()),
+                            delta: Delta::Shogi(
+                                current.suffix(old.event_count()).expect("validated prefix"),
+                            ),
+                        })
+                    }
+                    (CanonicalRecord::Tori(current), CanonicalRecord::Tori(old))
+                        if current.has_prefix(old) =>
+                    {
+                        Some(Update::Advance {
+                            base: base(old.event_count()),
+                            delta: Delta::Tori(
+                                current.suffix(old.event_count()).expect("validated prefix"),
+                            ),
+                        })
+                    }
+                    _ => None,
                 }
-                Some(Update::Advance {
-                    base: Metadata::from_context(&previous.context).stamp(old.event_count()),
-                    delta: Delta::Shogi(
-                        current.suffix(old.event_count()).expect("validated prefix"),
-                    ),
-                })
             })
             .unwrap_or_else(|| Update::Reset {
                 game: request.context.game.clone(),
@@ -283,6 +301,7 @@ impl Adapter for ShogiAdapter {
     fn delta(delta: &Delta) -> Option<&shogi::GameDelta> {
         match delta {
             Delta::Shogi(d) => Some(d),
+            _ => None,
         }
     }
     fn valid_limits(meta: &Metadata) -> bool {
@@ -314,6 +333,37 @@ impl Adapter for ShogiAdapter {
         game.events().len()
     }
 }
+/// Tori adoption of the shared session (MSH-204): engine turns only.
+pub struct ToriAdapter;
+impl Adapter for ToriAdapter {
+    type Record = tori::GameRecord;
+    fn record(record: &CanonicalRecord) -> Option<&Self::Record> {
+        match record {
+            CanonicalRecord::Tori(r) => Some(r),
+            _ => None,
+        }
+    }
+    fn delta(delta: &Delta) -> Option<&tori::GameDelta> {
+        match delta {
+            Delta::Tori(d) => Some(d),
+            _ => None,
+        }
+    }
+    fn valid_limits(meta: &Metadata) -> bool {
+        (mshogi_search::tori::Limits {
+            depth: meta.limits.depth,
+            nodes: meta.limits.nodes,
+        })
+        .valid()
+            && matches!(meta.purpose, ExecutionPurpose::EngineTurn {})
+    }
+    fn valid_target(_meta: &Metadata, _game: &tori::Game) -> bool {
+        true
+    }
+    fn events(game: &tori::Game) -> usize {
+        game.events().len()
+    }
+}
 /// Shared transport lifecycle around any adopted native record adapter.
 pub struct SessionServer<A: Adapter> {
     native: mshogi_core::native::incremental::Session<A::Record>,
@@ -327,8 +377,30 @@ impl<A: Adapter> Default for SessionServer<A> {
         }
     }
 }
-/// Shogi adoption of the shared session, used by the current process dispatcher.
-pub type Server = SessionServer<ShogiAdapter>;
+/// The adopted game sessions of one engine process.
+#[derive(Default)]
+pub struct Server {
+    /// Shogi session (MSH-189).
+    pub shogi: SessionServer<ShogiAdapter>,
+    /// Tori session (MSH-204).
+    pub tori: SessionServer<ToriAdapter>,
+}
+impl Request {
+    /// The game family of this request, from its full record or suffix.
+    pub fn game_kind(&self) -> mshogi_core::native::GameKind {
+        match &self.update {
+            Update::Reset { game } => game.game_kind(),
+            Update::Advance {
+                delta: Delta::Shogi(_),
+                ..
+            } => mshogi_core::native::GameKind::Shogi,
+            Update::Advance {
+                delta: Delta::Tori(_),
+                ..
+            } => mshogi_core::native::GameKind::Tori,
+        }
+    }
+}
 impl<A: Adapter> SessionServer<A>
 where
     <A::Record as mshogi_core::native::incremental::IncrementalRecord>::Error: std::fmt::Display,
@@ -484,7 +556,7 @@ mod tests {
         let bytes = client.encode(&request).unwrap();
         let (reset, response_bytes) = if let Ok(wire) = serde_json::from_slice::<Request>(&bytes) {
             let reset = matches!(wire.update, Update::Reset { .. });
-            let response = server.execute(wire, |game, actual_reset, _, _| {
+            let response = server.shogi.execute(wire, |game, actual_reset, _, _| {
                 assert_eq!(game, expected);
                 assert_eq!(actual_reset, reset);
                 ExecutionResult::failure(FailureKind::Search, "admission-only test")
@@ -493,7 +565,7 @@ mod tests {
             (reset, serde_json::to_vec(&response).unwrap())
         } else {
             let full: ExecutionRequest = serde_json::from_slice(&bytes).unwrap();
-            let response = server.begin(&full, |game, reset, _, _| {
+            let response = server.shogi.begin(&full, |game, reset, _, _| {
                 assert_eq!(game, expected);
                 assert!(reset);
                 ExecutionResult::failure(FailureKind::Search, "admission-only test")
@@ -572,9 +644,11 @@ mod tests {
             panic!("delta")
         };
         base.generation += 1;
-        let response = server.execute(wire, |_, _, _, _| panic!("invalid base must not search"));
+        let response = server
+            .shogi
+            .execute(wire, |_, _, _, _| panic!("invalid base must not search"));
         assert!(response.endpoint.is_none());
-        assert_eq!(server.native.game(), Some(&shogi::Game::new()));
+        assert_eq!(server.shogi.native.game(), Some(&shogi::Game::new()));
         // Failure clears the client endpoint. The next request resynchronizes fully.
         client
             .decode(&serde_json::to_vec(&response).unwrap(), next.clone())
@@ -596,10 +670,12 @@ mod tests {
         value["update"]["advance"]["delta"]["delta"]["events"][0]["command"]["action"] =
             serde_json::json!("3c3e");
         let wire: Request = serde_json::from_value(value).unwrap();
-        let prior = server.native.game().unwrap().clone();
-        let response = server.execute(wire, |_, _, _, _| panic!("illegal suffix must not search"));
+        let prior = server.shogi.native.game().unwrap().clone();
+        let response = server
+            .shogi
+            .execute(wire, |_, _, _, _| panic!("illegal suffix must not search"));
         assert!(response.endpoint.is_none());
-        assert_eq!(server.native.game(), Some(&prior));
+        assert_eq!(server.shogi.native.game(), Some(&prior));
     }
     #[test]
     fn fixed_work_encoding_and_timed_endpoint_are_unchanged() {
@@ -668,5 +744,110 @@ mod tests {
                 .is_err()
         );
         assert!(client.previous.is_none());
+    }
+
+    fn tori_request(game: &tori::Game, id: u64) -> Arc<ExecutionRequest> {
+        Arc::new(ExecutionRequest {
+            protocol: PROTOCOL_VERSION,
+            context: ExecutionContext {
+                purpose: ExecutionPurpose::EngineTurn {},
+                request_id: id,
+                process_generation: id,
+                session_version: id,
+                game: CanonicalRecord::tori(tori::GameRecord::from_game(game).unwrap()),
+                limits: WorkLimits {
+                    depth: 1,
+                    nodes: 512,
+                    time_ms: Some(0),
+                },
+            },
+        })
+    }
+    /// One Tori request through client and server (MSH-204); returns whether
+    /// the server reset its native session, and checks the game it searched.
+    fn tori_cycle(
+        client: &mut Client,
+        server: &mut Server,
+        request: Arc<ExecutionRequest>,
+        expected: &tori::Game,
+    ) -> bool {
+        let bytes = client.encode(&request).unwrap();
+        let check = |game: &tori::Game| {
+            assert_eq!(
+                tori::GameRecord::from_game(game).unwrap(),
+                tori::GameRecord::from_game(expected).unwrap()
+            );
+        };
+        let (reset, response_bytes) = if let Ok(wire) = serde_json::from_slice::<Request>(&bytes) {
+            let reset = matches!(wire.update, Update::Reset { .. });
+            let response = server.tori.execute(wire, |game, actual_reset, _, _| {
+                check(game);
+                assert_eq!(actual_reset, reset);
+                ExecutionResult::failure(FailureKind::Search, "admission-only test")
+            });
+            (reset, serde_json::to_vec(&response).unwrap())
+        } else {
+            let full: ExecutionRequest = serde_json::from_slice(&bytes).unwrap();
+            let response = server.tori.begin(&full, |game, reset, _, _| {
+                check(game);
+                assert!(reset);
+                ExecutionResult::failure(FailureKind::Search, "admission-only test")
+            });
+            (true, serde_json::to_vec(&response).unwrap())
+        };
+        let restored = client.decode(&response_bytes, request.clone()).unwrap();
+        assert!(restored.matches(&request));
+        reset
+    }
+    #[test]
+    fn tori_requests_send_only_native_suffix_and_reset_on_history_changes() {
+        let play = |game: &mut tori::Game, index: usize| {
+            let action = game.legal_actions()[index];
+            game.submit(tori::GameRequest {
+                expected: game.context(),
+                actor: game.position().side_to_move(),
+                command: tori::GameCommand::Play { action },
+            })
+            .unwrap();
+        };
+        let mut client = Client::default();
+        let mut server = Server::default();
+        let mut game = tori::Game::standard();
+        assert!(tori_cycle(
+            &mut client,
+            &mut server,
+            tori_request(&game, 1),
+            &game
+        ));
+        play(&mut game, 0);
+        play(&mut game, 1);
+        assert!(!tori_cycle(
+            &mut client,
+            &mut server,
+            tori_request(&game, 2),
+            &game
+        ));
+        assert!(!tori_cycle(
+            &mut client,
+            &mut server,
+            tori_request(&game, 3),
+            &game
+        ));
+        // A different history (not an extension) resets the session.
+        let mut alternate = tori::Game::standard();
+        play(&mut alternate, 2);
+        assert!(tori_cycle(
+            &mut client,
+            &mut server,
+            tori_request(&alternate, 4),
+            &alternate
+        ));
+        play(&mut alternate, 0);
+        assert!(!tori_cycle(
+            &mut client,
+            &mut server,
+            tori_request(&alternate, 5),
+            &alternate
+        ));
     }
 }

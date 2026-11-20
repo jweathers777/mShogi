@@ -2,7 +2,8 @@
 use mshogi_core::native::{CanonicalRecord, RulesProfile};
 use mshogi_engine::WorkLimits;
 use mshogi_runner::experiments::{
-    Config, FischerClock, Opening, Player, ProfileLimits, SCHEMA, Split, fresh_root,
+    ClockAllocation, Config, FischerClock, Opening, Player, ProfileLimits, SCHEMA, Split,
+    fresh_root,
 };
 
 #[allow(dead_code)]
@@ -34,6 +35,7 @@ impl Args {
         let mut random_plies = 0;
         let mut base = None;
         let mut increment = None;
+        let mut allocation = ClockAllocation::Hard;
         let positional = if profile { 11 } else { 10 };
         while values.len() > positional {
             let flag = values.remove(positional);
@@ -45,6 +47,13 @@ impl Args {
                 "--random-plies" => random_plies = value.parse().unwrap(),
                 "--clock-base-ms" => base = Some(value.parse().unwrap()),
                 "--clock-increment-ms" => increment = Some(value.parse().unwrap()),
+                "--clock-allocation" => {
+                    allocation = match value.as_str() {
+                        "hard" => ClockAllocation::Hard,
+                        "nominal" => ClockAllocation::Nominal,
+                        _ => panic!("clock allocation is hard or nominal"),
+                    }
+                }
                 _ => panic!("unknown flag {flag}"),
             }
         }
@@ -64,6 +73,7 @@ impl Args {
         let clock = base.map(|base_ms| FischerClock {
             base_ms,
             increment_ms: increment.unwrap(),
+            allocation,
         });
         (
             Self {

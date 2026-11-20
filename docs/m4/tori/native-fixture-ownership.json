@@ -1,8 +1,8 @@
 {
   "schema": "mshogi.tori.native-fixture-ownership.v1",
   "profile": "mshogi.tori.modern.v1",
-  "corpus_revision": "MSH81-MODERN-2026-11-01",
-  "corpus_sha256": "3f9e5ca3b541fc72f562ddd8231408e17e7bd5ba3ccee118e643ce0f543731e3",
+  "corpus_revision": "MSH208-MODERN-2026-11-20",
+  "corpus_sha256": "5b14a57a44e2dce311e3a112fb41bb737a88ec8c301e74295cf7a09039f92c22",
   "corpus_unchanged": true,
   "coordinator": "MSH-85",
   "corpus_owner": "MSH-126",
@@ -11,7 +11,7 @@
     "MSH-128",
     "MSH-129"
   ],
-  "policy": "Each original expected field is retained. Primary ownership is the native projection; explicit consumer facets remain binding at their later real consumer and do not make native completion depend on its own consumer. No unimplemented facet may be reported passed. Exact fixture bytes/expectations are unchanged.",
+  "policy": "Each original expected field is retained. Primary ownership is the native projection; explicit consumer facets remain binding at their later real consumer and do not make native completion depend on its own consumer. No unimplemented facet may be reported passed. Exact fixture bytes/expectations are unchanged. MSH-208 (Tori Repetition Rule, John 2026-11-20) changed T06 and re-derived the repetition fixtures by hand; all other fixture bytes and expectations are unchanged.",
   "fixtures": [
     {
       "fixture_id": "TORI-I01",
@@ -597,10 +597,10 @@
       "native_boundary": "native_game_context_history_commands_records",
       "expected_fields": [
         "accepted_board_plies",
-        "root_key_occurrences",
-        "obligation",
+        "current_key_occurrences",
+        "repetition",
         "conclusion",
-        "next_forbidden_attempt"
+        "forbidden_attempt"
       ],
       "supplementary_native_checks": [],
       "later_consumer_checks": []
@@ -612,9 +612,9 @@
       "native_boundary": "native_game_context_history_commands_records",
       "expected_fields": [
         "responsible",
-        "creator_not_responsible",
+        "starter_not_responsible",
         "accepted",
-        "obligation_consumed",
+        "restriction_cleared",
         "conclusion"
       ],
       "supplementary_native_checks": [],
@@ -731,9 +731,9 @@
       "expected_fields": [
         "same_board_hands_turn",
         "different_event_and_execution_context",
-        "A_obligation",
-        "B_obligation_side",
-        "same_action_4g5g_A_accepted_B_rejected"
+        "A_repetition",
+        "B_repetition_side",
+        "same_action_5a4a_A_accepted_B_rejected"
       ],
       "supplementary_native_checks": [],
       "later_consumer_checks": [
@@ -1298,14 +1298,16 @@
       "later_consumer_checks": []
     },
     {
-      "fixture_id": "TORI-H-OVERLAP",
+      "fixture_id": "TORI-H-SEPARATED",
       "corpus_owner": "MSH-126",
       "primary_native_owner": "MSH-129",
       "native_boundary": "native_game_context_history_commands_records",
       "expected_fields": [
-        "latest_three",
-        "forbidden_departures",
-        "departure_4g3g_allowed"
+        "accepted_board_plies",
+        "current_key_occurrences",
+        "repetition",
+        "conclusion",
+        "alternative_accepted"
       ],
       "supplementary_native_checks": [],
       "later_consumer_checks": []
@@ -1334,10 +1336,10 @@
       "native_boundary": "native_game_context_history_commands_records",
       "expected_fields": [
         "strict_replay_equals_original",
-        "undo_at7_obligation",
-        "redo_at8_obligation_side",
+        "undo_at6_repetition",
+        "redo_at7_repetition_side",
         "prefix4_occurrences",
-        "prefix4_obligation",
+        "prefix4_repetition",
         "live_occurrences",
         "all_native_fields_and_caches_exactly_restored",
         "runtime_work_never_revived"
@@ -1483,9 +1485,9 @@
       "native_boundary": "native_game_context_history_commands_records",
       "expected_fields": [
         "accepted_board_plies",
-        "root_key_occurrences",
-        "in_check_at8",
-        "complete_board_legal_choices_at8",
+        "current_key_occurrences",
+        "in_check",
+        "complete_board_legal_choices",
         "conclusion",
         "independent_escape_proof"
       ],
@@ -1493,19 +1495,17 @@
       "later_consumer_checks": []
     },
     {
-      "fixture_id": "TORI-H-UNEQUAL-FULL",
+      "fixture_id": "TORI-H-CAPTURE-DROP",
       "corpus_owner": "MSH-126",
       "primary_native_owner": "MSH-129",
       "native_boundary": "native_game_context_history_commands_records",
       "expected_fields": [
         "accepted_board_plies",
-        "root_key_occurrences",
-        "latest_three_at16",
-        "forbidden_at10",
-        "chosen_3f_at10_accepted",
-        "forbidden_at16",
-        "next_5g_accepted",
-        "conclusion"
+        "current_key_occurrences",
+        "root_key_occurrences_at6",
+        "repetition",
+        "conclusion",
+        "alternative_accepted"
       ],
       "supplementary_native_checks": [],
       "later_consumer_checks": []

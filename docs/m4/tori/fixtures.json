@@ -1,5 +1,5 @@
 {
-  "revision": "MSH81-MODERN-2026-11-01",
+  "revision": "MSH208-MODERN-2026-11-20",
   "profile": "mshogi.tori.modern.v1",
   "profile_status": "selected_modern_planning_contract",
   "native_conformance_executed": false,
@@ -1433,47 +1433,45 @@
             "from": "5g",
             "to": "4g",
             "result_face": "Ph"
-          },
-          {
-            "kind": "move",
-            "from": "5a",
-            "to": "4a",
-            "result_face": "Ph"
           }
-        ]
+        ],
+        "forbidden_attempt": {
+          "kind": "move",
+          "from": "5a",
+          "to": "4a",
+          "result_face": "Ph"
+        }
       },
       "expected": {
-        "accepted_board_plies": 8,
-        "root_key_occurrences": [
-          0,
-          4,
-          8
+        "accepted_board_plies": 7,
+        "current_key_occurrences": [
+          3,
+          7
         ],
-        "obligation": {
-          "side": "sente",
-          "at_ply": 8,
-          "forbidden_departures": [
+        "repetition": {
+          "side": "gote",
+          "forbidden": [
             {
               "kind": "move",
-              "from": "4g",
-              "to": "5g",
+              "from": "5a",
+              "to": "4a",
               "result_face": "Ph"
             }
           ]
         },
         "conclusion": null,
-        "next_forbidden_attempt": {
+        "forbidden_attempt": {
           "action": {
             "kind": "move",
-            "from": "4g",
-            "to": "5g",
+            "from": "5a",
+            "to": "4a",
             "result_face": "Ph"
           },
           "accepted": false,
           "unchanged": true
         }
       },
-      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+      "expectation_method": "Hand-derived from T06 as decided by John (MSH-208, 2026-11-20): a key is board, both hands and side to move; an action whose resulting key already occurred twice in the known history is refused. Not engine output."
     },
     {
       "id": "TORI-H-INITIATOR",
@@ -1546,30 +1544,24 @@
             "from": "5g",
             "to": "4g",
             "result_face": "Ph"
-          },
-          {
-            "kind": "move",
-            "from": "5a",
-            "to": "4a",
-            "result_face": "Ph"
           }
         ],
-        "creator_of_third_root_key": "gote",
+        "sequence_starter": "sente",
         "next_action": {
           "kind": "move",
-          "from": "4g",
-          "to": "3g",
+          "from": "5a",
+          "to": "5b",
           "result_face": "Ph"
         }
       },
       "expected": {
-        "responsible": "sente",
-        "creator_not_responsible": true,
+        "responsible": "gote",
+        "starter_not_responsible": true,
         "accepted": true,
-        "obligation_consumed": true,
+        "restriction_cleared": true,
         "conclusion": null
       },
-      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+      "expectation_method": "Hand-derived from T06 as decided by John (MSH-208, 2026-11-20): a key is board, both hands and side to move; an action whose resulting key already occurred twice in the known history is refused. Not engine output."
     },
     {
       "id": "TORI-H-CHECK",
@@ -1581,19 +1573,9 @@
       ],
       "scope": "history_adjudication_unit_with_explicit_choice_input",
       "given": {
-        "occurrences": [
-          0,
-          4,
-          8
-        ],
-        "key_side": "sente",
-        "departures_at_0_and_4": [
-          {
-            "kind": "move",
-            "from": "4g",
-            "to": "5g",
-            "result_face": "Ph"
-          },
+        "side": "sente",
+        "in_check": true,
+        "forbidden": [
           {
             "kind": "move",
             "from": "4g",
@@ -1601,7 +1583,6 @@
             "result_face": "Ph"
           }
         ],
-        "continuous_checker": "gote",
         "safety_drop_legal_choices": [
           {
             "kind": "move",
@@ -1609,7 +1590,8 @@
             "to": "5g",
             "result_face": "Ph"
           }
-        ]
+        ],
+        "continuous_checker": "gote"
       },
       "expected": {
         "responsible": "sente",
@@ -1620,7 +1602,7 @@
         "no_check_evasion_exemption": true,
         "no_suicide_action_committed": true
       },
-      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+      "expectation_method": "Hand-derived from T06 as decided by John (MSH-208, 2026-11-20): a key is board, both hands and side to move; an action whose resulting key already occurred twice in the known history is refused. Not engine output."
     },
     {
       "id": "TORI-O-QUIET",
@@ -1813,11 +1795,11 @@
               "historical_reachability": "not_asserted",
               "missing_material": "permitted_custom_diagram"
             },
-            "side_to_move": "sente",
+            "side_to_move": "gote",
             "declared_completed_plies": 0,
             "board": [
               "s:Ph:4g",
-              "g:Ph:4a"
+              "g:Ph:5a"
             ],
             "hands": {
               "s": {},
@@ -1889,12 +1871,6 @@
               "from": "5g",
               "to": "4g",
               "result_face": "Ph"
-            },
-            {
-              "kind": "move",
-              "from": "5a",
-              "to": "4a",
-              "result_face": "Ph"
             }
           ]
         }
@@ -1902,11 +1878,11 @@
       "expected": {
         "same_board_hands_turn": true,
         "different_event_and_execution_context": true,
-        "A_obligation": null,
-        "B_obligation_side": "sente",
-        "same_action_4g5g_A_accepted_B_rejected": true
+        "A_repetition": null,
+        "B_repetition_side": "gote",
+        "same_action_5a4a_A_accepted_B_rejected": true
       },
-      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+      "expectation_method": "Hand-derived from T06 as decided by John (MSH-208, 2026-11-20): a key is board, both hands and side to move; an action whose resulting key already occurred twice in the known history is refused. Not engine output."
     },
     {
       "id": "TORI-C-IDENTITY",
@@ -2952,19 +2928,9 @@
       ],
       "scope": "history_adjudication_unit_with_explicit_choice_input",
       "given": {
-        "occurrences": [
-          0,
-          4,
-          8
-        ],
-        "key_side": "sente",
-        "departures_at_0_and_4": [
-          {
-            "kind": "move",
-            "from": "4g",
-            "to": "5g",
-            "result_face": "Ph"
-          },
+        "side": "sente",
+        "in_check": false,
+        "forbidden": [
           {
             "kind": "move",
             "from": "4g",
@@ -2979,8 +2945,7 @@
             "to": "5g",
             "result_face": "Ph"
           }
-        ],
-        "in_check": false
+        ]
       },
       "expected": {
         "conclusion": {
@@ -2989,69 +2954,108 @@
         },
         "not_stalemate": true
       },
-      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+      "expectation_method": "Hand-derived from T06 as decided by John (MSH-208, 2026-11-20): a key is board, both hands and side to move; an action whose resulting key already occurred twice in the known history is refused. Not engine output."
     },
     {
-      "id": "TORI-H-OVERLAP",
+      "id": "TORI-H-SEPARATED",
       "clauses": [
         "T06"
       ],
       "sources": [
         "PROFILE:T06"
       ],
-      "scope": "history_adjudication_unit",
+      "scope": "complete_history_sequence",
       "given": {
-        "occurrences": [
-          0,
-          4,
-          10,
-          16
-        ],
-        "key_side": "sente",
-        "departures": {
-          "0": {
-            "kind": "move",
-            "from": "4g",
-            "to": "3g",
-            "result_face": "Ph"
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
           },
-          "4": {
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:4g",
+            "g:Ph:4a"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "actions": [
+          {
             "kind": "move",
             "from": "4g",
             "to": "5g",
             "result_face": "Ph"
           },
-          "10": {
+          {
+            "kind": "move",
+            "from": "4a",
+            "to": "5a",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "5g",
+            "to": "4g",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "5a",
+            "to": "4a",
+            "result_face": "Ph"
+          },
+          {
             "kind": "move",
             "from": "4g",
             "to": "4f",
             "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "4a",
+            "to": "5b",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "4f",
+            "to": "4g",
+            "result_face": "Ph"
           }
+        ],
+        "next_action": {
+          "kind": "move",
+          "from": "5b",
+          "to": "5a",
+          "result_face": "Ph"
         }
       },
       "expected": {
-        "latest_three": [
-          4,
-          10,
-          16
+        "accepted_board_plies": 7,
+        "current_key_occurrences": [
+          7
         ],
-        "forbidden_departures": [
-          {
-            "kind": "move",
-            "from": "4g",
-            "to": "5g",
-            "result_face": "Ph"
-          },
-          {
-            "kind": "move",
-            "from": "4g",
-            "to": "4f",
-            "result_face": "Ph"
-          }
-        ],
-        "departure_4g3g_allowed": true
+        "repetition": {
+          "side": "gote",
+          "forbidden": [
+            {
+              "kind": "move",
+              "from": "5b",
+              "to": "4a",
+              "result_face": "Ph"
+            }
+          ]
+        },
+        "conclusion": null,
+        "alternative_accepted": true
       },
-      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+      "expectation_method": "Hand-derived from T06 as decided by John (MSH-208, 2026-11-20): a key is board, both hands and side to move; an action whose resulting key already occurred twice in the known history is refused. Not engine output."
     },
     {
       "id": "TORI-H-IDENTITY",
@@ -3116,7 +3120,7 @@
         "T07"
       ],
       "sources": [
-        "PROFILE:T07"
+        "PROFILE:T06"
       ],
       "scope": "complete_history_sequence",
       "given": {
@@ -3181,12 +3185,6 @@
             "from": "5g",
             "to": "4g",
             "result_face": "Ph"
-          },
-          {
-            "kind": "move",
-            "from": "5a",
-            "to": "4a",
-            "result_face": "Ph"
           }
         ],
         "operations": [
@@ -3200,22 +3198,21 @@
       },
       "expected": {
         "strict_replay_equals_original": true,
-        "undo_at7_obligation": null,
-        "redo_at8_obligation_side": "sente",
+        "undo_at6_repetition": null,
+        "redo_at7_repetition_side": "gote",
         "prefix4_occurrences": [
           0,
           4
         ],
-        "prefix4_obligation": null,
+        "prefix4_repetition": null,
         "live_occurrences": [
-          0,
-          4,
-          8
+          3,
+          7
         ],
         "all_native_fields_and_caches_exactly_restored": true,
         "runtime_work_never_revived": true
       },
-      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+      "expectation_method": "Hand-derived from T06 as decided by John (MSH-208, 2026-11-20): a key is board, both hands and side to move; an action whose resulting key already occurred twice in the known history is refused. Not engine output."
     },
     {
       "id": "TORI-REJECT-DUPLICATE-SQUARE",
@@ -3491,10 +3488,10 @@
             "historical_reachability": "not_asserted",
             "missing_material": "permitted_custom_diagram"
           },
-          "side_to_move": "sente",
+          "side_to_move": "gote",
           "declared_completed_plies": 0,
           "board": [
-            "s:Ph:4a",
+            "s:Ph:5a",
             "g:Ph:4g",
             "g:Ea:4d",
             "g:Cr:2b",
@@ -3509,12 +3506,6 @@
           "known_events": []
         },
         "actions": [
-          {
-            "kind": "move",
-            "from": "4a",
-            "to": "5a",
-            "result_face": "Ph"
-          },
           {
             "kind": "move",
             "from": "4d",
@@ -3560,14 +3551,13 @@
         ]
       },
       "expected": {
-        "accepted_board_plies": 8,
-        "root_key_occurrences": [
-          0,
-          4,
-          8
+        "accepted_board_plies": 7,
+        "current_key_occurrences": [
+          3,
+          7
         ],
-        "in_check_at8": true,
-        "complete_board_legal_choices_at8": [
+        "in_check": true,
+        "complete_board_legal_choices": [
           {
             "kind": "move",
             "from": "4a",
@@ -3590,13 +3580,12 @@
           "5a_after_Sente_move": "safe_until_Gote_Eagle_moves"
         }
       },
-      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+      "expectation_method": "Hand-derived from T06 as decided by John (MSH-208, 2026-11-20): a key is board, both hands and side to move; an action whose resulting key already occurred twice in the known history is refused. Not engine output."
     },
     {
-      "id": "TORI-H-UNEQUAL-FULL",
+      "id": "TORI-H-CAPTURE-DROP",
       "clauses": [
-        "T06",
-        "T07"
+        "T06"
       ],
       "sources": [
         "PROFILE:T06"
@@ -3613,8 +3602,9 @@
           "side_to_move": "sente",
           "declared_completed_plies": 0,
           "board": [
-            "s:Ph:4g",
-            "g:Ph:4a"
+            "s:Ph:2f",
+            "g:Ph:5c",
+            "g:Sw:2e"
           ],
           "hands": {
             "s": {},
@@ -3625,148 +3615,99 @@
         "actions": [
           {
             "kind": "move",
-            "from": "4g",
-            "to": "5g",
+            "from": "2f",
+            "to": "2e",
             "result_face": "Ph"
           },
           {
             "kind": "move",
-            "from": "4a",
-            "to": "5a",
-            "result_face": "Ph"
-          },
-          {
-            "kind": "move",
-            "from": "5g",
-            "to": "4g",
-            "result_face": "Ph"
-          },
-          {
-            "kind": "move",
-            "from": "5a",
-            "to": "4a",
-            "result_face": "Ph"
-          },
-          {
-            "kind": "move",
-            "from": "4g",
-            "to": "4f",
-            "result_face": "Ph"
-          },
-          {
-            "kind": "move",
-            "from": "4a",
-            "to": "5a",
-            "result_face": "Ph"
-          },
-          {
-            "kind": "move",
-            "from": "4f",
-            "to": "5f",
-            "result_face": "Ph"
-          },
-          {
-            "kind": "move",
-            "from": "5a",
+            "from": "5c",
             "to": "5b",
             "result_face": "Ph"
           },
           {
-            "kind": "move",
-            "from": "5f",
-            "to": "4g",
-            "result_face": "Ph"
+            "kind": "drop",
+            "piece": "Sw",
+            "to": "5c"
           },
           {
             "kind": "move",
             "from": "5b",
-            "to": "4a",
+            "to": "5c",
             "result_face": "Ph"
           },
           {
             "kind": "move",
-            "from": "4g",
-            "to": "3f",
+            "from": "2e",
+            "to": "2f",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "drop",
+            "piece": "Sw",
+            "to": "2e"
+          },
+          {
+            "kind": "move",
+            "from": "2f",
+            "to": "2e",
             "result_face": "Ph"
           },
           {
             "kind": "move",
-            "from": "4a",
-            "to": "3a",
+            "from": "5c",
+            "to": "5b",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "drop",
+            "piece": "Sw",
+            "to": "5c"
+          },
+          {
+            "kind": "move",
+            "from": "5b",
+            "to": "5c",
             "result_face": "Ph"
           },
           {
             "kind": "move",
-            "from": "3f",
-            "to": "3g",
-            "result_face": "Ph"
-          },
-          {
-            "kind": "move",
-            "from": "3a",
-            "to": "3b",
-            "result_face": "Ph"
-          },
-          {
-            "kind": "move",
-            "from": "3g",
-            "to": "4g",
-            "result_face": "Ph"
-          },
-          {
-            "kind": "move",
-            "from": "3b",
-            "to": "4a",
+            "from": "2e",
+            "to": "2f",
             "result_face": "Ph"
           }
-        ]
+        ],
+        "next_action": {
+          "kind": "move",
+          "from": "5c",
+          "to": "5b",
+          "result_face": "Ph"
+        }
       },
       "expected": {
-        "accepted_board_plies": 16,
-        "root_key_occurrences": [
+        "accepted_board_plies": 11,
+        "current_key_occurrences": [
+          5,
+          11
+        ],
+        "root_key_occurrences_at6": [
           0,
-          4,
-          10,
-          16
+          6
         ],
-        "latest_three_at16": [
-          4,
-          10,
-          16
-        ],
-        "forbidden_at10": [
-          {
-            "kind": "move",
-            "from": "4g",
-            "to": "5g",
-            "result_face": "Ph"
-          },
-          {
-            "kind": "move",
-            "from": "4g",
-            "to": "4f",
-            "result_face": "Ph"
-          }
-        ],
-        "chosen_3f_at10_accepted": true,
-        "forbidden_at16": [
-          {
-            "kind": "move",
-            "from": "4g",
-            "to": "4f",
-            "result_face": "Ph"
-          },
-          {
-            "kind": "move",
-            "from": "4g",
-            "to": "3f",
-            "result_face": "Ph"
-          }
-        ],
-        "next_5g_accepted": true,
-        "conclusion": null
+        "repetition": {
+          "side": "gote",
+          "forbidden": [
+            {
+              "kind": "drop",
+              "piece": "Sw",
+              "to": "2e"
+            }
+          ]
+        },
+        "conclusion": null,
+        "alternative_accepted": true
       },
-      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+      "expectation_method": "Hand-derived from T06 as decided by John (MSH-208, 2026-11-20): a key is board, both hands and side to move; an action whose resulting key already occurred twice in the known history is refused. Not engine output."
     },
     {
       "id": "TORI-G-KIJI-BLOCK-ROTATED",

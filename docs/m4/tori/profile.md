@@ -1,6 +1,7 @@
 # Selected modern Tori Shogi profile
 
-**Identity: `mshogi.tori.modern.v1`, edition MSH81-MODERN-2026-11-01.**
+**Identity: `mshogi.tori.modern.v1`, edition MSH208-MODERN-2026-11-20.** The
+earlier edition MSH81-MODERN-2026-11-01 differed only in T06 (see T06).
 This is the complete rules contract selected by the recorded 2026-11-01
 modern-playing decision. Native support and delivered consumers are recorded in
 the [delivery review](delivery-review.md). The earlier reserved `mshogi.tori.bunsei11.v1` was never
@@ -137,47 +138,43 @@ atomically. No timed games in initial delivery. Administrative stop, resource
 exhaustion, engine failure or exhausted experiment limit is incomplete/unscored,
 never a native win, draw or proof of mating possibility.
 
-## T06 — repetition: explicit departure convention (S)
+## T06 — repetition: third occurrence refused (decided)
 
-Modern sources say third occurrence and initiator varies, but do not supply a
-machine-complete responsibility algorithm. This profile chooses **the player
-moving out of the repeated position**, not its previous creator. This is one
-of the documented modern interpretations; do not claim universal engine parity.
+**Decision (John, 2026-11-20, MSH-208 (Tori Repetition Rule)).** The rule works
+like the Shogi repetition rule, with two differences: three occurrences instead
+of four, and the result is not a draw — the move that would create the third
+occurrence is not allowed and a different move must be chosen. Sources named by
+John: a 2022 Japanese rule book (同じ手が3度繰り返された場合、その動きを始めた側の
+プレイヤーが手を変える必要があります), the PyChess Tori page (same position three
+times with the same player to move; the player starting the sequence must vary;
+pieces in hand are part of the position; not a draw as in Shogi), and Okano,
+禽将棋 (2008, Osaka University of Commerce bulletin 10), cited by the Japanese
+Abstract Games Museum as "third occurrence; change the repeating move".
 
 - Repetition key: every board square's owner/native face, both hands by distinct
   unpromoted kind/count, and side to move. Exclude counters, observations and
   runtime identity. Saved context still includes all those additional semantics.
-- Count the admitted root as occurrence1; each accepted ordinary move/drop adds
-  one position. Non-board events never add occurrences. Imported diagrams begin
-  known history, with earlier history explicitly unknown; infer no repetitions.
-- On a key's third or later occurrence, take its **latest three occurrence
-  indices** `(i,j,k)`. The side to move there is the initiator/responsible side.
-  Record an obligation at k: on this turn choose a complete action different
-  from each actual first departure at i and j. Action equality includes the
-  exact kind/drop, origin, destination and forced result face; identical hand
-  copies are not distinct choices. This handles unequal and overlapping cycles
-  without guessing intent or retrospectively punishing the previous creator.
-- The arrival at k is accepted. An attempted forbidden departure is rejected
-  without changing history or producing an illegal-move loss. A legal different
-  departure consumes this obligation. Subsequent repeated keys may create new
-  obligations; they are derived from full known board history, not a hash alone.
-- If the responsible side has safety/drop-legal actions but **none** is an allowed
-  variation, conclude repetition-forfeit loss immediately at k. If it has no
-  board-legal reply, T05 mate/stalemate takes precedence. No forced self-check.
-- No separate perpetual-check precedence: the same responsibility rule applies
-  whether checking, evading or quiet. A continuous checker is not automatically
-  blamed if the selected departure interpretation makes the evader responsible.
-  A forced evader can lose by repetition forfeit. This is explicit software
-  enforcement of the modern description's evader-may-have-to-stop case, not a
-  claim that every tournament/engine uses this interpretation.
-- Do not forbid a move merely because it creates the third occurrence. Do not
-  import fourth-occurrence CSA draw, WXF warning/claim penalties, chess claims,
-  check-evasion exemptions, or Fairy-Stockfish's repetition score.
+- The positions compared are all positions of the known history, wherever they
+  occurred (as in Shogi), not only consecutive moves. Count the admitted root as
+  occurrence 1; each accepted move/drop adds one position; non-board events add
+  none. An imported diagram begins known history; no earlier repetition is inferred.
+- An action whose resulting key already occurred twice is refused without
+  changing state (`ThirdOccurrence`); it is not an illegal-move loss. A key
+  therefore occurs at most twice.
+- If the side to move has board-legal actions but every one is refused by this
+  rule, that side loses at once (`repetition_forfeit`). If it has no board-legal
+  action, T05 checkmate or quiet-immobility loss takes precedence. There is no
+  separate perpetual-check rule; check and quiet cycles are treated the same.
+- Records store the occurrence list of each event (replay-checked). The set of
+  refused actions is derived from history on replay and is not stored.
+- Implementation: a 64-bit digest per position, scanned two plies at a time, with
+  full-key comparison on each digest match. A digest never decides a game.
 
-Canonical records retain the occurrence indices, prior departures, obligation
-and conclusion as replay-checked derived facts. History selection restores the
-exact prefix; semantic undo restores occurrence lists and obligation exactly.
-A side cannot evade responsibility by saving/reopening or adding observations.
+The earlier edition (MSH81-MODERN-2026-11-01, schema 1) let the move that created
+the third occurrence stand and obliged the other side to depart differently; an
+earlier session derived that convention, it was never decided by John. Schema-1
+records load by replay under this rule; a record containing a move that now
+creates a third occurrence is refused at that command.
 
 ## T07 — admission, roots, records and exact reversal (S)
 

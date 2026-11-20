@@ -319,9 +319,9 @@ impl ToriPosition {
             p.reversible = reversible;
         }
         p.root = p.keys.len() - 1;
-        if let Some(obligation) = game.obligation() {
-            p.root_forbidden = obligation
-                .forbidden_departures
+        if let Some(repetition) = game.repetition() {
+            p.root_forbidden = repetition
+                .forbidden
                 .iter()
                 .filter_map(|action| p.find(*action))
                 .collect();
@@ -788,31 +788,30 @@ impl SearchPosition for ToriPosition {
             || self.occupied[side] & !(self.pieces[side][PHOENIX] | self.pieces[side][SWALLOW]) != 0
     }
     fn rule_score(&self) -> Option<i32> {
-        // Approximation of the Tori repetition rule. The native rule makes the
-        // side to move leave a position at its third occurrence; it gives no
-        // draw. The scan looks back only to the last capture or drop. In a drop
-        // game a position can also come back through a capture and a drop, so
-        // the search can miss a repetition; the root uses the exact native
-        // forbidden departures. The search scores a position that occurs again as level, so a
-        // side with the better position does not go around in a cycle.
+        // Tori repetition rule (T06, MSH-208): a move that creates the third
+        // occurrence of a position is illegal, so the side that moved here
+        // loses. A position that occurred once before inside this search is a
+        // cycle without progress and scores level. The scan looks back only to
+        // the last capture or drop; in a drop game a position can also come
+        // back through a capture and a drop, so the search can miss a
+        // repetition. The root uses the exact native restriction.
         let current = self.keys.len() - 1;
         let limit = usize::from(self.reversible).min(current);
         let mut earlier = 0;
+        let mut in_search = false;
         let mut back = 2;
         while back <= limit {
             let index = current - back;
             if self.keys[index] == self.hash {
-                if index >= self.root {
-                    return Some(0);
-                }
                 earlier += 1;
+                in_search |= index >= self.root;
                 if earlier >= 2 {
-                    return Some(0);
+                    return Some(MATE_SCORE - self.ply() as i32);
                 }
             }
             back += 2;
         }
-        None
+        in_search.then_some(0)
     }
     fn draw_claimable(&self) -> bool {
         false

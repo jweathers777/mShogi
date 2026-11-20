@@ -1,0 +1,3067 @@
+{
+ "name": "tori-openings-v1",
+ "license": "CC0-1.0",
+ "profile": "mshogi.tori.modern.v1",
+ "notation": "native Tori notation (mshogi_core::tori::notation), from the standard root",
+ "provenance": "Project-generated (MSH-204, Tori Strength Harness); no copied game record or book line; CC0-1.0",
+ "generation": "8 plies from the standard root; each ply chooses uniformly (xorshift seed 204) among legal actions whose depth-6 search score (mover's view) is within 50 of the best; distinct final positions only; 300 attempts; generator crates/mshogi-search/examples/tori_openings.rs",
+ "balance": "admitted when the mShogi Tori search at commit 6c7be47a (shared core, mshogi.tori.material-placement.v1) scored the final position (side to move) within +-100 Swallow hundredths at fixed depth 12; rule fixed before screening; paired colors; not a certified equal-evaluation claim",
+ "order": "admitted rows shuffled with random.Random(204)",
+ "rejected": {
+  "unbalanced": 82
+ },
+ "openings": [
+  {
+   "id": "tori-c144",
+   "moves": [
+    "Sw5ex5d",
+    "Sw3cx3d",
+    "Sw*7f",
+    "Sw*3c",
+    "Sw3ex3d",
+    "Sw3cx3d",
+    "Sw*5e",
+    "Sw*7b"
+   ],
+   "screen_score": 8
+  },
+  {
+   "id": "tori-c235",
+   "moves": [
+    "Ph4g-5f",
+    "RQ7a-7b",
+    "Ph5f-4g",
+    "Cr5a-6b",
+    "LQ7g-7f",
+    "LQ1a-1b",
+    "RQ1g-1f",
+    "Sw3cx3d"
+   ],
+   "screen_score": -8
+  },
+  {
+   "id": "tori-c282",
+   "moves": [
+    "LQ7g-7f",
+    "Fa4b-3b",
+    "Fa4f-5f",
+    "Fa3b-4b",
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Sw*4d",
+    "Sw4cx4d"
+   ],
+   "screen_score": -12
+  },
+  {
+   "id": "tori-c288",
+   "moves": [
+    "Sw3dx3c",
+    "Sw5dx5e",
+    "Cr5g-6f",
+    "Fa4bx3c",
+    "Sw*3d",
+    "Fa3c-2b",
+    "Cr6fx5e",
+    "Sw*7d"
+   ],
+   "screen_score": -2
+  },
+  {
+   "id": "tori-c072",
+   "moves": [
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "LQ7g-7f",
+    "Sw*3b",
+    "Sw*6d",
+    "Fa3c-2b",
+    "RQ1g-1f",
+    "Sw5dx5e"
+   ],
+   "screen_score": 4
+  },
+  {
+   "id": "tori-c150",
+   "moves": [
+    "Sw5ex5d",
+    "Sw3cx3d",
+    "LQ7g-7f",
+    "RQ7a-7b",
+    "Cr5g-6f",
+    "Sw*4d",
+    "Sw4ex4d",
+    "Sw4cx4d"
+   ],
+   "screen_score": 8
+  },
+  {
+   "id": "tori-c198",
+   "moves": [
+    "Ph4g-5f",
+    "Fa4b-3b",
+    "Ph5f-4g",
+    "Cr3a-4b",
+    "Fa4f-5f",
+    "Ph4a-5b",
+    "Cr5g-4f",
+    "Sw5dx5e"
+   ],
+   "screen_score": -16
+  },
+  {
+   "id": "tori-c060",
+   "moves": [
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Sw*6d",
+    "Sw*5e",
+    "Fa4f-3f",
+    "Ph4a-3b",
+    "Ph4g-4f",
+    "Sw3cx3d"
+   ],
+   "screen_score": -14
+  },
+  {
+   "id": "tori-c170",
+   "moves": [
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "Sw3e-3d",
+    "Fa3c-2b",
+    "Fa4f-5f",
+    "Sw*6b",
+    "Cr5g-4f",
+    "Ph4a-4b"
+   ],
+   "screen_score": 4
+  },
+  {
+   "id": "tori-c211",
+   "moves": [
+    "Cr3g-2f",
+    "Fa4b-3b",
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Fa4f-3f",
+    "Sw5d-5e",
+    "Sw*5f",
+    "Sw3cx3d"
+   ],
+   "screen_score": 6
+  },
+  {
+   "id": "tori-c122",
+   "moves": [
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "LQ7g-7f",
+    "Ph4a-5b",
+    "Sw*5e",
+    "Sw5dx5e",
+    "Fa4fx5e",
+    "Sw*6b"
+   ],
+   "screen_score": 14
+  },
+  {
+   "id": "tori-c024",
+   "moves": [
+    "Cr5g-6f",
+    "Ph4a-3b",
+    "Ph4g-3f",
+    "Cr5a-6b",
+    "Cr6f-5g",
+    "Fa4b-5a",
+    "Cr3g-2f",
+    "Fa5a-4a"
+   ],
+   "screen_score": 10
+  },
+  {
+   "id": "tori-c284",
+   "moves": [
+    "Sw3dx3c",
+    "Sw5dx5e",
+    "Sw3c-3b=Go",
+    "Fa4bx3b",
+    "Fa4fx5e",
+    "Sw*2b",
+    "Sw6e-6d",
+    "LQ1a-1b"
+   ],
+   "screen_score": 12
+  },
+  {
+   "id": "tori-c260",
+   "moves": [
+    "Cr3g-2f",
+    "Cr3a-2b",
+    "LQ7g-7f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Sw*3a",
+    "Sw*3g",
+    "Cr5a-6b"
+   ],
+   "screen_score": -4
+  },
+  {
+   "id": "tori-c091",
+   "moves": [
+    "Fa4f-5f",
+    "Ph4a-5b",
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "Sw*3f",
+    "RQ7a-7b",
+    "LQ7g-7f",
+    "Ph5b-4b"
+   ],
+   "screen_score": -6
+  },
+  {
+   "id": "tori-c250",
+   "moves": [
+    "LQ7g-7f",
+    "RQ7a-7b",
+    "Ph4g-3f",
+    "Fa4b-3b",
+    "Ph3f-4g",
+    "Cr3a-2b",
+    "Sw3dx3c",
+    "Cr2bx3c"
+   ],
+   "screen_score": 10
+  },
+  {
+   "id": "tori-c160",
+   "moves": [
+    "Fa4f-5f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Fa4b-5b",
+    "Sw*3e",
+    "Fa5b-4b",
+    "Cr5g-6f",
+    "Ph4a-3b"
+   ],
+   "screen_score": -2
+  },
+  {
+   "id": "tori-c280",
+   "moves": [
+    "LQ7g-7f",
+    "RQ7a-7b",
+    "Ph4g-5f",
+    "LQ1a-1b",
+    "Cr5g-6f",
+    "Cr3a-2b",
+    "Ph5f-5g",
+    "Sw3cx3d"
+   ],
+   "screen_score": -8
+  },
+  {
+   "id": "tori-c253",
+   "moves": [
+    "LQ7g-7f",
+    "Fa4b-3b",
+    "Cr5g-6f",
+    "Fa3b-4b",
+    "Fa4f-3f",
+    "Cr3a-2b",
+    "Ph4g-4f",
+    "LQ1a-1b"
+   ],
+   "screen_score": 4
+  },
+  {
+   "id": "tori-c078",
+   "moves": [
+    "LQ7g-7f",
+    "Ph4a-5b",
+    "RQ1g-1f",
+    "Sw5dx5e",
+    "Sw3dx3c",
+    "Ph5b-6b",
+    "Sw6e-6d",
+    "Fa4bx3c"
+   ],
+   "screen_score": 0
+  },
+  {
+   "id": "tori-c209",
+   "moves": [
+    "Cr3g-2f",
+    "Ph4a-5b",
+    "Ph4g-5f",
+    "Cr3a-2b",
+    "Fa4f-3f",
+    "LQ1a-1b",
+    "Cr5g-6f",
+    "Sw5dx5e"
+   ],
+   "screen_score": -8
+  },
+  {
+   "id": "tori-c045",
+   "moves": [
+    "Fa4f-5f",
+    "Cr5a-6b",
+    "Sw5ex5d",
+    "Sw3cx3d",
+    "Sw5dx5c",
+    "Sw3dx3e",
+    "Sw*5d",
+    "Sw*5a"
+   ],
+   "screen_score": 14
+  },
+  {
+   "id": "tori-c272",
+   "moves": [
+    "Ph4g-5f",
+    "Cr5a-6b",
+    "Sw5ex5d",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Sw5cx5d",
+    "Sw*7f",
+    "Sw*7b"
+   ],
+   "screen_score": 8
+  },
+  {
+   "id": "tori-c245",
+   "moves": [
+    "Fa4f-5f",
+    "Ph4a-5b",
+    "Cr5g-6f",
+    "RQ7a-7b",
+    "Ph4g-5g",
+    "Fa4b-3b",
+    "Cr3g-2f",
+    "Ph5b-4b"
+   ],
+   "screen_score": -8
+  },
+  {
+   "id": "tori-c073",
+   "moves": [
+    "Sw3dx3c",
+    "Sw5dx5e",
+    "Fa4fx5e",
+    "Sw5c-5d",
+    "Fa5e-6f",
+    "Sw*4d",
+    "Sw*2d",
+    "Fa4bx3c"
+   ],
+   "screen_score": -4
+  },
+  {
+   "id": "tori-c030",
+   "moves": [
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Sw*7d",
+    "LQ1a-1b",
+    "Fa4f-5f",
+    "Fa4b-3b",
+    "Fa5f-4f",
+    "Ph4a-4b"
+   ],
+   "screen_score": 22
+  },
+  {
+   "id": "tori-c188",
+   "moves": [
+    "LQ7g-7f",
+    "RQ7a-7b",
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Sw*4d",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Ph4a-3b"
+   ],
+   "screen_score": 8
+  },
+  {
+   "id": "tori-c193",
+   "moves": [
+    "LQ7g-7f",
+    "Ph4a-5b",
+    "Ph4g-5f",
+    "Sw3cx3d",
+    "Sw5ex5d",
+    "Ph5b-4a",
+    "RQ1g-1f",
+    "Sw*4d"
+   ],
+   "screen_score": 14
+  },
+  {
+   "id": "tori-c278",
+   "moves": [
+    "Sw5ex5d",
+    "Sw3cx3d",
+    "Sw*5e",
+    "Sw5cx5d",
+    "Sw5ex5d",
+    "Sw*3c",
+    "Sw*5c",
+    "RQ7a-7b"
+   ],
+   "screen_score": 6
+  },
+  {
+   "id": "tori-c066",
+   "moves": [
+    "Cr5g-6f",
+    "Ph4a-5b",
+    "Cr6f-5g",
+    "Ph5b-4a",
+    "Sw5ex5d",
+    "Sw3cx3d",
+    "Sw*1d",
+    "Cr3a-2b"
+   ],
+   "screen_score": 10
+  },
+  {
+   "id": "tori-c001",
+   "moves": [
+    "Cr3g-2f",
+    "LQ1a-1b",
+    "Cr5g-6f",
+    "Sw5dx5e",
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "Sw3e-3d",
+    "Fa3c-4b"
+   ],
+   "screen_score": -8
+  },
+  {
+   "id": "tori-c162",
+   "moves": [
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "Sw*6d",
+    "Sw5dx5e",
+    "Sw6dx6c",
+    "Cr3a-2b",
+    "Cr3g-2f",
+    "LQ1a-1b"
+   ],
+   "screen_score": 16
+  },
+  {
+   "id": "tori-c006",
+   "moves": [
+    "Sw5ex5d",
+    "Sw3cx3d",
+    "LQ7g-7f",
+    "Sw*1d",
+    "Sw5dx5c",
+    "Sw3dx3e",
+    "Sw*5e",
+    "LQ1a-1b"
+   ],
+   "screen_score": 6
+  },
+  {
+   "id": "tori-c273",
+   "moves": [
+    "LQ7g-7f",
+    "RQ7a-7b",
+    "Ph4g-3f",
+    "Ph4a-3b",
+    "Fa4f-5f",
+    "LQ1a-1b",
+    "Cr5g-4f",
+    "Ph3b-2b"
+   ],
+   "screen_score": 8
+  },
+  {
+   "id": "tori-c011",
+   "moves": [
+    "Cr3g-2f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Sw*1d",
+    "Sw*7d",
+    "Cr5a-6b",
+    "Ph4g-3f",
+    "Cr6b-5a"
+   ],
+   "screen_score": 30
+  },
+  {
+   "id": "tori-c125",
+   "moves": [
+    "LQ7g-7f",
+    "LQ1a-1b",
+    "Cr3g-2f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "RQ7a-7b",
+    "Sw*1f",
+    "Fa4b-3b"
+   ],
+   "screen_score": 0
+  },
+  {
+   "id": "tori-c287",
+   "moves": [
+    "Cr3g-2f",
+    "Ph4a-3b",
+    "LQ7g-7f",
+    "Ph3b-4a",
+    "Ph4g-5f",
+    "Sw5dx5e",
+    "Ph5fx5e",
+    "Sw*1d"
+   ],
+   "screen_score": -2
+  },
+  {
+   "id": "tori-c100",
+   "moves": [
+    "Cr3g-2f",
+    "Cr3a-2b",
+    "Fa4f-5f",
+    "Cr2b-3a",
+    "Cr5g-4f",
+    "Ph4a-3b",
+    "Cr4f-3g",
+    "RQ7a-7b"
+   ],
+   "screen_score": 6
+  },
+  {
+   "id": "tori-c134",
+   "moves": [
+    "LQ7g-7f",
+    "Sw5dx5e",
+    "Sw3dx3c",
+    "Sw*2b",
+    "Cr3g-3f",
+    "RQ7a-7b",
+    "Sw*7g",
+    "Cr5a-6b"
+   ],
+   "screen_score": -4
+  },
+  {
+   "id": "tori-c082",
+   "moves": [
+    "RQ1g-1f",
+    "Sw5dx5e",
+    "Fa4fx5e",
+    "Sw*5b",
+    "Cr5g-6f",
+    "Cr5a-6b",
+    "Ph4g-5g",
+    "Ph4a-3b"
+   ],
+   "screen_score": 14
+  },
+  {
+   "id": "tori-c007",
+   "moves": [
+    "Ph4g-3f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Sw*3b",
+    "Fa4f-5f",
+    "Cr5a-6b",
+    "Sw*1d",
+    "LQ1a-1b"
+   ],
+   "screen_score": 28
+  },
+  {
+   "id": "tori-c020",
+   "moves": [
+    "RQ1g-1f",
+    "Cr3a-2b",
+    "LQ7g-7f",
+    "Fa4b-3a",
+    "Ph4g-3f",
+    "Fa3a-3b",
+    "Cr5g-6f",
+    "LQ1a-1b"
+   ],
+   "screen_score": 14
+  },
+  {
+   "id": "tori-c089",
+   "moves": [
+    "LQ7g-7f",
+    "Ph4a-3b",
+    "Ph4g-3f",
+    "Ph3b-2b",
+    "Cr5g-6f",
+    "Cr3a-3b",
+    "Sw5ex5d",
+    "Sw3cx3d"
+   ],
+   "screen_score": 8
+  },
+  {
+   "id": "tori-c008",
+   "moves": [
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "Sw*2f",
+    "Ph4a-5b",
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Sw*7d",
+    "Sw7cx7d"
+   ],
+   "screen_score": 8
+  },
+  {
+   "id": "tori-c184",
+   "moves": [
+    "Cr5g-6f",
+    "Fa4b-3b",
+    "Cr3g-2f",
+    "Cr5a-6b",
+    "Ph4g-3f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Cr3a-4b"
+   ],
+   "screen_score": 18
+  },
+  {
+   "id": "tori-c297",
+   "moves": [
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "Sw*1d",
+    "Cr5a-6b",
+    "Cr3g-2f",
+    "Cr3a-3b",
+    "Cr2f-3g",
+    "Cr6b-5a"
+   ],
+   "screen_score": 34
+  },
+  {
+   "id": "tori-c161",
+   "moves": [
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Sw*7f",
+    "Cr5a-6b",
+    "Ph4g-5f",
+    "Sw*1d",
+    "RQ1g-1f",
+    "Fa4b-3b"
+   ],
+   "screen_score": 2
+  },
+  {
+   "id": "tori-c017",
+   "moves": [
+    "Sw3dx3c",
+    "Sw5dx5e",
+    "Cr5g-6f",
+    "RQ7a-7b",
+    "Fa4f-3f",
+    "Sw*4d",
+    "Sw*2d",
+    "Cr3a-2b"
+   ],
+   "screen_score": 10
+  },
+  {
+   "id": "tori-c233",
+   "moves": [
+    "Ph4g-5f",
+    "Ph4a-5b",
+    "RQ1g-1f",
+    "Ph5b-6b",
+    "Cr3g-2f",
+    "LQ1a-1b",
+    "LQ7g-7f",
+    "Cr3a-2b"
+   ],
+   "screen_score": -6
+  },
+  {
+   "id": "tori-c039",
+   "moves": [
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "LQ7g-7f",
+    "Sw*4b",
+    "Ph4g-3f",
+    "Ph4a-3b",
+    "Sw*5b",
+    "Cr5a-6b"
+   ],
+   "screen_score": 10
+  },
+  {
+   "id": "tori-c123",
+   "moves": [
+    "Ph4g-5f",
+    "Ph4a-3b",
+    "Cr3g-2f",
+    "Sw5dx5e",
+    "Ph5fx5e",
+    "Sw*5d",
+    "Ph5e-6f",
+    "Cr3a-2b"
+   ],
+   "screen_score": 10
+  },
+  {
+   "id": "tori-c136",
+   "moves": [
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Sw*1d",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Sw*5e",
+    "Sw*6d",
+    "Sw6cx6d"
+   ],
+   "screen_score": 0
+  },
+  {
+   "id": "tori-c097",
+   "moves": [
+    "Sw5ex5d",
+    "Sw3cx3d",
+    "Sw*5e",
+    "Sw3dx3e",
+    "Sw5dx5c",
+    "Sw*7d",
+    "LQ7g-7f",
+    "Sw*1d"
+   ],
+   "screen_score": 0
+  },
+  {
+   "id": "tori-c229",
+   "moves": [
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "Sw*2f",
+    "Fa3c-4b",
+    "Fa4f-5f",
+    "RQ7a-7b",
+    "Sw3e-3d",
+    "LQ1a-1b"
+   ],
+   "screen_score": 0
+  },
+  {
+   "id": "tori-c046",
+   "moves": [
+    "Fa4f-5f",
+    "Ph4a-5b",
+    "Ph4g-3f",
+    "Fa4b-3b",
+    "Fa5f-4f",
+    "Fa3b-2b",
+    "LQ7g-7f",
+    "Cr5a-4b"
+   ],
+   "screen_score": 12
+  },
+  {
+   "id": "tori-c101",
+   "moves": [
+    "Sw3dx3c",
+    "Sw5dx5e",
+    "Sw*1f",
+    "Sw5e-5f=Go",
+    "Fa4fx5f",
+    "Fa4bx3c",
+    "Cr3g-2f",
+    "LQ1a-1b"
+   ],
+   "screen_score": 0
+  },
+  {
+   "id": "tori-c036",
+   "moves": [
+    "Fa4f-5f",
+    "Cr5a-6b",
+    "Fa5f-6f",
+    "Cr3a-2b",
+    "Cr5g-4f",
+    "Fa4b-5a",
+    "Ph4g-3f",
+    "Sw3cx3d"
+   ],
+   "screen_score": 4
+  },
+  {
+   "id": "tori-c018",
+   "moves": [
+    "LQ7g-7f",
+    "Ph4a-5b",
+    "Fa4f-5f",
+    "LQ1a-1b",
+    "Cr5g-6f",
+    "Ph5b-4a",
+    "Cr6f-7g",
+    "Cr5a-6b"
+   ],
+   "screen_score": 2
+  },
+  {
+   "id": "tori-c166",
+   "moves": [
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "Sw3e-3d",
+    "Fa3c-2b",
+    "Fa4f-5f",
+    "Sw*1d",
+    "Sw*2d",
+    "Ph4a-3b"
+   ],
+   "screen_score": 0
+  },
+  {
+   "id": "tori-c176",
+   "moves": [
+    "Ph4g-3f",
+    "Sw5dx5e",
+    "Sw3dx3c",
+    "Sw2c-2d",
+    "Sw3c-3b=Go",
+    "Fa4bx3b",
+    "Fa4fx5e",
+    "Sw*5d"
+   ],
+   "screen_score": -10
+  },
+  {
+   "id": "tori-c113",
+   "moves": [
+    "Cr3g-2f",
+    "Cr5a-6b",
+    "Cr2f-3g",
+    "Ph4a-5b",
+    "Ph4g-5f",
+    "RQ7a-7b",
+    "Fa4f-3f",
+    "Ph5b-4a"
+   ],
+   "screen_score": 0
+  },
+  {
+   "id": "tori-c145",
+   "moves": [
+    "Cr3g-2f",
+    "Fa4b-3b",
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "LQ7g-7f",
+    "Ph4a-5b",
+    "Sw*2d",
+    "Cr5a-4b"
+   ],
+   "screen_score": 6
+  },
+  {
+   "id": "tori-c093",
+   "moves": [
+    "Cr5g-6f",
+    "Ph4a-5b",
+    "Ph4g-5g",
+    "Cr3a-2b",
+    "Sw3dx3c",
+    "Sw5dx5e",
+    "Fa4fx5e",
+    "Cr2bx3c"
+   ],
+   "screen_score": -12
+  },
+  {
+   "id": "tori-c230",
+   "moves": [
+    "Ph4g-5f",
+    "Sw5dx5e",
+    "Fa4fx5e",
+    "Cr5a-6b",
+    "Sw*2f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Sw*5b"
+   ],
+   "screen_score": 16
+  },
+  {
+   "id": "tori-c246",
+   "moves": [
+    "Sw3dx3c",
+    "Sw5dx5e",
+    "Sw6e-6d",
+    "Sw2c-2d",
+    "Sw2ex2d",
+    "Sw6cx6d",
+    "Sw*6f",
+    "Sw*7d"
+   ],
+   "screen_score": 14
+  },
+  {
+   "id": "tori-c206",
+   "moves": [
+    "Cr5g-6f",
+    "Sw3cx3d",
+    "Sw5ex5d",
+    "Sw*7d",
+    "Sw*3c",
+    "RQ7a-7b",
+    "Sw5dx5c",
+    "Sw3dx3e"
+   ],
+   "screen_score": 0
+  },
+  {
+   "id": "tori-c095",
+   "moves": [
+    "RQ1g-1f",
+    "RQ7a-7b",
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Sw*7d",
+    "Sw*1d",
+    "Sw7dx7c",
+    "RQ7bx7c"
+   ],
+   "screen_score": 14
+  },
+  {
+   "id": "tori-c048",
+   "moves": [
+    "Sw5ex5d",
+    "Sw3cx3d",
+    "LQ7g-7f",
+    "Sw*1d",
+    "Cr5g-6f",
+    "Sw5cx5d",
+    "Sw3ex3d",
+    "Sw*7d"
+   ],
+   "screen_score": 0
+  },
+  {
+   "id": "tori-c065",
+   "moves": [
+    "Cr3g-2f",
+    "Cr3a-2b",
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Cr2f-3g",
+    "Ph4a-5b",
+    "Sw*7d",
+    "Sw7cx7d"
+   ],
+   "screen_score": 10
+  },
+  {
+   "id": "tori-c169",
+   "moves": [
+    "LQ7g-7f",
+    "Fa4b-3b",
+    "Ph4g-5f",
+    "Fa3b-4b",
+    "Fa4f-3f",
+    "LQ1a-1b",
+    "Fa3f-4f",
+    "Sw5dx5e"
+   ],
+   "screen_score": -6
+  },
+  {
+   "id": "tori-c205",
+   "moves": [
+    "Sw3dx3c",
+    "Sw5dx5e",
+    "Sw*4d",
+    "Sw*1d",
+    "Fa4fx5e",
+    "Sw1dx1e",
+    "Cr5g-6f",
+    "Sw*5d"
+   ],
+   "screen_score": -16
+  },
+  {
+   "id": "tori-c254",
+   "moves": [
+    "LQ7g-7f",
+    "Ph4a-5b",
+    "Ph4g-3f",
+    "LQ1a-1b",
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Sw*7g",
+    "Sw3cx3d"
+   ],
+   "screen_score": -14
+  },
+  {
+   "id": "tori-c189",
+   "moves": [
+    "RQ1g-1f",
+    "Fa4b-3b",
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Cr5g-6f",
+    "Sw*7b",
+    "Cr6f-5g",
+    "LQ1a-1b"
+   ],
+   "screen_score": 14
+  },
+  {
+   "id": "tori-c140",
+   "moves": [
+    "Fa4f-5f",
+    "Fa4b-3b",
+    "Fa5f-6f",
+    "Sw3cx3d",
+    "Sw5ex5d",
+    "Sw*6b",
+    "Sw*3f",
+    "Sw5cx5d"
+   ],
+   "screen_score": -6
+  },
+  {
+   "id": "tori-c215",
+   "moves": [
+    "Sw3dx3c",
+    "Sw5dx5e",
+    "Cr5g-6f",
+    "Sw*2b",
+    "LQ7g-7f",
+    "Fa4bx3c",
+    "Cr6fx5e",
+    "Sw*7b"
+   ],
+   "screen_score": 26
+  },
+  {
+   "id": "tori-c265",
+   "moves": [
+    "RQ1g-1f",
+    "LQ1a-1b",
+    "Sw5ex5d",
+    "Sw3cx3d",
+    "LQ7g-7f",
+    "Sw*7d",
+    "Sw3ex3d",
+    "Sw7dx7e"
+   ],
+   "screen_score": -6
+  },
+  {
+   "id": "tori-c271",
+   "moves": [
+    "RQ1g-1f",
+    "Sw5dx5e",
+    "Fa4fx5e",
+    "Cr3a-2b",
+    "Ph4g-3f",
+    "Cr2b-3a",
+    "Sw*5f",
+    "Cr3a-3b"
+   ],
+   "screen_score": 0
+  },
+  {
+   "id": "tori-c021",
+   "moves": [
+    "Ph4g-5f",
+    "Cr3a-2b",
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "Fa4f-3f",
+    "Sw*1d",
+    "Sw*7f",
+    "Ph4a-5b"
+   ],
+   "screen_score": -12
+  },
+  {
+   "id": "tori-c146",
+   "moves": [
+    "Cr5g-6f",
+    "Ph4a-3b",
+    "Ph4g-3f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Sw*1d",
+    "Sw*7d",
+    "Sw1dx1e"
+   ],
+   "screen_score": 4
+  },
+  {
+   "id": "tori-c038",
+   "moves": [
+    "LQ7g-7f",
+    "Cr3a-2b",
+    "Fa4f-5f",
+    "Fa4b-3b",
+    "Sw5ex5d",
+    "Sw3cx3d",
+    "Sw*5e",
+    "Sw*3c"
+   ],
+   "screen_score": 8
+  },
+  {
+   "id": "tori-c121",
+   "moves": [
+    "Fa4f-5f",
+    "RQ7a-7b",
+    "Cr3g-2f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Fa4b-5b",
+    "Sw*3e",
+    "Sw*2b"
+   ],
+   "screen_score": 8
+  },
+  {
+   "id": "tori-c107",
+   "moves": [
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Sw*7f",
+    "Ph4a-3b",
+    "Fa4f-3f",
+    "LQ1a-1b",
+    "Sw3dx3c",
+    "Ph3bx3c"
+   ],
+   "screen_score": -6
+  },
+  {
+   "id": "tori-c094",
+   "moves": [
+    "Ph4g-5f",
+    "LQ1a-1b",
+    "RQ1g-1f",
+    "Cr3a-2b",
+    "Ph5f-4g",
+    "Sw3cx3d",
+    "Sw5ex5d",
+    "Sw5cx5d"
+   ],
+   "screen_score": -4
+  },
+  {
+   "id": "tori-c248",
+   "moves": [
+    "Fa4f-5f",
+    "Sw5dx5e",
+    "Fa5fx5e",
+    "Cr3a-2b",
+    "Sw3dx3c",
+    "Cr2bx3c",
+    "Sw*3d",
+    "Cr3c-2b"
+   ],
+   "screen_score": 2
+  },
+  {
+   "id": "tori-c003",
+   "moves": [
+    "Ph4g-5f",
+    "Cr3a-2b",
+    "Ph5f-4g",
+    "Ph4a-3a",
+    "Fa4f-5f",
+    "Sw5dx5e",
+    "Fa5fx5e",
+    "Sw*1b"
+   ],
+   "screen_score": 8
+  },
+  {
+   "id": "tori-c200",
+   "moves": [
+    "Ph4g-5f",
+    "Cr5a-6b",
+    "Cr3g-2f",
+    "RQ7a-7b",
+    "LQ7g-7f",
+    "LQ1a-1b",
+    "Sw3dx3c",
+    "Fa4bx3c"
+   ],
+   "screen_score": 8
+  },
+  {
+   "id": "tori-c118",
+   "moves": [
+    "Cr5g-6f",
+    "Ph4a-5b",
+    "Cr3g-2f",
+    "Ph5b-6b",
+    "Ph4g-5g",
+    "Cr3a-2b",
+    "Fa4f-5f",
+    "Ph6b-7b"
+   ],
+   "screen_score": -4
+  },
+  {
+   "id": "tori-c186",
+   "moves": [
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "Fa4f-5f",
+    "Cr3a-3b",
+    "Fa5f-4f",
+    "Ph4a-3a",
+    "Sw3e-3d",
+    "Fa3c-4b"
+   ],
+   "screen_score": 14
+  },
+  {
+   "id": "tori-c202",
+   "moves": [
+    "Fa4f-5f",
+    "RQ7a-7b",
+    "Sw5ex5d",
+    "Sw3cx3d",
+    "Cr5g-4f",
+    "Sw*3f",
+    "Ph4gx3f",
+    "Sw3dx3e"
+   ],
+   "screen_score": 8
+  },
+  {
+   "id": "tori-c293",
+   "moves": [
+    "Ph4g-5f",
+    "Cr3a-2b",
+    "Fa4f-3f",
+    "Fa4b-3b",
+    "Fa3f-2f",
+    "Cr2b-3a",
+    "Ph5f-4f",
+    "Ph4a-4b"
+   ],
+   "screen_score": -2
+  },
+  {
+   "id": "tori-c178",
+   "moves": [
+    "LQ7g-7f",
+    "Sw3cx3d",
+    "Sw5ex5d",
+    "Sw*2b",
+    "Sw5dx5c",
+    "Sw3dx3e",
+    "Sw*2d",
+    "Sw2cx2d"
+   ],
+   "screen_score": 2
+  },
+  {
+   "id": "tori-c180",
+   "moves": [
+    "Ph4g-3f",
+    "Ph4a-5b",
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "Ph3f-2f",
+    "Ph5b-6b",
+    "Sw*1d",
+    "Cr3a-2b"
+   ],
+   "screen_score": 6
+  },
+  {
+   "id": "tori-c199",
+   "moves": [
+    "Ph4g-5f",
+    "Fa4b-3b",
+    "Cr5g-6f",
+    "Sw3cx3d",
+    "Sw5ex5d",
+    "Cr3a-4b",
+    "Sw*3c",
+    "Fa3bx3c"
+   ],
+   "screen_score": 12
+  },
+  {
+   "id": "tori-c173",
+   "moves": [
+    "Fa4f-5f",
+    "Ph4a-5b",
+    "Ph4g-4f",
+    "Sw3cx3d",
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Sw3ex3d",
+    "Sw*5e"
+   ],
+   "screen_score": -16
+  },
+  {
+   "id": "tori-c111",
+   "moves": [
+    "Cr5g-6f",
+    "Ph4a-5b",
+    "Ph4g-3f",
+    "Ph5b-4a",
+    "Fa4f-5f",
+    "Fa4b-3b",
+    "Sw3dx3c",
+    "Sw5dx5e"
+   ],
+   "screen_score": 10
+  },
+  {
+   "id": "tori-c298",
+   "moves": [
+    "Ph4g-3f",
+    "RQ7a-7b",
+    "LQ7g-7f",
+    "Cr3a-2b",
+    "Sw3dx3c",
+    "Cr2bx3c",
+    "Ph3f-4g",
+    "Sw*1d"
+   ],
+   "screen_score": 14
+  },
+  {
+   "id": "tori-c290",
+   "moves": [
+    "Ph4g-5f",
+    "Cr3a-2b",
+    "RQ1g-1f",
+    "Sw5dx5e",
+    "Ph5fx5e",
+    "Fa4b-5b",
+    "Sw*2f",
+    "Sw*6b"
+   ],
+   "screen_score": 0
+  },
+  {
+   "id": "tori-c163",
+   "moves": [
+    "LQ7g-7f",
+    "Ph4a-3b",
+    "Sw5ex5d",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Sw5cx5d",
+    "Cr3g-2f",
+    "Sw*4a"
+   ],
+   "screen_score": 20
+  },
+  {
+   "id": "tori-c068",
+   "moves": [
+    "Ph4g-5f",
+    "Ph4a-5b",
+    "Ph5f-6f",
+    "Cr3a-2b",
+    "Ph6f-7f",
+    "LQ1a-1b",
+    "Cr5g-6f",
+    "Ph5b-6b"
+   ],
+   "screen_score": 2
+  },
+  {
+   "id": "tori-c056",
+   "moves": [
+    "Ph4g-5f",
+    "RQ7a-7b",
+    "Cr5g-6f",
+    "Sw5dx5e",
+    "Fa4fx5e",
+    "Ph4a-5b",
+    "Sw*2f",
+    "Sw*4a"
+   ],
+   "screen_score": -4
+  },
+  {
+   "id": "tori-c151",
+   "moves": [
+    "Cr5g-5f",
+    "Sw3cx3d",
+    "Cr5f-5g",
+    "Sw5dx5e",
+    "Sw3ex3d",
+    "Sw5c-5d",
+    "Sw*7d",
+    "Ph4a-5b"
+   ],
+   "screen_score": -54
+  },
+  {
+   "id": "tori-c251",
+   "moves": [
+    "Sw3dx3c",
+    "Sw5dx5e",
+    "Sw*1f",
+    "Sw5e-5f=Go",
+    "Fa4fx5f",
+    "Fa4bx3c",
+    "Cr5g-4f",
+    "Sw*5b"
+   ],
+   "screen_score": 10
+  },
+  {
+   "id": "tori-c083",
+   "moves": [
+    "LQ7g-7f",
+    "Ph4a-5b",
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Sw*6f",
+    "Cr3a-3b",
+    "Fa4f-3f",
+    "Sw*7b"
+   ],
+   "screen_score": -8
+  },
+  {
+   "id": "tori-c266",
+   "moves": [
+    "Ph4g-3f",
+    "LQ1a-1b",
+    "RQ1g-1f",
+    "Fa4b-3b",
+    "Cr3g-2f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Cr3a-4b"
+   ],
+   "screen_score": 20
+  },
+  {
+   "id": "tori-c256",
+   "moves": [
+    "Fa4f-5f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Fa4b-3b",
+    "Ph4g-4f",
+    "Sw*1d",
+    "Sw*6f",
+    "Ph4a-5b"
+   ],
+   "screen_score": -14
+  },
+  {
+   "id": "tori-c115",
+   "moves": [
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "RQ1g-1f",
+    "Sw*6b",
+    "Sw*5f",
+    "Cr3a-2b",
+    "LQ7g-7f",
+    "Fa4b-5b"
+   ],
+   "screen_score": 14
+  },
+  {
+   "id": "tori-c214",
+   "moves": [
+    "RQ1g-1f",
+    "Ph4a-5b",
+    "LQ7g-7f",
+    "Ph5b-4a",
+    "Sw3dx3c",
+    "Sw5dx5e",
+    "Sw6e-6d",
+    "Ph4a-5b"
+   ],
+   "screen_score": 6
+  },
+  {
+   "id": "tori-c041",
+   "moves": [
+    "LQ7g-7f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Sw*3c",
+    "Sw5ex5d",
+    "Sw3cx3d",
+    "Sw*3e",
+    "Sw*7b"
+   ],
+   "screen_score": 16
+  },
+  {
+   "id": "tori-c220",
+   "moves": [
+    "Cr5g-6f",
+    "RQ7a-7b",
+    "Ph4g-5f",
+    "Fa4b-3b",
+    "RQ1g-1f",
+    "Cr3a-4b",
+    "Ph5f-5g",
+    "Fa3b-2b"
+   ],
+   "screen_score": 0
+  },
+  {
+   "id": "tori-c086",
+   "moves": [
+    "Ph4g-5f",
+    "Sw3cx3d",
+    "Sw5ex5d",
+    "LQ1a-1b",
+    "Sw5dx5c",
+    "Sw3dx3e",
+    "Sw*1f",
+    "Sw*7d"
+   ],
+   "screen_score": 0
+  },
+  {
+   "id": "tori-c263",
+   "moves": [
+    "Ph4g-5f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Sw*3b",
+    "Cr5g-6f",
+    "Sw5dx5e",
+    "Fa4fx5e",
+    "Cr3a-2b"
+   ],
+   "screen_score": 0
+  },
+  {
+   "id": "tori-c234",
+   "moves": [
+    "Ph4g-5f",
+    "Ph4a-3b",
+    "LQ7g-7f",
+    "Ph3b-2b",
+    "Cr5g-6f",
+    "Sw3cx3d",
+    "Sw5ex5d",
+    "LQ1a-1b"
+   ],
+   "screen_score": 4
+  },
+  {
+   "id": "tori-c022",
+   "moves": [
+    "Cr3g-2f",
+    "RQ7a-7b",
+    "Cr5g-6f",
+    "Cr3a-2b",
+    "Fa4f-5g",
+    "LQ1a-1b",
+    "Sw5ex5d",
+    "Sw3cx3d"
+   ],
+   "screen_score": 12
+  },
+  {
+   "id": "tori-c042",
+   "moves": [
+    "RQ1g-1f",
+    "Ph4a-5b",
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "Sw*3d",
+    "Fa3c-4b",
+    "Cr3g-2f",
+    "Sw*7b"
+   ],
+   "screen_score": -4
+  },
+  {
+   "id": "tori-c219",
+   "moves": [
+    "LQ7g-7f",
+    "Ph4a-3b",
+    "Ph4g-5f",
+    "Sw3cx3d",
+    "Sw5ex5d",
+    "Sw*7b",
+    "Sw*7d",
+    "Sw3dx3e"
+   ],
+   "screen_score": -2
+  },
+  {
+   "id": "tori-c227",
+   "moves": [
+    "Ph4g-3f",
+    "Fa4b-3b",
+    "Cr5g-6f",
+    "Fa3b-4b",
+    "Cr6f-5g",
+    "Cr5a-6b",
+    "Sw5ex5d",
+    "Sw5cx5d"
+   ],
+   "screen_score": 10
+  },
+  {
+   "id": "tori-c231",
+   "moves": [
+    "Cr3g-2f",
+    "Ph4a-5b",
+    "LQ7g-7f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Sw*1b",
+    "Sw*4d",
+    "Ph5b-4a"
+   ],
+   "screen_score": 14
+  },
+  {
+   "id": "tori-c092",
+   "moves": [
+    "Ph4g-5f",
+    "LQ1a-1b",
+    "Cr3g-2f",
+    "RQ7a-7b",
+    "Sw3dx3c",
+    "Sw5dx5e",
+    "Ph5fx5e",
+    "Fa4bx3c"
+   ],
+   "screen_score": 2
+  },
+  {
+   "id": "tori-c299",
+   "moves": [
+    "Ph4g-5f",
+    "Ph4a-5b",
+    "RQ1g-1f",
+    "LQ1a-1b",
+    "Cr5g-6f",
+    "Sw5dx5e",
+    "Cr6fx5e",
+    "Ph5b-4a"
+   ],
+   "screen_score": 0
+  },
+  {
+   "id": "tori-c259",
+   "moves": [
+    "Cr5g-6f",
+    "Cr3a-2b",
+    "Fa4f-3f",
+    "Cr5a-6b",
+    "Fa3f-2f",
+    "Ph4a-3a",
+    "RQ1g-1f",
+    "Fa4b-5a"
+   ],
+   "screen_score": 8
+  },
+  {
+   "id": "tori-c102",
+   "moves": [
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "Sw*3f",
+    "Sw*4b",
+    "Cr5g-5f",
+    "Cr3a-3b",
+    "Sw5ex5d",
+    "Sw5cx5d"
+   ],
+   "screen_score": -8
+  },
+  {
+   "id": "tori-c204",
+   "moves": [
+    "Cr3g-2f",
+    "Sw3cx3d",
+    "Sw5ex5d",
+    "Sw*3c",
+    "Sw3ex3d",
+    "Sw3cx3d",
+    "Sw*5e",
+    "RQ7a-7b"
+   ],
+   "screen_score": 6
+  },
+  {
+   "id": "tori-c291",
+   "moves": [
+    "Ph4g-3f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Ph4a-5b",
+    "Fa4f-5f",
+    "Sw*1b",
+    "Sw*4g",
+    "Cr3a-2b"
+   ],
+   "screen_score": 0
+  },
+  {
+   "id": "tori-c221",
+   "moves": [
+    "Ph4g-3f",
+    "Fa4b-3b",
+    "Ph3f-2f",
+    "Fa3b-4b",
+    "Fa4f-5f",
+    "LQ1a-1b",
+    "Sw5ex5d",
+    "Sw3cx3d"
+   ],
+   "screen_score": 8
+  },
+  {
+   "id": "tori-c032",
+   "moves": [
+    "Sw5ex5d",
+    "Sw3cx3d",
+    "Sw*7f",
+    "Cr3a-2b",
+    "Cr5g-6f",
+    "Sw*1d",
+    "RQ1g-1f",
+    "Ph4a-3a"
+   ],
+   "screen_score": 0
+  },
+  {
+   "id": "tori-c281",
+   "moves": [
+    "Cr3g-2f",
+    "RQ7a-7b",
+    "Cr5g-6f",
+    "Sw3cx3d",
+    "Sw5ex5d",
+    "Sw3dx3e",
+    "Sw5dx5c",
+    "Sw*4d"
+   ],
+   "screen_score": 2
+  },
+  {
+   "id": "tori-c133",
+   "moves": [
+    "Cr3g-2f",
+    "Fa4b-3b",
+    "Ph4g-3f",
+    "Fa3b-2b",
+    "Fa4f-5f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Sw*3b"
+   ],
+   "screen_score": 8
+  },
+  {
+   "id": "tori-c270",
+   "moves": [
+    "RQ1g-1f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Cr5a-6b",
+    "Sw*3e",
+    "Sw*1b",
+    "Sw5ex5d",
+    "Sw5cx5d"
+   ],
+   "screen_score": 8
+  },
+  {
+   "id": "tori-c257",
+   "moves": [
+    "Cr3g-2f",
+    "Cr5a-6b",
+    "Cr5g-6f",
+    "Fa4b-3b",
+    "LQ7g-7f",
+    "Sw3cx3d",
+    "Sw5ex5d",
+    "Ph4a-4b"
+   ],
+   "screen_score": 6
+  },
+  {
+   "id": "tori-c069",
+   "moves": [
+    "Cr5g-6f",
+    "Fa4b-3b",
+    "Sw3dx3c",
+    "Fa3bx3c",
+    "Sw*5f",
+    "Cr3a-2b",
+    "Sw3e-3d",
+    "Fa3cx3d"
+   ],
+   "screen_score": -2
+  },
+  {
+   "id": "tori-c081",
+   "moves": [
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Sw*6f",
+    "Ph4a-5b",
+    "Fa4f-3f",
+    "Sw*6d",
+    "LQ7g-7f",
+    "Ph5b-4a"
+   ],
+   "screen_score": 0
+  },
+  {
+   "id": "tori-c103",
+   "moves": [
+    "Cr5g-6f",
+    "Fa4b-3b",
+    "Ph4g-5g",
+    "Sw5dx5e",
+    "Fa4fx5e",
+    "Fa3b-2b",
+    "Sw6e-6d",
+    "Sw6cx6d"
+   ],
+   "screen_score": -8
+  },
+  {
+   "id": "tori-c276",
+   "moves": [
+    "Cr3g-2f",
+    "Fa4b-3b",
+    "Ph4g-3g",
+    "Cr3a-2b",
+    "Sw3dx3c",
+    "Fa3bx3c",
+    "Sw*6f",
+    "RQ7a-7b"
+   ],
+   "screen_score": 6
+  },
+  {
+   "id": "tori-c275",
+   "moves": [
+    "Cr5g-6f",
+    "LQ1a-1b",
+    "Cr6f-5g",
+    "RQ7a-7b",
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "Sw*5f",
+    "Sw*1a"
+   ],
+   "screen_score": 10
+  },
+  {
+   "id": "tori-c096",
+   "moves": [
+    "Ph4g-5f",
+    "Cr5a-6b",
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Ph5f-4g",
+    "Sw*5b",
+    "Ph4g-3f",
+    "Cr6b-5a"
+   ],
+   "screen_score": 18
+  },
+  {
+   "id": "tori-c239",
+   "moves": [
+    "LQ7g-7f",
+    "Cr5a-6b",
+    "Fa4f-5f",
+    "Sw5dx5e",
+    "Fa5fx5e",
+    "Sw5c-5d",
+    "Fa5e-6f",
+    "Fa4b-3b"
+   ],
+   "screen_score": 4
+  },
+  {
+   "id": "tori-c124",
+   "moves": [
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "Fa4f-5f",
+    "Sw4c-4d",
+    "Sw*3d",
+    "Fa3c-4c",
+    "Fa5f-4f",
+    "Sw*3c"
+   ],
+   "screen_score": 4
+  },
+  {
+   "id": "tori-c241",
+   "moves": [
+    "Sw3dx3c",
+    "Sw5dx5e",
+    "Sw*6d",
+    "Sw5e-5f=Go",
+    "Fa4fx5f",
+    "Fa4bx3c",
+    "Sw*4f",
+    "Sw*6b"
+   ],
+   "screen_score": 2
+  },
+  {
+   "id": "tori-c049",
+   "moves": [
+    "Cr5g-6f",
+    "RQ7a-7b",
+    "Ph4g-5f",
+    "Sw5dx5e",
+    "Fa4fx5e",
+    "Ph4a-3b",
+    "Sw3dx3c",
+    "Fa4bx3c"
+   ],
+   "screen_score": 4
+  },
+  {
+   "id": "tori-c148",
+   "moves": [
+    "Ph4g-3f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Sw*6b",
+    "Fa4f-5f",
+    "Cr3a-2b",
+    "Sw*2d",
+    "Ph4a-3a"
+   ],
+   "screen_score": 10
+  },
+  {
+   "id": "tori-c112",
+   "moves": [
+    "Ph4g-5f",
+    "Sw3cx3d",
+    "Sw5ex5d",
+    "Ph4a-3b",
+    "Sw*2d",
+    "Sw*3f",
+    "Fa4fx3f",
+    "Sw3dx3e"
+   ],
+   "screen_score": 8
+  },
+  {
+   "id": "tori-c129",
+   "moves": [
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "Ph4g-5f",
+    "Sw*6d",
+    "Cr5g-6f",
+    "RQ7a-7b",
+    "Sw3e-3d",
+    "Fa3c-4b"
+   ],
+   "screen_score": 4
+  },
+  {
+   "id": "tori-c128",
+   "moves": [
+    "Ph4g-3f",
+    "Ph4a-3b",
+    "Cr5g-6f",
+    "Fa4b-5b",
+    "Fa4f-5f",
+    "LQ1a-1b",
+    "Sw5ex5d",
+    "Sw3cx3d"
+   ],
+   "screen_score": 10
+  },
+  {
+   "id": "tori-c191",
+   "moves": [
+    "Fa4f-5f",
+    "Sw5dx5e",
+    "Fa5fx5e",
+    "Sw*1d",
+    "Sw*4d",
+    "LQ1a-1b",
+    "Fa5e-4f",
+    "Sw5c-5d"
+   ],
+   "screen_score": 14
+  },
+  {
+   "id": "tori-c285",
+   "moves": [
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Sw*7f",
+    "Sw*5b",
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "Sw*3d",
+    "Fa3c-4b"
+   ],
+   "screen_score": -6
+  },
+  {
+   "id": "tori-c157",
+   "moves": [
+    "LQ7g-7f",
+    "RQ7a-7b",
+    "Cr3g-2f",
+    "Ph4a-3b",
+    "Ph4g-3g",
+    "Sw5dx5e",
+    "Fa4fx5e",
+    "Sw3cx3d"
+   ],
+   "screen_score": -4
+  },
+  {
+   "id": "tori-c016",
+   "moves": [
+    "LQ7g-7f",
+    "Sw5dx5e",
+    "Fa4fx5e",
+    "Sw*7d",
+    "RQ1g-1f",
+    "LQ1a-1b",
+    "Sw*1d",
+    "Cr5a-6b"
+   ],
+   "screen_score": 8
+  },
+  {
+   "id": "tori-c226",
+   "moves": [
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "Sw*1f",
+    "Sw*4b",
+    "Cr5g-6f",
+    "Fa3c-2b",
+    "Fa4f-5g",
+    "RQ7a-7b"
+   ],
+   "screen_score": -2
+  },
+  {
+   "id": "tori-c185",
+   "moves": [
+    "Sw3dx3c",
+    "Sw5dx5e",
+    "Sw*6f",
+    "RQ7a-7b",
+    "Ph4g-3f",
+    "Sw*1d",
+    "LQ7g-7f",
+    "Sw2c-2d"
+   ],
+   "screen_score": 18
+  },
+  {
+   "id": "tori-c055",
+   "moves": [
+    "Cr5g-6f",
+    "Fa4b-3b",
+    "LQ7g-7f",
+    "Ph4a-5b",
+    "Cr3g-2f",
+    "Cr5a-6b",
+    "Sw5ex5d",
+    "Sw5cx5d"
+   ],
+   "screen_score": 0
+  },
+  {
+   "id": "tori-c237",
+   "moves": [
+    "Ph4g-5f",
+    "RQ7a-7b",
+    "Sw5ex5d",
+    "Sw3cx3d",
+    "Sw*3c",
+    "Sw*3b",
+    "Sw3cx3b=Go",
+    "Ph4ax3b"
+   ],
+   "screen_score": 8
+  },
+  {
+   "id": "tori-c076",
+   "moves": [
+    "RQ1g-1f",
+    "RQ7a-7b",
+    "Cr5g-6f",
+    "Cr5a-6b",
+    "Fa4f-5f",
+    "Cr6b-5a",
+    "Cr3g-2f",
+    "Sw5dx5e"
+   ],
+   "screen_score": -12
+  },
+  {
+   "id": "tori-c105",
+   "moves": [
+    "Ph4g-5f",
+    "Ph4a-3b",
+    "Fa4f-3f",
+    "Fa4b-5b",
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Fa3f-2f",
+    "Sw*4b"
+   ],
+   "screen_score": 8
+  },
+  {
+   "id": "tori-c009",
+   "moves": [
+    "Sw5ex5d",
+    "Sw3cx3d",
+    "LQ7g-7f",
+    "Sw5cx5d",
+    "Sw3ex3d",
+    "Sw*1d",
+    "Sw*7d",
+    "Sw*6d"
+   ],
+   "screen_score": 12
+  },
+  {
+   "id": "tori-c142",
+   "moves": [
+    "Cr5g-5f",
+    "Sw3cx3d",
+    "Cr5f-5g",
+    "Sw5dx5e",
+    "Sw3ex3d",
+    "Sw5c-5d",
+    "Sw*1d",
+    "Sw*3b"
+   ],
+   "screen_score": -40
+  },
+  {
+   "id": "tori-c127",
+   "moves": [
+    "Ph4g-5f",
+    "Cr3a-2b",
+    "Ph5f-6f",
+    "Cr5a-6b",
+    "Ph6f-5f",
+    "Fa4b-5a",
+    "Cr3g-2f",
+    "Ph4a-3a"
+   ],
+   "screen_score": 16
+  },
+  {
+   "id": "tori-c300",
+   "moves": [
+    "Ph4g-5f",
+    "RQ7a-7b",
+    "Sw5ex5d",
+    "Sw3cx3d",
+    "Sw*1d",
+    "Sw*3c",
+    "Sw3ex3d",
+    "Sw5cx5d"
+   ],
+   "screen_score": 20
+  },
+  {
+   "id": "tori-c138",
+   "moves": [
+    "RQ1g-1f",
+    "Sw5dx5e",
+    "Sw3dx3c",
+    "RQ7a-7b",
+    "LQ7g-7f",
+    "Sw*1d",
+    "Cr3g-2f",
+    "Ph4a-5b"
+   ],
+   "screen_score": -12
+  },
+  {
+   "id": "tori-c175",
+   "moves": [
+    "Cr3g-2f",
+    "Sw5dx5e",
+    "Sw3dx3c",
+    "LQ1a-1b",
+    "Sw*7f",
+    "Sw*4d",
+    "Cr2f-3g",
+    "Ph4a-5b"
+   ],
+   "screen_score": -14
+  },
+  {
+   "id": "tori-c243",
+   "moves": [
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Sw*7f",
+    "Sw*6b",
+    "Cr5g-5f",
+    "Cr5a-5b",
+    "Ph4g-3f",
+    "Cr3a-3b"
+   ],
+   "screen_score": 12
+  },
+  {
+   "id": "tori-c057",
+   "moves": [
+    "Fa4f-5f",
+    "Fa4b-3b",
+    "LQ7g-7f",
+    "Ph4a-4b",
+    "Ph4g-3f",
+    "Ph4b-4a",
+    "Fa5f-6f",
+    "Fa3b-4b"
+   ],
+   "screen_score": 6
+  },
+  {
+   "id": "tori-c174",
+   "moves": [
+    "Ph4g-3f",
+    "LQ1a-1b",
+    "Cr3g-2f",
+    "Ph4a-5b",
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Sw*5e",
+    "Sw3cx3d"
+   ],
+   "screen_score": 6
+  },
+  {
+   "id": "tori-c258",
+   "moves": [
+    "Cr5g-6f",
+    "Cr3a-2b",
+    "Fa4f-5f",
+    "Sw5dx5e",
+    "Cr6fx5e",
+    "Fa4b-3a",
+    "Sw*1f",
+    "Sw*5b"
+   ],
+   "screen_score": 12
+  },
+  {
+   "id": "tori-c004",
+   "moves": [
+    "RQ1g-1f",
+    "Ph4a-5b",
+    "LQ7g-7f",
+    "RQ7a-7b",
+    "Ph4g-5f",
+    "Sw5dx5e",
+    "Fa4fx5e",
+    "Sw*2d"
+   ],
+   "screen_score": -6
+  },
+  {
+   "id": "tori-c104",
+   "moves": [
+    "Ph4g-3f",
+    "Sw5dx5e",
+    "Sw3dx3c",
+    "Sw*7b",
+    "Sw3e-3d",
+    "Sw5c-5d",
+    "Ph3f-3e",
+    "Fa4b-5b"
+   ],
+   "screen_score": 12
+  },
+  {
+   "id": "tori-c159",
+   "moves": [
+    "Sw3dx3c",
+    "Sw5dx5e",
+    "Sw6e-6d",
+    "Sw*2d",
+    "Sw*6e",
+    "Ph4a-5b",
+    "Cr5g-6f",
+    "Ph5b-6b"
+   ],
+   "screen_score": 2
+  },
+  {
+   "id": "tori-c071",
+   "moves": [
+    "Ph4g-3f",
+    "LQ1a-1b",
+    "Fa4f-5f",
+    "Fa4b-3b",
+    "Cr3g-2f",
+    "RQ7a-7b",
+    "Cr5g-6f",
+    "Sw3cx3d"
+   ],
+   "screen_score": 2
+  },
+  {
+   "id": "tori-c255",
+   "moves": [
+    "RQ1g-1f",
+    "LQ1a-1b",
+    "LQ7g-7f",
+    "Sw3cx3d",
+    "Sw5ex5d",
+    "Sw*7d",
+    "Sw*3c",
+    "Cr3a-2b"
+   ],
+   "screen_score": -2
+  },
+  {
+   "id": "tori-c154",
+   "moves": [
+    "Sw5ex5d",
+    "Sw3cx3d",
+    "Ph4g-5f",
+    "Sw*2b",
+    "Sw2e-2d",
+    "Ph4a-3b",
+    "Sw3ex3d",
+    "Sw2cx2d"
+   ],
+   "screen_score": 24
+  },
+  {
+   "id": "tori-c279",
+   "moves": [
+    "Fa4f-5f",
+    "Sw5dx5e",
+    "Fa5fx5e",
+    "Fa4b-3b",
+    "Sw3dx3c",
+    "Fa3bx3c",
+    "Sw*4f",
+    "RQ7a-7b"
+   ],
+   "screen_score": -2
+  },
+  {
+   "id": "tori-c027",
+   "moves": [
+    "Fa4f-5f",
+    "Cr3a-2b",
+    "LQ7g-7f",
+    "Fa4b-5b",
+    "RQ1g-1f",
+    "LQ1a-1b",
+    "Fa5f-4f",
+    "Ph4a-3b"
+   ],
+   "screen_score": 6
+  },
+  {
+   "id": "tori-c183",
+   "moves": [
+    "Fa4f-5f",
+    "RQ7a-7b",
+    "RQ1g-1f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Ph4a-3b",
+    "Sw*4d",
+    "Sw5dx5e"
+   ],
+   "screen_score": -6
+  },
+  {
+   "id": "tori-c130",
+   "moves": [
+    "Ph4g-5f",
+    "Ph4a-3b",
+    "Ph5f-4g",
+    "Ph3b-2b",
+    "Ph4g-3f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Ph2b-1b"
+   ],
+   "screen_score": 12
+  },
+  {
+   "id": "tori-c252",
+   "moves": [
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "Ph4g-5f",
+    "Sw4c-4d",
+    "Sw*2f",
+    "Ph4a-5b",
+    "LQ7g-7f",
+    "Sw*1d"
+   ],
+   "screen_score": -8
+  },
+  {
+   "id": "tori-c244",
+   "moves": [
+    "Cr3g-2f",
+    "Fa4b-3b",
+    "RQ1g-1f",
+    "Cr3a-2b",
+    "Ph4g-3g",
+    "LQ1a-1b",
+    "Ph3g-4g",
+    "Sw5dx5e"
+   ],
+   "screen_score": -6
+  },
+  {
+   "id": "tori-c155",
+   "moves": [
+    "Sw3dx3c",
+    "Sw5dx5e",
+    "LQ7g-7f",
+    "Sw*1d",
+    "Sw*1f",
+    "RQ7a-7b",
+    "Cr5g-6f",
+    "Sw2c-2d"
+   ],
+   "screen_score": 10
+  },
+  {
+   "id": "tori-c190",
+   "moves": [
+    "Fa4f-5f",
+    "Fa4b-3b",
+    "Cr5g-6f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Sw*2b",
+    "Cr3g-2f",
+    "Sw5dx5e"
+   ],
+   "screen_score": 4
+  },
+  {
+   "id": "tori-c195",
+   "moves": [
+    "LQ7g-7f",
+    "Fa4b-3b",
+    "Fa4f-5f",
+    "Sw5dx5e",
+    "Fa5fx5e",
+    "LQ1a-1b",
+    "Sw*4d",
+    "Sw*7d"
+   ],
+   "screen_score": 8
+  },
+  {
+   "id": "tori-c052",
+   "moves": [
+    "Fa4f-5f",
+    "Ph4a-5b",
+    "LQ7g-7f",
+    "Ph5b-6b",
+    "RQ1g-1f",
+    "Cr5a-5b",
+    "Sw5ex5d",
+    "Sw5cx5d"
+   ],
+   "screen_score": -2
+  },
+  {
+   "id": "tori-c015",
+   "moves": [
+    "LQ7g-7f",
+    "Ph4a-3b",
+    "Ph4g-5f",
+    "Ph3b-4a",
+    "Sw5ex5d",
+    "Sw3cx3d",
+    "Sw5dx5c",
+    "Sw3dx3e"
+   ],
+   "screen_score": 8
+  },
+  {
+   "id": "tori-c208",
+   "moves": [
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Fa4f-3f",
+    "Sw*6d",
+    "Cr5g-4f",
+    "RQ7a-7b",
+    "Sw*6f",
+    "Sw6dx6e"
+   ],
+   "screen_score": -14
+  },
+  {
+   "id": "tori-c181",
+   "moves": [
+    "LQ7g-7f",
+    "Cr3a-2b",
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "Sw*3d",
+    "Fa3c-4b",
+    "Fa4f-5f",
+    "Sw*7d"
+   ],
+   "screen_score": -10
+  },
+  {
+   "id": "tori-c141",
+   "moves": [
+    "Ph4g-5f",
+    "Ph4a-3b",
+    "LQ7g-7f",
+    "Cr5a-6b",
+    "Cr5g-6f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Sw*2b"
+   ],
+   "screen_score": 14
+  },
+  {
+   "id": "tori-c054",
+   "moves": [
+    "Ph4g-3f",
+    "Cr3a-2b",
+    "Ph3f-4g",
+    "Ph4a-5b",
+    "Sw3dx3c",
+    "Sw5dx5e",
+    "Sw*1d",
+    "Sw*2d"
+   ],
+   "screen_score": -6
+  },
+  {
+   "id": "tori-c098",
+   "moves": [
+    "Fa4f-5f",
+    "LQ1a-1b",
+    "LQ7g-7f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Sw*6d",
+    "Sw*6f",
+    "Fa4b-5b"
+   ],
+   "screen_score": 2
+  },
+  {
+   "id": "tori-c116",
+   "moves": [
+    "Sw3dx3c",
+    "Sw5dx5e",
+    "Sw6e-6d",
+    "Sw5e-5f=Go",
+    "Fa4fx5f",
+    "Fa4bx3c",
+    "Fa5f-5e",
+    "Fa3c-2b"
+   ],
+   "screen_score": 12
+  },
+  {
+   "id": "tori-c262",
+   "moves": [
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Sw*2d",
+    "Sw*3b",
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "Sw2dx2c",
+    "Sw*3d"
+   ],
+   "screen_score": 18
+  },
+  {
+   "id": "tori-c132",
+   "moves": [
+    "Cr5g-6f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Ph4a-5b",
+    "Sw*5f",
+    "Sw*2b",
+    "Ph4g-3f",
+    "LQ1a-1b"
+   ],
+   "screen_score": 10
+  },
+  {
+   "id": "tori-c156",
+   "moves": [
+    "Cr3g-2f",
+    "Cr3a-2b",
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Sw3dx3c",
+    "Cr2bx3c",
+    "Sw*3g",
+    "Ph4a-3a"
+   ],
+   "screen_score": -2
+  },
+  {
+   "id": "tori-c108",
+   "moves": [
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "Sw3e-3d",
+    "Fa3c-2b",
+    "Sw*6d",
+    "Sw*3c",
+    "Sw6dx6c",
+    "Pt6ax6c"
+   ],
+   "screen_score": 6
+  },
+  {
+   "id": "tori-c067",
+   "moves": [
+    "RQ1g-1f",
+    "Sw5dx5e",
+    "Sw3dx3c",
+    "Sw5c-5d",
+    "Sw3e-3d",
+    "Sw*1d",
+    "Sw*2d",
+    "Sw1dx1e"
+   ],
+   "screen_score": -10
+  },
+  {
+   "id": "tori-c079",
+   "moves": [
+    "LQ7g-7f",
+    "Sw5dx5e",
+    "Fa4fx5e",
+    "Sw*5d",
+    "Fa5e-6f",
+    "Fa4b-3b",
+    "Ph4g-3f",
+    "LQ1a-1b"
+   ],
+   "screen_score": 12
+  },
+  {
+   "id": "tori-c090",
+   "moves": [
+    "Cr3g-2f",
+    "RQ7a-7b",
+    "Fa4f-5f",
+    "Sw5dx5e",
+    "Fa5fx5e",
+    "Cr3a-2b",
+    "Ph4g-5f",
+    "Sw*5b"
+   ],
+   "screen_score": 22
+  },
+  {
+   "id": "tori-c106",
+   "moves": [
+    "RQ1g-1f",
+    "Ph4a-5b",
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Sw*2f",
+    "Sw*7d",
+    "LQ7g-7f",
+    "Ph5b-5c"
+   ],
+   "screen_score": -20
+  },
+  {
+   "id": "tori-c087",
+   "moves": [
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "Sw*3f",
+    "Sw4c-4d",
+    "Ph4g-5f",
+    "Ph4a-5b",
+    "Ph5f-6f",
+    "Sw5dx5e"
+   ],
+   "screen_score": -8
+  },
+  {
+   "id": "tori-c077",
+   "moves": [
+    "Cr3g-2f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Fa4b-5b",
+    "Sw*2d",
+    "Cr5a-4b",
+    "RQ1g-1f",
+    "Cr3a-3b"
+   ],
+   "screen_score": 16
+  },
+  {
+   "id": "tori-c058",
+   "moves": [
+    "Sw3dx3c",
+    "Sw5dx5e",
+    "LQ7g-7f",
+    "Sw5c-5d",
+    "Sw3e-3d",
+    "RQ7a-7b",
+    "Sw*6f",
+    "Fa4b-5c"
+   ],
+   "screen_score": -14
+  },
+  {
+   "id": "tori-c126",
+   "moves": [
+    "Fa4f-5f",
+    "Cr5a-6b",
+    "Ph4g-4f",
+    "Ph4a-5a",
+    "Cr5g-6f",
+    "RQ7a-7b",
+    "Ph4f-5g",
+    "Sw3cx3d"
+   ],
+   "screen_score": -14
+  },
+  {
+   "id": "tori-c182",
+   "moves": [
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "LQ7g-7f",
+    "Cr5a-6b",
+    "Sw*5e",
+    "Sw3cx3d",
+    "Sw5ex5d",
+    "Sw3dx3e"
+   ],
+   "screen_score": 0
+  },
+  {
+   "id": "tori-c240",
+   "moves": [
+    "Cr3g-2f",
+    "Cr3a-2b",
+    "Cr2f-3g",
+    "LQ1a-1b",
+    "Ph4g-5f",
+    "RQ7a-7b",
+    "LQ7g-7f",
+    "Ph4a-5b"
+   ],
+   "screen_score": -8
+  },
+  {
+   "id": "tori-c158",
+   "moves": [
+    "LQ7g-7f",
+    "Sw5dx5e",
+    "Sw3dx3c",
+    "Sw*7d",
+    "Ph4g-3f",
+    "Sw5c-5d",
+    "Sw3e-3d",
+    "LQ1a-1b"
+   ],
+   "screen_score": 0
+  },
+  {
+   "id": "tori-c028",
+   "moves": [
+    "Cr5g-6f",
+    "LQ1a-1b",
+    "Cr3g-2f",
+    "Ph4a-3b",
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "LQ7g-7f",
+    "Cr3a-2b"
+   ],
+   "screen_score": 6
+  },
+  {
+   "id": "tori-c152",
+   "moves": [
+    "Ph4g-5f",
+    "Sw5dx5e",
+    "Fa4fx5e",
+    "Cr5a-6b",
+    "Cr5g-6f",
+    "Sw*5b",
+    "Sw6e-6d",
+    "Ph4a-3b"
+   ],
+   "screen_score": 14
+  },
+  {
+   "id": "tori-c029",
+   "moves": [
+    "Fa4f-5f",
+    "RQ7a-7b",
+    "Ph4g-3f",
+    "Ph4a-5b",
+    "Ph3f-4f",
+    "Sw5dx5e",
+    "Fa5fx5e",
+    "Sw*1d"
+   ],
+   "screen_score": -8
+  },
+  {
+   "id": "tori-c292",
+   "moves": [
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Sw*5e",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Sw5dx5e",
+    "Fa4fx5e",
+    "Sw*7d"
+   ],
+   "screen_score": -8
+  },
+  {
+   "id": "tori-c117",
+   "moves": [
+    "Cr5g-6f",
+    "Cr3a-2b",
+    "Fa4f-5g",
+    "RQ7a-7b",
+    "Fa5g-4f",
+    "Fa4b-3b",
+    "Fa4f-3f",
+    "LQ1a-1b"
+   ],
+   "screen_score": 0
+  },
+  {
+   "id": "tori-c062",
+   "moves": [
+    "Sw5ex5d",
+    "Sw3cx3d",
+    "Sw*6f",
+    "Sw6c-6d",
+    "Cr5g-5f",
+    "Sw*6c",
+    "Cr3g-2f",
+    "Sw5cx5d"
+   ],
+   "screen_score": -12
+  },
+  {
+   "id": "tori-c194",
+   "moves": [
+    "Fa4f-5f",
+    "Fa4b-3b",
+    "Ph4g-3f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Ph4a-4b",
+    "Sw*1d",
+    "Sw1cx1d"
+   ],
+   "screen_score": 12
+  },
+  {
+   "id": "tori-c247",
+   "moves": [
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "Sw*3d",
+    "Fa3c-4b",
+    "Ph4g-3f",
+    "Cr5a-6b",
+    "Ph3f-4g",
+    "Sw*3b"
+   ],
+   "screen_score": 10
+  },
+  {
+   "id": "tori-c044",
+   "moves": [
+    "Ph4g-5f",
+    "Ph4a-3b",
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Sw3dx3c",
+    "Ph3bx3c",
+    "Sw*3f",
+    "Fa4b-3b"
+   ],
+   "screen_score": -6
+  },
+  {
+   "id": "tori-c119",
+   "moves": [
+    "LQ7g-7f",
+    "RQ7a-7b",
+    "Cr3g-2f",
+    "LQ1a-1b",
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "Sw*7g",
+    "Sw*1a"
+   ],
+   "screen_score": 2
+  },
+  {
+   "id": "tori-c164",
+   "moves": [
+    "Cr3g-2f",
+    "Ph4a-3b",
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "Cr2f-3g",
+    "Cr3a-2b",
+    "Sw*2f",
+    "Sw*2d"
+   ],
+   "screen_score": 4
+  },
+  {
+   "id": "tori-c143",
+   "moves": [
+    "Fa4f-5f",
+    "Sw5dx5e",
+    "Fa5fx5e",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Sw*1d",
+    "Sw*5f",
+    "Sw*6b"
+   ],
+   "screen_score": -20
+  },
+  {
+   "id": "tori-c053",
+   "moves": [
+    "Sw5ex5d",
+    "Sw5cx5d",
+    "RQ1g-1f",
+    "Sw3cx3d",
+    "Sw3ex3d",
+    "Sw*1d",
+    "Ph4g-3f",
+    "Ph4a-5b"
+   ],
+   "screen_score": -4
+  },
+  {
+   "id": "tori-c080",
+   "moves": [
+    "Sw3dx3c",
+    "Sw5dx5e",
+    "Sw*1d",
+    "Sw*2d",
+    "Sw2ex2d",
+    "Fa4bx3c",
+    "Sw*4d",
+    "Ph4a-5b"
+   ],
+   "screen_score": 0
+  },
+  {
+   "id": "tori-c201",
+   "moves": [
+    "Sw5ex5d",
+    "Sw3cx3d",
+    "Ph4g-5f",
+    "Ph4a-3b",
+    "Sw*6f",
+    "RQ7a-7b",
+    "Ph5f-4g",
+    "Sw*2b"
+   ],
+   "screen_score": 6
+  },
+  {
+   "id": "tori-c034",
+   "moves": [
+    "Sw3dx3c",
+    "Fa4bx3c",
+    "Sw*3f",
+    "Sw2c-2d",
+    "Fa4f-5f",
+    "Sw*2b",
+    "Cr5g-6f",
+    "Cr3a-3b"
+   ],
+   "screen_score": -2
+  },
+  {
+   "id": "tori-c139",
+   "moves": [
+    "RQ1g-1f",
+    "Ph4a-5b",
+    "Ph4g-5f",
+    "RQ7a-7b",
+    "Cr5g-6f",
+    "Cr3a-2b",
+    "Sw3dx3c",
+    "Sw5dx5e"
+   ],
+   "screen_score": -6
+  }
+ ]
+}

@@ -356,7 +356,33 @@ fn same_board_full_history_and_forbidden_departure_require_native_worker_validat
         t::RootMetadata::diagram(0),
     )
     .unwrap();
-    let fresh = t::Game::from_root(root.clone()).unwrap();
+    // MSH-208: after seven plies Gote's 5a-4a would make the start key's third
+    // occurrence. The fresh game is a diagram root at the same position.
+    let fresh = t::Game::from_root(
+        t::Position::from_diagram(
+            &[
+                (
+                    "4g".parse().unwrap(),
+                    t::Piece {
+                        side: t::Side::Sente,
+                        face: t::Face::Phoenix,
+                    },
+                ),
+                (
+                    "5a".parse().unwrap(),
+                    t::Piece {
+                        side: t::Side::Gote,
+                        face: t::Face::Phoenix,
+                    },
+                ),
+            ],
+            [t::Hand::empty(); 2],
+            t::Side::Gote,
+            t::RootMetadata::diagram(0),
+        )
+        .unwrap(),
+    )
+    .unwrap();
     let mut repeated = t::Game::from_root(root).unwrap();
     for (from, to) in [
         ("4g", "5g"),
@@ -366,7 +392,6 @@ fn same_board_full_history_and_forbidden_departure_require_native_worker_validat
         ("4g", "5g"),
         ("4a", "5a"),
         ("5g", "4g"),
-        ("5a", "4a"),
     ] {
         repeated
             .submit(t::GameRequest {
@@ -394,8 +419,8 @@ fn same_board_full_history_and_forbidden_departure_require_native_worker_validat
     same_board.request_id = c.request_id;
     assert!(!good.matches(&same_board));
     let forbidden = t::Action::Move {
-        from: "4g".parse().unwrap(),
-        to: "5g".parse().unwrap(),
+        from: "5a".parse().unwrap(),
+        to: "4a".parse().unwrap(),
         result_face: t::Face::Phoenix,
     };
     assert!(fresh.legal_actions().contains(&forbidden));

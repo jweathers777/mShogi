@@ -129,7 +129,7 @@ fn wrong_capture_promotion_demotion_hand_owner_count_history_fail() {
             "each_difference_changes_repetition_key",
             json!(false),
         ),
-        ("TORI-H-COUNT", "root_key_occurrences", json!([0, 8, 4])),
+        ("TORI-H-COUNT", "current_key_occurrences", json!([7, 3])),
     ];
     let c = corpus();
     for (id, field, value) in cases {

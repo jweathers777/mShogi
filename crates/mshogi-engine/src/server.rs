@@ -226,23 +226,32 @@ fn dispatch_request(
     output: &mut impl Write,
 ) -> io::Result<()> {
     if let Ok(request) = serde_json::from_slice::<crate::incremental::Request>(bytes) {
-        let response = native.execute(request, |game, reset, limits, time| {
-            execute_incremental_shogi(session, game, reset, limits, time, None)
-        });
+        let response = if request.game_kind() == mshogi_core::native::GameKind::Tori {
+            native.tori.execute(request, |game, reset, limits, time| {
+                execute_incremental_tori(session, game, reset, limits, time, None)
+            })
+        } else {
+            native.shogi.execute(request, |game, reset, limits, time| {
+                execute_incremental_shogi(session, game, reset, limits, time, None)
+            })
+        };
         return write_response(output, &response);
     }
     let request: ExecutionRequest = serde_json::from_slice(bytes).map_err(io::Error::other)?;
     if crate::incremental::Client::supports(&request) {
-        let response = native.begin(&request, |game, reset, limits, time| {
-            execute_incremental_shogi(
-                session,
-                game,
-                reset,
-                limits,
-                time,
-                Some(&request.context.game),
-            )
-        });
+        let record = Some(&request.context.game);
+        let response = if matches!(
+            request.context.game,
+            mshogi_core::native::CanonicalRecord::Tori(_)
+        ) {
+            native.tori.begin(&request, |game, reset, limits, time| {
+                execute_incremental_tori(session, game, reset, limits, time, record)
+            })
+        } else {
+            native.shogi.begin(&request, |game, reset, limits, time| {
+                execute_incremental_shogi(session, game, reset, limits, time, record)
+            })
+        };
         return write_response(output, &response);
     }
     if request.context.limits.time_ms.is_some() {
@@ -282,6 +291,43 @@ fn execute_incremental_shogi(
             result: ShogiResult::searched(found),
         },
         Err(error) => ExecutionResult::failure(FailureKind::Search, error),
+    }
+}
+
+fn execute_incremental_tori(
+    session: &mut Session,
+    game: &mshogi_core::tori::Game,
+    reset: bool,
+    limits: WorkLimits,
+    time: &RequestTime,
+    record: Option<&mshogi_core::native::CanonicalRecord>,
+) -> ExecutionResult {
+    use mshogi_core::native::CanonicalRecord;
+    if session.kind != Some(mshogi_core::native::GameKind::Tori) {
+        *session = Session::default();
+        session.kind = Some(mshogi_core::native::GameKind::Tori);
+    }
+    let create = || Ok::<_, std::convert::Infallible>(mshogi_search::tori::new_engine());
+    let mut engine = match record {
+        Some(record) => session.tori.acquire_relation(record, true,
+            |last| matches!((record, last), (CanonicalRecord::Tori(current), CanonicalRecord::Tori(old)) if current.has_prefix(old)), create),
+        None => session.tori.acquire_incremental(reset, create),
+    }
+    .expect("infallible engine allocation");
+    match mshogi_search::tori::search_with_state(
+        game,
+        mshogi_search::tori::Limits {
+            depth: limits.depth,
+            nodes: limits.nodes,
+        },
+        time.remaining(),
+        &mut engine,
+        || false,
+    ) {
+        Ok(result) => ExecutionResult::Tori {
+            result: ToriResult::searched(result),
+        },
+        Err(e) => ExecutionResult::failure(FailureKind::Search, e),
     }
 }
 

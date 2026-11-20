@@ -32,8 +32,11 @@ pub(super) fn sequence(v: &Value) -> Game {
     }
     g
 }
-fn obligation(o: Option<&Obligation>) -> Value {
-    o.map_or(Value::Null, |o| json!({"side":o.side,"at_ply":o.at_ply(),"forbidden_departures":o.forbidden_departures.iter().copied().map(action_value).collect::<Vec<_>>()}))
+fn repetition(r: Option<&Repetition>) -> Value {
+    r.map_or(
+        Value::Null,
+        |r| json!({"side":r.side,"forbidden":forbidden(r)}),
+    )
 }
 fn conclusion(c: Option<Conclusion>) -> Value {
     match c {
@@ -56,9 +59,9 @@ fn native_command(v: &Value) -> GameCommand {
         _ => GameCommand::Play { action: action(v) },
     }
 }
-fn obligation_actions(o: &Obligation) -> Value {
+fn forbidden(r: &Repetition) -> Value {
     json!(
-        o.forbidden_departures
+        r.forbidden
             .iter()
             .copied()
             .map(action_value)
@@ -127,87 +130,102 @@ impl NativeAdapter for GameAdapter {
             let mut g = sequence(&f.given);
             return Ok(Some(match field {
                 "accepted_board_plies" => json!(g.snapshot().board_ply),
-                "root_key_occurrences" | "live_occurrences" => json!(g.occurrences()),
-                "obligation" => obligation(g.obligation()),
+                "current_key_occurrences" | "live_occurrences" => json!(g.occurrences()),
+                "root_key_occurrences_at6" => json!(g.event_prefix(6).unwrap().occurrences),
+                "repetition" => repetition(g.repetition()),
                 "conclusion" => conclusion(g.conclusion()),
-                "responsible" => json!(g.obligation().ok_or("missing obligation")?.side),
-                "creator_not_responsible" => json!(g.events().last().unwrap().actor != g.obligation().unwrap().side),
-                "accepted" | "obligation_consumed" => {
+                "responsible" => json!(g.repetition().ok_or("missing restriction")?.side),
+                "starter_not_responsible" => json!(
+                    side(f.given["sequence_starter"].as_str().unwrap())
+                        != g.repetition().ok_or("missing restriction")?.side
+                ),
+                "accepted" | "restriction_cleared" | "alternative_accepted" => {
                     let result = play(&mut g, action(&f.given["next_action"]));
-                    json!(result.is_ok() && (field == "accepted" || g.obligation().is_none()))
+                    json!(
+                        result.is_ok()
+                            && (field != "restriction_cleared" || g.repetition().is_none())
+                    )
                 }
-                "next_forbidden_attempt" => {
-                    // The actual previously taken departure is the query input.
-                    let a = action(&f.given["actions"][0]);
+                "forbidden_attempt" => {
+                    let a = action(&f.given["forbidden_attempt"]);
                     let before = g.context();
-                    let accepted = play(&mut g, a).is_ok();
-                    json!({"action":action_value(a),"accepted":accepted,"unchanged":before == g.context()})
+                    let snapshot = g.cache_snapshot();
+                    let refused = matches!(play(&mut g, a), Err(GameError::ThirdOccurrence));
+                    json!({"action":action_value(a),"accepted":!refused,"unchanged":before == g.context() && snapshot == g.cache_snapshot()})
                 }
-                "in_check_at8" => json!(g.local_position().is_in_check(g.position().side_to_move())),
-                "complete_board_legal_choices_at8" => json!(g.local_position().legal_actions().into_iter().map(action_value).collect::<Vec<_>>()),
-                "latest_three_at16" => json!(g.obligation().unwrap().occurrences),
-                "forbidden_at10" => obligation_actions(g.event_prefix(10).unwrap().obligation.as_ref().unwrap()),
-                "forbidden_at16" => obligation_actions(g.obligation().unwrap()),
-                "chosen_3f_at10_accepted" => json!(g.events().get(10).is_some_and(|e| matches!(e.command, GameCommand::Play { action: Action::Move { to, .. } } if to == sq("3f")))),
-                "next_5g_accepted" => json!(play(&mut g, Action::Move { from: sq("4g"), to: sq("5g"), result_face: Face::Phoenix }).is_ok()),
+                "in_check" => json!(g.local_position().is_in_check(g.position().side_to_move())),
+                "complete_board_legal_choices" => json!(
+                    g.local_position()
+                        .legal_actions()
+                        .into_iter()
+                        .map(action_value)
+                        .collect::<Vec<_>>()
+                ),
                 "prefix4_occurrences" => json!(g.event_prefix(4).unwrap().occurrences),
-                "prefix4_obligation" => obligation(g.event_prefix(4).unwrap().obligation.as_ref()),
+                "prefix4_repetition" => repetition(g.event_prefix(4).unwrap().repetition.as_ref()),
                 "strict_replay_equals_original" => {
-                    let replay = GameRecord::from_json(GameRecord::from_game(&g).unwrap().to_json()).unwrap().to_game().unwrap();
-                    json!(g.cache_snapshot() == replay.cache_snapshot() && g.context() != replay.context())
+                    let replay =
+                        GameRecord::from_json(GameRecord::from_game(&g).unwrap().to_json())
+                            .unwrap()
+                            .to_game()
+                            .unwrap();
+                    json!(
+                        g.cache_snapshot() == replay.cache_snapshot()
+                            && g.context() != replay.context()
+                    )
                 }
-                "undo_at7_obligation" | "redo_at8_obligation_side" | "all_native_fields_and_caches_exactly_restored" => {
+                "undo_at6_repetition"
+                | "redo_at7_repetition_side"
+                | "all_native_fields_and_caches_exactly_restored" => {
                     let before = g.cache_snapshot();
-                    let (mut replay, mut undos) = GameRecord::from_game(&g).unwrap().to_game_with_undo().unwrap();
+                    let (mut replay, mut undos) = GameRecord::from_game(&g)
+                        .unwrap()
+                        .to_game_with_undo()
+                        .unwrap();
                     let mut r = replay.undo(undos.last_mut().unwrap()).unwrap();
-                    if field == "undo_at7_obligation" { obligation(replay.obligation()) } else {
+                    if field == "undo_at6_repetition" {
+                        repetition(replay.repetition())
+                    } else {
                         replay.redo(&mut r).unwrap();
-                        if field == "redo_at8_obligation_side" { json!(replay.obligation().unwrap().side) } else { json!(before == replay.cache_snapshot()) }
+                        if field == "redo_at7_repetition_side" {
+                            json!(replay.repetition().unwrap().side)
+                        } else {
+                            json!(before == replay.cache_snapshot())
+                        }
                     }
                 }
                 _ => return Err(format!("unhandled history field {field}")),
             }));
         }
         if f.scope.starts_with("history_adjudication_unit") {
-            let indices: Vec<usize> =
-                serde_json::from_value(f.given["occurrences"].clone()).unwrap();
-            let get_departure = |i: usize| {
-                if let Some(ds) = f.given.get("departures") {
-                    action(&ds[i.to_string()])
-                } else {
-                    action(&f.given["departures_at_0_and_4"][usize::from(i != 0)])
-                }
+            // The forced-loss clause alone: the restricted actions and the
+            // complete local choices are explicit inputs.
+            let r = Repetition {
+                side: side(f.given["side"].as_str().unwrap()),
+                forbidden: f.given["forbidden"]
+                    .as_array()
+                    .unwrap()
+                    .iter()
+                    .map(action)
+                    .collect(),
             };
-            let o = Obligation::derive(
-                side(f.given["key_side"].as_str().unwrap()),
-                &indices,
-                get_departure,
-            )
-            .unwrap();
             let local: Vec<Action> = f.given["safety_drop_legal_choices"]
                 .as_array()
                 .map(|as_| as_.iter().map(action).collect())
                 .unwrap_or_default();
-            let loss = o
+            let loss = r
                 .forces_loss(&local)
-                .then_some(Conclusion::RepetitionForfeit { loser: o.side });
+                .then_some(Conclusion::RepetitionForfeit { loser: r.side });
             return Ok(Some(match field {
-                "responsible" => json!(o.side),
+                "responsible" => json!(r.side),
                 "conclusion" => conclusion(loss),
                 "no_check_evasion_exemption" => json!(loss.is_some() && !local.is_empty()),
                 "no_suicide_action_committed" => {
-                    json!(local.iter().all(|a| !o.permits(*a)) && loss.is_some())
+                    json!(local.iter().all(|a| !r.permits(*a)) && loss.is_some())
                 }
                 "not_stalemate" => json!(
                     !local.is_empty() && matches!(loss, Some(Conclusion::RepetitionForfeit { .. }))
                 ),
-                "latest_three" => json!(o.occurrences),
-                "forbidden_departures" => obligation_actions(&o),
-                "departure_4g3g_allowed" => json!(o.permits(Action::Move {
-                    from: sq("4g"),
-                    to: sq("3g"),
-                    result_face: Face::Phoenix
-                })),
                 _ => return Err(format!("unhandled unit field {field}")),
             }));
         }
@@ -219,17 +237,17 @@ impl NativeAdapter for GameAdapter {
                 "different_event_and_execution_context" => json!(
                     ga.context() != gb.context() && !ga.context().same_semantics(&gb.context())
                 ),
-                "A_obligation" => obligation(ga.obligation()),
-                "B_obligation_side" => json!(gb.obligation().unwrap().side),
-                "same_action_4g5g_A_accepted_B_rejected" => {
+                "A_repetition" => repetition(ga.repetition()),
+                "B_repetition_side" => json!(gb.repetition().unwrap().side),
+                "same_action_5a4a_A_accepted_B_rejected" => {
                     let a = Action::Move {
-                        from: sq("4g"),
-                        to: sq("5g"),
+                        from: sq("5a"),
+                        to: sq("4a"),
                         result_face: Face::Phoenix,
                     };
                     json!(
                         play(&mut ga, a).is_ok()
-                            && matches!(play(&mut gb, a), Err(GameError::RepetitionDeparture))
+                            && matches!(play(&mut gb, a), Err(GameError::ThirdOccurrence))
                     )
                 }
                 _ => return Err(format!("unhandled pair field {field}")),

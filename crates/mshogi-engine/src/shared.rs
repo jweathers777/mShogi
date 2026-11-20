@@ -297,6 +297,23 @@ impl ExecutionObservation {
         text: &str,
         stop: &mut impl FnMut() -> bool,
     ) -> Result<Self, ObservationDecodeError> {
+        Self::decode(text, None, stop)
+    }
+    /// Decode an observation whose context omits its native record, with the
+    /// caller's already admitted record (MSH-204: experiment reports omit the
+    /// record that native replay restores). An encoded record is refused.
+    pub fn from_json_with_record(
+        text: &str,
+        game: CanonicalRecord,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<Self, ObservationDecodeError> {
+        Self::decode(text, Some(game), stop)
+    }
+    fn decode(
+        text: &str,
+        supplied: Option<CanonicalRecord>,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<Self, ObservationDecodeError> {
         fn check(stop: &mut impl FnMut() -> bool) -> Result<(), ObservationDecodeError> {
             if stop() {
                 Err(ObservationDecodeError::Stopped)
@@ -329,7 +346,8 @@ impl ExecutionObservation {
             request_id: u64,
             session_version: u64,
             process_generation: u64,
-            game: Box<serde_json::value::RawValue>,
+            #[serde(default)]
+            game: Option<Box<serde_json::value::RawValue>>,
             limits: WorkLimits,
         }
         let wire: Wire = serde_json::from_str(text).map_err(|error| error.to_string())?;
@@ -340,13 +358,31 @@ impl ExecutionObservation {
         let context: ContextWire =
             serde_json::from_str(wire.context.get()).map_err(|error| error.to_string())?;
         check(stop)?;
-        let game =
-            CanonicalRecord::from_json_with_stop(context.game.get(), stop).map_err(|error| {
-                match error {
+        // With a supplied record the field must be absent, not null.
+        if supplied.is_some()
+            && serde_json::from_str::<serde_json::Map<String, serde_json::Value>>(
+                wire.context.get(),
+            )
+            .map_err(|error| error.to_string())?
+            .contains_key("game")
+        {
+            return Err("Execution observation context repeats the supplied record.".into());
+        }
+        let game = match (context.game, supplied) {
+            (Some(raw), None) => CanonicalRecord::from_json_with_stop(raw.get(), stop).map_err(
+                |error| match error {
                     mshogi_core::native::EnvelopeError::Stopped => ObservationDecodeError::Stopped,
                     error => ObservationDecodeError::Native(error),
-                }
-            })?;
+                },
+            )?,
+            (None, Some(game)) => game,
+            (None, None) => {
+                return Err("Execution observation context has no native record.".into());
+            }
+            (Some(_), Some(_)) => {
+                return Err("Execution observation context repeats the supplied record.".into());
+            }
+        };
         check(stop)?;
         let result = serde_json::from_str(wire.result.get()).map_err(|error| error.to_string())?;
         check(stop)?;

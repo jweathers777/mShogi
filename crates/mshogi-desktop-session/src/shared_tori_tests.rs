@@ -353,20 +353,25 @@ fn actual_controller_seventy_native_admission_cases_and_rotations() {
 
 #[test]
 fn history_prefix_obligations_takeback_and_reopen_are_exact_and_fresh() {
+    // MSH-208: A is a diagram root at the position that B reaches after
+    // seven plies; in B, Gote's 5a-4a would make a third occurrence.
     let v = given("TORI-C-HISTORY");
     let g = sequence(&v["record_B"]);
     let a = sequence(&v["record_A"]);
+    let back = t::Action::Move {
+        from: "5a".parse().unwrap(),
+        to: "4a".parse().unwrap(),
+        result_face: t::Face::Phoenix,
+    };
     let mut c = controller();
-    replace(&mut c, &a, t::Side::Sente);
+    replace(&mut c, &a, t::Side::Gote);
     let record_a = native(&c);
     let board_a = current(&c).game.repetition_key().clone();
     send(
         &mut c,
         SessionOperation::Tori {
-            actor: t::Side::Sente,
-            command: t::GameCommand::Play {
-                action: action(&v["record_B"]["actions"][0]),
-            },
+            actor: t::Side::Gote,
+            command: t::GameCommand::Play { action: back },
         },
     )
     .unwrap();
@@ -375,20 +380,18 @@ fn history_prefix_obligations_takeback_and_reopen_are_exact_and_fresh() {
 
     let old = context(&c, 100, true);
     c.session.tori_mut().unwrap().pending = Some(old.clone());
-    replace(&mut c, &g, t::Side::Sente);
+    replace(&mut c, &g, t::Side::Gote);
     assert!(!submit_observation(&mut c, response(old.clone())));
     assert_eq!(current(&c).game.repetition_key(), &board_a);
     assert_ne!(native(&c), record_a);
-    assert_eq!(current(&c).game.obligation().unwrap().side, t::Side::Sente);
+    assert_eq!(current(&c).game.repetition().unwrap().side, t::Side::Gote);
     let before = exact(&c);
     assert!(
         send(
             &mut c,
             SessionOperation::Tori {
-                actor: t::Side::Sente,
-                command: t::GameCommand::Play {
-                    action: action(&v["record_B"]["actions"][0])
-                }
+                actor: t::Side::Gote,
+                command: t::GameCommand::Play { action: back }
             }
         )
         .is_err()
@@ -396,9 +399,9 @@ fn history_prefix_obligations_takeback_and_reopen_are_exact_and_fresh() {
     assert_eq!(exact(&c), before);
     send(&mut c, SessionOperation::Inspect { event_index: 4 }).unwrap();
     assert_eq!(current(&c).selected().occurrences(), [0, 4]);
-    assert!(current(&c).selected().obligation().is_none());
+    assert!(current(&c).selected().repetition().is_none());
     assert_eq!(current(&c).selected().events().len(), 4);
-    assert_eq!(current(&c).game.events().len(), 8);
+    assert_eq!(current(&c).game.events().len(), 7);
     let selected = c.shared_token();
     let inspected = c
         .shared_inspection(MovementInspectionQuery {
@@ -410,14 +413,14 @@ fn history_prefix_obligations_takeback_and_reopen_are_exact_and_fresh() {
     assert_eq!(c.shared_token(), selected);
     assert!(send(&mut c, SessionOperation::Undo {}).is_err());
     send(&mut c, SessionOperation::ReturnLive {}).unwrap();
-    assert_eq!(current(&c).game.occurrences(), [0, 4, 8]);
+    assert_eq!(current(&c).game.occurrences(), [3, 7]);
     assert!(!submit_observation(&mut c, response(old.clone())));
     send(&mut c, SessionOperation::Undo {}).unwrap();
-    assert!(current(&c).game.obligation().is_none());
-    assert_eq!(current(&c).game.events().len(), 7);
-    // One atomic human decision restores event6, retaining complete8/7 histories.
-    send(&mut c, SessionOperation::TakeBack {}).unwrap();
+    assert!(current(&c).game.repetition().is_none());
     assert_eq!(current(&c).game.events().len(), 6);
+    // One atomic human decision restores event5, retaining complete7/6 histories.
+    send(&mut c, SessionOperation::TakeBack {}).unwrap();
+    assert_eq!(current(&c).game.events().len(), 5);
     assert_eq!(current(&c).document.retired_branches().count(), 2);
     let dir = directory("history");
     let path = dir.join("tori.mshogi");
@@ -1019,9 +1022,9 @@ fn byte_control_native_event_and_replay_limited_open_preserves_current_authority
     let mut events = template.clone();
     events["payload"]["current"] = serde_json::to_value(record).unwrap();
     let event = events["payload"]["current"]["payload"]["events"][0].clone();
-    events["payload"]["current"]["payload"]["events"] = json!(vec![event.clone(); 513]);
-    let mut work = events.clone();
-    work["payload"]["current"]["payload"]["events"] = json!(vec![event; 400]);
+    events["payload"]["current"]["payload"]["events"] = json!(vec![event; t::MAX_GAME_EVENTS + 1]);
+    // MSH-208: a single record's modelled replay work is linear in its events
+    // and bounded by the event limit, so no single-record work case remains.
     // These deliberately malformed over-limit inputs must be bounded before native replay.
     for (bytes, category) in [
         (
@@ -1036,7 +1039,6 @@ fn byte_control_native_event_and_replay_limited_open_preserves_current_authority
             events.to_string().into_bytes(),
             ResourceCategory::NativeEvents,
         ),
-        (work.to_string().into_bytes(), ResourceCategory::ReplayWork),
     ] {
         fs::write(&path, bytes).unwrap();
         let id = c
@@ -1173,9 +1175,6 @@ fn long_native_runtime(actions: usize, allow_deadline: bool) {
 
     let generated_ms = start.elapsed().as_millis();
     assert_eq!(g.events().len(), actions);
-    if actions == 360 {
-        assert_eq!(g.capacity_usage().unwrap().replay_work, 65341);
-    }
     let mut c = controller();
     let start = Instant::now();
     let before = long_retained_state(&mut c);
@@ -1197,19 +1196,19 @@ fn long_native_runtime(actions: usize, allow_deadline: bool) {
     let installation_ms = start.elapsed().as_millis();
     let initial_usage = current(&c).document.usage().clone();
     if actions == 360 {
+        // MSH-208: 360 plies is no longer a native limit; the next move is
+        // accepted, and Undo restores the exact prior state.
         let next = current(&c).game.legal_actions()[0];
-        let prior = exact(&c);
-        assert!(
-            send(
-                &mut c,
-                SessionOperation::Tori {
-                    actor: t::Side::Sente,
-                    command: t::GameCommand::Play { action: next }
-                }
-            )
-            .is_err()
-        );
-        assert_eq!(exact(&c), prior);
+        send(
+            &mut c,
+            SessionOperation::Tori {
+                actor: t::Side::Sente,
+                command: t::GameCommand::Play { action: next },
+            },
+        )
+        .unwrap();
+        send(&mut c, SessionOperation::Undo {}).unwrap();
+        assert_eq!(current(&c).game.events().len(), 360);
     }
     let start = Instant::now();
     let before = long_retained_state(&mut c);
@@ -1365,8 +1364,8 @@ fn typed_identity_refusal_and_interrupted_save_keep_complete_accepted_document_d
     fs::remove_dir_all(dir).unwrap();
 }
 #[test]
-fn forced8_conclusion_and_unequal16_obligation_are_derived_by_final_controller_action() {
-    for id in ["TORI-H-FORCED-FULL", "TORI-H-UNEQUAL-FULL"] {
+fn forced_conclusion_and_capture_drop_restriction_are_derived_by_final_controller_action() {
+    for id in ["TORI-H-FORCED-FULL", "TORI-H-CAPTURE-DROP"] {
         let v = given(id);
         let full = sequence(&v);
         let count = full.events().len();
@@ -1386,7 +1385,7 @@ fn forced8_conclusion_and_unequal16_obligation_are_derived_by_final_controller_a
         assert_eq!(native(&c), t::GameRecord::from_game(&full).unwrap());
         assert_eq!(after.event_index, count);
         assert_eq!(after.board_ply, count as u64);
-        if count == 8 {
+        if id == "TORI-H-FORCED-FULL" {
             assert_eq!(
                 current(&c).game.conclusion(),
                 Some(t::Conclusion::RepetitionForfeit {
@@ -1397,14 +1396,19 @@ fn forced8_conclusion_and_unequal16_obligation_are_derived_by_final_controller_a
             assert_eq!(after.status.score_half_points, Some([0, 2]));
         } else {
             assert!(current(&c).game.conclusion().is_none());
-            assert_eq!(current(&c).game.occurrences(), [0, 4, 10, 16]);
-            assert_eq!(current(&c).game.obligation().unwrap().side, t::Side::Sente);
+            assert_eq!(current(&c).game.occurrences(), [5, 11]);
+            assert_eq!(current(&c).game.repetition().unwrap().side, t::Side::Gote);
             assert!(!after.status.concluded);
         }
         let live = native(&c);
         send(&mut c, SessionOperation::Inspect { event_index: 4 }).unwrap();
-        assert_eq!(current(&c).selected().occurrences(), [0, 4]);
-        assert!(current(&c).selected().obligation().is_none());
+        let expected: &[usize] = if id == "TORI-H-FORCED-FULL" {
+            &[0, 4]
+        } else {
+            &[4]
+        };
+        assert_eq!(current(&c).selected().occurrences(), expected);
+        assert!(current(&c).selected().repetition().is_none());
         assert!(current(&c).selected().conclusion().is_none());
         send(&mut c, SessionOperation::ReturnLive {}).unwrap();
         assert_eq!(native(&c), live);
@@ -1434,7 +1438,7 @@ fn historical_failure_observation_saves_exact_prefix_without_future_knowledge_or
     let id = c.queue_shared_open(path, c.shared_open_token()).unwrap();
     let restored = wait_file(&mut c, id);
     assert!(matches!(restored.io.phase, IoPhase::Complete));
-    assert_eq!(restored.event_index, 8);
+    assert_eq!(restored.event_index, 7);
     assert!(!restored.historical);
     assert!(restored.paused);
     assert!(current(&c).pending.is_none());
@@ -1444,7 +1448,7 @@ fn historical_failure_observation_saves_exact_prefix_without_future_knowledge_or
     };
     let target = target.to_game().unwrap();
     assert_eq!(target.occurrences(), [0, 4]);
-    assert!(target.obligation().is_none());
+    assert!(target.repetition().is_none());
     assert_eq!(target.events().len(), 4);
     send(&mut c, SessionOperation::Inspect { event_index: 4 }).unwrap();
     assert_eq!(
@@ -1452,7 +1456,7 @@ fn historical_failure_observation_saves_exact_prefix_without_future_knowledge_or
         prefix
     );
     send(&mut c, SessionOperation::ReturnLive {}).unwrap();
-    assert_eq!(current(&c).game.occurrences(), [0, 4, 8]);
+    assert_eq!(current(&c).game.occurrences(), [3, 7]);
     assert!(!submit_observation(&mut c, response(ctx)));
     fs::remove_dir_all(dir).unwrap();
 }

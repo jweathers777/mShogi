@@ -270,7 +270,8 @@ impl Config {
             || self.openings.len() > 16
             || !(1..=16).contains(&self.rounds)
             || self.openings.len() * usize::from(self.rounds) * (self.players.len() - 1) * 2 > 128
-            || self.max_steps > 512
+            // The native Tori event limit (MSH-208) allows about 1,000 plies.
+            || self.max_steps > 1024
             || self.openings.len()
                 * usize::from(self.rounds)
                 * (self.players.len() - 1)

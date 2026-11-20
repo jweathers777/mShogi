@@ -51,6 +51,15 @@ fn strict_effective_limits_and_bounded_aggregate_work() {
     let mut bad = c.clone();
     bad.max_steps = 512;
     assert!(bad.validate().is_err());
+    // One opening pair may use the native Tori event limit (MSH-204/MSH-208).
+    let mut pair = c.clone();
+    pair.openings.truncate(1);
+    pair.players.truncate(2);
+    pair.rounds = 1;
+    pair.max_steps = 1024;
+    pair.validate().unwrap();
+    pair.max_steps = 1025;
+    assert!(pair.validate().is_err());
     let mut bad = c.clone();
     bad.players[0].limits.remove(0);
     assert!(bad.validate().is_err());

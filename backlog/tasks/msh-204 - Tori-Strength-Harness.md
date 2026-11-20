@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-19T19:43:00Z'
-updated_date: '2026-11-20T08:48:00Z'
+updated_date: '2026-11-20T11:55:00Z'
 labels:
   - handle:tori-strength-harness
   - tori
@@ -59,6 +59,8 @@ Plan:
 5. Tactical suite: native Tori mate prover (checks-only attacker, drops), mined from self-play, complete answer sets as in MSH-194; held-out split.
 6. Control with late-game depth >= 8; Texel export; time-odds test (2x time).
 7. Review, report, integration.
+
+Revised 2026-11-20 after MSH-208, before any game-test result: runner max_steps cap 512 -> 1024 per game (native event limit); Tori default max_steps 1000. Length-limit rule (tools/strength/native_match.py, fixed now): a Tori pair where a game reaches the step limit without a native result is excluded from SPRT and counted (length_limited_pairs); any other unscored stop still stops the campaign; stop when more than 10% of at least 20 pairs are excluded. Remaining: Tori mate prover + tactical suite (>= 200, held-out), control with median late-game depth >= 8, Texel export with split, 2x time-odds measurement (needs per-player clock in the native runner), report, review, merge.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes

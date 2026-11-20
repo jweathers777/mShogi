@@ -177,6 +177,76 @@ fn random_games_agree_with_the_native_rules() {
     );
 }
 
+/// The check flag after every legal move agrees with the native rules. The
+/// search position derives it from the moved piece and the rays that its
+/// departure opens (MSH-200), so each child is checked, not only the path.
+#[test]
+fn check_after_every_legal_move_agrees_with_the_native_rules() {
+    let mut children = 0;
+    let mut checks = 0;
+    let mut ray_pieces = 0;
+    for seed in 1..=48u64 {
+        let mut random = Random(seed.wrapping_mul(0xD1B5_4A32_D192_ED03) | 1);
+        let mut game = Game::standard();
+        let mut position = ToriPosition::from_game(&game);
+        for _ in 0..120 {
+            if game.conclusion().is_some() {
+                break;
+            }
+            let mut local = game.local_position().clone();
+            let mover = local.position().side_to_move();
+            for m in position.legal_moves() {
+                let action = position.action(m);
+                assert!(position.make(m));
+                let (_, mut undo) = local.apply(action).unwrap();
+                assert_eq!(
+                    position.in_check(),
+                    local.is_in_check(mover.opponent()),
+                    "{action:?}"
+                );
+                children += 1;
+                checks += usize::from(position.in_check());
+                local.undo(&mut undo).unwrap();
+                position.unmake();
+            }
+            ray_pieces += Square::all()
+                .filter(|&square| {
+                    matches!(
+                        game.position().piece(square),
+                        Some(Piece {
+                            face: Face::Eagle | Face::LeftQuail | Face::RightQuail,
+                            ..
+                        })
+                    )
+                })
+                .count();
+            // Prefer captures and drops, so that Eagles, Quails and drops
+            // are frequent.
+            let legal = game.legal_actions();
+            let wanted: Vec<Action> = legal
+                .iter()
+                .copied()
+                .filter(|action| match action {
+                    Action::Drop { .. } => true,
+                    Action::Move { to, .. } => game.position().piece(*to).is_some(),
+                })
+                .collect();
+            let pool = if wanted.is_empty() || random.next().is_multiple_of(3) {
+                &legal
+            } else {
+                &wanted
+            };
+            let action = pool[(random.next() % pool.len() as u64) as usize];
+            assert!(position.make(position.find(action).unwrap()));
+            play(&mut game, action);
+        }
+    }
+    assert!(
+        children > 50_000 && checks > 1_000 && ray_pieces > 1_000,
+        "{children} {checks} {ray_pieces}"
+    );
+}
+
 #[test]
 fn perft_agrees_with_the_native_perft() {
     let game = Game::standard();

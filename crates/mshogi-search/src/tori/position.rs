@@ -126,7 +126,54 @@ fn in_zone(side: usize, square: usize) -> bool {
     }
 }
 
+/// One ray of a ray piece: its squares up to the maximum distance, and
+/// whether square indices grow along the ray (so the nearest blocker is the
+/// lowest set bit) or fall (the highest set bit).
+#[derive(Clone, Copy)]
+struct Ray {
+    mask: u64,
+    up: bool,
+}
+const NO_RAY: Ray = Ray { mask: 0, up: false };
+const MAX_RAYS: usize = 5;
+/// The ray piece faces.
+const RAY_FACES: [usize; 3] = [EAGLE, LEFT_QUAIL, RIGHT_QUAIL];
+
+impl Ray {
+    /// Squares the ray reaches: up to and including the nearest occupied one.
+    fn targets(self, occupied: u64) -> u64 {
+        let blockers = self.mask & occupied;
+        if blockers == 0 {
+            self.mask
+        } else if self.up {
+            let nearest = blockers.trailing_zeros();
+            self.mask & ((2u64 << nearest) - 1)
+        } else {
+            let nearest = 63 - blockers.leading_zeros();
+            self.mask & !((1u64 << nearest) - 1)
+        }
+    }
+    /// The nearest occupied square on the ray, if any.
+    fn nearest(self, occupied: u64) -> Option<usize> {
+        let blockers = self.mask & occupied;
+        (blockers != 0).then(|| {
+            if self.up {
+                blockers.trailing_zeros() as usize
+            } else {
+                63 - blockers.leading_zeros() as usize
+            }
+        })
+    }
+}
+
 struct Tables {
+    /// Rays of [side][face][square], in the order of `RAYS`.
+    rays: [[[[Ray; MAX_RAYS]; SQUARES]; FACES]; 2],
+    /// Reverse rays of [side][face][square]: the squares from which a piece
+    /// of that side and face would reach the square along one of its rays.
+    reverse: [[[[Ray; MAX_RAYS]; SQUARES]; FACES]; 2],
+    /// Union of the reverse rays of [side][face][square], ignoring blockers.
+    lines: [[[u64; SQUARES]; FACES]; 2],
     /// Leap targets of [side][face][square].
     leaps: [[[u64; SQUARES]; FACES]; 2],
     /// Squares from which a piece of [side][face] leaps to [square].
@@ -139,6 +186,9 @@ struct Tables {
 #[allow(clippy::needless_range_loop)]
 static TABLES: LazyLock<Box<Tables>> = LazyLock::new(|| {
     let mut t = Box::new(Tables {
+        rays: [[[[NO_RAY; MAX_RAYS]; SQUARES]; FACES]; 2],
+        reverse: [[[[NO_RAY; MAX_RAYS]; SQUARES]; FACES]; 2],
+        lines: [[[0; SQUARES]; FACES]; 2],
         leaps: [[[0; SQUARES]; FACES]; 2],
         leapers_to: [[[0; SQUARES]; FACES]; 2],
         files: [0; 7],
@@ -154,6 +204,31 @@ static TABLES: LazyLock<Box<Tables>> = LazyLock::new(|| {
                         t.leaps[side][face][from] |= 1 << to;
                         t.leapers_to[side][face][to] |= 1 << from;
                     }
+                }
+            }
+        }
+    }
+    let walk = |side: usize, from: usize, right: i8, forward: i8, max: u8| {
+        let mut ray = NO_RAY;
+        let mut at = from;
+        for _ in 0..max {
+            let Some(next) = offset(at, side, right, forward) else {
+                break;
+            };
+            ray.mask |= 1 << next;
+            ray.up = next > from;
+            at = next;
+        }
+        ray
+    };
+    for side in 0..2 {
+        for face in 0..FACES {
+            for square in 0..SQUARES {
+                for (index, &(right, forward, max)) in RAYS[face].iter().enumerate() {
+                    t.rays[side][face][square][index] = walk(side, square, right, forward, max);
+                    let reverse = walk(side, square, -right, -forward, max);
+                    t.reverse[side][face][square][index] = reverse;
+                    t.lines[side][face][square] |= reverse.mask;
                 }
             }
         }
@@ -499,21 +574,19 @@ impl ToriPosition {
     /// Ray targets of a piece: empty squares and the first occupied square.
     fn ray_targets(&self, side: usize, face: usize, from: usize) -> u64 {
         let all = self.occupied[0] | self.occupied[1];
-        let mut targets = 0u64;
-        for &(right, forward, max) in RAYS[face] {
-            let mut at = from;
-            for _ in 0..max {
-                let Some(next) = offset(at, side, right, forward) else {
-                    break;
-                };
-                targets |= 1 << next;
-                if all & (1 << next) != 0 {
-                    break;
-                }
-                at = next;
-            }
+        let rays = &TABLES.rays[side][face][from];
+        rays[..RAYS[face].len()]
+            .iter()
+            .fold(0, |targets, ray| targets | ray.targets(all))
+    }
+    /// Squares that a piece of `side` and `face` on `square` attacks.
+    fn attacks(&self, side: usize, face: usize, square: usize) -> u64 {
+        let leaps = TABLES.leaps[side][face][square];
+        if RAYS[face].is_empty() {
+            leaps
+        } else {
+            leaps | self.ray_targets(side, face, square)
         }
-        targets
     }
     /// True if a piece of `by` attacks the square.
     fn attacked(&self, target: usize, by: usize) -> bool {
@@ -523,17 +596,32 @@ impl ToriPosition {
                 return true;
             }
         }
-        for face in [EAGLE, LEFT_QUAIL, RIGHT_QUAIL] {
-            let mut sliders = self.pieces[by][face];
-            while sliders != 0 {
-                let from = sliders.trailing_zeros() as usize;
-                sliders &= sliders - 1;
-                if self.ray_targets(by, face, from) & (1 << target) != 0 {
+        let all = self.occupied[0] | self.occupied[1];
+        for face in RAY_FACES {
+            let sliders = self.pieces[by][face];
+            if sliders == 0 {
+                continue;
+            }
+            // The nearest piece on a reverse ray is the only one that can
+            // reach the target along that ray.
+            for ray in &t.reverse[by][face][target][..RAYS[face].len()] {
+                if let Some(nearest) = ray.nearest(all)
+                    && sliders & (1 << nearest) != 0
+                {
                     return true;
                 }
             }
         }
         false
+    }
+    /// Squares on a ray line between `square` and a ray piece of `by`,
+    /// ignoring blockers: only a piece leaving one of them can open a ray
+    /// attack of `by` on the square.
+    fn ray_lines(&self, square: usize, by: usize) -> u64 {
+        RAY_FACES
+            .iter()
+            .filter(|&&face| self.pieces[by][face] != 0)
+            .fold(0, |lines, &face| lines | TABLES.lines[by][face][square])
     }
     #[allow(clippy::needless_range_loop)]
     fn generate_all(&self, stage: Stage, moves: &mut Vec<Move>) {
@@ -619,11 +707,39 @@ impl ToriPosition {
         TABLES.leaps[side][face][from] & (1 << to) != 0
             || (!RAYS[face].is_empty() && self.ray_targets(side, face, from) & (1 << to) != 0)
     }
-    fn has_legal_move(&mut self) -> bool {
-        let mut moves = Vec::new();
-        self.generate_all(Stage::Tactical, &mut moves);
-        self.generate_all(Stage::Quiet, &mut moves);
-        moves.into_iter().any(|m| {
+    /// True if the side to move can answer the check of a Swallow just
+    /// dropped on `swallow`. A Swallow checks from an adjacent square, so no
+    /// move can block it: only a Phoenix move or a capture of the Swallow can
+    /// be legal.
+    fn can_answer_swallow_check(&mut self, swallow: usize) -> bool {
+        let side = self.side;
+        let king = self.king(side);
+        let mut candidates = Vec::new();
+        let mut steps = TABLES.leaps[side][PHOENIX][king] & !self.occupied[side];
+        while steps != 0 {
+            let to = steps.trailing_zeros() as usize;
+            steps &= steps - 1;
+            candidates.push(Move::new(king, to));
+        }
+        for face in 0..FACES {
+            let mut attackers = TABLES.leapers_to[side][face][swallow] & self.pieces[side][face];
+            while attackers != 0 {
+                let from = attackers.trailing_zeros() as usize;
+                attackers &= attackers - 1;
+                candidates.push(Move::new(from, swallow));
+            }
+        }
+        let all = self.occupied[0] | self.occupied[1];
+        for face in RAY_FACES {
+            for ray in &TABLES.reverse[side][face][swallow][..RAYS[face].len()] {
+                if let Some(from) = ray.nearest(all)
+                    && self.pieces[side][face] & (1 << from) != 0
+                {
+                    candidates.push(Move::new(from, swallow));
+                }
+            }
+        }
+        candidates.into_iter().any(|m| {
             let legal = self.make(m);
             if legal {
                 self.unmake();
@@ -685,6 +801,13 @@ impl SearchPosition for ToriPosition {
     fn make(&mut self, m: Move) -> bool {
         let side = self.side;
         let (from, to) = (m.from(), m.to());
+        // The move can expose the own Phoenix only if the side is in check,
+        // the Phoenix moves, or the piece leaves a ray line to the Phoenix.
+        // A drop outside check adds a piece and never exposes the Phoenix.
+        let own_king = self.king(side);
+        let test_legality = self.check
+            || (from < DROP
+                && (from == own_king || self.ray_lines(own_king, side ^ 1) & (1 << from) != 0));
         let mut undo = Undo {
             m,
             moved: 0,
@@ -694,11 +817,13 @@ impl SearchPosition for ToriPosition {
             reversible: self.reversible,
         };
         let mut swallow_drop = false;
+        let placed;
         if from >= DROP {
             let index = from - DROP;
             self.remove_hand(side, index);
-            self.put(side, HAND_FACE[index], to);
-            swallow_drop = HAND_FACE[index] == SWALLOW;
+            placed = HAND_FACE[index];
+            self.put(side, placed, to);
+            swallow_drop = placed == SWALLOW;
             self.reversible = 0;
         } else {
             undo.moved = self.board[from];
@@ -712,20 +837,27 @@ impl SearchPosition for ToriPosition {
                 self.reversible = self.reversible.saturating_add(1);
             }
             self.take(side, face, from);
-            let result = self.moved_face(side, face, from, to);
-            self.put(side, result, to);
+            placed = self.moved_face(side, face, from, to);
+            self.put(side, placed, to);
         }
         self.side ^= 1;
         self.hash ^= TABLES.side;
         self.stack.push(undo);
         self.keys.push(self.hash);
-        if self.attacked(self.king(side), side ^ 1) {
+        if test_legality && self.attacked(self.king(side), side ^ 1) {
             self.unmake();
             return false;
         }
-        self.check = self.attacked(self.king(side ^ 1), side);
+        // The opponent was not in check before the move. Check now comes from
+        // the moved piece itself, or from a ray that its departure opened (a
+        // drop opens none; a capture leaves the target square occupied).
+        let enemy_king = self.king(side ^ 1);
+        self.check = self.attacks(side, placed, to) & (1 << enemy_king) != 0
+            || (from < DROP
+                && self.ray_lines(enemy_king, side) & (1 << from) != 0
+                && self.attacked(enemy_king, side));
         // A Swallow drop must not give checkmate.
-        if swallow_drop && self.check && !self.has_legal_move() {
+        if swallow_drop && self.check && !self.can_answer_swallow_check(to) {
             self.unmake();
             return false;
         }

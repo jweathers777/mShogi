@@ -38,6 +38,9 @@ COMPUTE_USD = 5
 # Frozen data in the worker image; a local smoke run may point elsewhere.
 DATA = os.environ.get('MSH204_DATA', '/opt/data')
 ENGINES = ('engine', 'runner', 'writer', 'helper')
+# Optional frozen predecessor (MSH-200): its engine and helper, for match pairs
+# and same-machine profiles and probes of both builds.
+BASELINE = ('baseline', 'baseline_helper')
 # Must equal FULL_VISITS and PROVER_VERSION in crates/mshogi-runner/examples/tori_strength.rs.
 PROOF_BOUND = 20_000_000
 PROVER_VERSION = 'tori-mate-proof-v2'
@@ -53,18 +56,22 @@ def validate_task(t):
     from tools.strength.anchor_worker import require
     kind = t.get('kind')
     if kind == 'pairs':
-        require(set(t) == {'kind', 'label', 'seeds', 'base_ms', 'increment_ms', 'factor', 'concurrency',
-                           'pair_ms'}, 'pairs fields')
-        require(t['label'] in ('control', 'odds') and isinstance(t['seeds'], list) and t['seeds']
+        fields = {'kind', 'label', 'seeds', 'base_ms', 'increment_ms', 'factor', 'concurrency', 'pair_ms'}
+        require(set(t) in (fields, fields | {'opponent'}), 'pairs fields')
+        require(t.get('opponent', 'self') in ('self', 'baseline'), 'pairs opponent')
+        require((t['label'] == 'match') == (t.get('opponent') == 'baseline'), 'match pairs play the baseline')
+        require(t['label'] in ('control', 'odds', 'match') and isinstance(t['seeds'], list) and t['seeds']
                 and all(type(s) is int and s >= 1 for s in t['seeds']), 'pairs seeds')
         require(1000 <= t['base_ms'] <= 60000 and 0 <= t['increment_ms'] <= 5000 and t['factor'] in (1, 2)
                 and t['concurrency'] in (1, 2) and 60000 <= t['pair_ms'] <= 600000, 'pairs bounds')
     elif kind == 'probe':
-        require(set(t) == {'kind', 'ms', 'shard', 'shards'}, 'probe fields')
+        require(set(t) - {'build'} == {'kind', 'ms', 'shard', 'shards'}, 'probe fields')
+        require(t.get('build', 'candidate') in ('candidate', 'baseline'), 'probe build')
         require(t['ms'] in (20, 200, 1000) and 0 <= t['shard'] < t['shards'] <= 8, 'probe bounds')
     elif kind == 'movegen':
-        require(set(t) == {'kind', 'repeats'} and type(t['repeats']) is int and 1 <= t['repeats'] <= 10000,
-                'movegen fields')
+        require(set(t) - {'build'} == {'kind', 'repeats'} and type(t['repeats']) is int
+                and 1 <= t['repeats'] <= 10000, 'movegen fields')
+        require(t.get('build', 'candidate') in ('candidate', 'baseline'), 'movegen build')
     elif kind == 'depth':
         require(set(t) == {'kind', 'ms', 'min_ply'}, 'depth fields')
         require(t['ms'] in (50, 100, 200) and 0 <= t['min_ply'] <= 400, 'depth bounds')
@@ -90,7 +97,10 @@ def validate_manifest(m):
         validate_task(t)
     seeds = [(t['label'], s) for t in tasks if t['kind'] == 'pairs' for s in t['seeds']]
     require(len(seeds) == len(set(seeds)), 'unique pair seeds per label')
-    require(set(m['build']['engines']) == set(ENGINES), 'four binaries')
+    engines = set(m['build']['engines'])
+    require(engines in (set(ENGINES), set(ENGINES + BASELINE)), 'four binaries, or six with a baseline')
+    require(engines == set(ENGINES + BASELINE) or not any(
+        t.get('opponent') == 'baseline' or t.get('build') == 'baseline' for t in tasks), 'baseline binaries')
     for e in m['build']['engines'].values():
         require(Path(e['path']).is_absolute() and re.fullmatch('[a-f0-9]{64}', e['sha256']) is not None
                 and re.fullmatch('[a-f0-9]{40}', e['source']) is not None, 'binary identity')
@@ -111,7 +121,8 @@ def data_digest(directory):
 def pairs_args(m, t):
     e = m['build']['engines']
     return SimpleNamespace(
-        config_writer=e['writer']['path'], candidate=e['engine']['path'], baseline=e['engine']['path'],
+        config_writer=e['writer']['path'], candidate=e['engine']['path'],
+        baseline=e['baseline' if t.get('opponent') == 'baseline' else 'engine']['path'],
         candidate_nodes=5_000_000, baseline_depth=64, baseline_nodes=5_000_000, calibrate=False,
         max_steps=1000, pair_wall_ms=t['pair_ms'], base=t['base_ms'] / 1000, increment=t['increment_ms'] / 1000,
         game='tori', candidate_time_factor=t['factor'], openings=f'{DATA}/tori-openings-v1.json',
@@ -122,7 +133,8 @@ def pairs_args(m, t):
 def run_task(m, t, directory, upload, end):
     """Run one task in `directory`; upload every artifact. Returns a summary."""
     from tools.strength import native_match
-    helper = m['build']['engines']['helper']['path']
+    helper = m['build']['engines']['baseline_helper' if t.get('build') == 'baseline' else 'helper']['path']
+    suffix = '-baseline' if t.get('build') == 'baseline' else ''
     if t['kind'] == 'pairs':
         args = pairs_args(m, t)
         out = Path(directory) / 'pairs'
@@ -150,12 +162,12 @@ def run_task(m, t, directory, upload, end):
         out = Path(directory) / f'probe-{t["ms"]}-{t["shard"]}.json'
         subprocess.run([helper, 'probe', str(shard), str(out), str(t['ms']), f'{DATA}/store.json'],
                        check=True, capture_output=True, timeout=max(60, end - time.time()))
-        upload(f'probe/{out.name}', out)
+        upload(f'probe{suffix}/{out.name}', out)
         return json.loads(out.read_text())['all']
     listing = Path(directory) / 'reports.json'
     listing.write_text(json.dumps(sorted(str(p) for p in Path(f'{DATA}/control').glob('*.report.json'))))
     if t['kind'] == 'movegen':
-        out = Path(directory) / 'movegen.json'
+        out = Path(directory) / f'movegen{suffix}.json'
         subprocess.run([helper, 'movegen', str(listing), str(out), str(t['repeats']),
                         f'{DATA}/tori-tactics-v1.json', f'{DATA}/tori-openings-v1.json'],
                        check=True, capture_output=True, timeout=max(60, end - time.time()))
@@ -235,6 +247,20 @@ def campaign_bins():
     return bins
 
 
+def match_bins():
+    """MSH-200, fixed before any result: one bin profiles and probes both
+    builds on the same VM; seven bins play candidate-predecessor pairs at the
+    Tori control (5 s + 0.1 s)."""
+    first = [{'kind': 'movegen', 'repeats': 200, 'build': b} for b in ('baseline', 'candidate')]
+    first += [{'kind': 'probe', 'ms': 20, 'shard': 0, 'shards': 1, 'build': b} for b in ('baseline', 'candidate')]
+    bins = [first]
+    for b in range(7):
+        bins.append([{'kind': 'pairs', 'label': 'match', 'opponent': 'baseline', 'factor': 1,
+                      'seeds': list(range(1 + 32 * b, 33 + 32 * b)), 'base_ms': 5000, 'increment_ms': 100,
+                      'concurrency': 2, 'pair_ms': 600000}])
+    return bins
+
+
 def smoke_bins():
     """One small task of each kind, to check the whole path before a campaign."""
     pairs = {'kind': 'pairs', 'seeds': [113], 'base_ms': 5000, 'increment_ms': 100, 'concurrency': 1,
@@ -270,12 +296,18 @@ def make_manifest(args):
              'compiler': (bins / 'rustc.txt').read_text().strip() + '; -C target-cpu=x86-64; --locked release',
              'engines': {k: {'path': '/opt/engines/' + n, 'sha256': file_hash(bins / n), 'source': source}
                          for k, n in names.items()}}
+    if args.baseline_bin_dir:
+        old = Path(args.baseline_bin_dir)
+        old_source = (old / 'source.txt').read_text().strip()
+        for k, n in (('baseline', 'mshogi'), ('baseline_helper', 'tori_strength')):
+            build['engines'][k] = {'path': '/opt/engines/baseline/' + n, 'sha256': file_hash(old / n),
+                                   'source': old_source}
     start = time.time()
     m = {'schema': 1, 'experiment': args.experiment, 'campaign_started_epoch': start,
          'deadline_epoch': start + CAMPAIGN_SECONDS, 'estimated_compute_before_usd': args.before,
          'task_seconds': args.task_seconds, 'build': build,
          'bins': (smoke_bins() if args.smoke else [[{'kind': 'movegen', 'repeats': 200}]] if args.movegen
-                  else campaign_bins())}
+                  else match_bins() if args.match else campaign_bins())}
     validate_manifest(m)
     Path(args.out).write_text(json.dumps(m))
     print(sum(map(len, m['bins'])), 'tasks in', len(m['bins']), 'bins')
@@ -302,7 +334,7 @@ def collect(raw, out):
                 if 'error' in pair or 'skipped' in pair:
                     raise SystemExit(f'{receipt}: pair {pair["seed"]} not played: {pair}')
     result = {}
-    for label in ('control', 'odds'):
+    for label in ('control', 'odds', 'match'):
         expected = sorted(s for b in manifest['bins'] for t in b
                           if t['kind'] == 'pairs' and t['label'] == label for s in t['seeds'])
         summaries = [json.loads(f.read_text()) for f in sorted(raw.glob(f'tasks/*/*/{label}/pair-*.summary.json'))]
@@ -338,7 +370,18 @@ def collect(raw, out):
                  'median_move_seconds': statistics.median(seconds) if seconds else None,
                  'pentanomial': counts, 'estimate': stats.estimate(counts) if sum(counts) else None,
                  'sprt_fixed_sample': stats.Sprt(0, 15, .05, .05, 30).status(counts) if sum(counts) else None}
-        result[label] = entry
+        if label == 'match' and scored:
+            # Sequential test in seed order over every launched pair: the first
+            # decision is the result; later pairs are retained, not used.
+            ordered = [row['pair_score'] for row in sorted(summaries, key=lambda row: row['seed'])]
+            test = stats.Sprt(0, 15, .05, .05, 30)
+            for n in range(1, len(ordered) + 1):
+                status = test.status(stats.pentanomial(ordered[:n]))
+                if status['decision'] != 'continue':
+                    break
+            entry['sprt_sequential'] = dict(status, pairs=n)
+        if summaries:
+            result[label] = entry
     suite_path = Path(__file__).resolve().parents[2] / 'tools/strength/data/tori-tactics-v1.json'
     suite_bytes = suite_path.read_bytes()
     frozen = json.loads((Path(__file__).resolve().parents[2] / 'tools/strength/data/tori-cloud-data-files.json')
@@ -347,27 +390,30 @@ def collect(raw, out):
         raise SystemExit('suite differs from the frozen cloud data')
     suite = json.loads(suite_bytes)
     diagrams = {r['id']: r['diagram'] for r in suite['positions']}
-    probes = collections.defaultdict(list)
-    for f in sorted(raw.glob('tasks/*/*/probe/probe-*.json')):
-        ms = int(f.name.split('-')[1])
-        probes[ms] += json.loads(f.read_text())['results']
-    result['suite'] = {}
+    result['movegen'] = {f.stem: json.loads(f.read_text())
+                         for f in sorted(raw.glob('tasks/*/*/movegen*/movegen*.json'))}
     proofs = {}
-    for ms, rows in sorted(probes.items()):
-        def count(split):
-            sel = [r for r in rows if split is None or r['split'] == split]
-            verdict = collections.Counter(r['verdict'] for r in sel)
-            return {'positions': len(sel), 'passed': sum(r['pass'] for r in sel), 'verdicts': dict(verdict)}
-        result['suite'][ms] = {'all': count(None), 'development': count('development'),
-                               'held_out': count('held-out')}
-        for r in rows:
-            if r['verdict'] in ('proved_win', 'refuted', 'unknown'):
-                # Same key as tori_strength store_key: canonical diagram digest,
-                # action, mate length, visit bound, prover version.
-                digest = hashlib.sha256(json.dumps(diagrams[r['id']], sort_keys=True,
-                                                   separators=(',', ':')).encode()).hexdigest()
-                proofs[f"{digest}|{r['chosen']}|{r['mate_plies']}|{PROOF_BOUND}|{PROVER_VERSION}"] = {
-                    'verdict': r['verdict'], 'id': r['id']}
+    def count(rows, split):
+        sel = [r for r in rows if split is None or r['split'] == split]
+        verdict = collections.Counter(r['verdict'] for r in sel)
+        return {'positions': len(sel), 'passed': sum(r['pass'] for r in sel), 'verdicts': dict(verdict)}
+
+    for folder, key in (('probe', 'suite'), ('probe-baseline', 'suite_baseline')):
+        probes = collections.defaultdict(list)
+        for f in sorted(raw.glob(f'tasks/*/*/{folder}/probe-*.json')):
+            probes[int(f.name.split('-')[1])] += json.loads(f.read_text())['results']
+        result[key] = {}
+        for ms, rows in sorted(probes.items()):
+            result[key][ms] = {'all': count(rows, None), 'development': count(rows, 'development'),
+                               'held_out': count(rows, 'held-out')}
+            for r in rows:
+                if r['verdict'] in ('proved_win', 'refuted', 'unknown'):
+                    # Same key as tori_strength store_key: canonical diagram digest,
+                    # action, mate length, visit bound, prover version.
+                    digest = hashlib.sha256(json.dumps(diagrams[r['id']], sort_keys=True,
+                                                       separators=(',', ':')).encode()).hexdigest()
+                    proofs[f"{digest}|{r['chosen']}|{r['mate_plies']}|{PROOF_BOUND}|{PROVER_VERSION}"] = {
+                        'verdict': r['verdict'], 'id': r['id']}
     result['proofs_stored'] = len(proofs)
     depth = [json.loads(f.read_text()) for f in sorted(raw.glob('tasks/*/*/depth/depth-*.json'))]
     result['fresh_search_depth'] = depth
@@ -396,6 +442,8 @@ def main():
     k.add_argument('--before', type=float, default=0)
     k.add_argument('--smoke', action='store_true')
     k.add_argument('--movegen', action='store_true', help='MSH-200 move generation profile (one VM)')
+    k.add_argument('--match', action='store_true', help='MSH-200 candidate against --baseline-bin-dir')
+    k.add_argument('--baseline-bin-dir', help='binaries of the frozen predecessor (mshogi, tori_strength)')
     c = sub.add_parser('collect')
     c.add_argument('--raw', required=True)
     c.add_argument('--out', required=True)

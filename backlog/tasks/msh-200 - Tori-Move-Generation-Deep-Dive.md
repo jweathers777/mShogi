@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-19T07:12:00Z'
-updated_date: '2026-11-20T23:29:00Z'
+updated_date: '2026-11-20T23:39:00Z'
 labels:
   - tori
   - search
@@ -36,7 +36,7 @@ Native rules stay the authority. The search-side position must agree with them i
 ## Implementation Plan
 
 <!-- SECTION:PLAN:BEGIN -->
-1. Freeze the current main build as predecessor. 2. Implement A (drops), C (Swallow drop-mate), D (ray tables), then B (danger set), each with differential tests against native legality and check flags. 3. Measure nodes/s and time to depth against the baseline. 4. Game test against the predecessor in the cloud (5 s + 0.1 s, SPRT). 5. Rewrite the note as a design note.
+1. Predecessor: main at the task start (bdf0c75; code as d50c082). 2. Exact speed set in tori/position.rs: ray tables with first-blocker scan, reverse-ray attack test, legality test only in check / Phoenix move / departure from a ray line to the Phoenix, check from the moved piece plus discovered-ray test, Swallow drop-mate test over Phoenix moves and Swallow captures only. 3. Correctness: native differential tests incl. a new child check-flag test (48 games), perft, Swallow drop rules; mutation checks of the new paths. 4. Cloud (tori_cloud --match, one c3-standard-4 type): same-VM depth-6 profile and 20 ms suite probe of both builds (node totals must match exactly), then candidate-predecessor pairs at 5 s + 0.1 s, sequential SPRT H0 0 / H1 15 in seed order. 5. Rewrite docs/m5/tori-move-generation.md as a design note.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes

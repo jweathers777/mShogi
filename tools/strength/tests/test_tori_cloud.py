@@ -70,3 +70,53 @@ class ProofKey(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class Match(unittest.TestCase):
+    """MSH-200: candidate against a frozen predecessor, both builds profiled."""
+
+    def baseline_manifest(self):
+        m = manifest()
+        m['experiment'] = 'msh200-match'
+        m['bins'] = tori_cloud.match_bins()
+        for k in tori_cloud.BASELINE:
+            m['build']['engines'][k] = {'path': '/opt/engines/baseline/' + k, 'sha256': H, 'source': SRC}
+        return m
+
+    def test_match_campaign_is_valid(self):
+        m = self.baseline_manifest()
+        tori_cloud.validate_manifest(m)
+        pairs = [t for b in m['bins'] for t in b if t['kind'] == 'pairs']
+        self.assertEqual(len(pairs), 7)
+        self.assertTrue(all(t['label'] == 'match' and t['opponent'] == 'baseline' for t in pairs))
+        self.assertEqual(sorted(s for t in pairs for s in t['seeds']), list(range(1, 225)))
+        self.assertEqual(sorted(t['build'] for t in m['bins'][0] if t['kind'] == 'movegen'),
+                         ['baseline', 'candidate'])
+
+    def test_baseline_tasks_need_baseline_binaries_and_match_label(self):
+        cases = []
+        m = self.baseline_manifest()
+        for k in tori_cloud.BASELINE:
+            m['build']['engines'].pop(k)
+        cases.append(m)
+        m = self.baseline_manifest(); m['bins'][1][0]['label'] = 'control'; cases.append(m)
+        m = self.baseline_manifest(); m['bins'][1][0].pop('opponent'); cases.append(m)
+        m = self.baseline_manifest(); m['bins'][0][0]['build'] = 'other'; cases.append(m)
+        m = self.baseline_manifest(); m['build']['engines'].pop('baseline_helper'); cases.append(m)
+        for bad in cases:
+            with self.assertRaises(Exception):
+                tori_cloud.validate_manifest(copy.deepcopy(bad))
+
+    def test_pairs_args_select_the_opponent(self):
+        from pathlib import Path
+        from unittest import mock
+        data = str(Path(__file__).resolve().parents[1] / 'data')
+        patcher = mock.patch.object(tori_cloud, 'DATA', data)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        m = self.baseline_manifest()
+        task = m['bins'][1][0]
+        self.assertEqual(tori_cloud.pairs_args(m, task).baseline, '/opt/engines/baseline/baseline')
+        control = dict(task, label='control')
+        control.pop('opponent')
+        self.assertEqual(tori_cloud.pairs_args(m, control).baseline, '/opt/engines/engine')

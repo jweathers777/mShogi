@@ -31,6 +31,8 @@ from pathlib import Path
 from types import SimpleNamespace
 
 PREFIX = 'msh204'
+# Tori program tasks that run campaigns through this module.
+PREFIXES = ('msh204', 'msh200')
 CAMPAIGN_SECONDS = 2 * 3600
 COMPUTE_USD = 5
 # Frozen data in the worker image; a local smoke run may point elsewhere.
@@ -41,9 +43,9 @@ PROOF_BOUND = 20_000_000
 PROVER_VERSION = 'tori-mate-proof-v2'
 
 
-def policy():
+def policy(prefix=PREFIX):
     from tools.strength import anchor_cloud
-    return anchor_cloud.CampaignPolicy(PREFIX, CAMPAIGN_SECONDS, COMPUTE_USD, 'tools.strength.tori_cloud',
+    return anchor_cloud.CampaignPolicy(prefix, CAMPAIGN_SECONDS, COMPUTE_USD, 'tools.strength.tori_cloud',
                                        ('worker',))
 
 
@@ -60,6 +62,9 @@ def validate_task(t):
     elif kind == 'probe':
         require(set(t) == {'kind', 'ms', 'shard', 'shards'}, 'probe fields')
         require(t['ms'] in (20, 200, 1000) and 0 <= t['shard'] < t['shards'] <= 8, 'probe bounds')
+    elif kind == 'movegen':
+        require(set(t) == {'kind', 'repeats'} and type(t['repeats']) is int and 1 <= t['repeats'] <= 10000,
+                'movegen fields')
     elif kind == 'depth':
         require(set(t) == {'kind', 'ms', 'min_ply'}, 'depth fields')
         require(t['ms'] in (50, 100, 200) and 0 <= t['min_ply'] <= 400, 'depth bounds')
@@ -69,8 +74,8 @@ def validate_task(t):
 
 def validate_manifest(m):
     from tools.strength.anchor_worker import require
-    require(m.get('schema') == 1 and re.fullmatch(PREFIX + r'-[a-z0-9-]{1,50}', m.get('experiment', '')),
-            'wrong campaign identity')
+    require(m.get('schema') == 1 and re.fullmatch('(' + '|'.join(PREFIXES) + r')-[a-z0-9-]{1,50}',
+                                                  m.get('experiment', '')), 'wrong campaign identity')
     for field in ('campaign_started_epoch', 'deadline_epoch', 'estimated_compute_before_usd'):
         require(type(m.get(field)) in (int, float) and math.isfinite(m[field]), 'finite ' + field)
     require(m['deadline_epoch'] == m['campaign_started_epoch'] + CAMPAIGN_SECONDS, 'fixed campaign deadline')
@@ -149,6 +154,13 @@ def run_task(m, t, directory, upload, end):
         return json.loads(out.read_text())['all']
     listing = Path(directory) / 'reports.json'
     listing.write_text(json.dumps(sorted(str(p) for p in Path(f'{DATA}/control').glob('*.report.json'))))
+    if t['kind'] == 'movegen':
+        out = Path(directory) / 'movegen.json'
+        subprocess.run([helper, 'movegen', str(listing), str(out), str(t['repeats']),
+                        f'{DATA}/tori-tactics-v1.json', f'{DATA}/tori-openings-v1.json'],
+                       check=True, capture_output=True, timeout=max(60, end - time.time()))
+        upload(f'movegen/{out.name}', out)
+        return {'sets': list(json.loads(out.read_text())['sets'])}
     out = Path(directory) / f'depth-{t["ms"]}.json'
     subprocess.run([helper, 'depth', str(listing), str(out), str(t['ms']), str(t['min_ply'])],
                    check=True, capture_output=True, timeout=max(60, end - time.time()))
@@ -183,7 +195,7 @@ def worker(manifest_uri, store_uri):
             started = time.time()
             row = {'task': task, 'started_epoch': started}
             try:
-                with tempfile.TemporaryDirectory(prefix=PREFIX + '-') as directory:
+                with tempfile.TemporaryDirectory(prefix='tori-') as directory:
                     row['result'] = run_task(
                         m, task, directory,
                         lambda name, path: put_new(store, f'tasks/{index}/{number}/{name}',
@@ -211,7 +223,7 @@ def submit(args):
     require(args.image == m['build']['runtime_image'], 'submitted image differs from frozen worker')
     config = gcp.validate_config(decode(Path(args.config).read_bytes()))
     require(config['max_run_seconds'] == m['task_seconds'], 'task limit differs')
-    anchor_cloud.run(args, policy=policy(), manifest_validator=validate_manifest)
+    anchor_cloud.run(args, policy=policy(m['experiment'].split('-')[0]), manifest_validator=validate_manifest)
 
 
 def campaign_bins():
@@ -262,7 +274,8 @@ def make_manifest(args):
     m = {'schema': 1, 'experiment': args.experiment, 'campaign_started_epoch': start,
          'deadline_epoch': start + CAMPAIGN_SECONDS, 'estimated_compute_before_usd': args.before,
          'task_seconds': args.task_seconds, 'build': build,
-         'bins': smoke_bins() if args.smoke else campaign_bins()}
+         'bins': (smoke_bins() if args.smoke else [[{'kind': 'movegen', 'repeats': 200}]] if args.movegen
+                  else campaign_bins())}
     validate_manifest(m)
     Path(args.out).write_text(json.dumps(m))
     print(sum(map(len, m['bins'])), 'tasks in', len(m['bins']), 'bins')
@@ -382,6 +395,7 @@ def main():
     k.add_argument('--task-seconds', type=int, default=3600)
     k.add_argument('--before', type=float, default=0)
     k.add_argument('--smoke', action='store_true')
+    k.add_argument('--movegen', action='store_true', help='MSH-200 move generation profile (one VM)')
     c = sub.add_parser('collect')
     c.add_argument('--raw', required=True)
     c.add_argument('--out', required=True)

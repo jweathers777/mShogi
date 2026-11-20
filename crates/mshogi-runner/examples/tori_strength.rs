@@ -10,6 +10,7 @@
 //!   tori_strength prove SUITE.json OUT.json STORE.json PROBE.json [PROBE.json ...]
 //!   tori_strength depth REPORTS.json OUT.json TIME_MS MIN_PLY
 //!   tori_strength export REPORTS.json OUT.jsonl EVERY
+//!   tori_strength movegen REPORTS.json OUT.json REPEATS SUITE.json OPENINGS.json
 use mshogi_core::{native::CanonicalRecord, tori::*};
 use mshogi_runner::experiments::ValidatedReport;
 use mshogi_search::{alphabeta::timing::TimeBudget, tori as search};
@@ -498,6 +499,100 @@ fn export(paths: &Value, every: usize) -> String {
     text
 }
 
+/// Move-generation cost profile (MSH-200, Tori Move Generation Deep Dive) on
+/// three position sets: real game positions (every 4th ply from ply 20 of the
+/// reports), the suite diagrams and the final opening positions; plus the
+/// fixed-depth search speed on each set.
+fn movegen(paths: &Value, repeats: u32, suite: &str, openings: &str) -> Value {
+    let mut games = vec![];
+    for s in strings(paths).iter().flat_map(|p| sources(p)) {
+        for (ply, (event, _)) in plays(&s).into_iter().enumerate() {
+            if ply >= 20 && ply % 4 == 0 {
+                games.push(
+                    s.game
+                        .event_prefix(event)
+                        .unwrap()
+                        .local_position()
+                        .position()
+                        .clone(),
+                );
+            }
+        }
+    }
+    let suite: Value = serde_json::from_str(&fs::read_to_string(suite).unwrap()).unwrap();
+    let diagrams: Vec<Position> = suite["positions"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|r| root(&r["diagram"]))
+        .collect();
+    let catalog: Value = serde_json::from_str(&fs::read_to_string(openings).unwrap()).unwrap();
+    let opening_positions: Vec<Position> = catalog["openings"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|o| {
+            let mut local = LocalPosition::admit(Position::standard()).unwrap();
+            for m in strings(&o["moves"]) {
+                let a = notation::parse_action(local.position(), &m).unwrap();
+                local.apply(a).unwrap();
+            }
+            local.position().clone()
+        })
+        .collect();
+    let mut sets = serde_json::Map::new();
+    for (name, positions) in [
+        ("games", games),
+        ("suite", diagrams),
+        ("openings", opening_positions),
+    ] {
+        let rows = search::movegen_profile(&positions, repeats);
+        let table: Vec<Value> = rows
+            .iter()
+            .map(|r| json!({"label": r.label, "nanos": r.nanos as u64, "count": r.count, "calls": r.calls,
+                            "ns_per_call": r.nanos as f64 / r.calls.max(1) as f64,
+                            "ns_per_count": r.nanos as f64 / r.count.max(1) as f64}))
+            .collect();
+        // Fixed-depth search speed (one thread, fresh engine per position).
+        let (mut nodes, mut nanos) = (0u64, 0u128);
+        for p in positions.iter().take(200) {
+            let game = Game::from_root(
+                Position::from_diagram(
+                    &Square::all()
+                        .filter_map(|s| p.piece(s).map(|x| (s, x)))
+                        .collect::<Vec<_>>(),
+                    [p.hand(Side::Sente), p.hand(Side::Gote)],
+                    p.side_to_move(),
+                    RootMetadata::diagram(0),
+                )
+                .unwrap(),
+            )
+            .unwrap();
+            if game.conclusion().is_some() {
+                continue;
+            }
+            let start = std::time::Instant::now();
+            let r = search::search(
+                &game,
+                search::Limits {
+                    depth: 6,
+                    nodes: search::MAX_NODES,
+                },
+            )
+            .unwrap();
+            nanos += start.elapsed().as_nanos();
+            nodes += r.nodes;
+        }
+        sets.insert(
+            name.into(),
+            json!({"positions": positions.len(), "rows": table,
+            "search_depth6": {"positions": positions.len().min(200), "nodes": nodes,
+                              "nodes_per_second": nodes as f64 / (nanos as f64 / 1e9)}}),
+        );
+    }
+    json!({"repeats": repeats, "evaluator": search::EVALUATOR_ID, "search": search::SEARCH_ID, "sets": sets})
+}
+
 fn main() {
     let args: Vec<_> = std::env::args().collect();
     let input: Value = serde_json::from_str(&fs::read_to_string(&args[2]).unwrap()).unwrap();
@@ -517,6 +612,13 @@ fn main() {
             serde_json::to_string_pretty(&prove(&input, &probes, Some(&args[4]))).unwrap()
         }
         "export" => export(&input, args[4].parse().unwrap()),
+        "movegen" => serde_json::to_string_pretty(&movegen(
+            &input,
+            args[4].parse().unwrap(),
+            &args[5],
+            &args[6],
+        ))
+        .unwrap(),
         "depth" => serde_json::to_string_pretty(&depth(
             &input,
             args[4].parse().unwrap(),

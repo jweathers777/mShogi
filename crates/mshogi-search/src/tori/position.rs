@@ -894,3 +894,177 @@ impl SearchPosition for ToriPosition {
         self.pseudo_legal(m) && !(self.ply() == 0 && self.root_forbidden.contains(&m))
     }
 }
+
+/// One measured operation of [`movegen_profile`]: total nanoseconds over all
+/// repeats and positions, and the number of operations (or generated moves).
+#[doc(hidden)]
+#[derive(Clone, Debug)]
+pub struct ProfileRow {
+    /// Operation name.
+    pub label: String,
+    /// Total time in nanoseconds.
+    pub nanos: u128,
+    /// Operations, or moves generated for a generation row.
+    pub count: u64,
+    /// Calls (pieces or hand kinds for generation rows).
+    pub calls: u64,
+}
+
+/// Cost of the search-side move generation by piece kind, drops, make/unmake
+/// by move class, the attack test and perft (MSH-200, Tori Move Generation
+/// Deep Dive). A measurement tool, not used by the search.
+#[doc(hidden)]
+#[allow(clippy::needless_range_loop)]
+pub fn movegen_profile(positions: &[Position], repeats: u32) -> Vec<ProfileRow> {
+    use std::hint::black_box;
+    use std::time::Instant;
+    const NAMES: [&str; FACES] = [
+        "Phoenix",
+        "Falcon",
+        "Eagle",
+        "Crane",
+        "Pheasant",
+        "LeftQuail",
+        "RightQuail",
+        "Swallow",
+        "Goose",
+    ];
+    let mut rows: Vec<ProfileRow> = Vec::new();
+    let mut add = |label: &str, nanos: u128, count: u64, calls: u64| match rows
+        .iter_mut()
+        .find(|r| r.label == label)
+    {
+        Some(r) => {
+            r.nanos += nanos;
+            r.count += count;
+            r.calls += calls;
+        }
+        None => rows.push(ProfileRow {
+            label: label.into(),
+            nanos,
+            count,
+            calls,
+        }),
+    };
+    let mut copies: Vec<ToriPosition> = positions.iter().map(ToriPosition::from_position).collect();
+    for p in &mut copies {
+        let side = p.side;
+        let own = p.occupied[side];
+        let blocked = own | p.pieces[side ^ 1][PHOENIX];
+        // Targets of each piece kind of the side to move.
+        for face in 0..FACES {
+            let pieces = p.pieces[side][face];
+            if pieces == 0 {
+                continue;
+            }
+            let mut generated = 0u64;
+            let start = Instant::now();
+            for _ in 0..repeats {
+                let mut set = black_box(pieces);
+                while set != 0 {
+                    let from = set.trailing_zeros() as usize;
+                    set &= set - 1;
+                    let mut targets = TABLES.leaps[side][face][from];
+                    if !RAYS[face].is_empty() {
+                        targets |= p.ray_targets(side, face, from);
+                    }
+                    generated += u64::from(black_box(targets & !blocked).count_ones());
+                }
+            }
+            add(
+                &format!("targets {}", NAMES[face]),
+                start.elapsed().as_nanos(),
+                generated,
+                u64::from(repeats) * u64::from(pieces.count_ones()),
+            );
+        }
+        // Drop targets and moves.
+        let kinds = p.hands[side].iter().filter(|&&n| n > 0).count() as u64;
+        if kinds > 0 {
+            let mut moves = Vec::with_capacity(256);
+            let start = Instant::now();
+            for _ in 0..repeats {
+                moves.clear();
+                let empty = ALL & !(p.occupied[0] | p.occupied[1]);
+                for index in 0..HAND_FACES {
+                    if p.hands[side][index] == 0 {
+                        continue;
+                    }
+                    let mut targets = empty;
+                    if HAND_FACE[index] == SWALLOW {
+                        targets &= p.swallow_drop_squares(side);
+                    }
+                    while targets != 0 {
+                        let to = targets.trailing_zeros() as usize;
+                        targets &= targets - 1;
+                        moves.push(Move::new(DROP + index, to));
+                    }
+                }
+                black_box(&moves);
+            }
+            add(
+                "drops",
+                start.elapsed().as_nanos(),
+                moves.len() as u64 * u64::from(repeats),
+                kinds * u64::from(repeats),
+            );
+        }
+        // Full generation of both stages.
+        let mut moves = Vec::with_capacity(256);
+        let start = Instant::now();
+        for _ in 0..repeats {
+            moves.clear();
+            p.generate_all(Stage::Tactical, &mut moves);
+            p.generate_all(Stage::Quiet, &mut moves);
+            black_box(&moves);
+        }
+        add(
+            "generate all",
+            start.elapsed().as_nanos(),
+            moves.len() as u64 * u64::from(repeats),
+            u64::from(repeats),
+        );
+        // Attack test of the own Phoenix (the legality test of each move).
+        let king = p.king(side);
+        let start = Instant::now();
+        for _ in 0..repeats {
+            black_box(p.attacked(black_box(king), side ^ 1));
+        }
+        add(
+            "attacked(Phoenix)",
+            start.elapsed().as_nanos(),
+            u64::from(repeats),
+            u64::from(repeats),
+        );
+        // Make and unmake by move class.
+        for &m in &moves {
+            let class = if m.is_drop() {
+                if HAND_FACE[m.from() - DROP] == SWALLOW {
+                    "make swallow drop"
+                } else {
+                    "make drop"
+                }
+            } else if p.board[m.to()] != 0 {
+                "make capture"
+            } else {
+                "make move"
+            };
+            let mut legal = 0u64;
+            let start = Instant::now();
+            for _ in 0..repeats {
+                if p.make(black_box(m)) {
+                    legal += 1;
+                    p.unmake();
+                }
+            }
+            add(class, start.elapsed().as_nanos(), legal, u64::from(repeats));
+        }
+    }
+    // Perft to depth 3 (generation, make and unmake together).
+    for p in &mut copies {
+        let start = Instant::now();
+        let nodes = p.perft(3);
+        add("perft 3", start.elapsed().as_nanos(), nodes, 1);
+    }
+    rows
+}

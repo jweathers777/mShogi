@@ -42,6 +42,22 @@ class Manifest(unittest.TestCase):
                 tori_cloud.validate_manifest(copy.deepcopy(bad))
 
 
+class MoveGeneration(unittest.TestCase):
+    def test_msh200_profile_campaign_is_valid_and_bounded(self):
+        m = manifest()
+        m['experiment'] = 'msh200-movegen'
+        m['bins'] = [[{'kind': 'movegen', 'repeats': 200}]]
+        tori_cloud.validate_manifest(m)
+        for bad in ({'kind': 'movegen', 'repeats': 0}, {'kind': 'movegen', 'repeats': 200, 'shell': 'x'}):
+            m['bins'] = [[bad]]
+            with self.assertRaises(Exception):
+                tori_cloud.validate_manifest(m)
+        m['bins'] = [[{'kind': 'movegen', 'repeats': 200}]]
+        m['experiment'] = 'msh999-movegen'
+        with self.assertRaises(Exception):
+            tori_cloud.validate_manifest(m)
+
+
 class ProofKey(unittest.TestCase):
     def test_python_and_rust_proof_constants_agree(self):
         import re

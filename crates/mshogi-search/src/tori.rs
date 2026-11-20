@@ -17,6 +17,8 @@ use mshogi_core::tori::{
 };
 use position::ToriPosition;
 pub use position::piece_value;
+#[doc(hidden)]
+pub use position::{ProfileRow, movegen_profile};
 use std::{error::Error, fmt};
 
 /// Evaluation identity: material with Swallow advance, Phoenix cover and hand terms.

@@ -1,9 +1,11 @@
 ---
 id: MSH-200
 title: Tori Move Generation Deep Dive
-status: To Do
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-19T07:12:00Z'
+updated_date: '2026-11-20T16:53:00Z'
 labels:
   - handle:tori-move-generation-deep-dive
   - tori

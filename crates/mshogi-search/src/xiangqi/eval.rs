@@ -216,7 +216,7 @@ pub const LOWER: [i32; COUNT] = bounds(false);
 /// Inclusive upper bounds.
 pub const UPPER: [i32; COUNT] = bounds(true);
 /// Compiled weights used by the search: the MSH-196 (Xiangqi Evaluation
-/// Round) static-term fit, docs/m5/evidence/msh196/fit3.json.
+/// Round) static-term fit.
 pub const DEFAULT: [i32; COUNT] = [
     150, 150, 512, 1440, 498, 108, 0, 0, 0, -16, 20, 112, 126, 150, 142, -32, -32, -8, 40, 16, -56,
     -48, -44, 56, 142, 120, 132, 120, 120, 120, 134, 24, 90, 60, 62, -8, 48, 10, 76, 134, 150, 150,

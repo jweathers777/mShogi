@@ -151,12 +151,11 @@ def run(args, *, policy=ANCHOR_POLICY, manifest_validator=None):
     if not store.put(key, data):
         raise ValueError('Batch prefix already exists; reconcile instead of rerunning')
     uri = config['store_uri'].rstrip('/') + '/' + key
-    spec = gcp.batch_config(uri, args.image, config, len(manifest['bins']))
+    spec = gcp.batch_config(uri, args.image, config, len(manifest['bins']), [
+        '-m', policy.worker_module, *policy.worker_arguments, '--manifest', uri, '--store', config['store_uri']])
     owner = uuid.uuid4().hex
     spec['labels'][policy.owner_label] = owner
     spec['allocationPolicy']['labels'] = {policy.owner_label: owner}
-    spec['taskGroups'][0]['taskSpec']['runnables'][0]['container']['commands'] = [
-        '-m', policy.worker_module, *policy.worker_arguments, '--manifest', uri, '--store', config['store_uri']]
     # VM runtime bound supplements the absolute worker deadline and local watchdog.
     spec['taskGroups'][0]['taskSpec']['maxRunDuration'] = str(min(config['max_run_seconds'], int(deadline-start))) + 's'
     save(out / 'batch-request.json', spec)

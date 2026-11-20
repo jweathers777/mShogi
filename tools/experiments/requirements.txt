@@ -1,2 +1,1 @@
-chess==1.11.2
 google-cloud-storage==3.4.1

@@ -59,6 +59,9 @@ class Client:
         return [SimpleNamespace(name=k) for k in bucket.objects if k.startswith(prefix)]
 
 
+WORKER = ['-m', 'tools.strength.worker', '--manifest', 'gs://test-bucket/m.json']
+
+
 class StorageTests(unittest.TestCase):
     def setUp(self):
         self.errors = patch.object(gcp, '_api_errors', return_value=(Missing, Conflict))
@@ -134,7 +137,7 @@ MANIFEST = 'gs://test-results/experiment/manifest.json'
 
 class BatchTests(unittest.TestCase):
     def test_eight_workers_one_task_per_whole_machine(self):
-        cfg = gcp.batch_config(MANIFEST, IMAGE, CONFIG, 100)
+        cfg = gcp.batch_config(MANIFEST, IMAGE, CONFIG, 100, WORKER)
         group = cfg['taskGroups'][0]
         self.assertEqual((group['taskCount'], group['parallelism'], group['taskCountPerNode']), ('100', '8', '1'))
         self.assertEqual(group['taskSpec']['computeResource']['cpuMilli'], '4000')
@@ -146,16 +149,16 @@ class BatchTests(unittest.TestCase):
         self.assertEqual(policy['location']['allowedLocations'], ['regions/us-central1'])
         container = group['taskSpec']['runnables'][0]['container']
         self.assertEqual(container['entrypoint'], 'python3')
-        self.assertEqual(container['commands'], ['-m', 'tools.experiments.cli', 'cloud-worker', '--manifest', MANIFEST, '--store', CONFIG['store_uri']])
+        self.assertEqual(container['commands'], WORKER)
         self.assertNotIn('script', group['taskSpec']['runnables'][0])
 
     def test_explicit_network_is_emitted_without_default_network(self):
         config = {**CONFIG, 'network':'projects/test-project/global/networks/experiment-workers',
                   'subnetwork':'projects/test-project/regions/us-central1/subnetworks/experiment-workers'}
-        result = gcp.batch_config(MANIFEST, IMAGE, config, 1)
+        result = gcp.batch_config(MANIFEST, IMAGE, config, 1, WORKER)
         self.assertEqual(result['allocationPolicy']['network']['networkInterfaces'],
                          [{'network':config['network'], 'subnetwork':config['subnetwork']}])
-        self.assertNotIn('network', gcp.batch_config(MANIFEST, IMAGE, CONFIG, 1)['allocationPolicy'])
+        self.assertNotIn('network', gcp.batch_config(MANIFEST, IMAGE, CONFIG, 1, WORKER)['allocationPolicy'])
 
     def test_network_names_project_region_and_pair_are_validated(self):
         network = 'projects/test-project/global/networks/experiment-workers'
@@ -176,39 +179,14 @@ class BatchTests(unittest.TestCase):
                 gcp.validate_config({**CONFIG, **values})
 
     def test_small_pilot_and_sixteen_ceiling(self):
-        self.assertEqual(gcp.batch_config(MANIFEST, IMAGE, CONFIG, 1)['taskGroups'][0]['parallelism'], '1')
-        self.assertEqual(gcp.batch_config(MANIFEST, IMAGE, {**CONFIG, 'parallelism':16}, 100)['taskGroups'][0]['parallelism'], '16')
+        self.assertEqual(gcp.batch_config(MANIFEST, IMAGE, CONFIG, 1, WORKER)['taskGroups'][0]['parallelism'], '1')
+        self.assertEqual(gcp.batch_config(MANIFEST, IMAGE, {**CONFIG, 'parallelism':16}, 100, WORKER)['taskGroups'][0]['parallelism'], '16')
         for key, value in [('parallelism',17), ('parallelism',True), ('cpu_milli',1000), ('machine_type','e2-standard-4'), ('max_retries',10), ('max_run_seconds',0), ('unexpected',1), ('vm_hourly_usd',float('nan'))]:
             with self.subTest(key=key), self.assertRaises(ValueError):
-                gcp.batch_config(MANIFEST, IMAGE, {**CONFIG, key:value}, 1)
-        with self.assertRaises(ValueError): gcp.batch_config(MANIFEST, IMAGE.split('@')[0]+':latest', CONFIG, 1)
-        with self.assertRaises(ValueError): gcp.batch_config(MANIFEST, IMAGE, CONFIG, 0)
-
-    def test_submit_argument_vector_and_observable_failure(self):
-        def run(argv, **kw):
-            self.assertEqual(argv[:5], ['gcloud','batch','jobs','submit','pilot-01'])
-            self.assertTrue(kw['check'])
-            self.assertNotIn('shell', kw)
-            with open(argv[argv.index('--config')+1]) as f: document=json.load(f)
-            self.assertEqual(document['taskGroups'][0]['taskCount'], '1')
-            return SimpleNamespace(stdout='{"name":"pilot-01"}')
-        with patch.object(gcp.subprocess, 'run', side_effect=run):
-            self.assertEqual(gcp.submit_job('pilot-01', MANIFEST, IMAGE, CONFIG, 1), {'name':'pilot-01'})
-        with patch.object(gcp.subprocess, 'run', side_effect=subprocess.CalledProcessError(1, 'gcloud')):
-            with self.assertRaises(subprocess.CalledProcessError): gcp.submit_job('pilot-01', MANIFEST, IMAGE, CONFIG, 1)
-
-    def test_cancel_requests_async_deletion_without_touching_store(self):
-        with patch.object(gcp, '_run', return_value={'name':'operation'}) as run:
-            self.assertEqual(gcp.cancel_job('pilot-01','test-project','us-central1'), {'name':'operation'})
-            self.assertEqual(run.call_args.args[0][0], 'delete')
-            self.assertIn('--async',run.call_args.args[0])
-
-    def test_cost_is_estimated_and_excludes_unobserved_charges(self):
-        result = gcp.cost_estimate(7200, .20)
-        self.assertAlmostEqual(result['estimated_compute_usd'], .40)
-        self.assertIn('not a billing receipt', result['limitations'])
-        for value in [-1,float('inf'),True]:
-            with self.assertRaises(ValueError): gcp.cost_estimate(value,.2)
+                gcp.batch_config(MANIFEST, IMAGE, {**CONFIG, key:value}, 1, WORKER)
+        with self.assertRaises(ValueError): gcp.batch_config(MANIFEST, IMAGE.split('@')[0]+':latest', CONFIG, 1, WORKER)
+        with self.assertRaises(ValueError): gcp.batch_config(MANIFEST, IMAGE, CONFIG, 0, WORKER)
+        with self.assertRaises(ValueError): gcp.batch_config(MANIFEST, IMAGE, CONFIG, 1, [])
 
 
 TOPIC = 'projects/test-project/topics/experiment-completion'
@@ -249,9 +227,9 @@ class Subscriber:
 
 class NotificationTests(unittest.TestCase):
     def test_optional_topic_sets_official_batch_notification(self):
-        cfg = gcp.batch_config(MANIFEST, IMAGE, NOTICE_CONFIG, 1)
+        cfg = gcp.batch_config(MANIFEST, IMAGE, NOTICE_CONFIG, 1, WORKER)
         self.assertEqual(cfg['notifications'], [{'pubsubTopic': TOPIC, 'message': {'type': 'JOB_STATE_CHANGED'}}])
-        self.assertNotIn('notifications', gcp.batch_config(MANIFEST, IMAGE, CONFIG, 1))
+        self.assertNotIn('notifications', gcp.batch_config(MANIFEST, IMAGE, CONFIG, 1, WORKER))
         with self.assertRaises(ValueError):
             gcp.validate_config({**CONFIG, 'notification_topic': 'projects/other-project/topics/events'})
 

@@ -1,11 +1,11 @@
-"""GCP transport for experiment jobs; no Chess rules or scientific decisions.
+"""Google Cloud Storage and Batch transport for the cloud strength tools.
 
 References (verified 2026-11-11):
 https://docs.cloud.google.com/batch/docs/reference/rest/v1/projects.locations.jobs
 https://docs.cloud.google.com/storage/docs/request-preconditions
 https://docs.cloud.google.com/python/docs/reference/storage/latest/google.cloud.storage.blob.Blob
 
-Cloud resources are created only by explicit submit_job calls. SDK credentials use
+The caller submits Batch jobs; this module builds and watches them. SDK credentials use
 Application Default Credentials; this module never reads or prints credential files.
 """
 from __future__ import annotations
@@ -15,7 +15,6 @@ import json
 import math
 import re
 import subprocess
-import tempfile
 import threading
 from urllib.parse import urlsplit
 
@@ -200,13 +199,15 @@ def validate_config(config):
     return result
 
 
-def batch_config(manifest_uri, image, config, task_count):
-    """One pipeline task per VM; its game and analysis stages never overlap."""
+def batch_config(manifest_uri, image, config, task_count, commands):
+    """Batch job spec: one task per whole VM, running `python3 *commands`."""
     config = validate_config(config)
     parse_uri(manifest_uri)
     _identifier(image, r'[a-zA-Z0-9./:_-]+@sha256:[a-f0-9]{64}', 'digest-pinned image')
     if type(task_count) is not int or not 1 <= task_count <= 10000:
         raise ValueError('task_count must be in [1, 10000]')
+    if not commands or not all(isinstance(c, str) for c in commands):
+        raise ValueError('commands must be a nonempty list of strings')
     disk = {'sizeGb': str(config['boot_disk_gb']), 'type': 'pd-balanced'}
     if config.get('boot_image'):
         disk['image'] = config['boot_image']
@@ -222,8 +223,7 @@ def batch_config(manifest_uri, image, config, task_count):
                 'maxRunDuration': f"{config['max_run_seconds']}s",
                 'runnables': [{'container': {
                     'imageUri': image, 'entrypoint': 'python3',
-                    'commands': ['-m', 'tools.experiments.cli', 'cloud-worker',
-                                 '--manifest', manifest_uri, '--store', config['store_uri']],
+                    'commands': list(commands),
                 }}],
             },
         }],
@@ -259,37 +259,8 @@ def _run(args):
     return json.loads(completed.stdout) if completed.stdout.strip() else {}
 
 
-def submit_job(job_id, manifest_uri, image, config, task_count):
-    """Explicit billable action. Caller must first obtain owner authorization."""
-    spec = batch_config(manifest_uri, image, config, task_count)
-    scope = _scope(config['project'], config['region'], job_id)
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json') as handle:
-        json.dump(spec, handle, allow_nan=False)
-        handle.flush()
-        return _run(['submit', job_id, *scope, '--config', handle.name])
-
-
 def status_job(job_id, project, region):
     return _run(['describe', job_id, *_scope(project, region, job_id)])
-
-
-def cancel_job(job_id, project, region):
-    """Request Batch deletion/cancellation; GCS evidence is untouched.
-
-    Caller should retain status before this call. The asynchronous operation is a
-    request receipt, not proof that every task or VM has already stopped.
-    """
-    return _run(['delete', job_id, *_scope(project, region, job_id), '--async'])
-
-
-def cost_estimate(vm_seconds, hourly_usd):
-    """Compute-only estimate from supplied allocation time and reviewed rate."""
-    for value in (vm_seconds, hourly_usd):
-        if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or value < 0:
-            raise ValueError('Cost inputs must be finite nonnegative numbers')
-    return {'vm_seconds': vm_seconds, 'vm_hourly_usd': hourly_usd,
-            'estimated_compute_usd': vm_seconds / 3600 * hourly_usd,
-            'limitations': 'Estimate, not a billing receipt. Include VM startup/idle/retry time; excludes disk, storage, logging, network, taxes and discounts.'}
 
 
 def _pubsub_name(value, project, collection):

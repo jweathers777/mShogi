@@ -1,14 +1,13 @@
-# Supply digest-pinned base and prebuilt, verified Linux executables; no engine
-# rebuild or network dependency resolution occurs when a worker starts.
+# Generic cloud worker image: a digest-pinned Python base, the Cloud Storage
+# client and prebuilt, verified Linux executables. Workers fetch their own
+# source; no engine rebuild or dependency resolution happens on the VM.
 ARG PYTHON_BASE
 FROM ${PYTHON_BASE}
 WORKDIR /opt/mshogi
 COPY tools/experiments/requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 COPY tools/experiments tools/experiments
-COPY docs/m5/competitive-gameplay-diagnosis.md docs/m5/competitive-gameplay-diagnosis.md
-# build-context/bin must contain mshogi, mshogi-match, oxidation and stockfish.
-# Build provenance and hashes are in the separately frozen job manifest.
+# build-context/bin holds the engine executables named in the campaign manifest.
 COPY build-context/bin /opt/engines
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
-ENTRYPOINT ["python3", "-m", "tools.experiments.cli"]
+ENTRYPOINT ["python3"]

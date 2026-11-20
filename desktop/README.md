@@ -126,7 +126,7 @@ after modification. Native file-operation and unsaved-change guards remain in
 force. Play details displays the actual native play budget; the common bottom
 status row distinguishes live play, exact historical position, pause and conclusion.
 
-MSH-74's [product evidence and screenshot review](../docs/m4/evidence/msh74/README.md)
+MSH-74's product evidence and screenshot review (task record MSH-74)
 record the exact revision, actual platform journeys, independent reviews and
 the recorded approval. This historical game-specific evidence is supplemented
 by the completed [M4 delivery gate](../docs/m4/final-delivery.md).

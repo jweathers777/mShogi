@@ -108,7 +108,7 @@ export type ToriStop = "cancelled" | "resource_limit" | "engine_failure" | "work
 export type ToriConclusion = { kind: "checkmate" | "resignation"; winner: ToriSide } | { kind: "stalemate_loss" | "repetition_forfeit"; loser: ToriSide };
 export interface ToriHistory {
   event_index: number; board_ply: number; in_check: boolean; occurrences: number[];
-  obligation: { side: ToriSide; occurrences: [number, number, number]; forbidden_departures: ToriAction[] } | null;
+  repetition: { side: ToriSide; forbidden: ToriAction[] } | null;
   conclusion: ToriConclusion | null; incomplete: ToriStop | null;
 }
 export type ToriSnapshot = GameSnapshotBase & {

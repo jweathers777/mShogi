@@ -4,11 +4,10 @@ use serde::{Deserialize, Serialize};
 use std::sync::atomic::{AtomicU64, Ordering};
 
 /// Total committed commands/events, including reserved concluding administration.
-pub const MAX_GAME_COMMANDS: usize = 512;
+pub const MAX_GAME_COMMANDS: usize = 1024;
 /// One atomic native event per accepted command; derived facts are in that event.
-pub const MAX_GAME_EVENTS: usize = 512;
-/// Deterministic replay units: root=1; each command=1 plus prior keys scanned by a board action.
-pub const MAX_REPLAY_WORK: u64 = 65_536;
+/// The 512 KiB record bound normally ends a game first, at about 1,000 plies.
+pub const MAX_GAME_EVENTS: usize = 1024;
 const RESERVED_BYTES_PER_EVENT: usize = 4096;
 
 static NEXT_INSTANCE: AtomicU64 = AtomicU64::new(1);
@@ -29,46 +28,39 @@ impl RepetitionKey {
             side: p.state.side,
         }
     }
+    /// 64-bit FNV-1a digest of the key (MSH-208). A filter only: equal keys
+    /// have equal digests, and a match is always confirmed on the full key.
+    pub fn digest(&self) -> u64 {
+        let mut h: u64 = 0xcbf2_9ce4_8422_2325;
+        let mut eat = |b: u8| {
+            h ^= u64::from(b);
+            h = h.wrapping_mul(0x0000_0100_0000_01b3);
+        };
+        for square in &self.board {
+            eat(square.map_or(0, |p| 1 + p.side as u8 * 32 + p.face as u8));
+        }
+        for hand in &self.hands {
+            hand.0.iter().for_each(|&n| eat(n));
+        }
+        eat(self.side as u8);
+        h
+    }
 }
-/// Obligation at the latest third-or-later occurrence, never a retroactive arrival refusal.
+/// T06 (MSH-208): the side to move may not play an action that would create
+/// the third occurrence of a position (board, both hands, side to move) in the
+/// known history. Derived from history after every board action; never a draw.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-pub struct Obligation {
-    /// Side moving OUT of the repeated key.
+pub struct Repetition {
+    /// Side to move, which may not play the listed actions.
     pub side: Side,
-    /// Latest three zero-based board-position indices, including the known root.
-    pub occurrences: [usize; 3],
-    /// Deduplicated actual complete departures from the first two indices.
-    pub forbidden_departures: Vec<Action>,
+    /// Complete local actions whose resulting position already occurred twice.
+    pub forbidden: Vec<Action>,
 }
-impl Obligation {
-    /// Current arrival index.
-    pub fn at_ply(&self) -> usize {
-        self.occurrences[2]
-    }
+impl Repetition {
     /// History permission, separate from local board legality.
     pub fn permits(&self, action: Action) -> bool {
-        !self.forbidden_departures.contains(&action)
-    }
-    pub(super) fn derive(
-        side: Side,
-        occurrences: &[usize],
-        departure: impl Fn(usize) -> Action,
-    ) -> Option<Self> {
-        let last: [usize; 3] = occurrences
-            .get(occurrences.len().checked_sub(3)?..)?
-            .try_into()
-            .ok()?;
-        let mut forbidden_departures = vec![departure(last[0])];
-        let other = departure(last[1]);
-        if !forbidden_departures.contains(&other) {
-            forbidden_departures.push(other);
-        }
-        Some(Self {
-            side,
-            occurrences: last,
-            forbidden_departures,
-        })
+        !self.forbidden.contains(&action)
     }
     pub(super) fn forces_loss(&self, local: &[Action]) -> bool {
         !local.is_empty() && local.iter().all(|a| !self.permits(*a))
@@ -147,16 +139,14 @@ pub struct GameEvent {
     pub command: GameCommand,
     /// Native board effects; null for non-board events.
     pub effects: Option<Effects>,
-    /// All known occurrences of the current board key.
+    /// All known occurrences of the current board key (at most two: a third
+    /// occurrence is refused). The restriction they imply is derived on replay,
+    /// not stored.
     pub occurrences: Vec<usize>,
-    /// Current departure obligation, including when it forces a conclusion.
-    pub obligation: Option<Obligation>,
     /// Actual native conclusion only.
     pub conclusion: Option<Conclusion>,
     /// Latest incomplete operation; a later accepted board action/resignation clears it.
     pub incomplete: Option<StopReason>,
-    /// Exact accumulated deterministic replay admission charge.
-    pub replay_work: u64,
 }
 /// Immutable historical data; no action application or playable branch method.
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -169,8 +159,8 @@ pub struct HistorySnapshot {
     pub board_ply: usize,
     /// Current key's root-indexed occurrences, without future knowledge.
     pub occurrences: Vec<usize>,
-    /// Current obligation.
-    pub obligation: Option<Obligation>,
+    /// Current third-occurrence restriction.
+    pub repetition: Option<Repetition>,
     /// Conclusion known at this prefix.
     pub conclusion: Option<Conclusion>,
     /// Incomplete operation known at this prefix.
@@ -229,8 +219,6 @@ pub enum Resource {
     EncodedBytes,
     /// Native command/event count.
     Events,
-    /// Deterministic replay charge.
-    ReplayWork,
     /// Counter or monotonic native authority exhausted.
     Counter,
 }
@@ -249,8 +237,8 @@ pub enum GameError {
     UnsupportedCommand,
     /// An actual native conclusion already exists.
     Concluded,
-    /// This complete board action is forbidden by T06.
-    RepetitionDeparture,
+    /// This complete board action would create a third occurrence (T06).
+    ThirdOccurrence,
     /// Complete local rule refusal.
     Action(ActionError),
     /// Duplicate stop without intervening board work.
@@ -273,8 +261,6 @@ pub struct CapacityUsage {
     pub encoded_bytes: usize,
     /// Native events and commands (one-to-one).
     pub events: usize,
-    /// Deterministic replay units.
-    pub replay_work: u64,
 }
 #[derive(Debug)]
 /// Single-use instance/order-bound full-game reversal, not serialized history.
@@ -304,6 +290,10 @@ pub struct Game {
     /// Cumulative compact encoded event lengths: entry i covers events[..=i].
     event_bytes: Vec<usize>,
     keys: Vec<RepetitionKey>,
+    /// Key digests, index-aligned with `keys`.
+    digests: Vec<u64>,
+    /// Whether some position with this side to move occurred at least twice.
+    repeated: [bool; 2],
     actions: Vec<Action>,
     snapshots: Vec<HistorySnapshot>,
     root_snapshot: HistorySnapshot,
@@ -344,7 +334,7 @@ impl Game {
             event_count: 0,
             board_ply: 0,
             occurrences: vec![0],
-            obligation: None,
+            repetition: None,
             conclusion,
             incomplete: None,
         };
@@ -357,7 +347,9 @@ impl Game {
             local,
             events: vec![],
             event_bytes: vec![],
+            digests: vec![key.digest()],
             keys: vec![key],
+            repeated: [false; 2],
             actions: vec![],
             snapshots: vec![],
             root_snapshot,
@@ -393,9 +385,9 @@ impl Game {
     pub fn conclusion(&self) -> Option<Conclusion> {
         self.snapshot().conclusion
     }
-    /// Current history-dependent departure obligation.
-    pub fn obligation(&self) -> Option<&Obligation> {
-        self.snapshot().obligation.as_ref()
+    /// Current third-occurrence restriction of the side to move.
+    pub fn repetition(&self) -> Option<&Repetition> {
+        self.snapshot().repetition.as_ref()
     }
     /// Full semantic context plus fresh runtime authority.
     pub fn context(&self) -> GameContext {
@@ -421,7 +413,7 @@ impl Game {
         self.local
             .legal_actions()
             .into_iter()
-            .filter(|a| self.obligation().is_none_or(|o| o.permits(*a)))
+            .filter(|a| self.repetition().is_none_or(|r| r.permits(*a)))
             .collect()
     }
     /// Immutable historical query. Selection retirement is explicitly separate below.
@@ -446,6 +438,8 @@ impl Game {
         prefix.snapshots.truncate(count);
         prefix.actions.truncate(snapshot.board_ply);
         prefix.keys.truncate(snapshot.board_ply + 1);
+        prefix.digests.truncate(snapshot.board_ply + 1);
+        prefix.recompute_repeated();
         prefix.local = LocalPosition::admit(Position::install(snapshot.state))
             .expect("native historical state");
         GameRecord::from_game(&prefix)
@@ -468,15 +462,11 @@ impl Game {
             .checked_add(1)
             .ok_or(GameError::Capacity(Resource::Counter))
     }
-    fn replay_work(&self) -> u64 {
-        self.events.last().map_or(1, |e| e.replay_work)
-    }
     /// Actual native encoded bytes and deterministic bounded replay accounting.
     pub fn capacity_usage(&self) -> Result<CapacityUsage, GameError> {
         Ok(CapacityUsage {
             encoded_bytes: self.encoded_len()?,
             events: self.events.len(),
-            replay_work: self.replay_work(),
         })
     }
     /// Exact full encoded length from cached event lengths (MSH-204).
@@ -491,6 +481,8 @@ impl Game {
             events: self.events.clone(),
             event_bytes: self.event_bytes.clone(),
             keys: self.keys.clone(),
+            digests: self.digests.clone(),
+            repeated: self.repeated,
             actions: self.actions.clone(),
             snapshots: self.snapshots.clone(),
             root_snapshot: self.root_snapshot.clone(),
@@ -537,19 +529,9 @@ impl Game {
         let mut candidate = self.transaction_copy();
         let mut effects = None;
         let mut occurrences = self.occurrences().to_vec();
-        let mut obligation = self.obligation().cloned();
+        let mut repetition = self.repetition().cloned();
         let mut conclusion = None;
         let mut incomplete = None;
-        let work = self
-            .replay_work()
-            .checked_add(
-                1 + if matches!(command, GameCommand::Play { .. }) {
-                    self.keys.len() as u64
-                } else {
-                    0
-                },
-            )
-            .ok_or(GameError::Capacity(Resource::ReplayWork))?;
         match command {
             GameCommand::Play { action } => {
                 if actor != self.position().side_to_move() {
@@ -564,8 +546,8 @@ impl Game {
                             .expect_err("not locally legal"),
                     ));
                 }
-                if obligation.as_ref().is_some_and(|o| !o.permits(action)) {
-                    return Err(GameError::RepetitionDeparture);
+                if repetition.as_ref().is_some_and(|r| !r.permits(action)) {
+                    return Err(GameError::ThirdOccurrence);
                 }
                 effects = Some(
                     candidate
@@ -581,10 +563,14 @@ impl Game {
                         .0,
                 );
                 candidate.actions.push(action);
-                candidate
-                    .keys
-                    .push(RepetitionKey::from_position(candidate.position()));
+                let key = RepetitionKey::from_position(candidate.position());
+                candidate.digests.push(key.digest());
+                candidate.keys.push(key);
                 occurrences = candidate.current_occurrences();
+                if occurrences.len() >= 2 {
+                    let side = candidate.position().side_to_move();
+                    candidate.repeated[side as usize] = true;
+                }
                 let local_choices = candidate.local.legal_actions();
                 let side = candidate.position().side_to_move();
                 let status = match (candidate.local.is_in_check(side), local_choices.is_empty()) {
@@ -594,12 +580,12 @@ impl Game {
                     (false, false) => LocalStatus::Ongoing,
                 };
                 conclusion = board_conclusion(status, side);
-                obligation = None;
+                repetition = None;
                 if conclusion.is_none() {
-                    obligation = Obligation::derive(side, &occurrences, |i| candidate.actions[i]);
-                    if obligation
+                    repetition = candidate.third_occurrences(&local_choices);
+                    if repetition
                         .as_ref()
-                        .is_some_and(|o| o.forces_loss(&local_choices))
+                        .is_some_and(|r| r.forces_loss(&local_choices))
                     {
                         conclusion = Some(Conclusion::RepetitionForfeit { loser: side });
                     }
@@ -627,11 +613,10 @@ impl Game {
             command,
             effects,
             occurrences,
-            obligation,
             conclusion,
             incomplete,
-            replay_work: work,
         };
+        debug_assert!(event.occurrences.len() <= 2, "third occurrence admitted");
         let event_len =
             record::event_len(&event).map_err(|_| GameError::Capacity(Resource::EncodedBytes))?;
         candidate
@@ -643,7 +628,7 @@ impl Game {
             event_count: candidate.events.len(),
             board_ply: candidate.actions.len(),
             occurrences: event.occurrences.clone(),
-            obligation: event.obligation.clone(),
+            repetition,
             conclusion,
             incomplete,
         });
@@ -657,7 +642,6 @@ impl Game {
             CapacityUsage {
                 encoded_bytes: bytes,
                 events: candidate.events.len(),
-                replay_work: work,
             },
             remaining,
         )?;
@@ -675,15 +659,53 @@ impl Game {
         Ok(undo)
     }
     fn current_occurrences(&self) -> Vec<usize> {
-        let key = self.keys.last().expect("known root");
         let current = self.keys.len() - 1;
-        let mut occurrences: Vec<_> = self.keys[..current]
-            .iter()
-            .enumerate()
-            .filter_map(|(i, k)| (k == key).then_some(i))
-            .collect();
+        let mut occurrences = self.earlier(&self.keys[current], self.digests[current], current);
         occurrences.push(current);
         occurrences
+    }
+    /// Known indices before `end` (same side to move: same parity as `end`) of
+    /// one key, by digest scan with full-key confirmation.
+    fn earlier(&self, key: &RepetitionKey, digest: u64, end: usize) -> Vec<usize> {
+        let mut found = Vec::new();
+        let mut i = end;
+        while i >= 2 {
+            i -= 2;
+            if self.digests[i] == digest && self.keys[i] == *key {
+                found.push(i);
+            }
+        }
+        found.reverse();
+        found
+    }
+    /// Actions of the side to move that would create a third occurrence.
+    fn third_occurrences(&self, local: &[Action]) -> Option<Repetition> {
+        let side = self.position().side_to_move();
+        // Only a position that already occurred twice can occur a third time.
+        if !self.repeated[side.opponent() as usize] {
+            return None;
+        }
+        let next = self.keys.len();
+        let forbidden: Vec<Action> = local
+            .iter()
+            .copied()
+            .filter(|&action| {
+                let mut after = self.local.clone();
+                after.apply(action).expect("locally legal action");
+                let key = RepetitionKey::from_position(after.position());
+                self.earlier(&key, key.digest(), next).len() >= 2
+            })
+            .collect();
+        (!forbidden.is_empty()).then_some(Repetition { side, forbidden })
+    }
+    /// Recompute the twice-occurred flags after truncating history.
+    fn recompute_repeated(&mut self) {
+        self.repeated = [false; 2];
+        for (i, key) in self.keys.iter().enumerate() {
+            if !self.earlier(key, self.digests[i], i).is_empty() {
+                self.repeated[key.side as usize] = true;
+            }
+        }
     }
     /// Exact LIFO semantic undo. Monotonic runtime authority advances, never rewinds.
     pub fn undo(&mut self, undo: &mut GameUndo) -> Result<GameRedo, GameError> {
@@ -702,6 +724,8 @@ impl Game {
         self.snapshots.truncate(undo.before_len);
         self.actions.truncate(before.board_ply);
         self.keys.truncate(before.board_ply + 1);
+        self.digests.truncate(before.board_ply + 1);
+        self.recompute_repeated();
         self.local =
             LocalPosition::admit(Position::install(before.state)).expect("native previous state");
         self.runtime.revision = revision;
@@ -744,9 +768,6 @@ fn check_capacity(usage: CapacityUsage, reserve: usize) -> Result<(), GameError>
     if usage.events > MAX_GAME_EVENTS - reserve || usage.events > MAX_GAME_COMMANDS - reserve {
         return Err(GameError::Capacity(Resource::Events));
     }
-    if usage.replay_work > MAX_REPLAY_WORK - reserve as u64 {
-        return Err(GameError::Capacity(Resource::ReplayWork));
-    }
     if usage.encoded_bytes > MAX_GAME_RECORD_BYTES - reserve * RESERVED_BYTES_PER_EVENT {
         return Err(GameError::Capacity(Resource::EncodedBytes));
     }
@@ -762,19 +783,13 @@ mod capacity_tests {
             let max = CapacityUsage {
                 encoded_bytes: MAX_GAME_RECORD_BYTES - reserve * RESERVED_BYTES_PER_EVENT,
                 events: MAX_GAME_EVENTS - reserve,
-                replay_work: MAX_REPLAY_WORK - reserve as u64,
             };
             assert_eq!(check_capacity(max, reserve), Ok(()));
-            for resource in [
-                Resource::EncodedBytes,
-                Resource::Events,
-                Resource::ReplayWork,
-            ] {
+            for resource in [Resource::EncodedBytes, Resource::Events] {
                 let mut next = max;
                 match resource {
                     Resource::EncodedBytes => next.encoded_bytes += 1,
                     Resource::Events => next.events += 1,
-                    Resource::ReplayWork => next.replay_work += 1,
                     _ => unreachable!(),
                 }
                 assert_eq!(
@@ -790,23 +805,8 @@ mod reservation_bound_test {
     use super::*;
     #[test]
     fn constructed_metadata_upper_bound_proves_each_reserved_nonboard_event_fits() {
-        // A conservative bound, not a fabricated reachable game or conformance
-        // position: every allowable index appears, and both departures are maximal.
-        let move_a = Action::Move {
-            from: "7g".parse().unwrap(),
-            to: "1a".parse().unwrap(),
-            result_face: Face::RightQuail,
-        };
-        let move_b = Action::Move {
-            from: "6g".parse().unwrap(),
-            to: "2a".parse().unwrap(),
-            result_face: Face::LeftQuail,
-        };
-        let o = Obligation {
-            side: Side::Sente,
-            occurrences: [510, 511, 512],
-            forbidden_departures: vec![move_a, move_b],
-        };
+        // A conservative bound, not a reachable game: maximal indices, and the
+        // most occurrences a key can have (two; a third is refused, T06).
         for command in [
             GameCommand::Stop {
                 reason: StopReason::ResourceLimit,
@@ -819,13 +819,11 @@ mod reservation_bound_test {
                 actor: Side::Sente,
                 command,
                 effects: None,
-                occurrences: (0..=MAX_GAME_COMMANDS).collect(),
-                obligation: Some(o.clone()),
+                occurrences: vec![MAX_GAME_COMMANDS - 2, MAX_GAME_COMMANDS],
                 conclusion: Some(Conclusion::Resignation {
                     winner: Side::Sente,
                 }),
                 incomplete: Some(StopReason::ResourceLimit),
-                replay_work: MAX_REPLAY_WORK,
             };
             let bytes = serde_json::to_vec(&event).unwrap().len();
             // Extra256 conservatively covers comma and changed current nullable

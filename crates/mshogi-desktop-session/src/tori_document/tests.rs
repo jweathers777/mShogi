@@ -156,7 +156,7 @@ fn roundtrip(d: &ValidatedToriDocument) {
 }
 #[test]
 fn actual_native_histories_preserve_repetition_ending_prefixes_and_declared_provenance() {
-    for id in ["TORI-H-FORCED-FULL", "TORI-H-UNEQUAL-FULL"] {
+    for id in ["TORI-H-FORCED-FULL", "TORI-H-CAPTURE-DROP"] {
         let g = sequence(id);
         let d = document(&g);
         roundtrip(&d);
@@ -271,7 +271,7 @@ fn immutable_journal_retains_rewind_branch_settings_and_exact_observation() {
 }
 #[test]
 fn strict_outer_payload_commands_and_native_facts_reject_without_normalizing_duplicates() {
-    let d = document(&sequence("TORI-H-UNEQUAL-FULL"));
+    let d = document(&sequence("TORI-H-CAPTURE-DROP"));
     let good = String::from_utf8(d.bytes().to_vec()).unwrap();
     for (key, value) in [
         ("mode", "\"untimed\""),
@@ -320,7 +320,7 @@ fn strict_outer_payload_commands_and_native_facts_reject_without_normalizing_dup
             "{field}"
         );
     }
-    for field in ["conclusion", "obligation", "root_conclusion", "incomplete"] {
+    for field in ["conclusion", "root_conclusion", "incomplete"] {
         let mut v: Value = serde_json::from_str(&good).unwrap();
         v["payload"]["current"]["payload"]
             .as_object_mut()
@@ -929,10 +929,15 @@ fn actual_encoded_input_limit_and_aggregate_event_limit_plus_one() {
             .category,
         ResourceCategory::EncodedDocumentBytes
     );
-    let g = sequence("TORI-H-UNEQUAL-FULL");
-    // Event15 then resignation makes16 events, a concluded native target whose
-    // 255 retained observations plus current reach exactly4096 retained events.
-    let mut g = g.record_prefix(15).unwrap().to_game().unwrap();
+    // Eleven fixture events, four more legal plays, then resignation make 16
+    // events: a concluded native target whose 255 retained observations plus
+    // current reach exactly 4096 retained events.
+    let mut g = sequence("TORI-H-CAPTURE-DROP");
+    for _ in 0..4 {
+        let a = g.legal_actions()[0];
+        play(&mut g, a).unwrap();
+    }
+    assert_eq!(g.events().len(), 15);
     g.submit(t::GameRequest {
         expected: g.context(),
         actor: t::Side::Sente,
@@ -1004,7 +1009,6 @@ fn measured_complete_long_documents_charge_repeated_native_work_and_refuse_befor
     let roundtrip_ms = start.elapsed().as_millis();
     roundtrip(&d);
     let native_usage = g.capacity_usage().unwrap();
-    assert_eq!(native_usage.replay_work, 65_341);
     assert_eq!(g.events().len(), 360);
     assert!(
         g.events()
@@ -1032,13 +1036,12 @@ fn measured_complete_long_documents_charge_repeated_native_work_and_refuse_befor
         .with_observation(observation(&d, 11), &mut || false)
         .unwrap();
     let before = observed.bytes().to_vec();
-    let refused = observed
+    // MSH-208: native replay is linear in events, so a second analysis
+    // observation of this long game stays within the document work budget.
+    let second = observed
         .with_observation(observation(&observed, 12), &mut || false)
-        .unwrap_err();
-    assert_eq!(
-        refused.resource.as_ref().unwrap().facts()[0].category,
-        ResourceCategory::ReplayWork
-    );
+        .unwrap();
+    assert!(second.usage().replay_work < MAX_TORI_DOCUMENT_WORK);
     assert_eq!(observed.bytes(), before);
     let stopped = observed
         .with_control(
@@ -1103,7 +1106,7 @@ fn measured_complete_long_documents_charge_repeated_native_work_and_refuse_befor
     let root_started = Instant::now();
     let roots = validate_payload(roots, &mut || false).unwrap();
     let root_observations_ms = root_started.elapsed().as_millis();
-    let report = json!({"seed":"0x129ca11ab1e5","generated_ms":generated_ms,"worker_save_ms":worker_save_ms,"root_observations_ms":root_observations_ms,"root256":roots.usage(),"initial_validation_ms":roundtrip_ms,"native":{"bytes":native_usage.encoded_bytes,"events":native_usage.events,"work":native_usage.replay_work},"complete_document":d.usage(),"one_observation":observed.usage(),"second_observation_refusal":{"resource":refused.resource},"stopped":stopped.usage(),"resigned_closed":closed.usage(),"retained_branch":branch.usage(),"forced8":document(&sequence("TORI-H-FORCED-FULL")).usage(),"unequal16":document(&sequence("TORI-H-UNEQUAL-FULL")).usage()});
+    let report = json!({"seed":"0x129ca11ab1e5","generated_ms":generated_ms,"worker_save_ms":worker_save_ms,"root_observations_ms":root_observations_ms,"root256":roots.usage(),"initial_validation_ms":roundtrip_ms,"native":{"bytes":native_usage.encoded_bytes,"events":native_usage.events},"complete_document":d.usage(),"one_observation":observed.usage(),"second_observation":second.usage(),"stopped":stopped.usage(),"resigned_closed":closed.usage(),"retained_branch":branch.usage(),"forced7":document(&sequence("TORI-H-FORCED-FULL")).usage(),"capture_drop11":document(&sequence("TORI-H-CAPTURE-DROP")).usage()});
     println!("MSH130_MEASUREMENTS {}", report);
     if let Ok(path) = std::env::var("MSH_TORI_130_MEASUREMENTS") {
         fs::write(path, serde_json::to_vec_pretty(&report).unwrap()).unwrap();
@@ -1112,7 +1115,7 @@ fn measured_complete_long_documents_charge_repeated_native_work_and_refuse_befor
 
 #[test]
 fn single_unsupported_mode_unknown_fields_and_forged_intermediate_facts_reject() {
-    let d = document(&sequence("TORI-H-UNEQUAL-FULL"));
+    let d = document(&sequence("TORI-H-CAPTURE-DROP"));
     let good: Value = serde_json::from_slice(d.bytes()).unwrap();
     for name in [
         "mode",
@@ -1191,8 +1194,9 @@ fn native_record_byte_ceiling_and_desktop_precharge_reject_forged_work_before_na
         ResourceCategory::CanonicalRecordBytes
     );
     let mut v: Value = serde_json::from_slice(standard().bytes()).unwrap();
-    let event = json!({"command":{"kind":"play"},"replay_work":0});
-    v["payload"]["current"]["payload"]["events"] = json!(vec![event.clone(); 513]);
+    let event = json!({"command":{"kind":"play"}});
+    v["payload"]["current"]["payload"]["events"] =
+        json!(vec![event.clone(); t::MAX_GAME_EVENTS + 1]);
     let error =
         ValidatedToriDocument::decode(&serde_json::to_vec(&v).unwrap(), &mut || false).unwrap_err();
     assert_eq!(
@@ -1200,17 +1204,19 @@ fn native_record_byte_ceiling_and_desktop_precharge_reject_forged_work_before_na
         ResourceCategory::NativeEvents
     );
     // Many bounded-looking native contexts must fail raw aggregate preflight,
-    // even when each forged event claims zero work and native replay would fail.
+    // even when each forged event is cheap and native replay would fail. Since
+    // MSH-208 a record's modelled work is linear, so the aggregate retained
+    // event bound refuses first.
     v["payload"]["current"]["payload"]["events"] = json!(vec![event; 360]);
     v["payload"]["retired"] = json!(vec![
         json!({"control_index":0,"record":v["payload"]["current"].clone()});
-        4
+        12
     ]);
     let error =
         ValidatedToriDocument::decode(&serde_json::to_vec(&v).unwrap(), &mut || false).unwrap_err();
     assert_eq!(
         error.resource.unwrap().facts()[0].category,
-        ResourceCategory::ReplayWork
+        ResourceCategory::NativeEvents
     );
 }
 
@@ -1220,7 +1226,8 @@ fn every_native_record_is_precharged_and_wrong_inner_identity_never_falls_throug
     for (field, bad) in [
         ("game_kind", json!("shogi")),
         ("rules_profile", json!("mshogi.shogi.csa36.v1")),
-        ("native_schema_version", json!(2)),
+        ("native_schema_version", json!(1)),
+        ("native_schema_version", json!(3)),
         ("envelope_version", json!(2)),
         ("profile_edition", json!("wrong")),
     ] {
@@ -1233,15 +1240,16 @@ fn every_native_record_is_precharged_and_wrong_inner_identity_never_falls_throug
     }
     for which in ["initial", "current"] {
         let mut v = good.clone();
+        // MSH-208: no separate native replay-work bound; the event bound applies.
         v["payload"][which]["payload"]["events"] = json!(vec![
-            json!({"command":{"kind":"play"},"replay_work":0});
-            361
+            json!({"command":{"kind":"play"}});
+            t::MAX_GAME_EVENTS + 1
         ]);
         let e = ValidatedToriDocument::decode(&serde_json::to_vec(&v).unwrap(), &mut || false)
             .unwrap_err();
         let f = e.resource.unwrap();
-        assert_eq!(f.facts()[0].category, ResourceCategory::ReplayWork);
-        assert_eq!(f.facts()[0].limit, Some(t::MAX_REPLAY_WORK));
+        assert_eq!(f.facts()[0].category, ResourceCategory::NativeEvents);
+        assert_eq!(f.facts()[0].limit, Some(t::MAX_GAME_EVENTS as u64));
     }
 }
 #[test]

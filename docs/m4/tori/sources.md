@@ -180,3 +180,12 @@ so its public description is not a second independent implementation.
 | B rare cycles | Creator/departure responsibility, evasion exemption,3/4 occurrence and sanction vary between software descriptions | T06 explicitly selects departure algorithm at third occurrence; no whole-profile comparator admission. |
 | B endings/admission | Modern summaries omit quiet immobility, exact root/command behavior | Explicit T05/T07 software conventions; no Chess draw or CSA declaration imported. |
 | C historical bibliography | Unread1833/2008, physical edition relations | Nonblocking supporting research; no additional search/contact/purchase. |
+
+## MSH-208 repetition decision (2026-11-20)
+
+John decided the T06 repetition rule from sources he read: a 2022 Japanese rule
+book (quoted in [profile T06](profile.md)), the PyChess Tori page, and Okano,
+禽将棋 (2008, ISSN 1881-1949, NDL 9501307; T-M1 above) as summarised by the
+Japanese Abstract Games Museum ("third occurrence; change the repeating move").
+The project did not retrieve or read these sources again for this decision; the
+earlier T06 departure convention had no human decision.

@@ -181,9 +181,11 @@ fn main() {
         })
     );
     save(&output, "quiet-loss", &quiet);
+    // MSH-208: the forced line ends with Gote's seventh action; the
+    // repetition line stops where Gote may not make a third occurrence.
     for (id, name, prefix) in [
-        ("TORI-H-FORCED-FULL", "forced-prefix7", 7),
-        ("TORI-H-COUNT", "obligation8", 8),
+        ("TORI-H-FORCED-FULL", "forced-prefix6", 6),
+        ("TORI-H-COUNT", "repetition7", 7),
     ] {
         let value = given(id);
         let mut game = t::Game::from_root(position(&value["root"])).unwrap();
@@ -191,9 +193,9 @@ fn main() {
             play(&mut game, action(value));
         }
         assert!(game.conclusion().is_none());
-        if prefix == 8 {
-            assert_eq!(game.occurrences(), [0, 4, 8]);
-            assert!(game.obligation().is_some());
+        if prefix == 7 {
+            assert_eq!(game.occurrences(), [3, 7]);
+            assert_eq!(game.repetition().unwrap().side, t::Side::Gote);
         }
         save(&output, name, &game);
     }

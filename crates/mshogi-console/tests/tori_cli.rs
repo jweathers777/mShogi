@@ -162,17 +162,18 @@ fn malformed_and_locally_legal_but_history_forbidden_requests_are_atomic() {
         t::Hand::empty(),
         100,
     );
-    // TORI-H-COUNT: exact third arrival creates a departure obligation, not draw.
+    // TORI-H-COUNT (MSH-208): Gote's Ph5a-4a would make the start position's
+    // third occurrence; it is refused atomically, never a draw.
     let cycle = "Ph4g-5g Ph4a-5a Ph5g-4g Ph5a-4a";
     let o = shell(&format!(
-        "position record-json {}\nmove {cycle} {cycle}\nrecord\nmove Ph4g-5g\nrecord\nlegal\n",
+        "position record-json {}\nmove {cycle} Ph4g-5g Ph4a-5a Ph5g-4g\nrecord\nmove Ph5a-4a\nrecord\nlegal\n",
         encode(&root)
     ));
     assert!(!o.status.success());
-    assert!(String::from_utf8_lossy(&o.stderr).contains("RepetitionDeparture"));
+    assert!(String::from_utf8_lossy(&o.stderr).contains("ThirdOccurrence"));
     assert_eq!(records(&o)[0], records(&o)[1]);
-    assert!(output(&o).contains("occurrences [0, 4, 8]"));
-    assert!(!output(&o).lines().any(|l| l.starts_with("Ph4g-5g {")));
+    assert!(output(&o).contains("occurrences [3, 7]"));
+    assert!(!output(&o).lines().any(|l| l.starts_with("Ph5a-4a {")));
     let o = shell("record\nmove Sw7e-7d Sw1c-1d Sw1d-1e\nrecord\nmove Sw8e-7d\nrecord\n");
     assert!(!o.status.success());
     let r = records(&o);

@@ -11,7 +11,7 @@ use sha2::{Digest, Sha256};
 use std::collections::{BTreeMap, BTreeSet};
 
 /// Audited MSH-81 bytes, not generated from implementation output.
-pub const CORPUS_SHA256: &str = "3f9e5ca3b541fc72f562ddd8231408e17e7bd5ba3ccee118e643ce0f543731e3";
+pub const CORPUS_SHA256: &str = "5b14a57a44e2dce311e3a112fb41bb737a88ec8c301e74295cf7a09039f92c22";
 /// Exact selected profile.
 pub const PROFILE: &str = "mshogi.tori.modern.v1";
 /// Native fixture specification bytes, unchanged from MSH-81.

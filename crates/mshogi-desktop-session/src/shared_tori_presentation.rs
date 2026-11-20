@@ -11,8 +11,9 @@ pub struct ToriHistoryPresentation {
     pub in_check: bool,
     /// Root-indexed known occurrences at this prefix only.
     pub occurrences: Vec<usize>,
-    /// Native departure obligation, not a concluded game by itself.
-    pub obligation: Option<t::Obligation>,
+    /// Actions the side to move may not play: each would create a third
+    /// occurrence of a position (T06, MSH-208). Not a conclusion by itself.
+    pub repetition: Option<t::Repetition>,
     /// Native concluded outcome only.
     pub conclusion: Option<t::Conclusion>,
     /// Unscored administrative reason, independent of conclusion.
@@ -28,7 +29,7 @@ impl ToriHistoryPresentation {
                 .local_position()
                 .is_in_check(game.position().side_to_move()),
             occurrences: snapshot.occurrences.clone(),
-            obligation: snapshot.obligation.clone(),
+            repetition: snapshot.repetition.clone(),
             conclusion: snapshot.conclusion,
             incomplete: snapshot.incomplete,
         }

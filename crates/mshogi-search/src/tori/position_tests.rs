@@ -2,7 +2,7 @@
 //! authority: legal actions (moves and drops), resulting state, check status,
 //! hash and move encoding.
 use super::position::{Move, ToriPosition};
-use crate::alphabeta::{SearchPosition, Stage};
+use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
 use mshogi_core::tori::{
     Action, Face, Game, GameCommand, GameRequest, Hand, Piece, Position, RootMetadata, Side, Square,
 };
@@ -311,38 +311,39 @@ fn the_root_excludes_departures_that_the_native_repetition_rule_forbids() {
         to: to.parse().unwrap(),
         result_face: Face::Phoenix,
     };
-    for _ in 0..2 {
-        for (from, to) in [("4g", "5g"), ("4a", "5a"), ("5g", "4g"), ("5a", "4a")] {
-            play(&mut game, step(from, to));
-        }
+    // Seven plies: the start key occurred at 0 and 4, so Gote's 5a-4a would
+    // make its third occurrence (T06, MSH-208).
+    let cycle = [("4g", "5g"), ("4a", "5a"), ("5g", "4g"), ("5a", "4a")];
+    for &(from, to) in cycle.iter().cycle().take(7) {
+        play(&mut game, step(from, to));
     }
-    let obligation = game.obligation().expect("third occurrence").clone();
-    assert_eq!(obligation.forbidden_departures, vec![step("4g", "5g")]);
+    let repetition = game.repetition().expect("third occurrence").clone();
+    assert_eq!(repetition.forbidden, vec![step("5a", "4a")]);
     let position = ToriPosition::from_game(&game);
     let mut moves: Vec<Move> = Vec::new();
     position.generate(Stage::Tactical, &mut moves);
     position.generate(Stage::Quiet, &mut moves);
     let actions: Vec<Action> = moves.iter().map(|&m| position.action(m)).collect();
-    assert!(!actions.contains(&step("4g", "5g")));
-    assert!(actions.contains(&step("4g", "3g")));
+    assert!(!actions.contains(&step("5a", "4a")));
+    assert!(actions.contains(&step("5a", "5b")));
     for action in game.legal_actions() {
         assert!(actions.contains(&action));
     }
     // A new position has no repetition score.
     let mut position = position;
-    let m = position.find(step("4g", "3g")).unwrap();
+    let m = position.find(step("5a", "5b")).unwrap();
     assert!(position.make(m));
     assert_eq!(position.rule_score(), None);
     position.unmake();
-    // The root is the third occurrence from the game: the first return to it
-    // inside the search is a repetition, through the history keys of the game.
+    // Inside the search, Sente's return to the root key (seen at plies 3 and
+    // 7 of the game) is its third occurrence: illegal, so Gote wins.
     let mut path = Vec::new();
-    for (from, to) in [("4g", "3g"), ("4a", "5a"), ("3g", "4g"), ("5a", "4a")] {
+    for (from, to) in [("5a", "5b"), ("4g", "3g"), ("5b", "5a"), ("3g", "4g")] {
         let m = position.find(step(from, to)).unwrap();
         assert!(position.make(m));
         path.push(m);
     }
-    assert_eq!(position.rule_score(), Some(0));
+    assert_eq!(position.rule_score(), Some(MATE_SCORE - 4));
     for _ in &path {
         position.unmake();
     }
@@ -374,13 +375,17 @@ fn the_root_excludes_departures_that_the_native_repetition_rule_forbids() {
     )
     .unwrap();
     let mut position = ToriPosition::from_game(&fresh);
-    for (index, (from, to)) in [("4g", "5g"), ("4a", "5a"), ("5g", "4g"), ("5a", "4a")]
-        .into_iter()
-        .enumerate()
-    {
+    // First return: a level cycle. Second return: the third occurrence.
+    for (index, (from, to)) in cycle.iter().copied().cycle().take(8).enumerate() {
         let m = position.find(step(from, to)).unwrap();
         assert!(position.make(m));
-        assert_eq!(position.rule_score(), (index == 3).then_some(0));
+        let expected = match index {
+            3 => Some(0),
+            7 => Some(MATE_SCORE - 8),
+            _ if index > 3 => Some(0),
+            _ => None,
+        };
+        assert_eq!(position.rule_score(), expected, "ply {index}");
     }
 }
 
@@ -437,8 +442,8 @@ fn history_keys_survive_stop_events_between_actions() {
     }
     // The position after 5g-4g occurred one time before: no score. The start
     // position after 5a-4a occurred two times before the root: its third
-    // occurrence scores as level.
-    assert_eq!(scores[0], vec![None, Some(0)]);
+    // occurrence is illegal (T06, MSH-208), a win for the side to move.
+    assert_eq!(scores[0], vec![None, Some(MATE_SCORE - 2)]);
     assert_eq!(scores[1], scores[0]);
 }
 

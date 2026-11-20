@@ -37,7 +37,7 @@ fn actual_core_consumer_uses_native_choices_effects_history_inspection_context_a
     assert_eq!(r.game_kind(), GameKind::Tori);
     assert_eq!(r.profile(), RulesProfile::ToriModernV1);
     assert_eq!(r.profile().edition(), t::PROFILE_EDITION);
-    assert_eq!(r.native_schema(), NativeSchema::ToriV1);
+    assert_eq!(r.native_schema(), NativeSchema::ToriV2);
     assert_eq!(r.known_board_actions(), 1);
     assert_eq!(r.event_count(), 1);
     let text = r.to_json().unwrap();
@@ -110,7 +110,8 @@ fn raw_outer_and_nested_identity_duplicates_unknown_missing_conflicts_never_fall
         ("game_kind", json!("shogi")),
         ("rules_profile", json!("mshogi.shogi.csa36.v1")),
         ("profile_edition", json!("other")),
-        ("native_schema_version", json!(2)),
+        ("native_schema_version", json!(1)),
+        ("native_schema_version", json!(3)),
         ("envelope_version", json!(2)),
         ("unknown", json!(1)),
     ] {
@@ -202,7 +203,7 @@ fn imported_complete_history_through_real_envelope_preserves_obligation_and_root
     for (from, to) in [("4g", "5g"), ("4a", "5a"), ("5g", "4g"), ("5a", "4a")]
         .into_iter()
         .cycle()
-        .take(8)
+        .take(7)
     {
         play(
             &mut g,
@@ -213,9 +214,10 @@ fn imported_complete_history_through_real_envelope_preserves_obligation_and_root
             },
         );
     }
-    assert_eq!(g.repetition_key(), &root_key);
-    assert_eq!(g.occurrences(), [0, 4, 8]);
-    assert_eq!(g.obligation().unwrap().side, t::Side::Sente);
+    // MSH-208: Gote's 5a-4a would make the root key's third occurrence.
+    assert_ne!(g.repetition_key(), &root_key);
+    assert_eq!(g.occurrences(), [3, 7]);
+    assert_eq!(g.repetition().unwrap().side, t::Side::Gote);
     assert_ne!(root_record, record(&g));
     let encoded = record(&g).to_json().unwrap();
     let CanonicalRecord::Tori(native) = CanonicalRecord::from_json(&encoded).unwrap() else {
@@ -223,9 +225,9 @@ fn imported_complete_history_through_real_envelope_preserves_obligation_and_root
     };
     let replay = native.to_game().unwrap();
     assert_eq!(replay.events(), g.events());
-    assert_eq!(replay.obligation(), g.obligation());
+    assert_eq!(replay.repetition(), g.repetition());
     assert_eq!(replay.position().root(), g.position().root());
-    assert_eq!(replay.position().declared_total_plies(), 59);
+    assert_eq!(replay.position().declared_total_plies(), 58);
     assert!(replay.position().root().earlier_history_unknown());
     assert!(!replay.position().root().historical_reachability_proven());
     assert_ne!(replay.context(), g.context());
@@ -233,10 +235,10 @@ fn imported_complete_history_through_real_envelope_preserves_obligation_and_root
     let prefix = prefix.to_game().unwrap();
     assert_eq!(prefix.events().len(), 4);
     assert_eq!(prefix.occurrences(), [0, 4]);
-    assert!(prefix.obligation().is_none());
+    assert!(prefix.repetition().is_none());
     let view = g.select_prefix(4).unwrap();
     assert_eq!(view.occurrences, [0, 4]);
-    assert!(view.obligation.is_none());
+    assert!(view.repetition.is_none());
     assert_eq!(view.local_position().position().declared_total_plies(), 55);
-    assert_eq!(g.occurrences(), [0, 4, 8]);
+    assert_eq!(g.occurrences(), [3, 7]);
 }

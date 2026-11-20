@@ -272,7 +272,8 @@ pub fn write_all(dir: &Path) {
         ),
     );
     write(dir, "resigned", &submit(&mut c, t::GameCommand::Resign));
-    // Independently authored TORI-H-COUNT eight-action history, actual native execution.
+    // Independently authored TORI-H-COUNT seven-action history (MSH-208): Gote's
+    // 5a-4a would make the start key's third occurrence. Actual native execution.
     let board = [("4g", t::Side::Sente), ("4a", t::Side::Gote)].map(|(sq, side)| {
         (
             sq.parse().unwrap(),
@@ -292,11 +293,14 @@ pub fn write_all(dir: &Path) {
         .unwrap(),
     )
     .unwrap();
-    for _ in 0..2 {
-        for (from, to) in [("4g", "5g"), ("4a", "5a"), ("5g", "4g"), ("5a", "4a")] {
-            play(&mut g, from, to, t::Face::Phoenix);
-        }
+    for (from, to) in [("4g", "5g"), ("4a", "5a"), ("5g", "4g"), ("5a", "4a")]
+        .into_iter()
+        .cycle()
+        .take(7)
+    {
+        play(&mut g, from, to, t::Face::Phoenix);
     }
+    assert_eq!(g.repetition().unwrap().side, t::Side::Gote);
     let mut c = install(&g);
     write(dir, "repetition", &c.shared_snapshot());
     write(

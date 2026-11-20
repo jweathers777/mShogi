@@ -104,10 +104,10 @@ it("projects only board rows, native nonmove events and selected completed geome
   rerender(<GameBoard snapshot={historyJson as unknown as ToriSnapshot} disabled={false} inspectionDisabled={false} command={vi.fn()} />);
   expect(container.querySelector(".completed-action-cue")).toBeNull();
 });
-it("keeps repetition advice separate from a conclusion and never leaks live obligations into a prefix", () => {
+it("keeps the repetition limit separate from a conclusion and never leaks a live limit into a prefix", () => {
   const native = repetitionJson as unknown as ToriSnapshot; app(native);
-  expect(screen.getByText(/Repetition obligation:/)).toBeTruthy(); expect(screen.queryByLabelText("Game outcome")).toBeNull();
-  cleanup(); app(prefixJson as unknown as ToriSnapshot); expect(screen.queryByText(/Repetition obligation:/)).toBeNull();
+  expect(screen.getByText(/Repetition limit:/)).toBeTruthy(); expect(screen.queryByLabelText("Game outcome")).toBeNull();
+  cleanup(); app(prefixJson as unknown as ToriSnapshot); expect(screen.queryByText(/Repetition limit:/)).toBeNull();
   expect(screen.getByRole("button", { name: "Return to live" })).toBeTruthy();
 });
 it("shows actual pending native engine work and cancellation without inventing telemetry", () => {

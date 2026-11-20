@@ -1,7 +1,7 @@
 ---
 id: MSH-204
 title: Tori Strength Harness
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-11-19T19:43:00Z'
@@ -44,7 +44,7 @@ Handle: Tori Strength Harness
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -80,3 +80,9 @@ Revised 2026-11-20 after MSH-208, before any game-test result: runner max_steps 
 
 2026-11-20 independent review complete (docs/m5/evidence/msh204/review.md): harness-completion review found no blocking defect; should-fix items resolved in 7ba3291a (per-game depth unchanged at median 10; collect checks; proof keys with diagram digest and prover version; five-ply and cross-depth prover tests; time factor needs a clock); re-review clean; notes applied. Verification Level 1 (native tooling, runner, Python tools; no product rules or desktop change in this branch since MSH-208): macOS arm64 focused checks — tools/strength tests 152 passed; tori_strength example tests passed; runner lib tests passed earlier at 9fdb6ed5; Clippy/fmt clean. Heavy measurement only in the cloud (c3-standard-4).
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Tori Strength Harness (step 1 of the per-game program). Route: Tori uses the clocked native experiment route; fixed on the way: clock allocation policy recorded per configuration (Tori nominal; absent = earlier hard policy so MSH-186 reports replay), Tori incremental sessions, native fork, cached encoded size, record-free experiment reports (linear size), per-player clocks for time odds, 1,024-step runner cap, and a length-limit rule fixed before results. MSH-208 (Tori Repetition Rule) removed the 360-ply limit. Results (report docs/m5/tori-strength-harness.md, evidence docs/m5/evidence/msh204): 218 balanced openings; a 502-position tactical suite (124 held-out) with native-prover answers and per-move full-width proof at scoring time (proof store keyed by diagram digest and prover version); baseline 346/484/501 of 502 at 20/200/1000 ms; control 5 s + 0.1 s with real-game median depth 10 from ply 100 (fresh search 8); 2x time worth +330 Elo (266-418, H1, fixed 96-pair sample); Texel export and opening split verified. Cloud: new cloud build path (tools/strength/cloud_build.py) and Tori campaign module (tools/strength/tori_cloud.py); about US$0.70, cleanup verified. Limits: the suite is nearly saturated at playing budgets; measurements are self-play on one machine type, not a rating; two wasteful local prover runs were stopped and heavy work now runs in the cloud (John 2026-11-20). Verification Level 1, focused local checks plus cloud measurement; independent review and re-review recorded. Integrated: merge 36511318 into main. Next: MSH-205 (Tori Selectivity Round).
+<!-- SECTION:FINAL_SUMMARY:END -->

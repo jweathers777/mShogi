@@ -326,7 +326,13 @@ def collect(raw, out):
                  'pentanomial': counts, 'estimate': stats.estimate(counts) if sum(counts) else None,
                  'sprt_fixed_sample': stats.Sprt(0, 15, .05, .05, 30).status(counts) if sum(counts) else None}
         result[label] = entry
-    suite = json.loads(Path('tools/strength/data/tori-tactics-v1.json').read_text())
+    suite_path = Path(__file__).resolve().parents[2] / 'tools/strength/data/tori-tactics-v1.json'
+    suite_bytes = suite_path.read_bytes()
+    frozen = json.loads((Path(__file__).resolve().parents[2] / 'docs/m5/evidence/msh204/cloud/data-files.json')
+                        .read_text())['files']['tori-tactics-v1.json']
+    if hashlib.sha256(suite_bytes).hexdigest() != frozen:
+        raise SystemExit('suite differs from the frozen cloud data')
+    suite = json.loads(suite_bytes)
     diagrams = {r['id']: r['diagram'] for r in suite['positions']}
     probes = collections.defaultdict(list)
     for f in sorted(raw.glob('tasks/*/*/probe/probe-*.json')):

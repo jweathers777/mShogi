@@ -264,6 +264,64 @@ def make_manifest(args):
     print(sum(map(len, m['bins'])), 'tasks in', len(m['bins']), 'bins')
 
 
+def collect(raw, out):
+    """Summarize retrieved campaign artifacts (local, reads files only)."""
+    import collections
+    import gzip
+    import statistics
+    from tools.strength import native_match, stats
+    raw = Path(raw)
+    result = {}
+    for label in ('control', 'odds'):
+        summaries = [json.loads(f.read_text()) for f in sorted(raw.glob(f'tasks/*/*/{label}/pair-*.summary.json'))]
+        reports = sorted(raw.glob(f'tasks/*/*/{label}/pair-*.report.json.gz'))
+        stops = collections.Counter(s for row in summaries for s in row['stops'])
+        plies = [n for row in summaries for n in row['plies']]
+        scored = [row['pair_score'] for row in summaries if row['pair_score'] is not None]
+        counts = stats.pentanomial(scored)
+        late = []
+        for row in summaries:
+            for player in row['turns']:
+                late += [t['depth'] for i, t in enumerate(player) if 2 * i >= 100]
+        seconds = [t['seconds'] for row in summaries for player in row['turns'] for t in player]
+        entry = {'pairs': len(summaries), 'reports': len(reports), 'stops': dict(stops),
+                 'length_limited_pairs': sum(native_match.length_limited(
+                     SimpleNamespace(game='tori'), row) for row in summaries),
+                 'median_plies': statistics.median(plies) if plies else None, 'max_plies': max(plies, default=None),
+                 'game_depth_from_ply_100': {'moves': len(late),
+                                             'median': statistics.median(late) if late else None,
+                                             'p10': sorted(late)[len(late) // 10] if late else None},
+                 'median_move_seconds': statistics.median(seconds) if seconds else None,
+                 'pentanomial': counts, 'estimate': stats.estimate(counts) if sum(counts) else None,
+                 'sprt': stats.Sprt(0, 15, .05, .05, 30).status(counts) if sum(counts) else None}
+        result[label] = entry
+    probes = collections.defaultdict(list)
+    for f in sorted(raw.glob('tasks/*/*/probe/probe-*.json')):
+        ms = int(f.name.split('-')[1])
+        probes[ms] += json.loads(f.read_text())['results']
+    result['suite'] = {}
+    proofs = {}
+    for ms, rows in sorted(probes.items()):
+        def count(split):
+            sel = [r for r in rows if split is None or r['split'] == split]
+            verdict = collections.Counter(r['verdict'] for r in sel)
+            return {'positions': len(sel), 'passed': sum(r['pass'] for r in sel), 'verdicts': dict(verdict)}
+        result['suite'][ms] = {'all': count(None), 'development': count('development'),
+                               'held_out': count('held-out')}
+        for r in rows:
+            if r['verdict'] in ('proved_win', 'refuted', 'unknown'):
+                proofs[f"{r['id']}|{r['chosen']}|{r['mate_plies']}|20000000"] = {'verdict': r['verdict']}
+    result['proofs_stored'] = len(proofs)
+    depth = [json.loads(f.read_text()) for f in sorted(raw.glob('tasks/*/*/depth/depth-*.json'))]
+    result['fresh_search_depth'] = depth
+    Path(out).write_text(json.dumps(result, indent=1))
+    Path(out).with_name('proof-store.json').write_text(json.dumps(
+        {'rule': 'native full-width prover; verdict proved_win | refuted | unknown (visit bound)',
+         'visit_bound': 20_000_000, 'proofs': proofs}, indent=1))
+    print(json.dumps({k: v for k, v in result.items() if k != 'fresh_search_depth'}, indent=1)[:4000])
+    print(json.dumps(depth, indent=1))
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     sub = p.add_subparsers(dest='command', required=True)
@@ -280,11 +338,16 @@ def main():
     k.add_argument('--task-seconds', type=int, default=3600)
     k.add_argument('--before', type=float, default=0)
     k.add_argument('--smoke', action='store_true')
+    c = sub.add_parser('collect')
+    c.add_argument('--raw', required=True)
+    c.add_argument('--out', required=True)
     a = p.parse_args()
     if a.command == 'worker':
         worker(a.manifest, a.store)
     elif a.command == 'submit':
         submit(a)
+    elif a.command == 'collect':
+        collect(a.raw, a.out)
     else:
         make_manifest(a)
 

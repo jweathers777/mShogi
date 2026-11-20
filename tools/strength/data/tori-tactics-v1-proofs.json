@@ -1,0 +1,606 @@
+{
+ "rule": "native full-width prover; verdict proved_win | refuted | unknown (visit bound)",
+ "visit_bound": 20000000,
+ "proofs": {
+  "mate-0234c8f590-g0-e218|LQ5c-4d|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-101c2eb8f2-g1-e119|Fa*5c|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-226e4d635e-g1-e291|Pt3ex4d|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-227c3eac35-g0-e75|Pt2gx1f|3|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-2737e35c8e-g1-e210|Cr*1c|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-328a461622-g1-e208|Pt3cx3a|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-4ed5719dcc-g0-e204|Sw*2b|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-561dfc6a90-g0-e266|Ea2dx2e|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-60b1680bdb-g0-e163|Ea6gx7f|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-60b1680bdb-g1-e184|Sw5b-5a=Go|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-7e0c719c29-g1-e87|Sw*2f|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-8e6782cdf0-g1-e51|Fa2fx2g=Ea|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-929abfae9d-g0-e225|Ea4e-5d|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-988ceb71ad-g1-e169|Ea2c-1c|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-9ae547d54e-g1-e205|Ea4ex6c|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-a02071514c-g0-e183|Fa5bx6b|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-a0f2b531a1-g1-e203|Cr6e-5f|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-ab0208a144-g1-e264|Sw4dx4c|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-ad64ed69cc-g1-e213|Sw*7d|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-b05c618110-g0-e195|LQ2cx2d|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-b669d14b90-g0-e57|Ph6b-6c|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-baf3bebb51-g0-e274|Cr*2d|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-c36a9b1c7b-g1-e575|Cr1dx1c|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-d0b0135bb7-g1-e351|Cr*1g|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-d38079ffd8-g0-e247|Go3ex1g|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-d5d26e2ac0-g0-e158|Fa*6b|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-d5d26e2ac0-g1-e536|Sw*7b|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-dafb2862d7-g1-e160|Fa3c-3b=Ea|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-e17da37dd8-g0-e158|Sw*3e|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-e6b951eb45-g0-e582|Go3a-3c|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-e8223ceb27-g0-e109|Ea7c-7b|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-fc8b84af2c-g0-e165|LQ2cx1b|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-0513306a48-g0-e98|Fa*1b|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-2eb2946385-g0-e399|Ea4g-6e|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-2eb2946385-g1-e167|Cr4ex3f|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-4ccc2a1888-g0-e64|RQ*7e|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-6a2cba79af-g0-e216|Cr*3c|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-806d4f286c-g1-e160|LQ1fx1b|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-834eb7439e-g0-e441|Ea4ex4d|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-87bb22b01e-g1-e596|Ea4gx3f|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-a27b2a1920-g1-e244|Cr2bx1a|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-b212aef642-g1-e221|RQ7ax7b|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-0234c8f590-g0-e220|LQ4d-4a|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-11acc2701d-g1-e182|Cr*3b|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-172f818949-g0-e288|Cr*7c|5|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-1c68a23fdf-g0-e179|Pt2fx1e|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-226e4d635e-g1-e293|Pt4dx5c|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-2737e35c8e-g0-e331|Cr*2f|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-2737e35c8e-g1-e235|Sw3dx3e|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-2e4cfc164f-g0-e225|Fa*3f|5|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-40facbb6a6-g0-e145|Ea3ex2e|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-436f534f41-g0-e420|Fa4bx5b=Ea|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-4d61a89ab1-g0-e113|Fa6f-6g=Ea|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-4ed5719dcc-g0-e208|Ph2dx3c|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-52f1fb1aa7-g0-e117|LQ2c-1b|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-5615dd5550-g1-e207|RQ2cx2d|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-5da1f423e1-g0-e573|Fa*5e|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-60b1680bdb-g0-e165|Ea6gx7f|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-60b1680bdb-g1-e186|Ph6a-5b|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-680215b2f1-g0-e201|Ph4b-3a|5|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-6a6a8ec2d1-g0-e162|Cr6cx5b|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-7fc2874c20-g1-e106|Go4cx6a|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-82a74c3481-g1-e170|Sw5cx5b=Go|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-8e6782cdf0-g0-e227|Fa3f-4g=Ea|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-8e6782cdf0-g1-e71|Ph2bx1c|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-97e623b90d-g0-e278|Cr4b-5c|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-988ceb71ad-g1-e175|Ea1cx2d|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-9ae547d54e-g1-e223|Cr*1d|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-a0f2b531a1-g1-e363|Sw*7b|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-ad64ed69cc-g0-e290|Ea4a-5b|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-b6047bc00a-g0-e339|Cr*2f|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-b669d14b90-g1-e212|Fa5fx4g|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-d41a08e2a1-g0-e244|Sw4c-4b=Go|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-d5d26e2ac0-g0-e164|Ea7bx6a|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-dafb2862d7-g1-e258|Ea4cx3d|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-e17da37dd8-g0-e160|Sw7b-7a=Go|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-e40d841e7d-g0-e99|Ea3fx3c|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-e8223ceb27-g0-e131|Cr1gx1f|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-e8d1de49fd-g1-e77|LQ1ax1b|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-edafc114f1-g1-e140|Fa5b-4b=Ea|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-fc8b84af2c-g0-e167|Fa3bx4b|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-2387657d82-g1-e141|Ea4ex2g|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-2eb2946385-g1-e205|Ea2fx3f|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-6a2cba79af-g1-e289|Ea7fx6f|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-806d4f286c-g1-e162|Ea3c-4d|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-87bb22b01e-g0-e354|Ea3ax1c|5|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-8d978a3070-g0-e115|Pt*6f|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-99850cd269-g1-e225|Cr6fx5e|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-b212aef642-g0-e217|Go7fx7d|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-ebda3a59c7-g0-e159|RQ7ax7b|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-ebda3a59c7-g1-e387|Cr*6f|5|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-0234c8f590-g0-e98|Fa4b-3c=Ea|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-059b9d245d-g0-e162|Ea7c-7d|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-0f2b952f41-g0-e79|Cr*4f|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-21750069e9-g0-e122|Ea5cx7a|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-226e4d635e-g0-e227|Cr2d-3c|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-226e4d635e-g1-e295|Pt4dx5c|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-227c3eac35-g1-e74|Sw*2e|5|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-2737e35c8e-g1-e239|Sw3dx3e|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-2bd215503c-g0-e128|Sw7c-7b=Go|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-2e4cfc164f-g1-e189|Cr5ax5b|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-40facbb6a6-g0-e193|Ea7fx6e|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-4d61a89ab1-g0-e117|Cr5ex5f|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-4ed5719dcc-g1-e168|Ea1d-2e|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-5615dd5550-g0-e134|Cr3d-3e|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-5615dd5550-g1-e209|Sw*4b|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-60b1680bdb-g0-e167|RQ6dx5c|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-6287777827-g0-e173|Cr2gx2f|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-6935863685-g1-e249|Cr*3e|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-6b47f13e0c-g0-e100|Fa2ax1a=Ea|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-77016e4784-g1-e208|Ea1d-2d|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-82a74c3481-g0-e164|Go4a-4c|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-8e6782cdf0-g0-e257|Sw1bx1c|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-988ceb71ad-g1-e177|Sw*2e|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-a02071514c-g1-e247|Sw*2d|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-a0f2b531a1-g0-e117|Ea1f-2f|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-a8fa80e294-g1-e249|Sw5ex5f=Go|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-ab0208a144-g1-e256|Fa*3b|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-ad64ed69cc-g1-e65|Ea3e-2f|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-b6047bc00a-g0-e341|Cr*2f|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-b669d14b90-g1-e214|Sw6b-6a=Go|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-baf3bebb51-g1-e220|Ea1c-1f|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-c57215c79b-g0-e52|Fa4dx4c|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-d205e185ee-g0-e106|Cr2bx1a|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-dafb2862d7-g0-e244|LQ7b-7a|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-e17da37dd8-g1-e176|RQ*1e|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-e40d841e7d-g1-e165|Fa7dx6c|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-e8223ceb27-g0-e135|Sw*3c|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-e8d1de49fd-g0-e126|Ph3gx2g|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-edafc114f1-g1-e142|Sw6dx6c|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-f79807860d-g1-e120|Fa*3c|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-26cbf4fa7f-g1-e107|Ea4f-4e|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-2eb2946385-g0-e403|Ea6ex6d|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-3d70f6c527-g0-e123|Fa4g-3g=Ea|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-4787bdec7d-g0-e107|Sw6f-6g=Go|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-6627b87d62-g0-e164|Sw*7b|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-6a2cba79af-g1-e291|Ea6gx6f|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-6dda085346-g1-e69|Cr5a-5b|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-806d4f286c-g1-e164|Ea4d-4e|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-87bb22b01e-g1-e590|Ea2a-3b|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-a9d99becd9-g1-e174|Ea1bx2a|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-b212aef642-g0-e219|Sw*4f|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-101c2eb8f2-g1-e116|Ph4ex5d|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-189a0ad75d-g0-e124|Sw*4d|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-1a535c126b-g1-e143|Ea4gx6e|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-227c3eac35-g0-e71|Pt*2g|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-2a8bda389e-g0-e171|Go6f-6d|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-2e4cfc164f-g1-e191|LQ*2g|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-3934fd928f-g1-e133|Go4gx4e|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-436f534f41-g1-e407|Cr1f-1g|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-4ed5719dcc-g0-e202|Go3b-3d|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-52f1fb1aa7-g1-e82|Fa4fx5f|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-5615dd5550-g1-e223|Fa4b-3a|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-6935863685-g1-e502|Pt1gx1e|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-6e6ebc5861-g0-e152|Pt2e-3f|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-77016e4784-g0-e68|Cr4bx3a|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-77016e4784-g1-e236|Ea2a-4c|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-82a74c3481-g0-e166|Cr4bx4c|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-8e6782cdf0-g0-e261|Sw3e-3f=Go|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-929abfae9d-g0-e163|Sw2ex2f=Go|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-97e623b90d-g0-e265|LQ1gx5c|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-a02071514c-g0-e167|Fa5bx6c|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-a0f2b531a1-g0-e221|Fa4f-5g=Ea|5|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-ab0208a144-g1-e260|LQ*6a|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-b05c618110-g0-e189|Fa2cx3c|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-b669d14b90-g1-e276|Pt*2a|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-d5d26e2ac0-g1-e534|Ea3f-1d|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-e17da37dd8-g0-e156|Sw*7b|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-e40d841e7d-g0-e131|Cr*3f|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-fc8b84af2c-g1-e91|Pt2a-2c|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-0513306a48-g0-e96|Cr7ex7f|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-26cbf4fa7f-g1-e109|Cr5fx6e|5|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-2eb2946385-g1-e165|RQ5cx5e|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-3d70f6c527-g0-e125|Ea3gx2g|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-45a490fbd7-g0-e164|Fa3a-4b=Ea|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-4ccc2a1888-g0-e62|Ph6fx7f|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-6627b87d62-g0-e194|Ea6gx7f|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-834eb7439e-g0-e439|Ea4ex4d|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-87bb22b01e-g1-e592|Ea3bx2c|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-93eb4ec2b0-g0-e276|Cr*5b|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-99850cd269-g1-e173|Ph5bx4c|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-b212aef642-g0-e221|Sw*2e|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-592744af10-g0-e183|Cr2e-2d|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-60b1680bdb-g0-e163|LQ*3b|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-680215b2f1-g0-e199|Fa4c-3b|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-d38079ffd8-g0-e247|Cr*2f|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-a27b2a1920-g1-e244|Ea5ex4d|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-226e4d635e-g1-e293|RQ*7g|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-e17da37dd8-g0-e160|Pt3ex3c|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-e8223ceb27-g0-e131|Ea6ex5d|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-226e4d635e-g0-e227|Fa*6b|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-e8223ceb27-g0-e135|Ea6ex5d|5|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-edafc114f1-g1-e142|Cr*6b|5|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-101c2eb8f2-g1-e116|Ph4ex3d|7|20000000": {
+   "verdict": "refuted"
+  },
+  "mate-5615dd5550-g1-e223|Cr4f-3e|5|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-82a74c3481-g0-e166|Ea3cx4c|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-45a490fbd7-g0-e164|Cr*7c|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-6627b87d62-g0-e194|Cr*5c|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-0234c8f590-g0-e220|Pt*1d|7|20000000": {
+   "verdict": "proved_win"
+  },
+  "mate-60b1680bdb-g0-e165|LQ*3c|7|20000000": {
+   "verdict": "proved_win"
+  }
+ }
+}

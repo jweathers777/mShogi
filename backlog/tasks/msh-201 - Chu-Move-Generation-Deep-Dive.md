@@ -4,7 +4,7 @@ title: Chu Search Speed
 status: To Do
 assignee: []
 created_date: '2026-11-19T07:12:00Z'
-updated_date: '2026-11-20T22:48:00Z'
+updated_date: '2026-11-20T22:49:00Z'
 labels:
   - chu
   - search
@@ -30,3 +30,9 @@ Native rules stay the authority. A faster search-side position must agree with t
 - [ ] #3 Each kept change passed the blunder suite and a game test against the frozen predecessor; rejected changes are recorded with their result
 - [ ] #4 A short design note in docs/ explains how the unusual pieces are generated and checked in search
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+2026-11-20, John: rescoped from a discussion task to an ordinary speed task; agents choose the techniques. Blocker: Chu has no strength harness yet (opening set, blunder suite, game test against the predecessor; see MSH-204 (Tori Strength Harness) and docs/m5/strength-roadmap.md). Speed profiling and perft/differential work can start; AC 3 needs the harness.
+<!-- SECTION:NOTES:END -->

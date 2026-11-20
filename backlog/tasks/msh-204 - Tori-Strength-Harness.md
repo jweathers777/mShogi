@@ -5,13 +5,14 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-19T19:43:00Z'
-updated_date: '2026-11-19T20:39:00Z'
+updated_date: '2026-11-20T07:34:00Z'
 labels:
   - handle:tori-strength-harness
   - tori
   - strength
 milestone: m-5
-dependencies: []
+dependencies:
+  - MSH-208
 references:
   - docs/m5/strength-roadmap.md
 ordinal: 211000
@@ -66,4 +67,6 @@ Plan:
 2026-11-19 harness infrastructure (Level 1 local, macOS arm64): (1) Tori adopts the incremental session protocol (core GameDelta/IncrementalRecord, engine ToriAdapter; engine turns only). (2) Native Tori Game::fork (exact copy, fresh runtime identity) for search validation, ToriResult::validate and runner transaction copies. (3) Tori admission computes encoded bytes from cached per-event lengths (exact; differential test against full encoding after play/undo/redo/prefix/stop/resign). (4) Clocked runner gives the nominal (soft) allocation, not the 3x hard ceiling. (5) Experiment reports omit each step's native record (request and observation context); decode restores it from native replay without re-decoding; reports and byte charges are now linear in game length (Tori pair 4.6 MB -> 40 KB gz; replay of a 357+111-ply pair 75 s -> 1.75 s). Smoke: per-request overhead flat (median -13 to -5 ms over the game). Tests: core/engine/search/runner/console 943 passed, desktop-session 322 passed, Clippy clean. OPEN DECISION: 2 of 20 smoke games reached the recorded MSH-129 native Tori capacity (65,536 replay units, about 360 board plies) and ended unscored; asked John how to treat this.
 
 2026-11-19 openings: tools/strength/data/tori-openings-v1.json, 218 admitted of 300 distinct candidates (82 unbalanced). Rule fixed before screening: 8 plies from the standard root, each ply chooses uniformly (seed 204) among actions within 50 of the best depth-6 score; screen at fixed depth 12 by the search at 6c7be47a, admit |score| <= 100 Swallow hundredths. Generator crates/mshogi-search/examples/tori_openings.rs; candidates and screen in docs/m5/evidence/msh204/openings/. 8 pairs at 5 s + 0.1 s through the clocked route from the catalog: 15 games concluded natively, 1 reached native capacity (ply 361 incl. opening). Capacity total so far: 3 of 36 games.
+
+2026-11-20: Blocked on MSH-208 (Tori Repetition Rule). John decided the Tori repetition rule (Shogi-style position repetition, third occurrence forbidden, different move required) and the removal of the replay-work count that ended about 8% of self-play games unscored at about 360 plies. Game tests resume after MSH-208. MSH-209 (Native Consistency Review) covers the cross-game safeguard inconsistency.
 <!-- SECTION:NOTES:END -->

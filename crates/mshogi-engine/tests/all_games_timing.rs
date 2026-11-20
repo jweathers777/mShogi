@@ -117,10 +117,8 @@ fn capture_frozen_fixed_baseline() {
 
 #[test]
 fn fixed_search_matches_frozen_predecessor() {
-    let mut expected: Vec<Value> = serde_json::from_str(include_str!(
-        "../../../docs/m5/evidence/msh179/fixed-baseline.json"
-    ))
-    .unwrap();
+    let mut expected: Vec<Value> =
+        serde_json::from_str(include_str!("data/fixed-baseline.json")).unwrap();
     // Shogi alone changed after MSH-179: MSH-190 (Shogi Selectivity Round)
     // added the root mate search (121 -> 122 nodes) and MSH-188 (Shogi
     // Evaluation Round) the tuned evaluation (move, nodes and score below).

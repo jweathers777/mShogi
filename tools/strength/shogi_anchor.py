@@ -241,7 +241,7 @@ def prepare(args):
          **({'clock': {'base_ms': args.clock[0], 'increment_ms': args.clock[1]}} if args.clock else {}),
          'source_files': {n: digest(Path(n).read_bytes()) for n in
                           ('tools/strength/shogi_anchor.py', 'tools/strength/anchor_stats.py',
-                           'docs/m5/evidence/msh191/method.md')}}
+                           'docs/m5/shogi-anchor-method.md')}}
     validate_manifest(m)
     with Path(args.output).open('x') as f:
         json.dump(m, f, indent=1)

@@ -39,7 +39,7 @@ def prepare(args):
                 'selection_reason': args.reason,
                 'source_files': {name: digest(Path(name).read_bytes()) for name in
                   ('tools/strength/anchor_worker.py','tools/strength/anchor_stats.py','tools/strength/anchor_cloud.py',
-                   'tools/strength/anchor_batch.py','docs/m5/evidence/msh185/method.md')}}
+                   'tools/strength/anchor_batch.py','docs/m5/chess-anchor-method.md')}}
     validate_manifest(manifest)
     write(args.output, manifest)
 

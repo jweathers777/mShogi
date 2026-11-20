@@ -1,10 +1,11 @@
 ---
 id: MSH-200
 title: Tori Search Speed
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-19T07:12:00Z'
-updated_date: '2026-11-20T23:28:00Z'
+updated_date: '2026-11-20T23:29:00Z'
 labels:
   - tori
   - search

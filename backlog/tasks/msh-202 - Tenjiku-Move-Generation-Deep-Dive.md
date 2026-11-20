@@ -1,11 +1,11 @@
 ---
 id: MSH-202
-title: Tenjiku Move Generation Deep Dive
+title: Tenjiku Search Speed
 status: To Do
 assignee: []
 created_date: '2026-11-19T07:12:00Z'
+updated_date: '2026-11-20T22:48:00Z'
 labels:
-  - handle:tenjiku-move-generation-deep-dive
   - tenjiku
   - search
 milestone: m-5
@@ -18,28 +18,15 @@ ordinal: 209000
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-Handle: Tenjiku Move Generation Deep Dive
+Goal: make the Tenjiku search faster with conventional techniques. Measure where search time goes (move generation, make and unmake, legality and check tests, attack tests), then remove the largest costs. This includes the unusual pieces (Fire Demon area moves and burning, range-jumping generals, Lion and Lion-like moves, Heavenly Tetrarch and Vice General moves). Keep a change only on evidence: correctness checks, a speed measurement, and a game test against the frozen predecessor.
 
-**Problem.** Tenjiku Shogi adds the Fire Demon (area burning), range-jumping Generals (Great, Vice, Rook and Bishop Generals), Heavenly Tetrarchs and Lion-like pieces. Fast, correct generation of these moves limits search speed and correctness, and the shared core's techniques assume ordinary moves.
-
-**Objective.** With John, examine each piece of Tenjiku that needs non-standard generation and choose the best way to generate, order and update its moves for search.
-
-**Approach.** A discussion task first (John, 2026-11-19): list the pieces and their move rules from the native profile, measure the current generation cost, and compare candidate representations (for example precomputed tables, attack sets, special encodings for multi-step moves). Implementation follows in this task or in separate tasks as agreed. Native rules stay the authority; a faster search-side generator is validated by perft and differential tests against them.
-
-**Completion.** The pieces, measured costs, options and the agreed decision are recorded; any agreed implementation passes perft and differential tests.
+Native rules stay the authority. A faster search-side position must agree with them in perft and differential tests. No rule changes.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Each Tenjiku piece with non-standard generation is listed with its native move rule and its measured generation cost.
-- [ ] #2 Options and John's decision are recorded in the task.
-- [ ] #3 Any agreed implementation passes perft and native differential tests and has a recorded speed measurement.
+- [ ] #1 Baseline and final speed are recorded on the same machine and positions: nodes per second and time to a fixed depth, with the cost profile that guided the changes
+- [ ] #2 Tenjiku perft and differential tests against the native rules pass
+- [ ] #3 Each kept change passed the blunder suite and a game test against the frozen predecessor; rejected changes are recorded with their result
+- [ ] #4 A short design note in docs/ explains how the unusual pieces are generated and checked in search
 <!-- AC:END -->
-
-## Definition of Done
-<!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
-<!-- DOD:END -->

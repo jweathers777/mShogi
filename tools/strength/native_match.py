@@ -72,6 +72,8 @@ def run_pair(args, seed, out):
         # keep the earlier hard-ceiling policy so their evidence stays comparable.
         if args.game == 'tori':
             command.extend(['--clock-allocation', 'nominal'])
+        if getattr(args, 'candidate_time_factor', 1) != 1:
+            command.extend(['--candidate-time-factor', str(args.candidate_time_factor)])
     if getattr(args, 'openings', None):
         command.extend(['--openings', args.openings, '--opening-index',
                         str((seed - 1) % args.opening_count)])
@@ -115,6 +117,31 @@ def run_pair(args, seed, out):
     return result
 
 
+# Rule fixed before any MSH-204 (Tori Strength Harness) result, 2026-11-20,
+# as proposed to John: a Tori pair in which a game reaches the step limit
+# without a native result is excluded from the test and counted; every other
+# unscored stop still stops the campaign; the campaign also stops when more
+# than LENGTH_LIMIT_SHARE of at least LENGTH_LIMIT_MIN_PAIRS pairs are excluded.
+LENGTH_LIMIT_SHARE = 0.10
+LENGTH_LIMIT_MIN_PAIRS = 20
+
+
+def length_limited(args, row):
+    return (args.game == 'tori' and row['pair_score'] is None
+            and all(stop in ('native_concluded', 'step_limit') for stop in row['stops'])
+            and 'step_limit' in row['stops'])
+
+
+def unfinished(args, rows):
+    """The reason to stop the campaign, or None."""
+    if any(row['pair_score'] is None and not length_limited(args, row) for row in rows):
+        return 'unfinished pair: stop and diagnose; no score-based exclusion'
+    limited = sum(length_limited(args, row) for row in rows)
+    if len(rows) >= LENGTH_LIMIT_MIN_PAIRS and limited > LENGTH_LIMIT_SHARE * len(rows):
+        return f'length-limited pairs {limited} of {len(rows)} exceed {LENGTH_LIMIT_SHARE:.0%}: stop and diagnose'
+    return None
+
+
 def summary(args, rows, start, failure=None):
     counts = stats.pentanomial(row['pair_score'] for row in rows if row['pair_score'] is not None)
     sprt = stats.Sprt(args.elo0, args.elo1, args.alpha, args.beta, args.min_pairs)
@@ -127,6 +154,7 @@ def summary(args, rows, start, failure=None):
                         'total_request_seconds': sum(t['seconds'] for t in turns)})
     scores = [s for row in rows for s in row['scores_twice'] if s is not None]
     return {'pairs': len(rows), 'scored_pairs': sum(counts), 'pentanomial': counts,
+            'length_limited_pairs': sum(length_limited(args, row) for row in rows),
             'decision': 'calibration' if args.calibrate else sprt.status(counts)['decision'] or 'no decision',
             'wins_draws_losses': [scores.count(2), scores.count(1), scores.count(0)],
             'sprt': sprt.status(counts), 'estimate': stats.estimate(counts),
@@ -162,14 +190,20 @@ def main(default_game="shogi"):
     parser.add_argument('--alpha', type=float, default=.05)
     parser.add_argument('--beta', type=float, default=.05)
     parser.add_argument('--calibrate', action='store_true')
+    parser.add_argument('--candidate-time-factor', type=int, default=1,
+                        help='time odds: the candidate clock is this multiple of --base/--increment')
     args = parser.parse_args()
     if (args.game == 'tenjiku') != (args.profile is not None):
         parser.error('--profile adams|muller is required only for --game tenjiku')
-    defaults = {'shogi': (2, 5000, 320), 'xiangqi': (1, 128, 500), 'tori': (1, 512, 500), 'chu': (1, 512, 500), 'tenjiku': (1, 1024, 500)}
+    defaults = {'shogi': (2, 5000, 320), 'xiangqi': (1, 128, 500), 'tori': (1, 512, 1000), 'chu': (1, 512, 500), 'tenjiku': (1, 1024, 500)}
     depth, nodes, args.max_steps = defaults[args.game]
+    if args.candidate_time_factor != 1 and args.base is None:
+        parser.error('--candidate-time-factor needs a clock (--base)')
     if args.base is not None:
         if args.game not in ('shogi', 'tori') or not (0.001 <= args.base <= 600 and 0 <= args.increment <= 60):
             parser.error('clock mode requires Shogi or Tori, base 0.001..600 and increment 0..60 seconds')
+        if not 1 <= args.candidate_time_factor <= 8:
+            parser.error('--candidate-time-factor must be 1..8')
         if args.candidate_nodes is not None or args.baseline_nodes is not None or args.baseline_depth is not None:
             parser.error('clock mode uses symmetric native safety caps; do not supply fixed work')
         args.candidate_nodes = args.baseline_nodes = 5_000_000
@@ -241,8 +275,9 @@ def main(default_game="shogi"):
                 print(json.dumps({k: result[k] for k in ('pairs', 'wins_draws_losses', 'sprt', 'wall_seconds')}), flush=True)
                 if args.calibrate:
                     continue
-                if any(row['pair_score'] is None for row in rows):
-                    raise RuntimeError('unfinished pair: stop and diagnose; no score-based exclusion')
+                reason = unfinished(args, rows)
+                if reason:
+                    raise RuntimeError(reason)
                 if result['sprt']['decision']:
                     break
     except Exception as error:

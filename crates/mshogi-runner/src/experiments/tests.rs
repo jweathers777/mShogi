@@ -51,6 +51,15 @@ fn strict_effective_limits_and_bounded_aggregate_work() {
     let mut bad = c.clone();
     bad.max_steps = 512;
     assert!(bad.validate().is_err());
+    // One opening pair may use the native Tori event limit (MSH-204/MSH-208).
+    let mut pair = c.clone();
+    pair.openings.truncate(1);
+    pair.players.truncate(2);
+    pair.rounds = 1;
+    pair.max_steps = 1024;
+    pair.validate().unwrap();
+    pair.max_steps = 1025;
+    assert!(pair.validate().is_err());
     let mut bad = c.clone();
     bad.players[0].limits.remove(0);
     assert!(bad.validate().is_err());
@@ -607,6 +616,26 @@ fn successful_shogi_clock_steps_replay_both_players_and_colors() {
     other.config.clock.as_mut().unwrap().allocation = ClockAllocation::Nominal;
     other.config_sha256 = digest(&serde_json::to_string(&other.config).unwrap());
     assert!(other.validate().is_err());
+    // Time odds (MSH-204): replay uses each participant's own clock, so the
+    // same steps under a doubled clock for player 0 no longer replay.
+    let mut odds = report.clone();
+    let shared = odds.config.clock.unwrap();
+    odds.config.players[0].clock = Some(FischerClock {
+        base_ms: shared.base_ms * 2,
+        increment_ms: shared.increment_ms * 2,
+        ..shared
+    });
+    odds.config_sha256 = digest(&serde_json::to_string(&odds.config).unwrap());
+    odds.config.validate().unwrap();
+    assert!(odds.validate().is_err());
+    // A participant clock needs the shared clock and the same policy.
+    let mut c = odds.config.clone();
+    c.clock = None;
+    assert!(c.validate().is_err());
+    let mut c = odds.config.clone();
+    c.players[0].clock.as_mut().unwrap().allocation = ClockAllocation::Nominal;
+    assert!(c.validate().is_err());
+    assert_eq!(c.player_clock(1).unwrap().base_ms, c.clock.unwrap().base_ms);
     // Encoded steps omit the replay-determined native record (MSH-204); the
     // decoder restores it by native replay and the result is identical.
     let text = report.to_json().unwrap();

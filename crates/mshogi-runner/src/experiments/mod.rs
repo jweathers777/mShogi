@@ -39,7 +39,7 @@ pub fn template(executable: &str) -> Result<Config, RunnerError> {
         .to_str()
         .ok_or_else(|| err("executable path must be UTF8"))?
         .to_owned();
-    let players=[("candidate",1,512),("baseline-low",1,128),("baseline-deeper",2,512)].into_iter().map(|(id,depth,nodes)|Player{id:id.into(),executable:executable.clone(),build_provenance:"unverified declaration: replace with actual source/compiler/build receipt; executable SHA is observed automatically".into(),limits:PROFILES.iter().map(|p|ProfileLimits{profile:*p,work:WorkLimits{ time_ms: None,depth,nodes}}).collect()}).collect();
+    let players=[("candidate",1,512),("baseline-low",1,128),("baseline-deeper",2,512)].into_iter().map(|(id,depth,nodes)|Player{id:id.into(),executable:executable.clone(),build_provenance:"unverified declaration: replace with actual source/compiler/build receipt; executable SHA is observed automatically".into(),limits:PROFILES.iter().map(|p|ProfileLimits{profile:*p,work:WorkLimits{ time_ms: None,depth,nodes}}).collect(),clock:None}).collect();
     let openings = PROFILES
         .iter()
         .map(|p| {
@@ -90,6 +90,10 @@ pub struct Player {
     pub build_provenance: String,
     /// Per-profile effective search limits.
     pub limits: Vec<ProfileLimits>,
+    /// This player's own clock, for time odds (MSH-204). Requires the shared
+    /// configuration clock; absent means the shared clock.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub clock: Option<FischerClock>,
 }
 /// Complete native starting history and its authored/source provenance.
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -237,15 +241,28 @@ impl Config {
         value.validate()?;
         Ok(value)
     }
+    /// The clock of one participant: its own clock (time odds) or the shared one.
+    pub fn player_clock(&self, player: usize) -> Option<FischerClock> {
+        self.clock
+            .map(|shared| self.players[player].clock.unwrap_or(shared))
+    }
     /// Validate resource limits and concrete native profiles before launching.
     pub fn validate(&self) -> Result<(), RunnerError> {
-        if self
-            .clock
-            .is_some_and(|c| c.base_ms == 0 || c.base_ms > 600_000 || c.increment_ms > 60_000)
-        {
-            return Err(err("invalid finite Fischer clock"));
+        if self.clock.is_none() && self.players.iter().any(|p| p.clock.is_some()) {
+            return Err(err("a participant clock requires the shared clock"));
         }
-        if let Some(clock) = self.clock {
+        for clock in (0..self.players.len()).filter_map(|p| self.player_clock(p)) {
+            if clock.base_ms == 0 || clock.base_ms > 600_000 || clock.increment_ms > 60_000 {
+                return Err(err("invalid finite Fischer clock"));
+            }
+            if self
+                .clock
+                .is_some_and(|shared| shared.allocation != clock.allocation)
+            {
+                return Err(err("participant clocks must share the allocation policy"));
+            }
+        }
+        for clock in (0..self.players.len()).filter_map(|p| self.player_clock(p)) {
             // Upper bound even if every command earns an increment without time charge.
             let remaining = clock
                 .base_ms
@@ -270,7 +287,8 @@ impl Config {
             || self.openings.len() > 16
             || !(1..=16).contains(&self.rounds)
             || self.openings.len() * usize::from(self.rounds) * (self.players.len() - 1) * 2 > 128
-            || self.max_steps > 512
+            // The native Tori event limit (MSH-208) allows about 1,000 plies.
+            || self.max_steps > 1024
             || self.openings.len()
                 * usize::from(self.rounds)
                 * (self.players.len() - 1)
@@ -773,8 +791,9 @@ impl Report {
                 native::NativeState::from_root(&self.config.openings[expected.opening].root)
                     .map_err(err)?;
             let mut last_stop = None;
-            let mut remaining =
-                vec![self.config.clock.map_or(0, |c| c.base_ms); self.config.players.len()];
+            let mut remaining: Vec<u64> = (0..self.config.players.len())
+                .map(|p| self.config.player_clock(p).map_or(0, |c| c.base_ms))
+                .collect();
             let mut moved = vec![false; self.config.players.len()];
             for step in &game.steps {
                 if state.stop_reason().is_some() {
@@ -792,7 +811,7 @@ impl Report {
                     || c.limits
                         != clock_work(
                             self.config.players[player].work(c.game.profile())?,
-                            self.config.clock,
+                            self.config.player_clock(player),
                             remaining[player],
                             !moved[player],
                         )
@@ -803,7 +822,7 @@ impl Report {
                 {
                     return Err(err("stale/wrong participant, history, purpose or limits"));
                 }
-                let receipt = self.config.clock.map(|clock| {
+                let receipt = self.config.player_clock(player).map(|clock| {
                     clock_receipt(clock, remaining[player], step.elapsed_ns, step.applied)
                 });
                 if step.clock != receipt {

@@ -24,5 +24,7 @@ mshogi-desktop-session = { path = "../../crates/mshogi-desktop-session" }
 unsafe_code = "forbid"
 
 [patch.crates-io]
-# Keep native macOS Quit on the same preventable path as window close.
-tao = { path = "vendor/tao" }
+# Keep macOS Dock Quit, logout and shutdown on the same preventable path as
+# window close. The fork carries one patch on tao 0.37.2; drop it when the
+# upstream change is released.
+tao = { git = "https://github.com/jweathers777/tao", rev = "97dd48097e8d3c9fd2e68f01bdf75e3ccce0db9b" }

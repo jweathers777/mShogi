@@ -82,7 +82,9 @@ pub fn run_with_stop(
             .map(|p| EngineBridge::with_options(p.executable.clone().into(), bridge_options))
             .collect::<Result<_, _>>()
             .map_err(err)?;
-        let mut remaining = vec![config.clock.map_or(0, |c| c.base_ms); config.players.len()];
+        let mut remaining: Vec<u64> = (0..config.players.len())
+            .map(|p| config.player_clock(p).map_or(0, |c| c.base_ms))
+            .collect();
         let mut moved = vec![false; config.players.len()];
         loop {
             if let Some(reason) = state.stop_reason() {
@@ -123,7 +125,7 @@ pub fn run_with_stop(
                     game: before.record.clone(),
                     limits: clock_work(
                         config.players[player].work(before.record.profile())?,
-                        config.clock,
+                        config.player_clock(player),
                         remaining[player],
                         !moved[player],
                     ),
@@ -179,7 +181,7 @@ pub fn run_with_stop(
             } else {
                 native::Admission::Failed(failure.clone().unwrap())
             };
-            let clock = config.clock.map(|c| {
+            let clock = config.player_clock(player).map(|c| {
                 clock_receipt(
                     c,
                     remaining[player],

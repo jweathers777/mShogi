@@ -72,6 +72,8 @@ def run_pair(args, seed, out):
         # keep the earlier hard-ceiling policy so their evidence stays comparable.
         if args.game == 'tori':
             command.extend(['--clock-allocation', 'nominal'])
+        if getattr(args, 'candidate_time_factor', 1) != 1:
+            command.extend(['--candidate-time-factor', str(args.candidate_time_factor)])
     if getattr(args, 'openings', None):
         command.extend(['--openings', args.openings, '--opening-index',
                         str((seed - 1) % args.opening_count)])
@@ -188,6 +190,8 @@ def main(default_game="shogi"):
     parser.add_argument('--alpha', type=float, default=.05)
     parser.add_argument('--beta', type=float, default=.05)
     parser.add_argument('--calibrate', action='store_true')
+    parser.add_argument('--candidate-time-factor', type=int, default=1,
+                        help='time odds: the candidate clock is this multiple of --base/--increment')
     args = parser.parse_args()
     if (args.game == 'tenjiku') != (args.profile is not None):
         parser.error('--profile adams|muller is required only for --game tenjiku')
@@ -196,6 +200,8 @@ def main(default_game="shogi"):
     if args.base is not None:
         if args.game not in ('shogi', 'tori') or not (0.001 <= args.base <= 600 and 0 <= args.increment <= 60):
             parser.error('clock mode requires Shogi or Tori, base 0.001..600 and increment 0..60 seconds')
+        if not 1 <= args.candidate_time_factor <= 8:
+            parser.error('--candidate-time-factor must be 1..8')
         if args.candidate_nodes is not None or args.baseline_nodes is not None or args.baseline_depth is not None:
             parser.error('clock mode uses symmetric native safety caps; do not supply fixed work')
         args.candidate_nodes = args.baseline_nodes = 5_000_000

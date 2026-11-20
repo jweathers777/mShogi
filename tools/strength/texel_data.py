@@ -11,14 +11,17 @@ import json
 from pathlib import Path
 
 
-FIELDS = {'chess': 4, 'shogi': 3, 'xiangqi': 2}
-POSITION = {'chess': 'fen', 'shogi': 'sfen', 'xiangqi': 'fen'}
-OUTCOME = {'chess': 'white_outcome', 'shogi': 'sente_outcome', 'xiangqi': 'red_outcome'}
+FIELDS = {'chess': 4, 'shogi': 3, 'xiangqi': 2, 'tori': None}
+POSITION = {'chess': 'fen', 'shogi': 'sfen', 'xiangqi': 'fen', 'tori': 'diagram'}
+OUTCOME = {'chess': 'white_outcome', 'shogi': 'sente_outcome', 'xiangqi': 'red_outcome', 'tori': 'sente_outcome'}
 
 
 def key(fen, game='chess'):
     # Board identity: Chess FEN without clocks, SFEN board, side and hands
-    # (its fourth field is only the move counter), Xiangqi FEN board and side.
+    # (its fourth field is only the move counter), Xiangqi FEN board and side,
+    # Tori compact diagram (board, both hands, side; MSH-204) as canonical JSON.
+    if isinstance(fen, dict):
+        return json.dumps(fen, sort_keys=True, separators=(',', ':'))
     return ' '.join(fen.split()[:FIELDS[game]])
 
 
@@ -29,6 +32,8 @@ def digest(path):
 def split(root, manifest_path, game='chess', allow_empty=False, by_opening=False):
     if game not in FIELDS:
         raise ValueError('unsupported game')
+    if game == 'tori' and not by_opening:
+        raise ValueError('Tori exports carry no initial diagram; split --by-opening')
     position_field = POSITION[game]
     outcome_field = OUTCOME[game]
     files = sorted(root.glob('games-*.jsonl'))

@@ -16,6 +16,8 @@ pub struct Args {
     /// Seeded random legal plies appended to a catalog opening (self-play corpora).
     pub random_plies: usize,
     clock: Option<FischerClock>,
+    /// The candidate's clock is this multiple of the shared clock (time odds).
+    candidate_time_factor: u64,
 }
 impl Args {
     #[allow(dead_code)]
@@ -36,6 +38,7 @@ impl Args {
         let mut base = None;
         let mut increment = None;
         let mut allocation = ClockAllocation::Hard;
+        let mut candidate_time_factor = 1;
         let positional = if profile { 11 } else { 10 };
         while values.len() > positional {
             let flag = values.remove(positional);
@@ -47,6 +50,7 @@ impl Args {
                 "--random-plies" => random_plies = value.parse().unwrap(),
                 "--clock-base-ms" => base = Some(value.parse().unwrap()),
                 "--clock-increment-ms" => increment = Some(value.parse().unwrap()),
+                "--candidate-time-factor" => candidate_time_factor = value.parse().unwrap(),
                 "--clock-allocation" => {
                     allocation = match value.as_str() {
                         "hard" => ClockAllocation::Hard,
@@ -84,6 +88,7 @@ impl Args {
                 opening_index,
                 random_plies,
                 clock,
+                candidate_time_factor,
             },
             profile,
         )
@@ -97,7 +102,21 @@ impl Args {
         id: String,
         provenance: String,
     ) {
+        assert!(
+            (1..=8).contains(&self.candidate_time_factor)
+                && (self.candidate_time_factor == 1 || self.clock.is_some()),
+            "time odds need a clock and a factor of 1..=8"
+        );
+        let candidate_clock = self
+            .clock
+            .filter(|_| self.candidate_time_factor > 1)
+            .map(|c| FischerClock {
+                base_ms: c.base_ms * self.candidate_time_factor,
+                increment_ms: c.increment_ms * self.candidate_time_factor,
+                ..c
+            });
         let player = |id: &str, executable: &str, depth: u16, nodes: u64| Player {
+            clock: None,
             id: id.into(),
             executable: std::fs::canonicalize(executable)
                 .unwrap()
@@ -135,12 +154,15 @@ impl Args {
             cleanup_ms: 1_000,
             clock: self.clock,
             players: vec![
-                player(
-                    "candidate",
-                    &self.values[1],
-                    64,
-                    self.values[4].parse().unwrap(),
-                ),
+                Player {
+                    clock: candidate_clock,
+                    ..player(
+                        "candidate",
+                        &self.values[1],
+                        64,
+                        self.values[4].parse().unwrap(),
+                    )
+                },
                 player(
                     "baseline",
                     &self.values[2],

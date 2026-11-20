@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-19T19:43:00Z'
-updated_date: '2026-11-20T08:24:00Z'
+updated_date: '2026-11-20T08:48:00Z'
 labels:
   - handle:tori-strength-harness
   - tori
@@ -71,4 +71,6 @@ Plan:
 2026-11-20: Blocked on MSH-208 (Tori Repetition Rule). John decided the Tori repetition rule (Shogi-style position repetition, third occurrence forbidden, different move required) and the removal of the replay-work count that ended about 8% of self-play games unscored at about 360 plies. Game tests resume after MSH-208. MSH-209 (Native Consistency Review) covers the cross-game safeguard inconsistency.
 
 2026-11-20 after MSH-208 (Tori Repetition Rule, commit 9d06871d): 8 pairs (16 games) at 5 s + 0.1 s from tori-openings-v1: 15 concluded natively, 0 reached a native limit (old 360-ply limit gone), median 205.5 plies, 1 game reached the runner step limit (max_steps 500; runner Config::validate caps max_steps at 512). Next in MSH-204: raise the runner step cap toward the native 1,024-event limit, and fix before results the rule for a game that reaches a limit (pair excluded from SPRT, counted, stop above a set share), as proposed to John on 2026-11-20.
+
+2026-11-20 independent review of 6c7be47a and 6f035708 (fresh reviewer): B1 blocking — the clock-allocation change broke replay of committed clocked Shogi reports (MSH-186) and changed future Shogi runs silently. Resolved at c7e013a2: FischerClock.allocation (hard|nominal), absent = hard and not serialized, so configuration identities are unchanged; validate uses the recorded policy; config writer flag --clock-allocation; native_match.py passes nominal for Tori only. Both committed MSH-186 clocked reports (clock-attempt-01/02 pair-0001) replay again; a test shows a report under the other policy is refused. Notes resolved: explicit null record in an elided observation refused; GameDelta doc comment corrected; catalog writer tools/strength/make_tori_openings.py committed and reproduces tori-openings-v1.json byte for byte.
 <!-- SECTION:NOTES:END -->

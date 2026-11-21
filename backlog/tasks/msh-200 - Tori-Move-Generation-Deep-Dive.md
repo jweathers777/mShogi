@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-19T07:12:00Z'
-updated_date: '2026-11-20T23:39:00Z'
+updated_date: '2026-11-21T01:33:00Z'
 labels:
   - tori
   - search
@@ -47,4 +47,6 @@ Native rules stay the authority. The search-side position must agree with them i
 2026-11-20, John: rescoped from a discussion task to an ordinary speed task. The options questions in the note need no answer; agents choose the techniques and measurements decide. Branch codex/msh-200-tori-movegen holds the cost profile tooling and the note; it is merged with main and pushed. Measurement data: gs://mshogi-experiments-216675633801/runs/msh-200/.
 
 2026-11-21: the cost-profile tooling (tori::movegen_profile, tori_strength movegen, tori_cloud movegen task) and docs/m5/tori-move-generation.md are merged to main (d50c082); branch codex/msh-200-tori-movegen is deleted. Start a new branch from main.
+
+Checkpoint 2026-11-21 (handoff): candidate 40edac6 on branch claude/msh-200-tori-search-speed. Predecessor = cloud build of e6df0d79 (production code identical to task-start main). Cloud c3-standard-4, image worker@sha256:11c7dfd1 (msh200-e6df0d79 image + new tools/engines; frozen data digest af2d54e8 verified). Build build-40edac60-1: <=0.67 VM-h, <=US$0.13. Campaign msh200-match-1: <=7.98 VM-h, <=US$1.61, cleanup verified. Depth-6 node totals identical for games/suite/openings (2,031,634 / 1,886,835 / 753,052): exact. Speed: games 0.998 -> 1.222 M nodes/s (+22.5%), suite +16.8%, openings 1.169 -> 1.045 (-10.7%; 0.7 s total, fresh engine per position; cause not established). Micro: make 67.5 -> 38.2 ns, drop make 69.5 -> 31.1 ns, attacked 20.3 -> 8.3 ns, perft leaf 94.5 -> 42.2 ns. Match 5 s + 0.1 s, 224 pairs (1 length-limited, unscored): pentanomial [31,0,107,0,85], +86 Elo (54-120); sequential SPRT H0 0/H1 15 in seed order: H1 at pair 149. Suite probe: bin 0 ran out of time (unsharded); rerun msh200-suite-1 (4 shards x 2 builds) submitted. Next: suite result, design note, merge.
 <!-- SECTION:NOTES:END -->

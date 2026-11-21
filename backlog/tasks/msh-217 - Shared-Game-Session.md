@@ -1,11 +1,11 @@
 ---
 id: MSH-217
 title: Shared Game Session
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-11-20T23:25:00Z'
-updated_date: '2026-11-21T23:26:00Z'
+updated_date: '2026-11-21T23:34:00Z'
 labels:
   - desktop
   - refactor
@@ -27,10 +27,10 @@ Approach: measure the per-game differences first, design the trait from the real
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 One generic session/document implementation serves the games; per-game code contains only game-specific behavior, and the production line count before and after is recorded
-- [ ] #2 Behavior is unchanged: existing desktop-session tests pass (re-expressed once against the generic code instead of copied per game), saved documents of every game load and save identically, and the desktop host tests pass
-- [ ] #3 Stop/cancellation behavior is the same for every game (the Chu restore and browse paths become interruptible like Tenjiku)
-- [ ] #4 One review by a fresh agent session of the trait boundary and the migration
+- [x] #1 One generic session/document implementation serves the games; per-game code contains only game-specific behavior, and the production line count before and after is recorded
+- [x] #2 Behavior is unchanged: existing desktop-session tests pass (re-expressed once against the generic code instead of copied per game), saved documents of every game load and save identically, and the desktop host tests pass
+- [x] #3 Stop/cancellation behavior is the same for every game (the Chu restore and browse paths become interruptible like Tenjiku)
+- [x] #4 One review by a fresh agent session of the trait boundary and the migration
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -62,3 +62,12 @@ Fit of other games (measured, normalized against the old Tenjiku copies): Tori d
 
 Independent review (fresh subagent, branch diff and task): no high-severity defect. Confirmed equal to main: closing reserve loop of both games, saved bytes (field order and serde attributes), snapshot fields, observation display, take_back_target, session operations; the Chu core change is not a rules change. Fixed: Chu browse-selection work charge stays 2x (SELECTION_WORK_FACTOR; Tenjiku 3x), so saved Chu documents near the 12M limit still load; one NativeGame::game_profile instead of two copies; verify_chu_execution and verify_tenjiku_execution moved to the game modules; NativeSession fields private again. Accepted intended changes (recorded): Chu observations are decoded with the stop-aware typed decoder (schema version and raw response-size checks; compact size still checked in validate); Chu controls are parsed after records and observations, so the first reported error of a multi-fault file can differ; record capacity refusals of both games are typed resource refusals; a stopped session replay says 'Native operation stopped before acceptance.'; nothing in production matches these strings.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+One generic document (game_document.rs, ValidatedGameDocument<G>) and one generic session (native_session.rs, NativeSession<G>, execute, controller methods, observation display, snapshot) now serve Chu and Tenjiku behind two traits (NativeGame, SessionGame). Per-game code holds only real differences: presentation, PV label (Tenjiku stationary capture), board and score text, limits, the measured work allowance, a Stop after a conclusion (Tenjiku rules), strict control fields and the browse work charge (recorded saved-format compatibility of Chu). The Chu core gained stop-aware replay, prefix, choices and submit (no rules change), so Chu restore, browse and rewind can be interrupted like Tenjiku.
+Lines: production 24,851 -> 23,688; Chu and Tenjiku modules 4,634 -> 3,463.
+Evidence: fmt, clippy (default and all features), full workspace tests (release) and CI pass; 37 committed Chu and Tenjiku documents decode and re-encode byte-identically on main and branch; the Tenjiku GUI generator output is byte-identical; new Chu stop tests (broken on purpose once). Independent review: no high-severity defect; findings fixed or recorded.
+Scope: Tori, Xiangqi, Shogi and Chess do not fit without format or design changes (recorded); Tori is MSH-223 (needs John: saved-format decision). Follow-ups: MSH-221 (fixture generators), MSH-222 (engine adapters), MSH-223.
+<!-- SECTION:FINAL_SUMMARY:END -->

@@ -142,3 +142,5 @@ class Corpus(unittest.TestCase):
         self.assertEqual(len(pairs), 8)
         self.assertTrue(all(t['label'] == 'control' and 'opponent' not in t for t in pairs))
         self.assertEqual(sorted(s for t in pairs for s in t['seeds']), list(range(1, 3201)))
+        second = [s for b in tori_cloud.corpus_bins(3201) for t in b for s in t['seeds']]
+        self.assertEqual(sorted(second), list(range(3201, 6401)))

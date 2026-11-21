@@ -82,6 +82,15 @@ fn tori_record(record: &CanonicalRecord) -> &GameRecord {
     }
 }
 
+/// The games of all reports in `paths`, in list order. Report validation
+/// replays every game, so the reports load in parallel.
+fn load(paths: &Value) -> Vec<Source> {
+    parallel(&strings(paths), |p| sources(p))
+        .into_iter()
+        .flatten()
+        .collect()
+}
+
 fn sources(path: &str) -> Vec<Source> {
     let text = fs::read_to_string(path).unwrap();
     let digest = format!("{:x}", Sha256::digest(text.as_bytes()));
@@ -117,7 +126,7 @@ fn plays(source: &Source) -> Vec<(usize, Action)> {
 
 /// Forced checking wins of 3..=7 plies before each move after the opening.
 fn mine(paths: &Value) -> String {
-    let all: Vec<Source> = strings(paths).iter().flat_map(|p| sources(p)).collect();
+    let all: Vec<Source> = load(paths);
     let rows = parallel(&all, |s| {
         let mut out = vec![];
         for (event, played) in plays(s) {
@@ -348,7 +357,7 @@ fn probe(spec: &Value, ms: u64, store: Option<&String>) -> Value {
 /// Completed depth of a fresh timed search (with the game's full history) on
 /// every fourth position from board ply `min_ply` after the opening.
 fn depth(paths: &Value, ms: u64, min_ply: usize) -> Value {
-    let all: Vec<Source> = strings(paths).iter().flat_map(|p| sources(p)).collect();
+    let all: Vec<Source> = load(paths);
     let mut positions = vec![];
     for (i, s) in all.iter().enumerate() {
         for (ply, (event, _)) in plays(s).into_iter().enumerate() {
@@ -398,7 +407,7 @@ fn sente_outcome(s: &Source) -> Option<f64> {
 /// Native-labelled Texel rows: one JSON line per game, with every `every`-th
 /// position after the opening. Unscored games keep no samples.
 fn export(paths: &Value, every: usize) -> String {
-    let all: Vec<Source> = strings(paths).iter().flat_map(|p| sources(p)).collect();
+    let all: Vec<Source> = load(paths);
     let rows = parallel(&all, |s| {
         let outcome = sente_outcome(s);
         let mut samples = vec![];
@@ -432,7 +441,7 @@ fn export(paths: &Value, every: usize) -> String {
 /// fixed-depth search speed on each set.
 fn movegen(paths: &Value, repeats: u32, suite: &str, openings: &str) -> Value {
     let mut games = vec![];
-    for s in strings(paths).iter().flat_map(|p| sources(p)) {
+    for s in load(paths) {
         for (ply, (event, _)) in plays(&s).into_iter().enumerate() {
             if ply >= 20 && ply % 4 == 0 {
                 games.push(

@@ -128,3 +128,17 @@ class Match(unittest.TestCase):
         control = dict(task, label='control')
         control.pop('opponent')
         self.assertEqual(tori_cloud.pairs_args(m, control).baseline, '/opt/engines/engine')
+
+
+class Corpus(unittest.TestCase):
+    """MSH-206: self-play pairs of one frozen build for the Texel corpus."""
+
+    def test_corpus_campaign_is_valid_self_play(self):
+        m = manifest()
+        m['experiment'] = 'msh206-corpus'
+        m['bins'] = tori_cloud.corpus_bins()
+        tori_cloud.validate_manifest(m)
+        pairs = [t for b in m['bins'] for t in b]
+        self.assertEqual(len(pairs), 8)
+        self.assertTrue(all(t['label'] == 'control' and 'opponent' not in t for t in pairs))
+        self.assertEqual(sorted(s for t in pairs for s in t['seeds']), list(range(1, 3201)))

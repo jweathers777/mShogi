@@ -258,6 +258,14 @@ def match_bins():
     return bins
 
 
+def corpus_bins():
+    """MSH-206 (Tori Evaluation Round) Texel corpus: 3,200 self-play pairs of
+    the frozen predecessor at 2 s + 0.05 s, 400 pairs per VM. Seed N plays
+    catalog opening (N - 1) mod 218; timing makes repeated openings differ."""
+    return [[{'kind': 'pairs', 'label': 'control', 'factor': 1, 'seeds': list(range(1 + 400 * b, 401 + 400 * b)),
+              'base_ms': 2000, 'increment_ms': 50, 'concurrency': 2, 'pair_ms': 300000}] for b in range(8)]
+
+
 def suite_bins():
     """20 ms tactical-suite probes of both builds, four shards each, one per VM."""
     return [[{'kind': 'probe', 'ms': 20, 'shard': shard, 'shards': 4, 'build': b}]
@@ -310,7 +318,7 @@ def make_manifest(args):
          'deadline_epoch': start + CAMPAIGN_SECONDS, 'estimated_compute_before_usd': args.before,
          'task_seconds': args.task_seconds, 'build': build,
          'bins': (smoke_bins() if args.smoke else [[{'kind': 'movegen', 'repeats': 200}]] if args.movegen
-                  else match_bins() if args.match else suite_bins() if args.suite else campaign_bins())}
+                  else match_bins() if args.match else corpus_bins() if args.corpus else suite_bins() if args.suite else campaign_bins())}
     validate_manifest(m)
     Path(args.out).write_text(json.dumps(m))
     print(sum(map(len, m['bins'])), 'tasks in', len(m['bins']), 'bins')
@@ -447,6 +455,7 @@ def main():
     k.add_argument('--movegen', action='store_true', help='MSH-200 move generation profile (one VM)')
     k.add_argument('--match', action='store_true', help='candidate against --baseline-bin-dir')
     k.add_argument('--suite', action='store_true', help='suite probes of both builds')
+    k.add_argument('--corpus', action='store_true', help='MSH-206 self-play pairs for the Texel corpus')
     k.add_argument('--baseline-bin-dir', help='binaries of the frozen predecessor (mshogi, tori_strength)')
     c = sub.add_parser('collect')
     c.add_argument('--raw', required=True)

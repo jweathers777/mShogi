@@ -75,7 +75,19 @@ pub(crate) trait SessionGame: NativeGame {
     ) -> archive::NativeCompleted;
     fn state(session: &ActiveDocument) -> Option<&NativeSession<Self>>;
     fn state_mut(session: &mut ActiveDocument) -> Option<&mut NativeSession<Self>>;
-    fn snapshot(controller: &DesktopController) -> SharedSnapshot;
+
+    /// Board width and height in squares.
+    const BOARD_SIZE: u8;
+    const BOARD_LABEL: &'static str;
+    const INITIAL_FOCUS: &'static str;
+    const SCORE_MEANING: &'static str;
+    fn rules_profile(game: &Self::Game) -> RulesProfile;
+    fn edition(game: &Self::Game) -> &'static str;
+    fn pieces(game: &Self::Game) -> Vec<PresentedPiece>;
+    fn presented_events(game: &Self::Game) -> Vec<PresentedEvent>;
+    fn board_ply(game: &Self::Game) -> u64;
+    /// Put this game's presentation into its snapshot field.
+    fn present_in(snapshot: &mut SharedSnapshot, presentation: Self::Presentation);
 }
 
 fn record_text(e: crate::native_game::RecordFailure) -> String {
@@ -732,7 +744,7 @@ impl DesktopController {
                 }
             }
         }
-        G::snapshot(self)
+        self.game_snapshot::<G>()
     }
     /// Verification entry into the same real native supervised request path.
     #[cfg(any(test, feature = "desktop-verification"))]
@@ -794,6 +806,134 @@ impl DesktopController {
         // Prepared on the admission/Open worker; O(1) swap on native close.
         state.document = state.close_document.clone();
         self.shared_changed();
+    }
+}
+
+impl DesktopController {
+    pub(crate) fn game_snapshot<G: SessionGame>(&self) -> SharedSnapshot {
+        let state = G::state(&self.session).expect("native owner");
+        let game = state.selected();
+        let profile = G::rules_profile(game);
+        let turn = G::side_to_move(game);
+        let sides: Vec<_> = G::SIDES.map(|s| side(profile, G::native_side(s))).into();
+        let files: Vec<_> = (1..=G::BOARD_SIZE).rev().map(|n| n.to_string()).collect();
+        let ranks: Vec<_> = (b'a'..b'a' + G::BOARD_SIZE)
+            .map(|n| char::from(n).to_string())
+            .collect();
+        let historical = state.viewed.is_some();
+        let ended = G::concluded(game);
+        let settings = state.document.settings();
+        let human = state.document.human();
+        let mut snapshot = SharedSnapshot {
+            moves: self.present_moves(G::events(game)),
+            xiangqi: None,
+            tori: None,
+            chu: None,
+            tenjiku: None,
+            open_token: self.shared_open_token(),
+            document: self.shared_document(),
+            io: self.io_state.clone(),
+            capacity: self.session.capacity.clone(),
+            token: self.shared_token(),
+            game: G::KIND,
+            profile,
+            edition: G::edition(game),
+            play_mode: settings.play_mode,
+            local_actor: side(
+                profile,
+                G::native_side(settings.play_mode.actor(human, turn)),
+            ),
+            human: side(profile, G::native_side(human)),
+            turn: side(profile, G::native_side(turn)),
+            sides: sides.clone(),
+            board: BoardDescriptor {
+                intersections: None,
+                files: files.clone(),
+                ranks: ranks.clone(),
+                label: G::BOARD_LABEL.into(),
+                initial_focus: G::INITIAL_FOCUS.into(),
+            },
+            orientations: vec![
+                Orientation {
+                    side: sides[0].clone(),
+                    files: files.clone(),
+                    ranks: ranks.clone(),
+                },
+                Orientation {
+                    side: sides[1].clone(),
+                    files: files.into_iter().rev().collect(),
+                    ranks: ranks.into_iter().rev().collect(),
+                },
+            ],
+            pieces: G::pieces(game),
+            hands: vec![],
+            choices: state.choices.clone(),
+            capabilities: CommandCapabilities {
+                board_action: !historical
+                    && (!settings.play_mode.is_two_humans() || !state.paused)
+                    && !ended
+                    && settings.play_mode.owns(human, turn),
+                drops: false,
+                promotion: true,
+                take_back: !historical && state.take_back_target().is_some(),
+                undo: !historical && G::events(&state.game) > 0,
+                engine_turn: !settings.play_mode.is_two_humans(),
+                move_analysis: true,
+                chess_full: false,
+                claims: false,
+                declaration: false,
+                resign: !historical && !ended,
+                hands: false,
+                history: true,
+                save: true,
+            },
+            status: state.status.clone(),
+            events: G::presented_events(&state.game),
+            event_index: G::events(game),
+            board_ply: G::board_ply(game),
+            play_limits: G::PLAY_LIMITS,
+            historical,
+            paused: state.paused,
+            close_requires_save: self.close_requires_save(),
+            phase: state.phase,
+            execution_purpose: state.pending.as_ref().map(|p| {
+                if matches!(p.purpose, ExecutionPurpose::EngineTurn {}) {
+                    "engine_turn"
+                } else {
+                    "move_analysis"
+                }
+            }),
+            diagnostic: state.diagnostic.clone(),
+            declaration_advice: vec![],
+            context: G::canonical(G::from_game(game).expect("admitted native record")),
+            analysis: state.analysis.as_ref().map(|o| PresentedObservation {
+                observation: o.clone(),
+                historical: false,
+                application_error: None,
+            }),
+            observations: state
+                .document
+                .observations()
+                .iter()
+                .map(|o| PresentedObservation {
+                    observation: o.clone(),
+                    historical: !state.current_observations.contains(&o.context.request_id),
+                    application_error: None,
+                })
+                .collect(),
+            search_observations: state
+                .document
+                .observations()
+                .iter()
+                .enumerate()
+                .map(|(i, o)| display_observation(i, o, state))
+                .collect(),
+            score_meaning: G::SCORE_MEANING,
+            chess: None,
+            chess_match: None,
+        };
+        G::present_in(&mut snapshot, state.presentation.clone());
+        snapshot
     }
 }
 
@@ -869,7 +1009,8 @@ pub(crate) fn display_observation<G: SessionGame>(
 macro_rules! large_shogi_session {
     ($game:ident, $core:ident, $engine:ident, $limits:ident, $max_depth:ident, $max_nodes:ident,
      operation: $op:ident, preferences: $prefs:ident, runtime: $runtime:ident, save: $save:ident,
-     state: $state:ident, $state_mut:ident, snapshot: $snapshot:ident,
+     state: $state:ident, $state_mut:ident, field: $field:ident,
+     board: $size:expr, $label:expr, $focus:expr, score_meaning: $meaning:expr,
      pv: |$a:ident| $pv:expr) => {
         impl SessionGame for $game {
             type Presentation = presentation::Presentation;
@@ -976,8 +1117,27 @@ macro_rules! large_shogi_session {
             fn state_mut(session: &mut ActiveDocument) -> Option<&mut NativeSession<Self>> {
                 session.$state_mut()
             }
-            fn snapshot(controller: &DesktopController) -> SharedSnapshot {
-                controller.$snapshot()
+            const BOARD_SIZE: u8 = $size;
+            const BOARD_LABEL: &'static str = $label;
+            const INITIAL_FOCUS: &'static str = $focus;
+            const SCORE_MEANING: &'static str = $meaning;
+            fn rules_profile(game: &c::Game) -> RulesProfile {
+                presentation::profile(game)
+            }
+            fn edition(game: &c::Game) -> &'static str {
+                presentation::edition(game)
+            }
+            fn pieces(game: &c::Game) -> Vec<PresentedPiece> {
+                presentation::pieces(game)
+            }
+            fn presented_events(game: &c::Game) -> Vec<PresentedEvent> {
+                presentation::events(game)
+            }
+            fn board_ply(game: &c::Game) -> u64 {
+                game.snapshot().board_ply as u64
+            }
+            fn present_in(snapshot: &mut SharedSnapshot, presentation: Self::Presentation) {
+                snapshot.$field = Some(presentation);
             }
         }
     };

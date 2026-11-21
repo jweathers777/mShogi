@@ -12,7 +12,9 @@ pub(crate) type ChuSession = NativeSession<Chu>;
 
 large_shogi_session!(Chu, chu, ChuResult, CHU_PLAY_LIMITS, CHU_MAX_DEPTH, CHU_MAX_NODES,
 operation: Chu, preferences: ChuPreferences, runtime: ChuRuntime, save: ChuSave,
-state: chu, chu_mut, snapshot: chu_snapshot,
+state: chu, chu_mut, field: chu,
+    board: 12, "Chu Shogi 12×12 board", "6g",
+    score_meaning: "Native root-side evaluation in hundredths of a Pawn. Win/loss distances count complete board actions, not necessarily mate. Failures and incomplete work are unscored.",
 pv: |a| format!(
     "{}→{}{}",
     a.from,

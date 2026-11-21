@@ -13,7 +13,9 @@ pub(crate) type TenjikuSession = NativeSession<Tenjiku>;
 large_shogi_session!(Tenjiku, tenjiku, TenjikuResult, TENJIKU_PLAY_LIMITS, TENJIKU_MAX_DEPTH,
 TENJIKU_MAX_NODES,
 operation: Tenjiku, preferences: TenjikuPreferences, runtime: TenjikuRuntime,
-save: TenjikuSave, state: tenjiku, tenjiku_mut, snapshot: tenjiku_snapshot,
+save: TenjikuSave, state: tenjiku, tenjiku_mut, field: tenjiku,
+    board: 16, "Tenjiku Shogi 16×16 board", "8i",
+    score_meaning: "Transparent material evaluation in Pawns from the analyzed native side; native terminal wins use board-action distance. Operational failures and absence of board actions remain unscored.",
 pv: |a| if a.kind == c::ActionKind::Igui {
     format!(
         "{}!x{} (stationary capture)",

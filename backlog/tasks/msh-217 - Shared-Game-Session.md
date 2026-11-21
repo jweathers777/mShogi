@@ -1,9 +1,11 @@
 ---
 id: MSH-217
 title: Shared Game Session
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-20T23:25:00Z'
+updated_date: '2026-11-21T22:41:00Z'
 labels:
   - desktop
   - refactor

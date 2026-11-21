@@ -6,6 +6,7 @@
 //! geometric candidates are crate-private and cannot admit a public game action.
 use serde::{Deserialize, Serialize};
 use std::{error::Error, fmt, str::FromStr, sync::Arc};
+mod diagram;
 mod game;
 pub mod notation;
 mod record;

@@ -5,6 +5,8 @@
 //! forbids) and each action of the reported line. The shared core searches a
 //! private [`position::ToriPosition`] and proposes a move; this adapter returns
 //! it only if the native legal actions contain it.
+/// Tunable classical evaluation weights and the Texel model.
+pub mod eval;
 pub mod position;
 
 use crate::{
@@ -21,7 +23,8 @@ pub use position::piece_value;
 pub use position::{ProfileRow, movegen_profile};
 use std::{error::Error, fmt};
 
-/// Evaluation identity: material with Swallow advance, Phoenix cover and hand terms.
+/// Evaluation identity: the linear Texel-fitted evaluation (`tori/eval.rs`).
+/// MSH-206 kept the identity; shared-core scores have no exact score check.
 pub const EVALUATOR_ID: &str = "mshogi.tori.material-placement.v1";
 /// Search identity: the shared alpha-beta core.
 pub const SEARCH_ID: &str = "mshogi.tori.shared-core.v1";

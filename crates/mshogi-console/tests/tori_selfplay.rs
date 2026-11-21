@@ -8,6 +8,9 @@ use std::{
     time::{Duration, Instant},
 };
 
+/// A small depth-1 budget; quiescence after depth 1 decides how much it needs.
+const NODES: u64 = 1_024;
+
 fn request(game: &t::Game, id: u64) -> ExecutionRequest {
     ExecutionRequest {
         protocol: PROTOCOL_VERSION,
@@ -20,7 +23,7 @@ fn request(game: &t::Game, id: u64) -> ExecutionRequest {
             limits: WorkLimits {
                 time_ms: None,
                 depth: 1,
-                nodes: 256,
+                nodes: NODES,
             },
         },
     }
@@ -103,7 +106,7 @@ fn bounded(mut game: t::Game, maximum_plies: usize) -> Trace {
         };
         assert_eq!(telemetry.completed_depth, 1);
         assert!(telemetry.score.is_some());
-        assert!(telemetry.nodes <= 256);
+        assert!(telemetry.nodes <= NODES);
         assert_eq!(telemetry.perspective, game.position().side_to_move());
         assert!(game.legal_actions().contains(action));
         actions.push(*action);

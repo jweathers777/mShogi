@@ -40,6 +40,16 @@ impl<P> Dataset<P> {
     }
 }
 
+/// Position text of a row: a string field as is, an object field (for
+/// example a compact Tori diagram) as its JSON text.
+fn position_text<M: TexelModel>(row: &Value) -> Option<String> {
+    match row.get(M::POSITION_FIELD)? {
+        Value::String(text) => Some(text.clone()),
+        object @ Value::Object(_) => Some(object.to_string()),
+        _ => None,
+    }
+}
+
 fn squared_error(score: i32, result: f64, k: f64) -> f64 {
     (probability(score, k) - result).powi(2)
 }
@@ -58,10 +68,7 @@ pub fn load<M: TexelModel>(path: &str, expected: &str) -> Result<Dataset<M::Prep
         if row.get("split").and_then(Value::as_str) != Some(expected) {
             return Err(error("unexpected split; fit never accepts heldout rows").into());
         }
-        let text = row
-            .get(M::POSITION_FIELD)
-            .and_then(Value::as_str)
-            .ok_or_else(|| error("missing position"))?;
+        let text = position_text::<M>(&row).ok_or_else(|| error("missing position"))?;
         let result = row
             .get("result")
             .and_then(Value::as_f64)
@@ -77,11 +84,11 @@ pub fn load<M: TexelModel>(path: &str, expected: &str) -> Result<Dataset<M::Prep
             .ok_or_else(|| error("game_id must be a string or unsigned integer"))?;
         // Evaluation sees the board; differing clock fields do not establish
         // independent positions. The producer must deduplicate before splitting.
-        if !data.positions.insert(M::key(text)) {
+        if !data.positions.insert(M::key(&text)) {
             return Err(error("duplicate board/side/rights position").into());
         }
         let Some(position) =
-            M::prepare(text).map_err(|e| error(&format!("invalid position: {e}")))?
+            M::prepare(&text).map_err(|e| error(&format!("invalid position: {e}")))?
         else {
             data.skipped += 1;
             continue;
@@ -359,15 +366,12 @@ pub fn stats<M: TexelModel>(args: &[String]) -> Result<()> {
         for line in BufReader::new(File::open(path)?).lines() {
             let row: Value = serde_json::from_str(&line?)?;
             rows += 1;
-            let text = row
-                .get(M::POSITION_FIELD)
-                .and_then(Value::as_str)
-                .ok_or("missing position")?;
-            if !keys.insert(M::key(text)) {
+            let text = position_text::<M>(&row).ok_or("missing position")?;
+            if !keys.insert(M::key(&text)) {
                 duplicates += 1;
                 continue;
             }
-            if M::prepare(text)?.is_none() {
+            if M::prepare(&text)?.is_none() {
                 continue;
             }
             kept += 1;

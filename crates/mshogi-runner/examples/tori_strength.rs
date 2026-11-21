@@ -65,80 +65,6 @@ fn parallel<T: Sync, R: Send>(items: &[T], f: impl Fn(&T) -> R + Sync) -> Vec<R>
         .collect()
 }
 
-fn side_code(side: Side) -> &'static str {
-    match side {
-        Side::Sente => "s",
-        Side::Gote => "g",
-    }
-}
-
-/// Compact diagram: board entries `owner:face:square`, hands by face code and
-/// the side to move. Counters and history are not part of a diagram.
-fn diagram(position: &Position) -> Value {
-    let board: Vec<String> = Square::all()
-        .filter_map(|s| {
-            position
-                .piece(s)
-                .map(|p| format!("{}:{}:{s}", side_code(p.side), p.face.code()))
-        })
-        .collect();
-    let hands: serde_json::Map<String, Value> = [Side::Sente, Side::Gote]
-        .into_iter()
-        .map(|side| {
-            let hand = position.hand(side);
-            let counts: serde_json::Map<String, Value> = Face::HANDS
-                .into_iter()
-                .filter(|&f| hand.count(f) > 0)
-                .map(|f| (f.code().to_string(), json!(hand.count(f))))
-                .collect();
-            (side_code(side).to_string(), Value::Object(counts))
-        })
-        .collect();
-    json!({"board": board, "hands": hands,
-           "side_to_move": side_code(position.side_to_move())})
-}
-
-fn face(code: &str) -> Face {
-    Face::ALL.into_iter().find(|f| f.code() == code).unwrap()
-}
-
-fn side(code: &str) -> Side {
-    if code == "s" { Side::Sente } else { Side::Gote }
-}
-
-/// Native diagram root of a compact diagram.
-fn root(d: &Value) -> Position {
-    let board: Vec<(Square, Piece)> = strings(&d["board"])
-        .iter()
-        .map(|e| {
-            let parts: Vec<&str> = e.split(':').collect();
-            (
-                parts[2].parse().unwrap(),
-                Piece {
-                    side: side(parts[0]),
-                    face: face(parts[1]),
-                },
-            )
-        })
-        .collect();
-    let hands = ["s", "g"].map(|s| {
-        let counts: Vec<(Face, u8)> = d["hands"][s]
-            .as_object()
-            .unwrap()
-            .iter()
-            .map(|(k, v)| (face(k), v.as_u64().unwrap() as u8))
-            .collect();
-        Hand::from_counts(&counts).unwrap()
-    });
-    Position::from_diagram(
-        &board,
-        hands,
-        side(d["side_to_move"].as_str().unwrap()),
-        RootMetadata::diagram(0),
-    )
-    .unwrap()
-}
-
 /// One validated game: its native record and the event count of its opening.
 struct Source {
     digest: String,
@@ -154,6 +80,15 @@ fn tori_record(record: &CanonicalRecord) -> &GameRecord {
         CanonicalRecord::Tori(r) => r,
         _ => panic!("not a Tori report"),
     }
+}
+
+/// The games of all reports in `paths`, in list order. Report validation
+/// replays every game, so the reports load in parallel.
+fn load(paths: &Value) -> Vec<Source> {
+    parallel(&strings(paths), |p| sources(p))
+        .into_iter()
+        .flatten()
+        .collect()
 }
 
 fn sources(path: &str) -> Vec<Source> {
@@ -191,7 +126,7 @@ fn plays(source: &Source) -> Vec<(usize, Action)> {
 
 /// Forced checking wins of 3..=7 plies before each move after the opening.
 fn mine(paths: &Value) -> String {
-    let all: Vec<Source> = strings(paths).iter().flat_map(|p| sources(p)).collect();
+    let all: Vec<Source> = load(paths);
     let rows = parallel(&all, |s| {
         let mut out = vec![];
         for (event, played) in plays(s) {
@@ -208,7 +143,7 @@ fn mine(paths: &Value) -> String {
                     .map(|a| notation::format_action(local.position(), *a).unwrap())
                     .collect();
                 out.push(
-                    json!({"diagram": diagram(local.position()), "mate_plies": plies,
+                    json!({"diagram": local.position().compact_diagram(), "mate_plies": plies,
                     "checking_answers": expected, "played": played,
                     "played_in_answers": expected.contains(&played),
                     "source_report_sha256": s.digest, "game": s.game_index,
@@ -233,7 +168,8 @@ fn mine(paths: &Value) -> String {
 fn finalize(spec: &Value) -> Value {
     let rows = spec["positions"].as_array().unwrap();
     let done = parallel(rows, |r| {
-        let local = LocalPosition::admit(root(&r["diagram"])).unwrap();
+        let local =
+            LocalPosition::admit(Position::from_compact_diagram(&r["diagram"]).unwrap()).unwrap();
         let one_ply = successors(&local, false)
             .iter()
             .any(|(_, next)| next.legal_actions().is_empty());
@@ -328,7 +264,7 @@ fn prove(spec: &Value, probes: &[Value], store: Option<&String>) -> Value {
         }
     }
     let done = parallel(&todo, |(key, id, chosen, plies)| {
-        let position = root(&rows[id]["diagram"]);
+        let position = Position::from_compact_diagram(&rows[id]["diagram"]).unwrap();
         let action = notation::parse_action(&position, chosen).unwrap();
         let start = std::time::Instant::now();
         let (result, visits) = prove_one(&position, action, *plies);
@@ -361,7 +297,7 @@ fn probe(spec: &Value, ms: u64, store: Option<&String>) -> Value {
     let known = read_store(store);
     let rows = spec["positions"].as_array().unwrap();
     let results = parallel(rows, |r| {
-        let game = Game::from_root(root(&r["diagram"])).unwrap();
+        let game = Game::from_root(Position::from_compact_diagram(&r["diagram"]).unwrap()).unwrap();
         let result = search::search_with_state(
             &game,
             search::Limits {
@@ -421,7 +357,7 @@ fn probe(spec: &Value, ms: u64, store: Option<&String>) -> Value {
 /// Completed depth of a fresh timed search (with the game's full history) on
 /// every fourth position from board ply `min_ply` after the opening.
 fn depth(paths: &Value, ms: u64, min_ply: usize) -> Value {
-    let all: Vec<Source> = strings(paths).iter().flat_map(|p| sources(p)).collect();
+    let all: Vec<Source> = load(paths);
     let mut positions = vec![];
     for (i, s) in all.iter().enumerate() {
         for (ply, (event, _)) in plays(s).into_iter().enumerate() {
@@ -471,7 +407,7 @@ fn sente_outcome(s: &Source) -> Option<f64> {
 /// Native-labelled Texel rows: one JSON line per game, with every `every`-th
 /// position after the opening. Unscored games keep no samples.
 fn export(paths: &Value, every: usize) -> String {
-    let all: Vec<Source> = strings(paths).iter().flat_map(|p| sources(p)).collect();
+    let all: Vec<Source> = load(paths);
     let rows = parallel(&all, |s| {
         let outcome = sente_outcome(s);
         let mut samples = vec![];
@@ -480,7 +416,7 @@ fn export(paths: &Value, every: usize) -> String {
                 if ply % every == 0 {
                     let snapshot = s.game.event_prefix(event).unwrap();
                     samples.push(
-                        json!({"diagram": diagram(snapshot.local_position().position()),
+                        json!({"diagram": snapshot.local_position().position().compact_diagram(),
                                         "sente_outcome": outcome, "ply": ply}),
                     );
                 }
@@ -505,7 +441,7 @@ fn export(paths: &Value, every: usize) -> String {
 /// fixed-depth search speed on each set.
 fn movegen(paths: &Value, repeats: u32, suite: &str, openings: &str) -> Value {
     let mut games = vec![];
-    for s in strings(paths).iter().flat_map(|p| sources(p)) {
+    for s in load(paths) {
         for (ply, (event, _)) in plays(&s).into_iter().enumerate() {
             if ply >= 20 && ply % 4 == 0 {
                 games.push(
@@ -524,7 +460,7 @@ fn movegen(paths: &Value, repeats: u32, suite: &str, openings: &str) -> Value {
         .as_array()
         .unwrap()
         .iter()
-        .map(|r| root(&r["diagram"]))
+        .map(|r| Position::from_compact_diagram(&r["diagram"]).unwrap())
         .collect();
     let catalog: Value = serde_json::from_str(&fs::read_to_string(openings).unwrap()).unwrap();
     let opening_positions: Vec<Position> = catalog["openings"]
@@ -642,7 +578,7 @@ mod tests {
     use tori_mate_proof::plain_defender_mated;
 
     fn answers(d: &Value, plies: u8) -> Vec<String> {
-        let p = root(d);
+        let p = Position::from_compact_diagram(d).unwrap();
         let local = LocalPosition::admit(p.clone()).unwrap();
         Prover::new(1_000_000)
             .answer_set(&local, plies)
@@ -712,21 +648,6 @@ mod tests {
             }
         }
         assert!(checked > 100, "{checked}");
-    }
-
-    #[test]
-    fn diagram_round_trip_keeps_board_hands_and_side() {
-        let mut local = LocalPosition::admit(Position::standard()).unwrap();
-        for _ in 0..30 {
-            let a = local.legal_actions()[3 % local.legal_actions().len()];
-            local.apply(a).unwrap();
-        }
-        let d = diagram(local.position());
-        let back = root(&d);
-        assert_eq!(
-            RepetitionKey::from_position(&back),
-            RepetitionKey::from_position(local.position())
-        );
     }
 
     /// Plain full-width recursion without memo: every attacker action.

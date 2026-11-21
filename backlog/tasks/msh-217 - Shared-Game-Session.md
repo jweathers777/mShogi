@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-20T23:25:00Z'
-updated_date: '2026-11-21T23:10:00Z'
+updated_date: '2026-11-21T23:18:00Z'
 labels:
   - desktop
   - refactor
@@ -54,4 +54,9 @@ Plan:
 Checkpoint 2026-11-21 (branch claude/msh-217-shared-session, 31ba49d): (1) Chu core stop-aware to_game_with_stop, record_prefix_with_stop, legal_actions_with_stop, submit_with_stop, with a core test. (2) native_game.rs: trait NativeGame (native types and calls; constants for the real differences) with one macro impl for Chu and Tenjiku (same core API). (3) game_document.rs: ValidatedGameDocument<G> replaces chu_document.rs and tenjiku_document.rs (now aliases plus test helpers); 958+1112 -> 1080+313+35+50 lines. All 322 desktop-session lib tests pass; clippy clean. Behavior notes: Chu document errors now use the Tenjiku forms (stopped flag and 'Chu document operation stopped before acceptance.'; native record capacity is a resource refusal, not 'invalid'). Next: generic session (shared_chu.rs, shared_tenjiku.rs), then presentation, then Tori/Xiangqi fit, byte-identity check of saved documents, tests, review.
 
 Checkpoint 2026-11-22 (8c4afaa): generic session NativeSession<G: SessionGame> (native_session.rs) replaces ChuSession and TenjikuSession; generic snapshot game_snapshot<G>; one macro supplies the Chu and Tenjiku SessionGame impls (names, PV label, board, score meaning). Chu restore, browse and rewind are stop-aware. Lines: shared_chu+shared_tenjiku 859+832 -> 90+37 (+ native_session 1144); presentations 469+404 -> 329+280. Evidence: 322 lib tests pass; clippy (all features) clean; Tenjiku GUI generator output byte-identical between main and branch (21 files, separate main worktree and target); decode+re-encode of all 37 committed Chu and Tenjiku documents byte-identical between main and branch, 0 errors. Found outside scope: MSH-221 (Chu generator assertion fails on main; committed fixtures predate play_mode), MSH-222 (engine adapter copies). Next: Tori and Xiangqi fit to the traits.
+
+Line count (production files; inline test modules included): 24,851 before (main c0f67d7) -> 23,688 after. Chu and Tenjiku modules 4,634 -> 3,463 (generic native_game 321, game_document 1080, native_session 1144; per game: chu_document 35, tenjiku_document 50, shared_chu 185 incl. stop tests, shared_tenjiku 39, presentations 329 + 280).
+AC3 evidence: shared::chu::stop_tests - restore and browse (Inspect) refuse at every stop check; a longer history gives more checks during restore. Broken on purpose (Chu replay stop check removed): the per-event test failed; restored.
+Tests: the per-game test files are mostly game-specific scenarios (10 test names appear in both games, with different bodies); all run against the generic code, so they were not merged.
+Fit of other games (measured, normalized against the old Tenjiku copies): Tori document 1,608 changed lines of 1,168, session 639 of 1,139. The Tori document is a different design, not drift: its saved payload has no selected_event field (deny_unknown_fields), it has its own file worker (ToriDocumentWorker), raw preflight and its own work accounting (1,048,576), and the Tori core has no stop-aware calls or replay work. Xiangqi has its own archive module and format (shared_xiangqi_archive.rs); Shogi and Chess use the original shared runtime. Moving Tori to the generic document changes its saved bytes (selected_event), so it is a saved-format decision for John.
 <!-- SECTION:NOTES:END -->

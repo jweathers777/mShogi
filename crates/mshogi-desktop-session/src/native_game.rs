@@ -59,6 +59,10 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
     /// Recorded saved-format compatibility: a saved control must equal its
     /// canonical form. False keeps older files with defaulted fields loadable.
     const STRICT_CONTROL_FIELDS: bool;
+    /// Replay-work charge of a saved browse selection, in prefix reconstructions.
+    /// Chu keeps its recorded 2 so that saved Chu documents near the work limit
+    /// still load; Tenjiku charges validation plus runtime construction and replay.
+    const SELECTION_WORK_FACTOR: u64;
     /// Native per-record canonical byte limit, reported in capacity refusals.
     const MAX_RECORD_BYTES: u64;
     /// Native per-record event limit.
@@ -89,6 +93,8 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
     fn native(record: &CanonicalRecord) -> Option<&Self::Record>;
     /// Immutable rules profile of a record.
     fn profile(record: &Self::Record) -> RulesProfile;
+    /// Immutable rules profile of a game.
+    fn game_profile(game: &Self::Game) -> RulesProfile;
     /// Deterministic work to reconstruct a record.
     fn reconstruction_work(record: &Self::Record) -> u64;
     /// Events of a record.
@@ -151,7 +157,8 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
 macro_rules! large_shogi_game {
     ($game:ident, $core:ident, $glue:ident, $engine_result:ident, $result_variant:ident, $scope:ident,
      work: $work:expr, stop_after_conclusion: $stop:expr, strict: $strict:expr,
-     profile: |$r:ident| $profile:expr) => {
+     selection_work: $selection:expr,
+     profile: |$r:ident| $profile:expr, game_profile: |$g:ident| $game_profile:expr) => {
         /// Marker of the native game behind the generic document and session.
         pub struct $game;
         impl NativeGame for $game {
@@ -161,6 +168,7 @@ macro_rules! large_shogi_game {
             const MAX_DOCUMENT_WORK: u64 = $work;
             const STOP_AFTER_CONCLUSION: bool = $stop;
             const STRICT_CONTROL_FIELDS: bool = $strict;
+            const SELECTION_WORK_FACTOR: u64 = $selection;
             const MAX_RECORD_BYTES: u64 = mshogi_core::$core::MAX_GAME_RECORD_BYTES as u64;
             const MAX_EVENTS: u64 = mshogi_core::$core::MAX_GAME_EVENTS as u64;
             const MAX_REPLAY_WORK: u64 = mshogi_core::$core::MAX_REPLAY_WORK;
@@ -188,6 +196,9 @@ macro_rules! large_shogi_game {
             }
             fn profile($r: &Self::Record) -> RulesProfile {
                 $profile
+            }
+            fn game_profile($g: &Self::Game) -> RulesProfile {
+                $game_profile
             }
             fn reconstruction_work(record: &Self::Record) -> u64 {
                 record.reconstruction_work()
@@ -314,8 +325,10 @@ macro_rules! large_shogi_game {
 
 large_shogi_game!(Chu, chu, chu_glue, ChuResult, Chu, Chu,
     work: 12_000_000, stop_after_conclusion: false, strict: false,
-    profile: |_r| RulesProfile::ChuJcsa2019V1);
+    selection_work: 2,
+    profile: |_r| RulesProfile::ChuJcsa2019V1, game_profile: |_g| RulesProfile::ChuJcsa2019V1);
 large_shogi_game!(Tenjiku, tenjiku, tenjiku_glue, TenjikuResult, Tenjiku, Tenjiku,
     // Measured: see `tenjiku_document::MAX_TENJIKU_DOCUMENT_WORK`.
     work: 160_000_000, stop_after_conclusion: true, strict: true,
-    profile: |r| RulesProfile::from(r.profile()));
+    selection_work: 3,
+    profile: |r| RulesProfile::from(r.profile()), game_profile: |g| RulesProfile::from(g.profile()));

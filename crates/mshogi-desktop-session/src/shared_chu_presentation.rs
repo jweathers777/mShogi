@@ -292,15 +292,11 @@ pub(super) fn status(game: &c::Game, _has_board_actions: bool) -> PresentedStatu
         }),
     }
 }
-/// Chu has one profile.
-pub(super) fn profile(_game: &c::Game) -> RulesProfile {
-    RulesProfile::ChuJcsa2019V1
-}
 pub(super) fn edition(_game: &c::Game) -> &'static str {
     c::PROFILE_EDITION
 }
 pub(super) fn pieces(game: &c::Game) -> Vec<PresentedPiece> {
-    let profile = profile(game);
+    let profile = <super::Chu as crate::native_game::NativeGame>::game_profile(game);
     game.position()
         .pieces()
         .map(|(square, p)| PresentedPiece {

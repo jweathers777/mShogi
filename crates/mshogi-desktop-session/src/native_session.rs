@@ -81,7 +81,6 @@ pub(crate) trait SessionGame: NativeGame {
     const BOARD_LABEL: &'static str;
     const INITIAL_FOCUS: &'static str;
     const SCORE_MEANING: &'static str;
-    fn rules_profile(game: &Self::Game) -> RulesProfile;
     fn edition(game: &Self::Game) -> &'static str;
     fn pieces(game: &Self::Game) -> Vec<PresentedPiece>;
     fn presented_events(game: &Self::Game) -> Vec<PresentedEvent>;
@@ -104,19 +103,19 @@ pub(crate) struct NativeSession<G: SessionGame> {
     pub(crate) document: Arc<ValidatedGameDocument<G>>,
     close_document: Arc<ValidatedGameDocument<G>>,
     pub(crate) game: G::Game,
-    pub(crate) viewed: Option<G::Game>,
+    viewed: Option<G::Game>,
     pub(crate) browse_stop: Option<BrowseStop>,
     pub(crate) pending: Option<ExecutionContext>,
     pub(crate) phase: EnginePhase,
     pub(crate) paused: bool,
     submitted: bool,
     requested_analysis: Option<WorkLimits>,
-    pub(crate) analysis: Option<ExecutionObservation>,
-    pub(crate) current_observations: Vec<u64>,
+    analysis: Option<ExecutionObservation>,
+    current_observations: Vec<u64>,
     pub(crate) diagnostic: Option<String>,
-    pub(crate) presentation: G::Presentation,
-    pub(crate) choices: Vec<PresentedChoice>,
-    pub(crate) status: PresentedStatus,
+    presentation: G::Presentation,
+    choices: Vec<PresentedChoice>,
+    status: PresentedStatus,
 }
 impl<G: SessionGame> NativeSession<G> {
     pub(crate) fn restore(
@@ -176,7 +175,7 @@ impl<G: SessionGame> NativeSession<G> {
             .play_mode
             .actor(self.document.human(), G::side_to_move(&self.game))
     }
-    pub(crate) fn take_back_target(&self) -> Option<usize> {
+    fn take_back_target(&self) -> Option<usize> {
         let human = self.document.human();
         let events = G::events(&self.game);
         if self.document.settings().play_mode.is_two_humans() {
@@ -771,24 +770,6 @@ impl DesktopController {
             .submitted = true;
         Ok(context)
     }
-    /// Verification entry into the real native Chu request path.
-    #[cfg(any(test, feature = "desktop-verification"))]
-    pub fn verify_chu_execution(
-        &mut self,
-        limits: WorkLimits,
-        analysis: bool,
-    ) -> Result<ExecutionContext, String> {
-        self.verify_game_execution::<Chu>(limits, analysis)
-    }
-    /// Verification entry into the real native Tenjiku request path.
-    #[cfg(any(test, feature = "desktop-verification"))]
-    pub fn verify_tenjiku_execution(
-        &mut self,
-        limits: WorkLimits,
-        analysis: bool,
-    ) -> Result<ExecutionContext, String> {
-        self.verify_game_execution::<Tenjiku>(limits, analysis)
-    }
     pub(super) fn close_game<G: SessionGame>(&mut self) {
         if G::state(&self.session).is_some_and(|s| {
             s.paused
@@ -813,7 +794,7 @@ impl DesktopController {
     pub(crate) fn game_snapshot<G: SessionGame>(&self) -> SharedSnapshot {
         let state = G::state(&self.session).expect("native owner");
         let game = state.selected();
-        let profile = G::rules_profile(game);
+        let profile = G::game_profile(game);
         let turn = G::side_to_move(game);
         let sides: Vec<_> = G::SIDES.map(|s| side(profile, G::native_side(s))).into();
         let files: Vec<_> = (1..=G::BOARD_SIZE).rev().map(|n| n.to_string()).collect();
@@ -1121,9 +1102,6 @@ macro_rules! large_shogi_session {
             const BOARD_LABEL: &'static str = $label;
             const INITIAL_FOCUS: &'static str = $focus;
             const SCORE_MEANING: &'static str = $meaning;
-            fn rules_profile(game: &c::Game) -> RulesProfile {
-                presentation::profile(game)
-            }
             fn edition(game: &c::Game) -> &'static str {
                 presentation::edition(game)
             }

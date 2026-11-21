@@ -944,8 +944,10 @@ pub(crate) fn validate<G: NativeGame>(
     E::<G>::charge(&mut usage.replay_work, G::reconstruction_work(current))?;
     if let Some(index) = p.selected_event {
         let prefix = G::record_prefix(&game, index, stopped).map_err(E::<G>::record)?;
-        // One validation construction plus runtime prefix construction/replay.
-        E::<G>::charge(&mut usage.replay_work, 3 * G::reconstruction_work(&prefix))?;
+        E::<G>::charge(
+            &mut usage.replay_work,
+            G::SELECTION_WORK_FACTOR * G::reconstruction_work(&prefix),
+        )?;
     }
     reserve(&p, &mut game, &mut usage, stopped)?;
     E::<G>::check(stopped)?;

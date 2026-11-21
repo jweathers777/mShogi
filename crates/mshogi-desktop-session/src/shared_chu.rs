@@ -22,6 +22,18 @@ pv: |a| format!(
     if a.promote { " (promote)" } else { "" }
 ));
 
+impl DesktopController {
+    /// Verification entry into the real native Chu request path.
+    #[cfg(any(test, feature = "desktop-verification"))]
+    pub fn verify_chu_execution(
+        &mut self,
+        limits: WorkLimits,
+        analysis: bool,
+    ) -> Result<ExecutionContext, String> {
+        self.verify_game_execution::<Chu>(limits, analysis)
+    }
+}
+
 #[path = "shared_chu_presentation.rs"]
 mod presentation;
 pub use presentation::Presentation as ChuPresentation;

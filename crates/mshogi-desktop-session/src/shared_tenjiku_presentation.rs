@@ -248,14 +248,11 @@ pub(super) fn status(game: &c::Game, has_board_actions: bool) -> PresentedStatus
         }),
     }
 }
-pub(super) fn profile(game: &c::Game) -> RulesProfile {
-    game.profile().into()
-}
 pub(super) fn edition(game: &c::Game) -> &'static str {
     game.profile().edition()
 }
 pub(super) fn pieces(game: &c::Game) -> Vec<PresentedPiece> {
-    let profile = profile(game);
+    let profile = <super::Tenjiku as crate::native_game::NativeGame>::game_profile(game);
     game.position()
         .pieces()
         .map(|(square, p)| PresentedPiece {

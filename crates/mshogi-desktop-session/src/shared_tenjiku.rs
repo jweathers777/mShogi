@@ -31,6 +31,18 @@ pv: |a| if a.kind == c::ActionKind::Igui {
     )
 });
 
+impl DesktopController {
+    /// Verification entry into the real native Tenjiku request path.
+    #[cfg(any(test, feature = "desktop-verification"))]
+    pub fn verify_tenjiku_execution(
+        &mut self,
+        limits: WorkLimits,
+        analysis: bool,
+    ) -> Result<ExecutionContext, String> {
+        self.verify_game_execution::<Tenjiku>(limits, analysis)
+    }
+}
+
 #[path = "shared_tenjiku_presentation.rs"]
 mod presentation;
 pub use presentation::{Presentation as TenjikuPresentation, TenjikuChoiceShape};

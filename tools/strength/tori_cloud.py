@@ -248,17 +248,22 @@ def campaign_bins():
 
 
 def match_bins():
-    """MSH-200, fixed before any result: one bin profiles and probes both
-    builds on the same VM; seven bins play candidate-predecessor pairs at the
-    Tori control (5 s + 0.1 s)."""
-    first = [{'kind': 'movegen', 'repeats': 200, 'build': b} for b in ('baseline', 'candidate')]
-    first += [{'kind': 'probe', 'ms': 20, 'shard': 0, 'shards': 1, 'build': b} for b in ('baseline', 'candidate')]
-    bins = [first]
+    """MSH-200, fixed before any result: one bin profiles both builds on the
+    same VM; seven bins play candidate-predecessor pairs at the Tori control
+    (5 s + 0.1 s). The suite probes run separately (`suite_bins`): one
+    unsharded probe with proofs takes about half an hour."""
+    bins = [[{'kind': 'movegen', 'repeats': 200, 'build': b} for b in ('baseline', 'candidate')]]
     for b in range(7):
         bins.append([{'kind': 'pairs', 'label': 'match', 'opponent': 'baseline', 'factor': 1,
                       'seeds': list(range(1 + 32 * b, 33 + 32 * b)), 'base_ms': 5000, 'increment_ms': 100,
                       'concurrency': 2, 'pair_ms': 600000}])
     return bins
+
+
+def suite_bins():
+    """20 ms tactical-suite probes of both builds, four shards each, one per VM."""
+    return [[{'kind': 'probe', 'ms': 20, 'shard': shard, 'shards': 4, 'build': b}]
+            for b in ('baseline', 'candidate') for shard in range(4)]
 
 
 def smoke_bins():
@@ -307,7 +312,7 @@ def make_manifest(args):
          'deadline_epoch': start + CAMPAIGN_SECONDS, 'estimated_compute_before_usd': args.before,
          'task_seconds': args.task_seconds, 'build': build,
          'bins': (smoke_bins() if args.smoke else [[{'kind': 'movegen', 'repeats': 200}]] if args.movegen
-                  else match_bins() if args.match else campaign_bins())}
+                  else match_bins() if args.match else suite_bins() if args.suite else campaign_bins())}
     validate_manifest(m)
     Path(args.out).write_text(json.dumps(m))
     print(sum(map(len, m['bins'])), 'tasks in', len(m['bins']), 'bins')
@@ -377,7 +382,7 @@ def collect(raw, out):
             test = stats.Sprt(0, 15, .05, .05, 30)
             for n in range(1, len(ordered) + 1):
                 status = test.status(stats.pentanomial(ordered[:n]))
-                if status['decision'] != 'continue':
+                if status['decision'] is not None:
                     break
             entry['sprt_sequential'] = dict(status, pairs=n)
         if summaries:
@@ -443,6 +448,7 @@ def main():
     k.add_argument('--smoke', action='store_true')
     k.add_argument('--movegen', action='store_true', help='MSH-200 move generation profile (one VM)')
     k.add_argument('--match', action='store_true', help='MSH-200 candidate against --baseline-bin-dir')
+    k.add_argument('--suite', action='store_true', help='MSH-200 suite probes of both builds')
     k.add_argument('--baseline-bin-dir', help='binaries of the frozen predecessor (mshogi, tori_strength)')
     c = sub.add_parser('collect')
     c.add_argument('--raw', required=True)

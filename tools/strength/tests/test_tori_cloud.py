@@ -92,6 +92,10 @@ class Match(unittest.TestCase):
         self.assertEqual(sorted(s for t in pairs for s in t['seeds']), list(range(1, 225)))
         self.assertEqual(sorted(t['build'] for t in m['bins'][0] if t['kind'] == 'movegen'),
                          ['baseline', 'candidate'])
+        m['bins'] = tori_cloud.suite_bins()
+        tori_cloud.validate_manifest(m)
+        self.assertEqual(sorted((t['build'], t['shard']) for b in m['bins'] for t in b),
+                         [(b, s) for b in ('baseline', 'candidate') for s in range(4)])
 
     def test_baseline_tasks_need_baseline_binaries_and_match_label(self):
         cases = []
@@ -102,6 +106,10 @@ class Match(unittest.TestCase):
         m = self.baseline_manifest(); m['bins'][1][0]['label'] = 'control'; cases.append(m)
         m = self.baseline_manifest(); m['bins'][1][0].pop('opponent'); cases.append(m)
         m = self.baseline_manifest(); m['bins'][0][0]['build'] = 'other'; cases.append(m)
+        m = self.baseline_manifest(); m['bins'] = tori_cloud.suite_bins()
+        for k in tori_cloud.BASELINE:
+            m['build']['engines'].pop(k)
+        cases.append(m)
         m = self.baseline_manifest(); m['build']['engines'].pop('baseline_helper'); cases.append(m)
         for bad in cases:
             with self.assertRaises(Exception):

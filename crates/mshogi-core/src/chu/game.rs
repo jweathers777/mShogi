@@ -293,6 +293,8 @@ pub enum GameError {
     Capacity(Resource),
     /// Wrong/used reversal or prefix.
     InvalidToken,
+    /// Caller explicitly stopped a cancellable query or reconstruction.
+    Stopped,
 }
 impl std::fmt::Display for GameError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -486,15 +488,30 @@ impl Game {
     }
     /// Actual complete board choices filtered by full native history admission.
     pub fn legal_actions(&self) -> Vec<Action> {
-        if self.conclusion().is_some() {
-            return vec![];
+        self.legal_actions_with_stop(&mut || false)
+            .expect("a query that is never stopped completes")
+    }
+    /// Cancellable native choices: the stop is checked between candidate actions.
+    pub fn legal_actions_with_stop(
+        &self,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<Vec<Action>, GameError> {
+        if stop() {
+            return Err(GameError::Stopped);
         }
-        self.data
-            .local
-            .legal_actions()
-            .into_iter()
-            .filter(|a| self.history_permits(a))
-            .collect()
+        if self.conclusion().is_some() {
+            return Ok(vec![]);
+        }
+        let mut out = vec![];
+        for action in self.data.local.legal_actions() {
+            if stop() {
+                return Err(GameError::Stopped);
+            }
+            if self.history_permits(&action) {
+                out.push(action);
+            }
+        }
+        Ok(out)
     }
     fn history_permits(&self, action: &Action) -> bool {
         if self.obligations().is_empty() {
@@ -919,12 +936,26 @@ impl Game {
     }
     /// Canonical exact event prefix; reopening always receives fresh native authority.
     pub fn record_prefix(&self, count: usize) -> Result<GameRecord, RecordError> {
+        self.record_prefix_with_stop(count, &mut || false)
+    }
+    /// Exact prefix with cooperative cancellation between replayed events.
+    pub fn record_prefix_with_stop(
+        &self,
+        count: usize,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<GameRecord, RecordError> {
         self.event_prefix(count).map_err(|_| RecordError::Prefix)?;
         let mut game =
             Self::from_native_root(self.data.root.clone()).map_err(|_| RecordError::Root)?;
         for e in &self.events()[..count] {
+            if stop() {
+                return Err(RecordError::Stopped);
+            }
             game.commit(e.actor, e.command.clone())
                 .map_err(|_| RecordError::Derived)?;
+        }
+        if stop() {
+            return Err(RecordError::Stopped);
         }
         GameRecord::from_game(&game)
     }

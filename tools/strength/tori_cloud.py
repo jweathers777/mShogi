@@ -328,7 +328,7 @@ def make_manifest(args):
     print(sum(map(len, m['bins'])), 'tasks in', len(m['bins']), 'bins')
 
 
-def collect(raw, out):
+def collect(raw, out, h1=15):
     """Summarize retrieved campaign artifacts (local, reads files only)."""
     import collections
     import gzip
@@ -384,12 +384,12 @@ def collect(raw, out):
                                              'p10': late[len(late) // 10] if late else None},
                  'median_move_seconds': statistics.median(seconds) if seconds else None,
                  'pentanomial': counts, 'estimate': stats.estimate(counts) if sum(counts) else None,
-                 'sprt_fixed_sample': stats.Sprt(0, 15, .05, .05, 30).status(counts) if sum(counts) else None}
+                 'sprt_fixed_sample': stats.Sprt(0, h1, .05, .05, 30).status(counts) if sum(counts) else None}
         if label == 'match' and scored:
             # Sequential test in seed order over every launched pair: the first
             # decision is the result; later pairs are retained, not used.
             ordered = [row['pair_score'] for row in sorted(summaries, key=lambda row: row['seed'])]
-            test = stats.Sprt(0, 15, .05, .05, 30)
+            test = stats.Sprt(0, h1, .05, .05, 30)
             for n in range(1, len(ordered) + 1):
                 status = test.status(stats.pentanomial(ordered[:n]))
                 if status['decision'] is not None:
@@ -465,13 +465,14 @@ def main():
     c = sub.add_parser('collect')
     c.add_argument('--raw', required=True)
     c.add_argument('--out', required=True)
+    c.add_argument('--h1', type=float, default=15, help='SPRT H1 in Elo (H0 is 0)')
     a = p.parse_args()
     if a.command == 'worker':
         worker(a.manifest, a.store)
     elif a.command == 'submit':
         submit(a)
     elif a.command == 'collect':
-        collect(a.raw, a.out)
+        collect(a.raw, a.out, a.h1)
     else:
         make_manifest(a)
 

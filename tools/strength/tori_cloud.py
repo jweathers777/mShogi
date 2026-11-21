@@ -32,7 +32,6 @@ from types import SimpleNamespace
 
 PREFIX = 'msh204'
 # Tori program tasks that run campaigns through this module.
-PREFIXES = ('msh204', 'msh200')
 CAMPAIGN_SECONDS = 2 * 3600
 COMPUTE_USD = 5
 # Frozen data in the worker image; a local smoke run may point elsewhere.
@@ -81,7 +80,7 @@ def validate_task(t):
 
 def validate_manifest(m):
     from tools.strength.anchor_worker import require
-    require(m.get('schema') == 1 and re.fullmatch('(' + '|'.join(PREFIXES) + r')-[a-z0-9-]{1,50}',
+    require(m.get('schema') == 1 and re.fullmatch(r'msh[0-9]+-[a-z0-9-]{1,50}',
                                                   m.get('experiment', '')), 'wrong campaign identity')
     for field in ('campaign_started_epoch', 'deadline_epoch', 'estimated_compute_before_usd'):
         require(type(m.get(field)) in (int, float) and math.isfinite(m[field]), 'finite ' + field)
@@ -447,8 +446,8 @@ def main():
     k.add_argument('--before', type=float, default=0)
     k.add_argument('--smoke', action='store_true')
     k.add_argument('--movegen', action='store_true', help='MSH-200 move generation profile (one VM)')
-    k.add_argument('--match', action='store_true', help='MSH-200 candidate against --baseline-bin-dir')
-    k.add_argument('--suite', action='store_true', help='MSH-200 suite probes of both builds')
+    k.add_argument('--match', action='store_true', help='candidate against --baseline-bin-dir')
+    k.add_argument('--suite', action='store_true', help='suite probes of both builds')
     k.add_argument('--baseline-bin-dir', help='binaries of the frozen predecessor (mshogi, tori_strength)')
     c = sub.add_parser('collect')
     c.add_argument('--raw', required=True)

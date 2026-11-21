@@ -53,7 +53,7 @@ class MoveGeneration(unittest.TestCase):
             with self.assertRaises(Exception):
                 tori_cloud.validate_manifest(m)
         m['bins'] = [[{'kind': 'movegen', 'repeats': 200}]]
-        m['experiment'] = 'msh999-movegen'
+        m['experiment'] = 'other-movegen'
         with self.assertRaises(Exception):
             tori_cloud.validate_manifest(m)
 

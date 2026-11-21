@@ -57,6 +57,18 @@ those moves, instead of a full legal-move search.
 All of these give exactly the same legal moves and check flags as before, so
 the search output does not change.
 
+**Checking moves (MSH-205).** The quiescence check stage and the root mate
+search need every legal checking move. A piece checks directly if its target
+is on a square from which its face (after promotion) attacks the enemy
+Phoenix; these squares come from the reverse rays from the Phoenix. An own
+piece between the Phoenix and an own ray piece can give a discovered check, so
+all its moves are candidates. One Tori case needs care: a Falcon that steps
+forward into the zone becomes an Eagle, whose backward ray can pass the square
+the Falcon left. That move is tested with the occupancy after the move. At the
+root, the moves that the repetition rule forbids are removed, as in ordinary
+generation. In check, only drops between the Phoenix and a single ray checker
+are searched; no other drop can be legal.
+
 ## Result
 
 Measured on one cloud machine type for both builds (MSH-200): depth-6 node

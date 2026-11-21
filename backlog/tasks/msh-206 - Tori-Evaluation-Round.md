@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-19T19:43:00Z'
-updated_date: '2026-11-21T10:53:00Z'
+updated_date: '2026-11-21T14:42:00Z'
 labels:
   - handle:tori-evaluation-round
   - tori
@@ -61,4 +61,11 @@ Handle: Tori Evaluation Round
 
 <!-- SECTION:NOTES:BEGIN -->
 Checkpoint: branch claude/msh-206-tori-evaluation. Predecessor build da3969d0 (store gs://mshogi-experiments-216675633801/build-da3969d0, <=0.06 VM-h). Corpus image worker@sha256:5993056f (tag msh206-corpus-da3969d0). Campaign msh206-corpus-1 submitted (store gs://.../msh206). Eval code in progress (not committed).
+
+2026-11-21 checkpoint (@claude):
+- Corpus batch 1 msh206-corpus-1 (predecessor da3969d0, 3,200 pairs, 2 s + 0.05 s, 8 x c3-standard-4, 4,863 s, about 10.8 VM-h, about US$2.18, VMs verified deleted): 6,400 games (11 step-limit), 1,100,705 rows; split by opening: train 770,866 / validation 71,787 / held-out 180,027 rows; quiet: 295,498 / 28,570 / 70,887 = 394,955. Below 500k (38% quiet), so batch 2 msh206-corpus-2 (seeds 3201-6400, store msh206-corpus2) is running.
+- Tool fixes (45e3f49): export loads reports in parallel (was 0.9 s per report on one core); corpus batches by first seed; Tori cloud cap set to the task cap US$10.
+- Tori K range 0.01-0.71 as Shogi and Xiangqi (default 0.25-2.0 put K at its bound). Pilot static fit on batch 1: K 0.17, validation MSE 0.22178 -> 0.20876, 33 table entries at +-150. Pilot weights compiled in d86c874f for a pilot game test.
+- Pilot build build-d86c874f-1 stayed queued 55 min (regional quota 8 VMs / 32 C3 CPUs used by the corpus job); no VM, no cost. Rerun after batch 2. Run one cloud job at a time.
+- Next: when batch 2 ends, rebuild pilot; image with Cloud Build (not local Docker); pilot SPRT; export and split both batches; final static fit; held-out check; SPRT; then per-node fit.
 <!-- SECTION:NOTES:END -->

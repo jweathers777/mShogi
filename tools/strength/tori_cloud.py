@@ -247,15 +247,16 @@ def campaign_bins():
     return bins
 
 
-def match_bins():
+def match_bins(first_seed=1):
     """MSH-200, fixed before any result: one bin profiles both builds on the
-    same VM; seven bins play candidate-predecessor pairs at the Tori control
-    (5 s + 0.1 s). The suite probes run separately (`suite_bins`): one
-    unsharded probe with proofs takes about half an hour."""
+    same VM; seven bins play 224 candidate-predecessor pairs from `first_seed`
+    at the Tori control (5 s + 0.1 s). A continuation starts after the earlier
+    seeds. The suite probes run separately (`suite_bins`): one unsharded probe
+    with proofs takes about half an hour."""
     bins = [[{'kind': 'movegen', 'repeats': 200, 'build': b} for b in ('baseline', 'candidate')]]
     for b in range(7):
         bins.append([{'kind': 'pairs', 'label': 'match', 'opponent': 'baseline', 'factor': 1,
-                      'seeds': list(range(1 + 32 * b, 33 + 32 * b)), 'base_ms': 5000, 'increment_ms': 100,
+                      'seeds': list(range(first_seed + 32 * b, first_seed + 32 * (b + 1))), 'base_ms': 5000, 'increment_ms': 100,
                       'concurrency': 2, 'pair_ms': 600000}])
     return bins
 
@@ -322,10 +323,25 @@ def make_manifest(args):
          'deadline_epoch': start + CAMPAIGN_SECONDS, 'estimated_compute_before_usd': args.before,
          'task_seconds': args.task_seconds, 'build': build,
          'bins': (smoke_bins() if args.smoke else [[{'kind': 'movegen', 'repeats': 200}]] if args.movegen
-                  else match_bins() if args.match else corpus_bins(args.corpus_first_seed) if args.corpus else suite_bins() if args.suite else campaign_bins())}
+                  else match_bins(args.first_seed) if args.match else corpus_bins(args.first_seed) if args.corpus else suite_bins() if args.suite else campaign_bins())}
     validate_manifest(m)
     Path(args.out).write_text(json.dumps(m))
     print(sum(map(len, m['bins'])), 'tasks in', len(m['bins']), 'bins')
+
+
+def sequential(summaries, h1):
+    """Sequential test in seed order over every launched pair: the first
+    decision is the result; later pairs are retained, not used.
+    Length-limited pairs have no score and are skipped, as in the counts."""
+    from tools.strength import stats
+    ordered = [row['pair_score'] for row in sorted(summaries, key=lambda row: row['seed'])
+               if row['pair_score'] is not None]
+    test = stats.Sprt(0, h1, .05, .05, 30)
+    for n in range(1, len(ordered) + 1):
+        status = test.status(stats.pentanomial(ordered[:n]))
+        if status['decision'] is not None:
+            break
+    return dict(status, pairs=n)
 
 
 def collect(raw, out, h1=15):
@@ -386,15 +402,7 @@ def collect(raw, out, h1=15):
                  'pentanomial': counts, 'estimate': stats.estimate(counts) if sum(counts) else None,
                  'sprt_fixed_sample': stats.Sprt(0, h1, .05, .05, 30).status(counts) if sum(counts) else None}
         if label == 'match' and scored:
-            # Sequential test in seed order over every launched pair: the first
-            # decision is the result; later pairs are retained, not used.
-            ordered = [row['pair_score'] for row in sorted(summaries, key=lambda row: row['seed'])]
-            test = stats.Sprt(0, h1, .05, .05, 30)
-            for n in range(1, len(ordered) + 1):
-                status = test.status(stats.pentanomial(ordered[:n]))
-                if status['decision'] is not None:
-                    break
-            entry['sprt_sequential'] = dict(status, pairs=n)
+            entry['sprt_sequential'] = sequential(summaries, h1)
         if summaries:
             result[label] = entry
     suite_path = Path(__file__).resolve().parents[2] / 'tools/strength/data/tori-tactics-v1.json'
@@ -460,7 +468,7 @@ def main():
     k.add_argument('--match', action='store_true', help='candidate against --baseline-bin-dir')
     k.add_argument('--suite', action='store_true', help='suite probes of both builds')
     k.add_argument('--corpus', action='store_true', help='MSH-206 self-play pairs for the Texel corpus')
-    k.add_argument('--corpus-first-seed', type=int, default=1, help='first pair seed of a corpus batch')
+    k.add_argument('--first-seed', type=int, default=1, help='first pair seed of a corpus batch or match')
     k.add_argument('--baseline-bin-dir', help='binaries of the frozen predecessor (mshogi, tori_strength)')
     c = sub.add_parser('collect')
     c.add_argument('--raw', required=True)

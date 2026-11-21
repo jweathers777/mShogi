@@ -90,6 +90,8 @@ class Match(unittest.TestCase):
         self.assertEqual(len(pairs), 7)
         self.assertTrue(all(t['label'] == 'match' and t['opponent'] == 'baseline' for t in pairs))
         self.assertEqual(sorted(s for t in pairs for s in t['seeds']), list(range(1, 225)))
+        more = [s for b in tori_cloud.match_bins(225) for t in b if t['kind'] == 'pairs' for s in t['seeds']]
+        self.assertEqual(sorted(more), list(range(225, 449)))
         self.assertEqual(sorted(t['build'] for t in m['bins'][0] if t['kind'] == 'movegen'),
                          ['baseline', 'candidate'])
         m['bins'] = tori_cloud.suite_bins()
@@ -144,3 +146,14 @@ class Corpus(unittest.TestCase):
         self.assertEqual(sorted(s for t in pairs for s in t['seeds']), list(range(1, 3201)))
         second = [s for b in tori_cloud.corpus_bins(3201) for t in b for s in t['seeds']]
         self.assertEqual(sorted(second), list(range(3201, 6401)))
+
+
+class Sequential(unittest.TestCase):
+    """MSH-206: an unscored (length-limited) pair does not stop the test."""
+
+    def test_unscored_pairs_are_skipped(self):
+        rows = [{'seed': n, 'pair_score': 1} for n in range(1, 61)]
+        rows[4]['pair_score'] = None
+        result = tori_cloud.sequential(rows, 10)
+        self.assertEqual(result['decision'], 'H1')
+        self.assertLess(result['pairs'], 59)

@@ -122,12 +122,6 @@ pub trait SearchPosition {
     fn quiet_order(&self, _m: Self::Move) -> i32 {
         0
     }
-    /// True for a quiet move aimed at the opponent's King (for example a
-    /// drop near it; each game defines "near"). The search never prunes such a move as a
-    /// late or futile move and reduces it one ply less.
-    fn attacks_king(&self, _m: Self::Move) -> bool {
-        false
-    }
     /// History slot of a move in this position (for example side, piece, target).
     fn history_slot(&self, m: Self::Move) -> usize;
     /// Nonzero table encoding of a move.
@@ -1007,7 +1001,6 @@ impl<P: SearchPosition> Run<'_, P> {
                 continue;
             }
             let tactical = self.pos.is_tactical(m);
-            let attack = !tactical && self.pos.attacks_king(m);
             let slot = self.pos.history_slot(m);
             if !self.pos.make(m) {
                 continue;
@@ -1022,14 +1015,13 @@ impl<P: SearchPosition> Run<'_, P> {
                 && !in_check
                 && !tactical
                 && !gives_check
-                && !attack
                 && best > -MATE_BOUND
                 && count > (3 + depth * depth * if improving { 2 } else { 1 }) as usize
             {
                 self.pos.unmake();
                 continue;
             }
-            if futile && count > 1 && !tactical && !gives_check && !attack {
+            if futile && count > 1 && !tactical && !gives_check {
                 self.pos.unmake();
                 // The pruned move is assumed to reach at most this value, so a
                 // stored upper bound must not be below it.
@@ -1055,7 +1047,6 @@ impl<P: SearchPosition> Run<'_, P> {
                     reduction -= i32::from(pv);
                     reduction -= i32::from(improving);
                     reduction -= i32::from(self.s.killers[ply].contains(&Some(m)));
-                    reduction -= i32::from(attack);
                     reduction -= (self.quiet_score(ply, slot) / 8_192).clamp(-2, 2);
                     reduction = reduction.clamp(0, (new_depth - 1).max(0));
                 }

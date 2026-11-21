@@ -1339,19 +1339,14 @@ impl SearchPosition for ToriPosition {
         if self.gives_direct_check(m) {
             return 6_000;
         }
-        if self.attacks_king(m) {
-            return 2_000;
+        if m.is_drop() {
+            let king = self.king(self.side ^ 1);
+            let (row, column) = (m.to() / 7, m.to() % 7);
+            if row.abs_diff(king / 7).max(column.abs_diff(king % 7)) <= 2 {
+                return 2_000;
+            }
         }
         0
-    }
-    /// A drop near the enemy Phoenix: within two squares (a 5 x 5 box).
-    fn attacks_king(&self, m: Move) -> bool {
-        if !m.is_drop() {
-            return false;
-        }
-        let king = self.king(self.side ^ 1);
-        let (row, column) = (m.to() / 7, m.to() % 7);
-        row.abs_diff(king / 7).max(column.abs_diff(king % 7)) <= 2
     }
     fn history_slot(&self, m: Move) -> usize {
         let face = if m.is_drop() {

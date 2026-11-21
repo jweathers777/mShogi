@@ -1,11 +1,11 @@
 ---
 id: MSH-207
 title: Tori Strength Assessment
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-11-19T19:43:00Z'
-updated_date: '2026-11-21T22:00:00Z'
+updated_date: '2026-11-21T22:10:00Z'
 labels:
   - handle:tori-strength-assessment
   - tori
@@ -34,16 +34,16 @@ Handle: Tori Strength Assessment
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Scaling curve and judged move quality reported with their limits (same-family judge).
-- [ ] #2 Blunder rule, classes and fix rule fixed before results; blunder suite with a held-out split; independent review recorded.
+- [x] #1 Scaling curve and judged move quality reported with their limits (same-family judge).
+- [x] #2 Blunder rule, classes and fix rule fixed before results; blunder suite with a held-out split; independent review recorded.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -77,3 +77,14 @@ Fix round result (msh207-fix-1, 747 s, 8 x c3-standard-4, about US$0.34; candida
 Independent review (fresh subagent, branch diff and task): no blocking defects; judge command, sign convention, class order, shared blunder rules (Shogi and Xiangqi behavior unchanged), seeds and the search hook confirmed. Minor points fixed: judge clock-count assertion, int checks of judge shard fields, docstring on seeds (correction to plan item 1: the 50 control pairs reuse the seeds and openings of the first 50 odds pairs; odds clocks have distinct seeds), documented limit of the repetition class (a move that loses by its own repetition is not marked repetition; 0 cases), committed Shogi suite split label heldout -> held-out (the shared label).
 MSH-206 note (table weights at +-150): missed_capture is 5 of 69 clear blunders (7.2%), so table preferences that skip free captures are not a major blunder cause at this control.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Tori assessment (steps 5 and 6 of the strength program, no external opponents).
+Scaling curve (time odds, 2x clock, 96 pairs per clock): 1.25 s +346 Elo, 2.5 s +340, 5 s +286, 10 s +296, 20 s +261 (95% intervals in the notes); more time still gains much, slowly less at longer clocks.
+Judged move quality (100 games at 5 s + 0.1 s, 14,197 moves, mShogi judge at 5,000,000 nodes): 0.49 clear blunders and 1.49 mistakes per 100 moves, mean win-probability loss 0.0198. Same-family judge: weaker evidence; in 14 of 69 blunders the judge chose the played move, so the rates are a lower bound.
+Rules, classes and fix rule were fixed before the results (blunder_rules.py now shared by the Shogi, Xiangqi and Tori screens). The fix rule triggered (drop_refutation 33%, mostly drops near the Phoenix); the one fix round (never prune near-Phoenix drops) lost -55 Elo (SPRT H0 at pair 198) and was reverted. Suite: tools/strength/data/tori-blunders-v1.json, 280 positions with a held-out split.
+Checks: fmt, clippy, full workspace tests (release), Python tests pass. Independent review: no blocking findings; minor points fixed. Cost about US$3.9 of US$8 (cloud only); VMs, stores and images deleted; data gs://mshogi-experiments-216675633801/runs/msh-207/.
+Next: John's stop-or-continue decision for Tori (MSH-51).
+<!-- SECTION:FINAL_SUMMARY:END -->

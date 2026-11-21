@@ -1,10 +1,11 @@
 ---
 id: MSH-207
 title: Tori Strength Assessment
-status: To Do
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-19T19:43:00Z'
-updated_date: '2026-11-21T18:15:00Z'
+updated_date: '2026-11-21T18:52:00Z'
 labels:
   - handle:tori-strength-assessment
   - tori

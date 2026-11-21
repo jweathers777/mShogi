@@ -634,6 +634,17 @@ impl Game {
         }
         self.commit(request.actor, request.command)
     }
+    /// `submit` behind a stop check: one Chu command is a bounded native step.
+    pub fn submit_with_stop(
+        &mut self,
+        request: GameRequest,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<GameUndo, GameError> {
+        if stop() {
+            return Err(GameError::Stopped);
+        }
+        self.submit(request)
+    }
     fn commit(&mut self, actor: Side, command: GameCommand) -> Result<GameUndo, GameError> {
         if self.conclusion().is_some() {
             return Err(GameError::Concluded);

@@ -17,6 +17,10 @@ pub use capacity::*;
 /// Immutable Chu candidates for the same document envelope and file worker.
 pub mod chu_document;
 mod document;
+/// Generic native document of the games behind `native_game::NativeGame`.
+pub mod game_document;
+/// Per-game boundary of the generic document and session.
+pub mod native_game;
 mod resource;
 /// Immutable two-profile Tenjiku candidates for the existing document and worker.
 pub mod tenjiku_document;

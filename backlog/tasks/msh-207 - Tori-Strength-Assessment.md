@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-19T19:43:00Z'
-updated_date: '2026-11-21T21:42:00Z'
+updated_date: '2026-11-21T22:00:00Z'
 labels:
   - handle:tori-strength-assessment
   - tori
@@ -71,4 +71,6 @@ Checkpoint 2026-11-21. msh207-assess-1 done (3590 s, 8 x c3-standard-4, about US
 
 Judge (msh207-judge-1, 3718 s, 8 x c3-standard-4, about US$1.67, VMs verified absent): 100 control games (5 s + 0.1 s), 14,197 moves judged by mShogi at 5,000,000 nodes, 0 unjudged. Clear blunders 69 (0.49 per 100 moves), mistakes 211 (1.49 per 100 moves), mean win-probability loss 0.0198 per move. Classes of clear blunders: drop_refutation 23 (33.3%), other 15 (21.7%), refuted_major_capture 13 (18.8%), refuted_minor_capture 9 (13.0%), missed_capture 5 (7.2%), allowed_short_mate 4 (5.8%); no time_trouble, no repetition. Caveat: same-family judge; in 14 of 69 clear blunders the judge's own best move is the played move (the judge also sees the refutation only one ply later), so the rates are a lower bound on what a stronger independent judge would find. Suite: tools/strength/data/tori-blunders-v1.json (280 positions; held-out 13 blunders + 51 mistakes).
 Fix rule triggers: drop_refutation 33.3% >= 30%. Mechanism: 19 of the 23 refutation drops land within two squares of the mover's Phoenix (13 adjacent); the player ordered such drops early (quiet_order 2,000) but pruned and reduced them as ordinary quiet moves. General change (898c1da): a shared hook SearchPosition::attacks_king (default false); such a move is never pruned as a late or futile move and is reduced one ply less; Tori defines it as a drop within two squares of the enemy Phoenix, the same set that the ordering already uses. Test: SPRT vs 99805d1 at 5 s + 0.1 s, H1 15 Elo (search change), campaign msh207-fix-1 (224 pairs).
+
+Fix round result (msh207-fix-1, 747 s, 8 x c3-standard-4, about US$0.34; candidate build about US$0.13; VMs verified absent): 898c1da vs 99805d1 at 5 s + 0.1 s, 224 pairs, pentanomial [69,0,121,0,34], -55 Elo (-86 to -24), sequential SPRT (H1 15) H0 at pair 198; 448 native conclusions. Rejected and reverted: exempting near-Phoenix drops from pruning costs more search than it gains. The one allowed fix round is used; no further change in this task.
 <!-- SECTION:NOTES:END -->

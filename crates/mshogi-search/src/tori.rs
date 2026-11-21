@@ -5,6 +5,8 @@
 //! forbids) and each action of the reported line. The shared core searches a
 //! private [`position::ToriPosition`] and proposes a move; this adapter returns
 //! it only if the native legal actions contain it.
+/// Tunable classical evaluation weights and the Texel model.
+pub mod eval;
 pub mod position;
 
 use crate::{

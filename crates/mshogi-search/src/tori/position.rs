@@ -8,6 +8,7 @@
 //!
 //! Squares use the native index: `row * 7 + column`, row 0 is rank `a`, and
 //! Sente moves toward row 0.
+use super::eval;
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
 use mshogi_core::tori::{Action, Face, Game, Piece, Position, Side, Square};
 use std::sync::LazyLock;
@@ -21,15 +22,15 @@ const FALCON: usize = 1;
 const EAGLE: usize = 2;
 const LEFT_QUAIL: usize = 5;
 const RIGHT_QUAIL: usize = 6;
-const SWALLOW: usize = 7;
+pub(super) const SWALLOW: usize = 7;
 const GOOSE: usize = 8;
 /// First `from` value of a drop: `DROP + hand index`.
 const DROP: usize = SQUARES;
 
 /// Material in hundredths of a Swallow, in `Face::ALL` order.
-const VALUE: [i32; FACES] = [0, 700, 1000, 400, 300, 500, 500, 100, 300];
+pub(super) const VALUE: [i32; FACES] = [0, 700, 1000, 400, 300, 500, 500, 100, 300];
 /// Face of a hand index, in `Face::HANDS` order.
-const HAND_FACE: [usize; HAND_FACES] = [FALCON, 3, 4, LEFT_QUAIL, RIGHT_QUAIL, SWALLOW];
+pub(super) const HAND_FACE: [usize; HAND_FACES] = [FALCON, 3, 4, LEFT_QUAIL, RIGHT_QUAIL, SWALLOW];
 
 /// Material value of a face; hand pieces have the value of their base face.
 pub const fn piece_value(face: Face) -> i32 {
@@ -179,6 +180,8 @@ struct Tables {
     /// Squares from which a piece of [side][face] leaps to [square].
     leapers_to: [[[u64; SQUARES]; FACES]; 2],
     files: [u64; 7],
+    /// Other squares within two rows and two columns of [square].
+    near: [u64; SQUARES],
     piece: [[[u64; SQUARES]; FACES]; 2],
     hand: [[[u64; 17]; HAND_FACES]; 2],
     side: u64,
@@ -192,6 +195,7 @@ static TABLES: LazyLock<Box<Tables>> = LazyLock::new(|| {
         leaps: [[[0; SQUARES]; FACES]; 2],
         leapers_to: [[[0; SQUARES]; FACES]; 2],
         files: [0; 7],
+        near: [0; SQUARES],
         piece: [[[0; SQUARES]; FACES]; 2],
         hand: [[[0; 17]; HAND_FACES]; 2],
         side: 0,
@@ -235,6 +239,14 @@ static TABLES: LazyLock<Box<Tables>> = LazyLock::new(|| {
     }
     for square in 0..SQUARES {
         t.files[square % 7] |= 1 << square;
+        for other in 0..SQUARES {
+            if other != square
+                && (square / 7).abs_diff(other / 7) <= 2
+                && (square % 7).abs_diff(other % 7) <= 2
+            {
+                t.near[square] |= 1 << other;
+            }
+        }
     }
     // Fixed-seed SplitMix64: the keys are the same in each process.
     let mut state = 0x7012_5EED_0000_0165_u64;
@@ -304,8 +316,9 @@ pub struct ToriPosition {
     hands: [[u8; HAND_FACES]; 2],
     side: usize,
     hash: u64,
-    /// Board and hand material of each side.
-    material: [i32; 2],
+    /// Static evaluation of each side with the compiled weights: board
+    /// values, rank and column tables, and hand values.
+    accumulated: [i32; 2],
     /// True if the side to move is in check.
     check: bool,
     /// Plies since the last capture or drop.
@@ -337,7 +350,7 @@ impl ToriPosition {
             hands: [[0; HAND_FACES]; 2],
             side: side_index(position.side_to_move()),
             hash: 0,
-            material: [0; 2],
+            accumulated: [0; 2],
             check: false,
             reversible: 0,
             stack: Vec::with_capacity(160),
@@ -490,9 +503,34 @@ impl ToriPosition {
             Side::Gote
         }
     }
-    /// Material of a side on the board and in hand.
-    pub fn material(&self, side: Side) -> i32 {
-        self.material[side_index(side)]
+    /// Pieces in both hands.
+    pub fn pieces_in_hand(&self) -> u8 {
+        self.hands.iter().flatten().sum()
+    }
+    /// All evaluation features, side to move minus opponent: the static terms
+    /// of every piece and hand, the per-node terms and the tempo.
+    pub fn features(&self, sink: &mut impl FnMut(usize, i32)) {
+        for side in 0..2 {
+            let sign = if side == self.side { 1 } else { -1 };
+            for face in 0..FACES {
+                let mut pieces = self.pieces[side][face];
+                while pieces != 0 {
+                    let square = pieces.trailing_zeros() as usize;
+                    pieces &= pieces - 1;
+                    for index in eval::piece_indices(side, face, square)
+                        .into_iter()
+                        .flatten()
+                    {
+                        sink(index, sign);
+                    }
+                }
+            }
+            for (index, &count) in self.hands[side].iter().enumerate() {
+                sink(eval::HAND + index, sign * i32::from(count));
+            }
+        }
+        self.per_node_features(true, sink);
+        sink(eval::TEMPO, 1);
     }
     /// Piece on a square.
     pub fn piece(&self, square: Square) -> Option<Piece> {
@@ -539,26 +577,26 @@ impl ToriPosition {
         self.pieces[side][face] |= 1 << square;
         self.occupied[side] |= 1 << square;
         self.hash ^= TABLES.piece[side][face][square];
-        self.material[side] += VALUE[face];
+        self.accumulated[side] += PLACED[side][face][square];
     }
     fn take(&mut self, side: usize, face: usize, square: usize) {
         self.board[square] = 0;
         self.pieces[side][face] &= !(1 << square);
         self.occupied[side] &= !(1 << square);
         self.hash ^= TABLES.piece[side][face][square];
-        self.material[side] -= VALUE[face];
+        self.accumulated[side] -= PLACED[side][face][square];
     }
     fn add_hand(&mut self, side: usize, index: usize) {
         let count = usize::from(self.hands[side][index]);
         self.hash ^= TABLES.hand[side][index][count] ^ TABLES.hand[side][index][count + 1];
         self.hands[side][index] += 1;
-        self.material[side] += VALUE[HAND_FACE[index]];
+        self.accumulated[side] += eval::DEFAULT[eval::HAND + index];
     }
     fn remove_hand(&mut self, side: usize, index: usize) {
         let count = usize::from(self.hands[side][index]);
         self.hash ^= TABLES.hand[side][index][count] ^ TABLES.hand[side][index][count - 1];
         self.hands[side][index] -= 1;
-        self.material[side] -= VALUE[HAND_FACE[index]];
+        self.accumulated[side] -= eval::DEFAULT[eval::HAND + index];
     }
     fn moved_face(&self, side: usize, face: usize, from: usize, to: usize) -> usize {
         if in_zone(side, from) || in_zone(side, to) {
@@ -932,25 +970,83 @@ impl ToriPosition {
     fn ply(&self) -> usize {
         self.keys.len() - 1 - self.root
     }
-    /// Static evaluation terms other than material, for one side.
-    fn placement(&self, side: usize) -> i32 {
-        let mut score = 0;
-        // Swallows gain value as they advance; they promote in the zone.
-        let mut swallows = self.pieces[side][SWALLOW];
-        while swallows != 0 {
-            let square = swallows.trailing_zeros() as usize;
-            swallows &= swallows - 1;
-            let row = square / 7;
-            score += 4 * if side == 0 { 6 - row } else { row } as i32;
+    /// Per-node terms (Phoenix safety, mobility), side to move minus
+    /// opponent. With `all` false, terms whose compiled weight is zero are
+    /// skipped (the search evaluation); fitting needs every term.
+    fn per_node_features(&self, all: bool, sink: &mut impl FnMut(usize, i32)) {
+        use eval::*;
+        let want = |index: usize| all || DEFAULT[index] != 0;
+        let occupied = self.occupied[0] | self.occupied[1];
+        for side in 0..2 {
+            let sign = if side == self.side { 1 } else { -1 };
+            let them = side ^ 1;
+            let king = self.king(side);
+            let around = TABLES.leaps[0][PHOENIX][king];
+            if want(PHOENIX_ADJACENT_OWN) {
+                sink(
+                    PHOENIX_ADJACENT_OWN,
+                    sign * (around & self.occupied[side]).count_ones() as i32,
+                );
+            }
+            if want(PHOENIX_ADJACENT_ATTACKED) {
+                let mut squares = around;
+                let mut attacked = 0;
+                while squares != 0 {
+                    let square = squares.trailing_zeros() as usize;
+                    squares &= squares - 1;
+                    attacked += i32::from(self.attackers(square, them, occupied) != 0);
+                }
+                sink(PHOENIX_ADJACENT_ATTACKED, sign * attacked);
+            }
+            if want(PHOENIX_DROP_THREAT) {
+                let in_hand: i32 = self.hands[them].iter().map(|&n| i32::from(n)).sum();
+                sink(
+                    PHOENIX_DROP_THREAT,
+                    sign * in_hand * (around & !occupied).count_ones() as i32,
+                );
+            }
+            if want(PHOENIX_NEAR_ENEMY) {
+                sink(
+                    PHOENIX_NEAR_ENEMY,
+                    sign * (TABLES.near[king] & self.occupied[them]).count_ones() as i32,
+                );
+            }
+            for (slot, face) in [EAGLE, LEFT_QUAIL, RIGHT_QUAIL].into_iter().enumerate() {
+                if !want(MOBILITY + slot) {
+                    continue;
+                }
+                let mut pieces = self.pieces[side][face];
+                let mut reach = 0;
+                while pieces != 0 {
+                    let square = pieces.trailing_zeros() as usize;
+                    pieces &= pieces - 1;
+                    reach += (self.attacks(side, face, square) & !self.occupied[side]).count_ones()
+                        as i32;
+                }
+                sink(MOBILITY + slot, sign * reach);
+            }
         }
-        // Own pieces next to the Phoenix protect it.
-        let king = self.king(side);
-        score += 8 * (TABLES.leaps[0][PHOENIX][king] & self.occupied[side]).count_ones() as i32;
-        // A piece in hand can go to any empty square.
-        let in_hand: i32 = self.hands[side].iter().map(|&n| i32::from(n)).sum();
-        score + 10 * in_hand
     }
 }
+
+/// Static value of each piece on each square with the compiled weights.
+static PLACED: [[[i32; SQUARES]; FACES]; 2] = {
+    let mut t = [[[0; SQUARES]; FACES]; 2];
+    let mut side = 0;
+    while side < 2 {
+        let mut face = 0;
+        while face < FACES {
+            let mut square = 0;
+            while square < SQUARES {
+                t[side][face][square] = eval::piece_score(&eval::DEFAULT, side, face, square);
+                square += 1;
+            }
+            face += 1;
+        }
+        side += 1;
+    }
+    t
+};
 
 fn square(index: usize) -> Square {
     Square::new((7 - index % 7) as u8, (index / 7 + 1) as u8).expect("board index")
@@ -1197,10 +1293,13 @@ impl SearchPosition for ToriPosition {
         -(MATE_SCORE - ply)
     }
     fn evaluate(&self) -> i32 {
-        let side = self.side;
-        self.material[side] - self.material[side ^ 1] + self.placement(side)
-            - self.placement(side ^ 1)
-            + 10
+        let mut per_node = 0;
+        self.per_node_features(false, &mut |index, value| {
+            per_node += eval::DEFAULT[index] * value
+        });
+        self.accumulated[self.side] - self.accumulated[self.side ^ 1]
+            + per_node
+            + eval::DEFAULT[eval::TEMPO]
     }
     fn is_tactical(&self, m: Move) -> bool {
         if m.is_drop() {

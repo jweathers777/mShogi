@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-19T19:43:00Z'
-updated_date: '2026-11-21T19:17:00Z'
+updated_date: '2026-11-21T20:23:00Z'
 labels:
   - handle:tori-strength-assessment
   - tori
@@ -66,4 +66,6 @@ Frozen engine: main c7be8c6 (MSH-206 fit2). The cloud build uses the task branch
 From MSH-206 (Tori Evaluation Round) review: many fitted table weights sit at the +-150 bound (for example Eagle columns 0 and 2 at -150, Phoenix ranks 0 and 6 at -150). At depth 1, a quiet Falcon promotion to an Eagle on a good column scores above taking a free Swallow with promotion. Check in the blunder screen whether such table preferences cause blunders (rarely visited squares fitted on little data).
 
 2026-11-21 checkpoint (@claude): tools committed (99805d1): tori_strength judge; tori_cloud assessment and judge bins, judge task, odds results per clock; tools/strength/blunder_rules.py shared by the Shogi, Xiangqi and Tori screens; tori_assessment.py classifier and suite with tests. Build build-99805d1a-1 (<=US$0.13, VM deleted); image worker@sha256:3ce1959a (tag msh207-assess-99805d1a, Cloud Build). Running: msh207-assess-1 (store msh207-assess). Next: collect; judge 100 control games locally smoke-tested on one report, then campaign msh207-judge with the reports added under /opt/data/judge.
+
+Checkpoint 2026-11-21. msh207-assess-1 done (3590 s, 8 x c3-standard-4, about US$1.61; VMs verified absent). Scaling, 2x time vs 1x, 96 pairs per base clock (increment base/50): 1.25 s +346 Elo [277,446]; 2.5 s +340 [274,434]; 5 s +286 [223,371]; 10 s +296 [232,381]; 20 s +261 [205,331]. All bases: +303 [274,337], 5 of 480 pairs step-limited. Control 5 s + 0.1 s, 50 pairs: 100 games concluded, median 137.5 plies, median depth from ply 100 = 9. Judge smoke test passed locally (20k nodes, 1 report). Running: msh207-judge-1 (image worker@sha256:1faeee34..., store msh207-judge, 32 shards at 5,000,000 nodes). Next: tori_assessment on the judge outputs, fix rule, review, checks, merge.
 <!-- SECTION:NOTES:END -->

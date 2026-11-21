@@ -101,6 +101,9 @@ Report results honestly: say what passed, what failed and what did not run.
 - John's Mac is not for heavy compute. A job that uses many cores for more than
   a few minutes runs on Google Cloud Batch through `tools/experiments/gcp.py`,
   with one machine type per comparison. Check that the VMs are deleted after.
+- Build container images with Google Cloud Build (`gcloud builds submit
+  --tag <Artifact Registry path>`), and pin them by `@sha256:` digest. Do not
+  run Docker Desktop or `docker build` on John's Mac.
 - Spending cap: up to US$10 per task without asking. Ask John before more.
 - Never commit run output: game records, logs, JSON reports, screenshots,
   archives. Write it under `runs/` (ignored by Git). Upload what can help a

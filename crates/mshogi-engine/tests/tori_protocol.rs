@@ -536,3 +536,57 @@ fn saved_observations_of_the_earlier_full_width_search_stay_valid() {
     };
     assert!(mixed.validate(&g).is_err());
 }
+#[test]
+fn a_root_mate_proof_is_a_complete_reply_below_the_requested_depth() {
+    // A position from an MSH-205 test game: Gote has a long forced mate. The
+    // root mate search proves it before the iterative deepening reaches it,
+    // so the reply is complete at a depth below the requested one.
+    use t::Face::*;
+    let (s, g) = (t::Side::Sente, t::Side::Gote);
+    let entries = [
+        ("7a", s, Goose),
+        ("4a", s, LeftQuail),
+        ("3a", s, Pheasant),
+        ("2a", s, Goose),
+        ("7b", s, Swallow),
+        ("4b", s, Pheasant),
+        ("3b", s, Goose),
+        ("7c", s, Swallow),
+        ("5c", s, Crane),
+        ("3c", s, Swallow),
+        ("1c", s, Crane),
+        ("7d", g, Phoenix),
+        ("1d", s, Pheasant),
+        ("4e", g, Eagle),
+        ("3e", g, Swallow),
+        ("1e", s, RightQuail),
+        ("5f", g, Eagle),
+        ("2f", s, LeftQuail),
+        ("2g", s, Crane),
+        ("1g", s, Phoenix),
+    ]
+    .map(|(square, side, face)| (square.parse().unwrap(), t::Piece { side, face }));
+    let hands = [
+        t::Hand::from_counts(&[(Crane, 1), (Swallow, 3)]).unwrap(),
+        t::Hand::from_counts(&[(Pheasant, 1), (RightQuail, 1), (Swallow, 6)]).unwrap(),
+    ];
+    let root = t::Position::from_diagram(&entries, hands, g, t::RootMetadata::diagram(0));
+    let game = t::Game::from_root(root.unwrap()).unwrap();
+    let mut c = context(&game);
+    c.limits = WorkLimits {
+        time_ms: None,
+        depth: search::MAX_DEPTH,
+        nodes: 200_000,
+    };
+    let observation = execute(&c);
+    assert!(observation.matches(&c), "{observation:?}");
+    let ExecutionResult::Tori {
+        result: ToriResult::Choice { telemetry, .. },
+    } = &observation.result
+    else {
+        panic!("{observation:?}")
+    };
+    assert_eq!(telemetry.status, StopReason::Complete);
+    assert!(telemetry.completed_depth < search::MAX_DEPTH);
+    assert!(telemetry.score.unwrap() > search::WIN_SCORE - 64);
+}

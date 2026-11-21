@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-19T19:43:00Z'
-updated_date: '2026-11-21T03:23:00Z'
+updated_date: '2026-11-21T03:47:00Z'
 labels:
   - handle:tori-selectivity-round
   - tori
@@ -73,4 +73,6 @@ Caps: US$10. Checkpoint: if the set is weak, test parts alone only with a specif
 Checkpoint 2026-11-21 (handoff): set committed 643f645 on branch claude/msh-205-tori-selectivity; Tori tests pass (17), new tests: check generator and in-check search generator against native (48 games), Falcon->Eagle promotion check, SEE values, df-pn drop mate and Swallow rule; mutation of discovered and promotion check paths fails the tests. Predecessor = MSH-200 build 40edac60 (gs://mshogi-experiments-216675633801/build). Candidate build store gs://mshogi-experiments-216675633801/build-643f6451. Next: derived worker image, tori_cloud --match and --suite, collect.
 
 Checkpoint 2026-11-21: candidate build 643f645 (store gs://mshogi-experiments-216675633801/build-643f6451). Worker image worker@sha256:b3e2d72d (tag msh205-643f6451; base = msh200 Tori worker, frozen data digest af2d54e8 verified; candidate in /opt/engines, MSH-200 40edac60 in /opt/engines/baseline). Campaign msh205-match-1 submitted (c3-standard-4, 8 VMs). tori_cloud now accepts any msh<number> campaign name (70ea533). Next: collect match, then suite campaign msh205-suite-1 with its own store prefix.
+
+2026-11-21 campaign msh205-match-1 (643f645 vs 40edac60, c3-standard-4, <=2.42 VM-h, <=US$0.49, VMs verified deleted; build <=0.63 VM-h, <=US$0.13): no result. 113 of 448 games stopped with the candidate's own ContextMismatch failure. Cause: the Tori engine reply check (mshogi-engine/src/tori.rs matches) required a Complete reply to reach the requested depth; the new root df-pn mate search returns a proven mate as Complete at depth 7-9. Replaying 10 failed requests locally gave Complete with mate scores at depth 7-9 in each. Shogi and Xiangqi have no such rule. Fix: Complete below the requested depth is accepted only with a proven-win score (>= MATE_BOUND). Regression test tori_protocol a_root_mate_proof_is_a_complete_reply_below_the_requested_depth uses a failed game position with a node limit (deterministic); it fails without the fix. Next: rebuild, rerun as msh205-match-2.
 <!-- SECTION:NOTES:END -->

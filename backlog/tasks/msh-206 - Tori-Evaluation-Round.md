@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-19T19:43:00Z'
-updated_date: '2026-11-21T14:42:00Z'
+updated_date: '2026-11-21T16:47:00Z'
 labels:
   - handle:tori-evaluation-round
   - tori
@@ -68,4 +68,12 @@ Checkpoint: branch claude/msh-206-tori-evaluation. Predecessor build da3969d0 (s
 - Tori K range 0.01-0.71 as Shogi and Xiangqi (default 0.25-2.0 put K at its bound). Pilot static fit on batch 1: K 0.17, validation MSE 0.22178 -> 0.20876, 33 table entries at +-150. Pilot weights compiled in d86c874f for a pilot game test.
 - Pilot build build-d86c874f-1 stayed queued 55 min (regional quota 8 VMs / 32 C3 CPUs used by the corpus job); no VM, no cost. Rerun after batch 2. Run one cloud job at a time.
 - Next: when batch 2 ends, rebuild pilot; image with Cloud Build (not local Docker); pilot SPRT; export and split both batches; final static fit; held-out check; SPRT; then per-node fit.
+
+2026-11-21 checkpoint 2 (@claude):
+- Corpus batch 2 msh206-corpus-2 (seeds 3201-6400, 4,791 s on 8 x c3-standard-4, about 10.6 VM-h, about US$2.15, VMs verified deleted).
+- Both batches (corpus-all): 12,800 games (26 step-limit), 2,195,634 rows; split by opening: train 1,519,748 / validation 143,991 / held-out 357,269 rows; quiet: 581,623 / 57,277 / 138,820 = 777,720 (AC1 size met).
+- fit1 (static terms, per-node pinned at INITIAL; K 0.17; 900 s cap, stopped at validation patience after 12.8 s): validation MSE 0.21974 -> 0.20528; held-out (read once) 0.21259 -> 0.20474. 26 table entries at +-150. Compiled in ec1a9085.
+- Pilot (batch-1 fit) game test not run: config time limit differed (refused before submission, no cost). Dropped in favor of fit1.
+- Cloud Build API enabled in project mshogi (John approved 2026-11-21); images are built there. Images: worker@sha256:67b2571f (pilot, unused), worker@sha256:dd9b1e00 (fit1, tag msh206-fit1-ec1a9085).
+- Running: msh206-fit1-match-1, fit1 vs da3969d0, 5 s + 0.1 s, 224 pairs, collect with --h1 10. Spend so far about US$4.7.
 <!-- SECTION:NOTES:END -->

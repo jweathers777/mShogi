@@ -1,10 +1,11 @@
 ---
 id: MSH-205
 title: Tori Selectivity Round
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-19T19:43:00Z'
-updated_date: '2026-11-20T16:50:00Z'
+updated_date: '2026-11-21T02:59:00Z'
 labels:
   - handle:tori-selectivity-round
   - tori
@@ -15,6 +16,7 @@ dependencies:
   - MSH-200
 references:
   - docs/m5/strength-roadmap.md
+priority: high
 ordinal: 212000
 ---
 

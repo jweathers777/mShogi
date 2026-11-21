@@ -1,11 +1,11 @@
 ---
 id: MSH-206
 title: Tori Evaluation Round
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-11-19T19:43:00Z'
-updated_date: '2026-11-21T18:12:00Z'
+updated_date: '2026-11-21T18:25:00Z'
 labels:
   - handle:tori-evaluation-round
   - tori
@@ -35,16 +35,16 @@ Handle: Tori Evaluation Round
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 A corpus of at least about 500,000 quiet positions with a split; held-out loss before and after recorded.
-- [ ] #2 The kept evaluation passes the sequential predecessor test (H1 about 10) or the null result is reported and reverted; independent review recorded.
+- [x] #1 A corpus of at least about 500,000 quiet positions with a split; held-out loss before and after recorded.
+- [x] #2 The kept evaluation passes the sequential predecessor test (H1 about 10) or the null result is reported and reverted; independent review recorded.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -87,4 +87,17 @@ Checkpoint: branch claude/msh-206-tori-evaluation. Predecessor build da3969d0 (s
 - Compute: Batch conservative bounds US$6.05 in all (corpus 2.24 + 2.20, four builds 4 x 0.13, games 0.33 + 0.38 + 0.38), plus Cloud Build (4 builds, about 15 s each). VMs verified deleted after every job.
 - Data: gs://mshogi-experiments-216675633801/runs/msh-206/ (fits, held-out checks, match summaries and manifests, split manifest, train/validation/held-out corpus gzipped).
 - Follow-up: MSH-220 (Tori Exchange Values from the Fitted Evaluation).
+
+Independent review (fresh subagent, diff main...HEAD, 2026-11-21): no correctness bugs. Checked incremental accumulation through make/unmake, drops, captures and promotion; Sente/Gote table orientation; features() = evaluate(); the shared-core mate status change for all games (root move set only after a non-aborted child search, so a kept mate score is real); codec; tori_cloud changes; docs. Findings fixed in 040e5c5: three stale comments (DEFAULT is fit2, evaluator identity description, task reference). Observation passed to MSH-207: many table weights at +-150; at depth 1 a quiet Eagle promotion can outscore taking a free Swallow. Final checks after merging main: fmt, clippy -D warnings, cargo test --workspace --release --no-fail-fast, Python tool tests: all pass.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Tori now uses a linear, Texel-fitted evaluation of 148 weights (tori/eval.rs): board and hand values, rank and column tables for each piece, Phoenix safety, Eagle and Quail mobility and tempo. Static terms are incremental; INITIAL reproduces the earlier evaluation exactly (test).
+Corpus: two cloud self-play batches of the predecessor (6,400 pairs), 777,720 quiet positions split by opening. Held-out loss 0.21259 -> 0.20436.
+Game tests at 5 s + 0.1 s (SPRT H0 0, H1 10): static fit1 vs predecessor +255 Elo (218-298), H1 at pair 41; fit2 with per-node terms vs fit1 +99 Elo (76-123), H1 at pair 238. fit2 is kept. Unlike Xiangqi, the Tori per-node terms win.
+Also: shared compact Tori diagram codec; parallel report loading in tori_strength export; a kept alpha-beta mate under a root proof is a complete result (shared core); Tori cloud tool corpus mode, first seeds, SPRT H1 option, unscored pairs skipped in the sequential test. Independent review: no bugs; comment fixes made.
+Compute: <= US$6.05 on Batch plus Cloud Build (about 1 minute). Data: gs://mshogi-experiments-216675633801/runs/msh-206/.
+Follow-ups: MSH-220 (Tori Exchange Values from the Fitted Evaluation); a note for MSH-207 (table weights at the bounds).
+<!-- SECTION:FINAL_SUMMARY:END -->

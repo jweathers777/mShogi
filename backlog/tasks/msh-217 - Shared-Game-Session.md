@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-20T23:25:00Z'
-updated_date: '2026-11-21T22:55:00Z'
+updated_date: '2026-11-21T23:10:00Z'
 labels:
   - desktop
   - refactor
@@ -52,4 +52,6 @@ Plan:
 
 <!-- SECTION:NOTES:BEGIN -->
 Checkpoint 2026-11-21 (branch claude/msh-217-shared-session, 31ba49d): (1) Chu core stop-aware to_game_with_stop, record_prefix_with_stop, legal_actions_with_stop, submit_with_stop, with a core test. (2) native_game.rs: trait NativeGame (native types and calls; constants for the real differences) with one macro impl for Chu and Tenjiku (same core API). (3) game_document.rs: ValidatedGameDocument<G> replaces chu_document.rs and tenjiku_document.rs (now aliases plus test helpers); 958+1112 -> 1080+313+35+50 lines. All 322 desktop-session lib tests pass; clippy clean. Behavior notes: Chu document errors now use the Tenjiku forms (stopped flag and 'Chu document operation stopped before acceptance.'; native record capacity is a resource refusal, not 'invalid'). Next: generic session (shared_chu.rs, shared_tenjiku.rs), then presentation, then Tori/Xiangqi fit, byte-identity check of saved documents, tests, review.
+
+Checkpoint 2026-11-22 (8c4afaa): generic session NativeSession<G: SessionGame> (native_session.rs) replaces ChuSession and TenjikuSession; generic snapshot game_snapshot<G>; one macro supplies the Chu and Tenjiku SessionGame impls (names, PV label, board, score meaning). Chu restore, browse and rewind are stop-aware. Lines: shared_chu+shared_tenjiku 859+832 -> 90+37 (+ native_session 1144); presentations 469+404 -> 329+280. Evidence: 322 lib tests pass; clippy (all features) clean; Tenjiku GUI generator output byte-identical between main and branch (21 files, separate main worktree and target); decode+re-encode of all 37 committed Chu and Tenjiku documents byte-identical between main and branch, 0 errors. Found outside scope: MSH-221 (Chu generator assertion fails on main; committed fixtures predate play_mode), MSH-222 (engine adapter copies). Next: Tori and Xiangqi fit to the traits.
 <!-- SECTION:NOTES:END -->

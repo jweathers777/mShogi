@@ -454,8 +454,8 @@ impl ToriPosition {
     /// All legal moves, without the root repetition restriction.
     pub fn legal_moves(&mut self) -> Vec<Move> {
         let mut moves = Vec::new();
-        self.generate_all(Stage::Tactical, &mut moves);
-        self.generate_all(Stage::Quiet, &mut moves);
+        self.generate_all(Stage::Tactical, ALL, &mut moves);
+        self.generate_all(Stage::Quiet, ALL, &mut moves);
         moves.retain(|&m| {
             let legal = self.make(m);
             if legal {
@@ -471,8 +471,8 @@ impl ToriPosition {
             return 1;
         }
         let mut moves = Vec::new();
-        self.generate_all(Stage::Tactical, &mut moves);
-        self.generate_all(Stage::Quiet, &mut moves);
+        self.generate_all(Stage::Tactical, ALL, &mut moves);
+        self.generate_all(Stage::Quiet, ALL, &mut moves);
         let mut count = 0;
         for m in moves {
             if self.make(m) {
@@ -623,8 +623,185 @@ impl ToriPosition {
             .filter(|&&face| self.pieces[by][face] != 0)
             .fold(0, |lines, &face| lines | TABLES.lines[by][face][square])
     }
+    /// All pieces of `by` on `occupied` that attack `target` under that
+    /// occupancy (the exchange occupancy of `see`).
+    fn attackers(&self, target: usize, by: usize, occupied: u64) -> u64 {
+        let t = &TABLES;
+        let mut result = 0;
+        for face in 0..FACES {
+            result |= t.leapers_to[by][face][target] & self.pieces[by][face];
+        }
+        for face in RAY_FACES {
+            let sliders = self.pieces[by][face] & occupied;
+            if sliders == 0 {
+                continue;
+            }
+            for ray in &t.reverse[by][face][target][..RAYS[face].len()] {
+                if let Some(nearest) = ray.nearest(occupied) {
+                    result |= sliders & (1 << nearest);
+                }
+            }
+        }
+        result & occupied
+    }
+    /// Squares from which a piece of `side` with `face` attacks `king`
+    /// under the occupancy.
+    fn check_squares(&self, side: usize, face: usize, king: usize, occupied: u64) -> u64 {
+        let reverse = &TABLES.reverse[side][face][king];
+        reverse[..RAYS[face].len()]
+            .iter()
+            .fold(TABLES.leapers_to[side][face][king], |squares, ray| {
+                squares | ray.targets(occupied)
+            })
+    }
+    /// Own pieces of `side` that block one of its own ray pieces from
+    /// `king`: moving one off the line can give a discovered check.
+    fn discoverers(&self, side: usize, king: usize, occupied: u64) -> u64 {
+        let mut result = 0;
+        for face in RAY_FACES {
+            let sliders = self.pieces[side][face];
+            if sliders & TABLES.lines[side][face][king] == 0 {
+                continue;
+            }
+            for &ray in &TABLES.reverse[side][face][king][..RAYS[face].len()] {
+                let Some(blocker) = ray.nearest(occupied) else {
+                    continue;
+                };
+                if self.occupied[side] & (1 << blocker) == 0 {
+                    continue;
+                }
+                if ray
+                    .nearest(occupied & !(1 << blocker))
+                    .is_some_and(|behind| sliders & (1 << behind) != 0)
+                {
+                    result |= 1 << blocker;
+                }
+            }
+        }
+        result
+    }
+    /// Empty squares where a drop can block the single ray check of the
+    /// side to move; zero for a double check or a step or jump check.
+    fn interpositions(&self) -> u64 {
+        let side = self.side;
+        let king = self.king(side);
+        let occupied = self.occupied[0] | self.occupied[1];
+        let checkers = self.attackers(king, side ^ 1, occupied);
+        if checkers.count_ones() != 1 {
+            return 0;
+        }
+        let (_, face) = decode_piece(self.board[checkers.trailing_zeros() as usize]);
+        for ray in &TABLES.reverse[side ^ 1][face][king][..RAYS[face].len()] {
+            let line = ray.targets(occupied);
+            if line & checkers != 0 {
+                return line & !checkers;
+            }
+        }
+        0
+    }
+    /// Face of the moving piece after the move.
+    fn placed_face(&self, m: Move) -> usize {
+        if m.is_drop() {
+            HAND_FACE[m.from() - DROP]
+        } else {
+            let (side, face) = decode_piece(self.board[m.from()]);
+            self.moved_face(side, face, m.from(), m.to())
+        }
+    }
+    /// True if the moved piece attacks the enemy Phoenix from its target
+    /// (a discovered check is not counted).
+    fn gives_direct_check(&self, m: Move) -> bool {
+        let side = self.side;
+        let occupied = self.occupied[0] | self.occupied[1];
+        let after = if m.is_drop() {
+            occupied | 1 << m.to()
+        } else {
+            (occupied & !(1 << m.from())) | 1 << m.to()
+        };
+        self.check_squares(side, self.placed_face(m), self.king(side ^ 1), after) & (1 << m.to())
+            != 0
+    }
+    /// Static exchange evaluation of a move on its target square, with
+    /// board and hand values: a captured piece leaves the board and its base
+    /// face enters the capturer's hand. Each recapture uses the least
+    /// valuable attacker, with compulsory promotion. Pins are ignored.
+    pub fn see(&self, m: Move) -> i32 {
+        const ORDER: [usize; FACES] = [
+            SWALLOW,
+            GOOSE,
+            4,
+            3,
+            LEFT_QUAIL,
+            RIGHT_QUAIL,
+            FALCON,
+            EAGLE,
+            PHOENIX,
+        ];
+        let side = self.side;
+        let to = m.to();
+        let mut occupied = self.occupied[0] | self.occupied[1];
+        let mut gains = [0i32; 40];
+        let mut on_target = self.placed_face(m);
+        if m.is_drop() {
+            occupied |= 1 << to;
+        } else {
+            let face = decode_piece(self.board[m.from()]).1;
+            gains[0] = VALUE[on_target] - VALUE[face];
+            if self.board[to] != 0 {
+                let victim = decode_piece(self.board[to]).1;
+                gains[0] += VALUE[victim] + VALUE[base(victim)];
+            }
+            occupied &= !(1 << m.from());
+        }
+        let mut mover = side ^ 1;
+        let mut depth = 0;
+        loop {
+            let found = self.attackers(to, mover, occupied);
+            let Some((face, from)) = ORDER.iter().find_map(|&face| {
+                let set = found & self.pieces[mover][face];
+                (set != 0).then(|| (face, set.trailing_zeros() as usize))
+            }) else {
+                break;
+            };
+            if face == PHOENIX && self.attackers(to, mover ^ 1, occupied & !(1 << from)) != 0 {
+                break;
+            }
+            let promoted = self.moved_face(mover, face, from, to);
+            depth += 1;
+            if depth >= gains.len() {
+                break;
+            }
+            gains[depth] = VALUE[on_target] + VALUE[base(on_target)] + VALUE[promoted]
+                - VALUE[face]
+                - gains[depth - 1];
+            on_target = promoted;
+            occupied &= !(1 << from);
+            mover ^= 1;
+        }
+        while depth > 0 {
+            gains[depth - 1] = -(-gains[depth - 1]).max(gains[depth]);
+            depth -= 1;
+        }
+        gains[0]
+    }
+    /// Generate one stage with drops only on `drops`, and without the
+    /// departures that the repetition rule forbids at the root.
+    fn generate_masked(&self, stage: Stage, drops: u64, moves: &mut Vec<Move>) {
+        let start = moves.len();
+        self.generate_all(stage, drops, moves);
+        if self.ply() == 0 && !self.root_forbidden.is_empty() {
+            let mut index = start;
+            while index < moves.len() {
+                if self.root_forbidden.contains(&moves[index]) {
+                    moves.swap_remove(index);
+                } else {
+                    index += 1;
+                }
+            }
+        }
+    }
     #[allow(clippy::needless_range_loop)]
-    fn generate_all(&self, stage: Stage, moves: &mut Vec<Move>) {
+    fn generate_all(&self, stage: Stage, drops: u64, moves: &mut Vec<Move>) {
         let side = self.side;
         let own = self.occupied[side];
         let enemy = self.occupied[side ^ 1] & !self.pieces[side ^ 1][PHOENIX];
@@ -653,7 +830,7 @@ impl ToriPosition {
         if tactical {
             return;
         }
-        let empty = ALL & !(self.occupied[0] | self.occupied[1]);
+        let empty = drops & !(self.occupied[0] | self.occupied[1]);
         for index in 0..HAND_FACES {
             if self.hands[side][index] == 0 {
                 continue;
@@ -777,6 +954,11 @@ fn square(index: usize) -> Square {
 impl SearchPosition for ToriPosition {
     type Move = Move;
     const HISTORY_SLOTS: usize = 2 * FACES * SQUARES;
+    /// A capture moves a piece from the board to the hand: the smallest
+    /// capture changes material by two Swallow values.
+    const MARGIN_UNIT: i32 = 200;
+    const QUIESCENCE_CHECKS: usize = 8;
+    const MATE_SEARCH: bool = true;
 
     fn hash(&self) -> u64 {
         self.hash
@@ -785,16 +967,71 @@ impl SearchPosition for ToriPosition {
         self.check
     }
     fn generate(&self, stage: Stage, moves: &mut Vec<Move>) {
-        let start = moves.len();
-        self.generate_all(stage, moves);
-        if self.ply() == 0 && !self.root_forbidden.is_empty() {
-            let mut index = start;
-            while index < moves.len() {
-                if self.root_forbidden.contains(&moves[index]) {
-                    moves.swap_remove(index);
-                } else {
-                    index += 1;
+        self.generate_masked(stage, ALL, moves);
+    }
+    fn generate_search(&self, stage: Stage, moves: &mut Vec<Move>) {
+        // In check, only a drop between the Phoenix and a single ray piece
+        // can be legal; other drops are left out. Board moves are unchanged.
+        let drops = if stage == Stage::Quiet && self.check {
+            self.interpositions()
+        } else {
+            ALL
+        };
+        self.generate_masked(stage, drops, moves);
+    }
+    #[allow(clippy::needless_range_loop)]
+    fn generate_checks(&self, moves: &mut Vec<Move>) {
+        let side = self.side;
+        let king = self.king(side ^ 1);
+        let occupied = self.occupied[0] | self.occupied[1];
+        let open = !self.occupied[side] & !self.pieces[side ^ 1][PHOENIX];
+        let mut squares = [0u64; FACES];
+        for face in 1..FACES {
+            squares[face] = self.check_squares(side, face, king, occupied);
+        }
+        let discoverers = self.discoverers(side, king, occupied);
+        for face in 0..FACES {
+            let mut from_set = self.pieces[side][face];
+            while from_set != 0 {
+                let from = from_set.trailing_zeros() as usize;
+                from_set &= from_set - 1;
+                let discovers = discoverers & (1 << from) != 0;
+                if face == PHOENIX && !discovers {
+                    continue;
                 }
+                let mut targets = self.attacks(side, face, from) & open;
+                while targets != 0 {
+                    let to = targets.trailing_zeros() as usize;
+                    targets &= targets - 1;
+                    let m = Move::new(from, to);
+                    let placed = self.moved_face(side, face, from, to);
+                    // A piece that becomes a ray piece (Falcon to Eagle) can
+                    // check through the square it leaves.
+                    let through_from = !RAYS[placed].is_empty()
+                        && TABLES.lines[side][placed][king] & (1 << from) != 0;
+                    if discovers
+                        || squares[placed] & (1 << to) != 0
+                        || (through_from && self.gives_direct_check(m))
+                    {
+                        moves.push(m);
+                    }
+                }
+            }
+        }
+        let empty = ALL & !occupied;
+        for index in 0..HAND_FACES {
+            if self.hands[side][index] == 0 {
+                continue;
+            }
+            let face = HAND_FACE[index];
+            let mut targets = empty & squares[face];
+            if face == SWALLOW {
+                targets &= self.swallow_drop_squares(side);
+            }
+            while targets != 0 {
+                let to = targets.trailing_zeros() as usize;
+                targets &= targets - 1;
+                moves.push(Move::new(DROP + index, to));
             }
         }
     }
@@ -986,26 +1223,24 @@ impl SearchPosition for ToriPosition {
         gain.max(0)
     }
     fn exchange_at_least(&self, m: Move, threshold: i32) -> bool {
-        // One-step exchange estimate. A capture of a piece that is worth at
-        // least the capturing piece is good. If not, the capturing piece must
-        // not be open to recapture.
-        if m.is_drop() {
-            return threshold <= 0;
-        }
-        let (side, face) = decode_piece(self.board[m.from()]);
-        let gain = self.tactical_gain(m);
-        if gain < threshold {
+        // The first move's gain bounds the exchange from above.
+        if !m.is_drop() && self.tactical_gain(m) < threshold {
             return false;
         }
-        let mover = VALUE[self.moved_face(side, face, m.from(), m.to())];
-        let victim = match self.board[m.to()] {
-            0 => 0,
-            code => VALUE[decode_piece(code).1],
-        };
-        if victim >= mover {
-            return true;
+        self.see(m) >= threshold
+    }
+    fn quiet_order(&self, m: Move) -> i32 {
+        if self.gives_direct_check(m) {
+            return 6_000;
         }
-        !self.attacked(m.to(), side ^ 1) || gain - mover - VALUE[base(face)] >= threshold
+        if m.is_drop() {
+            let king = self.king(self.side ^ 1);
+            let (row, column) = (m.to() / 7, m.to() % 7);
+            if row.abs_diff(king / 7).max(column.abs_diff(king % 7)) <= 2 {
+                return 2_000;
+            }
+        }
+        0
     }
     fn history_slot(&self, m: Move) -> usize {
         let face = if m.is_drop() {
@@ -1146,8 +1381,8 @@ pub fn movegen_profile(positions: &[Position], repeats: u32) -> Vec<ProfileRow> 
         let start = Instant::now();
         for _ in 0..repeats {
             moves.clear();
-            p.generate_all(Stage::Tactical, &mut moves);
-            p.generate_all(Stage::Quiet, &mut moves);
+            p.generate_all(Stage::Tactical, ALL, &mut moves);
+            p.generate_all(Stage::Quiet, ALL, &mut moves);
             black_box(&moves);
         }
         add(

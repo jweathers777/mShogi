@@ -2,6 +2,7 @@
 //! authority: legal actions (moves and drops), resulting state, check status,
 //! hash and move encoding.
 use super::position::{Move, ToriPosition};
+use crate::alphabeta::mate::{self, MateLimits, MateResult, MateTable};
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
 use mshogi_core::tori::{
     Action, Face, Game, GameCommand, GameRequest, Hand, Piece, Position, RootMetadata, Side, Square,
@@ -180,11 +181,26 @@ fn random_games_agree_with_the_native_rules() {
 /// The check flag after every legal move agrees with the native rules. The
 /// search position derives it from the moved piece and the rays that its
 /// departure opens (MSH-200), so each child is checked, not only the path.
+/// The check generator's moves: pseudo-legal and without repeats.
+fn generated_checks(position: &ToriPosition) -> Vec<Move> {
+    let mut pseudo = Vec::new();
+    position.generate(Stage::Tactical, &mut pseudo);
+    position.generate(Stage::Quiet, &mut pseudo);
+    let mut candidates = Vec::new();
+    position.generate_checks(&mut candidates);
+    for (index, m) in candidates.iter().enumerate() {
+        assert!(pseudo.contains(m), "{:?}", position.action(*m));
+        assert!(!candidates[..index].contains(m));
+    }
+    candidates
+}
+
 #[test]
-fn check_after_every_legal_move_agrees_with_the_native_rules() {
+fn checks_check_generation_and_evasions_agree_with_the_native_rules() {
     let mut children = 0;
     let mut checks = 0;
     let mut ray_pieces = 0;
+    let mut evasions = 0;
     for seed in 1..=48u64 {
         let mut random = Random(seed.wrapping_mul(0xD1B5_4A32_D192_ED03) | 1);
         let mut game = Game::standard();
@@ -195,7 +211,9 @@ fn check_after_every_legal_move_agrees_with_the_native_rules() {
             }
             let mut local = game.local_position().clone();
             let mover = local.position().side_to_move();
-            for m in position.legal_moves() {
+            let candidates = generated_checks(&position);
+            let legal = position.legal_moves();
+            for &m in &legal {
                 let action = position.action(m);
                 assert!(position.make(m));
                 let (_, mut undo) = local.apply(action).unwrap();
@@ -205,10 +223,30 @@ fn check_after_every_legal_move_agrees_with_the_native_rules() {
                     "{action:?}"
                 );
                 children += 1;
-                checks += usize::from(position.in_check());
+                if position.in_check() {
+                    checks += 1;
+                    assert!(candidates.contains(&m), "missing check {action:?}");
+                }
                 local.undo(&mut undo).unwrap();
                 position.unmake();
             }
+            // The search generator (in check: drops only between the
+            // Phoenix and a single ray piece) keeps every legal move.
+            let mut search = Vec::new();
+            position.generate_search(Stage::Tactical, &mut search);
+            position.generate_search(Stage::Quiet, &mut search);
+            search.retain(|&m| {
+                let kept = position.make(m);
+                if kept {
+                    position.unmake();
+                }
+                kept
+            });
+            assert_eq!(
+                sorted(search.iter().map(|&m| position.action(m)).collect()),
+                sorted(legal.iter().map(|&m| position.action(m)).collect())
+            );
+            evasions += usize::from(position.in_check());
             ray_pieces += Square::all()
                 .filter(|&square| {
                     matches!(
@@ -242,8 +280,8 @@ fn check_after_every_legal_move_agrees_with_the_native_rules() {
         }
     }
     assert!(
-        children > 50_000 && checks > 1_000 && ray_pieces > 1_000,
-        "{children} {checks} {ray_pieces}"
+        children > 50_000 && checks > 1_000 && ray_pieces > 1_000 && evasions > 100,
+        "{children} {checks} {ray_pieces} {evasions}"
     );
 }
 
@@ -541,4 +579,134 @@ fn gote_swallow_drop_rules_agree_with_the_native_rules() {
     assert!(!position.make(m), "Swallow drop mate");
     assert!(position.find(drop("2g")).is_none(), "last rank for Gote");
     assert!(position.find(drop("2f")).is_some());
+}
+
+#[test]
+fn static_exchange_uses_board_and_hand_values() {
+    use Face::*;
+    use Side::{Gote, Sente};
+    // Each diagram adds the Sente Phoenix on 7g; Gote's Phoenix is on 1a
+    // unless the diagram places it.
+    let see = |entries: &[(&str, Side, Face)], hand: Hand, action: Action| {
+        let mut all = vec![("7g", Sente, Phoenix)];
+        if !entries.iter().any(|e| e.1 == Gote && e.2 == Phoenix) {
+            all.push(("1a", Gote, Phoenix));
+        }
+        all.extend_from_slice(entries);
+        let game = diagram(&all, [hand, Hand::empty()], Sente);
+        let position = ToriPosition::from_game(&game);
+        position.see(position.find(action).unwrap())
+    };
+    let take = |face| Action::Move {
+        from: "4e".parse().unwrap(),
+        to: "4d".parse().unwrap(),
+        result_face: face,
+    };
+    let none = Hand::empty();
+    let (swallow, target) = (("4e", Sente, Swallow), ("4d", Gote, Swallow));
+    // An undefended Swallow: board value plus hand value.
+    assert_eq!(see(&[swallow, target], none, take(Swallow)), 200);
+    // Defended by a Crane: an equal trade.
+    let crane = ("4c", Gote, Crane);
+    assert_eq!(see(&[swallow, target, crane], none, take(Swallow)), 0);
+    // A Falcon that takes the defended Swallow is lost (board and hand).
+    let falcon = ("4e", Sente, Falcon);
+    assert_eq!(
+        see(&[falcon, target, crane], none, take(Falcon)),
+        200 - 1400
+    );
+    // X-ray: the Left Quail behind the Swallow defends the target square,
+    // so Gote does not recapture.
+    let quail = ("4f", Sente, LeftQuail);
+    assert_eq!(
+        see(&[swallow, target, crane, quail], none, take(Swallow)),
+        200
+    );
+    // The Phoenix recaptures an undefended piece, but not a defended one.
+    let phoenix = ("4c", Gote, Phoenix);
+    assert_eq!(see(&[swallow, target, phoenix], none, take(Swallow)), 0);
+    let guard = ("3e", Sente, Crane);
+    assert_eq!(
+        see(&[swallow, target, phoenix, guard], none, take(Swallow)),
+        200
+    );
+    // A Pheasant drop attacked by a Swallow loses the Pheasant for nothing.
+    let pheasant = Hand::from_counts(&[(Pheasant, 1)]).unwrap();
+    let drop = Action::Drop {
+        face: Pheasant,
+        to: "4d".parse().unwrap(),
+    };
+    assert_eq!(see(&[("4c", Gote, Swallow)], pheasant, drop), -600);
+    assert_eq!(see(&[], pheasant, drop), 0);
+}
+
+#[test]
+fn mate_search_finds_a_drop_mate_and_respects_the_swallow_rule() {
+    use Face::*;
+    use Side::{Gote, Sente};
+    let boxed = [
+        ("7g", Sente, Phoenix),
+        ("4a", Gote, Phoenix),
+        ("4d", Sente, Pheasant),
+        ("3a", Gote, Swallow),
+        ("5a", Gote, Swallow),
+        ("3b", Gote, Swallow),
+        ("5b", Gote, Swallow),
+    ];
+    let search = |hand: Hand| {
+        let game = diagram(&boxed, [hand, Hand::empty()], Sente);
+        let mut position = ToriPosition::from_game(&game);
+        let before = position.hash();
+        let mut table = MateTable::new(16);
+        let limits = MateLimits {
+            nodes: 100_000,
+            deadline: None,
+        };
+        let (result, _) = mate::search(&mut position, &mut table, limits, &mut || false);
+        assert_eq!(position.hash(), before);
+        (game, position, result)
+    };
+    // A Crane drop on 4b, protected by the Pheasant, is checkmate.
+    let (game, mut position, result) = search(Hand::from_counts(&[(Crane, 1)]).unwrap());
+    let MateResult::Mate(line) = result else {
+        panic!("no mate found");
+    };
+    let mut native = game.local_position().clone();
+    for &m in &line {
+        native.apply(position.action(m)).unwrap();
+        assert!(position.make(m));
+    }
+    let defender = native.position().side_to_move();
+    assert!(native.legal_actions().is_empty() && native.is_in_check(defender));
+    // The same drop with a Swallow is illegal: no mate.
+    let (_, _, result) = search(Hand::from_counts(&[(Swallow, 1)]).unwrap());
+    assert!(!matches!(result, MateResult::Mate(_)));
+}
+
+#[test]
+fn a_falcon_that_promotes_checks_through_the_square_it_leaves() {
+    use Face::*;
+    use Side::{Gote, Sente};
+    // The Falcon steps from 4c into the zone and becomes an Eagle, whose
+    // backward ray passes 4c to the Phoenix on 4e.
+    let game = diagram(
+        &[
+            ("7g", Sente, Phoenix),
+            ("4c", Sente, Falcon),
+            ("4e", Gote, Phoenix),
+        ],
+        [Hand::empty(), Hand::empty()],
+        Sente,
+    );
+    let mut position = ToriPosition::from_game(&game);
+    let m = position
+        .find(Action::Move {
+            from: "4c".parse().unwrap(),
+            to: "4b".parse().unwrap(),
+            result_face: Eagle,
+        })
+        .unwrap();
+    assert!(position.make(m) && position.in_check());
+    position.unmake();
+    assert!(generated_checks(&position).contains(&m));
 }

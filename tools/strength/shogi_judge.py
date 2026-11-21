@@ -11,7 +11,6 @@ import argparse
 import concurrent.futures
 import gzip
 import json
-import math
 import os
 import re
 import subprocess
@@ -205,16 +204,6 @@ def collect(args):
             results[key(row['sfen'])] = row
     Path(args.output).write_text(json.dumps(results))
     print(len(results), 'judged positions')
-
-
-def win_probability(score):
-    """Side-to-move win probability from a judge score."""
-    if score is None:
-        return None
-    kind, value = score
-    if kind == 'mate':
-        return 1.0 if value > 0 else 0.0
-    return 1 / (1 + math.exp(-value / 600))
 
 
 def main():

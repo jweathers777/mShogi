@@ -11,6 +11,7 @@
 //!   tori_strength depth REPORTS.json OUT.json TIME_MS MIN_PLY
 //!   tori_strength export REPORTS.json OUT.jsonl EVERY
 //!   tori_strength movegen REPORTS.json OUT.json REPEATS SUITE.json OPENINGS.json
+//!   tori_strength judge REPORTS.json OUT.json NODES
 use mshogi_core::{native::CanonicalRecord, tori::*};
 use mshogi_runner::experiments::ValidatedReport;
 use mshogi_search::{alphabeta::timing::TimeBudget, tori as search};
@@ -73,6 +74,8 @@ struct Source {
     game: Game,
     start_events: usize,
     stop: String,
+    /// Mover's clock before each board ply after the opening, when clocked.
+    clocks: Vec<Option<u64>>,
 }
 
 fn tori_record(record: &CanonicalRecord) -> &GameRecord {
@@ -108,6 +111,12 @@ fn sources(path: &str) -> Vec<Source> {
                 game: tori_record(&g.final_root.record).to_game().unwrap(),
                 start_events: tori_record(&opening.root.record).event_count(),
                 stop: g.stop.clone(),
+                clocks: g
+                    .steps
+                    .iter()
+                    .filter(|step| step.applied)
+                    .map(|step| step.clock.as_ref().map(|c| c.before_ms))
+                    .collect(),
             }
         })
         .collect()
@@ -390,18 +399,99 @@ fn depth(paths: &Value, ms: u64, min_ply: usize) -> Value {
            "threads": thread::available_parallelism().map_or(4, |n| n.get())})
 }
 
+/// MSH-207 (Tori Strength Assessment) judge: a fresh `NODES` search (with the
+/// game's full history) of every position after the opening, including the
+/// final one, with the facts the blunder classes need. Scores are from the
+/// side to move; a concluded position has its native result instead.
+fn judge(paths: &Value, nodes: u64) -> Value {
+    let all: Vec<Source> = load(paths);
+    let mut positions = vec![];
+    for (i, s) in all.iter().enumerate() {
+        let plays = plays(s);
+        // One clock per applied step; only a final non-play step can follow the plays.
+        assert!(s.clocks.len() == plays.len() || s.clocks.len() == plays.len() + 1);
+        for k in 0..=plays.len() {
+            positions.push((i, k, plays.get(k).copied()));
+        }
+    }
+    let rows = parallel(&positions, |&(i, k, play)| {
+        let s = &all[i];
+        let game = match play {
+            Some((event, _)) => s.game.record_prefix(event).unwrap().to_game().unwrap(),
+            None => {
+                let count = s.game.events().len();
+                s.game.record_prefix(count).unwrap().to_game().unwrap()
+            }
+        };
+        let position = game.position();
+        let text = |p: &Position, a: Action| notation::format_action(p, a).unwrap();
+        let victim = |p: &Position, a: Action| match a {
+            Action::Move { to, .. } => p.piece(to).map(|v| v.face.code()),
+            Action::Drop { .. } => None,
+        };
+        let mut row = json!({"ply": k, "side": if position.side_to_move() == Side::Sente { "s" } else { "g" },
+                             "diagram": position.compact_diagram()});
+        if let Some(conclusion) = game.conclusion() {
+            row["terminal"] = json!({"lost": winner(conclusion) != position.side_to_move()});
+            return row;
+        }
+        let r = search::search(
+            &game,
+            search::Limits {
+                depth: search::MAX_DEPTH,
+                nodes,
+            },
+        )
+        .unwrap();
+        row["score"] = json!(r.score);
+        row["depth"] = json!(r.completed_depth);
+        row["nodes"] = json!(r.nodes);
+        if let Some(&best) = r.principal_variation.first() {
+            row["best"] = json!(text(position, best));
+            row["best_captures"] = json!(victim(position, best));
+            row["best_drop"] = json!(matches!(best, Action::Drop { .. }));
+        }
+        if let Some((_, played)) = play {
+            row["played"] = json!(text(position, played));
+            row["played_captures"] = json!(victim(position, played));
+            row["clock_ms"] = json!(s.clocks.get(k).copied().flatten());
+        }
+        row
+    });
+    let mut games: Vec<Value> = all
+        .iter()
+        .map(|s| {
+            json!({"game_id": format!("{}/{}", s.digest, s.game_index), "opening_id": s.opening_id,
+                        "stop": s.stop, "positions": []})
+        })
+        .collect();
+    for (&(i, _, _), row) in positions.iter().zip(rows) {
+        games[i]["positions"].as_array_mut().unwrap().push(row);
+    }
+    json!({"nodes": nodes, "evaluator_id": search::EVALUATOR_ID, "search_id": search::SEARCH_ID,
+           "games": games})
+}
+
 /// Sente's native result in half points / 2; None unless natively concluded.
 fn sente_outcome(s: &Source) -> Option<f64> {
     if s.stop != "native_concluded" {
         return None;
     }
-    let winner = match s.game.conclusion()? {
+    Some(if winner(s.game.conclusion()?) == Side::Sente {
+        1.0
+    } else {
+        0.0
+    })
+}
+
+/// The winner of a native conclusion (Tori has no draw).
+fn winner(conclusion: Conclusion) -> Side {
+    match conclusion {
         Conclusion::Checkmate { winner } | Conclusion::Resignation { winner } => winner,
         Conclusion::StalemateLoss { loser } | Conclusion::RepetitionForfeit { loser } => {
             loser.opponent()
         }
-    };
-    Some(if winner == Side::Sente { 1.0 } else { 0.0 })
+    }
 }
 
 /// Native-labelled Texel rows: one JSON line per game, with every `every`-th
@@ -561,7 +651,10 @@ fn main() {
             args[5].parse().unwrap(),
         ))
         .unwrap(),
-        _ => panic!("usage: tori_strength mine|finalize|probe|depth|export INPUT OUTPUT [ARGS]"),
+        "judge" => serde_json::to_string(&judge(&input, args[4].parse().unwrap())).unwrap(),
+        _ => panic!(
+            "usage: tori_strength mine|finalize|probe|depth|export|judge INPUT OUTPUT [ARGS]"
+        ),
     };
     use std::io::Write;
     let mut file = fs::OpenOptions::new()

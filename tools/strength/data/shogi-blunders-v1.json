@@ -239,7 +239,7 @@
    "mechanism": "capture_refutation",
    "opponent": "gikou-d5",
    "clock_ms": 19987,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "B*3c",
    "recheck_p_after": null,
    "source": "MSH-191 game p009-g0 (native-replayed report), position before mShogi's move at event 60"
@@ -256,7 +256,7 @@
    "mechanism": "time_trouble",
    "opponent": "gikou-d5",
    "clock_ms": 1915,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "B*7a",
    "recheck_p_after": 0.329,
    "source": "MSH-191 game p009-g0 (native-replayed report), position before mShogi's move at event 100"
@@ -290,7 +290,7 @@
    "mechanism": "other",
    "opponent": "gikou-d5",
    "clock_ms": 13229,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "3g3f",
    "recheck_p_after": null,
    "source": "MSH-191 game p010-g0 (native-replayed report), position before mShogi's move at event 84"
@@ -358,7 +358,7 @@
    "mechanism": "drop_refutation",
    "opponent": "gikou-d5",
    "clock_ms": 32916,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "3c3d",
    "recheck_p_after": null,
    "source": "MSH-191 game p013-g1 (native-replayed report), position before mShogi's move at event 45"
@@ -375,7 +375,7 @@
    "mechanism": "time_trouble",
    "opponent": "gikou-d5",
    "clock_ms": 1576,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "B*8i",
    "recheck_p_after": null,
    "source": "MSH-191 game p015-g1 (native-replayed report), position before mShogi's move at event 145"
@@ -494,7 +494,7 @@
    "mechanism": "drop_refutation",
    "opponent": "gikou-d5",
    "clock_ms": 6091,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "P*4c",
    "recheck_p_after": 0.807,
    "source": "MSH-191 game p020-g0 (native-replayed report), position before mShogi's move at event 76"
@@ -511,7 +511,7 @@
    "mechanism": "capture_refutation",
    "opponent": "gikou-d5",
    "clock_ms": 2248,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "3a3b",
    "recheck_p_after": null,
    "source": "MSH-191 game p020-g0 (native-replayed report), position before mShogi's move at event 86"
@@ -528,7 +528,7 @@
    "mechanism": "time_trouble",
    "opponent": "gikou-d5",
    "clock_ms": 1100,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "1g2e",
    "recheck_p_after": 0.401,
    "source": "MSH-191 game p020-g0 (native-replayed report), position before mShogi's move at event 100"
@@ -766,7 +766,7 @@
    "mechanism": "allowed_short_mate",
    "opponent": "gikou-d5",
    "clock_ms": 2362,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "3d4c",
    "recheck_p_after": null,
    "source": "MSH-191 game p029-g1 (native-replayed report), position before mShogi's move at event 123"
@@ -936,7 +936,7 @@
    "mechanism": "drop_refutation",
    "opponent": "gikou-d5",
    "clock_ms": 3941,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "S*5g",
    "recheck_p_after": 0.357,
    "source": "MSH-191 game p042-g1 (native-replayed report), position before mShogi's move at event 67"
@@ -953,7 +953,7 @@
    "mechanism": "capture_refutation",
    "opponent": "gikou-d5",
    "clock_ms": 6759,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "B*9c",
    "recheck_p_after": null,
    "source": "MSH-191 game p044-g0 (native-replayed report), position before mShogi's move at event 90"
@@ -970,7 +970,7 @@
    "mechanism": "other",
    "opponent": "gikou-d5",
    "clock_ms": 8566,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "7a7b",
    "recheck_p_after": null,
    "source": "MSH-191 game p044-g1 (native-replayed report), position before mShogi's move at event 83"
@@ -987,7 +987,7 @@
    "mechanism": "drop_refutation",
    "opponent": "gikou-d5",
    "clock_ms": 8632,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "1i5e",
    "recheck_p_after": 0.46,
    "source": "MSH-191 game p044-g1 (native-replayed report), position before mShogi's move at event 85"
@@ -1004,7 +1004,7 @@
    "mechanism": "time_trouble",
    "opponent": "gikou-d5",
    "clock_ms": 1099,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "8g8h",
    "recheck_p_after": 0.041,
    "source": "MSH-191 game p044-g1 (native-replayed report), position before mShogi's move at event 111"
@@ -1021,7 +1021,7 @@
    "mechanism": "time_trouble",
    "opponent": "gikou-d5",
    "clock_ms": 1098,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "8d8e",
    "recheck_p_after": null,
    "source": "MSH-191 game p044-g1 (native-replayed report), position before mShogi's move at event 113"
@@ -1089,7 +1089,7 @@
    "mechanism": "other",
    "opponent": "gikou-d5",
    "clock_ms": 8433,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "G*2e",
    "recheck_p_after": 0.674,
    "source": "MSH-191 game p048-g0 (native-replayed report), position before mShogi's move at event 78"
@@ -1106,7 +1106,7 @@
    "mechanism": "other",
    "opponent": "gikou-d5",
    "clock_ms": 3635,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "N*2f",
    "recheck_p_after": null,
    "source": "MSH-191 game p048-g0 (native-replayed report), position before mShogi's move at event 98"
@@ -1123,7 +1123,7 @@
    "mechanism": "time_trouble",
    "opponent": "gikou-d5",
    "clock_ms": 1091,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "G*2i",
    "recheck_p_after": null,
    "source": "MSH-191 game p048-g0 (native-replayed report), position before mShogi's move at event 146"
@@ -1140,7 +1140,7 @@
    "mechanism": "other",
    "opponent": "gikou-d5",
    "clock_ms": 55612,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "4i4h",
    "recheck_p_after": 0.117,
    "source": "MSH-191 game p054-g0 (native-replayed report), position before mShogi's move at event 24"
@@ -1157,7 +1157,7 @@
    "mechanism": "time_trouble",
    "opponent": "gikou-d5",
    "clock_ms": 1095,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "3h1f",
    "recheck_p_after": 0.836,
    "source": "MSH-191 game p054-g0 (native-replayed report), position before mShogi's move at event 148"
@@ -1174,7 +1174,7 @@
    "mechanism": "capture_refutation",
    "opponent": "gikou-d7",
    "clock_ms": 13771,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "P*8h",
    "recheck_p_after": null,
    "source": "MSH-191 game p057-g0 (native-replayed report), position before mShogi's move at event 58"
@@ -1395,7 +1395,7 @@
    "mechanism": "capture_refutation",
    "opponent": "gikou-d7",
    "clock_ms": 22669,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "1i1g",
    "recheck_p_after": null,
    "source": "MSH-191 game p065-g1 (native-replayed report), position before mShogi's move at event 57"
@@ -1463,7 +1463,7 @@
    "mechanism": "other",
    "opponent": "gikou-d5",
    "clock_ms": 26399,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "B*1e",
    "recheck_p_after": null,
    "source": "MSH-191 game p070-g1 (native-replayed report), position before mShogi's move at event 55"
@@ -1480,7 +1480,7 @@
    "mechanism": "capture_refutation",
    "opponent": "gikou-d5",
    "clock_ms": 20781,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "1e3g+",
    "recheck_p_after": null,
    "source": "MSH-191 game p070-g1 (native-replayed report), position before mShogi's move at event 61"
@@ -1650,7 +1650,7 @@
    "mechanism": "time_trouble",
    "opponent": "gikou-d3",
    "clock_ms": 1096,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "3c2b",
    "recheck_p_after": null,
    "source": "MSH-191 game p081-g1 (native-replayed report), position before mShogi's move at event 153"
@@ -1667,7 +1667,7 @@
    "mechanism": "time_trouble",
    "opponent": "gikou-d3",
    "clock_ms": 1095,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "3a3b",
    "recheck_p_after": null,
    "source": "MSH-191 game p081-g1 (native-replayed report), position before mShogi's move at event 155"
@@ -1684,7 +1684,7 @@
    "mechanism": "time_trouble",
    "opponent": "gikou-d3",
    "clock_ms": 1086,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "L*2a",
    "recheck_p_after": null,
    "source": "MSH-191 game p081-g1 (native-replayed report), position before mShogi's move at event 209"
@@ -1871,7 +1871,7 @@
    "mechanism": "capture_refutation",
    "opponent": "gikou-d5",
    "clock_ms": 14097,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "3c2b",
    "recheck_p_after": null,
    "source": "MSH-191 game p088-g1 (native-replayed report), position before mShogi's move at event 85"
@@ -1888,7 +1888,7 @@
    "mechanism": "time_trouble",
    "opponent": "gikou-d5",
    "clock_ms": 1627,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "P*4f",
    "recheck_p_after": 0.189,
    "source": "MSH-191 game p088-g1 (native-replayed report), position before mShogi's move at event 135"
@@ -1905,7 +1905,7 @@
    "mechanism": "time_trouble",
    "opponent": "gikou-d5",
    "clock_ms": 1095,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "G*7e",
    "recheck_p_after": 0.002,
    "source": "MSH-191 game p088-g1 (native-replayed report), position before mShogi's move at event 143"
@@ -1990,7 +1990,7 @@
    "mechanism": "drop_refutation",
    "opponent": "gikou-d5",
    "clock_ms": 22106,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "R*2b",
    "recheck_p_after": null,
    "source": "MSH-191 game p092-g0 (native-replayed report), position before mShogi's move at event 54"
@@ -2007,7 +2007,7 @@
    "mechanism": "drop_refutation",
    "opponent": "gikou-d5",
    "clock_ms": 20688,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "N*7g",
    "recheck_p_after": 0.519,
    "source": "MSH-191 game p092-g0 (native-replayed report), position before mShogi's move at event 62"
@@ -2024,7 +2024,7 @@
    "mechanism": "allowed_short_mate",
    "opponent": "gikou-d5",
    "clock_ms": 20717,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "9f9e",
    "recheck_p_after": null,
    "source": "MSH-191 game p092-g0 (native-replayed report), position before mShogi's move at event 68"
@@ -2177,7 +2177,7 @@
    "mechanism": "drop_refutation",
    "opponent": "gikou-d3",
    "clock_ms": 31991,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "7d7e",
    "recheck_p_after": null,
    "source": "MSH-191 game p099-g0 (native-replayed report), position before mShogi's move at event 44"
@@ -2194,7 +2194,7 @@
    "mechanism": "capture_refutation",
    "opponent": "gikou-d3",
    "clock_ms": 4542,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "G*9h",
    "recheck_p_after": null,
    "source": "MSH-191 game p099-g0 (native-replayed report), position before mShogi's move at event 82"
@@ -2211,7 +2211,7 @@
    "mechanism": "capture_refutation",
    "opponent": "gikou-d3",
    "clock_ms": 2151,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "2h3h",
    "recheck_p_after": null,
    "source": "MSH-191 game p099-g0 (native-replayed report), position before mShogi's move at event 92"
@@ -2228,7 +2228,7 @@
    "mechanism": "time_trouble",
    "opponent": "gikou-d3",
    "clock_ms": 1527,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "7b4b+",
    "recheck_p_after": null,
    "source": "MSH-191 game p099-g0 (native-replayed report), position before mShogi's move at event 102"
@@ -2245,7 +2245,7 @@
    "mechanism": "time_trouble",
    "opponent": "gikou-d3",
    "clock_ms": 1097,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "2b2a",
    "recheck_p_after": null,
    "source": "MSH-191 game p099-g0 (native-replayed report), position before mShogi's move at event 104"
@@ -2262,7 +2262,7 @@
    "mechanism": "time_trouble",
    "opponent": "gikou-d3",
    "clock_ms": 1097,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "4b3c",
    "recheck_p_after": null,
    "source": "MSH-191 game p099-g0 (native-replayed report), position before mShogi's move at event 106"
@@ -2279,7 +2279,7 @@
    "mechanism": "time_trouble",
    "opponent": "gikou-d3",
    "clock_ms": 1097,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "N*6h",
    "recheck_p_after": 0.091,
    "source": "MSH-191 game p099-g0 (native-replayed report), position before mShogi's move at event 112"
@@ -2296,7 +2296,7 @@
    "mechanism": "time_trouble",
    "opponent": "gikou-d3",
    "clock_ms": 1094,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "P*5i",
    "recheck_p_after": 1.0,
    "source": "MSH-191 game p099-g0 (native-replayed report), position before mShogi's move at event 124"
@@ -2313,7 +2313,7 @@
    "mechanism": "time_trouble",
    "opponent": "gikou-d3",
    "clock_ms": 1281,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "9c7e",
    "recheck_p_after": 0.729,
    "source": "MSH-191 game p099-g0 (native-replayed report), position before mShogi's move at event 138"
@@ -2330,7 +2330,7 @@
    "mechanism": "capture_refutation",
    "opponent": "gikou-d5",
    "clock_ms": 6758,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "6c8a+",
    "recheck_p_after": null,
    "source": "MSH-191 game p100-g0 (native-replayed report), position before mShogi's move at event 72"
@@ -2585,7 +2585,7 @@
    "mechanism": "drop_refutation",
    "opponent": "gikou-d3",
    "clock_ms": 18284,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "8e8b+",
    "recheck_p_after": null,
    "source": "MSH-191 game p107-g0 (native-replayed report), position before mShogi's move at event 80"
@@ -2602,7 +2602,7 @@
    "mechanism": "other",
    "opponent": "gikou-d3",
    "clock_ms": 17211,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "7c6d",
    "recheck_p_after": null,
    "source": "MSH-191 game p107-g0 (native-replayed report), position before mShogi's move at event 82"
@@ -2874,7 +2874,7 @@
    "mechanism": "capture_refutation",
    "opponent": "gikou-d5",
    "clock_ms": 31617,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "G*1b",
    "recheck_p_after": null,
    "source": "MSH-191 game p112-g1 (native-replayed report), position before mShogi's move at event 47"
@@ -2891,7 +2891,7 @@
    "mechanism": "drop_refutation",
    "opponent": "gikou-d5",
    "clock_ms": 21462,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "3a2b",
    "recheck_p_after": null,
    "source": "MSH-191 game p112-g1 (native-replayed report), position before mShogi's move at event 61"
@@ -2908,7 +2908,7 @@
    "mechanism": "capture_refutation",
    "opponent": "gikou-d5",
    "clock_ms": 16690,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "6a5b",
    "recheck_p_after": null,
    "source": "MSH-191 game p112-g1 (native-replayed report), position before mShogi's move at event 73"
@@ -2925,7 +2925,7 @@
    "mechanism": "capture_refutation",
    "opponent": "gikou-d5",
    "clock_ms": 15567,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "G*6a",
    "recheck_p_after": null,
    "source": "MSH-191 game p112-g1 (native-replayed report), position before mShogi's move at event 79"
@@ -2942,7 +2942,7 @@
    "mechanism": "drop_refutation",
    "opponent": "gikou-d5",
    "clock_ms": 11208,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "6a7b",
    "recheck_p_after": null,
    "source": "MSH-191 game p112-g1 (native-replayed report), position before mShogi's move at event 83"
@@ -3061,7 +3061,7 @@
    "mechanism": "drop_refutation",
    "opponent": "gikou-d3",
    "clock_ms": 20225,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "3i3h",
    "recheck_p_after": null,
    "source": "MSH-191 game p117-g0 (native-replayed report), position before mShogi's move at event 58"
@@ -3078,7 +3078,7 @@
    "mechanism": "other",
    "opponent": "gikou-d3",
    "clock_ms": 8559,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "G*3f",
    "recheck_p_after": null,
    "source": "MSH-191 game p117-g0 (native-replayed report), position before mShogi's move at event 90"
@@ -3316,7 +3316,7 @@
    "mechanism": "time_trouble",
    "opponent": "gikou-d3",
    "clock_ms": 1101,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "G*4d",
    "recheck_p_after": 1.0,
    "source": "MSH-191 game p135-g1 (native-replayed report), position before mShogi's move at event 89"
@@ -3333,7 +3333,7 @@
    "mechanism": "drop_refutation",
    "opponent": "gikou-d5",
    "clock_ms": 5023,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "P*5a",
    "recheck_p_after": null,
    "source": "MSH-191 game p136-g1 (native-replayed report), position before mShogi's move at event 103"
@@ -3367,7 +3367,7 @@
    "mechanism": "other",
    "opponent": "gikou-d3",
    "clock_ms": 4993,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "4h4g",
    "recheck_p_after": null,
    "source": "MSH-191 game p139-g0 (native-replayed report), position before mShogi's move at event 88"
@@ -3639,7 +3639,7 @@
    "mechanism": "drop_refutation",
    "opponent": "gikou-d5",
    "clock_ms": 2673,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "2f1f",
    "recheck_p_after": null,
    "source": "MSH-191 game p146-g0 (native-replayed report), position before mShogi's move at event 90"
@@ -3656,7 +3656,7 @@
    "mechanism": "allowed_short_mate",
    "opponent": "gikou-d5",
    "clock_ms": 3035,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "1f1e",
    "recheck_p_after": null,
    "source": "MSH-191 game p146-g0 (native-replayed report), position before mShogi's move at event 92"
@@ -3707,7 +3707,7 @@
    "mechanism": "drop_refutation",
    "opponent": "gikou-d3",
    "clock_ms": 23982,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "R*5a",
    "recheck_p_after": null,
    "source": "MSH-191 game p147-g0 (native-replayed report), position before mShogi's move at event 58"
@@ -3724,7 +3724,7 @@
    "mechanism": "capture_refutation",
    "opponent": "gikou-d3",
    "clock_ms": 4817,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "1h2i",
    "recheck_p_after": 0.0,
    "source": "MSH-191 game p147-g0 (native-replayed report), position before mShogi's move at event 80"
@@ -3741,7 +3741,7 @@
    "mechanism": "capture_refutation",
    "opponent": "gikou-d5",
    "clock_ms": 53312,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "4i4h",
    "recheck_p_after": null,
    "source": "MSH-191 game p148-g0 (native-replayed report), position before mShogi's move at event 22"
@@ -3758,7 +3758,7 @@
    "mechanism": "time_trouble",
    "opponent": "gikou-d5",
    "clock_ms": 1099,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "L*2e",
    "recheck_p_after": 0.387,
    "source": "MSH-191 game p148-g0 (native-replayed report), position before mShogi's move at event 110"
@@ -3809,7 +3809,7 @@
    "mechanism": "drop_refutation",
    "opponent": "gikou-d3",
    "clock_ms": 17113,
-   "split": "heldout",
+   "split": "held-out",
    "recheck_10s": "7h8i",
    "recheck_p_after": null,
    "source": "MSH-191 game p149-g0 (native-replayed report), position before mShogi's move at event 68"

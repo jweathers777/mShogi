@@ -4,7 +4,7 @@ title: Establish and meet measured tori shogi engine strength criteria
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-19T19:44:00Z'
+updated_date: '2026-11-21T22:40:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -56,4 +56,6 @@ Direction, 2026-11-19 (John): do not look for external opponents or judges for t
 Move generation discussion slot: MSH-200 (Tori Move Generation Deep Dive).
 
 2026-11-19 (John: "Let's move on to Tori Shogi now."): program step tasks MSH-204 (Tori Strength Harness), MSH-205 (Tori Selectivity Round), MSH-206 (Tori Evaluation Round), MSH-207 (Tori Strength Assessment, no external opponents); MSH-200 (Tori Move Generation Deep Dive) is the discussion slot with John.
+
+Owner decision (John, 2026-11-21): the current classical Tori engine (main e012786, MSH-206 fit2 evaluation) is the accepted baseline for later learned-evaluation experiments; Tori strength work stops here and further strength work is deferred to learned evaluation (MSH-55). Evidence (MSH-207): no external opponents (Games after Xiangqi rule); scaling curve 2x time +346 Elo at 1.25 s to +261 at 20 s; same-family judge 0.49 clear blunders and 1.49 mistakes per 100 moves at 5 s + 0.1 s; the one fix round (drop_refutation) was rejected at -55 Elo. Suite tools/strength/data/tori-blunders-v1.json.
 <!-- SECTION:NOTES:END -->

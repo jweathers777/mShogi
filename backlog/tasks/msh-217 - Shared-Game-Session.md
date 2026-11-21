@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-20T23:25:00Z'
-updated_date: '2026-11-21T23:18:00Z'
+updated_date: '2026-11-21T23:26:00Z'
 labels:
   - desktop
   - refactor
@@ -59,4 +59,6 @@ Line count (production files; inline test modules included): 24,851 before (main
 AC3 evidence: shared::chu::stop_tests - restore and browse (Inspect) refuse at every stop check; a longer history gives more checks during restore. Broken on purpose (Chu replay stop check removed): the per-event test failed; restored.
 Tests: the per-game test files are mostly game-specific scenarios (10 test names appear in both games, with different bodies); all run against the generic code, so they were not merged.
 Fit of other games (measured, normalized against the old Tenjiku copies): Tori document 1,608 changed lines of 1,168, session 639 of 1,139. The Tori document is a different design, not drift: its saved payload has no selected_event field (deny_unknown_fields), it has its own file worker (ToriDocumentWorker), raw preflight and its own work accounting (1,048,576), and the Tori core has no stop-aware calls or replay work. Xiangqi has its own archive module and format (shared_xiangqi_archive.rs); Shogi and Chess use the original shared runtime. Moving Tori to the generic document changes its saved bytes (selected_event), so it is a saved-format decision for John.
+
+Independent review (fresh subagent, branch diff and task): no high-severity defect. Confirmed equal to main: closing reserve loop of both games, saved bytes (field order and serde attributes), snapshot fields, observation display, take_back_target, session operations; the Chu core change is not a rules change. Fixed: Chu browse-selection work charge stays 2x (SELECTION_WORK_FACTOR; Tenjiku 3x), so saved Chu documents near the 12M limit still load; one NativeGame::game_profile instead of two copies; verify_chu_execution and verify_tenjiku_execution moved to the game modules; NativeSession fields private again. Accepted intended changes (recorded): Chu observations are decoded with the stop-aware typed decoder (schema version and raw response-size checks; compact size still checked in validate); Chu controls are parsed after records and observations, so the first reported error of a multi-fault file can differ; record capacity refusals of both games are typed resource refusals; a stopped session replay says 'Native operation stopped before acceptance.'; nothing in production matches these strings.
 <!-- SECTION:NOTES:END -->

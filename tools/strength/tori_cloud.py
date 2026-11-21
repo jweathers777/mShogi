@@ -72,6 +72,10 @@ def validate_task(t):
         require(set(t) - {'build'} == {'kind', 'repeats'} and type(t['repeats']) is int
                 and 1 <= t['repeats'] <= 10000, 'movegen fields')
         require(t.get('build', 'candidate') in ('candidate', 'baseline'), 'movegen build')
+    elif kind == 'judge':
+        require(set(t) == {'kind', 'nodes', 'shard', 'shards'}, 'judge fields')
+        require(type(t['nodes']) is int and 100_000 <= t['nodes'] <= 5_000_000
+                and 0 <= t['shard'] < t['shards'] <= 64, 'judge bounds')
     elif kind == 'depth':
         require(set(t) == {'kind', 'ms', 'min_ply'}, 'depth fields')
         require(t['ms'] in (50, 100, 200) and 0 <= t['min_ply'] <= 400, 'depth bounds')
@@ -109,13 +113,30 @@ def validate_manifest(m):
                          m['build'].get('runtime_image', '')) is not None, 'frozen worker image')
 
 
-def data_digest(directory):
-    """SHA-256 over the sorted (name, file hash) list of the frozen data."""
+def files_digest(files):
+    """SHA-256 over the sorted (name, file hash) list of a data directory."""
     import hashlib
-    from tools.experiments.core import file_hash
-    rows = [f'{p.relative_to(directory)} {file_hash(p)}' for p in sorted(Path(directory).rglob('*'))
-            if p.is_file()]
+    rows = [f'{name} {files[name]}' for name in sorted(files)]
     return hashlib.sha256('\n'.join(rows).encode()).hexdigest()
+
+
+def data_digest(directory):
+    """Digest of the data in `directory` (the worker checks /opt/data)."""
+    from tools.experiments.core import file_hash
+    return files_digest({str(p.relative_to(directory)): file_hash(p) for p in Path(directory).rglob('*')
+                         if p.is_file()})
+
+
+def image_data_digest(added=None):
+    """Digest of the frozen worker data (recorded in tori-cloud-data-files.json)
+    with the files of directory `added` placed at /opt/data/<its name>/."""
+    from tools.experiments.core import file_hash
+    record = Path(__file__).resolve().parent / 'data/tori-cloud-data-files.json'
+    files = dict(json.loads(record.read_text())['files'])
+    if added:
+        added = Path(added)
+        files.update({str(p.relative_to(added.parent)): file_hash(p) for p in added.rglob('*') if p.is_file()})
+    return files_digest(files)
 
 
 def pairs_args(m, t):
@@ -165,6 +186,14 @@ def run_task(m, t, directory, upload, end):
         upload(f'probe{suffix}/{out.name}', out)
         return json.loads(out.read_text())['all']
     listing = Path(directory) / 'reports.json'
+    if t['kind'] == 'judge':
+        reports = sorted(str(p) for p in Path(f'{DATA}/judge').glob('*.report.json'))
+        listing.write_text(json.dumps(reports[t['shard']::t['shards']]))
+        out = Path(directory) / f'judge-{t["shard"]}.json'
+        subprocess.run([helper, 'judge', str(listing), str(out), str(t['nodes'])],
+                       check=True, capture_output=True, timeout=max(60, end - time.time()))
+        upload(f'judge/{out.name}', out)
+        return {'games': len(json.loads(out.read_text())['games'])}
     listing.write_text(json.dumps(sorted(str(p) for p in Path(f'{DATA}/control').glob('*.report.json'))))
     if t['kind'] == 'movegen':
         out = Path(directory) / f'movegen{suffix}.json'
@@ -238,6 +267,32 @@ def submit(args):
     anchor_cloud.run(args, policy=policy(m['experiment'].split('-')[0]), manifest_validator=validate_manifest)
 
 
+SCALING_BASES_MS = (20000, 10000, 5000, 2500, 1250)
+
+
+def assessment_bins():
+    """MSH-207 (Tori Strength Assessment), fixed before any result. Each of
+    the eight bins plays its share of 50 control pairs (5 s + 0.1 s, the games
+    to judge) and of 96 time-odds pairs (the candidate has twice the clock) at
+    each base time of the scaling curve, with increment base / 50. Seeds differ
+    between clocks, so the openings differ too."""
+    bins = [[] for _ in range(8)]
+    pairs = {'kind': 'pairs', 'concurrency': 2, 'pair_ms': 600000}
+    for b in range(8):
+        bins[b].append(dict(pairs, label='control', factor=1, base_ms=5000, increment_ms=100,
+                            seeds=list(range(1 + b, 51, 8))))
+        for i, base in enumerate(SCALING_BASES_MS):
+            bins[b].append(dict(pairs, label='odds', factor=2, base_ms=base, increment_ms=base // 50,
+                                seeds=list(range(1 + 96 * i + b, 97 + 96 * i, 8))))
+    return bins
+
+
+def judge_bins(nodes=5_000_000):
+    """MSH-207: the judge over the reports in /opt/data/judge, 32 shards."""
+    return [[{'kind': 'judge', 'nodes': nodes, 'shard': s, 'shards': 32} for s in range(b, 32, 8)]
+            for b in range(8)]
+
+
 def campaign_bins():
     """The reviewed MSH-204 work, fixed before any result: eight bins of the
     control pairs, the time-odds pairs, the suite probes and the depth task."""
@@ -308,7 +363,7 @@ def make_manifest(args):
     source = (bins / 'source.txt').read_text().strip()
     names = {'engine': 'mshogi', 'runner': 'mshogi-match', 'writer': 'tori_match_config',
              'helper': 'tori_strength'}
-    build = {'source': source, 'runtime_image': args.image, 'data_sha256': data_digest(args.data_dir),
+    build = {'source': source, 'runtime_image': args.image, 'data_sha256': image_data_digest(args.added_data),
              'compiler': (bins / 'rustc.txt').read_text().strip() + '; -C target-cpu=x86-64; --locked release',
              'engines': {k: {'path': '/opt/engines/' + n, 'sha256': file_hash(bins / n), 'source': source}
                          for k, n in names.items()}}
@@ -323,7 +378,8 @@ def make_manifest(args):
          'deadline_epoch': start + CAMPAIGN_SECONDS, 'estimated_compute_before_usd': args.before,
          'task_seconds': args.task_seconds, 'build': build,
          'bins': (smoke_bins() if args.smoke else [[{'kind': 'movegen', 'repeats': 200}]] if args.movegen
-                  else match_bins(args.first_seed) if args.match else corpus_bins(args.first_seed) if args.corpus else suite_bins() if args.suite else campaign_bins())}
+                  else match_bins(args.first_seed) if args.match else corpus_bins(args.first_seed) if args.corpus
+                  else assessment_bins() if args.assessment else judge_bins() if args.judge else suite_bins() if args.suite else campaign_bins())}
     validate_manifest(m)
     Path(args.out).write_text(json.dumps(m))
     print(sum(map(len, m['bins'])), 'tasks in', len(m['bins']), 'bins')
@@ -368,7 +424,8 @@ def collect(raw, out, h1=15):
     for label in ('control', 'odds', 'match'):
         expected = sorted(s for b in manifest['bins'] for t in b
                           if t['kind'] == 'pairs' and t['label'] == label for s in t['seeds'])
-        summaries = [json.loads(f.read_text()) for f in sorted(raw.glob(f'tasks/*/*/{label}/pair-*.summary.json'))]
+        files = sorted(raw.glob(f'tasks/*/*/{label}/pair-*.summary.json'))
+        summaries = [json.loads(f.read_text()) for f in files]
         if sorted(row['seed'] for row in summaries) != expected:
             raise SystemExit(f'{label}: pair summaries do not match the manifest seeds')
         reason = native_match.unfinished(SimpleNamespace(game='tori'), summaries)
@@ -403,6 +460,16 @@ def collect(raw, out, h1=15):
                  'sprt_fixed_sample': stats.Sprt(0, h1, .05, .05, 30).status(counts) if sum(counts) else None}
         if label == 'match' and scored:
             entry['sprt_sequential'] = sequential(summaries, h1)
+        if label == 'odds':
+            # Odds pairs at each base time of their task (tasks/<bin>/<task>/...).
+            by_base = collections.defaultdict(list)
+            for f, row in zip(files, summaries):
+                task = manifest['bins'][int(f.parts[-4])][int(f.parts[-3])]
+                if row['pair_score'] is not None:
+                    by_base[task['base_ms']].append(row['pair_score'])
+            entry['by_base_ms'] = {base: {'pairs': len(scores), 'pentanomial': stats.pentanomial(scores),
+                                          'estimate': stats.estimate(stats.pentanomial(scores))}
+                                   for base, scores in sorted(by_base.items())}
         if summaries:
             result[label] = entry
     suite_path = Path(__file__).resolve().parents[2] / 'tools/strength/data/tori-tactics-v1.json'
@@ -459,8 +526,9 @@ def main():
         s.add_argument('--' + name, required=True)
     s.add_argument('--subscription', default='projects/mshogi/subscriptions/mshogi-pilot-completion')
     k = sub.add_parser('manifest')
-    for name in ('bin-dir', 'data-dir', 'image', 'experiment', 'out'):
+    for name in ('bin-dir', 'image', 'experiment', 'out'):
         k.add_argument('--' + name, required=True)
+    k.add_argument('--added-data', help='directory that the image adds under /opt/data (by its name)')
     k.add_argument('--task-seconds', type=int, default=3600)
     k.add_argument('--before', type=float, default=0)
     k.add_argument('--smoke', action='store_true')
@@ -468,6 +536,8 @@ def main():
     k.add_argument('--match', action='store_true', help='candidate against --baseline-bin-dir')
     k.add_argument('--suite', action='store_true', help='suite probes of both builds')
     k.add_argument('--corpus', action='store_true', help='MSH-206 self-play pairs for the Texel corpus')
+    k.add_argument('--assessment', action='store_true', help='MSH-207 control and time-odds pairs')
+    k.add_argument('--judge', action='store_true', help='MSH-207 judge of the reports in --added-data')
     k.add_argument('--first-seed', type=int, default=1, help='first pair seed of a corpus batch or match')
     k.add_argument('--baseline-bin-dir', help='binaries of the frozen predecessor (mshogi, tori_strength)')
     c = sub.add_parser('collect')

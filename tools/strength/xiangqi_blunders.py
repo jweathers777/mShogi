@@ -14,11 +14,11 @@ ladder runs (native-replayed reports) and the collected Pikafish judgement
 """
 import argparse
 import collections
-import hashlib
 import json
 from pathlib import Path
 
-from tools.strength.xiangqi_judge import extract, win_probability
+from tools.strength.blunder_rules import judgement, split_of, win_probability
+from tools.strength.xiangqi_judge import extract
 
 START = 'rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR'
 FILES = 'abcdefghi'
@@ -62,10 +62,6 @@ def classify(game, turn, after, player_side):
     return 'other'
 
 
-def split_of(game_id):
-    return 'held-out' if hashlib.sha256(game_id.encode()).digest()[0] % 4 == 0 else 'development'
-
-
 def analyze(games, judged, player='mshogi'):
     errors, moves = [], 0
     for g in games:
@@ -83,9 +79,7 @@ def analyze(games, judged, player='mshogi'):
                 continue
             pa = 1 - pa_opp
             moves += 1
-            loss = pb - pa
-            kind = ('clear_blunder' if pb >= 0.30 and pa <= pb - 0.30
-                    else 'mistake' if pb >= 0.20 and loss >= 0.15 else None)
+            kind = judgement(pb, pa)
             if kind:
                 errors.append({'game': g['id'], 'index': t['index'], 'kind': kind,
                                'moves': g['moves'][:t['index']], 'played': t['move'],

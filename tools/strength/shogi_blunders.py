@@ -14,7 +14,8 @@ import collections
 import json
 from pathlib import Path
 
-from tools.strength.shogi_judge import key, win_probability
+from tools.strength.blunder_rules import judgement, split_of, win_probability
+from tools.strength.shogi_judge import key
 
 FILES = '987654321'
 
@@ -88,7 +89,7 @@ def analyze(games, judged, sfens):
                 continue
             p_after = 1 - p_after_opponent
             moves += 1
-            if p_before >= 0.30 and p_after <= p_before - 0.30:
+            if judgement(p_before, p_after) == 'clear_blunder':
                 mechanism = classify(turn, before, after, sfens[turn['after']], mshogi_sente)
                 group = ('elmo' if game['opponent'] == 'elmo-1000k' else 'gikou',
                          'win' if game['score'] == 1 else 'loss')
@@ -99,7 +100,7 @@ def analyze(games, judged, sfens):
                                  'p_before': round(p_before, 3), 'p_after': round(p_after, 3),
                                  'clock_ms': turn['clock_before_ms'][0 if mshogi_sente else 1],
                                  'mechanism': mechanism, 'group': list(group),
-                                 'split': 'heldout' if hash_game(game['id']) else 'development'})
+                                 'split': split_of(game['id'])})
     shares = collections.Counter(b['mechanism'] for b in blunders)
     return {'mshogi_moves_judged': moves, 'clear_blunders': len(blunders),
             'per_100_moves': round(100 * len(blunders) / max(moves, 1), 2),
@@ -108,11 +109,6 @@ def analyze(games, judged, sfens):
             'mechanisms': {k: {'count': v, 'share': round(v / max(len(blunders), 1), 3)}
                            for k, v in shares.most_common()},
             'blunders': blunders}
-
-
-def hash_game(game_id):
-    import hashlib
-    return hashlib.sha256(game_id.encode()).digest()[0] % 4 == 0
 
 
 def main():

@@ -15,11 +15,12 @@ import argparse
 import concurrent.futures
 import gzip
 import json
-import math
 import re
 import subprocess
 import time
 from pathlib import Path
+
+from tools.strength.blunder_rules import win_probability
 
 PREFIX = 'msh197'
 CAMPAIGN_SECONDS = 6 * 3600
@@ -220,15 +221,6 @@ def collect(args):
             results[row['moves']] = row
     Path(args.output).write_text(json.dumps(results))
     print(len(results), 'judged positions')
-
-
-def win_probability(score):
-    if score is None:
-        return None
-    kind, value = score
-    if kind == 'mate':
-        return 1.0 if value > 0 else 0.0
-    return 1 / (1 + math.exp(-value / 600))
 
 
 def analyze_games(games, judged):

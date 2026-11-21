@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-19T19:43:00Z'
-updated_date: '2026-11-21T19:11:00Z'
+updated_date: '2026-11-21T19:17:00Z'
 labels:
   - handle:tori-strength-assessment
   - tori
@@ -64,4 +64,6 @@ Frozen engine: main c7be8c6 (MSH-206 fit2). The cloud build uses the task branch
 
 <!-- SECTION:NOTES:BEGIN -->
 From MSH-206 (Tori Evaluation Round) review: many fitted table weights sit at the +-150 bound (for example Eagle columns 0 and 2 at -150, Phoenix ranks 0 and 6 at -150). At depth 1, a quiet Falcon promotion to an Eagle on a good column scores above taking a free Swallow with promotion. Check in the blunder screen whether such table preferences cause blunders (rarely visited squares fitted on little data).
+
+2026-11-21 checkpoint (@claude): tools committed (99805d1): tori_strength judge; tori_cloud assessment and judge bins, judge task, odds results per clock; tools/strength/blunder_rules.py shared by the Shogi, Xiangqi and Tori screens; tori_assessment.py classifier and suite with tests. Build build-99805d1a-1 (<=US$0.13, VM deleted); image worker@sha256:3ce1959a (tag msh207-assess-99805d1a, Cloud Build). Running: msh207-assess-1 (store msh207-assess). Next: collect; judge 100 control games locally smoke-tested on one report, then campaign msh207-judge with the reports added under /opt/data/judge.
 <!-- SECTION:NOTES:END -->

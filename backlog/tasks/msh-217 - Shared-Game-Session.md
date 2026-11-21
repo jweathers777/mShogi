@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-20T23:25:00Z'
-updated_date: '2026-11-21T22:42:00Z'
+updated_date: '2026-11-21T22:55:00Z'
 labels:
   - desktop
   - refactor
@@ -47,3 +47,9 @@ Plan:
 6. Tests re-expressed once against the generic code; per-game test files keep only game-specific cases.
 7. Line count after; checks; fresh-agent review of the trait boundary and migration; merge.
 <!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Checkpoint 2026-11-21 (branch claude/msh-217-shared-session, 31ba49d): (1) Chu core stop-aware to_game_with_stop, record_prefix_with_stop, legal_actions_with_stop, submit_with_stop, with a core test. (2) native_game.rs: trait NativeGame (native types and calls; constants for the real differences) with one macro impl for Chu and Tenjiku (same core API). (3) game_document.rs: ValidatedGameDocument<G> replaces chu_document.rs and tenjiku_document.rs (now aliases plus test helpers); 958+1112 -> 1080+313+35+50 lines. All 322 desktop-session lib tests pass; clippy clean. Behavior notes: Chu document errors now use the Tenjiku forms (stopped flag and 'Chu document operation stopped before acceptance.'; native record capacity is a resource refusal, not 'invalid'). Next: generic session (shared_chu.rs, shared_tenjiku.rs), then presentation, then Tori/Xiangqi fit, byte-identity check of saved documents, tests, review.
+<!-- SECTION:NOTES:END -->

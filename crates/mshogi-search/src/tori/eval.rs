@@ -210,8 +210,9 @@ const fn initial() -> [i32; COUNT] {
     w
 }
 
-/// Per-node terms are fitted only when this is true (MSH-196: test them
-/// separately from the static terms). Otherwise they stay at `INITIAL`.
+/// Per-node terms are fitted only when this is true (as in MSH-196, they
+/// were fitted and tested separately from the static terms; MSH-206 kept
+/// them). Otherwise they stay at `INITIAL`.
 const PER_NODE_FITTED: bool = true;
 
 const fn bounds(upper: bool) -> [i32; COUNT] {
@@ -246,7 +247,7 @@ pub const LOWER: [i32; COUNT] = bounds(false);
 /// Inclusive upper bounds.
 pub const UPPER: [i32; COUNT] = bounds(true);
 /// Compiled weights used by the search: the MSH-206 (Tori Evaluation Round)
-/// static-term fit.
+/// fit2, static and per-node terms.
 pub const DEFAULT: [i32; COUNT] = [
     636, 1136, 488, 204, 404, 372, 100, 220, 934, 634, 358, 486, 518, 118, -150, 0, 104, -120, -24,
     150, -150, -96, -40, 32, 48, 150, 150, 150, -128, -128, 24, 150, 0, -48, -16, -134, 0, 48, 120,

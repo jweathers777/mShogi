@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-19T19:43:00Z'
-updated_date: '2026-11-21T16:47:00Z'
+updated_date: '2026-11-21T18:12:00Z'
 labels:
   - handle:tori-evaluation-round
   - tori
@@ -76,4 +76,15 @@ Checkpoint: branch claude/msh-206-tori-evaluation. Predecessor build da3969d0 (s
 - Pilot (batch-1 fit) game test not run: config time limit differed (refused before submission, no cost). Dropped in favor of fit1.
 - Cloud Build API enabled in project mshogi (John approved 2026-11-21); images are built there. Images: worker@sha256:67b2571f (pilot, unused), worker@sha256:dd9b1e00 (fit1, tag msh206-fit1-ec1a9085).
 - Running: msh206-fit1-match-1, fit1 vs da3969d0, 5 s + 0.1 s, 224 pairs, collect with --h1 10. Spend so far about US$4.7.
+
+2026-11-21 results (@claude):
+- Game test fit1 (ec1a9085) vs predecessor da3969d0: msh206-fit1-match-1, 5 s + 0.1 s, 224 pairs, 8 x c3-standard-4, 619 s, <=US$0.33. Pentanomial [5,0,74,0,145], +255 Elo (218-298). Sequential SPRT H0 0 / H1 10: H1 at pair 41. Late-game depth median 9, p10 8.
+- fit2 (per-node terms fitted, PER_NODE_FITTED = true): validation 0.21974 -> 0.20520 (fit1 0.20528); held-out (read once) 0.21259 -> 0.20436 (fit1 0.20474). Phoenix adjacent attacked -64, near enemy -24, drop threat 0; mobility Eagle 30, Left Quail 16, Right Quail 30; tempo 8.
+- Game test fit2 (4ca61fd9) vs fit1 (ec1a9085): msh206-fit2-match-1 (seeds 1-224, 741 s, <=US$0.38): [36,0,106,0,80], +70 (37-104), sequential undecided (LLR 2.44 < 2.94; Tori has no draws, so the pair variance is high). Continuation msh206-fit2-match-2 (seeds 225-448, 715 s, <=US$0.38): [22,0,100,0,102] +130. Sequential test over both in seed order: H1 at pair 238 (LLR 2.96). Combined [58,0,206,0,182], +99 Elo (76-123), 446 scored pairs (2 length-limited). Kept fit2. Unlike Xiangqi (MSH-196), the Tori per-node terms win.
+- Collect fix: the sequential test skipped no unscored pair and failed on a length-limited pair; it now skips them (tori_cloud.sequential, unit test).
+- Test changes: the search and protocol choice tests take a Crane (not a Swallow) so that the capture is clearly best, and compare the score with the evaluation after it (exact). The legacy-observation test keeps the Swallow position. tori_selfplay depth-1 budget 256 -> 1,024 nodes (quiescence needs more). Frozen fixed search: Tori 4g-3f Phoenix, 358 nodes, score 8.
+- Shared core fix (alphabeta/mod.rs): when a root mate is proven and the alpha-beta mate is kept (not longer), the result is Complete. With fit2, the MSH-205 mate test found the mate in 9 by alpha-beta and returned NodeLimit.
+- Compute: Batch conservative bounds US$6.05 in all (corpus 2.24 + 2.20, four builds 4 x 0.13, games 0.33 + 0.38 + 0.38), plus Cloud Build (4 builds, about 15 s each). VMs verified deleted after every job.
+- Data: gs://mshogi-experiments-216675633801/runs/msh-206/ (fits, held-out checks, match summaries and manifests, split manifest, train/validation/held-out corpus gzipped).
+- Follow-up: MSH-220 (Tori Exchange Values from the Fitted Evaluation).
 <!-- SECTION:NOTES:END -->

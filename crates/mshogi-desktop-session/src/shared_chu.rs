@@ -90,3 +90,96 @@ mod observation_compatibility_tests {
         }
     }
 }
+
+#[cfg(test)]
+mod stop_tests {
+    use super::*;
+
+    /// A record with a few played events, and a document that browses one.
+    fn played() -> c::GameRecord {
+        played_n(6)
+    }
+    fn played_n(n: usize) -> c::GameRecord {
+        let mut g = c::Game::standard();
+        for _ in 0..n {
+            let action = g.legal_actions()[0].clone();
+            let actor = g.position().side_to_move();
+            g.submit(c::GameRequest {
+                expected: g.context(),
+                actor,
+                command: c::GameCommand::Play { action },
+            })
+            .unwrap();
+        }
+        c::GameRecord::from_game(&g).unwrap()
+    }
+
+    /// Every stop point of `run` refuses; a run that is never stopped succeeds.
+    fn stops_everywhere<T>(mut run: impl FnMut(&mut dyn FnMut() -> bool) -> Result<T, String>) {
+        let mut calls = 0;
+        assert!(
+            run(&mut || {
+                calls += 1;
+                false
+            })
+            .is_ok()
+        );
+        assert!(calls > 2, "the path checks the stop more than at its ends");
+        for limit in 0..calls {
+            let mut seen = 0;
+            let stopped = run(&mut || {
+                seen += 1;
+                seen > limit
+            });
+            assert!(stopped.is_err(), "stop after {limit} of {calls} checks");
+        }
+    }
+
+    /// The stop is checked during replay: a longer history has more checks.
+    #[test]
+    fn chu_restore_checks_the_stop_per_replayed_event() {
+        let checks = |n| {
+            let document =
+                crate::chu_document::ValidatedChuDocument::new(played_n(n), c::Side::Sente)
+                    .unwrap();
+            let mut calls = 0;
+            ChuSession::restore(document, &mut || {
+                calls += 1;
+                false
+            })
+            .unwrap();
+            calls
+        };
+        assert!(checks(8) >= checks(2) + 6);
+    }
+
+    #[test]
+    fn chu_restore_and_browse_stop_at_every_check() {
+        let document =
+            crate::chu_document::ValidatedChuDocument::new(played(), c::Side::Sente).unwrap();
+        let browsed = document.with_selection(Some(3), &mut || false).unwrap();
+        stops_everywhere(|stop| {
+            ChuSession::restore(browsed.clone(), &mut || stop())
+                .map(|_| ())
+                .map_err(|e| e.diagnostic)
+        });
+        stops_everywhere(|stop| {
+            execute(
+                RuntimeWork::<Chu> {
+                    seed: RuntimeSeed::Record {
+                        record: Box::new(played()),
+                        human: c::Side::Sente,
+                        play_mode: PlayMode::HumanEngine,
+                    },
+                    operation: Some(SessionOperation::Inspect { event_index: 2 }),
+                    response: None,
+                    floor: 1,
+                    replacement: false,
+                },
+                &mut || stop(),
+            )
+            .map(|_| ())
+            .map_err(|e| e.diagnostic)
+        });
+    }
+}

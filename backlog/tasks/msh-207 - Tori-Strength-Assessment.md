@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-19T19:43:00Z'
-updated_date: '2026-11-21T20:23:00Z'
+updated_date: '2026-11-21T21:42:00Z'
 labels:
   - handle:tori-strength-assessment
   - tori
@@ -68,4 +68,7 @@ From MSH-206 (Tori Evaluation Round) review: many fitted table weights sit at th
 2026-11-21 checkpoint (@claude): tools committed (99805d1): tori_strength judge; tori_cloud assessment and judge bins, judge task, odds results per clock; tools/strength/blunder_rules.py shared by the Shogi, Xiangqi and Tori screens; tori_assessment.py classifier and suite with tests. Build build-99805d1a-1 (<=US$0.13, VM deleted); image worker@sha256:3ce1959a (tag msh207-assess-99805d1a, Cloud Build). Running: msh207-assess-1 (store msh207-assess). Next: collect; judge 100 control games locally smoke-tested on one report, then campaign msh207-judge with the reports added under /opt/data/judge.
 
 Checkpoint 2026-11-21. msh207-assess-1 done (3590 s, 8 x c3-standard-4, about US$1.61; VMs verified absent). Scaling, 2x time vs 1x, 96 pairs per base clock (increment base/50): 1.25 s +346 Elo [277,446]; 2.5 s +340 [274,434]; 5 s +286 [223,371]; 10 s +296 [232,381]; 20 s +261 [205,331]. All bases: +303 [274,337], 5 of 480 pairs step-limited. Control 5 s + 0.1 s, 50 pairs: 100 games concluded, median 137.5 plies, median depth from ply 100 = 9. Judge smoke test passed locally (20k nodes, 1 report). Running: msh207-judge-1 (image worker@sha256:1faeee34..., store msh207-judge, 32 shards at 5,000,000 nodes). Next: tori_assessment on the judge outputs, fix rule, review, checks, merge.
+
+Judge (msh207-judge-1, 3718 s, 8 x c3-standard-4, about US$1.67, VMs verified absent): 100 control games (5 s + 0.1 s), 14,197 moves judged by mShogi at 5,000,000 nodes, 0 unjudged. Clear blunders 69 (0.49 per 100 moves), mistakes 211 (1.49 per 100 moves), mean win-probability loss 0.0198 per move. Classes of clear blunders: drop_refutation 23 (33.3%), other 15 (21.7%), refuted_major_capture 13 (18.8%), refuted_minor_capture 9 (13.0%), missed_capture 5 (7.2%), allowed_short_mate 4 (5.8%); no time_trouble, no repetition. Caveat: same-family judge; in 14 of 69 clear blunders the judge's own best move is the played move (the judge also sees the refutation only one ply later), so the rates are a lower bound on what a stronger independent judge would find. Suite: tools/strength/data/tori-blunders-v1.json (280 positions; held-out 13 blunders + 51 mistakes).
+Fix rule triggers: drop_refutation 33.3% >= 30%. Mechanism: 19 of the 23 refutation drops land within two squares of the mover's Phoenix (13 adjacent); the player ordered such drops early (quiet_order 2,000) but pruned and reduced them as ordinary quiet moves. General change (898c1da): a shared hook SearchPosition::attacks_king (default false); such a move is never pruned as a late or futile move and is reduced one ply less; Tori defines it as a drop within two squares of the enemy Phoenix, the same set that the ordering already uses. Test: SPRT vs 99805d1 at 5 s + 0.1 s, H1 15 Elo (search change), campaign msh207-fix-1 (224 pairs).
 <!-- SECTION:NOTES:END -->

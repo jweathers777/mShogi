@@ -789,6 +789,11 @@ impl ToriPosition {
     fn generate_masked(&self, stage: Stage, drops: u64, moves: &mut Vec<Move>) {
         let start = moves.len();
         self.generate_all(stage, drops, moves);
+        self.remove_root_forbidden(start, moves);
+    }
+    /// Remove the moves after `start` that the repetition rule forbids at
+    /// the root.
+    fn remove_root_forbidden(&self, start: usize, moves: &mut Vec<Move>) {
         if self.ply() == 0 && !self.root_forbidden.is_empty() {
             let mut index = start;
             while index < moves.len() {
@@ -981,6 +986,7 @@ impl SearchPosition for ToriPosition {
     }
     #[allow(clippy::needless_range_loop)]
     fn generate_checks(&self, moves: &mut Vec<Move>) {
+        let start = moves.len();
         let side = self.side;
         let king = self.king(side ^ 1);
         let occupied = self.occupied[0] | self.occupied[1];
@@ -1034,6 +1040,7 @@ impl SearchPosition for ToriPosition {
                 moves.push(Move::new(DROP + index, to));
             }
         }
+        self.remove_root_forbidden(start, moves);
     }
     fn make(&mut self, m: Move) -> bool {
         let side = self.side;

@@ -283,10 +283,12 @@ impl ToriResult {
                     && t.score.is_some()
                     && t.principal_variation.first() == Some(action)
                     // A complete search reached the requested depth, or the
-                    // root mate search proved a win.
+                    // root mate search of the shared core proved a win.
                     && (t.status != StopReason::Complete
                         || t.completed_depth == context.limits.depth
-                        || t.score.is_some_and(|s| s >= mshogi_search::alphabeta::MATE_BOUND))
+                        || (identity.kind == SearchKind::SharedCore
+                            && t.score
+                                .is_some_and(|s| s >= mshogi_search::alphabeta::MATE_BOUND)))
             }
             Self::Finished { conclusion, .. } => {
                 record.conclusion() == Some(*conclusion)

@@ -178,9 +178,6 @@ fn random_games_agree_with_the_native_rules() {
     );
 }
 
-/// The check flag after every legal move agrees with the native rules. The
-/// search position derives it from the moved piece and the rays that its
-/// departure opens (MSH-200), so each child is checked, not only the path.
 /// The check generator's moves: pseudo-legal and without repeats.
 fn generated_checks(position: &ToriPosition) -> Vec<Move> {
     let mut pseudo = Vec::new();
@@ -195,6 +192,11 @@ fn generated_checks(position: &ToriPosition) -> Vec<Move> {
     candidates
 }
 
+/// The check flag after every legal move agrees with the native rules. The
+/// search position derives it from the moved piece and the rays that its
+/// departure opens (MSH-200), so each child is checked, not only the path.
+/// The check generator gives every checking move, and in check the search
+/// generator keeps every legal move.
 #[test]
 fn checks_check_generation_and_evasions_agree_with_the_native_rules() {
     let mut children = 0;
@@ -709,4 +711,60 @@ fn a_falcon_that_promotes_checks_through_the_square_it_leaves() {
     assert!(position.make(m) && position.in_check());
     position.unmake();
     assert!(generated_checks(&position).contains(&m));
+}
+
+#[test]
+fn the_root_check_generator_excludes_forbidden_departures() {
+    use Face::*;
+    use Side::{Gote, Sente};
+    // The Sente Eagle checks from 6d along the diagonal to 3a, and from 6c
+    // to 4a; the Gote Phoenix steps between 3a and 4a. The start position
+    // (Gote to move, in check) occurred twice when the Eagle is on 6c again,
+    // so its checking return to 6d would make the third occurrence.
+    let mut game = diagram(
+        &[
+            ("4g", Sente, Phoenix),
+            ("6d", Sente, Eagle),
+            ("3a", Gote, Phoenix),
+        ],
+        [Hand::empty(); 2],
+        Gote,
+    );
+    let step = |from: &str, to: &str, face| Action::Move {
+        from: from.parse().unwrap(),
+        to: to.parse().unwrap(),
+        result_face: face,
+    };
+    let check = step("6c", "6d", Eagle);
+    let cycle = [
+        step("3a", "4a", Phoenix),
+        step("6d", "6c", Eagle),
+        step("4a", "3a", Phoenix),
+        check,
+    ];
+    for &action in cycle.iter().cycle().take(7) {
+        play(&mut game, action);
+    }
+    let forbidden = &game.repetition().expect("third occurrence").forbidden;
+    assert!(forbidden.contains(&check));
+    let mut position = ToriPosition::from_game(&game);
+    let checks: Vec<Action> = generated_checks(&position)
+        .iter()
+        .map(|&m| position.action(m))
+        .collect();
+    assert!(!checks.is_empty());
+    for action in forbidden {
+        assert!(!checks.contains(action), "{action:?}");
+    }
+    // The root mate search never starts with a forbidden move.
+    let mut table = MateTable::new(16);
+    let limits = MateLimits {
+        nodes: 20_000,
+        deadline: None,
+    };
+    if let (MateResult::Mate(line), _) =
+        mate::search(&mut position, &mut table, limits, &mut || false)
+    {
+        assert!(!forbidden.contains(&position.action(line[0])));
+    }
 }

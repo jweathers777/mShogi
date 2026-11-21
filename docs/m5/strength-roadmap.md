@@ -107,7 +107,7 @@ Steps 5 and 6 change accordingly.
 | Chess | Baseline. CCRL Blitz-referenced estimate about 2750 (MSH-185). | Final criteria: MSH-49 |
 | Standard Shogi | Baseline accepted 2026-11-18. Floodgate-referenced index about 2765 (MSH-191); blunder screen MSH-193. | Final criteria: MSH-50 |
 | Xiangqi | Baseline accepted 2026-11-19. Ladder and blunder screen: MSH-197, MSH-198. | Final criteria: MSH-54 |
-| Tori Shogi | Current. Harness done (MSH-204). | MSH-200 (speed), MSH-205 (selectivity), MSH-206 (evaluation), MSH-207 (assessment); final criteria MSH-51 |
+| Tori Shogi | Current. Harness (MSH-204), speed (MSH-200) and selectivity (MSH-205) done. | MSH-206 (evaluation), MSH-207 (assessment); final criteria MSH-51 |
 | Chu Shogi | Not started. | MSH-213 (harness), MSH-201 (speed); final criteria MSH-52 |
 | Tenjiku Shogi | Not started. | MSH-214 (harness), MSH-202 (speed); final criteria MSH-53 |
 

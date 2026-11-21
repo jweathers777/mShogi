@@ -31,7 +31,6 @@ from pathlib import Path
 from types import SimpleNamespace
 
 PREFIX = 'msh204'
-# Tori program tasks that run campaigns through this module.
 CAMPAIGN_SECONDS = 2 * 3600
 COMPUTE_USD = 5
 # Frozen data in the worker image; a local smoke run may point elsewhere.

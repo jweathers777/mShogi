@@ -75,6 +75,7 @@ def validate_task(t):
     elif kind == 'judge':
         require(set(t) == {'kind', 'nodes', 'shard', 'shards'}, 'judge fields')
         require(type(t['nodes']) is int and 100_000 <= t['nodes'] <= 5_000_000
+                and type(t['shard']) is int and type(t['shards']) is int
                 and 0 <= t['shard'] < t['shards'] <= 64, 'judge bounds')
     elif kind == 'depth':
         require(set(t) == {'kind', 'ms', 'min_ply'}, 'depth fields')
@@ -275,7 +276,8 @@ def assessment_bins():
     the eight bins plays its share of 50 control pairs (5 s + 0.1 s, the games
     to judge) and of 96 time-odds pairs (the candidate has twice the clock) at
     each base time of the scaling curve, with increment base / 50. Seeds differ
-    between clocks, so the openings differ too."""
+    between the odds clocks; the control pairs reuse the seeds (and openings)
+    of the first 50 odds pairs."""
     bins = [[] for _ in range(8)]
     pairs = {'kind': 'pairs', 'concurrency': 2, 'pair_ms': 600000}
     for b in range(8):

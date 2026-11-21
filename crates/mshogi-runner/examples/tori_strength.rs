@@ -408,6 +408,8 @@ fn judge(paths: &Value, nodes: u64) -> Value {
     let mut positions = vec![];
     for (i, s) in all.iter().enumerate() {
         let plays = plays(s);
+        // One clock per applied step; only a final non-play step can follow the plays.
+        assert!(s.clocks.len() == plays.len() || s.clocks.len() == plays.len() + 1);
         for k in 0..=plays.len() {
             positions.push((i, k, plays.get(k).copied()));
         }

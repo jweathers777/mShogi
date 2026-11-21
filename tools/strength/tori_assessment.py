@@ -19,6 +19,8 @@ move of the judged games is an mShogi move.
   refuted_major_capture (it captures a Falcon, Eagle, Crane or Quail),
   refuted_minor_capture (it captures a Pheasant, Goose or Swallow),
   other.
+  A move that loses at once by the mover's own repetition is not marked
+  `repetition` (the flag looks at the position before the move only).
 - Fix rule: one round only if one class other than `other` has at least 30%
   of the clear blunders and maps to a general change.
 """

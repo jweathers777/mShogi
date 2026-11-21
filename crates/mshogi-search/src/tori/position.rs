@@ -1344,7 +1344,7 @@ impl SearchPosition for ToriPosition {
         }
         0
     }
-    /// A drop within two squares of the enemy Phoenix.
+    /// A drop near the enemy Phoenix: within two squares (a 5 x 5 box).
     fn attacks_king(&self, m: Move) -> bool {
         if !m.is_drop() {
             return false;

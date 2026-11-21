@@ -122,8 +122,8 @@ pub trait SearchPosition {
     fn quiet_order(&self, _m: Self::Move) -> i32 {
         0
     }
-    /// True for a quiet move that attacks the opponent's King directly (for
-    /// example a drop next to it). The search never prunes such a move as a
+    /// True for a quiet move aimed at the opponent's King (for example a
+    /// drop near it; each game defines "near"). The search never prunes such a move as a
     /// late or futile move and reduces it one ply less.
     fn attacks_king(&self, _m: Self::Move) -> bool {
         false

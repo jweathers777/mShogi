@@ -112,7 +112,7 @@ impl ChuHistory {
 }
 /// Native Chu root provenance and visibly separate selected/live facts.
 #[derive(Clone, Debug, Serialize)]
-pub struct ChuPresentation {
+pub struct Presentation {
     /// Native root category, declared counters and known-history provenance.
     pub root: c::RootMetadata,
     /// Exact declared root counter as decimal text for JavaScript consumers.
@@ -129,7 +129,7 @@ pub struct ChuPresentation {
     /// Functional native execution for the ordinary Chu product.
     pub execution_supported: bool,
 }
-impl ChuPresentation {
+impl Presentation {
     pub(super) fn new(selected: &c::Game, live: &c::Game) -> Self {
         Self {
             root: selected.position().root().clone(),
@@ -246,7 +246,8 @@ fn event_label(event: &c::GameEvent) -> String {
         c::GameCommand::Stop { reason } => format!("{reason:?} · unscored"),
     }
 }
-pub(super) fn status(game: &c::Game) -> PresentedStatus {
+/// Chu status does not depend on the count of legal actions.
+pub(super) fn status(game: &c::Game, _has_board_actions: bool) -> PresentedStatus {
     let label = match game.conclusion() {
         Some(c::Conclusion::AgreedDraw) => "Draw by agreement".into(),
         Some(outcome) => {
@@ -422,7 +423,7 @@ impl DesktopController {
                 .collect(),
             event_index: game.events().len(),
             board_ply: game.snapshot().board_ply as u64,
-            play_limits: play_limits(),
+            play_limits: <super::Chu as SessionGame>::PLAY_LIMITS,
             historical,
             paused: state.paused,
             close_requires_save: self.close_requires_save(),

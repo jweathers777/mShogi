@@ -21,6 +21,7 @@ mod document;
 pub mod game_document;
 /// Per-game boundary of the generic document and session.
 pub mod native_game;
+pub(crate) use native_game::{Chu, Tenjiku};
 mod resource;
 /// Immutable two-profile Tenjiku candidates for the existing document and worker.
 pub mod tenjiku_document;

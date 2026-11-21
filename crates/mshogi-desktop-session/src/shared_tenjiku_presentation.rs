@@ -70,7 +70,7 @@ impl TenjikuHistory {
 }
 /// Both profiles use the same shared owner while retaining native semantics.
 #[derive(Clone, Debug, Serialize)]
-pub struct TenjikuPresentation {
+pub struct Presentation {
     pub profile: RulesProfile,
     pub edition: &'static str,
     pub root: c::RootMetadata,
@@ -81,7 +81,7 @@ pub struct TenjikuPresentation {
     pub live: TenjikuHistory,
     pub execution_supported: bool,
 }
-impl TenjikuPresentation {
+impl Presentation {
     pub(super) fn new(selected: &c::Game, live: &c::Game) -> Self {
         Self {
             profile: selected.profile().into(),
@@ -357,7 +357,7 @@ impl DesktopController {
                 .collect(),
             event_index: game.events().len(),
             board_ply: game.snapshot().board_ply as u64,
-            play_limits: play_limits(),
+            play_limits: <super::Tenjiku as SessionGame>::PLAY_LIMITS,
             historical,
             paused: state.paused,
             close_requires_save: self.close_requires_save(),

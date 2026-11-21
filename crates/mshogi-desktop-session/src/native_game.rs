@@ -10,6 +10,7 @@ use serde::{Serialize, de::DeserializeOwned};
 use std::fmt::Debug;
 
 /// A refused native record operation.
+#[derive(Debug)]
 pub enum RecordFailure {
     /// The caller stopped the operation.
     Stopped,
@@ -20,6 +21,7 @@ pub enum RecordFailure {
 }
 
 /// The native resource of a game capacity refusal.
+#[derive(Debug)]
 pub enum NativeResource {
     /// Canonical record bytes.
     EncodedBytes,
@@ -32,6 +34,7 @@ pub enum NativeResource {
 }
 
 /// A refused native game command or query.
+#[derive(Debug)]
 pub enum NativeFailure {
     /// The caller stopped the operation.
     Stopped,
@@ -90,6 +93,8 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
     fn reconstruction_work(record: &Self::Record) -> u64;
     /// Events of a record.
     fn event_count(record: &Self::Record) -> usize;
+    /// Side to move at the end of a record.
+    fn record_side_to_move(record: &Self::Record) -> Self::Side;
     /// Reconstruct a game; the stop is checked during replay.
     fn to_game(
         record: &Self::Record,
@@ -189,6 +194,9 @@ macro_rules! large_shogi_game {
             }
             fn event_count(record: &Self::Record) -> usize {
                 record.event_count()
+            }
+            fn record_side_to_move(record: &Self::Record) -> Self::Side {
+                record.side_to_move()
             }
             fn to_game(
                 record: &Self::Record,

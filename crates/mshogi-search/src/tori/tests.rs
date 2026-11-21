@@ -265,7 +265,7 @@ fn a_capture_with_compulsory_promotion_and_a_drop_are_complete_native_actions() 
             ("4g", Side::Sente, Face::Phoenix),
             ("4a", Side::Gote, Face::Phoenix),
             ("7c", Side::Sente, Face::Falcon),
-            ("7b", Side::Gote, Face::Swallow),
+            ("7b", Side::Gote, Face::Crane),
         ],
         [Hand::empty(); 2],
         Side::Sente,
@@ -278,21 +278,24 @@ fn a_capture_with_compulsory_promotion_and_a_drop_are_complete_native_actions() 
         },
     )
     .unwrap();
-    // The Falcon takes the free Swallow and must promote in the zone.
-    assert_eq!(
-        r.decision,
-        Some(Decision::Choose(Action::Move {
-            from: "7c".parse().unwrap(),
-            to: "7b".parse().unwrap(),
-            result_face: Face::Eagle
-        }))
+    // The Falcon takes the free Crane and must promote in the zone.
+    let capture = Action::Move {
+        from: "7c".parse().unwrap(),
+        to: "7b".parse().unwrap(),
+        result_face: Face::Eagle,
+    };
+    assert_eq!(r.decision, Some(Decision::Choose(capture)));
+    // Gote has no capture in reply: the score is the static evaluation after
+    // the capture (an Eagle and a Crane in hand), from Sente's view.
+    let mut after =
+        mshogi_core::tori::LocalPosition::admit(g.snapshot().local_position().position().clone())
+            .unwrap();
+    after.apply(capture).unwrap();
+    let expected = -eval::score(
+        &ToriPosition::from_position(after.position()),
+        &eval::DEFAULT,
     );
-    // Material after the capture: Eagle 1000 and a Swallow in hand 100.
-    assert!(
-        r.score.unwrap() >= 1100 && r.score.unwrap() < 1300,
-        "{:?}",
-        r.score
-    );
+    assert_eq!(r.score, Some(expected));
     // Sente has only a Phoenix and a Quail in hand: each good action is a drop.
     let drop = diagram(
         &[

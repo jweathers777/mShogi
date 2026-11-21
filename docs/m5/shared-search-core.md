@@ -36,7 +36,8 @@ says nothing about other opponents.
 | `chess_engine.rs` | Adapter between an `AdjudicatedGame` and the core; owns the state that lasts for a game | Chess |
 | `coordination.rs` | One worker thread that owns the `ChessEngine` between requests | Chess |
 | `tori/position.rs` | Tori Shogi search position: 49-bit bitboards, hands, drops, compulsory promotion, the Swallow drop rules, repetition on the path | Tori |
-| `tori.rs` | Adapter between a native Tori `Game` and the core; material and placement evaluation | Tori |
+| `tori/eval.rs` | Tori evaluation weights (Texel-fitted), feature layout and Texel model | Tori |
+| `tori.rs` | Adapter between a native Tori `Game` and the core | Tori |
 | `shogi/position.rs` | Shogi position, hands, drops, promotion, history and classical evaluation | Shogi |
 | `shogi.rs` | Native Shogi root/declaration and continuation adapter | Shogi |
 | `xiangqi/position.rs` | Xiangqi board, movement, private history and classical evaluation | Xiangqi |
@@ -197,6 +198,20 @@ its private full-width minimax. The trait and the core did not change.
   of the end of its line, so the earlier exact score check does not apply to
   it. Saved observations of the earlier identities stay valid and keep their
   exact score check (`mshogi-engine/src/tori.rs`).
+- Evaluation (MSH-206, Tori Evaluation Round) is linear in 148 Texel-tuned
+  weights (`tori/eval.rs`): board and hand values, rank and column tables for
+  each piece, Phoenix safety (own and attacked neighbors, enemy pieces near
+  it, drop threats), Eagle and Quail mobility, and tempo. Board, hand and
+  table terms are kept incrementally; Phoenix safety and mobility are computed
+  per node. `INITIAL` is the earlier evaluation, and a test checks that it
+  gives the earlier score. The corpus is cloud self-play of the predecessor
+  (6,400 pairs at 2 s + 0.05 s, about 778,000 quiet positions, split by
+  opening). Only about 38% of Tori game positions are quiet, so a corpus needs
+  about twice the games of Xiangqi. The static fit won about +255 Elo against
+  the predecessor; the per-node terms, fitted separately and tested against
+  the static fit, won about +99 Elo more. Unlike Xiangqi, the per-node terms
+  are kept. Exchange (SEE) and ordering values still use the earlier fixed
+  piece values. The evaluator identity is unchanged.
 
 Result (Apple M1 Pro, engine binaries through the internal protocol, native
 Tori game as controller, eight seeded openings with both colors for each

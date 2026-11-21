@@ -521,15 +521,19 @@ impl<P: SearchPosition> Run<'_, P> {
         outcome.status = self.status;
         outcome.nodes = self.nodes;
         outcome.selective_depth = self.seldepth as u16;
-        if let Some(mut mate) = proven
-            && outcome
+        if let Some(mut mate) = proven {
+            if outcome
                 .score
                 .is_none_or(|score| score < mate.score.unwrap_or(MATE_SCORE))
-        {
-            mate.nodes = self.nodes;
-            mate.selective_depth = mate.selective_depth.max(outcome.selective_depth);
-            mate.depth = mate.depth.max(outcome.depth);
-            return mate;
+            {
+                mate.nodes = self.nodes;
+                mate.selective_depth = mate.selective_depth.max(outcome.selective_depth);
+                mate.depth = mate.depth.max(outcome.depth);
+                return mate;
+            }
+            // The alpha-beta mate is no longer than the proven one and is
+            // kept; the proof makes the result complete at any limit.
+            outcome.status = Status::Complete;
         }
         outcome
     }

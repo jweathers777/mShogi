@@ -43,6 +43,10 @@ fn good_score(observation: &ExecutionObservation) -> i32 {
     result.telemetry().score.unwrap()
 }
 fn game(turn: t::Side) -> t::Game {
+    game_with(turn, t::Face::Swallow)
+}
+/// Phoenixes on 4g and 4a, a Sente Falcon on 7c and a Gote `prey` on 7b.
+fn game_with(turn: t::Side, prey: t::Face) -> t::Game {
     t::Game::from_root(
         t::Position::from_diagram(
             &[
@@ -71,7 +75,7 @@ fn game(turn: t::Side) -> t::Game {
                     "7b".parse().unwrap(),
                     t::Piece {
                         side: t::Side::Gote,
-                        face: t::Face::Swallow,
+                        face: prey,
                     },
                 ),
             ],
@@ -85,7 +89,8 @@ fn game(turn: t::Side) -> t::Game {
 }
 #[test]
 fn actual_choices_admit_and_scores_purpose_and_identity_remain_native() {
-    let mut game = game(t::Side::Sente);
+    // A Crane, not a Swallow: taking it is clearly the best action.
+    let mut game = game_with(t::Side::Sente, t::Face::Crane);
     for side in [t::Side::Sente, t::Side::Gote] {
         let c = context(&game);
         let observation = execute(&c);
@@ -99,15 +104,18 @@ fn actual_choices_admit_and_scores_purpose_and_identity_remain_native() {
         assert_eq!(telemetry.perspective, side);
         assert!(telemetry.score_label().is_some());
         if side == t::Side::Sente {
-            assert_eq!(
-                *action,
-                t::Action::Move {
-                    from: "7c".parse().unwrap(),
-                    to: "7b".parse().unwrap(),
-                    result_face: t::Face::Eagle
-                }
-            );
-            assert_eq!(telemetry.score, Some(1100));
+            let capture = t::Action::Move {
+                from: "7c".parse().unwrap(),
+                to: "7b".parse().unwrap(),
+                result_face: t::Face::Eagle,
+            };
+            assert_eq!(*action, capture);
+            // Gote has no capture in reply: the static evaluation after it.
+            let mut after = t::LocalPosition::admit(game.position().clone()).unwrap();
+            after.apply(capture).unwrap();
+            let position = search::position::ToriPosition::from_position(after.position());
+            let expected = -search::eval::score(&position, &search::eval::DEFAULT);
+            assert_eq!(telemetry.score, Some(expected));
         }
         for n in 0..6 {
             let mut wrong = c.clone();
@@ -586,7 +594,7 @@ fn a_root_mate_proof_is_a_complete_reply_below_the_requested_depth() {
     else {
         panic!("{observation:?}")
     };
-    assert_eq!(telemetry.status, StopReason::Complete);
+    assert_eq!(telemetry.status, StopReason::Complete, "{telemetry:?}");
     assert!(telemetry.completed_depth < search::MAX_DEPTH);
     assert!(telemetry.score.unwrap() > search::WIN_SCORE - 64);
 }

@@ -245,8 +245,18 @@ pub const INITIAL: [i32; COUNT] = initial();
 pub const LOWER: [i32; COUNT] = bounds(false);
 /// Inclusive upper bounds.
 pub const UPPER: [i32; COUNT] = bounds(true);
-/// Compiled weights used by the search.
-pub const DEFAULT: [i32; COUNT] = INITIAL;
+/// Compiled weights used by the search: the MSH-206 (Tori Evaluation Round)
+/// static-term fit.
+pub const DEFAULT: [i32; COUNT] = [
+    668, 1192, 496, 236, 468, 436, 132, 236, 870, 602, 374, 542, 510, 110, -64, 64, 64, -150, -32,
+    150, 150, -96, -64, 64, 0, 150, 150, 150, 96, -96, 64, 150, 96, 0, -32, -150, 0, 32, 150, 96,
+    64, 32, -96, -32, 96, 128, -64, 0, 128, -64, -64, 32, 150, 150, -64, -32, -32, -32, 32, 32, 32,
+    -150, 150, 32, -92, -24, 44, 48, 52, 24, 128, -96, 150, 150, 150, -150, -128, -150, -128, 0,
+    96, 96, 128, 64, -150, 0, 64, 32, 32, 128, -150, -150, -128, -32, 150, 150, 150, 64, -150, 64,
+    150, 150, 150, 32, -150, 0, 0, -64, 0, -96, 32, -32, -64, -32, 150, 150, 128, 128, -150, -64,
+    32, 0, 128, 0, 64, -64, -96, -96, 32, 96, 0, -32, -64, 0, 32, 150, 128, 96, 128, 64, 8, 0, 0,
+    0, 0, 0, 0, 42,
+];
 
 /// Owner-relative rank and column of a square (native index `row * 7 + column`,
 /// Sente moves toward row 0).
@@ -318,6 +328,8 @@ impl crate::texel::TexelModel for ToriTexel {
     type Prepared = Prepared;
     const KIND: &'static str = "tori";
     const POSITION_FIELD: &'static str = "diagram";
+    // Drops keep long games open, so early scores predict outcomes weakly.
+    const K_RANGE: (f64, f64) = (0.01, 0.71);
     const STEPS: &'static [i32] = &[32, 16, 8, 4, 2, 1];
     fn names() -> &'static [&'static str] {
         &NAMES

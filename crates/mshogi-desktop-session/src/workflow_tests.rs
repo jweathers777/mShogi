@@ -9,8 +9,8 @@ fn peek(c: &DesktopController) -> SharedSnapshot {
         ActiveDocument::Shogi { .. } => c.shogi_snapshot(),
         ActiveDocument::Xiangqi { .. } => c.xiangqi_snapshot(),
         ActiveDocument::Tori { .. } => c.tori_snapshot(),
-        ActiveDocument::Chu { .. } => c.chu_snapshot(),
-        ActiveDocument::Tenjiku { .. } => c.tenjiku_snapshot(),
+        ActiveDocument::Chu { .. } => c.game_snapshot::<Chu>(),
+        ActiveDocument::Tenjiku { .. } => c.game_snapshot::<Tenjiku>(),
     }
 }
 fn pump(c: &mut DesktopController) {

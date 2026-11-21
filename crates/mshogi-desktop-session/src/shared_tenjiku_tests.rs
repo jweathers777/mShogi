@@ -656,7 +656,7 @@ fn real_search_observations_reject_profile_purpose_and_all_runtime_context_chang
         play(&mut ctl, c::Action::single(square(16, 16), square(15, 16))).unwrap();
         let live = record(&ctl);
         send(&mut ctl, SessionOperation::Inspect { event_index: 0 }).unwrap();
-        ctl.start_tenjiku(
+        ctl.start_game_work::<Tenjiku>(
             WorkLimits {
                 time_ms: None,
                 depth: 1,
@@ -769,7 +769,7 @@ fn real_search_observations_reject_profile_purpose_and_all_runtime_context_chang
         assert!(ctl.session.tenjiku().unwrap().pending.is_none());
         assert_eq!(record(&ctl), live);
         send(&mut ctl, SessionOperation::ReturnLive {}).unwrap();
-        ctl.start_tenjiku(
+        ctl.start_game_work::<Tenjiku>(
             WorkLimits {
                 time_ms: None,
                 depth: 1,
@@ -939,8 +939,8 @@ fn cancelled_replacement_receipt_cannot_install_other_profile_or_damage_the_save
         // The production queue does not poll. Retire before the main owner can
         // install even an already completed candidate; no timing race is assumed.
         let receipt = ctl
-            .queue_tenjiku_candidate(
-                tenjiku::RuntimeSeed::Record {
+            .queue_game_candidate::<Tenjiku>(
+                native_session::RuntimeSeed::<Tenjiku>::Record {
                     play_mode: PlayMode::HumanEngine,
                     record: Box::new(c::GameRecord::from_game(&root(other, &[])).unwrap()),
                     human: c::Side::Sente,
@@ -1389,7 +1389,7 @@ fn real_stationary_capture_analysis_preserves_target_in_presented_pv() {
         )
         .unwrap();
         let before = record(&ctl);
-        ctl.start_tenjiku(mshogi_engine::TENJIKU_PLAY_LIMITS, true)
+        ctl.start_game_work::<Tenjiku>(mshogi_engine::TENJIKU_PLAY_LIMITS, true)
             .unwrap();
         let pending = ctl.session.tenjiku().unwrap().pending.clone().unwrap();
         let response = execute(&pending);

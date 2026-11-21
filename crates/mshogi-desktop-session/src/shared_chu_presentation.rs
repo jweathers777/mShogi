@@ -112,7 +112,7 @@ impl ChuHistory {
 }
 /// Native Chu root provenance and visibly separate selected/live facts.
 #[derive(Clone, Debug, Serialize)]
-pub struct ChuPresentation {
+pub struct Presentation {
     /// Native root category, declared counters and known-history provenance.
     pub root: c::RootMetadata,
     /// Exact declared root counter as decimal text for JavaScript consumers.
@@ -129,7 +129,7 @@ pub struct ChuPresentation {
     /// Functional native execution for the ordinary Chu product.
     pub execution_supported: bool,
 }
-impl ChuPresentation {
+impl Presentation {
     pub(super) fn new(selected: &c::Game, live: &c::Game) -> Self {
         Self {
             root: selected.position().root().clone(),
@@ -246,7 +246,8 @@ fn event_label(event: &c::GameEvent) -> String {
         c::GameCommand::Stop { reason } => format!("{reason:?} · unscored"),
     }
 }
-pub(super) fn status(game: &c::Game) -> PresentedStatus {
+/// Chu status does not depend on the count of legal actions.
+pub(super) fn status(game: &c::Game, _has_board_actions: bool) -> PresentedStatus {
     let label = match game.conclusion() {
         Some(c::Conclusion::AgreedDraw) => "Draw by agreement".into(),
         Some(outcome) => {
@@ -291,179 +292,34 @@ pub(super) fn status(game: &c::Game) -> PresentedStatus {
         }),
     }
 }
-impl DesktopController {
-    pub(crate) fn chu_snapshot(&self) -> SharedSnapshot {
-        let state = self.session.chu().unwrap();
-        let game = state.selected();
-        let position = game.position();
-        let sides: Vec<_> = [c::Side::Sente, c::Side::Gote]
-            .map(|s| {
-                side(
-                    mshogi_core::native::RulesProfile::ChuJcsa2019V1,
-                    NativeSide::Chu(s),
-                )
-            })
-            .into();
-        let files: Vec<_> = (1..=12).rev().map(|n| n.to_string()).collect();
-        let ranks: Vec<_> = ('a'..='l').map(|n| n.to_string()).collect();
-        let historical = state.viewed.is_some();
-        let ended = game.conclusion().is_some();
-        SharedSnapshot {
-            moves: self.present_moves(game.events().len()),
-            xiangqi: None,
-            tori: None,
-            chu: Some(state.presentation.clone()),
-            tenjiku: None,
-            open_token: self.shared_open_token(),
-            document: self.shared_document(),
-            io: self.io_state.clone(),
-            capacity: self.session.capacity.clone(),
-            token: self.shared_token(),
-            game: GameKind::Chu,
-            profile: RulesProfile::ChuJcsa2019V1,
-            edition: c::PROFILE_EDITION,
-            play_mode: state.document.settings().play_mode,
-            local_actor: side(
-                RulesProfile::ChuJcsa2019V1,
-                NativeSide::Chu(
-                    state
-                        .document
-                        .settings()
-                        .play_mode
-                        .actor(state.document.human(), position.side_to_move()),
-                ),
+pub(super) fn edition(_game: &c::Game) -> &'static str {
+    c::PROFILE_EDITION
+}
+pub(super) fn pieces(game: &c::Game) -> Vec<PresentedPiece> {
+    let profile = <super::Chu as crate::native_game::NativeGame>::game_profile(game);
+    game.position()
+        .pieces()
+        .map(|(square, p)| PresentedPiece {
+            square: square.to_string(),
+            owner: side(profile, NativeSide::Chu(p.side)).key,
+            kind: p.base.code().into(),
+            promoted: p.promoted,
+            text: p.code(),
+            label: format!(
+                "{square}, {} {}",
+                side(profile, NativeSide::Chu(p.side)).label,
+                piece_name(p)
             ),
-            human: side(
-                mshogi_core::native::RulesProfile::ChuJcsa2019V1,
-                NativeSide::Chu(state.document.human()),
-            ),
-            turn: side(
-                mshogi_core::native::RulesProfile::ChuJcsa2019V1,
-                NativeSide::Chu(position.side_to_move()),
-            ),
-            sides: sides.clone(),
-            board: BoardDescriptor {
-                intersections: None,
-                files: files.clone(),
-                ranks: ranks.clone(),
-                label: "Chu Shogi 12×12 board".into(),
-                initial_focus: "6g".into(),
-            },
-            orientations: vec![
-                Orientation {
-                    side: sides[0].clone(),
-                    files: files.clone(),
-                    ranks: ranks.clone(),
-                },
-                Orientation {
-                    side: sides[1].clone(),
-                    files: files.into_iter().rev().collect(),
-                    ranks: ranks.into_iter().rev().collect(),
-                },
-            ],
-            pieces: position
-                .pieces()
-                .map(|(square, p)| PresentedPiece {
-                    square: square.to_string(),
-                    owner: side(
-                        mshogi_core::native::RulesProfile::ChuJcsa2019V1,
-                        NativeSide::Chu(p.side),
-                    )
-                    .key,
-                    kind: p.base.code().into(),
-                    promoted: p.promoted,
-                    text: p.code(),
-                    label: format!(
-                        "{square}, {} {}",
-                        side(
-                            mshogi_core::native::RulesProfile::ChuJcsa2019V1,
-                            NativeSide::Chu(p.side)
-                        )
-                        .label,
-                        piece_name(p)
-                    ),
-                })
-                .collect(),
-            hands: vec![],
-            choices: state.choices.clone(),
-            capabilities: CommandCapabilities {
-                board_action: !historical
-                    && (!state.document.settings().play_mode.is_two_humans() || !state.paused)
-                    && !ended
-                    && state
-                        .document
-                        .settings()
-                        .play_mode
-                        .owns(state.document.human(), position.side_to_move()),
-                drops: false,
-                promotion: true,
-                take_back: !historical && state.take_back_target().is_some(),
-                undo: !historical && !state.game.events().is_empty(),
-                engine_turn: !state.document.settings().play_mode.is_two_humans(),
-                move_analysis: true,
-                chess_full: false,
-                claims: false,
-                declaration: false,
-                resign: !historical && !ended,
-                hands: false,
-                history: true,
-                save: true,
-            },
-            status: state.status.clone(),
-            events: state
-                .game
-                .events()
-                .iter()
-                .map(|e| PresentedEvent {
-                    index: e.index + 1,
-                    board_ply: e.board_ply,
-                    label: event_label(e),
-                })
-                .collect(),
-            event_index: game.events().len(),
-            board_ply: game.snapshot().board_ply as u64,
-            play_limits: play_limits(),
-            historical,
-            paused: state.paused,
-            close_requires_save: self.close_requires_save(),
-            phase: state.phase,
-            execution_purpose: state.pending.as_ref().map(|p| {
-                if matches!(p.purpose, ExecutionPurpose::EngineTurn {}) {
-                    "engine_turn"
-                } else {
-                    "move_analysis"
-                }
-            }),
-            diagnostic: state.diagnostic.clone(),
-            declaration_advice: vec![],
-            context: CanonicalRecord::chu(
-                c::GameRecord::from_game(game).expect("admitted native game"),
-            ),
-            analysis: state.analysis.as_ref().map(|o| PresentedObservation {
-                observation: o.clone(),
-                historical: false,
-                application_error: None,
-            }),
-            observations: state
-                .document
-                .observations()
-                .iter()
-                .map(|o| PresentedObservation {
-                    observation: o.clone(),
-                    historical: !state.current_observations.contains(&o.context.request_id),
-                    application_error: None,
-                })
-                .collect(),
-            search_observations: state
-                .document
-                .observations()
-                .iter()
-                .enumerate()
-                .map(|(index, o)| display_observation(index, o, state))
-                .collect(),
-            score_meaning: "Native root-side evaluation in hundredths of a Pawn. Win/loss distances count complete board actions, not necessarily mate. Failures and incomplete work are unscored.",
-            chess: None,
-            chess_match: None,
-        }
-    }
+        })
+        .collect()
+}
+pub(super) fn events(game: &c::Game) -> Vec<PresentedEvent> {
+    game.events()
+        .iter()
+        .map(|e| PresentedEvent {
+            index: e.index + 1,
+            board_ply: e.board_ply,
+            label: event_label(e),
+        })
+        .collect()
 }

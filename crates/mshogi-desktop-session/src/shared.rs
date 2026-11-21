@@ -4,6 +4,9 @@ use super::*;
 #[path = "shared_archive.rs"]
 pub(super) mod archive;
 pub use archive::{NativeDesktopSettings, SharedDocumentState, SharedOpenToken, ShogiSettings};
+#[path = "native_session.rs"]
+#[macro_use]
+pub(super) mod native_session;
 #[path = "shared_chu.rs"]
 pub(super) mod chu;
 #[path = "shared_inspection.rs"]
@@ -1118,8 +1121,8 @@ impl DesktopController {
                     &mshogi_core::tenjiku::Game::standard(native_profile),
                 )
                 .map_err(|e| e.to_string())?;
-                self.queue_tenjiku_candidate(
-                    tenjiku::RuntimeSeed::Record {
+                self.queue_game_candidate::<Tenjiku>(
+                    native_session::RuntimeSeed::<Tenjiku>::Record {
                         record: Box::new(record),
                         human,
                         play_mode,
@@ -1133,8 +1136,8 @@ impl DesktopController {
                 let record =
                     mshogi_core::chu::GameRecord::from_game(&mshogi_core::chu::Game::standard())
                         .map_err(|e| e.to_string())?;
-                self.queue_chu_candidate(
-                    chu::RuntimeSeed::Record {
+                self.queue_game_candidate::<Chu>(
+                    native_session::RuntimeSeed::<Chu>::Record {
                         record: Box::new(record),
                         human,
                         play_mode,
@@ -1302,13 +1305,13 @@ impl DesktopController {
                 let NativeSide::Tenjiku(human) = human else {
                     return Err("Wrong native Tenjiku side.".into());
                 };
-                return self.replace_tenjiku(*record, human);
+                return self.replace_game::<Tenjiku>(*record, human);
             }
             if let CanonicalRecord::Chu(record) = record {
                 let NativeSide::Chu(human) = human else {
                     unreachable!()
                 };
-                return self.replace_chu(*record, human);
+                return self.replace_game::<Chu>(*record, human);
             }
             if let CanonicalRecord::Tori(record) = record {
                 let NativeSide::Tori(human) = human else {
@@ -1351,10 +1354,10 @@ impl DesktopController {
             return Ok(self.shared_snapshot());
         }
         if self.session.tenjiku().is_some() {
-            return self.tenjiku_command(command.operation);
+            return self.game_command::<Tenjiku>(command.operation);
         }
         if self.session.chu().is_some() {
-            return self.chu_command(command.operation);
+            return self.game_command::<Chu>(command.operation);
         }
         if self.session.tori().is_some() {
             return self.tori_command(command.operation);
@@ -1520,10 +1523,10 @@ impl DesktopController {
     }
     pub(crate) fn accept_observation(&mut self, response: ExecutionObservation) -> bool {
         if self.session.tenjiku().is_some() {
-            return self.accept_tenjiku_observation(response);
+            return self.accept_game_observation::<Tenjiku>(response);
         }
         if self.session.chu().is_some() {
-            return self.accept_chu_observation(response);
+            return self.accept_game_observation::<Chu>(response);
         }
         if self.session.tori().is_some() {
             return self.accept_tori_observation(response);
@@ -1555,10 +1558,10 @@ impl DesktopController {
         self.poll_native_admission();
         self.poll_files();
         if self.session.tenjiku().is_some() {
-            return self.poll_tenjiku();
+            return self.poll_game::<Tenjiku>();
         }
         if self.session.chu().is_some() {
-            return self.poll_chu();
+            return self.poll_game::<Chu>();
         }
         if self.session.tori().is_some() {
             return self.poll_tori();
@@ -1636,11 +1639,11 @@ impl DesktopController {
     pub(super) fn pause_shared_for_close(&mut self) {
         self.retire_admission();
         if self.session.tenjiku().is_some() {
-            self.close_tenjiku();
+            self.close_game::<Tenjiku>();
             return;
         }
         if self.session.chu().is_some() {
-            self.close_chu();
+            self.close_game::<Chu>();
         }
         if self.session.tori().is_some() {
             self.close_tori();

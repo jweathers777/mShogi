@@ -428,8 +428,8 @@ fn local_record(c: &mut DesktopController, record: CanonicalRecord) -> SharedSna
             None,
             true,
         ),
-        CanonicalRecord::Chu(record) => c.queue_chu_candidate(
-            chu::RuntimeSeed::Record {
+        CanonicalRecord::Chu(record) => c.queue_game_candidate::<Chu>(
+            native_session::RuntimeSeed::<Chu>::Record {
                 record,
                 human: mshogi_core::chu::Side::Gote,
                 play_mode,
@@ -438,8 +438,8 @@ fn local_record(c: &mut DesktopController, record: CanonicalRecord) -> SharedSna
             None,
             true,
         ),
-        CanonicalRecord::Tenjiku(record) => c.queue_tenjiku_candidate(
-            tenjiku::RuntimeSeed::Record {
+        CanonicalRecord::Tenjiku(record) => c.queue_game_candidate::<Tenjiku>(
+            native_session::RuntimeSeed::<Tenjiku>::Record {
                 record,
                 human: mshogi_core::tenjiku::Side::Gote,
                 play_mode,

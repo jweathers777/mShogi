@@ -132,7 +132,7 @@ pub(crate) enum ShogiSeed {
     },
 }
 pub(crate) enum NativeWork {
-    TenjikuRuntime(Box<tenjiku::RuntimeWork>),
+    TenjikuRuntime(Box<native_session::RuntimeWork<Tenjiku>>),
     TenjikuSave {
         document: std::sync::Arc<crate::tenjiku_document::ValidatedTenjikuDocument>,
         floor: u64,
@@ -140,7 +140,7 @@ pub(crate) enum NativeWork {
         revision: u64,
         identity: u64,
     },
-    ChuRuntime(Box<chu::RuntimeWork>),
+    ChuRuntime(Box<native_session::RuntimeWork<Chu>>),
     ChuSave {
         document: std::sync::Arc<crate::chu_document::ValidatedChuDocument>,
         floor: u64,
@@ -1092,7 +1092,7 @@ pub(crate) fn execute(
     stopped: &mut impl FnMut() -> bool,
 ) -> Result<NativeCompleted, OperationFailure> {
     match work {
-        NativeWork::TenjikuRuntime(work) => tenjiku::execute(*work, stopped),
+        NativeWork::TenjikuRuntime(work) => native_session::execute(*work, stopped),
         NativeWork::TenjikuSave {
             document,
             floor,
@@ -1110,7 +1110,7 @@ pub(crate) fn execute(
                 identity,
             })
         }
-        NativeWork::ChuRuntime(work) => chu::execute(*work, stopped),
+        NativeWork::ChuRuntime(work) => native_session::execute(*work, stopped),
         NativeWork::ChuSave {
             document,
             floor,
@@ -1330,10 +1330,10 @@ impl DesktopController {
     /// Queue a complete current-format document using native payload encoding.
     pub fn queue_shared_save(&mut self, path: PathBuf) -> Result<u64, String> {
         if self.session.tenjiku().is_some() {
-            return self.queue_tenjiku_save(path);
+            return self.queue_game_save::<Tenjiku>(path);
         }
         if self.session.chu().is_some() {
-            return self.queue_chu_save(path);
+            return self.queue_game_save::<Chu>(path);
         }
         if self.session.tori().is_some() {
             return self.queue_tori_save(path);

@@ -397,3 +397,59 @@ fn exact_native_record_byte_limit_accepts_padding_and_rejects_one_more_byte() {
     );
     assert_eq!(bytes(&g), native);
 }
+
+#[test]
+fn stop_aware_replay_prefix_and_choices_stop_or_match_the_plain_calls() {
+    let mut g = Game::standard();
+    for _ in 0..4 {
+        let a = g.legal_actions()[0].clone();
+        play(&mut g, a).unwrap();
+    }
+    let record = GameRecord::from_game(&g).unwrap();
+    // Never stopped: the same values as the plain calls.
+    assert_eq!(
+        bytes(&record.to_game_with_stop(&mut || false).unwrap()),
+        bytes(&record.to_game().unwrap())
+    );
+    assert_eq!(
+        g.record_prefix_with_stop(2, &mut || false).unwrap(),
+        g.record_prefix(2).unwrap()
+    );
+    assert_eq!(
+        g.legal_actions_with_stop(&mut || false).unwrap(),
+        g.legal_actions()
+    );
+    // Stopped at once, and stopped part way through replay or generation.
+    assert_eq!(
+        record.to_game_with_stop(&mut || true).unwrap_err(),
+        RecordError::Stopped
+    );
+    assert_eq!(
+        g.record_prefix_with_stop(2, &mut || true).unwrap_err(),
+        RecordError::Stopped
+    );
+    assert_eq!(
+        g.legal_actions_with_stop(&mut || true).unwrap_err(),
+        GameError::Stopped
+    );
+    for limit in 1..3 {
+        let mut calls = 0;
+        let mut stop = || {
+            calls += 1;
+            calls > limit
+        };
+        assert_eq!(
+            record.to_game_with_stop(&mut stop).unwrap_err(),
+            RecordError::Stopped
+        );
+        let mut calls = 0;
+        let mut stop = || {
+            calls += 1;
+            calls > limit
+        };
+        assert_eq!(
+            g.legal_actions_with_stop(&mut stop).unwrap_err(),
+            GameError::Stopped
+        );
+    }
+}

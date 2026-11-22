@@ -1726,11 +1726,11 @@ impl DesktopController {
                     .max(value.archive.next_request),
                 value.archive.document_revision,
             ),
-            OpenedNative::Xiangqi(state) => (state.document.retired_execution_floor(), 0),
-            OpenedNative::Shogi(state) => (state.document.retired_execution_floor(), 0),
-            OpenedNative::Tori(state) => (state.document.retired_execution_floor(), 0),
-            OpenedNative::Chu(state) => (state.document.retired_execution_floor(), 0),
-            OpenedNative::Tenjiku(state) => (state.document.retired_execution_floor(), 0),
+            OpenedNative::Xiangqi(_) => (0, 0),
+            OpenedNative::Shogi(_) => (0, 0),
+            OpenedNative::Tori(_) => (0, 0),
+            OpenedNative::Chu(_) => (0, 0),
+            OpenedNative::Tenjiku(_) => (0, 0),
         };
         let next = self
             .runtime_floor()

@@ -134,27 +134,12 @@ impl DesktopController {
             .conclusion()
             .is_none()
             .then_some(SessionOperation::Resume {});
-        let seed = if fixture == "xiangqi-control-capacity" {
-            // A document whose journal is one control short of the limit.
-            let document =
-                crate::game_document::ValidatedGameDocument::<Xiangqi>::new(record, human)
-                    .map_err(|e| e.diagnostic)?;
-            let mut payload = document.payload.clone();
-            payload.controls = vec![
-                crate::game_document::GameControl::Settings {
-                    settings: payload.settings.clone(),
-                };
-                MAX_ARCHIVE_CONTROLS - 5
-            ];
-            native_session::RuntimeSeed::Document(Box::new(
-                crate::game_document::validate(payload, &mut || false).map_err(|e| e.diagnostic)?,
-            ))
-        } else {
-            native_session::RuntimeSeed::Record {
-                record: Box::new(record),
-                human,
-                play_mode: PlayMode::HumanEngine,
-            }
+        // There is no control journal any more; the control-capacity fixture
+        // is the standard game (MSH-228).
+        let seed = native_session::RuntimeSeed::Record {
+            record: Box::new(record),
+            human,
+            play_mode: PlayMode::HumanEngine,
         };
         let receipt = self.queue_game_candidate::<Xiangqi>(seed, operation, None, true)?;
         self.finish_verification_admission(receipt)?;

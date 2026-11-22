@@ -2,8 +2,8 @@
 //! with the Xiangqi presentation and exact-endgame evidence. Rules stay native-owned.
 use super::native_session::*;
 use super::*;
+use crate::native_game::NativeGame;
 pub(crate) use crate::native_game::Xiangqi;
-use crate::native_game::{NativeGame, xiangqi_work};
 use mshogi_core::xiangqi as x;
 use mshogi_engine::{XiangqiChoice, XiangqiResult, XiangqiStop};
 #[cfg(test)]
@@ -209,7 +209,7 @@ impl XiangqiExactEvidence {
         &self,
         game: &x::Game,
         stopped: &mut impl FnMut() -> bool,
-    ) -> Result<u64, String> {
+    ) -> Result<(), String> {
         if stopped() {
             return Err("Xiangqi evidence validation stopped".into());
         }
@@ -296,15 +296,7 @@ impl XiangqiExactEvidence {
         }
         // Negative graph closure is deliberately NOT recomputed here. Reports retain
         // their provenance as historical observations and cannot adjudicate the game.
-        let witness = match &self.report.verdict {
-            x::ExactVerdict::NaturalWin { witness, .. } => witness.len() as u64,
-            _ => 0,
-        };
-        Ok(
-            xiangqi_work::of(self.source.event_count(), self.source.known_board_actions())
-                + xiangqi_work::VALIDATION_WORK
-                + xiangqi_work::WITNESS_ACTION_WORK * witness,
-        )
+        Ok(())
     }
 }
 
@@ -539,7 +531,7 @@ impl SessionGame for Xiangqi {
             conclusion: history.conclusion,
             pending: history.pending.clone(),
             no_win_assessment: history.no_win_assessment.clone(),
-            exact_observations: state.document.evidence().to_vec(),
+            exact_observations: state.evidence.clone(),
         });
         let files: Vec<_> = (b'a'..=b'i').map(|f| char::from(f).to_string()).collect();
         let ranks: Vec<_> = (0..10).rev().map(|r| r.to_string()).collect();

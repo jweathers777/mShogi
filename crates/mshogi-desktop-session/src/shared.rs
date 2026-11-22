@@ -1011,13 +1011,6 @@ impl DesktopController {
             .clone()
             .expect("queued replacement receipt"))
     }
-    fn shared_changed(&mut self) {
-        self.session.version += 1;
-        self.session.revision += 1;
-        self.session.selection_id += 1;
-        self.session.document_revision += 1;
-        self.session.archive_revision = self.session.revision.min(MAX_SAFE_ID - 65);
-    }
     pub(super) fn require_chess(&self) -> Result<(), String> {
         if self.session.shogi().is_some()
             || self.session.xiangqi().is_some()
@@ -1576,26 +1569,12 @@ impl DesktopController {
             receipt.completion().expect("completed fixture admission")
         };
         let record = s::GameRecord::from_game(&game);
-        let seed = if fixture == "shogi-control-capacity" {
-            // A document whose journal is one control short of the limit.
-            let document = crate::game_document::ValidatedGameDocument::<Shogi>::new(record, human)
-                .map_err(|e| e.diagnostic)?;
-            let mut payload = document.payload.clone();
-            payload.controls = vec![
-                crate::game_document::GameControl::Settings {
-                    settings: payload.settings.clone(),
-                };
-                MAX_ARCHIVE_CONTROLS - 5
-            ];
-            native_session::RuntimeSeed::Document(Box::new(
-                crate::game_document::validate(payload, &mut || false).map_err(|e| e.diagnostic)?,
-            ))
-        } else {
-            native_session::RuntimeSeed::Record {
-                record: Box::new(record),
-                human,
-                play_mode: PlayMode::HumanEngine,
-            }
+        // There is no control journal any more; the control-capacity fixture
+        // is the standard game (MSH-228).
+        let seed = native_session::RuntimeSeed::Record {
+            record: Box::new(record),
+            human,
+            play_mode: PlayMode::HumanEngine,
         };
         let operation = game
             .conclusion()

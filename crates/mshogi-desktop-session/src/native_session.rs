@@ -2,7 +2,7 @@
 //! persistence stay native-owned; each game supplies its presentation, limits
 //! and the wrappers of the shared runtime enums through [`SessionGame`].
 use super::*;
-use crate::game_document::{ControlOf, GameControl, RewindKind, SettingsOf, ValidatedGameDocument};
+use crate::game_document::{SettingsOf, ValidatedGameDocument};
 use crate::native_game::{DocumentSettings, NativeGame};
 use std::sync::Arc;
 
@@ -24,6 +24,13 @@ pub(crate) enum GameOperation<G: NativeGame> {
     Preferences { settings: SettingsOf<G> },
     /// A complete native command of the local actor.
     Local { command: G::Command },
+}
+
+/// A change of the saved document.
+enum Change<G: NativeGame> {
+    Command { actor: G::Side, command: G::Command },
+    Settings(SettingsOf<G>),
+    Rewind(usize),
 }
 
 /// Engine telemetry as the observation display needs it.
@@ -136,7 +143,6 @@ fn record_text(e: crate::native_game::RecordFailure) -> String {
 
 pub(crate) struct NativeSession<G: SessionGame> {
     pub(crate) document: Arc<ValidatedGameDocument<G>>,
-    close_document: Arc<ValidatedGameDocument<G>>,
     pub(crate) game: G::Game,
     viewed: Option<G::Game>,
     pub(crate) browse_stop: Option<BrowseStop>,
@@ -146,6 +152,10 @@ pub(crate) struct NativeSession<G: SessionGame> {
     submitted: bool,
     requested_analysis: Option<WorkLimits>,
     pub(crate) analysis: Option<ExecutionObservation>,
+    /// Engine results of this session, in memory only (not saved).
+    pub(crate) observations: Vec<ExecutionObservation>,
+    /// Completed evidence of this session (Xiangqi exact reports), not saved.
+    pub(crate) evidence: Vec<G::Evidence>,
     current_observations: Vec<u64>,
     pub(crate) diagnostic: Option<String>,
     presentation: G::Presentation,
@@ -160,23 +170,12 @@ impl<G: SessionGame> NativeSession<G> {
         persistence::check(stopped)?;
         let game = G::to_game(document.record(), stopped).map_err(record_text)?;
         persistence::check(stopped)?;
-        let close_document =
-            Arc::new(document.with_reserved_close(document.retired_execution_floor())?);
-        let viewed = if let Some(index) = document.selected_event() {
-            let prefix = G::record_prefix(&game, index, stopped).map_err(record_text)?;
-            persistence::check(stopped)?;
-            Some(G::to_game(&prefix, stopped).map_err(record_text)?)
-        } else {
-            None
-        };
-        persistence::check(stopped)?;
-        let (presentation, status, choices) = present::<G>(&game, viewed.as_ref(), stopped)?;
+        let (presentation, status, choices) = present::<G>(&game, None, stopped)?;
         persistence::check(stopped)?;
         Ok(Self {
             document: Arc::new(document),
-            close_document,
             game,
-            viewed,
+            viewed: None,
             browse_stop: None,
             pending: None,
             phase: EnginePhase::Paused,
@@ -184,8 +183,10 @@ impl<G: SessionGame> NativeSession<G> {
             submitted: false,
             requested_analysis: None,
             analysis: None,
+            observations: vec![],
+            evidence: vec![],
             current_observations: vec![],
-            diagnostic: Some("Saved observations are historical. Resume starts play.".into()),
+            diagnostic: Some("Resume starts play.".into()),
             presentation,
             choices,
             status,
@@ -237,7 +238,7 @@ impl<G: SessionGame> NativeSession<G> {
         stopped: &mut impl FnMut() -> bool,
     ) -> Result<bool, OperationFailure> {
         persistence::check(stopped)?;
-        let control: Option<ControlOf<G>> = match G::operation(operation) {
+        let control: Option<Change<G>> = match G::operation(operation) {
             Ok(GameOperation::Command { actor, command }) => {
                 let kind = G::command_kind(&command);
                 if self.document.settings().play_mode().is_two_humans()
@@ -254,7 +255,7 @@ impl<G: SessionGame> NativeSession<G> {
                 if matches!(kind, CommandKind::Terminal | CommandKind::Stop) {
                     self.paused = true;
                 }
-                Some(GameControl::Native { actor, command })
+                Some(Change::Command { actor, command })
             }
             Ok(GameOperation::Local { command }) => {
                 let actor = G::command_actor(
@@ -268,7 +269,7 @@ impl<G: SessionGame> NativeSession<G> {
             }
             Ok(GameOperation::Preferences { mut settings }) => {
                 settings.set_play_mode(self.document.settings().play_mode());
-                Some(GameControl::Settings { settings })
+                Some(Change::Settings(settings))
             }
             Err(SessionOperation::Resign {}) => {
                 return self.apply(
@@ -280,23 +281,14 @@ impl<G: SessionGame> NativeSession<G> {
                 if self.viewed.is_some() {
                     return Err("Return to live before changing history.".into());
                 }
-                let (event_index, reason) = if matches!(operation, SessionOperation::Undo {}) {
-                    (
-                        G::last_command_start(&self.game).ok_or("No event to Undo.")?,
-                        RewindKind::Undo,
-                    )
+                let event_index = if matches!(operation, SessionOperation::Undo {}) {
+                    G::last_command_start(&self.game).ok_or("No event to Undo.")?
                 } else {
-                    (
-                        self.take_back_target()
-                            .ok_or("No earlier playable human decision is available.")?,
-                        RewindKind::TakeBack,
-                    )
+                    self.take_back_target()
+                        .ok_or("No earlier playable human decision is available.")?
                 };
                 self.paused = true;
-                Some(GameControl::Rewind {
-                    event_index,
-                    reason,
-                })
+                Some(Change::Rewind(event_index))
             }
             Err(SessionOperation::Inspect { event_index }) => {
                 let record =
@@ -310,7 +302,6 @@ impl<G: SessionGame> NativeSession<G> {
                 } else {
                     self.browse_stop.clone()
                 };
-                self.document = Arc::new(self.document.with_selection(Some(event_index), stopped)?);
                 self.viewed = Some(G::to_game(&record, stopped).map_err(record_text)?);
                 self.retire();
                 self.browse_stop = stop;
@@ -327,16 +318,13 @@ impl<G: SessionGame> NativeSession<G> {
                     phase: self.phase,
                     diagnostic: self.diagnostic.clone(),
                 });
-                self.document = Arc::new(self.document.with_selection(None, stopped)?);
                 self.viewed = None;
                 self.retire();
                 self.paused = true;
-                let room = observation_room::<G>(&self.document);
                 if was_viewed
                     && !stop.paused
                     && !G::concluded(&self.game)
                     && !G::stop_recorded(&self.game)
-                    && room.is_ok()
                 {
                     // Use the same worker-owned Resume admission; a browse intent
                     // never contains or restores an execution request.
@@ -347,11 +335,7 @@ impl<G: SessionGame> NativeSession<G> {
                 } else {
                     stop.phase
                 };
-                self.diagnostic = match room {
-                    // Play cannot resume: every observation slot is used.
-                    Err(e) if was_viewed && !stop.paused => Some(e.diagnostic),
-                    _ => stop.diagnostic,
-                };
+                self.diagnostic = stop.diagnostic;
                 return Ok(false);
             }
             Err(SessionOperation::Cancel {}) => {
@@ -378,7 +362,6 @@ impl<G: SessionGame> NativeSession<G> {
                     nodes,
                 };
                 validate_limits::<G>(limits)?;
-                observation_room::<G>(&self.document)?;
                 let stop = if self.viewed.is_some() {
                     self.browse_stop.clone()
                 } else {
@@ -392,10 +375,7 @@ impl<G: SessionGame> NativeSession<G> {
                     .filter(|s| s != self.document.settings());
                 let durable = remembered.is_some();
                 if let Some(settings) = remembered {
-                    self.document = Arc::new(
-                        self.document
-                            .with_control(GameControl::Settings { settings }, stopped)?,
-                    );
+                    self.document = Arc::new(self.document.with_settings(settings)?);
                 }
                 self.retire();
                 self.browse_stop = stop;
@@ -411,7 +391,6 @@ impl<G: SessionGame> NativeSession<G> {
                 if G::concluded(&self.game) {
                     return Err("Resume requires a live unconcluded game.".into());
                 }
-                observation_room::<G>(&self.document)?;
                 self.retire();
                 self.paused = false;
                 self.phase = EnginePhase::Idle;
@@ -425,23 +404,23 @@ impl<G: SessionGame> NativeSession<G> {
             }
         };
         if let Some(control) = control {
-            // Preferences change no game and keep current work.
-            if matches!(control, GameControl::Settings { .. }) {
-                self.document = Arc::new(self.document.with_control(control, stopped)?);
-                return Ok(true);
-            }
-            let rewind = matches!(control, GameControl::Rewind { .. });
-            let document = self.document.with_control(control, stopped)?;
-            self.game = G::to_game(document.record(), stopped).map_err(record_text)?;
-            if rewind {
-                self.current_observations.clear();
-            }
-            self.viewed = if let Some(index) = document.selected_event() {
-                let prefix = G::record_prefix(&self.game, index, stopped).map_err(record_text)?;
-                Some(G::to_game(&prefix, stopped).map_err(record_text)?)
-            } else {
-                None
+            let document = match control {
+                // Preferences change no game and keep current work.
+                Change::Settings(settings) => {
+                    self.document = Arc::new(self.document.with_settings(settings)?);
+                    return Ok(true);
+                }
+                Change::Command { actor, command } => {
+                    self.document.with_command(actor, command, stopped)?
+                }
+                Change::Rewind(event_index) => {
+                    // Results on the removed moves are no longer current.
+                    self.current_observations.clear();
+                    self.document.with_rewind(event_index, stopped)?
+                }
             };
+            self.game = G::to_game(document.record(), stopped).map_err(record_text)?;
+            self.viewed = None;
             self.document = Arc::new(document);
             self.retire();
         }
@@ -469,8 +448,11 @@ impl<G: SessionGame> NativeSession<G> {
             submitted: self.submitted,
             requested_analysis: self.requested_analysis,
             analysis: self.analysis.clone(),
+            observations: self.observations.clone(),
+            evidence: self.evidence.clone(),
             current_observations: self.current_observations.clone(),
             diagnostic: self.diagnostic.clone(),
+            selected: self.viewed.as_ref().map(G::events),
         }
     }
 }
@@ -503,8 +485,12 @@ pub(crate) struct Draft<G: SessionGame> {
     submitted: bool,
     requested_analysis: Option<WorkLimits>,
     analysis: Option<ExecutionObservation>,
+    observations: Vec<ExecutionObservation>,
+    evidence: Vec<G::Evidence>,
     current_observations: Vec<u64>,
     diagnostic: Option<String>,
+    /// Event count of the viewed history position, if any.
+    selected: Option<usize>,
 }
 pub(crate) enum RuntimeSeed<G: SessionGame> {
     Current(Box<Draft<G>>),
@@ -523,7 +509,6 @@ pub(crate) struct RuntimeWork<G: SessionGame> {
     pub(crate) response: Option<ExecutionObservation>,
     /// Completed evidence to keep in the document.
     pub(crate) evidence: Option<G::Evidence>,
-    pub(crate) floor: u64,
     pub(crate) replacement: bool,
 }
 pub(crate) fn execute<G: SessionGame>(
@@ -541,8 +526,14 @@ pub(crate) fn execute<G: SessionGame>(
             state.submitted = draft.submitted;
             state.requested_analysis = draft.requested_analysis;
             state.analysis = draft.analysis;
+            state.observations = draft.observations;
+            state.evidence = draft.evidence;
             state.current_observations = draft.current_observations;
             state.diagnostic = draft.diagnostic;
+            if let Some(index) = draft.selected {
+                let prefix = G::record_prefix(&state.game, index, stopped).map_err(record_text)?;
+                state.viewed = Some(G::to_game(&prefix, stopped).map_err(record_text)?);
+            }
             state
         }
         RuntimeSeed::Document(document) => Box::new(NativeSession::restore(*document, stopped)?),
@@ -560,8 +551,8 @@ pub(crate) fn execute<G: SessionGame>(
         durable = state.apply(operation, stopped)?;
     }
     if let Some(evidence) = work.evidence {
-        state.document = Arc::new(state.document.with_evidence(evidence, stopped)?);
-        durable = true;
+        G::validate_evidence(&evidence, &state.game, stopped)?;
+        keep_newest(&mut state.evidence, evidence);
     }
     if let Some(response) = work.response {
         let pending = state
@@ -575,10 +566,19 @@ pub(crate) fn execute<G: SessionGame>(
         }
         let analysis = matches!(pending.purpose, ExecutionPurpose::MoveAnalysis { .. });
         let incomplete = result.is_some_and(G::incomplete);
-        // One worker-owned candidate validates the observation, native continuation,
-        // engine action and all persistence headroom before the live state changes.
-        state.document = Arc::new(state.document.with_observation(response.clone(), stopped)?);
-        state.game = G::to_game(state.document.record(), stopped).map_err(record_text)?;
+        // Check the result against its exact target, then play an engine move.
+        if let Some(result) = result {
+            let target = G::native(&response.context.game)
+                .ok_or_else(|| format!("Wrong game in a {} observation.", G::NAME))?;
+            let target = G::to_game(target, stopped).map_err(record_text)?;
+            G::validate_result(result, &target, stopped)?;
+            if !analysis && let Some((actor, command)) = G::engine_command(result, &state.game) {
+                state.document = Arc::new(state.document.with_command(actor, command, stopped)?);
+                state.game = G::to_game(state.document.record(), stopped).map_err(record_text)?;
+                durable = true;
+            }
+        }
+        keep_newest(&mut state.observations, response.clone());
         let browse_stop = if analysis && !failed && !incomplete {
             state.browse_stop.clone()
         } else {
@@ -611,10 +611,7 @@ pub(crate) fn execute<G: SessionGame>(
         } else {
             None
         };
-        durable = true;
     }
-    state.document = Arc::new(state.document.with_runtime_floor(work.floor)?);
-    state.close_document = Arc::new(state.document.with_reserved_close(work.floor)?);
     let (presentation, status, choices) =
         present::<G>(&state.game, state.viewed.as_ref(), stopped)?;
     state.presentation = presentation;
@@ -647,20 +644,24 @@ pub(crate) fn open<G: SessionGame>(
     )?)))
 }
 
-/// Save on the file worker: refresh the runtime floor, validate the complete
-/// candidate again and write it atomically.
+/// Results kept in memory per session; the oldest is dropped beyond this.
+const KEPT_RESULTS: usize = 256;
+fn keep_newest<T>(list: &mut Vec<T>, item: T) {
+    if list.len() >= KEPT_RESULTS {
+        list.remove(0);
+    }
+    list.push(item);
+}
+
+/// Save on the file worker: write the accepted document atomically.
 pub(crate) fn save<G: NativeGame>(
     document: &ValidatedGameDocument<G>,
-    floor: u64,
     path: &std::path::Path,
     revision: u64,
     identity: u64,
     stopped: &mut impl FnMut() -> bool,
 ) -> Result<archive::NativeCompleted, OperationFailure> {
-    // An exhausted runtime identity range never prevents saving the document.
-    let doc = document.with_runtime_floor(floor.min(MAX_SAFE_ID - 65))?;
-    let doc = ValidatedGameDocument::<G>::decode(doc.bytes(), stopped)?;
-    persistence::atomic_write(path, doc.bytes(), stopped)?;
+    persistence::atomic_write(path, document.bytes(), stopped)?;
     Ok(archive::NativeCompleted::Saved {
         path: path.to_path_buf(),
         revision,
@@ -681,14 +682,12 @@ impl DesktopController {
         if replacement {
             self.retire_admission();
         }
-        let floor = self.runtime_floor();
         self.queue_native_transaction(
             runtime_job(RuntimeWork {
                 seed,
                 operation,
                 response,
                 evidence: None,
-                floor,
                 replacement,
             }),
             consumes_response,
@@ -705,16 +704,13 @@ impl DesktopController {
         }
         let state =
             G::state(&self.session).ok_or_else(|| format!("No native {} document.", G::NAME))?;
-        observation_room::<G>(&state.document).map_err(|e| e.diagnostic)?;
         let draft = state.capture();
-        let floor = self.runtime_floor();
         self.queue_native_transaction(
             runtime_job(RuntimeWork {
                 seed: RuntimeSeed::Current(Box::new(draft)),
                 operation: None,
                 response: None,
                 evidence: Some(evidence),
-                floor,
                 replacement: false,
             }),
             false,
@@ -805,18 +801,13 @@ impl DesktopController {
             .expect("native owner")
             .document
             .clone();
-        let floor = self.runtime_floor();
         let revision = self.session.document_revision;
         let identity = self.session.document_identity;
         let id = self.next_native_io(IoPhase::Saving)?;
         self.files.submit(
             id,
             persistence::Work::Native(Box::new(archive::NativeWork::Game(Box::new(
-                move |stopped| {
-                    save(&document, floor, &path, revision, identity, &mut || {
-                        stopped()
-                    })
-                },
+                move |stopped| save(&document, &path, revision, identity, &mut || stopped()),
             )))),
         );
         Ok(id)
@@ -867,7 +858,6 @@ impl DesktopController {
         validate_limits::<G>(limits)?;
         self.ensure_runtime_capacity()?;
         let state = G::state(&self.session).expect("native owner");
-        observation_room::<G>(&state.document)?;
         let game = G::canonical(G::from_game(state.selected()).map_err(record_text)?);
         let turn = G::side_to_move(state.selected());
         let historical = state.viewed.is_some();
@@ -1028,22 +1018,19 @@ impl DesktopController {
         Ok(self.game_snapshot::<G>())
     }
     pub(super) fn close_game<G: SessionGame>(&mut self) {
-        if G::state(&self.session).is_some_and(|s| {
-            s.paused
-                && s.phase == EnginePhase::Paused
-                && s.pending.is_none()
-                && s.browse_stop.is_none()
-                && matches!(s.document.controls().last(), Some(GameControl::Close {}))
-        }) {
+        if G::state(&self.session)
+            .is_some_and(|s| s.paused && s.phase == EnginePhase::Paused && s.pending.is_none())
+        {
             return;
         }
+        // Stop all work; closing never changes the saved document.
         self.bridge.cancel();
         let state = G::state_mut(&mut self.session).expect("native owner");
         state.retire();
         state.paused = true;
-        // Prepared on the admission/Open worker; O(1) swap on native close.
-        state.document = state.close_document.clone();
-        self.shared_changed();
+        self.session.version += 1;
+        self.session.selection_id += 1;
+        self.session.revision += 1;
     }
 }
 
@@ -1152,8 +1139,7 @@ impl DesktopController {
                 application_error: None,
             }),
             observations: state
-                .document
-                .observations()
+                .observations
                 .iter()
                 .map(|o| PresentedObservation {
                     observation: o.clone(),
@@ -1162,8 +1148,7 @@ impl DesktopController {
                 })
                 .collect(),
             search_observations: state
-                .document
-                .observations()
+                .observations
                 .iter()
                 .enumerate()
                 .map(|(i, o)| display_observation(i, o, state))
@@ -1176,30 +1161,6 @@ impl DesktopController {
         G::finish_snapshot(&mut snapshot, state);
         snapshot
     }
-}
-
-/// Refuse new work when every observation slot of the document is used.
-fn observation_room<G: SessionGame>(
-    document: &ValidatedGameDocument<G>,
-) -> Result<(), OperationFailure> {
-    let count = document.observations().len() + document.evidence().len();
-    if count >= MAX_ARCHIVE_OBSERVATIONS {
-        return Err(OperationFailure::resource(ResourceFailure::new(
-            ResourceFact::measured(
-                if document.evidence().is_empty() {
-                    ResourceCategory::OrdinaryObservations
-                } else {
-                    ResourceCategory::CombinedObservations
-                },
-                count as u64,
-                MAX_ARCHIVE_OBSERVATIONS as u64,
-            )
-            .with_scope(G::SCOPE)
-            .with_unit(ResourceUnit::Observations),
-            "Application capacity: all 256 observation slots are occupied. The complete current game can still be saved.",
-        )));
-    }
-    Ok(())
 }
 
 /// Display label of a shared-search stop reason.

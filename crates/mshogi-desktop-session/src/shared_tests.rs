@@ -602,6 +602,21 @@ fn observation_capacity_refuses_new_work_before_changing_session() {
     assert_eq!(c.game_snapshot::<Shogi>().context, context);
     assert_eq!(c.game_snapshot::<Shogi>().observations.len(), 256);
     assert!(c.session.shogi().unwrap().pending.is_none());
+    // Browsing while play runs, then Return to live: the full ledger stops
+    // play but the view returns to the live game (MSH-224 review).
+    c.session.shogi_mut().unwrap().paused = false;
+    send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
+    let live = send(&mut c, SessionOperation::ReturnLive {}).unwrap();
+    assert!(!live.historical && live.paused);
+    assert!(live.diagnostic.unwrap().contains("observation slots"));
+}
+
+#[test]
+fn shogi_commands_with_an_actor_are_internal_only() {
+    // The frontend submits Shogi commands as Play and Declare for the local
+    // actor; an actor-carrying command could play for the engine's side.
+    let json = r#"{"kind":"shogi","actor":"gote","command":{"kind":"resign"}}"#;
+    assert!(serde_json::from_str::<SessionOperation>(json).is_err());
 }
 
 #[test]

@@ -733,6 +733,9 @@ enum OperationWire {
     ChuPreferences {
         settings: crate::chu_document::ChuSettings,
     },
+    // Internal only: the frontend submits Shogi commands as Play and Declare,
+    // always for the local actor.
+    #[serde(skip_deserializing)]
     Shogi {
         actor: s::Side,
         command: s::GameCommand,
@@ -742,10 +745,10 @@ enum OperationWire {
         // Opaque complete native action identifier.
         action: s::Action,
     },
-    // Submit a formal entering-king declaration, including its native false-declaration semantics.
     ShogiPreferences {
         settings: ShogiSettings,
     },
+    // Submit a formal entering-king declaration, including its native false-declaration semantics.
     Declare {},
     // Submit native human resignation.
     Resign {},

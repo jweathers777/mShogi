@@ -1,11 +1,11 @@
 ---
 id: MSH-224
 title: Shogi on the Generic Document and Session
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-11-22T09:57:00Z'
-updated_date: '2026-11-22T11:33:00Z'
+updated_date: '2026-11-22T11:50:00Z'
 labels:
   - desktop
   - refactor
@@ -24,9 +24,9 @@ MSH-217 (Shared Game Session) put Chu and Tenjiku on one generic document (Valid
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Shogi uses the generic document and session; game-specific code holds only real differences (declarations, settings with analysis defaults, presentation)
-- [ ] #2 Old Shogi session and archive code is removed; production line counts before and after are recorded
-- [ ] #3 Desktop-session and workspace tests pass; committed Shogi fixtures are regenerated; frontend tests pass; one fresh-agent review
+- [x] #1 Shogi uses the generic document and session; game-specific code holds only real differences (declarations, settings with analysis defaults, presentation)
+- [x] #2 Old Shogi session and archive code is removed; production line counts before and after are recorded
+- [x] #3 Desktop-session and workspace tests pass; committed Shogi fixtures are regenerated; frontend tests pass; one fresh-agent review
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -53,4 +53,12 @@ Checkpoint 2026-11-22 (branch claude/msh-224-shogi-xiangqi-generic, commit after
 Checkpoint 2026-11-22 (branch claude/msh-224-shogi-xiangqi-generic, pushed): SHOGI DONE. Shogi runs on ValidatedGameDocument/NativeSession (shared_shogi.rs). Lines shared.rs 2378->1712, shared_archive.rs 1834->654 (+ shared_shogi 289; generic modules grew ~460). shared_capacity_tests.rs removed (old Shogi capacity model; generic capacity has Chu/Tenjiku/Tori tests). Shared-session changes taken from Shogi, now for all generic games: preference changes keep current work and version; Resume sets Idle and refuses a concluded game; full observation ledger refuses Analyze/Resume at once; take back after a formal declaration (CommandKind::Terminal); an approved replacement retires a pending admission; engine failure text keeps the engine message; save clamps an exhausted identity floor; analysis target side is checked against the prefix. Shogi-specific now generic hooks: DocumentSettings (validate, with_analysis_defaults: Shogi remembers analysis limits), declaration advice/capability, local Play/Declare operations, optional Stop, engine_command. Accepted differences: Shogi Take back/Undo keep retired branches; an inadmissible engine choice refuses the observation (no application_error); Shogi analysis needs nodes >= 1; Save waits for a pending admission. Shogi document limit 4,194,304 measured (largest valid 2,362,756 units, 1.6 s; forged refused 3.2 s). Checks: desktop-session 311 pass, workspace tests pass, clippy clean, frontend 609 pass with regenerated Shogi fixtures. Found: Chess and Xiangqi frontend fixtures are stale from earlier engine changes (not regenerated here; belongs to MSH-221). NEXT: Xiangqi (shared_xiangqi.rs, shared_xiangqi_archive.rs, shared_xiangqi_verification.rs; exact-endgame evidence; Xiangqi rollback in SharedState).
 
 Scope split (2026-11-22): Xiangqi moved to MSH-226 because it needs more generic extension points (multi-event commands, snapshot views, draw actors, exact evidence).
+
+Review (fresh subagent, 2026-11-22): no Shogi rules change. Fixed: (1) SessionOperation::Shogi {actor, command} is internal only (not deserialized), so the client cannot submit for the engine's side; test added; (2) Return to live with all 256 observation slots used now returns to the live game paused with the capacity message (was refused; would also have hit Chu/Tenjiku/Tori); test added; (3) a Shogi engine declaration must be for the side to move (validate_result and engine_command); (4) declaration capability uses the local actor; Shogi settings limits use the same bounds as Analyze (nodes >= 1); reserve() runs one Stop-actor pass for a game without Stop; comment placement. Not done: document-level check that a saved engine turn is on the engine's side (many existing Chu/Tenjiku/Tori document tests build such turns; runtime only starts engine turns on the engine side); lib.rs per-variant arms and the old SharedState rollback stay until MSH-226 (Xiangqi).
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Shogi now uses the generic document (ValidatedGameDocument) and session (NativeSession) shared with Chu, Tenjiku and Tori. Its old session, archive format, Admit/Save worker jobs and snapshot code are removed: shared.rs 2,378 -> 1,712 lines, shared_archive.rs 1,834 -> 654, plus shared_shogi.rs 289; the generic modules grew to hold the real differences (per-game settings with analysis defaults, optional engine Stop, engine commands that can declare, local Play/Declare operations, declaration advice). All generic games now use one boxed worker job type. Shared behavior taken from Shogi for all games: preference changes keep work; Resume sets Idle and refuses a concluded game; full observation ledger refuses new work at once; take back after a declaration; approved replacement retires a pending admission; failure text keeps the engine message. Shogi document work limit 4,194,304 units, measured (largest valid 1.6 s, forged refused 3.2 s). Checks: fmt, clippy (also all features), all workspace tests, 609 frontend tests with regenerated Shogi fixtures; fresh-agent review fixed. Follow-ups: MSH-226 (Xiangqi), MSH-225 (Chess), MSH-221 (stale Chess/Xiangqi fixtures).
+<!-- SECTION:FINAL_SUMMARY:END -->

@@ -1004,7 +1004,12 @@ fn reserve<G: NativeGame>(
     } else {
         &[None]
     };
-    for stop_actor in G::SIDES {
+    let stop_actors: &[G::Side] = if G::engine_failure_stop().is_some() {
+        &G::SIDES
+    } else {
+        &G::SIDES[..1]
+    };
+    for &stop_actor in stop_actors {
         for resign_actor in G::SIDES {
             for &concluding_actor in concluding {
                 E::<G>::check(stopped)?;

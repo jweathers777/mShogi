@@ -184,12 +184,13 @@ pub(super) fn bounded(error: impl ToString) -> String {
 }
 
 fn valid_limits(limits: WorkLimits) -> Result<(), String> {
+    // The same bounds as Analyze (native_session::validate_limits).
     if !(1..=mshogi_engine::SHOGI_MAX_DEPTH).contains(&limits.depth)
-        || limits.nodes > mshogi_engine::SHOGI_MAX_NODES
+        || !(1..=mshogi_engine::SHOGI_MAX_NODES).contains(&limits.nodes)
         || limits.time_ms.is_some()
     {
         Err(
-            "Unsupported Shogi limits: depth 1–64 and at most 5,000,000 nodes; untimed play only."
+            "Unsupported Shogi limits: depth 1–64 and 1 to 5,000,000 nodes; untimed play only."
                 .into(),
         )
     } else {

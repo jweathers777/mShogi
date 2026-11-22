@@ -302,10 +302,12 @@ impl<G: SessionGame> NativeSession<G> {
                 self.viewed = None;
                 self.retire();
                 self.paused = true;
+                let room = observation_room::<G>(&self.document);
                 if was_viewed
                     && !stop.paused
                     && !G::concluded(&self.game)
                     && !G::stop_recorded(&self.game)
+                    && room.is_ok()
                 {
                     // Use the same worker-owned Resume admission; a browse intent
                     // never contains or restores an execution request.
@@ -316,7 +318,11 @@ impl<G: SessionGame> NativeSession<G> {
                 } else {
                     stop.phase
                 };
-                self.diagnostic = stop.diagnostic;
+                self.diagnostic = match room {
+                    // Play cannot resume: every observation slot is used.
+                    Err(e) if was_viewed && !stop.paused => Some(e.diagnostic),
+                    _ => stop.diagnostic,
+                };
                 return Ok(false);
             }
             Err(SessionOperation::Cancel {}) => {
@@ -1020,7 +1026,9 @@ impl DesktopController {
                 move_analysis: true,
                 chess_full: false,
                 claims: false,
-                declaration: !historical && !ended && G::can_declare(&state.game, human),
+                declaration: !historical
+                    && !ended
+                    && G::can_declare(&state.game, settings.play_mode().actor(human, turn)),
                 resign: !historical && !ended,
                 hands: G::HANDS,
                 history: true,

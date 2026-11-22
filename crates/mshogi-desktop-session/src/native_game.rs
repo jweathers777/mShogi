@@ -736,7 +736,9 @@ impl NativeGame for Shogi {
         game: &Self::Game,
     ) -> Option<(Self::Side, Self::Command)> {
         match result {
-            mshogi_engine::ShogiResult::Choice { choice, .. } => Some(shogi_choice(choice, game)),
+            // An engine declares only for the side to move.
+            mshogi_engine::ShogiResult::Choice { choice, .. } => Some(shogi_choice(choice, game))
+                .filter(|(actor, _)| *actor == game.position().side_to_move()),
             _ => None,
         }
     }
@@ -754,6 +756,14 @@ impl NativeGame for Shogi {
                 &telemetry.principal_variation
             }
         };
+        if let mshogi_engine::ShogiResult::Choice {
+            choice: mshogi_engine::ShogiChoice::Declare { actor },
+            ..
+        } = result
+            && *actor != game.position().side_to_move()
+        {
+            return Err("Shogi engine declaration is not for the side to move".into());
+        }
         let mut probe = game.clone();
         for choice in line {
             let (actor, command) = shogi_choice(choice, &probe);

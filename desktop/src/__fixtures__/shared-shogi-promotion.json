@@ -9,11 +9,11 @@
   },
   "open_token": {
     "document": 3,
-    "version": 7,
-    "document_revision": 6
+    "version": 15,
+    "document_revision": 3
   },
   "document": {
-    "revision": 6,
+    "revision": 3,
     "dirty": true,
     "path": null,
     "settings": {
@@ -29,22 +29,22 @@
     }
   },
   "io": {
-    "id": 3,
+    "id": 0,
     "phase": "idle",
     "message": null,
     "resource": null
   },
   "capacity": {
-    "id": 12,
+    "id": 9,
     "status": "available",
     "message": null,
     "resource": null
   },
   "token": {
     "document": 3,
-    "version": 7,
-    "revision": 22,
-    "selection": 7
+    "version": 15,
+    "revision": 16,
+    "selection": 15
   },
   "game": "shogi",
   "profile": "mshogi.shogi.csa36.v1",
@@ -405,7 +405,7 @@
     "promotion": true,
     "take_back": false,
     "undo": false,
-    "engine_turn": false,
+    "engine_turn": true,
     "move_analysis": true,
     "chess_full": false,
     "claims": false,
@@ -424,8 +424,9 @@
   "event_index": 0,
   "board_ply": 0,
   "play_limits": {
-    "depth": 2,
-    "nodes": 5000
+    "depth": 64,
+    "nodes": 5000000,
+    "time_ms": 1000
   },
   "historical": false,
   "paused": false,

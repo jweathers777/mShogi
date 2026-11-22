@@ -781,6 +781,11 @@ fn shogi_choice(
     }
 }
 /// Whole-document validation allowance of Shogi, in modelled replay units.
+/// Measured (MSH-224, release, macOS arm64, test
+/// `measure_full_length_shogi_replay`): the largest valid document (3,828
+/// retained events: full-length records, retired branches and a selection)
+/// charges 2,362,756 units and validates in 1.6 s; a forged 16 MB file of
+/// full-length records is refused at this allowance after 3.2 s.
 const SHOGI_DOCUMENT_WORK: u64 = 4_194_304;
 
 #[cfg(test)]
@@ -823,6 +828,58 @@ mod measurements {
             "MSH224 shogi events={} replay_ms={ms:.1} us_per_event={:.1}",
             record.event_count(),
             ms * 1e3 / record.event_count() as f64
+        );
+        // Largest valid document: retired full-length branches up to the
+        // retained-event limit, and a browse selection.
+        use crate::game_document::{GameControl, RewindKind, ValidatedGameDocument};
+        let last = g.events().len() - 1;
+        let command = g.events()[last].command;
+        let actor = g.events()[last].actor;
+        let mut doc =
+            ValidatedGameDocument::<super::Shogi>::new(record.clone(), s::Side::Sente).unwrap();
+        loop {
+            let next = doc.with_control(
+                GameControl::Rewind {
+                    event_index: last,
+                    reason: RewindKind::Undo,
+                },
+                &mut || false,
+            );
+            let Ok(rewound) = next else { break };
+            let Ok(replayed) =
+                rewound.with_control(GameControl::Native { actor, command }, &mut || false)
+            else {
+                break;
+            };
+            doc = replayed;
+        }
+        let doc = doc.with_selection(Some(last), &mut || false).unwrap();
+        let started = std::time::Instant::now();
+        ValidatedGameDocument::<super::Shogi>::decode(doc.bytes(), &mut || false).unwrap();
+        println!(
+            "MSH224 shogi largest_valid_ms={:.1} usage={:?}",
+            started.elapsed().as_secs_f64() * 1e3,
+            doc.usage()
+        );
+        // Forged: valid full-length retired records up to the byte limit.
+        let single = ValidatedGameDocument::<super::Shogi>::new(record, s::Side::Sente).unwrap();
+        let per = single.bytes().len() / 2;
+        let mut v: serde_json::Value = serde_json::from_slice(single.bytes()).unwrap();
+        let current = v["payload"]["current"].clone();
+        v["payload"]["retired"] = serde_json::json!(vec![
+            serde_json::json!({"control_index": 0, "record": current});
+            crate::MAX_ARCHIVE_BYTES / per - 3
+        ]);
+        let started = std::time::Instant::now();
+        let refused = ValidatedGameDocument::<super::Shogi>::decode(
+            &serde_json::to_vec(&v).unwrap(),
+            &mut || false,
+        )
+        .unwrap_err();
+        println!(
+            "MSH224 shogi forged_refusal_ms={:.1} forged={:?}",
+            started.elapsed().as_secs_f64() * 1e3,
+            refused.resource.map(|r| r.facts()[0].category)
         );
     }
 }

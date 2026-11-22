@@ -167,11 +167,6 @@ impl<G: SessionGame> NativeSession<G> {
     pub(crate) fn record(&self) -> CanonicalRecord {
         G::canonical(G::from_game(self.selected()).expect("admitted native record"))
     }
-    /// The selected history position, if any.
-    #[cfg(test)]
-    pub(crate) fn viewed(&self) -> Option<&G::Game> {
-        self.viewed.as_ref()
-    }
     /// Select a history position directly, for tests.
     #[cfg(test)]
     pub(crate) fn set_viewed(&mut self, viewed: Option<G::Game>) {

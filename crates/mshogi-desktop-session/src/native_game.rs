@@ -57,6 +57,10 @@ pub trait DocumentSettings:
     fn play_mode(&self) -> crate::PlayMode;
     /// Keep the document's participant mode.
     fn set_play_mode(&mut self, play_mode: crate::PlayMode);
+    /// Check game-specific settings fields.
+    fn validate(&self) -> Result<(), String> {
+        Ok(())
+    }
 }
 
 /// A game that the generic document and session serve.
@@ -265,7 +269,9 @@ macro_rules! large_shogi_game {
                 .map_err($glue::native_failure)
             }
             fn undo(game: &mut Self::Game, mut undo: Self::Undo) -> Result<(), NativeFailure> {
-                game.undo(&mut undo).map(|_| ()).map_err($glue::native_failure)
+                game.undo(&mut undo)
+                    .map(|_| ())
+                    .map_err($glue::native_failure)
             }
             fn replay_work(game: &Self::Game) -> u64 {
                 game.replay_work()

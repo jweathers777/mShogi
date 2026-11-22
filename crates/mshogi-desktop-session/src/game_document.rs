@@ -83,11 +83,8 @@ pub enum GameControl<S, C, T> {
 /// The settings of game `G`.
 pub type SettingsOf<G> = <G as NativeGame>::Settings;
 /// The journal control of game `G`.
-pub type ControlOf<G> = GameControl<
-    <G as NativeGame>::Side,
-    <G as NativeGame>::Command,
-    <G as NativeGame>::Settings,
->;
+pub type ControlOf<G> =
+    GameControl<<G as NativeGame>::Side, <G as NativeGame>::Command, <G as NativeGame>::Settings>;
 
 #[derive(Clone, Debug, Serialize)]
 pub(crate) struct Retired {
@@ -599,6 +596,7 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
                 G::submit(&mut game, *actor, command.clone(), stopped).map_err(E::<G>::native)?;
             }
             GameControl::Settings { settings } => {
+                settings.validate().map_err(E::<G>::invalid)?;
                 if settings.play_mode() != p.settings.play_mode() {
                     return Err(E::<G>::invalid(
                         "participant mode can only be selected for a new game",
@@ -828,6 +826,7 @@ pub(crate) fn validate<G: NativeGame>(
                 )?;
             }
             GameControl::Settings { settings: next } => {
+                next.validate().map_err(E::<G>::invalid)?;
                 if next.play_mode() != settings.play_mode() {
                     return Err(E::<G>::invalid(
                         "participant mode changed within a document",

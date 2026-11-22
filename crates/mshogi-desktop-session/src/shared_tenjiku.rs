@@ -2,18 +2,15 @@
 //! (`native_session`) with the Tenjiku presentation and stationary captures.
 use super::native_session::*;
 use super::*;
-use crate::game_document::ValidatedGameDocument;
 pub(crate) use crate::native_game::Tenjiku;
 use mshogi_core::tenjiku as c;
-use std::sync::Arc;
 
 /// The Tenjiku session.
 pub(crate) type TenjikuSession = NativeSession<Tenjiku>;
 
 large_shogi_session!(Tenjiku, tenjiku, TenjikuResult, TENJIKU_PLAY_LIMITS, TENJIKU_MAX_DEPTH,
 TENJIKU_MAX_NODES,
-operation: Tenjiku, preferences: TenjikuPreferences, runtime: TenjikuRuntime,
-save: TenjikuSave, state: tenjiku, tenjiku_mut, field: tenjiku,
+operation: Tenjiku, preferences: TenjikuPreferences, state: tenjiku, tenjiku_mut, field: tenjiku,
     board: 16, "Tenjiku Shogi 16×16 board", "8i",
     score_meaning: "Transparent material evaluation in Pawns from the analyzed native side; native terminal wins use board-action distance. Operational failures and absence of board actions remain unscored.",
 pv: |a| if a.kind == c::ActionKind::Igui {

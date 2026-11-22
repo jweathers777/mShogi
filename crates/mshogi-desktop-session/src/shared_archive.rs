@@ -1,7 +1,6 @@
 //! Versioned lossless archives for the concrete shared desktop consumers.
 use super::*;
 use crate::persistence::{self, Completed, Work};
-use serde_json::value::RawValue;
 use std::{fs, io::Read};
 
 /// Native shogi preferences; presentation does not prescribe artwork or layout.
@@ -44,12 +43,11 @@ impl crate::native_game::DocumentSettings for ShogiSettings {
     fn set_play_mode(&mut self, play_mode: PlayMode) {
         self.play_mode = play_mode;
     }
-}
-impl ShogiSettings {
     fn validate(&self) -> Result<(), String> {
         valid_limits(self.analysis_defaults)
     }
 }
+
 /// Game-qualified settings without a common board or rules representation.
 #[derive(Clone, Debug, Serialize)]
 #[serde(tag = "game_kind", rename_all = "snake_case")]
@@ -110,83 +108,18 @@ pub struct SharedOpenToken {
     /// Exact accepted content revision approved for replacement.
     pub document_revision: u64,
 }
-#[derive(Clone, Debug, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-pub(crate) struct ShogiControl {
-    sequence: usize,
-    #[serde(deserialize_with = "required_option")]
-    command: Option<SessionOperation>,
-    #[serde(deserialize_with = "required_option")]
-    observation: Option<usize>,
-    close_pause: bool,
-}
 pub(crate) fn required_option<'de, D: serde::Deserializer<'de>, T: Deserialize<'de>>(
     d: D,
 ) -> Result<Option<T>, D::Error> {
     Option::<T>::deserialize(d)
 }
-#[derive(Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-struct ShogiArchive {
-    initial: CanonicalRecord,
-    current: CanonicalRecord,
-    human: NativeSide,
-    initial_settings: ShogiSettings,
-    settings: ShogiSettings,
-    controls: Vec<ShogiControl>,
-    observations: Vec<PresentedObservation>,
-    // A retired high-water mark is evidence/headroom, never pending execution.
-    retired_execution_floor: u64,
-}
-pub(crate) enum ShogiSeed {
-    Current(Box<ShogiSession>),
-    Record {
-        record: Box<s::GameRecord>,
-        human: s::Side,
-        orient_human: bool,
-        play_mode: PlayMode,
-    },
-}
+/// A generic game's runtime or save job on the worker.
+pub(crate) type GameJob =
+    Box<dyn FnOnce(&mut dyn FnMut() -> bool) -> Result<NativeCompleted, OperationFailure> + Send>;
 pub(crate) enum NativeWork {
-    TenjikuRuntime(Box<native_session::RuntimeWork<Tenjiku>>),
-    TenjikuSave {
-        document: std::sync::Arc<crate::tenjiku_document::ValidatedTenjikuDocument>,
-        floor: u64,
-        path: PathBuf,
-        revision: u64,
-        identity: u64,
-    },
-    ChuRuntime(Box<native_session::RuntimeWork<Chu>>),
-    ChuSave {
-        document: std::sync::Arc<crate::chu_document::ValidatedChuDocument>,
-        floor: u64,
-        path: PathBuf,
-        revision: u64,
-        identity: u64,
-    },
-    ToriSave {
-        document: std::sync::Arc<crate::tori_document::ValidatedToriDocument>,
-        floor: u64,
-        path: PathBuf,
-        revision: u64,
-        identity: u64,
-    },
-    ToriRuntime(Box<native_session::RuntimeWork<Tori>>),
+    /// Runtime admission or save of a game on the generic session.
+    Game(GameJob),
     Xiangqi(xiangqi::archive::XiangqiWork),
-    Admit {
-        candidate: ShogiSeed,
-        command: Option<SessionOperation>,
-        response: Option<Box<ExecutionObservation>>,
-        replacement: bool,
-        floor: u64,
-    },
-    Save {
-        candidate: Box<ShogiSession>,
-        path: PathBuf,
-        revision: u64,
-        identity: u64,
-        floor: u64,
-    },
     Open {
         path: PathBuf,
         token: SharedOpenToken,
@@ -201,33 +134,16 @@ pub(crate) enum OpenedNative {
         floor: u64,
     },
     Chess(Box<persistence::Opened>),
-    Shogi {
-        state: Box<ShogiSession>,
-        floor: u64,
-    },
+    Shogi(Box<shogi::ShogiSession>),
 }
 pub(crate) enum NativeCompleted {
-    TenjikuRuntime {
-        state: Box<tenjiku::TenjikuSession>,
-        replacement: bool,
-        durable: bool,
-    },
-    ChuRuntime {
-        state: Box<chu::ChuSession>,
-        replacement: bool,
-        durable: bool,
-    },
-    ToriRuntime {
-        state: Box<tori::ToriSession>,
+    /// A generic game's session after runtime admission.
+    Runtime {
+        state: OpenedNative,
         replacement: bool,
         durable: bool,
     },
     Xiangqi(xiangqi::archive::XiangqiCompleted),
-    Admitted {
-        state: Box<ShogiSession>,
-        analysis: Option<WorkLimits>,
-        replacement: bool,
-    },
     Saved {
         path: PathBuf,
         revision: u64,
@@ -262,796 +178,7 @@ fn valid_limits(limits: WorkLimits) -> Result<(), String> {
         Ok(())
     }
 }
-fn native(record: &CanonicalRecord) -> Result<&s::GameRecord, String> {
-    match record {
-        CanonicalRecord::Shogi(record) => Ok(record),
-        _ => Err("Wrong game: a shogi archive contains a non-shogi native record.".into()),
-    }
-}
-fn archive(state: &ShogiSession, floor: u64) -> ShogiArchive {
-    ShogiArchive {
-        initial: CanonicalRecord::shogi(state.initial_record.clone()),
-        current: CanonicalRecord::shogi(s::GameRecord::from_game(&state.game)),
-        human: NativeSide::Shogi(state.human),
-        initial_settings: state.initial_settings.clone(),
-        settings: state.settings.clone(),
-        controls: state.controls.clone(),
-        observations: state.observations.clone(),
-        retired_execution_floor: floor,
-    }
-}
-fn encode(state: &ShogiSession, floor: u64) -> Result<Vec<u8>, String> {
-    crate::document::encode(RulesProfile::ShogiCsa36V1, &archive(state, floor))
-}
-fn needs_stop(state: &ShogiSession) -> bool {
-    state.pending.is_some() || state.analysis_intent.is_some() || !state.paused
-}
 
-/// Bound total replay, including semantic Undo reconstruction, independently of wall time.
-const MAX_REPLAY_ACTIONS: usize = 16_000;
-// Native event admission/reconstruction costs more than a cheap desktop control.
-const NATIVE_EVENT_WORK: usize = 4;
-fn counts(state: &ShogiSession, reserve: bool) -> Result<(), OperationFailure> {
-    if state.controls.len() + usize::from(reserve) > MAX_ARCHIVE_CONTROLS
-        || state.observations.len() > MAX_ARCHIVE_OBSERVATIONS
-    {
-        let mut facts = Vec::new();
-        if state.controls.len() + usize::from(reserve) > MAX_ARCHIVE_CONTROLS {
-            facts.push(resource_fact(
-                ResourceCategory::Controls,
-                state.controls.len(),
-                MAX_ARCHIVE_CONTROLS,
-                usize::from(reserve),
-                ResourceScope::Shogi,
-                ResourceUnit::Controls,
-            ));
-        }
-        if state.observations.len() > MAX_ARCHIVE_OBSERVATIONS {
-            facts.push(resource_fact(
-                ResourceCategory::OrdinaryObservations,
-                state.observations.len(),
-                MAX_ARCHIVE_OBSERVATIONS,
-                0,
-                ResourceScope::Shogi,
-                ResourceUnit::Observations,
-            ));
-        }
-        return Err(resource_refusal(
-            facts,
-            "Application capacity: native Shogi document counts exceed supported limits including stop/close reservation. Current accepted document remains saveable.",
-        ));
-    }
-    if state.game.events().len() > s::MAX_RECORD_EVENTS
-        || state.initial_record.event_count() > s::MAX_RECORD_EVENTS
-    {
-        return Err(resource_refusal(
-            vec![resource_fact(
-                ResourceCategory::NativeEvents,
-                state
-                    .game
-                    .events()
-                    .len()
-                    .max(state.initial_record.event_count()),
-                s::MAX_RECORD_EVENTS,
-                0,
-                ResourceScope::Shogi,
-                ResourceUnit::Events,
-            )],
-            "Application capacity: native Shogi event limit reached.",
-        ));
-    }
-    Ok(())
-}
-fn check_capacity(
-    state: &ShogiSession,
-    stopped: &mut impl FnMut() -> bool,
-) -> Result<(), OperationFailure> {
-    let reserve = needs_stop(state) || state.durable_needs_stop;
-    counts(state, reserve)?;
-    persistence::check(stopped)?;
-    // Historical flags become true on Open: budget the longer false spelling now.
-    let mut state = state.clone();
-    for o in &mut state.observations {
-        o.historical = false;
-    }
-    let bytes = encode(&state, MAX_SAFE_ID - 17)?;
-    if bytes.len() + if reserve { 1024 } else { 0 } > MAX_ARCHIVE_BYTES {
-        return Err(resource_refusal(
-            vec![resource_fact(
-                ResourceCategory::EncodedDocumentBytes,
-                bytes.len(),
-                MAX_ARCHIVE_BYTES,
-                if reserve { 1024 } else { 0 },
-                ResourceScope::Shogi,
-                ResourceUnit::Bytes,
-            )],
-            "Application capacity: complete Shogi document exceeds16MiB including stop/close headroom.",
-        ));
-    }
-    persistence::check(stopped)?;
-    replay_work(&state)?;
-    Ok(())
-}
-fn replay_work(state: &ShogiSession) -> Result<(), OperationFailure> {
-    let mut work = (state.initial_record.event_count() + state.game.events().len())
-        * NATIVE_EVENT_WORK
-        + usize::from(needs_stop(state) || state.durable_needs_stop);
-    for c in &state.controls {
-        work = work.saturating_add(match &c.command {
-            Some(SessionOperation::Undo {} | SessionOperation::TakeBack {}) => {
-                s::MAX_RECORD_EVENTS * NATIVE_EVENT_WORK
-            }
-            Some(SessionOperation::Inspect { .. }) => s::MAX_RECORD_EVENTS * NATIVE_EVENT_WORK,
-            _ => 1,
-        });
-    }
-    for o in &state.observations {
-        work =
-            work.saturating_add(o.observation.context.game.event_count() * NATIVE_EVENT_WORK + 8);
-    }
-    if work > MAX_REPLAY_ACTIONS {
-        Err(resource_refusal(
-            vec![resource_fact(
-                ResourceCategory::ReplayWork,
-                work.saturating_sub(usize::from(needs_stop(state) || state.durable_needs_stop)),
-                MAX_REPLAY_ACTIONS,
-                usize::from(needs_stop(state) || state.durable_needs_stop),
-                ResourceScope::Shogi,
-                ResourceUnit::ReplayUnits,
-            )],
-            "Application capacity: complete Shogi document exceeds16,000 native replay work units.",
-        ))
-    } else {
-        Ok(())
-    }
-}
-impl ShogiSession {
-    // Seed a complete cheap-control journal only in a separately labeled QA build.
-    #[cfg(feature = "desktop-verification")]
-    pub(crate) fn verification_control_capacity(&mut self) -> Result<(), String> {
-        while self.controls.len() < MAX_ARCHIVE_CONTROLS - 1 {
-            let operation = SessionOperation::ShogiPreferences {
-                settings: self.settings.clone(),
-            };
-            self.apply_command(operation.clone())?;
-            self.control(Some(operation), None, false);
-        }
-        check_capacity(self, &mut || false).map_err(String::from)
-    }
-    pub(crate) fn restored(record: &s::GameRecord, human: s::Side) -> Result<Self, String> {
-        let settings = ShogiSettings::default();
-        Ok(Self {
-            initial_record: record.clone(),
-            initial_settings: settings.clone(),
-            settings,
-            controls: vec![],
-            analysis_intent: None,
-            durable_needs_stop: false,
-            execution_floor: 0,
-            game: record
-                .to_game()
-                .map_err(|e| format!("Corrupt native shogi record: {e}"))?,
-            human,
-            viewed: None,
-            paused: true,
-            browse_running: false,
-            browse_stop: None,
-            pending: None,
-            submitted: false,
-            phase: EnginePhase::Paused,
-            diagnostic: None,
-            analysis: None,
-            observations: vec![],
-        })
-    }
-    pub(crate) fn control(
-        &mut self,
-        command: Option<SessionOperation>,
-        observation: Option<usize>,
-        close_pause: bool,
-    ) {
-        if close_pause {
-            self.durable_needs_stop = false;
-        }
-        self.controls.push(ShogiControl {
-            sequence: self.controls.len() + 1,
-            command,
-            observation,
-            close_pause,
-        });
-    }
-    fn apply_command(
-        &mut self,
-        operation: SessionOperation,
-    ) -> Result<Option<WorkLimits>, OperationFailure> {
-        if matches!(
-            operation,
-            SessionOperation::Analyze { .. }
-                | SessionOperation::Resume {}
-                | SessionOperation::Retry {}
-                | SessionOperation::Play { .. }
-        ) && self.observations.len() >= MAX_ARCHIVE_OBSERVATIONS
-        {
-            return Err(resource_refusal(
-                vec![
-                    resource_fact(
-                        ResourceCategory::OrdinaryObservations,
-                        self.observations.len(),
-                        MAX_ARCHIVE_OBSERVATIONS,
-                        0,
-                        ResourceScope::Shogi,
-                        ResourceUnit::Observations,
-                    )
-                    .with_measurement(ResourceMeasurement::Accepted),
-                ],
-                "Application capacity: all256 observation slots are retained; no new work started.",
-            ));
-        }
-        let preferences = matches!(operation, SessionOperation::ShogiPreferences { .. });
-        let mut analysis = None;
-        match operation {
-            SessionOperation::Play{action}=>{
-                if self.paused||self.viewed.is_some()||self.settings.play_mode.engine_turn(self.human,self.game.position().side_to_move()){return Err("Native board action requires the resumed human live turn.".into());}
-                self.game.submit(s::GameRequest{expected:self.game.context(),actor:self.local_actor(),command:s::GameCommand::Play(action)}).map_err(|e|format!("Native action rejected: {e:?}"))?;
-                self.retire();self.paused=false;self.phase=EnginePhase::Idle;
-            }
-            SessionOperation::Declare{}|SessionOperation::Resign{}=>{
-                if self.viewed.is_some(){return Err("Return to live before a terminal command.".into());}
-                let command=if matches!(operation,SessionOperation::Declare{}){s::GameCommand::DeclareEnteringKing}else{s::GameCommand::Resign};
-                self.game.submit(s::GameRequest{expected:self.game.context(),actor:self.local_actor(),command}).map_err(|e|format!("Native terminal command rejected: {e:?}"))?;
-                self.retire();self.paused=true;
-            }
-            SessionOperation::TakeBack{}=>{
-                self.browse_running=false;
-                if self.viewed.is_some(){return Err("Return to live before Take back.".into());}
-                let target=self.take_back_target().ok_or("No earlier playable human decision is available.")?;
-                self.game=self.game.prefix(target).map_err(|e|format!("Native Take back rejected: {e:?}"))?;
-                self.retire();self.paused=true;
-                self.diagnostic=Some("Position restored. Resume play when ready.".into());
-                for o in &mut self.observations{o.historical=true;}
-            }
-            SessionOperation::Undo{}=>{
-                self.browse_running=false;
-                if self.viewed.is_some()||self.game.events().is_empty(){return Err("Undo requires a live accepted event.".into());}
-                self.game=self.game.prefix(self.game.events().len()-1).map_err(|e|format!("Native undo rejected: {e:?}"))?;self.retire();self.paused=true;
-            }
-            SessionOperation::Inspect { event_index } => {
-                if self.viewed.is_none() {
-                    self.browse_running = !self.paused && self.game.conclusion().is_none()
-                        && matches!(self.phase, EnginePhase::Idle | EnginePhase::Thinking);
-                }
-                if !self.browse_running && self.browse_stop.is_none() {
-                    self.browse_stop = Some(BrowseStop { paused: true, phase: self.phase, diagnostic: self.diagnostic.clone() });
-                }
-                self.viewed = Some(self.game.prefix(event_index).map_err(|e| format!("Native history rejected: {e:?}"))?);
-                self.retire(); self.paused = true;
-            }
-            SessionOperation::ReturnLive {} => {
-                let resume = std::mem::take(&mut self.browse_running) && self.viewed.is_some()
-                    && self.game.conclusion().is_none()
-                    && matches!(self.phase, EnginePhase::Paused | EnginePhase::Idle | EnginePhase::Thinking);
-                let stop = self.browse_stop.take().unwrap_or(BrowseStop { paused: true, phase: self.phase, diagnostic: self.diagnostic.clone() });
-                self.viewed = None; self.retire(); self.paused = true;
-                if resume { self.apply_command(SessionOperation::Resume {})?; }
-                else if !matches!(stop.phase, EnginePhase::Idle | EnginePhase::Thinking) { self.phase = stop.phase; self.diagnostic = stop.diagnostic; }
-            }
-            SessionOperation::Cancel{}=>{self.browse_running=false;self.browse_stop=None;self.retire();self.paused=true;self.phase=EnginePhase::Cancelled;}
-            SessionOperation::Analyze{operation:AnalysisOperation::Moves{depth,nodes}}=>{
-                if self.viewed.is_none(){self.browse_running=false;}
-                let limits=WorkLimits{ time_ms: None,depth,nodes};valid_limits(limits)?;self.retire();self.paused=true;self.settings.analysis_defaults=limits;self.analysis_intent=Some((self.record(),limits));analysis=Some(limits);
-            }
-            SessionOperation::Resume{}|SessionOperation::Retry{}=>{
-                self.browse_running=false;
-                if self.viewed.is_some()||self.game.conclusion().is_some(){return Err("Resume requires a live unconcluded game.".into());}
-                self.retire();self.paused=false;self.phase=EnginePhase::Idle;
-            }
-            SessionOperation::ShogiPreferences{mut settings}=>{settings.validate()?;settings.play_mode=self.settings.play_mode;self.settings=settings;}
-            _=>return Err("Unsupported shogi operation: chess Full/claims/chess commands are not shogi capabilities.".into()),
-        }
-        if !preferences {
-            self.durable_needs_stop = needs_stop(self);
-        }
-        Ok(analysis)
-    }
-    fn apply_response(&mut self, response: ExecutionObservation) -> Result<(), OperationFailure> {
-        if serde_json::to_vec(&execution_request(response.context.clone()))
-            .map_err(bounded)?
-            .len()
-            > mshogi_engine::MAX_REQUEST_BYTES
-            || serde_json::to_vec(&ExecutionResponse {
-                protocol: mshogi_engine::PROTOCOL_VERSION,
-                observation: response.clone(),
-            })
-            .map_err(bounded)?
-            .len()
-                > mshogi_engine::MAX_RESPONSE_BYTES
-        {
-            return Err(OperationFailure::resource(ResourceFailure::unknown(
-                "Application capacity: encoded observation context/result exceeds native transport limits.",
-            )));
-        }
-        if !response.matches(&response.context) {
-            return Err("Corrupt observation: invalid native context/result metadata.".into());
-        }
-        if self.observations.len() >= MAX_ARCHIVE_OBSERVATIONS {
-            return Err(resource_refusal(
-                vec![
-                    resource_fact(
-                        ResourceCategory::OrdinaryObservations,
-                        self.observations.len(),
-                        MAX_ARCHIVE_OBSERVATIONS,
-                        0,
-                        ResourceScope::Shogi,
-                        ResourceUnit::Observations,
-                    )
-                    .with_measurement(ResourceMeasurement::Accepted),
-                ],
-                "Application capacity: all256 observation slots are retained; no new observation accepted.",
-            ));
-        }
-        let analysis = matches!(
-            response.context.purpose,
-            ExecutionPurpose::MoveAnalysis { .. }
-        );
-        let expected = if analysis {
-            let (game, limits) = self
-                .analysis_intent
-                .as_ref()
-                .ok_or("Corrupt observation: no corresponding analysis command.")?;
-            if *limits != response.context.limits {
-                return Err(
-                    "Corrupt observation: analysis limits disagree with its command.".into(),
-                );
-            }
-            game.clone()
-        } else {
-            if !matches!(response.context.purpose, ExecutionPurpose::EngineTurn {})
-                || self.paused
-                || self.viewed.is_some()
-                || self.game.conclusion().is_some()
-                || !self
-                    .settings
-                    .play_mode
-                    .engine_turn(self.human, self.game.position().side_to_move())
-            {
-                return Err("Corrupt observation: no corresponding native engine turn.".into());
-            }
-            CanonicalRecord::shogi(s::GameRecord::from_game(&self.game))
-        };
-        if response.context.game != expected {
-            return Err("Corrupt observation: exact native history/target differs from its command context.".into());
-        }
-        // Validate the short PV in private native state, never on the live game.
-        // The journal already owns this exact native prefix. Clone that proven
-        // state instead of replaying hundreds of events for every empty/short PV.
-        // Strict native record parsing remains mandatory at the archive boundary.
-        if CanonicalRecord::shogi(s::GameRecord::from_game(self.selected())) != expected {
-            return Err(
-                "Corrupt observation: selected native prefix disagrees with command intent.".into(),
-            );
-        }
-        let mut probe = self.selected().clone();
-        if let ExecutionPurpose::MoveAnalysis { target } = &response.context.purpose {
-            if target.turn != NativeSide::Shogi(probe.position().side_to_move()) {
-                return Err(
-                    "Corrupt observation: analysis side disagrees with the exact native target."
-                        .into(),
-                );
-            }
-        } else if response.context.limits != mshogi_engine::SHOGI_PLAY_LIMITS
-            && response.context.limits
-                != (WorkLimits {
-                    time_ms: None,
-                    depth: 64,
-                    nodes: 300_000,
-                })
-            && response.context.limits
-                != (WorkLimits {
-                    time_ms: None,
-                    depth: 2,
-                    nodes: 5000,
-                })
-        {
-            return Err(
-                "Unsupported saved shogi engine-turn limits; no downgrade was applied.".into(),
-            );
-        }
-        let result = match &response.result {
-            ExecutionResult::Shogi { result } => Some(result),
-            ExecutionResult::Failure { .. } => None,
-            _ => return Err("Wrong game: chess observation in a shogi document.".into()),
-        };
-        let mut pv_error = None;
-        if let Some(
-            ShogiResult::Choice { telemetry, .. }
-            | ShogiResult::Finished { telemetry, .. }
-            | ShogiResult::Incomplete { telemetry },
-        ) = result
-        {
-            for choice in &telemetry.principal_variation {
-                let (actor, command) = match choice {
-                    ShogiChoice::Move { action } => (
-                        probe.position().side_to_move(),
-                        s::GameCommand::Play(*action),
-                    ),
-                    ShogiChoice::Declare { actor } => (*actor, s::GameCommand::DeclareEnteringKing),
-                };
-                if let Err(e) = probe.submit(s::GameRequest {
-                    expected: probe.context(),
-                    actor,
-                    command,
-                }) {
-                    pv_error = Some(format!("Native engine choice rejected: {e:?}"));
-                    break;
-                }
-            }
-        }
-        let mut error = None;
-        self.phase = match &response.result {
-            ExecutionResult::Failure { failure } => {
-                self.diagnostic = Some(failure.message.clone());
-                EnginePhase::Failed
-            }
-            ExecutionResult::Shogi {
-                result: ShogiResult::Incomplete { .. },
-            } => EnginePhase::Incomplete,
-            ExecutionResult::Shogi {
-                result: ShogiResult::Finished { .. },
-            } => EnginePhase::Idle,
-            ExecutionResult::Shogi {
-                result: ShogiResult::Choice { choice, .. },
-            } => {
-                if !analysis {
-                    let (actor, command) = match choice {
-                        ShogiChoice::Move { action } => (
-                            self.game.position().side_to_move(),
-                            s::GameCommand::Play(*action),
-                        ),
-                        ShogiChoice::Declare { actor } => {
-                            (*actor, s::GameCommand::DeclareEnteringKing)
-                        }
-                    };
-                    if let Err(e) = self.game.submit(s::GameRequest {
-                        expected: self.game.context(),
-                        actor,
-                        command,
-                    }) {
-                        error = Some(format!("Native engine choice rejected: {e:?}"));
-                    }
-                }
-                if error.is_some() {
-                    EnginePhase::Failed
-                } else {
-                    EnginePhase::Idle
-                }
-            }
-            _ => unreachable!(),
-        };
-        if pv_error.is_some() && error.is_none() {
-            return Err(
-                "Corrupt observation: native principal variation contains an inadmissible choice."
-                    .into(),
-            );
-        }
-        if let Some(e) = &error {
-            self.diagnostic = Some(e.clone());
-        }
-        let observation = PresentedObservation {
-            observation: response,
-            application_error: error,
-            historical: false,
-        };
-        if analysis {
-            self.analysis = Some(observation.clone());
-            self.analysis_intent = None;
-        } else if self.phase != EnginePhase::Idle {
-            self.paused = true;
-        }
-        if matches!(
-            self.phase,
-            EnginePhase::Failed | EnginePhase::Incomplete | EnginePhase::Cancelled
-        ) {
-            self.browse_running = false;
-            self.browse_stop = None;
-        }
-        self.pending = None;
-        self.submitted = false;
-        self.observations.push(observation);
-        self.durable_needs_stop = needs_stop(self);
-        Ok(())
-    }
-}
-#[derive(Deserialize)]
-#[serde(deny_unknown_fields)]
-struct RawShogiArchive {
-    initial: Box<RawValue>,
-    current: Box<RawValue>,
-    human: NativeSide,
-    initial_settings: ShogiSettings,
-    settings: ShogiSettings,
-    controls: Vec<Box<RawValue>>,
-    observations: Vec<Box<RawValue>>,
-    retired_execution_floor: u64,
-}
-fn raw_event_count(text: &str) -> Result<usize, OperationFailure> {
-    #[derive(Deserialize)]
-    struct Envelope {
-        game_kind: String,
-        rules_profile: String,
-        profile_edition: String,
-        payload: Box<RawValue>,
-    }
-    #[derive(Deserialize)]
-    struct Ledger {
-        events: Vec<Box<RawValue>>,
-    }
-    let record: Envelope = serde_json::from_str(text).map_err(bounded)?;
-    if record.game_kind != "shogi" {
-        return Err("Wrong game: shogi archive contains a non-shogi native context.".into());
-    }
-    if record.rules_profile != s::PROFILE_ID || record.profile_edition != s::PROFILE_EDITION {
-        return Err(
-            "Wrong profile/edition: native shogi context disagrees with the selected archive."
-                .into(),
-        );
-    }
-    let ledger: Ledger = serde_json::from_str(record.payload.get()).map_err(bounded)?;
-    if ledger.events.len() > s::MAX_RECORD_EVENTS {
-        return Err(resource_refusal(
-            vec![resource_fact(
-                ResourceCategory::NativeEvents,
-                ledger.events.len(),
-                s::MAX_RECORD_EVENTS,
-                0,
-                ResourceScope::Shogi,
-                ResourceUnit::Events,
-            )],
-            "Application capacity: native Shogi event bound exceeded.",
-        ));
-    }
-    Ok(ledger.events.len())
-}
-fn parse_shogi_archive(
-    payload: &str,
-    stopped: &mut impl FnMut() -> bool,
-) -> Result<ShogiArchive, OperationFailure> {
-    let raw: RawShogiArchive = serde_json::from_str(payload)
-        .map_err(|e| format!("Corrupt shogi archive: {}", bounded(e)))?;
-    if raw.controls.len() > MAX_ARCHIVE_CONTROLS
-        || raw.observations.len() > MAX_ARCHIVE_OBSERVATIONS
-    {
-        return Err(document_count_failure(
-            raw.controls.len(),
-            raw.observations.len(),
-            0,
-            false,
-            ResourceScope::Shogi,
-            0,
-        ));
-    }
-    // This is only a resource probe, never an alternate parser. Every original
-    // raw value subsequently reaches its strict native parser unchanged.
-    let mut work = (raw_event_count(raw.initial.get())? + raw_event_count(raw.current.get())?)
-        * NATIVE_EVENT_WORK;
-    #[derive(Deserialize)]
-    struct ObservationProbe {
-        observation: Box<RawValue>,
-    }
-    #[derive(Deserialize)]
-    struct ResponseProbe {
-        context: Box<RawValue>,
-    }
-    #[derive(Deserialize)]
-    struct ContextProbe {
-        game: Box<RawValue>,
-    }
-    for text in &raw.observations {
-        persistence::check(stopped)?;
-        let observation: ObservationProbe = serde_json::from_str(text.get()).map_err(bounded)?;
-        let response: ResponseProbe =
-            serde_json::from_str(observation.observation.get()).map_err(bounded)?;
-        let context: ContextProbe =
-            serde_json::from_str(response.context.get()).map_err(bounded)?;
-        work = work.saturating_add(raw_event_count(context.game.get())? * NATIVE_EVENT_WORK + 8);
-    }
-    let mut controls = Vec::with_capacity(raw.controls.len());
-    for text in raw.controls {
-        persistence::check(stopped)?;
-        // Journal replacement is not a supported command. Reject it before its
-        // embedded canonical record could trigger expensive native validation.
-        #[derive(Deserialize)]
-        struct CommandProbe {
-            command: Option<Box<RawValue>>,
-        }
-        #[derive(Deserialize)]
-        struct KindProbe {
-            kind: String,
-        }
-        let probe: CommandProbe = serde_json::from_str(text.get()).map_err(bounded)?;
-        if let Some(command) = probe.command {
-            let kind: KindProbe = serde_json::from_str(command.get()).map_err(bounded)?;
-            if matches!(kind.kind.as_str(), "replace" | "chess") {
-                return Err("Unsupported shogi journal command; native record preserved.".into());
-            }
-        }
-        let control: ShogiControl = serde_json::from_str(text.get()).map_err(bounded)?;
-        work = work.saturating_add(match control.command {
-            Some(
-                SessionOperation::Undo {}
-                | SessionOperation::TakeBack {}
-                | SessionOperation::Inspect { .. },
-            ) => s::MAX_RECORD_EVENTS * NATIVE_EVENT_WORK,
-            _ => 1,
-        });
-        controls.push(control);
-    }
-    if work > MAX_REPLAY_ACTIONS {
-        return Err(resource_refusal(
-            vec![resource_fact(
-                ResourceCategory::ReplayWork,
-                work,
-                MAX_REPLAY_ACTIONS,
-                0,
-                ResourceScope::Shogi,
-                ResourceUnit::ReplayUnits,
-            )],
-            "Application capacity: Saved journal exceeds16,000 replay actions.",
-        ));
-    }
-    persistence::check(stopped)?;
-    let initial = serde_json::from_str(raw.initial.get()).map_err(bounded)?;
-    persistence::check(stopped)?;
-    let current = serde_json::from_str(raw.current.get()).map_err(bounded)?;
-    let mut observations = Vec::with_capacity(raw.observations.len());
-    for text in raw.observations {
-        persistence::check(stopped)?;
-        observations.push(serde_json::from_str(text.get()).map_err(bounded)?);
-    }
-    persistence::check(stopped)?;
-    Ok(ShogiArchive {
-        initial,
-        current,
-        human: raw.human,
-        initial_settings: raw.initial_settings,
-        settings: raw.settings,
-        controls,
-        observations,
-        retired_execution_floor: raw.retired_execution_floor,
-    })
-}
-fn decode_shogi(
-    payload: &str,
-    stopped: &mut impl FnMut() -> bool,
-) -> Result<(ShogiSession, u64), OperationFailure> {
-    let saved = parse_shogi_archive(payload, stopped)?;
-    let NativeSide::Shogi(human) = saved.human else {
-        return Err("Wrong game: shogi archive human side is chess.".into());
-    };
-    if saved.retired_execution_floor >= MAX_SAFE_ID - 64 {
-        return Err(resource_refusal(
-            vec![resource_fact(
-                ResourceCategory::IdentityHeadroom,
-                saved.retired_execution_floor as usize,
-                MAX_SAFE_ID as usize,
-                64,
-                ResourceScope::Shogi,
-                ResourceUnit::Identities,
-            )],
-            "Saved identity floor leaves no safe runtime headroom.",
-        ));
-    }
-    saved.settings.validate()?;
-    saved.initial_settings.validate()?;
-    let mut state = ShogiSession::restored(native(&saved.initial)?, human)?;
-    state.settings = saved.initial_settings.clone();
-    state.initial_settings = saved.initial_settings;
-    if saved.controls.len() > MAX_ARCHIVE_CONTROLS
-        || saved.observations.len() > MAX_ARCHIVE_OBSERVATIONS
-    {
-        return Err(document_count_failure(
-            saved.controls.len(),
-            saved.observations.len(),
-            0,
-            false,
-            ResourceScope::Shogi,
-            0,
-        ));
-    }
-    let mut work = state.initial_record.event_count() * NATIVE_EVENT_WORK;
-    for (index, control) in saved.controls.into_iter().enumerate() {
-        persistence::check(stopped)?;
-        if control.sequence != index + 1
-            || usize::from(control.command.is_some())
-                + usize::from(control.observation.is_some())
-                + usize::from(control.close_pause)
-                != 1
-        {
-            return Err("Corrupt shogi control journal sequence/type.".into());
-        }
-        if let Some(operation) = &control.command {
-            work = work.saturating_add(match operation {
-                SessionOperation::Undo {}
-                | SessionOperation::TakeBack {}
-                | SessionOperation::Inspect { .. } => state.game.events().len() * NATIVE_EVENT_WORK,
-                _ => 1,
-            });
-            if work > MAX_REPLAY_ACTIONS {
-                return Err(resource_refusal(
-                    vec![resource_fact(
-                        ResourceCategory::ReplayWork,
-                        work,
-                        MAX_REPLAY_ACTIONS,
-                        0,
-                        ResourceScope::Shogi,
-                        ResourceUnit::ReplayUnits,
-                    )],
-                    "Application capacity: Saved journal exceeds16,000 replay actions.",
-                ));
-            }
-            state.apply_command(operation.clone())?;
-        } else if let Some(observation) = control.observation {
-            if observation != state.observations.len() {
-                return Err("Corrupt observation/control ordering.".into());
-            }
-            let archived = saved
-                .observations
-                .get(observation)
-                .ok_or("Corrupt missing observation.")?;
-            work = work.saturating_add(
-                archived.observation.context.game.event_count() * NATIVE_EVENT_WORK + 8,
-            );
-            if work > MAX_REPLAY_ACTIONS {
-                return Err(resource_refusal(
-                    vec![resource_fact(
-                        ResourceCategory::ReplayWork,
-                        work,
-                        MAX_REPLAY_ACTIONS,
-                        0,
-                        ResourceScope::Shogi,
-                        ResourceUnit::ReplayUnits,
-                    )],
-                    "Application capacity: Saved observations exceed16,000 replay actions.",
-                ));
-            }
-            if [
-                archived.observation.context.request_id,
-                archived.observation.context.session_version,
-                archived.observation.context.process_generation,
-            ]
-            .iter()
-            .any(|id| *id > saved.retired_execution_floor)
-            {
-                return Err("Corrupt observation: identity exceeds retired evidence floor.".into());
-            }
-            if let ExecutionPurpose::MoveAnalysis { target } = &archived.observation.context.purpose
-                && target.selection_id > saved.retired_execution_floor
-            {
-                return Err("Corrupt observation selection exceeds retired floor.".into());
-            }
-            state.apply_response(archived.observation.clone())?;
-            let admitted = state.observations.last_mut().unwrap();
-            if admitted.application_error != archived.application_error {
-                return Err("Corrupt observation application-admission evidence.".into());
-            }
-            admitted.historical = archived.historical;
-        } else {
-            state.retire();
-            state.paused = true;
-            state.durable_needs_stop = false;
-        }
-        state.controls.push(control);
-    }
-    if state.observations.len() != saved.observations.len() {
-        return Err("Corrupt unreferenced observation.".into());
-    }
-    if s::GameRecord::from_game(&state.game) != *native(&saved.current)?
-        || state.settings != saved.settings
-    {
-        return Err("Corrupt archive: native replay disagrees with saved record/settings.".into());
-    }
-    check_capacity(&state, stopped)?;
-    Ok((state, saved.retired_execution_floor))
-}
 pub(crate) fn decode_chess_document(
     bytes: &[u8],
     stopped: &mut impl FnMut() -> bool,
@@ -1106,121 +233,8 @@ pub(crate) fn execute(
     stopped: &mut impl FnMut() -> bool,
 ) -> Result<NativeCompleted, OperationFailure> {
     match work {
-        NativeWork::TenjikuRuntime(work) => native_session::execute(*work, stopped),
-        NativeWork::TenjikuSave {
-            document,
-            floor,
-            path,
-            revision,
-            identity,
-        } => native_session::save(&document, floor, &path, revision, identity, stopped),
-        NativeWork::ChuRuntime(work) => native_session::execute(*work, stopped),
-        NativeWork::ChuSave {
-            document,
-            floor,
-            path,
-            revision,
-            identity,
-        } => native_session::save(&document, floor, &path, revision, identity, stopped),
-        NativeWork::ToriSave {
-            document,
-            floor,
-            path,
-            revision,
-            identity,
-        } => native_session::save(&document, floor, &path, revision, identity, stopped),
-        NativeWork::ToriRuntime(work) => native_session::execute(*work, stopped),
+        NativeWork::Game(job) => job(stopped),
         NativeWork::Xiangqi(work) => xiangqi::archive::execute(work, stopped),
-        NativeWork::Admit {
-            candidate,
-            command,
-            response,
-            replacement,
-            floor,
-        } => {
-            let mut candidate = match candidate {
-                ShogiSeed::Current(state) => state,
-                ShogiSeed::Record {
-                    record,
-                    human,
-                    orient_human,
-                    play_mode,
-                } => {
-                    let mut state = ShogiSession::restored(&record, human)?;
-                    state.settings.play_mode = play_mode;
-                    state.initial_settings = state.settings.clone();
-                    if orient_human {
-                        state.settings.orientation = human;
-                        state.initial_settings = state.settings.clone();
-                    }
-                    Box::new(state)
-                }
-            };
-            let mut analysis = None;
-            if let Some(command) = command {
-                analysis = candidate.apply_command(command.clone())?;
-                let resumed_return =
-                    matches!(command, SessionOperation::ReturnLive {}) && !candidate.paused;
-                candidate.control(Some(command), None, false);
-                if resumed_return {
-                    candidate.control(Some(SessionOperation::Resume {}), None, false);
-                }
-            }
-            if let Some(response) = response {
-                let index = candidate.observations.len();
-                candidate.apply_response(*response)?;
-                candidate.control(None, Some(index), false);
-            }
-            // Check raw encoded context bounds as well as archive composition.
-            if floor >= MAX_SAFE_ID - 64 {
-                return Err(resource_refusal(
-                    vec![resource_fact(
-                        ResourceCategory::IdentityHeadroom,
-                        floor as usize,
-                        (MAX_SAFE_ID - 65) as usize,
-                        0,
-                        ResourceScope::Application,
-                        ResourceUnit::Identities,
-                    )],
-                    "Application capacity: runtime identity headroom exhausted.",
-                ));
-            }
-            check_capacity(&candidate, stopped)?;
-            Ok(NativeCompleted::Admitted {
-                state: candidate,
-                analysis,
-                replacement,
-            })
-        }
-        NativeWork::Save {
-            candidate,
-            path,
-            revision,
-            identity,
-            floor,
-        } => {
-            check_capacity(&candidate, stopped)?;
-            let bytes = encode(&candidate, floor)?;
-            if bytes.len() > MAX_ARCHIVE_BYTES {
-                return Err(resource_refusal(
-                    vec![resource_fact(
-                        ResourceCategory::EncodedDocumentBytes,
-                        bytes.len(),
-                        MAX_ARCHIVE_BYTES,
-                        0,
-                        ResourceScope::Shogi,
-                        ResourceUnit::Bytes,
-                    )],
-                    "Application capacity: complete archive exceeds16MiB.",
-                ));
-            }
-            persistence::atomic_write(&path, &bytes, stopped)?;
-            Ok(NativeCompleted::Saved {
-                path,
-                revision,
-                identity,
-            })
-        }
         NativeWork::Open { path, token } => {
             let bytes = read(&path, stopped)?;
             let value = crate::document::DocumentEnvelope::parse(&bytes)?;
@@ -1231,13 +245,7 @@ pub(crate) fn execute(
                 GameKind::Chess => OpenedNative::Chess(Box::new(
                     persistence::decode_chess_payload(value.payload.get().as_bytes(), stopped)?,
                 )),
-                GameKind::Shogi => {
-                    let (state, floor) = decode_shogi(value.payload.get(), stopped)?;
-                    OpenedNative::Shogi {
-                        state: Box::new(state),
-                        floor,
-                    }
-                }
+                GameKind::Shogi => native_session::open::<Shogi>(&bytes, stopped)?,
                 GameKind::Xiangqi => {
                     let (state, floor) = xiangqi::archive::decode(value.payload.get(), stopped)?;
                     OpenedNative::Xiangqi {
@@ -1280,7 +288,7 @@ impl DesktopController {
             }
         } else if let Some(state) = self.session.shogi() {
             NativeDesktopSettings::Shogi {
-                settings: state.settings.clone(),
+                settings: state.document.settings().clone(),
             }
         } else {
             NativeDesktopSettings::Chess {
@@ -1322,25 +330,10 @@ impl DesktopController {
                 .submit(id, Work::Native(Box::new(NativeWork::Xiangqi(work))));
             return Ok(id);
         }
-        let Some(state) = self.session.shogi() else {
-            return self.queue_save(path);
-        };
-        let candidate = Box::new(state.clone());
-        let revision = self.session.document_revision;
-        let identity = self.session.document_identity;
-        let floor = state.execution_floor;
-        let id = self.next_native_io(IoPhase::Saving)?;
-        self.files.submit(
-            id,
-            Work::Native(Box::new(NativeWork::Save {
-                candidate,
-                path,
-                revision,
-                identity,
-                floor,
-            })),
-        );
-        Ok(id)
+        if self.session.shogi().is_some() {
+            return self.queue_game_save::<Shogi>(path);
+        }
+        self.queue_save(path)
     }
     /// Queue strict current-envelope native dispatch. Open never installs resumable work.
     pub fn queue_shared_open(
@@ -1419,11 +412,7 @@ impl DesktopController {
         completed: NativeCompleted,
     ) -> Result<String, String> {
         match completed {
-            NativeCompleted::TenjikuRuntime { .. }
-            | NativeCompleted::ChuRuntime { .. }
-            | NativeCompleted::ToriRuntime { .. }
-            | NativeCompleted::Admitted { .. }
-            | NativeCompleted::Xiangqi(_) => {
+            NativeCompleted::Runtime { .. } | NativeCompleted::Xiangqi(_) => {
                 unreachable!("dedicated admission worker")
             }
             NativeCompleted::Saved {
@@ -1447,92 +436,6 @@ impl DesktopController {
             }
         }
     }
-    pub(crate) fn queue_native_candidate(
-        &mut self,
-        candidate: ShogiSession,
-        command: Option<SessionOperation>,
-        response: Option<ExecutionObservation>,
-        replacement: bool,
-    ) -> Result<AdmissionReceipt, String> {
-        self.queue_shogi_seed(
-            ShogiSeed::Current(Box::new(candidate)),
-            command,
-            response,
-            replacement,
-        )
-    }
-    pub(crate) fn queue_shogi_seed(
-        &mut self,
-        candidate: ShogiSeed,
-        command: Option<SessionOperation>,
-        response: Option<ExecutionObservation>,
-        replacement: bool,
-    ) -> Result<AdmissionReceipt, String> {
-        self.ensure_runtime_capacity()?;
-        if self.session.capacity.id >= MAX_SAFE_ID - 64 {
-            return Err(self.identity_refusal(
-                self.session.capacity.id,
-                MAX_SAFE_ID - 65,
-                false,
-                ResourceMeasurement::Accepted,
-                "Application capacity: admission identity headroom exhausted.",
-            ));
-        }
-        let preserve_tori = replacement
-            && (self.session.tori().is_some()
-                || self.session.chu().is_some()
-                || self.session.tenjiku().is_some());
-        let preferences = matches!(command, Some(SessionOperation::ShogiPreferences { .. }));
-        let rollback = self.session.shogi().map(|s| {
-            (
-                s.paused,
-                s.phase,
-                s.diagnostic.clone(),
-                s.analysis.clone(),
-                s.pending.is_some() || s.analysis_intent.is_some(),
-            )
-        });
-        self.retire_admission();
-        self.shared.transactional_admission = preserve_tori;
-        self.shared.rollback = rollback;
-        if replacement && !preserve_tori {
-            self.retire_native_files()?;
-        }
-        if !preferences && !preserve_tori {
-            if let Some(state) = self.session.xiangqi_mut() {
-                state.retire();
-                state.paused = true;
-            }
-            self.bridge.cancel();
-            if let Some(state) = self.session.shogi_mut() {
-                state.retire();
-                state.paused = true;
-            } else {
-                self.session.retire_execution();
-            }
-        }
-        self.session.capacity.id += 1;
-        self.session.capacity.status = CapacityPhase::Checking;
-        self.session.capacity.message = None;
-        self.session.capacity.resource = None;
-        self.session.revision += 1;
-        let receipt = AdmissionReceipt::pending();
-        self.admission_receipt = Some(receipt.clone());
-        self.admission_token = Some(self.open_token());
-        self.shared.admission = Some((self.session.document_epoch, preferences));
-        let floor = self.runtime_floor();
-        self.admissions.submit(
-            self.session.capacity.id,
-            Work::Native(Box::new(NativeWork::Admit {
-                candidate,
-                command,
-                response: response.map(Box::new),
-                replacement,
-                floor,
-            })),
-        );
-        Ok(receipt)
-    }
     pub(crate) fn poll_native_admission(&mut self) {
         if self.shared.admission.is_none() {
             return;
@@ -1543,7 +446,7 @@ impl DesktopController {
         if id != self.session.capacity.id {
             return;
         }
-        let Some((epoch, preferences)) = self.shared.admission.take() else {
+        let Some((epoch, _preferences)) = self.shared.admission.take() else {
             return;
         };
         let transactional_admission = std::mem::take(&mut self.shared.transactional_admission);
@@ -1559,86 +462,15 @@ impl DesktopController {
         }
         match result {
             Ok(Completed::Native(value)) => match *value {
-                NativeCompleted::TenjikuRuntime {
+                NativeCompleted::Runtime {
                     state,
                     replacement,
                     durable,
                 } => {
-                    self.finish_native_transaction(
-                        OpenedNative::Tenjiku(state),
-                        replacement,
-                        durable,
-                        id,
-                        receipt,
-                    );
-                }
-                NativeCompleted::ChuRuntime {
-                    state,
-                    replacement,
-                    durable,
-                } => {
-                    self.finish_native_transaction(
-                        OpenedNative::Chu(state),
-                        replacement,
-                        durable,
-                        id,
-                        receipt,
-                    );
-                }
-                NativeCompleted::ToriRuntime {
-                    state,
-                    replacement,
-                    durable,
-                } => {
-                    self.finish_native_transaction(
-                        OpenedNative::Tori(state),
-                        replacement,
-                        durable,
-                        id,
-                        receipt,
-                    );
+                    self.finish_native_transaction(state, replacement, durable, id, receipt);
                 }
                 NativeCompleted::Xiangqi(completed) => {
                     self.finish_xiangqi_admission(completed, id, receipt)
-                }
-                NativeCompleted::Admitted {
-                    state,
-                    analysis,
-                    replacement,
-                } => {
-                    if replacement
-                        && (self.session.tori().is_some()
-                            || self.session.chu().is_some()
-                            || self.session.tenjiku().is_some())
-                    {
-                        self.bridge.cancel();
-                    }
-                    self.session.install_shogi(state);
-                    if preferences {
-                        self.session.document_revision += 1;
-                        self.session.revision += 1;
-                        self.session.archive_revision = self.session.revision.min(MAX_SAFE_ID - 65);
-                    } else {
-                        self.shared_changed();
-                    }
-                    if replacement {
-                        self.session.document_epoch += 1;
-                        self.session.document_identity += 1;
-                        self.session.document_path = None;
-                        self.session.saved_revision = 0;
-                    }
-                    self.session.capacity = CapacityState {
-                        id,
-                        ..CapacityState::default()
-                    };
-                    if let Some(limits) = analysis
-                        && let Err(e) = self.start_shogi(limits, true)
-                    {
-                        self.pause_native_failure(e);
-                    }
-                    if let Some(r) = receipt {
-                        r.finish(Ok(()));
-                    }
                 }
                 _ => unreachable!("dedicated admission worker"),
             },
@@ -1673,35 +505,8 @@ impl DesktopController {
                         // even when the rejected candidate cannot alter the game.
                         self.session.clear_browse_intent();
                     }
-                    if consumes_response && let Some(state) = self.session.tori_mut() {
-                        state.retire();
-                        state.paused = true;
-                        state.phase = if error.resource.is_some() {
-                            EnginePhase::Paused
-                        } else {
-                            EnginePhase::Failed
-                        };
-                        state.diagnostic = Some("Completed work refused by document admission; the accepted document is preserved and saveable. See Technical Details for the refusal.".into());
-                    }
-                    if consumes_response && let Some(state) = self.session.chu_mut() {
-                        state.retire();
-                        state.paused = true;
-                        state.phase = if error.resource.is_some() {
-                            EnginePhase::Paused
-                        } else {
-                            EnginePhase::Failed
-                        };
-                        state.diagnostic = Some("Completed work refused by document admission; the accepted document is preserved and saveable. See Technical Details for the refusal.".into());
-                    }
-                    if consumes_response && let Some(state) = self.session.tenjiku_mut() {
-                        state.retire();
-                        state.paused = true;
-                        state.phase = if error.resource.is_some() {
-                            EnginePhase::Paused
-                        } else {
-                            EnginePhase::Failed
-                        };
-                        state.diagnostic = Some("Completed work refused by document admission; the accepted document is preserved and saveable. See Technical Details for the refusal.".into());
+                    if consumes_response {
+                        self.session.refuse_completed_work(error.resource.is_some());
                     }
                     // Rejected candidates cannot alter accepted game or execution.
                     self.session.capacity = CapacityState {
@@ -1727,21 +532,6 @@ impl DesktopController {
                         id,
                         ..CapacityState::default()
                     };
-                    if let (Some(state), Some((paused, phase, diagnostic, analysis, had_work))) =
-                        (self.session.shogi_mut(), rollback.clone())
-                    {
-                        if !had_work || preferences {
-                            state.paused = paused;
-                            state.phase = phase;
-                            state.diagnostic = diagnostic;
-                            state.analysis = analysis;
-                        } else {
-                            state.diagnostic = Some(
-                                "Command rejected; prior execution was retired. Resume explicitly."
-                                    .into(),
-                            );
-                        }
-                    }
                     if let (Some(state), Some((paused, phase, diagnostic, analysis, had_work))) =
                         (self.session.xiangqi_mut(), rollback)
                     {

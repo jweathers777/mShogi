@@ -132,7 +132,7 @@ fn inspect_shogi(position: &s::Position, origin: &str) -> Result<Inspected, Stri
                                 NativeSide::Shogi(actor)
                             )
                             .key,
-                            piece_text(kind)
+                            shogi::piece_text(kind)
                         ))
                     .then_some((actor, kind))
                 })

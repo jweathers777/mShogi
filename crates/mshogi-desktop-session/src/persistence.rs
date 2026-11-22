@@ -1726,7 +1726,8 @@ impl DesktopController {
                     .max(value.archive.next_request),
                 value.archive.document_revision,
             ),
-            OpenedNative::Shogi { floor, .. } | OpenedNative::Xiangqi { floor, .. } => (*floor, 0),
+            OpenedNative::Xiangqi { floor, .. } => (*floor, 0),
+            OpenedNative::Shogi(state) => (state.document.retired_execution_floor(), 0),
             OpenedNative::Tori(state) => (state.document.retired_execution_floor(), 0),
             OpenedNative::Chu(state) => (state.document.retired_execution_floor(), 0),
             OpenedNative::Tenjiku(state) => (state.document.retired_execution_floor(), 0),
@@ -1796,8 +1797,8 @@ impl DesktopController {
                 };
                 (ActiveDocument::Chess(Box::new(state)), clock_floor)
             }
-            OpenedNative::Shogi { mut state, floor } => {
-                state.reopened(floor);
+            OpenedNative::Shogi(mut state) => {
+                state.retire();
                 (ActiveDocument::Shogi { runtime, state }, 0)
             }
             OpenedNative::Tenjiku(mut state) => {

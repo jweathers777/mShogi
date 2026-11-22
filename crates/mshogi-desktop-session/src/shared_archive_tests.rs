@@ -384,11 +384,7 @@ fn hostile_archives_reject_without_changing_the_current_document() {
             "\"schema_version\":1,\"schema_version\":1",
             1,
         ),
-        text.replacen(
-            "\"human\":{\"game_kind\":\"shogi\",\"side\":\"sente\"}",
-            "\"human\":{\"game_kind\":\"chess\",\"side\":\"white\"}",
-            1,
-        ),
+        text.replacen("\"human\":\"sente\"", "\"human\":\"white\"", 1),
         text.replacen(
             "\"retired_execution_floor\":",
             "\"unexpected\":0,\"retired_execution_floor\":",
@@ -570,23 +566,18 @@ fn concurrent_save_as_keeps_new_admission_dirty_and_open_retires_it() {
         })
         .unwrap();
     let copy = path("save-as-admission");
-    let id = c.queue_shared_save(copy.clone()).unwrap();
-    // Deliberately accept the file completion before the candidate completion.
-    let deadline = Instant::now() + std::time::Duration::from_secs(10);
-    while c.io_state.phase == IoPhase::Saving {
-        c.poll_files();
-        assert!(Instant::now() < deadline);
-        std::thread::sleep(std::time::Duration::from_millis(1));
-    }
-    assert_eq!(c.io_state.id, id);
-    assert_eq!(c.io_state.phase, IoPhase::Complete);
+    // Save waits for the pending admission; it never saves a stale document.
+    assert!(c.queue_shared_save(copy.clone()).is_err());
     settle(&mut c);
     assert_eq!(receipt.completion(), Some(Ok(())));
     assert_eq!(c.session.shogi().unwrap().document.settings(), &settings);
     assert!(c.shared_document().dirty);
+    save(&mut c, &copy);
+    assert!(!c.shared_document().dirty);
     assert_eq!(c.session.document_path.as_ref(), Some(&copy));
     let saved = decode(&fs::read(&copy).unwrap()).unwrap();
-    assert_eq!(saved.settings().orientation, s::Side::Sente);
+    assert_eq!(saved.settings().orientation, s::Side::Gote);
+    let deadline = Instant::now() + std::time::Duration::from_secs(10);
     let id = c
         .queue_shared_open(original.clone(), c.shared_open_token())
         .unwrap();
@@ -619,7 +610,7 @@ fn persisted_preferences_keep_exact_pending_execution_and_original_limits() {
     send(
         &mut c,
         SessionOperation::Analyze {
-            operation: AnalysisOperation::Moves { depth: 1, nodes: 0 },
+            operation: AnalysisOperation::Moves { depth: 1, nodes: 1 },
         },
     )
     .unwrap();
@@ -655,7 +646,7 @@ fn persisted_preferences_keep_exact_pending_execution_and_original_limits() {
         WorkLimits {
             time_ms: None,
             depth: 1,
-            nodes: 0
+            nodes: 1
         }
     );
     assert!(opened.observations[0].historical);
@@ -671,10 +662,10 @@ fn raw_nested_observation_fields_remain_strict_and_identity_errors_are_explicit(
     assert!(decode(text.as_bytes()).is_ok());
     for (before, after) in [
         (
-            "\"schema_version\": 1",
-            "\"schema_version\": 1, \"schema_version\": 1",
+            "\"schema_version\":1",
+            "\"schema_version\":1,\"schema_version\":1",
         ),
-        ("\"request_id\":", "\"surprise\": null, \"request_id\":"),
+        ("\"request_id\":", "\"surprise\":null,\"request_id\":"),
     ] {
         let wrong = text.replacen(before, after, 1);
         assert_ne!(wrong, text, "{before}");

@@ -67,7 +67,7 @@ impl SessionGame for Tori {
     fn command_kind(command: &t::GameCommand) -> CommandKind {
         match command {
             t::GameCommand::Play { .. } => CommandKind::Play,
-            t::GameCommand::Resign => CommandKind::Resign,
+            t::GameCommand::Resign => CommandKind::Terminal,
             t::GameCommand::Stop { .. } => CommandKind::Stop,
             _ => CommandKind::Other,
         }

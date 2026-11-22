@@ -627,6 +627,10 @@ fn close_document_preconditions_advance_for_shogi_events_observations_and_replac
         .unwrap();
         decode_execution_observation(&bytes)
     }));
+    while c.admission_token.is_some() {
+        c.poll_native_admission();
+        std::thread::sleep(std::time::Duration::from_millis(1));
+    }
     let observed = c.shared_snapshot().document.revision;
     assert!(observed > terminal);
     send(

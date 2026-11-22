@@ -4,7 +4,7 @@
 //! code makes; the rules stay in `mshogi_core`. A constant here records a real
 //! difference between games, never a copy that drifted.
 use crate::ResourceScope;
-use mshogi_core::native::{CanonicalRecord, GameKind, RulesProfile};
+use mshogi_core::native::{CanonicalRecord, GameKind, NativeSide, RulesProfile};
 use mshogi_engine::ExecutionResult;
 use serde::{Serialize, de::DeserializeOwned};
 use std::fmt::Debug;
@@ -113,6 +113,8 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
     /// Saved document settings.
     type Settings: DocumentSettings<Side = Self::Side>;
 
+    /// Wrap a native participant.
+    fn native_side(side: Self::Side) -> NativeSide;
     /// Wrap a native record.
     fn canonical(record: Self::Record) -> CanonicalRecord;
     /// Unwrap this game's native record.
@@ -213,6 +215,9 @@ macro_rules! large_shogi_game {
             type EngineResult = mshogi_engine::$engine_result;
             type Settings = crate::game_document::GameSettings<Self::Side>;
 
+            fn native_side(side: Self::Side) -> NativeSide {
+                NativeSide::$result_variant(side)
+            }
             fn canonical(record: Self::Record) -> CanonicalRecord {
                 CanonicalRecord::$core(record)
             }
@@ -414,6 +419,9 @@ impl NativeGame for Tori {
     type EngineResult = mshogi_engine::ToriResult;
     type Settings = crate::game_document::GameSettings<Self::Side>;
 
+    fn native_side(side: Self::Side) -> NativeSide {
+        NativeSide::Tori(side)
+    }
     fn canonical(record: Self::Record) -> CanonicalRecord {
         CanonicalRecord::tori(record)
     }
@@ -615,6 +623,9 @@ impl NativeGame for Shogi {
     type EngineResult = mshogi_engine::ShogiResult;
     type Settings = crate::shared::archive::ShogiSettings;
 
+    fn native_side(side: Self::Side) -> NativeSide {
+        NativeSide::Shogi(side)
+    }
     fn canonical(record: Self::Record) -> CanonicalRecord {
         CanonicalRecord::shogi(record)
     }

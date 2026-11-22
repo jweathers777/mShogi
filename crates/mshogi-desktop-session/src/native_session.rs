@@ -10,7 +10,8 @@ use std::sync::Arc;
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) enum CommandKind {
     Play,
-    Resign,
+    /// A human's final command: resignation or a formal declaration.
+    Terminal,
     Stop,
     Other,
 }
@@ -55,7 +56,6 @@ pub(crate) trait SessionGame: NativeGame {
     /// Actor and command kind of event `index`.
     fn event(game: &Self::Game, index: usize) -> (Self::Side, CommandKind);
     fn command_kind(command: &Self::Command) -> CommandKind;
-    fn native_side(side: Self::Side) -> NativeSide;
     /// Telemetry and incompleteness of this game's engine result.
     fn telemetry(result: &Self::EngineResult) -> TelemetryView;
     fn incomplete(result: &Self::EngineResult) -> bool;
@@ -203,7 +203,7 @@ impl<G: SessionGame> NativeSession<G> {
             return events.checked_sub(1);
         }
         if let Some(last) = events.checked_sub(1)
-            && G::event(&self.game, last) == (human, CommandKind::Resign)
+            && G::event(&self.game, last) == (human, CommandKind::Terminal)
             && G::side_to_move(&self.game) == human
         {
             return Some(last);
@@ -232,7 +232,7 @@ impl<G: SessionGame> NativeSession<G> {
                 }
                 // Actor/turn/terminal/draw admission belongs to the native Game.
                 // The immutable document candidate admits the complete command below.
-                if matches!(kind, CommandKind::Resign | CommandKind::Stop) {
+                if matches!(kind, CommandKind::Terminal | CommandKind::Stop) {
                     self.paused = true;
                 }
                 Some(GameControl::Native { actor, command })
@@ -348,6 +348,7 @@ impl<G: SessionGame> NativeSession<G> {
                     nodes,
                 };
                 validate_limits::<G>(limits)?;
+                observation_room::<G>(&self.document)?;
                 let stop = if self.viewed.is_some() {
                     self.browse_stop.clone()
                 } else {
@@ -377,8 +378,13 @@ impl<G: SessionGame> NativeSession<G> {
                 if self.viewed.is_some() {
                     return Err("Return to live before resuming play.".into());
                 }
+                if G::concluded(&self.game) {
+                    return Err("Resume requires a live unconcluded game.".into());
+                }
+                observation_room::<G>(&self.document)?;
                 self.retire();
                 self.paused = false;
+                self.phase = EnginePhase::Idle;
                 self.diagnostic = None;
                 return Ok(false);
             }
@@ -545,6 +551,10 @@ pub(crate) fn execute<G: SessionGame>(
         state.retire();
         state.browse_stop = browse_stop;
         state.current_observations.push(response.context.request_id);
+        let failure = match &response.result {
+            ExecutionResult::Failure { failure } => Some(failure.message.clone()),
+            _ => None,
+        };
         if analysis {
             state.analysis = Some(response);
         }
@@ -556,8 +566,10 @@ pub(crate) fn execute<G: SessionGame>(
         } else {
             EnginePhase::Paused
         };
-        state.diagnostic = if failed {
-            Some("Engine failure. The game is unchanged; Retry is explicit.".into())
+        state.diagnostic = if let Some(message) = failure {
+            Some(format!(
+                "Engine failure: {message} · The game is unchanged; Retry is explicit."
+            ))
         } else if incomplete {
             Some("Incomplete search. No move, score or game outcome was created.".into())
         } else {
@@ -609,7 +621,8 @@ pub(crate) fn save<G: NativeGame>(
     identity: u64,
     stopped: &mut impl FnMut() -> bool,
 ) -> Result<archive::NativeCompleted, OperationFailure> {
-    let doc = document.with_runtime_floor(floor)?;
+    // An exhausted runtime identity range never prevents saving the document.
+    let doc = document.with_runtime_floor(floor.min(MAX_SAFE_ID - 65))?;
     let doc = ValidatedGameDocument::<G>::decode(doc.bytes(), stopped)?;
     persistence::atomic_write(path, doc.bytes(), stopped)?;
     Ok(archive::NativeCompleted::Saved {
@@ -628,6 +641,10 @@ impl DesktopController {
         replacement: bool,
     ) -> Result<AdmissionReceipt, String> {
         let consumes_response = response.is_some();
+        // An approved replacement supersedes any pending admission.
+        if replacement {
+            self.retire_admission();
+        }
         let floor = self.runtime_floor();
         self.queue_native_transaction(
             runtime_job(RuntimeWork {
@@ -671,7 +688,13 @@ impl DesktopController {
             self.session.selection_id += 1;
             self.session.revision += 1;
         }
-        let state = G::state(&self.session).expect("native owner").capture();
+        let state = G::state(&self.session).expect("native owner");
+        if matches!(operation, SessionOperation::TakeBack {})
+            && (state.viewed.is_some() || state.take_back_target().is_none())
+        {
+            return Err("No live playable human decision is available for Take back.".into());
+        }
+        let state = state.capture();
         self.queue_game_candidate::<G>(
             RuntimeSeed::Current(Box::new(state)),
             Some(operation),
@@ -750,19 +773,7 @@ impl DesktopController {
         validate_limits::<G>(limits)?;
         self.ensure_runtime_capacity()?;
         let state = G::state(&self.session).expect("native owner");
-        let count = state.document.observations().len();
-        if count >= MAX_ARCHIVE_OBSERVATIONS {
-            return Err(OperationFailure::resource(ResourceFailure::new(
-                ResourceFact::measured(
-                    ResourceCategory::OrdinaryObservations,
-                    count as u64,
-                    MAX_ARCHIVE_OBSERVATIONS as u64,
-                )
-                .with_scope(G::SCOPE)
-                .with_unit(ResourceUnit::Observations),
-                "Application limit reached: all 256 observation slots are occupied. The complete current game can still be saved.",
-            )));
-        }
+        observation_room::<G>(&state.document)?;
         let game = G::canonical(G::from_game(state.selected()).map_err(record_text)?);
         let turn = G::side_to_move(state.selected());
         let historical = state.viewed.is_some();
@@ -1070,6 +1081,26 @@ impl DesktopController {
     }
 }
 
+/// Refuse new work when every observation slot of the document is used.
+fn observation_room<G: SessionGame>(
+    document: &ValidatedGameDocument<G>,
+) -> Result<(), OperationFailure> {
+    let count = document.observations().len();
+    if count >= MAX_ARCHIVE_OBSERVATIONS {
+        return Err(OperationFailure::resource(ResourceFailure::new(
+            ResourceFact::measured(
+                ResourceCategory::OrdinaryObservations,
+                count as u64,
+                MAX_ARCHIVE_OBSERVATIONS as u64,
+            )
+            .with_scope(G::SCOPE)
+            .with_unit(ResourceUnit::Observations),
+            "Application capacity: all 256 observation slots are occupied. The complete current game can still be saved.",
+        )));
+    }
+    Ok(())
+}
+
 fn validate_limits<G: SessionGame>(limits: WorkLimits) -> Result<(), OperationFailure> {
     if limits.depth == 0
         || limits.depth > G::MAX_DEPTH
@@ -1144,9 +1175,6 @@ macro_rules! session_wiring {
     ($game:ident, $core:ident, operation: $op:ident, preferences: $prefs:ident,
      state: $state:ident, $state_mut:ident $(, field: $field:ident)?
      $(, local: { $($local:pat => $command:expr),* $(,)? })?) => {
-        fn native_side(side: $core::Side) -> NativeSide {
-            NativeSide::$game(side)
-        }
         fn operation(operation: SessionOperation) -> Result<GameOperation<Self>, SessionOperation> {
             match operation {
                 SessionOperation::$op { actor, command } => {
@@ -1221,7 +1249,7 @@ macro_rules! large_shogi_session {
             fn command_kind(command: &c::GameCommand) -> CommandKind {
                 match command {
                     c::GameCommand::Play { .. } => CommandKind::Play,
-                    c::GameCommand::Resign => CommandKind::Resign,
+                    c::GameCommand::Resign => CommandKind::Terminal,
                     c::GameCommand::Stop { .. } => CommandKind::Stop,
                     _ => CommandKind::Other,
                 }

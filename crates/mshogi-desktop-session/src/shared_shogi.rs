@@ -91,8 +91,7 @@ impl SessionGame for Shogi {
     fn command_kind(command: &s::GameCommand) -> CommandKind {
         match command {
             s::GameCommand::Play(_) => CommandKind::Play,
-            s::GameCommand::Resign => CommandKind::Resign,
-            s::GameCommand::DeclareEnteringKing => CommandKind::Other,
+            s::GameCommand::Resign | s::GameCommand::DeclareEnteringKing => CommandKind::Terminal,
         }
     }
     fn telemetry(result: &mshogi_engine::ShogiResult) -> TelemetryView {

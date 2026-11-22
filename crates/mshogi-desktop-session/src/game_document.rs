@@ -899,6 +899,13 @@ pub(crate) fn validate<G: NativeGame>(
                         "observation is not the exact journal history prefix",
                     ));
                 }
+                if let ExecutionPurpose::MoveAnalysis { target } = &o.context.purpose
+                    && target.turn != G::native_side(G::record_side_to_move(&prefix))
+                {
+                    return Err(E::<G>::invalid(
+                        "analysis target side disagrees with its prefix",
+                    ));
+                }
                 if let Some(result) = result {
                     E::<G>::charge(&mut usage.replay_work, G::reconstruction_work(&prefix))?;
                     let target_game = G::to_game(&prefix, stopped).map_err(E::<G>::record)?;

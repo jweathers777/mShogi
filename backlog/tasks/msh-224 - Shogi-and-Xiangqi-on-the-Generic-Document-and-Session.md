@@ -1,10 +1,11 @@
 ---
 id: MSH-224
 title: Shogi and Xiangqi on the Generic Document and Session
-status: To Do
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-22T09:57:00Z'
-updated_date: '2026-11-22T10:24:00Z'
+updated_date: '2026-11-22T10:48:00Z'
 labels:
   - desktop
   - refactor

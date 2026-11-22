@@ -1,9 +1,11 @@
 ---
 id: MSH-228
 title: Minimal Saved Game Document
-status: To Do
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-22T16:43:00Z'
+updated_date: '2026-11-22T16:44:00Z'
 labels:
   - desktop
   - refactor

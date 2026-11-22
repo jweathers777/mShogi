@@ -211,13 +211,19 @@ behavioral and independently expected fixtures against the replacement; retire
 tests whose only purpose is a removed interface.
 
 Preserve the functional requirements: correct complete native game semantics;
-authoritative histories, adjudication and atomic operations; safe execution,
-cancellation and stale-result rejection; lossless save and reopen for the
-current format; cross-game product consistency; required external protocol
-interoperability (UCI, USI and others actually required); independent rules
-conformance. A changed development encoding never authorizes changing a
-selected rules profile, losing accepted history, observations or Take back
-lineage, or weakening current-format persistence and failure guarantees.
+authoritative game histories, adjudication and atomic operations; safe
+execution, cancellation and stale-result rejection; save and reopen of the game
+(rules profile, start position, every command, sides and settings);
+cross-game product consistency; required external protocol interoperability
+(UCI, USI and others actually required); independent rules conformance. A
+changed encoding never authorizes changing a selected rules profile or losing
+the game's own history.
+
+A saved document holds the game, not an audit trail (MSH-228, John
+2026-11-22): no journal of desktop changes, no copies of earlier records, no
+branches removed by Take back or Undo, no runtime identities, and no engine
+results (they stay in memory while the game is open). Keep only data that the
+product uses.
 
 ### A-10. Application architecture and shared product UI
 
@@ -259,8 +265,8 @@ model or frontend rules interpreter.
   capacity and recovery information.
 - Moves are native complete board actions in sourced game-appropriate notation,
   in two player columns. Native warnings, claims and other non-move events stay
-  in the exact history, attached to their move, not as extra rows. Event
-  prefixes stay selectable, with historical analysis provenance. The last
+  in the history, attached to the command that caused them, not as extra rows.
+  History stops only at command boundaries (MSH-226). The last
   completed action highlights its origin and a stronger destination (drops:
   destination only), also during thinking and history browsing.
 - Document actions are Save and Load; the first Save chooses a path; there is
@@ -273,8 +279,8 @@ model or frontend rules interpreter.
   browsing, with fresh native admission; play stopped by Load, Take back,
   cancellation or failure stays explicitly stopped (Resume or Retry).
 - [Take back](desktop/take-back.md) restores native human decision points
-  atomically, keeps complete archive evidence and retires abandoned execution;
-  restored play needs an explicit Resume.
+  atomically by cutting the game's command list, and retires abandoned
+  execution; restored play needs an explicit Resume.
 
 ## 4. Milestones
 

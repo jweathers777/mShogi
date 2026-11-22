@@ -38,19 +38,12 @@ not raw event counts, preserving warning/claim and multi-event adjudication
 semantics. Rules profiles, counters, known history, root provenance and native
 outcomes remain owned by each game.
 
-Accepted observations are retained against their exact original histories. They
-remain historical information, including observations on an abandoned continuation.
-They do not become pending execution or a current game outcome after restoration
-or reopening. Save/Open retains complete accepted evidence, settings and native
-history; successful Open creates fresh stopped runtime identities and requires
-explicit Resume. Failed admission and file operations preserve the accepted game
-and its complete save path.
-
-Capacity admission includes retained abandoned evidence, actual encoded bytes,
-observations, native events, desktop controls and bounded replay work. Take back
-does not replenish archive capacity or erase accepted observations. The existing
-reserved stop/close headroom and resource-limit notices apply. The implementation
-and exact version compatibility are recorded with the task's verification evidence.
+Take back and Undo cut the game's command list; the removed commands are not
+kept (MSH-228). Engine results of the open session stay visible as history, but
+they never become pending execution or a game outcome, and they are not saved.
+Save/Open keeps the game, sides and settings; successful Open starts stopped and
+requires explicit Resume. Failed admission and file operations preserve the
+accepted game and its save path.
 
 ## Scope
 

@@ -1,9 +1,11 @@
 ---
 id: MSH-226
 title: Xiangqi on the Generic Document and Session
-status: To Do
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-22T11:33:00Z'
+updated_date: '2026-11-22T11:50:00Z'
 labels:
   - desktop
   - refactor

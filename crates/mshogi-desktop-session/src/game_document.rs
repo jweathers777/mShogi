@@ -53,6 +53,11 @@ pub enum RewindKind {
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 /// Document journal operations; native commands retain exact complete types.
 pub enum GameControl<S, C, T> {
+    /// Reference the next saved evidence entry (`NativeGame::Evidence`).
+    Evidence {
+        /// Sequential evidence ledger index.
+        index: usize,
+    },
     /// Admit a complete native command with its native actor.
     Native {
         /// Native participant or administrative actor.
@@ -102,6 +107,7 @@ pub(crate) struct Payload<G: NativeGame> {
     pub(crate) settings: SettingsOf<G>,
     pub(crate) controls: Vec<ControlOf<G>>,
     pub(crate) observations: Vec<ExecutionObservation>,
+    pub(crate) evidence: Vec<G::Evidence>,
     pub(crate) retired: Vec<Retired>,
     pub(crate) retired_execution_floor: u64,
     pub(crate) selected_event: Option<usize>,
@@ -117,6 +123,7 @@ impl<G: NativeGame> Clone for Payload<G> {
             settings: self.settings.clone(),
             controls: self.controls.clone(),
             observations: self.observations.clone(),
+            evidence: self.evidence.clone(),
             retired: self.retired.clone(),
             retired_execution_floor: self.retired_execution_floor,
             selected_event: self.selected_event,
@@ -303,8 +310,12 @@ fn counts<G: NativeGame>(p: &Payload<G>, bytes: usize) -> Result<(), GameDocumen
             ResourceUnit::Controls,
         ),
         (
-            ResourceCategory::OrdinaryObservations,
-            p.observations.len() as u64,
+            if p.evidence.is_empty() {
+                ResourceCategory::OrdinaryObservations
+            } else {
+                ResourceCategory::CombinedObservations
+            },
+            (p.observations.len() + p.evidence.len()) as u64,
             MAX_ARCHIVE_OBSERVATIONS as u64,
             ResourceUnit::Observations,
         ),
@@ -379,6 +390,7 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
                 settings,
                 controls: vec![],
                 observations: vec![],
+                evidence: vec![],
                 retired: vec![],
                 retired_execution_floor: 1,
                 selected_event: None,
@@ -419,6 +431,7 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
             settings: SettingsOf<G>,
             controls: Vec<Box<serde_json::value::RawValue>>,
             observations: Vec<Box<serde_json::value::RawValue>>,
+            evidence: Vec<G::Evidence>,
             retired: Vec<Branch>,
             retired_execution_floor: u64,
             #[serde(deserialize_with = "shared::archive::required_option")]
@@ -520,6 +533,7 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
                 settings: w.settings,
                 controls,
                 observations,
+                evidence: w.evidence,
                 retired,
                 retired_execution_floor: w.retired_execution_floor,
                 selected_event: w.selected_event,
@@ -618,7 +632,7 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
                 game = G::to_game(&prefix, stopped).map_err(E::<G>::record)?;
                 E::<G>::check(stopped)?;
             }
-            GameControl::Observation { .. } => {
+            GameControl::Observation { .. } | GameControl::Evidence { .. } => {
                 return Err(E::<G>::invalid("use atomic observation admission"));
             }
             GameControl::Close {} => {}
@@ -631,6 +645,23 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
             p.selected_event = None;
         }
         p.controls.push(control);
+        validate(p, stopped)
+    }
+    /// Saved evidence, in journal order.
+    pub fn evidence(&self) -> &[G::Evidence] {
+        &self.payload.evidence
+    }
+    /// Keep completed evidence; it never changes the game.
+    pub fn with_evidence(
+        &self,
+        evidence: G::Evidence,
+        stopped: &mut impl FnMut() -> bool,
+    ) -> Result<Self, GameDocumentError> {
+        let mut p = self.payload.clone();
+        p.controls.push(GameControl::Evidence {
+            index: p.evidence.len(),
+        });
+        p.evidence.push(evidence);
         validate(p, stopped)
     }
     /// Validate exact historical selection without modifying native play.
@@ -778,7 +809,7 @@ pub(crate) fn validate<G: NativeGame>(
         encoded_bytes: bytes.len(),
         retained_events: 0,
         controls: p.controls.len(),
-        observations: p.observations.len(),
+        observations: p.observations.len() + p.evidence.len(),
         replay_work: p.controls.len() as u64,
         reserved_bytes: 0,
         reserved_work: 0,
@@ -805,7 +836,7 @@ pub(crate) fn validate<G: NativeGame>(
     let mut game = G::to_game(initial, stopped).map_err(E::<G>::record)?;
     E::<G>::check(stopped)?;
     let mut settings = p.initial_settings.clone();
-    let (mut retired, mut obs) = (0, 0);
+    let (mut retired, mut obs, mut evidence) = (0, 0, 0);
     let mut required_action: Option<(G::Side, G::Command)> = None;
     for (i, control) in p.controls.iter().enumerate() {
         E::<G>::check(stopped)?;
@@ -951,6 +982,19 @@ pub(crate) fn validate<G: NativeGame>(
                 }
                 obs += 1;
             }
+            GameControl::Evidence { index } => {
+                if *index != evidence {
+                    return Err(E::<G>::invalid("evidence order disagrees"));
+                }
+                let e = p
+                    .evidence
+                    .get(evidence)
+                    .ok_or_else(|| E::<G>::invalid("missing evidence"))?;
+                let work = G::validate_evidence(e, &game, stopped).map_err(E::<G>::invalid)?;
+                E::<G>::check(stopped)?;
+                E::<G>::charge(&mut usage.replay_work, work)?;
+                evidence += 1;
+            }
             GameControl::Close {} => {}
         }
     }
@@ -959,6 +1003,7 @@ pub(crate) fn validate<G: NativeGame>(
     if required_action.is_some()
         || retired != p.retired.len()
         || obs != p.observations.len()
+        || evidence != p.evidence.len()
         || settings != p.settings
         || current != &G::from_game(&game).map_err(E::<G>::record)?
     {

@@ -6,7 +6,7 @@
 use crate::ResourceScope;
 use mshogi_core::native::{CanonicalRecord, GameKind, NativeSide, RulesProfile};
 use mshogi_engine::ExecutionResult;
-use serde::{Serialize, de::DeserializeOwned};
+use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use std::fmt::Debug;
 
 /// A refused native record operation.
@@ -68,6 +68,10 @@ pub trait DocumentSettings:
     }
 }
 
+/// Evidence type of a game that saves none.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub enum NoEvidence {}
+
 /// A game that the generic document and session serve.
 pub trait NativeGame: Sized + Send + Sync + 'static {
     /// Display name in diagnostics.
@@ -112,6 +116,9 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
     type EngineResult;
     /// Saved document settings.
     type Settings: DocumentSettings<Side = Self::Side>;
+    /// Completed non-engine work that the document keeps beside its
+    /// observations (Xiangqi exact-endgame reports); `NoEvidence` otherwise.
+    type Evidence: Clone + PartialEq + Debug + Serialize + DeserializeOwned + Send + Sync;
 
     /// Wrap a native participant.
     fn native_side(side: Self::Side) -> NativeSide;
@@ -155,6 +162,18 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
     fn replay_work(game: &Self::Game) -> u64;
     /// Events of a game.
     fn events(game: &Self::Game) -> usize;
+    /// Event index where the last command began: one command can produce
+    /// several events, and history changes only at command boundaries.
+    fn last_command_start(game: &Self::Game) -> Option<usize> {
+        Self::events(game).checked_sub(1)
+    }
+    /// Validate saved evidence against the game at its journal position; the
+    /// native work it used.
+    fn validate_evidence(
+        evidence: &Self::Evidence,
+        game: &Self::Game,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<u64, String>;
     /// Side to move.
     fn side_to_move(game: &Self::Game) -> Self::Side;
     /// The game has a native conclusion.
@@ -214,6 +233,14 @@ macro_rules! large_shogi_game {
             type Record = mshogi_core::$core::GameRecord;
             type EngineResult = mshogi_engine::$engine_result;
             type Settings = crate::game_document::GameSettings<Self::Side>;
+            type Evidence = NoEvidence;
+            fn validate_evidence(
+                evidence: &NoEvidence,
+                _game: &Self::Game,
+                _stop: &mut impl FnMut() -> bool,
+            ) -> Result<u64, String> {
+                match *evidence {}
+            }
 
             fn native_side(side: Self::Side) -> NativeSide {
                 NativeSide::$result_variant(side)
@@ -418,6 +445,14 @@ impl NativeGame for Tori {
     type Record = mshogi_core::tori::GameRecord;
     type EngineResult = mshogi_engine::ToriResult;
     type Settings = crate::game_document::GameSettings<Self::Side>;
+    type Evidence = NoEvidence;
+    fn validate_evidence(
+        evidence: &NoEvidence,
+        _game: &Self::Game,
+        _stop: &mut impl FnMut() -> bool,
+    ) -> Result<u64, String> {
+        match *evidence {}
+    }
 
     fn native_side(side: Self::Side) -> NativeSide {
         NativeSide::Tori(side)
@@ -622,6 +657,14 @@ impl NativeGame for Shogi {
     type Record = mshogi_core::shogi::GameRecord;
     type EngineResult = mshogi_engine::ShogiResult;
     type Settings = crate::shared::archive::ShogiSettings;
+    type Evidence = NoEvidence;
+    fn validate_evidence(
+        evidence: &NoEvidence,
+        _game: &Self::Game,
+        _stop: &mut impl FnMut() -> bool,
+    ) -> Result<u64, String> {
+        match *evidence {}
+    }
 
     fn native_side(side: Self::Side) -> NativeSide {
         NativeSide::Shogi(side)

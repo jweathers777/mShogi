@@ -1,17 +1,16 @@
 ---
 id: MSH-225
 title: Chess Document and Session Fit
-status: In Progress
-assignee:
-  - '@claude'
+status: To Do
+assignee: []
 created_date: '2026-11-22T09:57:00Z'
-updated_date: '2026-11-22T16:03:00Z'
+updated_date: '2026-11-22T16:43:00Z'
 labels:
   - desktop
   - refactor
 milestone: m-6
 dependencies:
-  - MSH-226
+  - MSH-228
 priority: medium
 ordinal: 232000
 ---
@@ -40,4 +39,6 @@ Fit: Chess can use the generic document and session if (1) the document record i
 Plan: same steps as MSH-224/226; regenerate Chess fixtures (already stale per MSH-221); measure work limit; review.
 
 Cost finding (2026-11-22): the Chess saved record is a MatchRecord (timestamped request log with replies; rejected requests are recorded as audit events), not a CanonicalRecord, while engine contexts use CanonicalRecord::Chess(GameRecord). Moving Chess onto the generic document needs: (1) a per-game record type in the generic payload (today CanonicalRecord everywhere: parse, profile, to_json, observation prefix checks); (2) a record-to-engine-context hook; (3) a decision on rejected-request audit events (the generic journal keeps accepted commands only); (4) Chess Full analysis (certificates, cached verification) as a generic extra analysis kind. Estimate: larger than MSH-224 and MSH-226 together; touches lib.rs, persistence.rs (about 1,900 lines of tests) and full_archive_tests. Asked John whether to do it now or after Chu work.
+
+Paused 2026-11-22 (John): MSH-228 (Minimal Saved Game Document) first; with the minimal document Chess fits much more cheaply (its match log can become moves, claims, offers and result, without timestamps or rejected-request audit).
 <!-- SECTION:NOTES:END -->

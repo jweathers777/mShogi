@@ -4,6 +4,7 @@ title: Chu and Tenjiku GUI Fixture Generators
 status: To Do
 assignee: []
 created_date: '2026-11-21T23:10:00Z'
+updated_date: '2026-11-22T11:32:00Z'
 labels:
   - desktop
   - fixtures
@@ -25,3 +26,9 @@ Goal: make the committed desktop GUI fixtures reproducible again. On main c0f67d
 - [ ] #2 The committed Chu and Tenjiku fixtures are regenerated, and a second run makes no change
 - [ ] #3 desktop/scripts/fixtures/CHU.md and the Tenjiku notes still describe the generators correctly
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Found in MSH-224 (2026-11-22): regenerating with write_frontend_fixtures changes Chess (shared-chess-analysis-moves, shared-chess-capacity) and all Xiangqi frontend fixtures because of earlier engine changes (play limits, selective_depth, saved play_mode). Only the Shogi fixtures were updated in MSH-224.
+<!-- SECTION:NOTES:END -->

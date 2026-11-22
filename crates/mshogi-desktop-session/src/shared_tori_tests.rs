@@ -1352,13 +1352,17 @@ fn typed_identity_refusal_and_interrupted_save_keep_complete_accepted_document_d
     let dir = directory("interrupted");
     let path = dir.join("current.mshogi");
     fs::write(&path, &before).unwrap();
-    let work = archive::NativeWork::ToriSave {
-        document: current(&c).document.clone(),
-        floor: c.runtime_floor(),
-        path: path.clone(),
-        revision: c.session.document_revision,
-        identity: c.session.document_identity,
-    };
+    let (document, floor) = (current(&c).document.clone(), c.runtime_floor());
+    let (revision, identity, target) = (
+        c.session.document_revision,
+        c.session.document_identity,
+        path.clone(),
+    );
+    let work = archive::NativeWork::Game(Box::new(move |stopped| {
+        native_session::save(&document, floor, &target, revision, identity, &mut || {
+            stopped()
+        })
+    }));
     let mut observed_temporary = false;
     let result = archive::execute(work, &mut || {
         let has_tmp = fs::read_dir(&dir).unwrap().any(|e| {
@@ -1508,12 +1512,11 @@ fn rejected_outgoing_replacements_preserve_tori_document_and_accepted_execution(
     // Real existing worker paths with intentionally unsupported destination
     // preferences inject candidate failure before swap, not a fake completion.
     let receipt = c
-        .queue_shogi_seed(
-            archive::ShogiSeed::Record {
+        .queue_game_candidate::<Shogi>(
+            native_session::RuntimeSeed::<Shogi>::Record {
                 play_mode: PlayMode::HumanEngine,
                 record: Box::new(s::GameRecord::from_game(&s::Game::new())),
                 human: s::Side::Sente,
-                orient_human: false,
             },
             Some(SessionOperation::ShogiPreferences {
                 settings: ShogiSettings {

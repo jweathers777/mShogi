@@ -162,6 +162,21 @@ impl<G: SessionGame> NativeSession<G> {
             status,
         })
     }
+    /// Canonical record of the selected game.
+    #[cfg(test)]
+    pub(crate) fn record(&self) -> CanonicalRecord {
+        G::canonical(G::from_game(self.selected()).expect("admitted native record"))
+    }
+    /// The selected history position, if any.
+    #[cfg(test)]
+    pub(crate) fn viewed(&self) -> Option<&G::Game> {
+        self.viewed.as_ref()
+    }
+    /// Select a history position directly, for tests.
+    #[cfg(test)]
+    pub(crate) fn set_viewed(&mut self, viewed: Option<G::Game>) {
+        self.viewed = viewed;
+    }
     pub(crate) fn selected(&self) -> &G::Game {
         self.viewed.as_ref().unwrap_or(&self.game)
     }
@@ -338,12 +353,25 @@ impl<G: SessionGame> NativeSession<G> {
                 } else {
                     None
                 };
+                // A game whose settings remember analysis limits saves them.
+                let remembered = self
+                    .document
+                    .settings()
+                    .with_analysis_defaults(limits)
+                    .filter(|s| s != self.document.settings());
+                let durable = remembered.is_some();
+                if let Some(settings) = remembered {
+                    self.document = Arc::new(
+                        self.document
+                            .with_control(GameControl::Settings { settings }, stopped)?,
+                    );
+                }
                 self.retire();
                 self.browse_stop = stop;
                 self.paused = true;
                 self.requested_analysis = Some(limits);
                 self.diagnostic = None;
-                return Ok(false);
+                return Ok(durable);
             }
             Err(SessionOperation::Resume {} | SessionOperation::Retry {}) => {
                 if self.viewed.is_some() {
@@ -361,6 +389,11 @@ impl<G: SessionGame> NativeSession<G> {
             }
         };
         if let Some(control) = control {
+            // Preferences change no game and keep current work.
+            if matches!(control, GameControl::Settings { .. }) {
+                self.document = Arc::new(self.document.with_control(control, stopped)?);
+                return Ok(true);
+            }
             let rewind = matches!(control, GameControl::Rewind { .. });
             let document = self.document.with_control(control, stopped)?;
             self.game = G::to_game(document.record(), stopped).map_err(record_text)?;

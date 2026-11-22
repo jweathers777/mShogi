@@ -1,4 +1,5 @@
 use super::*;
+use mshogi_engine::ShogiResult;
 fn controller() -> DesktopController {
     let mut c = DesktopController::new(PathBuf::from("/unused/msh72-engine")).unwrap();
     c.shared.manual_engine = true;
@@ -233,7 +234,7 @@ fn actual_complete_drop_promotion_capture_and_atomic_rejection() {
         s::Side::Sente,
     );
     send(&mut c, SessionOperation::Resume {}).unwrap();
-    assert_eq!(c.shogi_snapshot().phase, EnginePhase::Idle);
+    assert_eq!(c.game_snapshot::<Shogi>().phase, EnginePhase::Idle);
     let before = c.shared_token();
     assert!(
         send(
@@ -395,7 +396,7 @@ fn exact_analysis_context_retirement_and_same_board_history() {
     assert!(c.accept_observation(result));
     settle(&mut c);
     assert_eq!(c.session.shogi().unwrap().game.context(), root.context());
-    assert!(c.shogi_snapshot().analysis.is_some());
+    assert!(c.game_snapshot::<Shogi>().analysis.is_some());
     send(&mut c, SessionOperation::Inspect { event_index: 2 }).unwrap();
     let historic = analyze(&mut c);
     assert_eq!(historic.game.event_count(), 2);
@@ -481,7 +482,7 @@ fn semantic_undo_replay_does_not_revive_retired_work() {
     .unwrap();
     assert!(c.accept_observation(decode_execution_observation(&bytes)));
     settle(&mut c);
-    assert!(c.shogi_snapshot().status.concluded);
+    assert!(c.game_snapshot::<Shogi>().status.concluded);
 }
 #[test]
 fn command_json_strict_native_payload_and_encoded_capacity() {
@@ -550,16 +551,42 @@ fn observation_capacity_refuses_new_work_before_changing_session() {
     let mut c = controller();
     replace(&mut c, s::Game::new(), s::Side::Sente);
     let request = analyze(&mut c);
-    let observation = PresentedObservation {
-        observation: incomplete(request),
-        application_error: None,
-        historical: false,
-    };
-    let state = c.session.shogi_mut().unwrap();
-    state.retire();
-    state.observations = vec![observation; 256];
+    // Install a document that already holds all 256 observations.
+    let observation = incomplete(request.clone());
+    let mut payload = c.session.shogi().unwrap().document.payload.clone();
+    payload.retired_execution_floor = payload
+        .retired_execution_floor
+        .max(request.request_id)
+        .max(request.session_version)
+        .max(request.process_generation)
+        .max(match &request.purpose {
+            ExecutionPurpose::MoveAnalysis { target } => target.selection_id,
+            _ => 0,
+        });
+    for _ in 0..256 {
+        payload
+            .controls
+            .push(crate::game_document::GameControl::Observation {
+                index: payload.observations.len(),
+            });
+        payload.observations.push(observation.clone());
+    }
+    let document = crate::game_document::validate(payload, &mut || false).unwrap();
+    let receipt = c
+        .queue_game_candidate::<Shogi>(
+            native_session::RuntimeSeed::Document(Box::new(document)),
+            None,
+            None,
+            false,
+        )
+        .unwrap();
+    while receipt.completion().is_none() {
+        c.poll_native_admission();
+        std::thread::sleep(std::time::Duration::from_millis(1));
+    }
+    receipt.completion().unwrap().unwrap();
     let token = c.shared_token();
-    let context = c.shogi_snapshot().context;
+    let context = c.game_snapshot::<Shogi>().context;
     assert!(
         send(
             &mut c,
@@ -572,8 +599,8 @@ fn observation_capacity_refuses_new_work_before_changing_session() {
     );
     assert_eq!(c.shared_token().version, token.version);
     assert_eq!(c.shared_token().selection, token.selection);
-    assert_eq!(c.shogi_snapshot().context, context);
-    assert_eq!(c.shogi_snapshot().observations.len(), 256);
+    assert_eq!(c.game_snapshot::<Shogi>().context, context);
+    assert_eq!(c.game_snapshot::<Shogi>().observations.len(), 256);
     assert!(c.session.shogi().unwrap().pending.is_none());
 }
 
@@ -630,12 +657,12 @@ fn incomplete_failure_and_retry_preserve_native_history_without_fallback() {
     replace(&mut c, s::Game::new(), s::Side::Gote);
     send(&mut c, SessionOperation::Resume {}).unwrap();
     let old = c.session.shogi().unwrap().pending.clone().unwrap();
-    let before = c.shogi_snapshot().context;
+    let before = c.game_snapshot::<Shogi>().context;
     assert!(c.accept_observation(incomplete(old.clone())));
     settle(&mut c);
-    assert_eq!(c.shogi_snapshot().phase, EnginePhase::Incomplete);
-    assert_eq!(c.shogi_snapshot().context, before);
-    assert!(!c.shogi_snapshot().status.concluded);
+    assert_eq!(c.game_snapshot::<Shogi>().phase, EnginePhase::Incomplete);
+    assert_eq!(c.game_snapshot::<Shogi>().context, before);
+    assert!(!c.game_snapshot::<Shogi>().status.concluded);
     send(&mut c, SessionOperation::Retry {}).unwrap();
     let fresh = c.session.shogi().unwrap().pending.clone().unwrap();
     assert!(fresh.request_id > old.request_id);
@@ -651,9 +678,9 @@ fn incomplete_failure_and_retry_preserve_native_history_without_fallback() {
         }
     }));
     settle(&mut c);
-    assert_eq!(c.shogi_snapshot().phase, EnginePhase::Failed);
-    assert_eq!(c.shogi_snapshot().context, before);
-    assert!(!c.shogi_snapshot().status.concluded);
+    assert_eq!(c.game_snapshot::<Shogi>().phase, EnginePhase::Failed);
+    assert_eq!(c.game_snapshot::<Shogi>().context, before);
+    assert!(!c.game_snapshot::<Shogi>().status.concluded);
 }
 
 fn settle(c: &mut DesktopController) {
@@ -769,7 +796,10 @@ fn product_new_games_are_native_qualified_oriented_and_live_with_fresh_identitie
                 assert_eq!(current.choices.len(), 30);
                 assert!(!current.capabilities.declaration);
                 assert_eq!(current.turn.id, NativeSide::Shogi(s::Side::Sente));
-                assert_eq!(c.session.shogi().unwrap().settings.orientation, side);
+                assert_eq!(
+                    c.session.shogi().unwrap().document.settings().orientation,
+                    side
+                );
                 assert_eq!(current.capabilities.board_action, side == s::Side::Sente);
                 assert_eq!(
                     c.session.shogi().unwrap().pending.is_some(),
@@ -964,7 +994,14 @@ fn current_wire_frame_is_checked_before_a_durable_native_observation_is_admitted
         observation: observation.clone(),
     }));
     assert_eq!(c.shared_snapshot().context, before);
-    assert!(c.session.shogi().unwrap().observations.is_empty());
+    assert!(
+        c.session
+            .shogi()
+            .unwrap()
+            .document
+            .observations()
+            .is_empty()
+    );
     assert_eq!(c.session.shogi().unwrap().pending, Some(context));
     assert!(c.accept_shared(ExecutionResponse {
         protocol: mshogi_engine::PROTOCOL_VERSION,
@@ -972,9 +1009,9 @@ fn current_wire_frame_is_checked_before_a_durable_native_observation_is_admitted
     }));
     settle(&mut c);
     let saved = c.session.shogi().unwrap();
-    assert_eq!(saved.observations.len(), 1);
+    assert_eq!(saved.document.observations().len(), 1);
     assert_eq!(
-        saved.observations[0].observation.schema_version,
+        saved.document.observations()[0].schema_version,
         OBSERVATION_SCHEMA_VERSION
     );
     assert_eq!(saved.record(), before);

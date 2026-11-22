@@ -822,10 +822,17 @@ fn cancel_retires_pending_cross_game_admission_and_its_receipt_immediately() {
         x::Side::Red,
     );
     let before = native(&c);
-    let candidate =
-        ShogiSession::restored(&s::GameRecord::from_game(&s::Game::new()), s::Side::Sente).unwrap();
     let receipt = c
-        .queue_native_candidate(candidate, None, None, true)
+        .queue_game_candidate::<Shogi>(
+            native_session::RuntimeSeed::<Shogi>::Record {
+                record: Box::new(s::GameRecord::from_game(&s::Game::new())),
+                human: s::Side::Sente,
+                play_mode: PlayMode::HumanEngine,
+            },
+            None,
+            None,
+            true,
+        )
         .unwrap();
     assert_eq!(receipt.completion(), None);
     assert!(send(&mut c, SessionOperation::Resume {}).is_err());

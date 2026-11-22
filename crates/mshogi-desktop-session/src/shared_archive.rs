@@ -46,6 +46,12 @@ impl crate::native_game::DocumentSettings for ShogiSettings {
     fn validate(&self) -> Result<(), String> {
         valid_limits(self.analysis_defaults)
     }
+    fn with_analysis_defaults(&self, limits: WorkLimits) -> Option<Self> {
+        Some(Self {
+            analysis_defaults: limits,
+            ..self.clone()
+        })
+    }
 }
 
 /// Game-qualified settings without a common board or rules representation.
@@ -135,6 +141,18 @@ pub(crate) enum OpenedNative {
     },
     Chess(Box<persistence::Opened>),
     Shogi(Box<shogi::ShogiSession>),
+}
+impl OpenedNative {
+    /// A generic game's session still holds pending work.
+    pub(crate) fn has_pending_work(&self) -> bool {
+        match self {
+            Self::Shogi(state) => state.pending.is_some(),
+            Self::Tori(state) => state.pending.is_some(),
+            Self::Chu(state) => state.pending.is_some(),
+            Self::Tenjiku(state) => state.pending.is_some(),
+            Self::Xiangqi { .. } | Self::Chess(_) => false,
+        }
+    }
 }
 pub(crate) enum NativeCompleted {
     /// A generic game's session after runtime admission.
@@ -634,7 +652,3 @@ impl DesktopController {
 #[cfg(test)]
 #[path = "shared_archive_tests.rs"]
 mod tests;
-
-#[cfg(test)]
-#[path = "shared_capacity_tests.rs"]
-mod capacity_tests;

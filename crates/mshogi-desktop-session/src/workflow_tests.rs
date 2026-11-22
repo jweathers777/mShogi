@@ -6,7 +6,7 @@ const GAMES: [GameKind; 3] = [GameKind::Chess, GameKind::Shogi, GameKind::Xiangq
 fn peek(c: &DesktopController) -> SharedSnapshot {
     match &c.session {
         ActiveDocument::Chess(_) => c.chess_snapshot(c.session.snapshot()),
-        ActiveDocument::Shogi { .. } => c.shogi_snapshot(),
+        ActiveDocument::Shogi { .. } => c.game_snapshot::<Shogi>(),
         ActiveDocument::Xiangqi { .. } => c.xiangqi_snapshot(),
         ActiveDocument::Tori { .. } => c.game_snapshot::<Tori>(),
         ActiveDocument::Chu { .. } => c.game_snapshot::<Chu>(),

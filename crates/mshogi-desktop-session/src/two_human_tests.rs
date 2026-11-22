@@ -407,11 +407,10 @@ fn local_record(c: &mut DesktopController, record: CanonicalRecord) -> SharedSna
     let play_mode = PlayMode::TwoHumans;
     let resume = Some(SessionOperation::Resume {});
     let receipt = match record {
-        CanonicalRecord::Shogi(record) => c.queue_shogi_seed(
-            archive::ShogiSeed::Record {
+        CanonicalRecord::Shogi(record) => c.queue_game_candidate::<Shogi>(
+            native_session::RuntimeSeed::<Shogi>::Record {
                 record,
                 human: mshogi_core::shogi::Side::Gote,
-                orient_human: true,
                 play_mode,
             },
             resume,

@@ -61,6 +61,11 @@ pub trait DocumentSettings:
     fn validate(&self) -> Result<(), String> {
         Ok(())
     }
+    /// These settings with `limits` as the remembered analysis limits, for a
+    /// game whose settings remember them.
+    fn with_analysis_defaults(&self, _limits: mshogi_engine::WorkLimits) -> Option<Self> {
+        None
+    }
 }
 
 /// A game that the generic document and session serve.

@@ -494,9 +494,6 @@ pub(crate) struct Draft<G: SessionGame> {
 }
 pub(crate) enum RuntimeSeed<G: SessionGame> {
     Current(Box<Draft<G>>),
-    /// A complete validated document, restored stopped.
-    #[cfg_attr(not(feature = "desktop-verification"), allow(dead_code))]
-    Document(Box<ValidatedGameDocument<G>>),
     Record {
         record: Box<G::Record>,
         human: G::Side,
@@ -536,7 +533,6 @@ pub(crate) fn execute<G: SessionGame>(
             }
             state
         }
-        RuntimeSeed::Document(document) => Box::new(NativeSession::restore(*document, stopped)?),
         RuntimeSeed::Record {
             record,
             human,

@@ -159,6 +159,8 @@ pub enum RecordError {
     Prefix,
     /// Replay-derived facts disagree at a prefix or current state.
     Derived,
+    /// The caller stopped the replay.
+    Stopped,
 }
 impl fmt::Display for RecordError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -370,17 +372,31 @@ impl GameRecord {
     }
     /// Strict duplicate-preserving admission and authoritative replay of every prefix.
     pub fn from_json(text: &str) -> Result<Self, RecordError> {
-        Self::from_game(&Self::replay(text)?.0)
+        Self::from_json_with_stop(text, &mut || false)
+    }
+    /// Admission with cooperative cancellation between replayed events.
+    pub fn from_json_with_stop(
+        text: &str,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<Self, RecordError> {
+        Self::from_game(&Self::replay(text, stop)?.0)
     }
     /// Reconstruct semantic history with fresh native runtime authority.
     pub fn to_game(&self) -> Result<Game, RecordError> {
-        Self::replay(&self.json).map(|(game, _)| game)
+        self.to_game_with_stop(&mut || false)
+    }
+    /// Reconstruct with cooperative cancellation between replayed events.
+    pub fn to_game_with_stop(&self, stop: &mut impl FnMut() -> bool) -> Result<Game, RecordError> {
+        Self::replay(&self.json, stop).map(|(game, _)| game)
     }
     /// Reconstruct the exact native command ledger and fresh LIFO undo handles.
     pub fn to_game_with_undo(&self) -> Result<(Game, Vec<GameUndo>), RecordError> {
-        Self::replay(&self.json)
+        Self::replay(&self.json, &mut || false)
     }
-    fn replay(text: &str) -> Result<(Game, Vec<GameUndo>), RecordError> {
+    fn replay(
+        text: &str,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<(Game, Vec<GameUndo>), RecordError> {
         strict(text, MAX_GAME_RECORD_BYTES)?;
         #[derive(Deserialize)]
         struct Version {
@@ -395,7 +411,7 @@ impl GameRecord {
         }
         let probe: Probe = serde_json::from_str(text).map_err(|_| RecordError::Json)?;
         if probe.version.schema_version == 1 {
-            return Self::replay_v1(text);
+            return Self::replay_v1(text, stop);
         }
         let wire: WireRecord = serde_json::from_str(text).map_err(|_| RecordError::Json)?;
         if wire.format != "mshogi.tori.game"
@@ -416,6 +432,9 @@ impl GameRecord {
         }
         let mut undo = Vec::with_capacity(wire.events.len());
         for (i, event) in wire.events.iter().enumerate() {
+            if stop() {
+                return Err(RecordError::Stopped);
+            }
             undo.push(
                 game.submit(GameRequest {
                     expected: game.context(),
@@ -439,6 +458,9 @@ impl GameRecord {
             serde_json::to_value(WireRecord::from_game(&game)).map_err(|_| RecordError::Json)?;
         if actual != expected {
             return Err(RecordError::Derived);
+        }
+        if stop() {
+            return Err(RecordError::Stopped);
         }
         Ok((game, undo))
     }
@@ -490,7 +512,10 @@ impl GameRecord {
     /// commands under the current rule (MSH-208). A record whose history now
     /// contains a refused third occurrence, or whose derived facts differ, is
     /// refused (`Command` or `Derived`). The result encodes as the current schema.
-    fn replay_v1(text: &str) -> Result<(Game, Vec<GameUndo>), RecordError> {
+    fn replay_v1(
+        text: &str,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<(Game, Vec<GameUndo>), RecordError> {
         let wire: WireRecordV1 = serde_json::from_str(text).map_err(|_| RecordError::Json)?;
         if wire.format != "mshogi.tori.game"
             || wire.game != "tori"
@@ -510,6 +535,9 @@ impl GameRecord {
         }
         let mut undo = Vec::with_capacity(wire.events.len());
         for (i, event) in wire.events.iter().enumerate() {
+            if stop() {
+                return Err(RecordError::Stopped);
+            }
             undo.push(
                 game.submit(GameRequest {
                     expected: game.context(),
@@ -537,6 +565,9 @@ impl GameRecord {
             || game.snapshot().incomplete != wire.incomplete
         {
             return Err(RecordError::Derived);
+        }
+        if stop() {
+            return Err(RecordError::Stopped);
         }
         Ok((game, undo))
     }

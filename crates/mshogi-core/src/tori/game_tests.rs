@@ -956,3 +956,30 @@ fn digest_scan_agrees_with_full_key_scan_on_repetition_heavy_games() {
     );
     eprintln!("MSH208 differential: {restricted} restricted positions, {forced} forced losses");
 }
+
+#[test]
+fn stop_aware_replay_stops_per_event_or_matches_the_plain_replay() {
+    let mut g = Game::standard();
+    for _ in 0..4 {
+        let a = g.legal_actions()[0];
+        play(&mut g, a).unwrap();
+    }
+    let record = GameRecord::from_game(&g).unwrap();
+    // Never stopped: the same game as the plain call.
+    assert_eq!(
+        GameRecord::from_game(&record.to_game_with_stop(&mut || false).unwrap()).unwrap(),
+        record
+    );
+    // Stopped at once, before each of the four events, and after the last one.
+    for limit in 0..=4 {
+        let mut calls = 0;
+        let mut stop = || {
+            calls += 1;
+            calls > limit
+        };
+        assert_eq!(
+            record.to_game_with_stop(&mut stop).unwrap_err(),
+            RecordError::Stopped
+        );
+    }
+}

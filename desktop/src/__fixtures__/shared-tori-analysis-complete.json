@@ -2130,7 +2130,7 @@
         },
         "limits": {
           "depth": 1,
-          "nodes": 1000
+          "nodes": 100000
         }
       },
       "result": {
@@ -2138,24 +2138,62 @@
         "result": {
           "kind": "choice",
           "action": {
-            "kind": "move",
-            "from": "7c",
-            "to": "7b",
-            "result_face": "eagle"
+            "kind": "drop",
+            "face": "crane",
+            "to": "3b"
           },
           "telemetry": {
             "evaluator_id": "mshogi.tori.material-placement.v1",
             "search_id": "mshogi.tori.shared-core.v1",
             "perspective": "sente",
-            "score": 4012,
+            "score": 999983,
             "completed_depth": 1,
-            "nodes": 145,
+            "nodes": 1919,
             "principal_variation": [
+              {
+                "kind": "drop",
+                "face": "crane",
+                "to": "3b"
+              },
+              {
+                "kind": "move",
+                "from": "4a",
+                "to": "5a",
+                "result_face": "phoenix"
+              },
+              {
+                "kind": "drop",
+                "face": "swallow",
+                "to": "5b"
+              },
+              {
+                "kind": "move",
+                "from": "5a",
+                "to": "6a",
+                "result_face": "phoenix"
+              },
+              {
+                "kind": "drop",
+                "face": "swallow",
+                "to": "6b"
+              },
+              {
+                "kind": "move",
+                "from": "6a",
+                "to": "7a",
+                "result_face": "phoenix"
+              },
               {
                 "kind": "move",
                 "from": "7c",
                 "to": "7b",
                 "result_face": "eagle"
+              },
+              {
+                "kind": "move",
+                "from": "7a",
+                "to": "7b",
+                "result_face": "phoenix"
               }
             ],
             "status": "complete"
@@ -2198,7 +2236,7 @@
           },
           "limits": {
             "depth": 1,
-            "nodes": 1000
+            "nodes": 100000
           }
         },
         "result": {
@@ -2206,24 +2244,62 @@
           "result": {
             "kind": "choice",
             "action": {
-              "kind": "move",
-              "from": "7c",
-              "to": "7b",
-              "result_face": "eagle"
+              "kind": "drop",
+              "face": "crane",
+              "to": "3b"
             },
             "telemetry": {
               "evaluator_id": "mshogi.tori.material-placement.v1",
               "search_id": "mshogi.tori.shared-core.v1",
               "perspective": "sente",
-              "score": 4012,
+              "score": 999983,
               "completed_depth": 1,
-              "nodes": 145,
+              "nodes": 1919,
               "principal_variation": [
+                {
+                  "kind": "drop",
+                  "face": "crane",
+                  "to": "3b"
+                },
+                {
+                  "kind": "move",
+                  "from": "4a",
+                  "to": "5a",
+                  "result_face": "phoenix"
+                },
+                {
+                  "kind": "drop",
+                  "face": "swallow",
+                  "to": "5b"
+                },
+                {
+                  "kind": "move",
+                  "from": "5a",
+                  "to": "6a",
+                  "result_face": "phoenix"
+                },
+                {
+                  "kind": "drop",
+                  "face": "swallow",
+                  "to": "6b"
+                },
+                {
+                  "kind": "move",
+                  "from": "6a",
+                  "to": "7a",
+                  "result_face": "phoenix"
+                },
                 {
                   "kind": "move",
                   "from": "7c",
                   "to": "7b",
                   "result_face": "eagle"
+                },
+                {
+                  "kind": "move",
+                  "from": "7a",
+                  "to": "7b",
+                  "result_face": "phoenix"
                 }
               ],
               "status": "complete"
@@ -2243,11 +2319,18 @@
       "board_ply": 0,
       "perspective": "Sente",
       "engine": "mShogi",
-      "score": "+40.12 Swallows",
+      "score": "Win in 17 board actions",
       "completed_depth": 1,
-      "nodes": 145,
+      "nodes": 1919,
       "variation": [
-        "{\"kind\":\"move\",\"from\":\"7c\",\"to\":\"7b\",\"result_face\":\"eagle\"}"
+        "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"3b\"}",
+        "{\"kind\":\"move\",\"from\":\"4a\",\"to\":\"5a\",\"result_face\":\"phoenix\"}",
+        "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"5b\"}",
+        "{\"kind\":\"move\",\"from\":\"5a\",\"to\":\"6a\",\"result_face\":\"phoenix\"}",
+        "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"6b\"}",
+        "{\"kind\":\"move\",\"from\":\"6a\",\"to\":\"7a\",\"result_face\":\"phoenix\"}",
+        "{\"kind\":\"move\",\"from\":\"7c\",\"to\":\"7b\",\"result_face\":\"eagle\"}",
+        "{\"kind\":\"move\",\"from\":\"7a\",\"to\":\"7b\",\"result_face\":\"phoenix\"}"
       ],
       "status": "Complete",
       "historical": false,

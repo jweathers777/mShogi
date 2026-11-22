@@ -21,11 +21,11 @@ mod document;
 pub mod game_document;
 /// Per-game boundary of the generic document and session.
 pub mod native_game;
-pub(crate) use native_game::{Chu, Tenjiku};
+pub(crate) use native_game::{Chu, Tenjiku, Tori};
 mod resource;
 /// Immutable two-profile Tenjiku candidates for the existing document and worker.
 pub mod tenjiku_document;
-/// Immutable Tori document codec/admission; installation belongs to the sole native controller.
+/// Tori document: the generic native document for Tori.
 pub mod tori_document;
 pub use resource::*;
 mod lifecycle;

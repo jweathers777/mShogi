@@ -42,7 +42,8 @@ pub(crate) trait SessionGame: NativeGame {
 
     fn presentation(selected: &Self::Game, live: &Self::Game) -> Self::Presentation;
     fn status(selected: &Self::Game, has_actions: bool) -> PresentedStatus;
-    fn choice(action: Self::Action, all: &[Self::Action]) -> PresentedChoice;
+    /// A legal action of `game` as a frontend choice.
+    fn choice(game: &Self::Game, action: Self::Action, all: &[Self::Action]) -> PresentedChoice;
     fn legal_actions(
         game: &Self::Game,
         stop: &mut impl FnMut() -> bool,
@@ -73,9 +74,17 @@ pub(crate) trait SessionGame: NativeGame {
         replacement: bool,
         durable: bool,
     ) -> archive::NativeCompleted;
+    /// A restored session as an opened document.
+    fn opened(state: Box<NativeSession<Self>>) -> archive::OpenedNative;
     fn state(session: &ActiveDocument) -> Option<&NativeSession<Self>>;
     fn state_mut(session: &mut ActiveDocument) -> Option<&mut NativeSession<Self>>;
 
+    /// The game has pieces in hand and drops.
+    const HANDS: bool = false;
+    /// Pieces in hand, for a game with hands.
+    fn hands(_game: &Self::Game) -> Vec<PresentedHand> {
+        vec![]
+    }
     /// Board width and height in squares.
     const BOARD_SIZE: u8;
     const BOARD_LABEL: &'static str;
@@ -110,7 +119,7 @@ pub(crate) struct NativeSession<G: SessionGame> {
     pub(crate) paused: bool,
     submitted: bool,
     requested_analysis: Option<WorkLimits>,
-    analysis: Option<ExecutionObservation>,
+    pub(crate) analysis: Option<ExecutionObservation>,
     current_observations: Vec<u64>,
     pub(crate) diagnostic: Option<String>,
     presentation: G::Presentation,
@@ -399,7 +408,7 @@ fn present<G: SessionGame>(
     let choices = actions
         .iter()
         .filter(|_| viewed.is_none())
-        .map(|a| G::choice(a.clone(), &actions))
+        .map(|a| G::choice(selected, a.clone(), &actions))
         .collect();
     Ok((presentation, status, choices))
 }
@@ -516,6 +525,37 @@ pub(crate) fn execute<G: SessionGame>(
     state.choices = choices;
     persistence::check(stopped)?;
     Ok(G::completed(state, work.replacement, durable))
+}
+
+/// Open on the file worker: decode, validate and restore a saved document.
+pub(crate) fn open<G: SessionGame>(
+    bytes: &[u8],
+    stopped: &mut impl FnMut() -> bool,
+) -> Result<archive::OpenedNative, OperationFailure> {
+    let document = ValidatedGameDocument::<G>::decode(bytes, stopped)?;
+    Ok(G::opened(Box::new(NativeSession::restore(
+        document, stopped,
+    )?)))
+}
+
+/// Save on the file worker: refresh the runtime floor, validate the complete
+/// candidate again and write it atomically.
+pub(crate) fn save<G: NativeGame>(
+    document: &ValidatedGameDocument<G>,
+    floor: u64,
+    path: &std::path::Path,
+    revision: u64,
+    identity: u64,
+    stopped: &mut impl FnMut() -> bool,
+) -> Result<archive::NativeCompleted, OperationFailure> {
+    let doc = document.with_runtime_floor(floor)?;
+    let doc = ValidatedGameDocument::<G>::decode(doc.bytes(), stopped)?;
+    persistence::atomic_write(path, doc.bytes(), stopped)?;
+    Ok(archive::NativeCompleted::Saved {
+        path: path.to_path_buf(),
+        revision,
+        identity,
+    })
 }
 
 impl DesktopController {
@@ -770,6 +810,53 @@ impl DesktopController {
             .submitted = true;
         Ok(context)
     }
+    /// Hold technical fixture play; excluded from ordinary distributables.
+    #[cfg(feature = "desktop-verification")]
+    pub(crate) fn verify_game_pause_play<G: SessionGame>(&mut self) -> Result<(), String> {
+        self.bridge.cancel();
+        let state = G::state_mut(&mut self.session)
+            .ok_or_else(|| format!("Requires native {} document.", G::NAME))?;
+        state.retire();
+        state.paused = true;
+        Ok(())
+    }
+    /// Project the actual submitted pending state without polling completion.
+    #[cfg(feature = "desktop-verification")]
+    pub(crate) fn verify_game_pending_snapshot<G: SessionGame>(
+        &self,
+    ) -> Result<SharedSnapshot, String> {
+        if G::state(&self.session).is_none_or(|s| s.pending.is_none()) {
+            return Err(format!(
+                "Requires actual pending {} verification work.",
+                G::NAME
+            ));
+        }
+        Ok(self.game_snapshot::<G>())
+    }
+    /// Verification-only elapsed-clock injection; canonical state is unchanged.
+    #[cfg(feature = "desktop-verification")]
+    pub(crate) fn verify_game_validation_deadline<G: SessionGame>(
+        &mut self,
+        file: bool,
+    ) -> Result<SharedSnapshot, String> {
+        if G::state(&self.session).is_none() || self.admission_token.is_some() {
+            return Err(format!("Requires an idle native {} document.", G::NAME));
+        }
+        let failure = persistence::verification_deadline_failure();
+        if file {
+            self.io_state.id += 1;
+            self.io_state.phase = IoPhase::Failed;
+            self.io_state.message = Some(failure.diagnostic);
+            self.io_state.resource = failure.resource;
+        } else {
+            self.session.capacity.id += 1;
+            self.session.capacity.status = CapacityPhase::Paused;
+            self.session.capacity.message = Some(failure.diagnostic);
+            self.session.capacity.resource = failure.resource;
+        }
+        self.session.revision += 1;
+        Ok(self.game_snapshot::<G>())
+    }
     pub(super) fn close_game<G: SessionGame>(&mut self) {
         if G::state(&self.session).is_some_and(|s| {
             s.paused
@@ -847,14 +934,14 @@ impl DesktopController {
                 },
             ],
             pieces: G::pieces(game),
-            hands: vec![],
+            hands: G::hands(game),
             choices: state.choices.clone(),
             capabilities: CommandCapabilities {
                 board_action: !historical
                     && (!settings.play_mode.is_two_humans() || !state.paused)
                     && !ended
                     && settings.play_mode.owns(human, turn),
-                drops: false,
+                drops: G::HANDS,
                 promotion: true,
                 take_back: !historical && state.take_back_target().is_some(),
                 undo: !historical && G::events(&state.game) > 0,
@@ -864,7 +951,7 @@ impl DesktopController {
                 claims: false,
                 declaration: false,
                 resign: !historical && !ended,
-                hands: false,
+                hands: G::HANDS,
                 history: true,
                 save: true,
             },
@@ -986,6 +1073,72 @@ pub(crate) fn display_observation<G: SessionGame>(
     }
 }
 
+/// The wrappers of the shared runtime enums for one game: its session
+/// operations, worker jobs, active-document variant and snapshot field.
+macro_rules! session_wiring {
+    ($game:ident, $core:ident, operation: $op:ident, preferences: $prefs:ident, runtime: $runtime:ident,
+     save: $save:ident, state: $state:ident, $state_mut:ident, field: $field:ident) => {
+        fn native_side(side: $core::Side) -> NativeSide {
+            NativeSide::$game(side)
+        }
+        fn operation(operation: SessionOperation) -> Result<GameOperation<Self>, SessionOperation> {
+            match operation {
+                SessionOperation::$op { actor, command } => {
+                    Ok(GameOperation::Command { actor, command })
+                }
+                SessionOperation::$prefs { settings } => {
+                    Ok(GameOperation::Preferences { settings })
+                }
+                operation => Err(operation),
+            }
+        }
+        fn command_operation(actor: $core::Side, command: $core::GameCommand) -> SessionOperation {
+            SessionOperation::$op { actor, command }
+        }
+        fn runtime_work(work: RuntimeWork<Self>) -> archive::NativeWork {
+            archive::NativeWork::$runtime(Box::new(work))
+        }
+        fn save_work(
+            document: Arc<ValidatedGameDocument<Self>>,
+            floor: u64,
+            path: PathBuf,
+            revision: u64,
+            identity: u64,
+        ) -> archive::NativeWork {
+            archive::NativeWork::$save {
+                document,
+                floor,
+                path,
+                revision,
+                identity,
+            }
+        }
+        fn completed(
+            state: Box<NativeSession<Self>>,
+            replacement: bool,
+            durable: bool,
+        ) -> archive::NativeCompleted {
+            archive::NativeCompleted::$runtime {
+                state,
+                replacement,
+                durable,
+            }
+        }
+        fn opened(state: Box<NativeSession<Self>>) -> archive::OpenedNative {
+            archive::OpenedNative::$game(state)
+        }
+        fn state(session: &ActiveDocument) -> Option<&NativeSession<Self>> {
+            session.$state()
+        }
+        fn state_mut(session: &mut ActiveDocument) -> Option<&mut NativeSession<Self>> {
+            session.$state_mut()
+        }
+        fn present_in(snapshot: &mut SharedSnapshot, presentation: Self::Presentation) {
+            snapshot.$field = Some(presentation);
+        }
+    };
+}
+
 /// The Chu and Tenjiku sessions differ only by names and the PV label.
 macro_rules! large_shogi_session {
     ($game:ident, $core:ident, $engine:ident, $limits:ident, $max_depth:ident, $max_nodes:ident,
@@ -999,13 +1152,16 @@ macro_rules! large_shogi_session {
             const MAX_DEPTH: u16 = mshogi_engine::$max_depth;
             const MAX_NODES: u64 = mshogi_engine::$max_nodes;
 
+            session_wiring!($game, c, operation: $op, preferences: $prefs, runtime: $runtime,
+                save: $save, state: $state, $state_mut, field: $field);
+
             fn presentation(selected: &c::Game, live: &c::Game) -> Self::Presentation {
                 presentation::Presentation::new(selected, live)
             }
             fn status(selected: &c::Game, has_actions: bool) -> PresentedStatus {
                 presentation::status(selected, has_actions)
             }
-            fn choice(action: c::Action, all: &[c::Action]) -> PresentedChoice {
+            fn choice(_game: &c::Game, action: c::Action, all: &[c::Action]) -> PresentedChoice {
                 presentation::choice(action, all)
             }
             fn legal_actions(
@@ -1031,9 +1187,6 @@ macro_rules! large_shogi_session {
                     _ => CommandKind::Other,
                 }
             }
-            fn native_side(side: c::Side) -> NativeSide {
-                NativeSide::$game(side)
-            }
             fn telemetry(result: &mshogi_engine::$engine) -> TelemetryView {
                 let t = result.telemetry();
                 TelemetryView {
@@ -1046,57 +1199,6 @@ macro_rules! large_shogi_session {
             }
             fn incomplete(result: &mshogi_engine::$engine) -> bool {
                 matches!(result, mshogi_engine::$engine::Incomplete { .. })
-            }
-            fn operation(
-                operation: SessionOperation,
-            ) -> Result<GameOperation<Self>, SessionOperation> {
-                match operation {
-                    SessionOperation::$op { actor, command } => {
-                        Ok(GameOperation::Command { actor, command })
-                    }
-                    SessionOperation::$prefs { settings } => {
-                        Ok(GameOperation::Preferences { settings })
-                    }
-                    operation => Err(operation),
-                }
-            }
-            fn command_operation(actor: c::Side, command: c::GameCommand) -> SessionOperation {
-                SessionOperation::$op { actor, command }
-            }
-            fn runtime_work(work: RuntimeWork<Self>) -> archive::NativeWork {
-                archive::NativeWork::$runtime(Box::new(work))
-            }
-            fn save_work(
-                document: Arc<ValidatedGameDocument<Self>>,
-                floor: u64,
-                path: PathBuf,
-                revision: u64,
-                identity: u64,
-            ) -> archive::NativeWork {
-                archive::NativeWork::$save {
-                    document,
-                    floor,
-                    path,
-                    revision,
-                    identity,
-                }
-            }
-            fn completed(
-                state: Box<NativeSession<Self>>,
-                replacement: bool,
-                durable: bool,
-            ) -> archive::NativeCompleted {
-                archive::NativeCompleted::$runtime {
-                    state,
-                    replacement,
-                    durable,
-                }
-            }
-            fn state(session: &ActiveDocument) -> Option<&NativeSession<Self>> {
-                session.$state()
-            }
-            fn state_mut(session: &mut ActiveDocument) -> Option<&mut NativeSession<Self>> {
-                session.$state_mut()
             }
             const BOARD_SIZE: u8 = $size;
             const BOARD_LABEL: &'static str = $label;
@@ -1113,9 +1215,6 @@ macro_rules! large_shogi_session {
             }
             fn board_ply(game: &c::Game) -> u64 {
                 game.snapshot().board_ply as u64
-            }
-            fn present_in(snapshot: &mut SharedSnapshot, presentation: Self::Presentation) {
-                snapshot.$field = Some(presentation);
             }
         }
     };

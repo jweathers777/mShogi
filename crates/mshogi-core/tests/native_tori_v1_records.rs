@@ -142,3 +142,26 @@ fn schema_one_record_with_a_third_occurrence_is_refused_at_that_command() {
         t::RecordError::Identity
     );
 }
+
+#[test]
+fn schema_one_replay_stops_per_event() {
+    let text = v1("tori-forced-prefix7");
+    let events = serde_json::from_str::<Value>(&text).unwrap()["events"]
+        .as_array()
+        .unwrap()
+        .len();
+    assert!(events > 0);
+    assert!(t::GameRecord::from_json_with_stop(&text, &mut || false).is_ok());
+    // Stopped before each event and after the last one.
+    for limit in 0..=events {
+        let mut calls = 0;
+        let mut stop = || {
+            calls += 1;
+            calls > limit
+        };
+        assert_eq!(
+            t::GameRecord::from_json_with_stop(&text, &mut stop).unwrap_err(),
+            t::RecordError::Stopped
+        );
+    }
+}

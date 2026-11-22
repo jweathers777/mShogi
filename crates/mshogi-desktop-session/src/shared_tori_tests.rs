@@ -341,7 +341,11 @@ fn actual_controller_seventy_native_admission_cases_and_rotations() {
                 after,
                 "{id} replay same authoritative transition"
             );
-            ValidatedToriDocument::decode(current(&c).document.bytes(), &mut || false).unwrap();
+            crate::tori_document::ValidatedToriDocument::decode(
+                current(&c).document.bytes(),
+                &mut || false,
+            )
+            .unwrap();
         }
         ids.push(id.to_string());
     }
@@ -914,7 +918,7 @@ fn stale_and_cancelled_open_and_save_receipts_never_replace_or_clean_newer_conte
     assert!(matches!(wait_file(&mut c, id).io.phase, IoPhase::Complete));
     assert_eq!(
         native(&c),
-        ValidatedToriDocument::decode(&before, &mut || false)
+        crate::tori_document::ValidatedToriDocument::decode(&before, &mut || false)
             .unwrap()
             .record()
             .clone()
@@ -926,7 +930,7 @@ fn stale_and_cancelled_open_and_save_receipts_never_replace_or_clean_newer_conte
     assert!(opened.paused && current(&c).pending.is_none());
     assert_eq!(
         current(&c).document.record(),
-        ValidatedToriDocument::decode(&before, &mut || false)
+        crate::tori_document::ValidatedToriDocument::decode(&before, &mut || false)
             .unwrap()
             .record()
     );
@@ -1012,7 +1016,7 @@ fn byte_control_native_event_and_replay_limited_open_preserves_current_authority
     let dir = directory("resources");
     let path = dir.join("refused.mshogi");
     let template: Value = serde_json::from_slice(&before).unwrap();
-    let settings = json!({"kind":"settings","settings":{"orientation":"sente"}});
+    let settings = json!({"kind":"settings","settings":template["payload"]["settings"].clone()});
     let mut controls = template.clone();
     controls["payload"]["controls"] = json!(vec![settings; 8190]);
     let mut g = t::Game::standard();
@@ -1035,10 +1039,9 @@ fn byte_control_native_event_and_replay_limited_open_preserves_current_authority
             controls.to_string().into_bytes(),
             ResourceCategory::Controls,
         ),
-        (
-            events.to_string().into_bytes(),
-            ResourceCategory::NativeEvents,
-        ),
+        // The native record parser refuses the event count; it names no
+        // specific desktop limit.
+        (events.to_string().into_bytes(), ResourceCategory::Unknown),
     ] {
         fs::write(&path, bytes).unwrap();
         let id = c
@@ -1046,7 +1049,10 @@ fn byte_control_native_event_and_replay_limited_open_preserves_current_authority
             .unwrap();
         let result = wait_file(&mut c, id);
         assert!(matches!(result.io.phase, IoPhase::Failed));
-        let failure = result.io.resource.expect("typed resource fact");
+        let failure = result
+            .io
+            .resource
+            .unwrap_or_else(|| panic!("typed resource fact: {category:?} {:?}", result.io.message));
         assert!(
             failure.facts().iter().any(|f| f.category == category),
             "{category:?}: {failure:?}"
@@ -1058,7 +1064,8 @@ fn byte_control_native_event_and_replay_limited_open_preserves_current_authority
     let good = dir.join("still-saveable.mshogi");
     let id = c.queue_shared_save(good.clone()).unwrap();
     assert!(matches!(wait_file(&mut c, id).io.phase, IoPhase::Complete));
-    ValidatedToriDocument::decode(&fs::read(good).unwrap(), &mut || false).unwrap();
+    crate::tori_document::ValidatedToriDocument::decode(&fs::read(good).unwrap(), &mut || false)
+        .unwrap();
     fs::remove_dir_all(dir).unwrap();
 }
 
@@ -1109,11 +1116,16 @@ fn long_result(
     // the accepted canonical state still has a lossless supported encoding.
     if let Some(state) = c.session.tori() {
         let record = native(c);
-        ValidatedToriDocument::decode(state.document.bytes(), &mut || false).unwrap();
+        crate::tori_document::ValidatedToriDocument::decode(state.document.bytes(), &mut || false)
+            .unwrap();
         let closed = c.application_pause_for_close();
         assert_eq!(native(c), record);
         assert!(closed.close_requires_save);
-        ValidatedToriDocument::decode(current(c).document.bytes(), &mut || false).unwrap();
+        crate::tori_document::ValidatedToriDocument::decode(
+            current(c).document.bytes(),
+            &mut || false,
+        )
+        .unwrap();
     }
     eprintln!(
         "MSH131_LONG_DEADLINE {}",
@@ -1263,7 +1275,11 @@ fn long_native_runtime(actions: usize, allow_deadline: bool) {
     }
     assert!(matches!(result.io.phase, IoPhase::Complete));
     let save_ms = start.elapsed().as_millis();
-    let readback = ValidatedToriDocument::decode(&fs::read(&path).unwrap(), &mut || false).unwrap();
+    let readback =
+        crate::tori_document::ValidatedToriDocument::decode(&fs::read(&path).unwrap(), &mut || {
+            false
+        })
+        .unwrap();
     assert_eq!(readback.record(), &native(&c));
     let mut reopened = controller();
     let before = long_retained_state(&mut reopened);
@@ -1438,8 +1454,10 @@ fn historical_failure_observation_saves_exact_prefix_without_future_knowledge_or
     let id = c.queue_shared_open(path, c.shared_open_token()).unwrap();
     let restored = wait_file(&mut c, id);
     assert!(matches!(restored.io.phase, IoPhase::Complete));
-    assert_eq!(restored.event_index, 7);
-    assert!(!restored.historical);
+    // The saved browse selection is restored with the live game.
+    assert_eq!(restored.event_index, 4);
+    assert!(restored.historical);
+    assert_eq!(current(&c).game.events().len(), 7);
     assert!(restored.paused);
     assert!(current(&c).pending.is_none());
     assert!(restored.observations[0].historical);
@@ -1670,7 +1688,11 @@ fn actual_engine_turns_both_assignments_and_exact_historical_analysis_have_separ
         let exact_rewind = native(&c);
         assert!(!submit_observation(&mut c, retired_reply));
         assert_eq!(native(&c), exact_rewind);
-        ValidatedToriDocument::decode(current(&c).document.bytes(), &mut || false).unwrap();
+        crate::tori_document::ValidatedToriDocument::decode(
+            current(&c).document.bytes(),
+            &mut || false,
+        )
+        .unwrap();
     }
 }
 #[test]
@@ -1718,7 +1740,10 @@ fn consumed_real_response_admission_identity_refusal_retires_thinking_and_preser
     assert!(matches!(current(&c).phase, EnginePhase::Paused));
     assert!(c.session.capacity.resource.is_some());
     assert!(!c.accept_observation(response));
-    ValidatedToriDocument::decode(current(&c).document.bytes(), &mut || false).unwrap();
+    crate::tori_document::ValidatedToriDocument::decode(current(&c).document.bytes(), &mut || {
+        false
+    })
+    .unwrap();
 }
 
 #[test]

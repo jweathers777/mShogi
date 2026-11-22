@@ -138,7 +138,14 @@ impl GameRecord {
     }
     /// Strict duplicate-preserving parsing followed by authoritative replay.
     pub fn from_json(text: &str) -> Result<Self, RecordError> {
-        Self::from_game(&Self::replay(text, &mut || false)?.0)
+        Self::from_json_with_stop(text, &mut || false)
+    }
+    /// Admission with cooperative cancellation between replayed events.
+    pub fn from_json_with_stop(
+        text: &str,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<Self, RecordError> {
+        Self::from_game(&Self::replay(text, stop)?.0)
     }
     /// Reconstruct canonical semantics with fresh runtime authority.
     pub fn to_game(&self) -> Result<Game, RecordError> {

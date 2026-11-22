@@ -155,8 +155,7 @@ pub(crate) enum NativeWork {
         revision: u64,
         identity: u64,
     },
-    ToriRuntime(Box<tori::RuntimeWork>),
-    Tori(crate::tori_document::CandidateWork),
+    ToriRuntime(Box<native_session::RuntimeWork<Tori>>),
     Xiangqi(xiangqi::archive::XiangqiWork),
     Admit {
         candidate: ShogiSeed,
@@ -207,7 +206,6 @@ pub(crate) enum NativeCompleted {
         replacement: bool,
         durable: bool,
     },
-    ToriValidated(Box<crate::tori_document::ValidatedToriDocument>),
     Xiangqi(xiangqi::archive::XiangqiCompleted),
     Admitted {
         state: Box<ShogiSession>,
@@ -1099,17 +1097,7 @@ pub(crate) fn execute(
             path,
             revision,
             identity,
-        } => {
-            let doc = document.with_runtime_floor(floor)?;
-            let doc =
-                crate::tenjiku_document::ValidatedTenjikuDocument::decode(doc.bytes(), stopped)?;
-            persistence::atomic_write(&path, doc.bytes(), stopped)?;
-            Ok(NativeCompleted::Saved {
-                path,
-                revision,
-                identity,
-            })
-        }
+        } => native_session::save(&document, floor, &path, revision, identity, stopped),
         NativeWork::ChuRuntime(work) => native_session::execute(*work, stopped),
         NativeWork::ChuSave {
             document,
@@ -1117,37 +1105,15 @@ pub(crate) fn execute(
             path,
             revision,
             identity,
-        } => {
-            let doc = document.with_runtime_floor(floor)?;
-            let doc = crate::chu_document::ValidatedChuDocument::decode(doc.bytes(), stopped)?;
-            persistence::atomic_write(&path, doc.bytes(), stopped)?;
-            Ok(NativeCompleted::Saved {
-                path,
-                revision,
-                identity,
-            })
-        }
+        } => native_session::save(&document, floor, &path, revision, identity, stopped),
         NativeWork::ToriSave {
             document,
             floor,
             path,
             revision,
             identity,
-        } => {
-            let doc = document.with_runtime_floor(floor)?;
-            // Authoritative full validation and atomic write stay on existing worker.
-            crate::tori_document::execute(
-                crate::tori_document::CandidateWork::Save {
-                    bytes: doc.bytes().to_vec(),
-                    path,
-                    revision,
-                    identity,
-                },
-                stopped,
-            )
-        }
-        NativeWork::ToriRuntime(work) => tori::execute(*work, stopped),
-        NativeWork::Tori(work) => crate::tori_document::execute(work, stopped),
+        } => native_session::save(&document, floor, &path, revision, identity, stopped),
+        NativeWork::ToriRuntime(work) => native_session::execute(*work, stopped),
         NativeWork::Xiangqi(work) => xiangqi::archive::execute(work, stopped),
         NativeWork::Admit {
             candidate,
@@ -1243,20 +1209,9 @@ pub(crate) fn execute(
             let bytes = read(&path, stopped)?;
             let value = crate::document::DocumentEnvelope::parse(&bytes)?;
             let game = match value.game_kind {
-                GameKind::Tenjiku => {
-                    OpenedNative::Tenjiku(Box::new(tenjiku::TenjikuSession::restore(
-                        crate::tenjiku_document::ValidatedTenjikuDocument::decode(&bytes, stopped)?,
-                        stopped,
-                    )?))
-                }
-                GameKind::Chu => OpenedNative::Chu(Box::new(chu::ChuSession::restore(
-                    crate::chu_document::ValidatedChuDocument::decode(&bytes, stopped)?,
-                    stopped,
-                )?)),
-                GameKind::Tori => OpenedNative::Tori(Box::new(tori::ToriSession::restore(
-                    crate::tori_document::ValidatedToriDocument::decode(&bytes, stopped)?,
-                    stopped,
-                )?)),
+                GameKind::Tenjiku => native_session::open::<Tenjiku>(&bytes, stopped)?,
+                GameKind::Chu => native_session::open::<Chu>(&bytes, stopped)?,
+                GameKind::Tori => native_session::open::<Tori>(&bytes, stopped)?,
                 GameKind::Chess => OpenedNative::Chess(Box::new(
                     persistence::decode_chess_payload(value.payload.get().as_bytes(), stopped)?,
                 )),
@@ -1336,7 +1291,7 @@ impl DesktopController {
             return self.queue_game_save::<Chu>(path);
         }
         if self.session.tori().is_some() {
-            return self.queue_tori_save(path);
+            return self.queue_game_save::<Tori>(path);
         }
         if let Some(state) = self.session.xiangqi() {
             let work = xiangqi::archive::XiangqiWork::Save {
@@ -1452,8 +1407,7 @@ impl DesktopController {
             | NativeCompleted::ChuRuntime { .. }
             | NativeCompleted::ToriRuntime { .. }
             | NativeCompleted::Admitted { .. }
-            | NativeCompleted::Xiangqi(_)
-            | NativeCompleted::ToriValidated(_) => {
+            | NativeCompleted::Xiangqi(_) => {
                 unreachable!("dedicated admission worker")
             }
             NativeCompleted::Saved {
@@ -1620,7 +1574,13 @@ impl DesktopController {
                     replacement,
                     durable,
                 } => {
-                    self.finish_tori_admission(state, replacement, durable, id, receipt);
+                    self.finish_native_transaction(
+                        OpenedNative::Tori(state),
+                        replacement,
+                        durable,
+                        id,
+                        receipt,
+                    );
                 }
                 NativeCompleted::Xiangqi(completed) => {
                     self.finish_xiangqi_admission(completed, id, receipt)

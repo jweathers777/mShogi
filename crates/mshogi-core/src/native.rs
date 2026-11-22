@@ -325,10 +325,22 @@ impl CanonicalRecord {
                     .map_err(EnvelopeError::encoding)?,
             ),
             GameKind::Tori => Self::tori(
-                tori::GameRecord::from_json(wire.payload.get()).map_err(EnvelopeError::encoding)?,
+                tori::GameRecord::from_json_with_stop(wire.payload.get(), stop).map_err(
+                    |error| match error {
+                        tori::RecordError::Stopped => EnvelopeError::Stopped,
+                        tori::RecordError::Capacity => EnvelopeError::Capacity,
+                        error => EnvelopeError::encoding(error),
+                    },
+                )?,
             ),
             GameKind::Chu => Self::chu(
-                chu::GameRecord::from_json(wire.payload.get()).map_err(EnvelopeError::encoding)?,
+                chu::GameRecord::from_json_with_stop(wire.payload.get(), stop).map_err(
+                    |error| match error {
+                        chu::RecordError::Stopped => EnvelopeError::Stopped,
+                        chu::RecordError::Capacity => EnvelopeError::Capacity,
+                        error => EnvelopeError::encoding(error),
+                    },
+                )?,
             ),
             GameKind::Tenjiku => Self::tenjiku(
                 tenjiku::GameRecord::from_json_with_stop(wire.payload.get(), stop).map_err(

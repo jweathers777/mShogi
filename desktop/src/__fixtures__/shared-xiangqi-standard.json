@@ -71,40 +71,39 @@
   },
   "open_token": {
     "document": 5,
-    "version": 11,
-    "document_revision": 10
+    "version": 25,
+    "document_revision": 5
   },
   "document": {
-    "revision": 10,
+    "revision": 5,
     "dirty": true,
     "path": null,
     "settings": {
       "game_kind": "xiangqi",
-      "play_mode": "human_engine",
       "orientation": "red",
       "analysis_defaults": {
-        "depth": 1,
-        "nodes": 128
+        "depth": 64,
+        "nodes": 300000
       }
     }
   },
   "io": {
-    "id": 5,
+    "id": 0,
     "phase": "idle",
     "message": null,
     "resource": null
   },
   "capacity": {
-    "id": 20,
+    "id": 15,
     "status": "available",
     "message": null,
     "resource": null
   },
   "token": {
     "document": 5,
-    "version": 11,
-    "revision": 36,
-    "selection": 11
+    "version": 25,
+    "revision": 26,
+    "selection": 25
   },
   "game": "xiangqi",
   "profile": "mshogi.xiangqi.wxf2018.v1",
@@ -1217,7 +1216,7 @@
     "promotion": false,
     "take_back": false,
     "undo": false,
-    "engine_turn": false,
+    "engine_turn": true,
     "move_analysis": true,
     "chess_full": false,
     "claims": false,
@@ -1236,8 +1235,8 @@
   "event_index": 0,
   "board_ply": 0,
   "play_limits": {
-    "depth": 1,
-    "nodes": 128
+    "depth": 64,
+    "nodes": 300000
   },
   "historical": false,
   "paused": false,

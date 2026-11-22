@@ -842,17 +842,21 @@ fn shogi_choice(
 const SHOGI_DOCUMENT_WORK: u64 = 4_194_304;
 
 /// Xiangqi has no native replay-work count; the desktop models it per event
-/// and per board action.
+/// and per board action, in units of about one microsecond of release replay.
+/// Measured (MSH-226, release, macOS arm64, test
+/// `measure_long_xiangqi_documents`): a 511-move record replays in 303 ms,
+/// about 593 us per move; the cost per move rises with length (repetition
+/// history). 832 is about 1.4 times that, the margin used for Tori and Shogi.
 pub mod xiangqi_work {
     /// Work of one recorded event.
     pub const EVENT_WORK: u64 = 4;
     /// Additional work of one board action.
-    pub const BOARD_WORK: u64 = 12;
+    pub const BOARD_WORK: u64 = 832;
     /// Fixed work of validating an engine line or exact witness.
     pub const VALIDATION_WORK: u64 = 512;
-    /// Work of one engine-line action.
-    pub const LINE_ACTION_WORK: u64 = 16;
-    /// Work of one exact-witness action (repeated local checks).
+    /// Work of one engine-line action: a full move on a copy of the game.
+    pub const LINE_ACTION_WORK: u64 = BOARD_WORK;
+    /// Work of one exact-witness action (a bare position, no history).
     pub const WITNESS_ACTION_WORK: u64 = 64;
     /// Modelled work of a history.
     pub fn of(events: usize, board_actions: usize) -> u64 {
@@ -1074,7 +1078,14 @@ fn xiangqi_choice(
     }
 }
 /// Whole-document validation allowance of Xiangqi, in modelled replay units.
-const XIANGQI_DOCUMENT_WORK: u64 = 4_194_304;
+/// Measured (MSH-226, release, macOS arm64, test
+/// `measure_long_xiangqi_documents`): a document with one 511-move game and a
+/// browse selection needs about 4.3 million units, so a lower allowance would
+/// refuse browsing in long games. The largest valid document (3,577 retained
+/// events) charges 8,112,554 units and validates in 5.5 s; a forged 16 MB file
+/// is refused at this allowance after 6.3 s, within the 15 s file deadline.
+/// Native Xiangqi replay is slow (about 0.6 ms per move); see MSH-227.
+const XIANGQI_DOCUMENT_WORK: u64 = 8_388_608;
 
 #[cfg(test)]
 mod measurements {
@@ -1166,6 +1177,103 @@ mod measurements {
         .unwrap_err();
         println!(
             "MSH224 shogi forged_refusal_ms={:.1} forged={:?}",
+            started.elapsed().as_secs_f64() * 1e3,
+            refused.resource.map(|r| r.facts()[0].category)
+        );
+    }
+    /// MSH-226 measurement: long Xiangqi records against the work limit.
+    /// Run with `--ignored --nocapture` in release.
+    #[test]
+    #[ignore]
+    fn measure_long_xiangqi_documents() {
+        use crate::game_document::{GameControl, RewindKind, ValidatedGameDocument};
+        use mshogi_core::xiangqi as x;
+        let mut g = x::Game::standard(x::ClaimPolicy::Explicit).unwrap();
+        while g.conclusion().is_none() {
+            let actions = g.position().legal_actions().unwrap();
+            let next = actions.into_iter().find(|a| {
+                let mut probe = g.fork().unwrap();
+                probe
+                    .submit(x::GameRequest {
+                        expected: probe.context(),
+                        actor: probe.position().side_to_move(),
+                        command: x::GameCommand::Play { action: *a },
+                    })
+                    .is_ok()
+                    && probe.conclusion().is_none()
+            });
+            let Some(a) = next else { break };
+            let actor = g.position().side_to_move();
+            if g.submit(x::GameRequest {
+                expected: g.context(),
+                actor,
+                command: x::GameCommand::Play { action: a },
+            })
+            .is_err()
+            {
+                break;
+            }
+        }
+        let record = x::GameRecord::from_game(&g).unwrap();
+        let started = std::time::Instant::now();
+        record.to_game().unwrap();
+        println!(
+            "MSH226 xiangqi events={} board={} replay_ms={:.1} work={}",
+            record.event_count(),
+            record.known_board_actions(),
+            started.elapsed().as_secs_f64() * 1e3,
+            super::xiangqi_work::of(record.event_count(), record.known_board_actions())
+        );
+        let start = g.command_event_ranges().last().unwrap().0;
+        let (actor, command) = {
+            let e = &g.events()[start];
+            let x::EventKind::BoardAction { action, .. } = e.event else {
+                panic!("last command is a move")
+            };
+            (e.actor.unwrap(), x::GameCommand::Play { action })
+        };
+        let mut doc =
+            ValidatedGameDocument::<super::Xiangqi>::new(record.clone(), x::Side::Red).unwrap();
+        while let Ok(rewound) = doc.with_control(
+            GameControl::Rewind {
+                event_index: start,
+                reason: RewindKind::Undo,
+            },
+            &mut || false,
+        ) {
+            let Ok(replayed) =
+                rewound.with_control(GameControl::Native { actor, command }, &mut || false)
+            else {
+                break;
+            };
+            doc = replayed;
+        }
+        let doc = doc
+            .with_selection(Some(start), &mut || false)
+            .unwrap_or_else(|_| doc.clone());
+        let started = std::time::Instant::now();
+        ValidatedGameDocument::<super::Xiangqi>::decode(doc.bytes(), &mut || false).unwrap();
+        println!(
+            "MSH226 xiangqi largest_valid_ms={:.1} usage={:?}",
+            started.elapsed().as_secs_f64() * 1e3,
+            doc.usage()
+        );
+        let single = ValidatedGameDocument::<super::Xiangqi>::new(record, x::Side::Red).unwrap();
+        let per = single.bytes().len() / 2;
+        let mut v: serde_json::Value = serde_json::from_slice(single.bytes()).unwrap();
+        let current = v["payload"]["current"].clone();
+        v["payload"]["retired"] = serde_json::json!(vec![
+            serde_json::json!({"control_index": 0, "record": current});
+            crate::MAX_ARCHIVE_BYTES / per - 3
+        ]);
+        let started = std::time::Instant::now();
+        let refused = ValidatedGameDocument::<super::Xiangqi>::decode(
+            &serde_json::to_vec(&v).unwrap(),
+            &mut || false,
+        )
+        .unwrap_err();
+        println!(
+            "MSH226 xiangqi forged_refusal_ms={:.1} forged={:?}",
             started.elapsed().as_secs_f64() * 1e3,
             refused.resource.map(|r| r.facts()[0].category)
         );

@@ -5,9 +5,8 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-22T11:33:00Z'
-updated_date: '2026-11-22T11:51:00Z'
-labels:
-  - needs-john
+updated_date: '2026-11-22T14:46:00Z'
+labels: []
 milestone: m-6
 dependencies:
   - MSH-224
@@ -41,4 +40,8 @@ MSH-223 and MSH-224 put Tori and Shogi on the generic document (ValidatedGameDoc
 
 <!-- SECTION:NOTES:BEGIN -->
 Question for John (2026-11-22): one Xiangqi command can produce several events (for example a move, then an automatic warning or conclusion). Today the history view can stop between those events (it then shows a HistorySnapshot and refuses analysis there). The generic session views only command boundaries (a full game). Options: (A, recommended) view only at command boundaries: the board between those events is the same position, so little is lost and Xiangqi uses the generic view unchanged; (B) keep views inside a command: the generic session needs a second view type through all presentation hooks.
+
+John (2026-11-22, in conversation): priority is one unified document and session for all games; standard file formats (PGN, KIF/CSA, WXF) are later adapter tasks, not now. History view question: he never wanted internal events shown as steps, so Xiangqi history stops at command boundaries (option A).
+
+Checkpoint 2026-11-22: library builds (all features, clippy clean). Xiangqi runs on ValidatedGameDocument/NativeSession (shared_xiangqi.rs; shared_xiangqi_archive.rs removed; SharedState rollback removed). Generic additions: evidence ledger (NativeGame::Evidence, GameControl::Evidence, counts with observations), last_command_start, SessionGame take_back_target/command_actor/finish_snapshot, TelemetryView status label, internal SessionOperation::XiangqiCommand. History and presented events are per command. Next: tests, fixtures, measurement of XIANGQI_DOCUMENT_WORK (placeholder 4,194,304), review.
 <!-- SECTION:NOTES:END -->

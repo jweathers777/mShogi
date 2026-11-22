@@ -35,7 +35,7 @@ it("uses the accepted shell, actual native play limits and shared document/statu
   expect(screen.getByText("XIANGQI")).toBeTruthy();
   expect(screen.getByRole("heading", { name: "Untitled game" })).toBeTruthy();
   expect(container.querySelector("[data-document-state]")?.textContent).toBe("Unsaved");
-  expect(container.querySelector("[data-play-limits]")?.textContent).toBe("Play limit: depth 1 · 128 nodes");
+  expect(container.querySelector("[data-play-limits]")?.textContent).toBe("Play limit: depth 64 · 300,000 nodes");
   expect([...container.querySelectorAll("[data-shell-section]")].map((node) => node.getAttribute("data-shell-section"))).toEqual(["analysis", "actions", "history"]);
   expect(container.querySelector(".shell-sidebar > details")).toBeNull();
   expect(screen.getByRole("button", { name: "About mShogi" }).closest(".shell-header")).toBeTruthy();
@@ -54,7 +54,7 @@ it("sends the opaque native action through the Xiangqi command wrapper, never ge
 it("flips using native Xiangqi preferences while preserving existing document and play controls", () => {
   const { session, props } = app();
   fireEvent.click(screen.getByRole("button", { name: "Flip board; currently Red at bottom" }));
-  expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "xiangqi_preferences", settings: { play_mode: "human_engine", orientation: "black", analysis_defaults: { depth: 1, nodes: 128 } } });
+  expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "xiangqi_preferences", settings: { play_mode: "human_engine", orientation: "black", analysis_defaults: { depth: 64, nodes: 300000 } } });
   fireEvent.click(screen.getByRole("button", { name: "New game" })); expect(props.onNewGame).toHaveBeenCalledOnce();
   fireEvent.click(screen.getByRole("button", { name: "Save" })); expect(session.file).toHaveBeenLastCalledWith(standard, "save");
   fireEvent.click(screen.getByRole("button", { name: "Load" })); expect(props.onOpen).toHaveBeenCalledOnce();

@@ -1,5 +1,4 @@
 {
-  "close_requires_save": true,
   "moves": {
     "root": {
       "label": "Starting position",
@@ -88,7 +87,7 @@
   },
   "open_token": {
     "document": 1,
-    "version": 2,
+    "version": 4,
     "document_revision": 1
   },
   "document": {
@@ -97,16 +96,15 @@
     "path": null,
     "settings": {
       "game_kind": "xiangqi",
-      "play_mode": "human_engine",
       "orientation": "red",
       "analysis_defaults": {
-        "depth": 1,
-        "nodes": 128
+        "depth": 64,
+        "nodes": 300000
       }
     }
   },
   "io": {
-    "id": 1,
+    "id": 0,
     "phase": "idle",
     "message": null,
     "resource": null
@@ -119,9 +117,9 @@
   },
   "token": {
     "document": 1,
-    "version": 2,
-    "revision": 5,
-    "selection": 2
+    "version": 4,
+    "revision": 4,
+    "selection": 4
   },
   "game": "xiangqi",
   "profile": "mshogi.xiangqi.wxf2018.v1",
@@ -464,8 +462,8 @@
     "drops": false,
     "promotion": false,
     "take_back": false,
-    "undo": false,
-    "engine_turn": false,
+    "undo": true,
+    "engine_turn": true,
     "move_analysis": true,
     "chess_full": false,
     "claims": false,
@@ -483,24 +481,19 @@
       1
     ]
   },
-  "events": [
-    {
-      "index": 1,
-      "board_ply": 0,
-      "label": "Draw · neither side can win"
-    }
-  ],
+  "events": [],
   "event_index": 1,
   "board_ply": 0,
   "play_limits": {
-    "depth": 1,
-    "nodes": 128
+    "depth": 64,
+    "nodes": 300000
   },
   "historical": false,
   "paused": true,
+  "close_requires_save": true,
   "phase": "paused",
   "execution_purpose": null,
-  "diagnostic": null,
+  "diagnostic": "Saved observations are historical. Resume starts play.",
   "declaration_advice": [],
   "context": {
     "envelope_version": 1,

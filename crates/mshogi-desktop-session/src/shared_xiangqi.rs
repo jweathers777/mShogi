@@ -316,7 +316,7 @@ impl SessionGame for Xiangqi {
     const BOARD_SIZE: u8 = 9;
     const BOARD_LABEL: &'static str = "Xiangqi intersection board";
     const INITIAL_FOCUS: &'static str = "e3";
-    const SCORE_MEANING: &'static str = "Native Red/Black root-side hundredths of soldier. Terminal distances count command edges; heuristic evaluation and existence proofs are separate.";
+    const SCORE_MEANING: &'static str = "Native Red/Black root-side hundredths of soldier. Terminal distances count command edges; heuristic evaluation and existential win witnesses never establish a forced win. Ordinary analysis uses sound_fast_only; Unknown is unscored evidence, not proof of win capability.";
 
     session_wiring!(Xiangqi, x, operation: XiangqiCommand, preferences: XiangqiPreferences,
     state: xiangqi, xiangqi_mut, local: {

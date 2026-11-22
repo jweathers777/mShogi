@@ -1,5 +1,4 @@
 {
-  "close_requires_save": true,
   "moves": {
     "root": {
       "label": "Starting position",
@@ -493,7 +492,7 @@
   },
   "open_token": {
     "document": 1,
-    "version": 2,
+    "version": 4,
     "document_revision": 1
   },
   "document": {
@@ -502,16 +501,15 @@
     "path": null,
     "settings": {
       "game_kind": "xiangqi",
-      "play_mode": "human_engine",
       "orientation": "red",
       "analysis_defaults": {
-        "depth": 1,
-        "nodes": 128
+        "depth": 64,
+        "nodes": 300000
       }
     }
   },
   "io": {
-    "id": 1,
+    "id": 0,
     "phase": "idle",
     "message": null,
     "resource": null
@@ -524,9 +522,9 @@
   },
   "token": {
     "document": 1,
-    "version": 2,
-    "revision": 5,
-    "selection": 2
+    "version": 4,
+    "revision": 4,
+    "selection": 4
   },
   "game": "xiangqi",
   "profile": "mshogi.xiangqi.wxf2018.v1",
@@ -878,7 +876,7 @@
     "promotion": false,
     "take_back": true,
     "undo": true,
-    "engine_turn": false,
+    "engine_turn": true,
     "move_analysis": true,
     "chess_full": false,
     "claims": false,
@@ -933,67 +931,43 @@
       "label": "Red: f9–e9 · check"
     },
     {
-      "index": 8,
-      "board_ply": 8,
-      "label": "Black: e8–f8"
-    },
-    {
       "index": 9,
       "board_ply": 8,
-      "label": "Red: repetition warning · perpetual check"
-    },
-    {
-      "index": 10,
-      "board_ply": 9,
-      "label": "Red: e9–f9 · check"
+      "label": "Black: e8–f8 · Red: repetition warning · perpetual check"
     },
     {
       "index": 11,
       "board_ply": 9,
-      "label": "Red: repetition warning · perpetual check"
-    },
-    {
-      "index": 12,
-      "board_ply": 10,
-      "label": "Black: f8–e8"
+      "label": "Red: e9–f9 · check · Red: repetition warning · perpetual check"
     },
     {
       "index": 13,
       "board_ply": 10,
-      "label": "Red: repetition warning · perpetual check"
-    },
-    {
-      "index": 14,
-      "board_ply": 11,
-      "label": "Red: f9–e9 · check"
+      "label": "Black: f8–e8 · Red: repetition warning · perpetual check"
     },
     {
       "index": 15,
       "board_ply": 11,
-      "label": "Red: repetition warning · perpetual check"
-    },
-    {
-      "index": 16,
-      "board_ply": 12,
-      "label": "Black: e8–f8"
+      "label": "Red: f9–e9 · check · Red: repetition warning · perpetual check"
     },
     {
       "index": 17,
       "board_ply": 12,
-      "label": "Black wins · perpetual check"
+      "label": "Black: e8–f8 · Black wins · perpetual check"
     }
   ],
   "event_index": 17,
   "board_ply": 12,
   "play_limits": {
-    "depth": 1,
-    "nodes": 128
+    "depth": 64,
+    "nodes": 300000
   },
   "historical": false,
   "paused": true,
+  "close_requires_save": true,
   "phase": "paused",
   "execution_purpose": null,
-  "diagnostic": null,
+  "diagnostic": "Saved observations are historical. Resume starts play.",
   "declaration_advice": [],
   "context": {
     "envelope_version": 1,

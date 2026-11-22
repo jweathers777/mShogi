@@ -1,9 +1,9 @@
 {
   "token": {
     "document": 5,
-    "version": 11,
-    "revision": 36,
-    "selection": 11
+    "version": 25,
+    "revision": 26,
+    "selection": 25
   },
   "game": "xiangqi",
   "origin": "b7",

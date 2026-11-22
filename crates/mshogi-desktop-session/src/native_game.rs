@@ -6,7 +6,7 @@
 use crate::ResourceScope;
 use mshogi_core::native::{CanonicalRecord, GameKind, NativeSide, RulesProfile};
 use mshogi_engine::ExecutionResult;
-use serde::{Serialize, de::DeserializeOwned};
+use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use std::fmt::Debug;
 
 /// A refused native record operation.
@@ -68,6 +68,10 @@ pub trait DocumentSettings:
     }
 }
 
+/// Evidence type of a game that saves none.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub enum NoEvidence {}
+
 /// A game that the generic document and session serve.
 pub trait NativeGame: Sized + Send + Sync + 'static {
     /// Display name in diagnostics.
@@ -112,6 +116,9 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
     type EngineResult;
     /// Saved document settings.
     type Settings: DocumentSettings<Side = Self::Side>;
+    /// Completed non-engine work that the document keeps beside its
+    /// observations (Xiangqi exact-endgame reports); `NoEvidence` otherwise.
+    type Evidence: Clone + PartialEq + Debug + Serialize + DeserializeOwned + Send + Sync;
 
     /// Wrap a native participant.
     fn native_side(side: Self::Side) -> NativeSide;
@@ -155,6 +162,22 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
     fn replay_work(game: &Self::Game) -> u64;
     /// Events of a game.
     fn events(game: &Self::Game) -> usize;
+    /// Event index where the last command began: one command can produce
+    /// several events, and history changes only at command boundaries.
+    fn last_command_start(game: &Self::Game) -> Option<usize> {
+        Self::events(game).checked_sub(1)
+    }
+    /// Native replay work of parsing saved evidence.
+    fn evidence_work(_evidence: &Self::Evidence) -> u64 {
+        0
+    }
+    /// Validate saved evidence against the game at its journal position; the
+    /// native work it used.
+    fn validate_evidence(
+        evidence: &Self::Evidence,
+        game: &Self::Game,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<u64, String>;
     /// Side to move.
     fn side_to_move(game: &Self::Game) -> Self::Side;
     /// The game has a native conclusion.
@@ -214,6 +237,14 @@ macro_rules! large_shogi_game {
             type Record = mshogi_core::$core::GameRecord;
             type EngineResult = mshogi_engine::$engine_result;
             type Settings = crate::game_document::GameSettings<Self::Side>;
+            type Evidence = NoEvidence;
+            fn validate_evidence(
+                evidence: &NoEvidence,
+                _game: &Self::Game,
+                _stop: &mut impl FnMut() -> bool,
+            ) -> Result<u64, String> {
+                match *evidence {}
+            }
 
             fn native_side(side: Self::Side) -> NativeSide {
                 NativeSide::$result_variant(side)
@@ -418,6 +449,14 @@ impl NativeGame for Tori {
     type Record = mshogi_core::tori::GameRecord;
     type EngineResult = mshogi_engine::ToriResult;
     type Settings = crate::game_document::GameSettings<Self::Side>;
+    type Evidence = NoEvidence;
+    fn validate_evidence(
+        evidence: &NoEvidence,
+        _game: &Self::Game,
+        _stop: &mut impl FnMut() -> bool,
+    ) -> Result<u64, String> {
+        match *evidence {}
+    }
 
     fn native_side(side: Self::Side) -> NativeSide {
         NativeSide::Tori(side)
@@ -622,6 +661,14 @@ impl NativeGame for Shogi {
     type Record = mshogi_core::shogi::GameRecord;
     type EngineResult = mshogi_engine::ShogiResult;
     type Settings = crate::shared::archive::ShogiSettings;
+    type Evidence = NoEvidence;
+    fn validate_evidence(
+        evidence: &NoEvidence,
+        _game: &Self::Game,
+        _stop: &mut impl FnMut() -> bool,
+    ) -> Result<u64, String> {
+        match *evidence {}
+    }
 
     fn native_side(side: Self::Side) -> NativeSide {
         NativeSide::Shogi(side)
@@ -798,6 +845,257 @@ fn shogi_choice(
 /// full-length records is refused at this allowance after 3.2 s.
 const SHOGI_DOCUMENT_WORK: u64 = 4_194_304;
 
+/// Xiangqi has no native replay-work count; the desktop models it per event
+/// and per board action, in units of about one microsecond of release replay.
+/// Measured (MSH-226, release, macOS arm64, test
+/// `measure_long_xiangqi_documents`): a 511-move record replays in 303 ms,
+/// about 593 us per move; the cost per move rises with length (repetition
+/// history). 832 is about 1.4 times that, the margin used for Tori and Shogi.
+pub mod xiangqi_work {
+    /// Work of one recorded event.
+    pub const EVENT_WORK: u64 = 4;
+    /// Additional work of one board action.
+    pub const BOARD_WORK: u64 = 832;
+    /// Fixed work of validating an engine line or exact witness.
+    pub const VALIDATION_WORK: u64 = 512;
+    /// Work of one engine-line action: a full move on a copy of the game.
+    pub const LINE_ACTION_WORK: u64 = BOARD_WORK;
+    /// Work of one exact-witness action (a bare position, no history).
+    pub const WITNESS_ACTION_WORK: u64 = 64;
+    /// Modelled work of a history.
+    pub fn of(events: usize, board_actions: usize) -> u64 {
+        EVENT_WORK * events as u64 + BOARD_WORK * board_actions as u64
+    }
+}
+
+/// Marker of the native Xiangqi game behind the generic document and session.
+pub struct Xiangqi;
+impl NativeGame for Xiangqi {
+    const NAME: &'static str = "Xiangqi";
+    const KIND: GameKind = GameKind::Xiangqi;
+    const SCOPE: ResourceScope = ResourceScope::Xiangqi;
+    const MAX_DOCUMENT_WORK: u64 = XIANGQI_DOCUMENT_WORK;
+    const STOP_AFTER_CONCLUSION: bool = false;
+    const STRICT_CONTROL_FIELDS: bool = true;
+    const SELECTION_WORK_FACTOR: u64 = 3;
+    const MAX_RECORD_BYTES: u64 = mshogi_core::xiangqi::MAX_GAME_RECORD_BYTES as u64;
+    const MAX_EVENTS: u64 = mshogi_core::xiangqi::MAX_GAME_EVENTS as u64;
+    const MAX_REPLAY_WORK: u64 = xiangqi_work::EVENT_WORK
+        * mshogi_core::xiangqi::MAX_GAME_EVENTS as u64
+        + xiangqi_work::BOARD_WORK * mshogi_core::xiangqi::MAX_GAME_COMMANDS as u64;
+    const SIDES: [Self::Side; 2] = [
+        mshogi_core::xiangqi::Side::Red,
+        mshogi_core::xiangqi::Side::Black,
+    ];
+
+    type Side = mshogi_core::xiangqi::Side;
+    type Command = mshogi_core::xiangqi::GameCommand;
+    type Action = mshogi_core::xiangqi::Action;
+    type Game = mshogi_core::xiangqi::Game;
+    type Undo = mshogi_core::xiangqi::GameUndo;
+    type Record = mshogi_core::xiangqi::GameRecord;
+    type EngineResult = mshogi_engine::XiangqiResult;
+    type Settings = crate::shared::xiangqi::XiangqiSettings;
+    type Evidence = crate::shared::xiangqi::XiangqiExactEvidence;
+
+    fn native_side(side: Self::Side) -> NativeSide {
+        NativeSide::Xiangqi(side)
+    }
+    fn canonical(record: Self::Record) -> CanonicalRecord {
+        CanonicalRecord::xiangqi(record)
+    }
+    fn native(record: &CanonicalRecord) -> Option<&Self::Record> {
+        match record {
+            CanonicalRecord::Xiangqi(r) => Some(r),
+            _ => None,
+        }
+    }
+    fn profile(_record: &Self::Record) -> RulesProfile {
+        RulesProfile::XiangqiWxf2018V1
+    }
+    fn game_profile(_game: &Self::Game) -> RulesProfile {
+        RulesProfile::XiangqiWxf2018V1
+    }
+    fn reconstruction_work(record: &Self::Record) -> u64 {
+        xiangqi_work::of(record.event_count(), record.known_board_actions())
+    }
+    fn event_count(record: &Self::Record) -> usize {
+        record.event_count()
+    }
+    fn record_side_to_move(record: &Self::Record) -> Self::Side {
+        record.side_to_move()
+    }
+    fn to_game(
+        record: &Self::Record,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<Self::Game, RecordFailure> {
+        // A Xiangqi record replays in milliseconds; check the stop around it.
+        if stop() {
+            return Err(RecordFailure::Stopped);
+        }
+        let game = record.to_game().map_err(|e| match e {
+            mshogi_core::xiangqi::RecordError::Capacity => RecordFailure::Capacity(e.to_string()),
+            e => RecordFailure::Invalid(e.to_string()),
+        })?;
+        if stop() {
+            return Err(RecordFailure::Stopped);
+        }
+        Ok(game)
+    }
+    fn from_game(game: &Self::Game) -> Result<Self::Record, RecordFailure> {
+        mshogi_core::xiangqi::GameRecord::from_game(game).map_err(|e| match e {
+            mshogi_core::xiangqi::RecordError::Capacity => RecordFailure::Capacity(e.to_string()),
+            e => RecordFailure::Invalid(e.to_string()),
+        })
+    }
+    fn record_prefix(
+        game: &Self::Game,
+        count: usize,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<Self::Record, RecordFailure> {
+        // History stops only at command boundaries (MSH-226, John).
+        if stop() {
+            return Err(RecordFailure::Stopped);
+        }
+        let prefix = game
+            .committed_prefix(count)
+            .map_err(|e| RecordFailure::Invalid(e.to_string()))?;
+        Self::from_game(&prefix)
+    }
+    fn submit(
+        game: &mut Self::Game,
+        actor: Self::Side,
+        command: Self::Command,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<Self::Undo, NativeFailure> {
+        if stop() {
+            return Err(NativeFailure::Stopped);
+        }
+        let expected = game.context();
+        game.submit(mshogi_core::xiangqi::GameRequest {
+            expected,
+            actor,
+            command,
+        })
+        .map(|s| s.undo)
+        .map_err(|e| NativeFailure::Invalid(e.to_string()))
+    }
+    fn undo(game: &mut Self::Game, undo: Self::Undo) -> Result<(), NativeFailure> {
+        game.undo(undo)
+            .map_err(|e| NativeFailure::Invalid(e.to_string()))
+    }
+    fn replay_work(game: &Self::Game) -> u64 {
+        let events = game.events();
+        let board = events
+            .iter()
+            .filter(|e| matches!(e.event, mshogi_core::xiangqi::EventKind::BoardAction { .. }))
+            .count();
+        xiangqi_work::of(events.len(), board)
+    }
+    fn events(game: &Self::Game) -> usize {
+        game.events().len()
+    }
+    fn last_command_start(game: &Self::Game) -> Option<usize> {
+        game.command_event_ranges().last().map(|(start, _)| start)
+    }
+    fn side_to_move(game: &Self::Game) -> Self::Side {
+        game.position().side_to_move()
+    }
+    fn concluded(game: &Self::Game) -> bool {
+        // Pending adjudication admits no further command either.
+        game.conclusion().is_some() || game.pending_adjudication().is_some()
+    }
+    fn stop_recorded(_game: &Self::Game) -> bool {
+        false
+    }
+    fn resign() -> Self::Command {
+        mshogi_core::xiangqi::GameCommand::Resign
+    }
+    fn engine_failure_stop() -> Option<Self::Command> {
+        None
+    }
+    fn engine_result(result: &ExecutionResult) -> Option<&Self::EngineResult> {
+        match result {
+            ExecutionResult::Xiangqi { result } => Some(result),
+            _ => None,
+        }
+    }
+    fn engine_command(
+        result: &Self::EngineResult,
+        game: &Self::Game,
+    ) -> Option<(Self::Side, Self::Command)> {
+        match result {
+            mshogi_engine::XiangqiResult::Choice { choice, .. } => {
+                Some(xiangqi_choice(*choice, game.position().side_to_move()))
+            }
+            _ => None,
+        }
+    }
+    fn validate_result(
+        result: &Self::EngineResult,
+        game: &Self::Game,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<u64, String> {
+        let line = match result {
+            mshogi_engine::XiangqiResult::Choice { telemetry, .. }
+            | mshogi_engine::XiangqiResult::Finished { telemetry, .. }
+            | mshogi_engine::XiangqiResult::Incomplete { telemetry }
+            | mshogi_engine::XiangqiResult::Unresolved { telemetry, .. } => {
+                &telemetry.principal_variation
+            }
+        };
+        if line.is_empty() {
+            return Ok(0);
+        }
+        let mut probe = game.fork().map_err(|e| e.to_string())?;
+        for choice in line {
+            let (actor, command) = xiangqi_choice(*choice, probe.position().side_to_move());
+            Self::submit(&mut probe, actor, command, stop).map_err(|e| match e {
+                NativeFailure::Stopped => "Xiangqi observation validation stopped".to_string(),
+                NativeFailure::Capacity(_, d) | NativeFailure::Invalid(d) => d,
+            })?;
+        }
+        Ok(xiangqi_work::VALIDATION_WORK + xiangqi_work::LINE_ACTION_WORK * line.len() as u64)
+    }
+    fn evidence_work(evidence: &Self::Evidence) -> u64 {
+        let source = evidence.source();
+        xiangqi_work::of(source.event_count(), source.known_board_actions())
+    }
+    fn validate_evidence(
+        evidence: &Self::Evidence,
+        game: &Self::Game,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<u64, String> {
+        evidence.validate_against(game, stop)
+    }
+}
+/// The actor and command of an engine choice.
+fn xiangqi_choice(
+    choice: mshogi_engine::XiangqiChoice,
+    turn: mshogi_core::xiangqi::Side,
+) -> (
+    mshogi_core::xiangqi::Side,
+    mshogi_core::xiangqi::GameCommand,
+) {
+    match choice {
+        mshogi_engine::XiangqiChoice::Move { action } => {
+            (turn, mshogi_core::xiangqi::GameCommand::Play { action })
+        }
+        mshogi_engine::XiangqiChoice::Claim { actor } => {
+            (actor, mshogi_core::xiangqi::GameCommand::ClaimNaturalCount)
+        }
+    }
+}
+/// Whole-document validation allowance of Xiangqi, in modelled replay units.
+/// Measured (MSH-226, release, macOS arm64, test
+/// `measure_long_xiangqi_documents`): a document with one 511-move game and a
+/// browse selection needs about 4.3 million units, so a lower allowance would
+/// refuse browsing in long games. The largest valid document (3,577 retained
+/// events) charges 8,112,554 units and validates in 5.5 s; a forged 16 MB file
+/// is refused at this allowance after 6.3 s, within the 15 s file deadline.
+/// Native Xiangqi replay is slow (about 0.6 ms per move); see MSH-227.
+const XIANGQI_DOCUMENT_WORK: u64 = 8_388_608;
+
 #[cfg(test)]
 mod measurements {
     use mshogi_core::shogi as s;
@@ -888,6 +1186,103 @@ mod measurements {
         .unwrap_err();
         println!(
             "MSH224 shogi forged_refusal_ms={:.1} forged={:?}",
+            started.elapsed().as_secs_f64() * 1e3,
+            refused.resource.map(|r| r.facts()[0].category)
+        );
+    }
+    /// MSH-226 measurement: long Xiangqi records against the work limit.
+    /// Run with `--ignored --nocapture` in release.
+    #[test]
+    #[ignore]
+    fn measure_long_xiangqi_documents() {
+        use crate::game_document::{GameControl, RewindKind, ValidatedGameDocument};
+        use mshogi_core::xiangqi as x;
+        let mut g = x::Game::standard(x::ClaimPolicy::Explicit).unwrap();
+        while g.conclusion().is_none() {
+            let actions = g.position().legal_actions().unwrap();
+            let next = actions.into_iter().find(|a| {
+                let mut probe = g.fork().unwrap();
+                probe
+                    .submit(x::GameRequest {
+                        expected: probe.context(),
+                        actor: probe.position().side_to_move(),
+                        command: x::GameCommand::Play { action: *a },
+                    })
+                    .is_ok()
+                    && probe.conclusion().is_none()
+            });
+            let Some(a) = next else { break };
+            let actor = g.position().side_to_move();
+            if g.submit(x::GameRequest {
+                expected: g.context(),
+                actor,
+                command: x::GameCommand::Play { action: a },
+            })
+            .is_err()
+            {
+                break;
+            }
+        }
+        let record = x::GameRecord::from_game(&g).unwrap();
+        let started = std::time::Instant::now();
+        record.to_game().unwrap();
+        println!(
+            "MSH226 xiangqi events={} board={} replay_ms={:.1} work={}",
+            record.event_count(),
+            record.known_board_actions(),
+            started.elapsed().as_secs_f64() * 1e3,
+            super::xiangqi_work::of(record.event_count(), record.known_board_actions())
+        );
+        let start = g.command_event_ranges().last().unwrap().0;
+        let (actor, command) = {
+            let e = &g.events()[start];
+            let x::EventKind::BoardAction { action, .. } = e.event else {
+                panic!("last command is a move")
+            };
+            (e.actor.unwrap(), x::GameCommand::Play { action })
+        };
+        let mut doc =
+            ValidatedGameDocument::<super::Xiangqi>::new(record.clone(), x::Side::Red).unwrap();
+        while let Ok(rewound) = doc.with_control(
+            GameControl::Rewind {
+                event_index: start,
+                reason: RewindKind::Undo,
+            },
+            &mut || false,
+        ) {
+            let Ok(replayed) =
+                rewound.with_control(GameControl::Native { actor, command }, &mut || false)
+            else {
+                break;
+            };
+            doc = replayed;
+        }
+        let doc = doc
+            .with_selection(Some(start), &mut || false)
+            .unwrap_or_else(|_| doc.clone());
+        let started = std::time::Instant::now();
+        ValidatedGameDocument::<super::Xiangqi>::decode(doc.bytes(), &mut || false).unwrap();
+        println!(
+            "MSH226 xiangqi largest_valid_ms={:.1} usage={:?}",
+            started.elapsed().as_secs_f64() * 1e3,
+            doc.usage()
+        );
+        let single = ValidatedGameDocument::<super::Xiangqi>::new(record, x::Side::Red).unwrap();
+        let per = single.bytes().len() / 2;
+        let mut v: serde_json::Value = serde_json::from_slice(single.bytes()).unwrap();
+        let current = v["payload"]["current"].clone();
+        v["payload"]["retired"] = serde_json::json!(vec![
+            serde_json::json!({"control_index": 0, "record": current});
+            crate::MAX_ARCHIVE_BYTES / per - 3
+        ]);
+        let started = std::time::Instant::now();
+        let refused = ValidatedGameDocument::<super::Xiangqi>::decode(
+            &serde_json::to_vec(&v).unwrap(),
+            &mut || false,
+        )
+        .unwrap_err();
+        println!(
+            "MSH226 xiangqi forged_refusal_ms={:.1} forged={:?}",
             started.elapsed().as_secs_f64() * 1e3,
             refused.resource.map(|r| r.facts()[0].category)
         );

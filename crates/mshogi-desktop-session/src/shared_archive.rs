@@ -125,7 +125,6 @@ pub(crate) type GameJob =
 pub(crate) enum NativeWork {
     /// Runtime admission or save of a game on the generic session.
     Game(GameJob),
-    Xiangqi(xiangqi::archive::XiangqiWork),
     Open {
         path: PathBuf,
         token: SharedOpenToken,
@@ -135,10 +134,7 @@ pub(crate) enum OpenedNative {
     Tenjiku(Box<tenjiku::TenjikuSession>),
     Chu(Box<chu::ChuSession>),
     Tori(Box<tori::ToriSession>),
-    Xiangqi {
-        state: Box<xiangqi::XiangqiSession>,
-        floor: u64,
-    },
+    Xiangqi(Box<xiangqi::XiangqiSession>),
     Chess(Box<persistence::Opened>),
     Shogi(Box<shogi::ShogiSession>),
 }
@@ -150,7 +146,8 @@ impl OpenedNative {
             Self::Tori(state) => state.pending.is_some(),
             Self::Chu(state) => state.pending.is_some(),
             Self::Tenjiku(state) => state.pending.is_some(),
-            Self::Xiangqi { .. } | Self::Chess(_) => false,
+            Self::Xiangqi(state) => state.pending.is_some(),
+            Self::Chess(_) => false,
         }
     }
 }
@@ -161,7 +158,6 @@ pub(crate) enum NativeCompleted {
         replacement: bool,
         durable: bool,
     },
-    Xiangqi(xiangqi::archive::XiangqiCompleted),
     Saved {
         path: PathBuf,
         revision: u64,
@@ -253,7 +249,6 @@ pub(crate) fn execute(
 ) -> Result<NativeCompleted, OperationFailure> {
     match work {
         NativeWork::Game(job) => job(stopped),
-        NativeWork::Xiangqi(work) => xiangqi::archive::execute(work, stopped),
         NativeWork::Open { path, token } => {
             let bytes = read(&path, stopped)?;
             let value = crate::document::DocumentEnvelope::parse(&bytes)?;
@@ -265,13 +260,7 @@ pub(crate) fn execute(
                     persistence::decode_chess_payload(value.payload.get().as_bytes(), stopped)?,
                 )),
                 GameKind::Shogi => native_session::open::<Shogi>(&bytes, stopped)?,
-                GameKind::Xiangqi => {
-                    let (state, floor) = xiangqi::archive::decode(value.payload.get(), stopped)?;
-                    OpenedNative::Xiangqi {
-                        state: Box::new(state),
-                        floor,
-                    }
-                }
+                GameKind::Xiangqi => native_session::open::<Xiangqi>(&bytes, stopped)?,
             };
             persistence::check(stopped)?;
             Ok(NativeCompleted::Opened { game, path, token })
@@ -302,8 +291,8 @@ impl DesktopController {
             }
         } else if let Some(state) = self.session.xiangqi() {
             NativeDesktopSettings::Xiangqi {
-                orientation: state.settings.orientation,
-                analysis_defaults: state.settings.analysis_defaults,
+                orientation: state.document.settings().orientation,
+                analysis_defaults: state.document.settings().analysis_defaults,
             }
         } else if let Some(state) = self.session.shogi() {
             NativeDesktopSettings::Shogi {
@@ -336,18 +325,8 @@ impl DesktopController {
         if self.session.tori().is_some() {
             return self.queue_game_save::<Tori>(path);
         }
-        if let Some(state) = self.session.xiangqi() {
-            let work = xiangqi::archive::XiangqiWork::Save {
-                draft: Box::new(xiangqi::archive::XiangqiDraft::capture(state)),
-                path,
-                revision: self.session.document_revision,
-                identity: self.session.document_identity,
-                floor: state.execution_floor.max(self.runtime_floor()),
-            };
-            let id = self.next_native_io(IoPhase::Saving)?;
-            self.files
-                .submit(id, Work::Native(Box::new(NativeWork::Xiangqi(work))));
-            return Ok(id);
+        if self.session.xiangqi().is_some() {
+            return self.queue_game_save::<Xiangqi>(path);
         }
         if self.session.shogi().is_some() {
             return self.queue_game_save::<Shogi>(path);
@@ -431,7 +410,7 @@ impl DesktopController {
         completed: NativeCompleted,
     ) -> Result<String, String> {
         match completed {
-            NativeCompleted::Runtime { .. } | NativeCompleted::Xiangqi(_) => {
+            NativeCompleted::Runtime { .. } => {
                 unreachable!("dedicated admission worker")
             }
             NativeCompleted::Saved {
@@ -470,7 +449,6 @@ impl DesktopController {
         };
         let transactional_admission = std::mem::take(&mut self.shared.transactional_admission);
         let consumes_response = std::mem::take(&mut self.shared.admission_consumes_response);
-        let rollback = self.shared.rollback.take();
         let token = self.admission_token.take();
         let receipt = self.admission_receipt.take();
         if token != Some(self.open_token()) || epoch != self.session.document_epoch {
@@ -487,9 +465,6 @@ impl DesktopController {
                     durable,
                 } => {
                     self.finish_native_transaction(state, replacement, durable, id, receipt);
-                }
-                NativeCompleted::Xiangqi(completed) => {
-                    self.finish_xiangqi_admission(completed, id, receipt)
                 }
                 _ => unreachable!("dedicated admission worker"),
             },
@@ -551,32 +526,6 @@ impl DesktopController {
                         id,
                         ..CapacityState::default()
                     };
-                    if let (Some(state), Some((paused, phase, diagnostic, analysis, had_work))) =
-                        (self.session.xiangqi_mut(), rollback)
-                    {
-                        if consumes_response {
-                            // The bridge has already delivered this result. Never
-                            // restore Thinking for execution that has ended.
-                            self.bridge.cancel();
-                            state.retire();
-                            state.paused = true;
-                            state.phase = EnginePhase::Failed;
-                            state.diagnostic = Some(bounded(format!(
-                                "Native result rejected by document admission: {error} Retry explicitly; the accepted game is preserved."
-                            )));
-                        } else if had_work && state.pending.is_none() {
-                            state.paused = true;
-                            state.diagnostic = Some(
-                                "Command rejected; prior execution was retired. Resume explicitly."
-                                    .into(),
-                            );
-                        } else {
-                            state.paused = paused;
-                            state.phase = phase;
-                            state.diagnostic = diagnostic;
-                            state.analysis = analysis;
-                        }
-                    }
                     self.session.revision += 1;
                 }
                 if let Some(r) = receipt {

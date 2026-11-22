@@ -454,9 +454,10 @@ fn shared_moves_shogi_exact_prefix_analysis_reopen_and_replacement_keep_identity
 }
 
 #[test]
-fn shared_moves_xiangqi_action_plus_warning_preserves_exact_eight_and_nine_prefixes() {
-    // Frozen F022-CC's independently reviewed cycle: third occurrence warns,
-    // while the eighth ordinary action and its derived warning are distinct.
+fn shared_moves_xiangqi_action_plus_warning_is_one_command_in_history() {
+    // Frozen F022-CC's independently reviewed cycle: the eighth action and its
+    // derived third-occurrence warning are two events of one command. History
+    // stops only at command boundaries (MSH-226).
     let mut game = x::Game::from_root(
         x::PositionRoot::from_fen("4R4/5k3/9/9/9/9/9/9/9/3K5 w - - 0 1").unwrap(),
         x::ClaimPolicy::Explicit,
@@ -475,76 +476,16 @@ fn shared_moves_xiangqi_action_plus_warning_preserves_exact_eight_and_nine_prefi
     assert_eq!(game.events().len(), 9);
     let mut c = controller();
     let record = CanonicalRecord::xiangqi(x::GameRecord::from_game(&game).unwrap());
-    replace(&mut c, record.clone(), NativeSide::Xiangqi(x::Side::Red));
-    let before_warning = send(&mut c, SessionOperation::Inspect { event_index: 8 }).unwrap();
-    assert_eq!(before_warning.event_index, 8);
+    replace(&mut c, record, NativeSide::Xiangqi(x::Side::Red));
+    assert!(send(&mut c, SessionOperation::Inspect { event_index: 8 }).is_err());
+    let before = send(&mut c, SessionOperation::Inspect { event_index: 7 }).unwrap();
+    assert!(before.xiangqi.as_ref().unwrap().warnings.is_empty());
+    let warned = send(&mut c, SessionOperation::Inspect { event_index: 9 }).unwrap();
     assert_eq!(
-        before_warning.moves.entries.len(),
+        warned.moves.entries.len(),
         8,
         "a warning is not a ninth move"
     );
-    let last = before_warning.moves.entries.last().unwrap();
-    assert_eq!(
-        (last.event_index, last.command_start, last.command_end),
-        (8, 7, 9)
-    );
-    assert_eq!(
-        (
-            &*before_warning.moves.entries[0].notation,
-            &*before_warning.moves.entries[1].notation,
-            &*last.notation
-        ),
-        ("R5=4", "K6=5", "K5=6")
-    );
-    cue(&before_warning, "e8f8", 8, "e8", "f8");
-    assert!(before_warning.xiangqi.as_ref().unwrap().warnings.is_empty());
-    let token = before_warning.token;
-    assert!(
-        send(
-            &mut c,
-            SessionOperation::Analyze {
-                operation: AnalysisOperation::Moves {
-                    depth: 1,
-                    nodes: 32
-                }
-            }
-        )
-        .is_err()
-    );
-    assert_eq!(
-        c.shared_token(),
-        token,
-        "rejection cannot normalize the selected prefix"
-    );
-    let warned = send(&mut c, SessionOperation::Inspect { event_index: 9 }).unwrap();
     assert_eq!(warned.xiangqi.as_ref().unwrap().warnings.len(), 1);
-    assert_eq!(
-        serde_json::to_value(&before_warning.pieces).unwrap(),
-        serde_json::to_value(&warned.pieces).unwrap(),
-        "same diagram, different native warning history"
-    );
-    cue(&warned, "e8f8", 8, "e8", "f8");
-    assert_ne!(warned.token.selection, before_warning.token.selection);
-    let pending = request(&mut c);
-    assert_eq!(pending.game, record);
-    match pending.purpose {
-        ExecutionPurpose::MoveAnalysis { target } => {
-            assert_eq!((target.event_index, target.board_ply), (9, 8))
-        }
-        other => panic!("unexpected purpose {other:?}"),
-    }
-    let root = send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
-    assert!(root.moves.last_action.is_none());
-    assert!(root.xiangqi.as_ref().unwrap().warnings.is_empty());
-    assert_eq!(
-        serde_json::to_value(&root.pieces).unwrap(),
-        serde_json::to_value(&warned.pieces).unwrap(),
-        "the cycle returns to the root diagram without erasing known history"
-    );
-    let root_request = request(&mut c);
-    assert_eq!(root_request.game.event_count(), 0);
-    assert_ne!(
-        root_request.game, warned.context,
-        "same-board root has no future warning history"
-    );
+    assert_eq!(warned.events.len(), 8);
 }

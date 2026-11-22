@@ -65,47 +65,6 @@ pub(crate) fn resource_refusal(
 ) -> OperationFailure {
     OperationFailure::resource(ResourceFailure::multiple(facts, diagnostic))
 }
-pub(crate) fn document_count_failure(
-    controls: usize,
-    ordinary: usize,
-    exact: usize,
-    combined: bool,
-    scope: ResourceScope,
-    reserve: usize,
-) -> OperationFailure {
-    let mut facts = Vec::new();
-    if controls.saturating_add(reserve) > MAX_ARCHIVE_CONTROLS {
-        facts.push(resource_fact(
-            ResourceCategory::Controls,
-            controls,
-            MAX_ARCHIVE_CONTROLS,
-            reserve,
-            scope,
-            ResourceUnit::Controls,
-        ));
-    }
-    if ordinary.saturating_add(exact) > MAX_ARCHIVE_OBSERVATIONS {
-        facts.push(
-            resource_fact(
-                if combined {
-                    ResourceCategory::CombinedObservations
-                } else {
-                    ResourceCategory::OrdinaryObservations
-                },
-                ordinary.saturating_add(exact),
-                MAX_ARCHIVE_OBSERVATIONS,
-                0,
-                scope,
-                ResourceUnit::Observations,
-            )
-            .with_observations(ordinary as u64, exact as u64),
-        );
-    }
-    resource_refusal(
-        facts,
-        "Application capacity: saved native document counts exceed supported limits; current document preserved.",
-    )
-}
 /// Resource admission is independent of engine execution and chess outcomes.
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
@@ -303,7 +262,6 @@ impl DesktopController {
         self.shared.admission = None;
         self.shared.admission_consumes_response = false;
         self.shared.transactional_admission = false;
-        self.shared.rollback = None;
         if let Some(receipt) = self.admission_receipt.take() {
             receipt.finish(Err(
                 "The pending command was superseded before acceptance.".into()

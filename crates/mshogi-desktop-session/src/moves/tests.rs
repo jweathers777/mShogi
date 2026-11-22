@@ -115,16 +115,16 @@ fn xiangqi_action_warning_exact_prefix_and_command_ranges() {
     let last = &p.entries[7];
     assert_eq!(
         (last.event_index, last.command_start, last.command_end),
-        (8, 7, 9)
+        (9, 7, 9)
     );
     assert!(game.event_prefix(8).unwrap().warnings.is_empty());
     assert_eq!(game.event_prefix(9).unwrap().warnings.len(), 1);
     assert!(game.committed_prefix(8).is_err());
     assert!(game.committed_prefix(9).is_ok());
-    let a = selected(p.clone(), 8).last_action.unwrap();
+    // The move and its warning are one command; its history position is 9.
     let b = selected(p, 9).last_action.unwrap();
-    assert_eq!(a.action, b.action);
-    assert_eq!((a.event_index, b.event_index), (8, 8));
+    assert_eq!(b.action, "e8f8");
+    assert_eq!(b.event_index, 9);
     assert_eq!(
         before,
         x::GameRecord::from_game(&game).unwrap(),

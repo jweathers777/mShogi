@@ -32,7 +32,8 @@ pub(crate) struct TelemetryView {
     pub(crate) completed_depth: u16,
     pub(crate) nodes: u64,
     pub(crate) variation: Vec<String>,
-    pub(crate) status: mshogi_engine::StopReason,
+    /// Display label of how the search ended.
+    pub(crate) status: &'static str,
 }
 
 /// The session-side differences of a native game.
@@ -68,6 +69,34 @@ pub(crate) trait SessionGame: NativeGame {
     fn state(session: &ActiveDocument) -> Option<&NativeSession<Self>>;
     fn state_mut(session: &mut ActiveDocument) -> Option<&mut NativeSession<Self>>;
 
+    /// Event index that Take back restores, if a human decision is available.
+    fn take_back_target(game: &Self::Game, human: Self::Side, two_humans: bool) -> Option<usize> {
+        if two_humans {
+            return Self::last_command_start(game);
+        }
+        let events = Self::events(game);
+        if let Some(last) = events.checked_sub(1)
+            && Self::event(game, last) == (human, CommandKind::Terminal)
+            && Self::side_to_move(game) == human
+        {
+            return Some(last);
+        }
+        (0..events)
+            .rev()
+            .find(|&i| Self::event(game, i) == (human, CommandKind::Play))
+    }
+    /// The actor of a local command; for most games the local actor.
+    fn command_actor(
+        _game: &Self::Game,
+        _settings: &SettingsOf<Self>,
+        _human: Self::Side,
+        _command: &Self::Command,
+        local: Self::Side,
+    ) -> Self::Side {
+        local
+    }
+    /// Add game-specific snapshot fields after the generic ones.
+    fn finish_snapshot(_snapshot: &mut SharedSnapshot, _state: &NativeSession<Self>) {}
     /// Advisory declaration facts of both sides, for a game with declarations.
     fn declaration_advice(_game: &Self::Game) -> Vec<DeclarationAdvice> {
         vec![]
@@ -191,21 +220,16 @@ impl<G: SessionGame> NativeSession<G> {
             .play_mode()
             .actor(self.document.human(), G::side_to_move(&self.game))
     }
-    fn take_back_target(&self) -> Option<usize> {
-        let human = self.document.human();
-        let events = G::events(&self.game);
-        if self.document.settings().play_mode().is_two_humans() {
-            return events.checked_sub(1);
-        }
-        if let Some(last) = events.checked_sub(1)
-            && G::event(&self.game, last) == (human, CommandKind::Terminal)
-            && G::side_to_move(&self.game) == human
-        {
-            return Some(last);
-        }
-        (0..events)
-            .rev()
-            .find(|&i| G::event(&self.game, i) == (human, CommandKind::Play))
+    pub(crate) fn take_back_target(&self) -> Option<usize> {
+        G::take_back_target(
+            &self.game,
+            self.document.human(),
+            self.document.settings().play_mode().is_two_humans(),
+        )
+    }
+    /// A history position is selected.
+    pub(crate) fn historical(&self) -> bool {
+        self.viewed.is_some()
     }
     fn apply(
         &mut self,
@@ -233,7 +257,14 @@ impl<G: SessionGame> NativeSession<G> {
                 Some(GameControl::Native { actor, command })
             }
             Ok(GameOperation::Local { command }) => {
-                return self.apply(G::command_operation(self.local_actor(), command), stopped);
+                let actor = G::command_actor(
+                    &self.game,
+                    self.document.settings(),
+                    self.document.human(),
+                    &command,
+                    self.local_actor(),
+                );
+                return self.apply(G::command_operation(actor, command), stopped);
             }
             Ok(GameOperation::Preferences { mut settings }) => {
                 settings.set_play_mode(self.document.settings().play_mode());
@@ -251,9 +282,7 @@ impl<G: SessionGame> NativeSession<G> {
                 }
                 let (event_index, reason) = if matches!(operation, SessionOperation::Undo {}) {
                     (
-                        G::events(&self.game)
-                            .checked_sub(1)
-                            .ok_or("No event to Undo.")?,
+                        G::last_command_start(&self.game).ok_or("No event to Undo.")?,
                         RewindKind::Undo,
                     )
                 } else {
@@ -492,6 +521,8 @@ pub(crate) struct RuntimeWork<G: SessionGame> {
     pub(crate) seed: RuntimeSeed<G>,
     pub(crate) operation: Option<SessionOperation>,
     pub(crate) response: Option<ExecutionObservation>,
+    /// Completed evidence to keep in the document.
+    pub(crate) evidence: Option<G::Evidence>,
     pub(crate) floor: u64,
     pub(crate) replacement: bool,
 }
@@ -527,6 +558,10 @@ pub(crate) fn execute<G: SessionGame>(
     let mut durable = false;
     if let Some(operation) = work.operation {
         durable = state.apply(operation, stopped)?;
+    }
+    if let Some(evidence) = work.evidence {
+        state.document = Arc::new(state.document.with_evidence(evidence, stopped)?);
+        durable = true;
     }
     if let Some(response) = work.response {
         let pending = state
@@ -652,10 +687,37 @@ impl DesktopController {
                 seed,
                 operation,
                 response,
+                evidence: None,
                 floor,
                 replacement,
             }),
             consumes_response,
+        )
+    }
+    /// Keep completed evidence (Xiangqi exact reports) in the active document.
+    pub(crate) fn retain_game_evidence<G: SessionGame>(
+        &mut self,
+        expected: SessionToken,
+        evidence: G::Evidence,
+    ) -> Result<AdmissionReceipt, String> {
+        if expected != self.shared_token() || self.admission_token.is_some() {
+            return Err("Stale historical evidence attachment.".into());
+        }
+        let state =
+            G::state(&self.session).ok_or_else(|| format!("No native {} document.", G::NAME))?;
+        observation_room::<G>(&state.document).map_err(|e| e.diagnostic)?;
+        let draft = state.capture();
+        let floor = self.runtime_floor();
+        self.queue_native_transaction(
+            runtime_job(RuntimeWork {
+                seed: RuntimeSeed::Current(Box::new(draft)),
+                operation: None,
+                response: None,
+                evidence: Some(evidence),
+                floor,
+                replacement: false,
+            }),
+            false,
         )
     }
     pub(super) fn replace_game<G: SessionGame>(
@@ -688,6 +750,37 @@ impl DesktopController {
             self.session.version += 1;
             self.session.selection_id += 1;
             self.session.revision += 1;
+        }
+        // While history is viewed, a command that would change the game is
+        // refused at once; it changes nothing.
+        if G::state(&self.session).is_some_and(|s| s.viewed.is_some())
+            && !matches!(
+                operation,
+                SessionOperation::Inspect { .. }
+                    | SessionOperation::ReturnLive {}
+                    | SessionOperation::Analyze { .. }
+                    | SessionOperation::Cancel {}
+            )
+            && G::operation(operation.clone())
+                .map_or(true, |o| !matches!(o, GameOperation::Preferences { .. }))
+        {
+            return Err("Return to live before changing the game.".into());
+        }
+        // Refuse a malformed analysis request at once; it changes nothing.
+        if let SessionOperation::Analyze { operation } = &operation {
+            let AnalysisOperation::Moves { depth, nodes } = *operation else {
+                return Err(format!(
+                    "Unsupported {} analysis operation: Chess Full analysis is not {} analysis.",
+                    G::NAME,
+                    G::NAME
+                ));
+            };
+            validate_limits::<G>(WorkLimits {
+                time_ms: None,
+                depth,
+                nodes,
+            })
+            .map_err(|e| e.diagnostic)?;
         }
         let state = G::state(&self.session).expect("native owner");
         if matches!(operation, SessionOperation::TakeBack {})
@@ -1021,7 +1114,7 @@ impl DesktopController {
                 drops: G::HANDS,
                 promotion: true,
                 take_back: !historical && state.take_back_target().is_some(),
-                undo: !historical && G::events(&state.game) > 0,
+                undo: !historical && G::last_command_start(&state.game).is_some(),
                 engine_turn: !settings.play_mode().is_two_humans(),
                 move_analysis: true,
                 chess_full: false,
@@ -1080,6 +1173,7 @@ impl DesktopController {
             chess_match: None,
         };
         G::present_in(&mut snapshot, state.presentation.clone());
+        G::finish_snapshot(&mut snapshot, state);
         snapshot
     }
 }
@@ -1088,11 +1182,15 @@ impl DesktopController {
 fn observation_room<G: SessionGame>(
     document: &ValidatedGameDocument<G>,
 ) -> Result<(), OperationFailure> {
-    let count = document.observations().len();
+    let count = document.observations().len() + document.evidence().len();
     if count >= MAX_ARCHIVE_OBSERVATIONS {
         return Err(OperationFailure::resource(ResourceFailure::new(
             ResourceFact::measured(
-                ResourceCategory::OrdinaryObservations,
+                if document.evidence().is_empty() {
+                    ResourceCategory::OrdinaryObservations
+                } else {
+                    ResourceCategory::CombinedObservations
+                },
                 count as u64,
                 MAX_ARCHIVE_OBSERVATIONS as u64,
             )
@@ -1102,6 +1200,15 @@ fn observation_room<G: SessionGame>(
         )));
     }
     Ok(())
+}
+
+/// Display label of a shared-search stop reason.
+pub(crate) fn stop_label(status: mshogi_engine::StopReason) -> &'static str {
+    match status {
+        mshogi_engine::StopReason::Complete => "Complete",
+        mshogi_engine::StopReason::NodeLimit => "Node limit reached",
+        mshogi_engine::StopReason::Stopped => "Search stopped",
+    }
 }
 
 fn validate_limits<G: SessionGame>(limits: WorkLimits) -> Result<(), OperationFailure> {
@@ -1150,9 +1257,7 @@ pub(crate) fn display_observation<G: SessionGame>(
             .as_ref()
             .map_or_else(Vec::new, |t| t.variation.clone()),
         status: match telemetry.as_ref().map(|t| t.status) {
-            Some(mshogi_engine::StopReason::Complete) => "Complete",
-            Some(mshogi_engine::StopReason::NodeLimit) => "Node limit reached",
-            Some(mshogi_engine::StopReason::Stopped) => "Search stopped",
+            Some(status) => status,
             None => match &o.result {
                 ExecutionResult::Failure { failure }
                     if failure.kind == mshogi_engine::FailureKind::UnsupportedMode =>
@@ -1264,7 +1369,7 @@ macro_rules! large_shogi_session {
                     completed_depth: t.completed_depth,
                     nodes: t.nodes,
                     variation: t.principal_variation.iter().map(|$a| $pv).collect(),
-                    status: t.status,
+                    status: stop_label(t.status),
                 }
             }
             fn incomplete(result: &mshogi_engine::$engine) -> bool {

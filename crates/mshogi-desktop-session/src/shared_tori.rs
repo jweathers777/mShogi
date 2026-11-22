@@ -85,7 +85,7 @@ impl SessionGame for Tori {
                 .iter()
                 .map(|a| serde_json::to_string(a).expect("native action"))
                 .collect(),
-            status: t.status,
+            status: stop_label(t.status),
         }
     }
     fn incomplete(result: &mshogi_engine::ToriResult) -> bool {

@@ -45,6 +45,14 @@ fn corpus(text: &str, id: &str, maximum: usize) -> Result<x::Game, String> {
     Ok(game)
 }
 impl DesktopController {
+    /// Apply one session operation and wait for its admission.
+    fn verification_command(&mut self, operation: SessionOperation) -> Result<(), String> {
+        self.game_command::<Xiangqi>(operation)?;
+        match self.admission_receipt.clone() {
+            Some(receipt) => self.finish_verification_admission(receipt),
+            None => Ok(()),
+        }
+    }
     fn finish_verification_admission(&mut self, receipt: AdmissionReceipt) -> Result<(), String> {
         let deadline = Instant::now() + std::time::Duration::from_secs(30);
         loop {
@@ -126,13 +134,29 @@ impl DesktopController {
             .conclusion()
             .is_none()
             .then_some(SessionOperation::Resume {});
-        let receipt = self.queue_xiangqi_candidate(
-            archive::XiangqiDraft::replacement(&record, human),
-            operation,
-            None,
-            None,
-            true,
-        )?;
+        let seed = if fixture == "xiangqi-control-capacity" {
+            // A document whose journal is one control short of the limit.
+            let document =
+                crate::game_document::ValidatedGameDocument::<Xiangqi>::new(record, human)
+                    .map_err(|e| e.diagnostic)?;
+            let mut payload = document.payload.clone();
+            payload.controls = vec![
+                crate::game_document::GameControl::Settings {
+                    settings: payload.settings.clone(),
+                };
+                MAX_ARCHIVE_CONTROLS - 5
+            ];
+            native_session::RuntimeSeed::Document(Box::new(
+                crate::game_document::validate(payload, &mut || false).map_err(|e| e.diagnostic)?,
+            ))
+        } else {
+            native_session::RuntimeSeed::Record {
+                record: Box::new(record),
+                human,
+                play_mode: PlayMode::HumanEngine,
+            }
+        };
+        let receipt = self.queue_game_candidate::<Xiangqi>(seed, operation, None, true)?;
         self.finish_verification_admission(receipt)?;
         if fixture == "xiangqi-exact-evidence" {
             let source = game;
@@ -171,14 +195,7 @@ impl DesktopController {
                     },
                     x::ExactTarget::Live => SessionOperation::ReturnLive {},
                 };
-                let receipt = self.queue_xiangqi_candidate(
-                    archive::XiangqiDraft::capture(self.session.xiangqi().unwrap()),
-                    Some(selection),
-                    None,
-                    None,
-                    false,
-                )?;
-                self.finish_verification_admission(receipt)?;
+                self.verification_command(selection)?;
                 let mut analysis = x::ExactAnalysis::new().map_err(|e| e.to_string())?;
                 analysis.select(target).map_err(|e| e.to_string())?;
                 let observation = analysis
@@ -195,35 +212,21 @@ impl DesktopController {
                     return Err("Read-only exact evidence changed the native game.".into());
                 }
             }
-            let receipt = self.queue_xiangqi_candidate(
-                archive::XiangqiDraft::capture(self.session.xiangqi().unwrap()),
-                Some(SessionOperation::ReturnLive {}),
-                None,
-                None,
-                false,
-            )?;
-            self.finish_verification_admission(receipt)?;
-        }
-        if fixture == "xiangqi-control-capacity" {
-            self.session
-                .xiangqi_mut()
-                .unwrap()
-                .verification_control_capacity()?;
+            self.verification_command(SessionOperation::ReturnLive {})?;
         }
         if fixture == "xiangqi-capacity" {
             // Real native results, not a forged count or fabricated observations.
             // Poll only admission here so the supervised child is not also submitted.
             for _ in 0..MAX_ARCHIVE_OBSERVATIONS - 1 {
-                let receipt = self.queue_xiangqi_candidate(
-                    archive::XiangqiDraft::capture(self.session.xiangqi().unwrap()),
-                    Some(SessionOperation::Analyze {
-                        operation: AnalysisOperation::Moves { depth: 1, nodes: 1 },
-                    }),
-                    None,
-                    None,
-                    false,
-                )?;
-                self.finish_verification_admission(receipt)?;
+                self.start_game_work::<Xiangqi>(
+                    WorkLimits {
+                        time_ms: None,
+                        depth: 1,
+                        nodes: 1,
+                    },
+                    true,
+                )
+                .map_err(|e| e.diagnostic)?;
                 let request = self
                     .session
                     .xiangqi()
@@ -268,8 +271,8 @@ mod tests {
         assert!(snapshot.status.concluded);
         let state = controller.session.xiangqi().unwrap();
         assert!(state.pending.is_none());
-        assert_eq!(state.exact_observations.len(), 5);
-        let reports = &state.exact_observations;
+        assert_eq!(state.document.evidence().len(), 5);
+        let reports = &state.document.evidence();
         assert!(matches!(reports[0].report().verdict,
             x::ExactVerdict::NaturalWin { winner: x::Side::Red, ref witness, .. } if witness.len() == 2));
         assert_eq!(reports[0].event_count(), 0);
@@ -293,10 +296,14 @@ mod tests {
                 reason: x::ExactFailure::UnsupportedLimits
             }
         );
-        for report in reports {
+        for report in reports.iter() {
             assert_eq!(report.source(), &snapshot.context);
         }
-        archive::check_capacity(state, &mut || false).unwrap();
+        crate::game_document::ValidatedGameDocument::<Xiangqi>::decode(
+            state.document.bytes(),
+            &mut || false,
+        )
+        .unwrap();
     }
     #[test]
     fn labeled_capacity_fixture_retains_real_observations_and_one_remaining_slot() {
@@ -307,16 +314,20 @@ mod tests {
         .unwrap();
         controller.shared.manual_engine = true;
         let state = controller.session.xiangqi().unwrap();
-        assert_eq!(state.observations.len(), MAX_ARCHIVE_OBSERVATIONS - 1);
-        assert!(state.observations.iter().all(|o| matches!(
-            &o.observation.result,
+        let observations = state.document.observations();
+        assert_eq!(observations.len(), MAX_ARCHIVE_OBSERVATIONS - 1);
+        assert!(observations.iter().all(|o| matches!(
+            &o.result,
             ExecutionResult::Xiangqi {
                 result: XiangqiResult::Incomplete { .. }
             }
         )));
         assert_eq!(state.game.events().len(), 0);
-        archive::check_capacity(state, &mut || false).unwrap();
-        assert!(state.observation_capacity());
+        crate::game_document::ValidatedGameDocument::<Xiangqi>::decode(
+            state.document.bytes(),
+            &mut || false,
+        )
+        .unwrap();
     }
     #[test]
     fn labeled_native_verification_roots_replay_actual_facts() {
@@ -335,7 +346,7 @@ mod tests {
                 DesktopController::verification("/unused/verification-engine".into(), name)
                     .unwrap();
             controller.shared.manual_engine = true;
-            let snapshot = controller.xiangqi_snapshot();
+            let snapshot = controller.game_snapshot::<Xiangqi>();
             let facts = snapshot.xiangqi.unwrap();
             assert_eq!(snapshot.game, GameKind::Xiangqi);
             match name {

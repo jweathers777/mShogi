@@ -57,7 +57,7 @@ impl DesktopController {
         } else if let Some(state) = self.session.tori() {
             tori::inspect(state.selected(), &query.origin)?
         } else if let Some(state) = self.session.xiangqi() {
-            xiangqi::inspect(state.selected_position(), &query.origin)?
+            xiangqi::inspect(state.selected().position(), &query.origin)?
         } else if let Some(state) = self.session.shogi() {
             inspect_shogi(state.selected().position(), &query.origin)?
         } else {

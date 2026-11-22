@@ -806,7 +806,7 @@ fn product_new_games_are_native_qualified_oriented_and_live_with_fresh_identitie
                 assert!(!current.capabilities.promotion && !current.capabilities.declaration);
                 assert_eq!(current.turn.id, NativeSide::Xiangqi(x::Side::Red));
                 let state = c.session.xiangqi().unwrap();
-                assert_eq!(state.settings.orientation, side);
+                assert_eq!(state.document.settings().orientation, side);
                 assert_eq!(current.capabilities.board_action, side == x::Side::Red);
                 assert_eq!(state.pending.is_some(), side == x::Side::Black);
             }

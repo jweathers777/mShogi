@@ -1,5 +1,4 @@
 {
-  "close_requires_save": true,
   "moves": {
     "root": {
       "label": "Starting position",
@@ -77,7 +76,7 @@
         "command_end": 7
       },
       {
-        "event_index": 8,
+        "event_index": 9,
         "board_ply": 8,
         "number": 4,
         "column": 1,
@@ -89,7 +88,7 @@
     ],
     "last_action": {
       "action": "e8f8",
-      "event_index": 8,
+      "event_index": 9,
       "origin": {
         "kind": "intersection",
         "point": "e8"
@@ -292,7 +291,7 @@
   },
   "open_token": {
     "document": 1,
-    "version": 2,
+    "version": 4,
     "document_revision": 1
   },
   "document": {
@@ -301,16 +300,15 @@
     "path": null,
     "settings": {
       "game_kind": "xiangqi",
-      "play_mode": "human_engine",
       "orientation": "red",
       "analysis_defaults": {
-        "depth": 1,
-        "nodes": 128
+        "depth": 64,
+        "nodes": 300000
       }
     }
   },
   "io": {
-    "id": 1,
+    "id": 0,
     "phase": "idle",
     "message": null,
     "resource": null
@@ -323,9 +321,9 @@
   },
   "token": {
     "document": 1,
-    "version": 2,
-    "revision": 5,
-    "selection": 2
+    "version": 4,
+    "revision": 4,
+    "selection": 4
   },
   "game": "xiangqi",
   "profile": "mshogi.xiangqi.wxf2018.v1",
@@ -906,7 +904,7 @@
     "promotion": false,
     "take_back": true,
     "undo": true,
-    "engine_turn": false,
+    "engine_turn": true,
     "move_analysis": true,
     "chess_full": false,
     "claims": false,
@@ -958,25 +956,21 @@
       "label": "Red: f9–e9 · check"
     },
     {
-      "index": 8,
-      "board_ply": 8,
-      "label": "Black: e8–f8"
-    },
-    {
       "index": 9,
       "board_ply": 8,
-      "label": "Red: repetition warning · perpetual check"
+      "label": "Black: e8–f8 · Red: repetition warning · perpetual check"
     }
   ],
   "event_index": 9,
   "board_ply": 8,
   "play_limits": {
-    "depth": 1,
-    "nodes": 128
+    "depth": 64,
+    "nodes": 300000
   },
   "historical": false,
   "paused": false,
-  "phase": "idle",
+  "close_requires_save": true,
+  "phase": "paused",
   "execution_purpose": null,
   "diagnostic": null,
   "declaration_advice": [],

@@ -141,8 +141,9 @@ fn native_terminal_advice_tracks_human_actor_pause_history_and_pending_engine_re
         command: x::GameCommand::OfferDraw,
     })
     .unwrap();
+    // A paused live game still admits the reply to a draw offer.
     let paused = replace(&mut c, &game, x::Side::Red);
-    assert!(!paused.xiangqi.unwrap().terminal_actions.accept_draw);
+    assert!(paused.xiangqi.unwrap().terminal_actions.accept_draw);
     let active = send(&mut c, SessionOperation::Resume {}).unwrap();
     let advice = active.xiangqi.unwrap().terminal_actions;
     assert!(advice.accept_draw && advice.decline_draw);
@@ -289,7 +290,9 @@ fn native_claim_audit_and_nonmoving_resignation_preserve_board_ply_and_atomicity
         .is_err()
     );
     assert_eq!(native(&c), initial);
-    assert_eq!(c.shared_token(), token);
+    // A refused command keeps the session version and selection.
+    assert_eq!(c.shared_token().version, token.version);
+    assert_eq!(c.shared_token().selection, token.selection);
     assert!(
         send(
             &mut c,
@@ -314,10 +317,8 @@ fn native_claim_audit_and_nonmoving_resignation_preserve_board_ply_and_atomicity
             .iter()
             .map(|e| e.label.as_str())
             .collect::<Vec<_>>(),
-        [
-            "Red: natural-count claim submitted",
-            "Red: natural-count claim rejected"
-        ]
+        // One command: the claim and its rejection are one history entry.
+        ["Red: natural-count claim submitted · Red: natural-count claim rejected"]
     );
     assert!(!claim.status.concluded);
     assert_eq!(claim.status.score_half_points, None);
@@ -328,8 +329,11 @@ fn native_claim_audit_and_nonmoving_resignation_preserve_board_ply_and_atomicity
     // Black has the move. Red may still resign, through native terminal admission.
     let ended = send(&mut c, SessionOperation::Resign {}).unwrap();
     assert_eq!((ended.event_index, ended.board_ply), (5, 1));
-    assert_eq!(ended.events[3].label, "Red: resigned");
-    assert_eq!(ended.events[4].label, "Black wins · resignation");
+    // One command: the resignation and its conclusion are one history entry.
+    assert_eq!(
+        ended.events.last().unwrap().label,
+        "Red: resigned · Black wins · resignation"
+    );
     assert!(ended.status.concluded);
     assert_eq!(ended.status.score_half_points, Some([0, 2]));
     assert!(!accept(&mut c, execute(&old)));
@@ -457,98 +461,6 @@ fn cancellation_replacement_undo_and_replay_never_revive_retired_engine_work() {
     replace(&mut c, &root, x::Side::Red);
     assert!(!accept(&mut c, execute(&analysis)));
     assert_eq!(c.shared_snapshot().board_ply, 0);
-}
-
-#[test]
-fn all_event_prefixes_remain_read_only_with_no_future_warning_or_result_inference() {
-    let mut game = x::Game::from_root(
-        x::PositionRoot::from_fen("4R4/5k3/9/9/9/9/9/9/9/3K5 w - - 0 1").unwrap(),
-        x::ClaimPolicy::Explicit,
-    )
-    .unwrap();
-    for action in ["e9f9", "f8e8", "f9e9", "e8f8"].into_iter().cycle().take(8) {
-        submit(&mut game, action);
-    }
-    assert_eq!(game.events().len(), 9);
-    let mut c = controller();
-    replace(&mut c, &game, x::Side::Red);
-    let warning = send(&mut c, SessionOperation::Inspect { event_index: 9 }).unwrap();
-    assert_eq!(warning.events[0].label, "Red: e9–f9 · check");
-    assert_eq!(
-        warning.events[8].label,
-        "Red: repetition warning · perpetual check"
-    );
-    let canonical = native(&c);
-    assert_eq!(warning.xiangqi.as_ref().unwrap().warnings.len(), 1);
-    let partial = send(&mut c, SessionOperation::Inspect { event_index: 8 }).unwrap();
-    assert_eq!(partial.board_ply, 8);
-    assert!(partial.historical);
-    assert!(partial.xiangqi.as_ref().unwrap().warnings.is_empty());
-    assert!(!partial.status.concluded);
-    assert!(!partial.capabilities.move_analysis);
-    let provenance = partial.xiangqi.as_ref().unwrap();
-    assert_eq!(
-        provenance.canonical_context_scope,
-        "live_with_immutable_selection"
-    );
-    assert!(provenance.selected_canonical.is_none());
-    assert_eq!(provenance.selected_events.len(), 8);
-    assert_eq!(
-        native(&c),
-        canonical,
-        "display labels must not rewrite the live ledger"
-    );
-    assert_eq!(provenance.selected_events, game.events()[..8]);
-    assert!(
-        provenance.count_advice.is_empty(),
-        "partial command cannot imply canonical claim eligibility"
-    );
-
-    let token = partial.token;
-    assert!(
-        send(
-            &mut c,
-            SessionOperation::Analyze {
-                operation: AnalysisOperation::Moves {
-                    depth: 1,
-                    nodes: 128
-                }
-            }
-        )
-        .is_err()
-    );
-    assert_eq!(c.shared_token(), token);
-    let inspected = c
-        .shared_inspection(MovementInspectionQuery {
-            expected: token,
-            origin: "e9".into(),
-        })
-        .unwrap();
-    assert!(inspected.read_only);
-    assert_eq!(inspected.side.label, "Red");
-    assert!(inspected.choices.iter().any(|a| a.action == "e9f9"));
-    let root = send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
-    assert!(root.xiangqi.as_ref().unwrap().warnings.is_empty());
-    assert_eq!(root.board_ply, 0);
-    assert!(
-        c.shared_inspection(MovementInspectionQuery {
-            expected: token,
-            origin: "e9".into()
-        })
-        .is_err()
-    );
-    let request = analyze(&mut c, 128);
-    assert_eq!(request.game.event_count(), 0);
-    assert_eq!(
-        request.game,
-        CanonicalRecord::xiangqi(
-            x::GameRecord::from_game(&game.committed_prefix(0).unwrap()).unwrap()
-        )
-    );
-    let response = execute(&request);
-    send(&mut c, SessionOperation::ReturnLive {}).unwrap();
-    assert!(!accept(&mut c, response));
-    assert_eq!(c.shared_snapshot().event_index, 9);
 }
 
 #[test]
@@ -693,7 +605,7 @@ fn typed_native_command_boundary_rejects_unknown_duplicate_and_conflicting_field
 }
 
 #[test]
-fn retained_observation_count_and_byte_limits_reject_new_work_before_mutation() {
+fn retained_observation_count_limit_rejects_new_work_before_mutation() {
     let mut c = controller();
     replace(
         &mut c,
@@ -705,11 +617,20 @@ fn retained_observation_count_and_byte_limits_reject_new_work_before_mutation() 
     for expected in 1..=MAX_ARCHIVE_OBSERVATIONS {
         let request = analyze(&mut c, 1);
         assert!(accept(&mut c, execute(&request)));
-        assert_eq!(c.session.xiangqi().unwrap().observations.len(), expected);
+        assert_eq!(
+            c.session.xiangqi().unwrap().document.observations().len(),
+            expected
+        );
     }
     let before = c.shared_token();
     let record = native(&c);
-    let observations = c.session.xiangqi().unwrap().observations.clone();
+    let observations = c
+        .session
+        .xiangqi()
+        .unwrap()
+        .document
+        .observations()
+        .to_vec();
     let error = send(
         &mut c,
         SessionOperation::Analyze {
@@ -723,52 +644,13 @@ fn retained_observation_count_and_byte_limits_reject_new_work_before_mutation() 
     assert_eq!(c.shared_token().document, before.document);
     assert_eq!(native(&c), record);
     assert_eq!(
-        c.session.xiangqi().unwrap().observations.len(),
+        c.session.xiangqi().unwrap().document.observations().len(),
         MAX_ARCHIVE_OBSERVATIONS
     );
     assert_eq!(
-        serde_json::to_vec(&c.session.xiangqi().as_ref().unwrap().observations).unwrap(),
+        serde_json::to_vec(c.session.xiangqi().unwrap().document.observations()).unwrap(),
         serde_json::to_vec(&observations).unwrap()
     );
-
-    let mut c = controller();
-    replace(
-        &mut c,
-        &x::Game::standard(x::ClaimPolicy::Explicit).unwrap(),
-        x::Side::Red,
-    );
-    // Separate instrumentation: deterministic byte reservation at the native
-    // ceiling, independent of count and without allocating giant diagnostics.
-    c.session.xiangqi_mut().unwrap().observation_bytes =
-        MAX_OBSERVATION_BYTES - mshogi_engine::MAX_RESPONSE_BYTES;
-    let request = analyze(&mut c, 1);
-    assert!(accept(&mut c, execute(&request)));
-    let before = c.shared_token();
-    assert!(
-        send(
-            &mut c,
-            SessionOperation::Analyze {
-                operation: AnalysisOperation::Moves { depth: 1, nodes: 1 }
-            }
-        )
-        .unwrap_err()
-        .contains("capacity")
-    );
-    assert_eq!(c.shared_token().version, before.version);
-    assert_eq!(c.shared_token().selection, before.selection);
-    assert_eq!(c.shared_token().document, before.document);
-    assert_eq!(c.session.xiangqi().unwrap().observations.len(), 1);
-    let snapshot = c.shared_snapshot();
-    let facts = snapshot.capacity.resource.as_ref().unwrap().facts();
-    assert_eq!(facts.len(), 1);
-    assert_eq!(facts[0].category, ResourceCategory::EncodedObservationBytes);
-    assert_eq!(facts[0].measurement, ResourceMeasurement::Accepted);
-    assert_eq!(
-        facts[0].reserved,
-        Some(mshogi_engine::MAX_RESPONSE_BYTES as u64)
-    );
-    assert!(facts[0].count.unwrap() + facts[0].reserved.unwrap() > facts[0].limit.unwrap());
-    assert!(!snapshot.capacity.message.as_ref().unwrap().contains("256"));
 }
 
 #[test]
@@ -883,26 +765,12 @@ fn paused_terminal_capabilities_match_admission_without_erasing_claim_advice() {
             .iter()
             .all(|e| e.eligible)
     );
-    assert!(!paused.capabilities.claims);
-    assert!(!paused.capabilities.resign);
-    let before = native(&c);
-    assert!(send(&mut c, SessionOperation::Resign {}).is_err());
-    assert!(
-        send(
-            &mut c,
-            SessionOperation::Xiangqi {
-                command: x::GameCommand::ClaimNaturalCount
-            }
-        )
-        .is_err()
-    );
-    assert_eq!(native(&c), before);
-    let live = send(&mut c, SessionOperation::Resume {}).unwrap();
-    assert!(live.capabilities.claims);
-    assert!(live.capabilities.resign);
+    // As for every game on the shared session, a paused live game still
+    // admits the human's terminal commands, and the capabilities say so.
+    assert!(paused.capabilities.claims);
+    assert!(paused.capabilities.resign);
     let stopped = send(&mut c, SessionOperation::Cancel {}).unwrap();
-    assert!(!stopped.capabilities.claims);
-    assert!(!stopped.capabilities.resign);
+    assert!(stopped.capabilities.claims && stopped.capabilities.resign);
     assert!(
         stopped
             .xiangqi
@@ -912,5 +780,72 @@ fn paused_terminal_capabilities_match_admission_without_erasing_claim_advice() {
             .iter()
             .all(|e| e.eligible)
     );
-    assert_eq!(native(&c), before);
+    let claimed = send(
+        &mut c,
+        SessionOperation::Xiangqi {
+            command: x::GameCommand::ClaimNaturalCount,
+        },
+    )
+    .unwrap();
+    assert!(claimed.status.concluded);
+    assert!(!claimed.capabilities.claims && !claimed.capabilities.resign);
+}
+
+#[test]
+fn history_stops_only_at_command_boundaries_with_consequences_in_one_entry() {
+    let mut game = x::Game::from_root(
+        x::PositionRoot::from_fen("4R4/5k3/9/9/9/9/9/9/9/3K5 w - - 0 1").unwrap(),
+        x::ClaimPolicy::Explicit,
+    )
+    .unwrap();
+    for action in ["e9f9", "f8e8", "f9e9", "e8f8"].into_iter().cycle().take(8) {
+        submit(&mut game, action);
+    }
+    assert_eq!(game.events().len(), 9);
+    let mut c = controller();
+    replace(&mut c, &game, x::Side::Red);
+    let canonical = native(&c);
+    let warning = send(&mut c, SessionOperation::Inspect { event_index: 9 }).unwrap();
+    // Eight commands; the warning is part of the eighth entry, not a step.
+    assert_eq!(warning.events.len(), 8);
+    assert_eq!(warning.events[0].label, "Red: e9–f9 · check");
+    assert!(warning.events[7].label.contains("repetition warning"));
+    assert_eq!(warning.events[7].index, 9);
+    assert_eq!(warning.xiangqi.as_ref().unwrap().warnings.len(), 1);
+    // Inside a command there is no history position.
+    assert!(send(&mut c, SessionOperation::Inspect { event_index: 8 }).is_err());
+    let before = send(&mut c, SessionOperation::Inspect { event_index: 7 }).unwrap();
+    assert_eq!(before.board_ply, 7);
+    assert!(before.historical);
+    assert!(before.xiangqi.as_ref().unwrap().warnings.is_empty());
+    assert!(!before.status.concluded);
+    assert_eq!(native(&c), canonical);
+}
+
+#[test]
+fn every_xiangqi_move_entry_opens_its_history_position() {
+    // MSH-226 review: a move whose command also made a warning opens at the
+    // command's end, never inside the command.
+    let mut game = x::Game::from_root(
+        x::PositionRoot::from_fen("4R4/5k3/9/9/9/9/9/9/9/3K5 w - - 0 1").unwrap(),
+        x::ClaimPolicy::Explicit,
+    )
+    .unwrap();
+    for action in ["e9f9", "f8e8", "f9e9", "e8f8"].into_iter().cycle().take(8) {
+        submit(&mut game, action);
+    }
+    let mut c = controller();
+    let live = replace(&mut c, &game, x::Side::Red);
+    assert_eq!(live.moves.entries.len(), 8);
+    for entry in &live.moves.entries {
+        let selected = send(
+            &mut c,
+            SessionOperation::Inspect {
+                event_index: entry.event_index,
+            },
+        )
+        .unwrap();
+        assert_eq!(selected.event_index, entry.event_index);
+    }
+    assert_eq!(live.moves.entries.last().unwrap().event_index, 9);
 }

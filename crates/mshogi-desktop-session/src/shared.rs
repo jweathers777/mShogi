@@ -25,6 +25,8 @@ pub use inspection::{MovementInspection, MovementInspectionQuery};
 pub use mshogi_core::native::{GameKind, NativeSide, RulesProfile};
 pub use mshogi_core::shogi::Side as ShogiSide;
 use mshogi_core::{native::CanonicalRecord, shogi as s};
+#[cfg(test)]
+use mshogi_engine::OBSERVATION_SCHEMA_VERSION;
 use mshogi_engine::{
     ExecutionContext, ExecutionObservation, ExecutionPurpose, ExecutionRequest, ExecutionResponse,
     ExecutionResult, ExecutionTarget,

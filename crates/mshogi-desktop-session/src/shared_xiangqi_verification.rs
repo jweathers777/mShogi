@@ -271,8 +271,8 @@ mod tests {
         assert!(snapshot.status.concluded);
         let state = controller.session.xiangqi().unwrap();
         assert!(state.pending.is_none());
-        assert_eq!(state.exact_observations.len(), 5);
-        let reports = &state.exact_observations;
+        assert_eq!(state.document.evidence().len(), 5);
+        let reports = &state.document.evidence();
         assert!(matches!(reports[0].report().verdict,
             x::ExactVerdict::NaturalWin { winner: x::Side::Red, ref witness, .. } if witness.len() == 2));
         assert_eq!(reports[0].event_count(), 0);
@@ -296,10 +296,14 @@ mod tests {
                 reason: x::ExactFailure::UnsupportedLimits
             }
         );
-        for report in reports {
+        for report in reports.iter() {
             assert_eq!(report.source(), &snapshot.context);
         }
-        archive::check_capacity(state, &mut || false).unwrap();
+        crate::game_document::ValidatedGameDocument::<Xiangqi>::decode(
+            state.document.bytes(),
+            &mut || false,
+        )
+        .unwrap();
     }
     #[test]
     fn labeled_capacity_fixture_retains_real_observations_and_one_remaining_slot() {
@@ -310,16 +314,20 @@ mod tests {
         .unwrap();
         controller.shared.manual_engine = true;
         let state = controller.session.xiangqi().unwrap();
-        assert_eq!(state.observations.len(), MAX_ARCHIVE_OBSERVATIONS - 1);
-        assert!(state.observations.iter().all(|o| matches!(
-            &o.observation.result,
+        let observations = state.document.observations();
+        assert_eq!(observations.len(), MAX_ARCHIVE_OBSERVATIONS - 1);
+        assert!(observations.iter().all(|o| matches!(
+            &o.result,
             ExecutionResult::Xiangqi {
                 result: XiangqiResult::Incomplete { .. }
             }
         )));
         assert_eq!(state.game.events().len(), 0);
-        archive::check_capacity(state, &mut || false).unwrap();
-        assert!(state.observation_capacity());
+        crate::game_document::ValidatedGameDocument::<Xiangqi>::decode(
+            state.document.bytes(),
+            &mut || false,
+        )
+        .unwrap();
     }
     #[test]
     fn labeled_native_verification_roots_replay_actual_facts() {
@@ -338,7 +346,7 @@ mod tests {
                 DesktopController::verification("/unused/verification-engine".into(), name)
                     .unwrap();
             controller.shared.manual_engine = true;
-            let snapshot = controller.xiangqi_snapshot();
+            let snapshot = controller.game_snapshot::<Xiangqi>();
             let facts = snapshot.xiangqi.unwrap();
             assert_eq!(snapshot.game, GameKind::Xiangqi);
             match name {

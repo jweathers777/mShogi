@@ -502,7 +502,6 @@ impl SessionGame for Xiangqi {
         let live = &state.game;
         let active =
             !historical && live.conclusion().is_none() && live.pending_adjudication().is_none();
-        let running = active && !state.paused;
         let history = game
             .event_prefix(game.events().len())
             .expect("native current prefix");
@@ -519,9 +518,9 @@ impl SessionGame for Xiangqi {
             terminal_actions: XiangqiTerminalActions {
                 offer_actor: xiangqi_side(offer_actor),
                 response_actor: xiangqi_side(response_actor),
-                offer_draw: running && live.can_offer_draw(offer_actor),
-                accept_draw: running && live.can_respond_to_draw(response_actor),
-                decline_draw: running && live.can_respond_to_draw(response_actor),
+                offer_draw: active && live.can_offer_draw(offer_actor),
+                accept_draw: active && live.can_respond_to_draw(response_actor),
+                decline_draw: active && live.can_respond_to_draw(response_actor),
             },
             canonical_context_scope: "selected_committed",
             selected_canonical: Some(snapshot.context.clone()),
@@ -550,7 +549,7 @@ impl SessionGame for Xiangqi {
         caps.promotion = false;
         caps.board_action = caps.board_action && active;
         caps.resign = caps.resign && active;
-        caps.claims = running
+        caps.claims = active
             && count_advice
                 .iter()
                 .any(|e| e.claimant == local && e.eligible);

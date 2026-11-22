@@ -1539,11 +1539,13 @@ fn rejected_outgoing_replacements_preserve_tori_document_and_accepted_execution(
     let game =
         mshogi_core::xiangqi::Game::standard(mshogi_core::xiangqi::ClaimPolicy::Explicit).unwrap();
     let record = mshogi_core::xiangqi::GameRecord::from_game(&game).unwrap();
-    let draft =
-        xiangqi::archive::XiangqiDraft::replacement(&record, mshogi_core::xiangqi::Side::Red);
     let receipt = c
-        .queue_xiangqi_candidate(
-            draft,
+        .queue_game_candidate::<Xiangqi>(
+            native_session::RuntimeSeed::<Xiangqi>::Record {
+                record: Box::new(record),
+                human: mshogi_core::xiangqi::Side::Red,
+                play_mode: PlayMode::HumanEngine,
+            },
             Some(SessionOperation::XiangqiPreferences {
                 settings: XiangqiSettings {
                     play_mode: PlayMode::HumanEngine,
@@ -1555,7 +1557,6 @@ fn rejected_outgoing_replacements_preserve_tori_document_and_accepted_execution(
                     },
                 },
             }),
-            None,
             None,
             true,
         )

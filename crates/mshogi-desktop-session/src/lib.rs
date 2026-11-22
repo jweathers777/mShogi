@@ -587,7 +587,8 @@ impl ActiveDocument {
             Self::Tori { state, .. } => state.refuse_completed_work(resource),
             Self::Chu { state, .. } => state.refuse_completed_work(resource),
             Self::Tenjiku { state, .. } => state.refuse_completed_work(resource),
-            Self::Chess(_) | Self::Xiangqi { .. } => {}
+            Self::Xiangqi { state, .. } => state.refuse_completed_work(resource),
+            Self::Chess(_) => {}
         }
     }
     fn retire_analysis(&mut self) {

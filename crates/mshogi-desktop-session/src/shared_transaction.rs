@@ -56,6 +56,9 @@ impl DesktopController {
                 (ActiveDocument::Shogi { state, .. }, archive::OpenedNative::Shogi(next)) => {
                     *state = next
                 }
+                (ActiveDocument::Xiangqi { state, .. }, archive::OpenedNative::Xiangqi(next)) => {
+                    *state = next
+                }
                 (ActiveDocument::Tori { state, .. }, archive::OpenedNative::Tori(next)) => {
                     *state = next
                 }

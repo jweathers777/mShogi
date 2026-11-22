@@ -751,6 +751,37 @@ impl DesktopController {
             self.session.selection_id += 1;
             self.session.revision += 1;
         }
+        // While history is viewed, a command that would change the game is
+        // refused at once; it changes nothing.
+        if G::state(&self.session).is_some_and(|s| s.viewed.is_some())
+            && !matches!(
+                operation,
+                SessionOperation::Inspect { .. }
+                    | SessionOperation::ReturnLive {}
+                    | SessionOperation::Analyze { .. }
+                    | SessionOperation::Cancel {}
+            )
+            && G::operation(operation.clone())
+                .map_or(true, |o| !matches!(o, GameOperation::Preferences { .. }))
+        {
+            return Err("Return to live before changing the game.".into());
+        }
+        // Refuse a malformed analysis request at once; it changes nothing.
+        if let SessionOperation::Analyze { operation } = &operation {
+            let AnalysisOperation::Moves { depth, nodes } = *operation else {
+                return Err(format!(
+                    "Unsupported {} analysis operation: Chess Full analysis is not {} analysis.",
+                    G::NAME,
+                    G::NAME
+                ));
+            };
+            validate_limits::<G>(WorkLimits {
+                time_ms: None,
+                depth,
+                nodes,
+            })
+            .map_err(|e| e.diagnostic)?;
+        }
         let state = G::state(&self.session).expect("native owner");
         if matches!(operation, SessionOperation::TakeBack {})
             && (state.viewed.is_some() || state.take_back_target().is_none())

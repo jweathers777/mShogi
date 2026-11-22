@@ -70,7 +70,8 @@ fn warning_inspection_archive_reopen_and_resume_preserve_one_native_context() {
         },
     )
     .unwrap();
-    let selected = send(&mut c, SessionOperation::Inspect { event_index: 8 }).unwrap();
+    // History stops at command boundaries: event 7 ends the seventh command.
+    let selected = send(&mut c, SessionOperation::Inspect { event_index: 7 }).unwrap();
     let old_query = MovementInspectionQuery {
         expected: selected.token,
         origin: "e9".into(),
@@ -86,9 +87,10 @@ fn warning_inspection_archive_reopen_and_resume_preserve_one_native_context() {
             .as_ref()
             .unwrap()
             .selected_canonical
-            .is_none()
+            .is_some()
     );
-    assert!(!selected.capabilities.move_analysis, "intra-command prefix");
+    // A command boundary is a committed position: analysis is available.
+    assert!(selected.capabilities.move_analysis);
 
     let file = std::env::temp_dir().join(format!("msh76-handoff-{}.json", std::process::id()));
     let save = c.queue_shared_save(file.clone()).unwrap();
@@ -113,19 +115,19 @@ fn warning_inspection_archive_reopen_and_resume_preserve_one_native_context() {
     assert_eq!(reopened.game, GameKind::Xiangqi);
     assert_eq!(reopened.profile.id(), x::PROFILE_ID);
     assert!(reopened.historical && reopened.paused);
-    assert_eq!(reopened.event_index, 8);
+    assert_eq!(reopened.event_index, 7);
     assert!(reopened.xiangqi.as_ref().unwrap().warnings.is_empty());
-    assert_eq!(reopened.xiangqi.as_ref().unwrap().selected_events.len(), 8);
+    assert_eq!(reopened.xiangqi.as_ref().unwrap().selected_events.len(), 7);
     assert_eq!(
         reopened.xiangqi.as_ref().unwrap().canonical_context_scope,
-        "live_with_immutable_selection"
+        "selected_committed"
     );
     let state = c.session.xiangqi().unwrap();
-    assert_eq!(state.settings, settings);
+    assert_eq!(state.document.settings(), &settings);
     assert!(state.pending.is_none() && state.analysis.is_none());
-    assert_eq!(state.observations.len(), 1);
-    assert!(state.observations[0].historical);
-    assert_eq!(state.observations[0].observation, observed);
+    assert_eq!(state.document.observations().len(), 1);
+    assert!(reopened.observations[0].historical);
+    assert_eq!(state.document.observations()[0], observed);
     assert!(c.shared_inspection(old_query).is_err());
     assert!(!accept(&mut c, late.clone()));
     let fresh_inspection = c

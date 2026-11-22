@@ -47,8 +47,15 @@ impl DesktopController {
                 self.session.saved_revision = 0;
             })
         } else {
-            self.bridge.cancel();
+            // A preference change keeps current work; every other change retires it.
+            let keeps_work = opened.has_pending_work();
+            if !keeps_work {
+                self.bridge.cancel();
+            }
             match (&mut self.session, opened) {
+                (ActiveDocument::Shogi { state, .. }, archive::OpenedNative::Shogi(next)) => {
+                    *state = next
+                }
                 (ActiveDocument::Tori { state, .. }, archive::OpenedNative::Tori(next)) => {
                     *state = next
                 }
@@ -60,8 +67,10 @@ impl DesktopController {
                 }
                 _ => unreachable!("serialized native transaction owner"),
             }
-            self.session.version += 1;
-            self.session.selection_id += 1;
+            if !keeps_work {
+                self.session.version += 1;
+                self.session.selection_id += 1;
+            }
             self.session.revision += 1;
             if durable {
                 self.session.document_revision += 1;

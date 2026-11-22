@@ -2,10 +2,8 @@
 //! with the Tori presentation. Rules and persistence stay native-owned.
 use super::native_session::*;
 use super::*;
-use crate::game_document::ValidatedGameDocument;
 pub(crate) use crate::native_game::Tori;
 use mshogi_core::tori as t;
-use std::sync::Arc;
 
 /// The Tori session.
 pub(crate) type ToriSession = NativeSession<Tori>;
@@ -21,8 +19,7 @@ impl SessionGame for Tori {
     const INITIAL_FOCUS: &'static str = "4e";
     const SCORE_MEANING: &'static str = "Native root-side evaluation in hundredths of a Swallow. Win/loss distances count board actions; failures and incomplete work are unscored.";
 
-    session_wiring!(Tori, t, operation: Tori, preferences: ToriPreferences, runtime: ToriRuntime,
-        save: ToriSave, state: tori, tori_mut, field: tori);
+    session_wiring!(Tori, t, operation: Tori, preferences: ToriPreferences, state: tori, tori_mut, field: tori);
 
     fn presentation(selected: &t::Game, live: &t::Game) -> ToriPresentation {
         ToriPresentation::new(selected, live)
@@ -70,7 +67,7 @@ impl SessionGame for Tori {
     fn command_kind(command: &t::GameCommand) -> CommandKind {
         match command {
             t::GameCommand::Play { .. } => CommandKind::Play,
-            t::GameCommand::Resign => CommandKind::Resign,
+            t::GameCommand::Resign => CommandKind::Terminal,
             t::GameCommand::Stop { .. } => CommandKind::Stop,
             _ => CommandKind::Other,
         }

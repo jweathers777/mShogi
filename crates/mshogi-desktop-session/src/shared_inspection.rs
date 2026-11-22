@@ -132,7 +132,7 @@ fn inspect_shogi(position: &s::Position, origin: &str) -> Result<Inspected, Stri
                                 NativeSide::Shogi(actor)
                             )
                             .key,
-                            piece_text(kind)
+                            shogi::piece_text(kind)
                         ))
                     .then_some((actor, kind))
                 })
@@ -230,9 +230,12 @@ mod tests {
                 .unwrap(),
             )
         };
-        c.session.install_shogi(Box::new(
-            ShogiSession::restored(&s::GameRecord::from_game(&game), s::Side::Sente).unwrap(),
-        ));
+        c.replace_game::<Shogi>(s::GameRecord::from_game(&game), s::Side::Sente)
+            .unwrap();
+        while c.admission_token.is_some() {
+            c.poll_native_admission();
+            std::thread::sleep(std::time::Duration::from_millis(1));
+        }
     }
     #[test]
     fn exact_native_chess_query_is_not_a_snapshot_poll_or_mutation() {
@@ -308,7 +311,7 @@ mod tests {
     fn selected_shogi_owner_promotions_hands_and_pending_work_stay_native() {
         let mut c = controller();
         native_shogi(&mut c, "4k4/9/9/4P4/9/9/9/9/4K4 b p 17");
-        c.start_shogi(
+        c.start_game_work::<Shogi>(
             WorkLimits {
                 time_ms: None,
                 depth: 1,
@@ -363,7 +366,7 @@ mod tests {
             command: s::GameCommand::Play("7g7f".parse().unwrap()),
         };
         state.game.submit(request).unwrap();
-        state.viewed = Some(prefix);
+        state.set_viewed(Some(prefix));
         let before = state.record();
         assert!(query(&c, "7g").is_ok());
         assert!(query(&c, "7f").is_err());
@@ -375,7 +378,7 @@ mod tests {
         c.session.selection_id += 1;
         assert!(c.shared_inspection(stale).is_err());
         let state = c.session.shogi_mut().unwrap();
-        state.viewed = None;
+        state.set_viewed(None);
         let resignation = s::GameRequest {
             expected: state.game.context(),
             actor: s::Side::Gote,

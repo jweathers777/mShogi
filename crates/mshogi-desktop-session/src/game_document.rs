@@ -2,7 +2,9 @@
 //! runtime or file owner. Each game supplies its native calls through
 //! [`NativeGame`]; the journal, observations, branches and capacity
 //! accounting are the same for every game that uses this module.
-use crate::native_game::{NativeFailure, NativeGame, NativeResource, RecordFailure};
+use crate::native_game::{
+    DocumentSettings, NativeFailure, NativeGame, NativeResource, RecordFailure,
+};
 use crate::{document, *};
 use mshogi_core::native::{CanonicalRecord, RulesProfile};
 use mshogi_engine::{ExecutionObservation, ExecutionPurpose, ExecutionResult};
@@ -20,6 +22,24 @@ pub struct GameSettings<S> {
     /// Native side displayed at the bottom.
     pub orientation: S,
 }
+impl<S> DocumentSettings for GameSettings<S>
+where
+    S: Clone + Eq + fmt::Debug + Serialize + serde::de::DeserializeOwned + Send + Sync + 'static,
+{
+    type Side = S;
+    fn new(orientation: S, play_mode: crate::PlayMode) -> Self {
+        Self {
+            play_mode,
+            orientation,
+        }
+    }
+    fn play_mode(&self) -> crate::PlayMode {
+        self.play_mode
+    }
+    fn set_play_mode(&mut self, play_mode: crate::PlayMode) {
+        self.play_mode = play_mode;
+    }
+}
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 /// Durable reason for retiring a complete native branch.
@@ -32,7 +52,7 @@ pub enum RewindKind {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 /// Document journal operations; native commands retain exact complete types.
-pub enum GameControl<S, C> {
+pub enum GameControl<S, C, T> {
     /// Admit a complete native command with its native actor.
     Native {
         /// Native participant or administrative actor.
@@ -42,8 +62,8 @@ pub enum GameControl<S, C> {
     },
     /// Persist presentation settings without modifying rules.
     Settings {
-        /// Native orientation.
-        settings: GameSettings<S>,
+        /// Native document settings.
+        settings: T,
     },
     /// Retain the abandoned branch and restore an exact event prefix.
     Rewind {
@@ -61,9 +81,10 @@ pub enum GameControl<S, C> {
     Close {},
 }
 /// The settings of game `G`.
-pub type SettingsOf<G> = GameSettings<<G as NativeGame>::Side>;
+pub type SettingsOf<G> = <G as NativeGame>::Settings;
 /// The journal control of game `G`.
-pub type ControlOf<G> = GameControl<<G as NativeGame>::Side, <G as NativeGame>::Command>;
+pub type ControlOf<G> =
+    GameControl<<G as NativeGame>::Side, <G as NativeGame>::Command, <G as NativeGame>::Settings>;
 
 #[derive(Clone, Debug, Serialize)]
 pub(crate) struct Retired {
@@ -346,10 +367,7 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
         stopped: &mut impl FnMut() -> bool,
     ) -> Result<Self, GameDocumentError> {
         Errors::<G>::check(stopped)?;
-        let settings = GameSettings {
-            orientation: human,
-            play_mode,
-        };
+        let settings = G::Settings::new(human, play_mode);
         let record = G::canonical(record);
         validate(
             Payload {
@@ -578,7 +596,8 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
                 G::submit(&mut game, *actor, command.clone(), stopped).map_err(E::<G>::native)?;
             }
             GameControl::Settings { settings } => {
-                if settings.play_mode != p.settings.play_mode {
+                settings.validate().map_err(E::<G>::invalid)?;
+                if settings.play_mode() != p.settings.play_mode() {
                     return Err(E::<G>::invalid(
                         "participant mode can only be selected for a new game",
                     ));
@@ -645,14 +664,15 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
         p.controls.push(GameControl::Observation {
             index: p.observations.len(),
         });
-        if matches!(observation.context.purpose, ExecutionPurpose::EngineTurn {})
-            && let Some(action) = G::engine_result(&observation.result).and_then(G::engine_choice)
-        {
+        let engine_turn = matches!(observation.context.purpose, ExecutionPurpose::EngineTurn {});
+        if let Some(result) = G::engine_result(&observation.result).filter(|_| engine_turn) {
             let mut game =
                 G::to_game(E::<G>::record_of(&p.current)?, stopped).map_err(E::<G>::record)?;
             E::<G>::check(stopped)?;
-            let actor = G::side_to_move(&game);
-            let command = G::play(action.clone());
+            let Some((actor, command)) = G::engine_command(result, &game) else {
+                p.observations.push(observation);
+                return validate(p, stopped);
+            };
             G::submit(&mut game, actor, command.clone(), stopped).map_err(E::<G>::native)?;
             p.controls.push(GameControl::Native { actor, command });
             p.current = G::canonical(G::from_game(&game).map_err(E::<G>::record)?);
@@ -806,7 +826,8 @@ pub(crate) fn validate<G: NativeGame>(
                 )?;
             }
             GameControl::Settings { settings: next } => {
-                if next.play_mode != settings.play_mode {
+                next.validate().map_err(E::<G>::invalid)?;
+                if next.play_mode() != settings.play_mode() {
                     return Err(E::<G>::invalid(
                         "participant mode changed within a document",
                     ));
@@ -843,7 +864,7 @@ pub(crate) fn validate<G: NativeGame>(
                     .observations
                     .get(obs)
                     .ok_or_else(|| E::<G>::invalid("missing observation"))?;
-                if settings.play_mode.is_two_humans()
+                if settings.play_mode().is_two_humans()
                     && matches!(o.context.purpose, ExecutionPurpose::EngineTurn {})
                 {
                     return Err(E::<G>::invalid(
@@ -878,6 +899,13 @@ pub(crate) fn validate<G: NativeGame>(
                         "observation is not the exact journal history prefix",
                     ));
                 }
+                if let ExecutionPurpose::MoveAnalysis { target } = &o.context.purpose
+                    && target.turn != G::native_side(G::record_side_to_move(&prefix))
+                {
+                    return Err(E::<G>::invalid(
+                        "analysis target side disagrees with its prefix",
+                    ));
+                }
                 if let Some(result) = result {
                     E::<G>::charge(&mut usage.replay_work, G::reconstruction_work(&prefix))?;
                     let target_game = G::to_game(&prefix, stopped).map_err(E::<G>::record)?;
@@ -885,10 +913,8 @@ pub(crate) fn validate<G: NativeGame>(
                     let validated = G::validate_result(result, &target_game, stopped);
                     E::<G>::check(stopped)?;
                     E::<G>::charge(&mut usage.replay_work, validated.map_err(E::<G>::invalid)?)?;
-                    if matches!(o.context.purpose, ExecutionPurpose::EngineTurn {})
-                        && let Some(action) = G::engine_choice(result)
-                    {
-                        required_action = Some((G::side_to_move(&game), G::play(action.clone())));
+                    if matches!(o.context.purpose, ExecutionPurpose::EngineTurn {}) {
+                        required_action = G::engine_command(result, &game);
                     }
                 }
                 for id in [
@@ -978,7 +1004,12 @@ fn reserve<G: NativeGame>(
     } else {
         &[None]
     };
-    for stop_actor in G::SIDES {
+    let stop_actors: &[G::Side] = if G::engine_failure_stop().is_some() {
+        &G::SIDES
+    } else {
+        &G::SIDES[..1]
+    };
+    for &stop_actor in stop_actors {
         for resign_actor in G::SIDES {
             for &concluding_actor in concluding {
                 E::<G>::check(stopped)?;
@@ -998,16 +1029,17 @@ fn reserve<G: NativeGame>(
                     q.controls.push(GameControl::Native { actor, command });
                     Ok(())
                 };
+                let stop = G::engine_failure_stop();
                 if ongoing {
-                    if needs_stop {
-                        add(stop_actor, G::engine_failure_stop())?;
+                    if needs_stop && let Some(stop) = stop.clone() {
+                        add(stop_actor, stop)?;
                     }
                     add(resign_actor, G::resign())?;
-                    if let Some(actor) = concluding_actor {
-                        add(actor, G::engine_failure_stop())?;
+                    if let (Some(actor), Some(stop)) = (concluding_actor, stop) {
+                        add(actor, stop)?;
                     }
-                } else if needs_stop && let Some(actor) = concluding_actor {
-                    add(actor, G::engine_failure_stop())?;
+                } else if needs_stop && let (Some(actor), Some(stop)) = (concluding_actor, stop) {
+                    add(actor, stop)?;
                 }
                 let native_added = undos.len();
                 q.current = G::canonical(G::from_game(game).map_err(E::<G>::record)?);
@@ -1036,7 +1068,7 @@ fn reserve<G: NativeGame>(
                 );
                 max_controls = max_controls.max(q.controls.len());
                 max_events = max_events.max(usage.retained_events + native_added);
-                for undo in undos.iter_mut().rev() {
+                for undo in undos.into_iter().rev() {
                     G::undo(game, undo).map_err(E::<G>::native)?;
                 }
             }

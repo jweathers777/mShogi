@@ -21,7 +21,7 @@ mod document;
 pub mod game_document;
 /// Per-game boundary of the generic document and session.
 pub mod native_game;
-pub(crate) use native_game::{Chu, Tenjiku, Tori};
+pub(crate) use native_game::{Chu, Shogi, Tenjiku, Tori};
 mod resource;
 /// Immutable two-profile Tenjiku candidates for the existing document and worker.
 pub mod tenjiku_document;
@@ -375,7 +375,7 @@ pub(crate) enum ActiveDocument {
     /// Native Shogi game journal and observations.
     Shogi {
         runtime: RuntimeMetadata,
-        state: Box<shared::ShogiSession>,
+        state: Box<shared::shogi::ShogiSession>,
     },
     /// Authoritative Tori game and admitted immutable document.
     Tori {
@@ -436,13 +436,13 @@ impl ActiveDocument {
             _ => panic!("Chess endpoint requires active Chess"),
         }
     }
-    fn shogi(&self) -> Option<&shared::ShogiSession> {
+    fn shogi(&self) -> Option<&shared::shogi::ShogiSession> {
         match self {
             Self::Shogi { state, .. } => Some(state),
             _ => None,
         }
     }
-    fn shogi_mut(&mut self) -> Option<&mut shared::ShogiSession> {
+    fn shogi_mut(&mut self) -> Option<&mut shared::shogi::ShogiSession> {
         match self {
             Self::Shogi { state, .. } => Some(state),
             _ => None,
@@ -511,10 +511,6 @@ impl ActiveDocument {
             _ => None,
         }
     }
-    fn install_shogi(&mut self, state: Box<shared::ShogiSession>) {
-        let runtime = std::ops::Deref::deref(self).clone();
-        *self = Self::Shogi { runtime, state };
-    }
     fn install_xiangqi(&mut self, state: Box<shared::xiangqi::XiangqiSession>) {
         let runtime = std::ops::Deref::deref(self).clone();
         *self = Self::Xiangqi { runtime, state };
@@ -535,7 +531,6 @@ impl ActiveDocument {
                 s.browse_stop = None;
             }
             Self::Shogi { state, .. } => {
-                state.browse_running = false;
                 state.browse_stop = None;
             }
             Self::Tori { state, .. } => {
@@ -589,6 +584,16 @@ impl ActiveDocument {
     }
     fn ensure_capacity(&self) -> Result<(), OperationFailure> {
         std::ops::Deref::deref(self).ensure_capacity()
+    }
+    /// Refuse completed work of a game on the generic session.
+    fn refuse_completed_work(&mut self, resource: bool) {
+        match self {
+            Self::Shogi { state, .. } => state.refuse_completed_work(resource),
+            Self::Tori { state, .. } => state.refuse_completed_work(resource),
+            Self::Chu { state, .. } => state.refuse_completed_work(resource),
+            Self::Tenjiku { state, .. } => state.refuse_completed_work(resource),
+            Self::Chess(_) | Self::Xiangqi { .. } => {}
+        }
     }
     fn retire_analysis(&mut self) {
         match self {

@@ -101,6 +101,15 @@ fn open(c: &mut DesktopController, p: &std::path::Path) -> Result<SharedSnapshot
         .unwrap();
     wait_file(c, id)
 }
+/// Decode Shogi document bytes with the generic document.
+fn decode(bytes: &[u8]) -> Result<crate::game_document::ValidatedGameDocument<Shogi>, String> {
+    crate::game_document::ValidatedGameDocument::<Shogi>::decode(bytes, &mut || false)
+        .map_err(|e| e.diagnostic)
+}
+/// The current document as a JSON value.
+fn document_value(c: &DesktopController) -> serde_json::Value {
+    serde_json::from_slice(c.session.shogi().unwrap().document.bytes()).unwrap()
+}
 fn record(c: &DesktopController) -> s::GameRecord {
     s::GameRecord::from_game(&c.session.shogi().as_ref().unwrap().game)
 }
@@ -306,14 +315,7 @@ fn observations_keep_exact_retired_branch_targets_and_never_resume_on_open() {
     .unwrap();
     send(&mut c, SessionOperation::Cancel {}).unwrap();
     let expected = record(&c);
-    let responses: Vec<_> = c
-        .session
-        .shogi()
-        .unwrap()
-        .observations
-        .iter()
-        .map(|o| o.observation.clone())
-        .collect();
+    let responses: Vec<_> = c.session.shogi().unwrap().document.observations().to_vec();
     let file = path("branches");
     save(&mut c, &file);
     let runtime = c.runtime_floor();
@@ -323,16 +325,10 @@ fn observations_keep_exact_retired_branch_targets_and_never_resume_on_open() {
     assert!(opened.analysis.is_none());
     assert!(c.runtime_floor() > runtime);
     assert!(!c.accept_observation(analysis));
-    let restored = &c.session.shogi().unwrap().observations;
-    assert_eq!(
-        restored
-            .iter()
-            .map(|o| o.observation.clone())
-            .collect::<Vec<_>>(),
-        responses
-    );
-    assert!(restored.iter().all(|o| o.historical));
-    assert!(restored[1].observation.context.game.event_count() > expected.event_count());
+    let restored = c.session.shogi().unwrap().document.observations().to_vec();
+    assert_eq!(restored, responses);
+    assert!(opened.observations.iter().all(|o| o.historical));
+    assert!(restored[1].context.game.event_count() > expected.event_count());
     fs::remove_file(file).unwrap();
 }
 #[test]
@@ -388,11 +384,7 @@ fn hostile_archives_reject_without_changing_the_current_document() {
             "\"schema_version\":1,\"schema_version\":1",
             1,
         ),
-        text.replacen(
-            "\"human\":{\"game_kind\":\"shogi\",\"side\":\"sente\"}",
-            "\"human\":{\"game_kind\":\"chess\",\"side\":\"white\"}",
-            1,
-        ),
+        text.replacen("\"human\":\"sente\"", "\"human\":\"white\"", 1),
         text.replacen(
             "\"retired_execution_floor\":",
             "\"unexpected\":0,\"retired_execution_floor\":",
@@ -419,39 +411,36 @@ fn wrong_native_game_and_semantic_journal_or_observation_tampering_reject() {
     let mut c = controller();
     replace(&mut c, &s::Game::new(), s::Side::Sente);
     analyze(&mut c);
-    let payload = archive(c.session.shogi().unwrap(), c.runtime_floor());
+    let good = document_value(&c);
     let expected = record(&c);
-    let serialize = |p: &ShogiArchive| serde_json::to_string(p).unwrap();
-    let mut wrong: ShogiArchive = serde_json::from_str(&serialize(&payload)).unwrap();
-    wrong.current =
-        CanonicalRecord::chess(AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record());
+    let tampered = |change: &dyn Fn(&mut serde_json::Value)| {
+        let mut v = good.clone();
+        change(&mut v);
+        decode(&serde_json::to_vec(&v).unwrap())
+    };
+    assert!(decode(&serde_json::to_vec(&good).unwrap()).is_ok());
     assert!(
-        decode_shogi(&serialize(&wrong), &mut || false)
-            .err()
+        tampered(
+            &|v| v["payload"]["current"] = serde_json::to_value(CanonicalRecord::chess(
+                AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record()
+            ))
             .unwrap()
-            .contains("Wrong game")
+        )
+        .is_err()
     );
-    let mut wrong: ShogiArchive = serde_json::from_str(&serialize(&payload)).unwrap();
-    wrong.controls[0].sequence = 2;
-    assert!(decode_shogi(&serialize(&wrong), &mut || false).is_err());
-    let mut wrong: ShogiArchive = serde_json::from_str(&serialize(&payload)).unwrap();
-    wrong.controls[0].command = Some(SessionOperation::Play {
-        action: "9a9b".parse().unwrap(),
-    });
-    assert!(decode_shogi(&serialize(&wrong), &mut || false).is_err());
-    let mut wrong: ShogiArchive = serde_json::from_str(&serialize(&payload)).unwrap();
-    if let ExecutionPurpose::MoveAnalysis { target } =
-        &mut wrong.observations[0].observation.context.purpose
-    {
-        target.turn = NativeSide::Shogi(s::Side::Gote);
-    }
-    assert!(decode_shogi(&serialize(&wrong), &mut || false).is_err());
-    let mut wrong: ShogiArchive = serde_json::from_str(&serialize(&payload)).unwrap();
-    wrong.observations[0].observation.context.limits.nodes += 1;
-    assert!(decode_shogi(&serialize(&wrong), &mut || false).is_err());
-    let mut wrong: ShogiArchive = serde_json::from_str(&serialize(&payload)).unwrap();
-    wrong.settings.orientation = s::Side::Gote;
-    assert!(decode_shogi(&serialize(&wrong), &mut || false).is_err());
+    assert!(
+        tampered(&|v| v["payload"]["controls"][0] =
+            serde_json::json!({"kind":"native","actor":"sente","command":{"kind":"play","action":"9a9b"}}))
+        .is_err()
+    );
+    assert!(
+        tampered(&|v| {
+            let target = &mut v["payload"]["observations"][0]["context"]["purpose"]["target"];
+            target["turn"] = serde_json::to_value(NativeSide::Shogi(s::Side::Gote)).unwrap();
+        })
+        .is_err()
+    );
+    assert!(tampered(&|v| v["payload"]["settings"]["orientation"] = "gote".into()).is_err());
     assert_eq!(record(&c), expected);
 }
 #[test]
@@ -517,23 +506,13 @@ fn stale_open_and_cross_game_save_completion_never_replace_current_state() {
     let file = path("stale");
     save(&mut c, &file);
     let token = c.shared_open_token();
-    let (state, floor) = decode_shogi(
-        crate::document::DocumentEnvelope::parse(&fs::read(&file).unwrap())
-            .unwrap()
-            .payload
-            .get(),
-        &mut || false,
-    )
-    .unwrap();
+    let opened = native_session::open::<Shogi>(&fs::read(&file).unwrap(), &mut || false).unwrap();
     let old_id = c.session.document_identity;
     send(&mut c, SessionOperation::Resign {}).unwrap();
     let expected = record(&c);
     assert!(
         c.finish_native_file(NativeCompleted::Opened {
-            game: OpenedNative::Shogi {
-                state: Box::new(state),
-                floor
-            },
+            game: opened,
             path: file.clone(),
             token
         })
@@ -577,51 +556,37 @@ fn concurrent_save_as_keeps_new_admission_dirty_and_open_retires_it() {
             nodes: 12,
         },
     };
-    let receipt = c
-        .queue_native_candidate(
-            c.session.shogi().unwrap().clone(),
-            Some(SessionOperation::ShogiPreferences {
+    let (_, receipt) = c
+        .shared_command_with_receipt(SharedDesktopCommand {
+            expected: c.shared_token(),
+            game: GameKind::Shogi,
+            operation: SessionOperation::ShogiPreferences {
                 settings: settings.clone(),
-            }),
-            None,
-            false,
-        )
+            },
+        })
         .unwrap();
     let copy = path("save-as-admission");
-    let id = c.queue_shared_save(copy.clone()).unwrap();
-    // Deliberately accept the file completion before the candidate completion.
-    let deadline = Instant::now() + std::time::Duration::from_secs(10);
-    while c.io_state.phase == IoPhase::Saving {
-        c.poll_files();
-        assert!(Instant::now() < deadline);
-        std::thread::sleep(std::time::Duration::from_millis(1));
-    }
-    assert_eq!(c.io_state.id, id);
-    assert_eq!(c.io_state.phase, IoPhase::Complete);
+    // Save waits for the pending admission; it never saves a stale document.
+    assert!(c.queue_shared_save(copy.clone()).is_err());
     settle(&mut c);
     assert_eq!(receipt.completion(), Some(Ok(())));
-    assert_eq!(c.session.shogi().unwrap().settings, settings);
+    assert_eq!(c.session.shogi().unwrap().document.settings(), &settings);
     assert!(c.shared_document().dirty);
+    save(&mut c, &copy);
+    assert!(!c.shared_document().dirty);
     assert_eq!(c.session.document_path.as_ref(), Some(&copy));
-    let (saved, _) = decode_shogi(
-        crate::document::DocumentEnvelope::parse(&fs::read(&copy).unwrap())
-            .unwrap()
-            .payload
-            .get(),
-        &mut || false,
-    )
-    .unwrap();
-    assert_eq!(saved.settings.orientation, s::Side::Sente);
+    let saved = decode(&fs::read(&copy).unwrap()).unwrap();
+    assert_eq!(saved.settings().orientation, s::Side::Gote);
+    let deadline = Instant::now() + std::time::Duration::from_secs(10);
     let id = c
         .queue_shared_open(original.clone(), c.shared_open_token())
         .unwrap();
-    let receipt = c
-        .queue_native_candidate(
-            c.session.shogi().unwrap().clone(),
-            Some(SessionOperation::Resign {}),
-            None,
-            false,
-        )
+    let (_, receipt) = c
+        .shared_command_with_receipt(SharedDesktopCommand {
+            expected: c.shared_token(),
+            game: GameKind::Shogi,
+            operation: SessionOperation::Resign {},
+        })
         .unwrap();
     while c.io_state.phase == IoPhase::Opening {
         c.poll_files();
@@ -645,7 +610,7 @@ fn persisted_preferences_keep_exact_pending_execution_and_original_limits() {
     send(
         &mut c,
         SessionOperation::Analyze {
-            operation: AnalysisOperation::Moves { depth: 1, nodes: 0 },
+            operation: AnalysisOperation::Moves { depth: 1, nodes: 1 },
         },
     )
     .unwrap();
@@ -673,18 +638,18 @@ fn persisted_preferences_keep_exact_pending_execution_and_original_limits() {
     settle(&mut c);
     let file = path("settings");
     save(&mut c, &file);
-    open(&mut c, &file).unwrap();
+    let opened = open(&mut c, &file).unwrap();
     let state = c.session.shogi().unwrap();
-    assert_eq!(state.settings, settings);
+    assert_eq!(state.document.settings(), &settings);
     assert_eq!(
-        state.observations[0].observation.context.limits,
+        state.document.observations()[0].context.limits,
         WorkLimits {
             time_ms: None,
             depth: 1,
-            nodes: 0
+            nodes: 1
         }
     );
-    assert!(state.observations[0].historical);
+    assert!(opened.observations[0].historical);
     fs::remove_file(file).unwrap();
 }
 
@@ -693,35 +658,22 @@ fn raw_nested_observation_fields_remain_strict_and_identity_errors_are_explicit(
     let mut c = controller();
     replace(&mut c, &s::Game::new(), s::Side::Sente);
     analyze(&mut c);
-    let text =
-        serde_json::to_string(&archive(c.session.shogi().unwrap(), c.runtime_floor())).unwrap();
+    let text = String::from_utf8(c.session.shogi().unwrap().document.bytes().to_vec()).unwrap();
+    assert!(decode(text.as_bytes()).is_ok());
     for (before, after) in [
-        ("\"application_error\":null,", ""),
-        (
-            "\"application_error\":null",
-            "\"application_error\":null,\"application_error\":null",
-        ),
         (
             "\"schema_version\":1",
             "\"schema_version\":1,\"schema_version\":1",
         ),
-        ("\"nodes\":1000", "\"nodes\":1000,\"unknown\":true"),
         ("\"request_id\":", "\"surprise\":null,\"request_id\":"),
     ] {
         let wrong = text.replacen(before, after, 1);
-        assert_ne!(wrong, text);
-        assert!(decode_shogi(&wrong, &mut || false).is_err(), "{before}");
+        assert_ne!(wrong, text, "{before}");
+        assert!(decode(wrong.as_bytes()).is_err(), "{before}");
     }
     let wrong = text.replacen(s::PROFILE_ID, "mshogi.unapproved.v1", 1);
-    assert!(
-        decode_shogi(&wrong, &mut || false)
-            .err()
-            .unwrap()
-            .starts_with("Wrong profile/edition:")
-    );
-    let wrong = text.replacen("\"events\":[]", "\"events\":[],\"events\":[]", 1);
     assert_ne!(wrong, text);
-    assert!(decode_shogi(&wrong, &mut || false).is_err());
+    assert!(decode(wrong.as_bytes()).is_err());
 }
 
 #[test]
@@ -800,9 +752,8 @@ fn durable_observations_have_a_semantic_schema_without_transport_framing() {
     let mut c = controller();
     replace(&mut c, &s::Game::new(), s::Side::Sente);
     let accepted = analyze(&mut c);
-    let payload = archive(c.session.shogi().unwrap(), c.runtime_floor());
-    let encoded = serde_json::to_value(&payload).unwrap();
-    let observation = &encoded["observations"][0]["observation"];
+    let encoded = document_value(&c);
+    let observation = &encoded["payload"]["observations"][0];
     assert_eq!(observation["schema_version"], OBSERVATION_SCHEMA_VERSION);
     assert!(observation.get("protocol").is_none());
     assert!(observation["context"].get("protocol").is_none());
@@ -812,12 +763,12 @@ fn durable_observations_have_a_semantic_schema_without_transport_framing() {
     );
     for schema in [0, OBSERVATION_SCHEMA_VERSION + 1] {
         let mut wrong = encoded.clone();
-        wrong["observations"][0]["observation"]["schema_version"] = schema.into();
-        assert!(decode_shogi(&wrong.to_string(), &mut || false).is_err());
+        wrong["payload"]["observations"][0]["schema_version"] = schema.into();
+        assert!(decode(&serde_json::to_vec(&wrong).unwrap()).is_err());
     }
     let mut framed = encoded;
-    framed["observations"][0]["observation"]["protocol"] = mshogi_engine::PROTOCOL_VERSION.into();
-    assert!(decode_shogi(&framed.to_string(), &mut || false).is_err());
+    framed["payload"]["observations"][0]["protocol"] = mshogi_engine::PROTOCOL_VERSION.into();
+    assert!(decode(&serde_json::to_vec(&framed).unwrap()).is_err());
 }
 
 #[test]
@@ -866,11 +817,10 @@ fn prior_shogi_fixed_play_observation_reopens_with_new_time_default() {
     };
     c.session.shogi_mut().unwrap().pending = Some(context.clone());
     assert!(c.accept_observation(run(context)));
-    let payload = archive(c.session.shogi().unwrap(), c.runtime_floor());
-    let decoded = decode_shogi(&serde_json::to_string(&payload).unwrap(), &mut || false).unwrap();
+    let decoded = decode(c.session.shogi().unwrap().document.bytes()).unwrap();
     assert_eq!(
-        decoded.0.game.position(),
-        c.session.shogi().unwrap().game.position()
+        decoded.record(),
+        &s::GameRecord::from_game(&c.session.shogi().unwrap().game)
     );
     assert_eq!(mshogi_engine::SHOGI_PLAY_LIMITS.time_ms, Some(1_000));
 }

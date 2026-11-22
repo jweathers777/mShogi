@@ -1,10 +1,11 @@
 ---
 id: MSH-225
 title: Chess Document and Session Fit
-status: To Do
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-22T09:57:00Z'
-updated_date: '2026-11-22T11:33:00Z'
+updated_date: '2026-11-22T16:02:00Z'
 labels:
   - desktop
   - refactor

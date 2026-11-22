@@ -32,7 +32,8 @@ pub(crate) struct TelemetryView {
     pub(crate) completed_depth: u16,
     pub(crate) nodes: u64,
     pub(crate) variation: Vec<String>,
-    pub(crate) status: mshogi_engine::StopReason,
+    /// Display label of how the search ended.
+    pub(crate) status: &'static str,
 }
 
 /// The session-side differences of a native game.
@@ -702,8 +703,8 @@ impl DesktopController {
         if expected != self.shared_token() || self.admission_token.is_some() {
             return Err("Stale historical evidence attachment.".into());
         }
-        let state = G::state(&self.session)
-            .ok_or_else(|| format!("No native {} document.", G::NAME))?;
+        let state =
+            G::state(&self.session).ok_or_else(|| format!("No native {} document.", G::NAME))?;
         observation_room::<G>(&state.document).map_err(|e| e.diagnostic)?;
         let draft = state.capture();
         let floor = self.runtime_floor();
@@ -1166,6 +1167,15 @@ fn observation_room<G: SessionGame>(
     Ok(())
 }
 
+/// Display label of a shared-search stop reason.
+pub(crate) fn stop_label(status: mshogi_engine::StopReason) -> &'static str {
+    match status {
+        mshogi_engine::StopReason::Complete => "Complete",
+        mshogi_engine::StopReason::NodeLimit => "Node limit reached",
+        mshogi_engine::StopReason::Stopped => "Search stopped",
+    }
+}
+
 fn validate_limits<G: SessionGame>(limits: WorkLimits) -> Result<(), OperationFailure> {
     if limits.depth == 0
         || limits.depth > G::MAX_DEPTH
@@ -1212,9 +1222,7 @@ pub(crate) fn display_observation<G: SessionGame>(
             .as_ref()
             .map_or_else(Vec::new, |t| t.variation.clone()),
         status: match telemetry.as_ref().map(|t| t.status) {
-            Some(mshogi_engine::StopReason::Complete) => "Complete",
-            Some(mshogi_engine::StopReason::NodeLimit) => "Node limit reached",
-            Some(mshogi_engine::StopReason::Stopped) => "Search stopped",
+            Some(status) => status,
             None => match &o.result {
                 ExecutionResult::Failure { failure }
                     if failure.kind == mshogi_engine::FailureKind::UnsupportedMode =>
@@ -1326,7 +1334,7 @@ macro_rules! large_shogi_session {
                     completed_depth: t.completed_depth,
                     nodes: t.nodes,
                     variation: t.principal_variation.iter().map(|$a| $pv).collect(),
-                    status: t.status,
+                    status: stop_label(t.status),
                 }
             }
             fn incomplete(result: &mshogi_engine::$engine) -> bool {

@@ -1726,7 +1726,7 @@ impl DesktopController {
                     .max(value.archive.next_request),
                 value.archive.document_revision,
             ),
-            OpenedNative::Xiangqi { floor, .. } => (*floor, 0),
+            OpenedNative::Xiangqi(state) => (state.document.retired_execution_floor(), 0),
             OpenedNative::Shogi(state) => (state.document.retired_execution_floor(), 0),
             OpenedNative::Tori(state) => (state.document.retired_execution_floor(), 0),
             OpenedNative::Chu(state) => (state.document.retired_execution_floor(), 0),
@@ -1813,8 +1813,8 @@ impl DesktopController {
                 state.retire();
                 (ActiveDocument::Tori { runtime, state }, 0)
             }
-            OpenedNative::Xiangqi { mut state, .. } => {
-                state.reopened();
+            OpenedNative::Xiangqi(mut state) => {
+                state.retire();
                 (ActiveDocument::Xiangqi { runtime, state }, 0)
             }
         };

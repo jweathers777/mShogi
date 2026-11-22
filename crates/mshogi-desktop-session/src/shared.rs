@@ -27,7 +27,7 @@ pub use mshogi_core::shogi::Side as ShogiSide;
 use mshogi_core::{native::CanonicalRecord, shogi as s};
 use mshogi_engine::{
     ExecutionContext, ExecutionObservation, ExecutionPurpose, ExecutionRequest, ExecutionResponse,
-    ExecutionResult, ExecutionTarget, OBSERVATION_SCHEMA_VERSION,
+    ExecutionResult, ExecutionTarget,
 };
 pub use xiangqi::{
     IntersectionTopology, Palace, XiangqiExactEvidence, XiangqiPresentation, XiangqiSettings,
@@ -595,6 +595,13 @@ pub enum SessionOperation {
         /// Authoritative native command including board actions, claims and agreement.
         command: mshogi_core::xiangqi::GameCommand,
     },
+    /// Complete native Xiangqi command with its explicit actor.
+    XiangqiCommand {
+        /// Explicit native actor.
+        actor: mshogi_core::xiangqi::Side,
+        /// Complete native command.
+        command: mshogi_core::xiangqi::GameCommand,
+    },
     /// Native document preferences; does not change human ownership or execution.
     XiangqiPreferences {
         /// Persisted orientation and ordinary analysis defaults.
@@ -709,6 +716,12 @@ enum OperationWire {
     Xiangqi {
         command: mshogi_core::xiangqi::GameCommand,
     },
+    // Internal only: the frontend submits Xiangqi commands for the local actor.
+    #[serde(skip_deserializing)]
+    XiangqiCommand {
+        actor: mshogi_core::xiangqi::Side,
+        command: mshogi_core::xiangqi::GameCommand,
+    },
     XiangqiPreferences {
         settings: XiangqiSettings,
     },
@@ -806,20 +819,12 @@ impl<'de> Deserialize<'de> for SessionOperation {
     }
 }
 
-type ShogiRollback = (
-    bool,
-    EnginePhase,
-    Option<String>,
-    Option<PresentedObservation>,
-    bool,
-);
 #[derive(Default)]
 pub(super) struct SharedState {
     pub moves_cache: std::cell::RefCell<crate::moves::Cache>,
     pub admission: Option<(u64, bool)>,
     pub admission_consumes_response: bool,
     pub transactional_admission: bool,
-    pub rollback: Option<ShogiRollback>,
     #[cfg(test)]
     pub manual_engine: bool,
 }
@@ -933,13 +938,13 @@ impl DesktopController {
                 let game =
                     x::Game::standard(x::ClaimPolicy::Explicit).map_err(|e| e.to_string())?;
                 let record = x::GameRecord::from_game(&game).map_err(|e| e.to_string())?;
-                let candidate = xiangqi::archive::XiangqiDraft::replacement_with_mode(
-                    &record, human, play_mode,
-                );
-                self.queue_xiangqi_candidate(
-                    candidate,
+                self.queue_game_candidate::<Xiangqi>(
+                    native_session::RuntimeSeed::<Xiangqi>::Record {
+                        record: Box::new(record),
+                        human,
+                        play_mode,
+                    },
                     Some(SessionOperation::Resume {}),
-                    None,
                     None,
                     true,
                 )?
@@ -1081,12 +1086,11 @@ impl DesktopController {
                 };
                 return self.replace_game::<Tori>(*record, human);
             }
-            // Validate before retiring any current state or work.
-            if let CanonicalRecord::Xiangqi(record) = &record {
+            if let CanonicalRecord::Xiangqi(record) = record {
                 let NativeSide::Xiangqi(human) = human else {
                     unreachable!()
                 };
-                return self.replace_xiangqi(record, human);
+                return self.replace_game::<Xiangqi>(*record, human);
             }
             if let CanonicalRecord::Shogi(record) = record {
                 let NativeSide::Shogi(human) = human else {
@@ -1115,16 +1119,7 @@ impl DesktopController {
             return self.game_command::<Tori>(command.operation);
         }
         if self.session.xiangqi().is_some() {
-            if self.admission_token.is_some() {
-                if !matches!(command.operation, SessionOperation::Cancel {}) {
-                    return Err(
-                        "Wait for native replacement admission before another command.".into(),
-                    );
-                }
-                self.retire_admission();
-            }
-            self.last_command_receipt = None;
-            return self.xiangqi_command(command.operation);
+            return self.game_command::<Xiangqi>(command.operation);
         }
         if self.session.shogi().is_none() {
             let native = match command.operation {
@@ -1206,7 +1201,7 @@ impl DesktopController {
             return self.accept_game_observation::<Tori>(response);
         }
         if self.session.xiangqi().is_some() {
-            return self.accept_xiangqi_observation(response);
+            return self.accept_game_observation::<Xiangqi>(response);
         }
         if self.session.shogi().is_some() {
             return self.accept_game_observation::<Shogi>(response);
@@ -1227,11 +1222,7 @@ impl DesktopController {
             return self.poll_game::<Tori>();
         }
         if self.session.xiangqi().is_some() {
-            return if self.shared.admission.is_some() {
-                self.xiangqi_snapshot()
-            } else {
-                self.poll_xiangqi()
-            };
+            return self.poll_game::<Xiangqi>();
         }
         if self.session.shogi().is_some() {
             return self.poll_game::<Shogi>();
@@ -1270,11 +1261,8 @@ impl DesktopController {
             self.close_game::<Shogi>();
             return;
         }
-        if let Some(state) = self.session.xiangqi_mut()
-            && state.close_pause()
-        {
-            self.bridge.cancel();
-            self.shared_changed();
+        if self.session.xiangqi().is_some() {
+            self.close_game::<Xiangqi>();
         }
     }
     fn chess_snapshot(&self, snapshot: ChessSnapshot) -> SharedSnapshot {

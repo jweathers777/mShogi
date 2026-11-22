@@ -1,10 +1,11 @@
-//! Concrete native Xiangqi consumer; product UI remains separately owned.
+//! Xiangqi in the sole desktop runtime: the generic native session (`native_session`)
+//! with the Xiangqi presentation and exact-endgame evidence. Rules stay native-owned.
+use super::native_session::*;
 use super::*;
+pub(crate) use crate::native_game::Xiangqi;
+use crate::native_game::{NativeGame, xiangqi_work};
 use mshogi_core::xiangqi as x;
 use mshogi_engine::{XiangqiChoice, XiangqiResult, XiangqiStop};
-#[path = "shared_xiangqi_archive.rs"]
-pub(super) mod archive;
-pub use archive::{XiangqiExactEvidence, XiangqiSettings};
 #[cfg(test)]
 #[path = "shared_xiangqi_label_tests.rs"]
 mod label_tests;
@@ -14,7 +15,10 @@ mod verification;
 
 // Matches MSH-97's measured interactive default; requests also undergo native validation.
 const PLAY_LIMITS: WorkLimits = mshogi_engine::XIANGQI_PLAY_LIMITS;
-const MAX_OBSERVATION_BYTES: usize = 16 * 1024 * 1024;
+
+/// The Xiangqi session.
+pub(crate) type XiangqiSession = NativeSession<Xiangqi>;
+
 /// Xiangqi intersection topology; coordinates are native a0–i9, never square cells.
 #[derive(Clone, Debug, Serialize)]
 pub struct IntersectionTopology {
@@ -82,114 +86,558 @@ pub struct XiangqiTerminalActions {
     /// Decline the opponent's outstanding offer.
     pub decline_draw: bool,
 }
-pub(crate) struct XiangqiSession {
-    pub(super) initial_record: x::GameRecord,
-    pub(super) initial_settings: XiangqiSettings,
-    pub(super) settings: XiangqiSettings,
-    pub(super) controls: Vec<archive::XiangqiControl>,
-    pub(super) analysis_intent: Option<(CanonicalRecord, WorkLimits)>,
-    pub(super) durable_needs_stop: bool,
-    pub(super) execution_floor: u64,
-    pub(super) exact_observations: Vec<XiangqiExactEvidence>,
-    pub(super) game: x::Game,
-    pub(super) undo: Vec<x::GameUndo>,
-    pub(super) human: x::Side,
-    pub(super) viewed: Option<x::HistorySnapshot>,
-    pub(super) viewed_game: Option<x::Game>,
-    pub(crate) paused: bool,
-    pub(crate) browse_running: bool,
-    pub(crate) browse_stop: Option<BrowseStop>,
-    pub(super) pending: Option<ExecutionContext>,
-    pub(super) submitted: bool,
-    pub(super) phase: EnginePhase,
-    pub(super) diagnostic: Option<String>,
-    pub(super) analysis: Option<PresentedObservation>,
-    pub(super) observations: Vec<PresentedObservation>,
-    pub(super) observation_bytes: usize,
+
+/// Persisted native preferences; execution ownership is never a setting.
+#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct XiangqiSettings {
+    /// Persisted ownership of the two native participants.
+    #[serde(default)]
+    pub play_mode: crate::PlayMode,
+    /// Native side at the bottom, independent of human ownership.
+    pub orientation: x::Side,
+    /// Ordinary sound-fast-only analysis defaults.
+    pub analysis_defaults: WorkLimits,
 }
-impl XiangqiSession {
-    pub(crate) fn reopened(&mut self) {
-        self.retire();
-        self.paused = true;
-        self.browse_running = false;
-        self.browse_stop = None;
-        for observation in &mut self.observations {
-            observation.historical = true;
+impl Default for XiangqiSettings {
+    fn default() -> Self {
+        Self {
+            play_mode: crate::PlayMode::default(),
+            orientation: x::Side::Red,
+            analysis_defaults: PLAY_LIMITS,
         }
-        self.diagnostic=Some("Document reopened with work stopped. Saved ordinary/exact observations are historical; Resume explicitly.".into());
     }
-    pub(super) fn selected_position(&self) -> &x::Position {
-        self.viewed
-            .as_ref()
-            .map_or(self.game.position(), |v| &v.position)
+}
+fn valid_limits(limits: WorkLimits) -> Result<(), String> {
+    if !(1..=mshogi_engine::XIANGQI_MAX_DEPTH).contains(&limits.depth)
+        || !(1..=mshogi_engine::XIANGQI_MAX_NODES).contains(&limits.nodes)
+        || limits.time_ms.is_some()
+    {
+        return Err(
+            "Xiangqi analysis requires depth 1–64 and 1–5,000,000 nodes; no downgrade was applied."
+                .into(),
+        );
     }
-    fn record(&self) -> CanonicalRecord {
-        CanonicalRecord::xiangqi(
-            x::GameRecord::from_game(self.viewed_game.as_ref().unwrap_or(&self.game))
-                .expect("admitted native record capacity"),
+    Ok(())
+}
+
+impl crate::native_game::DocumentSettings for XiangqiSettings {
+    type Side = x::Side;
+    fn new(orientation: x::Side, play_mode: crate::PlayMode) -> Self {
+        Self {
+            play_mode,
+            orientation,
+            ..Self::default()
+        }
+    }
+    fn play_mode(&self) -> crate::PlayMode {
+        self.play_mode
+    }
+    fn set_play_mode(&mut self, play_mode: crate::PlayMode) {
+        self.play_mode = play_mode;
+    }
+    fn validate(&self) -> Result<(), String> {
+        valid_limits(self.analysis_defaults)
+    }
+    fn with_analysis_defaults(&self, limits: WorkLimits) -> Option<Self> {
+        Some(Self {
+            analysis_defaults: limits,
+            ..self.clone()
+        })
+    }
+}
+fn error(e: impl ToString) -> String {
+    archive::bounded(e)
+}
+
+/// Immutable completed native exact work, never a resumable request or an outcome.
+/// On Open this is historical reported evidence, not a newly verified graph proof.
+#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct XiangqiExactEvidence {
+    format: String,
+    executor: String,
+    source: CanonicalRecord,
+    purpose: String,
+    goal: String,
+    event_count: usize,
+    historical_target: bool,
+    position_json: String,
+    native_session: u64,
+    native_generation: u64,
+    limits: x::ExactLimits,
+    report: x::ExactReport,
+}
+impl XiangqiExactEvidence {
+    /// Construct only from completed native work. This does not execute or accept work.
+    pub fn from_native(observation: &x::ExactObservation) -> Self {
+        let request = observation.request();
+        let (native_session, native_generation) = request.identity();
+        let (event_count, historical_target) = match request.target() {
+            x::ExactTarget::Live => (request.source_record().event_count(), false),
+            x::ExactTarget::History { event_count } => (event_count, true),
+        };
+        Self {
+            format: "mshogi.xiangqi.exact-observation.v1".into(),
+            executor: "native_in_process".into(),
+            source: CanonicalRecord::xiangqi(request.source_record().clone()),
+            purpose: "natural_board_win".into(),
+            goal: x::NATURAL_WIN_GOAL.into(),
+            event_count,
+            historical_target,
+            position_json: x::PositionRoot::analysis(request.position().clone()).to_json(),
+            native_session,
+            native_generation,
+            limits: request.limits(),
+            report: observation.report().clone(),
+        }
+    }
+    /// Exact source history, separate from the analyzed event prefix.
+    pub fn source(&self) -> &CanonicalRecord {
+        &self.source
+    }
+    /// Actual reported proof, positive witness, Unknown/cancellation or failure.
+    pub fn report(&self) -> &x::ExactReport {
+        &self.report
+    }
+    /// Exact native event selection, not board ply.
+    pub fn event_count(&self) -> usize {
+        self.event_count
+    }
+    /// Validate against the game at its journal position; the native work used.
+    pub(crate) fn validate_against(
+        &self,
+        game: &x::Game,
+        stopped: &mut impl FnMut() -> bool,
+    ) -> Result<u64, String> {
+        if stopped() {
+            return Err("Xiangqi evidence validation stopped".into());
+        }
+        if self.format != "mshogi.xiangqi.exact-observation.v1"
+            || self.executor != "native_in_process"
+            || self.purpose != "natural_board_win"
+            || self.goal != x::NATURAL_WIN_GOAL
+            || self.native_session == 0
+            || self.native_generation == 0
+            || self.native_session > MAX_SAFE_ID
+            || self.native_generation > MAX_SAFE_ID
+            || self.source
+                != CanonicalRecord::xiangqi(x::GameRecord::from_game(game).map_err(error)?)
+            || self.historical_target != (self.event_count != game.events().len())
+            || self.event_count > game.events().len()
+        {
+            return Err("Corrupt exact historical evidence: source, purpose, identity or event target differs.".into());
+        }
+        let root = x::PositionRoot::from_json(&self.position_json).map_err(error)?;
+        let target = game.event_prefix(self.event_count).map_err(error)?.position;
+        if root != x::PositionRoot::analysis(target.clone()) {
+            return Err("Corrupt exact evidence target position/provenance.".into());
+        }
+        let unsupported = !self.limits.is_supported();
+        if matches!(
+            self.report.verdict,
+            x::ExactVerdict::Failure {
+                reason: x::ExactFailure::UnsupportedLimits
+            }
+        ) != unsupported
+        {
+            return Err("Corrupt exact evidence limits/failure contract.".into());
+        }
+        let work = &self.report.work;
+        if work.states > self.limits.states
+            || work.expanded > work.states
+            || work.transitions > self.limits.transitions
+            || work.cache_hits > work.transitions
+            || work.memory_bytes > self.limits.memory_bytes
+            || matches!(self.report.verdict, x::ExactVerdict::NeitherCanWin)
+                && (work.states == 0 || work.expanded != work.states)
+        {
+            return Err(
+                "Corrupt exact evidence work/closure metadata; no graph was executed.".into(),
+            );
+        }
+        if let x::ExactVerdict::NaturalWin {
+            winner,
+            reason,
+            witness,
+        } = &self.report.verdict
+        {
+            if witness.len() > 4096 || witness.len() > self.limits.witness_plies as usize {
+                return Err(
+                    "Application capacity: exact witness output exceeds its recorded bound.".into(),
+                );
+            }
+
+            let p = &target;
+            let mut p = x::Position::from_diagram(
+                &p.pieces().collect::<Vec<_>>(),
+                p.side_to_move(),
+                x::Counters::unknown(),
+            )
+            .map_err(error)?;
+            for &action in witness {
+                if stopped() {
+                    return Err("Xiangqi evidence validation stopped".into());
+                }
+                if !matches!(p.local_status(), Ok(x::LocalStatus::Ongoing { .. })) {
+                    return Err("Corrupt exact witness: action after a natural terminal.".into());
+                }
+                p.apply(action).map_err(error)?;
+            }
+            if p.side_to_move().opponent() != *winner
+                || p.local_status().map_err(error)?
+                    != (x::LocalStatus::NoLegalAction { reason: *reason })
+            {
+                return Err(
+                    "Corrupt exact natural-board witness; repetition penalties are not witnesses."
+                        .into(),
+                );
+            }
+        }
+        // Negative graph closure is deliberately NOT recomputed here. Reports retain
+        // their provenance as historical observations and cannot adjudicate the game.
+        let witness = match &self.report.verdict {
+            x::ExactVerdict::NaturalWin { witness, .. } => witness.len() as u64,
+            _ => 0,
+        };
+        Ok(
+            xiangqi_work::of(self.source.event_count(), self.source.known_board_actions())
+                + xiangqi_work::VALIDATION_WORK
+                + xiangqi_work::WITNESS_ACTION_WORK * witness,
         )
     }
-    pub(crate) fn retire(&mut self) {
-        self.pending = None;
-        self.submitted = false;
-        self.analysis = None;
-        self.analysis_intent = None;
-        self.phase = EnginePhase::Paused;
-        self.diagnostic = None;
-    }
-    #[cfg(all(test, feature = "desktop-verification"))]
-    fn observation_capacity(&self) -> bool {
-        self.ensure_observation_capacity().is_ok()
-    }
-    pub(super) fn ensure_observation_capacity(&self) -> Result<(), OperationFailure> {
-        let ordinary = self.observations.len();
-        let exact = self.exact_observations.len();
-        let mut facts = Vec::new();
-        if ordinary.saturating_add(exact) >= MAX_ARCHIVE_OBSERVATIONS {
-            facts.push(
-                resource_fact(
-                    ResourceCategory::CombinedObservations,
-                    ordinary.saturating_add(exact),
-                    MAX_ARCHIVE_OBSERVATIONS,
-                    1,
-                    ResourceScope::Xiangqi,
-                    ResourceUnit::Observations,
-                )
-                .with_observations(ordinary as u64, exact as u64)
-                .with_measurement(ResourceMeasurement::Accepted),
-            );
-        }
-        if self
-            .observation_bytes
-            .saturating_add(mshogi_engine::MAX_RESPONSE_BYTES)
-            > MAX_OBSERVATION_BYTES
-        {
-            facts.push(
-                resource_fact(
-                    ResourceCategory::EncodedObservationBytes,
-                    self.observation_bytes,
-                    MAX_OBSERVATION_BYTES,
-                    mshogi_engine::MAX_RESPONSE_BYTES,
-                    ResourceScope::Xiangqi,
-                    ResourceUnit::Bytes,
-                )
-                .with_measurement(ResourceMeasurement::Accepted),
-            );
-        }
-        if facts.is_empty() {
-            Ok(())
-        } else {
-            let diagnostic = if facts.len() == 1
-                && facts[0].category == ResourceCategory::CombinedObservations
-            {
-                "Application capacity: all256 observations are retained. Ordinary and exact observations share this limit. The complete accepted document remains saveable; saving or reopening cannot enlarge its structural limits."
+}
+
+impl SessionGame for Xiangqi {
+    type Presentation = ();
+    const PLAY_LIMITS: WorkLimits = PLAY_LIMITS;
+    const MAX_DEPTH: u16 = mshogi_engine::XIANGQI_MAX_DEPTH;
+    const MAX_NODES: u64 = mshogi_engine::XIANGQI_MAX_NODES;
+    const BOARD_SIZE: u8 = 9;
+    const BOARD_LABEL: &'static str = "Xiangqi intersection board";
+    const INITIAL_FOCUS: &'static str = "e3";
+    const SCORE_MEANING: &'static str = "Native Red/Black root-side hundredths of soldier. Terminal distances count command edges; heuristic evaluation and existence proofs are separate.";
+
+    session_wiring!(Xiangqi, x, operation: XiangqiCommand, preferences: XiangqiPreferences,
+    state: xiangqi, xiangqi_mut, local: {
+        SessionOperation::Xiangqi { command } => command,
+    });
+
+    fn presentation(_selected: &x::Game, _live: &x::Game) {}
+    fn status(game: &x::Game, _has_actions: bool) -> PresentedStatus {
+        let concluded = game.conclusion();
+        let position = game.position();
+        PresentedStatus {
+            concluded: concluded.is_some(),
+            score_half_points: concluded.map(|c| match c {
+                x::Conclusion::Win {
+                    winner: x::Side::Red,
+                    ..
+                } => [2, 0],
+                x::Conclusion::Win { .. } => [0, 2],
+                x::Conclusion::Draw { .. } => [1, 1],
+            }),
+            label: if let Some(c) = concluded {
+                conclusion_label(&c)
+            } else if game.pending_adjudication().is_some() {
+                "Adjudication unresolved · unscored".into()
             } else {
-                "Application capacity: no remaining Xiangqi observation admission capacity. The complete accepted document remains saveable; saving or reopening cannot enlarge its structural limits."
-            };
-            Err(resource_refusal(facts, diagnostic))
+                format!(
+                    "{} to move{}",
+                    xiangqi_side(position.side_to_move()).label,
+                    if position.is_in_check(position.side_to_move()) {
+                        " · check"
+                    } else {
+                        ""
+                    }
+                )
+            },
         }
+    }
+    fn choice(_game: &x::Game, action: x::Action, _all: &[x::Action]) -> PresentedChoice {
+        choice(action)
+    }
+    fn legal_actions(
+        game: &x::Game,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<Vec<x::Action>, String> {
+        if stop() {
+            return Err("Native operation stopped before acceptance.".into());
+        }
+        if game.conclusion().is_some() || game.pending_adjudication().is_some() {
+            return Ok(vec![]);
+        }
+        game.position().legal_actions().map_err(error)
+    }
+    fn retire_context(_game: &mut x::Game) {
+        // Execution identities are retired by the session version.
+    }
+    fn event(game: &x::Game, index: usize) -> (x::Side, CommandKind) {
+        let event = &game.events()[index];
+        let actor = event.actor.unwrap_or(game.position().side_to_move());
+        let kind = match event.event {
+            x::EventKind::BoardAction { .. } => CommandKind::Play,
+            x::EventKind::Resigned => CommandKind::Terminal,
+            _ => CommandKind::Other,
+        };
+        (actor, kind)
+    }
+    fn command_kind(command: &x::GameCommand) -> CommandKind {
+        match command {
+            x::GameCommand::Play { .. } => CommandKind::Play,
+            x::GameCommand::Resign => CommandKind::Terminal,
+            _ => CommandKind::Other,
+        }
+    }
+    fn take_back_target(game: &x::Game, human: x::Side, two_humans: bool) -> Option<usize> {
+        if two_humans {
+            Self::last_command_start(game)
+        } else {
+            game.preceding_playable_decision(human)
+        }
+    }
+    fn command_actor(
+        game: &x::Game,
+        settings: &XiangqiSettings,
+        human: x::Side,
+        command: &x::GameCommand,
+        local: x::Side,
+    ) -> x::Side {
+        match command {
+            x::GameCommand::OfferDraw => draw_offer_actor(game, settings, human),
+            x::GameCommand::AcceptDraw | x::GameCommand::DeclineDraw => {
+                draw_response_actor(game, settings, human, local)
+            }
+            _ => local,
+        }
+    }
+    fn telemetry(result: &XiangqiResult) -> TelemetryView {
+        let t = match result {
+            XiangqiResult::Choice { telemetry, .. }
+            | XiangqiResult::Finished { telemetry, .. }
+            | XiangqiResult::Incomplete { telemetry }
+            | XiangqiResult::Unresolved { telemetry, .. } => telemetry,
+        };
+        TelemetryView {
+            score: t.score_label(),
+            completed_depth: t.completed_depth,
+            nodes: t.nodes,
+            variation: t
+                .principal_variation
+                .iter()
+                .map(|c| match c {
+                    XiangqiChoice::Move { action } => action.to_string(),
+                    XiangqiChoice::Claim { actor } => format!("{actor:?} count claim"),
+                })
+                .collect(),
+            status: match t.status {
+                XiangqiStop::Complete => "Complete",
+                XiangqiStop::NodeLimit => "Node limit reached",
+                XiangqiStop::Stopped => "Stopped",
+                XiangqiStop::Unresolved => "Unresolved, unscored",
+            },
+        }
+    }
+    fn incomplete(result: &XiangqiResult) -> bool {
+        matches!(
+            result,
+            XiangqiResult::Incomplete { .. } | XiangqiResult::Unresolved { .. }
+        )
+    }
+    fn edition(_game: &x::Game) -> &'static str {
+        RulesProfile::XiangqiWxf2018V1.edition()
+    }
+    fn pieces(game: &x::Game) -> Vec<PresentedPiece> {
+        let position = game.position();
+        x::Intersection::all()
+            .filter_map(|point| {
+                position.piece(point).map(|p| {
+                    let owner = xiangqi_side(p.side);
+                    PresentedPiece {
+                        square: point.to_string(),
+                        owner: owner.key,
+                        kind: format!("{:?}", p.kind).to_lowercase(),
+                        promoted: false,
+                        text: format!("{:?}", p.kind),
+                        label: format!("{point}, {} {:?}", owner.label, p.kind),
+                    }
+                })
+            })
+            .collect()
+    }
+    fn presented_events(game: &x::Game) -> Vec<PresentedEvent> {
+        // One entry per command: history stops only at command boundaries.
+        let events = game.events();
+        game.command_event_ranges()
+            .map(|(start, end)| {
+                let shown = events[start..end]
+                    .iter()
+                    .find(|e| matches!(e.event, x::EventKind::BoardAction { .. }))
+                    .unwrap_or(&events[start]);
+                let consequences: Vec<String> = events[start..end]
+                    .iter()
+                    .filter(|e| !std::ptr::eq(*e, shown))
+                    .map(event_label)
+                    .collect();
+                PresentedEvent {
+                    index: end,
+                    board_ply: events[end - 1].board_ply,
+                    label: if consequences.is_empty() {
+                        event_label(shown)
+                    } else {
+                        format!("{} · {}", event_label(shown), consequences.join(" · "))
+                    },
+                }
+            })
+            .collect()
+    }
+    fn board_ply(game: &x::Game) -> u64 {
+        game.events().last().map_or(0, |e| e.board_ply as u64)
+    }
+    fn finish_snapshot(snapshot: &mut SharedSnapshot, state: &XiangqiSession) {
+        let game = state.selected();
+        let historical = state.historical();
+        let settings = state.document.settings();
+        let human = state.document.human();
+        let live = &state.game;
+        let active =
+            !historical && live.conclusion().is_none() && live.pending_adjudication().is_none();
+        let running = active && !state.paused;
+        let history = game
+            .event_prefix(game.events().len())
+            .expect("native current prefix");
+        let count_advice: Vec<_> = [x::Side::Red, x::Side::Black]
+            .into_iter()
+            .map(|s| game.natural_count_eligibility(s))
+            .collect();
+        let local = settings
+            .play_mode
+            .actor(human, live.position().side_to_move());
+        let offer_actor = draw_offer_actor(live, settings, human);
+        let response_actor = draw_response_actor(live, settings, human, local);
+        snapshot.xiangqi = Some(XiangqiPresentation {
+            terminal_actions: XiangqiTerminalActions {
+                offer_actor: xiangqi_side(offer_actor),
+                response_actor: xiangqi_side(response_actor),
+                offer_draw: running && live.can_offer_draw(offer_actor),
+                accept_draw: running && live.can_respond_to_draw(response_actor),
+                decline_draw: running && live.can_respond_to_draw(response_actor),
+            },
+            canonical_context_scope: "selected_committed",
+            selected_canonical: Some(snapshot.context.clone()),
+            selected_events: game.events().to_vec(),
+            selected_position: x::PositionRoot::analysis(game.position().clone()).to_json(),
+            root: live.root().to_json(),
+            claim_policy: live.claim_policy(),
+            count_advice: count_advice.clone(),
+            warnings: history.warnings.clone(),
+            offered_by: history.offered_by,
+            conclusion: history.conclusion,
+            pending: history.pending.clone(),
+            no_win_assessment: history.no_win_assessment.clone(),
+            exact_observations: state.document.evidence().to_vec(),
+        });
+        let files: Vec<_> = (b'a'..=b'i').map(|f| char::from(f).to_string()).collect();
+        let ranks: Vec<_> = (0..10).rev().map(|r| r.to_string()).collect();
+        snapshot.board.files = files.clone();
+        snapshot.board.ranks = ranks.clone();
+        snapshot.board.intersections = Some(topology());
+        snapshot.orientations[0].files = files.clone();
+        snapshot.orientations[0].ranks = ranks.clone();
+        snapshot.orientations[1].files = files.into_iter().rev().collect();
+        snapshot.orientations[1].ranks = ranks.into_iter().rev().collect();
+        let caps = &mut snapshot.capabilities;
+        caps.promotion = false;
+        caps.board_action = caps.board_action && active;
+        caps.resign = caps.resign && active;
+        caps.claims = running
+            && count_advice
+                .iter()
+                .any(|e| e.claimant == local && e.eligible);
     }
 }
+
+fn xiangqi_side(side: x::Side) -> PresentedSide {
+    shared::side(RulesProfile::XiangqiWxf2018V1, NativeSide::Xiangqi(side))
+}
+fn draw_offer_actor(game: &x::Game, settings: &XiangqiSettings, human: x::Side) -> x::Side {
+    if settings.play_mode.is_two_humans() {
+        game.position().side_to_move().opponent()
+    } else {
+        human
+    }
+}
+fn draw_response_actor(
+    game: &x::Game,
+    settings: &XiangqiSettings,
+    human: x::Side,
+    local: x::Side,
+) -> x::Side {
+    if settings.play_mode.is_two_humans() {
+        [x::Side::Red, x::Side::Black]
+            .into_iter()
+            .find(|actor| game.can_respond_to_draw(*actor))
+            .unwrap_or(local)
+    } else {
+        human
+    }
+}
+fn topology() -> IntersectionTopology {
+    IntersectionTopology {
+        points: x::Intersection::all().map(|p| p.to_string()).collect(),
+        river_between_ranks: x::RIVER_BETWEEN_RANKS,
+        palaces: [x::Side::Red, x::Side::Black]
+            .into_iter()
+            .map(|actor| {
+                let base = if actor == x::Side::Red { 0 } else { 7 };
+                Palace {
+                    side: xiangqi_side(actor),
+                    points: x::Intersection::all()
+                        .filter(|p| actor.in_palace(*p))
+                        .map(|p| p.to_string())
+                        .collect(),
+                    diagonals: vec![
+                        vec![
+                            format!("d{base}"),
+                            format!("e{}", base + 1),
+                            format!("f{}", base + 2),
+                        ],
+                        vec![
+                            format!("f{base}"),
+                            format!("e{}", base + 1),
+                            format!("d{}", base + 2),
+                        ],
+                    ],
+                }
+            })
+            .collect(),
+    }
+}
+
+impl DesktopController {
+    /// Attach already completed native exact work as historical evidence only.
+    /// This issues no request, advertises no execution capability and applies no result.
+    pub fn retain_xiangqi_exact_evidence(
+        &mut self,
+        expected: SessionToken,
+        observation: &x::ExactObservation,
+    ) -> Result<AdmissionReceipt, String> {
+        self.retain_game_evidence::<Xiangqi>(
+            expected,
+            XiangqiExactEvidence::from_native(observation),
+        )
+    }
+    /// Verification entry into the real native Xiangqi request path.
+    #[cfg(any(test, feature = "desktop-verification"))]
+    pub fn verify_xiangqi_execution(
+        &mut self,
+        limits: WorkLimits,
+        analysis: bool,
+    ) -> Result<ExecutionContext, String> {
+        self.verify_game_execution::<Xiangqi>(limits, analysis)
+    }
+}
+
 fn choice(a: x::Action) -> PresentedChoice {
     PresentedChoice {
         tenjiku: None,
@@ -331,600 +779,6 @@ pub(super) fn inspect(
             .map(choice)
             .collect(),
     ))
-}
-impl DesktopController {
-    pub(super) fn replace_xiangqi(
-        &mut self,
-        record: &x::GameRecord,
-        human: x::Side,
-    ) -> Result<SharedSnapshot, String> {
-        let seed = archive::XiangqiDraft::replacement(record, human);
-        let receipt = self.queue_xiangqi_candidate(seed, None, None, None, true)?;
-        self.last_command_receipt = Some(receipt);
-        Ok(self.shared_snapshot())
-    }
-    fn start_xiangqi(
-        &mut self,
-        limits: WorkLimits,
-        analysis: bool,
-    ) -> Result<(), OperationFailure> {
-        self.ensure_runtime_capacity()?;
-        let state = self.session.xiangqi().unwrap();
-        state.ensure_observation_capacity()?;
-        let game = state.record();
-        let request = ExecutionContext {
-            purpose: if analysis {
-                ExecutionPurpose::MoveAnalysis {
-                    target: ExecutionTarget {
-                        selection_id: self.session.selection_id,
-                        event_index: game.event_count() as u64,
-                        board_ply: game.known_board_actions() as u64,
-                        session_version: self.session.version,
-                        turn: NativeSide::Xiangqi(state.selected_position().side_to_move()),
-                        label: format!(
-                            "Xiangqi event {} ({})",
-                            game.event_count(),
-                            if state.viewed.is_some() {
-                                "history"
-                            } else {
-                                "live"
-                            }
-                        ),
-                    },
-                }
-            } else {
-                ExecutionPurpose::EngineTurn {}
-            },
-            request_id: self.session.next_request + 1,
-            session_version: self.session.version,
-            process_generation: self.session.next_request + 1,
-            game,
-            limits,
-        };
-        if !request.valid_limits() {
-            return Err("Unsupported Xiangqi operation or work limits; maximum depth 64 and 5,000,000 nodes, ordinary sound_fast_only analysis only.".into());
-        }
-        let encoded =
-            serde_json::to_vec(&execution_request(request.clone())).map_err(|e| e.to_string())?;
-        if encoded.len() > mshogi_engine::MAX_REQUEST_BYTES {
-            return Err(
-                "Application capacity: complete encoded engine request exceeds transport capacity."
-                    .into(),
-            );
-        }
-        self.session.next_request += 1;
-        let selection_id = self.session.selection_id;
-        let state = self.session.xiangqi_mut().unwrap();
-        state.execution_floor = state
-            .execution_floor
-            .max(request.request_id)
-            .max(request.session_version)
-            .max(selection_id);
-        state.pending = Some(request);
-        state.submitted = false;
-        state.phase = EnginePhase::Thinking;
-        Ok(())
-    }
-    pub(super) fn xiangqi_command(
-        &mut self,
-        op: SessionOperation,
-    ) -> Result<SharedSnapshot, String> {
-        // Cheap native queries reject impossible requests before even exposing
-        // admission progress. All transitions still run on the private worker.
-        let state = self.session.xiangqi().unwrap();
-        match &op {
-            SessionOperation::Analyze {
-                operation: AnalysisOperation::Moves { depth, nodes },
-            } => {
-                if state.viewed.is_some() && state.viewed_game.is_none() {
-                    return Err("This immutable event is inside an atomic native command. Analysis requires a committed command boundary; view and movement inspection remain available.".into());
-                }
-                if !(1..=mshogi_engine::XIANGQI_MAX_DEPTH).contains(depth)
-                    || !(1..=mshogi_engine::XIANGQI_MAX_NODES).contains(nodes)
-                {
-                    return Err(
-                        "Xiangqi analysis requires depth 1–64 and 1–5,000,000 nodes.".into(),
-                    );
-                }
-                if let Err(failure) = state.ensure_observation_capacity() {
-                    let diagnostic = failure.diagnostic.clone();
-                    self.pause_native_failure(failure);
-                    return Err(diagnostic);
-                }
-            }
-            SessionOperation::Analyze { .. } => {
-                return Err(
-                    "Chess Full is not Xiangqi analysis. Native exact execution remains separate."
-                        .into(),
-                );
-            }
-            SessionOperation::Xiangqi { .. } | SessionOperation::Resign {} => {
-                if state.viewed.is_some() {
-                    return Err(
-                        "Historical viewing is read-only. Return to live explicitly.".into(),
-                    );
-                }
-                if state.paused {
-                    return Err("Resume live play before submitting a native command.".into());
-                }
-                if let SessionOperation::Xiangqi {
-                    command: x::GameCommand::Play { action },
-                } = &op
-                {
-                    if state
-                        .settings
-                        .play_mode
-                        .engine_turn(state.human, state.game.position().side_to_move())
-                    {
-                        return Err("Native board action requires its actor turn.".into());
-                    }
-                    state
-                        .game
-                        .position()
-                        .resolve_action(*action)
-                        .map_err(|e| e.to_string())?;
-                }
-            }
-            SessionOperation::TakeBack {}
-                if state.viewed.is_some() || state.take_back_target().is_none() =>
-            {
-                return Err("No live playable human decision is available for Take back.".into());
-            }
-            SessionOperation::Undo {} if state.viewed.is_some() || state.undo.is_empty() => {
-                return Err("No live native command to undo.".into());
-            }
-            SessionOperation::Inspect { event_index }
-                if *event_index > state.game.events().len() =>
-            {
-                return Err("Unknown native event prefix.".into());
-            }
-            SessionOperation::Resume {} | SessionOperation::Retry {} if state.viewed.is_some() => {
-                return Err("Return to live before resuming play.".into());
-            }
-            SessionOperation::Cancel {}
-            | SessionOperation::ReturnLive {}
-            | SessionOperation::TakeBack {}
-            | SessionOperation::Undo {}
-            | SessionOperation::Inspect { .. }
-            | SessionOperation::Resume {}
-            | SessionOperation::Retry {}
-            | SessionOperation::XiangqiPreferences { .. } => {}
-            _ => return Err("Unsupported operation for the native Xiangqi session.".into()),
-        }
-        let seed = archive::XiangqiDraft::capture(self.session.xiangqi().unwrap());
-        let receipt = self.queue_xiangqi_candidate(seed, Some(op), None, None, false)?;
-        self.last_command_receipt = Some(receipt);
-        Ok(self.shared_snapshot())
-    }
-    pub(super) fn accept_xiangqi_observation(&mut self, response: ExecutionObservation) -> bool {
-        let state = self.session.xiangqi().unwrap();
-        let Some(pending) = &state.pending else {
-            return false;
-        };
-        if self.admission_token.is_some()
-            || self.session.ensure_capacity().is_err()
-            || !response.matches(pending)
-            || pending.session_version != self.session.version
-            || pending.game != state.record()
-        {
-            return false;
-        }
-        self.queue_xiangqi_candidate(
-            archive::XiangqiDraft::capture(state),
-            None,
-            Some(response),
-            None,
-            false,
-        )
-        .is_ok()
-    }
-    pub(super) fn poll_xiangqi(&mut self) -> SharedSnapshot {
-        if let Some(response) = self.bridge.poll() {
-            self.accept_shared(response);
-        }
-        let state = self.session.xiangqi().unwrap();
-        if state.pending.is_none()
-            && !state.paused
-            && state.viewed.is_none()
-            && state.game.conclusion().is_none()
-            && state.game.pending_adjudication().is_none()
-            && state
-                .settings
-                .play_mode
-                .engine_turn(state.human, state.game.position().side_to_move())
-            && let Err(e) = self.start_xiangqi(PLAY_LIMITS, false)
-        {
-            self.pause_native_failure(e);
-        }
-        let auto_submit = self.shared.auto_submit();
-        let state = self.session.xiangqi_mut().unwrap();
-        if auto_submit
-            && !state.submitted
-            && let Some(request) = state.pending.clone()
-        {
-            state.submitted = true;
-            if let Err(e) = self.bridge.submit(execution_request(request.clone())) {
-                self.accept_xiangqi_observation(ExecutionObservation {
-                    schema_version: OBSERVATION_SCHEMA_VERSION,
-                    context: request,
-                    result: ExecutionResult::Failure {
-                        failure: mshogi_engine::EngineFailure {
-                            kind: mshogi_engine::FailureKind::Start,
-                            message: format!("Cannot start native work: {e:?}"),
-                        },
-                    },
-                });
-            }
-        }
-        self.xiangqi_snapshot()
-    }
-    pub(super) fn xiangqi_snapshot(&self) -> SharedSnapshot {
-        let state = self.session.xiangqi().unwrap();
-        let position = state.selected_position();
-        let record = state.record();
-        let history = state.viewed.clone().unwrap_or_else(|| {
-            state
-                .game
-                .event_prefix(state.game.events().len())
-                .expect("native current prefix")
-        });
-        let concluded = history.conclusion;
-        let pending = history.pending.as_ref();
-        let historical = state.viewed.is_some();
-        let active = !historical && concluded.is_none() && pending.is_none();
-        let sides = vec![
-            side(
-                mshogi_core::native::RulesProfile::XiangqiWxf2018V1,
-                NativeSide::Xiangqi(x::Side::Red),
-            ),
-            side(
-                mshogi_core::native::RulesProfile::XiangqiWxf2018V1,
-                NativeSide::Xiangqi(x::Side::Black),
-            ),
-        ];
-        let files: Vec<_> = (b'a'..=b'i').map(|f| char::from(f).to_string()).collect();
-        let ranks: Vec<_> = (0..10).rev().map(|r| r.to_string()).collect();
-        let count_advice: Vec<_> = if historical && state.viewed_game.is_none() {
-            vec![]
-        } else {
-            [x::Side::Red, x::Side::Black]
-                .into_iter()
-                .map(|s| {
-                    state
-                        .viewed_game
-                        .as_ref()
-                        .unwrap_or(&state.game)
-                        .natural_count_eligibility(s)
-                })
-                .collect()
-        };
-        let status = PresentedStatus {
-            concluded: concluded.is_some(),
-            score_half_points: concluded.map(|c| match c {
-                x::Conclusion::Win {
-                    winner: x::Side::Red,
-                    ..
-                } => [2, 0],
-                x::Conclusion::Win { .. } => [0, 2],
-                x::Conclusion::Draw { .. } => [1, 1],
-            }),
-            label: if let Some(c) = concluded {
-                conclusion_label(&c)
-            } else if pending.is_some() {
-                "Adjudication unresolved · unscored".into()
-            } else {
-                format!(
-                    "{} to move{}",
-                    side(
-                        mshogi_core::native::RulesProfile::XiangqiWxf2018V1,
-                        NativeSide::Xiangqi(position.side_to_move())
-                    )
-                    .label,
-                    if position.is_in_check(position.side_to_move()) {
-                        " · check"
-                    } else {
-                        ""
-                    }
-                )
-            },
-        };
-        SharedSnapshot {
-            tori: None,
-            chu: None,
-            tenjiku: None,
-            moves: self.present_moves(history.event_count),
-            xiangqi: Some(XiangqiPresentation {
-                terminal_actions: XiangqiTerminalActions {
-                    offer_actor: side(
-                        RulesProfile::XiangqiWxf2018V1,
-                        NativeSide::Xiangqi(state.draw_offer_actor()),
-                    ),
-                    response_actor: side(
-                        RulesProfile::XiangqiWxf2018V1,
-                        NativeSide::Xiangqi(state.draw_response_actor()),
-                    ),
-                    offer_draw: active
-                        && !state.paused
-                        && state.game.can_offer_draw(state.draw_offer_actor()),
-                    accept_draw: active
-                        && !state.paused
-                        && state.game.can_respond_to_draw(state.draw_response_actor()),
-                    decline_draw: active
-                        && !state.paused
-                        && state.game.can_respond_to_draw(state.draw_response_actor()),
-                },
-                canonical_context_scope: if historical && state.viewed_game.is_none() {
-                    "live_with_immutable_selection"
-                } else {
-                    "selected_committed"
-                },
-                selected_canonical: if historical && state.viewed_game.is_none() {
-                    None
-                } else {
-                    Some(record.clone())
-                },
-                selected_events: state.game.events()[..history.event_count].to_vec(),
-                selected_position: x::PositionRoot::analysis(position.clone()).to_json(),
-                root: state.game.root().to_json(),
-                claim_policy: state.game.claim_policy(),
-                count_advice: count_advice.clone(),
-                warnings: history.warnings.clone(),
-                offered_by: history.offered_by,
-                conclusion: concluded,
-                pending: pending.cloned(),
-                no_win_assessment: history.no_win_assessment.clone(),
-                exact_observations: state.exact_observations.clone(),
-            }),
-            open_token: self.shared_open_token(),
-            document: self.shared_document(),
-            io: self.io_state.clone(),
-            capacity: self.session.capacity.clone(),
-            token: self.shared_token(),
-            game: GameKind::Xiangqi,
-            profile: RulesProfile::XiangqiWxf2018V1,
-            edition: RulesProfile::XiangqiWxf2018V1.edition(),
-            play_mode: state.settings.play_mode,
-            local_actor: side(
-                RulesProfile::XiangqiWxf2018V1,
-                NativeSide::Xiangqi(
-                    state
-                        .settings
-                        .play_mode
-                        .actor(state.human, position.side_to_move()),
-                ),
-            ),
-            human: side(
-                mshogi_core::native::RulesProfile::XiangqiWxf2018V1,
-                NativeSide::Xiangqi(state.human),
-            ),
-            turn: side(
-                mshogi_core::native::RulesProfile::XiangqiWxf2018V1,
-                NativeSide::Xiangqi(position.side_to_move()),
-            ),
-            sides: sides.clone(),
-            board: BoardDescriptor {
-                files: files.clone(),
-                ranks: ranks.clone(),
-                label: "Xiangqi intersection board".into(),
-                initial_focus: "e3".into(),
-                intersections: Some(IntersectionTopology {
-                    points: x::Intersection::all().map(|p| p.to_string()).collect(),
-                    river_between_ranks: x::RIVER_BETWEEN_RANKS,
-                    palaces: [x::Side::Red, x::Side::Black]
-                        .into_iter()
-                        .map(|actor| {
-                            let base = if actor == x::Side::Red { 0 } else { 7 };
-                            Palace {
-                                side: side(
-                                    mshogi_core::native::RulesProfile::XiangqiWxf2018V1,
-                                    NativeSide::Xiangqi(actor),
-                                ),
-                                points: x::Intersection::all()
-                                    .filter(|p| actor.in_palace(*p))
-                                    .map(|p| p.to_string())
-                                    .collect(),
-                                diagonals: vec![
-                                    vec![
-                                        format!("d{base}"),
-                                        format!("e{}", base + 1),
-                                        format!("f{}", base + 2),
-                                    ],
-                                    vec![
-                                        format!("f{base}"),
-                                        format!("e{}", base + 1),
-                                        format!("d{}", base + 2),
-                                    ],
-                                ],
-                            }
-                        })
-                        .collect(),
-                }),
-            },
-            orientations: vec![
-                Orientation {
-                    side: sides[0].clone(),
-                    files: files.clone(),
-                    ranks: ranks.clone(),
-                },
-                Orientation {
-                    side: sides[1].clone(),
-                    files: files.into_iter().rev().collect(),
-                    ranks: ranks.into_iter().rev().collect(),
-                },
-            ],
-            pieces: x::Intersection::all()
-                .filter_map(|point| {
-                    position.piece(point).map(|p| {
-                        let owner = side(
-                            mshogi_core::native::RulesProfile::XiangqiWxf2018V1,
-                            NativeSide::Xiangqi(p.side),
-                        );
-                        PresentedPiece {
-                            square: point.to_string(),
-                            owner: owner.key,
-                            kind: format!("{:?}", p.kind).to_lowercase(),
-                            promoted: false,
-                            text: format!("{:?}", p.kind),
-                            label: format!("{point}, {} {:?}", owner.label, p.kind),
-                        }
-                    })
-                })
-                .collect(),
-            hands: vec![],
-            choices: if concluded.is_none() && pending.is_none() {
-                position
-                    .legal_actions()
-                    .expect("admitted native position")
-                    .into_iter()
-                    .map(choice)
-                    .collect()
-            } else {
-                vec![]
-            },
-            capabilities: CommandCapabilities {
-                board_action: active
-                    && !state.paused
-                    && state
-                        .settings
-                        .play_mode
-                        .owns(state.human, position.side_to_move()),
-                drops: false,
-                promotion: false,
-                take_back: !historical && state.take_back_target().is_some(),
-                undo: !historical && !state.undo.is_empty(),
-                engine_turn: active
-                    && state
-                        .settings
-                        .play_mode
-                        .engine_turn(state.human, position.side_to_move()),
-                move_analysis: !historical || state.viewed_game.is_some(),
-                chess_full: false,
-                claims: active
-                    && !state.paused
-                    && count_advice
-                        .iter()
-                        .any(|e| e.claimant == state.local_actor() && e.eligible),
-                declaration: false,
-                resign: active && !state.paused,
-                hands: false,
-                history: true,
-                save: true,
-            },
-            status,
-            events: state
-                .game
-                .events()
-                .iter()
-                .map(|e| PresentedEvent {
-                    index: e.index + 1,
-                    board_ply: e.board_ply,
-                    label: event_label(e),
-                })
-                .collect(),
-            event_index: history.event_count,
-            board_ply: history.board_ply as u64,
-            play_limits: PLAY_LIMITS,
-            historical,
-            paused: state.paused,
-            close_requires_save: self.close_requires_save(),
-            phase: state.phase,
-            execution_purpose: state.pending.as_ref().map(|p| {
-                if matches!(p.purpose, ExecutionPurpose::EngineTurn {}) {
-                    "engine_turn"
-                } else {
-                    "move_analysis"
-                }
-            }),
-            diagnostic: state.diagnostic.clone(),
-            declaration_advice: vec![],
-            context: record,
-            analysis: state.analysis.clone(),
-            observations: state.observations.clone(),
-            search_observations: state
-                .observations
-                .iter()
-                .enumerate()
-                .map(|(index, o)| display_observation(index, o, state.analysis.as_ref()))
-                .collect(),
-            score_meaning: "Native Red/Black root-side hundredths of soldier. Terminal distances count command edges; heuristic evaluation and existential win witnesses never establish a forced win. Ordinary analysis uses sound_fast_only; Unknown is unscored evidence, not proof of win capability.",
-            chess: None,
-            chess_match: None,
-        }
-    }
-}
-fn display_observation(
-    index: usize,
-    o: &PresentedObservation,
-    current: Option<&PresentedObservation>,
-) -> PresentedSearchObservation {
-    let t = match &o.observation.result {
-        ExecutionResult::Xiangqi {
-            result:
-                XiangqiResult::Choice { telemetry, .. }
-                | XiangqiResult::Finished { telemetry, .. }
-                | XiangqiResult::Incomplete { telemetry }
-                | XiangqiResult::Unresolved { telemetry, .. },
-        } => Some(telemetry),
-        _ => None,
-    };
-    let (purpose, event_index, board_ply) = match &o.observation.context.purpose {
-        ExecutionPurpose::MoveAnalysis { target } => (
-            "move_analysis",
-            target.event_index as usize,
-            target.board_ply as usize,
-        ),
-        _ => (
-            "engine_turn",
-            o.observation.context.game.event_count(),
-            o.observation.context.game.known_board_actions(),
-        ),
-    };
-    let perspective = match &o.observation.context.game {
-        CanonicalRecord::Xiangqi(r) => {
-            side(
-                mshogi_core::native::RulesProfile::XiangqiWxf2018V1,
-                NativeSide::Xiangqi(r.side_to_move()),
-            )
-            .label
-        }
-        _ => unreachable!(),
-    };
-    PresentedSearchObservation {
-        selective_depth: None,
-        observation_index: index,
-        purpose,
-        event_index,
-        board_ply,
-        perspective,
-        engine: "mShogi",
-        score: t
-            .filter(|_| o.application_error.is_none())
-            .and_then(|t| t.score_label()),
-        completed_depth: t.map(|t| t.completed_depth),
-        nodes: t.map(|t| t.nodes),
-        variation: t.map_or_else(Vec::new, |t| {
-            t.principal_variation
-                .iter()
-                .map(|c| match c {
-                    XiangqiChoice::Move { action } => action.to_string(),
-                    XiangqiChoice::Claim { actor } => format!("{actor:?} count claim"),
-                })
-                .collect()
-        }),
-        status: if o.application_error.is_some() {
-            "Rejected engine result"
-        } else {
-            match t.map(|t| t.status) {
-                Some(XiangqiStop::Complete) => "Complete",
-                Some(XiangqiStop::NodeLimit) => "Node limit reached",
-                Some(XiangqiStop::Stopped) => "Stopped",
-                Some(XiangqiStop::Unresolved) => "Unresolved, unscored",
-                None => "Engine failure",
-            }
-        },
-        historical: o.historical,
-        selected: current.is_some_and(|c| c.observation == o.observation) && !o.historical,
-    }
 }
 
 #[cfg(test)]

@@ -105,7 +105,7 @@ impl SessionGame for Shogi {
             completed_depth: t.completed_depth,
             nodes: t.nodes,
             variation: t.principal_variation.iter().map(choice_label).collect(),
-            status: t.status,
+            status: stop_label(t.status),
         }
     }
     fn incomplete(result: &mshogi_engine::ShogiResult) -> bool {

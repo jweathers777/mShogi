@@ -4,12 +4,13 @@ title: Chess Document and Session Fit
 status: To Do
 assignee: []
 created_date: '2026-11-22T09:57:00Z'
+updated_date: '2026-11-22T11:33:00Z'
 labels:
   - desktop
   - refactor
 milestone: m-6
 dependencies:
-  - MSH-224
+  - MSH-226
 priority: medium
 ordinal: 232000
 ---

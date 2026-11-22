@@ -8,7 +8,7 @@ fn peek(c: &DesktopController) -> SharedSnapshot {
         ActiveDocument::Chess(_) => c.chess_snapshot(c.session.snapshot()),
         ActiveDocument::Shogi { .. } => c.shogi_snapshot(),
         ActiveDocument::Xiangqi { .. } => c.xiangqi_snapshot(),
-        ActiveDocument::Tori { .. } => c.tori_snapshot(),
+        ActiveDocument::Tori { .. } => c.game_snapshot::<Tori>(),
         ActiveDocument::Chu { .. } => c.game_snapshot::<Chu>(),
         ActiveDocument::Tenjiku { .. } => c.game_snapshot::<Tenjiku>(),
     }

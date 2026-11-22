@@ -147,7 +147,7 @@ pub fn write_all(dir: &Path) {
                 mshogi_engine::WorkLimits {
                     time_ms: None,
                     depth: 1,
-                    nodes: 1000,
+                    nodes: 100_000,
                 },
                 true,
             )

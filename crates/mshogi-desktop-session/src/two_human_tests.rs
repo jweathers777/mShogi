@@ -418,8 +418,8 @@ fn local_record(c: &mut DesktopController, record: CanonicalRecord) -> SharedSna
             None,
             true,
         ),
-        CanonicalRecord::Tori(record) => c.queue_tori_candidate(
-            tori::RuntimeSeed::Record {
+        CanonicalRecord::Tori(record) => c.queue_game_candidate::<Tori>(
+            native_session::RuntimeSeed::<Tori>::Record {
                 record,
                 human: mshogi_core::tori::Side::Gote,
                 play_mode,

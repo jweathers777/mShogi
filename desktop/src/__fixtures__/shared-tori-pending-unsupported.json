@@ -2497,7 +2497,7 @@
   "close_requires_save": true,
   "phase": "thinking",
   "execution_purpose": "engine_turn",
-  "diagnostic": "Tori document ready. Saved observations are historical; Resume starts native play.",
+  "diagnostic": "Saved observations are historical. Resume starts play.",
   "declaration_advice": [],
   "context": {
     "envelope_version": 1,

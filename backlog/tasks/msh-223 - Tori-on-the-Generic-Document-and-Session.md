@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-21T23:34:00Z'
-updated_date: '2026-11-22T09:57:00Z'
+updated_date: '2026-11-22T10:23:00Z'
 labels:
   - desktop
   - refactor
@@ -28,8 +28,19 @@ Goal: serve Tori with the generic document and session of MSH-217 (Shared Game S
 - [ ] #3 Committed Tori documents load and save as decided; desktop-session tests pass; one fresh-agent review
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Tori core: stop-aware replay and record parse (like Chu/Tenjiku).
+2. NativeGame impl for Tori; desktop work model (ROOT_WORK, PLAY_WORK) moves to native_game.rs.
+3. tori_document.rs becomes aliases of ValidatedGameDocument; SessionGame impl for Tori with hands/drops hooks; one session_wiring! macro for all generic games; generic save and verification entries.
+4. Adapt tests; measure the Tori document work limit; regenerate Tori fixtures; checks; review.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 Decision (John, 2026-11-22, in conversation): saved-format compatibility does not matter before release (design A-09). Tori moves to the generic document and gets selected_event; old Tori files need not load.
+
+Checkpoint 2026-11-22 (branch claude/msh-223-tori-generic): Tori runs on ValidatedGameDocument and NativeSession. Lines (tori_document, shared_tori, native_game, native_session, shared_archive): 5,637 -> 3,898. Desktop-session lib 320 pass; frontend vitest 609 pass with regenerated Tori fixtures (saved files gain selected_event; analysis fixture budget raised from 1,000 to 100,000 nodes because MSH-206 evaluation no longer completes depth 1 in 1,000). Behavior notes: Tori browse selection now saved and restored; the Tori-only check that a command actor is the local human is gone (Chu/Tenjiku never had it; their tests enter engine-side commands); forged over-limit Tori records now refuse after a bounded native parse (category Unknown), not by the old desktop pre-check. Tori document work limit 1,048,576 -> 8,388,608 modelled units (measured: 360-event document 208,232 units in 33 ms release; the 4,096 retained-event limit binds first). Core: Chu and Tori record parse now stop-aware with typed capacity, like Tenjiku. Next: workspace tests, review, merge.
 <!-- SECTION:NOTES:END -->

@@ -105,7 +105,7 @@ fn document(g: &t::Game) -> ValidatedToriDocument {
             command: e.command,
         })
         .collect();
-    validate_payload(p, &mut || false).unwrap()
+    validate(p, &mut || false).unwrap()
 }
 fn sequence(id: &str) -> t::Game {
     let f = given(id);
@@ -252,10 +252,10 @@ fn immutable_journal_retains_rewind_branch_settings_and_exact_observation() {
     roundtrip(&d);
     let mut p = d.payload.clone();
     p.retired[0].control_index += 1;
-    assert!(validate_payload(p, &mut || false).is_err());
+    assert!(validate(p, &mut || false).is_err());
     let mut p = d.payload.clone();
     p.observations[0].context.game = d.payload.current.clone();
-    assert!(validate_payload(p, &mut || false).is_err());
+    assert!(validate(p, &mut || false).is_err());
     let before = d.bytes().to_vec();
     assert!(
         d.with_control(
@@ -454,7 +454,7 @@ fn observation256_to257_refuses_before_acceptance_and_all_native_ending_headroom
             .push(ToriControl::Observation { index: i as usize });
     }
     p.retired_execution_floor = 256;
-    let d = validate_payload(p, &mut || false).unwrap();
+    let d = validate(p, &mut || false).unwrap();
     assert_eq!(d.usage.observations, 256);
     roundtrip(&d);
     let before = d.bytes().to_vec();
@@ -493,107 +493,15 @@ fn observation256_to257_refuses_before_acceptance_and_all_native_ending_headroom
     roundtrip(&d);
 }
 #[test]
-fn exact_scalar_limits_reserves_and_plus_one_report_correct_resource() {
-    let base = ToriDocumentUsage {
-        encoded_bytes: 0,
-        retained_events: 0,
-        controls: 0,
-        observations: 0,
-        replay_work: 0,
-    };
-    for (cat, cap) in [
-        (
-            ResourceCategory::EncodedDocumentBytes,
-            MAX_ARCHIVE_BYTES as u64,
-        ),
-        (ResourceCategory::NativeEvents, MAX_ARCHIVE_EVENTS as u64),
-        (ResourceCategory::Controls, MAX_ARCHIVE_CONTROLS as u64),
-        (ResourceCategory::OrdinaryObservations, 256),
-        (ResourceCategory::ReplayWork, MAX_TORI_DOCUMENT_WORK),
-    ] {
-        for extra in [0, 1] {
-            let mut u = base.clone();
-            let n = cap + extra;
-            match cat {
-                ResourceCategory::EncodedDocumentBytes => u.encoded_bytes = n as usize,
-                ResourceCategory::NativeEvents => u.retained_events = n as usize,
-                ResourceCategory::Controls => u.controls = n as usize,
-                ResourceCategory::OrdinaryObservations => u.observations = n as usize,
-                _ => u.replay_work = n,
-            }
-            let result = check_limits(
-                &u,
-                1,
-                Reserve {
-                    native: 0,
-                    controls: 0,
-                },
-            );
-            if extra == 0 {
-                assert!(result.is_ok());
-            } else {
-                let f = result.unwrap_err().resource.unwrap();
-                assert_eq!(f.facts()[0].category, cat);
-                assert_eq!(f.facts()[0].count, Some(n));
-            }
-        }
-    }
-    let mut u = base.clone();
-    u.controls = MAX_ARCHIVE_CONTROLS - 3;
-    assert!(
-        check_limits(
-            &u,
-            1,
-            Reserve {
-                native: 2,
-                controls: 3
-            }
-        )
-        .is_ok()
-    );
-    u.controls += 1;
-    assert_eq!(
-        check_limits(
-            &u,
-            1,
-            Reserve {
-                native: 2,
-                controls: 3
-            }
-        )
-        .unwrap_err()
-        .resource
-        .unwrap()
-        .facts()[0]
-            .category,
-        ResourceCategory::Controls
-    );
-    assert_eq!(
-        check_limits(
-            &base,
-            MAX_SAFE_ID - 64,
-            Reserve {
-                native: 0,
-                controls: 0
-            }
-        )
-        .unwrap_err()
-        .resource
-        .unwrap()
-        .facts()[0]
-            .category,
-        ResourceCategory::IdentityHeadroom
-    );
-}
-#[test]
 fn actual_control_limit_consumes_stop_resign_close_reservations_without_resetting_them() {
     let mut p = standard().payload;
-    p.controls = (0..MAX_ARCHIVE_CONTROLS - 3)
+    // A close and reopen, Stop, Resign and the final Close stay reserved.
+    p.controls = (0..MAX_ARCHIVE_CONTROLS - 4)
         .map(|_| ToriControl::Settings {
             settings: p.settings.clone(),
         })
         .collect();
-    let d = validate_payload(p, &mut || false).unwrap();
+    let d = validate(p, &mut || false).unwrap();
     // Exercise the actual runtime worker's typed refusal, not only its codec.
     // Browsing began while play was running; exhausted control capacity must
     // retire that permission without discarding the exact admitted document.
@@ -693,106 +601,9 @@ fn actual_control_limit_consumes_stop_resign_close_reservations_without_resettin
     let d = d
         .with_control(ToriControl::Close {}, &mut || false)
         .unwrap();
-    assert_eq!(d.usage.controls, 8192);
+    // The close-and-reopen reservation was not used.
+    assert_eq!(d.usage.controls, MAX_ARCHIVE_CONTROLS - 1);
     roundtrip(&d);
-}
-fn path() -> std::path::PathBuf {
-    static N: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
-    std::env::temp_dir().join(format!(
-        "msh130-{}-{}.mshogi",
-        std::process::id(),
-        N.fetch_add(1, std::sync::atomic::Ordering::Relaxed)
-    ))
-}
-fn wait(w: &ToriDocumentWorker) -> (u64, Result<ToriFileResult, ToriDocumentError>) {
-    let end = Instant::now() + Duration::from_secs(30);
-    loop {
-        if let Some(v) = w.poll() {
-            return v;
-        }
-        assert!(Instant::now() < end);
-        std::thread::sleep(Duration::from_millis(1));
-    }
-}
-#[test]
-fn actual_file_worker_first_save_replacement_failure_interruption_and_stale_receipts() {
-    let d = standard();
-    let file = path();
-    let mut w = ToriDocumentWorker::new().unwrap();
-    assert_eq!(
-        w.validate(1, vec![b' '; MAX_ARCHIVE_BYTES + 1])
-            .unwrap_err()
-            .resource
-            .unwrap()
-            .facts()[0]
-            .category,
-        ResourceCategory::EncodedDocumentBytes
-    );
-    assert!(w.poll().is_none()); // rejection neither queues nor consumes the ID
-    w.save(1, d.bytes().to_vec(), file.clone(), 10, 20).unwrap();
-    let (id, result) = wait(&w);
-    assert_eq!(id, 1);
-    assert!(matches!(
-        result.unwrap(),
-        ToriFileResult::Saved {
-            revision: 10,
-            identity: 20,
-            ..
-        }
-    ));
-    assert_eq!(fs::read(&file).unwrap(), d.bytes());
-    let d2 = d
-        .with_control(
-            ToriControl::Settings {
-                settings: ToriSettings {
-                    play_mode: crate::PlayMode::HumanEngine,
-                    orientation: t::Side::Gote,
-                },
-            },
-            &mut || false,
-        )
-        .unwrap();
-    w.save(2, d2.bytes().to_vec(), file.clone(), 11, 20)
-        .unwrap();
-    assert!(matches!(
-        wait(&w).1.unwrap(),
-        ToriFileResult::Saved {
-            revision: 11,
-            identity: 20,
-            ..
-        }
-    ));
-    assert_eq!(fs::read(&file).unwrap(), d2.bytes());
-    w.save(3, b"corrupt".to_vec(), file.clone(), 12, 20)
-        .unwrap();
-    assert!(wait(&w).1.is_err());
-    assert_eq!(fs::read(&file).unwrap(), d2.bytes());
-    // Real writer cancellation after temporary-file construction/chunk write.
-    let mut checks = 0;
-    assert!(
-        persistence::atomic_write(&file, d.bytes(), &mut || {
-            checks += 1;
-            checks >= 2
-        })
-        .is_err()
-    );
-    assert_eq!(fs::read(&file).unwrap(), d2.bytes());
-    let dir = path();
-    fs::create_dir(&dir).unwrap();
-    assert!(persistence::atomic_write(&dir, d.bytes(), &mut || false).is_err());
-    assert!(dir.is_dir());
-    assert_eq!(fs::read(&file).unwrap(), d2.bytes());
-    fs::remove_dir(dir).unwrap();
-    w.validate(4, d.bytes().to_vec()).unwrap();
-    w.cancel();
-    w.validate(5, d2.bytes().to_vec()).unwrap();
-    let (id, result) = wait(&w);
-    assert_eq!(id, 5);
-    assert!(matches!(result.unwrap(), ToriFileResult::Validated(_)));
-    assert!(w.validate(5, d.bytes().to_vec()).is_err());
-    assert!(w.poll().is_none());
-    assert!(ValidatedToriDocument::decode(d.bytes(), &mut || true).is_err());
-    fs::remove_file(file).unwrap();
 }
 #[test]
 fn normal_tori_new_game_uses_the_admitted_native_document() {
@@ -863,59 +674,9 @@ fn forged_selection_identity_and_all_strict_fixture_payloads_reject_at_desktop_b
     assert_eq!(called, 1);
 }
 #[test]
-fn per_operation_byte_and_work_reservations_cover_real_native_encoding_growth() {
-    let d = standard();
-    let stop = d
-        .with_control(
-            ToriControl::Native {
-                actor: t::Side::Sente,
-                command: t::GameCommand::Stop {
-                    reason: t::StopReason::WorkLimit,
-                },
-            },
-            &mut || false,
-        )
-        .unwrap();
-    let resign = stop
-        .with_control(
-            ToriControl::Native {
-                actor: t::Side::Gote,
-                command: t::GameCommand::Resign,
-            },
-            &mut || false,
-        )
-        .unwrap();
-    let close = resign
-        .with_control(ToriControl::Close {}, &mut || false)
-        .unwrap();
-    // Apply actual encoded/replay deltas at each independently isolated policy
-    // ceiling; other document quotas can make a full16MiB candidate unreachable.
-    for resource in [
-        ResourceCategory::EncodedDocumentBytes,
-        ResourceCategory::ReplayWork,
-    ] {
-        let mut u = d.usage.clone();
-        if resource == ResourceCategory::EncodedDocumentBytes {
-            u.encoded_bytes = MAX_ARCHIVE_BYTES - 2 * NATIVE_RESERVED_BYTES - CLOSE_RESERVED_BYTES;
-        } else {
-            u.replay_work = MAX_TORI_DOCUMENT_WORK - 2 * NATIVE_RESERVED_WORK - CLOSE_RESERVED_WORK;
-        }
-        check_limits(&u, 1, reservation(&d.payload)).unwrap();
-        let mut previous = &d;
-        for next in [&stop, &resign, &close] {
-            u.encoded_bytes += next.usage.encoded_bytes - previous.usage.encoded_bytes;
-            u.replay_work += next.usage.replay_work - previous.usage.replay_work;
-            u.controls += 1;
-            u.retained_events += next.usage.retained_events - previous.usage.retained_events;
-            check_limits(&u, 1, reservation(&next.payload)).unwrap();
-            previous = next;
-        }
-    }
-}
-#[test]
 fn actual_encoded_input_limit_and_aggregate_event_limit_plus_one() {
     let d = standard();
-    let bound = MAX_ARCHIVE_BYTES - 2 * NATIVE_RESERVED_BYTES - CLOSE_RESERVED_BYTES;
+    let bound = MAX_ARCHIVE_BYTES;
     let mut padded = d.bytes().to_vec();
     padded.resize(bound, b' ');
     ValidatedToriDocument::decode(&padded, &mut || false).unwrap();
@@ -951,7 +712,7 @@ fn actual_encoded_input_limit_and_aggregate_event_limit_plus_one() {
         p.controls.push(ToriControl::Observation { index: i });
         p.observations.push(observation(&d, i as u64 + 1));
     }
-    let accepted = validate_payload(p, &mut || false).unwrap();
+    let accepted = validate(p, &mut || false).unwrap();
     assert_eq!(accepted.usage.retained_events, 4096);
     roundtrip(&accepted);
     let before = accepted.bytes().to_vec();
@@ -1079,13 +840,9 @@ fn measured_complete_long_documents_charge_repeated_native_work_and_refuse_befor
     roundtrip(&branch);
     let worker_started = Instant::now();
     let saved = path();
-    let mut worker = ToriDocumentWorker::new().unwrap();
-    worker
-        .save(1, closed.bytes().to_vec(), saved.clone(), 99, 100)
-        .unwrap();
     assert!(matches!(
-        wait(&worker).1.unwrap(),
-        ToriFileResult::Saved {
+        crate::shared::native_session::save(&closed, 1, &saved, 99, 100, &mut || false).unwrap(),
+        crate::shared::archive::NativeCompleted::Saved {
             revision: 99,
             identity: 100,
             ..
@@ -1104,7 +861,7 @@ fn measured_complete_long_documents_charge_repeated_native_work_and_refuse_befor
             .push(observation(&root_base, i as u64 + 1));
     }
     let root_started = Instant::now();
-    let roots = validate_payload(roots, &mut || false).unwrap();
+    let roots = validate(roots, &mut || false).unwrap();
     let root_observations_ms = root_started.elapsed().as_millis();
     let report = json!({"seed":"0x129ca11ab1e5","generated_ms":generated_ms,"worker_save_ms":worker_save_ms,"root_observations_ms":root_observations_ms,"root256":roots.usage(),"initial_validation_ms":roundtrip_ms,"native":{"bytes":native_usage.encoded_bytes,"events":native_usage.events},"complete_document":d.usage(),"one_observation":observed.usage(),"second_observation":second.usage(),"stopped":stopped.usage(),"resigned_closed":closed.usage(),"retained_branch":branch.usage(),"forced7":document(&sequence("TORI-H-FORCED-FULL")).usage(),"capture_drop11":document(&sequence("TORI-H-CAPTURE-DROP")).usage()});
     println!("MSH130_MEASUREMENTS {}", report);
@@ -1188,20 +945,13 @@ fn native_record_byte_ceiling_and_desktop_precharge_reject_forged_work_before_na
     ValidatedToriDocument::decode(at.as_bytes(), &mut || false).unwrap();
     padded.insert(padded.len() - 1, ' ');
     let over = doc.replace("\"NATIVE_PAD\"", &padded);
-    let error = ValidatedToriDocument::decode(over.as_bytes(), &mut || false).unwrap_err();
-    assert_eq!(
-        error.resource.unwrap().facts()[0].category,
-        ResourceCategory::CanonicalRecordBytes
-    );
+    assert!(ValidatedToriDocument::decode(over.as_bytes(), &mut || false).is_err());
     let mut v: Value = serde_json::from_slice(standard().bytes()).unwrap();
     let event = json!({"command":{"kind":"play"}});
     v["payload"]["current"]["payload"]["events"] =
         json!(vec![event.clone(); t::MAX_GAME_EVENTS + 1]);
-    let error =
-        ValidatedToriDocument::decode(&serde_json::to_vec(&v).unwrap(), &mut || false).unwrap_err();
-    assert_eq!(
-        error.resource.unwrap().facts()[0].category,
-        ResourceCategory::NativeEvents
+    assert!(
+        ValidatedToriDocument::decode(&serde_json::to_vec(&v).unwrap(), &mut || false).is_err()
     );
     // Many bounded-looking native contexts must fail raw aggregate preflight,
     // even when each forged event is cheap and native replay would fail. Since
@@ -1212,11 +962,8 @@ fn native_record_byte_ceiling_and_desktop_precharge_reject_forged_work_before_na
         json!({"control_index":0,"record":v["payload"]["current"].clone()});
         12
     ]);
-    let error =
-        ValidatedToriDocument::decode(&serde_json::to_vec(&v).unwrap(), &mut || false).unwrap_err();
-    assert_eq!(
-        error.resource.unwrap().facts()[0].category,
-        ResourceCategory::NativeEvents
+    assert!(
+        ValidatedToriDocument::decode(&serde_json::to_vec(&v).unwrap(), &mut || false).is_err()
     );
 }
 
@@ -1245,37 +992,10 @@ fn every_native_record_is_precharged_and_wrong_inner_identity_never_falls_throug
             json!({"command":{"kind":"play"}});
             t::MAX_GAME_EVENTS + 1
         ]);
-        let e = ValidatedToriDocument::decode(&serde_json::to_vec(&v).unwrap(), &mut || false)
-            .unwrap_err();
-        let f = e.resource.unwrap();
-        assert_eq!(f.facts()[0].category, ResourceCategory::NativeEvents);
-        assert_eq!(f.facts()[0].limit, Some(t::MAX_GAME_EVENTS as u64));
+        assert!(
+            ValidatedToriDocument::decode(&serde_json::to_vec(&v).unwrap(), &mut || false).is_err()
+        );
     }
-}
-#[test]
-fn runtime_floor_width_reservation_survives_consumed_close_and_exact_byte_boundary() {
-    let mut doc = standard();
-    let reserve = Reserve {
-        controls: 0,
-        native: 0,
-    };
-    let extra = (MAX_SAFE_ID - 65).to_string().len() - 1;
-    doc.usage.encoded_bytes = MAX_ARCHIVE_BYTES - extra;
-    assert!(check_runtime_bytes(&doc.usage, 1, reserve).is_ok());
-    doc.usage.encoded_bytes += 1;
-    let refused = check_runtime_bytes(&doc.usage, 1, reserve).unwrap_err();
-    assert!(
-        refused
-            .resource
-            .unwrap()
-            .facts()
-            .iter()
-            .any(|f| f.category == ResourceCategory::EncodedDocumentBytes
-                && f.reserved == Some(extra as u64))
-    );
-    // No additional width is needed once the maximum safe spelling is present.
-    doc.usage.encoded_bytes = MAX_ARCHIVE_BYTES;
-    assert!(check_runtime_bytes(&doc.usage, MAX_SAFE_ID - 65, reserve).is_ok());
 }
 
 fn actual_observation(doc: &ValidatedToriDocument, n: u64, analysis: bool) -> ExecutionObservation {
@@ -1335,7 +1055,7 @@ fn actual_tori_choice_is_atomic_with_native_action_while_analysis_is_read_only()
     let mut forged = moved.payload.clone();
     forged.controls.pop();
     forged.current = original.payload.current.clone();
-    assert!(validate_payload(forged, &mut || false).is_err());
+    assert!(validate(forged, &mut || false).is_err());
     let mut forged = read.payload.clone();
     if let ExecutionResult::Tori {
         result: mshogi_engine::ToriResult::Choice { action, telemetry },
@@ -1344,7 +1064,7 @@ fn actual_tori_choice_is_atomic_with_native_action_while_analysis_is_read_only()
         // A line that the native game refuses after its first action.
         telemetry.principal_variation = vec![*action, *action];
     }
-    assert!(validate_payload(forged, &mut || false).is_err());
+    assert!(validate(forged, &mut || false).is_err());
     assert_eq!(original.record().event_count(), 0);
 }
 #[test]
@@ -1368,7 +1088,7 @@ fn actual_search_observation_256_to_257_measures_archive_and_reserves_native_end
     }
     p.retired_execution_floor = 256;
     let start = Instant::now();
-    let accepted = validate_payload(p, &mut || false).unwrap();
+    let accepted = validate(p, &mut || false).unwrap();
     eprintln!(
         "MSH42_REAL_OBSERVATIONS {} decode_ms={}",
         serde_json::to_string(accepted.usage()).unwrap(),
@@ -1480,4 +1200,12 @@ fn two_human_document_retains_mode_and_rejects_mode_changes() {
         d.with_control(ToriControl::Settings { settings }, &mut || false)
             .is_err()
     );
+}
+fn path() -> std::path::PathBuf {
+    static N: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
+    std::env::temp_dir().join(format!(
+        "msh130-{}-{}.mshogi",
+        std::process::id(),
+        N.fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+    ))
 }

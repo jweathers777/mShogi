@@ -1151,8 +1151,8 @@ impl DesktopController {
                 let record =
                     mshogi_core::tori::GameRecord::from_game(&mshogi_core::tori::Game::standard())
                         .map_err(|e| e.to_string())?;
-                self.queue_tori_candidate(
-                    tori::RuntimeSeed::Record {
+                self.queue_game_candidate::<Tori>(
+                    native_session::RuntimeSeed::<Tori>::Record {
                         record: Box::new(record),
                         human,
                         play_mode,
@@ -1317,7 +1317,7 @@ impl DesktopController {
                 let NativeSide::Tori(human) = human else {
                     unreachable!()
                 };
-                return self.replace_tori(*record, human);
+                return self.replace_game::<Tori>(*record, human);
             }
             // Validate before retiring any current state or work.
             if let CanonicalRecord::Xiangqi(record) = &record {
@@ -1360,7 +1360,7 @@ impl DesktopController {
             return self.game_command::<Chu>(command.operation);
         }
         if self.session.tori().is_some() {
-            return self.tori_command(command.operation);
+            return self.game_command::<Tori>(command.operation);
         }
         if self.session.xiangqi().is_some() {
             if self.admission_token.is_some() {
@@ -1529,7 +1529,7 @@ impl DesktopController {
             return self.accept_game_observation::<Chu>(response);
         }
         if self.session.tori().is_some() {
-            return self.accept_tori_observation(response);
+            return self.accept_game_observation::<Tori>(response);
         }
         if self.session.xiangqi().is_some() {
             return self.accept_xiangqi_observation(response);
@@ -1564,7 +1564,7 @@ impl DesktopController {
             return self.poll_game::<Chu>();
         }
         if self.session.tori().is_some() {
-            return self.poll_tori();
+            return self.poll_game::<Tori>();
         }
         if self.session.xiangqi().is_some() {
             return if self.shared.admission.is_some() {
@@ -1646,7 +1646,7 @@ impl DesktopController {
             self.close_game::<Chu>();
         }
         if self.session.tori().is_some() {
-            self.close_tori();
+            self.close_game::<Tori>();
         }
         if let Some(state) = self.session.xiangqi_mut()
             && state.close_pause()

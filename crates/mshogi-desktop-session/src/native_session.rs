@@ -1114,7 +1114,7 @@ impl DesktopController {
                 drops: G::HANDS,
                 promotion: true,
                 take_back: !historical && state.take_back_target().is_some(),
-                undo: !historical && G::events(&state.game) > 0,
+                undo: !historical && G::last_command_start(&state.game).is_some(),
                 engine_turn: !settings.play_mode().is_two_humans(),
                 move_analysis: true,
                 chess_full: false,
@@ -1186,7 +1186,11 @@ fn observation_room<G: SessionGame>(
     if count >= MAX_ARCHIVE_OBSERVATIONS {
         return Err(OperationFailure::resource(ResourceFailure::new(
             ResourceFact::measured(
-                ResourceCategory::OrdinaryObservations,
+                if document.evidence().is_empty() {
+                    ResourceCategory::OrdinaryObservations
+                } else {
+                    ResourceCategory::CombinedObservations
+                },
                 count as u64,
                 MAX_ARCHIVE_OBSERVATIONS as u64,
             )

@@ -76,7 +76,7 @@
         "command_end": 7
       },
       {
-        "event_index": 8,
+        "event_index": 9,
         "board_ply": 8,
         "number": 4,
         "column": 1,
@@ -88,7 +88,7 @@
     ],
     "last_action": {
       "action": "e8f8",
-      "event_index": 8,
+      "event_index": 9,
       "origin": {
         "kind": "intersection",
         "point": "e8"

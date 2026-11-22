@@ -821,3 +821,31 @@ fn history_stops_only_at_command_boundaries_with_consequences_in_one_entry() {
     assert!(!before.status.concluded);
     assert_eq!(native(&c), canonical);
 }
+
+#[test]
+fn every_xiangqi_move_entry_opens_its_history_position() {
+    // MSH-226 review: a move whose command also made a warning opens at the
+    // command's end, never inside the command.
+    let mut game = x::Game::from_root(
+        x::PositionRoot::from_fen("4R4/5k3/9/9/9/9/9/9/9/3K5 w - - 0 1").unwrap(),
+        x::ClaimPolicy::Explicit,
+    )
+    .unwrap();
+    for action in ["e9f9", "f8e8", "f9e9", "e8f8"].into_iter().cycle().take(8) {
+        submit(&mut game, action);
+    }
+    let mut c = controller();
+    let live = replace(&mut c, &game, x::Side::Red);
+    assert_eq!(live.moves.entries.len(), 8);
+    for entry in &live.moves.entries {
+        let selected = send(
+            &mut c,
+            SessionOperation::Inspect {
+                event_index: entry.event_index,
+            },
+        )
+        .unwrap();
+        assert_eq!(selected.event_index, entry.event_index);
+    }
+    assert_eq!(live.moves.entries.last().unwrap().event_index, 9);
+}

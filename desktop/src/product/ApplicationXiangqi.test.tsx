@@ -120,17 +120,19 @@ it("uses selected native observations only, preserving perspective, provenance a
   expect(screen.getByText("No completed evaluation")).toBeTruthy();
   expect(screen.queryByText(/forced win|draw by evaluation/i)).toBeNull();
 });
-it("navigates exact native event indices and keeps partial command prefixes inspectable but not analyzable", async () => {
+it("navigates by command: a move and its warning are one history position", async () => {
   const native = warningJson as unknown as GameSnapshot;
-  const { session, props, rerender } = app(native);
-  const last = native.events.at(-1)!;
-  fireEvent.click(screen.getByRole("button", { name: new RegExp(last.label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) }));
-  expect(session.command).toHaveBeenLastCalledWith(native, { kind: "inspect", event_index: last.index });
-  const history = { ...native, historical: true, paused: true, event_index: last.index - 1, capabilities: { ...native.capabilities, board_action: false, move_analysis: false }, xiangqi: { ...native.xiangqi, canonical_context_scope: "live_with_immutable_selection" as const, selected_canonical: null } };
+  const { session, props, rerender, container } = app(native);
+  const last = native.moves.entries.at(-1)!;
+  // The last move and the warning it caused share one history position.
+  expect(last.event_index).toBe(native.events.at(-1)!.index);
+  const button = container.querySelector(`.moves-table button[data-event="${last.event_index}"]`)!;
+  fireEvent.click(button);
+  expect(session.command).toHaveBeenLastCalledWith(native, { kind: "inspect", event_index: last.event_index });
+  const history = { ...native, historical: true, paused: true, capabilities: { ...native.capabilities, board_action: false } };
   rerender(<XiangqiApp {...props} snapshot={history} />);
   fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
-  expect(screen.getByText(/Analysis is unavailable between a move and its following event/)).toBeTruthy();
-  expect((screen.getByRole("button", { name: "Start move analysis" }) as HTMLButtonElement).disabled).toBe(true);
+  expect(screen.queryByText(/Analysis is unavailable between a move and its following event/)).toBeNull();
   expect(screen.queryByRole("button", { name: "Resume play" })).toBeNull();
   fireEvent.click(screen.getByRole("button", { name: "Return to live" }));
   expect(session.command).toHaveBeenLastCalledWith(history, { kind: "return_live" });

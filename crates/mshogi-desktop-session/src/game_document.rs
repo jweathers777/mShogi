@@ -431,7 +431,9 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
             settings: SettingsOf<G>,
             controls: Vec<Box<serde_json::value::RawValue>>,
             observations: Vec<Box<serde_json::value::RawValue>>,
-            evidence: Vec<G::Evidence>,
+            // Absent in documents of games that keep no evidence.
+            #[serde(default)]
+            evidence: Vec<Box<serde_json::value::RawValue>>,
             retired: Vec<Branch>,
             retired_execution_floor: u64,
             #[serde(deserialize_with = "shared::archive::required_option")]
@@ -453,10 +455,14 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
                 ResourceUnit::Controls,
             ));
         }
-        if w.observations.len() > MAX_ARCHIVE_OBSERVATIONS {
+        if w.observations.len() + w.evidence.len() > MAX_ARCHIVE_OBSERVATIONS {
             return Err(E::<G>::limit(
-                ResourceCategory::OrdinaryObservations,
-                w.observations.len() as u64,
+                if w.evidence.is_empty() {
+                    ResourceCategory::OrdinaryObservations
+                } else {
+                    ResourceCategory::CombinedObservations
+                },
+                (w.observations.len() + w.evidence.len()) as u64,
                 MAX_ARCHIVE_OBSERVATIONS as u64,
                 0,
                 ResourceUnit::Observations,
@@ -508,6 +514,16 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
             E::<G>::check(stopped)?;
             observations.push(o);
         }
+        // Evidence holds native records too: parse each separately, with stop
+        // checks, and charge its replay like an observation.
+        let mut evidence = Vec::with_capacity(w.evidence.len());
+        for raw in w.evidence {
+            E::<G>::check(stopped)?;
+            let e: G::Evidence = serde_json::from_str(raw.get()).map_err(E::<G>::invalid)?;
+            E::<G>::check(stopped)?;
+            E::<G>::charge(&mut parsed_work, G::evidence_work(&e))?;
+            evidence.push(e);
+        }
         let mut controls = Vec::with_capacity(w.controls.len());
         for raw in w.controls {
             E::<G>::check(stopped)?;
@@ -533,7 +549,7 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
                 settings: w.settings,
                 controls,
                 observations,
-                evidence: w.evidence,
+                evidence,
                 retired,
                 retired_execution_floor: w.retired_execution_floor,
                 selected_event: w.selected_event,

@@ -359,6 +359,14 @@ pub(super) fn xiangqi_projection(game: &x::Game) -> MovesProjection {
             .unwrap_or(1),
     );
     let ranges: Vec<_> = game.command_event_ranges().collect();
+    // History stops at command boundaries: a move opens at the end of its
+    // command, with any warning or conclusion that command caused.
+    let command_end = |index: usize| {
+        ranges
+            .iter()
+            .find(|(start, end)| *start <= index && index < *end)
+            .map_or(index + 1, |r| r.1)
+    };
     for event in game.events() {
         if let x::EventKind::BoardAction { action, .. } = event.event {
             let pre = game
@@ -369,7 +377,7 @@ pub(super) fn xiangqi_projection(game: &x::Game) -> MovesProjection {
             let geometry = CompletedActionGeometry {
                 native_effects: None,
                 action: action.to_string(),
-                event_index: event.index + 1,
+                event_index: command_end(event.index),
                 origin: ChoiceOrigin::Intersection {
                     point: action.from.to_string(),
                 },

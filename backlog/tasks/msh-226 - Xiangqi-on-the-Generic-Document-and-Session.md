@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-22T11:33:00Z'
-updated_date: '2026-11-22T14:46:00Z'
+updated_date: '2026-11-22T15:52:00Z'
 labels: []
 milestone: m-6
 dependencies:
@@ -44,4 +44,6 @@ Question for John (2026-11-22): one Xiangqi command can produce several events (
 John (2026-11-22, in conversation): priority is one unified document and session for all games; standard file formats (PGN, KIF/CSA, WXF) are later adapter tasks, not now. History view question: he never wanted internal events shown as steps, so Xiangqi history stops at command boundaries (option A).
 
 Checkpoint 2026-11-22: library builds (all features, clippy clean). Xiangqi runs on ValidatedGameDocument/NativeSession (shared_xiangqi.rs; shared_xiangqi_archive.rs removed; SharedState rollback removed). Generic additions: evidence ledger (NativeGame::Evidence, GameControl::Evidence, counts with observations), last_command_start, SessionGame take_back_target/command_actor/finish_snapshot, TelemetryView status label, internal SessionOperation::XiangqiCommand. History and presented events are per command. Next: tests, fixtures, measurement of XIANGQI_DOCUMENT_WORK (placeholder 4,194,304), review.
+
+Review (fresh subagent, 2026-11-22): no unintended Xiangqi rules change. Fixed: (1) Moves-list entries now open at their command's end (moves.rs xiangqi_projection), test added; (2) pending adjudication counts as concluded for the session (no Resign probe in reserve, no engine start), so such games save, open and admit their final move; (3) saved evidence is read raw, counted with observations before parsing, parsed one entry at a time with stop checks and charged (NativeGame::evidence_work); (4) the evidence field is optional on read (serde default), so committed Chu/Tenjiku/Tori/Shogi GUI documents still open; new test opens every committed .mshogi fixture; (5) History-target evidence at the live length is accepted; (6) Undo capability uses the last command start; start-position events (a root conclusion) are listed; slot refusal reports CombinedObservations when evidence exists. Not changed: XiangqiPresentation.canonical_context_scope and selected_canonical are now constant but the frontend reads them (remove with a frontend change later); Xiangqi label helpers could use xiangqi_side (cosmetic).
 <!-- SECTION:NOTES:END -->

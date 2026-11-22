@@ -824,3 +824,39 @@ fn prior_shogi_fixed_play_observation_reopens_with_new_time_default() {
     );
     assert_eq!(mshogi_engine::SHOGI_PLAY_LIMITS.time_ms, Some(1_000));
 }
+
+#[test]
+fn every_committed_gui_fixture_document_opens() {
+    // The packaged GUI journeys open these files (desktop/scripts/fixtures).
+    let dir =
+        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../desktop/scripts/fixtures");
+    let mut opened = 0;
+    for entry in fs::read_dir(&dir).unwrap() {
+        let path = entry.unwrap().path();
+        if path.extension().and_then(|e| e.to_str()) != Some("mshogi") {
+            continue;
+        }
+        let bytes = fs::read(&path).unwrap();
+        let envelope = crate::document::DocumentEnvelope::parse(&bytes).unwrap();
+        let stop = &mut || false;
+        let result = match envelope.game_kind {
+            GameKind::Chess => {
+                persistence::decode_chess_payload(envelope.payload.get().as_bytes(), stop)
+                    .map(|_| ())
+            }
+            GameKind::Shogi => native_session::open::<Shogi>(&bytes, stop).map(|_| ()),
+            GameKind::Xiangqi => native_session::open::<Xiangqi>(&bytes, stop).map(|_| ()),
+            GameKind::Tori => native_session::open::<Tori>(&bytes, stop).map(|_| ()),
+            GameKind::Chu => native_session::open::<Chu>(&bytes, stop).map(|_| ()),
+            GameKind::Tenjiku => native_session::open::<Tenjiku>(&bytes, stop).map(|_| ()),
+        };
+        assert!(
+            result.is_ok(),
+            "{}: {:?}",
+            path.display(),
+            result.err().map(|e| e.diagnostic)
+        );
+        opened += 1;
+    }
+    assert!(opened > 0);
+}

@@ -223,8 +223,8 @@ impl XiangqiExactEvidence {
             || self.native_generation > MAX_SAFE_ID
             || self.source
                 != CanonicalRecord::xiangqi(x::GameRecord::from_game(game).map_err(error)?)
-            || self.historical_target != (self.event_count != game.events().len())
             || self.event_count > game.events().len()
+            || !self.historical_target && self.event_count != game.events().len()
         {
             return Err("Corrupt exact historical evidence: source, purpose, identity or event target differs.".into());
         }
@@ -468,7 +468,12 @@ impl SessionGame for Xiangqi {
     fn presented_events(game: &x::Game) -> Vec<PresentedEvent> {
         // One entry per command: history stops only at command boundaries.
         let events = game.events();
-        game.command_event_ranges()
+        let ranges: Vec<_> = game.command_event_ranges().collect();
+        // Events of the start position itself (a root conclusion) come first.
+        let first = ranges.first().map_or(events.len(), |r| r.0);
+        let root = (first > 0).then_some((0, first));
+        root.into_iter()
+            .chain(ranges)
             .map(|(start, end)| {
                 let shown = events[start..end]
                     .iter()

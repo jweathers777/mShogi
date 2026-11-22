@@ -462,7 +462,7 @@
     "drops": false,
     "promotion": false,
     "take_back": false,
-    "undo": true,
+    "undo": false,
     "engine_turn": true,
     "move_analysis": true,
     "chess_full": false,
@@ -481,7 +481,13 @@
       1
     ]
   },
-  "events": [],
+  "events": [
+    {
+      "index": 1,
+      "board_ply": 0,
+      "label": "Draw · neither side can win"
+    }
+  ],
   "event_index": 1,
   "board_ply": 0,
   "play_limits": {

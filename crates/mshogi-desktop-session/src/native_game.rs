@@ -167,6 +167,10 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
     fn last_command_start(game: &Self::Game) -> Option<usize> {
         Self::events(game).checked_sub(1)
     }
+    /// Native replay work of parsing saved evidence.
+    fn evidence_work(_evidence: &Self::Evidence) -> u64 {
+        0
+    }
     /// Validate saved evidence against the game at its journal position; the
     /// native work it used.
     fn validate_evidence(
@@ -998,7 +1002,8 @@ impl NativeGame for Xiangqi {
         game.position().side_to_move()
     }
     fn concluded(game: &Self::Game) -> bool {
-        game.conclusion().is_some()
+        // Pending adjudication admits no further command either.
+        game.conclusion().is_some() || game.pending_adjudication().is_some()
     }
     fn stop_recorded(_game: &Self::Game) -> bool {
         false
@@ -1051,6 +1056,10 @@ impl NativeGame for Xiangqi {
             })?;
         }
         Ok(xiangqi_work::VALIDATION_WORK + xiangqi_work::LINE_ACTION_WORK * line.len() as u64)
+    }
+    fn evidence_work(evidence: &Self::Evidence) -> u64 {
+        let source = evidence.source();
+        xiangqi_work::of(source.event_count(), source.known_board_actions())
     }
     fn validate_evidence(
         evidence: &Self::Evidence,

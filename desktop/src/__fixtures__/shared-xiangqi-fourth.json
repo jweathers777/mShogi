@@ -76,7 +76,7 @@
         "command_end": 7
       },
       {
-        "event_index": 8,
+        "event_index": 9,
         "board_ply": 8,
         "number": 4,
         "column": 1,
@@ -86,7 +86,7 @@
         "command_end": 9
       },
       {
-        "event_index": 10,
+        "event_index": 11,
         "board_ply": 9,
         "number": 5,
         "column": 0,
@@ -96,7 +96,7 @@
         "command_end": 11
       },
       {
-        "event_index": 12,
+        "event_index": 13,
         "board_ply": 10,
         "number": 5,
         "column": 1,
@@ -106,7 +106,7 @@
         "command_end": 13
       },
       {
-        "event_index": 14,
+        "event_index": 15,
         "board_ply": 11,
         "number": 6,
         "column": 0,
@@ -116,7 +116,7 @@
         "command_end": 15
       },
       {
-        "event_index": 16,
+        "event_index": 17,
         "board_ply": 12,
         "number": 6,
         "column": 1,
@@ -128,7 +128,7 @@
     ],
     "last_action": {
       "action": "e8f8",
-      "event_index": 16,
+      "event_index": 17,
       "origin": {
         "kind": "intersection",
         "point": "e8"

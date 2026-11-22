@@ -29,6 +29,22 @@ impl Default for ShogiSettings {
         }
     }
 }
+impl crate::native_game::DocumentSettings for ShogiSettings {
+    type Side = s::Side;
+    fn new(orientation: s::Side, play_mode: PlayMode) -> Self {
+        Self {
+            play_mode,
+            orientation,
+            ..Self::default()
+        }
+    }
+    fn play_mode(&self) -> PlayMode {
+        self.play_mode
+    }
+    fn set_play_mode(&mut self, play_mode: PlayMode) {
+        self.play_mode = play_mode;
+    }
+}
 impl ShogiSettings {
     fn validate(&self) -> Result<(), String> {
         valid_limits(self.analysis_defaults)

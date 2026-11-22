@@ -3,7 +3,7 @@
 //! and the wrappers of the shared runtime enums through [`SessionGame`].
 use super::*;
 use crate::game_document::{ControlOf, GameControl, RewindKind, SettingsOf, ValidatedGameDocument};
-use crate::native_game::NativeGame;
+use crate::native_game::{DocumentSettings, NativeGame};
 use std::sync::Arc;
 
 /// Kind of a native command, as the session needs it.
@@ -21,6 +21,8 @@ pub(crate) enum GameOperation<G: NativeGame> {
     Command { actor: G::Side, command: G::Command },
     /// Orientation preferences; the play mode stays the document's.
     Preferences { settings: SettingsOf<G> },
+    /// A complete native command of the local actor.
+    Local { command: G::Command },
 }
 
 /// Engine telemetry as the observation display needs it.
@@ -181,13 +183,13 @@ impl<G: SessionGame> NativeSession<G> {
     fn local_actor(&self) -> G::Side {
         self.document
             .settings()
-            .play_mode
+            .play_mode()
             .actor(self.document.human(), G::side_to_move(&self.game))
     }
     fn take_back_target(&self) -> Option<usize> {
         let human = self.document.human();
         let events = G::events(&self.game);
-        if self.document.settings().play_mode.is_two_humans() {
+        if self.document.settings().play_mode().is_two_humans() {
             return events.checked_sub(1);
         }
         if let Some(last) = events.checked_sub(1)
@@ -209,7 +211,7 @@ impl<G: SessionGame> NativeSession<G> {
         let control: Option<ControlOf<G>> = match G::operation(operation) {
             Ok(GameOperation::Command { actor, command }) => {
                 let kind = G::command_kind(&command);
-                if self.document.settings().play_mode.is_two_humans()
+                if self.document.settings().play_mode().is_two_humans()
                     && self.paused
                     && kind == CommandKind::Play
                 {
@@ -225,8 +227,11 @@ impl<G: SessionGame> NativeSession<G> {
                 }
                 Some(GameControl::Native { actor, command })
             }
+            Ok(GameOperation::Local { command }) => {
+                return self.apply(G::command_operation(self.local_actor(), command), stopped);
+            }
             Ok(GameOperation::Preferences { mut settings }) => {
-                settings.play_mode = self.document.settings().play_mode;
+                settings.set_play_mode(self.document.settings().play_mode());
                 Some(GameControl::Settings { settings })
             }
             Err(SessionOperation::Resign {}) => {
@@ -752,8 +757,7 @@ impl DesktopController {
                 && !G::concluded(&state.game)
                 && state
                     .document
-                    .settings()
-                    .play_mode
+                    .settings().play_mode()
                     .engine_turn(state.document.human(), G::side_to_move(&state.game));
             if let Some(limits) = analysis {
                 if let Err(e) = self.start_game_work::<G>(limits, true) {
@@ -906,10 +910,10 @@ impl DesktopController {
             game: G::KIND,
             profile,
             edition: G::edition(game),
-            play_mode: settings.play_mode,
+            play_mode: settings.play_mode(),
             local_actor: side(
                 profile,
-                G::native_side(settings.play_mode.actor(human, turn)),
+                G::native_side(settings.play_mode().actor(human, turn)),
             ),
             human: side(profile, G::native_side(human)),
             turn: side(profile, G::native_side(turn)),
@@ -938,14 +942,14 @@ impl DesktopController {
             choices: state.choices.clone(),
             capabilities: CommandCapabilities {
                 board_action: !historical
-                    && (!settings.play_mode.is_two_humans() || !state.paused)
+                    && (!settings.play_mode().is_two_humans() || !state.paused)
                     && !ended
-                    && settings.play_mode.owns(human, turn),
+                    && settings.play_mode().owns(human, turn),
                 drops: G::HANDS,
                 promotion: true,
                 take_back: !historical && state.take_back_target().is_some(),
                 undo: !historical && G::events(&state.game) > 0,
-                engine_turn: !settings.play_mode.is_two_humans(),
+                engine_turn: !settings.play_mode().is_two_humans(),
                 move_analysis: true,
                 chess_full: false,
                 claims: false,

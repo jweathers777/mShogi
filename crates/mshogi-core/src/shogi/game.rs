@@ -106,7 +106,8 @@ impl GameRoot {
 }
 
 /// All supported commands are untimed. Queries do not create events.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, serde::Serialize, serde::Deserialize)]
+#[serde(into = "CommandWire", from = "CommandWire")]
 pub enum GameCommand {
     /// A complete, locally legal board action.
     Play(Action),
@@ -114,6 +115,33 @@ pub enum GameCommand {
     Resign,
     /// Formal CSA declaration. Failing a prerequisite loses, including wrong turn.
     DeclareEnteringKing,
+}
+
+/// Serialized form of a command: `{"kind":"play","action":"7g7f"}`.
+#[derive(serde::Serialize, serde::Deserialize)]
+#[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
+enum CommandWire {
+    Play { action: Action },
+    Resign,
+    DeclareEnteringKing,
+}
+impl From<GameCommand> for CommandWire {
+    fn from(command: GameCommand) -> Self {
+        match command {
+            GameCommand::Play(action) => Self::Play { action },
+            GameCommand::Resign => Self::Resign,
+            GameCommand::DeclareEnteringKing => Self::DeclareEnteringKing,
+        }
+    }
+}
+impl From<CommandWire> for GameCommand {
+    fn from(wire: CommandWire) -> Self {
+        match wire {
+            CommandWire::Play { action } => Self::Play(action),
+            CommandWire::Resign => Self::Resign,
+            CommandWire::DeclareEnteringKing => Self::DeclareEnteringKing,
+        }
+    }
 }
 
 /// Advisory evidence; querying this never declares or changes a game.

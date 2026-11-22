@@ -44,6 +44,21 @@ pub enum NativeFailure {
     Invalid(String),
 }
 
+/// Saved document settings of a game: at least the native orientation and
+/// the participant mode.
+pub trait DocumentSettings:
+    Clone + Eq + Debug + Serialize + DeserializeOwned + Send + Sync + 'static
+{
+    /// Native participant.
+    type Side;
+    /// Settings of a new document.
+    fn new(orientation: Self::Side, play_mode: crate::PlayMode) -> Self;
+    /// Persisted ownership of the two native participants.
+    fn play_mode(&self) -> crate::PlayMode;
+    /// Keep the document's participant mode.
+    fn set_play_mode(&mut self, play_mode: crate::PlayMode);
+}
+
 /// A game that the generic document and session serve.
 pub trait NativeGame: Sized + Send + Sync + 'static {
     /// Display name in diagnostics.
@@ -86,6 +101,8 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
     type Record: Clone + PartialEq + Debug + Send + Sync;
     /// This game's engine result.
     type EngineResult;
+    /// Saved document settings.
+    type Settings: DocumentSettings<Side = Self::Side>;
 
     /// Wrap a native record.
     fn canonical(record: Self::Record) -> CanonicalRecord;
@@ -122,7 +139,7 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
         stop: &mut impl FnMut() -> bool,
     ) -> Result<Self::Undo, NativeFailure>;
     /// Reverse one submitted command.
-    fn undo(game: &mut Self::Game, undo: &mut Self::Undo) -> Result<(), NativeFailure>;
+    fn undo(game: &mut Self::Game, undo: Self::Undo) -> Result<(), NativeFailure>;
     /// Native replay work of a game so far.
     fn replay_work(game: &Self::Game) -> u64;
     /// Events of a game.
@@ -134,17 +151,18 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
     /// An engine Stop is already recorded in the history snapshot.
     fn stop_recorded(game: &Self::Game) -> bool;
 
-    /// Play command of an action.
-    fn play(action: Self::Action) -> Self::Command;
     /// Resign command.
     fn resign() -> Self::Command;
-    /// Engine-failure Stop command.
-    fn engine_failure_stop() -> Self::Command;
+    /// Engine-failure Stop command, if the game records one.
+    fn engine_failure_stop() -> Option<Self::Command>;
 
     /// This game's engine result, if the execution result is one.
     fn engine_result(result: &ExecutionResult) -> Option<&Self::EngineResult>;
-    /// The engine's proposed action of a result, if it proposes one.
-    fn engine_choice(result: &Self::EngineResult) -> Option<&Self::Action>;
+    /// The complete command, with its actor, that an engine result proposes.
+    fn engine_command(
+        result: &Self::EngineResult,
+        game: &Self::Game,
+    ) -> Option<(Self::Side, Self::Command)>;
     /// Validate a result against its target game; the native work it used.
     fn validate_result(
         result: &Self::EngineResult,
@@ -184,6 +202,7 @@ macro_rules! large_shogi_game {
             type Undo = mshogi_core::$core::GameUndo;
             type Record = mshogi_core::$core::GameRecord;
             type EngineResult = mshogi_engine::$engine_result;
+            type Settings = crate::game_document::GameSettings<Self::Side>;
 
             fn canonical(record: Self::Record) -> CanonicalRecord {
                 CanonicalRecord::$core(record)
@@ -245,8 +264,8 @@ macro_rules! large_shogi_game {
                 )
                 .map_err($glue::native_failure)
             }
-            fn undo(game: &mut Self::Game, undo: &mut Self::Undo) -> Result<(), NativeFailure> {
-                game.undo(undo).map(|_| ()).map_err($glue::native_failure)
+            fn undo(game: &mut Self::Game, mut undo: Self::Undo) -> Result<(), NativeFailure> {
+                game.undo(&mut undo).map(|_| ()).map_err($glue::native_failure)
             }
             fn replay_work(game: &Self::Game) -> u64 {
                 game.replay_work()
@@ -263,16 +282,13 @@ macro_rules! large_shogi_game {
             fn stop_recorded(game: &Self::Game) -> bool {
                 game.snapshot().incomplete.is_some()
             }
-            fn play(action: Self::Action) -> Self::Command {
-                mshogi_core::$core::GameCommand::Play { action }
-            }
             fn resign() -> Self::Command {
                 mshogi_core::$core::GameCommand::Resign
             }
-            fn engine_failure_stop() -> Self::Command {
-                mshogi_core::$core::GameCommand::Stop {
+            fn engine_failure_stop() -> Option<Self::Command> {
+                Some(mshogi_core::$core::GameCommand::Stop {
                     reason: mshogi_core::$core::StopReason::EngineFailure,
-                }
+                })
             }
             fn engine_result(result: &ExecutionResult) -> Option<&Self::EngineResult> {
                 match result {
@@ -280,9 +296,17 @@ macro_rules! large_shogi_game {
                     _ => None,
                 }
             }
-            fn engine_choice(result: &Self::EngineResult) -> Option<&Self::Action> {
+            fn engine_command(
+                result: &Self::EngineResult,
+                game: &Self::Game,
+            ) -> Option<(Self::Side, Self::Command)> {
                 match result {
-                    mshogi_engine::$engine_result::Choice { action, .. } => Some(action),
+                    mshogi_engine::$engine_result::Choice { action, .. } => Some((
+                        game.position().side_to_move(),
+                        mshogi_core::$core::GameCommand::Play {
+                            action: action.clone(),
+                        },
+                    )),
                     _ => None,
                 }
             }
@@ -377,6 +401,7 @@ impl NativeGame for Tori {
     type Undo = mshogi_core::tori::GameUndo;
     type Record = mshogi_core::tori::GameRecord;
     type EngineResult = mshogi_engine::ToriResult;
+    type Settings = crate::game_document::GameSettings<Self::Side>;
 
     fn canonical(record: Self::Record) -> CanonicalRecord {
         CanonicalRecord::tori(record)
@@ -441,8 +466,8 @@ impl NativeGame for Tori {
         })
         .map_err(tori_glue::native_failure)
     }
-    fn undo(game: &mut Self::Game, undo: &mut Self::Undo) -> Result<(), NativeFailure> {
-        game.undo(undo)
+    fn undo(game: &mut Self::Game, mut undo: Self::Undo) -> Result<(), NativeFailure> {
+        game.undo(&mut undo)
             .map(|_| ())
             .map_err(tori_glue::native_failure)
     }
@@ -461,16 +486,13 @@ impl NativeGame for Tori {
     fn stop_recorded(game: &Self::Game) -> bool {
         game.snapshot().incomplete.is_some()
     }
-    fn play(action: Self::Action) -> Self::Command {
-        mshogi_core::tori::GameCommand::Play { action }
-    }
     fn resign() -> Self::Command {
         mshogi_core::tori::GameCommand::Resign
     }
-    fn engine_failure_stop() -> Self::Command {
-        mshogi_core::tori::GameCommand::Stop {
+    fn engine_failure_stop() -> Option<Self::Command> {
+        Some(mshogi_core::tori::GameCommand::Stop {
             reason: mshogi_core::tori::StopReason::EngineFailure,
-        }
+        })
     }
     fn engine_result(result: &ExecutionResult) -> Option<&Self::EngineResult> {
         match result {
@@ -478,9 +500,15 @@ impl NativeGame for Tori {
             _ => None,
         }
     }
-    fn engine_choice(result: &Self::EngineResult) -> Option<&Self::Action> {
+    fn engine_command(
+        result: &Self::EngineResult,
+        game: &Self::Game,
+    ) -> Option<(Self::Side, Self::Command)> {
         match result {
-            mshogi_engine::ToriResult::Choice { action, .. } => Some(action),
+            mshogi_engine::ToriResult::Choice { action, .. } => Some((
+                game.position().side_to_move(),
+                mshogi_core::tori::GameCommand::Play { action: *action },
+            )),
             _ => None,
         }
     }
@@ -528,5 +556,251 @@ mod tori_glue {
             ),
             e => NativeFailure::Invalid(e.to_string()),
         }
+    }
+}
+
+/// Shogi has no native replay-work count; the desktop models it like Tori.
+pub mod shogi_work {
+    use mshogi_core::shogi as s;
+    /// A native root admission or serialization costs work even without events.
+    pub const ROOT_WORK: u64 = 128;
+    /// Modelled work of one native command. Measured (MSH-224, release, macOS
+    /// arm64, test `measure_full_length_shogi_replay`): a 319-command record
+    /// replays in 46 ms, about 144 us per command; 200 is about 1.4 times that,
+    /// the same margin as Tori.
+    pub const PLAY_WORK: u64 = 200;
+    /// Upper bound of one record's modelled replay work.
+    pub const MAX_RECORD_WORK: u64 = ROOT_WORK + PLAY_WORK * s::MAX_RECORD_EVENTS as u64;
+    /// Modelled work of a history of `events` commands.
+    pub fn of(events: usize) -> u64 {
+        ROOT_WORK + PLAY_WORK * events as u64
+    }
+}
+
+/// Marker of the native Shogi game behind the generic document and session.
+pub struct Shogi;
+impl NativeGame for Shogi {
+    const NAME: &'static str = "Shogi";
+    const KIND: GameKind = GameKind::Shogi;
+    const SCOPE: ResourceScope = ResourceScope::Shogi;
+    const MAX_DOCUMENT_WORK: u64 = SHOGI_DOCUMENT_WORK;
+    const STOP_AFTER_CONCLUSION: bool = false;
+    const STRICT_CONTROL_FIELDS: bool = true;
+    const SELECTION_WORK_FACTOR: u64 = 3;
+    const MAX_RECORD_BYTES: u64 = mshogi_core::shogi::MAX_RECORD_BYTES as u64;
+    const MAX_EVENTS: u64 = mshogi_core::shogi::MAX_RECORD_EVENTS as u64;
+    const MAX_REPLAY_WORK: u64 = shogi_work::MAX_RECORD_WORK;
+    const SIDES: [Self::Side; 2] = [
+        mshogi_core::shogi::Side::Sente,
+        mshogi_core::shogi::Side::Gote,
+    ];
+
+    type Side = mshogi_core::shogi::Side;
+    type Command = mshogi_core::shogi::GameCommand;
+    type Action = mshogi_core::shogi::Action;
+    type Game = mshogi_core::shogi::Game;
+    type Undo = mshogi_core::shogi::GameUndo;
+    type Record = mshogi_core::shogi::GameRecord;
+    type EngineResult = mshogi_engine::ShogiResult;
+    type Settings = crate::shared::archive::ShogiSettings;
+
+    fn canonical(record: Self::Record) -> CanonicalRecord {
+        CanonicalRecord::shogi(record)
+    }
+    fn native(record: &CanonicalRecord) -> Option<&Self::Record> {
+        match record {
+            CanonicalRecord::Shogi(r) => Some(r),
+            _ => None,
+        }
+    }
+    fn profile(_record: &Self::Record) -> RulesProfile {
+        RulesProfile::ShogiCsa36V1
+    }
+    fn game_profile(_game: &Self::Game) -> RulesProfile {
+        RulesProfile::ShogiCsa36V1
+    }
+    fn reconstruction_work(record: &Self::Record) -> u64 {
+        shogi_work::of(record.event_count())
+    }
+    fn event_count(record: &Self::Record) -> usize {
+        record.event_count()
+    }
+    fn record_side_to_move(record: &Self::Record) -> Self::Side {
+        record.side_to_move()
+    }
+    fn to_game(
+        record: &Self::Record,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<Self::Game, RecordFailure> {
+        // A Shogi record has at most 321 events; replay checks the stop before and after.
+        if stop() {
+            return Err(RecordFailure::Stopped);
+        }
+        let game = record.to_game().map_err(|e| match e {
+            mshogi_core::shogi::RecordError::Capacity => RecordFailure::Capacity(e.to_string()),
+            e => RecordFailure::Invalid(e.to_string()),
+        })?;
+        if stop() {
+            return Err(RecordFailure::Stopped);
+        }
+        Ok(game)
+    }
+    fn from_game(game: &Self::Game) -> Result<Self::Record, RecordFailure> {
+        Ok(mshogi_core::shogi::GameRecord::from_game(game))
+    }
+    fn record_prefix(
+        game: &Self::Game,
+        count: usize,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<Self::Record, RecordFailure> {
+        if stop() {
+            return Err(RecordFailure::Stopped);
+        }
+        let prefix = game
+            .prefix(count)
+            .map_err(|e| RecordFailure::Invalid(format!("{e:?}")))?;
+        Ok(mshogi_core::shogi::GameRecord::from_game(&prefix))
+    }
+    fn submit(
+        game: &mut Self::Game,
+        actor: Self::Side,
+        command: Self::Command,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<Self::Undo, NativeFailure> {
+        if stop() {
+            return Err(NativeFailure::Stopped);
+        }
+        let expected = game.context();
+        game.submit(mshogi_core::shogi::GameRequest {
+            expected,
+            actor,
+            command,
+        })
+        .map_err(|e| NativeFailure::Invalid(format!("Native shogi command rejected: {e:?}")))
+    }
+    fn undo(game: &mut Self::Game, undo: Self::Undo) -> Result<(), NativeFailure> {
+        game.undo(undo)
+            .map_err(|e| NativeFailure::Invalid(format!("{e:?}")))
+    }
+    fn replay_work(game: &Self::Game) -> u64 {
+        shogi_work::of(game.events().len())
+    }
+    fn events(game: &Self::Game) -> usize {
+        game.events().len()
+    }
+    fn side_to_move(game: &Self::Game) -> Self::Side {
+        game.position().side_to_move()
+    }
+    fn concluded(game: &Self::Game) -> bool {
+        game.conclusion().is_some()
+    }
+    fn stop_recorded(_game: &Self::Game) -> bool {
+        false
+    }
+    fn resign() -> Self::Command {
+        mshogi_core::shogi::GameCommand::Resign
+    }
+    fn engine_failure_stop() -> Option<Self::Command> {
+        None
+    }
+    fn engine_result(result: &ExecutionResult) -> Option<&Self::EngineResult> {
+        match result {
+            ExecutionResult::Shogi { result } => Some(result),
+            _ => None,
+        }
+    }
+    fn engine_command(
+        result: &Self::EngineResult,
+        game: &Self::Game,
+    ) -> Option<(Self::Side, Self::Command)> {
+        match result {
+            mshogi_engine::ShogiResult::Choice { choice, .. } => Some(shogi_choice(choice, game)),
+            _ => None,
+        }
+    }
+    fn validate_result(
+        result: &Self::EngineResult,
+        game: &Self::Game,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<u64, String> {
+        // The result identity is checked with the observation; replay its line
+        // on a private copy of the game.
+        let line = match result {
+            mshogi_engine::ShogiResult::Choice { telemetry, .. }
+            | mshogi_engine::ShogiResult::Finished { telemetry, .. }
+            | mshogi_engine::ShogiResult::Incomplete { telemetry } => {
+                &telemetry.principal_variation
+            }
+        };
+        let mut probe = game.clone();
+        for choice in line {
+            let (actor, command) = shogi_choice(choice, &probe);
+            Self::submit(&mut probe, actor, command, stop).map_err(|e| match e {
+                NativeFailure::Stopped => "Shogi observation validation stopped".to_string(),
+                NativeFailure::Capacity(_, d) | NativeFailure::Invalid(d) => d,
+            })?;
+        }
+        Ok(shogi_work::PLAY_WORK * line.len() as u64)
+    }
+}
+/// The actor and command of an engine choice in `game`.
+fn shogi_choice(
+    choice: &mshogi_engine::ShogiChoice,
+    game: &mshogi_core::shogi::Game,
+) -> (mshogi_core::shogi::Side, mshogi_core::shogi::GameCommand) {
+    match choice {
+        mshogi_engine::ShogiChoice::Move { action } => (
+            game.position().side_to_move(),
+            mshogi_core::shogi::GameCommand::Play(*action),
+        ),
+        mshogi_engine::ShogiChoice::Declare { actor } => {
+            (*actor, mshogi_core::shogi::GameCommand::DeclareEnteringKing)
+        }
+    }
+}
+/// Whole-document validation allowance of Shogi, in modelled replay units.
+const SHOGI_DOCUMENT_WORK: u64 = 4_194_304;
+
+#[cfg(test)]
+mod measurements {
+    use mshogi_core::shogi as s;
+    /// MSH-224 measurement: replay of a full-length Shogi record. Run with
+    /// `--ignored --nocapture` in release.
+    #[test]
+    #[ignore]
+    fn measure_full_length_shogi_replay() {
+        let mut g = s::Game::new();
+        while g.conclusion().is_none() {
+            let actions = g.position().legal_actions();
+            let next = actions.iter().copied().find(|a| {
+                let mut probe = g.clone();
+                probe
+                    .submit(s::GameRequest {
+                        expected: probe.context(),
+                        actor: probe.position().side_to_move(),
+                        command: s::GameCommand::Play(*a),
+                    })
+                    .is_ok()
+                    && (probe.conclusion().is_none() || probe.events().len() >= 319)
+            });
+            let Some(a) = next else { break };
+            g.submit(s::GameRequest {
+                expected: g.context(),
+                actor: g.position().side_to_move(),
+                command: s::GameCommand::Play(a),
+            })
+            .unwrap();
+        }
+        let record = s::GameRecord::from_game(&g);
+        let started = std::time::Instant::now();
+        for _ in 0..5 {
+            record.to_game().unwrap();
+        }
+        let ms = started.elapsed().as_secs_f64() * 1e3 / 5.0;
+        println!(
+            "MSH224 shogi events={} replay_ms={ms:.1} us_per_event={:.1}",
+            record.event_count(),
+            ms * 1e3 / record.event_count() as f64
+        );
     }
 }

@@ -411,7 +411,7 @@ impl GameRecord {
         }
         let probe: Probe = serde_json::from_str(text).map_err(|_| RecordError::Json)?;
         if probe.version.schema_version == 1 {
-            return Self::replay_v1(text);
+            return Self::replay_v1(text, stop);
         }
         let wire: WireRecord = serde_json::from_str(text).map_err(|_| RecordError::Json)?;
         if wire.format != "mshogi.tori.game"
@@ -512,7 +512,10 @@ impl GameRecord {
     /// commands under the current rule (MSH-208). A record whose history now
     /// contains a refused third occurrence, or whose derived facts differ, is
     /// refused (`Command` or `Derived`). The result encodes as the current schema.
-    fn replay_v1(text: &str) -> Result<(Game, Vec<GameUndo>), RecordError> {
+    fn replay_v1(
+        text: &str,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<(Game, Vec<GameUndo>), RecordError> {
         let wire: WireRecordV1 = serde_json::from_str(text).map_err(|_| RecordError::Json)?;
         if wire.format != "mshogi.tori.game"
             || wire.game != "tori"
@@ -532,6 +535,9 @@ impl GameRecord {
         }
         let mut undo = Vec::with_capacity(wire.events.len());
         for (i, event) in wire.events.iter().enumerate() {
+            if stop() {
+                return Err(RecordError::Stopped);
+            }
             undo.push(
                 game.submit(GameRequest {
                     expected: game.context(),
@@ -559,6 +565,9 @@ impl GameRecord {
             || game.snapshot().incomplete != wire.incomplete
         {
             return Err(RecordError::Derived);
+        }
+        if stop() {
+            return Err(RecordError::Stopped);
         }
         Ok((game, undo))
     }

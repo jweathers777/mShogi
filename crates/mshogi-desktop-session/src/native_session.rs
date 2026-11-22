@@ -74,6 +74,8 @@ pub(crate) trait SessionGame: NativeGame {
         replacement: bool,
         durable: bool,
     ) -> archive::NativeCompleted;
+    /// A restored session as an opened document.
+    fn opened(state: Box<NativeSession<Self>>) -> archive::OpenedNative;
     fn state(session: &ActiveDocument) -> Option<&NativeSession<Self>>;
     fn state_mut(session: &mut ActiveDocument) -> Option<&mut NativeSession<Self>>;
 
@@ -523,6 +525,17 @@ pub(crate) fn execute<G: SessionGame>(
     state.choices = choices;
     persistence::check(stopped)?;
     Ok(G::completed(state, work.replacement, durable))
+}
+
+/// Open on the file worker: decode, validate and restore a saved document.
+pub(crate) fn open<G: SessionGame>(
+    bytes: &[u8],
+    stopped: &mut impl FnMut() -> bool,
+) -> Result<archive::OpenedNative, OperationFailure> {
+    let document = ValidatedGameDocument::<G>::decode(bytes, stopped)?;
+    Ok(G::opened(Box::new(NativeSession::restore(
+        document, stopped,
+    )?)))
 }
 
 /// Save on the file worker: refresh the runtime floor, validate the complete
@@ -1110,6 +1123,9 @@ macro_rules! session_wiring {
                 replacement,
                 durable,
             }
+        }
+        fn opened(state: Box<NativeSession<Self>>) -> archive::OpenedNative {
+            archive::OpenedNative::$game(state)
         }
         fn state(session: &ActiveDocument) -> Option<&NativeSession<Self>> {
             session.$state()

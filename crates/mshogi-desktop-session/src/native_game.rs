@@ -498,12 +498,14 @@ impl NativeGame for Tori {
     }
 }
 /// Whole-document validation allowance of Tori, in modelled replay units.
-/// Measured (MSH-223, release, macOS arm64): a 360-event document charges
-/// 208,232 units and validates in 33 ms (about 0.16 us per unit); one engine
-/// observation on it brings the document to 346,729 units. The aggregate
-/// retained-event limit (4,096) holds a document to about 4,000,000 units, so
-/// that limit binds first; this allowance is about 1.3 s of validation.
-const TORI_DOCUMENT_WORK: u64 = 8_388_608;
+/// Measured (MSH-223, release, macOS arm64, test
+/// `measure_full_length_records_against_the_work_limit`): one 1,022-event
+/// record is 196,352 units and replays in 158 ms (about 0.8 us per unit). The
+/// largest valid document (4,088 retained events, two retired branches and a
+/// browse selection) charges 2,551,620 units and validates in 1.2 s. A forged
+/// file of full-length records is refused at this allowance after about 3.7 s,
+/// well within the file worker's 15 s deadline.
+const TORI_DOCUMENT_WORK: u64 = 4_194_304;
 mod tori_glue {
     use super::*;
     use mshogi_core::tori as t;

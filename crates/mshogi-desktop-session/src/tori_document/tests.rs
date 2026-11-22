@@ -945,13 +945,14 @@ fn native_record_byte_ceiling_and_desktop_precharge_reject_forged_work_before_na
     ValidatedToriDocument::decode(at.as_bytes(), &mut || false).unwrap();
     padded.insert(padded.len() - 1, ' ');
     let over = doc.replace("\"NATIVE_PAD\"", &padded);
-    assert!(ValidatedToriDocument::decode(over.as_bytes(), &mut || false).is_err());
+    assert_tori_resource(
+        ValidatedToriDocument::decode(over.as_bytes(), &mut || false).unwrap_err(),
+    );
     let mut v: Value = serde_json::from_slice(standard().bytes()).unwrap();
     let event = json!({"command":{"kind":"play"}});
-    v["payload"]["current"]["payload"]["events"] =
-        json!(vec![event.clone(); t::MAX_GAME_EVENTS + 1]);
-    assert!(
-        ValidatedToriDocument::decode(&serde_json::to_vec(&v).unwrap(), &mut || false).is_err()
+    v["payload"]["current"]["payload"]["events"] = over_limit_events();
+    assert_tori_resource(
+        ValidatedToriDocument::decode(&serde_json::to_vec(&v).unwrap(), &mut || false).unwrap_err(),
     );
     // Many bounded-looking native contexts must fail raw aggregate preflight,
     // even when each forged event is cheap and native replay would fail. Since
@@ -988,12 +989,10 @@ fn every_native_record_is_precharged_and_wrong_inner_identity_never_falls_throug
     for which in ["initial", "current"] {
         let mut v = good.clone();
         // MSH-208: no separate native replay-work bound; the event bound applies.
-        v["payload"][which]["payload"]["events"] = json!(vec![
-            json!({"command":{"kind":"play"}});
-            t::MAX_GAME_EVENTS + 1
-        ]);
-        assert!(
-            ValidatedToriDocument::decode(&serde_json::to_vec(&v).unwrap(), &mut || false).is_err()
+        v["payload"][which]["payload"]["events"] = over_limit_events();
+        assert_tori_resource(
+            ValidatedToriDocument::decode(&serde_json::to_vec(&v).unwrap(), &mut || false)
+                .unwrap_err(),
         );
     }
 }
@@ -1208,4 +1207,101 @@ fn path() -> std::path::PathBuf {
         std::process::id(),
         N.fetch_add(1, std::sync::atomic::Ordering::Relaxed)
     ))
+}
+
+/// MSH-223 measurement: full-length records near the work limit. Run with
+/// `--ignored --nocapture` in release.
+#[test]
+#[ignore]
+fn measure_full_length_records_against_the_work_limit() {
+    let mut g = t::Game::standard();
+    while g.events().len() < t::MAX_GAME_EVENTS - 2 {
+        let actions = g.legal_actions();
+        let next = actions.into_iter().find(|a| {
+            let mut probe = g.fork().unwrap();
+            play(&mut probe, *a).is_ok() && probe.conclusion().is_none()
+        });
+        let Some(a) = next else { break };
+        play(&mut g, a).unwrap();
+    }
+    let record = t::GameRecord::from_game(&g).unwrap();
+    let started = Instant::now();
+    record.to_game().unwrap();
+    let one_ms = started.elapsed().as_secs_f64() * 1e3;
+    let work =
+        crate::native_game::tori_work::of(record.event_count(), record.known_board_actions());
+    let d = ValidatedToriDocument::new(record.clone(), t::Side::Sente).unwrap();
+    let started = Instant::now();
+    ValidatedToriDocument::decode(d.bytes(), &mut || false).unwrap();
+    let valid_ms = started.elapsed().as_secs_f64() * 1e3;
+    // Largest valid document: initial, current and two retired full-length
+    // records (4,088 retained events), with a browse selection.
+    let last = g.events().len() - 1;
+    let t::GameCommand::Play { action } = g.events()[last].command else {
+        panic!()
+    };
+    let actor = g.events()[last].actor;
+    let mut big = d.clone();
+    for _ in 0..2 {
+        big = big
+            .with_control(
+                ToriControl::Rewind {
+                    event_index: last,
+                    reason: RewindKind::Undo,
+                },
+                &mut || false,
+            )
+            .unwrap();
+        big = big
+            .with_control(
+                ToriControl::Native {
+                    actor,
+                    command: t::GameCommand::Play { action },
+                },
+                &mut || false,
+            )
+            .unwrap();
+    }
+    let big = big.with_selection(Some(last), &mut || false).unwrap();
+    let started = Instant::now();
+    ValidatedToriDocument::decode(big.bytes(), &mut || false).unwrap();
+    println!(
+        "MSH223 largest_valid_ms={:.1} usage={:?}",
+        started.elapsed().as_secs_f64() * 1e3,
+        big.usage()
+    );
+    // Forged: valid full-length retired records up to the byte limit; refused
+    // by the work limit after bounded parsing.
+    let per = d.bytes().len() / 2;
+    let mut v: Value = serde_json::from_slice(d.bytes()).unwrap();
+    let current = v["payload"]["current"].clone();
+    v["payload"]["retired"] = json!(vec![
+        json!({"control_index":0,"record":current});
+        MAX_ARCHIVE_BYTES / per - 3
+    ]);
+    let forged = serde_json::to_vec(&v).unwrap();
+    let started = Instant::now();
+    let refused = ValidatedToriDocument::decode(&forged, &mut || false).unwrap_err();
+    let forged_ms = started.elapsed().as_secs_f64() * 1e3;
+    println!(
+        "MSH223 events={} work={work} one_replay_ms={one_ms:.1} valid_doc_ms={valid_ms:.1} usage={:?} forged_refusal_ms={forged_ms:.1} forged={:?}",
+        record.event_count(),
+        d.usage(),
+        refused.resource.map(|r| r.facts()[0].category)
+    );
+}
+
+/// A well-formed native event, repeated past the native event limit.
+fn over_limit_events() -> Value {
+    let mut g = t::Game::standard();
+    let a = g.legal_actions()[0];
+    play(&mut g, a).unwrap();
+    let record: Value =
+        serde_json::from_str(t::GameRecord::from_game(&g).unwrap().to_json()).unwrap();
+    json!(vec![record["events"][0].clone(); t::MAX_GAME_EVENTS + 1])
+}
+/// The refusal is a typed Tori resource refusal, not a syntax error.
+fn assert_tori_resource(e: ToriDocumentError) {
+    let f = e.resource.expect("typed resource refusal");
+    assert_eq!(f.facts()[0].scope, Some(ResourceScope::Tori), "{f:?}");
 }

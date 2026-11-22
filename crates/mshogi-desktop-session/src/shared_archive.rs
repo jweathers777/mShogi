@@ -1209,20 +1209,9 @@ pub(crate) fn execute(
             let bytes = read(&path, stopped)?;
             let value = crate::document::DocumentEnvelope::parse(&bytes)?;
             let game = match value.game_kind {
-                GameKind::Tenjiku => {
-                    OpenedNative::Tenjiku(Box::new(tenjiku::TenjikuSession::restore(
-                        crate::tenjiku_document::ValidatedTenjikuDocument::decode(&bytes, stopped)?,
-                        stopped,
-                    )?))
-                }
-                GameKind::Chu => OpenedNative::Chu(Box::new(chu::ChuSession::restore(
-                    crate::chu_document::ValidatedChuDocument::decode(&bytes, stopped)?,
-                    stopped,
-                )?)),
-                GameKind::Tori => OpenedNative::Tori(Box::new(tori::ToriSession::restore(
-                    crate::tori_document::ValidatedToriDocument::decode(&bytes, stopped)?,
-                    stopped,
-                )?)),
+                GameKind::Tenjiku => native_session::open::<Tenjiku>(&bytes, stopped)?,
+                GameKind::Chu => native_session::open::<Chu>(&bytes, stopped)?,
+                GameKind::Tori => native_session::open::<Tori>(&bytes, stopped)?,
                 GameKind::Chess => OpenedNative::Chess(Box::new(
                     persistence::decode_chess_payload(value.payload.get().as_bytes(), stopped)?,
                 )),

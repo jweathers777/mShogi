@@ -1,7 +1,11 @@
 # Chu strength harness
 
 Chu uses the shared clocked native experiment runner and structured internal
-protocol. No external opponent or text protocol is needed. Native rules admit
+protocol. No external opponent or text protocol is needed. Timed engine turns retain a
+native game in the shared incremental session. An authenticated exact prefix
+permits a suffix; takeback, unrelated roots and process restarts require a full
+reset. Every suffix command and its derived event are checked before the new
+state is installed. Saved-game JSON is unchanged. Native rules admit
 every complete action and decide the result. Measurements and costs belong in
 the relevant Backlog task and its ignored `runs/` directory.
 
@@ -35,7 +39,12 @@ invent a result for unresolved no-action positions. Cases cover double capture,
 capture-return, the qualifying intermediate capture of a defended Lion and
 capture of both opposing royals.
 
-The suite is an elementary screen, not a deep tactical-strength measure.
+`chu_strength forcing OUT COUNT` separately constructs three-ply material wins.
+It enumerates every defender reply with the native proof, rejects one-ply wins
+and omits a position if a complete answer set exceeds 200,000 proof visits.
+These positions also share construction templates; retain this limitation.
+
+The first suite is an elementary screen, not a deep tactical-strength measure.
 Its held-out part uses unseen placements from shared construction templates.
 Keep that limitation when reporting scores. `chu_strength probe SUITE OUT MS`
 compares the search choice with the complete independently proved answer set.

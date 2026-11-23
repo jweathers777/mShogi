@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-20T23:26:00Z'
-updated_date: '2026-11-23T18:49:00Z'
+updated_date: '2026-11-23T18:51:00Z'
 labels:
   - runner
   - refactor
@@ -27,9 +27,9 @@ Approach: list the real differences, design the boundary from them (A-10; genera
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 One generic runner (and, if it fits, one generic clocked match runner) serves Shogi and Xiangqi; per-game code holds only protocol, notation and rules differences; production line counts before and after are recorded
+- [x] #1 One generic runner (and, if it fits, one generic clocked match runner) serves Shogi and Xiangqi; per-game code holds only protocol, notation and rules differences; production line counts before and after are recorded
 - [ ] #2 Behavior is unchanged: runner tests pass, written once against the shared code where they were copied, and the recorded Shogi and Xiangqi reports in docs/m4 still replay
-- [ ] #3 One review by a fresh agent session of the boundary and the migration
+- [x] #3 One review by a fresh agent session of the boundary and the migration
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -46,4 +46,6 @@ Started from main 731a8ff. Trace Shogi/Xiangqi runner semantics and preserve rec
 Checkpoint: shared untimed Controller/run/replay and persistent clocked run/replay are implemented on codex/msh-218-shared-protocol-runner. Concrete report/config schemas and native adapter differences remain. Untimed and recorded-report tests: 29 passed; clocked fixture suites: 10 passed (two optional full-engine tests skipped internally because release mshogi was not built). Copied failure tests now share macros across both adapters. Fresh independent untimed and clocked reviews found no actionable defects. Next: validate final shared configuration helpers and tests, run workspace checks, build release console for actual clocked games, targeted process CI on Linux/macOS/Windows, record line counts, integrate and clean.
 
 Production line count (wc-style including comments/blank lines, excluding the unchanged #[cfg(test)] unit module): before at 731a8ff shogi 1110, xiangqi 1356, shogi_match 504, xiangqi_match 654, clocked 327 = 3951; after at d5fe836 shogi 445, xiangqi 735, shogi_match 303, xiangqi_match 452, clocked 328, protocol 908, protocol_match 354 = 3525 (426 fewer, 10.8%). Whole-file totals including the unchanged 74-line unit module: 4025 -> 3599. Shared native data models and runtime traits preserve serialized config/report shapes; native adapters retain dialect/notation, admission, terminal/pending outcome, and Xiangqi strict transcript differences. Final helper/test delta also reviewed without findings. Formatting and workspace Clippy passed. Product commit d5fe836 is pushed. Targeted process CI: https://github.com/jweathers777/mShogi/actions/runs/45242420199 ; workspace debug tests currently compiling.
+
+Verification checkpoint after merging main (already current): required debug workspace test stopped at the same four MSH-199 Chu internal watchdog failures (30.38 s); no Chu code changed. Final fmt and Clippy passed. Release console build and full release workspace suite are running with two build/test workers. The release console build makes the optional actual Shogi/Xiangqi full-game tests execute. Native full-suite debug warning about duplicate tenjiku_work example names remains tracked by MSH-234. No strength experiment or cloud VM was needed; GCP compute cost $0.
 <!-- SECTION:NOTES:END -->

@@ -472,7 +472,7 @@ fn composed_size_evidence_counts_native_wrapper_request_and_echoed_response() {
     .unwrap()
     .len();
     let response = run(context.clone());
-    let echoed = serde_json::to_vec(&incremental::Response::new(
+    let echoed = serde_json::to_vec(&mshogi_engine::incremental::Response::new(
         &serde_json::to_vec(&ExecutionRequest {
             protocol: PROTOCOL_VERSION,
             context: response.context.clone(),
@@ -508,7 +508,7 @@ fn composed_size_evidence_counts_native_wrapper_request_and_echoed_response() {
     .unwrap()
     .len();
     let response = run(context);
-    let echoed = serde_json::to_vec(&incremental::Response::new(
+    let echoed = serde_json::to_vec(&mshogi_engine::incremental::Response::new(
         &serde_json::to_vec(&ExecutionRequest {
             protocol: PROTOCOL_VERSION,
             context: response.context.clone(),

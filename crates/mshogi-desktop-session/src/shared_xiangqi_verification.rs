@@ -225,7 +225,8 @@ impl DesktopController {
                 let mut response = Vec::new();
                 mshogi_engine::serve_once(std::io::Cursor::new(bytes), &mut response)
                     .map_err(|e| e.to_string())?;
-                let response = serde_json::from_slice(&response).map_err(|e| e.to_string())?;
+                let response =
+                    ExecutionResponse::decode(&response, &execution_request(request.clone()))?;
                 if !self.accept_shared(response) {
                     return Err("Verification observation failed native context admission.".into());
                 }

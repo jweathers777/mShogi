@@ -1,11 +1,11 @@
 ---
 id: MSH-225
 title: Chess Document and Session Fit
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-22T09:57:00Z'
-updated_date: '2026-11-23T10:42:00Z'
+updated_date: '2026-11-23T10:51:00Z'
 labels:
   - desktop
   - refactor
@@ -24,9 +24,9 @@ Chess has its own DesktopSession, ChessDocument and mutation journal (lib.rs, pe
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Measured comparison of the Chess session and document against the generic ones, with each difference classed as rules, product or history; result recorded in the task
-- [ ] #2 Chess uses the generic document and session, or the parts that are the same are shared code with no copies; the reason for any remaining separation is recorded
-- [ ] #3 Desktop-session and workspace tests pass; one fresh-agent review
+- [x] #1 Measured comparison of the Chess session and document against the generic ones, with each difference classed as rules, product or history; result recorded in the task
+- [x] #2 Chess uses the generic document and session, or the parts that are the same are shared code with no copies; the reason for any remaining separation is recorded
+- [x] #3 Desktop-session and workspace tests pass; one fresh-agent review
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -72,4 +72,12 @@ Windows CI exposed a test scheduling race in concurrent_save_as_keeps_new_admiss
 Platform results: Linux and macOS persistence passed on production commit 8bfc824 (run 45156397616). Windows hit the test-only Open scheduling race; corrected test is ccb61c6 and Windows run 45157620360 is in progress. The first local release run compiled before the engine-phase fix and hit its expected Idle wait failure; final release workspace run now includes both corrections. No product or rules changes remain pending.
 
 Windows persistence rerun 45157620360 passed. Final real-process tests found New Game installation overwrote Idle with Paused while leaving paused=false; fixed common prepare_install to preserve running intent after retiring old execution. Open remains stopped. The process-failure test now starts request 1 with a human move instead of assuming New Game resets request numbering; both MissingResponse and UnexpectedExit and no-extra-move assertions remain. All 9 real-process play/analysis/persistence tests pass. Fresh reviewer confirmed the final fix has no findings. Final release workspace check next.
+
+Integrated into main at e1af145. Final checks: cargo fmt and workspace clippy passed; release workspace passed 1184 tests with 11 ignored; all-feature desktop-session passed 204; real-process Chess play/analysis/persistence passed 9; frontend passed 609; Python GUI scripts passed 176; TypeScript passed. Debug workspace retains the four known Chu watchdog failures tracked by MSH-199. Fresh review and final fix review have no remaining findings. Persistence CI: Linux/macOS passed in https://github.com/jweathers777/mShogi/actions/runs/45156397616 ; Windows passed after deterministic test gating in https://github.com/jweathers777/mShogi/actions/runs/45157620360 . Final production commit routine CI passed in https://github.com/jweathers777/mShogi/actions/runs/45158629737 . Packaged GUI/release campaign not run (not required for this task). Logs uploaded to gs://mshogi-experiments-216675633801/runs/msh-225/ ; no GCP compute or VMs used. Existing MSH-199 is the test follow-up; next ready medium-priority task is MSH-218 (Shared Protocol Runner).
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Chess now uses the shared minimal document and NativeSession lifecycle. Accepted match commands preserve claims, offers and native conclusions; Full analysis remains read-only and results stay in session memory. Removed about 5,000 net lines of separate archive/session code. Release workspace, frontend, process and affected-platform persistence checks passed; known debug Chu watchdog failures remain in MSH-199. Fresh review findings fixed. Integrated into main.
+<!-- SECTION:FINAL_SUMMARY:END -->

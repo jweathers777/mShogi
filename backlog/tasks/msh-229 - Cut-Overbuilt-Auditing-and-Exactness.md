@@ -1,11 +1,11 @@
 ---
 id: MSH-229
 title: Cut Overbuilt Auditing and Exactness
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-22T16:43:00Z'
-updated_date: '2026-11-23T11:17:00Z'
+updated_date: '2026-11-23T11:22:00Z'
 labels:
   - refactor
   - simplification
@@ -24,9 +24,9 @@ Early development (ChatGPT agents, approved without enough challenge) built audi
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 A written inventory (task notes) of every audit, provenance, exactness or defensive mechanism in crates/ and desktop/, each with what it protects, whether anything uses it, and a keep/cut/simplify verdict with a reason
-- [ ] #2 Every cut or simplification is either done here in small reviewed steps or split into its own task with a clear goal; no game rule changes and no rules test is loosened
-- [ ] #3 Line counts before and after, and the checks (fmt, clippy, workspace tests, frontend tests) pass after each step
+- [x] #1 A written inventory (task notes) of every audit, provenance, exactness or defensive mechanism in crates/ and desktop/, each with what it protects, whether anything uses it, and a keep/cut/simplify verdict with a reason
+- [x] #2 Every cut or simplification is either done here in small reviewed steps or split into its own task with a clear goal; no game rule changes and no rules test is loosened
+- [x] #3 Line counts before and after, and the checks (fmt, clippy, workspace tests, frontend tests) pass after each step
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -98,4 +98,12 @@ Measured first-step source count (tracked .rs/.ts/.tsx/.py/.mjs under crates/ an
 Linux persistence CI 45162808849 found a scheduling race in the first half of concurrent_save_as_keeps_new_admission_dirty_and_open_retires_it: shared_command can publish its fast preference admission before queue_shared_save is called. Added the existing test-only admission-result gate around that pending-admission assertion. The second Open/cancel half was already gated in MSH-225. No product code or assertion changed; this makes the required pending state deterministic.
 
 Final source count including the deterministic test gate: 158610 -> 158420, net -190 (desktop-session 26246 -> 26093; desktop/src 7498 -> 7461). Fresh review confirmed the gate preserves the pending-Save assertion and later acceptance/dirty-state checks. Corrected Linux persistence run is 45163460972; macOS/Windows continue in 45162808849. Final debug run has the same four known Chu watchdog failures. Final release workspace run is underway on 264d68f. No further code change is pending.
+
+Integrated into main at 2139d71. Final release workspace: 1180 passed, 11 ignored; all-feature desktop-session: 200 passed; frontend: 603 passed; Python GUI scripts: 176 passed; TypeScript, fmt and workspace clippy passed. Debug workspace retains the same four known Chu watchdog failures (MSH-199); no rules expectations or watchdog limits changed. Fresh review approved the inventory, bounded cuts and final deterministic test gate. macOS/Windows persistence passed in https://github.com/jweathers777/mShogi/actions/runs/45162808849 ; corrected Linux persistence passed in https://github.com/jweathers777/mShogi/actions/runs/45163460972 . Packaged GUI and strength campaigns were not run because this step changes neither rendering, packaging nor engine strength. Local Mac arm64 checks used two Cargo jobs/test threads; no GCP compute or VMs used. Logs and source-count data are at gs://mshogi-experiments-216675633801/runs/msh-229/ . Follow-ups MSH-230/231/232/233 are Ready; existing MSH-227 and MSH-209 carry cross-references.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Recorded a reviewed 30-group inventory of audit, provenance, exactness and defensive mechanisms and their real consumers. Removed obsolete archive watermark/quota models, unused resource input parsing and stale saved-result wording: 190 net source lines. Larger cuts are scoped in MSH-230 through MSH-233, with Xiangqi replay work in MSH-227. Release workspace, frontend and affected-platform persistence checks passed; known debug Chu failures remain in MSH-199. No rules or saved-game history was changed.
+<!-- SECTION:FINAL_SUMMARY:END -->

@@ -220,7 +220,8 @@ def completed_tenjiku_analysis(before, after, request_floor, generation_floor, d
         selected=before['tenjiku']['selected'];turn={'game_kind':'tenjiku','side':before['context']['payload']['current_position']['side']}
         if (len(current)!=len(previous)+1 or [item['observation'] for item in current[:-1]]!=[item['observation'] for item in previous]
                 or after['profile']!=before['profile'] or after['context']!=before['context']
-                or after['token']['document']!=before['token']['document'] or after['token']['version']<=before['token']['version']
+                or after['token']['document']!=before['token']['document'] or after['token']['version']!=before['token']['version']
+                or after['token']['revision']<=before['token']['revision']
                 or after['tenjiku']['selected']!=selected or after['tenjiku']['live']!=before['tenjiku']['live']
                 or after['moves']['entries']!=before['moves']['entries']):return False
         observation=current[-1]['observation'];context=observation['context'];purpose=context['purpose'];target=purpose['target']

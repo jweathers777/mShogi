@@ -97,8 +97,8 @@ it("cannot override native historical admission with disabled=false, while reado
 });
 it("projects only board rows, native nonmove events and selected completed geometry", () => {
   const ended = resignedJson as unknown as ToriSnapshot; render(<NativeHistory snapshot={ended} disabled={false} command={vi.fn()} />);
-  expect(ended.moves.entries).toHaveLength(1); expect(ended.events).toHaveLength(3);
-  expect(screen.getByRole("button", { name: "1. Sente: RQ*5e" })).toBeTruthy(); expect(screen.getByText(/Position events \(2\)/)).toBeTruthy();
+  expect(ended.moves.entries).toHaveLength(1); expect(ended.events).toHaveLength(2);
+  expect(screen.getByRole("button", { name: "1. Sente: RQ*5e" })).toBeTruthy(); expect(screen.getByText(/Position events \(1\)/)).toBeTruthy();
   cleanup(); const { container, rerender } = board(dropJson as unknown as ToriSnapshot);
   expect(container.querySelector(".completed-action-origin")).toBeNull(); expect(container.querySelector(".completed-action-destination")).not.toBeNull();
   rerender(<GameBoard snapshot={historyJson as unknown as ToriSnapshot} disabled={false} inspectionDisabled={false} command={vi.fn()} />);

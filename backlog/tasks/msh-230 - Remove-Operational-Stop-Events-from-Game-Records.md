@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-23T11:04:00Z'
-updated_date: '2026-11-23T12:37:00Z'
+updated_date: '2026-11-23T12:40:00Z'
 labels:
   - simplification
   - core
@@ -48,4 +48,6 @@ Fresh review completed with no concrete Rust defects. Added direct console cover
 First release workspace pass reached consumer tests and stopped on experiments reading the old checked-in Tori document schema. The native document generators will refresh Tori/Chu/Tenjiku GUI documents and manifests before rerunning. No game-rule failure observed in this pass.
 
 Fixture migration: refreshed 87 existing frontend DTO fixtures and 43 existing saved-document/manifest fixtures through native generators. Compared all 41 changed saved documents against the prior files after removing only schema labels and operational fields: roots, player commands, effects, outcomes, sides and settings are identical. Source count (.rs/.ts/.tsx/.py/.mjs, all tracked paths) 172040 -> 171697, net -343. fmt and workspace all-target clippy pass. Full release/debug and affected-OS persistence verification remain before integration.
+
+Final frontend fixture assertions now pass: 603 frontend tests and 176 Python tests. Updated the GUI analysis verifier to the existing read-only result contract (game version unchanged, session revision advances), with negative tests for stale revision or changed game version; regenerated native DTOs exposed the old assertion. No product behavior changed in this verification adjustment.
 <!-- SECTION:NOTES:END -->

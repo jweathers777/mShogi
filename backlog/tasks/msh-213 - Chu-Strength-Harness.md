@@ -5,10 +5,11 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-20T22:51:00Z'
-updated_date: '2026-11-23T22:08:00Z'
+updated_date: '2026-11-23T22:09:00Z'
 labels:
   - chu
   - search
+  - needs-john
 milestone: m-5
 dependencies:
   - MSH-236
@@ -63,4 +64,6 @@ Follow-up created: MSH-236 (Chu Native Long-Game Capacity), Ready/high. Final lo
 Blocking evidence: pilot2 standard predecessor pair at30s+0.5s also stopped both games at ReplayWork (219 requests each,321.3s pair wall); compact seed1 selfplay at10s+0.1s produced one native conclusion at31 requests and one ReplayWork failure at218 requests (51.3s pair wall). Both pairs remain unscored and campaigns stopped. Do not select only short wins to manufacture a strength result. MSH-236 now directly blocks the completed-game/control/odds/export criteria. Asked John in this chat for authorization to work MSH-236 then return here; answer pending. Compact frozen-predecessor pilot still running, with automatic cleanup. All current product changes passed local checks; Windows/macOS process CI still pending. Branch codex/msh-213-chu-strength-harness, source7bad3f3; do not mark Done.
 
 Final checkpoint: targeted process CI45273664857 succeeded on Linux, Windows and macOS for product source1a744c7. Compact frozen-predecessor seed1 at30s+0.5s also failed both games on ReplayWork (222/223 requests;328.9s wall), unscored. AC1/2 have evidence and are checked; AC3/4 remain open. Next step is MSH-236, subject to the scope approval requested from John, then repeat completed game/control/time-odds/export evidence. No rules, replay limits or result scoring were loosened. Cloud evidence: gs://mshogi-experiments-216675633801/runs/msh-213/ including checkpoint-evidence.tar.gz; last controller cleanup in progress. Branch codex/msh-213-chu-strength-harness remains unmerged.
+
+Cloud cleanup complete: all11 task controllers verified their jobs/VMs/disks absent; temporary msh213-measure-completion subscription deleted. Sum of conservative compute upper bounds US$1.452 (not actual billing; Cloud Build/storage additional, total comfortably belowUS$10). Compact failed-game late medians14 selfplay and9 versus predecessor do not satisfy the completed-game gate. Final diagnostic archive checkpoint-evidence.tar.gz includes manifests, local test logs and cleanup receipts. Local generated build/run caches will be removed after upload; recreate the controller venv when resuming. Awaiting John scope approval for MSH-236; MSH-213 remains In Progress/needs-john.
 <!-- SECTION:NOTES:END -->

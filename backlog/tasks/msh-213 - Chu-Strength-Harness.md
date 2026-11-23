@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-20T22:51:00Z'
-updated_date: '2026-11-23T22:04:00Z'
+updated_date: '2026-11-23T22:08:00Z'
 labels:
   - chu
   - search
@@ -23,8 +23,8 @@ Goal: the harness step of the per-game classical strength program (docs/m5/stren
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 At least 100 balanced openings, with their source and the balance rule fixed before screening
-- [ ] #2 A tactical suite of at least 200 positions with independently established answers (for example from a native mate prover) and a held-out part, with the baseline score
+- [x] #1 At least 100 balanced openings, with their source and the balance rule fixed before screening
+- [x] #2 A tactical suite of at least 200 positions with independently established answers (for example from a native mate prover) and a held-out part, with the baseline score
 - [ ] #3 A game-test control at which the median late-game depth is at least 8, or a lower target with its reason and cost recorded; a game test against a frozen predecessor runs end to end in the cloud
 - [ ] #4 A self-play export for Texel data with a split, and a time-odds measurement (2x time) recorded
 <!-- AC:END -->
@@ -61,4 +61,6 @@ Pilot2 standard current-engine selfplay failed unscored after218 applied moves p
 Follow-up created: MSH-236 (Chu Native Long-Game Capacity), Ready/high. Final local checks: fmt and workspace Clippy passed; workspace1195 passed/12 ignored/0 failed; examples6 passed; Python169 run with1 skipped. Linux process CI passed; Windows/macOS still running. Compact pilot is active in compact-1; standard predecessor pilot2 remains active. Branch codex/msh-213-chu-strength-harness.
 
 Blocking evidence: pilot2 standard predecessor pair at30s+0.5s also stopped both games at ReplayWork (219 requests each,321.3s pair wall); compact seed1 selfplay at10s+0.1s produced one native conclusion at31 requests and one ReplayWork failure at218 requests (51.3s pair wall). Both pairs remain unscored and campaigns stopped. Do not select only short wins to manufacture a strength result. MSH-236 now directly blocks the completed-game/control/odds/export criteria. Asked John in this chat for authorization to work MSH-236 then return here; answer pending. Compact frozen-predecessor pilot still running, with automatic cleanup. All current product changes passed local checks; Windows/macOS process CI still pending. Branch codex/msh-213-chu-strength-harness, source7bad3f3; do not mark Done.
+
+Final checkpoint: targeted process CI45273664857 succeeded on Linux, Windows and macOS for product source1a744c7. Compact frozen-predecessor seed1 at30s+0.5s also failed both games on ReplayWork (222/223 requests;328.9s wall), unscored. AC1/2 have evidence and are checked; AC3/4 remain open. Next step is MSH-236, subject to the scope approval requested from John, then repeat completed game/control/time-odds/export evidence. No rules, replay limits or result scoring were loosened. Cloud evidence: gs://mshogi-experiments-216675633801/runs/msh-213/ including checkpoint-evidence.tar.gz; last controller cleanup in progress. Branch codex/msh-213-chu-strength-harness remains unmerged.
 <!-- SECTION:NOTES:END -->

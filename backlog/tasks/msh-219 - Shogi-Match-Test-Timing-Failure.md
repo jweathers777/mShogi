@@ -1,10 +1,11 @@
 ---
 id: MSH-219
 title: Shogi Match Test Timing Failure
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-21T04:35:00Z'
-updated_date: '2026-11-21T04:35:00Z'
+updated_date: '2026-11-23T19:22:00Z'
 labels:
   - runner
   - test
@@ -24,3 +25,9 @@ The runner test a_full_mshogi_game_replays_and_tampering_is_rejected (crates/msh
 - [ ] #1 The cause of the failure is identified and recorded
 - [ ] #2 The test gives the same result in repeated runs (for example 20 runs), or the defect is fixed with a test
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Started from main 7d82b11. Investigate actual timed-game stop evidence and replace timing-dependent test behavior or fix a demonstrated defect. Branch codex/msh-219-shogi-match-timing.
+<!-- SECTION:NOTES:END -->

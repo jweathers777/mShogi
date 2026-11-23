@@ -74,24 +74,6 @@ fn resignation_and_false_declaration_score_for_the_opponent_by_engine_index() {
 }
 
 #[test]
-fn illegal_move_and_silence_are_unscored() {
-    let illegal = run(&config([fixture("illegal"), fixture("resign")], 0, 1000)).unwrap();
-    assert_eq!(illegal.stop, MatchStop::Failure);
-    assert_eq!(
-        illegal.failure.as_ref().unwrap().kind,
-        FailureKind::IllegalAction
-    );
-    assert_eq!(illegal.engine_score, None);
-    let silent = run(&config([fixture("timeout"), fixture("resign")], 0, 1000)).unwrap();
-    assert_eq!(silent.stop, MatchStop::ClockExhausted);
-    let exhaustion = silent.exhaustion.as_ref().unwrap();
-    assert_eq!((exhaustion.engine, exhaustion.remaining_ms), (0, 1000));
-    assert!(exhaustion.elapsed_ms > 1050);
-    assert_eq!(silent.engine_score, None);
-    MatchReport::from_json(&silent.to_json().unwrap()).unwrap();
-}
-
-#[test]
 fn a_full_mshogi_game_replays_and_tampering_is_rejected() {
     let mshogi =
         std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../target/release/mshogi");
@@ -127,12 +109,5 @@ fn a_full_mshogi_game_replays_and_tampering_is_rejected() {
     assert!(tampered.replay().is_err());
 }
 
-#[test]
-fn the_game_watchdog_is_a_time_limit_not_a_clock_exhaustion() {
-    let mut c = config([fixture("timeout"), fixture("resign")], 0, 60_000);
-    c.max_game_ms = 1_000;
-    let report = run(&c).unwrap();
-    assert_eq!(report.stop, MatchStop::TimeLimit);
-    assert!(report.exhaustion.is_none() && report.engine_score.is_none());
-    MatchReport::from_json(&report.to_json().unwrap()).unwrap();
-}
+include!("support/clocked_cases.rs");
+clocked_failure_cases!();

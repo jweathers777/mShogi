@@ -4,7 +4,8 @@
 //! the reply time against the mover's clock.
 use crate::{
     process::{Engine, Output, escaped},
-    shogi::{Failure, FailureKind, Traffic, option_value},
+    protocol::option_value,
+    shogi::{Failure, FailureKind, Traffic},
     *,
 };
 use std::{

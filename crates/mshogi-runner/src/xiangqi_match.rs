@@ -8,17 +8,17 @@
 //! adjudication is an unscored stop, and so is clock exhaustion: the accepted
 //! profile has no time-loss rule. Every report replays against the native
 //! rules, and its clock ledger is recomputed from the recorded elapsed times.
+use crate::protocol_match::MatchNative;
+use crate::xiangqi::Adapter;
 use crate::{
-    clocked::{Dialect, Host, Outcome},
-    process::{Engine, escaped},
-    shogi::{Failure, FailureKind, Process, Traffic},
+    clocked::Dialect,
+    shogi::FailureKind,
     shogi_match::Clock,
-    xiangqi::{Opening, canonical, digest, position, reply, score, submit},
+    xiangqi::{Opening, canonical, position, reply, score, submit},
     *,
 };
 use mshogi_core::{native::CanonicalRecord, xiangqi::*};
 use serde::{Deserialize, Serialize};
-use std::time::{Duration, Instant};
 
 /// Engine protocol.
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Serialize, Deserialize)]
@@ -85,6 +85,21 @@ pub struct MatchConfig {
 }
 
 impl MatchConfig {
+    fn settings(&self) -> crate::protocol_match::Settings<'_, Adapter> {
+        let (clock, increment) = self.side_clocks();
+        crate::protocol_match::Settings {
+            engines: &self.engines,
+            watchdogs: self.watchdogs,
+            io: self.io,
+            max_game_ms: self.max_game_ms,
+            grace_ms: self.grace_ms,
+            first: self.red,
+            clock,
+            increment,
+            wire: self.wire,
+        }
+    }
+
     /// Strict bounded parsing.
     pub fn from_json(text: &str) -> Result<Self, RunnerError> {
         if text.len() > 1_048_576 {
@@ -158,45 +173,10 @@ impl MatchConfig {
     }
 }
 
-/// One accepted reply with its clock ledger.
-#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-pub struct ClockedTurn {
-    /// Engine index.
-    pub engine: usize,
-    /// Native event count before the reply.
-    pub version: usize,
-    /// Canonical native prefix digest.
-    pub context_sha256: String,
-    /// Native side to move.
-    pub actor: Side,
-    /// Position command with the complete known history.
-    pub position: String,
-    /// Clock command.
-    pub go: String,
-    /// Accepted bestmove line.
-    pub reply: String,
-    /// Remaining Red and Black time before the reply.
-    pub clock_before_ms: [u64; 2],
-    /// Wall time from the written go to the bestmove line (rounded up).
-    pub elapsed_ms: u64,
-    /// Info lines received during this search (not retained).
-    pub info_lines: u64,
-}
-
-/// A reply attempt that ran past the mover's remaining time plus grace.
-#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-pub struct Exhaustion {
-    /// Engine index.
-    pub engine: usize,
-    /// Native side to move.
-    pub actor: Side,
-    /// Remaining time of the mover.
-    pub remaining_ms: u64,
-    /// Elapsed time when the controller stopped waiting.
-    pub elapsed_ms: u64,
-}
+/// Accepted reply and native-side clock ledger.
+pub type ClockedTurn = crate::protocol_match::ClockedTurn<Side>;
+/// Unscored clock exhaustion evidence.
+pub type Exhaustion = crate::protocol_match::Exhaustion<Side>;
 
 /// Why the experiment stopped.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
@@ -214,43 +194,8 @@ pub enum MatchStop {
     Failure,
 }
 
-/// Complete evidence of one clocked game.
-#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-pub struct MatchReport {
-    /// Report version, one.
-    pub schema_version: u32,
-    /// Effective configuration.
-    pub config: MatchConfig,
-    /// Executable and model identities.
-    pub identities: [EngineIdentity; 2],
-    /// Platform that ran the processes.
-    pub platform: String,
-    /// Advertised `id` lines of each engine.
-    pub engine_ids: [Vec<String>; 2],
-    /// Canonical native game record.
-    pub game: String,
-    /// Native conclusion, checked on replay.
-    pub conclusion: Option<Conclusion>,
-    /// Half points of engine 0 and engine 1, only for native conclusions.
-    pub engine_score: Option<[u8; 2]>,
-    /// Stop reason.
-    pub stop: MatchStop,
-    /// Failure evidence for `Failure`.
-    pub failure: Option<Failure>,
-    /// Clock exhaustion evidence for `ClockExhausted`.
-    pub exhaustion: Option<Exhaustion>,
-    /// Accepted replies in order.
-    pub turns: Vec<ClockedTurn>,
-    /// Retained protocol traffic except search `info` lines.
-    pub traffic: Vec<Traffic>,
-    /// False if traffic retention hit its bound.
-    pub traffic_complete: bool,
-    /// Final process observations of both engines.
-    pub processes: Vec<Process>,
-    /// Overall elapsed time.
-    pub elapsed_ns: u64,
-}
+/// Complete native clocked game evidence, with the recorded game-specific schema.
+pub type MatchReport = crate::protocol_match::MatchReport<MatchConfig, Side, Conclusion, MatchStop>;
 
 fn go(clock: [u64; 2], increment: [u64; 2]) -> String {
     format!(
@@ -397,48 +342,13 @@ impl MatchReport {
             return Err(RunnerError("unsupported match report version".into()));
         }
         let mut game = c.opening.game()?;
-        let (mut clock, increment) = c.side_clocks();
-        for turn in &self.turns {
-            if game.conclusion().is_some() || game.pending_adjudication().is_some() {
-                return Err(RunnerError(
-                    "turn after native conclusion or pending".into(),
-                ));
-            }
-            let actor = game.position().side_to_move();
-            let side = side_index(actor);
-            let wire = c.wire[c.engine_for(actor)];
-            if turn.engine != c.engine_for(actor)
-                || turn.actor != actor
-                || turn.version != game.events().len()
-                || turn.context_sha256 != digest(&game)?
-                || turn.position != position_for(wire, &game)
-                || turn.clock_before_ms != clock
-                || turn.go != go_for(wire, clock, increment, side)
-                || turn.elapsed_ms > clock[side].saturating_add(c.grace_ms)
-            {
-                return Err(RunnerError("turn context or clock ledger mismatch".into()));
-            }
-            let logged = |direction: &str, text: &str| {
-                self.traffic.iter().any(|t| {
-                    t.engine == turn.engine
-                        && t.version == turn.version
-                        && t.direction == direction
-                        && t.text == text
-                })
-            };
-            if self.traffic_complete
-                && !(logged("command", &turn.go)
-                    && logged("response", &escaped(turn.reply.as_bytes())))
-            {
-                return Err(RunnerError("turn lacks command/response evidence".into()));
-            }
-            clock[side] = clock[side].saturating_sub(turn.elapsed_ms) + increment[side];
-            submit(
-                &mut game,
-                reply_for(wire, &turn.reply).map_err(RunnerError)?,
-            )
-            .map_err(RunnerError)?;
-        }
+        let clock = crate::protocol_match::replay::<Adapter>(
+            &c.settings(),
+            &mut game,
+            &self.turns,
+            &self.traffic,
+            self.traffic_complete,
+        )?;
         let CanonicalRecord::Xiangqi(record) =
             CanonicalRecord::from_json(&self.game).map_err(|e| RunnerError(e.to_string()))?
         else {
@@ -488,168 +398,56 @@ impl MatchReport {
 /// Play one clocked game. Native admission alone decides results.
 pub fn run(config: &MatchConfig) -> Result<MatchReport, RunnerError> {
     config.validate()?;
-    let identities = config.engines.each_ref().map(|e| EngineIdentity {
-        executable: crate::run::identity(&e.path),
-        model: e.model_path.as_ref().map(|p| crate::run::identity(p)),
-        model_identity: e.model_identity.clone(),
-    });
-    let mut game = config.opening.game()?;
-    let mut host = Host {
-        dialects: config.wire.map(dialect),
-        engines: &config.engines,
-        watchdogs: config.watchdogs,
-        io: config.io,
-        start: Instant::now(),
-        version: game.events().len(),
-        traffic: vec![],
-        bytes: 0,
-        complete: true,
+    let completed =
+        crate::protocol_match::run::<Adapter>(config.settings(), config.opening.game()?)?;
+    let stop = match completed.stop {
+        crate::protocol_match::Stop::Native(crate::protocol::End::NativeConclusion) => {
+            MatchStop::NativeConclusion
+        }
+        crate::protocol_match::Stop::Native(crate::protocol::End::Unresolved) => {
+            MatchStop::Unresolved
+        }
+        crate::protocol_match::Stop::ClockExhausted => MatchStop::ClockExhausted,
+        crate::protocol_match::Stop::TimeLimit => MatchStop::TimeLimit,
+        crate::protocol_match::Stop::Failure => MatchStop::Failure,
+        crate::protocol_match::Stop::Native(_) => unreachable!("native terminal state"),
     };
-    let mut engines: Vec<Engine> = Vec::new();
-    let mut failure = None;
-    let mut engine_ids: [Vec<String>; 2] = [vec![], vec![]];
-    for index in 0..2 {
-        match Engine::spawn(index, &config.engines[index], config.io) {
-            Ok(engine) => engines.push(engine),
-            Err(e) => {
-                failure = Some(host.failure(index, FailureKind::ProcessStart, "spawn", e));
-                break;
-            }
-        }
-    }
-    if failure.is_none() {
-        for index in 0..2 {
-            match host.prepare(&mut engines[index]) {
-                Ok(ids) => engine_ids[index] = ids,
-                Err(e) => {
-                    failure = Some(e);
-                    break;
-                }
-            }
-        }
-    }
-    let (mut clock, increment) = config.side_clocks();
-    let mut turns = Vec::new();
-    let mut exhaustion = None;
-    let deadline = host.start + Duration::from_millis(config.max_game_ms);
-    let stop = if failure.is_some() {
-        MatchStop::Failure
+    let conclusion = completed.game.conclusion();
+    let engine_score = if stop == MatchStop::NativeConclusion {
+        conclusion.map(|conclusion| config.engine_score(conclusion))
     } else {
-        loop {
-            if game.conclusion().is_some() {
-                break MatchStop::NativeConclusion;
-            }
-            if game.pending_adjudication().is_some() {
-                break MatchStop::Unresolved;
-            }
-            if Instant::now() >= deadline {
-                break MatchStop::TimeLimit;
-            }
-            host.version = game.events().len();
-            let actor = game.position().side_to_move();
-            let side = side_index(actor);
-            let index = config.engine_for(actor);
-            let context = ClockedTurn {
-                engine: index,
-                version: host.version,
-                context_sha256: digest(&game)?,
-                actor,
-                position: position_for(config.wire[index], &game),
-                go: go_for(config.wire[index], clock, increment, side),
-                reply: String::new(),
-                clock_before_ms: clock,
-                elapsed_ms: 0,
-                info_lines: 0,
-            };
-            let outcome = host.search(
-                &mut engines[index],
-                &context.position,
-                &context.go,
-                clock[side],
-                config.grace_ms,
-                deadline,
-            );
-            match outcome {
-                Ok(Outcome::Accepted(line, elapsed, info)) => {
-                    let command = match reply_for(config.wire[index], &line) {
-                        Ok(command) => command,
-                        Err(e) => {
-                            failure =
-                                Some(host.failure(index, FailureKind::MalformedReply, "search", e));
-                            break MatchStop::Failure;
-                        }
-                    };
-                    let play = matches!(command, GameCommand::Play { .. });
-                    if let Err(e) = submit(&mut game, command) {
-                        failure = Some(host.failure(
-                            index,
-                            if play {
-                                FailureKind::IllegalAction
-                            } else {
-                                FailureKind::Native
-                            },
-                            "admission",
-                            e,
-                        ));
-                        break MatchStop::Failure;
-                    }
-                    clock[side] = clock[side].saturating_sub(elapsed) + increment[side];
-                    turns.push(ClockedTurn {
-                        reply: line,
-                        elapsed_ms: elapsed,
-                        info_lines: info,
-                        ..context
-                    });
-                }
-                Ok(Outcome::Watchdog) => break MatchStop::TimeLimit,
-                Ok(Outcome::Exhausted(elapsed)) => {
-                    exhaustion = Some(Exhaustion {
-                        engine: index,
-                        actor,
-                        remaining_ms: clock[side],
-                        elapsed_ms: elapsed,
-                    });
-                    break MatchStop::ClockExhausted;
-                }
-                Err(e) => {
-                    failure = Some(e);
-                    break MatchStop::Failure;
-                }
-            }
-        }
+        None
     };
-    let mut processes = Vec::new();
-    for engine in engines.iter_mut() {
-        let _ = host.send(engine, "cleanup", "quit");
-        processes.push(Process {
-            generation: 1,
-            observation: engine.cleanup(config.watchdogs.cleanup_ms),
-        });
-    }
-    let engine_score = match (&stop, game.conclusion()) {
-        (MatchStop::NativeConclusion, Some(conclusion)) => Some(config.engine_score(conclusion)),
-        _ => None,
-    };
-    let report = MatchReport {
-        schema_version: 1,
-        config: config.clone(),
-        identities,
-        platform: format!("{}-{}", std::env::consts::OS, std::env::consts::ARCH),
-        engine_ids,
-        game: canonical(&game)?,
-        conclusion: game.conclusion(),
-        engine_score,
-        stop,
-        failure,
-        exhaustion,
-        turns,
-        traffic: host.traffic,
-        traffic_complete: host.complete,
-        processes,
-        elapsed_ns: host.start.elapsed().as_nanos().min(u128::from(u64::MAX)) as u64,
-    };
+    let report = completed.report(config.clone(), conclusion, engine_score, stop)?;
     report.replay()?;
     Ok(report)
+}
+
+impl MatchNative for Adapter {
+    type Wire = Wire;
+    fn dialect(wire: Wire) -> Dialect {
+        dialect(wire)
+    }
+    fn position_for(wire: Wire, game: &Game) -> String {
+        position_for(wire, game)
+    }
+    fn go(wire: Wire, clock: [u64; 2], increment: [u64; 2], side: usize) -> String {
+        go_for(wire, clock, increment, side)
+    }
+    fn admit(
+        game: &mut Game,
+        wire: Wire,
+        text: &str,
+    ) -> Result<(), (FailureKind, &'static str, String)> {
+        let command =
+            reply_for(wire, text).map_err(|e| (FailureKind::MalformedReply, "search", e))?;
+        let kind = if matches!(command, GameCommand::Play { .. }) {
+            FailureKind::IllegalAction
+        } else {
+            FailureKind::Native
+        };
+        submit(game, command).map_err(|e| (kind, "admission", e))
+    }
 }
 
 #[cfg(test)]

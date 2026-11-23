@@ -88,28 +88,7 @@ fn valid_entering_king_declaration_uses_accepted_28point_fixture() {
         assert!(!game.root().has_complete_initial_history());
     }
 }
-#[test]
-fn malformed_illegal_missing_crashed_and_resource_replies_stay_unscored() {
-    for (mode, kind) in [
-        ("malformed", FailureKind::MalformedReply),
-        ("illegal", FailureKind::IllegalAction),
-        ("missing", FailureKind::MissingReply),
-        ("crash", FailureKind::UnexpectedExit),
-        ("oversize", FailureKind::ResourceLimit),
-        ("duplicate", FailureKind::LateReply),
-    ] {
-        let report = shogi::run(&config(mode)).unwrap();
-        for game in &report.games {
-            assert_eq!(game.stop, Stop::Failure, "{mode}");
-            assert_eq!(game.failure.as_ref().unwrap().kind, kind, "{mode}");
-            assert!(game.score.is_none() && game.conclusion.is_none() && game.turns.is_empty());
-            assert!(game.processes.iter().all(|p| p.observation.exit.is_some()));
-        }
-        for game in report.replay().unwrap() {
-            assert!(game.events().is_empty());
-        }
-    }
-}
+
 #[test]
 fn watchdog_and_late_reply_retirement_preserve_native_game_and_reap_children() {
     for mode in ["timeout", "late"] {
@@ -402,3 +381,8 @@ fn shared_experiment_wrapper_uses_actual_existing_adapter_and_replays() {
     decoded.report_json.push(' ');
     assert!(decoded.validate().is_err());
 }
+
+include!("support/protocol_cases.rs");
+protocol_failure_cases!(shogi, [], |game: &mshogi_core::shogi::Game| assert!(
+    game.events().is_empty()
+));

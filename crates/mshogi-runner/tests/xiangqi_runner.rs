@@ -83,35 +83,7 @@ fn resignation_is_native_same_ply_and_clean_protocol_replays_without_processes()
         report
     );
 }
-#[test]
-fn malformed_illegal_missing_crash_null_duplicate_and_incomplete_stay_unscored() {
-    for (mode, kind) in [
-        ("win", FailureKind::MalformedReply),
-        ("malformed", FailureKind::MalformedReply),
-        ("illegal", FailureKind::IllegalAction),
-        ("missing", FailureKind::MissingReply),
-        ("crash", FailureKind::UnexpectedExit),
-        ("null", FailureKind::MalformedReply),
-        ("duplicate", FailureKind::LateReply),
-        ("oversize", FailureKind::ResourceLimit),
-        ("incomplete", FailureKind::IncompleteWork),
-        ("unresolved", FailureKind::UnresolvedWork),
-    ] {
-        let report = xiangqi::run(&config(mode)).unwrap();
-        for e in &report.games {
-            assert_eq!(e.stop, Stop::Failure, "{mode}");
-            assert_eq!(
-                e.failure.as_ref().unwrap().kind,
-                kind,
-                "{mode}: {:?}",
-                e.failure
-            );
-            assert!(e.score.is_none() && e.conclusion.is_none() && e.turns.is_empty());
-            assert!(e.processes.iter().all(|p| p.observation.exit.is_some()));
-        }
-        report.replay().unwrap();
-    }
-}
+
 #[test]
 fn watchdog_cancels_and_retires_late_result_then_reaps_child() {
     for mode in ["timeout", "late", "hungquit", "post_crash"] {
@@ -432,3 +404,6 @@ fn shared_experiment_wrapper_uses_actual_existing_adapter_and_replays() {
     decoded.report_json.push(' ');
     assert!(decoded.validate().is_err());
 }
+
+include!("support/protocol_cases.rs");
+protocol_failure_cases!(xiangqi, ["win" => MalformedReply, "null" => MalformedReply, "incomplete" => IncompleteWork, "unresolved" => UnresolvedWork], |_: &x::Game| {});

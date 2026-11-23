@@ -4,6 +4,8 @@ mod config;
 /// Reproducible six-game native experiments and data, separate from strength claims.
 pub mod experiments;
 mod process;
+mod protocol;
+mod protocol_match;
 mod report;
 mod run;
 /// Native shogi USI experiments, separate from chess clocks and outcomes.

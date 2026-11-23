@@ -43,6 +43,10 @@ capture of both opposing royals.
 It enumerates every defender reply with the native proof, rejects one-ply wins
 and omits a position if a complete answer set exceeds 200,000 proof visits.
 These positions also share construction templates; retain this limitation.
+The frozen inputs are `tools/strength/data/chu-tactics-v1.json` and
+`tools/strength/data/chu-forcing-v1.json`. The latter accepts only actions that
+force a win within three plies. An action that wins later can fail this test;
+inspect the native line before calling a failed answer a blunder.
 
 The first suite is an elementary screen, not a deep tactical-strength measure.
 Its held-out part uses unseen placements from shared construction templates.

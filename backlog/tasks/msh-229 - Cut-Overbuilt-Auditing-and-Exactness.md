@@ -1,9 +1,11 @@
 ---
 id: MSH-229
 title: Cut Overbuilt Auditing and Exactness
-status: To Do
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-22T16:43:00Z'
+updated_date: '2026-11-23T10:59:00Z'
 labels:
   - refactor
   - simplification
@@ -26,3 +28,9 @@ Early development (ChatGPT agents, approved without enough challenge) built audi
 - [ ] #2 Every cut or simplification is either done here in small reviewed steps or split into its own task with a clear goal; no game rule changes and no rules test is loosened
 - [ ] #3 Line counts before and after, and the checks (fmt, clippy, workspace tests, frontend tests) pass after each step
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Started from main 8a9bf74 after MSH-225. Branch codex/msh-229-cut-auditing. First map mechanisms and their consumers across crates/ and desktop/, accounting for the completed minimal document/session cuts and existing MSH-227 replay work. No game rules or safety guarantees will be weakened.
+<!-- SECTION:NOTES:END -->

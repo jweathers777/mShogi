@@ -290,6 +290,14 @@ mod tests {
     #[test]
     fn lion_cases_have_complete_native_winning_answers() {
         let suite = tactics();
+        let frozen: Value = serde_json::from_str(include_str!(
+            "../../../tools/strength/data/chu-tactics-v1.json"
+        ))
+        .unwrap();
+        assert_eq!(
+            suite, frozen,
+            "frozen answers reproduce from exhaustive native proof"
+        );
         let rows = suite["positions"].as_array().unwrap();
         assert!(rows.len() >= 200);
         assert!(rows.iter().any(|r| r["split"] == "held-out"));

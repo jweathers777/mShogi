@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-20T22:51:00Z'
-updated_date: '2026-11-23T21:19:00Z'
+updated_date: '2026-11-23T21:21:00Z'
 labels:
   - chu
   - search
@@ -46,4 +46,6 @@ Checkpoint: implemented (not yet integrated) native Chu catalog loading, Python 
 Review found an igui coverage gap: ordinary captures also win the one-turn positions. Fixed by a separately scored exact capture-return contract in native and search positions, including restored Lion origin and removed victim; ordinary captures fail this contract. Complete valid winning answer sets are unchanged. Focused native tests pass (2); Python clock/catalog/time-odds and outcome-only split tests pass (7); workspace Clippy passes. Full debug workspace running. First baseline Batch attempt failed before VM creation due incorrect subnet; cleanup verified no jobs/VMs/disks. Correct subnet is mshogi-batch-us-central1. Tooling source 4da7b49 built successfully on c3-standard-4 (Rust1.99.1, 152 s); controller cleaning resources. Worker image digest sha256:17facfe4756343f40d6b624d53cc03796e683b79f995072d6f232f0d00729b04. Fixed 600-candidate depth3 opening screen submitted as msh213-screen-1. Measurements remain pending; no acceptance criteria checked.
 
 Opening screen complete on c3-standard-4: all 600 candidates completed depth3 and passed |score|<=100 (observed -25..+10). Freeze first 128 admitted seeds in ascending order as chu-openings-v1; full 600-row screen retained under runs/msh-213/screen-1 in GCS. Native catalog test confirms 128 distinct live 92-piece standard prefixes with eight events. Config-writer tests 4/4 passed; full debug workspace passed. Independent review correction includes actual generated search-move membership for igui. Before game results: pilot uses the standard catalog, nominal Fischer 10 s +0.1 s, 1000-event cap, 300 s pair watchdog, one color pair; report any unfinished game without scoring it. Targeted process CI run45267832263 is active. Final tactical helper cloud build is active; its predecessor/search remains unchanged.
+
+Final tactical input frozen: 315 positions (252 development, 63 held-out), with 80 separately scored igui contracts. Corpus equality test reproduces all stored answers from exhaustive native proofs; hand-established route and Lion-capture checks pass. Final helper source13b8f5c cloud build completed in145 s, SHA256 e14a6ccf728fef5d52e22d5153270c9da2720ea95fb26ad9a497521db2d991df. Tool engine/source4da7b49 contains no product/search/rules changes versus30e08e4. Worker with explicit --max-steps is pinned at sha256:7bf671076c7fae7681d1184506ccd94fa35a4987e9edddb2d9b56976c693ef05. Full local debug workspace1190 passed/12 ignored/0 failed; separate examples6 tests passed; workspace Clippy passed. Frozen predecessor build retry build-msh213-baseline-2 active on correct subnet. Next cloud pilot combines baseline tactical scores and one standard-opening paired game; then use results to set bounded control, time-odds sample and Texel export. All artifacts remain under gs://mshogi-experiments-216675633801/runs/msh-213/.
 <!-- SECTION:NOTES:END -->

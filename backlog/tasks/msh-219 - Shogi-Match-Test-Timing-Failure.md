@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-21T04:35:00Z'
-updated_date: '2026-11-23T19:22:00Z'
+updated_date: '2026-11-23T19:33:00Z'
 labels:
   - runner
   - test
@@ -26,8 +26,20 @@ The runner test a_full_mshogi_game_replays_and_tampering_is_rejected (crates/msh
 - [ ] #2 The test gives the same result in repeated runs (for example 20 runs), or the defect is fixed with a test
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Capture full reports from the existing 2 s + 100 ms actual-engine test and identify its stop path; inspect retained prior evidence. 2. Make replay/tampering coverage independent of timed search variation while retaining an actual engine/protocol check, or fix a demonstrated runner defect. 3. Repeat the resulting test at least 20 times, run required Rust and applicable platform checks, record evidence, merge and clean.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 Started from main 7d82b11. Investigate actual timed-game stop evidence and replace timing-dependent test behavior or fix a demonstrated defect. Branch codex/msh-219-shogi-match-timing.
+
+Checkpoint: original release test configuration is running serially through mshogi-match, saving complete reports under runs/msh-219/original-*.json. First four runs concluded with 117-169 replies, demonstrating time-dependent search variation; no failure reproduced yet. No original local failure log was present in retained MSH-205/files. Candidate test-only fix prepared: always-run scripted 11-reply native game retains multi-turn ledger/replay/tampering checks; separate actual release-engine mate-in-one uses the existing independently established USI/search fixture. No product/rules/search changes. Next: finish original reproduction, test candidate repeatedly and run required checks. Branch codex/msh-219-shogi-match-timing.
+
+Concrete test defect reproduced on original run 13 (zero-based): native Length draw after 318 replies, engine_score [1,1]. The test reverses that score as its alleged tampering; [1,1] reversed is unchanged, so replay correctly succeeds and the test would fail. Copied original-13.json to draw-score-swapped.json, reversed score, and mshogi-match shogi-match-replay accepted all 318 replies (exit 0). This proves a timing-dependent false failure of the existing test; the separately reported historical report.stop failure cannot be attributed from missing logs. Adjusted candidate to a fixed twelve-ply King-cycle Fourfold draw and guaranteed contradictory score [0,0], plus actual mate-in-one protocol check.
+
+Original configuration campaign complete on Darwin arm64, one game at a time: 20/20 native conclusions, 79-318 accepted replies, one Length draw. That draw proves the old score-reversal assertion can fail without invalid runner behavior. Historical non-conclusion stop did not repeat and its original evidence is unavailable. Candidate Shogi match suite passed all five tests, including scripted Fourfold draw and actual release-engine G*5b mate. Now checking that reintroducing the old score mutation fails the new draw regression, then repeating the fixed suite 20 times.
 <!-- SECTION:NOTES:END -->

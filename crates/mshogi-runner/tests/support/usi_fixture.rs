@@ -7,6 +7,7 @@ use std::{
 fn main() {
     let args: Vec<_> = std::env::args().collect();
     let mode = args.get(1).map_or("resign", String::as_str);
+    let mut script_index = 0;
     for line in io::stdin().lock().lines() {
         let line = line.unwrap();
         let words: Vec<_> = line.split_ascii_whitespace().collect();
@@ -15,7 +16,21 @@ fn main() {
                 "id name mshogi-USI-verification-fixture\noption name Nodes type spin default 5000 min 0 max 20000\noption name RulesProfile type combo default mshogi.shogi.csa36.v1 var mshogi.shogi.csa36.v1\nusiok"
             ),
             Some("isready") => println!("readyok"),
+            Some("position") if mode == "script" => {
+                // The shared script includes the opening, so each persistent
+                // child selects its reply from the complete supplied history.
+                let moves = words
+                    .iter()
+                    .position(|w| *w == "moves")
+                    .map_or(&[][..], |i| &words[i + 1..]);
+                assert_eq!(moves, &args[2..2 + moves.len()]);
+                script_index = moves.len();
+            }
             Some("go") => match mode {
+                "script" => println!(
+                    "bestmove {}",
+                    args.get(2 + script_index).expect("script reply")
+                ),
                 "win" => println!("bestmove win"),
                 "resign" => println!("bestmove resign"),
                 "move" => println!("bestmove {}", args.get(2).unwrap()),

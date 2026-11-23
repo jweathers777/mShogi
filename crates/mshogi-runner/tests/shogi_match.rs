@@ -74,11 +74,64 @@ fn resignation_and_false_declaration_score_for_the_opponent_by_engine_index() {
 }
 
 #[test]
-fn a_full_mshogi_game_replays_and_tampering_is_rejected() {
+fn a_scripted_game_replays_and_tampering_is_rejected() {
+    // Two pawn moves, then three four-ply King cycles: the opening position
+    // occurs at plies 2, 6, 10 and 14. Every reply and the draw are fixed;
+    // short-clock self-play cannot promise either a completed search or game.
+    let script = [
+        "7g7f", "3c3d", "5i6h", "5a6b", "6h5i", "6b5a", "5i6h", "5a6b", "6h5i", "6b5a", "5i6h",
+        "5a6b", "6h5i", "6b5a",
+    ];
+    let mut engine = fixture("script");
+    engine.args.extend(script.iter().map(|s| s.to_string()));
+    let mut c = config([engine.clone(), engine], 1, 60_000);
+    c.opening.moves = script[..2].iter().map(|s| s.to_string()).collect();
+    let report = run(&c).unwrap();
+    assert_eq!(report.stop, MatchStop::NativeConclusion, "{report:#?}");
+    assert_eq!(report.turns.len(), 12);
+    assert_eq!(report.engine_score, Some([1, 1]));
+    assert_eq!(
+        report.conclusion,
+        Some(mshogi_core::shogi::Conclusion::Draw(
+            mshogi_core::shogi::DrawReason::Fourfold {
+                first: 2,
+                fourth: 14
+            }
+        ))
+    );
+    assert!(report.traffic_complete);
+    assert_eq!(
+        report
+            .turns
+            .iter()
+            .map(|t| t.reply.as_str())
+            .collect::<Vec<_>>(),
+        script[2..]
+            .iter()
+            .map(|s| format!("bestmove {s}"))
+            .collect::<Vec<_>>()
+    );
+    let text = report.to_json().unwrap();
+    MatchReport::from_json(&text).unwrap();
+    let mut tampered = report.clone();
+    tampered.turns[3].elapsed_ms += 1;
+    assert!(tampered.replay().is_err());
+    let mut tampered = report.clone();
+    // Swapping [1, 1] does not change a draw report. This must actually
+    // contradict the native score for both draws and decisive conclusions.
+    tampered.engine_score = Some([0, 0]);
+    assert!(tampered.replay().is_err());
+    let mut tampered = report;
+    tampered.turns.pop();
+    assert!(tampered.replay().is_err());
+}
+
+#[test]
+fn actual_mshogi_mate_in_one_has_a_native_conclusion() {
     let mshogi =
         std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../target/release/mshogi");
     if !mshogi.exists() {
-        eprintln!("release mshogi not built; skipping full game");
+        eprintln!("release mshogi not built; skipping actual engine mate");
         return;
     }
     let engine = EngineConfig {
@@ -86,27 +139,16 @@ fn a_full_mshogi_game_replays_and_tampering_is_rejected() {
         args: vec!["usi".into()],
         ..fixture("resign")
     };
-    let mut c = config([engine.clone(), engine], 1, 2000);
-    c.opening.moves = vec!["7g7f".into(), "3c3d".into()];
+    let mut c = config([engine.clone(), engine], 1, 5_000);
+    // Independently established fixture also used by console USI/search tests:
+    // G*5b checks the boxed-in King, and Sente's King protects the dropped Gold.
+    c.opening.sfen = Some("3lkl3/3p1p3/4K4/9/9/9/9/9/9 b G 1".into());
     let report = run(&c).unwrap();
-    assert_eq!(
-        report.stop,
-        MatchStop::NativeConclusion,
-        "{:?}",
-        report.failure
-    );
-    assert!(report.turns.len() > 10);
-    let text = report.to_json().unwrap();
-    MatchReport::from_json(&text).unwrap();
-    let mut tampered = report.clone();
-    tampered.turns[3].elapsed_ms += 1;
-    assert!(tampered.replay().is_err());
-    let mut tampered = report.clone();
-    tampered.engine_score = tampered.engine_score.map(|[a, b]| [b, a]);
-    assert!(tampered.replay().is_err());
-    let mut tampered = report;
-    tampered.turns.pop();
-    assert!(tampered.replay().is_err());
+    assert_eq!(report.stop, MatchStop::NativeConclusion, "{report:#?}");
+    assert_eq!(report.turns.len(), 1);
+    assert_eq!(report.turns[0].reply, "bestmove G*5b");
+    assert_eq!(report.engine_score, Some([0, 2]));
+    MatchReport::from_json(&report.to_json().unwrap()).unwrap();
 }
 
 include!("support/clocked_cases.rs");

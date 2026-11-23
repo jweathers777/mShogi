@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-22T16:43:00Z'
-updated_date: '2026-11-23T08:51:00Z'
+updated_date: '2026-11-23T08:58:00Z'
 labels:
   - desktop
   - refactor
@@ -28,7 +28,7 @@ The shared desktop document (game_document.rs) stores a full audit trail: a jour
 - [x] #1 The saved document holds only: game kind, rules profile, start position, human side, play mode, orientation, the game's commands, and optional per-move engine notes (score, line, depth, nodes); opening checks it by one replay of the commands
 - [x] #2 Removed: the controls journal, current, initial_settings, retired branches, observation contexts, Xiangqi evidence ledger (or reduced to a short note), retired_execution_floor, selected_event, Close entries, mode, and the reservation and work-limit machinery that only these needed; line counts before and after recorded
 - [x] #3 Take back and Undo cut the move list; reopening a file restores the game, sides and settings; docs/design.md is updated to the new rules (A-09 and audit wording)
-- [ ] #4 Desktop-session and workspace tests pass; fixtures regenerated; frontend tests pass; one fresh-agent review
+- [x] #4 Desktop-session and workspace tests pass; fixtures regenerated; frontend tests pass; one fresh-agent review
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -69,4 +69,6 @@ Verification update: workspace clippy and all-feature desktop-session clippy pas
 Persistence CI passed on Linux, macOS and Windows: run 45139767465. Routine Rust/frontend CI passed: run 45139766446. Full all-feature desktop-session and release workspace local checks remain pending. Code is complete and freshly reviewed; no process files or CI workflows changed.
 
 Release follow-up: all six Chu subprocess tests passed in release (8.92 s), confirming MSH-199 debug-only failures. Full all-feature desktop-session suite passed 247 tests before final negative-test correction. Release workspace then exposed experiment consumers still reading payload.initial. Updated console experiment test, runner example and compound-action test to payload.record; shared fixture helper uses native Chu prefix(0) for the concluded royal fixture. Also corrected package-smoke reader and Tori negative tests that previously modified removed fields (false-positive rejection). Fresh reviewer checked these final edits and verified the four tactical roots match the original fixtures; no findings. Full release suite, all-feature session suite and clippy rerunning.
+
+Final validation on 297be4b (same product implementation as persistence CI 6102123): cargo fmt --all -- --check PASS; cargo clippy --workspace --all-targets --locked -- -D warnings PASS; desktop-session all-target/all-feature clippy PASS. cargo test --workspace --locked --release -j 2 -- --test-threads=2 PASS (1227 passed, 11 ignored, no failures); all-feature desktop-session release suite PASS (247 passed). Frontend pinned Node24.19.0: Vitest 609 passed, TypeScript PASS. Python GUI observers 129 passed. Persistence CI Linux/macOS/Windows PASS (45139767465); routine Rust/frontend CI PASS (45139766446). Debug workspace run FAILED in four existing Chu watchdog tests, tracked in MSH-199; the same six-test Chu suite passes in release. No rules/search strength changes, no SPRT needed. Packaged GUI checks were not run (not a release). Fresh-agent reviews completed with all findings fixed. Logs: gs://mshogi-experiments-216675633801/runs/msh-228/ (60-day lifecycle); local Mac with two build jobs/test threads, no GCP Batch compute or VMs, storage-only cost. Final line counts: game_document.rs 1175 -> 356; native_game.rs 1290 -> 931. Integration next, then MSH-225 (Chess Document and Session Fit); MSH-229 remains the audit follow-up.
 <!-- SECTION:NOTES:END -->

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-22T16:43:00Z'
-updated_date: '2026-11-23T11:14:00Z'
+updated_date: '2026-11-23T11:17:00Z'
 labels:
   - refactor
   - simplification
@@ -96,4 +96,6 @@ Checkpoint: complete 30-group inventory and implementation mapping recorded; MSH
 Measured first-step source count (tracked .rs/.ts/.tsx/.py/.mjs under crates/ and desktop/, including tests/examples): 158610 -> 158418, net -192. Desktop-session 26246 -> 26091; desktop/src 7498 -> 7461; other source groups unchanged. Three generated snapshot fields were also removed (not counted as source). After final cut: 200 all-feature desktop-session tests, 603 frontend tests, 176 Python tests, TypeScript, formatting and workspace clippy pass. Final debug workspace again has only the four known MSH-199 Chu watchdog failures. Main merge was already up to date. Final release workspace and persistence CI 45162808849 are running.
 
 Linux persistence CI 45162808849 found a scheduling race in the first half of concurrent_save_as_keeps_new_admission_dirty_and_open_retires_it: shared_command can publish its fast preference admission before queue_shared_save is called. Added the existing test-only admission-result gate around that pending-admission assertion. The second Open/cancel half was already gated in MSH-225. No product code or assertion changed; this makes the required pending state deterministic.
+
+Final source count including the deterministic test gate: 158610 -> 158420, net -190 (desktop-session 26246 -> 26093; desktop/src 7498 -> 7461). Fresh review confirmed the gate preserves the pending-Save assertion and later acceptance/dirty-state checks. Corrected Linux persistence run is 45163460972; macOS/Windows continue in 45162808849. Final debug run has the same four known Chu watchdog failures. Final release workspace run is underway on 264d68f. No further code change is pending.
 <!-- SECTION:NOTES:END -->

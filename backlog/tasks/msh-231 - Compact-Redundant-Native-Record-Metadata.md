@@ -1,10 +1,11 @@
 ---
 id: MSH-231
 title: Compact Redundant Native Record Metadata
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-23T11:05:00Z'
-updated_date: '2026-11-23T12:27:00Z'
+updated_date: '2026-11-23T13:32:00Z'
 labels:
   - simplification
   - persistence
@@ -31,4 +32,6 @@ Split from MSH-229: native.rs plus per-game record codecs repeatedly store game/
 
 <!-- SECTION:NOTES:BEGIN -->
 MSH-230 inspection: desktop DocumentEnvelope.native_schema_version is a hardcoded 1 game-payload label, distinct from the nested CanonicalRecord actual native schema (Tori was already 2 before MSH-230). Consider removing or renaming that redundant misleading label when compacting metadata. MSH-230 leaves the unchanged desktop payload label intact and documents the distinction.
+
+Started from main 8df7bf3. Branch codex/msh-231-compact-records. First map essential versus derived data for all six games and inspect the explicit compatibility paths; measure baseline record sizes/replay before changes.
 <!-- SECTION:NOTES:END -->

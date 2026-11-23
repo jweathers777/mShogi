@@ -1,11 +1,11 @@
 ---
 id: MSH-232
 title: Simplify Native Resource Admission and Copies
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-23T11:05:00Z'
-updated_date: '2026-11-23T17:15:00Z'
+updated_date: '2026-11-23T17:16:00Z'
 labels:
   - simplification
   - core
@@ -24,10 +24,10 @@ Split from MSH-229: Chu and Tenjiku encode complete histories and hypothetical e
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Measure admission/replay time and allocations or copied/encoded bytes for representative short and long Tori, Chu and Tenjiku histories; identify unused or redundant accounting
-- [ ] #2 Remove unnecessary work models, hypothetical-event sizing and whole-history copies in bounded reviewed steps while preserving no partial mutation, no loss of the accepted game and bounded cancellation
-- [ ] #3 Rules fixtures and perft remain unchanged; record line counts and pass required Rust/frontend/affected-platform checks after each step
-- [ ] #4 Remove unused multi-fact/omitted-resource accounting from native and frontend diagnostics, unless a concrete current producer requires it; retain bounded single-cause and unknown diagnostics
+- [x] #1 Measure admission/replay time and allocations or copied/encoded bytes for representative short and long Tori, Chu and Tenjiku histories; identify unused or redundant accounting
+- [x] #2 Remove unnecessary work models, hypothetical-event sizing and whole-history copies in bounded reviewed steps while preserving no partial mutation, no loss of the accepted game and bounded cancellation
+- [x] #3 Rules fixtures and perft remain unchanged; record line counts and pass required Rust/frontend/affected-platform checks after each step
+- [x] #4 Remove unused multi-fact/omitted-resource accounting from native and frontend diagnostics, unless a concrete current producer requires it; retain bounded single-cause and unknown diagnostics
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -55,3 +55,13 @@ Verification checkpoint at final source1736568: full release workspace1186 passe
 
 Final results, native code1736568 compared with baseline3111f8e/claim66c251d, Apple M1 Pro: serial target/release/examples/resource_admission GAME N play|controls,11 admission/undo samples and5 replay samples. At128 board events, admission medians(us): Tori44.417->16.792; Chu437.667->217.833; Tenjiku Adams268.834->14.500; Muller271.625->13.375. Replay medians(ms): Tori5.636->3.404; Chu345.795->294.921; Adams28.695->1.688; Muller28.944->1.723. Chu384-control admission272.375->15.292us and replay67.665->3.424ms. All18 measured record/command byte sizes and event counts match baseline. These are encoded stored bytes, not allocation counts. Full CSV and test evidence: gs://mshogi-experiments-216675633801/runs/msh-232/ (60-day lifecycle). Final source171583 lines vs171342 baseline; added harness/bound/rollback tests account for growth. Rules fixtures unchanged; independent perft/conformance tests pass. Final fmt/clippy pass; release workspace1186 passed,0 failed,11 existing ignored; frontend600 and TypeScript pass. Required debug workspace remains40 passed/4 known MSH-199 Chu timing failures (30.50s); no assertions or limits changed. Final-code routine45220606633, fixture regeneration45220648649 and three-platform persistence45220641227 all pass. Fresh reviews complete with findings fixed. No follow-up task added; known MSH-199 debug timing and MSH-234 example-name warning remain. Main still3111f8e; ready to integrate and clean task-owned output.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Merged into main at cafaca2. Compact root/command/event bounds replace repeated byte sizing and hypothetical endings; native admission and reversal no longer copy whole histories. Resource diagnostics carry one authoritative cause with bounded unknown fallback. Rules and saved formats are unchanged; fresh review findings are fixed.
+
+At128 events, admission medians improved from44.4 to16.8us (Tori),437.7 to217.8us (Chu), and about270 to13-15us (Tenjiku). Final fmt/clippy,1186 release tests,600 frontend tests, TypeScript, fixture regeneration and targeted persistence CI on Linux/macOS/Windows pass.11 existing release tests remain ignored. The required debug run retains the same4 MSH-199 timing failures; no limits or assertions were weakened.
+
+Evidence and exact commands/results are in task notes and gs://mshogi-experiments-216675633801/runs/msh-232/. Known follow-ups MSH-199 and MSH-234 remain; next planned task is MSH-233 (Simplify Internal Execution Identity and Validation).
+<!-- SECTION:FINAL_SUMMARY:END -->

@@ -511,7 +511,7 @@ pub(crate) struct RuntimeWork<G: SessionGame> {
     pub(crate) seed: RuntimeSeed<G>,
     pub(crate) operation: Option<SessionOperation>,
     pub(crate) response: Option<ExecutionObservation>,
-    /// Completed evidence to keep in the document.
+    /// Completed evidence to keep in session memory.
     pub(crate) evidence: Option<G::Evidence>,
     pub(crate) replacement: bool,
 }

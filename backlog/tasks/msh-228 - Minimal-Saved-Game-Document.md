@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-22T16:43:00Z'
-updated_date: '2026-11-23T08:31:00Z'
+updated_date: '2026-11-23T08:36:00Z'
 labels:
   - desktop
   - refactor
@@ -61,4 +61,6 @@ REMAINING (in order):
 Codex continuation: John assigned the pushed Claude handoff. Continue on codex/msh-228-minimal-document; finish console assertions, regenerate fixtures, remove capacity journey, run checks and platform CI, obtain fresh-agent review, integrate.
 
 Checkpoint (Codex): remaining console reopen assertions updated; all GUI documents regenerated with minimal record/human/settings payload; removed Chu capacity fixture and adapted generic-game smoke journeys; frontend regeneration exposed stale Chu/Tenjiku fixture search defaults, now explicit deterministic limits. Fresh review found unbounded current-observation IDs (fixed, 260-result regression passed) and double replay on Open (parser handoff fix in progress). GUI observer tests and frontend checks in progress. Branch codex/msh-228-minimal-document. Remaining: finish single-replay API, complete checks and affected-platform CI, final review and merge.
+
+Checkpoint: single-replay Open implemented through native parsers returning the validated record and replayed game; no rule changes. Fresh-agent review complete and findings fixed (bounded request IDs, single replay, exact historical-analysis source assertions). Frontend: 43 files / 609 tests pass on pinned Node 24.19.0; TypeScript passes; 129 Python GUI observer tests pass. fmt passes. Workspace tests and workspace/all-feature clippy still running. Persistence CI: https://github.com/jweathers777/mShogi/actions/runs/45139767465 (Linux/macOS/Windows), on product commit 6102123; later f92a776 adds only GUI observer assertions. Line counts: game_document.rs 1175 -> 356; native_game.rs 1290 -> 931. Next: resolve any check failures, record final results, merge main and clean task scratch. Branch codex/msh-228-minimal-document.
 <!-- SECTION:NOTES:END -->

@@ -5,11 +5,10 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-23T11:05:00Z'
-updated_date: '2026-11-23T15:21:00Z'
+updated_date: '2026-11-23T16:04:00Z'
 labels:
   - simplification
   - persistence
-  - needs-john
 milestone: m-6
 dependencies: []
 priority: high
@@ -72,4 +71,6 @@ Ready for integration at256f4ef. All code and consumer reviews complete. Require
 Awaiting John’s platform-CI exception decision. Code is ready and remote branch includes the full handoff (a712c3b after source256f4ef). Cleaned243049 build files/26.2GiB with cargo clean; removed task Node runtime/archive and Python bytecode cache. Remaining ignored runs/msh-231 evidence stays until integration per AGENTS.md. Final logs/measurements and runner-capacity annotations uploaded to GCS. Last macOS retry45201234609 still queued; if it passes no exception is needed. If John approves local macOS evidence, remove needs-john, merge/push, check AC3 with recorded MSH-199 baseline exception, set Done, delete own feature branch and remaining runs/msh-231. No product code changes remain.
 
 Final macOS retry45201234609 also ended cancelled after15 minutes without any executed step. All four attempts could not acquire a hosted runner. No CI jobs remain pending for verification. Await John’s one-task exception decision; do not merge until approved. Working tree otherwise clean,13MiB ignored run evidence retained, all build output removed. Next action is integrate MSH-231 on approval; next planned task after integration is MSH-232 (Simplify Native Resource Admission and Copies).
+
+John approved the one-task macOS CI exception in chat (Yes): merge using verified local macOS results after four hosted runner-capacity failures. The four known MSH-199 debug failures were disclosed in the request. No permanent process change. Refetched origin/main before integration; it remains8df7bf3, already merged before final verification. No code changed after the completed checks and focused probe rechecks.
 <!-- SECTION:NOTES:END -->

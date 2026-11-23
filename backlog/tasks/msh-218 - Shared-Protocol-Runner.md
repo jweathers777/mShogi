@@ -1,11 +1,11 @@
 ---
 id: MSH-218
 title: Shared Protocol Runner
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-20T23:26:00Z'
-updated_date: '2026-11-23T19:13:00Z'
+updated_date: '2026-11-23T19:14:00Z'
 labels:
   - runner
   - refactor
@@ -53,3 +53,9 @@ Final local checks on Darwin arm64, two workers: cargo fmt --all -- --check and 
 
 Targeted process workflow 45242420199 passed routine checks plus Ubuntu 24.04, macOS 15 and Windows 2022 on product commit d5fe836. Full packaged GUI/release CI was not requested or run. Verification logs uploaded to gs://mshogi-experiments-216675633801/runs/msh-218/ (60-day lifecycle). No GCP Batch job or VM was created; compute cost $0. Existing follow-ups remain MSH-199 (Chu Test Cost Review), MSH-219 (Shogi Match Test Timing Failure), and MSH-234 (Give Tenjiku Work Examples Distinct Build Names); this task changes no game rules or engine strength.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Merged into main at be361d5. Shared fresh-process and clocked lifecycle/replay code now serves Shogi and Xiangqi through native adapters; report formats and native behavior are preserved. Consolidated copied failure tests and removed 426 production lines (3951 -> 3525). Fresh independent reviews found no defects. Formatting/Clippy passed; release workspace: 1189 passed, 11 ignored, including full engine games and recorded reports; targeted process CI passed all three OSes. Required debug workspace run still hits the four known MSH-199 Chu watchdog failures. Logs are in the task GCS run path. No new follow-up task; next ready medium-priority work is MSH-219 (Shogi Match Test Timing Failure).
+<!-- SECTION:FINAL_SUMMARY:END -->

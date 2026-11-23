@@ -4,7 +4,7 @@ title: Chu Test Cost Review
 status: Ready
 assignee: []
 created_date: '2026-11-19T06:19:00Z'
-updated_date: '2026-11-23T08:38:00Z'
+updated_date: '2026-11-23T12:58:00Z'
 labels:
   - handle:chu-test-cost-review
   - chu
@@ -52,4 +52,6 @@ Handle: Chu Test Cost Review
 Observed again during MSH-228 on 2026-11-23, Apple Silicon Mac: cargo test --workspace --locked -j 2 -- --test-threads=2 stopped in chu_internal (2 passed, 4 failed, 30.48 s). Failures: actual_child_executes_complete_chu_choices_for_full_known_history_and_purpose (Timeout: internal engine response/exit watchdog expired at default depth64/300000 nodes); actual_controller_readonly_analysis_save_reopen_and_stale_identity_retirement (no score); actual_engine_turns_for_both_player_assignments_admit_observation_then_action and real_historical_analysis_saves_exact_prefix_and_reopens_stopped_without_future (only one board ply, expected two). No test budgets/assertions or watchdog changed in MSH-228. Removed document-capacity measurement tests no longer apply after minimal-document refactor.
 
 Debug failure log: gs://mshogi-experiments-216675633801/runs/msh-228/workspace-debug.log (60-day lifecycle). Source commit 6102123; subsequent changes were GUI observer assertions, comments and task notes.
+
+MSH-230 (source 1b75415), Apple Silicon Mac with 2 build jobs/2 test threads: same four chu_internal watchdog failures reproduced (30.49 s), while all 1182 workspace release tests pass. An additional debug --no-fail-fast run reached mshogi-engine/tests/chu_protocol.rs::bounded_standard_progression_has_both_sides_real_legal_choices_and_exact_records, which searches twelve standard-position turns using CHU_PLAY_LIMITS. It ran beyond 60 s and was stopped as extra debug coverage; this test also belongs in the cost review. No limits, assertions or rules changed. Logs: gs://mshogi-experiments-216675633801/runs/msh-230/ (60-day lifecycle).
 <!-- SECTION:NOTES:END -->

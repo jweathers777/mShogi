@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-23T11:04:00Z'
-updated_date: '2026-11-23T12:40:00Z'
+updated_date: '2026-11-23T12:59:00Z'
 labels:
   - simplification
   - core
@@ -50,4 +50,8 @@ First release workspace pass reached consumer tests and stopped on experiments r
 Fixture migration: refreshed 87 existing frontend DTO fixtures and 43 existing saved-document/manifest fixtures through native generators. Compared all 41 changed saved documents against the prior files after removing only schema labels and operational fields: roots, player commands, effects, outcomes, sides and settings are identical. Source count (.rs/.ts/.tsx/.py/.mjs, all tracked paths) 172040 -> 171697, net -343. fmt and workspace all-target clippy pass. Full release/debug and affected-OS persistence verification remain before integration.
 
 Final frontend fixture assertions now pass: 603 frontend tests and 176 Python tests. Updated the GUI analysis verifier to the existing read-only result contract (game version unchanged, session revision advances), with negative tests for stale revision or changed game version; regenerated native DTOs exposed the old assertion. No product behavior changed in this verification adjustment.
+
+Final code 1b75415: full release workspace 1182 passed/11 ignored; desktop all-features 200 passed; frontend 603 passed; Python 176 passed; TypeScript, fmt and workspace all-target clippy passed. Targeted persistence passed Linux/macOS/Windows in GitHub run 45176582506. Final fresh review finding (exact analysis version in smoke verifier) fixed and negative-tested. Debug repeats four known MSH-199 Chu failures; an extra no-fail-fast run was stopped at the known-cost twelve-ply Chu protocol test and the required standard command is being completed. Source stages: 172040 baseline ->171696 (a6e3b6d) ->171697 (bf83d0c) ->171700 final, net -340. No Cloud Batch jobs/VMs, GCP compute cost USD0. No strength or packaged-GUI campaign: no search-strength change or release.
+
+Required debug command completed with the same four known MSH-199 chu_internal failures (30.47 s); no test assertion or limit was changed. The full release suite passed all 1182 tests, including those four. Final evidence is under gs://mshogi-experiments-216675633801/runs/msh-230/ with a 60-day lifecycle. Ready to integrate.
 <!-- SECTION:NOTES:END -->

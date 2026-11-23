@@ -228,7 +228,7 @@ def completed_tenjiku_analysis(before, after, request_floor, generation_floor, d
         result=observation['result'];value=result['result'];telemetry=value['telemetry']
         return (observation['schema_version']==1 and after['analysis']['observation']==observation
             and context['request_id']>request_floor and context['process_generation']>generation_floor
-            and context['session_version']>=before['token']['version'] and target['session_version']==context['session_version']
+            and context['session_version']==before['token']['version'] and target['session_version']==context['session_version']
             and purpose['kind']=='move_analysis' and context['game']==before['context']
             and context['limits']=={'depth':depth,'nodes':nodes}
             and target['event_index']==selected['event_index'] and target['board_ply']==selected['board_ply'] and target['turn']==turn

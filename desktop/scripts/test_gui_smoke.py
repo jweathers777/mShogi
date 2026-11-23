@@ -1683,6 +1683,7 @@ class TenjikuPackagedEvidenceTests(unittest.TestCase):
         self.assertFalse(module.completed_tenjiku_analysis(before,before,5,6),'old available UI/status/native result is insufficient')
         for mutate in (lambda a:a['token'].update(revision=8),lambda a:a['token'].update(version=9),lambda a:a['observations'].pop(),lambda a:a['observations'][0]['observation'].update(result={'rewritten':'prior result'}),
                        lambda a:a['analysis']['observation']['context'].update(request_id=5),lambda a:a['analysis']['observation']['context'].update(process_generation=6),
+                       lambda a:(a['analysis']['observation']['context'].update(session_version=9),a['analysis']['observation']['context']['purpose']['target'].update(session_version=9)),
                        lambda a:a['analysis']['observation']['context'].update(session_version=7),lambda a:a['analysis']['observation']['context']['purpose']['target'].update(event_index=2),
                        lambda a:a['analysis']['observation']['context']['purpose']['target'].update(board_ply=2),lambda a:a['analysis']['observation']['context']['purpose'].update(kind='engine_turn'),
                        lambda a:a['analysis']['observation']['context']['purpose']['target']['turn'].update(side='sente'),lambda a:a['tenjiku']['selected'].update(event_index=2),

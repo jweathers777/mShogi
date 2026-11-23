@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-22T09:57:00Z'
-updated_date: '2026-11-23T10:36:00Z'
+updated_date: '2026-11-23T10:42:00Z'
 labels:
   - desktop
   - refactor
@@ -68,4 +68,8 @@ Real-process Chess persistence test exposed a shared phase mismatch after engine
 Latest checkpoint (8bfc824): all-feature desktop-session tests 204/204, real-process persistence 3/3, frontend 609/609, Python 176/176, TypeScript, formatting and workspace clippy passed. Corrected persistence CI run is 45156397616 (the superseded run was cancelled). Release workspace is compiling with two jobs. No code changes pending; next finish workspace/platform checks, integrate main, set Done and remove task build/run data.
 
 Windows CI exposed a test scheduling race in concurrent_save_as_keeps_new_admission_dirty_and_open_retires_it: Open could finish inside shared_command before the supposed pending command was queued. Added existing test-only file/admission result gates to establish the required order (queue both, publish Open first). Kept all cancellation and restored-state assertions. Focused test passes locally. Production code is unchanged by this fix.
+
+Platform results: Linux and macOS persistence passed on production commit 8bfc824 (run 45156397616). Windows hit the test-only Open scheduling race; corrected test is ccb61c6 and Windows run 45157620360 is in progress. The first local release run compiled before the engine-phase fix and hit its expected Idle wait failure; final release workspace run now includes both corrections. No product or rules changes remain pending.
+
+Windows persistence rerun 45157620360 passed. Final real-process tests found New Game installation overwrote Idle with Paused while leaving paused=false; fixed common prepare_install to preserve running intent after retiring old execution. Open remains stopped. The process-failure test now starts request 1 with a human move instead of assuming New Game resets request numbering; both MissingResponse and UnexpectedExit and no-extra-move assertions remain. All 9 real-process play/analysis/persistence tests pass. Fresh reviewer confirmed the final fix has no findings. Final release workspace check next.
 <!-- SECTION:NOTES:END -->

@@ -339,25 +339,26 @@ fn actual_missing_response_and_failed_process_pause_without_a_chess_score() {
     // request1 exits successfully without output; request2 exits nonzero.
     let mut controller = controller(env!("CARGO_BIN_EXE_mshogi-internal-fixture"));
     let initial = controller.shared_snapshot();
-    controller
-        .fresh(
-            SharedOpenToken {
-                document: initial.token.document,
-                version: initial.token.version,
-                document_revision: initial.document.revision,
+    // Start the first request in this session, without relying on the runtime
+    // identity floor allocated by New Game installation.
+    let started = controller
+        .settled(
+            initial.token,
+            SessionOperation::ChessPlay {
+                action: "e2e4".parse().unwrap(),
             },
-            Color::Black,
         )
         .unwrap();
+    let accepted_history = history(&started);
     let failed = until(&mut controller, |snapshot| {
         snapshot.phase == EnginePhase::Failed
     });
     assert!(
         matches!(&chess(&failed).last_engine_result, Some(ChessResult::Failure { failure }) if failure.kind == FailureKind::MissingResponse)
     );
-    assert!(history(&failed).is_empty());
+    assert_eq!(history(&failed), accepted_history);
     assert!(chess(&failed).live_conclusion.is_none());
-    assert_eq!(side_to_move(&failed), Color::White);
+    assert_eq!(side_to_move(&failed), Color::Black);
     let stable = controller.shared_snapshot();
     assert_eq!(
         stable.token.version, failed.token.version,
@@ -374,7 +375,7 @@ fn actual_missing_response_and_failed_process_pause_without_a_chess_score() {
     assert!(
         matches!(&chess(&failed).last_engine_result, Some(ChessResult::Failure { failure }) if failure.kind == FailureKind::UnexpectedExit)
     );
-    assert!(history(&failed).is_empty());
+    assert_eq!(history(&failed), accepted_history);
     assert!(chess(&failed).live_conclusion.is_none());
     assert!(
         failed

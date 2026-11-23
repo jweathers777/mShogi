@@ -403,27 +403,27 @@ impl DesktopController {
         };
         let candidate = match opened {
             OpenedNative::Chess(mut state) => {
-                state.retire();
+                state.prepare_install();
                 ActiveDocument::Chess { runtime, state }
             }
             OpenedNative::Shogi(mut state) => {
-                state.retire();
+                state.prepare_install();
                 ActiveDocument::Shogi { runtime, state }
             }
             OpenedNative::Tenjiku(mut state) => {
-                state.retire();
+                state.prepare_install();
                 ActiveDocument::Tenjiku { runtime, state }
             }
             OpenedNative::Chu(mut state) => {
-                state.retire();
+                state.prepare_install();
                 ActiveDocument::Chu { runtime, state }
             }
             OpenedNative::Tori(mut state) => {
-                state.retire();
+                state.prepare_install();
                 ActiveDocument::Tori { runtime, state }
             }
             OpenedNative::Xiangqi(mut state) => {
-                state.retire();
+                state.prepare_install();
                 ActiveDocument::Xiangqi { runtime, state }
             }
         };

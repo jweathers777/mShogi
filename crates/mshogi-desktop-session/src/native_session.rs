@@ -244,6 +244,13 @@ impl<G: SessionGame> NativeSession<G> {
         // The native context is never recovered by restoring a canonical record.
         G::retire_context(&mut self.game);
     }
+    /// Install fresh identities while preserving New Game's running intent.
+    pub(crate) fn prepare_install(&mut self) {
+        self.retire();
+        if !self.paused {
+            self.phase = EnginePhase::Idle;
+        }
+    }
     fn cancel(&mut self) {
         let cancelled = self
             .pending

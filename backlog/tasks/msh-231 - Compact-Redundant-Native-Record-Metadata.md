@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-23T11:05:00Z'
-updated_date: '2026-11-23T14:56:00Z'
+updated_date: '2026-11-23T15:15:00Z'
 labels:
   - simplification
   - persistence
@@ -23,8 +23,8 @@ Split from MSH-229: native.rs plus per-game record codecs repeatedly store game/
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 For each game, identify essential root/command data versus derived or repeated metadata, and remove redundant data in separate reviewed steps
-- [ ] #2 New records round-trip all supported profiles, claims, offers and conclusions through native rules; recorded compatibility and independent rules tests remain valid
+- [x] #1 For each game, identify essential root/command data versus derived or repeated metadata, and remove redundant data in separate reviewed steps
+- [x] #2 New records round-trip all supported profiles, claims, offers and conclusions through native rules; recorded compatibility and independent rules tests remain valid
 - [ ] #3 Record encoded size, replay time and source-line changes; pass required Rust/frontend/affected-platform persistence checks after each step
 <!-- AC:END -->
 
@@ -63,4 +63,8 @@ Step3 production commit e9a7d2c pushed. Final consumer review found three stale 
 Full step3 release scan completed and found additional old-format fixture/probe consumers; all identified sites updated. Retained Shogi/Xiangqi protocol report fixtures require re-expression because their context SHA256 is defined over canonical bytes. Converted 15 existing fixtures (59 games), changing only native encoded records and corresponding byte hashes; engine traffic, commands, outcomes and timings stay unchanged, with original captured files in Git. No new run reports committed. Current full release rerun starts after origin/main merge. Latest persistence c64cf0f Linux passed, Windows running, macOS still awaiting hosted capacity; routine fmt/Clippy/frontend passed. Final verification, replay measurements and merge remain.
 
 Fresh review independently audited the report conversion: 15 files, 59 records, 146 turn hashes; all roots, actor/command sequences and every other field unchanged except corresponding context_sha256, all recalculated hashes match. Late helper/probe changes have no findings. Final frontend rerun603 and Python177 pass; current source171333 lines versus171700 baseline (-367); 42 desktop document fixtures187404 ->79063 bytes (-57.8%). Final release rerun compiling with2 workers, required debug check and idle timing next. Linux/Windows persistence c64cf0f pass; macOS queued.
+
+Final verification at256f4ef: full workspace release run1180 passed/2 stale-probe failures/11 ignored; corrected probes then both complete target suites pass (8 Shogi CLI +6 Xiangqi handoff), so all1182 workspace tests verified. Frontend603, Python177, TypeScript and formatting pass; latest routine CI passed at67a6ed0,256f4ef pending. Idle Apple Silicon release benchmark versus8df7bf3:155 canonical samples862891->395160 bytes (-54.2%). By game bytes/replay geometric ratio: Chess6460->4352/0.959 (native bytes unchanged); Shogi7368->1637/1.051; Xiangqi42907->11345/0.821; Tori59395->26408/0.633; Chu91795->37509/0.628; Tenjiku654966->313909/0.514. Shogi decode/replay is roughly flat/slightly slower; no claim of a speed gain there. Required debug workspace now running. Third macOS CI again could not acquire hosted runner (explicit ARM64 capacity annotations); Linux/Windows passed. One final macOS retry45201234609 queued. No Cloud Batch VMs or compute spend; evidence at gs://mshogi-experiments-216675633801/runs/msh-231/.
+
+Ready for integration at256f4ef. All code and consumer reviews complete. Required debug workspace result: same four pre-existing MSH-199 Chu timing failures,30.39s; limits/assertions unchanged. Latest routine CI45201790731 passes. Local release verification covers all1182 tests (full run1180 pass plus two fixed-probe suites14/14),11 ignored; frontend603,Python177,TypeScript,fmt/Clippy pass. Final source171342 versus171700 (-358). Question sent to John: approve a one-task exception using local macOS release evidence in place of hosted macOS CI, or wait? Recommendation: accept local macOS evidence; identical persistence code passed Linux/Windows, and three macOS attempts had no runner/steps due ARM64 capacity. Fourth retry45201234609 pending. No approval yet; do not merge or mark Done until John approves or hosted macOS passes. Then integrate into main/push, finalize AC3 with honest baseline exceptions, delete own branch and task run/build outputs. Branch codex/msh-231-compact-records. No Cloud Batch jobs/VMs were created; compute cost0; only small GCS evidence storage.
 <!-- SECTION:NOTES:END -->

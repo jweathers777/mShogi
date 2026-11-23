@@ -1,9 +1,11 @@
 ---
 id: MSH-233
 title: Simplify Internal Execution Identity and Validation
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-23T11:05:00Z'
+updated_date: '2026-11-23T17:44:00Z'
 labels:
   - simplification
   - engine
@@ -25,3 +27,9 @@ Split from MSH-229: ExecutionContext echoes complete records and has request_id,
 - [ ] #2 Stale, cancelled, cross-game and cross-profile results cannot apply moves; invalid results do not create outcomes; accepted PV/proof presentation remains truthful and bounded
 - [ ] #3 Recorded reports still replay, retained sessions still work, and required Rust/frontend/process checks pass; record bytes, timings and line counts
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Started from main9ec1d05. Trace runtime identity and validation consumers, measure current bytes/replay work, then remove demonstrated redundancy in reviewed steps. Preserve recorded report replay, retained Shogi/Tori sessions, exact stale-result checks and native command admission. Branch codex/msh-233-execution-validation.
+<!-- SECTION:NOTES:END -->

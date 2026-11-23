@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-22T16:43:00Z'
-updated_date: '2026-11-23T08:36:00Z'
+updated_date: '2026-11-23T08:43:00Z'
 labels:
   - desktop
   - refactor
@@ -25,9 +25,9 @@ The shared desktop document (game_document.rs) stores a full audit trail: a jour
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 The saved document holds only: game kind, rules profile, start position, human side, play mode, orientation, the game's commands, and optional per-move engine notes (score, line, depth, nodes); opening checks it by one replay of the commands
-- [ ] #2 Removed: the controls journal, current, initial_settings, retired branches, observation contexts, Xiangqi evidence ledger (or reduced to a short note), retired_execution_floor, selected_event, Close entries, mode, and the reservation and work-limit machinery that only these needed; line counts before and after recorded
-- [ ] #3 Take back and Undo cut the move list; reopening a file restores the game, sides and settings; docs/design.md is updated to the new rules (A-09 and audit wording)
+- [x] #1 The saved document holds only: game kind, rules profile, start position, human side, play mode, orientation, the game's commands, and optional per-move engine notes (score, line, depth, nodes); opening checks it by one replay of the commands
+- [x] #2 Removed: the controls journal, current, initial_settings, retired branches, observation contexts, Xiangqi evidence ledger (or reduced to a short note), retired_execution_floor, selected_event, Close entries, mode, and the reservation and work-limit machinery that only these needed; line counts before and after recorded
+- [x] #3 Take back and Undo cut the move list; reopening a file restores the game, sides and settings; docs/design.md is updated to the new rules (A-09 and audit wording)
 - [ ] #4 Desktop-session and workspace tests pass; fixtures regenerated; frontend tests pass; one fresh-agent review
 <!-- AC:END -->
 
@@ -63,4 +63,8 @@ Codex continuation: John assigned the pushed Claude handoff. Continue on codex/m
 Checkpoint (Codex): remaining console reopen assertions updated; all GUI documents regenerated with minimal record/human/settings payload; removed Chu capacity fixture and adapted generic-game smoke journeys; frontend regeneration exposed stale Chu/Tenjiku fixture search defaults, now explicit deterministic limits. Fresh review found unbounded current-observation IDs (fixed, 260-result regression passed) and double replay on Open (parser handoff fix in progress). GUI observer tests and frontend checks in progress. Branch codex/msh-228-minimal-document. Remaining: finish single-replay API, complete checks and affected-platform CI, final review and merge.
 
 Checkpoint: single-replay Open implemented through native parsers returning the validated record and replayed game; no rule changes. Fresh-agent review complete and findings fixed (bounded request IDs, single replay, exact historical-analysis source assertions). Frontend: 43 files / 609 tests pass on pinned Node 24.19.0; TypeScript passes; 129 Python GUI observer tests pass. fmt passes. Workspace tests and workspace/all-feature clippy still running. Persistence CI: https://github.com/jweathers777/mShogi/actions/runs/45139767465 (Linux/macOS/Windows), on product commit 6102123; later f92a776 adds only GUI observer assertions. Line counts: game_document.rs 1175 -> 356; native_game.rs 1290 -> 931. Next: resolve any check failures, record final results, merge main and clean task scratch. Branch codex/msh-228-minimal-document.
+
+Verification update: workspace clippy and all-feature desktop-session clippy passed. Debug workspace tests failed in the four already-tracked Chu watchdog tests (MSH-199); evidence added there and uploaded to gs://mshogi-experiments-216675633801/runs/msh-228/workspace-debug.log. Release workspace suite and full all-feature desktop-session suite running. Linux persistence CI and routine Rust/frontend CI passed; macOS/Windows persistence pending. No GCP Batch VMs created; no paid experiment compute.
+
+Persistence CI passed on Linux, macOS and Windows: run 45139767465. Routine Rust/frontend CI passed: run 45139766446. Full all-feature desktop-session and release workspace local checks remain pending. Code is complete and freshly reviewed; no process files or CI workflows changed.
 <!-- SECTION:NOTES:END -->

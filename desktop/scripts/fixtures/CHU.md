@@ -9,7 +9,7 @@ normal application components.
 Regenerate from the integration checkout:
 
 ```sh
-cargo run --locked -p mshogi-desktop-session --example write_chu_gui_documents -- desktop/scripts/fixtures
+cargo run --release --locked -p mshogi-desktop-session --example write_chu_gui_documents -- desktop/scripts/fixtures
 cargo test --locked -p mshogi-desktop-session --example write_chu_gui_documents
 ```
 
@@ -22,7 +22,7 @@ not inferred from an engine's choices. They also check atomic rejection of a
 partial action, a forbidden pre-fourth repetition departure, quiet/capture-return
 distinctions and the availability of both promotion choices.
 
-Except for `chu-complete-resignation` and `chu-capacity256`, each root is an
+Except for `chu-complete-resignation`, each root is an
 independently authored diagram admitted by the native kernel. Earlier history and historical
 reachability from standard start are not claimed. Rank letters and file numbers
 below name native coordinates, independent of board orientation. A two-leg
@@ -44,9 +44,8 @@ action is one complete turn; a partially selected route is not a move.
 | `agreed-draw` | CHU-MATERIAL-AGREEMENT | Exact two-event offer/accept history, zero board actions, agreed draw. |
 | `royal-concluded` | CHU-ROYAL-BOTH-COMPOUND | Exact one-action naturally concluded royal-capture record. |
 | `material-concluded` | CHU-MATERIAL-DECLINE-COUNTERCAPTURE | Exact one-action naturally concluded material record. |
-| `complete-resignation` | Standard root and explicit scripted participant command | Twelve actual depth-1/512-visit native engine turns, then Sente resigns. All 12 actual observations and 13 native events survive canonical replay. |
-| `complete-royal-engine` | CHU-ROYAL-BOTH-COMPOUND plus an explicitly added remote Gote Gold at `11a` | Actual engine Choice completes two royal captures and produces a native Sente royal-capture win. A second actual engine request returns Finished; both observations and the exact complete action survive replay. |
-| `capacity256` | Standard root and actual zero-work native engine observations | Exactly 256 historical observations, all incomplete and unscored. A positive-budget GUI analysis must refuse a further observation before commitment, with truthful capacity information and Save still available. |
+| `complete-resignation` | Standard root and explicit scripted participant command | Twelve actual depth-1/512-visit native engine turns, then Sente resigns. All 13 native events survive canonical replay; engine observations are not saved. |
+| `complete-royal-engine` | CHU-ROYAL-BOTH-COMPOUND plus an explicitly added remote Gote Gold at `11a` | Actual engine Choice completes two royal captures and produces a native Sente royal-capture win. A second actual engine request returns Finished; the exact complete action survives replay; engine observations are not saved. |
 
 The standard-root resignation record is a complete **recorded game with an
 explicit resignation ending**. It is not evidence that the engine naturally
@@ -66,19 +65,11 @@ removing both royals. The source fixture is unchanged. The manifest identifies
 this derived root and records the actual engine-selected route; no expected
 route is forced onto search and no heuristic score is converted into a result.
 
-The capacity archive is assembled from actual depth-1/zero-node engine responses
-and admitted in one authoritative strict decode, avoiding repeated expensive
-validation of every intermediate document. The generator verifies that a 257th
-actual observation refuses atomically with typed OrdinaryObservations capacity,
-count 257 and limit 256. It never manufactures a successful score, action or
-pending operation. Structural capacity does not reset on Save/Load. This
-focused presentation input complements the existing native admission and
-Stop/Resign/Close reservation tests; it does not replace their broader coverage.
+The minimal document holds the native record, human side and settings. Engine
+results stay in memory for the open session. Load restores the live game with
+empty results, stops work and allocates fresh runtime identities. The removed
+capacity fixture tested a saved-observation limit that no longer exists.
 
-The manifest records each archive's actual bytes, replay work and reserved
-closing headroom. These inputs do not establish arbitrary long-game capacity
-or a platform GUI result. Those checks retain their separately recorded MSH-43
-evidence. Successful Load
-must still stop work and allocate fresh runtime identities. The packaged GUI
-campaign must actually perform the interactions; generating these files alone
-does not establish GUI success.
+These inputs do not establish arbitrary long-game capacity or a platform GUI
+result. The packaged GUI campaign must perform the interactions; generating
+these files alone does not establish GUI success.

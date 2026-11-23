@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-21T04:35:00Z'
-updated_date: '2026-11-23T19:39:00Z'
+updated_date: '2026-11-23T19:53:00Z'
 labels:
   - runner
   - test
@@ -46,4 +46,8 @@ Original configuration campaign complete on Darwin arm64, one game at a time: 20
 Historical source resolves the task-description mismatch: at task creation commit 0371aef (and preceding 05841f2), shogi_match.rs line 124 is assert!(tampered.replay().is_err()) after reversing engine_score at line 123; report.stop is at lines 110-115. Thus the recorded failing line matches the reproduced draw-score defect, not a clock stop. Root cause: wall-clock self-play can draw; reversing [1,1] leaves a valid report unchanged, and the test incorrectly requires rejection. Fixed suite passed 20/20 repetitions, all 5 tests each (100 test executions), with the release engine present. Reintroducing the original score reversal made the new scripted draw test fail at the corresponding assertion, confirming the regression. Product commit 175b52d; main merge already current. Formatting passed; workspace Clippy/debug tests running; targeted process CI https://github.com/jweathers777/mShogi/actions/runs/45250398037 .
 
 Verification checkpoint: fmt and workspace Clippy passed. Required debug workspace run stopped at the same four MSH-199 Chu watchdog failures (30.44 s), outside this test-only change. Release workspace run is now compiling with two workers. No engine, rules or runner product code changed; no strength campaign or fresh-agent review is required for this focused test fix. Targeted process CI is running on three OSes. Remaining: finish verification, upload evidence to gs://mshogi-experiments-216675633801/runs/msh-219/, merge main, mark Done, remove task branch/build/run outputs.
+
+Final local verification: cargo fmt --all -- --check and cargo clippy --workspace --all-targets --locked -j 2 -- -D warnings passed. Required debug workspace command stopped at the four known MSH-199 Chu watchdog failures. cargo test --release --workspace --locked -j 2 -- --test-threads=2 passed all 1190 tests, with 11 ignored and no failures. Release mshogi was built before testing, so the real-engine mate check ran. Linux and Windows targeted process CI passed; macOS remains running. Existing duplicate tenjiku_work example-name warning is tracked by MSH-234. No cloud VM/job or strength experiment was needed; GCP compute cost $0.
+
+Final platform verification: workflow 45250398037 passed routine checks and targeted process suites on Ubuntu 24.04, macOS 15 and Windows 2022 for fix 175b52d. Evidence uploaded successfully to gs://mshogi-experiments-216675633801/runs/msh-219/ (60-day lifecycle), including the original draw report, historical source, failed old-mutation regression, 20 passing fixed-suite logs, and workspace logs. No new follow-up is needed; MSH-199 (Chu Test Cost Review) remains the next test-cost issue. Ready for integration and cleanup.
 <!-- SECTION:NOTES:END -->

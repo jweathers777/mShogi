@@ -402,6 +402,7 @@ fn concurrent_save_as_keeps_new_admission_dirty_and_open_retires_it() {
             nodes: 12,
         },
     };
+    c.admissions.hold_results_for_test(true);
     let (_, receipt) = c
         .shared_command_with_receipt(SharedDesktopCommand {
             expected: c.shared_token(),
@@ -414,6 +415,7 @@ fn concurrent_save_as_keeps_new_admission_dirty_and_open_retires_it() {
     let copy = path("save-as-admission");
     // Save waits for the pending admission; it never saves a stale document.
     assert!(c.queue_shared_save(copy.clone()).is_err());
+    c.admissions.hold_results_for_test(false);
     settle(&mut c);
     assert_eq!(receipt.completion(), Some(Ok(())));
     assert_eq!(c.session.shogi().unwrap().document.settings(), &settings);

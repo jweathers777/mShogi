@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-22T16:43:00Z'
-updated_date: '2026-11-23T11:12:00Z'
+updated_date: '2026-11-23T11:14:00Z'
 labels:
   - refactor
   - simplification
@@ -94,4 +94,6 @@ Inventory15 correction from fresh review: the multiple-cause and omitted-facts r
 Checkpoint: complete 30-group inventory and implementation mapping recorded; MSH-230/231/232/233 created unassigned and Ready. First bounded code cut removes the unused archive watermark, dead control/observation refusal DTO/UI fields, unused inbound resource parsing, and misleading saved-result labels. Fresh review has no remaining findings after correcting the unused multiple-cause verdict. Clippy, TypeScript and 603 frontend tests pass; debug workspace has the known four MSH-199 Chu watchdog failures. Release workspace and final native checks are underway. Branch codex/msh-229-cut-auditing. Next finish checks including affected-platform persistence, integrate and clean up.
 
 Measured first-step source count (tracked .rs/.ts/.tsx/.py/.mjs under crates/ and desktop/, including tests/examples): 158610 -> 158418, net -192. Desktop-session 26246 -> 26091; desktop/src 7498 -> 7461; other source groups unchanged. Three generated snapshot fields were also removed (not counted as source). After final cut: 200 all-feature desktop-session tests, 603 frontend tests, 176 Python tests, TypeScript, formatting and workspace clippy pass. Final debug workspace again has only the four known MSH-199 Chu watchdog failures. Main merge was already up to date. Final release workspace and persistence CI 45162808849 are running.
+
+Linux persistence CI 45162808849 found a scheduling race in the first half of concurrent_save_as_keeps_new_admission_dirty_and_open_retires_it: shared_command can publish its fast preference admission before queue_shared_save is called. Added the existing test-only admission-result gate around that pending-admission assertion. The second Open/cancel half was already gated in MSH-225. No product code or assertion changed; this makes the required pending state deterministic.
 <!-- SECTION:NOTES:END -->

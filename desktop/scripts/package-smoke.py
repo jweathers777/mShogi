@@ -145,7 +145,7 @@ tenjiku_responses = []
 for index, profile in enumerate(('adams', 'muller')):
     source = Path(__file__).with_name('fixtures') / f'tenjiku-{profile}-royal-engine.mshogi'
     document = json.loads(source.read_text(encoding='utf-8'))
-    native = document['payload']['current']
+    native = document['payload']['record']
     turn = native['payload']['current_position']['side']
     assert turn == 'sente' and native['payload']['conclusion'] is None
     ctx = {'purpose': {'kind': 'engine_turn'}, 'request_id': 100 + index * 2,
@@ -157,7 +157,7 @@ for index, profile in enumerate(('adams', 'muller')):
     assert result['kind'] == 'choice' and telemetry['completed_depth'] == 1
     assert telemetry['score'] == 999999 and 0 < telemetry['nodes'] <= 1024
     assert telemetry['perspective'] == 'sente' and telemetry['principal_variation'][0] == result['action']
-    assert telemetry['evaluator_id'] == 'mshogi.tenjiku.material.v1' and telemetry['search_id'] == 'mshogi.tenjiku.full-width.v1'
+    assert telemetry['evaluator_id'] == 'mshogi.tenjiku.material-placement.v1' and telemetry['search_id'] == 'mshogi.tenjiku.shared-core.v1'
     analysis = copy.deepcopy(move_request)
     analysis['context'].update(request_id=101+index*2,process_generation=101+index*2,
         purpose={'kind':'move_analysis','target':{'selection_id':1,'event_index':0,'board_ply':0,'session_version':1,

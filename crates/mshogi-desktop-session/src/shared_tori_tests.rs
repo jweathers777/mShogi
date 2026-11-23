@@ -674,16 +674,13 @@ fn seven_reject_fixtures_actual_open_preserves_live_document_and_execution() {
             for raw in f["given"]["raw_payloads"].as_array().unwrap() {
                 let raw = raw.as_str().unwrap();
                 let text = serde_json::to_string(&template).unwrap();
-                let current = serde_json::to_string(&template["payload"]["current"]).unwrap();
+                let current = serde_json::to_string(&template["payload"]["record"]).unwrap();
                 raws.push(text.replacen(&current, raw, 1));
             }
         } else {
             let mut v = template.clone();
-            for location in ["initial", "current"] {
-                v["payload"][location]["payload"]["root"] = raw_root(&f["given"]["root"]);
-                v["payload"][location]["payload"]["current_position"] =
-                    raw_root(&f["given"]["root"]);
-            }
+            v["payload"]["record"]["payload"]["root"] = raw_root(&f["given"]["root"]);
+            v["payload"]["record"]["payload"]["current_position"] = raw_root(&f["given"]["root"]);
             raws.push(v.to_string());
         }
         for raw in raws {
@@ -709,7 +706,7 @@ fn seven_reject_fixtures_actual_open_preserves_live_document_and_execution() {
     let mut profile = template.clone();
     profile["profile_edition"] = json!("unsupported edition");
     let mut forged = template.clone();
-    forged["payload"]["current"]["payload"]["conclusion"] =
+    forged["payload"]["record"]["payload"]["conclusion"] =
         json!({"kind":"resignation","winner":"sente"});
     for raw in [
         timed.to_string(),
@@ -890,10 +887,8 @@ fn history_identity_distinguishes_native_owners_hands_handed_faces_and_counter_p
                 let dir = directory("structural-key");
                 let path = dir.join("not-a-live-root.mshogi");
                 let mut invalid: Value = serde_json::from_slice(&unchanged).unwrap();
-                for location in ["initial", "current"] {
-                    invalid["payload"][location]["payload"]["root"] = raw_root(&r);
-                    invalid["payload"][location]["payload"]["current_position"] = raw_root(&r);
-                }
+                invalid["payload"]["record"]["payload"]["root"] = raw_root(&r);
+                invalid["payload"]["record"]["payload"]["current_position"] = raw_root(&r);
                 fs::write(&path, invalid.to_string()).unwrap();
                 let id = c.queue_shared_open(path, c.shared_open_token()).unwrap();
                 assert!(matches!(wait_file(&mut c, id).io.phase, IoPhase::Failed));

@@ -927,7 +927,7 @@ mod tests {
         ] {
             let fixture: Value = serde_json::from_str(fixture).unwrap();
             let record =
-                CanonicalRecord::from_json(&fixture["payload"]["initial"].to_string()).unwrap();
+                CanonicalRecord::from_json(&fixture["payload"]["record"].to_string()).unwrap();
             let mut state = NativeState::from_root(&fresh_root(record).unwrap()).unwrap();
             match &mut state {
                 NativeState::Chu(g) => {

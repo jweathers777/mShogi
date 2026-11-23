@@ -5,7 +5,8 @@ use mshogi_core::{
     shogi, xiangqi,
 };
 use mshogi_runner::experiments::{Config, Opening, Split, fresh_root, template};
-use serde_json::Value;
+#[path = "../tests/support/document_fixture.rs"]
+mod document_fixture;
 use std::{error::Error, fs::OpenOptions, io::Write};
 
 fn add(
@@ -36,14 +37,7 @@ fn fixture(
     expected: RulesProfile,
     facts: &str,
 ) -> Result<(), String> {
-    let document: Value = serde_json::from_str(text).map_err(|e| e.to_string())?;
-    let initial = document
-        .get("payload")
-        .and_then(|payload| payload.get("initial"))
-        .ok_or_else(|| format!("{source} lacks its initial canonical native record"))?;
-    // Only trusted committed fixture JSON is selected here. The extracted
-    // canonical record still goes through its authoritative strict decoder.
-    let record = CanonicalRecord::from_json(&initial.to_string()).map_err(|e| e.to_string())?;
+    let record = document_fixture::initial_record(text)?;
     if record.profile() != expected {
         return Err(format!("{source} has an unexpected native profile"));
     }
@@ -124,28 +118,28 @@ fn generate(executable: &str) -> Result<Config, String> {
 
     fixture(
         &mut config,
-        "desktop/scripts/fixtures/tori-mate-in-one.mshogi#payload.initial",
+        "desktop/scripts/fixtures/tori-mate-in-one.mshogi#payload.record (native root prefix)",
         include_str!("../../../desktop/scripts/fixtures/tori-mate-in-one.mshogi"),
         RulesProfile::ToriModernV1,
         "Accepted native TORI-O-MATE predecessor: Sente Falcon 4c-4b promoting to Eagle, protected by Pheasant 4d, checks the blocked Gote Phoenix at 4a and establishes native checkmate.",
     )?;
     fixture(
         &mut config,
-        "desktop/scripts/fixtures/chu-complete-royal-engine.mshogi#payload.initial",
+        "desktop/scripts/fixtures/chu-complete-royal-engine.mshogi#payload.record (native root prefix)",
         include_str!("../../../desktop/scripts/fixtures/chu-complete-royal-engine.mshogi"),
         RulesProfile::ChuJcsa2019V1,
-        "Accepted native live Lion predecessor: the complete ordered 6f-6e-5e route captures Gote King and promoted Drunk Elephant/Prince in one turn, establishing RoyalCapture. The committed document also retains the genuine engine choice and Finished observation.",
+        "Accepted native live Lion predecessor: the complete ordered 6f-6e-5e route captures Gote King and promoted Drunk Elephant/Prince in one turn, establishing RoyalCapture. The native root prefix is restored from the concluded document; engine observations are not saved.",
     )?;
     fixture(
         &mut config,
-        "desktop/scripts/fixtures/tenjiku-adams-royal-engine.mshogi#payload.initial",
+        "desktop/scripts/fixtures/tenjiku-adams-royal-engine.mshogi#payload.record (native root prefix)",
         include_str!("../../../desktop/scripts/fixtures/tenjiku-adams-royal-engine.mshogi"),
         RulesProfile::TenjikuAdamsModernV1,
         "Accepted native live royal-capture predecessor under immutable Adams1999 Modern semantics; actual complete action and ordered native effects must establish the ending, with no resignation injection.",
     )?;
     fixture(
         &mut config,
-        "desktop/scripts/fixtures/tenjiku-muller-royal-engine.mshogi#payload.initial",
+        "desktop/scripts/fixtures/tenjiku-muller-royal-engine.mshogi#payload.record (native root prefix)",
         include_str!("../../../desktop/scripts/fixtures/tenjiku-muller-royal-engine.mshogi"),
         RulesProfile::TenjikuMullerCompletedV1,
         "Accepted native live royal-capture predecessor under immutable Muller Completed semantics; actual complete action and ordered native effects must establish the ending, with no resignation injection.",

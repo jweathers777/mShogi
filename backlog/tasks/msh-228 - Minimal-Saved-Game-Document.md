@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-22T16:43:00Z'
-updated_date: '2026-11-23T08:43:00Z'
+updated_date: '2026-11-23T08:51:00Z'
 labels:
   - desktop
   - refactor
@@ -67,4 +67,6 @@ Checkpoint: single-replay Open implemented through native parsers returning the 
 Verification update: workspace clippy and all-feature desktop-session clippy passed. Debug workspace tests failed in the four already-tracked Chu watchdog tests (MSH-199); evidence added there and uploaded to gs://mshogi-experiments-216675633801/runs/msh-228/workspace-debug.log. Release workspace suite and full all-feature desktop-session suite running. Linux persistence CI and routine Rust/frontend CI passed; macOS/Windows persistence pending. No GCP Batch VMs created; no paid experiment compute.
 
 Persistence CI passed on Linux, macOS and Windows: run 45139767465. Routine Rust/frontend CI passed: run 45139766446. Full all-feature desktop-session and release workspace local checks remain pending. Code is complete and freshly reviewed; no process files or CI workflows changed.
+
+Release follow-up: all six Chu subprocess tests passed in release (8.92 s), confirming MSH-199 debug-only failures. Full all-feature desktop-session suite passed 247 tests before final negative-test correction. Release workspace then exposed experiment consumers still reading payload.initial. Updated console experiment test, runner example and compound-action test to payload.record; shared fixture helper uses native Chu prefix(0) for the concluded royal fixture. Also corrected package-smoke reader and Tori negative tests that previously modified removed fields (false-positive rejection). Fresh reviewer checked these final edits and verified the four tactical roots match the original fixtures; no findings. Full release suite, all-feature session suite and clippy rerunning.
 <!-- SECTION:NOTES:END -->

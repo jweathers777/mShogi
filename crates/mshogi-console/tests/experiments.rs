@@ -10,6 +10,9 @@ use mshogi_runner::experiments::{
 use serde_json::{Value, json};
 use std::sync::Mutex;
 
+#[path = "../../mshogi-runner/tests/support/document_fixture.rs"]
+mod document_fixture;
+
 // These actual subprocess journeys share CPU and independent watchdogs.
 static JOURNEY: Mutex<()> = Mutex::new(());
 
@@ -29,8 +32,7 @@ fn add(config: &mut Config, record: CanonicalRecord, source: &str) {
 }
 
 fn fixture(config: &mut Config, text: &str, source: &str, profile: RulesProfile) {
-    let document: Value = serde_json::from_str(text).unwrap();
-    let record = CanonicalRecord::from_json(&document["payload"]["initial"].to_string()).unwrap();
+    let record = document_fixture::initial_record(text).unwrap();
     assert_eq!(record.profile(), profile);
     add(config, record, source);
 }
@@ -101,25 +103,25 @@ fn tactical_config() -> Config {
     fixture(
         &mut config,
         include_str!("../../../desktop/scripts/fixtures/tori-mate-in-one.mshogi"),
-        "desktop/scripts/fixtures/tori-mate-in-one.mshogi#payload.initial",
+        "desktop/scripts/fixtures/tori-mate-in-one.mshogi#payload.record (native root prefix)",
         RulesProfile::ToriModernV1,
     );
     fixture(
         &mut config,
         include_str!("../../../desktop/scripts/fixtures/chu-complete-royal-engine.mshogi"),
-        "desktop/scripts/fixtures/chu-complete-royal-engine.mshogi#payload.initial",
+        "desktop/scripts/fixtures/chu-complete-royal-engine.mshogi#payload.record (native root prefix)",
         RulesProfile::ChuJcsa2019V1,
     );
     fixture(
         &mut config,
         include_str!("../../../desktop/scripts/fixtures/tenjiku-adams-royal-engine.mshogi"),
-        "desktop/scripts/fixtures/tenjiku-adams-royal-engine.mshogi#payload.initial",
+        "desktop/scripts/fixtures/tenjiku-adams-royal-engine.mshogi#payload.record (native root prefix)",
         RulesProfile::TenjikuAdamsModernV1,
     );
     fixture(
         &mut config,
         include_str!("../../../desktop/scripts/fixtures/tenjiku-muller-royal-engine.mshogi"),
-        "desktop/scripts/fixtures/tenjiku-muller-royal-engine.mshogi#payload.initial",
+        "desktop/scripts/fixtures/tenjiku-muller-royal-engine.mshogi#payload.record (native root prefix)",
         RulesProfile::TenjikuMullerCompletedV1,
     );
     config.validate().unwrap();

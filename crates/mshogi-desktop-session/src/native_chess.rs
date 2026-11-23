@@ -231,9 +231,6 @@ impl NativeGame for Chess {
     fn concluded(game: &ChessMatch) -> bool {
         game.conclusion().is_some()
     }
-    fn stop_recorded(_game: &ChessMatch) -> bool {
-        false
-    }
     fn resign() -> MatchCommand {
         MatchCommand::Resign { witness: None }
     }

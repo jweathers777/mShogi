@@ -31,7 +31,6 @@ pub struct TenjikuHistory {
     pub pending_bare: Option<c::Side>,
     pub conclusion: Option<c::Conclusion>,
     pub draw_offer: Option<c::Side>,
-    pub incomplete: Option<c::StopReason>,
     pub last_effects: Option<c::Effects>,
 }
 impl TenjikuHistory {
@@ -63,7 +62,6 @@ impl TenjikuHistory {
             pending_bare: game.snapshot().pending_bare,
             conclusion: game.conclusion(),
             draw_offer: game.snapshot().draw_offer,
-            incomplete: game.snapshot().incomplete,
             last_effects: game.events().iter().rev().find_map(|e| e.effects.clone()),
         }
     }
@@ -209,7 +207,6 @@ fn event_label(game: &c::Game, event: &c::GameEvent) -> String {
         c::GameCommand::OfferDraw => format!("{actor} offered a draw"),
         c::GameCommand::AcceptDraw => format!("{actor} accepted the draw"),
         c::GameCommand::DeclineDraw => format!("{actor} declined the draw"),
-        c::GameCommand::Stop { reason } => format!("{reason:?} · unscored"),
     }
 }
 pub(super) fn status(game: &c::Game, has_board_actions: bool) -> PresentedStatus {
@@ -226,10 +223,6 @@ pub(super) fn status(game: &c::Game, has_board_actions: bool) -> PresentedStatus
                 c::Conclusion::Resignation { .. } => "resignation",
                 _ => unreachable!("draws handled above"),
             }
-        ),
-        None if game.snapshot().incomplete.is_some() => format!(
-            "{:?} · unscored",
-            game.snapshot().incomplete.expect("native annotation")
         ),
         None if game.snapshot().pending_bare.is_some() => format!(
             "{} to move · bare royal reply required",

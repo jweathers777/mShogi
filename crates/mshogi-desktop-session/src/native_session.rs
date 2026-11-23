@@ -12,7 +12,6 @@ pub(crate) enum CommandKind {
     Play,
     /// A human's final command: resignation or a formal declaration.
     Terminal,
-    Stop,
     Other,
 }
 
@@ -311,7 +310,7 @@ impl<G: SessionGame> NativeSession<G> {
                 )?;
                 // Actor/turn/terminal/draw admission belongs to the native Game.
                 // The immutable document candidate admits the complete command below.
-                if matches!(kind, CommandKind::Terminal | CommandKind::Stop) {
+                if matches!(kind, CommandKind::Terminal) {
                     self.paused = true;
                 }
                 Some(Change::Command { actor, command })
@@ -383,11 +382,7 @@ impl<G: SessionGame> NativeSession<G> {
                 self.viewed = None;
                 self.retire();
                 self.paused = true;
-                if was_viewed
-                    && !stop.paused
-                    && !G::concluded(&self.game)
-                    && !G::stop_recorded(&self.game)
-                {
+                if was_viewed && !stop.paused && !G::concluded(&self.game) {
                     // Use the same worker-owned Resume admission; a browse intent
                     // never contains or restores an execution request.
                     return self.apply(SessionOperation::Resume {}, stopped);
@@ -1431,7 +1426,6 @@ macro_rules! large_shogi_session {
                 match command {
                     c::GameCommand::Play { .. } => CommandKind::Play,
                     c::GameCommand::Resign => CommandKind::Terminal,
-                    c::GameCommand::Stop { .. } => CommandKind::Stop,
                     _ => CommandKind::Other,
                 }
             }

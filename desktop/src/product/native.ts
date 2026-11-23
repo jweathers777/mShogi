@@ -104,12 +104,11 @@ export type XiangqiSnapshot = GameSnapshotBase & {
 export type ToriSide = "sente" | "gote";
 export type ToriFace = "phoenix" | "falcon" | "eagle" | "crane" | "pheasant" | "left_quail" | "right_quail" | "swallow" | "goose";
 export type ToriAction = { kind: "move"; from: string; to: string; result_face: ToriFace } | { kind: "drop"; face: ToriFace; to: string };
-export type ToriStop = "cancelled" | "resource_limit" | "engine_failure" | "work_limit";
 export type ToriConclusion = { kind: "checkmate" | "resignation"; winner: ToriSide } | { kind: "stalemate_loss" | "repetition_forfeit"; loser: ToriSide };
 export interface ToriHistory {
   event_index: number; board_ply: number; in_check: boolean; occurrences: number[];
   repetition: { side: ToriSide; forbidden: ToriAction[] } | null;
-  conclusion: ToriConclusion | null; incomplete: ToriStop | null;
+  conclusion: ToriConclusion | null;
 }
 export type ToriSnapshot = GameSnapshotBase & {
   game: "tori";
@@ -124,7 +123,7 @@ export interface ChuHistory {
   royals: { identity: ChuHistory["identities"][number]; local_capture_threat: boolean }[];
   capture_all_royals_threat: [boolean | null, boolean | null]; threat_diagnostics: string[];
   lion_rights: unknown; occurrences: number[]; obligations: unknown[];
-  conclusion: unknown | null; draw_offer: ToriSide | null; incomplete: string | null; last_effects: unknown | null;
+  conclusion: unknown | null; draw_offer: ToriSide | null; last_effects: unknown | null;
 }
 export type ChuSquare = [number, number];
 export type ChuAction = { from: ChuSquare; route: ChuSquare[]; promote: boolean };
@@ -144,7 +143,7 @@ export interface TenjikuHistory {
   identities: TenjikuPieceIdentity[]; royals: TenjikuPieceIdentity[];
   repetition_key: unknown; known_repetition_positions: number; first_recurrence_forbidden: true;
   pending_bare: ToriSide | null; conclusion: unknown | null; draw_offer: ToriSide | null;
-  incomplete: ToriStop | null; last_effects: unknown | null;
+  last_effects: unknown | null;
 }
 export type TenjikuSnapshot = GameSnapshotBase & {
   game: "tenjiku"; profile: TenjikuProfile;

@@ -153,7 +153,7 @@ fn repetition_equality_and_semantic_context_are_distinct_and_root_counters_are_n
     assert_ne!(record(&a), record(&imported));
 }
 #[test]
-fn native_commands_are_atomic_out_of_turn_resignation_and_unscored_stops_preserve_board_identity() {
+fn native_commands_are_atomic_out_of_turn_resignation_preserve_board_identity() {
     let mut g = Game::standard();
     let before = record(&g);
     rejection(
@@ -186,58 +186,39 @@ fn native_commands_are_atomic_out_of_turn_resignation_and_unscored_stops_preserv
         },
         GameError::Action(ActionError::InvalidDropFace),
     );
-    for reason in [
-        StopReason::Cancelled,
-        StopReason::EngineFailure,
-        StopReason::ResourceLimit,
-        StopReason::WorkLimit,
-    ] {
-        let mut g = GameRecord::from_json(&before).unwrap().to_game().unwrap();
-        let key = g.repetition_key().clone();
-        let old = g.context();
-        let mut u = submit(&mut g, Side::Gote, GameCommand::Stop { reason }).unwrap();
-        assert_eq!(g.snapshot().board_ply, 0);
-        assert_eq!(g.repetition_key(), &key);
-        assert_eq!(g.occurrences(), [0]);
-        assert!(g.conclusion().is_none());
-        assert_eq!(g.snapshot().incomplete, Some(reason));
-        assert_ne!(g.context(), old);
-        assert_eq!(g.events()[0].effects, None);
-        rejection(
-            &mut g,
-            Side::Gote,
-            GameCommand::Stop { reason },
-            GameError::AlreadyStopped,
-        );
-        assert_eq!(
-            record(
-                &GameRecord::from_json(&record(&g))
-                    .unwrap()
-                    .to_game()
-                    .unwrap()
-            ),
-            record(&g)
-        );
-        let mut redo = g.undo(&mut u).unwrap();
-        assert_eq!(record(&g), before);
-        g.redo(&mut redo).unwrap();
-        assert_eq!(g.snapshot().incomplete, Some(reason));
-        submit(&mut g, Side::Gote, GameCommand::Resign).unwrap();
-        assert_eq!(
-            g.conclusion(),
-            Some(Conclusion::Resignation {
-                winner: Side::Sente
-            })
-        );
-        assert_eq!(g.snapshot().board_ply, 0);
-        assert_eq!(g.occurrences(), [0]);
-        rejection(
-            &mut g,
-            Side::Sente,
-            GameCommand::Resign,
-            GameError::Concluded,
-        );
-    }
+    // Player resignation remains a reversible native event, without a board ply.
+    let key = g.repetition_key().clone();
+    let old = g.context();
+    let mut undo = submit(&mut g, Side::Gote, GameCommand::Resign).unwrap();
+    assert_eq!(g.snapshot().board_ply, 0);
+    assert_eq!(g.repetition_key(), &key);
+    assert_eq!(g.occurrences(), [0]);
+    assert_ne!(g.context(), old);
+    assert_eq!(g.events()[0].effects, None);
+    assert_eq!(
+        g.conclusion(),
+        Some(Conclusion::Resignation {
+            winner: Side::Sente
+        })
+    );
+    assert_eq!(
+        record(
+            &GameRecord::from_json(&record(&g))
+                .unwrap()
+                .to_game()
+                .unwrap()
+        ),
+        record(&g)
+    );
+    let mut redo = g.undo(&mut undo).unwrap();
+    assert_eq!(record(&g), before);
+    g.redo(&mut redo).unwrap();
+    rejection(
+        &mut g,
+        Side::Sente,
+        GameCommand::Resign,
+        GameError::Concluded,
+    );
 }
 #[test]
 fn exact_reversal_every_prefix_replay_and_selection_never_restore_native_authority() {
@@ -476,7 +457,6 @@ fn strict_record_all_fields_nested_duplicates_missing_tampering_and_resources() 
         "occurrences",
         "obligation",
         "conclusion",
-        "incomplete",
         "replay_work",
     ] {
         let needle = format!("\"{key}\":");
@@ -494,7 +474,7 @@ fn strict_record_all_fields_nested_duplicates_missing_tampering_and_resources() 
         ("profile", json!("mshogi.tori.bunsei11.v1")),
         ("edition", json!("new")),
         ("schema_version", json!(1)),
-        ("schema_version", json!(3)),
+        ("schema_version", json!(4)),
         ("mode", json!("timed")),
         ("invented", json!(true)),
     ] {
@@ -505,7 +485,7 @@ fn strict_record_all_fields_nested_duplicates_missing_tampering_and_resources() 
     for (index, key, value) in [
         (0, "board_ply", json!(0)),
         (9, "occurrences", json!([0, 10])),
-        // Schema-1 fields are unknown in schema 2.
+        // Schema-1 fields are unknown in schema 3.
         (9, "obligation", Value::Null),
         (
             10,
@@ -572,18 +552,10 @@ fn counter_refusal_is_unscored_saveable_and_does_not_manufacture_no_actions() {
         ),
         record(&g)
     );
-    submit(
-        &mut g,
-        Side::Gote,
-        GameCommand::Stop {
-            reason: StopReason::ResourceLimit,
-        },
-    )
-    .unwrap();
     submit(&mut g, Side::Gote, GameCommand::Resign).unwrap();
 }
 #[test]
-fn long_deterministic_real_history_reaches_admission_bound_and_retains_stop_resign_headroom() {
+fn long_deterministic_real_history_reaches_admission_bound_and_retains_resign_headroom() {
     // Fixed-seed ordinary complete legal moves, favouring previously unseen keys
     // to exercise a long real game rather than a fabricated event array.
     let mut g = Game::standard();
@@ -612,8 +584,8 @@ fn long_deterministic_real_history_reaches_admission_bound_and_retains_stop_resi
             Err(e) => panic!("unexpected admission error:{e:?}"),
         }
     }
-    // MSH-208: no replay-work count; the event bound reserves Stop and Resign.
-    assert_eq!(accepted, MAX_GAME_EVENTS - 2);
+    // MSH-208: no replay-work count; the event bound reserves Resign.
+    assert_eq!(accepted, MAX_GAME_EVENTS - 1);
     let captures = g
         .events()
         .iter()
@@ -658,21 +630,11 @@ fn long_deterministic_real_history_reaches_admission_bound_and_retains_stop_resi
     assert_eq!(g.cache_snapshot(), reconstructed.cache_snapshot());
     let before_record = record(&g);
     let before_usage = g.capacity_usage().unwrap();
-    submit(
-        &mut g,
-        Side::Sente,
-        GameCommand::Stop {
-            reason: StopReason::ResourceLimit,
-        },
-    )
-    .unwrap();
-    let stopped = g.capacity_usage().unwrap();
-    assert!(stopped.encoded_bytes - before_usage.encoded_bytes <= 4096);
     assert!(g.conclusion().is_none());
     assert_eq!(g.snapshot().board_ply, accepted);
     submit(&mut g, Side::Gote, GameCommand::Resign).unwrap();
     let final_usage = g.capacity_usage().unwrap();
-    assert!(final_usage.encoded_bytes - stopped.encoded_bytes <= 4096);
+    assert!(final_usage.encoded_bytes - before_usage.encoded_bytes <= 4096);
     assert_eq!(
         record(
             &GameRecord::from_json(&record(&g))
@@ -698,12 +660,12 @@ fn long_deterministic_real_history_reaches_admission_bound_and_retains_stop_resi
         assert_eq!(restored.cache_snapshot(), snapshots[i + 1]);
     }
     eprintln!(
-        "TORI208 capacity real: {accepted}board/{events}events/{bytes}bytes; captures{captures}/drops{drops}/promotions{promotions}; generation+candidate probes {admission_ms}ms; strict parse+two replays {replay_ms}ms; stopped {stopped:?}; resigned {final_usage:?}",
+        "TORI208 capacity real: {accepted}board/{events}events/{bytes}bytes; captures{captures}/drops{drops}/promotions{promotions}; generation+candidate probes {admission_ms}ms; strict parse+two replays {replay_ms}ms; resigned {final_usage:?}",
         events = before.events,
         bytes = before.encoded_bytes,
     );
     if let Ok(path) = std::env::var("MSH_TORI_129_CAPACITY_REPORT") {
-        std::fs::write(path,serde_json::to_vec_pretty(&json!({"seed":"0x129ca11ab1e5","board_actions":accepted,"events":before.events,"captures":captures,"drops":drops,"promotions":promotions,"encoded_bytes":before.encoded_bytes,"generation_with_candidate_probes_ms":admission_ms,"strict_parse_plus_two_replays_ms":replay_ms,"stop_bytes":stopped.encoded_bytes,"resignation_bytes":final_usage.encoded_bytes,"record":serde_json::from_str::<Value>(&long).unwrap()})).unwrap()).unwrap();
+        std::fs::write(path,serde_json::to_vec_pretty(&json!({"seed":"0x129ca11ab1e5","board_actions":accepted,"events":before.events,"captures":captures,"drops":drops,"promotions":promotions,"encoded_bytes":before.encoded_bytes,"generation_with_candidate_probes_ms":admission_ms,"strict_parse_plus_two_replays_ms":replay_ms,"resignation_bytes":final_usage.encoded_bytes,"record":serde_json::from_str::<Value>(&long).unwrap()})).unwrap()).unwrap();
     }
 }
 
@@ -734,62 +696,6 @@ fn choose_live(g: &Game, seed: &mut u64) -> Action {
     }
     chosen.expect("live continuation")
 }
-#[test]
-fn real_event_limit_preserves_two_slots_for_stop_and_resignation() {
-    let mut g = Game::standard();
-    let mut seed = 0x129c_a11a_b1e5_u64;
-    for _ in 0..(MAX_GAME_EVENTS - 2) / 2 {
-        submit(
-            &mut g,
-            Side::Sente,
-            GameCommand::Stop {
-                reason: StopReason::WorkLimit,
-            },
-        )
-        .unwrap();
-        let a = choose_live(&g, &mut seed);
-        play(&mut g, a).unwrap();
-    }
-    assert_eq!(g.events().len(), MAX_GAME_EVENTS - 2);
-    assert_eq!(g.snapshot().board_ply, (MAX_GAME_EVENTS - 2) / 2);
-    assert!(g.conclusion().is_none());
-    let a = choose_live(&g, &mut seed);
-    let actor = g.position().side_to_move();
-    rejection(
-        &mut g,
-        actor,
-        GameCommand::Play { action: a },
-        GameError::Capacity(Resource::Events),
-    );
-    let ordinary = g.capacity_usage().unwrap();
-    submit(
-        &mut g,
-        Side::Gote,
-        GameCommand::Stop {
-            reason: StopReason::ResourceLimit,
-        },
-    )
-    .unwrap();
-    assert_eq!(g.events().len(), MAX_GAME_EVENTS - 1);
-    assert!(g.conclusion().is_none());
-    submit(&mut g, Side::Sente, GameCommand::Resign).unwrap();
-    assert_eq!(g.events().len(), MAX_GAME_EVENTS);
-    assert_eq!(g.snapshot().board_ply, (MAX_GAME_EVENTS - 2) / 2);
-    assert_eq!(
-        record(
-            &GameRecord::from_json(&record(&g))
-                .unwrap()
-                .to_game()
-                .unwrap()
-        ),
-        record(&g)
-    );
-    eprintln!(
-        "TORI129 real event boundary:{ordinary:?}; final {:?}",
-        g.capacity_usage().unwrap()
-    );
-}
-
 #[test]
 fn cached_encoded_length_equals_full_encoding_after_every_operation() {
     // MSH-204: admission computes encoded bytes from cached event lengths
@@ -838,14 +744,6 @@ fn cached_encoded_length_equals_full_encoding_after_every_operation() {
         }
         if g.conclusion().is_none() {
             let side = g.position().side_to_move();
-            submit(
-                &mut g,
-                side,
-                GameCommand::Stop {
-                    reason: StopReason::WorkLimit,
-                },
-            )
-            .unwrap();
             exact(&g);
             submit(&mut g, side.opponent(), GameCommand::Resign).unwrap();
             exact(&g);

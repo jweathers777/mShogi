@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-23T11:04:00Z'
-updated_date: '2026-11-23T12:12:00Z'
+updated_date: '2026-11-23T12:24:00Z'
 labels:
   - simplification
   - core
@@ -28,8 +28,18 @@ Split from MSH-229: Tori, Chu and Tenjiku store cancellation, engine failure and
 - [ ] #3 Migrate affected consumers and fixtures in bounded reviewed steps; record line counts and pass required Rust/frontend/persistence checks after each step
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Remove native Stop state and reservations; retain the explicit Tori schema-1 replay promise with wire-only legacy validation. Bump current schemas; development-era Tori-2/Chu-1/Tenjiku-1 encodings can retire under design A-09.
+2. Move console stop feedback to session memory and migrate desktop, runner and verification fixtures. Preserve real commands and rules expectations.
+3. Review the bounded migration, record source line counts, run Rust/frontend/persistence checks, then integrate and clean up.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 Started from main 8480977. Branch codex/msh-230-session-stops. Trace the native Stop commands, record compatibility readers, console/session feedback and verification fixtures before migration; preserve all native rules and player history.
+
+Checkpoint: native Stop commands/incomplete state and Stop-only capacity reservations removed; current schemas Tori 3, Chu 2, Tenjiku 2. Explicit Tori schema-1 reader validates old annotations then omits them while retaining player history. Console interruption state is transient; desktop uses existing Cancel/failure state. All workspace targets compile. Full release tests and fresh review are running; frontend fixture refresh and complete checks remain. Branch codex/msh-230-session-stops.
 <!-- SECTION:NOTES:END -->

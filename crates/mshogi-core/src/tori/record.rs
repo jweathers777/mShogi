@@ -8,9 +8,9 @@ use serde_json::value::RawValue;
 use std::collections::BTreeSet;
 
 /// Native schema, independent of the immutable profile and shared transport/envelope.
-/// Schema 2 (MSH-208): T06 third-occurrence refusal; no stored obligation or
-/// replay-work fields. Schema 1 records are read by replay (see `replay_v1`).
-pub const GAME_RECORD_SCHEMA_VERSION: u32 = 2;
+/// Schema 3 removes operational stops. Schema 1 records retain the promised
+/// replay path under current T06, with validated stop annotations omitted.
+pub const GAME_RECORD_SCHEMA_VERSION: u32 = 3;
 /// Native payload bound, leaving room inside the existing 1MiB shared envelope.
 pub const MAX_GAME_RECORD_BYTES: usize = 512 * 1024;
 /// Bounded complete native record with replay-validated cached metadata.
@@ -265,7 +265,6 @@ struct WireRecord {
     events: Vec<GameEvent>,
     current_position: WirePosition,
     conclusion: Option<Conclusion>,
-    incomplete: Option<StopReason>,
 }
 impl WireRecord {
     fn from_game(game: &Game) -> Self {
@@ -287,7 +286,6 @@ impl WireRecord {
             events: vec![],
             current_position: WirePosition::from_state(game.position().state()),
             conclusion: game.conclusion(),
-            incomplete: game.snapshot().incomplete,
         }
     }
 }
@@ -473,6 +471,24 @@ impl GameRecord {
         Ok((game, undo))
     }
 }
+// Operational annotations exist only in the promised schema-1 reader.
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Deserialize)]
+#[serde(rename_all = "snake_case")]
+enum StopReason {
+    Cancelled,
+    ResourceLimit,
+    EngineFailure,
+    WorkLimit,
+}
+#[derive(Deserialize)]
+#[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
+enum CommandV1 {
+    Play { action: Action },
+    Resign,
+    AgreeDraw,
+    DeclareImpasse,
+    Stop { reason: StopReason },
+}
 /// Schema-1 event: the earlier T06 obligation and replay-work fields are
 /// rule-dependent and ignored; every other field must equal the replay.
 #[derive(Deserialize)]
@@ -481,7 +497,7 @@ struct EventV1 {
     index: usize,
     board_ply: usize,
     actor: Side,
-    command: GameCommand,
+    command: CommandV1,
     #[serde(deserialize_with = "required_option")]
     effects: Option<Effects>,
     occurrences: Vec<usize>,
@@ -542,35 +558,54 @@ impl GameRecord {
             return Err(RecordError::Derived);
         }
         let mut undo = Vec::with_capacity(wire.events.len());
+        let mut incomplete = None;
         for (i, event) in wire.events.iter().enumerate() {
             if stop() {
                 return Err(RecordError::Stopped);
             }
-            undo.push(
-                game.submit(GameRequest {
-                    expected: game.context(),
-                    actor: event.actor,
-                    command: event.command,
-                })
-                .map_err(|e| match e {
-                    GameError::Capacity(_) => RecordError::Capacity,
-                    _ => RecordError::Command(i),
-                })?,
-            );
-            let actual = game.events.last().expect("accepted event");
-            if actual.index != event.index
-                || actual.board_ply != event.board_ply
-                || actual.effects != event.effects
-                || actual.occurrences != event.occurrences
-                || actual.conclusion != event.conclusion
-                || actual.incomplete != event.incomplete
+            let command = match event.command {
+                CommandV1::Play { action } => Some(GameCommand::Play { action }),
+                CommandV1::Resign => Some(GameCommand::Resign),
+                CommandV1::AgreeDraw => Some(GameCommand::AgreeDraw),
+                CommandV1::DeclareImpasse => Some(GameCommand::DeclareImpasse),
+                CommandV1::Stop { reason } => {
+                    if game.conclusion().is_some() || incomplete.is_some() {
+                        return Err(RecordError::Command(i));
+                    }
+                    incomplete = Some(reason);
+                    None
+                }
+            };
+            let effects = if let Some(command) = command {
+                undo.push(
+                    game.submit(GameRequest {
+                        expected: game.context(),
+                        actor: event.actor,
+                        command,
+                    })
+                    .map_err(|e| match e {
+                        GameError::Capacity(_) => RecordError::Capacity,
+                        _ => RecordError::Command(i),
+                    })?,
+                );
+                incomplete = None;
+                game.events.last().expect("accepted event").effects
+            } else {
+                None
+            };
+            if event.index != i
+                || game.snapshot().board_ply != event.board_ply
+                || effects != event.effects
+                || game.occurrences() != event.occurrences
+                || game.conclusion() != event.conclusion
+                || incomplete != event.incomplete
             {
                 return Err(RecordError::Derived);
             }
         }
         if WirePosition::from_state(game.position().state()) != wire.current_position
             || game.conclusion() != wire.conclusion
-            || game.snapshot().incomplete != wire.incomplete
+            || incomplete != wire.incomplete
         {
             return Err(RecordError::Derived);
         }

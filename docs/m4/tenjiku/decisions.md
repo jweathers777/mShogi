@@ -25,7 +25,7 @@ Both profiles use the explicit T04 final-action effect transaction, surviving-on
 promotion, no immediate burn on WBf promotion, Prince royal rank, full-turn royal
 outcome priority, simultaneous final-royal draw, narrowly specified bare-response,
 source board+turn first-repeat prohibition, unscored NoBoardActions and real draw
-agreement/Stop conventions. These rare-edge/software completions are labelled S
+agreement conventions; operational stops are session state. These rare-edge/software completions are labelled S
 in[profile.md](profile.md), with concrete distinguishing fixtures. No published
 source authority is invented. No100-move/250move/point claim, future forced-series
 bare proof, Chu Lion protection, Chess self-check or general mate search is added.

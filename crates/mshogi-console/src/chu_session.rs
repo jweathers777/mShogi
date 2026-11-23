@@ -19,7 +19,7 @@ const HELP: &str = "Untimed Chu Shogi diagnostic console (not USI/SFEN):
   resign sente|gote                 Actual resignation, independent of board turn
   offer-draw sente|gote             Actual draw offer; not an automatic result
   accept-draw sente|gote | decline-draw sente|gote
-  stop cancelled|resource|engine|work  Recorded incomplete/unscored annotation
+  stop cancelled|resource|engine|work  Session-only interruption; game unchanged
   undo [n] | history               Exact native events and event reversal
   record print | record save <path> | record load-file <path> | record load-json <JSON>
   perft <0..2> [visits] | divide <1..2> [visits]  Bounded local diagnostics
@@ -33,6 +33,7 @@ Perft/divide ignores history and conclusions. Search uses native full history.
 Saves require a new path; strict canonical records preserve complete semantics.";
 
 pub struct Session {
+    stopped: Option<crate::session::OperationalStop>,
     game: c::Game,
     undo: Vec<c::GameUndo>,
 }
@@ -41,11 +42,16 @@ impl Session {
         Self {
             game: c::Game::standard(),
             undo: Vec::new(),
+            stopped: None,
         }
     }
     fn restored(record: &c::GameRecord) -> Result<Self, String> {
         let (game, undo) = record.to_game_with_undo().map_err(diagnostic)?;
-        Ok(Self { game, undo })
+        Ok(Self {
+            game,
+            undo,
+            stopped: None,
+        })
     }
     pub fn execute(&mut self, line: &str, out: &mut String) -> Result<Next, String> {
         if line.len() > MAX_LINE_BYTES {
@@ -154,17 +160,7 @@ impl Session {
                 self.status(out);
             }
             "stop" => {
-                let reason = match args.as_slice() {
-                    ["cancelled"] => c::StopReason::Cancelled,
-                    ["resource"] => c::StopReason::ResourceLimit,
-                    ["engine"] => c::StopReason::EngineFailure,
-                    ["work"] => c::StopReason::WorkLimit,
-                    _ => return Err("usage: stop cancelled|resource|engine|work".into()),
-                };
-                self.submit(
-                    self.game.position().side_to_move(),
-                    c::GameCommand::Stop { reason },
-                )?;
+                self.stopped = Some(crate::session::OperationalStop::parse(&args)?);
                 self.status(out);
             }
             "undo" => {
@@ -200,7 +196,7 @@ impl Session {
                         .map_err(diagnostic)?,
                         _ => format!("{:?}", event.command),
                     };
-                    writeln!(out,"event {} board-ply {} actor {} action {} occurrences {:?} obligation {:?} conclusion {:?} incomplete {:?}",event.index+1,event.board_ply,side_text(event.actor),label,event.occurrences,event.obligations,event.conclusion,event.incomplete).unwrap();
+                    writeln!(out,"event {} board-ply {} actor {} action {} occurrences {:?} obligation {:?} conclusion {:?}",event.index+1,event.board_ply,side_text(event.actor),label,event.occurrences,event.obligations,event.conclusion).unwrap();
                 }
             }
             "record" => {
@@ -297,6 +293,7 @@ impl Session {
                 })
                 .map_err(diagnostic)?,
         );
+        self.stopped = None;
         Ok(())
     }
     fn record_json(&self) -> Result<String, String> {
@@ -325,7 +322,7 @@ impl Session {
         )
         .unwrap();
         writeln!(out,"root {:?} source {:?} declared-root-plies {} earlier-history-unknown {} reachability-proven {}",root.kind(),root.source(),root.declared_completed_plies(),root.earlier_history_unknown(),root.historical_reachability_proven()).unwrap();
-        writeln!(out,"side {} known-events {} known-board-actions {} occurrences {:?} obligation {:?} conclusion {:?} incomplete {:?}",side_text(self.game.position().side_to_move()),self.game.events().len(),self.game.snapshot().board_ply,self.game.occurrences(),self.game.obligations(),self.game.conclusion(),self.game.snapshot().incomplete).unwrap();
+        writeln!(out,"side {} known-events {} known-board-actions {} occurrences {:?} obligation {:?} conclusion {:?} incomplete {:?}",side_text(self.game.position().side_to_move()),self.game.events().len(),self.game.snapshot().board_ply,self.game.occurrences(),self.game.obligations(),self.game.conclusion(),self.stopped).unwrap();
         for side in [c::Side::Sente, c::Side::Gote] {
             let royals: Vec<_> = self
                 .game
@@ -349,7 +346,7 @@ impl Session {
             self.game.local_position().protection()
         )
         .unwrap();
-        if self.game.snapshot().incomplete.is_some() {
+        if self.stopped.is_some() {
             writeln!(
                 out,
                 "incomplete work is unscored; no game conclusion inferred"

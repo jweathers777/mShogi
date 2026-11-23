@@ -50,8 +50,6 @@ pub struct ChuHistory {
     pub conclusion: Option<c::Conclusion>,
     /// Actual current opposing draw offer, not a concluded draw.
     pub draw_offer: Option<c::Side>,
-    /// Unscored native operational annotation.
-    pub incomplete: Option<c::StopReason>,
     /// Actual last complete board action and all ordered derived effects.
     pub last_effects: Option<c::Effects>,
 }
@@ -105,7 +103,6 @@ impl ChuHistory {
             obligations: game.obligations().to_vec(),
             conclusion: game.conclusion(),
             draw_offer: game.snapshot().draw_offer,
-            incomplete: game.snapshot().incomplete,
             last_effects: game.events().iter().rev().find_map(|e| e.effects.clone()),
         }
     }
@@ -243,7 +240,6 @@ fn event_label(event: &c::GameEvent) -> String {
         c::GameCommand::OfferDraw => format!("{actor} offered a draw"),
         c::GameCommand::AcceptDraw => format!("{actor} accepted the draw"),
         c::GameCommand::DeclineDraw => format!("{actor} declined the draw"),
-        c::GameCommand::Stop { reason } => format!("{reason:?} · unscored"),
     }
 }
 /// Chu status does not depend on the count of legal actions.
@@ -266,9 +262,6 @@ pub(super) fn status(game: &c::Game, _has_board_actions: bool) -> PresentedStatu
                 )
                 .label
             )
-        }
-        None if game.snapshot().incomplete.is_some() => {
-            format!("{:?} · unscored", game.snapshot().incomplete.unwrap())
         }
         None if game.status() == c::GameStatus::NoBoardActions => {
             "No admitted board action · unresolved and unscored".into()

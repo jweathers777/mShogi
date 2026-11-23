@@ -223,8 +223,8 @@ fn quiet_setup(game: &mut Game, seed: u64, plies: u64, rear_only: bool) {
             command: GameCommand::Play { action },
         })
         .unwrap();
-        assert!(game.conclusion().is_none() && game.snapshot().incomplete.is_none());
-        assert!(other.conclusion().is_none() && other.snapshot().incomplete.is_none());
+        assert!(game.conclusion().is_none());
+        assert!(other.conclusion().is_none());
         let mut normalized = serde_json::to_value(other.position().state()).unwrap();
         normalized["profile"] = serde_json::to_value(game.profile()).unwrap();
         assert_eq!(
@@ -282,7 +282,7 @@ fn main() {
         ),
         _ => panic!("unsupported fixed corpus seed"),
     };
-    assert!(game.conclusion().is_none() && game.snapshot().incomplete.is_none());
+    assert!(game.conclusion().is_none());
     quiet_setup(&mut game, seed, plies, (1..=9999).contains(&seed));
     args.write(
         "MSH-183",

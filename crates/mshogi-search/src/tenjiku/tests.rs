@@ -244,17 +244,10 @@ fn sourced_no_action_root_is_unscored() {
     }
 }
 #[test]
-fn genuine_terminal_and_administrative_stop_are_distinct() {
+fn genuine_terminal_and_runtime_retirement_are_distinct() {
     for profile in Profile::ALL {
         let mut g = corner(profile);
-        g.submit(GameRequest {
-            expected: g.context(),
-            actor: Side::Sente,
-            command: GameCommand::Stop {
-                reason: mshogi_core::tenjiku::StopReason::Cancelled,
-            },
-        })
-        .unwrap();
+        g.retire_context().unwrap();
         assert_eq!(g.conclusion(), None);
         assert!(matches!(
             search(

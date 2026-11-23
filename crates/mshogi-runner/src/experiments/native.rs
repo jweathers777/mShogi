@@ -390,18 +390,6 @@ impl NativeState {
             Self::Xiangqi(g) if g.pending_adjudication().is_some() => {
                 Some("native_pending_adjudication".into())
             }
-            Self::Tori(g) if g.snapshot().incomplete.is_some() => Some(format!(
-                "native_stop:{:?}",
-                g.snapshot().incomplete.unwrap()
-            )),
-            Self::Chu(g) if g.snapshot().incomplete.is_some() => Some(format!(
-                "native_stop:{:?}",
-                g.snapshot().incomplete.unwrap()
-            )),
-            Self::Tenjiku(g) if g.snapshot().incomplete.is_some() => Some(format!(
-                "native_stop:{:?}",
-                g.snapshot().incomplete.unwrap()
-            )),
             Self::Chu(g) if g.status() == chu::GameStatus::NoBoardActions => {
                 Some("native_no_board_actions".into())
             }
@@ -969,21 +957,10 @@ mod tests {
     }
 
     #[test]
-    fn native_tori_stop_is_unscored_and_resignation_is_exact() {
+    fn native_tori_live_game_is_unscored_and_resignation_is_exact() {
         let mut state =
             NativeState::from_root(&standard_root(RulesProfile::ToriModernV1).unwrap()).unwrap();
-        let NativeState::Tori(g) = &mut state else {
-            unreachable!()
-        };
-        g.submit(tori::GameRequest {
-            expected: g.context(),
-            actor: tori::Side::Sente,
-            command: tori::GameCommand::Stop {
-                reason: tori::StopReason::WorkLimit,
-            },
-        })
-        .unwrap();
-        assert!(state.stop_reason().is_some());
+        assert!(state.stop_reason().is_none());
         assert!(state.outcome().is_none());
         assert_eq!(state.score_first_twice(), None);
         let NativeState::Tori(g) = &mut state else {

@@ -16,7 +16,7 @@ fn v1(name: &str) -> String {
 }
 
 #[test]
-fn schema_one_records_without_a_third_occurrence_load_and_reencode_as_schema_two() {
+fn schema_one_records_without_a_third_occurrence_load_and_reencode_as_current_schema() {
     for name in [
         "tori-contract",
         "tori-forced-prefix7",
@@ -50,7 +50,6 @@ fn schema_one_records_without_a_third_occurrence_load_and_reencode_as_schema_two
                 "effects",
                 "occurrences",
                 "conclusion",
-                "incomplete",
             ] {
                 assert_eq!(a[field], b[field], "{name} {field}");
             }
@@ -72,7 +71,7 @@ fn schema_one_records_without_a_third_occurrence_load_and_reencode_as_schema_two
         assert_eq!(native.to_json(), record.to_json());
         assert_eq!(
             CanonicalRecord::tori(*native).native_schema(),
-            NativeSchema::ToriV2
+            NativeSchema::ToriV3
         );
     }
     // In the forced prefix the Gote Eagle cannot return to 4d: that would make
@@ -164,4 +163,62 @@ fn schema_one_replay_stops_per_event() {
             t::RecordError::Stopped
         );
     }
+}
+
+#[test]
+fn legacy_stop_is_validated_and_removed_without_losing_player_history() {
+    let mut old: Value = serde_json::from_str(&v1("tori-forced-prefix7")).unwrap();
+    let original = t::GameRecord::from_json(&old.to_string()).unwrap();
+    let mut interruption = old["events"][0].clone();
+    interruption["index"] = json!(1);
+    interruption["command"] = json!({"kind":"stop", "reason":"engine_failure"});
+    interruption["effects"] = Value::Null;
+    interruption["incomplete"] = json!("engine_failure");
+    old["events"]
+        .as_array_mut()
+        .unwrap()
+        .insert(1, interruption);
+    for (index, event) in old["events"].as_array_mut().unwrap().iter_mut().enumerate() {
+        event["index"] = json!(index);
+    }
+    // The next actual move clears the old annotation, without changing repetition.
+    let migrated = t::GameRecord::from_json(&old.to_string()).unwrap();
+    assert_eq!(migrated, original);
+    let (_, undos) = migrated.to_game_with_undo().unwrap();
+    assert_eq!(undos.len(), original.event_count());
+    for (field, value) in [
+        ("index", json!(2)),
+        ("board_ply", json!(0)),
+        ("occurrences", json!([0])),
+        ("effects", old["events"][0]["effects"].clone()),
+        ("incomplete", json!("cancelled")),
+    ] {
+        let mut forged = old.clone();
+        forged["events"][1][field] = value;
+        assert!(
+            t::GameRecord::from_json(&forged.to_string()).is_err(),
+            "{field}"
+        );
+    }
+    let mut last = old["events"].as_array().unwrap().last().unwrap().clone();
+    last["index"] = json!(old["events"].as_array().unwrap().len());
+    last["command"] = json!({"kind":"stop", "reason":"cancelled"});
+    last["effects"] = Value::Null;
+    last["incomplete"] = json!("cancelled");
+    old["events"].as_array_mut().unwrap().push(last);
+    old["incomplete"] = json!("cancelled");
+    assert_eq!(
+        t::GameRecord::from_json(&old.to_string()).unwrap(),
+        original
+    );
+    old["incomplete"] = Value::Null;
+    assert!(t::GameRecord::from_json(&old.to_string()).is_err());
+}
+
+#[test]
+fn operational_stop_is_not_a_current_native_command() {
+    let command = r#"{"kind":"stop","reason":"cancelled"}"#;
+    assert!(t::GameCommand::from_json(command).is_err());
+    assert!(mshogi_core::chu::GameCommand::from_json(command).is_err());
+    assert!(mshogi_core::tenjiku::GameCommand::from_json(command).is_err());
 }

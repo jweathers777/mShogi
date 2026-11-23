@@ -400,7 +400,7 @@ fn actual_draw_stop_resignation_and_terminal_diagnostics_remain_native() {
         let o = shell(
             p,
             &format!(
-                "position record-json {}\nrecord\noffer-draw gote\nhistory\ndecline-draw sente\nundo 2\nrecord\noffer-draw sente\naccept-draw gote\nhistory\nperft 1\nundo 2\nstop work\nresign gote\nhistory\nundo 2\nrecord\n",
+                "position record-json {}\nrecord\noffer-draw gote\nhistory\ndecline-draw sente\nundo 2\nrecord\noffer-draw sente\naccept-draw gote\nhistory\nperft 1\nundo 2\nstop work\nresign gote\nhistory\nundo 1\nrecord\n",
                 encode(&root(p, &[]))
             ),
         );

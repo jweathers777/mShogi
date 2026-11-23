@@ -241,7 +241,7 @@ royal outcome: one surviving side wins; simultaneous loss of both sets draws
 (**S**, not a claim A/M discuss that edge). No checkmate-search or material score
 creates an outcome. No general quiet-immobility/stalemate loss or automatic draw
 is sourced: explicit `NoBoardActions` remains unscored/unconcluded unless a real
-royal/bare condition applies; Resign/agreement/Stop remain available (**S**).
+royal/bare condition applies; Resign/agreement remain available; session work can be stopped (**S**).
 
 BareKing rule A §1.2.6, explicit completion for both: exactly **one remaining
 royal and no other own piece** starts the immediate bare-response procedure;
@@ -264,7 +264,7 @@ retroactively promoted. This permits honestly labelled no-action diagnostics.
 
 Resign concludes loss for actual actor; draw requires real opposing offer and
 acceptance, not self-consent or inferred exhaustion. Decline/ordinary play clears
-the opposing offer. Administrative Stop records an interruption, not loss/draw.
+the opposing offer. Operational interruptions stay in session memory and add no native event or outcome.
 These untimed command spellings/offer protocol are **S**, not a published A/M event
 standard. No100-move/250move/points claim, evaluation resignation or automatic
 agreement is selected. Concluded game rejects further board play.

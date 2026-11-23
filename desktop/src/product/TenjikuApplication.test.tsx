@@ -117,9 +117,9 @@ it.each([adamsUnsupported, mullerUnsupported])("shows actual $profile incomplete
   expect(command).not.toHaveBeenCalled();
 });
 
-it.each([adamsEnded, mullerEnded])("retains the native $profile winner after a concluding Stop without calling the outcome unscored", value => {
+it.each([adamsEnded, mullerEnded])("retains the native $profile winner after session cancellation without calling the outcome unscored", value => {
   const source = value as unknown as TenjikuSnapshot;
-  expect(source.tenjiku.selected.incomplete).not.toBeNull();
+  expect(source.phase).toBe("cancelled");
   expect(source.status.concluded).toBe(true);
   expect(source.status.score_half_points).not.toBeNull();
   render(<NativeRecovery snapshot={source} error="" disabled={false} command={vi.fn()} />);

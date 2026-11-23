@@ -16,10 +16,17 @@ so its original bytes reach the strict parser and native replay.
 | Chess | `mshogi.chess.match.v1` | 1, M2 untimed match |
 | Shogi | `mshogi.shogi.csa36.v1` | 1 |
 | Xiangqi | `mshogi.xiangqi.wxf2018.v1` | 1 |
-| Tori Shogi | `mshogi.tori.modern.v1` | 1 |
-| Chu Shogi | `mshogi.chu.jcsa2019.v1` | 1 |
-| Tenjiku Shogi | `mshogi.tenjiku.adams1999-modern.v1` | 1 |
-| Tenjiku Shogi | `mshogi.tenjiku.muller-completed.v1` | 1 |
+| Tori Shogi | `mshogi.tori.modern.v1` | 3 |
+| Chu Shogi | `mshogi.chu.jcsa2019.v1` | 2 |
+| Tenjiku Shogi | `mshogi.tenjiku.adams1999-modern.v1` | 2 |
+| Tenjiku Shogi | `mshogi.tenjiku.muller-completed.v1` | 2 |
+
+Operational interruptions are session state. Cancellation, engine failure and
+work limits add no game command and do not change a saved record. Current native
+records have no Stop command or incomplete field. Tori schema-1 records retain
+their promised replay path under the current repetition rule: old stop entries
+are validated and omitted, while all player commands remain. Development-era
+Tori schema 2 and Chu/Tenjiku schema 1 are unsupported under design A-09.
 
 The edition is the exact native `RulesProfile::edition()` value. A different
 whole profile rejects; no rule toggle migrates an existing document.

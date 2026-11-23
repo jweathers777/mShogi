@@ -184,16 +184,16 @@ fn malformed_and_locally_legal_but_history_forbidden_requests_are_atomic() {
 #[test]
 fn nonmove_events_stay_distinct_and_undo_restores_complete_semantics() {
     let o = shell(
-        "move Sw7e-7d Sw1c-1d\nrecord\nstop work\nhistory\nresign sente\nhistory\nundo 2\nrecord\n",
+        "move Sw7e-7d Sw1c-1d\nrecord\nstop work\nhistory\nresign sente\nhistory\nundo 1\nrecord\n",
     );
     success(&o);
     let r = records(&o);
     assert_eq!(r[0], r[1]);
     let text = output(&o);
-    assert!(text.contains("event 3 board-ply 2 actor sente action Stop"));
+    assert!(!text.contains("action Stop"));
     assert!(text.contains("incomplete work is unscored; no game conclusion inferred"));
     assert!(text.contains("conclusion Some(Resignation { winner: Gote })"));
-    assert!(text.contains("event 4 board-ply 2 actor sente action Resign"));
+    assert!(text.contains("event 3 board-ply 2 actor sente action Resign"));
 }
 
 #[test]
@@ -201,7 +201,7 @@ fn canonical_atomic_save_load_retains_custom_root_events_hands_and_restored_undo
     let dir = Dir::new();
     let path = dir.0.join("Tori complete-é record.json");
     let o = shell(&format!(
-        "position record-json {}\nmove Fa7cx7b=Ea\nstop cancelled\nresign gote\nrecord print\nrecord save {}\nposition startpos\nrecord load-file {}\nrecord print\nhistory\nundo 3\nrecord print\n",
+        "position record-json {}\nmove Fa7cx7b=Ea\nstop cancelled\nresign gote\nrecord print\nrecord save {}\nposition startpos\nrecord load-file {}\nrecord print\nhistory\nundo 2\nrecord print\n",
         encode(&capture_root()),
         path.display(),
         path.display()
@@ -216,7 +216,7 @@ fn canonical_atomic_save_load_retains_custom_root_events_hands_and_restored_undo
         panic!()
     };
     assert_eq!(native.known_board_actions(), 1);
-    assert_eq!(native.event_count(), 3);
+    assert_eq!(native.event_count(), 2);
     assert_eq!(
         native.conclusion(),
         Some(t::Conclusion::Resignation {
@@ -307,4 +307,45 @@ fn read_only_native_analysis_reports_actual_work_and_no_fallback_for_zero_nodes(
     assert!(text.contains("decision None score None completed-depth 0 visited 0"));
     assert!(text.contains("decision Some(Choose("));
     assert_eq!(records(&o)[0], records(&o)[1]);
+}
+
+#[test]
+fn all_native_console_interruptions_leave_records_unchanged_and_do_not_reopen() {
+    let dir = Dir::new();
+    for args in [
+        vec!["--game", "tori", "shell"],
+        vec!["--game", "chu", "shell"],
+        vec!["--game", "tenjiku", "--profile", "adams", "shell"],
+        vec!["--game", "tenjiku", "--profile", "muller", "shell"],
+    ] {
+        for (reason, label) in [
+            ("cancelled", "Cancelled"),
+            ("resource", "ResourceLimit"),
+            ("engine", "EngineFailure"),
+            ("work", "WorkLimit"),
+        ] {
+            let path = dir.0.join(format!("{}-{reason}.json", args.join("-")));
+            let out = run(
+                &args,
+                &format!(
+                    "record\nstop {reason}\nrecord\nrecord save {}\nrecord load-file {}\nstatus\nrecord\n",
+                    path.display(),
+                    path.display(),
+                ),
+            );
+            success(&out);
+            let saved = records(&out);
+            assert_eq!(saved.len(), 3);
+            assert!(saved.iter().all(|record| record == &saved[0]));
+            assert_eq!(fs::read_to_string(path).unwrap(), saved[0]);
+            let text = output(&out);
+            assert!(text.contains(&format!("incomplete Some({label})")));
+            assert!(
+                text.rsplit("incomplete ")
+                    .next()
+                    .unwrap()
+                    .starts_with("None")
+            );
+        }
+    }
 }

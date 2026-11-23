@@ -118,7 +118,7 @@ fn both_profiles_keep_native_effects_root_history_and_fresh_authority() {
         assert_eq!(record.profile().tenjiku(), Some(profile));
         assert_eq!(record.profile().id(), profile.id());
         assert_eq!(record.profile().edition(), profile.edition());
-        assert_eq!(record.native_schema(), NativeSchema::TenjikuV1);
+        assert_eq!(record.native_schema(), NativeSchema::TenjikuV2);
         assert_eq!(record.event_count(), 2);
         assert_eq!(record.known_board_actions(), 1);
         let raw = record.to_json().unwrap();
@@ -185,7 +185,7 @@ fn exact_profile_edition_schema_and_duplicate_preserving_native_payload() {
         assert!(serde_json::from_value::<CanonicalRecord>(value).is_err());
         for (field, value) in [
             ("profile_edition", json!(other(profile).edition())),
-            ("native_schema_version", json!(2)),
+            ("native_schema_version", json!(3)),
             ("envelope_version", json!(2)),
             ("game_kind", json!("chu")),
         ] {

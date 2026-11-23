@@ -116,19 +116,10 @@ fn play_only_rows_preserve_terminal_prefix_and_selected_geometry_without_replay(
             .count,
         3
     );
-    let stopped = send(
-        &mut c,
-        SessionOperation::Tori {
-            actor: t::Side::Sente,
-            command: t::GameCommand::Stop {
-                reason: t::StopReason::Cancelled,
-            },
-        },
-    )
-    .unwrap();
+    let stopped = send(&mut c, SessionOperation::Cancel {}).unwrap();
     assert_eq!(stopped.moves.entries.len(), 1);
     assert_eq!(stopped.board_ply, 1);
-    assert_eq!(stopped.event_index, 2);
+    assert_eq!(stopped.event_index, 1);
     assert!(!stopped.status.concluded);
     assert!(stopped.status.score_half_points.is_none());
     let ended = send(&mut c, SessionOperation::Resign {}).unwrap();
@@ -143,7 +134,7 @@ fn play_only_rows_preserve_terminal_prefix_and_selected_geometry_without_replay(
     let meta = historical.tori.unwrap();
     assert!(meta.selected.conclusion.is_none());
     assert!(meta.live.conclusion.is_some());
-    assert_eq!(meta.live.event_index, 3);
+    assert_eq!(meta.live.event_index, 2);
     assert_eq!(meta.selected.event_index, 1);
     assert!(historical.choices.is_empty());
     let root = send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
@@ -294,14 +285,6 @@ fn nonboard_events_do_not_advance_pair_numbers_and_gote_can_be_first_known_actor
             result_face: t::Face::Phoenix,
         },
     );
-    g.submit(t::GameRequest {
-        expected: g.context(),
-        actor: t::Side::Gote,
-        command: t::GameCommand::Stop {
-            reason: t::StopReason::Cancelled,
-        },
-    })
-    .unwrap();
     play(
         &mut g,
         t::Action::Move {
@@ -316,7 +299,7 @@ fn nonboard_events_do_not_advance_pair_numbers_and_gote_can_be_first_known_actor
             .iter()
             .map(|m| (m.event_index, m.board_ply, m.number, m.column))
             .collect::<Vec<_>>(),
-        [(1, 1, 1, 0), (3, 2, 1, 1)]
+        [(1, 1, 1, 0), (2, 2, 1, 1)]
     );
     let board = [("7g", t::Side::Sente), ("1a", t::Side::Gote)].map(|(sq, side)| {
         (

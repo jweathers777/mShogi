@@ -183,7 +183,8 @@ The earlier edition (MSH81-MODERN-2026-11-01, schema 1) let the move that create
 the third occurrence stand and obliged the other side to depart differently; an
 earlier session derived that convention, it was never decided by John. Schema-1
 records load by replay under this rule; a record containing a move that now
-creates a third occurrence is refused at that command.
+creates a third occurrence is refused at that command. Operational stop entries
+are validated and omitted on import; player commands and their history remain.
 
 ## T07 — admission, roots, records and exact reversal (S)
 
@@ -211,7 +212,8 @@ missing earlier history/counter meaning); complete ordered board and match event
 actor, complete action, resulting effects and derived obligations/conclusion;
 current exact event prefix and board-ply mapping. Recompute effects/conclusions
 from native replay and compare any serialized copies, never trust them. Resign
-and administrative events do not masquerade as board moves or repetitions.
+does not masquerade as a board move or repetition. Operational interruptions
+stay in session memory and add no native event.
 Strict outer dispatch must retain duplicate fields for native rejection; reject
 unknown/conflicting profiles, schema, fields, malformed actions, unavailable hand
 pieces, illegal geometry/safety, stale identity and resource violations atomically.
@@ -221,8 +223,8 @@ indices, occurrence ledger, obligation, conclusion and incremental caches exactl
 Undo/history/reopen cannot revive retired execution identities. Saved observations
 retain exact target history, purpose, limits, native score perspective and proof
 provenance where relevant; they are historical data, not pending work. Capacity
-admission precedes every commit with actual encoded bytes/replay work and close/
-stop reservation, preserving the existing complete-saveability guarantee.
+admission precedes every commit with actual encoded bytes and resignation
+reservation, preserving the existing complete-saveability guarantee.
 
 ## T08 — notation and consumer boundaries (S)
 

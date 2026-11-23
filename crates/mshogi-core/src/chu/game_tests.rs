@@ -130,14 +130,6 @@ fn counter_exhaustion_is_unscored_and_speculation_is_counter_independent() {
     );
     assert_eq!(g.cache_snapshot(), before);
     assert_eq!(g.context(), c);
-    control(
-        &mut g,
-        Side::Gote,
-        GameCommand::Stop {
-            reason: StopReason::ResourceLimit,
-        },
-    )
-    .unwrap();
     assert_eq!(g.conclusion(), None);
     control(&mut g, Side::Sente, GameCommand::Resign).unwrap();
     assert_eq!(
@@ -163,17 +155,18 @@ fn observational_queries_do_not_change_record_or_admission_budget() {
     assert_eq!(g.capacity_usage().unwrap(), usage);
 }
 #[test]
-fn event_capacity_refuses_before_commit_and_reserves_real_stop_and_resign() {
+fn event_capacity_refuses_before_commit_and_reserves_real_and_resign() {
     let mut g = game("CHU-MATERIAL-AGREEMENT");
     for _ in 0..(MAX_GAME_EVENTS - 2) / 2 {
         control(&mut g, Side::Sente, GameCommand::OfferDraw).unwrap();
         control(&mut g, Side::Gote, GameCommand::DeclineDraw).unwrap();
     }
+    control(&mut g, Side::Sente, GameCommand::OfferDraw).unwrap();
     let before = bytes(&g);
     let c = g.context();
     let cache = g.cache_snapshot();
     assert_eq!(
-        control(&mut g, Side::Sente, GameCommand::OfferDraw).unwrap_err(),
+        control(&mut g, Side::Gote, GameCommand::DeclineDraw).unwrap_err(),
         GameError::Capacity(Resource::Events)
     );
     assert_eq!(bytes(&g), before);
@@ -181,14 +174,6 @@ fn event_capacity_refuses_before_commit_and_reserves_real_stop_and_resign() {
     assert_eq!(g.cache_snapshot(), cache);
     assert_eq!(g.occurrences(), [0]);
     assert_eq!(g.snapshot().board_ply, 0);
-    control(
-        &mut g,
-        Side::Sente,
-        GameCommand::Stop {
-            reason: StopReason::ResourceLimit,
-        },
-    )
-    .unwrap();
     control(&mut g, Side::Gote, GameCommand::Resign).unwrap();
     assert_eq!(g.events().len(), MAX_GAME_EVENTS);
     assert!(g.capacity_usage().unwrap().encoded_bytes <= MAX_GAME_RECORD_BYTES);
@@ -222,7 +207,6 @@ fn strict_canonical_mutations_reject_without_changing_live_state() {
         "root",
         "root_conclusion",
         "events",
-        "incomplete",
         "draw_offer",
         "conclusion",
         "obligations",
@@ -367,14 +351,6 @@ fn real_long_history_hits_work_limit_atomically_and_remains_closable_and_replaya
         usage.replay_work,
         timer.elapsed().as_millis()
     );
-    control(
-        &mut g,
-        Side::Sente,
-        GameCommand::Stop {
-            reason: StopReason::ResourceLimit,
-        },
-    )
-    .unwrap();
     control(&mut g, Side::Gote, GameCommand::Resign).unwrap();
     assert!(GameRecord::from_json(&bytes(&g)).is_ok());
 }

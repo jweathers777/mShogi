@@ -168,7 +168,7 @@ fn igui_contract(game: &Game, action: &Action) -> bool {
     let Some(m) = position.find(action) else {
         return false;
     };
-    if !position.make(m) {
+    if !position.legal_moves().contains(&m) || !position.make(m) {
         return false;
     }
     let mut native = game.fork().unwrap();

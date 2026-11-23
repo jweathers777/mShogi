@@ -2848,6 +2848,7 @@ class Journey:
         w.keyboard_activate('.moves-table button[data-event="1"]'); self.chu_events(2,selected=1,historical=True); self.assert_historical_notice(1)
         self.chu_analysis(); selected = self.native_diagnostics()
         assert selected['context']['payload']['events'] == events[:1]
+        assert selected['observations'][-1]['observation']['context']['game']['payload']['events'] == events[:1]
         self.capture('normal-history-exact-prefix-readonly-analysis')
         w.button('Return to live'); self.chu_events(2,selected=2); assert w.has('.play-paused')
         path = self.args.output/'normal-chu-complete.mshogi'; body = self.chu_save(path)
@@ -3083,6 +3084,7 @@ class Journey:
         selected = self.native_diagnostics()
         assert len(selected['context']['payload']['events']) == 1
         assert selected['context']['payload']['events'] == events[:1]
+        assert selected['observations'][-1]['observation']['context']['game']['payload']['events'] == events[:1]
         self.capture('normal-exact-history-readonly-analysis')
         w.button('Return to live'); self.tori_events(2, selected=2)
         assert w.has('.play-paused')

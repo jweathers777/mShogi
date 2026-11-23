@@ -83,13 +83,13 @@ context = {
 }
 request = {'protocol': 5, 'context': context}
 def query(request, game_kind="chess"):
-    encoded = json.dumps(request)
+    # Bytes avoid platform text-mode newline conversion in the request digest.
+    encoded = json.dumps(request).encode('utf-8')
     process = subprocess.run([str(engine), 'internal-search'],
-        input=encoded + '\n', check=True, capture_output=True,
-        text=True, timeout=15)
+        input=encoded + b'\n', check=True, capture_output=True, timeout=15)
     reply = json.loads(process.stdout)
     assert reply['protocol'] == request['protocol']
-    assert reply['request_digest'] == list(hashlib.sha256(encoded.encode('utf-8')).digest())
+    assert reply['request_digest'] == list(hashlib.sha256(encoded).digest())
     assert reply['endpoint'] is None  # These are fixed-work requests.
     assert reply['result']['kind'] == game_kind, reply
     # Keep the report's semantic observations independently replayable.

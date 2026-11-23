@@ -3,7 +3,7 @@ use super::*;
 use serde::{Deserialize, Serialize};
 use std::sync::atomic::{AtomicU64, Ordering};
 
-/// Maximum native events, including two reserved concluding/stop events.
+/// Maximum native events, including one reserved resignation event.
 pub const MAX_GAME_EVENTS: usize = 512;
 /// Native commands and events are one-to-one.
 pub const MAX_GAME_COMMANDS: usize = MAX_GAME_EVENTS;
@@ -265,7 +265,7 @@ pub enum GameError {
     RepetitionDeparture,
     /// Missing/wrong/same-side draw acceptance or refusal.
     NoMatchingOffer,
-    /// Repeated offer/stop without new work.
+    /// Repeated draw offer without a response.
     DuplicateControl,
     /// Resource refusal, unscored.
     Capacity(Resource),

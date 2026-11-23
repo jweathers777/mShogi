@@ -11,7 +11,7 @@ Envelope fields are required. Unknown and duplicate fields reject. The game,
 profile, edition and native schema must agree. `payload` is a raw JSON value,
 so its original bytes reach the strict parser and native replay.
 
-| Game | Selected profile | Native schema |
+| Game | Selected profile | Native record schema |
 | --- | --- | --- |
 | Chess | `mshogi.chess.match.v1` | 1, M2 untimed match |
 | Shogi | `mshogi.shogi.csa36.v1` | 1 |
@@ -27,6 +27,10 @@ records have no Stop command or incomplete field. Tori schema-1 records retain
 their promised replay path under the current repetition rule: old stop entries
 are validated and omitted, while all player commands remain. Development-era
 Tori schema 2 and Chu/Tenjiku schema 1 are unsupported under design A-09.
+
+The desktop envelope retains its existing `native_schema_version: 1` label
+for the unchanged game payload (`record`, `human`, `settings`). The nested
+canonical record envelope carries the native record schema from the table.
 
 The edition is the exact native `RulesProfile::edition()` value. A different
 whole profile rejects; no rule toggle migrates an existing document.

@@ -141,11 +141,11 @@ pub enum NativeSchema {
     ShogiV1,
     /// Xiangqi native history/command/event schema one.
     XiangqiV1,
-    /// Complete modern Tori native history schema two (MSH-208 repetition rule).
+    /// Complete modern Tori native history schema three (session stops excluded).
     ToriV3,
-    /// Complete native Chu history schema one.
+    /// Complete native Chu history schema two (session stops excluded).
     ChuV2,
-    /// Tenjiku native schema one, qualified independently by either whole profile.
+    /// Tenjiku native schema two, qualified independently by either whole profile.
     TenjikuV2,
 }
 impl NativeSchema {

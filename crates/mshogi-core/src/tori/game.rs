@@ -793,7 +793,8 @@ mod reservation_bound_test {
     fn constructed_metadata_upper_bound_proves_each_reserved_nonboard_event_fits() {
         // A conservative bound, not a reachable game: maximal indices, and the
         // most occurrences a key can have (two; a third is refused, T06).
-        for command in [GameCommand::Resign] {
+        {
+            let command = GameCommand::Resign;
             let event = GameEvent {
                 index: MAX_GAME_EVENTS - 1,
                 board_ply: MAX_GAME_COMMANDS,

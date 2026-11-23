@@ -214,7 +214,7 @@ fn actual_selfplay_is_deterministic_bounded_and_unscored_at_work_stop() {
             }
         );
         assert_eq!(record.known_board_actions(), 4);
-        assert_eq!(record.event_count(), 5);
+        assert_eq!(record.event_count(), 4);
         assert!(record.conclusion().is_none());
         println!(
             "TENJIKU-SELFPLAY-SMOKE {}",

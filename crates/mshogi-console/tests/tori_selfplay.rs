@@ -164,7 +164,7 @@ fn actual_standard_selfplay_is_deterministic_bounded_and_unscored_at_work_stop()
         panic!()
     };
     assert_eq!(record.known_board_actions(), 8);
-    assert_eq!(record.event_count(), 9);
+    assert_eq!(record.event_count(), 8);
     assert!(record.conclusion().is_none());
     println!(
         "TORI-SELFPLAY-STANDARD {}",

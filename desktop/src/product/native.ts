@@ -158,11 +158,11 @@ export interface Observation {
   observation: ExecutionObservation;
 }
 export type Operation =
-  | { kind: "tenjiku"; actor: ToriSide; command: { kind: "play"; action: TenjikuAction } | { kind: "resign" | "offer_draw" | "accept_draw" | "decline_draw" } | { kind: "stop"; reason: ToriStop } }
+  | { kind: "tenjiku"; actor: ToriSide; command: { kind: "play"; action: TenjikuAction } | { kind: "resign" | "offer_draw" | "accept_draw" | "decline_draw" } }
   | { kind: "tenjiku_preferences"; settings: { play_mode?: PlayMode; orientation: ToriSide } }
-  | { kind: "chu"; actor: ToriSide; command: { kind: "play"; action: ChuAction } | { kind: "resign" | "offer_draw" | "accept_draw" | "decline_draw" } | { kind: "stop"; reason: "cancelled" | "resource_limit" | "engine_failure" | "work_limit" } }
+  | { kind: "chu"; actor: ToriSide; command: { kind: "play"; action: ChuAction } | { kind: "resign" | "offer_draw" | "accept_draw" | "decline_draw" } }
   | { kind: "chu_preferences"; settings: { play_mode?: PlayMode; orientation: ToriSide } }
-  | { kind: "tori"; actor: ToriSide; command: { kind: "play"; action: ToriAction } | { kind: "resign" | "agree_draw" | "declare_impasse" } | { kind: "stop"; reason: ToriStop } }
+  | { kind: "tori"; actor: ToriSide; command: { kind: "play"; action: ToriAction } | { kind: "resign" | "agree_draw" | "declare_impasse" } }
   | { kind: "tori_preferences"; settings: { play_mode?: PlayMode; orientation: ToriSide } }
   | { kind: "chess_play"; action: string }
   | { kind: "chess_claim"; claim: Claim }

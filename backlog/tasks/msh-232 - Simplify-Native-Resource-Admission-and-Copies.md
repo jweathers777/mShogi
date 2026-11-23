@@ -1,10 +1,11 @@
 ---
 id: MSH-232
 title: Simplify Native Resource Admission and Copies
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-23T11:05:00Z'
-updated_date: '2026-11-23T11:09:00Z'
+updated_date: '2026-11-23T16:20:00Z'
 labels:
   - simplification
   - core
@@ -33,4 +34,6 @@ Split from MSH-229: Chu and Tenjiku encode complete histories and hypothetical e
 
 <!-- SECTION:NOTES:BEGIN -->
 MSH-229 fresh review also found dead outgoing resource-diagnostic generality: ResourceFailure::multiple/MAX_RESOURCE_FACTS/omitted_facts and frontend multiple-cause fallback have no production multi-fact producer. Every current refusal is one typed resource fact; multi-fact/omitted cases only exist in tests. Simplify this DTO and its callers alongside resource accounting; preserve the one real cause, unknown fallback, output byte/UTF-8 bounds and useful limit/recovery feedback.
+
+Started from main3111f8e on codex/msh-232-resource-admission. Inspect native admission/copy paths and resource diagnostics; capture representative short/long baseline measurements before changes. Rules, saved compatibility, atomic admission and cancellation remain required. MSH-231 macOS CI exception was task-specific; attempt required platform checks for this task normally.
 <!-- SECTION:NOTES:END -->

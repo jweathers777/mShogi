@@ -1,11 +1,11 @@
 ---
 id: MSH-231
 title: Compact Redundant Native Record Metadata
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-23T11:05:00Z'
-updated_date: '2026-11-23T16:04:00Z'
+updated_date: '2026-11-23T16:05:00Z'
 labels:
   - simplification
   - persistence
@@ -25,7 +25,7 @@ Split from MSH-229: native.rs plus per-game record codecs repeatedly store game/
 <!-- AC:BEGIN -->
 - [x] #1 For each game, identify essential root/command data versus derived or repeated metadata, and remove redundant data in separate reviewed steps
 - [x] #2 New records round-trip all supported profiles, claims, offers and conclusions through native rules; recorded compatibility and independent rules tests remain valid
-- [ ] #3 Record encoded size, replay time and source-line changes; pass required Rust/frontend/affected-platform persistence checks after each step
+- [x] #3 Record encoded size, replay time and source-line changes; pass required Rust/frontend/affected-platform persistence checks after each step
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -74,3 +74,9 @@ Final macOS retry45201234609 also ended cancelled after15 minutes without any ex
 
 John approved the one-task macOS CI exception in chat (Yes): merge using verified local macOS results after four hosted runner-capacity failures. The four known MSH-199 debug failures were disclosed in the request. No permanent process change. Refetched origin/main before integration; it remains8df7bf3, already merged before final verification. No code changed after the completed checks and focused probe rechecks.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Removed redundant native record metadata and desktop/canonical envelope labels while preserving complete roots, player commands, Chess schema1/2 compatibility and the Tori v1 reader. Separate fresh reviews completed; all findings fixed. Canonical samples54.2% smaller, saved documents57.8% smaller, source358 lines smaller; replay improved for four non-Chess games, Shogi roughly flat (+5%). All1182 release tests verified through the workspace run and focused rechecks;603 frontend/177 Python,TypeScript,fmt/Clippy and Linux/Windows persistence pass. Four known MSH-199 debug failures remain unchanged. John approved local macOS evidence after four hosted-capacity failures. Integrated into main at a5f98b3. Evidence retained in GCS; next task MSH-232 (Simplify Native Resource Admission and Copies).
+<!-- SECTION:FINAL_SUMMARY:END -->

@@ -911,6 +911,9 @@ fn records(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
             raw.to_string()
         }
         "tampered_capture_effect" => {
+            // Effects are no longer stored. Inject the same tampered native
+            // effect to verify that a record cannot supply its own outcome.
+            raw["events"][0]["effects"] = serde_json::to_value(&game.events()[0].effects).unwrap();
             let effect = raw["events"][0]["effects"]["captures"]
                 .as_array_mut()
                 .ok_or("missing real native captured effects")?;

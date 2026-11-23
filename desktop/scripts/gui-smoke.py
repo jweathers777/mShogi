@@ -2841,11 +2841,11 @@ class Journey:
         wait(lambda:w.read("document.querySelector('.game-shell').dataset.paused")=='false','explicit Chu Resume after Load')
         self.chu_analysis(); assert self.native_diagnostics()['context'] == reopened['context']
         w.button('Play details'); self.direct_resign('chu'); concluded = self.native_diagnostics()
-        assert concluded['context']['payload']['conclusion'] == {'kind':'resignation','winner':'gote'}
+        assert concluded['chu']['selected']['conclusion'] == {'kind':'resignation','winner':'gote'}
         final = self.chu_save(self.args.output/'normal-chu-concluded.mshogi')
-        assert final['record']['payload']['conclusion'] == {'kind':'resignation','winner':'gote'}
+        assert final['record']['payload']['events'][-1] == {'actor':'sente','command':{'kind':'resign'}}
         self.record('Bounded complete ordinary Chu game with explicit resignation', {'accepted_board_actions':4,'retired_board_actions':2,'current_board_actions':2,
-            'conclusion':concluded['context']['payload']['conclusion'],'qualification':'Real human/engine progression then explicit resignation; not natural standard self-play completion or playing-strength evidence.'})
+            'conclusion':concluded['chu']['selected']['conclusion'],'qualification':'Real human/engine progression then explicit resignation; not natural standard self-play completion or playing-strength evidence.'})
         self.dirty_native_close_source('Chu')
         self.record('Native Chu dirty window-close request',self.native.close_window()); wait(lambda:w.has('.document-guard'),'dirty Chu close protected')
         w.button('Cancel'); wait(lambda:not w.has('.document-guard'),'Cancel preserves dirty Chu game')
@@ -2860,10 +2860,10 @@ class Journey:
         assert 'No action submitted' in w.text('.route-selection'); self.chu_events(0)
         self.capture('normal-partial-compound-not-committed'); w.key('\ue00c'); self.chu_events(0)
         capture_return = self.chu_action('6f',['7e','6f'],1)
-        assert len(capture_return['context']['payload']['events'][0]['effects']['captures']) == 1
+        assert len(capture_return['chu']['selected']['last_effects']['captures']) == 1
         self.capture('normal-capture-return'); w.focused_button('Take back'); self.chu_events(0)
         quiet_return = self.chu_action('6f',['6e','6f'],1)
-        assert quiet_return['context']['payload']['events'][0]['effects']['captures'] == []
+        assert quiet_return['chu']['selected']['last_effects']['captures'] == []
         assert quiet_return['context']['payload']['events'][0]['command']['action'] != capture_return['context']['payload']['events'][0]['command']['action']
         self.capture('normal-quiet-return-same-endpoint'); self.chu_save(self.args.output/'normal-chu-return-branches.mshogi')
         w.focused_button('Take back'); self.chu_events(0); self.chu_action('6f',['7e'],1,complete_here=True)
@@ -2872,7 +2872,7 @@ class Journey:
         w.click(self.chu_square('3c')); w.click(self.chu_square('2b')); self.chu_events(0)
         assert 'No action submitted' in w.text('.route-selection'); w.key('\ue00c')
         captured = self.chu_action('3c',['2b','1b'],1)
-        assert [item['square'] for item in captured['context']['payload']['events'][0]['effects']['captures']] == [[2,2],[1,2]]
+        assert [item['square'] for item in captured['chu']['selected']['last_effects']['captures']] == [[2,2],[1,2]]
         self.capture('normal-two-ordered-captures'); self.chu_save(self.args.output/'normal-chu-compound.mshogi')
         self.chu_load_fixture('promotion'); self.chu_events(0)
         w.click(self.chu_square('6e')); w.click(self.chu_square('6d')); wait(lambda:w.has('.promotion-dialog'),'native optional promotion alternatives')
@@ -2880,28 +2880,28 @@ class Journey:
         promoted = self.chu_action('6e',['6d'],1,promote=True)
         assert w.read(f"document.querySelector({json.dumps(self.chu_square('6d'))})?.querySelector('[data-chu-face=Prince]')!==null")
         assert len([royal for royal in promoted['chu']['live']['royals'] if royal['identity']['piece']['side']=='sente']) == 2
-        assert promoted['context']['payload']['conclusion'] is None
+        assert promoted['chu']['selected']['conclusion'] is None
         self.capture('normal-promoted-Prince-and-surviving-King'); self.chu_save(self.args.output/'normal-chu-promoted.mshogi')
         self.chu_load_fixture('royal-survivor'); survived = self.chu_action('12j',['12l'],1,promote=False)
-        assert survived['context']['payload']['conclusion'] is None and not w.has('.outcome-card')
+        assert survived['chu']['selected']['conclusion'] is None and not w.has('.outcome-card')
         assert [royal['identity']['square'] for royal in survived['chu']['live']['royals'] if royal['identity']['piece']['side']=='sente'] == ['8j']
         self.capture('normal-one-royal-captured-Prince-survives')
         for name,origin,steps,ending in [('royal-both','6f',['6e','5e'],'royal_capture'),('material-reply','6d',['5c'],'material')]:
             self.chu_load_fixture(name); ended = self.chu_action(origin,steps,1)
-            assert ended['context']['payload']['conclusion'] == {'kind':ending,'winner':'sente'} and w.has('.outcome-card')
+            assert ended['chu']['selected']['conclusion'] == {'kind':ending,'winner':'sente'} and w.has('.outcome-card')
             self.capture(f'normal-{ending}-natural-complete-game'); self.chu_save(self.args.output/f'normal-chu-{ending}-complete.mshogi')
-        self.chu_load_fixture('mate'); assert self.native_diagnostics()['context']['payload']['conclusion'] == {'kind':'mate','winner':'gote'}
+        self.chu_load_fixture('mate'); assert self.native_diagnostics()['chu']['selected']['conclusion'] == {'kind':'mate','winner':'gote'}
         assert w.has('.outcome-card'); self.capture('normal-independent-finite-mate')
         self.chu_load_fixture('agreement-root'); w.focused_button('Offer draw…'); w.button('Offer draw'); self.chu_events(1)
-        offered = self.native_diagnostics(); assert offered['context']['payload']['conclusion'] is None and offered['context']['payload']['draw_offer']=='sente'
+        offered = self.native_diagnostics(); assert offered['chu']['selected']['conclusion'] is None and offered['chu']['selected']['draw_offer']=='sente'
         self.chu_save(self.args.output/'normal-chu-offered.mshogi')
         self.chu_load_fixture('agreement'); w.focused_button('Decline draw'); self.chu_events(2)
-        assert self.native_diagnostics()['context']['payload']['draw_offer'] is None and not w.has('.outcome-card')
+        assert self.native_diagnostics()['chu']['selected']['draw_offer'] is None and not w.has('.outcome-card')
         self.chu_load_fixture('agreement'); w.focused_button('Accept draw…'); w.button('Accept draw'); self.chu_events(2)
-        agreed = self.native_diagnostics(); assert agreed['context']['payload']['conclusion'] == {'kind':'agreed_draw'} and agreed['context']['payload']['current_position']['accepted_plies']==0
+        agreed = self.native_diagnostics(); assert agreed['chu']['selected']['conclusion'] == {'kind':'agreed_draw'} and agreed['chu']['selected']['board_ply']==0
         self.capture('normal-opposing-agreement-not-board-turn'); self.chu_save(self.args.output/'normal-chu-agreed.mshogi')
         self.chu_load_fixture('repetition10'); self.chu_events(10); obligation=self.native_diagnostics()
-        assert obligation['chu']['live']['obligations'] and obligation['context']['payload']['conclusion'] is None
+        assert obligation['chu']['live']['obligations'] and obligation['chu']['selected']['conclusion'] is None
         assert 'Repetition obligation' in w.text('.shell-notices')
         w.click(self.chu_square('1k')); assert not w.read(f"document.querySelector({json.dumps(self.chu_square('1l'))})?.classList.contains('target')")
         w.key('\ue00c'); self.chu_events(10)
@@ -2912,11 +2912,11 @@ class Journey:
         path=self.args.output/'normal-chu-obligation.mshogi'; self.chu_save(path); self.chu_reopen_saved(path)
         assert self.native_diagnostics()['context']==obligation['context'] and w.has('.play-paused')
         self.chu_load_fixture('complete-royal-engine'); natural = self.native_diagnostics()
-        assert natural['context']['payload']['conclusion'] == {'kind':'royal_capture','winner':'sente'}
+        assert natural['chu']['selected']['conclusion'] == {'kind':'royal_capture','winner':'sente'}
         assert not natural['observations'] and w.has('.outcome-card')
         self.capture('normal-complete-natural-engine-game')
         self.chu_load_fixture('complete-resignation'); complete=self.native_diagnostics()
-        assert complete['context']['payload']['conclusion']=={'kind':'resignation','winner':'gote'} and not complete['observations']
+        assert complete['chu']['selected']['conclusion']=={'kind':'resignation','winner':'gote'} and not complete['observations']
         assert not complete['observations']; self.capture('normal-reopen-complete-standard-engine-record')
         self.record('Independent Chu native scenarios through normal installed application', {'fixtures_manifest':str(Path(__file__).with_name('fixtures')/'chu-native-fixtures.json'),
             'capture_return':capture_return,'quiet_return':quiet_return,'promoted':promoted,'surviving_Prince':survived,'agreement':agreed,'repetition':obligation,'natural_engine_complete_game':natural,

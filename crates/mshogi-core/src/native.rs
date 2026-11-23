@@ -143,8 +143,8 @@ pub enum NativeSchema {
     XiangqiV1,
     /// Complete modern Tori native history schema three (session stops excluded).
     ToriV3,
-    /// Complete native Chu history schema two (session stops excluded).
-    ChuV2,
+    /// Complete native Chu command history schema three.
+    ChuV3,
     /// Tenjiku native schema two, qualified independently by either whole profile.
     TenjikuV2,
 }
@@ -157,7 +157,7 @@ impl NativeSchema {
             Self::ShogiV1 => shogi::SHOGI_RECORD_SCHEMA_VERSION,
             Self::XiangqiV1 => xiangqi::GAME_RECORD_SCHEMA_VERSION,
             Self::ToriV3 => tori::GAME_RECORD_SCHEMA_VERSION,
-            Self::ChuV2 => chu::GAME_RECORD_SCHEMA_VERSION,
+            Self::ChuV3 => chu::GAME_RECORD_SCHEMA_VERSION,
             Self::TenjikuV2 => tenjiku::GAME_RECORD_SCHEMA_VERSION,
         }
     }
@@ -257,7 +257,7 @@ impl CanonicalRecord {
             Self::Shogi(_) => NativeSchema::ShogiV1,
             Self::Xiangqi(_) => NativeSchema::XiangqiV1,
             Self::Tori(_) => NativeSchema::ToriV3,
-            Self::Chu(_) => NativeSchema::ChuV2,
+            Self::Chu(_) => NativeSchema::ChuV3,
             Self::Tenjiku(_) => NativeSchema::TenjikuV2,
         }
     }

@@ -8,7 +8,7 @@ use serde::{
 use serde_json::value::RawValue;
 use std::{collections::BTreeSet, error::Error, fmt};
 /// Native record version, distinct from immutable rules edition and outer transport.
-pub const GAME_RECORD_SCHEMA_VERSION: u32 = 2;
+pub const GAME_RECORD_SCHEMA_VERSION: u32 = 3;
 /// Native encoded payload bound, leaving space in the existing shared envelope.
 pub const MAX_GAME_RECORD_BYTES: usize = 512 * 1024;
 /// Exact validated canonical record, excluding runtime/undo handles.
@@ -51,38 +51,33 @@ impl Error for RecordError {}
 #[derive(Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 struct WireRecord {
-    format: String,
-    game: String,
     profile: String,
     edition: String,
     schema_version: u32,
-    mode: String,
     root: NativeRoot,
-    root_conclusion: Option<Conclusion>,
-    events: Vec<GameEvent>,
-    current_position: StructuralState,
-    current_protection: LionProtection,
-    conclusion: Option<Conclusion>,
-    obligations: Vec<Obligation>,
-    draw_offer: Option<Side>,
+    events: Vec<RecordedCommand>,
+}
+#[derive(Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+struct RecordedCommand {
+    actor: Side,
+    command: GameCommand,
 }
 impl WireRecord {
     fn from_game(g: &Game) -> Self {
         Self {
-            format: "mshogi.chu.game".into(),
-            game: "chu".into(),
             profile: PROFILE_ID.into(),
             edition: PROFILE_EDITION.into(),
             schema_version: GAME_RECORD_SCHEMA_VERSION,
-            mode: "untimed".into(),
             root: g.native_root().clone(),
-            root_conclusion: g.root_snapshot().conclusion,
-            events: g.events().to_vec(),
-            current_position: g.position().state().clone(),
-            current_protection: g.local_position().protection().clone(),
-            conclusion: g.conclusion(),
-            obligations: g.obligations().to_vec(),
-            draw_offer: g.snapshot().draw_offer,
+            events: g
+                .events()
+                .iter()
+                .map(|event| RecordedCommand {
+                    actor: event.actor,
+                    command: event.command.clone(),
+                })
+                .collect(),
         }
     }
 }
@@ -171,12 +166,9 @@ impl GameRecord {
     ) -> Result<(Game, Vec<GameUndo>), RecordError> {
         strict(text, MAX_GAME_RECORD_BYTES)?;
         let w: WireRecord = serde_json::from_str(text).map_err(|_| RecordError::Json)?;
-        if w.format != "mshogi.chu.game"
-            || w.game != "chu"
-            || w.profile != PROFILE_ID
+        if w.profile != PROFILE_ID
             || w.edition != PROFILE_EDITION
             || w.schema_version != GAME_RECORD_SCHEMA_VERSION
-            || w.mode != "untimed"
         {
             return Err(RecordError::Identity);
         }
@@ -190,9 +182,6 @@ impl GameRecord {
                 RecordError::Root
             }
         })?;
-        if game.conclusion() != w.root_conclusion {
-            return Err(RecordError::Derived);
-        }
         let mut undo = Vec::with_capacity(w.events.len());
         for (index, event) in w.events.iter().enumerate() {
             if stop() {
@@ -212,12 +201,9 @@ impl GameRecord {
                     }
                 })?,
             );
-            if game.events().last() != Some(event) {
-                return Err(RecordError::Derived);
-            }
         }
         // Maps are safe only AFTER recursive duplicate rejection and native typed replay.
-        // Exact equality also rejects missing nullable fields and forged cached summaries.
+        // Exact equality also rejects missing nullable root and command fields.
         let actual: serde_json::Value =
             serde_json::from_str(text).map_err(|_| RecordError::Json)?;
         let expected =

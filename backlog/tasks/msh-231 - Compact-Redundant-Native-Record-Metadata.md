@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-23T11:05:00Z'
-updated_date: '2026-11-23T13:32:00Z'
+updated_date: '2026-11-23T13:42:00Z'
 labels:
   - simplification
   - persistence
@@ -28,10 +28,23 @@ Split from MSH-229: native.rs plus per-game record codecs repeatedly store game/
 - [ ] #3 Record encoded size, replay time and source-line changes; pass required Rust/frontend/affected-platform persistence checks after each step
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Inventory essential data and capture baseline sizes/replay measurements. Preserve explicit Chess schema 1/2 and Tori schema 1 compatibility.
+2. Compact non-Chess native records to versioned profile/root and ordered actor/command data. Keep native replay, provenance, rights and actual command inputs; remove derived summaries. Review and run required checks.
+3. Remove redundant outer document/native labels, update consumers and contract documentation, then review and run required checks including affected-platform persistence.
+4. Record measurements, merge into main, close the task and remove task outputs.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 MSH-230 inspection: desktop DocumentEnvelope.native_schema_version is a hardcoded 1 game-payload label, distinct from the nested CanonicalRecord actual native schema (Tori was already 2 before MSH-230). Consider removing or renaming that redundant misleading label when compacting metadata. MSH-230 leaves the unchanged desktop payload label intact and documents the distinction.
 
 Started from main 8df7bf3. Branch codex/msh-231-compact-records. First map essential versus derived data for all six games and inspect the explicit compatibility paths; measure baseline record sizes/replay before changes.
+
+Inventory: Chess history retains FEN, history origin, claim/adjudication policy, ordered moves and real command/clock observations; schema 1 bytes and schema 2 configuration have explicit compatibility promises (docs/rules/chess-history-record-v1.md and chess-completeness.md). Shogi retains root category/SFEN/counter source and actor/command history; policies, score and after-position/event effects are derived. Xiangqi retains PositionRoot, claim policy and every CommandEntry actor/command (including admitted rejected claims); result/event_end/events/current position/assessment are derived. Tori retains root diagram, hands, declared counter and provenance plus actor/command history; Tori v1 reader must remain. Chu retains NativeRoot including Lion protection and actor/command history. Tenjiku retains StructuralState including whole profile, original-piece rights and provenance plus actor/command history. Current conclusions, offers, obligations, effects and work summaries in the last three are native replay results. MSH-209 coordination: this task changes record representations only; resource-admission architecture remains MSH-232 and Xiangqi replay optimization remains MSH-227.
+
+Checkpoint: baseline measurements captured for 155 existing canonical records in runs/msh-231/baseline.csv (base 8df7bf3, Apple Silicon, release -j2). First bounded implementation step is Chu schema 3: profile/edition/schema + complete NativeRoot + actor/command events. Cached effects/current state/conclusions/offer/obligations and constant format/game/mode removed. Native corpus expectations unchanged; tampered-effect fixture now injects the tampered effect as forbidden input. GUI checks use existing typed Chu presentation for effects/conclusions. Fresh review /root/review_231_chu found no issues and independently compared 29 changed fixture records: all roots and actor/command sequences preserved. Python checks: 176 pass. Native tests, generated fixtures and required full checks in progress; other games and outer envelopes remain next. Branch codex/msh-231-compact-records.
 <!-- SECTION:NOTES:END -->

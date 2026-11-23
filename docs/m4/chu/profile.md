@@ -291,9 +291,9 @@ must be validated, not guessed from a diagram.
 Internal apply/undo restores all logical state/caches exactly. Semantic Undo,
 Take back, history selection and reopened documents never revive retired execution
 IDs. Canonical records contain explicit game/profile/edition/native schema,
-root/provenance, commands and exact ordered routes. Recompute captures, Lion
-rights, cycles and conclusions by native replay; duplicated serialized facts are
-checked, never trusted. Duplicate fields must reach the strict native parser
+root/provenance, commands and exact ordered routes. Schema 3 recomputes captures, Lion
+rights, cycles and conclusions by native replay; these derived facts are not
+stored in the record. Duplicate fields must reach the strict native parser
 through RawValue dispatch, before any map can erase them. Resource/parse/illegal/
 unsupported/incomplete failures remain distinct and unscored.
 

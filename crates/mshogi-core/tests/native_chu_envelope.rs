@@ -67,7 +67,7 @@ fn real_chu_identity_history_commands_and_duplicate_preserving_routing() {
     let r = CanonicalRecord::chu(c::GameRecord::from_game(&g).unwrap());
     assert_eq!(r.game_kind(), GameKind::Chu);
     assert_eq!(r.profile(), RulesProfile::ChuJcsa2019V1);
-    assert_eq!(r.native_schema(), NativeSchema::ChuV2);
+    assert_eq!(r.native_schema(), NativeSchema::ChuV3);
     assert_eq!(r.event_count(), 3);
     assert_eq!(r.known_board_actions(), 2);
     let raw = r.to_json().unwrap();

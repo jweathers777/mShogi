@@ -203,14 +203,7 @@ fn strict_canonical_mutations_reject_without_changing_live_state() {
         bad[field] = value;
         invalid.push(bad.to_string());
     }
-    for field in [
-        "root",
-        "root_conclusion",
-        "events",
-        "draw_offer",
-        "conclusion",
-        "obligations",
-    ] {
+    for field in ["root", "events"] {
         let mut bad = v.clone();
         bad.as_object_mut().unwrap().remove(field);
         invalid.push(bad.to_string());
@@ -287,11 +280,10 @@ fn deterministic_real_sequences_preserve_exact_logical_caches_and_replay() {
     }
 }
 #[test]
-fn standard_provenance_cannot_be_forged_on_both_serialized_copies() {
+fn standard_root_provenance_cannot_be_forged() {
     let g = game("CHU-MATERIAL-AGREEMENT");
     let mut v: Value = serde_json::from_str(&bytes(&g)).unwrap();
     v["root"]["state"]["root"]["kind"] = json!("standard");
-    v["current_position"]["root"]["kind"] = json!("standard");
     assert_eq!(
         GameRecord::from_json(&v.to_string()).unwrap_err(),
         RecordError::Root

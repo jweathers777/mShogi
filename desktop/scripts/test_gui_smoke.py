@@ -1457,23 +1457,25 @@ class ChuNormalProductEvidenceTests(unittest.TestCase):
         self.assertEqual(manifest['profile'],'mshogi.chu.jcsa2019.v1')
         self.assertEqual(len(manifest['cases']),16)
         bodies={case['file']:module.desktop_document_payload(json.loads((fixtures/case['file']).read_text()),'chu') for case in manifest['cases']}
-        for name in ('contract','captures','promotion','royal-both','royal-survivor','material-reply'):
-            self.assertIsNone(bodies[f'chu-{name}.mshogi']['record']['payload']['conclusion'])
-        obligation=bodies['chu-repetition10.mshogi']['record']['payload']
-        self.assertEqual(len(obligation['events']),10);self.assertTrue(obligation['obligations']);self.assertIsNone(obligation['conclusion'])
-        offered=bodies['chu-agreement.mshogi']
-        self.assertEqual(offered['human'],'gote');self.assertEqual(offered['record']['payload']['draw_offer'],'sente')
-        self.assertEqual(offered['record']['payload']['current_position']['side'],'sente');self.assertIsNone(offered['record']['payload']['conclusion'])
-        for name,conclusion in (('mate',{'kind':'mate','winner':'gote'}),('agreed-draw',{'kind':'agreed_draw'}),
-                                ('royal-concluded',{'kind':'royal_capture','winner':'sente'}),('material-concluded',{'kind':'material','winner':'sente'})):
-            self.assertEqual(bodies[f'chu-{name}.mshogi']['record']['payload']['conclusion'],conclusion)
+        # Documents contain inputs only. The native corpus and the normal GUI
+        # journey check independently specified effects and conclusions after replay.
         for body in bodies.values():
             self.assertEqual(set(body), {'record', 'human', 'settings'})
-        complete=bodies['chu-complete-resignation.mshogi']
-        self.assertEqual(len(complete['record']['payload']['events']),13)
-        self.assertEqual(complete['record']['payload']['conclusion'],{'kind':'resignation','winner':'gote'})
-        natural=bodies['chu-complete-royal-engine.mshogi']
-        self.assertEqual(natural['record']['payload']['conclusion'],{'kind':'royal_capture','winner':'sente'})
+            native=body['record']['payload']
+            self.assertEqual(set(native), {'profile','edition','schema_version','root','events'})
+            self.assertEqual(native['schema_version'],3)
+            for event in native['events']:
+                self.assertEqual(set(event), {'actor','command'})
+        obligation=bodies['chu-repetition10.mshogi']['record']['payload']
+        self.assertEqual(len(obligation['events']),10)
+        offered=bodies['chu-agreement.mshogi']
+        self.assertEqual(offered['human'],'gote')
+        self.assertEqual(offered['record']['payload']['events'],[{'actor':'sente','command':{'kind':'offer_draw'}}])
+        agreed=bodies['chu-agreed-draw.mshogi']['record']['payload']
+        self.assertEqual(agreed['events'][-1],{'actor':'gote','command':{'kind':'accept_draw'}})
+        complete=bodies['chu-complete-resignation.mshogi']['record']['payload']
+        self.assertEqual(len(complete['events']),13)
+        self.assertEqual(complete['events'][-1],{'actor':'sente','command':{'kind':'resign'}})
 
     def test_chu_geometry_observer_requires_all144_squares_font_and_no_hands(self):
         journey=object.__new__(module.Journey);journey.web=Mock();journey.record=Mock()

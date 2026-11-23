@@ -1,7 +1,9 @@
 //! Chu harness: deterministic opening screening and native tactical proofs.
 //! Run expensive generation in Cloud Batch. Artifacts belong under runs/.
 //! chu_strength openings OUT COUNT DEPTH
+//! chu_strength tactics OUT
 //! chu_strength probe SUITE OUT MILLISECONDS
+//! chu_strength export REPORT_PATHS OUT EVERY
 use mshogi_core::chu::*;
 use mshogi_search::{alphabeta::timing::TimeBudget, chu as search};
 use serde_json::{Value, json};
@@ -123,8 +125,13 @@ fn tactics() -> Value {
             if answers.is_empty() {
                 continue;
             }
+            let igui = (family == 1).then(|| Action {
+                from: Square::new(x, y).unwrap(),
+                route: vec![Square::new(x, y - 1).unwrap(), Square::new(x, y).unwrap()],
+                promote: false,
+            });
             rows.push(
-                json!({"id":format!("chu-f{family}-{offset}"),"family":family,
+                json!({"id":format!("chu-f{family}-{offset}"),"family":family,"igui_contract":igui,
                 "split":if offset % 5 == 0 {"held-out"} else {"development"},
                 "record":GameRecord::from_game(&game).unwrap(),"win_plies":1,"answers":answers}),
             );
@@ -136,6 +143,52 @@ fn tactics() -> Value {
         "limitation":"Elementary one-turn Lion and royal tactics; not a measure of deep tactical strength. Construction templates are shared across splits; held-out measures new placements only.",
         "split_rule":"Construction offset modulo 5 equals zero is held-out; fixed before probing",
         "positions":rows})
+}
+
+/// Score exact igui support separately from best-move success. Ordinary capture
+/// remains a valid winning answer, but cannot satisfy this route/effect check.
+fn igui_contract(game: &Game, action: &Action) -> bool {
+    use mshogi_search::alphabeta::SearchPosition as _;
+    if action.route.len() != 2 || action.route[1] != action.from {
+        return false;
+    }
+    let victim = action.route[0];
+    let Some(lion) = game.position().piece(action.from) else {
+        return false;
+    };
+    if !lion.is_lion()
+        || game
+            .position()
+            .piece(victim)
+            .is_none_or(|p| p.side == lion.side)
+    {
+        return false;
+    }
+    let mut position = search::position::ChuPosition::from_game(game);
+    let Some(m) = position.find(action) else {
+        return false;
+    };
+    if !position.make(m) {
+        return false;
+    }
+    let mut native = game.fork().unwrap();
+    if native
+        .submit(GameRequest {
+            expected: native.context(),
+            actor: lion.side,
+            command: GameCommand::Play {
+                action: action.clone(),
+            },
+        })
+        .is_err()
+    {
+        return false;
+    }
+    native.position().piece(action.from) == Some(lion)
+        && native.position().piece(victim).is_none()
+        && position.piece(action.from) == Some(lion)
+        && position.piece(victim).is_none()
+        && position.side_to_move() == lion.side.opponent()
 }
 
 fn export(paths: &Value, every: usize) -> String {
@@ -218,7 +271,11 @@ fn main() {
                     Some(TimeBudget::from_hard_ms(ms)),&mut search::new_engine(),||false).unwrap();
                 let action = match r.decision {Some(search::Decision::Choose(a)) => Some(a),_=>None};
                 let passed = action.as_ref().is_some_and(|a| row["answers"].as_array().unwrap().contains(&serde_json::to_value(a).unwrap()));
-                json!({"id":row["id"],"split":row["split"],"passed":passed,"action":action,"depth":r.completed_depth,"nodes":r.nodes})
+                let contract = row.get("igui_contract").filter(|v| !v.is_null()).map(|v| {
+                    let a: Action = serde_json::from_value(v.clone()).unwrap();
+                    igui_contract(&game,&a)
+                });
+                json!({"id":row["id"],"split":row["split"],"passed":passed,"igui_contract_passed":contract,"action":action,"depth":r.completed_depth,"nodes":r.nodes})
             }).collect();
             write(&a[3], &json!({"ms":ms,"rows":rows}));
         }
@@ -243,6 +300,11 @@ mod tests {
             let answers: Vec<Action> = serde_json::from_value(row["answers"].clone()).unwrap();
             assert!(!answers.is_empty());
             if family == 1 {
+                let action: Action = serde_json::from_value(row["igui_contract"].clone()).unwrap();
+                assert!(igui_contract(&game, &action));
+                let mut ordinary = action.clone();
+                ordinary.route.pop();
+                assert!(!igui_contract(&game, &ordinary));
                 assert!(
                     answers.iter().any(|a| a.route.last() == Some(&a.from)),
                     "igui"

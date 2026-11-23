@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-23T11:05:00Z'
-updated_date: '2026-11-23T14:48:00Z'
+updated_date: '2026-11-23T14:56:00Z'
 labels:
   - simplification
   - persistence
@@ -59,4 +59,8 @@ Step 2 final local results: full release workspace 1182 passed/11 ignored; requi
 Step 3 checkpoint: Shogi schema 2 and Xiangqi schema 2 now store complete roots and actor/command inputs; shared canonical envelope v2 has only version/game/payload, desktop v2 has format/game/payload and stores native records directly. Chess native bytes remain unchanged; legacy Tori1 wrapper reader retained. Fresh review /root/review_231_final found no production defects and independently confirmed all 155 regenerated native roots and command histories unchanged. Four stale generated presentation differences were removed from the fixture update. Consumer migration and full release checks are running; frontend603 pass. Step2 macOS retry also failed to acquire a runner; Linux/Windows and routine checks passed, macOS still pending. Branch codex/msh-231-compact-records; uncommitted step3 work still needs final checks, measurements, platform CI and integration.
 
 Step3 production commit e9a7d2c pushed. Final consumer review found three stale GUI paths (nested game tag, shared profile lookup, consistent rather than conflicting Tenjiku mutation); fixed, with a fixture-backed Python regression test. Removed an obsolete encoded-derived-event capacity probe; native event admission limits and command/byte capacity tests remain. Reviewer independently confirms all155 fixture changes normalize exactly to original inputs/data. Local frontend603 and TypeScript pass; Python177 rerun pending. Routine CI exposed two Clippy layout issues, now fixed. origin/main merged (already up to date). Full release validation still running; final pipeline/measurements/integration remain.
+
+Full step3 release scan completed and found additional old-format fixture/probe consumers; all identified sites updated. Retained Shogi/Xiangqi protocol report fixtures require re-expression because their context SHA256 is defined over canonical bytes. Converted 15 existing fixtures (59 games), changing only native encoded records and corresponding byte hashes; engine traffic, commands, outcomes and timings stay unchanged, with original captured files in Git. No new run reports committed. Current full release rerun starts after origin/main merge. Latest persistence c64cf0f Linux passed, Windows running, macOS still awaiting hosted capacity; routine fmt/Clippy/frontend passed. Final verification, replay measurements and merge remain.
+
+Fresh review independently audited the report conversion: 15 files, 59 records, 146 turn hashes; all roots, actor/command sequences and every other field unchanged except corresponding context_sha256, all recalculated hashes match. Late helper/probe changes have no findings. Final frontend rerun603 and Python177 pass; current source171333 lines versus171700 baseline (-367); 42 desktop document fixtures187404 ->79063 bytes (-57.8%). Final release rerun compiling with2 workers, required debug check and idle timing next. Linux/Windows persistence c64cf0f pass; macOS queued.
 <!-- SECTION:NOTES:END -->

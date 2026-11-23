@@ -469,11 +469,8 @@ fn exact_native_request_history_selection_replacement_undo_reopen_and_save_are_s
     // Saved fast-only mode remains honest: no implicit exact replay or pending work.
     let unsupported = original
         .to_json()
-        .replace("sound_fast_only", "bounded_exact");
-    assert_eq!(
-        GameRecord::from_json(&unsupported),
-        Err(RecordError::Unsupported)
-    );
+        .replacen('{', "{\"no_win_mode\":\"bounded_exact\",", 1);
+    assert_eq!(GameRecord::from_json(&unsupported), Err(RecordError::Json));
 }
 
 #[test]

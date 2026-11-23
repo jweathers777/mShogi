@@ -7,7 +7,12 @@ pub fn initial_record(text: &str) -> Result<CanonicalRecord, String> {
         .get("payload")
         .and_then(|payload| payload.get("record"))
         .ok_or("fixture lacks its canonical native record")?;
-    let record = CanonicalRecord::from_json(&record.to_string()).map_err(|e| e.to_string())?;
+    let wrapper = serde_json::json!({
+        "envelope_version": mshogi_core::native::RECORD_ENVELOPE_VERSION,
+        "game_kind": document["game_kind"],
+        "payload": record,
+    });
+    let record = CanonicalRecord::from_json(&wrapper.to_string()).map_err(|e| e.to_string())?;
     // A concluded fixture still carries its native root. Ask the native game
     // for that prefix instead of editing events or derived rule state in JSON.
     match record {

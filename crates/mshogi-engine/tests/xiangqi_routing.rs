@@ -325,13 +325,13 @@ fn strict_raw_request_envelope_native_and_response_boundaries_preserve_duplicate
             1,
         ),
         text.replacen(
-            "\"conclusion\":null",
-            "\"conclusion\":null,\"conclusion\":null",
+            "\"schema_version\":2",
+            "\"schema_version\":2,\"schema_version\":2",
             1,
         ),
         text.replacen(
-            "\"kind\":\"warning\"",
-            "\"kind\":\"warning\",\"kind\":\"warning\"",
+            "\"kind\":\"play\"",
+            "\"kind\":\"play\",\"kind\":\"play\"",
             1,
         ),
     ] {

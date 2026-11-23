@@ -56,7 +56,7 @@ executable/arguments/options/model identity and finite depth/visit limits.
 Clocks and different claim policies reject rather than downgrade. UCI has no
 optional native-claim channel; the native host exercises eligible claims under
 this recorded policy. It does not infer claims or conclusions from engine
-scores. Sound-fast-only root/current evidence stays in the native record;
+scores. Sound-fast-only root/current evidence is restored by native replay;
 a fast miss is not a winnability proof or an automatic draw.
 
 Each opening supplies standard root or FEN plus complete ordinary actions, or

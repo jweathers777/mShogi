@@ -230,8 +230,8 @@ fn strict_replay_rejects_context_limits_traffic_and_native_payload_tampering() {
     assert!(bad.replay().is_err());
     let mut bad = report.clone();
     bad.games[0].game = bad.games[0].game.replace(
-        "\"schema_version\":1",
-        "\"schema_version\":1,\"schema_version\":1",
+        "\"schema_version\":2",
+        "\"schema_version\":2,\"schema_version\":2",
     );
     assert!(bad.replay().is_err());
     let encoded = report.to_json().unwrap();

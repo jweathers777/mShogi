@@ -104,3 +104,8 @@ for never-saved or dirty documents.
 reconstructs the GUI hand-inspection document through the current writer.
 `write_frontend_fixtures` builds current native snapshots for frontend tests.
 Neither generator is part of the product application.
+
+Retained protocol regression fixtures use the current native record encoding.
+Their canonical-prefix hashes identify those encoded bytes. An encoding update
+changes those hashes, but does not change engine traffic, accepted commands,
+outcomes or timing observations. Git retains the original captured files.

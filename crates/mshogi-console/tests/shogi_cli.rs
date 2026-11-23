@@ -273,6 +273,9 @@ fn short_command_lines_and_complete_large_record_sizes_have_separate_limits() {
     let value: serde_json::Value =
         serde_json::from_str(&fs::read_to_string(&path).unwrap()).unwrap();
     let pretty = serde_json::to_string_pretty(&value).unwrap();
+    // Compact records can be shorter than one command line; legal JSON whitespace
+    // still exercises a large file without changing the native history.
+    let pretty = format!("{pretty}{}", " ".repeat(4097));
     assert!(pretty.len() > 4096);
     fs::write(&path, pretty).unwrap();
     let out = run(&format!(

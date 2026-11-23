@@ -640,6 +640,10 @@ impl NativeState {
 }
 
 #[cfg(test)]
+#[path = "../../tests/support/document_fixture.rs"]
+mod document_fixture;
+
+#[cfg(test)]
 mod tests {
     use super::*;
     use mshogi_engine::{StopReason, Telemetry};
@@ -913,9 +917,7 @@ mod tests {
                 include_str!("../../../../desktop/scripts/fixtures/tenjiku-muller-compound.mshogi"),
             ),
         ] {
-            let fixture: Value = serde_json::from_str(fixture).unwrap();
-            let record =
-                CanonicalRecord::from_json(&fixture["payload"]["record"].to_string()).unwrap();
+            let record = document_fixture::initial_record(fixture).unwrap();
             let mut state = NativeState::from_root(&fresh_root(record).unwrap()).unwrap();
             match &mut state {
                 NativeState::Chu(g) => {

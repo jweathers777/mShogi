@@ -264,8 +264,8 @@ fn unsupported_policy_dialects_limits_and_live_nonboard_history_reject_losslessl
         .to_json()
         .unwrap();
     for token in [
-        "\"game\":\"xiangqi\"",
-        "\"no_win_mode\":\"sound_fast_only\"",
+        "\"game_kind\":\"xiangqi\"",
+        "\"claim_policy\":\"auto_valid_claims\"",
     ] {
         let duplicate = clean.replacen(token, &format!("{token},{token}"), 1);
         assert_ne!(duplicate, clean);

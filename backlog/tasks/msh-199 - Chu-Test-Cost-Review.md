@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-19T06:19:00Z'
-updated_date: '2026-11-23T20:30:00Z'
+updated_date: '2026-11-23T20:36:00Z'
 labels:
   - handle:chu-test-cost-review
   - chu
@@ -36,14 +36,14 @@ Handle: Chu Test Cost Review
 - [x] #1 Debug and release timings of all Chu-related tests in mshogi-console, mshogi-desktop-session, mshogi-engine and mshogi-search are recorded before and after the change.
 - [x] #2 Each slow test has a recorded statement of what it checks and why its budget is needed; redundant or overlapping checks are removed or merged without loss of coverage, as shown by the recorded mapping.
 - [x] #3 cargo test --workspace (debug) completes without Chu watchdog failures, and no single Chu test takes more than about 60 s in debug, or a recorded reason marks it release-only.
-- [ ] #4 Release CI suites still pass; independent review confirms that no rules or contract check was weakened.
+- [x] #4 Release CI suites still pass; independent review confirms that no rules or contract check was weakened.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
+- [x] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
@@ -77,4 +77,6 @@ After-debug complete at e2e0da3: 300 selected tests, 296 passed, 4 ignored, no f
 All four timing inventories complete; full per-test table is runs/msh-199/timing-comparison.json, to be uploaded at the task GCS path. Before debug:299 selected/291 pass/4 fail/1 timeout/3 ignored; before release:299/296 pass/3 ignored. After debug:300/296 pass/4 ignored; after release:300/297 pass/3 ignored. Existing ignores are manual frozen-executable capture, timed-game evidence capture, and representation benchmark, not ordinary workspace checks. New debug-only ignore is the normal production-budget Resume test; release time4.353 ->4.292 s, assertions preserved. Other release changes: child purpose/history4.434 ->0.024 s; readonly analysis2.325 ->0.049 s; historical analysis4.368 ->0.074 s; twelve-ply progression28.831 ->0.138 s. Bounded both-side test0.139 s debug/0.081 s release. All active measured tests pass after the change; maximum measured after-debug18.917 s and after-release4.292 s. Full workspace debug/release, fmt and Clippy now running. No cloud compute/VMs used; GCP compute cost $0.
 
 Required full workspace debug check now PASSED: cargo test --workspace --locked -j 2 -- --test-threads=2, 1190 passed/0 failed/12 ignored, summed suite test time361.75 s (~6 min), with no Chu watchdog failures. Fmt and workspace Clippy also passed. The 12 ignores include the one new debug-only production-default Resume test; it passed in release timing and remains in release CI. Full release workspace check is running. Linux targeted process CI passed; macOS/Windows still running. Existing tenjiku_work example filename warning remains tracked by MSH-234.
+
+Final verification passed at test source e2e0da3: cargo fmt --all -- --check; cargo clippy --workspace --all-targets --locked -j 2 -- -D warnings; cargo test --workspace --locked -j 2 -- --test-threads=2 (1190 passed,12 ignored,0 failed; suite time361.75 s); cargo test --release --workspace --locked -j 2 -- --test-threads=2 (1191 passed,11 ignored,0 failed; suite time194.11 s). All three targeted release process CI jobs passed in workflow45258165311: Ubuntu24.04, macOS15, Windows2022. Review found no weakened rules/contract coverage. The release-only normal-budget test passed in both local release timing and full release/CI suites. No packaged GUI or strength campaign was needed. Full per-test timing table, serial timing driver, 65 s baseline timeout logs and final logs are being uploaded to gs://mshogi-experiments-216675633801/runs/msh-199/ ; summary and coverage mapping are retained in this task. No new follow-up defects found; existing example-name warning stays with MSH-234. Integration/cleanup remain.
 <!-- SECTION:NOTES:END -->

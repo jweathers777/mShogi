@@ -68,9 +68,9 @@ def run_pair(args, seed, out):
     if getattr(args, 'base', None) is not None:
         command.extend(['--clock-base-ms', str(round(args.base * 1000)),
                         '--clock-increment-ms', str(round(args.increment * 1000))])
-        # MSH-204: Tori runs give the engine the nominal move time; other games
+        # MSH-204/MSH-213: Tori and Chu use the nominal move time; other games
         # keep the earlier hard-ceiling policy so their evidence stays comparable.
-        if args.game == 'tori':
+        if args.game in ('tori', 'chu'):
             command.extend(['--clock-allocation', 'nominal'])
         if getattr(args, 'candidate_time_factor', 1) != 1:
             command.extend(['--candidate-time-factor', str(args.candidate_time_factor)])
@@ -200,8 +200,8 @@ def main(default_game="shogi"):
     if args.candidate_time_factor != 1 and args.base is None:
         parser.error('--candidate-time-factor needs a clock (--base)')
     if args.base is not None:
-        if args.game not in ('shogi', 'tori') or not (0.001 <= args.base <= 600 and 0 <= args.increment <= 60):
-            parser.error('clock mode requires Shogi or Tori, base 0.001..600 and increment 0..60 seconds')
+        if args.game not in ('shogi', 'tori', 'chu') or not (0.001 <= args.base <= 600 and 0 <= args.increment <= 60):
+            parser.error('clock mode requires Shogi, Tori or Chu, base 0.001..600 and increment 0..60 seconds')
         if not 1 <= args.candidate_time_factor <= 8:
             parser.error('--candidate-time-factor must be 1..8')
         if args.candidate_nodes is not None or args.baseline_nodes is not None or args.baseline_depth is not None:
@@ -210,8 +210,8 @@ def main(default_game="shogi"):
         args.baseline_depth = 64
     elif args.candidate_nodes is None or args.increment != 0:
         parser.error('fixed-work mode requires --candidate-nodes; increment requires --base')
-    if args.openings and args.game not in ('shogi', 'tori'):
-        parser.error('--openings currently requires Shogi or Tori')
+    if args.openings and args.game not in ('shogi', 'tori', 'chu'):
+        parser.error('--openings currently requires Shogi, Tori or Chu')
     if args.first_seed < 0:
         parser.error('--first-seed must be nonnegative')
     if args.baseline_depth is None:

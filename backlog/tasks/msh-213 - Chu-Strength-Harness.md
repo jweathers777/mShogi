@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-20T22:51:00Z'
-updated_date: '2026-11-23T20:59:00Z'
+updated_date: '2026-11-23T21:07:00Z'
 labels:
   - chu
   - search
@@ -28,8 +28,18 @@ Goal: the harness step of the per-game classical strength program (docs/m5/stren
 - [ ] #4 A self-play export for Texel data with a split, and a time-odds measurement (2x time) recorded
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Reuse native clocked route, add Chu catalog support and nominal clock allocation. 2. Generate deterministic openings and screen under the rule recorded before results. 3. Establish tactical answers with native exhaustive proof independent of alpha-beta; retain complete answers, Lion cases and grouped held-out data. 4. Freeze predecessor binaries; cloud pilot, control/depth, self-play export and 2x-time measurement within US$10. 5. Required checks, review if applicable, evidence upload, integration and cleanup.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 Started from main 30e08e4. Freeze this predecessor for Chu harness measurements; reuse native clocked experiments and shared harness infrastructure. No game-rule, search-strength or evaluation change is planned. Budget cap US$10; heavy runs use Google Cloud Batch, one machine type per comparison. Branch codex/msh-213-chu-strength-harness.
+
+Pre-screen protocol: source 30e08e4 engine, no search changes. Generate standard-root quiet rear-zone prefixes with xorshift seeds 1..600 (8 plies, no captures/promotions, royals/Lions fixed); deduplicate full repetition positions. Screen at fixed depth 3, at most 500000 nodes; require completed depth and absolute side-to-move score <=100 Pawn hundredths, no native conclusion. If fewer than 100 pass, report the shortage and fix a revised rule before rescreening. Existing eight mirrored reduced-material diagram families are separate calibration/control candidates, not claimed to be reachable standard openings. Chu adopts nominal clock allocation for new measurements only. Any unscored Chu pair stops the game campaign; no length-limit exclusions. H0=0/H1=15, alpha=beta=.05 for predecessor smoke and time odds; bounded samples may give no decision. Late-game depth means applied board plies >=100, with per-game medians reported and no short-game substitution.
+
+Checkpoint: implemented (not yet integrated) native Chu catalog loading, Python clock/catalog enablement with nominal allocation, shared unchanged calibration roots, deterministic opening screen helper, finite full-width native proof and a 315-position constructed one-turn tactical corpus. It includes double capture, igui, qualifying defended-Lion capture and two-royal capture; independent answers enumerate all native winning actions, with held-out placements fixed before probing. Limitation: this is an elementary tactical screen, not a deep tactics sample; shared construction templates cross development/held-out. Added native-report Texel export and bounded Batch worker. Local compile and existing Python tests pass; more checks remain. Frozen predecessor 30e08e4 source uploaded; single-VM job build-msh213-baseline-1 submitted, controller handles cleanup, no result yet. Next: finish focused tests, build current tooling in cloud, generate/screen openings, probe tactics and pilot clocked games; choose control from measured depth. Branch codex/msh-213-chu-strength-harness.
 <!-- SECTION:NOTES:END -->

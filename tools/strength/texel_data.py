@@ -11,9 +11,9 @@ import json
 from pathlib import Path
 
 
-FIELDS = {'chess': 4, 'shogi': 3, 'xiangqi': 2, 'tori': None}
-POSITION = {'chess': 'fen', 'shogi': 'sfen', 'xiangqi': 'fen', 'tori': 'diagram'}
-OUTCOME = {'chess': 'white_outcome', 'shogi': 'sente_outcome', 'xiangqi': 'red_outcome', 'tori': 'sente_outcome'}
+FIELDS = {'chess': 4, 'shogi': 3, 'xiangqi': 2, 'tori': None, 'chu': None}
+POSITION = {'chess': 'fen', 'shogi': 'sfen', 'xiangqi': 'fen', 'tori': 'diagram', 'chu': 'diagram'}
+OUTCOME = {'chess': 'white_outcome', 'shogi': 'sente_outcome', 'xiangqi': 'red_outcome', 'tori': 'sente_outcome', 'chu': 'sente_outcome'}
 
 
 def key(fen, game='chess'):
@@ -32,8 +32,8 @@ def digest(path):
 def split(root, manifest_path, game='chess', allow_empty=False, by_opening=False):
     if game not in FIELDS:
         raise ValueError('unsupported game')
-    if game == 'tori' and not by_opening:
-        raise ValueError('Tori exports carry no initial diagram; split --by-opening')
+    if game in ('tori', 'chu') and not by_opening:
+        raise ValueError('Tori/Chu exports carry no initial diagram; split --by-opening')
     position_field = POSITION[game]
     outcome_field = OUTCOME[game]
     files = sorted(root.glob('games-*.jsonl'))

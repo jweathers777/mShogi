@@ -1,11 +1,11 @@
 ---
 id: MSH-233
 title: Simplify Internal Execution Identity and Validation
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-23T11:05:00Z'
-updated_date: '2026-11-23T18:29:00Z'
+updated_date: '2026-11-23T18:30:00Z'
 labels:
   - simplification
   - engine
@@ -23,9 +23,9 @@ Split from MSH-229: ExecutionContext echoes complete records and has request_id,
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Trace each identity/context field and validation pass to its consumer; remove redundant runtime fields/copies or checks with measured evidence, in small reviewed steps
-- [ ] #2 Stale, cancelled, cross-game and cross-profile results cannot apply moves; invalid results do not create outcomes; accepted PV/proof presentation remains truthful and bounded
-- [ ] #3 Recorded reports still replay, retained sessions still work, and required Rust/frontend/process checks pass; record bytes, timings and line counts
+- [x] #1 Trace each identity/context field and validation pass to its consumer; remove redundant runtime fields/copies or checks with measured evidence, in small reviewed steps
+- [x] #2 Stale, cancelled, cross-game and cross-profile results cannot apply moves; invalid results do not create outcomes; accepted PV/proof presentation remains truthful and bounded
+- [x] #3 Recorded reports still replay, retained sessions still work, and required Rust/frontend/process checks pass; record bytes, timings and line counts
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -57,3 +57,9 @@ Field trace retained by design: request_id is the bridge and retained-endpoint m
 
 Final verification: cargo fmt --all -- --check and workspace/all-targets locked clippy -D warnings passed. cargo test --release --workspace --locked --no-fail-fast -j 2 -- --test-threads=2 passed 1188 tests, 11 ignored, including native perft/fork isolation, stale/cancel/profile/PV checks and native/external recorded report replay. Required debug command again has only the four known MSH-199 Chu watchdog failures (30.39 s); no rules or tests relaxed. TypeScript and 600 frontend tests passed. Targeted process CI45236400013 at1c13156 passed Linux/macOS/Windows; routine CI45237294797 at3eb0b49 passed. Both fresh reviews complete; accounting findings fixed. Full packaged GUI/release checks not run (not a release). Evidence: gs://mshogi-experiments-216675633801/runs/msh-233/ (measurements, CSV, logs and validation metadata); Cloud Batch cost $0, no VMs created. Source lines171583->172009 (+426, includes benchmark and regression coverage). Follow-up MSH-235 documents stale native-application text; known debug cost MSH-199 and example-name warning MSH-234 remain. Ready to integrate and clean branch, target, Node scratch and local run data.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Merged into main: one compact protocol5 reply binds exact request bytes; one monotonic request ID controls execution; admitted native state replaces repeated reply, target, command and PV history replay. Recorded observation schema1 and retained Shogi/Tori sessions remain supported. At128 events, Chu reply18359->529 bytes, decode302ms->6us, native validation299ms->0.24ms (median5 synthetic legal-PV workload). Two fresh reviews completed; fmt/clippy,1188 release tests,600 frontend tests,TypeScript and Linux/macOS/Windows process CI passed. Debug retains the four known MSH-199 watchdog failures;11 release tests remain ignored; packaged GUI was not run. Evidence is in gs://mshogi-experiments-216675633801/runs/msh-233/. Follow-up: MSH-235 (Reconcile Native Application Contract Documentation). Next eligible medium-priority task: MSH-218 (Shared Protocol Runner).
+<!-- SECTION:FINAL_SUMMARY:END -->

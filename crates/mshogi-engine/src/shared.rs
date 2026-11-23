@@ -96,7 +96,8 @@ pub struct ExecutionContext {
     pub request_id: u64,
     /// Host-owned session version, independent of board ply and semantic undo.
     pub session_version: u64,
-    /// Fresh child-generation identity, shared across all native game work.
+    /// Positive historical request metadata retained for recorded observations.
+    /// Live authority uses request_id; this does not count child processes.
     pub process_generation: u64,
     /// Actual canonical native history, policies and root provenance.
     pub game: CanonicalRecord,

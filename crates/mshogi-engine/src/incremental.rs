@@ -554,7 +554,10 @@ mod tests {
         play(&mut game, "3c3d");
         assert!(!cycle(&mut client, &mut server, request(&game, 2), &game));
         // An identical request may retain state; no command is applied twice.
-        assert!(!cycle(&mut client, &mut server, request(&game, 3), &game));
+        // Recorded generation is metadata, not a second monotonic authority.
+        let mut next = (*request(&game, 3)).clone();
+        next.context.process_generation = 1;
+        assert!(!cycle(&mut client, &mut server, Arc::new(next), &game));
         let mut takeback = shogi::Game::new();
         play(&mut takeback, "7g7f");
         assert!(cycle(

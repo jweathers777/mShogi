@@ -237,7 +237,8 @@ pub struct GameUndo {
 pub struct GameRedo {
     instance: u64,
     branch: u64,
-    before: GameContext,
+    before_node: u64,
+    after_node: u64,
     actor: Side,
     command: GameCommand,
     used: bool,
@@ -275,7 +276,6 @@ pub struct Game {
     node: u64,
     next_node: u64,
     branch: u64,
-    pub(super) events_encoded_bytes: usize,
 }
 impl Game {
     #[cfg(test)]
@@ -321,7 +321,7 @@ impl Game {
         snapshot.conclusion = conclusion;
         snapshot.pending_bare = pending;
         snapshot.work += work;
-        let mut game = Self {
+        let game = Self {
             root,
             local,
             events: vec![],
@@ -335,10 +335,12 @@ impl Game {
             node: 0,
             next_node: 1,
             branch: 0,
-            events_encoded_bytes: 0,
         };
-        let bytes = record::encoded_size(&game).map_err(|_| GameError::Record)?;
-        Arc::make_mut(&mut game.root_snapshot).work += bytes as u64;
+        if record::encode(&game).map_err(|_| GameError::Record)?.len()
+            > crate::record::MAX_COMPACT_ROOT_BYTES
+        {
+            return Err(GameError::Capacity(Resource::EncodedBytes));
+        }
         game.ensure_capacity(stop)?;
         Ok(game)
     }
@@ -424,7 +426,7 @@ impl Game {
     }
     /// Advance runtime authority without rewriting any saved semantic state.
     pub fn retire_context(&mut self) -> Result<(), GameError> {
-        let reserve = self.capacity_usage()?.reserved_events as u64;
+        let reserve = u64::from(self.conclusion().is_none());
         let revision = self
             .runtime
             .revision
@@ -527,21 +529,6 @@ impl Game {
             GameStatus::Ongoing
         }
     }
-    fn copy_for_transaction(&self) -> Self {
-        Self {
-            root: self.root.clone(),
-            local: self.local.clone(),
-            events: self.events.clone(),
-            keys: self.keys.clone(),
-            snapshots: self.snapshots.clone(),
-            root_snapshot: self.root_snapshot.clone(),
-            runtime: self.runtime,
-            node: self.node,
-            next_node: self.next_node,
-            branch: self.branch,
-            events_encoded_bytes: self.events_encoded_bytes,
-        }
-    }
     /// Atomic full-context admission; all effects/capacity validate before publication.
     pub fn submit(&mut self, request: GameRequest) -> Result<GameUndo, GameError> {
         self.submit_with_stop(request, &mut || false)
@@ -552,7 +539,10 @@ impl Game {
         request: GameRequest,
         stop: &mut impl FnMut() -> bool,
     ) -> Result<GameUndo, GameError> {
-        if request.expected != self.context() {
+        if request.expected.runtime != self.runtime
+            || request.expected.root != self.root
+            || request.expected.events != self.events
+        {
             return Err(GameError::StaleContext);
         }
         self.commit(request.actor, request.command, true, stop)
@@ -564,11 +554,30 @@ impl Game {
         new_branch: bool,
         stop: &mut impl FnMut() -> bool,
     ) -> Result<GameUndo, GameError> {
+        let working = self.local.clone();
+        let local = std::mem::replace(&mut self.local, working);
+        let events = self.events.len();
+        let keys = self.keys.len();
+        let result = self.commit_inner(actor, command, new_branch, stop);
+        if result.is_err() {
+            self.local = local;
+            self.events.truncate(events);
+            self.snapshots.truncate(events);
+            self.keys.truncate(keys);
+        }
+        result
+    }
+    fn commit_inner(
+        &mut self,
+        actor: Side,
+        command: GameCommand,
+        new_branch: bool,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<GameUndo, GameError> {
         check(stop)?;
         if self.conclusion().is_some() {
             return Err(GameError::Concluded);
         }
-        let mut candidate = self.copy_for_transaction();
         let mut work = 1;
         let mut effects = None;
         let mut board_ply = self.snapshot().board_ply;
@@ -580,9 +589,9 @@ impl Game {
                 if actor != self.position().side_to_move() {
                     return Err(GameError::WrongActor);
                 }
-                let (e, _) = candidate.local.apply_with_stop(action, &mut *stop)?;
+                let (e, _) = self.local.apply_with_stop(action, &mut *stop)?;
                 work += e.work_units;
-                let key = RepetitionKey::from_position(candidate.position());
+                let key = RepetitionKey::from_position(self.position());
                 for old in &self.keys {
                     check(stop)?;
                     let (equal, n) = old.compared(&key);
@@ -591,11 +600,11 @@ impl Game {
                         return Err(GameError::Repetition);
                     }
                 }
-                candidate.keys.push(key);
+                self.keys.push(key);
                 board_ply += 1;
                 effects = Some(e);
                 offer = None;
-                let (c, p, n) = adjudicate(&candidate.local, &candidate.keys, stop)?;
+                let (c, p, n) = adjudicate(&self.local, &self.keys, stop)?;
                 work += n;
                 conclusion = c;
                 pending = p;
@@ -628,18 +637,12 @@ impl Game {
                 offer = None;
             }
         }
-        candidate.push_event(
+        self.push_event(
             actor, command, effects, board_ply, conclusion, pending, offer, work,
         )?;
-        let bytes = record::encoded_size(&candidate).map_err(|_| GameError::Record)?;
-        let total = candidate
-            .replay_work()
-            .checked_add(bytes as u64)
-            .ok_or(GameError::Capacity(Resource::ReplayWork))?;
-        Arc::make_mut(candidate.snapshots.last_mut().expect("new snapshot")).work = total;
-        candidate.ensure_capacity(stop)?;
+        self.ensure_capacity(stop)?;
         check(stop)?;
-        let counter_reserve = candidate.capacity_usage_with_stop(stop)?.reserved_events as u64;
+        let counter_reserve = u64::from(self.conclusion().is_none());
         for value in [self.runtime.revision, self.next_node, self.branch] {
             if value
                 .checked_add(1)
@@ -666,14 +669,13 @@ impl Game {
             instance: self.runtime.instance,
             before_node: self.node,
             after_node: self.next_node,
-            before_len: self.events.len(),
+            before_len: self.events.len() - 1,
             used: false,
         };
-        candidate.runtime.revision = revision;
-        candidate.node = self.next_node;
-        candidate.next_node = next_node;
-        candidate.branch = branch;
-        *self = candidate;
+        self.runtime.revision = revision;
+        self.node = self.next_node;
+        self.next_node = next_node;
+        self.branch = branch;
         Ok(token)
     }
     #[allow(clippy::too_many_arguments)]
@@ -698,11 +700,6 @@ impl Game {
             pending_bare,
             draw_offer,
         };
-        let size = super::record::event_len(&event).map_err(|_| GameError::Record)?;
-        self.events_encoded_bytes = self
-            .events_encoded_bytes
-            .checked_add(size)
-            .ok_or(GameError::Capacity(Resource::EncodedBytes))?;
         let charged = self
             .replay_work()
             .checked_add(work)
@@ -719,66 +716,25 @@ impl Game {
         }));
         Ok(())
     }
-    fn ending(&mut self, actor: Side) -> Result<u64, GameError> {
-        self.push_event(
-            actor,
-            GameCommand::Resign,
-            None,
-            self.snapshot().board_ply,
-            Some(Conclusion::Resignation {
-                winner: actor.opponent(),
-            }),
-            None,
-            None,
-            1,
-        )?;
-        Ok(record::encoded_size(self).map_err(|_| GameError::Record)? as u64 + 1)
-    }
-    /// Actual encoded complete document and widest actual ending sequence headroom.
+    /// Actual record size for an explicit diagnostic query; closure uses bounded headroom.
     pub fn capacity_usage(&self) -> Result<CapacityUsage, GameError> {
-        self.capacity_usage_with_stop(&mut || false)
-    }
-    fn capacity_usage_with_stop(
-        &self,
-        stop: &mut impl FnMut() -> bool,
-    ) -> Result<CapacityUsage, GameError> {
-        let bytes = record::encoded_size(self).map_err(|_| GameError::Record)?;
-        let mut largest_bytes = bytes;
-        let mut largest_events = self.events.len();
-        let mut largest_work = self.replay_work();
-        if self.conclusion().is_none() {
-            for actor in [Side::Sente, Side::Gote] {
-                check(stop)?;
-                let mut candidate = self.copy_for_transaction();
-                let extra = candidate.ending(actor)?;
-                largest_bytes = largest_bytes
-                    .max(record::encoded_size(&candidate).map_err(|_| GameError::Record)?);
-                largest_events = largest_events.max(candidate.events.len());
-                largest_work = largest_work.max(
-                    self.replay_work()
-                        .checked_add(extra)
-                        .ok_or(GameError::Capacity(Resource::ReplayWork))?,
-                );
-            }
-        }
+        let reserve = usize::from(self.conclusion().is_none());
         Ok(CapacityUsage {
-            encoded_bytes: bytes,
+            encoded_bytes: record::encoded_size(self).map_err(|_| GameError::Record)?,
             events: self.events.len(),
             replay_work: self.replay_work(),
-            reserved_bytes: largest_bytes - bytes,
-            reserved_events: largest_events - self.events.len(),
-            reserved_work: largest_work - self.replay_work(),
+            reserved_bytes: reserve * crate::record::MAX_COMPACT_COMMAND_BYTES,
+            reserved_events: reserve,
+            reserved_work: reserve as u64,
         })
     }
     fn ensure_capacity(&self, stop: &mut impl FnMut() -> bool) -> Result<(), GameError> {
-        let u = self.capacity_usage_with_stop(stop)?;
-        if u.encoded_bytes + u.reserved_bytes > MAX_GAME_RECORD_BYTES {
-            return Err(GameError::Capacity(Resource::EncodedBytes));
-        }
-        if u.events + u.reserved_events > MAX_GAME_EVENTS {
+        check(stop)?;
+        let reserve = usize::from(self.conclusion().is_none());
+        if self.events.len() + reserve > MAX_GAME_EVENTS {
             return Err(GameError::Capacity(Resource::Events));
         }
-        if u.replay_work + u.reserved_work > MAX_REPLAY_WORK {
+        if self.replay_work() > MAX_REPLAY_WORK - reserve as u64 {
             return Err(GameError::Capacity(Resource::ReplayWork));
         }
         Ok(())
@@ -798,37 +754,31 @@ impl Game {
             .checked_add(1)
             .ok_or(GameError::Capacity(Resource::Counter))?;
         let before = self.event_prefix(undo.before_len)?;
-        let event = self.events.last().expect("undo current").clone();
-        let mut candidate = self.copy_for_transaction();
-        candidate.events.truncate(undo.before_len);
-        candidate.snapshots.truncate(undo.before_len);
-        candidate.keys.truncate(before.board_ply + 1);
-        candidate.local =
-            LocalPosition::admit(Position::install(before.state).map_err(GameError::Root)?)
-                .map_err(GameError::Root)?;
-        candidate.events_encoded_bytes = candidate
-            .events
-            .iter()
-            .map(|e| super::record::event_len(e).expect("accepted event"))
-            .sum();
-        let reserve = candidate.capacity_usage()?.reserved_events as u64;
+        let local = LocalPosition::admit(Position::install(before.state).map_err(GameError::Root)?)
+            .map_err(GameError::Root)?;
+        let reserve = u64::from(before.conclusion.is_none());
         if revision.checked_add(reserve).is_none()
-            || candidate.next_node.checked_add(reserve).is_none()
-            || candidate.branch.checked_add(reserve).is_none()
+            || self.next_node.checked_add(reserve).is_none()
+            || self.branch.checked_add(reserve).is_none()
         {
             return Err(GameError::Capacity(Resource::Counter));
         }
-        candidate.runtime.revision = revision;
-        candidate.node = undo.before_node;
+        let event = self.events.last().expect("undo current");
         let redo = GameRedo {
-            instance: candidate.runtime.instance,
-            branch: candidate.branch,
-            before: candidate.context(),
+            instance: self.runtime.instance,
+            branch: self.branch,
+            before_node: undo.before_node,
+            after_node: undo.after_node,
             actor: event.actor,
-            command: event.command,
+            command: event.command.clone(),
             used: false,
         };
-        *self = candidate;
+        self.events.truncate(undo.before_len);
+        self.snapshots.truncate(undo.before_len);
+        self.keys.truncate(before.board_ply + 1);
+        self.local = local;
+        self.runtime.revision = revision;
+        self.node = undo.before_node;
         undo.used = true;
         Ok(redo)
     }
@@ -837,11 +787,13 @@ impl Game {
         if redo.used
             || redo.instance != self.runtime.instance
             || redo.branch != self.branch
-            || !redo.before.same_semantics(&self.context())
+            || redo.before_node != self.node
         {
             return Err(GameError::InvalidToken);
         }
-        let undo = self.commit(redo.actor, redo.command.clone(), false, &mut || false)?;
+        let mut undo = self.commit(redo.actor, redo.command.clone(), false, &mut || false)?;
+        self.node = redo.after_node;
+        undo.after_node = self.node;
         redo.used = true;
         Ok(undo)
     }
@@ -940,4 +892,59 @@ fn adjudicate(
         None,
         work,
     ))
+}
+
+// Every supported command prefix, including its reserved resignation, fits.
+const _: () = assert!(
+    crate::record::MAX_COMPACT_ROOT_BYTES
+        + MAX_GAME_EVENTS * crate::record::MAX_COMPACT_COMMAND_BYTES
+        <= MAX_GAME_RECORD_BYTES
+);
+
+#[cfg(test)]
+mod rollback_tests {
+    use super::*;
+    #[test]
+    fn late_cancellation_and_work_refusal_restore_all_private_state() {
+        for profile in Profile::ALL {
+            let mut game = Game::standard(profile);
+            let action = game.legal_actions()[0].clone();
+            game.submit(GameRequest {
+                expected: game.context(),
+                actor: Side::Sente,
+                command: GameCommand::Play { action },
+            })
+            .unwrap();
+            // Checks include cancellation after a new control snapshot is appended.
+            for stop_at in 1..=3 {
+                let before = format!("{game:?}");
+                let mut calls = 0;
+                let result = game.submit_with_stop(
+                    GameRequest {
+                        expected: game.context(),
+                        actor: Side::Sente,
+                        command: GameCommand::OfferDraw,
+                    },
+                    &mut || {
+                        calls += 1;
+                        calls == stop_at
+                    },
+                );
+                assert!(matches!(result, Err(GameError::Stopped)));
+                assert_eq!(format!("{game:?}"), before);
+            }
+            Arc::make_mut(game.snapshots.last_mut().unwrap()).work = MAX_REPLAY_WORK;
+            let before = format!("{game:?}");
+            let result = game.submit(GameRequest {
+                expected: game.context(),
+                actor: Side::Sente,
+                command: GameCommand::OfferDraw,
+            });
+            assert!(matches!(
+                result,
+                Err(GameError::Capacity(Resource::ReplayWork))
+            ));
+            assert_eq!(format!("{game:?}"), before);
+        }
+    }
 }

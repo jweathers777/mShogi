@@ -68,11 +68,6 @@ fn serialize_events<S: serde::Serializer>(
 ) -> Result<S::Ok, S::Error> {
     serializer.collect_seq(events.iter().map(recorded))
 }
-pub(super) fn event_len(event: &GameEvent) -> Result<usize, RecordError> {
-    serde_json::to_vec(&recorded(event))
-        .map(|bytes| bytes.len())
-        .map_err(|_| RecordError::Json)
-}
 impl<'a> WireRecord<'a> {
     fn from_game(game: &'a Game) -> Self {
         Self {
@@ -95,16 +90,9 @@ struct ParsedRecord {
 pub(super) fn encode(game: &Game) -> Result<String, RecordError> {
     serde_json::to_string(&WireRecord::from_game(game)).map_err(|_| RecordError::Json)
 }
-/// Exact native encoded size used by transactional admission, not a guessed estimate.
+/// Exact size for explicit diagnostics; ordinary admission uses compact record bounds.
 pub(super) fn encoded_size(game: &Game) -> Result<usize, RecordError> {
-    let mut wire = WireRecord::from_game(game);
-    wire.events = &[];
-    let base = serde_json::to_vec(&wire)
-        .map_err(|_| RecordError::Json)?
-        .len();
-    base.checked_add(game.events_encoded_bytes)
-        .and_then(|bytes| bytes.checked_add(game.events().len().saturating_sub(1)))
-        .ok_or(RecordError::Capacity)
+    encode(game).map(|text| text.len())
 }
 fn check(stop: &mut impl FnMut() -> bool) -> Result<(), RecordError> {
     if stop() {
@@ -301,3 +289,68 @@ fn strict(text: &str, limit: usize) -> Result<(), RecordError> {
 #[cfg(test)]
 #[path = "record_tests.rs"]
 mod tests;
+
+#[cfg(test)]
+mod compact_bounds {
+    use super::*;
+    use crate::record::{MAX_COMPACT_COMMAND_BYTES, MAX_COMPACT_ROOT_BYTES};
+    #[test]
+    fn maximal_wire_fields_fit_compact_bounds() {
+        for profile in Profile::ALL {
+            let game = Game::standard(profile);
+            let mut root = game.native_root().clone();
+            root.root = RootMetadata::imported("\0".repeat(1024), u64::MAX).unwrap();
+            // Deliberately overfill material/identities to bound every valid root.
+            for base in Base::ALL {
+                root.board = vec![
+                    Some(Piece {
+                        id: u16::MAX,
+                        side: Side::Sente,
+                        base,
+                        promoted: false,
+                        right: PromotionRight::FirstDeclinedNextMove
+                    });
+                    256
+                ];
+                let wire = WireRecord {
+                    edition: profile.edition(),
+                    schema_version: GAME_RECORD_SCHEMA_VERSION,
+                    root: &root,
+                    events: &[],
+                };
+                assert!(serde_json::to_vec(&wire).unwrap().len() <= MAX_COMPACT_ROOT_BYTES);
+            }
+        }
+        let square = Square::new(16, 16).unwrap();
+        for command in [
+            GameCommand::Play {
+                action: Action {
+                    kind: ActionKind::Travel,
+                    from: square,
+                    route: vec![square; 3],
+                    promote: false,
+                    target: None,
+                },
+            },
+            GameCommand::Play {
+                action: Action {
+                    kind: ActionKind::Igui,
+                    from: square,
+                    route: vec![],
+                    promote: false,
+                    target: Some(square),
+                },
+            },
+            GameCommand::Resign,
+            GameCommand::OfferDraw,
+            GameCommand::AcceptDraw,
+            GameCommand::DeclineDraw,
+        ] {
+            let event = RecordedCommand {
+                actor: Side::Sente,
+                command,
+            };
+            assert!(serde_json::to_vec(&event).unwrap().len() < MAX_COMPACT_COMMAND_BYTES);
+        }
+    }
+}

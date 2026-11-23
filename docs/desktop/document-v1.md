@@ -88,7 +88,9 @@ and execution stopped. Return to live and Resume remain separate actions.
 The encoded document limit is 16 MiB. Chess admits at most 4,096 combined
 initial events and player commands. Other native event, byte and replay limits
 remain game-specific. Tenjiku retains its 1 MiB/1,024-event/512M native limits
-and 160M document reconstruction budget. No history is truncated to fit a file.
+and 160M document reconstruction budget. No history is truncated to fit a file. Compact native command admission uses
+the [root, command and event bounds](../native-resource-admission.md); it does
+not serialize hypothetical endings.
 
 Validation runs on a bounded, cancellable worker with a 15-second deadline.
 It returns the already replayed game for guarded installation. A stale,

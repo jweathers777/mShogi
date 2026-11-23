@@ -5,6 +5,13 @@ use serde::{
 };
 use std::{collections::BTreeSet, fmt};
 
+/// Bounds for the compact Tori, Chu and Tenjiku records. Roots have at most
+/// 256 fixed-size cells, 1024 source bytes (at most 6144 JSON bytes), bounded
+/// rights/hands and integer metadata. A command has at most three landings.
+/// These include the record header and the comma before each command.
+pub(crate) const MAX_COMPACT_ROOT_BYTES: usize = 64 * 1024;
+pub(crate) const MAX_COMPACT_COMMAND_BYTES: usize = 256;
+
 /// One recorded input; effects and conclusions belong to authoritative replay.
 #[derive(Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]

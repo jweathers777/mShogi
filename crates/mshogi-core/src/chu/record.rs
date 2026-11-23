@@ -243,3 +243,49 @@ fn strict(text: &str, limit: usize) -> Result<(), RecordError> {
     }
     crate::record::reject_duplicates(text).map_err(|_| RecordError::Json)
 }
+
+#[cfg(test)]
+mod compact_bounds {
+    use super::*;
+    use crate::record::{MAX_COMPACT_COMMAND_BYTES, MAX_COMPACT_ROOT_BYTES};
+
+    #[test]
+    fn maximal_wire_fields_fit_compact_bounds() {
+        // Overfilled board/protection bound every admitted native root.
+        let mut wire = WireRecord::from_game(&Game::standard());
+        wire.root.state.root = RootMetadata::imported("\0".repeat(1024), u64::MAX).unwrap();
+        wire.root.protection.owner = Some(Side::Sente);
+        wire.root.protection.squares = Square::all().collect();
+        for base in Base::ALL {
+            wire.root.state.board = vec![
+                Some(Piece {
+                    side: Side::Sente,
+                    base,
+                    promoted: false
+                });
+                144
+            ];
+            assert!(serde_json::to_vec(&wire).unwrap().len() <= MAX_COMPACT_ROOT_BYTES);
+        }
+        let square = Square::new(12, 12).unwrap();
+        for command in [
+            GameCommand::Play {
+                action: Action {
+                    from: square,
+                    route: vec![square; 2],
+                    promote: false,
+                },
+            },
+            GameCommand::Resign,
+            GameCommand::OfferDraw,
+            GameCommand::AcceptDraw,
+            GameCommand::DeclineDraw,
+        ] {
+            let event = RecordedCommand {
+                actor: Side::Sente,
+                command,
+            };
+            assert!(serde_json::to_vec(&event).unwrap().len() < MAX_COMPACT_COMMAND_BYTES);
+        }
+    }
+}

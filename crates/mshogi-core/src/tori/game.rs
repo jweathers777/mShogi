@@ -7,9 +7,13 @@ use std::sync::atomic::{AtomicU64, Ordering};
 /// Total committed commands/events, including reserved concluding administration.
 pub const MAX_GAME_COMMANDS: usize = 1024;
 /// One atomic native event per accepted command; derived facts are in that event.
-/// The 512 KiB record bound normally ends a game first, at about 1,000 plies.
 pub const MAX_GAME_EVENTS: usize = 1024;
-const RESERVED_BYTES_PER_EVENT: usize = 4096;
+// Every supported command prefix, including its reserved resignation, fits.
+const _: () = assert!(
+    crate::record::MAX_COMPACT_ROOT_BYTES
+        + MAX_GAME_EVENTS * crate::record::MAX_COMPACT_COMMAND_BYTES
+        <= MAX_GAME_RECORD_BYTES
+);
 
 static NEXT_INSTANCE: AtomicU64 = AtomicU64::new(1);
 
@@ -253,7 +257,8 @@ pub struct GameUndo {
 pub struct GameRedo {
     instance: u64,
     branch: u64,
-    before: GameContext,
+    before_node: u64,
+    after_node: u64,
     actor: Side,
     command: GameCommand,
     used: bool,
@@ -264,8 +269,6 @@ pub struct Game {
     pub(super) root: StructuralState,
     local: LocalPosition,
     pub(super) events: Vec<GameEvent>,
-    /// Cumulative compact encoded event lengths: entry i covers events[..=i].
-    event_bytes: Vec<usize>,
     keys: Vec<RepetitionKey>,
     /// Key digests, index-aligned with `keys`.
     digests: Vec<u64>,
@@ -321,11 +324,10 @@ impl Game {
             .try_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
             .map_err(|_| GameError::Capacity(Resource::Counter))?;
         let key = RepetitionKey::from_position(local.position());
-        Ok(Self {
+        let game = Self {
             root,
             local,
             events: vec![],
-            event_bytes: vec![],
             digests: vec![key.digest()],
             positions: HashMap::from([(key.digest(), vec![0])]),
             keys: vec![key],
@@ -339,7 +341,15 @@ impl Game {
             },
             node: 0,
             branch: 0,
-        })
+        };
+        if record::encode(&game)
+            .map_err(|_| GameError::Capacity(Resource::EncodedBytes))?
+            .len()
+            > crate::record::MAX_COMPACT_ROOT_BYTES
+        {
+            return Err(GameError::Capacity(Resource::EncodedBytes));
+        }
+        Ok(game)
     }
     /// Full standard game with empty known history and the standard root as occurrence1.
     pub fn standard() -> Self {
@@ -414,7 +424,6 @@ impl Game {
         let snapshot = self.event_prefix(count).map_err(|_| RecordError::Prefix)?;
         let mut prefix = self.transaction_copy();
         prefix.events.truncate(count);
-        prefix.event_bytes.truncate(count);
         prefix.snapshots.truncate(count);
         prefix.actions.truncate(snapshot.board_ply);
         prefix.keys.truncate(snapshot.board_ply + 1);
@@ -449,9 +458,10 @@ impl Game {
             events: self.events.len(),
         })
     }
-    /// Exact full encoded length from cached event lengths (MSH-204).
+    /// Exact size is computed only for an explicit diagnostic query.
     fn encoded_len(&self) -> Result<usize, GameError> {
-        record::encoded_len(self, self.event_bytes.last().copied().unwrap_or(0))
+        record::encode(self)
+            .map(|text| text.len())
             .map_err(|_| GameError::Capacity(Resource::EncodedBytes))
     }
     fn transaction_copy(&self) -> Self {
@@ -459,7 +469,6 @@ impl Game {
             root: self.root.clone(),
             local: self.local.clone(),
             events: self.events.clone(),
-            event_bytes: self.event_bytes.clone(),
             keys: self.keys.clone(),
             digests: self.digests.clone(),
             repeated: self.repeated,
@@ -486,14 +495,47 @@ impl Game {
         };
         Ok(copy)
     }
-    /// Atomic participant admission. Capacity is checked on a complete candidate before commit.
+    /// Atomic participant admission. Failed private changes restore the accepted prefix.
     pub fn submit(&mut self, request: GameRequest) -> Result<GameUndo, GameError> {
-        if request.expected != self.context() {
+        if request.expected.runtime != self.runtime
+            || request.expected.root != self.root
+            || request.expected.events != self.events
+        {
             return Err(GameError::StaleContext);
         }
         self.commit(request.actor, request.command, true)
     }
     fn commit(
+        &mut self,
+        actor: Side,
+        command: GameCommand,
+        new_branch: bool,
+    ) -> Result<GameUndo, GameError> {
+        let working = self.local.clone();
+        let local = std::mem::replace(&mut self.local, working);
+        let events = self.events.len();
+        let plies = self.actions.len();
+        let repeated = self.repeated;
+        let result = self.commit_inner(actor, command, new_branch);
+        if result.is_err() {
+            self.local = local;
+            self.events.truncate(events);
+            self.snapshots.truncate(events);
+            self.actions.truncate(plies);
+            while self.digests.len() > plies + 1 {
+                let digest = self.digests.pop().expect("appended key");
+                let known = self.positions.get_mut(&digest).expect("indexed key");
+                known.pop();
+                if known.is_empty() {
+                    self.positions.remove(&digest);
+                }
+            }
+            self.keys.truncate(plies + 1);
+            self.repeated = repeated;
+        }
+        result
+    }
+    fn commit_inner(
         &mut self,
         actor: Side,
         command: GameCommand,
@@ -507,7 +549,6 @@ impl Game {
             .branch
             .checked_add(u64::from(new_branch))
             .ok_or(GameError::Capacity(Resource::Counter))?;
-        let mut candidate = self.transaction_copy();
         let mut effects = None;
         let mut occurrences = self.occurrences().to_vec();
         let mut repetition = self.repetition().cloned();
@@ -530,8 +571,7 @@ impl Game {
                     return Err(GameError::ThirdOccurrence);
                 }
                 effects = Some(
-                    candidate
-                        .local
+                    self.local
                         .apply(action)
                         .map_err(|e| {
                             if e == ActionError::Capacity {
@@ -542,24 +582,23 @@ impl Game {
                         })?
                         .0,
                 );
-                candidate.actions.push(action);
-                let key = RepetitionKey::from_position(candidate.position());
+                self.actions.push(action);
+                let key = RepetitionKey::from_position(self.position());
                 let digest = key.digest();
-                candidate.digests.push(digest);
-                candidate
-                    .positions
+                self.digests.push(digest);
+                self.positions
                     .entry(digest)
                     .or_default()
-                    .push(candidate.keys.len());
-                candidate.keys.push(key);
-                occurrences = candidate.current_occurrences();
+                    .push(self.keys.len());
+                self.keys.push(key);
+                occurrences = self.current_occurrences();
                 if occurrences.len() >= 2 {
-                    let side = candidate.position().side_to_move();
-                    candidate.repeated[side as usize] = true;
+                    let side = self.position().side_to_move();
+                    self.repeated[side as usize] = true;
                 }
-                let local_choices = candidate.local.legal_actions();
-                let side = candidate.position().side_to_move();
-                let status = match (candidate.local.is_in_check(side), local_choices.is_empty()) {
+                let local_choices = self.local.legal_actions();
+                let side = self.position().side_to_move();
+                let status = match (self.local.is_in_check(side), local_choices.is_empty()) {
                     (true, true) => LocalStatus::Checkmate,
                     (false, true) => LocalStatus::QuietNoAction,
                     (true, false) => LocalStatus::Check,
@@ -568,7 +607,7 @@ impl Game {
                 conclusion = board_conclusion(status, side);
                 repetition = None;
                 if conclusion.is_none() {
-                    repetition = candidate.third_occurrences(&local_choices);
+                    repetition = self.third_occurrences(&local_choices);
                     if repetition
                         .as_ref()
                         .is_some_and(|r| r.forces_loss(&local_choices))
@@ -588,7 +627,7 @@ impl Game {
         }
         let event = GameEvent {
             index: self.events.len(),
-            board_ply: candidate.actions.len(),
+            board_ply: self.actions.len(),
             actor,
             command,
             effects,
@@ -596,16 +635,11 @@ impl Game {
             conclusion,
         };
         debug_assert!(event.occurrences.len() <= 2, "third occurrence admitted");
-        let event_len =
-            record::event_len(&event).map_err(|_| GameError::Capacity(Resource::EncodedBytes))?;
-        candidate
-            .event_bytes
-            .push(self.event_bytes.last().copied().unwrap_or(0) + event_len);
-        candidate.events.push(event.clone());
-        candidate.snapshots.push(HistorySnapshot {
-            state: candidate.position().state().clone(),
-            event_count: candidate.events.len(),
-            board_ply: candidate.actions.len(),
+        self.events.push(event.clone());
+        self.snapshots.push(HistorySnapshot {
+            state: self.position().state().clone(),
+            event_count: self.events.len(),
+            board_ply: self.actions.len(),
             occurrences: event.occurrences.clone(),
             repetition,
             conclusion,
@@ -614,25 +648,17 @@ impl Game {
             GameCommand::Play { .. } if conclusion.is_none() => 1,
             _ => 0,
         };
-        let bytes = candidate.encoded_len()?;
-        check_capacity(
-            CapacityUsage {
-                encoded_bytes: bytes,
-                events: candidate.events.len(),
-            },
-            remaining,
-        )?;
-        candidate.runtime.revision = revision;
-        candidate.node = revision;
-        candidate.branch = branch;
+        check_capacity(self.events.len(), remaining)?;
         let undo = GameUndo {
             instance: self.runtime.instance,
             before_node: self.node,
             after_node: revision,
-            before_len: self.events.len(),
+            before_len: self.events.len() - 1,
             used: false,
         };
-        *self = candidate;
+        self.runtime.revision = revision;
+        self.node = revision;
+        self.branch = branch;
         Ok(undo)
     }
     fn current_occurrences(&self) -> Vec<usize> {
@@ -706,7 +732,6 @@ impl Game {
         let last = self.events.last().expect("undo post-state").clone();
         let before = self.event_prefix(undo.before_len)?;
         self.events.truncate(undo.before_len);
-        self.event_bytes.truncate(undo.before_len);
         self.snapshots.truncate(undo.before_len);
         self.actions.truncate(before.board_ply);
         self.keys.truncate(before.board_ply + 1);
@@ -720,7 +745,8 @@ impl Game {
         Ok(GameRedo {
             instance: self.runtime.instance,
             branch: self.branch,
-            before: self.context(),
+            before_node: self.node,
+            after_node: undo.after_node,
             actor: last.actor,
             command: last.command,
             used: false,
@@ -731,11 +757,13 @@ impl Game {
         if redo.used
             || redo.instance != self.runtime.instance
             || redo.branch != self.branch
-            || !redo.before.same_semantics(&self.context())
+            || redo.before_node != self.node
         {
             return Err(GameError::InvalidToken);
         }
-        let undo = self.commit(redo.actor, redo.command, false)?;
+        let mut undo = self.commit(redo.actor, redo.command, false)?;
+        self.node = redo.after_node;
+        undo.after_node = self.node;
         redo.used = true;
         Ok(undo)
     }
@@ -750,12 +778,9 @@ fn board_conclusion(status: LocalStatus, side: Side) -> Option<Conclusion> {
     }
 }
 
-fn check_capacity(usage: CapacityUsage, reserve: usize) -> Result<(), GameError> {
-    if usage.events > MAX_GAME_EVENTS - reserve || usage.events > MAX_GAME_COMMANDS - reserve {
+fn check_capacity(events: usize, reserve: usize) -> Result<(), GameError> {
+    if events + reserve > MAX_GAME_EVENTS {
         return Err(GameError::Capacity(Resource::Events));
-    }
-    if usage.encoded_bytes > MAX_GAME_RECORD_BYTES - reserve * RESERVED_BYTES_PER_EVENT {
-        return Err(GameError::Capacity(Resource::EncodedBytes));
     }
     Ok(())
 }
@@ -764,55 +789,40 @@ fn check_capacity(usage: CapacityUsage, reserve: usize) -> Result<(), GameError>
 mod capacity_tests {
     use super::*;
     #[test]
-    fn exact_production_capacity_and_reservation_policy_boundaries() {
+    fn event_limit_includes_reserved_resignation() {
         for reserve in 0..=1 {
-            let max = CapacityUsage {
-                encoded_bytes: MAX_GAME_RECORD_BYTES - reserve * RESERVED_BYTES_PER_EVENT,
-                events: MAX_GAME_EVENTS - reserve,
-            };
-            assert_eq!(check_capacity(max, reserve), Ok(()));
-            for resource in [Resource::EncodedBytes, Resource::Events] {
-                let mut next = max;
-                match resource {
-                    Resource::EncodedBytes => next.encoded_bytes += 1,
-                    Resource::Events => next.events += 1,
-                    _ => unreachable!(),
-                }
-                assert_eq!(
-                    check_capacity(next, reserve),
-                    Err(GameError::Capacity(resource))
-                );
-            }
+            assert_eq!(check_capacity(MAX_GAME_EVENTS - reserve, reserve), Ok(()));
+            assert_eq!(
+                check_capacity(MAX_GAME_EVENTS - reserve + 1, reserve),
+                Err(GameError::Capacity(Resource::Events))
+            );
         }
     }
 }
+
 #[cfg(test)]
-mod reservation_bound_test {
+mod rollback_tests {
     use super::*;
+
     #[test]
-    fn constructed_metadata_upper_bound_proves_each_reserved_nonboard_event_fits() {
-        // A conservative bound, not a reachable game: maximal indices, and the
-        // most occurrences a key can have (two; a third is refused, T06).
-        {
-            let command = GameCommand::Resign;
-            let event = GameEvent {
-                index: MAX_GAME_EVENTS - 1,
-                board_ply: MAX_GAME_COMMANDS,
-                actor: Side::Sente,
-                command,
-                effects: None,
-                occurrences: vec![MAX_GAME_COMMANDS - 2, MAX_GAME_COMMANDS],
-                conclusion: Some(Conclusion::Resignation {
-                    winner: Side::Sente,
-                }),
-            };
-            let bytes = serde_json::to_vec(&event).unwrap().len();
-            // Extra256 conservatively covers comma and changed current nullable
-            // conclusion fields. Root/current board do not change.
-            assert!(
-                bytes + 256 <= RESERVED_BYTES_PER_EVENT,
-                "reserved metadata bound {bytes}"
-            );
-        }
+    fn late_event_limit_refusal_restores_all_private_state() {
+        let mut game = Game::standard();
+        let action = game.legal_actions()[0];
+        game.commit(Side::Sente, GameCommand::Play { action }, true)
+            .unwrap();
+        // Inject exhaustion after a real accepted prefix. The next move must
+        // roll back local caches and all appended history/index data.
+        game.events.resize(MAX_GAME_EVENTS, game.events[0].clone());
+        game.snapshots
+            .resize(MAX_GAME_EVENTS, game.snapshots[0].clone());
+        let before = format!("{game:?}");
+        let action = game.legal_actions()[0];
+        let error = game.commit(
+            game.position().side_to_move(),
+            GameCommand::Play { action },
+            true,
+        );
+        assert!(matches!(error, Err(GameError::Capacity(Resource::Events))));
+        assert_eq!(format!("{game:?}"), before);
     }
 }

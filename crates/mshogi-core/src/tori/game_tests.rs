@@ -697,16 +697,12 @@ fn choose_live(g: &Game, seed: &mut u64) -> Action {
     chosen.expect("live continuation")
 }
 #[test]
-fn cached_encoded_length_equals_full_encoding_after_every_operation() {
-    // MSH-204: admission computes encoded bytes from cached event lengths
-    // instead of encoding the history again. Compare with the real encoding
-    // after plays (captures, drops, promotions), undo, redo, prefixes,
-    // repetition obligations and unscored stops on seeded random games.
+fn complete_records_remain_saveable_after_every_operation() {
+    // Exercise commands, undo, redo and prefixes with the event-count bound.
     let exact = |g: &Game| {
-        assert_eq!(
-            g.capacity_usage().unwrap().encoded_bytes,
-            record::encode(g).unwrap().len()
-        );
+        let saved = GameRecord::from_game(g).unwrap();
+        assert!(saved.to_json().len() <= MAX_GAME_RECORD_BYTES);
+        assert_eq!(saved.to_json(), record::encode(g).unwrap());
     };
     for seed in 1..=6u64 {
         let mut state = seed.wrapping_mul(0x9E37_79B9_7F4A_7C15) | 1;

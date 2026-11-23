@@ -284,24 +284,6 @@ impl WireRecord {
 pub(super) fn encode(game: &Game) -> Result<String, RecordError> {
     serde_json::to_string(&WireRecord::from_game(game)).map_err(|_| RecordError::Json)
 }
-/// Exact length of [`encode`] without encoding the history again (MSH-204).
-/// Compact JSON writes the event list as `[e1,e2,...]`, so the length is the
-/// record with an empty list plus each event's own encoding and the commas.
-pub(super) fn encoded_len(game: &Game, event_bytes: usize) -> Result<usize, RecordError> {
-    let empty = serde_json::to_vec(&WireRecord::without_events(game))
-        .map_err(|_| RecordError::Json)?
-        .len();
-    Ok(empty + event_bytes + game.events.len().saturating_sub(1))
-}
-/// Compact encoded length of one event inside the record.
-pub(super) fn event_len(event: &GameEvent) -> Result<usize, RecordError> {
-    serde_json::to_vec(&RecordedCommand {
-        actor: event.actor,
-        command: event.command,
-    })
-    .map(|v| v.len())
-    .map_err(|_| RecordError::Json)
-}
 impl GameRecord {
     /// Encode all accepted history without truncation. Admission guarantees this bound.
     pub fn from_game(game: &Game) -> Result<Self, RecordError> {
@@ -626,4 +608,55 @@ fn strict(text: &str, limit: usize) -> Result<(), RecordError> {
         return Err(RecordError::Capacity);
     }
     crate::record::reject_duplicates(text).map_err(|_| RecordError::Json)
+}
+
+#[cfg(test)]
+mod compact_bounds {
+    use super::*;
+    use crate::record::{MAX_COMPACT_COMMAND_BYTES, MAX_COMPACT_ROOT_BYTES};
+
+    #[test]
+    fn maximal_wire_fields_fit_compact_bounds() {
+        // Deliberately overfill material to bound every structurally valid root.
+        let mut wire = WireRecord::without_events(&Game::standard());
+        wire.root.root_kind = RootKind::Imported;
+        wire.root.source = Some("\0".repeat(1024));
+        wire.root.declared_completed_plies = u64::MAX;
+        wire.root.declared_total_plies = u64::MAX;
+        wire.root.hands = [[u8::MAX; 6]; 2];
+        for face in Face::ALL {
+            wire.root.board = Square::all()
+                .map(|square| Placed {
+                    square,
+                    piece: Piece {
+                        side: Side::Sente,
+                        face,
+                    },
+                })
+                .collect();
+            assert!(serde_json::to_vec(&wire).unwrap().len() <= MAX_COMPACT_ROOT_BYTES);
+            for command in [
+                GameCommand::Play {
+                    action: Action::Move {
+                        from: Square::new(7, 7).unwrap(),
+                        to: Square::new(7, 7).unwrap(),
+                        result_face: face,
+                    },
+                },
+                GameCommand::Play {
+                    action: Action::Drop {
+                        face,
+                        to: Square::new(7, 7).unwrap(),
+                    },
+                },
+                GameCommand::Resign,
+            ] {
+                let event = RecordedCommand {
+                    actor: Side::Sente,
+                    command,
+                };
+                assert!(serde_json::to_vec(&event).unwrap().len() < MAX_COMPACT_COMMAND_BYTES);
+            }
+        }
+    }
 }

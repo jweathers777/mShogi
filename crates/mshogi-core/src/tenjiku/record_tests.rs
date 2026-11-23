@@ -156,7 +156,7 @@ fn oversized_native_input_and_missing_nullable_root_field_refuse() {
 }
 
 #[test]
-fn cached_event_size_equals_actual_encoding_for_board_controls_and_reversal() {
+fn complete_records_fit_after_board_controls_and_reversal() {
     for profile in Profile::ALL {
         let square = |file, rank| Square::new(file, rank).unwrap();
         let pieces = [
@@ -200,7 +200,7 @@ fn cached_event_size_equals_actual_encoding_for_board_controls_and_reversal() {
             (Side::Sente, GameCommand::Resign),
         ];
         let mut undos = vec![];
-        assert_eq!(encoded_size(&game).unwrap(), encode(&game).unwrap().len());
+        assert!(GameRecord::from_game(&game).unwrap().to_json().len() <= MAX_GAME_RECORD_BYTES);
         for (actor, command) in commands {
             undos.push(
                 game.submit(GameRequest {
@@ -210,11 +210,11 @@ fn cached_event_size_equals_actual_encoding_for_board_controls_and_reversal() {
                 })
                 .unwrap(),
             );
-            assert_eq!(encoded_size(&game).unwrap(), encode(&game).unwrap().len());
+            assert!(GameRecord::from_game(&game).unwrap().to_json().len() <= MAX_GAME_RECORD_BYTES);
         }
         for undo in undos.iter_mut().rev() {
             game.undo(undo).unwrap();
-            assert_eq!(encoded_size(&game).unwrap(), encode(&game).unwrap().len());
+            assert!(GameRecord::from_game(&game).unwrap().to_json().len() <= MAX_GAME_RECORD_BYTES);
         }
     }
 }

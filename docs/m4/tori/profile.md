@@ -223,8 +223,9 @@ indices, occurrence ledger, obligation, conclusion and incremental caches exactl
 Undo/history/reopen cannot revive retired execution identities. Saved observations
 retain exact target history, purpose, limits, native score perspective and proof
 provenance where relevant; they are historical data, not pending work. Capacity
-admission precedes every commit with actual encoded bytes and resignation
-reservation, preserving the existing complete-saveability guarantee.
+admission reserves a resignation event. Bounded compact root and command sizes
+prove that every supported event prefix fits the record byte limit, preserving
+the complete-saveability guarantee.
 
 ## T08 — notation and consumer boundaries (S)
 

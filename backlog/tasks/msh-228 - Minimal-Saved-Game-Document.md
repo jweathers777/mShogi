@@ -1,11 +1,11 @@
 ---
 id: MSH-228
 title: Minimal Saved Game Document
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-22T16:43:00Z'
-updated_date: '2026-11-23T08:58:00Z'
+updated_date: '2026-11-23T08:59:00Z'
 labels:
   - desktop
   - refactor
@@ -72,3 +72,9 @@ Release follow-up: all six Chu subprocess tests passed in release (8.92 s), conf
 
 Final validation on 297be4b (same product implementation as persistence CI 6102123): cargo fmt --all -- --check PASS; cargo clippy --workspace --all-targets --locked -- -D warnings PASS; desktop-session all-target/all-feature clippy PASS. cargo test --workspace --locked --release -j 2 -- --test-threads=2 PASS (1227 passed, 11 ignored, no failures); all-feature desktop-session release suite PASS (247 passed). Frontend pinned Node24.19.0: Vitest 609 passed, TypeScript PASS. Python GUI observers 129 passed. Persistence CI Linux/macOS/Windows PASS (45139767465); routine Rust/frontend CI PASS (45139766446). Debug workspace run FAILED in four existing Chu watchdog tests, tracked in MSH-199; the same six-test Chu suite passes in release. No rules/search strength changes, no SPRT needed. Packaged GUI checks were not run (not a release). Fresh-agent reviews completed with all findings fixed. Logs: gs://mshogi-experiments-216675633801/runs/msh-228/ (60-day lifecycle); local Mac with two build jobs/test threads, no GCP Batch compute or VMs, storage-only cost. Final line counts: game_document.rs 1175 -> 356; native_game.rs 1290 -> 931. Integration next, then MSH-225 (Chess Document and Session Fit); MSH-229 remains the audit follow-up.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Integrated into main at 78ad550. Shared documents now hold only native record, human side and settings; Open reuses one validated replay, and Take back/Undo discard removed commands. Engine results and Xiangqi evidence stay in bounded session memory. Fixtures, consumers and design updated; about 6000 net lines removed. Fresh review findings fixed. Release workspace: 1227 passed, 11 ignored; all-feature session: 247 passed; frontend: 609 passed; Python observers: 129 passed; fmt, clippy and TypeScript passed; persistence CI passed on Linux/macOS/Windows. Debug Chu watchdog failures remain tracked in MSH-199. Logs archived under gs://mshogi-experiments-216675633801/runs/msh-228/. Next: MSH-225 (Chess Document and Session Fit), then MSH-229.
+<!-- SECTION:FINAL_SUMMARY:END -->

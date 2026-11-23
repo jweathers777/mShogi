@@ -60,18 +60,23 @@ fn real_subprocess_preserves_tori_context_supplies_native_action_and_roundtrips_
     assert_eq!(telemetry.completed_depth, 1);
     assert!(telemetry.score.is_some());
     let accepted_action = *action;
-    // Engine-turn admission commits the revalidated action exactly once. Decode
-    // then replays that journal; it never resumes pending execution.
+    // The engine's action is played into the saved game; engine results
+    // themselves are not saved (MSH-228).
     use mshogi_desktop_session::tori_document::ValidatedToriDocument;
     let document = ValidatedToriDocument::new(
         tori::GameRecord::from_game(&game).unwrap(),
         tori::Side::Sente,
     )
     .unwrap()
-    .with_observation(response.observation.clone(), &mut || false)
+    .with_command(
+        tori::Side::Gote,
+        tori::GameCommand::Play {
+            action: accepted_action,
+        },
+        &mut || false,
+    )
     .unwrap();
     let reopened = ValidatedToriDocument::decode(document.bytes(), &mut || false).unwrap();
-    assert_eq!(reopened.observations(), &[response.observation]);
     game.submit(tori::GameRequest {
         expected: game.context(),
         actor: tori::Side::Gote,
@@ -85,25 +90,4 @@ fn real_subprocess_preserves_tori_context_supplies_native_action_and_roundtrips_
         tori::GameRecord::from_game(&game).unwrap().to_json()
     );
     assert!(reopened.record().conclusion().is_none());
-    // Old accepted unsupported failures keep their meaning and remain readable
-    // after real execution is introduced. They never acquire move/score/outcome.
-    let mut old_context = request.context;
-    old_context.game = CanonicalRecord::tori(tori::GameRecord::from_game(&game).unwrap());
-    old_context.request_id += 1;
-    old_context.session_version += 1;
-    old_context.process_generation += 1;
-    let old_failure = ExecutionObservation::new(
-        old_context,
-        ExecutionResult::Failure {
-            failure: EngineFailure {
-                kind: FailureKind::UnsupportedMode,
-                message: "historical pre-MSH42 unsupported execution".into(),
-            },
-        },
-    );
-    let document = reopened
-        .with_observation(old_failure.clone(), &mut || false)
-        .unwrap();
-    let reopened = ValidatedToriDocument::decode(document.bytes(), &mut || false).unwrap();
-    assert_eq!(reopened.observations().last(), Some(&old_failure));
 }

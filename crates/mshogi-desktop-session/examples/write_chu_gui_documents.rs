@@ -6,7 +6,7 @@
 mod roots;
 
 use mshogi_core::{chu as c, native::CanonicalRecord};
-use mshogi_desktop_session::chu_document::{ChuControl, ValidatedChuDocument};
+use mshogi_desktop_session::chu_document::ValidatedChuDocument;
 use mshogi_engine::{
     CHU_PLAY_LIMITS, ChuResult, ExecutionContext, ExecutionPurpose, ExecutionRequest,
     ExecutionResponse, ExecutionResult, PROTOCOL_VERSION,
@@ -249,70 +249,6 @@ fn actual_observation_at_limits(
     assert!(response.matches(&req));
     response.observation
 }
-fn capacity_document() -> (ValidatedChuDocument, Value) {
-    let baseline = document(&c::Game::standard(), c::Side::Sente);
-    // Assemble only our own trusted generated payload, not untrusted archive
-    // input. One strict native decode admits the entire candidate. No expected
-    // result, fake failure or copied telemetry replaces actual engine work.
-    let mut wire: Value = serde_json::from_slice(baseline.bytes()).unwrap();
-    let mut observations = vec![];
-    let mut controls = vec![];
-    for id in 1..=256 {
-        let observation = actual_observation_at_limits(
-            &baseline,
-            id,
-            mshogi_engine::WorkLimits {
-                time_ms: None,
-                depth: 1,
-                nodes: 0,
-            },
-        );
-        assert!(
-            matches!(&observation.result,ExecutionResult::Chu {result:ChuResult::Incomplete {telemetry}} if telemetry.score.is_none() && telemetry.nodes==0 && telemetry.principal_variation.is_empty())
-        );
-        controls.push(
-            serde_json::to_value(ChuControl::Observation {
-                index: observations.len(),
-            })
-            .unwrap(),
-        );
-        observations.push(serde_json::to_value(observation).unwrap());
-    }
-    wire["payload"]["controls"] = controls.into();
-    wire["payload"]["observations"] = observations.into();
-    wire["payload"]["retired_execution_floor"] = 256.into();
-    let d =
-        ValidatedChuDocument::decode(&serde_json::to_vec(&wire).unwrap(), &mut || false).unwrap();
-    assert_eq!(d.observations().len(), 256);
-    assert!(d.record().to_game().unwrap().events().is_empty());
-    replay(&d);
-    let before = d.bytes().to_vec();
-    let next = actual_observation_at_limits(
-        &d,
-        257,
-        mshogi_engine::WorkLimits {
-            time_ms: None,
-            depth: 1,
-            nodes: 0,
-        },
-    );
-    let error = d.with_observation(next, &mut || false).unwrap_err();
-    let fact = error.resource.expect("typed observation refusal");
-    assert_eq!(
-        fact.facts()[0].category,
-        mshogi_desktop_session::ResourceCategory::OrdinaryObservations
-    );
-    assert_eq!(fact.facts()[0].count, Some(257));
-    assert_eq!(fact.facts()[0].limit, Some(256));
-    assert_eq!(d.bytes(), before);
-    (
-        d,
-        json!({"root":"standard_start","observations":256,"native_events":0,
-        "engine":"mshogi.chu.full-width.v1","work_limits":{"depth":1,"nodes":0},
-        "expected":"A positive-budget normal analysis request refuses before committing a 257th observation, with typed observation capacity; Save remains available and Load does not reset the structural count.",
-        "limitation":"Historical actual zero-work observations only; neither pending execution nor completed scores/actions."}),
-    )
-}
 fn complete_standard_game() -> (ValidatedChuDocument, Value) {
     // Actual current depth1/512 deterministic engine on both sides, followed by
     // an explicit scripted participant resignation. This is a fully concluded
@@ -331,18 +267,15 @@ fn complete_standard_game() -> (ValidatedChuDocument, Value) {
         assert!(telemetry.nodes <= 512);
         let action = action.clone();
         let actor = d.record().to_game().unwrap().position().side_to_move();
-        turns.push(json!({"actor":actor,"action":action,"nodes":telemetry.nodes}));
-        d = d.with_observation(observation, &mut || false).unwrap();
+        turns.push(json!({"actor":actor,"action":action.clone(),"nodes":telemetry.nodes}));
+        // The engine's choice is played; engine results are not saved (MSH-228).
+        d = d
+            .with_command(actor, c::GameCommand::Play { action }, &mut || false)
+            .unwrap();
         assert!(d.record().to_game().unwrap().conclusion().is_none());
     }
     d = d
-        .with_control(
-            ChuControl::Native {
-                actor: c::Side::Sente,
-                command: c::GameCommand::Resign,
-            },
-            &mut || false,
-        )
+        .with_command(c::Side::Sente, c::GameCommand::Resign, &mut || false)
         .unwrap();
     let g = d.record().to_game().unwrap();
     assert_eq!(
@@ -353,7 +286,6 @@ fn complete_standard_game() -> (ValidatedChuDocument, Value) {
     );
     assert_eq!(g.position().accepted_plies(), 12);
     assert_eq!(g.events().len(), 13);
-    assert_eq!(d.observations().len(), 12);
     replay(&d);
     let metadata = json!({"root":"standard_start","engine":"mshogi.chu.full-width.v1","work_limits":{"depth":1,"nodes":512},
         "observed_turns":turns,"ending":"explicit_scripted_sente_resignation","conclusion":{"kind":"resignation","winner":"gote"},
@@ -390,7 +322,16 @@ fn complete_natural_engine_game() -> (ValidatedChuDocument, Value) {
     assert_eq!(telemetry.completed_depth, 1);
     assert_eq!(action.route.len(), 2);
     let actual_action = action.clone();
-    d = d.with_observation(choice, &mut || false).unwrap();
+    let actor = d.record().to_game().unwrap().position().side_to_move();
+    d = d
+        .with_command(
+            actor,
+            c::GameCommand::Play {
+                action: actual_action.clone(),
+            },
+            &mut || false,
+        )
+        .unwrap();
     let g = d.record().to_game().unwrap();
     assert_eq!(
         g.conclusion(),
@@ -426,9 +367,7 @@ fn complete_natural_engine_game() -> (ValidatedChuDocument, Value) {
     );
     assert_eq!(telemetry.nodes, 1);
     assert!(telemetry.principal_variation.is_empty());
-    d = d.with_observation(finished, &mut || false).unwrap();
     assert_eq!(d.record().to_game().unwrap().events().len(), 1);
-    assert_eq!(d.observations().len(), 2);
     replay(&d);
     (
         d,
@@ -448,14 +387,14 @@ fn main() {
     cases.push(("complete-resignation".into(), complete, metadata));
     let (complete, metadata) = complete_natural_engine_game();
     cases.push(("complete-royal-engine".into(), complete, metadata));
-    let (capacity, metadata) = capacity_document();
-    cases.push(("capacity256".into(), capacity, metadata));
     let mut manifest = vec![];
     for (name, d, metadata) in cases {
         let path = output.join(format!("chu-{name}.mshogi"));
         std::fs::write(&path, d.bytes()).unwrap();
         assert_eq!(std::fs::read(&path).unwrap(), d.bytes());
-        manifest.push(json!({"file":path.file_name().unwrap().to_str().unwrap(),"provenance":metadata,"usage":d.usage()}));
+        manifest.push(
+            json!({"file":path.file_name().unwrap().to_str().unwrap(),"provenance":metadata}),
+        );
         println!("{}", path.display());
     }
     std::fs::write(output.join("chu-native-fixtures.json"), serde_json::to_string_pretty(&json!({
@@ -634,11 +573,5 @@ mod tests {
                 winner: c::Side::Sente
             })
         );
-    }
-    #[test]
-    fn capacity_fixture_retains256_actual_unscored_observations_and_atomic257_refusal() {
-        let (d, _) = capacity_document();
-        assert_eq!(d.observations().len(), 256);
-        replay(&d);
     }
 }

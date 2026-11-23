@@ -106,10 +106,6 @@ fn decode(bytes: &[u8]) -> Result<crate::game_document::ValidatedGameDocument<Sh
     crate::game_document::ValidatedGameDocument::<Shogi>::decode(bytes, &mut || false)
         .map_err(|e| e.diagnostic)
 }
-/// The current document as a JSON value.
-fn document_value(c: &DesktopController) -> serde_json::Value {
-    serde_json::from_slice(c.session.shogi().unwrap().document.bytes()).unwrap()
-}
 fn record(c: &DesktopController) -> s::GameRecord {
     s::GameRecord::from_game(&c.session.shogi().as_ref().unwrap().game)
 }
@@ -124,23 +120,6 @@ fn run(context: ExecutionContext) -> ExecutionObservation {
     )
     .unwrap();
     decode_execution_observation(&bytes)
-}
-fn analyze(c: &mut DesktopController) -> ExecutionObservation {
-    send(
-        c,
-        SessionOperation::Analyze {
-            operation: AnalysisOperation::Moves {
-                depth: 1,
-                nodes: 1000,
-            },
-        },
-    )
-    .unwrap();
-    let context = c.session.shogi().unwrap().pending.clone().unwrap();
-    let response = run(context);
-    assert!(c.accept_observation(response.clone()));
-    settle(c);
-    response
 }
 #[test]
 fn canonical_fixture_roundtrips_preserve_native_root_history_and_all_outcomes() {
@@ -499,7 +478,7 @@ fn persisted_preferences_keep_exact_pending_execution_and_original_limits() {
     settle(&mut c);
     let file = path("settings");
     save(&mut c, &file);
-    let opened = open(&mut c, &file).unwrap();
+    open(&mut c, &file).unwrap();
     let state = c.session.shogi().unwrap();
     assert_eq!(state.document.settings(), &settings);
     fs::remove_file(file).unwrap();

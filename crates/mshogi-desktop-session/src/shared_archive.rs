@@ -392,7 +392,6 @@ impl DesktopController {
     pub(crate) fn runtime_floor(&self) -> u64 {
         [
             self.session.version,
-            self.session.archive_revision,
             self.session.next_request,
             self.session.selection_id,
         ]

@@ -4,7 +4,7 @@ title: Xiangqi Record Replay Speed
 status: To Do
 assignee: []
 created_date: '2026-11-22T15:18:00Z'
-updated_date: '2026-11-22T15:25:00Z'
+updated_date: '2026-11-23T11:09:00Z'
 labels:
   - core
   - performance
@@ -31,4 +31,6 @@ Found in MSH-226 (2026-11-22): replaying a native Xiangqi record costs about 0.6
 
 <!-- SECTION:NOTES:BEGIN -->
 Cause analysis (2026-11-22, code reading, not yet profiled): Game::submit (xiangqi/game.rs) (1) serializes the complete record to JSON on every command (GameRecord::encoded_candidate, only to check MAX_GAME_RECORD_BYTES), so replay is quadratic in game length; Tori removed the same cost in MSH-204 by caching per-event encoded lengths; (2) clones the whole game per command (transaction_copy: steps with before/after positions, events, commands, lineage), also linear per command; (3) runs assess_natural_win per board action. Expected order: (1) dominates (about 150 KB of JSON per command near 500 moves). Fix (1) the MSH-204 way first, then measure.
+
+MSH-229 inventory entries 5/9/10 identify this task as the existing Xiangqi implementation work for per-command full-record encoding and transaction/history copies. MSH-232 covers the separate Tori/Chu/Tenjiku resource-admission cuts; MSH-231 covers redundant record metadata. Preserve atomic native command admission and saved-game safety, and measure after the MSH-228/225 desktop simplification.
 <!-- SECTION:NOTES:END -->

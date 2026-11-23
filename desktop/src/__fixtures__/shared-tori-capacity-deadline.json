@@ -69,7 +69,6 @@
           "category": "validation_budget",
           "measurement": "candidate",
           "count": 15000,
-          "observations": null,
           "reserved": 0,
           "limit": 15000,
           "scope": "application",

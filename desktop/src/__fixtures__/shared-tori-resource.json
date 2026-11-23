@@ -157,7 +157,6 @@
           "category": "encoded_document_bytes",
           "measurement": "candidate",
           "count": 16777217,
-          "observations": null,
           "reserved": 0,
           "limit": 16777216,
           "scope": "application",

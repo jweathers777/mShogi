@@ -218,7 +218,7 @@ fn reopened_all_game_identities_exceed_runtime_only_revisions_without_spending_s
             .unwrap();
         settle(&mut c, &receipt);
         let canonical = c.shared_snapshot().context;
-        let persisted = c.session.archive_revision;
+        let persisted = c.session.document_revision;
         c.session.revision += 1000;
         let path = std::env::temp_dir().join(format!(
             "msh118-r3-monotonic-{}-{index}.mshogi",
@@ -226,7 +226,7 @@ fn reopened_all_game_identities_exceed_runtime_only_revisions_without_spending_s
         ));
         let id = c.queue_shared_save(path.clone()).unwrap();
         file(&mut c, id);
-        assert_eq!(c.session.archive_revision, persisted);
+        assert_eq!(c.session.document_revision, persisted);
         c.session.revision += 1000;
         let old_revision = c.session.revision;
         let id = c

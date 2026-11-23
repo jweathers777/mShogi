@@ -8,9 +8,8 @@ import chess from "../__fixtures__/shared-chess-standard.json";
 import shogi from "../__fixtures__/shared-shogi-standard.json";
 import xiangqi from "../__fixtures__/shared-xiangqi-standard.json";
 afterEach(cleanup);
-const base: ResourceFact = { category: "controls", measurement: "candidate", count: 8192, observations: null, reserved: 1, limit: 8192, scope: "shogi", unit: "controls" };
-// Literal diagnostics from native archive admission. These deliberately mention
-// other supported bounds: the typed facts alone establish the refused resource.
+const base: ResourceFact = { category: "native_events", measurement: "candidate", count: 8192, reserved: 1, limit: 8192, scope: "shogi", unit: "events" };
+// Ambiguous diagnostic text must not override the typed resource facts.
 const diagnostic = "Application capacity: The archive retains256 total ordinary/exact observations and8192 controls including stop/close.";
 function paused(game: "chess" | "shogi" | "xiangqi", facts: ResourceFact[] | null = [base]): GameSnapshot {
   const native = structuredClone(game === "chess" ? chess : game === "shogi" ? shogi : xiangqi);
@@ -18,10 +17,10 @@ function paused(game: "chess" | "shogi" | "xiangqi", facts: ResourceFact[] | nul
 }
 function notice(snapshot: GameSnapshot, error = "") { return render(<NativeRecovery snapshot={snapshot} error={error} disabled={false} command={vi.fn()} />); }
 for (const game of ["chess", "shogi", "xiangqi"] as const) {
-  it(`${game} shows genuine control-only exhaustion with zero observations and no fictional256`, () => {
+  it(`${game} shows native event exhaustion with zero observations and no fictional256`, () => {
     const snapshot = paused(game); expect(snapshot.observations).toHaveLength(0); notice(snapshot);
     const message = screen.getByRole("alert", { name: "Document capacity" });
-    expect(message.textContent).toContain("control capacity"); expect(message.textContent).toContain("current game can still be saved");
+    expect(message.textContent).toContain("native event capacity"); expect(message.textContent).toContain("current game can still be saved");
     expect(message.textContent).not.toContain("256"); expect(message.textContent).not.toContain("Engine connection failed");
     expect(message.textContent).toContain("Saving and reopening does not reset this limit");
     expect(document.activeElement).toBe(message);
@@ -30,7 +29,7 @@ for (const game of ["chess", "shogi", "xiangqi"] as const) {
     notice(paused(game, null));
     expect(screen.getByRole("alert").textContent).toContain("Your current game can still be saved");
     expect(screen.getByRole("alert").textContent).not.toContain("256");
-    expect(screen.getByRole("alert").textContent).not.toContain("control capacity");
+    expect(screen.getByRole("alert").textContent).not.toContain("native event capacity");
   });
   it(`${game} keeps independent failed Save feedback visible alongside capacity`, () => {
     const snapshot = paused(game); snapshot.document.dirty = true; snapshot.io = { id: 2, phase: "failed", message: "Permission denied", resource: null };
@@ -39,15 +38,6 @@ for (const game of ["chess", "shogi", "xiangqi"] as const) {
     expect(snapshot.document.dirty).toBe(true);
   });
 }
-it.each([[256, 0], [255, 1], [0, 256]])("reports actual combined Xiangqi ordinary/exact accounting %s/%s", (ordinary, exact) => {
-  notice(paused("xiangqi", [{ ...base, category: "combined_observations", count: ordinary + exact, measurement: "accepted", observations: { ordinary, exact }, limit: 256, unit: "observations" }]));
-  expect(screen.getByRole("alert").textContent).toContain("limit of 256 recorded engine observations");
-  expect(screen.getByRole("alert").textContent).toContain(`${ordinary} ordinary and ${exact} exact`);
-});
-it("does not interpret257 candidate observations as accepted history", () => {
-  notice(paused("shogi", [{ ...base, category: "ordinary_observations", count: 257, limit: 256, unit: "observations" }]));
-  expect(screen.getByRole("alert").textContent).toContain("would exceed"); expect(screen.getByRole("alert").textContent).not.toContain("257 recorded");
-});
 it.each(["encoded_document_bytes", "native_events", "replay_work", "identity_headroom"] as const)("preserves %s as an independent resource", (category) => {
   notice(paused("xiangqi", [{ ...base, category }]));
   expect(screen.getByRole("alert").textContent).not.toContain("256 recorded"); expect(screen.getByRole("alert").textContent).not.toContain("control capacity");
@@ -70,5 +60,5 @@ it("reports capacity checking separately from search progress and no alarm when 
   snapshot.capacity = { id: 8, status: "available", message: null, resource: null }; rerender(<NativeRecovery snapshot={snapshot} error="" disabled={false} command={vi.fn()} />); expect(screen.queryByLabelText("Document capacity")).toBeNull();
 });
 it("uses authoritative capacity instead of duplicating its failed command as an unrelated connection error", () => {
-  notice(paused("xiangqi"), diagnostic); expect(screen.getAllByRole("alert")).toHaveLength(1); expect(screen.getByRole("alert").textContent).toContain("control capacity");
+  notice(paused("xiangqi"), diagnostic); expect(screen.getAllByRole("alert")).toHaveLength(1); expect(screen.getByRole("alert").textContent).toContain("native event capacity");
 });

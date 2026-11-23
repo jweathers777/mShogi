@@ -23,6 +23,6 @@ it("distinguishes saved exact proof, positive witness, unknown, cancellation and
  expect(screen.getByText("Cancelled · Unknown. No conclusion was established.")).toBeTruthy();
  expect(screen.getByText("Analysis failed. No conclusion was established.")).toBeTruthy();
  expect(screen.getByText("Historical results for their recorded positions. They do not change your current game.")).toBeTruthy();
- expect(screen.getByText("Saved analysis · event 5")).toBeTruthy();expect(screen.getByText("Possible route · not played")).toBeTruthy();
+ expect(screen.getByText("Session analysis · event 5")).toBeTruthy();expect(screen.getByText("Possible route · not played")).toBeTruthy();
  expect(JSON.stringify(snapshot)).toBe(original);
 });

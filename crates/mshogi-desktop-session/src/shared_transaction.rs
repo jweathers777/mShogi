@@ -83,7 +83,6 @@ impl DesktopController {
             if durable {
                 self.session.document_revision += 1;
             }
-            self.session.archive_revision = self.session.revision;
             Ok(())
         };
         self.session.capacity = CapacityState {

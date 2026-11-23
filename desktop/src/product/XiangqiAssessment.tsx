@@ -18,9 +18,9 @@ export function XiangqiAssessment({ snapshot }: { snapshot: XiangqiSnapshot }) {
       : assessment.kind === "proven_natural_win" ? "Fast assessment found a possible winning continuation. This is not a forced win."
       : assessment.kind === "failure" ? "Assessment failed. No game result is implied."
       : "No proof is available from ordinary search. Unknown does not establish a win or draw."}</p>
-    {snapshot.xiangqi.exact_observations.length > 0 && <details><summary>Saved exact reports ({snapshot.xiangqi.exact_observations.length})</summary>
+    {snapshot.xiangqi.exact_observations.length > 0 && <details><summary>Session exact reports ({snapshot.xiangqi.exact_observations.length})</summary>
       <p>Historical results for their recorded positions. They do not change your current game.</p>
-      {snapshot.xiangqi.exact_observations.map((evidence, index) => <article key={index}><h4>Saved analysis · event {evidence.event_count}</h4>
+      {snapshot.xiangqi.exact_observations.map((evidence, index) => <article key={index}><h4>Session analysis · event {evidence.event_count}</h4>
         <p>{savedMeaning(evidence)}</p><p>{evidence.report.work.states.toLocaleString()} positions · {evidence.report.work.transitions.toLocaleString()} transitions</p>
         {evidence.report.verdict.kind === "natural_win" && <details><summary>Possible route · not played</summary><p>{evidence.report.verdict.witness.length ? evidence.report.verdict.witness.join(" · ") : "The target already has a natural board win."}</p></details>}
       </article>)}

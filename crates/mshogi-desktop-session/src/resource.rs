@@ -4,7 +4,7 @@
 //! supplies facts only when it knows them; unknown and simultaneous causes remain
 //! representable without inventing a count or a game outcome.
 
-use serde::{Deserialize, Deserializer, Serialize};
+use serde::Serialize;
 
 /// Maximum number of distinct resource facts in one host response.
 pub const MAX_RESOURCE_FACTS: usize = 16;
@@ -12,25 +12,15 @@ pub const MAX_RESOURCE_FACTS: usize = 16;
 pub const MAX_RESOURCE_DIAGNOSTIC_BYTES: usize = 4096;
 
 /// Resource measured by a native admission or file-validation check.
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ResourceCategory {
     /// Actual encoded desktop document size.
     EncodedDocumentBytes,
-    /// Retained encoded execution observations, including reserved response space.
-    EncodedObservationBytes,
     /// Actual encoded authoritative native record size.
     CanonicalRecordBytes,
     /// Native events, including events that do not advance board ply.
     NativeEvents,
-    /// Accepted desktop control entries.
-    Controls,
-    /// Ordinary engine or move-analysis observations.
-    OrdinaryObservations,
-    /// Explicit exact-analysis observations.
-    ExactObservations,
-    /// A shared limit covering ordinary and exact observations together.
-    CombinedObservations,
     /// Native replay or validation work units.
     ReplayWork,
     /// Monotonic execution, request, session or document identity space.
@@ -42,7 +32,7 @@ pub enum ResourceCategory {
 }
 
 /// Native ownership of a resource fact, when its check establishes a scope.
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ResourceScope {
     /// A common application or document resource.
@@ -62,17 +52,13 @@ pub enum ResourceScope {
 }
 
 /// Unit of a count or allowance; no conversion is implied between units.
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ResourceUnit {
     /// Encoded UTF-8 bytes.
     Bytes,
     /// Native event entries.
     Events,
-    /// Desktop control entries.
-    Controls,
-    /// Recorded observations.
-    Observations,
     /// Native implementation-defined replay work units.
     ReplayUnits,
     /// Monotonic identity increments.
@@ -83,7 +69,7 @@ pub enum ResourceUnit {
 
 /// Which state the measured count describes. A rejected candidate's usage must
 /// never be presented as evidence already retained in the accepted document.
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ResourceMeasurement {
     /// The current complete accepted document, before starting more work.
@@ -94,20 +80,8 @@ pub enum ResourceMeasurement {
     Unknown,
 }
 
-/// Native components of the one shared ordinary/exact observation allowance.
-/// Components explain total usage; neither is a separate exhausted allowance.
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
-pub struct ObservationCounts {
-    /// Ordinary engine-turn and move-analysis observations in the measured state.
-    pub ordinary: u64,
-    /// Explicit exact-analysis observations in the measured state.
-    pub exact: u64,
-}
-
 /// One native-measured resource fact. Missing values mean unknown, never zero.
-#[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct ResourceFact {
     /// Authoritative category, independent of the diagnostic wording.
     pub category: ResourceCategory,
@@ -115,8 +89,6 @@ pub struct ResourceFact {
     pub measurement: ResourceMeasurement,
     /// Measured usage in that state, excluding the separately recorded reserve.
     pub count: Option<u64>,
-    /// Constituent usage when ordinary and exact observations share one limit.
-    pub observations: Option<ObservationCounts>,
     /// Additional admission allowance for requested work or mandatory stop/close.
     pub reserved: Option<u64>,
     /// Established supported limit in the same units.
@@ -134,7 +106,6 @@ impl ResourceFact {
             category,
             measurement: ResourceMeasurement::Candidate,
             count: Some(count),
-            observations: None,
             reserved: None,
             limit: Some(limit),
             scope: None,
@@ -148,7 +119,6 @@ impl ResourceFact {
             category: ResourceCategory::Unknown,
             measurement: ResourceMeasurement::Unknown,
             count: None,
-            observations: None,
             reserved: None,
             limit: None,
             scope: None,
@@ -179,17 +149,10 @@ impl ResourceFact {
         self.measurement = measurement;
         self
     }
-
-    /// Explain combined usage without inventing two separately exhausted limits.
-    pub fn with_observations(mut self, ordinary: u64, exact: u64) -> Self {
-        self.observations = Some(ObservationCounts { ordinary, exact });
-        self
-    }
 }
 
 /// Bounded native capacity refusal; this is neither an illegal move nor outcome.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
-#[serde(deny_unknown_fields)]
 pub struct ResourceFailure {
     facts: Vec<ResourceFact>,
     /// Number of further facts omitted only to bound host metadata.
@@ -257,40 +220,14 @@ impl ResourceFailure {
     }
 }
 
-impl<'de> Deserialize<'de> for ResourceFailure {
-    fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
-        #[derive(Deserialize)]
-        #[serde(deny_unknown_fields)]
-        struct Wire {
-            facts: Vec<ResourceFact>,
-            omitted_facts: u64,
-            diagnostic: String,
-        }
-        let wire = Wire::deserialize(deserializer)?;
-        if wire.facts.is_empty() || wire.facts.len() > MAX_RESOURCE_FACTS {
-            return Err(serde::de::Error::custom("invalid resource fact count"));
-        }
-        if wire.diagnostic.len() > MAX_RESOURCE_DIAGNOSTIC_BYTES {
-            return Err(serde::de::Error::custom(
-                "resource diagnostic exceeds limit",
-            ));
-        }
-        Ok(Self {
-            facts: wire.facts,
-            omitted_facts: wire.omitted_facts,
-            diagnostic: wire.diagnostic,
-        })
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
-    fn rejected_candidate_count_is_distinct_from_accepted_observation_count() {
-        let candidate = ResourceFact::measured(ResourceCategory::CombinedObservations, 257, 256);
-        let accepted = ResourceFact::measured(ResourceCategory::CombinedObservations, 256, 256)
+    fn rejected_candidate_count_is_distinct_from_accepted_count() {
+        let candidate = ResourceFact::measured(ResourceCategory::NativeEvents, 257, 256);
+        let accepted = ResourceFact::measured(ResourceCategory::NativeEvents, 256, 256)
             .with_measurement(ResourceMeasurement::Accepted);
         assert_eq!(candidate.measurement, ResourceMeasurement::Candidate);
         assert_eq!(accepted.measurement, ResourceMeasurement::Accepted);
@@ -302,69 +239,6 @@ mod tests {
             ResourceFact::unknown().measurement,
             ResourceMeasurement::Unknown
         );
-    }
-
-    #[test]
-    fn combined_refusal_preserves_both_components_without_an_extra_cause() {
-        let fact = ResourceFact::measured(ResourceCategory::CombinedObservations, 257, 256)
-            .with_observations(1, 256);
-        let failure =
-            ResourceFailure::new(fact, "The complete candidate exceeds its shared allowance.");
-        assert_eq!(failure.facts().len(), 1);
-        let measured = &failure.facts()[0];
-        assert_eq!(measured.count, Some(257));
-        assert_eq!(
-            measured.observations,
-            Some(ObservationCounts {
-                ordinary: 1,
-                exact: 256
-            })
-        );
-        assert_eq!(
-            serde_json::from_str::<ResourceFailure>(&serde_json::to_string(&failure).unwrap())
-                .unwrap(),
-            failure
-        );
-    }
-
-    #[test]
-    fn control_refusal_does_not_claim_observations() {
-        for scope in [ResourceScope::Shogi, ResourceScope::Xiangqi] {
-            let failure = ResourceFailure::new(
-                ResourceFact::measured(ResourceCategory::Controls, 8191, 8192)
-                    .with_reserved(2)
-                    .with_scope(scope)
-                    .with_unit(ResourceUnit::Controls),
-                "capacity: 256 observations or 8192 controls",
-            );
-            assert_eq!(failure.facts().len(), 1);
-            assert_eq!(failure.facts()[0].category, ResourceCategory::Controls);
-            assert_eq!(failure.facts()[0].count, Some(8191));
-            assert_eq!(failure.facts()[0].reserved, Some(2));
-            let wire = serde_json::to_string(&failure).unwrap();
-            assert!(!wire.contains("combined_observations"));
-            assert_eq!(
-                serde_json::from_str::<ResourceFailure>(&wire).unwrap(),
-                failure
-            );
-        }
-    }
-
-    #[test]
-    fn combined_observation_counts_remain_distinct() {
-        let failure = ResourceFailure::multiple(
-            [
-                ResourceFact::measured(ResourceCategory::OrdinaryObservations, 1, 256),
-                ResourceFact::measured(ResourceCategory::ExactObservations, 256, 256),
-                ResourceFact::measured(ResourceCategory::CombinedObservations, 257, 256),
-            ],
-            "combined observation admission refused",
-        );
-        assert_eq!(failure.facts()[2].count, Some(257));
-        assert_eq!(failure.facts()[2].limit, Some(256));
-        assert_eq!(failure.facts()[0].count, Some(1));
-        assert_eq!(failure.facts()[1].count, Some(256));
-        assert_eq!(failure.omitted_facts(), 0);
     }
 
     #[test]
@@ -403,33 +277,9 @@ mod tests {
         );
         assert_eq!(failure.facts().len(), MAX_RESOURCE_FACTS);
         assert_eq!(failure.omitted_facts(), 2);
-        let wire = serde_json::to_string(&failure).unwrap();
-        assert_eq!(
-            serde_json::from_str::<ResourceFailure>(&wire).unwrap(),
-            failure
-        );
-    }
-
-    #[test]
-    fn deserialization_rejects_unbounded_unknown_and_duplicate_fields() {
-        let valid = serde_json::to_value(ResourceFailure::unknown("details")).unwrap();
-        let mut bad = valid.clone();
-        bad["diagnostic"] = "x".repeat(MAX_RESOURCE_DIAGNOSTIC_BYTES + 1).into();
-        assert!(serde_json::from_value::<ResourceFailure>(bad).is_err());
-        let mut bad = valid.clone();
-        bad["facts"] = serde_json::json!([]);
-        assert!(serde_json::from_value::<ResourceFailure>(bad).is_err());
-        let mut bad = valid.clone();
-        bad["facts"] = serde_json::json!(vec![ResourceFact::unknown(); MAX_RESOURCE_FACTS + 1]);
-        assert!(serde_json::from_value::<ResourceFailure>(bad).is_err());
-        let mut bad = valid;
-        bad["outcome"] = "draw".into();
-        assert!(serde_json::from_value::<ResourceFailure>(bad).is_err());
-        assert!(
-            serde_json::from_str::<ResourceFailure>(
-                r#"{"facts":[],"omitted_facts":0,"diagnostic":"a","diagnostic":"b"}"#
-            )
-            .is_err()
-        );
+        let wire = serde_json::to_value(&failure).unwrap();
+        assert_eq!(wire["facts"].as_array().unwrap().len(), MAX_RESOURCE_FACTS);
+        assert_eq!(wire["omitted_facts"], 2);
+        assert_eq!(wire["diagnostic"], failure.diagnostic());
     }
 }

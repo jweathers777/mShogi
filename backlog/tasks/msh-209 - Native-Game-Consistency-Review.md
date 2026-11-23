@@ -4,6 +4,7 @@ title: Native Game Consistency Review
 status: To Do
 assignee: []
 created_date: '2026-11-20T07:34:00Z'
+updated_date: '2026-11-23T11:09:00Z'
 labels:
   - handle:native-consistency-review
   - architecture
@@ -45,3 +46,9 @@ Handle: Native Consistency Review
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+MSH-229 now records a codebase-wide audit/exactness inventory in its task notes. Concrete simplification work is split into MSH-230 (operational Stop history), MSH-231 (redundant record metadata), MSH-232 (native resource admission/copies), MSH-233 (execution identity/validation), with Xiangqi replay costs in existing MSH-227. Use that inventory as current input and avoid duplicate implementation tasks; no rules change was made by MSH-229.
+<!-- SECTION:NOTES:END -->

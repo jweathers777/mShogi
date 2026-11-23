@@ -392,7 +392,6 @@ impl DesktopController {
             document_epoch: self.session.document_epoch + 1,
             version: next,
             revision: next,
-            archive_revision: next,
             next_request: next,
             document_revision: revision + 1,
             document_identity: next,

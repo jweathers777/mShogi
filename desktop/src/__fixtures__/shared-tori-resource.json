@@ -150,18 +150,15 @@
     "phase": "failed",
     "message": "Application capacity: encoded desktop archive exceeds16MiB.",
     "resource": {
-      "facts": [
-        {
-          "category": "encoded_document_bytes",
-          "measurement": "candidate",
-          "count": 16777217,
-          "reserved": 0,
-          "limit": 16777216,
-          "scope": "application",
-          "unit": "bytes"
-        }
-      ],
-      "omitted_facts": 0,
+      "fact": {
+        "category": "encoded_document_bytes",
+        "measurement": "candidate",
+        "count": 16777217,
+        "reserved": 0,
+        "limit": 16777216,
+        "scope": "application",
+        "unit": "bytes"
+      },
       "diagnostic": "Application capacity: encoded desktop archive exceeds16MiB."
     }
   },

@@ -13,7 +13,6 @@ export interface ResourceFact {
     | "identities" | "milliseconds" | null;
 }
 export interface ResourceFailure {
-  facts: ResourceFact[];
-  omitted_facts: number;
+  fact: ResourceFact;
   diagnostic: string;
 }

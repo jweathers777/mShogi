@@ -367,7 +367,7 @@ impl RuntimeMetadata {
             || self.selection_id >= MAX_SAFE_ID - 64
         {
             Err(resource_refusal(
-                vec![resource_fact(
+                resource_fact(
                     ResourceCategory::IdentityHeadroom,
                     self.version
                         .max(self.revision)
@@ -378,7 +378,7 @@ impl RuntimeMetadata {
                     64,
                     ResourceScope::Application,
                     ResourceUnit::Identities,
-                )],
+                ),
                 "Application capacity: session identity headroom exhausted. Save the complete current document then restart.",
             ))
         } else {

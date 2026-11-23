@@ -64,7 +64,7 @@ export function NativeRecovery({ snapshot, error, disabled, command, pending = f
   const capacity = nativeCapacityReached(snapshot);
   const adjudicationPending = pending || (snapshot.game === "xiangqi" && snapshot.xiangqi.pending !== null);
   const explanation = resourceExplanation(snapshot.capacity.resource);
-  const elapsedBudget = snapshot.capacity.resource?.omitted_facts === 0 && snapshot.capacity.resource.facts.length === 1 && snapshot.capacity.resource.facts[0]?.category === "validation_budget";
+  const elapsedBudget = snapshot.capacity.resource?.fact.category === "validation_budget";
   const capacityNotice = useRef<HTMLElement>(null);
   useLayoutEffect(() => { if (capacity) capacityNotice.current?.focus(); }, [snapshot.capacity.id, capacity]);
   const analyzing = snapshot.game === "chess" ? snapshot.chess.analysis.status === "thinking" : snapshot.phase === "thinking" && snapshot.execution_purpose === "move_analysis";

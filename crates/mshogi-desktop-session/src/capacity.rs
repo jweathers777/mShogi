@@ -60,10 +60,10 @@ pub(crate) fn resource_fact(
         .with_unit(unit)
 }
 pub(crate) fn resource_refusal(
-    facts: Vec<ResourceFact>,
+    fact: ResourceFact,
     diagnostic: impl AsRef<str>,
 ) -> OperationFailure {
-    OperationFailure::resource(ResourceFailure::multiple(facts, diagnostic))
+    OperationFailure::resource(ResourceFailure::new(fact, diagnostic))
 }
 /// Resource admission is independent of engine execution and chess outcomes.
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Serialize)]

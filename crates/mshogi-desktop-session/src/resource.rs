@@ -1,13 +1,11 @@
 //! Authoritative resource facts, separate from bounded technical diagnostics.
 //!
 //! A diagnostic is never parsed to discover a resource category. Native admission
-//! supplies facts only when it knows them; unknown and simultaneous causes remain
+//! supplies facts only when it knows them; unknown causes remain
 //! representable without inventing a count or a game outcome.
 
 use serde::Serialize;
 
-/// Maximum number of distinct resource facts in one host response.
-pub const MAX_RESOURCE_FACTS: usize = 16;
 /// Maximum UTF-8 byte length of a technical resource diagnostic.
 pub const MAX_RESOURCE_DIAGNOSTIC_BYTES: usize = 4096;
 
@@ -154,47 +152,20 @@ impl ResourceFact {
 /// Bounded native capacity refusal; this is neither an illegal move nor outcome.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct ResourceFailure {
-    facts: Vec<ResourceFact>,
-    /// Number of further facts omitted only to bound host metadata.
-    /// A nonzero value requires a general or multiple-cause explanation.
-    omitted_facts: u64,
+    fact: ResourceFact,
     diagnostic: String,
 }
 
 impl ResourceFailure {
     /// Construct a refusal with one authoritative resource fact.
     pub fn new(fact: ResourceFact, diagnostic: impl AsRef<str>) -> Self {
-        Self::multiple([fact], diagnostic)
-    }
-
-    /// Construct simultaneous causes without inferring a primary resource.
-    ///
-    /// Metadata is bounded even if a native caller supplies too many facts. The
-    /// explicit omitted count prevents the retained list claiming completeness.
-    pub fn multiple(
-        facts: impl IntoIterator<Item = ResourceFact>,
-        diagnostic: impl AsRef<str>,
-    ) -> Self {
-        let mut retained = Vec::new();
-        let mut omitted_facts = 0_u64;
-        for fact in facts {
-            if retained.len() < MAX_RESOURCE_FACTS {
-                retained.push(fact);
-            } else {
-                omitted_facts = omitted_facts.saturating_add(1);
-            }
-        }
-        if retained.is_empty() {
-            retained.push(ResourceFact::unknown());
-        }
         let diagnostic = diagnostic.as_ref();
         let mut end = diagnostic.len().min(MAX_RESOURCE_DIAGNOSTIC_BYTES);
         while !diagnostic.is_char_boundary(end) {
             end -= 1;
         }
         Self {
-            facts: retained,
-            omitted_facts,
+            fact,
             diagnostic: diagnostic[..end].to_owned(),
         }
     }
@@ -204,14 +175,9 @@ impl ResourceFailure {
         Self::new(ResourceFact::unknown(), diagnostic)
     }
 
-    /// All retained authoritative facts; diagnostic text adds no further facts.
-    pub fn facts(&self) -> &[ResourceFact] {
-        &self.facts
-    }
-
-    /// Number of additional causes omitted from the bounded metadata list.
-    pub fn omitted_facts(&self) -> u64 {
-        self.omitted_facts
+    /// The authoritative cause; diagnostic text adds no further facts.
+    pub fn fact(&self) -> &ResourceFact {
+        &self.fact
     }
 
     /// Bounded technical details, unsuitable for resource-category inference.
@@ -242,44 +208,24 @@ mod tests {
     }
 
     #[test]
-    fn unknown_and_simultaneous_causes_do_not_invent_specific_resources() {
+    fn unknown_cause_does_not_invent_a_specific_resource() {
         let unknown = ResourceFailure::unknown("8192 controls; 256 observations");
-        assert_eq!(unknown.facts(), &[ResourceFact::unknown()]);
-        let simultaneous = ResourceFailure::multiple(
-            [
-                ResourceFact::measured(ResourceCategory::EncodedDocumentBytes, 17, 16),
-                ResourceFact::measured(ResourceCategory::NativeEvents, 11, 10),
-                ResourceFact::unknown(),
-            ],
-            "several limits",
-        );
-        assert_eq!(simultaneous.facts().len(), 3);
-        assert_eq!(simultaneous.facts()[2].count, None);
-        let empty = ResourceFailure::multiple([], "no established cause");
-        assert_eq!(empty.facts(), &[ResourceFact::unknown()]);
+        assert_eq!(unknown.fact(), &ResourceFact::unknown());
     }
 
     #[test]
-    fn diagnostic_and_metadata_are_bounded_without_broken_utf8() {
+    fn diagnostic_is_bounded_without_broken_utf8() {
         let text = format!("{}界suffix", "a".repeat(MAX_RESOURCE_DIAGNOSTIC_BYTES - 1));
-        let failure = ResourceFailure::multiple(
-            (0..MAX_RESOURCE_FACTS + 2).map(|_| ResourceFact::unknown()),
-            text,
-        );
+        let fact = ResourceFact::measured(ResourceCategory::NativeEvents, 11, 10);
+        let failure = ResourceFailure::new(fact.clone(), text);
         assert_eq!(
             failure.diagnostic().len(),
             MAX_RESOURCE_DIAGNOSTIC_BYTES - 1
         );
-        assert!(
-            failure
-                .diagnostic()
-                .is_char_boundary(failure.diagnostic().len())
-        );
-        assert_eq!(failure.facts().len(), MAX_RESOURCE_FACTS);
-        assert_eq!(failure.omitted_facts(), 2);
+        assert_eq!(failure.fact(), &fact);
         let wire = serde_json::to_value(&failure).unwrap();
-        assert_eq!(wire["facts"].as_array().unwrap().len(), MAX_RESOURCE_FACTS);
-        assert_eq!(wire["omitted_facts"], 2);
+        assert_eq!(wire["fact"], serde_json::to_value(fact).unwrap());
         assert_eq!(wire["diagnostic"], failure.diagnostic());
+        assert_eq!(wire.as_object().unwrap().len(), 2);
     }
 }

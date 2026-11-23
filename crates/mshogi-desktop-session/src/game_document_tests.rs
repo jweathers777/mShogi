@@ -99,7 +99,7 @@ fn opening_refuses_wrong_shape_game_profile_and_records() {
     let oversize = vec![b' '; MAX_ARCHIVE_BYTES + 1];
     let error = Doc::decode(&oversize, &mut || false).unwrap_err();
     assert_eq!(
-        error.resource.unwrap().facts()[0].category,
+        error.resource.unwrap().fact().category,
         ResourceCategory::EncodedDocumentBytes
     );
 }

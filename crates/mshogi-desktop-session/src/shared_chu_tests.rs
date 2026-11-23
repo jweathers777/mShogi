@@ -476,7 +476,7 @@ fn maximum_declared_counter_keeps_exact_native_presentation_and_unknown_history(
         .is_err()
     );
     let refusal = ctl.shared_snapshot();
-    let fact = refusal.capacity.resource.as_ref().unwrap().facts()[0].clone();
+    let fact = refusal.capacity.resource.as_ref().unwrap().fact().clone();
     assert_eq!(fact.category, ResourceCategory::Unknown);
     assert_eq!((fact.count, fact.limit, fact.unit), (None, None, None));
     assert_eq!(native(&ctl), before);

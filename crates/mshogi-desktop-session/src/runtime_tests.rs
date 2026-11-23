@@ -165,7 +165,7 @@ fn direct_identity_refusals_publish_native_facts_without_mutating_the_game() {
     );
     let snapshot = c.shared_snapshot();
     assert_eq!(snapshot.context, before);
-    let fact = &snapshot.io.resource.as_ref().unwrap().facts()[0];
+    let fact = &snapshot.io.resource.as_ref().unwrap().fact();
     assert_eq!(fact.category, ResourceCategory::IdentityHeadroom);
     assert_eq!(fact.measurement, ResourceMeasurement::Accepted);
     c.io_state.id = 0;
@@ -180,7 +180,7 @@ fn direct_identity_refusals_publish_native_facts_without_mutating_the_game() {
     let snapshot = c.shared_snapshot();
     assert_eq!(snapshot.context, before);
     assert_eq!(
-        snapshot.capacity.resource.unwrap().facts()[0].category,
+        snapshot.capacity.resource.unwrap().fact().category,
         ResourceCategory::IdentityHeadroom
     );
 }

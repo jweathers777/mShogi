@@ -11,9 +11,9 @@ afterEach(cleanup);
 const base: ResourceFact = { category: "native_events", measurement: "candidate", count: 8192, reserved: 1, limit: 8192, scope: "shogi", unit: "events" };
 // Ambiguous diagnostic text must not override the typed resource facts.
 const diagnostic = "Application capacity: The archive retains256 total ordinary/exact observations and8192 controls including stop/close.";
-function paused(game: "chess" | "shogi" | "xiangqi", facts: ResourceFact[] | null = [base]): GameSnapshot {
+function paused(game: "chess" | "shogi" | "xiangqi", fact: ResourceFact | null = base): GameSnapshot {
   const native = structuredClone(game === "chess" ? chess : game === "shogi" ? shogi : xiangqi);
-  return { ...native, capacity: { id: 1, status: "paused", message: diagnostic, resource: facts && { facts: facts.map((fact) => ({ ...fact, scope: game })), omitted_facts: 0, diagnostic } } } as unknown as GameSnapshot;
+  return { ...native, capacity: { id: 1, status: "paused", message: diagnostic, resource: fact && { fact: { ...fact, scope: game }, diagnostic } } } as unknown as GameSnapshot;
 }
 function notice(snapshot: GameSnapshot, error = "") { return render(<NativeRecovery snapshot={snapshot} error={error} disabled={false} command={vi.fn()} />); }
 for (const game of ["chess", "shogi", "xiangqi"] as const) {
@@ -39,7 +39,7 @@ for (const game of ["chess", "shogi", "xiangqi"] as const) {
   });
 }
 it.each(["encoded_document_bytes", "native_events", "replay_work", "identity_headroom"] as const)("preserves %s as an independent resource", (category) => {
-  notice(paused("xiangqi", [{ ...base, category }]));
+  notice(paused("xiangqi", { ...base, category }));
   expect(screen.getByRole("alert").textContent).not.toContain("256 recorded"); expect(screen.getByRole("alert").textContent).not.toContain("control capacity");
 });
 it("keeps unknown command errors generic rather than classifying diagnostic substrings", () => {

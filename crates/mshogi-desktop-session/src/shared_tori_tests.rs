@@ -932,9 +932,9 @@ fn typed_identity_refusal_and_interrupted_save_keep_complete_accepted_document_d
             .resource
             .as_ref()
             .unwrap()
-            .facts()
-            .iter()
-            .any(|f| f.category == ResourceCategory::IdentityHeadroom)
+            .fact()
+            .category
+            == ResourceCategory::IdentityHeadroom
     );
     // Actual shared Save execution, interrupted after the exclusive temporary file
     // exists. No synthetic Saved receipt is produced or accepted by the controller.

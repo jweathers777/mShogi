@@ -218,14 +218,14 @@ fn read(
         }
         if bytes.len() + n > MAX_ARCHIVE_BYTES {
             return Err(resource_refusal(
-                vec![resource_fact(
+                resource_fact(
                     ResourceCategory::EncodedDocumentBytes,
                     bytes.len() + n,
                     MAX_ARCHIVE_BYTES,
                     0,
                     ResourceScope::Application,
                     ResourceUnit::Bytes,
-                )],
+                ),
                 "Application capacity: encoded desktop archive exceeds16MiB.",
             ));
         }

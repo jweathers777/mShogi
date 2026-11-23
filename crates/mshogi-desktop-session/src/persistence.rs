@@ -236,14 +236,14 @@ fn finish_validation_budget(
     };
     if !committed_save && !cancelled && elapsed >= budget {
         Err(resource_refusal(
-            vec![resource_fact(
+            resource_fact(
                 ResourceCategory::ValidationBudget,
                 elapsed.as_millis().min(u64::MAX as u128) as usize,
                 budget.as_millis() as usize,
                 0,
                 ResourceScope::Application,
                 ResourceUnit::Milliseconds,
-            )],
+            ),
             "Application capacity: native document validation exceeded its bounded15-second budget. The accepted current document is preserved.",
         ))
     } else {
@@ -473,7 +473,7 @@ mod tests {
             .unwrap();
             assert_eq!(error.resource.is_some(), resource);
             if let Some(failure) = error.resource {
-                let fact = &failure.facts()[0];
+                let fact = &failure.fact();
                 assert_eq!(fact.category, ResourceCategory::ValidationBudget);
                 assert_eq!(fact.count, Some(15001));
                 assert_eq!(fact.limit, Some(15000));

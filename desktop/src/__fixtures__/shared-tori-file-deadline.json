@@ -56,18 +56,15 @@
     "phase": "failed",
     "message": "Application capacity: native document validation exceeded its bounded15-second budget. The accepted current document is preserved.",
     "resource": {
-      "facts": [
-        {
-          "category": "validation_budget",
-          "measurement": "candidate",
-          "count": 15000,
-          "reserved": 0,
-          "limit": 15000,
-          "scope": "application",
-          "unit": "milliseconds"
-        }
-      ],
-      "omitted_facts": 0,
+      "fact": {
+        "category": "validation_budget",
+        "measurement": "candidate",
+        "count": 15000,
+        "reserved": 0,
+        "limit": 15000,
+        "scope": "application",
+        "unit": "milliseconds"
+      },
       "diagnostic": "Application capacity: native document validation exceeded its bounded15-second budget. The accepted current document is preserved."
     }
   },

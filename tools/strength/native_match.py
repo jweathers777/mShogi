@@ -181,6 +181,7 @@ def main(default_game="shogi"):
     parser.add_argument('--out', required=True)
     parser.add_argument('--workers', type=int, default=4)
     parser.add_argument('--max-pairs', type=int, default=600)
+    parser.add_argument('--max-steps', type=int, help='native event cap per game, 1..1024; unfinished games stay unscored')
     parser.add_argument('--min-pairs', type=int, default=30)
     parser.add_argument('--first-seed', type=int, default=1)
     parser.add_argument('--wall-seconds', type=int, default=1800)
@@ -196,7 +197,11 @@ def main(default_game="shogi"):
     if (args.game == 'tenjiku') != (args.profile is not None):
         parser.error('--profile adams|muller is required only for --game tenjiku')
     defaults = {'shogi': (2, 5000, 320), 'xiangqi': (1, 128, 500), 'tori': (1, 512, 1000), 'chu': (1, 512, 500), 'tenjiku': (1, 1024, 500)}
-    depth, nodes, args.max_steps = defaults[args.game]
+    depth, nodes, default_steps = defaults[args.game]
+    if args.max_steps is None:
+        args.max_steps = default_steps
+    if not 1 <= args.max_steps <= 1024:
+        parser.error('--max-steps must be 1..1024')
     if args.candidate_time_factor != 1 and args.base is None:
         parser.error('--candidate-time-factor needs a clock (--base)')
     if args.base is not None:

@@ -93,6 +93,26 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use mshogi_core::chu::{GameCommand, GameRequest};
+
+    #[test]
+    fn catalog_records_replay_as_live_standard_prefixes() {
+        let catalog: serde_json::Value = serde_json::from_str(include_str!(
+            "../../../tools/strength/data/chu-openings-v1.json"
+        ))
+        .unwrap();
+        let rows = catalog["openings"].as_array().unwrap();
+        assert!(rows.len() >= 100);
+        let mut seen = std::collections::BTreeSet::new();
+        for row in rows {
+            let record: GameRecord = serde_json::from_value(row["record"].clone()).unwrap();
+            let game = record.to_game().unwrap();
+            assert!(game.conclusion().is_none());
+            assert_eq!(game.events().len(), 8);
+            assert_eq!(game.position().pieces().count(), 92);
+            assert!(seen.insert(format!("{:?}", game.repetition_key())));
+        }
+    }
 
     #[test]
     fn compact_families_have_equal_material_and_no_immediate_native_win() {

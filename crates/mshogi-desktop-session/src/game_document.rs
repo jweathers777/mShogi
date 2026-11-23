@@ -7,7 +7,7 @@ use crate::native_game::{
     DocumentSettings, NativeFailure, NativeGame, NativeResource, RecordFailure,
 };
 use crate::{document, *};
-use mshogi_core::native::{CanonicalRecord, RulesProfile};
+use mshogi_core::native::RulesProfile;
 use serde::{Deserialize, Serialize};
 use std::fmt;
 use std::marker::PhantomData;
@@ -46,7 +46,8 @@ pub type SettingsOf<G> = <G as NativeGame>::Settings;
 #[derive(Serialize)]
 #[serde(bound(serialize = ""))]
 struct Payload<G: NativeGame> {
-    record: CanonicalRecord,
+    #[serde(serialize_with = "G::encode_record")]
+    record: G::Record,
     human: G::Side,
     settings: SettingsOf<G>,
 }
@@ -136,15 +137,6 @@ impl<G: NativeGame> Errors<G> {
         ))
         .into()
     }
-    fn canonical(error: mshogi_core::native::EnvelopeError) -> GameDocumentError {
-        match error {
-            mshogi_core::native::EnvelopeError::Stopped => Self::stopped(),
-            mshogi_core::native::EnvelopeError::Capacity => {
-                Self::capacity(ResourceCategory::Unknown, error.to_string())
-            }
-            error => Self::invalid(error),
-        }
-    }
     fn record(error: RecordFailure) -> GameDocumentError {
         match error {
             RecordFailure::Stopped => Self::stopped(),
@@ -167,9 +159,6 @@ impl<G: NativeGame> Errors<G> {
             NativeResource::Counter => ResourceCategory::Unknown,
         };
         Self::capacity(category, diagnostic)
-    }
-    pub(crate) fn record_of(r: &CanonicalRecord) -> Result<&G::Record, GameDocumentError> {
-        G::native(r).ok_or_else(|| Self::invalid(format!("record must be native {}", G::NAME)))
     }
 }
 
@@ -207,7 +196,7 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
     ) -> Result<Self, GameDocumentError> {
         Errors::<G>::check(stopped)?;
         Self::accept(Payload {
-            record: G::canonical(record),
+            record,
             human,
             settings: G::Settings::new(human, play_mode),
         })
@@ -243,25 +232,10 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
             settings: SettingsOf<G>,
         }
         let w: Wire<G> = serde_json::from_str(e.payload.get()).map_err(E::<G>::invalid)?;
-        let result = CanonicalRecord::from_json_with_native_parser(
-            w.record.get(),
-            stopped,
-            |kind, text, stop| {
-                use mshogi_core::native::EnvelopeError;
-                if kind != G::KIND {
-                    return Err(EnvelopeError::Identity);
-                }
-                let (record, game) = G::parse_record(text, stop).map_err(|e| match e {
-                    RecordFailure::Stopped => EnvelopeError::Stopped,
-                    RecordFailure::Capacity(_) => EnvelopeError::Capacity,
-                    RecordFailure::Invalid(message) => EnvelopeError::Encoding(message),
-                })?;
-                Ok((G::canonical(record), game))
-            },
-        );
+        let result = G::decode_record(w.record.get(), stopped);
         E::<G>::check(stopped)?;
-        let (record, game) = result.map_err(E::<G>::canonical)?;
-        if e.rules_profile != G::profile(E::<G>::record_of(&record)?) {
+        let (record, game) = result.map_err(E::<G>::record)?;
+        if e.rules_profile != G::profile(&record) {
             return Err(E::<G>::invalid(
                 "outer profile does not match native payload profile",
             ));
@@ -275,7 +249,7 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
     }
     fn accept(payload: Payload<G>) -> Result<Self, GameDocumentError> {
         type E<G> = Errors<G>;
-        let record = E::<G>::record_of(&payload.record)?;
+        let record = &payload.record;
         payload.settings.validate().map_err(E::<G>::invalid)?;
         let profile: RulesProfile = G::profile(record);
         let bytes = document::encode(profile, &payload).map_err(E::<G>::invalid)?;
@@ -290,7 +264,7 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
     }
     /// The native record: start position and every command.
     pub fn record(&self) -> &G::Record {
-        G::native(&self.payload.record).expect("validated native record")
+        &self.payload.record
     }
     /// The immutable rules profile.
     pub fn profile(&self) -> RulesProfile {
@@ -329,7 +303,7 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
         }
         let prefix = G::record_prefix(&game, event_index, stopped).map_err(E::<G>::record)?;
         let mut p = self.payload.clone();
-        p.record = G::canonical(prefix);
+        p.record = prefix;
         Self::accept(p)
     }
     /// This document with new settings; the play mode stays the document's.
@@ -346,7 +320,7 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
     /// This document holding the record of `game`.
     pub(crate) fn with_game(&self, game: &G::Game) -> Result<Self, GameDocumentError> {
         let mut p = self.payload.clone();
-        p.record = G::canonical(G::from_game(game).map_err(Errors::<G>::record)?);
+        p.record = G::from_game(game).map_err(Errors::<G>::record)?;
         Self::accept(p)
     }
 }

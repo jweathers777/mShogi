@@ -202,7 +202,7 @@ impl<G: SessionGame> NativeSession<G> {
     /// Canonical record of the selected game.
     #[cfg(test)]
     pub(crate) fn record(&self) -> CanonicalRecord {
-        G::canonical(G::from_game(self.selected()).expect("admitted native record"))
+        G::context(self.selected()).expect("admitted native record")
     }
     /// Select a history position directly, for tests.
     #[cfg(test)]
@@ -571,9 +571,7 @@ pub(crate) fn execute<G: SessionGame>(
         let incomplete = result.is_some_and(G::incomplete);
         // Check the result against its exact target, then play an engine move.
         if let Some(result) = result {
-            let target = G::native(&response.context.game)
-                .ok_or_else(|| format!("Wrong game in a {} observation.", G::NAME))?;
-            let target = G::to_game(target, stopped).map_err(record_text)?;
+            let target = G::context_game(&response.context.game, stopped).map_err(record_text)?;
             G::validate_result(result, &target, stopped)?;
             if !analysis && let Some((actor, command)) = G::engine_command(result, &state.game) {
                 state.document = Arc::new(state.document.with_command(actor, command, stopped)?);
@@ -826,7 +824,7 @@ impl DesktopController {
         let Some(pending) = &state.pending else {
             return false;
         };
-        let selected = G::canonical(G::from_game(state.selected()).expect("admitted record"));
+        let selected = G::context(state.selected()).expect("admitted record");
         if !response.matches(pending)
             || pending.session_version != self.session.version
             || pending.game != selected
@@ -864,7 +862,7 @@ impl DesktopController {
         validate_limits::<G>(limits)?;
         self.ensure_runtime_capacity()?;
         let state = G::state(&self.session).expect("native owner");
-        let game = G::canonical(G::from_game(state.selected()).map_err(record_text)?);
+        let game = G::context(state.selected()).map_err(record_text)?;
         let turn = G::side_to_move(state.selected());
         let historical = state.viewed.is_some();
         self.session.next_request += 1;
@@ -1138,7 +1136,7 @@ impl DesktopController {
             }),
             diagnostic: state.diagnostic.clone(),
             declaration_advice: G::declaration_advice(game),
-            context: G::canonical(G::from_game(game).expect("admitted native record")),
+            context: G::context(game).expect("admitted native record"),
             analysis: state.analysis.as_ref().map(|o| PresentedObservation {
                 observation: o.clone(),
                 historical: false,
@@ -1198,7 +1196,7 @@ pub(crate) fn display_observation<G: SessionGame>(
     o: &ExecutionObservation,
     state: &NativeSession<G>,
 ) -> PresentedSearchObservation {
-    let record = G::native(&o.context.game).expect("validated native context");
+    let record = &o.context.game;
     let telemetry = G::engine_result(&o.result).map(G::telemetry);
     PresentedSearchObservation {
         selective_depth: None,
@@ -1208,13 +1206,9 @@ pub(crate) fn display_observation<G: SessionGame>(
         } else {
             "move_analysis"
         },
-        event_index: G::event_count(record),
+        event_index: record.event_count(),
         board_ply: o.context.game.known_board_actions(),
-        perspective: side(
-            G::profile(record),
-            G::native_side(G::record_side_to_move(record)),
-        )
-        .label,
+        perspective: side(record.profile(), G::native_side(G::context_side(record))).label,
         engine: "mShogi",
         score: telemetry.as_ref().and_then(|t| t.score.clone()),
         completed_depth: telemetry.as_ref().map(|t| t.completed_depth),

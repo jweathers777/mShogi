@@ -103,10 +103,25 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
 
     /// Wrap a native participant.
     fn native_side(side: Self::Side) -> NativeSide;
-    /// Wrap a native record.
-    fn canonical(record: Self::Record) -> CanonicalRecord;
-    /// Unwrap this game's native record.
-    fn native(record: &CanonicalRecord) -> Option<&Self::Record>;
+    /// Serialize the durable native record; it can differ from engine context.
+    fn encode_record<S: serde::Serializer>(
+        record: &Self::Record,
+        serializer: S,
+    ) -> Result<S::Ok, S::Error>;
+    /// Decode and retain the game from native validation.
+    fn decode_record(
+        text: &str,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<(Self::Record, Self::Game), RecordFailure>;
+    /// Exact canonical context sent to the engine.
+    fn context(game: &Self::Game) -> Result<CanonicalRecord, RecordFailure>;
+    /// Restore an engine observation target.
+    fn context_game(
+        record: &CanonicalRecord,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<Self::Game, RecordFailure>;
+    /// Side to move in an admitted engine context, without replay.
+    fn context_side(record: &CanonicalRecord) -> Self::Side;
     /// Parse the native payload and keep the game produced by validation.
     fn parse_record(
         text: &str,
@@ -178,6 +193,70 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
     ) -> Result<(), String>;
 }
 
+// Five games use the same native record for persistence and engine requests.
+// Keep that wiring in one place; Chess supplies a separate match record.
+macro_rules! canonical_record {
+    ($variant:ident) => {
+        /// Encode the durable record. Usually this is the engine's canonical
+        /// record; Chess instead retains match commands beside its initial history.
+        fn encode_record<S: serde::Serializer>(
+            record: &Self::Record,
+            serializer: S,
+        ) -> Result<S::Ok, S::Error> {
+            CanonicalRecord::$variant(Box::new(record.clone())).serialize(serializer)
+        }
+        /// Decode the durable record and retain the game from native validation.
+        fn decode_record(
+            text: &str,
+            stop: &mut impl FnMut() -> bool,
+        ) -> Result<(Self::Record, Self::Game), RecordFailure> {
+            use mshogi_core::native::EnvelopeError;
+            let (record, game) =
+                CanonicalRecord::from_json_with_native_parser(text, stop, |kind, text, stop| {
+                    if kind != Self::KIND {
+                        return Err(EnvelopeError::Identity);
+                    }
+                    let (record, game) = Self::parse_record(text, stop).map_err(|e| match e {
+                        RecordFailure::Stopped => EnvelopeError::Stopped,
+                        RecordFailure::Capacity(_) => EnvelopeError::Capacity,
+                        RecordFailure::Invalid(message) => EnvelopeError::Encoding(message),
+                    })?;
+                    Ok((CanonicalRecord::$variant(Box::new(record)), game))
+                })
+                .map_err(|e| match e {
+                    EnvelopeError::Stopped => RecordFailure::Stopped,
+                    EnvelopeError::Capacity => RecordFailure::Capacity(e.to_string()),
+                    e => RecordFailure::Invalid(e.to_string()),
+                })?;
+            let CanonicalRecord::$variant(record) = record else {
+                return Err(RecordFailure::Invalid("Wrong native record family".into()));
+            };
+            Ok((*record, game))
+        }
+        /// Engine context of a game. It can differ from the durable match record.
+        fn context(game: &Self::Game) -> Result<CanonicalRecord, RecordFailure> {
+            Self::from_game(game).map(|record| CanonicalRecord::$variant(Box::new(record)))
+        }
+        /// Restore the target of an engine observation.
+        fn context_game(
+            record: &CanonicalRecord,
+            stop: &mut impl FnMut() -> bool,
+        ) -> Result<Self::Game, RecordFailure> {
+            let CanonicalRecord::$variant(record) = record else {
+                return Err(RecordFailure::Invalid("Wrong native context family".into()));
+            };
+            Self::to_game(record, stop)
+        }
+        /// Side to move in an engine context, without replay.
+        fn context_side(record: &CanonicalRecord) -> Self::Side {
+            let CanonicalRecord::$variant(record) = record else {
+                panic!("validated native context")
+            };
+            Self::record_side_to_move(record)
+        }
+    };
+}
+
 /// The Chu and Tenjiku cores have the same API; one impl serves both.
 macro_rules! large_shogi_game {
     ($game:ident, $core:ident, $glue:ident, $engine_result:ident, $result_variant:ident, $scope:ident,
@@ -212,15 +291,7 @@ macro_rules! large_shogi_game {
             fn native_side(side: Self::Side) -> NativeSide {
                 NativeSide::$result_variant(side)
             }
-            fn canonical(record: Self::Record) -> CanonicalRecord {
-                CanonicalRecord::$core(record)
-            }
-            fn native(record: &CanonicalRecord) -> Option<&Self::Record> {
-                match record {
-                    CanonicalRecord::$result_variant(r) => Some(r),
-                    _ => None,
-                }
-            }
+            canonical_record!($result_variant);
             fn parse_record(
                 text: &str,
                 stop: &mut impl FnMut() -> bool,
@@ -384,15 +455,7 @@ impl NativeGame for Tori {
     fn native_side(side: Self::Side) -> NativeSide {
         NativeSide::Tori(side)
     }
-    fn canonical(record: Self::Record) -> CanonicalRecord {
-        CanonicalRecord::tori(record)
-    }
-    fn native(record: &CanonicalRecord) -> Option<&Self::Record> {
-        match record {
-            CanonicalRecord::Tori(r) => Some(r),
-            _ => None,
-        }
-    }
+    canonical_record!(Tori);
     fn parse_record(
         text: &str,
         stop: &mut impl FnMut() -> bool,
@@ -553,15 +616,7 @@ impl NativeGame for Shogi {
     fn native_side(side: Self::Side) -> NativeSide {
         NativeSide::Shogi(side)
     }
-    fn canonical(record: Self::Record) -> CanonicalRecord {
-        CanonicalRecord::shogi(record)
-    }
-    fn native(record: &CanonicalRecord) -> Option<&Self::Record> {
-        match record {
-            CanonicalRecord::Shogi(r) => Some(r),
-            _ => None,
-        }
-    }
+    canonical_record!(Shogi);
     fn parse_record(
         text: &str,
         stop: &mut impl FnMut() -> bool,
@@ -746,15 +801,7 @@ impl NativeGame for Xiangqi {
     fn native_side(side: Self::Side) -> NativeSide {
         NativeSide::Xiangqi(side)
     }
-    fn canonical(record: Self::Record) -> CanonicalRecord {
-        CanonicalRecord::xiangqi(record)
-    }
-    fn native(record: &CanonicalRecord) -> Option<&Self::Record> {
-        match record {
-            CanonicalRecord::Xiangqi(r) => Some(r),
-            _ => None,
-        }
-    }
+    canonical_record!(Xiangqi);
     fn parse_record(
         text: &str,
         stop: &mut impl FnMut() -> bool,

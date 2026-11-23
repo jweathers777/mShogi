@@ -14,6 +14,8 @@ pub use moves::{
 };
 mod capacity;
 pub use capacity::*;
+/// Minimal accepted-command Chess records for desktop persistence.
+pub mod chess_record;
 /// Immutable Chu candidates for the same document envelope and file worker.
 pub mod chu_document;
 mod document;

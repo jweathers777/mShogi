@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-22T09:57:00Z'
-updated_date: '2026-11-23T09:45:00Z'
+updated_date: '2026-11-23T09:54:00Z'
 labels:
   - desktop
   - refactor
@@ -29,6 +29,14 @@ Chess has its own DesktopSession, ChessDocument and mutation journal (lib.rs, pe
 - [ ] #3 Desktop-session and workspace tests pass; one fresh-agent review
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Separate the generic saved native record from the engine context, keeping existing five-game encodings unchanged. Add a compact accepted-command Chess record reconstructed through ChessMatch.
+2. Implement Chess native/session hooks, including claims, Full analysis, presentation and take-back. Route Chess through generic admission, save/open, polling and bounded in-memory observations; remove the old journal and copied lifecycle paths.
+3. Migrate behavior tests and fixtures, run required checks and targeted persistence CI, obtain a fresh-agent review, then integrate and clean up.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
@@ -44,4 +52,8 @@ Cost finding (2026-11-22): the Chess saved record is a MatchRecord (timestamped 
 Paused 2026-11-22 (John): MSH-228 (Minimal Saved Game Document) first; with the minimal document Chess fits much more cheaply (its match log can become moves, claims, offers and result, without timestamps or rejected-request audit).
 
 Codex started after MSH-228 integration (main 8f5e55a). Reassess Chess against the minimal document and current generic session; preserve Chess claims, offers, mating-feasibility and Full analysis. Branch codex/msh-225-chess-document. Next: measure current differences and record implementation plan before code changes.
+
+Updated comparison after MSH-228: lib.rs 2490 lines; persistence.rs 3815; analysis.rs 612; takeback.rs 107; generic native_session.rs 1429 and game_document.rs 356. Rules differences remain ordered match commands, optional claims, draw offers and mating-feasibility outcomes. Product differences remain Full analysis, Chess presentation and 1-second play limits. Separate runtime versions, saved observations, controls, take-back lineage, capacity reservations and admission/poll/save/browse implementations are history, not required differences. Implement full generic session integration. The compact Chess record will retain initial canonical history and accepted player commands, with deterministic untimed replay through the unchanged ChessMatch core; runtime timestamps, rejected requests and Start/Observe bookkeeping will not be saved. This follows John’s recorded MSH-228-first direction.
+
+Checkpoint: generic document payload now owns G::Record, with shared canonical encoding for the existing five games and separate engine-context hooks. Added compact ChessRecord replay through unchanged ChessMatch; tests cover moves/offers/agreement, intended claim without a move, unresolved resignation, imported history/policy, rejected commands, malformed input and cancellation. Desktop-session tests passed 240/240 before the final canonical-wiring macro cleanup; cargo check passed after it. This is foundation work only: the active Chess session still uses the old archive/runtime. Next: implement NativeGame/SessionGame for Chess, Full analysis hooks, route controller and persistence through generic session, then remove old journal paths and migrate tests/fixtures. Branch codex/msh-225-chess-document.
 <!-- SECTION:NOTES:END -->

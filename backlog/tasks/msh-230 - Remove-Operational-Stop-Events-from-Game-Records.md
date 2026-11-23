@@ -1,11 +1,11 @@
 ---
 id: MSH-230
 title: Remove Operational Stop Events from Game Records
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-23T11:04:00Z'
-updated_date: '2026-11-23T12:59:00Z'
+updated_date: '2026-11-23T13:00:00Z'
 labels:
   - simplification
   - core
@@ -23,9 +23,9 @@ Split from MSH-229: Tori, Chu and Tenjiku store cancellation, engine failure and
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Operational stops no longer add native game commands or alter the saved game; console and desktop report failures and cancellation as session state
-- [ ] #2 Native rules, repetition, player endings and complete action histories are unchanged; existing rules expectations are not loosened
-- [ ] #3 Migrate affected consumers and fixtures in bounded reviewed steps; record line counts and pass required Rust/frontend/persistence checks after each step
+- [x] #1 Operational stops no longer add native game commands or alter the saved game; console and desktop report failures and cancellation as session state
+- [x] #2 Native rules, repetition, player endings and complete action histories are unchanged; existing rules expectations are not loosened
+- [x] #3 Migrate affected consumers and fixtures in bounded reviewed steps; record line counts and pass required Rust/frontend/persistence checks after each step
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -55,3 +55,11 @@ Final code 1b75415: full release workspace 1182 passed/11 ignored; desktop all-f
 
 Required debug command completed with the same four known MSH-199 chu_internal failures (30.47 s); no test assertion or limit was changed. The full release suite passed all 1182 tests, including those four. Final evidence is under gs://mshogi-experiments-216675633801/runs/msh-230/ with a 60-day lifecycle. Ready to integrate.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Integrated on main as 58fea3b. Operational stops are session state in the console and desktop; native records retain only player commands and rules outcomes. Removed Stop state/reservations, retained the promised Tori schema-1 reader, and refreshed native fixtures. Net reduction: 340 source lines.
+Validation: fmt, clippy, TypeScript, 603 frontend tests, 176 Python tests, 1182 release workspace tests (11 ignored), 200 desktop all-feature tests and Linux/macOS/Windows persistence CI passed. Required debug run has the same four known MSH-199 Chu watchdog failures; no rules expectations or limits changed. Fresh review completed and findings fixed.
+Evidence: gs://mshogi-experiments-216675633801/runs/msh-230/ (60 days); CI run 45176582506. No Cloud Batch compute. Follow-ups: MSH-199 debug test cost, MSH-231 metadata, MSH-234 example build-name collision. Next: MSH-231 (Compact Redundant Native Record Metadata).
+<!-- SECTION:FINAL_SUMMARY:END -->

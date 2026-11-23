@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-20T22:51:00Z'
-updated_date: '2026-11-23T21:55:00Z'
+updated_date: '2026-11-23T22:01:00Z'
 labels:
   - chu
   - search
@@ -54,4 +54,8 @@ Pilot1: all315 elementary tactics pass at20/200/1000ms; all80 exact igui contrac
 Additional reviewed transport detail: frozen30e08e4 has protocol5 but no Chu incremental endpoint. Full requests now negotiate capability by response endpoint; no endpoint keeps full-request mode. A compact success still requires its exact acknowledged endpoint, with unchanged digest/protocol/result binding. Eight incremental engine tests pass; fresh review accepted fallback trust boundary. Runner transaction copies now use Chu native fork too (22 experiment tests pass), avoiding a second host-side full replay. No saved bytes/rules/evaluation changed. Candidate7f21027 cloud build completed; next final runner build includes capability fallback. A separate completion subscription will isolate concurrent measurement/build controllers; delete it during task cleanup.
 
 Fixed-work cloud comparison passed all64 cases (16 standard roots and16 tactical roots at depths1/3): full search results identical between7f21027 and frozen30e08e4. Three-ply full-width native proof admitted71/80 candidates (55 development,16 held-out); baseline passes53/55 development and16/16 held-out at20/200/1000ms. Shared construction templates and three-ply horizon remain explicit limitations. Artifacts forcing-1; verified cleanup, conservative compute upper bound US$0.091. Next pilot protocol fixed before results: current engine selfplay at10s+0.1s and separate frozen predecessor smoke at30s+0.5s, standard catalog seed1 both colors,1000-event cap,600s pair watchdog,900s campaign wall; same c3-standard-4. Final runner1a744c7 supports old-child full requests. No unscored result will be counted as a draw.
+
+Pilot2 standard current-engine selfplay failed unscored after218 applied moves per game: Transition(Capacity(ReplayWork)); per-move native n*n history charge reaches the existing4000000 work guard. This is not incremental transport failure. Standard games therefore cannot yet support a completed strength measurement; preserve both failed pilots. Next bounded pilot uses existing compact balanced diagram seeds1..2 at10s+0.1s current selfplay and30s+0.5s versus frozen30e08e4, with the same1000-event cap and600s pair watchdog. These diagram results will not be presented as standard-opening strength. Native long-game capacity needs separate follow-up; no guard/rule is changed here.
+
+Follow-up created: MSH-236 (Chu Native Long-Game Capacity), Ready/high. Final local checks: fmt and workspace Clippy passed; workspace1195 passed/12 ignored/0 failed; examples6 passed; Python169 run with1 skipped. Linux process CI passed; Windows/macOS still running. Compact pilot is active in compact-1; standard predecessor pilot2 remains active. Branch codex/msh-213-chu-strength-harness.
 <!-- SECTION:NOTES:END -->

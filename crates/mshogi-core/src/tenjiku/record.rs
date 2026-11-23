@@ -194,11 +194,18 @@ impl GameRecord {
         text: &str,
         stop: &mut impl FnMut() -> bool,
     ) -> Result<Self, RecordError> {
+        Self::from_json_with_game(text, stop).map(|(record, _)| record)
+    }
+    /// Parse and validate once, retaining the reconstructed game for the caller.
+    pub fn from_json_with_game(
+        text: &str,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<(Self, Game), RecordError> {
         let (game, _) = Self::replay(text, false, stop)?;
         check(stop)?;
         let record = Self::from_game(&game)?;
         check(stop)?;
-        Ok(record)
+        Ok((record, game))
     }
     /// Fresh authoritative state without retaining per-event private undo snapshots.
     pub fn to_game(&self) -> Result<Game, RecordError> {

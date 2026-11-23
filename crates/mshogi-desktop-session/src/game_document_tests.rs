@@ -110,3 +110,36 @@ fn opening_checks_the_stop() {
     let error = Doc::decode(doc.bytes(), &mut || true).unwrap_err();
     assert!(error.stopped);
 }
+
+#[test]
+fn decoded_documents_return_the_validated_game_for_every_generic_game() {
+    use crate::native_game::{Chu, NativeGame, Shogi, Tenjiku, Xiangqi};
+    use mshogi_core::{chu, shogi, tenjiku, xiangqi};
+
+    fn check<G: NativeGame>(game: G::Game, events: usize) {
+        let doc = ValidatedGameDocument::<G>::new(G::from_game(&game).unwrap(), G::SIDES[1])
+            .unwrap()
+            .with_command(G::SIDES[0], G::resign(), &mut || false)
+            .unwrap();
+        let (decoded, game) =
+            ValidatedGameDocument::<G>::decode_with_game(doc.bytes(), &mut || false).unwrap();
+        assert!(G::concluded(&game));
+        assert_eq!(G::events(&game), events);
+        assert_eq!(G::from_game(&game).unwrap(), *decoded.record());
+        assert_eq!(decoded.human(), G::SIDES[1]);
+        assert_eq!(decoded.settings(), doc.settings());
+        assert_eq!(decoded.bytes(), doc.bytes());
+    }
+
+    check::<Tori>(t::Game::standard(), 1);
+    check::<Chu>(chu::Game::standard(), 1);
+    check::<Shogi>(shogi::Game::new(), 1);
+    // Xiangqi records Resigned and Concluded as separate events of one command.
+    check::<Xiangqi>(
+        xiangqi::Game::standard(xiangqi::ClaimPolicy::Explicit).unwrap(),
+        2,
+    );
+    for profile in tenjiku::Profile::ALL {
+        check::<Tenjiku>(tenjiku::Game::standard(profile), 1);
+    }
+}

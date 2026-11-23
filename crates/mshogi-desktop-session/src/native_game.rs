@@ -107,6 +107,11 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
     fn canonical(record: Self::Record) -> CanonicalRecord;
     /// Unwrap this game's native record.
     fn native(record: &CanonicalRecord) -> Option<&Self::Record>;
+    /// Parse the native payload and keep the game produced by validation.
+    fn parse_record(
+        text: &str,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<(Self::Record, Self::Game), RecordFailure>;
     /// Immutable rules profile of a record.
     fn profile(record: &Self::Record) -> RulesProfile;
     /// Immutable rules profile of a game.
@@ -215,6 +220,13 @@ macro_rules! large_shogi_game {
                     CanonicalRecord::$result_variant(r) => Some(r),
                     _ => None,
                 }
+            }
+            fn parse_record(
+                text: &str,
+                stop: &mut impl FnMut() -> bool,
+            ) -> Result<(Self::Record, Self::Game), RecordFailure> {
+                mshogi_core::$core::GameRecord::from_json_with_game(text, stop)
+                    .map_err($glue::record_failure)
             }
             fn profile($r: &Self::Record) -> RulesProfile {
                 $profile
@@ -381,6 +393,13 @@ impl NativeGame for Tori {
             _ => None,
         }
     }
+    fn parse_record(
+        text: &str,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<(Self::Record, Self::Game), RecordFailure> {
+        mshogi_core::tori::GameRecord::from_json_with_game(text, stop)
+            .map_err(tori_glue::record_failure)
+    }
     fn profile(_record: &Self::Record) -> RulesProfile {
         RulesProfile::ToriModernV1
     }
@@ -542,6 +561,23 @@ impl NativeGame for Shogi {
             CanonicalRecord::Shogi(r) => Some(r),
             _ => None,
         }
+    }
+    fn parse_record(
+        text: &str,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<(Self::Record, Self::Game), RecordFailure> {
+        if stop() {
+            return Err(RecordFailure::Stopped);
+        }
+        let parsed =
+            mshogi_core::shogi::GameRecord::from_json_with_game(text).map_err(|e| match e {
+                mshogi_core::shogi::RecordError::Capacity => RecordFailure::Capacity(e.to_string()),
+                e => RecordFailure::Invalid(e.to_string()),
+            })?;
+        if stop() {
+            return Err(RecordFailure::Stopped);
+        }
+        Ok(parsed)
     }
     fn profile(_record: &Self::Record) -> RulesProfile {
         RulesProfile::ShogiCsa36V1
@@ -718,6 +754,25 @@ impl NativeGame for Xiangqi {
             CanonicalRecord::Xiangqi(r) => Some(r),
             _ => None,
         }
+    }
+    fn parse_record(
+        text: &str,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<(Self::Record, Self::Game), RecordFailure> {
+        if stop() {
+            return Err(RecordFailure::Stopped);
+        }
+        let parsed =
+            mshogi_core::xiangqi::GameRecord::from_json_with_game(text).map_err(|e| match e {
+                mshogi_core::xiangqi::RecordError::Capacity => {
+                    RecordFailure::Capacity(e.to_string())
+                }
+                e => RecordFailure::Invalid(e.to_string()),
+            })?;
+        if stop() {
+            return Err(RecordFailure::Stopped);
+        }
+        Ok(parsed)
     }
     fn profile(_record: &Self::Record) -> RulesProfile {
         RulesProfile::XiangqiWxf2018V1

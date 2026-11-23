@@ -244,14 +244,19 @@ impl GameRecord {
     /// Decode directly into strict typed fields, then validate the entire ledger.
     /// Parsing through a generic JSON value would erase duplicate object fields.
     pub fn from_json(json: &str) -> Result<Self, RecordError> {
+        Self::from_json_with_game(json).map(|(record, _)| record)
+    }
+
+    /// Parse and validate once, retaining the reconstructed game for the caller.
+    pub fn from_json_with_game(json: &str) -> Result<(Self, Game), RecordError> {
         if json.len() > MAX_RECORD_BYTES {
             return Err(RecordError::Capacity);
         }
         let wire: WireRecord =
             serde_json::from_str(json).map_err(|e| RecordError::Json(e.to_string()))?;
         let record = Self { wire };
-        record.to_game()?;
-        Ok(record)
+        let game = record.to_game()?;
+        Ok((record, game))
     }
 
     /// Reconstruct the root and every accepted command, checking every derived prefix.

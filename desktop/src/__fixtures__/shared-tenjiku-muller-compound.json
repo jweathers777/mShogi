@@ -832,7 +832,7 @@
   },
   "open_token": {
     "document": 1,
-    "version": 3,
+    "version": 4,
     "document_revision": 1
   },
   "document": {
@@ -854,16 +854,16 @@
     "resource": null
   },
   "capacity": {
-    "id": 1,
+    "id": 2,
     "status": "available",
     "message": null,
     "resource": null
   },
   "token": {
     "document": 1,
-    "version": 3,
-    "revision": 3,
-    "selection": 3
+    "version": 4,
+    "revision": 4,
+    "selection": 4
   },
   "game": "tenjiku",
   "profile": "mshogi.tenjiku.muller-completed.v1",
@@ -2922,15 +2922,15 @@
   "event_index": 0,
   "board_ply": 0,
   "play_limits": {
-    "depth": 1,
-    "nodes": 1024
+    "depth": 64,
+    "nodes": 50000
   },
   "historical": false,
   "paused": true,
   "close_requires_save": true,
   "phase": "paused",
   "execution_purpose": null,
-  "diagnostic": "Saved observations are historical. Resume starts play.",
+  "diagnostic": "Resume starts play.",
   "declaration_advice": [],
   "context": {"envelope_version":1,"game_kind":"tenjiku","rules_profile":"mshogi.tenjiku.muller-completed.v1","profile_edition":"MULLER+ADAMS-COMPLETION+MSH83-2026-11-04","native_schema_version":1,"payload":{"format":"mshogi.tenjiku.game","game":"tenjiku","profile":"mshogi.tenjiku.muller-completed.v1","edition":"MULLER+ADAMS-COMPLETION+MSH83-2026-11-04","schema_version":1,"mode":"untimed","root":{"board":[{"id":2,"side":"gote","base":"K","promoted":false,"right":"consumed"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":3,"side":"gote","base":"P","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":5,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":6,"side":"gote","base":"P","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":4,"side":"sente","base":"Ln","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":1,"side":"sente","base":"P","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":0,"side":"sente","base":"K","promoted":false,"right":"consumed"}],"profile":"mshogi.tenjiku.muller-completed.v1","side":"sente","root":{"kind":"diagram","source":null,"declared_completed_plies":0},"accepted_plies":0},"root_conclusion":null,"root_pending_bare":null,"root_draw_offer":null,"root_incomplete":null,"events":[],"current_position":{"board":[{"id":2,"side":"gote","base":"K","promoted":false,"right":"consumed"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":3,"side":"gote","base":"P","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":5,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":6,"side":"gote","base":"P","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":4,"side":"sente","base":"Ln","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":1,"side":"sente","base":"P","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":0,"side":"sente","base":"K","promoted":false,"right":"consumed"}],"profile":"mshogi.tenjiku.muller-completed.v1","side":"sente","root":{"kind":"diagram","source":null,"declared_completed_plies":0},"accepted_plies":0},"conclusion":null,"pending_bare":null,"draw_offer":null,"incomplete":null}},
   "analysis": null,

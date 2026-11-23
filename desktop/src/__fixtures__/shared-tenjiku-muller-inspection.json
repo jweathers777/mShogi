@@ -1,9 +1,9 @@
 {
   "token": {
     "document": 1,
-    "version": 5,
-    "revision": 7,
-    "selection": 5
+    "version": 6,
+    "revision": 8,
+    "selection": 6
   },
   "game": "tenjiku",
   "profile": "mshogi.tenjiku.muller-completed.v1",

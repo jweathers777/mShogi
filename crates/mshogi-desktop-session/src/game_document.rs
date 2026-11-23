@@ -218,6 +218,13 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
         bytes: &[u8],
         stopped: &mut impl FnMut() -> bool,
     ) -> Result<Self, GameDocumentError> {
+        Self::decode_with_game(bytes, stopped).map(|(document, _)| document)
+    }
+    /// Keep the native game already reconstructed while checking the file.
+    pub(crate) fn decode_with_game(
+        bytes: &[u8],
+        stopped: &mut impl FnMut() -> bool,
+    ) -> Result<(Self, G::Game), GameDocumentError> {
         type E<G> = Errors<G>;
         E::<G>::check(stopped)?;
         if bytes.len() > MAX_ARCHIVE_BYTES {
@@ -236,19 +243,35 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
             settings: SettingsOf<G>,
         }
         let w: Wire<G> = serde_json::from_str(e.payload.get()).map_err(E::<G>::invalid)?;
-        let result = CanonicalRecord::from_json_with_stop(w.record.get(), stopped);
+        let result = CanonicalRecord::from_json_with_native_parser(
+            w.record.get(),
+            stopped,
+            |kind, text, stop| {
+                use mshogi_core::native::EnvelopeError;
+                if kind != G::KIND {
+                    return Err(EnvelopeError::Identity);
+                }
+                let (record, game) = G::parse_record(text, stop).map_err(|e| match e {
+                    RecordFailure::Stopped => EnvelopeError::Stopped,
+                    RecordFailure::Capacity(_) => EnvelopeError::Capacity,
+                    RecordFailure::Invalid(message) => EnvelopeError::Encoding(message),
+                })?;
+                Ok((G::canonical(record), game))
+            },
+        );
         E::<G>::check(stopped)?;
-        let record = result.map_err(E::<G>::canonical)?;
+        let (record, game) = result.map_err(E::<G>::canonical)?;
         if e.rules_profile != G::profile(E::<G>::record_of(&record)?) {
             return Err(E::<G>::invalid(
                 "outer profile does not match native payload profile",
             ));
         }
-        Self::accept(Payload {
+        let document = Self::accept(Payload {
             record,
             human: w.human,
             settings: w.settings,
-        })
+        })?;
+        Ok((document, game))
     }
     fn accept(payload: Payload<G>) -> Result<Self, GameDocumentError> {
         type E<G> = Errors<G>;

@@ -235,7 +235,7 @@ def completed_tenjiku_analysis(before, after, request_floor, generation_floor, d
             and result['kind']=='tenjiku' and value['kind']=='choice' and telemetry['completed_depth']==depth
             and telemetry['perspective']==turn['side'] and type(telemetry['score']) is int
             and 0<telemetry['nodes']<=nodes and telemetry['principal_variation'][0]==value['action']
-            and telemetry['evaluator_id']=='mshogi.tenjiku.material.v1' and telemetry['search_id']=='mshogi.tenjiku.full-width.v1')
+            and telemetry['evaluator_id']=='mshogi.tenjiku.material-placement.v1' and telemetry['search_id']=='mshogi.tenjiku.shared-core.v1')
     except (KeyError,TypeError,IndexError):
         return False
 
@@ -2220,7 +2220,7 @@ class Journey:
         assert context["purpose"]["kind"] == "move_analysis"
         assert len(context["game"]["payload"]["events"]) == 1
         assert len(body["record"]["payload"]["events"]) == 2
-        self.record("Saved historical analysis uses exact native history prefix", context)
+        self.record("Session analysis uses exact native history prefix", context)
         w.button("Return to live")
         self.shogi_events(2, selected=2)
         assert w.has(".play-paused")
@@ -2404,8 +2404,9 @@ class Journey:
             assert "Recorded searches (255)" in w.text(".recorded-searches")
             self.shogi_analysis(nodes=0)
             wait(lambda: "Recorded searches (256)" in w.text(".recorded-searches"), "shogi observation256 accepted")
+            previous = self.native_diagnostics()["observations"][-1]["observation"]["context"]["request_id"]
             self.shogi_analysis(nodes=0)
-            wait(lambda: len(self.native_diagnostics()["observations"]) == 256, "newest Shogi results retained")
+            wait(lambda: self.native_diagnostics()["observations"][-1]["observation"]["context"]["request_id"] > previous, "newest Shogi result replaces oldest")
             assert "Recorded searches (256)" in w.text(".recorded-searches")
             assert not w.has(".capacity-notice")
             self.shogi_events(0)
@@ -2520,7 +2521,7 @@ class Journey:
             activeWork:!!document.querySelector('.shogi-analysis[data-phase="thinking"],.shogi-analysis[data-phase="analyzing"]'),
             outcome:!!document.querySelector('.outcome-card'),resume:!!document.querySelector('.play-paused')}))()""")
         assert before['profile']==self.tenjiku_profile_id(profile) and reopened_tenjiku_document_stopped(before,after,ui),ui
-        self.record('Fresh ordinary Tenjiku Open retains exact native state/history/observations and stops work, including concluded games',ui)
+        self.record('Fresh ordinary Tenjiku Open retains exact native state/history and clears results, including concluded games',ui)
         return after
 
     def tenjiku_analysis(self):
@@ -2932,7 +2933,7 @@ class Journey:
         self.chu_load_fixture('complete-royal-engine'); natural = self.native_diagnostics()
         assert natural['context']['payload']['conclusion'] == {'kind':'royal_capture','winner':'sente'}
         assert not natural['observations'] and w.has('.outcome-card')
-        self.capture('normal-complete-natural-engine-game-and-Finished-observation')
+        self.capture('normal-complete-natural-engine-game')
         self.chu_load_fixture('complete-resignation'); complete=self.native_diagnostics()
         assert complete['context']['payload']['conclusion']=={'kind':'resignation','winner':'gote'} and not complete['observations']
         assert not complete['observations']; self.capture('normal-reopen-complete-standard-engine-record')
@@ -3465,8 +3466,10 @@ class Journey:
             assert len(before['observations']) == 255
             self.xiangqi_analysis(nodes=1)
             wait(lambda: 'Recorded searches (256)' in w.text('.recorded-searches'), 'combined observation256 accepted')
+            previous = self.native_diagnostics()['observations'][-1]['observation']['context']['request_id']
             self.xiangqi_analysis(nodes=1)
-            wait(lambda: len(self.native_diagnostics()['observations']) == 256, 'newest Xiangqi results retained')
+            wait(lambda: self.native_diagnostics()['observations'][-1]['observation']['context']['request_id'] > previous, 'newest Xiangqi result replaces oldest')
+            assert len(self.native_diagnostics()['observations']) == 256
             assert not w.has('.capacity-notice')
             assert not w.has('.outcome-card')
         elif name == 'xiangqi-exact-evidence':
@@ -3490,6 +3493,7 @@ class Journey:
         self.file('open', path); self.wait_opened(path)
         reopened = self.xiangqi_diagnostics()
         assert reopened['context'] == after['context']
+        assert not reopened['observations'] and not reopened['xiangqi']['exact_observations']
         assert reopened['token']['document'] > old_token['document']
         assert w.read("document.querySelector('.game-shell').dataset.paused") == 'true'
         assert not w.has('.shogi-analysis[data-phase="analyzing"]')

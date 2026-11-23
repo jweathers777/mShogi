@@ -379,7 +379,15 @@ impl GameRecord {
         text: &str,
         stop: &mut impl FnMut() -> bool,
     ) -> Result<Self, RecordError> {
-        Self::from_game(&Self::replay(text, stop)?.0)
+        Self::from_json_with_game(text, stop).map(|(record, _)| record)
+    }
+    /// Parse and validate once, retaining the reconstructed game for the caller.
+    pub fn from_json_with_game(
+        text: &str,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<(Self, Game), RecordError> {
+        let game = Self::replay(text, stop)?.0;
+        Ok((Self::from_game(&game)?, game))
     }
     /// Reconstruct semantic history with fresh native runtime authority.
     pub fn to_game(&self) -> Result<Game, RecordError> {

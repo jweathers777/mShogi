@@ -148,8 +148,12 @@ impl GameRecord {
     /// Strict direct decoding precedes every normalization. Raw native roots retain
     /// duplicate fields for their own parser; no map is used ahead of that boundary.
     pub fn from_json(json: &str) -> Result<Self, RecordError> {
+        Self::from_json_with_game(json).map(|(record, _)| record)
+    }
+    /// Parse and validate once, retaining the reconstructed game for the caller.
+    pub fn from_json_with_game(json: &str) -> Result<(Self, Game), RecordError> {
         let game = Self::replay(json)?;
-        Self::from_game(&game)
+        Ok((Self::from_game(&game)?, game))
     }
     fn replay(json: &str) -> Result<Game, RecordError> {
         Self::replay_with_undo(json, false).map(|(game, _)| game)

@@ -275,6 +275,57 @@ impl CanonicalRecord {
         text: &str,
         stop: &mut impl FnMut() -> bool,
     ) -> Result<Self, EnvelopeError> {
+        Self::from_json_with_native_parser(text, stop, |kind, payload, stop| {
+            let record = match kind {
+                GameKind::Chess => Self::chess(
+                    chess::GameRecord::from_json(payload).map_err(EnvelopeError::encoding)?,
+                ),
+                GameKind::Shogi => Self::shogi(
+                    shogi::GameRecord::from_json(payload).map_err(EnvelopeError::encoding)?,
+                ),
+                GameKind::Xiangqi => Self::xiangqi(
+                    xiangqi::GameRecord::from_json(payload).map_err(EnvelopeError::encoding)?,
+                ),
+                GameKind::Tori => Self::tori(
+                    tori::GameRecord::from_json_with_stop(payload, stop).map_err(|error| {
+                        match error {
+                            tori::RecordError::Stopped => EnvelopeError::Stopped,
+                            tori::RecordError::Capacity => EnvelopeError::Capacity,
+                            error => EnvelopeError::encoding(error),
+                        }
+                    })?,
+                ),
+                GameKind::Chu => {
+                    Self::chu(chu::GameRecord::from_json_with_stop(payload, stop).map_err(
+                        |error| match error {
+                            chu::RecordError::Stopped => EnvelopeError::Stopped,
+                            chu::RecordError::Capacity => EnvelopeError::Capacity,
+                            error => EnvelopeError::encoding(error),
+                        },
+                    )?)
+                }
+                GameKind::Tenjiku => Self::tenjiku(
+                    tenjiku::GameRecord::from_json_with_stop(payload, stop).map_err(|error| {
+                        match error {
+                            tenjiku::RecordError::Stopped => EnvelopeError::Stopped,
+                            tenjiku::RecordError::Capacity => EnvelopeError::Capacity,
+                            error => EnvelopeError::encoding(error),
+                        }
+                    })?,
+                ),
+            };
+            Ok((record, ()))
+        })
+        .map(|(record, ())| record)
+    }
+    /// Validate the shared envelope around a caller-selected strict native parser.
+    /// The parser can retain its reconstructed game alongside the validated record,
+    /// so consumers need not replay the same commands a second time.
+    pub fn from_json_with_native_parser<T, F: FnMut() -> bool>(
+        text: &str,
+        stop: &mut F,
+        parse: impl FnOnce(GameKind, &str, &mut F) -> Result<(Self, T), EnvelopeError>,
+    ) -> Result<(Self, T), EnvelopeError> {
         check_stop(stop)?;
         if text.len() > MAX_RECORD_ENVELOPE_BYTES {
             return Err(EnvelopeError::Capacity);
@@ -311,47 +362,7 @@ impl CanonicalRecord {
                 return Err(EnvelopeError::Identity);
             }
         }
-        let record = match wire.game_kind {
-            GameKind::Chess => Self::chess(
-                chess::GameRecord::from_json(wire.payload.get())
-                    .map_err(EnvelopeError::encoding)?,
-            ),
-            GameKind::Shogi => Self::shogi(
-                shogi::GameRecord::from_json(wire.payload.get())
-                    .map_err(EnvelopeError::encoding)?,
-            ),
-            GameKind::Xiangqi => Self::xiangqi(
-                xiangqi::GameRecord::from_json(wire.payload.get())
-                    .map_err(EnvelopeError::encoding)?,
-            ),
-            GameKind::Tori => Self::tori(
-                tori::GameRecord::from_json_with_stop(wire.payload.get(), stop).map_err(
-                    |error| match error {
-                        tori::RecordError::Stopped => EnvelopeError::Stopped,
-                        tori::RecordError::Capacity => EnvelopeError::Capacity,
-                        error => EnvelopeError::encoding(error),
-                    },
-                )?,
-            ),
-            GameKind::Chu => Self::chu(
-                chu::GameRecord::from_json_with_stop(wire.payload.get(), stop).map_err(
-                    |error| match error {
-                        chu::RecordError::Stopped => EnvelopeError::Stopped,
-                        chu::RecordError::Capacity => EnvelopeError::Capacity,
-                        error => EnvelopeError::encoding(error),
-                    },
-                )?,
-            ),
-            GameKind::Tenjiku => Self::tenjiku(
-                tenjiku::GameRecord::from_json_with_stop(wire.payload.get(), stop).map_err(
-                    |error| match error {
-                        tenjiku::RecordError::Stopped => EnvelopeError::Stopped,
-                        tenjiku::RecordError::Capacity => EnvelopeError::Capacity,
-                        error => EnvelopeError::encoding(error),
-                    },
-                )?,
-            ),
-        };
+        let (record, parsed) = parse(wire.game_kind, wire.payload.get(), stop)?;
         check_stop(stop)?;
         if (record.native_schema().version() != wire.native_schema_version && !tori_v1)
             || record.profile() != wire.rules_profile
@@ -360,7 +371,7 @@ impl CanonicalRecord {
         }
         record.to_json()?;
         check_stop(stop)?;
-        Ok(record)
+        Ok((record, parsed))
     }
     fn payload_json(&self) -> Result<String, EnvelopeError> {
         let text = match self {

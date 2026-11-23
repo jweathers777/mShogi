@@ -169,6 +169,13 @@ impl<G: SessionGame> NativeSession<G> {
     ) -> Result<Self, OperationFailure> {
         persistence::check(stopped)?;
         let game = G::to_game(document.record(), stopped).map_err(record_text)?;
+        Self::from_replayed_game(document, game, stopped)
+    }
+    fn from_replayed_game(
+        document: ValidatedGameDocument<G>,
+        game: G::Game,
+        stopped: &mut impl FnMut() -> bool,
+    ) -> Result<Self, OperationFailure> {
         persistence::check(stopped)?;
         let (presentation, status, choices) = present::<G>(&game, None, stopped)?;
         persistence::check(stopped)?;
@@ -548,7 +555,7 @@ pub(crate) fn execute<G: SessionGame>(
     }
     if let Some(evidence) = work.evidence {
         G::validate_evidence(&evidence, &state.game, stopped)?;
-        keep_newest(&mut state.evidence, evidence);
+        let _ = keep_newest(&mut state.evidence, evidence);
     }
     if let Some(response) = work.response {
         let pending = state
@@ -574,7 +581,11 @@ pub(crate) fn execute<G: SessionGame>(
                 durable = true;
             }
         }
-        keep_newest(&mut state.observations, response.clone());
+        if let Some(evicted) = keep_newest(&mut state.observations, response.clone()) {
+            state
+                .current_observations
+                .retain(|id| *id != evicted.context.request_id);
+        }
         let browse_stop = if analysis && !failed && !incomplete {
             state.browse_stop.clone()
         } else {
@@ -634,19 +645,18 @@ pub(crate) fn open<G: SessionGame>(
     bytes: &[u8],
     stopped: &mut impl FnMut() -> bool,
 ) -> Result<archive::OpenedNative, OperationFailure> {
-    let document = ValidatedGameDocument::<G>::decode(bytes, stopped)?;
-    Ok(G::opened(Box::new(NativeSession::restore(
-        document, stopped,
+    let (document, game) = ValidatedGameDocument::<G>::decode_with_game(bytes, stopped)?;
+    Ok(G::opened(Box::new(NativeSession::from_replayed_game(
+        document, game, stopped,
     )?)))
 }
 
 /// Results kept in memory per session; the oldest is dropped beyond this.
 const KEPT_RESULTS: usize = 256;
-fn keep_newest<T>(list: &mut Vec<T>, item: T) {
-    if list.len() >= KEPT_RESULTS {
-        list.remove(0);
-    }
+fn keep_newest<T>(list: &mut Vec<T>, item: T) -> Option<T> {
+    let evicted = (list.len() >= KEPT_RESULTS).then(|| list.remove(0));
     list.push(item);
+    evicted
 }
 
 /// Save on the file worker: write the accepted document atomically.
@@ -1350,4 +1360,70 @@ macro_rules! large_shogi_session {
             }
         }
     };
+}
+
+#[cfg(test)]
+mod retention_tests {
+    use super::*;
+    use crate::native_game::Tori;
+    use mshogi_core::tori;
+
+    #[test]
+    fn repeated_results_keep_only_recent_observations_and_current_ids() {
+        let record = tori::GameRecord::from_game(&tori::Game::standard()).unwrap();
+        let document =
+            ValidatedGameDocument::<Tori>::new(record.clone(), tori::Side::Sente).unwrap();
+        let saved = document.bytes().to_vec();
+        let mut state = Box::new(NativeSession::<Tori>::restore(document, &mut || false).unwrap());
+        for id in 1..=(KEPT_RESULTS as u64 + 4) {
+            let context = ExecutionContext {
+                purpose: ExecutionPurpose::EngineTurn {},
+                request_id: id,
+                session_version: 1,
+                process_generation: id,
+                game: CanonicalRecord::tori(record.clone()),
+                limits: WorkLimits {
+                    time_ms: None,
+                    depth: 1,
+                    nodes: 1,
+                },
+            };
+            state.pending = Some(context.clone());
+            let response = ExecutionObservation::new(
+                context,
+                ExecutionResult::Failure {
+                    failure: mshogi_engine::EngineFailure {
+                        kind: mshogi_engine::FailureKind::Search,
+                        message: "Constructed failure for retention test".into(),
+                    },
+                },
+            );
+            let completed = execute(
+                RuntimeWork {
+                    seed: RuntimeSeed::Current(Box::new(state.capture())),
+                    operation: None,
+                    response: Some(response),
+                    evidence: None,
+                    replacement: false,
+                },
+                &mut || false,
+            )
+            .unwrap();
+            let archive::NativeCompleted::Runtime {
+                state: archive::OpenedNative::Tori(next),
+                durable,
+                ..
+            } = completed
+            else {
+                panic!("expected Tori runtime completion")
+            };
+            assert!(!durable);
+            state = next;
+        }
+        assert_eq!(state.observations.len(), KEPT_RESULTS);
+        assert_eq!(state.current_observations, (5..=260).collect::<Vec<_>>());
+        assert_eq!(state.observations.first().unwrap().context.request_id, 5);
+        assert_eq!(state.observations.last().unwrap().context.request_id, 260);
+        assert_eq!(state.document.bytes(), saved);
+    }
 }

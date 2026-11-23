@@ -2,9 +2,9 @@
   {
     "token": {
       "document": 1,
-      "version": 3,
-      "revision": 3,
-      "selection": 3
+      "version": 4,
+      "revision": 4,
+      "selection": 4
     },
     "game": "tori",
     "origin": "4a",
@@ -73,9 +73,9 @@
   {
     "token": {
       "document": 1,
-      "version": 3,
-      "revision": 3,
-      "selection": 3
+      "version": 4,
+      "revision": 4,
+      "selection": 4
     },
     "game": "tori",
     "origin": "7b",
@@ -108,9 +108,9 @@
   {
     "token": {
       "document": 1,
-      "version": 3,
-      "revision": 3,
-      "selection": 3
+      "version": 4,
+      "revision": 4,
+      "selection": 4
     },
     "game": "tori",
     "origin": "7c",
@@ -185,9 +185,9 @@
   {
     "token": {
       "document": 1,
-      "version": 3,
-      "revision": 3,
-      "selection": 3
+      "version": 4,
+      "revision": 4,
+      "selection": 4
     },
     "game": "tori",
     "origin": "2d",
@@ -220,9 +220,9 @@
   {
     "token": {
       "document": 1,
-      "version": 3,
-      "revision": 3,
-      "selection": 3
+      "version": 4,
+      "revision": 4,
+      "selection": 4
     },
     "game": "tori",
     "origin": "7f",
@@ -327,9 +327,9 @@
   {
     "token": {
       "document": 1,
-      "version": 3,
-      "revision": 3,
-      "selection": 3
+      "version": 4,
+      "revision": 4,
+      "selection": 4
     },
     "game": "tori",
     "origin": "1f",
@@ -362,9 +362,9 @@
   {
     "token": {
       "document": 1,
-      "version": 3,
-      "revision": 3,
-      "selection": 3
+      "version": 4,
+      "revision": 4,
+      "selection": 4
     },
     "game": "tori",
     "origin": "7g",
@@ -384,9 +384,9 @@
   {
     "token": {
       "document": 1,
-      "version": 3,
-      "revision": 3,
-      "selection": 3
+      "version": 4,
+      "revision": 4,
+      "selection": 4
     },
     "game": "tori",
     "origin": "6g",
@@ -431,9 +431,9 @@
   {
     "token": {
       "document": 1,
-      "version": 3,
-      "revision": 3,
-      "selection": 3
+      "version": 4,
+      "revision": 4,
+      "selection": 4
     },
     "game": "tori",
     "origin": "4g",
@@ -514,9 +514,9 @@
   {
     "token": {
       "document": 1,
-      "version": 3,
-      "revision": 3,
-      "selection": 3
+      "version": 4,
+      "revision": 4,
+      "selection": 4
     },
     "game": "tori",
     "origin": "2g",
@@ -549,9 +549,9 @@
   {
     "token": {
       "document": 1,
-      "version": 3,
-      "revision": 3,
-      "selection": 3
+      "version": 4,
+      "revision": 4,
+      "selection": 4
     },
     "game": "tori",
     "origin": "1g",
@@ -571,9 +571,9 @@
   {
     "token": {
       "document": 1,
-      "version": 3,
-      "revision": 3,
-      "selection": 3
+      "version": 4,
+      "revision": 4,
+      "selection": 4
     },
     "game": "tori",
     "origin": "hand:mshogi.tori.modern.v1:sente:Cr",
@@ -1088,9 +1088,9 @@
   {
     "token": {
       "document": 1,
-      "version": 3,
-      "revision": 3,
-      "selection": 3
+      "version": 4,
+      "revision": 4,
+      "selection": 4
     },
     "game": "tori",
     "origin": "hand:mshogi.tori.modern.v1:sente:RQ",
@@ -1605,9 +1605,9 @@
   {
     "token": {
       "document": 1,
-      "version": 3,
-      "revision": 3,
-      "selection": 3
+      "version": 4,
+      "revision": 4,
+      "selection": 4
     },
     "game": "tori",
     "origin": "hand:mshogi.tori.modern.v1:sente:Sw",
@@ -2044,9 +2044,9 @@
   {
     "token": {
       "document": 1,
-      "version": 3,
-      "revision": 3,
-      "selection": 3
+      "version": 4,
+      "revision": 4,
+      "selection": 4
     },
     "game": "tori",
     "origin": "hand:mshogi.tori.modern.v1:gote:Cr",
@@ -2561,9 +2561,9 @@
   {
     "token": {
       "document": 1,
-      "version": 3,
-      "revision": 3,
-      "selection": 3
+      "version": 4,
+      "revision": 4,
+      "selection": 4
     },
     "game": "tori",
     "origin": "hand:mshogi.tori.modern.v1:gote:Pt",
@@ -3078,9 +3078,9 @@
   {
     "token": {
       "document": 1,
-      "version": 3,
-      "revision": 3,
-      "selection": 3
+      "version": 4,
+      "revision": 4,
+      "selection": 4
     },
     "game": "tori",
     "origin": "hand:mshogi.tori.modern.v1:gote:LQ",
@@ -3595,9 +3595,9 @@
   {
     "token": {
       "document": 1,
-      "version": 3,
-      "revision": 3,
-      "selection": 3
+      "version": 4,
+      "revision": 4,
+      "selection": 4
     },
     "game": "tori",
     "origin": "hand:mshogi.tori.modern.v1:gote:Sw",

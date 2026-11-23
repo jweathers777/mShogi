@@ -54,7 +54,7 @@ it("offers conservative default limits, admits bounded analysis only and does no
   const { command } = analysis();
   const depth = screen.getByRole("spinbutton", { name: "Depth" }) as HTMLInputElement;
   const nodes = screen.getByRole("spinbutton", { name: "Node limit" }) as HTMLInputElement;
-  expect(depth.value).toBe("1");expect(nodes.value).toBe("512");
+  expect(depth.value).toBe("64");expect(nodes.value).toBe("300000");
   expect([depth.min, depth.max, depth.step]).toEqual(["1", "64", "1"]);
   expect([nodes.min, nodes.max, nodes.step]).toEqual(["1", "5000000", "1"]);
   fireEvent.change(depth, { target: { value: "64" } });fireEvent.change(nodes, { target: { value: "5000000" } });
@@ -74,7 +74,7 @@ it("replaces and cancels analysis with distinct read-only operations and no synt
   const thinking: ChuSnapshot = { ...complete, phase: "thinking", execution_purpose: "move_analysis" };
   const { command, container } = analysis(thinking);
   fireEvent.click(screen.getByRole("button", { name: "Replace analysis" }));
-  expect(command).toHaveBeenNthCalledWith(1, { kind: "analyze", operation: { kind: "moves", depth: 1, nodes: 512 } });
+  expect(command).toHaveBeenNthCalledWith(1, { kind: "analyze", operation: { kind: "moves", depth: 64, nodes: 300000 } });
   fireEvent.click(screen.getByRole("button", { name: "Cancel analysis" }));
   expect(command).toHaveBeenNthCalledWith(2, { kind: "cancel" });expect(command).toHaveBeenCalledTimes(2);
   expect(screen.queryByRole("progressbar")).toBeNull();expect(container.querySelector(".shogi-pv")?.textContent).toContain(complete.search_observations[0]!.variation[0]);

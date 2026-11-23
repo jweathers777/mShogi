@@ -6,11 +6,11 @@ import { SupportDialog } from "./SupportDialog";
 import type { GameSnapshot } from "./native";
 import type { GameSession } from "./useGameSession";
 import chess from "../__fixtures__/shared-chess-standard.json";
-import actualCapacityArchive from "../../scripts/fixtures/chu-capacity256.mshogi?raw";
+import chuAnalysis from "../__fixtures__/shared-chu-analysis.json";
 
 afterEach(cleanup);
-it("renders a bounded page of the real 256-observation archive and reconstructs every byte", () => {
-  const archive: unknown = JSON.parse(actualCapacityArchive), text = JSON.stringify(archive);
+it("renders bounded pages of a large session diagnostic and reconstructs every byte", () => {
+  const archive = { ...chuAnalysis, observations: Array.from({ length: 256 }, () => chuAnalysis.observations[0]) }, text = JSON.stringify(archive);
   const { container } = render(<DiagnosticText text={text} />);
   let complete = "", pages = 0;
   do {

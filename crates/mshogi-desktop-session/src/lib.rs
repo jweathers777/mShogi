@@ -1440,7 +1440,11 @@ impl DesktopController {
             if matches!(scenario, "engine-played" | "analysis") {
                 let before = controller.shared_snapshot().observations.len();
                 controller.verify_tenjiku_execution(
-                    mshogi_engine::TENJIKU_PLAY_LIMITS,
+                    WorkLimits {
+                        time_ms: None,
+                        depth: 1,
+                        nodes: 1024,
+                    },
                     scenario == "analysis",
                 )?;
                 let deadline = Instant::now() + std::time::Duration::from_secs(20);

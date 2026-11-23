@@ -67,7 +67,7 @@
   },
   "open_token": {
     "document": 1,
-    "version": 12,
+    "version": 13,
     "document_revision": 8
   },
   "document": {
@@ -89,16 +89,16 @@
     "resource": null
   },
   "capacity": {
-    "id": 10,
+    "id": 11,
     "status": "available",
     "message": null,
     "resource": null
   },
   "token": {
     "document": 1,
-    "version": 12,
-    "revision": 21,
-    "selection": 12
+    "version": 13,
+    "revision": 22,
+    "selection": 13
   },
   "game": "tori",
   "profile": "mshogi.tori.modern.v1",
@@ -482,7 +482,7 @@
   "close_requires_save": true,
   "phase": "paused",
   "execution_purpose": null,
-  "diagnostic": "Saved observations are historical. Resume starts play.",
+  "diagnostic": "Resume starts play.",
   "declaration_advice": [],
   "context": {
     "envelope_version": 1,

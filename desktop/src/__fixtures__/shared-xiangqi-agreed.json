@@ -827,7 +827,7 @@
   "close_requires_save": true,
   "phase": "paused",
   "execution_purpose": null,
-  "diagnostic": "Saved observations are historical. Resume starts play.",
+  "diagnostic": "Resume starts play.",
   "declaration_advice": [],
   "context": {
     "envelope_version": 1,

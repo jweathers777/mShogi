@@ -8,8 +8,8 @@ mod roots;
 use mshogi_core::{chu as c, native::CanonicalRecord};
 use mshogi_desktop_session::chu_document::ValidatedChuDocument;
 use mshogi_engine::{
-    CHU_PLAY_LIMITS, ChuResult, ExecutionContext, ExecutionPurpose, ExecutionRequest,
-    ExecutionResponse, ExecutionResult, PROTOCOL_VERSION,
+    ChuResult, ExecutionContext, ExecutionPurpose, ExecutionRequest, ExecutionResponse,
+    ExecutionResult, PROTOCOL_VERSION,
 };
 use serde_json::{Value, json};
 use std::{io::Cursor, path::PathBuf};
@@ -221,7 +221,15 @@ fn scenarios() -> Vec<(String, ValidatedChuDocument, Value)> {
 }
 
 fn actual_observation(d: &ValidatedChuDocument, id: u64) -> mshogi_engine::ExecutionObservation {
-    actual_observation_at_limits(d, id, CHU_PLAY_LIMITS)
+    actual_observation_at_limits(
+        d,
+        id,
+        mshogi_engine::WorkLimits {
+            time_ms: None,
+            depth: 1,
+            nodes: 512,
+        },
+    )
 }
 fn actual_observation_at_limits(
     d: &ValidatedChuDocument,

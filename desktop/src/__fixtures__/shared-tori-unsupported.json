@@ -60,11 +60,11 @@
   },
   "open_token": {
     "document": 1,
-    "version": 5,
-    "document_revision": 3
+    "version": 6,
+    "document_revision": 2
   },
   "document": {
-    "revision": 3,
+    "revision": 2,
     "dirty": true,
     "path": null,
     "settings": {
@@ -82,16 +82,16 @@
     "resource": null
   },
   "capacity": {
-    "id": 3,
+    "id": 4,
     "status": "available",
     "message": null,
     "resource": null
   },
   "token": {
     "document": 1,
-    "version": 5,
-    "revision": 7,
-    "selection": 5
+    "version": 6,
+    "revision": 8,
+    "selection": 6
   },
   "game": "tori",
   "profile": "mshogi.tori.modern.v1",
@@ -2516,9 +2516,9 @@
           "purpose": {
             "kind": "engine_turn"
           },
-          "request_id": 4,
-          "session_version": 4,
-          "process_generation": 4,
+          "request_id": 5,
+          "session_version": 5,
+          "process_generation": 5,
           "game": {
             "envelope_version": 1,
             "game_kind": "tori",

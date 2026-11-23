@@ -12,15 +12,6 @@
         },
         "root": "independently_authored_diagram",
         "source_fixture": "CHU-RETURN-Ln-enemy"
-      },
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 5934,
-        "observations": 0,
-        "replay_work": 20,
-        "reserved_bytes": 703,
-        "reserved_work": 10,
-        "retained_events": 0
       }
     },
     {
@@ -36,15 +27,6 @@
         },
         "root": "independently_authored_diagram",
         "source_fixture": "CHU-LION-C2-1"
-      },
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 6410,
-        "observations": 0,
-        "replay_work": 128,
-        "reserved_bytes": 705,
-        "reserved_work": 10,
-        "retained_events": 0
       }
     },
     {
@@ -65,15 +47,6 @@
         },
         "root": "independently_authored_diagram",
         "source_fixture": "CHU-PROMOTE-DE-YES"
-      },
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 5778,
-        "observations": 0,
-        "replay_work": 28,
-        "reserved_bytes": 703,
-        "reserved_work": 10,
-        "retained_events": 0
       }
     },
     {
@@ -92,15 +65,6 @@
         },
         "root": "independently_authored_diagram",
         "source_fixture": "CHU-ROYAL-BOTH-COMPOUND"
-      },
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 5618,
-        "observations": 0,
-        "replay_work": 60,
-        "reserved_bytes": 705,
-        "reserved_work": 10,
-        "retained_events": 0
       }
     },
     {
@@ -115,15 +79,6 @@
         },
         "root": "independently_authored_diagram",
         "source_fixture": "CHU-ROYAL-SURVIVOR"
-      },
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 5923,
-        "observations": 0,
-        "replay_work": 52,
-        "reserved_bytes": 705,
-        "reserved_work": 10,
-        "retained_events": 0
       }
     },
     {
@@ -139,15 +94,6 @@
         },
         "root": "independently_authored_diagram",
         "source_fixture": "CHU-MATERIAL-DECLINE-COUNTERCAPTURE"
-      },
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 5451,
-        "observations": 0,
-        "replay_work": 84,
-        "reserved_bytes": 705,
-        "reserved_work": 10,
-        "retained_events": 0
       }
     },
     {
@@ -161,15 +107,6 @@
         },
         "root": "independently_authored_diagram",
         "source_fixture": "CHU-MATE"
-      },
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 5726,
-        "observations": 0,
-        "replay_work": 1840,
-        "reserved_bytes": 31,
-        "reserved_work": 1,
-        "retained_events": 0
       }
     },
     {
@@ -181,15 +118,6 @@
         },
         "root": "independently_authored_diagram",
         "source_fixture": "CHU-MATERIAL-AGREEMENT"
-      },
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 5298,
-        "observations": 0,
-        "replay_work": 16,
-        "reserved_bytes": 703,
-        "reserved_work": 10,
-        "retained_events": 0
       }
     },
     {
@@ -203,15 +131,6 @@
         },
         "root": "independently_authored_diagram",
         "source_fixture": "CHU-REP-QUIET"
-      },
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 15182,
-        "observations": 0,
-        "replay_work": 1492,
-        "reserved_bytes": 964,
-        "reserved_work": 10,
-        "retained_events": 16
       }
     },
     {
@@ -225,15 +144,6 @@
         },
         "root": "independently_authored_diagram",
         "source_fixture": "CHU-REP-QUIET"
-      },
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 19218,
-        "observations": 0,
-        "replay_work": 2464,
-        "reserved_bytes": 1472,
-        "reserved_work": 10,
-        "retained_events": 20
       }
     },
     {
@@ -249,15 +159,6 @@
         },
         "root": "independently_authored_diagram",
         "source_fixture": "CHU-MATERIAL-AGREEMENT"
-      },
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 5693,
-        "observations": 0,
-        "replay_work": 20,
-        "reserved_bytes": 710,
-        "reserved_work": 10,
-        "retained_events": 2
       }
     },
     {
@@ -272,15 +173,6 @@
         },
         "root": "independently_authored_diagram",
         "source_fixture": "CHU-MATERIAL-AGREEMENT"
-      },
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 6147,
-        "observations": 0,
-        "replay_work": 24,
-        "reserved_bytes": 31,
-        "reserved_work": 1,
-        "retained_events": 4
       }
     },
     {
@@ -295,15 +187,6 @@
         },
         "root": "independently_authored_diagram",
         "source_fixture": "CHU-ROYAL-BOTH-COMPOUND"
-      },
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 7034,
-        "observations": 0,
-        "replay_work": 80,
-        "reserved_bytes": 31,
-        "reserved_work": 1,
-        "retained_events": 2
       }
     },
     {
@@ -318,15 +201,6 @@
         },
         "root": "independently_authored_diagram",
         "source_fixture": "CHU-MATERIAL-DECLINE-COUNTERCAPTURE"
-      },
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 6700,
-        "observations": 0,
-        "replay_work": 136,
-        "reserved_bytes": 31,
-        "reserved_work": 1,
-        "retained_events": 2
       }
     },
     {
@@ -346,6 +220,40 @@
           {
             "action": {
               "from": [
+                7,
+                10
+              ],
+              "promote": false,
+              "route": [
+                [
+                  7,
+                  8
+                ]
+              ]
+            },
+            "actor": "sente",
+            "nodes": 38
+          },
+          {
+            "action": {
+              "from": [
+                6,
+                3
+              ],
+              "promote": false,
+              "route": [
+                [
+                  7,
+                  5
+                ]
+              ]
+            },
+            "actor": "gote",
+            "nodes": 39
+          },
+          {
+            "action": {
+              "from": [
                 9,
                 8
               ],
@@ -358,126 +266,58 @@
               ]
             },
             "actor": "sente",
-            "nodes": 37
+            "nodes": 51
+          },
+          {
+            "action": {
+              "from": [
+                12,
+                4
+              ],
+              "promote": false,
+              "route": [
+                [
+                  12,
+                  5
+                ]
+              ]
+            },
+            "actor": "gote",
+            "nodes": 54
+          },
+          {
+            "action": {
+              "from": [
+                4,
+                8
+              ],
+              "promote": false,
+              "route": [
+                [
+                  4,
+                  7
+                ]
+              ]
+            },
+            "actor": "sente",
+            "nodes": 62
           },
           {
             "action": {
               "from": [
                 11,
-                1
+                4
               ],
               "promote": false,
               "route": [
                 [
                   11,
-                  2
+                  5
                 ]
               ]
             },
             "actor": "gote",
-            "nodes": 37
-          },
-          {
-            "action": {
-              "from": [
-                9,
-                7
-              ],
-              "promote": false,
-              "route": [
-                [
-                  9,
-                  6
-                ]
-              ]
-            },
-            "actor": "sente",
-            "nodes": 40
-          },
-          {
-            "action": {
-              "from": [
-                9,
-                5
-              ],
-              "promote": false,
-              "route": [
-                [
-                  9,
-                  6
-                ]
-              ]
-            },
-            "actor": "gote",
-            "nodes": 36
-          },
-          {
-            "action": {
-              "from": [
-                4,
-                8
-              ],
-              "promote": false,
-              "route": [
-                [
-                  4,
-                  7
-                ]
-              ]
-            },
-            "actor": "sente",
-            "nodes": 38
-          },
-          {
-            "action": {
-              "from": [
-                10,
-                1
-              ],
-              "promote": false,
-              "route": [
-                [
-                  9,
-                  2
-                ]
-              ]
-            },
-            "actor": "gote",
-            "nodes": 38
-          },
-          {
-            "action": {
-              "from": [
-                4,
-                7
-              ],
-              "promote": false,
-              "route": [
-                [
-                  4,
-                  6
-                ]
-              ]
-            },
-            "actor": "sente",
-            "nodes": 40
-          },
-          {
-            "action": {
-              "from": [
-                4,
-                5
-              ],
-              "promote": false,
-              "route": [
-                [
-                  4,
-                  6
-                ]
-              ]
-            },
-            "actor": "gote",
-            "nodes": 33
+            "nodes": 55
           },
           {
             "action": {
@@ -494,24 +334,24 @@
               ]
             },
             "actor": "sente",
-            "nodes": 38
+            "nodes": 65
           },
           {
             "action": {
               "from": [
-                5,
-                1
+                10,
+                4
               ],
               "promote": false,
               "route": [
                 [
-                  4,
-                  2
+                  10,
+                  5
                 ]
               ]
             },
             "actor": "gote",
-            "nodes": 36
+            "nodes": 56
           },
           {
             "action": {
@@ -528,24 +368,58 @@
               ]
             },
             "actor": "sente",
-            "nodes": 39
+            "nodes": 61
+          },
+          {
+            "action": {
+              "from": [
+                8,
+                4
+              ],
+              "promote": false,
+              "route": [
+                [
+                  8,
+                  5
+                ]
+              ]
+            },
+            "actor": "gote",
+            "nodes": 58
+          },
+          {
+            "action": {
+              "from": [
+                11,
+                9
+              ],
+              "promote": false,
+              "route": [
+                [
+                  11,
+                  8
+                ]
+              ]
+            },
+            "actor": "sente",
+            "nodes": 66
           },
           {
             "action": {
               "from": [
                 6,
-                1
+                4
               ],
               "promote": false,
               "route": [
                 [
-                  5,
-                  1
+                  6,
+                  5
                 ]
               ]
             },
             "actor": "gote",
-            "nodes": 32
+            "nodes": 61
           }
         ],
         "root": "standard_start",
@@ -553,15 +427,6 @@
           "depth": 1,
           "nodes": 512
         }
-      },
-      "usage": {
-        "controls": 25,
-        "encoded_bytes": 188032,
-        "observations": 12,
-        "replay_work": 26444,
-        "reserved_bytes": 31,
-        "reserved_work": 1,
-        "retained_events": 79
       }
     },
     {
@@ -605,39 +470,6 @@
           "depth": 1,
           "nodes": 512
         }
-      },
-      "usage": {
-        "controls": 3,
-        "encoded_bytes": 13684,
-        "observations": 2,
-        "replay_work": 258,
-        "reserved_bytes": 32,
-        "reserved_work": 1,
-        "retained_events": 2
-      }
-    },
-    {
-      "file": "chu-capacity256.mshogi",
-      "provenance": {
-        "engine": "mshogi.chu.full-width.v1",
-        "expected": "A positive-budget normal analysis request refuses before committing a 257th observation, with typed observation capacity; Save remains available and Load does not reset the structural count.",
-        "limitation": "Historical actual zero-work observations only; neither pending execution nor completed scores/actions.",
-        "native_events": 0,
-        "observations": 256,
-        "root": "standard_start",
-        "work_limits": {
-          "depth": 1,
-          "nodes": 0
-        }
-      },
-      "usage": {
-        "controls": 256,
-        "encoded_bytes": 2601304,
-        "observations": 256,
-        "replay_work": 28820,
-        "reserved_bytes": 704,
-        "reserved_work": 10,
-        "retained_events": 0
       }
     }
   ],

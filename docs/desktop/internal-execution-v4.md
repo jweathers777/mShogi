@@ -1,4 +1,4 @@
-# Current internal execution and durable observations (MSH-116 / R1)
+# Current internal execution and session observations
 
 This is the sole supported internal engine boundary. Development transports
 v1/v2/v3 are retired. External UCI, USI and Xiangqi interoperability are separate,
@@ -12,7 +12,7 @@ unchanged functional contracts. See R1 evidence.
   `process_generation`, `game: CanonicalRecord`, and `limits: WorkLimits`.
 - `ExecutionRequest`: `{ protocol: 4, context: ExecutionContext }`.
 - `ExecutionObservation`: `{ schema_version: 1, context: ExecutionContext,
-  result: ExecutionResult }`. This is durable semantic evidence, with no wire
+  result: ExecutionResult }`. This is semantic evidence, with no wire
   version or pending-execution meaning.
 - `ExecutionResponse`: `{ protocol: 4, observation: ExecutionObservation }`.
 
@@ -32,7 +32,7 @@ an explicit unscored InvalidRequest response; an old flat shape is malformed.
 MSH-49.1 adds optional Chess fields within this same family. `WorkLimits` keeps
 mandatory `depth` and `nodes`, with optional `time_ms` (0–60,000 milliseconds)
 for ordinary engine turns or move analysis in all six games. The exact time
-limit is part of context equality, request replacement and durable observations.
+limit is part of context equality, request replacement and observations.
 Chess Full refuses this field. Omission serializes exactly as before, so
 existing deterministic requests and observation digests retain their encoding.
 An older strict child may reject the new timed field; the host does not retry
@@ -119,62 +119,19 @@ watchdogs, bounded pipes, cleanup and diagnostic handling remain. Encoded caps
 are unchanged: request1MiB, response2MiB, retained diagnostic4096UTF-8bytes.
 Admission measures actual current framing, not an inner payload estimate.
 Cancellation/Unknown/incomplete work/failure never invents a fallback move,
-score or game outcome. Cancellation remains recorded in native desktop controls;
+score or game outcome. Cancellation retires the active runtime request;
 absence of a final observation does not invent search telemetry.
 
-## Current-stage persistence and next boundaries
+## Persistence
 
-Chess `ArchivedObservation` and native `PresentedObservation` contain an
-`observation: ExecutionObservation`. Validators replay authoritative native
-history/prefixes and verify native result/variation/proof facts, identities,
-limits and perspective. Stored observations are historical evidence, never
-resumable pending requests. Take back retains abandoned histories and their
-observations; Xiangqi exact evidence is not discarded or turned into an outcome.
+The shared native document saves the game, human side and settings (MSH-228).
+Engine observations and Xiangqi exact evidence stay in session memory; each
+list keeps its newest 256 results. They are not part of Save/Open. Take back
+cuts the game command list and keeps the open session's results as historical
+observations. Opening restores the live game with fresh runtime identities,
+empty results and stopped execution. It does not restore a history selection.
 
-R1 changes observation contents in the current-stage desktop codecs; it does
-**not** promise to read development-era saves. Such old observation encodings
-reject strictly, without falling back to a retired engine parser. Current-stage
-Save/Open, atomic file failures, fresh stopped restoration, capacity admission
-and reserved stop/close headroom remain tested. No archive/resource constant is
-raised. The Xiangqi payload now records `observation_schema_version: 1` instead
-of coupling durable data to an engine protocol number.
-
-Subsequent MSH-117/R2 delivered the sole current outer desktop envelope and
-deleted old desktop version/read branches. MSH-118/R3 and MSH-119/R4 delivered
-the native runtime/document owner and single frontend session, deleting the
-finite installation/forwarding stages and remaining Chess product projection.
-See the [current document](document-v1.md) and [native application](native-application.md)
-contracts. R1 introduced no permanent transport adapter. Native Chess
-presentation types remain meaningful domain data, not an alternate engine
-execution interface.
-
-## Engine session
-
-MSH-169 (Engine Session Persistence) and MSH-179 (Clock and Session for All Games).
-The wire types did not change.
-
-- One child serves successive requests. A response is accepted when its line is
-  complete and matches the request; the bridge does not wait for the child to
-  exit.
-- The bridge stops the child on cancellation or replacement of a running
-  request, on each typed failure, on the watchdog and on shutdown. The next
-  request starts a new child. A kept child that ended normally while it was
-  idle is replaced once, and the request runs on the new child. A kept child
-  that ends with a failure status during a request is an `UnexpectedExit`
-  failure with the diagnostic text of that request.
-- Memory: the child retains state for one game kind at a time: Chess uses a
-  64 MB table by default; the other adapters use 16 MiB tables plus shared
-  move statistics. A request without `time_ms` uses fresh state for its duration.
-- Each game: a request with `time_ms` uses the transposition table and move
-  statistics that the child kept, when the game of the last timed request is an
-  exact prefix of the game of this request. A new, loaded or taken-back game
-  starts with empty state. Explicit host cancellation retires an idle child as
-  well as active work, so an equal loaded history also starts empty. A request
-  without `time_ms` always runs on new
-  state and does not change the kept state, so depth and node limits stay
-  reproducible.
-- All six games use the same session retention rule. Native history prefix
-  comparison includes the initial state and immutable profile. A timed switch
-  of game kind drops the previous game state. Desktop defaults are unchanged.
-- `process_generation` is a request identity that increases with each
-  submission. It does not count child processes.
+Chess still uses its existing archive until MSH-225. Its stored observations
+are historical evidence, never resumable requests. No development-era document
+compatibility is promised; see design A-09. Atomic file failures preserve the
+accepted document and save path. The encoded document limit remains 16 MiB.

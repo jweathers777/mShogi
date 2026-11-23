@@ -964,7 +964,7 @@
   },
   "open_token": {
     "document": 1,
-    "version": 4,
+    "version": 5,
     "document_revision": 2
   },
   "document": {
@@ -986,16 +986,16 @@
     "resource": null
   },
   "capacity": {
-    "id": 2,
+    "id": 3,
     "status": "available",
     "message": null,
     "resource": null
   },
   "token": {
     "document": 1,
-    "version": 4,
-    "revision": 5,
-    "selection": 4
+    "version": 5,
+    "revision": 6,
+    "selection": 5
   },
   "game": "tenjiku",
   "profile": "mshogi.tenjiku.adams1999-modern.v1",
@@ -1358,15 +1358,15 @@
   "event_index": 1,
   "board_ply": 1,
   "play_limits": {
-    "depth": 1,
-    "nodes": 1024
+    "depth": 64,
+    "nodes": 50000
   },
   "historical": false,
   "paused": true,
   "close_requires_save": true,
   "phase": "paused",
   "execution_purpose": null,
-  "diagnostic": "Saved observations are historical. Resume starts play.",
+  "diagnostic": "Resume starts play.",
   "declaration_advice": [],
   "context": {"envelope_version":1,"game_kind":"tenjiku","rules_profile":"mshogi.tenjiku.adams1999-modern.v1","profile_edition":"ADAMS1999-MODERN+MSH83-2026-11-04","native_schema_version":1,"payload":{"format":"mshogi.tenjiku.game","game":"tenjiku","profile":"mshogi.tenjiku.adams1999-modern.v1","edition":"ADAMS1999-MODERN+MSH83-2026-11-04","schema_version":1,"mode":"untimed","root":{"board":[{"id":2,"side":"gote","base":"K","promoted":false,"right":"consumed"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":3,"side":"gote","base":"P","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":5,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":6,"side":"gote","base":"P","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":4,"side":"sente","base":"Ln","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":1,"side":"sente","base":"P","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":0,"side":"sente","base":"K","promoted":false,"right":"consumed"}],"profile":"mshogi.tenjiku.adams1999-modern.v1","side":"sente","root":{"kind":"diagram","source":null,"declared_completed_plies":0},"accepted_plies":0},"root_conclusion":null,"root_pending_bare":null,"root_draw_offer":null,"root_incomplete":null,"events":[{"index":0,"board_ply":1,"actor":"sente","command":{"kind":"play","action":{"kind":"travel","from":[8,8],"route":[[8,7],[8,8]],"promote":false}},"effects":{"actor":"sente","action":{"kind":"travel","from":[8,8],"route":[[8,7],[8,8]],"promote":false},"mover_before":{"id":4,"side":"sente","base":"Ln","promoted":false,"right":"unseen"},"mover_after":{"id":4,"side":"sente","base":"Ln","promoted":false,"right":"unseen"},"phases":[{"phase":"capture","victim":{"square":[8,7],"piece":{"id":5,"side":"gote","base":"P","promoted":false,"right":"unseen"}}}],"work_units":779},"conclusion":null,"pending_bare":null,"draw_offer":null,"incomplete":null}],"current_position":{"board":[{"id":2,"side":"gote","base":"K","promoted":false,"right":"consumed"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":3,"side":"gote","base":"P","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":6,"side":"gote","base":"P","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":4,"side":"sente","base":"Ln","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":1,"side":"sente","base":"P","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":0,"side":"sente","base":"K","promoted":false,"right":"consumed"}],"profile":"mshogi.tenjiku.adams1999-modern.v1","side":"gote","root":{"kind":"diagram","source":null,"declared_completed_plies":0},"accepted_plies":1},"conclusion":null,"pending_bare":null,"draw_offer":null,"incomplete":null}},
   "analysis": null,

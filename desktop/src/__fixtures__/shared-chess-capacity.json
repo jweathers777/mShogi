@@ -1,5 +1,4 @@
 {
-  "close_requires_save": true,
   "moves": {
     "root": {
       "label": "Starting position",
@@ -724,14 +723,16 @@
   "event_index": 1,
   "board_ply": 0,
   "play_limits": {
-    "depth": 2,
-    "nodes": 20000
+    "depth": 128,
+    "nodes": 9007199254740991,
+    "time_ms": 1000
   },
   "historical": false,
   "paused": true,
+  "close_requires_save": true,
   "phase": "paused",
   "execution_purpose": null,
-  "diagnostic": "Play paused for analysis. Resume play explicitly to continue.",
+  "diagnostic": "Analysis incomplete. Resume play when ready.",
   "declaration_advice": [],
   "context": {
     "envelope_version": 1,
@@ -782,6 +783,7 @@
           "telemetry": {
             "score": null,
             "completed_depth": 0,
+            "selective_depth": 0,
             "nodes": 0,
             "principal_variation": [],
             "status": "node_limit"
@@ -834,6 +836,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -885,6 +888,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -936,6 +940,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -987,6 +992,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -1038,6 +1044,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -1089,6 +1096,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -1140,6 +1148,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -1191,6 +1200,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -1242,6 +1252,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -1293,6 +1304,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -1344,6 +1356,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -1395,6 +1408,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -1446,6 +1460,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -1497,6 +1512,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -1548,6 +1564,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -1599,6 +1616,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -1650,6 +1668,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -1701,6 +1720,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -1752,6 +1772,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -1803,6 +1824,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -1854,6 +1876,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -1905,6 +1928,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -1956,6 +1980,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -2007,6 +2032,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -2058,6 +2084,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -2109,6 +2136,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -2160,6 +2188,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -2211,6 +2240,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -2262,6 +2292,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -2313,6 +2344,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -2364,6 +2396,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -2415,6 +2448,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -2466,6 +2500,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -2517,6 +2552,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -2568,6 +2604,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -2619,6 +2656,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -2670,6 +2708,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -2721,6 +2760,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -2772,6 +2812,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -2823,6 +2864,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -2874,6 +2916,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -2925,6 +2968,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -2976,6 +3020,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -3027,6 +3072,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -3078,6 +3124,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -3129,6 +3176,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -3180,6 +3228,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -3231,6 +3280,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -3282,6 +3332,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -3333,6 +3384,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -3384,6 +3436,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -3435,6 +3488,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -3486,6 +3540,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -3537,6 +3592,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -3588,6 +3644,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -3639,6 +3696,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -3690,6 +3748,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -3741,6 +3800,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -3792,6 +3852,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -3843,6 +3904,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -3894,6 +3956,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -3945,6 +4008,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -3996,6 +4060,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -4047,6 +4112,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -4098,6 +4164,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -4149,6 +4216,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -4200,6 +4268,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -4251,6 +4320,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -4302,6 +4372,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -4353,6 +4424,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -4404,6 +4476,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -4455,6 +4528,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -4506,6 +4580,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -4557,6 +4632,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -4608,6 +4684,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -4659,6 +4736,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -4710,6 +4788,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -4761,6 +4840,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -4812,6 +4892,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -4863,6 +4944,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -4914,6 +4996,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -4965,6 +5048,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -5016,6 +5100,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -5067,6 +5152,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -5118,6 +5204,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -5169,6 +5256,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -5220,6 +5308,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -5271,6 +5360,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -5322,6 +5412,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -5373,6 +5464,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -5424,6 +5516,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -5475,6 +5568,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -5526,6 +5620,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -5577,6 +5672,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -5628,6 +5724,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -5679,6 +5776,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -5730,6 +5828,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -5781,6 +5880,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -5832,6 +5932,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -5883,6 +5984,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -5934,6 +6036,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -5985,6 +6088,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -6036,6 +6140,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -6087,6 +6192,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -6138,6 +6244,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -6189,6 +6296,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -6240,6 +6348,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -6291,6 +6400,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -6342,6 +6452,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -6393,6 +6504,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -6444,6 +6556,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -6495,6 +6608,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -6546,6 +6660,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -6597,6 +6712,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -6648,6 +6764,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -6699,6 +6816,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -6750,6 +6868,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -6801,6 +6920,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -6852,6 +6972,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -6903,6 +7024,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -6954,6 +7076,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -7005,6 +7128,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -7056,6 +7180,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -7107,6 +7232,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -7158,6 +7284,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -7209,6 +7336,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -7260,6 +7388,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -7311,6 +7440,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -7362,6 +7492,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -7413,6 +7544,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -7464,6 +7596,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -7515,6 +7648,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -7566,6 +7700,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -7617,6 +7752,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -7668,6 +7804,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -7719,6 +7856,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -7770,6 +7908,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -7821,6 +7960,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -7872,6 +8012,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -7923,6 +8064,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -7974,6 +8116,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -8025,6 +8168,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -8076,6 +8220,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -8127,6 +8272,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -8178,6 +8324,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -8229,6 +8376,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -8280,6 +8428,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -8331,6 +8480,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -8382,6 +8532,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -8433,6 +8584,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -8484,6 +8636,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -8535,6 +8688,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -8586,6 +8740,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -8637,6 +8792,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -8688,6 +8844,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -8739,6 +8896,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -8790,6 +8948,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -8841,6 +9000,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -8892,6 +9052,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -8943,6 +9104,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -8994,6 +9156,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -9045,6 +9208,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -9096,6 +9260,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -9147,6 +9312,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -9198,6 +9364,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -9249,6 +9416,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -9300,6 +9468,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -9351,6 +9520,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -9402,6 +9572,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -9453,6 +9624,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -9504,6 +9676,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -9555,6 +9728,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -9606,6 +9780,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -9657,6 +9832,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -9708,6 +9884,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -9759,6 +9936,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -9810,6 +9988,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -9861,6 +10040,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -9912,6 +10092,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -9963,6 +10144,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -10014,6 +10196,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -10065,6 +10248,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -10116,6 +10300,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -10167,6 +10352,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -10218,6 +10404,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -10269,6 +10456,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -10320,6 +10508,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -10371,6 +10560,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -10422,6 +10612,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -10473,6 +10664,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -10524,6 +10716,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -10575,6 +10768,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -10626,6 +10820,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -10677,6 +10872,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -10728,6 +10924,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -10779,6 +10976,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -10830,6 +11028,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -10881,6 +11080,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -10932,6 +11132,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -10983,6 +11184,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -11034,6 +11236,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -11085,6 +11288,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -11136,6 +11340,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -11187,6 +11392,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -11238,6 +11444,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -11289,6 +11496,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -11340,6 +11548,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -11391,6 +11600,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -11442,6 +11652,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -11493,6 +11704,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -11544,6 +11756,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -11595,6 +11808,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -11646,6 +11860,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -11697,6 +11912,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -11748,6 +11964,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -11799,6 +12016,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -11850,6 +12068,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -11901,6 +12120,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -11952,6 +12172,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -12003,6 +12224,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -12054,6 +12276,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -12105,6 +12328,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -12156,6 +12380,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -12207,6 +12432,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -12258,6 +12484,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -12309,6 +12536,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -12360,6 +12588,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -12411,6 +12640,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -12462,6 +12692,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -12513,6 +12744,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -12564,6 +12796,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -12615,6 +12848,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -12666,6 +12900,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -12717,6 +12952,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -12768,6 +13004,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -12819,6 +13056,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -12870,6 +13108,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -12921,6 +13160,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -12972,6 +13212,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -13023,6 +13264,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -13074,6 +13316,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -13125,6 +13368,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -13176,6 +13420,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -13227,6 +13472,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -13278,6 +13524,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -13329,6 +13576,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -13380,6 +13628,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -13431,6 +13680,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -13482,6 +13732,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -13533,6 +13784,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -13584,6 +13836,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -13635,6 +13888,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -13686,6 +13940,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -13737,6 +13992,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -13788,6 +14044,7 @@
             "telemetry": {
               "score": null,
               "completed_depth": 0,
+              "selective_depth": 0,
               "nodes": 0,
               "principal_variation": [],
               "status": "node_limit"
@@ -13809,6 +14066,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -13824,6 +14082,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -13839,6 +14098,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -13854,6 +14114,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -13869,6 +14130,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -13884,6 +14146,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -13899,6 +14162,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -13914,6 +14178,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -13929,6 +14194,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -13944,6 +14210,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -13959,6 +14226,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -13974,6 +14242,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -13989,6 +14258,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14004,6 +14274,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14019,6 +14290,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14034,6 +14306,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14049,6 +14322,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14064,6 +14338,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14079,6 +14354,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14094,6 +14370,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14109,6 +14386,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14124,6 +14402,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14139,6 +14418,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14154,6 +14434,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14169,6 +14450,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14184,6 +14466,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14199,6 +14482,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14214,6 +14498,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14229,6 +14514,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14244,6 +14530,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14259,6 +14546,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14274,6 +14562,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14289,6 +14578,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14304,6 +14594,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14319,6 +14610,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14334,6 +14626,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14349,6 +14642,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14364,6 +14658,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14379,6 +14674,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14394,6 +14690,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14409,6 +14706,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14424,6 +14722,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14439,6 +14738,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14454,6 +14754,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14469,6 +14770,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14484,6 +14786,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14499,6 +14802,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14514,6 +14818,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14529,6 +14834,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14544,6 +14850,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14559,6 +14866,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14574,6 +14882,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14589,6 +14898,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14604,6 +14914,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14619,6 +14930,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14634,6 +14946,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14649,6 +14962,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14664,6 +14978,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14679,6 +14994,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14694,6 +15010,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14709,6 +15026,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14724,6 +15042,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14739,6 +15058,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14754,6 +15074,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14769,6 +15090,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14784,6 +15106,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14799,6 +15122,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14814,6 +15138,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14829,6 +15154,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14844,6 +15170,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14859,6 +15186,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14874,6 +15202,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14889,6 +15218,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14904,6 +15234,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14919,6 +15250,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14934,6 +15266,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14949,6 +15282,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14964,6 +15298,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14979,6 +15314,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -14994,6 +15330,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15009,6 +15346,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15024,6 +15362,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15039,6 +15378,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15054,6 +15394,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15069,6 +15410,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15084,6 +15426,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15099,6 +15442,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15114,6 +15458,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15129,6 +15474,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15144,6 +15490,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15159,6 +15506,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15174,6 +15522,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15189,6 +15538,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15204,6 +15554,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15219,6 +15570,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15234,6 +15586,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15249,6 +15602,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15264,6 +15618,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15279,6 +15634,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15294,6 +15650,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15309,6 +15666,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15324,6 +15682,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15339,6 +15698,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15354,6 +15714,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15369,6 +15730,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15384,6 +15746,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15399,6 +15762,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15414,6 +15778,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15429,6 +15794,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15444,6 +15810,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15459,6 +15826,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15474,6 +15842,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15489,6 +15858,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15504,6 +15874,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15519,6 +15890,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15534,6 +15906,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15549,6 +15922,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15564,6 +15938,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15579,6 +15954,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15594,6 +15970,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15609,6 +15986,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15624,6 +16002,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15639,6 +16018,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15654,6 +16034,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15669,6 +16050,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15684,6 +16066,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15699,6 +16082,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15714,6 +16098,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15729,6 +16114,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15744,6 +16130,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15759,6 +16146,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15774,6 +16162,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15789,6 +16178,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15804,6 +16194,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15819,6 +16210,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15834,6 +16226,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15849,6 +16242,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15864,6 +16258,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15879,6 +16274,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15894,6 +16290,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15909,6 +16306,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15924,6 +16322,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15939,6 +16338,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15954,6 +16354,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15969,6 +16370,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15984,6 +16386,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -15999,6 +16402,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16014,6 +16418,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16029,6 +16434,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16044,6 +16450,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16059,6 +16466,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16074,6 +16482,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16089,6 +16498,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16104,6 +16514,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16119,6 +16530,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16134,6 +16546,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16149,6 +16562,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16164,6 +16578,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16179,6 +16594,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16194,6 +16610,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16209,6 +16626,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16224,6 +16642,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16239,6 +16658,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16254,6 +16674,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16269,6 +16690,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16284,6 +16706,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16299,6 +16722,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16314,6 +16738,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16329,6 +16754,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16344,6 +16770,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16359,6 +16786,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16374,6 +16802,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16389,6 +16818,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16404,6 +16834,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16419,6 +16850,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16434,6 +16866,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16449,6 +16882,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16464,6 +16898,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16479,6 +16914,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16494,6 +16930,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16509,6 +16946,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16524,6 +16962,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16539,6 +16978,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16554,6 +16994,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16569,6 +17010,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16584,6 +17026,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16599,6 +17042,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16614,6 +17058,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16629,6 +17074,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16644,6 +17090,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16659,6 +17106,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16674,6 +17122,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16689,6 +17138,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16704,6 +17154,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16719,6 +17170,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16734,6 +17186,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16749,6 +17202,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16764,6 +17218,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16779,6 +17234,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16794,6 +17250,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16809,6 +17266,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16824,6 +17282,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16839,6 +17298,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16854,6 +17314,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16869,6 +17330,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16884,6 +17346,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16899,6 +17362,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16914,6 +17378,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16929,6 +17394,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16944,6 +17410,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16959,6 +17426,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16974,6 +17442,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -16989,6 +17458,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17004,6 +17474,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17019,6 +17490,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17034,6 +17506,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17049,6 +17522,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17064,6 +17538,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17079,6 +17554,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17094,6 +17570,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17109,6 +17586,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17124,6 +17602,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17139,6 +17618,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17154,6 +17634,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17169,6 +17650,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17184,6 +17666,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17199,6 +17682,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17214,6 +17698,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17229,6 +17714,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17244,6 +17730,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17259,6 +17746,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17274,6 +17762,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17289,6 +17778,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17304,6 +17794,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17319,6 +17810,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17334,6 +17826,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17349,6 +17842,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17364,6 +17858,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17379,6 +17874,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17394,6 +17890,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17409,6 +17906,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17424,6 +17922,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17439,6 +17938,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17454,6 +17954,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17469,6 +17970,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17484,6 +17986,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17499,6 +18002,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17514,6 +18018,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17529,6 +18034,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17544,6 +18050,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17559,6 +18066,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17574,6 +18082,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17589,6 +18098,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17604,6 +18114,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17619,6 +18130,7 @@
       "engine": "mShogi",
       "score": null,
       "completed_depth": 0,
+      "selective_depth": 0,
       "nodes": 0,
       "variation": [],
       "status": "Node limit reached",
@@ -17686,6 +18198,7 @@
         "telemetry": {
           "score": null,
           "completed_depth": 0,
+          "selective_depth": 0,
           "nodes": 0,
           "principal_variation": [],
           "status": "node_limit"

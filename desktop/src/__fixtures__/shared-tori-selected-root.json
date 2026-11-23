@@ -49,7 +49,7 @@
   },
   "open_token": {
     "document": 1,
-    "version": 9,
+    "version": 10,
     "document_revision": 6
   },
   "document": {
@@ -71,16 +71,16 @@
     "resource": null
   },
   "capacity": {
-    "id": 7,
+    "id": 8,
     "status": "available",
     "message": null,
     "resource": null
   },
   "token": {
     "document": 1,
-    "version": 9,
-    "revision": 15,
-    "selection": 9
+    "version": 10,
+    "revision": 16,
+    "selection": 10
   },
   "game": "tori",
   "profile": "mshogi.tori.modern.v1",

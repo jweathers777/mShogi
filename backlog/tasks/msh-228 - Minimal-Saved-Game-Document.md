@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-22T16:43:00Z'
-updated_date: '2026-11-23T08:25:00Z'
+updated_date: '2026-11-23T08:31:00Z'
 labels:
   - desktop
   - refactor
@@ -59,4 +59,6 @@ REMAINING (in order):
 5. Run fmt, clippy (also --all-features for mshogi-desktop-session), cargo test --workspace --locked --release; fresh-agent review (rules unchanged; check nothing reads saved results); record line counts; merge; then MSH-225 (Chess) and MSH-229 (audit of overbuilt auditing) can start.
 
 Codex continuation: John assigned the pushed Claude handoff. Continue on codex/msh-228-minimal-document; finish console assertions, regenerate fixtures, remove capacity journey, run checks and platform CI, obtain fresh-agent review, integrate.
+
+Checkpoint (Codex): remaining console reopen assertions updated; all GUI documents regenerated with minimal record/human/settings payload; removed Chu capacity fixture and adapted generic-game smoke journeys; frontend regeneration exposed stale Chu/Tenjiku fixture search defaults, now explicit deterministic limits. Fresh review found unbounded current-observation IDs (fixed, 260-result regression passed) and double replay on Open (parser handoff fix in progress). GUI observer tests and frontend checks in progress. Branch codex/msh-228-minimal-document. Remaining: finish single-replay API, complete checks and affected-platform CI, final review and merge.
 <!-- SECTION:NOTES:END -->

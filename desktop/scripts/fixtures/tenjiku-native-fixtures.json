@@ -16,16 +16,7 @@
       "file": "tenjiku-adams-compound.mshogi",
       "human": "sente",
       "profile": "mshogi.tenjiku.adams1999-modern.v1",
-      "source_fixture": "TEN-LIONHAWK-DOUBLE-CAPTURE",
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 9560,
-        "observations": 0,
-        "replay_work": 19448,
-        "reserved_bytes": 945,
-        "reserved_work": 43040,
-        "retained_events": 0
-      }
+      "source_fixture": "TEN-LIONHAWK-DOUBLE-CAPTURE"
     },
     {
       "expected": {
@@ -37,16 +28,7 @@
       "file": "tenjiku-adams-igui.mshogi",
       "human": "sente",
       "profile": "mshogi.tenjiku.adams1999-modern.v1",
-      "source_fixture": "TEN-TETRARCH-IGUI",
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 9264,
-        "observations": 0,
-        "replay_work": 18856,
-        "reserved_bytes": 945,
-        "reserved_work": 41708,
-        "retained_events": 0
-      }
+      "source_fixture": "TEN-TETRARCH-IGUI"
     },
     {
       "expected": {
@@ -61,16 +43,7 @@
       "file": "tenjiku-adams-promotion.mshogi",
       "human": "sente",
       "profile": "mshogi.tenjiku.adams1999-modern.v1",
-      "source_fixture": "TEN-PROMOTION-CONCRETE-P-YES",
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 9044,
-        "observations": 0,
-        "replay_work": 18416,
-        "reserved_bytes": 945,
-        "reserved_work": 40718,
-        "retained_events": 0
-      }
+      "source_fixture": "TEN-PROMOTION-CONCRETE-P-YES"
     },
     {
       "expected": {
@@ -89,16 +62,7 @@
       "file": "tenjiku-adams-burn.mshogi",
       "human": "sente",
       "profile": "mshogi.tenjiku.adams1999-modern.v1",
-      "source_fixture": "TEN-BURN-DYING",
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 9524,
-        "observations": 0,
-        "replay_work": 19376,
-        "reserved_bytes": 945,
-        "reserved_work": 42878,
-        "retained_events": 0
-      }
+      "source_fixture": "TEN-BURN-DYING"
     },
     {
       "diagram_extension": {
@@ -128,16 +92,7 @@
       "file": "tenjiku-adams-royal-engine.mshogi",
       "human": "gote",
       "profile": "mshogi.tenjiku.adams1999-modern.v1",
-      "source_fixture": "TEN-BURN-ENEMY-ROYAL",
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 9693,
-        "observations": 0,
-        "replay_work": 19720,
-        "reserved_bytes": 945,
-        "reserved_work": 43652,
-        "retained_events": 0
-      }
+      "source_fixture": "TEN-BURN-ENEMY-ROYAL"
     },
     {
       "expected": {
@@ -152,16 +107,7 @@
       "file": "tenjiku-adams-simultaneous.mshogi",
       "human": "sente",
       "profile": "mshogi.tenjiku.adams1999-modern.v1",
-      "source_fixture": "TEN-BURN-SIMULTANEOUS-ROYALS",
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 9056,
-        "observations": 0,
-        "replay_work": 18440,
-        "reserved_bytes": 945,
-        "reserved_work": 40772,
-        "retained_events": 0
-      }
+      "source_fixture": "TEN-BURN-SIMULTANEOUS-ROYALS"
     },
     {
       "expected": {
@@ -177,16 +123,7 @@
       "file": "tenjiku-adams-bare-loss.mshogi",
       "human": "gote",
       "profile": "mshogi.tenjiku.adams1999-modern.v1",
-      "source_fixture": "TEN-BARE-CONCRETE-LOSS",
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 9009,
-        "observations": 0,
-        "replay_work": 18352,
-        "reserved_bytes": 945,
-        "reserved_work": 40574,
-        "retained_events": 0
-      }
+      "source_fixture": "TEN-BARE-CONCRETE-LOSS"
     },
     {
       "expected": {
@@ -197,16 +134,7 @@
       "file": "tenjiku-adams-no-actions.mshogi",
       "human": "sente",
       "profile": "mshogi.tenjiku.adams1999-modern.v1",
-      "source_fixture": "TEN-NO-ACTIONS-CONCRETE",
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 9280,
-        "observations": 0,
-        "replay_work": 18888,
-        "reserved_bytes": 945,
-        "reserved_work": 41780,
-        "retained_events": 0
-      }
+      "source_fixture": "TEN-NO-ACTIONS-CONCRETE"
     },
     {
       "expected": {
@@ -222,16 +150,7 @@
       "file": "tenjiku-adams-agreement.mshogi",
       "human": "gote",
       "profile": "mshogi.tenjiku.adams1999-modern.v1",
-      "source_fixture": "TEN-REPETITION-CONCRETE",
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 9101,
-        "observations": 0,
-        "replay_work": 34356,
-        "reserved_bytes": 946,
-        "reserved_work": 41006,
-        "retained_events": 2
-      }
+      "source_fixture": "TEN-REPETITION-CONCRETE"
     },
     {
       "expected": {
@@ -243,16 +162,7 @@
       "file": "tenjiku-adams-repetition3.mshogi",
       "human": "gote",
       "profile": "mshogi.tenjiku.adams1999-modern.v1",
-      "source_fixture": "TEN-REPETITION-CONCRETE",
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 11869,
-        "observations": 0,
-        "replay_work": 90216,
-        "reserved_bytes": 946,
-        "reserved_work": 53453,
-        "retained_events": 6
-      }
+      "source_fixture": "TEN-REPETITION-CONCRETE"
     },
     {
       "expected": {
@@ -270,16 +180,7 @@
       "file": "tenjiku-muller-compound.mshogi",
       "human": "sente",
       "profile": "mshogi.tenjiku.muller-completed.v1",
-      "source_fixture": "TEN-LIONHAWK-DOUBLE-CAPTURE",
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 9595,
-        "observations": 0,
-        "replay_work": 19476,
-        "reserved_bytes": 945,
-        "reserved_work": 43103,
-        "retained_events": 0
-      }
+      "source_fixture": "TEN-LIONHAWK-DOUBLE-CAPTURE"
     },
     {
       "expected": {
@@ -291,16 +192,7 @@
       "file": "tenjiku-muller-igui.mshogi",
       "human": "sente",
       "profile": "mshogi.tenjiku.muller-completed.v1",
-      "source_fixture": "TEN-TETRARCH-IGUI",
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 9299,
-        "observations": 0,
-        "replay_work": 18884,
-        "reserved_bytes": 945,
-        "reserved_work": 41771,
-        "retained_events": 0
-      }
+      "source_fixture": "TEN-TETRARCH-IGUI"
     },
     {
       "expected": {
@@ -315,16 +207,7 @@
       "file": "tenjiku-muller-promotion.mshogi",
       "human": "sente",
       "profile": "mshogi.tenjiku.muller-completed.v1",
-      "source_fixture": "TEN-PROMOTION-CONCRETE-P-YES",
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 9079,
-        "observations": 0,
-        "replay_work": 18444,
-        "reserved_bytes": 945,
-        "reserved_work": 40781,
-        "retained_events": 0
-      }
+      "source_fixture": "TEN-PROMOTION-CONCRETE-P-YES"
     },
     {
       "expected": {
@@ -341,16 +224,7 @@
       "file": "tenjiku-muller-burn.mshogi",
       "human": "sente",
       "profile": "mshogi.tenjiku.muller-completed.v1",
-      "source_fixture": "TEN-BURN-DYING",
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 9559,
-        "observations": 0,
-        "replay_work": 19404,
-        "reserved_bytes": 945,
-        "reserved_work": 42941,
-        "retained_events": 0
-      }
+      "source_fixture": "TEN-BURN-DYING"
     },
     {
       "diagram_extension": {
@@ -380,16 +254,7 @@
       "file": "tenjiku-muller-royal-engine.mshogi",
       "human": "gote",
       "profile": "mshogi.tenjiku.muller-completed.v1",
-      "source_fixture": "TEN-BURN-ENEMY-ROYAL",
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 9728,
-        "observations": 0,
-        "replay_work": 19748,
-        "reserved_bytes": 945,
-        "reserved_work": 43715,
-        "retained_events": 0
-      }
+      "source_fixture": "TEN-BURN-ENEMY-ROYAL"
     },
     {
       "expected": {
@@ -404,16 +269,7 @@
       "file": "tenjiku-muller-simultaneous.mshogi",
       "human": "sente",
       "profile": "mshogi.tenjiku.muller-completed.v1",
-      "source_fixture": "TEN-BURN-SIMULTANEOUS-ROYALS",
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 9091,
-        "observations": 0,
-        "replay_work": 18468,
-        "reserved_bytes": 945,
-        "reserved_work": 40835,
-        "retained_events": 0
-      }
+      "source_fixture": "TEN-BURN-SIMULTANEOUS-ROYALS"
     },
     {
       "expected": {
@@ -429,16 +285,7 @@
       "file": "tenjiku-muller-bare-loss.mshogi",
       "human": "gote",
       "profile": "mshogi.tenjiku.muller-completed.v1",
-      "source_fixture": "TEN-BARE-CONCRETE-LOSS",
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 9044,
-        "observations": 0,
-        "replay_work": 18380,
-        "reserved_bytes": 945,
-        "reserved_work": 40637,
-        "retained_events": 0
-      }
+      "source_fixture": "TEN-BARE-CONCRETE-LOSS"
     },
     {
       "expected": {
@@ -449,16 +296,7 @@
       "file": "tenjiku-muller-no-actions.mshogi",
       "human": "sente",
       "profile": "mshogi.tenjiku.muller-completed.v1",
-      "source_fixture": "TEN-NO-ACTIONS-CONCRETE",
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 9315,
-        "observations": 0,
-        "replay_work": 18916,
-        "reserved_bytes": 945,
-        "reserved_work": 41843,
-        "retained_events": 0
-      }
+      "source_fixture": "TEN-NO-ACTIONS-CONCRETE"
     },
     {
       "expected": {
@@ -474,16 +312,7 @@
       "file": "tenjiku-muller-agreement.mshogi",
       "human": "gote",
       "profile": "mshogi.tenjiku.muller-completed.v1",
-      "source_fixture": "TEN-REPETITION-CONCRETE",
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 9136,
-        "observations": 0,
-        "replay_work": 34412,
-        "reserved_bytes": 946,
-        "reserved_work": 41069,
-        "retained_events": 2
-      }
+      "source_fixture": "TEN-REPETITION-CONCRETE"
     },
     {
       "expected": {
@@ -495,16 +324,7 @@
       "file": "tenjiku-muller-repetition3.mshogi",
       "human": "gote",
       "profile": "mshogi.tenjiku.muller-completed.v1",
-      "source_fixture": "TEN-REPETITION-CONCRETE",
-      "usage": {
-        "controls": 0,
-        "encoded_bytes": 11904,
-        "observations": 0,
-        "replay_work": 90328,
-        "reserved_bytes": 946,
-        "reserved_work": 53516,
-        "retained_events": 6
-      }
+      "source_fixture": "TEN-REPETITION-CONCRETE"
     }
   ],
   "generator": "write_tenjiku_gui_fixtures",

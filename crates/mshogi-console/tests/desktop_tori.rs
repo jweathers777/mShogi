@@ -106,7 +106,8 @@ fn real_internal_tori_analysis_save_reopen_stopped_then_explicit_analysis_and_re
     assert!(opened.paused);
     assert!(opened.token.version > old.version);
     assert!(opened.token.document > old.document);
-    assert!(opened.observations[0].historical);
+    assert!(opened.observations.is_empty());
+    assert!(!opened.historical);
     assert_eq!(opened.context, before);
     assert!(!c.accept_shared(ExecutionResponse {
         protocol: PROTOCOL_VERSION,
@@ -124,7 +125,7 @@ fn real_internal_tori_analysis_save_reopen_stopped_then_explicit_analysis_and_re
     let deadline = Instant::now() + Duration::from_secs(20);
     loop {
         let s = c.shared_snapshot();
-        if s.observations.len() == 2 {
+        if s.observations.len() == 1 {
             assert_eq!(s.context, before);
             break;
         }

@@ -216,7 +216,7 @@
   },
   "open_token": {
     "document": 1,
-    "version": 3,
+    "version": 4,
     "document_revision": 1
   },
   "document": {
@@ -238,16 +238,16 @@
     "resource": null
   },
   "capacity": {
-    "id": 1,
+    "id": 2,
     "status": "available",
     "message": null,
     "resource": null
   },
   "token": {
     "document": 1,
-    "version": 3,
-    "revision": 3,
-    "selection": 3
+    "version": 4,
+    "revision": 4,
+    "selection": 4
   },
   "game": "chu",
   "profile": "mshogi.chu.jcsa2019.v1",
@@ -1630,15 +1630,15 @@
   "event_index": 0,
   "board_ply": 0,
   "play_limits": {
-    "depth": 1,
-    "nodes": 512
+    "depth": 64,
+    "nodes": 300000
   },
   "historical": false,
   "paused": true,
   "close_requires_save": true,
   "phase": "paused",
   "execution_purpose": null,
-  "diagnostic": "Saved observations are historical. Resume starts play.",
+  "diagnostic": "Resume starts play.",
   "declaration_advice": [],
   "context": {
     "envelope_version": 1,

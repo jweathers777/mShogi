@@ -296,8 +296,8 @@ fn actual_controller_readonly_analysis_save_reopen_and_stale_identity_retirement
         assert!(reopened.token.version > saved.token.version);
         assert!(reopened.paused);
         assert_eq!(reopened.execution_purpose, None);
-        assert_eq!(reopened.observations.len(), 1);
-        assert!(reopened.observations[0].historical);
+        assert!(reopened.observations.is_empty());
+        assert!(!reopened.historical);
         assert!(!ctl.accept_shared(failure(submitted)));
         assert_eq!(reopened.context, native);
         std::fs::remove_file(path).unwrap();
@@ -705,11 +705,11 @@ fn real_historical_analysis_saves_exact_prefix_and_reopens_stopped_without_futur
             assert!(Instant::now() < deadline);
             thread::sleep(Duration::from_millis(1));
         };
-        assert_eq!(opened.context, initial);
+        assert_eq!(opened.context, played.context);
         assert_eq!(opened.tenjiku.as_ref().unwrap().live.board_ply, 2);
         assert!(opened.paused);
-        assert!(opened.historical);
-        assert!(opened.observations.iter().all(|o| o.historical));
+        assert!(!opened.historical);
+        assert!(opened.observations.is_empty());
         assert_eq!(opened.execution_purpose, None);
         assert!(!ctl.accept_shared(failure(submitted)));
         let live = send(&mut ctl, SessionOperation::ReturnLive {});

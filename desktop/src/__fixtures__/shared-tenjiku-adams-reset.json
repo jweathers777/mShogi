@@ -5302,7 +5302,7 @@
   },
   "open_token": {
     "document": 3,
-    "version": 7,
+    "version": 10,
     "document_revision": 3
   },
   "document": {
@@ -5324,16 +5324,16 @@
     "resource": null
   },
   "capacity": {
-    "id": 3,
+    "id": 6,
     "status": "available",
     "message": null,
     "resource": null
   },
   "token": {
     "document": 3,
-    "version": 7,
-    "revision": 7,
-    "selection": 7
+    "version": 10,
+    "revision": 10,
+    "selection": 10
   },
   "game": "tenjiku",
   "profile": "mshogi.tenjiku.adams1999-modern.v1",
@@ -8108,8 +8108,8 @@
   "event_index": 0,
   "board_ply": 0,
   "play_limits": {
-    "depth": 1,
-    "nodes": 1024
+    "depth": 64,
+    "nodes": 50000
   },
   "historical": false,
   "paused": false,

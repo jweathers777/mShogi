@@ -38,7 +38,7 @@
   },
   "open_token": {
     "document": 1,
-    "version": 3,
+    "version": 4,
     "document_revision": 1
   },
   "document": {
@@ -60,7 +60,7 @@
     "resource": null
   },
   "capacity": {
-    "id": 2,
+    "id": 3,
     "status": "paused",
     "message": "Application capacity: native document validation exceeded its bounded15-second budget. The accepted current document is preserved.",
     "resource": {
@@ -82,9 +82,9 @@
   },
   "token": {
     "document": 1,
-    "version": 3,
-    "revision": 4,
-    "selection": 3
+    "version": 4,
+    "revision": 5,
+    "selection": 4
   },
   "game": "tori",
   "profile": "mshogi.tori.modern.v1",
@@ -2104,7 +2104,7 @@
   "close_requires_save": true,
   "phase": "paused",
   "execution_purpose": null,
-  "diagnostic": "Saved observations are historical. Resume starts play.",
+  "diagnostic": "Resume starts play.",
   "declaration_advice": [],
   "context": {
     "envelope_version": 1,

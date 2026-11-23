@@ -1,4 +1,6 @@
-//! Native admission/replay measurements; generated walks are workloads, not rules oracles.
+#[path = "support/walk.rs"]
+mod walk;
+// Native admission/replay measurements; generated walks are workloads, not rules oracles.
 use std::{error::Error, hint::black_box, time::Instant};
 
 type Failure = Box<dyn Error>;
@@ -15,39 +17,16 @@ fn measure<G, C: Clone, U>(
     replay: impl Fn(&str) -> Result<(), Failure>,
 ) -> Result<(), Failure> {
     let start = Instant::now();
-    let mut accepted = 0;
-    let mut next = None;
-    for index in 0..=requested {
-        let mut candidates = choices(&game, index);
-        if !candidates.is_empty() {
-            let offset = index.wrapping_mul(7919).wrapping_add(17) % candidates.len();
-            candidates.rotate_left(offset);
-        }
-        let mut found = false;
-        for command in candidates {
-            let Ok(mut token) = submit(&mut game, command.clone()) else {
-                continue;
-            };
-            if ended(&game) || index == requested {
-                let terminal = ended(&game);
-                undo(&mut game, &mut token)?;
-                if terminal {
-                    continue;
-                }
-                next = Some(command);
-            } else {
-                accepted += 1;
-            }
-            found = true;
-            break;
-        }
-        if !found || next.is_some() {
-            break;
-        }
-    }
+    let (accepted, command) = walk::prefix(
+        &mut game,
+        requested,
+        &mut choices,
+        &mut submit,
+        &mut undo,
+        ended,
+    )?;
     let build_us = start.elapsed().as_micros();
     let json = encode(&game)?;
-    let command = next.ok_or("workload has no further nonterminal command")?;
     let mut admissions = Vec::new();
     let mut undos = Vec::new();
     let mut command_bytes = 0;

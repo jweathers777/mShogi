@@ -282,6 +282,20 @@ impl<G: SessionGame> NativeSession<G> {
     pub(crate) fn historical(&self) -> bool {
         self.viewed.is_some()
     }
+    // Only used on the private admission candidate. Any error discards that
+    // candidate; publication still requires the captured host context to match.
+    fn apply_command(
+        &mut self,
+        actor: G::Side,
+        command: G::Command,
+        stopped: &mut impl FnMut() -> bool,
+    ) -> Result<(), OperationFailure> {
+        G::submit(&mut self.game, actor, command, stopped)
+            .map_err(crate::game_document::Errors::<G>::native)?;
+        self.document = Arc::new(self.document.with_game(&self.game)?);
+        Ok(())
+    }
+
     fn apply(
         &mut self,
         operation: SessionOperation,
@@ -450,24 +464,23 @@ impl<G: SessionGame> NativeSession<G> {
             }
         };
         if let Some(control) = control {
-            let document = match control {
+            match control {
                 // Preferences change no game and keep current work.
                 Change::Settings(settings) => {
                     self.document = Arc::new(self.document.with_settings(settings)?);
                     return Ok(true);
                 }
                 Change::Command { actor, command } => {
-                    self.document.with_command(actor, command, stopped)?
+                    self.apply_command(actor, command, stopped)?
                 }
                 Change::Rewind(event_index) => {
-                    // Results on the removed moves are no longer current.
                     self.current_observations.clear();
-                    self.document.with_rewind(event_index, stopped)?
+                    let document = self.document.with_rewind(event_index, stopped)?;
+                    self.game = G::to_game(document.record(), stopped).map_err(record_text)?;
+                    self.document = Arc::new(document);
                 }
-            };
-            self.game = G::to_game(document.record(), stopped).map_err(record_text)?;
+            }
             self.viewed = None;
-            self.document = Arc::new(document);
             self.retire();
         }
         Ok(true)
@@ -613,11 +626,13 @@ pub(crate) fn execute<G: SessionGame>(
         let incomplete = result.is_some_and(G::incomplete);
         // Check the result against its exact target, then play an engine move.
         if let Some(result) = result {
-            let target = G::context_game(&response.context.game, stopped).map_err(record_text)?;
-            G::validate_result(result, &response.context, &target, stopped)?;
+            let target = state.selected();
+            if G::context(target).map_err(record_text)? != response.context.game {
+                return Err("Observation target differs from the admitted candidate.".into());
+            }
+            G::validate_result(result, &response.context, target, stopped)?;
             if !analysis && let Some((actor, command)) = G::engine_command(result, &state.game) {
-                state.document = Arc::new(state.document.with_command(actor, command, stopped)?);
-                state.game = G::to_game(state.document.record(), stopped).map_err(record_text)?;
+                state.apply_command(actor, command, stopped)?;
                 durable = true;
             }
         }

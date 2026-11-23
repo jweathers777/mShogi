@@ -253,7 +253,7 @@ fn actual_observation_at_limits(
         &mut output,
     )
     .unwrap();
-    let response: ExecutionResponse = serde_json::from_slice(&output).unwrap();
+    let response: ExecutionResponse = ExecutionResponse::decode(&output, &req).unwrap();
     assert!(response.matches(&req));
     response.observation
 }

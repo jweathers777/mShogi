@@ -539,11 +539,11 @@ mod tests {
         let snapshot = c.shared_snapshot();
         assert_eq!(snapshot.execution_purpose, Some("chess_full_reachability"));
         let pending = c.session.chess().unwrap().pending.clone().unwrap();
-        let mut bytes = serde_json::to_vec(&execution_request(pending)).unwrap();
+        let mut bytes = serde_json::to_vec(&execution_request(pending.clone())).unwrap();
         bytes.push(b'\n');
         let mut output = vec![];
         mshogi_engine::serve_once(std::io::Cursor::new(bytes), &mut output).unwrap();
-        let response: ExecutionResponse = serde_json::from_slice(&output).unwrap();
+        let response = ExecutionResponse::decode(&output, &execution_request(pending)).unwrap();
         assert!(c.accept_shared(response));
         settle(&mut c);
         let snapshot = c.shared_snapshot();

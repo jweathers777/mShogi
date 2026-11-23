@@ -1116,12 +1116,12 @@ fn searched(context: ExecutionContext) -> ExecutionObservation {
     mshogi_engine::serve_once(
         std::io::Cursor::new(format!(
             "{}\n",
-            serde_json::to_string(&execution_request(context)).unwrap()
+            serde_json::to_string(&execution_request(context.clone())).unwrap()
         )),
         &mut output,
     )
     .unwrap();
-    serde_json::from_slice::<ExecutionResponse>(&output)
+    ExecutionResponse::decode(&output, &execution_request(context))
         .unwrap()
         .observation
 }

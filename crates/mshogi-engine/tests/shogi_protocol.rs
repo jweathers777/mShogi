@@ -1,4 +1,5 @@
 //! Concrete native shogi admission/result boundaries; no second rules engine.
+mod support;
 use mshogi_core::{native::*, shogi::*};
 use mshogi_engine::*;
 use mshogi_search::shogi as search;
@@ -50,9 +51,15 @@ fn raw(text: &str) -> std::io::Result<Vec<u8>> {
 }
 fn run(c: ExecutionContext) -> ExecutionObservation {
     let bytes = raw(&serde_json::to_string(&c).unwrap()).unwrap();
-    let response = serde_json::from_slice::<ExecutionResponse>(&bytes)
-        .unwrap()
-        .observation;
+    let response = support::decode_response(
+        &bytes,
+        &ExecutionRequest {
+            protocol: PROTOCOL_VERSION,
+            context: c.clone(),
+        },
+    )
+    .unwrap()
+    .observation;
     assert_eq!(response.context, c);
     response
 }

@@ -504,7 +504,7 @@ pub const SHOGI_MAX_DEPTH: u16 = search::MAX_DEPTH;
 /// Maximum supported Shogi node budget for native consumers.
 pub const SHOGI_MAX_NODES: u64 = search::MAX_NODES;
 
-/// Shogi front-end access to the same timed history-prefix policy as protocol4.
+/// Shogi front-end access to the same timed history-prefix policy as the internal protocol.
 /// Fixed-work searches use fresh state and leave the retained timed state alone.
 #[derive(Default)]
 pub struct ShogiSearchSession {

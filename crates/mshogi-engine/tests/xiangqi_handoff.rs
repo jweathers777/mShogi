@@ -1,5 +1,6 @@
 //! MSH-84: a consumer uses the public native contract as one system.
 //! Expected rules reuse independently reviewed91/93/94/105 cases, not engine outcomes.
+mod support;
 use mshogi_core::{native::*, xiangqi as x};
 use mshogi_engine::*;
 use serde_json::Value;
@@ -543,7 +544,7 @@ fn strict_payload_context_and_transport_preserve_identity_through_real_execution
         &mut response,
     )
     .unwrap();
-    let reply = serde_json::from_slice::<ExecutionResponse>(&response)
+    let reply = support::decode_response(&response, &submitted)
         .unwrap()
         .observation;
     assert!(reply.matches(&context));

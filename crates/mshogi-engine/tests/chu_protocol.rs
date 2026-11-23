@@ -1,4 +1,5 @@
 //! Native Chu completed-route and exact-context contracts via the real line server.
+mod support;
 use mshogi_core::{chu as c, native::*};
 use mshogi_engine::*;
 use std::io::Cursor;
@@ -58,9 +59,15 @@ fn execute(c: &ExecutionContext) -> ExecutionObservation {
         &mut out,
     )
     .unwrap();
-    serde_json::from_slice::<ExecutionResponse>(&out)
-        .unwrap()
-        .observation
+    support::decode_response(
+        &out,
+        &ExecutionRequest {
+            protocol: PROTOCOL_VERSION,
+            context: c.clone(),
+        },
+    )
+    .unwrap()
+    .observation
 }
 #[test]
 fn compound_result_native_replay_work_and_atomic_validation() {
@@ -74,12 +81,25 @@ fn compound_result_native_replay_work_and_atomic_validation() {
     };
     result.validate(&g).unwrap();
     let work = result.validate_with_work(&g, &mut || false).unwrap();
-    assert!(work > before.reconstruction_work());
     assert!(result.validate_with_work(&g, &mut || true).is_err());
     assert_eq!(c::GameRecord::from_game(&g).unwrap(), before);
     let ChuResult::Choice { action, telemetry } = &result else {
         panic!()
     };
+    let mut branch = before.to_game().unwrap();
+    let start = branch.replay_work();
+    for action in &telemetry.principal_variation {
+        branch
+            .submit(c::GameRequest {
+                expected: branch.context(),
+                actor: branch.position().side_to_move(),
+                command: c::GameCommand::Play {
+                    action: action.clone(),
+                },
+            })
+            .unwrap();
+    }
+    assert_eq!(work, branch.replay_work() - start);
     assert_eq!(action.route.len(), 2);
     assert_eq!(telemetry.perspective, c::Side::Sente);
     assert_eq!(telemetry.score, Some(mshogi_search::chu::WIN_SCORE - 1));

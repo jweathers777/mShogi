@@ -1,4 +1,5 @@
 //! Independently constructed terminal tactics and forged real-result admission.
+mod support;
 use mshogi_core::{native::*, tenjiku as t};
 use mshogi_engine::*;
 use std::io::Cursor;
@@ -50,7 +51,7 @@ fn run(ctx: ExecutionContext) -> ExecutionObservation {
         &mut bytes,
     )
     .unwrap();
-    let response: ExecutionResponse = serde_json::from_slice(&bytes).unwrap();
+    let response: ExecutionResponse = support::decode_response(&bytes, &request).unwrap();
     assert_eq!(response.matches(&request), request.context.valid_limits());
     response.observation
 }
@@ -82,7 +83,7 @@ fn actual_royal_capture_score_and_native_pv_validation_for_both_profiles() {
                 })
                 .unwrap();
         }
-        let expected_work = before.reconstruction_work() + branch.replay_work() - start;
+        let expected_work = branch.replay_work() - start;
         let mut polls = 0;
         assert_eq!(
             result

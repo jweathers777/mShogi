@@ -87,7 +87,7 @@ fn execute(request: &ExecutionContext) -> ExecutionObservation {
         &mut bytes,
     )
     .unwrap();
-    decode_execution_observation(&bytes)
+    decode_execution_observation(&bytes, request)
 }
 fn engine(c: &mut DesktopController) -> ExecutionObservation {
     let response = execute(&pending(c));

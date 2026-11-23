@@ -1,4 +1,5 @@
 //! Lossless decisions against independently specified chess facts.
+mod support;
 use mshogi_core::chess::*;
 use mshogi_engine::*;
 use std::io::Cursor;
@@ -25,7 +26,7 @@ fn run(context: ExecutionContext) -> ChessResult {
     bytes.push(b'\n');
     let mut output = Vec::new();
     serve_once(Cursor::new(bytes), &mut output).unwrap();
-    let response: ExecutionResponse = serde_json::from_slice(&output).unwrap();
+    let response: ExecutionResponse = support::decode_response(&output, &request).unwrap();
     assert_eq!(response.observation.context, context);
     match response.observation.result {
         ExecutionResult::Chess { result } => result,

@@ -1,5 +1,6 @@
 //! One engine process serves successive requests and keeps its Chess state
 //! between the timed searches of one game (MSH-169).
+mod support;
 use mshogi_core::{
     chess::{AdjudicatedGame, ClaimPolicy},
     native::CanonicalRecord,
@@ -53,7 +54,7 @@ fn nodes(requests: &[ExecutionRequest]) -> Vec<u64> {
         .iter()
         .zip(lines)
         .map(|(request, line)| {
-            let response: ExecutionResponse = serde_json::from_slice(line).unwrap();
+            let response: ExecutionResponse = support::decode_response(line, request).unwrap();
             assert!(response.matches(request));
             let ExecutionResult::Chess {
                 result: ChessResult::Move { telemetry, .. },

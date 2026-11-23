@@ -1,4 +1,5 @@
 //! Native Xiangqi ordinary execution, strict context and bounded transport.
+mod support;
 use mshogi_core::{chess as c, native::*, xiangqi as x};
 use mshogi_engine::*;
 use serde_json::{Value, json};
@@ -72,8 +73,12 @@ fn raw(text: &str) -> std::io::Result<Vec<u8>> {
     Ok(output)
 }
 fn run(context: &ExecutionContext) -> ExecutionObservation {
-    serde_json::from_slice::<ExecutionResponse>(
+    support::decode_response(
         &raw(&serde_json::to_string(context).unwrap()).unwrap(),
+        &ExecutionRequest {
+            protocol: PROTOCOL_VERSION,
+            context: context.clone(),
+        },
     )
     .unwrap()
     .observation

@@ -328,12 +328,15 @@ fn local_analysis_is_explicit_and_read_only_for_all_seven_profiles() {
         mshogi_engine::serve_once(
             std::io::Cursor::new(format!(
                 "{}\n",
-                serde_json::to_string(&execution_request(context)).unwrap()
+                serde_json::to_string(&execution_request(context.clone())).unwrap()
             )),
             &mut bytes,
         )
         .unwrap();
-        assert!(accept(&mut c, decode_execution_observation(&bytes)));
+        assert!(accept(
+            &mut c,
+            decode_execution_observation(&bytes, &context)
+        ));
         let analyzed = wait_admission(&mut c);
         assert_eq!(analyzed.context, before.context, "{profile:?}");
         assert_eq!(analyzed.local_actor.id, before.local_actor.id);

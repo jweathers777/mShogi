@@ -45,7 +45,7 @@ fn real_subprocess_preserves_tori_context_supplies_native_action_and_roundtrips_
     .unwrap();
     let output = child.wait_with_output().unwrap();
     assert!(output.status.success(), "{:?}", output.stderr);
-    let response: ExecutionResponse = serde_json::from_slice(&output.stdout).unwrap();
+    let response: ExecutionResponse = ExecutionResponse::decode(&output.stdout, &request).unwrap();
     assert!(response.matches(&request));
     assert_eq!(response.observation.context, request.context);
     let ExecutionResult::Tori { result } = &response.observation.result else {

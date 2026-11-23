@@ -481,7 +481,7 @@ impl ExecutionObservation {
 
 // Preserve duplicate fields before internally tagged purpose/result parsers can
 // buffer them. The seed checks cancellation at each actual JSON value boundary.
-fn reject_observation_duplicates(
+pub(crate) fn reject_observation_duplicates(
     text: &str,
     stop: &mut impl FnMut() -> bool,
 ) -> Result<(), String> {
@@ -596,24 +596,19 @@ impl ExecutionRequest {
             ),
         }
     }
-    pub(crate) fn execute(&self, session: &mut crate::server::Session) -> ExecutionResponse {
+    pub(crate) fn execute(&self, session: &mut crate::server::Session) -> ExecutionResult {
         if !self.valid() {
-            return self.failure(
+            return ExecutionResult::failure(
                 FailureKind::InvalidRequest,
                 "invalid internal transport version, identity, purpose, selection or limits",
             );
         }
-        ExecutionResponse {
-            protocol: crate::PROTOCOL_VERSION,
-            observation: ExecutionObservation::new(
-                self.context.clone(),
-                crate::server::execute(&self.context, session),
-            ),
-        }
+        crate::server::execute(&self.context, session)
     }
 }
 /// Versioned wire result; persistence retains only its semantic observation.
-#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct ExecutionResponse {
     /// Current transport identity.
     pub protocol: u32,
@@ -621,6 +616,16 @@ pub struct ExecutionResponse {
     pub observation: ExecutionObservation,
 }
 impl ExecutionResponse {
+    /// Decode a reply to a full request, retaining its exact submitted context.
+    /// Retained process sessions must use `incremental::Client` instead.
+    pub fn decode(bytes: &[u8], submitted: &ExecutionRequest) -> Result<Self, String> {
+        let mut client = crate::incremental::Client::default();
+        client
+            .encode(&std::sync::Arc::new(submitted.clone()))
+            .map_err(|e| e.to_string())?;
+        client.decode(bytes).map_err(|e| e.1)
+    }
+
     /// Exact transport and semantic result acceptance.
     pub fn matches(&self, submitted: &ExecutionRequest) -> bool {
         submitted.valid()

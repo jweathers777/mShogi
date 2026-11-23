@@ -5,7 +5,7 @@ use std::{
     time::{Duration, Instant},
 };
 
-/// Run actual bounded protocol4 subprocesses over native full-history owners.
+/// Run actual bounded the internal protocol subprocesses over native full-history owners.
 pub fn run(config: &Config) -> Result<ValidatedReport, RunnerError> {
     run_with_stop(config, &mut || false)
 }

@@ -1,4 +1,5 @@
 //! Shared time admission, retained state and deterministic fixed work.
+mod support;
 use mshogi_core::{chess, chu, native::CanonicalRecord, shogi, tenjiku, tori, xiangqi};
 use mshogi_engine::*;
 use serde_json::{Value, json};
@@ -57,7 +58,8 @@ fn run(requests: &[ExecutionRequest]) -> Vec<ExecutionResponse> {
     let responses: Vec<ExecutionResponse> = output
         .split(|&c| c == b'\n')
         .filter(|line| !line.is_empty())
-        .map(|line| serde_json::from_slice(line).unwrap())
+        .zip(requests)
+        .map(|(line, request)| support::decode_response(line, request).unwrap())
         .collect();
     assert_eq!(responses.len(), requests.len());
     for (response, request) in responses.iter().zip(requests) {
@@ -332,7 +334,8 @@ fn record_timed_native_games() {
             let mut line = String::new();
             output.read_line(&mut line).unwrap();
             let elapsed = sent.elapsed();
-            let response: ExecutionResponse = serde_json::from_str(&line).unwrap();
+            let response: ExecutionResponse =
+                support::decode_response(line.as_bytes(), &request).unwrap();
             assert!(response.matches(&request));
             current = played(&current, &response);
             let spent_ms = elapsed.as_micros().div_ceil(1_000) as u64;

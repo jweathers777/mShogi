@@ -244,7 +244,7 @@ fn execute(context: &ExecutionContext) -> ExecutionObservation {
         &mut output,
     )
     .unwrap();
-    let observation = decode_execution_observation(&output);
+    let observation = decode_execution_observation(&output, context);
     assert!(observation.matches(context));
     observation
 }

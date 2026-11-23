@@ -81,15 +81,22 @@ context = {
     },
     'limits': {'depth': 1, 'nodes': 1000},
 }
-request = {'protocol': 4, 'context': context}
-internal = subprocess.run([str(engine), 'internal-search'],
-    input=json.dumps(request) + '\n', check=True, capture_output=True,
-    text=True, timeout=15)
-response = json.loads(internal.stdout)
-assert response['protocol'] == request['protocol'], 'internal response transport mismatch'
+request = {'protocol': 5, 'context': context}
+def query(request, game_kind="chess"):
+    encoded = json.dumps(request)
+    process = subprocess.run([str(engine), 'internal-search'],
+        input=encoded + '\n', check=True, capture_output=True,
+        text=True, timeout=15)
+    reply = json.loads(process.stdout)
+    assert reply['protocol'] == request['protocol']
+    assert reply['request_digest'] == list(hashlib.sha256(encoded.encode('utf-8')).digest())
+    assert reply['endpoint'] is None  # These are fixed-work requests.
+    assert reply['result']['kind'] == game_kind, reply
+    # Keep the report's semantic observations independently replayable.
+    return {'protocol': reply['protocol'], 'observation': {
+        'schema_version': 1, 'context': request['context'], 'result': reply['result']}}
+response = query(request)
 observation = response['observation']
-assert observation['schema_version'] == 1
-assert observation['context'] == context, 'internal response changed exact request context'
 assert observation['result']['kind'] == 'chess', observation
 result = observation['result']['result']
 assert result['kind'] == 'move', result
@@ -113,16 +120,6 @@ target = {'selection_id': 1, 'event_index': 0, 'board_ply': 0, 'session_version'
 analysis_request = copy.deepcopy(request)
 analysis_request['context'].update(request_id=2, process_generation=2,
     purpose={'kind': 'move_analysis', 'target': target})
-def query(request, game_kind="chess"):
-    process = subprocess.run([str(engine), 'internal-search'],
-        input=json.dumps(request) + '\n', check=True, capture_output=True,
-        text=True, timeout=15)
-    reply = json.loads(process.stdout)
-    assert reply['protocol'] == request['protocol']
-    assert reply['observation']['schema_version'] == 1
-    assert reply['observation']['context'] == request['context'], 'analysis execution context changed'
-    assert reply['observation']['result']['kind'] == game_kind, reply
-    return reply
 analysis_response = query(analysis_request)
 check_chess_choice(analysis_response['observation']['result']['result'])
 full_request = copy.deepcopy(request)
@@ -148,7 +145,7 @@ for index, profile in enumerate(('adams', 'muller')):
     ctx = {'purpose': {'kind': 'engine_turn'}, 'request_id': 100 + index * 2,
         'session_version': 1, 'process_generation': 100 + index * 2,
         'game': native, 'limits': {'depth': 1, 'nodes': 1024}}
-    move_request = {'protocol': 4, 'context': ctx}
+    move_request = {'protocol': 5, 'context': ctx}
     move = query(move_request, 'tenjiku')
     result = move['observation']['result']['result']; telemetry = result['telemetry']
     assert result['kind'] == 'choice' and telemetry['completed_depth'] == 1

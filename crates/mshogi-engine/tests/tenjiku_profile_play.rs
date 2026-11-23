@@ -2,6 +2,7 @@
 //! These are functional engine results, not second rules, subprocess supervision,
 //! competitive-strength or packaged-GUI evidence. Expectations follow the accepted
 //! profile T03 (Free Eagle/Tetrarch), T04 (Demon ordering) and T05 (ranked victims).
+mod support;
 use mshogi_core::{native::CanonicalRecord, tenjiku as t};
 use mshogi_engine::*;
 use std::{io::Cursor, time::Instant};
@@ -64,7 +65,7 @@ fn played(case: &str, game: &t::Game) -> (t::Game, t::Action, TenjikuTelemetry) 
     )
     .unwrap();
     let elapsed_us = begin.elapsed().as_micros();
-    let response: ExecutionResponse = serde_json::from_slice(&output).unwrap();
+    let response: ExecutionResponse = support::decode_response(&output, &request).unwrap();
     assert!(response.matches(&request));
     assert_eq!(response.observation.context, request.context);
     assert_eq!(

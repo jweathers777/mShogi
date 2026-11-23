@@ -10,9 +10,6 @@ use std::sync::Arc;
 #[serde(deny_unknown_fields)]
 pub struct Stamp {
     request_id: u64,
-    generation: u64,
-    session_version: u64,
-    events: usize,
 }
 /// All search semantics except the native ledger, echoed without modification.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
@@ -46,12 +43,9 @@ impl Metadata {
             limits: c.limits,
         }
     }
-    fn stamp(&self, events: usize) -> Stamp {
+    fn stamp(&self) -> Stamp {
         Stamp {
             request_id: self.request_id,
-            generation: self.process_generation,
-            session_version: self.session_version,
-            events,
         }
     }
 }
@@ -94,46 +88,45 @@ pub struct Request {
     session: Metadata,
     update: Update,
 }
-/// Compact result, never an independently loadable saved observation.
+/// Compact process reply bound to the exact submitted request bytes.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Response {
     protocol: u32,
-    session: Metadata,
+    request_digest: [u8; 32],
     endpoint: Option<Stamp>,
     result: ExecutionResult,
 }
-/// Full response with an optional acknowledged compact-transport capability.
-/// Old engines omit it and continue to receive ordinary full requests.
-#[derive(Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-pub struct ReadyResponse {
-    /// Ordinary internal protocol identity.
-    pub protocol: u32,
-    /// Complete first observation, also understood by full-request consumers.
-    pub observation: ExecutionObservation,
-    /// Exact native endpoint prepared for subsequent suffixes.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub incremental: Option<Stamp>,
-}
-impl From<ReadyResponse> for ExecutionResponse {
-    fn from(response: ReadyResponse) -> Self {
+impl Response {
+    /// Bind a result to one request line (without the framing newline).
+    pub fn new(request: &[u8], result: ExecutionResult) -> Self {
         Self {
-            protocol: response.protocol,
-            observation: response.observation,
+            protocol: PROTOCOL_VERSION,
+            request_digest: digest(request),
+            endpoint: None,
+            result,
         }
     }
-}
-impl<'de> Deserialize<'de> for ExecutionResponse {
-    fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        ReadyResponse::deserialize(d).map(Into::into)
+    /// Inspect a child result without admitting it to a host session.
+    /// Live consumers must use `Client::decode` to check request identity.
+    pub fn into_result(self) -> ExecutionResult {
+        self.result
     }
+    pub(crate) fn bind(mut self, request: &[u8]) -> Self {
+        self.request_digest = digest(request);
+        self
+    }
+}
+fn digest(bytes: &[u8]) -> [u8; 32] {
+    use sha2::{Digest, Sha256};
+    Sha256::digest(bytes.strip_suffix(b"\n").unwrap_or(bytes)).into()
 }
 
 /// One client state per actual child process, discarded on process retirement.
 #[derive(Default)]
 pub struct Client {
     previous: Option<Arc<ExecutionRequest>>,
+    pending: Option<(Arc<ExecutionRequest>, [u8; 32])>,
 }
 impl Client {
     /// Only adopted game families use incremental timed traffic.
@@ -152,7 +145,15 @@ impl Client {
             }
     }
     /// Prepare bytes without advancing the acknowledged endpoint.
-    pub fn encode(&self, request: &ExecutionRequest) -> Result<Vec<u8>, serde_json::Error> {
+    pub fn encode(
+        &mut self,
+        request: &Arc<ExecutionRequest>,
+    ) -> Result<Vec<u8>, serde_json::Error> {
+        let bytes = self.encode_request(request)?;
+        self.pending = Some((Arc::clone(request), digest(&bytes)));
+        Ok(bytes)
+    }
+    fn encode_request(&self, request: &ExecutionRequest) -> Result<Vec<u8>, serde_json::Error> {
         if !Self::supports(request) || self.previous.is_none() {
             return serde_json::to_vec(request);
         }
@@ -160,13 +161,13 @@ impl Client {
             .previous
             .as_ref()
             .and_then(|previous| {
-                let base = |events| Metadata::from_context(&previous.context).stamp(events);
+                let base = || Metadata::from_context(&previous.context).stamp();
                 match (&request.context.game, &previous.context.game) {
                     (CanonicalRecord::Shogi(current), CanonicalRecord::Shogi(old))
                         if current.has_prefix(old) =>
                     {
                         Some(Update::Advance {
-                            base: base(old.event_count()),
+                            base: base(),
                             delta: Delta::Shogi(
                                 current.suffix(old.event_count()).expect("validated prefix"),
                             ),
@@ -176,7 +177,7 @@ impl Client {
                         if current.has_prefix(old) =>
                     {
                         Some(Update::Advance {
-                            base: base(old.event_count()),
+                            base: base(),
                             delta: Delta::Tori(
                                 current.suffix(old.event_count()).expect("validated prefix"),
                             ),
@@ -196,72 +197,57 @@ impl Client {
     }
     /// Check the compact echo, then attach the already owned immutable context.
     /// An invalid/stale response cannot change the acknowledged endpoint.
-    pub fn decode(
-        &mut self,
-        bytes: &[u8],
-        submitted: Arc<ExecutionRequest>,
-    ) -> Result<ExecutionResponse, (FailureKind, String)> {
-        if !Self::supports(&submitted) || self.previous.is_none() {
-            let wire: ReadyResponse = serde_json::from_slice(bytes)
-                .map_err(|e| (FailureKind::MalformedResponse, e.to_string()))?;
-            let expected = Metadata::from_context(&submitted.context)
-                .stamp(submitted.context.game.event_count());
-            if wire
-                .incremental
-                .as_ref()
-                .is_some_and(|stamp| stamp != &expected)
-            {
-                return Err((
-                    FailureKind::ContextMismatch,
-                    "incremental capability endpoint differs".into(),
-                ));
-            }
-            let ready = wire.incremental.is_some();
-            let response: ExecutionResponse = wire.into();
-            if !response.matches(&submitted) {
-                return Err((
-                    FailureKind::ContextMismatch,
-                    "full response context differs".into(),
-                ));
-            }
-            if Self::supports(&submitted) && ready {
-                self.previous = Some(submitted);
-            } else if submitted.context.limits.time_ms.is_some() {
-                self.previous = None;
-            }
-            return Ok(response);
+    pub fn decode(&mut self, bytes: &[u8]) -> Result<ExecutionResponse, (FailureKind, String)> {
+        let malformed = |error: String| (FailureKind::MalformedResponse, error);
+        if bytes.strip_suffix(b"\n").unwrap_or(bytes).len() > MAX_RESPONSE_BYTES {
+            return Err((
+                FailureKind::OversizedResponse,
+                "response exceeds byte cap".into(),
+            ));
         }
-        let response: Response = serde_json::from_slice(bytes)
-            .map_err(|e| (FailureKind::MalformedResponse, e.to_string()))?;
-        let meta = Metadata::from_context(&submitted.context);
-        let expected = meta.stamp(submitted.context.game.event_count());
-        if response.protocol != PROTOCOL_VERSION
-            || response.session != meta
-            || response.endpoint.as_ref().is_some_and(|s| s != &expected)
-            || (response.endpoint.is_none()
-                && !matches!(response.result, ExecutionResult::Failure { .. }))
+        let text = std::str::from_utf8(bytes).map_err(|e| malformed(e.to_string()))?;
+        crate::shared::reject_observation_duplicates(text, &mut || false).map_err(malformed)?;
+        let wire: Response = serde_json::from_str(text).map_err(|e| malformed(e.to_string()))?;
+        let Some((submitted, expected_digest)) = &self.pending else {
+            return Err((
+                FailureKind::ContextMismatch,
+                "no pending encoded request".into(),
+            ));
+        };
+        let supports = Self::supports(submitted);
+        let expected = Metadata::from_context(&submitted.context).stamp();
+        if wire.protocol != PROTOCOL_VERSION
+            || wire.request_digest != *expected_digest
+            || wire
+                .endpoint
+                .as_ref()
+                .is_some_and(|stamp| !supports || stamp != &expected)
+            || (supports
+                && wire.endpoint.is_none()
+                && !matches!(wire.result, ExecutionResult::Failure { .. }))
         {
             return Err((
                 FailureKind::ContextMismatch,
-                "incremental response identity differs".into(),
+                "response differs from encoded request".into(),
             ));
         }
-        let result = ExecutionResponse {
-            protocol: response.protocol,
-            observation: ExecutionObservation::new(submitted.context.clone(), response.result),
+        let response = ExecutionResponse {
+            protocol: wire.protocol,
+            observation: ExecutionObservation::new(submitted.context.clone(), wire.result),
         };
-        if !result.matches(&submitted) {
+        if !response.matches(submitted) {
             return Err((
                 FailureKind::ContextMismatch,
-                "incremental result differs from submitted context".into(),
+                "result differs from submitted context".into(),
             ));
         }
-        if response.endpoint.is_some() {
+        let (submitted, _) = self.pending.take().expect("checked pending request");
+        if supports && wire.endpoint.is_some() {
             self.previous = Some(submitted);
-        } else {
+        } else if submitted.context.limits.time_ms.is_some() {
             self.previous = None;
         }
-        Ok(result)
+        Ok(response)
     }
 }
 
@@ -283,10 +269,6 @@ pub trait Adapter {
         meta: &Metadata,
         game: &<Self::Record as mshogi_core::native::incremental::IncrementalRecord>::Game,
     ) -> bool;
-    /// Current native event count, not an identity on its own.
-    fn events(
-        game: &<Self::Record as mshogi_core::native::incremental::IncrementalRecord>::Game,
-    ) -> usize;
 }
 /// First adapter; other games keep this exact session lifecycle.
 pub struct ShogiAdapter;
@@ -329,9 +311,6 @@ impl Adapter for ShogiAdapter {
             && !target.label.is_empty()
             && target.label.len() <= 256
     }
-    fn events(game: &shogi::Game) -> usize {
-        game.events().len()
-    }
 }
 /// Tori adoption of the shared session (MSH-204): engine turns only.
 pub struct ToriAdapter;
@@ -359,9 +338,6 @@ impl Adapter for ToriAdapter {
     }
     fn valid_target(_meta: &Metadata, _game: &tori::Game) -> bool {
         true
-    }
-    fn events(game: &tori::Game) -> usize {
-        game.events().len()
     }
 }
 /// Shared transport lifecycle around any adopted native record adapter.
@@ -415,17 +391,14 @@ where
             WorkLimits,
             &mshogi_search::alphabeta::timing::RequestTime,
         ) -> ExecutionResult,
-    ) -> ReadyResponse {
+    ) -> Response {
         if !request.valid() {
-            return ReadyResponse {
-                protocol: PROTOCOL_VERSION,
-                observation: request
-                    .failure(FailureKind::InvalidRequest, "invalid initial request")
-                    .observation,
-                incremental: None,
-            };
+            return Response::new(
+                &[],
+                ExecutionResult::failure(FailureKind::InvalidRequest, "invalid initial request"),
+            );
         }
-        let response = self.execute(
+        self.execute(
             Request {
                 protocol: request.protocol,
                 session: Metadata::from_context(&request.context),
@@ -434,13 +407,9 @@ where
                 },
             },
             run,
-        );
-        ReadyResponse {
-            protocol: response.protocol,
-            incremental: response.endpoint,
-            observation: ExecutionObservation::new(request.context.clone(), response.result),
-        }
+        )
     }
+
     /// Admit a reset/suffix and execute against the retained authoritative game.
     /// The callback also permits measurement of admission without search work.
     pub fn execute(
@@ -457,7 +426,7 @@ where
         let time = RequestTime::new(request.session.limits.time_ms.map(TimeBudget::from_hard_ms));
         let mut result = Response {
             protocol: PROTOCOL_VERSION,
-            session: request.session.clone(),
+            request_digest: [0; 32],
             endpoint: None,
             result: ExecutionResult::failure(
                 FailureKind::InvalidRequest,
@@ -484,10 +453,7 @@ where
                 None => Err("game differs from incremental adapter".into()),
             },
             Update::Advance { base, ref delta } => {
-                if self.endpoint.as_ref() != Some(&base)
-                    || meta.request_id <= base.request_id
-                    || meta.process_generation <= base.generation
-                {
+                if self.endpoint.as_ref() != Some(&base) || meta.request_id <= base.request_id {
                     Err("incremental base differs; full reset required".into())
                 } else {
                     match A::delta(delta) {
@@ -511,7 +477,7 @@ where
             self.endpoint = None;
             return result;
         }
-        let stamp = meta.stamp(A::events(game));
+        let stamp = meta.stamp();
         result.result = run(game, reset, meta.limits, &time);
         result.endpoint = Some(stamp.clone());
         self.endpoint = Some(stamp);
@@ -562,7 +528,7 @@ mod tests {
                 ExecutionResult::failure(FailureKind::Search, "admission-only test")
             });
             assert!(response.endpoint.is_some());
-            (reset, serde_json::to_vec(&response).unwrap())
+            (reset, serde_json::to_vec(&response.bind(&bytes)).unwrap())
         } else {
             let full: ExecutionRequest = serde_json::from_slice(&bytes).unwrap();
             let response = server.shogi.begin(&full, |game, reset, _, _| {
@@ -570,10 +536,10 @@ mod tests {
                 assert!(reset);
                 ExecutionResult::failure(FailureKind::Search, "admission-only test")
             });
-            assert!(response.incremental.is_some());
-            (true, serde_json::to_vec(&response).unwrap())
+            assert!(response.endpoint.is_some());
+            (true, serde_json::to_vec(&response.bind(&bytes)).unwrap())
         };
-        let restored = client.decode(&response_bytes, request.clone()).unwrap();
+        let restored = client.decode(&response_bytes).unwrap();
         assert!(restored.matches(&request));
         assert_eq!(restored.observation.context, request.context);
         reset
@@ -643,7 +609,7 @@ mod tests {
         let Update::Advance { ref mut base, .. } = wire.update else {
             panic!("delta")
         };
-        base.generation += 1;
+        base.request_id += 1;
         let response = server
             .shogi
             .execute(wire, |_, _, _, _| panic!("invalid base must not search"));
@@ -651,14 +617,14 @@ mod tests {
         assert_eq!(server.shogi.native.game(), Some(&shogi::Game::new()));
         // Failure clears the client endpoint. The next request resynchronizes fully.
         client
-            .decode(&serde_json::to_vec(&response).unwrap(), next.clone())
+            .decode(&serde_json::to_vec(&response.clone().bind(&encoded)).unwrap())
             .unwrap();
         assert!(cycle(&mut client, &mut server, next.clone(), &game));
         let mut forged = response;
-        forged.endpoint = Some(Metadata::from_context(&old.context).stamp(0));
+        forged.endpoint = Some(Metadata::from_context(&old.context).stamp());
         assert!(
             client
-                .decode(&serde_json::to_vec(&forged).unwrap(), next.clone())
+                .decode(&serde_json::to_vec(&forged.bind(&encoded)).unwrap())
                 .is_err()
         );
         assert_eq!(client.previous.as_ref().unwrap().context, next.context);
@@ -685,65 +651,103 @@ mod tests {
         cycle(&mut client, &mut server, request(&game, 1), &game);
         let mut fixed = (*request(&game, 2)).clone();
         fixed.context.limits.time_ms = None;
+        let fixed = Arc::new(fixed);
         assert_eq!(
             client.encode(&fixed).unwrap(),
-            serde_json::to_vec(&fixed).unwrap()
+            serde_json::to_vec(&*fixed).unwrap()
         );
-        let response = fixed.failure(FailureKind::Search, "fixed test");
+        let response = Response::new(
+            &client.encode(&fixed).unwrap(),
+            ExecutionResult::failure(FailureKind::Search, "fixed test"),
+        );
         client
-            .decode(&serde_json::to_vec(&response).unwrap(), Arc::new(fixed))
+            .decode(&serde_json::to_vec(&response).unwrap())
             .unwrap();
         play(&mut game, "7g7f");
         assert!(!cycle(&mut client, &mut server, request(&game, 3), &game));
     }
     #[test]
-    fn old_full_response_without_capability_keeps_full_requests() {
-        let mut client = Client::default();
-        let mut game = shogi::Game::new();
-        for id in 1..=3 {
-            let submitted = request(&game, id);
-            let bytes = client.encode(&submitted).unwrap();
-            assert_eq!(bytes, serde_json::to_vec(&*submitted).unwrap());
-            let old_response = submitted.failure(FailureKind::Search, "legacy peer");
-            client
-                .decode(&serde_json::to_vec(&old_response).unwrap(), submitted)
-                .unwrap();
-            assert!(client.previous.is_none());
-            let action = game.position().legal_actions()[0];
-            game.submit(shogi::GameRequest {
-                expected: game.context(),
-                actor: game.position().side_to_move(),
-                command: shogi::GameCommand::Play(action),
-            })
-            .unwrap();
-        }
-    }
-    #[test]
-    fn wrong_capability_or_unknown_response_field_never_enables_suffixes() {
+    fn response_requires_exact_pending_bytes_and_is_consumed_once() {
         let mut client = Client::default();
         let game = shogi::Game::new();
         let submitted = request(&game, 1);
-        let mut wire = ReadyResponse {
-            protocol: PROTOCOL_VERSION,
-            observation: submitted.failure(FailureKind::Search, "test").observation,
-            incremental: Some(Metadata::from_context(&submitted.context).stamp(99)),
-        };
-        assert!(
-            client
-                .decode(&serde_json::to_vec(&wire).unwrap(), submitted.clone())
-                .is_err()
+        let bytes = client.encode(&submitted).unwrap();
+        let mut wire = Response::new(
+            &bytes,
+            ExecutionResult::failure(FailureKind::Search, "test"),
         );
+        wire.endpoint = Some(Stamp { request_id: 99 });
+        assert!(client.decode(&serde_json::to_vec(&wire).unwrap()).is_err());
         assert!(client.previous.is_none());
-        wire.incremental = None;
-        let mut value = serde_json::to_value(wire).unwrap();
+        wire.endpoint = None;
+        let mut value = serde_json::to_value(&wire).unwrap();
         value["unknown"] = serde_json::json!(true);
-        assert!(serde_json::from_value::<ExecutionResponse>(value.clone()).is_err());
-        assert!(
-            client
-                .decode(&serde_json::to_vec(&value).unwrap(), submitted)
-                .is_err()
-        );
+        assert!(client.decode(&serde_json::to_vec(&value).unwrap()).is_err());
+        let mut other = (*submitted).clone();
+        other.context.limits.nodes += 1;
+        let wrong = Response::new(&serde_json::to_vec(&other).unwrap(), wire.result.clone());
+        assert!(client.decode(&serde_json::to_vec(&wrong).unwrap()).is_err());
+        let encoded = serde_json::to_vec(&wire).unwrap();
+        client.decode(&encoded).unwrap();
+        assert!(client.decode(&encoded).is_err());
         assert!(client.previous.is_none());
+    }
+
+    #[test]
+    fn digest_binds_all_context_fields_and_rejects_duplicate_results() {
+        let submitted = request(&shogi::Game::new(), 1);
+        let mut client = Client::default();
+        let bytes = client.encode(&submitted).unwrap();
+        let failure = ExecutionResult::failure(FailureKind::Search, "test");
+        let original = serde_json::to_value(&*submitted).unwrap();
+        for (pointer, value) in [
+            ("/context/request_id", serde_json::json!(2)),
+            ("/context/process_generation", serde_json::json!(2)),
+            ("/context/session_version", serde_json::json!(2)),
+            ("/context/limits/nodes", serde_json::json!(123)),
+            ("/context/purpose", serde_json::json!({"kind":"other"})),
+            ("/context/game", serde_json::json!({"game_kind":"other"})),
+        ] {
+            let mut other = original.clone();
+            *other.pointer_mut(pointer).unwrap() = value;
+            let forged = Response::new(&serde_json::to_vec(&other).unwrap(), failure.clone());
+            assert!(
+                client
+                    .decode(&serde_json::to_vec(&forged).unwrap())
+                    .is_err(),
+                "{pointer}"
+            );
+        }
+        // Two valid complete native profiles with the same request ID cannot cross.
+        for profile in mshogi_core::tenjiku::Profile::ALL {
+            let mut other = (*submitted).clone();
+            other.context.game = CanonicalRecord::tenjiku(
+                mshogi_core::tenjiku::GameRecord::from_game(&mshogi_core::tenjiku::Game::standard(
+                    profile,
+                ))
+                .unwrap(),
+            );
+            let forged = Response::new(&serde_json::to_vec(&other).unwrap(), failure.clone());
+            assert!(
+                client
+                    .decode(&serde_json::to_vec(&forged).unwrap())
+                    .is_err()
+            );
+        }
+        let response = Response::new(&bytes, failure);
+        let text = serde_json::to_string(&response).unwrap();
+        let duplicate = text.replace(
+            "\"kind\":\"failure\"",
+            "\"kind\":\"failure\",\"kind\":\"failure\"",
+        );
+        assert_ne!(duplicate, text);
+        assert!(client.decode(duplicate.as_bytes()).is_err());
+        assert!(client.decode(&vec![b' '; MAX_RESPONSE_BYTES + 1]).is_err());
+        // Invalid replies leave the exact pending request available for its reply.
+        client.decode(text.as_bytes()).unwrap();
+        let next = request(&shogi::Game::new(), 2);
+        client.encode(&next).unwrap();
+        assert!(client.decode(text.as_bytes()).is_err());
     }
 
     fn tori_request(game: &tori::Game, id: u64) -> Arc<ExecutionRequest> {
@@ -785,7 +789,7 @@ mod tests {
                 assert_eq!(actual_reset, reset);
                 ExecutionResult::failure(FailureKind::Search, "admission-only test")
             });
-            (reset, serde_json::to_vec(&response).unwrap())
+            (reset, serde_json::to_vec(&response.bind(&bytes)).unwrap())
         } else {
             let full: ExecutionRequest = serde_json::from_slice(&bytes).unwrap();
             let response = server.tori.begin(&full, |game, reset, _, _| {
@@ -793,9 +797,9 @@ mod tests {
                 assert!(reset);
                 ExecutionResult::failure(FailureKind::Search, "admission-only test")
             });
-            (true, serde_json::to_vec(&response).unwrap())
+            (true, serde_json::to_vec(&response.bind(&bytes)).unwrap())
         };
-        let restored = client.decode(&response_bytes, request.clone()).unwrap();
+        let restored = client.decode(&response_bytes).unwrap();
         assert!(restored.matches(&request));
         reset
     }

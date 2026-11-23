@@ -11,5 +11,7 @@ mshogi-search = { path = "../mshogi-search" }
 serde = { version = "=1.0.229", features = ["derive"] }
 serde_json = { version = "=1.0.145", features = ["raw_value"] }
 
+sha2 = "=0.10.9"
+
 [lints]
 workspace = true

@@ -75,7 +75,7 @@ pub enum Split {
 pub struct ProfileLimits {
     /// Immutable whole profile.
     pub profile: RulesProfile,
-    /// Effective values submitted to protocol4.
+    /// Effective values submitted to the internal protocol.
     pub work: WorkLimits,
 }
 /// Internal-search participant. Arbitrary model/options/arguments are unsupported.
@@ -495,7 +495,7 @@ pub struct Step {
     pub elapsed_ns: u64,
     /// Exact actual submitted request, even if cancelled before a response.
     pub request: ExecutionContext,
-    /// Actual protocol4 observation, never fabricated on cancellation.
+    /// Actual the internal protocol observation, never fabricated on cancellation.
     #[serde(deserialize_with = "strict_observation")]
     pub observation: Option<ExecutionObservation>,
     /// Host cancellation or native-admission refusal.

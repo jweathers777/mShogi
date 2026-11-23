@@ -92,15 +92,6 @@ impl NativeGame for Chess {
     fn context(game: &ChessMatch) -> Result<CanonicalRecord, RecordFailure> {
         Ok(CanonicalRecord::chess(game.game().record()))
     }
-    fn context_game(
-        record: &CanonicalRecord,
-        stop: &mut impl FnMut() -> bool,
-    ) -> Result<ChessMatch, RecordFailure> {
-        let CanonicalRecord::Chess(record) = record else {
-            return Err(invalid("Wrong native context family"));
-        };
-        ChessRecord::new(record).replay(stop)
-    }
     fn context_side(record: &CanonicalRecord) -> Color {
         let CanonicalRecord::Chess(record) = record else {
             panic!("validated Chess context")

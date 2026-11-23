@@ -275,6 +275,29 @@ pub struct Game {
     branch: u64,
 }
 impl Game {
+    /// Copy an admitted game for private analysis without replaying its history.
+    /// The copy has a fresh runtime identity; existing reversal tokens cannot apply.
+    pub fn fork(&self) -> Result<Self, GameError> {
+        let instance = NEXT_INSTANCE
+            .try_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
+            .map_err(|_| GameError::Capacity(Resource::Counter))?;
+        Ok(Self {
+            root: self.root.clone(),
+            local: self.local.clone(),
+            events: self.events.clone(),
+            keys: self.keys.clone(),
+            snapshots: self.snapshots.clone(),
+            root_snapshot: self.root_snapshot.clone(),
+            runtime: RuntimeToken {
+                instance,
+                revision: self.runtime.revision,
+            },
+            node: self.node,
+            next_node: self.next_node,
+            branch: self.branch,
+        })
+    }
+
     #[cfg(test)]
     pub(super) fn set_test_authority(&mut self, revision: u64, next_node: u64, branch: u64) {
         self.runtime.revision = revision;

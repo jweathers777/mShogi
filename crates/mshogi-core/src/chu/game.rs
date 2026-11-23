@@ -355,6 +355,33 @@ pub struct Game {
     branch: u64,
 }
 impl Game {
+    /// Copy an admitted game for private analysis without replaying its history.
+    /// The copy has a fresh runtime identity; existing reversal tokens cannot apply.
+    pub fn fork(&self) -> Result<Self, GameError> {
+        let instance = NEXT_INSTANCE
+            .try_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
+            .map_err(|_| GameError::Capacity(Resource::Counter))?;
+        Ok(Self {
+            data: GameData {
+                root: self.data.root.clone(),
+                local: self.data.local.clone(),
+                events: self.data.events.clone(),
+                keys: self.data.keys.clone(),
+                plies: self.data.plies.clone(),
+                snapshots: self.data.snapshots.clone(),
+                root_snapshot: self.data.root_snapshot.clone(),
+                work: self.data.work,
+            },
+            runtime: RuntimeToken {
+                instance,
+                revision: self.runtime.revision,
+            },
+            node: self.node,
+            next_node: self.next_node,
+            branch: self.branch,
+        })
+    }
+
     /// Standard game, empty known history.
     pub fn standard() -> Self {
         Self::from_root(Position::standard()).expect("standard native root")

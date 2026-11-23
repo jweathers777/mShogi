@@ -171,10 +171,14 @@ fn main() {
     let crash_on_next = context.request_id == 30;
     println!(
         "{}",
-        serde_json::to_string(&ExecutionResponse {
-            protocol: PROTOCOL_VERSION,
-            observation: ExecutionObservation::new(context, result),
-        })
+        serde_json::to_string(&incremental::Response::new(
+            &serde_json::to_vec(&ExecutionRequest {
+                protocol: PROTOCOL_VERSION,
+                context
+            })
+            .unwrap(),
+            result
+        ))
         .unwrap()
     );
     if crash_on_next {

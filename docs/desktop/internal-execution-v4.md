@@ -1,7 +1,7 @@
 # Current internal execution and session observations
 
 This is the sole supported internal engine boundary. Development transports
-v1/v2/v3 are retired. External UCI, USI and Xiangqi interoperability are separate,
+v1/v2/v3/v4 are retired. External UCI, USI and Xiangqi interoperability are separate,
 unchanged functional contracts. See R1 evidence.
 
 ## Ownership and encoding
@@ -10,11 +10,23 @@ unchanged functional contracts. See R1 evidence.
 
 - `ExecutionContext`: `purpose`, `request_id`, `session_version`,
   `process_generation`, `game: CanonicalRecord`, and `limits: WorkLimits`.
-- `ExecutionRequest`: `{ protocol: 4, context: ExecutionContext }`.
+- `ExecutionRequest`: `{ protocol: 5, context: ExecutionContext }`.
 - `ExecutionObservation`: `{ schema_version: 1, context: ExecutionContext,
   result: ExecutionResult }`. This is semantic evidence, with no wire
   version or pending-execution meaning.
-- `ExecutionResponse`: `{ protocol: 4, observation: ExecutionObservation }`.
+- Process reply: `{ protocol: 5, request_digest: [32 SHA-256 bytes],
+  endpoint: null | { request_id }, result: ExecutionResult }`.
+- `ExecutionResponse`: the host's admitted `{ protocol: 5, observation }`.
+  This is not the child wire shape.
+
+The digest covers the exact encoded request bytes, excluding one framing newline.
+The process client retains that digest and the immutable submitted request. It
+checks the bounded, duplicate-free reply against the pending digest, protocol,
+endpoint and native result family/shape, then attaches its own submitted context.
+A reply consumes the pending request once. Invalid replies do not advance the
+retained native endpoint. There is no echoed record to deserialize or replay.
+The digest binds history, profile, purpose, target, limits and identity; it is not
+a signature or a substitute for native result validation.
 
 One `EngineBridge::submit` and `poll` serve all six games and seven immutable
 profiles. The
@@ -107,8 +119,9 @@ and linked game contracts for native scoring, limits and accepted evidence.
 The earlier Chess/Shogi/Xiangqi result descriptions are examples, not an exclusion
 of the three subsequently delivered games.
 
-Request and response equality includes full history, selection/purpose, request,
-session/process identities and actual limits. Replacement/cancellation retires
+Request binding includes full history, selection/purpose, request,
+session/process metadata and actual limits. The host also checks the observation
+against the current pending request before native admission. Replacement/cancellation retires
 pending and already published work; semantic undo and historical selection do
 not restore execution authority. Current document reopening allocates fresh
 runtime identities and leaves work stopped until explicit Resume.
@@ -147,7 +160,7 @@ execution interface.
 ## Engine session
 
 MSH-169 (Engine Session Persistence) and MSH-179 (Clock and Session for All Games).
-The wire types did not change.
+The session retention policy remains the same under protocol5.
 
 - One child serves successive requests. A response is accepted when its line is
   complete and matches the request; the bridge does not wait for the child to
@@ -172,5 +185,25 @@ The wire types did not change.
 - All six games use the same session retention rule. Native history prefix
   comparison includes the initial state and immutable profile. A timed switch
   of game kind drops the previous game state. Desktop defaults are unchanged.
-- `process_generation` is a request identity that increases with each
-  submission. It does not count child processes.
+- The bridge requires strictly increasing nonzero `request_id` values.
+  `process_generation` remains positive recorded metadata for report compatibility;
+  it is not a second monotonic counter or a count of child processes.
+- Timed Shogi and Tori engine turns retain their measured native incremental
+  sessions. A suffix names the exact acknowledged request ID. A missing or
+  different base cannot apply a suffix. Every reply uses the same compact shape,
+  including the initial full request and fixed-work requests.
+
+## Native result admission
+
+The desktop worker restores one private candidate and checks the result against
+its exact selected native record. Commands apply to that admitted candidate once;
+serialization still enforces the document bound. Failure or cancellation discards
+the candidate, and publication still checks the captured host context. Historical
+analysis validates its selected prefix without issuing a live command.
+
+Chu and Tenjiku PV validation fork the admitted native history with a fresh runtime
+identity instead of replaying it. Reversal tokens cannot cross that boundary.
+Every PV command still passes native admission, terminal-score checks and line
+bounds. Reported validation work counts actual PV transitions; it does not charge
+for a history replay that no longer occurs. Saved experiment observation schema1
+and its complete provenance remain unchanged.

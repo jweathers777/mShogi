@@ -1,4 +1,5 @@
 //! Additive Chess thinking-time and selective-search execution contracts.
+mod support;
 use mshogi_core::{
     chess::*,
     native::{CanonicalRecord, NativeSide},
@@ -32,7 +33,7 @@ fn execute(context: ExecutionContext) -> ExecutionResponse {
     input.push(b'\n');
     let mut output = Vec::new();
     serve_once(Cursor::new(input), &mut output).unwrap();
-    let response: ExecutionResponse = serde_json::from_slice(&output).unwrap();
+    let response: ExecutionResponse = support::decode_response(&output, &request).unwrap();
     assert!(response.matches(&request), "{response:?}");
     response
 }

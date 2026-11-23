@@ -1,4 +1,5 @@
 //! Actual native Tori result contract through the real one-shot transport.
+mod support;
 use mshogi_core::{native::*, tori as t};
 use mshogi_engine::*;
 use mshogi_search::tori as search;
@@ -32,7 +33,14 @@ fn execute(c: &ExecutionContext) -> ExecutionObservation {
         &mut out,
     )
     .unwrap();
-    let r: ExecutionResponse = serde_json::from_slice(&out).unwrap();
+    let r: ExecutionResponse = support::decode_response(
+        &out,
+        &ExecutionRequest {
+            protocol: PROTOCOL_VERSION,
+            context: c.clone(),
+        },
+    )
+    .unwrap();
     assert_eq!(&r.observation.context, c);
     r.observation
 }

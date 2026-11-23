@@ -119,11 +119,6 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
     fn native_side(side: Self::Side) -> NativeSide;
     /// Exact canonical context sent to the engine.
     fn context(game: &Self::Game) -> Result<CanonicalRecord, RecordFailure>;
-    /// Restore an engine observation target.
-    fn context_game(
-        record: &CanonicalRecord,
-        stop: &mut impl FnMut() -> bool,
-    ) -> Result<Self::Game, RecordFailure>;
     /// Side to move in an admitted engine context, without replay.
     fn context_side(record: &CanonicalRecord) -> Self::Side;
     /// Parse the native payload and keep the game produced by validation.
@@ -210,16 +205,6 @@ macro_rules! canonical_record {
         /// Engine context of a game. It can differ from the durable match record.
         fn context(game: &Self::Game) -> Result<CanonicalRecord, RecordFailure> {
             Self::from_game(game).map(|record| CanonicalRecord::$variant(Box::new(record)))
-        }
-        /// Restore the target of an engine observation.
-        fn context_game(
-            record: &CanonicalRecord,
-            stop: &mut impl FnMut() -> bool,
-        ) -> Result<Self::Game, RecordFailure> {
-            let CanonicalRecord::$variant(record) = record else {
-                return Err(RecordFailure::Invalid("Wrong native context family".into()));
-            };
-            Self::to_game(record, stop)
         }
         /// Side to move in an engine context, without replay.
         fn context_side(record: &CanonicalRecord) -> Self::Side {

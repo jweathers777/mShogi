@@ -77,7 +77,7 @@ fn actual(request: &ExecutionRequest) -> ExecutionResponse {
     assert!(status.success(), "{}", String::from_utf8_lossy(&stderr));
     assert!(stderr.is_empty());
     assert!(stdout.len() <= MAX_RESPONSE_BYTES);
-    let response: ExecutionResponse = serde_json::from_slice(&stdout).unwrap();
+    let response: ExecutionResponse = ExecutionResponse::decode(&stdout, request).unwrap();
     assert!(response.matches(request));
     response
 }

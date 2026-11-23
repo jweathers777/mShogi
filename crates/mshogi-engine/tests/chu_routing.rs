@@ -1,4 +1,5 @@
 //! Native routing and actual bounded Chu execution retain complete identities.
+mod support;
 use mshogi_core::{chu as t, native::*};
 use mshogi_engine::*;
 use std::io::Cursor;
@@ -30,7 +31,14 @@ fn run(context: &ExecutionContext) -> ExecutionResponse {
         &mut bytes,
     )
     .unwrap();
-    serde_json::from_slice(&bytes).unwrap()
+    support::decode_response(
+        &bytes,
+        &ExecutionRequest {
+            protocol: PROTOCOL_VERSION,
+            context: context.clone(),
+        },
+    )
+    .unwrap()
 }
 #[test]
 fn real_internal_entry_point_supports_bounded_chu_without_foreign_operations() {

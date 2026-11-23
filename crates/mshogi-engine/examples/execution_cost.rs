@@ -6,11 +6,15 @@ use mshogi_engine::*;
 use std::{hint::black_box, sync::Arc, time::Instant};
 use walk::Failure;
 
-fn median(mut run: impl FnMut() -> Result<(), Failure>) -> Result<f64, Failure> {
+fn median<T>(
+    mut prepare: impl FnMut() -> Result<T, Failure>,
+    mut run: impl FnMut(T) -> Result<(), Failure>,
+) -> Result<f64, Failure> {
     let mut samples = Vec::new();
     for _ in 0..5 {
+        let input = prepare()?;
         let started = Instant::now();
-        run()?;
+        run(input)?;
         samples.push(started.elapsed().as_nanos());
     }
     samples.sort();
@@ -38,26 +42,34 @@ fn measure(
     });
     let mut client = incremental::Client::default();
     let request_bytes = client.encode(&request)?;
-    let response = ExecutionResponse {
-        protocol: PROTOCOL_VERSION,
-        observation: ExecutionObservation::new(request.context.clone(), result),
-    };
+    let response = incremental::Response::new(&request_bytes, result);
     let response_bytes = serde_json::to_vec(&response)?;
-    let decode = median(|| {
-        let decoded = client
-            .decode(black_box(&response_bytes), Arc::clone(&request))
-            .map_err(|e| e.1)?;
-        assert!(decoded.matches(&request));
-        Ok(())
-    })?;
-    let clone = median(|| {
-        black_box(request.context.clone());
-        Ok(())
-    })?;
-    let validation = median(|| {
-        validate()?;
-        Ok(())
-    })?;
+    let decode = median(
+        || {
+            let mut client = incremental::Client::default();
+            client.encode(&request)?;
+            Ok(client)
+        },
+        |mut client| {
+            let decoded = client.decode(black_box(&response_bytes)).map_err(|e| e.1)?;
+            assert!(decoded.matches(&request));
+            Ok(())
+        },
+    )?;
+    let clone = median(
+        || Ok(()),
+        |_| {
+            black_box(request.context.clone());
+            Ok(())
+        },
+    )?;
+    let validation = median(
+        || Ok(()),
+        |_| {
+            validate()?;
+            Ok(())
+        },
+    )?;
     println!(
         "{},{},{},{decode:.3},{clone:.3},{validation:.3}",
         request.context.game.event_count(),

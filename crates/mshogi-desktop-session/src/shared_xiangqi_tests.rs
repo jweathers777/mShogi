@@ -69,7 +69,7 @@ fn execute(request: &ExecutionContext) -> ExecutionObservation {
         &mut output,
     )
     .unwrap();
-    let response = decode_execution_observation(&output);
+    let response = decode_execution_observation(&output, request);
     assert!(response.matches(request));
     response
 }

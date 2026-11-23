@@ -1,4 +1,5 @@
 //! Both immutable Tenjiku identities reach actual native execution with exact context guards.
+mod support;
 use mshogi_core::{native::*, tenjiku as t};
 use mshogi_engine::*;
 use serde_json::{Value, json};
@@ -76,7 +77,14 @@ fn run(context: &ExecutionContext) -> ExecutionResponse {
         &mut bytes,
     )
     .unwrap();
-    serde_json::from_slice(&bytes).unwrap()
+    support::decode_response(
+        &bytes,
+        &ExecutionRequest {
+            protocol: PROTOCOL_VERSION,
+            context: context.clone(),
+        },
+    )
+    .unwrap()
 }
 
 fn assert_failure(response: &ExecutionResponse, kind: FailureKind) {

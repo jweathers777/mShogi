@@ -76,7 +76,7 @@ fn current_chess_contract_contains_actual_claims_match_and_search_observations()
     encoded.push(b'\n');
     let mut bytes = vec![];
     mshogi_engine::serve_once(std::io::Cursor::new(encoded), &mut bytes).unwrap();
-    let response: ExecutionResponse = serde_json::from_slice(&bytes).unwrap();
+    let response: ExecutionResponse = ExecutionResponse::decode(&bytes, &request).unwrap();
     let observation = response.observation.clone();
     assert!(c.accept_shared(response));
     let receipt = c.admission_receipt.clone().unwrap();

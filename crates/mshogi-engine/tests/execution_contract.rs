@@ -1,4 +1,5 @@
 //! Wire identity and durable semantic observation are separate strict boundaries.
+mod support;
 use mshogi_core::{
     chess::{AdjudicatedGame, ClaimPolicy},
     native::CanonicalRecord,
@@ -27,7 +28,8 @@ fn request() -> ExecutionRequest {
 fn execute(text: &str) -> std::io::Result<ExecutionResponse> {
     let mut output = Vec::new();
     serve_once(Cursor::new(format!("{text}\n")), &mut output)?;
-    serde_json::from_slice(&output).map_err(std::io::Error::other)
+    let request: ExecutionRequest = serde_json::from_str(text).map_err(std::io::Error::other)?;
+    support::decode_response(&output, &request).map_err(std::io::Error::other)
 }
 
 #[test]
@@ -36,7 +38,7 @@ fn singular_wire_rejects_old_versions_without_interpreting_a_legacy_payload() {
     let text = serde_json::to_string(&request).unwrap();
     let response = execute(&text).unwrap();
     assert!(response.matches(&request));
-    for version in [0, 2, 3, PROTOCOL_VERSION + 1] {
+    for version in [0, 2, 3, 4, PROTOCOL_VERSION + 1] {
         let mut changed = request.clone();
         changed.protocol = version;
         assert!(!changed.valid());
@@ -63,7 +65,7 @@ fn outer_wrapper_context_native_and_observation_reject_duplicates_and_unknowns()
     let request = request();
     let text = serde_json::to_string(&request).unwrap();
     for (needle, replacement) in [
-        ("\"protocol\":4", "\"protocol\":4,\"protocol\":4"),
+        ("\"protocol\":5", "\"protocol\":5,\"protocol\":5"),
         ("\"context\":{", "\"context\":{},\"context\":{"),
         ("\"request_id\":1", "\"request_id\":1,\"request_id\":1"),
         (
@@ -95,7 +97,7 @@ fn outer_wrapper_context_native_and_observation_reject_duplicates_and_unknowns()
     let response = execute(&text).unwrap();
     let encoded = serde_json::to_string(&response).unwrap();
     for (needle, replacement) in [
-        ("\"protocol\":4", "\"protocol\":4,\"protocol\":4"),
+        ("\"protocol\":5", "\"protocol\":5,\"protocol\":5"),
         ("\"observation\":{", "\"observation\":{},\"observation\":{"),
         (
             "\"schema_version\":1",

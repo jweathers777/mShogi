@@ -119,7 +119,7 @@ fn run(context: ExecutionContext) -> ExecutionObservation {
         &mut bytes,
     )
     .unwrap();
-    decode_execution_observation(&bytes)
+    decode_execution_observation(&bytes, &context)
 }
 #[test]
 fn canonical_fixture_roundtrips_preserve_native_root_history_and_all_outcomes() {

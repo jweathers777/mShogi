@@ -33,7 +33,7 @@ impl Default for BridgeOptions {
 pub enum SubmitError {
     /// Bridge is shutting down.
     ShuttingDown,
-    /// IDs/generations must be nonzero and strictly increasing per bridge.
+    /// Request IDs must be nonzero and strictly increasing per bridge.
     IdentityReused,
     /// Unsupported protocol version or invalid depth.
     InvalidRequest,
@@ -55,7 +55,6 @@ struct State {
     pending: Option<Pending>,
     result: Option<ExecutionResponse>,
     last_id: u64,
-    last_generation: u64,
     shutdown: bool,
     retire_engine: bool,
 }
@@ -115,14 +114,13 @@ impl EngineBridge {
         if state.shutdown {
             return Err(SubmitError::ShuttingDown);
         }
-        if context.request_id() <= state.last_id || context.generation() <= state.last_generation {
+        if context.request_id() <= state.last_id {
             return Err(SubmitError::IdentityReused);
         }
         if let Some(cancel) = &state.cancel {
             cancel.store(true, Ordering::Release);
         }
         state.last_id = context.request_id();
-        state.last_generation = context.generation();
         let retired = (
             state.current.replace(context.clone()),
             state.cancel.replace(cancelled.clone()),
@@ -544,17 +542,10 @@ fn exchange(
                     if bytes.last() != Some(&b'\n') {
                         ended = Some(bytes);
                     } else {
-                        let response =
-                            match process.incremental.decode(&bytes, pending.context.clone()) {
-                                Ok(response) => response,
-                                Err((kind, error)) => return fail(kind, &error),
-                            };
-                        if !response.matches(&pending.context) {
-                            return fail(
-                                FailureKind::ContextMismatch,
-                                &"engine echoed a different complete context or result family",
-                            );
-                        }
+                        let response = match process.incremental.decode(&bytes) {
+                            Ok(response) => response,
+                            Err((kind, error)) => return fail(kind, &error),
+                        };
                         return Exchange::Response(response);
                     }
                 }
@@ -680,10 +671,11 @@ mod tests {
         bridge.submit(request(2, 2)).unwrap();
         published(&bridge);
         assert_eq!(
-            bridge.submit(request(3, 2)),
+            bridge.submit(request(2, 3)),
             Err(SubmitError::IdentityReused)
         );
-        bridge.submit(request(3, 3)).unwrap();
+        // Recorded generation remains metadata, not a second monotonic authority.
+        bridge.submit(request(3, 2)).unwrap();
         published(&bridge);
         assert_eq!(bridge.poll().unwrap().observation.context.request_id, 3);
         assert!(bridge.poll().is_none());

@@ -3,7 +3,7 @@ use crate::observation_identity::{Identity, Profile, SearchKind};
 use crate::{ExecutionContext, ExecutionPurpose, StopReason};
 use mshogi_core::{
     native::CanonicalRecord,
-    tenjiku::{Action, Conclusion, Game, GameCommand, GameRecord, GameRequest, Side},
+    tenjiku::{Action, Conclusion, Game, GameCommand, GameRequest, Side},
 };
 use mshogi_search::tenjiku as search;
 /// Current bounded interactive Tenjiku defaults, shared by native consumers.
@@ -161,7 +161,7 @@ impl TenjikuResult {
         self.validate_with_work(game, &mut || false).map(|_| ())
     }
     /// Validate native continuation under an admission worker's stop/deadline.
-    /// Returns actual deterministic reconstruction plus native PV transition work;
+    /// Returns actual native PV transition work; the admitted history is copied, not replayed;
     /// the document owner must charge these units to its aggregate budget.
     pub fn validate_with_work(
         &self,
@@ -215,12 +215,7 @@ impl TenjikuResult {
                 {
                     return Err("Tenjiku choice has no completed live-root iteration".into());
                 }
-                let record = GameRecord::from_game(game).map_err(|e| e.to_string())?;
-                if stop() {
-                    return Err("Tenjiku observation validation stopped".into());
-                }
-                let mut branch = record.to_game_with_stop(stop).map_err(|e| e.to_string())?;
-                work = record.reconstruction_work();
+                let mut branch = game.fork().map_err(|e| e.to_string())?;
                 for action in &t.principal_variation {
                     if stop() {
                         return Err("Tenjiku observation validation stopped".into());
@@ -362,7 +357,9 @@ mod identity_tests {
             request_id: 1,
             session_version: 1,
             process_generation: 1,
-            game: CanonicalRecord::tenjiku(GameRecord::from_game(&game).unwrap()),
+            game: CanonicalRecord::tenjiku(
+                mshogi_core::tenjiku::GameRecord::from_game(&game).unwrap(),
+            ),
             limits: crate::WorkLimits {
                 time_ms: None,
                 depth: 1,

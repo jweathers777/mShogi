@@ -1273,13 +1273,13 @@ impl DesktopController {
                     .shogi()
                     .and_then(|s| s.pending.clone())
                     .expect("fixture request");
-                let mut bytes =
-                    serde_json::to_vec(&execution_request(request)).map_err(|e| e.to_string())?;
+                let mut bytes = serde_json::to_vec(&execution_request(request.clone()))
+                    .map_err(|e| e.to_string())?;
                 bytes.push(b'\n');
                 let mut response = vec![];
                 mshogi_engine::serve_once(std::io::Cursor::new(bytes), &mut response)
                     .map_err(|e| e.to_string())?;
-                let response = serde_json::from_slice::<ExecutionResponse>(&response)
+                let response = ExecutionResponse::decode(&response, &execution_request(request))
                     .map_err(|e| e.to_string())?
                     .observation;
                 if !self.accept_game_observation::<Shogi>(response) {
@@ -1307,8 +1307,8 @@ fn execution_request(context: ExecutionContext) -> ExecutionRequest {
     }
 }
 #[cfg(test)]
-fn decode_execution_observation(bytes: &[u8]) -> ExecutionObservation {
-    let response: ExecutionResponse = serde_json::from_slice(bytes).unwrap();
+fn decode_execution_observation(bytes: &[u8], context: &ExecutionContext) -> ExecutionObservation {
+    let response = ExecutionResponse::decode(bytes, &execution_request(context.clone())).unwrap();
     assert_eq!(response.protocol, mshogi_engine::PROTOCOL_VERSION);
     response.observation
 }

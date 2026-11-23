@@ -382,7 +382,7 @@ fn exact_analysis_context_retirement_and_same_board_history() {
         &mut output,
     )
     .unwrap();
-    let result = decode_execution_observation(&output);
+    let result = decode_execution_observation(&output, &second);
     assert!(c.accept_observation(result));
     settle(&mut c);
     assert_eq!(c.session.shogi().unwrap().game.context(), root.context());
@@ -468,7 +468,7 @@ fn semantic_undo_replay_does_not_revive_retired_work() {
         &mut bytes,
     )
     .unwrap();
-    assert!(c.accept_observation(decode_execution_observation(&bytes)));
+    assert!(c.accept_observation(decode_execution_observation(&bytes, &fresh)));
     settle(&mut c);
     assert!(c.game_snapshot::<Shogi>().status.concluded);
 }
@@ -564,7 +564,7 @@ fn close_document_preconditions_advance_for_shogi_events_observations_and_replac
             &mut bytes,
         )
         .unwrap();
-        decode_execution_observation(&bytes)
+        decode_execution_observation(&bytes, &context)
     }));
     while c.admission_token.is_some() {
         c.poll_native_admission();
@@ -867,7 +867,7 @@ fn native_search_presentation_preserves_target_purpose_and_real_terminal_distanc
     bytes.push(b'\n');
     let mut output = vec![];
     mshogi_engine::serve_once(std::io::Cursor::new(bytes), &mut output).unwrap();
-    assert!(c.accept_observation(decode_execution_observation(&output)));
+    assert!(c.accept_observation(decode_execution_observation(&output, &context)));
     settle(&mut c);
     let view = c.shared_snapshot();
     assert_eq!(view.event_index, 0);

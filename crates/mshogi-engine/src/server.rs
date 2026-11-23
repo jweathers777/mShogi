@@ -235,7 +235,7 @@ fn dispatch_request(
                 execute_incremental_shogi(session, game, reset, limits, time, None)
             })
         };
-        return write_response(output, &response);
+        return write_response(output, &response.bind(bytes));
     }
     let request: ExecutionRequest = serde_json::from_slice(bytes).map_err(io::Error::other)?;
     if crate::incremental::Client::supports(&request) {
@@ -252,12 +252,15 @@ fn dispatch_request(
                 execute_incremental_shogi(session, game, reset, limits, time, record)
             })
         };
-        return write_response(output, &response);
+        return write_response(output, &response.bind(bytes));
     }
     if request.context.limits.time_ms.is_some() {
         *native = crate::incremental::Server::default();
     }
-    write_response(output, &request.execute(session))
+    write_response(
+        output,
+        &crate::incremental::Response::new(bytes, request.execute(session)),
+    )
 }
 fn execute_incremental_shogi(
     session: &mut Session,

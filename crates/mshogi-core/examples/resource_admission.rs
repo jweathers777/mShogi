@@ -1,6 +1,6 @@
+//! Native admission/replay measurements; generated walks are workloads, not rules oracles.
 #[path = "support/walk.rs"]
 mod walk;
-// Native admission/replay measurements; generated walks are workloads, not rules oracles.
 use std::{error::Error, hint::black_box, time::Instant};
 
 type Failure = Box<dyn Error>;

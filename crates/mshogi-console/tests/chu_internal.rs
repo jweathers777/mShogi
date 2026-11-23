@@ -8,6 +8,15 @@ use std::{
     thread,
     time::{Duration, Instant},
 };
+// These tests need one complete native iteration, not production playing depth.
+// The standard root completes depth one in 38 nodes; 512 leaves room for the
+// tested opening/history prefixes. Normal Resume limits are checked separately.
+const CONTRACT_LIMITS: WorkLimits = WorkLimits {
+    time_ms: None,
+    depth: 1,
+    nodes: 512,
+};
+
 fn request(id: u64, g: &c::Game, analysis: bool) -> ExecutionRequest {
     let game = CanonicalRecord::chu(c::GameRecord::from_game(g).unwrap());
     ExecutionRequest {
@@ -31,7 +40,7 @@ fn request(id: u64, g: &c::Game, analysis: bool) -> ExecutionRequest {
             session_version: 2,
             process_generation: id,
             game,
-            limits: CHU_PLAY_LIMITS,
+            limits: CONTRACT_LIMITS,
         },
     }
 }
@@ -59,6 +68,23 @@ fn send(c: &mut DesktopController, op: SessionOperation) -> SharedSnapshot {
         let s = c.shared_snapshot();
         if let Some(done) = r.completion() {
             done.unwrap();
+            return s;
+        }
+        assert!(Instant::now() < end);
+        thread::sleep(Duration::from_millis(1));
+    }
+}
+fn wait_file(ctl: &mut DesktopController, id: u64) -> SharedSnapshot {
+    let end = Instant::now() + Duration::from_secs(20);
+    loop {
+        let s = ctl.shared_snapshot();
+        if s.io.id == id
+            && matches!(
+                s.io.phase,
+                mshogi_desktop_session::IoPhase::Complete | mshogi_desktop_session::IoPhase::Failed
+            )
+        {
+            assert_eq!(s.io.phase, mshogi_desktop_session::IoPhase::Complete);
             return s;
         }
         assert!(Instant::now() < end);
@@ -139,7 +165,7 @@ fn actual_controller_readonly_analysis_save_reopen_and_stale_identity_retirement
             human: NativeSide::Chu(c::Side::Sente),
         },
     );
-    let submitted = ctl.verify_chu_execution(CHU_PLAY_LIMITS, true).unwrap();
+    let submitted = ctl.verify_chu_execution(CONTRACT_LIMITS, true).unwrap();
     for case in 0..7 {
         let mut ctx = submitted.clone();
         match case {
@@ -194,24 +220,6 @@ fn actual_controller_readonly_analysis_save_reopen_and_stale_identity_retirement
         "msh43-real-observation-{}.mshogi",
         std::process::id()
     ));
-    let wait_file = |ctl: &mut DesktopController, id| {
-        let end = Instant::now() + Duration::from_secs(20);
-        loop {
-            let s = ctl.shared_snapshot();
-            if s.io.id == id
-                && matches!(
-                    s.io.phase,
-                    mshogi_desktop_session::IoPhase::Complete
-                        | mshogi_desktop_session::IoPhase::Failed
-                )
-            {
-                assert_eq!(s.io.phase, mshogi_desktop_session::IoPhase::Complete);
-                break s;
-            }
-            assert!(Instant::now() < end);
-            thread::sleep(Duration::from_millis(1));
-        }
-    };
     let id = ctl.queue_shared_save(path.clone()).unwrap();
     let saved = wait_file(&mut ctl, id);
     let id = ctl
@@ -323,7 +331,23 @@ fn wait_observation(ctl: &mut DesktopController, count: usize) -> SharedSnapshot
     }
 }
 #[test]
+fn bounded_engine_turns_for_both_player_assignments_admit_observation_then_action() {
+    engine_turns_for_both_player_assignments(false);
+}
+
+// This test deliberately checks the product's unmodified Resume budget and
+// real child deadline. Debug search at 300,000 nodes exceeds that deadline;
+// the same assertion body runs with bounded work above in every build.
+#[test]
+#[cfg_attr(
+    debug_assertions,
+    ignore = "production Chu Resume budget; run in release"
+)]
 fn actual_engine_turns_for_both_player_assignments_admit_observation_then_action() {
+    engine_turns_for_both_player_assignments(true);
+}
+
+fn engine_turns_for_both_player_assignments(production_limits: bool) {
     for human in [c::Side::Sente, c::Side::Gote] {
         let mut ctl = controller(human);
         let before = ctl.shared_snapshot();
@@ -343,7 +367,13 @@ fn actual_engine_turns_for_both_player_assignments_admit_observation_then_action
         } else {
             before
         };
-        send(&mut ctl, SessionOperation::Resume {});
+        let expected_limits = if production_limits {
+            send(&mut ctl, SessionOperation::Resume {});
+            CHU_PLAY_LIMITS
+        } else {
+            ctl.verify_chu_execution(CONTRACT_LIMITS, false).unwrap();
+            CONTRACT_LIMITS
+        };
         let after = wait_observation(&mut ctl, 1);
         assert_eq!(
             after.context.known_board_actions(),
@@ -352,6 +382,7 @@ fn actual_engine_turns_for_both_player_assignments_admit_observation_then_action
         assert_eq!(after.turn.id, NativeSide::Chu(human));
         let observation = &after.observations[0].observation;
         assert_eq!(observation.context.game, base.context);
+        assert_eq!(observation.context.limits, expected_limits);
         assert!(matches!(
             observation.context.purpose,
             ExecutionPurpose::EngineTurn {}
@@ -517,13 +548,13 @@ fn real_historical_analysis_saves_exact_prefix_and_reopens_stopped_without_futur
             },
         },
     );
-    send(&mut ctl, SessionOperation::Resume {});
+    ctl.verify_chu_execution(CONTRACT_LIMITS, false).unwrap();
     let played = wait_observation(&mut ctl, 1);
     assert_eq!(played.context.known_board_actions(), 2);
     send(&mut ctl, SessionOperation::Inspect { event_index: 0 });
     let selected = ctl.shared_snapshot();
     assert!(selected.historical);
-    let submitted = ctl.verify_chu_execution(CHU_PLAY_LIMITS, true).unwrap();
+    let submitted = ctl.verify_chu_execution(CONTRACT_LIMITS, true).unwrap();
     assert_eq!(submitted.game, initial);
     let ExecutionPurpose::MoveAnalysis { target } = &submitted.purpose else {
         panic!()
@@ -544,39 +575,11 @@ fn real_historical_analysis_saves_exact_prefix_and_reopens_stopped_without_futur
         std::process::id()
     ));
     let id = ctl.queue_shared_save(path.clone()).unwrap();
-    let deadline = Instant::now() + Duration::from_secs(20);
-    let saved = loop {
-        let s = ctl.shared_snapshot();
-        if s.io.id == id
-            && matches!(
-                s.io.phase,
-                mshogi_desktop_session::IoPhase::Complete | mshogi_desktop_session::IoPhase::Failed
-            )
-        {
-            assert_eq!(s.io.phase, mshogi_desktop_session::IoPhase::Complete);
-            break s;
-        }
-        assert!(Instant::now() < deadline);
-        thread::sleep(Duration::from_millis(1));
-    };
+    let saved = wait_file(&mut ctl, id);
     let id = ctl
         .queue_shared_open(path.clone(), saved.open_token)
         .unwrap();
-    let deadline = Instant::now() + Duration::from_secs(20);
-    let opened = loop {
-        let s = ctl.shared_snapshot();
-        if s.io.id == id
-            && matches!(
-                s.io.phase,
-                mshogi_desktop_session::IoPhase::Complete | mshogi_desktop_session::IoPhase::Failed
-            )
-        {
-            assert_eq!(s.io.phase, mshogi_desktop_session::IoPhase::Complete);
-            break s;
-        }
-        assert!(Instant::now() < deadline);
-        thread::sleep(Duration::from_millis(1));
-    };
+    let opened = wait_file(&mut ctl, id);
     // The file opens live: the viewed position and results are not saved.
     assert_eq!(opened.context, played.context);
     assert_eq!(opened.chu.as_ref().unwrap().live.board_ply, 2);

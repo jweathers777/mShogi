@@ -326,7 +326,15 @@ fn bounded_standard_progression_has_both_sides_real_legal_choices_and_exact_reco
                 c::Side::Gote
             }
         );
-        let c = context(&g);
+        let mut c = context(&g);
+        // This checks twelve native transitions and record/observation replay,
+        // not playing strength. One completed iteration is sufficient; the
+        // console Resume test separately executes the production play budget.
+        c.limits = WorkLimits {
+            time_ms: None,
+            depth: 1,
+            nodes: 512,
+        };
         let obs = execute(&c);
         assert!(obs.matches(&c));
         let ExecutionResult::Chu { result } = &obs.result else {

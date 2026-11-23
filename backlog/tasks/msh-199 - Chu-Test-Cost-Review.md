@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-19T06:19:00Z'
-updated_date: '2026-11-23T20:11:00Z'
+updated_date: '2026-11-23T20:17:00Z'
 labels:
   - handle:chu-test-cost-review
   - chu
@@ -13,7 +13,7 @@ labels:
 milestone: m-5
 dependencies: []
 references:
-  - docs/testing/verification-levels.md
+  - AGENTS.md
 ordinal: 206000
 ---
 
@@ -67,4 +67,8 @@ Started from main 7754591. Measure current Chu test coverage and debug/release c
 Checkpoint: baseline timing driver runs selected test binaries serially with a 65 s process-group timeout. Scope includes all desktop-session tests and engine/console unit tests conservatively, dedicated Chu integration/search tests, and shared multi-game timing/experiment/protocol tests that include Chu. Original debug console failures measured individually at 15.02-15.10 s (child watchdog), while current desktop tests completed below 60 s; the old Chu capacity test was removed by prior tasks. No product/test changes yet. Source 7754591; logs/timing script in runs/msh-199. Next finish debug/release baseline, then compare bounded contract budgets with retaining normal default Resume coverage in release. Current verification rules are AGENTS.md; deleted verification-levels.md was read from 4752743 parent and its removal confirmed as MSH-215 cleanup.
 
 Completed before-debug inventory on Darwin arm64 (single active test): 299 selected tests, 291 passed, 4 failed, 3 pre-existing ignored evidence/benchmark generators, 1 timeout at 65 s. Dedicated Chu search tests all completed below 60 s; no search/rules change is needed. The sole timeout is engine chu_protocol::bounded_standard_progression_has_both_sides_real_legal_choices_and_exact_records (12 searches at depth64/300000 nodes). Standard-root internal-search probes at depth1 with 256/512/1024-node caps all completed depth1 in 38 nodes. Proposed 512-node contract budget will be validated against unchanged assertions across all tested histories; retain default Resume path in a release-only test, plus a bounded debug version sharing its assertion body. Release baseline building; no test edits yet.
+
+Coverage mapping prepared (test-only diff): (1) console actual_child... retains both purposes, offered/declined draw history, full context equality, native legality, completed iteration and score; budget depth1/512 replaces unrelated playing depth. (2) readonly analysis retains all seven stale-identity probes, read-only result, save/open, selection/undo/cancel/cross-game retirement; only completed-search budget changes. (3) historical analysis retains two real board actions, exact historical target and live prefix, save/open stopped with no results, stale rejection; its duplicated default-budget setup uses bounded work. (4) original both-player-assignment Resume test retains every assertion and normal production budget in release, with an added submitted-limit assertion; a bounded debug test calls the same assertion body. The production budget is intrinsically what that one test checks, so it remains release-only. (5) inline twelve-ply engine progression retains all twelve real searches, alternating sides, native legality/result validation, complete records, conclusion and observation JSON roundtrip; depth1/512 suffices for this contract, while default-budget completion is covered by (4). (6) repeated file wait loops now use one helper with the same completion/failure/deadline assertions. All search tests, native fixtures, rule assertions, process watchdogs and product defaults stay unchanged.
+
+Fresh required review (review_199, diff vs7754591 plus task/mapping) found no actionable defects: completed native-search, identity, legality, history/persistence/replay assertions retained; original production Resume path intact in release; bounded debug path shares the assertion body; wait helper preserves success/failure/deadline checks; no rules/product code changed. Early after-debug timings: actual child 0.085 s, readonly analysis 0.146 s, historical analysis 0.192 s (each formerly failed at15 s); bounded both-player assignment 0.139 s. Full after timing and workspace verification still running.
 <!-- SECTION:NOTES:END -->

@@ -1,10 +1,11 @@
 ---
 id: MSH-199
 title: Chu Test Cost Review
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-19T06:19:00Z'
-updated_date: '2026-11-23T12:58:00Z'
+updated_date: '2026-11-23T19:59:00Z'
 labels:
   - handle:chu-test-cost-review
   - chu
@@ -54,4 +55,6 @@ Observed again during MSH-228 on 2026-11-23, Apple Silicon Mac: cargo test --wor
 Debug failure log: gs://mshogi-experiments-216675633801/runs/msh-228/workspace-debug.log (60-day lifecycle). Source commit 6102123; subsequent changes were GUI observer assertions, comments and task notes.
 
 MSH-230 (source 1b75415), Apple Silicon Mac with 2 build jobs/2 test threads: same four chu_internal watchdog failures reproduced (30.49 s), while all 1182 workspace release tests pass. An additional debug --no-fail-fast run reached mshogi-engine/tests/chu_protocol.rs::bounded_standard_progression_has_both_sides_real_legal_choices_and_exact_records, which searches twelve standard-position turns using CHU_PLAY_LIMITS. It ran beyond 60 s and was stopped as extra debug coverage; this test also belongs in the cost review. No limits, assertions or rules changed. Logs: gs://mshogi-experiments-216675633801/runs/msh-230/ (60-day lifecycle).
+
+Started from main 7754591. Measure current Chu test coverage and debug/release costs before changing budgets. The referenced docs/testing/verification-levels.md is absent; inspect its removal and current AGENTS.md for applicable verification rules. Branch codex/msh-199-chu-test-cost.
 <!-- SECTION:NOTES:END -->

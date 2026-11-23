@@ -5,8 +5,8 @@ mod position_tests;
 use crate::alphabeta::{self, Searcher};
 use crate::search::SearchStatus;
 use mshogi_core::chu::{
-    Action, Conclusion, Face, Game, GameCommand, GameError, GameRecord, GameRequest, Position,
-    RecordError, Side,
+    Action, Conclusion, Face, Game, GameCommand, GameError, GameRequest, Position, RecordError,
+    Side,
 };
 use position::ChuPosition;
 use std::{error::Error, fmt};
@@ -237,9 +237,7 @@ pub fn search_with_state(
     if !legal.contains(&action) {
         return Err(SearchError::Restore);
     }
-    let mut native = GameRecord::from_game(game)
-        .and_then(|record| record.to_game())
-        .map_err(SearchError::Record)?;
+    let mut native = game.fork().map_err(SearchError::Transition)?;
     let mut first_conclusion = None;
     for &m in outcome.pv.iter().take(MAX_LINE) {
         if !r.principal_variation.is_empty() && timing.expired() {

@@ -1,5 +1,5 @@
 use super::*;
-use mshogi_core::chu::{Base, Piece, RootMetadata};
+use mshogi_core::chu::{Base, GameRecord, Piece, RootMetadata};
 fn diagram(entries: &[(&str, Side, Base, bool)], turn: Side) -> Game {
     Game::from_root(
         Position::from_diagram(

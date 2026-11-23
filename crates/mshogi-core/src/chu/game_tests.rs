@@ -421,3 +421,54 @@ fn stop_aware_replay_prefix_and_choices_stop_or_match_the_plain_calls() {
         );
     }
 }
+
+#[test]
+fn incremental_suffixes_preserve_sourced_lion_windows_and_must_vary_history() {
+    use crate::native::incremental::Session;
+    for (id, accepted) in [
+        ("CHU-LION-NONLION-R", 1),
+        ("CHU-LION-PROTECTION-EXPIRES", 4),
+        ("CHU-REP-QUIET", 10),
+        ("CHU-REP-PASSES", 4),
+    ] {
+        let fixture = fixture(id);
+        let mut source = game(id);
+        let mut previous = GameRecord::from_game(&source).unwrap();
+        let mut session = Session::<GameRecord>::new();
+        session.reset(&previous).unwrap();
+        for (index, command) in fixture["given"]["commands"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .enumerate()
+        {
+            let action = action(command);
+            if index == accepted {
+                let before = bytes(&source);
+                assert!(play(&mut source, action.clone()).is_err(), "{id}");
+                let mut retained = session.game().unwrap().fork().unwrap();
+                assert!(play(&mut retained, action).is_err(), "{id}");
+                assert_eq!(bytes(&source), before);
+                break;
+            }
+            play(&mut source, action).unwrap();
+            let current = GameRecord::from_game(&source).unwrap();
+            let delta = GameDelta::from_json(
+                &current
+                    .suffix(previous.event_count())
+                    .unwrap()
+                    .to_json()
+                    .unwrap(),
+            )
+            .unwrap();
+            let retained = session.advance(&delta).unwrap();
+            assert_eq!(
+                retained.cache_snapshot(),
+                source.cache_snapshot(),
+                "{id} event {index}"
+            );
+            assert_eq!(retained.legal_actions(), source.legal_actions());
+            previous = current;
+        }
+    }
+}

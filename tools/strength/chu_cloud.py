@@ -35,7 +35,7 @@ def validate(m):
     for commands in m['bins']:
         for command in commands:
             assert isinstance(command, list) and all(isinstance(v, str) for v in command)
-            assert command[0] in ('helper', 'match', 'export')
+            assert command[0] in ('helper', 'match', 'export', 'signature')
 
 
 def fetch(item):
@@ -67,6 +67,8 @@ def worker(manifest_uri, store_uri):
             for n, command in enumerate(m['bins'][index]):
                 if command[0] == 'helper':
                     actual = [str(root / 'helper'), *command[1:]]
+                elif command[0] == 'signature':
+                    actual = ['python3', '-m', 'tools.strength.native_signature', str(root / 'engine'), str(root / 'baseline'), 'openings.json', 'suite.json', command[1]]
                 elif command[0] == 'match':
                     actual = ['python3', '-m', 'tools.strength.native_match', '--game', 'chu',
                               '--candidate', str(root / 'engine'), '--baseline', str(root / 'baseline'),

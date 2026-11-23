@@ -65,10 +65,26 @@ fn openings(count: u64, depth: u16) -> Value {
 /// Vary the two remote royals and the local tactical geometry; mirrored rows
 /// stay in the same split. Full-width native terminal proofs supply all answers.
 fn tactics() -> Value {
+    tactical_cases(0..4, 80, 1)
+}
+
+fn forcing(count: u8) -> Value {
+    let mut value = tactical_cases(4..5, count, 3);
+    value["name"] = json!("chu-forcing-v1");
+    value["answer_rule"] = json!(
+        "Every first action forcing a native win within three plies, over all native defender replies; no one-ply win; complete full-width answer set or omitted on 200000-visit proof bound"
+    );
+    value["limitation"] = json!(
+        "Constructed three-ply Lion material wins; shared templates across splits, held-out placements only; no claim of representative game difficulty"
+    );
+    value
+}
+
+fn tactical_cases(families: std::ops::Range<u8>, count: u8, plies: u8) -> Value {
     let mut rows = vec![];
     let mut seen = BTreeSet::new();
-    for family in 0..4 {
-        for offset in 0..80u8 {
+    for family in families {
+        for offset in 0..count {
             let x = 4 + offset % 5;
             let y = 4 + (offset / 5) % 5;
             let sk = Square::new(1 + offset % 3, 12).unwrap();
@@ -96,7 +112,7 @@ fn tactics() -> Value {
                     (x, y - 2, Side::Gote, Base::Lion, false),
                 ],
                 // Two royals require a complete double capture; no single-royal shortcut.
-                _ => {
+                3 => {
                     entries.pop();
                     vec![
                         (x, y, Side::Sente, Base::Lion, false),
@@ -104,6 +120,15 @@ fn tactics() -> Value {
                         (x - 1, y - 1, Side::Gote, Base::Elephant, true),
                     ]
                 }
+                // The two victims are three files apart: no immediate double
+                // capture. After taking the rook, a second native turn must
+                // still catch the pawn against every defender reply.
+                4 => vec![
+                    (x, y, Side::Sente, Base::Lion, false),
+                    (x - 1, y - 1, Side::Gote, Base::Rook, false),
+                    (x + 2, y - 1, Side::Gote, Base::Pawn, false),
+                ],
+                _ => unreachable!(),
             };
             entries.extend(
                 local.into_iter().map(|(f, r, s, b, p)| {
@@ -121,7 +146,13 @@ fn tactics() -> Value {
             if !seen.insert(key) {
                 continue;
             }
-            let answers = chu_proof::answers(&game, 1, 100_000).expect("complete one-ply proof");
+            if plies > 1 && !chu_proof::answers(&game, 1, 100_000).unwrap().is_empty() {
+                continue;
+            }
+            let Some(answers) = chu_proof::answers(&game, plies, 200_000) else {
+                eprintln!("family {family} offset {offset}: proof bound, omitted");
+                continue;
+            };
             if answers.is_empty() {
                 continue;
             }
@@ -133,7 +164,7 @@ fn tactics() -> Value {
             rows.push(
                 json!({"id":format!("chu-f{family}-{offset}"),"family":family,"igui_contract":igui,
                 "split":if offset % 5 == 0 {"held-out"} else {"development"},
-                "record":GameRecord::from_game(&game).unwrap(),"win_plies":1,"answers":answers}),
+                "record":GameRecord::from_game(&game).unwrap(),"win_plies":plies,"answers":answers}),
             );
         }
     }
@@ -257,6 +288,7 @@ fn main() {
                 .unwrap();
         }
         "tactics" => write(&a[2], &tactics()),
+        "forcing" => write(&a[2], &forcing(a[3].parse().unwrap())),
         "openings" => write(
             &a[2],
             &openings(a[3].parse().unwrap(), a[4].parse().unwrap()),

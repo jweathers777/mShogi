@@ -3,9 +3,9 @@ id: MSH-228
 title: Minimal Saved Game Document
 status: In Progress
 assignee:
-  - '@claude'
+  - '@codex'
 created_date: '2026-11-22T16:43:00Z'
-updated_date: '2026-11-23T08:09:00Z'
+updated_date: '2026-11-23T08:25:00Z'
 labels:
   - desktop
   - refactor
@@ -57,4 +57,6 @@ REMAINING (in order):
 3. desktop/scripts/gui-smoke.py (about line 2987, chu_load_fixture('capacity256') and the capacity journey) and test_gui_smoke.py (about line 1528) use the removed Chu capacity fixture: remove that journey.
 4. Regenerate frontend fixtures (write_frontend_fixtures, write_tori_frontend_fixtures, write_chu_frontend_fixtures, write_tenjiku_frontend_fixtures) and run npx vitest run and npx tsc --noEmit in desktop/. Expect changes: observations not restored after reopen, reopen opens live, no document change on close.
 5. Run fmt, clippy (also --all-features for mshogi-desktop-session), cargo test --workspace --locked --release; fresh-agent review (rules unchanged; check nothing reads saved results); record line counts; merge; then MSH-225 (Chess) and MSH-229 (audit of overbuilt auditing) can start.
+
+Codex continuation: John assigned the pushed Claude handoff. Continue on codex/msh-228-minimal-document; finish console assertions, regenerate fixtures, remove capacity journey, run checks and platform CI, obtain fresh-agent review, integrate.
 <!-- SECTION:NOTES:END -->

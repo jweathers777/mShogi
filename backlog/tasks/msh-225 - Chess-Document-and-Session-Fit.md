@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-22T09:57:00Z'
-updated_date: '2026-11-23T10:28:00Z'
+updated_date: '2026-11-23T10:31:00Z'
 labels:
   - desktop
   - refactor
@@ -64,4 +64,6 @@ Checkpoint: all Chess entry points now use NativeSession and the minimal shared 
 Final review confirmed the read-only analysis identity fix; no remaining findings. Frontend: 609/609 tests and TypeScript passed. fmt and workspace clippy passed. Debug workspace stopped on the same four pre-existing Chu watchdog failures as MSH-228 (MSH-199); no rules or test limits changed. Release workspace and targeted Linux/macOS/Windows persistence run 45155718339 are running. Main was merged (already up to date). Final measured common files: lib 822, persistence 517, analysis 80, takeback 43 lines; new Chess adapter/record/validation files total 1583 lines. Remaining Chess code is native match rules, Full result validation, presentation and ownership/take-back mapping; lifecycle, admission and file code are shared.
 
 Real-process Chess persistence test exposed a shared phase mismatch after engine moves: paused=false but phase=Paused. Fixed successful live responses to report Idle, preserving Paused for read-only analysis. All three real-process persistence tests now pass, including minimal save/reopen, failure preservation and same-ply resignation history.
+
+Latest checkpoint (8bfc824): all-feature desktop-session tests 204/204, real-process persistence 3/3, frontend 609/609, Python 176/176, TypeScript, formatting and workspace clippy passed. Corrected persistence CI run is 45156397616 (the superseded run was cancelled). Release workspace is compiling with two jobs. No code changes pending; next finish workspace/platform checks, integrate main, set Done and remove task build/run data.
 <!-- SECTION:NOTES:END -->

@@ -133,15 +133,6 @@ fn real_compound_effects_royals_promotion_outcomes_and_exact_prefixes() {
         let s = send(&mut ctl, SessionOperation::TakeBack {}).unwrap();
         assert_eq!(s.board_ply, 0);
         assert_eq!(
-            ctl.session
-                .chu()
-                .unwrap()
-                .document
-                .retired_branches()
-                .count(),
-            1
-        );
-        assert_eq!(
             s.chu.unwrap().live.royals.len(),
             g.position()
                 .pieces()
@@ -291,8 +282,8 @@ fn atomic_file_reopen_history_branch_and_normal_product_gate() {
     assert!(s.token.document > old.token.document);
     assert!(s.token.version > old.token.version);
     assert!(s.paused);
-    assert!(s.historical);
-    assert_eq!(s.event_index, 0);
+    // The file opens live; the viewed history position is not saved.
+    assert!(!s.historical);
     assert_eq!(native(&ctl), record);
     assert!(ctl.session.chu().unwrap().pending.is_none());
     let s = send(&mut ctl, SessionOperation::ReturnLive {}).unwrap();
@@ -575,65 +566,6 @@ fn known_root_pair_numbering_preserves_first_gote_action_order() {
             .collect::<Vec<_>>(),
         vec![(1, 1), (2, 0)]
     );
-}
-
-#[test]
-fn ambiguous_native_counter_capacity_keeps_all_ending_and_close_paths_saveable() {
-    use crate::chu_document::{ChuControl, ValidatedChuDocument};
-    let base = f::root(&f::fixture("CHU-REP-QUIET")["given"]["root"]);
-    let g = c::Game::from_root(
-        c::Position::from_diagram(
-            &base.position().pieces().collect::<Vec<_>>(),
-            c::Side::Sente,
-            c::RootMetadata::diagram(u64::MAX),
-        )
-        .unwrap(),
-    )
-    .unwrap();
-    let d =
-        ValidatedChuDocument::new(c::GameRecord::from_game(&g).unwrap(), c::Side::Sente).unwrap();
-    let bytes = d.bytes().to_vec();
-    let e = d
-        .with_control(
-            ChuControl::Native {
-                actor: c::Side::Sente,
-                command: c::GameCommand::Play {
-                    action: c::Action {
-                        from: "1l".parse().unwrap(),
-                        route: vec!["1k".parse().unwrap()],
-                        promote: false,
-                    },
-                },
-            },
-            &mut || false,
-        )
-        .unwrap_err();
-    assert_eq!(
-        e.resource.unwrap().facts()[0].category,
-        ResourceCategory::Unknown
-    );
-    assert_eq!(d.bytes(), bytes);
-    let d = d
-        .with_control(
-            ChuControl::Native {
-                actor: c::Side::Gote,
-                command: c::GameCommand::Stop {
-                    reason: c::StopReason::ResourceLimit,
-                },
-            },
-            &mut || false,
-        )
-        .unwrap();
-    let d = d
-        .with_control(
-            ChuControl::Native {
-                actor: c::Side::Sente,
-                command: c::GameCommand::Resign,
-            },
-            &mut || false,
-        )
-        .unwrap();
-    ValidatedChuDocument::decode(d.with_reserved_close(1).unwrap().bytes(), &mut || false).unwrap();
 }
 
 #[test]

@@ -197,11 +197,10 @@ fn main() {
             let replay = ValidatedTenjikuDocument::decode(doc.bytes(), &mut || false).unwrap();
             assert_eq!(replay.bytes(), doc.bytes());
             assert_eq!(replay.record(), doc.record());
-            assert!(replay.observations().is_empty());
             let filename = format!("tenjiku-{key}-{name}.mshogi");
             let path = directory.join(&filename);
             std::fs::write(&path, doc.bytes()).unwrap();
-            let mut case = json!({"file":filename,"profile":profile.id(),"source_fixture":id,"human":human,"expected":expected,"usage":doc.usage()});
+            let mut case = json!({"file":filename,"profile":profile.id(),"source_fixture":id,"human":human,"expected":expected});
             if name == "royal-engine" {
                 case["diagram_extension"] = json!({"added":{"id":"5","side":"gote","original":"P","promoted":false,"at":[1,1]},"reason":"Exclude the independently identified alternative one-ply bare-royal win while retaining RoyalCapture expectation.","proof":"From 8j the Fire Demon's long diagonal can end at 1c or 2d and burn Pawn 2c, but neither endpoint burns remote Pawn 1a; its at-most-three-step area route cannot remove both Pawns. Any one-ply win must therefore remove King 8g.","development_observation":"Before this extension the actual normal macOS engine legally chose 8j-1c and won by bare_royal_loss; that was a fixture expectation gap, not a product defect.","qualification":"Explicit extension of the cited frozen root, not an exact corpus-root identity; the frozen corpus is unchanged."});
             }

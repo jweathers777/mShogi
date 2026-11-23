@@ -2,7 +2,7 @@
 //! Seven shared consumer obligations and five profile-boundary obligations are covered here;
 //! the five full product obligations remain with MSH-44.
 use super::*;
-use crate::tenjiku_document::{TenjikuSettings, ValidatedTenjikuDocument};
+use crate::tenjiku_document::TenjikuSettings;
 use mshogi_core::tenjiku as c;
 use serde_json::{Value, json};
 use std::{
@@ -610,26 +610,6 @@ fn selected_history_inspection_takeback_retained_branch_and_return_live_use_exac
         let snapshot = send(&mut ctl, SessionOperation::TakeBack {}).unwrap();
         assert_eq!(snapshot.event_index, 0);
         assert_eq!(record(&ctl), root_record);
-        assert_eq!(
-            ctl.session
-                .tenjiku()
-                .unwrap()
-                .document
-                .retired_branches()
-                .next()
-                .unwrap()
-                .1,
-            &live
-        );
-        assert_eq!(
-            ctl.session
-                .tenjiku()
-                .unwrap()
-                .document
-                .retired_branches()
-                .count(),
-            1
-        );
     }
 }
 
@@ -763,9 +743,7 @@ fn real_search_observations_reject_profile_purpose_and_all_runtime_context_chang
             .unwrap();
         let reopened = wait_file(&mut ctl, id);
         assert_eq!(reopened.io.phase, IoPhase::Complete);
-        assert!(reopened.paused && reopened.historical);
-        assert_eq!(reopened.observations[0].observation.context, pending);
-        assert!(reopened.observations.iter().all(|o| o.historical));
+        assert!(reopened.paused && !reopened.historical);
         assert!(ctl.session.tenjiku().unwrap().pending.is_none());
         assert_eq!(record(&ctl), live);
         send(&mut ctl, SessionOperation::ReturnLive {}).unwrap();
@@ -791,8 +769,9 @@ fn real_search_observations_reject_profile_purpose_and_all_runtime_context_chang
         let snapshot = settle(&mut ctl, receipt).unwrap();
         assert_eq!(record(&ctl).event_count(), live.event_count() + 1);
         assert!(!snapshot.paused && !snapshot.historical);
-        assert_eq!(snapshot.observations.len(), 2);
-        assert_eq!(snapshot.observations[1].observation.context, engine_turn);
+        // Results are not saved: only this session's engine turn is listed.
+        assert_eq!(snapshot.observations.len(), 1);
+        assert_eq!(snapshot.observations[0].observation.context, engine_turn);
         assert!(snapshot.status.score_half_points.is_none() && !snapshot.status.concluded);
     }
 }
@@ -876,10 +855,9 @@ fn stopped_product_reopen_and_failed_files_preserve_whole_profile_prior_file_and
         );
         assert!(reopened.token.document > before_open.document);
         assert_eq!(reopened.profile, RulesProfile::from(profile));
-        assert!(reopened.paused && reopened.historical);
+        assert!(reopened.paused && !reopened.historical);
         assert_eq!(reopened.human.id, saved.human.id);
         assert_eq!(fs::read(&path).unwrap(), prior_file);
-        assert_eq!(reopened.event_index, 0);
         assert!(ctl.session.tenjiku().unwrap().pending.is_none());
         assert_eq!(record(&ctl), live);
         assert!(!reopened.document.dirty);
@@ -976,382 +954,6 @@ fn cancelled_replacement_receipt_cannot_install_other_profile_or_damage_the_save
         println!(
             "{}",
             serde_json::json!({"cancel_profile":profile.id(),"retire_admission_us":retire_admission_us,"retire_file_us":retire_file_us,"authority_document_and_prior_file_preserved":true,"scope":"controller retirement latency; native cooperative checkpoints tested separately"})
-        );
-    }
-}
-
-#[test]
-fn resume_after_saved_close_still_retires_runtime_without_duplicate_close_journal() {
-    for profile in c::Profile::ALL {
-        let directory = TestDirectory::new();
-        let mut ctl = controller();
-        replace(&mut ctl, &root(profile, &[]), c::Side::Sente);
-        ctl.pause_shared_for_close();
-        let path = directory.path("closed.mshogi");
-        save(&mut ctl, &path);
-        let id = ctl
-            .queue_shared_open(path, ctl.shared_open_token())
-            .unwrap();
-        assert_eq!(wait_file(&mut ctl, id).io.phase, IoPhase::Complete);
-        for _ in 0..2 {
-            let resumed = send(&mut ctl, SessionOperation::Resume {}).unwrap();
-            assert!(!resumed.paused);
-            let before = ctl.shared_token();
-            let state = ctl.session.tenjiku().unwrap();
-            let context = state.game.context();
-            let controls = state.document.controls().len();
-            let request = c::GameRequest {
-                expected: context.clone(),
-                actor: c::Side::Sente,
-                command: c::GameCommand::OfferDraw,
-            };
-            ctl.pause_shared_for_close();
-            let closed = ctl.shared_snapshot();
-            assert!(closed.paused);
-            assert_ne!(closed.token, before);
-            let state = ctl.session.tenjiku_mut().unwrap();
-            assert_ne!(state.game.context(), context);
-            assert!(
-                state.game.submit(request).is_err(),
-                "closing must retire old native authority"
-            );
-            assert_eq!(
-                state.document.controls().len(),
-                controls,
-                "Close journal is idempotent across Resume"
-            );
-            let token = ctl.shared_token();
-            let authority = ctl.session.tenjiku().unwrap().game.context();
-            let bytes = document_bytes(&ctl);
-            ctl.pause_shared_for_close();
-            let next = ctl.shared_token();
-            assert_eq!(
-                (next.document, next.version, next.selection),
-                (token.document, token.version, token.selection),
-                "an already quiescent close preserves runtime authority"
-            );
-            assert_eq!(ctl.session.tenjiku().unwrap().game.context(), authority);
-            assert!(
-                document_bytes(&ctl) == bytes,
-                "quiescent close preserves the exact document"
-            );
-        }
-    }
-}
-
-#[test]
-fn whole_document_control_capacity_refusal_retains_the_complete_accepted_document() {
-    // TEN-CONSUMER-WHOLE_DOCUMENT_CAPACITY: whole journal count, not one native record.
-    let directory = TestDirectory::new();
-    let mut ctl = controller();
-    for profile in c::Profile::ALL {
-        replace(&mut ctl, &root(profile, &[]), c::Side::Sente);
-        let path = directory.path("accepted.mshogi");
-        save(&mut ctl, &path);
-        let file = fs::read(&path).unwrap();
-        let accepted = document_bytes(&ctl);
-        let native = record(&ctl);
-        let mut excessive: Value = serde_json::from_slice(&file).unwrap();
-        excessive["payload"]["controls"] =
-            json!(vec![json!({"kind":"close"}); MAX_ARCHIVE_CONTROLS + 1]);
-        let raw = excessive.to_string();
-        assert!(raw.len() < MAX_ARCHIVE_BYTES);
-        let rejected = directory.path("too-many-controls.mshogi");
-        fs::write(&rejected, raw).unwrap();
-        let id = ctl
-            .queue_shared_open(rejected, ctl.shared_open_token())
-            .unwrap();
-        let snapshot = wait_file(&mut ctl, id);
-        assert_eq!(snapshot.io.phase, IoPhase::Failed);
-        let resource = snapshot.io.resource.unwrap();
-        assert!(
-            resource
-                .facts()
-                .iter()
-                .any(|f| f.category == ResourceCategory::Controls
-                    && f.count == Some((MAX_ARCHIVE_CONTROLS + 1) as u64)
-                    && f.limit == Some(MAX_ARCHIVE_CONTROLS as u64))
-        );
-        assert_eq!(document_bytes(&ctl), accepted);
-        assert_eq!(record(&ctl), native);
-        assert!(!ctl.shared_snapshot().document.dirty);
-        assert_eq!(fs::read(&path).unwrap(), file);
-    }
-}
-
-#[test]
-fn refused_native_mutation_preserves_receipt_state_and_actual_stop_resign_close_saveability() {
-    let directory = TestDirectory::new();
-    let mut ctl = controller();
-    for profile in c::Profile::ALL {
-        replace(
-            &mut ctl,
-            &root_metadata(profile, &[], c::RootMetadata::diagram(u64::MAX)),
-            c::Side::Sente,
-        );
-        let prior_path = directory.path("counter-root.mshogi");
-        save(&mut ctl, &prior_path);
-        let prior_file = fs::read(&prior_path).unwrap();
-        let accepted = record(&ctl);
-        let authority = ctl.session.tenjiku().unwrap().game.context();
-        let bytes = document_bytes(&ctl);
-        let dirty = ctl.shared_snapshot().document.dirty;
-        let (_, receipt) = ctl
-            .shared_command_with_receipt(SharedDesktopCommand {
-                expected: ctl.shared_token(),
-                game: GameKind::Tenjiku,
-                operation: SessionOperation::Tenjiku {
-                    actor: c::Side::Sente,
-                    command: c::GameCommand::Play {
-                        action: c::Action::single(square(16, 16), square(15, 16)),
-                    },
-                },
-            })
-            .unwrap();
-        assert!(settle(&mut ctl, receipt.clone()).is_err());
-        assert!(receipt.completion().unwrap().is_err());
-        assert_eq!(record(&ctl), accepted);
-        assert_eq!(ctl.session.tenjiku().unwrap().game.context(), authority);
-        assert_eq!(document_bytes(&ctl), bytes);
-        assert_eq!(ctl.shared_snapshot().document.dirty, dirty);
-        assert_eq!(fs::read(&prior_path).unwrap(), prior_file);
-        assert_eq!(
-            ctl.shared_snapshot()
-                .capacity
-                .resource
-                .as_ref()
-                .unwrap()
-                .facts()[0]
-                .category,
-            ResourceCategory::Unknown
-        );
-        command(
-            &mut ctl,
-            c::Side::Gote,
-            c::GameCommand::Stop {
-                reason: c::StopReason::EngineFailure,
-            },
-        )
-        .unwrap();
-        command(&mut ctl, c::Side::Sente, c::GameCommand::Resign).unwrap();
-        let snapshot = command(
-            &mut ctl,
-            c::Side::Gote,
-            c::GameCommand::Stop {
-                reason: c::StopReason::EngineFailure,
-            },
-        )
-        .unwrap();
-        assert_eq!(snapshot.status.score_half_points, Some([0, 2]));
-        assert!(snapshot.status.concluded);
-        let ended = record(&ctl);
-        let before_close = ctl.session.tenjiku().unwrap().document.usage().clone();
-        ctl.pause_shared_for_close();
-        let closed = document_bytes(&ctl);
-        assert!(closed.len() <= before_close.encoded_bytes + before_close.reserved_bytes);
-        assert_eq!(
-            ValidatedTenjikuDocument::decode(&closed, &mut || false)
-                .unwrap()
-                .record(),
-            &ended
-        );
-        ctl.pause_shared_for_close();
-        assert_eq!(document_bytes(&ctl), closed);
-        save(&mut ctl, &directory.path("closed.mshogi"));
-        let id = ctl
-            .queue_shared_open(directory.path("closed.mshogi"), ctl.shared_open_token())
-            .unwrap();
-        assert_eq!(wait_file(&mut ctl, id).io.phase, IoPhase::Complete);
-        assert_eq!(record(&ctl), ended);
-    }
-}
-
-#[test]
-#[ignore = "serial release measurement of the actual FileWorker and session install path"]
-fn measured_policy_boundary_actual_worker_open_save_endings_and_close() {
-    for profile in c::Profile::ALL {
-        let directory = TestDirectory::new();
-        let source = crate::tenjiku_document::measurement_document(profile);
-        let source_record = source.record().clone();
-        let source_path = directory.path("source.mshogi");
-        fs::write(&source_path, source.bytes()).unwrap();
-        let prior_file = fs::read(&source_path).unwrap();
-        let mut ctl = controller();
-        let old = ctl.shared_token();
-        let begin = Instant::now();
-        let id = ctl
-            .queue_shared_open(source_path.clone(), ctl.shared_open_token())
-            .unwrap();
-        let loaded = wait_file(&mut ctl, id);
-        let open_us = begin.elapsed().as_micros();
-        assert_eq!(loaded.io.phase, IoPhase::Complete, "{:?}", loaded.io);
-        assert!(open_us < 15_000_000, "actual worker Open exceeded deadline");
-        assert!(loaded.token.document > old.document);
-        assert!(loaded.paused && !loaded.document.dirty);
-        assert_eq!(loaded.observations.len(), 8);
-        assert!(ctl.session.tenjiku().unwrap().pending.is_none());
-        assert_eq!(record(&ctl), source_record);
-        assert_eq!(fs::read(&source_path).unwrap(), prior_file);
-        let saved_path = directory.path("saved.mshogi");
-        let expected_save = ctl
-            .session
-            .tenjiku()
-            .unwrap()
-            .document
-            .with_runtime_floor(ctl.runtime_floor())
-            .unwrap()
-            .bytes()
-            .to_vec();
-        let begin = Instant::now();
-        save(&mut ctl, &saved_path);
-        let save_us = begin.elapsed().as_micros();
-        assert!(save_us < 15_000_000, "actual worker Save exceeded deadline");
-        assert!(
-            fs::read(&saved_path).unwrap() == expected_save,
-            "Save must encode the exact accepted document with the current retirement floor"
-        );
-        let mut endings_us = Vec::new();
-        for (actor, native) in [
-            (
-                c::Side::Gote,
-                c::GameCommand::Stop {
-                    reason: c::StopReason::EngineFailure,
-                },
-            ),
-            (c::Side::Sente, c::GameCommand::Resign),
-            (
-                c::Side::Gote,
-                c::GameCommand::Stop {
-                    reason: c::StopReason::EngineFailure,
-                },
-            ),
-        ] {
-            let begin = Instant::now();
-            command(&mut ctl, actor, native).unwrap();
-            endings_us.push(begin.elapsed().as_micros());
-        }
-        assert!(endings_us.iter().all(|elapsed| *elapsed < 15_000_000));
-        let before = ctl.session.tenjiku().unwrap().document.usage().clone();
-        let begin = Instant::now();
-        ctl.pause_shared_for_close();
-        let close_us = begin.elapsed().as_micros();
-        assert!(document_bytes(&ctl).len() <= before.encoded_bytes + before.reserved_bytes);
-        let ended_record = record(&ctl);
-        let begin = Instant::now();
-        save(&mut ctl, &saved_path);
-        let ended_save_us = begin.elapsed().as_micros();
-        let old = ctl.shared_token();
-        let begin = Instant::now();
-        let id = ctl
-            .queue_shared_open(saved_path.clone(), ctl.shared_open_token())
-            .unwrap();
-        let reopened = wait_file(&mut ctl, id);
-        let ended_open_us = begin.elapsed().as_micros();
-        assert_eq!(reopened.io.phase, IoPhase::Complete, "{:?}", reopened.io);
-        assert!(
-            reopened.token.document > old.document && reopened.paused && !reopened.document.dirty
-        );
-        assert_eq!(record(&ctl), ended_record);
-        assert_eq!(reopened.status.score_half_points, Some([0, 2]));
-        assert_eq!(fs::read(&source_path).unwrap(), prior_file);
-        println!(
-            "{}",
-            serde_json::json!({"actual_worker_profile":profile.id(),"open_us":open_us,"save_us":save_us,"endings_us":endings_us,"close_us":close_us,"ended_save_us":ended_save_us,"ended_open_us":ended_open_us,"source_usage":source.usage(),"ended_usage":ctl.session.tenjiku().unwrap().document.usage(),"prior_file_preserved":true,"fresh_stopped_reopen":true})
-        );
-    }
-}
-
-#[test]
-#[ignore = "serial release measurement of the actual FileWorker and session install path"]
-fn measured_real_engine_contexts_actual_worker_open_save_endings_and_close() {
-    for profile in c::Profile::ALL {
-        let directory = TestDirectory::new();
-        let source = crate::tenjiku_document::measured_real_engine_document(profile);
-        let source_record = source.record().clone();
-        let source_path = directory.path("source.mshogi");
-        fs::write(&source_path, source.bytes()).unwrap();
-        let prior_file = fs::read(&source_path).unwrap();
-        let mut ctl = controller();
-        let old = ctl.shared_token();
-        let begin = Instant::now();
-        let id = ctl
-            .queue_shared_open(source_path.clone(), ctl.shared_open_token())
-            .unwrap();
-        let loaded = wait_file(&mut ctl, id);
-        let open_us = begin.elapsed().as_micros();
-        assert_eq!(loaded.io.phase, IoPhase::Complete, "{:?}", loaded.io);
-        assert!(open_us < 15_000_000, "actual worker Open exceeded deadline");
-        assert!(loaded.token.document > old.document);
-        assert!(loaded.paused && !loaded.document.dirty);
-        assert_eq!(loaded.observations.len(), source.observations().len());
-        assert!(ctl.session.tenjiku().unwrap().pending.is_none());
-        assert_eq!(record(&ctl), source_record);
-        assert_eq!(fs::read(&source_path).unwrap(), prior_file);
-        let saved_path = directory.path("saved.mshogi");
-        let expected_save = ctl
-            .session
-            .tenjiku()
-            .unwrap()
-            .document
-            .with_runtime_floor(ctl.runtime_floor())
-            .unwrap()
-            .bytes()
-            .to_vec();
-        let begin = Instant::now();
-        save(&mut ctl, &saved_path);
-        let save_us = begin.elapsed().as_micros();
-        assert!(save_us < 15_000_000, "actual worker Save exceeded deadline");
-        assert!(
-            fs::read(&saved_path).unwrap() == expected_save,
-            "Save must encode the exact accepted document with the current retirement floor"
-        );
-        let mut endings_us = Vec::new();
-        for (actor, native) in [
-            (
-                c::Side::Gote,
-                c::GameCommand::Stop {
-                    reason: c::StopReason::EngineFailure,
-                },
-            ),
-            (c::Side::Sente, c::GameCommand::Resign),
-            (
-                c::Side::Gote,
-                c::GameCommand::Stop {
-                    reason: c::StopReason::EngineFailure,
-                },
-            ),
-        ] {
-            let begin = Instant::now();
-            command(&mut ctl, actor, native).unwrap();
-            endings_us.push(begin.elapsed().as_micros());
-        }
-        assert!(endings_us.iter().all(|elapsed| *elapsed < 15_000_000));
-        let before = ctl.session.tenjiku().unwrap().document.usage().clone();
-        let begin = Instant::now();
-        ctl.pause_shared_for_close();
-        let close_us = begin.elapsed().as_micros();
-        assert!(document_bytes(&ctl).len() <= before.encoded_bytes + before.reserved_bytes);
-        let ended_record = record(&ctl);
-        let begin = Instant::now();
-        save(&mut ctl, &saved_path);
-        let ended_save_us = begin.elapsed().as_micros();
-        let old = ctl.shared_token();
-        let begin = Instant::now();
-        let id = ctl
-            .queue_shared_open(saved_path.clone(), ctl.shared_open_token())
-            .unwrap();
-        let reopened = wait_file(&mut ctl, id);
-        let ended_open_us = begin.elapsed().as_micros();
-        assert_eq!(reopened.io.phase, IoPhase::Complete, "{:?}", reopened.io);
-        assert!(
-            reopened.token.document > old.document && reopened.paused && !reopened.document.dirty
-        );
-        assert_eq!(record(&ctl), ended_record);
-        assert_eq!(reopened.status.score_half_points, Some([0, 2]));
-        assert_eq!(fs::read(&source_path).unwrap(), prior_file);
-        println!(
-            "{}",
-            serde_json::json!({"actual_worker_profile":profile.id(),"open_us":open_us,"save_us":save_us,"endings_us":endings_us,"close_us":close_us,"ended_save_us":ended_save_us,"ended_open_us":ended_open_us,"source_usage":source.usage(),"ended_usage":ctl.session.tenjiku().unwrap().document.usage(),"prior_file_preserved":true,"fresh_stopped_reopen":true})
         );
     }
 }

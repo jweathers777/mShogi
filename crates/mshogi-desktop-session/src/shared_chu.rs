@@ -84,13 +84,10 @@ mod observation_compatibility_tests {
             );
             let doc =
                 crate::chu_document::ValidatedChuDocument::new(record.clone(), c::Side::Sente)
-                    .unwrap()
-                    .with_observation(observation.clone(), &mut || false)
                     .unwrap();
-            let decoded =
-                crate::chu_document::ValidatedChuDocument::decode(doc.bytes(), &mut || false)
-                    .unwrap();
-            let state = ChuSession::restore(decoded, &mut || false).unwrap();
+            let mut state = ChuSession::restore(doc, &mut || false).unwrap();
+            // A result from earlier work in this session, not a current one.
+            state.observations.push(observation.clone());
             let view = display_observation(0, &observation, &state);
             assert_eq!(view.status, label);
             assert_eq!(view.score, None);
@@ -167,9 +164,8 @@ mod stop_tests {
     fn chu_restore_and_browse_stop_at_every_check() {
         let document =
             crate::chu_document::ValidatedChuDocument::new(played(), c::Side::Sente).unwrap();
-        let browsed = document.with_selection(Some(3), &mut || false).unwrap();
         stops_everywhere(|stop| {
-            ChuSession::restore(browsed.clone(), &mut || stop())
+            ChuSession::restore(document.clone(), &mut || stop())
                 .map(|_| ())
                 .map_err(|e| e.diagnostic)
         });
@@ -184,7 +180,6 @@ mod stop_tests {
                     operation: Some(SessionOperation::Inspect { event_index: 2 }),
                     response: None,
                     evidence: None,
-                    floor: 1,
                     replacement: false,
                 },
                 &mut || stop(),

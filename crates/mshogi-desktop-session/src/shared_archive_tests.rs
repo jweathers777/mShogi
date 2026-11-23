@@ -266,69 +266,22 @@ fn same_ply_terminal_history_and_saved_selection_remain_distinct() {
     let file = path("selection");
     send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
     save(&mut c, &file);
+    // The viewed history position is not saved; the file opens live.
     let before = open(&mut c, &file).unwrap();
-    assert!(before.historical);
-    assert_eq!(before.event_index, 0);
-    assert!(!before.status.concluded);
+    assert!(!before.historical);
+    assert!(before.status.concluded);
     assert_eq!(record(&c), expected);
     send(&mut c, SessionOperation::Inspect { event_index: 1 }).unwrap();
     save(&mut c, &file);
     let after = open(&mut c, &file).unwrap();
-    assert!(after.historical);
-    assert_eq!(after.event_index, 1);
+    assert!(!after.historical);
     assert!(after.status.concluded);
     assert_eq!(
         before.context.known_board_actions(),
         after.context.known_board_actions()
     );
-    assert_ne!(before.context, after.context);
     send(&mut c, SessionOperation::ReturnLive {}).unwrap();
     assert!(c.shared_snapshot().status.concluded);
-    fs::remove_file(file).unwrap();
-}
-#[test]
-fn observations_keep_exact_retired_branch_targets_and_never_resume_on_open() {
-    let mut c = controller();
-    replace(&mut c, &s::Game::new(), s::Side::Sente);
-    send(&mut c, SessionOperation::Resume {}).unwrap();
-    send(
-        &mut c,
-        SessionOperation::Play {
-            action: "7g7f".parse().unwrap(),
-        },
-    )
-    .unwrap();
-    let engine_request = c.session.shogi().unwrap().pending.clone().unwrap();
-    let engine = run(engine_request);
-    assert!(c.accept_observation(engine));
-    settle(&mut c);
-    let analysis = analyze(&mut c);
-    send(&mut c, SessionOperation::Undo {}).unwrap();
-    send(&mut c, SessionOperation::Undo {}).unwrap();
-    send(&mut c, SessionOperation::Resume {}).unwrap();
-    send(
-        &mut c,
-        SessionOperation::Play {
-            action: "2g2f".parse().unwrap(),
-        },
-    )
-    .unwrap();
-    send(&mut c, SessionOperation::Cancel {}).unwrap();
-    let expected = record(&c);
-    let responses: Vec<_> = c.session.shogi().unwrap().document.observations().to_vec();
-    let file = path("branches");
-    save(&mut c, &file);
-    let runtime = c.runtime_floor();
-    let opened = open(&mut c, &file).unwrap();
-    assert_eq!(record(&c), expected);
-    assert!(opened.paused);
-    assert!(opened.analysis.is_none());
-    assert!(c.runtime_floor() > runtime);
-    assert!(!c.accept_observation(analysis));
-    let restored = c.session.shogi().unwrap().document.observations().to_vec();
-    assert_eq!(restored, responses);
-    assert!(opened.observations.iter().all(|o| o.historical));
-    assert!(restored[1].context.game.event_count() > expected.event_count());
     fs::remove_file(file).unwrap();
 }
 #[test]
@@ -350,98 +303,6 @@ fn pending_runtime_is_not_archived_and_resume_allocates_fresh_identity() {
     assert!(fresh.process_generation > old.process_generation);
     assert_ne!(fresh.session_version, old.session_version);
     fs::remove_file(file).unwrap();
-}
-#[test]
-fn hostile_archives_reject_without_changing_the_current_document() {
-    let mut c = controller();
-    replace(&mut c, &s::Game::new(), s::Side::Sente);
-    let good = path("valid");
-    save(&mut c, &good);
-    let text = fs::read_to_string(&good).unwrap();
-    let expected = record(&c);
-    let version = c.session.version;
-    let dirty = c.session.document_revision;
-    let cases = [
-        text.replacen("\"envelope_version\": 1", "\"envelope_version\": 99", 1),
-        text.replacen("\"game_kind\": \"shogi\"", "\"game_kind\": \"xiangqi\"", 1),
-        text.replacen(
-            "\"rules_profile\": \"mshogi.shogi.csa36.v1\"",
-            "\"rules_profile\": \"mshogi.chess.match.v1\"",
-            1,
-        ),
-        text.replacen(
-            "\"profile_edition\": \"JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026\"",
-            "\"profile_edition\": \"unapproved\"",
-            1,
-        ),
-        text.replacen(
-            "\"envelope_version\": 1",
-            "\"envelope_version\": 1,\"envelope_version\":1",
-            1,
-        ),
-        text.replacen(
-            "\"schema_version\":1",
-            "\"schema_version\":1,\"schema_version\":1",
-            1,
-        ),
-        text.replacen("\"human\":\"sente\"", "\"human\":\"white\"", 1),
-        text.replacen(
-            "\"retired_execution_floor\":",
-            "\"unexpected\":0,\"retired_execution_floor\":",
-            1,
-        ),
-    ];
-    let bad = path("hostile");
-    for value in cases {
-        assert_ne!(value, text);
-        fs::write(&bad, value).unwrap();
-        assert!(open(&mut c, &bad).is_err());
-        assert_eq!(record(&c), expected);
-        assert_eq!(c.session.version, version);
-        assert_eq!(c.session.document_revision, dirty);
-    }
-    fs::write(&bad, vec![b' '; MAX_ARCHIVE_BYTES + 1]).unwrap();
-    assert!(open(&mut c, &bad).unwrap_err().contains("capacity"));
-    assert_eq!(record(&c), expected);
-    fs::remove_file(bad).unwrap();
-    fs::remove_file(good).unwrap();
-}
-#[test]
-fn wrong_native_game_and_semantic_journal_or_observation_tampering_reject() {
-    let mut c = controller();
-    replace(&mut c, &s::Game::new(), s::Side::Sente);
-    analyze(&mut c);
-    let good = document_value(&c);
-    let expected = record(&c);
-    let tampered = |change: &dyn Fn(&mut serde_json::Value)| {
-        let mut v = good.clone();
-        change(&mut v);
-        decode(&serde_json::to_vec(&v).unwrap())
-    };
-    assert!(decode(&serde_json::to_vec(&good).unwrap()).is_ok());
-    assert!(
-        tampered(
-            &|v| v["payload"]["current"] = serde_json::to_value(CanonicalRecord::chess(
-                AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record()
-            ))
-            .unwrap()
-        )
-        .is_err()
-    );
-    assert!(
-        tampered(&|v| v["payload"]["controls"][0] =
-            serde_json::json!({"kind":"native","actor":"sente","command":{"kind":"play","action":"9a9b"}}))
-        .is_err()
-    );
-    assert!(
-        tampered(&|v| {
-            let target = &mut v["payload"]["observations"][0]["context"]["purpose"]["target"];
-            target["turn"] = serde_json::to_value(NativeSide::Shogi(s::Side::Gote)).unwrap();
-        })
-        .is_err()
-    );
-    assert!(tampered(&|v| v["payload"]["settings"]["orientation"] = "gote".into()).is_err());
-    assert_eq!(record(&c), expected);
 }
 #[test]
 fn current_chess_preserves_semantics_and_development_formats_reject() {
@@ -641,39 +502,7 @@ fn persisted_preferences_keep_exact_pending_execution_and_original_limits() {
     let opened = open(&mut c, &file).unwrap();
     let state = c.session.shogi().unwrap();
     assert_eq!(state.document.settings(), &settings);
-    assert_eq!(
-        state.document.observations()[0].context.limits,
-        WorkLimits {
-            time_ms: None,
-            depth: 1,
-            nodes: 1
-        }
-    );
-    assert!(opened.observations[0].historical);
     fs::remove_file(file).unwrap();
-}
-
-#[test]
-fn raw_nested_observation_fields_remain_strict_and_identity_errors_are_explicit() {
-    let mut c = controller();
-    replace(&mut c, &s::Game::new(), s::Side::Sente);
-    analyze(&mut c);
-    let text = String::from_utf8(c.session.shogi().unwrap().document.bytes().to_vec()).unwrap();
-    assert!(decode(text.as_bytes()).is_ok());
-    for (before, after) in [
-        (
-            "\"schema_version\":1",
-            "\"schema_version\":1,\"schema_version\":1",
-        ),
-        ("\"request_id\":", "\"surprise\":null,\"request_id\":"),
-    ] {
-        let wrong = text.replacen(before, after, 1);
-        assert_ne!(wrong, text, "{before}");
-        assert!(decode(wrong.as_bytes()).is_err(), "{before}");
-    }
-    let wrong = text.replacen(s::PROFILE_ID, "mshogi.unapproved.v1", 1);
-    assert_ne!(wrong, text);
-    assert!(decode(wrong.as_bytes()).is_err());
 }
 
 #[test]
@@ -745,30 +574,6 @@ fn product_new_game_archive_reopens_native_human_orientation_stopped_and_fresh()
             > before.token.version
     );
     std::fs::remove_file(file).unwrap();
-}
-
-#[test]
-fn durable_observations_have_a_semantic_schema_without_transport_framing() {
-    let mut c = controller();
-    replace(&mut c, &s::Game::new(), s::Side::Sente);
-    let accepted = analyze(&mut c);
-    let encoded = document_value(&c);
-    let observation = &encoded["payload"]["observations"][0];
-    assert_eq!(observation["schema_version"], OBSERVATION_SCHEMA_VERSION);
-    assert!(observation.get("protocol").is_none());
-    assert!(observation["context"].get("protocol").is_none());
-    assert_eq!(
-        observation["context"],
-        serde_json::to_value(&accepted.context).unwrap()
-    );
-    for schema in [0, OBSERVATION_SCHEMA_VERSION + 1] {
-        let mut wrong = encoded.clone();
-        wrong["payload"]["observations"][0]["schema_version"] = schema.into();
-        assert!(decode(&serde_json::to_vec(&wrong).unwrap()).is_err());
-    }
-    let mut framed = encoded;
-    framed["payload"]["observations"][0]["protocol"] = mshogi_engine::PROTOCOL_VERSION.into();
-    assert!(decode(&serde_json::to_vec(&framed).unwrap()).is_err());
 }
 
 #[test]

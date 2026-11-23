@@ -546,70 +546,6 @@ fn command_json_strict_native_payload_and_encoded_capacity() {
     assert!(c.shared_command(wrong).is_err());
     assert_eq!(old, c.shared_token());
 }
-#[test]
-fn observation_capacity_refuses_new_work_before_changing_session() {
-    let mut c = controller();
-    replace(&mut c, s::Game::new(), s::Side::Sente);
-    let request = analyze(&mut c);
-    // Install a document that already holds all 256 observations.
-    let observation = incomplete(request.clone());
-    let mut payload = c.session.shogi().unwrap().document.payload.clone();
-    payload.retired_execution_floor = payload
-        .retired_execution_floor
-        .max(request.request_id)
-        .max(request.session_version)
-        .max(request.process_generation)
-        .max(match &request.purpose {
-            ExecutionPurpose::MoveAnalysis { target } => target.selection_id,
-            _ => 0,
-        });
-    for _ in 0..256 {
-        payload
-            .controls
-            .push(crate::game_document::GameControl::Observation {
-                index: payload.observations.len(),
-            });
-        payload.observations.push(observation.clone());
-    }
-    let document = crate::game_document::validate(payload, &mut || false).unwrap();
-    let receipt = c
-        .queue_game_candidate::<Shogi>(
-            native_session::RuntimeSeed::Document(Box::new(document)),
-            None,
-            None,
-            false,
-        )
-        .unwrap();
-    while receipt.completion().is_none() {
-        c.poll_native_admission();
-        std::thread::sleep(std::time::Duration::from_millis(1));
-    }
-    receipt.completion().unwrap().unwrap();
-    let token = c.shared_token();
-    let context = c.game_snapshot::<Shogi>().context;
-    assert!(
-        send(
-            &mut c,
-            SessionOperation::Analyze {
-                operation: AnalysisOperation::Moves { depth: 1, nodes: 1 }
-            }
-        )
-        .unwrap_err()
-        .contains("capacity")
-    );
-    assert_eq!(c.shared_token().version, token.version);
-    assert_eq!(c.shared_token().selection, token.selection);
-    assert_eq!(c.game_snapshot::<Shogi>().context, context);
-    assert_eq!(c.game_snapshot::<Shogi>().observations.len(), 256);
-    assert!(c.session.shogi().unwrap().pending.is_none());
-    // Browsing while play runs, then Return to live: the full ledger stops
-    // play but the view returns to the live game (MSH-224 review).
-    c.session.shogi_mut().unwrap().paused = false;
-    send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
-    let live = send(&mut c, SessionOperation::ReturnLive {}).unwrap();
-    assert!(!live.historical && live.paused);
-    assert!(live.diagnostic.unwrap().contains("observation slots"));
-}
 
 #[test]
 fn shogi_commands_with_an_actor_are_internal_only() {
@@ -646,8 +582,9 @@ fn close_document_preconditions_advance_for_shogi_events_observations_and_replac
         c.poll_native_admission();
         std::thread::sleep(std::time::Duration::from_millis(1));
     }
+    // An analysis result is not saved: the document does not change.
     let observed = c.shared_snapshot().document.revision;
-    assert!(observed > terminal);
+    assert_eq!(observed, terminal);
     send(
         &mut c,
         SessionOperation::Replace {
@@ -1013,14 +950,7 @@ fn current_wire_frame_is_checked_before_a_durable_native_observation_is_admitted
         observation: observation.clone(),
     }));
     assert_eq!(c.shared_snapshot().context, before);
-    assert!(
-        c.session
-            .shogi()
-            .unwrap()
-            .document
-            .observations()
-            .is_empty()
-    );
+    assert!(c.session.shogi().unwrap().observations.is_empty());
     assert_eq!(c.session.shogi().unwrap().pending, Some(context));
     assert!(c.accept_shared(ExecutionResponse {
         protocol: mshogi_engine::PROTOCOL_VERSION,
@@ -1028,9 +958,9 @@ fn current_wire_frame_is_checked_before_a_durable_native_observation_is_admitted
     }));
     settle(&mut c);
     let saved = c.session.shogi().unwrap();
-    assert_eq!(saved.document.observations().len(), 1);
+    assert_eq!(saved.observations.len(), 1);
     assert_eq!(
-        saved.document.observations()[0].schema_version,
+        saved.observations[0].schema_version,
         OBSERVATION_SCHEMA_VERSION
     );
     assert_eq!(saved.record(), before);

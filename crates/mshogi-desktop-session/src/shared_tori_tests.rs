@@ -325,7 +325,6 @@ fn actual_controller_seventy_native_admission_cases_and_rotations() {
             c.session.tori_mut().unwrap().pending = Some(stale_context.clone());
             send(&mut c, SessionOperation::Undo {}).unwrap();
             assert_eq!(native(&c), before_native, "{id} exact semantic undo");
-            assert_eq!(current(&c).document.retired_branches().count(), 1);
             assert!(!submit_observation(&mut c, response(stale_context)));
             // Complete action reapplication uses new authority, not an old request.
             send(
@@ -425,7 +424,6 @@ fn history_prefix_obligations_takeback_and_reopen_are_exact_and_fresh() {
     // One atomic human decision restores event5, retaining complete7/6 histories.
     send(&mut c, SessionOperation::TakeBack {}).unwrap();
     assert_eq!(current(&c).game.events().len(), 5);
-    assert_eq!(current(&c).document.retired_branches().count(), 2);
     let dir = directory("history");
     let path = dir.join("tori.mshogi");
     let id = c.queue_shared_save(path.clone()).unwrap();
@@ -437,7 +435,6 @@ fn history_prefix_obligations_takeback_and_reopen_are_exact_and_fresh() {
     let reopened = wait_file(&mut c, id);
     assert!(matches!(reopened.io.phase, IoPhase::Complete));
     assert_eq!(native(&c), expected);
-    assert_eq!(current(&c).document.retired_branches().count(), 2);
     assert!(reopened.paused);
     assert!(c.session.version > token.version);
     assert!(c.session.selection_id > token.selection);
@@ -754,78 +751,6 @@ fn seven_reject_fixtures_actual_open_preserves_live_document_and_execution() {
     fs::remove_dir_all(dir).unwrap();
 }
 #[test]
-fn capacity_256_to257_and_reserved_close_save_reopen_do_not_reset_usage() {
-    let mut c = controller();
-    replace(&mut c, &t::Game::standard(), t::Side::Sente);
-    let mut wire: Value = serde_json::from_slice(&exact(&c)).unwrap();
-    let observations: Vec<_> = (1..=256)
-        .map(|n| serde_json::to_value(response(context(&c, n, true))).unwrap())
-        .collect();
-    wire["payload"]["observations"] = json!(observations);
-    wire["payload"]["controls"] = json!(
-        (0..256)
-            .map(|index| json!({"kind":"observation","index":index}))
-            .collect::<Vec<_>>()
-    );
-    wire["payload"]["retired_execution_floor"] = json!(1000);
-    let dir = directory("capacity");
-    let path = dir.join("full.mshogi");
-    fs::write(&path, wire.to_string()).unwrap();
-    let id = c
-        .queue_shared_open(path.clone(), c.shared_open_token())
-        .unwrap();
-    assert!(matches!(wait_file(&mut c, id).io.phase, IoPhase::Complete));
-    assert_eq!(current(&c).document.observations().len(), 256);
-    let before = exact(&c);
-    let pending = context(&c, 2000, true);
-    c.session.tori_mut().unwrap().pending = Some(pending.clone());
-    assert!(!submit_observation(&mut c, response(pending)));
-    assert_eq!(exact(&c), before);
-    assert!(c.session.capacity.resource.is_some());
-    assert!(current(&c).game.conclusion().is_none());
-    send(
-        &mut c,
-        SessionOperation::ToriPreferences {
-            settings: crate::tori_document::ToriSettings {
-                play_mode: PlayMode::HumanEngine,
-                orientation: t::Side::Gote,
-            },
-        },
-    )
-    .unwrap();
-    c.lifecycle.request_close().unwrap();
-    let snapshot = c.application_pause_for_close();
-    assert!(snapshot.close_requires_save);
-    assert!(snapshot.paused);
-    assert!(current(&c).pending.is_none());
-    let close_token = c.shared_open_token();
-    let controls = current(&c).document.controls().len();
-    c.application_pause_for_close();
-    assert_eq!(c.shared_open_token(), close_token);
-    assert_eq!(current(&c).document.controls().len(), controls);
-    let id = c.queue_shared_save(path.clone()).unwrap();
-    let saved = wait_file(&mut c, id);
-    assert!(matches!(saved.io.phase, IoPhase::Complete));
-    assert!(!saved.document.dirty);
-    c.lifecycle
-        .approve_close(saved.open_token, c.shared_open_token())
-        .unwrap();
-    assert!(c.lifecycle.close_approved());
-    let mut reopened = controller();
-    let id = reopened
-        .queue_shared_open(path, reopened.shared_open_token())
-        .unwrap();
-    let s = wait_file(&mut reopened, id);
-    assert!(matches!(s.io.phase, IoPhase::Complete));
-    assert_eq!(current(&reopened).document.observations().len(), 256);
-    assert!(s.paused);
-    assert!(s.capabilities.engine_turn);
-    assert!(s.capabilities.move_analysis);
-    assert!(!s.capabilities.chess_full);
-    assert!(current(&reopened).pending.is_none());
-    fs::remove_dir_all(dir).unwrap();
-}
-#[test]
 fn stale_and_cancelled_open_and_save_receipts_never_replace_or_clean_newer_content() {
     let mut c = controller();
     replace(&mut c, &t::Game::standard(), t::Side::Sente);
@@ -841,12 +766,8 @@ fn stale_and_cancelled_open_and_save_receipts_never_replace_or_clean_newer_conte
     let s = c.application_pause_for_close();
     assert!(!s.close_requires_save);
     assert!(!c.application_pause_for_close().close_requires_save);
-    assert!(s.document.dirty);
-    assert!(
-        !c.lifecycle
-            .approve_close(initial, c.shared_open_token())
-            .is_ok()
-    );
+    // Closing stops work but never changes the saved document.
+    assert!(!s.document.dirty);
     c.lifecycle.cancel_close().unwrap();
     let id = c
         .queue_shared_open(path.clone(), c.shared_open_token())
@@ -1005,316 +926,7 @@ fn history_identity_distinguishes_native_owners_hands_handed_faces_and_counter_p
     assert!(submit_observation(&mut c, response(ctx)));
     assert_eq!(current(&c).game.repetition_key(), &before);
 }
-#[test]
-fn byte_control_native_event_and_replay_limited_open_preserves_current_authority() {
-    let mut c = controller();
-    replace(&mut c, &t::Game::standard(), t::Side::Sente);
-    let before = exact(&c);
-    let token = c.shared_open_token();
-    let pending = context(&c, 900, true);
-    c.session.tori_mut().unwrap().pending = Some(pending.clone());
-    let dir = directory("resources");
-    let path = dir.join("refused.mshogi");
-    let template: Value = serde_json::from_slice(&before).unwrap();
-    let settings = json!({"kind":"settings","settings":template["payload"]["settings"].clone()});
-    let mut controls = template.clone();
-    controls["payload"]["controls"] = json!(vec![settings; 8190]);
-    let mut g = t::Game::standard();
-    let a = g.legal_actions()[0];
-    play(&mut g, a);
-    let record = CanonicalRecord::tori(t::GameRecord::from_game(&g).unwrap());
-    let mut events = template.clone();
-    events["payload"]["current"] = serde_json::to_value(record).unwrap();
-    let event = events["payload"]["current"]["payload"]["events"][0].clone();
-    events["payload"]["current"]["payload"]["events"] = json!(vec![event; t::MAX_GAME_EVENTS + 1]);
-    // MSH-208: a single record's modelled replay work is linear in its events
-    // and bounded by the event limit, so no single-record work case remains.
-    // These deliberately malformed over-limit inputs must be bounded before native replay.
-    for (bytes, category) in [
-        (
-            vec![b' '; MAX_ARCHIVE_BYTES + 1],
-            ResourceCategory::EncodedDocumentBytes,
-        ),
-        (
-            controls.to_string().into_bytes(),
-            ResourceCategory::Controls,
-        ),
-        // The native record parser refuses the event count; it names no
-        // specific desktop limit.
-        (events.to_string().into_bytes(), ResourceCategory::Unknown),
-    ] {
-        fs::write(&path, bytes).unwrap();
-        let id = c
-            .queue_shared_open(path.clone(), c.shared_open_token())
-            .unwrap();
-        let result = wait_file(&mut c, id);
-        assert!(matches!(result.io.phase, IoPhase::Failed));
-        let failure = result
-            .io
-            .resource
-            .unwrap_or_else(|| panic!("typed resource fact: {category:?} {:?}", result.io.message));
-        assert!(
-            failure.facts().iter().any(|f| f.category == category),
-            "{category:?}: {failure:?}"
-        );
-        assert_eq!(exact(&c), before);
-        assert_eq!(c.shared_open_token(), token);
-        assert_eq!(current(&c).pending.as_ref(), Some(&pending));
-    }
-    let good = dir.join("still-saveable.mshogi");
-    let id = c.queue_shared_save(good.clone()).unwrap();
-    assert!(matches!(wait_file(&mut c, id).io.phase, IoPhase::Complete));
-    crate::tori_document::ValidatedToriDocument::decode(&fs::read(good).unwrap(), &mut || false)
-        .unwrap();
-    fs::remove_dir_all(dir).unwrap();
-}
 
-// The elapsed validation cap is a product refusal, not a wall-clock performance
-// guarantee for an otherwise structurally admissible near-limit record. Keep a
-// mandatory representative full journey and measure the 360-action boundary;
-// only its precise authoritative elapsed-budget refusal is an alternate result.
-fn long_retained_state(c: &mut DesktopController) -> Value {
-    let snapshot = c.shared_snapshot();
-    json!({"record":snapshot.context,"document":snapshot.document,
-        "open_token":snapshot.open_token,
-        "authority":[snapshot.token.document,snapshot.token.version,snapshot.token.selection],
-        "phase":snapshot.phase,"purpose":snapshot.execution_purpose,
-        "observations":snapshot.observations,"analysis":snapshot.analysis,
-        "event":snapshot.event_index,"historical":snapshot.historical,
-        "close_requires_save":snapshot.close_requires_save,
-        "canonical":c.session.tori().map(|s|s.document.bytes()),
-        "pending":c.session.tori().and_then(|s|s.pending.as_ref())})
-}
-fn long_result(
-    c: &mut DesktopController,
-    result: Result<SharedSnapshot, String>,
-    before: Value,
-    allow_deadline: bool,
-    actions: usize,
-    stage: &str,
-) -> bool {
-    if result.is_ok() {
-        return true;
-    }
-    assert!(allow_deadline, "mandatory long journey {stage}: {result:?}");
-    let resource = if stage == "save" || stage == "open" {
-        c.io_state.resource.clone()
-    } else {
-        c.session.capacity.resource.clone()
-    }
-    .expect("typed elapsed-budget refusal");
-    let facts = resource.facts();
-    assert_eq!(facts.len(), 1);
-    let fact = &facts[0];
-    assert_eq!(fact.category, ResourceCategory::ValidationBudget);
-    assert_eq!(fact.scope, Some(ResourceScope::Application));
-    assert_eq!(fact.unit, Some(ResourceUnit::Milliseconds));
-    assert_eq!(fact.limit, Some(15000));
-    assert!(fact.count.unwrap() >= 15000);
-    assert_eq!(long_retained_state(c), before);
-    // Revalidate complete retained bytes without imposing a machine-speed promise;
-    // the accepted canonical state still has a lossless supported encoding.
-    if let Some(state) = c.session.tori() {
-        let record = native(c);
-        crate::tori_document::ValidatedToriDocument::decode(state.document.bytes(), &mut || false)
-            .unwrap();
-        let closed = c.application_pause_for_close();
-        assert_eq!(native(c), record);
-        assert!(closed.close_requires_save);
-        crate::tori_document::ValidatedToriDocument::decode(
-            current(c).document.bytes(),
-            &mut || false,
-        )
-        .unwrap();
-    }
-    eprintln!(
-        "MSH131_LONG_DEADLINE {}",
-        json!({"actions":actions,"stage":stage,"resource":resource,"complete_prior_state_preserved":true,"result":"typed elapsed-budget refusal; not a completed long journey"})
-    );
-    false
-}
-#[test]
-fn representative_long_native_runtime_journey_completes() {
-    long_native_runtime(180, false);
-}
-#[test]
-fn measured_long_native_runtime_admission_stop_end_save_and_prepared_close() {
-    long_native_runtime(360, true);
-}
-fn long_native_runtime(actions: usize, allow_deadline: bool) {
-    // Same documented deterministic native history generator as MSH-129/130;
-    // this measures the additional actual controller/worker boundary, not new rules.
-    let start = Instant::now();
-    let mut g = t::Game::standard();
-    let mut seed = 0x129c_a11a_b1e5u64;
-    for _ in 0..actions {
-        let choices = g.legal_actions();
-        seed ^= seed << 13;
-        seed ^= seed >> 7;
-        seed ^= seed << 17;
-        let offset = seed as usize % choices.len();
-        let mut chosen = None;
-        for i in 0..choices.len() {
-            let a = choices[(offset + i) % choices.len()];
-            match g.submit(t::GameRequest {
-                expected: g.context(),
-                actor: g.position().side_to_move(),
-                command: t::GameCommand::Play { action: a },
-            }) {
-                Ok(mut u) => {
-                    let valid = g.conclusion().is_none();
-                    let fresh = g.occurrences().len() == 1;
-                    g.undo(&mut u).unwrap();
-                    if valid {
-                        chosen = Some(a);
-                        if fresh {
-                            break;
-                        }
-                    }
-                }
-                Err(t::GameError::Capacity(_)) => {
-                    chosen = Some(a);
-                    break;
-                }
-                Err(_) => {}
-            }
-        }
-        play(
-            &mut g,
-            chosen.expect("live independently legal continuation"),
-        );
-    }
-
-    let generated_ms = start.elapsed().as_millis();
-    assert_eq!(g.events().len(), actions);
-    let mut c = controller();
-    let start = Instant::now();
-    let before = long_retained_state(&mut c);
-    let game = c.shared_snapshot().game;
-    let (_, receipt) = c
-        .shared_command_with_receipt(SharedDesktopCommand {
-            expected: c.shared_token(),
-            game,
-            operation: SessionOperation::Replace {
-                record: CanonicalRecord::tori(t::GameRecord::from_game(&g).unwrap()),
-                human: NativeSide::Tori(t::Side::Sente),
-            },
-        })
-        .unwrap();
-    let result = settle(&mut c, receipt);
-    if !long_result(&mut c, result, before, allow_deadline, actions, "install") {
-        return;
-    }
-    let installation_ms = start.elapsed().as_millis();
-    let initial_usage = current(&c).document.usage().clone();
-    if actions == 360 {
-        // MSH-208: 360 plies is no longer a native limit; the next move is
-        // accepted, and Undo restores the exact prior state.
-        let next = current(&c).game.legal_actions()[0];
-        send(
-            &mut c,
-            SessionOperation::Tori {
-                actor: t::Side::Sente,
-                command: t::GameCommand::Play { action: next },
-            },
-        )
-        .unwrap();
-        send(&mut c, SessionOperation::Undo {}).unwrap();
-        assert_eq!(current(&c).game.events().len(), 360);
-    }
-    let start = Instant::now();
-    let before = long_retained_state(&mut c);
-    let result = send(
-        &mut c,
-        SessionOperation::Tori {
-            actor: t::Side::Sente,
-            command: t::GameCommand::Stop {
-                reason: t::StopReason::ResourceLimit,
-            },
-        },
-    );
-    if !long_result(&mut c, result, before, allow_deadline, actions, "stop") {
-        return;
-    }
-    let stop_ms = start.elapsed().as_millis();
-    let start = Instant::now();
-    let before = long_retained_state(&mut c);
-    let result = send(&mut c, SessionOperation::Resign {});
-    if !long_result(&mut c, result, before, allow_deadline, actions, "resign") {
-        return;
-    }
-    let resign_ms = start.elapsed().as_millis();
-    let start = Instant::now();
-    let snapshot = c.application_pause_for_close();
-    let close_snapshot_ms = start.elapsed().as_millis();
-    assert!(snapshot.status.concluded);
-    assert_eq!(current(&c).game.events().len(), actions + 2);
-    let dir = directory(&format!("long-{actions}"));
-    let path = dir.join("complete.mshogi");
-    // A refused/interrupted Save must preserve the complete previous file too.
-    let previous = exact(&c);
-    fs::write(&path, &previous).unwrap();
-    let before = long_retained_state(&mut c);
-    let start = Instant::now();
-    let id = c.queue_shared_save(path.clone()).unwrap();
-    let enqueue_save_ms = start.elapsed().as_millis();
-    let result = wait_file(&mut c, id);
-    if matches!(result.io.phase, IoPhase::Failed) {
-        assert_eq!(fs::read(&path).unwrap(), previous);
-        let error = result.io.message.clone().unwrap();
-        assert!(!long_result(
-            &mut c,
-            Err(error),
-            before,
-            allow_deadline,
-            actions,
-            "save"
-        ));
-        fs::remove_dir_all(dir).unwrap();
-        return;
-    }
-    assert!(matches!(result.io.phase, IoPhase::Complete));
-    let save_ms = start.elapsed().as_millis();
-    let readback =
-        crate::tori_document::ValidatedToriDocument::decode(&fs::read(&path).unwrap(), &mut || {
-            false
-        })
-        .unwrap();
-    assert_eq!(readback.record(), &native(&c));
-    let mut reopened = controller();
-    let before = long_retained_state(&mut reopened);
-    let start = Instant::now();
-    let id = reopened
-        .queue_shared_open(path.clone(), reopened.shared_open_token())
-        .unwrap();
-    let result = wait_file(&mut reopened, id);
-    if matches!(result.io.phase, IoPhase::Failed) {
-        let error = result.io.message.clone().unwrap();
-        assert!(!long_result(
-            &mut reopened,
-            Err(error),
-            before,
-            allow_deadline,
-            actions,
-            "open"
-        ));
-        fs::remove_dir_all(dir).unwrap();
-        return;
-    }
-    assert!(matches!(result.io.phase, IoPhase::Complete));
-    assert_eq!(native(&reopened), native(&c));
-    assert!(result.paused);
-    assert!(current(&reopened).pending.is_none());
-    let reopen_ms = start.elapsed().as_millis();
-    let report = json!({"boundary":"actual DesktopController+existing bounded worker", "seed":"0x129ca11ab1e5", "actions":actions, "result":"complete journey", "generated_ms":generated_ms,"installation_ms":installation_ms,"stop_ms":stop_ms,"resign_ms":resign_ms,"close_and_snapshot_ms":close_snapshot_ms,"enqueue_save_ms":enqueue_save_ms,"save_ms":save_ms,"reopen_ms":reopen_ms,"initial_usage":initial_usage,"final_usage":current(&c).document.usage(),"saved_usage":readback.usage(),"saved_floor":readback.retired_execution_floor(),"document_budget":262144,"extra_native_replays_per_operation_upper_bound":4,"extra_replay_units_upper_bound":4*(65536+128)+512,"worker_deadline_seconds":15});
-    eprintln!("MSH131_LONG {}", report);
-    if actions == 360
-        && let Ok(path) = std::env::var("MSH_TORI_131_LONG_REPORT")
-    {
-        fs::write(path, serde_json::to_vec_pretty(&report).unwrap()).unwrap();
-    }
-    fs::remove_dir_all(dir).unwrap();
-}
 #[test]
 fn typed_identity_refusal_and_interrupted_save_keep_complete_accepted_document_dirty() {
     let mut c = controller();
@@ -1352,16 +964,14 @@ fn typed_identity_refusal_and_interrupted_save_keep_complete_accepted_document_d
     let dir = directory("interrupted");
     let path = dir.join("current.mshogi");
     fs::write(&path, &before).unwrap();
-    let (document, floor) = (current(&c).document.clone(), c.runtime_floor());
+    let document = current(&c).document.clone();
     let (revision, identity, target) = (
         c.session.document_revision,
         c.session.document_identity,
         path.clone(),
     );
     let work = archive::NativeWork::Game(Box::new(move |stopped| {
-        native_session::save(&document, floor, &target, revision, identity, &mut || {
-            stopped()
-        })
+        native_session::save(&document, &target, revision, identity, &mut || stopped())
     }));
     let mut observed_temporary = false;
     let result = archive::execute(work, &mut || {
@@ -1434,53 +1044,7 @@ fn forced_conclusion_and_capture_drop_restriction_are_derived_by_final_controlle
         assert_eq!(native(&c), live);
         send(&mut c, SessionOperation::TakeBack {}).unwrap();
         assert_eq!(native(&c), t::GameRecord::from_game(&prefix).unwrap());
-        assert_eq!(current(&c).document.retired_branches().count(), 1);
     }
-}
-#[test]
-fn historical_failure_observation_saves_exact_prefix_without_future_knowledge_or_pending_work() {
-    let g = sequence(&given("TORI-C-HISTORY")["record_B"]);
-    let mut c = controller();
-    replace(&mut c, &g, t::Side::Sente);
-    send(&mut c, SessionOperation::Inspect { event_index: 4 }).unwrap();
-    let prefix = current(&c).selected().record_prefix(4).unwrap();
-    let ctx = context(&c, 1000, true);
-    c.session.tori_mut().unwrap().pending = Some(ctx.clone());
-    assert!(submit_observation(&mut c, response(ctx.clone())));
-    assert_eq!(
-        current(&c).document.observations()[0].context.game,
-        CanonicalRecord::tori(prefix.clone())
-    );
-    let dir = directory("historical-observation");
-    let path = dir.join("target.mshogi");
-    let id = c.queue_shared_save(path.clone()).unwrap();
-    assert!(matches!(wait_file(&mut c, id).io.phase, IoPhase::Complete));
-    let id = c.queue_shared_open(path, c.shared_open_token()).unwrap();
-    let restored = wait_file(&mut c, id);
-    assert!(matches!(restored.io.phase, IoPhase::Complete));
-    // The saved browse selection is restored with the live game.
-    assert_eq!(restored.event_index, 4);
-    assert!(restored.historical);
-    assert_eq!(current(&c).game.events().len(), 7);
-    assert!(restored.paused);
-    assert!(current(&c).pending.is_none());
-    assert!(restored.observations[0].historical);
-    let CanonicalRecord::Tori(target) = &restored.observations[0].observation.context.game else {
-        panic!()
-    };
-    let target = target.to_game().unwrap();
-    assert_eq!(target.occurrences(), [0, 4]);
-    assert!(target.repetition().is_none());
-    assert_eq!(target.events().len(), 4);
-    send(&mut c, SessionOperation::Inspect { event_index: 4 }).unwrap();
-    assert_eq!(
-        t::GameRecord::from_game(current(&c).selected()).unwrap(),
-        prefix
-    );
-    send(&mut c, SessionOperation::ReturnLive {}).unwrap();
-    assert_eq!(current(&c).game.occurrences(), [3, 7]);
-    assert!(!submit_observation(&mut c, response(ctx)));
-    fs::remove_dir_all(dir).unwrap();
 }
 #[test]
 fn rejected_outgoing_replacements_preserve_tori_document_and_accepted_execution() {
@@ -1666,7 +1230,7 @@ fn actual_engine_turns_both_assignments_and_exact_historical_analysis_have_separ
         assert!(current(&c).analysis.is_none());
         assert!(!submit_observation(&mut c, observation));
         assert_eq!(native(&c), after);
-        let retained = current(&c).document.observations().to_vec();
+        let retained = current(&c).observations.to_vec();
         let retired_reply = searched(pending);
         send(
             &mut c,
@@ -1680,8 +1244,7 @@ fn actual_engine_turns_both_assignments_and_exact_historical_analysis_have_separ
         let rewound = c.shared_snapshot();
         assert!(rewound.paused);
         assert!(current(&c).pending.is_none());
-        assert_eq!(current(&c).document.observations(), retained);
-        assert_eq!(current(&c).document.retired_branches().count(), 1);
+        assert_eq!(current(&c).observations, retained);
         assert!(rewound.observations.iter().all(|view| view.historical));
         assert!(
             rewound

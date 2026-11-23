@@ -430,12 +430,11 @@ fn shared_moves_shogi_exact_prefix_analysis_reopen_and_replacement_keep_identity
     cue(&selected_two, "3c3d", 2, "3c", "3d");
     assert!(!c.accept_observation(late.clone()));
     let opened = reopen(&mut c);
-    assert!(opened.historical && opened.paused && opened.execution_purpose.is_none());
+    assert!(!opened.historical && opened.paused && opened.execution_purpose.is_none());
     assert_ne!(opened.token, selected_two.token);
-    cue(&opened, "3c3d", 2, "3c", "3d");
+    // The file opens at the live position; the viewed position is not saved.
+    cue(&opened, "2g2f", 3, "2g", "2f");
     assert!(!c.accept_observation(late.clone()));
-    let live = send(&mut c, SessionOperation::ReturnLive {}).unwrap();
-    cue(&live, "2g2f", 3, "2g", "2f");
     let fresh = replace(
         &mut c,
         CanonicalRecord::shogi(s::GameRecord::from_game(&s::Game::new())),

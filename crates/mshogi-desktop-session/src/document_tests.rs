@@ -251,11 +251,11 @@ fn real_native_transcripts_roundtrip_current_documents_with_fresh_stopped_runtim
         let reopened_document = DocumentEnvelope::parse(&saved(&mut restored)).unwrap();
         #[derive(serde::Deserialize)]
         struct NativePayload {
-            current: Box<RawValue>,
+            record: Box<RawValue>,
         }
         let native: NativePayload = serde_json::from_str(reopened_document.payload.get()).unwrap();
         assert_eq!(
-            CanonicalRecord::from_json(native.current.get()).unwrap(),
+            CanonicalRecord::from_json(native.record.get()).unwrap(),
             expected
         );
     }

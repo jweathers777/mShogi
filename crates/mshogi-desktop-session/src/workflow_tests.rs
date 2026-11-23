@@ -245,7 +245,9 @@ fn reopened_history_never_carries_browse_intent_and_records_fresh_resume_without
             .unwrap();
         file(&mut c, id);
         let loaded = peek(&c);
-        assert!(loaded.paused && loaded.historical && !loaded.document.dirty);
+        // The shared games open live (MSH-228); Chess keeps its own format.
+        assert!(loaded.paused && !loaded.document.dirty);
+        assert!(game == GameKind::Chess || !loaded.historical);
         let live = send(&mut c, SessionOperation::ReturnLive {}).unwrap();
         assert!(live.paused && !live.historical);
         send(&mut c, SessionOperation::Resume {}).unwrap();

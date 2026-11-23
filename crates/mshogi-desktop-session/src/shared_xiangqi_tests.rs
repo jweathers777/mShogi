@@ -605,55 +605,6 @@ fn typed_native_command_boundary_rejects_unknown_duplicate_and_conflicting_field
 }
 
 #[test]
-fn retained_observation_count_limit_rejects_new_work_before_mutation() {
-    let mut c = controller();
-    replace(
-        &mut c,
-        &x::Game::standard(x::ClaimPolicy::Explicit).unwrap(),
-        x::Side::Red,
-    );
-    // Actual bounded entry-point results, retained without dropping any earlier
-    // accepted context. This exercises the 256 -> 257 admission boundary.
-    for expected in 1..=MAX_ARCHIVE_OBSERVATIONS {
-        let request = analyze(&mut c, 1);
-        assert!(accept(&mut c, execute(&request)));
-        assert_eq!(
-            c.session.xiangqi().unwrap().document.observations().len(),
-            expected
-        );
-    }
-    let before = c.shared_token();
-    let record = native(&c);
-    let observations = c
-        .session
-        .xiangqi()
-        .unwrap()
-        .document
-        .observations()
-        .to_vec();
-    let error = send(
-        &mut c,
-        SessionOperation::Analyze {
-            operation: AnalysisOperation::Moves { depth: 1, nodes: 1 },
-        },
-    )
-    .unwrap_err();
-    assert!(error.contains("capacity"));
-    assert_eq!(c.shared_token().version, before.version);
-    assert_eq!(c.shared_token().selection, before.selection);
-    assert_eq!(c.shared_token().document, before.document);
-    assert_eq!(native(&c), record);
-    assert_eq!(
-        c.session.xiangqi().unwrap().document.observations().len(),
-        MAX_ARCHIVE_OBSERVATIONS
-    );
-    assert_eq!(
-        serde_json::to_vec(c.session.xiangqi().unwrap().document.observations()).unwrap(),
-        serde_json::to_vec(&observations).unwrap()
-    );
-}
-
-#[test]
 fn chess_full_and_historical_mutation_are_explicitly_unsupported_without_retiring_work() {
     let mut c = controller();
     replace(

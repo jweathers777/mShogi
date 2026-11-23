@@ -256,8 +256,8 @@ mod tests {
         assert!(snapshot.status.concluded);
         let state = controller.session.xiangqi().unwrap();
         assert!(state.pending.is_none());
-        assert_eq!(state.document.evidence().len(), 5);
-        let reports = &state.document.evidence();
+        assert_eq!(state.evidence.len(), 5);
+        let reports = &state.evidence;
         assert!(matches!(reports[0].report().verdict,
             x::ExactVerdict::NaturalWin { winner: x::Side::Red, ref witness, .. } if witness.len() == 2));
         assert_eq!(reports[0].event_count(), 0);
@@ -299,7 +299,7 @@ mod tests {
         .unwrap();
         controller.shared.manual_engine = true;
         let state = controller.session.xiangqi().unwrap();
-        let observations = state.document.observations();
+        let observations = &state.observations;
         assert_eq!(observations.len(), MAX_ARCHIVE_OBSERVATIONS - 1);
         assert!(observations.iter().all(|o| matches!(
             &o.result,

@@ -375,8 +375,8 @@ fn raw_request_routing_keeps_native_duplicates_and_unknowns_visible() {
             "\"profile_id\":\"mshogi.shogi.csa36.v1\",\"profile_id\":",
         ),
         (
-            "\"schema_version\":1",
-            "\"schema_version\":1,\"schema_version\":1",
+            "\"schema_version\":2",
+            "\"schema_version\":2,\"schema_version\":2",
         ),
         (
             "\"kind\":\"engine_turn\"",

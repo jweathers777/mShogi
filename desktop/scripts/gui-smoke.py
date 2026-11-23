@@ -130,6 +130,18 @@ def desktop_document_payload(document, game_kind):
     return document["payload"]
 
 
+def native_record_profile(context):
+    """Read the profile from the native record selected by the dispatch tag."""
+    game, record = context['game_kind'], context['payload']
+    if game == 'chess':
+        return record['rules_profile']
+    if game == 'shogi':
+        return record['profile_id']
+    if game in ('xiangqi', 'tenjiku'):
+        return record['root']['profile']
+    return record['profile']
+
+
 def xiangqi_retained_state(diagnostics):
     """Compare accepted native document state, excluding file-operation receipts.
 
@@ -1421,11 +1433,10 @@ class Journey:
     def save_native_game(self, path, game):
         archive = self.save_current(path)
         body = desktop_document_payload(archive, game)
-        assert body['record']['game_kind'] == game
         self.record('Save native game and settings', {
             'path': str(path), 'sha256': digest(path), 'bytes': path.stat().st_size,
             'game': game, 'settings': body['settings'],
-            'native_events': len(body['record']['events'])})
+            'native_commands': len(body['record']['commands' if game == 'xiangqi' else 'events'])})
         return archive
 
     def shogi_save(self, path, observation_count=None):
@@ -1580,7 +1591,7 @@ class Journey:
             assert len(played['observations'])==1
             observation=played['observations'][0]['observation']
             assert observation['context']['game']['game_kind']==game
-            assert observation['context']['game']['payload']['profile_id']==played['profile']
+            assert native_record_profile(observation['context']['game'])==played['profile']
             assert observation['context']['purpose']['kind']=='engine_turn'
             key=profile or game;path=self.args.output/f'cross-game-{index}-{key}.mshogi'
             archive=self.save_current(path);desktop_document_payload(archive,game)
@@ -2516,16 +2527,14 @@ class Journey:
     def tenjiku_reject_cross_profile(self, profile):
         before=self.native_diagnostics();actual=Path(before['document']['path']);accepted_hash=digest(actual)
         wire=json.loads(actual.read_text(encoding='utf-8'));other='muller' if profile=='adams' else 'adams'
-        # A deliberately malformed file changes only its envelope profile/edition,
-        # leaving the complete payload under the original immutable profile.
+        # Change the root profile without its edition to create a real conflict.
         wire['payload']['record']['root']['profile']=self.tenjiku_profile_id(other)
-        wire['payload']['record']['edition']='ADAMS1999-MODERN+MSH83-2026-11-04' if other=='adams' else 'MULLER+ADAMS-COMPLETION+MSH83-2026-11-04'
         path=self.args.output/f'{self.phase}-deliberate-cross-profile-conflict.mshogi';path.write_text(json.dumps(wire),encoding='utf-8')
         self.file('open',path)
         def rejected():
             current=self.native_diagnostics()
             return current if current['io']['id']>before['io']['id'] and current['io']['phase']=='failed' else None
-        after=wait(rejected,'normal Load rejects conflicting whole-profile envelope atomically')
+        after=wait(rejected,'normal Load rejects conflicting native profile and edition atomically')
         assert retained_document_state(after)==retained_document_state(before) and digest(actual)==accepted_hash
         self.record('Deliberately conflicting profile Load preserves accepted native context, identities, dirty state and prior file',{'before':before,'after':after,'accepted_sha256':accepted_hash})
         self.capture('cross-profile-conflict-rejected-without-reinterpretation')

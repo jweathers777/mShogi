@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-23T11:05:00Z'
-updated_date: '2026-11-23T14:43:00Z'
+updated_date: '2026-11-23T14:48:00Z'
 labels:
   - simplification
   - persistence
@@ -57,4 +57,6 @@ Step 2 follow-up: full release validation exposed stale negative probes in tori_
 Step 2 final local results: full release workspace 1182 passed/11 ignored; required debug workspace again only reaches the same four MSH-199 Chu timing failures (30.41s). Final envelope tests and five Tori v1 compatibility tests pass. Fresh review also confirmed the corrected tori_cli/tenjiku_consumer probes, with no further findings. Idle release replay ratios versus 8df7bf3: Tori 0.591 across 23 samples; Tenjiku 0.491 across 77. GitHub macOS could not acquire a hosted runner after multiple attempts (capacity notice); Linux/Windows and routine checks passed. macOS-only retry 45194057670 pending. Now applying the remaining Shogi/Xiangqi codecs and envelope compaction; prior saved-format steps remain in commits d081761, ec7c958 and test correction f28b9f5.
 
 Step 3 checkpoint: Shogi schema 2 and Xiangqi schema 2 now store complete roots and actor/command inputs; shared canonical envelope v2 has only version/game/payload, desktop v2 has format/game/payload and stores native records directly. Chess native bytes remain unchanged; legacy Tori1 wrapper reader retained. Fresh review /root/review_231_final found no production defects and independently confirmed all 155 regenerated native roots and command histories unchanged. Four stale generated presentation differences were removed from the fixture update. Consumer migration and full release checks are running; frontend603 pass. Step2 macOS retry also failed to acquire a runner; Linux/Windows and routine checks passed, macOS still pending. Branch codex/msh-231-compact-records; uncommitted step3 work still needs final checks, measurements, platform CI and integration.
+
+Step3 production commit e9a7d2c pushed. Final consumer review found three stale GUI paths (nested game tag, shared profile lookup, consistent rather than conflicting Tenjiku mutation); fixed, with a fixture-backed Python regression test. Removed an obsolete encoded-derived-event capacity probe; native event admission limits and command/byte capacity tests remain. Reviewer independently confirms all155 fixture changes normalize exactly to original inputs/data. Local frontend603 and TypeScript pass; Python177 rerun pending. Routine CI exposed two Clippy layout issues, now fixed. origin/main merged (already up to date). Full release validation still running; final pipeline/measurements/integration remain.
 <!-- SECTION:NOTES:END -->

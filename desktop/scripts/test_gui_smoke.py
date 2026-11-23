@@ -502,6 +502,24 @@ class CurrentDocumentInspectionTests(unittest.TestCase):
                 document = self.document(game)
                 self.assertIs(module.desktop_document_payload(document, game), document["payload"])
 
+    def test_native_profile_and_save_inspection_use_current_fixture_shapes(self):
+        snapshots = Path(__file__).parents[1] / 'src' / '__fixtures__'
+        for name in ('chess', 'shogi', 'xiangqi', 'tori', 'chu', 'tenjiku-adams', 'tenjiku-muller'):
+            snapshot = json.loads((snapshots / ('shared-chu-routes.json' if name == 'chu' else f'shared-{name}-standard.json')).read_text())
+            self.assertEqual(module.native_record_profile(snapshot['context']), snapshot['profile'])
+        for game in ('shogi', 'xiangqi', 'tori', 'chu', 'tenjiku'):
+            with tempfile.TemporaryDirectory() as directory:
+                path = Path(directory) / 'saved.mshogi'
+                key = 'commands' if game == 'xiangqi' else 'events'
+                document = {'format': 'mshogi.desktop.document.v2', 'game_kind': game,
+                            'payload': {'record': {key: []}, 'human': 'first', 'settings': {}}}
+                path.write_text(json.dumps(document))
+                journey = object.__new__(module.Journey)
+                journey.save_current = Mock(return_value=document)
+                journey.record = Mock()
+                self.assertEqual(journey.save_native_game(path, game), document)
+                self.assertEqual(journey.record.call_args.args[1]['native_commands'], 0)
+
     def test_old_or_conflicting_envelopes_are_not_accepted_as_gui_evidence(self):
         for game in ("chess", "shogi", "xiangqi", "tori", "chu"):
             for field, value in (("envelope_version", 2), ("format", "mshogi.desktop.archive.v2"),

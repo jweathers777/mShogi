@@ -683,6 +683,13 @@ impl From<&GameEvent> for WireEvent {
 // fixed envelope/root is <8192 bytes. Thus 8192 + 321*2048 = 665600 < 1 MiB.
 // These deliberately loose limits include all supported encoded alternatives.
 
+impl Serialize for GameRecord {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        let json = self.to_json().map_err(serde::ser::Error::custom)?;
+        crate::record::serialize_json(&json, serializer)
+    }
+}
+
 #[cfg(test)]
 mod prefix_identity_tests {
     use super::*;
@@ -791,12 +798,5 @@ mod prefix_identity_tests {
         let root = GameRecord::from_game(&root);
         assert!(root.has_prefix(&root));
         assert!(!root.has_prefix(&empty));
-    }
-}
-
-impl Serialize for GameRecord {
-    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
-        let json = self.to_json().map_err(serde::ser::Error::custom)?;
-        crate::record::serialize_json(&json, serializer)
     }
 }

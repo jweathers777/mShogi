@@ -270,8 +270,8 @@ fn hostile_common_loads_are_atomic_including_undo_and_strict_nested_fields() {
             initial(other),
             valid.replacen("\"payload\":", "\"payload\":{},\"payload\":", 1),
             valid.replace(
-                "\"schema_version\":1",
-                "\"schema_version\":1,\"schema_version\":1",
+                "\"schema_version\":",
+                "\"schema_version\":99,\"schema_version\":",
             ),
             valid.replacen("\"payload\":{", "\"payload\":{\"unknown\":true,", 1),
             valid.replace("\"envelope_version\":2", "\"envelope_version\":999"),

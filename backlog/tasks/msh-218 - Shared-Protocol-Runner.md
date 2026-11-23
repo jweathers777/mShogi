@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-20T23:26:00Z'
-updated_date: '2026-11-23T18:51:00Z'
+updated_date: '2026-11-23T19:13:00Z'
 labels:
   - runner
   - refactor
@@ -28,7 +28,7 @@ Approach: list the real differences, design the boundary from them (A-10; genera
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [x] #1 One generic runner (and, if it fits, one generic clocked match runner) serves Shogi and Xiangqi; per-game code holds only protocol, notation and rules differences; production line counts before and after are recorded
-- [ ] #2 Behavior is unchanged: runner tests pass, written once against the shared code where they were copied, and the recorded Shogi and Xiangqi reports in docs/m4 still replay
+- [x] #2 Behavior is unchanged: runner tests pass, written once against the shared code where they were copied, and the recorded Shogi and Xiangqi reports in docs/m4 still replay
 - [x] #3 One review by a fresh agent session of the boundary and the migration
 <!-- AC:END -->
 
@@ -48,4 +48,8 @@ Checkpoint: shared untimed Controller/run/replay and persistent clocked run/repl
 Production line count (wc-style including comments/blank lines, excluding the unchanged #[cfg(test)] unit module): before at 731a8ff shogi 1110, xiangqi 1356, shogi_match 504, xiangqi_match 654, clocked 327 = 3951; after at d5fe836 shogi 445, xiangqi 735, shogi_match 303, xiangqi_match 452, clocked 328, protocol 908, protocol_match 354 = 3525 (426 fewer, 10.8%). Whole-file totals including the unchanged 74-line unit module: 4025 -> 3599. Shared native data models and runtime traits preserve serialized config/report shapes; native adapters retain dialect/notation, admission, terminal/pending outcome, and Xiangqi strict transcript differences. Final helper/test delta also reviewed without findings. Formatting and workspace Clippy passed. Product commit d5fe836 is pushed. Targeted process CI: https://github.com/jweathers777/mShogi/actions/runs/45242420199 ; workspace debug tests currently compiling.
 
 Verification checkpoint after merging main (already current): required debug workspace test stopped at the same four MSH-199 Chu internal watchdog failures (30.38 s); no Chu code changed. Final fmt and Clippy passed. Release console build and full release workspace suite are running with two build/test workers. The release console build makes the optional actual Shogi/Xiangqi full-game tests execute. Native full-suite debug warning about duplicate tenjiku_work example names remains tracked by MSH-234. No strength experiment or cloud VM was needed; GCP compute cost $0.
+
+Final local checks on Darwin arm64, two workers: cargo fmt --all -- --check and cargo clippy --workspace --all-targets --locked -j 2 -- -D warnings passed; cargo test --workspace --locked -j 2 -- --test-threads=2 stopped on the four known MSH-199 debug Chu watchdog failures. cargo build --release --locked -p mshogi-console --bin mshogi -j 2 then cargo test --release --workspace --locked -j 2 -- --test-threads=2 passed: 1189 passed, 0 failed, 11 ignored. Actual full-engine Shogi and Xiangqi match tests ran (16.51 s and 15.55 s test suites), including replay/tampering; all retained docs/m4 report tests passed. Linux and Windows targeted process CI passed; macOS is still running. Product tree remains d5fe836; main merge was already current. Next: finish macOS CI, integrate main, mark Done and clean target/runs/feature branch.
+
+Targeted process workflow 45242420199 passed routine checks plus Ubuntu 24.04, macOS 15 and Windows 2022 on product commit d5fe836. Full packaged GUI/release CI was not requested or run. Verification logs uploaded to gs://mshogi-experiments-216675633801/runs/msh-218/ (60-day lifecycle). No GCP Batch job or VM was created; compute cost $0. Existing follow-ups remain MSH-199 (Chu Test Cost Review), MSH-219 (Shogi Match Test Timing Failure), and MSH-234 (Give Tenjiku Work Examples Distinct Build Names); this task changes no game rules or engine strength.
 <!-- SECTION:NOTES:END -->

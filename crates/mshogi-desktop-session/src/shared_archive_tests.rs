@@ -424,6 +424,9 @@ fn concurrent_save_as_keeps_new_admission_dirty_and_open_retires_it() {
     let saved = decode(&fs::read(&copy).unwrap()).unwrap();
     assert_eq!(saved.settings().orientation, s::Side::Gote);
     let deadline = Instant::now() + std::time::Duration::from_secs(10);
+    // Keep Open pending while the command is queued, then publish Open first.
+    c.files.hold_results_for_test(true);
+    c.admissions.hold_results_for_test(true);
     let id = c
         .queue_shared_open(original.clone(), c.shared_open_token())
         .unwrap();
@@ -434,6 +437,7 @@ fn concurrent_save_as_keeps_new_admission_dirty_and_open_retires_it() {
             operation: SessionOperation::Resign {},
         })
         .unwrap();
+    c.files.hold_results_for_test(false);
     while c.io_state.phase == IoPhase::Opening {
         c.poll_files();
         assert!(Instant::now() < deadline);
@@ -442,6 +446,7 @@ fn concurrent_save_as_keeps_new_admission_dirty_and_open_retires_it() {
     assert_eq!(c.io_state.id, id);
     assert_eq!(c.io_state.phase, IoPhase::Complete);
     assert!(receipt.completion().unwrap().is_err());
+    c.admissions.hold_results_for_test(false);
     c.poll_native_admission();
     assert!(c.session.shogi().unwrap().game.conclusion().is_none());
     assert!(!c.shared_document().dirty);

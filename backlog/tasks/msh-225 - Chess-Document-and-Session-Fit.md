@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-22T09:57:00Z'
-updated_date: '2026-11-23T10:31:00Z'
+updated_date: '2026-11-23T10:36:00Z'
 labels:
   - desktop
   - refactor
@@ -66,4 +66,6 @@ Final review confirmed the read-only analysis identity fix; no remaining finding
 Real-process Chess persistence test exposed a shared phase mismatch after engine moves: paused=false but phase=Paused. Fixed successful live responses to report Idle, preserving Paused for read-only analysis. All three real-process persistence tests now pass, including minimal save/reopen, failure preservation and same-ply resignation history.
 
 Latest checkpoint (8bfc824): all-feature desktop-session tests 204/204, real-process persistence 3/3, frontend 609/609, Python 176/176, TypeScript, formatting and workspace clippy passed. Corrected persistence CI run is 45156397616 (the superseded run was cancelled). Release workspace is compiling with two jobs. No code changes pending; next finish workspace/platform checks, integrate main, set Done and remove task build/run data.
+
+Windows CI exposed a test scheduling race in concurrent_save_as_keeps_new_admission_dirty_and_open_retires_it: Open could finish inside shared_command before the supposed pending command was queued. Added existing test-only file/admission result gates to establish the required order (queue both, publish Open first). Kept all cancellation and restored-state assertions. Focused test passes locally. Production code is unchanged by this fix.
 <!-- SECTION:NOTES:END -->

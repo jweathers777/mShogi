@@ -623,7 +623,7 @@ fn execute(context: &ExecutionContext) -> ExecutionResponse {
         &mut bytes,
     )
     .unwrap();
-    serde_json::from_slice(&bytes).unwrap()
+    ExecutionResponse::decode(&bytes, &execution_request(context.clone())).unwrap()
 }
 
 #[test]

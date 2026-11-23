@@ -96,7 +96,9 @@ fn capture_frozen_fixed_baseline() {
         .unwrap();
     let mut stdin = child.stdin.take().unwrap();
     for request in &requests {
-        serde_json::to_writer(&mut stdin, request).unwrap();
+        let mut request = request.clone();
+        request.protocol = 4; // This explicit evidence tool targets the frozen v4 predecessor.
+        serde_json::to_writer(&mut stdin, &request).unwrap();
         stdin.write_all(b"\n").unwrap();
     }
     drop(stdin);
@@ -106,7 +108,13 @@ fn capture_frozen_fixed_baseline() {
         .stdout
         .split(|&c| c == b'\n')
         .filter(|line| !line.is_empty())
-        .map(|line| serde_json::from_slice(line).unwrap())
+        .map(|line| {
+            let legacy: Value = serde_json::from_slice(line).unwrap();
+            ExecutionResponse {
+                protocol: PROTOCOL_VERSION,
+                observation: serde_json::from_value(legacy["observation"].clone()).unwrap(),
+            }
+        })
         .collect();
     assert_eq!(responses.len(), requests.len());
     let evidence: Vec<_> = responses.iter().map(fingerprint).collect();

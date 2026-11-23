@@ -472,10 +472,14 @@ fn composed_size_evidence_counts_native_wrapper_request_and_echoed_response() {
     .unwrap()
     .len();
     let response = run(context.clone());
-    let echoed = serde_json::to_vec(&ExecutionResponse {
-        protocol: PROTOCOL_VERSION,
-        observation: response.clone(),
-    })
+    let echoed = serde_json::to_vec(&incremental::Response::new(
+        &serde_json::to_vec(&ExecutionRequest {
+            protocol: PROTOCOL_VERSION,
+            context: response.context.clone(),
+        })
+        .unwrap(),
+        response.result.clone(),
+    ))
     .unwrap()
     .len();
     assert!(frame < MAX_REQUEST_BYTES);
@@ -504,10 +508,14 @@ fn composed_size_evidence_counts_native_wrapper_request_and_echoed_response() {
     .unwrap()
     .len();
     let response = run(context);
-    let echoed = serde_json::to_vec(&ExecutionResponse {
-        protocol: PROTOCOL_VERSION,
-        observation: response.clone(),
-    })
+    let echoed = serde_json::to_vec(&incremental::Response::new(
+        &serde_json::to_vec(&ExecutionRequest {
+            protocol: PROTOCOL_VERSION,
+            context: response.context.clone(),
+        })
+        .unwrap(),
+        response.result.clone(),
+    ))
     .unwrap()
     .len();
     assert!(frame < MAX_REQUEST_BYTES);

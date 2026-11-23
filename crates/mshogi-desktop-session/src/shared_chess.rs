@@ -463,13 +463,13 @@ impl DesktopController {
                     .pending
                     .clone()
                     .expect("started analysis");
-                let mut input =
-                    serde_json::to_vec(&execution_request(context)).map_err(|e| e.to_string())?;
+                let mut input = serde_json::to_vec(&execution_request(context.clone()))
+                    .map_err(|e| e.to_string())?;
                 input.push(b'\n');
                 let mut output = vec![];
                 mshogi_engine::serve_once(std::io::Cursor::new(input), &mut output)
                     .map_err(|e| e.to_string())?;
-                let response = serde_json::from_slice(&output).map_err(|e| e.to_string())?;
+                let response = ExecutionResponse::decode(&output, &execution_request(context))?;
                 if !self.accept_shared(response) {
                     return Err("Chess fixture observation refused".into());
                 }

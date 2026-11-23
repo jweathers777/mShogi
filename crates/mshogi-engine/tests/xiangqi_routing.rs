@@ -394,10 +394,14 @@ fn actual_maximum_native_audit_ledger_and_whole_encoded_transport_boundaries_fit
         }
     ));
     assert!(response.matches(&context));
-    let echoed = serde_json::to_vec(&ExecutionResponse {
-        protocol: PROTOCOL_VERSION,
-        observation: response.clone(),
-    })
+    let echoed = serde_json::to_vec(&incremental::Response::new(
+        &serde_json::to_vec(&ExecutionRequest {
+            protocol: PROTOCOL_VERSION,
+            context: response.context.clone(),
+        })
+        .unwrap(),
+        response.result.clone(),
+    ))
     .unwrap()
     .len();
     assert!(

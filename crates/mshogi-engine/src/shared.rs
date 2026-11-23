@@ -606,9 +606,8 @@ impl ExecutionRequest {
         crate::server::execute(&self.context, session)
     }
 }
-/// Versioned wire result; persistence retains only its semantic observation.
-#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
+/// Admitted host result; persistence retains only its semantic observation.
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct ExecutionResponse {
     /// Current transport identity.
     pub protocol: u32,

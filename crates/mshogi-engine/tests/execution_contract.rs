@@ -94,21 +94,21 @@ fn outer_wrapper_context_native_and_observation_reject_duplicates_and_unknowns()
         missing.as_object_mut().unwrap().remove(field);
         assert!(execute(&missing.to_string()).is_err(), "{field}");
     }
-    let response = execute(&text).unwrap();
-    let encoded = serde_json::to_string(&response).unwrap();
+    let mut output = Vec::new();
+    serve_once(Cursor::new(format!("{text}\n")), &mut output).unwrap();
+    let encoded = String::from_utf8(output).unwrap();
     for (needle, replacement) in [
         ("\"protocol\":5", "\"protocol\":5,\"protocol\":5"),
-        ("\"observation\":{", "\"observation\":{},\"observation\":{"),
-        (
-            "\"schema_version\":1",
-            "\"schema_version\":1,\"schema_version\":1",
-        ),
-        ("\"request_id\":1", "\"request_id\":1,\"request_id\":1"),
+        ("\"endpoint\":null", "\"endpoint\":null,\"endpoint\":null"),
+        ("\"result\":{", "\"result\":{},\"result\":{"),
     ] {
         assert!(encoded.contains(needle));
         assert!(
-            serde_json::from_str::<ExecutionResponse>(&encoded.replacen(needle, replacement, 1))
-                .is_err(),
+            ExecutionResponse::decode(
+                encoded.replacen(needle, replacement, 1).as_bytes(),
+                &request
+            )
+            .is_err(),
             "{needle}"
         );
     }

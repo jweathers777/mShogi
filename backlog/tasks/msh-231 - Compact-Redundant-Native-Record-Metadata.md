@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-23T11:05:00Z'
-updated_date: '2026-11-23T15:17:00Z'
+updated_date: '2026-11-23T15:21:00Z'
 labels:
   - simplification
   - persistence
@@ -70,4 +70,6 @@ Final verification at256f4ef: full workspace release run1180 passed/2 stale-prob
 Ready for integration at256f4ef. All code and consumer reviews complete. Required debug workspace result: same four pre-existing MSH-199 Chu timing failures,30.39s; limits/assertions unchanged. Latest routine CI45201790731 passes. Local release verification covers all1182 tests (full run1180 pass plus two fixed-probe suites14/14),11 ignored; frontend603,Python177,TypeScript,fmt/Clippy pass. Final source171342 versus171700 (-358). Question sent to John: approve a one-task exception using local macOS release evidence in place of hosted macOS CI, or wait? Recommendation: accept local macOS evidence; identical persistence code passed Linux/Windows, and three macOS attempts had no runner/steps due ARM64 capacity. Fourth retry45201234609 pending. No approval yet; do not merge or mark Done until John approves or hosted macOS passes. Then integrate into main/push, finalize AC3 with honest baseline exceptions, delete own branch and task run/build outputs. Branch codex/msh-231-compact-records. No Cloud Batch jobs/VMs were created; compute cost0; only small GCS evidence storage.
 
 Awaiting John’s platform-CI exception decision. Code is ready and remote branch includes the full handoff (a712c3b after source256f4ef). Cleaned243049 build files/26.2GiB with cargo clean; removed task Node runtime/archive and Python bytecode cache. Remaining ignored runs/msh-231 evidence stays until integration per AGENTS.md. Final logs/measurements and runner-capacity annotations uploaded to GCS. Last macOS retry45201234609 still queued; if it passes no exception is needed. If John approves local macOS evidence, remove needs-john, merge/push, check AC3 with recorded MSH-199 baseline exception, set Done, delete own feature branch and remaining runs/msh-231. No product code changes remain.
+
+Final macOS retry45201234609 also ended cancelled after15 minutes without any executed step. All four attempts could not acquire a hosted runner. No CI jobs remain pending for verification. Await John’s one-task exception decision; do not merge until approved. Working tree otherwise clean,13MiB ignored run evidence retained, all build output removed. Next action is integrate MSH-231 on approval; next planned task after integration is MSH-232 (Simplify Native Resource Admission and Copies).
 <!-- SECTION:NOTES:END -->

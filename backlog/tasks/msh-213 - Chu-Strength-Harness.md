@@ -5,12 +5,13 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-20T22:51:00Z'
-updated_date: '2026-11-23T22:01:00Z'
+updated_date: '2026-11-23T22:04:00Z'
 labels:
   - chu
   - search
 milestone: m-5
-dependencies: []
+dependencies:
+  - MSH-236
 ordinal: 220000
 ---
 
@@ -58,4 +59,6 @@ Fixed-work cloud comparison passed all64 cases (16 standard roots and16 tactical
 Pilot2 standard current-engine selfplay failed unscored after218 applied moves per game: Transition(Capacity(ReplayWork)); per-move native n*n history charge reaches the existing4000000 work guard. This is not incremental transport failure. Standard games therefore cannot yet support a completed strength measurement; preserve both failed pilots. Next bounded pilot uses existing compact balanced diagram seeds1..2 at10s+0.1s current selfplay and30s+0.5s versus frozen30e08e4, with the same1000-event cap and600s pair watchdog. These diagram results will not be presented as standard-opening strength. Native long-game capacity needs separate follow-up; no guard/rule is changed here.
 
 Follow-up created: MSH-236 (Chu Native Long-Game Capacity), Ready/high. Final local checks: fmt and workspace Clippy passed; workspace1195 passed/12 ignored/0 failed; examples6 passed; Python169 run with1 skipped. Linux process CI passed; Windows/macOS still running. Compact pilot is active in compact-1; standard predecessor pilot2 remains active. Branch codex/msh-213-chu-strength-harness.
+
+Blocking evidence: pilot2 standard predecessor pair at30s+0.5s also stopped both games at ReplayWork (219 requests each,321.3s pair wall); compact seed1 selfplay at10s+0.1s produced one native conclusion at31 requests and one ReplayWork failure at218 requests (51.3s pair wall). Both pairs remain unscored and campaigns stopped. Do not select only short wins to manufacture a strength result. MSH-236 now directly blocks the completed-game/control/odds/export criteria. Asked John in this chat for authorization to work MSH-236 then return here; answer pending. Compact frozen-predecessor pilot still running, with automatic cleanup. All current product changes passed local checks; Windows/macOS process CI still pending. Branch codex/msh-213-chu-strength-harness, source7bad3f3; do not mark Done.
 <!-- SECTION:NOTES:END -->

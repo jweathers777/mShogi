@@ -20,11 +20,7 @@ fn send_with_poll(
 ) -> Result<SharedSnapshot, String> {
     let deadline = Instant::now() + std::time::Duration::from_secs(20);
     let game = c.shared_snapshot().game;
-    let view_event = match &operation {
-        SessionOperation::Inspect { event_index } if game == GameKind::Chess => Some(*event_index),
-        _ => None,
-    };
-    let (started, receipt) = c.shared_command_with_receipt(SharedDesktopCommand {
+    let (_, receipt) = c.shared_command_with_receipt(SharedDesktopCommand {
         expected: c.shared_token(),
         game,
         operation,
@@ -33,26 +29,7 @@ fn send_with_poll(
         let snapshot = poll(c, &receipt);
         if let Some(result) = receipt.completion() {
             result?;
-            if let Some(event) = view_event {
-                if snapshot.io.id != started.io.id {
-                    return Err("Requested history view I/O was superseded.".into());
-                }
-                match snapshot.io.phase {
-                    IoPhase::Complete => {
-                        if snapshot.event_index != event {
-                            return Err("Completed history view has the wrong event prefix.".into());
-                        }
-                        return Ok(snapshot);
-                    }
-                    IoPhase::Failed => {
-                        return Err(snapshot.io.message.unwrap_or("History view failed.".into()));
-                    }
-                    IoPhase::Viewing => {}
-                    _ => return Err("Requested history view is not pending or complete.".into()),
-                }
-            } else {
-                return Ok(snapshot);
-            }
+            return Ok(snapshot);
         }
         assert!(Instant::now() < deadline, "Moves admission/view deadline");
         std::thread::sleep(std::time::Duration::from_millis(1));
@@ -75,141 +52,108 @@ fn chess_history() -> DesktopController {
 }
 
 #[test]
-fn controlled_chess_view_waits_beyond_admission_from_live_and_historical_prefixes() {
+fn controlled_chess_view_waits_for_atomic_admission() {
     for prior_history in [false, true] {
-        for held_polls in [1, 4] {
-            let mut c = chess_history();
-            let live_before = c.shared_snapshot();
-            if prior_history {
-                let selected = send(&mut c, SessionOperation::Inspect { event_index: 1 }).unwrap();
-                assert!(selected.historical);
-            }
-            let before = c.shared_snapshot();
-            let native = c.session.chess().game.record().to_json();
-            c.files.hold_results_for_test(true);
-            let mut polls = 0;
-            let mut io_id = None;
-            let root = send_with_poll(
-                &mut c,
-                SessionOperation::Inspect { event_index: 0 },
-                |c, receipt| {
-                    let snapshot = c.shared_snapshot();
-                    polls += 1;
-                    if polls <= held_polls {
-                        // Original helper would return this actual stale prefix:
-                        // admission succeeds while the real View result is held.
-                        assert_eq!(receipt.completion(), Some(Ok(())));
-                        assert_eq!(snapshot.io.phase, IoPhase::Viewing);
-                        assert_eq!(snapshot.event_index, before.event_index);
-                        assert_ne!(snapshot.event_index, 0);
-                        assert_eq!(snapshot.historical, prior_history);
-                        assert_eq!(
-                            serde_json::to_value(&snapshot.moves.last_action).unwrap(),
-                            serde_json::to_value(&before.moves.last_action).unwrap()
-                        );
-                        assert_eq!(*io_id.get_or_insert(snapshot.io.id), snapshot.io.id);
-                        if polls == held_polls {
-                            c.files.hold_results_for_test(false);
-                        }
-                    }
-                    snapshot
-                },
-            )
-            .unwrap();
-            assert_eq!(root.io.id, io_id.unwrap());
-            assert_eq!(root.io.phase, IoPhase::Complete);
-            assert_eq!(root.event_index, 0);
-            assert!(root.historical && root.moves.last_action.is_none());
-            assert!(polls > held_polls);
-            assert_eq!(root.moves.entries.len(), 2);
-            assert_eq!(c.session.chess().game.record().to_json(), native);
-            let live = send(&mut c, SessionOperation::ReturnLive {}).unwrap();
-            assert_eq!(live.context, live_before.context);
-            assert_eq!(
-                serde_json::to_value(&live.moves.last_action).unwrap(),
-                serde_json::to_value(&live_before.moves.last_action).unwrap()
-            );
+        let mut c = chess_history();
+        if prior_history {
+            send(&mut c, SessionOperation::Inspect { event_index: 1 }).unwrap();
         }
+        let before = c.shared_snapshot();
+        let native = before.chess_match.clone();
+        c.admissions.hold_results_for_test(true);
+        let mut polls = 0;
+        let root = send_with_poll(
+            &mut c,
+            SessionOperation::Inspect { event_index: 0 },
+            |c, receipt| {
+                let snapshot = c.shared_snapshot();
+                polls += 1;
+                if polls <= 4 {
+                    assert!(receipt.completion().is_none());
+                    assert_eq!(snapshot.event_index, before.event_index);
+                    assert_eq!(snapshot.historical, before.historical);
+                    assert_eq!(
+                        serde_json::to_value(&snapshot.moves.last_action).unwrap(),
+                        serde_json::to_value(&before.moves.last_action).unwrap()
+                    );
+                    if polls == 4 {
+                        c.admissions.hold_results_for_test(false);
+                    }
+                }
+                snapshot
+            },
+        )
+        .unwrap();
+        assert!(root.historical && root.event_index == 0 && root.moves.last_action.is_none());
+        assert_eq!(root.moves.entries.len(), 2);
+        assert_eq!(root.chess_match, native);
+        let live = send(&mut c, SessionOperation::ReturnLive {}).unwrap();
+        assert!(!live.historical);
+        assert_eq!(live.chess_match, native);
     }
 }
-
 #[test]
-fn controlled_repeated_chess_root_requires_new_io_completion() {
+fn repeated_chess_root_has_a_new_admission_receipt() {
     let mut c = chess_history();
-    let old = send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
-    assert_eq!(old.io.phase, IoPhase::Complete);
-    c.files.hold_results_for_test(true);
-    let mut pending = false;
+    send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
+    c.admissions.hold_results_for_test(true);
+    let mut held = false;
     let root = send_with_poll(
         &mut c,
         SessionOperation::Inspect { event_index: 0 },
         |c, receipt| {
             let snapshot = c.shared_snapshot();
-            if !pending {
-                assert_eq!(receipt.completion(), Some(Ok(())));
-                assert!(snapshot.io.id > old.io.id);
-                assert_eq!(snapshot.io.phase, IoPhase::Viewing);
-                assert!(snapshot.historical && snapshot.event_index == 0);
-                assert!(snapshot.moves.last_action.is_none());
-                pending = true;
-                c.files.hold_results_for_test(false);
+            if !held {
+                assert!(receipt.completion().is_none());
+                held = true;
+                c.admissions.hold_results_for_test(false);
             }
             snapshot
         },
     )
     .unwrap();
-    assert!(pending && root.io.id > old.io.id);
-    assert_eq!(root.io.phase, IoPhase::Complete);
-    assert!(root.historical && root.moves.last_action.is_none());
-    assert_eq!(root.moves.entries.len(), 2);
+    assert!(held && root.historical && root.event_index == 0);
 }
-
 #[test]
-fn controlled_chess_view_refuses_superseded_io() {
+fn controlled_chess_view_refuses_superseded_admission() {
     let mut c = chess_history();
-    c.files.hold_results_for_test(true);
+    c.admissions.hold_results_for_test(true);
     let error = send_with_poll(
         &mut c,
         SessionOperation::Inspect { event_index: 0 },
         |c, _| {
-            c.queue_view(c.session.version, 1).unwrap();
+            c.test_chess_operation(SessionOperation::Cancel {}).unwrap();
             c.shared_snapshot()
         },
     )
     .unwrap_err();
-    assert_eq!(error, "Requested history view I/O was superseded.");
-    c.files.hold_results_for_test(false);
+    assert!(error.contains("superseded"));
+    c.admissions.hold_results_for_test(false);
+    assert!(!c.shared_snapshot().historical);
 }
-
 #[test]
-fn controlled_chess_view_reports_real_failed_completion() {
+fn controlled_chess_view_rejects_a_changed_token_atomically() {
     let mut c = chess_history();
-    let native = c.session.chess().game.record().to_json();
-    c.files.hold_results_for_test(true);
+    let native = c.shared_snapshot().chess_match;
+    c.admissions.hold_results_for_test(true);
     let mut invalidated = false;
     let error = send_with_poll(
         &mut c,
         SessionOperation::Inspect { event_index: 0 },
         |c, _| {
             if !invalidated {
-                // Invalidate the actual worker's saved token before installation.
                 c.session.version += 1;
-                c.files.hold_results_for_test(false);
+                c.admissions.hold_results_for_test(false);
                 invalidated = true;
             }
             c.shared_snapshot()
         },
     )
     .unwrap_err();
-    assert_eq!(
-        error,
-        "The game changed during historical reconstruction; view was not applied."
-    );
+    assert!(error.contains("superseded"));
     let snapshot = c.shared_snapshot();
-    assert_eq!(snapshot.io.phase, IoPhase::Failed);
     assert!(!snapshot.historical);
-    assert_eq!(snapshot.moves.entries.len(), 2);
-    assert_eq!(c.session.chess().game.record().to_json(), native);
+    assert_eq!(snapshot.chess_match, native);
 }
 
 fn replace(
@@ -311,8 +255,8 @@ fn shared_moves_chess_real_admission_reopen_and_takeback_do_not_fabricate_cues()
     let root = c.shared_snapshot();
     assert!(root.moves.entries.is_empty() && root.moves.last_action.is_none());
     assert_eq!(
-        root.event_index, 1,
-        "the native Chess match has its Start command before board actions"
+        root.event_index, 0,
+        "runtime Start is not a saved player command"
     );
     let played = send(
         &mut c,
@@ -323,37 +267,23 @@ fn shared_moves_chess_real_admission_reopen_and_takeback_do_not_fabricate_cues()
     .unwrap();
     assert_eq!(played.moves.entries.len(), 1);
     let first = &played.moves.entries[0];
-    assert_eq!((first.number, first.column, first.event_index), (1, 0, 2));
+    assert_eq!((first.number, first.column, first.event_index), (1, 0, 1));
     assert_eq!((&*first.notation, &*first.action), ("e4", "e2e4"));
-    cue(&played, "e2e4", 2, "e2", "e4");
-    // The manual-engine fixture applies to Shogi/Xiangqi; Chess still owns a
-    // real supervised launch of the deliberately absent path. Cancellation can
-    // win that race, or the explicit process-start failure can arrive first.
-    // Neither permitted result may invent or remove a completed board action.
-    match send(&mut c, SessionOperation::Cancel {}) {
-        Ok(cancelled) => assert_eq!(cancelled.phase, EnginePhase::Cancelled),
-        Err(message) => {
-            assert_eq!(message, "There is no active engine search to cancel.");
-            // Admission rejection retires Chess execution via the existing
-            // shared native safety path; it publishes Paused, not a fabricated
-            // move/result or a claim that the failed launch remains running.
-            let retired = c.shared_snapshot();
-            assert_eq!(retired.phase, EnginePhase::Paused);
-            assert!(retired.paused && retired.execution_purpose.is_none());
-        }
-    }
+    cue(&played, "e2e4", 1, "e2", "e4");
+    let cancelled = send(&mut c, SessionOperation::Cancel {}).unwrap();
+    assert_eq!(cancelled.phase, EnginePhase::Cancelled);
     let after_cancel = c.shared_snapshot();
     assert_eq!(after_cancel.context, played.context);
     assert_eq!(
         serde_json::to_value(&after_cancel.moves.entries).unwrap(),
         serde_json::to_value(&played.moves.entries).unwrap()
     );
-    cue(&after_cancel, "e2e4", 2, "e2", "e4");
+    cue(&after_cancel, "e2e4", 1, "e2", "e4");
     let before_open = c.shared_snapshot();
     let opened = reopen(&mut c);
     assert_ne!(opened.token, before_open.token);
     assert!(opened.paused && opened.execution_purpose.is_none());
-    cue(&opened, "e2e4", 2, "e2", "e4");
+    cue(&opened, "e2e4", 1, "e2", "e4");
     let selected_root = send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
     assert!(selected_root.historical && selected_root.moves.last_action.is_none());
     assert_eq!(
@@ -362,7 +292,7 @@ fn shared_moves_chess_real_admission_reopen_and_takeback_do_not_fabricate_cues()
         "viewing root does not delete known move rows"
     );
     let live = send(&mut c, SessionOperation::ReturnLive {}).unwrap();
-    cue(&live, "e2e4", 2, "e2", "e4");
+    cue(&live, "e2e4", 1, "e2", "e4");
     let taken = send(&mut c, SessionOperation::TakeBack {}).unwrap();
     assert_eq!(taken.board_ply, 0);
     assert!(taken.paused && taken.moves.entries.is_empty() && taken.moves.last_action.is_none());

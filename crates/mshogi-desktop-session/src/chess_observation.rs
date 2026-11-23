@@ -3,41 +3,17 @@ use super::*;
 use crate::persistence::check;
 
 pub(crate) fn validate_result(
-    observation: &ExecutionObservation,
-    application_error: Option<&str>,
+    result: &ChessResult,
+    context: &ExecutionContext,
     game: &AdjudicatedGame,
-    witness_verified: bool,
     stopped: &mut impl FnMut() -> bool,
 ) -> Result<(), String> {
     use mshogi_engine::{EngineChoice, ExecutionPurpose, StopReason};
-    let context = &observation.context;
-    let native_result =
-        chess_observation_result(observation).ok_or("Wrong native observation result family.")?;
-    let result = &native_result;
+    check(stopped)?;
     let full = matches!(
         context.purpose,
         ExecutionPurpose::ChessFullReachability { .. }
     );
-    // Rejected native choices remain explicit historical failure evidence.
-    if let Some(message) = application_error {
-        if message.is_empty() || message.len() > mshogi_engine::MAX_STDERR_BYTES {
-            return Err("Invalid observation application diagnostic.".into());
-        }
-        let invalid = match result {
-            ChessResult::Move { action, .. } if !full => game.clone().apply(*action).is_err(),
-            ChessResult::Claim { claim, .. } if !full => {
-                game.clone().claim((*claim).into()).is_err()
-            }
-            ChessResult::Finished { outcome, .. } if !full => game.outcome() != Some(*outcome),
-            ChessResult::Reachability { .. } => !full,
-            _ => full,
-        };
-        return if invalid {
-            Ok(())
-        } else {
-            Err("Observation marks a valid choice as an application failure.".into())
-        };
-    }
     if let ChessResult::Failure { failure } = result {
         return if failure.message.len() <= mshogi_engine::MAX_STDERR_BYTES {
             Ok(())
@@ -62,28 +38,26 @@ pub(crate) fn validate_result(
                 let ExecutionPurpose::ChessFullReachability { mate, .. } = context.purpose else {
                     unreachable!()
                 };
-                if !witness_verified {
-                    let targets: &[Color] = match mate {
-                        mshogi_engine::ReachabilityTarget::Either => &[Color::White, Color::Black],
-                        mshogi_engine::ReachabilityTarget::White => &[Color::White],
-                        mshogi_engine::ReachabilityTarget::Black => &[Color::Black],
-                    };
-                    let mut valid = false;
-                    for side in targets {
-                        check(stopped)?;
-                        match mating_feasibility_with_stop(game.position(), *side, Some(witness), &mut *stopped) {
+                let targets: &[Color] = match mate {
+                    mshogi_engine::ReachabilityTarget::Either => &[Color::White, Color::Black],
+                    mshogi_engine::ReachabilityTarget::White => &[Color::White],
+                    mshogi_engine::ReachabilityTarget::Black => &[Color::Black],
+                };
+                let mut valid = false;
+                for side in targets {
+                    check(stopped)?;
+                    match mating_feasibility_with_stop(game.position(), *side, Some(witness), &mut *stopped) {
                         Ok(MatingFeasibility::Possible) => { valid = true; break; },
-                        Err("mating witness verification interrupted") => return Err("Stored witness verification interrupted by the operation budget/cancellation.".into()),
+                        Err("mating witness verification interrupted") => return Err("Full witness verification interrupted by the operation budget/cancellation.".into()),
                         _ => {},
                     }
-                    }
-                    check(stopped)?;
-                    if !valid {
-                        return Err(
-                        "Stored cooperative witness does not establish the requested legal mate."
+                }
+                check(stopped)?;
+                if !valid {
+                    return Err(
+                        "Full cooperative witness does not establish the requested legal mate."
                             .into(),
                     );
-                    }
                 }
                 check(stopped)?;
                 work
@@ -155,6 +129,7 @@ pub(crate) fn validate_result(
     }
     let mut continuation = game.clone();
     for (index, choice) in telemetry.principal_variation.iter().enumerate() {
+        check(stopped)?;
         match choice {
             EngineChoice::Move { action } => {
                 continuation.apply(*action).map_err(|e| e.to_string())?
@@ -170,4 +145,126 @@ pub(crate) fn validate_result(
         }
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use mshogi_engine::{ExecutionPurpose, ExecutionTarget, FullLimits, ReachabilityTarget};
+    fn proof() -> (AdjudicatedGame, ExecutionContext, ChessResult) {
+        let game =
+            AdjudicatedGame::from_fen("7k/8/5KQ1/8/8/8/8/8 w - - 0 1", ClaimPolicy::ExplicitOnly)
+                .unwrap();
+        let context = ExecutionContext {
+            request_id: 1,
+            process_generation: 1,
+            session_version: 1,
+            game: CanonicalRecord::chess(game.record()),
+            limits: mshogi_engine::FULL_SENTINEL,
+            purpose: ExecutionPurpose::ChessFullReachability {
+                target: ExecutionTarget {
+                    selection_id: 1,
+                    event_index: 0,
+                    board_ply: 0,
+                    session_version: 1,
+                    label: "root".into(),
+                    turn: NativeSide::Chess(Color::White),
+                },
+                mate: ReachabilityTarget::White,
+                limits: FullLimits {
+                    max_positions: 10,
+                    max_transitions: 10,
+                },
+            },
+        };
+        let result = ChessResult::Reachability {
+            result: MateReachability::Possible {
+                witness: vec!["g6g7".parse().unwrap()],
+                work: ReachabilityWork {
+                    positions: 2,
+                    expanded: 1,
+                    transitions: 1,
+                    static_leaves: 0,
+                },
+            },
+        };
+        (game, context, result)
+    }
+    #[test]
+    fn full_witness_requires_the_requested_legal_mate_and_work_evidence() {
+        let (game, mut context, result) = proof();
+        assert!(validate_result(&result, &context, &game, &mut || false).is_ok());
+        let ExecutionPurpose::ChessFullReachability { mate, .. } = &mut context.purpose else {
+            unreachable!()
+        };
+        *mate = ReachabilityTarget::Black;
+        assert!(validate_result(&result, &context, &game, &mut || false).is_err());
+        let (_, context, mut invalid) = proof();
+        let ChessResult::Reachability {
+            result: MateReachability::Possible { witness, .. },
+        } = &mut invalid
+        else {
+            unreachable!()
+        };
+        witness[0] = "g6g5".parse().unwrap();
+        assert!(validate_result(&invalid, &context, &game, &mut || false).is_err());
+        let (_, context, mut invalid) = proof();
+        let ChessResult::Reachability {
+            result: MateReachability::Possible { work, .. },
+        } = &mut invalid
+        else {
+            unreachable!()
+        };
+        work.positions = 11;
+        assert!(validate_result(&invalid, &context, &game, &mut || false).is_err());
+    }
+    #[test]
+    fn full_validation_stops_during_witness_check_and_refuses_a_moves_purpose() {
+        let (game, mut context, result) = proof();
+        let mut checks = 0;
+        assert!(
+            validate_result(&result, &context, &game, &mut || {
+                checks += 1;
+                checks >= 3
+            })
+            .is_err()
+        );
+        assert_eq!(checks, 3);
+        let ExecutionPurpose::ChessFullReachability { target, .. } = context.purpose else {
+            unreachable!()
+        };
+        context.purpose = ExecutionPurpose::MoveAnalysis { target };
+        assert!(validate_result(&result, &context, &game, &mut || false).is_err());
+    }
+    #[test]
+    fn minimax_continuations_are_native_and_cannot_be_full_proofs() {
+        let (game, mut context, _) = proof();
+        let result = ChessResult::Move {
+            action: "g6g7".parse().unwrap(),
+            telemetry: mshogi_engine::Telemetry {
+                score: Some(999_999),
+                completed_depth: 1,
+                selective_depth: None,
+                nodes: 1,
+                principal_variation: vec![mshogi_engine::EngineChoice::Move {
+                    action: "g6g7".parse().unwrap(),
+                }],
+                status: mshogi_engine::StopReason::Complete,
+            },
+        };
+        assert!(validate_result(&result, &context, &game, &mut || false).is_err());
+        context.purpose = ExecutionPurpose::EngineTurn {};
+        context.limits = WorkLimits {
+            depth: 1,
+            nodes: 1,
+            time_ms: None,
+        };
+        assert!(validate_result(&result, &context, &game, &mut || false).is_ok());
+        let mut invalid = result;
+        let ChessResult::Move { action, .. } = &mut invalid else {
+            unreachable!()
+        };
+        *action = "g6g5".parse().unwrap();
+        assert!(validate_result(&invalid, &context, &game, &mut || false).is_err());
+    }
 }

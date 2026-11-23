@@ -9,7 +9,7 @@
   },
   "open_token": {
     "document": 1,
-    "version": 3,
+    "version": 5,
     "document_revision": 2
   },
   "document": {
@@ -30,7 +30,7 @@
     }
   },
   "io": {
-    "id": 1,
+    "id": 0,
     "phase": "idle",
     "message": null,
     "resource": null
@@ -43,9 +43,9 @@
   },
   "token": {
     "document": 1,
-    "version": 3,
-    "revision": 7,
-    "selection": 2
+    "version": 5,
+    "revision": 6,
+    "selection": 5
   },
   "game": "chess",
   "profile": "mshogi.chess.match.v1",
@@ -452,7 +452,7 @@
     "promotion": true,
     "take_back": true,
     "undo": false,
-    "engine_turn": false,
+    "engine_turn": true,
     "move_analysis": true,
     "chess_full": true,
     "claims": false,
@@ -469,22 +469,12 @@
   },
   "events": [
     {
-      "index": 0,
-      "board_ply": 0,
-      "label": "Initial known position"
-    },
-    {
       "index": 1,
       "board_ply": 0,
-      "label": "Match started"
-    },
-    {
-      "index": 2,
-      "board_ply": 0,
-      "label": "Resignation"
+      "label": "White: Resign { witness: None }"
     }
   ],
-  "event_index": 2,
+  "event_index": 1,
   "board_ply": 0,
   "play_limits": {
     "depth": 128,
@@ -492,11 +482,11 @@
     "time_ms": 1000
   },
   "historical": false,
-  "paused": false,
+  "paused": true,
   "close_requires_save": true,
-  "phase": "idle",
+  "phase": "paused",
   "execution_purpose": null,
-  "diagnostic": null,
+  "diagnostic": "Resume starts play.",
   "declaration_advice": [],
   "context": {
     "envelope_version": 1,

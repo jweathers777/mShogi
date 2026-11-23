@@ -258,12 +258,7 @@ fn native_identity_intersection_palaces_river_and_capability_scope() {
         })
         .is_err()
     );
-    assert!(
-        c.command(ChessMutationCommand::Resign {
-            version: c.session.version
-        })
-        .is_err()
-    );
+    assert!(c.test_chess_operation(SessionOperation::Resign {}).is_err());
     // Save capability is now exercised through actual files by MSH-99 tests.
 }
 

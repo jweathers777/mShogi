@@ -273,18 +273,7 @@ impl NativeGame for Chess {
         game: &ChessMatch,
         stop: &mut impl FnMut() -> bool,
     ) -> Result<(), String> {
-        crate::chess_observation::validate_result(
-            &ExecutionObservation::new(
-                context.clone(),
-                ExecutionResult::Chess {
-                    result: result.clone(),
-                },
-            ),
-            None,
-            game.game(),
-            false,
-            stop,
-        )
+        crate::chess_observation::validate_result(result, context, game.game(), stop)
     }
 }
 

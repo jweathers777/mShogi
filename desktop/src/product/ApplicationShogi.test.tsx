@@ -95,7 +95,7 @@ it("formats only supplied observations with position, perspective and incomplete
   // A newly selected position must not show the old observation as its result.
   rerender(<ShogiApp {...props} snapshot={{ ...snapshot, historical: true, event_index: 1, search_observations: [{ ...view, selected: false, historical: true }] }} />);
   expect(document.querySelector(".shogi-analysis > .shogi-search-observation")).toBeNull();
-  expect(screen.getByText("Saved observation · event 0")).toBeTruthy();
+  expect(screen.getByText("Historical observation · event 0")).toBeTruthy();
 });
 it("requires native declaration capability plus a formal confirmation and preserves captured authority", () => {
   const { props, session, rerender } = app();

@@ -91,10 +91,9 @@ search. Only the last completed iteration can supply a choice. Zero thinking
 time remains honestly incomplete, with no fallback action or invented score.
 UCI and supervised Chess use this same native timed search. Current live desktop
 defaults are a128 nominal depth ceiling,20,000 visits and1,000ms hard time; analysis
-defaults and all other game budgets are unchanged. Current-stage documents with
-the prior fixed depth2/20,000-visit untimed defaults still open stopped, preserving
-their records and observations. Explicit Resume selects the new defaults for
-future live work; opening or resuming never rewrites the original file.
+defaults and all other game budgets are unchanged. Documents open stopped and preserve their native records. Explicit Resume
+selects the current defaults for future live work; opening or resuming never
+rewrites the original file.
 
 ## Execution safety and bounds
 
@@ -131,9 +130,9 @@ cuts the game command list and keeps the open session's results as historical
 observations. Opening restores the live game with fresh runtime identities,
 empty results and stopped execution. It does not restore a history selection.
 
-Chess still uses its existing archive until MSH-225. Its stored observations
-are historical evidence, never resumable requests. No development-era document
-compatibility is promised; see design A-09. Atomic file failures preserve the
+Chess uses the same minimal document and session lifecycle (MSH-225). Its
+record retains accepted player commands through the native match API. No
+development-era document compatibility is promised; see design A-09. Atomic file failures preserve the
 accepted document and save path. The encoded document limit remains 16 MiB.
 
 Subsequent MSH-117/R2 delivered the sole current outer desktop envelope and

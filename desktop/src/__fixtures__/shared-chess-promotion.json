@@ -9,11 +9,11 @@
   },
   "open_token": {
     "document": 1,
-    "version": 3,
-    "document_revision": 2
+    "version": 5,
+    "document_revision": 1
   },
   "document": {
-    "revision": 2,
+    "revision": 1,
     "dirty": true,
     "path": null,
     "settings": {
@@ -30,7 +30,7 @@
     }
   },
   "io": {
-    "id": 1,
+    "id": 0,
     "phase": "idle",
     "message": null,
     "resource": null
@@ -43,9 +43,9 @@
   },
   "token": {
     "document": 1,
-    "version": 3,
-    "revision": 7,
-    "selection": 2
+    "version": 5,
+    "revision": 6,
+    "selection": 5
   },
   "game": "chess",
   "profile": "mshogi.chess.match.v1",
@@ -317,7 +317,7 @@
     "promotion": true,
     "take_back": false,
     "undo": false,
-    "engine_turn": false,
+    "engine_turn": true,
     "move_analysis": true,
     "chess_full": true,
     "claims": false,
@@ -332,19 +332,8 @@
     "label": "White to move",
     "score_half_points": null
   },
-  "events": [
-    {
-      "index": 0,
-      "board_ply": 0,
-      "label": "Initial known position"
-    },
-    {
-      "index": 1,
-      "board_ply": 0,
-      "label": "Match started"
-    }
-  ],
-  "event_index": 1,
+  "events": [],
+  "event_index": 0,
   "board_ply": 0,
   "play_limits": {
     "depth": 128,

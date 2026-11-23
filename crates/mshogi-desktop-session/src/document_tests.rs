@@ -262,17 +262,24 @@ fn real_native_transcripts_roundtrip_current_documents_with_fresh_stopped_runtim
     // Chess's full MatchRecord remains distinct from the execution GameRecord.
     let mut source = controller();
     let (_, receipt) = source
-        .command_with_receipt(ChessMutationCommand::Resign {
-            version: source.session.version,
-        })
+        .test_chess_operation(SessionOperation::Resign {})
         .unwrap();
     settle(&mut source);
     receipt.completion().unwrap().unwrap();
-    assert!(source.session.chess_mut().game.conclusion().is_some());
     assert!(
         source
             .session
             .chess_mut()
+            .unwrap()
+            .game
+            .conclusion()
+            .is_some()
+    );
+    assert!(
+        source
+            .session
+            .chess_mut()
+            .unwrap()
             .game
             .record()
             .events()
@@ -285,6 +292,7 @@ fn real_native_transcripts_roundtrip_current_documents_with_fresh_stopped_runtim
         source
             .session
             .chess_mut()
+            .unwrap()
             .game
             .game()
             .record()
@@ -292,7 +300,7 @@ fn real_native_transcripts_roundtrip_current_documents_with_fresh_stopped_runtim
             .len(),
         0
     );
-    let before = source.session.chess_mut().game.record().to_json();
+    let before = source.session.chess_mut().unwrap().game.record().to_json();
     let bytes = saved(&mut source);
     assert_eq!(
         DocumentEnvelope::parse(&bytes).unwrap().game_kind,
@@ -300,9 +308,18 @@ fn real_native_transcripts_roundtrip_current_documents_with_fresh_stopped_runtim
     );
     let mut restored = controller();
     open(&mut restored, &bytes).unwrap();
-    assert_eq!(restored.session.chess_mut().game.record().to_json(), before);
-    assert!(restored.session.chess_mut().play_paused);
-    assert!(restored.session.chess_mut().pending.is_none());
+    assert_eq!(
+        restored
+            .session
+            .chess_mut()
+            .unwrap()
+            .game
+            .record()
+            .to_json(),
+        before
+    );
+    assert!(restored.session.chess_mut().unwrap().paused);
+    assert!(restored.session.chess_mut().unwrap().pending.is_none());
 }
 
 #[test]
@@ -376,7 +393,7 @@ fn native_payload_failure_diagnostics_stay_bounded_and_open_is_atomic() {
     document.payload = serde_json::value::to_raw_value(&payload).unwrap();
     let error = open(&mut current, &serde_json::to_vec(&document).unwrap()).unwrap_err();
     assert!(error.len() <= mshogi_engine::MAX_STDERR_BYTES);
-    assert!(error.starts_with("Invalid desktop archive:"));
+    assert!(error.starts_with("Invalid Chess document:"));
     let after = current.shared_snapshot();
     assert_eq!(after.context, before.context);
     assert_eq!(after.token.document, before.token.document);

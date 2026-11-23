@@ -116,7 +116,7 @@ it("uses selected native observations only, preserving perspective, provenance a
   expect(within(current).getByText("No move or claim was played.")).toBeTruthy();
   rerender(<XiangqiApp {...props} snapshot={{ ...standard, historical: true, event_index: 1, search_observations: [{ ...view, selected: false, historical: true, score: null, status: "Node limit reached", completed_depth: null }] }} />);
   expect(document.querySelector(".shogi-analysis > .shogi-search-observation")).toBeNull();
-  expect(screen.getByText("Saved observation · event 0")).toBeTruthy();
+  expect(screen.getByText("Historical observation · event 0")).toBeTruthy();
   expect(screen.getByText("No completed evaluation")).toBeTruthy();
   expect(screen.queryByText(/forced win|draw by evaluation/i)).toBeNull();
 });

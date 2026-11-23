@@ -325,6 +325,41 @@ mod tests {
         );
     }
     #[test]
+    fn command_capacity_and_mid_replay_cancellation_are_bounded() {
+        let mut record = initial();
+        for _ in 0..crate::MAX_ARCHIVE_EVENTS / 2 {
+            record.commands.push(ChessCommand {
+                actor: Color::White,
+                command: MatchCommand::OfferDraw,
+            });
+            record.commands.push(ChessCommand {
+                actor: Color::Black,
+                command: MatchCommand::DeclineDraw,
+            });
+        }
+        assert!(record.replay(&mut || false).is_ok());
+        assert!(matches!(
+            record.with_command(Color::White, MatchCommand::OfferDraw, &mut || false),
+            Err(RecordFailure::Capacity(_))
+        ));
+        let mut checks = 0;
+        assert!(matches!(
+            record.replay(&mut || {
+                checks += 1;
+                checks == 30
+            }),
+            Err(RecordFailure::Stopped)
+        ));
+        record.commands.push(ChessCommand {
+            actor: Color::White,
+            command: MatchCommand::OfferDraw,
+        });
+        assert!(matches!(
+            record.replay(&mut || false),
+            Err(RecordFailure::Capacity(_))
+        ));
+    }
+    #[test]
     fn malformed_saved_commands_fail_native_replay() {
         let mut record = initial();
         record.commands.push(ChessCommand {

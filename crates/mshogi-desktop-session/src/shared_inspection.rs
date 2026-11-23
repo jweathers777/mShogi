@@ -240,7 +240,7 @@ mod tests {
     #[test]
     fn exact_native_chess_query_is_not_a_snapshot_poll_or_mutation() {
         let c = controller();
-        let before = serde_json::to_string(&c.session.snapshot()).unwrap();
+        let before = serde_json::to_string(&c.game_snapshot::<Chess>()).unwrap();
         let token = c.shared_token();
         let inspected = query(&c, "b8").unwrap();
         assert_eq!(inspected.label, "Black knight");
@@ -255,7 +255,7 @@ mod tests {
         assert_eq!(inspected.token, token);
         assert_eq!(c.shared_token(), token);
         assert_eq!(
-            serde_json::to_string(&c.session.snapshot()).unwrap(),
+            serde_json::to_string(&c.game_snapshot::<Chess>()).unwrap(),
             before
         );
         assert!(query(&c, "e4").is_err());
@@ -264,36 +264,32 @@ mod tests {
     #[test]
     fn chess_pending_engine_work_and_historical_prefix_are_not_touched() {
         let mut c = controller();
-        let version = c.session.version;
-        c.session
-            .chess_mut()
-            .command_unchecked(
-                ChessMutationCommand::Play {
-                    version,
-                    action: "e2e4".parse().unwrap(),
-                },
-                0,
-            )
+        let (_, receipt) = c
+            .test_chess_operation(SessionOperation::ChessPlay {
+                action: "e2e4".parse().unwrap(),
+            })
             .unwrap();
-        c.session.chess_mut().engine_request().unwrap();
-        let pending = c.session.chess_mut().pending.clone();
+        while receipt.completion().is_none() {
+            c.shared_snapshot();
+            std::thread::sleep(std::time::Duration::from_millis(1));
+        }
+        receipt.completion().unwrap().unwrap();
+        c.shared_snapshot();
+        let pending = c.session.chess_mut().unwrap().pending.clone();
         assert!(pending.is_some());
-        let before = serde_json::to_string(&c.session.snapshot()).unwrap();
+        let before = serde_json::to_string(&c.game_snapshot::<Chess>()).unwrap();
         query(&c, "g8").unwrap();
         query(&c, "g1").unwrap();
-        assert_eq!(c.session.chess_mut().pending, pending);
+        assert_eq!(c.session.chess_mut().unwrap().pending, pending);
         assert_eq!(
-            serde_json::to_string(&c.session.snapshot()).unwrap(),
+            serde_json::to_string(&c.game_snapshot::<Chess>()).unwrap(),
             before
         );
         let previous = c.shared_token();
-        c.command(ChessMutationCommand::Inspect {
-            version: c.session.version,
-            event_index: 0,
-        })
-        .unwrap();
+        c.test_chess_operation(SessionOperation::Inspect { event_index: 0 })
+            .unwrap();
         let deadline = Instant::now() + std::time::Duration::from_secs(10);
-        while !c.snapshot().view.historical {
+        while !c.shared_snapshot().historical {
             assert!(Instant::now() < deadline);
             std::thread::sleep(std::time::Duration::from_millis(1));
         }

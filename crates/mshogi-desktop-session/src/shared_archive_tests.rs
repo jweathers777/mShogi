@@ -291,11 +291,14 @@ fn current_chess_preserves_semantics_and_development_formats_reject() {
     let bytes = fs::read(&file).unwrap();
     let envelope = crate::document::DocumentEnvelope::parse(&bytes).unwrap();
     assert_eq!(envelope.game_kind, GameKind::Chess);
-    let expected = c.session.chess_mut().game.record().to_json();
+    let expected = c.session.chess_mut().unwrap().game.record().to_json();
     replace(&mut c, &s::Game::new(), s::Side::Sente);
     let opened = open(&mut c, &file).unwrap();
     assert_eq!(opened.game, GameKind::Chess);
-    assert_eq!(c.session.chess_mut().game.record().to_json(), expected);
+    assert_eq!(
+        c.session.chess_mut().unwrap().game.record().to_json(),
+        expected
+    );
     assert!(opened.paused);
     let bad = path("development");
     for version in [1, 2, 3] {
@@ -307,7 +310,10 @@ fn current_chess_preserves_semantics_and_development_formats_reject() {
         let before = c.shared_open_token();
         assert!(open(&mut c, &bad).is_err());
         assert_eq!(c.shared_open_token(), before);
-        assert_eq!(c.session.chess_mut().game.record().to_json(), expected);
+        assert_eq!(
+            c.session.chess_mut().unwrap().game.record().to_json(),
+            expected
+        );
     }
     for p in [file, bad] {
         fs::remove_file(p).unwrap();
@@ -624,10 +630,7 @@ fn every_committed_gui_fixture_document_opens() {
         let envelope = crate::document::DocumentEnvelope::parse(&bytes).unwrap();
         let stop = &mut || false;
         let result = match envelope.game_kind {
-            GameKind::Chess => {
-                persistence::decode_chess_payload(envelope.payload.get().as_bytes(), stop)
-                    .map(|_| ())
-            }
+            GameKind::Chess => native_session::open::<Chess>(&bytes, stop).map(|_| ()),
             GameKind::Shogi => native_session::open::<Shogi>(&bytes, stop).map(|_| ()),
             GameKind::Xiangqi => native_session::open::<Xiangqi>(&bytes, stop).map(|_| ()),
             GameKind::Tori => native_session::open::<Tori>(&bytes, stop).map(|_| ()),

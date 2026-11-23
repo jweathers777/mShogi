@@ -9,7 +9,7 @@
   },
   "open_token": {
     "document": 2,
-    "version": 12,
+    "version": 11,
     "document_revision": 3
   },
   "document": {
@@ -30,9 +30,9 @@
     }
   },
   "io": {
-    "id": 4,
+    "id": 2,
     "phase": "complete",
-    "message": "Reconstructed an exact read-only history prefix.",
+    "message": "Opened complete native document with fresh runtime identities and work stopped.",
     "resource": null
   },
   "capacity": {
@@ -43,9 +43,9 @@
   },
   "token": {
     "document": 2,
-    "version": 12,
-    "revision": 16,
-    "selection": 12
+    "version": 11,
+    "revision": 13,
+    "selection": 11
   },
   "game": "chess",
   "profile": "mshogi.chess.match.v1",
@@ -452,7 +452,7 @@
     "promotion": true,
     "take_back": false,
     "undo": false,
-    "engine_turn": false,
+    "engine_turn": true,
     "move_analysis": true,
     "chess_full": true,
     "claims": false,
@@ -463,25 +463,15 @@
     "save": true
   },
   "status": {
-    "concluded": false,
-    "label": "White to move",
+    "concluded": true,
+    "label": "Unresolved { actor: White, trigger: Resignation }",
     "score_half_points": null
   },
   "events": [
     {
-      "index": 0,
-      "board_ply": 0,
-      "label": "Initial known position"
-    },
-    {
       "index": 1,
       "board_ply": 0,
-      "label": "Match started"
-    },
-    {
-      "index": 2,
-      "board_ply": 0,
-      "label": "Resignation"
+      "label": "White: Resign { witness: None }"
     }
   ],
   "event_index": 1,
@@ -496,7 +486,7 @@
   "close_requires_save": false,
   "phase": "paused",
   "execution_purpose": null,
-  "diagnostic": "Document reopened with work stopped. Saved observations are historical. Resume play explicitly.",
+  "diagnostic": "Historical position. Analysis is read-only. Return to live explicitly.",
   "declaration_advice": [],
   "context": {
     "envelope_version": 1,
@@ -518,7 +508,12 @@
         "trigger": "resignation"
       }
     },
-    "selected_conclusion": null,
+    "selected_conclusion": {
+      "unresolved": {
+        "actor": "white",
+        "trigger": "resignation"
+      }
+    },
     "in_check": false,
     "analysis": {
       "status": "idle",

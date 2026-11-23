@@ -147,8 +147,7 @@ def desktop_document_payload(document, game_kind):
     assert document["rules_profile"] == profile and document["profile_edition"] == edition, document
     assert document["native_schema_version"] == 1, document
     assert isinstance(document["payload"], dict), document
-    if game_kind != "chess":
-        assert set(document["payload"]) == {"record", "human", "settings"}, document
+    assert set(document["payload"]) == {"record", "human", "settings"}, document
     return document["payload"]
 
 
@@ -282,30 +281,14 @@ def warning_prefix_transition(earlier, warned):
                     and warning['fault'] == 'perpetual_check' for warning in new['warnings']))
 
 
-def retained_pending_takeback(game, body, action):
-    """Check the saved restored game; Chess retains its older archive format."""
-    if game != 'chess':
-        return (set(body) == {'record', 'human', 'settings'}
-                and body['record'] == action)
-    controls = [entry for entry in body['controls'] if entry.get('command')]
-    undos = [entry for entry in controls if entry['command']['kind'] == 'take_back']
-    if not undos:
-        return False
-    def played(entry):
-        command = entry['command']
-        if game == 'xiangqi':
-            command = command.get('command', {}) if command['kind'] == 'xiangqi' else {}
-        return command.get('kind') == 'play' and command.get('action') == action
-    moves = [entry for entry in controls if played(entry)]
-    if not moves or not any(move['sequence'] < undo['sequence'] for move in moves for undo in undos):
+def retained_pending_takeback(game, body, restored):
+    """Check the saved restored prefix without replaying any game rules."""
+    if set(body) != {'record', 'human', 'settings'}:
         return False
     if game == 'chess':
-        retained = body.get('takebacks', [])
-        return bool(retained and not json.loads(body['game_record_json'])['events']
-                    and any(event['request']['command'] == {'move': action}
-                        for lineage in retained
-                        for event in json.loads(lineage['match_record_json'])['events']))
-    return False
+        return (not body['record']['commands']
+                and json.loads(body['record']['initial_record_json']) == restored['payload'])
+    return body['record'] == restored
 
 
 def saved_document_accepted(observation, expected_path):
@@ -491,9 +474,9 @@ def historical_notice_matches(observed, event):
             and observed.get("returnLiveEnabled") is True)
 
 
-def saved_chess_evidence_count(text, count):
+def session_chess_evidence_count(text, count):
     """Require the current player-facing summary and exact accepted count."""
-    return text == f"Saved analysis evidence ({count})"
+    return text == f"Session analysis evidence ({count})"
 
 
 def terminal_transport_closed(error):
@@ -1494,14 +1477,16 @@ class Journey:
              "native shogi orientation changes")
 
     def save(self, path, observation_count=None):
+        native = self.native_diagnostics()
+        if observation_count is not None:
+            assert len(native["observations"]) == observation_count
         archive = self.save_current(path)
         body = desktop_document_payload(archive, "chess")
-        if observation_count is not None:
-            assert len(body["observations"]) == observation_count
-        self.record("Inspect actual saved canonical archive", {
+        self.record("Save native Chess game and settings", {
             "path": str(path), "sha256": digest(path), "bytes": path.stat().st_size,
-            "observations": len(body["observations"]), "controls": len(body["controls"]),
-            "game_events": len(json.loads(body["game_record_json"])["events"])})
+            "session_observations": len(native["observations"]),
+            "initial_events": len(json.loads(body["record"]["initial_record_json"])["events"]),
+            "commands": len(body["record"]["commands"])})
         return archive
 
     def document_file_state(self):
@@ -1631,10 +1616,7 @@ class Journey:
             self.file('open',path);self.wait_opened(path)
             opened=self.native_diagnostics()
             assert opened['context']==played['context']
-            if key == 'chess':
-                assert [x['observation'] for x in opened['observations']] == [x['observation'] for x in played['observations']]
-            else:
-                assert not opened['observations']
+            assert not opened['observations']
             assert opened['token']['document']>before['token']['document']
             assert opened['token']['selection']!=before['token']['selection']
             assert w.read("document.querySelector('.game-shell').dataset.paused")=='true'
@@ -1724,7 +1706,7 @@ class Journey:
         assert not w.has(".outcome-card")
         self.capture("play")
         self.record("Play e2e4 against actual bundled engine", w.text('[data-search-purpose="engine_turn"]'))
-        self.moves_navigation("chess", "e2e4", "e4", 2, "e2", "e4")
+        self.moves_navigation("chess", "e2e4", "e4", 1, "e2", "e4")
 
         w.focused_button("Take back")
         self.plies(0)
@@ -1761,7 +1743,7 @@ class Journey:
 
         path = self.args.output / "normal-complete.mshogi"
         archive = self.save(path)
-        assert len(desktop_document_payload(archive, "chess")["observations"]) >= 2
+        assert len(self.native_diagnostics()["observations"]) >= 2
         self.inspect_piece('chess','b8','c6','Black knight')
         before_write=path.stat().st_mtime_ns
         w.button('Save')
@@ -1773,16 +1755,14 @@ class Journey:
         self.plies(2)
         assert w.has(".play-paused")
         w.button("Play details")
-        # Reopened searches are historical evidence, not a pending engine turn.
-        assert any(entry["observation"]["context"]["purpose"]["kind"] == "engine_turn"
-                   for entry in desktop_document_payload(archive, "chess")["observations"])
+        assert not self.native_diagnostics()["observations"]
         sidebar = w.text(".sidebar")
-        assert "Earlier engine searches are retained as historical observations." in sidebar
+        assert "No engine search has completed in this game." in sidebar
         assert "Last engine turn" not in sidebar
         self.record("Reopen complete document without resuming work", w.text(".document-card"))
-        w.click('.shogi-history [data-event="2"]')
+        w.click('.shogi-history [data-event="1"]')
         self.plies(1, historical=True)
-        self.assert_historical_notice(2)
+        self.assert_historical_notice(1)
         self.inspect_piece('chess','b8','c6','Black knight')
         w.button("Analyze position")
         w.set('.shogi-analysis input[name="depth"]', 1)
@@ -1800,18 +1780,17 @@ class Journey:
         wait(lambda: not w.has(".play-paused"), "explicit Resume")
         self.plies(2)
         assert "Play remains paused" not in w.text(".document-card")
-        # Save to the existing path uses no picker; the earlier observation is
-        # canonical historical information, never resumable pending work.
+        # Save to the existing path uses no picker. Analysis stays in this session.
         w.button("Save")
         self.wait_saved(path)
         archive = json.loads(path.read_text(encoding="utf-8"))
         body = desktop_document_payload(archive, "chess")
-        observation = body["observations"][-1]["observation"]["context"]
+        observation = self.native_diagnostics()["observations"][-1]["observation"]["context"]
         assert observation["purpose"]["kind"] == "move_analysis"
         assert len(observation["game"]["payload"]["events"]) == 1
         self.record("History prefix provenance / Return live / Resume", {
             "historical_request": observation, "live_game_events":
-                len(json.loads(body["game_record_json"])["events"])})
+                len(body["record"]["commands"])})
         w.click(".flip-button")
         wait(lambda: w.text(".document-dirty").casefold() == "unsaved changes", "orientation change is protected")
         self.record("Native window-close request", self.native.close_window())
@@ -3295,8 +3274,7 @@ class Journey:
         point = self.square if game == 'chess' else self.shogi_square if game in ('shogi', 'tori') else self.chu_square if game in ('chu','tenjiku') else self.xiangqi_point
         w.click(point(origin)); w.click(point(destination))
         wait(lambda: w.has('.shogi-analysis[data-phase="thinking"]') and w.has('.shell-notices button'), 'actual pending engine decision')
-        # Chess desktop history includes its native Match Start event.
-        human_event, restored_event = (2, 1) if game == 'chess' else (1, 0)
+        human_event, restored_event = 1, 0
         before = self.native_diagnostics()
         cue_action = (json.dumps(before['context']['payload']['events'][-1]['command']['action'], separators=(',', ':'))
                       if game in ('tori', 'chu', 'tenjiku') else origin + destination)
@@ -3340,7 +3318,7 @@ class Journey:
         path = self.args.output / (f'pending-{game}'+(f'-{tenjiku_profile}' if tenjiku_profile else '')+'-complete.mshogi')
         archive = self.save_current(path)
         body = desktop_document_payload(archive, game)
-        action = origin + destination if game == 'chess' else restored['context']
+        action = restored['context']
         assert retained_pending_takeback(game, body, action), 'saved game matches the restored native command prefix'
         old_token = cancelled['token']
         self.file('open', path); self.wait_opened(path)
@@ -3557,24 +3535,18 @@ class Journey:
             self.chess_full()
         elif name == "capacity":
             w.button("Analyze position")
-            assert saved_chess_evidence_count(w.text(".recorded-chess-evidence summary"),255)
+            assert session_chess_evidence_count(w.text(".recorded-chess-evidence summary"), 255)
+            w.set('.shogi-analysis input[name="depth"]', 1)
+            w.set('.shogi-analysis input[name="nodes"]', 1)
             w.click('[data-analysis-start="chess"]')
-            wait(lambda:saved_chess_evidence_count(w.text(".recorded-chess-evidence summary"),256), "accept observation 256")
+            wait(lambda: session_chess_evidence_count(w.text(".recorded-chess-evidence summary"), 256), "accept observation 256")
+            previous = self.native_diagnostics()['observations'][-1]['observation']['context']['request_id']
             w.click('[data-analysis-start="chess"]')
-            wait(lambda: "Application limit reached" in w.text(".capacity-notice"), "reject operation before observation 257")
-            wait(lambda: w.read("""(() => {
-                const notice = document.querySelector('.capacity-notice');
-                const sidebar = document.querySelector('.sidebar');
-                if (!notice || !sidebar || document.activeElement !== notice) return false;
-                const rect = notice.getBoundingClientRect(), box = sidebar.getBoundingClientRect();
-                return rect.top >= Math.max(0, box.top) && rect.bottom <= Math.min(innerHeight, box.bottom);
-            })()"""), "new capacity pause is focused and visible in the actual inspector")
-            assert saved_chess_evidence_count(w.text(".recorded-chess-evidence summary"),256)
-            assert not w.has(".outcome-card")
-            self.capture("capacity-pause")
+            wait(lambda: self.native_diagnostics()['observations'][-1]['observation']['context']['request_id'] > previous, "newest Chess result replaces oldest")
+            assert session_chess_evidence_count(w.text(".recorded-chess-evidence summary"), 256)
+            assert not w.has(".capacity-notice") and not w.has(".outcome-card")
+            self.capture("recent-chess-searches")
             self.save(self.args.output / "capacity-complete.mshogi", 256)
-            # A preference change keeps this temporary saved document dirty for
-            # the native lifecycle guard; it does not remove any observation.
             w.click(".flip-button")
             wait(lambda: w.text(".document-dirty").casefold() == "unsaved changes", "protected preference change completes before Quit")
         elif name == "synthetic":

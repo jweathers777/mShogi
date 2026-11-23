@@ -23,7 +23,17 @@ impl SessionGame for Chess {
     const MAX_DEPTH: u16 = 128;
     const MAX_NODES: u64 = crate::PLAY_NODE_CEILING;
     const FULL_ANALYSIS: bool = true;
-    const REQUIRE_RESUME: bool = true;
+    const FINISH_CONCLUDED_ANALYSIS: bool = true;
+    fn cancellation_phase(analysis: bool) -> EnginePhase {
+        if analysis {
+            EnginePhase::Paused
+        } else {
+            EnginePhase::Cancelled
+        }
+    }
+    fn requires_running(command: &MatchCommand) -> bool {
+        matches!(command, MatchCommand::Move(_) | MatchCommand::Claim { .. })
+    }
     const UNDO: bool = false;
     fn validate_command(
         _game: &ChessMatch,
@@ -188,17 +198,17 @@ impl SessionGame for Chess {
         SessionOperation::ChessCommand { actor, command }
     }
     fn opened(state: Box<ChessSession>) -> archive::OpenedNative {
-        archive::OpenedNative::GenericChess(state)
+        archive::OpenedNative::Chess(state)
     }
     fn state(session: &ActiveDocument) -> Option<&ChessSession> {
-        if let ActiveDocument::GenericChess { state, .. } = session {
+        if let ActiveDocument::Chess { state, .. } = session {
             Some(state)
         } else {
             None
         }
     }
     fn state_mut(session: &mut ActiveDocument) -> Option<&mut ChessSession> {
-        if let ActiveDocument::GenericChess { state, .. } = session {
+        if let ActiveDocument::Chess { state, .. } = session {
             Some(state)
         } else {
             None
@@ -336,7 +346,8 @@ impl SessionGame for Chess {
             .pending
             .as_ref()
             .filter(|p| !matches!(p.purpose, ExecutionPurpose::EngineTurn {}))
-            .or_else(|| state.analysis.as_ref().map(|o| &o.context));
+            .or_else(|| state.analysis.as_ref().map(|o| &o.context))
+            .or(state.cancelled_analysis.as_ref());
         if let Some(context) = context {
             let (target, operation) = match &context.purpose {
                 ExecutionPurpose::MoveAnalysis { target } => (
@@ -361,7 +372,9 @@ impl SessionGame for Chess {
                 _ => unreachable!(),
             };
             chess.analysis = AnalysisState {
-                status: if state.pending.is_some() {
+                status: if state.cancelled_analysis.is_some() {
+                    AnalysisPhase::Cancelled
+                } else if state.pending.is_some() {
                     AnalysisPhase::Thinking
                 } else if state
                     .analysis
@@ -386,6 +399,98 @@ impl SessionGame for Chess {
                 message: state.diagnostic.clone(),
             };
         }
+    }
+}
+
+#[cfg(feature = "desktop-verification")]
+impl DesktopController {
+    pub(crate) fn verification_chess(&mut self, fixture: &str) -> Result<(), String> {
+        if ["shogi-", "xiangqi-", "tori-", "chu-", "tenjiku-"]
+            .iter()
+            .any(|prefix| fixture.starts_with(prefix))
+        {
+            return Ok(());
+        }
+        let fen = match fixture {
+            "standard" | "shared-contract" | "capacity" | "incomplete" => STANDARD_START_FEN,
+            "promotion" => "7k/P7/8/8/8/8/8/7K w - - 0 1",
+            "claim" => "7k/8/8/8/8/8/R7/K7 w - - 99 1",
+            "current-claim" => "7k/8/8/8/8/8/R7/K7 w - - 100 1",
+            "concluded" => "7k/6Q1/5K2/8/8/8/8/8 b - - 0 1",
+            _ => return Err("Unknown desktop verification fixture.".into()),
+        };
+        let game = if fen == STANDARD_START_FEN {
+            AdjudicatedGame::new(ClaimPolicy::ExplicitOnly)
+        } else {
+            AdjudicatedGame::from_fen(fen, ClaimPolicy::ExplicitOnly).map_err(|e| e.to_string())?
+        };
+        let human = if matches!(fixture, "incomplete" | "concluded") {
+            Color::Black
+        } else {
+            Color::White
+        };
+        let receipt = self.queue_game_candidate::<Chess>(
+            native_session::RuntimeSeed::Record {
+                record: Box::new(crate::chess_record::ChessRecord::new(&game.record())),
+                human,
+                play_mode: PlayMode::HumanEngine,
+            },
+            (game.outcome().is_none() && fixture != "incomplete")
+                .then_some(SessionOperation::Resume {}),
+            None,
+            true,
+        )?;
+        while receipt.completion().is_none() {
+            self.poll_native_admission();
+            std::thread::sleep(std::time::Duration::from_millis(1));
+        }
+        receipt.completion().unwrap()?;
+        if fixture == "capacity" {
+            for _ in 0..MAX_ARCHIVE_OBSERVATIONS - 1 {
+                self.start_game_work::<Chess>(
+                    WorkLimits {
+                        depth: 1,
+                        nodes: 0,
+                        time_ms: None,
+                    },
+                    true,
+                )
+                .map_err(|e| e.diagnostic)?;
+                let context = self
+                    .session
+                    .chess()
+                    .expect("Chess fixture")
+                    .pending
+                    .clone()
+                    .expect("started analysis");
+                let mut input =
+                    serde_json::to_vec(&execution_request(context)).map_err(|e| e.to_string())?;
+                input.push(b'\n');
+                let mut output = vec![];
+                mshogi_engine::serve_once(std::io::Cursor::new(input), &mut output)
+                    .map_err(|e| e.to_string())?;
+                let response = serde_json::from_slice(&output).map_err(|e| e.to_string())?;
+                if !self.accept_shared(response) {
+                    return Err("Chess fixture observation refused".into());
+                }
+                let receipt = self.admission_receipt.clone().expect("fixture admission");
+                while receipt.completion().is_none() {
+                    self.poll_native_admission();
+                    std::thread::sleep(std::time::Duration::from_millis(1));
+                }
+                receipt.completion().unwrap()?;
+            }
+        }
+        if fixture == "incomplete" {
+            self.verify_game_execution::<Chess>(
+                WorkLimits {
+                    nodes: 0,
+                    ..crate::PLAY_LIMITS
+                },
+                false,
+            )?;
+        }
+        Ok(())
     }
 }
 
@@ -422,9 +527,9 @@ mod tests {
         receipt.completion().unwrap().unwrap();
     }
     #[test]
-    fn generic_chess_full_analysis_stays_read_only_and_remembers_its_kind() {
+    fn chess_full_analysis_stays_read_only_and_remembers_its_kind() {
         let mut c = controller(Color::White);
-        let record = Chess::from_game(&c.session.generic_chess().unwrap().game).unwrap();
+        let record = Chess::from_game(&c.session.chess().unwrap().game).unwrap();
         let operation = AnalysisOperation::FullReachability {
             target: mshogi_engine::ReachabilityTarget::Either,
             max_positions: 0,
@@ -433,7 +538,7 @@ mod tests {
         command(&mut c, SessionOperation::Analyze { operation });
         let snapshot = c.shared_snapshot();
         assert_eq!(snapshot.execution_purpose, Some("chess_full_reachability"));
-        let pending = c.session.generic_chess().unwrap().pending.clone().unwrap();
+        let pending = c.session.chess().unwrap().pending.clone().unwrap();
         let mut bytes = serde_json::to_vec(&execution_request(pending)).unwrap();
         bytes.push(b'\n');
         let mut output = vec![];
@@ -444,15 +549,18 @@ mod tests {
         let snapshot = c.shared_snapshot();
         let chess = snapshot.chess.unwrap();
         assert_eq!(chess.analysis.status, AnalysisPhase::Incomplete);
+        let target = chess.analysis.target.as_ref().unwrap();
+        assert_eq!(target.session_version, snapshot.token.version);
+        assert_eq!(target.selection_id, snapshot.token.selection);
         assert_eq!(chess.analysis.operation, Some(operation));
         assert_eq!(
-            Chess::from_game(&c.session.generic_chess().unwrap().game).unwrap(),
+            Chess::from_game(&c.session.chess().unwrap().game).unwrap(),
             record
         );
         assert!(snapshot.paused);
         assert_eq!(
             c.session
-                .generic_chess()
+                .chess()
                 .unwrap()
                 .document
                 .settings()
@@ -465,7 +573,7 @@ mod tests {
         let mut c = controller(Color::Black);
         command(&mut c, SessionOperation::Resume {});
         c.shared_snapshot();
-        let pending = c.session.generic_chess().unwrap().pending.clone().unwrap();
+        let pending = c.session.chess().unwrap().pending.clone().unwrap();
         assert!(c.accept_observation(ExecutionObservation::new(
             pending,
             ExecutionResult::Chess {
@@ -483,11 +591,11 @@ mod tests {
             assert_eq!(snapshot.phase, EnginePhase::Failed);
             assert!(snapshot.paused);
             assert!(snapshot.diagnostic.unwrap().contains("test failure"));
-            assert!(c.session.generic_chess().unwrap().pending.is_none());
+            assert!(c.session.chess().unwrap().pending.is_none());
         }
     }
     #[test]
-    fn generic_chess_play_takeback_and_browse_keep_imported_history() {
+    fn chess_play_takeback_and_browse_keep_imported_history() {
         let mut c = controller(Color::White);
         let mut initial = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly);
         initial.apply("e2e4".parse().unwrap()).unwrap();
@@ -507,7 +615,7 @@ mod tests {
         assert_eq!(c.shared_snapshot().board_ply, 0);
         command(&mut c, SessionOperation::ReturnLive {});
         command(&mut c, SessionOperation::TakeBack {});
-        let state = c.session.generic_chess().unwrap();
+        let state = c.session.chess().unwrap();
         assert_eq!(state.game.game().record(), initial.record());
         assert!(state.take_back_target().is_none());
     }

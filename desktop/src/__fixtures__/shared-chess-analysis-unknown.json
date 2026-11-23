@@ -9,11 +9,11 @@
   },
   "open_token": {
     "document": 1,
-    "version": 3,
-    "document_revision": 3
+    "version": 5,
+    "document_revision": 2
   },
   "document": {
-    "revision": 3,
+    "revision": 2,
     "dirty": true,
     "path": null,
     "settings": {
@@ -31,7 +31,7 @@
     }
   },
   "io": {
-    "id": 1,
+    "id": 0,
     "phase": "idle",
     "message": null,
     "resource": null
@@ -44,9 +44,9 @@
   },
   "token": {
     "document": 1,
-    "version": 3,
-    "revision": 9,
-    "selection": 2
+    "version": 5,
+    "revision": 8,
+    "selection": 5
   },
   "game": "chess",
   "profile": "mshogi.chess.match.v1",
@@ -694,7 +694,7 @@
     "promotion": true,
     "take_back": false,
     "undo": false,
-    "engine_turn": false,
+    "engine_turn": true,
     "move_analysis": true,
     "chess_full": true,
     "claims": false,
@@ -709,19 +709,8 @@
     "label": "White to move",
     "score_half_points": null
   },
-  "events": [
-    {
-      "index": 0,
-      "board_ply": 0,
-      "label": "Initial known position"
-    },
-    {
-      "index": 1,
-      "board_ply": 0,
-      "label": "Match started"
-    }
-  ],
-  "event_index": 1,
+  "events": [],
+  "event_index": 0,
   "board_ply": 0,
   "play_limits": {
     "depth": 128,
@@ -731,9 +720,9 @@
   "historical": false,
   "paused": true,
   "close_requires_save": true,
-  "phase": "paused",
+  "phase": "incomplete",
   "execution_purpose": null,
-  "diagnostic": "Analysis incomplete. Resume play when ready.",
+  "diagnostic": "Incomplete search. No move, score or game outcome was created.",
   "declaration_advice": [],
   "context": {
     "envelope_version": 1,
@@ -750,11 +739,11 @@
         "purpose": {
           "kind": "chess_full_reachability",
           "target": {
-            "selection_id": 2,
+            "selection_id": 5,
             "event_index": 0,
             "board_ply": 0,
-            "session_version": 3,
-            "label": "Live position after 0 plies",
+            "session_version": 5,
+            "label": "Chess event 0 (live)",
             "turn": {
               "game_kind": "chess",
               "side": "white"
@@ -766,9 +755,9 @@
             "max_transitions": 0
           }
         },
-        "request_id": 1,
-        "session_version": 3,
-        "process_generation": 1,
+        "request_id": 5,
+        "session_version": 5,
+        "process_generation": 5,
         "game": {
           "envelope_version": 1,
           "game_kind": "chess",
@@ -811,11 +800,11 @@
           "purpose": {
             "kind": "chess_full_reachability",
             "target": {
-              "selection_id": 2,
+              "selection_id": 5,
               "event_index": 0,
               "board_ply": 0,
-              "session_version": 3,
-              "label": "Live position after 0 plies",
+              "session_version": 5,
+              "label": "Chess event 0 (live)",
               "turn": {
                 "game_kind": "chess",
                 "side": "white"
@@ -827,9 +816,9 @@
               "max_transitions": 0
             }
           },
-          "request_id": 1,
-          "session_version": 3,
-          "process_generation": 1,
+          "request_id": 5,
+          "session_version": 5,
+          "process_generation": 5,
           "game": {
             "envelope_version": 1,
             "game_kind": "chess",
@@ -891,11 +880,11 @@
     "analysis": {
       "status": "incomplete",
       "target": {
-        "selection_id": 2,
+        "selection_id": 5,
         "event_index": 0,
         "board_ply": 0,
-        "session_version": 3,
-        "label": "Live position after 0 plies",
+        "session_version": 5,
+        "label": "Chess event 0 (live)",
         "turn": {
           "game_kind": "chess",
           "side": "white"
@@ -911,11 +900,11 @@
         "purpose": {
           "kind": "chess_full_reachability",
           "target": {
-            "selection_id": 2,
+            "selection_id": 5,
             "event_index": 0,
             "board_ply": 0,
-            "session_version": 3,
-            "label": "Live position after 0 plies",
+            "session_version": 5,
+            "label": "Chess event 0 (live)",
             "turn": {
               "game_kind": "chess",
               "side": "white"
@@ -927,9 +916,9 @@
             "max_transitions": 0
           }
         },
-        "request_id": 1,
-        "session_version": 3,
-        "process_generation": 1,
+        "request_id": 5,
+        "session_version": 5,
+        "process_generation": 5,
         "game": {
           "envelope_version": 1,
           "game_kind": "chess",
@@ -957,7 +946,7 @@
           }
         }
       },
-      "message": null
+      "message": "Incomplete search. No move, score or game outcome was created."
     },
     "last_engine_result": null,
     "last_engine_turn": null,

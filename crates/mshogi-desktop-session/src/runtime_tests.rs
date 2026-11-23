@@ -39,7 +39,7 @@ fn exactly_one_native_document_and_uniform_metadata_survive_cross_game_replaceme
         assert!(snapshot.token.version > previous.version);
         assert!(snapshot.token.selection > previous.selection);
         match (&c.session, human.game()) {
-            (ActiveDocument::Chess(_), GameKind::Chess)
+            (ActiveDocument::Chess { .. }, GameKind::Chess)
             | (ActiveDocument::Shogi { .. }, GameKind::Shogi)
             | (ActiveDocument::Xiangqi { .. }, GameKind::Xiangqi) => {}
             _ => panic!("exactly one authoritative native variant must match the public contract"),
@@ -59,30 +59,29 @@ fn current_chess_contract_contains_actual_claims_match_and_search_observations()
     let game =
         AdjudicatedGame::from_fen("7k/8/8/8/8/8/R7/K7 w - - 100 1", ClaimPolicy::ExplicitOnly)
             .unwrap();
-    let mut native = DesktopSession::from_record(&game.record(), Color::White).unwrap();
-    native
-        .command(
-            ChessMutationCommand::Analyze {
-                version: native.version,
-                operation: AnalysisOperation::Moves {
-                    depth: 1,
-                    nodes: 100,
-                },
+    let mut c = controller();
+    c.test_chess_record(game.record(), Color::White);
+    let (_, receipt) = c
+        .test_chess_operation(SessionOperation::Analyze {
+            operation: AnalysisOperation::Moves {
+                depth: 1,
+                nodes: 100,
             },
-            1,
-        )
+        })
         .unwrap();
-    let request = native.analysis_request().unwrap();
+    settle(&mut c, &receipt);
+    c.shared_snapshot();
+    let request = test_request(c.session.chess().unwrap().pending.clone().unwrap());
     let mut encoded = serde_json::to_vec(&request).unwrap();
     encoded.push(b'\n');
-    let mut bytes = Vec::new();
+    let mut bytes = vec![];
     mshogi_engine::serve_once(std::io::Cursor::new(encoded), &mut bytes).unwrap();
     let response: ExecutionResponse = serde_json::from_slice(&bytes).unwrap();
-    assert!(native.accept_analysis(response));
-    let expected = native.game.record().to_json();
-    let observation = native.observations[0].observation.clone();
-    let mut c = controller();
-    c.session = ActiveDocument::Chess(Box::new(native));
+    let observation = response.observation.clone();
+    assert!(c.accept_shared(response));
+    let receipt = c.admission_receipt.clone().unwrap();
+    settle(&mut c, &receipt);
+    let expected = c.session.chess().unwrap().game.record().to_json();
     let snapshot = c.shared_snapshot();
     assert!(!snapshot.chess.as_ref().unwrap().claims.is_empty());
     assert!(snapshot.capabilities.chess_full);
@@ -128,12 +127,7 @@ fn close_authority_rejects_all_native_replacement_commands_and_open_but_keeps_sa
     let mut c = controller();
     let expected = c.shared_open_token();
     c.lifecycle.request_close().unwrap();
-    assert!(
-        c.command(ChessMutationCommand::Resign {
-            version: c.session.version
-        })
-        .is_err()
-    );
+    assert!(c.test_chess_operation(SessionOperation::Resign {}).is_err());
     assert!(
         c.queue_shared_open("/unused/r3.mshogi".into(), expected)
             .is_err()
@@ -177,7 +171,7 @@ fn direct_identity_refusals_publish_native_facts_without_mutating_the_game() {
     c.io_state.id = 0;
     c.session.capacity.id = MAX_SAFE_ID - 32;
     assert!(
-        c.command(ChessMutationCommand::Preferences {
+        c.test_chess_operation(SessionOperation::ChessPreferences {
             orientation: Color::Black,
             analysis_defaults: AnalysisOperation::Moves { depth: 1, nodes: 1 }
         })
@@ -254,9 +248,9 @@ fn current_flat_chess_claim_keeps_the_intended_action_unplayed_and_rejects_old_t
         AdjudicatedGame::from_fen("7k/8/8/8/8/8/R7/K7 w - - 99 1", ClaimPolicy::ExplicitOnly)
             .unwrap();
     let mut c = controller();
-    c.session = ActiveDocument::Chess(Box::new(
-        DesktopSession::from_record(&game.record(), Color::White).unwrap(),
-    ));
+    c.test_chess_record(game.record(), Color::White);
+    let (_, receipt) = c.test_chess_operation(SessionOperation::Resume {}).unwrap();
+    settle(&mut c, &receipt);
     let before = c.shared_snapshot();
     let claim = before
         .chess
@@ -282,7 +276,7 @@ fn current_flat_chess_claim_keeps_the_intended_action_unplayed_and_rejects_old_t
     let after = c.shared_snapshot();
     assert_eq!(after.board_ply, 0);
     assert_eq!(
-        c.session.chess().game.game().position().to_fen(),
+        c.session.chess().unwrap().game.game().position().to_fen(),
         game.position().to_fen()
     );
     assert!(matches!(

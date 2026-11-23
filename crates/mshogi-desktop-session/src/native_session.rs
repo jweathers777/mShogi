@@ -52,7 +52,13 @@ pub(crate) trait SessionGame: NativeGame {
     const MAX_NODES: u64;
     /// Only Chess exposes the cooperative mating-reachability operation.
     const FULL_ANALYSIS: bool = false;
-    const REQUIRE_RESUME: bool = false;
+    const FINISH_CONCLUDED_ANALYSIS: bool = false;
+    fn cancellation_phase(_analysis: bool) -> EnginePhase {
+        EnginePhase::Cancelled
+    }
+    fn requires_running(_command: &Self::Command) -> bool {
+        false
+    }
     const UNDO: bool = true;
     fn validate_command(
         _game: &Self::Game,
@@ -165,6 +171,7 @@ pub(crate) struct NativeSession<G: SessionGame> {
     submitted: bool,
     requested_analysis: Option<AnalysisOperation>,
     pub(crate) analysis: Option<ExecutionObservation>,
+    pub(crate) cancelled_analysis: Option<ExecutionContext>,
     /// Engine results of this session, in memory only (not saved).
     pub(crate) observations: Vec<ExecutionObservation>,
     /// Completed evidence of this session (Xiangqi exact reports), not saved.
@@ -203,6 +210,7 @@ impl<G: SessionGame> NativeSession<G> {
             submitted: false,
             requested_analysis: None,
             analysis: None,
+            cancelled_analysis: None,
             observations: vec![],
             evidence: vec![],
             current_observations: vec![],
@@ -230,10 +238,26 @@ impl<G: SessionGame> NativeSession<G> {
         self.submitted = false;
         self.requested_analysis = None;
         self.analysis = None;
+        self.cancelled_analysis = None;
         self.browse_stop = None;
         self.phase = EnginePhase::Paused;
         // The native context is never recovered by restoring a canonical record.
         G::retire_context(&mut self.game);
+    }
+    fn cancel(&mut self) {
+        let cancelled = self
+            .pending
+            .as_ref()
+            .filter(|p| !matches!(p.purpose, ExecutionPurpose::EngineTurn {}))
+            .cloned()
+            .or_else(|| self.analysis.as_ref().map(|o| o.context.clone()))
+            .or_else(|| self.cancelled_analysis.clone());
+        self.retire();
+        self.phase = G::cancellation_phase(cancelled.is_some());
+        self.cancelled_analysis = cancelled;
+        self.paused = true;
+        self.diagnostic =
+            Some("Work cancelled. The game is unchanged; Resume or start another analysis.".into());
     }
     fn local_actor(&self) -> G::Side {
         self.document
@@ -261,9 +285,10 @@ impl<G: SessionGame> NativeSession<G> {
         let control: Option<Change<G>> = match G::operation(operation) {
             Ok(GameOperation::Command { actor, command }) => {
                 let kind = G::command_kind(&command);
-                if (G::REQUIRE_RESUME || self.document.settings().play_mode().is_two_humans())
-                    && self.paused
-                    && kind == CommandKind::Play
+                if self.paused
+                    && (G::requires_running(&command)
+                        || (self.document.settings().play_mode().is_two_humans()
+                            && kind == CommandKind::Play))
                 {
                     return Err("Resume play before moving.".into());
                 }
@@ -369,13 +394,7 @@ impl<G: SessionGame> NativeSession<G> {
                 return Ok(false);
             }
             Err(SessionOperation::Cancel {}) => {
-                self.retire();
-                self.paused = true;
-                self.phase = EnginePhase::Cancelled;
-                self.diagnostic = Some(
-                    "Work cancelled. The game is unchanged; Resume or start another analysis."
-                        .into(),
-                );
+                self.cancel();
                 return Ok(false);
             }
             Err(SessionOperation::Analyze { operation }) => {
@@ -406,7 +425,14 @@ impl<G: SessionGame> NativeSession<G> {
                 if self.viewed.is_some() {
                     return Err("Return to live before resuming play.".into());
                 }
-                if G::concluded(&self.game) {
+                let analysis = self.requested_analysis.is_some()
+                    || self.analysis.is_some()
+                    || self.cancelled_analysis.is_some()
+                    || self
+                        .pending
+                        .as_ref()
+                        .is_some_and(|p| !matches!(p.purpose, ExecutionPurpose::EngineTurn {}));
+                if G::concluded(&self.game) && !(G::FINISH_CONCLUDED_ANALYSIS && analysis) {
                     return Err("Resume requires a live unconcluded game.".into());
                 }
                 self.retire();
@@ -466,6 +492,7 @@ impl<G: SessionGame> NativeSession<G> {
             submitted: self.submitted,
             requested_analysis: self.requested_analysis,
             analysis: self.analysis.clone(),
+            cancelled_analysis: self.cancelled_analysis.clone(),
             observations: self.observations.clone(),
             evidence: self.evidence.clone(),
             current_observations: self.current_observations.clone(),
@@ -503,6 +530,7 @@ pub(crate) struct Draft<G: SessionGame> {
     submitted: bool,
     requested_analysis: Option<AnalysisOperation>,
     analysis: Option<ExecutionObservation>,
+    cancelled_analysis: Option<ExecutionContext>,
     observations: Vec<ExecutionObservation>,
     evidence: Vec<G::Evidence>,
     current_observations: Vec<u64>,
@@ -541,6 +569,7 @@ pub(crate) fn execute<G: SessionGame>(
             state.submitted = draft.submitted;
             state.requested_analysis = draft.requested_analysis;
             state.analysis = draft.analysis;
+            state.cancelled_analysis = draft.cancelled_analysis;
             state.observations = draft.observations;
             state.evidence = draft.evidence;
             state.current_observations = draft.current_observations;
@@ -753,8 +782,7 @@ impl DesktopController {
             self.retire_admission();
             self.bridge.cancel();
             let state = G::state_mut(&mut self.session).expect("native owner");
-            state.retire();
-            state.paused = true;
+            state.cancel();
             self.session.version += 1;
             self.session.selection_id += 1;
             self.session.revision += 1;
@@ -988,8 +1016,26 @@ impl DesktopController {
         if self.admission_token.is_some() || self.lifecycle.close_requested() {
             return Err("Wait for native operation/close.".into());
         }
-        self.start_game_work::<G>(limits, analysis)
-            .map_err(|e| e.diagnostic)?;
+        // The Chess QA incomplete fixture sends a real zero-node request.
+        // Normal product work still uses the validated positive play limits.
+        let zero_chess = G::KIND == GameKind::Chess && limits.nodes == 0 && !analysis;
+        self.start_game_work::<G>(
+            if zero_chess {
+                WorkLimits { nodes: 1, ..limits }
+            } else {
+                limits
+            },
+            analysis,
+        )
+        .map_err(|e| e.diagnostic)?;
+        if zero_chess {
+            G::state_mut(&mut self.session)
+                .expect("native owner")
+                .pending
+                .as_mut()
+                .expect("started work")
+                .limits = limits;
+        }
         let context = G::state(&self.session)
             .expect("native owner")
             .pending

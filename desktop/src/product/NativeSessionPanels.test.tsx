@@ -111,9 +111,9 @@ it("restores saved analysis defaults on a fresh document while ordinary polls pr
   rerender(<NativeAnalysis {...props} snapshot={{ ...snapshot, token: { ...snapshot.token, document: snapshot.token.document + 1 } }} />); expect(nodes.value).toBe("4321");
 });
 
-it("preserves the native Chess initial event without manufacturing a duplicate index0", () => {
+it("shows the Chess root once without a Start bookkeeping event", () => {
   const snapshot = chess(standardJson); const command = vi.fn(); const { container } = render(<NativeHistory snapshot={snapshot} disabled={false} command={command} />);
-  expect(container.querySelectorAll("[data-event='0']")).toHaveLength(1); expect(screen.getAllByRole("button")).toHaveLength(snapshot.events.length);
+  expect(container.querySelectorAll("[data-event='0']")).toHaveLength(1); expect(screen.getAllByRole("button")).toHaveLength(snapshot.events.length + 1);
 });
 
 it("finishes concluded Chess analysis without reopening the native outcome", () => {

@@ -107,49 +107,6 @@ impl AdmissionReceipt {
         }
     }
 }
-impl DesktopSession {
-    pub(super) fn observation_slot(&self) -> Result<(), OperationFailure> {
-        if self.observations.len() >= MAX_ARCHIVE_OBSERVATIONS {
-            Err(resource_refusal(
-                vec![
-                    resource_fact(
-                        ResourceCategory::OrdinaryObservations,
-                        self.observations.len(),
-                        MAX_ARCHIVE_OBSERVATIONS,
-                        0,
-                        ResourceScope::Chess,
-                        ResourceUnit::Observations,
-                    )
-                    .with_measurement(ResourceMeasurement::Accepted),
-                ],
-                "Application capacity: all256 retained observation slots are occupied. Current document remains saveable; start a new document to continue work.",
-            ))
-        } else {
-            Ok(())
-        }
-    }
-    pub(super) fn capacity_pause(&mut self, error: String) {
-        self.browse_running = false;
-        self.pending = None;
-        if self.analysis_pending.take().is_some() {
-            self.analysis.status = AnalysisPhase::Cancelled;
-            self.analysis.result = None;
-            self.analysis.message = Some("Work stopped before observation acceptance because the document has no remaining capacity.".into());
-        }
-        self.play_paused = true;
-        self.engine.status = EnginePhase::Paused;
-        self.engine.message = None;
-        self.capacity.status = CapacityPhase::Paused;
-        self.capacity.message = Some(if error.starts_with("Application capacity:") {
-            error
-        } else {
-            format!(
-                "Application capacity: {error} Save the complete current document, then start a new game/document to continue."
-            )
-        });
-        self.revision += 1;
-    }
-}
 impl DesktopController {
     pub(crate) fn ensure_runtime_capacity(&mut self) -> Result<(), OperationFailure> {
         if let Err(error) = self.session.ensure_capacity() {
@@ -185,79 +142,6 @@ impl DesktopController {
         }
         diagnostic.into()
     }
-    /// Queue a command and return a stable, caller-owned completion receipt.
-    /// Continue polling snapshots off the UI thread until completion is present.
-    #[cfg(test)]
-    pub(super) fn command_with_receipt(
-        &mut self,
-        command: ChessMutationCommand,
-    ) -> Result<(ChessSnapshot, AdmissionReceipt), String> {
-        self.last_command_receipt = None;
-        let snapshot = self.command(command)?;
-        let receipt = self.last_command_receipt.take().unwrap_or_else(|| {
-            let value = AdmissionReceipt::pending();
-            value.finish(Ok(()));
-            value
-        });
-        Ok((snapshot, receipt))
-    }
-
-    #[cfg(test)]
-    pub(super) fn queue_admission(&mut self, candidate: DesktopSession) -> Result<(), String> {
-        self.queue_admission_operation(candidate, None)
-    }
-    pub(super) fn queue_admission_operation(
-        &mut self,
-        candidate: DesktopSession,
-        take_back_at: Option<u64>,
-    ) -> Result<(), String> {
-        self.queue_chess_candidate(
-            candidate,
-            take_back_at.map(|at_ns| persistence::ChessMutation::TakeBack { at_ns }),
-        )
-    }
-    pub(super) fn queue_chess_candidate(
-        &mut self,
-        mut candidate: DesktopSession,
-        mutation: Option<persistence::ChessMutation>,
-    ) -> Result<(), String> {
-        candidate.document_epoch = self.session.document_epoch;
-        if self.session.capacity.id >= MAX_SAFE_ID - 32 {
-            return Err(self.identity_refusal(self.session.capacity.id,MAX_SAFE_ID-33,false,ResourceMeasurement::Accepted,"Application capacity: admission identity space exhausted. Current document remains saveable."));
-        }
-        if let Some(receipt) = self.admission_receipt.take() {
-            receipt.finish(Err(
-                "The pending command was superseded before acceptance.".into()
-            ));
-        }
-        self.admission_receipt = Some(AdmissionReceipt::pending());
-        self.session.capacity.id += 1;
-        self.session.capacity.status = CapacityPhase::Checking;
-        self.session.capacity.message = None;
-        self.session.capacity.resource = None;
-        self.session.revision += 1;
-        candidate.capacity.id = self.session.capacity.id;
-        self.admission_token = Some(self.open_token());
-        let preferences = matches!(
-            &mutation,
-            Some(persistence::ChessMutation::Command {
-                command: ChessMutationCommand::Preferences { .. },
-                ..
-            })
-        );
-        self.shared.admission = Some((self.session.document_epoch, preferences));
-        self.admissions.submit(
-            self.session.capacity.id,
-            persistence::Work::Admit {
-                candidate: Box::new(candidate),
-                mutation,
-            },
-        );
-        Ok(())
-    }
-    pub(super) fn poll_admission(&mut self) {
-        self.poll_native_admission();
-    }
     pub(super) fn retire_admission(&mut self) {
         self.shared.admission = None;
         self.shared.admission_consumes_response = false;
@@ -276,60 +160,5 @@ impl DesktopController {
             self.session.capacity.resource = None;
         }
         self.session.revision += 1;
-    }
-}
-
-#[cfg(feature = "desktop-verification")]
-impl DesktopSession {
-    pub(super) fn verification_capacity() -> Result<Self, String> {
-        let mut session = Self::new();
-        // Native zero-node evaluations supply real incomplete observations. This
-        // fixture initializer and its name do not exist in normal distributions.
-        for index in 0..MAX_ARCHIVE_OBSERVATIONS - 1 {
-            session.command_unchecked(
-                ChessMutationCommand::Analyze {
-                    version: session.version,
-                    operation: AnalysisOperation::Moves { depth: 1, nodes: 0 },
-                },
-                index as u64,
-            )?;
-            let request = session
-                .analysis_request()
-                .expect("fixture analysis request");
-            let mut request_bytes = serde_json::to_vec(&request).map_err(|e| e.to_string())?;
-            request_bytes.push(b'\n');
-            let mut response_bytes = Vec::new();
-            mshogi_engine::serve_once(std::io::Cursor::new(request_bytes), &mut response_bytes)
-                .map_err(|e| e.to_string())?;
-            let response: ExecutionResponse =
-                serde_json::from_slice(&response_bytes).map_err(|e| e.to_string())?;
-            if !response.matches(&request)
-                || !session.accept_analysis_unchecked(response.observation)
-            {
-                return Err("Verification observation was not accepted.".into());
-            }
-        }
-        session.check_archive_capacity(&mut || false)?;
-        session.validated_observations = session.observations.len();
-        Ok(session)
-    }
-}
-
-#[cfg(all(test, feature = "desktop-verification"))]
-mod verification_tests {
-    use super::*;
-    #[test]
-    fn chess_capacity_fixture_retains_current_semantic_observations_from_real_executor() {
-        let session = DesktopSession::verification_capacity().unwrap();
-        assert_eq!(session.observations.len(), MAX_ARCHIVE_OBSERVATIONS - 1);
-        assert!(
-            session
-                .observations
-                .iter()
-                .all(|entry| entry.observation.matches(&entry.observation.context))
-        );
-        assert!(session.check_archive_capacity(&mut || false).is_ok());
-        assert!(session.analysis_pending.is_none());
-        assert!(session.pending.is_none());
     }
 }

@@ -5,8 +5,7 @@ use std::sync::atomic::{AtomicU64, Ordering};
 const GAMES: [GameKind; 3] = [GameKind::Chess, GameKind::Shogi, GameKind::Xiangqi];
 fn peek(c: &DesktopController) -> SharedSnapshot {
     match &c.session {
-        ActiveDocument::GenericChess { .. } => c.game_snapshot::<Chess>(),
-        ActiveDocument::Chess(_) => c.chess_snapshot(c.session.snapshot()),
+        ActiveDocument::Chess { .. } => c.game_snapshot::<Chess>(),
         ActiveDocument::Shogi { .. } => c.game_snapshot::<Shogi>(),
         ActiveDocument::Xiangqi { .. } => c.game_snapshot::<Xiangqi>(),
         ActiveDocument::Tori { .. } => c.game_snapshot::<Tori>(),
@@ -76,19 +75,10 @@ fn running(game: GameKind, engine_turn: bool) -> DesktopController {
     c
 }
 fn pending(c: &mut DesktopController) -> ExecutionContext {
-    if matches!(c.session, ActiveDocument::Chess(_)) {
-        if let Some(p) = c.session.chess().analysis_pending.clone().or(c
-            .session
-            .chess()
-            .pending
-            .clone())
-        {
-            return p;
-        }
-        return c.session.chess_mut().engine_request().unwrap().context;
-    }
     c.shared_snapshot(); // Manual mode allocates native work without a process submission.
-    if let Some(s) = c.session.shogi() {
+    if let Some(s) = c.session.chess() {
+        s.pending.clone().unwrap()
+    } else if let Some(s) = c.session.shogi() {
         s.pending.clone().unwrap()
     } else {
         c.session.xiangqi().unwrap().pending.clone().unwrap()
@@ -96,10 +86,6 @@ fn pending(c: &mut DesktopController) -> ExecutionContext {
 }
 fn retired(c: &mut DesktopController, context: ExecutionContext) {
     let before = peek(c).context;
-    let analysis = matches!(
-        context.purpose,
-        ExecutionPurpose::MoveAnalysis { .. } | ExecutionPurpose::ChessFullReachability { .. }
-    );
     let observation = ExecutionObservation::new(
         context,
         ExecutionResult::Failure {
@@ -109,19 +95,7 @@ fn retired(c: &mut DesktopController, context: ExecutionContext) {
             },
         },
     );
-    let accepted = if matches!(c.session, ActiveDocument::Chess(_)) {
-        let response = ExecutionResponse {
-            protocol: mshogi_engine::PROTOCOL_VERSION,
-            observation,
-        };
-        if analysis {
-            c.session.chess_mut().accept_analysis(response)
-        } else {
-            c.session.chess_mut().accept(response, 1)
-        }
-    } else {
-        c.accept_observation(observation)
-    };
+    let accepted = c.accept_observation(observation);
     assert!(!accepted);
     assert_eq!(peek(c).context, before);
 }
@@ -352,20 +326,11 @@ fn failed_or_cancelled_engine_turn_keeps_explicit_recovery_after_history_navigat
                         },
                     },
                 );
-                if game == GameKind::Chess {
-                    assert!(c.session.chess_mut().accept(
-                        ExecutionResponse {
-                            protocol: mshogi_engine::PROTOCOL_VERSION,
-                            observation
-                        },
-                        1
-                    ));
-                } else {
-                    assert!(c.accept_observation(observation));
-                    while c.admission_token.is_some() {
-                        pump(&mut c);
-                        std::thread::yield_now();
-                    }
+
+                assert!(c.accept_observation(observation));
+                while c.admission_token.is_some() {
+                    pump(&mut c);
+                    std::thread::yield_now();
                 }
             } else {
                 send(&mut c, SessionOperation::Cancel {}).unwrap();
@@ -426,21 +391,13 @@ fn newer_historical_analysis_stop_supersedes_older_engine_failure() {
                     },
                 },
             );
-            if game == GameKind::Chess {
-                assert!(c.session.chess_mut().accept(
-                    ExecutionResponse {
-                        protocol: mshogi_engine::PROTOCOL_VERSION,
-                        observation: old
-                    },
-                    1
-                ));
-            } else {
-                assert!(c.accept_observation(old));
-                while c.admission_token.is_some() {
-                    pump(&mut c);
-                    std::thread::yield_now();
-                }
+
+            assert!(c.accept_observation(old));
+            while c.admission_token.is_some() {
+                pump(&mut c);
+                std::thread::yield_now();
             }
+
             send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
             send(
                 &mut c,
@@ -465,17 +422,11 @@ fn newer_historical_analysis_stop_supersedes_older_engine_failure() {
                         },
                     },
                 );
-                if game == GameKind::Chess {
-                    assert!(c.session.chess_mut().accept_analysis(ExecutionResponse {
-                        protocol: mshogi_engine::PROTOCOL_VERSION,
-                        observation: newer
-                    }));
-                } else {
-                    assert!(c.accept_observation(newer));
-                    while c.admission_token.is_some() {
-                        pump(&mut c);
-                        std::thread::yield_now();
-                    }
+
+                assert!(c.accept_observation(newer));
+                while c.admission_token.is_some() {
+                    pump(&mut c);
+                    std::thread::yield_now();
                 }
             }
             let live = send(&mut c, SessionOperation::ReturnLive {}).unwrap();

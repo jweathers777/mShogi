@@ -502,7 +502,7 @@ class CurrentDocumentInspectionTests(unittest.TestCase):
         }[game]
         return {"envelope_version": 1, "format": "mshogi.desktop.document.v1",
                 "game_kind": game, "rules_profile": profile, "profile_edition": edition,
-                "native_schema_version": 1, "payload": ({"observations": []} if game == "chess" else {"record": {}, "human": "sente", "settings": {}})}
+                "native_schema_version": 1, "payload": {"record": {}, "human": "white" if game == "chess" else "sente", "settings": {}}}
 
     def test_current_envelopes_expose_native_payload_without_reconstruction(self):
         for game in ("chess", "shogi", "xiangqi", "tori", "chu"):
@@ -1320,12 +1320,12 @@ class CurrentShellCopyEvidenceTests(unittest.TestCase):
             self.assertFalse(module.historical_notice_matches({**observed,field:value},2),field)
         self.assertFalse(module.historical_notice_matches(None,2))
 
-    def test_saved_evidence_summary_preserves_exact_capacity_transition_count(self):
+    def test_session_evidence_summary_preserves_exact_retention_count(self):
         for count in (255,256):
-            self.assertTrue(module.saved_chess_evidence_count(f'Saved analysis evidence ({count})',count))
-            self.assertFalse(module.saved_chess_evidence_count(f'Saved analysis evidence ({count+1})',count))
-            self.assertFalse(module.saved_chess_evidence_count(f'Recorded native evidence ({count})',count))
-        self.assertFalse(module.saved_chess_evidence_count(None,256))
+            self.assertTrue(module.session_chess_evidence_count(f'Session analysis evidence ({count})',count))
+            self.assertFalse(module.session_chess_evidence_count(f'Session analysis evidence ({count+1})',count))
+            self.assertFalse(module.session_chess_evidence_count(f'Recorded native evidence ({count})',count))
+        self.assertFalse(module.session_chess_evidence_count(None,256))
 
 
 

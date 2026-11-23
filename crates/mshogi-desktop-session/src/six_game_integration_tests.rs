@@ -74,13 +74,7 @@ fn second_side(game: GameKind) -> NativeSide {
 fn pending(c: &mut DesktopController) -> ExecutionContext {
     c.shared_snapshot();
     match &c.session {
-        ActiveDocument::GenericChess { state, .. } => state.pending.clone().unwrap(),
-        ActiveDocument::Chess(_) => c
-            .session
-            .chess()
-            .pending
-            .clone()
-            .unwrap_or_else(|| c.session.chess_mut().engine_request().unwrap().context),
+        ActiveDocument::Chess { state, .. } => state.pending.clone().unwrap(),
         ActiveDocument::Shogi { state, .. } => state.pending.clone().unwrap(),
         ActiveDocument::Xiangqi { state, .. } => state.pending.clone().unwrap(),
         ActiveDocument::Tori { state, .. } => state.pending.clone().unwrap(),
@@ -133,11 +127,7 @@ fn reject_retired(c: &mut DesktopController, retired: &Retired, saved: &Path) {
             },
         ),
     };
-    let accepted = if matches!(c.session, ActiveDocument::Chess(_)) {
-        c.session.chess_mut().accept(response, 1)
-    } else {
-        c.accept_shared(response)
-    };
+    let accepted = c.accept_shared(response);
     assert!(!accepted);
     let after = c.shared_snapshot();
     assert_eq!(after.token, before.token);

@@ -9,11 +9,11 @@
   },
   "open_token": {
     "document": 1,
-    "version": 4,
-    "document_revision": 3
+    "version": 7,
+    "document_revision": 2
   },
   "document": {
-    "revision": 3,
+    "revision": 2,
     "dirty": true,
     "path": null,
     "settings": {
@@ -30,22 +30,22 @@
     }
   },
   "io": {
-    "id": 1,
+    "id": 0,
     "phase": "idle",
     "message": null,
     "resource": null
   },
   "capacity": {
-    "id": 4,
+    "id": 5,
     "status": "available",
     "message": null,
     "resource": null
   },
   "token": {
     "document": 1,
-    "version": 4,
-    "revision": 9,
-    "selection": 2
+    "version": 7,
+    "revision": 10,
+    "selection": 7
   },
   "game": "chess",
   "profile": "mshogi.chess.match.v1",
@@ -693,7 +693,7 @@
     "promotion": true,
     "take_back": false,
     "undo": false,
-    "engine_turn": false,
+    "engine_turn": true,
     "move_analysis": true,
     "chess_full": true,
     "claims": false,
@@ -708,19 +708,8 @@
     "label": "White to move",
     "score_half_points": null
   },
-  "events": [
-    {
-      "index": 0,
-      "board_ply": 0,
-      "label": "Initial known position"
-    },
-    {
-      "index": 1,
-      "board_ply": 0,
-      "label": "Match started"
-    }
-  ],
-  "event_index": 1,
+  "events": [],
+  "event_index": 0,
   "board_ply": 0,
   "play_limits": {
     "depth": 128,
@@ -732,7 +721,7 @@
   "close_requires_save": true,
   "phase": "paused",
   "execution_purpose": null,
-  "diagnostic": "Analysis cancelled before final observations were received. Play remains paused.",
+  "diagnostic": "Work cancelled. The game is unchanged; Resume or start another analysis.",
   "declaration_advice": [],
   "context": {
     "envelope_version": 1,
@@ -754,11 +743,11 @@
     "analysis": {
       "status": "cancelled",
       "target": {
-        "selection_id": 2,
+        "selection_id": 5,
         "event_index": 0,
         "board_ply": 0,
-        "session_version": 3,
-        "label": "Live position after 0 plies",
+        "session_version": 5,
+        "label": "Chess event 0 (live)",
         "turn": {
           "game_kind": "chess",
           "side": "white"
@@ -773,20 +762,20 @@
         "purpose": {
           "kind": "move_analysis",
           "target": {
-            "selection_id": 2,
+            "selection_id": 5,
             "event_index": 0,
             "board_ply": 0,
-            "session_version": 3,
-            "label": "Live position after 0 plies",
+            "session_version": 5,
+            "label": "Chess event 0 (live)",
             "turn": {
               "game_kind": "chess",
               "side": "white"
             }
           }
         },
-        "request_id": 1,
-        "session_version": 3,
-        "process_generation": 1,
+        "request_id": 5,
+        "session_version": 5,
+        "process_generation": 5,
         "game": {
           "envelope_version": 1,
           "game_kind": "chess",
@@ -801,7 +790,7 @@
         }
       },
       "result": null,
-      "message": "Analysis cancelled before final observations were received. Play remains paused."
+      "message": "Work cancelled. The game is unchanged; Resume or start another analysis."
     },
     "last_engine_result": null,
     "last_engine_turn": null,

@@ -196,10 +196,8 @@ fn push(
         geometry: Some(geometry),
     });
 }
-pub(super) fn chess_projection(state: &DesktopSession) -> MovesProjection {
-    chess_match_projection(&state.game, false)
-}
-pub(super) fn chess_match_projection(game: &ChessMatch, compact: bool) -> MovesProjection {
+
+pub(super) fn chess_match_projection(game: &ChessMatch) -> MovesProjection {
     let record = game
         .record()
         .initial_record()
@@ -276,11 +274,10 @@ pub(super) fn chess_match_projection(game: &ChessMatch, compact: bool) -> MovesP
         .record()
         .events()
         .filter(|(r, _)| {
-            !compact
-                || !matches!(
-                    r.command,
-                    MatchCommand::Start | MatchCommand::Observe { .. }
-                )
+            !matches!(
+                r.command,
+                MatchCommand::Start | MatchCommand::Observe { .. }
+            )
         })
         .enumerate()
     {

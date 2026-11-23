@@ -80,10 +80,10 @@ export function ChessAnalysisContent({ snapshot, disabled, command, defaults }: 
     </div>}
   </>;
 }
-export function ChessSavedEvidence({ observation, rejected = false }: { observation: ExecutionObservation; rejected?: boolean }) {
+export function ChessSessionEvidence({ observation, rejected = false }: { observation: ExecutionObservation; rejected?: boolean }) {
   if (rejected) return <p>Rejected response. No valid score or proof is presented.</p>;
   const result = observation.result.kind === "chess" ? observation.result.result : null;
   const purpose = observation.context.purpose;
   if (!result) return null;
-  return <>{purpose.kind !== "engine_turn" && <p>{purpose.target.label} · saved historical observation, not a pending request</p>}{result.kind === "reachability" && purpose.kind === "chess_full_reachability" ? <ReachabilityEvidence result={result.result} target={purpose.mate} /> : result.kind === "claim" ? <p>{choiceDescription({ kind: "claim", claim: result.claim })} · not exercised by this observation</p> : result.kind === "failure" ? <p>Process failure. No chess outcome is implied.</p> : result.kind === "incomplete" ? <p>Incomplete search · no completed action</p> : null}</>;
+  return <>{purpose.kind !== "engine_turn" && <p>{purpose.target.label} · historical session observation, not a pending request</p>}{result.kind === "reachability" && purpose.kind === "chess_full_reachability" ? <ReachabilityEvidence result={result.result} target={purpose.mate} /> : result.kind === "claim" ? <p>{choiceDescription({ kind: "claim", claim: result.claim })} · not exercised by this observation</p> : result.kind === "failure" ? <p>Process failure. No chess outcome is implied.</p> : result.kind === "incomplete" ? <p>Incomplete search · no completed action</p> : null}</>;
 }

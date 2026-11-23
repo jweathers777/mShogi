@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AnalysisActions, InspectorSwitch, NativeEnginePanel } from "./ApplicationShell";
 import type { GameSnapshot, Operation, SearchView } from "./native";
 import { resourceExplanation } from "./resourcePresentation";
-import { ChessAnalysisContent, ChessSavedEvidence } from "./ChessAnalysisContent";
+import { ChessAnalysisContent, ChessSessionEvidence } from "./ChessAnalysisContent";
 import type { AnalysisOperation } from "../native";
 import { XiangqiAssessment } from "./XiangqiAssessment";
 import { colorName, conclusionName } from "../presentation";
@@ -17,7 +17,7 @@ export function publicSessionError(_message: string) {
 export function Observation({ view, game = "shogi", rejected = false }: { view: SearchView; game?: "chess" | "shogi" | "xiangqi" | "tori" | "chu" | "tenjiku"; rejected?: boolean }) {
   if (rejected) return <div className="shogi-search-observation"><p>Rejected engine response · event {view.event_index}. No valid score or proof is presented.</p></div>;
   return <div className="shogi-search-observation" data-search-purpose={view.purpose}>
-    <p className="search-target">{view.historical ? "Saved observation" : view.purpose === "engine_turn" ? "Last engine turn" : view.purpose === "chess_full_reachability" ? "Full cooperative reachability" : "Move analysis"} · event {view.event_index}</p>
+    <p className="search-target">{view.historical ? "Historical observation" : view.purpose === "engine_turn" ? "Last engine turn" : view.purpose === "chess_full_reachability" ? "Full cooperative reachability" : "Move analysis"} · event {view.event_index}</p>
     <p className="shogi-evaluation">{view.score ?? "No completed evaluation"}</p>
     <p className="analysis-perspective">{view.perspective} perspective · {view.status}</p>
     <dl className="shogi-telemetry"><div><dt>Completed depth</dt><dd>{view.completed_depth ?? "—"}</dd></div>{view.selective_depth !== undefined && <div><dt>Selective depth</dt><dd>{view.selective_depth}</dd></div>}<div><dt>Nodes</dt><dd>{view.nodes?.toLocaleString() ?? "—"}</dd></div></dl>
@@ -115,7 +115,7 @@ export function NativeAnalysis({ snapshot, defaults, disabled, command, maxDepth
       {validation && <p role="alert" className="validation-error">{validation}</p>}
       <p className="shogi-analysis-state" role="status" aria-live="polite">{unavailable ?? (analyzing ? "Analyzing the selected position…" : snapshot.phase === "cancelled" ? "Search stopped" : current ? "Analysis result available" : "Set work limits and start analysis.")}</p>
       {snapshot.game === "chess" ? <ChessAnalysisContent snapshot={snapshot} disabled={disabled || snapshot.capacity.status === "paused" || !snapshot.capabilities.chess_full} command={command} defaults={"kind" in defaults ? defaults : { kind: "moves", ...defaults }} /> : current && <Observation view={current} game={game} rejected={Boolean(snapshot.observations[current.observation_index]?.application_error)} />}
-      {snapshot.game === "chess" && snapshot.observations.length > 0 && <details className="recorded-chess-evidence"><summary>Saved analysis evidence ({snapshot.observations.length})</summary>{snapshot.observations.map((entry, index) => <article key={index}><ChessSavedEvidence observation={entry.observation} rejected={entry.application_error !== null} /></article>)}</details>}
+      {snapshot.game === "chess" && snapshot.observations.length > 0 && <details className="recorded-chess-evidence"><summary>Session analysis evidence ({snapshot.observations.length})</summary>{snapshot.observations.map((entry, index) => <article key={index}><ChessSessionEvidence observation={entry.observation} rejected={entry.application_error !== null} /></article>)}</details>}
       {snapshot.search_observations.length > 0 && <details className="recorded-searches"><summary>Recorded searches ({snapshot.search_observations.length})</summary>{snapshot.search_observations.map((v) => <article key={v.observation_index}><Observation view={v} game={game} rejected={Boolean(snapshot.observations[v.observation_index]?.application_error)} /></article>)}</details>}
     </> : snapshot.play_mode === "two_humans" ? <p className="muted">Both players are local. Engine analysis starts only on request.</p> : <NativeEnginePanel limits={snapshot.play_limits} status={thinking ? "Searching" : snapshot.paused ? "Play paused" : snapshot.game === "tori" && snapshot.phase === "paused" && snapshot.execution_purpose === null ? "Ready" : snapshot.phase}>{lastEngine ? <Observation view={lastEngine} game={game} rejected={Boolean(snapshot.observations[lastEngine.observation_index]?.application_error)} /> : <p className="muted">{snapshot.search_observations.some(view => view.purpose === "engine_turn") ? "Earlier engine searches are retained as historical observations." : "No engine search has completed in this game."}</p>}</NativeEnginePanel>}
   </section>{snapshot.game === "xiangqi" && <XiangqiAssessment snapshot={snapshot} />}</>;

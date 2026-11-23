@@ -131,12 +131,11 @@ pub(crate) enum NativeWork {
     },
 }
 pub(crate) enum OpenedNative {
-    GenericChess(Box<chess::ChessSession>),
+    Chess(Box<chess::ChessSession>),
     Tenjiku(Box<tenjiku::TenjikuSession>),
     Chu(Box<chu::ChuSession>),
     Tori(Box<tori::ToriSession>),
     Xiangqi(Box<xiangqi::XiangqiSession>),
-    Chess(Box<persistence::Opened>),
     Shogi(Box<shogi::ShogiSession>),
 }
 impl OpenedNative {
@@ -148,8 +147,7 @@ impl OpenedNative {
             Self::Chu(state) => state.pending.is_some(),
             Self::Tenjiku(state) => state.pending.is_some(),
             Self::Xiangqi(state) => state.pending.is_some(),
-            Self::Chess(_) => false,
-            Self::GenericChess(state) => state.pending.is_some(),
+            Self::Chess(state) => state.pending.is_some(),
         }
     }
 }
@@ -196,16 +194,6 @@ fn valid_limits(limits: WorkLimits) -> Result<(), String> {
     }
 }
 
-pub(crate) fn decode_chess_document(
-    bytes: &[u8],
-    stopped: &mut impl FnMut() -> bool,
-) -> Result<persistence::Opened, OperationFailure> {
-    let value = crate::document::DocumentEnvelope::parse(bytes)?;
-    if value.game_kind != GameKind::Chess {
-        return Err("Wrong game: the Chess consumer cannot install another native game.".into());
-    }
-    persistence::decode_chess_payload(value.payload.get().as_bytes(), stopped)
-}
 fn read(
     path: &std::path::Path,
     stopped: &mut impl FnMut() -> bool,
@@ -258,9 +246,7 @@ pub(crate) fn execute(
                 GameKind::Tenjiku => native_session::open::<Tenjiku>(&bytes, stopped)?,
                 GameKind::Chu => native_session::open::<Chu>(&bytes, stopped)?,
                 GameKind::Tori => native_session::open::<Tori>(&bytes, stopped)?,
-                GameKind::Chess => OpenedNative::Chess(Box::new(
-                    persistence::decode_chess_payload(value.payload.get().as_bytes(), stopped)?,
-                )),
+                GameKind::Chess => native_session::open::<Chess>(&bytes, stopped)?,
                 GameKind::Shogi => native_session::open::<Shogi>(&bytes, stopped)?,
                 GameKind::Xiangqi => native_session::open::<Xiangqi>(&bytes, stopped)?,
             };
@@ -279,7 +265,7 @@ impl DesktopController {
         }
     }
     pub(crate) fn shared_document(&self) -> SharedDocumentState {
-        let settings = if let Some(state) = self.session.generic_chess() {
+        let settings = if let Some(state) = self.session.chess() {
             NativeDesktopSettings::Chess {
                 settings: state.document.settings().clone(),
             }
@@ -305,9 +291,7 @@ impl DesktopController {
                 settings: state.document.settings().clone(),
             }
         } else {
-            NativeDesktopSettings::Chess {
-                settings: self.session.chess().settings.clone(),
-            }
+            unreachable!("all native games handled")
         };
         SharedDocumentState {
             revision: self.session.document_revision,
@@ -322,7 +306,7 @@ impl DesktopController {
     }
     /// Queue a complete current-format document using native payload encoding.
     pub fn queue_shared_save(&mut self, path: PathBuf) -> Result<u64, String> {
-        if self.session.generic_chess().is_some() {
+        if self.session.chess().is_some() {
             return self.queue_game_save::<Chess>(path);
         }
         if self.session.tenjiku().is_some() {
@@ -340,7 +324,7 @@ impl DesktopController {
         if self.session.shogi().is_some() {
             return self.queue_game_save::<Shogi>(path);
         }
-        self.queue_save(path)
+        unreachable!("all native games handled")
     }
     /// Queue strict current-envelope native dispatch. Open never installs resumable work.
     pub fn queue_shared_open(
@@ -374,11 +358,7 @@ impl DesktopController {
             .submit(id, Work::Native(Box::new(NativeWork::Open { path, token })));
         Ok(id)
     }
-    pub(crate) fn retire_native_files(&mut self) -> Result<(), String> {
-        self.next_native_io(IoPhase::Idle)?;
-        self.files.cancel();
-        Ok(())
-    }
+
     pub(crate) fn next_native_io(&mut self, phase: IoPhase) -> Result<u64, String> {
         if self.io_state.id >= MAX_SAFE_ID - 1 || self.session.revision >= MAX_SAFE_ID - 2 {
             let (count, limit) = if self.io_state.id >= MAX_SAFE_ID - 1 {
@@ -402,6 +382,12 @@ impl DesktopController {
         };
         self.session.revision += 1;
         Ok(self.io_state.id)
+    }
+    #[cfg(test)]
+    pub(crate) fn retire_native_files(&mut self) -> Result<(), String> {
+        self.next_native_io(IoPhase::Idle)?;
+        self.files.cancel();
+        Ok(())
     }
     pub(crate) fn runtime_floor(&self) -> u64 {
         [
@@ -473,34 +459,18 @@ impl DesktopController {
                     replacement,
                     durable,
                 } => {
-                    self.finish_native_transaction(state, replacement, durable, id, receipt);
+                    self.finish_native_transaction(
+                        state,
+                        replacement,
+                        durable,
+                        consumes_response,
+                        id,
+                        receipt,
+                    );
                 }
                 _ => unreachable!("dedicated admission worker"),
             },
-            Ok(Completed::Admitted(mut candidate)) => {
-                if self.session.tori().is_some()
-                    || self.session.chu().is_some()
-                    || self.session.tenjiku().is_some()
-                {
-                    self.bridge.cancel();
-                }
-                if candidate.document_identity == self.session.document_identity {
-                    candidate.document_path = self.session.document_path.clone();
-                    candidate.saved_revision = self.session.saved_revision;
-                } else {
-                    candidate.document_epoch = self.session.document_epoch + 1;
-                }
-                candidate.validated_observations = candidate.observations.len();
-                candidate.revision = candidate.revision.max(self.session.revision + 1);
-                candidate.capacity = CapacityState {
-                    id,
-                    ..CapacityState::default()
-                };
-                self.session = ActiveDocument::Chess(candidate);
-                if let Some(r) = receipt {
-                    r.finish(Ok(()));
-                }
-            }
+
             Err(error) => {
                 if transactional_admission {
                     if error.resource.is_some() {
@@ -527,10 +497,6 @@ impl DesktopController {
                     self.pause_native_capacity(error.diagnostic.clone());
                     self.session.capacity.resource = error.resource.clone();
                 } else {
-                    if matches!(&self.session, ActiveDocument::Chess(_)) {
-                        self.bridge.cancel();
-                        self.session.retire_execution();
-                    }
                     self.session.capacity = CapacityState {
                         id,
                         ..CapacityState::default()
@@ -541,7 +507,6 @@ impl DesktopController {
                     r.finish(Err(error.diagnostic));
                 }
             }
-            _ => unreachable!("native admission completion"),
         }
     }
     pub(crate) fn pause_native_failure(&mut self, error: OperationFailure) {
@@ -554,10 +519,7 @@ impl DesktopController {
             self.session.retire_execution();
             self.session.revision += 1;
             match &mut self.session {
-                ActiveDocument::Chess(state) => state.engine.message = Some(error.diagnostic),
-                ActiveDocument::GenericChess { state, .. } => {
-                    state.diagnostic = Some(error.diagnostic)
-                }
+                ActiveDocument::Chess { state, .. } => state.diagnostic = Some(error.diagnostic),
                 ActiveDocument::Shogi { state, .. } => state.diagnostic = Some(error.diagnostic),
                 ActiveDocument::Xiangqi { state, .. } => state.diagnostic = Some(error.diagnostic),
                 ActiveDocument::Tori { state, .. } => state.diagnostic = Some(error.diagnostic),
@@ -569,10 +531,8 @@ impl DesktopController {
     pub(crate) fn pause_native_capacity(&mut self, error: String) {
         self.session.clear_browse_intent();
         self.bridge.cancel();
-        if matches!(&self.session, ActiveDocument::Chess(_)) {
-            self.session.retire_execution();
-        }
-        if let Some(state) = self.session.generic_chess_mut() {
+
+        if let Some(state) = self.session.chess_mut() {
             state.retire();
             state.paused = true;
         }

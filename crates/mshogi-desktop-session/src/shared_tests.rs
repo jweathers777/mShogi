@@ -138,17 +138,7 @@ fn identities_native_geometry_and_chess_compatibility() {
         })
         .is_err()
     );
-    assert!(
-        c.command(ChessMutationCommand::Resign {
-            version: c.session.version
-        })
-        .is_err()
-    );
-    assert!(c.queue_save(PathBuf::from("/unused/save")).is_err());
-    assert!(
-        c.queue_open(PathBuf::from("/unused/open"), c.open_token())
-            .is_err()
-    );
+    assert!(c.test_chess_operation(SessionOperation::Resign {}).is_err());
     let snapshot = c.application_pause_for_close();
     assert!(snapshot.document.dirty);
     assert!(c.session.shogi().unwrap().paused);
@@ -427,24 +417,22 @@ fn exact_analysis_context_retirement_and_same_board_history() {
 #[test]
 fn replacement_retires_chess_files_and_pending_admission() {
     let mut c = controller();
-    c.queue_open(PathBuf::from("/unused/absent.mshogi"), c.open_token())
-        .unwrap();
+    c.queue_shared_open(
+        PathBuf::from("/unused/absent.mshogi"),
+        c.shared_open_token(),
+    )
+    .unwrap();
     // Stage a real immutable candidate without polling it. The public command
     // also returns a snapshot and may already accept a fast worker completion;
     // that legitimately completed command is not pending work to retire.
-    let mut candidate = c.session.chess().clone();
-    candidate
-        .command_unchecked(
-            ChessMutationCommand::Play {
-                version: c.session.version,
-                action: "e2e4".parse().unwrap(),
-            },
-            0,
-        )
-        .unwrap();
-    c.queue_admission(candidate).unwrap();
+    c.admissions.hold_results_for_test(true);
+    c.test_chess_operation(SessionOperation::ChessPlay {
+        action: "e2e4".parse().unwrap(),
+    })
+    .unwrap();
     let receipt = c.admission_receipt.clone().unwrap();
     assert!(receipt.completion().is_none());
+    c.admissions.hold_results_for_test(false);
     replace(&mut c, s::Game::new(), s::Side::Sente);
     assert!(receipt.completion().unwrap().is_err());
     for _ in 0..20 {
@@ -763,7 +751,10 @@ fn product_new_games_are_native_qualified_oriented_and_live_with_fresh_identitie
                 );
             }
             NativeSide::Chess(side) => {
-                assert_eq!(c.session.chess().settings.orientation, side)
+                assert_eq!(
+                    c.session.chess().unwrap().document.settings().orientation,
+                    side
+                )
             }
         }
         previous = current.token;

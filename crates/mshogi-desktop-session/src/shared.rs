@@ -993,45 +993,18 @@ impl DesktopController {
         paused: bool,
         play_mode: PlayMode,
     ) -> Result<AdmissionReceipt, String> {
-        let preserve_tori = self.session.tori().is_some()
-            || self.session.chu().is_some()
-            || self.session.tenjiku().is_some();
-        self.retire_admission();
-        if !preserve_tori {
-            self.bridge.cancel();
-            self.retire_native_files()?;
-            self.session.retire_execution();
-        }
-        let mut candidate = DesktopSession::new();
-        candidate.runtime = std::ops::Deref::deref(&self.session).clone();
-        self.queue_chess_candidate(
-            candidate,
-            Some(persistence::ChessMutation::Replace {
-                record,
+        self.queue_game_candidate::<Chess>(
+            native_session::RuntimeSeed::Record {
+                record: Box::new(crate::chess_record::ChessRecord::new(&record)),
                 human,
-                paused,
                 play_mode,
-            }),
-        )?;
-        self.shared.admission = Some((self.session.document_epoch, false));
-        self.shared.transactional_admission = preserve_tori;
-        Ok(self
-            .admission_receipt
-            .clone()
-            .expect("queued replacement receipt"))
+            },
+            (!paused).then_some(SessionOperation::Resume {}),
+            None,
+            true,
+        )
     }
-    pub(super) fn require_chess(&self) -> Result<(), String> {
-        if self.session.shogi().is_some()
-            || self.session.xiangqi().is_some()
-            || self.session.tori().is_some()
-            || self.session.chu().is_some()
-            || self.session.tenjiku().is_some()
-        {
-            Err("Wrong game: a Chess mutation cannot act on another active native game.".into())
-        } else {
-            Ok(())
-        }
-    }
+
     /// Apply a native-qualified operation. Cancellation/replacement is processed
     /// before polling, so an already completed retired response cannot win a race.
     pub fn shared_command(
@@ -1113,7 +1086,7 @@ impl DesktopController {
             }
             return Ok(self.shared_snapshot());
         }
-        if self.session.generic_chess().is_some() {
+        if self.session.chess().is_some() {
             return self.game_command::<Chess>(command.operation);
         }
         if self.session.tenjiku().is_some() {
@@ -1128,66 +1101,6 @@ impl DesktopController {
         if self.session.xiangqi().is_some() {
             return self.game_command::<Xiangqi>(command.operation);
         }
-        if self.session.shogi().is_none() {
-            let native = match command.operation {
-                SessionOperation::ChessPlay { action } => ChessMutationCommand::Play {
-                    version: self.session.version,
-                    action,
-                },
-                SessionOperation::ChessClaim { claim } => ChessMutationCommand::Claim {
-                    version: self.session.version,
-                    claim,
-                },
-                SessionOperation::ChessPreferences {
-                    orientation,
-                    analysis_defaults,
-                } => ChessMutationCommand::Preferences {
-                    orientation,
-                    analysis_defaults,
-                },
-                SessionOperation::Analyze { operation } => ChessMutationCommand::Analyze {
-                    version: self.session.version,
-                    operation,
-                },
-                SessionOperation::Inspect { event_index } => ChessMutationCommand::Inspect {
-                    version: self.session.version,
-                    event_index,
-                },
-                SessionOperation::ReturnLive {} => ChessMutationCommand::ReturnLive {
-                    version: self.session.version,
-                },
-                SessionOperation::Cancel {} => {
-                    if self.session.chess_mut().analysis_pending.is_some() {
-                        ChessMutationCommand::CancelAnalysis {
-                            version: self.session.version,
-                        }
-                    } else {
-                        ChessMutationCommand::Cancel {
-                            version: self.session.version,
-                        }
-                    }
-                }
-                SessionOperation::Resume {} => ChessMutationCommand::Resume {
-                    version: self.session.version,
-                },
-                SessionOperation::Retry {} => ChessMutationCommand::Retry {
-                    version: self.session.version,
-                },
-                SessionOperation::TakeBack {} => ChessMutationCommand::TakeBack {
-                    version: self.session.version,
-                },
-                SessionOperation::Resign {} => ChessMutationCommand::Resign {
-                    version: self.session.version,
-                },
-                _ => {
-                    return Err(
-                        "Unsupported chess operation; use its native complete command.".into(),
-                    );
-                }
-            };
-            self.command(native)?;
-            return Ok(self.shared_snapshot());
-        }
         self.game_command::<Shogi>(command.operation)
     }
     /// Exact acceptance, separate read-only observation path and native command admission.
@@ -1198,7 +1111,7 @@ impl DesktopController {
         self.accept_observation(response.observation)
     }
     pub(crate) fn accept_observation(&mut self, response: ExecutionObservation) -> bool {
-        if self.session.generic_chess().is_some() {
+        if self.session.chess().is_some() {
             return self.accept_game_observation::<Chess>(response);
         }
         if self.session.tenjiku().is_some() {
@@ -1222,7 +1135,7 @@ impl DesktopController {
     pub fn shared_snapshot(&mut self) -> SharedSnapshot {
         self.poll_native_admission();
         self.poll_files();
-        if self.session.generic_chess().is_some() {
+        if self.session.chess().is_some() {
             return self.poll_game::<Chess>();
         }
         if self.session.tenjiku().is_some() {
@@ -1240,25 +1153,11 @@ impl DesktopController {
         if self.session.shogi().is_some() {
             return self.poll_game::<Shogi>();
         }
-        self.poll_chess();
-        // The native poll may commit a cross-game Open. Never publish its Chess
-        // projection with the replacement Shogi epoch: equal-token freshness
-        // rejection would then hide the correct Shogi view indefinitely.
-        if self.session.shogi().is_some()
-            || self.session.xiangqi().is_some()
-            || self.session.tori().is_some()
-            || self.session.chu().is_some()
-            || self.session.tenjiku().is_some()
-        {
-            return self.shared_snapshot();
-        }
-        let mut snapshot = self.session.snapshot();
-        snapshot.io = self.io_state.clone();
-        self.chess_snapshot(snapshot)
+        unreachable!("all native games handled")
     }
     pub(super) fn pause_shared_for_close(&mut self) {
         self.retire_admission();
-        if self.session.generic_chess().is_some() {
+        if self.session.chess().is_some() {
             self.close_game::<Chess>();
             return;
         }
@@ -1280,250 +1179,6 @@ impl DesktopController {
         }
         if self.session.xiangqi().is_some() {
             self.close_game::<Xiangqi>();
-        }
-    }
-    fn chess_snapshot(&self, snapshot: ChessSnapshot) -> SharedSnapshot {
-        let sides = vec![
-            side(
-                mshogi_core::native::RulesProfile::ChessMatchV1,
-                NativeSide::Chess(Color::White),
-            ),
-            side(
-                mshogi_core::native::RulesProfile::ChessMatchV1,
-                NativeSide::Chess(Color::Black),
-            ),
-        ];
-        let files: Vec<String> = (b'a'..=b'h').map(|c| char::from(c).to_string()).collect();
-        let ranks: Vec<String> = (1..=8).rev().map(|n| n.to_string()).collect();
-        let pieces = snapshot
-            .view
-            .pieces
-            .iter()
-            .map(|p| PresentedPiece {
-                square: p.square.clone(),
-                owner: side(
-                    mshogi_core::native::RulesProfile::ChessMatchV1,
-                    NativeSide::Chess(p.color),
-                )
-                .key,
-                kind: p.kind.clone(),
-                promoted: false,
-                text: match p.kind.as_str() {
-                    "king" => "K",
-                    "queen" => "Q",
-                    "rook" => "R",
-                    "bishop" => "B",
-                    "knight" => "N",
-                    _ => "P",
-                }
-                .into(),
-                label: p.label.clone(),
-            })
-            .collect();
-        let choices = snapshot
-            .legal_choices
-            .iter()
-            .map(|c| PresentedChoice {
-                tenjiku: None,
-                origin: ChoiceOrigin::Board {
-                    square: c.from.clone(),
-                },
-                action: c.action.to_string(),
-                from: c.from.clone(),
-                steps: vec![c.to.clone()],
-                completion: c.promotion.as_ref().map(|p| Completion {
-                    label: p.clone(),
-                    glyph: None,
-                }),
-            })
-            .collect();
-        let events = snapshot
-            .view
-            .timeline
-            .iter()
-            .map(|e| PresentedEvent {
-                index: e.index,
-                board_ply: e.ply as usize,
-                label: e.label.clone(),
-            })
-            .collect();
-        let concluded = snapshot.view.conclusion.is_some();
-        let status = PresentedStatus {
-            concluded,
-            label: if concluded {
-                format!("{:?}", snapshot.view.conclusion.unwrap())
-            } else {
-                format!(
-                    "{} to move",
-                    side(
-                        mshogi_core::native::RulesProfile::ChessMatchV1,
-                        NativeSide::Chess(snapshot.view.turn)
-                    )
-                    .label
-                )
-            },
-            score_half_points: snapshot
-                .view
-                .conclusion
-                .and_then(|c| c.white_score_twice())
-                .map(|n| [n, 2 - n]),
-        };
-        let active = !snapshot.view.historical && snapshot.conclusion.is_none();
-        let observations: Vec<_> = snapshot
-            .observations
-            .iter()
-            .map(|entry| PresentedObservation {
-                observation: entry.observation.clone(),
-                application_error: entry.application_error.clone(),
-                historical: entry.historical,
-            })
-            .collect();
-        let analysis = observations
-            .iter()
-            .find(|entry| {
-                snapshot.analysis.context.as_ref() == Some(&entry.observation.context)
-                    && chess_observation_result(&entry.observation).as_ref()
-                        == snapshot.analysis.result.as_ref()
-            })
-            .cloned();
-        let search_observations = observations
-            .iter()
-            .enumerate()
-            .map(|(index, entry)| {
-                display_chess_observation(
-                    index,
-                    entry,
-                    analysis.as_ref(),
-                    snapshot.observations[index].analyzed_turn,
-                )
-            })
-            .collect();
-        SharedSnapshot {
-            moves: self.present_moves(snapshot.view.event_index),
-            xiangqi: None,
-            tori: None,
-            chu: None,
-            tenjiku: None,
-            open_token: self.shared_open_token(),
-            document: self.shared_document(),
-            io: self.io_state.clone(),
-            capacity: self.session.capacity.clone(),
-            token: self.shared_token(),
-            game: GameKind::Chess,
-            profile: RulesProfile::ChessMatchV1,
-            edition: RulesProfile::ChessMatchV1.edition(),
-            play_mode: self.session.chess().settings.play_mode,
-            local_actor: side(
-                RulesProfile::ChessMatchV1,
-                NativeSide::Chess(
-                    self.session
-                        .chess()
-                        .settings
-                        .play_mode
-                        .actor(snapshot.human, snapshot.view.turn),
-                ),
-            ),
-            human: side(
-                mshogi_core::native::RulesProfile::ChessMatchV1,
-                NativeSide::Chess(snapshot.human),
-            ),
-            turn: side(
-                mshogi_core::native::RulesProfile::ChessMatchV1,
-                NativeSide::Chess(snapshot.view.turn),
-            ),
-            sides: sides.clone(),
-            board: BoardDescriptor {
-                intersections: None,
-                files: files.clone(),
-                ranks: ranks.clone(),
-                label: "Chess board".into(),
-                initial_focus: "e2".into(),
-            },
-            orientations: vec![
-                Orientation {
-                    side: sides[0].clone(),
-                    files: files.clone(),
-                    ranks: ranks.clone(),
-                },
-                Orientation {
-                    side: sides[1].clone(),
-                    files: files.into_iter().rev().collect(),
-                    ranks: ranks.into_iter().rev().collect(),
-                },
-            ],
-            pieces,
-            hands: vec![],
-            choices,
-            capabilities: CommandCapabilities {
-                board_action: active
-                    && !snapshot.play_paused
-                    && self
-                        .session
-                        .chess()
-                        .settings
-                        .play_mode
-                        .owns(snapshot.human, snapshot.turn),
-                drops: false,
-                promotion: true,
-                take_back: snapshot.can_take_back,
-                undo: false,
-                engine_turn: active
-                    && self
-                        .session
-                        .chess()
-                        .settings
-                        .play_mode
-                        .engine_turn(snapshot.human, snapshot.turn),
-                move_analysis: true,
-                chess_full: true,
-                claims: active && !snapshot.claims.is_empty(),
-                declaration: false,
-                resign: active,
-                hands: false,
-                history: true,
-                save: true,
-            },
-            status,
-            events,
-            event_index: snapshot.view.event_index,
-            board_ply: snapshot.view.ply,
-            play_limits: snapshot.limits,
-            historical: snapshot.view.historical,
-            paused: snapshot.play_paused,
-            close_requires_save: self.close_requires_save(),
-            phase: snapshot.engine.status,
-            execution_purpose: self
-                .session
-                .chess()
-                .analysis_pending
-                .as_ref()
-                .or(self.session.chess().pending.as_ref())
-                .map(|request| match request.purpose {
-                    mshogi_engine::ExecutionPurpose::EngineTurn {} => "engine_turn",
-                    mshogi_engine::ExecutionPurpose::MoveAnalysis { .. } => "move_analysis",
-                    mshogi_engine::ExecutionPurpose::ChessFullReachability { .. } => {
-                        "chess_full_reachability"
-                    }
-                }),
-            diagnostic: snapshot.engine.message.clone(),
-            declaration_advice: vec![],
-            context: CanonicalRecord::chess(self.session.selected_game().record()),
-            analysis,
-            observations,
-            search_observations,
-            score_meaning: "Chess root-side centipawns; native mate distance and bounded cooperative Full proof remain distinct (see chess analysis).",
-            chess_match: Some(self.session.chess().game.record().clone()),
-            chess: Some(ChessPresentation {
-                claims: snapshot.claims,
-                live_conclusion: snapshot.conclusion,
-                selected_conclusion: snapshot.view.conclusion,
-                in_check: self.session.selected_game().position().in_check(),
-                analysis: snapshot.analysis,
-                last_engine_result: snapshot.engine.last,
-                last_engine_turn: snapshot.engine.last_turn,
-                searched_version: snapshot.engine.searched_version,
-                rules_mode: snapshot.rules_mode,
-            }),
         }
     }
 }
@@ -1672,9 +1327,8 @@ impl DesktopController {
                 ActiveDocument::Tenjiku { state, .. } => {
                     crate::moves::tenjiku_projection(&state.game)
                 }
-                ActiveDocument::Chess(state) => crate::moves::chess_projection(state),
-                ActiveDocument::GenericChess { state, .. } => {
-                    crate::moves::chess_match_projection(&state.game, true)
+                ActiveDocument::Chess { state, .. } => {
+                    crate::moves::chess_match_projection(&state.game)
                 }
                 ActiveDocument::Shogi { state, .. } => crate::moves::shogi_projection(&state.game),
                 ActiveDocument::Xiangqi { state, .. } => {

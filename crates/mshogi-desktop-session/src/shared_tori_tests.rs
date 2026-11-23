@@ -797,9 +797,7 @@ fn stale_and_cancelled_open_and_save_receipts_never_replace_or_clean_newer_conte
     )
     .unwrap();
     let after = exact(&c);
-    let persistence::Completed::Native(completed) = completed else {
-        panic!("native worker completion")
-    };
+    let persistence::Completed::Native(completed) = completed;
     assert!(c.finish_native_file(*completed).is_err());
     assert_eq!(exact(&c), after);
     let failed = c

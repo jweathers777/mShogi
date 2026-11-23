@@ -38,6 +38,7 @@ impl DesktopController {
         opened: archive::OpenedNative,
         replacement: bool,
         durable: bool,
+        consumes_response: bool,
         id: u64,
         receipt: Option<AdmissionReceipt>,
     ) {
@@ -53,10 +54,7 @@ impl DesktopController {
                 self.bridge.cancel();
             }
             match (&mut self.session, opened) {
-                (
-                    ActiveDocument::GenericChess { state, .. },
-                    archive::OpenedNative::GenericChess(next),
-                ) => {
+                (ActiveDocument::Chess { state, .. }, archive::OpenedNative::Chess(next)) => {
                     *state = next;
                 }
                 (ActiveDocument::Shogi { state, .. }, archive::OpenedNative::Shogi(next)) => {
@@ -76,7 +74,8 @@ impl DesktopController {
                 }
                 _ => unreachable!("serialized native transaction owner"),
             }
-            if !keeps_work {
+            // A read-only result changes revision, not its selected target.
+            if !keeps_work && !(consumes_response && !durable) {
                 self.session.version += 1;
                 self.session.selection_id += 1;
             }

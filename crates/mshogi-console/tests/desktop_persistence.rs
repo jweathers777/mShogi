@@ -72,7 +72,7 @@ fn shutdown(controller: &mut DesktopController) {
 }
 
 #[test]
-fn complete_archive_reopens_paused_and_historical_analysis_uses_only_its_prefix() {
+fn minimal_document_reopens_paused_and_historical_analysis_uses_only_its_prefix() {
     let directory = Directory::new();
     let path = directory.0.join("game.mshogi");
     let second_path = directory.0.join("reopened.mshogi");
@@ -137,14 +137,17 @@ fn complete_archive_reopens_paused_and_historical_analysis_uses_only_its_prefix(
     let payload = &archive["payload"];
     assert!(payload.get("profile").is_none());
     assert!(payload.get("schema_version").is_none());
-    assert!(
-        payload["match_record_json"]
-            .as_str()
+    assert_eq!(
+        payload
+            .as_object()
             .unwrap()
-            .contains("e2e4")
+            .keys()
+            .map(String::as_str)
+            .collect::<Vec<_>>(),
+        ["human", "record", "settings"]
     );
-    assert!(payload["controls"].as_array().unwrap().len() >= 3);
-    assert_eq!(payload["observations"].as_array().unwrap().len(), 2);
+    assert!(payload["record"]["commands"].to_string().contains("e2e4"));
+    assert_eq!(payload["record"]["commands"].as_array().unwrap().len(), 2);
     controller
         .fresh(
             SharedOpenToken {
@@ -170,18 +173,11 @@ fn complete_archive_reopens_paused_and_historical_analysis_uses_only_its_prefix(
     assert_eq!(reopened.phase, EnginePhase::Paused);
     assert!(chess(&reopened).analysis.context.is_none());
     assert_eq!(orientation(&reopened), Color::Black);
-    assert!(reopened.observations.iter().all(|o| o.historical));
+    assert!(reopened.observations.is_empty());
     let again = saved(&mut controller, second_path.clone());
     let archive_again: serde_json::Value =
         serde_json::from_slice(&fs::read(second_path).unwrap()).unwrap();
-    assert_eq!(
-        archive_again["payload"]["match_record_json"],
-        payload["match_record_json"]
-    );
-    assert_eq!(
-        archive_again["payload"]["game_record_json"],
-        payload["game_record_json"]
-    );
+    assert_eq!(archive_again["payload"], *payload);
     // Event zero is the known initial position, with neither played move nor
     // future repetition information. Analysis must remain read-only there.
     controller

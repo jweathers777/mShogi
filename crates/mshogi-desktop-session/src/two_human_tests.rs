@@ -146,8 +146,7 @@ fn play(c: &mut DesktopController) -> SharedSnapshot {
 }
 fn pending(c: &DesktopController) -> Option<ExecutionContext> {
     match &c.session {
-        ActiveDocument::GenericChess { state, .. } => state.pending.clone(),
-        ActiveDocument::Chess(s) => s.analysis_pending.clone().or(s.pending.clone()),
+        ActiveDocument::Chess { state, .. } => state.pending.clone(),
         ActiveDocument::Shogi { state, .. } => state.pending.clone(),
         ActiveDocument::Xiangqi { state, .. } => state.pending.clone(),
         ActiveDocument::Tori { state, .. } => state.pending.clone(),
@@ -156,23 +155,7 @@ fn pending(c: &DesktopController) -> Option<ExecutionContext> {
     }
 }
 fn accept(c: &mut DesktopController, observation: ExecutionObservation) -> bool {
-    if matches!(c.session, ActiveDocument::Chess(_)) {
-        let analysis = matches!(
-            observation.context.purpose,
-            mshogi_engine::ExecutionPurpose::MoveAnalysis { .. }
-        );
-        let response = ExecutionResponse {
-            protocol: mshogi_engine::PROTOCOL_VERSION,
-            observation,
-        };
-        if analysis {
-            c.session.chess_mut().accept_analysis(response)
-        } else {
-            c.session.chess_mut().accept(response, 1)
-        }
-    } else {
-        c.accept_observation(observation)
-    }
+    c.accept_observation(observation)
 }
 fn no_engine(c: &mut DesktopController) {
     let snapshot = c.shared_snapshot();
@@ -372,15 +355,8 @@ fn switching_to_local_play_retires_every_old_engine_authority() {
             .shared_new_game(c.shared_open_token(), profile, anchor(profile.game()))
             .unwrap();
         settled(&mut c, receipt).unwrap();
-        let old = if profile.game() == GameKind::Chess {
-            c.session
-                .chess_mut()
-                .engine_request()
-                .expect("old opponent turn")
-                .context
-        } else {
-            pending(&c).expect("old opponent turn")
-        };
+        c.shared_snapshot();
+        let old = pending(&c).expect("old opponent turn");
         let before = local(&mut c, profile);
         let accepted = accept(
             &mut c,

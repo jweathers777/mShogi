@@ -29,8 +29,10 @@ fn native_chess_pairs_root_counter_geometry_and_nonmove_boundaries() {
     .unwrap();
     game.apply("e7e5".parse().unwrap()).unwrap();
     game.apply("e2e4".parse().unwrap()).unwrap();
-    let state = DesktopSession::from_record(&game.record(), Color::White).unwrap();
-    let p = chess_projection(&state);
+    let state = crate::chess_record::ChessRecord::new(&game.record())
+        .replay(&mut || false)
+        .unwrap();
+    let p = chess_match_projection(&state);
     assert_eq!(
         p.entries
             .iter()
@@ -52,8 +54,12 @@ fn native_chess_pairs_root_counter_geometry_and_nonmove_boundaries() {
     )
     .unwrap();
     game.apply("e1g1".parse().unwrap()).unwrap();
-    let state = DesktopSession::from_record(&game.record(), Color::White).unwrap();
-    let cue = selected(chess_projection(&state), 1).last_action.unwrap();
+    let state = crate::chess_record::ChessRecord::new(&game.record())
+        .replay(&mut || false)
+        .unwrap();
+    let cue = selected(chess_match_projection(&state), 1)
+        .last_action
+        .unwrap();
     assert_eq!(cue.action, "e1g1");
     assert_eq!(cue.effects.len(), 1);
     assert_eq!((&*cue.effects[0].from, &*cue.effects[0].to), ("h1", "f1"));
@@ -134,8 +140,10 @@ fn xiangqi_action_warning_exact_prefix_and_command_ranges() {
 #[test]
 fn polling_cache_selected_prefix_and_monotonic_undo_identity() {
     let game = Game::new(ClaimPolicy::ExplicitOnly);
-    let state = DesktopSession::from_record(&game.record(), Color::White).unwrap();
-    let p = chess_projection(&state);
+    let state = crate::chess_record::ChessRecord::new(&game.record())
+        .replay(&mut || false)
+        .unwrap();
+    let p = chess_match_projection(&state);
     let mut cache = Cache::default();
     let calls = std::cell::Cell::new(0);
     for selected in [0, 1, 0, 1] {

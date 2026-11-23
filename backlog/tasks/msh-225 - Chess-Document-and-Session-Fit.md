@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-22T09:57:00Z'
-updated_date: '2026-11-23T10:04:00Z'
+updated_date: '2026-11-23T10:23:00Z'
 labels:
   - desktop
   - refactor
@@ -58,4 +58,6 @@ Updated comparison after MSH-228: lib.rs 2490 lines; persistence.rs 3815; analys
 Checkpoint: generic document payload now owns G::Record, with shared canonical encoding for the existing five games and separate engine-context hooks. Added compact ChessRecord replay through unchanged ChessMatch; tests cover moves/offers/agreement, intended claim without a move, unresolved resignation, imported history/policy, rejected commands, malformed input and cancellation. Desktop-session tests passed 240/240 before the final canonical-wiring macro cleanup; cargo check passed after it. This is foundation work only: the active Chess session still uses the old archive/runtime. Next: implement NativeGame/SessionGame for Chess, Full analysis hooks, route controller and persistence through generic session, then remove old journal paths and migrate tests/fixtures. Branch codex/msh-225-chess-document.
 
 Checkpoint: Chess NativeGame and SessionGame adapters now work on a transitional GenericChess active-document variant. Focused tests pass for generic Full analysis (read-only, remembered kind), wrapped Chess failure stopping without automatic retry, and play/browse/take-back across imported history. Existing 241 desktop-session tests passed before adapter routing was added. Review found wrapped Chess failures and duplicate uncancellable witnessed-resignation verification; fixed with native failure extraction and the existing desktop refusal of witnessed match commands. Full read-only validation remains cooperative. Normal Chess New/Open/default construction still uses the legacy path; next switch those entry points, remove legacy session/archive/journal code and migrate its relevant behavior tests/fixtures. Imported initial history remains browseable but Take back cannot cross its root.
+
+Checkpoint: all Chess entry points now use NativeSession and the minimal shared document. Removed legacy DesktopSession/archive/control-journal paths. Migrated native tests, frontend snapshots, GUI assertions and document contract. All-feature desktop tests passed 203/203 before the final review fix; Python GUI tests passed 176/176. Fresh review found completed analysis incorrectly advancing selection identity; fixed read-only response admission and added a target-identity regression. Focused Chess tests now pass 37/37, including the 4096-command boundary and mid-replay cancellation. Next: complete workspace/frontend checks, targeted persistence CI on affected operating systems, then integrate. Branch codex/msh-225-chess-document.
 <!-- SECTION:NOTES:END -->

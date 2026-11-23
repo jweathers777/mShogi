@@ -1,11 +1,11 @@
 ---
 id: MSH-199
 title: Chu Test Cost Review
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-19T06:19:00Z'
-updated_date: '2026-11-23T20:36:00Z'
+updated_date: '2026-11-23T20:38:00Z'
 labels:
   - handle:chu-test-cost-review
   - chu
@@ -44,7 +44,7 @@ Handle: Chu Test Cost Review
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -80,3 +80,9 @@ Required full workspace debug check now PASSED: cargo test --workspace --locked 
 
 Final verification passed at test source e2e0da3: cargo fmt --all -- --check; cargo clippy --workspace --all-targets --locked -j 2 -- -D warnings; cargo test --workspace --locked -j 2 -- --test-threads=2 (1190 passed,12 ignored,0 failed; suite time361.75 s); cargo test --release --workspace --locked -j 2 -- --test-threads=2 (1191 passed,11 ignored,0 failed; suite time194.11 s). All three targeted release process CI jobs passed in workflow45258165311: Ubuntu24.04, macOS15, Windows2022. Review found no weakened rules/contract coverage. The release-only normal-budget test passed in both local release timing and full release/CI suites. No packaged GUI or strength campaign was needed. Full per-test timing table, serial timing driver, 65 s baseline timeout logs and final logs are being uploaded to gs://mshogi-experiments-216675633801/runs/msh-199/ ; summary and coverage mapping are retained in this task. No new follow-up defects found; existing example-name warning stays with MSH-234. Integration/cleanup remain.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Integrated and pushed to main at 15a96f9 (test changes e2e0da3). Contract tests now use measured depth1/512-node work; the normal production-budget Resume test remains covered in release, and a bounded debug variant shares its assertions. Repeated file waits use one helper. Rules, product defaults and contract coverage are unchanged; independent review found no actionable issues. The twelve-ply debug test fell from a timeout above 65 s to 0.705 s; former 15 s watchdog failures now pass in 0.085-0.192 s. Fmt and Clippy passed; debug workspace 1190 passed/12 ignored, release 1191 passed/11 ignored, zero failures. Targeted release process CI passed on Linux, macOS and Windows. Timing tables, driver and logs uploaded successfully to gs://mshogi-experiments-216675633801/runs/msh-199/ (60-day retention). No cloud compute or VMs used; compute cost $0. No new follow-up tasks. Next task: MSH-213 (Chu Strength Harness).
+<!-- SECTION:FINAL_SUMMARY:END -->

@@ -641,8 +641,10 @@ pub(crate) fn execute<G: SessionGame>(
             EnginePhase::Failed
         } else if incomplete {
             EnginePhase::Incomplete
-        } else {
+        } else if analysis {
             EnginePhase::Paused
+        } else {
+            EnginePhase::Idle
         };
         state.diagnostic = if let Some(message) = failure {
             Some(format!(

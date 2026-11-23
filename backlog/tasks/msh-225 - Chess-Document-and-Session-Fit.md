@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-22T09:57:00Z'
-updated_date: '2026-11-23T10:23:00Z'
+updated_date: '2026-11-23T10:28:00Z'
 labels:
   - desktop
   - refactor
@@ -60,4 +60,8 @@ Checkpoint: generic document payload now owns G::Record, with shared canonical e
 Checkpoint: Chess NativeGame and SessionGame adapters now work on a transitional GenericChess active-document variant. Focused tests pass for generic Full analysis (read-only, remembered kind), wrapped Chess failure stopping without automatic retry, and play/browse/take-back across imported history. Existing 241 desktop-session tests passed before adapter routing was added. Review found wrapped Chess failures and duplicate uncancellable witnessed-resignation verification; fixed with native failure extraction and the existing desktop refusal of witnessed match commands. Full read-only validation remains cooperative. Normal Chess New/Open/default construction still uses the legacy path; next switch those entry points, remove legacy session/archive/journal code and migrate its relevant behavior tests/fixtures. Imported initial history remains browseable but Take back cannot cross its root.
 
 Checkpoint: all Chess entry points now use NativeSession and the minimal shared document. Removed legacy DesktopSession/archive/control-journal paths. Migrated native tests, frontend snapshots, GUI assertions and document contract. All-feature desktop tests passed 203/203 before the final review fix; Python GUI tests passed 176/176. Fresh review found completed analysis incorrectly advancing selection identity; fixed read-only response admission and added a target-identity regression. Focused Chess tests now pass 37/37, including the 4096-command boundary and mid-replay cancellation. Next: complete workspace/frontend checks, targeted persistence CI on affected operating systems, then integrate. Branch codex/msh-225-chess-document.
+
+Final review confirmed the read-only analysis identity fix; no remaining findings. Frontend: 609/609 tests and TypeScript passed. fmt and workspace clippy passed. Debug workspace stopped on the same four pre-existing Chu watchdog failures as MSH-228 (MSH-199); no rules or test limits changed. Release workspace and targeted Linux/macOS/Windows persistence run 45155718339 are running. Main was merged (already up to date). Final measured common files: lib 822, persistence 517, analysis 80, takeback 43 lines; new Chess adapter/record/validation files total 1583 lines. Remaining Chess code is native match rules, Full result validation, presentation and ownership/take-back mapping; lifecycle, admission and file code are shared.
+
+Real-process Chess persistence test exposed a shared phase mismatch after engine moves: paused=false but phase=Paused. Fixed successful live responses to report Idle, preserving Paused for read-only analysis. All three real-process persistence tests now pass, including minimal save/reopen, failure preservation and same-ply resignation history.
 <!-- SECTION:NOTES:END -->

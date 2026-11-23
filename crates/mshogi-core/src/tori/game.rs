@@ -92,19 +92,6 @@ pub enum Conclusion {
         winner: Side,
     },
 }
-/// Recorded unscored operational reason, not a chess-family conclusion or raw diagnostic.
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
-pub enum StopReason {
-    /// External work cancelled.
-    Cancelled,
-    /// Resource admission refused elsewhere.
-    ResourceLimit,
-    /// Engine/process failed.
-    EngineFailure,
-    /// Experiment/search work exhausted.
-    WorkLimit,
-}
 /// Native participant/administrative command. Unsupported declarations remain explicit refusals.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
@@ -120,11 +107,6 @@ pub enum GameCommand {
     AgreeDraw,
     /// Unsupported by this selected profile.
     DeclareImpasse,
-    /// Record incomplete work; does not conclude the game or authorize engine work.
-    Stop {
-        /// Bounded unscored reason.
-        reason: StopReason,
-    },
 }
 /// Exact ordered command plus all authoritative derived facts at its committed prefix.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
@@ -146,8 +128,6 @@ pub struct GameEvent {
     pub occurrences: Vec<usize>,
     /// Actual native conclusion only.
     pub conclusion: Option<Conclusion>,
-    /// Latest incomplete operation; a later accepted board action/resignation clears it.
-    pub incomplete: Option<StopReason>,
 }
 /// Immutable historical data; no action application or playable branch method.
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -164,8 +144,6 @@ pub struct HistorySnapshot {
     pub repetition: Option<Repetition>,
     /// Conclusion known at this prefix.
     pub conclusion: Option<Conclusion>,
-    /// Incomplete operation known at this prefix.
-    pub incomplete: Option<StopReason>,
 }
 impl HistorySnapshot {
     /// Exact native logical state. External callers cannot replace this admitted
@@ -242,8 +220,6 @@ pub enum GameError {
     ThirdOccurrence,
     /// Complete local rule refusal.
     Action(ActionError),
-    /// Duplicate stop without intervening board work.
-    AlreadyStopped,
     /// Explicit unscored admission refusal.
     Capacity(Resource),
     /// Invalid historical index/reversal token.
@@ -340,7 +316,6 @@ impl Game {
             occurrences: vec![0],
             repetition: None,
             conclusion,
-            incomplete: None,
         };
         let instance = NEXT_INSTANCE
             .try_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
@@ -536,8 +511,7 @@ impl Game {
         let mut effects = None;
         let mut occurrences = self.occurrences().to_vec();
         let mut repetition = self.repetition().cloned();
-        let mut conclusion = None;
-        let mut incomplete = None;
+        let mut conclusion;
         match command {
             GameCommand::Play { action } => {
                 if actor != self.position().side_to_move() {
@@ -611,12 +585,6 @@ impl Game {
             GameCommand::AgreeDraw | GameCommand::DeclareImpasse => {
                 return Err(GameError::UnsupportedCommand);
             }
-            GameCommand::Stop { reason } => {
-                if self.snapshot().incomplete.is_some() {
-                    return Err(GameError::AlreadyStopped);
-                }
-                incomplete = Some(reason);
-            }
         }
         let event = GameEvent {
             index: self.events.len(),
@@ -626,7 +594,6 @@ impl Game {
             effects,
             occurrences,
             conclusion,
-            incomplete,
         };
         debug_assert!(event.occurrences.len() <= 2, "third occurrence admitted");
         let event_len =
@@ -642,11 +609,9 @@ impl Game {
             occurrences: event.occurrences.clone(),
             repetition,
             conclusion,
-            incomplete,
         });
         let remaining = match command {
-            GameCommand::Play { .. } if conclusion.is_none() => 2,
-            GameCommand::Stop { .. } => 1,
+            GameCommand::Play { .. } if conclusion.is_none() => 1,
             _ => 0,
         };
         let bytes = candidate.encoded_len()?;
@@ -800,7 +765,7 @@ mod capacity_tests {
     use super::*;
     #[test]
     fn exact_production_capacity_and_reservation_policy_boundaries() {
-        for reserve in 0..=2 {
+        for reserve in 0..=1 {
             let max = CapacityUsage {
                 encoded_bytes: MAX_GAME_RECORD_BYTES - reserve * RESERVED_BYTES_PER_EVENT,
                 events: MAX_GAME_EVENTS - reserve,
@@ -828,12 +793,8 @@ mod reservation_bound_test {
     fn constructed_metadata_upper_bound_proves_each_reserved_nonboard_event_fits() {
         // A conservative bound, not a reachable game: maximal indices, and the
         // most occurrences a key can have (two; a third is refused, T06).
-        for command in [
-            GameCommand::Stop {
-                reason: StopReason::ResourceLimit,
-            },
-            GameCommand::Resign,
-        ] {
+        {
+            let command = GameCommand::Resign;
             let event = GameEvent {
                 index: MAX_GAME_EVENTS - 1,
                 board_ply: MAX_GAME_COMMANDS,
@@ -844,11 +805,10 @@ mod reservation_bound_test {
                 conclusion: Some(Conclusion::Resignation {
                     winner: Side::Sente,
                 }),
-                incomplete: Some(StopReason::ResourceLimit),
             };
             let bytes = serde_json::to_vec(&event).unwrap().len();
             // Extra256 conservatively covers comma and changed current nullable
-            // conclusion/incomplete fields. Root/current board do not change.
+            // conclusion fields. Root/current board do not change.
             assert!(
                 bytes + 256 <= RESERVED_BYTES_PER_EVENT,
                 "reserved metadata bound {bytes}"

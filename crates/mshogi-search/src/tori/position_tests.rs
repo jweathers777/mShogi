@@ -545,9 +545,9 @@ fn the_root_excludes_departures_that_the_native_repetition_rule_forbids() {
 }
 
 #[test]
-fn history_keys_survive_stop_events_between_actions() {
-    // A Stop command adds an event without a board action. The search copy
-    // must see each earlier position one time, as without the Stop events.
+fn history_keys_survive_runtime_retirement_between_actions() {
+    // Retiring execution changes runtime authority, not game history. The search
+    // copy must see each earlier position once in either case.
     let step = |from: &str, to: &str| Action::Move {
         from: from.parse().unwrap(),
         to: to.parse().unwrap(),
@@ -570,14 +570,7 @@ fn history_keys_survive_stop_events_between_actions() {
         for (index, &(from, to)) in cycle.iter().cycle().take(6).enumerate() {
             play(&mut game, step(from, to));
             if stops && (index == 0 || index == 4) {
-                game.submit(GameRequest {
-                    expected: game.context(),
-                    actor: game.position().side_to_move(),
-                    command: GameCommand::Stop {
-                        reason: mshogi_core::tori::StopReason::Cancelled,
-                    },
-                })
-                .unwrap();
+                game.retire_context().unwrap();
             }
         }
         game
@@ -585,7 +578,7 @@ fn history_keys_survive_stop_events_between_actions() {
     let mut scores = Vec::new();
     for stops in [false, true] {
         let game = build(stops);
-        assert_eq!(game.events().len(), if stops { 8 } else { 6 });
+        assert_eq!(game.events().len(), 6);
         let mut position = ToriPosition::from_game(&game);
         let mut seen = Vec::new();
         for &(from, to) in &cycle[2..] {

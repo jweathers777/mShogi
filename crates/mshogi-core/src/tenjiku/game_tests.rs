@@ -122,7 +122,7 @@ fn two_profiles_contexts_cannot_cross_even_equal_boards() {
     assert_eq!(before, GameRecord::from_game(&a).unwrap());
 }
 #[test]
-fn actual_consent_stop_and_resign_do_not_become_board_actions() {
+fn actual_consent_and_resign_do_not_become_board_actions() {
     for profile in Profile::ALL {
         let mut g = corner(profile);
         let state = g.position().state().clone();
@@ -132,14 +132,6 @@ fn actual_consent_stop_and_resign_do_not_become_board_actions() {
             GameError::DrawOffer
         );
         submit(&mut g, Side::Sente, GameCommand::DeclineDraw).unwrap();
-        submit(
-            &mut g,
-            Side::Sente,
-            GameCommand::Stop {
-                reason: StopReason::WorkLimit,
-            },
-        )
-        .unwrap();
         assert_eq!(g.position().state(), &state);
         assert_eq!(g.snapshot().board_ply, 0);
         assert_eq!(g.conclusion(), None);
@@ -261,7 +253,7 @@ fn root_provenance_and_declared_counter_are_not_played_history() {
 #[test]
 fn actual_ending_runtime_headroom_is_reserved_before_ordinary_admission() {
     let mut g = corner(Profile::AdamsModern);
-    g.set_test_authority(u64::MAX - 3, u64::MAX - 3, u64::MAX - 3);
+    g.set_test_authority(u64::MAX - 1, u64::MAX - 1, u64::MAX - 1);
     let before = GameRecord::from_game(&g).unwrap();
     let context = g.context();
     assert_eq!(
@@ -270,30 +262,14 @@ fn actual_ending_runtime_headroom_is_reserved_before_ordinary_admission() {
     );
     assert_eq!(before, GameRecord::from_game(&g).unwrap());
     assert_eq!(context, g.context());
-    submit(
-        &mut g,
-        Side::Sente,
-        GameCommand::Stop {
-            reason: StopReason::ResourceLimit,
-        },
-    )
-    .unwrap();
     submit(&mut g, Side::Gote, GameCommand::Resign).unwrap();
-    submit(
-        &mut g,
-        Side::Sente,
-        GameCommand::Stop {
-            reason: StopReason::ResourceLimit,
-        },
-    )
-    .unwrap();
     assert!(GameRecord::from_game(&g).is_ok());
 }
 #[test]
 fn undo_cannot_spend_reserved_ending_authority_and_failure_keeps_token() {
     let mut g = corner(Profile::AdamsModern);
     let mut u = play(&mut g, (16, 16), (15, 16));
-    g.set_test_authority(u64::MAX - 3, 5, 5);
+    g.set_test_authority(u64::MAX - 1, 5, 5);
     let before = GameRecord::from_game(&g).unwrap();
     let context = g.context();
     assert_eq!(

@@ -88,15 +88,15 @@ keeps the loaded profile. There is no rules switch within a game.
 
 `help`, `show`, `status`, `legal`, `move`, `undo` and `history` expose complete
 native choices, original/promoted identity, royal sets, root provenance, known
-history, bare-reply state, actual conclusions and incomplete work annotations.
+history, bare-reply state and actual conclusions.
 `move` batches commit only when every complete action is admitted; readable
 native effect descriptions are published after that whole-batch success. `history`
 uses the same core effect formatter for exact admitted event phases. Rejected
 batches publish neither partial action confirmations nor partial effect text.
 `undo` reverses
 native events, including non-move events. `offer-draw`, `accept-draw`,
-`decline-draw` and `resign` use an explicit Sente/Gote actor. `stop` records
-unscored administrative interruption, without inventing a conclusion.
+`decline-draw` and `resign` use an explicit Sente/Gote actor. `stop` sets an
+unscored session interruption; it adds no native event and is not saved.
 
 `position record-file`/`record-json` accept strict canonical standard/custom roots.
 `record print`, `record save`, `record load-file` and `record load-json` share the

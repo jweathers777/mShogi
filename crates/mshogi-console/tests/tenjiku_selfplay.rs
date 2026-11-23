@@ -113,18 +113,8 @@ fn bounded(mut game: t::Game, maximum_plies: usize) -> Trace {
         .unwrap();
         observations.push(response.observation);
     }
-    if game.conclusion().is_none() {
-        game.submit(t::GameRequest {
-            expected: game.context(),
-            actor: game.position().side_to_move(),
-            command: t::GameCommand::Stop {
-                reason: t::StopReason::WorkLimit,
-            },
-        })
-        .unwrap();
-        assert!(game.conclusion().is_none());
-        assert_eq!(game.snapshot().incomplete, Some(t::StopReason::WorkLimit));
-    } else {
+    // A ply cutoff belongs to this run, not to the saved native game.
+    if game.conclusion().is_some() {
         // The next actual process sees the exact native conclusion, not a
         // synthetic zero-move/heuristic result or an already retired request.
         let response = actual(&request(&game, maximum_plies as u64 + 1));
@@ -224,7 +214,7 @@ fn actual_selfplay_is_deterministic_bounded_and_unscored_at_work_stop() {
             }
         );
         assert_eq!(record.known_board_actions(), 4);
-        assert_eq!(record.event_count(), 5);
+        assert_eq!(record.event_count(), 4);
         assert!(record.conclusion().is_none());
         println!(
             "TENJIKU-SELFPLAY-SMOKE {}",
@@ -296,7 +286,6 @@ fn actual_complete_custom_game_captures_both_independently_expected_native_royal
         );
         assert_eq!(record.known_board_actions(), 1);
         assert_eq!(record.event_count(), 1);
-        assert!(record.to_game().unwrap().snapshot().incomplete.is_none());
         assert_eq!(first.observations.len(), 2);
         println!(
             "TENJIKU-SELFPLAY-COMPLETE {}",

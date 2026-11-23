@@ -89,11 +89,11 @@ fn identities_and_all_redundant_fields_are_rederived_not_trusted() {
     let mutations: Vec<Mutation> = vec![
         Box::new(|v| v["profile"] = json!(Profile::MullerCompleted)),
         Box::new(|v| v["edition"] = json!(Profile::MullerCompleted.edition())),
-        Box::new(|v| v["schema_version"] = json!(2)),
+        Box::new(|v| v["schema_version"] = json!(3)),
         Box::new(|v| v["root"]["profile"] = json!(Profile::MullerCompleted)),
         Box::new(|v| v["current_position"]["profile"] = json!(Profile::MullerCompleted)),
         Box::new(|v| {
-            v.as_object_mut().unwrap().remove("root_incomplete");
+            v.as_object_mut().unwrap().remove("root_draw_offer");
         }),
         Box::new(|v| v["events"][0]["actor"] = json!("gote")),
         Box::new(|v| v["events"][0]["board_ply"] = json!(1)),

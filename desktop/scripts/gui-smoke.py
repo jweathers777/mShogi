@@ -220,14 +220,15 @@ def completed_tenjiku_analysis(before, after, request_floor, generation_floor, d
         selected=before['tenjiku']['selected'];turn={'game_kind':'tenjiku','side':before['context']['payload']['current_position']['side']}
         if (len(current)!=len(previous)+1 or [item['observation'] for item in current[:-1]]!=[item['observation'] for item in previous]
                 or after['profile']!=before['profile'] or after['context']!=before['context']
-                or after['token']['document']!=before['token']['document'] or after['token']['version']<=before['token']['version']
+                or after['token']['document']!=before['token']['document'] or after['token']['version']!=before['token']['version']
+                or after['token']['revision']<=before['token']['revision']
                 or after['tenjiku']['selected']!=selected or after['tenjiku']['live']!=before['tenjiku']['live']
                 or after['moves']['entries']!=before['moves']['entries']):return False
         observation=current[-1]['observation'];context=observation['context'];purpose=context['purpose'];target=purpose['target']
         result=observation['result'];value=result['result'];telemetry=value['telemetry']
         return (observation['schema_version']==1 and after['analysis']['observation']==observation
             and context['request_id']>request_floor and context['process_generation']>generation_floor
-            and context['session_version']>=before['token']['version'] and target['session_version']==context['session_version']
+            and context['session_version']==before['token']['version'] and target['session_version']==context['session_version']
             and purpose['kind']=='move_analysis' and context['game']==before['context']
             and context['limits']=={'depth':depth,'nodes':nodes}
             and target['event_index']==selected['event_index'] and target['board_ply']==selected['board_ply'] and target['turn']==turn

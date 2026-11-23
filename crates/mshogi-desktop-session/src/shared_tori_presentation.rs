@@ -16,8 +16,6 @@ pub struct ToriHistoryPresentation {
     pub repetition: Option<t::Repetition>,
     /// Native concluded outcome only.
     pub conclusion: Option<t::Conclusion>,
-    /// Unscored administrative reason, independent of conclusion.
-    pub incomplete: Option<t::StopReason>,
 }
 impl ToriHistoryPresentation {
     fn new(game: &t::Game) -> Self {
@@ -31,7 +29,6 @@ impl ToriHistoryPresentation {
             occurrences: snapshot.occurrences.clone(),
             repetition: snapshot.repetition.clone(),
             conclusion: snapshot.conclusion,
-            incomplete: snapshot.incomplete,
         }
     }
 }
@@ -102,9 +99,6 @@ pub(super) fn status_label(game: &t::Game) -> String {
             }
         };
     }
-    if let Some(reason) = game.snapshot().incomplete {
-        return format!("{} · unscored", stop_label(reason));
-    }
     format!(
         "{} to move{}",
         name(game.position().side_to_move()),
@@ -118,14 +112,6 @@ pub(super) fn status_label(game: &t::Game) -> String {
         }
     )
 }
-fn stop_label(reason: t::StopReason) -> &'static str {
-    match reason {
-        t::StopReason::Cancelled => "Work cancelled",
-        t::StopReason::ResourceLimit => "Resource limit reached",
-        t::StopReason::EngineFailure => "Engine process failed",
-        t::StopReason::WorkLimit => "Work incomplete",
-    }
-}
 pub(super) fn event_label(event: &t::GameEvent) -> String {
     let actor = side(
         mshogi_core::native::RulesProfile::ToriModernV1,
@@ -138,7 +124,6 @@ pub(super) fn event_label(event: &t::GameEvent) -> String {
             serde_json::to_string(&action).expect("native action")
         ),
         t::GameCommand::Resign => format!("{actor} resigned"),
-        t::GameCommand::Stop { reason } => format!("{} · unscored", stop_label(reason)),
         // Rejected native commands can never occur in an admitted history.
         t::GameCommand::AgreeDraw | t::GameCommand::DeclareImpasse => {
             unreachable!("admitted Tori history")

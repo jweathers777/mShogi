@@ -261,16 +261,7 @@ pub fn write_all(dir: &Path) {
         "return-live",
         &send(&mut c, SessionOperation::ReturnLive {}),
     );
-    write(
-        dir,
-        "stopped",
-        &submit(
-            &mut c,
-            t::GameCommand::Stop {
-                reason: t::StopReason::Cancelled,
-            },
-        ),
-    );
+    write(dir, "stopped", &send(&mut c, SessionOperation::Cancel {}));
     write(dir, "resigned", &submit(&mut c, t::GameCommand::Resign));
     // Independently authored TORI-H-COUNT seven-action history (MSH-208): Gote's
     // 5a-4a would make the start key's third occurrence. Actual native execution.

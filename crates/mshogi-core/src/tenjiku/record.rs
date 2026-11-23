@@ -8,7 +8,7 @@ use serde_json::value::RawValue;
 use std::{collections::BTreeSet, error::Error, fmt};
 
 /// Native schema number, independently qualified by the immutable profile/edition.
-pub const GAME_RECORD_SCHEMA_VERSION: u32 = 1;
+pub const GAME_RECORD_SCHEMA_VERSION: u32 = 2;
 /// Initial native encoded bound; product documents must measure their own aggregate policy.
 pub const MAX_GAME_RECORD_BYTES: usize = 1024 * 1024;
 
@@ -62,13 +62,11 @@ struct WireRecord<'a> {
     root_conclusion: Option<Conclusion>,
     root_pending_bare: Option<Side>,
     root_draw_offer: Option<Side>,
-    root_incomplete: Option<StopReason>,
     events: &'a [GameEvent],
     current_position: &'a StructuralState,
     conclusion: Option<Conclusion>,
     pending_bare: Option<Side>,
     draw_offer: Option<Side>,
-    incomplete: Option<StopReason>,
 }
 impl<'a> WireRecord<'a> {
     fn from_game(game: &'a Game) -> Self {
@@ -83,13 +81,11 @@ impl<'a> WireRecord<'a> {
             root_conclusion: game.root_snapshot().conclusion,
             root_pending_bare: game.root_snapshot().pending_bare,
             root_draw_offer: game.root_snapshot().draw_offer,
-            root_incomplete: game.root_snapshot().incomplete,
             events: game.events(),
             current_position: game.position().state(),
             conclusion: game.snapshot().conclusion,
             pending_bare: game.snapshot().pending_bare,
             draw_offer: game.snapshot().draw_offer,
-            incomplete: game.snapshot().incomplete,
         }
     }
 }
@@ -106,13 +102,11 @@ struct ParsedRecord {
     root_conclusion: Option<Conclusion>,
     root_pending_bare: Option<Side>,
     root_draw_offer: Option<Side>,
-    root_incomplete: Option<StopReason>,
     events: Vec<GameEvent>,
     current_position: StructuralState,
     conclusion: Option<Conclusion>,
     pending_bare: Option<Side>,
     draw_offer: Option<Side>,
-    incomplete: Option<StopReason>,
 }
 /// Serialize a borrowed event ledger; no cloned history or retained undo vector.
 pub(super) fn encode(game: &Game) -> Result<String, RecordError> {
@@ -253,7 +247,6 @@ impl GameRecord {
         if game.root_snapshot().conclusion != wire.root_conclusion
             || game.root_snapshot().pending_bare != wire.root_pending_bare
             || game.root_snapshot().draw_offer != wire.root_draw_offer
-            || game.root_snapshot().incomplete != wire.root_incomplete
         {
             return Err(RecordError::Derived);
         }
@@ -294,7 +287,6 @@ impl GameRecord {
             || game.snapshot().conclusion != wire.conclusion
             || game.snapshot().pending_bare != wire.pending_bare
             || game.snapshot().draw_offer != wire.draw_offer
-            || game.snapshot().incomplete != wire.incomplete
         {
             return Err(RecordError::Derived);
         }

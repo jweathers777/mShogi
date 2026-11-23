@@ -524,23 +524,14 @@ impl DesktopController {
                 )?;
             }
             if scenario == "ending-stopped" {
-                for (actor, command) in [
-                    (
-                        mshogi_core::tenjiku::Side::Sente,
-                        mshogi_core::tenjiku::GameCommand::Resign,
-                    ),
-                    (
-                        mshogi_core::tenjiku::Side::Gote,
-                        mshogi_core::tenjiku::GameCommand::Stop {
-                            reason: mshogi_core::tenjiku::StopReason::EngineFailure,
-                        },
-                    ),
-                ] {
-                    send(
-                        &mut controller,
-                        SessionOperation::Tenjiku { actor, command },
-                    )?;
-                }
+                send(
+                    &mut controller,
+                    SessionOperation::Tenjiku {
+                        actor: mshogi_core::tenjiku::Side::Sente,
+                        command: mshogi_core::tenjiku::GameCommand::Resign,
+                    },
+                )?;
+                send(&mut controller, SessionOperation::Cancel {})?;
             }
             if scenario == "unsupported" {
                 let before = controller.shared_snapshot().observations.len();

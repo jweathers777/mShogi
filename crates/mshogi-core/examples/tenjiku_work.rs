@@ -275,9 +275,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         GameRequest {
             expected: old_context.clone(),
             actor: Side::Sente,
-            command: GameCommand::Stop {
-                reason: StopReason::Cancelled,
-            },
+            command: GameCommand::Resign,
         },
         &mut || {
             admission_polls += 1;
@@ -293,26 +291,12 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
     let usage = game.capacity_usage()?;
     let mut close = native_record.to_game()?;
-    submit(
-        &mut close,
-        Side::Sente,
-        GameCommand::Stop {
-            reason: StopReason::ResourceLimit,
-        },
-    )?;
     submit(&mut close, Side::Gote, GameCommand::Resign)?;
-    submit(
-        &mut close,
-        Side::Gote,
-        GameCommand::Stop {
-            reason: StopReason::Cancelled,
-        },
-    )?;
     let closed = record(&close)?;
     let closed_replayed = closed.to_game()?;
     let closing_exact = record(&closed_replayed)? == closed;
     if !closing_exact {
-        return Err("actual reserved Stop/Resign path failed replay".into());
+        return Err("actual reserved Resign path failed replay".into());
     }
     let output = json!({
         "isolated_native_workloads":effect_probe(profile)?,
@@ -325,7 +309,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         "ordinary_replay":{"us":replay_us,"exact_semantics_and_fresh_authority":replay_exact,"returned_undo_handles":0,"retention_policy":"ordinary replay requests no private undo handles; source-defined, not an RSS measurement"},
         "explicit_undo":undo_report,
         "cooperative_cancellation":{"replay_us":cancel_replay_us,"replay_polls":replay_polls,"inspection_us":cancel_query_us,"inspection_polls":query_polls,"admission_us":cancel_admission_us,"admission_polls":admission_polls,"atomic":cancelled_atomic,"no_external_watchdog_or_product_latency_claim":true},
-        "actual_closing_path":{"stop_then_resign_then_stop":true,"events":close.events().len(),"encoded_bytes":closed.as_json().len(),"replayed_exactly":closing_exact},
+        "actual_closing_path":{"resign":true,"events":close.events().len(),"encoded_bytes":closed.as_json().len(),"replayed_exactly":closing_exact},
         "timing_unit":"microseconds measured by Instant; deterministic units are not CPU time or strength"
     });
     println!("{output}");

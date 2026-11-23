@@ -1676,13 +1676,14 @@ class TenjikuPackagedEvidenceTests(unittest.TestCase):
         action={'kind':'travel','from':[1,3],'route':[[1,4]],'promote':False}
         native={'game_kind':'tenjiku','rules_profile':'mshogi.tenjiku.adams1999-modern.v1','payload':{'events':[{'native':'prefix1'}],'current_position':{'side':'gote'}}}
         old={'schema_version':1,'context':{'request_id':5,'process_generation':6},'result':{'kind':'retained-prior-analysis'}}
-        before={'profile':native['rules_profile'],'context':native,'token':{'document':4,'version':8},'tenjiku':{'selected':{'event_index':1,'board_ply':1},'live':{'event_index':2,'identities':'native-live'}},'moves':{'entries':[{'native':'event1'},{'native':'event2'}]},'observations':[{'observation':old}]}
-        observation={'schema_version':1,'context':{'request_id':10,'process_generation':11,'session_version':9,'game':copy.deepcopy(native),'limits':{'depth':1,'nodes':1024},'purpose':{'kind':'move_analysis','target':{'event_index':1,'board_ply':1,'session_version':9,'turn':{'game_kind':'tenjiku','side':'gote'}}}},'result':{'kind':'tenjiku','result':{'kind':'choice','action':action,'telemetry':{'completed_depth':1,'perspective':'gote','score':0,'nodes':5,'principal_variation':[action],'evaluator_id':'mshogi.tenjiku.material-placement.v1','search_id':'mshogi.tenjiku.shared-core.v1'}}}}
-        after=copy.deepcopy(before);after['token']['version']=10;after['observations'].append({'observation':observation});after['analysis']={'observation':observation}
+        before={'profile':native['rules_profile'],'context':native,'token':{'document':4,'version':8,'revision':8},'tenjiku':{'selected':{'event_index':1,'board_ply':1},'live':{'event_index':2,'identities':'native-live'}},'moves':{'entries':[{'native':'event1'},{'native':'event2'}]},'observations':[{'observation':old}]}
+        observation={'schema_version':1,'context':{'request_id':10,'process_generation':11,'session_version':8,'game':copy.deepcopy(native),'limits':{'depth':1,'nodes':1024},'purpose':{'kind':'move_analysis','target':{'event_index':1,'board_ply':1,'session_version':8,'turn':{'game_kind':'tenjiku','side':'gote'}}}},'result':{'kind':'tenjiku','result':{'kind':'choice','action':action,'telemetry':{'completed_depth':1,'perspective':'gote','score':0,'nodes':5,'principal_variation':[action],'evaluator_id':'mshogi.tenjiku.material-placement.v1','search_id':'mshogi.tenjiku.shared-core.v1'}}}}
+        after=copy.deepcopy(before);after['token']['revision']=10;after['observations'].append({'observation':observation});after['analysis']={'observation':observation}
         self.assertTrue(module.completed_tenjiku_analysis(before,after,5,6))
         self.assertFalse(module.completed_tenjiku_analysis(before,before,5,6),'old available UI/status/native result is insufficient')
-        for mutate in (lambda a:a['observations'].pop(),lambda a:a['observations'][0]['observation'].update(result={'rewritten':'prior result'}),
+        for mutate in (lambda a:a['token'].update(revision=8),lambda a:a['token'].update(version=9),lambda a:a['observations'].pop(),lambda a:a['observations'][0]['observation'].update(result={'rewritten':'prior result'}),
                        lambda a:a['analysis']['observation']['context'].update(request_id=5),lambda a:a['analysis']['observation']['context'].update(process_generation=6),
+                       lambda a:(a['analysis']['observation']['context'].update(session_version=9),a['analysis']['observation']['context']['purpose']['target'].update(session_version=9)),
                        lambda a:a['analysis']['observation']['context'].update(session_version=7),lambda a:a['analysis']['observation']['context']['purpose']['target'].update(event_index=2),
                        lambda a:a['analysis']['observation']['context']['purpose']['target'].update(board_ply=2),lambda a:a['analysis']['observation']['context']['purpose'].update(kind='engine_turn'),
                        lambda a:a['analysis']['observation']['context']['purpose']['target']['turn'].update(side='sente'),lambda a:a['tenjiku']['selected'].update(event_index=2),
@@ -1712,6 +1713,7 @@ class TenjikuPackagedEvidenceTests(unittest.TestCase):
                 before=copy.deepcopy(after);before['observations']=[];before['analysis']=None
                 context=after['analysis']['observation']['context']
                 before['token']['version']=context['session_version'];before['token']['selection']=context['purpose']['target']['selection_id']
+                before['token']['revision']=after['token']['revision']-1
             self.assertTrue(module.completed_tenjiku_analysis(before,after,0,0))
             self.assertFalse(module.completed_tenjiku_analysis(before,before,0,0))
             journey=object.__new__(module.Journey);journey.web=Mock();journey.record=Mock()

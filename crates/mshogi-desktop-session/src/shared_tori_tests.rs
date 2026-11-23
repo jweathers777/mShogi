@@ -562,26 +562,15 @@ fn all_identity_dimensions_wrong_game_and_return_to_same_diagram_reject() {
 }
 
 #[test]
-fn distinct_administrative_stops_and_unsupported_commands_are_unscored() {
-    for reason in [
-        t::StopReason::Cancelled,
-        t::StopReason::ResourceLimit,
-        t::StopReason::EngineFailure,
-        t::StopReason::WorkLimit,
-    ] {
+fn session_cancel_and_unsupported_commands_are_unscored() {
+    {
         let mut c = controller();
         let g = t::Game::from_root(root(&given("TORI-O-ADMIN")["root"])).unwrap();
         replace(&mut c, &g, t::Side::Sente);
         let before = current(&c).game.position().state().clone();
-        send(
-            &mut c,
-            SessionOperation::Tori {
-                actor: t::Side::Sente,
-                command: t::GameCommand::Stop { reason },
-            },
-        )
-        .unwrap();
-        assert_eq!(current(&c).game.snapshot().incomplete, Some(reason));
+        let record_before = native(&c);
+        send(&mut c, SessionOperation::Cancel {}).unwrap();
+        assert_eq!(native(&c), record_before);
         assert!(current(&c).game.conclusion().is_none());
         assert_eq!(current(&c).game.position().state(), &before);
         let s = c.shared_snapshot();
@@ -728,17 +717,15 @@ fn seven_reject_fixtures_actual_open_preserves_live_document_and_execution() {
         game: GameKind::Tori,
         operation: SessionOperation::Tori {
             actor: t::Side::Sente,
-            command: t::GameCommand::Stop {
-                reason: t::StopReason::Cancelled,
-            },
+            command: t::GameCommand::Resign,
         },
     })
     .unwrap();
     assert!(SharedDesktopCommand::from_json(&valid).is_ok());
     for raw in [
         valid.replace(
-            "\"reason\":\"cancelled\"",
-            "\"reason\":\"cancelled\",\"reason\":\"work_limit\"",
+            "\"kind\":\"resign\"",
+            "\"kind\":\"resign\",\"kind\":\"resign\"",
         ),
         valid.replace("\"actor\":\"sente\"", "\"actor\":\"sente\",\"extra\":1"),
         valid.replace("\"actor\":\"sente\",", ""),

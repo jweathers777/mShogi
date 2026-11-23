@@ -4,6 +4,7 @@ title: Compact Redundant Native Record Metadata
 status: Ready
 assignee: []
 created_date: '2026-11-23T11:05:00Z'
+updated_date: '2026-11-23T12:27:00Z'
 labels:
   - simplification
   - persistence
@@ -25,3 +26,9 @@ Split from MSH-229: native.rs plus per-game record codecs repeatedly store game/
 - [ ] #2 New records round-trip all supported profiles, claims, offers and conclusions through native rules; recorded compatibility and independent rules tests remain valid
 - [ ] #3 Record encoded size, replay time and source-line changes; pass required Rust/frontend/affected-platform persistence checks after each step
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+MSH-230 inspection: desktop DocumentEnvelope.native_schema_version is a hardcoded 1 game-payload label, distinct from the nested CanonicalRecord actual native schema (Tori was already 2 before MSH-230). Consider removing or renaming that redundant misleading label when compacting metadata. MSH-230 leaves the unchanged desktop payload label intact and documents the distinction.
+<!-- SECTION:NOTES:END -->

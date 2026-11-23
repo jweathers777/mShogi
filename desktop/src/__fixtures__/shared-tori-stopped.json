@@ -37,35 +37,33 @@
     "earlier_history_unknown": true,
     "historical_reachability_proven": false,
     "selected": {
-      "event_index": 2,
+      "event_index": 1,
       "board_ply": 1,
       "in_check": false,
       "occurrences": [
         1
       ],
       "repetition": null,
-      "conclusion": null,
-      "incomplete": "cancelled"
+      "conclusion": null
     },
     "live": {
-      "event_index": 2,
+      "event_index": 1,
       "board_ply": 1,
       "in_check": false,
       "occurrences": [
         1
       ],
       "repetition": null,
-      "conclusion": null,
-      "incomplete": "cancelled"
+      "conclusion": null
     }
   },
   "open_token": {
     "document": 1,
-    "version": 12,
-    "document_revision": 7
+    "version": 13,
+    "document_revision": 6
   },
   "document": {
-    "revision": 7,
+    "revision": 6,
     "dirty": true,
     "path": null,
     "settings": {
@@ -83,16 +81,16 @@
     "resource": null
   },
   "capacity": {
-    "id": 10,
+    "id": 11,
     "status": "available",
     "message": null,
     "resource": null
   },
   "token": {
     "document": 1,
-    "version": 12,
-    "revision": 20,
-    "selection": 12
+    "version": 13,
+    "revision": 22,
+    "selection": 13
   },
   "game": "tori",
   "profile": "mshogi.tori.modern.v1",
@@ -2377,7 +2375,7 @@
   },
   "status": {
     "concluded": false,
-    "label": "Work cancelled · unscored",
+    "label": "Gote to move",
     "score_half_points": null
   },
   "events": [
@@ -2385,14 +2383,9 @@
       "index": 1,
       "board_ply": 1,
       "label": "Sente · Technical action {\"kind\":\"drop\",\"face\":\"right_quail\",\"to\":\"5e\"}"
-    },
-    {
-      "index": 2,
-      "board_ply": 1,
-      "label": "Work cancelled · unscored"
     }
   ],
-  "event_index": 2,
+  "event_index": 1,
   "board_ply": 1,
   "play_limits": {
     "depth": 64,
@@ -2401,17 +2394,17 @@
   "historical": false,
   "paused": true,
   "close_requires_save": true,
-  "phase": "paused",
+  "phase": "cancelled",
   "execution_purpose": null,
-  "diagnostic": "Resume starts play.",
+  "diagnostic": "Work cancelled. The game is unchanged; Resume or start another analysis.",
   "declaration_advice": [],
   "context": {
     "envelope_version": 1,
     "game_kind": "tori",
     "rules_profile": "mshogi.tori.modern.v1",
     "profile_edition": "MSH208-MODERN-2026-11-20",
-    "native_schema_version": 2,
-    "payload": {"format":"mshogi.tori.game","game":"tori","profile":"mshogi.tori.modern.v1","edition":"MSH208-MODERN-2026-11-20","schema_version":2,"mode":"untimed","root":{"root_kind":"diagram","source":null,"earlier_history_unknown":true,"historical_reachability_proven":false,"declared_completed_plies":31,"accepted_plies":0,"declared_total_plies":31,"side_to_move":"sente","board":[{"square":"4a","piece":{"side":"gote","face":"phoenix"}},{"square":"7b","piece":{"side":"gote","face":"swallow"}},{"square":"7c","piece":{"side":"sente","face":"falcon"}},{"square":"2d","piece":{"side":"sente","face":"swallow"}},{"square":"7f","piece":{"side":"sente","face":"eagle"}},{"square":"1f","piece":{"side":"sente","face":"goose"}},{"square":"7g","piece":{"side":"sente","face":"left_quail"}},{"square":"6g","piece":{"side":"sente","face":"crane"}},{"square":"4g","piece":{"side":"sente","face":"phoenix"}},{"square":"2g","piece":{"side":"sente","face":"pheasant"}},{"square":"1g","piece":{"side":"sente","face":"right_quail"}}],"hands":[[0,1,0,0,1,2],[0,1,1,1,0,1]]},"root_conclusion":null,"events":[{"index":0,"board_ply":1,"actor":"sente","command":{"kind":"play","action":{"kind":"drop","face":"right_quail","to":"5e"}},"effects":{"actor":"sente","action":{"kind":"drop","face":"right_quail","to":"5e"},"resulting_piece":{"side":"sente","face":"right_quail"},"captured":null,"hand_change":["right_quail",-1]},"occurrences":[1],"conclusion":null,"incomplete":null},{"index":1,"board_ply":1,"actor":"sente","command":{"kind":"stop","reason":"cancelled"},"effects":null,"occurrences":[1],"conclusion":null,"incomplete":"cancelled"}],"current_position":{"root_kind":"diagram","source":null,"earlier_history_unknown":true,"historical_reachability_proven":false,"declared_completed_plies":31,"accepted_plies":1,"declared_total_plies":32,"side_to_move":"gote","board":[{"square":"4a","piece":{"side":"gote","face":"phoenix"}},{"square":"7b","piece":{"side":"gote","face":"swallow"}},{"square":"7c","piece":{"side":"sente","face":"falcon"}},{"square":"2d","piece":{"side":"sente","face":"swallow"}},{"square":"5e","piece":{"side":"sente","face":"right_quail"}},{"square":"7f","piece":{"side":"sente","face":"eagle"}},{"square":"1f","piece":{"side":"sente","face":"goose"}},{"square":"7g","piece":{"side":"sente","face":"left_quail"}},{"square":"6g","piece":{"side":"sente","face":"crane"}},{"square":"4g","piece":{"side":"sente","face":"phoenix"}},{"square":"2g","piece":{"side":"sente","face":"pheasant"}},{"square":"1g","piece":{"side":"sente","face":"right_quail"}}],"hands":[[0,1,0,0,0,2],[0,1,1,1,0,1]]},"conclusion":null,"incomplete":"cancelled"}
+    "native_schema_version": 3,
+    "payload": {"format":"mshogi.tori.game","game":"tori","profile":"mshogi.tori.modern.v1","edition":"MSH208-MODERN-2026-11-20","schema_version":3,"mode":"untimed","root":{"root_kind":"diagram","source":null,"earlier_history_unknown":true,"historical_reachability_proven":false,"declared_completed_plies":31,"accepted_plies":0,"declared_total_plies":31,"side_to_move":"sente","board":[{"square":"4a","piece":{"side":"gote","face":"phoenix"}},{"square":"7b","piece":{"side":"gote","face":"swallow"}},{"square":"7c","piece":{"side":"sente","face":"falcon"}},{"square":"2d","piece":{"side":"sente","face":"swallow"}},{"square":"7f","piece":{"side":"sente","face":"eagle"}},{"square":"1f","piece":{"side":"sente","face":"goose"}},{"square":"7g","piece":{"side":"sente","face":"left_quail"}},{"square":"6g","piece":{"side":"sente","face":"crane"}},{"square":"4g","piece":{"side":"sente","face":"phoenix"}},{"square":"2g","piece":{"side":"sente","face":"pheasant"}},{"square":"1g","piece":{"side":"sente","face":"right_quail"}}],"hands":[[0,1,0,0,1,2],[0,1,1,1,0,1]]},"root_conclusion":null,"events":[{"index":0,"board_ply":1,"actor":"sente","command":{"kind":"play","action":{"kind":"drop","face":"right_quail","to":"5e"}},"effects":{"actor":"sente","action":{"kind":"drop","face":"right_quail","to":"5e"},"resulting_piece":{"side":"sente","face":"right_quail"},"captured":null,"hand_change":["right_quail",-1]},"occurrences":[1],"conclusion":null}],"current_position":{"root_kind":"diagram","source":null,"earlier_history_unknown":true,"historical_reachability_proven":false,"declared_completed_plies":31,"accepted_plies":1,"declared_total_plies":32,"side_to_move":"gote","board":[{"square":"4a","piece":{"side":"gote","face":"phoenix"}},{"square":"7b","piece":{"side":"gote","face":"swallow"}},{"square":"7c","piece":{"side":"sente","face":"falcon"}},{"square":"2d","piece":{"side":"sente","face":"swallow"}},{"square":"5e","piece":{"side":"sente","face":"right_quail"}},{"square":"7f","piece":{"side":"sente","face":"eagle"}},{"square":"1f","piece":{"side":"sente","face":"goose"}},{"square":"7g","piece":{"side":"sente","face":"left_quail"}},{"square":"6g","piece":{"side":"sente","face":"crane"}},{"square":"4g","piece":{"side":"sente","face":"phoenix"}},{"square":"2g","piece":{"side":"sente","face":"pheasant"}},{"square":"1g","piece":{"side":"sente","face":"right_quail"}}],"hands":[[0,1,0,0,0,2],[0,1,1,1,0,1]]},"conclusion":null}
   },
   "analysis": null,
   "observations": [],

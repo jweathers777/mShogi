@@ -90,7 +90,7 @@ prefix records, strict native schema1 replay and typed core dispatch. All713nati
 assertions execute and pass (202127+281128+230129),14genuinely later assertions and
 83real-consumer requirements remain pending. Selected profile/corpus/ownership are
 unchanged. Native bounds are measured separately from later desktop quotas;
-ordinary admission preserves complete encoding and reserved Stop/Resign headroom.
+ordinary admission preserves complete encoding and reserved resignation headroom.
 Tori execution remains explicitly unsupported/unscored and unadvertised; no Tori
 session, engine, console, desktop codec/UI or chooser is supplied.85 retains separate
 native acceptance;77/42 remain real shared/product consumers. Earlier handoff sections

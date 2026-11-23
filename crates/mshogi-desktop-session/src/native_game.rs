@@ -186,8 +186,6 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
     fn side_to_move(game: &Self::Game) -> Self::Side;
     /// The game has a native conclusion.
     fn concluded(game: &Self::Game) -> bool;
-    /// An engine Stop is already recorded in the history snapshot.
-    fn stop_recorded(game: &Self::Game) -> bool;
 
     /// Resign command.
     fn resign() -> Self::Command;
@@ -379,9 +377,6 @@ macro_rules! large_shogi_game {
             fn concluded(game: &Self::Game) -> bool {
                 game.conclusion().is_some()
             }
-            fn stop_recorded(game: &Self::Game) -> bool {
-                game.snapshot().incomplete.is_some()
-            }
             fn resign() -> Self::Command {
                 mshogi_core::$core::GameCommand::Resign
             }
@@ -546,9 +541,6 @@ impl NativeGame for Tori {
     }
     fn concluded(game: &Self::Game) -> bool {
         game.conclusion().is_some()
-    }
-    fn stop_recorded(game: &Self::Game) -> bool {
-        game.snapshot().incomplete.is_some()
     }
     fn resign() -> Self::Command {
         mshogi_core::tori::GameCommand::Resign
@@ -729,9 +721,6 @@ impl NativeGame for Shogi {
     }
     fn concluded(game: &Self::Game) -> bool {
         game.conclusion().is_some()
-    }
-    fn stop_recorded(_game: &Self::Game) -> bool {
-        false
     }
     fn resign() -> Self::Command {
         mshogi_core::shogi::GameCommand::Resign
@@ -926,9 +915,6 @@ impl NativeGame for Xiangqi {
     fn concluded(game: &Self::Game) -> bool {
         // Pending adjudication admits no further command either.
         game.conclusion().is_some() || game.pending_adjudication().is_some()
-    }
-    fn stop_recorded(_game: &Self::Game) -> bool {
-        false
     }
     fn resign() -> Self::Command {
         mshogi_core::xiangqi::GameCommand::Resign

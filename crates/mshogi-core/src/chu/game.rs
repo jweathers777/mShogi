@@ -3,13 +3,13 @@ use super::*;
 use serde::{Deserialize, Serialize};
 use std::sync::atomic::{AtomicU64, Ordering};
 
-/// Maximum native events, including two reserved concluding/stop events.
+/// Maximum native events, including one reserved resignation event.
 pub const MAX_GAME_EVENTS: usize = 512;
 /// Native commands and events are one-to-one.
 pub const MAX_GAME_COMMANDS: usize = MAX_GAME_EVENTS;
 /// Deterministic history/reply work bound; resource refusal is never an outcome.
 pub const MAX_REPLAY_WORK: u64 = 4_000_000;
-const RESERVED_EVENTS: usize = 2;
+const RESERVED_EVENTS: usize = 1;
 static NEXT_INSTANCE: AtomicU64 = AtomicU64::new(1);
 
 /// Repetition projection: native original/once-promoted placement, turn and Lion rights.
@@ -110,19 +110,6 @@ pub enum GameStatus {
     /// Actual native conclusion exists.
     Concluded,
 }
-/// Unscored operation annotation, independent of game outcomes.
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
-pub enum StopReason {
-    /// Cancelled work.
-    Cancelled,
-    /// Resource exhaustion outside board rules.
-    ResourceLimit,
-    /// Process failure.
-    EngineFailure,
-    /// Bounded work incomplete.
-    WorkLimit,
-}
 /// Complete native command. Actor is separately bound by GameRequest.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
@@ -140,11 +127,6 @@ pub enum GameCommand {
     AcceptDraw,
     /// Opposing refusal of the current offer.
     DeclineDraw,
-    /// Unscored operational annotation; never authorizes work.
-    Stop {
-        /// Typed reason.
-        reason: StopReason,
-    },
 }
 /// Complete accepted event and native-derived facts at this exact prefix.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
@@ -168,8 +150,6 @@ pub struct GameEvent {
     pub conclusion: Option<Conclusion>,
     /// Current actual draw offer.
     pub draw_offer: Option<Side>,
-    /// Current operational annotation.
-    pub incomplete: Option<StopReason>,
     /// Accumulated deterministic native replay work.
     pub replay_work: u64,
 }
@@ -202,8 +182,6 @@ pub struct HistorySnapshot {
     pub conclusion: Option<Conclusion>,
     /// Recorded offer, never implied consent.
     pub draw_offer: Option<Side>,
-    /// Unscored stopped work.
-    pub incomplete: Option<StopReason>,
 }
 impl HistorySnapshot {
     /// Immutable native-validated structural state at this exact prefix.
@@ -287,7 +265,7 @@ pub enum GameError {
     RepetitionDeparture,
     /// Missing/wrong/same-side draw acceptance or refusal.
     NoMatchingOffer,
-    /// Repeated offer/stop without new work.
+    /// Repeated draw offer without a response.
     DuplicateControl,
     /// Resource refusal, unscored.
     Capacity(Resource),
@@ -404,7 +382,6 @@ impl Game {
             obligations: vec![],
             conclusion: None,
             draw_offer: None,
-            incomplete: None,
         };
         let mut game = Self {
             data: GameData {
@@ -705,7 +682,6 @@ impl Game {
                 next.occurrences = candidate.current_occurrences();
                 next.obligations = candidate.derive_obligations(&previous.obligations);
                 next.draw_offer = None;
-                next.incomplete = None;
                 // Install history for finite reply checks, without recursive mate adjudication.
                 next.state = candidate.position().state().clone();
                 next.protection = candidate.data.local.protection().clone();
@@ -740,12 +716,6 @@ impl Game {
                 }
                 next.draw_offer = None;
             }
-            GameCommand::Stop { reason } => {
-                if previous.incomplete.is_some() {
-                    return Err(GameError::DuplicateControl);
-                }
-                next.incomplete = Some(*reason);
-            }
         }
         next.state = candidate.position().state().clone();
         next.protection = candidate.data.local.protection().clone();
@@ -761,14 +731,10 @@ impl Game {
             obligations: next.obligations.clone(),
             conclusion: next.conclusion,
             draw_offer: next.draw_offer,
-            incomplete: next.incomplete,
             replay_work: candidate.data.work,
         });
         candidate.data.snapshots.push(next);
-        let reserved = matches!(
-            command,
-            GameCommand::Resign | GameCommand::AcceptDraw | GameCommand::Stop { .. }
-        );
+        let reserved = matches!(command, GameCommand::Resign | GameCommand::AcceptDraw);
         candidate.enforce_capacity(!reserved)?;
         let undo = GameUndo {
             instance: self.runtime.instance,
@@ -814,48 +780,35 @@ impl Game {
         Ok(())
     }
     fn encoded_with_reservations(&self) -> Result<usize, GameError> {
-        // Encode the real complete candidate plus Stop+Resign. Obligations can be
-        // variable-size; a fixed byte guess would not guarantee closing headroom.
-        let mut reserved = self.transaction();
-        for (actor, command) in [
-            (
-                Side::Sente,
-                GameCommand::Stop {
-                    reason: StopReason::ResourceLimit,
-                },
-            ),
-            (Side::Gote, GameCommand::Resign),
-        ] {
-            let mut snapshot = reserved.snapshot().clone();
-            snapshot.event_count += 1;
-            match command {
-                GameCommand::Stop { reason } => snapshot.incomplete = Some(reason),
-                GameCommand::Resign => {
-                    snapshot.conclusion = Some(Conclusion::Resignation {
-                        winner: actor.opponent(),
-                    })
-                }
-                _ => unreachable!(),
-            }
-            reserved.data.work += 1;
-            reserved.data.events.push(GameEvent {
-                index: reserved.events().len(),
-                board_ply: snapshot.board_ply,
-                actor,
-                command,
-                effects: None,
-                occurrences: snapshot.occurrences.clone(),
-                obligations: snapshot.obligations.clone(),
-                conclusion: snapshot.conclusion,
-                draw_offer: snapshot.draw_offer,
-                incomplete: snapshot.incomplete,
-                replay_work: reserved.data.work,
-            });
-            reserved.data.snapshots.push(snapshot);
-        }
-        Ok(super::record::encode(&reserved)
-            .map_err(|_| GameError::Capacity(Resource::EncodedBytes))?
-            .len())
+        // Obligations vary in size. Reserve the widest actual resignation.
+        [Side::Sente, Side::Gote]
+            .into_iter()
+            .map(|actor| {
+                let mut reserved = self.transaction();
+                let mut snapshot = reserved.snapshot().clone();
+                snapshot.event_count += 1;
+                snapshot.conclusion = Some(Conclusion::Resignation {
+                    winner: actor.opponent(),
+                });
+                reserved.data.work += 1;
+                reserved.data.events.push(GameEvent {
+                    index: reserved.events().len(),
+                    board_ply: snapshot.board_ply,
+                    actor,
+                    command: GameCommand::Resign,
+                    effects: None,
+                    occurrences: snapshot.occurrences.clone(),
+                    obligations: snapshot.obligations.clone(),
+                    conclusion: snapshot.conclusion,
+                    draw_offer: snapshot.draw_offer,
+                    replay_work: reserved.data.work,
+                });
+                reserved.data.snapshots.push(snapshot);
+                super::record::encode(&reserved)
+                    .map(|json| json.len())
+                    .map_err(|_| GameError::Capacity(Resource::EncodedBytes))
+            })
+            .try_fold(0, |largest, bytes| bytes.map(|bytes| largest.max(bytes)))
     }
     /// Exact logical undo; runtime revision advances and retired work stays retired.
     pub fn undo(&mut self, token: &mut GameUndo) -> Result<GameRedo, GameError> {
@@ -1106,7 +1059,6 @@ impl Game {
         next.obligations = self.derive_obligations(&before.obligations);
         next.conclusion = None;
         next.draw_offer = None;
-        next.incomplete = None;
         self.data.snapshots.push(next);
         Ok(())
     }
@@ -1229,20 +1181,10 @@ mod capacity_tests {
         let current = super::super::record::encode(&game).unwrap().len();
         let reserved = game.encoded_with_reservations().unwrap();
         let mut largest = 0;
-        for stop_actor in [Side::Sente, Side::Gote] {
-            for resign_actor in [Side::Sente, Side::Gote] {
-                let mut actual = game.transaction();
-                actual
-                    .commit(
-                        stop_actor,
-                        GameCommand::Stop {
-                            reason: StopReason::ResourceLimit,
-                        },
-                    )
-                    .unwrap();
-                actual.commit(resign_actor, GameCommand::Resign).unwrap();
-                largest = largest.max(super::super::record::encode(&actual).unwrap().len());
-            }
+        for resign_actor in [Side::Sente, Side::Gote] {
+            let mut actual = game.transaction();
+            actual.commit(resign_actor, GameCommand::Resign).unwrap();
+            largest = largest.max(super::super::record::encode(&actual).unwrap().len());
         }
         assert_eq!(reserved, largest);
         assert!(reserved > current);

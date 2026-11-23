@@ -104,8 +104,7 @@
         4
       ],
       "repetition": null,
-      "conclusion": null,
-      "incomplete": null
+      "conclusion": null
     },
     "live": {
       "event_index": 7,
@@ -126,8 +125,7 @@
           }
         ]
       },
-      "conclusion": null,
-      "incomplete": null
+      "conclusion": null
     }
   },
   "open_token": {
@@ -491,8 +489,8 @@
     "game_kind": "tori",
     "rules_profile": "mshogi.tori.modern.v1",
     "profile_edition": "MSH208-MODERN-2026-11-20",
-    "native_schema_version": 2,
-    "payload": {"format":"mshogi.tori.game","game":"tori","profile":"mshogi.tori.modern.v1","edition":"MSH208-MODERN-2026-11-20","schema_version":2,"mode":"untimed","root":{"root_kind":"diagram","source":null,"earlier_history_unknown":true,"historical_reachability_proven":false,"declared_completed_plies":0,"accepted_plies":0,"declared_total_plies":0,"side_to_move":"sente","board":[{"square":"4a","piece":{"side":"gote","face":"phoenix"}},{"square":"4g","piece":{"side":"sente","face":"phoenix"}}],"hands":[[0,0,0,0,0,0],[0,0,0,0,0,0]]},"root_conclusion":null,"events":[{"index":0,"board_ply":1,"actor":"sente","command":{"kind":"play","action":{"kind":"move","from":"4g","to":"5g","result_face":"phoenix"}},"effects":{"actor":"sente","action":{"kind":"move","from":"4g","to":"5g","result_face":"phoenix"},"resulting_piece":{"side":"sente","face":"phoenix"},"captured":null,"hand_change":null},"occurrences":[1],"conclusion":null,"incomplete":null},{"index":1,"board_ply":2,"actor":"gote","command":{"kind":"play","action":{"kind":"move","from":"4a","to":"5a","result_face":"phoenix"}},"effects":{"actor":"gote","action":{"kind":"move","from":"4a","to":"5a","result_face":"phoenix"},"resulting_piece":{"side":"gote","face":"phoenix"},"captured":null,"hand_change":null},"occurrences":[2],"conclusion":null,"incomplete":null},{"index":2,"board_ply":3,"actor":"sente","command":{"kind":"play","action":{"kind":"move","from":"5g","to":"4g","result_face":"phoenix"}},"effects":{"actor":"sente","action":{"kind":"move","from":"5g","to":"4g","result_face":"phoenix"},"resulting_piece":{"side":"sente","face":"phoenix"},"captured":null,"hand_change":null},"occurrences":[3],"conclusion":null,"incomplete":null},{"index":3,"board_ply":4,"actor":"gote","command":{"kind":"play","action":{"kind":"move","from":"5a","to":"4a","result_face":"phoenix"}},"effects":{"actor":"gote","action":{"kind":"move","from":"5a","to":"4a","result_face":"phoenix"},"resulting_piece":{"side":"gote","face":"phoenix"},"captured":null,"hand_change":null},"occurrences":[0,4],"conclusion":null,"incomplete":null}],"current_position":{"root_kind":"diagram","source":null,"earlier_history_unknown":true,"historical_reachability_proven":false,"declared_completed_plies":0,"accepted_plies":4,"declared_total_plies":4,"side_to_move":"sente","board":[{"square":"4a","piece":{"side":"gote","face":"phoenix"}},{"square":"4g","piece":{"side":"sente","face":"phoenix"}}],"hands":[[0,0,0,0,0,0],[0,0,0,0,0,0]]},"conclusion":null,"incomplete":null}
+    "native_schema_version": 3,
+    "payload": {"format":"mshogi.tori.game","game":"tori","profile":"mshogi.tori.modern.v1","edition":"MSH208-MODERN-2026-11-20","schema_version":3,"mode":"untimed","root":{"root_kind":"diagram","source":null,"earlier_history_unknown":true,"historical_reachability_proven":false,"declared_completed_plies":0,"accepted_plies":0,"declared_total_plies":0,"side_to_move":"sente","board":[{"square":"4a","piece":{"side":"gote","face":"phoenix"}},{"square":"4g","piece":{"side":"sente","face":"phoenix"}}],"hands":[[0,0,0,0,0,0],[0,0,0,0,0,0]]},"root_conclusion":null,"events":[{"index":0,"board_ply":1,"actor":"sente","command":{"kind":"play","action":{"kind":"move","from":"4g","to":"5g","result_face":"phoenix"}},"effects":{"actor":"sente","action":{"kind":"move","from":"4g","to":"5g","result_face":"phoenix"},"resulting_piece":{"side":"sente","face":"phoenix"},"captured":null,"hand_change":null},"occurrences":[1],"conclusion":null},{"index":1,"board_ply":2,"actor":"gote","command":{"kind":"play","action":{"kind":"move","from":"4a","to":"5a","result_face":"phoenix"}},"effects":{"actor":"gote","action":{"kind":"move","from":"4a","to":"5a","result_face":"phoenix"},"resulting_piece":{"side":"gote","face":"phoenix"},"captured":null,"hand_change":null},"occurrences":[2],"conclusion":null},{"index":2,"board_ply":3,"actor":"sente","command":{"kind":"play","action":{"kind":"move","from":"5g","to":"4g","result_face":"phoenix"}},"effects":{"actor":"sente","action":{"kind":"move","from":"5g","to":"4g","result_face":"phoenix"},"resulting_piece":{"side":"sente","face":"phoenix"},"captured":null,"hand_change":null},"occurrences":[3],"conclusion":null},{"index":3,"board_ply":4,"actor":"gote","command":{"kind":"play","action":{"kind":"move","from":"5a","to":"4a","result_face":"phoenix"}},"effects":{"actor":"gote","action":{"kind":"move","from":"5a","to":"4a","result_face":"phoenix"},"resulting_piece":{"side":"gote","face":"phoenix"},"captured":null,"hand_change":null},"occurrences":[0,4],"conclusion":null}],"current_position":{"root_kind":"diagram","source":null,"earlier_history_unknown":true,"historical_reachability_proven":false,"declared_completed_plies":0,"accepted_plies":4,"declared_total_plies":4,"side_to_move":"sente","board":[{"square":"4a","piece":{"side":"gote","face":"phoenix"}},{"square":"4g","piece":{"side":"sente","face":"phoenix"}}],"hands":[[0,0,0,0,0,0],[0,0,0,0,0,0]]},"conclusion":null}
   },
   "analysis": null,
   "observations": [],

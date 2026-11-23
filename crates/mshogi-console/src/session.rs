@@ -397,3 +397,23 @@ fn piece_char(color: Color, kind: PieceKind) -> char {
         Color::Black => letter,
     }
 }
+
+/// Transient diagnostic-console interruption; never part of a native record.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub(crate) enum OperationalStop {
+    Cancelled,
+    ResourceLimit,
+    EngineFailure,
+    WorkLimit,
+}
+impl OperationalStop {
+    pub(crate) fn parse(args: &[&str]) -> Result<Self, String> {
+        match args {
+            ["cancelled"] => Ok(Self::Cancelled),
+            ["resource"] => Ok(Self::ResourceLimit),
+            ["engine"] => Ok(Self::EngineFailure),
+            ["work"] => Ok(Self::WorkLimit),
+            _ => Err("usage: stop cancelled|resource|engine|work".into()),
+        }
+    }
+}

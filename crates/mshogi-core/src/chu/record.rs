@@ -8,7 +8,7 @@ use serde::{
 use serde_json::value::RawValue;
 use std::{collections::BTreeSet, error::Error, fmt};
 /// Native record version, distinct from immutable rules edition and outer transport.
-pub const GAME_RECORD_SCHEMA_VERSION: u32 = 1;
+pub const GAME_RECORD_SCHEMA_VERSION: u32 = 2;
 /// Native encoded payload bound, leaving space in the existing shared envelope.
 pub const MAX_GAME_RECORD_BYTES: usize = 512 * 1024;
 /// Exact validated canonical record, excluding runtime/undo handles.
@@ -65,7 +65,6 @@ struct WireRecord {
     conclusion: Option<Conclusion>,
     obligations: Vec<Obligation>,
     draw_offer: Option<Side>,
-    incomplete: Option<StopReason>,
 }
 impl WireRecord {
     fn from_game(g: &Game) -> Self {
@@ -84,7 +83,6 @@ impl WireRecord {
             conclusion: g.conclusion(),
             obligations: g.obligations().to_vec(),
             draw_offer: g.snapshot().draw_offer,
-            incomplete: g.snapshot().incomplete,
         }
     }
 }

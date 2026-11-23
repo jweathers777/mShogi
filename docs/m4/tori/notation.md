@@ -46,9 +46,9 @@ custom roots or complete games through strict canonical replay. There is no
 second text-only diagram grammar. Board cells use `s`/`g` owner prefixes without
 colons and fixed widths (`sLQ`, `gRQ`, `sEa`). Hands retain separate native counts.
 
-`move` batches are all-or-none. `resign` and `stop` retain their native event
-meanings; Stop is incomplete/unscored, not a game result. `undo` reverses complete
-events. `history` reports board actions in readable notation and non-board events
+`move` batches are all-or-none. `resign` is a native event. `stop` changes only
+the session interruption message; it is unscored and is not saved. `undo` reverses
+complete player events. `history` reports board actions in readable notation and non-board events
 separately with exact event/board-ply indices. `perft` and `divide` are explicitly
 bounded local diagnostics and do not replace history-aware game permission.
 `analyze` is read-only history-aware native search; it never applies its action.
@@ -67,8 +67,8 @@ session/process identities and an independent20-second process watchdog. The
 two fixed scenarios each run twice and compare actions, complete observations
 and canonical records:
 
-- Standard-root self-play, bounded to eight board actions. It then records an
-  explicit unscored WorkLimit Stop; this is a functional smoke, not a completed
+- Standard-root self-play, bounded to eight board actions. The run ends without
+  adding a game event; this is a functional smoke, not a completed
   standard game or playing-strength result.
 - A hand-reviewed predecessor of TORI-O-MATE. `Ea4c-4b` reaches the independently
   expected native checkmate; the next process reports that actual conclusion.

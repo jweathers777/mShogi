@@ -137,7 +137,7 @@ fn malformed_batch_and_resource_diagnostics_preserve_canonical_session() {
 #[test]
 fn actual_offers_and_nonmove_commands_preserve_turn_and_atomic_failure() {
     let o = shell(&format!(
-        "position record-json {}\nrecord\noffer-draw gote\nhistory\ndecline-draw sente\nundo 2\nrecord\noffer-draw sente\naccept-draw gote\nhistory\nundo 2\nstop work\nresign gote\nhistory\nundo 2\nrecord\n",
+        "position record-json {}\nrecord\noffer-draw gote\nhistory\ndecline-draw sente\nundo 2\nrecord\noffer-draw sente\naccept-draw gote\nhistory\nundo 2\nstop work\nresign gote\nhistory\nundo 1\nrecord\n",
         encode(&root())
     ));
     success(&o);

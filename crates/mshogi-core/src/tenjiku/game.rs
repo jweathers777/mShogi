@@ -41,16 +41,6 @@ impl Conclusion {
         }
     }
 }
-/// Administrative interruption is not a game outcome.
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
-#[allow(missing_docs)]
-pub enum StopReason {
-    Cancelled,
-    ResourceLimit,
-    EngineFailure,
-    WorkLimit,
-}
 /// Complete native participant/administrative commands; no rule switches exist.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
@@ -61,7 +51,6 @@ pub enum GameCommand {
     OfferDraw,
     AcceptDraw,
     DeclineDraw,
-    Stop { reason: StopReason },
 }
 impl<'de> Deserialize<'de> for GameCommand {
     fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
@@ -73,7 +62,6 @@ impl<'de> Deserialize<'de> for GameCommand {
             OfferDraw {},
             AcceptDraw {},
             DeclineDraw {},
-            Stop { reason: StopReason },
         }
         Ok(match Wire::deserialize(d)? {
             Wire::Play { action } => Self::Play { action },
@@ -81,7 +69,6 @@ impl<'de> Deserialize<'de> for GameCommand {
             Wire::OfferDraw {} => Self::OfferDraw,
             Wire::AcceptDraw {} => Self::AcceptDraw,
             Wire::DeclineDraw {} => Self::DeclineDraw,
-            Wire::Stop { reason } => Self::Stop { reason },
         })
     }
 }
@@ -142,7 +129,6 @@ pub struct GameEvent {
     pub conclusion: Option<Conclusion>,
     pub pending_bare: Option<Side>,
     pub draw_offer: Option<Side>,
-    pub incomplete: Option<StopReason>,
 }
 /// A complete immutable committed native prefix; it owns no execution authority.
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -154,7 +140,6 @@ pub struct HistorySnapshot {
     pub conclusion: Option<Conclusion>,
     pub pending_bare: Option<Side>,
     pub draw_offer: Option<Side>,
-    pub incomplete: Option<StopReason>,
     work: u64,
 }
 impl HistorySnapshot {
@@ -330,7 +315,6 @@ impl Game {
             conclusion: None,
             pending_bare: None,
             draw_offer: None,
-            incomplete: None,
             work: 256,
         };
         let (conclusion, pending, work) = adjudicate(&local, std::slice::from_ref(&key), stop)?;
@@ -581,7 +565,7 @@ impl Game {
         stop: &mut impl FnMut() -> bool,
     ) -> Result<GameUndo, GameError> {
         check(stop)?;
-        if self.conclusion().is_some() && !matches!(command, GameCommand::Stop { .. }) {
+        if self.conclusion().is_some() {
             return Err(GameError::Concluded);
         }
         let mut candidate = self.copy_for_transaction();
@@ -591,7 +575,6 @@ impl Game {
         let mut conclusion = self.conclusion();
         let mut pending = self.snapshot().pending_bare;
         let mut offer = self.snapshot().draw_offer;
-        let mut incomplete = self.snapshot().incomplete;
         match &command {
             GameCommand::Play { action } => {
                 if actor != self.position().side_to_move() {
@@ -612,7 +595,6 @@ impl Game {
                 board_ply += 1;
                 effects = Some(e);
                 offer = None;
-                incomplete = None;
                 let (c, p, n) = adjudicate(&candidate.local, &candidate.keys, stop)?;
                 work += n;
                 conclusion = c;
@@ -624,7 +606,6 @@ impl Game {
                 });
                 pending = None;
                 offer = None;
-                incomplete = None;
             }
             GameCommand::OfferDraw => {
                 if offer.is_some() {
@@ -639,7 +620,6 @@ impl Game {
                 conclusion = Some(Conclusion::Agreement);
                 pending = None;
                 offer = None;
-                incomplete = None;
             }
             GameCommand::DeclineDraw => {
                 if offer != Some(actor.opponent()) {
@@ -647,12 +627,9 @@ impl Game {
                 }
                 offer = None;
             }
-            GameCommand::Stop { reason } => {
-                incomplete = Some(*reason);
-            }
         }
         candidate.push_event(
-            actor, command, effects, board_ply, conclusion, pending, offer, incomplete, work,
+            actor, command, effects, board_ply, conclusion, pending, offer, work,
         )?;
         let bytes = record::encoded_size(&candidate).map_err(|_| GameError::Record)?;
         let total = candidate
@@ -709,7 +686,6 @@ impl Game {
         conclusion: Option<Conclusion>,
         pending_bare: Option<Side>,
         draw_offer: Option<Side>,
-        incomplete: Option<StopReason>,
         work: u64,
     ) -> Result<(), GameError> {
         let event = GameEvent {
@@ -721,7 +697,6 @@ impl Game {
             conclusion,
             pending_bare,
             draw_offer,
-            incomplete,
         };
         let size = serde_json::to_vec(&event)
             .map_err(|_| GameError::Record)?
@@ -742,33 +717,22 @@ impl Game {
             conclusion,
             pending_bare,
             draw_offer,
-            incomplete,
             work: charged,
         }));
         Ok(())
     }
-    fn ending(&mut self, actor: Side, command: GameCommand) -> Result<u64, GameError> {
-        let (s, c, p, o, i) = (
-            self.snapshot().board_ply,
-            self.conclusion(),
-            self.snapshot().pending_bare,
-            self.snapshot().draw_offer,
-            self.snapshot().incomplete,
-        );
-        let (conclusion, pending, offer, incomplete) = match command {
-            GameCommand::Resign => (
-                Some(Conclusion::Resignation {
-                    winner: actor.opponent(),
-                }),
-                None,
-                None,
-                None,
-            ),
-            GameCommand::Stop { reason } => (c, p, o, Some(reason)),
-            _ => (c, p, o, i),
-        };
+    fn ending(&mut self, actor: Side) -> Result<u64, GameError> {
         self.push_event(
-            actor, command, None, s, conclusion, pending, offer, incomplete, 1,
+            actor,
+            GameCommand::Resign,
+            None,
+            self.snapshot().board_ply,
+            Some(Conclusion::Resignation {
+                winner: actor.opponent(),
+            }),
+            None,
+            None,
+            1,
         )?;
         Ok(record::encoded_size(self).map_err(|_| GameError::Record)? as u64 + 1)
     }
@@ -784,42 +748,19 @@ impl Game {
         let mut largest_bytes = bytes;
         let mut largest_events = self.events.len();
         let mut largest_work = self.replay_work();
-        // All actors are native choices. Only reserve a first Stop while ongoing and not already stopped.
-        for first in [Side::Sente, Side::Gote] {
-            for resign in [Side::Sente, Side::Gote] {
-                for last in [Side::Sente, Side::Gote] {
-                    check(stop)?;
-                    let mut candidate = self.copy_for_transaction();
-                    let mut extra = 0;
-                    if candidate.conclusion().is_none() && candidate.snapshot().incomplete.is_none()
-                    {
-                        extra += candidate.ending(
-                            first,
-                            GameCommand::Stop {
-                                reason: StopReason::ResourceLimit,
-                            },
-                        )?;
-                    }
-                    if candidate.conclusion().is_none() {
-                        extra += candidate.ending(resign, GameCommand::Resign)?;
-                    }
-                    if candidate.snapshot().incomplete.is_none() {
-                        extra += candidate.ending(
-                            last,
-                            GameCommand::Stop {
-                                reason: StopReason::ResourceLimit,
-                            },
-                        )?;
-                    }
-                    largest_bytes = largest_bytes
-                        .max(record::encoded_size(&candidate).map_err(|_| GameError::Record)?);
-                    largest_events = largest_events.max(candidate.events.len());
-                    largest_work = largest_work.max(
-                        self.replay_work()
-                            .checked_add(extra)
-                            .ok_or(GameError::Capacity(Resource::ReplayWork))?,
-                    );
-                }
+        if self.conclusion().is_none() {
+            for actor in [Side::Sente, Side::Gote] {
+                check(stop)?;
+                let mut candidate = self.copy_for_transaction();
+                let extra = candidate.ending(actor)?;
+                largest_bytes = largest_bytes
+                    .max(record::encoded_size(&candidate).map_err(|_| GameError::Record)?);
+                largest_events = largest_events.max(candidate.events.len());
+                largest_work = largest_work.max(
+                    self.replay_work()
+                        .checked_add(extra)
+                        .ok_or(GameError::Capacity(Resource::ReplayWork))?,
+                );
             }
         }
         Ok(CapacityUsage {

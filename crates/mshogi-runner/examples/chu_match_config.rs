@@ -207,7 +207,7 @@ fn quiet_setup(game: &mut Game, seed: u64, plies: u64, rear_only: bool) {
             command: GameCommand::Play { action },
         })
         .unwrap();
-        assert!(game.conclusion().is_none() && game.snapshot().incomplete.is_none());
+        assert!(game.conclusion().is_none());
     }
 }
 
@@ -252,7 +252,7 @@ fn main() {
         ),
         _ => panic!("unsupported fixed corpus seed"),
     };
-    assert!(game.conclusion().is_none() && game.snapshot().incomplete.is_none());
+    assert!(game.conclusion().is_none());
     quiet_setup(&mut game, seed, plies, (1..=9999).contains(&seed));
     args.write(
         "MSH-182",

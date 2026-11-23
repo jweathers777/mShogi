@@ -162,12 +162,9 @@ fn public_consumer_rejects_profile_conflicts_forged_effects_and_duplicate_fields
             1,
         );
         assert!(GameRecord::from_json(&duplicate).is_err());
-        let forged = record.as_json().replacen(
-            "\"conclusion\":null",
-            "\"conclusion\":{\"kind\":\"agreement\"}",
-            1,
-        );
-        assert!(GameRecord::from_json(&forged).is_err());
+        let mut forged: serde_json::Value = serde_json::from_str(record.as_json()).unwrap();
+        forged["conclusion"] = serde_json::json!({"kind":"agreement"});
+        assert!(GameRecord::from_json(&forged.to_string()).is_err());
         let profile_wire = serde_json::to_string(&profile).unwrap();
         let duplicate_outer = format!(
             "{{\"profile\":{profile_wire},\"profile\":{profile_wire},\"record\":{}}}",
@@ -185,6 +182,7 @@ fn public_consumer_rejects_profile_conflicts_forged_effects_and_duplicate_fields
         .unwrap();
         let accepted = GameRecord::from_game(&game).unwrap();
         let mut forged: serde_json::Value = serde_json::from_str(accepted.as_json()).unwrap();
+        forged["events"][0]["effects"] = serde_json::to_value(&game.events()[0].effects).unwrap();
         if profile == Profile::AdamsModern {
             forged["events"][0]["effects"]["phases"][0]["victims"][0]["square"] =
                 serde_json::json!([8, 6]);
@@ -193,7 +191,7 @@ fn public_consumer_rejects_profile_conflicts_forged_effects_and_duplicate_fields
         }
         assert_eq!(
             GameRecord::from_json(&forged.to_string()).unwrap_err(),
-            RecordError::Derived
+            RecordError::Json
         );
         assert_eq!(GameRecord::from_game(&game).unwrap(), accepted);
     }

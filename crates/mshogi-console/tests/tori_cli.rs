@@ -236,11 +236,7 @@ fn strict_wrong_game_profile_derived_duplicate_and_large_loads_preserve_current_
             .replace(t::PROFILE_ID, "unknown.tori.profile")
             .into_bytes(),
         valid
-            .replacen(
-                "\"game\":\"tori\"",
-                "\"game\":\"tori\",\"game\":\"tori\"",
-                1,
-            )
+            .replacen("\"edition\":", "\"edition\":\"duplicate\",\"edition\":", 1)
             .into_bytes(),
         valid
             .replace("\"declared_total_plies\":31", "\"declared_total_plies\":32")
@@ -254,6 +250,7 @@ fn strict_wrong_game_profile_derived_duplicate_and_large_loads_preserve_current_
         .unwrap()
         .into_bytes(),
     ] {
+        assert_ne!(bytes, valid.as_bytes(), "mutation must change the record");
         fs::write(&path, &bytes).unwrap();
         let o = shell(&format!(
             "move Sw7e-7d\nrecord\nrecord load-file {}\nrecord\nrecord save {}\nrecord\n",

@@ -502,8 +502,12 @@ fn strict_payload_context_and_transport_preserve_identity_through_real_execution
     assert!(CanonicalRecord::from_json(&conflict).is_err());
     let native = x::GameRecord::from_game(&g).unwrap();
     assert_eq!(
-        x::GameRecord::from_json(&native.to_json().replace("sound_fast_only", "bounded_exact")),
-        Err(x::RecordError::Unsupported)
+        x::GameRecord::from_json(&native.to_json().replacen(
+            '{',
+            "{\"no_win_mode\":\"bounded_exact\",",
+            1
+        )),
+        Err(x::RecordError::Json)
     );
     let mut resource = x::ExactAnalysis::new().unwrap();
     let request = resource.begin(&g, limits()).unwrap();

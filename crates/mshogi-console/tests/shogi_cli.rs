@@ -248,10 +248,15 @@ fn malformed_unsupported_tampered_oversized_loads_and_failed_saves_preserve_sess
         command: GameCommand::Play("7g7f".parse().unwrap()),
     })
     .unwrap();
-    let malformed = CanonicalRecord::shogi(GameRecord::from_game(&game))
+    let valid = CanonicalRecord::shogi(GameRecord::from_game(&game))
         .to_json()
-        .unwrap()
-        .replace("\"gave_check\":false", "\"gave_check\":true");
+        .unwrap();
+    let malformed = valid.replacen(
+        "\"actor\":\"sente\"",
+        "\"actor\":\"sente\",\"gave_check\":true",
+        1,
+    );
+    assert_ne!(malformed, valid);
     fs::write(&path, malformed).unwrap();
     let out = run(&format!("record\nrecord load {}\nrecord\n", path.display()));
     assert!(!out.status.success());

@@ -1,11 +1,11 @@
 ---
 id: MSH-219
 title: Shogi Match Test Timing Failure
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-21T04:35:00Z'
-updated_date: '2026-11-23T19:53:00Z'
+updated_date: '2026-11-23T19:54:00Z'
 labels:
   - runner
   - test
@@ -51,3 +51,9 @@ Final local verification: cargo fmt --all -- --check and cargo clippy --workspac
 
 Final platform verification: workflow 45250398037 passed routine checks and targeted process suites on Ubuntu 24.04, macOS 15 and Windows 2022 for fix 175b52d. Evidence uploaded successfully to gs://mshogi-experiments-216675633801/runs/msh-219/ (60-day lifecycle), including the original draw report, historical source, failed old-mutation regression, 20 passing fixed-suite logs, and workspace logs. No new follow-up is needed; MSH-199 (Chu Test Cost Review) remains the next test-cost issue. Ready for integration and cleanup.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Merged into main at cebbd74. Root cause: the timed self-play test sometimes drew; reversing [1,1] left the report unchanged, so replay correctly succeeded. Historical line 124 at 0371aef is this score assertion, despite the task description naming report.stop. Replaced variable self-play with a fixed twelve-ply Fourfold draw, guaranteed contradictory score tampering, and a separate real-engine mate-in-one check. Old mutation fails the new regression; fixed five-test suite passed 20/20 repeats. Formatting/Clippy and three-platform process CI passed; release workspace 1190 passed, 11 ignored. Debug workspace retains the four known MSH-199 failures. Evidence is in the task GCS path. No product or game-rule change; next task MSH-199 (Chu Test Cost Review).
+<!-- SECTION:FINAL_SUMMARY:END -->

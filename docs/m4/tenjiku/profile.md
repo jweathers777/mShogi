@@ -296,10 +296,11 @@ records even when repetition treats their final boards as equal.
 Apply/undo must restore every logical state/cache/right/effect/history/conclusion;
 private undo layout never becomes public save schema. Rewind/reopen assign fresh
 runtime authority and cannot revive old requests. Native record fixes profile ID,
-edition/schema, root/provenance, actual commands/complete actions, ordered effect
-phases, per-original rights and derived outcomes. Strict parse rejects duplicate,
-unknown, conflicting/missing identities and forged derived data; replay re-derives
-and compares all semantic facts. One profile's record must never be interpreted
+edition/schema, root/provenance, actual commands/complete actions and
+per-original rights. Schema 3 stores the whole profile in the root. Native replay
+restores ordered effect phases and derived outcomes. Strict parse rejects
+duplicate, unknown and conflicting/missing identities; records cannot supply
+their own effects or outcomes. One profile's record must never be interpreted
 as the other merely because board/sides/topology match. Unsupported conversion
 fails explicitly; switching profiles means a fresh root/game, not mutating history.
 

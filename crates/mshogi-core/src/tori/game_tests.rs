@@ -474,7 +474,7 @@ fn strict_record_all_fields_nested_duplicates_missing_tampering_and_resources() 
         ("profile", json!("mshogi.tori.bunsei11.v1")),
         ("edition", json!("new")),
         ("schema_version", json!(1)),
-        ("schema_version", json!(4)),
+        ("schema_version", json!(99)),
         ("mode", json!("timed")),
         ("invented", json!(true)),
     ] {
@@ -485,7 +485,7 @@ fn strict_record_all_fields_nested_duplicates_missing_tampering_and_resources() 
     for (index, key, value) in [
         (0, "board_ply", json!(0)),
         (9, "occurrences", json!([0, 10])),
-        // Schema-1 fields are unknown in schema 3.
+        // Derived fields are unknown in schema 4.
         (9, "obligation", Value::Null),
         (
             10,
@@ -503,7 +503,7 @@ fn strict_record_all_fields_nested_duplicates_missing_tampering_and_resources() 
         );
     }
     let mut v = original.clone();
-    v["current_position"]["hands"][0][0] = json!(1);
+    v["current_position"] = json!({"hands":[[1],[]]});
     assert!(GameRecord::from_json(&v.to_string()).is_err());
     let mut v = original.clone();
     v["root"]["historical_reachability_proven"] = json!(true);

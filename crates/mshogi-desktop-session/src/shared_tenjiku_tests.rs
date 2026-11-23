@@ -810,6 +810,10 @@ fn raw_mixed_profile_forged_effects_and_duplicate_commands_never_reach_the_insta
         assert_ne!(duplicate, raw);
         assert!(SharedDesktopCommand::from_json(&duplicate).is_err());
         let mut forged: Value = serde_json::from_str(&raw).unwrap();
+        // Effects are derived, so even a supplied copy is forbidden. Keep the
+        // hostile native-effect probe without relying on an encoded cache.
+        forged["operation"]["record"]["payload"]["events"][0]["effects"] =
+            serde_json::to_value(&native.to_game().unwrap().events()[0].effects).unwrap();
         let phase =
             &mut forged["operation"]["record"]["payload"]["events"][0]["effects"]["phases"][0];
         if profile == c::Profile::AdamsModern {

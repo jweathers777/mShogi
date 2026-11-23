@@ -1,16 +1,13 @@
 //! Native strict records. No desktop archive or execution framework is defined here.
 use super::*;
-use serde::{
-    Deserialize, Serialize,
-    de::{self, MapAccess, SeqAccess, Visitor},
-};
+use crate::record::RecordedCommand;
+use serde::{Deserialize, Serialize};
 use serde_json::value::RawValue;
-use std::collections::BTreeSet;
 
 /// Native schema, independent of the immutable profile and shared transport/envelope.
-/// Schema 3 removes operational stops. Schema 1 records retain the promised
+/// Schema 4 stores commands and reconstructs their effects. Schema 1 records retain the promised
 /// replay path under current T06, with validated stop annotations omitted.
-pub const GAME_RECORD_SCHEMA_VERSION: u32 = 3;
+pub const GAME_RECORD_SCHEMA_VERSION: u32 = 4;
 /// Native payload bound, leaving room inside the existing 1MiB shared envelope.
 pub const MAX_GAME_RECORD_BYTES: usize = 512 * 1024;
 /// Bounded complete native record with replay-validated cached metadata.
@@ -254,38 +251,33 @@ impl WirePosition {
 #[derive(Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 struct WireRecord {
-    format: String,
-    game: String,
     profile: String,
     edition: String,
     schema_version: u32,
-    mode: String,
     root: WirePosition,
-    root_conclusion: Option<Conclusion>,
-    events: Vec<GameEvent>,
-    current_position: WirePosition,
-    conclusion: Option<Conclusion>,
+    events: Vec<RecordedCommand<Side, GameCommand>>,
 }
 impl WireRecord {
     fn from_game(game: &Game) -> Self {
         Self {
-            events: game.events.clone(),
+            events: game
+                .events
+                .iter()
+                .map(|event| RecordedCommand {
+                    actor: event.actor,
+                    command: event.command,
+                })
+                .collect(),
             ..Self::without_events(game)
         }
     }
     fn without_events(game: &Game) -> Self {
         Self {
-            format: "mshogi.tori.game".into(),
-            game: "tori".into(),
             profile: PROFILE_ID.into(),
             edition: PROFILE_EDITION.into(),
             schema_version: GAME_RECORD_SCHEMA_VERSION,
-            mode: "untimed".into(),
             root: WirePosition::from_state(&game.root),
-            root_conclusion: game.event_prefix(0).expect("root").conclusion,
             events: vec![],
-            current_position: WirePosition::from_state(game.position().state()),
-            conclusion: game.conclusion(),
         }
     }
 }
@@ -303,9 +295,12 @@ pub(super) fn encoded_len(game: &Game, event_bytes: usize) -> Result<usize, Reco
 }
 /// Compact encoded length of one event inside the record.
 pub(super) fn event_len(event: &GameEvent) -> Result<usize, RecordError> {
-    serde_json::to_vec(event)
-        .map(|v| v.len())
-        .map_err(|_| RecordError::Json)
+    serde_json::to_vec(&RecordedCommand {
+        actor: event.actor,
+        command: event.command,
+    })
+    .map(|v| v.len())
+    .map_err(|_| RecordError::Json)
 }
 impl GameRecord {
     /// Encode all accepted history without truncation. Admission guarantees this bound.
@@ -420,12 +415,9 @@ impl GameRecord {
             return Self::replay_v1(text, stop);
         }
         let wire: WireRecord = serde_json::from_str(text).map_err(|_| RecordError::Json)?;
-        if wire.format != "mshogi.tori.game"
-            || wire.game != "tori"
-            || wire.profile != PROFILE_ID
+        if wire.profile != PROFILE_ID
             || wire.edition != PROFILE_EDITION
             || wire.schema_version != GAME_RECORD_SCHEMA_VERSION
-            || wire.mode != "untimed"
         {
             return Err(RecordError::Identity);
         }
@@ -433,9 +425,6 @@ impl GameRecord {
             return Err(RecordError::Capacity);
         }
         let mut game = Game::from_root(wire.root.root()?).map_err(|_| RecordError::Root)?;
-        if wire.root_conclusion != game.conclusion() {
-            return Err(RecordError::Derived);
-        }
         let mut undo = Vec::with_capacity(wire.events.len());
         for (i, event) in wire.events.iter().enumerate() {
             if stop() {
@@ -452,9 +441,6 @@ impl GameRecord {
                     _ => RecordError::Command(i),
                 })?,
             );
-            if game.events.last() != Some(event) {
-                return Err(RecordError::Derived);
-            }
         }
         // Only AFTER duplicate-preserving validation and typed parsing. Also rejects
         // omitted nullable fields; Option's default cannot silently admit absence.
@@ -641,52 +627,5 @@ fn strict(text: &str, limit: usize) -> Result<(), RecordError> {
     if text.len() > limit {
         return Err(RecordError::Capacity);
     }
-    struct Unique;
-    impl<'de> Deserialize<'de> for Unique {
-        fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-            d.deserialize_any(UniqueVisitor)
-        }
-    }
-    struct UniqueVisitor;
-    impl<'de> Visitor<'de> for UniqueVisitor {
-        type Value = Unique;
-        fn expecting(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            f.write_str("duplicate-free bounded JSON")
-        }
-        fn visit_map<M: MapAccess<'de>>(self, mut map: M) -> Result<Unique, M::Error> {
-            let mut keys = BTreeSet::new();
-            while let Some(key) = map.next_key::<String>()? {
-                if !keys.insert(key) {
-                    return Err(de::Error::custom("duplicate field"));
-                }
-                map.next_value::<Unique>()?;
-            }
-            Ok(Unique)
-        }
-        fn visit_seq<S: SeqAccess<'de>>(self, mut seq: S) -> Result<Unique, S::Error> {
-            while seq.next_element::<Unique>()?.is_some() {}
-            Ok(Unique)
-        }
-        fn visit_bool<E: de::Error>(self, _: bool) -> Result<Unique, E> {
-            Ok(Unique)
-        }
-        fn visit_i64<E: de::Error>(self, _: i64) -> Result<Unique, E> {
-            Ok(Unique)
-        }
-        fn visit_u64<E: de::Error>(self, _: u64) -> Result<Unique, E> {
-            Ok(Unique)
-        }
-        fn visit_f64<E: de::Error>(self, _: f64) -> Result<Unique, E> {
-            Ok(Unique)
-        }
-        fn visit_str<E: de::Error>(self, _: &str) -> Result<Unique, E> {
-            Ok(Unique)
-        }
-        fn visit_unit<E: de::Error>(self) -> Result<Unique, E> {
-            Ok(Unique)
-        }
-    }
-    let mut d = serde_json::Deserializer::from_str(text);
-    Unique::deserialize(&mut d).map_err(|_| RecordError::Json)?;
-    d.end().map_err(|_| RecordError::Json)
+    crate::record::reject_duplicates(text).map_err(|_| RecordError::Json)
 }

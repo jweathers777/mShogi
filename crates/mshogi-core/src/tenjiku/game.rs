@@ -698,9 +698,7 @@ impl Game {
             pending_bare,
             draw_offer,
         };
-        let size = serde_json::to_vec(&event)
-            .map_err(|_| GameError::Record)?
-            .len();
+        let size = super::record::event_len(&event).map_err(|_| GameError::Record)?;
         self.events_encoded_bytes = self
             .events_encoded_bytes
             .checked_add(size)
@@ -811,7 +809,7 @@ impl Game {
         candidate.events_encoded_bytes = candidate
             .events
             .iter()
-            .map(|e| serde_json::to_vec(e).expect("accepted event").len())
+            .map(|e| super::record::event_len(e).expect("accepted event"))
             .sum();
         let reserve = candidate.capacity_usage()?.reserved_events as u64;
         if revision.checked_add(reserve).is_none()

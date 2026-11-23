@@ -37,7 +37,7 @@ fn actual_core_consumer_uses_native_choices_effects_history_inspection_context_a
     assert_eq!(r.game_kind(), GameKind::Tori);
     assert_eq!(r.profile(), RulesProfile::ToriModernV1);
     assert_eq!(r.profile().edition(), t::PROFILE_EDITION);
-    assert_eq!(r.native_schema(), NativeSchema::ToriV3);
+    assert_eq!(r.native_schema(), NativeSchema::ToriV4);
     assert_eq!(r.known_board_actions(), 1);
     assert_eq!(r.event_count(), 1);
     let text = r.to_json().unwrap();
@@ -111,7 +111,7 @@ fn raw_outer_and_nested_identity_duplicates_unknown_missing_conflicts_never_fall
         ("rules_profile", json!("mshogi.shogi.csa36.v1")),
         ("profile_edition", json!("other")),
         ("native_schema_version", json!(1)),
-        ("native_schema_version", json!(4)),
+        ("native_schema_version", json!(99)),
         ("envelope_version", json!(2)),
         ("unknown", json!(1)),
     ] {

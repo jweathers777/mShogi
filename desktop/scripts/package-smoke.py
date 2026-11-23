@@ -146,8 +146,8 @@ for index, profile in enumerate(('adams', 'muller')):
     source = Path(__file__).with_name('fixtures') / f'tenjiku-{profile}-royal-engine.mshogi'
     document = json.loads(source.read_text(encoding='utf-8'))
     native = document['payload']['record']
-    turn = native['payload']['current_position']['side']
-    assert turn == 'sente' and native['payload']['conclusion'] is None
+    turn = native['payload']['root']['side']
+    assert turn == 'sente' and native['payload']['events'] == []
     ctx = {'purpose': {'kind': 'engine_turn'}, 'request_id': 100 + index * 2,
         'session_version': 1, 'process_generation': 100 + index * 2,
         'game': native, 'limits': {'depth': 1, 'nodes': 1024}}

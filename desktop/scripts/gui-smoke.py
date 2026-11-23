@@ -217,7 +217,7 @@ def completed_tenjiku_analysis(before, after, request_floor, generation_floor, d
     """A retained old result/status cannot prove a newly requested analysis."""
     try:
         previous=before['observations'];current=after['observations']
-        selected=before['tenjiku']['selected'];turn={'game_kind':'tenjiku','side':before['context']['payload']['current_position']['side']}
+        selected=before['tenjiku']['selected'];turn={'game_kind':'tenjiku','side':before['tenjiku']['selected']['repetition_key']['side']}
         if (len(current)!=len(previous)+1 or [item['observation'] for item in current[:-1]]!=[item['observation'] for item in previous]
                 or after['profile']!=before['profile'] or after['context']!=before['context']
                 or after['token']['document']!=before['token']['document'] or after['token']['version']!=before['token']['version']
@@ -243,7 +243,7 @@ def completed_tenjiku_analysis(before, after, request_floor, generation_floor, d
 def reopened_tenjiku_document_stopped(before, after, ui):
     """Ordinary Open stops work even when a concluded game has no Resume banner."""
     try:
-        concluded=before['context']['payload']['conclusion'] is not None
+        concluded=before['tenjiku']['selected']['conclusion'] is not None
         return (after['profile']==before['profile'] and after['context']==before['context']
             and after['tenjiku']==before['tenjiku'] and after['moves']==before['moves']
             and after['token']['document']>before['token']['document']
@@ -2601,7 +2601,7 @@ class Journey:
         w.button('Resume play');wait(lambda:w.read("document.querySelector('.game-shell').dataset.paused")=='false','explicit Tenjiku Resume after Load')
         self.tenjiku_analysis();assert self.native_diagnostics()['context']==reopened['context']
         w.button('Play details');self.direct_resign('tenjiku');concluded=self.native_diagnostics()
-        assert concluded['context']['payload']['conclusion']=={'kind':'resignation','winner':'gote'}
+        assert concluded['tenjiku']['selected']['conclusion']=={'kind':'resignation','winner':'gote'}
         self.tenjiku_save(self.args.output/f'normal-tenjiku-{profile}-concluded.mshogi',profile)
         dirty=self.dirty_native_close_source('Tenjiku');self.record('Actual dirty Tenjiku native close',self.native.close_window())
         wait(lambda:w.has('.document-guard'),'dirty Tenjiku Quit protected');w.button('Cancel');wait(lambda:not w.has('.document-guard'),'dirty Tenjiku Quit Cancel')
@@ -2621,17 +2621,17 @@ class Journey:
         w.click(self.square('9h'));self.tenjiku_events(0);assert w.text('.selected-piece-status')==selected and 'No action submitted' in w.text('.route-selection')
         self.selected_footer_fits(selected,require_route=True);self.capture('compound-partial-friendly-name-retained');w.key('\ue00c');wait(lambda:not w.has('.selected-piece-status'),'compound Escape restores footer')
         self.viewport(1180,820);captured=self.tenjiku_action('8h',['9h','10h'],1)
-        assert [phase['victim']['square'] for phase in captured['context']['payload']['events'][0]['effects']['phases']]==[[9,8],[10,8]]
+        assert [phase['victim']['square'] for phase in captured['tenjiku']['selected']['last_effects']['phases']]==[[9,8],[10,8]]
         self.capture('complete-two-ordered-captures');self.tenjiku_save(self.args.output/f'tenjiku-{profile}-compound.mshogi',profile)
         self.tenjiku_load_fixture(profile,'igui');iguied=self.tenjiku_action('8h',['9h'],1,igui=True)
         assert 'stationary origin 8h' in w.read("document.querySelector('.moves-table button[data-event=\"1\"]')?.getAttribute('aria-label')??''")
-        assert iguied['context']['payload']['current_position']['board'][7*16+7]['base']=='ChS'
+        assert next(item for item in iguied['tenjiku']['selected']['identities'] if item['square']=='8h')['piece']['base']=='ChS'
         self.capture('stationary-capture-accessible-effects')
         self.tenjiku_load_fixture(profile,'promotion');promoted=self.tenjiku_action('8f',['8e'],1,promote=True)
         assert w.read("document.querySelector('.square[aria-label^=\"8e,\"] [data-tenjiku-face=G][data-promoted=true]')!==null")
-        assert promoted['context']['payload']['conclusion'] is None;self.capture('native-optional-promotion-identity')
+        assert promoted['tenjiku']['selected']['conclusion'] is None;self.capture('native-optional-promotion-identity')
         self.tenjiku_load_fixture(profile,'burn');burned=self.tenjiku_action('8j',['7i','7h','8h'],1)
-        phases=burned['context']['payload']['events'][0]['effects']['phases']
+        phases=burned['tenjiku']['selected']['last_effects']['phases']
         assert [phase['phase'] for phase in phases]==(['burn','mover_dies'] if profile=='adams' else ['mover_dies'])
         if profile=='adams':assert [victim['square'] for victim in phases[0]['victims']]==[[8,7]]
         effects=w.read("document.querySelector('.moves-table button[data-event=\"1\"]')?.getAttribute('aria-label')??''")
@@ -2639,20 +2639,20 @@ class Journey:
         self.capture('three-stage-demon-native-burn-death-and-accessible-phases')
         for name,origin,steps,conclusion in [('simultaneous','8i',['8h'],{'kind':'simultaneous_royal_loss'}),('bare-loss','5a',['5j'],{'kind':'bare_royal_loss','winner':'gote'})]:
             self.tenjiku_load_fixture(profile,name);ended=self.tenjiku_action(origin,steps,1)
-            assert ended['context']['payload']['conclusion']==conclusion and w.has('.outcome-card')
+            assert ended['tenjiku']['selected']['conclusion']==conclusion and w.has('.outcome-card')
             self.capture(f'independent-native-terminal-{name}');self.tenjiku_save(self.args.output/f'tenjiku-{profile}-{name}-concluded.mshogi',profile)
         self.tenjiku_load_fixture(profile,'no-actions');unscored=self.native_diagnostics()
-        assert unscored['context']['payload']['conclusion'] is None and not w.has('.outcome-card')
+        assert unscored['tenjiku']['selected']['conclusion'] is None and not w.has('.outcome-card')
         w.click(self.square('1a'));wait(lambda:'Sente King' in w.text('.movement-inspection-status'),'friendly no-action piece identified read-only')
         w.key('\ue00c');assert self.native_diagnostics()['context']==unscored['context'];self.capture('no-actions-unscored-friendly-inspection')
         w.focused_button('Offer draw…');w.button('Offer draw');self.tenjiku_events(1)
-        offered=self.native_diagnostics();assert offered['context']['payload']['draw_offer']=='sente' and offered['context']['payload']['conclusion'] is None
-        assert offered['context']['payload']['current_position']['accepted_plies']==0
+        offered=self.native_diagnostics();assert offered['tenjiku']['selected']['draw_offer']=='sente' and offered['tenjiku']['selected']['conclusion'] is None
+        assert offered['tenjiku']['selected']['board_ply']==0
         self.capture('no-actions-still-allows-native-unscored-draw-offer')
         self.tenjiku_load_fixture(profile,'agreement');w.focused_button('Decline draw');self.tenjiku_events(2)
-        declined=self.native_diagnostics();assert declined['context']['payload']['draw_offer'] is None and declined['context']['payload']['conclusion'] is None
+        declined=self.native_diagnostics();assert declined['tenjiku']['selected']['draw_offer'] is None and declined['tenjiku']['selected']['conclusion'] is None
         self.tenjiku_load_fixture(profile,'agreement');w.focused_button('Accept draw…');w.button('Accept draw');self.tenjiku_events(2)
-        agreed=self.native_diagnostics();assert agreed['context']['payload']['conclusion']=={'kind':'agreement'} and agreed['context']['payload']['current_position']['accepted_plies']==0
+        agreed=self.native_diagnostics();assert agreed['tenjiku']['selected']['conclusion']=={'kind':'agreement'} and agreed['tenjiku']['selected']['board_ply']==0
         self.capture('opposing-actor-native-agreement-independent-of-board-turn');self.tenjiku_save(self.args.output/f'tenjiku-{profile}-agreement-complete.mshogi',profile)
 
         self.tenjiku_load_fixture(profile,'repetition3');self.tenjiku_events(3);before=self.native_diagnostics()
@@ -2660,7 +2660,7 @@ class Journey:
         w.key('\ue00c');assert self.native_diagnostics()['context']==before['context'];self.capture('first-recurrence-forbidden-without-invented-result')
         self.tenjiku_load_fixture(profile,'royal-engine');w.button('Resume play');self.tenjiku_events(1)
         wait(lambda:w.has('.outcome-card'),'actual engine naturally completes independently specified royal game',45)
-        complete=self.native_diagnostics();assert complete['context']['payload']['conclusion']=={'kind':'royal_capture','winner':'sente'}
+        complete=self.native_diagnostics();assert complete['tenjiku']['selected']['conclusion']=={'kind':'royal_capture','winner':'sente'}
         assert len(complete['observations'])==1 and complete['observations'][0]['observation']['result']['result']['kind']=='choice'
         self.record('Actual installed bundled engine completes native diagram game',{'profile':profile,'native':complete,'qualification':'Independent limited source diagram, real supervised Choice/native action and outcome; not standard-root selfplay or strength evidence.'})
         self.capture('real-engine-native-royal-complete-game');path=self.args.output/f'tenjiku-{profile}-natural-engine-complete.mshogi'
@@ -3088,12 +3088,12 @@ class Journey:
         w.button('Play details')
         self.direct_resign('tori')
         concluded = self.native_diagnostics()
-        assert concluded['context']['payload']['conclusion'] == {'kind':'resignation','winner':'gote'}
+        assert concluded['tori']['selected']['conclusion'] == {'kind':'resignation','winner':'gote'}
         assert len(concluded['context']['payload']['events']) == 3
         final = self.tori_save(self.args.output / 'normal-tori-concluded.mshogi')
-        assert final['record']['payload']['conclusion'] == {'kind':'resignation','winner':'gote'}
+        assert final['record']['payload']['events'][-1] == {'actor':'sente','command':{'kind':'resign'}}
         self.record('Bounded complete ordinary Tori game', {'root':'standard', 'accepted_board_actions':4,
-            'retired_board_actions':2, 'current_board_actions':2, 'final_native_conclusion':concluded['context']['payload']['conclusion'],
+            'retired_board_actions':2, 'current_board_actions':2, 'final_native_conclusion':concluded['tori']['selected']['conclusion'],
             'evidence':'Human capture / real engine capture / human drop / real engine reply / Take back / Save Load / analysis / native resignation. Functional play, not strength evidence.'})
         self.dirty_tori_close_source()
         self.record('Native Tori dirty window-close request', self.native.close_window())
@@ -3165,30 +3165,30 @@ class Journey:
         w.click(self.shogi_square('4c')); w.click(self.shogi_square('4b'))
         self.tori_events(1)
         mate = self.native_diagnostics()
-        assert mate['context']['payload']['conclusion'] == {'kind':'checkmate','winner':'sente'}
+        assert mate['tori']['selected']['conclusion'] == {'kind':'checkmate','winner':'sente'}
         assert w.has('.outcome-card') and not w.has('.resign-button')
         self.capture('TORI-O-MATE-natural-complete-game')
         self.tori_save(self.args.output / 'normal-tori-checkmate.mshogi')
         self.tori_load_fixture('quiet-loss')
         assert w.has('.outcome-card')
         quiet = self.native_diagnostics()
-        assert quiet['context']['payload']['conclusion'] == {'kind':'stalemate_loss','loser':'gote'}
+        assert quiet['tori']['selected']['conclusion'] == {'kind':'stalemate_loss','loser':'gote'}
         self.capture('TORI-O-QUIET-native-stalemate-loss')
         # MSH-208: Gote's Eagle returns; Sente's only escape would make a third occurrence.
         self.tori_load_fixture('forced-prefix6'); self.tori_events(6)
         w.click(self.shogi_square('5d')); w.click(self.shogi_square('4d'))
         self.tori_events(7)
         forced = self.native_diagnostics()
-        assert forced['context']['payload']['conclusion'] == {'kind':'repetition_forfeit','loser':'sente'}
-        assert forced['context']['payload']['events'][-1]['occurrences'] == [3,7]
+        assert forced['tori']['selected']['conclusion'] == {'kind':'repetition_forfeit','loser':'sente'}
+        assert forced['tori']['selected']['occurrences'] == [3,7]
         assert w.has('.outcome-card')
         self.capture('TORI-H-FORCED-FULL-terminal-third-occurrence')
         self.tori_save(self.args.output / 'normal-tori-repetition-forfeit.mshogi')
         # MSH-208: Gote may not play 5a-4a, which would make a third occurrence.
         self.tori_load_fixture('repetition7'); self.tori_events(7)
         obligation = self.native_diagnostics()
-        assert obligation['context']['payload']['events'][-1]['occurrences'] == [3,7]
-        assert obligation['context']['payload']['conclusion'] is None
+        assert obligation['tori']['selected']['occurrences'] == [3,7]
+        assert obligation['tori']['selected']['conclusion'] is None
         assert 'Repetition limit' in w.text('.shell-notices')
         w.click(self.shogi_square('5a'))
         assert not w.read(f"document.querySelector({json.dumps(self.shogi_square('4a'))}).classList.contains('target')"), 'native third-occurrence move cannot be entered'

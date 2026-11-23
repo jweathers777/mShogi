@@ -82,18 +82,18 @@ fn strict_raw_parser_rejects_duplicates_including_escaped_keys_before_tag_buffer
     assert!(GameCommand::from_json(r#"{"kind":"resign","victims":[]}"#).is_err());
 }
 #[test]
-fn identities_and_all_redundant_fields_are_rederived_not_trusted() {
+fn identities_and_injected_derived_fields_are_rejected() {
     let record = GameRecord::from_game(&sample(Profile::AdamsModern)).unwrap();
     let value: Value = serde_json::from_str(record.to_json()).unwrap();
     type Mutation = Box<dyn Fn(&mut Value)>;
     let mutations: Vec<Mutation> = vec![
         Box::new(|v| v["profile"] = json!(Profile::MullerCompleted)),
         Box::new(|v| v["edition"] = json!(Profile::MullerCompleted.edition())),
-        Box::new(|v| v["schema_version"] = json!(3)),
+        Box::new(|v| v["schema_version"] = json!(99)),
         Box::new(|v| v["root"]["profile"] = json!(Profile::MullerCompleted)),
         Box::new(|v| v["current_position"]["profile"] = json!(Profile::MullerCompleted)),
         Box::new(|v| {
-            v.as_object_mut().unwrap().remove("root_draw_offer");
+            v.as_object_mut().unwrap().remove("events");
         }),
         Box::new(|v| v["events"][0]["actor"] = json!("gote")),
         Box::new(|v| v["events"][0]["board_ply"] = json!(1)),
@@ -137,7 +137,7 @@ fn cancellation_is_distinct_and_never_changes_record_or_source_game() {
     assert_eq!(GameRecord::from_game(&game).unwrap(), record);
 }
 #[test]
-fn oversized_native_input_and_missing_nullable_summary_refuse() {
+fn oversized_native_input_and_missing_nullable_root_field_refuse() {
     assert_eq!(
         GameRecord::from_json(&" ".repeat(MAX_GAME_RECORD_BYTES + 1)),
         Err(RecordError::Capacity)
@@ -145,7 +145,10 @@ fn oversized_native_input_and_missing_nullable_summary_refuse() {
     let game = Game::standard(Profile::AdamsModern);
     let record = GameRecord::from_game(&game).unwrap();
     let mut wire: Value = serde_json::from_str(record.to_json()).unwrap();
-    wire.as_object_mut().unwrap().remove("pending_bare");
+    wire["root"]["root"]
+        .as_object_mut()
+        .unwrap()
+        .remove("source");
     assert_eq!(
         GameRecord::from_json(&wire.to_string()),
         Err(RecordError::Derived)

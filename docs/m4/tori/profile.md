@@ -209,9 +209,9 @@ the native consumer owner, not dictated by a Shogi SFEN-shaped string.
 Canonical native record requirements: game=tori; immutable profile/edition;
 native schema; standard or explicit diagram root; root provenance (including
 missing earlier history/counter meaning); complete ordered board and match events;
-actor, complete action, resulting effects and derived obligations/conclusion;
-current exact event prefix and board-ply mapping. Recompute effects/conclusions
-from native replay and compare any serialized copies, never trust them. Resign
+actor and complete action. Schema 4 reconstructs effects, conclusions, event
+prefixes and board-ply mapping by native replay instead of storing copies. The
+schema-1 compatibility reader still checks the derived data in those old records. Resign
 does not masquerade as a board move or repetition. Operational interruptions
 stay in session memory and add no native event.
 Strict outer dispatch must retain duplicate fields for native rejection; reject

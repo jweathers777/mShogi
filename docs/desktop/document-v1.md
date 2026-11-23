@@ -16,20 +16,22 @@ so its original bytes reach the strict parser and native replay.
 | Chess | `mshogi.chess.match.v1` | 1, M2 untimed match |
 | Shogi | `mshogi.shogi.csa36.v1` | 1 |
 | Xiangqi | `mshogi.xiangqi.wxf2018.v1` | 1 |
-| Tori Shogi | `mshogi.tori.modern.v1` | 3 |
+| Tori Shogi | `mshogi.tori.modern.v1` | 4 |
 | Chu Shogi | `mshogi.chu.jcsa2019.v1` | 3 |
-| Tenjiku Shogi | `mshogi.tenjiku.adams1999-modern.v1` | 2 |
-| Tenjiku Shogi | `mshogi.tenjiku.muller-completed.v1` | 2 |
+| Tenjiku Shogi | `mshogi.tenjiku.adams1999-modern.v1` | 3 |
+| Tenjiku Shogi | `mshogi.tenjiku.muller-completed.v1` | 3 |
 
 Operational interruptions are session state. Cancellation, engine failure and
 work limits add no game command and do not change a saved record. Current native
 records have no Stop command or incomplete field. Tori schema-1 records retain
 their promised replay path under the current repetition rule: old stop entries
 are validated and omitted, while all player commands remain. Development-era
-Tori schema 2, Chu schemas 1–2 and Tenjiku schema 1 are unsupported under design A-09.
+Tori schemas 2–3, Chu schemas 1–2 and Tenjiku schemas 1–2 are unsupported under design A-09.
 
-Chu schema 3 stores its profile, edition, schema version, complete native root
-(including Lion protection), and ordered actor/command pairs. Effects, current
+Tori schema 4, Chu schema 3 and Tenjiku schema 3 store their profile, edition,
+schema version, complete native root and ordered actor/command pairs. Chu roots
+include Lion protection. Tenjiku roots hold the whole profile and original-piece
+rights; the record does not repeat the profile outside the root. Effects, current
 position, offers, obligations and conclusions are reconstructed by native replay.
 
 The desktop envelope retains its existing `native_schema_version: 1` label

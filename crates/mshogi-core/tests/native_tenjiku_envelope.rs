@@ -118,7 +118,7 @@ fn both_profiles_keep_native_effects_root_history_and_fresh_authority() {
         assert_eq!(record.profile().tenjiku(), Some(profile));
         assert_eq!(record.profile().id(), profile.id());
         assert_eq!(record.profile().edition(), profile.edition());
-        assert_eq!(record.native_schema(), NativeSchema::TenjikuV2);
+        assert_eq!(record.native_schema(), NativeSchema::TenjikuV3);
         assert_eq!(record.event_count(), 2);
         assert_eq!(record.known_board_actions(), 1);
         let raw = record.to_json().unwrap();
@@ -185,7 +185,7 @@ fn exact_profile_edition_schema_and_duplicate_preserving_native_payload() {
         assert!(serde_json::from_value::<CanonicalRecord>(value).is_err());
         for (field, value) in [
             ("profile_edition", json!(other(profile).edition())),
-            ("native_schema_version", json!(3)),
+            ("native_schema_version", json!(99)),
             ("envelope_version", json!(2)),
             ("game_kind", json!("chu")),
         ] {
@@ -209,6 +209,8 @@ fn exact_profile_edition_schema_and_duplicate_preserving_native_payload() {
         assert_ne!(duplicate, raw);
         assert!(CanonicalRecord::from_json(&duplicate).is_err());
         let mut forged: Value = serde_json::from_str(&raw).unwrap();
+        forged["payload"]["events"][0]["effects"] =
+            serde_json::to_value(&game.events()[0].effects).unwrap();
         if profile == t::Profile::AdamsModern {
             forged["payload"]["events"][0]["effects"]["phases"][0]["victims"][0]["square"] =
                 json!([8, 6]);

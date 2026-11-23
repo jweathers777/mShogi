@@ -1,14 +1,12 @@
 //! Strict profile-qualified native records; replay is authoritative, never cached JSON facts.
 use super::*;
-use serde::{
-    Deserialize, Serialize,
-    de::{self, MapAccess, SeqAccess, Visitor},
-};
+use crate::record::RecordedCommand;
+use serde::{Deserialize, Serialize};
 use serde_json::value::RawValue;
-use std::{collections::BTreeSet, error::Error, fmt};
+use std::{error::Error, fmt};
 
 /// Native schema number, independently qualified by the immutable profile/edition.
-pub const GAME_RECORD_SCHEMA_VERSION: u32 = 2;
+pub const GAME_RECORD_SCHEMA_VERSION: u32 = 3;
 /// Initial native encoded bound; product documents must measure their own aggregate policy.
 pub const MAX_GAME_RECORD_BYTES: usize = 1024 * 1024;
 
@@ -52,61 +50,46 @@ impl Error for RecordError {}
 
 #[derive(Serialize)]
 struct WireRecord<'a> {
-    format: &'static str,
-    game: &'static str,
-    profile: Profile,
     edition: &'static str,
     schema_version: u32,
-    mode: &'static str,
     root: &'a StructuralState,
-    root_conclusion: Option<Conclusion>,
-    root_pending_bare: Option<Side>,
-    root_draw_offer: Option<Side>,
+    #[serde(serialize_with = "serialize_events")]
     events: &'a [GameEvent],
-    current_position: &'a StructuralState,
-    conclusion: Option<Conclusion>,
-    pending_bare: Option<Side>,
-    draw_offer: Option<Side>,
+}
+fn recorded(event: &GameEvent) -> RecordedCommand<Side, &GameCommand> {
+    RecordedCommand {
+        actor: event.actor,
+        command: &event.command,
+    }
+}
+fn serialize_events<S: serde::Serializer>(
+    events: &[GameEvent],
+    serializer: S,
+) -> Result<S::Ok, S::Error> {
+    serializer.collect_seq(events.iter().map(recorded))
+}
+pub(super) fn event_len(event: &GameEvent) -> Result<usize, RecordError> {
+    serde_json::to_vec(&recorded(event))
+        .map(|bytes| bytes.len())
+        .map_err(|_| RecordError::Json)
 }
 impl<'a> WireRecord<'a> {
     fn from_game(game: &'a Game) -> Self {
         Self {
-            format: "mshogi.tenjiku.game",
-            game: "tenjiku",
-            profile: game.profile(),
             edition: game.profile().edition(),
             schema_version: GAME_RECORD_SCHEMA_VERSION,
-            mode: "untimed",
             root: game.native_root(),
-            root_conclusion: game.root_snapshot().conclusion,
-            root_pending_bare: game.root_snapshot().pending_bare,
-            root_draw_offer: game.root_snapshot().draw_offer,
             events: game.events(),
-            current_position: game.position().state(),
-            conclusion: game.snapshot().conclusion,
-            pending_bare: game.snapshot().pending_bare,
-            draw_offer: game.snapshot().draw_offer,
         }
     }
 }
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 struct ParsedRecord {
-    format: String,
-    game: String,
-    profile: Profile,
     edition: String,
     schema_version: u32,
-    mode: String,
     root: StructuralState,
-    root_conclusion: Option<Conclusion>,
-    root_pending_bare: Option<Side>,
-    root_draw_offer: Option<Side>,
-    events: Vec<GameEvent>,
-    current_position: StructuralState,
-    conclusion: Option<Conclusion>,
-    pending_bare: Option<Side>,
-    draw_offer: Option<Side>,
+    events: Vec<RecordedCommand<Side, GameCommand>>,
 }
 /// Serialize a borrowed event ledger; no cloned history or retained undo vector.
 pub(super) fn encode(game: &Game) -> Result<String, RecordError> {
@@ -223,13 +206,8 @@ impl GameRecord {
         check(stop)?;
         let wire: ParsedRecord = serde_json::from_str(text).map_err(|_| RecordError::Json)?;
         check(stop)?;
-        if wire.format != "mshogi.tenjiku.game"
-            || wire.game != "tenjiku"
-            || wire.edition != wire.profile.edition()
+        if wire.edition != wire.root.profile().edition()
             || wire.schema_version != GAME_RECORD_SCHEMA_VERSION
-            || wire.mode != "untimed"
-            || wire.root.profile() != wire.profile
-            || wire.current_position.profile() != wire.profile
         {
             return Err(RecordError::Identity);
         }
@@ -244,12 +222,6 @@ impl GameRecord {
             _ => RecordError::Root,
         })?;
         check(stop)?;
-        if game.root_snapshot().conclusion != wire.root_conclusion
-            || game.root_snapshot().pending_bare != wire.root_pending_bare
-            || game.root_snapshot().draw_offer != wire.root_draw_offer
-        {
-            return Err(RecordError::Derived);
-        }
         let mut undos = if retain_undo {
             Vec::with_capacity(wire.events.len())
         } else {
@@ -276,20 +248,10 @@ impl GameRecord {
             } // Otherwise this iteration's token is discarded, never retained.
 
             check(stop)?;
-            if game.events().last() != Some(event) {
-                return Err(RecordError::Derived);
-            }
         }
         check(stop)?;
         // Typed validation alone permits omitted Option fields; complete wire equality
         // also rejects missing nulls and every forged redundant field after raw duplicates reject.
-        if game.position().state() != &wire.current_position
-            || game.snapshot().conclusion != wire.conclusion
-            || game.snapshot().pending_bare != wire.pending_bare
-            || game.snapshot().draw_offer != wire.draw_offer
-        {
-            return Err(RecordError::Derived);
-        }
         let actual: serde_json::Value =
             serde_json::from_str(text).map_err(|_| RecordError::Json)?;
         check(stop)?;
@@ -335,54 +297,7 @@ fn strict(text: &str, limit: usize) -> Result<(), RecordError> {
     if text.len() > limit {
         return Err(RecordError::Capacity);
     }
-    struct Unique;
-    impl<'de> Deserialize<'de> for Unique {
-        fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-            d.deserialize_any(UniqueVisitor)
-        }
-    }
-    struct UniqueVisitor;
-    impl<'de> Visitor<'de> for UniqueVisitor {
-        type Value = Unique;
-        fn expecting(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            f.write_str("duplicate-free bounded JSON")
-        }
-        fn visit_map<M: MapAccess<'de>>(self, mut map: M) -> Result<Unique, M::Error> {
-            let mut keys = BTreeSet::new();
-            while let Some(key) = map.next_key::<String>()? {
-                if !keys.insert(key) {
-                    return Err(de::Error::custom("duplicate field"));
-                }
-                map.next_value::<Unique>()?;
-            }
-            Ok(Unique)
-        }
-        fn visit_seq<S: SeqAccess<'de>>(self, mut seq: S) -> Result<Unique, S::Error> {
-            while seq.next_element::<Unique>()?.is_some() {}
-            Ok(Unique)
-        }
-        fn visit_bool<E: de::Error>(self, _: bool) -> Result<Unique, E> {
-            Ok(Unique)
-        }
-        fn visit_i64<E: de::Error>(self, _: i64) -> Result<Unique, E> {
-            Ok(Unique)
-        }
-        fn visit_u64<E: de::Error>(self, _: u64) -> Result<Unique, E> {
-            Ok(Unique)
-        }
-        fn visit_f64<E: de::Error>(self, _: f64) -> Result<Unique, E> {
-            Ok(Unique)
-        }
-        fn visit_str<E: de::Error>(self, _: &str) -> Result<Unique, E> {
-            Ok(Unique)
-        }
-        fn visit_unit<E: de::Error>(self) -> Result<Unique, E> {
-            Ok(Unique)
-        }
-    }
-    let mut d = serde_json::Deserializer::from_str(text);
-    Unique::deserialize(&mut d).map_err(|_| RecordError::Json)?;
-    d.end().map_err(|_| RecordError::Json)
+    crate::record::reject_duplicates(text).map_err(|_| RecordError::Json)
 }
 
 #[cfg(test)]

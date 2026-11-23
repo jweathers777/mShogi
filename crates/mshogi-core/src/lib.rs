@@ -35,3 +35,5 @@ pub mod chu;
 
 /// Complete native Tenjiku state, actions, ordered effects and profile-qualified histories.
 pub mod tenjiku;
+
+mod record;

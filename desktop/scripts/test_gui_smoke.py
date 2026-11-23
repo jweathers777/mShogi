@@ -1510,7 +1510,7 @@ class ToriNormalProductEvidenceTests(unittest.TestCase):
         self.assertTrue({'normal-tori', 'normal-tori-native', 'pending-tori',
                          'tori-recovery'} <= set(module.selected_gui_phases('all')))
 
-    def test_native_generated_normal_documents_retain_known_prefix_and_independent_outcomes(self):
+    def test_native_generated_normal_documents_retain_native_roots_and_commands(self):
         fixtures = Path(__file__).with_name('fixtures')
         bodies = {name: module.desktop_document_payload(json.loads(
             (fixtures / f'tori-{name}.mshogi').read_text()), 'tori')
@@ -1519,23 +1519,20 @@ class ToriNormalProductEvidenceTests(unittest.TestCase):
             self.assertEqual(set(body), {'record', 'human', 'settings'})
             self.assertFalse(body['record']['payload']['root']['historical_reachability_proven'])
             self.assertTrue(body['record']['payload']['root']['earlier_history_unknown'])
-        # MSH-208 (Tori Repetition Rule): records hold occurrences, not a stored restriction.
+        # Native replay derives occurrences and conclusions from the complete commands.
         forced = bodies['forced-prefix6']['record']['payload']
         self.assertEqual(len(forced['events']), 6)
-        self.assertIsNone(forced['conclusion'])
         self.assertEqual(forced['events'][-1]['command']['action'],
                          {'kind':'move','from':'5a','to':'4a','result_face':'phoenix'})
         repetition = bodies['repetition7']['record']['payload']
         self.assertEqual(len(repetition['events']), 7)
-        self.assertIsNone(repetition['conclusion'])
-        self.assertEqual(repetition['events'][-1]['occurrences'], [3,7])
+        self.assertNotIn('occurrences', repetition['events'][-1])
         self.assertNotIn('obligation', repetition)
         self.assertEqual(repetition['events'][-1]['command']['action'],
                          {'kind':'move','from':'5g','to':'4g','result_face':'phoenix'})
-        self.assertEqual(bodies['quiet-loss']['record']['payload']['conclusion'],
-                         {'kind':'stalemate_loss','loser':'gote'})
+        self.assertNotIn('conclusion', bodies['quiet-loss']['record']['payload'])
         mate = bodies['mate-in-one']['record']['payload']
-        self.assertIsNone(mate['conclusion'])
+        self.assertNotIn('conclusion', mate)
         self.assertIn({'square':'4c','piece':{'side':'sente','face':'falcon'}}, mate['root']['board'])
         self.assertEqual(mate['root']['side_to_move'], 'sente')
 
@@ -1652,10 +1649,10 @@ class TenjikuPackagedEvidenceTests(unittest.TestCase):
             document=json.loads((directory/case['file']).read_text());body=module.desktop_document_payload(document,'tenjiku')
             self.assertEqual(document['rules_profile'],case['profile'])
             self.assertEqual(set(body), {'record', 'human', 'settings'})
-            self.assertIsNone(body['record']['payload']['conclusion'])
+            self.assertEqual(set(body['record']['payload']), {'edition','schema_version','root','events'})
             if 'repetition3' in case['file']:self.assertEqual(len(body['record']['payload']['events']),3)
             elif 'agreement' in case['file']:
-                self.assertEqual(len(body['record']['payload']['events']),1);self.assertEqual(body['human'],'gote');self.assertEqual(body['record']['payload']['draw_offer'],'sente');self.assertEqual(body['record']['payload']['current_position']['side'],'sente')
+                self.assertEqual(len(body['record']['payload']['events']),1);self.assertEqual(body['human'],'gote');self.assertEqual(body['record']['payload']['events'][0],{'actor':'sente','command':{'kind':'offer_draw'}});self.assertEqual(body['record']['payload']['root']['side'],'sente')
             else:self.assertEqual(body['record']['payload']['events'],[])
             for mutate in (lambda d:d.update(rules_profile='unknown'),lambda d:d.update(profile_edition='other-profile-edition')):
                 bad=copy.deepcopy(document);mutate(bad)
@@ -1676,9 +1673,9 @@ class TenjikuPackagedEvidenceTests(unittest.TestCase):
 
     def test_repeated_analysis_requires_new_observation_fresh_identity_and_exact_selected_prefix(self):
         action={'kind':'travel','from':[1,3],'route':[[1,4]],'promote':False}
-        native={'game_kind':'tenjiku','rules_profile':'mshogi.tenjiku.adams1999-modern.v1','payload':{'events':[{'native':'prefix1'}],'current_position':{'side':'gote'}}}
+        native={'game_kind':'tenjiku','rules_profile':'mshogi.tenjiku.adams1999-modern.v1','payload':{'events':[{'native':'prefix1'}]}}
         old={'schema_version':1,'context':{'request_id':5,'process_generation':6},'result':{'kind':'retained-prior-analysis'}}
-        before={'profile':native['rules_profile'],'context':native,'token':{'document':4,'version':8,'revision':8},'tenjiku':{'selected':{'event_index':1,'board_ply':1},'live':{'event_index':2,'identities':'native-live'}},'moves':{'entries':[{'native':'event1'},{'native':'event2'}]},'observations':[{'observation':old}]}
+        before={'profile':native['rules_profile'],'context':native,'token':{'document':4,'version':8,'revision':8},'tenjiku':{'selected':{'event_index':1,'board_ply':1,'repetition_key':{'side':'gote'}},'live':{'event_index':2,'identities':'native-live'}},'moves':{'entries':[{'native':'event1'},{'native':'event2'}]},'observations':[{'observation':old}]}
         observation={'schema_version':1,'context':{'request_id':10,'process_generation':11,'session_version':8,'game':copy.deepcopy(native),'limits':{'depth':1,'nodes':1024},'purpose':{'kind':'move_analysis','target':{'event_index':1,'board_ply':1,'session_version':8,'turn':{'game_kind':'tenjiku','side':'gote'}}}},'result':{'kind':'tenjiku','result':{'kind':'choice','action':action,'telemetry':{'completed_depth':1,'perspective':'gote','score':0,'nodes':5,'principal_variation':[action],'evaluator_id':'mshogi.tenjiku.material-placement.v1','search_id':'mshogi.tenjiku.shared-core.v1'}}}}
         after=copy.deepcopy(before);after['token']['revision']=10;after['observations'].append({'observation':observation});after['analysis']={'observation':observation}
         self.assertTrue(module.completed_tenjiku_analysis(before,after,5,6))

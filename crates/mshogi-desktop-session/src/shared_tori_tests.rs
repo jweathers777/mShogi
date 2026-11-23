@@ -669,7 +669,6 @@ fn seven_reject_fixtures_actual_open_preserves_live_document_and_execution() {
         } else {
             let mut v = template.clone();
             v["payload"]["record"]["payload"]["root"] = raw_root(&f["given"]["root"]);
-            v["payload"]["record"]["payload"]["current_position"] = raw_root(&f["given"]["root"]);
             raws.push(v.to_string());
         }
         for raw in raws {
@@ -873,7 +872,6 @@ fn history_identity_distinguishes_native_owners_hands_handed_faces_and_counter_p
                 let path = dir.join("not-a-live-root.mshogi");
                 let mut invalid: Value = serde_json::from_slice(&unchanged).unwrap();
                 invalid["payload"]["record"]["payload"]["root"] = raw_root(&r);
-                invalid["payload"]["record"]["payload"]["current_position"] = raw_root(&r);
                 fs::write(&path, invalid.to_string()).unwrap();
                 let id = c.queue_shared_open(path, c.shared_open_token()).unwrap();
                 assert!(matches!(wait_file(&mut c, id).io.phase, IoPhase::Failed));

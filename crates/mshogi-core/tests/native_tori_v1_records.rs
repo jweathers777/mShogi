@@ -34,9 +34,29 @@ fn schema_one_records_without_a_third_occurrence_load_and_reencode_as_current_sc
             new["events"].as_array().unwrap().len(),
             old["events"].as_array().unwrap().len()
         );
-        assert_eq!(new["current_position"], old["current_position"]);
-        assert_eq!(new["conclusion"], old["conclusion"]);
-        for (a, b) in new["events"]
+        let game = record.to_game().unwrap();
+        let position = game.position();
+        let root = position.root();
+        let current = json!({
+            "root_kind": root.kind(), "source": root.source(),
+            "earlier_history_unknown": root.earlier_history_unknown(),
+            "historical_reachability_proven": root.historical_reachability_proven(),
+            "declared_completed_plies": root.declared_completed_plies(),
+            "accepted_plies": position.accepted_plies(),
+            "declared_total_plies": position.declared_total_plies(),
+            "side_to_move": position.side_to_move(),
+            "board": t::Square::all().filter_map(|square| position.piece(square)
+                .map(|piece| json!({"square":square,"piece":piece}))).collect::<Vec<_>>(),
+            "hands": ([t::Side::Sente,t::Side::Gote].map(|side|
+                t::Face::HANDS.map(|face| position.hand(side).count(face)))),
+        });
+        assert_eq!(current, old["current_position"]);
+        assert_eq!(
+            serde_json::to_value(game.conclusion()).unwrap(),
+            old["conclusion"]
+        );
+        let events = serde_json::to_value(game.events()).unwrap();
+        for (a, b) in events
             .as_array()
             .unwrap()
             .iter()
@@ -71,7 +91,7 @@ fn schema_one_records_without_a_third_occurrence_load_and_reencode_as_current_sc
         assert_eq!(native.to_json(), record.to_json());
         assert_eq!(
             CanonicalRecord::tori(*native).native_schema(),
-            NativeSchema::ToriV3
+            NativeSchema::ToriV4
         );
     }
     // In the forced prefix the Gote Eagle cannot return to 4d: that would make

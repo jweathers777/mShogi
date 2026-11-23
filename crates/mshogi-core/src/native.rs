@@ -141,12 +141,12 @@ pub enum NativeSchema {
     ShogiV1,
     /// Xiangqi native history/command/event schema one.
     XiangqiV1,
-    /// Complete modern Tori native history schema three (session stops excluded).
-    ToriV3,
+    /// Complete modern Tori command history schema four.
+    ToriV4,
     /// Complete native Chu command history schema three.
     ChuV3,
-    /// Tenjiku native schema two, qualified independently by either whole profile.
-    TenjikuV2,
+    /// Tenjiku command history schema three, qualified by either whole profile.
+    TenjikuV3,
 }
 impl NativeSchema {
     /// Native wire number, scoped to the game/profile.
@@ -156,9 +156,9 @@ impl NativeSchema {
             Self::ChessFull => chess::CHESS_FULL_RECORD_SCHEMA_VERSION,
             Self::ShogiV1 => shogi::SHOGI_RECORD_SCHEMA_VERSION,
             Self::XiangqiV1 => xiangqi::GAME_RECORD_SCHEMA_VERSION,
-            Self::ToriV3 => tori::GAME_RECORD_SCHEMA_VERSION,
+            Self::ToriV4 => tori::GAME_RECORD_SCHEMA_VERSION,
             Self::ChuV3 => chu::GAME_RECORD_SCHEMA_VERSION,
-            Self::TenjikuV2 => tenjiku::GAME_RECORD_SCHEMA_VERSION,
+            Self::TenjikuV3 => tenjiku::GAME_RECORD_SCHEMA_VERSION,
         }
     }
 }
@@ -256,9 +256,9 @@ impl CanonicalRecord {
             Self::Chess(_) => NativeSchema::ChessFull,
             Self::Shogi(_) => NativeSchema::ShogiV1,
             Self::Xiangqi(_) => NativeSchema::XiangqiV1,
-            Self::Tori(_) => NativeSchema::ToriV3,
+            Self::Tori(_) => NativeSchema::ToriV4,
             Self::Chu(_) => NativeSchema::ChuV3,
-            Self::Tenjiku(_) => NativeSchema::TenjikuV2,
+            Self::Tenjiku(_) => NativeSchema::TenjikuV3,
         }
     }
     /// Serialize a complete bounded wrapper. Native encoding is unchanged.

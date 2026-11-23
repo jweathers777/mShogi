@@ -1,12 +1,10 @@
 //! Strict native Chu records; authoritative replay, not a desktop document format.
 use super::game::NativeRoot;
 use super::*;
-use serde::{
-    Deserialize, Serialize,
-    de::{self, MapAccess, SeqAccess, Visitor},
-};
+use crate::record::RecordedCommand;
+use serde::{Deserialize, Serialize};
 use serde_json::value::RawValue;
-use std::{collections::BTreeSet, error::Error, fmt};
+use std::{error::Error, fmt};
 /// Native record version, distinct from immutable rules edition and outer transport.
 pub const GAME_RECORD_SCHEMA_VERSION: u32 = 3;
 /// Native encoded payload bound, leaving space in the existing shared envelope.
@@ -55,13 +53,7 @@ struct WireRecord {
     edition: String,
     schema_version: u32,
     root: NativeRoot,
-    events: Vec<RecordedCommand>,
-}
-#[derive(Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-struct RecordedCommand {
-    actor: Side,
-    command: GameCommand,
+    events: Vec<RecordedCommand<Side, GameCommand>>,
 }
 impl WireRecord {
     fn from_game(g: &Game) -> Self {
@@ -251,52 +243,5 @@ fn strict(text: &str, limit: usize) -> Result<(), RecordError> {
     if text.len() > limit {
         return Err(RecordError::Capacity);
     }
-    struct Unique;
-    impl<'de> Deserialize<'de> for Unique {
-        fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-            d.deserialize_any(UniqueVisitor)
-        }
-    }
-    struct UniqueVisitor;
-    impl<'de> Visitor<'de> for UniqueVisitor {
-        type Value = Unique;
-        fn expecting(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            f.write_str("duplicate-free bounded JSON")
-        }
-        fn visit_map<M: MapAccess<'de>>(self, mut map: M) -> Result<Unique, M::Error> {
-            let mut keys = BTreeSet::new();
-            while let Some(key) = map.next_key::<String>()? {
-                if !keys.insert(key) {
-                    return Err(de::Error::custom("duplicate field"));
-                }
-                map.next_value::<Unique>()?;
-            }
-            Ok(Unique)
-        }
-        fn visit_seq<S: SeqAccess<'de>>(self, mut seq: S) -> Result<Unique, S::Error> {
-            while seq.next_element::<Unique>()?.is_some() {}
-            Ok(Unique)
-        }
-        fn visit_bool<E: de::Error>(self, _: bool) -> Result<Unique, E> {
-            Ok(Unique)
-        }
-        fn visit_i64<E: de::Error>(self, _: i64) -> Result<Unique, E> {
-            Ok(Unique)
-        }
-        fn visit_u64<E: de::Error>(self, _: u64) -> Result<Unique, E> {
-            Ok(Unique)
-        }
-        fn visit_f64<E: de::Error>(self, _: f64) -> Result<Unique, E> {
-            Ok(Unique)
-        }
-        fn visit_str<E: de::Error>(self, _: &str) -> Result<Unique, E> {
-            Ok(Unique)
-        }
-        fn visit_unit<E: de::Error>(self) -> Result<Unique, E> {
-            Ok(Unique)
-        }
-    }
-    let mut d = serde_json::Deserializer::from_str(text);
-    Unique::deserialize(&mut d).map_err(|_| RecordError::Json)?;
-    d.end().map_err(|_| RecordError::Json)
+    crate::record::reject_duplicates(text).map_err(|_| RecordError::Json)
 }

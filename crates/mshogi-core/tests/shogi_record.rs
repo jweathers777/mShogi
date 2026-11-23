@@ -142,7 +142,7 @@ fn root_category_origin_and_counter_provenance_are_enforced() {
         .unwrap(),
     );
     let full_wire = value(&full);
-    assert_eq!(full_wire["root"]["known_history"], "imported_unknown");
+    assert!(!full.root().has_complete_initial_history());
     assert_eq!(
         GameRecord::from_json(&full_wire.to_string())
             .unwrap()
@@ -194,7 +194,7 @@ fn root_category_origin_and_counter_provenance_are_enforced() {
         .unwrap(),
     );
     let wire = value(&imported_moved);
-    assert_eq!(wire["root"]["known_history"], "imported_unknown");
+    assert!(!imported_moved.root().has_complete_initial_history());
     let mut bad = wire;
     bad["root"]["category"] = json!("standard");
     bad["root"]["counter_source"] = json!("initial_fixed");
@@ -203,7 +203,7 @@ fn root_category_origin_and_counter_provenance_are_enforced() {
 }
 
 #[test]
-fn every_derived_effect_is_checked_even_if_final_state_is_unchanged() {
+fn obsolete_derived_fields_are_rejected_and_native_commands_are_validated() {
     let mut game = Game::new();
     play(&mut game, "7g7f");
     play(&mut game, "3c3d");
@@ -223,30 +223,29 @@ fn every_derived_effect_is_checked_even_if_final_state_is_unchanged() {
     ] {
         let mut bad = valid.clone();
         bad["events"][0][field] = replacement;
-        assert_eq!(
-            GameRecord::from_json(&bad.to_string()),
-            Err(RecordError::Event(0)),
-            "field {field}"
-        );
+        rejected(&bad);
     }
     let mut bad = valid.clone();
     bad["conclusion"]["winner"] = json!("gote");
-    assert_eq!(
-        GameRecord::from_json(&bad.to_string()),
-        Err(RecordError::Conclusion)
-    );
+    rejected(&bad);
     bad = valid.clone();
     bad["score_half_points"] = json!([0, 2]);
-    assert_eq!(
-        GameRecord::from_json(&bad.to_string()),
-        Err(RecordError::Conclusion)
-    );
+    rejected(&bad);
     bad = valid;
     bad["events"][2]["actor"] = json!("sente");
+    // Either side can resign. With no cached winner, the command actor is authoritative.
+    let changed = GameRecord::from_json(&bad.to_string())
+        .unwrap()
+        .to_game()
+        .unwrap();
     assert_eq!(
-        GameRecord::from_json(&bad.to_string()),
-        Err(RecordError::Event(2))
+        changed.conclusion(),
+        Some(Conclusion::Win {
+            winner: Side::Gote,
+            reason: WinReason::Resignation,
+        })
     );
+    assert_eq!(changed.position(), game.position());
 }
 
 #[test]
@@ -261,21 +260,20 @@ fn declarations_retain_actor_and_evidence_and_reject_embedded_conflicting_actor(
         })
     );
     let valid = value(&game);
-    assert_eq!(valid["events"][0]["declaration"]["own_turn"], false);
+    let replayed = GameRecord::from_json(&valid.to_string())
+        .unwrap()
+        .to_game()
+        .unwrap();
+    assert_eq!(replayed, game);
+    assert!(!replayed.events()[0].declaration.as_ref().unwrap().own_turn);
     let mut bad = valid.clone();
     bad["events"][0]["declaration"]["own_turn"] = json!(true);
-    assert_eq!(
-        GameRecord::from_json(&bad.to_string()),
-        Err(RecordError::Event(0))
-    );
+    rejected(&bad);
     bad = valid.clone();
     bad["events"][0]["command"]["actor"] = json!("sente");
     rejected(&bad);
     bad = valid;
-    bad["events"][0]["declaration"]
-        .as_object_mut()
-        .unwrap()
-        .remove("time_available");
+    bad["events"][0].as_object_mut().unwrap().remove("actor");
     rejected(&bad);
 }
 
@@ -284,9 +282,13 @@ fn automatic_root_conclusions_and_all_post_terminal_commands_are_validated() {
     let root_terminal = imported("4k4/9/5R3/9/9/9/9/9/K8 b - 321", CounterSource::Supplied);
     let mut bad = value(&root_terminal);
     bad["root"]["conclusion"] = Value::Null;
+    rejected(&bad);
     assert_eq!(
-        GameRecord::from_json(&bad.to_string()),
-        Err(RecordError::Root)
+        GameRecord::from_json(&value(&root_terminal).to_string())
+            .unwrap()
+            .to_game()
+            .unwrap(),
+        root_terminal
     );
     let mut resignation = Game::new();
     submit(&mut resignation, Side::Sente, GameCommand::Resign);
@@ -297,7 +299,6 @@ fn automatic_root_conclusions_and_all_post_terminal_commands_are_validated() {
     ] {
         let mut bad = value(&resignation);
         let mut event = bad["events"][0].clone();
-        event["index"] = json!(1);
         event["command"] = command.clone();
         bad["events"].as_array_mut().unwrap().push(event.clone());
         assert_eq!(
@@ -305,7 +306,6 @@ fn automatic_root_conclusions_and_all_post_terminal_commands_are_validated() {
             Err(RecordError::Event(1))
         );
         let mut bad = value(&root_terminal);
-        event["index"] = json!(0);
         bad["events"].as_array_mut().unwrap().push(event);
         assert_eq!(
             GameRecord::from_json(&bad.to_string()),
@@ -322,8 +322,8 @@ fn strict_decode_rejects_duplicate_unknown_missing_and_unsupported_fields() {
     let valid = GameRecord::from_game(&game).to_json().unwrap();
     for (needle, replacement) in [
         (
-            "\"schema_version\":1",
-            "\"schema_version\":1,\"schema_version\":1",
+            "\"schema_version\":2",
+            "\"schema_version\":2,\"schema_version\":2",
         ),
         (
             "\"category\":\"standard\"",
@@ -339,8 +339,8 @@ fn strict_decode_rejects_duplicate_unknown_missing_and_unsupported_fields() {
             "\"action\":\"7g7f\",\"action\":\"7g7f\"",
         ),
         (
-            "\"kind\":\"resignation\"",
-            "\"kind\":\"resignation\",\"winner\":\"sente\"",
+            "\"kind\":\"resign\"",
+            "\"kind\":\"resign\",\"winner\":\"sente\"",
         ),
     ] {
         let bad = valid.replacen(needle, replacement, 1);
@@ -356,12 +356,7 @@ fn strict_decode_rejects_duplicate_unknown_missing_and_unsupported_fields() {
         bad[target]["unknown"] = json!(true);
         rejected(&bad);
     }
-    for field in [
-        "gave_check",
-        "declaration",
-        "conclusion",
-        "score_half_points",
-    ] {
+    for field in ["actor", "command"] {
         let mut bad = base.clone();
         bad["events"][0].as_object_mut().unwrap().remove(field);
         assert!(
@@ -373,8 +368,7 @@ fn strict_decode_rejects_duplicate_unknown_missing_and_unsupported_fields() {
         );
     }
     for (field, replacement) in [
-        ("mode", json!("timed")),
-        ("schema_version", json!(2)),
+        ("schema_version", json!(99)),
         ("profile_id", json!("mshogi.shogi.jsa.v1")),
         ("profile_edition", json!("latest")),
     ] {
@@ -387,18 +381,12 @@ fn strict_decode_rejects_duplicate_unknown_missing_and_unsupported_fields() {
     }
     let mut bad = base.clone();
     bad["policies"]["length_completed_actions"] = json!(500);
-    assert_eq!(
-        GameRecord::from_json(&bad.to_string()),
-        Err(RecordError::Unsupported)
-    );
+    rejected(&bad);
     bad = base;
     bad["policies"]["external_events"] = json!("referee_override");
-    assert_eq!(
-        GameRecord::from_json(&bad.to_string()),
-        Err(RecordError::Unsupported)
-    );
+    rejected(&bad);
     assert!(GameRecord::from_json(&(valid.clone() + " {} ")).is_err());
-    assert!(GameRecord::from_json(&valid.replace("\"index\":0", "\"index\":0.0")).is_err());
+    assert!(GameRecord::from_json(&valid.replace("\"actor\":\"sente\"", "\"actor\":0.0")).is_err());
 }
 
 #[test]

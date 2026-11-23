@@ -112,20 +112,18 @@ it remains unstarted here. No general exact-proof performance claim is made.
 
 ## Canonical record, undo and bounded saveability
 
-`GameRecord` schema1 is `mshogi.xiangqi.game`: explicit game/profile/edition,
-`untimed`, claim policy, `sound_fast_only`, goal and fast witness limit1, complete
-root, commands/results/event ends, every derived event, redundant current native
-position, conclusion, pending state and target-specific assessment. Runtime
-execution tokens are not canonical data. Unsupported modes, limits, identities
-or schemas are refused, not downgraded.
+`GameRecord` schema 2 stores the complete native root, claim policy and ordered
+actor/command pairs. The root carries profile and edition. Native replay restores
+command results, event boundaries, derived events, current position, conclusion,
+pending state and target-specific assessment. Runtime execution tokens are not
+canonical data. Unsupported identities and schemas are refused, not downgraded.
 
-Typed strict decoding rejects duplicates/unknown fields before normalization.
-Both root and redundant current-position JSON remain `RawValue` through the
-native parser. Every command/result/event prefix is authoritatively replayed.
-A final equality/presence check (after those strict parsers) rejects omitted
-nullable fields and forged derived metadata while allowing key order/whitespace.
-FEN alone never restores this record. Reopen allocates fresh runtime identity;
-a saved record is not resumable pending execution.
+Strict decoding rejects duplicates and unknown fields before normalization.
+Root JSON remains `RawValue` through the native parser. Every command is replayed,
+including admitted rejected claims. A final equality/presence check rejects
+omitted nullable fields while allowing key order and whitespace. FEN alone never
+restores this record. Reopen allocates fresh runtime identity; a saved record is
+not resumable pending execution.
 
 `event_prefix` is immutable historical inspection, including separate board and
 same-ply warning/conclusion states. It is not a new resumable command boundary.

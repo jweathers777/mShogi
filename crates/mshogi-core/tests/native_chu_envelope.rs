@@ -74,7 +74,7 @@ fn real_chu_identity_history_commands_and_duplicate_preserving_routing() {
     assert_eq!(CanonicalRecord::from_json(&raw).unwrap(), r);
     assert_eq!(serde_json::from_str::<CanonicalRecord>(&raw).unwrap(), r);
     let mut v: Value = serde_json::from_str(&raw).unwrap();
-    assert_eq!(v["profile_edition"], c::PROFILE_EDITION);
+    assert_eq!(v["payload"]["edition"], c::PROFILE_EDITION);
     let CanonicalRecord::Chu(restored) = CanonicalRecord::from_json(&raw).unwrap() else {
         panic!()
     };
@@ -93,10 +93,14 @@ fn real_chu_identity_history_commands_and_duplicate_preserving_routing() {
         "native_schema_version",
         "envelope_version",
     ] {
-        let old = v[field].clone();
+        let old = v.get(field).cloned();
         v[field] = json!("unsupported");
         assert!(CanonicalRecord::from_json(&v.to_string()).is_err());
-        v[field] = old;
+        if let Some(old) = old {
+            v[field] = old;
+        } else {
+            v.as_object_mut().unwrap().remove(field);
+        }
     }
     let duplicate = raw.replacen(
         "\"promote\":false",

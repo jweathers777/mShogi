@@ -121,31 +121,10 @@ def assert_shared_native_card_flow(current, previous):
 
 def desktop_document_payload(document, game_kind):
     """Inspect the one current native envelope; this is not a replay validator."""
-    profiles = {
-        "chess": ("mshogi.chess.match.v1", "FIDE-2023-01-01+mshogi.chess.match.v1"),
-        "shogi": ("mshogi.shogi.csa36.v1", "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026"),
-        "xiangqi": ("mshogi.xiangqi.wxf2018.v1", "WXF-2018+XIANGQI-P1-2026-10-27"),
-        "tori": ("mshogi.tori.modern.v1", "MSH208-MODERN-2026-11-20"),
-        "chu": ("mshogi.chu.jcsa2019.v1", "JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02"),
-    }
-    if game_kind == 'tenjiku':
-        tenjiku = {
-            'mshogi.tenjiku.adams1999-modern.v1': 'ADAMS1999-MODERN+MSH83-2026-11-04',
-            'mshogi.tenjiku.muller-completed.v1': 'MULLER+ADAMS-COMPLETION+MSH83-2026-11-04',
-        }
-        profile = document['rules_profile']
-        assert profile in tenjiku, document
-        edition = tenjiku[profile]
-    else:
-        profile, edition = profiles[game_kind]
-    assert set(document) == {
-        "envelope_version", "format", "game_kind", "rules_profile",
-        "profile_edition", "native_schema_version", "payload"}, document
-    assert document["envelope_version"] == 1, document
-    assert document["format"] == "mshogi.desktop.document.v1", document
+    assert game_kind in {"chess", "shogi", "xiangqi", "tori", "chu", "tenjiku"}
+    assert set(document) == {"format", "game_kind", "payload"}, document
+    assert document["format"] == "mshogi.desktop.document.v2", document
     assert document["game_kind"] == game_kind, document
-    assert document["rules_profile"] == profile and document["profile_edition"] == edition, document
-    assert document["native_schema_version"] == 1, document
     assert isinstance(document["payload"], dict), document
     assert set(document["payload"]) == {"record", "human", "settings"}, document
     return document["payload"]
@@ -161,7 +140,7 @@ def xiangqi_retained_state(diagnostics):
     assert diagnostics["profile"] == "mshogi.xiangqi.wxf2018.v1", diagnostics
     context = diagnostics["context"]
     assert context["game_kind"] == "xiangqi", context
-    assert context["rules_profile"] == diagnostics["profile"], context
+    assert context["payload"]["root"]["profile"] == diagnostics["profile"], context
     token = diagnostics["token"]
     return json.loads(json.dumps({
         "authority": {key: token[key] for key in ("document", "version", "selection")},
@@ -289,7 +268,7 @@ def retained_pending_takeback(game, body, restored):
     if game == 'chess':
         return (not body['record']['commands']
                 and json.loads(body['record']['initial_record_json']) == restored['payload'])
-    return body['record'] == restored
+    return body['record'] == restored['payload']
 
 
 def saved_document_accepted(observation, expected_path):
@@ -1446,7 +1425,7 @@ class Journey:
         self.record('Save native game and settings', {
             'path': str(path), 'sha256': digest(path), 'bytes': path.stat().st_size,
             'game': game, 'settings': body['settings'],
-            'native_events': len(body['record']['payload']['events'])})
+            'native_events': len(body['record']['events'])})
         return archive
 
     def shogi_save(self, path, observation_count=None):
@@ -1601,7 +1580,7 @@ class Journey:
             assert len(played['observations'])==1
             observation=played['observations'][0]['observation']
             assert observation['context']['game']['game_kind']==game
-            assert observation['context']['game']['rules_profile']==played['profile']
+            assert observation['context']['game']['payload']['profile_id']==played['profile']
             assert observation['context']['purpose']['kind']=='engine_turn'
             key=profile or game;path=self.args.output/f'cross-game-{index}-{key}.mshogi'
             archive=self.save_current(path);desktop_document_payload(archive,game)
@@ -1928,7 +1907,7 @@ class Journey:
                 context = item["observation"]["context"]
                 if (not item["historical"] and context["purpose"]["kind"] == "move_analysis"
                         and context["limits"] == {"depth": depth, "nodes": nodes}
-                        and len(context["game"]["payload"]["events"]) == event_count):
+                        and context["purpose"]["target"]["event_index"] == event_count):
                     return item
             return None
         observation = wait(completed, f"actual Xiangqi analysis observation for event{event_count}, depth{depth}/{nodes}visits", 45)
@@ -1979,8 +1958,8 @@ class Journey:
         self.xiangqi_events(2, selected=2)
         wait(lambda: w.has('[data-search-purpose="engine_turn"]'), "actual bundled Xiangqi engine observation")
         played = self.xiangqi_diagnostics()
-        assert played["context"]["payload"]["events"][0]["event"]["action"] == "a3a4", played
-        assert played["context"]["payload"]["conclusion"] is None, played
+        assert played["context"]["payload"]["commands"][0]["command"]["action"] == "a3a4", played
+        assert played["xiangqi"]["conclusion"] is None, played
         self.capture("play")
         self.record("Pointer selection / Escape / keyboard a3a4 / actual bounded engine reply", played)
         self.moves_navigation("xiangqi", "a3a4", "P9+1", 1, "a3", "a4")
@@ -2029,7 +2008,7 @@ class Journey:
         path = self.args.output / "normal-xiangqi-complete.mshogi"
         archive = self.xiangqi_save(path)
         body = archive["payload"]
-        assert len(body["record"]["payload"]["events"]) == 2, body
+        assert len(body["record"]["commands"]) == 2, body
         old = self.xiangqi_diagnostics()
         self.file("open", path)
         wait(lambda: (now := self.xiangqi_diagnostics()) and now["token"]["document"] > old["token"]["document"], "Xiangqi Open installs fresh document identity")
@@ -2045,8 +2024,8 @@ class Journey:
         w.click('.shogi-history [data-event="1"]')
         self.xiangqi_events(2, selected=1, historical=True)
         selected = self.xiangqi_diagnostics()
-        assert len(selected["context"]["payload"]["events"]) == 1, selected
-        assert selected["context"]["payload"]["events"][0]["event"]["action"] == "a3a4", selected
+        assert len(selected["context"]["payload"]["commands"]) == 1, selected
+        assert selected["context"]["payload"]["commands"][0]["command"]["action"] == "a3a4", selected
         self.xiangqi_analysis()
         self.xiangqi_complete_analysis(1)
         self.xiangqi_events(2, selected=1, historical=True)
@@ -2054,14 +2033,14 @@ class Journey:
         historical = self.xiangqi_save(history_path)["payload"]
         context = self.native_diagnostics()["observations"][-1]["observation"]["context"]
         assert context["purpose"]["kind"] == "move_analysis", context
-        assert len(context["game"]["payload"]["events"]) == 1, context
-        assert len(historical["record"]["payload"]["events"]) == 2, historical
+        assert len(context["game"]["payload"]["commands"]) == 1, context
+        assert len(historical["record"]["commands"]) == 2, historical
         self.capture("historical-analysis")
         old = self.xiangqi_diagnostics()
         self.file("open", history_path)
         wait(lambda: (now := self.xiangqi_diagnostics()) and now["token"]["document"] > old["token"]["document"], "historical Xiangqi Open establishes fresh authority")
         self.xiangqi_events(2, selected=2)
-        assert self.xiangqi_diagnostics()["context"] == historical["record"]
+        assert self.xiangqi_diagnostics()["context"]["payload"] == historical["record"]
         self.capture("reopened-live")
         self.xiangqi_events(2, selected=2)
         assert w.has(".play-paused")
@@ -2199,7 +2178,7 @@ class Journey:
         context = self.native_diagnostics()["observations"][-1]["observation"]["context"]
         assert context["purpose"]["kind"] == "move_analysis"
         assert len(context["game"]["payload"]["events"]) == 1
-        assert len(body["record"]["payload"]["events"]) == 2
+        assert len(body["record"]["events"]) == 2
         self.record("Session analysis uses exact native history prefix", context)
         w.button("Return to live")
         self.shogi_events(2, selected=2)
@@ -2245,8 +2224,8 @@ class Journey:
         self.record('Normal-package opponent hand inspection preserves complete canonical archive',{
             'source_archive':str(source_captures),'source_sha256':digest(source_captures),
             'loaded_copy':str(captures),
-            'root':before_archive['payload']['record']['payload']['root'],
-            'native_events':len(before_archive['payload']['record']['payload']['events']),
+            'root':before_archive['payload']['record']['root'],
+            'native_events':len(before_archive['payload']['record']['events']),
             'before_sha256':digest(self.args.output/'normal-shogi-inspection-before.mshogi'),
             'after_sha256':digest(self.args.output/'normal-shogi-inspection-after.mshogi')})
         self.shogi_flip()  # Keep the native unsaved-close guard journey meaningful.
@@ -2336,7 +2315,7 @@ class Journey:
             path = self.args.output / "shogi-takeback-declaration.mshogi"
             archive = self.shogi_save(path)
             body = desktop_document_payload(archive, "shogi")
-            assert not body['record']['payload']['events']
+            assert not body['record']['events']
             old_token = self.native_diagnostics()["token"]
             assert old_token is not None
             self.file("open", path)
@@ -2353,7 +2332,7 @@ class Journey:
             self.shogi_events(0, selected=0, historical=False)
             self.record("Declare / Take back / native Save Open / stopped identities / explicit Resume", {
                 "path": str(path), "sha256": digest(path),
-                "saved_native_events": len(body["record"]["payload"]["events"]),
+                "saved_native_events": len(body["record"]["events"]),
                 "old_token": old_token, "fresh_token": self.native_diagnostics()["token"],
                 "status": w.text("[data-game-status]")})
             self.capture("takeback-reopened-resumed")
@@ -2428,7 +2407,7 @@ class Journey:
         wait(lambda:not w.has('.shogi-analysis[data-phase="thinking"]') and w.read("!!document.querySelector('.moves-root:not(:disabled)')"),'initial actual Tenjiku engine/admission settled',45)
         self.tenjiku_events(0 if side=='sente' else 1)
         native=self.native_diagnostics()
-        assert native['profile']==self.tenjiku_profile_id(profile) and native['context']['rules_profile']==native['profile']
+        assert native['profile']==self.tenjiku_profile_id(profile) and native['context']['payload']['root']['profile']==native['profile']
         assert native['token']['document']>before['token']['document']
         assert w.read("document.querySelector('.game-shell').dataset.orientation")==side
         assert w.read("document.querySelector('[data-rules-profile]').dataset.rulesProfile")==native['profile']
@@ -2490,7 +2469,7 @@ class Journey:
 
     def tenjiku_save(self, path, profile):
         archive = self.save_native_game(path, 'tenjiku')
-        assert archive['rules_profile'] == self.tenjiku_profile_id(profile)
+        assert archive['payload']['record']['root']['profile'] == self.tenjiku_profile_id(profile)
         return archive['payload']
 
     def tenjiku_reopen_saved(self, evidence_path, profile):
@@ -2529,7 +2508,7 @@ class Journey:
         before=self.native_diagnostics();self.file('open',path);self.wait_opened(path)
         wait(lambda:self.web.has('.shell-tenjiku'),'ordinary normal-package Tenjiku Load')
         after=self.native_diagnostics();expected=desktop_document_payload(json.loads(source.read_text()),'tenjiku')
-        assert after['context']==expected['record'] and after['profile']==self.tenjiku_profile_id(profile) and after['token']['document']>before['token']['document']
+        assert after['context']['payload']==expected['record'] and after['profile']==self.tenjiku_profile_id(profile) and after['token']['document']>before['token']['document']
         assert self.web.has('.play-paused') and not after['observations']
         self.record('Normal OS file-picker Load of independent native Tenjiku current document',{'profile':profile,'fixture':name,'source_sha256':digest(source),'native':after})
         return after
@@ -2539,8 +2518,8 @@ class Journey:
         wire=json.loads(actual.read_text(encoding='utf-8'));other='muller' if profile=='adams' else 'adams'
         # A deliberately malformed file changes only its envelope profile/edition,
         # leaving the complete payload under the original immutable profile.
-        wire['rules_profile']=self.tenjiku_profile_id(other)
-        wire['profile_edition']='ADAMS1999-MODERN+MSH83-2026-11-04' if other=='adams' else 'MULLER+ADAMS-COMPLETION+MSH83-2026-11-04'
+        wire['payload']['record']['root']['profile']=self.tenjiku_profile_id(other)
+        wire['payload']['record']['edition']='ADAMS1999-MODERN+MSH83-2026-11-04' if other=='adams' else 'MULLER+ADAMS-COMPLETION+MSH83-2026-11-04'
         path=self.args.output/f'{self.phase}-deliberate-cross-profile-conflict.mshogi';path.write_text(json.dumps(wire),encoding='utf-8')
         self.file('open',path)
         def rejected():
@@ -2596,7 +2575,7 @@ class Journey:
         self.capture('historical-exact-prefix-readonly-analysis');w.button('Return to live');self.tenjiku_events(2,selected=2)
         assert w.has('.play-paused')
         path=self.args.output/f'normal-tenjiku-{profile}-complete.mshogi';body=self.tenjiku_save(path,profile)
-        assert body['record']['payload']['events'] == events[:2]
+        assert body['record']['events'] == events[:2]
         reopened=self.tenjiku_reopen_saved(path,profile);self.capture('normal-reopened-stopped')
         w.button('Resume play');wait(lambda:w.read("document.querySelector('.game-shell').dataset.paused")=='false','explicit Tenjiku Resume after Load')
         self.tenjiku_analysis();assert self.native_diagnostics()['context']==reopened['context']
@@ -2608,7 +2587,7 @@ class Journey:
         assert self.native.alive() and self.native_diagnostics()['context']==concluded['context']
         self.capture('normal-dirty-quit-cancel');self.quit(save=True)
         saved_path=Path(dirty['document']['path']);saved=json.loads(saved_path.read_text(encoding='utf-8'));saved_body=desktop_document_payload(saved,'tenjiku')
-        assert saved['rules_profile']==self.tenjiku_profile_id(profile) and saved_body['record']==concluded['context']
+        assert saved_body['record']['root']['profile']==self.tenjiku_profile_id(profile) and saved_body['record']==concluded['context']['payload']
         assert saved_body['settings']==dirty['document']['settings']['settings']
         assert set(saved_body) == {'record', 'human', 'settings'}
         self.record('Actual dirty Quit Save retains native profile, complete game/history, settings on disk',{'profile':profile,'path':str(saved_path),'sha256':digest(saved_path),'settings':saved_body['settings']})
@@ -2755,7 +2734,7 @@ class Journey:
         wait(lambda: self.web.has('.shell-chu'), 'ordinary Load dispatches native Chu document')
         after = self.native_diagnostics()
         expected = desktop_document_payload(json.loads(source.read_text(encoding='utf-8')), 'chu')
-        assert after['context'] == expected['record'] and after['token']['document'] > before['token']['document'], after
+        assert after['context']['payload'] == expected['record'] and after['token']['document'] > before['token']['document'], after
         assert self.web.read("document.querySelector('.game-shell').dataset.paused") == 'true'
         assert not self.web.has('.shogi-analysis[data-phase="thinking"],.shogi-analysis[data-phase="analyzing"]')
         assert not after['observations']
@@ -2832,7 +2811,7 @@ class Journey:
         self.capture('normal-history-exact-prefix-readonly-analysis')
         w.button('Return to live'); self.chu_events(2,selected=2); assert w.has('.play-paused')
         path = self.args.output/'normal-chu-complete.mshogi'; body = self.chu_save(path)
-        assert body['record']['payload']['events'] == events[:2]
+        assert body['record']['events'] == events[:2]
         before = self.native_diagnostics(); reopened = self.chu_reopen_saved(path)
         assert reopened['context'] == before['context'] and reopened['token']['document'] > before['token']['document']
         assert reopened['token']['selection'] != before['token']['selection'] and not reopened['observations']
@@ -2843,7 +2822,7 @@ class Journey:
         w.button('Play details'); self.direct_resign('chu'); concluded = self.native_diagnostics()
         assert concluded['chu']['selected']['conclusion'] == {'kind':'resignation','winner':'gote'}
         final = self.chu_save(self.args.output/'normal-chu-concluded.mshogi')
-        assert final['record']['payload']['events'][-1] == {'actor':'sente','command':{'kind':'resign'}}
+        assert final['record']['events'][-1] == {'actor':'sente','command':{'kind':'resign'}}
         self.record('Bounded complete ordinary Chu game with explicit resignation', {'accepted_board_actions':4,'retired_board_actions':2,'current_board_actions':2,
             'conclusion':concluded['chu']['selected']['conclusion'],'qualification':'Real human/engine progression then explicit resignation; not natural standard self-play completion or playing-strength evidence.'})
         self.dirty_native_close_source('Chu')
@@ -3007,7 +2986,7 @@ class Journey:
         assert self.web.read("document.querySelector('.game-shell').dataset.paused") == 'true'
         assert not self.web.has('.shogi-analysis[data-phase="thinking"],.shogi-analysis[data-phase="analyzing"]')
         expected = desktop_document_payload(json.loads(source.read_text(encoding='utf-8')), 'tori')
-        assert after['context'] == expected['record'], (after['context'], expected['record'])
+        assert after['context']['payload'] == expected['record'], (after['context'], expected['record'])
         self.record('Ordinary normal-package Load of native-generated admitted document', {
             'fixture': name, 'source': str(source), 'source_sha256': digest(source),
             'opened_copy': str(path), 'before_token': before['token'], 'after': after,
@@ -3070,7 +3049,7 @@ class Journey:
         assert w.has('.play-paused')
         path = self.args.output / 'normal-tori-complete.mshogi'
         body = self.tori_save(path)
-        assert body['record']['payload']['events'] == events[:2]
+        assert body['record']['events'] == events[:2]
         before = self.native_diagnostics()
         self.file('open', path); self.wait_opened(path)
         reopened = self.native_diagnostics()
@@ -3091,7 +3070,7 @@ class Journey:
         assert concluded['tori']['selected']['conclusion'] == {'kind':'resignation','winner':'gote'}
         assert len(concluded['context']['payload']['events']) == 3
         final = self.tori_save(self.args.output / 'normal-tori-concluded.mshogi')
-        assert final['record']['payload']['events'][-1] == {'actor':'sente','command':{'kind':'resign'}}
+        assert final['record']['events'][-1] == {'actor':'sente','command':{'kind':'resign'}}
         self.record('Bounded complete ordinary Tori game', {'root':'standard', 'accepted_board_actions':4,
             'retired_board_actions':2, 'current_board_actions':2, 'final_native_conclusion':concluded['tori']['selected']['conclusion'],
             'evidence':'Human capture / real engine capture / human drop / real engine reply / Take back / Save Load / analysis / native resignation. Functional play, not strength evidence.'})
@@ -3462,7 +3441,7 @@ class Journey:
             w.click('.position-assessment details > summary')
             for expected in ('Exact proof: neither side', 'possible natural board win', 'not a forced win', 'Unknown · exploration incomplete', 'Cancelled · Unknown', 'Analysis failed. No conclusion was established.', 'Historical results for their recorded positions'):
                 assert expected in w.text('.position-assessment'), expected
-            assert before['context']['payload']['conclusion'] == self.xiangqi_diagnostics()['context']['payload']['conclusion'], 'saved exact observations cannot alter the native game outcome'
+            assert before['xiangqi']['conclusion'] == self.xiangqi_diagnostics()['xiangqi']['conclusion'], 'saved exact observations cannot alter the native game outcome'
             self.capture('saved-native-exact-proof-witness-unknown')
         else:
             raise AssertionError(name)

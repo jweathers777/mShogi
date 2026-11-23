@@ -112,7 +112,7 @@ fn raw_outer_and_nested_identity_duplicates_unknown_missing_conflicts_never_fall
         ("profile_edition", json!("other")),
         ("native_schema_version", json!(1)),
         ("native_schema_version", json!(99)),
-        ("envelope_version", json!(2)),
+        ("envelope_version", json!(99)),
         ("unknown", json!(1)),
     ] {
         let mut v = original.clone();
@@ -125,9 +125,6 @@ fn raw_outer_and_nested_identity_duplicates_unknown_missing_conflicts_never_fall
     for key in [
         "envelope_version",
         "game_kind",
-        "rules_profile",
-        "profile_edition",
-        "native_schema_version",
         "payload",
         "profile",
         "root_kind",
@@ -138,6 +135,7 @@ fn raw_outer_and_nested_identity_duplicates_unknown_missing_conflicts_never_fall
     ] {
         let needle = format!("\"{key}\":");
         let bad = text.replacen(&needle, &format!("\"{key}\":null,{needle}"), 1);
+        assert_ne!(bad, text, "missing duplicate target {key}");
         assert!(CanonicalRecord::from_json(&bad).is_err(), "duplicate {key}");
         assert!(serde_json::from_str::<CanonicalRecord>(&bad).is_err());
     }

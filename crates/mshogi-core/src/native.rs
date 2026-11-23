@@ -12,7 +12,7 @@ use serde_json::value::RawValue;
 use std::{error::Error, fmt};
 
 /// This wrapper's version, independent of native schemas and engine transport.
-pub const RECORD_ENVELOPE_VERSION: u32 = 1;
+pub const RECORD_ENVELOPE_VERSION: u32 = 2;
 /// Encoded canonical wrapper input/output limit; request overhead is counted separately.
 pub const MAX_RECORD_ENVELOPE_BYTES: usize = 1024 * 1024;
 /// Bounded shared chess history context; native records themselves retain their own contract.
@@ -137,10 +137,10 @@ pub enum NativeSchema {
     ChessM2,
     /// Existing chess completeness-mode history schema two.
     ChessFull,
-    /// Approved shogi game/match schema one.
-    ShogiV1,
-    /// Xiangqi native history/command/event schema one.
-    XiangqiV1,
+    /// Approved Shogi command history schema two.
+    ShogiV2,
+    /// Xiangqi native command history schema two.
+    XiangqiV2,
     /// Complete modern Tori command history schema four.
     ToriV4,
     /// Complete native Chu command history schema three.
@@ -154,8 +154,8 @@ impl NativeSchema {
         match self {
             Self::ChessM2 => chess::CHESS_RECORD_SCHEMA_VERSION,
             Self::ChessFull => chess::CHESS_FULL_RECORD_SCHEMA_VERSION,
-            Self::ShogiV1 => shogi::SHOGI_RECORD_SCHEMA_VERSION,
-            Self::XiangqiV1 => xiangqi::GAME_RECORD_SCHEMA_VERSION,
+            Self::ShogiV2 => shogi::SHOGI_RECORD_SCHEMA_VERSION,
+            Self::XiangqiV2 => xiangqi::GAME_RECORD_SCHEMA_VERSION,
             Self::ToriV4 => tori::GAME_RECORD_SCHEMA_VERSION,
             Self::ChuV3 => chu::GAME_RECORD_SCHEMA_VERSION,
             Self::TenjikuV3 => tenjiku::GAME_RECORD_SCHEMA_VERSION,
@@ -254,8 +254,8 @@ impl CanonicalRecord {
                 NativeSchema::ChessM2
             }
             Self::Chess(_) => NativeSchema::ChessFull,
-            Self::Shogi(_) => NativeSchema::ShogiV1,
-            Self::Xiangqi(_) => NativeSchema::XiangqiV1,
+            Self::Shogi(_) => NativeSchema::ShogiV2,
+            Self::Xiangqi(_) => NativeSchema::XiangqiV2,
             Self::Tori(_) => NativeSchema::ToriV4,
             Self::Chu(_) => NativeSchema::ChuV3,
             Self::Tenjiku(_) => NativeSchema::TenjikuV3,
@@ -330,43 +330,50 @@ impl CanonicalRecord {
         if text.len() > MAX_RECORD_ENVELOPE_BYTES {
             return Err(EnvelopeError::Capacity);
         }
-        let wire: WireRecord = serde_json::from_str(text).map_err(EnvelopeError::encoding)?;
-        check_stop(stop)?;
-        // A schema-1 Tori record (earlier edition) is read by replay under the
-        // current rule and re-encoded as the current schema (MSH-208).
-        let tori_v1 = wire.game_kind == GameKind::Tori
-            && wire.native_schema_version == 1
-            && wire.profile_edition == tori::PROFILE_EDITION_V1;
-        if wire.envelope_version != RECORD_ENVELOPE_VERSION
-            || wire.rules_profile.game() != wire.game_kind
-            || (wire.profile_edition != wire.rules_profile.edition() && !tori_v1)
-            || wire.game_kind == GameKind::Tenjiku
-                && wire.native_schema_version != tenjiku::GAME_RECORD_SCHEMA_VERSION
-        {
-            return Err(EnvelopeError::Identity);
+        #[derive(Deserialize)]
+        struct Version {
+            envelope_version: u32,
         }
-        if wire.game_kind == GameKind::Tori {
-            // The payload's own schema and edition must equal the envelope
-            // labels; schema 1 is upgraded on read (MSH-208), so the parsed
-            // record alone cannot show which schema the payload had.
-            #[derive(Deserialize)]
-            struct Labels {
-                schema_version: u32,
-                edition: String,
+        let version: Version = serde_json::from_str(text).map_err(EnvelopeError::encoding)?;
+        let (kind, payload) = match version.envelope_version {
+            RECORD_ENVELOPE_VERSION => {
+                let wire: WireRecord =
+                    serde_json::from_str(text).map_err(EnvelopeError::encoding)?;
+                if wire.envelope_version != RECORD_ENVELOPE_VERSION {
+                    return Err(EnvelopeError::Identity);
+                }
+                (wire.game_kind, wire.payload)
             }
-            let labels: Labels =
-                serde_json::from_str(wire.payload.get()).map_err(EnvelopeError::encoding)?;
-            if labels.schema_version != wire.native_schema_version
-                || labels.edition != wire.profile_edition
-            {
-                return Err(EnvelopeError::Identity);
+            1 => {
+                // Only Tori schema 1 has a promised legacy envelope reader.
+                let wire: LegacyToriEnvelope =
+                    serde_json::from_str(text).map_err(EnvelopeError::encoding)?;
+                if wire.envelope_version != 1
+                    || wire.game_kind != GameKind::Tori
+                    || wire.rules_profile != RulesProfile::ToriModernV1
+                    || wire.profile_edition != tori::PROFILE_EDITION_V1
+                    || wire.native_schema_version != 1
+                {
+                    return Err(EnvelopeError::Identity);
+                }
+                #[derive(Deserialize)]
+                struct Labels {
+                    schema_version: u32,
+                    edition: String,
+                }
+                let labels: Labels =
+                    serde_json::from_str(wire.payload.get()).map_err(EnvelopeError::encoding)?;
+                if labels.schema_version != 1 || labels.edition != tori::PROFILE_EDITION_V1 {
+                    return Err(EnvelopeError::Identity);
+                }
+                (GameKind::Tori, wire.payload)
             }
-        }
-        let (record, parsed) = parse(wire.game_kind, wire.payload.get(), stop)?;
+            _ => return Err(EnvelopeError::Identity),
+        };
         check_stop(stop)?;
-        if (record.native_schema().version() != wire.native_schema_version && !tori_v1)
-            || record.profile() != wire.rules_profile
-        {
+        let (record, parsed) = parse(kind, payload.get(), stop)?;
+        check_stop(stop)?;
+        if record.game_kind() != kind {
             return Err(EnvelopeError::Identity);
         }
         record.to_json()?;
@@ -395,28 +402,8 @@ impl CanonicalRecord {
 }
 impl Serialize for CanonicalRecord {
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
-        use serde::ser::SerializeStruct;
-        // Compute native encoding once and enforce the complete canonical wrapper
-        // bound for every serializer, including the existing field-wise format.
-        let payload = self.payload_json().map_err(serde::ser::Error::custom)?;
-        let text = encode_envelope(self, &payload).map_err(serde::ser::Error::custom)?;
-        if matches!(self, Self::Tenjiku(_)) {
-            // Preserve the already measured Tenjiku document/fixture encoding.
-            return RawValue::from_string(text)
-                .map_err(serde::ser::Error::custom)?
-                .serialize(serializer);
-        }
-        // Existing games retain their original pretty field indentation while
-        // each authoritative native payload remains raw and byte-preserved.
-        let payload = RawValue::from_string(payload).map_err(serde::ser::Error::custom)?;
-        let mut wire = serializer.serialize_struct("CanonicalRecord", 6)?;
-        wire.serialize_field("envelope_version", &RECORD_ENVELOPE_VERSION)?;
-        wire.serialize_field("game_kind", &self.game_kind())?;
-        wire.serialize_field("rules_profile", &self.profile())?;
-        wire.serialize_field("profile_edition", self.profile().edition())?;
-        wire.serialize_field("native_schema_version", &self.native_schema().version())?;
-        wire.serialize_field("payload", &payload)?;
-        wire.end()
+        let text = self.to_json().map_err(serde::ser::Error::custom)?;
+        crate::record::serialize_json(&text, serializer)
     }
 }
 fn check_stop(stop: &mut impl FnMut() -> bool) -> Result<(), EnvelopeError> {
@@ -431,18 +418,12 @@ fn encode_envelope(record: &CanonicalRecord, payload: &str) -> Result<String, En
     struct Encoded<'a> {
         envelope_version: u32,
         game_kind: GameKind,
-        rules_profile: RulesProfile,
-        profile_edition: &'static str,
-        native_schema_version: u32,
         payload: &'a RawValue,
     }
     let payload = RawValue::from_string(payload.to_owned()).map_err(EnvelopeError::encoding)?;
     let text = serde_json::to_string(&Encoded {
         envelope_version: RECORD_ENVELOPE_VERSION,
         game_kind: record.game_kind(),
-        rules_profile: record.profile(),
-        profile_edition: record.profile().edition(),
-        native_schema_version: record.native_schema().version(),
         payload: &payload,
     })
     .map_err(EnvelopeError::encoding)?;
@@ -455,6 +436,13 @@ fn encode_envelope(record: &CanonicalRecord, payload: &str) -> Result<String, En
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 struct WireRecord {
+    envelope_version: u32,
+    game_kind: GameKind,
+    payload: Box<RawValue>,
+}
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct LegacyToriEnvelope {
     envelope_version: u32,
     game_kind: GameKind,
     rules_profile: RulesProfile,

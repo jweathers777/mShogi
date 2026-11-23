@@ -174,10 +174,10 @@ class NativePendingTakebackArchiveTests(unittest.TestCase):
     def test_saved_native_takeback_is_only_the_restored_game(self):
         for game in ('shogi', 'xiangqi', 'tori', 'chu', 'tenjiku'):
             record = {'game_kind': game, 'payload': {'root': {'native_root': game}, 'events': []}}
-            body = {'record': copy.deepcopy(record), 'human': 'first', 'settings': {}}
+            body = {'record': copy.deepcopy(record['payload']), 'human': 'first', 'settings': {}}
             self.assertTrue(module.retained_pending_takeback(game, body, record))
             changed = copy.deepcopy(body)
-            changed['record']['payload']['events'] = [{'removed': 'move'}]
+            changed['record']['events'] = [{'removed': 'move'}]
             self.assertFalse(module.retained_pending_takeback(game, changed, record))
             changed = {**body, 'retired': [record]}
             self.assertFalse(module.retained_pending_takeback(game, changed, record))
@@ -493,16 +493,8 @@ class SyntheticFullBoardEvidenceTests(unittest.TestCase):
 
 class CurrentDocumentInspectionTests(unittest.TestCase):
     def document(self, game="chess"):
-        profile, edition = {
-            "chess": ("mshogi.chess.match.v1", "FIDE-2023-01-01+mshogi.chess.match.v1"),
-            "shogi": ("mshogi.shogi.csa36.v1", "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026"),
-            "xiangqi": ("mshogi.xiangqi.wxf2018.v1", "WXF-2018+XIANGQI-P1-2026-10-27"),
-            "tori": ("mshogi.tori.modern.v1", "MSH208-MODERN-2026-11-20"),
-            "chu": ("mshogi.chu.jcsa2019.v1", "JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02"),
-        }[game]
-        return {"envelope_version": 1, "format": "mshogi.desktop.document.v1",
-                "game_kind": game, "rules_profile": profile, "profile_edition": edition,
-                "native_schema_version": 1, "payload": {"record": {}, "human": "white" if game == "chess" else "sente", "settings": {}}}
+        return {"format": "mshogi.desktop.document.v2", "game_kind": game,
+                "payload": {"record": {}, "human": "white" if game == "chess" else "sente", "settings": {}}}
 
     def test_current_envelopes_expose_native_payload_without_reconstruction(self):
         for game in ("chess", "shogi", "xiangqi", "tori", "chu"):
@@ -567,7 +559,7 @@ class XiangqiRuntimeEvidenceTests(unittest.TestCase):
     def test_failed_open_comparison_detects_native_history_settings_and_identity_changes(self):
         before = self.diagnostics()
         changes = [
-            lambda data: data['context']['payload']['events'].pop(),
+            lambda data: data['context']['payload']['commands'].pop(),
             lambda data: data['context']['payload']['root'].update(no_capture_plies=29),
             lambda data: data['xiangqi']['warnings'].append({'side': 'red', 'event_index': 1}),
             lambda data: data['xiangqi']['count_advice'][0].update(eligible=True),
@@ -591,6 +583,8 @@ class XiangqiRuntimeEvidenceTests(unittest.TestCase):
                 data = self.diagnostics()
                 if field == 'profile':
                     data[field] = value
+                elif field == 'rules_profile':
+                    data['context']['payload']['root']['profile'] = value
                 else:
                     data['context'][field] = value
                 with self.assertRaises(AssertionError):
@@ -628,14 +622,14 @@ class XiangqiRuntimeEvidenceTests(unittest.TestCase):
             'Analysis result available' if selector == '.shogi-analysis-state'
             else 'No move or claim was played')
         accepted = {'historical': False, 'observation': {'context': {
-            'purpose': {'kind': 'move_analysis'}, 'limits': {'depth': 1, 'nodes': 128},
+            'purpose': {'kind': 'move_analysis', 'target': {'event_index': 2}}, 'limits': {'depth': 1, 'nodes': 128},
             'game': copy.deepcopy(self.diagnostics()['context'])}}}
         wrong = []
         for change in (
                 lambda item: item.update(historical=True),
                 lambda item: item['observation']['context'].update(purpose={'kind': 'engine_turn'}),
                 lambda item: item['observation']['context']['limits'].update(nodes=512),
-                lambda item: item['observation']['context']['game']['payload']['events'].pop()):
+                lambda item: item['observation']['context']['purpose']['target'].update(event_index=1)):
             item = copy.deepcopy(accepted)
             change(item)
             wrong.append({'observations': [item]})
@@ -1461,19 +1455,19 @@ class ChuNormalProductEvidenceTests(unittest.TestCase):
         # journey check independently specified effects and conclusions after replay.
         for body in bodies.values():
             self.assertEqual(set(body), {'record', 'human', 'settings'})
-            native=body['record']['payload']
+            native=body['record']
             self.assertEqual(set(native), {'profile','edition','schema_version','root','events'})
             self.assertEqual(native['schema_version'],3)
             for event in native['events']:
                 self.assertEqual(set(event), {'actor','command'})
-        obligation=bodies['chu-repetition10.mshogi']['record']['payload']
+        obligation=bodies['chu-repetition10.mshogi']['record']
         self.assertEqual(len(obligation['events']),10)
         offered=bodies['chu-agreement.mshogi']
         self.assertEqual(offered['human'],'gote')
-        self.assertEqual(offered['record']['payload']['events'],[{'actor':'sente','command':{'kind':'offer_draw'}}])
-        agreed=bodies['chu-agreed-draw.mshogi']['record']['payload']
+        self.assertEqual(offered['record']['events'],[{'actor':'sente','command':{'kind':'offer_draw'}}])
+        agreed=bodies['chu-agreed-draw.mshogi']['record']
         self.assertEqual(agreed['events'][-1],{'actor':'gote','command':{'kind':'accept_draw'}})
-        complete=bodies['chu-complete-resignation.mshogi']['record']['payload']
+        complete=bodies['chu-complete-resignation.mshogi']['record']
         self.assertEqual(len(complete['events']),13)
         self.assertEqual(complete['events'][-1],{'actor':'sente','command':{'kind':'resign'}})
 
@@ -1517,21 +1511,21 @@ class ToriNormalProductEvidenceTests(unittest.TestCase):
             for name in ('contract','mate-in-one','quiet-loss','forced-prefix6','repetition7')}
         for body in bodies.values():
             self.assertEqual(set(body), {'record', 'human', 'settings'})
-            self.assertFalse(body['record']['payload']['root']['historical_reachability_proven'])
-            self.assertTrue(body['record']['payload']['root']['earlier_history_unknown'])
+            self.assertFalse(body['record']['root']['historical_reachability_proven'])
+            self.assertTrue(body['record']['root']['earlier_history_unknown'])
         # Native replay derives occurrences and conclusions from the complete commands.
-        forced = bodies['forced-prefix6']['record']['payload']
+        forced = bodies['forced-prefix6']['record']
         self.assertEqual(len(forced['events']), 6)
         self.assertEqual(forced['events'][-1]['command']['action'],
                          {'kind':'move','from':'5a','to':'4a','result_face':'phoenix'})
-        repetition = bodies['repetition7']['record']['payload']
+        repetition = bodies['repetition7']['record']
         self.assertEqual(len(repetition['events']), 7)
         self.assertNotIn('occurrences', repetition['events'][-1])
         self.assertNotIn('obligation', repetition)
         self.assertEqual(repetition['events'][-1]['command']['action'],
                          {'kind':'move','from':'5g','to':'4g','result_face':'phoenix'})
-        self.assertNotIn('conclusion', bodies['quiet-loss']['record']['payload'])
-        mate = bodies['mate-in-one']['record']['payload']
+        self.assertNotIn('conclusion', bodies['quiet-loss']['record'])
+        mate = bodies['mate-in-one']['record']
         self.assertNotIn('conclusion', mate)
         self.assertIn({'square':'4c','piece':{'side':'sente','face':'falcon'}}, mate['root']['board'])
         self.assertEqual(mate['root']['side_to_move'], 'sente')
@@ -1647,13 +1641,13 @@ class TenjikuPackagedEvidenceTests(unittest.TestCase):
         self.assertEqual(len(manifest['cases']),20)
         for case in manifest['cases']:
             document=json.loads((directory/case['file']).read_text());body=module.desktop_document_payload(document,'tenjiku')
-            self.assertEqual(document['rules_profile'],case['profile'])
+            self.assertEqual(body['record']['root']['profile'],case['profile'])
             self.assertEqual(set(body), {'record', 'human', 'settings'})
-            self.assertEqual(set(body['record']['payload']), {'edition','schema_version','root','events'})
-            if 'repetition3' in case['file']:self.assertEqual(len(body['record']['payload']['events']),3)
+            self.assertEqual(set(body['record']), {'edition','schema_version','root','events'})
+            if 'repetition3' in case['file']:self.assertEqual(len(body['record']['events']),3)
             elif 'agreement' in case['file']:
-                self.assertEqual(len(body['record']['payload']['events']),1);self.assertEqual(body['human'],'gote');self.assertEqual(body['record']['payload']['events'][0],{'actor':'sente','command':{'kind':'offer_draw'}});self.assertEqual(body['record']['payload']['root']['side'],'sente')
-            else:self.assertEqual(body['record']['payload']['events'],[])
+                self.assertEqual(len(body['record']['events']),1);self.assertEqual(body['human'],'gote');self.assertEqual(body['record']['events'][0],{'actor':'sente','command':{'kind':'offer_draw'}});self.assertEqual(body['record']['root']['side'],'sente')
+            else:self.assertEqual(body['record']['events'],[])
             for mutate in (lambda d:d.update(rules_profile='unknown'),lambda d:d.update(profile_edition='other-profile-edition')):
                 bad=copy.deepcopy(document);mutate(bad)
                 with self.assertRaises(AssertionError):module.desktop_document_payload(bad,'tenjiku')

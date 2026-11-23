@@ -498,14 +498,7 @@
   "execution_purpose": null,
   "diagnostic": "Historical position. Analysis is read-only. Return to live explicitly.",
   "declaration_advice": [],
-  "context": {
-    "envelope_version": 1,
-    "game_kind": "tori",
-    "rules_profile": "mshogi.tori.modern.v1",
-    "profile_edition": "MSH208-MODERN-2026-11-20",
-    "native_schema_version": 4,
-    "payload": {"profile":"mshogi.tori.modern.v1","edition":"MSH208-MODERN-2026-11-20","schema_version":4,"root":{"root_kind":"diagram","source":null,"earlier_history_unknown":true,"historical_reachability_proven":false,"declared_completed_plies":0,"accepted_plies":0,"declared_total_plies":0,"side_to_move":"sente","board":[{"square":"4a","piece":{"side":"gote","face":"phoenix"}},{"square":"4g","piece":{"side":"sente","face":"phoenix"}}],"hands":[[0,0,0,0,0,0],[0,0,0,0,0,0]]},"events":[{"actor":"sente","command":{"kind":"play","action":{"kind":"move","from":"4g","to":"5g","result_face":"phoenix"}}},{"actor":"gote","command":{"kind":"play","action":{"kind":"move","from":"4a","to":"5a","result_face":"phoenix"}}},{"actor":"sente","command":{"kind":"play","action":{"kind":"move","from":"5g","to":"4g","result_face":"phoenix"}}},{"actor":"gote","command":{"kind":"play","action":{"kind":"move","from":"5a","to":"4a","result_face":"phoenix"}}}]}
-  },
+  "context": {"envelope_version":2,"game_kind":"tori","payload":{"profile":"mshogi.tori.modern.v1","edition":"MSH208-MODERN-2026-11-20","schema_version":4,"root":{"root_kind":"diagram","source":null,"earlier_history_unknown":true,"historical_reachability_proven":false,"declared_completed_plies":0,"accepted_plies":0,"declared_total_plies":0,"side_to_move":"sente","board":[{"square":"4a","piece":{"side":"gote","face":"phoenix"}},{"square":"4g","piece":{"side":"sente","face":"phoenix"}}],"hands":[[0,0,0,0,0,0],[0,0,0,0,0,0]]},"events":[{"actor":"sente","command":{"kind":"play","action":{"kind":"move","from":"4g","to":"5g","result_face":"phoenix"}}},{"actor":"gote","command":{"kind":"play","action":{"kind":"move","from":"4a","to":"5a","result_face":"phoenix"}}},{"actor":"sente","command":{"kind":"play","action":{"kind":"move","from":"5g","to":"4g","result_face":"phoenix"}}},{"actor":"gote","command":{"kind":"play","action":{"kind":"move","from":"5a","to":"4a","result_face":"phoenix"}}}]}},
   "analysis": null,
   "observations": [],
   "search_observations": [],

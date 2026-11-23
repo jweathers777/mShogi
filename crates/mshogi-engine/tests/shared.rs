@@ -383,15 +383,14 @@ fn strict_outer_purpose_target_envelope_and_native_bytes_survive_routing() {
         v.as_object_mut().unwrap().remove(field);
         assert!(raw_run(&v.to_string()).is_err(), "missing {field}");
     }
-    for pointer in ["/game/envelope_version", "/game/native_schema_version"] {
+    for pointer in ["/game/envelope_version", "/game/payload/schema_version"] {
         let mut v = value.clone();
         *v.pointer_mut(pointer).unwrap() = json!(99);
         assert!(raw_run(&v.to_string()).is_err());
     }
     for (pointer, v) in [
         ("/game/game_kind", json!("shogi")),
-        ("/game/rules_profile", json!("unknown")),
-        ("/game/profile_edition", json!("other")),
+        ("/game/payload/rules_profile", json!("unknown")),
         ("/purpose/kind", json!("shogi_tsume")),
     ] {
         let mut altered = value.clone();

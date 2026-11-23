@@ -496,18 +496,18 @@ fn command_json_strict_native_payload_and_encoded_capacity() {
             1,
         ),
         json.replacen(
-            "\"envelope_version\":1",
-            "\"envelope_version\":1,\"envelope_version\":1",
+            "\"envelope_version\":2",
+            "\"envelope_version\":2,\"envelope_version\":2",
             1,
         ),
         json.replacen(
-            "\"rules_profile\":\"mshogi.shogi.csa36.v1\"",
-            "\"rules_profile\":\"mshogi.chess.match.v1\"",
+            "\"profile_id\":\"mshogi.shogi.csa36.v1\"",
+            "\"profile_id\":\"mshogi.chess.match.v1\"",
             1,
         ),
         json.replacen(
-            "\"schema_version\":1",
-            "\"schema_version\":1,\"schema_version\":1",
+            "\"schema_version\":2",
+            "\"schema_version\":2,\"schema_version\":2",
             1,
         ),
         json.replacen(

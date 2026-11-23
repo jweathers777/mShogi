@@ -1,10 +1,11 @@
 //! Strict native records for the selected untimed profile.
 //!
 //! A record is a complete accepted ledger, not an SFEN recovery shortcut. Its
-//! redundant effects are checked at every prefix by authoritative game replay.
+//! commands restore effects and conclusions through authoritative game replay.
 
 use std::{error::Error, fmt};
 
+use crate::record::RecordedCommand;
 use serde::{Deserialize, Deserializer, Serialize};
 
 use super::{
@@ -18,12 +19,12 @@ pub const MAX_RECORD_BYTES: usize = 1024 * 1024;
 /// Conservative ledger bound, including a possible terminal non-board command.
 pub const MAX_RECORD_EVENTS: usize = 321;
 /// Native game/match record schema, distinct from profile and transport identities.
-pub const SHOGI_RECORD_SCHEMA_VERSION: u32 = 1;
+pub const SHOGI_RECORD_SCHEMA_VERSION: u32 = 2;
 
 /// Lossless canonical game and untimed match-command ledger.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct GameRecord {
-    wire: WireRecord,
+    wire: CachedRecord,
 }
 
 /// New native events after an exact transport-bound retained state.
@@ -161,7 +162,7 @@ impl Error for RecordError {}
 impl GameRecord {
     /// Validated native schema identity.
     pub fn schema_version(&self) -> u32 {
-        self.wire.schema_version
+        SHOGI_RECORD_SCHEMA_VERSION
     }
     /// Accepted command-event count, independent of the declared SFEN counter.
     pub fn event_count(&self) -> usize {
@@ -197,13 +198,7 @@ impl GameRecord {
     pub fn from_game(game: &Game) -> Self {
         let initial = Game::from_root(game.root().clone());
         Self {
-            wire: WireRecord {
-                format: "mshogi.shogi.game".into(),
-                schema_version: SHOGI_RECORD_SCHEMA_VERSION,
-                profile_id: PROFILE_ID.into(),
-                profile_edition: super::PROFILE_EDITION.into(),
-                mode: "untimed".into(),
-                policies: Policies::selected(),
+            wire: CachedRecord {
                 root: WireRoot {
                     category: match game.root().category() {
                         RootCategory::Standard => Category::Standard,
@@ -215,11 +210,6 @@ impl GameRecord {
                         None => Source::InitialFixed,
                         Some(CounterSource::Supplied) => Source::Supplied,
                         Some(CounterSource::Defaulted) => Source::Defaulted,
-                    },
-                    known_history: if game.root().has_complete_initial_history() {
-                        KnownHistory::Initial
-                    } else {
-                        KnownHistory::ImportedUnknown
                     },
                     conclusion: initial.conclusion().map(WireConclusion::from),
                     score_half_points: score(initial.conclusion()),
@@ -233,8 +223,8 @@ impl GameRecord {
 
     /// Compact UTF-8 JSON in stable field order, without a trailing newline.
     pub fn to_json(&self) -> Result<String, RecordError> {
-        let json =
-            serde_json::to_string(&self.wire).map_err(|e| RecordError::Json(e.to_string()))?;
+        let json = serde_json::to_string(&SavedRecord::from_record(self))
+            .map_err(|e| RecordError::Json(e.to_string()))?;
         if json.len() > MAX_RECORD_BYTES || self.wire.events.len() > MAX_RECORD_EVENTS {
             return Err(RecordError::Capacity);
         }
@@ -252,100 +242,16 @@ impl GameRecord {
         if json.len() > MAX_RECORD_BYTES {
             return Err(RecordError::Capacity);
         }
-        let wire: WireRecord =
+        crate::record::reject_duplicates(json).map_err(|e| RecordError::Json(e.to_string()))?;
+        let wire: SavedRecord =
             serde_json::from_str(json).map_err(|e| RecordError::Json(e.to_string()))?;
-        let record = Self { wire };
-        let game = record.to_game()?;
-        Ok((record, game))
+        let game = wire.to_game()?;
+        Ok((Self::from_game(&game), game))
     }
 
-    /// Reconstruct the root and every accepted command, checking every derived prefix.
+    /// Reconstruct the complete root and every recorded command through native rules.
     pub fn to_game(&self) -> Result<Game, RecordError> {
-        let wire = &self.wire;
-        if wire.events.len() > MAX_RECORD_EVENTS {
-            return Err(RecordError::Capacity);
-        }
-        if wire.format != "mshogi.shogi.game"
-            || wire.schema_version != SHOGI_RECORD_SCHEMA_VERSION
-            || wire.profile_id != PROFILE_ID
-            || wire.profile_edition != super::PROFILE_EDITION
-            || wire.mode != "untimed"
-            || wire.policies != Policies::selected()
-        {
-            return Err(RecordError::Unsupported);
-        }
-        let root = &wire.root;
-        let position = Position::from_sfen(&root.sfen).map_err(|_| RecordError::Root)?;
-        if position.to_sfen() != root.sfen {
-            return Err(RecordError::Root);
-        }
-        let root = match (root.category, root.counter_source, root.known_history) {
-            (Category::Standard, Source::InitialFixed, KnownHistory::Initial)
-                if root.sfen == INITIAL_SFEN =>
-            {
-                GameRoot::standard()
-            }
-            (
-                category @ (Category::FullMaterialDiagram | Category::ReducedMaterialDiagram),
-                source @ (Source::Supplied | Source::Defaulted),
-                KnownHistory::ImportedUnknown,
-            ) => GameRoot::import(
-                position,
-                if category == Category::FullMaterialDiagram {
-                    RootCategory::FullMaterialDiagram
-                } else {
-                    RootCategory::ReducedMaterialDiagram
-                },
-                if source == Source::Supplied {
-                    CounterSource::Supplied
-                } else {
-                    CounterSource::Defaulted
-                },
-            )
-            .map_err(|_| RecordError::Root)?,
-            _ => return Err(RecordError::Root),
-        };
-        // Check all command/position syntax before executing any recorded
-        // command, including malformed data late in an otherwise valid ledger.
-        let commands = wire
-            .events
-            .iter()
-            .enumerate()
-            .map(|(index, event)| {
-                if event.index != index {
-                    return Err(RecordError::Event(index));
-                }
-                let position = Position::from_sfen(&event.after_sfen)
-                    .map_err(|_| RecordError::Event(index))?;
-                if position.to_sfen() != event.after_sfen {
-                    return Err(RecordError::Event(index));
-                }
-                event.command.to_native().ok_or(RecordError::Event(index))
-            })
-            .collect::<Result<Vec<_>, _>>()?;
-        let mut game = Game::from_root(root);
-        if wire.root.conclusion != game.conclusion().map(WireConclusion::from)
-            || wire.root.score_half_points != score(game.conclusion())
-        {
-            return Err(RecordError::Root);
-        }
-        for (index, (event, command)) in wire.events.iter().zip(commands).enumerate() {
-            game.submit(GameRequest {
-                expected: game.context(),
-                actor: event.actor.native(),
-                command,
-            })
-            .map_err(|error| replay_error(index, error))?;
-            if *event != WireEvent::from(game.events().last().expect("just accepted event")) {
-                return Err(RecordError::Event(index));
-            }
-        }
-        if wire.conclusion != game.conclusion().map(WireConclusion::from)
-            || wire.score_half_points != score(game.conclusion())
-        {
-            return Err(RecordError::Conclusion);
-        }
-        Ok(game)
+        SavedRecord::from_record(self).to_game()
     }
 
     /// Whether an already validated record is an exact prefix of this record.
@@ -357,12 +263,6 @@ impl GameRecord {
         let previous = &earlier.wire;
         let count = previous.events.len();
         if count > current.events.len()
-            || current.format != previous.format
-            || current.schema_version != previous.schema_version
-            || current.profile_id != previous.profile_id
-            || current.profile_edition != previous.profile_edition
-            || current.mode != previous.mode
-            || current.policies != previous.policies
             || current.root != previous.root
             || current.events[..count] != previous.events
         {
@@ -425,67 +325,107 @@ fn required_option<'de, D: Deserializer<'de>, T: Deserialize<'de>>(
     Option::<T>::deserialize(d)
 }
 
-#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-struct WireRecord {
-    format: String,
-    schema_version: u32,
-    profile_id: String,
-    profile_edition: String,
-    mode: String,
-    policies: Policies,
+#[derive(Clone, Debug, Eq, PartialEq)]
+struct CachedRecord {
     root: WireRoot,
     events: Vec<WireEvent>,
-    #[serde(deserialize_with = "required_option")]
     conclusion: Option<WireConclusion>,
-    #[serde(deserialize_with = "required_option")]
     score_half_points: Option<[u8; 2]>,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[derive(Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-struct Policies {
-    no_legal_action: String,
-    repetition: String,
-    continuous_check: String,
-    entering_king: String,
-    sente_declaration_points: u16,
-    gote_declaration_points: u16,
-    minimum_other_camp_pieces: u8,
-    length_completed_actions: u32,
-    precedence: [String; 3],
-    resignation: String,
-    scoring: String,
-    imported_history: String,
-    counters: String,
-    live_root_admission: String,
-    timing: String,
-    external_events: String,
+struct SavedRecord {
+    schema_version: u32,
+    profile_id: String,
+    profile_edition: String,
+    root: SavedRoot,
+    events: Vec<RecordedCommand<WireSide, WireCommand>>,
 }
-impl Policies {
-    fn selected() -> Self {
+#[derive(Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+struct SavedRoot {
+    category: Category,
+    sfen: String,
+    counter_source: Source,
+}
+impl SavedRecord {
+    fn from_record(record: &GameRecord) -> Self {
+        let wire = &record.wire;
         Self {
-            no_legal_action: "loss_with_or_without_check".into(),
-            repetition: "four_known_occurrences_final_draw".into(),
-            continuous_check: "all_own_actions_first_to_fourth_checker_loses".into(),
-            entering_king: "formal_own_turn_camp_unchecked_false_declaration_loses".into(),
-            sente_declaration_points: 28,
-            gote_declaration_points: 27,
-            minimum_other_camp_pieces: 10,
-            length_completed_actions: 320,
-            precedence: [
-                "no_legal_action".into(),
-                "repetition_including_continuous_check".into(),
-                "length".into(),
-            ],
-            resignation: "opponent_wins".into(),
-            scoring: "csa_sente_gote_half_point_units".into(),
-            imported_history: "root_once_earlier_history_unknown".into(),
-            counters: "declared_next_ply_minus_one_default_one".into(),
-            live_root_admission: "nonmoving_king_unattacked_necessary_not_reachability".into(),
-            timing: "unsupported_untimed_time_prerequisite_true".into(),
-            external_events: "unsupported".into(),
+            schema_version: SHOGI_RECORD_SCHEMA_VERSION,
+            profile_id: PROFILE_ID.into(),
+            profile_edition: super::PROFILE_EDITION.into(),
+            root: SavedRoot {
+                category: wire.root.category,
+                sfen: wire.root.sfen.clone(),
+                counter_source: wire.root.counter_source,
+            },
+            events: wire
+                .events
+                .iter()
+                .map(|event| RecordedCommand {
+                    actor: event.actor,
+                    command: event.command.clone(),
+                })
+                .collect(),
         }
+    }
+    fn to_game(&self) -> Result<Game, RecordError> {
+        if self.events.len() > MAX_RECORD_EVENTS {
+            return Err(RecordError::Capacity);
+        }
+        if self.schema_version != SHOGI_RECORD_SCHEMA_VERSION
+            || self.profile_id != PROFILE_ID
+            || self.profile_edition != super::PROFILE_EDITION
+        {
+            return Err(RecordError::Unsupported);
+        }
+        let root = &self.root;
+        let position = Position::from_sfen(&root.sfen).map_err(|_| RecordError::Root)?;
+        if position.to_sfen() != root.sfen {
+            return Err(RecordError::Root);
+        }
+        let root = match (root.category, root.counter_source) {
+            (Category::Standard, Source::InitialFixed) if root.sfen == INITIAL_SFEN => {
+                GameRoot::standard()
+            }
+            (
+                category @ (Category::FullMaterialDiagram | Category::ReducedMaterialDiagram),
+                source @ (Source::Supplied | Source::Defaulted),
+            ) => GameRoot::import(
+                position,
+                if category == Category::FullMaterialDiagram {
+                    RootCategory::FullMaterialDiagram
+                } else {
+                    RootCategory::ReducedMaterialDiagram
+                },
+                if source == Source::Supplied {
+                    CounterSource::Supplied
+                } else {
+                    CounterSource::Defaulted
+                },
+            )
+            .map_err(|_| RecordError::Root)?,
+            _ => return Err(RecordError::Root),
+        };
+        // Parse the entire command list before executing any command.
+        let commands = self
+            .events
+            .iter()
+            .enumerate()
+            .map(|(index, event)| event.command.to_native().ok_or(RecordError::Event(index)))
+            .collect::<Result<Vec<_>, _>>()?;
+        let mut game = Game::from_root(root);
+        for (index, (event, command)) in self.events.iter().zip(commands).enumerate() {
+            game.submit(GameRequest {
+                expected: game.context(),
+                actor: event.actor.native(),
+                command,
+            })
+            .map_err(|error| replay_error(index, error))?;
+        }
+        Ok(game)
     }
 }
 
@@ -502,12 +442,6 @@ enum Source {
     InitialFixed,
     Supplied,
     Defaulted,
-}
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
-enum KnownHistory {
-    Initial,
-    ImportedUnknown,
 }
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
@@ -542,16 +476,12 @@ impl<'de> Deserialize<'de> for Side {
     }
 }
 
-#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct WireRoot {
     category: Category,
     sfen: String,
     counter_source: Source,
-    known_history: KnownHistory,
-    #[serde(deserialize_with = "required_option")]
     conclusion: Option<WireConclusion>,
-    #[serde(deserialize_with = "required_option")]
     score_half_points: Option<[u8; 2]>,
 }
 
@@ -749,8 +679,7 @@ impl From<&GameEvent> for WireEvent {
 // therefore never an extra restriction on accepted play. Canonical SFEN has at
 // most 40 pieces (80 piece bytes), rank separators/empty runs, 14 bounded hand
 // entries, side and u32 counter; it fits 256 bytes. A serialized event has only
-// fixed strings, one <=5-byte action, that SFEN, <=321 indices, bounded point
-// counts, and optional fixed-shaped declaration/conclusion: <2048 bytes. The
+// an actor and a command with at most one <=5-byte action: <2048 bytes. The
 // fixed envelope/root is <8192 bytes. Thus 8192 + 321*2048 = 665600 < 1 MiB.
 // These deliberately loose limits include all supported encoded alternatives.
 
@@ -862,5 +791,12 @@ mod prefix_identity_tests {
         let root = GameRecord::from_game(&root);
         assert!(root.has_prefix(&root));
         assert!(!root.has_prefix(&empty));
+    }
+}
+
+impl Serialize for GameRecord {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        let json = self.to_json().map_err(serde::ser::Error::custom)?;
+        crate::record::serialize_json(&json, serializer)
     }
 }

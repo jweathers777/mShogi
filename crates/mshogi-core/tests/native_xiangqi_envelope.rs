@@ -49,23 +49,22 @@ fn real_records_keep_profiles_roots_counters_history_and_cached_target_metadata(
     let r = record(&g);
     assert_eq!(r.game_kind(), GameKind::Xiangqi);
     assert_eq!(r.profile(), RulesProfile::XiangqiWxf2018V1);
-    assert_eq!(r.native_schema(), NativeSchema::XiangqiV1);
+    assert_eq!(r.native_schema(), NativeSchema::XiangqiV2);
     assert_eq!(r.known_board_actions(), 8);
     assert_eq!(r.event_count(), 9); // eight actions plus third-occurrence warning
     let text = r.to_json().unwrap();
     let wire: Value = serde_json::from_str(&text).unwrap();
-    assert_eq!(wire["envelope_version"], 1);
-    assert_eq!(wire["rules_profile"], x::PROFILE_ID);
-    assert_eq!(wire["profile_edition"], x::PROFILE_EDITION);
-    assert_eq!(wire["native_schema_version"], 1);
+    assert_eq!(wire["envelope_version"], 2);
+    assert_eq!(wire["payload"]["root"]["profile"], x::PROFILE_ID);
+    assert_eq!(wire["payload"]["root"]["edition"], x::PROFILE_EDITION);
+    assert_eq!(wire["payload"]["schema_version"], 2);
     assert_eq!(wire["payload"]["root"]["origin"], "imported_fen");
     assert_eq!(
         wire["payload"]["root"]["history"],
         "starts_at_this_position"
     );
     assert_eq!(wire["payload"]["root"]["no_capture_plies"], 0);
-    assert_eq!(wire["payload"]["no_win_goal"], x::NATURAL_WIN_GOAL);
-    assert_eq!(wire["payload"]["no_win_mode"], "sound_fast_only");
+    assert_eq!(wire["payload"].as_object().unwrap().len(), 4);
     let parsed = CanonicalRecord::from_json(&text).unwrap();
     assert_eq!(parsed, r);
     assert_eq!(serde_json::from_str::<CanonicalRecord>(&text).unwrap(), r);
@@ -271,14 +270,7 @@ fn claimant_specific_full_history_and_same_ply_conclusions_survive_native_handof
 fn raw_outer_and_nested_rejections_never_fall_through_to_another_game() {
     let text = record(&game()).to_json().unwrap();
     let baseline: Value = serde_json::from_str(&text).unwrap();
-    for field in [
-        "envelope_version",
-        "game_kind",
-        "rules_profile",
-        "profile_edition",
-        "native_schema_version",
-        "payload",
-    ] {
+    for field in ["envelope_version", "game_kind", "payload"] {
         let mut missing = baseline.clone();
         missing.as_object_mut().unwrap().remove(field);
         assert!(
@@ -297,20 +289,12 @@ fn raw_outer_and_nested_rejections_never_fall_through_to_another_game() {
         assert!(serde_json::from_str::<CanonicalRecord>(&raw).is_err());
     }
     for (pointer, value) in [
-        ("/envelope_version", json!(2)),
+        ("/envelope_version", json!(99)),
         ("/game_kind", json!("future_game")),
         ("/game_kind", json!("shogi")),
-        ("/rules_profile", json!(s::PROFILE_ID)),
-        ("/rules_profile", json!("mshogi.xiangqi.wxf2018.v2")),
-        ("/profile_edition", json!("WXF-2024")),
-        ("/native_schema_version", json!(2)),
-        ("/payload/game", json!("chess")),
-        ("/payload/profile", json!(s::PROFILE_ID)),
-        ("/payload/edition", json!("wrong")),
-        ("/payload/schema_version", json!(2)),
+        ("/payload/schema_version", json!(99)),
         ("/payload/root/profile", json!(s::PROFILE_ID)),
-        ("/payload/no_win_mode", json!("exact")),
-        ("/payload/fast_witness_limit", json!(2)),
+        ("/payload/root/edition", json!("wrong")),
     ] {
         let mut wrong = baseline.clone();
         *wrong.pointer_mut(pointer).unwrap() = value;
@@ -331,13 +315,13 @@ fn raw_outer_and_nested_rejections_never_fall_through_to_another_game() {
             1,
         ),
         text.replacen(
-            "\"conclusion\":null",
-            "\"conclusion\":null,\"conclusion\":null",
+            "\"schema_version\":2",
+            "\"schema_version\":2,\"schema_version\":2",
             1,
         ),
         text.replacen("\"payload\":{", "\"payload\":{\"unknown\":1,", 1),
         text.replacen("\"root\":{", "\"root\":{\"unknown\":1,", 1),
-        text.replacen("\"conclusion\":null,", "", 1),
+        text.replacen("\"schema_version\":2,", "", 1),
     ] {
         assert_ne!(raw, text);
         assert!(CanonicalRecord::from_json(&raw).is_err());

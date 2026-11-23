@@ -1045,12 +1045,725 @@
     },
     "canonical_context_scope": "selected_committed",
     "selected_canonical": {
-      "envelope_version": 1,
+      "envelope_version": 2,
       "game_kind": "xiangqi",
-      "rules_profile": "mshogi.xiangqi.wxf2018.v1",
-      "profile_edition": "WXF-2018+XIANGQI-P1-2026-10-27",
-      "native_schema_version": 1,
-      "payload": {"format":"mshogi.xiangqi.game","schema_version":1,"game":"xiangqi","profile":"mshogi.xiangqi.wxf2018.v1","edition":"WXF-2018+XIANGQI-P1-2026-10-27","mode":"untimed","no_win_goal":"mshogi.xiangqi.natural-board-win.exists.v1","no_win_mode":"sound_fast_only","fast_witness_limit":1,"claim_policy":"explicit","root":{"schema":"mshogi.xiangqi.position.v1","profile":"mshogi.xiangqi.wxf2018.v1","edition":"WXF-2018+XIANGQI-P1-2026-10-27","history":"starts_at_this_position","origin":"imported_fen","board":"5k2r/9/9/9/R8/9/9/9/9/3K5","side":"red","no_capture_plies":0,"fullmove_number":1},"commands":[{"actor":"red","command":{"kind":"play","action":"a5d5"},"result":"accepted","event_end":1},{"actor":"black","command":{"kind":"play","action":"i9i6"},"result":"accepted","event_end":2},{"actor":"red","command":{"kind":"play","action":"d5d6"},"result":"accepted","event_end":3},{"actor":"black","command":{"kind":"play","action":"i6i1"},"result":"accepted","event_end":4},{"actor":"red","command":{"kind":"play","action":"d6i6"},"result":"accepted","event_end":5},{"actor":"black","command":{"kind":"play","action":"i1b1"},"result":"accepted","event_end":6},{"actor":"red","command":{"kind":"play","action":"i6e6"},"result":"accepted","event_end":7},{"actor":"black","command":{"kind":"play","action":"b1i1"},"result":"accepted","event_end":8},{"actor":"red","command":{"kind":"play","action":"e6e9"},"result":"accepted","event_end":9},{"actor":"black","command":{"kind":"play","action":"f9f8"},"result":"accepted","event_end":10},{"actor":"red","command":{"kind":"play","action":"e9e0"},"result":"accepted","event_end":11},{"actor":"black","command":{"kind":"play","action":"i1f1"},"result":"accepted","event_end":12},{"actor":"red","command":{"kind":"play","action":"e0f0"},"result":"accepted","event_end":13},{"actor":"black","command":{"kind":"play","action":"f8f9"},"result":"accepted","event_end":14},{"actor":"red","command":{"kind":"play","action":"f0i0"},"result":"accepted","event_end":15},{"actor":"black","command":{"kind":"play","action":"f1e1"},"result":"accepted","event_end":16},{"actor":"red","command":{"kind":"play","action":"i0f0"},"result":"accepted","event_end":17},{"actor":"black","command":{"kind":"play","action":"f9e9"},"result":"accepted","event_end":18},{"actor":"red","command":{"kind":"play","action":"f0f4"},"result":"accepted","event_end":19},{"actor":"black","command":{"kind":"play","action":"e1e6"},"result":"accepted","event_end":20},{"actor":"red","command":{"kind":"play","action":"f4f9"},"result":"accepted","event_end":21},{"actor":"black","command":{"kind":"play","action":"e9e8"},"result":"accepted","event_end":22},{"actor":"red","command":{"kind":"play","action":"f9f8"},"result":"accepted","event_end":23},{"actor":"black","command":{"kind":"play","action":"e8e7"},"result":"accepted","event_end":24},{"actor":"red","command":{"kind":"play","action":"f8f7"},"result":"accepted","event_end":25},{"actor":"black","command":{"kind":"play","action":"e7e8"},"result":"accepted","event_end":26},{"actor":"red","command":{"kind":"play","action":"f7d7"},"result":"accepted","event_end":27},{"actor":"black","command":{"kind":"play","action":"e6e7"},"result":"accepted","event_end":28},{"actor":"red","command":{"kind":"play","action":"d7d3"},"result":"accepted","event_end":29},{"actor":"black","command":{"kind":"play","action":"e7f7"},"result":"accepted","event_end":30},{"actor":"red","command":{"kind":"play","action":"d3d8"},"result":"accepted","event_end":31},{"actor":"black","command":{"kind":"play","action":"e8e9"},"result":"accepted","event_end":32},{"actor":"red","command":{"kind":"play","action":"d8d5"},"result":"accepted","event_end":33},{"actor":"black","command":{"kind":"play","action":"f7g7"},"result":"accepted","event_end":34},{"actor":"red","command":{"kind":"play","action":"d0d1"},"result":"accepted","event_end":35},{"actor":"black","command":{"kind":"play","action":"g7g5"},"result":"accepted","event_end":36},{"actor":"red","command":{"kind":"play","action":"d5d4"},"result":"accepted","event_end":37},{"actor":"black","command":{"kind":"play","action":"g5g9"},"result":"accepted","event_end":38},{"actor":"red","command":{"kind":"play","action":"d4e4"},"result":"accepted","event_end":39},{"actor":"black","command":{"kind":"play","action":"e9f9"},"result":"accepted","event_end":40},{"actor":"red","command":{"kind":"play","action":"e4e1"},"result":"accepted","event_end":41},{"actor":"black","command":{"kind":"play","action":"g9g5"},"result":"accepted","event_end":42},{"actor":"red","command":{"kind":"play","action":"e1e4"},"result":"accepted","event_end":43},{"actor":"black","command":{"kind":"play","action":"g5g6"},"result":"accepted","event_end":44},{"actor":"red","command":{"kind":"play","action":"e4e9"},"result":"accepted","event_end":45},{"actor":"black","command":{"kind":"play","action":"f9f8"},"result":"accepted","event_end":46},{"actor":"red","command":{"kind":"play","action":"e9e1"},"result":"accepted","event_end":47},{"actor":"black","command":{"kind":"play","action":"g6g3"},"result":"accepted","event_end":48},{"actor":"red","command":{"kind":"play","action":"d1d0"},"result":"accepted","event_end":49},{"actor":"black","command":{"kind":"play","action":"g3g8"},"result":"accepted","event_end":50},{"actor":"red","command":{"kind":"play","action":"e1e9"},"result":"accepted","event_end":51},{"actor":"black","command":{"kind":"play","action":"g8g9"},"result":"accepted","event_end":52},{"actor":"red","command":{"kind":"play","action":"e9e8"},"result":"accepted","event_end":53},{"actor":"black","command":{"kind":"play","action":"f8f7"},"result":"accepted","event_end":54},{"actor":"red","command":{"kind":"play","action":"e8f8"},"result":"accepted","event_end":55},{"actor":"black","command":{"kind":"play","action":"f7e7"},"result":"accepted","event_end":56},{"actor":"red","command":{"kind":"play","action":"f8g8"},"result":"accepted","event_end":57},{"actor":"black","command":{"kind":"play","action":"g9a9"},"result":"accepted","event_end":58},{"actor":"red","command":{"kind":"play","action":"g8f8"},"result":"accepted","event_end":59},{"actor":"black","command":{"kind":"play","action":"a9a5"},"result":"accepted","event_end":60},{"actor":"red","command":{"kind":"play","action":"f8f3"},"result":"accepted","event_end":61},{"actor":"black","command":{"kind":"play","action":"a5a8"},"result":"accepted","event_end":62},{"actor":"red","command":{"kind":"play","action":"f3h3"},"result":"accepted","event_end":63},{"actor":"black","command":{"kind":"play","action":"a8a1"},"result":"accepted","event_end":64},{"actor":"red","command":{"kind":"play","action":"h3h5"},"result":"accepted","event_end":65},{"actor":"black","command":{"kind":"play","action":"a1a9"},"result":"accepted","event_end":66},{"actor":"red","command":{"kind":"play","action":"h5h4"},"result":"accepted","event_end":67},{"actor":"black","command":{"kind":"play","action":"a9a8"},"result":"accepted","event_end":68},{"actor":"red","command":{"kind":"play","action":"h4d4"},"result":"accepted","event_end":69},{"actor":"black","command":{"kind":"play","action":"a8g8"},"result":"accepted","event_end":70},{"actor":"red","command":{"kind":"play","action":"d4g4"},"result":"accepted","event_end":71},{"actor":"black","command":{"kind":"play","action":"g8h8"},"result":"accepted","event_end":72},{"actor":"red","command":{"kind":"play","action":"g4b4"},"result":"accepted","event_end":73},{"actor":"black","command":{"kind":"play","action":"e7e8"},"result":"accepted","event_end":74},{"actor":"red","command":{"kind":"play","action":"b4b0"},"result":"accepted","event_end":75},{"actor":"black","command":{"kind":"play","action":"h8h7"},"result":"accepted","event_end":76},{"actor":"red","command":{"kind":"play","action":"b0b4"},"result":"accepted","event_end":77},{"actor":"black","command":{"kind":"play","action":"h7f7"},"result":"accepted","event_end":78},{"actor":"red","command":{"kind":"play","action":"b4b0"},"result":"accepted","event_end":79},{"actor":"black","command":{"kind":"play","action":"f7f2"},"result":"accepted","event_end":80},{"actor":"red","command":{"kind":"play","action":"b0c0"},"result":"accepted","event_end":81},{"actor":"black","command":{"kind":"play","action":"f2f7"},"result":"accepted","event_end":82},{"actor":"red","command":{"kind":"play","action":"c0c4"},"result":"accepted","event_end":83},{"actor":"black","command":{"kind":"play","action":"f7f5"},"result":"accepted","event_end":84},{"actor":"red","command":{"kind":"play","action":"c4d4"},"result":"accepted","event_end":85},{"actor":"black","command":{"kind":"play","action":"f5e5"},"result":"accepted","event_end":86},{"actor":"red","command":{"kind":"play","action":"d0d1"},"result":"accepted","event_end":87},{"actor":"black","command":{"kind":"play","action":"e5f5"},"result":"accepted","event_end":88},{"actor":"red","command":{"kind":"play","action":"d4h4"},"result":"accepted","event_end":89},{"actor":"black","command":{"kind":"play","action":"f5i5"},"result":"accepted","event_end":90},{"actor":"red","command":{"kind":"play","action":"d1d0"},"result":"accepted","event_end":91},{"actor":"black","command":{"kind":"play","action":"i5e5"},"result":"accepted","event_end":92},{"actor":"red","command":{"kind":"play","action":"d0d1"},"result":"accepted","event_end":93},{"actor":"black","command":{"kind":"play","action":"e5e0"},"result":"accepted","event_end":94},{"actor":"red","command":{"kind":"play","action":"h4h1"},"result":"accepted","event_end":95},{"actor":"black","command":{"kind":"play","action":"e8f8"},"result":"accepted","event_end":96},{"actor":"red","command":{"kind":"play","action":"h1g1"},"result":"accepted","event_end":97},{"actor":"black","command":{"kind":"play","action":"f8e8"},"result":"accepted","event_end":98},{"actor":"red","command":{"kind":"play","action":"d1d2"},"result":"accepted","event_end":99},{"actor":"black","command":{"kind":"play","action":"e0a0"},"result":"accepted","event_end":100}],"events":[{"index":0,"board_ply":1,"actor":"red","event":{"kind":"board_action","action":"a5d5","moving_id":1,"captured_id":null,"gave_check":false}},{"index":1,"board_ply":2,"actor":"black","event":{"kind":"board_action","action":"i9i6","moving_id":3,"captured_id":null,"gave_check":false}},{"index":2,"board_ply":3,"actor":"red","event":{"kind":"board_action","action":"d5d6","moving_id":1,"captured_id":null,"gave_check":false}},{"index":3,"board_ply":4,"actor":"black","event":{"kind":"board_action","action":"i6i1","moving_id":3,"captured_id":null,"gave_check":false}},{"index":4,"board_ply":5,"actor":"red","event":{"kind":"board_action","action":"d6i6","moving_id":1,"captured_id":null,"gave_check":false}},{"index":5,"board_ply":6,"actor":"black","event":{"kind":"board_action","action":"i1b1","moving_id":3,"captured_id":null,"gave_check":false}},{"index":6,"board_ply":7,"actor":"red","event":{"kind":"board_action","action":"i6e6","moving_id":1,"captured_id":null,"gave_check":false}},{"index":7,"board_ply":8,"actor":"black","event":{"kind":"board_action","action":"b1i1","moving_id":3,"captured_id":null,"gave_check":false}},{"index":8,"board_ply":9,"actor":"red","event":{"kind":"board_action","action":"e6e9","moving_id":1,"captured_id":null,"gave_check":true}},{"index":9,"board_ply":10,"actor":"black","event":{"kind":"board_action","action":"f9f8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":10,"board_ply":11,"actor":"red","event":{"kind":"board_action","action":"e9e0","moving_id":1,"captured_id":null,"gave_check":false}},{"index":11,"board_ply":12,"actor":"black","event":{"kind":"board_action","action":"i1f1","moving_id":3,"captured_id":null,"gave_check":false}},{"index":12,"board_ply":13,"actor":"red","event":{"kind":"board_action","action":"e0f0","moving_id":1,"captured_id":null,"gave_check":false}},{"index":13,"board_ply":14,"actor":"black","event":{"kind":"board_action","action":"f8f9","moving_id":2,"captured_id":null,"gave_check":false}},{"index":14,"board_ply":15,"actor":"red","event":{"kind":"board_action","action":"f0i0","moving_id":1,"captured_id":null,"gave_check":false}},{"index":15,"board_ply":16,"actor":"black","event":{"kind":"board_action","action":"f1e1","moving_id":3,"captured_id":null,"gave_check":false}},{"index":16,"board_ply":17,"actor":"red","event":{"kind":"board_action","action":"i0f0","moving_id":1,"captured_id":null,"gave_check":true}},{"index":17,"board_ply":18,"actor":"black","event":{"kind":"board_action","action":"f9e9","moving_id":2,"captured_id":null,"gave_check":false}},{"index":18,"board_ply":19,"actor":"red","event":{"kind":"board_action","action":"f0f4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":19,"board_ply":20,"actor":"black","event":{"kind":"board_action","action":"e1e6","moving_id":3,"captured_id":null,"gave_check":false}},{"index":20,"board_ply":21,"actor":"red","event":{"kind":"board_action","action":"f4f9","moving_id":1,"captured_id":null,"gave_check":true}},{"index":21,"board_ply":22,"actor":"black","event":{"kind":"board_action","action":"e9e8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":22,"board_ply":23,"actor":"red","event":{"kind":"board_action","action":"f9f8","moving_id":1,"captured_id":null,"gave_check":true}},{"index":23,"board_ply":24,"actor":"black","event":{"kind":"board_action","action":"e8e7","moving_id":2,"captured_id":null,"gave_check":false}},{"index":24,"board_ply":25,"actor":"red","event":{"kind":"board_action","action":"f8f7","moving_id":1,"captured_id":null,"gave_check":true}},{"index":25,"board_ply":26,"actor":"black","event":{"kind":"board_action","action":"e7e8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":26,"board_ply":27,"actor":"red","event":{"kind":"board_action","action":"f7d7","moving_id":1,"captured_id":null,"gave_check":false}},{"index":27,"board_ply":28,"actor":"black","event":{"kind":"board_action","action":"e6e7","moving_id":3,"captured_id":null,"gave_check":false}},{"index":28,"board_ply":29,"actor":"red","event":{"kind":"board_action","action":"d7d3","moving_id":1,"captured_id":null,"gave_check":false}},{"index":29,"board_ply":30,"actor":"black","event":{"kind":"board_action","action":"e7f7","moving_id":3,"captured_id":null,"gave_check":false}},{"index":30,"board_ply":31,"actor":"red","event":{"kind":"board_action","action":"d3d8","moving_id":1,"captured_id":null,"gave_check":true}},{"index":31,"board_ply":32,"actor":"black","event":{"kind":"board_action","action":"e8e9","moving_id":2,"captured_id":null,"gave_check":false}},{"index":32,"board_ply":33,"actor":"red","event":{"kind":"board_action","action":"d8d5","moving_id":1,"captured_id":null,"gave_check":false}},{"index":33,"board_ply":34,"actor":"black","event":{"kind":"board_action","action":"f7g7","moving_id":3,"captured_id":null,"gave_check":false}},{"index":34,"board_ply":35,"actor":"red","event":{"kind":"board_action","action":"d0d1","moving_id":0,"captured_id":null,"gave_check":false}},{"index":35,"board_ply":36,"actor":"black","event":{"kind":"board_action","action":"g7g5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":36,"board_ply":37,"actor":"red","event":{"kind":"board_action","action":"d5d4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":37,"board_ply":38,"actor":"black","event":{"kind":"board_action","action":"g5g9","moving_id":3,"captured_id":null,"gave_check":false}},{"index":38,"board_ply":39,"actor":"red","event":{"kind":"board_action","action":"d4e4","moving_id":1,"captured_id":null,"gave_check":true}},{"index":39,"board_ply":40,"actor":"black","event":{"kind":"board_action","action":"e9f9","moving_id":2,"captured_id":null,"gave_check":false}},{"index":40,"board_ply":41,"actor":"red","event":{"kind":"board_action","action":"e4e1","moving_id":1,"captured_id":null,"gave_check":false}},{"index":41,"board_ply":42,"actor":"black","event":{"kind":"board_action","action":"g9g5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":42,"board_ply":43,"actor":"red","event":{"kind":"board_action","action":"e1e4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":43,"board_ply":44,"actor":"black","event":{"kind":"board_action","action":"g5g6","moving_id":3,"captured_id":null,"gave_check":false}},{"index":44,"board_ply":45,"actor":"red","event":{"kind":"board_action","action":"e4e9","moving_id":1,"captured_id":null,"gave_check":true}},{"index":45,"board_ply":46,"actor":"black","event":{"kind":"board_action","action":"f9f8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":46,"board_ply":47,"actor":"red","event":{"kind":"board_action","action":"e9e1","moving_id":1,"captured_id":null,"gave_check":false}},{"index":47,"board_ply":48,"actor":"black","event":{"kind":"board_action","action":"g6g3","moving_id":3,"captured_id":null,"gave_check":false}},{"index":48,"board_ply":49,"actor":"red","event":{"kind":"board_action","action":"d1d0","moving_id":0,"captured_id":null,"gave_check":false}},{"index":49,"board_ply":50,"actor":"black","event":{"kind":"board_action","action":"g3g8","moving_id":3,"captured_id":null,"gave_check":false}},{"index":50,"board_ply":51,"actor":"red","event":{"kind":"board_action","action":"e1e9","moving_id":1,"captured_id":null,"gave_check":false}},{"index":51,"board_ply":52,"actor":"black","event":{"kind":"board_action","action":"g8g9","moving_id":3,"captured_id":null,"gave_check":false}},{"index":52,"board_ply":53,"actor":"red","event":{"kind":"board_action","action":"e9e8","moving_id":1,"captured_id":null,"gave_check":true}},{"index":53,"board_ply":54,"actor":"black","event":{"kind":"board_action","action":"f8f7","moving_id":2,"captured_id":null,"gave_check":false}},{"index":54,"board_ply":55,"actor":"red","event":{"kind":"board_action","action":"e8f8","moving_id":1,"captured_id":null,"gave_check":true}},{"index":55,"board_ply":56,"actor":"black","event":{"kind":"board_action","action":"f7e7","moving_id":2,"captured_id":null,"gave_check":false}},{"index":56,"board_ply":57,"actor":"red","event":{"kind":"board_action","action":"f8g8","moving_id":1,"captured_id":null,"gave_check":false}},{"index":57,"board_ply":58,"actor":"black","event":{"kind":"board_action","action":"g9a9","moving_id":3,"captured_id":null,"gave_check":false}},{"index":58,"board_ply":59,"actor":"red","event":{"kind":"board_action","action":"g8f8","moving_id":1,"captured_id":null,"gave_check":false}},{"index":59,"board_ply":60,"actor":"black","event":{"kind":"board_action","action":"a9a5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":60,"board_ply":61,"actor":"red","event":{"kind":"board_action","action":"f8f3","moving_id":1,"captured_id":null,"gave_check":false}},{"index":61,"board_ply":62,"actor":"black","event":{"kind":"board_action","action":"a5a8","moving_id":3,"captured_id":null,"gave_check":false}},{"index":62,"board_ply":63,"actor":"red","event":{"kind":"board_action","action":"f3h3","moving_id":1,"captured_id":null,"gave_check":false}},{"index":63,"board_ply":64,"actor":"black","event":{"kind":"board_action","action":"a8a1","moving_id":3,"captured_id":null,"gave_check":false}},{"index":64,"board_ply":65,"actor":"red","event":{"kind":"board_action","action":"h3h5","moving_id":1,"captured_id":null,"gave_check":false}},{"index":65,"board_ply":66,"actor":"black","event":{"kind":"board_action","action":"a1a9","moving_id":3,"captured_id":null,"gave_check":false}},{"index":66,"board_ply":67,"actor":"red","event":{"kind":"board_action","action":"h5h4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":67,"board_ply":68,"actor":"black","event":{"kind":"board_action","action":"a9a8","moving_id":3,"captured_id":null,"gave_check":false}},{"index":68,"board_ply":69,"actor":"red","event":{"kind":"board_action","action":"h4d4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":69,"board_ply":70,"actor":"black","event":{"kind":"board_action","action":"a8g8","moving_id":3,"captured_id":null,"gave_check":false}},{"index":70,"board_ply":71,"actor":"red","event":{"kind":"board_action","action":"d4g4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":71,"board_ply":72,"actor":"black","event":{"kind":"board_action","action":"g8h8","moving_id":3,"captured_id":null,"gave_check":false}},{"index":72,"board_ply":73,"actor":"red","event":{"kind":"board_action","action":"g4b4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":73,"board_ply":74,"actor":"black","event":{"kind":"board_action","action":"e7e8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":74,"board_ply":75,"actor":"red","event":{"kind":"board_action","action":"b4b0","moving_id":1,"captured_id":null,"gave_check":false}},{"index":75,"board_ply":76,"actor":"black","event":{"kind":"board_action","action":"h8h7","moving_id":3,"captured_id":null,"gave_check":false}},{"index":76,"board_ply":77,"actor":"red","event":{"kind":"board_action","action":"b0b4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":77,"board_ply":78,"actor":"black","event":{"kind":"board_action","action":"h7f7","moving_id":3,"captured_id":null,"gave_check":false}},{"index":78,"board_ply":79,"actor":"red","event":{"kind":"board_action","action":"b4b0","moving_id":1,"captured_id":null,"gave_check":false}},{"index":79,"board_ply":80,"actor":"black","event":{"kind":"board_action","action":"f7f2","moving_id":3,"captured_id":null,"gave_check":false}},{"index":80,"board_ply":81,"actor":"red","event":{"kind":"board_action","action":"b0c0","moving_id":1,"captured_id":null,"gave_check":false}},{"index":81,"board_ply":82,"actor":"black","event":{"kind":"board_action","action":"f2f7","moving_id":3,"captured_id":null,"gave_check":false}},{"index":82,"board_ply":83,"actor":"red","event":{"kind":"board_action","action":"c0c4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":83,"board_ply":84,"actor":"black","event":{"kind":"board_action","action":"f7f5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":84,"board_ply":85,"actor":"red","event":{"kind":"board_action","action":"c4d4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":85,"board_ply":86,"actor":"black","event":{"kind":"board_action","action":"f5e5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":86,"board_ply":87,"actor":"red","event":{"kind":"board_action","action":"d0d1","moving_id":0,"captured_id":null,"gave_check":false}},{"index":87,"board_ply":88,"actor":"black","event":{"kind":"board_action","action":"e5f5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":88,"board_ply":89,"actor":"red","event":{"kind":"board_action","action":"d4h4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":89,"board_ply":90,"actor":"black","event":{"kind":"board_action","action":"f5i5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":90,"board_ply":91,"actor":"red","event":{"kind":"board_action","action":"d1d0","moving_id":0,"captured_id":null,"gave_check":false}},{"index":91,"board_ply":92,"actor":"black","event":{"kind":"board_action","action":"i5e5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":92,"board_ply":93,"actor":"red","event":{"kind":"board_action","action":"d0d1","moving_id":0,"captured_id":null,"gave_check":false}},{"index":93,"board_ply":94,"actor":"black","event":{"kind":"board_action","action":"e5e0","moving_id":3,"captured_id":null,"gave_check":false}},{"index":94,"board_ply":95,"actor":"red","event":{"kind":"board_action","action":"h4h1","moving_id":1,"captured_id":null,"gave_check":false}},{"index":95,"board_ply":96,"actor":"black","event":{"kind":"board_action","action":"e8f8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":96,"board_ply":97,"actor":"red","event":{"kind":"board_action","action":"h1g1","moving_id":1,"captured_id":null,"gave_check":false}},{"index":97,"board_ply":98,"actor":"black","event":{"kind":"board_action","action":"f8e8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":98,"board_ply":99,"actor":"red","event":{"kind":"board_action","action":"d1d2","moving_id":0,"captured_id":null,"gave_check":false}},{"index":99,"board_ply":100,"actor":"black","event":{"kind":"board_action","action":"e0a0","moving_id":3,"captured_id":null,"gave_check":false}}],"current_position":{"schema":"mshogi.xiangqi.position.v1","profile":"mshogi.xiangqi.wxf2018.v1","edition":"WXF-2018+XIANGQI-P1-2026-10-27","history":"starts_at_this_position","origin":"analysis_diagram","board":"9/4k4/9/9/9/9/9/3K5/6R2/r8","side":"red","no_capture_plies":100,"fullmove_number":51},"conclusion":null,"pending":null,"no_win_assessment":{"kind":"unknown_exact_unavailable"}}
+      "payload": {
+        "schema_version": 2,
+        "claim_policy": "explicit",
+        "root": {
+          "schema": "mshogi.xiangqi.position.v1",
+          "profile": "mshogi.xiangqi.wxf2018.v1",
+          "edition": "WXF-2018+XIANGQI-P1-2026-10-27",
+          "history": "starts_at_this_position",
+          "origin": "imported_fen",
+          "board": "5k2r/9/9/9/R8/9/9/9/9/3K5",
+          "side": "red",
+          "no_capture_plies": 0,
+          "fullmove_number": 1
+        },
+        "commands": [
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "a5d5"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "i9i6"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "d5d6"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "i6i1"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "d6i6"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "i1b1"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "i6e6"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "b1i1"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "e6e9"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "f9f8"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "e9e0"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "i1f1"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "e0f0"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "f8f9"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "f0i0"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "f1e1"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "i0f0"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "f9e9"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "f0f4"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "e1e6"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "f4f9"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "e9e8"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "f9f8"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "e8e7"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "f8f7"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "e7e8"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "f7d7"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "e6e7"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "d7d3"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "e7f7"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "d3d8"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "e8e9"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "d8d5"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "f7g7"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "d0d1"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "g7g5"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "d5d4"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "g5g9"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "d4e4"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "e9f9"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "e4e1"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "g9g5"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "e1e4"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "g5g6"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "e4e9"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "f9f8"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "e9e1"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "g6g3"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "d1d0"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "g3g8"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "e1e9"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "g8g9"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "e9e8"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "f8f7"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "e8f8"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "f7e7"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "f8g8"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "g9a9"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "g8f8"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "a9a5"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "f8f3"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "a5a8"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "f3h3"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "a8a1"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "h3h5"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "a1a9"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "h5h4"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "a9a8"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "h4d4"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "a8g8"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "d4g4"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "g8h8"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "g4b4"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "e7e8"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "b4b0"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "h8h7"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "b0b4"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "h7f7"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "b4b0"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "f7f2"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "b0c0"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "f2f7"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "c0c4"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "f7f5"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "c4d4"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "f5e5"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "d0d1"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "e5f5"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "d4h4"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "f5i5"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "d1d0"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "i5e5"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "d0d1"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "e5e0"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "h4h1"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "e8f8"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "h1g1"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "f8e8"
+            }
+          },
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "d1d2"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "e0a0"
+            }
+          }
+        ]
+      }
     },
     "selected_events": [
       {
@@ -3424,12 +4137,725 @@
   "diagnostic": null,
   "declaration_advice": [],
   "context": {
-    "envelope_version": 1,
+    "envelope_version": 2,
     "game_kind": "xiangqi",
-    "rules_profile": "mshogi.xiangqi.wxf2018.v1",
-    "profile_edition": "WXF-2018+XIANGQI-P1-2026-10-27",
-    "native_schema_version": 1,
-    "payload": {"format":"mshogi.xiangqi.game","schema_version":1,"game":"xiangqi","profile":"mshogi.xiangqi.wxf2018.v1","edition":"WXF-2018+XIANGQI-P1-2026-10-27","mode":"untimed","no_win_goal":"mshogi.xiangqi.natural-board-win.exists.v1","no_win_mode":"sound_fast_only","fast_witness_limit":1,"claim_policy":"explicit","root":{"schema":"mshogi.xiangqi.position.v1","profile":"mshogi.xiangqi.wxf2018.v1","edition":"WXF-2018+XIANGQI-P1-2026-10-27","history":"starts_at_this_position","origin":"imported_fen","board":"5k2r/9/9/9/R8/9/9/9/9/3K5","side":"red","no_capture_plies":0,"fullmove_number":1},"commands":[{"actor":"red","command":{"kind":"play","action":"a5d5"},"result":"accepted","event_end":1},{"actor":"black","command":{"kind":"play","action":"i9i6"},"result":"accepted","event_end":2},{"actor":"red","command":{"kind":"play","action":"d5d6"},"result":"accepted","event_end":3},{"actor":"black","command":{"kind":"play","action":"i6i1"},"result":"accepted","event_end":4},{"actor":"red","command":{"kind":"play","action":"d6i6"},"result":"accepted","event_end":5},{"actor":"black","command":{"kind":"play","action":"i1b1"},"result":"accepted","event_end":6},{"actor":"red","command":{"kind":"play","action":"i6e6"},"result":"accepted","event_end":7},{"actor":"black","command":{"kind":"play","action":"b1i1"},"result":"accepted","event_end":8},{"actor":"red","command":{"kind":"play","action":"e6e9"},"result":"accepted","event_end":9},{"actor":"black","command":{"kind":"play","action":"f9f8"},"result":"accepted","event_end":10},{"actor":"red","command":{"kind":"play","action":"e9e0"},"result":"accepted","event_end":11},{"actor":"black","command":{"kind":"play","action":"i1f1"},"result":"accepted","event_end":12},{"actor":"red","command":{"kind":"play","action":"e0f0"},"result":"accepted","event_end":13},{"actor":"black","command":{"kind":"play","action":"f8f9"},"result":"accepted","event_end":14},{"actor":"red","command":{"kind":"play","action":"f0i0"},"result":"accepted","event_end":15},{"actor":"black","command":{"kind":"play","action":"f1e1"},"result":"accepted","event_end":16},{"actor":"red","command":{"kind":"play","action":"i0f0"},"result":"accepted","event_end":17},{"actor":"black","command":{"kind":"play","action":"f9e9"},"result":"accepted","event_end":18},{"actor":"red","command":{"kind":"play","action":"f0f4"},"result":"accepted","event_end":19},{"actor":"black","command":{"kind":"play","action":"e1e6"},"result":"accepted","event_end":20},{"actor":"red","command":{"kind":"play","action":"f4f9"},"result":"accepted","event_end":21},{"actor":"black","command":{"kind":"play","action":"e9e8"},"result":"accepted","event_end":22},{"actor":"red","command":{"kind":"play","action":"f9f8"},"result":"accepted","event_end":23},{"actor":"black","command":{"kind":"play","action":"e8e7"},"result":"accepted","event_end":24},{"actor":"red","command":{"kind":"play","action":"f8f7"},"result":"accepted","event_end":25},{"actor":"black","command":{"kind":"play","action":"e7e8"},"result":"accepted","event_end":26},{"actor":"red","command":{"kind":"play","action":"f7d7"},"result":"accepted","event_end":27},{"actor":"black","command":{"kind":"play","action":"e6e7"},"result":"accepted","event_end":28},{"actor":"red","command":{"kind":"play","action":"d7d3"},"result":"accepted","event_end":29},{"actor":"black","command":{"kind":"play","action":"e7f7"},"result":"accepted","event_end":30},{"actor":"red","command":{"kind":"play","action":"d3d8"},"result":"accepted","event_end":31},{"actor":"black","command":{"kind":"play","action":"e8e9"},"result":"accepted","event_end":32},{"actor":"red","command":{"kind":"play","action":"d8d5"},"result":"accepted","event_end":33},{"actor":"black","command":{"kind":"play","action":"f7g7"},"result":"accepted","event_end":34},{"actor":"red","command":{"kind":"play","action":"d0d1"},"result":"accepted","event_end":35},{"actor":"black","command":{"kind":"play","action":"g7g5"},"result":"accepted","event_end":36},{"actor":"red","command":{"kind":"play","action":"d5d4"},"result":"accepted","event_end":37},{"actor":"black","command":{"kind":"play","action":"g5g9"},"result":"accepted","event_end":38},{"actor":"red","command":{"kind":"play","action":"d4e4"},"result":"accepted","event_end":39},{"actor":"black","command":{"kind":"play","action":"e9f9"},"result":"accepted","event_end":40},{"actor":"red","command":{"kind":"play","action":"e4e1"},"result":"accepted","event_end":41},{"actor":"black","command":{"kind":"play","action":"g9g5"},"result":"accepted","event_end":42},{"actor":"red","command":{"kind":"play","action":"e1e4"},"result":"accepted","event_end":43},{"actor":"black","command":{"kind":"play","action":"g5g6"},"result":"accepted","event_end":44},{"actor":"red","command":{"kind":"play","action":"e4e9"},"result":"accepted","event_end":45},{"actor":"black","command":{"kind":"play","action":"f9f8"},"result":"accepted","event_end":46},{"actor":"red","command":{"kind":"play","action":"e9e1"},"result":"accepted","event_end":47},{"actor":"black","command":{"kind":"play","action":"g6g3"},"result":"accepted","event_end":48},{"actor":"red","command":{"kind":"play","action":"d1d0"},"result":"accepted","event_end":49},{"actor":"black","command":{"kind":"play","action":"g3g8"},"result":"accepted","event_end":50},{"actor":"red","command":{"kind":"play","action":"e1e9"},"result":"accepted","event_end":51},{"actor":"black","command":{"kind":"play","action":"g8g9"},"result":"accepted","event_end":52},{"actor":"red","command":{"kind":"play","action":"e9e8"},"result":"accepted","event_end":53},{"actor":"black","command":{"kind":"play","action":"f8f7"},"result":"accepted","event_end":54},{"actor":"red","command":{"kind":"play","action":"e8f8"},"result":"accepted","event_end":55},{"actor":"black","command":{"kind":"play","action":"f7e7"},"result":"accepted","event_end":56},{"actor":"red","command":{"kind":"play","action":"f8g8"},"result":"accepted","event_end":57},{"actor":"black","command":{"kind":"play","action":"g9a9"},"result":"accepted","event_end":58},{"actor":"red","command":{"kind":"play","action":"g8f8"},"result":"accepted","event_end":59},{"actor":"black","command":{"kind":"play","action":"a9a5"},"result":"accepted","event_end":60},{"actor":"red","command":{"kind":"play","action":"f8f3"},"result":"accepted","event_end":61},{"actor":"black","command":{"kind":"play","action":"a5a8"},"result":"accepted","event_end":62},{"actor":"red","command":{"kind":"play","action":"f3h3"},"result":"accepted","event_end":63},{"actor":"black","command":{"kind":"play","action":"a8a1"},"result":"accepted","event_end":64},{"actor":"red","command":{"kind":"play","action":"h3h5"},"result":"accepted","event_end":65},{"actor":"black","command":{"kind":"play","action":"a1a9"},"result":"accepted","event_end":66},{"actor":"red","command":{"kind":"play","action":"h5h4"},"result":"accepted","event_end":67},{"actor":"black","command":{"kind":"play","action":"a9a8"},"result":"accepted","event_end":68},{"actor":"red","command":{"kind":"play","action":"h4d4"},"result":"accepted","event_end":69},{"actor":"black","command":{"kind":"play","action":"a8g8"},"result":"accepted","event_end":70},{"actor":"red","command":{"kind":"play","action":"d4g4"},"result":"accepted","event_end":71},{"actor":"black","command":{"kind":"play","action":"g8h8"},"result":"accepted","event_end":72},{"actor":"red","command":{"kind":"play","action":"g4b4"},"result":"accepted","event_end":73},{"actor":"black","command":{"kind":"play","action":"e7e8"},"result":"accepted","event_end":74},{"actor":"red","command":{"kind":"play","action":"b4b0"},"result":"accepted","event_end":75},{"actor":"black","command":{"kind":"play","action":"h8h7"},"result":"accepted","event_end":76},{"actor":"red","command":{"kind":"play","action":"b0b4"},"result":"accepted","event_end":77},{"actor":"black","command":{"kind":"play","action":"h7f7"},"result":"accepted","event_end":78},{"actor":"red","command":{"kind":"play","action":"b4b0"},"result":"accepted","event_end":79},{"actor":"black","command":{"kind":"play","action":"f7f2"},"result":"accepted","event_end":80},{"actor":"red","command":{"kind":"play","action":"b0c0"},"result":"accepted","event_end":81},{"actor":"black","command":{"kind":"play","action":"f2f7"},"result":"accepted","event_end":82},{"actor":"red","command":{"kind":"play","action":"c0c4"},"result":"accepted","event_end":83},{"actor":"black","command":{"kind":"play","action":"f7f5"},"result":"accepted","event_end":84},{"actor":"red","command":{"kind":"play","action":"c4d4"},"result":"accepted","event_end":85},{"actor":"black","command":{"kind":"play","action":"f5e5"},"result":"accepted","event_end":86},{"actor":"red","command":{"kind":"play","action":"d0d1"},"result":"accepted","event_end":87},{"actor":"black","command":{"kind":"play","action":"e5f5"},"result":"accepted","event_end":88},{"actor":"red","command":{"kind":"play","action":"d4h4"},"result":"accepted","event_end":89},{"actor":"black","command":{"kind":"play","action":"f5i5"},"result":"accepted","event_end":90},{"actor":"red","command":{"kind":"play","action":"d1d0"},"result":"accepted","event_end":91},{"actor":"black","command":{"kind":"play","action":"i5e5"},"result":"accepted","event_end":92},{"actor":"red","command":{"kind":"play","action":"d0d1"},"result":"accepted","event_end":93},{"actor":"black","command":{"kind":"play","action":"e5e0"},"result":"accepted","event_end":94},{"actor":"red","command":{"kind":"play","action":"h4h1"},"result":"accepted","event_end":95},{"actor":"black","command":{"kind":"play","action":"e8f8"},"result":"accepted","event_end":96},{"actor":"red","command":{"kind":"play","action":"h1g1"},"result":"accepted","event_end":97},{"actor":"black","command":{"kind":"play","action":"f8e8"},"result":"accepted","event_end":98},{"actor":"red","command":{"kind":"play","action":"d1d2"},"result":"accepted","event_end":99},{"actor":"black","command":{"kind":"play","action":"e0a0"},"result":"accepted","event_end":100}],"events":[{"index":0,"board_ply":1,"actor":"red","event":{"kind":"board_action","action":"a5d5","moving_id":1,"captured_id":null,"gave_check":false}},{"index":1,"board_ply":2,"actor":"black","event":{"kind":"board_action","action":"i9i6","moving_id":3,"captured_id":null,"gave_check":false}},{"index":2,"board_ply":3,"actor":"red","event":{"kind":"board_action","action":"d5d6","moving_id":1,"captured_id":null,"gave_check":false}},{"index":3,"board_ply":4,"actor":"black","event":{"kind":"board_action","action":"i6i1","moving_id":3,"captured_id":null,"gave_check":false}},{"index":4,"board_ply":5,"actor":"red","event":{"kind":"board_action","action":"d6i6","moving_id":1,"captured_id":null,"gave_check":false}},{"index":5,"board_ply":6,"actor":"black","event":{"kind":"board_action","action":"i1b1","moving_id":3,"captured_id":null,"gave_check":false}},{"index":6,"board_ply":7,"actor":"red","event":{"kind":"board_action","action":"i6e6","moving_id":1,"captured_id":null,"gave_check":false}},{"index":7,"board_ply":8,"actor":"black","event":{"kind":"board_action","action":"b1i1","moving_id":3,"captured_id":null,"gave_check":false}},{"index":8,"board_ply":9,"actor":"red","event":{"kind":"board_action","action":"e6e9","moving_id":1,"captured_id":null,"gave_check":true}},{"index":9,"board_ply":10,"actor":"black","event":{"kind":"board_action","action":"f9f8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":10,"board_ply":11,"actor":"red","event":{"kind":"board_action","action":"e9e0","moving_id":1,"captured_id":null,"gave_check":false}},{"index":11,"board_ply":12,"actor":"black","event":{"kind":"board_action","action":"i1f1","moving_id":3,"captured_id":null,"gave_check":false}},{"index":12,"board_ply":13,"actor":"red","event":{"kind":"board_action","action":"e0f0","moving_id":1,"captured_id":null,"gave_check":false}},{"index":13,"board_ply":14,"actor":"black","event":{"kind":"board_action","action":"f8f9","moving_id":2,"captured_id":null,"gave_check":false}},{"index":14,"board_ply":15,"actor":"red","event":{"kind":"board_action","action":"f0i0","moving_id":1,"captured_id":null,"gave_check":false}},{"index":15,"board_ply":16,"actor":"black","event":{"kind":"board_action","action":"f1e1","moving_id":3,"captured_id":null,"gave_check":false}},{"index":16,"board_ply":17,"actor":"red","event":{"kind":"board_action","action":"i0f0","moving_id":1,"captured_id":null,"gave_check":true}},{"index":17,"board_ply":18,"actor":"black","event":{"kind":"board_action","action":"f9e9","moving_id":2,"captured_id":null,"gave_check":false}},{"index":18,"board_ply":19,"actor":"red","event":{"kind":"board_action","action":"f0f4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":19,"board_ply":20,"actor":"black","event":{"kind":"board_action","action":"e1e6","moving_id":3,"captured_id":null,"gave_check":false}},{"index":20,"board_ply":21,"actor":"red","event":{"kind":"board_action","action":"f4f9","moving_id":1,"captured_id":null,"gave_check":true}},{"index":21,"board_ply":22,"actor":"black","event":{"kind":"board_action","action":"e9e8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":22,"board_ply":23,"actor":"red","event":{"kind":"board_action","action":"f9f8","moving_id":1,"captured_id":null,"gave_check":true}},{"index":23,"board_ply":24,"actor":"black","event":{"kind":"board_action","action":"e8e7","moving_id":2,"captured_id":null,"gave_check":false}},{"index":24,"board_ply":25,"actor":"red","event":{"kind":"board_action","action":"f8f7","moving_id":1,"captured_id":null,"gave_check":true}},{"index":25,"board_ply":26,"actor":"black","event":{"kind":"board_action","action":"e7e8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":26,"board_ply":27,"actor":"red","event":{"kind":"board_action","action":"f7d7","moving_id":1,"captured_id":null,"gave_check":false}},{"index":27,"board_ply":28,"actor":"black","event":{"kind":"board_action","action":"e6e7","moving_id":3,"captured_id":null,"gave_check":false}},{"index":28,"board_ply":29,"actor":"red","event":{"kind":"board_action","action":"d7d3","moving_id":1,"captured_id":null,"gave_check":false}},{"index":29,"board_ply":30,"actor":"black","event":{"kind":"board_action","action":"e7f7","moving_id":3,"captured_id":null,"gave_check":false}},{"index":30,"board_ply":31,"actor":"red","event":{"kind":"board_action","action":"d3d8","moving_id":1,"captured_id":null,"gave_check":true}},{"index":31,"board_ply":32,"actor":"black","event":{"kind":"board_action","action":"e8e9","moving_id":2,"captured_id":null,"gave_check":false}},{"index":32,"board_ply":33,"actor":"red","event":{"kind":"board_action","action":"d8d5","moving_id":1,"captured_id":null,"gave_check":false}},{"index":33,"board_ply":34,"actor":"black","event":{"kind":"board_action","action":"f7g7","moving_id":3,"captured_id":null,"gave_check":false}},{"index":34,"board_ply":35,"actor":"red","event":{"kind":"board_action","action":"d0d1","moving_id":0,"captured_id":null,"gave_check":false}},{"index":35,"board_ply":36,"actor":"black","event":{"kind":"board_action","action":"g7g5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":36,"board_ply":37,"actor":"red","event":{"kind":"board_action","action":"d5d4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":37,"board_ply":38,"actor":"black","event":{"kind":"board_action","action":"g5g9","moving_id":3,"captured_id":null,"gave_check":false}},{"index":38,"board_ply":39,"actor":"red","event":{"kind":"board_action","action":"d4e4","moving_id":1,"captured_id":null,"gave_check":true}},{"index":39,"board_ply":40,"actor":"black","event":{"kind":"board_action","action":"e9f9","moving_id":2,"captured_id":null,"gave_check":false}},{"index":40,"board_ply":41,"actor":"red","event":{"kind":"board_action","action":"e4e1","moving_id":1,"captured_id":null,"gave_check":false}},{"index":41,"board_ply":42,"actor":"black","event":{"kind":"board_action","action":"g9g5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":42,"board_ply":43,"actor":"red","event":{"kind":"board_action","action":"e1e4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":43,"board_ply":44,"actor":"black","event":{"kind":"board_action","action":"g5g6","moving_id":3,"captured_id":null,"gave_check":false}},{"index":44,"board_ply":45,"actor":"red","event":{"kind":"board_action","action":"e4e9","moving_id":1,"captured_id":null,"gave_check":true}},{"index":45,"board_ply":46,"actor":"black","event":{"kind":"board_action","action":"f9f8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":46,"board_ply":47,"actor":"red","event":{"kind":"board_action","action":"e9e1","moving_id":1,"captured_id":null,"gave_check":false}},{"index":47,"board_ply":48,"actor":"black","event":{"kind":"board_action","action":"g6g3","moving_id":3,"captured_id":null,"gave_check":false}},{"index":48,"board_ply":49,"actor":"red","event":{"kind":"board_action","action":"d1d0","moving_id":0,"captured_id":null,"gave_check":false}},{"index":49,"board_ply":50,"actor":"black","event":{"kind":"board_action","action":"g3g8","moving_id":3,"captured_id":null,"gave_check":false}},{"index":50,"board_ply":51,"actor":"red","event":{"kind":"board_action","action":"e1e9","moving_id":1,"captured_id":null,"gave_check":false}},{"index":51,"board_ply":52,"actor":"black","event":{"kind":"board_action","action":"g8g9","moving_id":3,"captured_id":null,"gave_check":false}},{"index":52,"board_ply":53,"actor":"red","event":{"kind":"board_action","action":"e9e8","moving_id":1,"captured_id":null,"gave_check":true}},{"index":53,"board_ply":54,"actor":"black","event":{"kind":"board_action","action":"f8f7","moving_id":2,"captured_id":null,"gave_check":false}},{"index":54,"board_ply":55,"actor":"red","event":{"kind":"board_action","action":"e8f8","moving_id":1,"captured_id":null,"gave_check":true}},{"index":55,"board_ply":56,"actor":"black","event":{"kind":"board_action","action":"f7e7","moving_id":2,"captured_id":null,"gave_check":false}},{"index":56,"board_ply":57,"actor":"red","event":{"kind":"board_action","action":"f8g8","moving_id":1,"captured_id":null,"gave_check":false}},{"index":57,"board_ply":58,"actor":"black","event":{"kind":"board_action","action":"g9a9","moving_id":3,"captured_id":null,"gave_check":false}},{"index":58,"board_ply":59,"actor":"red","event":{"kind":"board_action","action":"g8f8","moving_id":1,"captured_id":null,"gave_check":false}},{"index":59,"board_ply":60,"actor":"black","event":{"kind":"board_action","action":"a9a5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":60,"board_ply":61,"actor":"red","event":{"kind":"board_action","action":"f8f3","moving_id":1,"captured_id":null,"gave_check":false}},{"index":61,"board_ply":62,"actor":"black","event":{"kind":"board_action","action":"a5a8","moving_id":3,"captured_id":null,"gave_check":false}},{"index":62,"board_ply":63,"actor":"red","event":{"kind":"board_action","action":"f3h3","moving_id":1,"captured_id":null,"gave_check":false}},{"index":63,"board_ply":64,"actor":"black","event":{"kind":"board_action","action":"a8a1","moving_id":3,"captured_id":null,"gave_check":false}},{"index":64,"board_ply":65,"actor":"red","event":{"kind":"board_action","action":"h3h5","moving_id":1,"captured_id":null,"gave_check":false}},{"index":65,"board_ply":66,"actor":"black","event":{"kind":"board_action","action":"a1a9","moving_id":3,"captured_id":null,"gave_check":false}},{"index":66,"board_ply":67,"actor":"red","event":{"kind":"board_action","action":"h5h4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":67,"board_ply":68,"actor":"black","event":{"kind":"board_action","action":"a9a8","moving_id":3,"captured_id":null,"gave_check":false}},{"index":68,"board_ply":69,"actor":"red","event":{"kind":"board_action","action":"h4d4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":69,"board_ply":70,"actor":"black","event":{"kind":"board_action","action":"a8g8","moving_id":3,"captured_id":null,"gave_check":false}},{"index":70,"board_ply":71,"actor":"red","event":{"kind":"board_action","action":"d4g4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":71,"board_ply":72,"actor":"black","event":{"kind":"board_action","action":"g8h8","moving_id":3,"captured_id":null,"gave_check":false}},{"index":72,"board_ply":73,"actor":"red","event":{"kind":"board_action","action":"g4b4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":73,"board_ply":74,"actor":"black","event":{"kind":"board_action","action":"e7e8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":74,"board_ply":75,"actor":"red","event":{"kind":"board_action","action":"b4b0","moving_id":1,"captured_id":null,"gave_check":false}},{"index":75,"board_ply":76,"actor":"black","event":{"kind":"board_action","action":"h8h7","moving_id":3,"captured_id":null,"gave_check":false}},{"index":76,"board_ply":77,"actor":"red","event":{"kind":"board_action","action":"b0b4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":77,"board_ply":78,"actor":"black","event":{"kind":"board_action","action":"h7f7","moving_id":3,"captured_id":null,"gave_check":false}},{"index":78,"board_ply":79,"actor":"red","event":{"kind":"board_action","action":"b4b0","moving_id":1,"captured_id":null,"gave_check":false}},{"index":79,"board_ply":80,"actor":"black","event":{"kind":"board_action","action":"f7f2","moving_id":3,"captured_id":null,"gave_check":false}},{"index":80,"board_ply":81,"actor":"red","event":{"kind":"board_action","action":"b0c0","moving_id":1,"captured_id":null,"gave_check":false}},{"index":81,"board_ply":82,"actor":"black","event":{"kind":"board_action","action":"f2f7","moving_id":3,"captured_id":null,"gave_check":false}},{"index":82,"board_ply":83,"actor":"red","event":{"kind":"board_action","action":"c0c4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":83,"board_ply":84,"actor":"black","event":{"kind":"board_action","action":"f7f5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":84,"board_ply":85,"actor":"red","event":{"kind":"board_action","action":"c4d4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":85,"board_ply":86,"actor":"black","event":{"kind":"board_action","action":"f5e5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":86,"board_ply":87,"actor":"red","event":{"kind":"board_action","action":"d0d1","moving_id":0,"captured_id":null,"gave_check":false}},{"index":87,"board_ply":88,"actor":"black","event":{"kind":"board_action","action":"e5f5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":88,"board_ply":89,"actor":"red","event":{"kind":"board_action","action":"d4h4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":89,"board_ply":90,"actor":"black","event":{"kind":"board_action","action":"f5i5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":90,"board_ply":91,"actor":"red","event":{"kind":"board_action","action":"d1d0","moving_id":0,"captured_id":null,"gave_check":false}},{"index":91,"board_ply":92,"actor":"black","event":{"kind":"board_action","action":"i5e5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":92,"board_ply":93,"actor":"red","event":{"kind":"board_action","action":"d0d1","moving_id":0,"captured_id":null,"gave_check":false}},{"index":93,"board_ply":94,"actor":"black","event":{"kind":"board_action","action":"e5e0","moving_id":3,"captured_id":null,"gave_check":false}},{"index":94,"board_ply":95,"actor":"red","event":{"kind":"board_action","action":"h4h1","moving_id":1,"captured_id":null,"gave_check":false}},{"index":95,"board_ply":96,"actor":"black","event":{"kind":"board_action","action":"e8f8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":96,"board_ply":97,"actor":"red","event":{"kind":"board_action","action":"h1g1","moving_id":1,"captured_id":null,"gave_check":false}},{"index":97,"board_ply":98,"actor":"black","event":{"kind":"board_action","action":"f8e8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":98,"board_ply":99,"actor":"red","event":{"kind":"board_action","action":"d1d2","moving_id":0,"captured_id":null,"gave_check":false}},{"index":99,"board_ply":100,"actor":"black","event":{"kind":"board_action","action":"e0a0","moving_id":3,"captured_id":null,"gave_check":false}}],"current_position":{"schema":"mshogi.xiangqi.position.v1","profile":"mshogi.xiangqi.wxf2018.v1","edition":"WXF-2018+XIANGQI-P1-2026-10-27","history":"starts_at_this_position","origin":"analysis_diagram","board":"9/4k4/9/9/9/9/9/3K5/6R2/r8","side":"red","no_capture_plies":100,"fullmove_number":51},"conclusion":null,"pending":null,"no_win_assessment":{"kind":"unknown_exact_unavailable"}}
+    "payload": {
+      "schema_version": 2,
+      "claim_policy": "explicit",
+      "root": {
+        "schema": "mshogi.xiangqi.position.v1",
+        "profile": "mshogi.xiangqi.wxf2018.v1",
+        "edition": "WXF-2018+XIANGQI-P1-2026-10-27",
+        "history": "starts_at_this_position",
+        "origin": "imported_fen",
+        "board": "5k2r/9/9/9/R8/9/9/9/9/3K5",
+        "side": "red",
+        "no_capture_plies": 0,
+        "fullmove_number": 1
+      },
+      "commands": [
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "a5d5"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "i9i6"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "d5d6"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "i6i1"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "d6i6"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "i1b1"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "i6e6"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "b1i1"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "e6e9"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "f9f8"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "e9e0"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "i1f1"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "e0f0"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "f8f9"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "f0i0"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "f1e1"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "i0f0"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "f9e9"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "f0f4"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "e1e6"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "f4f9"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "e9e8"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "f9f8"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "e8e7"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "f8f7"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "e7e8"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "f7d7"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "e6e7"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "d7d3"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "e7f7"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "d3d8"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "e8e9"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "d8d5"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "f7g7"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "d0d1"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "g7g5"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "d5d4"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "g5g9"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "d4e4"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "e9f9"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "e4e1"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "g9g5"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "e1e4"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "g5g6"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "e4e9"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "f9f8"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "e9e1"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "g6g3"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "d1d0"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "g3g8"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "e1e9"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "g8g9"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "e9e8"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "f8f7"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "e8f8"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "f7e7"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "f8g8"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "g9a9"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "g8f8"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "a9a5"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "f8f3"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "a5a8"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "f3h3"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "a8a1"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "h3h5"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "a1a9"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "h5h4"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "a9a8"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "h4d4"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "a8g8"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "d4g4"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "g8h8"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "g4b4"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "e7e8"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "b4b0"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "h8h7"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "b0b4"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "h7f7"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "b4b0"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "f7f2"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "b0c0"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "f2f7"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "c0c4"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "f7f5"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "c4d4"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "f5e5"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "d0d1"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "e5f5"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "d4h4"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "f5i5"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "d1d0"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "i5e5"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "d0d1"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "e5e0"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "h4h1"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "e8f8"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "h1g1"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "f8e8"
+          }
+        },
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "d1d2"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "e0a0"
+          }
+        }
+      ]
+    }
   },
   "analysis": null,
   "observations": [],

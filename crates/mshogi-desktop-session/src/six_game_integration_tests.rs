@@ -181,10 +181,7 @@ fn seven_profile_new_and_current_load_rings_retire_all_prior_authorities_atomica
         assert!(!saved.document.dirty);
         let bytes = fs::read(&path).unwrap();
         let envelope = crate::document::DocumentEnvelope::parse(&bytes).unwrap();
-        assert_eq!(envelope.rules_profile, profile);
         assert_eq!(envelope.game_kind, profile.game());
-        assert_eq!(envelope.profile_edition, profile.edition());
-        assert_eq!(envelope.native_schema_version, 1);
         let id = c
             .queue_shared_open(corrupt.clone(), saved.open_token)
             .unwrap();

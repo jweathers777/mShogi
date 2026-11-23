@@ -71,10 +71,7 @@ context = {
     'purpose': {'kind': 'engine_turn'}, 'request_id': 1, 'session_version': 1,
     'process_generation': 1,
     'game': {
-        'envelope_version': 1, 'game_kind': 'chess',
-        'rules_profile': 'mshogi.chess.match.v1',
-        'profile_edition': 'FIDE-2023-01-01+mshogi.chess.match.v1',
-        'native_schema_version': 1,
+        'envelope_version': 2, 'game_kind': 'chess',
         'payload': {
             'schema_version': 1, 'rules_profile': 'mshogi.chess.match.v1',
             'initial_fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
@@ -145,7 +142,7 @@ tenjiku_responses = []
 for index, profile in enumerate(('adams', 'muller')):
     source = Path(__file__).with_name('fixtures') / f'tenjiku-{profile}-royal-engine.mshogi'
     document = json.loads(source.read_text(encoding='utf-8'))
-    native = document['payload']['record']
+    native = {'envelope_version': 2, 'game_kind': 'tenjiku', 'payload': document['payload']['record']}
     turn = native['payload']['root']['side']
     assert turn == 'sente' and native['payload']['events'] == []
     ctx = {'purpose': {'kind': 'engine_turn'}, 'request_id': 100 + index * 2,
@@ -164,7 +161,7 @@ for index, profile in enumerate(('adams', 'muller')):
             'label':'Packaged Tenjiku independent royal diagram','turn':{'game_kind':'tenjiku','side':turn}}})
     analyzed = query(analysis, 'tenjiku')
     assert analyzed['observation']['result']['result']['action'] == result['action']
-    tenjiku_responses.append({'profile':document['rules_profile'],'source_fixture':str(source),
+    tenjiku_responses.append({'profile':native['payload']['root']['profile'],'source_fixture':str(source),
         'source_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'engine_turn':move,'analysis':analyzed})
 report = {
     'package_root': str(args.package_root),

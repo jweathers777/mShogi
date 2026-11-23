@@ -588,7 +588,11 @@ fn canonical_records_reject_strict_parsing_forged_events_and_post_conclusion_com
             "\"root\":{\"profile\":\"mshogi.xiangqi.wxf2018.v1\",",
             1,
         ),
-        valid.replacen("\"board_ply\":1", "\"board_ply\":1,\"board_ply\":1", 1),
+        valid.replacen(
+            "\"schema_version\":2",
+            "\"schema_version\":2,\"schema_version\":2",
+            1,
+        ),
         format!("{valid}{{}}"),
     ] {
         assert!(
@@ -597,16 +601,7 @@ fn canonical_records_reject_strict_parsing_forged_events_and_post_conclusion_com
         );
     }
     let base: Value = serde_json::from_str(&valid).unwrap();
-    for key in [
-        "profile",
-        "root",
-        "commands",
-        "events",
-        "current_position",
-        "conclusion",
-        "pending",
-        "no_win_assessment",
-    ] {
+    for key in ["schema_version", "claim_policy", "root", "commands"] {
         let mut changed = base.clone();
         changed.as_object_mut().unwrap().remove(key);
         assert!(
@@ -618,7 +613,7 @@ fn canonical_records_reject_strict_parsing_forged_events_and_post_conclusion_com
         ("game", json!("chess")),
         ("profile", json!("mshogi.xiangqi.other")),
         ("edition", json!("other")),
-        ("schema_version", json!(2)),
+        ("schema_version", json!(99)),
         ("mode", json!("timed")),
         ("no_win_goal", json!("resignations_count_as_win")),
         ("unexpected", json!(null)),
@@ -631,6 +626,7 @@ fn canonical_records_reject_strict_parsing_forged_events_and_post_conclusion_com
         );
     }
     let mut forged = base.clone();
+    forged["events"] = serde_json::to_value(game.events()).unwrap();
     let warning = forged["events"]
         .as_array_mut()
         .unwrap()
@@ -649,6 +645,7 @@ fn canonical_records_reject_strict_parsing_forged_events_and_post_conclusion_com
     let mut audited = root_game(CYCLE_ROOT, ClaimPolicy::Explicit);
     command(&mut audited, Side::Black, GameCommand::ClaimNaturalCount);
     let mut forged: Value = serde_json::from_str(&canonical(&audited)).unwrap();
+    forged["events"] = serde_json::to_value(audited.events()).unwrap();
     forged["events"][0]["event"]["evidence"]["eligible"] = json!(true);
     assert!(GameRecord::from_json(&forged.to_string()).is_err());
 }

@@ -165,8 +165,8 @@ fn canonical_fixture_roundtrips_preserve_native_root_history_and_all_outcomes() 
         assert_eq!(
             crate::document::DocumentEnvelope::parse(&bytes)
                 .unwrap()
-                .envelope_version,
-            1
+                .format,
+            "mshogi.desktop.document.v2"
         );
         let before = c.shared_token();
         let opened = open(&mut c, &file).unwrap();

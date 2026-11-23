@@ -45,17 +45,17 @@ fn actual_native_payloads_round_trip_with_derived_identity_and_provenance() {
             native
         );
         let wire: Value = serde_json::from_str(&text).unwrap();
-        assert_eq!(wire["envelope_version"], 1);
-        assert_eq!(wire["native_schema_version"], 1);
+        assert_eq!(wire["envelope_version"], 2);
+        assert_eq!(wire.as_object().unwrap().len(), 3);
         match native {
             CanonicalRecord::Tenjiku(_) => unreachable!("covered by native_tenjiku_envelope"),
             CanonicalRecord::Chu(_) => unreachable!("covered by native_chu_envelope"),
             CanonicalRecord::Tori(_) => unreachable!("covered by native_tori_envelope"),
             CanonicalRecord::Xiangqi(_) => unreachable!("covered by native_xiangqi_envelope"),
             CanonicalRecord::Chess(r) => {
-                assert_eq!(wire["rules_profile"], "mshogi.chess.match.v1");
+                assert_eq!(wire["payload"]["rules_profile"], "mshogi.chess.match.v1");
                 assert_eq!(
-                    wire["profile_edition"],
+                    RulesProfile::ChessMatchV1.edition(),
                     "FIDE-2023-01-01+mshogi.chess.match.v1"
                 );
                 assert_eq!(
@@ -67,9 +67,9 @@ fn actual_native_payloads_round_trip_with_derived_identity_and_provenance() {
                 assert!(c::AdjudicatedGame::replay_record(&r).is_err());
             }
             CanonicalRecord::Shogi(r) => {
-                assert_eq!(wire["rules_profile"], "mshogi.shogi.csa36.v1");
+                assert_eq!(wire["payload"]["profile_id"], "mshogi.shogi.csa36.v1");
                 assert_eq!(
-                    wire["profile_edition"],
+                    wire["payload"]["profile_edition"],
                     "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026"
                 );
                 assert_eq!(r.to_game().unwrap(), shogi);
@@ -104,14 +104,7 @@ fn actual_native_payloads_round_trip_with_derived_identity_and_provenance() {
 fn outer_and_native_duplicates_unknown_missing_and_cross_identities_reject() {
     let native = CanonicalRecord::shogi(s::GameRecord::from_game(&shogi_game()));
     let text = native.to_json().unwrap();
-    for key in [
-        "envelope_version",
-        "game_kind",
-        "rules_profile",
-        "profile_edition",
-        "native_schema_version",
-        "payload",
-    ] {
+    for key in ["envelope_version", "game_kind", "payload"] {
         let mut value: Value = serde_json::from_str(&text).unwrap();
         value.as_object_mut().unwrap().remove(key);
         assert!(
@@ -121,14 +114,14 @@ fn outer_and_native_duplicates_unknown_missing_and_cross_identities_reject() {
     }
     for malformed in [
         text.replacen(
-            "\"envelope_version\":1",
-            "\"envelope_version\":1,\"envelope_version\":1",
+            "\"envelope_version\":2",
+            "\"envelope_version\":2,\"envelope_version\":2",
             1,
         ),
         text.replacen("\"payload\":", "\"unexpected\":true,\"payload\":", 1),
         text.replacen(
-            "\"schema_version\":1",
-            "\"schema_version\":1,\"schema_version\":1",
+            "\"schema_version\":2",
+            "\"schema_version\":2,\"schema_version\":2",
             1,
         ),
         text.replacen("\"root\":", "\"extra_native\":true,\"root\":", 1),
@@ -137,7 +130,7 @@ fn outer_and_native_duplicates_unknown_missing_and_cross_identities_reject() {
             "\"counter_source\":\"supplied\",\"counter_source\":",
             1,
         ),
-        text.replacen("\"envelope_version\":1", "\"envelope_version\":99", 1),
+        text.replacen("\"envelope_version\":2", "\"envelope_version\":99", 1),
     ] {
         assert!(
             CanonicalRecord::from_json(&malformed).is_err(),
@@ -151,20 +144,23 @@ fn outer_and_native_duplicates_unknown_missing_and_cross_identities_reject() {
         ("profile_edition", json!("unreviewed")),
         ("native_schema_version", json!(2)),
     ] {
-        let before = value[key].clone();
+        let before = value.get(key).cloned();
         value[key] = bad;
         assert!(
             CanonicalRecord::from_json(&value.to_string()).is_err(),
             "conflict {key}"
         );
-        value[key] = before;
+        if let Some(before) = before {
+            value[key] = before;
+        } else {
+            value.as_object_mut().unwrap().remove(key);
+        }
     }
     value["rules_profile"] = json!("mshogi.other.v1");
     assert!(CanonicalRecord::from_json(&value.to_string()).is_err());
-    // All outer chess IDs can agree, but a native shogi payload still cannot dispatch as chess.
-    value["rules_profile"] = json!("mshogi.chess.match.v1");
+    // The dispatch tag must agree with the native payload.
+    value = serde_json::from_str(&text).unwrap();
     value["game_kind"] = json!("chess");
-    value["profile_edition"] = json!(CHESS_PROFILE_EDITION);
     assert!(CanonicalRecord::from_json(&value.to_string()).is_err());
     let chess =
         CanonicalRecord::chess(c::AdjudicatedGame::new(c::ClaimPolicy::ExplicitOnly).record())
@@ -395,11 +391,8 @@ fn pretty_serialization_preserves_existing_outer_fields_and_raw_native_payloads(
             CanonicalRecord::Tenjiku(_) => unreachable!(),
         };
         let expected = format!(
-            "{{\n  \"envelope_version\": 1,\n  \"game_kind\": {},\n  \"rules_profile\": {},\n  \"profile_edition\": {},\n  \"native_schema_version\": {},\n  \"payload\": {payload}\n}}",
+            "{{\"envelope_version\":2,\"game_kind\":{},\"payload\":{payload}}}",
             serde_json::to_string(&record.game_kind()).unwrap(),
-            serde_json::to_string(&record.profile()).unwrap(),
-            serde_json::to_string(record.profile().edition()).unwrap(),
-            record.native_schema().version(),
         );
         let pretty = serde_json::to_string_pretty(&record).unwrap();
         assert_eq!(pretty, expected);

@@ -64,3 +64,13 @@ pub(crate) fn reject_duplicates(text: &str) -> serde_json::Result<()> {
     Unique::deserialize(&mut d)?;
     d.end()
 }
+
+/// Serialize validated native JSON without an intermediate object or owned copy.
+pub(crate) fn serialize_json<S: serde::Serializer>(
+    text: &str,
+    serializer: S,
+) -> Result<S::Ok, S::Error> {
+    let raw: &serde_json::value::RawValue =
+        serde_json::from_str(text).map_err(serde::ser::Error::custom)?;
+    raw.serialize(serializer)
+}

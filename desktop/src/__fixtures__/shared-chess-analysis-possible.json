@@ -254,14 +254,7 @@
   "execution_purpose": null,
   "diagnostic": null,
   "declaration_advice": [],
-  "context": {
-    "envelope_version": 1,
-    "game_kind": "chess",
-    "rules_profile": "mshogi.chess.match.v1",
-    "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
-    "native_schema_version": 1,
-    "payload": {"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"7k/6Q1/5K2/8/8/8/8/8 b - - 0 1","history_origin":"imported_fen","claim_policy":"explicit_only","events":[]}
-  },
+  "context": {"envelope_version":2,"game_kind":"chess","payload":{"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"7k/6Q1/5K2/8/8/8/8/8 b - - 0 1","history_origin":"imported_fen","claim_policy":"explicit_only","events":[]}},
   "analysis": {
     "observation": {
       "schema_version": 1,
@@ -288,14 +281,7 @@
         "request_id": 5,
         "session_version": 5,
         "process_generation": 5,
-        "game": {
-          "envelope_version": 1,
-          "game_kind": "chess",
-          "rules_profile": "mshogi.chess.match.v1",
-          "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
-          "native_schema_version": 1,
-          "payload": {"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"7k/6Q1/5K2/8/8/8/8/8 b - - 0 1","history_origin":"imported_fen","claim_policy":"explicit_only","events":[]}
-        },
+        "game": {"envelope_version":2,"game_kind":"chess","payload":{"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"7k/6Q1/5K2/8/8/8/8/8 b - - 0 1","history_origin":"imported_fen","claim_policy":"explicit_only","events":[]}},
         "limits": {
           "depth": 1,
           "nodes": 0
@@ -349,14 +335,7 @@
           "request_id": 5,
           "session_version": 5,
           "process_generation": 5,
-          "game": {
-            "envelope_version": 1,
-            "game_kind": "chess",
-            "rules_profile": "mshogi.chess.match.v1",
-            "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
-            "native_schema_version": 1,
-            "payload": {"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"7k/6Q1/5K2/8/8/8/8/8 b - - 0 1","history_origin":"imported_fen","claim_policy":"explicit_only","events":[]}
-          },
+          "game": {"envelope_version":2,"game_kind":"chess","payload":{"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"7k/6Q1/5K2/8/8/8/8/8 b - - 0 1","history_origin":"imported_fen","claim_policy":"explicit_only","events":[]}},
           "limits": {
             "depth": 1,
             "nodes": 0
@@ -461,14 +440,7 @@
         "request_id": 5,
         "session_version": 5,
         "process_generation": 5,
-        "game": {
-          "envelope_version": 1,
-          "game_kind": "chess",
-          "rules_profile": "mshogi.chess.match.v1",
-          "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
-          "native_schema_version": 1,
-          "payload": {"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"7k/6Q1/5K2/8/8/8/8/8 b - - 0 1","history_origin":"imported_fen","claim_policy":"explicit_only","events":[]}
-        },
+        "game": {"envelope_version":2,"game_kind":"chess","payload":{"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"7k/6Q1/5K2/8/8/8/8/8 b - - 0 1","history_origin":"imported_fen","claim_policy":"explicit_only","events":[]}},
         "limits": {
           "depth": 1,
           "nodes": 0

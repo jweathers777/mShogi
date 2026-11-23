@@ -306,20 +306,20 @@ fn strict_outer_nested_identity_and_bounded_file_failures_preserve_live_session(
             .into_bytes(),
         valid
             .replacen(
-                "\"envelope_version\":1",
-                "\"envelope_version\":1,\"envelope_version\":1",
+                "\"envelope_version\":2",
+                "\"envelope_version\":2,\"envelope_version\":2",
                 1,
             )
             .into_bytes(),
         valid
             .replacen(
-                "\"no_win_mode\":",
-                "\"schema_version\":1,\"no_win_mode\":",
+                "\"claim_policy\":",
+                "\"schema_version\":2,\"claim_policy\":",
                 1,
             )
             .into_bytes(),
         valid
-            .replacen("\"envelope_version\":1", "\"envelope_version\":999", 1)
+            .replacen("\"envelope_version\":2", "\"envelope_version\":999", 1)
             .into_bytes(),
         chess.into_bytes(),
         vec![b' '; mshogi_core::native::MAX_RECORD_ENVELOPE_BYTES + 1],

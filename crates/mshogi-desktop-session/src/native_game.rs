@@ -106,7 +106,7 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
     /// Native game with full history.
     type Game;
     /// Canonical native record.
-    type Record: Clone + PartialEq + Debug + Send + Sync;
+    type Record: Clone + PartialEq + Debug + Serialize + Send + Sync;
     /// This game's engine result.
     type EngineResult;
     /// Saved document settings.
@@ -117,16 +117,6 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
 
     /// Wrap a native participant.
     fn native_side(side: Self::Side) -> NativeSide;
-    /// Serialize the durable native record; it can differ from engine context.
-    fn encode_record<S: serde::Serializer>(
-        record: &Self::Record,
-        serializer: S,
-    ) -> Result<S::Ok, S::Error>;
-    /// Decode and retain the game from native validation.
-    fn decode_record(
-        text: &str,
-        stop: &mut impl FnMut() -> bool,
-    ) -> Result<(Self::Record, Self::Game), RecordFailure>;
     /// Exact canonical context sent to the engine.
     fn context(game: &Self::Game) -> Result<CanonicalRecord, RecordFailure>;
     /// Restore an engine observation target.
@@ -217,42 +207,6 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
 // Keep that wiring in one place; Chess supplies a separate match record.
 macro_rules! canonical_record {
     ($variant:ident) => {
-        /// Encode the durable record. Usually this is the engine's canonical
-        /// record; Chess instead retains match commands beside its initial history.
-        fn encode_record<S: serde::Serializer>(
-            record: &Self::Record,
-            serializer: S,
-        ) -> Result<S::Ok, S::Error> {
-            CanonicalRecord::$variant(Box::new(record.clone())).serialize(serializer)
-        }
-        /// Decode the durable record and retain the game from native validation.
-        fn decode_record(
-            text: &str,
-            stop: &mut impl FnMut() -> bool,
-        ) -> Result<(Self::Record, Self::Game), RecordFailure> {
-            use mshogi_core::native::EnvelopeError;
-            let (record, game) =
-                CanonicalRecord::from_json_with_native_parser(text, stop, |kind, text, stop| {
-                    if kind != Self::KIND {
-                        return Err(EnvelopeError::Identity);
-                    }
-                    let (record, game) = Self::parse_record(text, stop).map_err(|e| match e {
-                        RecordFailure::Stopped => EnvelopeError::Stopped,
-                        RecordFailure::Capacity(_) => EnvelopeError::Capacity,
-                        RecordFailure::Invalid(message) => EnvelopeError::Encoding(message),
-                    })?;
-                    Ok((CanonicalRecord::$variant(Box::new(record)), game))
-                })
-                .map_err(|e| match e {
-                    EnvelopeError::Stopped => RecordFailure::Stopped,
-                    EnvelopeError::Capacity => RecordFailure::Capacity(e.to_string()),
-                    e => RecordFailure::Invalid(e.to_string()),
-                })?;
-            let CanonicalRecord::$variant(record) = record else {
-                return Err(RecordFailure::Invalid("Wrong native record family".into()));
-            };
-            Ok((*record, game))
-        }
         /// Engine context of a game. It can differ from the durable match record.
         fn context(game: &Self::Game) -> Result<CanonicalRecord, RecordFailure> {
             Self::from_game(game).map(|record| CanonicalRecord::$variant(Box::new(record)))

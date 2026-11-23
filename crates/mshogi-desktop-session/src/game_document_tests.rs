@@ -93,7 +93,7 @@ fn opening_refuses_wrong_shape_game_profile_and_records() {
     kind["game_kind"] = json!("chu");
     assert!(decode(&kind).is_err(), "wrong game");
     let mut record = good.clone();
-    record["payload"]["record"]["payload"]["events"] =
+    record["payload"]["record"]["events"] =
         json!([{"index": 0, "actor": "gote", "command": {"kind": "resign"}}]);
     assert!(decode(&record).is_err(), "record that does not replay");
     let oversize = vec![b' '; MAX_ARCHIVE_BYTES + 1];

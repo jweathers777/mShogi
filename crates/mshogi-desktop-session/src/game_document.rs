@@ -46,7 +46,6 @@ pub type SettingsOf<G> = <G as NativeGame>::Settings;
 #[derive(Serialize)]
 #[serde(bound(serialize = ""))]
 struct Payload<G: NativeGame> {
-    #[serde(serialize_with = "G::encode_record")]
     record: G::Record,
     human: G::Side,
     settings: SettingsOf<G>,
@@ -232,14 +231,9 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
             settings: SettingsOf<G>,
         }
         let w: Wire<G> = serde_json::from_str(e.payload.get()).map_err(E::<G>::invalid)?;
-        let result = G::decode_record(w.record.get(), stopped);
+        let result = G::parse_record(w.record.get(), stopped);
         E::<G>::check(stopped)?;
         let (record, game) = result.map_err(E::<G>::record)?;
-        if e.rules_profile != G::profile(&record) {
-            return Err(E::<G>::invalid(
-                "outer profile does not match native payload profile",
-            ));
-        }
         let document = Self::accept(Payload {
             record,
             human: w.human,
@@ -249,10 +243,8 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
     }
     fn accept(payload: Payload<G>) -> Result<Self, GameDocumentError> {
         type E<G> = Errors<G>;
-        let record = &payload.record;
         payload.settings.validate().map_err(E::<G>::invalid)?;
-        let profile: RulesProfile = G::profile(record);
-        let bytes = document::encode(profile, &payload).map_err(E::<G>::invalid)?;
+        let bytes = document::encode(G::KIND, &payload).map_err(E::<G>::invalid)?;
         if bytes.len() > MAX_ARCHIVE_BYTES {
             return Err(E::<G>::file_size(bytes.len()));
         }

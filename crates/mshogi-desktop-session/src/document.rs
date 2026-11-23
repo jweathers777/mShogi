@@ -1,6 +1,6 @@
 //! The sole current desktop envelope. Native payloads retain their own replay.
 //! Runtime-to-codec and validated-codec-to-install bridges end in MSH-118.
-use mshogi_core::native::{GameKind, RulesProfile};
+use mshogi_core::native::GameKind;
 use serde::{
     Deserialize, Serialize,
     de::{self, MapAccess, SeqAccess, Visitor},
@@ -8,18 +8,13 @@ use serde::{
 use serde_json::value::RawValue;
 use std::{collections::BTreeSet, fmt};
 
-pub(crate) const FORMAT: &str = "mshogi.desktop.document.v1";
-const VERSION: u32 = 1;
+pub(crate) const FORMAT: &str = "mshogi.desktop.document.v2";
 
 #[derive(Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct DocumentEnvelope {
-    pub(crate) envelope_version: u32,
     pub(crate) format: String,
     pub(crate) game_kind: GameKind,
-    pub(crate) rules_profile: RulesProfile,
-    pub(crate) profile_edition: String,
-    pub(crate) native_schema_version: u32,
     pub(crate) payload: Box<RawValue>,
 }
 impl DocumentEnvelope {
@@ -31,17 +26,8 @@ impl DocumentEnvelope {
         // nested byte reaches the strict native document/record parser intact.
         let doc: Self = serde_json::from_slice(bytes)
             .map_err(|e| diagnostic(format!("Invalid current desktop document: {e}")))?;
-        if doc.envelope_version != VERSION || doc.format != FORMAT {
+        if doc.format != FORMAT {
             return Err("Unsupported desktop document format/version; development archives are not supported.".into());
-        }
-        if doc.game_kind != doc.rules_profile.game()
-            || doc.profile_edition != doc.rules_profile.edition()
-            || doc.native_schema_version != 1
-        {
-            return Err(
-                "Conflicting or unsupported desktop game/profile/edition/native schema identity."
-                    .into(),
-            );
         }
         Ok(doc)
     }
@@ -54,15 +40,11 @@ pub(crate) fn diagnostic(mut message: String) -> String {
     message.truncate(end);
     message
 }
-pub(crate) fn encode<T: Serialize>(profile: RulesProfile, payload: &T) -> Result<Vec<u8>, String> {
+pub(crate) fn encode<T: Serialize>(game_kind: GameKind, payload: &T) -> Result<Vec<u8>, String> {
     let payload = serde_json::value::to_raw_value(payload).map_err(|e| e.to_string())?;
     serde_json::to_vec_pretty(&DocumentEnvelope {
-        envelope_version: VERSION,
         format: FORMAT.into(),
-        game_kind: profile.game(),
-        rules_profile: profile,
-        profile_edition: profile.edition().into(),
-        native_schema_version: 1,
+        game_kind,
         payload,
     })
     .map_err(|e| e.to_string())

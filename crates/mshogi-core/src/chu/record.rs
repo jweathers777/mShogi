@@ -210,10 +210,8 @@ impl GameRecord {
     }
 }
 impl Serialize for GameRecord {
-    fn serialize<S: serde::Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
-        RawValue::from_string(self.json.clone())
-            .map_err(serde::ser::Error::custom)?
-            .serialize(s)
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        crate::record::serialize_json(&self.json, serializer)
     }
 }
 impl<'de> Deserialize<'de> for GameRecord {

@@ -1678,14 +1678,7 @@
   "execution_purpose": null,
   "diagnostic": null,
   "declaration_advice": [],
-  "context": {
-    "envelope_version": 1,
-    "game_kind": "chu",
-    "rules_profile": "mshogi.chu.jcsa2019.v1",
-    "profile_edition": "JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02",
-    "native_schema_version": 3,
-    "payload": {"profile":"mshogi.chu.jcsa2019.v1","edition":"JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02","schema_version":3,"root":{"state":{"board":[{"side":"gote","base":"K","promoted":false},{"side":"gote","base":"P","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"side":"gote","base":"P","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,{"side":"sente","base":"Ln","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"side":"sente","base":"K","promoted":false},null,null,null,null,null,null,null,null,null,{"side":"sente","base":"P","promoted":false},null],"side":"sente","root":{"kind":"diagram","source":null,"declared_completed_plies":0},"accepted_plies":0},"protection":{"owner":null,"squares":[]}},"events":[]}
-  },
+  "context": {"envelope_version":2,"game_kind":"chu","payload":{"profile":"mshogi.chu.jcsa2019.v1","edition":"JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02","schema_version":3,"root":{"state":{"board":[{"side":"gote","base":"K","promoted":false},{"side":"gote","base":"P","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"side":"gote","base":"P","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,{"side":"sente","base":"Ln","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"side":"sente","base":"K","promoted":false},null,null,null,null,null,null,null,null,null,{"side":"sente","base":"P","promoted":false},null],"side":"sente","root":{"kind":"diagram","source":null,"declared_completed_plies":0},"accepted_plies":0},"protection":{"owner":null,"squares":[]}},"events":[]}},
   "analysis": {
     "observation": {
       "schema_version": 1,
@@ -1707,14 +1700,7 @@
         "request_id": 5,
         "session_version": 4,
         "process_generation": 5,
-        "game": {
-          "envelope_version": 1,
-          "game_kind": "chu",
-          "rules_profile": "mshogi.chu.jcsa2019.v1",
-          "profile_edition": "JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02",
-          "native_schema_version": 3,
-          "payload": {"profile":"mshogi.chu.jcsa2019.v1","edition":"JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02","schema_version":3,"root":{"state":{"board":[{"side":"gote","base":"K","promoted":false},{"side":"gote","base":"P","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"side":"gote","base":"P","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,{"side":"sente","base":"Ln","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"side":"sente","base":"K","promoted":false},null,null,null,null,null,null,null,null,null,{"side":"sente","base":"P","promoted":false},null],"side":"sente","root":{"kind":"diagram","source":null,"declared_completed_plies":0},"accepted_plies":0},"protection":{"owner":null,"squares":[]}},"events":[]}
-        },
+        "game": {"envelope_version":2,"game_kind":"chu","payload":{"profile":"mshogi.chu.jcsa2019.v1","edition":"JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02","schema_version":3,"root":{"state":{"board":[{"side":"gote","base":"K","promoted":false},{"side":"gote","base":"P","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"side":"gote","base":"P","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,{"side":"sente","base":"Ln","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"side":"sente","base":"K","promoted":false},null,null,null,null,null,null,null,null,null,{"side":"sente","base":"P","promoted":false},null],"side":"sente","root":{"kind":"diagram","source":null,"declared_completed_plies":0},"accepted_plies":0},"protection":{"owner":null,"squares":[]}},"events":[]}},
         "limits": {
           "depth": 1,
           "nodes": 512
@@ -1789,14 +1775,7 @@
           "request_id": 5,
           "session_version": 4,
           "process_generation": 5,
-          "game": {
-            "envelope_version": 1,
-            "game_kind": "chu",
-            "rules_profile": "mshogi.chu.jcsa2019.v1",
-            "profile_edition": "JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02",
-            "native_schema_version": 3,
-            "payload": {"profile":"mshogi.chu.jcsa2019.v1","edition":"JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02","schema_version":3,"root":{"state":{"board":[{"side":"gote","base":"K","promoted":false},{"side":"gote","base":"P","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"side":"gote","base":"P","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,{"side":"sente","base":"Ln","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"side":"sente","base":"K","promoted":false},null,null,null,null,null,null,null,null,null,{"side":"sente","base":"P","promoted":false},null],"side":"sente","root":{"kind":"diagram","source":null,"declared_completed_plies":0},"accepted_plies":0},"protection":{"owner":null,"squares":[]}},"events":[]}
-          },
+          "game": {"envelope_version":2,"game_kind":"chu","payload":{"profile":"mshogi.chu.jcsa2019.v1","edition":"JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02","schema_version":3,"root":{"state":{"board":[{"side":"gote","base":"K","promoted":false},{"side":"gote","base":"P","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"side":"gote","base":"P","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,{"side":"sente","base":"Ln","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"side":"sente","base":"K","promoted":false},null,null,null,null,null,null,null,null,null,{"side":"sente","base":"P","promoted":false},null],"side":"sente","root":{"kind":"diagram","source":null,"declared_completed_plies":0},"accepted_plies":0},"protection":{"owner":null,"squares":[]}},"events":[]}},
           "limits": {
             "depth": 1,
             "nodes": 512

@@ -83,23 +83,11 @@ impl NativeGame for Chess {
     fn native_side(side: Color) -> NativeSide {
         NativeSide::Chess(side)
     }
-    fn encode_record<S: serde::Serializer>(
-        record: &ChessRecord,
-        serializer: S,
-    ) -> Result<S::Ok, S::Error> {
-        record.serialize(serializer)
-    }
-    fn decode_record(
-        text: &str,
-        stop: &mut impl FnMut() -> bool,
-    ) -> Result<(ChessRecord, ChessMatch), RecordFailure> {
-        ChessRecord::decode(text, stop)
-    }
     fn parse_record(
         text: &str,
         stop: &mut impl FnMut() -> bool,
     ) -> Result<(ChessRecord, ChessMatch), RecordFailure> {
-        Self::decode_record(text, stop)
+        ChessRecord::decode(text, stop)
     }
     fn context(game: &ChessMatch) -> Result<CanonicalRecord, RecordFailure> {
         Ok(CanonicalRecord::chess(game.game().record()))

@@ -176,17 +176,13 @@ fn exact_profile_edition_schema_and_duplicate_preserving_native_payload() {
         let record = wrapped(&game);
         let raw = record.to_json().unwrap();
         let mut value: Value = serde_json::from_str(&raw).unwrap();
-        value["rules_profile"] = json!(other(profile).id());
-        value["profile_edition"] = json!(other(profile).edition());
-        assert_eq!(
-            CanonicalRecord::from_json(&value.to_string()).unwrap_err(),
-            EnvelopeError::Identity
-        );
+        value["payload"]["root"]["profile"] = json!(other(profile).id());
+        assert!(CanonicalRecord::from_json(&value.to_string()).is_err());
         assert!(serde_json::from_value::<CanonicalRecord>(value).is_err());
         for (field, value) in [
             ("profile_edition", json!(other(profile).edition())),
             ("native_schema_version", json!(99)),
-            ("envelope_version", json!(2)),
+            ("envelope_version", json!(99)),
             ("game_kind", json!("chu")),
         ] {
             let mut changed: Value = serde_json::from_str(&raw).unwrap();
@@ -204,7 +200,7 @@ fn exact_profile_edition_schema_and_duplicate_preserving_native_payload() {
         assert_ne!(duplicate, raw);
         assert!(CanonicalRecord::from_json(&duplicate).is_err());
         assert!(serde_json::from_str::<CanonicalRecord>(&duplicate).is_err());
-        let profile_key = format!("\"rules_profile\":\"{}\"", profile.id());
+        let profile_key = format!("\"profile\":\"{}\"", profile.id());
         let duplicate = raw.replacen(&profile_key, &format!("{profile_key},{profile_key}"), 1);
         assert_ne!(duplicate, raw);
         assert!(CanonicalRecord::from_json(&duplicate).is_err());

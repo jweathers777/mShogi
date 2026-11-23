@@ -2,7 +2,10 @@
 //! independently of the document decoder; these are not packaged GUI evidence.
 use super::*;
 use crate::*;
-use mshogi_core::{native::NativeSide, shogi as s, xiangqi as x};
+use mshogi_core::{
+    native::{NativeSide, RulesProfile},
+    shogi as s, xiangqi as x,
+};
 use serde_json::{Value, json, value::RawValue};
 use std::{
     fs,
@@ -86,7 +89,7 @@ fn open(controller: &mut DesktopController, bytes: &[u8]) -> Result<(), String> 
 fn envelope(profile: RulesProfile) -> String {
     String::from_utf8(
         encode(
-            profile,
+            profile.game(),
             &json!({"native_document":"opaque in outer parser"}),
         )
         .unwrap(),
@@ -103,12 +106,8 @@ fn current_outer_identity_is_explicit_for_every_native_game() {
     ] {
         let text = envelope(profile);
         let parsed = DocumentEnvelope::parse(text.as_bytes()).unwrap();
-        assert_eq!(parsed.format, "mshogi.desktop.document.v1");
-        assert_eq!(parsed.envelope_version, 1);
-        assert_eq!(parsed.native_schema_version, 1);
+        assert_eq!(parsed.format, "mshogi.desktop.document.v2");
         assert_eq!(parsed.game_kind, profile.game());
-        assert_eq!(parsed.rules_profile, profile);
-        assert_eq!(parsed.profile_edition, profile.edition());
         assert!(parsed.payload.get().contains("opaque in outer parser"));
     }
 }
@@ -117,15 +116,7 @@ fn current_outer_identity_is_explicit_for_every_native_game() {
 fn every_outer_field_is_required_and_duplicate_fields_reject() {
     let text = envelope(RulesProfile::ShogiCsa36V1);
     let value: Value = serde_json::from_str(&text).unwrap();
-    for key in [
-        "envelope_version",
-        "format",
-        "game_kind",
-        "rules_profile",
-        "profile_edition",
-        "native_schema_version",
-        "payload",
-    ] {
+    for key in ["format", "game_kind", "payload"] {
         let mut absent = value.clone();
         absent.as_object_mut().unwrap().remove(key);
         assert!(
@@ -147,8 +138,8 @@ fn unsupported_conflicting_malformed_and_old_outer_formats_reject() {
         ("envelope_version", json!(0)),
         ("envelope_version", json!(2)),
         ("format", json!("mshogi.desktop.archive.v2")),
-        ("game_kind", json!("chess")),
-        ("game_kind", json!("tori")),
+        ("game_kind", json!("unsupported")),
+        ("format", json!("mshogi.desktop.document.v1")),
         ("rules_profile", json!("mshogi.xiangqi.wxf2018.v1")),
         ("rules_profile", json!("unapproved.profile")),
         ("profile_edition", json!("unapproved-edition")),
@@ -239,7 +230,6 @@ fn real_native_transcripts_roundtrip_current_documents_with_fresh_stopped_runtim
         let bytes = saved(&mut source);
         let document = DocumentEnvelope::parse(&bytes).unwrap();
         assert_eq!(document.game_kind, expected.game_kind());
-        assert_eq!(document.rules_profile, expected.profile());
         let mut restored = controller();
         open(&mut restored, &bytes).unwrap();
         let reopened = restored.shared_snapshot();
@@ -255,8 +245,8 @@ fn real_native_transcripts_roundtrip_current_documents_with_fresh_stopped_runtim
         }
         let native: NativePayload = serde_json::from_str(reopened_document.payload.get()).unwrap();
         assert_eq!(
-            CanonicalRecord::from_json(native.record.get()).unwrap(),
-            expected
+            serde_json::from_str::<Value>(native.record.get()).unwrap(),
+            serde_json::from_str::<Value>(&expected.to_json().unwrap()).unwrap()["payload"]
         );
     }
     // Chess's full MatchRecord remains distinct from the execution GameRecord.
@@ -343,12 +333,12 @@ fn duplicate_native_schema_fields_reject_atomically_after_raw_outer_dispatch() {
         let before = current.shared_snapshot();
         let mut document = DocumentEnvelope::parse(&bytes).unwrap();
         let text = document.payload.get();
-        let needle = "\"schema_version\":1";
+        let needle = "\"schema_version\":";
         assert!(
             text.contains(needle),
             "native payload schema absent: {text}"
         );
-        let hostile = text.replacen(needle, "\"schema_version\":1,\"schema_version\":1", 1);
+        let hostile = text.replacen(needle, "\"schema_version\":0,\"schema_version\":", 1);
         document.payload = RawValue::from_string(hostile).unwrap();
         let hostile = serde_json::to_vec(&document).unwrap();
         // Outer parsing deliberately retains the duplicate; native parsing rejects it.

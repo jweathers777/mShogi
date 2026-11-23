@@ -52,7 +52,7 @@ fn reopen(g: &x::Game) -> x::Game {
     assert_eq!(decoded.game_kind(), GameKind::Xiangqi);
     assert_eq!(decoded.profile().id(), x::PROFILE_ID);
     assert_eq!(decoded.profile().edition(), x::PROFILE_EDITION);
-    assert_eq!(decoded.native_schema(), NativeSchema::XiangqiV1);
+    assert_eq!(decoded.native_schema(), NativeSchema::XiangqiV2);
     let CanonicalRecord::Xiangqi(native) = decoded else {
         panic!()
     };
@@ -484,14 +484,14 @@ fn strict_payload_context_and_transport_preserve_identity_through_real_execution
     let saved = record(&g);
     let text = saved.to_json().unwrap();
     let duplicated = text.replacen(
-        "\"envelope_version\":1",
-        "\"envelope_version\":1,\"envelope_version\":1",
+        "\"envelope_version\":2",
+        "\"envelope_version\":2,\"envelope_version\":2",
         1,
     );
     assert!(CanonicalRecord::from_json(&duplicated).is_err());
     let duplicate_native = text.replacen(
-        "\"format\":\"mshogi.xiangqi.game\"",
-        "\"format\":\"mshogi.xiangqi.game\",\"format\":\"mshogi.xiangqi.game\"",
+        "\"schema_version\":2",
+        "\"schema_version\":2,\"schema_version\":2",
         1,
     );
     assert!(CanonicalRecord::from_json(&duplicate_native).is_err());

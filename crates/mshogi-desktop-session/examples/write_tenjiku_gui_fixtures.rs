@@ -221,8 +221,8 @@ fn verify_package_report(path: PathBuf) {
         for purpose in ["engine_turn", "analysis"] {
             let observation = &entry[purpose]["observation"];
             let source = &observation["context"]["game"];
-            assert_eq!(source["rules_profile"], profile.id());
             let record = t::GameRecord::from_json(&source["payload"].to_string()).unwrap();
+            assert_eq!(record.profile(), profile);
             let result = &observation["result"]["result"];
             let variation = result["telemetry"]["principal_variation"]
                 .as_array()

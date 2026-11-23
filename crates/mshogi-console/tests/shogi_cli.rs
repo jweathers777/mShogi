@@ -216,7 +216,7 @@ fn malformed_unsupported_tampered_oversized_loads_and_failed_saves_preserve_sess
             .replace("mshogi.shogi.csa36.v1", "unknown.profile")
             .into_bytes(),
         valid
-            .replace("\"schema_version\":1", "\"schema_version\":999")
+            .replace("\"schema_version\":2", "\"schema_version\":999")
             .into_bytes(),
         vec![b' '; MAX_RECORD_ENVELOPE_BYTES + 1],
         vec![255],

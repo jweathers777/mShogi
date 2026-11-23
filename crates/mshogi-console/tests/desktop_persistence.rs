@@ -120,18 +120,9 @@ fn minimal_document_reopens_paused_and_historical_analysis_uses_only_its_prefix(
     assert!(!before.document.dirty);
     let bytes = fs::read(&path).unwrap();
     let archive: serde_json::Value = serde_json::from_slice(&bytes).unwrap();
-    assert_eq!(archive["envelope_version"], 1);
-    assert_eq!(archive["format"], "mshogi.desktop.document.v1");
+    assert_eq!(archive.as_object().unwrap().len(), 3);
+    assert_eq!(archive["format"], "mshogi.desktop.document.v2");
     assert_eq!(archive["game_kind"], "chess");
-    assert_eq!(
-        archive["rules_profile"],
-        mshogi_core::CHESS_MATCH_PROFILE_ID
-    );
-    assert_eq!(
-        archive["profile_edition"],
-        mshogi_core::native::CHESS_PROFILE_EDITION
-    );
-    assert_eq!(archive["native_schema_version"], 1);
     assert!(archive.get("profile").is_none());
     assert!(archive.get("schema_version").is_none());
     let payload = &archive["payload"];

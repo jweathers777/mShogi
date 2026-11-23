@@ -178,7 +178,7 @@ fn every_record_field_is_required_and_native_raw_payloads_reject_duplicates() {
             "missing outer{key}"
         );
     }
-    for (tag, field) in [("root", "side"), ("current_position", "side")] {
+    for (tag, field) in [("root", "side")] {
         let marker = format!("\"{tag}\":");
         let start = text.find(&marker).unwrap() + marker.len();
         let end = start + text[start..].find('}').unwrap() + 1;
@@ -204,19 +204,16 @@ fn every_record_field_is_required_and_native_raw_payloads_reject_duplicates() {
     ] {
         let mut v = value.clone();
         v[key] = val;
-        assert_eq!(
-            GameRecord::from_json(&v.to_string()),
-            Err(RecordError::Unsupported)
-        );
+        assert!(GameRecord::from_json(&v.to_string()).is_err());
     }
-    let root_field = "\"schema_version\":1";
-    let dup = text.replacen(root_field, "\"schema_version\":1,\"schema_version\":1", 1);
+    let root_field = "\"schema_version\":2";
+    let dup = text.replacen(root_field, "\"schema_version\":2,\"schema_version\":2", 1);
     assert!(GameRecord::from_json(&dup).is_err());
     let mut extra = value.clone();
     extra["unknown"] = json!(true);
     assert!(GameRecord::from_json(&extra.to_string()).is_err());
     let mut missing = value.clone();
-    missing["events"][0]
+    missing["commands"][0]
         .as_object_mut()
         .unwrap()
         .remove("actor");

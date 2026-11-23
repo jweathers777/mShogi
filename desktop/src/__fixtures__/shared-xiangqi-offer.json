@@ -65,12 +65,45 @@
     },
     "canonical_context_scope": "selected_committed",
     "selected_canonical": {
-      "envelope_version": 1,
+      "envelope_version": 2,
       "game_kind": "xiangqi",
-      "rules_profile": "mshogi.xiangqi.wxf2018.v1",
-      "profile_edition": "WXF-2018+XIANGQI-P1-2026-10-27",
-      "native_schema_version": 1,
-      "payload": {"format":"mshogi.xiangqi.game","schema_version":1,"game":"xiangqi","profile":"mshogi.xiangqi.wxf2018.v1","edition":"WXF-2018+XIANGQI-P1-2026-10-27","mode":"untimed","no_win_goal":"mshogi.xiangqi.natural-board-win.exists.v1","no_win_mode":"sound_fast_only","fast_witness_limit":1,"claim_policy":"explicit","root":{"schema":"mshogi.xiangqi.position.v1","profile":"mshogi.xiangqi.wxf2018.v1","edition":"WXF-2018+XIANGQI-P1-2026-10-27","history":"starts_at_this_position","origin":"standard_initial","board":"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR","side":"red","no_capture_plies":0,"fullmove_number":1},"commands":[{"actor":"red","command":{"kind":"play","action":"a3a4"},"result":"accepted","event_end":1},{"actor":"black","command":{"kind":"play","action":"a6a5"},"result":"accepted","event_end":2},{"actor":"black","command":{"kind":"offer_draw"},"result":"accepted","event_end":3}],"events":[{"index":0,"board_ply":1,"actor":"red","event":{"kind":"board_action","action":"a3a4","moving_id":11,"captured_id":null,"gave_check":false}},{"index":1,"board_ply":2,"actor":"black","event":{"kind":"board_action","action":"a6a5","moving_id":16,"captured_id":null,"gave_check":false}},{"index":2,"board_ply":2,"actor":"black","event":{"kind":"draw_offer","offered_by":"black"}}],"current_position":{"schema":"mshogi.xiangqi.position.v1","profile":"mshogi.xiangqi.wxf2018.v1","edition":"WXF-2018+XIANGQI-P1-2026-10-27","history":"starts_at_this_position","origin":"analysis_diagram","board":"rnbakabnr/9/1c5c1/2p1p1p1p/p8/P8/2P1P1P1P/1C5C1/9/RNBAKABNR","side":"red","no_capture_plies":2,"fullmove_number":2},"conclusion":null,"pending":null,"no_win_assessment":{"kind":"unknown_exact_unavailable"}}
+      "payload": {
+        "schema_version": 2,
+        "claim_policy": "explicit",
+        "root": {
+          "schema": "mshogi.xiangqi.position.v1",
+          "profile": "mshogi.xiangqi.wxf2018.v1",
+          "edition": "WXF-2018+XIANGQI-P1-2026-10-27",
+          "history": "starts_at_this_position",
+          "origin": "standard_initial",
+          "board": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR",
+          "side": "red",
+          "no_capture_plies": 0,
+          "fullmove_number": 1
+        },
+        "commands": [
+          {
+            "actor": "red",
+            "command": {
+              "kind": "play",
+              "action": "a3a4"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "play",
+              "action": "a6a5"
+            }
+          },
+          {
+            "actor": "black",
+            "command": {
+              "kind": "offer_draw"
+            }
+          }
+        ]
+      }
     },
     "selected_events": [
       {
@@ -1340,12 +1373,45 @@
   "diagnostic": null,
   "declaration_advice": [],
   "context": {
-    "envelope_version": 1,
+    "envelope_version": 2,
     "game_kind": "xiangqi",
-    "rules_profile": "mshogi.xiangqi.wxf2018.v1",
-    "profile_edition": "WXF-2018+XIANGQI-P1-2026-10-27",
-    "native_schema_version": 1,
-    "payload": {"format":"mshogi.xiangqi.game","schema_version":1,"game":"xiangqi","profile":"mshogi.xiangqi.wxf2018.v1","edition":"WXF-2018+XIANGQI-P1-2026-10-27","mode":"untimed","no_win_goal":"mshogi.xiangqi.natural-board-win.exists.v1","no_win_mode":"sound_fast_only","fast_witness_limit":1,"claim_policy":"explicit","root":{"schema":"mshogi.xiangqi.position.v1","profile":"mshogi.xiangqi.wxf2018.v1","edition":"WXF-2018+XIANGQI-P1-2026-10-27","history":"starts_at_this_position","origin":"standard_initial","board":"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR","side":"red","no_capture_plies":0,"fullmove_number":1},"commands":[{"actor":"red","command":{"kind":"play","action":"a3a4"},"result":"accepted","event_end":1},{"actor":"black","command":{"kind":"play","action":"a6a5"},"result":"accepted","event_end":2},{"actor":"black","command":{"kind":"offer_draw"},"result":"accepted","event_end":3}],"events":[{"index":0,"board_ply":1,"actor":"red","event":{"kind":"board_action","action":"a3a4","moving_id":11,"captured_id":null,"gave_check":false}},{"index":1,"board_ply":2,"actor":"black","event":{"kind":"board_action","action":"a6a5","moving_id":16,"captured_id":null,"gave_check":false}},{"index":2,"board_ply":2,"actor":"black","event":{"kind":"draw_offer","offered_by":"black"}}],"current_position":{"schema":"mshogi.xiangqi.position.v1","profile":"mshogi.xiangqi.wxf2018.v1","edition":"WXF-2018+XIANGQI-P1-2026-10-27","history":"starts_at_this_position","origin":"analysis_diagram","board":"rnbakabnr/9/1c5c1/2p1p1p1p/p8/P8/2P1P1P1P/1C5C1/9/RNBAKABNR","side":"red","no_capture_plies":2,"fullmove_number":2},"conclusion":null,"pending":null,"no_win_assessment":{"kind":"unknown_exact_unavailable"}}
+    "payload": {
+      "schema_version": 2,
+      "claim_policy": "explicit",
+      "root": {
+        "schema": "mshogi.xiangqi.position.v1",
+        "profile": "mshogi.xiangqi.wxf2018.v1",
+        "edition": "WXF-2018+XIANGQI-P1-2026-10-27",
+        "history": "starts_at_this_position",
+        "origin": "standard_initial",
+        "board": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR",
+        "side": "red",
+        "no_capture_plies": 0,
+        "fullmove_number": 1
+      },
+      "commands": [
+        {
+          "actor": "red",
+          "command": {
+            "kind": "play",
+            "action": "a3a4"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "play",
+            "action": "a6a5"
+          }
+        },
+        {
+          "actor": "black",
+          "command": {
+            "kind": "offer_draw"
+          }
+        }
+      ]
+    }
   },
   "analysis": null,
   "observations": [],

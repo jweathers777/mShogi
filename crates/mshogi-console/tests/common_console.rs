@@ -274,7 +274,7 @@ fn hostile_common_loads_are_atomic_including_undo_and_strict_nested_fields() {
                 "\"schema_version\":1,\"schema_version\":1",
             ),
             valid.replacen("\"payload\":{", "\"payload\":{\"unknown\":true,", 1),
-            valid.replace("\"envelope_version\":1", "\"envelope_version\":999"),
+            valid.replace("\"envelope_version\":2", "\"envelope_version\":999"),
             valid.replacen("\"game_kind\":", "\"unknown\":0,\"game_kind\":", 1),
         ];
         for json in hostile {

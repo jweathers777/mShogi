@@ -146,6 +146,7 @@ fn play(c: &mut DesktopController) -> SharedSnapshot {
 }
 fn pending(c: &DesktopController) -> Option<ExecutionContext> {
     match &c.session {
+        ActiveDocument::GenericChess { state, .. } => state.pending.clone(),
         ActiveDocument::Chess(s) => s.analysis_pending.clone().or(s.pending.clone()),
         ActiveDocument::Shogi { state, .. } => state.pending.clone(),
         ActiveDocument::Xiangqi { state, .. } => state.pending.clone(),

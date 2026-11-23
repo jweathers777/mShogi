@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-22T09:57:00Z'
-updated_date: '2026-11-23T09:54:00Z'
+updated_date: '2026-11-23T10:04:00Z'
 labels:
   - desktop
   - refactor
@@ -56,4 +56,6 @@ Codex started after MSH-228 integration (main 8f5e55a). Reassess Chess against t
 Updated comparison after MSH-228: lib.rs 2490 lines; persistence.rs 3815; analysis.rs 612; takeback.rs 107; generic native_session.rs 1429 and game_document.rs 356. Rules differences remain ordered match commands, optional claims, draw offers and mating-feasibility outcomes. Product differences remain Full analysis, Chess presentation and 1-second play limits. Separate runtime versions, saved observations, controls, take-back lineage, capacity reservations and admission/poll/save/browse implementations are history, not required differences. Implement full generic session integration. The compact Chess record will retain initial canonical history and accepted player commands, with deterministic untimed replay through the unchanged ChessMatch core; runtime timestamps, rejected requests and Start/Observe bookkeeping will not be saved. This follows John’s recorded MSH-228-first direction.
 
 Checkpoint: generic document payload now owns G::Record, with shared canonical encoding for the existing five games and separate engine-context hooks. Added compact ChessRecord replay through unchanged ChessMatch; tests cover moves/offers/agreement, intended claim without a move, unresolved resignation, imported history/policy, rejected commands, malformed input and cancellation. Desktop-session tests passed 240/240 before the final canonical-wiring macro cleanup; cargo check passed after it. This is foundation work only: the active Chess session still uses the old archive/runtime. Next: implement NativeGame/SessionGame for Chess, Full analysis hooks, route controller and persistence through generic session, then remove old journal paths and migrate tests/fixtures. Branch codex/msh-225-chess-document.
+
+Checkpoint: Chess NativeGame and SessionGame adapters now work on a transitional GenericChess active-document variant. Focused tests pass for generic Full analysis (read-only, remembered kind), wrapped Chess failure stopping without automatic retry, and play/browse/take-back across imported history. Existing 241 desktop-session tests passed before adapter routing was added. Review found wrapped Chess failures and duplicate uncancellable witnessed-resignation verification; fixed with native failure extraction and the existing desktop refusal of witnessed match commands. Full read-only validation remains cooperative. Normal Chess New/Open/default construction still uses the legacy path; next switch those entry points, remove legacy session/archive/journal code and migrate its relevant behavior tests/fixtures. Imported initial history remains browseable but Take back cannot cross its root.
 <!-- SECTION:NOTES:END -->

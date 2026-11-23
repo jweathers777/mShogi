@@ -14,6 +14,7 @@ pub use moves::{
 };
 mod capacity;
 pub use capacity::*;
+mod chess_observation;
 /// Minimal accepted-command Chess records for desktop persistence.
 pub mod chess_record;
 /// Immutable Chu candidates for the same document envelope and file worker.
@@ -21,9 +22,10 @@ pub mod chu_document;
 mod document;
 /// Generic native document of the games behind `native_game::NativeGame`.
 pub mod game_document;
+mod native_chess;
 /// Per-game boundary of the generic document and session.
 pub mod native_game;
-pub(crate) use native_game::{Chu, Shogi, Tenjiku, Tori, Xiangqi};
+pub(crate) use native_game::{Chess, Chu, Shogi, Tenjiku, Tori, Xiangqi};
 mod resource;
 /// Immutable two-profile Tenjiku candidates for the existing document and worker.
 pub mod tenjiku_document;
@@ -372,6 +374,10 @@ impl std::ops::DerefMut for DesktopSession {
 }
 /// Exactly one authoritative native game/document is installed at a time.
 pub(crate) enum ActiveDocument {
+    GenericChess {
+        runtime: RuntimeMetadata,
+        state: Box<shared::chess::ChessSession>,
+    },
     /// Native Chess match, document and observations.
     Chess(Box<DesktopSession>),
     /// Native Shogi game journal and observations.
@@ -405,7 +411,8 @@ impl std::ops::Deref for ActiveDocument {
     fn deref(&self) -> &Self::Target {
         match self {
             Self::Chess(state) => &state.runtime,
-            Self::Shogi { runtime, .. }
+            Self::GenericChess { runtime, .. }
+            | Self::Shogi { runtime, .. }
             | Self::Xiangqi { runtime, .. }
             | Self::Tori { runtime, .. }
             | Self::Chu { runtime, .. }
@@ -417,7 +424,8 @@ impl std::ops::DerefMut for ActiveDocument {
     fn deref_mut(&mut self) -> &mut Self::Target {
         match self {
             Self::Chess(state) => &mut state.runtime,
-            Self::Shogi { runtime, .. }
+            Self::GenericChess { runtime, .. }
+            | Self::Shogi { runtime, .. }
             | Self::Xiangqi { runtime, .. }
             | Self::Tori { runtime, .. }
             | Self::Chu { runtime, .. }
@@ -426,6 +434,18 @@ impl std::ops::DerefMut for ActiveDocument {
     }
 }
 impl ActiveDocument {
+    fn generic_chess(&self) -> Option<&shared::chess::ChessSession> {
+        match self {
+            Self::GenericChess { state, .. } => Some(state),
+            _ => None,
+        }
+    }
+    fn generic_chess_mut(&mut self) -> Option<&mut shared::chess::ChessSession> {
+        match self {
+            Self::GenericChess { state, .. } => Some(state),
+            _ => None,
+        }
+    }
     fn chess(&self) -> &DesktopSession {
         match self {
             Self::Chess(state) => state,
@@ -493,7 +513,7 @@ impl ActiveDocument {
     fn profile(&self) -> mshogi_core::native::RulesProfile {
         use mshogi_core::native::RulesProfile;
         match self {
-            Self::Chess(_) => RulesProfile::ChessMatchV1,
+            Self::Chess(_) | Self::GenericChess { .. } => RulesProfile::ChessMatchV1,
             Self::Shogi { .. } => RulesProfile::ShogiCsa36V1,
             Self::Xiangqi { .. } => RulesProfile::XiangqiWxf2018V1,
             Self::Tori { .. } => RulesProfile::ToriModernV1,
@@ -514,7 +534,11 @@ impl ActiveDocument {
         }
     }
     fn selected_game(&self) -> &AdjudicatedGame {
-        self.chess().selected_game()
+        if let Some(state) = self.generic_chess() {
+            state.selected().game()
+        } else {
+            self.chess().selected_game()
+        }
     }
     fn changed(&mut self) {
         self.version += 1;
@@ -527,6 +551,9 @@ impl ActiveDocument {
             Self::Chess(s) => {
                 s.browse_running = false;
                 s.browse_stop = None;
+            }
+            Self::GenericChess { state, .. } => {
+                state.browse_stop = None;
             }
             Self::Shogi { state, .. } => {
                 state.browse_stop = None;
@@ -553,6 +580,10 @@ impl ActiveDocument {
                 s.retire_analysis();
                 s.play_paused = true;
                 s.engine.status = EnginePhase::Paused;
+            }
+            Self::GenericChess { state, .. } => {
+                state.retire();
+                state.paused = true;
             }
             Self::Shogi { state, .. } => {
                 state.retire();
@@ -591,6 +622,7 @@ impl ActiveDocument {
             Self::Tenjiku { state, .. } => state.refuse_completed_work(resource),
             Self::Xiangqi { state, .. } => state.refuse_completed_work(resource),
             Self::Chess(_) => {}
+            Self::GenericChess { state, .. } => state.refuse_completed_work(resource),
         }
     }
     fn retire_analysis(&mut self) {
@@ -601,6 +633,7 @@ impl ActiveDocument {
             Self::Tori { state, .. } => state.retire(),
             Self::Chu { state, .. } => state.retire(),
             Self::Tenjiku { state, .. } => state.retire(),
+            Self::GenericChess { state, .. } => state.retire(),
         }
     }
     fn capacity_pause(&mut self, error: String) {

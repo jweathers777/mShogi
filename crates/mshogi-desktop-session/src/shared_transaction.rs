@@ -53,6 +53,12 @@ impl DesktopController {
                 self.bridge.cancel();
             }
             match (&mut self.session, opened) {
+                (
+                    ActiveDocument::GenericChess { state, .. },
+                    archive::OpenedNative::GenericChess(next),
+                ) => {
+                    *state = next;
+                }
                 (ActiveDocument::Shogi { state, .. }, archive::OpenedNative::Shogi(next)) => {
                     *state = next
                 }

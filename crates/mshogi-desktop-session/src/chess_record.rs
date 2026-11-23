@@ -134,7 +134,7 @@ impl ChessRecord {
         record.commands.push(command);
         Ok(record)
     }
-    fn submit(
+    pub(crate) fn submit(
         game: &mut ChessMatch,
         entry: &ChessCommand,
         stop: &mut impl FnMut() -> bool,
@@ -146,20 +146,13 @@ impl ChessRecord {
         ) {
             return Err(invalid("Clock bookkeeping is not a saved player command."));
         }
-        // Check a potentially long certificate cooperatively before native submit.
-        // Its truth and the resulting conclusion still belong to ChessMatch.
-        if let MatchCommand::Resign {
-            witness: Some(witness),
-        } = &entry.command
-        {
-            let checked = mating_feasibility_with_stop(
-                game.game().position(),
-                entry.actor.opponent(),
-                Some(witness),
-                &mut *stop,
-            );
-            check(stop)?;
-            checked.map_err(invalid)?;
+        // The desktop has never admitted witnessed match commands. Native
+        // submit verifies them synchronously; read-only Full analysis has its
+        // separate cooperative validation path.
+        if matches!(entry.command, MatchCommand::Resign { witness: Some(_) }) {
+            return Err(invalid(
+                "Witnessed match commands are unsupported by desktop play.",
+            ));
         }
         let reply = game.submit(MatchRequest {
             at_ns: 0,

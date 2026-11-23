@@ -50,6 +50,19 @@ pub(crate) trait SessionGame: NativeGame {
     const PLAY_LIMITS: WorkLimits;
     const MAX_DEPTH: u16;
     const MAX_NODES: u64;
+    /// Only Chess exposes the cooperative mating-reachability operation.
+    const FULL_ANALYSIS: bool = false;
+    const REQUIRE_RESUME: bool = false;
+    const UNDO: bool = true;
+    fn validate_command(
+        _game: &Self::Game,
+        _human: Self::Side,
+        _settings: &SettingsOf<Self>,
+        _actor: Self::Side,
+        _command: &Self::Command,
+    ) -> Result<(), String> {
+        Ok(())
+    }
 
     fn presentation(selected: &Self::Game, live: &Self::Game) -> Self::Presentation;
     fn status(selected: &Self::Game, has_actions: bool) -> PresentedStatus;
@@ -150,7 +163,7 @@ pub(crate) struct NativeSession<G: SessionGame> {
     pub(crate) phase: EnginePhase,
     pub(crate) paused: bool,
     submitted: bool,
-    requested_analysis: Option<WorkLimits>,
+    requested_analysis: Option<AnalysisOperation>,
     pub(crate) analysis: Option<ExecutionObservation>,
     /// Engine results of this session, in memory only (not saved).
     pub(crate) observations: Vec<ExecutionObservation>,
@@ -248,7 +261,7 @@ impl<G: SessionGame> NativeSession<G> {
         let control: Option<Change<G>> = match G::operation(operation) {
             Ok(GameOperation::Command { actor, command }) => {
                 let kind = G::command_kind(&command);
-                if self.document.settings().play_mode().is_two_humans()
+                if (G::REQUIRE_RESUME || self.document.settings().play_mode().is_two_humans())
                     && self.paused
                     && kind == CommandKind::Play
                 {
@@ -257,6 +270,13 @@ impl<G: SessionGame> NativeSession<G> {
                 if self.viewed.is_some() {
                     return Err("Return to live before changing the game.".into());
                 }
+                G::validate_command(
+                    &self.game,
+                    self.document.human(),
+                    self.document.settings(),
+                    actor,
+                    &command,
+                )?;
                 // Actor/turn/terminal/draw admission belongs to the native Game.
                 // The immutable document candidate admits the complete command below.
                 if matches!(kind, CommandKind::Terminal | CommandKind::Stop) {
@@ -289,6 +309,9 @@ impl<G: SessionGame> NativeSession<G> {
                     return Err("Return to live before changing history.".into());
                 }
                 let event_index = if matches!(operation, SessionOperation::Undo {}) {
+                    if !G::UNDO {
+                        return Err("Undo is unsupported for this game; use Take back.".into());
+                    }
                     G::last_command_start(&self.game).ok_or("No event to Undo.")?
                 } else {
                     self.take_back_target()
@@ -356,19 +379,7 @@ impl<G: SessionGame> NativeSession<G> {
                 return Ok(false);
             }
             Err(SessionOperation::Analyze { operation }) => {
-                let AnalysisOperation::Moves { depth, nodes } = operation else {
-                    return Err(format!(
-                        "Unsupported {} analysis operation; no Chess Full or Xiangqi exact operation is available.",
-                        G::NAME
-                    )
-                    .into());
-                };
-                let limits = WorkLimits {
-                    time_ms: None,
-                    depth,
-                    nodes,
-                };
-                validate_limits::<G>(limits)?;
+                analysis_limits::<G>(operation)?;
                 let stop = if self.viewed.is_some() {
                     self.browse_stop.clone()
                 } else {
@@ -378,7 +389,7 @@ impl<G: SessionGame> NativeSession<G> {
                 let remembered = self
                     .document
                     .settings()
-                    .with_analysis_defaults(limits)
+                    .with_analysis_operation(operation)
                     .filter(|s| s != self.document.settings());
                 let durable = remembered.is_some();
                 if let Some(settings) = remembered {
@@ -387,7 +398,7 @@ impl<G: SessionGame> NativeSession<G> {
                 self.retire();
                 self.browse_stop = stop;
                 self.paused = true;
-                self.requested_analysis = Some(limits);
+                self.requested_analysis = Some(operation);
                 self.diagnostic = None;
                 return Ok(durable);
             }
@@ -490,7 +501,7 @@ pub(crate) struct Draft<G: SessionGame> {
     phase: EnginePhase,
     paused: bool,
     submitted: bool,
-    requested_analysis: Option<WorkLimits>,
+    requested_analysis: Option<AnalysisOperation>,
     analysis: Option<ExecutionObservation>,
     observations: Vec<ExecutionObservation>,
     evidence: Vec<G::Evidence>,
@@ -563,16 +574,16 @@ pub(crate) fn execute<G: SessionGame>(
             .as_ref()
             .ok_or_else(|| format!("No current {} execution.", G::NAME))?;
         let result = G::engine_result(&response.result);
-        let failed = matches!(response.result, ExecutionResult::Failure { .. });
+        let failed = G::failure(&response.result).is_some();
         if !response.matches(pending) || !(failed || result.is_some()) {
             return Err(format!("Stale or unsupported {} observation.", G::NAME).into());
         }
-        let analysis = matches!(pending.purpose, ExecutionPurpose::MoveAnalysis { .. });
+        let analysis = !matches!(pending.purpose, ExecutionPurpose::EngineTurn {});
         let incomplete = result.is_some_and(G::incomplete);
         // Check the result against its exact target, then play an engine move.
         if let Some(result) = result {
             let target = G::context_game(&response.context.game, stopped).map_err(record_text)?;
-            G::validate_result(result, &target, stopped)?;
+            G::validate_result(result, &response.context, &target, stopped)?;
             if !analysis && let Some((actor, command)) = G::engine_command(result, &state.game) {
                 state.document = Arc::new(state.document.with_command(actor, command, stopped)?);
                 state.game = G::to_game(state.document.record(), stopped).map_err(record_text)?;
@@ -592,10 +603,7 @@ pub(crate) fn execute<G: SessionGame>(
         state.retire();
         state.browse_stop = browse_stop;
         state.current_observations.push(response.context.request_id);
-        let failure = match &response.result {
-            ExecutionResult::Failure { failure } => Some(failure.message.clone()),
-            _ => None,
-        };
+        let failure = G::failure(&response.result).map(|failure| failure.message.clone());
         if analysis {
             state.analysis = Some(response);
         }
@@ -768,20 +776,9 @@ impl DesktopController {
         }
         // Refuse a malformed analysis request at once; it changes nothing.
         if let SessionOperation::Analyze { operation } = &operation {
-            let AnalysisOperation::Moves { depth, nodes } = *operation else {
-                return Err(format!(
-                    "Unsupported {} analysis operation: Chess Full analysis is not {} analysis.",
-                    G::NAME,
-                    G::NAME
-                ));
-            };
-            validate_limits::<G>(WorkLimits {
-                time_ms: None,
-                depth,
-                nodes,
-            })
-            .map_err(|e| e.diagnostic)?;
+            analysis_limits::<G>(*operation).map_err(|e| e.diagnostic)?;
         }
+
         let state = G::state(&self.session).expect("native owner");
         if matches!(operation, SessionOperation::TakeBack {})
             && (state.viewed.is_some() || state.take_back_target().is_none())
@@ -859,7 +856,24 @@ impl DesktopController {
         limits: WorkLimits,
         analysis: bool,
     ) -> Result<(), OperationFailure> {
-        validate_limits::<G>(limits)?;
+        self.start_game_operation::<G>(
+            limits,
+            analysis.then_some(AnalysisOperation::Moves {
+                depth: limits.depth,
+                nodes: limits.nodes,
+            }),
+        )
+    }
+    fn start_game_operation<G: SessionGame>(
+        &mut self,
+        limits: WorkLimits,
+        operation: Option<AnalysisOperation>,
+    ) -> Result<(), OperationFailure> {
+        if let Some(operation) = operation {
+            analysis_limits::<G>(operation)?;
+        } else {
+            validate_limits::<G>(limits)?;
+        }
         self.ensure_runtime_capacity()?;
         let state = G::state(&self.session).expect("native owner");
         let game = G::context(state.selected()).map_err(record_text)?;
@@ -867,20 +881,33 @@ impl DesktopController {
         let historical = state.viewed.is_some();
         self.session.next_request += 1;
         let context = ExecutionContext {
-            purpose: if analysis {
-                ExecutionPurpose::MoveAnalysis {
-                    target: ExecutionTarget {
-                        selection_id: self.session.selection_id,
-                        event_index: game.event_count() as u64,
-                        board_ply: game.known_board_actions() as u64,
-                        session_version: self.session.version,
-                        label: format!(
-                            "{} event {}{}",
-                            G::NAME,
-                            game.event_count(),
-                            if historical { " (history)" } else { " (live)" }
-                        ),
-                        turn: G::native_side(turn),
+            purpose: if let Some(operation) = operation {
+                let target = ExecutionTarget {
+                    selection_id: self.session.selection_id,
+                    event_index: game.event_count() as u64,
+                    board_ply: game.known_board_actions() as u64,
+                    session_version: self.session.version,
+                    label: format!(
+                        "{} event {}{}",
+                        G::NAME,
+                        game.event_count(),
+                        if historical { " (history)" } else { " (live)" }
+                    ),
+                    turn: G::native_side(turn),
+                };
+                match operation {
+                    AnalysisOperation::Moves { .. } => ExecutionPurpose::MoveAnalysis { target },
+                    AnalysisOperation::FullReachability {
+                        target: mate,
+                        max_positions,
+                        max_transitions,
+                    } => ExecutionPurpose::ChessFullReachability {
+                        target,
+                        mate,
+                        limits: mshogi_engine::FullLimits {
+                            max_positions,
+                            max_transitions,
+                        },
                     },
                 }
             } else {
@@ -919,8 +946,10 @@ impl DesktopController {
                     .settings()
                     .play_mode()
                     .engine_turn(state.document.human(), G::side_to_move(&state.game));
-            if let Some(limits) = analysis {
-                if let Err(e) = self.start_game_work::<G>(limits, true) {
+            if let Some(operation) = analysis {
+                let started = analysis_limits::<G>(operation)
+                    .and_then(|limits| self.start_game_operation::<G>(limits, Some(operation)));
+                if let Err(e) = started {
                     self.pause_native_failure(e);
                 }
             } else if play && let Err(e) = self.start_game_work::<G>(G::PLAY_LIMITS, false) {
@@ -1127,12 +1156,10 @@ impl DesktopController {
             paused: state.paused,
             close_requires_save: self.close_requires_save(),
             phase: state.phase,
-            execution_purpose: state.pending.as_ref().map(|p| {
-                if matches!(p.purpose, ExecutionPurpose::EngineTurn {}) {
-                    "engine_turn"
-                } else {
-                    "move_analysis"
-                }
+            execution_purpose: state.pending.as_ref().map(|p| match p.purpose {
+                ExecutionPurpose::EngineTurn {} => "engine_turn",
+                ExecutionPurpose::MoveAnalysis { .. } => "move_analysis",
+                ExecutionPurpose::ChessFullReachability { .. } => "chess_full_reachability",
             }),
             diagnostic: state.diagnostic.clone(),
             declaration_advice: G::declaration_advice(game),
@@ -1173,6 +1200,36 @@ pub(crate) fn stop_label(status: mshogi_engine::StopReason) -> &'static str {
         mshogi_engine::StopReason::Complete => "Complete",
         mshogi_engine::StopReason::NodeLimit => "Node limit reached",
         mshogi_engine::StopReason::Stopped => "Search stopped",
+    }
+}
+
+fn analysis_limits<G: SessionGame>(
+    operation: AnalysisOperation,
+) -> Result<WorkLimits, OperationFailure> {
+    match operation {
+        AnalysisOperation::Moves { depth, nodes } => {
+            let limits = WorkLimits {
+                time_ms: None,
+                depth,
+                nodes,
+            };
+            if G::FULL_ANALYSIS {
+                operation.validate()?;
+            } else {
+                validate_limits::<G>(limits)?;
+            }
+            Ok(limits)
+        }
+        AnalysisOperation::FullReachability { .. } if G::FULL_ANALYSIS => {
+            operation.validate()?;
+            Ok(mshogi_engine::FULL_SENTINEL)
+        }
+        _ => Err(format!(
+            "Unsupported {} analysis operation: Chess Full analysis is not {} analysis.",
+            G::NAME,
+            G::NAME
+        )
+        .into()),
     }
 }
 

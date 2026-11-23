@@ -131,6 +131,7 @@ pub(crate) enum NativeWork {
     },
 }
 pub(crate) enum OpenedNative {
+    GenericChess(Box<chess::ChessSession>),
     Tenjiku(Box<tenjiku::TenjikuSession>),
     Chu(Box<chu::ChuSession>),
     Tori(Box<tori::ToriSession>),
@@ -148,6 +149,7 @@ impl OpenedNative {
             Self::Tenjiku(state) => state.pending.is_some(),
             Self::Xiangqi(state) => state.pending.is_some(),
             Self::Chess(_) => false,
+            Self::GenericChess(state) => state.pending.is_some(),
         }
     }
 }
@@ -277,7 +279,11 @@ impl DesktopController {
         }
     }
     pub(crate) fn shared_document(&self) -> SharedDocumentState {
-        let settings = if let Some(state) = self.session.tenjiku() {
+        let settings = if let Some(state) = self.session.generic_chess() {
+            NativeDesktopSettings::Chess {
+                settings: state.document.settings().clone(),
+            }
+        } else if let Some(state) = self.session.tenjiku() {
             NativeDesktopSettings::Tenjiku {
                 settings: state.document.settings().clone(),
             }
@@ -316,6 +322,9 @@ impl DesktopController {
     }
     /// Queue a complete current-format document using native payload encoding.
     pub fn queue_shared_save(&mut self, path: PathBuf) -> Result<u64, String> {
+        if self.session.generic_chess().is_some() {
+            return self.queue_game_save::<Chess>(path);
+        }
         if self.session.tenjiku().is_some() {
             return self.queue_game_save::<Tenjiku>(path);
         }
@@ -546,6 +555,9 @@ impl DesktopController {
             self.session.revision += 1;
             match &mut self.session {
                 ActiveDocument::Chess(state) => state.engine.message = Some(error.diagnostic),
+                ActiveDocument::GenericChess { state, .. } => {
+                    state.diagnostic = Some(error.diagnostic)
+                }
                 ActiveDocument::Shogi { state, .. } => state.diagnostic = Some(error.diagnostic),
                 ActiveDocument::Xiangqi { state, .. } => state.diagnostic = Some(error.diagnostic),
                 ActiveDocument::Tori { state, .. } => state.diagnostic = Some(error.diagnostic),
@@ -559,6 +571,10 @@ impl DesktopController {
         self.bridge.cancel();
         if matches!(&self.session, ActiveDocument::Chess(_)) {
             self.session.retire_execution();
+        }
+        if let Some(state) = self.session.generic_chess_mut() {
+            state.retire();
+            state.paused = true;
         }
         if let Some(state) = self.session.shogi_mut() {
             state.retire();

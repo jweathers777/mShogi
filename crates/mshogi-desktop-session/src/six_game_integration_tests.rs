@@ -74,6 +74,7 @@ fn second_side(game: GameKind) -> NativeSide {
 fn pending(c: &mut DesktopController) -> ExecutionContext {
     c.shared_snapshot();
     match &c.session {
+        ActiveDocument::GenericChess { state, .. } => state.pending.clone().unwrap(),
         ActiveDocument::Chess(_) => c
             .session
             .chess()

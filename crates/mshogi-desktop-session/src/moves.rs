@@ -197,7 +197,13 @@ fn push(
     });
 }
 pub(super) fn chess_projection(state: &DesktopSession) -> MovesProjection {
-    let record = &state.initial_record;
+    chess_match_projection(&state.game, false)
+}
+pub(super) fn chess_match_projection(game: &ChessMatch, compact: bool) -> MovesProjection {
+    let record = game
+        .record()
+        .initial_record()
+        .expect("admitted initial record");
     let mut position = record.initial_position().clone();
     let mut view = projection(
         "Starting position".into(),
@@ -266,7 +272,18 @@ pub(super) fn chess_projection(state: &DesktopSession) -> MovesProjection {
             add(action, i + 1);
         }
     }
-    for (i, (request, reply)) in state.game.record().events().enumerate() {
+    for (i, (request, reply)) in game
+        .record()
+        .events()
+        .filter(|(r, _)| {
+            !compact
+                || !matches!(
+                    r.command,
+                    MatchCommand::Start | MatchCommand::Observe { .. }
+                )
+        })
+        .enumerate()
+    {
         if reply.rejection.is_none()
             && let MatchCommand::Move(action) = request.command
         {

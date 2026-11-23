@@ -7,6 +7,8 @@ pub use archive::{NativeDesktopSettings, SharedDocumentState, SharedOpenToken, S
 #[path = "native_session.rs"]
 #[macro_use]
 pub(super) mod native_session;
+#[path = "shared_chess.rs"]
+pub(super) mod chess;
 #[path = "shared_chu.rs"]
 pub(super) mod chu;
 #[path = "shared_inspection.rs"]
@@ -575,6 +577,13 @@ pub enum SessionOperation {
         /// Native side controlled by the human.
         human: NativeSide,
     },
+    /// Complete native Chess match command, admitted under the outer token.
+    ChessCommand {
+        /// Explicit player.
+        actor: Color,
+        /// Native move, claim, offer or resignation.
+        command: MatchCommand,
+    },
     /// Complete native Chess board action, admitted under the outer token.
     ChessPlay {
         /// Complete authoritative action.
@@ -1104,6 +1113,9 @@ impl DesktopController {
             }
             return Ok(self.shared_snapshot());
         }
+        if self.session.generic_chess().is_some() {
+            return self.game_command::<Chess>(command.operation);
+        }
         if self.session.tenjiku().is_some() {
             return self.game_command::<Tenjiku>(command.operation);
         }
@@ -1186,6 +1198,9 @@ impl DesktopController {
         self.accept_observation(response.observation)
     }
     pub(crate) fn accept_observation(&mut self, response: ExecutionObservation) -> bool {
+        if self.session.generic_chess().is_some() {
+            return self.accept_game_observation::<Chess>(response);
+        }
         if self.session.tenjiku().is_some() {
             return self.accept_game_observation::<Tenjiku>(response);
         }
@@ -1207,6 +1222,9 @@ impl DesktopController {
     pub fn shared_snapshot(&mut self) -> SharedSnapshot {
         self.poll_native_admission();
         self.poll_files();
+        if self.session.generic_chess().is_some() {
+            return self.poll_game::<Chess>();
+        }
         if self.session.tenjiku().is_some() {
             return self.poll_game::<Tenjiku>();
         }
@@ -1240,6 +1258,10 @@ impl DesktopController {
     }
     pub(super) fn pause_shared_for_close(&mut self) {
         self.retire_admission();
+        if self.session.generic_chess().is_some() {
+            self.close_game::<Chess>();
+            return;
+        }
         if self.session.tenjiku().is_some() {
             self.close_game::<Tenjiku>();
             return;
@@ -1651,6 +1673,9 @@ impl DesktopController {
                     crate::moves::tenjiku_projection(&state.game)
                 }
                 ActiveDocument::Chess(state) => crate::moves::chess_projection(state),
+                ActiveDocument::GenericChess { state, .. } => {
+                    crate::moves::chess_match_projection(&state.game, true)
+                }
                 ActiveDocument::Shogi { state, .. } => crate::moves::shogi_projection(&state.game),
                 ActiveDocument::Xiangqi { state, .. } => {
                     crate::moves::xiangqi_projection(&state.game)

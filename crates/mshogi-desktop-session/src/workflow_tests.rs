@@ -5,6 +5,7 @@ use std::sync::atomic::{AtomicU64, Ordering};
 const GAMES: [GameKind; 3] = [GameKind::Chess, GameKind::Shogi, GameKind::Xiangqi];
 fn peek(c: &DesktopController) -> SharedSnapshot {
     match &c.session {
+        ActiveDocument::GenericChess { .. } => c.game_snapshot::<Chess>(),
         ActiveDocument::Chess(_) => c.chess_snapshot(c.session.snapshot()),
         ActiveDocument::Shogi { .. } => c.game_snapshot::<Shogi>(),
         ActiveDocument::Xiangqi { .. } => c.game_snapshot::<Xiangqi>(),

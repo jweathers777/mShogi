@@ -4,6 +4,7 @@
 //! code makes; the rules stay in `mshogi_core`. A constant here records a real
 //! difference between games, never a copy that drifted.
 use crate::ResourceScope;
+pub use crate::native_chess::Chess;
 use mshogi_core::native::{CanonicalRecord, GameKind, NativeSide, RulesProfile};
 use mshogi_engine::ExecutionResult;
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
@@ -60,6 +61,19 @@ pub trait DocumentSettings:
     /// Check game-specific settings fields.
     fn validate(&self) -> Result<(), String> {
         Ok(())
+    }
+    /// Remember a supported analysis kind, including game-specific operations.
+    fn with_analysis_operation(&self, operation: crate::AnalysisOperation) -> Option<Self> {
+        match operation {
+            crate::AnalysisOperation::Moves { depth, nodes } => {
+                self.with_analysis_defaults(mshogi_engine::WorkLimits {
+                    time_ms: None,
+                    depth,
+                    nodes,
+                })
+            }
+            _ => None,
+        }
     }
     /// These settings with `limits` as the remembered analysis limits, for a
     /// game whose settings remember them.
@@ -178,6 +192,13 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
     /// Resign command.
     fn resign() -> Self::Command;
 
+    /// Execution failures can be carried by a native result family.
+    fn failure(result: &ExecutionResult) -> Option<&mshogi_engine::EngineFailure> {
+        match result {
+            ExecutionResult::Failure { failure } => Some(failure),
+            _ => None,
+        }
+    }
     /// This game's engine result, if the execution result is one.
     fn engine_result(result: &ExecutionResult) -> Option<&Self::EngineResult>;
     /// The complete command, with its actor, that an engine result proposes.
@@ -188,6 +209,7 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
     /// Validate a result against its target game.
     fn validate_result(
         result: &Self::EngineResult,
+        _context: &mshogi_engine::ExecutionContext,
         game: &Self::Game,
         stop: &mut impl FnMut() -> bool,
     ) -> Result<(), String>;
@@ -385,6 +407,7 @@ macro_rules! large_shogi_game {
             }
             fn validate_result(
                 result: &Self::EngineResult,
+                _context: &mshogi_engine::ExecutionContext,
                 game: &Self::Game,
                 stop: &mut impl FnMut() -> bool,
             ) -> Result<(), String> {
@@ -550,6 +573,7 @@ impl NativeGame for Tori {
     }
     fn validate_result(
         result: &Self::EngineResult,
+        _context: &mshogi_engine::ExecutionContext,
         game: &Self::Game,
         stop: &mut impl FnMut() -> bool,
     ) -> Result<(), String> {
@@ -731,6 +755,7 @@ impl NativeGame for Shogi {
     }
     fn validate_result(
         result: &Self::EngineResult,
+        _context: &mshogi_engine::ExecutionContext,
         game: &Self::Game,
         stop: &mut impl FnMut() -> bool,
     ) -> Result<(), String> {
@@ -927,6 +952,7 @@ impl NativeGame for Xiangqi {
     }
     fn validate_result(
         result: &Self::EngineResult,
+        _context: &mshogi_engine::ExecutionContext,
         game: &Self::Game,
         stop: &mut impl FnMut() -> bool,
     ) -> Result<(), String> {

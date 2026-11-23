@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-22T16:43:00Z'
-updated_date: '2026-11-22T16:50:00Z'
+updated_date: '2026-11-23T08:09:00Z'
 labels:
   - desktop
   - refactor
@@ -48,4 +48,13 @@ The shared desktop document (game_document.rs) stores a full audit trail: a jour
 Decision (2026-11-22, in scope of John's 'cut this fat'): engine results are not saved; they stay in memory for the open session. Saved per-move engine notes can come back later as standard-format comments (adapter tasks).
 
 Checkpoint 2026-11-22 (branch claude/msh-228-minimal-document, pushed): library done and clippy-clean (all features): game_document.rs rewritten (payload {record, human, settings}; with_command/with_rewind/with_settings); per-game *_document.rs are 10-line aliases; old document test dirs removed; new game_document_tests.rs; NativeGame lost work models/limits/undo/engine Stop; engine results and Xiangqi evidence live in NativeSession memory (newest 256 kept, no refusal); closing does not change the document; RuntimeWork lost floor; RuntimeSeed::Document removed; design.md and take-back.md updated. NEXT: fix test compile errors (about 56: tests reading document.observations()/evidence()/retired_branches()/controls()/usage()/with_runtime_floor; shared_chu.rs tests use with_observation/with_selection/floor; shared_tests observation-capacity test uses RuntimeSeed::Document -> delete; shared_tenjiku_tests uses measurement_document helpers -> delete those measurement tests), then examples write_chu_gui_documents.rs and write_tenjiku_gui_fixtures.rs (use with_command and session results), regenerate all fixtures (GUI .mshogi docs for Chu/Tenjiku/Tori/Shogi, frontend JSON), frontend tests, workspace checks, review.
+
+HANDOFF 2026-11-23 (branch claude/msh-228-minimal-document, last commit pushed; task stays In Progress). Net change so far: 31 files, +460 / -6,463 lines; game_document.rs 1,175 -> 333, native_game.rs 1,290 -> 876 (work models, limits, undo, engine Stop, measurement tests removed).
+DONE: minimal document {record, human, settings}; with_command/with_rewind/with_settings; engine results and Xiangqi evidence in session memory only (newest 256 kept, no refusal); close never changes the document; RuntimeSeed::Document and RuntimeWork.floor removed; design.md (A-09, moves rule, Take back) and docs/desktop/take-back.md updated; desktop-session lib tests pass with --all-features except every_committed_gui_fixture_document_opens (needs regenerated fixtures); clippy --workspace --all-targets clean; Tenjiku and Chu GUI generators compile (Chu capacity256 document removed: it tested the removed observation limit).
+REMAINING (in order):
+1. Three mshogi-console tests still expect saved results or a saved history position after reopen: desktop_tori.rs:109 (real_internal_tori_analysis_save_reopen_stopped_then_explicit_analysis_and_resume), tenjiku_internal.rs:299 and :708. Change them the way chu_internal.rs was changed in the last commit: after Open the view is live and observations are empty.
+2. Regenerate every committed GUI document under desktop/scripts/fixtures with the generators (all need --features desktop-verification): write_chu_gui_documents, write_tenjiku_gui_fixtures, write_tori_gui_documents, write_document_fixtures (Shogi). Delete desktop/scripts/fixtures/chu-capacity256.mshogi and update chu-native-fixtures.json; then the fixture-open test passes.
+3. desktop/scripts/gui-smoke.py (about line 2987, chu_load_fixture('capacity256') and the capacity journey) and test_gui_smoke.py (about line 1528) use the removed Chu capacity fixture: remove that journey.
+4. Regenerate frontend fixtures (write_frontend_fixtures, write_tori_frontend_fixtures, write_chu_frontend_fixtures, write_tenjiku_frontend_fixtures) and run npx vitest run and npx tsc --noEmit in desktop/. Expect changes: observations not restored after reopen, reopen opens live, no document change on close.
+5. Run fmt, clippy (also --all-features for mshogi-desktop-session), cargo test --workspace --locked --release; fresh-agent review (rules unchanged; check nothing reads saved results); record line counts; merge; then MSH-225 (Chess) and MSH-229 (audit of overbuilt auditing) can start.
 <!-- SECTION:NOTES:END -->

@@ -5,10 +5,11 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-23T11:05:00Z'
-updated_date: '2026-11-23T15:15:00Z'
+updated_date: '2026-11-23T15:17:00Z'
 labels:
   - simplification
   - persistence
+  - needs-john
 milestone: m-6
 dependencies: []
 priority: high
@@ -67,4 +68,6 @@ Fresh review independently audited the report conversion: 15 files, 59 records, 
 Final verification at256f4ef: full workspace release run1180 passed/2 stale-probe failures/11 ignored; corrected probes then both complete target suites pass (8 Shogi CLI +6 Xiangqi handoff), so all1182 workspace tests verified. Frontend603, Python177, TypeScript and formatting pass; latest routine CI passed at67a6ed0,256f4ef pending. Idle Apple Silicon release benchmark versus8df7bf3:155 canonical samples862891->395160 bytes (-54.2%). By game bytes/replay geometric ratio: Chess6460->4352/0.959 (native bytes unchanged); Shogi7368->1637/1.051; Xiangqi42907->11345/0.821; Tori59395->26408/0.633; Chu91795->37509/0.628; Tenjiku654966->313909/0.514. Shogi decode/replay is roughly flat/slightly slower; no claim of a speed gain there. Required debug workspace now running. Third macOS CI again could not acquire hosted runner (explicit ARM64 capacity annotations); Linux/Windows passed. One final macOS retry45201234609 queued. No Cloud Batch VMs or compute spend; evidence at gs://mshogi-experiments-216675633801/runs/msh-231/.
 
 Ready for integration at256f4ef. All code and consumer reviews complete. Required debug workspace result: same four pre-existing MSH-199 Chu timing failures,30.39s; limits/assertions unchanged. Latest routine CI45201790731 passes. Local release verification covers all1182 tests (full run1180 pass plus two fixed-probe suites14/14),11 ignored; frontend603,Python177,TypeScript,fmt/Clippy pass. Final source171342 versus171700 (-358). Question sent to John: approve a one-task exception using local macOS release evidence in place of hosted macOS CI, or wait? Recommendation: accept local macOS evidence; identical persistence code passed Linux/Windows, and three macOS attempts had no runner/steps due ARM64 capacity. Fourth retry45201234609 pending. No approval yet; do not merge or mark Done until John approves or hosted macOS passes. Then integrate into main/push, finalize AC3 with honest baseline exceptions, delete own branch and task run/build outputs. Branch codex/msh-231-compact-records. No Cloud Batch jobs/VMs were created; compute cost0; only small GCS evidence storage.
+
+Awaiting John’s platform-CI exception decision. Code is ready and remote branch includes the full handoff (a712c3b after source256f4ef). Cleaned243049 build files/26.2GiB with cargo clean; removed task Node runtime/archive and Python bytecode cache. Remaining ignored runs/msh-231 evidence stays until integration per AGENTS.md. Final logs/measurements and runner-capacity annotations uploaded to GCS. Last macOS retry45201234609 still queued; if it passes no exception is needed. If John approves local macOS evidence, remove needs-john, merge/push, check AC3 with recorded MSH-199 baseline exception, set Done, delete own feature branch and remaining runs/msh-231. No product code changes remain.
 <!-- SECTION:NOTES:END -->

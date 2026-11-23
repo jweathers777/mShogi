@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-23T11:05:00Z'
-updated_date: '2026-11-23T16:42:00Z'
+updated_date: '2026-11-23T16:48:00Z'
 labels:
   - simplification
   - core
@@ -48,4 +48,6 @@ Baseline at 66c251d (main code3111f8e): reusable resource_admission example, rel
 Step1 checkpoint: native refusals and frontend now carry one fact plus the existing bounded UTF-8 diagnostic. Fresh review found no remaining issues after fixing fixture indentation. TypeScript and600 frontend tests pass;192 native session tests pass; workspace clippy and fmt pass. Workspace tests still running. Source171455 lines (+113 includes reusable benchmark). Byte columns measure saved record size and one command growth, not allocations or cumulative internal encoding. No rules or saved-format changes. Next: verify generated fixtures and full workspace result, then native admission/copy simplification and separate review.
 
 Step1 complete at530b771: fmt/clippy pass;192 native session and600 frontend tests pass. Linux routine45217663343 and generated-fixtures45217689152 pass. Required debug workspace attempt hits the same four known MSH-199 Chu timing failures (30.42s); no tests loosened. Native checkpoint: compact64KiB root/256-byte command/event-count proof replaces hypothetical endings and byte caches; Tenjiku no longer charges removed serialization work. Actual Chu/Tenjiku native work counters remain because engine validation consumes them. In-place private transactions retain the original local owner plus append-only lengths; Chu undo no longer holds whole histories, and redo keeps stable semantic nodes with fresh runtime authority. Fresh reviews found/fixed stable-node redo, exact local-owner rollback and accidental removal of an unrelated Chu test (restored verbatim). Final reviews have no remaining findings. All200 core library tests and workspace fmt/clippy pass. Final workspace/release/frontend/measurements and affected-platform persistence CI remain. Main3111f8e merged (already current). Branch codex/msh-232-resource-admission.
+
+Final ownership cleanup removes now-unshared Tenjiku Arc snapshots and unused private Chu GameData clone traits; fresh review confirms no hidden sharing consumers. Source171583 lines including the reusable measurement harness and added bound/rollback tests (baseline171342; first step171455). Machine is Apple M1 Pro; all local Rust jobs limited to2 workers. Initial repeat measurements show128-event Tenjiku admission about13-15us versus269-272us and Chu384-control admission15.8us versus272us; final quiet measurements still pending. Initial native run200/200 and frontend600/600 pass; required debug workspace again has the same4 MSH-199 timing failures at30.39s. Release workspace is building; Linux persistence CI on ee68296 passes, Windows running, macOS queued without a runner. Native final-code checks and final platform verification remain. Evidence baseline uploaded to gs://mshogi-experiments-216675633801/runs/msh-232/. No cloud compute used; cost below$0.01 for small storage.
 <!-- SECTION:NOTES:END -->

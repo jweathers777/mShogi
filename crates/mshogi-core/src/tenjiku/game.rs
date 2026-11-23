@@ -4,17 +4,14 @@ use serde::{Deserialize, Serialize};
 use std::{
     error::Error,
     fmt,
-    sync::{
-        Arc,
-        atomic::{AtomicU64, Ordering},
-    },
+    sync::atomic::{AtomicU64, Ordering},
 };
 
 /// Native event bound; native acceptance additionally reserves real ending events.
 pub const MAX_GAME_EVENTS: usize = 1024;
 /// One native event is retained per accepted command.
 pub const MAX_GAME_COMMANDS: usize = MAX_GAME_EVENTS;
-/// Deterministic native rule/key/encoded-byte units, not elapsed milliseconds.
+/// Deterministic native rule/key work units, not encoded bytes or elapsed milliseconds.
 pub const MAX_REPLAY_WORK: u64 = 512_000_000;
 static NEXT_INSTANCE: AtomicU64 = AtomicU64::new(1);
 
@@ -243,7 +240,7 @@ pub struct GameRedo {
     command: GameCommand,
     used: bool,
 }
-/// Actual current native capacity facts plus prevalidated ending headroom.
+/// Actual current native capacity facts plus bounded ending headroom.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 #[allow(missing_docs)]
 pub struct CapacityUsage {
@@ -270,8 +267,8 @@ pub struct Game {
     local: LocalPosition,
     events: Vec<GameEvent>,
     keys: Vec<RepetitionKey>,
-    snapshots: Vec<Arc<HistorySnapshot>>,
-    root_snapshot: Arc<HistorySnapshot>,
+    snapshots: Vec<HistorySnapshot>,
+    root_snapshot: HistorySnapshot,
     runtime: RuntimeToken,
     node: u64,
     next_node: u64,
@@ -327,7 +324,7 @@ impl Game {
             events: vec![],
             keys: vec![key],
             snapshots: vec![],
-            root_snapshot: Arc::new(snapshot),
+            root_snapshot: snapshot,
             runtime: RuntimeToken {
                 instance,
                 revision: 0,
@@ -370,7 +367,7 @@ impl Game {
     }
     /// Exact current committed prefix.
     pub fn snapshot(&self) -> &HistorySnapshot {
-        self.snapshots.last().map_or(&self.root_snapshot, |s| s)
+        self.snapshots.last().unwrap_or(&self.root_snapshot)
     }
     /// Actual command/event ledger in native order.
     pub fn events(&self) -> &[GameEvent] {
@@ -410,11 +407,11 @@ impl Game {
     /// Exact immutable event prefix; future outcomes/rights cannot leak backwards.
     pub fn event_prefix(&self, count: usize) -> Result<HistorySnapshot, GameError> {
         if count == 0 {
-            Ok((*self.root_snapshot).clone())
+            Ok(self.root_snapshot.clone())
         } else {
             self.snapshots
                 .get(count - 1)
-                .map(|s| (**s).clone())
+                .cloned()
                 .ok_or(GameError::Prefix)
         }
     }
@@ -705,7 +702,7 @@ impl Game {
             .checked_add(work)
             .ok_or(GameError::Capacity(Resource::ReplayWork))?;
         self.events.push(event);
-        self.snapshots.push(Arc::new(HistorySnapshot {
+        self.snapshots.push(HistorySnapshot {
             state: self.position().state().clone(),
             event_count: self.events.len(),
             board_ply,
@@ -713,7 +710,7 @@ impl Game {
             pending_bare,
             draw_offer,
             work: charged,
-        }));
+        });
         Ok(())
     }
     /// Actual record size for an explicit diagnostic query; closure uses bounded headroom.
@@ -933,7 +930,7 @@ mod rollback_tests {
                 assert!(matches!(result, Err(GameError::Stopped)));
                 assert_eq!(format!("{game:?}"), before);
             }
-            Arc::make_mut(game.snapshots.last_mut().unwrap()).work = MAX_REPLAY_WORK;
+            game.snapshots.last_mut().unwrap().work = MAX_REPLAY_WORK;
             let before = format!("{game:?}");
             let result = game.submit(GameRequest {
                 expected: game.context(),

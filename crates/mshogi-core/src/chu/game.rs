@@ -304,7 +304,7 @@ struct Ply {
     check: bool,
     attack: bool,
 }
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Debug)]
 struct GameData {
     root: NativeRoot,
     local: LocalPosition,

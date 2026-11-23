@@ -451,7 +451,7 @@ impl Game {
             .checked_add(1)
             .ok_or(GameError::Capacity(Resource::Counter))
     }
-    /// Actual native encoded bytes and deterministic bounded replay accounting.
+    /// Actual native encoded bytes and accepted event count.
     pub fn capacity_usage(&self) -> Result<CapacityUsage, GameError> {
         Ok(CapacityUsage {
             encoded_bytes: self.encoded_len()?,

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-19T07:12:00Z'
-updated_date: '2026-11-24T17:00:00Z'
+updated_date: '2026-11-24T17:21:00Z'
 labels:
   - chu
   - search
@@ -27,10 +27,10 @@ Native rules stay the authority. A faster search-side position must agree with t
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Baseline and final speed are recorded on the same machine and positions: nodes per second and time to a fixed depth, with the cost profile that guided the changes
-- [ ] #2 Chu perft and differential tests against the native rules pass
-- [ ] #3 Each kept change passed the blunder suite and a game test against the frozen predecessor; rejected changes are recorded with their result
-- [ ] #4 A short design note in docs/ explains how the unusual pieces are generated and checked in search
+- [x] #1 Baseline and final speed are recorded on the same machine and positions: nodes per second and time to a fixed depth, with the cost profile that guided the changes
+- [x] #2 Chu perft and differential tests against the native rules pass
+- [x] #3 Each kept change passed the blunder suite and a game test against the frozen predecessor; rejected changes are recorded with their result
+- [x] #4 A short design note in docs/ explains how the unusual pieces are generated and checked in search
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -67,4 +67,16 @@ Final combined source79c2409 build succeeded; build job/VM/disks deleted, conser
 Final combined source79c2409:18 depth5 searches have identical107238 nodes and complete outcomes, plus64 identical native fixed-work results. Same-VM B-A-B comparison: baseline0.706006s versus candidate0.596408s (sum of per-position medians;10 baseline and5 candidate repeats),151894 versus179806 nodes/s,18.4% throughput gain/15.5% time reduction. Both builds315/315 elementary tactics+80 igui and69/71 forcing, with no changed failures. Final comparison and all prior build/profile jobs are cleaned; conservative compute upper bounds totalUS$0.637 before games. First prespecified64-pair campaign is starting: msh213-msh201-match-1, GCS runs/msh-201/match-1. No further optimization is planned.
 
 First game sample completed: 49 launched pairs,44 fully scored (48 wins/40 losses/0 draws), pentanomial[10,0,20,0,14], SPRT LLR0.251/no decision. Five pairs unscored: seeds6,12,23,53,62 each include one1000-step experiment cutoff; all93 native conclusions and all reports retained/replayed. No engine errors. Batch marks cutoff-stopped bins failed by design; job,VMs,disks verified absent. Compute upper boundUS$0.471 (task totalUS$1.108 before second sample). Starting prespecified seeds65..128, same settings, msh213-msh201-match-2; pooled decision after completion. Branch codex/msh-201-chu-search-speed.
+
+Final predecessor game result, candidate79c2409 versus frozen4f5e2ed: both prespecified campaigns launched84 pairs total;73 fully scored,79 wins/67 losses/0 draws, pentanomial[18,0,31,0,24]. SPRT H0=0/H1=15,alpha=beta=.05,min30: LLR0.341, no decision. Approximate paired Elo+28.6,95% interval[-31.2,+90.2]; not a demonstrated strength gain or statistical equivalence. Eleven pairs contain one1000-step experiment cutoff and remain unscored; all157 native conclusions retained. Every report hash and native summary verified; replay logs pass, no engine failures. All8 campaign groups completed in each sample. Cutoff bins produce Batch failure by design. Both jobs,VMs and disks verified absent. Retain the two simpler geometry changes as exact-search speed work under strength-roadmap lines68-70: all fixed-depth nodes and complete outcomes unchanged, native signatures equal, tactical results unchanged. No attempted optimization was rejected; candidate1 was kept and extended by the single-royal simplification.
+
+Reproduce measurements using chu_bench bench bench.json OUT 5 5 in baseline/candidate/baseline order on one c3-standard-4; frozen input and raw outputs: gs://mshogi-experiments-216675633801/runs/msh-201/comparison-final/ (input also baseline-profile/tasks/0/bench.json). Clocked commands are native_match --game chu --base 10 --increment 0.1 --max-steps 1000 --max-pairs 8 --first-seed 1,9,...57 then65,73,...121 --wall-seconds 1500 --pair-wall-ms 600000, through chu_cloud submit with frozen manifests. Full manifests, binary hashes, costs and deletion receipts: controller-records.tar.gz at the same runs/msh-201 root; speed-summary.json,game-summary.json and checks.tar.gz are there too. Conservative VM compute upper bounds totalUS$1.609, plus small Cloud Build/storage costs, withinUS$10. This is not a billing total.
+
+Final verification: fmt and workspace Clippy passed; workspace1188 passed,12 ignored,0 failed; focused Chu29 passed/1 ignored; Python170 tests run/1 skipped. Fresh review found no issues. No manual GitHub CI or GUI checks: product changes are platform-independent search code; worker extension was exercised on Linux Cloud Batch. Main182f017 remains unchanged and was merged before final checks. Next program work is Chu selectivity under MSH-52.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Simplified target-directed reach tests and single-royal threats. Same-position fixed-depth search is18.4% faster (15.5% less time), with identical nodes and full outcomes. Native differential/perft, workspace checks, tactical comparisons and fresh review pass. Clocked predecessor test:79W/67L in73 scored pairs;11 cutoff pairs unscored; SPRT inconclusive, no strength claim. Design note documents unusual-piece generation and checking. All cloud resources deleted; next is Chu selectivity under MSH-52.
+<!-- SECTION:FINAL_SUMMARY:END -->

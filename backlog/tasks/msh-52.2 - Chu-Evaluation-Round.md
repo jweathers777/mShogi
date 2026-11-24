@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-24T19:15:00Z'
-updated_date: '2026-11-24T20:29:00Z'
+updated_date: '2026-11-24T20:31:00Z'
 labels:
   - chu
   - evaluation
@@ -65,4 +65,6 @@ Static fit completed and resources deleted. Unique quiet positions721430: traini
 Unfitted runtime check: all18 depth5 signatures/nodes identical to79c2409,107238 nodes each; median-time sum .597131s baseline vs .600267s refactor (+0.53%). Candidate focused Chu tests pass after replacing one old material-total literal with explicit sums of the current King/Lion/Pawn/Rook values; no rules expectation changed. Feature/capture/promotion/undo tests and workspace Clippy pass. Next: candidate cloud build,20ms tactical probes and depth5 cost check, then the prespecified0/10 match. Accumulated conservative cloud compute upper boundUS$1.21784.
 
 Candidate e2658c7 pilot passed on c3-standard-4: elementary315/315 and igui80/80 unchanged; forcing69/71 ->70/71 at20ms. Fixed18-position depth5/3-repeat set:107238 ->91030 nodes; sum of per-position median times .598384 ->.417429s (30.2% less time, diagnostic only). The remaining strength decision is the frozen predecessor match. Workspace rerun updated only the deterministic Chu depth2 snapshot to current move10l-11k,149 nodes,score0; original was7j-7h,173 nodes,score10. No native rules expectations changed. Product candidate stays e2658c7; snapshot-only follow-up does not change binaries.
+
+Candidate validation complete:1188 workspace tests passed,12 ignored,0 failed; four fitting/feature tests and the self-play retry test pass; fmt and all-target Clippy pass. First game campaign msh213-msh522-match-1 is active, sourcee2658c7 versus79c2409, frozen protocol above. Continue only the prespecified remaining campaigns while pooled SPRT is undecided. Product code unchanged during games. Old evaluator identity readers and protocol-v4 test conversion found outside this task are tracked separately in MSH-237 (Remove obsolete development-version compatibility code).
 <!-- SECTION:NOTES:END -->

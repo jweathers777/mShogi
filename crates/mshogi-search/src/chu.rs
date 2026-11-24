@@ -1,4 +1,5 @@
 //! Chu adapter for the shared search core. Native Game owns actual play.
+pub mod eval;
 pub mod position;
 #[cfg(test)]
 mod position_tests;
@@ -37,24 +38,9 @@ pub const DEFAULT_LIMITS: Limits = Limits {
     depth: MAX_DEPTH,
     nodes: 300_000,
 };
-/// Untrained hundredths-of-a-Pawn material values. Royals receive a finite
-/// survival value; only native terminal adjudication establishes a result.
+/// Material values shared by evaluation, capture ordering and static exchange.
 pub const fn piece_value(face: Face) -> i32 {
-    match face {
-        Face::Pawn => 100,
-        Face::GoBetween => 150,
-        Face::Lance | Face::ReverseChariot => 300,
-        Face::Copper | Face::Silver | Face::Leopard | Face::Tiger => 400,
-        Face::Gold | Face::Elephant => 500,
-        Face::Kirin | Face::Phoenix => 600,
-        Face::SideMover | Face::VerticalMover | Face::Bishop => 700,
-        Face::Rook | Face::WhiteHorse | Face::Whale | Face::FlyingStag => 900,
-        Face::DragonHorse | Face::DragonKing | Face::FlyingOx | Face::FreeBoar => 1100,
-        Face::SoaringEagle | Face::HornedFalcon => 1300,
-        Face::FreeKing => 1500,
-        Face::Lion => 2000,
-        Face::King | Face::Prince => 5000,
-    }
+    eval::DEFAULT[eval::index(face)]
 }
 /// Transparent board totals.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]

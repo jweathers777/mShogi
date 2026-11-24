@@ -3,8 +3,8 @@
 //! Lion protection and restoration below are independent search operations.
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
 use mshogi_core::chu::{
-    Action, Base, Face, Game, GameCommand, LionProtection, LocalPosition, Movement, Piece,
-    Position, Side, SpecialMovement, Square, movement,
+    Action, Base, Game, GameCommand, LionProtection, LocalPosition, Movement, Piece, Position,
+    Side, SpecialMovement, Square, movement,
 };
 use std::sync::LazyLock;
 const N: usize = 144;
@@ -337,21 +337,9 @@ impl Board {
         if unknown { None } else { Some(false) }
     }
     fn placement(c: u8, at: usize) -> i32 {
-        let p = meta(c).piece;
-        let advance = if p.side == Side::Sente {
-            11 - at / 12
-        } else {
-            at / 12
-        };
-        let central = 5 - (at % 12).abs_diff(5).min((at % 12).abs_diff(6)) as i32;
-        match p.face() {
-            Face::Pawn | Face::GoBetween => 4 * advance as i32,
-            Face::Lion => 8 * central + 3 * advance.min(7) as i32,
-            Face::Kirin | Face::Phoenix => 4 * central + 2 * advance as i32,
-            Face::King | Face::Prince => 0,
-            _ => central + advance as i32,
-        }
+        super::eval::placement(meta(c).piece, square(at))
     }
+
     fn put(&mut self, c: u8, at: usize) {
         let m = meta(c);
         let s = m.piece.side.index();
@@ -1032,7 +1020,7 @@ impl SearchPosition for ChuPosition {
         let s = self.board.side;
         self.board.material[s] - self.board.material[s ^ 1] + self.board.placement[s]
             - self.board.placement[s ^ 1]
-            + 10
+            + super::eval::DEFAULT[super::eval::COUNT - 1]
     }
     fn is_tactical(&self, m: Move) -> bool {
         m.promotes() || self.board.captures(m).1 != 0

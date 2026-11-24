@@ -38,7 +38,7 @@ pub const INITIAL: [i32; COUNT] = [
     1300, 1, 1,  // Horned Falcon
     10, // Tempo
 ];
-/// Static Texel candidate from the native MSH-52.2 corpus.
+/// Fitted static Texel weights from the native MSH-52.2 corpus.
 pub const DEFAULT: [i32; COUNT] = [
     100, 4, 0, // Pawn
     75, 4, 0, // Go-between

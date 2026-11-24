@@ -74,8 +74,8 @@ Split with `python3 -m tools.strength.texel_data split CORPUS MANIFEST --game
 chu --by-opening`. Both colors and every prefix of an opening stay together.
 The shared splitter removes board duplicates across partitions. A small
 export demonstration may use `--allow-empty-demonstration`; its manifest says
-that empty partitions are not ready for training. The later evaluation task
-must generate a sufficiently large quiet-position corpus before fitting weights.
+that empty partitions are not ready for training. Weight fitting requires a
+sufficiently large quiet-position corpus with native outcome labels.
 
 ## Classical evaluation tools
 
@@ -96,8 +96,8 @@ later material fit does not change which positions enter the comparison.
 generates records directly through the native Game. It adds eight seeded
 quiet rear-zone moves to each catalog opening, then uses two separate search
 states. If a turn has no completed first iteration, it doubles that turn's
-node allowance up to the engine maximum and retries. It samples both sides to move. Every admitted action is retained with
-the initial record, so the game can be replayed. Only native concluded games
+node allowance up to the engine maximum and retries. It samples both sides
+to move. Every admitted action is retained with the initial record, so the game can be replayed. Only native concluded games
 supply labels. A game stopped by a search failure, time limit or move limit
 has no samples and no inferred draw result. All continuations of one catalog
 opening must stay in the same corpus partition.

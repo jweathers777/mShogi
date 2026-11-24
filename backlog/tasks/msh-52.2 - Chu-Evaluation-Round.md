@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-24T19:15:00Z'
-updated_date: '2026-11-24T20:31:00Z'
+updated_date: '2026-11-24T21:01:00Z'
 labels:
   - chu
   - evaluation
@@ -27,10 +27,10 @@ Replace the untuned Chu material and placement weights with a measured classical
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 About 500,000 or more quiet self-play positions have native outcome labels, a split by game or opening, duplicate control and recorded held-out loss before and after fitting.
-- [ ] #2 Evaluation features agree with the search score through moves, captures, promotion and undo; native correctness and tactical checks pass.
-- [ ] #3 Kept weights have supporting predecessor SPRT evidence at H1 about 10; unsupported candidates are reported and reverted.
-- [ ] #4 Required checks and review are complete, durable documentation is current, and run identities, costs and resource cleanup are recorded.
+- [x] #1 About 500,000 or more quiet self-play positions have native outcome labels, a split by game or opening, duplicate control and recorded held-out loss before and after fitting.
+- [x] #2 Evaluation features agree with the search score through moves, captures, promotion and undo; native correctness and tactical checks pass.
+- [x] #3 Kept weights have supporting predecessor SPRT evidence at H1 about 10; unsupported candidates are reported and reverted.
+- [x] #4 Required checks and review are complete, durable documentation is current, and run identities, costs and resource cleanup are recorded.
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -67,4 +67,10 @@ Unfitted runtime check: all18 depth5 signatures/nodes identical to79c2409,107238
 Candidate e2658c7 pilot passed on c3-standard-4: elementary315/315 and igui80/80 unchanged; forcing69/71 ->70/71 at20ms. Fixed18-position depth5/3-repeat set:107238 ->91030 nodes; sum of per-position median times .598384 ->.417429s (30.2% less time, diagnostic only). The remaining strength decision is the frozen predecessor match. Workspace rerun updated only the deterministic Chu depth2 snapshot to current move10l-11k,149 nodes,score0; original was7j-7h,173 nodes,score10. No native rules expectations changed. Product candidate stays e2658c7; snapshot-only follow-up does not change binaries.
 
 Candidate validation complete:1188 workspace tests passed,12 ignored,0 failed; four fitting/feature tests and the self-play retry test pass; fmt and all-target Clippy pass. First game campaign msh213-msh522-match-1 is active, sourcee2658c7 versus79c2409, frozen protocol above. Continue only the prespecified remaining campaigns while pooled SPRT is undecided. Product code unchanged during games. Old evaluator identity readers and protocol-v4 test conversion found outside this task are tracked separately in MSH-237 (Remove obsolete development-version compatibility code).
+
+Interim match1 diagnosis (not a stopping checkpoint): seed174 second game stopped incomplete:Stopped at101 plies. Player1 is frozen predecessor79c2409; it returned depth0/no score/no move after25984 nodes,147.06ms elapsed, within a160ms request. No invalid action or native-rule failure. First game was a native candidate win; whole pair stays unscored per frozen policy. Other observed unscored pairs are1000-step experiment cutoffs. Preserve and report interrupted searches separately from length cutoffs; do not invent outcomes.
+
+Completed match1 checkpoint: exact candidate e2658c7 versus predecessor79c2409, c3-standard-4,10s+0.1s, frozen protocol. 124 launched pairs,119 scored:164 wins/0 draws/74 losses; pentanomial[8,0,58,0,53]. SPRT0/10 LLR3.36650 exceeds2.94444: H1, retain fitted weights and stop campaigns. Conditional scored-pair Elo estimate+138.2 (95% interval+95.8..+185.1); not an absolute rating. Five pairs unscored: seeds65,98,140,208 reached1000 steps; seed174 predecessor interruption diagnosed above. All243 completed native games replay-verified. Batch statusFAILED reflects the five bins stopping on unscored pairs, not invalid moves. Cleanup verified no job/VM/disk remains. Conservative accumulated compute upper boundUS$1.89247. GCS gs://mshogi-experiments-216675633801/runs/msh-52.2/. Next final checks after merging latest main, integrate, markDone and clean local task artifacts. Branch codex/msh-52.2-chu-evaluation.
+
+Final checks after merging origin/main (already current at55191fe): cargo fmt passed; workspace all-target Clippy with-D warnings passed; workspace tests1188 passed/0 failed/12 ignored; four Chu feature tests, one self-play retry test and nine Python tests passed. Fresh review findings were fixed before corpus generation. Native perft/differential tests passed. Final evidence, pooled match and all nine resource cleanup receipts uploaded under GCS runs/msh-52.2/final-evidence.tar.gz, pooled-match.json and final-costs.json. No platform-sensitive product change; no GitHub CI run requested. Conservative compute boundUS$1.89247; no new container image or subscription. Next integration and local cleanup.
 <!-- SECTION:NOTES:END -->

@@ -55,7 +55,10 @@ impl TexelModel for ChuTexel {
         let Ok(mut v) = serde_json::from_str::<serde_json::Value>(text) else {
             return text.to_string();
         };
-        if let Some(p) = v["pieces"].as_array_mut() {
+        if let Some(p) = v
+            .get_mut("pieces")
+            .and_then(serde_json::Value::as_array_mut)
+        {
             p.sort_by_key(|p| p[0].to_string());
         }
         v.to_string()

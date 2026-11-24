@@ -5,8 +5,7 @@ protocol. No external opponent or text protocol is needed. Timed engine turns re
 native game in the shared incremental session. An authenticated exact prefix
 permits a suffix; takeback, unrelated roots and process restarts require a full
 reset. Every suffix command and its derived event are checked before the new
-state is installed. Saved-game JSON is unchanged. Native rules admit
-every complete action and decide the result. Measurements and costs belong in
+state is installed. Native rules admit every complete action and decide the result. Measurements and costs belong in
 the relevant Backlog task and its ignored `runs/` directory.
 
 Build the tools with `tools.strength.cloud_build` for cloud work:
@@ -60,8 +59,7 @@ search positions. Ordinary winning captures cannot satisfy that contract.
 Run `python3 -m tools.strength.native_match --game chu` with `--candidate`,
 `--baseline`, `--runner`, `--config-writer`, `--openings`, `--base`,
 `--increment` and `--out`. The driver records all executable identities and
-plays both colors of each opening. Chu selects nominal allocation explicitly;
-older reports retain their recorded allocation. `--candidate-time-factor 2`
+plays both colors of each opening. Chu selects nominal allocation explicitly. `--candidate-time-factor 2`
 doubles both candidate base time and increment. An unfinished Chu pair stops
 the campaign and remains unscored. Do not convert a move or clock limit to a
 draw. A small capped sample can give no statistical decision.

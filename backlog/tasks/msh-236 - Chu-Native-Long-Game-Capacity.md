@@ -1,11 +1,11 @@
 ---
 id: MSH-236
 title: Remove Remaining History-Work Limits
-status: In Progress
+status: Done
 assignee:
   - codex
 created_date: '2026-11-23T22:01:00Z'
-updated_date: '2026-11-24T07:28:00Z'
+updated_date: '2026-11-24T07:37:00Z'
 labels:
   - chu
   - native
@@ -27,7 +27,7 @@ Remove the remaining artificial history-work limits and all runtime consumers ac
 <!-- AC:BEGIN -->
 - [x] #1 No artificial history-work counter, quota or validation consumer remains in any game
 - [x] #2 Long-game regressions pass beyond the former work cutoff; saved records and rules behavior remain correct
-- [ ] #3 Required checks and fresh review pass; MSH-213 resumes with the removal integrated
+- [x] #3 Required checks and fresh review pass; MSH-213 resumes with the removal integrated
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -52,4 +52,12 @@ The larger cloud sample exposed a second leftover: the separate Chu512-event quo
 Checkpoint: removed the remaining command/event quotas across all games; retained actual encoded-byte bounds and the Shogi 320-board-action rule. Console candidates now validate their full encoded record before publication. Final tests and review are in progress. The work-only sample failed on the old event quota; all eight cloud tasks and their VMs/disks are verified absent. Next: commit reviewed removal, rebuild current binaries and run the final MSH-213 sample. Branch codex/msh-236-remove-history-work.
 
 Source4f5e2ed removes the remaining event/command quotas. Fresh review approved actual-byte console publication checks and preserved cancellation rollback. fmt and Clippy pass; frontend595 tests pass; desktop-verification200 pass; workspace tests and Linux/macOS/Windows persistence CI45347831998 remain running. Final cloud build build-msh236-final is active; MSH-213 final sample will use that source. Work-only failed sample cleanup is verified; conservative compute upper bound US$0.356.
+
+Final persistence CI45347831998 passed on Linux/macOS/Windows. Final build source4f5e2ed succeeded in151.3s on c3-standard-4; build job/VM/disk cleanup verified, conservative compute upper bound US$0.123. Last full workspace run exposed one obsolete Xiangqi test expecting the removed511-command search failure; faef59f replaces it with600-command successful native-PV replay and unchanged-source checks. Complete workspace rerun is active; Clippy remains clean. Final MSH-213 cloud sample is active at runs/msh-213/final-sample.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Removed synthetic history-work accounting and command/event quotas across all six games, plus obsolete Tori readers and old-child protocol fallback. AGENTS.md now states zero backward compatibility unless John names an exception. Native rules, cancellation and actual encoded-byte checks remain. Final checks: fmt/Clippy pass; workspace1187 passed,12 ignored; frontend595 and desktop-verification200 pass; fresh review accepted; Linux/macOS/Windows persistence CI45347831998 passed. MSH-213 measurements resumed with source4f5e2ed. No replacement work model.
+<!-- SECTION:FINAL_SUMMARY:END -->

@@ -63,8 +63,13 @@ must be able to start the next task without chat history and without help.
   layout, error handling, test style and documentation comments. Read the
   nearby code before you write. Do not copy a pattern that this file says to
   remove, such as duplicated per-game modules.
-- Build the simplest thing that works. Internal APIs have no compatibility duty.
-  Saved-game formats keep their recorded compatibility.
+- Build the simplest thing that works. This application has not been released.
+  There are ZERO backward-compatibility obligations for saved-game files,
+  internal APIs, external APIs, protocols, schemas or any other interface unless
+  John explicitly names an exception. Do not retain obsolete readers, converters,
+  adapters, fields, code paths or tests to support earlier development versions.
+  Update current callers and fixtures when an interface changes. Existing code,
+  documentation or earlier agent promises do not create a compatibility duty.
 
 ## Checks
 

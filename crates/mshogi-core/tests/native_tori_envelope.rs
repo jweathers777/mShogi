@@ -240,3 +240,11 @@ fn imported_complete_history_through_real_envelope_preserves_obligation_and_root
     assert_eq!(view.local_position().position().declared_total_plies(), 55);
     assert_eq!(g.occurrences(), [3, 7]);
 }
+
+#[test]
+fn operational_stop_is_not_a_current_native_command() {
+    let command = r#"{"kind":"stop","reason":"cancelled"}"#;
+    assert!(mshogi_core::tori::GameCommand::from_json(command).is_err());
+    assert!(mshogi_core::chu::GameCommand::from_json(command).is_err());
+    assert!(mshogi_core::tenjiku::GameCommand::from_json(command).is_err());
+}

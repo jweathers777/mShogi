@@ -1,5 +1,9 @@
 # Native desktop archives (MSH-73)
 
+This describes the retired journal archive. Current saves use the
+[minimal game document](../desktop/document-v1.md). The journal quotas and
+synthetic replay-work budget below are historical, not current requirements.
+
 This extends [the desktop session contract](desktop-session.md). Native chess
 and shogi records remain authoritative; this is concrete dispatch, not a shared
 rules model. The selected shogi profile remains `mshogi.shogi.csa36.v1`, with its

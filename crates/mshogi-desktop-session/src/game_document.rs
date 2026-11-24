@@ -154,7 +154,6 @@ impl<G: NativeGame> Errors<G> {
         let category = match resource {
             NativeResource::EncodedBytes => ResourceCategory::CanonicalRecordBytes,
             NativeResource::Events => ResourceCategory::NativeEvents,
-            NativeResource::ReplayWork => ResourceCategory::ReplayWork,
             NativeResource::Counter => ResourceCategory::Unknown,
         };
         Self::capacity(category, diagnostic)

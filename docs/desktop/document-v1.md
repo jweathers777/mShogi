@@ -23,11 +23,9 @@ so its original bytes reach the strict parser and native replay.
 
 Operational interruptions are session state. Cancellation, engine failure and
 work limits add no game command and do not change a saved record. Current native
-records have no Stop command or incomplete field. Tori schema-1 records retain
-their promised replay path under the current repetition rule: old stop entries
-are validated and omitted, while all player commands remain. Development-era
-Shogi/Xiangqi schema 1, Tori schemas 2–3, Chu schemas 1–2 and Tenjiku schemas
-1–2 are unsupported under design A-09.
+records have no Stop command or incomplete field. Development-era formats,
+including Tori schema 1, are unsupported. The product has not been released;
+there is no migration reader for those formats.
 
 Tori schema 4, Chu schema 3 and Tenjiku schema 3 store their profile, edition,
 schema version, complete native root and ordered actor/command pairs. Chu roots
@@ -42,7 +40,7 @@ replay restores declaration evidence, warnings, claim results and conclusions.
 
 The document stores each non-Chess native record directly. Engine contexts use
 a separate canonical wrapper with `envelope_version: 2`, `game_kind` and `payload`.
-That wrapper retains the promised version-1 Tori schema-1 reader. Chess native
+Only the current wrapper is accepted. Chess native
 history schema 1 bytes and schema 2 adjudication settings are unchanged.
 
 The edition is the exact native `RulesProfile::edition()` value. A different

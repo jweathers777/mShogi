@@ -73,7 +73,6 @@ fn actual_royal_capture_score_and_native_pv_validation_for_both_profiles() {
         assert_eq!(telemetry.perspective, t::Side::Sente);
         assert_eq!(telemetry.principal_variation, vec![action.clone()]);
         let mut branch = before.to_game().unwrap();
-        let start = branch.replay_work();
         for a in &telemetry.principal_variation {
             branch
                 .submit(t::GameRequest {
@@ -83,22 +82,18 @@ fn actual_royal_capture_score_and_native_pv_validation_for_both_profiles() {
                 })
                 .unwrap();
         }
-        let expected_work = branch.replay_work() - start;
         let mut polls = 0;
-        assert_eq!(
-            result
-                .validate_with_work(&g, &mut || {
-                    polls += 1;
-                    false
-                })
-                .unwrap(),
-            expected_work
-        );
+        result
+            .validate_with_stop(&g, &mut || {
+                polls += 1;
+                false
+            })
+            .unwrap();
         for at in [1, polls / 2, polls - 1] {
             let mut n = 0;
             assert!(
                 result
-                    .validate_with_work(&g, &mut || {
+                    .validate_with_stop(&g, &mut || {
                         n += 1;
                         n >= at
                     })

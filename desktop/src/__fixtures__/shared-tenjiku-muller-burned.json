@@ -488,8 +488,7 @@
               "right": "consumed"
             }
           }
-        ],
-        "work_units": 780
+        ]
       }
     },
     "live": {
@@ -918,8 +917,7 @@
               "right": "consumed"
             }
           }
-        ],
-        "work_units": 780
+        ]
       }
     },
     "execution_supported": true

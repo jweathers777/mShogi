@@ -2713,8 +2713,7 @@
           "promoted": false,
           "right": "unseen"
         },
-        "phases": [],
-        "work_units": 779
+        "phases": []
       }
     },
     "live": {
@@ -5384,8 +5383,7 @@
           "promoted": false,
           "right": "unseen"
         },
-        "phases": [],
-        "work_units": 779
+        "phases": []
       }
     },
     "execution_supported": true

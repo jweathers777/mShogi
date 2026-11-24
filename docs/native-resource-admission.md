@@ -30,10 +30,10 @@ resignation as required by native admission. Input and output byte limits still
 apply at record boundaries. An explicit capacity diagnostic computes the actual
 encoded size; it is not part of ordinary command admission.
 
-Chu and Tenjiku retain native replay-work counters used by engine validation.
-These bound native work and do not count bytes serialized for capacity checks.
-Tenjiku reserves one work unit for resignation. Existing stop checks and bounded
-native operations keep replay cancellable. A refusal is never a game result.
+Native history and engine-result validation have no synthetic work counters or
+work quotas. Validation replays the actual commands and checks cancellation;
+the desktop worker and child-process supervisor enforce elapsed-time deadlines.
+A cancellation or resource refusal is never a game result.
 
 A private transaction holds the original local owner and the lengths of
 append-only history vectors. It works on a local copy. On failure, it restores

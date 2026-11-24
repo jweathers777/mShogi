@@ -28,8 +28,6 @@ pub enum NativeResource {
     EncodedBytes,
     /// Native events.
     Events,
-    /// Native replay work.
-    ReplayWork,
     /// Board counters or runtime identities: no one specific limit.
     Counter,
 }
@@ -345,7 +343,7 @@ macro_rules! large_shogi_game {
                 game: &Self::Game,
                 stop: &mut impl FnMut() -> bool,
             ) -> Result<(), String> {
-                result.validate_with_work(game, stop).map(|_| ())
+                result.validate_with_stop(game, stop)
             }
         }
         mod $glue {
@@ -365,7 +363,6 @@ macro_rules! large_shogi_game {
                         match r {
                             c::Resource::EncodedBytes => NativeResource::EncodedBytes,
                             c::Resource::Events => NativeResource::Events,
-                            c::Resource::ReplayWork => NativeResource::ReplayWork,
                             c::Resource::Counter => NativeResource::Counter,
                         },
                         e.to_string(),

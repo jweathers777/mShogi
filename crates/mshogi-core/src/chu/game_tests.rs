@@ -290,11 +290,10 @@ fn standard_root_provenance_cannot_be_forged() {
     );
 }
 #[test]
-fn real_long_history_hits_work_limit_atomically_and_remains_closable_and_replayable() {
+fn long_history_continues_and_remains_closable_and_replayable() {
     let mut g = game("CHU-REP-QUIET");
     let mut rng = 3917u64;
-    let mut refused = false;
-    for _ in 0..1000 {
+    for _ in 0..400 {
         let side = g.position().side_to_move();
         let actions: Vec<_> = g
             .legal_actions()
@@ -315,20 +314,9 @@ fn real_long_history_hits_work_limit_atomically_and_remains_closable_and_replaya
         assert!(!actions.is_empty());
         rng = rng.wrapping_mul(6364136223846793005).wrapping_add(1);
         let a = actions[(rng as usize) % actions.len()].clone();
-        let context = g.context();
-        let before = g.cache_snapshot();
-        match play(&mut g, a) {
-            Ok(_) => {}
-            Err(GameError::Capacity(Resource::ReplayWork)) => {
-                assert_eq!(g.context(), context);
-                assert_eq!(g.cache_snapshot(), before);
-                refused = true;
-                break;
-            }
-            Err(e) => panic!("unexpected native refusal {e}"),
-        }
+        play(&mut g, a).unwrap();
     }
-    assert!(refused);
+    assert_eq!(g.events().len(), 400);
     let usage = g.capacity_usage().unwrap();
     let timer = std::time::Instant::now();
     let restored = GameRecord::from_json(&bytes(&g))
@@ -337,10 +325,9 @@ fn real_long_history_hits_work_limit_atomically_and_remains_closable_and_replaya
         .unwrap();
     assert!(g.context().same_semantics(&restored.context()));
     eprintln!(
-        "Chu long native record: events={}, bytes={}, work={}, parse+replay_ms={}",
+        "Chu long native record: events={}, bytes={}, parse+replay_ms={}",
         usage.events,
         usage.encoded_bytes,
-        usage.replay_work,
         timer.elapsed().as_millis()
     );
     control(&mut g, Side::Gote, GameCommand::Resign).unwrap();

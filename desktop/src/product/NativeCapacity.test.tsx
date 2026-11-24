@@ -38,7 +38,7 @@ for (const game of ["chess", "shogi", "xiangqi"] as const) {
     expect(snapshot.document.dirty).toBe(true);
   });
 }
-it.each(["encoded_document_bytes", "native_events", "replay_work", "identity_headroom"] as const)("preserves %s as an independent resource", (category) => {
+it.each(["encoded_document_bytes", "native_events", "identity_headroom"] as const)("preserves %s as an independent resource", (category) => {
   notice(paused("xiangqi", { ...base, category }));
   expect(screen.getByRole("alert").textContent).not.toContain("256 recorded"); expect(screen.getByRole("alert").textContent).not.toContain("control capacity");
 });

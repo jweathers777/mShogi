@@ -18,13 +18,12 @@ pub struct GameRecord {
     board_plies: usize,
     side: Side,
     conclusion: Option<Conclusion>,
-    reconstruction_work: u64,
     profile: Profile,
 }
 /// Typed record refusal; neither cancellation nor capacity is a game outcome.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum RecordError {
-    /// Encoded/event/native work capacity was exceeded.
+    /// Encoded/event capacity was exceeded.
     Capacity,
     /// Malformed, duplicate, unknown, missing or trailing JSON.
     Json,
@@ -114,7 +113,6 @@ impl GameRecord {
             board_plies: game.snapshot().board_ply,
             side: game.position().side_to_move(),
             conclusion: game.snapshot().conclusion,
-            reconstruction_work: game.replay_work(),
             profile: game.profile(),
         })
     }
@@ -141,10 +139,6 @@ impl GameRecord {
     /// Replay-established native outcome only.
     pub fn conclusion(&self) -> Option<Conclusion> {
         self.conclusion
-    }
-    /// Deterministic native reconstruction work, never trusted from wire input.
-    pub fn reconstruction_work(&self) -> u64 {
-        self.reconstruction_work
     }
     /// The whole immutable profile selected before root construction.
     pub fn profile(&self) -> Profile {

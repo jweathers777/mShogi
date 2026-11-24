@@ -330,46 +330,11 @@ impl CanonicalRecord {
         if text.len() > MAX_RECORD_ENVELOPE_BYTES {
             return Err(EnvelopeError::Capacity);
         }
-        #[derive(Deserialize)]
-        struct Version {
-            envelope_version: u32,
+        let wire: WireRecord = serde_json::from_str(text).map_err(EnvelopeError::encoding)?;
+        if wire.envelope_version != RECORD_ENVELOPE_VERSION {
+            return Err(EnvelopeError::Identity);
         }
-        let version: Version = serde_json::from_str(text).map_err(EnvelopeError::encoding)?;
-        let (kind, payload) = match version.envelope_version {
-            RECORD_ENVELOPE_VERSION => {
-                let wire: WireRecord =
-                    serde_json::from_str(text).map_err(EnvelopeError::encoding)?;
-                if wire.envelope_version != RECORD_ENVELOPE_VERSION {
-                    return Err(EnvelopeError::Identity);
-                }
-                (wire.game_kind, wire.payload)
-            }
-            1 => {
-                // Only Tori schema 1 has a promised legacy envelope reader.
-                let wire: LegacyToriEnvelope =
-                    serde_json::from_str(text).map_err(EnvelopeError::encoding)?;
-                if wire.envelope_version != 1
-                    || wire.game_kind != GameKind::Tori
-                    || wire.rules_profile != RulesProfile::ToriModernV1
-                    || wire.profile_edition != tori::PROFILE_EDITION_V1
-                    || wire.native_schema_version != 1
-                {
-                    return Err(EnvelopeError::Identity);
-                }
-                #[derive(Deserialize)]
-                struct Labels {
-                    schema_version: u32,
-                    edition: String,
-                }
-                let labels: Labels =
-                    serde_json::from_str(wire.payload.get()).map_err(EnvelopeError::encoding)?;
-                if labels.schema_version != 1 || labels.edition != tori::PROFILE_EDITION_V1 {
-                    return Err(EnvelopeError::Identity);
-                }
-                (GameKind::Tori, wire.payload)
-            }
-            _ => return Err(EnvelopeError::Identity),
-        };
+        let (kind, payload) = (wire.game_kind, wire.payload);
         check_stop(stop)?;
         let (record, parsed) = parse(kind, payload.get(), stop)?;
         check_stop(stop)?;
@@ -438,16 +403,6 @@ fn encode_envelope(record: &CanonicalRecord, payload: &str) -> Result<String, En
 struct WireRecord {
     envelope_version: u32,
     game_kind: GameKind,
-    payload: Box<RawValue>,
-}
-#[derive(Deserialize)]
-#[serde(deny_unknown_fields)]
-struct LegacyToriEnvelope {
-    envelope_version: u32,
-    game_kind: GameKind,
-    rules_profile: RulesProfile,
-    profile_edition: String,
-    native_schema_version: u32,
     payload: Box<RawValue>,
 }
 impl<'de> Deserialize<'de> for CanonicalRecord {

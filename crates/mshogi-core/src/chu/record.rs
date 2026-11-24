@@ -18,7 +18,6 @@ pub struct GameRecord {
     side: Side,
     conclusion: Option<Conclusion>,
     // Derived only from authoritative native admission/replay; never serialized.
-    reconstruction_work: u64,
     // Validated immutable prefix identity for incremental process traffic.
     root: NativeRoot,
     ledger: Vec<GameEvent>,
@@ -92,7 +91,6 @@ impl GameRecord {
             board_plies: g.snapshot().board_ply,
             side: g.position().side_to_move(),
             conclusion: g.conclusion(),
-            reconstruction_work: g.replay_work(),
             root: g.native_root().clone(),
             ledger: g.events().to_vec(),
         })
@@ -137,11 +135,6 @@ impl GameRecord {
     /// Actual replay-validated result only.
     pub fn conclusion(&self) -> Option<Conclusion> {
         self.conclusion
-    }
-    /// Authoritative deterministic work of reconstructing this validated record.
-    /// This cache is native-derived and is absent from serialized input.
-    pub fn reconstruction_work(&self) -> u64 {
-        self.reconstruction_work
     }
     /// Strict duplicate-preserving parsing followed by authoritative replay.
     pub fn from_json(text: &str) -> Result<Self, RecordError> {
@@ -447,7 +440,7 @@ mod incremental_tests {
             let text = delta.to_json().unwrap();
             let delta = GameDelta::from_json(&text).unwrap();
             let context = session.game().unwrap().context();
-            for field in ["board_ply", "index", "replay_work"] {
+            for field in ["board_ply", "index"] {
                 let mut forged = serde_json::to_value(&delta).unwrap();
                 forged["events"][1][field] = serde_json::json!(999999);
                 let bad: GameDelta = serde_json::from_value(forged).unwrap();

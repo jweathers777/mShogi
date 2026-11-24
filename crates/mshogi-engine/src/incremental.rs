@@ -128,7 +128,7 @@ fn digest(bytes: &[u8]) -> [u8; 32] {
 #[derive(Default)]
 pub struct Client {
     previous: Option<Arc<ExecutionRequest>>,
-    pending: Option<(Arc<ExecutionRequest>, [u8; 32], bool)>,
+    pending: Option<(Arc<ExecutionRequest>, [u8; 32])>,
 }
 impl Client {
     /// Only adopted game families use incremental timed traffic.
@@ -152,8 +152,7 @@ impl Client {
         request: &Arc<ExecutionRequest>,
     ) -> Result<Vec<u8>, serde_json::Error> {
         let bytes = self.encode_request(request)?;
-        let requires_endpoint = Self::supports(request) && self.previous.is_some();
-        self.pending = Some((Arc::clone(request), digest(&bytes), requires_endpoint));
+        self.pending = Some((Arc::clone(request), digest(&bytes)));
         Ok(bytes)
     }
     fn encode_request(&self, request: &ExecutionRequest) -> Result<Vec<u8>, serde_json::Error> {
@@ -221,7 +220,7 @@ impl Client {
         let text = std::str::from_utf8(bytes).map_err(|e| malformed(e.to_string()))?;
         crate::shared::reject_observation_duplicates(text, &mut || false).map_err(malformed)?;
         let wire: Response = serde_json::from_str(text).map_err(|e| malformed(e.to_string()))?;
-        let Some((submitted, expected_digest, requires_endpoint)) = &self.pending else {
+        let Some((submitted, expected_digest)) = &self.pending else {
             return Err((
                 FailureKind::ContextMismatch,
                 "no pending encoded request".into(),
@@ -235,7 +234,7 @@ impl Client {
                 .endpoint
                 .as_ref()
                 .is_some_and(|stamp| !supports || stamp != &expected)
-            || (*requires_endpoint
+            || (supports
                 && wire.endpoint.is_none()
                 && !matches!(wire.result, ExecutionResult::Failure { .. }))
         {
@@ -254,10 +253,7 @@ impl Client {
                 "result differs from submitted context".into(),
             ));
         }
-        let (submitted, _, _) = self.pending.take().expect("checked pending request");
-        // A full reply without an endpoint is the frozen predecessor's
-        // capability fallback. It remains bound to the exact full request;
-        // never send a suffix until the child acknowledges an endpoint.
+        let (submitted, _) = self.pending.take().expect("checked pending request");
         if supports && wire.endpoint.is_some() {
             self.previous = Some(submitted);
         } else if submitted.context.limits.time_ms.is_some() {
@@ -942,7 +938,7 @@ mod tests {
         }
     }
     #[test]
-    fn full_reply_negotiates_capability_but_suffix_requires_acknowledgement() {
+    fn full_and_compact_replies_require_acknowledgement() {
         let game = chu::Game::standard();
         let mut client = Client::default();
         let result = ExecutionResult::Chu {
@@ -978,24 +974,22 @@ mod tests {
             let bytes = client.encode(&request).unwrap();
             assert_eq!(
                 serde_json::from_slice::<ExecutionRequest>(&bytes).is_ok(),
-                id < 3
+                id == 1
             );
             let mut response = Response::new(&bytes, result.clone());
-            if id == 3 {
+            {
                 assert!(
                     client
                         .decode(&serde_json::to_vec(&response).unwrap())
                         .is_err(),
-                    "compact request cannot lose its endpoint"
+                    "successful request cannot lose its endpoint"
                 );
             }
-            if id >= 2 {
-                response.endpoint = Some(Stamp { request_id: id });
-            }
+            response.endpoint = Some(Stamp { request_id: id });
             client
                 .decode(&serde_json::to_vec(&response).unwrap())
                 .unwrap();
-            assert_eq!(client.previous.is_some(), id >= 2);
+            assert!(client.previous.is_some());
         }
     }
 }

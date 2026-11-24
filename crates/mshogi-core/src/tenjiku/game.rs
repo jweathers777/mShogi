@@ -11,8 +11,6 @@ use std::{
 pub const MAX_GAME_EVENTS: usize = 1024;
 /// One native event is retained per accepted command.
 pub const MAX_GAME_COMMANDS: usize = MAX_GAME_EVENTS;
-/// Deterministic native rule/key work units, not encoded bytes or elapsed milliseconds.
-pub const MAX_REPLAY_WORK: u64 = 512_000_000;
 static NEXT_INSTANCE: AtomicU64 = AtomicU64::new(1);
 
 /// Native conclusions are separate from search, cancellation and operational failures.
@@ -75,7 +73,6 @@ impl<'de> Deserialize<'de> for GameCommand {
 pub enum Resource {
     EncodedBytes,
     Events,
-    ReplayWork,
     Counter,
 }
 /// Typed atomic native refusal.
@@ -137,7 +134,6 @@ pub struct HistorySnapshot {
     pub conclusion: Option<Conclusion>,
     pub pending_bare: Option<Side>,
     pub draw_offer: Option<Side>,
-    work: u64,
 }
 impl HistorySnapshot {
     /// Exact logical board, original identities, promotion rights and provenance.
@@ -170,19 +166,6 @@ impl RepetitionKey {
                 .map(|p| p.map(|p| (p.side, p.base, p.promoted)))
                 .collect(),
         }
-    }
-    fn compared(&self, other: &Self) -> (bool, u64) {
-        let mut work = 1;
-        if self.profile != other.profile || self.side != other.side {
-            return (false, work);
-        }
-        for (a, b) in self.board.iter().zip(&other.board) {
-            work += 1;
-            if a != b {
-                return (false, work);
-            }
-        }
-        (true, work)
     }
 }
 /// Fresh runtime authority, distinct from saved/repetition/search semantics.
@@ -246,10 +229,8 @@ pub struct GameRedo {
 pub struct CapacityUsage {
     pub encoded_bytes: usize,
     pub events: usize,
-    pub replay_work: u64,
     pub reserved_bytes: usize,
     pub reserved_events: usize,
-    pub reserved_work: u64,
 }
 /// Unscored no-action is not an invented mate, forfeit or draw.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -335,12 +316,10 @@ impl Game {
             conclusion: None,
             pending_bare: None,
             draw_offer: None,
-            work: 256,
         };
-        let (conclusion, pending, work) = adjudicate(&local, std::slice::from_ref(&key), stop)?;
+        let (conclusion, pending) = adjudicate(&local, std::slice::from_ref(&key), stop)?;
         snapshot.conclusion = conclusion;
         snapshot.pending_bare = pending;
-        snapshot.work += work;
         let game = Self {
             root,
             local,
@@ -399,10 +378,6 @@ impl Game {
     /// Exact completed native outcome only.
     pub fn conclusion(&self) -> Option<Conclusion> {
         self.snapshot().conclusion
-    }
-    /// Actual deterministic reconstruction charge, excluding a refused candidate.
-    pub fn replay_work(&self) -> u64 {
-        self.snapshot().work
     }
     /// Full saved semantics plus never-rewound runtime authority.
     pub fn context(&self) -> GameContext {
@@ -598,7 +573,6 @@ impl Game {
         if self.conclusion().is_some() {
             return Err(GameError::Concluded);
         }
-        let mut work = 1;
         let mut effects = None;
         let mut board_ply = self.snapshot().board_ply;
         let mut conclusion = self.conclusion();
@@ -610,13 +584,10 @@ impl Game {
                     return Err(GameError::WrongActor);
                 }
                 let (e, _) = self.local.apply_with_stop(action, &mut *stop)?;
-                work += e.work_units;
                 let key = RepetitionKey::from_position(self.position());
                 for old in &self.keys {
                     check(stop)?;
-                    let (equal, n) = old.compared(&key);
-                    work += n;
-                    if equal {
+                    if old == &key {
                         return Err(GameError::Repetition);
                     }
                 }
@@ -624,8 +595,7 @@ impl Game {
                 board_ply += 1;
                 effects = Some(e);
                 offer = None;
-                let (c, p, n) = adjudicate(&self.local, &self.keys, stop)?;
-                work += n;
+                let (c, p) = adjudicate(&self.local, &self.keys, stop)?;
                 conclusion = c;
                 pending = p;
             }
@@ -658,7 +628,7 @@ impl Game {
             }
         }
         self.push_event(
-            actor, command, effects, board_ply, conclusion, pending, offer, work,
+            actor, command, effects, board_ply, conclusion, pending, offer,
         )?;
         self.ensure_capacity(stop)?;
         check(stop)?;
@@ -708,7 +678,6 @@ impl Game {
         conclusion: Option<Conclusion>,
         pending_bare: Option<Side>,
         draw_offer: Option<Side>,
-        work: u64,
     ) -> Result<(), GameError> {
         let event = GameEvent {
             index: self.events.len(),
@@ -720,10 +689,6 @@ impl Game {
             pending_bare,
             draw_offer,
         };
-        let charged = self
-            .replay_work()
-            .checked_add(work)
-            .ok_or(GameError::Capacity(Resource::ReplayWork))?;
         self.events.push(event);
         self.snapshots.push(HistorySnapshot {
             state: self.position().state().clone(),
@@ -732,7 +697,6 @@ impl Game {
             conclusion,
             pending_bare,
             draw_offer,
-            work: charged,
         });
         Ok(())
     }
@@ -742,10 +706,8 @@ impl Game {
         Ok(CapacityUsage {
             encoded_bytes: record::encoded_size(self).map_err(|_| GameError::Record)?,
             events: self.events.len(),
-            replay_work: self.replay_work(),
             reserved_bytes: reserve * crate::record::MAX_COMPACT_COMMAND_BYTES,
             reserved_events: reserve,
-            reserved_work: reserve as u64,
         })
     }
     fn ensure_capacity(&self, stop: &mut impl FnMut() -> bool) -> Result<(), GameError> {
@@ -753,9 +715,6 @@ impl Game {
         let reserve = usize::from(self.conclusion().is_none());
         if self.events.len() + reserve > MAX_GAME_EVENTS {
             return Err(GameError::Capacity(Resource::Events));
-        }
-        if self.replay_work() > MAX_REPLAY_WORK - reserve as u64 {
-            return Err(GameError::Capacity(Resource::ReplayWork));
         }
         Ok(())
     }
@@ -856,18 +815,18 @@ fn adjudicate(
     local: &LocalPosition,
     keys: &[RepetitionKey],
     stop: &mut impl FnMut() -> bool,
-) -> Result<(Option<Conclusion>, Option<Side>, u64), GameError> {
+) -> Result<(Option<Conclusion>, Option<Side>), GameError> {
     check(stop)?;
     let p = local.position();
     if let Some(c) = terminal_royals(p) {
-        return Ok((Some(c), None, 256));
+        return Ok((Some(c), None));
     }
     let b = [bare(p, Side::Sente), bare(p, Side::Gote)];
     if b == [true, true] {
-        return Ok((Some(Conclusion::BothBareRoyals), None, 256));
+        return Ok((Some(Conclusion::BothBareRoyals), None));
     }
     let Some(victim) = [Side::Sente, Side::Gote].into_iter().find(|s| b[s.index()]) else {
-        return Ok((None, None, 256));
+        return Ok((None, None));
     };
     if victim != p.side_to_move() {
         return Ok((
@@ -875,22 +834,17 @@ fn adjudicate(
                 winner: victim.opponent(),
             }),
             None,
-            256,
         ));
     }
-    let query = local.legal_actions_metered(&mut *stop)?;
-    let mut work = query.work_units + 256;
-    for action in query.value {
+    let actions = local.legal_actions_with_stop(&mut *stop)?;
+    for action in actions {
         check(stop)?;
-        let (next, e) = local.simulate_with_stop(&action, &mut *stop)?;
-        work += e.work_units;
+        let (next, _) = local.simulate_with_stop(&action, &mut *stop)?;
         let key = RepetitionKey::from_position(next.position());
         let mut repeated = false;
         for old in keys {
             check(stop)?;
-            let (equal, n) = old.compared(&key);
-            work += n;
-            if equal {
+            if old == &key {
                 repeated = true;
                 break;
             }
@@ -902,7 +856,7 @@ fn adjudicate(
             .is_some_and(|c| c.winner() != Some(victim.opponent()))
             || (bare(next.position(), Side::Sente) && bare(next.position(), Side::Gote));
         if escape {
-            return Ok((None, Some(victim), work));
+            return Ok((None, Some(victim)));
         }
     }
     Ok((
@@ -910,7 +864,6 @@ fn adjudicate(
             winner: victim.opponent(),
         }),
         None,
-        work,
     ))
 }
 
@@ -925,7 +878,7 @@ const _: () = assert!(
 mod rollback_tests {
     use super::*;
     #[test]
-    fn late_cancellation_and_work_refusal_restore_all_private_state() {
+    fn late_cancellation_restores_all_private_state() {
         for profile in Profile::ALL {
             let mut game = Game::standard(profile);
             let action = game.legal_actions()[0].clone();
@@ -953,18 +906,6 @@ mod rollback_tests {
                 assert!(matches!(result, Err(GameError::Stopped)));
                 assert_eq!(format!("{game:?}"), before);
             }
-            game.snapshots.last_mut().unwrap().work = MAX_REPLAY_WORK;
-            let before = format!("{game:?}");
-            let result = game.submit(GameRequest {
-                expected: game.context(),
-                actor: Side::Sente,
-                command: GameCommand::OfferDraw,
-            });
-            assert!(matches!(
-                result,
-                Err(GameError::Capacity(Resource::ReplayWork))
-            ));
-            assert_eq!(format!("{game:?}"), before);
         }
     }
 }

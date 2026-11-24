@@ -1,8 +1,8 @@
 //! Reproducible native measurements, separate from playing strength and product latency.
 //!
 //! `cargo run -p mshogi-core --release --example tenjiku_work -- adams 128 play`
-//! Modes: play, controls, replay, undo. Rules work is deterministic accounting;
-//! timings are observations on this invocation. No outer watchdog is simulated.
+//! Modes: play, controls, replay, undo. Timings are observations on this
+//! invocation. No outer watchdog is simulated.
 use mshogi_core::tenjiku::*;
 use serde_json::{Value, json};
 use std::{error::Error, mem::size_of, time::Instant};
@@ -32,11 +32,11 @@ fn effect_probe(profile: Profile) -> Result<Value, Box<dyn Error>> {
             RootMetadata::diagram(0),
         )?)?;
         let start = Instant::now();
-        let query = local.geometry_actions_from_metered(sq(8, 8), || false)?;
+        let query = local.geometry_actions_from_with_stop(sq(8, 8), || false)?;
         let generation_us = micros(start);
         let start = Instant::now();
-        let bytes = serde_json::to_vec(&query.value)?.len();
-        generation.push(json!({"original":base,"actions":query.value.len(),"generation_us":generation_us,"work_units":query.work_units,"action_bytes":bytes,"serialization_us":micros(start)}));
+        let bytes = serde_json::to_vec(&query)?.len();
+        generation.push(json!({"original":base,"actions":query.len(),"generation_us":generation_us,"action_bytes":bytes,"serialization_us":micros(start)}));
     }
     // One active burn destroys seven adjacent enemy bystanders; the mover's
     // origin is deliberately outside that batch. This is a workload observation,
@@ -67,7 +67,7 @@ fn effect_probe(profile: Profile) -> Result<Value, Box<dyn Error>> {
     let start = Instant::now();
     let effect_bytes = serde_json::to_vec(&effects)?.len();
     Ok(
-        json!({"empty_center_generation":generation,"active_burn":{"captured_or_burned":effects.captures().count(),"resolution_us":effect_us,"work_units":effects.work_units,"effect_bytes":effect_bytes,"serialization_us":micros(start)}}),
+        json!({"empty_center_generation":generation,"active_burn":{"captured_or_burned":effects.captures().count(),"resolution_us":effect_us,"effect_bytes":effect_bytes,"serialization_us":micros(start)}}),
     )
 }
 
@@ -178,31 +178,27 @@ fn main() -> Result<(), Box<dyn Error>> {
     let before_queries = native_record.clone();
     let before_query_context = game.context();
     let query_start = Instant::now();
-    let local_choices = game.local_position().legal_actions_metered(|| false)?;
+    let local_choices = game.local_position().legal_actions_with_stop(|| false)?;
     let local_query_us = micros(query_start);
     let origins = game.position().pieces().map(|(s, _)| s).collect::<Vec<_>>();
     let mut inspection_rows = vec![];
     let mut inspection_us = 0u128;
     let mut action_serialization_us = 0u128;
     let mut action_bytes = 0usize;
-    let mut inspection_work_units = 0u64;
     for origin in origins {
         let start = Instant::now();
-        let inspected = game.local_position().inspection_metered(origin, || false)?;
+        let inspected = game
+            .local_position()
+            .inspection_with_stop(origin, || false)?;
         let inspect_us = micros(start);
-        let actions = inspected
-            .value
-            .iter()
-            .map(|c| &c.action)
-            .collect::<Vec<_>>();
+        let actions = inspected.iter().map(|c| &c.action).collect::<Vec<_>>();
         let start = Instant::now();
         let bytes = serde_json::to_vec(&actions)?.len();
         let serialize_us = micros(start);
         inspection_us += inspect_us;
-        inspection_work_units += inspected.work_units;
         action_serialization_us += serialize_us;
         action_bytes += bytes;
-        inspection_rows.push((inspect_us,json!({"origin":origin,"choices":actions.len(),"inspection_us":inspect_us,"work_units":inspected.work_units,"action_json_bytes":bytes,"serialization_us":serialize_us})));
+        inspection_rows.push((inspect_us,json!({"origin":origin,"choices":actions.len(),"inspection_us":inspect_us,"action_json_bytes":bytes,"serialization_us":serialize_us})));
     }
     inspection_rows.sort_by_key(|r| std::cmp::Reverse(r.0));
     let slowest = inspection_rows
@@ -259,7 +255,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         .ok_or("no inspection origin")?;
     let cancel_start = Instant::now();
     let mut query_polls = 0u64;
-    let query_stopped = game.local_position().inspection_metered(origin, || {
+    let query_stopped = game.local_position().inspection_with_stop(origin, || {
         query_polls += 1;
         query_polls >= 3
     });
@@ -302,10 +298,10 @@ fn main() -> Result<(), Box<dyn Error>> {
         "isolated_native_workloads":effect_probe(profile)?,
         "profile":profile.id(),"edition":profile.edition(),"mode":mode,"requested":requested,"accepted_events":game.events().len(),"accepted_board_plies":game.snapshot().board_ply,
         "root_us":root_us,"build_us":build_us,"generator_attempts":generator_attempts,"refusal":refusal,
-        "record":{"encoded_bytes":native_record.as_json().len(),"encode_us":encode_us,"deterministic_reconstruction_units":native_record.reconstruction_work()},
-        "capacity":{"bytes":usage.encoded_bytes,"events":usage.events,"work_units":usage.replay_work,"reserved_bytes":usage.reserved_bytes,"reserved_events":usage.reserved_events,"reserved_work_units":usage.reserved_work,"limits":{"bytes":MAX_GAME_RECORD_BYTES,"events":MAX_GAME_EVENTS,"work_units":MAX_REPLAY_WORK}},
-        "local_choices":{"count":local_choices.value.len(),"query_us":local_query_us,"work_units":local_choices.work_units,"history_filtered":false},
-        "per_origin_inspection":{"origins":inspection_rows.len(),"total_us":inspection_us,"total_work_units":inspection_work_units,"action_serialization_us":action_serialization_us,"total_action_json_bytes":action_bytes,"slowest_three":slowest},
+        "record":{"encoded_bytes":native_record.as_json().len(),"encode_us":encode_us},
+        "capacity":{"bytes":usage.encoded_bytes,"events":usage.events,"reserved_bytes":usage.reserved_bytes,"reserved_events":usage.reserved_events,"limits":{"bytes":MAX_GAME_RECORD_BYTES,"events":MAX_GAME_EVENTS}},
+        "local_choices":{"count":local_choices.len(),"query_us":local_query_us,"history_filtered":false},
+        "per_origin_inspection":{"origins":inspection_rows.len(),"total_us":inspection_us,"action_serialization_us":action_serialization_us,"total_action_json_bytes":action_bytes,"slowest_three":slowest},
         "ordinary_replay":{"us":replay_us,"exact_semantics_and_fresh_authority":replay_exact,"returned_undo_handles":0,"retention_policy":"ordinary replay requests no private undo handles; source-defined, not an RSS measurement"},
         "explicit_undo":undo_report,
         "cooperative_cancellation":{"replay_us":cancel_replay_us,"replay_polls":replay_polls,"inspection_us":cancel_query_us,"inspection_polls":query_polls,"admission_us":cancel_admission_us,"admission_polls":admission_polls,"atomic":cancelled_atomic,"no_external_watchdog_or_product_latency_claim":true},

@@ -181,10 +181,7 @@ Abstract Games Museum as "third occurrence; change the repeating move".
 
 The earlier edition (MSH81-MODERN-2026-11-01, schema 1) let the move that created
 the third occurrence stand and obliged the other side to depart differently; an
-earlier session derived that convention, it was never decided by John. Schema-1
-records load by replay under this rule; a record containing a move that now
-creates a third occurrence is refused at that command. Operational stop entries
-are validated and omitted on import; player commands and their history remain.
+earlier session derived that convention, it was never decided by John. That development-era format is no longer supported.
 
 ## T07 — admission, roots, records and exact reversal (S)
 
@@ -210,8 +207,7 @@ Canonical native record requirements: game=tori; immutable profile/edition;
 native schema; standard or explicit diagram root; root provenance (including
 missing earlier history/counter meaning); complete ordered board and match events;
 actor and complete action. Schema 4 reconstructs effects, conclusions, event
-prefixes and board-ply mapping by native replay instead of storing copies. The
-schema-1 compatibility reader still checks the derived data in those old records. Resign
+prefixes and board-ply mapping by native replay instead of storing copies. Resign
 does not masquerade as a board move or repetition. Operational interruptions
 stay in session memory and add no native event.
 Strict outer dispatch must retain duplicate fields for native rejection; reject

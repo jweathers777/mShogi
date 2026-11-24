@@ -448,8 +448,7 @@
           "promoted": false,
           "right": "first_declined_next_move"
         },
-        "phases": [],
-        "work_units": 779
+        "phases": []
       }
     },
     "live": {
@@ -854,8 +853,7 @@
           "promoted": false,
           "right": "first_declined_next_move"
         },
-        "phases": [],
-        "work_units": 779
+        "phases": []
       }
     },
     "execution_supported": true

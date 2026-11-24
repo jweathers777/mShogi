@@ -473,8 +473,7 @@
           "promoted": false,
           "right": "consumed"
         },
-        "phases": [],
-        "work_units": 783
+        "phases": []
       }
     },
     "live": {
@@ -902,8 +901,7 @@
           "promoted": false,
           "right": "consumed"
         },
-        "phases": [],
-        "work_units": 783
+        "phases": []
       }
     },
     "execution_supported": true

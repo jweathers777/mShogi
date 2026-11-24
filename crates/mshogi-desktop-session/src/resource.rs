@@ -19,8 +19,6 @@ pub enum ResourceCategory {
     CanonicalRecordBytes,
     /// Native events, including events that do not advance board ply.
     NativeEvents,
-    /// Native replay or validation work units.
-    ReplayWork,
     /// Monotonic execution, request, session or document identity space.
     IdentityHeadroom,
     /// Bounded validation time or work allowance.
@@ -57,8 +55,6 @@ pub enum ResourceUnit {
     Bytes,
     /// Native event entries.
     Events,
-    /// Native implementation-defined replay work units.
-    ReplayUnits,
     /// Monotonic identity increments.
     Identities,
     /// Elapsed or reserved milliseconds.

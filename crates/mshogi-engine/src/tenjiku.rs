@@ -158,20 +158,17 @@ impl TenjikuResult {
     /// This validates consistency, not a claim that a heuristic score is optimal.
     /// Runtime identities and submitted limits remain the observation owner's check.
     pub fn validate(&self, game: &Game) -> Result<(), String> {
-        self.validate_with_work(game, &mut || false).map(|_| ())
+        self.validate_with_stop(game, &mut || false)
     }
     /// Validate native continuation under an admission worker's stop/deadline.
-    /// Returns actual native PV transition work; the admitted history is copied, not replayed;
-    /// the document owner must charge these units to its aggregate budget.
-    pub fn validate_with_work(
+    pub fn validate_with_stop(
         &self,
         game: &Game,
         stop: &mut impl FnMut() -> bool,
-    ) -> Result<u64, String> {
+    ) -> Result<(), String> {
         if stop() {
             return Err("Tenjiku observation validation stopped".into());
         }
-        let mut work = 0u64;
         let t = self.telemetry();
         let Some(identity) = t.identity() else {
             return Err("Tenjiku telemetry identity, work or score mismatch".into());
@@ -220,7 +217,6 @@ impl TenjikuResult {
                     if stop() {
                         return Err("Tenjiku observation validation stopped".into());
                     }
-                    let before = branch.replay_work();
                     branch
                         .submit_with_stop(
                             GameRequest {
@@ -233,11 +229,6 @@ impl TenjikuResult {
                             stop,
                         )
                         .map_err(|e| e.to_string())?;
-                    work = work
-                        .checked_add(branch.replay_work().saturating_sub(before))
-                        .ok_or_else(|| {
-                            "Tenjiku observation validation work overflow".to_string()
-                        })?;
                 }
                 if stop() {
                     return Err("Tenjiku observation validation stopped".into());
@@ -251,7 +242,7 @@ impl TenjikuResult {
                     {
                         Err("Tenjiku choice cannot be a win at the analyzed root".into())
                     } else {
-                        Ok(work)
+                        Ok(())
                     };
                 }
                 if t.principal_variation.len() != usize::from(t.completed_depth)
@@ -282,7 +273,7 @@ impl TenjikuResult {
                 }
             }
         }
-        Ok(work)
+        Ok(())
     }
     pub(crate) fn matches(&self, context: &ExecutionContext) -> bool {
         let CanonicalRecord::Tenjiku(record) = &context.game else {

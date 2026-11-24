@@ -24,7 +24,6 @@ macro_rules! check {
         let mut fork = original.fork().unwrap();
         assert_eq!(GameRecord::from_game(&fork).unwrap(), record);
         assert_ne!(fork.context(), original.context());
-        assert_eq!(fork.replay_work(), original.replay_work());
         let mut token = last.unwrap();
         assert!(fork.undo(&mut token).is_err());
         assert_eq!(GameRecord::from_game(&fork).unwrap(), record);

@@ -149,8 +149,6 @@ pub struct Effects {
     pub mover_after: Option<Piece>,
     /// Ordered atomic effects, including simultaneous batches.
     pub phases: Vec<EffectPhase>,
-    /// Deterministic actual local work; not a game result or elapsed-time claim.
-    pub work_units: u64,
 }
 impl Effects {
     /// Native enemy removals in phase order; mover suicide is separate.
@@ -161,14 +159,6 @@ impl Effects {
             _ => [].iter(),
         })
     }
-}
-/// A bounded native query and its actual deterministic work accounting.
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct QueryResult<T> {
-    /// Complete value; stopped queries never publish partial answers.
-    pub value: T,
-    /// Actual board-cell copies, generation attempts and resolution visits charged.
-    pub work_units: u64,
 }
 /// Local refusal; all failures preserve the participant's live state.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -291,26 +281,18 @@ impl LocalPosition {
     }
     /// Complete local actual-turn actions, including promotion choices.
     pub fn legal_actions(&self) -> Vec<Action> {
-        self.legal_actions_metered(|| false)
+        self.legal_actions_with_stop(|| false)
             .expect("finite native local query")
-            .value
     }
     /// Cancellable complete local action set; no partial result after stop.
     pub fn legal_actions_with_stop(
         &self,
-        stop: impl FnMut() -> bool,
-    ) -> Result<Vec<Action>, ActionError> {
-        self.legal_actions_metered(stop).map(|q| q.value)
-    }
-    /// Same query with actual deterministic work for native game admission.
-    pub fn legal_actions_metered(
-        &self,
         mut stop: impl FnMut() -> bool,
-    ) -> Result<QueryResult<Vec<Action>>, ActionError> {
-        let mut w = Work::new(&mut stop);
+    ) -> Result<Vec<Action>, ActionError> {
+        let mut w = Cancellation::new(&mut stop);
         let mut out = BTreeSet::new();
         for from in Square::all() {
-            w.tick(1)?;
+            w.check()?;
             if self
                 .position
                 .piece(from)
@@ -319,70 +301,55 @@ impl LocalPosition {
                 out.extend(self.choices(from, false, &mut w)?);
             }
         }
-        Ok(QueryResult {
-            value: out.into_iter().collect(),
-            work_units: w.used,
-        })
+        Ok(out.into_iter().collect())
     }
     /// Actual-turn local choices for one owned source.
     pub fn choices_from(&self, from: Square) -> Vec<Action> {
-        self.choices_from_metered(from, || false)
+        self.choices_from_with_stop(from, || false)
             .expect("finite native origin query")
-            .value
     }
-    /// Cancellable metered actual-turn origin query.
-    pub fn choices_from_metered(
+    /// Cancellable actual-turn origin query.
+    pub fn choices_from_with_stop(
         &self,
         from: Square,
         mut stop: impl FnMut() -> bool,
-    ) -> Result<QueryResult<Vec<Action>>, ActionError> {
-        let mut w = Work::new(&mut stop);
+    ) -> Result<Vec<Action>, ActionError> {
+        let mut w = Cancellation::new(&mut stop);
         let value = self.choices(from, false, &mut w)?;
-        Ok(QueryResult {
-            value,
-            work_units: w.used,
-        })
+        Ok(value)
     }
     /// Nonpromoting geometry on the actual piece owner's hypothetical turn.
     /// Iguis require an enemy target; promotion/turn/history/conclusions do not prune this set.
     pub fn geometry_actions_from(&self, from: Square) -> Vec<Action> {
-        self.geometry_actions_from_metered(from, || false)
+        self.geometry_actions_from_with_stop(from, || false)
             .expect("finite native geometry query")
-            .value
     }
-    /// Cancellable exact geometry set with work; rights/counters are not permission filters.
-    pub fn geometry_actions_from_metered(
+    /// Cancellable exact geometry set; rights/counters are not permission filters.
+    pub fn geometry_actions_from_with_stop(
         &self,
         from: Square,
         mut stop: impl FnMut() -> bool,
-    ) -> Result<QueryResult<Vec<Action>>, ActionError> {
-        let mut w = Work::new(&mut stop);
+    ) -> Result<Vec<Action>, ActionError> {
+        let mut w = Cancellation::new(&mut stop);
         let value = self.choices(from, true, &mut w)?;
-        Ok(QueryResult {
-            value,
-            work_units: w.used,
-        })
+        Ok(value)
     }
     /// Read-only hypothetical full local choices/effects for either owner's piece.
     pub fn inspection(&self, from: Square) -> Vec<InspectedChoice> {
-        self.inspection_metered(from, || false)
+        self.inspection_with_stop(from, || false)
             .expect("finite native inspection")
-            .value
     }
     /// Cancellable inspection without mutating counters, rights or local authority.
-    pub fn inspection_metered(
+    pub fn inspection_with_stop(
         &self,
         from: Square,
         mut stop: impl FnMut() -> bool,
-    ) -> Result<QueryResult<Vec<InspectedChoice>>, ActionError> {
-        let mut w = Work::new(&mut stop);
+    ) -> Result<Vec<InspectedChoice>, ActionError> {
+        let mut w = Cancellation::new(&mut stop);
         let mut copy = self.position.clone();
-        w.tick(256)?;
+        w.check()?;
         let Some(p) = copy.piece(from) else {
-            return Ok(QueryResult {
-                value: vec![],
-                work_units: w.used,
-            });
+            return Ok(vec![]);
         };
         copy.state.side = p.side;
         let local = Self::install(copy);
@@ -395,18 +362,15 @@ impl LocalPosition {
                 effects,
             });
         }
-        Ok(QueryResult {
-            value,
-            work_units: w.used,
-        })
+        Ok(value)
     }
     fn choices(
         &self,
         from: Square,
         geometry: bool,
-        w: &mut Work<'_>,
+        w: &mut Cancellation<'_>,
     ) -> Result<Vec<Action>, ActionError> {
-        w.tick(1)?;
+        w.check()?;
         let Some(p) = self.position.piece(from) else {
             return Ok(vec![]);
         };
@@ -414,7 +378,7 @@ impl LocalPosition {
             return Ok(vec![]);
         }
         let mut base = self.position.clone();
-        w.tick(256)?;
+        w.check()?;
         base.state.side = p.side;
         let mut out = BTreeSet::new();
         for action in candidates(&base, from, p, w)? {
@@ -453,7 +417,7 @@ impl LocalPosition {
         action: &Action,
         mut stop: impl FnMut() -> bool,
     ) -> Result<(Self, Effects), ActionError> {
-        let mut w = Work::new(&mut stop);
+        let mut w = Cancellation::new(&mut stop);
         let (p, e) = resolve(&self.position, action, false, true, &mut w)?;
         Ok((Self::install(p), e))
     }
@@ -467,13 +431,12 @@ impl LocalPosition {
         action: &Action,
         mut stop: impl FnMut() -> bool,
     ) -> Result<(Effects, LocalUndo), ActionError> {
-        let mut w = Work::new(&mut stop);
-        let (after, mut effects) = resolve(&self.position, action, true, true, &mut w)?;
+        let mut w = Cancellation::new(&mut stop);
+        let (after, effects) = resolve(&self.position, action, true, true, &mut w)?;
         let revision = self.revision.checked_add(1).ok_or(ActionError::Capacity)?;
         let next = self.next_node.checked_add(1).ok_or(ActionError::Capacity)?;
         let branch = self.branch.checked_add(1).ok_or(ActionError::Capacity)?;
-        w.tick(512)?;
-        effects.work_units = w.used;
+        w.check()?;
         let token = LocalUndo {
             owner: self.owner.clone(),
             before: self.position.clone(),
@@ -549,19 +512,17 @@ impl LocalPosition {
         Ok((t.effects.clone(), undo))
     }
 }
-struct Work<'a> {
-    used: u64,
+struct Cancellation<'a> {
     stop: &'a mut dyn FnMut() -> bool,
 }
-impl<'a> Work<'a> {
+impl<'a> Cancellation<'a> {
     fn new(stop: &'a mut dyn FnMut() -> bool) -> Self {
-        Self { used: 0, stop }
+        Self { stop }
     }
-    fn tick(&mut self, n: u64) -> Result<(), ActionError> {
+    fn check(&mut self) -> Result<(), ActionError> {
         if (self.stop)() {
             return Err(ActionError::Stopped);
         }
-        self.used = self.used.checked_add(n).ok_or(ActionError::Capacity)?;
         Ok(())
     }
 }
@@ -748,19 +709,19 @@ fn candidates(
     p: &Position,
     from: Square,
     piece: Piece,
-    w: &mut Work<'_>,
+    w: &mut Cancellation<'_>,
 ) -> Result<Vec<Action>, ActionError> {
     let m = movement(piece.face(), p.profile());
     let mut out = BTreeSet::new();
     for &(df, dr) in m.steps.iter().chain(m.jumps) {
-        w.tick(1)?;
+        w.check()?;
         if let Some(to) = from.offset(piece.side, df, dr) {
             out.insert(Action::single(from, to));
         }
     }
     for &(df, dr) in m.limited {
         for n in 1..=2 {
-            w.tick(1)?;
+            w.check()?;
             let Some(to) = from.offset(piece.side, df * n, dr * n) else {
                 break;
             };
@@ -772,7 +733,7 @@ fn candidates(
     }
     for &(df, dr) in m.rays {
         for n in 1..=15 {
-            w.tick(1)?;
+            w.check()?;
             let Some(to) = from.offset(piece.side, df * n, dr * n) else {
                 break;
             };
@@ -789,7 +750,7 @@ fn candidates(
         Special::Lion => {
             for df in -2..=2 {
                 for dr in -2..=2 {
-                    w.tick(1)?;
+                    w.check()?;
                     if (df != 0 || dr != 0)
                         && let Some(to) = from.offset(piece.side, df, dr)
                     {
@@ -800,7 +761,7 @@ fn candidates(
             for &(df, dr) in A {
                 if let Some(mid) = from.offset(piece.side, df, dr) {
                     for &(f, r) in A {
-                        w.tick(1)?;
+                        w.check()?;
                         if let Some(to) = mid.offset(piece.side, f, r) {
                             let mut a = Action::single(from, mid);
                             a.route.push(to);
@@ -820,7 +781,7 @@ fn candidates(
                 &[(-1, -1), (1, -1)]
             };
             for &(df, dr) in dirs {
-                w.tick(1)?;
+                w.check()?;
                 if let Some(mid) = from.offset(piece.side, df, dr) {
                     out.insert(Action::single(from, mid));
                     let mut a = Action::single(from, mid);
@@ -839,7 +800,7 @@ fn candidates(
             for &(df, dr) in D {
                 if let Some(mid) = from.offset(piece.side, df, dr) {
                     for &(f, r) in D {
-                        w.tick(1)?;
+                        w.check()?;
                         if let Some(to) = mid.offset(piece.side, f, r) {
                             let mut a = Action::single(from, mid);
                             a.route.push(to);
@@ -851,7 +812,7 @@ fn candidates(
         }
         Special::Tetrarch => {
             for &(df, dr) in A {
-                w.tick(1)?;
+                w.check()?;
                 if let Some(target) = from.offset(piece.side, df, dr)
                     && p.piece(target).is_some_and(|q| q.side != piece.side)
                 {
@@ -859,7 +820,7 @@ fn candidates(
                 }
                 if dr == 0 {
                     for n in 2..=3 {
-                        w.tick(1)?;
+                        w.check()?;
                         let Some(to) = from.offset(piece.side, df * n, 0) else {
                             break;
                         };
@@ -870,7 +831,7 @@ fn candidates(
                     }
                 } else if df != 0 || p.profile() == Profile::MullerCompleted {
                     for n in 2..=15 {
-                        w.tick(1)?;
+                        w.check()?;
                         let Some(to) = from.offset(piece.side, df * n, dr * n) else {
                             break;
                         };
@@ -892,13 +853,13 @@ fn area_paths(
     side: Side,
     path: &mut Vec<Square>,
     out: &mut BTreeSet<Action>,
-    w: &mut Work<'_>,
+    w: &mut Cancellation<'_>,
 ) -> Result<(), ActionError> {
     if path.len() == 3 {
         return Ok(());
     }
     for &(df, dr) in A {
-        w.tick(1)?;
+        w.check()?;
         if let Some(to) = at.offset(side, df, dr) {
             path.push(to);
             out.insert(Action {
@@ -930,14 +891,14 @@ fn ray(
     piece: Piece,
     directions: &[(i8, i8)],
     mode: RayMode,
-    w: &mut Work<'_>,
+    w: &mut Cancellation<'_>,
 ) -> Result<bool, ActionError> {
     for &(df, dr) in directions {
-        w.tick(1)?;
+        w.check()?;
         if let Some(n) = line_distance(from, to, piece.side, df, dr) {
             let mut crossed = false;
             for i in 1..n {
-                w.tick(1)?;
+                w.check()?;
                 if matches!(mode, RayMode::SkipFirst) && i == 1 {
                     continue;
                 }
@@ -964,7 +925,12 @@ fn ray(
     }
     Ok(false)
 }
-fn geometry(p: &Position, piece: Piece, a: &Action, w: &mut Work<'_>) -> Result<bool, ActionError> {
+fn geometry(
+    p: &Position,
+    piece: Piece,
+    a: &Action,
+    w: &mut Cancellation<'_>,
+) -> Result<bool, ActionError> {
     let m = movement(piece.face(), p.profile());
     if a.kind == ActionKind::Igui {
         return Ok(matches!(m.special, Special::Tetrarch)
@@ -980,7 +946,7 @@ fn geometry(p: &Position, piece: Piece, a: &Action, w: &mut Work<'_>) -> Result<
             return Ok(false);
         }
         for &(df, dr) in m.steps.iter().chain(m.jumps) {
-            w.tick(1)?;
+            w.check()?;
             if a.from.offset(piece.side, df, dr) == Some(*to) {
                 return Ok(true);
             }
@@ -1001,7 +967,7 @@ fn geometry(p: &Position, piece: Piece, a: &Action, w: &mut Work<'_>) -> Result<
             return Ok(true);
         }
         for &(df, dr) in m.limited {
-            w.tick(1)?;
+            w.check()?;
             if let Some(n) = line_distance(a.from, *to, piece.side, df, dr)
                 && n <= 2
                 && ray(p, a.from, *to, piece, &[(df, dr)], RayMode::Ordinary, w)?
@@ -1052,7 +1018,7 @@ fn geometry(p: &Position, piece: Piece, a: &Action, w: &mut Work<'_>) -> Result<
     if matches!(m.special, Special::Area | Special::RankedArea) {
         let mut at = a.from;
         for &to in &a.route {
-            w.tick(1)?;
+            w.check()?;
             if at.distance(to) != 1 {
                 return Ok(false);
             }
@@ -1103,10 +1069,9 @@ fn resolve(
     a: &Action,
     advance: bool,
     promotion_rules: bool,
-    w: &mut Work<'_>,
+    w: &mut Cancellation<'_>,
 ) -> Result<(Position, Effects), ActionError> {
-    let start = w.used;
-    w.tick(1)?;
+    w.check()?;
     let before = p.piece(a.from).ok_or(ActionError::EmptySource)?;
     if before.side != p.side_to_move() {
         return Err(ActionError::WrongOwner);
@@ -1120,14 +1085,14 @@ fn resolve(
     if !geometry(p, before, a, w)? {
         return Err(ActionError::Geometry);
     }
-    w.tick(256)?;
+    w.check()?;
     let mut next = p.clone();
     let mut phases = vec![];
     let mut captured = false;
     let to = a.to().ok_or(ActionError::InvalidRoute)?;
     if a.kind == ActionKind::Igui {
         let target = a.target.ok_or(ActionError::InvalidRoute)?;
-        w.tick(1)?;
+        w.check()?;
         let victim = next.piece(target).ok_or(ActionError::EmptyTarget)?;
         if victim.side == before.side {
             return Err(ActionError::FriendlyDestination);
@@ -1148,7 +1113,7 @@ fn resolve(
             Special::Area | Special::RankedArea
         ) && a.route.len() > 1;
         for (i, &landing) in a.route.iter().enumerate() {
-            w.tick(1)?;
+            w.check()?;
             if let Some(victim) = next.piece(landing) {
                 if victim.side == before.side {
                     return Err(ActionError::FriendlyDestination);
@@ -1171,7 +1136,7 @@ fn resolve(
     }
     let mut hazardous = false;
     for &(df, dr) in A {
-        w.tick(1)?;
+        w.check()?;
         if let Some(s) = to.offset(Side::Sente, df, dr)
             && next
                 .piece(s)
@@ -1183,7 +1148,7 @@ fn resolve(
     if before.face() == Face::FiD && (!hazardous || p.profile() == Profile::AdamsModern) {
         let mut victims = vec![];
         for &(df, dr) in A {
-            w.tick(1)?;
+            w.check()?;
             if let Some(s) = to.offset(Side::Sente, df, dr)
                 && let Some(q) = next.piece(s)
                 && q.side != before.side
@@ -1263,7 +1228,6 @@ fn resolve(
             mover_before: before,
             mover_after: (!hazardous).then_some(after),
             phases,
-            work_units: w.used - start,
         },
     ))
 }

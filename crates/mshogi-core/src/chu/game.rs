@@ -7,8 +7,6 @@ use std::sync::atomic::{AtomicU64, Ordering};
 pub const MAX_GAME_EVENTS: usize = 512;
 /// Native commands and events are one-to-one.
 pub const MAX_GAME_COMMANDS: usize = MAX_GAME_EVENTS;
-/// Deterministic history/reply work bound; resource refusal is never an outcome.
-pub const MAX_REPLAY_WORK: u64 = 4_000_000;
 const RESERVED_EVENTS: usize = 1;
 static NEXT_INSTANCE: AtomicU64 = AtomicU64::new(1);
 
@@ -150,8 +148,6 @@ pub struct GameEvent {
     pub conclusion: Option<Conclusion>,
     /// Current actual draw offer.
     pub draw_offer: Option<Side>,
-    /// Accumulated deterministic native replay work.
-    pub replay_work: u64,
 }
 /// Immutable logical position/history view with no live command authority.
 /// Untrusted structural data cannot overwrite a native historical view:
@@ -241,8 +237,6 @@ pub enum Resource {
     EncodedBytes,
     /// Native events.
     Events,
-    /// Bounded deterministic work.
-    ReplayWork,
     /// Counter/runtime identity.
     Counter,
 }
@@ -287,8 +281,6 @@ pub struct CapacityUsage {
     pub encoded_bytes: usize,
     /// Native event count.
     pub events: usize,
-    /// Deterministic replay work.
-    pub replay_work: u64,
 }
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -313,7 +305,6 @@ struct GameData {
     plies: Vec<Ply>,
     snapshots: Vec<HistorySnapshot>,
     root_snapshot: HistorySnapshot,
-    work: u64,
 }
 /// Only the current local owner and append-only prefix lengths are needed for rollback.
 #[derive(Debug)]
@@ -323,7 +314,6 @@ struct Checkpoint {
     keys: usize,
     plies: usize,
     snapshots: usize,
-    work: u64,
 }
 /// Single-use LIFO reversal of every logical component/cache, never of runtime identity.
 #[derive(Debug)]
@@ -370,7 +360,6 @@ impl Game {
                 plies: self.data.plies.clone(),
                 snapshots: self.data.snapshots.clone(),
                 root_snapshot: self.data.root_snapshot.clone(),
-                work: self.data.work,
             },
             runtime: RuntimeToken {
                 instance,
@@ -430,7 +419,6 @@ impl Game {
                 plies: vec![],
                 snapshots: vec![],
                 root_snapshot: snapshot,
-                work: 1,
             },
             runtime: RuntimeToken {
                 instance,
@@ -564,15 +552,6 @@ impl Game {
             .filter_map(|(i, k)| (k == self.repetition_key()).then_some(i))
             .collect()
     }
-    fn charge(&mut self, n: u64) -> Result<(), GameError> {
-        self.data.work = self
-            .data
-            .work
-            .checked_add(n)
-            .filter(|w| *w <= MAX_REPLAY_WORK)
-            .ok_or(GameError::Capacity(Resource::ReplayWork))?;
-        Ok(())
-    }
     fn derive_obligations(&self, previous: &[Obligation]) -> Vec<Obligation> {
         let n = self.data.plies.len();
         let mut out: Vec<_> = previous
@@ -679,7 +658,6 @@ impl Game {
             keys: self.data.keys.len(),
             plies: self.data.plies.len(),
             snapshots: self.data.snapshots.len(),
-            work: self.data.work,
         }
     }
     fn restore(&mut self, before: Checkpoint) {
@@ -688,7 +666,6 @@ impl Game {
         self.data.keys.truncate(before.keys);
         self.data.plies.truncate(before.plies);
         self.data.snapshots.truncate(before.snapshots);
-        self.data.work = before.work;
     }
     fn commit(&mut self, actor: Side, command: GameCommand) -> Result<GameUndo, GameError> {
         self.commit_branch(actor, command, true)
@@ -737,7 +714,6 @@ impl Game {
             .branch
             .checked_add(u64::from(new_branch))
             .ok_or(GameError::Capacity(Resource::Counter))?;
-        self.charge(1)?;
         let previous = self.snapshot().clone();
         let mut next = previous.clone();
         let mut effects = None;
@@ -774,8 +750,6 @@ impl Game {
                     attack,
                 });
                 self.data.keys.push(key);
-                let n = self.data.keys.len() as u64;
-                self.charge(n * n)?;
                 next.occurrences = self.current_occurrences();
                 next.obligations = self.derive_obligations(&previous.obligations);
                 next.draw_offer = None;
@@ -828,7 +802,6 @@ impl Game {
             obligations: next.obligations.clone(),
             conclusion: next.conclusion,
             draw_offer: next.draw_offer,
-            replay_work: self.data.work,
         });
         self.data.snapshots.push(next);
         let reserved = matches!(command, GameCommand::Resign | GameCommand::AcceptDraw);
@@ -843,9 +816,6 @@ impl Game {
         let limit = MAX_GAME_EVENTS - if reserve { RESERVED_EVENTS } else { 0 };
         if self.events().len() > limit {
             return Err(GameError::Capacity(Resource::Events));
-        }
-        if self.data.work > MAX_REPLAY_WORK - if reserve { RESERVED_EVENTS as u64 } else { 0 } {
-            return Err(GameError::Capacity(Resource::ReplayWork));
         }
         Ok(())
     }
@@ -955,18 +925,13 @@ impl Game {
     pub(super) fn native_root(&self) -> &NativeRoot {
         &self.data.root
     }
-    /// Native-derived replay work, without encoding or mutating the game.
-    pub fn replay_work(&self) -> u64 {
-        self.data.work
-    }
-    /// Complete encoded native size, events and bounded work.
+    /// Complete encoded native size and events.
     pub fn capacity_usage(&self) -> Result<CapacityUsage, GameError> {
         Ok(CapacityUsage {
             encoded_bytes: super::record::encode(self)
                 .map_err(|_| GameError::Capacity(Resource::EncodedBytes))?
                 .len(),
             events: self.events().len(),
-            replay_work: self.data.work,
         })
     }
     /// Native turn-appropriate material exception replies, not general win search.
@@ -1003,14 +968,10 @@ impl Game {
                 }));
             }
         }
-        let mut threat_work = 0;
-        let threatened = mate
-            && royals(&self.data.local, side).len() == 1
-            && self.capture_all_counted(side, &mut threat_work)?;
-        self.charge(threat_work)?;
+        let threatened =
+            mate && royals(&self.data.local, side).len() == 1 && self.has_capture_all(side)?;
         if threatened {
             let replies = self.data.local.legal_actions();
-            self.charge(replies.len() as u64)?;
             let mut escaped = false;
             for action in replies {
                 if !self.history_permits(&action) {
@@ -1019,19 +980,16 @@ impl Game {
                 let before = self.checkpoint();
                 let result = (|| {
                     self.apply_for_reply(&action)?;
-                    let before_work = self.data.work;
                     let non_mate = self.adjudicate(false)?;
-                    let mut work = 0;
                     let captured = if non_mate.is_some() {
                         false
                     } else {
-                        self.capture_all_counted(side, &mut work)?
+                        self.has_capture_all(side)?
                     };
-                    Ok::<_, GameError>((non_mate, captured, self.data.work - before_work + work))
+                    Ok::<_, GameError>((non_mate, captured))
                 })();
                 self.restore(before);
-                let (non_mate, captured, work) = result?;
-                self.charge(work)?;
+                let (non_mate, captured) = result?;
                 if non_mate.is_some() || !captured {
                     escaped = true;
                     break;
@@ -1090,18 +1048,11 @@ impl Game {
     }
     /// A single admitted opponent action capturing all royals, not separate attacks/minimax.
     pub fn has_capture_all(&self, victim: Side) -> Result<bool, GameError> {
-        self.capture_all_counted(victim, &mut 0)
-    }
-    fn capture_all_counted(&self, victim: Side, work: &mut u64) -> Result<bool, GameError> {
         let targets = royals(&self.data.local, victim);
         if targets.is_empty() {
             return Ok(false);
         }
         let actions = self.data.local.legal_actions_for(victim.opponent());
-        *work = work
-            .checked_add(actions.len() as u64)
-            .filter(|w| *w <= MAX_REPLAY_WORK)
-            .ok_or(GameError::Capacity(Resource::ReplayWork))?;
         for action in actions {
             // A hypothetical future turn with the same placement must respect native history.
             // At actual replies the opponent is side-to-move; root threat is advisory geometry.
@@ -1132,7 +1083,6 @@ impl Game {
                 &self.data.plies,
                 &self.data.snapshots,
                 &self.data.root_snapshot,
-                self.data.work
             )
         )
     }
@@ -1188,27 +1138,6 @@ const _: () = assert!(
         + MAX_GAME_EVENTS * crate::record::MAX_COMPACT_COMMAND_BYTES
         <= MAX_GAME_RECORD_BYTES
 );
-
-#[cfg(test)]
-mod rollback_tests {
-    use super::*;
-    #[test]
-    fn late_work_refusal_restores_all_private_state() {
-        let mut game = Game::standard();
-        let action = game.legal_actions()[0].clone();
-        game.commit(Side::Sente, GameCommand::Play { action })
-            .unwrap();
-        game.data.work = MAX_REPLAY_WORK - 1;
-        let before = format!("{game:?}");
-        let action = game.legal_actions()[0].clone();
-        let result = game.commit(game.position().side_to_move(), GameCommand::Play { action });
-        assert!(matches!(
-            result,
-            Err(GameError::Capacity(Resource::ReplayWork))
-        ));
-        assert_eq!(format!("{game:?}"), before);
-    }
-}
 
 #[cfg(test)]
 mod attack_metadata_tests {

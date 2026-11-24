@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-23T22:01:00Z'
-updated_date: '2026-11-24T06:44:00Z'
+updated_date: '2026-11-24T06:54:00Z'
 labels:
   - chu
   - native
@@ -35,3 +35,13 @@ Remove the remaining artificial history-work limits and all runtime consumers ac
 <!-- SECTION:PLAN:BEGIN -->
 Remove counters and validation budgets, retain direct native validation and cancellation, check old record readers, test long games, review and integrate. Then resume Chu measurements.
 <!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+John clarified that this unreleased product has no backward-compatibility obligation. Removed the obsolete Tori schema-1 reader and its envelope path rather than retaining discarded work fields. No replacement work model. Native rule tests remain; compatibility-only tests and old migration fixtures are removed.
+
+John also explicitly authorized AGENTS.md to state ZERO backward compatibility obligations for files, APIs and protocols unless he names an exception. Updated that rule in place. Removed the old-child capability fallback added during MSH-213; measurements must use the current interface, not preserve a product compatibility path for an old test binary.
+
+Removal implemented: Chu/Tenjiku history charges and counters, Tenjiku local query/effect metering, record caches, validation work returns and UI diagnostics removed. Tori obsolete reader/envelope removed under explicit user direction. Real cancellation checks remain. 400-action Chu regression passes with replay and resignation. Fresh review found no product defect; fixture/doc findings fixed. Frontend597 tests and TypeScript pass; final Clippy passes; final workspace tests running. Branch codex/msh-236-remove-history-work contains the pending MSH-213 harness too.
+<!-- SECTION:NOTES:END -->

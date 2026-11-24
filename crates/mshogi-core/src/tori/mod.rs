@@ -34,8 +34,6 @@ pub use perft::{
 pub const PROFILE_ID: &str = "mshogi.tori.modern.v1";
 /// Selected immutable source/software edition.
 pub const PROFILE_EDITION: &str = "MSH208-MODERN-2026-11-20";
-/// Edition of schema-1 records, read by replay under the current rule.
-pub const PROFILE_EDITION_V1: &str = "MSH81-MODERN-2026-11-01";
 
 /// Native ownership and orientation, independent of other games.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Serialize, Deserialize)]

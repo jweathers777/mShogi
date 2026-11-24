@@ -353,7 +353,6 @@ fn rotated_effects(e: &Effects) -> Effects {
         mover_before: rotated_piece(e.mover_before),
         mover_after: e.mover_after.map(rotated_piece),
         phases,
-        work_units: 0,
     }
 }
 #[test]
@@ -376,9 +375,7 @@ fn owner_exchange_preserves_real_burn_phases_after_canonical_batch_sort() {
         submit(&mut b, Side::Gote, GameCommand::Play { action: rotated }).unwrap();
         let actual = b.events()[0].effects.as_ref().unwrap();
         let expected = rotated_effects(a.events()[0].effects.as_ref().unwrap());
-        let mut actual = actual.clone();
-        actual.work_units = 0;
-        assert_eq!(actual, expected);
+        assert_eq!(actual, &expected);
         let expected_board = a
             .position()
             .pieces()

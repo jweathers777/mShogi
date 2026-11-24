@@ -70,7 +70,7 @@ fn execute(c: &ExecutionContext) -> ExecutionObservation {
     .observation
 }
 #[test]
-fn compound_result_native_replay_work_and_atomic_validation() {
+fn compound_result_native_replay_and_atomic_validation() {
     let g = game();
     let before = c::GameRecord::from_game(&g).unwrap();
     let ctx = context(&g);
@@ -80,14 +80,13 @@ fn compound_result_native_replay_work_and_atomic_validation() {
         panic!()
     };
     result.validate(&g).unwrap();
-    let work = result.validate_with_work(&g, &mut || false).unwrap();
-    assert!(result.validate_with_work(&g, &mut || true).is_err());
+    result.validate_with_stop(&g, &mut || false).unwrap();
+    assert!(result.validate_with_stop(&g, &mut || true).is_err());
     assert_eq!(c::GameRecord::from_game(&g).unwrap(), before);
     let ChuResult::Choice { action, telemetry } = &result else {
         panic!()
     };
     let mut branch = before.to_game().unwrap();
-    let start = branch.replay_work();
     for action in &telemetry.principal_variation {
         branch
             .submit(c::GameRequest {
@@ -99,7 +98,6 @@ fn compound_result_native_replay_work_and_atomic_validation() {
             })
             .unwrap();
     }
-    assert_eq!(work, branch.replay_work() - start);
     assert_eq!(action.route.len(), 2);
     assert_eq!(telemetry.perspective, c::Side::Sente);
     assert_eq!(telemetry.score, Some(mshogi_search::chu::WIN_SCORE - 1));
@@ -363,9 +361,8 @@ fn bounded_standard_progression_has_both_sides_real_legal_choices_and_exact_reco
     let round: Vec<ExecutionObservation> = serde_json::from_slice(&bytes).unwrap();
     assert_eq!(round, observations);
     eprintln!(
-        "12-ply standard Chu smoke: native_bytes={} observation_bytes={} native_work={}",
+        "12-ply standard Chu smoke: native_bytes={} observation_bytes={}",
         c::GameRecord::from_game(&g).unwrap().as_json().len(),
-        bytes.len(),
-        g.replay_work()
+        bytes.len()
     );
 }

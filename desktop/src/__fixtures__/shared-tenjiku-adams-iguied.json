@@ -489,8 +489,7 @@
               }
             }
           }
-        ],
-        "work_units": 778
+        ]
       }
     },
     "live": {
@@ -911,8 +910,7 @@
               }
             }
           }
-        ],
-        "work_units": 778
+        ]
       }
     },
     "execution_supported": true

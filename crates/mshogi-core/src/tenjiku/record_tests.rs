@@ -26,7 +26,6 @@ fn both_profiles_replay_actual_commands_metadata_and_fresh_authority() {
         assert_eq!(record.known_board_actions(), 0);
         assert_eq!(record.side_to_move(), Side::Sente);
         assert_eq!(record.conclusion(), game.snapshot().conclusion);
-        assert_eq!(record.reconstruction_work(), game.replay_work());
         let decoded = GameRecord::from_json(record.to_json()).unwrap();
         assert_eq!(decoded, record);
         let restored = decoded.to_game().unwrap();

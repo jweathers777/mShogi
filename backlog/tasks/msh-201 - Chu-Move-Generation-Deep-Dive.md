@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-19T07:12:00Z'
-updated_date: '2026-11-24T16:40:00Z'
+updated_date: '2026-11-24T17:00:00Z'
 labels:
   - chu
   - search
@@ -65,4 +65,6 @@ Combined candidate source79c2409 is pushed. Fresh review found no issue in the s
 Final combined source79c2409 build succeeded; build job/VM/disks deleted, conservative compute upper bound US$0.132. Final local fmt/Clippy pass; workspace1188 passed/12 ignored/0 failed. Final same-VM benchmark,64 native signatures and both tactical suites are active in msh213-msh201-finalcompare, GCS runs/msh-201/comparison-final. No further code changes planned unless measurements or review find an issue.
 
 Final combined source79c2409:18 depth5 searches have identical107238 nodes and complete outcomes, plus64 identical native fixed-work results. Same-VM B-A-B comparison: baseline0.706006s versus candidate0.596408s (sum of per-position medians;10 baseline and5 candidate repeats),151894 versus179806 nodes/s,18.4% throughput gain/15.5% time reduction. Both builds315/315 elementary tactics+80 igui and69/71 forcing, with no changed failures. Final comparison and all prior build/profile jobs are cleaned; conservative compute upper bounds totalUS$0.637 before games. First prespecified64-pair campaign is starting: msh213-msh201-match-1, GCS runs/msh-201/match-1. No further optimization is planned.
+
+First game sample completed: 49 launched pairs,44 fully scored (48 wins/40 losses/0 draws), pentanomial[10,0,20,0,14], SPRT LLR0.251/no decision. Five pairs unscored: seeds6,12,23,53,62 each include one1000-step experiment cutoff; all93 native conclusions and all reports retained/replayed. No engine errors. Batch marks cutoff-stopped bins failed by design; job,VMs,disks verified absent. Compute upper boundUS$0.471 (task totalUS$1.108 before second sample). Starting prespecified seeds65..128, same settings, msh213-msh201-match-2; pooled decision after completion. Branch codex/msh-201-chu-search-speed.
 <!-- SECTION:NOTES:END -->

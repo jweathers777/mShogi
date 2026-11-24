@@ -1066,10 +1066,6 @@ impl SearchPosition for ChuPosition {
             &mut work,
         ) != Some(true)
     }
-    fn quiet_order(&self, m: Move) -> i32 {
-        let c = self.board.cells[m.from()];
-        16 * (Board::placement(c, m.to()) - Board::placement(c, m.from()))
-    }
     fn history_slot(&self, m: Move) -> usize {
         (usize::from(self.board.cells[m.from()]) - 1) * N + m.to()
     }

@@ -38,6 +38,13 @@ retain every route. Search generation first applies native root restrictions,
 then retains the first route for each exactly equal successor, including Lion
 rights. It checks full state when hashes match.
 
+The shared continuous-check df-pn solver stays disabled for Chu. It proves mate
+when the checked defender has no legal reply and excludes positions decided by
+`rule_score`. Chu admits replies that ignore a royal threat and handles royal
+capture through `rule_score`, so that solver's terminal contract does not fit.
+Alpha-beta handles those capture threats. Selectivity margins use one Pawn
+(100 evaluation units); captured pieces do not also enter a hand.
+
 `chu_bench` measures fixed-depth searches from frozen native records, with fresh
 tables for each repeat. A separate wrapper times generation/admission,
 make/threat checks, unmake, rule/threat checks and exchange evaluation. It asserts

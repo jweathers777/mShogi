@@ -11,10 +11,6 @@ use std::{
     sync::atomic::{AtomicU64, Ordering},
 };
 
-/// Native bound includes commands whose claims were semantically rejected.
-pub const MAX_GAME_COMMANDS: usize = 512;
-/// Separate board, warning, request, rejection and conclusion events are counted.
-pub const MAX_GAME_EVENTS: usize = 2048;
 static NEXT_INSTANCE: AtomicU64 = AtomicU64::new(1);
 /// Initial unattended software policy, independent of native claim eligibility.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
@@ -865,11 +861,6 @@ impl Game {
             event_end: candidate.events.len(),
         });
         let terminal = candidate.conclusion.is_some();
-        let command_limit = MAX_GAME_COMMANDS - usize::from(!terminal);
-        let event_limit = MAX_GAME_EVENTS - if terminal { 0 } else { 4 };
-        if candidate.commands.len() > command_limit || candidate.events.len() > event_limit {
-            return Err(GameError::Capacity);
-        }
         let encoded = super::record::GameRecord::encoded_candidate(&candidate)
             .map_err(|_| GameError::Capacity)?;
         if !terminal && encoded.len() > super::record::MAX_GAME_RECORD_BYTES - 4096 {

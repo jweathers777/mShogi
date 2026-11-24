@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-23T22:01:00Z'
-updated_date: '2026-11-24T07:07:00Z'
+updated_date: '2026-11-24T07:24:00Z'
 labels:
   - chu
   - native
@@ -20,7 +20,7 @@ ordinal: 243000
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-Remove the remaining artificial history-work limits and all runtime consumers across all six games. John explicitly authorized this on 2026-11-24 after the surviving Chu limit blocked MSH-213. Keep real cancellation, process timeouts, game rules and saved-record compatibility; do not introduce another work model.
+Remove the remaining artificial history-work limits and all runtime consumers across all six games, including command/event history quotas. John explicitly authorized removal after these limits blocked MSH-213. Keep real cancellation, process timeouts and game rules; do not introduce another work model. This unreleased application has no backward-compatibility obligations unless John explicitly names an exception.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
@@ -46,4 +46,8 @@ John also explicitly authorized AGENTS.md to state ZERO backward compatibility o
 Removal implemented: Chu/Tenjiku history charges and counters, Tenjiku local query/effect metering, record caches, validation work returns and UI diagnostics removed. Tori obsolete reader/envelope removed under explicit user direction. Real cancellation checks remain. 400-action Chu regression passes with replay and resignation. Fresh review found no product defect; fixture/doc findings fixed. Frontend597 tests and TypeScript pass; final Clippy passes; final workspace tests running. Branch codex/msh-236-remove-history-work contains the pending MSH-213 harness too.
 
 Final native/source4f6f07e checks: fmt/Clippy pass, workspace1190 passed/12 ignored/0 failed; frontend597 tests and TypeScript pass; harness examples6 pass; Python169 run/1 skipped. Final fresh review also approved removal of old Tori migration and old-child fallback. Cloud standard games now complete at416/438/427/114 moves;64 fixed-work results match the former30e08e4 binary. Cloud build completed in153.6s on c3-standard-4 with cleanup verified. Linux process CI45343902716 passed; macOS/Windows still running. Full post-removal game sample active under MSH-213/sample-1. AGENTS.md now explicitly states zero backward compatibility unless John names an exception.
+
+The larger cloud sample exposed a second leftover: the separate Chu512-event quota. Removing artificial command/event history quotas and their consumers across all six games as part of the same cleanup. Shogi native320-board-action ending remains unchanged; actual record/document byte bounds, cancellation and elapsed deadlines remain. New long-history regressions cross the former event quotas. No replacement work model or higher history allowance is introduced. Initial work-only sample remains diagnostic, not the final baseline.
+
+Checkpoint: removed the remaining command/event quotas across all games; retained actual encoded-byte bounds and the Shogi 320-board-action rule. Console candidates now validate their full encoded record before publication. Final tests and review are in progress. The work-only sample failed on the old event quota; all eight cloud tasks and their VMs/disks are verified absent. Next: commit reviewed removal, rebuild current binaries and run the final MSH-213 sample. Branch codex/msh-236-remove-history-work.
 <!-- SECTION:NOTES:END -->

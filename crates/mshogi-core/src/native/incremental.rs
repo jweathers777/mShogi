@@ -225,7 +225,7 @@ mod tests {
         assert!(GameDelta::from_json(&value.to_string()).is_err());
         let mut value: Value = serde_json::from_str(&text).unwrap();
         value["start_event"] = serde_json::json!(322);
-        assert!(GameDelta::from_json(&value.to_string()).is_err());
+        assert!(GameDelta::from_json(&value.to_string()).is_ok());
         let mut game = Game::new();
         play(&mut game, "7g7f");
         let text = GameRecord::from_game(&game)

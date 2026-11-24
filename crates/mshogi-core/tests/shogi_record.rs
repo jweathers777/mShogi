@@ -3,7 +3,7 @@
 
 use mshogi_core::shogi::{
     Conclusion, CounterSource, Game, GameCommand, GameRecord, GameRequest, GameRoot, INITIAL_SFEN,
-    MAX_RECORD_BYTES, MAX_RECORD_EVENTS, Position, RecordError, RootCategory, Side, WinReason,
+    MAX_RECORD_BYTES, Position, RecordError, RootCategory, Side, WinReason,
 };
 use serde_json::{Value, json};
 
@@ -390,18 +390,9 @@ fn strict_decode_rejects_duplicate_unknown_missing_and_unsupported_fields() {
 }
 
 #[test]
-fn byte_and_event_capacity_are_bounded_without_truncation() {
+fn record_byte_capacity_is_bounded_without_truncation() {
     assert_eq!(
         GameRecord::from_json(&" ".repeat(MAX_RECORD_BYTES + 1)),
-        Err(RecordError::Capacity)
-    );
-    let mut game = Game::new();
-    play(&mut game, "7g7f");
-    let mut bad = value(&game);
-    let event = bad["events"][0].clone();
-    bad["events"] = Value::Array(vec![event; MAX_RECORD_EVENTS + 1]);
-    assert_eq!(
-        GameRecord::from_json(&bad.to_string()),
         Err(RecordError::Capacity)
     );
 }

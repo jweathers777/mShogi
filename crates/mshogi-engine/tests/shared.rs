@@ -489,7 +489,7 @@ fn composed_size_evidence_counts_native_wrapper_request_and_echoed_response() {
         "shogi 320 events: native={native_bytes}, envelope={envelope}, request={frame}, response={echoed}"
     );
     let mut record = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record();
-    for _ in 0..MAX_SHARED_CHESS_EVENTS {
+    for _ in 0..4100 {
         record.push_event(RecordEvent {
             ply: 0,
             kind: RecordEventKind::Observation(MatchObservation::Clock {
@@ -521,7 +521,7 @@ fn composed_size_evidence_counts_native_wrapper_request_and_echoed_response() {
     assert!(frame < MAX_REQUEST_BYTES);
     assert!(echoed < MAX_RESPONSE_BYTES);
     println!(
-        "chess 4096 max-counter clock observations: envelope={envelope}, request={frame}, response={echoed}"
+        "chess 4100 max-counter clock observations: envelope={envelope}, request={frame}, response={echoed}"
     );
     // Construct syntactically strict native data whose wrapper fits but its
     // enclosing request does not. Whitespace belongs to actual input bytes.

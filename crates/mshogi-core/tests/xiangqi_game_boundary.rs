@@ -225,20 +225,14 @@ fn every_record_field_is_required_and_native_raw_payloads_reject_duplicates() {
 }
 
 #[test]
-fn saveability_survives_audit_capacity_and_retains_reserved_native_close_path() {
+fn long_command_history_can_continue_replay_and_close() {
     let mut game = Game::standard(ClaimPolicy::Explicit).unwrap();
-    for _ in 0..MAX_GAME_COMMANDS - 1 {
+    for _ in 0..600 {
         let result = submit(&mut game, Side::Red, GameCommand::ClaimNaturalCount).unwrap();
         assert_eq!(result.result, CommandResult::RejectedNaturalCount);
     }
     let full = record(&game);
-    let context = game.context();
-    assert_eq!(
-        submit(&mut game, Side::Black, GameCommand::ClaimNaturalCount).unwrap_err(),
-        GameError::Capacity
-    );
-    assert_eq!(game.context(), context);
-    assert_eq!(record(&game), full);
+    submit(&mut game, Side::Black, GameCommand::ClaimNaturalCount).unwrap();
     assert_eq!(GameRecord::from_json(&full).unwrap().to_json(), full);
     submit(&mut game, Side::Black, GameCommand::Resign).unwrap();
     assert!(matches!(
@@ -259,13 +253,6 @@ fn saveability_survives_audit_capacity_and_retains_reserved_native_close_path() 
     assert!(GameRecord::from_json(&padded).is_ok());
     assert_eq!(
         GameRecord::from_json(&(padded + " ")),
-        Err(RecordError::Capacity)
-    );
-    let mut v: Value = serde_json::from_str(&full).unwrap();
-    let c = v["commands"][0].clone();
-    v["commands"] = Value::Array(vec![c; MAX_GAME_COMMANDS + 1]);
-    assert_eq!(
-        GameRecord::from_json(&v.to_string()),
         Err(RecordError::Capacity)
     );
 }

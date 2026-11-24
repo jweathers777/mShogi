@@ -23,9 +23,8 @@ mod record;
 pub use conduct::FaultKind;
 pub use game::{
     ClaimPolicy, CommandResult, Conclusion, DrawReason, EventKind, Game, GameCommand, GameContext,
-    GameError, GameEvent, GameRequest, GameUndo, HistorySnapshot, MAX_GAME_COMMANDS,
-    MAX_GAME_EVENTS, NaturalCountEligibility, PendingAdjudication, RuntimeToken, Submission,
-    Warning, WinReason,
+    GameError, GameEvent, GameRequest, GameUndo, HistorySnapshot, NaturalCountEligibility,
+    PendingAdjudication, RuntimeToken, Submission, Warning, WinReason,
 };
 pub use record::{GAME_RECORD_SCHEMA_VERSION, GameRecord, MAX_GAME_RECORD_BYTES, RecordError};
 mod legal;

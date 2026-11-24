@@ -1,48 +1,21 @@
-# Compact native record bounds
+# Native record admission
 
-Tori, Chu and Tenjiku save a complete immutable root followed by actor/command
-pairs. Derived effects and outcomes are reconstructed during native replay.
-Ordinary command admission does not serialize the history or build hypothetical
-resignations to measure file size.
+Games have no synthetic history-work budget or arbitrary command/event quota.
+Rule-based endings remain native rules, including Standard Shogi's selected
+move-count rule. Operational cancellation or resource refusal is not a result.
 
-The compact record header and root must fit 64 KiB. Root admission checks this
-once. Roots contain at most 256 cells, fixed-size piece fields and counters,
-bounded hands or Lion protection, and at most 1,024 source bytes. JSON escaping
-can expand those source bytes to 6,144 bytes. The maximum board representation
-and metadata remain below 64 KiB. Tests overfill the board with every piece kind,
-maximum integer fields and escaped source text to check the wire bound.
-
-Each recorded command, including its separating comma, fits 256 bytes. Commands
-contain fixed tags, one actor and a bounded action: Tori has a move or drop, Chu
-has at most two landings, and Tenjiku has at most three landings or one igui target.
-Wire tests cover each command shape with the longest coordinate and enum fields.
-Native legality rejects malformed or longer routes before they enter history.
-
-| Game | Event limit | Maximum compact bytes | Record limit |
-| --- | ---: | ---: | ---: |
-| Tori | 1,024 | 327,680 | 524,288 |
-| Chu | 512 | 196,608 | 524,288 |
-| Tenjiku | 1,024 | 327,680 | 1,048,576 |
-
-The upper bound is `65,536 + event_limit * 256`. Compile-time assertions check
-that it fits each native record limit. Ordinary commands leave one event for
-resignation as required by native admission. Input and output byte limits still
-apply at record boundaries. An explicit capacity diagnostic computes the actual
-encoded size; it is not part of ordinary command admission.
-
-Native history and engine-result validation have no synthetic work counters or
-work quotas. Validation replays the actual commands and checks cancellation;
-the desktop worker and child-process supervisor enforce elapsed-time deadlines.
-A cancellation or resource refusal is never a game result.
+Tori, Chu and Tenjiku store an immutable root followed by actor/command pairs.
+Effects, history-dependent rights and outcomes are reconstructed by replay.
+Input and output byte limits apply to actual encoded records at the record and
+document boundaries. Root admission checks its encoded bytes once. Ordinary
+commands do not encode hypothetical endings or predict future size from a
+per-command allowance. Desktop admission checks the resulting document before
+publishing a change. Cancellation checks and elapsed-time deadlines keep file
+validation and engine processes interruptible.
 
 A private transaction holds the original local owner and the lengths of
-append-only history vectors. It works on a local copy. On failure, it restores
-the original owner and truncates appended history before returning. Runtime
-identity changes are published only after all fallible checks. Chu reply queries
-use the same rollback rule. Undo tokens retain a prefix checkpoint or index;
-redo retains the command and stable history nodes. Runtime authority advances
-through reversal, so old requests cannot become live again.
-
-Captured public contexts still contain exact history for identity comparison.
-Forks and explicit historical records can also copy history. Those operations
-are distinct from the private admission and reversal transactions.
+append-only history vectors. On failure it restores the owner and truncates
+appended history. Runtime identity changes are published only after the fallible
+checks. Undo tokens retain a prefix checkpoint or index; redo retains the command
+and history nodes. Forks and explicit historical records can copy history for
+private analysis without granting permission to change the live game.

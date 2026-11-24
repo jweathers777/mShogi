@@ -144,7 +144,7 @@ impl Session {
                     candidate.undo.push(undo);
                     labels.push(label);
                 }
-                *self = candidate;
+                record_io::install(self, candidate, Self::record_json)?;
                 for label in labels {
                     writeln!(out, "played {label}").unwrap();
                 }
@@ -291,17 +291,19 @@ impl Session {
         Ok(Next::Continue)
     }
     fn submit(&mut self, actor: t::Side, command: t::GameCommand) -> Result<(), String> {
-        self.undo.push(
-            self.game
-                .submit(t::GameRequest {
-                    expected: self.game.context(),
-                    actor,
-                    command,
-                })
-                .map_err(diagnostic)?,
-        );
-        self.stopped = None;
-        Ok(())
+        let mut candidate =
+            Self::restored(&t::GameRecord::from_game(&self.game).map_err(diagnostic)?)?;
+        let undo = candidate
+            .game
+            .submit(t::GameRequest {
+                expected: candidate.game.context(),
+                actor,
+                command,
+            })
+            .map_err(diagnostic)?;
+        candidate.undo.push(undo);
+        candidate.stopped = None;
+        record_io::install(self, candidate, Self::record_json)
     }
     fn record_json(&self) -> Result<String, String> {
         CanonicalRecord::tori(t::GameRecord::from_game(&self.game).map_err(diagnostic)?)

@@ -82,7 +82,7 @@ impl GameRecord {
     /// Encode all accepted native semantics without truncation.
     pub fn from_game(g: &Game) -> Result<Self, RecordError> {
         let json = encode(g)?;
-        if json.len() > MAX_GAME_RECORD_BYTES || g.events().len() > MAX_GAME_EVENTS {
+        if json.len() > MAX_GAME_RECORD_BYTES {
             return Err(RecordError::Capacity);
         }
         Ok(Self {
@@ -179,9 +179,7 @@ impl GameRecord {
         {
             return Err(RecordError::Identity);
         }
-        if w.events.len() > MAX_GAME_EVENTS {
-            return Err(RecordError::Capacity);
-        }
+
         let mut game = Game::from_native_root(w.root).map_err(|e| {
             if matches!(e, GameError::Capacity(_)) {
                 RecordError::Capacity
@@ -260,7 +258,7 @@ impl GameDelta {
             .0
             .start_event
             .checked_add(self.0.events.len())
-            .is_none_or(|n| n > MAX_GAME_EVENTS)
+            .is_none()
         {
             return Err(RecordError::Capacity);
         }
@@ -363,7 +361,7 @@ fn strict(text: &str, limit: usize) -> Result<(), RecordError> {
 #[cfg(test)]
 mod compact_bounds {
     use super::*;
-    use crate::record::{MAX_COMPACT_COMMAND_BYTES, MAX_COMPACT_ROOT_BYTES};
+    use crate::record::MAX_COMPACT_ROOT_BYTES;
 
     #[test]
     fn maximal_wire_fields_fit_compact_bounds() {
@@ -382,26 +380,6 @@ mod compact_bounds {
                 144
             ];
             assert!(serde_json::to_vec(&wire).unwrap().len() <= MAX_COMPACT_ROOT_BYTES);
-        }
-        let square = Square::new(12, 12).unwrap();
-        for command in [
-            GameCommand::Play {
-                action: Action {
-                    from: square,
-                    route: vec![square; 2],
-                    promote: false,
-                },
-            },
-            GameCommand::Resign,
-            GameCommand::OfferDraw,
-            GameCommand::AcceptDraw,
-            GameCommand::DeclineDraw,
-        ] {
-            let event = RecordedCommand {
-                actor: Side::Sente,
-                command,
-            };
-            assert!(serde_json::to_vec(&event).unwrap().len() < MAX_COMPACT_COMMAND_BYTES);
         }
     }
 }

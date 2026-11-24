@@ -508,12 +508,6 @@ fn strict_record_all_fields_nested_duplicates_missing_tampering_and_resources() 
     let mut v = original.clone();
     v["root"]["historical_reachability_proven"] = json!(true);
     assert!(GameRecord::from_json(&v.to_string()).is_err());
-    let mut v = original.clone();
-    v["events"] = json!(vec![original["events"][0].clone(); MAX_GAME_EVENTS + 1]);
-    assert_eq!(
-        GameRecord::from_json(&v.to_string()).unwrap_err(),
-        RecordError::Capacity
-    );
     let small = record(&Game::standard());
     let padded = format!(
         "{}{}",
@@ -555,7 +549,7 @@ fn counter_refusal_is_unscored_saveable_and_does_not_manufacture_no_actions() {
     submit(&mut g, Side::Gote, GameCommand::Resign).unwrap();
 }
 #[test]
-fn long_deterministic_real_history_reaches_admission_bound_and_retains_resign_headroom() {
+fn long_deterministic_real_history_replays_and_remains_closable() {
     // Fixed-seed ordinary complete legal moves, favouring previously unseen keys
     // to exercise a long real game rather than a fabricated event array.
     let mut g = Game::standard();
@@ -564,28 +558,16 @@ fn long_deterministic_real_history_reaches_admission_bound_and_retains_resign_he
     let mut accepted = 0;
     let mut snapshots = vec![g.cache_snapshot()];
     let mut undos = vec![];
-    loop {
+    for _ in 0..1040 {
         let action = choose_live(&g, &mut seed);
-        let before = g.context();
-        let bytes = record(&g);
-        match play(&mut g, action) {
-            Ok(u) => {
-                accepted += 1;
-                undos.push(u);
-                snapshots.push(g.cache_snapshot());
-                assert_eq!(g.events().len(), accepted);
-                assert_eq!(g.position().declared_total_plies(), accepted as u64);
-            }
-            Err(GameError::Capacity(Resource::Events)) => {
-                assert_eq!(before, g.context());
-                assert_eq!(bytes, record(&g));
-                break;
-            }
-            Err(e) => panic!("unexpected admission error:{e:?}"),
-        }
+        let u = play(&mut g, action).unwrap();
+        accepted += 1;
+        undos.push(u);
+        snapshots.push(g.cache_snapshot());
+        assert_eq!(g.events().len(), accepted);
+        assert_eq!(g.position().declared_total_plies(), accepted as u64);
     }
-    // MSH-208: no replay-work count; the event bound reserves Resign.
-    assert_eq!(accepted, MAX_GAME_EVENTS - 1);
+    assert_eq!(accepted, 1040);
     let captures = g
         .events()
         .iter()

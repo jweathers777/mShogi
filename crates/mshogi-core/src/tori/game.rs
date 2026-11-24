@@ -4,17 +4,6 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::sync::atomic::{AtomicU64, Ordering};
 
-/// Total committed commands/events, including reserved concluding administration.
-pub const MAX_GAME_COMMANDS: usize = 1024;
-/// One atomic native event per accepted command; derived facts are in that event.
-pub const MAX_GAME_EVENTS: usize = 1024;
-// Every supported command prefix, including its reserved resignation, fits.
-const _: () = assert!(
-    crate::record::MAX_COMPACT_ROOT_BYTES
-        + MAX_GAME_EVENTS * crate::record::MAX_COMPACT_COMMAND_BYTES
-        <= MAX_GAME_RECORD_BYTES
-);
-
 static NEXT_INSTANCE: AtomicU64 = AtomicU64::new(1);
 
 /// Identity for repetition only: every native face/owner, both hands and turn.
@@ -200,8 +189,6 @@ pub struct GameRequest {
 pub enum Resource {
     /// Complete encoded native bytes.
     EncodedBytes,
-    /// Native command/event count.
-    Events,
     /// Counter or monotonic native authority exhausted.
     Counter,
 }
@@ -644,11 +631,6 @@ impl Game {
             repetition,
             conclusion,
         });
-        let remaining = match command {
-            GameCommand::Play { .. } if conclusion.is_none() => 1,
-            _ => 0,
-        };
-        check_capacity(self.events.len(), remaining)?;
         let undo = GameUndo {
             instance: self.runtime.instance,
             before_node: self.node,
@@ -775,54 +757,5 @@ fn board_conclusion(status: LocalStatus, side: Side) -> Option<Conclusion> {
         }),
         LocalStatus::QuietNoAction => Some(Conclusion::StalemateLoss { loser: side }),
         _ => None,
-    }
-}
-
-fn check_capacity(events: usize, reserve: usize) -> Result<(), GameError> {
-    if events + reserve > MAX_GAME_EVENTS {
-        return Err(GameError::Capacity(Resource::Events));
-    }
-    Ok(())
-}
-
-#[cfg(test)]
-mod capacity_tests {
-    use super::*;
-    #[test]
-    fn event_limit_includes_reserved_resignation() {
-        for reserve in 0..=1 {
-            assert_eq!(check_capacity(MAX_GAME_EVENTS - reserve, reserve), Ok(()));
-            assert_eq!(
-                check_capacity(MAX_GAME_EVENTS - reserve + 1, reserve),
-                Err(GameError::Capacity(Resource::Events))
-            );
-        }
-    }
-}
-
-#[cfg(test)]
-mod rollback_tests {
-    use super::*;
-
-    #[test]
-    fn late_event_limit_refusal_restores_all_private_state() {
-        let mut game = Game::standard();
-        let action = game.legal_actions()[0];
-        game.commit(Side::Sente, GameCommand::Play { action }, true)
-            .unwrap();
-        // Inject exhaustion after a real accepted prefix. The next move must
-        // roll back local caches and all appended history/index data.
-        game.events.resize(MAX_GAME_EVENTS, game.events[0].clone());
-        game.snapshots
-            .resize(MAX_GAME_EVENTS, game.snapshots[0].clone());
-        let before = format!("{game:?}");
-        let action = game.legal_actions()[0];
-        let error = game.commit(
-            game.position().side_to_move(),
-            GameCommand::Play { action },
-            true,
-        );
-        assert!(matches!(error, Err(GameError::Capacity(Resource::Events))));
-        assert_eq!(format!("{game:?}"), before);
     }
 }

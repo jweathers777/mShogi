@@ -329,9 +329,9 @@ fn native_owners_admit_claims_declarations_and_resignation_without_shared_turn_r
 }
 
 #[test]
-fn record_byte_event_and_diagnostic_bounds_are_explicit() {
+fn record_byte_and_diagnostic_bounds_are_explicit() {
     let mut record = c::AdjudicatedGame::new(c::ClaimPolicy::ExplicitOnly).record();
-    for _ in 0..MAX_SHARED_CHESS_EVENTS {
+    for _ in 0..4100 {
         record.push_event(c::RecordEvent {
             ply: 0,
             kind: c::RecordEventKind::Observation(c::MatchObservation::Clock {
@@ -345,11 +345,6 @@ fn record_byte_event_and_diagnostic_bounds_are_explicit() {
     let text = native.to_json().unwrap();
     assert!(text.len() < MAX_RECORD_ENVELOPE_BYTES);
     assert_eq!(CanonicalRecord::from_json(&text).unwrap(), native);
-    record.push_event(record.events()[0].clone());
-    let oversized = CanonicalRecord::chess(record);
-    assert_eq!(oversized.to_json(), Err(EnvelopeError::Capacity));
-    assert!(serde_json::to_string(&oversized).is_err());
-    assert!(serde_json::to_string_pretty(&oversized).is_err());
     assert_eq!(
         CanonicalRecord::from_json(&" ".repeat(MAX_RECORD_ENVELOPE_BYTES + 1)),
         Err(EnvelopeError::Capacity)

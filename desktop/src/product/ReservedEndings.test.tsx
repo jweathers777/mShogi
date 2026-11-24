@@ -14,8 +14,8 @@ const fixtures = [chess, shogi, xiangqi, tori, chu] as unknown as GameSnapshot[]
 function paused(fixture: GameSnapshot) {
   const snapshot = structuredClone(fixture);
   snapshot.capacity = { id: 7, status: "paused", message: "Ordinary work cannot be saved within capacity.",
-    resource: { fact: { category: "native_events", measurement: "candidate", count: 8192, reserved: 1, limit: 8192,
-      scope: snapshot.game, unit: "events" }, diagnostic: "Native control limit; reserved endings remain." } };
+    resource: { fact: { category: "canonical_record_bytes", measurement: "candidate", count: 8192, reserved: 1, limit: 8192,
+      scope: snapshot.game, unit: "bytes" }, diagnostic: "Native control limit; reserved endings remain." } };
   return snapshot;
 }
 function app(snapshot: GameSnapshot, busy = false, blocked = false) {

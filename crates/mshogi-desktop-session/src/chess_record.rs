@@ -82,11 +82,7 @@ impl ChessRecord {
                 "Full adjudication restoration is unsupported by untimed desktop play.",
             ));
         }
-        if initial.events().len().saturating_add(self.commands.len()) > crate::MAX_ARCHIVE_EVENTS {
-            return Err(RecordFailure::Capacity(
-                "Application limit reached: Chess history exceeds 4096 events.".into(),
-            ));
-        }
+
         let live = AdjudicatedGame::replay_record_with_stop(&initial, &mut *stop);
         check(stop)?;
         let mut game =
@@ -117,17 +113,7 @@ impl ChessRecord {
         stop: &mut impl FnMut() -> bool,
     ) -> Result<Self, RecordFailure> {
         let mut game = self.replay(stop)?;
-        if self
-            .initial_record()?
-            .events()
-            .len()
-            .saturating_add(self.commands.len())
-            >= crate::MAX_ARCHIVE_EVENTS
-        {
-            return Err(RecordFailure::Capacity(
-                "Application limit reached: Chess history exceeds 4096 events.".into(),
-            ));
-        }
+
         let command = ChessCommand { actor, command };
         Self::submit(&mut game, &command, stop)?;
         let mut record = self.clone();
@@ -325,9 +311,9 @@ mod tests {
         );
     }
     #[test]
-    fn command_capacity_and_mid_replay_cancellation_are_bounded() {
+    fn long_command_history_remains_cancellable() {
         let mut record = initial();
-        for _ in 0..crate::MAX_ARCHIVE_EVENTS / 2 {
+        for _ in 0..2050 {
             record.commands.push(ChessCommand {
                 actor: Color::White,
                 command: MatchCommand::OfferDraw,
@@ -338,10 +324,11 @@ mod tests {
             });
         }
         assert!(record.replay(&mut || false).is_ok());
-        assert!(matches!(
-            record.with_command(Color::White, MatchCommand::OfferDraw, &mut || false),
-            Err(RecordFailure::Capacity(_))
-        ));
+        assert!(
+            record
+                .with_command(Color::White, MatchCommand::OfferDraw, &mut || false)
+                .is_ok()
+        );
         let mut checks = 0;
         assert!(matches!(
             record.replay(&mut || {
@@ -354,10 +341,7 @@ mod tests {
             actor: Color::White,
             command: MatchCommand::OfferDraw,
         });
-        assert!(matches!(
-            record.replay(&mut || false),
-            Err(RecordFailure::Capacity(_))
-        ));
+        assert!(record.replay(&mut || false).is_ok());
     }
     #[test]
     fn malformed_saved_commands_fail_native_replay() {

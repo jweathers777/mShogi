@@ -155,28 +155,16 @@ fn observational_queries_do_not_change_record_or_admission_budget() {
     assert_eq!(g.capacity_usage().unwrap(), usage);
 }
 #[test]
-fn event_capacity_refuses_before_commit_and_reserves_real_and_resign() {
+fn long_control_history_remains_replayable_and_closable() {
     let mut g = game("CHU-MATERIAL-AGREEMENT");
-    for _ in 0..(MAX_GAME_EVENTS - 2) / 2 {
+    for _ in 0..300 {
         control(&mut g, Side::Sente, GameCommand::OfferDraw).unwrap();
         control(&mut g, Side::Gote, GameCommand::DeclineDraw).unwrap();
     }
-    control(&mut g, Side::Sente, GameCommand::OfferDraw).unwrap();
-    let before = bytes(&g);
-    let c = g.context();
-    let cache = g.cache_snapshot();
-    assert_eq!(
-        control(&mut g, Side::Gote, GameCommand::DeclineDraw).unwrap_err(),
-        GameError::Capacity(Resource::Events)
-    );
-    assert_eq!(bytes(&g), before);
-    assert_eq!(g.context(), c);
-    assert_eq!(g.cache_snapshot(), cache);
+    assert_eq!(g.events().len(), 600);
     assert_eq!(g.occurrences(), [0]);
     assert_eq!(g.snapshot().board_ply, 0);
     control(&mut g, Side::Gote, GameCommand::Resign).unwrap();
-    assert_eq!(g.events().len(), MAX_GAME_EVENTS);
-    assert!(g.capacity_usage().unwrap().encoded_bytes <= MAX_GAME_RECORD_BYTES);
     assert!(GameRecord::from_json(&bytes(&g)).is_ok());
 }
 #[test]
@@ -293,7 +281,7 @@ fn standard_root_provenance_cannot_be_forged() {
 fn long_history_continues_and_remains_closable_and_replayable() {
     let mut g = game("CHU-REP-QUIET");
     let mut rng = 3917u64;
-    for _ in 0..400 {
+    for _ in 0..800 {
         let side = g.position().side_to_move();
         let actions: Vec<_> = g
             .legal_actions()
@@ -316,7 +304,7 @@ fn long_history_continues_and_remains_closable_and_replayable() {
         let a = actions[(rng as usize) % actions.len()].clone();
         play(&mut g, a).unwrap();
     }
-    assert_eq!(g.events().len(), 400);
+    assert_eq!(g.events().len(), 800);
     let usage = g.capacity_usage().unwrap();
     let timer = std::time::Instant::now();
     let restored = GameRecord::from_json(&bytes(&g))

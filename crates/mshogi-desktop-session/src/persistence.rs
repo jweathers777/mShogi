@@ -11,8 +11,6 @@ use std::{
 };
 /// Maximum desktop archive bytes; exceeding a resource cap never truncates data.
 pub const MAX_ARCHIVE_BYTES: usize = 16 * 1024 * 1024;
-/// Maximum combined initial-history and match events per document.
-pub const MAX_ARCHIVE_EVENTS: usize = 4096;
 /// Maximum retained accepted observations in the current session.
 pub const MAX_ARCHIVE_OBSERVATIONS: usize = 256;
 const VALIDATION_BUDGET: std::time::Duration = std::time::Duration::from_secs(15);

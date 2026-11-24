@@ -47,7 +47,7 @@ fn native_failure(error: RecordFailure) -> NativeFailure {
     match error {
         RecordFailure::Stopped => NativeFailure::Stopped,
         RecordFailure::Capacity(message) => {
-            NativeFailure::Capacity(NativeResource::Events, message)
+            NativeFailure::Capacity(NativeResource::EncodedBytes, message)
         }
         RecordFailure::Invalid(message) => NativeFailure::Invalid(message),
     }
@@ -165,12 +165,7 @@ impl NativeGame for Chess {
         if stop() {
             return Err(NativeFailure::Stopped);
         }
-        if Self::events(game) >= MAX_ARCHIVE_EVENTS {
-            return Err(NativeFailure::Capacity(
-                NativeResource::Events,
-                "Application limit reached: Chess history exceeds 4096 events.".into(),
-            ));
-        }
+
         // Native rejected requests are audit events. Publish only an accepted
         // candidate, so they cannot enter the durable command list.
         let mut candidate = game.clone();

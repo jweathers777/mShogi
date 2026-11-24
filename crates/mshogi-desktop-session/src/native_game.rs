@@ -26,8 +26,6 @@ pub enum RecordFailure {
 pub enum NativeResource {
     /// Canonical record bytes.
     EncodedBytes,
-    /// Native events.
-    Events,
     /// Board counters or runtime identities: no one specific limit.
     Counter,
 }
@@ -362,7 +360,6 @@ macro_rules! large_shogi_game {
                     c::GameError::Capacity(r) => NativeFailure::Capacity(
                         match r {
                             c::Resource::EncodedBytes => NativeResource::EncodedBytes,
-                            c::Resource::Events => NativeResource::Events,
                             c::Resource::Counter => NativeResource::Counter,
                         },
                         e.to_string(),
@@ -528,7 +525,6 @@ mod tori_glue {
             t::GameError::Capacity(r) => NativeFailure::Capacity(
                 match r {
                     t::Resource::EncodedBytes => NativeResource::EncodedBytes,
-                    t::Resource::Events => NativeResource::Events,
                     t::Resource::Counter => NativeResource::Counter,
                 },
                 e.to_string(),

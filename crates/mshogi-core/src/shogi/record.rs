@@ -16,8 +16,6 @@ use super::{
 
 /// Bounded native input/output; independent of later console/archive transports.
 pub const MAX_RECORD_BYTES: usize = 1024 * 1024;
-/// Conservative ledger bound, including a possible terminal non-board command.
-pub const MAX_RECORD_EVENTS: usize = 321;
 /// Native game/match record schema, distinct from profile and transport identities.
 pub const SHOGI_RECORD_SCHEMA_VERSION: u32 = 2;
 
@@ -73,7 +71,7 @@ impl GameDelta {
         Ok(text)
     }
     fn check_capacity(&self) -> Result<(), RecordError> {
-        if self.end_event().is_none_or(|end| end > MAX_RECORD_EVENTS) {
+        if self.end_event().is_none() {
             return Err(RecordError::Capacity);
         }
         Ok(())
@@ -225,7 +223,7 @@ impl GameRecord {
     pub fn to_json(&self) -> Result<String, RecordError> {
         let json = serde_json::to_string(&SavedRecord::from_record(self))
             .map_err(|e| RecordError::Json(e.to_string()))?;
-        if json.len() > MAX_RECORD_BYTES || self.wire.events.len() > MAX_RECORD_EVENTS {
+        if json.len() > MAX_RECORD_BYTES {
             return Err(RecordError::Capacity);
         }
         Ok(json)
@@ -372,9 +370,6 @@ impl SavedRecord {
         }
     }
     fn to_game(&self) -> Result<Game, RecordError> {
-        if self.events.len() > MAX_RECORD_EVENTS {
-            return Err(RecordError::Capacity);
-        }
         if self.schema_version != SHOGI_RECORD_SCHEMA_VERSION
             || self.profile_id != PROFILE_ID
             || self.profile_edition != super::PROFILE_EDITION

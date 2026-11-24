@@ -9,7 +9,6 @@ export function resourceExplanation(resource: ResourceFailure | null | undefined
   switch (fact.category) {
     case "encoded_document_bytes": return "The complete saved document would exceed the supported byte capacity. Your current game can still be saved.";
     case "canonical_record_bytes": return "This operation would exceed the native record byte capacity. Your current game can still be saved.";
-    case "native_events": return "This operation would exceed the native event capacity. Your current game can still be saved.";
     case "identity_headroom": return "This operation would exceed the reserved execution-identity capacity. Your current game can still be saved.";
     case "validation_budget": return "Native validation reached its time budget. Your accepted game has been kept. Keep it open if Save cannot complete.";
     case "unknown": return "Your current game can still be saved.";

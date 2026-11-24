@@ -4,7 +4,7 @@ use crate::{
     MAX_ANALYSIS_NODES, MAX_FULL_POSITIONS, MAX_FULL_TRANSITIONS, MAX_STDERR_BYTES,
     ReachabilityTarget, WorkLimits,
 };
-use mshogi_core::native::{CanonicalRecord, GameKind, MAX_SHARED_CHESS_EVENTS, NativeSide};
+use mshogi_core::native::{CanonicalRecord, GameKind, NativeSide};
 use serde::{Deserialize, Serialize};
 
 /// Actual implemented operations; a tagged context alone adds no execution capability.
@@ -113,11 +113,7 @@ impl ExecutionContext {
         {
             return false;
         }
-        if self.game.game_kind() == GameKind::Chess
-            && self.game.event_count() > MAX_SHARED_CHESS_EVENTS
-        {
-            return false;
-        }
+
         let target_valid = |target: &ExecutionTarget| {
             target.selection_id > 0
                 && target.session_version == self.session_version

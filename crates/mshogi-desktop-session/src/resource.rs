@@ -17,11 +17,9 @@ pub enum ResourceCategory {
     EncodedDocumentBytes,
     /// Actual encoded authoritative native record size.
     CanonicalRecordBytes,
-    /// Native events, including events that do not advance board ply.
-    NativeEvents,
     /// Monotonic execution, request, session or document identity space.
     IdentityHeadroom,
-    /// Bounded validation time or work allowance.
+    /// Elapsed validation time allowance.
     ValidationBudget,
     /// The failing resource cannot be established authoritatively.
     Unknown,
@@ -53,8 +51,6 @@ pub enum ResourceScope {
 pub enum ResourceUnit {
     /// Encoded UTF-8 bytes.
     Bytes,
-    /// Native event entries.
-    Events,
     /// Monotonic identity increments.
     Identities,
     /// Elapsed or reserved milliseconds.
@@ -188,8 +184,8 @@ mod tests {
 
     #[test]
     fn rejected_candidate_count_is_distinct_from_accepted_count() {
-        let candidate = ResourceFact::measured(ResourceCategory::NativeEvents, 257, 256);
-        let accepted = ResourceFact::measured(ResourceCategory::NativeEvents, 256, 256)
+        let candidate = ResourceFact::measured(ResourceCategory::EncodedDocumentBytes, 257, 256);
+        let accepted = ResourceFact::measured(ResourceCategory::EncodedDocumentBytes, 256, 256)
             .with_measurement(ResourceMeasurement::Accepted);
         assert_eq!(candidate.measurement, ResourceMeasurement::Candidate);
         assert_eq!(accepted.measurement, ResourceMeasurement::Accepted);
@@ -212,7 +208,7 @@ mod tests {
     #[test]
     fn diagnostic_is_bounded_without_broken_utf8() {
         let text = format!("{}界suffix", "a".repeat(MAX_RESOURCE_DIAGNOSTIC_BYTES - 1));
-        let fact = ResourceFact::measured(ResourceCategory::NativeEvents, 11, 10);
+        let fact = ResourceFact::measured(ResourceCategory::EncodedDocumentBytes, 11, 10);
         let failure = ResourceFailure::new(fact.clone(), text);
         assert_eq!(
             failure.diagnostic().len(),

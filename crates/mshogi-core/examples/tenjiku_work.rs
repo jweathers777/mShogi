@@ -84,8 +84,8 @@ fn main() -> Result<(), Box<dyn Error>> {
         .transpose()?
         .unwrap_or(32);
     let mode = args.get(2).map(String::as_str).unwrap_or("play");
-    if !matches!(mode, "play" | "controls" | "replay" | "undo") || requested > MAX_GAME_EVENTS + 1 {
-        return Err("mode play|controls|replay|undo; length <= MAX_GAME_EVENTS+1".into());
+    if !matches!(mode, "play" | "controls" | "replay" | "undo") {
+        return Err("mode play|controls|replay|undo".into());
     }
     let root_start = Instant::now();
     let mut game = Game::standard(profile);
@@ -299,7 +299,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         "profile":profile.id(),"edition":profile.edition(),"mode":mode,"requested":requested,"accepted_events":game.events().len(),"accepted_board_plies":game.snapshot().board_ply,
         "root_us":root_us,"build_us":build_us,"generator_attempts":generator_attempts,"refusal":refusal,
         "record":{"encoded_bytes":native_record.as_json().len(),"encode_us":encode_us},
-        "capacity":{"bytes":usage.encoded_bytes,"events":usage.events,"reserved_bytes":usage.reserved_bytes,"reserved_events":usage.reserved_events,"limits":{"bytes":MAX_GAME_RECORD_BYTES,"events":MAX_GAME_EVENTS}},
+        "capacity":{"bytes":usage.encoded_bytes,"events":usage.events,"limits":{"bytes":MAX_GAME_RECORD_BYTES}},
         "local_choices":{"count":local_choices.len(),"query_us":local_query_us,"history_filtered":false},
         "per_origin_inspection":{"origins":inspection_rows.len(),"total_us":inspection_us,"action_serialization_us":action_serialization_us,"total_action_json_bytes":action_bytes,"slowest_three":slowest},
         "ordinary_replay":{"us":replay_us,"exact_semantics_and_fresh_authority":replay_exact,"returned_undo_handles":0,"retention_policy":"ordinary replay requests no private undo handles; source-defined, not an RSS measurement"},

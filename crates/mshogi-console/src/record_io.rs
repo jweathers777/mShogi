@@ -107,3 +107,14 @@ fn save_new(path: &Path, bytes: &[u8]) -> std::io::Result<()> {
     let _ = fs::remove_file(temp);
     result
 }
+
+/// Publish a console candidate only after its complete record can be exported.
+pub fn install<S>(
+    live: &mut S,
+    candidate: S,
+    encode: impl FnOnce(&S) -> Result<String, String>,
+) -> Result<(), String> {
+    encode(&candidate)?;
+    *live = candidate;
+    Ok(())
+}

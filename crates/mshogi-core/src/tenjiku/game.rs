@@ -7,10 +7,6 @@ use std::{
     sync::atomic::{AtomicU64, Ordering},
 };
 
-/// Native event bound; native acceptance additionally reserves real ending events.
-pub const MAX_GAME_EVENTS: usize = 1024;
-/// One native event is retained per accepted command.
-pub const MAX_GAME_COMMANDS: usize = MAX_GAME_EVENTS;
 static NEXT_INSTANCE: AtomicU64 = AtomicU64::new(1);
 
 /// Native conclusions are separate from search, cancellation and operational failures.
@@ -72,7 +68,6 @@ impl<'de> Deserialize<'de> for GameCommand {
 #[allow(missing_docs)]
 pub enum Resource {
     EncodedBytes,
-    Events,
     Counter,
 }
 /// Typed atomic native refusal.
@@ -229,8 +224,6 @@ pub struct GameRedo {
 pub struct CapacityUsage {
     pub encoded_bytes: usize,
     pub events: usize,
-    pub reserved_bytes: usize,
-    pub reserved_events: usize,
 }
 /// Unscored no-action is not an invented mate, forfeit or draw.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -340,7 +333,7 @@ impl Game {
         {
             return Err(GameError::Capacity(Resource::EncodedBytes));
         }
-        game.ensure_capacity(stop)?;
+        check(stop)?;
         Ok(game)
     }
     /// Exact standard setup under an explicitly selected whole profile.
@@ -630,7 +623,6 @@ impl Game {
         self.push_event(
             actor, command, effects, board_ply, conclusion, pending, offer,
         )?;
-        self.ensure_capacity(stop)?;
         check(stop)?;
         let counter_reserve = u64::from(self.conclusion().is_none());
         for value in [self.runtime.revision, self.next_node, self.branch] {
@@ -700,24 +692,14 @@ impl Game {
         });
         Ok(())
     }
-    /// Actual record size for an explicit diagnostic query; closure uses bounded headroom.
+    /// Actual record size and event count for an explicit diagnostic query.
     pub fn capacity_usage(&self) -> Result<CapacityUsage, GameError> {
-        let reserve = usize::from(self.conclusion().is_none());
         Ok(CapacityUsage {
             encoded_bytes: record::encoded_size(self).map_err(|_| GameError::Record)?,
             events: self.events.len(),
-            reserved_bytes: reserve * crate::record::MAX_COMPACT_COMMAND_BYTES,
-            reserved_events: reserve,
         })
     }
-    fn ensure_capacity(&self, stop: &mut impl FnMut() -> bool) -> Result<(), GameError> {
-        check(stop)?;
-        let reserve = usize::from(self.conclusion().is_none());
-        if self.events.len() + reserve > MAX_GAME_EVENTS {
-            return Err(GameError::Capacity(Resource::Events));
-        }
-        Ok(())
-    }
+
     /// LIFO exact logical undo; runtime revisions advance rather than rewind.
     pub fn undo(&mut self, undo: &mut GameUndo) -> Result<GameRedo, GameError> {
         if undo.used
@@ -867,13 +849,6 @@ fn adjudicate(
     ))
 }
 
-// Every supported command prefix, including its reserved resignation, fits.
-const _: () = assert!(
-    crate::record::MAX_COMPACT_ROOT_BYTES
-        + MAX_GAME_EVENTS * crate::record::MAX_COMPACT_COMMAND_BYTES
-        <= MAX_GAME_RECORD_BYTES
-);
-
 #[cfg(test)]
 mod rollback_tests {
     use super::*;
@@ -889,7 +864,7 @@ mod rollback_tests {
             })
             .unwrap();
             // Checks include cancellation after a new control snapshot is appended.
-            for stop_at in 1..=3 {
+            for stop_at in 1..=2 {
                 let before = format!("{game:?}");
                 let mut calls = 0;
                 let result = game.submit_with_stop(

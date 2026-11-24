@@ -3,11 +3,6 @@ use super::*;
 use serde::{Deserialize, Serialize};
 use std::sync::atomic::{AtomicU64, Ordering};
 
-/// Maximum native events, including one reserved resignation event.
-pub const MAX_GAME_EVENTS: usize = 512;
-/// Native commands and events are one-to-one.
-pub const MAX_GAME_COMMANDS: usize = MAX_GAME_EVENTS;
-const RESERVED_EVENTS: usize = 1;
 static NEXT_INSTANCE: AtomicU64 = AtomicU64::new(1);
 
 /// Repetition projection: native original/once-promoted placement, turn and Lion rights.
@@ -235,8 +230,6 @@ pub struct GameRequest {
 pub enum Resource {
     /// Encoded record bytes.
     EncodedBytes,
-    /// Native events.
-    Events,
     /// Counter/runtime identity.
     Counter,
 }
@@ -436,7 +429,6 @@ impl Game {
         {
             return Err(GameError::Capacity(Resource::EncodedBytes));
         }
-        game.enforce_capacity(true)?;
         Ok(game)
     }
     /// Current native board/provenance.
@@ -804,21 +796,13 @@ impl Game {
             draw_offer: next.draw_offer,
         });
         self.data.snapshots.push(next);
-        let reserved = matches!(command, GameCommand::Resign | GameCommand::AcceptDraw);
-        self.enforce_capacity(!reserved)?;
         self.runtime.revision = revision;
         self.node = node;
         self.next_node = next_node;
         self.branch = branch;
         Ok(())
     }
-    fn enforce_capacity(&self, reserve: bool) -> Result<(), GameError> {
-        let limit = MAX_GAME_EVENTS - if reserve { RESERVED_EVENTS } else { 0 };
-        if self.events().len() > limit {
-            return Err(GameError::Capacity(Resource::Events));
-        }
-        Ok(())
-    }
+
     /// Exact logical undo; runtime revision advances and retired work stays retired.
     pub fn undo(&mut self, token: &mut GameUndo) -> Result<GameRedo, GameError> {
         if token.used || token.instance != self.runtime.instance || token.after_node != self.node {
@@ -1131,13 +1115,6 @@ fn material_configuration(local: &LocalPosition) -> Option<(Side, Side)> {
     }
     None
 }
-
-// Compact roots and bounded commands fit even at the event limit.
-const _: () = assert!(
-    crate::record::MAX_COMPACT_ROOT_BYTES
-        + MAX_GAME_EVENTS * crate::record::MAX_COMPACT_COMMAND_BYTES
-        <= MAX_GAME_RECORD_BYTES
-);
 
 #[cfg(test)]
 mod attack_metadata_tests {

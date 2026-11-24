@@ -15,8 +15,6 @@ use std::{error::Error, fmt};
 pub const RECORD_ENVELOPE_VERSION: u32 = 2;
 /// Encoded canonical wrapper input/output limit; request overhead is counted separately.
 pub const MAX_RECORD_ENVELOPE_BYTES: usize = 1024 * 1024;
-/// Bounded shared chess history context; native records themselves retain their own contract.
-pub const MAX_SHARED_CHESS_EVENTS: usize = 4096;
 /// Maximum retained shared-record diagnostic bytes.
 pub const MAX_RECORD_DIAGNOSTIC_BYTES: usize = 4096;
 /// The source edition accepted by the existing chess match profile.
@@ -347,12 +345,7 @@ impl CanonicalRecord {
     }
     fn payload_json(&self) -> Result<String, EnvelopeError> {
         let text = match self {
-            Self::Chess(record) => {
-                if record.events().len() > MAX_SHARED_CHESS_EVENTS {
-                    return Err(EnvelopeError::Capacity);
-                }
-                record.to_json()
-            }
+            Self::Chess(record) => record.to_json(),
             Self::Shogi(record) => record.to_json().map_err(EnvelopeError::encoding)?,
             Self::Xiangqi(record) => record.to_json().to_owned(),
             Self::Tori(record) => record.to_json().to_owned(),

@@ -104,7 +104,7 @@ impl GameRecord {
     /// Capture all accepted semantics, with derived metadata and native bounds.
     pub fn from_game(game: &Game) -> Result<Self, RecordError> {
         let json = encode(game)?;
-        if json.len() > MAX_GAME_RECORD_BYTES || game.events().len() > MAX_GAME_EVENTS {
+        if json.len() > MAX_GAME_RECORD_BYTES {
             return Err(RecordError::Capacity);
         }
         Ok(Self {
@@ -193,9 +193,7 @@ impl GameRecord {
         {
             return Err(RecordError::Identity);
         }
-        if wire.events.len() > MAX_GAME_EVENTS {
-            return Err(RecordError::Capacity);
-        }
+
         let position = Position::install(wire.root).map_err(|_| RecordError::Root)?;
         check(stop)?;
         let mut game = Game::from_root_with_stop(position, stop).map_err(|error| match error {
@@ -287,7 +285,7 @@ mod tests;
 #[cfg(test)]
 mod compact_bounds {
     use super::*;
-    use crate::record::{MAX_COMPACT_COMMAND_BYTES, MAX_COMPACT_ROOT_BYTES};
+    use crate::record::MAX_COMPACT_ROOT_BYTES;
     #[test]
     fn maximal_wire_fields_fit_compact_bounds() {
         for profile in Profile::ALL {
@@ -314,37 +312,6 @@ mod compact_bounds {
                 };
                 assert!(serde_json::to_vec(&wire).unwrap().len() <= MAX_COMPACT_ROOT_BYTES);
             }
-        }
-        let square = Square::new(16, 16).unwrap();
-        for command in [
-            GameCommand::Play {
-                action: Action {
-                    kind: ActionKind::Travel,
-                    from: square,
-                    route: vec![square; 3],
-                    promote: false,
-                    target: None,
-                },
-            },
-            GameCommand::Play {
-                action: Action {
-                    kind: ActionKind::Igui,
-                    from: square,
-                    route: vec![],
-                    promote: false,
-                    target: Some(square),
-                },
-            },
-            GameCommand::Resign,
-            GameCommand::OfferDraw,
-            GameCommand::AcceptDraw,
-            GameCommand::DeclineDraw,
-        ] {
-            let event = RecordedCommand {
-                actor: Side::Sente,
-                command,
-            };
-            assert!(serde_json::to_vec(&event).unwrap().len() < MAX_COMPACT_COMMAND_BYTES);
         }
     }
 }

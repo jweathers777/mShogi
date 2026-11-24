@@ -1,7 +1,6 @@
 //! Bounded native canonical records. Native replay derives all event results.
 use super::{
-    ClaimPolicy, Conclusion, Game, GameError, GameRequest, MAX_GAME_COMMANDS, MAX_GAME_EVENTS,
-    NoWinAssessment, PositionRoot, Side,
+    ClaimPolicy, Conclusion, Game, GameError, GameRequest, NoWinAssessment, PositionRoot, Side,
 };
 use crate::record::RecordedCommand;
 use serde::{Deserialize, Serialize};
@@ -73,9 +72,6 @@ impl WireRecord {
 }
 impl GameRecord {
     pub(super) fn encoded_candidate(game: &Game) -> Result<String, RecordError> {
-        if game.commands.len() > MAX_GAME_COMMANDS || game.events.len() > MAX_GAME_EVENTS {
-            return Err(RecordError::Capacity);
-        }
         let json =
             serde_json::to_string(&WireRecord::from_game(game)).map_err(|_| RecordError::Json)?;
         if json.len() > MAX_GAME_RECORD_BYTES {
@@ -147,9 +143,7 @@ impl GameRecord {
         if wire.schema_version != GAME_RECORD_SCHEMA_VERSION {
             return Err(RecordError::Unsupported);
         }
-        if wire.commands.len() > MAX_GAME_COMMANDS {
-            return Err(RecordError::Capacity);
-        }
+
         let root = PositionRoot::from_json(wire.root.get()).map_err(|_| RecordError::Root)?;
         let mut game = Game::from_root(root, wire.claim_policy).map_err(|_| RecordError::Root)?;
         let mut undo = Vec::with_capacity(if retain_undo { wire.commands.len() } else { 0 });

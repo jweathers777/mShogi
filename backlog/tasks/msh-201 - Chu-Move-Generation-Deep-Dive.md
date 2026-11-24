@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-19T07:12:00Z'
-updated_date: '2026-11-24T16:28:00Z'
+updated_date: '2026-11-24T16:37:00Z'
 labels:
   - chu
   - search
@@ -59,4 +59,8 @@ First candidate implemented: direct_reaches computes mover-relative displacement
 Game protocol fixed before candidate results: if fixed-depth equality and speed checks pass, run64 paired openings (seeds1..64,8 bins of8) at10s+0.1s nominal against frozen4f5e2ed, c3-standard-4. H0=0,H1=15,alpha=beta=.05,min30 scored pairs; pooled decision at campaign completion. Each bin stops on an unscored pair; retain every launched game. Existing experiment1000-step cap,600s pair watchdog,1500s bin wall and1800s campaign deadline remain explicit. If no decision, one further prespecified campaign uses seeds65..128, pooling all valid pairs and retaining all unfinished evidence. No result-based opening selection; no change to search policy or native rules.
 
 Candidate1 bf7f49f: same c3-standard-4 VM,18 positions/depth5/5 repeats, baseline-before0.707543s and baseline-after0.707447s versus candidate0.632786s (sum of per-position medians),107238 identical nodes;151574 versus169470 nodes/s,11.8% speedup. All18 full signatures and64 native fixed-work signatures identical. Both engines315/315 elementary tactics+80 igui; both69/71 forcing (53/55 development,16/16 held-out). Final profile still spends27.0% in make/threat,24.4% generation/admission,22.8% exchange. Trying one further small simplification: single-royal threats need only direct capture reach; retain full compound admission for two royals and pass victim side explicitly to avoid scratch copies. New native comparison covers every identity/owner/displacement/blocker; Chu tests29 passed/1 ignored. Fresh review accepted the proof and victim/protection semantics; final combined metrics remain pending. First comparison cleanup verified.
+
+Combined candidate source79c2409 is pushed. Fresh review found no issue in the single-royal shortcut or new native differential test. Full workspace rerun and final cloud build are active/completing; no failures observed. Next: repeat the exact same B-A-B depth5 benchmark and tactical/signature commands against frozen4f5e2ed using the final build artifacts, then the prespecified game campaign. Cloud job build-msh201-final, store runs/msh-201/build-final; branch codex/msh-201-chu-search-speed.
+
+Final combined source79c2409 build succeeded; build job/VM/disks deleted, conservative compute upper bound US$0.132. Final local fmt/Clippy pass; workspace1188 passed/12 ignored/0 failed. Final same-VM benchmark,64 native signatures and both tactical suites are active in msh213-msh201-finalcompare, GCS runs/msh-201/comparison-final. No further code changes planned unless measurements or review find an issue.
 <!-- SECTION:NOTES:END -->

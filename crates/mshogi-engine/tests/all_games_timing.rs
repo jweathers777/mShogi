@@ -137,8 +137,8 @@ fn fixed_search_matches_frozen_predecessor() {
     // (Xiangqi Evaluation Round) the fitted evaluation (move, nodes and score
     // below). MSH-205 (Tori Selectivity Round) added the Tori root mate
     // search (125 -> 126 nodes, same move); MSH-206 (Tori Evaluation Round)
-    // the fitted evaluation (move, nodes and score below). Other games stay
-    // identical.
+    // the fitted evaluation (move, nodes and score below). MSH-52.2 adds the
+    // fitted Chu evaluation. Chess and Tenjiku stay identical.
     assert_eq!(expected[1]["nodes"], 121);
     assert_eq!(expected[2]["nodes"], 313);
     assert_eq!(expected[3]["nodes"], 125);
@@ -152,6 +152,10 @@ fn fixed_search_matches_frozen_predecessor() {
     expected[1]["action"] = json!({"action": "5i5h", "kind": "move"});
     expected[1]["nodes"] = 125.into();
     expected[1]["score"] = 0.into();
+    assert_eq!(expected[4]["nodes"], 173);
+    expected[4]["action"] = json!({"from": [10, 12], "promote": false, "route": [[11, 11]]});
+    expected[4]["nodes"] = 149.into();
+    expected[4]["score"] = 0.into();
     let requests: Vec<_> = roots()
         .iter()
         .enumerate()

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-24T19:15:00Z'
-updated_date: '2026-11-24T20:18:00Z'
+updated_date: '2026-11-24T20:29:00Z'
 labels:
   - chu
   - evaluation
@@ -63,4 +63,6 @@ Match protocol fixed before candidate game results: compare the fitted candidate
 
 Static fit completed and resources deleted. Unique quiet positions721430: training613007/2541 games, validation43283/183 games, heldout65140/280 games. Removed12191 within-partition duplicates; no cross-partition duplicates; every row passed the frozen quiet filter. K=.21 (interior of grid); shared fitter selected weights by validation, stopped at validation patience after35.41s/1058 objectives. MSE: training .148544 ->.141824, validation .148814 ->.137808, heldout .15822665 ->.15564347 (1.63% lower). Fit and heldout reports/corpus hashes at runs/msh-52.2/fit-static. No heldout-based weight edits. Candidate DEFAULT is the exact frozen fit vector.
 Unfitted runtime check: all18 depth5 signatures/nodes identical to79c2409,107238 nodes each; median-time sum .597131s baseline vs .600267s refactor (+0.53%). Candidate focused Chu tests pass after replacing one old material-total literal with explicit sums of the current King/Lion/Pawn/Rook values; no rules expectation changed. Feature/capture/promotion/undo tests and workspace Clippy pass. Next: candidate cloud build,20ms tactical probes and depth5 cost check, then the prespecified0/10 match. Accumulated conservative cloud compute upper boundUS$1.21784.
+
+Candidate e2658c7 pilot passed on c3-standard-4: elementary315/315 and igui80/80 unchanged; forcing69/71 ->70/71 at20ms. Fixed18-position depth5/3-repeat set:107238 ->91030 nodes; sum of per-position median times .598384 ->.417429s (30.2% less time, diagnostic only). The remaining strength decision is the frozen predecessor match. Workspace rerun updated only the deterministic Chu depth2 snapshot to current move10l-11k,149 nodes,score0; original was7j-7h,173 nodes,score10. No native rules expectations changed. Product candidate stays e2658c7; snapshot-only follow-up does not change binaries.
 <!-- SECTION:NOTES:END -->

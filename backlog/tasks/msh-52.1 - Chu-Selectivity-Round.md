@@ -1,11 +1,11 @@
 ---
 id: MSH-52.1
 title: Chu Selectivity Round
-status: In Progress
+status: Done
 assignee:
   - codex
 created_date: '2026-11-24T17:44:00Z'
-updated_date: '2026-11-24T18:43:00Z'
+updated_date: '2026-11-24T18:44:00Z'
 labels:
   - chu
   - search
@@ -66,6 +66,8 @@ Technique outcomes: (1) Quiescence quiet royal threats: tested with eight checks
 Reproduction: chu_strength probe SUITE OUT 20; chu_bench bench bench.json OUT 5 3. Game commands native_match --game chu --base 10 --increment 0.1 --max-steps 1000 --max-pairs 16 --first-seed 1,17,...113 then129,145,...241 --wall-seconds 1500 --pair-wall-ms 600000, through chu_cloud. c3-standard-4 throughout, Rust1.99.1 x86-64 release. Exact argv, input/binary hashes and receipts are under gs://mshogi-experiments-216675633801/runs/msh-52.1/ (build-candidate,pilot-1,match-1,match-2,build-ordering,ordering-pilot). All six cloud controllers verified jobs/VMs/disks absent. Sum of conservative VM compute upper bounds US$1.5244, not actual billing; no new image build, small storage extra, withinUS$10. Temporary msh521-build-completion subscription is being deleted. Final restored-baseline workspace checks are running; branch codex/msh-52.1-chu-selectivity.
 
 Final restored-baseline validation passed:1188 workspace tests,12 ignored,0 failed; fmt and workspace all-target Clippy pass. Main6c2414b remained unchanged and was merged into this branch; final crates/ and tools/ diff versus main is empty. No rules/format change or retained code refactor needs a separate review; no UI or platform change needs GUI/CI runs. Temporary cloud subscription deleted. Final evidence files final-results.json,experiment-records.tar.gz,candidate-checks.tar.gz,final-checks.tar.gz are under runs/msh-52.1 in GCS. Next step is Chu evaluation under MSH-52, not started.
+
+Integrated into main at 5e4dcb6. Final evidence uploads succeeded. The accepted engine is unchanged; only task records and design/status documentation remain in the final diff. Task branch and local build/run files are being removed.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

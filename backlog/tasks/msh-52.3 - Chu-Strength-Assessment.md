@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-24T21:07:00Z'
-updated_date: '2026-11-24T22:12:00Z'
+updated_date: '2026-11-24T22:18:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -67,4 +67,40 @@ First judge campaign reached the controller wait deadline. Only bin7/shards12..1
 Recovery changes scheduling only: same512 fixed positions, same5M-node searches, same frozen binary. Run each sampled move as one helper invocation against its original report, upload its completed row immediately to judge-samples/sample-NNN.json, shuffle pending jobs with seed523, and stop worker submissions within1200s to leave cleanup time. Keep the64 completed rows; remaining448 are queued without inspecting blunder scores. Corrected long-scaling-2 runs the previously unstarted20/40s games plus four judge VMs; a final eight-VM judge-finish batch will process only missing rows if needed. This replaces the two long, uncheckpointed shard runs; total actual campaign time remains below2h and spend belowUS$10. Orchestration checkpoint archive: GCS runs/msh-52.3/checkpoint-scripts-cc0014a.tar.gz; current recovery scripts will be archived at the next checkpoint.
 
 Recovery checkpoint: corrected job msh213-msh523-long-scaling-2 is running at runs/msh-52.3/long-scaling-2. All eight workers started; no command failures so far. judge-samples contains118 of512 exact planned rows and grows per completed move. Current orchestration and reconciliation are archived at gs://mshogi-experiments-216675633801/runs/msh-52.3/checkpoint-recovery-scripts.tar.gz. After cleanup, summarize-scaling.py long-scaling-2; prepare-recovery.py judge-finish creates a fresh eight-VM queue of only missing rows. Then download judge-samples and run verify-screen.py: it checks all512 source identities, exact history prefixes, actions, player observations and clocks before scoring. Do not score partial color/phase subsets. Branch codex/msh-52.3-chu-assessment; accepted engine remains unchanged.
+
+HANDOFF FOR ANOTHER AGENT — requested by John; continue this task, do not start a new assessment.
+
+State and scope
+- Task MSH-52.3 (Chu Strength Assessment), In Progress, @codex. Branch codex/msh-52.3-chu-assessment; code/checkpoint HEAD20c571e before this handoff commit. Main remains db9875b. Only this task work is in the worktree.
+- Accepted product is frozen e2658c7, engine SHA25683d00cff4b9ab07c396a806f37aff5b2a6d68f2fd1b8481963ad6ff8670ef597. No product/search/rules changes. Judge source e36cf8393b87854334049cdafdfc292ca5aa1521, SHA256f4ecf3177391f1b51e6987fb3a4c7d9657190528247172a1ad76d93c2abbb995. Core/search diff is only one comment.
+- Implemented chu_judge Rust example (full native report replay, exact history prefixes, fresh searches before/after each sampled move), chu_assessment Python classifier, tests and durable harness docs. Frozen rules and fix rule are in the plan. Keep the512 selected moves and5M nodes; do not select by scores or invent labels. Do not inspect partial blunder totals as final evidence. Same-family judge, score-derived probability proxy, no absolute rating or external opponents.
+
+Durable recovery material
+- GCS root: gs://mshogi-experiments-216675633801/runs/msh-52.3/.
+- handoff-20c571e.tar.gz contains current orchestration scripts, manifests/configs, all16 control reports, first64 completed rows, final check logs and controller ownership/cleanup receipts. Extract under runs/msh-52.3 if local files are missing. Source/tool code is committed. GCS judge-samples/sample-NNN.json is the authoritative growing set of completed rows;149 were saved at this snapshot.
+- Local controller Python: runs/msh-52.3/venv/bin/python. Recreate only if missing: python3 -m venv runs/msh-52.3/venv; install tools/experiments/requirements-controller.txt there. Heavy compute stays in Cloud Batch, c3-standard-4. No new images or subscriptions were created.
+- Worker image: us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:c15692c83e248b70e8c758662674559691ae4f362141dc7b045cd7f3c122f191. Existing subscription projects/mshogi/subscriptions/mshogi-pilot-completion. Use one controller at a time.
+
+LIVE JOB — do not duplicate or cancel it while its controller is working
+- Job msh213-msh523-long-scaling-2, us-central1, project mshogi. Local out runs/msh-52.3/long-scaling-2-controller. Current execution session3566 if available in the same chat. Manifest/config have the same stage prefix; intent.json records the ownership label.
+- Four20/40s time-odds game bins and four checkpointed judge workers. At the snapshot it had run about12 minutes. 40s bins2/3 finished:8 launched pairs, only1 fully scored;7 pairs hit the600s pair wall budget during their second game. This is experiment truncation, not a native loss or a search failure. Keep all records and do not rerun these selected pairs. 20s bins0/1 were still running. Judge workers save each completed move immediately to judge-samples and stop within1200s.
+- Controller normally deletes resources, verifies absence, then downloads artifacts and exits. Nonzero exit is expected if a game bin stops on an unscored pair; inspect actual reasons. If it is no longer running, inspect job status and ownership before cleanup; do not blindly resubmit. If cleanup verification fails, use fresh gcloud job/instance/disk list commands for this exact job and retain a reconciliation receipt. Delete only the owned job if it remains, then verify VMs/disks absent. Previous stage had a gcloud SIGPIPE cleanup check error, resolved by independent empty lists; no prior resources remain.
+
+NEXT COMMANDS after the live controller has finished and cleanup is verified
+1. PYTHONPATH=. runs/msh-52.3/venv/bin/python runs/msh-52.3/summarize-scaling.py long-scaling-2
+   Inspect every unscored reason. The script checks summary/report hashes and records pooled and per-game late depths. Results at2.5/5/10s are already in scaling-result.json and task notes.
+2. Count judge-samples. If fewer than512, run:
+   PYTHONPATH=. runs/msh-52.3/venv/bin/python runs/msh-52.3/prepare-recovery.py judge-finish
+   Then submit with tools.strength.chu_cloud using --manifest runs/msh-52.3/judge-finish-manifest.json --config runs/msh-52.3/judge-finish-config.json --image [pinned worker above] --job msh213-msh523-judge-finish --out runs/msh-52.3/judge-finish-controller.
+   This creates eight VMs with a shuffled queue of ONLY missing rows; each invokes the unchanged judge on one original report and one selected move. New rows are saved immediately. Do not reuse an already-submitted stage or overwrite immutable GCS inputs. The prepare script asserts spend stays belowUS$10 and uses reconciliation for the earlier failed cleanup bound.
+3. After all512 samples are stored, download them into runs/msh-52.3/judge-samples/ (GCSStore list/get; parallel reads are safe). Run:
+   PYTHONPATH=. runs/msh-52.3/venv/bin/python runs/msh-52.3/verify-screen.py
+   It proves exact coverage, source-report identity, record prefix, played action, player observation, clock and side change, then writes screen-result.json and blunder-suite.json. Do not treat absent rows as clean moves. If the final batch is incomplete, inspect runtime and finish missing rows within the remaining task caps; record any limitation honestly.
+4. Assess full-screen depth/node ratios, blunder rate and opening-cluster intervals. Diagnose any >=30% symptom class for a concrete general mechanism; class frequency alone is not a mechanism. Inspect development-split lines first if considering a fix. A retained product fix needs predecessor SPRT and tactical checks; otherwise keep the accepted engine unchanged. Leave the final Chu baseline stop/continue decision to John.
+5. Update task/parent notes and roadmap status, upload final evidence/suite/costs, integrate main, mark this subtask Done only with evidence, and clean own branch, target, runs/msh-52.3 and generated Python caches. Do not mark parent MSH-52 Done on behalf of John. No GitHub CI was requested; no platform-sensitive product code changed.
+
+Checks and budget
+- Already passed after merging current main: fmt; workspace all-target Clippy -D warnings;1188 workspace tests,12 ignored;3 Rust judge tests;12 Python assessment/Tori regression tests. Main was unchanged at last fetch. Later edits are Python reporting/tests and task/docs, tested. No fresh subagent review was required for these additive tools.
+- Before the LIVE job, conservative compute boundUS$1.32404: scaling0.43843, build0.13069, first judge/failed longer-game stage0.75492 (reconciled bound). Two-hour aggregate campaign cap andUS$10 spending cap; roughly52 campaign minutes had elapsed before the live job. Configured rate0.201USD/VM-hour; bounds use eight VMs even for a smaller build, not actual billing.
+- Earlier long-scaling failed game commands before any games because900000ms exceeded the driver maximum600000. Corrected current stage uses600000. Its first judge run lost unuploaded partial shards when the controller deadline expired; only64 rows were saved. The per-move checkpoint recovery fixes that orchestration issue without changing any sample, score, engine or rule.
 <!-- SECTION:NOTES:END -->

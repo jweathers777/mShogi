@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-24T17:44:00Z'
-updated_date: '2026-11-24T18:20:00Z'
+updated_date: '2026-11-24T18:29:00Z'
 labels:
   - chu
   - search
@@ -54,4 +54,6 @@ Final candidate checks: workspace1189 passed/12 ignored/0 failed; fmt and worksp
 First prespecified game sample completed:43 launched pairs,37 scored,20W/54L/0D, pentanomial[20,0,14,0,3], LLR-1.859/no SPRT decision. Six pairs have one1000-step cutoff, unscored;80 native conclusions retained. Native report hashes and summaries verified. All cloud resources deleted; sample compute upper boundUS$0.508, task totalUS$0.702 before sample2. Result is unfavorable; continuing the already declared second sample (seeds129..256), msh213-msh521-match-2. No product changes during this comparison.
 
 Weak-set diagnosis: first-sample median completed depth candidate5 versus baseline6 (from all reported turns; different game trajectories, so not a paired-position cost measurement). The same-position pilot separately measured46.6% extra time. While the frozen first candidate continues its prespecified second game sample, prepare an ordering-only ablation: remove the new quiescence stage/generator and its test, retain only placement-delta quiet ordering. This is the specific weak-set ablation allowed by the roadmap, not a change to the running binary. Do not pool different candidates.
+
+Ordering-only ablation source8b54048 is pushed; its product diff versus the accepted predecessor is only quiet_order using16 times the unchanged placement delta. Focused Chu checks and workspace Clippy pass. Build job build-msh521-ordering is queued while the second combined-candidate match occupies cloud capacity. Build uses temporary subscription projects/mshogi/subscriptions/msh521-build-completion; delete it at cleanup. Its controller and source receipt use ordering-build-* under runs/msh-52.1. Match2 remains source372b689; do not mix results. After build cleanup, run prepare_ordering_pilot.py and the resulting manifest on the same pinned worker image, with the temporary subscription if the game controller is still active.
 <!-- SECTION:NOTES:END -->

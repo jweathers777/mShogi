@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-23T22:01:00Z'
-updated_date: '2026-11-24T06:54:00Z'
+updated_date: '2026-11-24T07:07:00Z'
 labels:
   - chu
   - native
@@ -25,8 +25,8 @@ Remove the remaining artificial history-work limits and all runtime consumers ac
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 No artificial history-work counter, quota or validation consumer remains in any game
-- [ ] #2 Long-game regressions pass beyond the former work cutoff; saved records and rules behavior remain correct
+- [x] #1 No artificial history-work counter, quota or validation consumer remains in any game
+- [x] #2 Long-game regressions pass beyond the former work cutoff; saved records and rules behavior remain correct
 - [ ] #3 Required checks and fresh review pass; MSH-213 resumes with the removal integrated
 <!-- AC:END -->
 
@@ -44,4 +44,6 @@ John clarified that this unreleased product has no backward-compatibility obliga
 John also explicitly authorized AGENTS.md to state ZERO backward compatibility obligations for files, APIs and protocols unless he names an exception. Updated that rule in place. Removed the old-child capability fallback added during MSH-213; measurements must use the current interface, not preserve a product compatibility path for an old test binary.
 
 Removal implemented: Chu/Tenjiku history charges and counters, Tenjiku local query/effect metering, record caches, validation work returns and UI diagnostics removed. Tori obsolete reader/envelope removed under explicit user direction. Real cancellation checks remain. 400-action Chu regression passes with replay and resignation. Fresh review found no product defect; fixture/doc findings fixed. Frontend597 tests and TypeScript pass; final Clippy passes; final workspace tests running. Branch codex/msh-236-remove-history-work contains the pending MSH-213 harness too.
+
+Final native/source4f6f07e checks: fmt/Clippy pass, workspace1190 passed/12 ignored/0 failed; frontend597 tests and TypeScript pass; harness examples6 pass; Python169 run/1 skipped. Final fresh review also approved removal of old Tori migration and old-child fallback. Cloud standard games now complete at416/438/427/114 moves;64 fixed-work results match the former30e08e4 binary. Cloud build completed in153.6s on c3-standard-4 with cleanup verified. Linux process CI45343902716 passed; macOS/Windows still running. Full post-removal game sample active under MSH-213/sample-1. AGENTS.md now explicitly states zero backward compatibility unless John names an exception.
 <!-- SECTION:NOTES:END -->

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-24T19:15:00Z'
-updated_date: '2026-11-24T19:45:00Z'
+updated_date: '2026-11-24T20:06:00Z'
 labels:
   - chu
   - evaluation
@@ -54,4 +54,10 @@ Pilot source 3913370: 500 nodes produced 0/16 concluded games; 2000 nodes produc
 
 Corrected pilot source 80f32b643c193a0614be81e52ce3130a5b2c12c8: same 16 openings, 60-second/game and 2000-ply observation stops. At 2000 initial nodes: 14 native outcomes, 2 unlabelled ply stops, 4379 quiet rows, 138.28 aggregate CPU-task seconds. At 8000: 16 outcomes, 3633 rows, 447.38 seconds. Choose 2000 with doubling retries for corpus yield; no strength claim from node count. Pilot2 data excluded from fitting.
 Production protocol frozen before fitting: source 80f32b6, 2000 starting nodes, retry up to current engine maximum only if no first completed iteration; sample every quiet ply; only native conclusion labels; 60 s/game, 2000 plies. Request 3072 games across 8 c3-standard-4 VMs, four processes each; stop starting games near the campaign deadline. Use all completed native outcomes, retain unlabelled stops. Existing 128-opening catalog; every randomized continuation stays with its catalog opening; SHA256 opening split (0 heldout, 1 validation, rest training) and global duplicate removal. Require >=500000 unique quiet positions before fitting. Static model bounds and K range in 80f32b6 are frozen; fit training/validation for at most 900 seconds, then check heldout. Shared splitter uses current 80f32b6 streaming implementation. Resources/run files remain under runs/msh-52.2 and corresponding GCS prefix.
+
+Corpus1 complete: 3072 games; 3004 native outcomes, 68 unlabelled 2000-ply stops; 733621 quiet samples before global deduplication. No wall stops or search failures. Source80f32b6, 2000 starting nodes with retries, eight c3-standard-4 VMs/four processes each. Sum of per-game elapsed times22956.48s; this is elapsed process time, not measured CPU time. GCS runs/msh-52.2/corpus1 contains32 compressed game files, summaries and progress. All production job/VM/disk resources verified absent. Conservative accumulated compute upper boundUS$0.89281.
+Pilot pipeline check (excluded from fitting): streaming split retained4303 unique samples, both turns present; frozen model stats accepted all4303 with zero duplicate rows. The feature test checks material/placement agreement and undo, and now explicitly checks capture and promotion coverage.
+Fitting job msh213-msh522-fit-static is active at runs/msh-52.2/fit-static. It first compares the18 fixed predecessor positions at depth5/3 repeats for exact unfitted search-result agreement, then globally splits the production data, requires500000 positions, fits static weights for<=900s and checks heldout separately. Binary source80f32b6; orchestration and input hashes are in fit-manifest.json under runs/msh-52.2 (and GCS manifest). Next: inspect fit/heldout loss, install supported candidate weights, build/probe, freeze match batch sizing before game results, then predecessor SPRT0/10. Branch codex/msh-52.2-chu-evaluation; no fitted weights installed yet.
+
+Match protocol fixed before candidate game results: compare the fitted candidate with frozen79c2409, c3-standard-4,10s+0.1s nominal,1000 experiment steps,600s pair watchdog. Up to four30-minute campaigns, eight bins of32 paired seeds each, four concurrent pairs per4-core VM. Seeds1..256 then257..512,513..768,769..1024; frozen128-opening catalog cyclically, both colors. Use the existing native_match stop-on-unscored policy in each bin; preserve every launched pair and diagnose all failures/cutoffs. Pool complete campaigns only: SPRT H0=0/H1=10,alpha=beta=.05,min30. Stop on H0/H1 or declared maximum; revert unsupported weights. No multi-hour extension. Existing tactical probes use20ms; fixed cost set is18 positions at depth5/3 repeats. No external opponents or rule changes.
 <!-- SECTION:NOTES:END -->

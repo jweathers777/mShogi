@@ -139,6 +139,8 @@ mod tests {
     #[test]
     fn features_match_incremental_score_and_undo() {
         let mut native = LocalPosition::standard();
+        let mut captures = 0;
+        let mut promotions = 0;
         for ply in 0..200 {
             let mut p = ChuPosition::from_local(&native);
             let score = |p: &ChuPosition| {
@@ -156,6 +158,12 @@ mod tests {
             assert_eq!(score(&p), sign * p.evaluate());
             let before = score(&p);
             for m in p.legal_moves() {
+                let action = p.to_native(m);
+                promotions += usize::from(action.promote);
+                captures += usize::from(action.route.iter().any(|&at| {
+                    p.piece(at)
+                        .is_some_and(|piece| piece.side != p.side_to_move())
+                }));
                 assert!(p.make(m));
                 assert_eq!(score(&p), -sign * p.evaluate());
                 p.unmake();
@@ -167,6 +175,8 @@ mod tests {
             }
             native.apply(&actions[(ply * 17) % actions.len()]).unwrap();
         }
+        assert!(captures > 0, "capture coverage");
+        assert!(promotions > 0, "promotion coverage");
     }
     #[test]
     fn initial_placement_matches_previous_formula_for_every_piece_and_square() {

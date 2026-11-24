@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-20T22:51:00Z'
-updated_date: '2026-11-24T07:28:00Z'
+updated_date: '2026-11-24T07:38:00Z'
 labels:
   - chu
   - search
@@ -73,4 +73,6 @@ Resume after removal: freeze source4f6f07e as the post-removal Chu baseline for 
 Post-removal standard pilot: all4 games concluded natively (416/438 and427/114 moves),2 pairs in132.5s and90.5s on c3-standard-4. At10s+0.1s nominal, pooled late depth5 and median of per-game late medians6 (applied moves>=100). Freeze lower target5 for the affordable baseline; deeper standard play belongs to MSH-201, not a costlier harness campaign. All64 fixed-work results still match30e08e4. Next sample fixed before results:16 current-baseline control pairs (seeds1..16),32 2x-time pairs (seeds1..32),4 control bins of4 and4 odds bins of8, c3-standard-4 throughout;1500s per bin,300s per pair,1000-event runner cap. H0=0/H1=15,alpha=beta=.05,min30; all launched pairs retained, each bin stops on an unscored pair. Export all native concluded control games and split globally by catalog opening with cross-split board deduplication. No strength-gain claim from equal-code control or a bounded no-decision odds sample.
 
 The larger work-only sample hit the separate512-event Chu quota; it remains diagnostic and unscored. MSH-236 now removes event/command quotas too (source4f5e2ed). Final baseline will use this source and the same frozen opening catalog,10s+0.1s control,16 control pairs and32 time-odds pairs; no result-based seed selection. Current build is active. All sample-1 VMs/disks/jobs are verified absent; conservative compute upper bound US$0.356. Branch codex/msh-236-remove-history-work.
+
+MSH-236 is Done and merged into main4c43505. All final workspace checks pass (1187 passed/12 ignored), as do frontend595, desktop-verification200, Clippy/fmt and all-platform persistence CI45347831998. Final-sample remains active; seed5 control has a native conclusion at358 moves and an unscored experiment step_limit at1000 moves. This is not a product quota; retain the unfinished result and do not rerun only selected seeds. Next: collect all jobs, global native Texel export/split, record bounded odds/depth results and verify cloud cleanup.
 <!-- SECTION:NOTES:END -->

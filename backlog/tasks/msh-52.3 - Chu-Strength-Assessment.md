@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-24T21:07:00Z'
-updated_date: '2026-11-24T21:56:00Z'
+updated_date: '2026-11-24T22:12:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -62,4 +62,9 @@ Longer-clock orchestration error diagnosed before games: all four match commands
 Clarification from the completed MSH-213 harness: it explicitly accepted an affordable late-depth target5, with control median6. Eight is the roadmap ideal, not an unmet Chu acceptance criterion. The extra20/40s controls broaden the time-scaling range because the first levels are heavily censored; they do not impose a new depth requirement.
 
 Runtime checkpoint: long-scaling judge bin7 (shards12..15, final quarter of each game) completed all64 rows, each shard exit0 in795..938s. Earlier/middle-game shards0..11 remain active. No full-screen blunder scores inspected yet. Controller session owns job msh213-msh523-long-scaling and handles cleanup; after it finishes run prepare-long-scaling-2.py and submit fresh job msh213-msh523-long-scaling-2 with the same pinned worker. Scripts and manifests are in ignored runs/msh-52.3. Corrected campaign runs the unstarted20/40s pairs and judge shards16..31. All product code unchanged; final checks already pass.
+
+First judge campaign reached the controller wait deadline. Only bin7/shards12..15 uploaded64 complete rows; the other192 planned rows were not preserved by the command-level uploader. Do not claim them judged. Cleanup command failed with gcloud SIGPIPE(-13); independent gcloud job/VM/disk lists then all returned empty. Reconciliation receipt confirms absence and bounds this stage atUS$0.75492; cumulative boundUS$1.32404. No native search error was reported, but incomplete shard outputs are unavailable.
+Recovery changes scheduling only: same512 fixed positions, same5M-node searches, same frozen binary. Run each sampled move as one helper invocation against its original report, upload its completed row immediately to judge-samples/sample-NNN.json, shuffle pending jobs with seed523, and stop worker submissions within1200s to leave cleanup time. Keep the64 completed rows; remaining448 are queued without inspecting blunder scores. Corrected long-scaling-2 runs the previously unstarted20/40s games plus four judge VMs; a final eight-VM judge-finish batch will process only missing rows if needed. This replaces the two long, uncheckpointed shard runs; total actual campaign time remains below2h and spend belowUS$10. Orchestration checkpoint archive: GCS runs/msh-52.3/checkpoint-scripts-cc0014a.tar.gz; current recovery scripts will be archived at the next checkpoint.
+
+Recovery checkpoint: corrected job msh213-msh523-long-scaling-2 is running at runs/msh-52.3/long-scaling-2. All eight workers started; no command failures so far. judge-samples contains118 of512 exact planned rows and grows per completed move. Current orchestration and reconciliation are archived at gs://mshogi-experiments-216675633801/runs/msh-52.3/checkpoint-recovery-scripts.tar.gz. After cleanup, summarize-scaling.py long-scaling-2; prepare-recovery.py judge-finish creates a fresh eight-VM queue of only missing rows. Then download judge-samples and run verify-screen.py: it checks all512 source identities, exact history prefixes, actions, player observations and clocks before scoring. Do not score partial color/phase subsets. Branch codex/msh-52.3-chu-assessment; accepted engine remains unchanged.
 <!-- SECTION:NOTES:END -->

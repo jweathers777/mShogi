@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-24T19:15:00Z'
-updated_date: '2026-11-24T19:23:00Z'
+updated_date: '2026-11-24T19:26:00Z'
 labels:
   - chu
   - evaluation
@@ -47,4 +47,6 @@ Replace the untuned Chu material and placement weights with a measured classical
 
 <!-- SECTION:NOTES:BEGIN -->
 Checkpoint: branch codex/msh-52.2-chu-evaluation. Added an 88-weight static material/advance/central-file/tempo model; DEFAULT still INITIAL. Shared material feeds SEE and capture ordering. Added shared-fitter adapter and native self-play tool with no labels for unfinished games. Initial feature/move/undo tests passed. Next: cloud corpus pilot (500/2000 nodes per turn, native outcomes), then freeze production protocol after measuring yield. No cloud spend yet; no candidate weights fitted.
+
+Fresh review of 55191fe..3913370 found one issue: even-ply sampling gave only Sente-to-move inputs. Fixed to sample every ply; pilot source 3913370 is for yield measurement only, not fitting. Reviewer found no other concrete defects. All three chu_texel tests pass, including old-placement agreement for every piece and square. Workspace Clippy passed. Cloud build build-msh522-tools started; source 391337067e07610bf52a4f576a7cd0c0c1e3e5c8; GCS runs/msh-52.2/build-tools.
 <!-- SECTION:NOTES:END -->

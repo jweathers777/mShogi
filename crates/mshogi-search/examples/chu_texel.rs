@@ -115,6 +115,25 @@ mod tests {
     use mshogi_core::chu::Side;
     use mshogi_search::alphabeta::SearchPosition;
     #[test]
+    fn diagrams_prepare_exact_scores_and_canonical_keys() {
+        let local = LocalPosition::standard();
+        let p = ChuPosition::from_local(&local);
+        let mut diagram = serde_json::json!({
+            "pieces":local.position().pieces().collect::<Vec<_>>(),
+            "side":local.position().side_to_move(), "protection":local.protection()
+        });
+        let text = diagram.to_string();
+        let prepared = ChuTexel::prepare(&text)
+            .unwrap()
+            .expect("quiet standard root");
+        assert_eq!(ChuTexel::score(&prepared, &eval::DEFAULT), p.evaluate());
+        diagram["pieces"].as_array_mut().unwrap().reverse();
+        assert_eq!(ChuTexel::key(&text), ChuTexel::key(&diagram.to_string()));
+        diagram["side"] = serde_json::to_value(Side::Gote).unwrap();
+        let prepared = ChuTexel::prepare(&diagram.to_string()).unwrap().unwrap();
+        assert_eq!(ChuTexel::score(&prepared, &eval::DEFAULT), -10);
+    }
+    #[test]
     fn features_match_incremental_score_and_undo() {
         let mut native = LocalPosition::standard();
         for ply in 0..200 {

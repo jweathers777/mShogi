@@ -76,3 +76,27 @@ The shared splitter removes board duplicates across partitions. A small
 export demonstration may use `--allow-empty-demonstration`; its manifest says
 that empty partitions are not ready for training. The later evaluation task
 must generate a sufficiently large quiet-position corpus before fitting weights.
+
+## Classical evaluation tools
+
+`mshogi-search --example chu_texel` uses the shared Texel fitter. Its `fit`,
+`check` and `stats` commands read the exported `diagram` field. The model has
+material, advancement and central-file weights for each movement face, plus
+side-to-move tempo. Pawn material fixes the score scale. King and Prince
+material stay fixed; only native adjudication determines a win. Lion
+advancement saturates at seven ranks. The search board caches placement and
+material, and static exchange uses the same material values.
+
+The fitting filter excludes positions with a threat to all surviving royals
+or a capture/promotion that has a positive static exchange. An unresolved
+exchange is also excluded. Freeze the filtering binary with the corpus so a
+later material fit does not change which positions enter the comparison.
+
+`chu_selfplay OPENINGS OUT START COUNT NODES MAX_PLIES SECONDS_PER_GAME`
+generates records directly through the native Game. It adds eight seeded
+quiet rear-zone moves to each catalog opening, then uses two separate search
+states. It samples both sides to move. Every admitted action is retained with
+the initial record, so the game can be replayed. Only native concluded games
+supply labels. A game stopped by a search failure, time limit or move limit
+has no samples and no inferred draw result. All continuations of one catalog
+opening must stay in the same corpus partition.

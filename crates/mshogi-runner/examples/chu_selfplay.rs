@@ -36,7 +36,7 @@ fn generate(openings: &[Value], id: u64, nodes: u64, max_plies: usize, seconds: 
             stop = "wall_limit";
             break;
         }
-        if ply % 2 == 0 && eval::quiet(&ChuPosition::from_local(game.local_position())) {
+        if eval::quiet(&ChuPosition::from_local(game.local_position())) {
             let local = game.local_position();
             samples.push(json!({"ply":ply,"diagram":{
                 "pieces":local.position().pieces().collect::<Vec<_>>(),

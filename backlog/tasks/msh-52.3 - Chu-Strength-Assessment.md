@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-24T21:07:00Z'
-updated_date: '2026-11-24T21:34:00Z'
+updated_date: '2026-11-24T21:56:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -56,4 +56,10 @@ Engineering extension fixed before new results: these clocks do not reach the ha
 Validation after origin/main merge (already current): fmt and all-target workspace Clippy pass;1188 workspace tests pass,12 ignored; three Chu judge tests and twelve Python assessment/Tori regression tests pass. Native report smoke test: four sampled move pairs parsed/replayed and judged at1000 nodes; smoke scores excluded from the full screen. Runtime judge source remains e36cf83; later Rust change adds only a terminal-perspective test. Longer-clock campaign will share its eight-VM allocation with the first16 judge shards (four game VMs plus four judge VMs); remaining16 judge shards run after it. Same samples/nodes, no score-based scheduling.
 
 Judge build succeeded and its VM/disk/job are verified absent. Binary SHA256 f4ecf3177391f1b51e6987fb3a4c7d9657190528247172a1ad76d93c2abbb995, sourcee36cf8393b87854334049cdafdfc292ca5aa1521; core/search source differs from accepted e2658c7 only in one documentation comment. Accumulated conservative compute boundUS$0.56912. Campaign msh213-msh523-long-scaling now active: four longer-clock bins plus judge shards0..15, GCS runs/msh-52.3/long-scaling. All16 control reports hash-pinned in judge-inputs. Next collect full longer-clock results and first256 sampled moves; run remaining judge shards16..31, then assess all512 together. Before full judge results, allowed_short_win also includes an already concluded opponent win (zero plies); tests cover it. No engine changes.
+
+Longer-clock orchestration error diagnosed before games: all four match commands rejected --pair-wall-ms900000 because native_match accepts at most600000. No game configs or reports were created; judge shards0..15 are unaffected and continue. Keep failed command logs/manifests. Correct only the watchdog to600000 and run the same planned20/40s seeds33..48 in fresh campaign long-scaling-2, together with remaining judge shards16..31. No score-based reruns and no engine/rule changes. This replaces the remaining standalone judge campaign, so the total2h/$10 caps are unchanged.
+
+Clarification from the completed MSH-213 harness: it explicitly accepted an affordable late-depth target5, with control median6. Eight is the roadmap ideal, not an unmet Chu acceptance criterion. The extra20/40s controls broaden the time-scaling range because the first levels are heavily censored; they do not impose a new depth requirement.
+
+Runtime checkpoint: long-scaling judge bin7 (shards12..15, final quarter of each game) completed all64 rows, each shard exit0 in795..938s. Earlier/middle-game shards0..11 remain active. No full-screen blunder scores inspected yet. Controller session owns job msh213-msh523-long-scaling and handles cleanup; after it finishes run prepare-long-scaling-2.py and submit fresh job msh213-msh523-long-scaling-2 with the same pinned worker. Scripts and manifests are in ignored runs/msh-52.3. Corrected campaign runs the unstarted20/40s pairs and judge shards16..31. All product code unchanged; final checks already pass.
 <!-- SECTION:NOTES:END -->

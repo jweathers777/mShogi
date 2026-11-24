@@ -33,11 +33,14 @@ fn material_is_native_face_owned_and_not_an_outcome() {
     assert_eq!(
         e,
         Evaluation {
-            sente: 7000,
-            gote: 6000
+            sente: piece_value(Face::King) + piece_value(Face::Lion),
+            gote: piece_value(Face::King) + piece_value(Face::Pawn) + piece_value(Face::Rook)
         }
     );
-    assert_eq!(e.score_for(Side::Gote), -1000);
+    assert_eq!(
+        e.score_for(Side::Gote),
+        piece_value(Face::Pawn) + piece_value(Face::Rook) - piece_value(Face::Lion)
+    );
     assert_eq!(piece_value(Face::Prince), piece_value(Face::King));
     assert_eq!(g.conclusion(), None);
 }

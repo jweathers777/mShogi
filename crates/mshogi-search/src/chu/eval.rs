@@ -7,13 +7,70 @@ use mshogi_core::chu::{Face, Piece, Side, Square};
 pub const COUNT: usize = 29 * 3 + 1;
 /// Starting weights reproduce the MSH-201 evaluation exactly.
 pub const INITIAL: [i32; COUNT] = [
-    100, 4, 0, 150, 4, 0, 300, 1, 1, 300, 1, 1, 400, 1, 1, 400, 1, 1, 500, 1, 1, 400, 1, 1, 400, 1,
-    1, 500, 1, 1, 5000, 0, 0, 600, 2, 4, 600, 2, 4, 700, 1, 1, 700, 1, 1, 900, 1, 1, 700, 1, 1,
-    1100, 1, 1, 1100, 1, 1, 2000, 3, 8, 1500, 1, 1, 900, 1, 1, 900, 1, 1, 900, 1, 1, 5000, 0, 0,
-    1100, 1, 1, 1100, 1, 1, 1300, 1, 1, 1300, 1, 1, 10,
+    100, 4, 0, // Pawn
+    150, 4, 0, // Go-between
+    300, 1, 1, // Lance
+    300, 1, 1, // Reverse Chariot
+    400, 1, 1, // Copper
+    400, 1, 1, // Silver
+    500, 1, 1, // Gold
+    400, 1, 1, // Leopard
+    400, 1, 1, // Tiger
+    500, 1, 1, // Elephant
+    5000, 0, 0, // King
+    600, 2, 4, // Kirin
+    600, 2, 4, // Phoenix
+    700, 1, 1, // Side Mover
+    700, 1, 1, // Vertical Mover
+    900, 1, 1, // Rook
+    700, 1, 1, // Bishop
+    1100, 1, 1, // Dragon Horse
+    1100, 1, 1, // Dragon King
+    2000, 3, 8, // Lion
+    1500, 1, 1, // Free King
+    900, 1, 1, // White Horse
+    900, 1, 1, // Whale
+    900, 1, 1, // Flying Stag
+    5000, 0, 0, // Prince
+    1100, 1, 1, // Flying Ox
+    1100, 1, 1, // Free Boar
+    1300, 1, 1, // Soaring Eagle
+    1300, 1, 1,  // Horned Falcon
+    10, // Tempo
 ];
-/// Weights used by search. Replaced only after fitting and strength checks.
-pub const DEFAULT: [i32; COUNT] = INITIAL;
+/// Static Texel candidate from the native MSH-52.2 corpus.
+pub const DEFAULT: [i32; COUNT] = [
+    100, 4, 0, // Pawn
+    75, 4, 0, // Go-between
+    428, -32, 1, // Lance
+    492, 32, 1, // Reverse Chariot
+    200, 32, -32, // Copper
+    208, 32, 1, // Silver
+    372, 1, 1, // Gold
+    200, 32, 1, // Leopard
+    336, 32, 1, // Tiger
+    564, 1, 1, // Elephant
+    5000, -32, 32, // King
+    600, 2, 4, // Kirin
+    600, 32, 4, // Phoenix
+    572, 1, 1, // Side Mover
+    700, 1, 32, // Vertical Mover
+    964, 1, 1, // Rook
+    700, 1, 1, // Bishop
+    1164, -32, 1, // Dragon Horse
+    1228, 1, 1, // Dragon King
+    2256, 3, 32, // Lion
+    1564, 32, 32, // Free King
+    836, -32, 32, // White Horse
+    1028, 1, 1, // Whale
+    964, 32, 32, // Flying Stag
+    5000, -32, -32, // Prince
+    1164, 1, 32, // Flying Ox
+    1356, 32, 32, // Free Boar
+    1556, 32, 32, // Soaring Eagle
+    1428, 32, 1, // Horned Falcon
+    0, // Tempo
+];
 /// First weight for a face, in native Face::ALL order.
 pub const fn index(face: Face) -> usize {
     face as usize * 3

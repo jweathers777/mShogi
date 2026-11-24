@@ -1,7 +1,7 @@
 ---
 id: MSH-52.2
 title: Chu Evaluation Round
-status: In Progress
+status: Done
 assignee:
   - codex
 created_date: '2026-11-24T19:15:00Z'
@@ -74,3 +74,9 @@ Completed match1 checkpoint: exact candidate e2658c7 versus predecessor79c2409, 
 
 Final checks after merging origin/main (already current at55191fe): cargo fmt passed; workspace all-target Clippy with-D warnings passed; workspace tests1188 passed/0 failed/12 ignored; four Chu feature tests, one self-play retry test and nine Python tests passed. Fresh review findings were fixed before corpus generation. Native perft/differential tests passed. Final evidence, pooled match and all nine resource cleanup receipts uploaded under GCS runs/msh-52.2/final-evidence.tar.gz, pooled-match.json and final-costs.json. No platform-sensitive product change; no GitHub CI run requested. Conservative compute boundUS$1.89247; no new container image or subscription. Next integration and local cleanup.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Integrated into main at42ddd29. Added shared classical Chu material/placement/tempo features, native self-play generation and streaming corpus preparation. Exact fitted weights from721430 unique quiet positions reduce heldout MSE1.63% and pass predecessor SPRT0/10:164W/0D/74L,119 scored pairs,5 unscored; LLR3.3665. Tactical results315/315 elementary,80/80 igui,70/71 forcing. Final fmt, Clippy,1188 workspace tests (12 ignored),4 feature tests,1 retry test and9 Python tests passed; fresh review complete. Evidence at gs://mshogi-experiments-216675633801/runs/msh-52.2/; conservative compute upper boundUS$1.89247. All nine cloud stages verified cleaned; own feature branch, local build output, run data and Python caches removed. Next: Chu internal scaling curve and deeper same-family blunder screen underMSH-52. Separate compatibility cleanup isMSH-237.
+<!-- SECTION:FINAL_SUMMARY:END -->

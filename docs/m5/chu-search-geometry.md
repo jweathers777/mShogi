@@ -29,7 +29,11 @@ route; non-Lion captures can create the next window. Failed admission restores
 the board. Undo restores captures, promotion, rights, hash and evaluation caches.
 
 A royal threat requires one admitted action that captures every surviving royal.
-Separate attacks on King and Prince do not qualify. Full generation and perft
+With one royal, a direct reach proves a legal single-landing capture: the victim
+is not a Lion, no intermediate victim is required, and there is no self-check
+filter. This case needs no scratch projection. With King and Prince, the search
+still generates and admits a complete action capturing both. Separate attacks
+on King and Prince do not qualify. Full generation and perft
 retain every route. Search generation first applies native root restrictions,
 then retains the first route for each exactly equal successor, including Lion
 rights. It checks full state when hashes match.

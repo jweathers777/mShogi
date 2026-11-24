@@ -1125,3 +1125,61 @@ fn exposed_seed20_midgame_completes_with_bounded_quiescence() {
         before
     );
 }
+
+#[test]
+fn single_royal_threat_matches_native_captures_for_every_piece_identity() {
+    use mshogi_core::chu::Base;
+    let target: Square = "6f".parse().unwrap();
+    let remote: Square = "12l".parse().unwrap();
+    let block: Square = "6g".parse().unwrap();
+    let mut positive = 0;
+    let mut negative = 0;
+    for attacker in [Side::Sente, Side::Gote] {
+        for base in Base::ALL {
+            for promoted in [false, true] {
+                let Some(piece) = Piece::new(attacker, base, promoted) else {
+                    continue;
+                };
+                for origin in ["6e", "6g", "9i", "6j", "7h", "4f"] {
+                    let origin: Square = origin.parse().unwrap();
+                    for blocked in [false, true] {
+                        if blocked && origin == block {
+                            continue;
+                        }
+                        let victim = attacker.opponent();
+                        let mut pieces = vec![
+                            (target, Piece::new(victim, Base::King, false).unwrap()),
+                            (origin, piece),
+                        ];
+                        if base != Base::King {
+                            pieces.push((remote, Piece::new(attacker, Base::King, false).unwrap()));
+                        }
+                        if blocked {
+                            pieces.push((block, Piece::new(victim, Base::Pawn, false).unwrap()));
+                        }
+                        let native = LocalPosition::admit(
+                            Position::from_diagram(&pieces, victim, RootMetadata::diagram(0))
+                                .unwrap(),
+                        );
+                        let expected = native.legal_actions_for(attacker).iter().any(|action| {
+                            native
+                                .preview_for(attacker, action)
+                                .unwrap()
+                                .captures
+                                .iter()
+                                .any(|capture| capture.square == target)
+                        });
+                        assert_eq!(
+                            ChuPosition::from_local(&native).in_check(),
+                            expected,
+                            "{attacker:?} {base:?} promoted={promoted} origin={origin} blocked={blocked}"
+                        );
+                        positive += usize::from(expected);
+                        negative += usize::from(!expected);
+                    }
+                }
+            }
+        }
+    }
+    assert!(positive > 100 && negative > 100);
+}

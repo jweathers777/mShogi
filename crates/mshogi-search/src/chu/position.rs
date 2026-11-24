@@ -683,14 +683,26 @@ impl Board {
     }
     /// An admitted one-action capture of all surviving royals. This is a search
     /// threat, not a Chess self-check rule or an adjudicated native mate.
-    fn threatened(&self) -> bool {
-        let victims = self.royals[self.side];
+    fn threatened(&self, victim: usize) -> bool {
+        let mut victims = self.royals[victim];
         let count = victims.count();
         if count == 0 || count > 2 {
             return false;
         }
+        if count == 1 {
+            let target = victims.pop().expect("one royal");
+            let mut attackers = self.occupied[victim ^ 1];
+            while let Some(from) = attackers.pop() {
+                // A royal is never a protected Lion. Every direct reach has
+                // a one-landing capture, and Chu has no self-check filter.
+                if self.direct_reaches(self.cells[from], from, target) {
+                    return true;
+                }
+            }
+            return false;
+        }
         let mut scratch = *self;
-        scratch.side ^= 1;
+        scratch.side = victim ^ 1;
         // Active protection constrains its owner's opponent, not its owner.
         if scratch.protection.owner == scratch.side {
             scratch.set_protection(Protection::default());
@@ -762,7 +774,7 @@ impl ChuPosition {
             }
         }
         board.set_protection(protection);
-        let check = board.threatened();
+        let check = board.threatened(board.side);
         let hash = board.hash;
         Self {
             board,
@@ -956,7 +968,7 @@ impl SearchPosition for ChuPosition {
         };
         self.stack.push(undo);
         self.keys.push(self.board.hash);
-        self.check = self.board.threatened();
+        self.check = self.board.threatened(self.board.side);
         true
     }
     fn unmake(&mut self) {
@@ -994,9 +1006,7 @@ impl SearchPosition for ChuPosition {
         // Prove the next complete capture now instead of expanding all quiet
         // replies in quiescence. This changes no local legal-action set. The
         // core skips rule_score at its root and still selects an actual move.
-        let mut victim_view = self.board;
-        victim_view.side ^= 1;
-        if victim_view.threatened() {
+        if self.board.threatened(self.board.side ^ 1) {
             return Some(MATE_SCORE - ply - 1);
         }
         let current = self.keys.len() - 1;

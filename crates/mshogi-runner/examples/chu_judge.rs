@@ -132,4 +132,17 @@ mod tests {
         let f = facts(&g, &action);
         assert_eq!(f["action"], json!(action));
     }
+    #[test]
+    fn terminal_probability_uses_the_side_to_move_not_the_resigning_actor() {
+        for (actor, expected) in [(Side::Sente, 0.0), (Side::Gote, 1.0)] {
+            let mut game = Game::standard();
+            game.submit(GameRequest {
+                expected: game.context(),
+                actor,
+                command: GameCommand::Resign,
+            })
+            .unwrap();
+            assert_eq!(judge(&game, 1)["terminal_probability"], json!(expected));
+        }
+    }
 }

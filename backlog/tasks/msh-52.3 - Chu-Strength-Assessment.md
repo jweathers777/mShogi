@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-24T21:07:00Z'
-updated_date: '2026-11-24T21:13:00Z'
+updated_date: '2026-11-24T21:30:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -45,4 +45,13 @@ Measure the accepted Chu engine with internal time odds and a much deeper same-f
 
 <!-- SECTION:NOTES:BEGIN -->
 Checkpoint: branch codex/msh-52.3-chu-assessment; frozen scaling/control campaign msh213-msh523-scaling is running at gs://mshogi-experiments-216675633801/runs/msh-52.3/scaling. Added full-history sampled chu_judge tool and shared-rule Python classifier; two Rust and three Python tests pass, focused Clippy passes. Shortest-clock bins stopped after first four concurrent pairs: predecessor-side (1x clock) returned no completed iteration, sometimes zero nodes; keep these unscored. This is a time-control measurement limitation, not a native-rule failure. Next finish campaign, build judge in cloud, measure sampled full-history positions and diagnose classes.
+
+Frozen judge implementation source e36cf8393b87854334049cdafdfc292ca5aa1521; source archive uploaded to build-judge, awaiting scaling controller completion before starting the single controller build. Rust judge tests2/2 and Python assessment/Tori regression tests11/11 pass. Added opening-cluster bootstrap intervals (2000 draws, seed523) for sampled blunder rate and mean loss; no result-based sampling changes. Local workspace checks running. Judge orchestration uses32 shards/four processes per c3-standard-4 VM,16 evenly spaced moves/game,5M nodes before and after.
+
+Before full judge results: rename the planned allowed_short_mate symptom to allowed_short_win. Chu WIN_SCORE denotes a native win, not specifically checkmate (royal capture and other native conclusions also use it); threshold remains nine plies, class order and all probability rules unchanged. This corrects the label, not a game rule or sample. Control bins finished:16 pairs launched,15 fully scored,31 native conclusions; all32 played prefixes remain eligible for the fixed512-move sample.
+
+Scaling1 complete, all resources verified absent; conservative compute boundUS$0.43843. At bases2.5/5/10s (increment base/100),2x-clock scored WDL2/0/0,17/0/1,34/0/4 from1/9/19 pairs; launched8/12/20. Conditional estimates:2.5s unusable,5s+492 Elo (95% lower+215, upper unbounded),10s+372 (lower+226, upper unbounded). First-iteration interruptions caused7/3/1 unscored pairs. Late median depths2x/1x:4/3,5/4,6/5. Control16 pairs:15 scored11W/19L, one1000-step stop;31 native conclusions. Its equal-engine interval includes zero. Source and conditions unchanged.
+Engineering extension fixed before new results: these clocks do not reach the harness depth8 target. Add20s+0.2s and40s+0.4s,2x time,16 pairs each, new seeds33..48, two8-pair bins/level, four workers,1000steps,900s pair watchdog,1400s/bin,30-minute campaign. This adds new longer controls, not reruns or score-based replacement of the first campaign. Keep all earlier results. Fixed control sample remains all32 games from the first campaign. At most two judge campaigns now; total actual campaign wall time remains capped at2h andUS$10. Judge cloud build is active frome36cf83.
+
+Validation after origin/main merge (already current): fmt and all-target workspace Clippy pass;1188 workspace tests pass,12 ignored; three Chu judge tests and twelve Python assessment/Tori regression tests pass. Native report smoke test: four sampled move pairs parsed/replayed and judged at1000 nodes; smoke scores excluded from the full screen. Runtime judge source remains e36cf83; later Rust change adds only a terminal-perspective test. Longer-clock campaign will share its eight-VM allocation with the first16 judge shards (four game VMs plus four judge VMs); remaining16 judge shards run after it. Same samples/nodes, no score-based scheduling.
 <!-- SECTION:NOTES:END -->

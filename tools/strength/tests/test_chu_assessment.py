@@ -24,6 +24,10 @@ class Assessment(unittest.TestCase):
         r['repeated']=True;self.assertEqual(classify(r),'repetition')
         r['clock_ms']=999;self.assertEqual(classify(r),'time_trouble')
 
+    def test_short_native_win_is_not_assumed_to_be_checkmate(self):
+        r=row();r['after']={'score':999993}
+        self.assertEqual(classify(r),'allowed_short_win')
+
     def test_same_opening_split_and_duplicate_refusal(self):
         r=row();s=dict(row(),game_id='other-color')
         a=analyze([r,s]);self.assertEqual(a['errors'][0]['split'],a['errors'][1]['split'])

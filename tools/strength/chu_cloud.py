@@ -35,7 +35,9 @@ def validate(m):
     for commands in m['bins']:
         for command in commands:
             assert isinstance(command, list) and all(isinstance(v, str) for v in command)
-            assert command[0] in ('helper', 'match', 'export', 'signature')
+            assert command[0] in ('helper', 'run', 'match', 'export', 'signature')
+            if command[0] == 'run':
+                assert len(command) >= 2 and command[1] in m['files']
 
 
 def fetch(item):
@@ -65,8 +67,10 @@ def worker(manifest_uri, store_uri):
             env = dict(os.environ)
             env['PYTHONPATH'] = '/opt/mshogi'
             for n, command in enumerate(m['bins'][index]):
-                if command[0] == 'helper':
-                    actual = [str(root / 'helper'), *command[1:]]
+                if command[0] in ('helper', 'run'):
+                    name, arguments = ('helper', command[1:]) if command[0] == 'helper' else (command[1], command[2:])
+                    (root / name).chmod(0o755)
+                    actual = [str(root / name), *arguments]
                 elif command[0] == 'signature':
                     actual = ['python3', '-m', 'tools.strength.native_signature', str(root / 'engine'), str(root / 'baseline'), 'openings.json', 'suite.json', command[1]]
                 elif command[0] == 'match':

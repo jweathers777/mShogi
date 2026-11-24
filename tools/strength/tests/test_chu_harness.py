@@ -33,6 +33,18 @@ class ChuHarnessTests(unittest.TestCase):
             self.assertEqual(result['scores_twice'], [2, 0])
             self.assertEqual(result['pair_score'], .5)
 
+    def test_cloud_run_uses_only_manifested_tools(self):
+        from tools.strength.chu_cloud import validate
+        manifest = dict(schema=1, campaign_started_epoch=0, deadline_epoch=1800,
+                        estimated_compute_before_usd=0,
+                        files={'bench': {'uri': 'gs://bucket/bench', 'sha256': 'a' * 64}},
+                        bins=[[['run', 'bench', 'bench', 'input.json', 'out.json', '3', '3']]])
+        validate(manifest)
+        for command in (['run'], ['run', '../bench'], ['run', 'missing']):
+            manifest['bins'] = [[command]]
+            with self.assertRaises(AssertionError):
+                validate(manifest)
+
     def test_chu_unfinished_pairs_stop_instead_of_becoming_draws(self):
         args = SimpleNamespace(game='chu')
         self.assertIsNotNone(native_match.unfinished(args, [

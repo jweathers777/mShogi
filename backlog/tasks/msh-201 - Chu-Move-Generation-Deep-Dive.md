@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-19T07:12:00Z'
-updated_date: '2026-11-24T15:57:00Z'
+updated_date: '2026-11-24T16:03:00Z'
 labels:
   - chu
   - search
@@ -33,6 +33,12 @@ Native rules stay the authority. A faster search-side position must agree with t
 - [ ] #4 A short design note in docs/ explains how the unusual pieces are generated and checked in search
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Freeze the accepted engine and a benchmark set covering standard openings, real middle/endgame histories and unusual-piece tactics. Measure fixed-depth search and time spent in generation, make/unmake, threat/rule checks and exchange tests on c3-standard-4. 2. Remove measured hot-path costs without changing rules, evaluation, move ordering or search policy where possible. 3. Run native perft/differential and exact fixed-depth comparisons, tactical probes and a bounded clocked predecessor SPRT (H0=0,H1=15,alpha=beta=.05;10s+0.1s nominal, same frozen openings). Fix run size after the measured speed/pilot within US$10. Retain only supported changes; record rejected attempts. 4. Write the unusual-piece search design note, run required checks/review, integrate and clean up.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
@@ -41,4 +47,6 @@ Native rules stay the authority. A faster search-side position must agree with t
 Harness blocker is now the dependency MSH-213 (Chu Strength Harness).
 
 Started from main182f017 after MSH-213 completion. Frozen predecessor engine source4f5e2ed and harness inputs/results are recorded in MSH-213. No compatibility obligation or game-rule change. Budget US$10; measurements and heavy builds use c3-standard-4 cloud workers.
+
+Benchmark tooling ready before optimization:18 frozen positions (first8 opening catalog entries, first case of each4 tactical families,2 explicit Horned Falcon/Soaring Eagle diagrams, first completed source game prefixes80/160/240/320). Baseline pilot uses depth3,3 fresh-table repeats and a separate coarse timed-wrapper pass; wrapper asserts exact full search-output equality with the untimed pass. Timings exclude native root setup and separately report it. No product search change yet. New chu_bench helper and manifested executable selection reuse the cloud worker. Next build/profile baseline, then choose the measured hot path. Branch codex/msh-201-chu-search-speed.
 <!-- SECTION:NOTES:END -->

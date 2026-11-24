@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-20T22:51:00Z'
-updated_date: '2026-11-24T06:43:00Z'
+updated_date: '2026-11-24T06:56:00Z'
 labels:
   - chu
   - search
@@ -67,4 +67,6 @@ Final checkpoint: targeted process CI45273664857 succeeded on Linux, Windows and
 Cloud cleanup complete: all11 task controllers verified their jobs/VMs/disks absent; temporary msh213-measure-completion subscription deleted. Sum of conservative compute upper bounds US$1.452 (not actual billing; Cloud Build/storage additional, total comfortably belowUS$10). Compact failed-game late medians14 selfplay and9 versus predecessor do not satisfy the completed-game gate. Final diagnostic archive checkpoint-evidence.tar.gz includes manifests, local test logs and cleanup receipts. Local generated build/run caches will be removed after upload; recreate the controller venv when resuming. Awaiting John scope approval for MSH-236; MSH-213 remains In Progress/needs-john.
 
 John authorized removal of all remaining history-work limits and consumers in every game, with no replacement artificial work model, then completion of this task. MSH-236 carries the removal; no further approval is needed.
+
+Resume after removal: freeze source4f6f07e as the post-removal Chu baseline for future strength work. It includes the required native fix and current internal interface; retired30e08e4 remains only fixed-work evidence, not a reason to restore compatibility code. No search algorithm or evaluator change is made. Before game results, pilot standard catalog seeds1..2 with identical frozen current engines at10s+0.1s nominal,1000-event runner cap,600s pair watchdog; report every unfinished pair. Then choose the bounded control/time-odds sample and record depth, cost and export split.
 <!-- SECTION:NOTES:END -->

@@ -4,7 +4,7 @@ title: Establish and meet measured chu shogi engine strength criteria
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-20T16:50:00Z'
+updated_date: '2026-11-24T17:45:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -64,4 +64,6 @@ Direction, 2026-11-19 (John): do not look for external opponents or judges for t
 Move generation discussion slot: MSH-201 (Chu Move Generation Deep Dive).
 
 2026-11-20 (John): depends on MSH-201 (Chu Move Generation Deep Dive). Chu program step tasks (selectivity and later), when created, depend on MSH-201.
+
+John started the Chu selectivity step on 2026-11-24 after MSH-201. Tracked as MSH-52.1 (Chu Selectivity Round); later evaluation and measurement are not started.
 <!-- SECTION:NOTES:END -->

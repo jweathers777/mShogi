@@ -903,12 +903,36 @@ impl ChuPosition {
     fn ply(&self) -> usize {
         self.keys.len() - 1 - self.root
     }
+
+    fn search_moves(&self, stage: Stage, moves: &mut Vec<Move>, checks: bool) {
+        let mut routes = Vec::new();
+        // Native root restrictions precede both threat filtering and route reduction.
+        self.generate(stage, &mut routes);
+        let mut seen: Vec<Board> = Vec::new();
+        for m in routes {
+            let mut after = self.board;
+            if after.make(m).is_none() || (checks && !after.threatened(after.side)) {
+                continue;
+            }
+            if seen.iter().any(|b| {
+                b.hash == after.hash
+                    && b.cells == after.cells
+                    && b.side == after.side
+                    && b.protection == after.protection
+            }) {
+                continue;
+            }
+            seen.push(after);
+            moves.push(m);
+        }
+    }
 }
 impl SearchPosition for ChuPosition {
     type Move = Move;
     // Chu threat replies can branch widely; bound private quiescence separately
     // from principal search depth while retaining complete evasions before it.
     const QUIESCENCE_PLIES: usize = 8;
+    const QUIESCENCE_CHECKS: usize = 8;
     const HISTORY_SLOTS: usize = 2 * STATES * N;
     fn hash(&self) -> u64 {
         self.board.hash
@@ -931,26 +955,11 @@ impl SearchPosition for ChuPosition {
         }
     }
     fn generate_search(&self, stage: Stage, moves: &mut Vec<Move>) {
-        let mut routes = Vec::new();
-        // Native root restrictions are applied before choosing representatives.
-        self.generate(stage, &mut routes);
-        let mut seen: Vec<Board> = Vec::new();
-        for m in routes {
-            let mut after = self.board;
-            if after.make(m).is_none() {
-                continue;
-            }
-            if seen.iter().any(|b| {
-                b.hash == after.hash
-                    && b.cells == after.cells
-                    && b.side == after.side
-                    && b.protection == after.protection
-            }) {
-                continue;
-            }
-            seen.push(after);
-            moves.push(m);
-        }
+        self.search_moves(stage, moves, false);
+    }
+    fn generate_checks(&self, moves: &mut Vec<Move>) {
+        self.search_moves(Stage::Tactical, moves, true);
+        self.search_moves(Stage::Quiet, moves, true);
     }
     fn make(&mut self, m: Move) -> bool {
         if self.ply() == 0 && self.root_allowed.as_ref().is_some_and(|a| !a.contains(&m)) {
@@ -1068,6 +1077,10 @@ impl SearchPosition for ChuPosition {
     }
     fn history_slot(&self, m: Move) -> usize {
         (usize::from(self.board.cells[m.from()]) - 1) * N + m.to()
+    }
+    fn quiet_order(&self, m: Move) -> i32 {
+        let c = self.board.cells[m.from()];
+        16 * (Board::placement(c, m.to()) - Board::placement(c, m.from()))
     }
     fn encode(m: Move) -> u32 {
         m.0 + 1

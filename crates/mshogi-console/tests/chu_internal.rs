@@ -155,6 +155,36 @@ fn actual_child_executes_complete_chu_choices_for_full_known_history_and_purpose
     bridge.shutdown();
 }
 #[test]
+fn clocked_child_admits_suffixes_and_resets_after_takeback() {
+    let bridge = EngineBridge::new(env!("CARGO_BIN_EXE_mshogi").into()).unwrap();
+    let mut game = c::Game::standard();
+    for id in 1..=8 {
+        if id == 6 {
+            game = c::Game::standard();
+        }
+        let mut req = request(id, &game, false);
+        req.context.limits.time_ms = Some(5000);
+        bridge.submit(req.clone()).unwrap();
+        let response = wait(&bridge);
+        assert!(response.matches(&req));
+        let ExecutionResult::Chu { result } = response.observation.result else {
+            panic!("Chu result required")
+        };
+        result.validate(&game).unwrap();
+        let ChuResult::Choice { action, telemetry } = result else {
+            panic!("complete clocked choice required")
+        };
+        assert_eq!(telemetry.completed_depth, 1);
+        game.submit(c::GameRequest {
+            expected: game.context(),
+            actor: game.position().side_to_move(),
+            command: c::GameCommand::Play { action },
+        })
+        .unwrap();
+    }
+    bridge.shutdown();
+}
+#[test]
 fn actual_controller_readonly_analysis_save_reopen_and_stale_identity_retirement() {
     let mut ctl = DesktopController::new(env!("CARGO_BIN_EXE_mshogi").into()).unwrap();
     let native = CanonicalRecord::chu(c::GameRecord::from_game(&c::Game::standard()).unwrap());

@@ -1,7 +1,7 @@
 //! Compact transport for a retained native session. Saved observations still
 //! contain the complete original context; only process traffic is incremental.
 use crate::*;
-use mshogi_core::{native::CanonicalRecord, shogi, tori};
+use mshogi_core::{chu, native::CanonicalRecord, shogi, tori};
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
@@ -62,6 +62,8 @@ pub enum Delta {
     Shogi(shogi::GameDelta),
     /// Exact native Tori commands and derived event expectations (MSH-204).
     Tori(tori::GameDelta),
+    /// Exact native Chu suffix (MSH-213).
+    Chu(chu::GameDelta),
 }
 /// A full validated reset or a suffix of one exact acknowledged endpoint.
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -126,7 +128,7 @@ fn digest(bytes: &[u8]) -> [u8; 32] {
 #[derive(Default)]
 pub struct Client {
     previous: Option<Arc<ExecutionRequest>>,
-    pending: Option<(Arc<ExecutionRequest>, [u8; 32])>,
+    pending: Option<(Arc<ExecutionRequest>, [u8; 32], bool)>,
 }
 impl Client {
     /// Only adopted game families use incremental timed traffic.
@@ -138,7 +140,7 @@ impl Client {
                     ExecutionPurpose::ChessFullReachability { .. }
                 ),
                 // Tori adopts engine turns; analysis keeps full requests.
-                CanonicalRecord::Tori(_) => {
+                CanonicalRecord::Tori(_) | CanonicalRecord::Chu(_) => {
                     matches!(request.context.purpose, ExecutionPurpose::EngineTurn {})
                 }
                 _ => false,
@@ -150,7 +152,8 @@ impl Client {
         request: &Arc<ExecutionRequest>,
     ) -> Result<Vec<u8>, serde_json::Error> {
         let bytes = self.encode_request(request)?;
-        self.pending = Some((Arc::clone(request), digest(&bytes)));
+        let requires_endpoint = Self::supports(request) && self.previous.is_some();
+        self.pending = Some((Arc::clone(request), digest(&bytes), requires_endpoint));
         Ok(bytes)
     }
     fn encode_request(&self, request: &ExecutionRequest) -> Result<Vec<u8>, serde_json::Error> {
@@ -183,6 +186,16 @@ impl Client {
                             ),
                         })
                     }
+                    (CanonicalRecord::Chu(current), CanonicalRecord::Chu(old))
+                        if current.has_prefix(old) =>
+                    {
+                        Some(Update::Advance {
+                            base: base(),
+                            delta: Delta::Chu(
+                                current.suffix(old.event_count()).expect("validated prefix"),
+                            ),
+                        })
+                    }
                     _ => None,
                 }
             })
@@ -208,7 +221,7 @@ impl Client {
         let text = std::str::from_utf8(bytes).map_err(|e| malformed(e.to_string()))?;
         crate::shared::reject_observation_duplicates(text, &mut || false).map_err(malformed)?;
         let wire: Response = serde_json::from_str(text).map_err(|e| malformed(e.to_string()))?;
-        let Some((submitted, expected_digest)) = &self.pending else {
+        let Some((submitted, expected_digest, requires_endpoint)) = &self.pending else {
             return Err((
                 FailureKind::ContextMismatch,
                 "no pending encoded request".into(),
@@ -222,7 +235,7 @@ impl Client {
                 .endpoint
                 .as_ref()
                 .is_some_and(|stamp| !supports || stamp != &expected)
-            || (supports
+            || (*requires_endpoint
                 && wire.endpoint.is_none()
                 && !matches!(wire.result, ExecutionResult::Failure { .. }))
         {
@@ -241,7 +254,10 @@ impl Client {
                 "result differs from submitted context".into(),
             ));
         }
-        let (submitted, _) = self.pending.take().expect("checked pending request");
+        let (submitted, _, _) = self.pending.take().expect("checked pending request");
+        // A full reply without an endpoint is the frozen predecessor's
+        // capability fallback. It remains bound to the exact full request;
+        // never send a suffix until the child acknowledges an endpoint.
         if supports && wire.endpoint.is_some() {
             self.previous = Some(submitted);
         } else if submitted.context.limits.time_ms.is_some() {
@@ -312,34 +328,41 @@ impl Adapter for ShogiAdapter {
             && target.label.len() <= 256
     }
 }
-/// Tori adoption of the shared session (MSH-204): engine turns only.
-pub struct ToriAdapter;
-impl Adapter for ToriAdapter {
-    type Record = tori::GameRecord;
-    fn record(record: &CanonicalRecord) -> Option<&Self::Record> {
-        match record {
-            CanonicalRecord::Tori(r) => Some(r),
-            _ => None,
+// Native engine-turn adapters share validation and differ only in their types.
+macro_rules! turn_adapter {
+    ($adapter:ident, $game:ident, $variant:ident) => {
+        /// Native engine-turn adoption of the shared session lifecycle.
+        pub struct $adapter;
+        impl Adapter for $adapter {
+            type Record = $game::GameRecord;
+            fn record(record: &CanonicalRecord) -> Option<&Self::Record> {
+                match record {
+                    CanonicalRecord::$variant(r) => Some(r),
+                    _ => None,
+                }
+            }
+            fn delta(delta: &Delta) -> Option<&$game::GameDelta> {
+                match delta {
+                    Delta::$variant(d) => Some(d),
+                    _ => None,
+                }
+            }
+            fn valid_limits(meta: &Metadata) -> bool {
+                (mshogi_search::$game::Limits {
+                    depth: meta.limits.depth,
+                    nodes: meta.limits.nodes,
+                })
+                .valid()
+                    && matches!(meta.purpose, ExecutionPurpose::EngineTurn {})
+            }
+            fn valid_target(_meta: &Metadata, _game: &$game::Game) -> bool {
+                true
+            }
         }
-    }
-    fn delta(delta: &Delta) -> Option<&tori::GameDelta> {
-        match delta {
-            Delta::Tori(d) => Some(d),
-            _ => None,
-        }
-    }
-    fn valid_limits(meta: &Metadata) -> bool {
-        (mshogi_search::tori::Limits {
-            depth: meta.limits.depth,
-            nodes: meta.limits.nodes,
-        })
-        .valid()
-            && matches!(meta.purpose, ExecutionPurpose::EngineTurn {})
-    }
-    fn valid_target(_meta: &Metadata, _game: &tori::Game) -> bool {
-        true
-    }
+    };
 }
+turn_adapter!(ToriAdapter, tori, Tori);
+turn_adapter!(ChuAdapter, chu, Chu);
 /// Shared transport lifecycle around any adopted native record adapter.
 pub struct SessionServer<A: Adapter> {
     native: mshogi_core::native::incremental::Session<A::Record>,
@@ -360,6 +383,8 @@ pub struct Server {
     pub shogi: SessionServer<ShogiAdapter>,
     /// Tori session (MSH-204).
     pub tori: SessionServer<ToriAdapter>,
+    /// Chu session (MSH-213).
+    pub chu: SessionServer<ChuAdapter>,
 }
 impl Request {
     /// The game family of this request, from its full record or suffix.
@@ -374,6 +399,10 @@ impl Request {
                 delta: Delta::Tori(_),
                 ..
             } => mshogi_core::native::GameKind::Tori,
+            Update::Advance {
+                delta: Delta::Chu(_),
+                ..
+            } => mshogi_core::native::GameKind::Chu,
         }
     }
 }
@@ -856,5 +885,117 @@ mod tests {
             tori_request(&alternate, 5),
             &alternate
         ));
+    }
+    #[test]
+    fn chu_uses_exact_acknowledged_suffix_and_resets_for_takeback() {
+        let mut game = chu::Game::standard();
+        let mut client = Client::default();
+        let mut server = Server::default();
+        let root = chu::GameRecord::from_game(&game).unwrap();
+        for id in 1..=4 {
+            if id == 4 {
+                game = root.to_game().unwrap();
+            }
+            let record = chu::GameRecord::from_game(&game).unwrap();
+            let request = Arc::new(ExecutionRequest {
+                protocol: PROTOCOL_VERSION,
+                context: ExecutionContext {
+                    purpose: ExecutionPurpose::EngineTurn {},
+                    request_id: id,
+                    process_generation: id,
+                    session_version: id,
+                    game: CanonicalRecord::chu(record.clone()),
+                    limits: WorkLimits {
+                        depth: 1,
+                        nodes: 512,
+                        time_ms: Some(100),
+                    },
+                },
+            });
+            let bytes = client.encode(&request).unwrap();
+            let check =
+                |g: &chu::Game,
+                 reset: bool,
+                 _: WorkLimits,
+                 _: &mshogi_search::alphabeta::timing::RequestTime| {
+                    assert_eq!(chu::GameRecord::from_game(g).unwrap(), record);
+                    assert_eq!(reset, id == 1 || id == 4);
+                    ExecutionResult::failure(FailureKind::Search, "admission-only test")
+                };
+            let response = if id == 1 {
+                server.chu.begin(&request, check)
+            } else {
+                let wire: Request = serde_json::from_slice(&bytes).unwrap();
+                assert_eq!(matches!(wire.update, Update::Advance { .. }), id != 4);
+                server.chu.execute(wire, check)
+            };
+            let encoded = serde_json::to_vec(&response.bind(&bytes)).unwrap();
+            assert!(client.decode(&encoded).is_ok());
+            assert!(client.decode(&encoded).is_err());
+            let action = game.legal_actions()[0].clone();
+            game.submit(chu::GameRequest {
+                expected: game.context(),
+                actor: game.position().side_to_move(),
+                command: chu::GameCommand::Play { action },
+            })
+            .unwrap();
+        }
+    }
+    #[test]
+    fn full_reply_negotiates_capability_but_suffix_requires_acknowledgement() {
+        let game = chu::Game::standard();
+        let mut client = Client::default();
+        let result = ExecutionResult::Chu {
+            result: ChuResult::Incomplete {
+                telemetry: ChuTelemetry {
+                    evaluator_id: mshogi_search::chu::EVALUATOR_ID.into(),
+                    search_id: mshogi_search::chu::SEARCH_ID.into(),
+                    perspective: chu::Side::Sente,
+                    score: None,
+                    completed_depth: 0,
+                    nodes: 0,
+                    principal_variation: vec![],
+                    status: StopReason::Stopped,
+                },
+            },
+        };
+        for id in 1..=3 {
+            let request = Arc::new(ExecutionRequest {
+                protocol: PROTOCOL_VERSION,
+                context: ExecutionContext {
+                    purpose: ExecutionPurpose::EngineTurn {},
+                    request_id: id,
+                    process_generation: id,
+                    session_version: id,
+                    game: CanonicalRecord::chu(chu::GameRecord::from_game(&game).unwrap()),
+                    limits: WorkLimits {
+                        depth: 1,
+                        nodes: 512,
+                        time_ms: Some(100),
+                    },
+                },
+            });
+            let bytes = client.encode(&request).unwrap();
+            assert_eq!(
+                serde_json::from_slice::<ExecutionRequest>(&bytes).is_ok(),
+                id < 3
+            );
+            let mut response = Response::new(&bytes, result.clone());
+            if id == 3 {
+                assert!(
+                    client
+                        .decode(&serde_json::to_vec(&response).unwrap())
+                        .is_err(),
+                    "compact request cannot lose its endpoint"
+                );
+            }
+            if id >= 2 {
+                response.endpoint = Some(Stamp { request_id: id });
+            }
+            client
+                .decode(&serde_json::to_vec(&response).unwrap())
+                .unwrap();
+            assert_eq!(client.previous.is_some(), id >= 2);
+        }
     }
 }

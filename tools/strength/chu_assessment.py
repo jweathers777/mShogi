@@ -35,7 +35,8 @@ def classify(row):
         return 'time_trouble'
     if row['repeated']:
         return 'repetition'
-    if after.get('score') is not None and after['score'] >= MATE_SCORE - 9:
+    if after.get('terminal_probability') == 1 or (
+            after.get('score') is not None and after['score'] >= MATE_SCORE - 9):
         return 'allowed_short_win'
     if best.get('captures') and not row['played']['captures']:
         return 'missed_capture'

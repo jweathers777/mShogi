@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-24T21:07:00Z'
-updated_date: '2026-11-24T21:30:00Z'
+updated_date: '2026-11-24T21:34:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -54,4 +54,6 @@ Scaling1 complete, all resources verified absent; conservative compute boundUS$0
 Engineering extension fixed before new results: these clocks do not reach the harness depth8 target. Add20s+0.2s and40s+0.4s,2x time,16 pairs each, new seeds33..48, two8-pair bins/level, four workers,1000steps,900s pair watchdog,1400s/bin,30-minute campaign. This adds new longer controls, not reruns or score-based replacement of the first campaign. Keep all earlier results. Fixed control sample remains all32 games from the first campaign. At most two judge campaigns now; total actual campaign wall time remains capped at2h andUS$10. Judge cloud build is active frome36cf83.
 
 Validation after origin/main merge (already current): fmt and all-target workspace Clippy pass;1188 workspace tests pass,12 ignored; three Chu judge tests and twelve Python assessment/Tori regression tests pass. Native report smoke test: four sampled move pairs parsed/replayed and judged at1000 nodes; smoke scores excluded from the full screen. Runtime judge source remains e36cf83; later Rust change adds only a terminal-perspective test. Longer-clock campaign will share its eight-VM allocation with the first16 judge shards (four game VMs plus four judge VMs); remaining16 judge shards run after it. Same samples/nodes, no score-based scheduling.
+
+Judge build succeeded and its VM/disk/job are verified absent. Binary SHA256 f4ecf3177391f1b51e6987fb3a4c7d9657190528247172a1ad76d93c2abbb995, sourcee36cf8393b87854334049cdafdfc292ca5aa1521; core/search source differs from accepted e2658c7 only in one documentation comment. Accumulated conservative compute boundUS$0.56912. Campaign msh213-msh523-long-scaling now active: four longer-clock bins plus judge shards0..15, GCS runs/msh-52.3/long-scaling. All16 control reports hash-pinned in judge-inputs. Next collect full longer-clock results and first256 sampled moves; run remaining judge shards16..31, then assess all512 together. Before full judge results, allowed_short_win also includes an already concluded opponent win (zero plies); tests cover it. No engine changes.
 <!-- SECTION:NOTES:END -->

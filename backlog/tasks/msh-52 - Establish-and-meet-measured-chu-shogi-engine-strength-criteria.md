@@ -4,7 +4,7 @@ title: Establish and meet measured chu shogi engine strength criteria
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-24T20:54:00Z'
+updated_date: '2026-11-24T21:34:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -70,4 +70,6 @@ John started the Chu selectivity step on 2026-11-24 after MSH-201. Tracked as MS
 MSH-52.1 (Chu Selectivity Round) completed: combined quiescence/ordering candidate rejected by predecessor SPRT (41W/117L,79 scored pairs,10 unscored cutoffs); ordering-only pilot also rejected. No search changes kept; accepted MSH-201 engine remains the baseline. All five technique outcomes and evidence are in MSH-52.1. Next step is Chu evaluation; it has not been started.
 
 MSH-52.2 (Chu Evaluation Round): fitted classical material/placement/tempo weights passed the frozen predecessor SPRT0/10 with164W/0D/74L across119 scored pairs; five pairs unscored. Heldout MSE improved1.63%, forcing suite70/71, elementary315/315 and igui80/80. Next Chu steps are the internal scaling curve and much-deeper same-family blunder screen, then stop decision. No external opponents or absolute rating claim.
+
+John requested internal scaling and the deeper-search screen after evaluation. Active work is MSH-52.3 (Chu Strength Assessment). The accepted fitted engine is frozen; the parent stop/continue decision remains pending.
 <!-- SECTION:NOTES:END -->

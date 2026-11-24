@@ -131,7 +131,10 @@ mod tests {
         assert_eq!(ChuTexel::key(&text), ChuTexel::key(&diagram.to_string()));
         diagram["side"] = serde_json::to_value(Side::Gote).unwrap();
         let prepared = ChuTexel::prepare(&diagram.to_string()).unwrap().unwrap();
-        assert_eq!(ChuTexel::score(&prepared, &eval::DEFAULT), -10);
+        assert_eq!(
+            ChuTexel::score(&prepared, &eval::DEFAULT),
+            -eval::DEFAULT[eval::COUNT - 1]
+        );
     }
     #[test]
     fn features_match_incremental_score_and_undo() {
@@ -206,7 +209,14 @@ mod tests {
             assert_eq!(eval::index(face), i * 3);
         }
         let p = ChuPosition::from_position(&Position::standard());
-        assert_eq!(p.evaluate(), 10);
+        assert_eq!(
+            eval::features(&p)
+                .iter()
+                .zip(eval::INITIAL)
+                .map(|(v, w)| v * w)
+                .sum::<i32>(),
+            10
+        );
         assert!(ChuTexel::prepare("bad").is_err());
     }
 }

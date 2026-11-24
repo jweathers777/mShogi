@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-24T19:15:00Z'
-updated_date: '2026-11-24T19:33:00Z'
+updated_date: '2026-11-24T19:45:00Z'
 labels:
   - chu
   - evaluation
@@ -51,4 +51,7 @@ Checkpoint: branch codex/msh-52.2-chu-evaluation. Added an 88-weight static mate
 Fresh review of 55191fe..3913370 found one issue: even-ply sampling gave only Sente-to-move inputs. Fixed to sample every ply; pilot source 3913370 is for yield measurement only, not fitting. Reviewer found no other concrete defects. All three chu_texel tests pass, including old-placement agreement for every piece and square. Workspace Clippy passed. Cloud build build-msh522-tools started; source 391337067e07610bf52a4f576a7cd0c0c1e3e5c8; GCS runs/msh-52.2/build-tools.
 
 Pilot source 3913370: 500 nodes produced 0/16 concluded games; 2000 nodes produced 2/16, 539 even-ply quiet samples. Other games stopped with no completed first search iteration. Pilot data will not be fitted. Added doubling node retries for these turns (up to existing search maximum, within game deadline); test proves a 1-node starting allowance obtains a native move and unfinished games remain unlabelled. Shared splitter now streams two passes and retains only board hashes/partition masks; 9 Python tests pass and fresh review found no defect. Workspace tests passed 1188 with 12 ignored; fmt and Clippy passed before the retry edit. Both initial cloud jobs/VMs/disks deleted. Conservative compute upper bounds: build $0.13169, pilot $0.06766 (actual lower). Next build corrected generator, measure full-game yield, then production corpus and fit. Branch codex/msh-52.2-chu-evaluation.
+
+Corrected pilot source 80f32b643c193a0614be81e52ce3130a5b2c12c8: same 16 openings, 60-second/game and 2000-ply observation stops. At 2000 initial nodes: 14 native outcomes, 2 unlabelled ply stops, 4379 quiet rows, 138.28 aggregate CPU-task seconds. At 8000: 16 outcomes, 3633 rows, 447.38 seconds. Choose 2000 with doubling retries for corpus yield; no strength claim from node count. Pilot2 data excluded from fitting.
+Production protocol frozen before fitting: source 80f32b6, 2000 starting nodes, retry up to current engine maximum only if no first completed iteration; sample every quiet ply; only native conclusion labels; 60 s/game, 2000 plies. Request 3072 games across 8 c3-standard-4 VMs, four processes each; stop starting games near the campaign deadline. Use all completed native outcomes, retain unlabelled stops. Existing 128-opening catalog; every randomized continuation stays with its catalog opening; SHA256 opening split (0 heldout, 1 validation, rest training) and global duplicate removal. Require >=500000 unique quiet positions before fitting. Static model bounds and K range in 80f32b6 are frozen; fit training/validation for at most 900 seconds, then check heldout. Shared splitter uses current 80f32b6 streaming implementation. Resources/run files remain under runs/msh-52.2 and corresponding GCS prefix.
 <!-- SECTION:NOTES:END -->

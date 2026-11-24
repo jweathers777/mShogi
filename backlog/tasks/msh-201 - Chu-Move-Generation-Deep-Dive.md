@@ -1,7 +1,7 @@
 ---
 id: MSH-201
 title: Chu Search Speed
-status: In Progress
+status: Done
 assignee:
   - codex
 created_date: '2026-11-19T07:12:00Z'
@@ -73,6 +73,8 @@ Final predecessor game result, candidate79c2409 versus frozen4f5e2ed: both presp
 Reproduce measurements using chu_bench bench bench.json OUT 5 5 in baseline/candidate/baseline order on one c3-standard-4; frozen input and raw outputs: gs://mshogi-experiments-216675633801/runs/msh-201/comparison-final/ (input also baseline-profile/tasks/0/bench.json). Clocked commands are native_match --game chu --base 10 --increment 0.1 --max-steps 1000 --max-pairs 8 --first-seed 1,9,...57 then65,73,...121 --wall-seconds 1500 --pair-wall-ms 600000, through chu_cloud submit with frozen manifests. Full manifests, binary hashes, costs and deletion receipts: controller-records.tar.gz at the same runs/msh-201 root; speed-summary.json,game-summary.json and checks.tar.gz are there too. Conservative VM compute upper bounds totalUS$1.609, plus small Cloud Build/storage costs, withinUS$10. This is not a billing total.
 
 Final verification: fmt and workspace Clippy passed; workspace1188 passed,12 ignored,0 failed; focused Chu29 passed/1 ignored; Python170 tests run/1 skipped. Fresh review found no issues. No manual GitHub CI or GUI checks: product changes are platform-independent search code; worker extension was exercised on Linux Cloud Batch. Main182f017 remains unchanged and was merged before final checks. Next program work is Chu selectivity under MSH-52.
+
+Integrated into main at68b86b2. All acceptance evidence is recorded above; the clocked SPRT remains explicitly inconclusive. Final result archives uploaded before local cleanup.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

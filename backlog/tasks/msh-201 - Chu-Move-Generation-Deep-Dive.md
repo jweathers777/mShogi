@@ -1,10 +1,11 @@
 ---
 id: MSH-201
 title: Chu Search Speed
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - codex
 created_date: '2026-11-19T07:12:00Z'
-updated_date: '2026-11-20T22:52:00Z'
+updated_date: '2026-11-24T15:57:00Z'
 labels:
   - chu
   - search
@@ -38,4 +39,6 @@ Native rules stay the authority. A faster search-side position must agree with t
 2026-11-20, John: rescoped from a discussion task to an ordinary speed task; agents choose the techniques. Blocker: Chu has no strength harness yet (opening set, blunder suite, game test against the predecessor; see MSH-204 (Tori Strength Harness) and docs/m5/strength-roadmap.md). Speed profiling and perft/differential work can start; AC 3 needs the harness.
 
 Harness blocker is now the dependency MSH-213 (Chu Strength Harness).
+
+Started from main182f017 after MSH-213 completion. Frozen predecessor engine source4f5e2ed and harness inputs/results are recorded in MSH-213. No compatibility obligation or game-rule change. Budget US$10; measurements and heavy builds use c3-standard-4 cloud workers.
 <!-- SECTION:NOTES:END -->

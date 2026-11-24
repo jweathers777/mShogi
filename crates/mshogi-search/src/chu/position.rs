@@ -408,39 +408,42 @@ impl Board {
         if from == to {
             return false;
         }
-        let m = meta(c);
-        let s = m.piece.side.index();
-        if m.movement
-            .steps
-            .iter()
-            .chain(m.movement.jumps)
-            .any(|&(f, r)| offset(from, s, f, r) == Some(to))
-        {
+        let movement = meta(c).movement;
+        let sign = if meta(c).piece.side == Side::Sente {
+            1
+        } else {
+            -1
+        };
+        let df = ((from % 12) as i8 - (to % 12) as i8) * sign;
+        let dr = ((to / 12) as i8 - (from / 12) as i8) * sign;
+        if movement.steps.contains(&(df, dr)) || movement.jumps.contains(&(df, dr)) {
             return true;
         }
-        if match m.movement.special {
-            Some(SpecialMovement::Lion) => distance(from, to) <= 2,
-            Some(SpecialMovement::Forward) => (1..=2).any(|n| offset(from, s, 0, -n) == Some(to)),
-            Some(SpecialMovement::ForwardDiagonal) => [-1, 1]
-                .into_iter()
-                .any(|f| (1..=2).any(|n| offset(from, s, f * n, -n) == Some(to))),
+        if match movement.special {
+            Some(SpecialMovement::Lion) => df.abs() <= 2 && dr.abs() <= 2,
+            Some(SpecialMovement::Forward) => df == 0 && (-2..=-1).contains(&dr),
+            Some(SpecialMovement::ForwardDiagonal) => (-2..=-1).contains(&dr) && df.abs() == -dr,
             None => false,
         } {
             return true;
         }
-        for &(f, r) in m.movement.rays {
-            let mut at = from;
-            while let Some(next) = offset(at, s, f, r) {
-                if next == to {
-                    return true;
-                }
-                if self.cells[next] != 0 {
-                    break;
-                }
-                at = next;
-            }
+        // Only the ray towards the target can reach it. Check its direction
+        // before looking at occupancy; the target itself may be a friendly
+        // piece whose defense is being tested.
+        if (df != 0 && dr != 0 && df.abs() != dr.abs())
+            || !movement.rays.contains(&(df.signum(), dr.signum()))
+        {
+            return false;
         }
-        false
+        let step = isize::from(dr.signum() * sign) * 12 - isize::from(df.signum() * sign);
+        let mut at = from as isize + step;
+        while at != to as isize {
+            if self.cells[at as usize] != 0 {
+                return false;
+            }
+            at += step;
+        }
+        true
     }
     fn defended(&self, owner: usize, target: usize) -> bool {
         let mut sources = self.occupied[owner];

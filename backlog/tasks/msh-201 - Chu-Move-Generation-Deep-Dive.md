@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-19T07:12:00Z'
-updated_date: '2026-11-24T16:03:00Z'
+updated_date: '2026-11-24T16:15:00Z'
 labels:
   - chu
   - search
@@ -49,4 +49,10 @@ Harness blocker is now the dependency MSH-213 (Chu Strength Harness).
 Started from main182f017 after MSH-213 completion. Frozen predecessor engine source4f5e2ed and harness inputs/results are recorded in MSH-213. No compatibility obligation or game-rule change. Budget US$10; measurements and heavy builds use c3-standard-4 cloud workers.
 
 Benchmark tooling ready before optimization:18 frozen positions (first8 opening catalog entries, first case of each4 tactical families,2 explicit Horned Falcon/Soaring Eagle diagrams, first completed source game prefixes80/160/240/320). Baseline pilot uses depth3,3 fresh-table repeats and a separate coarse timed-wrapper pass; wrapper asserts exact full search-output equality with the untimed pass. Timings exclude native root setup and separately report it. No product search change yet. New chu_bench helper and manifested executable selection reuse the cloud worker. Next build/profile baseline, then choose the measured hot path. Branch codex/msh-201-chu-search-speed.
+
+Baseline helper source4599c86 built successfully on c3-standard-4; SHA25651519869cf9bd88fb9edef60348b57799e18366e4be5866fb00700fd1a275ac7. Build cleanup verified; conservative compute upper bound US$0.143. Worker image pinned sha256:c15692c83e248b70e8c758662674559691ae4f362141dc7b045cd7f3c122f191 (Cloud Build43d16165-e11a-4402-8514-6080e43d2f01). Baseline profile job msh213-msh201-profile active, using the existing Chu worker prefix; GCS runs/msh-201/baseline-profile. No search implementation change yet.
+
+Baseline depth3 profiling (18 fixed positions,3 uninstrumented repeats plus exact-result-checked instrumented pass):exchange34.3%, generation/route admission22.6%, make/threat17.4%, rule/capture threat9.0%, unmake1.8%. Total profiled time0.133s; individual uninstrumented medians0.07–58.25ms. The repeated direct_reaches scan is shared by exchange filtering, move admission and threats. First change checks the target displacement and allowed ray direction before scanning only its intervening squares; no tables, pruning, ordering, evaluation or limits change. Final same-VM comparison is fixed before results at depth5,5 repeats, baseline/candidate/baseline order, with complete search-signature equality required.
+
+First candidate implemented: direct_reaches computes mover-relative displacement once, checks direct movement, rejects nonaligned/unsupported rays, and scans only the target ray. No allocation, precomputed table, ordering, evaluation, selectivity or rules change. Chu checks28 passed/1 ignored, including native perft, >150 sourced fixtures, randomized differential/undo and exact successor comparisons. Search Clippy passes. A fresh movement-code review is active. Next cloud build and same-VM depth5 comparison before game tests.
 <!-- SECTION:NOTES:END -->

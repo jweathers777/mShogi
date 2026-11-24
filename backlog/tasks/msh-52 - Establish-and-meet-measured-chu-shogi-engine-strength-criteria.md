@@ -4,7 +4,7 @@ title: Establish and meet measured chu shogi engine strength criteria
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-24T17:45:00Z'
+updated_date: '2026-11-24T18:43:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -66,4 +66,6 @@ Move generation discussion slot: MSH-201 (Chu Move Generation Deep Dive).
 2026-11-20 (John): depends on MSH-201 (Chu Move Generation Deep Dive). Chu program step tasks (selectivity and later), when created, depend on MSH-201.
 
 John started the Chu selectivity step on 2026-11-24 after MSH-201. Tracked as MSH-52.1 (Chu Selectivity Round); later evaluation and measurement are not started.
+
+MSH-52.1 (Chu Selectivity Round) completed: combined quiescence/ordering candidate rejected by predecessor SPRT (41W/117L,79 scored pairs,10 unscored cutoffs); ordering-only pilot also rejected. No search changes kept; accepted MSH-201 engine remains the baseline. All five technique outcomes and evidence are in MSH-52.1. Next step is Chu evaluation; it has not been started.
 <!-- SECTION:NOTES:END -->

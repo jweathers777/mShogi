@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-24T17:44:00Z'
-updated_date: '2026-11-24T18:39:00Z'
+updated_date: '2026-11-24T18:43:00Z'
 labels:
   - chu
   - search
@@ -27,9 +27,9 @@ Improve Chu search decisions with a bounded round of classical shared-core selec
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Quiescence checks, full SEE, game-scaled margins, move ordering and shared df-pn mate search each have a recorded measured outcome or a concrete reason they do not apply.
-- [ ] #2 Kept changes pass native correctness and tactical checks and have supporting clocked predecessor evidence; inconclusive or rejected experiments are reported honestly.
-- [ ] #3 Required workspace checks pass, useful design documentation is current, and run identities, settings, costs and cleanup evidence are recorded.
+- [x] #1 Quiescence checks, full SEE, game-scaled margins, move ordering and shared df-pn mate search each have a recorded measured outcome or a concrete reason they do not apply.
+- [x] #2 Kept changes pass native correctness and tactical checks and have supporting clocked predecessor evidence; inconclusive or rejected experiments are reported honestly.
+- [x] #3 Required workspace checks pass, useful design documentation is current, and run identities, settings, costs and cleanup evidence are recorded.
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -64,4 +64,12 @@ Final combined-candidate game verdict:372b689 versus frozen79c2409, two complete
 Technique outcomes: (1) Quiescence quiet royal threats: tested with eight checks at the frontier as part of the combined candidate; rejected on game evidence despite two more constructed forcing solves. (2) Full SEE: existing threshold minimax already follows complete admitted compound recaptures, both victims, promotions and final landing; unresolved local exchanges retain the move. Keep that implementation unchanged; a Chess single-square swap list would lose Chu effects. (3) Margins: retain MARGIN_UNIT100, the native Pawn value with captures discarded and no hand gain. (4) Ordering: retain existing shared TT, tactical, killer, history and continuation ordering; tested placement-delta quiet bonus alone, rejected at pilot for more time/nodes and no tactical gain, not claimed as a measured strength loss. (5) Shared df-pn: not enabled because its no-legal-evasion mate and exclusion of rule_score terminals do not fit capture-based Chu; rationale now in chu-search-geometry.md.
 
 Reproduction: chu_strength probe SUITE OUT 20; chu_bench bench bench.json OUT 5 3. Game commands native_match --game chu --base 10 --increment 0.1 --max-steps 1000 --max-pairs 16 --first-seed 1,17,...113 then129,145,...241 --wall-seconds 1500 --pair-wall-ms 600000, through chu_cloud. c3-standard-4 throughout, Rust1.99.1 x86-64 release. Exact argv, input/binary hashes and receipts are under gs://mshogi-experiments-216675633801/runs/msh-52.1/ (build-candidate,pilot-1,match-1,match-2,build-ordering,ordering-pilot). All six cloud controllers verified jobs/VMs/disks absent. Sum of conservative VM compute upper bounds US$1.5244, not actual billing; no new image build, small storage extra, withinUS$10. Temporary msh521-build-completion subscription is being deleted. Final restored-baseline workspace checks are running; branch codex/msh-52.1-chu-selectivity.
+
+Final restored-baseline validation passed:1188 workspace tests,12 ignored,0 failed; fmt and workspace all-target Clippy pass. Main6c2414b remained unchanged and was merged into this branch; final crates/ and tools/ diff versus main is empty. No rules/format change or retained code refactor needs a separate review; no UI or platform change needs GUI/CI runs. Temporary cloud subscription deleted. Final evidence files final-results.json,experiment-records.tar.gz,candidate-checks.tar.gz,final-checks.tar.gz are under runs/msh-52.1 in GCS. Next step is Chu evaluation under MSH-52, not started.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Completed the bounded Chu selectivity round. Quiescence royal threats plus quiet placement ordering solved two extra constructed tactics but lost the predecessor test: 41 wins and 117 losses in 79 scored pairs, with 10 cutoff pairs unscored; SPRT H0. Ordering alone added about 12% fixed-depth time with no tactical gain, so that pilot was also rejected. Both candidates were reverted; the accepted MSH-201 engine remains unchanged. Existing compound SEE and Pawn-scale margins stay; the shared mate solver does not fit Chu capture-based terminals. Final formatting, Clippy and 1,188 workspace tests pass; all cloud resources are deleted. Next: Chu evaluation under MSH-52.
+<!-- SECTION:FINAL_SUMMARY:END -->

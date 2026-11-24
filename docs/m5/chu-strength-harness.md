@@ -95,7 +95,8 @@ later material fit does not change which positions enter the comparison.
 `chu_selfplay OPENINGS OUT START COUNT NODES MAX_PLIES SECONDS_PER_GAME`
 generates records directly through the native Game. It adds eight seeded
 quiet rear-zone moves to each catalog opening, then uses two separate search
-states. It samples both sides to move. Every admitted action is retained with
+states. If a turn has no completed first iteration, it doubles that turn's
+node allowance up to the engine maximum and retries. It samples both sides to move. Every admitted action is retained with
 the initial record, so the game can be replayed. Only native concluded games
 supply labels. A game stopped by a search failure, time limit or move limit
 has no samples and no inferred draw result. All continuations of one catalog

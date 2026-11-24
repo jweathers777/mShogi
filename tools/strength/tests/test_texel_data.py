@@ -42,3 +42,11 @@ class PartitionTests(unittest.TestCase):
                 self.assertEqual(len(rows), 1)
                 self.assertEqual(rows[0]['split'], part)
                 self.assertNotIn('shared', rows[0]['fen'])
+
+    def test_chu_board_tuple_order_is_not_part_of_identity(self):
+        pieces = [["1a", {"side": "g", "base": "K", "promoted": False}],
+                  ["12l", {"side": "s", "base": "K", "promoted": False}]]
+        diagram = {'pieces': pieces, 'side': 's', 'protection': {'owner': None, 'squares': []}}
+        reversed_diagram = dict(diagram, pieces=list(reversed(pieces)))
+        self.assertEqual(key(diagram, 'chu'), key(reversed_diagram, 'chu'))
+        self.assertNotEqual(key(diagram, 'chu'), key(dict(diagram, side='g'), 'chu'))

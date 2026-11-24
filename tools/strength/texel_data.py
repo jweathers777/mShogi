@@ -21,12 +21,44 @@ def key(fen, game='chess'):
     # (its fourth field is only the move counter), Xiangqi FEN board and side,
     # Tori compact diagram (board, both hands, side; MSH-204) as canonical JSON.
     if isinstance(fen, dict):
+        if game == 'chu':
+            fen = dict(fen, pieces=sorted(fen['pieces'], key=lambda p: json.dumps(p, sort_keys=True, separators=(',', ':'))))
         return json.dumps(fen, sort_keys=True, separators=(',', ':'))
     return ' '.join(fen.split()[:FIELDS[game]])
 
 
 def digest(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    result = hashlib.sha256()
+    with path.open('rb') as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b''):
+            result.update(chunk)
+    return result.hexdigest()
+
+
+def game_rows(files):
+    """Read one game at a time; a Chu corpus can contain gigabytes of diagrams."""
+    for path in files:
+        with path.open() as stream:
+            for line in stream:
+                yield json.loads(line)
+
+
+def samples(g, game, by_opening):
+    position_field, outcome_field = POSITION[game], OUTCOME[game]
+    source = g['opening_id'] if by_opening else key(g['initial_' + position_field], game)
+    family = hashlib.sha256(source.encode()).hexdigest()
+    bucket = int(family[:16], 16) % 10
+    part = 'heldout' if bucket == 0 else 'validation' if bucket == 1 else 'train'
+    if g[outcome_field] is None:
+        assert not g['samples']
+    for sample in g['samples']:
+        assert g['outcome'] is not None and not g['truncated']
+        assert sample[outcome_field] == g[outcome_field]
+        assert sample[outcome_field] in (0, .5, 1)
+        row = {position_field: sample[position_field], 'result': sample[outcome_field],
+               'split': part, 'game_id': g['game_id'], 'family_id': family}
+        identity = hashlib.sha256(key(row[position_field], game).encode()).digest()
+        yield identity, row
 
 
 def split(root, manifest_path, game='chess', allow_empty=False, by_opening=False):
@@ -34,60 +66,49 @@ def split(root, manifest_path, game='chess', allow_empty=False, by_opening=False
         raise ValueError('unsupported game')
     if game in ('tori', 'chu') and not by_opening:
         raise ValueError('Tori/Chu exports carry no initial diagram; split --by-opening')
-    position_field = POSITION[game]
-    outcome_field = OUTCOME[game]
     files = sorted(root.glob('games-*.jsonl'))
-    games = sorted((json.loads(line) for path in files for line in path.read_text().splitlines()),
-                   key=lambda g: g['game_id'])
-    assert games and len({g['game_id'] for g in games}) == len(games)
-    partitions = {}
-    boards = collections.defaultdict(set)
-    rows = []
-    for g in games:
-        # Equal initial boards (even from transposed opening moves) are one family.
-        source = g['opening_id'] if by_opening else key(g['initial_' + position_field], game)
-        family = hashlib.sha256(source.encode()).hexdigest()
-        bucket = int(family[:16], 16) % 10
-        part = 'heldout' if bucket == 0 else 'validation' if bucket == 1 else 'train'
-        partitions[g['game_id']] = part
-        if g[outcome_field] is None:
-            assert not g['samples']
-        for sample in g['samples']:
-            assert g['outcome'] is not None and not g['truncated']
-            assert sample[outcome_field] == g[outcome_field]
-            assert sample[outcome_field] in (0, .5, 1)
-            row = {position_field: sample[position_field], 'result': sample[outcome_field],
-                   'split': part, 'game_id': g['game_id'], 'family_id': family}
-            boards[key(row[position_field], game)].add(part)
-            rows.append(row)
-    # Remove every occurrence of a board shared across partitions, including
-    # clocks that differ. Within one partition retain its first occurrence only.
-    seen = set()
-    selected = collections.defaultdict(list)
+    game_ids, stops = set(), collections.Counter()
+    boards = {}
+    raw = 0
+    masks = {'train': 1, 'validation': 2, 'heldout': 4}
+    # Only board hashes and partition bits stay in memory. Re-read the frozen
+    # input to write rows after all cross-partition duplicates are known.
+    for g in game_rows(files):
+        assert g['game_id'] not in game_ids, 'duplicate game ID'
+        game_ids.add(g['game_id'])
+        stops[g['stop']] += 1
+        for identity, row in samples(g, game, by_opening):
+            boards[identity] = boards.get(identity, 0) | masks[row['split']]
+            raw += 1
+    assert game_ids, 'empty corpus'
+    counts = collections.Counter(mask for mask in boards.values() if mask in masks.values())
+    for part, mask in masks.items():
+        assert counts[mask] or allow_empty, f'empty {part}; add opening families before tuning'
+    selected_games = {part: set() for part in masks}
     cross = 0
-    for row in rows:
-        identity = key(row[position_field], game)
-        if len(boards[identity]) > 1:
-            cross += 1
-            continue
-        if identity in seen:
-            continue
-        seen.add(identity)
-        selected[row['split']].append(row)
+    seen = set()
+    from contextlib import ExitStack
+    with ExitStack() as stack:
+        streams = {part: stack.enter_context((root / (part + '.jsonl')).open('x')) for part in masks}
+        for g in game_rows(files):
+            for identity, row in samples(g, game, by_opening):
+                part = row['split']
+                if boards[identity] != masks[part]:
+                    cross += 1
+                    continue
+                if identity in seen:
+                    continue
+                seen.add(identity)
+                selected_games[part].add(row['game_id'])
+                streams[part].write(json.dumps(row, separators=(',', ':')) + '\n')
     outputs = {}
-    for part in ['train', 'validation', 'heldout']:
-        assert selected[part] or allow_empty, f'empty {part}; add opening families before tuning'
-    for part in ['train', 'validation', 'heldout']:
+    for part, mask in masks.items():
         path = root / (part + '.jsonl')
-        with path.open('x') as f:
-            for row in selected[part]:
-                f.write(json.dumps(row, separators=(',', ':')) + '\n')
         outputs[part] = {'path': str(path), 'sha256': digest(path),
-                         'positions': len(selected[part]),
-                         'games': len({r['game_id'] for r in selected[part]})}
+                         'positions': counts[mask], 'games': len(selected_games[part])}
     manifest = {
         'schema': 1, 'game': game, 'source': 'Fresh mShogi self-play; native final outcomes',
-        'training_ready': all(selected[p] for p in ['train', 'validation', 'heldout']),
+        'training_ready': all(counts[mask] for mask in masks.values()),
         'allow_empty_demonstration': allow_empty,
         'use': 'User-authorized internal classical tuning; no imported corpus',
         'project_terms': 'BSD-LICENSE',
@@ -95,9 +116,9 @@ def split(root, manifest_path, game='chess', allow_empty=False, by_opening=False
                       + ' first64bits mod10:0heldout,1validation,2..9train',
         'dedup_rule': 'Remove all cross-partition board/side/rights duplicates; retain first within-partition board',
         'inputs': {str(p): digest(p) for p in files},
-        'games': len(games), 'stops': dict(collections.Counter(g['stop'] for g in games)),
-        'raw_positions': len(rows), 'cross_partition_rows_removed': cross,
-        'remaining_within_partition_duplicates_removed': len(rows) - cross - len(seen),
+        'games': len(game_ids), 'stops': dict(stops),
+        'raw_positions': raw, 'cross_partition_rows_removed': cross,
+        'remaining_within_partition_duplicates_removed': raw - cross - len(seen),
         'outputs': outputs,
     }
     with manifest_path.open('x') as f:

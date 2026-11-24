@@ -24,6 +24,7 @@ fn generate(openings: &[Value], id: u64, nodes: u64, max_plies: usize, seconds: 
     let mut samples = Vec::new();
     let mut moves = Vec::new();
     let mut visited = 0;
+    let mut retries = 0;
     let mut stop = "ply_limit";
     let mut error = None;
     let deadline = Duration::from_secs(seconds);
@@ -42,13 +43,31 @@ fn generate(openings: &[Value], id: u64, nodes: u64, max_plies: usize, seconds: 
                 "pieces":local.position().pieces().collect::<Vec<_>>(),
                 "side":local.position().side_to_move(),"protection":local.protection()}}));
         }
-        let searched = chu::search_with_state(
-            &game,
-            chu::Limits { depth: 64, nodes },
-            None,
-            &mut engines[game.position().side_to_move().index()],
-            || started.elapsed() >= deadline,
-        );
+        let mut allowance = nodes;
+        let searched = loop {
+            let searched = chu::search_with_state(
+                &game,
+                chu::Limits {
+                    depth: 64,
+                    nodes: allowance,
+                },
+                None,
+                &mut engines[game.position().side_to_move().index()],
+                || started.elapsed() >= deadline,
+            );
+            if let Ok(result) = &searched {
+                visited += result.nodes;
+            }
+            if searched.as_ref().is_ok_and(|r| r.decision.is_none())
+                && allowance < chu::MAX_NODES
+                && started.elapsed() < deadline
+            {
+                allowance = (allowance * 2).min(chu::MAX_NODES);
+                retries += 1;
+                continue;
+            }
+            break searched;
+        };
         let result = match searched {
             Ok(r) => r,
             Err(e) => {
@@ -57,7 +76,6 @@ fn generate(openings: &[Value], id: u64, nodes: u64, max_plies: usize, seconds: 
                 break;
             }
         };
-        visited += result.nodes;
         let Some(chu::Decision::Choose(action)) = result.decision else {
             stop = "no_decision";
             break;
@@ -91,7 +109,7 @@ fn generate(openings: &[Value], id: u64, nodes: u64, max_plies: usize, seconds: 
         "initial_record":initial,"moves":moves,"sente_outcome":label,"outcome":outcome,
         "samples":samples,"truncated":outcome.is_none(),"stop":stop,"error":error,
         "nodes_per_move":nodes,"max_plies":max_plies,"seconds_per_game":seconds,
-        "nodes":visited,"elapsed_seconds":started.elapsed().as_secs_f64()})
+        "nodes":visited,"search_retries":retries,"elapsed_seconds":started.elapsed().as_secs_f64()})
 }
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<_> = std::env::args().skip(1).collect();
@@ -131,4 +149,22 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         out.flush()?;
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn incomplete_first_iteration_retries_but_unfinished_game_has_no_labels() {
+        let catalog: Value = serde_json::from_str(include_str!(
+            "../../../tools/strength/data/chu-openings-v1.json"
+        ))
+        .unwrap();
+        let row = generate(catalog["openings"].as_array().unwrap(), 0, 1, 1, 10);
+        assert!(row["search_retries"].as_u64().unwrap() > 0);
+        assert_eq!(row["moves"].as_array().unwrap().len(), 1);
+        assert!(row["outcome"].is_null());
+        assert!(row["sente_outcome"].is_null());
+        assert!(row["samples"].as_array().unwrap().is_empty());
+    }
 }

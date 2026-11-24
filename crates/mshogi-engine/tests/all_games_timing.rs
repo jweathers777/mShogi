@@ -138,7 +138,7 @@ fn fixed_search_matches_frozen_predecessor() {
     // below). MSH-205 (Tori Selectivity Round) added the Tori root mate
     // search (125 -> 126 nodes, same move); MSH-206 (Tori Evaluation Round)
     // the fitted evaluation (move, nodes and score below). MSH-52.1 adds Chu
-    // quiet placement ordering and quiescence threats (same move and score).
+    // quiet placement ordering (same move and score).
     assert_eq!(expected[1]["nodes"], 121);
     assert_eq!(expected[2]["nodes"], 313);
     assert_eq!(expected[3]["nodes"], 125);

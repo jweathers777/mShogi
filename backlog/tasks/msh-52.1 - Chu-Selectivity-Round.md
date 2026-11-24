@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-24T17:44:00Z'
-updated_date: '2026-11-24T18:05:00Z'
+updated_date: '2026-11-24T18:20:00Z'
 labels:
   - chu
   - search
@@ -50,4 +50,8 @@ Pilot on one c3-standard-4, candidate372b689 versus accepted79c2409: elementary3
 Game sizing fixed before any game result: at most four30-minute campaigns, each eight bins of16 paired seeds. Campaign seeds1..128,129..256,257..384,385..512, using the frozen128-opening catalog cyclically; no selective retries.10s+0.1s nominal,c3-standard-4,1000 experiment steps,600s pair watchdog,1500s bin wall,1800s campaign deadline. A bin stops on an unscored pair, preserving all evidence. Pool scored pairs at each completed campaign; H0=0/H1=15,alpha=beta=.05,min30. Stop on H1 or H0, otherwise continue to the fixed maximum; no decision is reported as such and candidate reverted if unsupported. No multi-hour extension. This fits the US$10 task cap.
 
 Final candidate checks: workspace1189 passed/12 ignored/0 failed; fmt and workspace all-target Clippy pass. First workspace run stopped only at the deterministic Chu node snapshot (173 ->145, same depth-two move and score), updated in c2cba48; second full run passes. No native rules expectations changed. Product build stays372b689. Checks archive uploaded to runs/msh-52.1/candidate-checks.tar.gz. First game campaign msh213-msh521-match-1 is active; continuation is the prespecified remaining campaigns only while pooled SPRT is undecided. Controller and scripts are under ignored runs/msh-52.1; branch codex/msh-52.1-chu-selectivity.
+
+First prespecified game sample completed:43 launched pairs,37 scored,20W/54L/0D, pentanomial[20,0,14,0,3], LLR-1.859/no SPRT decision. Six pairs have one1000-step cutoff, unscored;80 native conclusions retained. Native report hashes and summaries verified. All cloud resources deleted; sample compute upper boundUS$0.508, task totalUS$0.702 before sample2. Result is unfavorable; continuing the already declared second sample (seeds129..256), msh213-msh521-match-2. No product changes during this comparison.
+
+Weak-set diagnosis: first-sample median completed depth candidate5 versus baseline6 (from all reported turns; different game trajectories, so not a paired-position cost measurement). The same-position pilot separately measured46.6% extra time. While the frozen first candidate continues its prespecified second game sample, prepare an ordering-only ablation: remove the new quiescence stage/generator and its test, retain only placement-delta quiet ordering. This is the specific weak-set ablation allowed by the roadmap, not a change to the running binary. Do not pool different candidates.
 <!-- SECTION:NOTES:END -->

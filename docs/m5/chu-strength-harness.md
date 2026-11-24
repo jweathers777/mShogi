@@ -14,6 +14,7 @@ Build the tools with `tools.strength.cloud_build` for cloud work:
 - `mshogi-runner:bin:mshogi-match`
 - `mshogi-runner:example:chu_match_config`
 - `mshogi-runner:example:chu_strength`
+- `mshogi-runner:example:chu_judge` (deeper-search assessment)
 
 Freeze the accepted predecessor separately. Record each binary's source commit
 and SHA-256. Use a digest-pinned worker image built with Cloud Build. The

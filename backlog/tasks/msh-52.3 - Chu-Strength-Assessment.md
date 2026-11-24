@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-24T21:07:00Z'
-updated_date: '2026-11-24T22:18:00Z'
+updated_date: '2026-11-24T22:29:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -103,4 +103,7 @@ Checks and budget
 - Already passed after merging current main: fmt; workspace all-target Clippy -D warnings;1188 workspace tests,12 ignored;3 Rust judge tests;12 Python assessment/Tori regression tests. Main was unchanged at last fetch. Later edits are Python reporting/tests and task/docs, tested. No fresh subagent review was required for these additive tools.
 - Before the LIVE job, conservative compute boundUS$1.32404: scaling0.43843, build0.13069, first judge/failed longer-game stage0.75492 (reconciled bound). Two-hour aggregate campaign cap andUS$10 spending cap; roughly52 campaign minutes had elapsed before the live job. Configured rate0.201USD/VM-hour; bounds use eight VMs even for a smaller build, not actual billing.
 - Earlier long-scaling failed game commands before any games because900000ms exceeded the driver maximum600000. Corrected current stage uses600000. Its first judge run lost unuploaded partial shards when the controller deadline expired; only64 rows were saved. The per-move checkpoint recovery fixes that orchestration issue without changing any sample, score, engine or rule.
+
+HANDOFF UPDATE — live job is now msh213-msh523-judge-finish (execution session8456 if available), not long-scaling-2. Its out directory is runs/msh-52.3/judge-finish-controller. The previous job finished; cleanup verified no job/VM/disk remains. Saved227/512 samples; the new eight-VM queue contains only the285 missing rows. No full-screen scores inspected. After this controller finishes, download judge-samples, verify exact coverage with verify-screen.py, then assess and finish as in the full handoff above. Current conservative compute bound before this jobUS$1.92722; all earlier stages absent, including the independently reconciled stage.
+Validated longer-clock result:20s+0.2s versus40s+0.4s,16/16 scored pairs,31W/0D/1L; conditional relative estimate+596.5 Elo (95% lower+323.5, upper unbounded). Median late depths2x/1x7/6, both pooled and per-game. At40s+0.4s versus80s+0.8s, only1/8 pairs scored (1W/1L); seven second games stopped at the600s pair experiment budget. This point has no useful strength estimate. The fixed ten-minute runner/driver ceiling is separately tracked as MSH-238 (Remove the fixed ten-minute experiment cap), Ready and unassigned; do not expand this task to implement it.
 <!-- SECTION:NOTES:END -->

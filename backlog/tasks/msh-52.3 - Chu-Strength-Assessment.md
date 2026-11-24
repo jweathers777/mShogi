@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-24T21:07:00Z'
-updated_date: '2026-11-24T22:29:00Z'
+updated_date: '2026-11-24T22:31:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -106,4 +106,6 @@ Checks and budget
 
 HANDOFF UPDATE — live job is now msh213-msh523-judge-finish (execution session8456 if available), not long-scaling-2. Its out directory is runs/msh-52.3/judge-finish-controller. The previous job finished; cleanup verified no job/VM/disk remains. Saved227/512 samples; the new eight-VM queue contains only the285 missing rows. No full-screen scores inspected. After this controller finishes, download judge-samples, verify exact coverage with verify-screen.py, then assess and finish as in the full handoff above. Current conservative compute bound before this jobUS$1.92722; all earlier stages absent, including the independently reconciled stage.
 Validated longer-clock result:20s+0.2s versus40s+0.4s,16/16 scored pairs,31W/0D/1L; conditional relative estimate+596.5 Elo (95% lower+323.5, upper unbounded). Median late depths2x/1x7/6, both pooled and per-game. At40s+0.4s versus80s+0.8s, only1/8 pairs scored (1W/1L); seven second games stopped at the600s pair experiment budget. This point has no useful strength estimate. The fixed ten-minute runner/driver ceiling is separately tracked as MSH-238 (Remove the fixed ten-minute experiment cap), Ready and unassigned; do not expand this task to implement it.
+
+Latest full handoff archive: gs://mshogi-experiments-216675633801/runs/msh-52.3/handoff-judge-finish.tar.gz. It includes the new live-job ownership intent/manifest, completed long-scaling-2 result and cleanup receipts, scripts and control inputs. All eight judge-finish workers have started. The source-history verification also passed on all four local smoke rows; those low-node smoke results remain excluded.
 <!-- SECTION:NOTES:END -->

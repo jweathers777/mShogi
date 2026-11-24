@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-19T07:12:00Z'
-updated_date: '2026-11-24T16:37:00Z'
+updated_date: '2026-11-24T16:40:00Z'
 labels:
   - chu
   - search
@@ -63,4 +63,6 @@ Candidate1 bf7f49f: same c3-standard-4 VM,18 positions/depth5/5 repeats, baselin
 Combined candidate source79c2409 is pushed. Fresh review found no issue in the single-royal shortcut or new native differential test. Full workspace rerun and final cloud build are active/completing; no failures observed. Next: repeat the exact same B-A-B depth5 benchmark and tactical/signature commands against frozen4f5e2ed using the final build artifacts, then the prespecified game campaign. Cloud job build-msh201-final, store runs/msh-201/build-final; branch codex/msh-201-chu-search-speed.
 
 Final combined source79c2409 build succeeded; build job/VM/disks deleted, conservative compute upper bound US$0.132. Final local fmt/Clippy pass; workspace1188 passed/12 ignored/0 failed. Final same-VM benchmark,64 native signatures and both tactical suites are active in msh213-msh201-finalcompare, GCS runs/msh-201/comparison-final. No further code changes planned unless measurements or review find an issue.
+
+Final combined source79c2409:18 depth5 searches have identical107238 nodes and complete outcomes, plus64 identical native fixed-work results. Same-VM B-A-B comparison: baseline0.706006s versus candidate0.596408s (sum of per-position medians;10 baseline and5 candidate repeats),151894 versus179806 nodes/s,18.4% throughput gain/15.5% time reduction. Both builds315/315 elementary tactics+80 igui and69/71 forcing, with no changed failures. Final comparison and all prior build/profile jobs are cleaned; conservative compute upper bounds totalUS$0.637 before games. First prespecified64-pair campaign is starting: msh213-msh201-match-1, GCS runs/msh-201/match-1. No further optimization is planned.
 <!-- SECTION:NOTES:END -->

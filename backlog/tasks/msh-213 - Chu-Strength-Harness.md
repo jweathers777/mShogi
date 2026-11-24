@@ -1,11 +1,11 @@
 ---
 id: MSH-213
 title: Chu Strength Harness
-status: In Progress
+status: Done
 assignee:
   - codex
 created_date: '2026-11-20T22:51:00Z'
-updated_date: '2026-11-24T07:38:00Z'
+updated_date: '2026-11-24T08:00:00Z'
 labels:
   - chu
   - search
@@ -25,8 +25,8 @@ Goal: the harness step of the per-game classical strength program (docs/m5/stren
 <!-- AC:BEGIN -->
 - [x] #1 At least 100 balanced openings, with their source and the balance rule fixed before screening
 - [x] #2 A tactical suite of at least 200 positions with independently established answers (for example from a native mate prover) and a held-out part, with the baseline score
-- [ ] #3 A game-test control at which the median late-game depth is at least 8, or a lower target with its reason and cost recorded; a game test against a frozen predecessor runs end to end in the cloud
-- [ ] #4 A self-play export for Texel data with a split, and a time-odds measurement (2x time) recorded
+- [x] #3 A game-test control at which the median late-game depth is at least 8, or a lower target with its reason and cost recorded; a game test against a frozen predecessor runs end to end in the cloud
+- [x] #4 A self-play export for Texel data with a split, and a time-odds measurement (2x time) recorded
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -75,4 +75,20 @@ Post-removal standard pilot: all4 games concluded natively (416/438 and427/114 m
 The larger work-only sample hit the separate512-event Chu quota; it remains diagnostic and unscored. MSH-236 now removes event/command quotas too (source4f5e2ed). Final baseline will use this source and the same frozen opening catalog,10s+0.1s control,16 control pairs and32 time-odds pairs; no result-based seed selection. Current build is active. All sample-1 VMs/disks/jobs are verified absent; conservative compute upper bound US$0.356. Branch codex/msh-236-remove-history-work.
 
 MSH-236 is Done and merged into main4c43505. All final workspace checks pass (1187 passed/12 ignored), as do frontend595, desktop-verification200, Clippy/fmt and all-platform persistence CI45347831998. Final-sample remains active; seed5 control has a native conclusion at358 moves and an unscored experiment step_limit at1000 moves. This is not a product quota; retain the unfinished result and do not rerun only selected seeds. Next: collect all jobs, global native Texel export/split, record bounded odds/depth results and verify cloud cleanup.
+
+Final equal-clock sample (frozen4f5e2ed engines, c3-standard-4,10s+0.1s nominal):13 launched pairs,11 fully scored and2 unscored due the predeclared1000-event experiment cutoff;24 native-concluded games,2 unfinished. Both colors retained. Scored pentanomial [3,0,7,0,1], candidate9 wins/13 losses/0 draws; no SPRT decision and no strength-gain claim from identical code. Completed games: pooled late depth6, median of per-game late medians5.75, exceeding the predeclared affordable target5. Native conclusions include640/652-move games beyond the removed quota. Native Texel export is active; 2x-time bins still running. All implementation is merged; current branch main, old feature branches deleted.
+
+The local debug Texel export was stopped after about10 CPU-minutes. The same13 control reports are now being replayed by the existing release helper on one c3-standard-4 VM (msh213-final-export, GCS runs/msh-213/final-export). Separate temporary subscription msh213-export-completion must be deleted after cleanup. Final-sample controller still owns the remaining time-odds jobs; both controllers verify resource deletion. Continue on main.
+
+Final 2x-time sample:24 launched pairs;22 fully scored pairs (42 wins/2 losses/0 draws for the doubled-time side),2 unscored pairs containing1000-step experiment cutoffs. All48 game records retained (46 native conclusions,2 unfinished). Pentanomial [0,0,2,0,20]; SPRT has no decision because fewer than30 scored pairs. The complete-pair estimate is about+529 Elo, but censored pairs and the small bounded sample prevent treating this as a reliable rating or a product strength change. Both sides are identical source4f5e2ed; only time differs. Pooled late depth6. Native global export and resource cleanup are finishing.
+
+Global native export replayed all13 control reports:26 games retained,24 concluded and2 unlabeled unfinished. Sample every fourth board action:2675 raw positions,39 within-split duplicates removed,0 cross-split duplicates;1937 train positions/18 games,263 validation/2 games,436 held-out/4 games. Grouping is by catalog opening ID, all partitions nonempty. This is a harness/export demonstration, not a claim that this small unfiltered corpus is sufficient for evaluation fitting. Data and manifest: gs://mshogi-experiments-216675633801/runs/msh-213/final-texel/. Source4f5e2ed; all binary hashes and exact commands are in final-sample/manifest.json and final-export/manifest.json. Commands used tools.strength.chu_cloud submit, native_match --game chu with10s+0.1s and candidate-time-factor2 for odds, helper export every4, then texel_data split --game chu --by-opening. All runs used c3-standard-4. Final sample and export resource deletion verified; conservative compute upper bounds US$0.685 andUS$0.105, respectively. Total MSH-213 conservative compute upper bounds aboutUS$2.73; Cloud Build/storage extra, estimated total belowUS$4 and theUS$10 cap. Evidence includes final-summary.json, completed-depth.json and each controller receipt. Temporary export subscription deleted; local run/build files will be removed after evidence upload.
+
+Final cleanup complete: both merged feature branches deleted; local target build output (~7.2GB), both task run directories and Python caches removed. Final evidence archive: gs://mshogi-experiments-216675633801/runs/msh-213/final-evidence.tar.gz. Removal check logs: gs://mshogi-experiments-216675633801/runs/msh-236/checks.tar.gz. Current branch main.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Completed the Chu native strength harness:128 prescreened balanced openings;315 elementary native-proved tactics plus80 exact igui contracts and71 separate three-ply proofs; incremental timed native sessions; frozen cloud baseline,2x-time measurement and native Texel export/split. Final control has24 native conclusions and2 unscored cutoffs, with completed-game late depth6 (affordable target5). Time odds scored42 wins/2 losses across22 complete pairs, plus2 unscored pairs; no SPRT decision. Export split1937/263/436 positions. No search/rules/evaluation change or old-interface fallback. fmt/Clippy,1187 workspace tests,595 frontend tests,200 desktop verification tests,6 harness example tests,Python169 tests (1 skipped),fresh review and affected-platform CI passed. All cloud resources cleaned; evidence under runs/msh-213 in GCS. Next: MSH-201 (Chu Search Speed).
+<!-- SECTION:FINAL_SUMMARY:END -->

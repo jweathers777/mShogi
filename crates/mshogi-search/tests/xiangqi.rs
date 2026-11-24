@@ -556,9 +556,9 @@ fn required_exact_unknown_cancel_and_failure_are_unscored_and_preserve_root() {
 }
 
 #[test]
-fn native_capacity_failure_is_unscored_and_preserves_complete_source() {
+fn long_native_history_remains_searchable_and_preserves_complete_source() {
     let mut native = game(CYCLE_ROOT);
-    for _ in 0..511 {
+    for _ in 0..600 {
         submit(
             &mut native,
             x::Side::Black,
@@ -567,10 +567,16 @@ fn native_capacity_failure_is_unscored_and_preserves_complete_source() {
     }
     let before = record(&native);
     let context = native.context();
-    assert_eq!(
-        search(&native, DEFAULT_LIMITS),
-        Err(SearchError::Transition(x::GameError::Capacity))
-    );
+    let result = search(&native, DEFAULT_LIMITS).unwrap();
+    assert!(result.decision.is_some());
+    let mut replay = before.to_game().unwrap();
+    for choice in &result.principal_variation {
+        let actor = match choice {
+            Choice::Move(_) => replay.position().side_to_move(),
+            Choice::Claim { actor } => *actor,
+        };
+        submit(&mut replay, actor, choice.command());
+    }
     assert_eq!(record(&native), before);
     assert_eq!(native.context(), context);
 }

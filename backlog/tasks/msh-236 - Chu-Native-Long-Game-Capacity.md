@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - codex
 created_date: '2026-11-23T22:01:00Z'
-updated_date: '2026-11-24T07:24:00Z'
+updated_date: '2026-11-24T07:28:00Z'
 labels:
   - chu
   - native
@@ -50,4 +50,6 @@ Final native/source4f6f07e checks: fmt/Clippy pass, workspace1190 passed/12 igno
 The larger cloud sample exposed a second leftover: the separate Chu512-event quota. Removing artificial command/event history quotas and their consumers across all six games as part of the same cleanup. Shogi native320-board-action ending remains unchanged; actual record/document byte bounds, cancellation and elapsed deadlines remain. New long-history regressions cross the former event quotas. No replacement work model or higher history allowance is introduced. Initial work-only sample remains diagnostic, not the final baseline.
 
 Checkpoint: removed the remaining command/event quotas across all games; retained actual encoded-byte bounds and the Shogi 320-board-action rule. Console candidates now validate their full encoded record before publication. Final tests and review are in progress. The work-only sample failed on the old event quota; all eight cloud tasks and their VMs/disks are verified absent. Next: commit reviewed removal, rebuild current binaries and run the final MSH-213 sample. Branch codex/msh-236-remove-history-work.
+
+Source4f5e2ed removes the remaining event/command quotas. Fresh review approved actual-byte console publication checks and preserved cancellation rollback. fmt and Clippy pass; frontend595 tests pass; desktop-verification200 pass; workspace tests and Linux/macOS/Windows persistence CI45347831998 remain running. Final cloud build build-msh236-final is active; MSH-213 final sample will use that source. Work-only failed sample cleanup is verified; conservative compute upper bound US$0.356.
 <!-- SECTION:NOTES:END -->

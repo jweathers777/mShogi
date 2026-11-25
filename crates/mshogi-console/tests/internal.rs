@@ -136,7 +136,7 @@ fn real_entrypoint_echoes_zero_thinking_budget_without_inventing_a_move() {
     };
     assert_eq!(telemetry.completed_depth, 0);
     assert_eq!(telemetry.nodes, 0);
-    assert_eq!(telemetry.selective_depth, Some(0));
+    assert_eq!(telemetry.selective_depth, 0);
     assert_eq!(telemetry.score, None);
     assert!(telemetry.principal_variation.is_empty());
     stop(&bridge);

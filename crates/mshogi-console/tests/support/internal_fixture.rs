@@ -150,7 +150,7 @@ fn main() {
         ExecutionResult::Chess {
             result: ChessResult::Incomplete {
                 telemetry: Telemetry {
-                    selective_depth: None,
+                    selective_depth: 0,
                     score: None,
                     completed_depth: 0,
                     nodes: 0,

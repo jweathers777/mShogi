@@ -726,7 +726,7 @@ mod tests {
 
     fn telemetry() -> Telemetry {
         Telemetry {
-            selective_depth: None,
+            selective_depth: 0,
             score: None,
             completed_depth: 0,
             nodes: 0,
@@ -737,7 +737,7 @@ mod tests {
 
     fn move_telemetry(action: chess::Action) -> Telemetry {
         Telemetry {
-            selective_depth: None,
+            selective_depth: 1,
             score: Some(0),
             completed_depth: 1,
             nodes: 21,
@@ -757,7 +757,7 @@ mod tests {
                 action: a.parse().unwrap(),
             })
             .to_vec();
-        for bound in [None, Some(2), Some(129)] {
+        for bound in [1, 2, 129] {
             telemetry.selective_depth = bound;
             let mut state = NativeState::from_root(&root).unwrap();
             let result = ExecutionResult::Chess {
@@ -769,7 +769,7 @@ mod tests {
             assert!(state.admit(&result).is_err());
             same_root(&root, &state.root().unwrap());
         }
-        telemetry.selective_depth = Some(3);
+        telemetry.selective_depth = 3;
         let mut state = NativeState::from_root(&root).unwrap();
         let result = ExecutionResult::Chess {
             result: ChessResult::Move {
@@ -880,7 +880,7 @@ mod tests {
             result: ChessResult::Claim {
                 claim,
                 telemetry: Telemetry {
-                    selective_depth: None,
+                    selective_depth: 1,
                     score: Some(0),
                     completed_depth: 1,
                     nodes: 1,

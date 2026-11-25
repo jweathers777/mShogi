@@ -244,7 +244,7 @@ mod tests {
             telemetry: mshogi_engine::Telemetry {
                 score: Some(999_999),
                 completed_depth: 1,
-                selective_depth: None,
+                selective_depth: 1,
                 nodes: 1,
                 principal_variation: vec![mshogi_engine::EngineChoice::Move {
                     action: "g6g7".parse().unwrap(),

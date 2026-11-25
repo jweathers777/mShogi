@@ -76,9 +76,7 @@ fn real_observations(snapshot: &SharedSnapshot, perspective: Color, searched_ver
     assert!(telemetry.score.is_some());
     assert_eq!(telemetry.status, StopReason::Stopped);
     assert!(telemetry.completed_depth < PLAY_LIMITS.depth);
-    let selective_depth = telemetry
-        .selective_depth
-        .expect("actual conventional selective depth");
+    let selective_depth = telemetry.selective_depth;
     assert!(selective_depth <= mshogi_search::search::MAX_DEPTH);
     let board_plies = telemetry
         .principal_variation

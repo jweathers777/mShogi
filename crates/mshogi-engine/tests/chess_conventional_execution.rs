@@ -42,7 +42,7 @@ fn incomplete() -> ChessResult {
         telemetry: Telemetry {
             score: None,
             completed_depth: 0,
-            selective_depth: Some(0),
+            selective_depth: 0,
             nodes: 0,
             principal_variation: vec![],
             status: StopReason::Stopped,
@@ -50,7 +50,7 @@ fn incomplete() -> ChessResult {
     }
 }
 #[test]
-fn omitted_extensions_preserve_historical_wire_and_observation_encoding() {
+fn work_limits_omit_absent_thinking_time_and_telemetry_requires_selective_depth() {
     let limits = WorkLimits {
         depth: 2,
         nodes: 20_000,
@@ -59,11 +59,8 @@ fn omitted_extensions_preserve_historical_wire_and_observation_encoding() {
     let wire = r#"{"depth":2,"nodes":20000}"#;
     assert_eq!(serde_json::to_string(&limits).unwrap(), wire);
     assert_eq!(serde_json::from_str::<WorkLimits>(wire).unwrap(), limits);
-    let old = r#"{"score":0,"completed_depth":1,"nodes":21,"principal_variation":[{"kind":"move","action":"a2a3"}],"status":"complete"}"#;
-    let telemetry: Telemetry = serde_json::from_str(old).unwrap();
-    assert_eq!(telemetry.selective_depth, None);
-    assert_eq!(telemetry.variation_depth_bound(), Some(1));
-    assert_eq!(serde_json::to_string(&telemetry).unwrap(), old);
+    let incomplete_telemetry = r#"{"score":0,"completed_depth":1,"nodes":21,"principal_variation":[{"kind":"move","action":"a2a3"}],"status":"complete"}"#;
+    assert!(serde_json::from_str::<Telemetry>(incomplete_telemetry).is_err());
 }
 #[test]
 fn thinking_time_is_exact_request_identity_and_only_ordinary_work_accepts_it() {
@@ -130,7 +127,7 @@ fn actual_zero_time_request_is_honest_incomplete_without_action_or_score() {
     assert!(telemetry.principal_variation.is_empty());
     assert_eq!(telemetry.status, StopReason::Stopped);
     assert_eq!(telemetry.nodes, 0);
-    assert_eq!(telemetry.selective_depth, Some(0));
+    assert_eq!(telemetry.selective_depth, 0);
 }
 #[test]
 fn selective_continuation_bound_is_explicit_and_cannot_exceed_native_path_limit() {
@@ -143,7 +140,7 @@ fn selective_continuation_bound_is_explicit_and_cannot_exceed_native_path_limit(
     let telemetry = Telemetry {
         score: Some(0),
         completed_depth: 1,
-        selective_depth: Some(3),
+        selective_depth: 3,
         nodes: 50,
         principal_variation: actions
             .iter()
@@ -169,7 +166,7 @@ fn selective_continuation_bound_is_explicit_and_cannot_exceed_native_path_limit(
         else {
             unreachable!()
         };
-        telemetry.selective_depth = Some(invalid);
+        telemetry.selective_depth = invalid;
         assert!(!changed.matches(&request), "selective bound {invalid}");
     }
     let mut changed = observation;
@@ -213,7 +210,7 @@ fn actual_short_timed_search_is_bounded_and_every_returned_command_is_native() {
         other => panic!("unexpected timed standard result: {other:?}"),
     };
     assert!(telemetry.nodes <= 20_000);
-    assert!(telemetry.selective_depth.is_some());
+    assert!(telemetry.variation_depth_bound().is_some());
     let mut replay = source.clone();
     for choice in telemetry.principal_variation {
         match choice {

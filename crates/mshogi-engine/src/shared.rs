@@ -429,10 +429,9 @@ impl ExecutionObservation {
                 if let ChessResult::Failure { failure } = result {
                     return failure.message.len() <= MAX_STDERR_BYTES;
                 }
-                // Historical observations have no selective metadata and retain
-                // their existing native replay/admission contract. New results
-                // state an explicit bounded continuation depth and must agree
-                // with the complete request work/choice shape before admission.
+                // Search results state an explicit bounded continuation depth and
+                // must agree with the complete request work/choice shape before
+                // admission.
                 let telemetry = match result {
                     ChessResult::Move { telemetry, .. }
                     | ChessResult::Claim { telemetry, .. }
@@ -441,7 +440,6 @@ impl ExecutionObservation {
                     _ => None,
                 };
                 if let Some(t) = telemetry
-                    && t.selective_depth.is_some()
                     && (!t.valid_selective_shape(submitted.limits)
                         || match result {
                             ChessResult::Move { action, .. } => {

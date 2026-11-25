@@ -249,7 +249,7 @@ fn response_acceptance_requires_every_identity_setting_and_full_native_history()
     foreign.result = ExecutionResult::Chess {
         result: ChessResult::Incomplete {
             telemetry: Telemetry {
-                selective_depth: None,
+                selective_depth: 0,
                 score: None,
                 completed_depth: 0,
                 nodes: 0,

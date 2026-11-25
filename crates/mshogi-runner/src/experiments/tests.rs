@@ -168,7 +168,7 @@ fn chess_move_result(pv: &[&str]) -> mshogi_engine::ExecutionResult {
         result: mshogi_engine::ChessResult::Move {
             action,
             telemetry: mshogi_engine::Telemetry {
-                selective_depth: None,
+                selective_depth: pv.len() as u16,
                 score: Some(0),
                 completed_depth: pv.len() as u16,
                 nodes: 100,
@@ -186,7 +186,7 @@ fn chess_corrupt_pv_incomplete_and_scores_are_not_accepted() {
         mshogi_engine::ExecutionResult::Chess {
             result: mshogi_engine::ChessResult::Incomplete {
                 telemetry: mshogi_engine::Telemetry {
-                    selective_depth: None,
+                    selective_depth: 1,
                     score: Some(0),
                     completed_depth: 1,
                     nodes: 1,

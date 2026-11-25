@@ -39,7 +39,6 @@ export interface Telemetry {
   status: "complete" | "node_limit" | "stopped";
 }
 export type FailureKind =
-  | "unsupported_mode"
   | "invalid_request"
   | "search"
   | "start"
@@ -52,34 +51,10 @@ export type FailureKind =
   | "context_mismatch"
   | "cleanup";
 
-export type ReachabilityTarget = "either" | Color;
-export interface ReachabilityWork {
-  positions: number;
-  expanded: number;
-  transitions: number;
-  static_leaves: number;
+export interface AnalysisOperation {
+  depth: number;
+  nodes: number;
 }
-export type MateReachability =
-  | { possible: { witness: string[]; work: ReachabilityWork } }
-  | { impossible: { work: ReachabilityWork } }
-  | {
-      unknown: {
-        reason:
-          | "cancelled"
-          | "position_limit"
-          | "transition_limit"
-          | "resource_limit";
-        work: ReachabilityWork;
-      };
-    };
-export type AnalysisOperation =
-  | { kind: "moves"; depth: number; nodes: number }
-  | {
-      kind: "full_reachability";
-      target: ReachabilityTarget;
-      max_positions: number;
-      max_transitions: number;
-    };
 export interface ExecutionTarget {
   selection_id: number;
   board_ply: number;
@@ -95,13 +70,7 @@ export interface ExecutionContext {
   limits: { depth: number; nodes: number; time_ms?: number };
   purpose:
     | { kind: "engine_turn" }
-    | { kind: "move_analysis"; target: ExecutionTarget }
-    | {
-        kind: "chess_full_reachability";
-        target: ExecutionTarget;
-        mate: ReachabilityTarget;
-        limits: { max_positions: number; max_transitions: number };
-      };
+    | { kind: "move_analysis"; target: ExecutionTarget };
 }
 export interface AnalysisState {
   status:
@@ -118,8 +87,7 @@ export type ChessResult =
   | { kind: "claim"; claim: Claim; telemetry: Telemetry }
   | { kind: "finished"; outcome: ChessOutcome; telemetry: Telemetry }
   | { kind: "incomplete"; telemetry: Telemetry }
-  | { kind: "failure"; failure: { kind: FailureKind; message: string } }
-  | { kind: "reachability"; result: MateReachability };
+  | { kind: "failure"; failure: { kind: FailureKind; message: string } };
 export type ExecutionResult =
   | { kind: "chess"; result: ChessResult }
   | { kind: "shogi" | "xiangqi" | "tori" | "chu"; result: unknown }

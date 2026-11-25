@@ -312,7 +312,7 @@ fn local_analysis_is_explicit_and_read_only_for_all_seven_profiles() {
         send(
             &mut c,
             SessionOperation::Analyze {
-                operation: AnalysisOperation::Moves {
+                operation: AnalysisOperation {
                     depth: 1,
                     nodes: 128,
                 },

@@ -1,5 +1,5 @@
 //! Actual native Xiangqi ordinary-search results, distinct from exact proof operations.
-use crate::{ExecutionContext, ExecutionPurpose};
+use crate::ExecutionContext;
 use mshogi_core::{
     native::CanonicalRecord,
     xiangqi::{Action, Conclusion, NoWinAssessment, PendingAdjudication, Side},
@@ -194,12 +194,6 @@ impl XiangqiResult {
         let CanonicalRecord::Xiangqi(record) = &context.game else {
             return false;
         };
-        if matches!(
-            context.purpose,
-            ExecutionPurpose::ChessFullReachability { .. }
-        ) {
-            return false;
-        }
         let t = match self {
             Self::Choice { telemetry, .. }
             | Self::Finished { telemetry, .. }
@@ -279,7 +273,7 @@ mod identity_tests {
         let record = GameRecord::from_game(&game).unwrap();
         let assessment = record.no_win_assessment().clone();
         let context = ExecutionContext {
-            purpose: ExecutionPurpose::EngineTurn {},
+            purpose: crate::ExecutionPurpose::EngineTurn {},
             request_id: 1,
             session_version: 1,
             game: CanonicalRecord::xiangqi(record),

@@ -1,9 +1,5 @@
 import { expect, it } from "vitest";
-import {
-  readableAction,
-  reachabilityDescription,
-  scoreDescription,
-} from "./analysisPresentation";
+import { readableAction, scoreDescription } from "./analysisPresentation";
 it("converts native material scores to signed pawn units with the recorded perspective", () => {
   expect(scoreDescription(137, "white")).toBe(
     "+1.37 pawns from White perspective",
@@ -27,19 +23,4 @@ it("reports mate distance and the mating side for positive and negative root sco
     "Mate for Black · already checkmate",
   );
   expect(readableAction("a7a8n")).toBe("a7 → a8 = N");
-});
-it("does not turn a resource-limited reachability search into a proof", () => {
-  const work = { positions: 1, expanded: 1, transitions: 0, static_leaves: 0 };
-  const description = reachabilityDescription(
-    { unknown: { reason: "position_limit", work } },
-    "either",
-  );
-  expect(description.title).toBe("Unknown · exploration incomplete");
-  expect(description.explanation).toContain(
-    "No mating conclusion was established",
-  );
-  expect(
-    reachabilityDescription({ possible: { witness: ["g6g7"], work } }, "white")
-      .explanation,
-  ).toContain("not a forced win");
 });

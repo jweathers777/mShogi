@@ -51,7 +51,7 @@ fn analyze(c: &mut DesktopController) -> ExecutionContext {
     send(
         c,
         SessionOperation::Analyze {
-            operation: AnalysisOperation::Moves {
+            operation: AnalysisOperation {
                 depth: 1,
                 nodes: 1000,
             },
@@ -92,7 +92,6 @@ fn identities_native_geometry_and_chess_compatibility() {
     assert_eq!(chess.choices.len(), 20);
     assert_eq!(chess.play_limits, PLAY_LIMITS);
     assert_eq!(chess.board_ply, 0);
-    assert!(chess.capabilities.chess_full);
     assert!(!chess.capabilities.hands);
     let old = chess.token;
     let shogi = replace(&mut c, s::Game::new(), s::Side::Sente);
@@ -119,7 +118,6 @@ fn identities_native_geometry_and_chess_compatibility() {
         (&"1".into(), &"i".into())
     );
     assert!(shogi.capabilities.save);
-    assert!(!shogi.capabilities.chess_full);
     assert!(!shogi.capabilities.claims);
     assert_eq!(shogi.hands.len(), 14);
     assert!(
@@ -396,22 +394,6 @@ fn exact_analysis_context_retirement_and_same_board_history() {
     assert!(!c.accept_observation(incomplete(second)));
     send(&mut c, SessionOperation::ReturnLive {}).unwrap();
     assert!(!c.accept_observation(incomplete(historic)));
-    let before = c.shared_token();
-    assert!(
-        send(
-            &mut c,
-            SessionOperation::Analyze {
-                operation: AnalysisOperation::FullReachability {
-                    target: mshogi_engine::ReachabilityTarget::Either,
-                    max_positions: 1,
-                    max_transitions: 1
-                }
-            }
-        )
-        .is_err()
-    );
-    assert_eq!(before.version, c.shared_token().version);
-    assert_eq!(before.selection, c.shared_token().selection);
 }
 #[test]
 fn replacement_retires_chess_files_and_pending_admission() {

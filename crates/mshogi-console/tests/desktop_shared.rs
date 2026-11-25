@@ -38,7 +38,7 @@ fn analyze(c: &mut DesktopController) -> SharedSnapshot {
     command(
         c,
         SessionOperation::Analyze {
-            operation: AnalysisOperation::Moves {
+            operation: AnalysisOperation {
                 depth: 1,
                 nodes: 1000,
             },

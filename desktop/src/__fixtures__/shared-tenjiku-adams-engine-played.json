@@ -8197,7 +8197,6 @@
     "undo": true,
     "engine_turn": true,
     "move_analysis": true,
-    "chess_full": false,
     "claims": false,
     "declaration": false,
     "resign": true,

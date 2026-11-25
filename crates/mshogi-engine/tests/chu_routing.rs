@@ -40,14 +40,7 @@ fn run(context: &ExecutionContext) -> ExecutionResponse {
     .unwrap()
 }
 #[test]
-fn real_internal_entry_point_supports_bounded_chu_without_foreign_operations() {
-    assert_eq!(
-        execution_capabilities(GameKind::Chu),
-        &[
-            ExecutionOperation::EngineTurn,
-            ExecutionOperation::MoveAnalysis
-        ]
-    );
+fn real_internal_entry_point_supports_bounded_chu() {
     let mut c = context();
     for analysis in [false, true] {
         if analysis {

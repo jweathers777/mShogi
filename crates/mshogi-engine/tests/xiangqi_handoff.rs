@@ -532,7 +532,6 @@ fn strict_payload_context_and_transport_preserve_identity_through_real_execution
     let encoded = serde_json::to_string(&context).unwrap();
     let parsed: ExecutionContext = serde_json::from_str(&encoded).unwrap();
     assert_eq!(parsed, context);
-    assert_eq!(execution_capabilities(GameKind::Xiangqi).len(), 2);
     let mut response = vec![];
     let submitted = ExecutionRequest {
         protocol: PROTOCOL_VERSION,

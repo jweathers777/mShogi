@@ -174,8 +174,6 @@ impl Telemetry {
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum FailureKind {
-    /// The requested mode is deliberately unsupported by this play boundary.
-    UnsupportedMode,
     /// Invalid version, identity, limits or game history.
     InvalidRequest,
     /// Native search failed without publishing a partial score.
@@ -212,11 +210,6 @@ pub struct EngineFailure {
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum ChessResult {
-    /// Actual bounded cooperative proof observations, never a live chess result.
-    Reachability {
-        /// Exact native result including real work and incomplete-stop reason.
-        result: mshogi_core::chess::MateReachability,
-    },
     /// Apply this complete board action through the authoritative host.
     Move {
         /// Native action.

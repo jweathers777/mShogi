@@ -47,10 +47,6 @@ mod failure_observation_tests {
         let record = c::GameRecord::from_game(&c::Game::standard()).unwrap();
         for (kind, label) in [
             (
-                mshogi_engine::FailureKind::UnsupportedMode,
-                "Unsupported execution · unscored",
-            ),
-            (
                 mshogi_engine::FailureKind::Search,
                 "Search could not complete · unscored",
             ),

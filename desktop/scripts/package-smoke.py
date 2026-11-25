@@ -112,7 +112,7 @@ def check_chess_choice(value):
     assert telemetry['principal_variation'][0] == {'kind': 'move', 'action': value['action']}, value
     assert telemetry['status'] == 'complete', value
 check_chess_choice(result)
-# Purpose-specific queries exercise the actual shipped advanced solver as well.
+# A purpose-specific query exercises read-only move analysis as well.
 target = {'selection_id': 1, 'event_index': 0, 'board_ply': 0, 'session_version': 1,
           'label': 'Package verification: standard start',
           'turn': {'game_kind': 'chess', 'side': 'white'}}
@@ -121,16 +121,6 @@ analysis_request['context'].update(request_id=2,
     purpose={'kind': 'move_analysis', 'target': target})
 analysis_response = query(analysis_request)
 check_chess_choice(analysis_response['observation']['result']['result'])
-full_request = copy.deepcopy(request)
-full_request['context'].update(request_id=3,
-    limits={'depth': 1, 'nodes': 0},
-    purpose={'kind': 'chess_full_reachability', 'target': target, 'mate': 'either',
-             'limits': {'max_positions': 1, 'max_transitions': 1}})
-full_response = query(full_request)
-assert full_response['observation']['result']['result']['kind'] == 'reachability', full_response
-unknown = full_response['observation']['result']['result']['result']['unknown']
-assert unknown['reason'] in ('position_limit', 'transition_limit'), unknown
-assert unknown['work']['positions'] <= 1 and unknown['work']['transitions'] <= 1, unknown
 # Each selected Tenjiku profile is exercised through its real bundled engine.
 # Inputs are native-generated independent diagram documents, external to the
 # normal package; this is process/transport evidence, not host GUI evidence.
@@ -168,10 +158,9 @@ report = {
     'uci_observations': observations,
     'internal_response': response,
     'analysis_response': analysis_response,
-    'full_response': full_response,
     'tenjiku_responses': tenjiku_responses,
     'files': [str(path.relative_to(args.package_root)) for path in files],
-    'scope': 'Package inventory and actual UCI, engine-turn, move-analysis and bounded Full reachability queries. Both Tenjiku whole profiles additionally execute real diagram engine-turn and read-only analysis queries. Host acceptance and installed UI interaction are separate evidence.',
+    'scope': 'Package inventory and actual UCI, engine-turn and move-analysis queries. Both Tenjiku whole profiles additionally execute real diagram engine-turn and read-only analysis queries. Host acceptance and installed UI interaction are separate evidence.',
 }
 # Replay the real returned actions/PVs through the public native owner. This
 # external development verifier is not a packaged executable or Python rules

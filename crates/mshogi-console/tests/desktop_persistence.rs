@@ -93,7 +93,7 @@ fn minimal_document_reopens_paused_and_historical_analysis_uses_only_its_prefix(
         .settled(
             played.token,
             SessionOperation::Analyze {
-                operation: AnalysisOperation::Moves {
+                operation: AnalysisOperation {
                     depth: 1,
                     nodes: 1000,
                 },
@@ -109,7 +109,7 @@ fn minimal_document_reopens_paused_and_historical_analysis_uses_only_its_prefix(
             controller.shared_token(),
             SessionOperation::ChessPreferences {
                 orientation: Color::Black,
-                analysis_defaults: AnalysisOperation::Moves {
+                analysis_defaults: AnalysisOperation {
                     depth: 3,
                     nodes: 12_345,
                 },
@@ -181,7 +181,7 @@ fn minimal_document_reopens_paused_and_historical_analysis_uses_only_its_prefix(
         .settled(
             viewed.token,
             SessionOperation::Analyze {
-                operation: AnalysisOperation::Moves {
+                operation: AnalysisOperation {
                     depth: 1,
                     nodes: 1000,
                 },
@@ -223,7 +223,7 @@ fn failed_save_and_corrupt_open_preserve_the_valid_file_and_live_document() {
             controller.shared_token(),
             SessionOperation::ChessPreferences {
                 orientation: Color::Black,
-                analysis_defaults: AnalysisOperation::Moves {
+                analysis_defaults: AnalysisOperation {
                     depth: 2,
                     nodes: 2000,
                 },

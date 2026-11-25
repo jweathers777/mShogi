@@ -85,10 +85,7 @@ fn real_compound_effects_royals_promotion_outcomes_and_exact_prefixes() {
         assert_eq!(s.board.ranks.len(), 12);
         assert!(s.hands.is_empty());
         assert!(
-            s.capabilities.engine_turn
-                && s.capabilities.move_analysis
-                && !s.capabilities.drops
-                && !s.capabilities.chess_full
+            s.capabilities.engine_turn && s.capabilities.move_analysis && !s.capabilities.drops
         );
         assert!(
             s.choices
@@ -578,7 +575,7 @@ fn shared_core_analysis_bounds_preserve_native_state_and_reject_excess() {
     let snapshot = send(
         &mut ctl,
         SessionOperation::Analyze {
-            operation: AnalysisOperation::Moves {
+            operation: AnalysisOperation {
                 depth: 64,
                 nodes: 5_000_000,
             },
@@ -595,7 +592,7 @@ fn shared_core_analysis_bounds_preserve_native_state_and_reject_excess() {
             send(
                 &mut ctl,
                 SessionOperation::Analyze {
-                    operation: AnalysisOperation::Moves { depth, nodes },
+                    operation: AnalysisOperation { depth, nodes },
                 }
             )
             .is_err()

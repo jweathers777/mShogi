@@ -84,7 +84,7 @@ pub enum NativeDesktopSettings {
         /// Existing persisted chess preferences.
         settings: DesktopSettings,
     },
-    /// Native shogi settings; chess Full is not an available operation.
+    /// Native shogi settings.
     Shogi {
         /// Supported untimed shogi preferences.
         settings: ShogiSettings,

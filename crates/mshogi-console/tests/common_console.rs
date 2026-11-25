@@ -316,7 +316,7 @@ fn hostile_common_loads_are_atomic_including_undo_and_strict_nested_fields() {
     }
 }
 #[test]
-fn common_chess_restore_refuses_observations_and_full_modes_without_losing_undo() {
+fn common_chess_restore_refuses_observations_without_losing_undo() {
     use chess::*;
     let mut observed = Game::new(ClaimPolicy::ExplicitOnly).record();
     observed.push_event(RecordEvent {
@@ -326,39 +326,22 @@ fn common_chess_restore_refuses_observations_and_full_modes_without_losing_undo(
             command: RecordedCommand::OfferDraw,
         }),
     });
-    let full = AdjudicatedGame::from_fen_with_mode(
-        STANDARD_START_FEN,
-        ClaimPolicy::ExplicitOnly,
-        AdjudicationMode::Full {
-            limits: ReachabilityLimits {
-                max_positions: Some(0),
-                max_transitions: None,
-            },
-        },
-    )
-    .unwrap()
-    .record();
-    for (record, message) in [
-        (observed, "cannot restore match state"),
-        (full, "cannot restore that mode"),
-    ] {
-        let envelope = CanonicalRecord::chess(record).to_json().unwrap();
-        let dir = Dir::new();
-        let path = dir.0.join("unsupported.json");
-        fs::write(&path, &envelope).unwrap();
-        let out = shell(
-            "chess",
-            &format!(
-                "move e2e4\nrecord print\nrecord load-json {envelope}\nrecord load-file {}\nrecord print\nundo\nrecord print\n",
-                path.display()
-            ),
-        );
-        assert_eq!(out.status.code(), Some(1));
-        assert!(String::from_utf8_lossy(&out.stderr).contains(message));
-        let r = records(&out);
-        assert_eq!(r[0], r[1]);
-        assert_eq!(r[2], initial("chess"));
-    }
+    let envelope = CanonicalRecord::chess(observed).to_json().unwrap();
+    let dir = Dir::new();
+    let path = dir.0.join("unsupported.json");
+    fs::write(&path, &envelope).unwrap();
+    let out = shell(
+        "chess",
+        &format!(
+            "move e2e4\nrecord print\nrecord load-json {envelope}\nrecord load-file {}\nrecord print\nundo\nrecord print\n",
+            path.display()
+        ),
+    );
+    assert_eq!(out.status.code(), Some(1));
+    assert!(String::from_utf8_lossy(&out.stderr).contains("cannot restore match state"));
+    let r = records(&out);
+    assert_eq!(r[0], r[1]);
+    assert_eq!(r[2], initial("chess"));
 }
 #[test]
 fn common_shogi_restore_preserves_import_and_terminal_event_undo() {

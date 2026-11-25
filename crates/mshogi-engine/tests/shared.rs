@@ -118,74 +118,9 @@ fn actual_chess_play_claim_terminal_incomplete_analysis_and_full_are_preserved()
             }
         }
     ));
-    let dead = AdjudicatedGame::from_fen("7k/8/8/8/8/8/8/K7 w - - 0 1", ClaimPolicy::ExplicitOnly)
-        .unwrap();
-    let mut full = request(&dead);
-    full.purpose = ExecutionPurpose::ChessFullReachability {
-        target: target(&full),
-        mate: ReachabilityTarget::Either,
-        limits: FullLimits {
-            max_positions: 10,
-            max_transitions: 10,
-        },
-    };
-    full.limits = FULL_SENTINEL;
-    assert!(matches!(
-        chess_result(full),
-        ChessResult::Reachability {
-            result: MateReachability::Impossible { .. }
-        }
-    ));
-    let mut unknown = request(&live);
-    unknown.purpose = ExecutionPurpose::ChessFullReachability {
-        target: target(&unknown),
-        mate: ReachabilityTarget::Either,
-        limits: FullLimits {
-            max_positions: 0,
-            max_transitions: 0,
-        },
-    };
-    unknown.limits = FULL_SENTINEL;
-    assert!(matches!(
-        chess_result(unknown),
-        ChessResult::Reachability {
-            result: MateReachability::Unknown {
-                reason: ReachabilityStop::PositionLimit,
-                ..
-            }
-        }
-    ));
-    let full_mode = AdjudicatedGame::from_fen_with_mode(
-        "7k/8/8/8/8/8/8/K7 w - - 0 1",
-        ClaimPolicy::ExplicitOnly,
-        AdjudicationMode::Full {
-            limits: ReachabilityLimits {
-                max_positions: Some(1),
-                max_transitions: Some(1),
-            },
-        },
-    )
-    .unwrap();
-    assert!(matches!(
-        chess_result(request(&full_mode)),
-        ChessResult::Failure {
-            failure: EngineFailure {
-                kind: FailureKind::UnsupportedMode,
-                ..
-            }
-        }
-    ));
 }
 #[test]
 fn actual_shogi_records_have_only_implemented_native_operations() {
-    assert_eq!(
-        execution_capabilities(GameKind::Shogi),
-        &[
-            ExecutionOperation::EngineTurn,
-            ExecutionOperation::MoveAnalysis
-        ]
-    );
-    assert_eq!(execution_capabilities(GameKind::Chess).len(), 3);
     let mut game = shogi::Game::new();
     game.submit(shogi::GameRequest {
         expected: game.context(),
@@ -199,55 +134,28 @@ fn actual_shogi_records_have_only_implemented_native_operations() {
     t.turn = NativeSide::Shogi(shogi::Side::Sente);
     for purpose in [
         ExecutionPurpose::EngineTurn {},
-        ExecutionPurpose::MoveAnalysis { target: t.clone() },
-        ExecutionPurpose::ChessFullReachability {
-            target: t,
-            mate: ReachabilityTarget::Either,
-            limits: FullLimits {
-                max_positions: 1,
-                max_transitions: 1,
-            },
-        },
+        ExecutionPurpose::MoveAnalysis { target: t },
     ] {
-        context.limits = if matches!(purpose, ExecutionPurpose::ChessFullReachability { .. }) {
-            FULL_SENTINEL
-        } else {
-            WorkLimits {
-                time_ms: None,
-                depth: 1,
-                nodes: 10,
-            }
+        context.limits = WorkLimits {
+            time_ms: None,
+            depth: 1,
+            nodes: 10,
         };
         context.purpose = purpose;
         let response = run(context.clone());
         assert!(response.matches(&context));
-        if matches!(
-            context.purpose,
-            ExecutionPurpose::ChessFullReachability { .. }
-        ) {
-            assert!(matches!(
-                response.result,
-                ExecutionResult::Failure {
-                    failure: EngineFailure {
-                        kind: FailureKind::UnsupportedMode,
-                        ..
-                    }
+        assert!(matches!(
+            response.result,
+            ExecutionResult::Shogi {
+                result: ShogiResult::Finished {
+                    conclusion: shogi::Conclusion::Win {
+                        winner: shogi::Side::Sente,
+                        reason: shogi::WinReason::Resignation
+                    },
+                    ..
                 }
-            ));
-        } else {
-            assert!(matches!(
-                response.result,
-                ExecutionResult::Shogi {
-                    result: ShogiResult::Finished {
-                        conclusion: shogi::Conclusion::Win {
-                            winner: shogi::Side::Sente,
-                            reason: shogi::WinReason::Resignation
-                        },
-                        ..
-                    }
-                }
-            ));
-        }
+            }
+        ));
     }
 }
 #[test]
@@ -339,16 +247,6 @@ fn acceptance_checks_every_execution_and_selection_field() {
             }
         ));
     }
-    let mut wrong = response.clone();
-    wrong.result = ExecutionResult::Chess {
-        result: ChessResult::Reachability {
-            result: MateReachability::Unknown {
-                reason: ReachabilityStop::PositionLimit,
-                work: ReachabilityWork::default(),
-            },
-        },
-    };
-    assert!(!wrong.matches(&context));
     let mut overlong = response;
     overlong.result = ExecutionResult::Failure {
         failure: EngineFailure {

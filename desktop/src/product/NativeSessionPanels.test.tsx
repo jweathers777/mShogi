@@ -5,9 +5,6 @@ import { NativeAnalysis, NativeHistory, NativeRecovery, Observation } from "./Na
 import type { ChessSnapshot, GameSnapshot, SearchView } from "./native";
 import standardJson from "../__fixtures__/shared-chess-standard.json";
 import movesJson from "../__fixtures__/shared-chess-analysis-moves.json";
-import possibleJson from "../__fixtures__/shared-chess-analysis-possible.json";
-import impossibleJson from "../__fixtures__/shared-chess-analysis-impossible.json";
-import unknownJson from "../__fixtures__/shared-chess-analysis-unknown.json";
 import mateJson from "../__fixtures__/shared-chess-analysis-mate.json";
 import matedJson from "../__fixtures__/shared-chess-analysis-mated.json";
 import cancelledJson from "../__fixtures__/shared-chess-analysis-cancelled.json";
@@ -23,15 +20,11 @@ function panel(snapshot = chess(standardJson)) {
 }
 it("viewing Chess analysis never starts work; ordinary work uses the current read-only command", () => {
   const { command } = panel(); expect(command).not.toHaveBeenCalled(); fireEvent.click(screen.getByRole("button", { name: "Start move analysis" }));
-  expect(command).toHaveBeenCalledExactlyOnceWith({ kind: "analyze", operation: { kind: "moves", depth: 4, nodes: 100000 } });
+  expect(command).toHaveBeenCalledExactlyOnceWith({ kind: "analyze", operation: { depth: 4, nodes: 100000 } });
 });
 it("rejects unsupported limits without clamping or issuing work", () => {
   const { command } = panel(); fireEvent.change(screen.getByRole("spinbutton", { name: "Depth" }), { target: { value: "9" } }); fireEvent.click(screen.getByRole("button", { name: "Start move analysis" }));
   expect(command).not.toHaveBeenCalled(); expect(screen.getByRole("alert").textContent).toContain("depth from 1 to 8");
-});
-it("retains explicit bounded Full controls rather than treating it as move analysis", () => {
-  const { command } = panel(); fireEvent.click(screen.getByText("Advanced: Full mating reachability")); fireEvent.change(screen.getByLabelText("Mating side"), { target: { value: "white" } }); fireEvent.change(screen.getByLabelText("Position budget"), { target: { value: "50" } }); fireEvent.change(screen.getByLabelText("Transition budget"), { target: { value: "100" } }); fireEvent.click(screen.getByRole("button", { name: "Run Full reachability" }));
-  expect(command).toHaveBeenCalledExactlyOnceWith({ kind: "analyze", operation: { kind: "full_reachability", target: "white", max_positions: 50, max_transitions: 100 } }); expect(screen.getByText(/not forced-win search/)).toBeTruthy();
 });
 it("displays actual native move telemetry and perspective without playing suggestions", () => {
   const { command } = panel(chess(movesJson)); const result = screen.getByLabelText("Analysis result"); expect(result.textContent).toContain("Suggested move:"); expect(result.textContent).toContain("not played"); expect(result.textContent).toContain("pawns from White perspective"); expect(command).not.toHaveBeenCalled();
@@ -39,12 +32,9 @@ it("displays actual native move telemetry and perspective without playing sugges
 it.each([[mateJson, "Mate for White"], [matedJson, "Mate for White · already checkmate"]])("keeps native mating-distance score meaning and perspective", (fixture, expected) => {
   panel(chess(fixture)); expect(screen.getByLabelText("Analysis result").textContent).toContain(expected);
 });
-it.each([[possibleJson, "A cooperative mating route exists"], [impossibleJson, "Neither side can reach mate"], [unknownJson, "Unknown · exploration incomplete"]])("preserves cooperative proof/negative proof/Unknown meanings", (fixture, expected) => {
-  const { command } = panel(chess(fixture)); expect(within(screen.getByLabelText("Analysis result")).getByText(expected)).toBeTruthy(); expect(command).not.toHaveBeenCalled();
-});
-it("cancels and replaces active Full work through common commands without an engine-turn shortcut", () => {
-  const snapshot = chess(possibleJson); snapshot.chess.analysis.status = "thinking"; snapshot.chess.analysis.result = null;
-  const { command } = panel(snapshot); fireEvent.click(screen.getByRole("button", { name: "Cancel analysis" })); expect(command).toHaveBeenLastCalledWith({ kind: "cancel" }); fireEvent.click(screen.getByRole("button", { name: "Replace analysis" })); expect(command).toHaveBeenLastCalledWith(expect.objectContaining({ kind: "analyze", operation: expect.objectContaining({ kind: "moves" }) }));
+it("cancels and replaces active analysis work through common commands without an engine-turn shortcut", () => {
+  const snapshot = chess(movesJson); snapshot.chess.analysis.status = "thinking"; snapshot.chess.analysis.result = null;
+  const { command } = panel(snapshot); fireEvent.click(screen.getByRole("button", { name: "Cancel analysis" })); expect(command).toHaveBeenLastCalledWith({ kind: "cancel" }); fireEvent.click(screen.getByRole("button", { name: "Replace analysis" })); expect(command).toHaveBeenLastCalledWith({ kind: "analyze", operation: snapshot.document.settings.settings.analysis_defaults });
 });
 it.each(["selection", "version", "purpose", "event", "board", "side", "limits"] as const)("withholds native analysis when %s does not match the accepted selected context", (field) => {
   const snapshot = chess(movesJson); const purpose = snapshot.chess.analysis.context!.purpose;
@@ -94,18 +84,14 @@ it("announces replacement by exact native request identity and retires stale tar
   const { rerender, props } = panel(snapshot); const status = screen.getByRole("status", { name: "Analysis status" }); expect(status.textContent).toContain("Move analysis started for");
   const replacement = structuredClone(snapshot); replacement.chess.analysis.context!.request_id++;
   rerender(<NativeAnalysis {...props} snapshot={replacement} />); expect(status.textContent).toContain("replacement started for");
-  const stale = chess(unknownJson); stale.token.selection++; rerender(<NativeAnalysis {...props} snapshot={stale} />); expect(status.textContent).toContain("recorded target"); expect(status.textContent).toContain("does not describe the current position"); expect(status.textContent).not.toContain("query incomplete for");
+  const stale = chess(movesJson); stale.token.selection++; rerender(<NativeAnalysis {...props} snapshot={stale} />); expect(status.textContent).toContain("recorded target"); expect(status.textContent).toContain("does not describe the current position");
 });
-it("announces Full Unknown as incomplete cooperative analysis, never a live result", () => {
-  const snapshot = chess(unknownJson); panel(snapshot); const status = screen.getByRole("status", { name: "Analysis status" });
-  expect(status.textContent).toContain(`Full cooperative mating query incomplete for ${snapshot.chess.analysis.target!.label}`); expect(status.textContent).toContain("Unknown · exploration incomplete"); expect(status.textContent).toContain("No mating conclusion was established"); expect(status.textContent).toContain("not forced-win search or a live-game outcome");
-});
-it("does not display rejected archived scores or proofs as accepted analysis", () => {
-  const snapshot = chess(possibleJson); snapshot.observations.forEach((entry) => { entry.application_error = "Rejected native result"; }); snapshot.chess.analysis = { ...snapshot.chess.analysis, target: null, result: null, status: "idle" };
-  panel(snapshot); expect(screen.getByText("Rejected response. No valid score or proof is presented.")).toBeTruthy(); expect(screen.queryByText("A cooperative mating route exists")).toBeNull();
+it("does not display rejected archived scores as accepted analysis", () => {
+  const snapshot = chess(movesJson); snapshot.observations.forEach((entry) => { entry.application_error = "Rejected native result"; }); snapshot.chess.analysis = { ...snapshot.chess.analysis, target: null, result: null, status: "idle" };
+  panel(snapshot); expect(screen.getByText("Rejected response. No valid score or proof is presented.")).toBeTruthy(); expect(screen.queryByText(/Suggested move:/)).toBeNull();
 });
 it("restores saved analysis defaults on a fresh document while ordinary polls preserve typed work limits", () => {
-  const snapshot = chess(standardJson); snapshot.document.settings.settings.analysis_defaults = { kind: "moves", depth: 3, nodes: 4321 };
+  const snapshot = chess(standardJson); snapshot.document.settings.settings.analysis_defaults = { depth: 3, nodes: 4321 };
   const { props, rerender } = panel(snapshot); const nodes = screen.getByRole("spinbutton", { name: "Node limit" }) as HTMLInputElement; expect(nodes.value).toBe("4321"); fireEvent.change(nodes, { target: { value: "9999" } });
   rerender(<NativeAnalysis {...props} snapshot={{ ...snapshot, token: { ...snapshot.token, revision: snapshot.token.revision + 1 } }} />); expect(nodes.value).toBe("9999");
   rerender(<NativeAnalysis {...props} snapshot={{ ...snapshot, token: { ...snapshot.token, document: snapshot.token.document + 1 } }} />); expect(nodes.value).toBe("4321");

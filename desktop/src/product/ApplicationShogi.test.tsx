@@ -41,20 +41,20 @@ it("allows clearing and typing numeric work limits without inserting a leading z
   expect(depth.max).toBe("64"); expect(nodes.max).toBe("5000000");
   expect(depth.value).toBe("64"); expect(nodes.value).toBe("5000000");
   fireEvent.click(screen.getByRole("button", { name: "Start move analysis" }));
-  expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "analyze", operation: { kind: "moves", depth: 64, nodes: 5000000 } });
+  expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "analyze", operation: { depth: 64, nodes: 5000000 } });
 });
 it("routes bounded analysis through the read-only operation and cancellation path", () => {
   const { session, props, rerender } = app();
   fireEvent.change(screen.getByRole("spinbutton", { name: "Depth" }), { target: { value: "3" } });
   fireEvent.change(screen.getByRole("spinbutton", { name: "Node limit" }), { target: { value: "700" } });
   fireEvent.click(screen.getByRole("button", { name: "Start move analysis" }));
-  expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "analyze", operation: { kind: "moves", depth: 3, nodes: 700 } });
+  expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "analyze", operation: { depth: 3, nodes: 700 } });
   const analyzing = { ...standard, phase: "thinking" as const, execution_purpose: "move_analysis", paused: true };
   rerender(<ShogiApp {...props} snapshot={analyzing} />);
   expect(screen.getByText("Analyzing the selected position…")).toBeTruthy();
   expect(screen.queryByRole("button", { name: "Cancel search" })).toBeNull();
   fireEvent.click(screen.getByRole("button", { name: "Replace analysis" }));
-  expect(session.command).toHaveBeenLastCalledWith(analyzing, { kind: "analyze", operation: { kind: "moves", depth: 3, nodes: 700 } });
+  expect(session.command).toHaveBeenLastCalledWith(analyzing, { kind: "analyze", operation: { depth: 3, nodes: 700 } });
   fireEvent.click(screen.getByRole("button", { name: "Cancel analysis" }));
   expect(session.command).toHaveBeenLastCalledWith(analyzing, { kind: "cancel" });
 });

@@ -2,8 +2,6 @@ import type {
   Color,
   EngineChoice,
   ChessResult,
-  MateReachability,
-  ReachabilityTarget,
   Telemetry,
 } from "./native";
 import { colorName } from "./presentation";
@@ -38,39 +36,5 @@ export function choiceDescription(choice: EngineChoice): string {
     : `Claim draw${choice.claim.intended ? `, intending ${readableAction(choice.claim.intended)} (unplayed)` : " in the current position"}`;
 }
 export function resultTelemetry(result: ChessResult | null): Telemetry | null {
-  return result === null ||
-    result.kind === "failure" ||
-    result.kind === "reachability"
-    ? null
-    : result.telemetry;
-}
-export function reachabilityDescription(
-  result: MateReachability,
-  target: ReachabilityTarget,
-): { title: string; explanation: string } {
-  const subject = target === "either" ? "At least one side" : colorName(target);
-  if ("possible" in result)
-    return {
-      title: "A cooperative mating route exists",
-      explanation: `${subject} can deliver mate along the returned cooperative route. This is not a forced win against best defense and does not change the live game's outcome.`,
-    };
-  if ("impossible" in result)
-    return {
-      title:
-        target === "either"
-          ? "Neither side can reach mate"
-          : `${subject} cannot reach mate`,
-      explanation:
-        "The native search exhausted the reachable graph using sound proofs. This read-only result does not adjudicate the live M2 game.",
-    };
-  const why = {
-    cancelled: "cancelled",
-    position_limit: "position budget exhausted",
-    transition_limit: "transition budget exhausted",
-    resource_limit: "resource limit reached",
-  }[result.unknown.reason];
-  return {
-    title: "Unknown · exploration incomplete",
-    explanation: `${why[0]!.toUpperCase()}${why.slice(1)}. No mating conclusion was established. Failure to find a route is not proof that mating is impossible or possible.`,
-  };
+  return result === null || result.kind === "failure" ? null : result.telemetry;
 }

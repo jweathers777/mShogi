@@ -462,7 +462,7 @@ fn persisted_preferences_keep_exact_pending_execution_and_original_limits() {
     send(
         &mut c,
         SessionOperation::Analyze {
-            operation: AnalysisOperation::Moves { depth: 1, nodes: 1 },
+            operation: AnalysisOperation { depth: 1, nodes: 1 },
         },
     )
     .unwrap();
@@ -574,7 +574,7 @@ fn shared_core_shogi_analysis_limits_are_admitted_and_bounded() {
     let accepted = send(
         &mut c,
         SessionOperation::Analyze {
-            operation: AnalysisOperation::Moves {
+            operation: AnalysisOperation {
                 depth: 64,
                 nodes: 5_000_000,
             },
@@ -592,7 +592,7 @@ fn shared_core_shogi_analysis_limits_are_admitted_and_bounded() {
             send(
                 &mut c,
                 SessionOperation::Analyze {
-                    operation: AnalysisOperation::Moves { depth, nodes },
+                    operation: AnalysisOperation { depth, nodes },
                 }
             )
             .is_err()

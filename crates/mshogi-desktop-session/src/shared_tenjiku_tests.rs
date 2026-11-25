@@ -207,11 +207,7 @@ fn strict_profile_dispatch_fresh_new_other_profile_and_stale_contexts_in_both_di
         assert_eq!(snapshot.board.ranks.len(), 16);
         assert_eq!(snapshot.pieces.len(), 156);
         assert!(snapshot.hands.is_empty());
-        assert!(
-            snapshot.capabilities.engine_turn
-                && snapshot.capabilities.move_analysis
-                && !snapshot.capabilities.chess_full
-        );
+        assert!(snapshot.capabilities.engine_turn && snapshot.capabilities.move_analysis);
         assert!(snapshot.tenjiku.as_ref().unwrap().execution_supported);
         assert_eq!(record(&ctl).profile(), profile);
         assert_eq!(record(&ctl).event_count(), 0);
@@ -1035,7 +1031,7 @@ fn shared_core_analysis_bounds_preserve_both_profile_states_and_reject_excess() 
         let snapshot = send(
             &mut ctl,
             SessionOperation::Analyze {
-                operation: AnalysisOperation::Moves {
+                operation: AnalysisOperation {
                     depth: 64,
                     nodes: 5_000_000,
                 },
@@ -1052,7 +1048,7 @@ fn shared_core_analysis_bounds_preserve_both_profile_states_and_reject_excess() 
                 send(
                     &mut ctl,
                     SessionOperation::Analyze {
-                        operation: AnalysisOperation::Moves { depth, nodes },
+                        operation: AnalysisOperation { depth, nodes },
                     }
                 )
                 .is_err()

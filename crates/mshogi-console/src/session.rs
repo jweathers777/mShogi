@@ -257,11 +257,6 @@ impl Session {
             Operation::LoadFile(path) => Self::parse_envelope(&record_io::read(path)?)?,
             Operation::LoadJson(json) => Self::parse_envelope(json)?,
         };
-        if record.adjudication_mode() != mshogi_core::chess::AdjudicationMode::M2 {
-            return Err(
-                "record uses full adjudication; diagnostic shell cannot restore that mode".into(),
-            );
-        }
         let replay = record
             .replay_history()
             .map_err(|e| record_io::diagnostic(&e.to_string()))?;

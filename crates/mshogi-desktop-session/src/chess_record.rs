@@ -69,7 +69,7 @@ impl ChessRecord {
     pub fn commands(&self) -> &[ChessCommand] {
         &self.commands
     }
-    /// Parse the initial history without running an adjudication solver.
+    /// Parse the initial history without replaying it.
     pub fn initial_record(&self) -> Result<GameRecord, RecordFailure> {
         GameRecord::from_json(&self.initial_record_json).map_err(invalid)
     }
@@ -77,12 +77,6 @@ impl ChessRecord {
     pub fn replay(&self, stop: &mut impl FnMut() -> bool) -> Result<ChessMatch, RecordFailure> {
         check(stop)?;
         let initial = self.initial_record()?;
-        if initial.adjudication_mode() != AdjudicationMode::M2 {
-            return Err(invalid(
-                "Full adjudication restoration is unsupported by untimed desktop play.",
-            ));
-        }
-
         let live = AdjudicatedGame::replay_record_with_stop(&initial, &mut *stop);
         check(stop)?;
         let mut game =
@@ -133,8 +127,7 @@ impl ChessRecord {
             return Err(invalid("Clock bookkeeping is not a saved player command."));
         }
         // The desktop has never admitted witnessed match commands. Native
-        // submit verifies them synchronously; read-only Full analysis has its
-        // separate cooperative validation path.
+        // submit verifies them synchronously.
         if matches!(entry.command, MatchCommand::Resign { witness: Some(_) }) {
             return Err(invalid(
                 "Witnessed match commands are unsupported by desktop play.",

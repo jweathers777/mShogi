@@ -48,7 +48,7 @@ interface GameSnapshotBase extends Omit<NativeBoardSnapshot, "game" | "orientati
   close_requires_save: boolean;
   io: { id: number; phase: string; message: string | null; resource?: ResourceFailure | null };
   capacity: { id: number; status: "available" | "checking" | "paused"; message: string | null; resource?: ResourceFailure | null };
-  capabilities: { board_action: boolean; declaration: boolean; claims: boolean; resign: boolean; undo: boolean; take_back: boolean; move_analysis: boolean; chess_full: boolean; save: boolean; drops: boolean; promotion: boolean; engine_turn: boolean; hands: boolean; history: boolean };
+  capabilities: { board_action: boolean; declaration: boolean; claims: boolean; resign: boolean; undo: boolean; take_back: boolean; move_analysis: boolean; save: boolean; drops: boolean; promotion: boolean; engine_turn: boolean; hands: boolean; history: boolean };
   status: { concluded: boolean; label: string; score_half_points: number[] | null };
   events: { index: number; board_ply: number; label: string }[];
   moves: MovesPresentation;
@@ -73,7 +73,6 @@ export interface ChessPresentation {
   last_engine_result: ChessResult | null;
   last_engine_turn: Color | null;
   searched_version: number | null;
-  rules_mode: "m2";
 }
 export type ChessSnapshot = GameSnapshotBase & {
   game: "chess";

@@ -45,7 +45,7 @@ it("never returns a receipt from a replaced document as current", async () => {
   const replacement = { ...standard, token: { ...standard.token, document: standard.token.document + 1, revision: standard.token.revision + 3 } };
   vi.mocked(invoke).mockResolvedValueOnce(standard).mockReturnValueOnce(action.promise).mockReturnValueOnce(poll.promise);
   const { result } = renderHook(useGameSession); await flush();
-  let pending!: Promise<GameSnapshot | null>; act(() => { pending = result.current.command(standard, { kind: "analyze", operation: { kind: "moves", depth: 1, nodes: 10 } }); });
+  let pending!: Promise<GameSnapshot | null>; act(() => { pending = result.current.command(standard, { kind: "analyze", operation: { depth: 1, nodes: 10 } }); });
   await act(async () => { await vi.advanceTimersByTimeAsync(180); poll.resolve(replacement); await Promise.resolve(); });
   let returned: GameSnapshot | null = standard; await act(async () => { action.resolve(standard); returned = await pending; });
   expect(returned).toBeNull(); expect(result.current.snapshot).toBe(replacement);

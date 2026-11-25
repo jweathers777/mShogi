@@ -50,13 +50,6 @@ of `game` and does not change it.
 - `completed_depth` is the last completed nominal depth. `EngineResult` also
   gives the selective depth and the table fill (`hashfull`).
 
-## Adjudication mode
-
-Live and supervised consumers search only M2 games. UCI creates only M2 games.
-The native engine process, the desktop session and the experiment runner refuse
-a record in Full mode before they search. Full mode is the opt-in
-exact mate-reachability check of [chess completeness](rules/chess-completeness.md).
-
 ## Correctness tests
 
 - `chess_bitboard::tests`: published perft counts, and random walks that compare

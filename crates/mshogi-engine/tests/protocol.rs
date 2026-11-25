@@ -112,30 +112,6 @@ fn same_position_different_known_histories_preserve_different_claim_results() {
     assert_ne!(request(&repeated).game, request(&imported).game);
 }
 #[test]
-fn rejects_full_before_replay_without_downgrading_context() {
-    let record = AdjudicatedGame::from_fen_with_mode(
-        "7k/8/8/8/8/8/8/K7 w - - 0 1",
-        ClaimPolicy::ExplicitOnly,
-        AdjudicationMode::Full {
-            limits: ReachabilityLimits {
-                max_positions: Some(1),
-                max_transitions: Some(1),
-            },
-        },
-    )
-    .unwrap();
-    let response = run(request(&record));
-    assert!(matches!(
-        response,
-        ChessResult::Failure {
-            failure: EngineFailure {
-                kind: FailureKind::UnsupportedMode,
-                ..
-            }
-        }
-    ));
-}
-#[test]
 fn malformed_oversized_unknown_and_unterminated_input_are_rejected() {
     for bytes in [
         b"{}\n".to_vec(),
@@ -205,39 +181,8 @@ fn analysis_target(game: &AdjudicatedGame) -> ExecutionTarget {
         turn: mshogi_core::native::NativeSide::Chess(game.position().side_to_move()),
     }
 }
-fn full_request(game: &AdjudicatedGame, positions: u64) -> ExecutionContext {
-    let mut context = request(game);
-    context.purpose = ExecutionPurpose::ChessFullReachability {
-        target: analysis_target(game),
-        mate: ReachabilityTarget::Either,
-        limits: FullLimits {
-            max_positions: positions,
-            max_transitions: 1000,
-        },
-    };
-    context.limits = FULL_SENTINEL;
-    context
-}
 #[test]
-fn full_child_operation_reports_real_possible_impossible_and_unknown_work() {
-    let mated =
-        AdjudicatedGame::from_fen("7k/6Q1/5K2/8/8/8/8/8 b - - 0 1", ClaimPolicy::ExplicitOnly)
-            .unwrap();
-    assert!(
-        matches!(run(full_request(&mated, 10)), ChessResult::Reachability { result: MateReachability::Possible { witness, work } } if witness.is_empty() && work.positions == 1)
-    );
-    let dead = AdjudicatedGame::from_fen("7k/8/8/8/8/8/8/K7 w - - 0 1", ClaimPolicy::ExplicitOnly)
-        .unwrap();
-    assert!(
-        matches!(run(full_request(&dead, 10)), ChessResult::Reachability { result: MateReachability::Impossible { work } } if work.static_leaves == 1)
-    );
-    let live = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly);
-    assert!(
-        matches!(run(full_request(&live, 0)), ChessResult::Reachability { result: MateReachability::Unknown { reason: ReachabilityStop::PositionLimit, work } } if work.positions == 0 && work.transitions == 0)
-    );
-}
-#[test]
-fn analysis_requires_exact_provenance_supported_mode_and_explicit_limits() {
+fn analysis_requires_exact_provenance_and_explicit_limits() {
     let live = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly);
     let mut context = request(&live);
     context.purpose = ExecutionPurpose::MoveAnalysis {
@@ -256,16 +201,7 @@ fn analysis_requires_exact_provenance_supported_mode_and_explicit_limits() {
             }
         }
     ));
-    let mut invalid = full_request(&live, MAX_FULL_POSITIONS + 1);
-    assert!(matches!(
-        run(invalid.clone()),
-        ChessResult::Failure {
-            failure: EngineFailure {
-                kind: FailureKind::InvalidRequest,
-                ..
-            }
-        }
-    ));
+    let mut invalid = request(&live);
     invalid.purpose = ExecutionPurpose::MoveAnalysis {
         target: analysis_target(&live),
     };

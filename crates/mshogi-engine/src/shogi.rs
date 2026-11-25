@@ -1,5 +1,5 @@
-//! Actual shogi results, distinct from chess scores and cooperative Full proofs.
-use crate::{ExecutionContext, ExecutionPurpose, StopReason};
+//! Actual shogi results, distinct from chess scores.
+use crate::{ExecutionContext, StopReason};
 use mshogi_core::{
     native::CanonicalRecord,
     shogi::{Action, Conclusion, Side},
@@ -167,12 +167,6 @@ impl ShogiResult {
         let CanonicalRecord::Shogi(record) = &context.game else {
             return false;
         };
-        if matches!(
-            context.purpose,
-            ExecutionPurpose::ChessFullReachability { .. }
-        ) {
-            return false;
-        }
         let telemetry = match self {
             Self::Choice { telemetry, .. }
             | Self::Finished { telemetry, .. }
@@ -298,7 +292,7 @@ mod identity_tests {
 
     fn context() -> ExecutionContext {
         ExecutionContext {
-            purpose: ExecutionPurpose::EngineTurn {},
+            purpose: crate::ExecutionPurpose::EngineTurn {},
             request_id: 1,
             session_version: 1,
             game: CanonicalRecord::shogi(GameRecord::from_game(&Game::new())),

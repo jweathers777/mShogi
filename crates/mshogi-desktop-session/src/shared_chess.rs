@@ -22,7 +22,7 @@ impl SessionGame for Chess {
     const PLAY_LIMITS: WorkLimits = crate::PLAY_LIMITS;
     const MAX_DEPTH: u16 = 128;
     const MAX_NODES: u64 = crate::PLAY_NODE_CEILING;
-    const FULL_ANALYSIS: bool = true;
+    const ANALYSIS_BUDGETS: bool = true;
     const FINISH_CONCLUDED_ANALYSIS: bool = true;
     fn cancellation_phase(analysis: bool) -> EnginePhase {
         if analysis {
@@ -51,7 +51,8 @@ impl SessionGame for Chess {
     const BOARD_SIZE: u8 = 8;
     const BOARD_LABEL: &'static str = "Chess board";
     const INITIAL_FOCUS: &'static str = "e2";
-    const SCORE_MEANING: &'static str = "Chess root-side centipawns; native mate distance and bounded cooperative Full proof remain distinct (see chess analysis).";
+    const SCORE_MEANING: &'static str =
+        "Chess root-side centipawns; native mate distance remains distinct (see chess analysis).";
     fn presentation(selected: &ChessMatch, live: &ChessMatch) -> ChessPresentation {
         ChessPresentation {
             claims: if live.conclusion().is_none() {
@@ -70,7 +71,6 @@ impl SessionGame for Chess {
             last_engine_result: None,
             last_engine_turn: None,
             searched_version: None,
-            rules_mode: "m2",
         }
     }
     fn status(game: &ChessMatch, _has_actions: bool) -> PresentedStatus {
@@ -158,13 +158,7 @@ impl SessionGame for Chess {
         }
     }
     fn incomplete(result: &ChessResult) -> bool {
-        matches!(
-            result,
-            ChessResult::Incomplete { .. }
-                | ChessResult::Reachability {
-                    result: MateReachability::Unknown { .. }
-                }
-        )
+        matches!(result, ChessResult::Incomplete { .. })
     }
     fn operation(operation: SessionOperation) -> Result<GameOperation<Self>, SessionOperation> {
         match operation {
@@ -309,7 +303,6 @@ impl SessionGame for Chess {
         snapshot.orientations[0].ranks = ranks.clone();
         snapshot.orientations[1].files = files.into_iter().rev().collect();
         snapshot.orientations[1].ranks = ranks.into_iter().rev().collect();
-        snapshot.capabilities.chess_full = true;
         snapshot.capabilities.undo = false;
         snapshot.capabilities.board_action &= !state.paused;
         snapshot.capabilities.claims = !state.historical()
@@ -349,27 +342,12 @@ impl SessionGame for Chess {
             .or_else(|| state.analysis.as_ref().map(|o| &o.context))
             .or(state.cancelled_analysis.as_ref());
         if let Some(context) = context {
-            let (target, operation) = match &context.purpose {
-                ExecutionPurpose::MoveAnalysis { target } => (
-                    target,
-                    AnalysisOperation::Moves {
-                        depth: context.limits.depth,
-                        nodes: context.limits.nodes,
-                    },
-                ),
-                ExecutionPurpose::ChessFullReachability {
-                    target,
-                    mate,
-                    limits,
-                } => (
-                    target,
-                    AnalysisOperation::FullReachability {
-                        target: *mate,
-                        max_positions: limits.max_positions,
-                        max_transitions: limits.max_transitions,
-                    },
-                ),
-                _ => unreachable!(),
+            let ExecutionPurpose::MoveAnalysis { target } = &context.purpose else {
+                unreachable!()
+            };
+            let operation = AnalysisOperation {
+                depth: context.limits.depth,
+                nodes: context.limits.nodes,
             };
             chess.analysis = AnalysisState {
                 status: if state.cancelled_analysis.is_some() {
@@ -416,7 +394,6 @@ impl DesktopController {
             "promotion" => "7k/P7/8/8/8/8/8/7K w - - 0 1",
             "claim" => "7k/8/8/8/8/8/R7/K7 w - - 99 1",
             "current-claim" => "7k/8/8/8/8/8/R7/K7 w - - 100 1",
-            "concluded" => "7k/6Q1/5K2/8/8/8/8/8 b - - 0 1",
             _ => return Err("Unknown desktop verification fixture.".into()),
         };
         let game = if fen == STANDARD_START_FEN {
@@ -424,7 +401,7 @@ impl DesktopController {
         } else {
             AdjudicatedGame::from_fen(fen, ClaimPolicy::ExplicitOnly).map_err(|e| e.to_string())?
         };
-        let human = if matches!(fixture, "incomplete" | "concluded") {
+        let human = if fixture == "incomplete" {
             Color::Black
         } else {
             Color::White
@@ -525,48 +502,6 @@ mod tests {
         let receipt = c.last_command_receipt.clone().expect("queued command");
         settle(c);
         receipt.completion().unwrap().unwrap();
-    }
-    #[test]
-    fn chess_full_analysis_stays_read_only_and_remembers_its_kind() {
-        let mut c = controller(Color::White);
-        let record = Chess::from_game(&c.session.chess().unwrap().game).unwrap();
-        let operation = AnalysisOperation::FullReachability {
-            target: mshogi_engine::ReachabilityTarget::Either,
-            max_positions: 0,
-            max_transitions: 0,
-        };
-        command(&mut c, SessionOperation::Analyze { operation });
-        let snapshot = c.shared_snapshot();
-        assert_eq!(snapshot.execution_purpose, Some("chess_full_reachability"));
-        let pending = c.session.chess().unwrap().pending.clone().unwrap();
-        let mut bytes = serde_json::to_vec(&execution_request(pending.clone())).unwrap();
-        bytes.push(b'\n');
-        let mut output = vec![];
-        mshogi_engine::serve_once(std::io::Cursor::new(bytes), &mut output).unwrap();
-        let response = ExecutionResponse::decode(&output, &execution_request(pending)).unwrap();
-        assert!(c.accept_shared(response));
-        settle(&mut c);
-        let snapshot = c.shared_snapshot();
-        let chess = snapshot.chess.unwrap();
-        assert_eq!(chess.analysis.status, AnalysisPhase::Incomplete);
-        let target = chess.analysis.target.as_ref().unwrap();
-        assert_eq!(target.session_version, snapshot.token.version);
-        assert_eq!(target.selection_id, snapshot.token.selection);
-        assert_eq!(chess.analysis.operation, Some(operation));
-        assert_eq!(
-            Chess::from_game(&c.session.chess().unwrap().game).unwrap(),
-            record
-        );
-        assert!(snapshot.paused);
-        assert_eq!(
-            c.session
-                .chess()
-                .unwrap()
-                .document
-                .settings()
-                .analysis_defaults,
-            operation
-        );
     }
     #[test]
     fn wrapped_chess_failure_stops_play_without_automatic_retry() {

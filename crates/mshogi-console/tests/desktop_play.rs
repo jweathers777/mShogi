@@ -56,7 +56,6 @@ fn replay(snapshot: &SharedSnapshot) -> AdjudicatedGame {
         game.apply(action).unwrap();
     }
     assert_eq!(game.position().to_fen(), fen(snapshot));
-    assert_eq!(chess(snapshot).rules_mode, "m2");
     assert_eq!(snapshot.play_limits, PLAY_LIMITS);
     assert!(chess(snapshot).live_conclusion.is_none());
     game

@@ -106,7 +106,6 @@
       "in_check": false,
       "searched_version": null,
       "last_engine_turn": null,
-      "rules_mode": "m2",
       "selected_conclusion": null,
       "analysis": {
         "status": "idle",
@@ -284,7 +283,6 @@
       "in_check": false,
       "searched_version": null,
       "last_engine_turn": null,
-      "rules_mode": "m2",
       "selected_conclusion": {
         "unresolved": {
           "trigger": "resignation",

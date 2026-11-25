@@ -83,7 +83,7 @@ fn main() {
     send(
         &mut c,
         SessionOperation::Analyze {
-            operation: AnalysisOperation::Moves {
+            operation: AnalysisOperation {
                 depth: 1,
                 nodes: 128,
             },
@@ -95,7 +95,7 @@ fn main() {
     send(
         &mut c,
         SessionOperation::Analyze {
-            operation: AnalysisOperation::Moves {
+            operation: AnalysisOperation {
                 depth: 3,
                 nodes: 512,
             },
@@ -110,7 +110,7 @@ fn main() {
     send(
         &mut c,
         SessionOperation::Analyze {
-            operation: AnalysisOperation::Moves {
+            operation: AnalysisOperation {
                 depth: 1,
                 nodes: 128,
             },

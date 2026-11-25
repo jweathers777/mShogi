@@ -91,9 +91,7 @@ Reopened untimed games remain paused until **Resume play**. Saved observations
 are labeled historical and never restart pending engine work. Earlier positions
 are read-only; **Return to live** explicitly leaves history inspection.
 
-Full live-adjudication restoration is explicitly unsupported; the advanced
-read-only Full operation below is a separate controlled execution path. The
-synthetic large-board fixture is available in the isolated verification build.
+The synthetic large-board fixture is available in the isolated verification build.
 The integrated macOS interaction assessment covers keyboard/focus, status
 semantics, contrast and layouts at both supported sizes; screen-reader audio and
 formal accessibility conformance have not been tested. Actual Windows, macOS
@@ -118,7 +116,7 @@ analysis purpose. History selects exact native event boundaries; **Return to
 live** and **Resume play** are separate. Archives preserve complete native
 semantics, settings and historical observations. An application-capacity pause
 retains the complete save path and cannot be reset by reopening the same file.
-Chess-only Full analysis and timed restoration remain unsupported for shogi.
+Timed restoration remains unsupported for shogi.
 
 All six games use the same document labels: **Unsaved** before the first save,
 **Unmodified** when identical to the saved/opened file, and **Unsaved changes**
@@ -253,14 +251,6 @@ requested budgets and actual final depth/nodes/PV are labeled; native request,
 process and session identities plus raw encodings remain in technical details.
 There is no simulated live progress.
 
-**Advanced: Full mating reachability** asks whether legal cooperative play can
-reach mate for Either side, White or Black. It is not forced-win search and does
-not adjudicate the live M2 game. Mandatory position/transition caps (at most
-100,000/1,000,000) and a 15-second child watchdog keep reconstruction and solving
-off the interaction path. A proof, cooperative witness or unknown work result
-is displayed as analysis only. Cancellation has no fabricated solver counts;
-resource exhaustion and process failure never invent a chess outcome.
-
 The [current execution contract](../docs/desktop/internal-execution-v4.md) documents
 purpose-specific acceptance, retained engine sessions and limits. The batch evidence
 distinguishes controller, frontend and actual packaged GUI verification.
@@ -285,8 +275,8 @@ Save writes an exclusive same-directory temporary file and replaces the target
 only after a complete flushed write. A failed or cancelled save keeps the prior
 file and leaves unsaved changes unsaved. Open validates on a bounded native
 worker; corrupt, unsupported or resource-limited documents leave the current
-game intact. Full live modes and timed matches are rejected explicitly, without
-changing their mode or clocks. No automatic crash recovery is promised.
+game intact. Timed matches are rejected explicitly, without changing their
+clocks. No automatic crash recovery is promised.
 
 The history inspector includes nonmove events such as a claim or resignation.
 Selecting an earlier event pauses play and displays a read-only board. Analysis

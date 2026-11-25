@@ -24,15 +24,9 @@ impl DocumentSettings for DesktopSettings {
     fn validate(&self) -> Result<(), String> {
         self.analysis_defaults.validate()
     }
-    fn with_analysis_operation(&self, operation: AnalysisOperation) -> Option<Self> {
-        Some(Self {
-            analysis_defaults: operation,
-            ..self.clone()
-        })
-    }
     fn with_analysis_defaults(&self, limits: WorkLimits) -> Option<Self> {
         Some(Self {
-            analysis_defaults: AnalysisOperation::Moves {
+            analysis_defaults: AnalysisOperation {
                 depth: limits.depth,
                 nodes: limits.nodes,
             },

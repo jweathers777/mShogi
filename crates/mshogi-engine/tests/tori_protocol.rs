@@ -283,35 +283,7 @@ fn malformed_telemetry_complete_pv_and_terminal_mismatches_refuse() {
     assert!(serde_json::from_value::<ExecutionObservation>(v).is_err());
 }
 #[test]
-fn full_remains_explicit_unscored_unsupported_and_limits_are_bounded() {
-    let mut c = context(&t::Game::standard());
-    c.limits = FULL_SENTINEL;
-    c.purpose = ExecutionPurpose::ChessFullReachability {
-        target: ExecutionTarget {
-            selection_id: 1,
-            event_index: 0,
-            board_ply: 0,
-            session_version: c.session_version,
-            label: "not Tori Full".into(),
-            turn: NativeSide::Tori(t::Side::Sente),
-        },
-        mate: ReachabilityTarget::Either,
-        limits: FullLimits {
-            max_positions: 1,
-            max_transitions: 1,
-        },
-    };
-    let obs = execute(&c);
-    assert!(matches!(
-        obs.result,
-        ExecutionResult::Failure {
-            failure: EngineFailure {
-                kind: FailureKind::UnsupportedMode,
-                ..
-            }
-        }
-    ));
-    assert!(!serde_json::to_string(&obs).unwrap().contains("\"score\""));
+fn limits_are_bounded() {
     for limits in [
         WorkLimits {
             time_ms: None,

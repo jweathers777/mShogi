@@ -203,7 +203,7 @@ fn complete_routes_igui_original_identity_history_and_exact_event_undo() {
         let o = shell(
             p,
             &format!(
-                "position record-json {}\nrecord\nlegal\nmove Ln8hx8gx8f\nhistory\nundo\nmove Ln8hx8g-8h\nhistory\nundo\nmove Ln8h-7g-8h\nhistory\nundo\nmove VGn4h-4g-5g-5f\nhistory\nundo\nmove ChS+12h!x13h\nhistory\nshow\nundo\nrecord\n",
+                "position record-json {}\nrecord print\nlegal\nmove Ln8hx8gx8f\nhistory\nundo\nmove Ln8hx8g-8h\nhistory\nundo\nmove Ln8h-7g-8h\nhistory\nundo\nmove VGn4h-4g-5g-5f\nhistory\nundo\nmove ChS+12h!x13h\nhistory\nshow\nundo\nrecord print\n",
                 encode(&g)
             ),
         );
@@ -239,7 +239,7 @@ fn bad_batches_notation_and_diagnostics_preserve_exact_canonical_session() {
         let o = shell(
             p,
             &format!(
-                "position record-json {}\nrecord\nmove Ln8hx8g-8h Ln8h-8g\nrecord\nmove Ln8h-8g\nrecord\nperft 2 1\nrecord\ndivide 0\nrecord\nrecord load-json {{\"game\":\"tenjiku\",\"game\":\"chess\"}}\nrecord\n",
+                "position record-json {}\nrecord print\nmove Ln8hx8g-8h Ln8h-8g\nrecord print\nmove Ln8h-8g\nrecord print\nperft 2 1\nrecord print\ndivide 0\nrecord print\nrecord load-json {{\"game\":\"tenjiku\",\"game\":\"chess\"}}\nrecord print\n",
                 encode(&g)
             ),
         );
@@ -267,7 +267,7 @@ fn full_history_diagnostics_have_independent_corner_counts_and_analysis_is_read_
         let o = shell(
             p,
             &format!(
-                "position record-json {}\nrecord\nperft 0 1\nperft 1 5\nperft 2 21\ndivide 2 21\nanalyze 1 512\nrecord\nanalyze 1 0\nrecord\n",
+                "position record-json {}\nrecord print\nperft 0 1\nperft 1 5\nperft 2 21\ndivide 2 21\nanalyze 1 512\nrecord print\nanalyze 1 0\nrecord print\n",
                 encode(&root(p, &[]))
             ),
         );
@@ -297,7 +297,7 @@ fn promotion_derived_profile_specific_burn_and_mover_death_are_lossless() {
         let o = shell(
             p,
             &format!(
-                "position record-json {}\nmove P12f-12e^\nhistory\nrecord\nundo\nmove P12f-12e\nrecord\n",
+                "position record-json {}\nmove P12f-12e^\nhistory\nrecord print\nundo\nmove P12f-12e\nrecord print\n",
                 encode(&g)
             ),
         );
@@ -321,7 +321,7 @@ fn promotion_derived_profile_specific_burn_and_mover_death_are_lossless() {
         let o = shell(
             p,
             &format!(
-                "position record-json {}\nrecord\nmove FiD8j-8h\nhistory\nrecord\nundo\nrecord\n",
+                "position record-json {}\nrecord print\nmove FiD8j-8h\nhistory\nrecord print\nundo\nrecord print\n",
                 encode(&fire)
             ),
         );
@@ -374,7 +374,7 @@ fn canonical_save_load_profile_identity_existing_file_and_repetition_admission()
         let o = shell(
             other,
             &format!(
-                "position record-json {}\nmove K16p-15o K1a-2b K15o-16p\nrecord\nmove K2b-1a\nrecord\nrecord save {}\nrecord save {}\nposition startpos\nrecord load-file {}\nrecord\n",
+                "position record-json {}\nmove K16p-15o K1a-2b K15o-16p\nrecord print\nmove K2b-1a\nrecord print\nrecord save {}\nrecord save {}\nposition startpos\nrecord load-file {}\nrecord print\n",
                 encode(&root(p, &[])),
                 path.display(),
                 path.display(),
@@ -400,7 +400,7 @@ fn actual_draw_stop_resignation_and_terminal_diagnostics_remain_native() {
         let o = shell(
             p,
             &format!(
-                "position record-json {}\nrecord\noffer-draw gote\nhistory\ndecline-draw sente\nundo 2\nrecord\noffer-draw sente\naccept-draw gote\nhistory\nperft 1\nundo 2\nstop work\nresign gote\nhistory\nundo 1\nrecord\n",
+                "position record-json {}\nrecord print\noffer-draw gote\nhistory\ndecline-draw sente\nundo 2\nrecord print\noffer-draw sente\naccept-draw gote\nhistory\nperft 1\nundo 2\nstop work\nresign gote\nhistory\nundo 1\nrecord print\n",
                 encode(&root(p, &[]))
             ),
         );
@@ -431,7 +431,7 @@ fn loaded_profile_is_preserved_by_fresh_start_and_oversized_lines_are_drained() 
         let o = shell(
             other,
             &format!(
-                "position record-json {}\nposition startpos\nrecord\n{}\nrecord\n",
+                "position record-json {}\nposition startpos\nrecord print\n{}\nrecord print\n",
                 encode(&root(p, &[])),
                 "x".repeat(4097)
             ),

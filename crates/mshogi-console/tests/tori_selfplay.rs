@@ -18,7 +18,6 @@ fn request(game: &t::Game, id: u64) -> ExecutionRequest {
             purpose: ExecutionPurpose::EngineTurn {},
             request_id: id,
             session_version: id,
-            process_generation: id,
             game: CanonicalRecord::tori(t::GameRecord::from_game(game).unwrap()),
             limits: WorkLimits {
                 time_ms: None,

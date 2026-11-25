@@ -183,7 +183,6 @@ fn context(c: &DesktopController, n: u64, analysis: bool) -> ExecutionContext {
         },
         request_id: n,
         session_version: c.session.version,
-        process_generation: n,
         game,
         limits: WorkLimits {
             time_ms: None,
@@ -476,9 +475,6 @@ fn all_identity_dimensions_wrong_game_and_return_to_same_diagram_reject() {
     bad.push(x);
     let mut x = good.clone();
     x.session_version += 1;
-    bad.push(x);
-    let mut x = good.clone();
-    x.process_generation += 1;
     bad.push(x);
     let mut x = good.clone();
     x.limits.nodes += 1;
@@ -1351,9 +1347,7 @@ fn normal_tori_browse_return_preserves_running_intent_but_never_revives_work() {
         if let Some(old) = old {
             let fresh = current(&c).pending.clone().unwrap();
             assert!(
-                fresh.request_id > old.request_id
-                    && fresh.process_generation > old.process_generation
-                    && fresh.session_version > old.session_version
+                fresh.request_id > old.request_id && fresh.session_version > old.session_version
             );
             assert!(fresh.game == old.game && fresh.limits == old.limits);
             assert!(!submit_observation(&mut c, searched(old)));

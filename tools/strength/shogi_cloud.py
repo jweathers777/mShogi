@@ -123,7 +123,8 @@ def report_bytes(data):
 
 def audit_report(report, config, manifest, seed):
     require(report['config'] == config and config['seed'] == seed, 'wrong effective pair config')
-    require(config['clock'] == {'base_ms': 5000, 'increment_ms': manifest['protocol']['increment_ms']} and
+    require(config['clock'] == {'base_ms': 5000, 'increment_ms': manifest['protocol']['increment_ms'],
+                                'allocation': 'hard'} and
             config['max_steps'] == 320 and config['wall_budget_ms'] == bundle(manifest)['pair_ms'], 'wrong clock/pair bound')
     require(config['rounds'] == 1 and len(config['openings']) == 1 and len(config['players']) == 2,
             'expected one native opening pair')

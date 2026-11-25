@@ -9,7 +9,7 @@ use std::{
 };
 fn run(input: &str) -> Output {
     let mut child = Command::new(env!("CARGO_BIN_EXE_mshogi"))
-        .arg("shogi")
+        .args(["--game", "shogi", "shell"])
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
@@ -89,7 +89,7 @@ fn same_piece_destinations_have_explicit_sources_and_illegal_batches_are_atomic(
     // Independent manual geometry: two silvers each have five unobstructed
     // choices; Sente king9i has3. Both4e/6e can move5d without promotion.
     let out = run(
-        "position sfen reduced 8k/9/9/9/3S1S3/9/9/9/K8 b - 1\nlegal\nmove 4e5d\nundo\nmove 6e5d\nposition startpos\nrecord\nmove 7g7f 3c3d 7f7e 7e7d\nrecord\nposition sfen reduced 8k/4P4/9/9/9/9/9/9/K8 b - 1\nrecord\nmove 5b5a\nrecord\n",
+        "position sfen reduced 8k/9/9/9/3S1S3/9/9/9/K8 b - 1\nlegal\nmove 4e5d\nundo\nmove 6e5d\nposition startpos\nrecord print\nmove 7g7f 3c3d 7f7e 7e7d\nrecord print\nposition sfen reduced 8k/4P4/9/9/9/9/9/9/K8 b - 1\nrecord print\nmove 5b5a\nrecord print\n",
     );
     assert!(!out.status.success());
     let s = text(&out);
@@ -113,7 +113,7 @@ fn same_piece_destinations_have_explicit_sources_and_illegal_batches_are_atomic(
 fn declarations_queries_and_resignation_preserve_native_terminal_semantics() {
     let root = "K8/1RB6/1+P+P+P+P+P+P+P+P/9/9/9/9/9/8k b B5P 1";
     let out = run(&format!(
-        "position sfen reduced {root}\nrecord\neligibility sente\nrecord\ndeclare sente\nhistory\nundo\nposition startpos\ndeclare gote\nhistory\nundo\nmove 7g7f 3c3d\nresign sente\nhistory\nundo\nstatus\n"
+        "position sfen reduced {root}\nrecord print\neligibility sente\nrecord print\ndeclare sente\nhistory\nundo\nposition startpos\ndeclare gote\nhistory\nundo\nmove 7g7f 3c3d\nresign sente\nhistory\nundo\nstatus\n"
     ));
     assert!(
         out.status.success(),
@@ -169,7 +169,7 @@ fn complete_canonical_save_load_replay_and_restored_undo() {
     let dir = Dir::new();
     let path = dir.0.join("complete record-é.json");
     let out = run(&format!(
-        "position sfen reduced 8k/9/4+p4/9/4R4/9/9/9/K8 b - 17\nmove 5e5c+\nresign gote\nrecord\nrecord save {}\nposition startpos\nrecord load {}\nrecord\nhistory\nundo\nstatus\nundo\nstatus\n",
+        "position sfen reduced 8k/9/4+p4/9/4R4/9/9/9/K8 b - 17\nmove 5e5c+\nresign gote\nrecord print\nrecord save {}\nposition startpos\nrecord load-file {}\nrecord print\nhistory\nundo\nstatus\nundo\nstatus\n",
         path.display(),
         path.display()
     ));
@@ -230,7 +230,7 @@ fn malformed_unsupported_tampered_oversized_loads_and_failed_saves_preserve_sess
     ] {
         fs::write(&path, &bytes).unwrap();
         let out = run(&format!(
-            "move 7g7f\nrecord\nrecord load {}\nrecord\nrecord save {}\nrecord\n",
+            "move 7g7f\nrecord print\nrecord load-file {}\nrecord print\nrecord save {}\nrecord print\n",
             path.display(),
             path.display()
         ));
@@ -258,7 +258,10 @@ fn malformed_unsupported_tampered_oversized_loads_and_failed_saves_preserve_sess
     );
     assert_ne!(malformed, valid);
     fs::write(&path, malformed).unwrap();
-    let out = run(&format!("record\nrecord load {}\nrecord\n", path.display()));
+    let out = run(&format!(
+        "record print\nrecord load-file {}\nrecord print\n",
+        path.display()
+    ));
     assert!(!out.status.success());
     let s = text(&out);
     let records: Vec<_> = s.lines().filter(|l| l.starts_with("record ")).collect();
@@ -284,7 +287,7 @@ fn short_command_lines_and_complete_large_record_sizes_have_separate_limits() {
     assert!(pretty.len() > 4096);
     fs::write(&path, pretty).unwrap();
     let out = run(&format!(
-        "{}\nrecord load {}\nhistory\nperft 3\nperft 0\ndivide 0\n",
+        "{}\nrecord load-file {}\nhistory\nperft 3\nperft 0\ndivide 0\n",
         "x".repeat(4097),
         path.display()
     ));
@@ -301,7 +304,7 @@ fn short_command_lines_and_complete_large_record_sizes_have_separate_limits() {
 }
 #[test]
 fn standard_diagnostics_remain_position_only_and_preserve_state() {
-    let out = run("record\nperft 0\nperft 1\nperft 2\ndivide 1\nrecord\n");
+    let out = run("record print\nperft 0\nperft 1\nperft 2\ndivide 1\nrecord print\n");
     assert!(out.status.success());
     let s = text(&out);
     assert!(s.contains("perft-local 0 1"));

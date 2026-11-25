@@ -96,9 +96,6 @@ pub struct ExecutionContext {
     pub request_id: u64,
     /// Host-owned session version, independent of board ply and semantic undo.
     pub session_version: u64,
-    /// Positive historical request metadata retained for recorded observations.
-    /// Live authority uses request_id; this does not count child processes.
-    pub process_generation: u64,
     /// Actual canonical native history, policies and root provenance.
     pub game: CanonicalRecord,
     /// Complete deterministic ordinary-search limits (Full uses FULL_SENTINEL).
@@ -139,29 +136,26 @@ impl ExecutionContext {
                 && target.label.len() <= 256
         };
         let ordinary_limits_valid = |analysis: bool| match self.game.game_kind() {
-            // Preserve prior accepted unscored failure observations whose
-            // requests used these generic bounds before search was implemented.
-            // Real execution/result admission separately enforces the native
-            // limits of each game; transport parsing does not advertise work.
-            // Tori searches through the shared core and admits its larger
-            // depth; this bound includes the earlier generic bound.
-            GameKind::Tori => {
-                (1..=crate::TORI_MAX_DEPTH.max(MAX_ANALYSIS_DEPTH)).contains(&self.limits.depth)
-                    && self.limits.nodes <= MAX_ANALYSIS_NODES
-            }
-            GameKind::Chu => {
-                (1..=crate::CHU_MAX_DEPTH.max(MAX_ANALYSIS_DEPTH)).contains(&self.limits.depth)
-                    && self.limits.nodes <= crate::CHU_MAX_NODES.max(MAX_ANALYSIS_NODES)
-            }
-            GameKind::Tenjiku => {
-                (1..=crate::TENJIKU_MAX_DEPTH.max(MAX_ANALYSIS_DEPTH)).contains(&self.limits.depth)
-                    && self.limits.nodes <= crate::TENJIKU_MAX_NODES.max(MAX_ANALYSIS_NODES)
-            }
             GameKind::Chess if analysis => {
                 (1..=MAX_ANALYSIS_DEPTH).contains(&self.limits.depth)
                     && self.limits.nodes <= MAX_ANALYSIS_NODES
             }
             GameKind::Chess => (1..=mshogi_search::search::MAX_DEPTH).contains(&self.limits.depth),
+            GameKind::Tori => mshogi_search::tori::Limits {
+                depth: self.limits.depth,
+                nodes: self.limits.nodes,
+            }
+            .valid(),
+            GameKind::Chu => mshogi_search::chu::Limits {
+                depth: self.limits.depth,
+                nodes: self.limits.nodes,
+            }
+            .valid(),
+            GameKind::Tenjiku => mshogi_search::tenjiku::Limits {
+                depth: self.limits.depth,
+                nodes: self.limits.nodes,
+            }
+            .valid(),
             GameKind::Shogi => mshogi_search::shogi::Limits {
                 depth: self.limits.depth,
                 nodes: self.limits.nodes,
@@ -342,7 +336,6 @@ impl ExecutionObservation {
             purpose: ExecutionPurpose,
             request_id: u64,
             session_version: u64,
-            process_generation: u64,
             #[serde(default)]
             game: Option<Box<serde_json::value::RawValue>>,
             limits: WorkLimits,
@@ -389,7 +382,6 @@ impl ExecutionObservation {
                 purpose: context.purpose,
                 request_id: context.request_id,
                 session_version: context.session_version,
-                process_generation: context.process_generation,
                 game,
                 limits: context.limits,
             },
@@ -409,7 +401,6 @@ impl ExecutionObservation {
     pub fn matches(&self, submitted: &ExecutionContext) -> bool {
         if self.schema_version != OBSERVATION_SCHEMA_VERSION
             || submitted.request_id == 0
-            || submitted.process_generation == 0
             || !submitted.valid_limits()
             || self.context != *submitted
         {
@@ -429,10 +420,9 @@ impl ExecutionObservation {
                 if let ChessResult::Failure { failure } = result {
                     return failure.message.len() <= MAX_STDERR_BYTES;
                 }
-                // Historical observations have no selective metadata and retain
-                // their existing native replay/admission contract. New results
-                // state an explicit bounded continuation depth and must agree
-                // with the complete request work/choice shape before admission.
+                // Search results state an explicit bounded continuation depth and
+                // must agree with the complete request work/choice shape before
+                // admission.
                 let telemetry = match result {
                     ChessResult::Move { telemetry, .. }
                     | ChessResult::Claim { telemetry, .. }
@@ -441,7 +431,6 @@ impl ExecutionObservation {
                     _ => None,
                 };
                 if let Some(t) = telemetry
-                    && t.selective_depth.is_some()
                     && (!t.valid_selective_shape(submitted.limits)
                         || match result {
                             ChessResult::Move { action, .. } => {
@@ -575,14 +564,10 @@ impl ExecutionRequest {
     pub fn valid(&self) -> bool {
         self.protocol == crate::PROTOCOL_VERSION
             && self.context.request_id > 0
-            && self.context.process_generation > 0
             && self.context.valid_limits()
     }
     pub(crate) fn request_id(&self) -> u64 {
         self.context.request_id
-    }
-    pub(crate) fn generation(&self) -> u64 {
-        self.context.process_generation
     }
     pub(crate) fn failure(&self, kind: FailureKind, message: impl ToString) -> ExecutionResponse {
         ExecutionResponse {

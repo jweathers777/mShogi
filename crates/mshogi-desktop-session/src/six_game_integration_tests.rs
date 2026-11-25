@@ -243,7 +243,6 @@ fn seven_profile_new_and_current_load_rings_retire_all_prior_authorities_atomica
         assert_eq!(execution.game.profile(), loaded.profile);
         for old in &retired {
             assert!(execution.request_id > old.execution.request_id);
-            assert!(execution.process_generation > old.execution.process_generation);
         }
         retired.push(Retired {
             snapshot: c.shared_snapshot(),

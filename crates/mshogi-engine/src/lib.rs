@@ -5,7 +5,6 @@
 //! accepting a choice. Cancellation invalidates publication, even after completion.
 
 mod analysis;
-mod observation_identity;
 pub use analysis::*;
 mod bridge;
 mod chu;
@@ -29,7 +28,7 @@ pub use tori::*;
 pub use xiangqi::*;
 
 /// Current internal protocol version.
-pub const PROTOCOL_VERSION: u32 = 5;
+pub const PROTOCOL_VERSION: u32 = 6;
 /// Maximum encoded request line, excluding its newline.
 pub const MAX_REQUEST_BYTES: usize = 1024 * 1024;
 /// Maximum encoded response line, excluding its newline.
@@ -47,7 +46,7 @@ pub struct WorkLimits {
     /// Maximum attempted node visits, including discarded iterations.
     pub nodes: u64,
     /// Optional per-request hard thinking budget, in milliseconds.
-    /// Omission preserves the exact historical deterministic wire encoding.
+    /// Omitted for deterministic fixed work.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_ms: Option<u64>,
 }
@@ -126,9 +125,7 @@ pub struct Telemetry {
     /// Last completed depth; zero means no completed iteration.
     pub completed_depth: u16,
     /// Deepest actually visited board ply, including extensions/quiescence.
-    /// Old observations omit this and retain their nominal-depth PV bound.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub selective_depth: Option<u16>,
+    pub selective_depth: u16,
     /// All attempted node visits, including discarded iterations.
     pub nodes: u64,
     /// Continuation from the completed iteration, potentially ending in a claim.
@@ -137,15 +134,11 @@ pub struct Telemetry {
     pub status: StopReason,
 }
 impl Telemetry {
-    /// Admitted board-ply bound for a continuation. A terminal claim may add
-    /// one command without playing its intended move. Legacy observations retain
-    /// their nominal bound; selective observations must state a finite real bound.
+    /// Admitted board-ply bound for a continuation, absent beyond the native
+    /// path limit. A terminal claim may add one command without playing its
+    /// intended move.
     pub fn variation_depth_bound(&self) -> Option<u16> {
-        match self.selective_depth {
-            Some(depth) if depth <= mshogi_search::search::MAX_DEPTH => Some(depth),
-            Some(_) => None,
-            None => Some(self.completed_depth),
-        }
+        (self.selective_depth <= mshogi_search::search::MAX_DEPTH).then_some(self.selective_depth)
     }
 
     fn valid_selective_shape(&self, limits: WorkLimits) -> bool {
@@ -270,7 +263,7 @@ impl ChessResult {
             failure: EngineFailure { kind, message },
         }
     }
-    pub(crate) fn searched(result: SearchResult, selective_depth: Option<u16>) -> Self {
+    pub(crate) fn searched(result: SearchResult, selective_depth: u16) -> Self {
         let telemetry = Telemetry {
             score: result.score,
             completed_depth: result.completed_depth,

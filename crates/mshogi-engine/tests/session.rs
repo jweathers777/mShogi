@@ -27,7 +27,6 @@ fn request(id: u64, game: &AdjudicatedGame, time_ms: Option<u64>) -> ExecutionRe
             purpose: ExecutionPurpose::EngineTurn {},
             request_id: id,
             session_version: 1,
-            process_generation: id,
             game: CanonicalRecord::chess(game.record()),
             // The depth limit ends each search, so the node counts are exact.
             limits: WorkLimits {

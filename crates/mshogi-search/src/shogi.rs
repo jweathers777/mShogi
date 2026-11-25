@@ -13,18 +13,8 @@ use std::{error::Error, fmt};
 
 /// Classical material and placement evaluation identity.
 pub const EVALUATOR_ID: &str = "mshogi.shogi.material-placement.v1";
-/// Saved full-width evaluator identity.
-pub const LEGACY_EVALUATOR_ID: &str = "mshogi.shogi.material.v1";
 /// Shared alpha-beta search identity.
 pub const SEARCH_ID: &str = "mshogi.shogi.shared-core.v1";
-/// Saved full-width search identity.
-pub const LEGACY_SEARCH_ID: &str = "mshogi.shogi.full-width.v1";
-/// Earlier supported depth.
-pub const LEGACY_MAX_DEPTH: u16 = 4;
-/// Earlier supported node count.
-pub const LEGACY_MAX_NODES: u64 = 20_000;
-/// Earlier terminal score.
-pub const LEGACY_WIN_SCORE: i32 = 1_000_000;
 /// Maximum reported native continuation length.
 pub const MAX_LINE: usize = 8;
 /// Native terminal win, minus command-edge distance (not necessarily checkmate).

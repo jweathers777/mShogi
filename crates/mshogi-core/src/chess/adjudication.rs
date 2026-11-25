@@ -393,7 +393,7 @@ impl AdjudicatedGame {
         }
         Ok(game)
     }
-    /// Recorded semantics/work configuration; legacy constructors select M2.
+    /// Recorded semantics/work configuration; the plain constructors select M2.
     pub const fn adjudication_mode(&self) -> AdjudicationMode {
         self.mode
     }

@@ -15,7 +15,6 @@ fn request() -> ExecutionRequest {
             purpose: ExecutionPurpose::EngineTurn {},
             request_id: 1,
             session_version: 7,
-            process_generation: 3,
             game: CanonicalRecord::chess(AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record()),
             limits: WorkLimits {
                 time_ms: None,
@@ -33,12 +32,12 @@ fn execute(text: &str) -> std::io::Result<ExecutionResponse> {
 }
 
 #[test]
-fn singular_wire_rejects_old_versions_without_interpreting_a_legacy_payload() {
+fn wire_rejects_other_versions_and_shapes() {
     let request = request();
     let text = serde_json::to_string(&request).unwrap();
     let response = execute(&text).unwrap();
     assert!(response.matches(&request));
-    for version in [0, 2, 3, 4, PROTOCOL_VERSION + 1] {
+    for version in [0, PROTOCOL_VERSION - 1, PROTOCOL_VERSION + 1] {
         let mut changed = request.clone();
         changed.protocol = version;
         assert!(!changed.valid());
@@ -54,10 +53,10 @@ fn singular_wire_rejects_old_versions_without_interpreting_a_legacy_payload() {
         ));
         assert!(!failure.matches(&changed));
     }
-    // The former flat v2/v3 request shape is never guessed or translated.
-    let mut old = serde_json::to_value(&request.context).unwrap();
-    old["protocol"] = json!(3);
-    assert!(execute(&old.to_string()).is_err());
+    // A flat request shape is never guessed or translated.
+    let mut flat = serde_json::to_value(&request.context).unwrap();
+    flat["protocol"] = json!(PROTOCOL_VERSION);
+    assert!(execute(&flat.to_string()).is_err());
 }
 
 #[test]
@@ -65,7 +64,7 @@ fn outer_wrapper_context_native_and_observation_reject_duplicates_and_unknowns()
     let request = request();
     let text = serde_json::to_string(&request).unwrap();
     for (needle, replacement) in [
-        ("\"protocol\":5", "\"protocol\":5,\"protocol\":5"),
+        ("\"protocol\":6", "\"protocol\":6,\"protocol\":6"),
         ("\"context\":{", "\"context\":{},\"context\":{"),
         ("\"request_id\":1", "\"request_id\":1,\"request_id\":1"),
         (
@@ -98,7 +97,7 @@ fn outer_wrapper_context_native_and_observation_reject_duplicates_and_unknowns()
     serve_once(Cursor::new(format!("{text}\n")), &mut output).unwrap();
     let encoded = String::from_utf8(output).unwrap();
     for (needle, replacement) in [
-        ("\"protocol\":5", "\"protocol\":5,\"protocol\":5"),
+        ("\"protocol\":6", "\"protocol\":6,\"protocol\":6"),
         ("\"endpoint\":null", "\"endpoint\":null,\"endpoint\":null"),
         ("\"result\":{", "\"result\":{},\"result\":{"),
     ] {
@@ -144,11 +143,7 @@ fn saved_observation_has_semantic_schema_and_no_transport_identity_or_wrapper() 
         foreign.protocol = version;
         assert!(!foreign.matches(&request));
     }
-    for (field, changed) in [
-        ("request_id", 2),
-        ("session_version", 8),
-        ("process_generation", 4),
-    ] {
+    for (field, changed) in [("request_id", 2), ("session_version", 8)] {
         let mut value = serde_json::to_value(&request.context).unwrap();
         value[field] = json!(changed);
         let foreign: ExecutionContext = serde_json::from_value(value).unwrap();

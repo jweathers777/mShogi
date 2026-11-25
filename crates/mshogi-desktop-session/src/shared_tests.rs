@@ -351,15 +351,14 @@ fn exact_analysis_context_retirement_and_same_board_history() {
         CanonicalRecord::shogi(s::GameRecord::from_game(&fresh)),
         record
     );
-    for altered in 0..7 {
+    for altered in 0..6 {
         let mut response = incomplete(first.clone());
         match altered {
             0 => response.context.request_id += 1,
             1 => response.context.session_version += 1,
-            2 => response.context.process_generation += 1,
-            3 => response.context.limits.nodes += 1,
-            4 => response.context.purpose = ExecutionPurpose::EngineTurn {},
-            5 => response.context.game = CanonicalRecord::shogi(s::GameRecord::from_game(&fresh)),
+            2 => response.context.limits.nodes += 1,
+            3 => response.context.purpose = ExecutionPurpose::EngineTurn {},
+            4 => response.context.game = CanonicalRecord::shogi(s::GameRecord::from_game(&fresh)),
             _ => {
                 if let ExecutionPurpose::MoveAnalysis { target } = &mut response.context.purpose {
                     target.selection_id += 1;

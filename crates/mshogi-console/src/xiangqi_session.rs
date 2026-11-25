@@ -296,8 +296,8 @@ impl Session {
             }
             "record" => {
                 use record_io::Operation;
-                match record_io::parse(rest, record_io::LegacyLoad::File)? {
-                    Operation::Print | Operation::LegacyPrint => {
+                match record_io::parse(rest)? {
+                    Operation::Print => {
                         writeln!(out, "record {}", self.record()?.to_json().map_err(error)?)
                             .unwrap();
                     }
@@ -306,7 +306,6 @@ impl Session {
                     }
                     Operation::LoadFile(path) => self.load(&record_io::read(path)?, out)?,
                     Operation::LoadJson(json) => self.load(json, out)?,
-                    Operation::LegacyJson(_) => unreachable!(),
                 }
             }
             "perft" | "divide" => {

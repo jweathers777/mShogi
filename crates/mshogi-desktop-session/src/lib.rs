@@ -502,7 +502,7 @@ impl DesktopController {
                     | "declined"
                     | "compound-played"
                     | "selected-root"
-                    | "unsupported"
+                    | "incomplete"
                     | "hawk-played"
                     | "area-played"
                     | "ranked-jump-played"
@@ -517,7 +517,7 @@ impl DesktopController {
                     },
                 )?;
             }
-            if matches!(scenario, "selected-root" | "unsupported") {
+            if matches!(scenario, "selected-root" | "incomplete") {
                 send(
                     &mut controller,
                     SessionOperation::Inspect { event_index: 0 },
@@ -533,7 +533,7 @@ impl DesktopController {
                 )?;
                 send(&mut controller, SessionOperation::Cancel {})?;
             }
-            if scenario == "unsupported" {
+            if scenario == "incomplete" {
                 let before = controller.shared_snapshot().observations.len();
                 controller.verify_tenjiku_execution(
                     WorkLimits {
@@ -546,7 +546,7 @@ impl DesktopController {
                 let deadline = Instant::now() + std::time::Duration::from_secs(20);
                 while controller.shared_snapshot().observations.len() == before {
                     if Instant::now() >= deadline {
-                        return Err("Tenjiku unsupported observation did not complete".into());
+                        return Err("Tenjiku incomplete observation did not complete".into());
                     }
                     std::thread::sleep(std::time::Duration::from_millis(1));
                 }

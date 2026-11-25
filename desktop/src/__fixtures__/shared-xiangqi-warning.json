@@ -124,83 +124,7 @@
       "decline_draw": false
     },
     "canonical_context_scope": "selected_committed",
-    "selected_canonical": {
-      "envelope_version": 2,
-      "game_kind": "xiangqi",
-      "payload": {
-        "schema_version": 2,
-        "claim_policy": "explicit",
-        "root": {
-          "schema": "mshogi.xiangqi.position.v1",
-          "profile": "mshogi.xiangqi.wxf2018.v1",
-          "edition": "WXF-2018+XIANGQI-P1-2026-10-27",
-          "history": "starts_at_this_position",
-          "origin": "imported_fen",
-          "board": "4R4/5k3/9/9/9/9/9/9/9/3K5",
-          "side": "red",
-          "no_capture_plies": 0,
-          "fullmove_number": 1
-        },
-        "commands": [
-          {
-            "actor": "red",
-            "command": {
-              "kind": "play",
-              "action": "e9f9"
-            }
-          },
-          {
-            "actor": "black",
-            "command": {
-              "kind": "play",
-              "action": "f8e8"
-            }
-          },
-          {
-            "actor": "red",
-            "command": {
-              "kind": "play",
-              "action": "f9e9"
-            }
-          },
-          {
-            "actor": "black",
-            "command": {
-              "kind": "play",
-              "action": "e8f8"
-            }
-          },
-          {
-            "actor": "red",
-            "command": {
-              "kind": "play",
-              "action": "e9f9"
-            }
-          },
-          {
-            "actor": "black",
-            "command": {
-              "kind": "play",
-              "action": "f8e8"
-            }
-          },
-          {
-            "actor": "red",
-            "command": {
-              "kind": "play",
-              "action": "f9e9"
-            }
-          },
-          {
-            "actor": "black",
-            "command": {
-              "kind": "play",
-              "action": "e8f8"
-            }
-          }
-        ]
-      }
-    },
+    "selected_canonical": {"envelope_version":2,"game_kind":"xiangqi","payload":{"schema_version":2,"claim_policy":"explicit","root":{"schema":"mshogi.xiangqi.position.v1","profile":"mshogi.xiangqi.wxf2018.v1","edition":"WXF-2018+XIANGQI-P1-2026-10-27","history":"starts_at_this_position","origin":"imported_fen","board":"4R4/5k3/9/9/9/9/9/9/9/3K5","side":"red","no_capture_plies":0,"fullmove_number":1},"commands":[{"actor":"red","command":{"kind":"play","action":"e9f9"}},{"actor":"black","command":{"kind":"play","action":"f8e8"}},{"actor":"red","command":{"kind":"play","action":"f9e9"}},{"actor":"black","command":{"kind":"play","action":"e8f8"}},{"actor":"red","command":{"kind":"play","action":"e9f9"}},{"actor":"black","command":{"kind":"play","action":"f8e8"}},{"actor":"red","command":{"kind":"play","action":"f9e9"}},{"actor":"black","command":{"kind":"play","action":"e8f8"}}]}},
     "selected_events": [
       {
         "index": 0,
@@ -1039,87 +963,11 @@
   "historical": false,
   "paused": false,
   "close_requires_save": true,
-  "phase": "paused",
+  "phase": "idle",
   "execution_purpose": null,
   "diagnostic": null,
   "declaration_advice": [],
-  "context": {
-    "envelope_version": 2,
-    "game_kind": "xiangqi",
-    "payload": {
-      "schema_version": 2,
-      "claim_policy": "explicit",
-      "root": {
-        "schema": "mshogi.xiangqi.position.v1",
-        "profile": "mshogi.xiangqi.wxf2018.v1",
-        "edition": "WXF-2018+XIANGQI-P1-2026-10-27",
-        "history": "starts_at_this_position",
-        "origin": "imported_fen",
-        "board": "4R4/5k3/9/9/9/9/9/9/9/3K5",
-        "side": "red",
-        "no_capture_plies": 0,
-        "fullmove_number": 1
-      },
-      "commands": [
-        {
-          "actor": "red",
-          "command": {
-            "kind": "play",
-            "action": "e9f9"
-          }
-        },
-        {
-          "actor": "black",
-          "command": {
-            "kind": "play",
-            "action": "f8e8"
-          }
-        },
-        {
-          "actor": "red",
-          "command": {
-            "kind": "play",
-            "action": "f9e9"
-          }
-        },
-        {
-          "actor": "black",
-          "command": {
-            "kind": "play",
-            "action": "e8f8"
-          }
-        },
-        {
-          "actor": "red",
-          "command": {
-            "kind": "play",
-            "action": "e9f9"
-          }
-        },
-        {
-          "actor": "black",
-          "command": {
-            "kind": "play",
-            "action": "f8e8"
-          }
-        },
-        {
-          "actor": "red",
-          "command": {
-            "kind": "play",
-            "action": "f9e9"
-          }
-        },
-        {
-          "actor": "black",
-          "command": {
-            "kind": "play",
-            "action": "e8f8"
-          }
-        }
-      ]
-    }
-  },
+  "context": {"envelope_version":2,"game_kind":"xiangqi","payload":{"schema_version":2,"claim_policy":"explicit","root":{"schema":"mshogi.xiangqi.position.v1","profile":"mshogi.xiangqi.wxf2018.v1","edition":"WXF-2018+XIANGQI-P1-2026-10-27","history":"starts_at_this_position","origin":"imported_fen","board":"4R4/5k3/9/9/9/9/9/9/9/3K5","side":"red","no_capture_plies":0,"fullmove_number":1},"commands":[{"actor":"red","command":{"kind":"play","action":"e9f9"}},{"actor":"black","command":{"kind":"play","action":"f8e8"}},{"actor":"red","command":{"kind":"play","action":"f9e9"}},{"actor":"black","command":{"kind":"play","action":"e8f8"}},{"actor":"red","command":{"kind":"play","action":"e9f9"}},{"actor":"black","command":{"kind":"play","action":"f8e8"}},{"actor":"red","command":{"kind":"play","action":"f9e9"}},{"actor":"black","command":{"kind":"play","action":"e8f8"}}]}},
   "analysis": null,
   "observations": [],
   "search_observations": [],

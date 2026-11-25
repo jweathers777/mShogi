@@ -39,7 +39,6 @@ fn request(g: &x::Game) -> ExecutionContext {
         purpose: ExecutionPurpose::EngineTurn {},
         request_id: 17,
         session_version: 11,
-        process_generation: 7,
         game: CanonicalRecord::xiangqi(x::GameRecord::from_game(g).unwrap()),
         // Measured MSH-97 ordinary limits, independent of exact-proof work.
         limits: WorkLimits {
@@ -214,7 +213,6 @@ fn response_acceptance_requires_every_identity_setting_and_full_native_history()
     for (pointer, value) in [
         ("/request_id", json!(18)),
         ("/session_version", json!(12)),
-        ("/process_generation", json!(8)),
         ("/limits/depth", json!(2)),
         ("/limits/nodes", json!(0)),
         ("/purpose/target/selection_id", json!(4)),
@@ -249,7 +247,7 @@ fn response_acceptance_requires_every_identity_setting_and_full_native_history()
     foreign.result = ExecutionResult::Chess {
         result: ChessResult::Incomplete {
             telemetry: Telemetry {
-                selective_depth: None,
+                selective_depth: 0,
                 score: None,
                 completed_depth: 0,
                 nodes: 0,
@@ -278,7 +276,6 @@ fn malformed_or_wrong_target_context_is_invalid_rather_than_an_unsupported_succe
     let wire = serde_json::to_value(&context).unwrap();
     for (pointer, value) in [
         ("/request_id", json!(0)),
-        ("/process_generation", json!(0)),
         ("/purpose/target/selection_id", json!(0)),
         ("/purpose/target/session_version", json!(0)),
         ("/purpose/target/event_index", json!(8)),
@@ -344,14 +341,7 @@ fn strict_raw_request_envelope_native_and_response_boundaries_preserve_duplicate
         assert!(raw(&bad).is_err(), "{bad}");
     }
     let baseline: Value = serde_json::from_str(&text).unwrap();
-    for key in [
-        "purpose",
-        "request_id",
-        "session_version",
-        "process_generation",
-        "game",
-        "limits",
-    ] {
+    for key in ["purpose", "request_id", "session_version", "game", "limits"] {
         let mut missing = baseline.clone();
         missing.as_object_mut().unwrap().remove(key);
         assert!(raw(&missing.to_string()).is_err(), "missing {key}");

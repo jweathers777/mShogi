@@ -280,7 +280,6 @@
         },
         "request_id": 5,
         "session_version": 5,
-        "process_generation": 5,
         "game": {"envelope_version":2,"game_kind":"chess","payload":{"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"7k/6Q1/5K2/8/8/8/8/8 b - - 0 1","history_origin":"imported_fen","claim_policy":"explicit_only","events":[]}},
         "limits": {
           "depth": 1,
@@ -334,7 +333,6 @@
           },
           "request_id": 5,
           "session_version": 5,
-          "process_generation": 5,
           "game": {"envelope_version":2,"game_kind":"chess","payload":{"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"7k/6Q1/5K2/8/8/8/8/8 b - - 0 1","history_origin":"imported_fen","claim_policy":"explicit_only","events":[]}},
           "limits": {
             "depth": 1,
@@ -439,7 +437,6 @@
         },
         "request_id": 5,
         "session_version": 5,
-        "process_generation": 5,
         "game": {"envelope_version":2,"game_kind":"chess","payload":{"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"7k/6Q1/5K2/8/8/8/8/8 b - - 0 1","history_origin":"imported_fen","claim_policy":"explicit_only","events":[]}},
         "limits": {
           "depth": 1,

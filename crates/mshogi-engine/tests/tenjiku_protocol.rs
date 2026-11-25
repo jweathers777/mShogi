@@ -35,7 +35,6 @@ fn context(g: &t::Game) -> ExecutionContext {
         purpose: ExecutionPurpose::EngineTurn {},
         request_id: 1,
         session_version: 1,
-        process_generation: 1,
         game: CanonicalRecord::tenjiku(t::GameRecord::from_game(g).unwrap()),
         limits: TENJIKU_PLAY_LIMITS,
     }

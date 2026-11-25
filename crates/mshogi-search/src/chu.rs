@@ -15,16 +15,6 @@ use std::{error::Error, fmt};
 pub const EVALUATOR_ID: &str = "mshogi.chu.material-placement.v1";
 /// Shared alpha-beta search identity.
 pub const SEARCH_ID: &str = "mshogi.chu.shared-core.v1";
-/// Historical material identity for saved observations.
-pub const LEGACY_EVALUATOR_ID: &str = "mshogi.chu.material.v1";
-/// Historical search identity for saved observations.
-pub const LEGACY_SEARCH_ID: &str = "mshogi.chu.full-width.v1";
-/// Historical maximum depth.
-pub const LEGACY_MAX_DEPTH: u16 = 2;
-/// Historical maximum work.
-pub const LEGACY_MAX_NODES: u64 = 2_000;
-/// Historical terminal score.
-pub const LEGACY_WIN_SCORE: i32 = 1_000_000;
 /// Native terminal win minus board-action distance; not specifically mate.
 pub const WIN_SCORE: i32 = alphabeta::MATE_SCORE;
 /// Maximum nominal depth.

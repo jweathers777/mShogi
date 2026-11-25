@@ -31,7 +31,6 @@ fn measure(
             purpose: ExecutionPurpose::EngineTurn {},
             request_id: 1,
             session_version: 1,
-            process_generation: 1,
             game: record,
             limits: WorkLimits {
                 depth: 1,

@@ -1699,7 +1699,6 @@
         },
         "request_id": 5,
         "session_version": 4,
-        "process_generation": 5,
         "game": {"envelope_version":2,"game_kind":"chu","payload":{"profile":"mshogi.chu.jcsa2019.v1","edition":"JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02","schema_version":3,"root":{"state":{"board":[{"side":"gote","base":"K","promoted":false},{"side":"gote","base":"P","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"side":"gote","base":"P","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,{"side":"sente","base":"Ln","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"side":"sente","base":"K","promoted":false},null,null,null,null,null,null,null,null,null,{"side":"sente","base":"P","promoted":false},null],"side":"sente","root":{"kind":"diagram","source":null,"declared_completed_plies":0},"accepted_plies":0},"protection":{"owner":null,"squares":[]}},"events":[]}},
         "limits": {
           "depth": 1,
@@ -1727,7 +1726,7 @@
             "evaluator_id": "mshogi.chu.material-placement.v1",
             "search_id": "mshogi.chu.shared-core.v1",
             "perspective": "sente",
-            "score": 2051,
+            "score": 2437,
             "completed_depth": 1,
             "nodes": 38,
             "principal_variation": [
@@ -1774,7 +1773,6 @@
           },
           "request_id": 5,
           "session_version": 4,
-          "process_generation": 5,
           "game": {"envelope_version":2,"game_kind":"chu","payload":{"profile":"mshogi.chu.jcsa2019.v1","edition":"JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02","schema_version":3,"root":{"state":{"board":[{"side":"gote","base":"K","promoted":false},{"side":"gote","base":"P","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"side":"gote","base":"P","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,{"side":"sente","base":"Ln","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"side":"sente","base":"K","promoted":false},null,null,null,null,null,null,null,null,null,{"side":"sente","base":"P","promoted":false},null],"side":"sente","root":{"kind":"diagram","source":null,"declared_completed_plies":0},"accepted_plies":0},"protection":{"owner":null,"squares":[]}},"events":[]}},
           "limits": {
             "depth": 1,
@@ -1802,7 +1800,7 @@
               "evaluator_id": "mshogi.chu.material-placement.v1",
               "search_id": "mshogi.chu.shared-core.v1",
               "perspective": "sente",
-              "score": 2051,
+              "score": 2437,
               "completed_depth": 1,
               "nodes": 38,
               "principal_variation": [
@@ -1837,7 +1835,7 @@
       "board_ply": 0,
       "perspective": "Sente",
       "engine": "mShogi",
-      "score": "+20.51 Pawns",
+      "score": "+24.37 Pawns",
       "completed_depth": 1,
       "nodes": 38,
       "variation": [

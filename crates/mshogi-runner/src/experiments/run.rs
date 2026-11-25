@@ -121,7 +121,6 @@ pub fn run_with_stop(
                     purpose: ExecutionPurpose::EngineTurn {},
                     request_id: id,
                     session_version: id,
-                    process_generation: id,
                     game: before.record.clone(),
                     limits: clock_work(
                         config.players[player].work(before.record.profile())?,

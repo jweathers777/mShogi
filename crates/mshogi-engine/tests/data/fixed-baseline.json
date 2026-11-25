@@ -7,50 +7,50 @@
   },
   {
     "action": {
-      "action": "5i6h",
+      "action": "5i5h",
       "kind": "move"
-    },
-    "nodes": 121,
-    "profile": "mshogi.shogi.csa36.v1",
-    "score": 10
-  },
-  {
-    "action": {
-      "action": "a3a4",
-      "kind": "move"
-    },
-    "nodes": 313,
-    "profile": "mshogi.xiangqi.wxf2018.v1",
-    "score": 10
-  },
-  {
-    "action": {
-      "from": "3d",
-      "kind": "move",
-      "result_face": "swallow",
-      "to": "3c"
     },
     "nodes": 125,
+    "profile": "mshogi.shogi.csa36.v1",
+    "score": 0
+  },
+  {
+    "action": {
+      "action": "b0c2",
+      "kind": "move"
+    },
+    "nodes": 787,
+    "profile": "mshogi.xiangqi.wxf2018.v1",
+    "score": 0
+  },
+  {
+    "action": {
+      "from": "4g",
+      "kind": "move",
+      "result_face": "phoenix",
+      "to": "3f"
+    },
+    "nodes": 358,
     "profile": "mshogi.tori.modern.v1",
-    "score": 10
+    "score": 8
   },
   {
     "action": {
       "from": [
-        7,
-        10
+        10,
+        12
       ],
       "promote": false,
       "route": [
         [
-          7,
-          8
+          11,
+          11
         ]
       ]
     },
-    "nodes": 173,
+    "nodes": 149,
     "profile": "mshogi.chu.jcsa2019.v1",
-    "score": 10
+    "score": 0
   },
   {
     "action": {

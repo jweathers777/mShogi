@@ -106,7 +106,8 @@ def report_bytes(data):
 def audit_report(report, config, m, seed):
     p = m['protocol']
     require(report['config'] == config and config['seed'] == seed, 'wrong effective pair config')
-    require(config['clock'] == {'base_ms': p['base_ms'], 'increment_ms': p['increment_ms']} and
+    require(config['clock'] == {'base_ms': p['base_ms'], 'increment_ms': p['increment_ms'],
+                                'allocation': 'hard'} and
             config['max_steps'] == MAX_STEPS and config['wall_budget_ms'] == p['pair_ms'], 'wrong clock/pair bound')
     require(config['rounds'] == 1 and len(config['openings']) == 1 and len(config['players']) == 2,
             'expected one native opening pair')

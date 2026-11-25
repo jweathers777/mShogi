@@ -15,18 +15,8 @@ use std::{error::Error, fmt};
 
 /// Untrained material and soldier advancement, independent of WXF adjudication.
 pub const EVALUATOR_ID: &str = "mshogi.xiangqi.material-placement.v1";
-/// Historical evaluation identity.
-pub const LEGACY_EVALUATOR_ID: &str = "mshogi.xiangqi.material-advance.v1";
 /// Shared alpha-beta search identity.
 pub const SEARCH_ID: &str = "mshogi.xiangqi.shared-core.v1";
-/// Historical full-width identity.
-pub const LEGACY_SEARCH_ID: &str = "mshogi.xiangqi.full-width.v1";
-/// Historical maximum depth.
-pub const LEGACY_MAX_DEPTH: u16 = 3;
-/// Historical maximum visits.
-pub const LEGACY_MAX_NODES: u64 = 512;
-/// Historical terminal score.
-pub const LEGACY_WIN_SCORE: i32 = 1_000_000;
 /// Maximum reported native continuation length.
 pub const MAX_LINE: usize = 8;
 /// Native terminal win minus command-edge distance; not necessarily checkmate.

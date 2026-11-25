@@ -97,8 +97,8 @@ There is one execution resource. Starting/replacing analysis retires engine-turn
 work and pauses play; Cancel retires publication without a move/outcome; Resume
 retires analysis before live work. Every accepted result equals the complete
 pending request: native root/history/profile, purpose, request ID, session version,
-process generation, work limits and historical target/selection. Request and
-process-generation counters increase across chess/shogi/chess. Analysis only
+work limits and historical target/selection. Request counters increase across
+chess/shogi/chess. Analysis only
 records observations and cannot pass through native move/declaration admission.
 Engine-turn choices are separately admitted by the native game. Conclusions,
 incomplete work, process failures, and rejected choices remain distinct. Retry

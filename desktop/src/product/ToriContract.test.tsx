@@ -23,8 +23,8 @@ import historyJson from "../__fixtures__/shared-tori-selected-root.json";
 import resignedJson from "../__fixtures__/shared-tori-resigned.json";
 import repetitionJson from "../__fixtures__/shared-tori-repetition.json";
 import prefixJson from "../__fixtures__/shared-tori-repetition-prefix.json";
-import pendingJson from "../__fixtures__/shared-tori-pending-unsupported.json";
-import unsupportedJson from "../__fixtures__/shared-tori-unsupported.json";
+import pendingJson from "../__fixtures__/shared-tori-pending-incomplete.json";
+import incompleteJson from "../__fixtures__/shared-tori-incomplete.json";
 import analysisJson from "../__fixtures__/shared-tori-analysis-complete.json";
 import resourceJson from "../__fixtures__/shared-tori-resource.json";
 import inspectionJson from "../__fixtures__/shared-tori-inspections.json";
@@ -119,9 +119,7 @@ it("shows actual pending native engine work and cancellation without inventing t
   expect(screen.queryByText(/Completed depth/)).toBeNull();
 });
 it("shows real bounded incomplete work without a fallback, score or game outcome", () => {
-  // Historical fixture filename retained; payload now comes from real Tori
-  // depth1/nodes1 work, not the old unsupported-engine contract.
-  const native = unsupportedJson as unknown as ToriSnapshot; app(native);
+  const native = incompleteJson as unknown as ToriSnapshot; app(native);
   expect(native.phase).toBe("incomplete");
   expect(screen.getByText("Search incomplete")).toBeTruthy();
   expect(screen.getByText("No uncompleted move was played.")).toBeTruthy();
@@ -237,8 +235,8 @@ it("distinguishes an available idle Tori engine from paused play without fabrica
 });
 
 it("describes retained historical engine work honestly after rewind or reopening", () => {
-  const old = unsupportedJson as unknown as ToriSnapshot;
-  app({ ...old, search_observations: old.search_observations.map(view => ({ ...view, historical: true, selected: false })) });
+  const incomplete = incompleteJson as unknown as ToriSnapshot;
+  app({ ...incomplete, search_observations: incomplete.search_observations.map(view => ({ ...view, historical: true, selected: false })) });
   expect(screen.getByText('Earlier engine searches are retained as historical observations.')).toBeTruthy();
   expect(screen.queryByText('No engine search has completed in this game.')).toBeNull();
   expect(screen.queryByText(/Last engine turn/)).toBeNull();

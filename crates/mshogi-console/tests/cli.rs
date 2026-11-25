@@ -313,8 +313,10 @@ fn help_lists_every_shell_command() {
         "move <action>...",
         "undo [n]",
         "history",
-        "record",
-        "record load <JSON>",
+        "record print",
+        "record save <path>",
+        "record load-file <path>",
+        "record load-json <JSON>",
         "status",
         "perft <depth>",
         "divide <depth>",
@@ -437,8 +439,11 @@ fn history_is_rules_owned_and_import_resets_known_repetitions() {
 
 #[test]
 fn exported_record_restores_position_history_policy_and_undo_in_a_fresh_process() {
-    use mshogi_core::chess::{ClaimPolicy, Game};
-    let first = shell(b"move g1f3 g8f6 f3g1 f6g8\nrecord\n");
+    use mshogi_core::{
+        chess::{ClaimPolicy, Game},
+        native::CanonicalRecord,
+    };
+    let first = shell(b"move g1f3 g8f6 f3g1 f6g8\nrecord print\n");
     assert!(first.status.success());
     let stdout = text(first.stdout);
     let json = stdout
@@ -446,18 +451,21 @@ fn exported_record_restores_position_history_policy_and_undo_in_a_fresh_process(
         .find_map(|s| s.strip_prefix("record "))
         .unwrap();
     let second =
-        shell(format!("move e2e4\nrecord load {json}\nhistory\nundo 4\nhistory\n").as_bytes());
+        shell(format!("move e2e4\nrecord load-json {json}\nhistory\nundo 4\nhistory\n").as_bytes());
     assert!(second.status.success(), "{}", text(second.stderr));
     let out = text(second.stdout);
     assert!(out.contains("history 4 origin standard_start policy explicit_only repetitions 2"));
     assert!(out.ends_with("history 0 origin standard_start policy explicit_only repetitions 1\n"));
     // Import metadata and policy survive too; the diagnostic shell stores policy
     // without acting as the unattended runner that executes claims.
-    let imported = Game::from_fen("7k/8/8/8/8/8/8/KR6 w - - 100 77", ClaimPolicy::AutoClaim)
-        .unwrap()
-        .record()
-        .to_json();
-    let output = shell(format!("record load {imported}\nhistory\n").as_bytes());
+    let imported = CanonicalRecord::chess(
+        Game::from_fen("7k/8/8/8/8/8/8/KR6 w - - 100 77", ClaimPolicy::AutoClaim)
+            .unwrap()
+            .record(),
+    )
+    .to_json()
+    .unwrap();
+    let output = shell(format!("record load-json {imported}\nhistory\n").as_bytes());
     assert!(output.status.success());
     assert_eq!(
         text(output.stdout),
@@ -467,7 +475,7 @@ fn exported_record_restores_position_history_policy_and_undo_in_a_fresh_process(
 
 #[test]
 fn invalid_or_observation_bearing_records_never_replace_the_diagnostic_game() {
-    use mshogi_core::chess::*;
+    use mshogi_core::{chess::*, native::CanonicalRecord};
     let mut record = Game::new(ClaimPolicy::ExplicitOnly).record();
     record.push_event(RecordEvent {
         ply: 0,
@@ -476,7 +484,8 @@ fn invalid_or_observation_bearing_records_never_replace_the_diagnostic_game() {
             command: RecordedCommand::OfferDraw,
         }),
     });
-    let observation = record.to_json();
+    let envelope = |record| CanonicalRecord::chess(record).to_json().unwrap();
+    let observation = envelope(record);
     let mut invalid = Game::new(ClaimPolicy::ExplicitOnly).record();
     invalid.push_event(RecordEvent {
         ply: 0,
@@ -486,7 +495,7 @@ fn invalid_or_observation_bearing_records_never_replace_the_diagnostic_game() {
         ply: 1,
         kind: RecordEventKind::Move("e7e4".parse().unwrap()),
     });
-    let output=shell(format!("move g1f3 g8f6 f3g1 f6g8\nrecord load {{}}\nrecord load {}\nrecord load {observation}\nhistory\nundo 4\nhistory\n",invalid.to_json()).as_bytes());
+    let output=shell(format!("move g1f3 g8f6 f3g1 f6g8\nrecord load-json {{}}\nrecord load-json {}\nrecord load-json {observation}\nhistory\nundo 4\nhistory\n",envelope(invalid)).as_bytes());
     assert_eq!(output.status.code(), Some(1));
     let err = text(output.stderr);
     assert_eq!(err.lines().count(), 3);
@@ -499,7 +508,7 @@ fn invalid_or_observation_bearing_records_never_replace_the_diagnostic_game() {
 
 #[test]
 fn diagnostic_import_cannot_silently_drop_full_adjudication_mode() {
-    use mshogi_core::chess::*;
+    use mshogi_core::{chess::*, native::CanonicalRecord};
     let game = AdjudicatedGame::from_fen_with_mode(
         STANDARD_START_FEN,
         ClaimPolicy::ExplicitOnly,
@@ -513,8 +522,8 @@ fn diagnostic_import_cannot_silently_drop_full_adjudication_mode() {
     .unwrap();
     let output = shell(
         format!(
-            "move e2e4\nrecord load {}\nhistory\n",
-            game.record().to_json()
+            "move e2e4\nrecord load-json {}\nhistory\n",
+            CanonicalRecord::chess(game.record()).to_json().unwrap()
         )
         .as_bytes(),
     );

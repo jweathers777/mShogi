@@ -10,7 +10,6 @@ fn request(game: &AdjudicatedGame) -> ExecutionContext {
         purpose: ExecutionPurpose::EngineTurn {},
         request_id: 1,
         session_version: 7,
-        process_generation: 3,
         game: CanonicalRecord::chess(game.record()),
         limits: WorkLimits {
             time_ms: None,
@@ -289,7 +288,6 @@ fn acceptance_checks_every_execution_and_selection_field() {
     for (pointer, value) in [
         ("/request_id", json!(2)),
         ("/session_version", json!(8)),
-        ("/process_generation", json!(4)),
         ("/limits/nodes", json!(99)),
         ("/purpose/target/selection_id", json!(2)),
         ("/purpose/target/event_index", json!(1)),
@@ -319,13 +317,12 @@ fn acceptance_checks_every_execution_and_selection_field() {
             }
         }
     ));
-    for change in 0..5 {
+    for change in 0..4 {
         let mut invalid = context.clone();
         match change {
             0 => invalid.request_id = 0,
-            1 => invalid.process_generation = 0,
-            2 => invalid.limits.depth = MAX_ANALYSIS_DEPTH + 1,
-            3 => invalid.limits.nodes = MAX_ANALYSIS_NODES + 1,
+            1 => invalid.limits.depth = MAX_ANALYSIS_DEPTH + 1,
+            2 => invalid.limits.nodes = MAX_ANALYSIS_NODES + 1,
             _ => {
                 if let ExecutionPurpose::MoveAnalysis { target } = &mut invalid.purpose {
                     target.event_index = 1

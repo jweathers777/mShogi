@@ -22,7 +22,6 @@ const HELP: &str = "Untimed shogi diagnostic console (not USI protocol):
   record save <path>                  Atomic new-file save; never overwrite
   record load-file <path>             Bounded strict load/replay before replacement
   record load-json <JSON>             Strict inline canonical envelope
-  record | record load <path>         Compatibility aliases for print/load-file
   perft <0..2> | divide <1..2>         Position-only local legality; ignores outcomes
   help | quit
 USI actions: 7g7f, 5c5b+, P*5e. Readable long notation: S:Pawn[7g->7f;keep],
@@ -256,14 +255,13 @@ impl Session {
             }
             "record" => {
                 use record_io::Operation;
-                match record_io::parse(rest, record_io::LegacyLoad::File)? {
-                    Operation::Print | Operation::LegacyPrint => {
+                match record_io::parse(rest)? {
+                    Operation::Print => {
                         writeln!(out, "record {}", self.record_json()?).unwrap();
                     }
                     Operation::Save(path) => record_io::save(path, &self.record_json()?, out)?,
                     Operation::LoadFile(path) => self.restore_json(&record_io::read(path)?, out)?,
                     Operation::LoadJson(json) => self.restore_json(json, out)?,
-                    Operation::LegacyJson(_) => unreachable!("shogi legacy load is a file"),
                 }
             }
             "perft" | "divide" => {

@@ -93,7 +93,7 @@ fn arguments(args: impl Iterator<Item = std::ffi::OsString>) -> Result<Invocatio
             return Err("unsupported extra arguments".into());
         }
     }
-    let mut mode = mode.unwrap_or("--help".into());
+    let mode = mode.unwrap_or("--help".into());
     if mode == "internal-search" && (selected.is_some() || profile.is_some()) {
         return Err("--game is incompatible with internal-search: its structured request supplies the game identity".into());
     }
@@ -101,12 +101,6 @@ fn arguments(args: impl Iterator<Item = std::ffi::OsString>) -> Result<Invocatio
         if selected.is_some_and(|g| g != Game::Shogi) {
             return Err("USI supports shogi only; explicit game selection conflicts".into());
         }
-        Game::Shogi
-    } else if mode == "shogi" {
-        if selected.is_some_and(|g| g != Game::Shogi) {
-            return Err("shogi alias conflicts with selected game".into());
-        }
-        mode = "shell".into();
         Game::Shogi
     } else {
         selected.unwrap_or(Game::Chess)
@@ -149,7 +143,7 @@ fn help(game: Game) {
     let game = game.name();
     println!("mShogi headless console — selected game: {game}
 
-Usage: mshogi [--game chess|shogi|xiangqi|tori|chu|tenjiku] [--profile adams|muller] [--help | --version | profile | shell | shogi | uci | usi | internal-search]
+Usage: mshogi [--game chess|shogi|xiangqi|tori|chu|tenjiku] [--profile adams|muller] [--help | --version | profile | shell | uci | usi | internal-search]
 
   --game <game>  Select chess, shogi, xiangqi, tori, chu or tenjiku (default chess)
   --profile     Required Tenjiku whole profile: adams or muller (no default)
@@ -157,7 +151,6 @@ Usage: mshogi [--game chess|shogi|xiangqi|tori|chu|tenjiku] [--profile adams|mul
   --version, -V  Show the application version
   profile        Show the selected native rules profile and actual coverage
   shell          Read {game} commands from standard input, one per line
-  shogi          Compatibility alias for --game shogi shell
   uci            Selected Chess UCI or Xiangqi UCI0-9 adapter (rejects shogi)
   usi            Untimed bounded USI shogi adapter (bare usi selects shogi)
   internal-search  Structured native search, one request line per search until end of input; request supplies game, no --game

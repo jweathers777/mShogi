@@ -21,9 +21,8 @@ Verification-only capacity and terminal-state fixtures also use the actual gener
 cargo run --locked -p mshogi-desktop-session --features desktop-verification --example write_frontend_fixtures -- desktop/src/__fixtures__
 ```
 
-MSH-116 regenerates durable observations under schema1 without a transport wrapper.
-The verification generator also refreshes native Take back capabilities; those
-are existing native behavior, not a new frontend rule or feature.
+Observations use the current durable observation schema without a transport
+wrapper.
 
 Only frontend tests import these JSON files. Vite production imports do not
 reference them, and the native fixture generator is never a bundled sidecar.

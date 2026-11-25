@@ -372,7 +372,12 @@ fn execute_chess(context: &ExecutionContext, session: &mut Session) -> ChessResu
     loop {
         if let Some(completion) = coordinator.poll() {
             return match completion.result() {
-                Ok(result) => ChessResult::searched(result.clone(), completion.selective_depth()),
+                Ok(result) => ChessResult::searched(
+                    result.clone(),
+                    completion
+                        .selective_depth()
+                        .expect("a successful completion records its selective depth"),
+                ),
                 Err(error) => ChessResult::failure(FailureKind::Search, error),
             };
         }

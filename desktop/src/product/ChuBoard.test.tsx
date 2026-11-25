@@ -27,7 +27,7 @@ it("uses shared player/board/footer slots, full native geometry, traditional fac
   expect(container.querySelector('[data-game-slot="lower-player"]')).toBeTruthy();
   expect(container.querySelector(".shogi-hand,[data-development-contract]")).toBeNull();
   expect(square("6e").querySelector(".chu-piece")?.getAttribute("transform")).toBe("rotate(180 50 50)");
-  const flipped = { ...props.snapshot, document: { ...props.snapshot.document, settings: { ...props.snapshot.document.settings, settings: { orientation: "gote" as const } } } };
+  const flipped = { ...props.snapshot, document: { ...props.snapshot.document, settings: { ...props.snapshot.document.settings, settings: { ...props.snapshot.document.settings.settings, orientation: "gote" as const } } } };
   rerender(<ChuBoard {...props} snapshot={flipped} />);
   expect(container.querySelector("svg [role=button]")?.getAttribute("aria-label")).toMatch(/^1l,/);
   expect(square("6e").querySelector(".chu-piece")?.getAttribute("transform")).toBeNull();
@@ -122,7 +122,7 @@ it("puts legible coordinate labels outside the Chu grid while retaining native r
   const center = (key: string) => { const i = displayed.indexOf(key);return `${90 + i % 12 * 100},${90 + Math.floor(i / 12) * 100}`; };
   expect(container.querySelector(".native-selected-route polyline")?.getAttribute("points")).toBe(["6f", "7e"].map(center).join(" "));
   expect(props.onPlay).not.toHaveBeenCalled();
-  const flipped = { ...routes, document: { ...routes.document, settings: { ...routes.document.settings, settings: { orientation: "gote" as const } } } };
+  const flipped = { ...routes, document: { ...routes.document, settings: { ...routes.document.settings, settings: { ...routes.document.settings.settings, orientation: "gote" as const } } } };
   rerender(<ChuBoard {...props} snapshot={flipped} />);
   expect(container.querySelector('[data-coordinate-axis="file"]')?.textContent).toBe("1");
   expect(container.querySelector('[data-coordinate-axis="rank"]')?.textContent).toBe("l");

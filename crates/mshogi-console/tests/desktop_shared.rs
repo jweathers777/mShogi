@@ -99,7 +99,6 @@ fn real_chess_shogi_chess_execution_uses_one_supervisor_and_fresh_ids() {
     let chess = analyze(&mut c);
     let fresh = chess.chess.unwrap().analysis.context.unwrap();
     assert!(fresh.request_id > last.context.request_id);
-    assert!(fresh.process_generation > last.context.process_generation);
     assert!(!c.accept_shared(ExecutionResponse {
         protocol: PROTOCOL_VERSION,
         observation: last

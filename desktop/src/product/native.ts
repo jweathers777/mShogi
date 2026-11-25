@@ -78,11 +78,11 @@ export interface ChessPresentation {
 export type ChessSnapshot = GameSnapshotBase & {
   game: "chess";
   chess: ChessPresentation;
-  document: GameSnapshotBase["document"] & { settings: { game_kind: "chess"; settings: { play_mode?: PlayMode; orientation: Color; analysis_defaults: AnalysisOperation } } };
+  document: GameSnapshotBase["document"] & { settings: { game_kind: "chess"; settings: { play_mode: PlayMode; orientation: Color; analysis_defaults: AnalysisOperation } } };
 };
 export type ShogiSnapshot = GameSnapshotBase & {
   game: "shogi";
-  document: GameSnapshotBase["document"] & { settings: { game_kind: "shogi"; settings: { play_mode?: PlayMode; orientation: "sente" | "gote"; analysis_defaults: { depth: number; nodes: number } } } };
+  document: GameSnapshotBase["document"] & { settings: { game_kind: "shogi"; settings: { play_mode: PlayMode; orientation: "sente" | "gote"; analysis_defaults: { depth: number; nodes: number } } } };
 };
 // Preserve the authoritative flat Xiangqi settings encoding; no native/archive migration.
 export type XiangqiSnapshot = GameSnapshotBase & {
@@ -99,7 +99,7 @@ export type XiangqiSnapshot = GameSnapshotBase & {
     no_win_assessment: { kind: "proven_neither_can_win" | "proven_natural_win" | "unknown_exact_unavailable" | "unknown_exact_incomplete" | "failure"; winner?: "red" | "black"; witness?: string[]; reason?: string };
     exact_observations: XiangqiExactEvidence[];
   };
-  document: GameSnapshotBase["document"] & { settings: { game_kind: "xiangqi"; play_mode?: PlayMode; orientation: "red" | "black"; analysis_defaults: { depth: number; nodes: number } } };
+  document: GameSnapshotBase["document"] & { settings: { game_kind: "xiangqi"; play_mode: PlayMode; orientation: "red" | "black"; analysis_defaults: { depth: number; nodes: number } } };
 };
 export type ToriSide = "sente" | "gote";
 export type ToriFace = "phoenix" | "falcon" | "eagle" | "crane" | "pheasant" | "left_quail" | "right_quail" | "swallow" | "goose";
@@ -114,7 +114,7 @@ export type ToriSnapshot = GameSnapshotBase & {
   game: "tori";
   tori: { root_kind: "standard" | "diagram" | "imported"; root_source: string | null; declared_root_plies: string;
     earlier_history_unknown: boolean; historical_reachability_proven: boolean; selected: ToriHistory; live: ToriHistory };
-  document: GameSnapshotBase["document"] & { settings: { game_kind: "tori"; settings: { play_mode?: PlayMode; orientation: ToriSide } } };
+  document: GameSnapshotBase["document"] & { settings: { game_kind: "tori"; settings: { play_mode: PlayMode; orientation: ToriSide } } };
 };
 // Real native Chu session used by the ordinary fifth-game product.
 export interface ChuHistory {
@@ -130,7 +130,7 @@ export type ChuAction = { from: ChuSquare; route: ChuSquare[]; promote: boolean 
 export type ChuSnapshot = GameSnapshotBase & {
   game: "chu";
   chu: { root: unknown; declared_root_plies: string; earlier_history_unknown: boolean; historical_reachability_proven: boolean; selected: ChuHistory; live: ChuHistory; execution_supported: boolean };
-  document: GameSnapshotBase["document"] & { settings: { game_kind: "chu"; settings: { play_mode?: PlayMode; orientation: ToriSide } } };
+  document: GameSnapshotBase["document"] & { settings: { game_kind: "chu"; settings: { play_mode: PlayMode; orientation: ToriSide } } };
 };
 export type TenjikuAction = { kind: "travel"; from: ChuSquare; route: ChuSquare[]; promote: boolean }
   | { kind: "igui"; from: ChuSquare; route: []; promote: false; target: ChuSquare };
@@ -150,7 +150,7 @@ export type TenjikuSnapshot = GameSnapshotBase & {
   tenjiku: { profile: TenjikuProfile; edition: string; root: unknown; declared_root_plies: string;
     earlier_history_unknown: boolean; historical_reachability_proven: boolean;
     selected: TenjikuHistory; live: TenjikuHistory; execution_supported: boolean };
-  document: GameSnapshotBase["document"] & { settings: { game_kind: "tenjiku"; settings: { play_mode?: PlayMode; orientation: ToriSide } } };
+  document: GameSnapshotBase["document"] & { settings: { game_kind: "tenjiku"; settings: { play_mode: PlayMode; orientation: ToriSide } } };
 };
 export type GameSnapshot = ChessSnapshot | ShogiSnapshot | XiangqiSnapshot | ToriSnapshot | ChuSnapshot | TenjikuSnapshot;
 export interface Observation {
@@ -159,21 +159,21 @@ export interface Observation {
 }
 export type Operation =
   | { kind: "tenjiku"; actor: ToriSide; command: { kind: "play"; action: TenjikuAction } | { kind: "resign" | "offer_draw" | "accept_draw" | "decline_draw" } }
-  | { kind: "tenjiku_preferences"; settings: { play_mode?: PlayMode; orientation: ToriSide } }
+  | { kind: "tenjiku_preferences"; settings: { play_mode: PlayMode; orientation: ToriSide } }
   | { kind: "chu"; actor: ToriSide; command: { kind: "play"; action: ChuAction } | { kind: "resign" | "offer_draw" | "accept_draw" | "decline_draw" } }
-  | { kind: "chu_preferences"; settings: { play_mode?: PlayMode; orientation: ToriSide } }
+  | { kind: "chu_preferences"; settings: { play_mode: PlayMode; orientation: ToriSide } }
   | { kind: "tori"; actor: ToriSide; command: { kind: "play"; action: ToriAction } | { kind: "resign" | "agree_draw" | "declare_impasse" } }
-  | { kind: "tori_preferences"; settings: { play_mode?: PlayMode; orientation: ToriSide } }
+  | { kind: "tori_preferences"; settings: { play_mode: PlayMode; orientation: ToriSide } }
   | { kind: "chess_play"; action: string }
   | { kind: "chess_claim"; claim: Claim }
   | { kind: "chess_preferences"; orientation: Color; analysis_defaults: AnalysisOperation }
   | { kind: "xiangqi"; command: { kind: "play"; action: string } | { kind: "resign" | "offer_draw" | "accept_draw" | "decline_draw" | "claim_natural_count" } }
-  | { kind: "xiangqi_preferences"; settings: { play_mode?: PlayMode; orientation: "red" | "black"; analysis_defaults: { depth: number; nodes: number } } }
+  | { kind: "xiangqi_preferences"; settings: { play_mode: PlayMode; orientation: "red" | "black"; analysis_defaults: { depth: number; nodes: number } } }
   | { kind: "play"; action: string }
   | { kind: "resume" | "retry" | "cancel" | "take_back" | "undo" | "return_live" | "resign" | "declare" }
   | { kind: "inspect"; event_index: number }
   | { kind: "analyze"; operation: AnalysisOperation }
-  | { kind: "shogi_preferences"; settings: { play_mode?: PlayMode; orientation: string; analysis_defaults: { depth: number; nodes: number } } };
+  | { kind: "shogi_preferences"; settings: { play_mode: PlayMode; orientation: string; analysis_defaults: { depth: number; nodes: number } } };
 
 // Existing native saved-report projection, not a frontend proof validator or
 // execution request. Exact source/provenance remains intact in About diagnostics.

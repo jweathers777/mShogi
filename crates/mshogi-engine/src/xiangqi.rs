@@ -1,5 +1,4 @@
 //! Actual native Xiangqi ordinary-search results, distinct from exact proof operations.
-use crate::observation_identity::{Identity, Profile, SearchKind};
 use crate::{ExecutionContext, ExecutionPurpose};
 use mshogi_core::{
     native::CanonicalRecord,
@@ -19,12 +18,6 @@ pub const XIANGQI_PLAY_LIMITS: crate::WorkLimits = crate::WorkLimits {
 pub const XIANGQI_MAX_DEPTH: u16 = search::MAX_DEPTH;
 /// Largest supported ordinary node budget.
 pub const XIANGQI_MAX_NODES: u64 = search::MAX_NODES;
-/// Engine-turn limits of saved full-width observations.
-pub const XIANGQI_LEGACY_PLAY_LIMITS: crate::WorkLimits = crate::WorkLimits {
-    time_ms: None,
-    depth: 1,
-    nodes: 128,
-};
 
 /// Native complete board choice versus formal count claim.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
@@ -76,7 +69,7 @@ pub enum XiangqiStop {
 pub struct XiangqiTelemetry {
     /// Versioned classical evaluation configuration.
     pub evaluator_id: String,
-    /// Versioned search algorithm, including historical observations.
+    /// Versioned search algorithm.
     pub search_id: String,
     /// Native analyzed root side; never inferred from a terminal winner.
     pub perspective: Side,
@@ -95,51 +88,30 @@ pub struct XiangqiTelemetry {
     pub no_win_assessment: NoWinAssessment,
 }
 impl XiangqiTelemetry {
-    fn identity(&self) -> Option<Identity> {
-        Identity::classify(
-            &self.evaluator_id,
-            &self.search_id,
-            Profile {
-                evaluator: search::EVALUATOR_ID,
-                search: search::SEARCH_ID,
-                max_depth: search::MAX_DEPTH,
-                max_nodes: search::MAX_NODES,
-                win_score: search::WIN_SCORE,
-                line_bound: search::MAX_LINE,
-            },
-            Profile {
-                evaluator: search::LEGACY_EVALUATOR_ID,
-                search: search::LEGACY_SEARCH_ID,
-                max_depth: search::LEGACY_MAX_DEPTH,
-                max_nodes: search::LEGACY_MAX_NODES,
-                win_score: search::LEGACY_WIN_SCORE,
-                line_bound: 1,
-            },
-        )
+    fn is_current(&self) -> bool {
+        self.evaluator_id == search::EVALUATOR_ID && self.search_id == search::SEARCH_ID
     }
-    /// Native root-side score label with the saved search's distance scale.
+    /// Native root-side score label.
     pub fn score_label(&self) -> Option<String> {
-        let identity = self.identity()?;
-        let bound = match identity.kind {
-            SearchKind::SharedCore => mshogi_search::alphabeta::MATE_BOUND,
-            SearchKind::FullWidth => {
-                identity.profile.win_score - i32::from(identity.max_depth()) - 1
-            }
-        };
+        if !self.is_current() {
+            return None;
+        }
         self.score.and_then(|score| {
             let magnitude = i64::from(score).abs();
-            if magnitude > i64::from(identity.profile.win_score) {
+            if magnitude > i64::from(search::WIN_SCORE) {
                 return None;
             }
-            Some(if magnitude >= i64::from(bound) {
-                format!(
-                    "{} in {} native command edges",
-                    if score >= 0 { "Win" } else { "Loss" },
-                    i64::from(identity.profile.win_score) - magnitude
-                )
-            } else {
-                format!("{:+.2} soldiers", f64::from(score) / 100.0)
-            })
+            Some(
+                if magnitude >= i64::from(mshogi_search::alphabeta::MATE_BOUND) {
+                    format!(
+                        "{} in {} native command edges",
+                        if score >= 0 { "Win" } else { "Loss" },
+                        i64::from(search::WIN_SCORE) - magnitude
+                    )
+                } else {
+                    format!("{:+.2} soldiers", f64::from(score) / 100.0)
+                },
+            )
         })
     }
 }
@@ -234,17 +206,15 @@ impl XiangqiResult {
             | Self::Incomplete { telemetry }
             | Self::Unresolved { telemetry, .. } => telemetry,
         };
-        let Some(identity) = t.identity() else {
-            return false;
-        };
-        let win_score = identity.profile.win_score;
-        if context.limits.depth == 0
-            || context.limits.depth > identity.max_depth()
-            || context.limits.nodes > identity.max_nodes()
+        let win_score = search::WIN_SCORE;
+        if !t.is_current()
+            || context.limits.depth == 0
+            || context.limits.depth > search::MAX_DEPTH
+            || context.limits.nodes > search::MAX_NODES
             || t.perspective != record.side_to_move()
             || t.completed_depth > context.limits.depth
             || t.nodes > context.limits.nodes
-            || t.principal_variation.len() > identity.max_line(t.completed_depth)
+            || t.principal_variation.len() > search::MAX_LINE
             || t.score
                 .is_some_and(|s| !(-win_score..=win_score).contains(&s))
             || &t.no_win_assessment != record.no_win_assessment()
@@ -312,14 +282,13 @@ mod identity_tests {
             purpose: ExecutionPurpose::EngineTurn {},
             request_id: 1,
             session_version: 1,
-            process_generation: 1,
             game: CanonicalRecord::xiangqi(record),
-            limits: XIANGQI_LEGACY_PLAY_LIMITS,
+            limits: XIANGQI_PLAY_LIMITS,
         };
         let result = XiangqiResult::Incomplete {
             telemetry: XiangqiTelemetry {
-                evaluator_id: search::LEGACY_EVALUATOR_ID.into(),
-                search_id: search::LEGACY_SEARCH_ID.into(),
+                evaluator_id: search::EVALUATOR_ID.into(),
+                search_id: search::SEARCH_ID.into(),
                 perspective: Side::Red,
                 score: None,
                 completed_depth: 0,
@@ -332,36 +301,29 @@ mod identity_tests {
         (context, result)
     }
     #[test]
-    fn legacy_identities_keep_bounds_and_assessment_checks() {
-        let (mut context, old) = fixture();
-        assert!(old.matches(&context));
-        let mut current = old.clone();
-        let XiangqiResult::Incomplete { telemetry } = &mut current else {
-            unreachable!()
-        };
-        telemetry.evaluator_id = search::EVALUATOR_ID.into();
+    fn unknown_identities_and_excess_request_bounds_do_not_match() {
+        let (mut context, current) = fixture();
+        assert!(current.matches(&context));
+        for mutate in [
+            |t: &mut XiangqiTelemetry| t.evaluator_id = "mshogi.xiangqi.unknown.v1".into(),
+            |t: &mut XiangqiTelemetry| t.search_id = "mshogi.xiangqi.unknown.v1".into(),
+        ] {
+            let mut other = current.clone();
+            let XiangqiResult::Incomplete { telemetry } = &mut other else {
+                unreachable!()
+            };
+            mutate(telemetry);
+            assert_eq!(telemetry.score_label(), None);
+            assert!(!other.matches(&context));
+        }
+        context.limits.depth = search::MAX_DEPTH + 1;
         assert!(!current.matches(&context));
-        let XiangqiResult::Incomplete { telemetry } = &mut current else {
-            unreachable!()
-        };
-        telemetry.search_id = search::SEARCH_ID.into();
-        assert!(current.matches(&context));
-        context.limits = XIANGQI_PLAY_LIMITS;
-        assert!(!old.matches(&context));
-        assert!(current.matches(&context));
     }
     #[test]
-    fn saved_score_labels_distinguish_deeper_selective_distances() {
+    fn score_labels_distinguish_selective_distances() {
         let (_, XiangqiResult::Incomplete { mut telemetry }) = fixture() else {
             unreachable!()
         };
-        telemetry.score = Some(search::LEGACY_WIN_SCORE - 3);
-        assert_eq!(
-            telemetry.score_label().as_deref(),
-            Some("Win in 3 native command edges")
-        );
-        telemetry.evaluator_id = search::EVALUATOR_ID.into();
-        telemetry.search_id = search::SEARCH_ID.into();
         telemetry.score = Some(search::WIN_SCORE - 20);
         assert_eq!(
             telemetry.score_label().as_deref(),

@@ -34,7 +34,7 @@ class ReplacementAnalysisAuthorityTests(unittest.TestCase):
     def source(self, game='chess'):
         return {'token': {'document': 7, 'version': 8}, 'context': {'native_history': [1, 2]},
                 'analysis': {'context': {'purpose': {'kind': 'move_analysis'}, 'request_id': 10,
-                             'session_version': 8, 'process_generation': 4}}}
+                             'session_version': 8}}}
 
     def test_existing_thinking_state_is_not_replacement_evidence(self):
         before = self.source()
@@ -1686,14 +1686,14 @@ class TenjikuPackagedEvidenceTests(unittest.TestCase):
     def test_repeated_analysis_requires_new_observation_fresh_identity_and_exact_selected_prefix(self):
         action={'kind':'travel','from':[1,3],'route':[[1,4]],'promote':False}
         native={'game_kind':'tenjiku','rules_profile':'mshogi.tenjiku.adams1999-modern.v1','payload':{'events':[{'native':'prefix1'}]}}
-        old={'schema_version':1,'context':{'request_id':5,'process_generation':6},'result':{'kind':'retained-prior-analysis'}}
+        old={'schema_version':1,'context':{'request_id':5},'result':{'kind':'retained-prior-analysis'}}
         before={'profile':native['rules_profile'],'context':native,'token':{'document':4,'version':8,'revision':8},'tenjiku':{'selected':{'event_index':1,'board_ply':1,'repetition_key':{'side':'gote'}},'live':{'event_index':2,'identities':'native-live'}},'moves':{'entries':[{'native':'event1'},{'native':'event2'}]},'observations':[{'observation':old}]}
-        observation={'schema_version':1,'context':{'request_id':10,'process_generation':11,'session_version':8,'game':copy.deepcopy(native),'limits':{'depth':1,'nodes':1024},'purpose':{'kind':'move_analysis','target':{'event_index':1,'board_ply':1,'session_version':8,'turn':{'game_kind':'tenjiku','side':'gote'}}}},'result':{'kind':'tenjiku','result':{'kind':'choice','action':action,'telemetry':{'completed_depth':1,'perspective':'gote','score':0,'nodes':5,'principal_variation':[action],'evaluator_id':'mshogi.tenjiku.material-placement.v1','search_id':'mshogi.tenjiku.shared-core.v1'}}}}
+        observation={'schema_version':1,'context':{'request_id':10,'session_version':8,'game':copy.deepcopy(native),'limits':{'depth':1,'nodes':1024},'purpose':{'kind':'move_analysis','target':{'event_index':1,'board_ply':1,'session_version':8,'turn':{'game_kind':'tenjiku','side':'gote'}}}},'result':{'kind':'tenjiku','result':{'kind':'choice','action':action,'telemetry':{'completed_depth':1,'perspective':'gote','score':0,'nodes':5,'principal_variation':[action],'evaluator_id':'mshogi.tenjiku.material-placement.v1','search_id':'mshogi.tenjiku.shared-core.v1'}}}}
         after=copy.deepcopy(before);after['token']['revision']=10;after['observations'].append({'observation':observation});after['analysis']={'observation':observation}
-        self.assertTrue(module.completed_tenjiku_analysis(before,after,5,6))
-        self.assertFalse(module.completed_tenjiku_analysis(before,before,5,6),'old available UI/status/native result is insufficient')
+        self.assertTrue(module.completed_tenjiku_analysis(before,after,5))
+        self.assertFalse(module.completed_tenjiku_analysis(before,before,5),'old available UI/status/native result is insufficient')
         for mutate in (lambda a:a['token'].update(revision=8),lambda a:a['token'].update(version=9),lambda a:a['observations'].pop(),lambda a:a['observations'][0]['observation'].update(result={'rewritten':'prior result'}),
-                       lambda a:a['analysis']['observation']['context'].update(request_id=5),lambda a:a['analysis']['observation']['context'].update(process_generation=6),
+                       lambda a:a['analysis']['observation']['context'].update(request_id=5),
                        lambda a:(a['analysis']['observation']['context'].update(session_version=9),a['analysis']['observation']['context']['purpose']['target'].update(session_version=9)),
                        lambda a:a['analysis']['observation']['context'].update(session_version=7),lambda a:a['analysis']['observation']['context']['purpose']['target'].update(event_index=2),
                        lambda a:a['analysis']['observation']['context']['purpose']['target'].update(board_ply=2),lambda a:a['analysis']['observation']['context']['purpose'].update(kind='engine_turn'),
@@ -1703,7 +1703,7 @@ class TenjikuPackagedEvidenceTests(unittest.TestCase):
                        lambda a:a['tenjiku']['live'].update(identities='changed-live-game'),lambda a:a.update(profile='mshogi.tenjiku.muller-completed.v1'),
                        lambda a:a['analysis']['observation']['result']['result']['telemetry'].update(score=None),lambda a:a['analysis']['observation']['result'].update(kind='chu')):
             changed=copy.deepcopy(after);mutate(changed)
-            self.assertFalse(module.completed_tenjiku_analysis(before,changed,5,6))
+            self.assertFalse(module.completed_tenjiku_analysis(before,changed,5))
 
     def tenjiku_public_diagnostics(self, name):
         snapshot=json.loads((Path(__file__).parents[1]/'src'/'__fixtures__'/f'shared-tenjiku-{name}.json').read_text())
@@ -1720,13 +1720,13 @@ class TenjikuPackagedEvidenceTests(unittest.TestCase):
             # The Muller standard artifact was produced by a separate New epoch.
             # Use the actual analysis request's prior authority for that sample.
             if profile=='muller':
-                self.assertFalse(module.completed_tenjiku_analysis(before,after,0,0))
+                self.assertFalse(module.completed_tenjiku_analysis(before,after,0))
                 before=copy.deepcopy(after);before['observations']=[];before['analysis']=None
                 context=after['analysis']['observation']['context']
                 before['token']['version']=context['session_version'];before['token']['selection']=context['purpose']['target']['selection_id']
                 before['token']['revision']=after['token']['revision']-1
-            self.assertTrue(module.completed_tenjiku_analysis(before,after,0,0))
-            self.assertFalse(module.completed_tenjiku_analysis(before,before,0,0))
+            self.assertTrue(module.completed_tenjiku_analysis(before,after,0))
+            self.assertFalse(module.completed_tenjiku_analysis(before,before,0))
             journey=object.__new__(module.Journey);journey.web=Mock();journey.record=Mock()
             journey.native_diagnostics=Mock(side_effect=[before,after]);journey.web.has.return_value=True
             journey.web.text.side_effect=['Analysis result available','No move was played.']

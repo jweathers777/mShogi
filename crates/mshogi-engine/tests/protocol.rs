@@ -8,7 +8,6 @@ fn request(game: &AdjudicatedGame) -> ExecutionContext {
         purpose: ExecutionPurpose::EngineTurn {},
         request_id: 1,
         session_version: 7,
-        process_generation: 3,
         game: mshogi_core::native::CanonicalRecord::chess(game.record()),
         limits: WorkLimits {
             time_ms: None,

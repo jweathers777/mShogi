@@ -76,9 +76,7 @@ fn real_observations(snapshot: &SharedSnapshot, perspective: Color, searched_ver
     assert!(telemetry.score.is_some());
     assert_eq!(telemetry.status, StopReason::Stopped);
     assert!(telemetry.completed_depth < PLAY_LIMITS.depth);
-    let selective_depth = telemetry
-        .selective_depth
-        .expect("actual conventional selective depth");
+    let selective_depth = telemetry.selective_depth;
     assert!(selective_depth <= mshogi_search::search::MAX_DEPTH);
     let board_plies = telemetry
         .principal_variation
@@ -117,7 +115,7 @@ fn real_observations(snapshot: &SharedSnapshot, perspective: Color, searched_ver
     assert_eq!(recorded.context.limits, PLAY_LIMITS);
     assert_eq!(recorded.context.limits.time_ms, Some(1_000));
     assert_eq!(recorded.context.session_version, searched_version);
-    assert!(recorded.context.request_id > 0 && recorded.context.process_generation > 0);
+    assert!(recorded.context.request_id > 0);
     assert_eq!(
         recorded.context.game,
         CanonicalRecord::chess(before_reply.record())

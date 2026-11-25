@@ -418,9 +418,8 @@ fn cleanup_failure(context: &ExecutionRequest, detail: String) -> ExecutionRespo
     // Log before cancellation/shutdown publication filtering. Retention is capped.
     if let Some(message) = result.failure_message() {
         eprintln!(
-            "Engine cleanup uncertainty (request {}, generation {}): {}",
+            "Engine cleanup uncertainty (request {}): {}",
             context.request_id(),
-            context.generation(),
             message
         );
     }
@@ -598,14 +597,13 @@ fn exchange(
 mod tests {
     use super::*;
     use mshogi_core::chess::{AdjudicatedGame, ClaimPolicy};
-    fn request(id: u64, generation: u64) -> ExecutionRequest {
+    fn request(id: u64) -> ExecutionRequest {
         ExecutionRequest {
             protocol: PROTOCOL_VERSION,
             context: ExecutionContext {
                 purpose: ExecutionPurpose::EngineTurn {},
                 request_id: id,
                 session_version: 0,
-                process_generation: generation,
                 game: mshogi_core::native::CanonicalRecord::chess(
                     AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record(),
                 ),
@@ -642,7 +640,7 @@ mod tests {
             ["pipe helper did not finish within cleanup watchdog; detached"]
         );
         assert!(pipes.is_empty());
-        let result = cleanup_failure(&request(31, 42), problems.join("; "));
+        let result = cleanup_failure(&request(31), problems.join("; "));
         assert!(matches!(
             result,
             ExecutionResponse {
@@ -664,18 +662,14 @@ mod tests {
     #[test]
     fn cancel_and_replace_discard_even_an_already_published_completion() {
         let bridge = EngineBridge::new(PathBuf::from("/definitely/missing/engine")).unwrap();
-        bridge.submit(request(1, 1)).unwrap();
+        bridge.submit(request(1)).unwrap();
         published(&bridge);
         bridge.cancel();
         assert!(bridge.poll().is_none());
-        bridge.submit(request(2, 2)).unwrap();
+        bridge.submit(request(2)).unwrap();
         published(&bridge);
-        assert_eq!(
-            bridge.submit(request(2, 3)),
-            Err(SubmitError::IdentityReused)
-        );
-        // Recorded generation remains metadata, not a second monotonic authority.
-        bridge.submit(request(3, 2)).unwrap();
+        assert_eq!(bridge.submit(request(2)), Err(SubmitError::IdentityReused));
+        bridge.submit(request(3)).unwrap();
         published(&bridge);
         assert_eq!(bridge.poll().unwrap().observation.context.request_id, 3);
         assert!(bridge.poll().is_none());

@@ -43,8 +43,6 @@ pub const SHELL_HELP: &str =
   record save <path>       Atomic new-file envelope save; never overwrite
   record load-file <path>  Bounded strict envelope load before replacement
   record load-json <JSON>  Strict inline canonical envelope
-  record                   Compatibility: native chess JSON (no envelope)
-  record load <JSON>       Compatibility: native move-only JSON restoration
   status                   Print quiet, check, checkmate or stalemate
   perft <depth>            Count legal action sequences of that depth
   divide <depth>           Per-root-action perft counts and total
@@ -243,12 +241,8 @@ impl Session {
 
     fn record(&mut self, rest: &str, out: &mut String) -> Result<(), String> {
         use record_io::Operation;
-        let operation = record_io::parse(rest, record_io::LegacyLoad::Json)?;
+        let operation = record_io::parse(rest)?;
         let record = match operation {
-            Operation::LegacyPrint => {
-                writeln!(out, "record {}", self.game.record().to_json()).unwrap();
-                return Ok(());
-            }
             Operation::Print | Operation::Save(_) => {
                 let encoded = CanonicalRecord::chess(self.game.record())
                     .to_json()
@@ -262,9 +256,6 @@ impl Session {
             }
             Operation::LoadFile(path) => Self::parse_envelope(&record_io::read(path)?)?,
             Operation::LoadJson(json) => Self::parse_envelope(json)?,
-            Operation::LegacyJson(json) => GameRecord::from_json(json)
-                .map(Box::new)
-                .map_err(|e| record_io::diagnostic(&e.to_string()))?,
         };
         if record.adjudication_mode() != mshogi_core::chess::AdjudicationMode::M2 {
             return Err(

@@ -101,14 +101,14 @@ fn independent_material_and_native_soldier_advancement_arithmetic() {
 
 #[test]
 fn cannon_screen_and_horse_leg_tactics_choose_native_winning_captures() {
-    for (fen, action, _legacy_score) in [
+    for (fen, action) in [
         // Own soldier c5 is precisely one screen between cannon c3 and rook c7.
-        ("5k3/9/2r6/9/2P6/9/2C6/9/9/3K5 w - - 0 1", "c3c7", 590),
+        ("5k3/9/2r6/9/2P6/9/2C6/9/9/3K5 w - - 0 1", "c3c7"),
         // Empty c4 is the horse leg for c3-d5; capturing the rook leaves400.
-        ("5k3/9/9/9/3r5/9/2N6/9/9/3K5 w - - 0 1", "c3d5", 400),
+        ("5k3/9/9/9/3r5/9/2N6/9/9/3K5 w - - 0 1", "c3d5"),
         // Color/rank-reversed geometry and native Black score perspective.
-        ("3k5/9/9/2c6/9/2p6/9/2R6/9/5K3 b - - 0 1", "c6c2", 590),
-        ("3k5/9/9/2n6/9/3R5/9/9/9/5K3 b - - 0 1", "c6d4", 400),
+        ("3k5/9/9/2c6/9/2p6/9/2R6/9/5K3 b - - 0 1", "c6c2"),
+        ("3k5/9/9/2n6/9/3R5/9/9/9/5K3 b - - 0 1", "c6d4"),
     ] {
         let native = game(fen);
         let result = run(&native, 1);

@@ -20,7 +20,6 @@ fn request(game: &Game) -> ExecutionContext {
         purpose: ExecutionPurpose::EngineTurn {},
         request_id: 1,
         session_version: 7,
-        process_generation: 3,
         game: CanonicalRecord::shogi(GameRecord::from_game(game)),
         limits: WorkLimits {
             time_ms: None,
@@ -157,7 +156,6 @@ fn analysis_is_read_only_and_bound_to_native_side_and_same_ply_terminal_prefix()
     for (path, v) in [
         ("/request_id", json!(2)),
         ("/session_version", json!(8)),
-        ("/process_generation", json!(4)),
         ("/limits/nodes", json!(2)),
         ("/purpose/target/selection_id", json!(2)),
         ("/purpose/target/event_index", json!(0)),

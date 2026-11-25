@@ -36,7 +36,6 @@ fn request(id: u64, game: &xq::Game) -> ExecutionRequest {
             purpose: ExecutionPurpose::EngineTurn {},
             request_id: id,
             session_version: 19,
-            process_generation: id,
             game: CanonicalRecord::xiangqi(xq::GameRecord::from_game(game).unwrap()),
             // Measured native Xiangqi ordinary-search limits.
             limits: WorkLimits {
@@ -64,7 +63,6 @@ fn chess_request(id: u64) -> ExecutionRequest {
             purpose: ExecutionPurpose::EngineTurn {},
             request_id: id,
             session_version: 19,
-            process_generation: id,
             game: CanonicalRecord::chess(
                 chess::AdjudicatedGame::new(chess::ClaimPolicy::ExplicitOnly).record(),
             ),

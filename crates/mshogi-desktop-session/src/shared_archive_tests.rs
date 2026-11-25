@@ -279,7 +279,6 @@ fn pending_runtime_is_not_archived_and_resume_allocates_fresh_identity() {
     send(&mut c, SessionOperation::Resume {}).unwrap();
     let fresh = c.session.shogi().unwrap().pending.clone().unwrap();
     assert!(fresh.request_id > old.request_id);
-    assert!(fresh.process_generation > old.process_generation);
     assert_ne!(fresh.session_version, old.session_version);
     fs::remove_file(file).unwrap();
 }

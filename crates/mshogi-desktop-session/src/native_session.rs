@@ -961,7 +961,6 @@ impl DesktopController {
                 ExecutionPurpose::EngineTurn {}
             },
             request_id: self.session.next_request,
-            process_generation: self.session.next_request,
             session_version: self.session.version,
             game,
             limits,
@@ -1495,7 +1494,6 @@ mod retention_tests {
                 purpose: ExecutionPurpose::EngineTurn {},
                 request_id: id,
                 session_version: 1,
-                process_generation: id,
                 game: CanonicalRecord::tori(record.clone()),
                 limits: WorkLimits {
                     time_ms: None,

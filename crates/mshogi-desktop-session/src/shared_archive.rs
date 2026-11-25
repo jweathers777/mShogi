@@ -8,7 +8,6 @@ use std::{fs, io::Read};
 #[serde(deny_unknown_fields)]
 pub struct ShogiSettings {
     /// Durable local participant arrangement.
-    #[serde(default)]
     pub play_mode: PlayMode,
     /// Native side placed at the bottom by a presentation consumer.
     pub orientation: s::Side,

@@ -648,7 +648,7 @@ fn real_search_observations_reject_profile_purpose_and_all_runtime_context_chang
         let pending = ctl.session.tenjiku().unwrap().pending.clone().unwrap();
         let accepted = document_bytes(&ctl);
         let dirty = ctl.shared_snapshot().document.dirty;
-        for field in 0..9 {
+        for field in 0..8 {
             let mut other = pending.clone();
             match field {
                 0 => {
@@ -671,14 +671,13 @@ fn real_search_observations_reject_profile_purpose_and_all_runtime_context_chang
                         target.session_version += 1;
                     }
                 }
-                4 => other.process_generation += 1,
-                5 => other.limits.nodes += 1,
-                6 => {
+                4 => other.limits.nodes += 1,
+                5 => {
                     if let ExecutionPurpose::MoveAnalysis { target } = &mut other.purpose {
                         target.selection_id += 1;
                     }
                 }
-                7 => {
+                6 => {
                     if let ExecutionPurpose::MoveAnalysis { target } = &mut other.purpose {
                         target.label.push_str(" changed");
                     }

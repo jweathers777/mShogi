@@ -10,7 +10,6 @@ fn context(game: &t::Game) -> ExecutionContext {
         purpose: ExecutionPurpose::EngineTurn {},
         request_id: 42,
         session_version: 9,
-        process_generation: 3,
         game: CanonicalRecord::tori(t::GameRecord::from_game(game).unwrap()),
         limits: WorkLimits {
             time_ms: None,
@@ -125,14 +124,13 @@ fn actual_choices_admit_and_scores_purpose_and_identity_remain_native() {
             let expected = -search::eval::score(&position, &search::eval::DEFAULT);
             assert_eq!(telemetry.score, Some(expected));
         }
-        for n in 0..6 {
+        for n in 0..5 {
             let mut wrong = c.clone();
             match n {
                 0 => wrong.request_id += 1,
                 1 => wrong.session_version += 1,
-                2 => wrong.process_generation += 1,
-                3 => wrong.limits.nodes += 1,
-                4 => wrong.limits.depth += 1,
+                2 => wrong.limits.nodes += 1,
+                3 => wrong.limits.depth += 1,
                 _ => {
                     wrong.purpose = ExecutionPurpose::MoveAnalysis {
                         target: ExecutionTarget {
@@ -458,99 +456,34 @@ fn same_board_full_history_and_forbidden_departure_require_native_worker_validat
     assert!(result.validate(&repeated).is_err());
 }
 #[test]
-fn historical_unscored_failure_contexts_survive_new_bounded_execution_limits() {
-    let mut c = context(&t::Game::standard());
-    // Limits above the bounds of the earlier Tori search, which the generic
-    // transport bounds admitted before Tori search existed.
-    c.limits = WorkLimits {
-        time_ms: None,
-        depth: search::LEGACY_MAX_DEPTH + 1,
-        nodes: search::LEGACY_MAX_NODES + 1,
-    };
-    assert!(c.valid_limits());
-    let failure = ExecutionObservation::new(
-        c.clone(),
-        ExecutionResult::Failure {
-            failure: EngineFailure {
-                kind: FailureKind::UnsupportedMode,
-                message: "Tori engine execution is not implemented".into(),
-            },
-        },
-    );
-    assert!(failure.matches(&c));
-    let restored: ExecutionObservation =
-        serde_json::from_str(&serde_json::to_string(&failure).unwrap()).unwrap();
-    assert_eq!(failure, restored);
-    assert!(restored.matches(&c));
-    // The shared-core search admits these limits and gives a real result.
-    let current = execute(&c);
-    assert!(current.matches(&c));
-    assert!(matches!(
-        current.result,
-        ExecutionResult::Tori {
-            result: ToriResult::Choice { .. }
-        }
-    ));
-}
-
-#[test]
-fn saved_observations_of_the_earlier_full_width_search_stay_valid() {
-    // A depth-1 observation as the earlier search wrote it: the Falcon takes
-    // the Swallow on 7b and promotes. Material after the action, hand counted:
-    // Eagle 1000 + Swallow in hand 100 = 1100 for Sente, 0 for Gote.
+fn unknown_search_identities_are_refused() {
     let g = game(t::Side::Sente);
     let c = context(&g);
-    let action = t::Action::Move {
-        from: "7c".parse().unwrap(),
-        to: "7b".parse().unwrap(),
-        result_face: t::Face::Eagle,
-    };
-    let telemetry = ToriTelemetry {
-        evaluator_id: search::LEGACY_EVALUATOR_ID.into(),
-        search_id: search::LEGACY_SEARCH_ID.into(),
-        perspective: t::Side::Sente,
-        score: Some(1100),
-        completed_depth: 1,
-        nodes: g.legal_actions().len() as u64 + 1,
-        principal_variation: vec![action],
-        status: StopReason::Complete,
-    };
-    let saved = ExecutionObservation::new(
-        c.clone(),
-        ExecutionResult::Tori {
-            result: ToriResult::Choice {
-                action,
-                telemetry: telemetry.clone(),
-            },
-        },
-    );
-    assert!(saved.matches(&c));
-    let ExecutionResult::Tori { result } = &saved.result else {
+    let observation = execute(&c);
+    assert!(observation.matches(&c));
+    let ExecutionResult::Tori { result } = &observation.result else {
         panic!()
     };
     result.validate(&g).unwrap();
-    // The exact score check of the earlier search still applies to it.
-    let forged = ToriResult::Choice {
-        action,
-        telemetry: ToriTelemetry {
-            score: Some(0),
-            ..telemetry.clone()
-        },
-    };
-    assert!(forged.validate(&g).is_err());
-    // The bounds of the earlier search still apply to its observations.
-    let mut deep = c.clone();
-    deep.limits.depth = search::LEGACY_MAX_DEPTH + 1;
-    assert!(!saved.matches(&deep));
-    // An unknown identity pair is refused.
-    let mixed = ToriResult::Choice {
-        action,
-        telemetry: ToriTelemetry {
-            search_id: search::SEARCH_ID.into(),
-            ..telemetry
-        },
-    };
-    assert!(mixed.validate(&g).is_err());
+    for field in 0..2 {
+        let mut unknown = observation.clone();
+        let ExecutionResult::Tori {
+            result: ToriResult::Choice { telemetry, .. },
+        } = &mut unknown.result
+        else {
+            panic!()
+        };
+        if field == 0 {
+            telemetry.evaluator_id = "mshogi.tori.unknown.v1".into();
+        } else {
+            telemetry.search_id = "mshogi.tori.unknown.v1".into();
+        }
+        assert!(!unknown.matches(&c));
+        let ExecutionResult::Tori { result } = &unknown.result else {
+            panic!()
+        };
+        assert!(result.validate(&g).is_err());
+    }
 }
 #[test]
 fn a_root_mate_proof_is_a_complete_reply_below_the_requested_depth() {

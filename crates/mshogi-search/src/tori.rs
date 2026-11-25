@@ -28,15 +28,6 @@ use std::{error::Error, fmt};
 pub const EVALUATOR_ID: &str = "mshogi.tori.material-placement.v1";
 /// Search identity: the shared alpha-beta core.
 pub const SEARCH_ID: &str = "mshogi.tori.shared-core.v1";
-/// Evaluation identity of the earlier full-width search. Saved observations
-/// with this identity stay valid; see [`evaluate`].
-pub const LEGACY_EVALUATOR_ID: &str = "mshogi.tori.material.v1";
-/// Search identity of the earlier full-width search.
-pub const LEGACY_SEARCH_ID: &str = "mshogi.tori.full-width.v1";
-/// Depth bound of the earlier full-width search.
-pub const LEGACY_MAX_DEPTH: u16 = 3;
-/// Node bound of the earlier full-width search.
-pub const LEGACY_MAX_NODES: u64 = 10_000;
 /// Native terminal win minus board-action distance; not specifically a mate score.
 pub const WIN_SCORE: i32 = alphabeta::MATE_SCORE;
 /// Largest nominal depth of a request.
@@ -70,8 +61,7 @@ impl Evaluation {
         }
     }
 }
-/// Material of a native position. This was the full evaluation of the earlier
-/// full-width search; saved observations of that search are checked with it.
+/// Native board and hand material; neither side's total establishes an outcome.
 pub fn evaluate(position: &Position) -> Evaluation {
     let mut e = Evaluation { sente: 0, gote: 0 };
     for side in [Side::Sente, Side::Gote] {

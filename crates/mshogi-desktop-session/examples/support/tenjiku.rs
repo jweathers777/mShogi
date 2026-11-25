@@ -141,7 +141,7 @@ pub fn game(profile: c::Profile, scenario: &str) -> Result<c::Game, String> {
             )
             .map_err(|e| e.to_string())
         }
-        "contract" | "compound" | "compound-played" | "unsupported" | "selected-root"
+        "contract" | "compound" | "compound-played" | "incomplete" | "selected-root"
         | "ending-stopped" => {
             let board = [
                 (16, 16, c::Side::Sente, c::Base::K),
@@ -189,7 +189,7 @@ pub fn action(scenario: &str) -> Result<c::Action, String> {
             serde_json::from_value(input["commands"][0]["command"]["action"].clone())
                 .map_err(|e| e.to_string())
         }
-        "compound-played" | "selected-root" | "unsupported" => {
+        "compound-played" | "selected-root" | "incomplete" => {
             let mut action = c::Action::single(sq(8, 8), sq(8, 7));
             action.route.push(sq(8, 8));
             Ok(action)

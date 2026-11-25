@@ -4,17 +4,15 @@
 `mshogi.shogi.csa36.v1`. The host adapter parses and presents; `Game::submit`
 owns action/actor/context admission, adjudication and terminal commands.
 `mshogi --game chess shell` uses the chess adapter; `mshogi shell` retains that
-default. `mshogi shogi` is a compatibility alias through the same selection path
-(a matching explicit shogi selection is accepted, a chess selection conflicts).
+default.
 `mshogi --game chess profile` and `mshogi --game shogi profile` identify actual
 native coverage; `--game <game> --help` and shell `help` explain capabilities.
 Unknown games, missing selector values, repeated selectors and extra modes fail
 with exit2 and stderr only. Selectors may precede or follow the one mode.
 `mshogi --game chess uci` and the default `mshogi uci` preserve UCI. An explicit
 shogi/UCI combination rejects; [USI](usi.md) uses `--game shogi usi`. `mshogi internal-search`
-accepts no `--game`: structured v2/v3 requests supply authoritative identity,
-including valid shogi v3 requests without a selector. Human output never appears
-in protocol mode.
+accepts no `--game`: structured requests supply authoritative identity. Human
+output never appears in protocol mode.
 
 ## Commands and semantics
 
@@ -135,11 +133,8 @@ input leaves the current session and its undo history intact. `record load-json
 Both chess and shogi use these same canonical commands and the same strict
 RawValue boundary, so duplicate nested native fields remain visible to rejection.
 
-Compatibility forms remain explicit: shogi bare `record` aliases `record print`
-and `record load <path>` aliases `record load-file`. Chess bare `record` prints
-native chess JSON without an envelope; chess `record load <JSON>` accepts only
-that legacy native encoding. Canonical forms always require the typed envelope.
-Chess restoration accepts only native M2 move/history state; match observations
+The four `record` commands are the only forms, and they require the typed
+envelope. Chess restoration accepts only native M2 move/history state; match observations
 and Full mode reject clearly, rather than being silently discarded. No desktop
 archive capability is supplied here.
 

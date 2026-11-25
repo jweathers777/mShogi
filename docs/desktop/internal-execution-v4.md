@@ -1,22 +1,21 @@
 # Current internal execution and session observations
 
-This is the sole supported internal engine boundary. Development transports
-v1/v2/v3/v4 are retired. External UCI, USI and Xiangqi interoperability are separate,
-unchanged functional contracts. See R1 evidence.
+This is the sole supported internal engine boundary. External UCI, USI and
+Xiangqi interoperability are separate functional contracts.
 
 ## Ownership and encoding
 
 `mshogi-engine` exports one family:
 
 - `ExecutionContext`: `purpose`, `request_id`, `session_version`,
-  `process_generation`, `game: CanonicalRecord`, and `limits: WorkLimits`.
-- `ExecutionRequest`: `{ protocol: 5, context: ExecutionContext }`.
+  `game: CanonicalRecord`, and `limits: WorkLimits`.
+- `ExecutionRequest`: `{ protocol: 6, context: ExecutionContext }`.
 - `ExecutionObservation`: `{ schema_version: 1, context: ExecutionContext,
   result: ExecutionResult }`. This is semantic evidence, with no wire
   version or pending-execution meaning.
-- Process reply: `{ protocol: 5, request_digest: [32 SHA-256 bytes],
+- Process reply: `{ protocol: 6, request_digest: [32 SHA-256 bytes],
   endpoint: null | { request_id }, result: ExecutionResult }`.
-- `ExecutionResponse`: the host's admitted `{ protocol: 5, observation }`.
+- `ExecutionResponse`: the host's admitted `{ protocol: 6, observation }`.
   This is not the child wire shape.
 
 The digest covers the exact encoded request bytes, excluding one framing newline.
@@ -41,13 +40,11 @@ unknown, missing and conflicting fields reject. Unsupported versions never
 execute. A parseable current-shaped request with an unsupported version returns
 an explicit unscored InvalidRequest response; an old flat shape is malformed.
 
-MSH-49.1 adds optional Chess fields within this same family. `WorkLimits` keeps
+`WorkLimits` has
 mandatory `depth` and `nodes`, with optional `time_ms` (0–60,000 milliseconds)
 for ordinary engine turns or move analysis in all six games. The exact time
 limit is part of context equality, request replacement and observations.
-Chess Full refuses this field. Omission serializes exactly as before, so
-existing deterministic requests and observation digests retain their encoding.
-An older strict child may reject the new timed field; the host does not retry
+Chess Full refuses this field. Fixed work omits it. The host does not retry
 with downgraded limits or a different protocol. Bundled host/child are built
 together. The process watchdog is separate and must accommodate the requested
 thinking interval plus transport and cleanup; it is never a game clock result.
@@ -87,13 +84,11 @@ purpose and native command admission. Ordinary analysis uses a separate read-onl
 acceptance handler and cannot issue a live move or claim.
 
 Chess's conventional search reports nominal `completed_depth`, all attempted
-`nodes` and optional `selective_depth`: the deepest actually visited board ply
+`nodes` and `selective_depth`: the deepest actually visited board ply
 including extensions and quiescence. A completed iteration's PV can therefore
 exceed its nominal depth, bounded by the recorded selective depth and the native
 128-ply path cap. Every complete action and terminal claim is still re-admitted
-by the native owner; a claim's intended move is not played. Old observations
-without selective metadata keep their nominal-depth board-PV bound, plus a
-possible final claim command. A terminal root or root claim can have selective
+by the native owner; a claim's intended move is not played. A terminal root or root claim can have selective
 depth0, while a first incomplete iteration can have nonzero attempted depth.
 Neither selective depth nor a search score establishes a native game outcome.
 
@@ -160,7 +155,7 @@ execution interface.
 ## Engine session
 
 MSH-169 (Engine Session Persistence) and MSH-179 (Clock and Session for All Games).
-The session retention policy remains the same under protocol5.
+The session retention policy remains the same under protocol 6.
 
 - One child serves successive requests. A response is accepted when its line is
   complete and matches the request; the bridge does not wait for the child to
@@ -186,8 +181,6 @@ The session retention policy remains the same under protocol5.
   comparison includes the initial state and immutable profile. A timed switch
   of game kind drops the previous game state. Desktop defaults are unchanged.
 - The bridge requires strictly increasing nonzero `request_id` values.
-  `process_generation` remains positive recorded metadata for report compatibility;
-  it is not a second monotonic counter or a count of child processes.
 - Timed Shogi and Tori engine turns retain their measured native incremental
   sessions. A suffix names the exact acknowledged request ID. A missing or
   different base cannot apply a suffix. Every reply uses the same compact shape,

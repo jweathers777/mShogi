@@ -380,7 +380,7 @@ fn display_chess_observation(
         }
     });
     PresentedSearchObservation {
-        selective_depth: telemetry.and_then(|t| t.selective_depth),
+        selective_depth: telemetry.map(|t| t.selective_depth),
         observation_index: index,
         purpose,
         event_index,

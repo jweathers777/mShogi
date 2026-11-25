@@ -71,8 +71,7 @@ historical. This presentation change does not alter FEN, action or record encodi
 `record print` emits `record <complete-canonical-envelope-JSON>`; save/load-file
 uses the same native wrapper. `record load-json` accepts it inline within the
 4096-byte console line bound. Larger valid records must use `load-file` with the
-existing1MiB encoded-envelope bound. Legacy `record` and `record load <path>`
-remain print/file aliases for this game. FEN-only or foreign-game restoration,
+existing1MiB encoded-envelope bound. FEN-only or foreign-game restoration,
 unknown/duplicate/missing/conflicting fields and forged derived history reject
 before replacement. Unsupported exact-mode restoration is not downgraded.
 

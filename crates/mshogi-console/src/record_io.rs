@@ -8,22 +8,13 @@ use std::{
     sync::atomic::{AtomicU64, Ordering},
 };
 
-pub enum LegacyLoad {
-    File,
-    Json,
-}
 pub enum Operation<'a> {
     Print,
-    LegacyPrint,
     Save(&'a str),
     LoadFile(&'a str),
     LoadJson(&'a str),
-    LegacyJson(&'a str),
 }
-pub fn parse(rest: &str, legacy: LegacyLoad) -> Result<Operation<'_>, String> {
-    if rest.is_empty() {
-        return Ok(Operation::LegacyPrint);
-    }
+pub fn parse(rest: &str) -> Result<Operation<'_>, String> {
     if rest == "print" {
         return Ok(Operation::Print);
     }
@@ -34,10 +25,6 @@ pub fn parse(rest: &str, legacy: LegacyLoad) -> Result<Operation<'_>, String> {
                 "save" => Ok(Operation::Save(argument)),
                 "load-file" => Ok(Operation::LoadFile(argument)),
                 "load-json" => Ok(Operation::LoadJson(argument)),
-                "load" => Ok(match legacy {
-                    LegacyLoad::File => Operation::LoadFile(argument),
-                    LegacyLoad::Json => Operation::LegacyJson(argument),
-                }),
                 _ => Err(usage()),
             };
         }
@@ -45,7 +32,8 @@ pub fn parse(rest: &str, legacy: LegacyLoad) -> Result<Operation<'_>, String> {
     Err(usage())
 }
 fn usage() -> String {
-    "usage: record print | record save <path> | record load-file <path> | record load-json <JSON> (legacy record/load remain game-specific)".into()
+    "usage: record print | record save <path> | record load-file <path> | record load-json <JSON>"
+        .into()
 }
 pub fn diagnostic(text: &str) -> String {
     text.chars()

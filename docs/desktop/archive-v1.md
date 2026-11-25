@@ -27,9 +27,9 @@ No FEN/move-list fallback or silent policy downgrade is permitted.
 
 Externally supplied mating witnesses on match commands are also rejected before
 replay; this desktop profile does not create them. This avoids routing a long
-witness through uncontrolled match adjudication. Historical rejected engine responses retain their raw wire
-evidence and explicit application-failure diagnostic, never a promoted action,
-score or proof.
+witness through uncontrolled match adjudication. Historical rejected engine
+responses retain their raw wire evidence and explicit application-failure
+diagnostic, never a promoted action, score or proof.
 
 ## Resource and replacement rules
 

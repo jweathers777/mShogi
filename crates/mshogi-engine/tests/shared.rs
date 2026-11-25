@@ -59,7 +59,7 @@ fn chess_result(context: ExecutionContext) -> ChessResult {
     result
 }
 #[test]
-fn actual_chess_play_claim_terminal_incomplete_analysis_and_full_are_preserved() {
+fn actual_chess_play_claim_terminal_incomplete_and_analysis_are_preserved() {
     let mut mate =
         AdjudicatedGame::from_fen("7k/8/5KQ1/8/8/8/8/8 w - - 0 1", ClaimPolicy::ExplicitOnly)
             .unwrap();

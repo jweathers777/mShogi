@@ -505,6 +505,44 @@ mod tests {
         receipt.completion().unwrap().unwrap();
     }
     #[test]
+    fn chess_analysis_stays_read_only_and_remembers_its_limits() {
+        let mut c = controller(Color::White);
+        let record = Chess::from_game(&c.session.chess().unwrap().game).unwrap();
+        let operation = AnalysisOperation { depth: 1, nodes: 0 };
+        command(&mut c, SessionOperation::Analyze { operation });
+        let snapshot = c.shared_snapshot();
+        assert_eq!(snapshot.execution_purpose, Some("move_analysis"));
+        let pending = c.session.chess().unwrap().pending.clone().unwrap();
+        let mut bytes = serde_json::to_vec(&execution_request(pending.clone())).unwrap();
+        bytes.push(b'\n');
+        let mut output = vec![];
+        mshogi_engine::serve_once(std::io::Cursor::new(bytes), &mut output).unwrap();
+        let response = ExecutionResponse::decode(&output, &execution_request(pending)).unwrap();
+        assert!(c.accept_shared(response));
+        settle(&mut c);
+        let snapshot = c.shared_snapshot();
+        let chess = snapshot.chess.unwrap();
+        assert_eq!(chess.analysis.status, AnalysisPhase::Incomplete);
+        let target = chess.analysis.target.as_ref().unwrap();
+        assert_eq!(target.session_version, snapshot.token.version);
+        assert_eq!(target.selection_id, snapshot.token.selection);
+        assert_eq!(chess.analysis.operation, Some(operation));
+        assert_eq!(
+            Chess::from_game(&c.session.chess().unwrap().game).unwrap(),
+            record
+        );
+        assert!(snapshot.paused);
+        assert_eq!(
+            c.session
+                .chess()
+                .unwrap()
+                .document
+                .settings()
+                .analysis_defaults,
+            operation
+        );
+    }
+    #[test]
     fn wrapped_chess_failure_stops_play_without_automatic_retry() {
         let mut c = controller(Color::Black);
         command(&mut c, SessionOperation::Resume {});

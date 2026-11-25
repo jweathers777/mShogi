@@ -69,14 +69,15 @@ substitute for exact canonical context/history.
 The result tag selects native `ChessResult`, `ShogiResult`, `XiangqiResult`,
 `ToriResult`, `ChuResult` or `TenjikuResult`,
 or a bounded unscored `Failure`. Chess retains move versus intended/current
-claim, concluded root, incomplete work and actual telemetry. Shogi retains complete move/drop/promotion, formal declaration,
-conclusion and native incomplete work. Xiangqi retains Red/Black semantics,
+claim, concluded root, incomplete work and actual telemetry. Shogi retains
+complete move/drop/promotion, formal declaration, conclusion and native
+incomplete work. Xiangqi retains Red/Black semantics,
 complete WXF history, warning/claim state, sound-fast-only search and unresolved
 adjudication without a fabricated score. Native Xiangqi in-process exact evidence
 retains its separate explicit bounded operation and original provenance.
 
-The server executes Chess directly from its native canonical record. It never creates a retired
-Chess request. The authoritative desktop owner checks exact current context,
+The server executes Chess directly from its native canonical record. It never
+creates a retired Chess request. The authoritative desktop owner checks exact current context,
 purpose and native command admission. Ordinary analysis uses a separate read-only
 acceptance handler and cannot issue a live move or claim.
 

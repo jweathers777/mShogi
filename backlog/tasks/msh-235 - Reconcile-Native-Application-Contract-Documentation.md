@@ -4,7 +4,7 @@ title: Reconcile and Prune Durable Documentation
 status: Ready
 assignee: []
 created_date: '2026-11-23T17:53:00Z'
-updated_date: '2026-11-25T09:15:00Z'
+updated_date: '2026-11-25T12:23:00Z'
 labels:
   - documentation
   - model:medium
@@ -29,3 +29,9 @@ Do this after the cleanup tasks, so the documents describe the final code. docs/
 - [ ] #2 docs/ holds only durable knowledge: task reports, reviews, verification records and run output are removed (useful run data is first uploaded to GCS), and links to them are updated.
 - [ ] #3 Statements are checked against docs/design.md and the current code; no product behavior or process rule changes.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+MSH-209 (2026-11-25): an earlier bulk edit removed the space between a word and the number after it (for example 'exceeds1MiB', 'rank12') in about 190 places; most are in docs/m4. MSH-249 (Restore Spaces Lost Before Numbers) fixes crates/, desktop/ and tools/ only; fix the documents that this task keeps.
+<!-- SECTION:NOTES:END -->

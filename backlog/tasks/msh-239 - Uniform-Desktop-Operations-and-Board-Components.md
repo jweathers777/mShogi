@@ -4,7 +4,7 @@ title: Uniform Desktop Operations and Board Components
 status: Ready
 assignee: []
 created_date: '2026-11-25T08:51:00Z'
-updated_date: '2026-11-25T09:15:00Z'
+updated_date: '2026-11-25T12:23:00Z'
 labels:
   - desktop
   - refactor
@@ -35,3 +35,9 @@ Saved formats and protocols may change (A-09); update callers and fixtures.
 - [ ] #3 Settings have the same shape in every game; production line counts before and after are recorded; workspace, session and frontend tests pass.
 - [ ] #4 One review by a fresh agent session.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+MSH-209 (2026-11-25), findings that fall under AC2 and AC3 (no scope change): Board.tsx (47-127), product/ShogiBoard.tsx (36-114) and product/XiangqiBoard.tsx (20-108) repeat the same board controls (square list, help text, route controls, square labels, inspection rings, completion dialog) and have drifted (modal or inline dialog, label wording, help through a portal or inline). Chess still goes through the old colour-piece path of Board.tsx (GameBoard.tsx converts pieces); the hands group of Board.tsx and the Xiangqi guard and Tori hand filter of NativeBoard.tsx have only test callers. In desktop-session, ResourceScope (resource.rs) repeats GameKind plus Application. MSH-264 (One Frontend Game Table and Wire Types) runs after this task and covers game tables, wire types and test helpers.
+<!-- SECTION:NOTES:END -->

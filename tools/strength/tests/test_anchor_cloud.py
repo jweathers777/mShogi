@@ -196,5 +196,35 @@ class CloudControllerTests(unittest.TestCase):
             self.assertEqual(result['poll_allowance_seconds'], 12)
 
 
+class WorkerHelperTests(unittest.TestCase):
+    def test_cloud_region_checked_from_observed_zone(self):
+        class Reply:
+            def __init__(self, value):
+                self.value = value
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                pass
+            def read(self, bound):
+                return self.value.encode()
+        for zone, accepted in (('projects/123/zones/us-central1-a', True),
+                               ('projects/123/zones/us-east1-a', False)):
+            values = ['projects/123/machineTypes/c3-standard-4', zone, '123', 'Intel Sapphire Rapids']
+            with patch.object(controller, 'environment',
+                              return_value={'architecture': 'x86_64', 'platform': 'Linux'}), \
+                 patch.object(controller.urllib.request, 'urlopen', side_effect=[Reply(v) for v in values]):
+                if accepted:
+                    self.assertEqual(controller.cloud_environment()['gcp']['zone'], zone)
+                else:
+                    with self.assertRaisesRegex(ValueError, 'region'):
+                        controller.cloud_environment()
+
+    def test_immutable_upload_conflict_is_not_a_resume(self):
+        store = Mock()
+        store.put.return_value = False
+        with self.assertRaisesRegex(ValueError, 'existing immutable'):
+            controller.put_new(store, 'tasks/0/started.json', b'{}')
+
+
 if __name__ == '__main__':
     unittest.main()

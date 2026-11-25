@@ -4,6 +4,7 @@ title: One USI and Xiangqi UCI Front End
 status: Ready
 assignee: []
 created_date: '2026-11-25T12:22:00Z'
+updated_date: '2026-11-25T12:46:00Z'
 labels:
   - console
   - protocol
@@ -28,3 +29,9 @@ In crates/mshogi-console, usi.rs (731 lines) and xiangqi_uci.rs (632) share abou
 - [ ] #2 Each difference without a reason is resolved to one behavior and recorded in the notes; console protocol tests pass.
 - [ ] #3 Production line counts before and after are recorded.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+John, 2026-11-25: MSH-268 removes the input line cap for game records and position commands; do not add it back in the shared front end.
+<!-- SECTION:NOTES:END -->

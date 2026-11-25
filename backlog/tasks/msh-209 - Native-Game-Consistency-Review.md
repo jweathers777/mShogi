@@ -4,7 +4,7 @@ title: Codebase Consistency and Duplication Review
 status: Ready
 assignee: []
 created_date: '2026-11-20T07:34:00Z'
-updated_date: '2026-11-25T10:20:00Z'
+updated_date: '2026-11-25T10:40:00Z'
 labels:
   - handle:native-consistency-review
   - architecture
@@ -63,4 +63,6 @@ John's decisions, 2026-11-25 (from the items MSH-237 kept). Create tasks for the
 3. Remove the test-only material evaluators in mshogi-search (chu, shogi, tenjiku, tori, xiangqi evaluate and Evaluation) and the tests that exist to check them. Some callers are also the search-position differential tests (position_tests.rs compare functions), which AGENTS.md requires: remove only the evaluator assertions there and keep the board, hand, hash, check and legal-move comparisons. Tori earlier_evaluation test code is built on the evaluator and goes with it.
 
 Order update by John, 2026-11-25: MSH-240 runs before this review.
+
+John, 2026-11-25 (later): decision 1 is settled. Keep M2 (rename it), remove the Full judging mode, schema 2, the optional desktop Full analysis panel ("Advanced: Full mating reachability"), ExecutionPurpose::ChessFullReachability and the Full solver. Renaming unclear uses of "native" is its own task; do not add it as a review follow-up.
 <!-- SECTION:NOTES:END -->

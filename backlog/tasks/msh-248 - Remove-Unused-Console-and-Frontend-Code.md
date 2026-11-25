@@ -4,7 +4,7 @@ title: Remove Unused Console and Frontend Code
 status: Ready
 assignee: []
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-25T12:41:00Z'
+updated_date: '2026-11-25T16:26:00Z'
 labels:
   - cleanup
   - model:medium
@@ -28,6 +28,7 @@ MSH-209 found code that has no product caller or cannot run (checked 2026-11-25;
 <!-- AC:BEGIN -->
 - [ ] #1 Each listed item is removed, or kept with a current caller recorded in the notes; tests that only exercise removed code are removed, and documents that name removed console commands are updated.
 - [ ] #2 Workspace, frontend and desktop script tests pass; production line counts before and after are recorded.
+- [ ] #3 The ignored one-time measurement test record_timed_native_games in crates/mshogi-engine/tests/all_games_timing.rs and its now unused imports are removed; the other tests in that file stay.
 <!-- AC:END -->
 
 ## Implementation Notes
@@ -36,4 +37,6 @@ MSH-209 found code that has no product caller or cannot run (checked 2026-11-25;
 John, 2026-11-25: deletion tasks run before MSH-222, so later consolidation has less code.
 
 John, 2026-11-25: agreed to remove the listed console commands.
+
+2026-11-25, John: delete that one timing test in this task. It collected one-time evidence for MSH-179 (Clock and Session for All Games). Do this after MSH-246 (One Chess Judging Mode), which can edit the same file.
 <!-- SECTION:NOTES:END -->

@@ -199,15 +199,10 @@ fn budgets_and_cancellation_are_unknown_and_leave_input_unchanged() {
 }
 
 #[test]
-fn full_live_adjudication_records_mode_preserves_legacy_and_restores_undo() {
-    let legacy = AdjudicatedGame::from_fen(WALL, ClaimPolicy::ExplicitOnly).unwrap();
-    assert_eq!(legacy.outcome(), None);
-    assert!(
-        legacy
-            .record()
-            .to_json()
-            .starts_with("{\"schema_version\":1,")
-    );
+fn full_live_adjudication_records_mode_keeps_m2_and_restores_undo() {
+    let m2 = AdjudicatedGame::from_fen(WALL, ClaimPolicy::ExplicitOnly).unwrap();
+    assert_eq!(m2.outcome(), None);
+    assert!(m2.record().to_json().starts_with("{\"schema_version\":1,"));
     let game =
         AdjudicatedGame::from_fen_with_mode(WALL, ClaimPolicy::ExplicitOnly, full(unlimited()))
             .unwrap();

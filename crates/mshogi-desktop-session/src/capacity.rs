@@ -3,7 +3,7 @@ use super::*;
 use std::sync::{Arc, Mutex};
 
 /// Internal worker refusal keeps semantic/native errors distinct from resource
-/// facts. Public legacy error text is only a bounded diagnostic projection.
+/// facts. Public error text is only a bounded diagnostic projection.
 #[derive(Clone, Debug)]
 pub(crate) struct OperationFailure {
     pub diagnostic: String,

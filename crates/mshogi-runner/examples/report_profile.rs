@@ -59,7 +59,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     println!(
         "{}",
         serde_json::to_string_pretty(&serde_json::json!({
-            "mode": if mode.is_some() { "validated" } else { "legacy" },
+            "mode": if mode.is_some() { "validated" } else { "borrowed" },
             "input": path,
             "input_bytes": text.len(),
             "input_sha256": format!("{:x}", Sha256::digest(text.as_bytes())),

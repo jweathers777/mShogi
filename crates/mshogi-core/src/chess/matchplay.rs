@@ -226,7 +226,7 @@ pub struct MatchReply {
     /// Rejection does not imply a chess outcome.
     pub rejection: Option<MatchRejection>,
     /// Generated full-solver proof/witness or unfinished work, when requested.
-    /// Legacy M2 replies omit this field and preserve their original encoding.
+    /// M2 replies carry no evidence and omit this field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub feasibility_evidence: Option<MateReachability>,
 }
@@ -645,7 +645,7 @@ impl MatchRecord {
                 .any(|e| e.reply.feasibility_evidence.is_some())
         {
             return Err(MatchRecordError(
-                "legacy match cannot contain full-solver evidence".into(),
+                "M2 match cannot contain full-solver evidence".into(),
             ));
         }
         let game = AdjudicatedGame::replay_record_with_stop(&initial, &mut stopped)

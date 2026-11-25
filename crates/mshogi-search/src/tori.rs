@@ -61,8 +61,7 @@ impl Evaluation {
         }
     }
 }
-/// Material of a native position. This was the full evaluation of the earlier
-/// full-width search; saved observations of that search are checked with it.
+/// Native board and hand material; neither side's total establishes an outcome.
 pub fn evaluate(position: &Position) -> Evaluation {
     let mut e = Evaluation { sente: 0, gote: 0 };
     for side in [Side::Sente, Side::Gote] {

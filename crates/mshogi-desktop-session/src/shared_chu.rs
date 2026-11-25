@@ -40,10 +40,10 @@ pub(super) fn inspect(game: &c::Game, origin: &str) -> Result<inspection::Inspec
 }
 
 #[cfg(test)]
-mod observation_compatibility_tests {
+mod failure_observation_tests {
     use super::*;
     #[test]
-    fn historical_unsupported_and_search_failures_keep_distinct_unscored_meanings() {
+    fn engine_failures_keep_distinct_unscored_meanings() {
         let record = c::GameRecord::from_game(&c::Game::standard()).unwrap();
         for (kind, label) in [
             (
@@ -59,9 +59,6 @@ mod observation_compatibility_tests {
                 "Engine failure · unscored",
             ),
         ] {
-            // These transport limits were permitted for MSH-78's unsupported
-            // requests. Restoring their historical failures must not reinterpret
-            // them as a real current Chu search or lose their native meaning.
             let observation = ExecutionObservation::new(
                 ExecutionContext {
                     purpose: ExecutionPurpose::EngineTurn {},
@@ -77,7 +74,7 @@ mod observation_compatibility_tests {
                 ExecutionResult::Failure {
                     failure: mshogi_engine::EngineFailure {
                         kind,
-                        message: "Historical native failure".into(),
+                        message: "Native failure".into(),
                     },
                 },
             );

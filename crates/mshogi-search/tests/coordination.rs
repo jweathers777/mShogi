@@ -77,9 +77,9 @@ fn recorded_adjudication_mode_is_part_of_request_identity() {
     assert_eq!(context.base().adjudication_mode(), game.adjudication_mode());
     let result = complete(&coordinator);
     assert_eq!(coordinator.accept_result(&result, &game, 1), Ok(()));
-    let legacy = AdjudicatedGame::from_fen(STANDARD_START_FEN, ClaimPolicy::ExplicitOnly).unwrap();
+    let m2 = AdjudicatedGame::from_fen(STANDARD_START_FEN, ClaimPolicy::ExplicitOnly).unwrap();
     assert_eq!(
-        coordinator.accept_result(&result, &legacy, 1),
+        coordinator.accept_result(&result, &m2, 1),
         Err(StaleResult::ContextChanged)
     );
     assert_eq!(game, before);

@@ -12,7 +12,7 @@ pub struct ReachabilityLimits {
     /// Maximum generated legal transitions examined.
     pub max_transitions: Option<u64>,
 }
-/// Recorded live-adjudication configuration. Legacy constructors retain M2.
+/// Recorded live-adjudication configuration. The default is M2.
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case", deny_unknown_fields)]
 pub enum AdjudicationMode {

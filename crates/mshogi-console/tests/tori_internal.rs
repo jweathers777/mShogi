@@ -1,4 +1,4 @@
-//! Actual bundled native Tori entry point and retained historical failure compatibility.
+//! Actual bundled native Tori entry point.
 use mshogi_core::{native::CanonicalRecord, tori};
 use mshogi_engine::*;
 use std::{

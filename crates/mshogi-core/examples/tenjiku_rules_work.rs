@@ -1,6 +1,6 @@
 //! Reproducible native measurements, separate from playing strength and product latency.
 //!
-//! `cargo run -p mshogi-core --release --example tenjiku_work -- adams 128 play`
+//! `cargo run -p mshogi-core --release --example tenjiku_rules_work -- adams 128 play`
 //! Modes: play, controls, replay, undo. Timings are observations on this
 //! invocation. No outer watchdog is simulated.
 use mshogi_core::tenjiku::*;

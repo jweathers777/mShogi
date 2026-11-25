@@ -4,7 +4,7 @@ title: Codebase Consistency and Duplication Review
 status: Ready
 assignee: []
 created_date: '2026-11-20T07:34:00Z'
-updated_date: '2026-11-25T10:40:00Z'
+updated_date: '2026-11-25T10:49:00Z'
 labels:
   - handle:native-consistency-review
   - architecture
@@ -58,11 +58,11 @@ Order set by John, 2026-11-25: MSH-237, MSH-234, MSH-209, MSH-222, MSH-239, MSH-
 
 John's decisions, 2026-11-25 (from the items MSH-237 kept). Create tasks for them; do not decide them again.
 
-1. Chess has one judging mode and one record schema. John: use whichever of the two makes the most sense and remove the other. Recommendation: keep M2, remove Full and schema 2. Evidence: desktop record replay, engine server, console and experiment runner all reject Full records; docs/design.md says expensive exact proofs are not delivery gates; the Full solver has no practical runtime bound. Consequence: some dead positions outside the M2 material subset (for example a blocked pawn wall) are not recognized. Rename M2, because it is a milestone name. This is a rules change John approved: update docs/rules and tests, and get one fresh review. Open: whether the optional on-demand Full reachability analysis (ExecutionPurpose::ChessFullReachability) and its solver also go. Recommendation: remove them.
+1. Chess has one way of judging games and one record schema. There is no mode: remove AdjudicationMode and the name M2, and keep only the behavior that M2 has today (material-subset dead positions). Remove the Full mode, schema 2, the optional desktop Full analysis panel ("Advanced: Full mating reachability"), ExecutionPurpose::ChessFullReachability and the Full solver. Evidence: desktop record replay, engine server, console and experiment runner already reject Full records; docs/design.md says expensive exact proofs are not delivery gates; the Full solver has no practical runtime bound. Detecting only material cases is the usual practice. This is a rules change John approved: update docs/rules and tests, and get one fresh review.
 2. One clock policy for all games: the normal share (today ClockAllocation::Nominal). Remove ClockAllocation, the Hard path and the --clock-allocation flag; update docs/m5/strength-roadmap.md. Earlier Hard results are not comparable.
 3. Remove the test-only material evaluators in mshogi-search (chu, shogi, tenjiku, tori, xiangqi evaluate and Evaluation) and the tests that exist to check them. Some callers are also the search-position differential tests (position_tests.rs compare functions), which AGENTS.md requires: remove only the evaluator assertions there and keep the board, hand, hash, check and legal-move comparisons. Tori earlier_evaluation test code is built on the evaluator and goes with it.
 
 Order update by John, 2026-11-25: MSH-240 runs before this review.
 
-John, 2026-11-25 (later): decision 1 is settled. Keep M2 (rename it), remove the Full judging mode, schema 2, the optional desktop Full analysis panel ("Advanced: Full mating reachability"), ExecutionPurpose::ChessFullReachability and the Full solver. Renaming unclear uses of "native" is its own task; do not add it as a review follow-up.
+John, 2026-11-25: renaming unclear uses of "native" is MSH-241 (Replace Unclear Uses of Native in Names); do not add it as a review follow-up.
 <!-- SECTION:NOTES:END -->

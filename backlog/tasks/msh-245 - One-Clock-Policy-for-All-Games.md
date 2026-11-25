@@ -1,10 +1,11 @@
 ---
 id: MSH-245
 title: One Clock Policy for All Games
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-25T12:41:00Z'
+updated_date: '2026-11-25T15:26:00Z'
 labels:
   - cleanup
   - runner

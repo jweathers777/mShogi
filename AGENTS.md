@@ -188,6 +188,10 @@ labels. Change them only with a reason in the notes.
    the task notes.
 
 The coordinator does not do the task work itself.
+Run the coordinator itself at `model:medium`, `effort:medium`. Use
+`model:large`, `effort:high` for a planning session (ticket review, process
+changes, order of work) or to analyze a design or rules question before
+John decides.
 
 ## Documentation
 

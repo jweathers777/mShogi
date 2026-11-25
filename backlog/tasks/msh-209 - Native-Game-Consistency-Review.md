@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-20T07:34:00Z'
-updated_date: '2026-11-25T12:01:00Z'
+updated_date: '2026-11-25T12:11:00Z'
 labels:
   - handle:native-consistency-review
   - architecture
@@ -68,4 +68,6 @@ Order update by John, 2026-11-25: MSH-240 runs before this review.
 John, 2026-11-25: renaming unclear uses of "native" is MSH-241 (Replace Unclear Uses of Native in Names); do not add it as a review follow-up.
 
 John, 2026-11-25: the strength tooling is out of scope; MSH-243 (Game-Independent Strength Tool) reviews and consolidates it. Do not create tasks for it. The single clock policy decision (item 2) stays here and includes its changes to the match tool and runner. Follow-up tasks keep ordinals 6100 to 7900, so they run before MSH-238, MSH-243 and MSH-241.
+
+Checkpoint (claude, branch claude/msh-209-consistency-review): claimed 2026-11-25. Reading code; sweeps of console, runner/tools and desktop frontend/Tauri done; core, search, engine and desktop-session in progress. No inventory or follow-up tasks written yet.
 <!-- SECTION:NOTES:END -->

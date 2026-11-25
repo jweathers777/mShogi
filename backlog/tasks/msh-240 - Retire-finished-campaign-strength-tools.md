@@ -4,13 +4,14 @@ title: Retire finished-campaign strength tools
 status: Ready
 assignee: []
 created_date: '2026-11-25T09:51:00Z'
+updated_date: '2026-11-25T10:20:00Z'
 labels:
   - cleanup
   - model:medium
   - effort:medium
 dependencies: []
-priority: low
-ordinal: 248000
+priority: high
+ordinal: 2500
 ---
 
 ## Description
@@ -24,3 +25,9 @@ Some tools/strength scripts are kept unchanged only to re-verify evidence of fin
 - [ ] #1 Each tools/strength script that only re-verifies finished-campaign evidence is removed, with its tests, or has a recorded current use.
 - [ ] #2 Current match, screening and cloud tools still work and their Python tests pass.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+John, 2026-11-25: run before MSH-209, so the review has less code to read.
+<!-- SECTION:NOTES:END -->

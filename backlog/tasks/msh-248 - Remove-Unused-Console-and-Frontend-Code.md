@@ -1,10 +1,11 @@
 ---
 id: MSH-248
 title: Remove Unused Console and Frontend Code
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-25T16:26:00Z'
+updated_date: '2026-11-25T17:34:00Z'
 labels:
   - cleanup
   - model:medium
@@ -26,7 +27,7 @@ MSH-209 found code that has no product caller or cannot run (checked 2026-11-25;
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Each listed item is removed, or kept with a current caller recorded in the notes; tests that only exercise removed code are removed, and documents that name removed console commands are updated.
+- [ ] #1 Each listed item is removed, or kept with a current caller or a recorded decision of John's recorded in the notes; tests that only exercise removed code are removed, and documents that name removed console commands are updated.
 - [ ] #2 Workspace, frontend and desktop script tests pass; production line counts before and after are recorded.
 - [ ] #3 The ignored one-time measurement test record_timed_native_games in crates/mshogi-engine/tests/all_games_timing.rs and its now unused imports are removed; the other tests in that file stay.
 <!-- AC:END -->
@@ -39,4 +40,6 @@ John, 2026-11-25: deletion tasks run before MSH-222, so later consolidation has 
 John, 2026-11-25: agreed to remove the listed console commands.
 
 2026-11-25, John: delete that one timing test in this task. It collected one-time evidence for MSH-179 (Clock and Session for All Games). Do this after MSH-246 (One Chess Judging Mode), which can edit the same file.
+
+2026-11-25, claimed on branch claude/msh-248-remove-unused. Keep desktop/src/product/ToriBirdPiece.tsx, tori-birds.css, its test and every CSS class that they use: John decided on 2026-11-14 to keep this bird artwork (MSH-170 (Remove unused code) notes, docs/design.md "Pieces", docs/m4/tori/piece-artwork.md). This task was written without that decision. The coordinator asked John on 2026-11-25 whether he wants to change it. Criterion 1 now also permits an item that a recorded decision of John's keeps.
 <!-- SECTION:NOTES:END -->

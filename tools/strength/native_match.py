@@ -163,9 +163,9 @@ def summary(args, rows, start, failure=None):
             'players': players, 'failure': failure, 'rows': rows}
 
 
-def main(default_game="shogi"):
+def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--game', choices=['shogi', 'xiangqi', 'tori', 'chu', 'tenjiku'], default=default_game)
+    parser.add_argument('--game', choices=['shogi', 'xiangqi', 'tori', 'chu', 'tenjiku'], default='shogi')
     parser.add_argument('--profile', choices=['adams', 'muller'])
     parser.add_argument('--candidate', required=True)
     parser.add_argument('--baseline', required=True)

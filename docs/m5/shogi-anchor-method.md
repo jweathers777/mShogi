@@ -59,7 +59,8 @@ file order, one fresh opening per pair with colours reversed.
 
 ## Model
 
-`tools/strength/anchor_stats.py` unchanged (MSH-185): one logistic Elo
+`tools/strength/anchor_stats.py` unchanged (MSH-185; removed after the study,
+see Git history): one logistic Elo
 parameter, opponent ratings fixed, draws as half points, all scored games
 including bracketing, pair-cluster sandwich interval with the conservative
 routing envelope below 30 pairs. Prior Normal(2900, 500²), chosen from the

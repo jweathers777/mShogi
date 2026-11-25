@@ -122,9 +122,8 @@ replay, so its context also holds the pre-move game record that stored reports
 omit; compare it to the report after removing that field. Use a materially larger search than the player and
 report how often the judge actually reaches a greater depth.
 
-`python3 -m tools.strength.chu_assessment JUDGED.jsonl --out REPORT.json`
-applies the shared probability-loss rule and Chu symptom classes. Its error
-rows form a reusable full-history suite; both colors of an opening stay in
-the same split. Keep the suite with run evidence in GCS, not in Git. Classes
-alone do not prove a search defect. A same-family judge can miss shared errors;
-a sample rate does not describe every move in the games.
+Apply the blunder rule of the [strength roadmap](strength-roadmap.md) to these
+rows. Keep both colors of an opening in the same split and keep the error
+positions with run evidence in GCS, not in Git. Error classes alone do not
+prove a search defect. A same-family judge can miss shared errors; a sample
+rate does not describe every move in the games.

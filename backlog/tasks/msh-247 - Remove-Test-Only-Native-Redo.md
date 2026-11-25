@@ -4,6 +4,7 @@ title: Remove Test-Only Native Redo
 status: Ready
 assignee: []
 created_date: '2026-11-25T12:21:00Z'
+updated_date: '2026-11-25T12:41:00Z'
 labels:
   - cleanup
   - core
@@ -12,7 +13,7 @@ labels:
 milestone: m-6
 dependencies: []
 priority: medium
-ordinal: 6400
+ordinal: 3400
 ---
 
 ## Description
@@ -27,3 +28,9 @@ Tori, Chu and Tenjiku have redo tokens at two levels: Game::redo with GameRedo a
 - [ ] #2 Tests that only check redo are removed; undo, rules, perft and record tests pass with unchanged expected results.
 - [ ] #3 Production line counts before and after are recorded.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+John, 2026-11-25: deletion tasks run before MSH-222, so later consolidation has less code.
+<!-- SECTION:NOTES:END -->

@@ -4,6 +4,7 @@ title: Remove Unused Console and Frontend Code
 status: Ready
 assignee: []
 created_date: '2026-11-25T12:21:00Z'
+updated_date: '2026-11-25T12:41:00Z'
 labels:
   - cleanup
   - model:medium
@@ -11,7 +12,7 @@ labels:
 milestone: m-6
 dependencies: []
 priority: medium
-ordinal: 6500
+ordinal: 3500
 ---
 
 ## Description
@@ -28,3 +29,11 @@ MSH-209 found code that has no product caller or cannot run (checked 2026-11-25;
 - [ ] #1 Each listed item is removed, or kept with a current caller recorded in the notes; tests that only exercise removed code are removed, and documents that name removed console commands are updated.
 - [ ] #2 Workspace, frontend and desktop script tests pass; production line counts before and after are recorded.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+John, 2026-11-25: deletion tasks run before MSH-222, so later consolidation has less code.
+
+John, 2026-11-25: agreed to remove the listed console commands.
+<!-- SECTION:NOTES:END -->

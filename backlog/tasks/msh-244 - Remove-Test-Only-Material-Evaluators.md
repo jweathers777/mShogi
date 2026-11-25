@@ -4,6 +4,7 @@ title: Remove Test-Only Material Evaluators
 status: Ready
 assignee: []
 created_date: '2026-11-25T12:20:00Z'
+updated_date: '2026-11-25T12:41:00Z'
 labels:
   - cleanup
   - search
@@ -12,7 +13,7 @@ labels:
 milestone: m-6
 dependencies: []
 priority: medium
-ordinal: 6100
+ordinal: 3100
 ---
 
 ## Description
@@ -27,3 +28,9 @@ John decided on 2026-11-25 (MSH-209 decision 3): the material evaluate functions
 - [ ] #2 The differential tests still compare board, hands, hash, check and legal moves against the native rules; perft and differential tests pass.
 - [ ] #3 piece_value and the search evaluation (SearchPosition::evaluate) are unchanged; workspace checks pass.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+John, 2026-11-25: deletion tasks run before MSH-222, so later consolidation has less code.
+<!-- SECTION:NOTES:END -->

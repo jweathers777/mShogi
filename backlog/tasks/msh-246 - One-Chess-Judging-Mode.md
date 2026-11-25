@@ -4,6 +4,7 @@ title: One Chess Judging Mode
 status: Ready
 assignee: []
 created_date: '2026-11-25T12:21:00Z'
+updated_date: '2026-11-25T12:41:00Z'
 labels:
   - rules
   - chess
@@ -13,7 +14,7 @@ labels:
 milestone: m-6
 dependencies: []
 priority: medium
-ordinal: 6300
+ordinal: 3300
 ---
 
 ## Description
@@ -29,3 +30,9 @@ John decided on 2026-11-25 (MSH-209 decision 1; a rules change that John approve
 - [ ] #3 docs/rules (chess-adjudication, chess-completeness, chess-coverage, chess-match-api) describe the one behavior; rules tests whose expected results come from the rules pass and perft is unchanged.
 - [ ] #4 One review by a fresh agent session.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+John, 2026-11-25: deletion tasks run before MSH-222, so later consolidation has less code.
+<!-- SECTION:NOTES:END -->

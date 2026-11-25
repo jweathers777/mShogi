@@ -4,6 +4,7 @@ title: One Clock Policy for All Games
 status: Ready
 assignee: []
 created_date: '2026-11-25T12:21:00Z'
+updated_date: '2026-11-25T12:41:00Z'
 labels:
   - cleanup
   - runner
@@ -12,7 +13,7 @@ labels:
 milestone: m-6
 dependencies: []
 priority: medium
-ordinal: 6200
+ordinal: 3200
 ---
 
 ## Description
@@ -27,3 +28,9 @@ John decided on 2026-11-25 (MSH-209 decision 2): every game uses the normal shar
 - [ ] #2 The watchdog validation uses the bound of the one remaining policy, or the notes record why a larger bound stays.
 - [ ] #3 docs/m5/strength-roadmap.md and docs/m5/chu-strength-harness.md describe the one policy and say that earlier Hard results are not comparable; Rust and Python tests pass.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+John, 2026-11-25: deletion tasks run before MSH-222, so later consolidation has less code.
+<!-- SECTION:NOTES:END -->

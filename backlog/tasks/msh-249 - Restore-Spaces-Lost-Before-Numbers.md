@@ -4,6 +4,7 @@ title: Restore Spaces Lost Before Numbers
 status: Ready
 assignee: []
 created_date: '2026-11-25T12:21:00Z'
+updated_date: '2026-11-25T12:41:00Z'
 labels:
   - cleanup
   - model:small
@@ -11,7 +12,7 @@ labels:
 milestone: m-6
 dependencies: []
 priority: medium
-ordinal: 6600
+ordinal: 3600
 ---
 
 ## Description
@@ -25,3 +26,9 @@ An earlier bulk edit removed the space between a word and the number after it in
 - [ ] #1 Comments, messages and test text in crates/, desktop/ and tools/ have a space between a word and a number; the damaged chu/game.rs comments say what they mean.
 - [ ] #2 Tests that check changed messages are updated; workspace and frontend checks pass.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+John, 2026-11-25: deletion tasks run before MSH-222, so later consolidation has less code.
+<!-- SECTION:NOTES:END -->

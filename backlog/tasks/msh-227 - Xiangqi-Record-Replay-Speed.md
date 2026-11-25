@@ -4,7 +4,7 @@ title: Xiangqi Record Replay Speed
 status: Ready
 assignee: []
 created_date: '2026-11-22T15:18:00Z'
-updated_date: '2026-11-25T12:23:00Z'
+updated_date: '2026-11-25T12:41:00Z'
 labels:
   - core
   - performance
@@ -13,7 +13,7 @@ labels:
 milestone: m-6
 dependencies: []
 priority: medium
-ordinal: 6000
+ordinal: 6850
 ---
 
 ## Description
@@ -37,4 +37,6 @@ Cause analysis (2026-11-22, code reading, not yet profiled): Game::submit (xiang
 MSH-229 inventory entries 5/9/10 identify this task as the existing Xiangqi implementation work for per-command full-record encoding and transaction/history copies. MSH-232 covers the separate Tori/Chu/Tenjiku resource-admission cuts; MSH-231 covers redundant record metadata. Preserve atomic native command admission and saved-game safety, and measure after the MSH-228/225 desktop simplification.
 
 MSH-209 (2026-11-25): two cross-game follow-ups touch the same Xiangqi code. MSH-250 (Token-Only Native Request Context): each request copies and compares the full command history (game.context() and submit), which makes replay quadratic in all games. MSH-251 (One Repetition Index for All Games): xiangqi/game.rs occurrences scans all earlier identities after each command. If this task changes either in Xiangqi, record it here so that those tasks leave Xiangqi as it is.
+
+John, 2026-11-25: run after MSH-250 and MSH-251, which change the same replay cost. Measure again first; they may already meet this goal.
 <!-- SECTION:NOTES:END -->

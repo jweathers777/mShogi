@@ -4,7 +4,7 @@ title: One Native Record Size Limit
 status: To Do
 assignee: []
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-25T12:23:00Z'
+updated_date: '2026-11-25T12:41:00Z'
 labels:
   - core
   - needs-john
@@ -32,4 +32,6 @@ Native record byte limits differ by game with no recorded reason: Tori and Chu 5
 
 <!-- SECTION:NOTES:BEGIN -->
 Question for John (MSH-209, 2026-11-25): may the per-game native record limits become one limit? Recommendation: yes. Use one limit for every game, equal to the room for the payload in the shared envelope (1 MiB minus the envelope header), and check it in one place in the shared record code. Tori and Chu games can then grow about twice as long before a refusal; Shogi, Xiangqi and Tenjiku lose only the header room; no game rule changes. Set the task to Ready when John approves.
+
+Finding, 2026-11-25: both 1 MiB caps are our own choices (MSH-68, MSH-69); no recorded reason for the number. The engine request cap (mshogi-engine MAX_REQUEST_BYTES) is also 1 MiB and a full request carries the record plus overhead, so a record just under 1 MiB can be saved but may be refused by the engine. Revised recommendation, waiting for John: one record limit of 1 MiB for all games; derive the saved wrapper and engine request caps from it plus a fixed overhead allowance.
 <!-- SECTION:NOTES:END -->

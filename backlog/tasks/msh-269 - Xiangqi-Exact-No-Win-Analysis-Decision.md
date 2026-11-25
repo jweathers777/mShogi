@@ -1,36 +1,39 @@
 ---
 id: MSH-269
-title: Xiangqi Exact No-Win Analysis Decision
-status: To Do
+title: Remove Xiangqi Exact No-Win Analysis
+status: Ready
 assignee: []
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-25T12:23:00Z'
+updated_date: '2026-11-25T12:41:00Z'
 labels:
   - rules
   - xiangqi
-  - needs-john
   - model:large
   - effort:high
 milestone: m-6
 dependencies: []
 priority: medium
-ordinal: 7890
+ordinal: 3700
 ---
 
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-Xiangqi has an exact Article 3.2A graph search: mshogi-core xiangqi/exact.rs (381 lines) and exact_request.rs (160), tests/xiangqi_exact.rs (611). Only an explicit desktop analysis request starts it, and the desktop keeps its reports as session evidence (desktop-session shared_xiangqi.rs exact_observations, shared_xiangqi_verification.rs, the NativeGame Evidence type, desktop/src/product/XiangqiAssessment.tsx). Game adjudication does not use it: xiangqi/game.rs uses the fast sound recognition of xiangqi/assessment.rs. It is the Xiangqi parallel of the Chess Full reachability that John removed on 2026-11-25 (MSH-246, One Chess Judging Mode). Removing a desktop analysis feature changes product behavior, so it needs John.
+John (2026-11-25): remove the optional Xiangqi exact Article 3.2A analysis and keep only the fast sound no-win recognition that game adjudication uses. Remove the solver and request (mshogi-core xiangqi/exact.rs and exact_request.rs, tests/xiangqi_exact.rs), the desktop evidence and its UI (shared_xiangqi.rs exact observations, shared_xiangqi_verification.rs, the NativeGame Evidence type if nothing else needs it, XiangqiAssessment.tsx parts) and the xiangqi_exact_probe example. The selected Xiangqi rules profile names this bounded exact path, so update the profile and its related documents.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 John's choice is recorded in the notes.
-- [ ] #2 If John approves removal: the exact solver, its request and evidence types, the desktop evidence and its UI are removed; the fast assessment stays; Xiangqi rules tests whose expected results come from the rules pass; one review by a fresh agent session.
+- [ ] #1 The exact solver, its request and evidence types, the desktop evidence and UI and the probe example are removed; no code or user interface offers the exact analysis; the fast assessment is unchanged.
+- [ ] #2 The Xiangqi rules profile (docs/m4/xiangqi/profile-proposal.md) and related documents state that only the fast recognition applies; no other rule changes.
+- [ ] #3 Xiangqi rules tests of the remaining behavior keep their expected results; perft and workspace, frontend and affected checks pass; production line counts before and after are recorded.
+- [ ] #4 One review by a fresh agent session.
 <!-- AC:END -->
 
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 Question for John (MSH-209, 2026-11-25): apply decision 1 (one Chess judging mode) to Xiangqi as well, and keep only the fast sound no-win recognition? Recommendation: yes, for the same reasons as for Chess: expensive exact proofs are not delivery gates, and the usual practice is to detect only material cases. It removes about 1,150 lines in mshogi-core (solver, request and tests) plus the desktop evidence and UI. If John says no, archive this task. Set it to Ready when John approves.
+
+John, 2026-11-25: Yes, remove it. This answers the question above and approves the rules profile change.
 <!-- SECTION:NOTES:END -->

@@ -1,5 +1,5 @@
 //! Differential tests use the independent authoritative native Shogi rules.
-use super::position::ShogiPosition;
+use super::position::{ShogiPosition, VALUE, face_index};
 use crate::alphabeta::mate::{self, MateLimits, MateResult, MateTable};
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
 use mshogi_core::shogi::{
@@ -365,7 +365,7 @@ fn incremental_placement_matches_native_recalculation() {
             }
             for sq in Square::all() {
                 if let Some(piece) = native.piece(sq).filter(|p| p.side == side) {
-                    totals[i] += super::piece_value(piece.kind, piece.promoted);
+                    totals[i] += VALUE[face_index(piece.kind, piece.promoted)];
                     if piece.kind == PieceKind::Pawn && !piece.promoted {
                         totals[i] += 4 * if i == 0 {
                             8 - sq.index() / 9
@@ -384,7 +384,7 @@ fn incremental_placement_matches_native_recalculation() {
             }
             for kind in PieceKind::HAND_KINDS {
                 totals[i] += i32::from(native.hand(side).count(kind))
-                    * (super::piece_value(kind, false) + 10);
+                    * (VALUE[face_index(kind, false)] + 10);
             }
         }
         let side = usize::from(native.side_to_move() == Side::Gote);

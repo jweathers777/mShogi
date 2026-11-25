@@ -4,7 +4,7 @@ title: Tenjiku Strength Harness
 status: To Do
 assignee: []
 created_date: '2026-11-20T22:51:00Z'
-updated_date: '2026-11-25T09:15:00Z'
+updated_date: '2026-11-25T11:27:00Z'
 labels:
   - tenjiku
   - search
@@ -33,4 +33,6 @@ Goal: the harness step of the per-game classical strength program (docs/m5/stren
 
 <!-- SECTION:NOTES:BEGIN -->
 2026-11-25 (John): Tenjiku comes last, after the codebase cleanup (MSH-237 to MSH-235). Set to Ready when John releases Tenjiku.
+
+Note from the coordinator, 2026-11-25: MSH-240 removed the move-quality tools (tools/strength blunder_rules.py, chu_assessment.py, tori_assessment.py and the judge scripts) and the opening and tactics builders (make_*). The strength program still needs a blunder screen judged by a deeper search for games after Xiangqi. Before writing new code, read the removed versions in Git at commit 52f39b8 (git show 52f39b8:tools/strength/blunder_rules.py) and build one generic tool.
 <!-- SECTION:NOTES:END -->

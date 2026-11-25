@@ -4,7 +4,7 @@ title: Establish and meet measured tenjiku shogi engine strength criteria
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-25T09:15:00Z'
+updated_date: '2026-11-25T11:27:00Z'
 labels:
   - model:medium
   - effort:medium
@@ -62,4 +62,6 @@ Move generation discussion slot: MSH-202 (Tenjiku Move Generation Deep Dive).
 2026-11-20 (John): depends on MSH-202 (Tenjiku Move Generation Deep Dive). Tenjiku program step tasks (selectivity and later), when created, depend on MSH-202.
 
 2026-11-25 (John): the October criteria (independent opponent pool, release targets met in matches) are replaced by the strength program criteria above. Next steps: MSH-214 (Tenjiku Strength Harness), then MSH-202 (Tenjiku Search Speed).
+
+Note from the coordinator, 2026-11-25: MSH-240 removed the move-quality tools (tools/strength blunder_rules.py, chu_assessment.py, tori_assessment.py and the judge scripts) and the opening and tactics builders (make_*). The strength program still needs a blunder screen judged by a deeper search for games after Xiangqi. Before writing new code, read the removed versions in Git at commit 52f39b8 (git show 52f39b8:tools/strength/blunder_rules.py) and build one generic tool.
 <!-- SECTION:NOTES:END -->

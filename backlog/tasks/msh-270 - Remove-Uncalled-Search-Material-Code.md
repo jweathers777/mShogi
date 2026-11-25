@@ -4,6 +4,7 @@ title: Remove Uncalled Search Material Code
 status: Ready
 assignee: []
 created_date: '2026-11-25T13:01:00Z'
+updated_date: '2026-11-25T15:25:00Z'
 labels:
   - cleanup
   - search
@@ -11,8 +12,8 @@ labels:
   - effort:low
 milestone: m-6
 dependencies: []
-priority: low
-ordinal: 248000
+priority: medium
+ordinal: 3900
 ---
 
 ## Description
@@ -27,3 +28,9 @@ MSH-244 (Remove Test-Only Material Evaluators) removed the last callers of Shogi
 - [ ] #2 Shogi piece values are defined in one place and keep the same numbers
 - [ ] #3 Search results and evaluation are unchanged; workspace checks pass
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+2026-11-25: John approved moving this ahead of MSH-222 (Shared Engine Adapters) with the other deletion tasks.
+<!-- SECTION:NOTES:END -->

@@ -8,7 +8,7 @@ use crate::alphabeta::{self, SearchPosition, Searcher};
 use mshogi_core::xiangqi::{
     Action, Conclusion, ExactAnalysis, ExactFailure, ExactLimits, ExactObservation, ExactStop,
     ExactVerdict, Game, GameCommand, GameError, GameRequest, NoWinAssessment, PendingAdjudication,
-    PieceKind, Position, RecordError, Side,
+    PieceKind, RecordError, Side,
 };
 use position::XiangqiPosition;
 use std::{error::Error, fmt};
@@ -40,45 +40,6 @@ pub const fn piece_value(kind: PieceKind) -> i32 {
         PieceKind::Cannon => 450,
         PieceKind::Soldier => 100,
     }
-}
-/// Explicit native ownership; neither a large score nor zero establishes an outcome.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct Evaluation {
-    /// Red material plus soldier advancement.
-    pub red: i32,
-    /// Black material plus soldier advancement.
-    pub black: i32,
-}
-impl Evaluation {
-    /// Positive favors this named side, independent of turn.
-    pub const fn score_for(self, side: Side) -> i32 {
-        match side {
-            Side::Red => self.red - self.black,
-            Side::Black => self.black - self.red,
-        }
-    }
-}
-/// Only positional term: +20 per forward rank beyond the soldier's home rank3.
-/// Black's forward rank is9-rank; no mobility/king-safety or dead-position heuristic.
-pub fn evaluate(position: &Position) -> Evaluation {
-    let mut value = Evaluation { red: 0, black: 0 };
-    for (at, piece) in position.pieces() {
-        let forward_rank = match piece.side {
-            Side::Red => at.rank(),
-            Side::Black => 9 - at.rank(),
-        };
-        let advance = if piece.kind == PieceKind::Soldier {
-            20 * i32::from(forward_rank.saturating_sub(3))
-        } else {
-            0
-        };
-        let total = match piece.side {
-            Side::Red => &mut value.red,
-            Side::Black => &mut value.black,
-        };
-        *total += piece_value(piece.kind) + advance;
-    }
-    value
 }
 /// Mandatory finite deterministic work. Zero visits is explicitly supported.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]

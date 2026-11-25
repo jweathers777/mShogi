@@ -202,15 +202,15 @@ its private full-width minimax. The trait and the core did not change.
   each piece, Phoenix safety (own and attacked neighbors, enemy pieces near
   it, drop threats), Eagle and Quail mobility, and tempo. Board, hand and
   table terms are kept incrementally; Phoenix safety and mobility are computed
-  per node. `INITIAL` is the earlier evaluation, and a test checks that it
-  gives the earlier score. The corpus is cloud self-play of the predecessor
-  (6,400 pairs at 2 s + 0.05 s, about 778,000 quiet positions, split by
-  opening). Only about 38% of Tori game positions are quiet, so a corpus needs
-  about twice the games of Xiangqi. The static fit won about +255 Elo against
-  the predecessor; the per-node terms, fitted separately and tested against
-  the static fit, won about +99 Elo more. Unlike Xiangqi, the per-node terms
-  are kept. Exchange (SEE) and ordering values still use the earlier fixed
-  piece values. The evaluator identity is unchanged.
+  per node. `INITIAL` is the earlier evaluation. The corpus is cloud self-play
+  of the predecessor (6,400 pairs at 2 s + 0.05 s, about 778,000 quiet
+  positions, split by opening). Only about 38% of Tori game positions are
+  quiet, so a corpus needs about twice the games of Xiangqi. The static fit
+  won about +255 Elo against the predecessor; the per-node terms, fitted
+  separately and tested against the static fit, won about +99 Elo more. Unlike
+  Xiangqi, the per-node terms are kept. Exchange (SEE) and ordering values
+  still use the earlier fixed piece values. The evaluator identity is
+  unchanged.
 
 Result (Apple M1 Pro, engine binaries through the internal protocol, native
 Tori game as controller, eight seeded openings with both colors for each

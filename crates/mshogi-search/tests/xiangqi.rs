@@ -64,7 +64,7 @@ fn exact_limits() -> x::ExactLimits {
 }
 
 #[test]
-fn independent_material_and_native_soldier_advancement_arithmetic() {
+fn independent_piece_values() {
     for (kind, value) in [
         (x::PieceKind::General, 0),
         (x::PieceKind::Advisor, 200),
@@ -76,26 +76,6 @@ fn independent_material_and_native_soldier_advancement_arithmetic() {
     ] {
         assert_eq!(piece_value(kind), value);
     }
-    // 2*(200+200+400+900+450)+5*100 per side; home soldiers have no bonus.
-    let initial = x::Game::standard(x::ClaimPolicy::Explicit).unwrap();
-    assert_eq!(
-        evaluate(initial.position()),
-        Evaluation {
-            red: 4800,
-            black: 4800
-        }
-    );
-    // Red c3 is unadvanced; Black e5 has forward rank4, worth100+20.
-    let p = x::Position::from_fen("4k4/9/9/9/4p4/9/2P6/9/9/4K4 w - - 0 1").unwrap();
-    assert_eq!(
-        evaluate(&p),
-        Evaluation {
-            red: 100,
-            black: 120
-        }
-    );
-    assert_eq!(evaluate(&p).score_for(x::Side::Red), -20);
-    assert_eq!(evaluate(&p).score_for(x::Side::Black), 20);
     assert_ne!(EVALUATOR_ID, SEARCH_ID);
 }
 

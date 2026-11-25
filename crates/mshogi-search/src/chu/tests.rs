@@ -1,5 +1,5 @@
 use super::*;
-use mshogi_core::chu::{Base, GameRecord, Piece, RootMetadata};
+use mshogi_core::chu::{Base, GameRecord, Piece, Position, RootMetadata};
 fn diagram(entries: &[(&str, Side, Base, bool)], turn: Side) -> Game {
     Game::from_root(
         Position::from_diagram(
@@ -27,22 +27,8 @@ fn tactical() -> Game {
     )
 }
 #[test]
-fn material_is_native_face_owned_and_not_an_outcome() {
-    let g = tactical();
-    let e = evaluate(g.position());
-    assert_eq!(
-        e,
-        Evaluation {
-            sente: piece_value(Face::King) + piece_value(Face::Lion),
-            gote: piece_value(Face::King) + piece_value(Face::Pawn) + piece_value(Face::Rook)
-        }
-    );
-    assert_eq!(
-        e.score_for(Side::Gote),
-        piece_value(Face::Pawn) + piece_value(Face::Rook) - piece_value(Face::Lion)
-    );
+fn the_prince_has_the_king_value() {
     assert_eq!(piece_value(Face::Prince), piece_value(Face::King));
-    assert_eq!(g.conclusion(), None);
 }
 #[test]
 fn complete_compound_capture_search_restores_exact_context() {

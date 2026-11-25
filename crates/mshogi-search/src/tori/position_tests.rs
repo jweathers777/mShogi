@@ -54,51 +54,6 @@ fn diagram(entries: &[(&str, Side, Face)], hands: [Hand; 2], turn: Side) -> Game
     )
     .unwrap()
 }
-/// The untuned evaluation before MSH-206, from the side to move: board and
-/// hand material, Swallow advance 4 per rank, 8 per own piece next to the
-/// Phoenix, 10 per hand piece and a tempo of 10.
-fn earlier_evaluation(native: &Position) -> i32 {
-    let material = super::evaluate(native);
-    let side_score = |side: Side| {
-        let squares: Vec<(usize, Piece)> = Square::all()
-            .filter_map(|s| native.piece(s).map(|p| (s.index(), p)))
-            .collect();
-        let phoenix = squares
-            .iter()
-            .find(|(_, p)| p.side == side && p.face == Face::Phoenix)
-            .unwrap()
-            .0;
-        let mut score = 0;
-        for &(at, p) in &squares {
-            if p.side != side {
-                continue;
-            }
-            if p.face == Face::Swallow {
-                let row = (at / 7) as i32;
-                score += 4 * if side == Side::Sente { 6 - row } else { row };
-            }
-            if at != phoenix
-                && (at / 7).abs_diff(phoenix / 7) <= 1
-                && (at % 7).abs_diff(phoenix % 7) <= 1
-            {
-                score += 8;
-            }
-        }
-        score
-            + 10 * Face::HANDS
-                .iter()
-                .map(|&f| i32::from(native.hand(side).count(f)))
-                .sum::<i32>()
-    };
-    let us = native.side_to_move();
-    let them = if us == Side::Sente {
-        Side::Gote
-    } else {
-        Side::Sente
-    };
-    material.score_for(us) + side_score(us) - side_score(them) + 10
-}
-
 /// Compare one search position with the native position of `game`.
 fn compare(position: &mut ToriPosition, game: &Game) {
     let native = game.position();
@@ -115,13 +70,8 @@ fn compare(position: &mut ToriPosition, game: &Game) {
             );
         }
     }
-    // The incremental evaluation is the feature sum with the compiled
-    // weights, and the untuned weights give the earlier evaluation.
+    // The incremental evaluation is the feature sum with the compiled weights.
     assert_eq!(position.evaluate(), eval::score(position, &eval::DEFAULT));
-    assert_eq!(
-        eval::score(position, &eval::INITIAL),
-        earlier_evaluation(native)
-    );
     assert_eq!(position.hash(), position.hash_from_scratch());
     assert_eq!(
         position.in_check(),

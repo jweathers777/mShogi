@@ -14,8 +14,7 @@ use crate::{
     search::SearchStatus,
 };
 use mshogi_core::tori::{
-    Action, Conclusion, Face, Game, GameCommand, GameError, GameRequest, Position, RecordError,
-    Side, Square,
+    Action, Conclusion, Game, GameCommand, GameError, GameRequest, RecordError, Side,
 };
 use position::ToriPosition;
 pub use position::piece_value;
@@ -44,43 +43,6 @@ pub const DEFAULT_LIMITS: Limits = Limits {
 };
 const TABLE_MEGABYTES: usize = 16;
 
-/// Material of each side on the board and in hand.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct Evaluation {
-    /// Sente material.
-    pub sente: i32,
-    /// Gote material.
-    pub gote: i32,
-}
-impl Evaluation {
-    /// Positive favors this named native side.
-    pub const fn score_for(self, side: Side) -> i32 {
-        match side {
-            Side::Sente => self.sente - self.gote,
-            Side::Gote => self.gote - self.sente,
-        }
-    }
-}
-/// Native board and hand material; neither side's total establishes an outcome.
-pub fn evaluate(position: &Position) -> Evaluation {
-    let mut e = Evaluation { sente: 0, gote: 0 };
-    for side in [Side::Sente, Side::Gote] {
-        let value = Square::all()
-            .filter_map(|square| position.piece(square))
-            .filter(|p| p.side == side)
-            .map(|p| piece_value(p.face))
-            .sum::<i32>()
-            + Face::HANDS
-                .into_iter()
-                .map(|f| i32::from(position.hand(side).count(f)) * piece_value(f))
-                .sum::<i32>();
-        match side {
-            Side::Sente => e.sente = value,
-            Side::Gote => e.gote = value,
-        }
-    }
-    e
-}
 /// Mandatory finite deterministic limits.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Limits {

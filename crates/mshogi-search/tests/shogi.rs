@@ -166,61 +166,6 @@ fn choice(result: &SearchResult) -> Choice {
     c
 }
 #[test]
-fn independent_material_arithmetic_covers_promoted_board_and_both_hands() {
-    let p = Position::from_sfen("8k/9/9/9/9/9/9/9/K8 b 2R2B4G4S4N4L18P 1").unwrap();
-    assert_eq!(
-        evaluate(&p),
-        Evaluation {
-            sente: 10800,
-            gote: 0
-        }
-    );
-    assert_eq!(evaluate(&p).score_for(Side::Gote), -10800);
-    let mut board = [None; 81];
-    board["9i".parse::<Square>().unwrap().index()] =
-        Piece::new(Side::Sente, PieceKind::King, false);
-    board["1a".parse::<Square>().unwrap().index()] = Piece::new(Side::Gote, PieceKind::King, false);
-    for (i, kind) in [
-        PieceKind::Pawn,
-        PieceKind::Lance,
-        PieceKind::Knight,
-        PieceKind::Silver,
-        PieceKind::Bishop,
-        PieceKind::Rook,
-    ]
-    .into_iter()
-    .enumerate()
-    {
-        board[Square::new((i + 1) as u8, 5).unwrap().index()] = Piece::new(Side::Sente, kind, true);
-    }
-    board["8h".parse::<Square>().unwrap().index()] =
-        Piece::new(Side::Sente, PieceKind::Gold, false);
-    let hands = [
-        Hand::from_counts(&[(PieceKind::Pawn, 2)]).unwrap(),
-        Hand::from_counts(&[
-            (PieceKind::Rook, 1),
-            (PieceKind::Bishop, 1),
-            (PieceKind::Gold, 1),
-            (PieceKind::Silver, 1),
-            (PieceKind::Knight, 1),
-            (PieceKind::Lance, 1),
-            (PieceKind::Pawn, 3),
-        ])
-        .unwrap(),
-    ];
-    let p = Position::from_diagram(board, hands, Side::Gote, Some(17)).unwrap();
-    assert_eq!(
-        evaluate(&p),
-        Evaluation {
-            sente: 4600,
-            gote: 3300
-        }
-    );
-    assert_eq!(evaluate(&p).score_for(Side::Sente), 1300);
-    assert_eq!(evaluate(&p).score_for(Side::Gote), -1300);
-    assert_ne!(EVALUATOR_ID, SEARCH_ID);
-}
-#[test]
 fn independent_capture_demote_promotion_and_mating_drop_selections() {
     // Sente's King stands on its castled square (see the optional-promotion test).
     for (sfen, action) in [
@@ -253,7 +198,6 @@ fn independent_capture_demote_promotion_and_mating_drop_selections() {
 fn declaration_is_a_native_terminal_choice_at_root() {
     let root = "K8/1RB6/1+P+P+P+P+P+P+P+P/9/9/9/9/9/8k b B5P 1";
     let mut native = game(root);
-    assert_eq!(evaluate(native.position()).score_for(Side::Sente), 6700);
     assert_eq!(native.declaration_eligibility(Side::Sente).points, 28);
     let result = run(&native, 4);
     assert_eq!(choice(&result), Choice::Declare { actor: Side::Sente });
@@ -367,7 +311,6 @@ fn native_terminal_winner_precedes_static_score_and_declared_length() {
         "k6rr/9/9/9/9/9/9/9/8K b - 322",
     ] {
         let game = game(sfen);
-        assert_eq!(evaluate(game.position()).score_for(Side::Sente), -1600);
         let result = run(&game, 1);
         assert_eq!(result.score, Some(-WIN_SCORE));
         assert!(matches!(

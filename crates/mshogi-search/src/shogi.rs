@@ -6,7 +6,7 @@ mod position_tests;
 use crate::alphabeta::{self, SearchPosition, Searcher, Status};
 use crate::search::SearchStatus;
 use mshogi_core::shogi::{
-    Action, Conclusion, Game, GameCommand, GameError, GameRequest, PieceKind, Position, Side,
+    Action, Conclusion, Game, GameCommand, GameError, GameRequest, PieceKind, Side,
 };
 use position::ShogiPosition;
 use std::{error::Error, fmt};
@@ -55,45 +55,6 @@ pub const fn piece_value(kind: PieceKind, promoted: bool) -> i32 {
             }
         }
     }
-}
-/// Material only; neither a zero score nor a large score establishes an outcome.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct Evaluation {
-    /// Board plus unpromoted hand resources owned by Sente.
-    pub sente: i32,
-    /// Board plus unpromoted hand resources owned by Gote.
-    pub gote: i32,
-}
-impl Evaluation {
-    /// Positive favors the named native side, independent of current turn.
-    pub const fn score_for(self, side: Side) -> i32 {
-        match side {
-            Side::Sente => self.sente - self.gote,
-            Side::Gote => self.gote - self.sente,
-        }
-    }
-}
-/// Inspect native pieces and both hands; no legality/history/outcome approximation.
-pub fn evaluate(position: &Position) -> Evaluation {
-    let mut result = Evaluation { sente: 0, gote: 0 };
-    for piece in position.board().iter().flatten() {
-        let total = match piece.side {
-            Side::Sente => &mut result.sente,
-            Side::Gote => &mut result.gote,
-        };
-        *total += piece_value(piece.kind, piece.promoted);
-    }
-    for side in [Side::Sente, Side::Gote] {
-        let hand = position.hand(side);
-        let total = match side {
-            Side::Sente => &mut result.sente,
-            Side::Gote => &mut result.gote,
-        };
-        for kind in PieceKind::HAND_KINDS {
-            *total += i32::from(hand.count(kind)) * piece_value(kind, false);
-        }
-    }
-    result
 }
 /// Mandatory deterministic limits. Zero nodes visits nothing and publishes no choice.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]

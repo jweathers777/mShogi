@@ -65,9 +65,6 @@ fn compare_state(p: &ChuPosition, native: &LocalPosition) {
     assert_eq!(p.hash(), fresh.hash());
     assert_eq!(p.evaluate(), fresh.evaluate());
     assert_eq!(p.in_check(), fresh.in_check());
-    let e = super::evaluate(native.position());
-    assert_eq!(p.material(Side::Sente), e.sente);
-    assert_eq!(p.material(Side::Gote), e.gote);
 }
 fn compare(p: &mut ChuPosition, native: &LocalPosition) {
     compare_state(p, native);

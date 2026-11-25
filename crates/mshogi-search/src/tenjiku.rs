@@ -5,8 +5,8 @@ mod position_tests;
 use crate::alphabeta::{self, Searcher};
 use crate::search::SearchStatus;
 use mshogi_core::tenjiku::{
-    Action, Conclusion, Face, Game, GameCommand, GameError, GameRecord, GameRequest, Position,
-    RecordError, Side,
+    Action, Conclusion, Face, Game, GameCommand, GameError, GameRecord, GameRequest, RecordError,
+    Side,
 };
 use position::TenjikuPosition;
 use std::{error::Error, fmt};
@@ -48,39 +48,6 @@ pub const fn piece_value(face: Face) -> i32 {
         Face::FiD => 2500,
         Face::K | Face::CP => 5000,
     }
-}
-/// Transparent board totals.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct Evaluation {
-    /// Sente material.
-    pub sente: i32,
-    /// Gote material.
-    pub gote: i32,
-}
-impl Evaluation {
-    /// Positive favors this named native side.
-    pub const fn score_for(self, side: Side) -> i32 {
-        match side {
-            Side::Sente => self.sente - self.gote,
-            Side::Gote => self.gote - self.sente,
-        }
-    }
-}
-/// Native pieces only; material never establishes an outcome.
-pub fn evaluate(position: &Position) -> Evaluation {
-    let mut e = Evaluation { sente: 0, gote: 0 };
-    for side in [Side::Sente, Side::Gote] {
-        let value = position
-            .pieces()
-            .filter(|(_, p)| p.side == side)
-            .map(|(_, p)| piece_value(p.face()))
-            .sum::<i32>();
-        match side {
-            Side::Sente => e.sente = value,
-            Side::Gote => e.gote = value,
-        }
-    }
-    e
 }
 /// Mandatory finite deterministic limits.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]

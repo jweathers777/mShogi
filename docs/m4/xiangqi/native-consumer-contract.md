@@ -2,7 +2,7 @@
 
 This is the consumer-readiness boundary of the existing
 `mshogi_core::xiangqi` public module plus the concrete `native` record/command
-adapter. It composes completed MSH-91–95/105 contracts; it introduces no new
+adapter. It composes completed MSH-91–95 contracts; it introduces no new
 rules profile, universal interface, engine, console or desktop implementation.
 The [selected profile](profile-proposal.md), recorded decisions
 and independently reviewed fixtures remain authoritative. MSH-45/M4 stay open.
@@ -23,13 +23,12 @@ or proof-key helpers. Related public types have deliberately different roles:
 | Inspect history/adjudication | `events`, `warnings`, `natural_count_eligibility`, `conclusion`, `pending_adjudication`, `event_prefix` | Events include same-ply warnings/claims/conclusions; count query is advisory. Snapshots are read-only and do not create a resumable branch. No consumer reimplements WXF classification or claimant arithmetic. |
 | Undo actual history | `Game::undo(Submission::undo)` | Restores exact semantic ledger/state, never old runtime revisions or execution. Fresh lineage prevents old handles applying to an equal branch. |
 | Save/replay native semantics | `GameRecord::{from_game,from_json,to_game}`; `CanonicalRecord::xiangqi` / strict envelope codec | Complete policy/root/commands/audits/events/warnings/modes/limits/assessment/conclusions, not FEN-only. Fresh runtime on reopen. |
-| Read sound fast assessment | `Game::no_win_assessment` or `assess_natural_win` for a local position | Scoped bare-General negative proof, checked zero/one-ply positive witness, fast miss or failure. Ordinary queries never invoke the exact graph. |
-| Explicit exact assessment | `ExactAnalysis::{new,select,begin}`, `ExactRequest::run`, `ExactAnalysis::accept` | Native read-only purpose/target/history-bound work. Retain `ExactObservation` and `ExactReport`, not only the projected `assessment()`. No engine process is launched. |
-| Shared context/capabilities | `CanonicalRecord`, `NativeCommand`, `SharedRequest` / `SharedResponse`, `execution_capabilities` | Existing MSH-95 routing consumes actual native payloads. Xiangqi shared execution is unsupported/unscored with empty capabilities until MSH-97. Native exact analysis is not a Chess Full or shared-engine operation. |
+| Read sound fast assessment | `Game::no_win_assessment` or `assess_natural_win` for a local position | Scoped bare-General negative proof, checked zero/one-ply positive witness, fast miss (`Unknown`) or failure. This is the only no-win assessment; there is no exact graph analysis. |
+| Shared context/capabilities | `CanonicalRecord`, `NativeCommand`, `SharedRequest` / `SharedResponse`, `execution_capabilities` | Existing MSH-95 routing consumes actual native payloads. Xiangqi shared execution is unsupported/unscored with empty capabilities until MSH-97. |
 
 [`position-api.md`](position-api.md), `local-legality.md`,
-[`history-contract.md`](history-contract.md), `shared-routing.md`
-and `exact-verification.md` provide detailed contracts.
+[`history-contract.md`](history-contract.md) and `shared-routing.md`
+provide detailed contracts.
 The handoff requires no consumer to rebuild private classifiers or duplicate
 movement rules in TypeScript or another engine.
 
@@ -52,61 +51,35 @@ submissions and results. Native events and conclusions already encode those
 meanings. Consumers must use them rather than inferring a winner from turn,
 clock/process failures or repeated board keys.
 
-## Fast versus exact: result origin and uncertainty
+## Fast no-win assessment: results and uncertainty
 
-Keep the original carrier and exact target in an observation:
+| Result of `Game::no_win_assessment()` | Consumer meaning |
+| --- | --- |
+| `ProvenNeitherCanWin` | Sound scoped fast proof; Game's fast event ordering owns any actual conclusion. |
+| `ProvenNaturalWin { winner, witness }` | Genuine zero/one-ply natural board possibility, not forced play, strength or a win already awarded. |
+| `Unknown` | Fast miss. No assertion of winnability or draw. |
+| `Failure` | Input/invariant failure; not Unknown and not a game outcome. |
 
-| Origin / carrier | Actual result | Consumer meaning |
-| --- | --- | --- |
-| Fast: `Game::no_win_assessment()` | `ProvenNeitherCanWin` | Sound scoped fast proof; Game's existing fast-mode event ordering owns any actual conclusion. |
-| Fast: same query | `ProvenNaturalWin { winner,witness }` | Genuine zero/one-ply natural board possibility, not forced play, strength or a win already awarded. |
-| Fast: same query | `UnknownExactUnavailable` | Stable historical wire spelling for a fast miss; the explicit exact backend now exists. No assertion of winnability or draw. |
-| Exact: accepted observation/report | `ExactVerdict::NeitherCanWin` | Complete reachable graph exhausted, not a material heuristic. Exact work statistics/limits remain attached. |
-| Exact: same carrier | `NaturalWin { winner,reason,witness }` | Replayable finite checkmate or stalemate path. Distinct from fast evidence and from a forced-win result. |
-| Exact: same carrier | `Unknown { reason }` | Incomplete/cancelled work; neither positive capability nor negative proof. |
-| Fast or exact | `Failure` / `ExactVerdict::Failure { reason }` | Input/limit/invariant failure; not Unknown proof evidence and not a game outcome. |
-
-`ExactReport::assessment()` is a convenience projection into the native
-assessment vocabulary. It intentionally drops fast/exact origin and the exact
-terminal reason; retain the request/observation/report for provenance. It maps
-incomplete exact work to `UnknownExactIncomplete`, not a fast miss or positive
-win claim. No exact verdict is an evaluator score.
-
-The proof graph is the selected **intrinsic** existential natural-board
-question: ordinary local actions to checkmate or no-legal-action/stalemate loss.
-Penalty/claim/voluntary/administrative conclusions are not proof goals or graph
-barriers. This selected domain is why placement+turn is sufficient for the exact
-key; actual WXF live-game identity still requires full history. In F002 Black
-can receive a repetition-penalty win without that award proving Black has a
-natural board-win continuation. This is not minimax against optimal resistance.
+The question is the selected **intrinsic** existential natural-board question:
+ordinary local actions to checkmate or no-legal-action/stalemate loss.
+Penalty/claim/voluntary/administrative conclusions are not proof goals. In F002
+Black can receive a repetition-penalty win without that award proving Black has
+a natural board-win continuation. This is not minimax against optimal
+resistance. Only this fast recognition applies; there is no exact analysis.
 
 ### Operational policy and actual native limits
 
-The currently supported canonical mode is explicitly `sound_fast_only`.
+The only canonical mode is `sound_fast_only`.
 `Game::conclusion()==None` means **no committed conclusion**; it is not an
-`Ongoing` game conclusion or a completed no-win determination. The existing
-native command API admits ordinary work under that recorded fast policy; it
-does not silently run an exact graph or claim universal WXF completeness.
-`LocalStatus::Ongoing` answers a separate board-only query.
+`Ongoing` game conclusion or a completed no-win determination. The native
+command API admits ordinary work under that fast policy and does not claim
+universal WXF completeness. `LocalStatus::Ongoing` answers a separate
+board-only query.
 
-When a consumer genuinely needs unresolved no-win work to determine an outcome,
-the approved policy is to hold the experiment/host in **unresolved, unscored**
-state and invoke the bounded explicit path if appropriate. Fast Unknown, exact
-Unknown, cancellation or failure must not become an ordinary ongoing/winnable
-verdict, a draw or a score. Preserve the authoritative game and complete save
-path. An explicit retry may record new limits/traversal; an unchanged request
-is not promised to succeed. This is the existing MSH-105/profile policy, not a
-new rules adaptation selected by MSH-84.
-
-`ExactAnalysis::accept` consumes only the precisely current request and returns
-read-only proof data. It does not install a conclusion, resolve native repetition
-classification pending state or overwrite an earlier actual conclusion. Future
-MSH-97/100/102 consumers must integrate that approved host policy and retain
-observations at their own execution/archive boundaries. They cannot treat this
-handoff as complete product adjudication or assume an undocumented command for
-committing exact proofs. No such command or new canonical mode is added here.
+Fast Unknown or failure must not become an ordinary ongoing/winnable verdict,
+a draw or a score. Preserve the authoritative game and complete save path.
 Actual `Game::pending_adjudication` specifically represents unresolved automatic
-conduct classification and blocks `submit`; exact-analysis Unknown is separate.
+conduct classification and blocks `submit`; fast Unknown is separate.
 
 ## Identity audit
 
@@ -116,16 +89,11 @@ conduct classification and blocks `submit`; exact-analysis Unknown is separate.
 | Repetition/conduct | Private Game board/turn anchor equality plus full contiguous known actions, root-assigned persistent piece IDs/victims and warning obligations for classification. | Identical types swapping locations can return the board while exchanging IDs; a repeated key alone is not responsibility. |
 | Complete game/history | Opaque `GameContext`: root/provenance, claim policy, full command/result/event-end ledger and runtime token. Derived events remain native. | FEN, declared counters, move count or current board cannot replace it. |
 | Canonical record | Validated game/profile/edition/schema and complete semantic ledger; strict replay checks redundant events/current state and field presence. Runtime tokens are absent. | Equal canonical bytes after undo/reopen do not mean equal runtime context. Envelope version is not a rules-profile edition. |
-| Exact proof state | Private46-byte full placement+turn key for the independently reviewed intrinsic goal, normalized private counters; per-run cache only. | This is not a general game search cache, repetition state or history-sensitive score key. |
-| Native request/session | `GameContext` fresh instance + monotonic revision; `ExactAnalysis` fresh session + monotonic generation, purpose/target/limits/full context equality. | Undo, selection/return, cancellation, replacement and reopen cannot revive retired work. Preserve the original carriers. |
-| Shared execution | Whole `SharedRequest`: typed canonical context, purpose/target, request ID, session version and limits. | A transport echo or native tag does not advertise real Xiangqi engine execution. Native in-process exact requests have no engine process ID to invent. |
+| Native request/session | `GameContext` fresh instance + monotonic revision. | Undo, selection/return, cancellation, replacement and reopen cannot revive retired work. |
+| Shared execution | Whole `SharedRequest`: typed canonical context, purpose/target, request ID, session version and limits. | A transport echo or native tag does not advertise real Xiangqi engine execution. |
 
 History selections use event counts, not board plies; multiple events can share
-a ply. The exact request retains the full source record and the selected event
-boundary; the proof uses only that boundary's board, never a future board or
-future repetition data. Every historical selection must go through
-`ExactAnalysis::select`, including returning to an equal live board. Its host
-also signals cancellation; retirement independently rejects any late result.
+a ply.
 
 ## Error and resource contracts
 
@@ -139,8 +107,7 @@ also signals cancellation; retirement independently rejects any late result.
 | WXF warning | `Warning` / `EventKind::Warning` | Active obligation, not a conclusion or process error. |
 | Stale / wrong game | `StaleContext`, typed `DispatchMismatch` | No fallback to another game or old execution. |
 | Native capacity / record capacity | `GameError::Capacity`, `RecordError::Capacity`, `EnvelopeError::Capacity` | Refuse before acceptance at that boundary; retain current complete saveable session. |
-| Exact resource / cancel | `ExactVerdict::Unknown`, `ExactStop::{States,Transitions,Memory,Deadline,Witness,Cancelled}` | Explicit incomplete work reason, no score/result. |
-| Execution/invariant failure | `GameError::Invariant`, `ExactFailure::{InvalidPosition,TransitionInvariant,UnsupportedLimits}`, fast `Failure` | Separate failure; no manufactured win/loss/draw or positive proof. |
+| Execution/invariant failure | `GameError::Invariant`, fast `Failure` | Separate failure; no manufactured win/loss/draw or positive proof. |
 | Strict record rejection | `RecordError` / `EnvelopeError` | Duplicate/unknown/missing/conflicting/unsupported/capacity or replay inconsistency; never normalize through a map before native strict parsing. |
 
 Position/FEN limits are4096/256bytes. Native games bound512commands (including
@@ -151,21 +118,12 @@ The MSH-95 composition/boundary tests remain applicable; future adapters must
 measure their actual complete encoding and preflight before committing. No
 accepted history or observation is discarded and Save/Open does not reset limits.
 
-Current measured exact defaults:20,000states,200,000edges,250ms,4MiB owned
-capacity,4096witness plies, DFS. Configurable ceilings:1Mstates,20Medges,60s,
-128MiB and4096plies. These are current explicit settings, not permanent universal
-numbers. Preserve them with each observation and keep all work explicitly
-invoked/cancellable. CPU time/RSS is not the owned-capacity statistic. Exact
-reconstruction is not launched implicitly by ordinary record restore; unsupported
-`bounded_exact` restoration is explicitly rejected. See MSH-105's retained
-measurements and limits; no general feasibility conclusion is added here.
-
 ## Verification and remaining owners
 
 The MSH-84 evidence maps focused integrated journeys
 and reused independently reviewed fixtures/references to this contract. No
 production refactor or shared framework was necessary. MSH-96 owns the real
-console; MSH-97 owns functional evaluator/search/child execution and its exact
+console; MSH-97 owns functional evaluator/search/child execution and its
 adjudication consumption; MSH-98/99 own session/presentation and archives;
 MSH-100–103 own protocol/matches and product/complete-game journeys. MSH-106
 starts only after complete MSH-45 delivery, not this native handoff. MSH-45/M4

@@ -1,7 +1,5 @@
 //! Reproducible bounded Xiangqi workload; elapsed time is an observation, not a promise.
-use mshogi_core::xiangqi::{
-    ClaimPolicy, ExactLimits, Game, GameCommand, GameRequest, PositionRoot,
-};
+use mshogi_core::xiangqi::{ClaimPolicy, Game, GameCommand, GameRequest, PositionRoot};
 use mshogi_search::xiangqi::*;
 use std::time::Instant;
 fn game(fen: &str) -> Game {
@@ -43,10 +41,7 @@ fn main() {
             game("4r4/5k3/9/9/9/9/9/9/9/4K4 w - - 0 1"),
         ),
         ("warning-10plies", warning),
-        (
-            "exact-negative-domain",
-            game("5k3/9/9/9/9/9/9/9/9/3AK4 w - - 0 1"),
-        ),
+        ("advisor-ending", game("5k3/9/9/9/9/9/9/9/9/3AK4 w - - 0 1")),
     ];
     for (name, g) in &cases {
         for limits in [
@@ -68,35 +63,5 @@ fn main() {
                 started.elapsed().as_secs_f64() * 1000.0
             );
         }
-    }
-    for (name, g, states) in [
-        ("exact-negative", &cases[6].1, 1000),
-        ("exact-unknown", &cases[0].1, 0),
-    ] {
-        let started = Instant::now();
-        let result = search_requiring_root_exact(
-            g,
-            DEFAULT_LIMITS,
-            ExactLimits {
-                states,
-                millis: 5000,
-                ..ExactLimits::default()
-            },
-            || false,
-        )
-        .unwrap();
-        let elapsed = started.elapsed().as_secs_f64() * 1000.0;
-        let AssessmentEvidence::Exact(observation) = &result.assessment else {
-            panic!("explicit exact evidence")
-        };
-        println!(
-            "case={name} status={:?} decision={:?} score={:?} elapsed_ms={elapsed:.3} limits={:?} source_bytes={} report={:?}",
-            result.status,
-            result.decision,
-            result.score,
-            observation.request().limits(),
-            observation.request().source_record().to_json().len(),
-            observation.report()
-        );
     }
 }

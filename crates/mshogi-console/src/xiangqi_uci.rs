@@ -1,5 +1,5 @@
 //! Bounded Pikafish-compatible UCI0-9 over authoritative native Xiangqi.
-//! Ordinary search is sound_fast_only; UCI cannot request exact proof or native claims.
+//! Ordinary search is sound_fast_only; UCI cannot request native claims.
 //! Clocked requests (`wtime btime winc binc`, Red is white) keep the search
 //! table while each position extends the previous one.
 use mshogi_core::xiangqi::*;
@@ -160,12 +160,14 @@ impl Adapter {
                 writeln!(
                     out,
                     "option name Depth type spin default {} min 1 max {}",
-                    search::DEFAULT_LIMITS.depth, search::MAX_DEPTH
+                    search::DEFAULT_LIMITS.depth,
+                    search::MAX_DEPTH
                 )?;
                 writeln!(
                     out,
                     "option name Nodes type spin default {} min 0 max {}",
-                    search::DEFAULT_LIMITS.nodes, search::MAX_NODES
+                    search::DEFAULT_LIMITS.nodes,
+                    search::MAX_NODES
                 )?;
                 writeln!(
                     out,
@@ -195,7 +197,8 @@ impl Adapter {
                 Ok(())
             }
             "ucinewgame" if args.is_empty() => self.retire().map(|()| {
-                self.game = Game::standard(ClaimPolicy::AutoValidClaims).expect("standard native root");
+                self.game =
+                    Game::standard(ClaimPolicy::AutoValidClaims).expect("standard native root");
                 self.game_generation += 1;
             }),
             "position" => self
@@ -234,8 +237,7 @@ impl Adapter {
                 Ok(())
             }),
             _ => Err(
-                "unsupported command/parameters; Xiangqi UCI0-9 (no pondering, claims or exact proof)"
-                    .into(),
+                "unsupported command/parameters; Xiangqi UCI0-9 (no pondering or claims)".into(),
             ),
         };
         if let Err(e) = result {
@@ -344,11 +346,6 @@ impl Adapter {
                     "native_terminal: UCI0-9 has no exact native conclusion representation; host adjudicates before go",
                 ));
             }
-            Decision::ExactNoWin => {
-                return Err(io::Error::other(
-                    "unsupported exact result in ordinary UCI search",
-                ));
-            }
         };
         writeln!(out, "bestmove {text}")?;
         out.flush()
@@ -390,7 +387,7 @@ fn parse_go(
             "depth" | "nodes" | "movetime" | "wtime" | "btime" | "winc" | "binc"
         ) {
             return Err(format!(
-                "unsupported go control {key}; no pondering, exact proof or searchmoves"
+                "unsupported go control {key}; no pondering or searchmoves"
             ));
         }
         let value = number(args.get(i).ok_or("missing go value")?)?;

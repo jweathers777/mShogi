@@ -3,8 +3,7 @@
 This consumer uses `mshogi.xiangqi.wxf2018.v1`, edition
 `WXF-2018+XIANGQI-P1-2026-10-27`. Native rules, known history, warnings,
 claimant-specific counts and canonical records remain authoritative. It does
-not implement desktop UI, archives, new rules, exact verification or strength
-measurement. MSH-98 is an independent native desktop-session consumer.
+not implement desktop UI, archives, new rules or strength measurement. MSH-98 is an independent native desktop-session consumer.
 
 ## Selected external dialect
 
@@ -90,11 +89,9 @@ failure are unscored categories. Native pending adjudication stops unresolved
 with its precise carrier. Action/time watchdog cutoffs are unfinished
 experiments, never draws or losses. A successful native conclusion alone can
 supply Red/Black half-point scores. Native resignation preserves board ply;
-ordinary board actions alone validate the mover's turn. No implicit exact graph
-runs in position parsing, commands, match control or replay. Explicit root-exact
-analysis remains the unchanged native/internal facility from MSH-105/97;
-positive existential witness is not forced-win evidence, and required exact
-Unknown/cancellation/failure cannot be settled here by heuristics.
+ordinary board actions alone validate the mover's turn. The no-win assessment
+is the sound fast recognition only; a positive existential witness is not
+forced-win evidence, and fast Unknown cannot be settled here by heuristics.
 
 ## Bounds, records and replay
 

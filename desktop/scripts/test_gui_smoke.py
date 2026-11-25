@@ -558,7 +558,7 @@ class XiangqiRuntimeEvidenceTests(unittest.TestCase):
         xiangqi = module.selected_gui_phases('verification-xiangqi')
         self.assertEqual(set(xiangqi), {'xiangqi-warning', 'xiangqi-fourth', 'xiangqi-count',
             'xiangqi-offer', 'xiangqi-agreed', 'xiangqi-fast-proof', 'xiangqi-resigned',
-            'xiangqi-capacity', 'xiangqi-failure', 'xiangqi-exact-evidence'})
+            'xiangqi-capacity', 'xiangqi-failure'})
         self.assertTrue(set(xiangqi) <= set(actual))
         self.assertEqual(module.selected_gui_phases('normal'), previous[:4] + ['normal-tori', 'normal-tori-native', 'normal-chu', 'normal-chu-native', 'normal-tenjiku-adams', 'normal-tenjiku-adams-native', 'normal-tenjiku-muller', 'normal-tenjiku-muller-native', 'normal-cross-game'])
         self.assertEqual(module.selected_gui_phases('normal-tori'), ['normal-tori', 'normal-tori-native'])

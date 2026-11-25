@@ -1,5 +1,5 @@
 //! Xiangqi in the sole desktop runtime: the generic native session (`native_session`)
-//! with the Xiangqi presentation and exact-endgame evidence. Rules stay native-owned.
+//! with the Xiangqi presentation. Rules stay native-owned.
 use super::native_session::*;
 use super::*;
 use crate::native_game::NativeGame;
@@ -69,8 +69,6 @@ pub struct XiangqiPresentation {
     pub pending: Option<x::PendingAdjudication>,
     /// Sound-fast-only provenance; Unknown never means positive win capability.
     pub no_win_assessment: x::NoWinAssessment,
-    /// Completed native exact reports retained only as historical evidence.
-    pub exact_observations: Vec<XiangqiExactEvidence>,
 }
 /// Native terminal-command eligibility, independent of board-action turn ownership.
 #[derive(Clone, Debug, Serialize)]
@@ -147,156 +145,6 @@ impl crate::native_game::DocumentSettings for XiangqiSettings {
 }
 fn error(e: impl ToString) -> String {
     archive::bounded(e)
-}
-
-/// Immutable completed native exact work, never a resumable request or an outcome.
-/// On Open this is historical reported evidence, not a newly verified graph proof.
-#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-pub struct XiangqiExactEvidence {
-    format: String,
-    executor: String,
-    source: CanonicalRecord,
-    purpose: String,
-    goal: String,
-    event_count: usize,
-    historical_target: bool,
-    position_json: String,
-    native_session: u64,
-    native_generation: u64,
-    limits: x::ExactLimits,
-    report: x::ExactReport,
-}
-impl XiangqiExactEvidence {
-    /// Construct only from completed native work. This does not execute or accept work.
-    pub fn from_native(observation: &x::ExactObservation) -> Self {
-        let request = observation.request();
-        let (native_session, native_generation) = request.identity();
-        let (event_count, historical_target) = match request.target() {
-            x::ExactTarget::Live => (request.source_record().event_count(), false),
-            x::ExactTarget::History { event_count } => (event_count, true),
-        };
-        Self {
-            format: "mshogi.xiangqi.exact-observation.v1".into(),
-            executor: "native_in_process".into(),
-            source: CanonicalRecord::xiangqi(request.source_record().clone()),
-            purpose: "natural_board_win".into(),
-            goal: x::NATURAL_WIN_GOAL.into(),
-            event_count,
-            historical_target,
-            position_json: x::PositionRoot::analysis(request.position().clone()).to_json(),
-            native_session,
-            native_generation,
-            limits: request.limits(),
-            report: observation.report().clone(),
-        }
-    }
-    /// Exact source history, separate from the analyzed event prefix.
-    pub fn source(&self) -> &CanonicalRecord {
-        &self.source
-    }
-    /// Actual reported proof, positive witness, Unknown/cancellation or failure.
-    pub fn report(&self) -> &x::ExactReport {
-        &self.report
-    }
-    /// Exact native event selection, not board ply.
-    pub fn event_count(&self) -> usize {
-        self.event_count
-    }
-    /// Validate against the game at its journal position; the native work used.
-    pub(crate) fn validate_against(
-        &self,
-        game: &x::Game,
-        stopped: &mut impl FnMut() -> bool,
-    ) -> Result<(), String> {
-        if stopped() {
-            return Err("Xiangqi evidence validation stopped".into());
-        }
-        if self.format != "mshogi.xiangqi.exact-observation.v1"
-            || self.executor != "native_in_process"
-            || self.purpose != "natural_board_win"
-            || self.goal != x::NATURAL_WIN_GOAL
-            || self.native_session == 0
-            || self.native_generation == 0
-            || self.native_session > MAX_SAFE_ID
-            || self.native_generation > MAX_SAFE_ID
-            || self.source
-                != CanonicalRecord::xiangqi(x::GameRecord::from_game(game).map_err(error)?)
-            || self.event_count > game.events().len()
-            || !self.historical_target && self.event_count != game.events().len()
-        {
-            return Err("Corrupt exact historical evidence: source, purpose, identity or event target differs.".into());
-        }
-        let root = x::PositionRoot::from_json(&self.position_json).map_err(error)?;
-        let target = game.event_prefix(self.event_count).map_err(error)?.position;
-        if root != x::PositionRoot::analysis(target.clone()) {
-            return Err("Corrupt exact evidence target position/provenance.".into());
-        }
-        let unsupported = !self.limits.is_supported();
-        if matches!(
-            self.report.verdict,
-            x::ExactVerdict::Failure {
-                reason: x::ExactFailure::UnsupportedLimits
-            }
-        ) != unsupported
-        {
-            return Err("Corrupt exact evidence limits/failure contract.".into());
-        }
-        let work = &self.report.work;
-        if work.states > self.limits.states
-            || work.expanded > work.states
-            || work.transitions > self.limits.transitions
-            || work.cache_hits > work.transitions
-            || work.memory_bytes > self.limits.memory_bytes
-            || matches!(self.report.verdict, x::ExactVerdict::NeitherCanWin)
-                && (work.states == 0 || work.expanded != work.states)
-        {
-            return Err(
-                "Corrupt exact evidence work/closure metadata; no graph was executed.".into(),
-            );
-        }
-        if let x::ExactVerdict::NaturalWin {
-            winner,
-            reason,
-            witness,
-        } = &self.report.verdict
-        {
-            if witness.len() > 4096 || witness.len() > self.limits.witness_plies as usize {
-                return Err(
-                    "Application capacity: exact witness output exceeds its recorded bound.".into(),
-                );
-            }
-
-            let p = &target;
-            let mut p = x::Position::from_diagram(
-                &p.pieces().collect::<Vec<_>>(),
-                p.side_to_move(),
-                x::Counters::unknown(),
-            )
-            .map_err(error)?;
-            for &action in witness {
-                if stopped() {
-                    return Err("Xiangqi evidence validation stopped".into());
-                }
-                if !matches!(p.local_status(), Ok(x::LocalStatus::Ongoing { .. })) {
-                    return Err("Corrupt exact witness: action after a natural terminal.".into());
-                }
-                p.apply(action).map_err(error)?;
-            }
-            if p.side_to_move().opponent() != *winner
-                || p.local_status().map_err(error)?
-                    != (x::LocalStatus::NoLegalAction { reason: *reason })
-            {
-                return Err(
-                    "Corrupt exact natural-board witness; repetition penalties are not witnesses."
-                        .into(),
-                );
-            }
-        }
-        // Negative graph closure is deliberately NOT recomputed here. Reports retain
-        // their provenance as historical observations and cannot adjudicate the game.
-        Ok(())
-    }
 }
 
 impl SessionGame for Xiangqi {
@@ -530,7 +378,6 @@ impl SessionGame for Xiangqi {
             conclusion: history.conclusion,
             pending: history.pending.clone(),
             no_win_assessment: history.no_win_assessment.clone(),
-            exact_observations: state.evidence.clone(),
         });
         let files: Vec<_> = (b'a'..=b'i').map(|f| char::from(f).to_string()).collect();
         let ranks: Vec<_> = (0..10).rev().map(|r| r.to_string()).collect();
@@ -610,18 +457,6 @@ fn topology() -> IntersectionTopology {
 }
 
 impl DesktopController {
-    /// Attach already completed native exact work as historical evidence only.
-    /// This issues no request, advertises no execution capability and applies no result.
-    pub fn retain_xiangqi_exact_evidence(
-        &mut self,
-        expected: SessionToken,
-        observation: &x::ExactObservation,
-    ) -> Result<AdmissionReceipt, String> {
-        self.retain_game_evidence::<Xiangqi>(
-            expected,
-            XiangqiExactEvidence::from_native(observation),
-        )
-    }
     /// Verification entry into the real native Xiangqi request path.
     #[cfg(any(test, feature = "desktop-verification"))]
     pub fn verify_xiangqi_execution(

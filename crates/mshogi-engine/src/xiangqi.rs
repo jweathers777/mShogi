@@ -1,4 +1,4 @@
-//! Actual native Xiangqi ordinary-search results, distinct from exact proof operations.
+//! Actual native Xiangqi ordinary-search results.
 use crate::ExecutionContext;
 use mshogi_core::{
     native::CanonicalRecord,
@@ -150,10 +150,7 @@ pub enum XiangqiResult {
     },
 }
 impl XiangqiResult {
-    pub(crate) fn searched(result: search::SearchResult) -> Result<Self, &'static str> {
-        let search::AssessmentEvidence::Fast(assessment) = result.assessment else {
-            return Err("ordinary child does not accept a different exact execution purpose");
-        };
+    pub(crate) fn searched(result: search::SearchResult) -> Self {
         let telemetry = XiangqiTelemetry {
             evaluator_id: search::EVALUATOR_ID.into(),
             search_id: search::SEARCH_ID.into(),
@@ -172,22 +169,21 @@ impl XiangqiResult {
                 search::Status::Stopped => XiangqiStop::Stopped,
                 search::Status::Unresolved => XiangqiStop::Unresolved,
             },
-            no_win_assessment: assessment,
+            no_win_assessment: result.assessment,
         };
-        if let Some(search::Unresolved::Native(pending)) = result.unresolved {
-            return Ok(Self::Unresolved { pending, telemetry });
+        if let Some(pending) = result.unresolved {
+            return Self::Unresolved { pending, telemetry };
         }
         match result.decision {
-            Some(search::Decision::Choose(choice)) => Ok(Self::Choice {
+            Some(search::Decision::Choose(choice)) => Self::Choice {
                 choice: choice.into(),
                 telemetry,
-            }),
-            Some(search::Decision::Finished(conclusion)) => Ok(Self::Finished {
+            },
+            Some(search::Decision::Finished(conclusion)) => Self::Finished {
                 conclusion,
                 telemetry,
-            }),
-            None => Ok(Self::Incomplete { telemetry }),
-            _ => Err("unexpected exact proof in ordinary search"),
+            },
+            None => Self::Incomplete { telemetry },
         }
     }
     pub(crate) fn matches(&self, context: &ExecutionContext) -> bool {

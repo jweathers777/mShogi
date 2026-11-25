@@ -174,4 +174,3 @@
 .position-assessment { margin-top:14px; color:var(--shell-muted); font-size:11px; }
 .position-assessment summary { cursor:pointer; line-height:1.5; }
 .position-assessment p { margin:7px 0; font-size:11px; }
-.position-assessment article { border-top:1px solid var(--shell-border); margin-top:10px; padding-top:8px; }

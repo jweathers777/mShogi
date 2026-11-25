@@ -525,14 +525,11 @@ fn draw_advice_matches_native_admission_and_same_ply_reoffer_restriction() {
 #[test]
 fn native_command_refusals_are_atomic_and_unknown_no_win_is_not_a_result() {
     let mut game = Game::standard(ClaimPolicy::Explicit).unwrap();
-    assert_eq!(
-        game.no_win_assessment(),
-        NoWinAssessment::UnknownExactUnavailable
-    );
+    assert_eq!(game.no_win_assessment(), NoWinAssessment::Unknown);
     assert_eq!(game.conclusion(), None);
     assert_eq!(
         game.event_prefix(0).unwrap().no_win_assessment,
-        NoWinAssessment::UnknownExactUnavailable
+        NoWinAssessment::Unknown
     );
     for (actor, cmd, error) in [
         (

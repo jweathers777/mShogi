@@ -1,4 +1,4 @@
-//! Actual subprocess journeys using independently established MSH-92/94/105 facts.
+//! Actual subprocess journeys using independently established MSH-92/94 facts.
 use mshogi_core::{native::CanonicalRecord, xiangqi as x};
 use serde_json::Value;
 use std::{
@@ -11,7 +11,6 @@ use std::{
 
 const CYCLE_ROOT: &str = "4R4/5k3/9/9/9/9/9/9/9/3K5 w - - 0 1";
 const CYCLE: &str = "e9f9 f8e8 f9e9 e8f8";
-const POSITIVE: &str = "5k3/R8/9/9/9/9/9/9/9/3K5 b - - 0 1";
 fn run(args: &[&str], input: &str) -> Output {
     let mut child = Command::new(env!("CARGO_BIN_EXE_mshogi"))
         .args(args)
@@ -54,12 +53,6 @@ fn games(out: &Output) -> Vec<x::Game> {
             };
             r.to_game().unwrap()
         })
-        .collect()
-}
-fn reports(out: &Output) -> Vec<x::ExactReport> {
-    tagged(out, "nowin-result ")
-        .into_iter()
-        .map(|s| serde_json::from_str(&s).unwrap())
         .collect()
 }
 struct Dir(PathBuf);
@@ -346,85 +339,33 @@ fn strict_outer_nested_identity_and_bounded_file_failures_preserve_live_session(
 }
 
 #[test]
-fn exact_positive_negative_and_resource_unknown_are_read_only_with_source_provenance() {
-    for (fen, states, expected) in [
-        (POSITIVE, 5000, "positive"),
-        ("5k3/9/9/9/9/9/9/9/4A4/3K5 w - - 0 1", 5000, "negative"),
-        (POSITIVE, 0, "unknown"),
+fn fast_no_win_assessment_is_read_only() {
+    for (fen, expected) in [
+        (
+            "5k3/9/9/9/9/9/9/9/9/3K5 w - - 0 1",
+            r#"{"kind":"proven_neither_can_win"}"#,
+        ),
+        (
+            "5k3/9/9/9/9/9/9/9/4A4/3K5 w - - 0 1",
+            r#"{"kind":"unknown"}"#,
+        ),
     ] {
         let out = shell(&format!(
-            "position fen {fen}\nrecord print\nnowin fast\nnowin exact {states} 50000 60000 4194304 bfs\nnowin wait\nrecord print\n"
+            "position fen {fen}\nrecord print\nnowin fast\nrecord print\n"
         ));
         success(&out);
         let r = tagged(&out, "record ");
         assert_eq!(r.len(), 2);
         assert_eq!(r[0], r[1]);
-        assert_eq!(tagged(&out, "nowin-source "), vec![r[0].clone()]);
-        let reports = reports(&out);
-        assert_eq!(reports.len(), 1);
-        match (&reports[0].verdict, expected) {
-            (
-                x::ExactVerdict::NaturalWin {
-                    winner,
-                    reason,
-                    witness,
-                },
-                "positive",
-            ) => {
-                assert_eq!(*winner, x::Side::Red);
-                assert_eq!(*reason, x::NoActionReason::Stalemate);
-                assert_eq!(witness.len(), 2);
-                let mut p = x::Position::from_fen(fen).unwrap();
-                for &a in witness {
-                    p.apply(a).unwrap();
-                }
-                assert_eq!(
-                    p.local_status().unwrap(),
-                    x::LocalStatus::NoLegalAction {
-                        reason: x::NoActionReason::Stalemate
-                    }
-                );
-            }
-            (x::ExactVerdict::NeitherCanWin, "negative") => assert_eq!(reports[0].work.states, 255),
-            (
-                x::ExactVerdict::Unknown {
-                    reason: x::ExactStop::States,
-                },
-                "unknown",
-            ) => {}
-            _ => panic!("unexpected {reports:?} for {expected}"),
-        }
+        // `position` prints the status line; `nowin fast` prints the assessment alone.
+        assert_eq!(
+            tagged(&out, "no-win-fast "),
+            vec![
+                format!("{expected} (not an ongoing-game verdict)"),
+                expected.to_owned()
+            ]
+        );
     }
-}
-
-#[test]
-fn cancellation_replacement_and_undo_never_publish_retired_exact_work() {
-    let out = shell(&format!(
-        "record print\nnowin exact\nnowin cancel\nnowin poll\nrecord print\nnowin exact\nposition fen {POSITIVE}\nnowin poll\nnowin exact 5000 50000 60000 4194304 bfs\nnowin wait\nrecord print\nnowin exact\nmove f9e9\nundo\nnowin poll\nrecord print\n"
-    ));
-    assert!(!out.status.success());
-    assert_eq!(
-        String::from_utf8_lossy(&out.stderr)
-            .matches("no active exact request")
-            .count(),
-        3
-    );
-    let r = tagged(&out, "record ");
-    assert_eq!(r.len(), 4);
-    assert_eq!(r[0], r[1]);
-    assert_eq!(r[2], r[3]);
-    let reports = reports(&out);
-    assert_eq!(
-        reports.len(),
-        1,
-        "retired results must not later be accepted\n{}",
-        text(&out)
-    );
-    assert!(matches!(
-        reports[0].verdict,
-        x::ExactVerdict::NaturalWin { .. }
-    ));
-    assert_eq!(tagged(&out, "nowin-source "), vec![r[2].clone()]);
 }
 
 #[test]

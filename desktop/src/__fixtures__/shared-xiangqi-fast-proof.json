@@ -75,8 +75,7 @@
     "pending": null,
     "no_win_assessment": {
       "kind": "proven_neither_can_win"
-    },
-    "exact_observations": []
+    }
   },
   "open_token": {
     "document": 1,

@@ -57,8 +57,7 @@ telemetry, unresolved outcomes and Take back. Its actual observations and native
 MatchRecord are available through the current snapshot, not empty placeholders.
 Shogi keeps native drops/promotions/declarations and advisory eligibility.
 Xiangqi keeps exact event prefixes, WXF warnings/obligations/claimants/offers,
-fast/exact proof provenance and explicit Unknown. Routine presentation never
-starts exact graph analysis. No frontend rules or common outcome reinterpretation
+the sound fast no-win assessment and explicit Unknown. No frontend rules or common outcome reinterpretation
 is introduced.
 
 ## Native lifecycle and file guarantees

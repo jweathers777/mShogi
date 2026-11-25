@@ -6,9 +6,8 @@ pub mod position;
 mod position_tests;
 use crate::alphabeta::{self, SearchPosition, Searcher};
 use mshogi_core::xiangqi::{
-    Action, Conclusion, ExactAnalysis, ExactFailure, ExactLimits, ExactObservation, ExactStop,
-    ExactVerdict, Game, GameCommand, GameError, GameRequest, NoWinAssessment, PendingAdjudication,
-    PieceKind, RecordError, Side,
+    Action, Conclusion, Game, GameCommand, GameError, GameRequest, NoWinAssessment,
+    PendingAdjudication, PieceKind, RecordError, Side,
 };
 use position::XiangqiPosition;
 use std::{error::Error, fmt};
@@ -82,13 +81,11 @@ pub enum Decision {
     Choose(Choice),
     /// Already committed native root conclusion.
     Finished(Conclusion),
-    /// Read-only root exact proof. Does not install a canonical native conclusion.
-    ExactNoWin,
 }
 /// Real execution state, distinct from a game outcome.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Status {
-    /// Requested iteration work or explicit proof completed.
+    /// Requested iteration work completed.
     Complete,
     /// Deterministic total visit bound reached.
     NodeLimit,
@@ -96,22 +93,6 @@ pub enum Status {
     Stopped,
     /// Required native adjudication has no score.
     Unresolved,
-}
-/// Required adjudication could not establish a score.
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub enum Unresolved {
-    /// Native history/conduct classification blocks all commands.
-    Native(PendingAdjudication),
-    /// Explicit required root proof did not complete; never interpreted as winnable.
-    Exact(ExactStop),
-}
-/// Retain the origin and exact original carrier, including source record and runtime target.
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub enum AssessmentEvidence {
-    /// Recorded sound-fast-only root evidence, including a fast miss.
-    Fast(NoWinAssessment),
-    /// Accepted independently bounded root proof and complete source provenance.
-    Exact(Box<ExactObservation>),
 }
 /// Native observations; the immutable caller game is the analyzed source.
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -130,10 +111,11 @@ pub struct SearchResult {
     pub principal_variation: Vec<Choice>,
     /// Actual execution completion/stop reason.
     pub status: Status,
-    /// Native required uncertainty, never an invented score.
-    pub unresolved: Option<Unresolved>,
-    /// Original fast/exact root evidence; not a minimax evaluation.
-    pub assessment: AssessmentEvidence,
+    /// Native history/conduct classification that blocks all commands; never
+    /// an invented score.
+    pub unresolved: Option<PendingAdjudication>,
+    /// Sound fast root no-win assessment, including a fast miss; not a minimax evaluation.
+    pub assessment: NoWinAssessment,
 }
 /// Native failures remain unscored, retaining concrete diagnostics.
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -148,8 +130,6 @@ pub enum SearchError {
     Restore,
     /// Native live node lacked choices or a sound assessment.
     Invariant,
-    /// Explicit exact verifier failure, distinct from incomplete proof.
-    Exact(ExactFailure),
 }
 impl fmt::Display for SearchError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -177,7 +157,7 @@ pub fn new_engine_sized(megabytes: usize) -> Engine {
     Searcher::new(megabytes.clamp(1, MAX_TABLE_MB))
 }
 /// Recorded sound_fast_only policy. Fast Unknown is retained as uncertainty,
-/// not a claim of winnability. No implicit exact graph at any node.
+/// not a claim of winnability.
 /// Each call starts with empty state.
 pub fn search_with_stop(
     game: &Game,
@@ -195,71 +175,14 @@ pub fn search_with_state(
     engine: &mut Engine,
     mut stop: impl FnMut() -> bool,
 ) -> Result<SearchResult, SearchError> {
-    let timing = alphabeta::timing::RequestTime::new(time);
     // The core enforces the hard deadline through its limits, so a timed
     // request that expires is not a cancellation and may use its fallback.
-    run(
-        game,
-        limits,
-        AssessmentEvidence::Fast(game.no_win_assessment()),
-        engine,
-        &timing,
-        &mut stop,
-    )
-}
-/// Explicit advanced root requirement, independently bounded and cancellable.
-/// Positive existential evidence is not a forced win; descendants still obey the
-/// recorded fast policy. Exact negative/Unknown is read-only and unscored here.
-/// Native accept checks the complete root context, purpose/target/identity/limits.
-pub fn search_requiring_root_exact(
-    game: &Game,
-    limits: Limits,
-    exact: ExactLimits,
-    mut stop: impl FnMut() -> bool,
-) -> Result<SearchResult, SearchError> {
+    let timing = &alphabeta::timing::RequestTime::new(time);
+    let stop: &mut dyn FnMut() -> bool = &mut stop;
     if !limits.valid() {
         return Err(SearchError::InvalidLimits);
     }
-    // Already-concluded actual games take precedence over a hypothetical proof.
-    if game.conclusion().is_some() || game.pending_adjudication().is_some() {
-        return search_with_stop(game, limits, stop);
-    }
-    let mut analysis = ExactAnalysis::new().map_err(SearchError::Transition)?;
-    let request = analysis
-        .begin(game, exact)
-        .map_err(SearchError::Transition)?;
-    let observation = request.run(&mut stop);
-    let report = analysis
-        .accept(game, &observation)
-        .map_err(SearchError::Transition)?;
-    let mut result = empty(game, AssessmentEvidence::Exact(Box::new(observation)));
-    match report.verdict {
-        ExactVerdict::Failure { reason } => Err(SearchError::Exact(reason)),
-        ExactVerdict::Unknown { reason } => {
-            result.status = if reason == ExactStop::Cancelled {
-                Status::Stopped
-            } else {
-                Status::Unresolved
-            };
-            result.unresolved = Some(Unresolved::Exact(reason));
-            Ok(result)
-        }
-        ExactVerdict::NeitherCanWin => {
-            result.decision = Some(Decision::ExactNoWin);
-            Ok(result)
-        }
-        ExactVerdict::NaturalWin { .. } => run(
-            game,
-            limits,
-            result.assessment,
-            &mut new_engine(),
-            &alphabeta::timing::RequestTime::new(None),
-            &mut stop,
-        ),
-    }
-}
-fn empty(game: &Game, assessment: AssessmentEvidence) -> SearchResult {
-    SearchResult {
+    let mut result = SearchResult {
         decision: None,
         score: None,
         perspective: game.position().side_to_move(),
@@ -268,21 +191,8 @@ fn empty(game: &Game, assessment: AssessmentEvidence) -> SearchResult {
         principal_variation: vec![],
         status: Status::Complete,
         unresolved: None,
-        assessment,
-    }
-}
-fn run(
-    game: &Game,
-    limits: Limits,
-    evidence: AssessmentEvidence,
-    engine: &mut Engine,
-    timing: &alphabeta::timing::RequestTime,
-    stop: &mut dyn FnMut() -> bool,
-) -> Result<SearchResult, SearchError> {
-    if !limits.valid() {
-        return Err(SearchError::InvalidLimits);
-    }
-    let mut result = empty(game, evidence);
+        assessment: game.no_win_assessment(),
+    };
     // Cooperative stop before bounded native reconstruction; process owner also
     // retains the independent watchdog/kill path for parsing/replay/queries.
     if stop() {
@@ -302,11 +212,11 @@ fn run(
     }
     if let Some(pending) = game.pending_adjudication() {
         result.status = Status::Unresolved;
-        result.unresolved = Some(Unresolved::Native(pending.clone()));
+        result.unresolved = Some(pending.clone());
         result.nodes = 1;
         return Ok(result);
     }
-    if matches!(game.no_win_assessment(), NoWinAssessment::Failure) {
+    if matches!(result.assessment, NoWinAssessment::Failure) {
         return Err(SearchError::Invariant);
     }
     let legal = game

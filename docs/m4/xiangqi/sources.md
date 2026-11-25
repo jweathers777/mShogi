@@ -38,7 +38,7 @@ ambiguity; future AXF/CXA profiles remain separately named.
 | XQ-R3 chase classification | EN19–20 p43–47/35–39; ZH p27–30/26–29. | Check, mating threat, chase, exchange, block, offer and idle differ. Real protection requires legal recapture; apparent pinned protection is insufficient. Persistent pursuer/victim identity, roots, constraints, river and piece exceptions matter.20.5's two-to-one is **counter-chase frequency** from19.18, not “two attacking pieces” suggested by the English wording. |
 | XQ-R3 mixtures | EN20.2 enumeration omits alternate mating-threat/chase unlike old AXF General3.2. EN diagram38 p66/58; ZH diagram38 p49/48. | WXF's own diagram38 explicitly permits Black's **alternation** while Red's unilateral perpetual chase offends. Thus this case is supported within WXF; no AXF graft is needed. |
 | XQ-R3 simultaneous labels | EN36.4 diagram109 p106/98; ZH p85/84. | A move simultaneously mating-threat and chase is treated with the more consequential chase classification; Red must vary. Distinguish this from the alternating diagram38 family. Full overlapping-classification fixture review remains required. |
-| XQ-R4 inability to win | Art3.2A, ENp15/7, ZHp10/9 | The source includes neither side being able to win. It does not supply an executable proof algorithm or justify an engine insufficient-material shortcut. Establish independently reviewed positive/negative fixtures and the precise quantification of this condition. Scope includes required fast sound recognition94 and bounded/terminable exact verification105 in M4. Proven impossible, proven possible for at least one side, and unknown are distinct. G-NOWIN gates quantifier/eligible-win/history-domain interpretation before affected behavior; comparator material tables or a Chess mating-only goal cannot decide it. |
+| XQ-R4 inability to win | Art3.2A, ENp15/7, ZHp10/9 | The source includes neither side being able to win. It does not supply an executable proof algorithm or justify an engine insufficient-material shortcut. Establish independently reviewed positive/negative fixtures and the precise quantification of this condition. Scope is sound fast recognition only (MSH-94). Proven impossible, proven possible for at least one side, and unknown are distinct. G-NOWIN gates quantifier/eligible-win/history-domain interpretation before affected behavior; comparator material tables or a Chess mating-only goal cannot decide it. |
 
 Articles19–20 and the chapter5 diagrams remain normative obligations for a
 complete selected profile. Mating-threat resolution, legal roots, pinned and
@@ -79,7 +79,7 @@ using both texts and WXF context, with predecessor evidence kept separate:
 These are explicit affected-work gates in coverage, not omitted
 rules or claims of executed conformance. MSH-80 can close its planning scope
 under the supplied project decisions; MSH-84/103/45 cannot close without actual
-required3.2A implementation105. Source research and first board/kernel work
+required 3.2A implementation. Source research and first board/kernel work
 remain independent of unavailable unrelated alternative corpora.
 
 
@@ -97,6 +97,6 @@ checkmate/stalemate), excluding repetition penalties and other non-board awards.
 Project decision
 supersedes the research workers' initial proposal to include repetition wins.
 Full game history still governs actual penalties/claims, not a positive natural
-win witness. Sound fast proof/unknown is94; required exact backend105 remains
-unstarted behind94/95. Older planning gates above are historical, not unresolved
-semantic approval requests.
+win witness. Sound fast proof/unknown (MSH-94) is the only 3.2A assessment.
+Older planning gates above are historical, not unresolved semantic approval
+requests.

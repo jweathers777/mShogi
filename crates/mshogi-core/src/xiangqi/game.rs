@@ -477,7 +477,7 @@ impl Game {
     pub fn pending_adjudication(&self) -> Option<&PendingAdjudication> {
         self.pending.as_ref()
     }
-    /// No exact capability is claimed before the selected question/backend exists.
+    /// Sound fast no-win assessment of the current position; Unknown is not a result.
     pub fn no_win_assessment(&self) -> NoWinAssessment {
         self.assessment.clone()
     }

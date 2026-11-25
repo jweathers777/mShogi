@@ -1,15 +1,7 @@
 //! Native Xiangqi diagnostic consumer. No local rules or evaluator are implemented here.
 use crate::{record_io, session::Next};
 use mshogi_core::{native::CanonicalRecord, xiangqi::*};
-use std::{
-    fmt::Write as _,
-    sync::{
-        Arc,
-        atomic::{AtomicBool, Ordering},
-        mpsc::{self, Receiver},
-    },
-    thread::{self, JoinHandle},
-};
+use std::fmt::Write as _;
 const HELP: &str = "Untimed Xiangqi diagnostic console (not UCCI/UCI protocol):
   position [explicit|auto_valid_claims] startpos|fen <FEN>|json <root-JSON>
   fen | show | status | legal | history | warnings
@@ -20,42 +12,22 @@ const HELP: &str = "Untimed Xiangqi diagnostic console (not UCCI/UCI protocol):
   record print|save <path>|load-file <path>|load-json <JSON>
   perft <0..3> | divide <1..3>        Local board counts, not match outcomes
   nowin fast                        Scoped native fast assessment
-  nowin exact [states edges millis memory-bytes [bfs|dfs]]
-                                    Explicit bounded read-only worker
-  nowin poll|wait|cancel             Observe or retire exact work
   help | quit
 Native coordinate dialect: files a-i from Red left, ranks 0-9 from Red baseline;
 Show uses uppercase Red/lowercase Black, K A B N R C P (B=Elephant), dots for empty.
 FEN import starts known history; it never restores earlier warnings/claims.
 Use the canonical envelope for full restoration. Saves require a new path.
-Exact observations print their full source record, purpose, target, identity and
-limits; they are diagnostic evidence, not pending work or part of GameRecord.
-Exact acceptance never changes a game conclusion; required Unknown is unscored.
-Ordinary queries/replay do not invoke the exact verifier. Changing the game/undo
-retires pending exact work. Unknown/failure/cancellation are not game results.";
-struct Worker {
-    stop: Arc<AtomicBool>,
-    receive: Receiver<ExactObservation>,
-    thread: JoinHandle<()>,
-}
+The fast no-win assessment is Unknown when it finds no sound proof; Unknown and
+failure are not game results.";
 pub struct Session {
     game: Game,
     undo: Vec<GameUndo>,
-    analysis: ExactAnalysis,
-    worker: Option<Worker>,
-}
-impl Drop for Session {
-    fn drop(&mut self) {
-        self.retire();
-    }
 }
 impl Session {
     pub fn new() -> Result<Self, String> {
         Ok(Self {
             game: Game::standard(ClaimPolicy::Explicit).map_err(error)?,
             undo: vec![],
-            analysis: ExactAnalysis::new().map_err(error)?,
-            worker: None,
         })
     }
     fn record(&self) -> Result<CanonicalRecord, String> {
@@ -69,20 +41,12 @@ impl Session {
             .to_game_with_undo()
             .map_err(error)
     }
-    fn retire(&mut self) {
-        if let Some(worker) = self.worker.take() {
-            worker.stop.store(true, Ordering::Relaxed);
-            let _ = worker.thread.join();
-        }
-        let _ = self.analysis.retire();
-    }
     fn replace(&mut self, game: Game, undo: Vec<GameUndo>) -> Result<(), String> {
         // Measure the actual accepted wrapper before committing; native limits alone
         // cannot promise space for the envelope overhead.
         CanonicalRecord::xiangqi(GameRecord::from_game(&game).map_err(error)?)
             .to_json()
             .map_err(error)?;
-        self.retire();
         self.game = game;
         self.undo = undo;
         Ok(())
@@ -103,7 +67,6 @@ impl Session {
             }
             "quit" => {
                 empty(&args)?;
-                self.retire();
                 return Ok(Next::Quit);
             }
             "position" => {
@@ -260,7 +223,6 @@ impl Session {
                 }
                 // Native handles are owned and known LIFO; any invariant failure is
                 // explicit, never an invented outcome. Ordinary bounds are checked first.
-                self.retire();
                 for _ in 0..count {
                     self.game.undo(self.undo.pop().unwrap()).map_err(error)?;
                 }
@@ -344,11 +306,7 @@ impl Session {
         };
         let (game, undo) = record.to_game_with_undo().map_err(error)?;
         self.replace(game, undo)?;
-        writeln!(
-            out,
-            "loaded complete native record; fresh runtime; exact work stopped"
-        )
-        .unwrap();
+        writeln!(out, "loaded complete native record; fresh runtime").unwrap();
         self.status(out)
     }
     fn status(&self, out: &mut String) -> Result<(), String> {
@@ -376,125 +334,22 @@ impl Session {
         .unwrap();
         writeln!(
             out,
-            "no-win-fast {} (not an exact or ongoing-game verdict)",
+            "no-win-fast {} (not an ongoing-game verdict)",
             serde_json::to_string(&self.game.no_win_assessment()).map_err(error)?
         )
         .unwrap();
         Ok(())
     }
-    fn nowin(&mut self, args: &[&str], out: &mut String) -> Result<(), String> {
-        match args {
-            ["fast"] => {
-                writeln!(
-                    out,
-                    "no-win-fast {}",
-                    serde_json::to_string(&self.game.no_win_assessment()).map_err(error)?
-                )
-                .unwrap();
-            }
-            ["cancel"] => {
-                let active = self.worker.is_some();
-                self.retire();
-                writeln!(
-                    out,
-                    "exact retired {active}; no result accepted; game unchanged"
-                )
-                .unwrap();
-            }
-            ["poll"] | ["wait"] => {
-                let worker = self.worker.as_ref().ok_or("no active exact request")?;
-                let observation = if args[0] == "wait" {
-                    Some(
-                        worker
-                            .receive
-                            .recv()
-                            .map_err(|_| "exact worker failed; unscored")?,
-                    )
-                } else {
-                    match worker.receive.try_recv() {
-                        Ok(o) => Some(o),
-                        Err(mpsc::TryRecvError::Empty) => None,
-                        Err(_) => return Err("exact worker failed; unscored".into()),
-                    }
-                };
-                if let Some(observation) = observation {
-                    let worker = self.worker.take().unwrap();
-                    worker
-                        .thread
-                        .join()
-                        .map_err(|_| "exact worker panicked; unscored")?;
-                    let report = self
-                        .analysis
-                        .accept(&self.game, &observation)
-                        .map_err(error)?;
-                    let request = observation.request();
-                    writeln!(out,"nowin-context purpose=natural_board_win goal={NATURAL_WIN_GOAL} identity={:?} target={:?} limits={}",request.identity(),request.target(),serde_json::to_string(&request.limits()).map_err(error)?).unwrap();
-                    writeln!(
-                        out,
-                        "nowin-source {}",
-                        CanonicalRecord::xiangqi(request.source_record().clone())
-                            .to_json()
-                            .map_err(error)?
-                    )
-                    .unwrap();
-                    writeln!(
-                        out,
-                        "nowin-result {}",
-                        serde_json::to_string(&report).map_err(error)?
-                    )
-                    .unwrap();
-                    writeln!(out,"exact is read-only; required incomplete adjudication stays unresolved/unscored; GameRecord contains game semantics only").unwrap();
-                } else {
-                    writeln!(out, "exact pending").unwrap();
-                }
-            }
-            ["exact", rest @ ..] => {
-                let mut limits = ExactLimits::default();
-                if !rest.is_empty() {
-                    if !matches!(rest.len(), 4 | 5) {
-                        return Err(
-                            "usage: nowin exact [states edges millis memory-bytes [bfs|dfs]]"
-                                .into(),
-                        );
-                    }
-                    limits.states = number(rest[0])
-                        .and_then(|n| n.try_into().ok())
-                        .ok_or("invalid states")?;
-                    limits.transitions =
-                        number(rest[1]).map(|n| n as u64).ok_or("invalid edges")?;
-                    limits.millis = number(rest[2])
-                        .and_then(|n| n.try_into().ok())
-                        .ok_or("invalid millis")?;
-                    limits.memory_bytes = number(rest[3]).ok_or("invalid memory bytes")?;
-                    if rest.len() == 5 {
-                        limits.traversal = match rest[4] {
-                            "bfs" => ExactTraversal::BreadthFirst,
-                            "dfs" => ExactTraversal::DepthFirst,
-                            _ => return Err("traversal must be bfs or dfs".into()),
-                        };
-                    }
-                }
-                self.retire();
-                let request = self.analysis.begin(&self.game, limits).map_err(error)?;
-                let stop = Arc::new(AtomicBool::new(false));
-                let cancellation = stop.clone();
-                let (send, receive) = mpsc::sync_channel(1);
-                let thread = thread::Builder::new()
-                    .name("xiangqi-no-win-diagnostic".into())
-                    .spawn(move || {
-                        let result = request.run(|| cancellation.load(Ordering::Relaxed));
-                        let _ = send.send(result);
-                    })
-                    .map_err(error)?;
-                self.worker = Some(Worker {
-                    stop,
-                    receive,
-                    thread,
-                });
-                writeln!(out, "exact started; explicit bounded read-only work").unwrap();
-            }
-            _ => return Err("usage: nowin fast|exact [limits]|poll|wait|cancel".into()),
+    fn nowin(&self, args: &[&str], out: &mut String) -> Result<(), String> {
+        if args != ["fast"] {
+            return Err("usage: nowin fast".into());
         }
+        writeln!(
+            out,
+            "no-win-fast {}",
+            serde_json::to_string(&self.game.no_win_assessment()).map_err(error)?
+        )
+        .unwrap();
         Ok(())
     }
 }

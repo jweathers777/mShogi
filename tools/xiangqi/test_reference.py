@@ -21,7 +21,7 @@ MANIFEST = reference.MANIFEST
 class AdmissionSentinels(unittest.TestCase):
     def test_initial_independent_count_and_known_memberships(self):
         result = reference.query({'root_fen': INITIAL, 'perft_depth': 2}, MANIFEST)
-        # Count/grouping is the independently reviewed MSH80 opening fact.
+        # Count/grouping is the independently reviewed MSH-80 opening fact.
         self.assertEqual(len(result['legal_moves']), 44)
         self.assertFalse(result['in_check'])
         self.assertTrue(result['undo_restored'])

@@ -118,7 +118,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 }
             }
         } else {
-            // Prefer quiet progress with native effects, keeping the source156-piece
+            // Prefer quiet progress with native effects, keeping the source 156-piece
             // standard game material intact. Repetition admission remains Game-owned.
             let mut choices = game.local_position().legal_actions();
             seed = seed.wrapping_mul(6364136223846793005).wrapping_add(1);

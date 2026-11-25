@@ -86,7 +86,7 @@ pub fn game(profile: c::Profile, scenario: &str) -> Result<c::Game, String> {
             }
             pieces.push((c::Square::new(8,1).unwrap(),c::Piece::new(66,c::Side::Gote,c::Base::K,false).map_err(|e|e.to_string())?));
             c::Game::from_root(c::Position::from_diagram(profile,&pieces,c::Side::Sente,
-                c::RootMetadata::imported("Artwork inspection diagram: all44faces and30once-promoted identities, not reached play".into(),0).map_err(|e|e.to_string())?).map_err(|e|e.to_string())?).map_err(|e|e.to_string())
+                c::RootMetadata::imported("Artwork inspection diagram: all 44 faces and 30 once-promoted identities, not reached play".into(),0).map_err(|e|e.to_string())?).map_err(|e|e.to_string())?).map_err(|e|e.to_string())
         }
         "standard" | "gote" | "engine-played" | "analysis" => Ok(c::Game::standard(profile)),
         "burn" | "burned" => root(profile, &fixture_input("TEN-BURN-DYING")["root"]),

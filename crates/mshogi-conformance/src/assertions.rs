@@ -204,10 +204,10 @@ pub fn plan(corpus: &Corpus) -> Vec<Assertion> {
             }
         }
         if f.id == "TORI-C-IDENTITY" {
-            out.push(Assertion {fixture_id:f.id.clone(),field:"native_context/retired".into(),owner:"MSH-129".into(),boundary:Boundary::History,predicate:Predicate::DifferentSnapshots,expected:Value::String("fresh native full-history context/lineage after retirement; real process acceptance belongs77".into())});
+            out.push(Assertion {fixture_id:f.id.clone(),field:"native_context/retired".into(),owner:"MSH-129".into(),boundary:Boundary::History,predicate:Predicate::DifferentSnapshots,expected:Value::String("fresh native full-history context/lineage after retirement; real process acceptance belongs to MSH-77".into())});
         }
         let owner = corpus.owner(&f.id).expect("admitted owner");
-        // A structural projection is not full legality; the manifest assigns it to127.
+        // A structural projection is not full legality; the manifest assigns it to MSH-127.
         let structural = owner
             .supplementary_native_checks
             .iter()

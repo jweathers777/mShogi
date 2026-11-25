@@ -36,7 +36,7 @@ const inspections = inspectionJson as unknown as MovementInspection[];
 function board(snapshot = root, command = vi.fn()) { return { ...render(<GameBoard snapshot={snapshot} disabled={false} inspectionDisabled={false} command={command} />), command }; }
 function session(snapshot: GameSnapshot): GameSession { return { snapshot, busy: false, error: "", command: vi.fn(), file: vi.fn(), newGame: vi.fn(), closeRequested: false, cancelClose: vi.fn(), finishClose: vi.fn(), requestClose: vi.fn() }; }
 function app(snapshot: ToriSnapshot) { const native = session(snapshot); return { ...render(<ApplicationView snapshot={snapshot} session={native} onNewGame={vi.fn()} onOpen={vi.fn()} blocked={false} />), native }; }
-it("presents all nine native faces, handed resources, exact7x7 orientations and player presentation", () => {
+it("presents all nine native faces, handed resources, exact 7x7 orientations and player presentation", () => {
   board();
   for (const piece of root.pieces) expect(screen.getByRole("button", { name: piece.label })).toBeTruthy();
   expect(new Set(root.pieces.map(p => p.kind)).size).toBe(9);

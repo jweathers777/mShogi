@@ -38,7 +38,7 @@ pub enum GameCommand {
     AcceptDraw,
     /// Reject the opponent's offer without an action or outcome.
     DeclineDraw,
-    /// Submit an Art8 claim for this actor, regardless of turn.
+    /// Submit an Article 8 claim for this actor, regardless of turn.
     ClaimNaturalCount,
 }
 /// Native score reasons. No external engine failure is a reason for a win.
@@ -64,7 +64,7 @@ pub enum WinReason {
 pub enum DrawReason {
     /// Fourth known occurrence without continued unilateral fault.
     Repetition,
-    /// Valid claimant-specific Art8 request.
+    /// Valid claimant-specific Article 8 request.
     NaturalCount,
     /// Opponent accepted a draw offer.
     Agreement,

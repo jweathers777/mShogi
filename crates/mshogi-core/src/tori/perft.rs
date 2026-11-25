@@ -146,7 +146,7 @@ impl LocalPosition {
             visited: budget.used,
         })
     }
-    /// Deterministic root-action diagnostics. Depth must be1..=MAX_PERFT_DEPTH;
+    /// Deterministic root-action diagnostics. Depth must be 1..=MAX_PERFT_DEPTH;
     /// work is metered across the entire divide, not separately for each row.
     pub fn divide(&self, depth: u8, max_visits: u64) -> Result<DivideReport, PerftError> {
         if depth == 0 {

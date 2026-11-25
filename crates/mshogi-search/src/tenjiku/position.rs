@@ -671,7 +671,7 @@ impl Board {
         self.project(m)
     }
     // Geometry is known for generated routes, but full effects and promotion still
-    // decide admission. At most source+3landings+8burn neighbors are changed.
+    // decide admission. At most source + 3 landings + 8 burn neighbors are changed.
     fn project(&mut self, m: Move) -> Option<Undo> {
         let c = self.cells[m.from()];
         let before = piece(c);

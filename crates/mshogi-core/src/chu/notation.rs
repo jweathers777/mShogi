@@ -5,7 +5,7 @@
 //! A final `^` means this complete action promotes. Absence of `^` means no
 //! flip; it does not assert that promotion was available. Thus jump `Ln6fx6d`,
 //! walk `Ln6fx6ex6d`, capture-return `Ln6fx6e-6f` and quiet-return
-//! `Ln6f-5e-6f` remain distinct. Coordinates are file1..12/rank a..l.
+//! `Ln6f-5e-6f` remain distinct. Coordinates are file 1..12/rank a..l.
 use super::{Action, HistorySnapshot, LocalPosition, Position};
 use std::{error::Error, fmt};
 

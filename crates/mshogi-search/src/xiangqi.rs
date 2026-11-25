@@ -44,7 +44,7 @@ pub const fn piece_value(kind: PieceKind) -> i32 {
 /// Mandatory finite deterministic work. Zero visits is explicitly supported.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Limits {
-    /// Maximum nominal depth,1..=MAX_DEPTH.
+    /// Maximum nominal depth, 1..=MAX_DEPTH.
     pub depth: u16,
     /// Total admitted visits including iterative/partial work.
     pub nodes: u64,

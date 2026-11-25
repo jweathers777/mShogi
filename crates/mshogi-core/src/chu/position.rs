@@ -41,7 +41,7 @@ impl Side {
         }
     }
 }
-/// A bounded native12×12 square, canonical order rank1..12/file12..1.
+/// A bounded native 12×12 square, canonical order rank 1..12/file 12..1.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Ord, PartialOrd)]
 pub struct Square(u8);
 impl Square {
@@ -69,7 +69,7 @@ impl Square {
     pub fn all() -> impl Iterator<Item = Self> {
         (0..144).map(Self)
     }
-    /// Rotate180degrees.
+    /// Rotate 180 degrees.
     pub const fn rotated(self) -> Self {
         Self(143 - self.0)
     }
@@ -95,7 +95,7 @@ impl<'de> Deserialize<'de> for Square {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
         let [f, r] = <[u8; 2]>::deserialize(d)?;
         Self::new(f, r)
-            .ok_or_else(|| serde::de::Error::custom("Chu square coordinates must be1..12"))
+            .ok_or_else(|| serde::de::Error::custom("Chu square coordinates must be 1..12"))
     }
 }
 /// Invalid native square spelling.
@@ -103,7 +103,7 @@ impl<'de> Deserialize<'de> for Square {
 pub struct SquareError;
 impl fmt::Display for SquareError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.write_str("invalid Chu square (file1..12/rank a..l)")
+        f.write_str("invalid Chu square (file 1..12/rank a..l)")
     }
 }
 impl Error for SquareError {}
@@ -538,7 +538,7 @@ impl RootMetadata {
             declared_completed_plies,
         }
     }
-    /// Imported source bounded to1024 UTF-8 bytes.
+    /// Imported source bounded to 1024 UTF-8 bytes.
     pub fn imported(source: String, declared_completed_plies: u64) -> Result<Self, RootError> {
         if source.is_empty() || source.len() > 1024 {
             return Err(RootError::InvalidProvenance);
@@ -593,7 +593,7 @@ pub enum RootError {
     InvalidProvenance,
     /// Standard identity cannot relabel a custom diagram.
     StandardRootNotDiagram,
-    /// Native board length must be144.
+    /// Native board length must be 144.
     BoardLength,
     /// Counter addition overflows.
     Counter,
@@ -621,7 +621,7 @@ pub struct Position {
     pub(crate) state: StructuralState,
 }
 impl Position {
-    /// Standard92-piece arrangement.
+    /// Standard 92-piece arrangement.
     pub fn standard() -> Self {
         use Base::*;
         let mut entries = Vec::new();

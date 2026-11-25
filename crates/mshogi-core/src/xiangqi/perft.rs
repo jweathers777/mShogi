@@ -49,7 +49,7 @@ impl Position {
         }
         Ok(count)
     }
-    /// Count exact-depth board leaves, depth0=1, positive-depth no-action=0.
+    /// Count exact-depth board leaves, depth 0=1, positive-depth no-action=0.
     /// Does not adjudicate repetitions, movecounts or impossible-to-win material.
     /// Declared counters are ignored in a temporary copy; self remains exact.
     pub fn perft(&self, depth: u8) -> Result<u64, PerftError> {

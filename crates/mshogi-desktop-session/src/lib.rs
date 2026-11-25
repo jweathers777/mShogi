@@ -66,7 +66,7 @@ const MAX_SAFE_ID: u64 = 9_007_199_254_740_991;
 /// largest integer preserved exactly by the JSON/JavaScript desktop boundary;
 /// no supported timed search can practically exhaust it.
 pub const PLAY_NODE_CEILING: u64 = MAX_SAFE_ID;
-/// Time-primary Chess play. Depth128 remains the native recursion safeguard;
+/// Time-primary Chess play. Depth 128 remains the native recursion safeguard;
 /// both technical ceilings are recorded in the exact request identity.
 pub const PLAY_LIMITS: WorkLimits = WorkLimits {
     time_ms: Some(1_000),

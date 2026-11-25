@@ -110,7 +110,7 @@ pub struct Opening {
     /// Origin, license/rights and selection rationale.
     pub provenance: String,
 }
-/// Bounded preregistered experiment. Player0 is compared to each baseline.
+/// Bounded preregistered experiment. Player 0 is compared to each baseline.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Config {

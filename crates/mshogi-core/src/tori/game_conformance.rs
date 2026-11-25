@@ -338,7 +338,7 @@ impl NativeAdapter for GameAdapter {
                 all && GameRecord::from_json(&duplicate).is_err()
             )));
         }
-        Err(format!("unhandled MSH129 fixture {} / {field}", f.id))
+        Err(format!("unhandled MSH-129 fixture {} / {field}", f.id))
     }
 }
 #[test]
@@ -371,7 +371,7 @@ fn actual_complete_native_fixture_observations() {
         (591, 591, 14, 0)
     );
     eprintln!(
-        "TORI129 actual native:591 executed/591 passed/14 pending/0 failed; {} later consumer requirements pending",
+        "MSH-129 Tori actual native: 591 executed/591 passed/14 pending/0 failed; {} later consumer requirements pending",
         report.later_consumer_requirements.len()
     );
 }

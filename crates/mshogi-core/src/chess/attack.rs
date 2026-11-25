@@ -17,7 +17,7 @@ impl Position {
         debug_assert_eq!(kings.count_ones(), 1);
         Square(kings.trailing_zeros() as u8)
     }
-    /// Geometric squares attacked by the piece on `from`, as an a1-bit0 map.
+    /// Geometric squares attacked by the piece on `from`, as a map with a1 at bit 0.
     ///
     /// This has exactly the attack/defence semantics of [`Position::attackers`]:
     /// slider rays include their first occupied square and stop there, friendly

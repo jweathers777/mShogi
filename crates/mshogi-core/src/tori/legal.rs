@@ -88,7 +88,7 @@ pub enum LocalStatus {
     Ongoing,
     /// In check with a legal defense.
     Check,
-    /// In check with no board-legal action;129 installs the corresponding loss.
+    /// In check with no board-legal action; MSH-129 installs the corresponding loss.
     Checkmate,
     /// No check and no legal action; selected T05 is stalemate loss, never Chess draw.
     QuietNoAction,
@@ -196,7 +196,7 @@ impl LocalPosition {
             position: rule_probe(&self.position, self.position.side_to_move()),
         }
     }
-    /// Standard admitted32-piece setup.
+    /// Standard admitted 32-piece setup.
     pub fn standard() -> Self {
         Self::admit(Position::standard()).expect("selected standard root")
     }
@@ -227,8 +227,8 @@ impl LocalPosition {
         )
         .is_ok()
     }
-    /// Atomically commit one complete local choice using 127's native transition.
-    /// Requires separate 129 permission in a real Game. Capacity failure is explicit.
+    /// Atomically commit one complete local choice using MSH-127's native transition.
+    /// Requires separate MSH-129 permission in a real Game. Capacity failure is explicit.
     pub fn apply(&mut self, action: Action) -> Result<(Effects, LocalUndo), ActionError> {
         resolve_legal(
             &rule_probe(&self.position, self.position.side_to_move()),

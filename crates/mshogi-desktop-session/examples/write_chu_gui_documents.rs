@@ -257,7 +257,7 @@ fn actual_observation_at_limits(
     response.observation
 }
 fn complete_standard_game() -> (ValidatedChuDocument, Value) {
-    // Actual current depth1/512 deterministic engine on both sides, followed by
+    // Actual current depth 1/512 deterministic engine on both sides, followed by
     // an explicit scripted participant resignation. This is a fully concluded
     // standard-root record, NOT natural self-play completion or strength proof.
     let mut d = document(&c::Game::standard(), c::Side::Sente);
@@ -382,7 +382,7 @@ fn complete_natural_engine_game() -> (ValidatedChuDocument, Value) {
     (
         d,
         json!({"root":"independently_authored_diagram","source_fixture":"CHU-ROYAL-BOTH-COMPOUND",
-        "diagram_extension":"Remote Gote Gold11a prevents a single royal capture from also receiving a material award; original fixture remains unchanged.",
+        "diagram_extension":"Remote Gote Gold 11a prevents a single royal capture from also receiving a material award; original fixture remains unchanged.",
         "engine":engine,"work_limits":{"depth":1,"nodes":512},"actual_action":actual_action,
         "ending":"native_royal_capture_after_actual_engine_choice","conclusion":{"kind":"royal_capture","winner":"sente"},
         "known_board_actions":1,"native_events":1,"observations":2,"response_sequence":["choice","finished"],
@@ -409,7 +409,7 @@ fn main() {
     }
     std::fs::write(output.join("chu-native-fixtures.json"), serde_json::to_string_pretty(&json!({
         "profile":"mshogi.chu.jcsa2019.v1","generator":"write_chu_gui_documents",
-        "expectation_source":"ratified MSH82/86 docs/m4/chu/fixtures.json; independent source transcription and hand-worked expectations, no engine oracle",
+        "expectation_source":"ratified MSH-82/86 docs/m4/chu/fixtures.json; independent source transcription and hand-worked expectations, no engine oracle",
         "fixture_diagrams":"Not claimed historically reachable from standard start; known history begins at each diagram root.",
         "cases":manifest,
     })).unwrap()+"\n").unwrap();

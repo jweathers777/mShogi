@@ -152,7 +152,7 @@ def bounded_run(command, data, timeout=20.0):
                 name = key.data
                 limit = MAX_RESPONSE if name == 'stdout' else MAX_DIAGNOSTIC
                 if len(outputs[name]) + len(chunk) > limit:
-                    raise ProbeFailure('output_limit', f'{name} exceeds {limit}bytes')
+                    raise ProbeFailure('output_limit', f'{name} exceeds {limit} bytes')
                 outputs[name].extend(chunk)
         try:
             code = process.wait(timeout=max(0.001, deadline - time.monotonic()))

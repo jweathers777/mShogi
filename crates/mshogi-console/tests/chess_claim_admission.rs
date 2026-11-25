@@ -62,7 +62,7 @@ fn actual_depth_one_leaf_claim_tail_is_admitted_without_playing_intended_move() 
         let first = &game.steps[0];
         assert!(
             first.applied,
-            "valid depth1 move+leaf-claim refused: stop={}, failure={:?}, observation={:?}",
+            "valid depth 1 move+leaf-claim refused: stop={}, failure={:?}, observation={:?}",
             game.stop, first.failure, first.observation
         );
         assert_eq!(first.request.game, root.record);

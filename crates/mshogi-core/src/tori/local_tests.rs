@@ -179,8 +179,8 @@ fn independent_complete_choices_single_double_check_capture_and_block() {
 #[test]
 fn pinned_attackers_still_defend_squares_and_discovered_self_check_rejects() {
     for owner in [Side::Sente, Side::Gote] {
-        // Gote Crane4b is pinned to Phoenix4a by Sente LeftQuail4f. Its geometric
-        // threat3c still forbids Sente Phoenix3d→3c under the selected T05 map.
+        // Gote Crane 4b is pinned to Phoenix 4a by Sente LeftQuail 4f. Its geometric
+        // threat 3c still forbids Sente Phoenix 3d→3c under the selected T05 map.
         let mut p = LocalPosition::admit(diagram(
             &[
                 ("3d", Side::Sente, Face::Phoenix),
@@ -725,7 +725,7 @@ fn bounded_perft_and_divide_use_independent_counts_and_preserve_native_paths() {
     .unwrap();
     let before = unchanged(&p);
     // Each distant corner king has 3 moves. No first move can influence the other,
-    // so depth2=3×3=9, visited=1+3+9=13; not measured generator expectations.
+    // so depth 2=3×3=9, visited=1+3+9=13; not measured generator expectations.
     assert_eq!(
         p.perft(0, 1).unwrap(),
         PerftReport {

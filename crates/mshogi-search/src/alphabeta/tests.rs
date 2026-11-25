@@ -282,8 +282,8 @@ fn singular_exclusion_has_no_terminal_or_table_authority_and_restores_on_abort()
             root_move: None,
             root_count: 0,
         };
-        // A lower table score of100 must not cut off the verification at20.
-        // With the sole legal move excluded,10 is fail-low, not checkmate.
+        // A lower table score of 100 must not cut off the verification at 20.
+        // With the sole legal move excluded, 10 is fail-low, not checkmate.
         assert_eq!(run.search(3, 1, 10, 20, false, false), 10);
     }
     let after = s.table.probe(hash, 1).unwrap();

@@ -419,8 +419,8 @@ mod tests {
     #[test]
     fn actual_three_landing_demon_effects_explain_both_profiles_without_invented_victims() {
         // TEN-BURN-DYING's independent root, with actual three-step route
-        // 8j -> 7i -> 7h -> 8h. T04 burns the8g Pawn before mover death only
-        // under Adams; both profiles leave the enemy Demon9h untouched.
+        // 8j -> 7i -> 7h -> 8h. T04 burns the 8g Pawn before mover death only
+        // under Adams; both profiles leave the enemy Demon 9h untouched.
         for profile in Profile::ALL {
             let local = local(
                 profile,
@@ -492,8 +492,8 @@ mod tests {
     #[test]
     fn stationary_igui_origin_does_not_claim_survival_beside_an_enemy_demon() {
         for profile in Profile::ALL {
-            // The Tetrarch captures9h without moving. The other enemy Demon7h
-            // survives; its final-position hazard destroys the mover at8h.
+            // The Tetrarch captures 9h without moving. The other enemy Demon 7h
+            // survives; its final-position hazard destroys the mover at 8h.
             let igui = local(
                 profile,
                 &[

@@ -124,7 +124,7 @@ impl Position {
         false
     }
     /// Structural effect resolution on a private candidate. The caller must
-    /// additionally enforce 128 local legality and 129 game permission.
+    /// additionally enforce MSH-128 local legality and MSH-129 game permission.
     pub(crate) fn resolve_structural(
         &self,
         action: Action,

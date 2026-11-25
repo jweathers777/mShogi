@@ -389,7 +389,7 @@ fn claim_catalog_prerequisite_shortcut_matches_individually_validated_requests()
         assert_eq!(*g, before);
     }
     // Independently established threshold, reset, promotion, EP, terminal and
-    // fullmove-overflow cases. At98 no one-step fifty claim; at99 quiet moves
+    // fullmove-overflow cases. At 98 no one-step fifty claim; at 99 quiet moves
     // qualify; captures/pawns reset rather than increment the counter.
     for clock in [0, 98, 99, 100, 149, 150] {
         for board in [

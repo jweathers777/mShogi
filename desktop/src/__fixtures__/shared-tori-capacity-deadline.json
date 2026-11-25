@@ -60,7 +60,7 @@
   "capacity": {
     "id": 3,
     "status": "paused",
-    "message": "Application capacity: native document validation exceeded its bounded15-second budget. The accepted current document is preserved.",
+    "message": "Application capacity: native document validation exceeded its bounded 15-second budget. The accepted current document is preserved.",
     "resource": {
       "fact": {
         "category": "validation_budget",
@@ -71,7 +71,7 @@
         "scope": "application",
         "unit": "milliseconds"
       },
-      "diagnostic": "Application capacity: native document validation exceeded its bounded15-second budget. The accepted current document is preserved."
+      "diagnostic": "Application capacity: native document validation exceeded its bounded 15-second budget. The accepted current document is preserved."
     }
   },
   "token": {

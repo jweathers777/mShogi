@@ -164,7 +164,7 @@ fn existing_independent_board_fixtures_and_perft_agree() {
                 assert_eq!(
                     p.perft(u32::from(depth)),
                     expected,
-                    "{} depth{depth}",
+                    "{} depth {depth}",
                     fixture["id"]
                 );
                 assert_eq!(native.perft(depth).unwrap(), expected);

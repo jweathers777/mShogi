@@ -30,8 +30,8 @@ Your side starts at the bottom; **Flip board** remains explicit. The initial
 application opens Chess; the same normal application loads each game's native archive.
 
 Tori Shogi uses the approved traditional kanji, a complete 7×7 board and native
-hands/promotion. Its shared-core engine defaults to depth64 /300,000 nodes,
-with a maximum node limit of5,000,000. These are search bounds, not a
+hands/promotion. Its shared-core engine defaults to depth 64 /300,000 nodes,
+with a maximum node limit of 5,000,000. These are search bounds, not a
 competitive-strength claim. See the current [shared search core](../docs/m5/shared-search-core.md). Read-only analysis,
 cancellation/Retry, exact history, Take back, native outcomes and Save/Load share
 the existing owners. Load stops work until explicit **Resume play**. The desktop
@@ -44,8 +44,8 @@ complete 12×12 board in the same shell, without board scrolling or zoom. Select
 **Chu Shogi** in the ordinary dropdown and Sente, Gote or Random. Lion routes
 use native highlighted stages: select a second landing, or **Complete action
 here** when offered. Escape cancels an uncommitted selection. The game has no
-hands. Actual native engine play uses depth1 /512 visits; ordinary read-only
-analysis is capped at depth2 /2,000. This is a functional baseline, not a strength
+hands. Actual native engine play uses depth 1 /512 visits; ordinary read-only
+analysis is capped at depth 2 /2,000. This is a functional baseline, not a strength
 claim. Load retains complete native history and observations and stops work
 until **Resume play**. Take back retires execution and preserves its historical
 observations; native/console Undo remains separate. Capacity refusals preserve
@@ -72,7 +72,7 @@ of 760 × 650. The inspector scrolls; Tab/Shift-Tab reveal focused controls.
 The board uses one keyboard stop with arrow navigation between squares.
 
 Chess replies through the bundled engine with a one-second primary time budget;
-depth128 and the exact JSON integer node ceiling are technical guards, not
+depth 128 and the exact JSON integer node ceiling are technical guards, not
 ordinary effort limits. The shared bridge keeps an engine process between
 successful searches; timed Chess can retain search state across moves. Cancellation
 and failure retire that process. See [engine sessions](../docs/desktop/internal-execution-v4.md). The engine panel shows only final native observations, labeled with their

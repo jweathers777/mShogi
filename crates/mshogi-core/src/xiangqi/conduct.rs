@@ -223,7 +223,7 @@ fn chasing(steps: &[Step], side: Side, close_cycle: bool) -> Result<bool, Conduc
         .enumerate()
         .filter(|(_, step)| step.actor == side)
     {
-        // A check/noncheck mixture is allowed by20.2; a simultaneous mating
+        // A check/noncheck mixture is allowed by 20.2; a simultaneous mating
         // threat does not neutralize an established chase (diagram 109).
         if step.after.is_in_check(side.opponent()) {
             return Ok(false);
@@ -274,7 +274,7 @@ fn chasing(steps: &[Step], side: Side, close_cycle: bool) -> Result<bool, Conduc
         let moving_id = step.ids_before[step.action.from.index()];
         let mut victims = BTreeSet::new();
         for capture in after {
-            // Diagram110 excludes a stationary, continuously present attack.
+            // Diagram 110 excludes a stationary, continuously present attack.
             // Moving the pursuer, or changing a screen/leg/root to enable a
             // different native legal capture, supplies the causal link.
             let prohibited = prohibited_capture(&step.after, capture)?;
@@ -478,31 +478,31 @@ mod tests {
                 None,
             ),
             (
-                "diagram37 check/chase",
+                "diagram 37 check/chase",
                 "2bak4/4a4/4b4/p8/2p3n2/9/P1P3R2/3AB4/c3N3N/1RB1KA3 w - - 0 1",
                 "b0b1 a1a0 b1b0 a0a1",
                 Some(Side::Red),
             ),
             (
-                "diagram38 mate/chase",
+                "diagram 38 mate/chase",
                 "2bakab2/9/2c6/7R1/p3p1p2/9/P1P1P1P1P/B1N6/1R2A4/2B1KA3 w - - 0 1",
                 "h6c6 c7h7 c6h6 h7c7",
                 Some(Side::Red),
             ),
             (
-                "diagram108 equal prohibited chase",
+                "diagram 108 equal prohibited chase",
                 "3akab2/c2R1R2c/4b4/9/9/9/9/4B4/4K4/2B6 w - - 0 1",
                 "f8f6 d9e8 f6f8 e8d9",
                 None,
             ),
             (
-                "diagram109 simultaneous mate/chase",
+                "diagram 109 simultaneous mate/chase",
                 "1r2kab2/4aR3/1cn5c/p5N1p/6b2/9/P7P/6C2/9/2BAKAB2 w - - 0 1",
                 "g6h8 g5e7 h8g6 e7g5",
                 Some(Side::Red),
             ),
             (
-                "diagram110 persistent cannon excluded",
+                "diagram 110 persistent cannon excluded",
                 "4kab2/4arNC1/4b1R2/4n4/2p3p2/2c6/4P3P/9/4A4/2BAK1B2 w - - 0 1",
                 "g7g6 e6f4 g6g7 f4e6",
                 Some(Side::Black),

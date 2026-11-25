@@ -160,7 +160,7 @@ fn frozen_independent_board_facts_and_every_generated_action_restore_exactly() {
                 assert_eq!(
                     position.perft(depth.parse().unwrap()).unwrap(),
                     nodes.as_u64().unwrap(),
-                    "{id}: hand-derived perft{depth}"
+                    "{id}: hand-derived perft {depth}"
                 );
             }
         }
@@ -178,7 +178,7 @@ fn frozen_independent_board_facts_and_every_generated_action_restore_exactly() {
                     .iter()
                     .map(|(action, nodes)| (action.clone(), nodes.as_u64().unwrap()))
                     .collect();
-                assert_eq!(actual, expected, "{id}: hand-derived divide{depth}");
+                assert_eq!(actual, expected, "{id}: hand-derived divide {depth}");
             }
         }
         check_every_reversal(&mut position, id);
@@ -242,7 +242,7 @@ fn deterministic_sequences_restore_every_choice_and_every_recorded_prefix() {
             if actions.is_empty() {
                 break;
             }
-            check_every_reversal(&mut position, &format!("seed{seed}/ply{ply}"));
+            check_every_reversal(&mut position, &format!("seed {seed}/ply {ply}"));
             seed = seed.wrapping_mul(6364136223846793005).wrapping_add(1);
             let action = actions[(seed as usize) % actions.len()];
             prefixes.push(position.clone());

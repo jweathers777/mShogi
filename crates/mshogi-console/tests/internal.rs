@@ -80,7 +80,7 @@ fn real_bundled_entrypoint_echoes_context_and_plays_an_actual_legal_move() {
     // Independently derived Nb1-c3 preference with the frozen Texel weights:
     // knight placement: floor(52*68/100)-floor(8*68/100) = 30cp;
     // mobility: floor(65*132/100)-floor(48*132/100) = 22cp.
-    // The raw mobility difference is 15cp knight + 2cp rook, total score52cp.
+    // The raw mobility difference is 15cp knight + 2cp rook, total score 52cp.
     // Lexical ties choose b1c3.
     // This also proves the actual supervised child uses the active candidate,
     // rather than accidentally retaining the material/full-width coordinator.

@@ -87,7 +87,7 @@ fn drop_capture_hands_optional_forced_and_already_promoted_choices() {
 #[test]
 fn same_piece_destinations_have_explicit_sources_and_illegal_batches_are_atomic() {
     // Independent manual geometry: two silvers each have five unobstructed
-    // choices; Sente king9i has 3. Both4e/6e can move5d without promotion.
+    // choices; Sente king 9i has 3. Both 4e/6e can move 5d without promotion.
     let out = run(
         "position sfen reduced 8k/9/9/9/3S1S3/9/9/9/K8 b - 1\nlegal\nmove 4e5d\nundo\nmove 6e5d\nposition startpos\nrecord print\nmove 7g7f 3c3d 7f7e 7e7d\nrecord print\nposition sfen reduced 8k/4P4/9/9/9/9/9/9/K8 b - 1\nrecord print\nmove 5b5a\nrecord print\n",
     );

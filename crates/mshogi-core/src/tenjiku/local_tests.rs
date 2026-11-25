@@ -122,7 +122,7 @@ fn complete_action_json_rejects_conflicting_shape_and_caller_effects() {
 
 #[test]
 fn special_geometry_combinatorics_count_complete_paths_not_only_destinations() {
-    // Source combinatorics: Lion24direct+8*8two-step; area8+64+512 plus nonduplicate rays.
+    // Source combinatorics: Lion 24 direct + 8*8 two-step; area 8+64+512 plus nonduplicate rays.
     let cases = [
         (Base::Ln, 88, 88),
         (Base::LHk, 109, 109),

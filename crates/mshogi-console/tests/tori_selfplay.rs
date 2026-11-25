@@ -66,7 +66,7 @@ fn actual(request: &ExecutionRequest) -> ExecutionResponse {
         if Instant::now() >= deadline {
             child.kill().unwrap();
             let _ = child.wait();
-            panic!("bounded Tori child exceeded independent20-second watchdog");
+            panic!("bounded Tori child exceeded independent 20-second watchdog");
         }
         thread::sleep(Duration::from_millis(1));
     }
@@ -101,7 +101,7 @@ fn bounded(mut game: t::Game, maximum_plies: usize) -> Trace {
         };
         result.validate(&game).unwrap();
         let ToriResult::Choice { action, telemetry } = result else {
-            panic!("representative depth1 must complete: {result:?}")
+            panic!("representative depth 1 must complete: {result:?}")
         };
         assert_eq!(telemetry.completed_depth, 1);
         assert!(telemetry.score.is_some());
@@ -173,7 +173,7 @@ fn actual_standard_selfplay_is_deterministic_bounded_and_unscored_at_work_stop()
 
 fn mate_root() -> t::Game {
     // TORI-O-MATE's independently reviewed terminal diagram, one predecessor
-    // earlier. Ea4c-4b checks4a; Pt4d protects4b; native Gote3a/5a/3b/5b
+    // earlier. Ea4c-4b checks 4a; Pt4d protects 4b; native Gote 3a/5a/3b/5b
     // blockers leave no king escape or defense. No evaluator expectation oracle.
     let pieces = [
         ("7g", t::Side::Sente, t::Face::Phoenix),

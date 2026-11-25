@@ -140,8 +140,8 @@ fn main() {
             .clone()
     };
     save(&output, "contract", &roots::contract_game());
-    // Established TORI-O-MATE terminal diagram, with the previous Falcon4c
-    // replacing Eagle4b. Mandatory Fa4c-4b=Ea reaches that exact reviewed board.
+    // Established TORI-O-MATE terminal diagram, with the previous Falcon 4c
+    // replacing Eagle 4b. Mandatory Fa4c-4b=Ea reaches that exact reviewed board.
     let mut mate_root = given("TORI-O-MATE")["root"].clone();
     mate_root["side_to_move"] = "sente".into();
     for entry in mate_root["board"].as_array_mut().unwrap() {

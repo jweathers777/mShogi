@@ -57,7 +57,7 @@ impl Engine {
             let line = self
                 .lines
                 .recv_timeout(deadline.saturating_duration_since(Instant::now()))
-                .unwrap_or_else(|e| panic!("await {prefix}: {e}, lines{lines:?}"));
+                .unwrap_or_else(|e| panic!("await {prefix}: {e}, lines {lines:?}"));
             let done = line.starts_with(prefix);
             lines.push(line);
             if done {

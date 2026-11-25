@@ -120,7 +120,7 @@ mod tests {
 
     #[test]
     fn independent_complete_examples_capture_compulsory_result_and_handed_drop() {
-        // Manually established from T02/T03: Sente Falcon7c captures7b, enters
+        // Manually established from T02/T03: Sente Falcon 7c captures 7b, enters
         // the two-rank zone and must become Eagle; RQ is not interchangeable LQ.
         let position = root();
         let capture = Action::Move {

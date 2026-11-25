@@ -37,7 +37,7 @@ def digest(path):
 
 
 def capture_png_pixels(path):
-    """Decode a genuine noninterlaced8-bit WebDriver PNG for paint evidence.
+    """Decode a genuine noninterlaced 8-bit WebDriver PNG for paint evidence.
 
     This deliberately supports only actual RGB/RGBA screenshot formats; unknown
     encodings fail rather than treating DOM/class assertions as pixel evidence.
@@ -1921,7 +1921,7 @@ class Journey:
                         and context["purpose"]["target"]["event_index"] == event_count):
                     return item
             return None
-        observation = wait(completed, f"actual Xiangqi analysis observation for event{event_count}, depth{depth}/{nodes}visits", 45)
+        observation = wait(completed, f"actual Xiangqi analysis observation for event {event_count}, depth {depth}/{nodes} visits", 45)
         wait(lambda: "Analysis result available" in self.web.text('.shogi-analysis-state'), "native Xiangqi result presentation")
         assert "No move or claim was played" in self.web.text('.shogi-analysis')
         return observation
@@ -2222,7 +2222,7 @@ class Journey:
         w.key('\ue00c')
         w.key('\ue007')  # Enter on the returned hand button starts a new query.
         wait(lambda:'Inspecting Gote pawn in hand' in w.text('.movement-inspection-status'),'keyboard opponent hand inspection')
-        for key in ('\ue015','\ue013','\ue013','\ue007'):  # Down to board, Up twice, Enter at5e.
+        for key in ('\ue015','\ue013','\ue013','\ue007'):  # Down to board, Up twice, Enter at 5e.
             w.key(key)
         time.sleep(0.35)
         self.assert_inspection_unchanged(before, 'Opponent hand inspection complete route preserves authoritative context')
@@ -2432,7 +2432,7 @@ class Journey:
         # silently enlarge its outer window to manufacture a650px WebView.
         native=self.native.resize(760,650);time.sleep(0.2)
         viewport=self.web.read("({width:innerWidth,height:innerHeight,dpr:devicePixelRatio})")
-        self.record('Request retained760x650 native window minimum and measure actual content separately',{'native':native,'viewport':viewport,'limitation':'Full board fit does not make every Tenjiku kanji comfortably readable; larger windows remain recommended, not mandatory.'})
+        self.record('Request retained 760x650 native window minimum and measure actual content separately',{'native':native,'viewport':viewport,'limitation':'Full board fit does not make every Tenjiku kanji comfortably readable; larger windows remain recommended, not mandatory.'})
         return viewport
 
     def tenjiku_board_fits(self):
@@ -2444,7 +2444,7 @@ class Journey:
             return {viewport:{width:innerWidth,height:innerHeight,dpr:devicePixelRatio},board:board?rect(board):null,cells:cells.length,visibleCells:cells.filter(visible).length,boardVisible:visible(board),cell:cells[0]?rect(cells[0]):null,glyphCount:document.querySelectorAll('.tenjiku-face text').length,minimumGlyphEm:Math.min(...[...document.querySelectorAll('.tenjiku-face text')].map(e=>parseFloat(getComputedStyle(e).fontSize)*Math.hypot(e.getScreenCTM().a,e.getScreenCTM().b))),orientation:document.querySelector('.game-shell')?.dataset.orientation,fontLoaded:document.fonts.check('16px "mShogi Tenjiku Pieces"'),pageWidth:document.documentElement.scrollWidth,hands:document.querySelectorAll('[aria-label="Native hands"],.hand-piece').length};})()""")
         assert observed['cells']==observed['visibleCells']==256 and observed['boardVisible'] and observed['fontLoaded'] and observed['glyphCount']>0 and observed['minimumGlyphEm']>0 and not observed['hands'],observed
         assert observed['pageWidth']<=observed['viewport']['width']+1 and observed['cell']['width']>0,observed
-        self.record('Actual responsive16x16 fit and glyph measurements; small-window fit is not all-kanji reading comfort',observed)
+        self.record('Actual responsive 16x16 fit and glyph measurements; small-window fit is not all-kanji reading comfort',observed)
         return observed
 
     def selected_footer_fits(self, label, require_route=False):
@@ -2697,7 +2697,7 @@ class Journey:
                 hands:document.querySelectorAll('[aria-label="Native hands"],.hand-piece').length};})()""")
         assert geometry['allVisible'] and geometry['boardVisible'] and geometry['hands'] == 0 and geometry['uniqueSquares'] == 144, geometry
         assert geometry['nativeOrientation'] in ('sente','gote') and geometry['orientation'].endswith(f", {geometry['nativeOrientation'].capitalize()} at bottom"), geometry
-        # Guard the owner-approved compact minimum (about24px cells/11px kanji), not a new visual specification.
+        # Guard the owner-approved compact minimum (about 24px cells/11px kanji), not a new visual specification.
         assert geometry['minimumSquareWidth'] >= 23 and geometry['kanjiTexts'], geometry
         assert min(item['pixels'] for item in geometry['kanjiTexts']) >= 10, geometry
         assert geometry['pageWidth'] <= geometry['viewport']['width'] + 1, geometry

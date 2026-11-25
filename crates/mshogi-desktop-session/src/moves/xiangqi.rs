@@ -1,4 +1,4 @@
-//! WXF2018 Article7.1-7.5 display adapter; canonical ICCS stays unchanged.
+//! WXF2018 Article 7.1-7.5 display adapter; canonical ICCS stays unchanged.
 use mshogi_core::xiangqi::{Action, PieceKind, Position, Side};
 pub(super) fn notation(position: &Position, action: Action) -> String {
     let piece = position.piece(action.from).expect("admitted source");
@@ -23,8 +23,8 @@ pub(super) fn notation(position: &Position, action: Action) -> String {
             at.rank()
         }
     });
-    // Article7.5 explicitly illustrates three soldiers as ordinal+file.
-    // Owner-approved MSH123 display completion extends this to4/5 and to
+    // Article 7.5 explicitly illustrates three soldiers as ordinal+file.
+    // Owner-approved MSH-123 display completion extends this to 4/5 and to
     // simultaneous multi-file stacks whose +/-P spelling could collide.
     let paired_soldier_files = (0..9)
         .filter(|file| {
@@ -179,7 +179,7 @@ mod fixture_tests {
         let p = position(Side::Black, &[("e6", Side::Black, PieceKind::Rook)]);
         expect(&p, "e6e8", "R5-2");
     }
-    // Source figureB, English PDF24–25 (printed16–17), independently transcribed.
+    // Source figure B, English PDF 24–25 (printed 16–17), independently transcribed.
     #[test]
     fn article7_figure_b_three_soldiers() {
         let p = position(

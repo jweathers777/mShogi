@@ -13,7 +13,7 @@ Pinned source: https://github.com/notofonts/noto-cjk/blob/9b0f1436e455d902de067a
 Source SHA256: 234301038e76e7c35c43113785024700c4e4fe7bdce1d1fbbc42fca7e6683798
 Subset SHA256: 96a14f12cc9365b39a5046a09288186d1cee075dea756f1a39c81fc4332a4cdf
 Rebuild: PYTHONPATH=/path/to/fonttools python3 subset-xiangqi.py NotoSerifCJKtc-Regular.otf mshogi-xiangqi-pieces.woff2
-Verified with Python3.11, fontTools4.47.2 and Brotli1.1.0: all18 codepoints,19 glyphs, nonempty outlines; repeat generation byte-identical.
+Verified with Python 3.11, fontTools 4.47.2 and Brotli 1.1.0: all 18 codepoints, 19 glyphs, nonempty outlines; repeat generation byte-identical.
 
 mShogi Tori Pieces Regular is a separate modified subset of Noto Serif CJK JP Regular 2.003.
 Original font copyright: © 2017-2024 Adobe (http://www.adobe.com/).
@@ -23,7 +23,7 @@ Pinned source: https://github.com/notofonts/noto-cjk/blob/9b0f1436e455d902de067a
 Source SHA256: d9854c7a8ef170b5a7932558856fd64eb8de0b007cd823fed6f9f514ad2803d3
 Subset SHA256: aab996838bb6b9291206064fa4587f538877ce5a1192929224a29b45ff2a00b6
 Rebuild: PYTHONPATH=/path/to/brotli python3 subset-tori.py NotoSerifCJKjp-Regular.otf mshogi-tori-pieces.woff2
-Verified with Python3.11, fontTools4.47.2 and Brotli1.1.0: all10 codepoints,14 glyphs, nonempty outlines; repeat generation byte-identical.
+Verified with Python 3.11, fontTools 4.47.2 and Brotli 1.1.0: all 10 codepoints, 14 glyphs, nonempty outlines; repeat generation byte-identical.
 
 
 mShogi Chu Pieces Regular is a separate modified subset of Noto Serif CJK JP Regular 2.003.
@@ -34,14 +34,14 @@ Pinned source: https://github.com/notofonts/noto-cjk/blob/9b0f1436e455d902de067a
 Source SHA256: d9854c7a8ef170b5a7932558856fd64eb8de0b007cd823fed6f9f514ad2803d3
 Subset SHA256: b9b9b3efe3693504839fdb2cb48fb421f5c4a3de8e65f0f53f724525cfe0fbb5
 Rebuild: PYTHONPATH=/path/to/brotli python3 subset-chu.py NotoSerifCJKjp-Regular.otf mshogi-chu-pieces.woff2
-Verified with Python3.11, fontTools4.47.2 and Brotli1.1.0: all43 codepoints,55 glyphs, nonempty outlines; repeat generation byte-identical.
+Verified with Python 3.11, fontTools 4.47.2 and Brotli 1.1.0: all 43 codepoints, 55 glyphs, nonempty outlines; repeat generation byte-identical.
 
 mShogi Tenjiku Pieces Regular is a separate modified subset of Noto Serif CJK JP Regular 2.003.
 Original font copyright: © 2017-2024 Adobe (http://www.adobe.com/).
 Licensed under the SIL Open Font License, Version 1.1; see OFL.txt.
-Renamed family: mShogi Tenjiku Pieces. All44 traditional movement-face names are bundled locally, including full 四天王 and 雜将.
+Renamed family: mShogi Tenjiku Pieces. All 44 traditional movement-face names are bundled locally, including full 四天王 and 雜将.
 Pinned source: https://github.com/notofonts/noto-cjk/blob/9b0f1436e455d902de067a2501422e5dc71ad16b/Serif/OTF/Japanese/NotoSerifCJKjp-Regular.otf
 Source SHA256: d9854c7a8ef170b5a7932558856fd64eb8de0b007cd823fed6f9f514ad2803d3
 Subset SHA256: fc32544085ef2647d7f5566beec4bfa19ad30a9c99df51947f7e28c8ddd41dda
 Rebuild: PYTHONPATH=/path/to/brotli python3 subset-tenjiku.py NotoSerifCJKjp-Regular.otf mshogi-tenjiku-pieces.woff2
-Verified with Python3.11, fontTools4.47.2 and Brotli1.1.0: all52 codepoints,65 glyphs, nonempty outlines; repeat generation byte-identical.
+Verified with Python 3.11, fontTools 4.47.2 and Brotli 1.1.0: all 52 codepoints, 65 glyphs, nonempty outlines; repeat generation byte-identical.

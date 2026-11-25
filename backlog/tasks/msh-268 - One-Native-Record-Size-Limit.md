@@ -4,7 +4,7 @@ title: Remove Game Size and Engine Request Limits
 status: Ready
 assignee: []
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-25T12:48:00Z'
+updated_date: '2026-11-25T12:50:00Z'
 labels:
   - core
   - model:large
@@ -24,8 +24,8 @@ John (2026-11-25): no limit on game size or on requests to the engine; the limit
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [ ] #1 No code path refuses a game, a saved file, an engine request or an engine reply because of its length or byte size; the listed constants, capacity errors and the capacity messages in the user interface that become unused are removed; production line counts before and after are recorded.
-- [ ] #2 Tests show that a game past each old limit can be played, saved, reopened, sent to the engine and entered over UCI or USI where that protocol exists; every test, fixture and test helper that enforces a removed limit is removed or updated.
-- [ ] #3 Game rules and their expected test results are unchanged; documents (docs/native-resource-admission.md, docs/design.md and affected contracts) state that there is no size limit; workspace, frontend and affected-platform checks pass.
+- [ ] #2 Every test, fixture and test helper that enforces a removed limit is removed or updated. No new test is added only to show that a removed limit is gone.
+- [ ] #3 Every document that names a removed limit is updated (for example docs/native-resource-admission.md, docs/desktop and docs/m4 contracts and rules profiles); search docs/ for each removed value and constant. Game rules and their expected test results are unchanged; workspace, frontend and affected-platform checks pass.
 - [ ] #4 One review by a fresh agent session.
 <!-- AC:END -->
 
@@ -39,4 +39,6 @@ Finding, 2026-11-25: both 1 MiB caps are our own choices (MSH-68, MSH-69); no re
 John, 2026-11-25: I prefer no limit on the game size or the requests to the engine. This replaces the earlier question and recommendation. Accepted consequence: a very large or damaged file or input can use much memory; loading stays cancellable. Not in this task: the 4,096-byte stderr and diagnostic caps. Very long games load slowly until MSH-250, MSH-251 and MSH-227 are done.
 
 John, 2026-11-25: also remove the 2 MiB cap on the engine reply, and any tests that enforce these limits.
+
+John, 2026-11-25: no new tests to show that the removed limits are gone; update the documentation that refers to them.
 <!-- SECTION:NOTES:END -->

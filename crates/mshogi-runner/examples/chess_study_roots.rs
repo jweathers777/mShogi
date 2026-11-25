@@ -187,11 +187,11 @@ fn main() -> Result<(), Box<dyn Error>> {
         let value: serde_json::Value = serde_json::from_slice(&raw)?;
         let samples = value["samples"]
             .as_array()
-            .ok_or("missingexcludedsamples")?;
+            .ok_or("missing excluded samples")?;
         for sample in samples {
             let opening: OpeningConfig = serde_json::from_value(sample["opening"].clone())?;
             if opening.fen.is_some() {
-                return Err("samplerexclusionrequiresstandardroot".into());
+                return Err("sampler exclusion requires standard root".into());
             }
             excluded.insert(opening.moves);
         }

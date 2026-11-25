@@ -208,7 +208,7 @@ fn main() {
             println!("{}", path.display());
         }
     }
-    std::fs::write(directory.join("tenjiku-native-fixtures.json"),serde_json::to_string_pretty(&json!({"schema":"mshogi.tenjiku.packaged-fixtures.v1","generator":"write_tenjiku_gui_fixtures","source_sha256":"2005e098b507f73248b8f9bd442f7ffe0c2c0c5ae205428d9a3d2371a7c08e82","source":"docs/m4/tenjiku/fixtures.json frozen MSH83/87 independently authored roots and expectations","qualification":"Current native desktop documents admitted/replayed by public Rust APIs. Unproved diagrams, no fabricated observations, no normal host fixture/IPC activation.","cases":cases})).unwrap()+"\n").unwrap();
+    std::fs::write(directory.join("tenjiku-native-fixtures.json"),serde_json::to_string_pretty(&json!({"schema":"mshogi.tenjiku.packaged-fixtures.v1","generator":"write_tenjiku_gui_fixtures","source_sha256":"2005e098b507f73248b8f9bd442f7ffe0c2c0c5ae205428d9a3d2371a7c08e82","source":"docs/m4/tenjiku/fixtures.json frozen MSH-83/87 independently authored roots and expectations","qualification":"Current native desktop documents admitted/replayed by public Rust APIs. Unproved diagrams, no fabricated observations, no normal host fixture/IPC activation.","cases":cases})).unwrap()+"\n").unwrap();
 }
 
 fn verify_package_report(path: PathBuf) {

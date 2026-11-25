@@ -59,7 +59,7 @@ fn actual(request: &ExecutionRequest) -> ExecutionResponse {
         if Instant::now() >= deadline {
             child.kill().unwrap();
             let _ = child.wait();
-            panic!("bounded Tenjiku child exceeded independent20-second watchdog");
+            panic!("bounded Tenjiku child exceeded independent 20-second watchdog");
         }
         thread::sleep(Duration::from_millis(1));
     }

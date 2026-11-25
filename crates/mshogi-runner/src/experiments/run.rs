@@ -236,7 +236,7 @@ pub fn run_with_stop(
         for (i, b) in bridges.iter().enumerate() {
             if !b.shutdown_acknowledged() {
                 game.cleanup.push(format!(
-                    "participant{i} supervisor shutdown unacknowledged; cleanup not proven"
+                    "participant {i} supervisor shutdown unacknowledged; cleanup not proven"
                 ));
             }
         }

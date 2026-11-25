@@ -113,7 +113,7 @@ def split(root, manifest_path, game='chess', allow_empty=False, by_opening=False
         'use': 'User-authorized internal classical tuning; no imported corpus',
         'project_terms': 'BSD-LICENSE',
         'split_rule': ('SHA256(catalog opening id)' if by_opening else 'SHA256(initial board/side/rights-or-hands)')
-                      + ' first 64 bits mod 10:0heldout,1validation,2..9train',
+                      + ' first 64 bits mod 10: 0 heldout, 1 validation, 2..9 train',
         'dedup_rule': 'Remove all cross-partition board/side/rights duplicates; retain first within-partition board',
         'inputs': {str(p): digest(p) for p in files},
         'games': len(game_ids), 'stops': dict(stops),

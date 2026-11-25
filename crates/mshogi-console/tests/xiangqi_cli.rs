@@ -96,7 +96,7 @@ fn explicit_selection_profile_initial_choices_and_local_diagnostics() {
     assert!(s.contains(board), "{s}");
     assert!(
         s.contains("legal-local 44"),
-        "initial complete choices must be44\n{s}"
+        "initial complete choices must be 44\n{s}"
     );
     assert!(s.contains("perft-local 0 1"), "{s}");
     assert!(s.contains("perft-local 1 44"), "{s}");

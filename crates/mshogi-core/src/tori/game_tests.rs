@@ -621,7 +621,7 @@ fn long_deterministic_real_history_replays_and_remains_closable() {
         assert_eq!(restored.cache_snapshot(), snapshots[i]);
     }
     eprintln!(
-        "TORI208 capacity real: {accepted}board/{events}events/{bytes}bytes; captures{captures}/drops{drops}/promotions{promotions}; generation+candidate probes {admission_ms}ms; strict parse+two replays {replay_ms}ms; resigned {final_usage:?}",
+        "MSH-208 Tori capacity real: {accepted} board/{events} events/{bytes} bytes; captures {captures}/drops {drops}/promotions {promotions}; generation+candidate probes {admission_ms}ms; strict parse+two replays {replay_ms}ms; resigned {final_usage:?}",
         events = before.events,
         bytes = before.encoded_bytes,
     );
@@ -809,7 +809,7 @@ fn digest_scan_agrees_with_full_key_scan_on_repetition_heavy_games() {
         restricted > 50,
         "too few restricted positions: {restricted}"
     );
-    eprintln!("MSH208 differential: {restricted} restricted positions, {forced} forced losses");
+    eprintln!("MSH-208 differential: {restricted} restricted positions, {forced} forced losses");
 }
 
 #[test]

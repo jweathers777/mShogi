@@ -453,7 +453,7 @@
           "kind": "royal_capture",
           "winner": "sente"
         },
-        "diagram_extension": "Remote Gote Gold11a prevents a single royal capture from also receiving a material award; original fixture remains unchanged.",
+        "diagram_extension": "Remote Gote Gold 11a prevents a single royal capture from also receiving a material award; original fixture remains unchanged.",
         "ending": "native_royal_capture_after_actual_engine_choice",
         "engine": "mshogi.chu.shared-core.v1",
         "known_board_actions": 1,
@@ -473,7 +473,7 @@
       }
     }
   ],
-  "expectation_source": "ratified MSH82/86 docs/m4/chu/fixtures.json; independent source transcription and hand-worked expectations, no engine oracle",
+  "expectation_source": "ratified MSH-82/86 docs/m4/chu/fixtures.json; independent source transcription and hand-worked expectations, no engine oracle",
   "fixture_diagrams": "Not claimed historically reachable from standard start; known history begins at each diagram root.",
   "generator": "write_chu_gui_documents",
   "profile": "mshogi.chu.jcsa2019.v1"

@@ -1,5 +1,5 @@
 //! MSH-84: a consumer uses the public native contract as one system.
-//! Expected rules reuse independently reviewed91/93/94/105 cases, not engine outcomes.
+//! Expected rules reuse independently reviewed MSH-91/93/94/105 cases, not engine outcomes.
 mod support;
 use mshogi_core::{native::*, xiangqi as x};
 use mshogi_engine::*;
@@ -391,7 +391,7 @@ fn fast_exact_provenance_witness_unknown_cancel_failure_and_retirement_cross_nat
         analysis.accept(&negative, &proof).unwrap().assessment(),
         x::NoWinAssessment::ProvenNeitherCanWin
     );
-    assert_eq!(proof.report().work.states, 255); // independently cross-checked reachable component105
+    assert_eq!(proof.report().work.states, 255); // reachable component independently cross-checked in MSH-105
     assert_eq!(record(&negative), original);
     assert_eq!(negative.conclusion(), None);
     // Exact provenance stays with proof; flattening assessment alone would lose origin.

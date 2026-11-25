@@ -69,9 +69,9 @@ different positions. Native record/history and counter support are separate.
 
 Response fields are `fen`, sorted unique `legal_moves`, `in_check` and
 `undo_restored`. Positive depth adds `perft` and sorted
-`divide:[{"action":"a0a1","nodes":1},...]`. Depth0 does not add count fields.
+`divide:[{"action":"a0a1","nodes":1},...]`. Depth 0 does not add count fields.
 Use `python3 tools/xiangqi/reference.py --manifest ...` for one JSON request
-on stdin. POSIX subprocess control has a default20s timeout (maximum120s),
+on stdin. POSIX subprocess control has a default 20s timeout (maximum 120s),
 4096-byte request, 65536-byte response and 4096-byte diagnostic caps. Timeouts,
 process failures, malformed responses, resource limits and admission failures
 are explicit diagnostic categories. Failure/success retirement kills the
@@ -101,8 +101,8 @@ Pikafish's emitted FEN counter is its rule60/check10-adjusted clock. It is
 explicitly excluded from native counter agreement, while both original FEN
 observations are retained. The native raw/declared counter and WXF history
 cannot be redefined by this comparator. A 24-ply, 12-check cycle sentinel
-demonstrates the foreign clock reporting20 while the raw no-capture count
-is24. Placement, side and fullmove number remain comparable.
+demonstrates the foreign clock reporting 20 while the raw no-capture count
+is 24. Placement, side and fullmove number remain comparable.
 
 ## Evidence
 
@@ -133,7 +133,7 @@ python3 tools/xiangqi/review_count_history.py --output /tmp/count-arithmetic.jso
 ```
 
 The collector defaults to current directory as repository; `--repo` and
-`--native-probe` can name explicit paths. It checks every prefix (492 over17
+`--native-probe` can name explicit paths. It checks every prefix (492 over 17
 histories), all complete legal choices, check, exact undo and comparable FEN
 fields. `--native-only` is explicitly labeled and makes no reference claim.
 Each process uses the existing bounded adapter; failure/mismatch names the

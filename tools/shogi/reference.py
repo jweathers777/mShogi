@@ -155,7 +155,7 @@ def admitted_root(cshogi, root, extra_plies=0):
 
     Public dlshogi feature API is used solely for its raw per-piece attack
     planes; it does not consult Legal/is_legal or cached incremental check state.
-    At this pin, planes14..27 of owner0 hold all moving-side piece attacks,
+    At this pin, planes 14..27 of owner 0 hold all moving-side piece attacks,
     oriented to the mover; source cshogi.h:348-404 calls pos.attacksFrom.
     """
     try:
@@ -209,7 +209,7 @@ def verify_reversal(board, prefixes, cshogi):
         got = snapshot(board, cshogi)
         if got != want:
             fields = [key for key in want if want[key] != got[key]]
-            raise AssertionError(f'reference nested push/pop failed restoration at prefix{index}, fields={fields}, expected_sfen={want["sfen"]}, actual_sfen={got["sfen"]}')
+            raise AssertionError(f'reference nested push/pop failed restoration at prefix {index}, fields={fields}, expected_sfen={want["sfen"]}, actual_sfen={got["sfen"]}')
 
 
 def check_fixtures(cshogi, path):

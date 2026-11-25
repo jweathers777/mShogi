@@ -201,7 +201,7 @@ fn independently_expected_terminal_and_t06_history_not_board_only() {
 #[test]
 fn independently_proved_native_mate_in_one_uses_descendant_terminal_distance() {
     // TORI-O-MATE's independently reviewed final diagram is reached by Ea4c-4b.
-    // Gote3a/5a/3b/5b blockers and Pt4d protect Ea4b, leaving no defense.
+    // Gote 3a/5a/3b/5b blockers and Pt4d protect Ea4b, leaving no defense.
     let g = diagram(
         &[
             ("7g", Side::Sente, Face::Phoenix),

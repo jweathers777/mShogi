@@ -72,11 +72,11 @@ impl Side {
         }
     }
 }
-/// Bounded7×7 square, array order a→g and7→1 within each rank.
+/// Bounded 7×7 square, array order a→g and 7→1 within each rank.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub struct Square(u8);
 impl Square {
-    /// Numeric file/rank, both1..=7; rank 1 is a.
+    /// Numeric file/rank, both 1..=7; rank 1 is a.
     pub const fn new(file: u8, rank: u8) -> Option<Self> {
         if file >= 1 && file <= 7 && rank >= 1 && rank <= 7 {
             Some(Self((rank - 1) * 7 + 7 - file))
@@ -84,11 +84,11 @@ impl Square {
             None
         }
     }
-    /// Native numeric file1..=7, decreasing toward Sente's right.
+    /// Native numeric file 1..=7, decreasing toward Sente's right.
     pub const fn file(self) -> u8 {
         7 - self.0 % 7
     }
-    /// Numeric rank1..=7 (a..g).
+    /// Numeric rank 1..=7 (a..g).
     pub const fn rank(self) -> u8 {
         self.0 / 7 + 1
     }
@@ -96,11 +96,11 @@ impl Square {
     pub const fn index(self) -> usize {
         self.0 as usize
     }
-    /// All49 squares, canonical board order.
+    /// All 49 squares, canonical board order.
     pub fn all() -> impl Iterator<Item = Self> {
         (0..49).map(Self)
     }
-    /// Rotate180°; native handed kind is unaffected.
+    /// Rotate 180°; native handed kind is unaffected.
     pub const fn rotated(self) -> Self {
         Self(48 - self.0)
     }
@@ -116,7 +116,7 @@ impl Square {
 pub struct SquareError;
 impl fmt::Display for SquareError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.write_str("invalid Tori7x7 square")
+        f.write_str("invalid Tori 7x7 square")
     }
 }
 impl Error for SquareError {}
@@ -318,7 +318,7 @@ impl RootMetadata {
     pub const fn kind(&self) -> RootKind {
         self.kind
     }
-    /// Optional import source, bounded to1024 UTF-8 bytes.
+    /// Optional import source, bounded to 1024 UTF-8 bytes.
     pub fn source(&self) -> Option<&str> {
         self.source.as_deref()
     }
@@ -504,7 +504,7 @@ impl Position {
             accepted_plies: 0,
         }))
     }
-    /// Standard32-piece selected setup with complete empty prior history.
+    /// Standard 32-piece selected setup with complete empty prior history.
     pub fn standard() -> Self {
         let mut entries = Vec::with_capacity(32);
         let home = [

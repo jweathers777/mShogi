@@ -251,7 +251,7 @@ fn claimant_specific_full_history_and_same_ply_conclusions_survive_native_handof
     );
     let r = record(&g);
     assert_eq!(r.known_board_actions(), 100);
-    assert_eq!(r.event_count(), 105); //100 board,2 rejected audit,3 accepted claim/result
+    assert_eq!(r.event_count(), 105); // 100 board, 2 rejected audit, 3 accepted claim/result
     let CanonicalRecord::Xiangqi(native) =
         CanonicalRecord::from_json(&r.to_json().unwrap()).unwrap()
     else {

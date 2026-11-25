@@ -289,7 +289,7 @@ mod tests {
     #[test]
     fn independent_gold_drop_and_unprotected_silver_refutation() {
         let game = root(&json!({"sfen":"3pkp3/9/9/4S4/9/9/9/9/K8 b 2G 1","moves":[]}));
-        // This fixture has the king on5a, unlike the authored three-ply root.
+        // This fixture has the king on 5a, unlike the authored three-ply root.
         assert!(game.position().is_legal("G*5b".parse().unwrap()));
         let tactical = root(&json!({"sfen":"3p1p3/4k4/9/4S4/9/9/9/9/K8 b 2G 1","moves":[]}));
         let moved = played(&tactical, "5d5c+".parse().unwrap());

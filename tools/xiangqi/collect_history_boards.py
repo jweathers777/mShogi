@@ -108,17 +108,17 @@ def main():
             if not args.native_only:
                 other = reference.query(prefix, manifest, args.timeout)
                 if response['legal_moves'] != other['legal_moves']:
-                    raise ValueError(f'{fixture_id} prefix{count}: complete legal-action mismatch; '
+                    raise ValueError(f'{fixture_id} prefix {count}: complete legal-action mismatch; '
                                      f'missing={sorted(set(other["legal_moves"])-set(response["legal_moves"]))}; '
                                      f'extra={sorted(set(response["legal_moves"])-set(other["legal_moves"]))}')
                 if response['in_check'] != other['in_check']:
-                    raise ValueError(f'{fixture_id} prefix{count}: check mismatch')
+                    raise ValueError(f'{fixture_id} prefix {count}: check mismatch')
                 left, right = response['fen'].split(), other['fen'].split()
                 # Pikafish rule60/check10 halfcounter is not the native declared
-                # counter or claimant-specific WXF Art8 history. Only exclude
+                # counter or claimant-specific WXF Article 8 history. Only exclude
                 # that one field; retain both raw observations in the hash.
                 if left[:4] + left[5:] != right[:4] + right[5:]:
-                    raise ValueError(f'{fixture_id} prefix{count}: board/side/fullmove mismatch')
+                    raise ValueError(f'{fixture_id} prefix {count}: board/side/fullmove mismatch')
             if response['in_check']:
                 check_prefixes.append(count)
             frame = {'fixture': fixture_id, 'prefix_plies': count,

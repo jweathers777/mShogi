@@ -138,8 +138,8 @@ fn nonterminal_choice(branch: &t::Game, telemetry: &TenjikuTelemetry) {
 #[test]
 fn free_eagle_orthogonal_jump_and_diagonal_two_leg_win_remain_distinct() {
     use t::{Base::*, Side::*};
-    // OwnKnight8g blocks the Queen ray. Adams alone jumps directly8h->8f.
-    // Muller reaches8f through two actual diagonal landings around the blocker.
+    // Own Knight 8g blocks the Queen ray. Adams alone jumps directly 8h->8f.
+    // Muller reaches 8f through two actual diagonal landings around the blocker.
     for profile in t::Profile::ALL {
         let game = diagram(
             profile,
@@ -175,7 +175,7 @@ fn free_eagle_orthogonal_jump_and_diagonal_two_leg_win_remain_distinct() {
 #[test]
 fn tetrarch_vertical_skipped_ray_wins_only_under_muller() {
     use t::{Base::*, Side::*};
-    // Promoted Chariot Soldier is HT. Muller skips own adjacent8g and captures8e;
+    // Promoted Chariot Soldier is HT. Muller skips own adjacent 8g and captures 8e;
     // Adams has neither a vertical ray nor a royal within its adjacent igui reach.
     for profile in t::Profile::ALL {
         let game = diagram(
@@ -216,7 +216,7 @@ fn tetrarch_vertical_skipped_ray_wins_only_under_muller() {
 #[test]
 fn jumped_higher_general_victim_is_selected_only_under_muller() {
     use t::{Base::*, Side::*};
-    // OwnPawn7g is a lower-rank intervener; GGn6f outranks our BGn. Only Muller
+    // Own Pawn 7g is a lower-rank intervener; GGn6f outranks our BGn. Only Muller
     // permits that jumped nonroyal victim. Capturing it is the greatest material gain.
     for profile in t::Profile::ALL {
         let game = diagram(
@@ -258,9 +258,9 @@ fn jumped_higher_general_victim_is_selected_only_under_muller() {
 #[test]
 fn dying_demon_burns_last_royal_before_death_only_under_adams() {
     use t::{Base::*, Side::*};
-    // King8g is four steps from FiD8k; ownPawn8i blocks the vertical ray, and
-    // ownPawn7h occupies the only reachable safe square adjacent to that King.
-    // Every remaining reachable burning square is hazardous from9g/9h Demons.
+    // King 8g is four steps from FiD8k; own Pawn 8i blocks the vertical ray, and
+    // own Pawn 7h occupies the only reachable safe square adjacent to that King.
+    // Every remaining reachable burning square is hazardous from 9g/9h Demons.
     for profile in t::Profile::ALL {
         let game = diagram(
             profile,

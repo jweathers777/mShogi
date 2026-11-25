@@ -379,7 +379,7 @@ fn actual_maximum_native_audit_ledger_and_whole_encoded_transport_boundaries_fit
     );
     assert!(echoed < MAX_RESPONSE_BYTES);
     println!(
-        "xiangqi512commands/1024events: native={native_bytes}, envelope={envelope}, request={}, response={echoed}",
+        "xiangqi 512 commands/1024 events: native={native_bytes}, envelope={envelope}, request={}, response={echoed}",
         frame.len() + overhead
     );
     let exact = frame.replacen(

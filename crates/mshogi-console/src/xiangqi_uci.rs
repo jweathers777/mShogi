@@ -454,19 +454,18 @@ const CLOCK_MOVES: u64 = 30;
 /// admitted; otherwise the game is rebuilt from the root. Native admission
 /// checks every action either way. On error `current` is unchanged.
 fn parse_position(args: &[&str], current: &mut Game) -> Result<(), String> {
-    let (root, rest) =
-        match args {
-            ["startpos", rest @ ..] => (PositionRoot::standard(), rest),
-            ["fen", a, b, c, d, e, f, rest @ ..] => (
-                PositionRoot::from_fen(&[*a, *b, *c, *d, *e, *f].join(" "))
-                    .map_err(|e| e.to_string())?,
-                rest,
-            ),
-            _ => return Err(
-                "position requires startpos or six-field native FEN (a-i, ranks0-9, k/a/b/n/r/c/p)"
-                    .into(),
-            ),
-        };
+    let (root, rest) = match args {
+        ["startpos", rest @ ..] => (PositionRoot::standard(), rest),
+        ["fen", a, b, c, d, e, f, rest @ ..] => (
+            PositionRoot::from_fen(&[*a, *b, *c, *d, *e, *f].join(" "))
+                .map_err(|e| e.to_string())?,
+            rest,
+        ),
+        _ => return Err(
+            "position requires startpos or six-field native FEN (a-i, ranks 0-9, k/a/b/n/r/c/p)"
+                .into(),
+        ),
+    };
     let moves = match rest {
         [] => &[][..],
         ["moves", moves @ ..] => moves,

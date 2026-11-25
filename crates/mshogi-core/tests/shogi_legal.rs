@@ -91,7 +91,7 @@ fn corpus(text: &str) {
                 assert_eq!(
                     position.perft(depth.parse().unwrap()).unwrap(),
                     want.as_u64().unwrap(),
-                    "{id}: perft{depth}"
+                    "{id}: perft {depth}"
                 );
             }
         }
@@ -109,7 +109,7 @@ fn corpus(text: &str) {
                     .iter()
                     .map(|(k, v)| (k.to_owned(), v.as_u64().unwrap()))
                     .collect();
-                assert_eq!(got, want, "{id}: divide{depth}");
+                assert_eq!(got, want, "{id}: divide {depth}");
             }
         }
         assert_eq!(position, before, "{id}: query mutated state");
@@ -246,8 +246,8 @@ fn structural_diagrams_outside_reference_domain_still_use_native_king_safety() {
 
 #[test]
 fn pawn_drop_defense_keeps_compulsory_knight_promotion_and_preexisting_check_distinct() {
-    // Independently drawn by the separate reviewer: the knight on4f is the
-    // only legal capture of the dropped checking pawn, and reaching5h for Gote
+    // Independently drawn by the separate reviewer: the knight on 4f is the
+    // only legal capture of the dropped checking pawn, and reaching 5h for Gote
     // requires promotion. King escape/capture squares are occupied or defended.
     let mut p = Position::from_sfen("9/9/9/9/9/3ppn3/3lkl3/3b1p3/4G3K b P 1").unwrap();
     let root = p.clone();

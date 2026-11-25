@@ -244,7 +244,7 @@ fn independent_remote_perft_and_native_compound_perft_agree() {
         let mut p = ChuPosition::from_local(&native);
         for depth in 1..=2 {
             let n = native_perft(&native, depth);
-            assert_eq!(p.perft(depth), n, "{id} depth{depth}");
+            assert_eq!(p.perft(depth), n, "{id} depth {depth}");
             if id == "CHU-PERFT-REMOTE" {
                 assert_eq!(n, if depth == 1 { 7 } else { 42 });
             }
@@ -322,7 +322,7 @@ fn random_native_actions_positions_protection_hashes_and_undo_agree() {
     assert!(positions > 1500, "{positions}");
     assert!(
         captures > 100 && compounds > 30 && promotions > 20,
-        "captures{captures} compounds{compounds} promotions{promotions}"
+        "captures {captures} compounds {compounds} promotions {promotions}"
     );
 }
 #[test]
@@ -677,7 +677,7 @@ fn capture_shortcut_requires_one_complete_action_for_both_royals() {
 
 #[test]
 fn exposed_seed12_root_completes_an_iteration_with_the_same_100k_budget() {
-    // Frozen failed game-test pair0012, first game, first request. Preserve
+    // Frozen failed game-test pair 0012, first game, first request. Preserve
     // the four seeded actions; the original candidate used 100,000 nodes and
     // reported depth 0. This is an exposed regression, not strength evidence.
     let entries = [
@@ -739,7 +739,7 @@ fn exposed_seed12_root_completes_an_iteration_with_the_same_100k_budget() {
     )
     .unwrap();
     eprintln!(
-        "Chu exposed seed12: depth={}, nodes={}, elapsed_us={}",
+        "Chu exposed seed 12: depth={}, nodes={}, elapsed_us={}",
         result.completed_depth,
         result.nodes,
         start.elapsed().as_micros()

@@ -241,7 +241,7 @@ fn finish_validation_budget(
                 ResourceScope::Application,
                 ResourceUnit::Milliseconds,
             ),
-            "Application capacity: native document validation exceeded its bounded15-second budget. The accepted current document is preserved.",
+            "Application capacity: native document validation exceeded its bounded 15-second budget. The accepted current document is preserved.",
         ))
     } else {
         result

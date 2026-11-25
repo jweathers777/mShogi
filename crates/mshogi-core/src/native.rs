@@ -50,7 +50,7 @@ pub enum RulesProfile {
     ToriModernV1,
     /// Selected modern JCSA Chu profile.
     ChuJcsa2019V1,
-    /// Ratified Adams1999 Modern complete Tenjiku profile.
+    /// Ratified Adams 1999 Modern complete Tenjiku profile.
     TenjikuAdamsModernV1,
     /// Ratified Muller Tenjiku description with named completion clauses.
     TenjikuMullerCompletedV1,

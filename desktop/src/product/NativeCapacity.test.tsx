@@ -17,7 +17,7 @@ function paused(game: "chess" | "shogi" | "xiangqi", fact: ResourceFact | null =
 }
 function notice(snapshot: GameSnapshot, error = "") { return render(<NativeRecovery snapshot={snapshot} error={error} disabled={false} command={vi.fn()} />); }
 for (const game of ["chess", "shogi", "xiangqi"] as const) {
-  it(`${game} shows native event exhaustion with zero observations and no fictional256`, () => {
+  it(`${game} shows native event exhaustion with zero observations and no fictional 256`, () => {
     const snapshot = paused(game); expect(snapshot.observations).toHaveLength(0); notice(snapshot);
     const message = screen.getByRole("alert", { name: "Document capacity" });
     expect(message.textContent).toContain("record byte"); expect(message.textContent).toContain("current game can still be saved");

@@ -324,7 +324,7 @@ mod tests {
                         .unwrap();
                     assert!(
                         branch.conclusion().is_none(),
-                        "{profile:?} family{family} immediate terminal move"
+                        "{profile:?} family {family} immediate terminal move"
                     );
                 }
             }

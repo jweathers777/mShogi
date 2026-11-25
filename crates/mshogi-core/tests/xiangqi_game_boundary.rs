@@ -175,7 +175,7 @@ fn every_record_field_is_required_and_native_raw_payloads_reject_duplicates() {
         v.as_object_mut().unwrap().remove(key);
         assert!(
             GameRecord::from_json(&v.to_string()).is_err(),
-            "missing outer{key}"
+            "missing outer {key}"
         );
     }
     {
@@ -192,7 +192,7 @@ fn every_record_field_is_required_and_native_raw_payloads_reject_duplicates() {
         let malformed = format!("{}{}{}", &text[..start], duplicate, &text[end..]);
         assert!(
             GameRecord::from_json(&malformed).is_err(),
-            "duplicate native{tag}"
+            "duplicate native {tag}"
         );
     }
     for (key, val) in [

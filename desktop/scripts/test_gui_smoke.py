@@ -1707,7 +1707,7 @@ class TenjikuPackagedEvidenceTests(unittest.TestCase):
 
     def tenjiku_public_diagnostics(self, name):
         snapshot=json.loads((Path(__file__).parents[1]/'src'/'__fixtures__'/f'shared-tenjiku-{name}.json').read_text())
-        # Exact public About projection, also observed in Linux source0a2.
+        # Exact public About projection, also observed in Linux source 0a2.
         # Its shape deliberately differs from the complete native snapshot.
         keys=('token','profile','document','close_requires_save','context','moves','capacity','diagnostic','io','analysis','observations','tenjiku')
         return {**{key:snapshot[key] for key in keys},'error':''}

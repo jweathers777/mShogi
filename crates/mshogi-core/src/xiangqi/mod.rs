@@ -102,7 +102,7 @@ impl Side {
     }
 }
 
-/// One bounded intersection; files a–i and ranks0–9 from Red's baseline.
+/// One bounded intersection; files a–i and ranks 0–9 from Red's baseline.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Ord, PartialOrd)]
 pub struct Intersection(u8);
 impl Intersection {
@@ -251,7 +251,7 @@ impl Counters {
             fullmove_number: None,
         }
     }
-    /// Supplied capture-free ply count; no Article8 check adjustment is inferred.
+    /// Supplied capture-free ply count; no Article 8 check adjustment is inferred.
     pub const fn no_capture_plies(self) -> Option<u32> {
         self.no_capture_plies
     }
@@ -341,7 +341,7 @@ impl Position {
             counters,
         })
     }
-    /// The standard initial board, Red to move, counters0/1.
+    /// The standard initial board, Red to move, counters 0/1.
     pub fn initial() -> Self {
         Self::from_fen(INITIAL_FEN).expect("constant initial Xiangqi FEN")
     }

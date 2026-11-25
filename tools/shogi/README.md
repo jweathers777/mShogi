@@ -70,7 +70,7 @@ that history can be deleted. A snapshot with zero board moves remains a valid
 response; a transport failure does not masquerade as an empty legal set.
 
 `--diagnostics-demo` starts real subprocess test doubles with missing choice,
-extra choice, exit17, and truncated-response injections at ply2 of a retained
+extra choice, exit 17, and truncated-response injections at ply 2 of a retained
 five-move seeded path. The run must detect each and reduce the evidence to the
 two-move failing prefix. Those injected failures are expected diagnostic tests,
 not observations of defects in mShogi. Native comparison is a separate command;
@@ -81,7 +81,7 @@ MSH-64's admission report contains zero native comparisons.
 Before C++ Board construction, roots must be canonical bounded ASCII SFEN
 (at most 512 bytes), have exactly one nonadjacent king per owner, standard
 physical piece caps, no nifu or dead unpromoted board piece, and a positive
-next-ply fitting cshogi's signed32-bit counter including the requested path.
+next-ply fitting cshogi's signed 32-bit counter including the requested path.
 These restrictions define this reference process, not a change to native
 mShogi's independently specified u32 counter or analysis-position contract.
 
@@ -98,6 +98,6 @@ reference domain. Longer seeded play exposed their invalid prior-opponent
 check. Their bytes and original observations are retained as
 `board-rules-v1.json`, `reference-run-v1.json` and `cshogi-admission-v1.json`.
 Current versions move only those opposing kings off the bishop diagonal,
-retain the expected promotion choices, and record version2 supersession.
+retain the expected promotion choices, and record version 2 supersession.
 The old roots now deliberately fail admission with a named reference-domain
 error; they are never silently filtered from an otherwise passing run.

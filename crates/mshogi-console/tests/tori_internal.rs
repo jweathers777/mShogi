@@ -52,7 +52,7 @@ fn real_subprocess_preserves_tori_context_supplies_native_action_and_roundtrips_
     };
     result.validate(&game).unwrap();
     let ToriResult::Choice { action, telemetry } = result else {
-        panic!("complete depth1 must select a legal action")
+        panic!("complete depth 1 must select a legal action")
     };
     assert!(game.legal_actions().contains(action));
     assert_eq!(telemetry.perspective, tori::Side::Gote);

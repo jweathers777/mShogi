@@ -1,4 +1,4 @@
-//! Snapshot and valid7x7 data transformations; no game legality or state transitions.
+//! Snapshot and valid 7x7 data transformations; no game legality or state transitions.
 use serde_json::{Value, json};
 
 /// Exercise actual native apply/undo closures against a complete state projection.
@@ -57,7 +57,7 @@ pub fn preserves_material(before: &Value, after: &Value) -> Result<(), String> {
 pub fn rotate_square(s: &str) -> Result<String, String> {
     let b = s.as_bytes();
     if b.len() != 2 || !(b'1'..=b'7').contains(&b[0]) || !(b'a'..=b'g').contains(&b[1]) {
-        return Err("invalid7x7 square".into());
+        return Err("invalid 7x7 square".into());
     }
     Ok(format!(
         "{}{}",

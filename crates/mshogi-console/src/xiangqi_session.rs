@@ -24,7 +24,7 @@ const HELP: &str = "Untimed Xiangqi diagnostic console (not UCCI/UCI protocol):
                                     Explicit bounded read-only worker
   nowin poll|wait|cancel             Observe or retire exact work
   help | quit
-Native coordinate dialect: files a-i from Red left, ranks0-9 from Red baseline;
+Native coordinate dialect: files a-i from Red left, ranks 0-9 from Red baseline;
 Show uses uppercase Red/lowercase Black, K A B N R C P (B=Elephant), dots for empty.
 FEN import starts known history; it never restores earlier warnings/claims.
 Use the canonical envelope for full restoration. Saves require a new path.

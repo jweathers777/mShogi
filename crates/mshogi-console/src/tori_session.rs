@@ -20,7 +20,7 @@ const HELP: &str = "Untimed Tori Shogi diagnostic console (not USI/SFEN):
   record save <path>                Atomic new-file save; never overwrite
   record load-file <path>           Strict bounded replay before replacement
   record load-json <JSON>           Strict inline canonical envelope
-  perft <0..3> | divide <1..3> [visits]  Local diagnostics, default100000 visits
+  perft <0..3> | divide <1..3> [visits]  Local diagnostics, default 100000 visits
   analyze [depth nodes]             Read-only bounded native history-aware search
   help | quit
 Tori actions: Sw3d-3c, capture Fa7cx7b=Ea, drop RQ*5e. Source face and

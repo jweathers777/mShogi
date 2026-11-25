@@ -68,7 +68,7 @@ impl Side {
         }
     }
 }
-/// One bounded square, with canonical `[file,rank]` serialization (both1..16).
+/// One bounded square, with canonical `[file,rank]` serialization (both 1..16).
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Ord, PartialOrd)]
 pub struct Square(u16);
 impl Square {
@@ -80,11 +80,11 @@ impl Square {
             None
         }
     }
-    /// Native file1..16.
+    /// Native file 1..16.
     pub const fn file(self) -> u8 {
         (self.0 % 16 + 1) as u8
     }
-    /// Native rank1..16, a..p in human notation.
+    /// Native rank 1..16, a..p in human notation.
     pub const fn rank(self) -> u8 {
         (self.0 / 16 + 1) as u8
     }
@@ -142,7 +142,7 @@ macro_rules! kinds {
         #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Ord, PartialOrd, Serialize, Deserialize)]
         pub enum Face { $(#[doc=concat!("Native ",stringify!($base)," movement face.")] $base),+, $(#[doc=concat!("Promoted-only ",stringify!($only)," movement face.")] $only),+ }
         impl Base {
-            /// All36 original native identities.
+            /// All 36 original native identities.
             pub const ALL: [Self;36] = [$(Self::$base),+];
             /// Native source abbreviation.
             pub const fn code(self) -> &'static str { match self { $(Self::$base => stringify!($base)),+ } }
@@ -150,7 +150,7 @@ macro_rules! kinds {
             pub const fn face(self) -> Face { match self { $(Self::$base => Face::$base),+ } }
         }
         impl Face {
-            /// All44 movement faces.
+            /// All 44 movement faces.
             pub const ALL: [Self;44] = [$(Self::$base),+, $(Self::$only),+];
             /// Native source abbreviation.
             pub const fn code(self) -> &'static str { match self { $(Self::$base => stringify!($base)),+, $(Self::$only => stringify!($only)),+ } }
@@ -357,7 +357,7 @@ impl RootMetadata {
 /// Structural rejection; never a game conclusion.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum RootError {
-    /// Exactly256 board cells are required.
+    /// Exactly 256 board cells are required.
     BoardLength,
     /// Two supplied entries occupy the same square.
     DuplicateSquare,
@@ -408,7 +408,7 @@ pub struct Position {
     pub(crate) state: StructuralState,
 }
 impl Position {
-    /// Actual156-piece source setup with stable identities and canonical rights.
+    /// Actual 156-piece source setup with stable identities and canonical rights.
     pub fn standard(profile: Profile) -> Self {
         use Base::*;
         let rows: [(u8, &[Option<Base>]); 6] = [

@@ -36,7 +36,7 @@ it.each([adams, muller])("uses selected native $profile identities and leaves ac
 it.each([adamsFaces, mullerFaces])("renders all sourced $profile identities from the explicitly imported native artwork diagram", value => {
   const snapshot = value as unknown as TenjikuSnapshot;
   const identities = snapshot.tenjiku.selected.identities;
-  expect(snapshot.tenjiku.root).toMatchObject({ kind: "imported", source: "Artwork inspection diagram: all44faces and30once-promoted identities, not reached play" });
+  expect(snapshot.tenjiku.root).toMatchObject({ kind: "imported", source: "Artwork inspection diagram: all 44 faces and 30 once-promoted identities, not reached play" });
   expect(identities).toHaveLength(67);
   expect(new Set(identities.map(identity => identity.piece.id)).size).toBe(67);
   expect([...new Set(identities.map(identity => identity.face))].sort()).toEqual(profile.pieces.map(piece => piece.face).sort());

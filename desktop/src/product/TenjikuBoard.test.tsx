@@ -250,7 +250,7 @@ it.each(fixtures)("consumes native $label Lion Hawk and promoted-Lion complete t
   expect([...container.querySelectorAll('[data-native-effect-phase="capture"]')].map(node => node.getAttribute("data-location"))).toEqual(["9h", "10h"]);
 });
 
-it.each(fixtures)("submits the complete native $label Area3 route only after all three landings", fixture => {
+it.each(fixtures)("submits the complete native $label Area 3 route only after all three landings", fixture => {
   const source = snapshot(fixture.area), completed = snapshot(fixture.areaPlayed).moves.last_action!;
   const choice = source.choices.find(choice => choice.action === completed.action)!;
   expect(choice).toBeTruthy(); expect(choice.steps).toEqual(["7h", "7g", "6g"]);

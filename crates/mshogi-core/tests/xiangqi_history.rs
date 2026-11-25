@@ -53,12 +53,12 @@ fn play_fixture_prefix(game: &mut Game, fixture: &Value, count: usize) {
         assert_eq!(
             game.conclusion(),
             None,
-            "premature conclusion before ply{}",
+            "premature conclusion before ply {}",
             ply + 1
         );
         assert!(
             game.pending_adjudication().is_none(),
-            "unexpected pending before ply{}: {:?}",
+            "unexpected pending before ply {}: {:?}",
             ply + 1,
             game.pending_adjudication()
         );
@@ -101,7 +101,7 @@ fn independently_expected_check_chase_and_overlapping_cycle_histories() {
             assert_eq!(
                 game.conclusion(),
                 None,
-                "{id} concluded before ply{}",
+                "{id} concluded before ply {}",
                 i + 1
             );
             assert!(
@@ -322,7 +322,7 @@ fn natural_count_boundaries_use_actual_known_history_and_only_claimant_checks() 
             let evidence = game.natural_count_eligibility(claimant);
             assert_eq!(
                 evidence.effective_plies, expected_count,
-                "{} at{plies} {claimant:?}",
+                "{} at {plies} {claimant:?}",
                 fixture["id"]
             );
             assert_eq!(evidence.eligible, eligible);
@@ -606,7 +606,7 @@ fn canonical_records_reject_strict_parsing_forged_events_and_post_conclusion_com
         changed.as_object_mut().unwrap().remove(key);
         assert!(
             GameRecord::from_json(&changed.to_string()).is_err(),
-            "missing{key}"
+            "missing {key}"
         );
     }
     for (field, value) in [
@@ -622,7 +622,7 @@ fn canonical_records_reject_strict_parsing_forged_events_and_post_conclusion_com
         changed[field] = value;
         assert!(
             GameRecord::from_json(&changed.to_string()).is_err(),
-            "conflicting/unknown{field}"
+            "conflicting/unknown {field}"
         );
     }
     let mut forged = base.clone();

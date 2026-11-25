@@ -4,6 +4,7 @@ title: Token-Only Native Request Context
 status: Ready
 assignee: []
 created_date: '2026-11-25T12:21:00Z'
+updated_date: '2026-11-25T12:24:00Z'
 labels:
   - core
   - simplification
@@ -29,3 +30,9 @@ Each native command request carries a full GameContext: the root and the complet
 - [ ] #3 Rules, perft and record tests pass unchanged; replay time per move at full length is measured before and after for each changed game.
 - [ ] #4 One review by a fresh agent session.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Measurement tools that exist (MSH-209): mshogi-core examples record_replay and resource_admission (replay and admission time on generated walks), tenjiku_rules_work (Tenjiku modes play, controls, replay, undo), mshogi-engine example execution_cost.
+<!-- SECTION:NOTES:END -->

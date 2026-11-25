@@ -4,7 +4,7 @@ title: One Repetition Index for All Games
 status: Ready
 assignee: []
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-25T12:21:00Z'
+updated_date: '2026-11-25T12:24:00Z'
 labels:
   - core
   - simplification
@@ -29,3 +29,9 @@ Each native game finds earlier occurrences of a position in its own way: Chess k
 - [ ] #2 No full-history scan per command or per candidate action remains in Shogi, Xiangqi, Chu or Tenjiku.
 - [ ] #3 Rules, perft and record tests pass unchanged; replay and legal-action time at full length are measured before and after.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Measurement tools that exist (MSH-209): mshogi-core examples record_replay, resource_admission and tenjiku_rules_work.
+<!-- SECTION:NOTES:END -->

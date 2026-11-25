@@ -137,13 +137,13 @@ it("offers finishing concluded Chess analysis only while an actual analysis exis
 });
 
 
-it("shows reported selective depth including zero while legacy observations omit it", () => {
+it("shows reported selective depth including zero and omits it when unreported", () => {
   const view: SearchView = { selected: true, observation_index: 0, purpose: "move_analysis", event_index: 0, board_ply: 0, perspective: "White", engine: "mShogi", score: "+0.44 pawns", completed_depth: 1, selective_depth: 5, nodes: 21, variation: ["b1c3"], status: "Complete", historical: false };
   const { rerender } = render(<Observation view={view} game="chess" />);
   expect(screen.getByText("Selective depth").nextElementSibling?.textContent).toBe("5");
   rerender(<Observation view={{ ...view, selective_depth: 0 }} game="chess" />);
   expect(screen.getByText("Selective depth").nextElementSibling?.textContent).toBe("0");
-  const legacy = { ...view }; delete legacy.selective_depth;
-  rerender(<Observation view={legacy} game="chess" />);
+  const unreported = { ...view }; delete unreported.selective_depth;
+  rerender(<Observation view={unreported} game="chess" />);
   expect(screen.queryByText("Selective depth")).toBeNull();
 });

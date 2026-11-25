@@ -79,19 +79,21 @@ h  .  B  .  .  .  .  .  R  .
 i  L  N  S  G  K  G  S  N  L
    9  8  7  6  5  4  3  2  1\n";
 #[test]
-fn canonical_shells_route_native_commands_and_compatibility_aliases_match() {
-    for (game, alias, moves, expected) in [
-        ("chess", "shell", "e2e4 e7e5", "perft 1 20"),
-        ("shogi", "shogi", "7g7f 3c3d", "perft-local 1 30"),
+fn canonical_shells_route_native_commands() {
+    for (game, moves, expected) in [
+        ("chess", "e2e4 e7e5", "perft 1 20"),
+        ("shogi", "7g7f 3c3d", "perft-local 1 30"),
     ] {
         let input = format!(
             "position startpos\nmove {moves}\nshow\nlegal\nhistory\nstatus\nundo 2\nrecord print\nperft 1\ndivide 1\n"
         );
         let out = shell(game, &input);
         success(&out);
-        let old = run(&[alias], &input);
-        success(&old);
-        assert_eq!(out.stdout, old.stdout);
+        if game == "chess" {
+            let default = run(&["shell"], &input);
+            success(&default);
+            assert_eq!(out.stdout, default.stdout);
+        }
         assert!(stdout(&out).contains(expected));
         assert_eq!(records(&out), vec![initial(game)]);
     }
@@ -131,7 +133,6 @@ fn selected_help_profiles_and_argument_admission_are_explicit() {
             vec!["--game", "chess", "--game", "chess", "shell"],
             "duplicate",
         ),
-        (vec!["--game", "chess", "shogi"], "conflicts"),
         (
             vec!["--game", "shogi", "uci"],
             "UCI supports chess or xiangqi",
@@ -157,7 +158,6 @@ fn selected_help_profiles_and_argument_admission_are_explicit() {
             "{out:?}"
         );
     }
-    success(&run(&["--game", "shogi", "shogi"], "status\n"));
     let out = run(&["--game", "chess", "uci"], "uci\nisready\nquit\n");
     success(&out);
     assert!(stdout(&out).contains("uciok"));

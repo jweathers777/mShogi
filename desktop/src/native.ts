@@ -33,7 +33,7 @@ export type EngineChoice =
 export interface Telemetry {
   score: number | null;
   completed_depth: number;
-  selective_depth?: number;
+  selective_depth: number;
   nodes: number;
   principal_variation: EngineChoice[];
   status: "complete" | "node_limit" | "stopped";

@@ -207,14 +207,13 @@ impl Session {
             }
             "record" => {
                 use record_io::Operation;
-                match record_io::parse(rest, record_io::LegacyLoad::File)? {
-                    Operation::Print | Operation::LegacyPrint => {
+                match record_io::parse(rest)? {
+                    Operation::Print => {
                         writeln!(out, "record {}", self.record_json()?).unwrap();
                     }
                     Operation::Save(path) => record_io::save(path, &self.record_json()?, out)?,
                     Operation::LoadFile(path) => self.restore_json(&record_io::read(path)?, out)?,
                     Operation::LoadJson(json) => self.restore_json(json, out)?,
-                    Operation::LegacyJson(_) => unreachable!("Tori legacy load is file"),
                 }
             }
             "perft" | "divide" => {

@@ -166,7 +166,7 @@ fn malformed_and_locally_legal_but_history_forbidden_requests_are_atomic() {
     // third occurrence; it is refused atomically, never a draw.
     let cycle = "Ph4g-5g Ph4a-5a Ph5g-4g Ph5a-4a";
     let o = shell(&format!(
-        "position record-json {}\nmove {cycle} Ph4g-5g Ph4a-5a Ph5g-4g\nrecord\nmove Ph5a-4a\nrecord\nlegal\n",
+        "position record-json {}\nmove {cycle} Ph4g-5g Ph4a-5a Ph5g-4g\nrecord print\nmove Ph5a-4a\nrecord print\nlegal\n",
         encode(&root)
     ));
     assert!(!o.status.success());
@@ -174,7 +174,9 @@ fn malformed_and_locally_legal_but_history_forbidden_requests_are_atomic() {
     assert_eq!(records(&o)[0], records(&o)[1]);
     assert!(output(&o).contains("occurrences [3, 7]"));
     assert!(!output(&o).lines().any(|l| l.starts_with("Ph5a-4a {")));
-    let o = shell("record\nmove Sw7e-7d Sw1c-1d Sw1d-1e\nrecord\nmove Sw8e-7d\nrecord\n");
+    let o = shell(
+        "record print\nmove Sw7e-7d Sw1c-1d Sw1d-1e\nrecord print\nmove Sw8e-7d\nrecord print\n",
+    );
     assert!(!o.status.success());
     let r = records(&o);
     assert_eq!(r[0], r[1]);
@@ -184,7 +186,7 @@ fn malformed_and_locally_legal_but_history_forbidden_requests_are_atomic() {
 #[test]
 fn nonmove_events_stay_distinct_and_undo_restores_complete_semantics() {
     let o = shell(
-        "move Sw7e-7d Sw1c-1d\nrecord\nstop work\nhistory\nresign sente\nhistory\nundo 1\nrecord\n",
+        "move Sw7e-7d Sw1c-1d\nrecord print\nstop work\nhistory\nresign sente\nhistory\nundo 1\nrecord print\n",
     );
     success(&o);
     let r = records(&o);
@@ -253,7 +255,7 @@ fn strict_wrong_game_profile_derived_duplicate_and_large_loads_preserve_current_
         assert_ne!(bytes, valid.as_bytes(), "mutation must change the record");
         fs::write(&path, &bytes).unwrap();
         let o = shell(&format!(
-            "move Sw7e-7d\nrecord\nrecord load-file {}\nrecord\nrecord save {}\nrecord\n",
+            "move Sw7e-7d\nrecord print\nrecord load-file {}\nrecord print\nrecord save {}\nrecord print\n",
             path.display(),
             path.display()
         ));
@@ -278,7 +280,7 @@ fn bounded_local_diagnostics_use_independent_counts_and_never_change_history() {
         42,
     );
     let o = shell(&format!(
-        "position record-json {}\nrecord\nperft 0 1\nperft 1 4\nperft 2 13\ndivide 2 13\nperft 2 12\ndivide 0\nrecord\n",
+        "position record-json {}\nrecord print\nperft 0 1\nperft 1 4\nperft 2 13\ndivide 2 13\nperft 2 12\ndivide 0\nrecord print\n",
         encode(&game)
     ));
     assert!(!o.status.success());
@@ -297,7 +299,7 @@ fn bounded_local_diagnostics_use_independent_counts_and_never_change_history() {
 
 #[test]
 fn read_only_native_analysis_reports_actual_work_and_no_fallback_for_zero_nodes() {
-    let o = shell("record\nanalyze 1 0\nanalyze 1 100\nrecord\n");
+    let o = shell("record print\nanalyze 1 0\nanalyze 1 100\nrecord print\n");
     success(&o);
     let text = output(&o);
     assert!(text.contains("analysis-read-only perspective Sente"));
@@ -325,7 +327,7 @@ fn all_native_console_interruptions_leave_records_unchanged_and_do_not_reopen() 
             let out = run(
                 &args,
                 &format!(
-                    "record\nstop {reason}\nrecord\nrecord save {}\nrecord load-file {}\nstatus\nrecord\n",
+                    "record print\nstop {reason}\nrecord print\nrecord save {}\nrecord load-file {}\nstatus\nrecord print\n",
                     path.display(),
                     path.display(),
                 ),

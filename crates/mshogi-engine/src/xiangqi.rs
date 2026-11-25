@@ -101,15 +101,17 @@ impl XiangqiTelemetry {
             if magnitude > i64::from(search::WIN_SCORE) {
                 return None;
             }
-            Some(if magnitude >= i64::from(mshogi_search::alphabeta::MATE_BOUND) {
-                format!(
-                    "{} in {} native command edges",
-                    if score >= 0 { "Win" } else { "Loss" },
-                    i64::from(search::WIN_SCORE) - magnitude
-                )
-            } else {
-                format!("{:+.2} soldiers", f64::from(score) / 100.0)
-            })
+            Some(
+                if magnitude >= i64::from(mshogi_search::alphabeta::MATE_BOUND) {
+                    format!(
+                        "{} in {} native command edges",
+                        if score >= 0 { "Win" } else { "Loss" },
+                        i64::from(search::WIN_SCORE) - magnitude
+                    )
+                } else {
+                    format!("{:+.2} soldiers", f64::from(score) / 100.0)
+                },
+            )
         })
     }
 }

@@ -85,20 +85,22 @@ impl ShogiTelemetry {
             if magnitude > i64::from(search::WIN_SCORE) {
                 return None;
             }
-            Some(if magnitude >= i64::from(mshogi_search::alphabeta::MATE_BOUND) {
-                let distance = i64::from(search::WIN_SCORE) - magnitude;
-                let result = if score >= 0 { "Win" } else { "Loss" };
-                if distance == 0 {
-                    format!("{result} at the analyzed position")
+            Some(
+                if magnitude >= i64::from(mshogi_search::alphabeta::MATE_BOUND) {
+                    let distance = i64::from(search::WIN_SCORE) - magnitude;
+                    let result = if score >= 0 { "Win" } else { "Loss" };
+                    if distance == 0 {
+                        format!("{result} at the analyzed position")
+                    } else {
+                        format!(
+                            "{result} in {distance} command {} (including declarations)",
+                            if distance == 1 { "edge" } else { "edges" }
+                        )
+                    }
                 } else {
-                    format!(
-                        "{result} in {distance} command {} (including declarations)",
-                        if distance == 1 { "edge" } else { "edges" }
-                    )
-                }
-            } else {
-                format!("{:+.2} pawns", f64::from(score) / 100.0)
-            })
+                    format!("{:+.2} pawns", f64::from(score) / 100.0)
+                },
+            )
         })
     }
 }

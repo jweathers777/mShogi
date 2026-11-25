@@ -5,7 +5,7 @@
 //! `INITIAL` reproduces the earlier untuned evaluation exactly: material,
 //! hand pieces at value plus 10, Pawn advance 4 per rank, 8 per own piece
 //! next to the king and a tempo of 10. `DEFAULT` is the compiled weight set.
-use super::position::ShogiPosition;
+use super::position::{HAND_FACE, ShogiPosition, VALUE};
 use crate::alphabeta::{SearchPosition, Stage};
 
 /// Number of weights.
@@ -173,14 +173,31 @@ pub const NAMES: [&str; COUNT] = [
     "king_drop_threat",
     "tempo",
 ];
+
+const fn initial() -> [i32; COUNT] {
+    let mut w = [0; COUNT];
+    let mut face = 1;
+    while face < VALUE.len() {
+        w[BOARD + face - 1] = VALUE[face];
+        face += 1;
+    }
+    let mut i = 0;
+    while i < HAND_FACE.len() {
+        w[HAND + i] = VALUE[HAND_FACE[i]] + 10;
+        i += 1;
+    }
+    // The Pawn rank table is the first one.
+    let mut rank = 0;
+    while rank < 9 {
+        w[PST + rank] = 4 * rank as i32;
+        rank += 1;
+    }
+    w[KING_ADJACENT_OWN] = 8;
+    w[TEMPO] = 10;
+    w
+}
 /// Untuned weights: exactly the earlier evaluation.
-pub const INITIAL: [i32; COUNT] = [
-    800, 700, 500, 400, 300, 300, 100, 1000, 900, 500, 500, 500, 500, 810, 710, 510, 410, 310, 310,
-    110, 0, 0, 0, 0, 0, 0, 0, 0, 4, 8, 12, 16, 20, 24, 28, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 10,
-];
+pub const INITIAL: [i32; COUNT] = initial();
 /// Inclusive lower bounds.
 pub const LOWER: [i32; COUNT] = [
     400, 350, 250, 200, 150, 150, 50, 500, 450, 250, 250, 250, 250, 405, 355, 255, 205, 155, 155,

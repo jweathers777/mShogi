@@ -11,10 +11,13 @@ const ALL: u128 = (1 << SQUARES) - 1;
 const KING: usize = 0;
 const PAWN: usize = 7;
 const DROP: usize = SQUARES;
-const VALUE: [i32; FACES] = [
+/// Piece values in hundredths of a Pawn, in face order. Kings are scored by
+/// rules-owned outcomes.
+pub(super) const VALUE: [i32; FACES] = [
     0, 800, 700, 500, 400, 300, 300, 100, 1000, 900, 500, 500, 500, 500,
 ];
-const HAND_FACE: [usize; HAND_FACES] = [1, 2, 3, 4, 5, 6, 7];
+/// Face of a hand index.
+pub(super) const HAND_FACE: [usize; HAND_FACES] = [1, 2, 3, 4, 5, 6, 7];
 const KINDS: [PieceKind; 8] = [
     PieceKind::King,
     PieceKind::Rook,
@@ -25,7 +28,7 @@ const KINDS: [PieceKind; 8] = [
     PieceKind::Lance,
     PieceKind::Pawn,
 ];
-fn face_index(kind: PieceKind, promoted: bool) -> usize {
+pub(super) fn face_index(kind: PieceKind, promoted: bool) -> usize {
     let base = KINDS.iter().position(|&k| k == kind).unwrap();
     if promoted {
         match base {
@@ -306,8 +309,6 @@ pub struct ShogiPosition {
     hands: [[u8; HAND_FACES]; 2],
     side: usize,
     hash: u64,
-    /// Board and hand material of each side.
-    material: [i32; 2],
     /// Incremental evaluation terms of each side with the compiled weights:
     /// board values, rank tables, king rank and file, and hand terms.
     accumulated: [i32; 2],
@@ -343,7 +344,6 @@ impl ShogiPosition {
             hands: [[0; HAND_FACES]; 2],
             side: side_index(position.side_to_move()),
             hash: 0,
-            material: [0; 2],
             accumulated: [0; 2],
             check: false,
             reversible: 0,
@@ -468,10 +468,6 @@ impl ShogiPosition {
             Side::Gote
         }
     }
-    /// Material of a side on the board and in hand.
-    pub fn material(&self, side: Side) -> i32 {
-        self.material[side_index(side)]
-    }
     /// Piece on a square.
     pub fn piece(&self, square: Square) -> Option<Piece> {
         let code = self.board[square.index()];
@@ -519,7 +515,6 @@ impl ShogiPosition {
         self.pieces[side][face] |= 1 << square;
         self.occupied[side] |= 1 << square;
         self.hash ^= TABLES.piece[side][face][square];
-        self.material[side] += VALUE[face];
     }
     fn take(&mut self, side: usize, face: usize, square: usize) {
         self.accumulated[side] -= square_weight(side, face, square);
@@ -527,21 +522,18 @@ impl ShogiPosition {
         self.pieces[side][face] &= !(1 << square);
         self.occupied[side] &= !(1 << square);
         self.hash ^= TABLES.piece[side][face][square];
-        self.material[side] -= VALUE[face];
     }
     fn add_hand(&mut self, side: usize, index: usize) {
         let count = usize::from(self.hands[side][index]);
         self.accumulated[side] += hand_weight(index, count);
         self.hash ^= TABLES.hand[side][index][count] ^ TABLES.hand[side][index][count + 1];
         self.hands[side][index] += 1;
-        self.material[side] += VALUE[HAND_FACE[index]];
     }
     fn remove_hand(&mut self, side: usize, index: usize) {
         let count = usize::from(self.hands[side][index]);
         self.accumulated[side] -= hand_weight(index, count - 1);
         self.hash ^= TABLES.hand[side][index][count] ^ TABLES.hand[side][index][count - 1];
         self.hands[side][index] -= 1;
-        self.material[side] -= VALUE[HAND_FACE[index]];
     }
     fn moved_face(&self, face: usize, m: Move) -> usize {
         if m.promotes() {

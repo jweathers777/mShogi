@@ -5,9 +5,7 @@ pub mod position;
 mod position_tests;
 use crate::alphabeta::{self, SearchPosition, Searcher, Status};
 use crate::search::SearchStatus;
-use mshogi_core::shogi::{
-    Action, Conclusion, Game, GameCommand, GameError, GameRequest, PieceKind, Side,
-};
+use mshogi_core::shogi::{Action, Conclusion, Game, GameCommand, GameError, GameRequest, Side};
 use position::ShogiPosition;
 use std::{error::Error, fmt};
 
@@ -29,33 +27,6 @@ pub const DEFAULT_LIMITS: Limits = Limits {
     nodes: 300_000,
 };
 
-/// Hundredths of an unpromoted pawn; kings are scored by rules-owned outcomes.
-pub const fn piece_value(kind: PieceKind, promoted: bool) -> i32 {
-    match kind {
-        PieceKind::King => 0,
-        PieceKind::Gold => 500,
-        PieceKind::Pawn | PieceKind::Lance | PieceKind::Knight | PieceKind::Silver if promoted => {
-            500
-        }
-        PieceKind::Pawn => 100,
-        PieceKind::Lance | PieceKind::Knight => 300,
-        PieceKind::Silver => 400,
-        PieceKind::Bishop => {
-            if promoted {
-                900
-            } else {
-                700
-            }
-        }
-        PieceKind::Rook => {
-            if promoted {
-                1000
-            } else {
-                800
-            }
-        }
-    }
-}
 /// Mandatory deterministic limits. Zero nodes visits nothing and publishes no choice.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Limits {

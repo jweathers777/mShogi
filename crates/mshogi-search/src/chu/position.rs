@@ -857,10 +857,6 @@ impl ChuPosition {
         let c = self.board.cells[at.index()];
         (c != 0).then(|| meta(c).piece)
     }
-    /// Board material before placement terms.
-    pub fn material(&self, side: Side) -> i32 {
-        self.board.material[side.index()]
-    }
     /// Native form of the transient Lion right.
     pub fn protection(&self) -> LionProtection {
         let mut set = self.board.protection.squares;

@@ -1,11 +1,11 @@
 ---
 id: MSH-240
 title: Retire finished-campaign strength tools
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-11-25T09:51:00Z'
-updated_date: '2026-11-25T11:20:00Z'
+updated_date: '2026-11-25T11:26:00Z'
 labels:
   - cleanup
   - model:medium
@@ -23,8 +23,8 @@ Some tools/strength scripts are kept unchanged only to re-verify evidence of fin
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Each tools/strength script that only re-verifies finished-campaign evidence is removed, with its tests, or has a recorded current use.
-- [ ] #2 Current match, screening and cloud tools still work and their Python tests pass.
+- [x] #1 Each tools/strength script that only re-verifies finished-campaign evidence is removed, with its tests, or has a recorded current use.
+- [x] #2 Current match, screening and cloud tools still work and their Python tests pass.
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -66,4 +66,12 @@ For MSH-209 (duplication in what remains, not changed here):
 Review (fresh subagent, diff 52f39b8..39c4c84): no real defect. One finding, fixed: the wrong-region and immutable-upload tests of the moved helpers were deleted with test_anchor_worker; they are now in test_anchor_cloud.
 
 Checks on macOS arm64, no cloud use. Python before -> after: strength 175 (1 skipped) -> 62 (1 skipped without release binaries, 62 pass with them); experiments 30 -> 30; desktop/scripts 177 -> 177; ci_checks self-test 8 -> 8. cargo fmt and clippy clean; cargo test --workspace --locked 1186 passed, 11 ignored, 0 failed. Help of each kept command-line tool prints. Local smoke runs with release binaries passed: cli bench, blunders and match; native_match --game chu calibration; native_signature (64 identical rows); xiangqi_games run, summary and sprt. Not run: any cloud submission (chu_cloud, cloud_build) and a real cli build-engine build.
+
+Final run after merging origin/main (no new commits there): fmt and clippy clean; cargo test 1186 passed, 11 ignored, 0 failed; Python strength 62, experiments 30, desktop/scripts 177, ci_checks 8, all pass; help and imports of kept tools pass; the lazy imports of cloud_build resolve and it builds its source file list offline.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Removed 27 tools/strength scripts of finished campaigns and earlier development versions (rating anchor, per-game campaign, ladder, judge, assessment, self-play and data-builder scripts, the Shogi wrapper and Shogi subcommands of cli.py), 13 test files and tori-cloud-data-files.json: 7,194 lines deleted, 158 added. Kept anchor_cloud, chu_cloud, cli, cloud_build, native_match, native_signature, stats, texel_data, uci and xiangqi_games; the uses and the duplication list for MSH-209 are in the notes. The cloud controller now holds the three worker helpers and requires an explicit campaign policy. All suite and opening data are kept. Offline and local checks pass; no cloud job was run. Follow-up: MSH-242 (Retire Rust strength examples without a consumer).
+<!-- SECTION:FINAL_SUMMARY:END -->

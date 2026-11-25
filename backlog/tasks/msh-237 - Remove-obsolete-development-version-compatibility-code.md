@@ -1,10 +1,11 @@
 ---
 id: MSH-237
 title: Remove obsolete development-version compatibility code
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-24T20:31:00Z'
-updated_date: '2026-11-25T09:15:00Z'
+updated_date: '2026-11-25T09:22:00Z'
 labels:
   - cleanup
   - model:medium

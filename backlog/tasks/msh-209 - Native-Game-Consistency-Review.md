@@ -4,7 +4,7 @@ title: Codebase Consistency and Duplication Review
 status: Ready
 assignee: []
 created_date: '2026-11-20T07:34:00Z'
-updated_date: '2026-11-25T10:49:00Z'
+updated_date: '2026-11-25T11:47:00Z'
 labels:
   - handle:native-consistency-review
   - architecture
@@ -65,4 +65,6 @@ John's decisions, 2026-11-25 (from the items MSH-237 kept). Create tasks for the
 Order update by John, 2026-11-25: MSH-240 runs before this review.
 
 John, 2026-11-25: renaming unclear uses of "native" is MSH-241 (Replace Unclear Uses of Native in Names); do not add it as a review follow-up.
+
+John, 2026-11-25: consolidation of tools/strength is MSH-243 (Game-Independent Strength Tool). List tools/strength findings for it; do not create duplicate tasks.
 <!-- SECTION:NOTES:END -->

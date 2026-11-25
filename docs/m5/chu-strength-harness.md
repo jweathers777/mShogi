@@ -14,6 +14,7 @@ Build the tools with `tools.strength.cloud_build` for cloud work:
 - `mshogi-runner:bin:mshogi-match`
 - `mshogi-runner:example:chu_match_config`
 - `mshogi-runner:example:chu_strength`
+- `mshogi-runner:example:chu_judge` (deeper-search assessment)
 
 Freeze the accepted predecessor separately. Record each binary's source commit
 and SHA-256. Use a digest-pinned worker image built with Cloud Build. The
@@ -101,3 +102,29 @@ to move. Every admitted action is retained with the initial record, so the game 
 supply labels. A game stopped by a search failure, time limit or move limit
 has no samples and no inferred draw result. All continuations of one catalog
 opening must stay in the same corpus partition.
+
+## Internal scaling and move quality
+
+Use the same frozen engine on both sides with `--candidate-time-factor 2`
+to measure the benefit of more time. Report paired uncertainty and every
+unscored pair at each clock. A first-iteration timeout supplies no game result;
+it can make a short-clock estimate unusable. This is an internal scaling
+measure, not an independent rating.
+
+`chu_judge REPORT_PATHS OUT NODES SAMPLES_PER_GAME SHARD SHARDS` reads native
+validated reports and writes one JSONL row per selected move. It takes evenly
+spaced move indices across each game, including unfinished prefixes, and
+searches the position before and immediately after each move with fresh tables
+and full history. Shards partition that fixed sample. Rows retain native
+records, player observations, judge depths, native terminal outcomes and
+ordered capture facts. The player observation is the native value after
+replay, so its context also holds the pre-move game record that stored reports
+omit; compare it to the report after removing that field. Use a materially larger search than the player and
+report how often the judge actually reaches a greater depth.
+
+`python3 -m tools.strength.chu_assessment JUDGED.jsonl --out REPORT.json`
+applies the shared probability-loss rule and Chu symptom classes. Its error
+rows form a reusable full-history suite; both colors of an opening stay in
+the same split. Keep the suite with run evidence in GCS, not in Git. Classes
+alone do not prove a search defect. A same-family judge can miss shared errors;
+a sample rate does not describe every move in the games.

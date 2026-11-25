@@ -492,17 +492,6 @@ fn strict_record_all_fields_nested_duplicates_missing_tampering_and_resources() 
     let mut v = original.clone();
     v["root"]["historical_reachability_proven"] = json!(true);
     assert!(GameRecord::from_json(&v.to_string()).is_err());
-    let small = record(&Game::standard());
-    let padded = format!(
-        "{}{}",
-        small,
-        " ".repeat(MAX_GAME_RECORD_BYTES - small.len())
-    );
-    assert!(GameRecord::from_json(&padded).is_ok());
-    assert_eq!(
-        GameRecord::from_json(&(padded + " ")).unwrap_err(),
-        RecordError::Capacity
-    );
     assert_eq!(context, g.context());
     assert_eq!(good, record(&g));
 }
@@ -588,19 +577,16 @@ fn long_deterministic_real_history_replays_and_remains_closable() {
     assert!(captures > 0 && drops > 0 && promotions > 0);
     let admission_ms = started.elapsed().as_millis();
     let before = g.capacity_usage().unwrap();
-    assert!(before.encoded_bytes < MAX_GAME_RECORD_BYTES - 8192);
     let long = record(&g);
     let replay_started = std::time::Instant::now();
     let reconstructed = GameRecord::from_json(&long).unwrap().to_game().unwrap();
     let replay_ms = replay_started.elapsed().as_millis();
     assert_eq!(g.cache_snapshot(), reconstructed.cache_snapshot());
     let before_record = record(&g);
-    let before_usage = g.capacity_usage().unwrap();
     assert!(g.conclusion().is_none());
     assert_eq!(g.snapshot().board_ply, accepted);
     submit(&mut g, Side::Gote, GameCommand::Resign).unwrap();
     let final_usage = g.capacity_usage().unwrap();
-    assert!(final_usage.encoded_bytes - before_usage.encoded_bytes <= 4096);
     assert_eq!(
         record(
             &GameRecord::from_json(&record(&g))
@@ -659,10 +645,9 @@ fn choose_live(g: &Game, seed: &mut u64) -> Action {
 }
 #[test]
 fn complete_records_remain_saveable_after_every_operation() {
-    // Exercise commands, undo and prefixes with the event-count bound.
+    // Exercise commands, undo and prefixes.
     let exact = |g: &Game| {
         let saved = GameRecord::from_game(g).unwrap();
-        assert!(saved.to_json().len() <= MAX_GAME_RECORD_BYTES);
         assert_eq!(saved.to_json(), record::encode(g).unwrap());
     };
     for seed in 1..=6u64 {

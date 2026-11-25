@@ -331,7 +331,7 @@ fn strict_raw_request_envelope_native_and_response_boundaries_preserve_duplicate
 }
 
 #[test]
-fn actual_maximum_native_audit_ledger_and_whole_encoded_transport_boundaries_fit() {
+fn long_native_audit_ledger_request_finishes_and_echoes_its_context() {
     let mut g = game();
     for _ in 0..511 {
         command(&mut g, x::Side::Black, x::GameCommand::ClaimNaturalCount);
@@ -340,17 +340,7 @@ fn actual_maximum_native_audit_ledger_and_whole_encoded_transport_boundaries_fit
     let native = x::GameRecord::from_game(&g).unwrap();
     assert_eq!(native.event_count(), 1024);
     assert_eq!(native.known_board_actions(), 0);
-    let native_bytes = native.to_json().len();
     let context = request(&g);
-    let envelope = context.game.to_json().unwrap().len();
-    let frame = serde_json::to_string(&context).unwrap();
-    let overhead = serde_json::to_string(&ExecutionRequest {
-        protocol: PROTOCOL_VERSION,
-        context: context.clone(),
-    })
-    .unwrap()
-    .len()
-        - frame.len();
     let response = run(&context);
     assert!(matches!(
         response.result,
@@ -359,53 +349,6 @@ fn actual_maximum_native_audit_ledger_and_whole_encoded_transport_boundaries_fit
         }
     ));
     assert!(response.matches(&context));
-    let echoed = serde_json::to_vec(&mshogi_engine::incremental::Response::new(
-        &serde_json::to_vec(&ExecutionRequest {
-            protocol: PROTOCOL_VERSION,
-            context: response.context.clone(),
-        })
-        .unwrap(),
-        response.result.clone(),
-    ))
-    .unwrap()
-    .len();
-    assert!(
-        native_bytes < envelope
-            && envelope < frame.len()
-            && frame.len() + overhead < MAX_REQUEST_BYTES
-    );
-    assert!(echoed < MAX_RESPONSE_BYTES);
-    println!(
-        "xiangqi 512 commands/1024 events: native={native_bytes}, envelope={envelope}, request={}, response={echoed}",
-        frame.len() + overhead
-    );
-    let exact = frame.replacen(
-        "\"game\":",
-        &format!(
-            "\"game\":{}",
-            " ".repeat(MAX_REQUEST_BYTES - frame.len() - overhead)
-        ),
-        1,
-    );
-    assert_eq!(exact.len() + overhead, MAX_REQUEST_BYTES);
-    assert!(raw(&exact).is_ok());
-    assert!(raw(&format!(" {exact}")).is_err());
-    // Standalone wrapper bytes have their own cap, separately from request overhead.
-    let text = request(&game()).game.to_json().unwrap();
-    let exact = text.replacen(
-        "\"payload\":",
-        &format!(
-            "\"payload\":{}",
-            " ".repeat(MAX_RECORD_ENVELOPE_BYTES - text.len())
-        ),
-        1,
-    );
-    assert_eq!(exact.len(), MAX_RECORD_ENVELOPE_BYTES);
-    assert!(CanonicalRecord::from_json(&exact).is_ok());
-    assert_eq!(
-        CanonicalRecord::from_json(&format!(" {exact}")),
-        Err(EnvelopeError::Capacity)
-    );
 }
 
 #[test]

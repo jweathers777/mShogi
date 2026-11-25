@@ -564,7 +564,7 @@ pub fn run() -> ExitCode {
             let stdin = io::stdin();
             let mut input = stdin.lock();
             loop {
-                let event = crate::uci::bounded_uci_line(&mut input);
+                let event = crate::uci::uci_line(&mut input);
                 let ended = matches!(event, Ok(None) | Err(_));
                 if send.send(event).is_err() || ended {
                     break;
@@ -580,7 +580,7 @@ pub fn run() -> ExitCode {
     let result = (|| -> io::Result<()> {
         loop {
             match recv.recv_timeout(TICK) {
-                Ok(Ok(Some(Ok(bytes)))) => match std::str::from_utf8(&bytes) {
+                Ok(Ok(Some(bytes))) => match std::str::from_utf8(&bytes) {
                     Ok(line)
                         if line.is_ascii()
                             && !line
@@ -593,9 +593,6 @@ pub fn run() -> ExitCode {
                     }
                     _ => eprintln!("usi: input must be ASCII text without control bytes"),
                 },
-                Ok(Ok(Some(Err(())))) => {
-                    eprintln!("usi: line exceeds {} bytes", crate::MAX_LINE_BYTES)
-                }
                 Ok(Err(e)) => return Err(e),
                 Ok(Ok(None)) | Err(RecvTimeoutError::Disconnected) => break,
                 Err(RecvTimeoutError::Timeout) => {}

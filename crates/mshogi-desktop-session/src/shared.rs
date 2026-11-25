@@ -526,12 +526,9 @@ pub struct SharedDesktopCommand {
     pub operation: SessionOperation,
 }
 impl SharedDesktopCommand {
-    /// Parse the complete bounded command from raw JSON; retain duplicate native
+    /// Parse the complete command from raw JSON; retain duplicate native
     /// record fields for the authoritative strict canonical parser.
     pub fn from_json(json: &str) -> Result<Self, String> {
-        if json.len() > mshogi_core::native::MAX_RECORD_ENVELOPE_BYTES + 4096 {
-            return Err("Native contract command exceeds its encoded capacity.".into());
-        }
         serde_json::from_str(json).map_err(|e| {
             let mut message = e.to_string();
             let mut end = message

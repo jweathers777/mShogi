@@ -24,7 +24,7 @@ pub enum RecordFailure {
 /// The native resource of a game capacity refusal.
 #[derive(Debug)]
 pub enum NativeResource {
-    /// Canonical record bytes.
+    /// Encoded native root bytes.
     EncodedBytes,
     /// Board counters or runtime identities: no one specific limit.
     Counter,

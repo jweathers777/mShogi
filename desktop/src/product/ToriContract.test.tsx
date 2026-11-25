@@ -26,7 +26,6 @@ import prefixJson from "../__fixtures__/shared-tori-repetition-prefix.json";
 import pendingJson from "../__fixtures__/shared-tori-pending-incomplete.json";
 import incompleteJson from "../__fixtures__/shared-tori-incomplete.json";
 import analysisJson from "../__fixtures__/shared-tori-analysis-complete.json";
-import resourceJson from "../__fixtures__/shared-tori-resource.json";
 import inspectionJson from "../__fixtures__/shared-tori-inspections.json";
 import shogiJson from "../__fixtures__/shared-shogi-standard.json";
 vi.mock("@tauri-apps/api/core", () => ({ invoke: vi.fn() }));
@@ -156,11 +155,6 @@ it("rejects a zero-node Tori desktop analysis request before issuing native work
   await user.clear(nodes); await user.type(nodes, "1");
   await user.click(screen.getByRole("button", { name: "Start move analysis" }));
   expect(owner.command).toHaveBeenCalledExactlyOnceWith(native, { kind: "analyze", operation: { depth: native.play_limits.depth, nodes: 1 } });
-});
-it("renders actual native oversized-Open refusal, keeps Save available and does not claim an engine or game failure", () => {
-  app(resourceJson as unknown as ToriSnapshot);
-  expect(screen.getByRole("alert").textContent).toContain("byte capacity"); expect(screen.queryByLabelText("Game outcome")).toBeNull();
-  expect((screen.getByRole("button", { name: "Save" }) as HTMLButtonElement).disabled).toBe(false);
 });
 
 it.each([capturedJson, pendingJson])("retains native origin and emphasized destination for capture, including actual pending work", fixture => {

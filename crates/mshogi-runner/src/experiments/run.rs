@@ -102,8 +102,8 @@ pub fn run_with_stop(
             if game.steps.len() >= usize::from(config.max_steps) {
                 break;
             }
-            // Reserve more than one bounded response + request + native final
-            // record before submitting; do not search and then discard evidence.
+            // Reserve room for one more transition before submitting; do not
+            // search and then discard evidence.
             if charged > MAX_BYTES - 8 * 1024 * 1024 {
                 game.stop = "artifact_limit".into();
                 break;

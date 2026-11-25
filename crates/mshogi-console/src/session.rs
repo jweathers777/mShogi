@@ -12,8 +12,6 @@ use mshogi_core::chess::{
     Action, ClaimPolicy, Color, Game, GameRecord, HistoryOrigin, PieceKind, Promotion, Square,
 };
 
-/// Maximum bytes before LF, including a possible CR. Enforced while reading.
-pub const MAX_LINE_BYTES: usize = 4096;
 /// Interactive diagnostics are deliberately bounded; the library remains uncapped.
 pub const MAX_DIAGNOSTIC_DEPTH: u32 = 4;
 

@@ -7,8 +7,6 @@ use std::{error::Error, fmt};
 
 /// Native schema number, independently qualified by the immutable profile/edition.
 pub const GAME_RECORD_SCHEMA_VERSION: u32 = 3;
-/// Initial native encoded bound; product documents must measure their own aggregate policy.
-pub const MAX_GAME_RECORD_BYTES: usize = 1024 * 1024;
 
 /// Exact native bytes and replay-derived metadata. No undo or runtime identity is serialized.
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -23,7 +21,7 @@ pub struct GameRecord {
 /// Typed record refusal; neither cancellation nor capacity is a game outcome.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum RecordError {
-    /// Encoded/event capacity was exceeded.
+    /// A command is too large, or a native runtime counter or root bound was exceeded.
     Capacity,
     /// Malformed, duplicate, unknown, missing or trailing JSON.
     Json,
@@ -101,12 +99,9 @@ fn check(stop: &mut impl FnMut() -> bool) -> Result<(), RecordError> {
     }
 }
 impl GameRecord {
-    /// Capture all accepted semantics, with derived metadata and native bounds.
+    /// Capture all accepted semantics, with derived metadata.
     pub fn from_game(game: &Game) -> Result<Self, RecordError> {
         let json = encode(game)?;
-        if json.len() > MAX_GAME_RECORD_BYTES {
-            return Err(RecordError::Capacity);
-        }
         Ok(Self {
             json,
             events: game.events().len(),
@@ -184,7 +179,7 @@ impl GameRecord {
         stop: &mut impl FnMut() -> bool,
     ) -> Result<(Game, Vec<GameUndo>), RecordError> {
         check(stop)?;
-        strict(text, MAX_GAME_RECORD_BYTES)?;
+        strict(text)?;
         check(stop)?;
         let wire: ParsedRecord = serde_json::from_str(text).map_err(|_| RecordError::Json)?;
         check(stop)?;
@@ -258,7 +253,7 @@ impl<'de> Deserialize<'de> for GameRecord {
 impl GameCommand {
     /// Parse complete bounded command syntax; native Game still owns admission.
     pub fn from_json(text: &str) -> Result<Self, RecordError> {
-        strict(text, 4096)?;
+        strict_command(text)?;
         let command: Self = serde_json::from_str(text).map_err(|_| RecordError::Json)?;
         let input: serde_json::Value = serde_json::from_str(text).map_err(|_| RecordError::Json)?;
         let canonical = serde_json::to_value(&command).map_err(|_| RecordError::Json)?;
@@ -271,11 +266,15 @@ impl GameCommand {
 }
 // Recursive syntax check happens before any internally tagged enum can buffer
 // and normalize a nested duplicate. Escaped-equivalent keys compare decoded.
-fn strict(text: &str, limit: usize) -> Result<(), RecordError> {
-    if text.len() > limit {
+fn strict(text: &str) -> Result<(), RecordError> {
+    crate::record::reject_duplicates(text).map_err(|_| RecordError::Json)
+}
+/// One command has a small fixed size, independent of game length.
+fn strict_command(text: &str) -> Result<(), RecordError> {
+    if text.len() > 4096 {
         return Err(RecordError::Capacity);
     }
-    crate::record::reject_duplicates(text).map_err(|_| RecordError::Json)
+    strict(text)
 }
 
 #[cfg(test)]

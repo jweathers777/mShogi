@@ -206,9 +206,6 @@ impl NativeState {
                     .chess_match
                     .as_ref()
                     .ok_or("Chess root requires its complete native match record")?;
-                if text.len() > mshogi_core::native::MAX_RECORD_ENVELOPE_BYTES {
-                    return Err("Chess match root exceeds one MiB".into());
-                }
                 let matched = chess::MatchRecord::from_json(text).map_err(|e| e.to_string())?;
                 // Timed play is a different experiment contract.
                 if matched.time_control() != chess::TimeControl::Untimed {

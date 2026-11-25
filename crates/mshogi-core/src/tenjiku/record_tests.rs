@@ -136,11 +136,7 @@ fn cancellation_is_distinct_and_never_changes_record_or_source_game() {
     assert_eq!(GameRecord::from_game(&game).unwrap(), record);
 }
 #[test]
-fn oversized_native_input_and_missing_nullable_root_field_refuse() {
-    assert_eq!(
-        GameRecord::from_json(&" ".repeat(MAX_GAME_RECORD_BYTES + 1)),
-        Err(RecordError::Capacity)
-    );
+fn missing_nullable_root_field_refuses() {
     let game = Game::standard(Profile::AdamsModern);
     let record = GameRecord::from_game(&game).unwrap();
     let mut wire: Value = serde_json::from_str(record.to_json()).unwrap();
@@ -155,7 +151,7 @@ fn oversized_native_input_and_missing_nullable_root_field_refuse() {
 }
 
 #[test]
-fn complete_records_fit_after_board_controls_and_reversal() {
+fn complete_records_encode_after_board_controls_and_reversal() {
     for profile in Profile::ALL {
         let square = |file, rank| Square::new(file, rank).unwrap();
         let pieces = [
@@ -199,7 +195,7 @@ fn complete_records_fit_after_board_controls_and_reversal() {
             (Side::Sente, GameCommand::Resign),
         ];
         let mut undos = vec![];
-        assert!(GameRecord::from_game(&game).unwrap().to_json().len() <= MAX_GAME_RECORD_BYTES);
+        GameRecord::from_game(&game).unwrap();
         for (actor, command) in commands {
             undos.push(
                 game.submit(GameRequest {
@@ -209,11 +205,11 @@ fn complete_records_fit_after_board_controls_and_reversal() {
                 })
                 .unwrap(),
             );
-            assert!(GameRecord::from_game(&game).unwrap().to_json().len() <= MAX_GAME_RECORD_BYTES);
+            GameRecord::from_game(&game).unwrap();
         }
         for undo in undos.iter_mut().rev() {
             game.undo(undo).unwrap();
-            assert!(GameRecord::from_game(&game).unwrap().to_json().len() <= MAX_GAME_RECORD_BYTES);
+            GameRecord::from_game(&game).unwrap();
         }
     }
 }

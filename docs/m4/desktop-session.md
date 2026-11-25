@@ -112,14 +112,12 @@ technical details. Shared chess analysis stays in its typed compatibility view
 with its existing score/perspective and Full meaning.
 
 Existing bridge watchdog, bounded queues, cancellation and child cleanup remain.
-Full encoded engine request/response limits stay 1/2 MiB; diagnostics stay 4 KiB.
-The raw shared desktop command cap is native envelope cap (1 MiB) plus 4 KiB for
-fixed command/token/side overhead; native envelope and payload caps also apply.
+Engine requests, replies, shared desktop commands and native envelopes have no
+byte limit (MSH-268); diagnostics stay 4 KiB.
 Raw `SessionOperation` replacement dispatch preserves duplicate fields through
 strict native parsing, avoiding serde's internally tagged enum buffering.
-Diagnostics truncate at a valid UTF-8 boundary. No existing limit was raised.
-Shogi history/reconstruction uses the native bounded maximum of 320 actions and
-321 event parser capacity, with no Full reachability reconstruction. Retained
+Diagnostics truncate at a valid UTF-8 boundary.
+Shogi history/reconstruction follows the 320-action move-count rule, with no Full reachability reconstruction. Retained
 observations are capped at 256; new analysis/resume/retry is refused before
 committing at capacity. Native accepted history/observations are not truncated.
 This is in-memory bounded development support, not an archive design.

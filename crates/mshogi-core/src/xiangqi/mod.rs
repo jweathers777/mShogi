@@ -19,7 +19,7 @@ pub use game::{
     GameError, GameEvent, GameRequest, GameUndo, HistorySnapshot, NaturalCountEligibility,
     PendingAdjudication, RuntimeToken, Submission, Warning, WinReason,
 };
-pub use record::{GAME_RECORD_SCHEMA_VERSION, GameRecord, MAX_GAME_RECORD_BYTES, RecordError};
+pub use record::{GAME_RECORD_SCHEMA_VERSION, GameRecord, RecordError};
 mod legal;
 mod perft;
 pub use action::{

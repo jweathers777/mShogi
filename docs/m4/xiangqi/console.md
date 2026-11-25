@@ -69,18 +69,16 @@ historical. This presentation change does not alter FEN, action or record encodi
 ## Canonical Save/Load and bounds
 
 `record print` emits `record <complete-canonical-envelope-JSON>`; save/load-file
-uses the same native wrapper. `record load-json` accepts it inline within the
-4096-byte console line bound. Larger valid records must use `load-file` with the
-existing1MiB encoded-envelope bound. FEN-only or foreign-game restoration,
+uses the same native wrapper. `record load-json` accepts it inline;
+`load-file` reads it from a file. Neither has a byte limit (MSH-268). FEN-only or foreign-game restoration,
 unknown/duplicate/missing/conflicting fields and forged derived history reject
 before replacement.
 
 `record save <path>` atomically publishes a fully written new file and refuses
 existing files/symlinks, reusing the established no-overwrite console helper.
-Failed saves preserve the existing file and complete session. Session candidates
-measure their actual envelope overhead before acceptance; no constant was raised
-and no canonical history/audit is discarded. Native512-command/2048-event/1MiB
-limits and reserved closure remain unchanged. Opening does not reset capacity.
+Failed saves preserve the existing file and complete session. No canonical
+history/audit is discarded. Native records have no command, event or byte limit
+(MSH-268).
 
 The minimal native extension `GameRecord::to_game_with_undo` runs the same strict
 bounded authoritative replay while optionally retaining native LIFO handles;
@@ -91,7 +89,7 @@ schema, rules, outcomes, default replay behavior or existing game compatibility.
 
 Commands produce common tagged text/JSON on stdout, bounded escaped diagnostics
 on stderr (`error: line N:`). Exit status0 means success,1 any shell error,2 invalid
-program arguments. Oversized input is drained to LF, then later commands can run.
+program arguments. Input lines have no byte limit.
 Native admission, resource refusal, audited claim rejection and execution failure
 remain distinct. Internal invariant failures are explicit; no result is invented.
 
@@ -112,7 +110,7 @@ Actual subprocess fixtures in `tests/xiangqi_cli.rs` exercise initial44actions,
 perft/divide, atomic refusal, native third-warning/fourth-loss, claimant99/100
 counts, admitted audits, agreement/resignation, canonical Save/Open and restored
 undo, strict/bounded/UTF8/foreign-record rejection, the read-only fast no-win
-assessment and oversized-line recovery. Existing common console tests now use a genuinely
+assessment. Existing common console tests now use a genuinely
 unknown game spelling instead of rejecting the newly delivered Xiangqi selection.
 
 Initial test expectations were corrected from native history-contract.md, not

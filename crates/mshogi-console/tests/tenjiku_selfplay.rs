@@ -35,14 +35,11 @@ fn actual(request: &ExecutionRequest) -> ExecutionResponse {
     )
     .unwrap();
     // Drain both pipes while the process runs (especially Windows' small pipe
-    // buffers); retain only supported bounded transport/diagnostic payloads.
-    let stdout = child.stdout.take().unwrap();
+    // buffers); retain only bounded diagnostics.
+    let mut stdout = child.stdout.take().unwrap();
     let stdout = thread::spawn(move || {
         let mut bytes = Vec::new();
-        stdout
-            .take((MAX_RESPONSE_BYTES + 1) as u64)
-            .read_to_end(&mut bytes)
-            .unwrap();
+        stdout.read_to_end(&mut bytes).unwrap();
         bytes
     });
     let stderr = child.stderr.take().unwrap();
@@ -68,7 +65,6 @@ fn actual(request: &ExecutionRequest) -> ExecutionResponse {
     let stderr = stderr.join().unwrap();
     assert!(status.success(), "{}", String::from_utf8_lossy(&stderr));
     assert!(stderr.is_empty());
-    assert!(stdout.len() <= MAX_RESPONSE_BYTES);
     let response: ExecutionResponse = ExecutionResponse::decode(&stdout, request).unwrap();
     assert!(response.matches(request));
     response

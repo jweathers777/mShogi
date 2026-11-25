@@ -41,7 +41,7 @@ fn native_failure(error: RecordFailure) -> NativeFailure {
     match error {
         RecordFailure::Stopped => NativeFailure::Stopped,
         RecordFailure::Capacity(message) => {
-            NativeFailure::Capacity(NativeResource::EncodedBytes, message)
+            NativeFailure::Capacity(NativeResource::Counter, message)
         }
         RecordFailure::Invalid(message) => NativeFailure::Invalid(message),
     }

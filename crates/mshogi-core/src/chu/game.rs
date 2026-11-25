@@ -228,7 +228,7 @@ pub struct GameRequest {
 /// Exhausted resource, distinct from illegal actions and game outcomes.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Resource {
-    /// Encoded record bytes.
+    /// Encoded native root bytes at admission.
     EncodedBytes,
     /// Counter/runtime identity.
     Counter,

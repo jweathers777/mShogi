@@ -13,8 +13,6 @@ use std::{error::Error, fmt};
 
 /// This wrapper's version, independent of native schemas and engine transport.
 pub const RECORD_ENVELOPE_VERSION: u32 = 2;
-/// Encoded canonical wrapper input/output limit; request overhead is counted separately.
-pub const MAX_RECORD_ENVELOPE_BYTES: usize = 1024 * 1024;
 /// Maximum retained shared-record diagnostic bytes.
 pub const MAX_RECORD_DIAGNOSTIC_BYTES: usize = 4096;
 /// The source edition accepted by the existing chess match profile.
@@ -251,7 +249,7 @@ impl CanonicalRecord {
             Self::Tenjiku(_) => NativeSchema::TenjikuV3,
         }
     }
-    /// Serialize a complete bounded wrapper. Native encoding is unchanged.
+    /// Serialize the complete wrapper. Native encoding is unchanged.
     pub fn to_json(&self) -> Result<String, EnvelopeError> {
         encode_envelope(self, &self.payload_json()?)
     }
@@ -260,7 +258,7 @@ impl CanonicalRecord {
         Self::from_json_with_stop(text, &mut || false)
     }
     /// Strict duplicate-preserving parsing with native Tenjiku replay cancellation.
-    /// Older native parsers remain bounded calls with cancellation checked around them.
+    /// Chess, Shogi and Xiangqi parsers check cancellation only before and after parsing.
     pub fn from_json_with_stop(
         text: &str,
         stop: &mut impl FnMut() -> bool,
@@ -317,9 +315,6 @@ impl CanonicalRecord {
         parse: impl FnOnce(GameKind, &str, &mut F) -> Result<(Self, T), EnvelopeError>,
     ) -> Result<(Self, T), EnvelopeError> {
         check_stop(stop)?;
-        if text.len() > MAX_RECORD_ENVELOPE_BYTES {
-            return Err(EnvelopeError::Capacity);
-        }
         let wire: WireRecord = serde_json::from_str(text).map_err(EnvelopeError::encoding)?;
         if wire.envelope_version != RECORD_ENVELOPE_VERSION {
             return Err(EnvelopeError::Identity);
@@ -344,9 +339,6 @@ impl CanonicalRecord {
             Self::Chu(record) => record.to_json().to_owned(),
             Self::Tenjiku(record) => record.to_json().to_owned(),
         };
-        if text.len() > MAX_RECORD_ENVELOPE_BYTES {
-            return Err(EnvelopeError::Capacity);
-        }
         Ok(text)
     }
 }
@@ -371,17 +363,12 @@ fn encode_envelope(record: &CanonicalRecord, payload: &str) -> Result<String, En
         payload: &'a RawValue,
     }
     let payload = RawValue::from_string(payload.to_owned()).map_err(EnvelopeError::encoding)?;
-    let text = serde_json::to_string(&Encoded {
+    serde_json::to_string(&Encoded {
         envelope_version: RECORD_ENVELOPE_VERSION,
         game_kind: record.game_kind(),
         payload: &payload,
     })
-    .map_err(EnvelopeError::encoding)?;
-    if text.len() > MAX_RECORD_ENVELOPE_BYTES {
-        Err(EnvelopeError::Capacity)
-    } else {
-        Ok(text)
-    }
+    .map_err(EnvelopeError::encoding)
 }
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -401,7 +388,7 @@ impl<'de> Deserialize<'de> for CanonicalRecord {
 /// Explicit unsupported identity, malformed input or resource rejection.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum EnvelopeError {
-    /// Encoded bytes or supported shared event count exceeded.
+    /// A native runtime counter or root bound was exceeded.
     Capacity,
     /// Cooperative native replay/parser stop; no partial record is published.
     Stopped,
@@ -586,35 +573,5 @@ pub fn dispatch_command(
             Ok(NativeReply::Tenjiku(game.submit(*request).map(Box::new)))
         }
         _ => Err(DispatchMismatch),
-    }
-}
-
-#[cfg(test)]
-mod envelope_size_tests {
-    use super::*;
-
-    #[test]
-    fn complete_encoding_counts_profile_specific_wrapper_headroom_exactly() {
-        for profile in tenjiku::Profile::ALL {
-            let record = CanonicalRecord::tenjiku(
-                tenjiku::GameRecord::from_game(&tenjiku::Game::standard(profile)).unwrap(),
-            );
-            // Exercise only the envelope accounting helper with a JSON string;
-            // this synthetic payload is deliberately not a native game record.
-            let empty = encode_envelope(&record, "\"\"").unwrap();
-            let padding = MAX_RECORD_ENVELOPE_BYTES - empty.len();
-            let payload = format!("\"{}\"", "x".repeat(padding));
-            assert!(payload.len() < MAX_RECORD_ENVELOPE_BYTES);
-            assert_eq!(
-                encode_envelope(&record, &payload).unwrap().len(),
-                MAX_RECORD_ENVELOPE_BYTES
-            );
-            let overflow = format!("\"{}x\"", "x".repeat(padding));
-            assert!(overflow.len() < MAX_RECORD_ENVELOPE_BYTES);
-            assert_eq!(
-                encode_envelope(&record, &overflow).unwrap_err(),
-                EnvelopeError::Capacity
-            );
-        }
     }
 }

@@ -29,10 +29,6 @@ pub use xiangqi::*;
 
 /// Current internal protocol version.
 pub const PROTOCOL_VERSION: u32 = 6;
-/// Maximum encoded request line, excluding its newline.
-pub const MAX_REQUEST_BYTES: usize = 1024 * 1024;
-/// Maximum encoded response line, excluding its newline.
-pub const MAX_RESPONSE_BYTES: usize = 2 * 1024 * 1024;
 /// Maximum retained stderr bytes per child.
 pub const MAX_STDERR_BYTES: usize = 4096;
 
@@ -186,8 +182,6 @@ pub enum FailureKind {
     UnexpectedExit,
     /// Output was malformed, incomplete JSON, or contained extra data.
     MalformedResponse,
-    /// Response exceeded its byte cap.
-    OversizedResponse,
     /// Child exited successfully without a response.
     MissingResponse,
     /// Child failed to respond/exit within its watchdog.

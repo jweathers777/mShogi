@@ -501,12 +501,6 @@ fn command_json_strict_native_payload_and_encoded_capacity() {
         assert_ne!(text, json);
         assert!(SharedDesktopCommand::from_json(&text).is_err());
     }
-    assert!(
-        SharedDesktopCommand::from_json(
-            &" ".repeat(mshogi_core::native::MAX_RECORD_ENVELOPE_BYTES + 4097)
-        )
-        .is_err()
-    );
     let old = c.shared_token();
     let mut wrong = command;
     if let SessionOperation::Replace { human, .. } = &mut wrong.operation {

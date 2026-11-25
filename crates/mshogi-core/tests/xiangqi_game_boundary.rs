@@ -263,17 +263,6 @@ fn long_command_history_can_continue_replay_and_close() {
     ));
     let closed = record(&game);
     assert_eq!(GameRecord::from_json(&closed).unwrap().to_json(), closed);
-    let small = record(&Game::standard(ClaimPolicy::Explicit).unwrap());
-    let padded = format!(
-        "{}{}",
-        small,
-        " ".repeat(MAX_GAME_RECORD_BYTES - small.len())
-    );
-    assert!(GameRecord::from_json(&padded).is_ok());
-    assert_eq!(
-        GameRecord::from_json(&(padded + " ")),
-        Err(RecordError::Capacity)
-    );
 }
 
 #[test]

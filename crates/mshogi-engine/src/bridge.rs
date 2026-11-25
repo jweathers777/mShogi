@@ -315,9 +315,7 @@ impl Process {
                 let mut output = io::BufReader::new(output);
                 loop {
                     let mut bytes = Vec::new();
-                    let result = (&mut output)
-                        .take((MAX_RESPONSE_BYTES + 2) as u64)
-                        .read_until(b'\n', &mut bytes);
+                    let result = output.read_until(b'\n', &mut bytes);
                     let last = result.is_err() || bytes.last() != Some(&b'\n');
                     if out_send.send(result.map(|_| bytes)).is_err() || last {
                         break;
@@ -469,15 +467,10 @@ fn run(
             },
         };
         let exchange = match process.incremental.encode(&pending.context) {
-            Ok(mut bytes) if bytes.len() <= MAX_REQUEST_BYTES => {
+            Ok(mut bytes) => {
                 bytes.push(b'\n');
                 exchange(&mut process, kept, &bytes, pending, deadline)
             }
-            Ok(_) => Exchange::Failure(
-                pending
-                    .context
-                    .failure(FailureKind::InvalidRequest, "request exceeds byte cap"),
-            ),
             Err(error) => {
                 Exchange::Failure(pending.context.failure(FailureKind::InvalidRequest, error))
             }
@@ -535,9 +528,6 @@ fn exchange(
         if ended.is_none() {
             match process.stdout.try_recv() {
                 Ok(Ok(bytes)) => {
-                    if bytes.len() > MAX_RESPONSE_BYTES + 1 {
-                        return fail(FailureKind::OversizedResponse, &"response exceeds byte cap");
-                    }
                     if bytes.last() != Some(&b'\n') {
                         ended = Some(bytes);
                     } else {

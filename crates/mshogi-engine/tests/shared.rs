@@ -327,9 +327,8 @@ fn strict_outer_purpose_target_envelope_and_native_bytes_survive_routing() {
 }
 
 #[test]
-fn composed_size_evidence_counts_native_wrapper_request_and_echoed_response() {
-    // Deterministic capacity walk already used by the native MSH-67 record test;
-    // this measures composition, not an independent rules oracle.
+fn long_histories_request_echoes_their_context() {
+    // Deterministic walk to the Shogi move-count rule; not a rules oracle.
     let mut game = shogi::Game::new();
     let mut seed = 0x67_c5a3_6d91_u64;
     for ply in 1..=320 {
@@ -353,36 +352,12 @@ fn composed_size_evidence_counts_native_wrapper_request_and_echoed_response() {
                 break;
             }
         }
-        game = selected.expect("reviewed deterministic capacity walk has a continuation");
+        game = selected.expect("reviewed deterministic walk has a continuation");
     }
-    let native = shogi::GameRecord::from_game(&game);
-    let native_bytes = native.to_json().unwrap().len();
     let mut context = request(&AdjudicatedGame::new(ClaimPolicy::ExplicitOnly));
-    context.game = CanonicalRecord::shogi(native);
-    let envelope = context.game.to_json().unwrap().len();
-    let frame = serde_json::to_vec(&ExecutionRequest {
-        protocol: PROTOCOL_VERSION,
-        context: context.clone(),
-    })
-    .unwrap()
-    .len();
+    context.game = CanonicalRecord::shogi(shogi::GameRecord::from_game(&game));
     let response = run(context.clone());
-    let echoed = serde_json::to_vec(&mshogi_engine::incremental::Response::new(
-        &serde_json::to_vec(&ExecutionRequest {
-            protocol: PROTOCOL_VERSION,
-            context: response.context.clone(),
-        })
-        .unwrap(),
-        response.result.clone(),
-    ))
-    .unwrap()
-    .len();
-    assert!(frame < MAX_REQUEST_BYTES);
-    assert!(echoed < MAX_RESPONSE_BYTES);
     assert!(response.matches(&context));
-    println!(
-        "shogi 320 events: native={native_bytes}, envelope={envelope}, request={frame}, response={echoed}"
-    );
     let mut record = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record();
     for _ in 0..4100 {
         record.push_event(RecordEvent {
@@ -395,43 +370,6 @@ fn composed_size_evidence_counts_native_wrapper_request_and_echoed_response() {
         });
     }
     context.game = CanonicalRecord::chess(record);
-    let envelope = context.game.to_json().unwrap().len();
-    let frame = serde_json::to_vec(&ExecutionRequest {
-        protocol: PROTOCOL_VERSION,
-        context: context.clone(),
-    })
-    .unwrap()
-    .len();
-    let response = run(context);
-    let echoed = serde_json::to_vec(&mshogi_engine::incremental::Response::new(
-        &serde_json::to_vec(&ExecutionRequest {
-            protocol: PROTOCOL_VERSION,
-            context: response.context.clone(),
-        })
-        .unwrap(),
-        response.result.clone(),
-    ))
-    .unwrap()
-    .len();
-    assert!(frame < MAX_REQUEST_BYTES);
-    assert!(echoed < MAX_RESPONSE_BYTES);
-    println!(
-        "chess 4100 max-counter clock observations: envelope={envelope}, request={frame}, response={echoed}"
-    );
-    // Construct syntactically strict native data whose wrapper fits but its
-    // enclosing request does not. Whitespace belongs to actual input bytes.
-    let context = request(&AdjudicatedGame::new(ClaimPolicy::ExplicitOnly));
-    let text = serde_json::to_string(&context).unwrap();
-    let overhead = serde_json::to_string(&ExecutionRequest {
-        protocol: PROTOCOL_VERSION,
-        context: context.clone(),
-    })
-    .unwrap()
-    .len()
-        - text.len();
-    let padding = " ".repeat(MAX_REQUEST_BYTES - text.len() - overhead);
-    let exact = text.replacen("\"game\":", &format!("\"game\":{padding}"), 1);
-    assert_eq!(exact.len() + overhead, MAX_REQUEST_BYTES);
-    assert!(raw_run(&exact).is_ok());
-    assert!(raw_run(&format!(" {exact}")).is_err());
+    let response = run(context.clone());
+    assert!(response.matches(&context));
 }

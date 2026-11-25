@@ -160,12 +160,6 @@ fn unsupported_conflicting_malformed_and_old_outer_formats_reject() {
         assert!(DocumentEnvelope::parse(&serde_json::to_vec(&old).unwrap()).is_err());
     }
     assert!(DocumentEnvelope::parse(b"{").is_err());
-    assert!(
-        DocumentEnvelope::parse(&vec![b' '; MAX_ARCHIVE_BYTES + 1])
-            .err()
-            .unwrap()
-            .contains("capacity")
-    );
 }
 
 #[test]

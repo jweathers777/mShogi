@@ -53,7 +53,7 @@ bounded local diagnostics and do not replace history-aware game permission.
 `analyze` is read-only history-aware native search; it never applies its action.
 
 Canonical Save uses the existing bounded atomic new-file infrastructure and
-refuses overwrite. Malformed, wrong-game/profile, oversized or replay-invalid
+refuses overwrite. Malformed, wrong-game/profile or replay-invalid
 Load leaves the current session intact. Successful Load restores event undo.
 Human shell output and errors remain separate from structured `internal-search`.
 

@@ -122,19 +122,6 @@ impl<G: NativeGame> Errors<G> {
         fact.category = category;
         OperationFailure::resource(ResourceFailure::new(fact, diagnostic)).into()
     }
-    fn file_size(bytes: usize) -> GameDocumentError {
-        OperationFailure::resource(ResourceFailure::new(
-            ResourceFact::measured(
-                ResourceCategory::EncodedDocumentBytes,
-                bytes as u64,
-                MAX_ARCHIVE_BYTES as u64,
-            )
-            .with_scope(G::SCOPE)
-            .with_unit(ResourceUnit::Bytes),
-            "Application limit reached: the document is larger than 16 MiB.",
-        ))
-        .into()
-    }
     fn record(error: RecordFailure) -> GameDocumentError {
         match error {
             RecordFailure::Stopped => Self::stopped(),
@@ -151,7 +138,7 @@ impl<G: NativeGame> Errors<G> {
             NativeFailure::Capacity(resource, diagnostic) => (resource, diagnostic),
         };
         let category = match resource {
-            NativeResource::EncodedBytes => ResourceCategory::CanonicalRecordBytes,
+            NativeResource::EncodedBytes => ResourceCategory::NativeRootBytes,
             NativeResource::Counter => ResourceCategory::Unknown,
         };
         Self::capacity(category, diagnostic)
@@ -212,9 +199,6 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
     ) -> Result<(Self, G::Game), GameDocumentError> {
         type E<G> = Errors<G>;
         E::<G>::check(stopped)?;
-        if bytes.len() > MAX_ARCHIVE_BYTES {
-            return Err(E::<G>::file_size(bytes.len()));
-        }
         document::reject_duplicates(bytes).map_err(E::<G>::invalid)?;
         let e = document::DocumentEnvelope::parse(bytes).map_err(E::<G>::invalid)?;
         if e.game_kind != G::KIND {
@@ -242,9 +226,6 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
         type E<G> = Errors<G>;
         payload.settings.validate().map_err(E::<G>::invalid)?;
         let bytes = document::encode(G::KIND, &payload).map_err(E::<G>::invalid)?;
-        if bytes.len() > MAX_ARCHIVE_BYTES {
-            return Err(E::<G>::file_size(bytes.len()));
-        }
         Ok(Self { payload, bytes })
     }
     /// The saved bytes.

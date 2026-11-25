@@ -146,7 +146,6 @@ fn actual_process_failures_remain_explicit_unscored_and_bounded() {
         (1, FailureKind::MissingResponse),
         (2, FailureKind::UnexpectedExit),
         (3, FailureKind::MalformedResponse),
-        (4, FailureKind::OversizedResponse),
         (5, FailureKind::Timeout),
         (6, FailureKind::ContextMismatch),
         (9, FailureKind::UnexpectedExit),

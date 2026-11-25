@@ -1,9 +1,8 @@
-//! Bounded human-console file operations; native adapters own restoration.
-use mshogi_core::native::MAX_RECORD_ENVELOPE_BYTES;
+//! Human-console file operations; native adapters own restoration.
 use std::{
     fmt::Write as _,
-    fs::{self, File, OpenOptions},
-    io::{Read, Write},
+    fs::{self, OpenOptions},
+    io::Write,
     path::Path,
     sync::atomic::{AtomicU64, Ordering},
 };
@@ -43,24 +42,11 @@ pub fn diagnostic(text: &str) -> String {
         .collect()
 }
 pub fn read(path: &str) -> Result<String, String> {
-    let mut bytes = Vec::new();
-    File::open(path)
-        .and_then(|file| {
-            file.take((MAX_RECORD_ENVELOPE_BYTES + 1) as u64)
-                .read_to_end(&mut bytes)
-        })
-        .map_err(|e| format!("open failed: {}", diagnostic(&e.to_string())))?;
-    if bytes.len() > MAX_RECORD_ENVELOPE_BYTES {
-        return Err(format!(
-            "record exceeds {MAX_RECORD_ENVELOPE_BYTES}-byte limit; session preserved"
-        ));
-    }
+    let bytes =
+        fs::read(path).map_err(|e| format!("open failed: {}", diagnostic(&e.to_string())))?;
     String::from_utf8(bytes).map_err(|_| "record is not UTF-8; session preserved".into())
 }
 pub fn save(path: &str, encoded: &str, out: &mut String) -> Result<(), String> {
-    if encoded.len() > MAX_RECORD_ENVELOPE_BYTES {
-        return Err("record exceeds save limit".into());
-    }
     save_new(Path::new(path), encoded.as_bytes()).map_err(|e| {
         format!(
             "save failed (use a new path; existing files are preserved): {}",

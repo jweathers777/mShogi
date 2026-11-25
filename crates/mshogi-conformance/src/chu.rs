@@ -10,11 +10,10 @@ use std::collections::{BTreeMap, BTreeSet};
 /// Exact MSH-82 ratified profile identity.
 pub const PROFILE: &str = "mshogi.chu.jcsa2019.v1";
 /// Independently reviewed immutable corpus digest from MSH-82's audit lock.
-pub const CORPUS_SHA256: &str = "4ddfdcc55fbda3a9bb229f8a1eb14aaa804223dda241dd350a0a0c23e1f64b37";
+pub const CORPUS_SHA256: &str = "1f9ec75af36ad7aecaa1dded27acee913e73a39a3f17979c9f435b4e8092976a";
 /// Independently expected input; never implementation observations.
 pub const FIXTURES: &str = include_str!("../../../docs/m4/chu/fixtures.json");
-/// Development-only input bound: measured corpus is 563,575 bytes, exceeding Tori's bound.
-/// This does not change any native record, transport or archive limit.
+/// Development-only input bound for this fixture corpus; it is not a game record.
 pub const MAX_INPUT_BYTES: usize = 1024 * 1024;
 
 /// One source-derived fixture, including explicitly pending consumer scope.
@@ -81,10 +80,10 @@ impl Corpus {
                 ));
             }
         }
-        if wire.fixtures.len() != 250
-            || wire.fixtures.iter().filter(|f| f.scope == "native").count() != 240
+        if wire.fixtures.len() != 249
+            || wire.fixtures.iter().filter(|f| f.scope == "native").count() != 239
         {
-            return Err("expected 240 native and 10 consumer Chu fixtures".into());
+            return Err("expected 239 native and 10 consumer Chu fixtures".into());
         }
         let digest = format!("{:x}", Sha256::digest(input.as_bytes()));
         if digest != CORPUS_SHA256 {
@@ -338,8 +337,8 @@ mod tests {
     fn anchored_second_corpus_and_honest_pending() {
         let corpus = Corpus::embedded().unwrap();
         let report = run_adapter(&corpus, &Pending);
-        assert_eq!(report.fixtures_validated, 250);
-        assert_eq!(report.native_rows_pending, 240);
+        assert_eq!(report.fixtures_validated, 249);
+        assert_eq!(report.native_rows_pending, 239);
         assert_eq!(report.native_rows_executed, 0);
         assert_eq!(report.later_consumer_requirements.len(), 10);
         assert_eq!(report.passed, 0);

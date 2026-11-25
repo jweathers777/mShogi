@@ -271,19 +271,13 @@ fn cross_profile_and_wrong_game_commands_are_atomic_refusals() {
 }
 
 #[test]
-fn complete_wrapper_input_bound_and_cooperative_native_replay_stop() {
+fn cooperative_native_replay_stop() {
     for profile in t::Profile::ALL {
         let mut game = fixture_game(profile);
         play(&mut game);
         let record = wrapped(&game);
         let raw = record.to_json().unwrap();
-        let exact = format!("{raw}{}", " ".repeat(MAX_RECORD_ENVELOPE_BYTES - raw.len()));
-        assert_eq!(exact.len(), MAX_RECORD_ENVELOPE_BYTES);
-        assert_eq!(CanonicalRecord::from_json(&exact).unwrap(), record);
-        assert_eq!(
-            CanonicalRecord::from_json(&(exact + " ")).unwrap_err(),
-            EnvelopeError::Capacity
-        );
+        assert_eq!(CanonicalRecord::from_json(&raw).unwrap(), record);
         assert_eq!(
             CanonicalRecord::from_json_with_stop(&raw, &mut || true).unwrap_err(),
             EnvelopeError::Stopped

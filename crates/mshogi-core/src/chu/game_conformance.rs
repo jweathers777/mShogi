@@ -925,7 +925,6 @@ fn records(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
             raw["root"]["state"].as_object_mut().unwrap().remove("root");
             raw.to_string()
         }
-        "oversized_record" => format!("{}{}", record.as_json(), " ".repeat(MAX_GAME_RECORD_BYTES)),
         _ => return Err("unknown fixture mutation".into()),
     };
     let result = GameRecord::from_json(&mutated);
@@ -959,7 +958,7 @@ fn complete_independently_expected_native_corpus() {
         "{}",
         serde_json::to_string_pretty(&failures).unwrap()
     );
-    assert_eq!(report.native_rows_passed, 240);
+    assert_eq!(report.native_rows_passed, 239);
     assert_eq!(report.native_rows_pending, 0);
     assert_eq!(report.failed, 0);
     assert_eq!(report.later_consumer_requirements.len(), 10);

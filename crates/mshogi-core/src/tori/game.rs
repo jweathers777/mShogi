@@ -187,7 +187,7 @@ pub struct GameRequest {
 /// Exhausted native resource, never an illegal move or a game outcome.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Resource {
-    /// Complete encoded native bytes.
+    /// Encoded native root bytes at admission.
     EncodedBytes,
     /// Counter or monotonic native authority exhausted.
     Counter,

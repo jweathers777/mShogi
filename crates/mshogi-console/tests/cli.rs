@@ -392,22 +392,6 @@ fn ascii_grammar_numeric_bounds_and_escaped_diagnostics() {
 }
 
 #[test]
-fn streaming_line_bound_recovers_and_accepts_exact_limit() {
-    let mut input = vec![b'#'; 4096];
-    input.push(b'\n');
-    input.extend(vec![b'x'; 1024 * 1024]);
-    input.extend_from_slice(b"\nperft 1\n");
-    input.extend(vec![b'x'; 4097]); // Oversized last line with no LF.
-    let output = shell(&input);
-    assert_eq!(output.status.code(), Some(1));
-    assert_eq!(text(output.stdout), "perft 1 20\n");
-    assert_eq!(
-        text(output.stderr),
-        "error: line 2: line exceeds 4096 bytes\nerror: line 4: line exceeds 4096 bytes\n"
-    );
-}
-
-#[test]
 fn diagnostic_depth_limit_is_inclusive() {
     // A terminal diagram makes the highest accepted depth inexpensive.
     let output = shell(b"position fen 7k/5Q2/6K1/8/8/8/8/8 b - - 0 1\nperft 4\ndivide 4\n");

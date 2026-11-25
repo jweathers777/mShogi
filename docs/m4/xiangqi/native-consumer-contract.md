@@ -106,17 +106,13 @@ a ply.
 | Rejected claim | `Submission.result == RejectedNaturalCount` plus audit events | Admitted audit with no semantic penalty/board change. Different from pre-admission refusal. |
 | WXF warning | `Warning` / `EventKind::Warning` | Active obligation, not a conclusion or process error. |
 | Stale / wrong game | `StaleContext`, typed `DispatchMismatch` | No fallback to another game or old execution. |
-| Native capacity / record capacity | `GameError::Capacity`, `RecordError::Capacity`, `EnvelopeError::Capacity` | Refuse before acceptance at that boundary; retain current complete saveable session. |
+| Native counter capacity | `GameError::Capacity`, `RecordError::Capacity`, `EnvelopeError::Capacity` | Runtime counter exhaustion only; refuse before acceptance and retain the current complete saveable session. |
 | Execution/invariant failure | `GameError::Invariant`, fast `Failure` | Separate failure; no manufactured win/loss/draw or positive proof. |
 | Strict record rejection | `RecordError` / `EnvelopeError` | Duplicate/unknown/missing/conflicting/unsupported/capacity or replay inconsistency; never normalize through a map before native strict parsing. |
 
-Position/FEN limits are4096/256bytes. Native games bound512commands (including
-claim audits),2048events and1MiB encoded JSON. Admission reserves the documented
-native close path. The1MiB shared envelope includes its own overhead: a native
-record fitting its own limit does not automatically fit the wrapper/transport.
-The MSH-95 composition/boundary tests remain applicable; future adapters must
-measure their actual complete encoding and preflight before committing. No
-accepted history or observation is discarded and Save/Open does not reset limits.
+Position/FEN limits are4096/256bytes. Native games, records, the shared
+envelope and engine transport have no command, event or byte limit (MSH-268).
+No accepted history or observation is discarded.
 
 ## Verification and remaining owners
 

@@ -19,9 +19,6 @@ pub(crate) struct DocumentEnvelope {
 }
 impl DocumentEnvelope {
     pub(crate) fn parse(bytes: &[u8]) -> Result<Self, String> {
-        if bytes.len() > crate::MAX_ARCHIVE_BYTES {
-            return Err("Application capacity: desktop document exceeds 16MiB.".into());
-        }
         // No intermediate map: duplicate outer fields reject here and every
         // nested byte reaches the strict native document/record parser intact.
         let doc: Self = serde_json::from_slice(bytes)

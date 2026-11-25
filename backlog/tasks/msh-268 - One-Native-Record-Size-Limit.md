@@ -1,10 +1,11 @@
 ---
 id: MSH-268
 title: Remove Game Size and Engine Request Limits
-status: Ready
-assignee: []
+status: Done
+assignee:
+  - '@claude'
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-25T12:50:00Z'
+updated_date: '2026-11-25T22:29:00Z'
 labels:
   - core
   - model:large
@@ -23,11 +24,23 @@ John (2026-11-25): no limit on game size or on requests to the engine; the limit
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 No code path refuses a game, a saved file, an engine request or an engine reply because of its length or byte size; the listed constants, capacity errors and the capacity messages in the user interface that become unused are removed; production line counts before and after are recorded.
-- [ ] #2 Every test, fixture and test helper that enforces a removed limit is removed or updated. No new test is added only to show that a removed limit is gone.
-- [ ] #3 Every document that names a removed limit is updated (for example docs/native-resource-admission.md, docs/desktop and docs/m4 contracts and rules profiles); search docs/ for each removed value and constant. Game rules and their expected test results are unchanged; workspace, frontend and affected-platform checks pass.
-- [ ] #4 One review by a fresh agent session.
+- [x] #1 No code path refuses a game, a saved file, an engine request or an engine reply because of its length or byte size; the listed constants, capacity errors and the capacity messages in the user interface that become unused are removed; production line counts before and after are recorded.
+- [x] #2 Every test, fixture and test helper that enforces a removed limit is removed or updated. No new test is added only to show that a removed limit is gone.
+- [x] #3 Every document that names a removed limit is updated (for example docs/native-resource-admission.md, docs/desktop and docs/m4 contracts and rules profiles); search docs/ for each removed value and constant. Game rules and their expected test results are unchanged; workspace, frontend and affected-platform checks pass.
+- [x] #4 One review by a fresh agent session.
 <!-- AC:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Inventory every length/byte/event/ply cap on games, saved files, engine requests and replies (core, engine, console, runner, desktop session, Tauri host, frontend, scripts, tools), including derived constants and reserved headroom.
+2. Remove the per-game record byte caps, the envelope cap, the engine request/response caps, the desktop archive cap and the console line cap; remove derived checks and headroom; remove resulting dead errors, resource categories and UI messages.
+3. Remove or update tests, fixtures (with their generators) and scripts that enforce removed limits; add no proof-of-removal tests.
+4. Update docs that name removed limits.
+5. Record kept limits with reasons; record open questions with needs-john.
+6. Run fmt, clippy, workspace tests, frontend check and tests, touched Python tests; CI on Linux/macOS/Windows incl. process and persistence suites.
+7. Fresh-agent review; fix findings; integrate; finalize; clean up.
+<!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
 
@@ -41,4 +54,24 @@ John, 2026-11-25: I prefer no limit on the game size or the requests to the engi
 John, 2026-11-25: also remove the 2 MiB cap on the engine reply, and any tests that enforce these limits.
 
 John, 2026-11-25: no new tests to show that the removed limits are gone; update the documentation that refers to them.
+
+Checkpoint 1 (claude, branch claude/msh-268-remove-size-limits): core production caps removed (WIP, tests not yet updated, does not build its tests yet): native envelope cap, Shogi/Xiangqi/Tori/Chu/Tenjiku record byte caps, Xiangqi per-submit 4 KiB record headroom check. Kept: per-command 4096-byte parse cap in Tori/Chu/Tenjiku (strict_command; one command, not game length), MAX_COMPACT_ROOT_BYTES (root metadata), Xiangqi MAX_POSITION_BYTES/MAX_FEN_BYTES (position strings), u32/u64 counter overflow checks (integer representation). Production lines before: crates/*/src without test/conformance files 68538; desktop/src + src-tauri without tests/fixtures 3930. Next: core tests; engine MAX_REQUEST_BYTES/MAX_RESPONSE_BYTES (lib, server, bridge, incremental, shared; FailureKind::OversizedResponse); console MAX_LINE_BYTES and record_io; runner experiments (admit_with_match_capacity, request/response checks, max_steps>1024 derived from Tori limit); desktop MAX_ARCHIVE_BYTES, EncodedDocumentBytes/CanonicalRecordBytes, shared.rs envelope+4096 check, capacity fixtures; frontend; scripts; docs.
+
+Checkpoint 2 (claude): Rust caps removed in core (incl. tests, Chu fixture CHU-RECORD-OVERSIZED_RECORD removed, corpus hash/counts 249/239 updated), engine (MAX_REQUEST_BYTES, MAX_RESPONSE_BYTES, FailureKind::OversizedResponse), console (MAX_LINE_BYTES, record_io file/save caps), runner experiments (envelope/request/response checks; max_steps<=1024 derived from the old Tori limit), desktop (MAX_ARCHIVE_BYTES, EncodedDocumentBytes, command envelope+4096 cap, Tori oversized-Open fixture). Workspace builds. Next: frontend TS (oversized_response, encoded_document_bytes texts/tests), scripts, docs, full checks, CI, review.
+
+Checkpoint 3 (claude): implementation complete on branch, commit f416b51. Local checks: fmt, clippy (workspace; desktop-session all features), cargo test --workspace 1157 passed 0 failed, desktop-session --all-features 197 passed, npm run check, vitest 586 passed (Node 24.22.3), python test_gui_smoke+test_macos_verification 141 passed, docs/m4/chu validate + tests passed. Production lines (crates/*/src without test/conformance files): 68538 before, 68247 after; desktop/src + src-tauri without tests/fixtures 3930 -> 3928. CI dispatched: rust process all (45709713563), rust persistence all (45709717987), desktop host ubuntu (45709722103). Next: fresh review, merge main, integrate.
+
+Kept limits and reasons (not about game length): per-command 4096-byte parse bound in Tori/Chu/Tenjiku (one command); MAX_COMPACT_ROOT_BYTES 64 KiB and import source 1024 bytes (root metadata); Xiangqi MAX_POSITION_BYTES/MAX_FEN_BYTES and reference-tool FEN/SFEN caps (position strings); u32/u64 counter overflow checks and identity headroom (integer representation); 4096-byte diagnostic/stderr caps (excluded by John); MovementInspectionQuery 1024 bytes (fixed small query); verification selector 128 bytes; conformance/dev corpus input bounds (fixture files, not games); desktop KEPT_RESULTS 256 (drops the oldest in-memory analysis result, refuses nothing, not saved); 15-second validation budget and bridge watchdogs (time limits); runner config 1 MiB caps (configuration input).
+
+Removed derived limits: runner experiments max_steps <= 1024 (its stated reason was the old Tori record limit); runner admit_with_match_capacity, request/response checks and Chess match root 1 MiB check; Xiangqi 4 KiB record headroom per submit; console record_io read/save caps; desktop SharedDesktopCommand envelope+4096 cap; Chu fixture CHU-RECORD-OVERSIZED_RECORD (corpus 249 rows, 239 native, hash updated); Tori oversized-Open frontend fixture. Pipes: the engine bridge writes stdin and reads stdout/stderr on separate threads, so large messages cannot deadlock; the Tenjiku console test helper now writes stdin from a thread.
+
+Review (fresh general-purpose subagent, given the diff and the task): no real bugs. Chu fixture removal consistent (hash, 249/239 counts, 1,069 = 1,072 - 3 checks). Fixed findings: restored the long Chess record (4,100 observations) engine round trip in mshogi-engine tests/shared.rs; renamed ResourceCategory CanonicalRecordBytes to NativeRootBytes (wire native_root_bytes) because only root admission produces it; removed the unused ResourceUnit::Bytes and TS unit 'bytes'; Chess RecordFailure::Capacity now maps to NativeResource::Counter; fixed stale Tori/Chu Resource::EncodedBytes doc comments; NativeCapacity frontend tests use realistic identity-headroom facts. Not changed: capacity_usage()/CapacityUsage stay as a diagnostic measurement (used by the Tenjiku work example and tests). Runner limits that can depend on game length are kept and sent to John in MSH-273 (Runner Game Length Limits, needs-john). Duplicate MAX_ARCHIVE_OBSERVATIONS/KEPT_RESULTS constant moved to MSH-272 (One Kept Result Count). Accepted consequence noted: the 15-second validation budget can refuse reopening a very long game until MSH-250/251/227.
+
+Final checks on 87b65b8 (main unchanged since branch point 24de951): fmt, clippy (workspace; desktop-session all features), cargo test --workspace 1157 passed 0 failed 10 ignored, desktop-session --all-features 197 passed, npm run check, vitest 586 passed (Node 24.22.3), python test_gui_smoke+test_macos_verification 141 passed, docs/m4/chu validator and tests passed. CI: push routine 45711436068 success; process suite on ubuntu-24.04, macos-15, windows-2022 45711460653 success; persistence suite on all three 45711466343 success; desktop host ubuntu-24.04 45711471753 success (needed the desktop/src-tauri Cargo.lock sha2 entry that main had missed since f05da67; committed separately). Final production lines: crates/*/src without test/conformance files 68538 -> 68247 (-291); desktop/src + src-tauri without tests/fixtures 3930 -> 3928. No strength match, cloud job or spending.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Removed every limit on game size and on engine requests and replies, as John decided on 2026-11-25. Removed: the per-game record byte caps (Tori/Chu 512 KiB; Shogi/Xiangqi/Tenjiku 1 MiB), the 1 MiB shared envelope cap, the Xiangqi 4 KiB record headroom check at each command, the engine 1 MiB request and 2 MiB response caps with FailureKind::OversizedResponse and every reader using them, the 16 MiB desktop document cap with the encoded_document_bytes resource category, the 16 MiB+4 KiB shared command cap, the console 4096-byte line cap (shell, UCI, USI, Xiangqi UCI) and the console record file/save caps, and the runner experiment checks derived from these caps (including max_steps <= 1024). Tests, the Chu fixture CHU-RECORD-OVERSIZED_RECORD (corpus now 249 rows, hashes updated) and the Tori oversized-Open frontend fixture that only enforced removed limits were deleted; no proof-of-removal test was added. Docs that named the limits were updated. Kept: per-command, root, position-string, diagnostic, counter and time limits, which do not depend on game length; the remaining Capacity errors now mean counters or root bytes only (category renamed native_root_bytes). Game rules and their expected results are unchanged. Review by a fresh subagent found no bugs; its cleanups were applied. All local checks and CI (process and persistence on Linux, macOS and Windows; desktop host on Linux) passed. Production lines 68538 -> 68247. Follow-ups: MSH-273 (Runner Game Length Limits, needs-john) and MSH-272 (One Kept Result Count). Risk accepted by John: a very large or damaged input can use much memory, and the 15-second validation budget can refuse reopening a very long game until MSH-250, MSH-251 and MSH-227 are done.
+<!-- SECTION:FINAL_SUMMARY:END -->

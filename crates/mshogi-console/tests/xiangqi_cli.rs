@@ -315,7 +315,6 @@ fn strict_outer_nested_identity_and_bounded_file_failures_preserve_live_session(
             .replacen("\"envelope_version\":2", "\"envelope_version\":999", 1)
             .into_bytes(),
         chess.into_bytes(),
-        vec![b' '; mshogi_core::native::MAX_RECORD_ENVELOPE_BYTES + 1],
         vec![255],
     ] {
         fs::write(&path, &bytes).unwrap();
@@ -366,18 +365,4 @@ fn fast_no_win_assessment_is_read_only() {
             ]
         );
     }
-}
-
-#[test]
-fn oversized_input_is_drained_and_later_native_commands_still_work() {
-    let out = shell(&format!(
-        "record print\n{}\nmove a0a1\nrecord print\n",
-        "x".repeat(4097)
-    ));
-    assert!(!out.status.success());
-    assert!(String::from_utf8_lossy(&out.stderr).contains("line exceeds"));
-    let g = games(&out);
-    assert_eq!(g.len(), 2);
-    assert_eq!(g[0].events().len(), 0);
-    assert_eq!(g[1].events().len(), 1);
 }

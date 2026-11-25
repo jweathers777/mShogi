@@ -98,15 +98,13 @@ real opponents and protocol semantics differ.
 
 Reports retain the whole scheduled sample, including games never attempted after
 a budget stop, complete final native histories and actual work observations.
-Native re-admission checks both replay and proposed effects. A candidate that
-would exceed the existing request/history representation is refused atomically,
-with the prior state and actual observation retained. Imported observations use
+Native re-admission checks both replay and proposed effects. Imported observations use
 the existing duplicate-aware bounded decoder. Profiles/history are never reduced
 to board-only identities.
 
-Experiment bounds: config 1 MiB, report/data 32 MiB, at most 16 roots, 4 participants,
-16 cycles, 128 games, 512 commands/game and 4096 scheduled requests. Existing native
-search limits, 1 MiB request/2 MiB response and native record budgets still apply.
+Experiment bounds: config 1 MiB, report/data 128 MiB, at most 16 roots, 4 participants,
+16 cycles, 128 games and 4096 scheduled requests. Existing native search limits
+still apply; native records, engine requests and replies have no byte limit.
 Before search, the harness reserves bounded transition evidence capacity. Artifact
 exhaustion ends remaining work honestly. Watchdog and cleanup use EngineBridge;
 no alternate supervisor is introduced. Cancellation is polled before/while child

@@ -312,7 +312,7 @@ fn native_owners_admit_claims_declarations_and_resignation_without_shared_turn_r
 }
 
 #[test]
-fn record_byte_and_diagnostic_bounds_are_explicit() {
+fn long_record_roundtrips_and_diagnostic_bound_is_explicit() {
     let mut record = c::AdjudicatedGame::new(c::ClaimPolicy::ExplicitOnly).record();
     for _ in 0..4100 {
         record.push_event(c::RecordEvent {
@@ -326,12 +326,7 @@ fn record_byte_and_diagnostic_bounds_are_explicit() {
     }
     let native = CanonicalRecord::chess(record.clone());
     let text = native.to_json().unwrap();
-    assert!(text.len() < MAX_RECORD_ENVELOPE_BYTES);
     assert_eq!(CanonicalRecord::from_json(&text).unwrap(), native);
-    assert_eq!(
-        CanonicalRecord::from_json(&" ".repeat(MAX_RECORD_ENVELOPE_BYTES + 1)),
-        Err(EnvelopeError::Capacity)
-    );
     let mut wire: Value = serde_json::from_str(&text).unwrap();
     wire.as_object_mut()
         .unwrap()

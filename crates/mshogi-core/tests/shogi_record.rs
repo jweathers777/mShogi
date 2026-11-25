@@ -3,7 +3,7 @@
 
 use mshogi_core::shogi::{
     Conclusion, CounterSource, Game, GameCommand, GameRecord, GameRequest, GameRoot, INITIAL_SFEN,
-    MAX_RECORD_BYTES, Position, RecordError, RootCategory, Side, WinReason,
+    Position, RecordError, RootCategory, Side, WinReason,
 };
 use serde_json::{Value, json};
 
@@ -390,16 +390,8 @@ fn strict_decode_rejects_duplicate_unknown_missing_and_unsupported_fields() {
 }
 
 #[test]
-fn record_byte_capacity_is_bounded_without_truncation() {
-    assert_eq!(
-        GameRecord::from_json(&" ".repeat(MAX_RECORD_BYTES + 1)),
-        Err(RecordError::Capacity)
-    );
-}
-
-#[test]
-fn maximum_retained_board_ledger_and_terminal_command_always_fit() {
-    // Capacity exercise, not a playing-strength or governing-outcome oracle.
+fn maximum_board_ledger_and_terminal_command_roundtrip() {
+    // Move-count rule exercise, not a playing-strength or governing-outcome oracle.
     // Pick deterministically among legal actions, avoiding early conclusions.
     let mut game = Game::new();
     let mut seed = 0x67_c5a3_6d91_u64;
@@ -427,7 +419,6 @@ fn maximum_retained_board_ledger_and_terminal_command_always_fit() {
     }
     assert_eq!(game.events().len(), 320);
     let encoded = GameRecord::from_game(&game).to_json().unwrap();
-    assert!(encoded.len() < MAX_RECORD_BYTES);
     assert_eq!(
         GameRecord::from_json(&encoded).unwrap().to_game().unwrap(),
         game
@@ -440,7 +431,6 @@ fn maximum_retained_board_ledger_and_terminal_command_always_fit() {
     );
     assert_eq!(before_last.events().len(), 320);
     let encoded = GameRecord::from_game(&before_last).to_json().unwrap();
-    assert!(encoded.len() < MAX_RECORD_BYTES);
     assert_eq!(
         GameRecord::from_json(&encoded).unwrap().to_game().unwrap(),
         before_last

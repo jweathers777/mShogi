@@ -141,8 +141,8 @@ fn prohibited_capture(position: &Position, capture: Capture) -> Result<bool, Con
         if reciprocal_capture(position, capture)? {
             return Ok(false);
         }
-        // Chapter5 protected pinned-Cannon/Rook examples (diagram54 and
-        // section22) retain the real-root allowance even on a constrained target.
+        // Chapter 5 protected pinned-Cannon/Rook examples (diagram 54 and
+        // section 22) retain the real-root allowance even on a constrained target.
         return Ok(!real_root(position, capture)?);
     }
     //20.6 explicitly forbids Horse/Cannon pursuit of even a rooted Rook.
@@ -224,7 +224,7 @@ fn chasing(steps: &[Step], side: Side, close_cycle: bool) -> Result<bool, Conduc
         .filter(|(_, step)| step.actor == side)
     {
         // A check/noncheck mixture is allowed by20.2; a simultaneous mating
-        // threat does not neutralize an established chase (diagram109).
+        // threat does not neutralize an established chase (diagram 109).
         if step.after.is_in_check(side.opponent()) {
             return Ok(false);
         }
@@ -680,9 +680,9 @@ mod tests {
         assert!(!continues_chase_prefix(&checking_break, Side::Red).unwrap());
         let idle_break = witness(fen, &format!("{tt} e9d9"));
         assert!(!continues_chase_prefix(&idle_break, Side::Red).unwrap());
-        // T+T+Q: Red still pursues Cannon a7 at ply9, but Black's King reply
+        // T+T+Q: Red still pursues Cannon a7 at ply 9, but Black's King reply
         // f8f7 leaves that exact capture available. This is not an escape or
-        // direct chase resolution under19.10, so continuity ceases at ply10.
+        // direct chase resolution under 19.10, so continuity ceases at ply 10.
         let unanswered = witness(fen, &format!("{tt} e9a9"));
         assert!(continues_chase_prefix(&unanswered, Side::Red).unwrap());
         let ignored = witness(fen, &format!("{tt} e9a9 f8f7"));
@@ -691,7 +691,7 @@ mod tests {
 
     #[test]
     fn pending_general_attack_cannot_invent_a_combination_exemption() {
-        // Independently reviewed19.10/20.9 boundary: the Red General's direct
+        // Independently reviewed 19.10/20.9 boundary: the Red General's direct
         // attack on d0 remains available after Black's reply, so the General is
         // not part of the resolved pursuit. Only Red Cannon d4 persistently
         // chases the Horse through alternating General/Cannon screens.

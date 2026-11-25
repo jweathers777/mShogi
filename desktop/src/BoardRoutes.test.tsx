@@ -32,7 +32,7 @@ function board() {
     glyphs: { strider: "S", stone: "●" }, onPlay };
   return { ...render(<Board {...props} />), props, onPlay };
 }
-it("uses native geometry for all256 squares, full two-digit ranks and orientation", () => {
+it("uses native geometry for all 256 squares, full two-digit ranks and orientation", () => {
   const { props, rerender } = board();
   expect(screen.getAllByRole("button")).toHaveLength(256);
   expect(square("p16")).toBeTruthy();

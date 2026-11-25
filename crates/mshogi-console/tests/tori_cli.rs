@@ -262,8 +262,8 @@ fn strict_wrong_game_profile_derived_duplicate_and_large_loads_preserve_current_
 
 #[test]
 fn bounded_local_diagnostics_use_independent_counts_and_never_change_history() {
-    // Native independent perft fixture: distant corner Phoenixes have3 choices
-    // each; depth2=9, total visits13. Explicit12 visits must refuse, not count9.
+    // Native independent perft fixture: distant corner Phoenixes have 3 choices
+    // each; depth 2=9, total visits 13. Explicit 12 visits must refuse, not count 9.
     let game = root(
         &[
             ("1a", t::Side::Sente, t::Face::Phoenix),

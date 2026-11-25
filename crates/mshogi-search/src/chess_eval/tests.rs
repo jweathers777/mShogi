@@ -286,7 +286,7 @@ fn evaluation_is_symmetric_under_color_reflection() {
 #[test]
 fn bounded_weights_have_independent_integer_arithmetic() {
     use weights::{INITIAL, Prepared};
-    // Bare kings: d4 centrality6, h8 centrality0. Phase0, full scale.
+    // Bare kings: d4 centrality 6, h8 centrality 0. Phase 0, full scale.
     let p = Prepared::new(&board("7k/8/8/8/3K4/8/8/8 w - - 0 1"));
     let mut w = INITIAL;
     w.0[15] = 150;

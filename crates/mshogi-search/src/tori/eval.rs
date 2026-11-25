@@ -247,7 +247,7 @@ pub const LOWER: [i32; COUNT] = bounds(false);
 /// Inclusive upper bounds.
 pub const UPPER: [i32; COUNT] = bounds(true);
 /// Compiled weights used by the search: the MSH-206 (Tori Evaluation Round)
-/// fit2, static and per-node terms.
+/// fit 2, static and per-node terms.
 pub const DEFAULT: [i32; COUNT] = [
     636, 1136, 488, 204, 404, 372, 100, 220, 934, 634, 358, 486, 518, 118, -150, 0, 104, -120, -24,
     150, -150, -96, -40, 32, 48, 150, 150, 150, -128, -128, 24, 150, 0, -48, -16, -134, 0, 48, 120,

@@ -55,7 +55,7 @@ impl Position {
     pub fn perft(&self, depth: u8) -> Result<u64, PerftError> {
         self.perft_position(depth)?.count_leaves(depth)
     }
-    /// Root-action counts for depths1..=MAX_PERFT_DEPTH. Depth0 has no root edges.
+    /// Root-action counts for depths 1..=MAX_PERFT_DEPTH. Depth 0 has no root edges.
     pub fn divide(&self, depth: u8) -> Result<Vec<(super::Action, u64)>, PerftError> {
         let mut position = self.perft_position(depth)?;
         if depth == 0 {

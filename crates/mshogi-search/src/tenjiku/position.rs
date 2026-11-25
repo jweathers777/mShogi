@@ -1090,7 +1090,7 @@ impl Board {
         let mut seen: Vec<(u64, [u32; N], usize)> = Vec::new();
         let mut scratch = *self;
         for from in attackers {
-            // At most256distinct direct destinations plus64two-step and512
+            // At most 256 distinct direct destinations plus 64 two-step and 512
             // three-step routes. Reserve before generation, then refund unused.
             const MAX_ROUTES: usize = 832;
             if work.routes < MAX_ROUTES {

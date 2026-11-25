@@ -119,9 +119,9 @@ def validate_request(request):
     moves = request.get('moves', [])
     depth = request.get('perft_depth', 0)
     if not isinstance(moves, list) or len(moves) > 256 or any(not isinstance(m, str) or not MOVE.fullmatch(m) or m[:2] == m[2:] for m in moves):
-        raise ValueError('reference-domain: at most256 well-formed complete actions required')
+        raise ValueError('reference-domain: at most 256 well-formed complete actions required')
     if type(depth) is not int or not 0 <= depth <= 3:
-        raise ValueError('reference-domain: perft depth must be integer0..3')
+        raise ValueError('reference-domain: perft depth must be integer 0..3')
     return depth, request['root_fen'], moves
 
 

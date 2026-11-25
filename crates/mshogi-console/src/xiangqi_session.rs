@@ -308,7 +308,7 @@ impl Session {
                 };
                 let depth = number(value)
                     .filter(|d| *d <= MAX_PERFT_DEPTH as usize)
-                    .ok_or("xiangqi depth must be0..3 (divide1..3)")?
+                    .ok_or("xiangqi depth must be 0..3 (divide 1..3)")?
                     as u8;
                 if command == "perft" {
                     writeln!(

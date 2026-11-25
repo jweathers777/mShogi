@@ -562,7 +562,7 @@ fn free_eagle_diagonal_turn_threat_and_exchange_survive_straight_ray_blocker() {
         let p = TenjikuPosition::from_position(&pos);
         assert!(
             p.in_check(),
-            "orthogonal distance2 royal reachable around blocker"
+            "orthogonal distance 2 royal reachable around blocker"
         );
         let attack = diagram(
             profile,

@@ -401,7 +401,7 @@ fn claim_catalog_prerequisite_shortcut_matches_individually_validated_requests()
             "7k/6Q1/5K2/8/8/8/8/8 b - -",
         ] {
             // A structurally admitted EP target requires the preceding pawn
-            // move's zero counter; it cannot coexist with clock99.
+            // move's zero counter; it cannot coexist with clock 99.
             if board.ends_with("d6") && clock != 0 {
                 continue;
             }
@@ -414,7 +414,7 @@ fn claim_catalog_prerequisite_shortcut_matches_individually_validated_requests()
             );
         }
     }
-    // The seventh ply permits an intended third occurrence at halfmove7.
+    // The seventh ply permits an intended third occurrence at halfmove 7.
     // Imports with the same complete FEN have no known earlier occurrences.
     let mut g = Game::new(ClaimPolicy::ExplicitOnly);
     check(&g);

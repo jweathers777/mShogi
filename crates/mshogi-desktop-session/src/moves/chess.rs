@@ -1,4 +1,4 @@
-//! PGN specification8.2.3 English SAN, from native legal alternatives/state.
+//! PGN specification 8.2.3 English SAN, from native legal alternatives/state.
 use mshogi_core::chess::*;
 pub(super) fn notation(position: &Position, action: Action) -> String {
     let piece = position

@@ -109,7 +109,7 @@ fn checked_actual_player_does_not_prevent_read_only_opponent_inspection() {
 #[test]
 fn committed_history_preserves_prefix_context_without_future_warnings_or_commands() {
     // Frozen F022-CC: the third root occurrence after eight board actions
-    // emits Red's perpetual-check warning. The warning is part of action8,
+    // emits Red's perpetual-check warning. The warning is part of action 8,
     // never an independently resumable partially committed action.
     let root = PositionRoot::from_fen("4R4/5k3/9/9/9/9/9/9/9/3K5 w - - 47 23").unwrap();
     let mut game = Game::from_root(root.clone(), ClaimPolicy::Explicit).unwrap();

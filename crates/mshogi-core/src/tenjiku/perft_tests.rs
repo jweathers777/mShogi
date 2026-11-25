@@ -29,7 +29,7 @@ fn diagram(profile: Profile) -> Game {
 fn independent_full_game_corner_king_and_remote_pawn_counts_and_divide() {
     // Each owner has three corner King moves and one remote Pawn move.
     // Every first choice leaves exactly those four opponent choices; no effect,
-    // promotion, repeated boundary or bare-royal result intervenes at depth2.
+    // promotion, repeated boundary or bare-royal result intervenes at depth 2.
     for profile in Profile::ALL {
         let game = diagram(profile);
         let before = GameRecord::from_game(&game).unwrap();

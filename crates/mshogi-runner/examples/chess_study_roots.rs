@@ -182,7 +182,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let excluded_sha256 = if args[4] != "-" {
         let raw = std::fs::read(&args[4])?;
         if raw.len() > 1_048_576 {
-            return Err("exclusioncatalogexceeds1MiB".into());
+            return Err("exclusion catalog exceeds 1MiB".into());
         }
         let value: serde_json::Value = serde_json::from_slice(&raw)?;
         let samples = value["samples"]

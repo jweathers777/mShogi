@@ -276,7 +276,7 @@ fn aborted_startup_retires_and_reaps_already_spawned_child() {
 }
 #[test]
 fn repeated_immediate_and_yielded_partial_exits_remain_precise() {
-    // Supplemental stress, not the controlled ordering proof. Both modes exit7;
+    // Supplemental stress, not the controlled ordering proof. Both modes exit 7;
     // the latter also yields and closes a partial line after early stderr.
     for trial in 0..20 {
         let mut c = config("mate");

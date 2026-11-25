@@ -71,7 +71,7 @@ def build(source, output, compiler):
         'binary_path': str(binary), 'binary_sha256': sha(binary),
         'options': {'assertions': True, 'NNUE': 'no network acquired, loaded or evaluated', 'search': False, 'threads': 1},
         'operation': 'Position::set, MoveList<ALL> (EVASIONS under check), do_move/undo_move; perft using same complete list',
-        'dialect': 'six-field FEN RACPNBK/racpnbk, rank9 to rank0; w=Red, b=Black; a0-i9 complete board moves; literal - - fields',
+        'dialect': 'six-field FEN RACPNBK/racpnbk, rank 9 to rank 0; w=Red, b=Black; a0-i9 complete board moves; literal - - fields',
         'exclusions': ['rule_judge', 'repetition/chase', 'natural-count adjudication', 'game outcomes',
                        'NNUE/search/evaluation/strength', 'royal capture/missing kings', 'unreachable-square structural diagrams'],
         'interpretation': 'board comparator only, not rules authority; native fixture expectations must remain independently established',

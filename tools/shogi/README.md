@@ -79,7 +79,7 @@ MSH-64's admission report contains zero native comparisons.
 ## Admitted reference input domain
 
 Before C++ Board construction, roots must be canonical bounded ASCII SFEN
-(at most512bytes), have exactly one nonadjacent king per owner, standard
+(at most 512 bytes), have exactly one nonadjacent king per owner, standard
 physical piece caps, no nifu or dead unpromoted board piece, and a positive
 next-ply fitting cshogi's signed32-bit counter including the requested path.
 These restrictions define this reference process, not a change to native

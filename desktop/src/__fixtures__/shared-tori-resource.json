@@ -148,7 +148,7 @@
   "io": {
     "id": 1,
     "phase": "failed",
-    "message": "Application capacity: encoded desktop archive exceeds16MiB.",
+    "message": "Application capacity: encoded desktop archive exceeds 16MiB.",
     "resource": {
       "fact": {
         "category": "encoded_document_bytes",
@@ -159,7 +159,7 @@
         "scope": "application",
         "unit": "bytes"
       },
-      "diagnostic": "Application capacity: encoded desktop archive exceeds16MiB."
+      "diagnostic": "Application capacity: encoded desktop archive exceeds 16MiB."
     }
   },
   "capacity": {

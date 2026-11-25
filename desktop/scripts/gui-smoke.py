@@ -251,7 +251,7 @@ def reopened_tenjiku_document_stopped(before, after, ui):
 def warning_prefix_transition(earlier, warned):
     """An intra-command prefix is immutable history, not a forged canonical game.
 
-    Native event8 precedes its derived warning9 within one board command.
+    Native event 8 precedes its derived warning 9 within one board command.
     Both have the same diagram and full live canonical context, but distinct
     native selected event prefixes, warning state and selection authority.
     """
@@ -1081,7 +1081,7 @@ class Journey:
         assert geometry["fullyVisible"] and not geometry["clippedPositions"] and geometry["boardVisible"], geometry
         assert geometry["orientationLabel"].endswith(f", {orientation} at bottom"), geometry
         assert geometry["pageWidth"] <= geometry["viewport"]["width"] + 1, geometry
-        self.record("Observe all256 synthetic positions fully visible without scrolling or zooming", geometry)
+        self.record("Observe all 256 synthetic positions fully visible without scrolling or zooming", geometry)
         return geometry
 
     def synthetic_record(self, actions):
@@ -2011,7 +2011,7 @@ class Journey:
         self.record("Actual bounded Xiangqi analysis completion/cancellation observation", {
             "cancel_dispatched": cancel_dispatched, "visible_status": w.text('.shogi-analysis-state'),
             "native": self.xiangqi_diagnostics(),
-            "qualification": "Completion may beat cancellation at the native depth3/512-visit limit; no cancellation is inferred."})
+            "qualification": "Completion may beat cancellation at the native depth 3/512-visit limit; no cancellation is inferred."})
         self.xiangqi_analysis()
         self.xiangqi_complete_analysis(2)
         self.xiangqi_events(2, selected=2)
@@ -2373,7 +2373,7 @@ class Journey:
             self.shogi_analysis_tab()
             assert "Recorded searches (255)" in w.text(".recorded-searches")
             self.shogi_analysis(nodes=0)
-            wait(lambda: "Recorded searches (256)" in w.text(".recorded-searches"), "shogi observation256 accepted")
+            wait(lambda: "Recorded searches (256)" in w.text(".recorded-searches"), "shogi observation 256 accepted")
             previous = self.native_diagnostics()["observations"][-1]["observation"]["context"]["request_id"]
             self.shogi_analysis(nodes=0)
             wait(lambda: self.native_diagnostics()["observations"][-1]["observation"]["context"]["request_id"] > previous, "newest Shogi result replaces oldest")
@@ -3336,7 +3336,7 @@ class Journey:
             w.keyboard_activate('.moves-table [data-event="8"]')
             wait(lambda: w.read("document.querySelector('.game-shell').dataset.currentEvent") == '8', 'select exact prefix before warning')
             earlier = self.xiangqi_diagnostics()
-            assert 'Repetition warning' not in w.text('.shell-notices'), 'future warning must not appear at immutable prefix8'
+            assert 'Repetition warning' not in w.text('.shell-notices'), 'future warning must not appear at immutable prefix 8'
             if not w.read("document.querySelector('.moves-events').open"):
                 w.click('.moves-events summary')
             w.keyboard_activate('.moves-events [data-event="9"]')
@@ -3386,7 +3386,7 @@ class Journey:
         elif name == 'xiangqi-capacity':
             assert len(before['observations']) == 255
             self.xiangqi_analysis(nodes=1)
-            wait(lambda: 'Recorded searches (256)' in w.text('.recorded-searches'), 'combined observation256 accepted')
+            wait(lambda: 'Recorded searches (256)' in w.text('.recorded-searches'), 'combined observation 256 accepted')
             previous = self.native_diagnostics()['observations'][-1]['observation']['context']['request_id']
             self.xiangqi_analysis(nodes=1)
             wait(lambda: self.native_diagnostics()['observations'][-1]['observation']['context']['request_id'] > previous, 'newest Xiangqi result replaces oldest')

@@ -76,7 +76,7 @@ impl Side {
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub struct Square(u8);
 impl Square {
-    /// Numeric file/rank, both1..=7; rank1 is a.
+    /// Numeric file/rank, both1..=7; rank 1 is a.
     pub const fn new(file: u8, rank: u8) -> Option<Self> {
         if file >= 1 && file <= 7 && rank >= 1 && rank <= 7 {
             Some(Self((rank - 1) * 7 + 7 - file))

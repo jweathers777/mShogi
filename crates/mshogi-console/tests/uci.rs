@@ -160,7 +160,7 @@ fn deterministic_depth_and_node_limits_return_legal_bestmoves() {
     legal(START, &best);
     assert!(
         info[0].contains("depth 0 nodes 20"),
-        "root plus20 legal leaves require at least21 visits"
+        "root plus 20 legal leaves require at least 21 visits"
     );
     assert!(!info[0].contains("score "));
     engine.send("go depth 1 nodes 1000\n");

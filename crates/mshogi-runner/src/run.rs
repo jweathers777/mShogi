@@ -918,7 +918,7 @@ mod tests {
     #[test]
     #[ignore = "subprocess fixture, exercised by controlled_early_write_failure"]
     fn controlled_nonzero_exit_child() {
-        eprintln!("controlled runner child exits with code7");
+        eprintln!("controlled runner child exits with code 7");
         std::process::exit(7);
     }
     #[test]
@@ -1038,7 +1038,7 @@ mod tests {
         let c = config();
         for nonzero in [true, false] {
             let mut child = exited_child(nonzero);
-            // Unavailable through the10ms immediate settlement and failed(),
+            // Unavailable through the 10ms immediate settlement and failed(),
             // then definitive during the EXISTING cleanup grace.
             child.defer_exit_observations(12);
             let mut run = controlled_run(&c, child);
@@ -1128,7 +1128,7 @@ mod tests {
         child.single_exit_sample_control();
         let mut run = controlled_run(&c, child);
         // Run on every native CI platform: the original one-sample ordering
-        // freezes the wrong category despite this child's actual exit7.
+        // freezes the wrong category despite this child's actual exit 7.
         let failure = run.send(0, "uci", "handshake").unwrap_err();
         let (_, failure, _) = run.failed(failure);
         let mut failure = failure.unwrap();

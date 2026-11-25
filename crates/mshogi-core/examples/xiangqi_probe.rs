@@ -33,12 +33,12 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     let mut input = Vec::new();
     io::stdin().take(4097).read_to_end(&mut input)?;
     if input.len() > 4096 {
-        return Err("request byte limit4096".into());
+        return Err("request byte limit 4096".into());
     }
     // Direct typed parsing retains duplicate fields for rejection.
     let request: Request = serde_json::from_slice(&input)?;
     if request.moves.len() > 256 || request.perft_depth > 3 {
-        return Err("replay/depth limit256/3".into());
+        return Err("replay/depth limit 256/3".into());
     }
     let mut position = Position::from_fen(&request.root_fen)?;
     position.validate_local()?;
@@ -96,7 +96,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     };
     let output = serde_json::to_string(&response)?;
     if output.len() > 65536 {
-        return Err("response limit65536".into());
+        return Err("response limit 65536".into());
     }
     println!("{output}");
     Ok(())

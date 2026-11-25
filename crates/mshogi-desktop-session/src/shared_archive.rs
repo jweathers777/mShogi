@@ -225,7 +225,7 @@ fn read(
                     ResourceScope::Application,
                     ResourceUnit::Bytes,
                 ),
-                "Application capacity: encoded desktop archive exceeds16MiB.",
+                "Application capacity: encoded desktop archive exceeds 16MiB.",
             ));
         }
         bytes.extend_from_slice(&buffer[..n]);

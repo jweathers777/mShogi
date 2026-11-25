@@ -5,7 +5,7 @@ use std::{collections::BTreeSet, error::Error, fmt};
 /// The selected complete rules package; immutable for the lifetime of a game.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Ord, PartialOrd, Serialize, Deserialize)]
 pub enum Profile {
-    /// Adams's main-book Modern game, second edition1999.
+    /// Adams's main-book Modern game, second edition 1999.
     #[serde(rename = "mshogi.tenjiku.adams1999-modern.v1")]
     AdamsModern,
     /// Muller's movement/effects with the ratified named supplements.
@@ -34,9 +34,9 @@ impl Profile {
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Ord, PartialOrd, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Side {
-    /// First player, moving toward rank1.
+    /// First player, moving toward rank 1.
     Sente,
-    /// Second player, moving toward rank16.
+    /// Second player, moving toward rank 16.
     Gote,
 }
 impl Side {
@@ -124,7 +124,7 @@ impl Serialize for Square {
 impl<'de> Deserialize<'de> for Square {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
         let [f, r] = <[u8; 2]>::deserialize(d)?;
-        Self::new(f, r).ok_or_else(|| serde::de::Error::custom("Tenjiku square outside1..16"))
+        Self::new(f, r).ok_or_else(|| serde::de::Error::custom("Tenjiku square outside 1..16"))
     }
 }
 impl fmt::Display for Square {

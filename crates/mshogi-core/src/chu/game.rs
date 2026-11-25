@@ -198,7 +198,7 @@ pub struct RuntimeToken {
     instance: u64,
     revision: u64,
 }
-/// Complete native context plus runtime authority. Outer purpose/process/limits belong78/43.
+/// Complete native context plus runtime authority. Outer purpose, process and limits belong to the shared contracts of MSH-78 and the Chu integration of MSH-43.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct GameContext {
     root: NativeRoot,
@@ -267,7 +267,7 @@ impl std::fmt::Display for GameError {
     }
 }
 impl std::error::Error for GameError {}
-/// Exact native resource usage; outer desktop limits remain78.
+/// Exact native resource usage; outer desktop limits remain with MSH-78.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct CapacityUsage {
     /// Full encoded native record size.

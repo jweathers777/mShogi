@@ -344,11 +344,6 @@ impl Adapter {
                     "native_terminal: UCI0-9 has no exact native conclusion representation; host adjudicates before go",
                 ));
             }
-            Decision::ExactNoWin => {
-                return Err(io::Error::other(
-                    "unsupported exact result in ordinary UCI search",
-                ));
-            }
         };
         writeln!(out, "bestmove {text}")?;
         out.flush()

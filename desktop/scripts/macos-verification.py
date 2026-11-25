@@ -25,7 +25,7 @@ concluded incomplete capacity shogi-standard shogi-gote shogi-failure shogi-capa
 shogi-control-capacity shogi-hands shogi-promotion shogi-forced shogi-declaration
 shogi-concluded xiangqi-standard xiangqi-failure xiangqi-capacity
 xiangqi-control-capacity xiangqi-offer xiangqi-agreed xiangqi-resigned xiangqi-warning
-xiangqi-fourth xiangqi-count xiangqi-fast-proof xiangqi-exact-evidence""".split())
+xiangqi-fourth xiangqi-count xiangqi-fast-proof""".split())
 # Whole-profile QA scenarios share the existing immutable QA launch identity.
 FIXTURES |= frozenset(f"tenjiku-{profile}-{scenario}"
     for profile in ("adams", "muller")

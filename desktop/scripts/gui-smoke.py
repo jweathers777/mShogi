@@ -166,7 +166,7 @@ def selected_gui_phases(choice):
     chess = ["standard", "promotion", "claim", "current-claim", "concluded", "capacity", "synthetic", "pending-chess", "pending-shogi", "pending-xiangqi", "pending-tori", "tori-recovery", "pending-chu", "chu-recovery"]
     shogi = ["shogi-hands", "shogi-promotion", "shogi-forced", "shogi-declaration",
              "shogi-concluded", "shogi-capacity"]
-    xiangqi = ["xiangqi-warning", "xiangqi-fourth", "xiangqi-count", "xiangqi-offer", "xiangqi-agreed", "xiangqi-fast-proof", "xiangqi-resigned", "xiangqi-capacity", "xiangqi-failure", "xiangqi-exact-evidence"]
+    xiangqi = ["xiangqi-warning", "xiangqi-fourth", "xiangqi-count", "xiangqi-offer", "xiangqi-agreed", "xiangqi-fast-proof", "xiangqi-resigned", "xiangqi-capacity", "xiangqi-failure"]
     normal = [None, "normal-shogi", "normal-shogi-reopened", "normal-xiangqi", "normal-tori", "normal-tori-native", "normal-chu", "normal-chu-native"]
     tenjiku_normal = [f'normal-tenjiku-{profile}{suffix}' for profile in ('adams','muller') for suffix in ('','-native')]
     tenjiku_verification = [f'{kind}-tenjiku-{profile}' for profile in ('adams','muller') for kind in ('pending','recovery')]
@@ -3393,17 +3393,6 @@ class Journey:
             assert len(self.native_diagnostics()['observations']) == 256
             assert not w.has('.capacity-notice')
             assert not w.has('.outcome-card')
-        elif name == 'xiangqi-exact-evidence':
-            reports = before['xiangqi']['exact_observations']
-            kinds = {item['report']['verdict']['kind'] for item in reports}
-            assert {'neither_can_win', 'natural_win', 'unknown', 'failure'} <= kinds, kinds
-            assert any(item['report']['verdict'].get('reason') == 'cancelled' for item in reports), reports
-            w.click('.position-assessment > summary')
-            w.click('.position-assessment details > summary')
-            for expected in ('Exact proof: neither side', 'possible natural board win', 'not a forced win', 'Unknown · exploration incomplete', 'Cancelled · Unknown', 'Analysis failed. No conclusion was established.', 'Historical results for their recorded positions'):
-                assert expected in w.text('.position-assessment'), expected
-            assert before['xiangqi']['conclusion'] == self.xiangqi_diagnostics()['xiangqi']['conclusion'], 'saved exact observations cannot alter the native game outcome'
-            self.capture('saved-native-exact-proof-witness-unknown')
         else:
             raise AssertionError(name)
         after = self.xiangqi_diagnostics()
@@ -3414,14 +3403,13 @@ class Journey:
         self.file('open', path); self.wait_opened(path)
         reopened = self.xiangqi_diagnostics()
         assert reopened['context'] == after['context']
-        assert not reopened['observations'] and not reopened['xiangqi']['exact_observations']
+        assert not reopened['observations']
         assert reopened['token']['document'] > old_token['document']
         assert w.read("document.querySelector('.game-shell').dataset.paused") == 'true'
         assert not w.has('.shogi-analysis[data-phase="analyzing"]')
         self.record('Actual native Xiangqi capability, complete Save/Load and fresh stopped runtime', {
             'name': name, 'before': before, 'after': after, 'reopened': reopened,
-            'archive_sha256': digest(path), 'archive_bytes': path.stat().st_size,
-            'exact_observations_after_open': len(reopened['xiangqi']['exact_observations'])})
+            'archive_sha256': digest(path), 'archive_bytes': path.stat().st_size})
         self.quit()
 
     def fixture(self, name):

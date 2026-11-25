@@ -33,9 +33,7 @@ use mshogi_engine::{
     ExecutionContext, ExecutionObservation, ExecutionPurpose, ExecutionRequest, ExecutionResponse,
     ExecutionResult, ExecutionTarget,
 };
-pub use xiangqi::{
-    IntersectionTopology, Palace, XiangqiExactEvidence, XiangqiPresentation, XiangqiSettings,
-};
+pub use xiangqi::{IntersectionTopology, Palace, XiangqiPresentation, XiangqiSettings};
 
 /// Exact UI precondition; neither board ply nor semantic undo restores this token.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]

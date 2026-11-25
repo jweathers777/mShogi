@@ -1,5 +1,5 @@
 //! MSH-84: a consumer uses the public native contract as one system.
-//! Expected rules reuse independently reviewed MSH-91/93/94/105 cases, not engine outcomes.
+//! Expected rules reuse independently reviewed MSH-91/93/94 cases, not engine outcomes.
 mod support;
 use mshogi_core::{native::*, xiangqi as x};
 use mshogi_engine::*;
@@ -67,15 +67,6 @@ fn reopen(g: &x::Game) -> x::Game {
     assert_eq!(reopened.no_win_assessment(), g.no_win_assessment());
     assert_ne!(reopened.context(), g.context());
     reopened
-}
-fn limits() -> x::ExactLimits {
-    x::ExactLimits {
-        states: 1000,
-        transitions: 10_000,
-        millis: 60_000,
-        traversal: x::ExactTraversal::BreadthFirst,
-        ..x::ExactLimits::default()
-    }
 }
 #[test]
 fn admission_complete_capture_effects_local_and_game_undo_cross_canonical_boundary() {
@@ -192,27 +183,12 @@ fn warnings_same_board_different_history_undo_and_fourth_occurrence_are_native()
     assert_eq!(fresh.position(), g.position());
     assert!(fresh.warnings().is_empty());
     assert_ne!(record(&fresh), saved);
-    let mut analysis = x::ExactAnalysis::new().unwrap();
-    let pending = analysis
-        .begin(
-            &g,
-            x::ExactLimits {
-                states: 0,
-                ..limits()
-            },
-        )
-        .unwrap()
-        .run(|| false);
     g.undo(last.undo).unwrap();
     assert_eq!(record(&g), before_warning);
     assert!(g.warnings().is_empty());
     play(&mut g, C[3]);
     assert_eq!(record(&g), saved);
     assert_ne!(g.context(), old_context);
-    assert_eq!(
-        analysis.accept(&g, &pending),
-        Err(x::GameError::StaleContext)
-    );
     for a in C {
         play(&mut g, a);
     }
@@ -354,7 +330,7 @@ fn check_terminal_reasons_agreement_resignation_and_command_admission_remain_dis
     reopen(&g);
 }
 #[test]
-fn fast_exact_provenance_witness_unknown_cancel_failure_and_retirement_cross_native_record() {
+fn fast_proof_and_unknown_cross_native_record() {
     let fast = game("5k3/9/9/9/9/9/9/9/9/3K5 w - - 0 1");
     assert_eq!(
         fast.no_win_assessment(),
@@ -368,113 +344,14 @@ fn fast_exact_provenance_witness_unknown_cancel_failure_and_retirement_cross_nat
     );
     reopen(&fast);
     let negative = game("5k3/9/9/9/9/9/9/9/4A4/3K5 w - - 0 1");
-    assert_eq!(
-        negative.no_win_assessment(),
-        x::NoWinAssessment::UnknownExactUnavailable
-    );
+    assert_eq!(negative.no_win_assessment(), x::NoWinAssessment::Unknown);
     assert!(matches!(
         negative.position().local_status().unwrap(),
         x::LocalStatus::Ongoing { .. }
     ));
     // These are different questions: local choice availability is not resolved WXF adjudication.
-    let original = record(&negative);
-    let mut analysis = x::ExactAnalysis::new().unwrap();
-    let request = analysis.begin(&negative, limits()).unwrap();
-    let proof = request.run(|| false);
-    assert_eq!(proof.request().purpose(), x::ExactPurpose::NaturalBoardWin);
-    assert_eq!(
-        proof.request().source_record(),
-        &x::GameRecord::from_game(&negative).unwrap()
-    );
-    assert_eq!(proof.report().verdict, x::ExactVerdict::NeitherCanWin);
-    assert_eq!(
-        analysis.accept(&negative, &proof).unwrap().assessment(),
-        x::NoWinAssessment::ProvenNeitherCanWin
-    );
-    assert_eq!(proof.report().work.states, 255); // reachable component independently cross-checked in MSH-105
-    assert_eq!(record(&negative), original);
     assert_eq!(negative.conclusion(), None);
-    // Exact provenance stays with proof; flattening assessment alone would lose origin.
-    assert_eq!(proof.request().limits(), limits());
     reopen(&negative);
-    for (cancel, expected) in [
-        (false, x::ExactStop::States),
-        (true, x::ExactStop::Cancelled),
-    ] {
-        let r = analysis
-            .begin(
-                &negative,
-                x::ExactLimits {
-                    states: 0,
-                    ..limits()
-                },
-            )
-            .unwrap();
-        let result = r.run(|| cancel);
-        assert_eq!(
-            analysis.accept(&negative, &result).unwrap().assessment(),
-            x::NoWinAssessment::UnknownExactIncomplete { reason: expected }
-        );
-        assert_eq!(record(&negative), original);
-        assert_eq!(negative.conclusion(), None);
-    }
-    let failure = analysis
-        .begin(
-            &negative,
-            x::ExactLimits {
-                states: x::MAX_EXACT_STATES + 1,
-                ..limits()
-            },
-        )
-        .unwrap()
-        .run(|| false);
-    assert_eq!(
-        failure.report().verdict,
-        x::ExactVerdict::Failure {
-            reason: x::ExactFailure::UnsupportedLimits
-        }
-    );
-    assert_eq!(
-        analysis.accept(&negative, &failure).unwrap().assessment(),
-        x::NoWinAssessment::Failure
-    );
-    let positive = game("5k3/R8/9/9/9/9/9/9/9/3K5 b - - 0 1");
-    let request = analysis.begin(&positive, limits()).unwrap();
-    let observed = request.run(|| false);
-    let x::ExactVerdict::NaturalWin {
-        winner,
-        reason,
-        witness,
-    } = &observed.report().verdict
-    else {
-        panic!()
-    };
-    assert_eq!(
-        (*winner, *reason, witness.len()),
-        (x::Side::Red, x::NoActionReason::Stalemate, 2)
-    );
-    let mut path = positive.position().clone();
-    for &a in witness {
-        path.apply(a).unwrap();
-    }
-    assert_eq!(
-        path.local_status().unwrap(),
-        x::LocalStatus::NoLegalAction { reason: *reason }
-    );
-    analysis
-        .select(x::ExactTarget::History { event_count: 0 })
-        .unwrap();
-    analysis.select(x::ExactTarget::Live).unwrap();
-    assert_eq!(
-        analysis.accept(&positive, &observed),
-        Err(x::GameError::StaleContext)
-    );
-    let restored = reopen(&positive);
-    let old = analysis.begin(&positive, limits()).unwrap().run(|| false);
-    assert_eq!(
-        analysis.accept(&restored, &old),
-        Err(x::GameError::StaleContext)
-    );
 }
 #[test]
 fn strict_payload_context_and_transport_preserve_identity_through_real_execution() {
@@ -510,14 +387,7 @@ fn strict_payload_context_and_transport_preserve_identity_through_real_execution
         )),
         Err(x::RecordError::Json)
     );
-    let mut resource = x::ExactAnalysis::new().unwrap();
-    let request = resource.begin(&g, limits()).unwrap();
-    let prior = request.run(|| true);
-    let reopened = reopen(&g);
-    assert_eq!(
-        resource.accept(&reopened, &prior),
-        Err(x::GameError::StaleContext)
-    );
+    reopen(&g);
     let context = ExecutionContext {
         purpose: ExecutionPurpose::EngineTurn {},
         request_id: 41,

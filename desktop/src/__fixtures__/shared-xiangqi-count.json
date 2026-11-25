@@ -2271,9 +2271,8 @@
     "conclusion": null,
     "pending": null,
     "no_win_assessment": {
-      "kind": "unknown_exact_unavailable"
-    },
-    "exact_observations": []
+      "kind": "unknown"
+    }
   },
   "open_token": {
     "document": 1,

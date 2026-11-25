@@ -171,7 +171,6 @@ mod stop_tests {
                     },
                     operation: Some(SessionOperation::Inspect { event_index: 2 }),
                     response: None,
-                    evidence: None,
                     replacement: false,
                 },
                 &mut || stop(),

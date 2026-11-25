@@ -73,7 +73,6 @@ impl NativeGame for Chess {
     type Record = ChessRecord;
     type EngineResult = ChessResult;
     type Settings = DesktopSettings;
-    type Evidence = NoEvidence;
     fn native_side(side: Color) -> NativeSide {
         NativeSide::Chess(side)
     }
@@ -184,14 +183,6 @@ impl NativeGame for Chess {
                     )
                 })
                 .count()
-    }
-
-    fn validate_evidence(
-        evidence: &NoEvidence,
-        _game: &ChessMatch,
-        _stop: &mut impl FnMut() -> bool,
-    ) -> Result<(), String> {
-        match *evidence {}
     }
     fn side_to_move(game: &ChessMatch) -> Color {
         game.game().position().side_to_move()

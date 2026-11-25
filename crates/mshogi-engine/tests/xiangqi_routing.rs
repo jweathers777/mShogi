@@ -40,7 +40,7 @@ fn request(g: &x::Game) -> ExecutionContext {
         request_id: 17,
         session_version: 11,
         game: CanonicalRecord::xiangqi(x::GameRecord::from_game(g).unwrap()),
-        // Measured MSH-97 ordinary limits, independent of exact-proof work.
+        // Measured MSH-97 ordinary limits.
         limits: WorkLimits {
             time_ms: None,
             depth: 1,
@@ -131,14 +131,11 @@ fn actual_xiangqi_execution_returns_native_choices() {
         if Some(conclusion) == proof.conclusion() && telemetry.score == Some(0))
     );
     let standard = x::Game::standard(x::ClaimPolicy::AutoValidClaims).unwrap();
-    assert_eq!(
-        standard.no_win_assessment(),
-        x::NoWinAssessment::UnknownExactUnavailable
-    );
+    assert_eq!(standard.no_win_assessment(), x::NoWinAssessment::Unknown);
     let response = run(&request(&standard));
     assert!(
         matches!(response.result, ExecutionResult::Xiangqi { result: XiangqiResult::Choice { ref telemetry, .. } }
-        if telemetry.no_win_assessment == x::NoWinAssessment::UnknownExactUnavailable)
+        if telemetry.no_win_assessment == x::NoWinAssessment::Unknown)
     );
 }
 fn command_result(g: &mut x::Game, native: x::GameCommand) {

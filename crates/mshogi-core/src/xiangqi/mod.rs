@@ -8,13 +8,6 @@ use std::{error::Error, fmt, str::FromStr};
 
 mod action;
 mod assessment;
-mod exact;
-mod exact_request;
-pub use exact::{
-    ExactFailure, ExactLimits, ExactReport, ExactStop, ExactTraversal, ExactVerdict, ExactWork,
-    MAX_EXACT_MILLIS, MAX_EXACT_STATES,
-};
-pub use exact_request::{ExactAnalysis, ExactObservation, ExactPurpose, ExactRequest, ExactTarget};
 mod codec;
 mod conduct;
 mod game;

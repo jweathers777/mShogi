@@ -150,7 +150,7 @@ fn natural_win_witness_includes_stalemate_but_excludes_f002_penalty_award() {
     // No claim that Black is intrinsically impossible: missing a proof is unknown.
     assert_eq!(
         assess_natural_win(&Position::initial()),
-        NoWinAssessment::UnknownExactUnavailable
+        NoWinAssessment::Unknown
     );
     let bad = Position::from_fen("4k4/9/9/9/9/9/9/9/9/4K4 w - - 0 1").unwrap();
     assert_eq!(assess_natural_win(&bad), NoWinAssessment::Failure);

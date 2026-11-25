@@ -6,7 +6,6 @@
 //! It also provides the legal-action list, position-level classification and
 //! perft/divide diagnostics. Game owns action/repetition history and versioned
 //! records. The library also implements the selected game/match adjudication profiles.
-//! Exact proof procedures retain their documented resource-uncertainty limits.
 
 /// Target chess position contract specified in `docs/rules/chess-position-v1.md`.
 ///

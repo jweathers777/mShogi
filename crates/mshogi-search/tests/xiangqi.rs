@@ -53,15 +53,6 @@ fn choice(result: &SearchResult) -> Choice {
     };
     c
 }
-fn exact_limits() -> x::ExactLimits {
-    x::ExactLimits {
-        states: 5000,
-        transitions: 50_000,
-        millis: 60_000,
-        traversal: x::ExactTraversal::BreadthFirst,
-        ..x::ExactLimits::default()
-    }
-}
 
 #[test]
 fn independent_piece_values() {
@@ -100,7 +91,7 @@ fn cannon_screen_and_horse_leg_tactics_choose_native_winning_captures() {
         assert!(result.score.is_some_and(|s| s > 0), "{fen}");
         assert_eq!(result.perspective, native.position().side_to_move());
         assert_eq!(result.status, Status::Complete);
-        assert!(matches!(result.assessment, AssessmentEvidence::Fast(_)));
+        assert_eq!(result.assessment, native.no_win_assessment());
     }
 }
 
@@ -397,142 +388,19 @@ fn zero_work_partial_iterations_and_cancellation_publish_only_completed_work() {
 }
 
 #[test]
-fn exact_negative_is_read_only_proof_not_an_installed_game_draw() {
+fn fast_miss_is_unknown_and_not_an_installed_game_draw() {
     let native = game("5k3/9/9/9/9/9/9/9/4A4/3K5 w - - 0 1");
-    let before = record(&native);
-    let context = native.context();
-    assert_eq!(native.conclusion(), None);
-    assert_eq!(
-        native.no_win_assessment(),
-        x::NoWinAssessment::UnknownExactUnavailable
-    );
-    let r = search_requiring_root_exact(
-        &native,
-        Limits {
-            depth: 1,
-            nodes: MAX_NODES,
-        },
-        exact_limits(),
-        || false,
-    )
-    .unwrap();
-    assert_eq!(r.decision, Some(Decision::ExactNoWin));
-    assert_eq!(r.score, None);
-    assert_eq!(r.nodes, 0);
-    let AssessmentEvidence::Exact(observation) = &r.assessment else {
-        panic!("{r:?}")
-    };
-    assert_eq!(observation.report().verdict, x::ExactVerdict::NeitherCanWin);
-    assert_eq!(observation.report().work.states, 255);
-    assert_eq!(observation.request().source_record(), &before);
-    assert_eq!(record(&native), before);
-    assert_eq!(native.context(), context);
+    assert_eq!(native.no_win_assessment(), x::NoWinAssessment::Unknown);
+    let r = run(&native, 1);
+    assert_eq!(r.assessment, x::NoWinAssessment::Unknown);
+    assert!(matches!(r.decision, Some(Decision::Choose(_))));
     assert_eq!(native.conclusion(), None);
 }
 
 #[test]
-fn exact_positive_is_not_a_forced_win_score_and_retains_its_witness() {
-    let native = game(POSITIVE);
-    let before = record(&native);
-    let ordinary = run(&native, 1);
+fn possible_natural_win_is_not_a_forced_win_score() {
+    let ordinary = run(&game(POSITIVE), 1);
     assert!(ordinary.score.is_some_and(|s| s < 0 && s > -WIN_SCORE));
-    let r = search_requiring_root_exact(
-        &native,
-        Limits {
-            depth: 1,
-            nodes: MAX_NODES,
-        },
-        exact_limits(),
-        || false,
-    )
-    .unwrap();
-    assert_eq!(r.score, ordinary.score);
-    assert_eq!(r.decision, ordinary.decision);
-    let AssessmentEvidence::Exact(observation) = &r.assessment else {
-        panic!("{r:?}")
-    };
-    let x::ExactVerdict::NaturalWin {
-        winner,
-        reason,
-        witness,
-    } = &observation.report().verdict
-    else {
-        panic!("{r:?}")
-    };
-    assert_eq!(*winner, x::Side::Red);
-    assert_eq!(*reason, x::NoActionReason::Stalemate);
-    assert_eq!(witness.len(), 2);
-    let mut position = native.position().clone();
-    for &action in witness {
-        position.apply(action).unwrap();
-    }
-    assert_eq!(
-        position.local_status().unwrap(),
-        x::LocalStatus::NoLegalAction {
-            reason: x::NoActionReason::Stalemate
-        }
-    );
-    assert_eq!(observation.request().source_record(), &before);
-    assert_eq!(record(&native), before);
-}
-
-#[test]
-fn required_exact_unknown_cancel_and_failure_are_unscored_and_preserve_root() {
-    let native = game(POSITIVE);
-    let before = record(&native);
-    let context = native.context();
-    for (exact, stop, reason, status) in [
-        (
-            x::ExactLimits {
-                states: 0,
-                ..exact_limits()
-            },
-            false,
-            x::ExactStop::States,
-            Status::Unresolved,
-        ),
-        (
-            exact_limits(),
-            true,
-            x::ExactStop::Cancelled,
-            Status::Stopped,
-        ),
-    ] {
-        let r = search_requiring_root_exact(
-            &native,
-            Limits {
-                depth: 1,
-                nodes: MAX_NODES,
-            },
-            exact,
-            || stop,
-        )
-        .unwrap();
-        assert_eq!(r.status, status);
-        assert_eq!(r.unresolved, Some(Unresolved::Exact(reason)));
-        assert_eq!(r.score, None);
-        assert_eq!(r.decision, None);
-        assert_eq!(r.nodes, 0);
-        assert_eq!(r.completed_depth, 0);
-        assert!(r.principal_variation.is_empty());
-    }
-    assert!(matches!(
-        search_requiring_root_exact(
-            &native,
-            Limits {
-                depth: 1,
-                nodes: MAX_NODES
-            },
-            x::ExactLimits {
-                states: x::MAX_EXACT_STATES + 1,
-                ..exact_limits()
-            },
-            || false
-        ),
-        Err(SearchError::Exact(x::ExactFailure::UnsupportedLimits))
-    ));
-    assert_eq!(record(&native), before);
-    assert_eq!(native.context(), context);
 }
 
 #[test]

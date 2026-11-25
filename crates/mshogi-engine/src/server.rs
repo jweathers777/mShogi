@@ -467,9 +467,8 @@ fn execute_xiangqi(
         &mut engine,
         || false,
     ) {
-        Ok(result) => match XiangqiResult::searched(result) {
-            Ok(result) => ExecutionResult::Xiangqi { result },
-            Err(error) => ExecutionResult::failure(FailureKind::Search, error),
+        Ok(result) => ExecutionResult::Xiangqi {
+            result: XiangqiResult::searched(result),
         },
         Err(error) => ExecutionResult::failure(FailureKind::Search, error),
     }

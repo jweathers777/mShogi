@@ -173,8 +173,6 @@ pub(crate) struct NativeSession<G: SessionGame> {
     pub(crate) cancelled_analysis: Option<ExecutionContext>,
     /// Engine results of this session, in memory only (not saved).
     pub(crate) observations: Vec<ExecutionObservation>,
-    /// Completed evidence of this session (Xiangqi exact reports), not saved.
-    pub(crate) evidence: Vec<G::Evidence>,
     current_observations: Vec<u64>,
     pub(crate) diagnostic: Option<String>,
     presentation: G::Presentation,
@@ -211,7 +209,6 @@ impl<G: SessionGame> NativeSession<G> {
             analysis: None,
             cancelled_analysis: None,
             observations: vec![],
-            evidence: vec![],
             current_observations: vec![],
             diagnostic: Some("Resume starts play.".into()),
             presentation,
@@ -509,7 +506,6 @@ impl<G: SessionGame> NativeSession<G> {
             analysis: self.analysis.clone(),
             cancelled_analysis: self.cancelled_analysis.clone(),
             observations: self.observations.clone(),
-            evidence: self.evidence.clone(),
             current_observations: self.current_observations.clone(),
             diagnostic: self.diagnostic.clone(),
             selected: self.viewed.as_ref().map(G::events),
@@ -547,7 +543,6 @@ pub(crate) struct Draft<G: SessionGame> {
     analysis: Option<ExecutionObservation>,
     cancelled_analysis: Option<ExecutionContext>,
     observations: Vec<ExecutionObservation>,
-    evidence: Vec<G::Evidence>,
     current_observations: Vec<u64>,
     diagnostic: Option<String>,
     /// Event count of the viewed history position, if any.
@@ -565,8 +560,6 @@ pub(crate) struct RuntimeWork<G: SessionGame> {
     pub(crate) seed: RuntimeSeed<G>,
     pub(crate) operation: Option<SessionOperation>,
     pub(crate) response: Option<ExecutionObservation>,
-    /// Completed evidence to keep in session memory.
-    pub(crate) evidence: Option<G::Evidence>,
     pub(crate) replacement: bool,
 }
 pub(crate) fn execute<G: SessionGame>(
@@ -586,7 +579,6 @@ pub(crate) fn execute<G: SessionGame>(
             state.analysis = draft.analysis;
             state.cancelled_analysis = draft.cancelled_analysis;
             state.observations = draft.observations;
-            state.evidence = draft.evidence;
             state.current_observations = draft.current_observations;
             state.diagnostic = draft.diagnostic;
             if let Some(index) = draft.selected {
@@ -607,10 +599,6 @@ pub(crate) fn execute<G: SessionGame>(
     let mut durable = false;
     if let Some(operation) = work.operation {
         durable = state.apply(operation, stopped)?;
-    }
-    if let Some(evidence) = work.evidence {
-        G::validate_evidence(&evidence, &state.game, stopped)?;
-        let _ = keep_newest(&mut state.evidence, evidence);
     }
     if let Some(response) = work.response {
         let pending = state
@@ -747,33 +735,9 @@ impl DesktopController {
                 seed,
                 operation,
                 response,
-                evidence: None,
                 replacement,
             }),
             consumes_response,
-        )
-    }
-    /// Keep completed evidence (Xiangqi exact reports) in the active document.
-    pub(crate) fn retain_game_evidence<G: SessionGame>(
-        &mut self,
-        expected: SessionToken,
-        evidence: G::Evidence,
-    ) -> Result<AdmissionReceipt, String> {
-        if expected != self.shared_token() || self.admission_token.is_some() {
-            return Err("Stale historical evidence attachment.".into());
-        }
-        let state =
-            G::state(&self.session).ok_or_else(|| format!("No native {} document.", G::NAME))?;
-        let draft = state.capture();
-        self.queue_native_transaction(
-            runtime_job(RuntimeWork {
-                seed: RuntimeSeed::Current(Box::new(draft)),
-                operation: None,
-                response: None,
-                evidence: Some(evidence),
-                replacement: false,
-            }),
-            false,
         )
     }
     pub(super) fn replace_game<G: SessionGame>(
@@ -1481,7 +1445,6 @@ mod retention_tests {
                     seed: RuntimeSeed::Current(Box::new(state.capture())),
                     operation: None,
                     response: Some(response),
-                    evidence: None,
                     replacement: false,
                 },
                 &mut || false,

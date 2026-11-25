@@ -4,6 +4,7 @@ title: Retire Rust strength examples without a consumer
 status: Ready
 assignee: []
 created_date: '2026-11-25T11:20:00Z'
+updated_date: '2026-11-25T11:50:00Z'
 labels:
   - cleanup
   - model:medium
@@ -26,3 +27,9 @@ MSH-240 removed Python tools that were the only consumers of some Rust strength 
 - [ ] #1 Each example in crates/mshogi-runner/examples and crates/mshogi-search/examples that served strength campaigns has a recorded current use or is removed with its support files and tests, without a rules, search or evaluation change
 - [ ] #2 Documents that name a removed example or mode are updated and the workspace checks pass
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+2026-11-25 (John): folded into MSH-243 (Game-Independent Strength Tool), which consolidates these examples instead of only removing them.
+<!-- SECTION:NOTES:END -->

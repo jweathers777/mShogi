@@ -1,4 +1,4 @@
-"""The match wrapper must preserve native scoring and incomplete pairs."""
+"""The match driver must preserve native scoring and incomplete pairs."""
 import unittest
 import contextlib
 import io
@@ -9,14 +9,11 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest import mock
 
-from tools.strength.shogi_match import summarize
 from tools.strength import native_match
+from tools.strength.native_match import summarize
 
 
-class ShogiPairScoring(unittest.TestCase):
-    def test_shogi_entry_point_uses_shared_native_scorer(self):
-        self.assertIs(summarize, native_match.summarize)
-
+class PairScoring(unittest.TestCase):
     def test_tenjiku_requires_an_explicit_immutable_profile(self):
         common = ['native_match', '--candidate', 'unused', '--baseline', 'unused',
                   '--candidate-nodes', '1000', '--out', 'unused']
@@ -57,14 +54,14 @@ class ShogiPairScoring(unittest.TestCase):
     def test_pending_xiangqi_adjudication_stays_unscored(self):
         report = self.report(None, None)
         report['games'][0]['stop'] = 'native_pending_adjudication'
-        result = native_match.summarize(report)
+        result = summarize(report)
         self.assertIsNone(result['pair_score'])
         self.assertEqual(result['stops'][0], 'native_pending_adjudication')
 
     def test_chu_capacity_stop_does_not_become_a_draw(self):
         report = self.report(2, None)
         report['games'][1]['stop'] = 'native_stop:ResourceLimit'
-        result = native_match.summarize(report)
+        result = summarize(report)
         self.assertIsNone(result['pair_score'])
         self.assertEqual(result['scores_twice'], [2, None])
         self.assertEqual(result['stops'][1], 'native_stop:ResourceLimit')
@@ -72,7 +69,7 @@ class ShogiPairScoring(unittest.TestCase):
 
 class NativeClockDispatch(unittest.TestCase):
     def test_pair_replays_before_scoring_and_selects_fixed_opening(self):
-        report = ShogiPairScoring().report(2, 0)
+        report = PairScoring().report(2, 0)
         with tempfile.TemporaryDirectory() as directory:
             out = Path(directory)
             args = SimpleNamespace(config_writer='writer', candidate='new', baseline='old',
@@ -111,10 +108,10 @@ class NativeClockDispatch(unittest.TestCase):
             self.assertFalse((out / 'pair-0001.summary.json').exists())
 
     def test_cleanup_failure_cannot_enter_statistics(self):
-        report = ShogiPairScoring().report(2, 0)
+        report = PairScoring().report(2, 0)
         report['games'][0]['cleanup'] = ['unacknowledged']
         with self.assertRaises(ValueError):
-            native_match.summarize(report)
+            summarize(report)
 
 
 if __name__ == '__main__':

@@ -46,7 +46,7 @@ def policy():
 
 
 def validate_manifest(m):
-    from tools.strength.anchor_worker import require
+    from tools.strength.anchor_cloud import require
     require(m.get('schema') == 1 and re.fullmatch(PREFIX + r'-[a-z0-9-]{1,50}', m.get('experiment', '')),
             'wrong build identity')
     for field in ('campaign_started_epoch', 'deadline_epoch', 'estimated_compute_before_usd'):
@@ -85,7 +85,7 @@ def pack(args):
     """Upload the commit and its vendored dependencies; write the manifest."""
     from tools.experiments import gcp
     from tools.experiments.core import encode
-    from tools.strength.anchor_worker import require
+    from tools.strength.anchor_cloud import require
     revision = subprocess.run(['git', 'rev-parse', args.revision + '^{commit}'], check=True,
                               capture_output=True, text=True).stdout.strip()
     targets = args.targets.split(',')
@@ -120,7 +120,7 @@ def worker(manifest_uri, store_uri):
     import os
     from tools.experiments import gcp
     from tools.experiments.core import decode, digest, encode
-    from tools.strength.anchor_worker import cloud_environment, put_new, require
+    from tools.strength.anchor_cloud import cloud_environment, put_new, require
     bucket, key = gcp.parse_uri(manifest_uri)
     raw = gcp.GCSStore('gs://' + bucket).get(key)
     m = decode(raw)
@@ -174,7 +174,7 @@ def fetch(args):
     """Download the built binaries after checking them against the receipt."""
     from tools.experiments import gcp
     from tools.experiments.core import decode
-    from tools.strength.anchor_worker import require
+    from tools.strength.anchor_cloud import require
     store = gcp.GCSStore(args.store)
     receipt = decode(store.get('tasks/0/receipt.json'))
     require(receipt.get('complete') is True, 'build did not complete')

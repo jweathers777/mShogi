@@ -18,7 +18,6 @@ import shutil
 import signal
 import statistics
 import subprocess
-import sys
 import threading
 import time
 from pathlib import Path
@@ -83,9 +82,6 @@ def load_json(path):
 # ---------------------------------------------------------------- bench
 
 def bench(args):
-    if getattr(args, 'game', 'chess') == 'shogi':
-        from .shogi_tools import bench as shogi_bench
-        return shogi_bench(args)
     args.positions = args.positions or str(DATA / 'bench-chess-v1.json')
     spec = load_json(args.positions)
     engine = Engine(args.engine, ['uci'], [CLAIM_OPTION])
@@ -564,11 +560,8 @@ def main(argv=None):
     b = sub.add_parser('bench', help='nodes per second and time to fixed depth on a fixed position set')
     b.add_argument('--engine', default='target/release/mshogi')
     b.add_argument('--positions')
-    b.add_argument('--game', choices=['chess', 'shogi'], default='chess')
-    b.add_argument('--helper', default='target/release/examples/shogi_strength')
     b.add_argument('--repeat', type=int, default=3)
     b.add_argument('--timeout', type=float, default=300.0)
-    b.add_argument('--movetime', type=int, help='Shogi: measure completed depth at this native millisecond budget instead of fixed depth')
     b.add_argument('--out')
     b.set_defaults(func=bench)
 
@@ -609,37 +602,12 @@ def main(argv=None):
     m.add_argument('--out', required=True, help='new directory for this run')
     m.set_defaults(func=match)
 
-    from . import shogi_tools
-    t = sub.add_parser('tactics', help='native-proven Shogi development decisions at a fixed time budget')
-    t.add_argument('--game', choices=['shogi'], default='shogi')
-    t.add_argument('--engine', default='target/release/mshogi')
-    t.add_argument('--helper', default=shogi_tools.HELPER)
-    t.add_argument('--suite')
-    t.add_argument('--movetime', type=int, default=1000)
-    t.add_argument('--out')
-    t.set_defaults(func=shogi_tools.tactics)
-    v = sub.add_parser('validate-data', help='native legality and bounded tactical proof checks')
-    v.add_argument('--game', choices=['shogi'], default='shogi')
-    v.add_argument('--helper', default=shogi_tools.HELPER)
-    v.add_argument('--path')
-    v.add_argument('--out')
-    v.set_defaults(func=shogi_tools.validate_data)
-    x = sub.add_parser('texel-export', help='replay native Shogi games and export result-labeled positions')
-    x.add_argument('--game', choices=['shogi'], default='shogi')
-    x.add_argument('--helper', default=shogi_tools.HELPER)
-    x.add_argument('--reports', required=True)
-    x.add_argument('--out', required=True)
-    x.add_argument('--every', type=int, default=4, help='sample one before-position every N native events (1..16)')
-    x.set_defaults(func=shogi_tools.export)
-
     e = sub.add_parser('build-engine', help='build a frozen mshogi engine from a Git revision into target/strength')
     e.add_argument('revision')
     e.add_argument('--force', action='store_true')
     e.set_defaults(func=build_engine)
 
     args = ap.parse_args(argv)
-    if args.command == 'bench' and args.movetime is not None and args.game != 'shogi':
-        ap.error('bench --movetime currently requires --game shogi')
     if args.command == 'match' and args.baseline_movetime is not None:
         if args.base is None or args.baseline_movetime <= 0:
             ap.error('--baseline-movetime requires --base and a positive millisecond value')

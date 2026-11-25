@@ -166,5 +166,3 @@ at least 90%), data-file invariants, UCI parsing, every native conclusion shape,
 the native-summary cross-check, and one real paired game through
 `mshogi-match run` when the release binaries exist. The native controller
 accepted all 90 openings as legal during the smoke runs.
-
-MSH-186 (Shogi Strength Harness): see the Shogi tools, baseline and limits and external opponent proposal.

@@ -45,7 +45,8 @@ games run as separate jobs. The book is generic, not certified balanced.
 
 ## Joint model and uncertainty
 
-`tools/strength/anchor_stats.py` defines the exact formulas. Fit one logistic
+`tools/strength/anchor_stats.py` (removed after the study; see Git history)
+defined the exact formulas. Fit one logistic
 expected-score Elo parameter with fixed opponent ratings. Draws give half a
 point. Regularize with Normal(2500, 500 squared); repeat at SD 250 and 1000 for
 sensitivity. Include every scored game, including all bracketing games and a

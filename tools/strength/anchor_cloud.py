@@ -1,34 +1,34 @@
-"""MSH-185 single-batch controller using the existing GCP transport.
+"""Cost-bounded single-batch controller and worker helpers on the GCP transport.
 
 No match selection or game rules live here. Run one reviewed manifest, wait on
 its existing Pub/Sub completion subscription, preserve all evidence, then delete
 the job and verify its VMs are absent. No retries or automatic next batch.
 """
-import argparse
 import concurrent.futures
 import json
 import math
+import os
 import queue
 import re
 import subprocess
 import threading
 import time
+import urllib.request
 import uuid
 from dataclasses import dataclass
 from pathlib import Path
 
 from tools.experiments import gcp
-from tools.experiments.core import encode, digest
-from tools.strength.anchor_worker import validate_manifest
+from tools.experiments.core import encode, digest, environment
 
 
 @dataclass(frozen=True)
 class CampaignPolicy:
     """Reviewed fixed policy; callers cannot set it from a cloud manifest."""
-    prefix: str = 'msh185'
-    seconds: int = 21600
-    compute_usd: float = 15
-    worker_module: str = 'tools.strength.anchor_worker'
+    prefix: str
+    seconds: int
+    compute_usd: float
+    worker_module: str
     worker_arguments: tuple = ()
 
     @property
@@ -36,7 +36,31 @@ class CampaignPolicy:
         return self.prefix + '-owner'
 
 
-ANCHOR_POLICY = CampaignPolicy()
+def require(condition, message):
+    if not condition:
+        raise ValueError(message)
+
+
+def put_new(store, key, data):
+    require(store.put(key, data), 'existing immutable artifact: ' + key)
+
+
+def cloud_environment():
+    """The worker's host record; refuses a VM that is not the approved type and region."""
+    result = environment()
+    require(result['architecture'] == 'x86_64' and result['platform'].startswith('Linux'), 'expected Linux x86_64')
+    result['gcp'] = {}
+    for field in ('machine-type', 'zone', 'id', 'cpu-platform'):
+        request = urllib.request.Request('http://metadata.google.internal/computeMetadata/v1/instance/' + field,
+                                         headers={'Metadata-Flavor': 'Google'})
+        with urllib.request.urlopen(request, timeout=5) as response:
+            result['gcp'][field] = response.read(4096).decode()
+    require(result['gcp']['machine-type'].rsplit('/', 1)[-1] == 'c3-standard-4', 'wrong VM type')
+    require(result['gcp']['zone'].rsplit('/', 1)[-1].startswith('us-central1-'), 'wrong VM region')
+    result['batch'] = {key: os.environ.get(key) for key in
+                       ('BATCH_TASK_INDEX', 'BATCH_TASK_COUNT', 'BATCH_JOB_UID', 'BATCH_TASK_RETRY_ATTEMPT')}
+    return result
+
 
 def save(path, value):
     path = Path(path)
@@ -59,7 +83,7 @@ def jobs_named(job, region, timeout=None):
     return [row for row in jobs if row.get('name', '').rsplit('/', 1)[-1] == job]
 
 
-def cleanup(job, region, owner, out, submission_confirmed, campaign_deadline=None, owner_label="msh185-owner"):
+def cleanup(job, region, owner, out, submission_confirmed, *, owner_label, campaign_deadline=None):
     """Delete only this intent's labelled job, then verify jobs, VMs and disks.
 
     Label definitions: https://docs.cloud.google.com/batch/docs/organize-resources-using-labels
@@ -107,14 +131,14 @@ def cleanup(job, region, owner, out, submission_confirmed, campaign_deadline=Non
         save(out/'cleanup.json', receipt)
 
 
-def run(args, *, policy=ANCHOR_POLICY, manifest_validator=None):
+def run(args, *, policy, manifest_validator):
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=False)
     manifest = json.loads(Path(args.manifest).read_text())
-    (manifest_validator or validate_manifest)(manifest)
+    manifest_validator(manifest)
     config = gcp.validate_config(json.loads(Path(args.config).read_text()))
     if config['project'] != 'mshogi' or config['machine_type'] != 'c3-standard-4' or config['parallelism'] != 8:
-        raise ValueError('MSH-185 requires the approved project, machine and eight-worker limit')
+        raise ValueError('The approved project, machine and eight-worker limit are required')
     if config['max_retries'] != 0 or not 1 <= len(manifest['bins']) <= 8:
         raise ValueError('No retries; at most eight nonempty worker bins')
     if any(not rows for rows in manifest['bins']):
@@ -236,14 +260,3 @@ def run(args, *, policy=ANCHOR_POLICY, manifest_validator=None):
             raise RuntimeError('Cleanup requires reconciliation: ' + cleanup_error)
     if error:
         raise RuntimeError(error)
-
-
-def main():
-    p = argparse.ArgumentParser(description=__doc__)
-    for key in ('manifest','config','image','job','out'):
-        p.add_argument('--'+key, required=True)
-    p.add_argument('--subscription', default='projects/mshogi/subscriptions/mshogi-pilot-completion')
-    run(p.parse_args())
-
-if __name__ == '__main__':
-    main()

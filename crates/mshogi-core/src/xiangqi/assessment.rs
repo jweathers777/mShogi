@@ -1,8 +1,6 @@
 //! Sound fast recognition of the WXF Article 3.2A no-win condition.
 use super::{Action, LocalStatus, PieceKind, Position, Side};
 use serde::{Deserialize, Serialize};
-/// Owner-selected natural-course board-win goal. Penalty awards are excluded.
-pub const NATURAL_WIN_GOAL: &str = "mshogi.xiangqi.natural-board-win.exists.v1";
 /// Unknown is not proof of a possible win and never concludes a draw.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]

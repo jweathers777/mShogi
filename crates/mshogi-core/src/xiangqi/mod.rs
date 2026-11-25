@@ -11,7 +11,7 @@ mod assessment;
 mod codec;
 mod conduct;
 mod game;
-pub use assessment::{NATURAL_WIN_GOAL, NoWinAssessment, assess_natural_win};
+pub use assessment::{NoWinAssessment, assess_natural_win};
 mod record;
 pub use conduct::FaultKind;
 pub use game::{

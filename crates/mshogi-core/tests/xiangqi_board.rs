@@ -1,8 +1,10 @@
 //! Frozen independent WXF board facts, exact reversible actions and board-only diagnostics.
 //! History-dependent WXF warnings, claims and game conclusions are deliberately absent.
-use mshogi_core::xiangqi::{Action, LocalStatus, NoActionReason, PieceKind, Position, Side};
+use mshogi_core::xiangqi::{
+    Action, Counters, Intersection, LocalStatus, NoActionReason, Piece, PieceKind, Position, Side,
+};
 use serde_json::Value;
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::{BTreeMap, BTreeSet, HashSet};
 
 fn fixtures() -> Vec<Value> {
     let data: Value =
@@ -319,4 +321,165 @@ fn pinned_enemy_rook_still_geometrically_controls_general_destination() {
     assert!(position.resolve_action(action).is_err());
     assert!(position.apply(action).is_err());
     assert_eq!(position, before);
+}
+// Independent explicit palace model, without product attack/legal/apply helpers.
+// Tuple is Red General, Black General, optional Red/Black Advisor and whose turn.
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
+struct Small {
+    red: (u8, u8),
+    black: (u8, u8),
+    advisor: Option<(u8, u8, Side)>,
+    turn: Side,
+}
+impl Small {
+    fn valid(self) -> bool {
+        let (r, b) = (self.red, self.black);
+        if self
+            .advisor
+            .is_some_and(|(x, y, _)| (x, y) == r || (x, y) == b)
+        {
+            return false;
+        }
+        r.0 != b.0
+            || self
+                .advisor
+                .is_some_and(|(x, y, _)| x == r.0 && y > r.1 && y < b.1)
+    }
+    fn choices(self) -> Vec<(Action, Self)> {
+        let mut out = vec![];
+        let (x, y) = if self.turn == Side::Red {
+            self.red
+        } else {
+            self.black
+        };
+        for (dx, dy) in [(1, 0), (-1, 0), (0, 1), (0, -1)] {
+            let (nx, ny) = (x as i8 + dx, y as i8 + dy);
+            let home = if self.turn == Side::Red { 0..=2 } else { 7..=9 };
+            if !(3..=5).contains(&nx) || !home.contains(&ny) {
+                continue;
+            }
+            let mut next = self;
+            if self.turn == Side::Red {
+                next.red = (nx as u8, ny as u8);
+            } else {
+                next.black = (nx as u8, ny as u8);
+            }
+            next.turn = self.turn.opponent();
+            if next.valid() {
+                out.push((
+                    Action {
+                        from: Intersection::new(x, y).unwrap(),
+                        to: Intersection::new(nx as u8, ny as u8).unwrap(),
+                    },
+                    next,
+                ));
+            }
+        }
+        if let Some((x, y, side)) = self.advisor.filter(|(_, _, s)| *s == self.turn) {
+            for (dx, dy) in [(1, 1), (-1, 1), (1, -1), (-1, -1)] {
+                let (nx, ny) = (x as i8 + dx, y as i8 + dy);
+                let home = if side == Side::Red { 0..=2 } else { 7..=9 };
+                if !(3..=5).contains(&nx) || !home.contains(&ny) {
+                    continue;
+                }
+                let next = Self {
+                    advisor: Some((nx as u8, ny as u8, side)),
+                    turn: side.opponent(),
+                    ..self
+                };
+                if next.valid() {
+                    out.push((
+                        Action {
+                            from: Intersection::new(x, y).unwrap(),
+                            to: Intersection::new(nx as u8, ny as u8).unwrap(),
+                        },
+                        next,
+                    ));
+                }
+            }
+        }
+        out
+    }
+    fn position(self) -> Position {
+        let mut pieces = vec![
+            (
+                Intersection::new(self.red.0, self.red.1).unwrap(),
+                Piece::new(Side::Red, PieceKind::General),
+            ),
+            (
+                Intersection::new(self.black.0, self.black.1).unwrap(),
+                Piece::new(Side::Black, PieceKind::General),
+            ),
+        ];
+        if let Some((x, y, s)) = self.advisor {
+            pieces.push((
+                Intersection::new(x, y).unwrap(),
+                Piece::new(s, PieceKind::Advisor),
+            ));
+        }
+        Position::from_diagram(&pieces, self.turn, Counters::unknown()).unwrap()
+    }
+}
+#[test]
+fn exhaustive_independent_palace_universes_match_legal_actions_and_transitions() {
+    for advisor_side in [None, Some(Side::Red), Some(Side::Black)] {
+        let mut universe = HashSet::new();
+        for rx in 3..=5 {
+            for ry in 0..=2 {
+                for bx in 3..=5 {
+                    for by in 7..=9 {
+                        for turn in [Side::Red, Side::Black] {
+                            let advisors = if let Some(s) = advisor_side {
+                                vec![(3, 0), (5, 0), (4, 1), (3, 2), (5, 2)]
+                                    .into_iter()
+                                    .map(|(x, y)| {
+                                        Some((x, if s == Side::Red { y } else { 9 - y }, s))
+                                    })
+                                    .collect()
+                            } else {
+                                vec![None]
+                            };
+                            for advisor in advisors {
+                                let state = Small {
+                                    red: (rx, ry),
+                                    black: (bx, by),
+                                    advisor,
+                                    turn,
+                                };
+                                if state.valid() {
+                                    universe.insert(state);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        assert_eq!(
+            universe.len(),
+            if advisor_side.is_none() { 108 } else { 510 }
+        );
+        for &s in &universe {
+            let expected = s.choices();
+            assert!(!expected.is_empty(), "{s:?}");
+            let p = s.position();
+            let choices = p
+                .legal_actions()
+                .unwrap()
+                .into_iter()
+                .map(|a| a.to_string())
+                .collect::<BTreeSet<_>>();
+            assert_eq!(
+                choices,
+                expected.iter().map(|(a, _)| a.to_string()).collect(),
+                "{s:?}"
+            );
+            for (a, next) in expected {
+                assert!(universe.contains(&next));
+                let mut native = p.clone();
+                native.apply(a).unwrap();
+                assert_eq!(native, next.position());
+            }
+        }
+    }
 }

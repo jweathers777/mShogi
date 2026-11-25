@@ -103,8 +103,8 @@ nowin fast
 
 `nowin fast` prints the scoped native fast assessment of the current position;
 `status` prints the same value. `unknown` is a fast miss, not a possible win or
-a draw. There is no exact no-win analysis: John removed it on 2026-11-25
-(MSH-269). This is not general practical WXF completeness.
+a draw. There is no exact no-win analysis. This is not general practical WXF
+completeness.
 
 ## Verification
 

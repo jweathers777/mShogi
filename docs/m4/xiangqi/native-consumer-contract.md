@@ -65,8 +65,7 @@ ordinary local actions to checkmate or no-legal-action/stalemate loss.
 Penalty/claim/voluntary/administrative conclusions are not proof goals. In F002
 Black can receive a repetition-penalty win without that award proving Black has
 a natural board-win continuation. This is not minimax against optimal
-resistance. John removed the optional exact analysis on 2026-11-25 (MSH-269);
-only this fast recognition applies.
+resistance. Only this fast recognition applies; there is no exact analysis.
 
 ### Operational policy and actual native limits
 
@@ -90,7 +89,7 @@ conduct classification and blocks `submit`; fast Unknown is separate.
 | Repetition/conduct | Private Game board/turn anchor equality plus full contiguous known actions, root-assigned persistent piece IDs/victims and warning obligations for classification. | Identical types swapping locations can return the board while exchanging IDs; a repeated key alone is not responsibility. |
 | Complete game/history | Opaque `GameContext`: root/provenance, claim policy, full command/result/event-end ledger and runtime token. Derived events remain native. | FEN, declared counters, move count or current board cannot replace it. |
 | Canonical record | Validated game/profile/edition/schema and complete semantic ledger; strict replay checks redundant events/current state and field presence. Runtime tokens are absent. | Equal canonical bytes after undo/reopen do not mean equal runtime context. Envelope version is not a rules-profile edition. |
-| Native request/session | `GameContext` fresh instance + monotonic revision. | Undo, selection/return, cancellation, replacement and reopen cannot revive retired work. Preserve the original carriers. |
+| Native request/session | `GameContext` fresh instance + monotonic revision. | Undo, selection/return, cancellation, replacement and reopen cannot revive retired work. |
 | Shared execution | Whole `SharedRequest`: typed canonical context, purpose/target, request ID, session version and limits. | A transport echo or native tag does not advertise real Xiangqi engine execution. |
 
 History selections use event counts, not board plies; multiple events can share

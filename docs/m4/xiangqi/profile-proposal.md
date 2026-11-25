@@ -178,4 +178,4 @@ records the consequence-relevant classification/admission software policy.
 History evidence traces actual fixtures, review and tests.
 The planning-boundary text above is preserved history; G-NOWIN semantics now have
 the explicit owner resolution above. MSH-94 does not implement any Xiangqi
-consumer. The exact backend that MSH-105 later added was removed by MSH-269.
+consumer.

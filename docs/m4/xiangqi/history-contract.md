@@ -107,8 +107,7 @@ different-file placement there is a legal vertical exit. The exhaustive
 108-position invariant test checks that scoped proof and successors. No larger
 material heuristic is silently substituted. A miss is not proof of possible
 mate/stalemate and does not conclude a draw. This fast recognition is the only
-no-win assessment: John removed the optional exact analysis on 2026-11-25
-(MSH-269), so no exact graph search is available or required.
+no-win assessment; no exact graph search is available or required.
 
 ## Canonical record, undo and bounded saveability
 

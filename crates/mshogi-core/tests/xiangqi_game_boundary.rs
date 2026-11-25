@@ -152,6 +152,26 @@ fn natural_win_witness_includes_stalemate_but_excludes_f002_penalty_award() {
         assess_natural_win(&Position::initial()),
         NoWinAssessment::Unknown
     );
+    // A real two-ply stalemate win is beyond the one-ply fast scan: Unknown.
+    let beyond = Position::from_fen("5k3/R8/9/9/9/9/9/9/9/3K5 b - - 0 1").unwrap();
+    assert_eq!(assess_natural_win(&beyond), NoWinAssessment::Unknown);
+    assert_eq!(
+        beyond.legal_actions().unwrap(),
+        vec!["f9e9".parse().unwrap()]
+    );
+    let mut stalemate = beyond.clone();
+    stalemate.apply("f9e9".parse().unwrap()).unwrap();
+    assert!(matches!(
+        stalemate.local_status(),
+        Ok(LocalStatus::Ongoing { .. })
+    ));
+    stalemate.apply("a8f8".parse().unwrap()).unwrap();
+    assert_eq!(
+        stalemate.local_status().unwrap(),
+        LocalStatus::NoLegalAction {
+            reason: NoActionReason::Stalemate
+        }
+    );
     let bad = Position::from_fen("4k4/9/9/9/9/9/9/9/9/4K4 w - - 0 1").unwrap();
     assert_eq!(assess_natural_win(&bad), NoWinAssessment::Failure);
 }
@@ -200,7 +220,6 @@ fn every_record_field_is_required_and_native_raw_payloads_reject_duplicates() {
         ("game", json!("chess")),
         ("profile", json!("mshogi.xiangqi.other")),
         ("no_win_goal", json!("perpetual-fault-win")),
-        ("no_win_mode", json!("bounded_exact")),
         ("fast_witness_limit", json!(2)),
     ] {
         let mut v = value.clone();

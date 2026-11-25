@@ -175,18 +175,10 @@ pub fn search_with_state(
     engine: &mut Engine,
     mut stop: impl FnMut() -> bool,
 ) -> Result<SearchResult, SearchError> {
-    let timing = alphabeta::timing::RequestTime::new(time);
     // The core enforces the hard deadline through its limits, so a timed
     // request that expires is not a cancellation and may use its fallback.
-    run(game, limits, engine, &timing, &mut stop)
-}
-fn run(
-    game: &Game,
-    limits: Limits,
-    engine: &mut Engine,
-    timing: &alphabeta::timing::RequestTime,
-    stop: &mut dyn FnMut() -> bool,
-) -> Result<SearchResult, SearchError> {
+    let timing = &alphabeta::timing::RequestTime::new(time);
+    let stop: &mut dyn FnMut() -> bool = &mut stop;
     if !limits.valid() {
         return Err(SearchError::InvalidLimits);
     }

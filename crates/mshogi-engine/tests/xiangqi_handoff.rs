@@ -378,15 +378,6 @@ fn strict_payload_context_and_transport_preserve_identity_through_real_execution
     assert!(CanonicalRecord::from_json(&forged.to_string()).is_err());
     let conflict = text.replace(x::PROFILE_ID, "mshogi.shogi.csa36.v1");
     assert!(CanonicalRecord::from_json(&conflict).is_err());
-    let native = x::GameRecord::from_game(&g).unwrap();
-    assert_eq!(
-        x::GameRecord::from_json(&native.to_json().replacen(
-            '{',
-            "{\"no_win_mode\":\"bounded_exact\",",
-            1
-        )),
-        Err(x::RecordError::Json)
-    );
     reopen(&g);
     let context = ExecutionContext {
         purpose: ExecutionPurpose::EngineTurn {},

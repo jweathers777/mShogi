@@ -101,14 +101,14 @@ match events; it cannot create intrinsic natural winning capability through a
 penalty. F002's Black repetition award is therefore not a Black capability proof.
 
 MSH-94's `assess_natural_win` returns a sound bare-two-Generals impossibility
-proof, a genuine zero/one-ply natural-win witness, `UnknownExactUnavailable`, or
-failure. Bare Generals cannot check/capture across disjoint palaces; in every
-admitted different-file placement there is a legal vertical exit. The exhaustive
+proof, a genuine zero/one-ply natural-win witness, `Unknown`, or failure. Bare
+Generals cannot check/capture across disjoint palaces; in every admitted
+different-file placement there is a legal vertical exit. The exhaustive
 108-position invariant test checks that scoped proof and successors. No larger
 material heuristic is silently substituted. A miss is not proof of possible
-mate/stalemate and does not conclude a draw. MSH-105 owns the required bounded/
-terminable exact backend and feasibility evidence after MSH-94 and MSH-95;
-it remains unstarted here. No general exact-proof performance claim is made.
+mate/stalemate and does not conclude a draw. This fast recognition is the only
+no-win assessment: John removed the optional exact analysis on 2026-11-25
+(MSH-269), so no exact graph search is available or required.
 
 ## Canonical record, undo and bounded saveability
 
@@ -141,13 +141,3 @@ path; no accepted history is dropped. At511 rejected claim commands, command512
 cannot be another audit but can be resignation, and both records reopen.
 Later shared envelope/archive owners must measure their own additional overhead
 and preserve MSH-61; this native limit is not approval of future desktop limits.
-
-## MSH-105 explicit exact assessment extension
-
-The fast-only canonical behavior above remains unchanged. The native
-exact-verification API now supplies separate bounded
-read-only proof work and `ExactReport::assessment`, including an explicit
-`UnknownExactIncomplete` with reason. It binds full native context while its
-intrinsic proof key uses board/turn only. Exact acceptance cannot install a
-board action, claim, pending-game recovery or conclusion; future consumers must
-preserve the documented unresolved/unscored behavior and native event ordering.

@@ -41,7 +41,7 @@ says nothing about other opponents.
 | `shogi/position.rs` | Shogi position, hands, drops, promotion, history and classical evaluation | Shogi |
 | `shogi.rs` | Native Shogi root/declaration and continuation adapter | Shogi |
 | `xiangqi/position.rs` | Xiangqi board, movement, private history and classical evaluation | Xiangqi |
-| `xiangqi.rs` | Native Xiangqi outcome, count-claim, exact-proof and continuation adapter | Xiangqi |
+| `xiangqi.rs` | Native Xiangqi outcome, count-claim and continuation adapter | Xiangqi |
 | `chu/position.rs`, `chu.rs` | Chu board, compound moves, Lion rights and native adapter | Chu Shogi |
 | `tenjiku/position.rs`, `tenjiku.rs` | Tenjiku board, ranked jumps, Demon effects, both profiles and native adapter | Tenjiku Shogi |
 
@@ -334,8 +334,8 @@ verify the boundary.
 
 Native authority stays at the root and the application boundary. A concluded
 root reports its conclusion. A root with pending adjudication stays unscored.
-The original root assessment and exact-proof request/evidence APIs remain
-intact; an existential exact witness is not a forced-win score. A valid count
+The result carries the native sound fast root assessment; an existential win
+witness is not a forced-win score. A valid count
 claim is chosen after a completed search if the move score is no better than
 zero. The adapter never claims for the nonmoving player. The selected action
 must be locally legal and must pass native submission in a private copy. The
@@ -352,8 +352,8 @@ Private approximations are explicit:
 - Captures and null moves bound the repetition scan. Non-board native events
   are not turns. Full native board history initializes the private position.
 - No-legal-action loss, including unchecked stalemate, is tested before draw
-  approximations. Bare Generals draw. Other exact no-win graph proofs are not
-  run inside the tree. Count claims are native root options only.
+  approximations. Bare Generals draw. No other no-win proof runs inside the
+  tree. Count claims are native root options only.
 - The exchange test is a one-step estimate. Evaluation uses material, Soldier
   advancement and centralization/development placement with a tempo bonus.
   It is not a rules adjudication or a learned evaluator.

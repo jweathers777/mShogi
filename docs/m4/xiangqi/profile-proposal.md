@@ -11,9 +11,10 @@ is retained so existing task/document references remain valid.
 Selection itself was a planning/profile contract, not an implemented capability.
 Current implementation: MSH-91/92/93 board rules and MSH-94 native history,
 canonical records and sound fast assessment; see [history contract](history-contract.md)
-and evidence. MSH-105 now supplies the explicit bounded
-read-only native exact path; product consumers remain
-outstanding, and this is not general ordinary-play WXF completeness. The selection-stage claims below are preserved history.
+and evidence. The WXF 3.2A neither-can-win condition uses only the sound fast
+recognition: John removed the optional exact analysis of MSH-105 on 2026-11-25
+(MSH-269). This is not general ordinary-play WXF completeness. The other
+selection-stage claims below are preserved history.
 Native schema and transport versions remain separately identified. No public
 profile constant, native rule implementation, runtime reference or UI support
 is introduced by selection. Existing Chess/Shogi identities remain unchanged.
@@ -93,36 +94,34 @@ arbiter procedure):
   no-action outcome: checkmate or stalemate is a loss. This has precedence over
   a repetition/count request generated afterward at that boundary.
 - Resolve the selected repetition result (one-sided continuation loss or WXF
-  draw) next; a warning is an event, not a concluded game. Resolve a soundly
-  proven3.2A impossibility draw next. A request requiring expensive/unresolved
-  proof enters the bounded path; unknown alone never concludes a draw or loss.
+  draw) next; a warning is an event, not a concluded game. Resolve a 3.2A
+  impossibility draw proven by the sound fast recognition next. Unknown never
+  concludes a draw or loss.
 - In still-live state process explicit commands in host receipt order:
   resignation, agreement offer/acceptance, manual natural-count claim or other
   supported native request. No event retroactively changes a prior conclusion.
   Apply `auto_valid_claims` only after the move's automatic conclusions, before
   admitting the next external command; no evaluation-based adjudication.
-- If an experiment genuinely needs an incomplete exact result to adjudicate,
-  retain an unresolved/unscored state. Cancellation, resource exhaustion and
-  engine/process failure are execution observations, never invented game results.
+- Cancellation, resource exhaustion and engine/process failure are execution
+  observations, never invented game results.
 
 Physical touch-move, arbiters/appeals, tournament clock/foul sanctions, pairings
 and scoring remain outside this initial local software profile. Later timed/event
 policies require explicit names; no runtime clock behavior is implemented here.
 
-## WXF3.2A: required two-level verification
+## WXF 3.2A: sound fast recognition only
 
-The impossible-for-either-side-to-win condition remains required M4 behavior:
-**MSH-94** owns the native assessment contract and fast sound recognizer;
-**MSH-105** owns the separately bounded or independently terminable exact path
-beyond it. MSH-84 native handoff, MSH-103 full review and MSH-45 completion all
-wait for105. Required completeness is not deferred to M5.
+The impossible-for-either-side-to-win condition is required behavior.
+**MSH-94** owns the native assessment contract and the sound fast recognizer.
+John decided on 2026-11-25 (MSH-269) that this fast recognition is the only
+3.2A assessment: the optional bounded exact analysis of MSH-105 is removed.
+Expensive exact proofs are not delivery gates (`docs/design.md`), and the usual
+practice is to detect only clear material cases.
 
-Native assessment distinguishes **proven impossible for both**, **proven at
-least one side can win** (with the verifier's actual witness/proof), and
-**unknown/incomplete**. Failure of the fast recognizer or exhaustion/cancellation
-of exact work proves neither side of the question. Record mode, limits, exact
-target/history/provenance and accepted proof/unknown observations. Bound replay
-and reconstruction too; unsupported restoration is explicit.
+The native assessment distinguishes **proven impossible for both** (bare
+Generals), **proven at least one side can win** (a checked zero- or one-ply
+witness), **unknown** (a fast miss) and **failure**. Unknown proves neither side
+of the question and never concludes a draw or a loss.
 
 **G-NOWIN resolved by recorded decision during MSH-94:** use the existential natural-course
 board-win question, identifier `mshogi.xiangqi.natural-board-win.exists.v1`.
@@ -135,9 +134,8 @@ penalty clauses. Full history still governs actual game outcomes; a penalty
 award cannot prove intrinsic natural winning capability. F002's possible Black
 repetition award is specifically not a positive Black natural-win witness.
 See the explicit owner resolution.
-The earlier recommendation to include repetition awards was rejected. Exact
-algorithm, proof/resource evidence and MSH-105 delivery remain required, not
-claimed by this semantic decision. A missed fast proof remains unknown.
+The earlier recommendation to include repetition awards was rejected. A missed
+fast proof remains unknown.
 
 
 ## Complete native contract / clause coverage
@@ -153,7 +151,7 @@ uninstantiated source families and decision-dependent expected outcomes.
 | Pieces and complete actions —2 | General/king orthogonal palace step; advisor diagonal palace step; elephant two-diagonal with eye blocker, own half only; horse orthogonal leg then diagonal destination; chariot orthogonal sliding; cannon quiet sliding or capture over exactly one screen; soldier owner-relative forward and sideways after crossing river, never backward. Capture removes one destination victim. No promotions, hands, drops, castling or declaration is imported. Complete action is native origin+destination; derived capture/check effects are rules-owned. |
 | Board legality —2/3 | Reject own-piece landing, malformed/off-board requests, moving wrong side, exposing own general, and unobstructed facing generals. General capture is not a playable continuation API. Check evasions must enumerate **all** legal choices, including removing/adding cannon screens and horse-leg interpositions. Empty legal set loses whether checked or not; retain mate versus stalemate reason. |
 | History classifications —19/20 and5 | Preserve complete known actions and identity of relevant pieces. Classify all-check, mating threat, chase, exchange, block, offer, idle and mixtures; same victim versus changing victims; real/fake protection, pinned/blocked same-type targets, cannon/horse against protected chariot, own king/soldier and uncrossed victim exceptions, two-to-one counter-chase frequency, overlapping labels and responsibility precedence. No attack-set-only substitute. |
-| Match events —3/8/19/20 | Native resignation, agreement offer/accept, count claims, warning/refusal under XIANGQI-P1, board-terminal outcomes and neither-can-win3.2A with sound fast recognition and the bounded exact path. Event actor/turn semantics belong to native adapter; board-ply checks must not reject legitimate terminal commands merely because actor is not side to move. Availability is not conclusion. Preserve claim denials, unresolved assessment, failures and cancellations as different categories; invalid claims preserve semantic game state while the separately admitted request/rejection audit is retained. |
+| Match events —3/8/19/20 | Native resignation, agreement offer/accept, count claims, warning/refusal under XIANGQI-P1, board-terminal outcomes and neither-can-win 3.2A by sound fast recognition only. Event actor/turn semantics belong to native adapter; board-ply checks must not reject legitimate terminal commands merely because actor is not side to move. Availability is not conclusion. Preserve claim denials, unresolved assessment, failures and cancellations as different categories; invalid claims preserve semantic game state while the separately admitted request/rejection audit is retained. |
 | Imported roots and identities | Structural diagram admissibility differs from proven historical reachability. Preserve root provenance, declared counters, unavailable prefix, capture/check/pursuit history and warning state. Separate board equality, rules-history identity, saved-document identity and search reuse identity. Repetition starts with known root; no invented earlier occurrence. |
 | Exact transition/reversal | Validate atomically, apply complete action/events once, undo exact board/material/side/counters/history/classification. Semantic undo changes game state, never revives old engine execution identities. Canonical commands and accepted events replay exactly. |
 | Notation / records | Selected diagnostic coordinate dialect: files a–i from Red's left, ranks0–9 from Red baseline, e.g. `a0a1`; name/pin dialect explicitly. ICCS/UCI/UCCI/Chinese notation are adapters, **not a native canonical record**. FEN-like import must pin piece alphabet, active-color meaning, unused fields/counters and strict parsing; preserve unsupported fields or reject, never guess. Pure board FEN cannot restore full history. Schema/version/strict duplicate rejection and encoded size limits use the existing native-envelope boundary. |
@@ -179,6 +177,5 @@ The current [native history contract](history-contract.md) resolves G-CYCLE and
 records the consequence-relevant classification/admission software policy.
 History evidence traces actual fixtures, review and tests.
 The planning-boundary text above is preserved history; G-NOWIN semantics now have
-the explicit owner resolution above. MSH-94 does not implement the required
-exact backend105 or any future Xiangqi consumer. Complete M4 delivery still waits
-for the recorded graph, including105; MSH-45/M4 remain open.
+the explicit owner resolution above. MSH-94 does not implement any Xiangqi
+consumer. The exact backend that MSH-105 later added was removed by MSH-269.

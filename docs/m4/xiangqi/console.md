@@ -49,7 +49,7 @@ quit
   conclusion events. `legal-local` is not permission to bypass game admission.
 - `move <action>...` is one atomic batch: all native commands must admit and the
   actual final canonical envelope must fit before the session is replaced.
-  A failed batch changes neither current game nor pending exact work.
+  A failed batch does not change the current game.
 - `eligibility red|black` is advisory. `claim`, `resign`, `offer`, `accept`,
   `decline` submit actual native commands with the specified actor. Claims use
   claimant-specific history and can return an admitted rejection audit without
@@ -73,7 +73,7 @@ uses the same native wrapper. `record load-json` accepts it inline within the
 4096-byte console line bound. Larger valid records must use `load-file` with the
 existing1MiB encoded-envelope bound. FEN-only or foreign-game restoration,
 unknown/duplicate/missing/conflicting fields and forged derived history reject
-before replacement. Unsupported exact-mode restoration is not downgraded.
+before replacement.
 
 `record save <path>` atomically publishes a fully written new file and refuses
 existing files/symlinks, reusing the established no-overwrite console helper.
@@ -95,57 +95,24 @@ program arguments. Oversized input is drained to LF, then later commands can run
 Native admission, resource refusal, audited claim rejection and execution failure
 remain distinct. Internal invariant failures are explicit; no result is invented.
 
-## Explicit exact diagnostics and execution ownership
+## No-win assessment
 
 ```
 nowin fast
-nowin exact
-nowin poll
-nowin wait
-nowin exact 5000 50000 1000 4194304 bfs
-nowin cancel
 ```
 
-Fast queries stay scoped native fast evidence. Exact defaults are the current
-MSH-105 measured20kstates/200kedges/250ms/4MiB/4096witnessplies/DFS. Optional
-numeric settings are states, edges, milliseconds, memory bytes and optional
-`bfs|dfs`; the native verifier enforces its existing hard ceilings. Invalid
-ceilings produce verifier Failure, exhaustion/cancellation Unknown, never a
-made-up ongoing/winnable result or draw. No ordinary query/replay starts exact work.
-
-One worker and one bounded result slot are owned by the session. `nowin exact`
-replaces/retire-cancels earlier work; the host polls native cancellation between
-bounded operations. `poll` is nonblocking. `wait` is an explicitly blocking
-observation bounded by the submitted native limits, not a live progress stream.
-`cancel`, successful position/record replacement, move/command, undo and quit
-retire the request, signal cancellation and join the worker. Drop does the same.
-No child process or unbounded queue is introduced. Polling an inactive request
-is an explicit diagnostic error, not a synthetic cancellation observation.
-
-Actual accepted output includes `nowin-context` with native purpose/goal/session/
-generation/target/limits, `nowin-source` with the complete canonical source
-record, and `nowin-result` with the actual native verdict/witness/work statistics.
-Retain these together: `assessment()` alone would lose exact provenance.
-Execution is read-only and full context checked; retired results cannot be
-applied to a changed/equal/reopened game. Exact results never enter a move or
-claim application handler.
-
-These printed observations are bounded diagnostic evidence; `GameRecord` saves
-the full game semantics, not pending exact work or a console analysis archive.
-Reopening explicitly stops work. No unsupported promise to restore exact
-observations as resumable work is made. If an experimental result genuinely
-requires incomplete exact adjudication, it remains unresolved/unscored under
-the approved MSH-84 policy. The console cannot commit a read-only proof as an
-undocumented native conclusion. This is not general practical WXF completeness.
+`nowin fast` prints the scoped native fast assessment of the current position;
+`status` prints the same value. `unknown` is a fast miss, not a possible win or
+a draw. There is no exact no-win analysis: John removed it on 2026-11-25
+(MSH-269). This is not general practical WXF completeness.
 
 ## Verification
 
 Actual subprocess fixtures in `tests/xiangqi_cli.rs` exercise initial44actions,
 perft/divide, atomic refusal, native third-warning/fourth-loss, claimant99/100
 counts, admitted audits, agreement/resignation, canonical Save/Open and restored
-undo, strict/bounded/UTF8/foreign-record rejection, exact255-state closure,
-replayed2-ply natural witness, Unknown, cancellation/replacement/undo retirement
-and oversized-line recovery. Existing common console tests now use a genuinely
+undo, strict/bounded/UTF8/foreign-record rejection, the read-only fast no-win
+assessment and oversized-line recovery. Existing common console tests now use a genuinely
 unknown game spelling instead of rejecting the newly delivered Xiangqi selection.
 
 Initial test expectations were corrected from native history-contract.md, not

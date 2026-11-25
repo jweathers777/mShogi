@@ -66,9 +66,9 @@ preferences cannot change ownership during a game.
 
 ## Session state and history
 
-Engine observations and Xiangqi exact evidence stay in session memory. Each
-list retains its newest 256 results. They are not saved. Open does not restore
-or verify old analysis evidence.
+Engine observations stay in session memory. The list retains its newest 256
+results. They are not saved. Open does not restore or verify old analysis
+evidence.
 
 Take back cuts the command list. It retains the current session's results as
 historical observations. Abandoned continuations, history selection, pending

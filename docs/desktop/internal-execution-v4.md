@@ -73,8 +73,7 @@ claim, concluded root, incomplete work and actual telemetry. Shogi retains
 complete move/drop/promotion, formal declaration, conclusion and native
 incomplete work. Xiangqi retains Red/Black semantics,
 complete WXF history, warning/claim state, sound-fast-only search and unresolved
-adjudication without a fabricated score. Native Xiangqi in-process exact evidence
-retains its separate explicit bounded operation and original provenance.
+adjudication without a fabricated score.
 
 The server executes Chess directly from its native canonical record. It never
 creates a retired Chess request. The authoritative desktop owner checks exact current context,
@@ -130,8 +129,8 @@ absence of a final observation does not invent search telemetry.
 ## Persistence
 
 The shared native document saves the game, human side and settings (MSH-228).
-Engine observations and Xiangqi exact evidence stay in session memory; each
-list keeps its newest 256 results. They are not part of Save/Open. Take back
+Engine observations stay in session memory; the list keeps its newest 256
+results. They are not part of Save/Open. Take back
 cuts the game command list and keeps the open session's results as historical
 observations. Opening restores the live game with fresh runtime identities,
 empty results and stopped execution. It does not restore a history selection.

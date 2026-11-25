@@ -159,6 +159,6 @@ requiring zoom/pan; no common renderer/layout imposes the harness's scrolling.
 The Xiangqi native archive contract adds an explicit
 Xiangqi payload to the existing v2 dispatcher. It preserves the frozen Chessv1
 writer and existing Chess/Shogiv2 payloads. Its measured native replay admission,
-complete event prefixes and historical exact evidence remain game-specific;
+and complete event prefixes remain game-specific;
 this addition does not claim finished Xiangqi product UI. The original MSH-73
 verification narrative above remains historical evidence.

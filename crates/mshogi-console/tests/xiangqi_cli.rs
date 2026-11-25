@@ -357,7 +357,14 @@ fn fast_no_win_assessment_is_read_only() {
         let r = tagged(&out, "record ");
         assert_eq!(r.len(), 2);
         assert_eq!(r[0], r[1]);
-        assert_eq!(tagged(&out, "no-win-fast "), vec![expected.to_owned()]);
+        // `position` prints the status line; `nowin fast` prints the assessment alone.
+        assert_eq!(
+            tagged(&out, "no-win-fast "),
+            vec![
+                format!("{expected} (not an ongoing-game verdict)"),
+                expected.to_owned()
+            ]
+        );
     }
 }
 

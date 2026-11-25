@@ -4,7 +4,7 @@ use mshogi_core::{
     tori as t,
 };
 use mshogi_desktop_session::{
-    DesktopController, IoPhase, SessionOperation, SharedDesktopCommand, SharedSnapshot,
+    DesktopController, SessionOperation, SharedDesktopCommand, SharedSnapshot,
 };
 use std::{
     path::Path,
@@ -297,21 +297,4 @@ pub fn write_all(dir: &Path) {
         "repetition-prefix",
         &send(&mut c, SessionOperation::Inspect { event_index: 4 }),
     );
-    // Actual failed oversized Open: typed native resource facts, current Tori preserved.
-    let path = std::env::temp_dir().join(format!("msh132-oversized-{}.mshogi", std::process::id()));
-    std::fs::write(&path, vec![b' '; 16 * 1024 * 1024 + 1]).unwrap();
-    let id = c
-        .queue_shared_open(path.clone(), c.shared_open_token())
-        .unwrap();
-    let deadline = Instant::now() + Duration::from_secs(30);
-    loop {
-        let s = c.shared_snapshot();
-        if s.io.id == id && s.io.phase == IoPhase::Failed {
-            write(dir, "resource", &s);
-            break;
-        }
-        assert!(Instant::now() < deadline);
-        std::thread::sleep(Duration::from_millis(1));
-    }
-    std::fs::remove_file(path).unwrap();
 }

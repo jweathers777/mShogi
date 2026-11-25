@@ -925,7 +925,6 @@ fn records(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
             raw["root"]["state"].as_object_mut().unwrap().remove("root");
             raw.to_string()
         }
-        "oversized_record" => format!("{}{}", record.as_json(), " ".repeat(MAX_GAME_RECORD_BYTES)),
         _ => return Err("unknown fixture mutation".into()),
     };
     let result = GameRecord::from_json(&mutated);

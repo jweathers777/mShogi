@@ -366,25 +366,24 @@ fn common_shogi_restore_preserves_import_and_terminal_event_undo() {
     assert!(s.ends_with("sfen 8k/9/9/9/9/9/9/9/K8 b P 17\n"));
 }
 #[test]
-fn explicit_record_operations_never_guess_path_vs_json_and_recover_after_long_lines() {
+fn explicit_record_operations_never_guess_path_vs_json() {
     for game in ["chess", "shogi"] {
         let dir = Dir::new();
         let path = dir.0.join("not-json");
         fs::write(&path, initial(game)).unwrap();
-        let long = "x".repeat(4097);
         let pretty = format!("{}{}", initial(game), " ".repeat(5000));
         let large = dir.0.join("large.json");
         fs::write(&large, pretty).unwrap();
         let out = shell(
             game,
             &format!(
-                "record load-json {}\nrecord load-file {{}}\n{long}\nrecord load-file {}\nrecord print\n",
+                "record load-json {}\nrecord load-file {{}}\nrecord load-file {}\nrecord print\n",
                 path.display(),
                 large.display()
             ),
         );
         assert_eq!(out.status.code(), Some(1));
-        assert_eq!(String::from_utf8_lossy(&out.stderr).lines().count(), 3);
+        assert_eq!(String::from_utf8_lossy(&out.stderr).lines().count(), 2);
         assert_eq!(records(&out), vec![initial(game)]);
     }
 }

@@ -112,12 +112,8 @@ fn same_position_different_known_histories_preserve_different_claim_results() {
     assert_ne!(request(&repeated).game, request(&imported).game);
 }
 #[test]
-fn malformed_oversized_unknown_and_unterminated_input_are_rejected() {
-    for bytes in [
-        b"{}\n".to_vec(),
-        vec![b'x'; MAX_REQUEST_BYTES + 2],
-        b"{}".to_vec(),
-    ] {
+fn malformed_unknown_and_unterminated_input_are_rejected() {
+    for bytes in [b"{}\n".to_vec(), b"{}".to_vec()] {
         assert!(serve_once(Cursor::new(bytes), Vec::new()).is_err());
     }
     let mut value =

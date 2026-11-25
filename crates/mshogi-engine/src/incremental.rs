@@ -206,12 +206,6 @@ impl Client {
     /// An invalid/stale response cannot change the acknowledged endpoint.
     pub fn decode(&mut self, bytes: &[u8]) -> Result<ExecutionResponse, (FailureKind, String)> {
         let malformed = |error: String| (FailureKind::MalformedResponse, error);
-        if bytes.strip_suffix(b"\n").unwrap_or(bytes).len() > MAX_RESPONSE_BYTES {
-            return Err((
-                FailureKind::OversizedResponse,
-                "response exceeds byte cap".into(),
-            ));
-        }
         let text = std::str::from_utf8(bytes).map_err(|e| malformed(e.to_string()))?;
         crate::shared::reject_observation_duplicates(text, &mut || false).map_err(malformed)?;
         let wire: Response = serde_json::from_str(text).map_err(|e| malformed(e.to_string()))?;
@@ -758,7 +752,6 @@ mod tests {
         );
         assert_ne!(duplicate, text);
         assert!(client.decode(duplicate.as_bytes()).is_err());
-        assert!(client.decode(&vec![b' '; MAX_RESPONSE_BYTES + 1]).is_err());
         // Invalid replies leave the exact pending request available for its reply.
         client.decode(text.as_bytes()).unwrap();
         let next = request(&shogi::Game::new(), 2);

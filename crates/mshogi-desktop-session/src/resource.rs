@@ -13,9 +13,7 @@ pub const MAX_RESOURCE_DIAGNOSTIC_BYTES: usize = 4096;
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ResourceCategory {
-    /// Actual encoded desktop document size.
-    EncodedDocumentBytes,
-    /// Actual encoded authoritative native record size.
+    /// Encoded native root size, a fixed bound independent of game length.
     CanonicalRecordBytes,
     /// Monotonic execution, request, session or document identity space.
     IdentityHeadroom,
@@ -184,8 +182,8 @@ mod tests {
 
     #[test]
     fn rejected_candidate_count_is_distinct_from_accepted_count() {
-        let candidate = ResourceFact::measured(ResourceCategory::EncodedDocumentBytes, 257, 256);
-        let accepted = ResourceFact::measured(ResourceCategory::EncodedDocumentBytes, 256, 256)
+        let candidate = ResourceFact::measured(ResourceCategory::IdentityHeadroom, 257, 256);
+        let accepted = ResourceFact::measured(ResourceCategory::IdentityHeadroom, 256, 256)
             .with_measurement(ResourceMeasurement::Accepted);
         assert_eq!(candidate.measurement, ResourceMeasurement::Candidate);
         assert_eq!(accepted.measurement, ResourceMeasurement::Accepted);
@@ -208,7 +206,7 @@ mod tests {
     #[test]
     fn diagnostic_is_bounded_without_broken_utf8() {
         let text = format!("{}界suffix", "a".repeat(MAX_RESOURCE_DIAGNOSTIC_BYTES - 1));
-        let fact = ResourceFact::measured(ResourceCategory::EncodedDocumentBytes, 11, 10);
+        let fact = ResourceFact::measured(ResourceCategory::IdentityHeadroom, 11, 10);
         let failure = ResourceFailure::new(fact.clone(), text);
         assert_eq!(
             failure.diagnostic().len(),

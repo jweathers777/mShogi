@@ -253,9 +253,6 @@ impl ExecutionObservation {
             }
         }
         check(stop)?;
-        if text.len() > crate::MAX_RESPONSE_BYTES {
-            return Err("Execution observation exceeds the encoded response limit.".into());
-        }
         reject_observation_duplicates(text, stop).map_err(|error| {
             if error == "Execution observation parsing stopped" {
                 ObservationDecodeError::Stopped

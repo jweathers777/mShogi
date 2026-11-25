@@ -26822,27 +26822,6 @@
       "requires_owner_decisions": []
     },
     {
-      "id": "CHU-RECORD-OVERSIZED_RECORD",
-      "clauses": [
-        "C10"
-      ],
-      "sources": [
-        "software:strict_native_replay"
-      ],
-      "scope": "native",
-      "given": {
-        "fixture_ref": "CHU-LION-C2-3",
-        "mutation": "oversized_record"
-      },
-      "expected": {
-        "replay_admitted": false,
-        "accepted_live_game_unchanged": true,
-        "diagnostic_kind": "record_or_resource_failure_not_chess_outcome"
-      },
-      "expectation_method": "Independent source transcription and explicit hand-worked example; no engine output",
-      "requires_owner_decisions": []
-    },
-    {
       "id": "CHU-RECORD-ROUNDTRIP",
       "clauses": [
         "C10"

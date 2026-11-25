@@ -6,7 +6,7 @@ use mshogi_search::{
     search::SearchLimits,
 };
 use std::{
-    io::{self, BufRead, Read, Write},
+    io::{self, BufRead, Write},
     thread,
     time::Duration,
 };
@@ -140,32 +140,23 @@ impl<T> std::ops::DerefMut for EngineState<'_, T> {
     }
 }
 
-/// Read one bounded request line. `Ok(None)` is a clean end of input.
+/// Read one request line. `Ok(None)` is a clean end of input.
 fn read_request(input: &mut impl BufRead) -> io::Result<Option<Vec<u8>>> {
     let mut bytes = Vec::new();
-    input
-        .by_ref()
-        .take((MAX_REQUEST_BYTES + 2) as u64)
-        .read_until(b'\n', &mut bytes)?;
+    input.read_until(b'\n', &mut bytes)?;
     if bytes.is_empty() {
         return Ok(None);
     }
-    if bytes.last() != Some(&b'\n') || bytes.len() > MAX_REQUEST_BYTES + 1 {
+    if bytes.last() != Some(&b'\n') {
         return Err(io::Error::new(
             io::ErrorKind::InvalidData,
-            "missing newline or oversized internal request",
+            "missing newline after internal request",
         ));
     }
     Ok(Some(bytes))
 }
 fn write_response(output: &mut impl Write, response: &impl serde::Serialize) -> io::Result<()> {
     let bytes = serde_json::to_vec(response).map_err(io::Error::other)?;
-    if bytes.len() > MAX_RESPONSE_BYTES {
-        return Err(io::Error::new(
-            io::ErrorKind::InvalidData,
-            "internal response exceeds byte cap",
-        ));
-    }
     output.write_all(&bytes)?;
     output.write_all(b"\n")?;
     output.flush()

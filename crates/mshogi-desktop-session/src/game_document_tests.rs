@@ -96,12 +96,6 @@ fn opening_refuses_wrong_shape_game_profile_and_records() {
     record["payload"]["record"]["events"] =
         json!([{"index": 0, "actor": "gote", "command": {"kind": "resign"}}]);
     assert!(decode(&record).is_err(), "record that does not replay");
-    let oversize = vec![b' '; MAX_ARCHIVE_BYTES + 1];
-    let error = Doc::decode(&oversize, &mut || false).unwrap_err();
-    assert_eq!(
-        error.resource.unwrap().fact().category,
-        ResourceCategory::EncodedDocumentBytes
-    );
 }
 
 #[test]

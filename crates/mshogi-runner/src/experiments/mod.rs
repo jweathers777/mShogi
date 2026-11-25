@@ -12,10 +12,10 @@ use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::{collections::BTreeSet, path::Path};
 
-/// Aggregate config/report/data resource bound, independent of product budgets.
+/// Aggregate config/report/data bound for one experiment batch.
 // Encoded steps omit the native record that native replay restores (MSH-204),
-// so a report grows linearly with game length; the runner still reserves
-// 8 MiB per transition and retains all schedule caps.
+// so a report grows linearly with game length; the runner reserves 8 MiB of
+// this budget per transition and retains all schedule caps.
 pub const MAX_BYTES: usize = 128 * 1024 * 1024;
 /// Versioned schedule and evidence family.
 pub const SCHEMA: u32 = 1;
@@ -249,8 +249,6 @@ impl Config {
             || self.openings.len() > 16
             || !(1..=16).contains(&self.rounds)
             || self.openings.len() * usize::from(self.rounds) * (self.players.len() - 1) * 2 > 128
-            // The native Tori event limit (MSH-208) allows about 1,000 plies.
-            || self.max_steps > 1024
             || self.openings.len()
                 * usize::from(self.rounds)
                 * (self.players.len() - 1)
@@ -481,48 +479,20 @@ fn admit_bounded(
     result: &mshogi_engine::ExecutionResult,
     limits: WorkLimits,
 ) -> Result<native::Admission, String> {
-    admit_with_match_capacity(
-        state,
-        result,
-        limits,
-        mshogi_core::native::MAX_RECORD_ENVELOPE_BYTES,
-    )
-}
-fn admit_with_match_capacity(
-    state: &mut native::NativeState,
-    result: &mshogi_engine::ExecutionResult,
-    limits: WorkLimits,
-    match_capacity: usize,
-) -> Result<native::Admission, String> {
     let mut candidate = state.fork()?;
     let decision = candidate.admit(result)?;
     let after = candidate
         .root()
         .map_err(|e| format!("transition evidence: {e}"))?;
-    if after
-        .chess_match
-        .as_ref()
-        .is_some_and(|r| r.len() > match_capacity)
-    {
-        return Err("transition evidence exceeds Chess match record capacity".into());
-    }
-    let request = mshogi_engine::ExecutionRequest {
-        protocol: mshogi_engine::PROTOCOL_VERSION,
-        context: ExecutionContext {
-            purpose: ExecutionPurpose::EngineTurn {},
-            request_id: u64::MAX,
-            session_version: u64::MAX,
-            game: after.record,
-            limits,
-        },
+    let context = ExecutionContext {
+        purpose: ExecutionPurpose::EngineTurn {},
+        request_id: u64::MAX,
+        session_version: u64::MAX,
+        game: after.record,
+        limits,
     };
-    if !request.context.valid_limits()
-        || serde_json::to_vec(&request)
-            .map_err(|e| e.to_string())?
-            .len()
-            > mshogi_engine::MAX_REQUEST_BYTES
-    {
-        return Err("transition evidence exceeds existing request/history capacity".into());
+    if !context.valid_limits() {
+        return Err("transition evidence has unsupported work limits".into());
     }
     *state = candidate;
     Ok(decision)
@@ -817,11 +787,6 @@ impl Report {
                     }
                     continue;
                 };
-                if serde_json::to_vec(observation).map_err(err)?.len()
-                    > mshogi_engine::MAX_RESPONSE_BYTES
-                {
-                    return Err(err("observation exceeds existing response capacity"));
-                }
                 let refusal = if exhausted {
                     Some("clock_limit")
                 } else if !observation.matches(c) {

@@ -206,7 +206,6 @@ fn strict_canonical_mutations_reject_without_changing_live_state() {
         "\"side\":\"gote\",\"side\":\"sente\"",
         1,
     ));
-    invalid.push(format!("{}{}", original, " ".repeat(MAX_GAME_RECORD_BYTES)));
     for input in invalid {
         assert!(GameRecord::from_json(&input).is_err());
         assert_eq!(bytes(&g), original);
@@ -305,26 +304,6 @@ fn long_history_continues_and_remains_closable_and_replayable() {
     control(&mut g, Side::Gote, GameCommand::Resign).unwrap();
     assert!(GameRecord::from_json(&bytes(&g)).is_ok());
 }
-#[test]
-fn exact_native_record_byte_limit_accepts_padding_and_rejects_one_more_byte() {
-    let g = game("CHU-REP-QUIET");
-    let native = bytes(&g);
-    let mut exact = native.clone();
-    exact.extend(std::iter::repeat_n(
-        ' ',
-        MAX_GAME_RECORD_BYTES - native.len(),
-    ));
-    assert_eq!(exact.len(), MAX_GAME_RECORD_BYTES);
-    let admitted = GameRecord::from_json(&exact).unwrap();
-    assert_eq!(admitted.to_json(), native);
-    exact.push(' ');
-    assert_eq!(
-        GameRecord::from_json(&exact).unwrap_err(),
-        RecordError::Capacity
-    );
-    assert_eq!(bytes(&g), native);
-}
-
 #[test]
 fn stop_aware_replay_prefix_and_choices_stop_or_match_the_plain_calls() {
     let mut g = Game::standard();

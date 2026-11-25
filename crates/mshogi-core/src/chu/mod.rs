@@ -24,9 +24,7 @@ mod local_tests;
 mod game;
 mod record;
 pub use game::*;
-pub use record::{
-    GAME_RECORD_SCHEMA_VERSION, GameDelta, GameRecord, RecordError,
-};
+pub use record::{GAME_RECORD_SCHEMA_VERSION, GameDelta, GameRecord, RecordError};
 
 #[cfg(test)]
 mod game_tests;

@@ -51,15 +51,6 @@ fn strict_effective_limits_and_bounded_aggregate_work() {
     let mut bad = c.clone();
     bad.max_steps = 512;
     assert!(bad.validate().is_err());
-    // One opening pair may use the native Tori event limit (MSH-204/MSH-208).
-    let mut pair = c.clone();
-    pair.openings.truncate(1);
-    pair.players.truncate(2);
-    pair.rounds = 1;
-    pair.max_steps = 1024;
-    pair.validate().unwrap();
-    pair.max_steps = 1025;
-    assert!(pair.validate().is_err());
     let mut bad = c.clone();
     bad.players[0].limits.remove(0);
     assert!(bad.validate().is_err());
@@ -233,31 +224,7 @@ fn chess_corrupt_pv_incomplete_and_scores_are_not_accepted() {
     );
 }
 #[test]
-fn capacity_crossing_refuses_transition_atomically() {
-    let root = standard_root(RulesProfile::ChessMatchV1).unwrap();
-    let mut state = native::NativeState::from_root(&root).unwrap();
-    // Controlled smaller capacity uses the exact production refusal path,
-    // without thousands of repeated native MatchObserve admissions.
-    let capacity = root.chess_match.as_ref().unwrap().len();
-    let e = admit_with_match_capacity(
-        &mut state,
-        &chess_move_result(&["e2e4"]),
-        WorkLimits {
-            time_ms: None,
-            depth: 1,
-            nodes: 512,
-        },
-        capacity,
-    )
-    .unwrap_err();
-    assert!(
-        e.contains("capacity") || e.contains("transition evidence"),
-        "{e}"
-    );
-    assert_eq!(state.root().unwrap(), root);
-}
-#[test]
-fn observation_decoder_keeps_duplicates_and_wire_size_visible() {
+fn observation_decoder_keeps_duplicates_visible() {
     let root = standard_root(RulesProfile::ChessMatchV1).unwrap();
     let context = ExecutionContext {
         purpose: ExecutionPurpose::EngineTurn {},
@@ -290,15 +257,6 @@ fn observation_decoder_keeps_duplicates_and_wire_size_visible() {
         1,
     );
     assert!(serde_json::from_str::<Step>(&duplicate).is_err());
-    let oversized = text.replacen(
-        "\"observation\":{",
-        &format!(
-            "\"observation\":{{{}",
-            " ".repeat(mshogi_engine::MAX_RESPONSE_BYTES)
-        ),
-        1,
-    );
-    assert!(serde_json::from_str::<Step>(&oversized).is_err());
 }
 #[test]
 fn shogi_and_xiangqi_reject_illegal_later_pv_commands_atomically() {

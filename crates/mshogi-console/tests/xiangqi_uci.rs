@@ -239,7 +239,7 @@ fn zero_work_and_actual_terminal_never_invent_a_bestmove_or_score() {
     }
 }
 #[test]
-fn unsupported_controls_options_and_oversized_input_are_explicit_and_drained() {
+fn unsupported_controls_and_options_are_explicit() {
     let mut e = engine();
     e.send("setoption name RulesProfile value other");
     e.send("setoption name Nodes value 5000001");
@@ -247,7 +247,6 @@ fn unsupported_controls_options_and_oversized_input_are_explicit_and_drained() {
     e.send("go wtime 1000 depth 3");
     e.send("go btime 1000");
     e.send("go depth 1 depth 2");
-    e.send(&"x".repeat(4097));
     e.send("isready");
     assert_eq!(e.until("readyok"), vec!["readyok"]);
     let (code, err, _) = e.finish(true);
@@ -259,7 +258,6 @@ fn unsupported_controls_options_and_oversized_input_are_explicit_and_drained() {
         "time controls cannot combine",
         "remaining time",
         "duplicate go control",
-        "line exceeds 4096",
     ] {
         assert!(err.contains(expected), "missing {expected}: {err}");
     }

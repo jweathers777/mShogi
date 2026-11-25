@@ -5,7 +5,6 @@ use std::{
     fs,
     io::Write,
     process::{Command, Output, Stdio},
-    sync::atomic::{AtomicU64, Ordering},
 };
 fn run(args: &[&str], input: &str) -> Output {
     let mut child = Command::new(env!("CARGO_BIN_EXE_mshogi"))
@@ -16,13 +15,13 @@ fn run(args: &[&str], input: &str) -> Output {
         .stderr(Stdio::piped())
         .spawn()
         .unwrap();
-    child
-        .stdin
-        .take()
-        .unwrap()
-        .write_all(input.as_bytes())
-        .unwrap();
-    child.wait_with_output().unwrap()
+    // Write from another thread: a large record line must not wait on a full stdout pipe.
+    let mut stdin = child.stdin.take().unwrap();
+    let input = input.to_owned();
+    let writer = std::thread::spawn(move || stdin.write_all(input.as_bytes()).unwrap());
+    let output = child.wait_with_output().unwrap();
+    writer.join().unwrap();
+    output
 }
 fn profile(p: t::Profile) -> &'static str {
     if p == t::Profile::AdamsModern {
@@ -32,41 +31,10 @@ fn profile(p: t::Profile) -> &'static str {
     }
 }
 fn shell(p: t::Profile, input: &str) -> Output {
-    // Rich native roots exceed the intentional 4096-byte shell line bound.
-    // Exercise the public load-file adapter for those fixtures, leaving small
-    // records on the direct load-json path and preserving the production cap.
-    static NEXT: AtomicU64 = AtomicU64::new(0);
-    let mut paths = Vec::new();
-    let lines = input
-        .lines()
-        .map(|line| {
-            if line.len() > 4096
-                && let Some(json) = line.strip_prefix("record load-json ")
-            {
-                let path = std::env::temp_dir().join(format!(
-                    "mshogi-ten44-fixture-{}-{}.json",
-                    std::process::id(),
-                    NEXT.fetch_add(1, Ordering::Relaxed)
-                ));
-                fs::write(&path, json).unwrap();
-                let replacement = format!("record load-file {}", path.display());
-                paths.push(path);
-                replacement
-            } else {
-                line.to_owned()
-            }
-        })
-        .collect::<Vec<_>>()
-        .join("\n")
-        + "\n";
-    let result = run(
+    run(
         &["--game", "tenjiku", "--profile", profile(p), "shell"],
-        &lines,
-    );
-    for path in paths {
-        fs::remove_file(path).unwrap();
-    }
-    result
+        &format!("{input}\n"),
+    )
 }
 fn output(o: &Output) -> String {
     String::from_utf8(o.stdout.clone()).unwrap()
@@ -420,7 +388,7 @@ fn actual_draw_resignation_and_terminal_diagnostics_remain_native() {
 }
 
 #[test]
-fn loaded_profile_is_preserved_by_fresh_start_and_oversized_lines_are_drained() {
+fn loaded_profile_is_preserved_by_fresh_start() {
     for p in t::Profile::ALL {
         let other = if p == t::Profile::AdamsModern {
             t::Profile::MullerCompleted
@@ -430,13 +398,11 @@ fn loaded_profile_is_preserved_by_fresh_start_and_oversized_lines_are_drained() 
         let o = shell(
             other,
             &format!(
-                "record load-json {}\nposition startpos\nrecord print\n{}\nrecord print\n",
-                encode(&root(p, &[])),
-                "x".repeat(4097)
+                "record load-json {}\nposition startpos\nrecord print\nrecord print\n",
+                encode(&root(p, &[]))
             ),
         );
-        assert!(!o.status.success());
-        assert!(String::from_utf8_lossy(&o.stderr).contains("line exceeds 4096 bytes"));
+        success(&o);
         let r = records(&o);
         assert_eq!(r.len(), 2);
         assert_eq!(r[0], r[1]);

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-25T21:41:00Z'
+updated_date: '2026-11-25T21:49:00Z'
 labels:
   - core
   - model:large
@@ -56,4 +56,6 @@ John, 2026-11-25: also remove the 2 MiB cap on the engine reply, and any tests t
 John, 2026-11-25: no new tests to show that the removed limits are gone; update the documentation that refers to them.
 
 Checkpoint 1 (claude, branch claude/msh-268-remove-size-limits): core production caps removed (WIP, tests not yet updated, does not build its tests yet): native envelope cap, Shogi/Xiangqi/Tori/Chu/Tenjiku record byte caps, Xiangqi per-submit 4 KiB record headroom check. Kept: per-command 4096-byte parse cap in Tori/Chu/Tenjiku (strict_command; one command, not game length), MAX_COMPACT_ROOT_BYTES (root metadata), Xiangqi MAX_POSITION_BYTES/MAX_FEN_BYTES (position strings), u32/u64 counter overflow checks (integer representation). Production lines before: crates/*/src without test/conformance files 68538; desktop/src + src-tauri without tests/fixtures 3930. Next: core tests; engine MAX_REQUEST_BYTES/MAX_RESPONSE_BYTES (lib, server, bridge, incremental, shared; FailureKind::OversizedResponse); console MAX_LINE_BYTES and record_io; runner experiments (admit_with_match_capacity, request/response checks, max_steps>1024 derived from Tori limit); desktop MAX_ARCHIVE_BYTES, EncodedDocumentBytes/CanonicalRecordBytes, shared.rs envelope+4096 check, capacity fixtures; frontend; scripts; docs.
+
+Checkpoint 2 (claude): Rust caps removed in core (incl. tests, Chu fixture CHU-RECORD-OVERSIZED_RECORD removed, corpus hash/counts 249/239 updated), engine (MAX_REQUEST_BYTES, MAX_RESPONSE_BYTES, FailureKind::OversizedResponse), console (MAX_LINE_BYTES, record_io file/save caps), runner experiments (envelope/request/response checks; max_steps<=1024 derived from the old Tori limit), desktop (MAX_ARCHIVE_BYTES, EncodedDocumentBytes, command envelope+4096 cap, Tori oversized-Open fixture). Workspace builds. Next: frontend TS (oversized_response, encoded_document_bytes texts/tests), scripts, docs, full checks, CI, review.
 <!-- SECTION:NOTES:END -->

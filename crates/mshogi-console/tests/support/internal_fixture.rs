@@ -92,12 +92,6 @@ fn main() {
             println!("not json");
             return;
         }
-        4 => {
-            let _ = io::stdout().write_all(&vec![b'x'; MAX_RESPONSE_BYTES + 2]);
-            let _ = io::stdout().flush();
-            thread::sleep(Duration::from_secs(30));
-            return;
-        }
         5 => {
             thread::sleep(Duration::from_secs(30));
             return;

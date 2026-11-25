@@ -19,7 +19,7 @@ mod usi;
 mod xiangqi_session;
 mod xiangqi_uci;
 
-use session::{MAX_LINE_BYTES, Next, Session};
+use session::{Next, Session};
 
 #[derive(Clone, Copy, PartialEq)]
 enum Game {
@@ -291,22 +291,10 @@ fn shell(mut execute: impl FnMut(&str, &mut String) -> Result<Next, String>) -> 
     let mut failed = false;
     let mut input = stdin.lock();
     for index in 0usize.. {
-        let line = bounded_line(&mut input);
-        if matches!(line, Ok(None)) {
-            break;
-        }
         let number = index + 1;
-        let line = match line {
-            Ok(Some(Ok(bytes))) => bytes,
-            Ok(Some(Err(()))) => {
-                let _ = writeln!(
-                    stderr,
-                    "error: line {number}: line exceeds {MAX_LINE_BYTES} bytes"
-                );
-                failed = true;
-                continue;
-            }
-            Ok(None) => unreachable!(),
+        let line = match read_line(&mut input) {
+            Ok(Some(bytes)) => bytes,
+            Ok(None) => break,
             Err(error) => {
                 let _ = writeln!(stderr, "error: line {number}: cannot read input: {error}");
                 return ExitCode::FAILURE;
@@ -348,30 +336,14 @@ fn invalid_arguments(message: &str) -> ExitCode {
     ExitCode::from(2)
 }
 
-/// Consume an oversized line without allocating its remainder, then recover at LF.
-fn bounded_line(input: &mut impl BufRead) -> io::Result<Option<Result<Vec<u8>, ()>>> {
+/// Read one line without its LF; a possible CR stays in the line.
+fn read_line(input: &mut impl BufRead) -> io::Result<Option<Vec<u8>>> {
     let mut line = Vec::new();
-    let mut oversized = false;
-    let mut seen = false;
-    loop {
-        let chunk = input.fill_buf()?;
-        if chunk.is_empty() {
-            return Ok(seen.then_some(if oversized { Err(()) } else { Ok(line) }));
-        }
-        seen = true;
-        let end = chunk.iter().position(|&b| b == b'\n');
-        let take = end.unwrap_or(chunk.len());
-        if !oversized {
-            if line.len() + take > MAX_LINE_BYTES {
-                oversized = true;
-                line.clear();
-            } else {
-                line.extend_from_slice(&chunk[..take]);
-            }
-        }
-        input.consume(take + usize::from(end.is_some()));
-        if end.is_some() {
-            return Ok(Some(if oversized { Err(()) } else { Ok(line) }));
-        }
+    if input.read_until(b'\n', &mut line)? == 0 {
+        return Ok(None);
     }
+    if line.last() == Some(&b'\n') {
+        line.pop();
+    }
+    Ok(Some(line))
 }

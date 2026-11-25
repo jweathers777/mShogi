@@ -51,11 +51,8 @@ pub fn run() -> ExitCode {
             let stdin = io::stdin();
             let mut input = stdin.lock();
             loop {
-                let event = match bounded_uci_line(&mut input) {
-                    Ok(Some(Ok(bytes))) => Input::Line(bytes),
-                    Ok(Some(Err(()))) => {
-                        Input::Error(format!("line exceeds {} bytes", crate::MAX_LINE_BYTES))
-                    }
+                let event = match uci_line(&mut input) {
+                    Ok(Some(bytes)) => Input::Line(bytes),
                     Ok(None) => Input::End,
                     Err(error) => {
                         let _ = send.send(Input::Error(format!("cannot read input: {error}")));
@@ -89,34 +86,24 @@ pub fn run() -> ExitCode {
     }
 }
 // UCI permits CR and LF line endings. Treat CRLF as an empty extra line;
-// empty commands are ignored. Drain oversized lines without growing allocation.
-pub(super) fn bounded_uci_line(
-    input: &mut impl BufRead,
-) -> io::Result<Option<Result<Vec<u8>, ()>>> {
+// empty commands are ignored.
+pub(super) fn uci_line(input: &mut impl BufRead) -> io::Result<Option<Vec<u8>>> {
     let mut line = Vec::new();
-    let mut oversized = false;
     let mut seen = false;
     loop {
         let chunk = input.fill_buf()?;
         if chunk.is_empty() {
-            return Ok(seen.then_some(if oversized { Err(()) } else { Ok(line) }));
+            return Ok(seen.then_some(line));
         }
         seen = true;
         let end = chunk
             .iter()
             .position(|&byte| byte == b'\r' || byte == b'\n');
         let take = end.unwrap_or(chunk.len());
-        if !oversized {
-            if line.len() + take > crate::MAX_LINE_BYTES {
-                oversized = true;
-                line.clear();
-            } else {
-                line.extend_from_slice(&chunk[..take]);
-            }
-        }
+        line.extend_from_slice(&chunk[..take]);
         input.consume(take + usize::from(end.is_some()));
         if end.is_some() {
-            return Ok(Some(if oversized { Err(()) } else { Ok(line) }));
+            return Ok(Some(line));
         }
     }
 }
@@ -597,20 +584,11 @@ mod tests {
         }
     }
     #[test]
-    fn cr_lf_and_oversized_input_are_bounded_and_recover() {
+    fn cr_and_lf_both_end_a_line() {
         let mut input = std::io::Cursor::new(b"uci\risready\r\nquit\n");
         for expected in ["uci", "isready", "", "quit"] {
-            assert_eq!(
-                bounded_uci_line(&mut input).unwrap().unwrap().unwrap(),
-                expected.as_bytes()
-            );
+            assert_eq!(uci_line(&mut input).unwrap().unwrap(), expected.as_bytes());
         }
-        assert!(bounded_uci_line(&mut input).unwrap().is_none());
-        let mut input = std::io::Cursor::new(format!("{}\risready\r", "x".repeat(5000)));
-        assert!(bounded_uci_line(&mut input).unwrap().unwrap().is_err());
-        assert_eq!(
-            bounded_uci_line(&mut input).unwrap().unwrap().unwrap(),
-            b"isready"
-        );
+        assert!(uci_line(&mut input).unwrap().is_none());
     }
 }

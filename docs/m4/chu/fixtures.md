@@ -1,15 +1,15 @@
 > Historical MSH-82 preimplementation accounting below is preserved: its
 > zero-execution numbers describe that source/data checkpoint. Actual native86
-> acceptance is 1,072 checks across240 native rows.
+> acceptance covers239 native rows.
 > The ten shared/product obligations are reconciled in the current
 > MSH-43 coverage matrix.
 
 # Independent Chu fixture accounting
 
-The [corpus](fixtures.json) contains **250 rows:221 authored and29 explicitly
-owner-exchanged180° rotations**.240 belong to native86;10 record future shared/
-product obligations for78/43. There are1137 top-level expected fields, including
-explanations and future assertions: this is **not1137 executed assertions**,250
+The [corpus](fixtures.json) contains **249 rows:220 authored and29 explicitly
+owner-exchanged180° rotations**.239 belong to native86;10 record future shared/
+product obligations for78/43. There are1134 top-level expected fields, including
+explanations and future assertions: this is **not1134 executed assertions**,249
 unique positions or native conformance. Native Chu: **0 executed,0 passed**.
 
 Expectations precede implementation. C1/C2/C3 diagrams and prose, the selected
@@ -34,7 +34,7 @@ Rows can cover several clauses; these counts overlap.
 | C07 |11|Same-board history, quiet/check/attack responsibility, both-jitto/first actual passer, equivalent routes, last own opportunity before fourth |
 | C08 |13|Narrow three-piece threshold, exclusions/dead blockers, immediate equalizer/counterwin, current-turn imports, actual draw consent/refusal |
 | C09 |7|Exact private reversal, complete sequence/replay, imported provenance/counter,7/42 perft/divide |
-| C10 |15|Strict/malformed/conflicting records, ordered events and paths, history identity, atomic refusal and retired execution |
+| C10 |14|Strict/malformed/conflicting records, ordered events and paths, history identity, atomic refusal and retired execution |
 | C11 |10|Real native consumer requirements: codec/admission, choices/inspection/history, bounded engine, notation and finished12×12 UI |
 
 The complete empty-center actor sets preserve **actions**, not only destinations:
@@ -80,11 +80,9 @@ fixture links, setup inventories, coverage, rotations and reviewed data hashes.
 `python3 -m unittest discover -s docs/m4/chu -p 'test_validate.py'` exercises
 negative data admission. These implement **no Chu move generator or adjudicator**.
 
-The563,575-byte corpus exceeds the current Tori harness's512KiB embedded-data
-bound. This separate validator uses a measured1MiB development-data limit;
-product/native/archive constants are unchanged.86 should reuse the conformance
+This separate validator uses a1MiB development-data limit for the corpus file;
+it is not a game record limit.86 should reuse the conformance
 crate's generic assertions/property infrastructure with an actual Chu corpus/
 adapter boundary. The existing Tori corpus is not relabeled as Chu evidence.
-78 must independently measure actual Chu record/observation size and replay
-work before its product admission policy. No reference engine is a build/test/
+No reference engine is a build/test/
 milestone prerequisite under the [conformance policy](../../testing/conformance-policy.md).

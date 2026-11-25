@@ -33,12 +33,12 @@ fn execute(text: &str) -> std::io::Result<ExecutionResponse> {
 }
 
 #[test]
-fn singular_wire_rejects_old_versions_without_interpreting_a_legacy_payload() {
+fn wire_rejects_other_versions_and_shapes() {
     let request = request();
     let text = serde_json::to_string(&request).unwrap();
     let response = execute(&text).unwrap();
     assert!(response.matches(&request));
-    for version in [0, 2, 3, 4, PROTOCOL_VERSION + 1] {
+    for version in [0, PROTOCOL_VERSION - 1, PROTOCOL_VERSION + 1] {
         let mut changed = request.clone();
         changed.protocol = version;
         assert!(!changed.valid());
@@ -54,10 +54,10 @@ fn singular_wire_rejects_old_versions_without_interpreting_a_legacy_payload() {
         ));
         assert!(!failure.matches(&changed));
     }
-    // The former flat v2/v3 request shape is never guessed or translated.
-    let mut old = serde_json::to_value(&request.context).unwrap();
-    old["protocol"] = json!(3);
-    assert!(execute(&old.to_string()).is_err());
+    // A flat request shape is never guessed or translated.
+    let mut flat = serde_json::to_value(&request.context).unwrap();
+    flat["protocol"] = json!(PROTOCOL_VERSION);
+    assert!(execute(&flat.to_string()).is_err());
 }
 
 #[test]

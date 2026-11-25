@@ -1,5 +1,4 @@
 //! Actual native Chu results. No declaration, chess mate or exact-proof adaptation.
-use crate::observation_identity::{Identity, Profile, SearchKind};
 use crate::{ExecutionContext, ExecutionPurpose, StopReason};
 use mshogi_core::{
     chu::{Action, Conclusion, Game, GameCommand, GameRequest, Side},
@@ -45,43 +44,21 @@ fn required_score<'de, D: serde::Deserializer<'de>>(d: D) -> Result<Option<i32>,
     Option::<i32>::deserialize(d)
 }
 impl ChuTelemetry {
-    fn identity(&self) -> Option<Identity> {
-        Identity::classify(
-            &self.evaluator_id,
-            &self.search_id,
-            Profile {
-                evaluator: search::EVALUATOR_ID,
-                search: search::SEARCH_ID,
-                max_depth: search::MAX_DEPTH,
-                max_nodes: search::MAX_NODES,
-                win_score: search::WIN_SCORE,
-                line_bound: search::MAX_LINE,
-            },
-            Profile {
-                evaluator: search::LEGACY_EVALUATOR_ID,
-                search: search::LEGACY_SEARCH_ID,
-                max_depth: search::LEGACY_MAX_DEPTH,
-                max_nodes: search::LEGACY_MAX_NODES,
-                win_score: search::LEGACY_WIN_SCORE,
-                line_bound: 0,
-            },
-        )
+    fn is_current(&self) -> bool {
+        self.evaluator_id == search::EVALUATOR_ID && self.search_id == search::SEARCH_ID
     }
     /// Native win/loss distance is not necessarily checkmate; heuristic units are Pawns.
     pub fn score_label(&self) -> Option<String> {
-        let identity = self.identity()?;
-        let win_score = identity.profile.win_score;
-        let win_bound = match identity.kind {
-            SearchKind::SharedCore => mshogi_search::alphabeta::MATE_BOUND,
-            SearchKind::FullWidth => win_score - i32::from(identity.max_depth()),
-        };
+        if !self.is_current() {
+            return None;
+        }
         self.score.and_then(|score| {
             let n = i64::from(score).abs();
-            if n > i64::from(win_score) {
+            if n > i64::from(search::WIN_SCORE) {
                 return None;
             }
-            Some(if n >= i64::from(win_bound) {
-                let d = i64::from(win_score) - n;
+            Some(if n >= i64::from(mshogi_search::alphabeta::MATE_BOUND) {
+                let d = i64::from(search::WIN_SCORE) - n;
                 let outcome = if score >= 0 { "Win" } else { "Loss" };
                 if d == 0 {
                     format!("{outcome} at the analyzed position")
@@ -170,15 +147,13 @@ impl ChuResult {
             return Err("Chu observation validation stopped".into());
         }
         let t = self.telemetry();
-        let Some(identity) = t.identity() else {
-            return Err("Chu telemetry identity, work or score mismatch".into());
-        };
-        if t.perspective != game.position().side_to_move()
-            || t.completed_depth > identity.max_depth()
-            || t.nodes > identity.max_nodes()
+        if !t.is_current()
+            || t.perspective != game.position().side_to_move()
+            || t.completed_depth > search::MAX_DEPTH
+            || t.nodes > search::MAX_NODES
             || t.score
                 .is_some_and(|s| !(-search::WIN_SCORE..=search::WIN_SCORE).contains(&s))
-            || t.principal_variation.len() > identity.max_line(t.completed_depth)
+            || t.principal_variation.len() > search::MAX_LINE
         {
             return Err("Chu telemetry identity, work or score mismatch".into());
         }
@@ -206,7 +181,7 @@ impl ChuResult {
             Self::Choice { action, .. } => {
                 if game.conclusion().is_some()
                     || t.completed_depth == 0
-                    || t.nodes < identity.least_nodes(t.completed_depth)
+                    || t.nodes < u64::from(t.completed_depth)
                     || t.score.is_none()
                     || t.principal_variation.first() != Some(action)
                 {
@@ -232,31 +207,10 @@ impl ChuResult {
                 }
                 // Selective search scores are not the static value at the end
                 // of a bounded reported line. Native replay above remains mandatory.
-                if identity.kind == SearchKind::SharedCore {
-                    return if t
-                        .score
-                        .is_some_and(|s| s.unsigned_abs() >= search::WIN_SCORE as u32)
-                    {
-                        Err("Chu choice cannot be a win at the analyzed root".into())
-                    } else {
-                        Ok(())
-                    };
-                }
-                if t.principal_variation.len() != usize::from(t.completed_depth)
-                    && branch.conclusion().is_none()
+                if t.score
+                    .is_some_and(|s| s.unsigned_abs() >= search::WIN_SCORE as u32)
                 {
-                    return Err("Chu continuation ends before its completed depth".into());
-                }
-                let expected = branch
-                    .conclusion()
-                    .map(|c| {
-                        search::terminal_score(c, t.perspective, t.principal_variation.len() as u16)
-                    })
-                    .unwrap_or_else(|| {
-                        search::evaluate(branch.position()).score_for(t.perspective)
-                    });
-                if t.score != Some(expected) {
-                    return Err("Chu score disagrees with its native continuation".into());
+                    return Err("Chu choice cannot be a win at the analyzed root".into());
                 }
             }
         }
@@ -273,12 +227,10 @@ impl ChuResult {
             return false;
         }
         let t = self.telemetry();
-        let Some(identity) = t.identity() else {
-            return false;
-        };
-        if context.limits.depth == 0
-            || context.limits.depth > identity.max_depth()
-            || context.limits.nodes > identity.max_nodes()
+        if !t.is_current()
+            || context.limits.depth == 0
+            || context.limits.depth > search::MAX_DEPTH
+            || context.limits.nodes > search::MAX_NODES
         {
             return false;
         }
@@ -286,7 +238,7 @@ impl ChuResult {
             || t.completed_depth > context.limits.depth
             || t.nodes > context.limits.nodes
             || (t.status == StopReason::NodeLimit && t.nodes != context.limits.nodes)
-            || t.principal_variation.len() > identity.max_line(t.completed_depth)
+            || t.principal_variation.len() > search::MAX_LINE
             || t.score
                 .is_some_and(|s| !(-search::WIN_SCORE..=search::WIN_SCORE).contains(&s))
         {
@@ -299,12 +251,9 @@ impl ChuResult {
             Self::Choice { action, .. } => {
                 record.conclusion().is_none()
                     && t.completed_depth > 0
-                    && t.nodes >= identity.least_nodes(t.completed_depth)
+                    && t.nodes >= u64::from(t.completed_depth)
                     && t.score.is_some()
                     && t.principal_variation.first() == Some(action)
-                    && (identity.kind == SearchKind::SharedCore
-                        || t.status != StopReason::Complete
-                        || t.completed_depth == context.limits.depth)
             }
             Self::Finished { conclusion, .. } => {
                 record.conclusion() == Some(*conclusion)
@@ -328,7 +277,7 @@ impl ChuResult {
 mod identity_tests {
     use super::*;
     #[test]
-    fn historical_identity_bounds_and_selective_distance_labels_are_distinct() {
+    fn identity_bounds_and_selective_distance_labels() {
         let game = Game::standard();
         let mut context = ExecutionContext {
             purpose: ExecutionPurpose::EngineTurn {},
@@ -336,15 +285,11 @@ mod identity_tests {
             session_version: 1,
             process_generation: 1,
             game: CanonicalRecord::chu(mshogi_core::chu::GameRecord::from_game(&game).unwrap()),
-            limits: crate::WorkLimits {
-                time_ms: None,
-                depth: 1,
-                nodes: 512,
-            },
+            limits: CHU_PLAY_LIMITS,
         };
         let mut telemetry = ChuTelemetry {
-            evaluator_id: search::LEGACY_EVALUATOR_ID.into(),
-            search_id: search::LEGACY_SEARCH_ID.into(),
+            evaluator_id: "mshogi.chu.unknown.v1".into(),
+            search_id: search::SEARCH_ID.into(),
             perspective: Side::Sente,
             score: None,
             completed_depth: 0,
@@ -352,27 +297,16 @@ mod identity_tests {
             principal_variation: vec![],
             status: StopReason::Stopped,
         };
-        let old = ChuResult::Incomplete {
+        let incomplete = |telemetry: &ChuTelemetry| ChuResult::Incomplete {
             telemetry: telemetry.clone(),
         };
-        assert!(old.matches(&context));
-        old.validate(&game).unwrap();
-        context.limits = CHU_PLAY_LIMITS;
-        assert!(!old.matches(&context));
+        assert!(!incomplete(&telemetry).matches(&context));
+        assert!(incomplete(&telemetry).validate(&game).is_err());
         telemetry.evaluator_id = search::EVALUATOR_ID.into();
-        assert!(
-            !ChuResult::Incomplete {
-                telemetry: telemetry.clone()
-            }
-            .matches(&context)
-        );
-        telemetry.search_id = search::SEARCH_ID.into();
-        assert!(
-            ChuResult::Incomplete {
-                telemetry: telemetry.clone()
-            }
-            .matches(&context)
-        );
+        assert!(incomplete(&telemetry).matches(&context));
+        incomplete(&telemetry).validate(&game).unwrap();
+        context.limits.depth = search::MAX_DEPTH + 1;
+        assert!(!incomplete(&telemetry).matches(&context));
         telemetry.score = Some(search::WIN_SCORE - 20);
         assert_eq!(
             telemetry.score_label().as_deref(),

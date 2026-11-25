@@ -129,16 +129,8 @@ fn compound_result_native_replay_and_atomic_validation() {
     let ChuResult::Choice { telemetry, .. } = &mut forged else {
         panic!()
     };
-    telemetry.evaluator_id = mshogi_search::chu::LEGACY_EVALUATOR_ID.into();
-    telemetry.search_id = mshogi_search::chu::LEGACY_SEARCH_ID.into();
-    telemetry.completed_depth = 1;
-    telemetry.nodes = 2;
+    telemetry.evaluator_id = "mshogi.chu.unknown.v1".into();
     assert!(forged.validate(&g).is_err());
-    let ChuResult::Choice { telemetry, .. } = &mut forged else {
-        panic!()
-    };
-    telemetry.score = Some(mshogi_search::chu::LEGACY_WIN_SCORE - 1);
-    assert!(forged.validate(&g).is_ok());
     let mut forged = result.clone();
     let ChuResult::Choice { telemetry, .. } = &mut forged else {
         panic!()
@@ -247,36 +239,18 @@ fn zero_budget_incomplete_and_native_agreement_are_distinct() {
     assert_eq!(result.telemetry().score, Some(0));
 }
 #[test]
-fn historical_unsupported_failures_survive_and_current_limits_stay_finite() {
+fn limits_stay_finite_and_chess_purposes_are_refused() {
     let mut c = context(&game());
     c.limits = WorkLimits {
         time_ms: None,
-        depth: 3,
-        nodes: 2001,
+        depth: CHU_MAX_DEPTH + 1,
+        nodes: CHU_MAX_NODES + 1,
     };
-    assert!(c.valid_limits());
-    let old = ExecutionObservation::new(
-        c.clone(),
-        ExecutionResult::Failure {
-            failure: EngineFailure {
-                kind: FailureKind::UnsupportedMode,
-                message: "Chu execution is not implemented".into(),
-            },
-        },
-    );
-    assert!(old.matches(&c));
-    let round: ExecutionObservation =
-        serde_json::from_str(&serde_json::to_string(&old).unwrap()).unwrap();
-    assert_eq!(old, round);
-    // This formerly unsupported request is now within the shared-core bounds.
-    // A different request beyond the current bounds is still refused.
-    c.limits.depth = CHU_MAX_DEPTH + 1;
-    c.limits.nodes = CHU_MAX_NODES + 1;
     assert!(!c.valid_limits());
-    let now = execute(&c);
-    assert!(!now.matches(&c));
+    let refused = execute(&c);
+    assert!(!refused.matches(&c));
     assert!(matches!(
-        now.result,
+        refused.result,
         ExecutionResult::Failure {
             failure: EngineFailure {
                 kind: FailureKind::InvalidRequest,

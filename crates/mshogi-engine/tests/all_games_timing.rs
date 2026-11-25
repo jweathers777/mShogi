@@ -78,84 +78,12 @@ fn fingerprint(response: &ExecutionResponse) -> Value {
     json!({"profile": response.observation.context.game.profile(), "action": native.get("action").or_else(|| native.get("choice")), "nodes": native["telemetry"]["nodes"], "score": native["telemetry"]["score"]})
 }
 
+/// Fixed-work searches of the standard roots are deterministic. A change that
+/// moves an action, node count or score updates the recorded baseline.
 #[test]
-#[ignore = "explicit frozen executable evidence capture"]
-fn capture_frozen_fixed_baseline() {
-    let binary = std::env::var("MSH179_BASELINE_BINARY").unwrap();
-    let destination = std::env::var("MSH179_BASELINE_OUTPUT").unwrap();
-    let requests: Vec<_> = roots()
-        .iter()
-        .enumerate()
-        .map(|(i, record)| request(record, i as u64 + 1, false))
-        .collect();
-    let mut child = Command::new(binary)
-        .arg("internal-search")
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .spawn()
-        .unwrap();
-    let mut stdin = child.stdin.take().unwrap();
-    for request in &requests {
-        let mut request = request.clone();
-        request.protocol = 4; // This explicit evidence tool targets the frozen v4 predecessor.
-        serde_json::to_writer(&mut stdin, &request).unwrap();
-        stdin.write_all(b"\n").unwrap();
-    }
-    drop(stdin);
-    let output = child.wait_with_output().unwrap();
-    assert!(output.status.success());
-    let responses: Vec<ExecutionResponse> = output
-        .stdout
-        .split(|&c| c == b'\n')
-        .filter(|line| !line.is_empty())
-        .map(|line| {
-            let legacy: Value = serde_json::from_slice(line).unwrap();
-            ExecutionResponse {
-                protocol: PROTOCOL_VERSION,
-                observation: serde_json::from_value(legacy["observation"].clone()).unwrap(),
-            }
-        })
-        .collect();
-    assert_eq!(responses.len(), requests.len());
-    let evidence: Vec<_> = responses.iter().map(fingerprint).collect();
-    std::fs::write(
-        destination,
-        serde_json::to_string_pretty(&evidence).unwrap() + "\n",
-    )
-    .unwrap();
-}
-
-#[test]
-fn fixed_search_matches_frozen_predecessor() {
-    let mut expected: Vec<Value> =
+fn fixed_search_matches_recorded_baseline() {
+    let expected: Vec<Value> =
         serde_json::from_str(include_str!("data/fixed-baseline.json")).unwrap();
-    // Shogi alone changed after MSH-179: MSH-190 (Shogi Selectivity Round)
-    // added the root mate search (121 -> 122 nodes) and MSH-188 (Shogi
-    // Evaluation Round) the tuned evaluation (move, nodes and score below).
-    // MSH-195 (Xiangqi Selectivity Round) added the Xiangqi root mate search
-    // and quiescence check stage (313 -> 324 nodes, same move); MSH-196
-    // (Xiangqi Evaluation Round) the fitted evaluation (move, nodes and score
-    // below). MSH-205 (Tori Selectivity Round) added the Tori root mate
-    // search (125 -> 126 nodes, same move); MSH-206 (Tori Evaluation Round)
-    // the fitted evaluation (move, nodes and score below). MSH-52.2 adds the
-    // fitted Chu evaluation. Chess and Tenjiku stay identical.
-    assert_eq!(expected[1]["nodes"], 121);
-    assert_eq!(expected[2]["nodes"], 313);
-    assert_eq!(expected[3]["nodes"], 125);
-    expected[3]["action"] =
-        json!({"from": "4g", "kind": "move", "result_face": "phoenix", "to": "3f"});
-    expected[3]["nodes"] = 358.into();
-    expected[3]["score"] = 8.into();
-    expected[2]["action"] = json!({"action": "b0c2", "kind": "move"});
-    expected[2]["nodes"] = 787.into();
-    expected[2]["score"] = 0.into();
-    expected[1]["action"] = json!({"action": "5i5h", "kind": "move"});
-    expected[1]["nodes"] = 125.into();
-    expected[1]["score"] = 0.into();
-    assert_eq!(expected[4]["nodes"], 173);
-    expected[4]["action"] = json!({"from": [10, 12], "promote": false, "route": [[11, 11]]});
-    expected[4]["nodes"] = 149.into();
-    expected[4]["score"] = 0.into();
     let requests: Vec<_> = roots()
         .iter()
         .enumerate()

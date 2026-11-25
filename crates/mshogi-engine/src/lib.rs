@@ -5,7 +5,6 @@
 //! accepting a choice. Cancellation invalidates publication, even after completion.
 
 mod analysis;
-mod observation_identity;
 pub use analysis::*;
 mod bridge;
 mod chu;

@@ -1,5 +1,4 @@
 //! Actual native Tori results. No declaration, chess mate or exact-proof adaptation.
-use crate::observation_identity::{Identity, Profile, SearchKind};
 use crate::{ExecutionContext, ExecutionPurpose, StopReason};
 use mshogi_core::{
     native::CanonicalRecord,
@@ -128,45 +127,23 @@ impl ToriResult {
             None => Self::Incomplete { telemetry },
         }
     }
-    /// Search identity of this observation: the shared-core search, or the
-    /// earlier full-width search whose saved observations stay valid.
-    fn identity(&self) -> Option<Identity> {
+    /// Whether this observation names the current evaluator and search.
+    fn is_current(&self) -> bool {
         let t = self.telemetry();
-        Identity::classify(
-            &t.evaluator_id,
-            &t.search_id,
-            Profile {
-                evaluator: search::EVALUATOR_ID,
-                search: search::SEARCH_ID,
-                max_depth: search::MAX_DEPTH,
-                max_nodes: search::MAX_NODES,
-                win_score: search::WIN_SCORE,
-                line_bound: search::MAX_LINE,
-            },
-            Profile {
-                evaluator: search::LEGACY_EVALUATOR_ID,
-                search: search::LEGACY_SEARCH_ID,
-                max_depth: search::LEGACY_MAX_DEPTH,
-                max_nodes: search::LEGACY_MAX_NODES,
-                win_score: search::WIN_SCORE,
-                line_bound: 0,
-            },
-        )
+        t.evaluator_id == search::EVALUATOR_ID && t.search_id == search::SEARCH_ID
     }
     /// Re-admit the complete continuation against authoritative native history.
     /// This validates consistency, not a claim that a heuristic score is optimal.
     /// Runtime identities and submitted limits remain the observation owner's check.
     pub fn validate(&self, game: &Game) -> Result<(), String> {
         let t = self.telemetry();
-        let Some(identity) = self.identity() else {
-            return Err("Tori telemetry identity, work or score mismatch".into());
-        };
-        if t.perspective != game.position().side_to_move()
-            || t.completed_depth > identity.max_depth()
-            || t.nodes > identity.max_nodes()
+        if !self.is_current()
+            || t.perspective != game.position().side_to_move()
+            || t.completed_depth > search::MAX_DEPTH
+            || t.nodes > search::MAX_NODES
             || t.score
                 .is_some_and(|s| !(-search::WIN_SCORE..=search::WIN_SCORE).contains(&s))
-            || t.principal_variation.len() > identity.max_line(t.completed_depth)
+            || t.principal_variation.len() > search::MAX_LINE
         {
             return Err("Tori telemetry identity, work or score mismatch".into());
         }
@@ -194,7 +171,7 @@ impl ToriResult {
             Self::Choice { action, .. } => {
                 if game.conclusion().is_some()
                     || t.completed_depth == 0
-                    || t.nodes < identity.least_nodes(t.completed_depth)
+                    || t.nodes < u64::from(t.completed_depth)
                     || t.score.is_none()
                     || t.principal_variation.first() != Some(action)
                 {
@@ -215,31 +192,10 @@ impl ToriResult {
                 // static value of the end of the reported line. The native
                 // replay above is its check.
                 // A choice is never a win at the analyzed position itself.
-                if identity.kind == SearchKind::SharedCore {
-                    return if t
-                        .score
-                        .is_some_and(|s| s.unsigned_abs() >= search::WIN_SCORE as u32)
-                    {
-                        Err("Tori choice claims a win or loss at its own root".into())
-                    } else {
-                        Ok(())
-                    };
-                }
-                if t.principal_variation.len() != usize::from(t.completed_depth)
-                    && branch.conclusion().is_none()
+                if t.score
+                    .is_some_and(|s| s.unsigned_abs() >= search::WIN_SCORE as u32)
                 {
-                    return Err("Tori continuation ends before its completed depth".into());
-                }
-                let expected = branch
-                    .conclusion()
-                    .map(|c| {
-                        search::terminal_score(c, t.perspective, t.principal_variation.len() as u16)
-                    })
-                    .unwrap_or_else(|| {
-                        search::evaluate(branch.position()).score_for(t.perspective)
-                    });
-                if t.score != Some(expected) {
-                    return Err("Tori score disagrees with its native continuation".into());
+                    return Err("Tori choice claims a win or loss at its own root".into());
                 }
             }
         }
@@ -256,17 +212,15 @@ impl ToriResult {
             return false;
         }
         let t = self.telemetry();
-        let Some(identity) = self.identity() else {
-            return false;
-        };
-        if context.limits.depth == 0
-            || context.limits.depth > identity.max_depth()
-            || context.limits.nodes > identity.max_nodes()
+        if !self.is_current()
+            || context.limits.depth == 0
+            || context.limits.depth > search::MAX_DEPTH
+            || context.limits.nodes > search::MAX_NODES
             || t.perspective != record.side_to_move()
             || t.completed_depth > context.limits.depth
             || t.nodes > context.limits.nodes
             || (t.status == StopReason::NodeLimit && t.nodes != context.limits.nodes)
-            || t.principal_variation.len() > identity.max_line(t.completed_depth)
+            || t.principal_variation.len() > search::MAX_LINE
             || t.score
                 .is_some_and(|s| !(-search::WIN_SCORE..=search::WIN_SCORE).contains(&s))
         {
@@ -279,16 +233,15 @@ impl ToriResult {
             Self::Choice { action, .. } => {
                 record.conclusion().is_none()
                     && t.completed_depth > 0
-                    && t.nodes >= identity.least_nodes(t.completed_depth)
+                    && t.nodes >= u64::from(t.completed_depth)
                     && t.score.is_some()
                     && t.principal_variation.first() == Some(action)
                     // A complete search reached the requested depth, or the
                     // root mate search of the shared core proved a win.
                     && (t.status != StopReason::Complete
                         || t.completed_depth == context.limits.depth
-                        || (identity.kind == SearchKind::SharedCore
-                            && t.score
-                                .is_some_and(|s| s >= mshogi_search::alphabeta::MATE_BOUND)))
+                        || t.score
+                            .is_some_and(|s| s >= mshogi_search::alphabeta::MATE_BOUND))
             }
             Self::Finished { conclusion, .. } => {
                 record.conclusion() == Some(*conclusion)

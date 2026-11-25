@@ -1,5 +1,4 @@
 //! Actual shogi results, distinct from chess scores and cooperative Full proofs.
-use crate::observation_identity::{Identity, Profile, SearchKind};
 use crate::{ExecutionContext, ExecutionPurpose, StopReason};
 use mshogi_core::{
     native::CanonicalRecord,
@@ -52,7 +51,7 @@ impl From<ShogiChoice> for search::Choice {
 pub struct ShogiTelemetry {
     /// Fixed native evaluator configuration identity.
     pub evaluator_id: String,
-    /// Search configuration identity, including historical observations.
+    /// Search configuration identity.
     pub search_id: String,
     /// Native root side, independent of final command actor or terminal winner.
     pub perspective: Side,
@@ -70,46 +69,24 @@ pub struct ShogiTelemetry {
     pub status: StopReason,
 }
 impl ShogiTelemetry {
-    fn identity(&self) -> Option<Identity> {
-        Identity::classify(
-            &self.evaluator_id,
-            &self.search_id,
-            Profile {
-                evaluator: search::EVALUATOR_ID,
-                search: search::SEARCH_ID,
-                max_depth: search::MAX_DEPTH,
-                max_nodes: search::MAX_NODES,
-                win_score: search::WIN_SCORE,
-                line_bound: search::MAX_LINE,
-            },
-            Profile {
-                evaluator: search::LEGACY_EVALUATOR_ID,
-                search: search::LEGACY_SEARCH_ID,
-                max_depth: search::LEGACY_MAX_DEPTH,
-                max_nodes: search::LEGACY_MAX_NODES,
-                win_score: search::LEGACY_WIN_SCORE,
-                line_bound: 1,
-            },
-        )
+    fn is_current(&self) -> bool {
+        self.evaluator_id == search::EVALUATOR_ID && self.search_id == search::SEARCH_ID
     }
 
     /// Player-facing value in the native root-side interpretation. Terminal
     /// distance counts complete command edges, including formal declarations;
     /// it is deliberately never described as a chess mate distance.
     pub fn score_label(&self) -> Option<String> {
-        let identity = self.identity()?;
-        let win_score = identity.profile.win_score;
-        let win_bound = match identity.kind {
-            SearchKind::SharedCore => mshogi_search::alphabeta::MATE_BOUND,
-            SearchKind::FullWidth => win_score - i32::from(identity.max_depth()) - 1,
-        };
+        if !self.is_current() {
+            return None;
+        }
         self.score.and_then(|score| {
             let magnitude = i64::from(score).abs();
-            if magnitude > i64::from(win_score) {
+            if magnitude > i64::from(search::WIN_SCORE) {
                 return None;
             }
-            Some(if magnitude >= i64::from(win_bound) {
-                let distance = i64::from(win_score) - magnitude;
+            Some(if magnitude >= i64::from(mshogi_search::alphabeta::MATE_BOUND) {
+                let distance = i64::from(search::WIN_SCORE) - magnitude;
                 let result = if score >= 0 { "Win" } else { "Loss" };
                 if distance == 0 {
                     format!("{result} at the analyzed position")
@@ -199,17 +176,15 @@ impl ShogiResult {
             | Self::Finished { telemetry, .. }
             | Self::Incomplete { telemetry } => telemetry,
         };
-        let Some(identity) = telemetry.identity() else {
-            return false;
-        };
-        let win_score = identity.profile.win_score;
-        if context.limits.depth == 0
-            || context.limits.depth > identity.max_depth()
-            || context.limits.nodes > identity.max_nodes()
+        let win_score = search::WIN_SCORE;
+        if !telemetry.is_current()
+            || context.limits.depth == 0
+            || context.limits.depth > search::MAX_DEPTH
+            || context.limits.nodes > search::MAX_NODES
             || telemetry.perspective != record.side_to_move()
             || telemetry.completed_depth > context.limits.depth
             || telemetry.nodes > context.limits.nodes
-            || telemetry.principal_variation.len() > identity.max_line(telemetry.completed_depth)
+            || telemetry.principal_variation.len() > search::MAX_LINE
             || telemetry
                 .score
                 .is_some_and(|s| !(-win_score..=win_score).contains(&s))
@@ -219,8 +194,6 @@ impl ShogiResult {
         match self {
             Self::Choice { choice, .. } => {
                 let timed_fallback = context.limits.time_ms.is_some()
-                    && telemetry.evaluator_id == search::EVALUATOR_ID
-                    && telemetry.search_id == search::SEARCH_ID
                     && telemetry.completed_depth == 0
                     && telemetry.score.is_none()
                     && telemetry.status != StopReason::Complete
@@ -249,8 +222,6 @@ impl ShogiResult {
                     && ((telemetry.completed_depth == 1 && telemetry.nodes == 1)
                         || (context.limits.time_ms.is_some()
                             && context.limits.nodes == 0
-                            && telemetry.evaluator_id == search::EVALUATOR_ID
-                            && telemetry.search_id == search::SEARCH_ID
                             && telemetry.completed_depth == 0
                             && telemetry.nodes == 0))
                     && telemetry.status == StopReason::Complete
@@ -312,6 +283,9 @@ mod presentation_tests {
         }
         telemetry.score = Some(i32::MIN);
         assert_eq!(telemetry.score_label(), None);
+        telemetry.score = Some(0);
+        telemetry.evaluator_id = "mshogi.shogi.unknown.v1".into();
+        assert_eq!(telemetry.score_label(), None);
     }
 }
 
@@ -349,24 +323,19 @@ mod identity_tests {
         }
     }
     #[test]
-    fn saved_legacy_observations_keep_their_identity_and_request_bounds() {
+    fn unknown_identities_and_excess_request_bounds_do_not_match() {
         let mut c = context();
-        let old = incomplete(search::LEGACY_EVALUATOR_ID, search::LEGACY_SEARCH_ID);
-        let new = incomplete(search::EVALUATOR_ID, search::SEARCH_ID);
-        assert!(old.matches(&c));
-        assert!(new.matches(&c));
-        assert!(!incomplete(search::EVALUATOR_ID, search::LEGACY_SEARCH_ID).matches(&c));
-        assert!(!incomplete(search::LEGACY_EVALUATOR_ID, search::SEARCH_ID).matches(&c));
-        c.limits.depth = search::LEGACY_MAX_DEPTH + 1;
-        assert!(!old.matches(&c));
-        assert!(new.matches(&c));
+        assert!(incomplete(search::EVALUATOR_ID, search::SEARCH_ID).matches(&c));
+        assert!(!incomplete(search::EVALUATOR_ID, "mshogi.shogi.unknown.v1").matches(&c));
+        assert!(!incomplete("mshogi.shogi.unknown.v1", search::SEARCH_ID).matches(&c));
+        c.limits.depth = search::MAX_DEPTH + 1;
+        assert!(!incomplete(search::EVALUATOR_ID, search::SEARCH_ID).matches(&c));
         c.limits.depth = 1;
-        c.limits.nodes = search::LEGACY_MAX_NODES + 1;
-        assert!(!old.matches(&c));
-        assert!(new.matches(&c));
+        c.limits.nodes = search::MAX_NODES + 1;
+        assert!(!incomplete(search::EVALUATOR_ID, search::SEARCH_ID).matches(&c));
     }
     #[test]
-    fn selective_line_bound_is_distinct_from_legacy_depth_bound() {
+    fn reported_line_is_bounded() {
         let c = context();
         let action = ShogiChoice::Move {
             action: "7g7f".parse().unwrap(),
@@ -379,36 +348,14 @@ mod identity_tests {
         telemetry.completed_depth = 1;
         telemetry.nodes = 100;
         telemetry.score = Some(0);
-        telemetry.principal_variation = vec![action; 3];
-        let result = ShogiResult::Choice {
+        telemetry.principal_variation = vec![action; search::MAX_LINE];
+        let result = |telemetry: &ShogiTelemetry| ShogiResult::Choice {
             choice: action,
             telemetry: telemetry.clone(),
         };
-        assert!(result.matches(&c));
-        telemetry.evaluator_id = search::LEGACY_EVALUATOR_ID.into();
-        telemetry.search_id = search::LEGACY_SEARCH_ID.into();
-        assert!(
-            !ShogiResult::Choice {
-                choice: action,
-                telemetry
-            }
-            .matches(&c)
-        );
-    }
-    #[test]
-    fn old_terminal_labels_keep_the_original_distance_scale() {
-        let ShogiResult::Incomplete { mut telemetry } =
-            incomplete(search::LEGACY_EVALUATOR_ID, search::LEGACY_SEARCH_ID)
-        else {
-            unreachable!()
-        };
-        telemetry.score = Some(search::LEGACY_WIN_SCORE - 4);
-        assert_eq!(
-            telemetry.score_label().as_deref(),
-            Some("Win in 4 command edges (including declarations)")
-        );
-        telemetry.evaluator_id = search::EVALUATOR_ID.into();
-        assert_eq!(telemetry.score_label(), None);
+        assert!(result(&telemetry).matches(&c));
+        telemetry.principal_variation = vec![action; search::MAX_LINE + 1];
+        assert!(!result(&telemetry).matches(&c));
     }
 
     #[test]
@@ -453,10 +400,7 @@ mod identity_tests {
                 1 => bad.status = StopReason::Complete,
                 2 => bad.principal_variation.push(choice),
                 3 => bad.nodes = 1,
-                _ => {
-                    bad.evaluator_id = search::LEGACY_EVALUATOR_ID.into();
-                    bad.search_id = search::LEGACY_SEARCH_ID.into();
-                }
+                _ => bad.search_id = "mshogi.shogi.unknown.v1".into(),
             }
             assert!(
                 !ShogiResult::Choice {

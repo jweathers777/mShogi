@@ -1,10 +1,11 @@
 ---
 id: MSH-269
 title: Remove Xiangqi Exact No-Win Analysis
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-25T12:41:00Z'
+updated_date: '2026-11-25T18:40:00Z'
 labels:
   - rules
   - xiangqi

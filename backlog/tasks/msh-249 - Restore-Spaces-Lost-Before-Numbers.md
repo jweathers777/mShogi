@@ -1,10 +1,11 @@
 ---
 id: MSH-249
 title: Restore Spaces Lost Before Numbers
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-25T12:41:00Z'
+updated_date: '2026-11-25T18:00:00Z'
 labels:
   - cleanup
   - model:small

@@ -1,8 +1,5 @@
 //! Human Tori adapter. Native Game alone owns rules, history and admission.
-use crate::{
-    record_io,
-    session::{MAX_LINE_BYTES, Next},
-};
+use crate::{record_io, session::Next};
 use mshogi_core::{
     native::CanonicalRecord,
     tori::{self as t, notation},
@@ -13,13 +10,10 @@ const MAX_DIAGNOSTIC_DEPTH: u8 = 3;
 const MAX_DIAGNOSTIC_VISITS: u64 = 100_000;
 const HELP: &str = "Untimed Tori Shogi diagnostic console (not USI/SFEN):
   position startpos                 Standard root with complete known history
-  position record-file <path>       Strict canonical standard/custom game
-  position record-json <JSON>       Strict inline canonical standard/custom game
   show | hands | status             Board, resources and native game state
   legal                            Complete history-permitted native choices
   move <Tori-action>...             Atomic batch; native Game admits each action
   resign sente|gote                 Native resignation, including out of turn
-  stop cancelled|resource|engine|work  Session-only interruption; game unchanged
   undo [n]                         Exact event undo, including resignation
   history                          Native event ordering, conclusions, repetition limits
   record print                     Complete canonical envelope, not display text
@@ -36,7 +30,6 @@ Board: s/g owner prefixes, no colon; Ph Fa Ea Cr Pt LQ RQ Sw Go in fixed cells.
 Perft/divide ignores history and conclusions, never changes the live game.";
 
 pub struct Session {
-    stopped: Option<crate::session::OperationalStop>,
     game: t::Game,
     undo: Vec<t::GameUndo>,
 }
@@ -45,21 +38,13 @@ impl Session {
         Self {
             game: t::Game::standard(),
             undo: Vec::new(),
-            stopped: None,
         }
     }
     fn restored(record: &t::GameRecord) -> Result<Self, String> {
         let (game, undo) = record.to_game_with_undo().map_err(diagnostic)?;
-        Ok(Self {
-            game,
-            undo,
-            stopped: None,
-        })
+        Ok(Self { game, undo })
     }
     pub fn execute(&mut self, line: &str, out: &mut String) -> Result<Next, String> {
-        if line.len() > MAX_LINE_BYTES {
-            return Err(format!("line exceeds {MAX_LINE_BYTES} bytes"));
-        }
         let line = line.trim_matches([' ', '\t', '\r', '\x0b', '\x0c']);
         if line.is_empty() || line.starts_with('#') {
             return Ok(Next::Continue);
@@ -78,16 +63,11 @@ impl Session {
                 return Ok(Next::Quit);
             }
             "position" => {
-                if rest == "startpos" {
-                    *self = Self::new();
-                    self.status(out);
-                } else if let Some(path) = rest.strip_prefix("record-file ") {
-                    self.restore_json(&record_io::read(path.trim())?, out)?;
-                } else if let Some(json) = rest.strip_prefix("record-json ") {
-                    self.restore_json(json.trim(), out)?;
-                } else {
-                    return Err("usage: position startpos | position record-file <path> | position record-json <canonical JSON>".into());
+                if rest != "startpos" {
+                    return Err("usage: position startpos".into());
                 }
+                *self = Self::new();
+                self.status(out);
             }
             "show" => {
                 empty(&args)?;
@@ -153,10 +133,6 @@ impl Session {
             "resign" => {
                 let actor = side(&args)?;
                 self.submit(actor, t::GameCommand::Resign)?;
-                self.status(out);
-            }
-            "stop" => {
-                self.stopped = Some(crate::session::OperationalStop::parse(&args)?);
                 self.status(out);
             }
             "undo" => {
@@ -301,7 +277,6 @@ impl Session {
             })
             .map_err(diagnostic)?;
         candidate.undo.push(undo);
-        candidate.stopped = None;
         record_io::install(self, candidate, Self::record_json)
     }
     fn record_json(&self) -> Result<String, String> {
@@ -330,14 +305,7 @@ impl Session {
         )
         .unwrap();
         writeln!(out,"root {:?} source {:?} declared-root-plies {} earlier-history-unknown {} reachability-proven {}",root.kind(),root.source(),root.declared_completed_plies(),root.earlier_history_unknown(),root.historical_reachability_proven()).unwrap();
-        writeln!(out,"side {} known-events {} known-board-actions {} occurrences {:?} repetition {:?} conclusion {:?} incomplete {:?}",side_text(self.game.position().side_to_move()),self.game.events().len(),self.game.snapshot().board_ply,self.game.occurrences(),self.game.repetition(),self.game.conclusion(),self.stopped).unwrap();
-        if self.stopped.is_some() {
-            writeln!(
-                out,
-                "incomplete work is unscored; no game conclusion inferred"
-            )
-            .unwrap();
-        }
+        writeln!(out,"side {} known-events {} known-board-actions {} occurrences {:?} repetition {:?} conclusion {:?}",side_text(self.game.position().side_to_move()),self.game.events().len(),self.game.snapshot().board_ply,self.game.occurrences(),self.game.repetition(),self.game.conclusion()).unwrap();
     }
     fn hands(&self, out: &mut String) {
         for side in [t::Side::Sente, t::Side::Gote] {

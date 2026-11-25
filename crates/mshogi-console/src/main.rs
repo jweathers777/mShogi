@@ -210,7 +210,7 @@ fn main() -> ExitCode {
                 println!("Target rules profile: {}", mshogi_core::tori::PROFILE_ID);
                 println!("Edition: {}", mshogi_core::tori::PROFILE_EDITION);
                 println!(
-                    "Coverage: untimed native7x7 complete moves/drops/compulsory promotion, distinct handed quails, known history/T06 third-occurrence rule, native outcomes, resignation/unscored Stop, exact event undo, readable action notation and strict canonical standard/custom records. Local diagnostics depth0..3 with explicit visits; bounded native search/structured internal-search. No SFEN/USI adapter or competitive-strength claim."
+                    "Coverage: untimed native7x7 complete moves/drops/compulsory promotion, distinct handed quails, known history/T06 third-occurrence rule, native outcomes, resignation, exact event undo, readable action notation and strict canonical standard/custom records. Local diagnostics depth0..3 with explicit visits; bounded native search/structured internal-search. No SFEN/USI adapter or competitive-strength claim."
                 );
             }
             Game::Chu => {

@@ -1,8 +1,5 @@
 //! Human Tenjiku adapter. Native Game alone owns rules, history and admission.
-use crate::{
-    record_io,
-    session::{MAX_LINE_BYTES, Next},
-};
+use crate::{record_io, session::Next};
 use mshogi_core::{
     native::CanonicalRecord,
     tenjiku::{self as c, notation},
@@ -12,14 +9,13 @@ use std::fmt::Write as _;
 const MAX_DIAGNOSTIC_DEPTH: u8 = c::MAX_PERFT_DEPTH;
 const MAX_DIAGNOSTIC_VISITS: u64 = c::MAX_PERFT_VISITS;
 const HELP: &str = "Untimed Tenjiku Shogi diagnostic console (not USI/SFEN):
-  position startpos | position record-file <path> | position record-json <JSON>
+  position startpos                Standard root with complete known history
   show | status                    Board, native royal status and exact history
   legal                            Complete history-permitted native actions
   move <Tenjiku-action>...          Atomic batch, complete routes only
   resign sente|gote                 Actual resignation, independent of board turn
   offer-draw sente|gote             Actual draw offer; not an automatic result
   accept-draw sente|gote | decline-draw sente|gote
-  stop cancelled|resource|engine|work  Session-only interruption; game unchanged
   undo [n] | history               Exact native events and event reversal
   record print | record save <path> | record load-file <path> | record load-json <JSON>
   perft <0..3> [visits] | divide <1..3> [visits]  Bounded full-history diagnostics
@@ -33,7 +29,6 @@ Perft/divide uses full native history/endings, depth0..3 (divide1..3).
 Saves require a new path; strict canonical records preserve the selected profile.";
 
 pub struct Session {
-    stopped: Option<crate::session::OperationalStop>,
     game: c::Game,
     undo: Vec<c::GameUndo>,
 }
@@ -42,21 +37,13 @@ impl Session {
         Self {
             game: c::Game::standard(profile),
             undo: Vec::new(),
-            stopped: None,
         }
     }
     fn restored(record: &c::GameRecord) -> Result<Self, String> {
         let (game, undo) = record.to_game_with_undo().map_err(diagnostic)?;
-        Ok(Self {
-            game,
-            undo,
-            stopped: None,
-        })
+        Ok(Self { game, undo })
     }
     pub fn execute(&mut self, line: &str, out: &mut String) -> Result<Next, String> {
-        if line.len() > MAX_LINE_BYTES {
-            return Err(format!("line exceeds {MAX_LINE_BYTES} bytes"));
-        }
         let line = line.trim_matches([' ', '\t', '\r', '\x0b', '\x0c']);
         if line.is_empty() || line.starts_with('#') {
             return Ok(Next::Continue);
@@ -75,16 +62,11 @@ impl Session {
                 return Ok(Next::Quit);
             }
             "position" => {
-                if rest == "startpos" {
-                    *self = Self::new(self.game.profile());
-                    self.status(out);
-                } else if let Some(path) = rest.strip_prefix("record-file ") {
-                    self.restore_json(&record_io::read(path.trim())?, out)?;
-                } else if let Some(json) = rest.strip_prefix("record-json ") {
-                    self.restore_json(json.trim(), out)?;
-                } else {
-                    return Err("usage: position startpos | position record-file <path> | position record-json <canonical JSON>".into());
+                if rest != "startpos" {
+                    return Err("usage: position startpos".into());
                 }
+                *self = Self::new(self.game.profile());
+                self.status(out);
             }
             "show" => {
                 empty(&args)?;
@@ -168,10 +150,6 @@ impl Session {
                     _ => c::GameCommand::DeclineDraw,
                 };
                 self.submit(actor, command)?;
-                self.status(out);
-            }
-            "stop" => {
-                self.stopped = Some(crate::session::OperationalStop::parse(&args)?);
                 self.status(out);
             }
             "undo" => {
@@ -311,7 +289,6 @@ impl Session {
             })
             .map_err(diagnostic)?;
         candidate.undo.push(undo);
-        candidate.stopped = None;
         record_io::install(self, candidate, Self::record_json)
     }
     fn record_json(&self) -> Result<String, String> {
@@ -349,7 +326,16 @@ impl Session {
             root.earlier_history_unknown()
         )
         .unwrap();
-        writeln!(out,"side {} known-events {} known-board-actions {} pending-bare {:?} conclusion {:?} incomplete {:?}",side_text(self.game.position().side_to_move()),self.game.events().len(),self.game.snapshot().board_ply,self.game.snapshot().pending_bare,self.game.conclusion(),self.stopped).unwrap();
+        writeln!(
+            out,
+            "side {} known-events {} known-board-actions {} pending-bare {:?} conclusion {:?}",
+            side_text(self.game.position().side_to_move()),
+            self.game.events().len(),
+            self.game.snapshot().board_ply,
+            self.game.snapshot().pending_bare,
+            self.game.conclusion()
+        )
+        .unwrap();
         for side in [c::Side::Sente, c::Side::Gote] {
             let royals: Vec<_> = self
                 .game
@@ -366,13 +352,6 @@ impl Session {
             self.game.snapshot().draw_offer
         )
         .unwrap();
-        if self.stopped.is_some() {
-            writeln!(
-                out,
-                "incomplete work is unscored; no game conclusion inferred"
-            )
-            .unwrap();
-        }
     }
     fn board(&self, out: &mut String) {
         for rank in 1..=16 {

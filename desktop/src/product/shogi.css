@@ -36,8 +36,6 @@
 .shogi-promotion>div { display:flex; gap:7px; margin-bottom:8px; }
 .shogi-promotion>div button { flex:1; }
 .shogi-promotion>button { width:100%; padding:7px; }
-.shogi-history-banner { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:6px 9px; margin:0 0 8px; font-size:11px; border:1px solid; }
-.shogi-history-banner button { white-space:nowrap; padding:5px 9px; border:1px solid; }
 .shogi-section-heading { display:flex; align-items:center; justify-content:space-between; gap:8px; }
 .shogi-section-heading h2 { font-size:13px; font-weight:600; }
 .shogi-history ol { list-style:none; padding:0; margin:9px -5px 0; overflow-y:auto; }
@@ -62,23 +60,14 @@
 .shogi-resume { display:flex; align-items:center; gap:8px; justify-content:space-between; }
 .shogi-resume button { margin:0; padding:8px 10px; width:auto; }
 .shogi-game-actions p { margin-bottom:8px; }
-.shogi-technical summary { cursor:pointer; }
-.shogi-technical p,.shogi-technical details { margin:8px 0; }
 .product-dialog { padding:26px; border:1px solid; border-radius:13px; width:min(520px,calc(100vw - 36px)); box-shadow:0 22px 100px #030e1288; }
 .product-dialog h2 { font-family:Georgia,serif; font-size:26px; font-weight:500; margin-bottom:10px; }
 .product-dialog p { font-size:13px; }
 .product-dialog .dialog-actions { display:flex; gap:9px; justify-content:flex-end; margin-top:23px; }
 .product-dialog [role="alert"] { color:#f3c4bf; margin-top:12px; }
-.game-choices { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:20px 0; }
-.game-choices button { display:flex; flex-direction:column; align-items:center; padding:18px 12px; border:1px solid; font-weight:400; }
-.game-mark { font-size:40px; line-height:1.4; }
-.game-mark.shogi { font-family:"mShogi Pieces",serif; }
-.game-choices strong { margin:6px 0; font-size:16px; }
-.game-choices small { font-size:10px; }
 .product-dialog h3 { font-size:12px; margin:14px 0 9px; }
 .side-choices { display:flex; gap:9px; }
 .side-choices button { flex:1; border:1px solid; font-size:12px; }
-.product-dialog .new-game-note { font-size:11px; margin-top:15px; }
 @media(max-width:960px) {
  .hand-piece { width:26px; height:33px; }
  .hand-piece svg { width:26px; height:29px; }

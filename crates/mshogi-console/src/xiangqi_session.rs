@@ -1,8 +1,5 @@
 //! Native Xiangqi diagnostic consumer. No local rules or evaluator are implemented here.
-use crate::{
-    record_io,
-    session::{MAX_LINE_BYTES, Next},
-};
+use crate::{record_io, session::Next};
 use mshogi_core::{native::CanonicalRecord, xiangqi::*};
 use std::{
     fmt::Write as _,
@@ -91,9 +88,6 @@ impl Session {
         Ok(())
     }
     pub fn execute(&mut self, line: &str, out: &mut String) -> Result<Next, String> {
-        if line.len() > MAX_LINE_BYTES {
-            return Err(format!("line exceeds {MAX_LINE_BYTES} bytes"));
-        }
         let line = line.trim_matches(|c: char| c.is_ascii_whitespace());
         if line.is_empty() || line.starts_with('#') {
             return Ok(Next::Continue);

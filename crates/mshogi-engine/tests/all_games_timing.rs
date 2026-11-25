@@ -3,10 +3,6 @@ mod support;
 use mshogi_core::{chess, chu, native::CanonicalRecord, shogi, tenjiku, tori, xiangqi};
 use mshogi_engine::*;
 use serde_json::{Value, json};
-use std::{
-    io::Write,
-    process::{Command, Stdio},
-};
 
 fn roots() -> Vec<CanonicalRecord> {
     let mut records = vec![
@@ -227,78 +223,6 @@ fn takeback_and_game_switch_clear_timed_state() {
             cold.observation.result,
             "switch {:?}",
             root.profile()
-        );
-    }
-}
-
-#[test]
-#[ignore = "bounded clock measurement with explicit built executable"]
-fn record_timed_native_games() {
-    use std::{
-        io::{BufRead, BufReader},
-        time::Instant,
-    };
-    let binary = std::env::var("MSH179_CLOCK_BINARY").unwrap();
-    let destination = std::env::var("MSH179_CLOCK_OUTPUT").unwrap();
-    let mut receipts = Vec::new();
-    let started = Instant::now();
-    for root in roots() {
-        let mut child = Command::new(&binary)
-            .arg("internal-search")
-            .stdin(Stdio::piped())
-            .stdout(Stdio::piped())
-            .spawn()
-            .unwrap();
-        let mut input = child.stdin.take().unwrap();
-        let mut output = BufReader::new(child.stdout.take().unwrap());
-        let mut current = root;
-        let mut remaining_ms = [10_000_u64; 2];
-        for ply in 0..4 {
-            let mut request = request(&current, ply + 1, true);
-            request.context.limits.depth = 64;
-            let side = ply as usize % 2;
-            let before_ms = remaining_ms[side];
-            let allocation =
-                mshogi_search::alphabeta::timing::TimeBudget::from_clock_ms(before_ms, 100, 30);
-            let clock_share_ms = allocation.soft.as_millis() as u64;
-            // Fixed thinking time excludes Chess setup/delivery. The caller
-            // reserves transport time from its shared game-clock allocation.
-            let reserve_ms = if ply == 0 { 300 } else { 50 }.min(clock_share_ms / 2);
-            let requested_ms = clock_share_ms.saturating_sub(reserve_ms);
-            request.context.limits.time_ms = Some(requested_ms);
-            let sent = Instant::now();
-            serde_json::to_writer(&mut input, &request).unwrap();
-            input.write_all(b"\n").unwrap();
-            input.flush().unwrap();
-            let mut line = String::new();
-            output.read_line(&mut line).unwrap();
-            let elapsed = sent.elapsed();
-            let response: ExecutionResponse =
-                support::decode_response(line.as_bytes(), &request).unwrap();
-            assert!(response.matches(&request));
-            current = played(&current, &response);
-            let spent_ms = elapsed.as_micros().div_ceil(1_000) as u64;
-            remaining_ms[side] = before_ms.saturating_sub(spent_ms).saturating_add(100);
-            receipts.push(json!({"profile": current.profile(), "ply": ply + 1, "elapsed_us": elapsed.as_micros(), "requested_ms": requested_ms, "transport_setup_reserve_ms": reserve_ms, "clock_share_ms": clock_share_ms, "clock_before_ms": before_ms, "clock_after_ms": remaining_ms[side], "increment_ms":100, "native_admitted": true, "request": request, "response": response}));
-        }
-        drop(input);
-        assert!(child.wait().unwrap().success());
-    }
-    let evidence =
-        json!({"elapsed_seconds": started.elapsed().as_secs_f64(), "requests": receipts});
-    std::fs::write(
-        destination,
-        serde_json::to_string_pretty(&evidence).unwrap() + "\n",
-    )
-    .unwrap();
-    for receipt in evidence["requests"].as_array().unwrap() {
-        assert!(
-            receipt["elapsed_us"].as_u64().unwrap()
-                <= receipt["clock_share_ms"].as_u64().unwrap() * 1_000,
-            "clock share exceeded: {} ply {} took {} us",
-            receipt["profile"],
-            receipt["ply"],
-            receipt["elapsed_us"]
         );
     }
 }

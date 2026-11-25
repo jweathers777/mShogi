@@ -42,15 +42,16 @@ native event prefix, including the original capture occupancy.
 ## Console
 
 Run `cargo run --release --locked --bin mshogi -- --game chu shell`, then `help`.
-The console accepts standard roots and strict canonical record-file/record-json
-custom roots. It does not invent SFEN, USI or a second machine protocol. Compound
-moves are entered as complete labels; `legal` prints each label with its native
-JSON action. A `move` batch commits only if every complete action is admitted.
+The console accepts standard roots and strict canonical custom roots through
+`record load-file`/`record load-json`. It does not invent SFEN, USI or a second
+machine protocol. Compound moves are entered as complete labels; `legal` prints
+each label with its native JSON action. A `move` batch commits only if every
+complete action is admitted.
 
 `history` includes all native events and obligation/outcome metadata; `undo` is
 one-event native reversal. Actual `offer-draw`, `accept-draw` and `decline-draw`
-commands retain the chosen actor and do not pretend an offer is consent. `stop`
-is an unscored session annotation; it adds no native event and is not saved. `analyze` is read-only history-aware native search.
+commands retain the chosen actor and do not pretend an offer is consent.
+`analyze` is read-only history-aware native search.
 Perft/divide are explicitly position-local, depth0–2 (divide1–2), at most100,000
 visited positions; an exhausted diagnostic is incomplete/unscored and leaves the
 live session untouched. There are no captured-piece hands in Chu.

@@ -129,7 +129,7 @@ This is in-memory bounded development support, not an archive design.
 Normal app launch remains `cd desktop && npm run desktop:dev` (Node 24.19.0;
 Tauri/native prerequisites in `desktop/README.md`). It remains the chess product.
 The development contract surface is compiled only in the separate verification
-host/frontend and is labeled **MSH-72 DEVELOPMENT CONTRACT**:
+host/frontend:
 
 ```sh
 cd desktop

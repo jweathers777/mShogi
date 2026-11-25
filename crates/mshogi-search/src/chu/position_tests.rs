@@ -678,8 +678,8 @@ fn capture_shortcut_requires_one_complete_action_for_both_royals() {
 #[test]
 fn exposed_seed12_root_completes_an_iteration_with_the_same_100k_budget() {
     // Frozen failed game-test pair0012, first game, first request. Preserve
-    // the four seeded actions; the original candidate used100,000 nodes and
-    // reported depth0. This is an exposed regression, not strength evidence.
+    // the four seeded actions; the original candidate used 100,000 nodes and
+    // reported depth 0. This is an exposed regression, not strength evidence.
     let entries = [
         (7, 3, Side::Gote, "G"),
         (6, 2, Side::Gote, "K"),
@@ -1032,7 +1032,7 @@ fn exchange_recapturing_lion_can_return_away_from_the_original_target() {
 #[test]
 fn exposed_seed20_midgame_completes_with_bounded_quiescence() {
     // Exact root and six accepted actions from round4/match100k/failed-request.json.
-    // The frozen predecessor reached depth0 at100k on this second engine turn.
+    // The frozen predecessor reached depth 0 at 100k on this second engine turn.
     // This exposed regression proves resource completion, not playing strength.
     let entries = [
         (6, 2, Side::Gote, "K"),

@@ -254,7 +254,7 @@ fn unsupported_controls_options_and_oversized_input_are_explicit_and_drained() {
     assert_eq!(code, 0);
     for expected in [
         "immutable",
-        "depth1..64/nodes0..5000000",
+        "depth 1..64/nodes 0..5000000",
         "unsupported go control",
         "time controls cannot combine",
         "remaining time",

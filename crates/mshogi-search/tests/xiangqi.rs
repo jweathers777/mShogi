@@ -84,7 +84,7 @@ fn cannon_screen_and_horse_leg_tactics_choose_native_winning_captures() {
     for (fen, action) in [
         // Own soldier c5 is precisely one screen between cannon c3 and rook c7.
         ("5k3/9/2r6/9/2P6/9/2C6/9/9/3K5 w - - 0 1", "c3c7"),
-        // Empty c4 is the horse leg for c3-d5; capturing the rook leaves400.
+        // Empty c4 is the horse leg for c3-d5; capturing the rook leaves 400.
         ("5k3/9/9/9/3r5/9/2N6/9/9/3K5 w - - 0 1", "c3d5"),
         // Color/rank-reversed geometry and native Black score perspective.
         ("3k5/9/9/2c6/9/2p6/9/2R6/9/5K3 b - - 0 1", "c6c2"),
@@ -222,7 +222,7 @@ fn claimant_specific_history_and_policy_admit_only_valid_turn_claims() {
         play(&mut native, action.as_str().unwrap());
         play(&mut automatic, action.as_str().unwrap());
     }
-    // Frozen claimant arithmetic: Red has11 checks, so100-1=99. Black has100.
+    // Frozen claimant arithmetic: Red has 11 checks, so 100-1=99. Black has 100.
     assert_eq!(
         native
             .natural_count_eligibility(x::Side::Red)

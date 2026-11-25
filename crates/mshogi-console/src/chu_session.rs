@@ -205,7 +205,7 @@ impl Session {
                     .ok_or("Chu diagnostic depth must be ASCII 0..2")?
                     as u8;
                 if command == "divide" && depth == 0 {
-                    return Err("divide requires depth1..2".into());
+                    return Err("divide requires depth 1..2".into());
                 }
                 let mut visited = 0;
                 let mut candidate = self.game.local_position().clone();

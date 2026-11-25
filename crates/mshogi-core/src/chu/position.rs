@@ -6,9 +6,9 @@ use std::{error::Error, fmt, str::FromStr};
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Ord, PartialOrd, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Side {
-    /// First player; forward is toward rank1.
+    /// First player; forward is toward rank 1.
     Sente,
-    /// Second player; forward is toward rank12.
+    /// Second player; forward is toward rank 12.
     Gote,
 }
 impl Side {
@@ -45,7 +45,7 @@ impl Side {
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Ord, PartialOrd)]
 pub struct Square(u8);
 impl Square {
-    /// Construct from both numeric coordinates1..=12.
+    /// Construct from both numeric coordinates 1..=12.
     pub const fn new(file: u8, rank: u8) -> Option<Self> {
         if file >= 1 && file <= 12 && rank >= 1 && rank <= 12 {
             Some(Self((rank - 1) * 12 + 12 - file))

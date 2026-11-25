@@ -514,9 +514,9 @@ impl LocalPosition {
 pub enum SpecialMovement {
     /// Lion's two King steps or outer-ring jump.
     Lion,
-    /// Either single forward diagonal, no turn on leg2.
+    /// Either single forward diagonal, no turn on leg 2.
     ForwardDiagonal,
-    /// Straight forward, no turn on leg2.
+    /// Straight forward, no turn on leg 2.
     Forward,
 }
 /// Native source movement geometry. Offsets are Sente file/rank deltas; Gote

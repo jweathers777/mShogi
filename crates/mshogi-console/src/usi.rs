@@ -270,7 +270,7 @@ impl Adapter {
         }
         if !limits.valid() {
             return Err(format!(
-                "limits outside depth1..{}/nodes0..{}",
+                "limits outside depth 1..{}/nodes 0..{}",
                 search::MAX_DEPTH,
                 search::MAX_NODES
             ));
@@ -403,7 +403,7 @@ fn parse_go(
         match key {
             "movetime" => {
                 if !(1..=60_000).contains(&value) {
-                    return Err("movetime outside1..60000ms".into());
+                    return Err("movetime outside 1..60000ms".into());
                 }
                 movetime = Some(value);
             }
@@ -425,7 +425,7 @@ fn parse_go(
     }
     if !limits.valid() {
         return Err(format!(
-            "limits outside depth1..{}/nodes0..{}",
+            "limits outside depth 1..{}/nodes 0..{}",
             search::MAX_DEPTH,
             search::MAX_NODES
         ));

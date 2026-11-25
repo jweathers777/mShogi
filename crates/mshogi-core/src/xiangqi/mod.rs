@@ -118,7 +118,7 @@ impl Intersection {
     pub const fn file(self) -> u8 {
         self.0 % FILES
     }
-    /// Zero-based rank0 through9, increasing away from Red's baseline.
+    /// Zero-based rank 0 through 9, increasing away from Red's baseline.
     pub const fn rank(self) -> u8 {
         self.0 / FILES
     }

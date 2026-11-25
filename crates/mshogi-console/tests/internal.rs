@@ -86,7 +86,7 @@ fn real_bundled_entrypoint_echoes_context_and_plays_an_actual_legal_move() {
     // rather than accidentally retaining the material/full-width coordinator.
     assert_eq!(action.to_string(), "b1c3");
     assert_eq!(telemetry.completed_depth, 1);
-    // Root plus20 legal leaves are required; PVS may re-search improved moves.
+    // Root plus 20 legal leaves are required; PVS may re-search improved moves.
     assert!(telemetry.nodes >= 21 && telemetry.nodes <= context.context.limits.nodes);
     assert_eq!(telemetry.score, Some(52));
     assert_eq!(

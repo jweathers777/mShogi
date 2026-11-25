@@ -142,7 +142,7 @@ class PendingResumeAnalysisPreconditionTests(unittest.TestCase):
 class XiangqiImmutableWarningPrefixTests(unittest.TestCase):
     def pair(self):
         events = [{'event': {'kind': 'board_action', 'action': f'independent-{i}'}} for i in range(8)]
-        context = {'native_record': 'complete live command history through warning9'}
+        context = {'native_record': 'complete live command history through warning 9'}
         earlier = {'token': {'document': 7, 'selection': 8}, 'context': copy.deepcopy(context),
             'xiangqi': {'selected_events': events, 'selected_position': 'same diagram and counters',
                        'canonical_context_scope': 'live_with_immutable_selection',

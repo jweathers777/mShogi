@@ -127,7 +127,7 @@ fn scenarios() -> Vec<(String, ValidatedChuDocument, Value)> {
         json!({"root_concluded":false,"offer_alone_concludes":false}),
     );
 
-    // Exact independently reviewed first10 commands; never commit the forbidden
+    // Exact independently reviewed first 10 commands; never commit the forbidden
     // fourth occurrence or substitute a repetition-loss rule.
     let f = roots::fixture("CHU-REP-QUIET");
     let mut g = from_fixture("CHU-REP-QUIET");

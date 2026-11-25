@@ -100,7 +100,7 @@ pub struct NaturalCountEligibility {
     pub claimant_checks: usize,
     /// Only checks above ten are deducted.
     pub effective_plies: usize,
-    /// Whether the independently known count reaches100.
+    /// Whether the independently known count reaches 100.
     pub eligible: bool,
 }
 /// Semantic warning witness uses board indices; event identities remain separate.

@@ -142,7 +142,7 @@ pub struct ExactReport {
     /// Actual work and capacity observations.
     pub work: ExactWork,
 }
-// 90 nibbles encode empty/7 native kinds x2 sides; byte45 is side-to-move.
+// 90 nibbles encode empty/7 native kinds x2 sides; byte 45 is side-to-move.
 // No material hashing collisions, symmetry quotient or history-sensitive score reuse.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct Key([u8; 46]);

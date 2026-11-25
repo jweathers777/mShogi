@@ -696,7 +696,7 @@ fn deterministic_generated_structural_sequences_restore_all_native_state() {
 }
 #[test]
 fn incomplete_legality_boundary_is_explicit_not_silently_partial() {
-    // Structural layer intentionally does not implement128's root or safety/drop rules.
+    // Structural layer intentionally does not implement 128's root or safety/drop rules.
     let c = Corpus::embedded().unwrap();
     for id in [
         "TORI-REJECT-ADJACENT-ROYALS",

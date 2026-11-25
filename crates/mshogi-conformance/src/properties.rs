@@ -53,7 +53,7 @@ pub fn equivalent(before: &Value, after: &Value) -> Result<(), String> {
 pub fn preserves_material(before: &Value, after: &Value) -> Result<(), String> {
     equivalent(before, after)
 }
-/// Rotate a valid7x7 coordinate180 degrees. Does not establish legal movement.
+/// Rotate a valid 7x7 coordinate 180 degrees. Does not establish legal movement.
 pub fn rotate_square(s: &str) -> Result<String, String> {
     let b = s.as_bytes();
     if b.len() != 2 || !(b'1'..=b'7').contains(&b[0]) || !(b'a'..=b'g').contains(&b[1]) {

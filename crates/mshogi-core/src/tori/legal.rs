@@ -227,8 +227,8 @@ impl LocalPosition {
         )
         .is_ok()
     }
-    /// Atomically commit one complete local choice using127's native transition.
-    /// Requires separate129 permission in a real Game. Capacity failure is explicit.
+    /// Atomically commit one complete local choice using 127's native transition.
+    /// Requires separate 129 permission in a real Game. Capacity failure is explicit.
     pub fn apply(&mut self, action: Action) -> Result<(Effects, LocalUndo), ActionError> {
         resolve_legal(
             &rule_probe(&self.position, self.position.side_to_move()),

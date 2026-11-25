@@ -11,8 +11,8 @@ use mshogi_runner::experiments::{Opening, Report, Split, fresh_root, run, templa
 
 #[test]
 fn actual_depth_one_leaf_claim_tail_is_admitted_without_playing_intended_move() {
-    // This accepted native/search fixture has no claim for White at counter98.
-    // Every quiet move lets Black claim by an intended quiet move at counter99.
+    // This accepted native/search fixture has no claim for White at counter 98.
+    // Every quiet move lets Black claim by an intended quiet move at counter 99.
     // Search depth counts board plies; that terminal claim adds a command, not
     // another played board ply. The final actual match must contain one move.
     let source =
@@ -42,7 +42,7 @@ fn actual_depth_one_leaf_claim_tail_is_admitted_without_playing_intended_move() 
         group: "accepted-native-chess-counter98".into(),
         root: root.clone(),
         split: Split::Test,
-        provenance: "Project-authored accepted search regression; fifty-move count98, \
+        provenance: "Project-authored accepted search regression; fifty-move count 98, \
             no initial claim, a quiet White move enables Black's intended claim."
             .into(),
     }];

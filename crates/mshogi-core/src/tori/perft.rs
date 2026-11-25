@@ -10,7 +10,7 @@ pub const MAX_PERFT_VISITS: u64 = 1_000_000;
 pub struct PerftReport {
     /// Requested board-action depth.
     pub depth: u8,
-    /// Leaves at exactly that depth (depth0 includes the root).
+    /// Leaves at exactly that depth (depth 0 includes the root).
     pub leaves: u64,
     /// All visited nodes including root; also the metered work unit.
     pub visited: u64,

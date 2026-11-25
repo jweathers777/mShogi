@@ -153,7 +153,7 @@ impl Corpus {
             return Err("missing, unknown or conflicting fixture ownership/fields".into());
         }
         if mapping.len() != 103 || wire.fixtures.len() != 103 {
-            return Err("expected exactly103 fixtures".into());
+            return Err("expected exactly 103 fixtures".into());
         }
         for f in &wire.fixtures {
             let o = &mapping[&f.id];

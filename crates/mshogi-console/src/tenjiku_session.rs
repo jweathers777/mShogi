@@ -25,7 +25,7 @@ Tenjiku actions: Ln8hx8gx8f ordered captures; Ln8hx8g-8h capture-return;
 VGn4h-4g-5g-5f three actual landings; ChS+8h!x9h stationary igui;
 P12f-12e^ requests promotion. Original code+ retains original identity.
 Burn/death are native derived effects, never input choices. No captured hands.
-Perft/divide uses full native history/endings, depth0..3 (divide1..3).
+Perft/divide uses full native history/endings, depth 0..3 (divide 1..3).
 Saves require a new path; strict canonical records preserve the selected profile.";
 
 pub struct Session {
@@ -221,7 +221,7 @@ impl Session {
                     .ok_or("Tenjiku diagnostic depth must be ASCII 0..3")?
                     as u8;
                 if command == "divide" && depth == 0 {
-                    return Err("divide requires depth1..3".into());
+                    return Err("divide requires depth 1..3".into());
                 }
                 if command == "perft" {
                     let report = self.game.perft(depth, visits).map_err(diagnostic)?;

@@ -206,7 +206,7 @@ impl Session {
                 };
                 let depth = decimal(depth)
                     .filter(|n| *n <= usize::from(MAX_DIAGNOSTIC_DEPTH))
-                    .ok_or("Tori diagnostic depth must be ASCII 0..3 (divide1..3)")?
+                    .ok_or("Tori diagnostic depth must be ASCII 0..3 (divide 1..3)")?
                     as u8;
                 if command == "perft" {
                     let report = self

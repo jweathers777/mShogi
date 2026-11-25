@@ -85,7 +85,7 @@ def legal(board, cshogi):
 def normalized_sfen(sfen):
     """Independent syntax/semantics normalization, not a reachability oracle."""
     if not isinstance(sfen, str) or not sfen.isascii() or len(sfen) > 512:
-        raise ValueError('reference-domain: SFEN must be bounded ASCII, at most512bytes')
+        raise ValueError('reference-domain: SFEN must be bounded ASCII, at most 512 bytes')
     fields = sfen.split()
     if sfen != ' '.join(fields):
         raise ValueError('reference-domain: comparison SFEN must use canonical single-space fields')

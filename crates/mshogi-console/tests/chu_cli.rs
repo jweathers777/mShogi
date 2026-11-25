@@ -241,7 +241,7 @@ fn promotion_and_terminal_action_remain_native_not_display_inference() {
 #[test]
 fn accepted_repetition_fixture_keeps_obligation_admission_and_refusal_atomic() {
     // CHU-REP-QUIET independent expectation: 10 actions accepted, responsible
-    // Sente must vary before move11; the fourth occurrence is never committed.
+    // Sente must vary before move 11; the fourth occurrence is never committed.
     let p = c::Position::from_diagram(
         &[
             ("1l", c::Side::Sente, "K"),

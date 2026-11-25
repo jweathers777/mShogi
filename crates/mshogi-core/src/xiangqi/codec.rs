@@ -5,8 +5,8 @@ use super::{
 };
 use serde::{Deserialize, Serialize};
 
-/// Maximum native root-position JSON bytes. Valid documents are under512bytes;
-/// the4KiB bound limits hostile parsing without imposing a future record limit.
+/// Maximum native root-position JSON bytes. Valid documents are under 512 bytes;
+/// the 4KiB bound limits hostile parsing without imposing a future record limit.
 pub const MAX_POSITION_BYTES: usize = 4096;
 /// Maximum six-field position FEN bytes (no history or extra fields).
 pub const MAX_FEN_BYTES: usize = 256;
@@ -40,7 +40,7 @@ impl<'de> Deserialize<'de> for NullableCounter {
         impl serde::de::Visitor<'_> for CounterVisitor {
             type Value = NullableCounter;
             fn expecting(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-                formatter.write_str("an explicit null or unsigned32-bit declared counter")
+                formatter.write_str("an explicit null or unsigned 32-bit declared counter")
             }
             fn visit_unit<E: serde::de::Error>(self) -> Result<Self::Value, E> {
                 Ok(NullableCounter(None))
@@ -150,7 +150,7 @@ impl PositionRoot {
     }
 }
 impl Position {
-    /// Strict scoped FEN: rank9first, k/a/b/n/r/c/p, uppercase Red/lowercase Black,
+    /// Strict scoped FEN: rank 9 first, k/a/b/n/r/c/p, uppercase Red/lowercase Black,
     /// active `w` means Red and `b` Black, literal `- -`, capture-free plies and
     /// positive fullmove number. h/e aliases, noncanonical runs/spacing, unused
     /// field values and unknown counters are not silently normalized.

@@ -308,7 +308,7 @@ fn singular_exclusion_has_no_terminal_or_table_authority_and_restores_on_abort()
             root_move: None,
             root_count: 0,
         };
-        // depth7 cannot cut off from depth6 TT. Verification hits the node cap.
+        // depth 7 cannot cut off from depth 6 TT. Verification hits the node cap.
         assert_eq!(run.search(7, 1, -1000, 1000, false, true), 0);
         assert!(run.abort);
     }
@@ -398,7 +398,7 @@ impl SearchPosition for RazorEquality {
 }
 #[test]
 fn razor_threshold_equality_does_not_hide_quiet_mating_check() {
-    // Quiescence sees only a drawing capture. Its score equals alpha0, which
+    // Quiescence sees only a drawing capture. Its score equals alpha 0, which
     // fails high in [-1,0]. Full search must still see the quiet mating check.
     let mut s = Searcher::<RazorEquality>::new(1).with_selectivity(Selectivity {
         razoring: true,

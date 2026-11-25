@@ -310,7 +310,7 @@ fn project(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
     match f.id.as_str() {
         "CHU-REP-IMPORTED" => {
             // Read the native cache, not a second count which would conceal an
-            // implementation inventing duplicate root occurrences from8000.
+            // implementation inventing duplicate root occurrences from 8000.
             put(&mut out, "known_root_occurrences", g.occurrences().len());
             put(
                 &mut out,

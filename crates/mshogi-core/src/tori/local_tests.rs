@@ -724,7 +724,7 @@ fn bounded_perft_and_divide_use_independent_counts_and_preserve_native_paths() {
     ))
     .unwrap();
     let before = unchanged(&p);
-    // Each distant corner king has3moves. No first move can influence the other,
+    // Each distant corner king has 3 moves. No first move can influence the other,
     // so depth2=3×3=9, visited=1+3+9=13; not measured generator expectations.
     assert_eq!(
         p.perft(0, 1).unwrap(),

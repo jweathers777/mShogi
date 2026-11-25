@@ -333,7 +333,7 @@ fn cancel_new_game_stale_commands_and_retry_protect_the_live_game() {
 #[test]
 fn actual_missing_response_and_failed_process_pause_without_a_chess_score() {
     // Separate fixture helper, excluded from packaged normal applications:
-    // request1 exits successfully without output; request2 exits nonzero.
+    // request 1 exits successfully without output; request 2 exits nonzero.
     let mut controller = controller(env!("CARGO_BIN_EXE_mshogi-internal-fixture"));
     let initial = controller.shared_snapshot();
     // Start the first request in this session, without relying on the runtime

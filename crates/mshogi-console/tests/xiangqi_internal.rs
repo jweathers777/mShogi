@@ -207,7 +207,7 @@ fn forged_xiangqi_identity_purpose_selection_limits_and_same_board_history_are_r
     let game = game();
     for id in 20..=27 {
         let mut context = request(id, &game);
-        // Leave headroom for the intentional limit mutation in fixture23.
+        // Leave headroom for the intentional limit mutation in fixture 23.
         context.context.limits.nodes = 17;
         context.context.purpose = ExecutionPurpose::MoveAnalysis {
             target: target(&context, id),

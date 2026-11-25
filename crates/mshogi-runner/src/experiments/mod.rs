@@ -211,7 +211,7 @@ impl Config {
     /// Strict bounded decoding retains native-record duplicate-field admission.
     pub fn from_json(text: &str) -> Result<Self, RunnerError> {
         if text.len() > 1024 * 1024 {
-            return Err(err("experiment config exceeds1MiB"));
+            return Err(err("experiment config exceeds 1MiB"));
         }
         let value: Self = serde_json::from_str(text).map_err(err)?;
         value.validate()?;
@@ -329,7 +329,7 @@ impl Config {
             ));
         }
         if serde_json::to_vec(self).map_err(err)?.len() > 1024 * 1024 {
-            return Err(err("config encoding exceeds1MiB"));
+            return Err(err("config encoding exceeds 1MiB"));
         }
         Ok(())
     }
@@ -645,7 +645,7 @@ impl Report {
     /// Bound, strict parsing followed by authoritative consistency replay.
     pub fn from_json(text: &str) -> Result<Self, RunnerError> {
         if text.len() > MAX_BYTES {
-            return Err(err("experiment report exceeds128MiB"));
+            return Err(err("experiment report exceeds 128MiB"));
         }
         let report = Self::decode(serde_json::from_str(text).map_err(err)?)?;
         report.validate()?;
@@ -712,7 +712,7 @@ impl Report {
     fn encode(&self) -> Result<String, RunnerError> {
         let s = self.encoded()?.to_string();
         if s.len() > MAX_BYTES {
-            return Err(err("report encoding exceeds128MiB"));
+            return Err(err("report encoding exceeds 128MiB"));
         }
         Ok(s)
     }
@@ -720,7 +720,7 @@ impl Report {
     pub fn validate(&self) -> Result<(), RunnerError> {
         self.config.validate()?;
         if self.encoded()?.to_string().len() > MAX_BYTES {
-            return Err(err("typed report exceeds128MiB"));
+            return Err(err("typed report exceeds 128MiB"));
         }
         if self.schema != SCHEMA
             || self.schedule_algorithm != SCHEDULE

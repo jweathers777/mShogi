@@ -152,7 +152,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     try:
         if not 0 <= args.walks <= 32 or not 0 <= args.length <= 256:
-            raise ValueError('bounded walks0..32 and length0..256 required')
+            raise ValueError('bounded walks 0..32 and length 0..256 required')
         sys.exit(compare(args.fixtures, args.manifest, shlex.split(args.native_probe) if args.native_probe else None,
                          args.report, args.timeout, args.depth, args.walks, args.length))
     except (ValueError, OSError, KeyError, TypeError, AssertionError) as error:

@@ -325,7 +325,7 @@ impl Game {
         }
         Ok(game)
     }
-    /// Full standard game with empty known history and the standard root as occurrence1.
+    /// Full standard game with empty known history and the standard root as occurrence 1.
     pub fn standard() -> Self {
         Self::from_root(Position::standard()).expect("standard root and available runtime identity")
     }

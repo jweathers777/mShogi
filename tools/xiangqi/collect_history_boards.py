@@ -54,7 +54,7 @@ def main():
     native = (args.native_probe or repo / 'target/debug/examples/xiangqi_probe').resolve()
     manifest = (args.manifest or repo / 'docs/m4/xiangqi/reference/pikafish-admission.json').resolve()
     if not 0 < args.timeout <= 120:
-        raise ValueError('bounded timeout must be greater than0 and at most120 seconds')
+        raise ValueError('bounded timeout must be greater than 0 and at most 120 seconds')
     native_sha = reference.sha(native)
     script = Path(__file__).resolve()
     source_paths = sorted((repo / 'crates/mshogi-core/src/xiangqi').glob('*.rs'))
@@ -66,7 +66,7 @@ def main():
         path = repo / 'tests/fixtures/xiangqi' / name
         raw = path.read_bytes()
         if len(raw) > 262144:
-            raise ValueError(f'fixture file exceeds256KiB: {name}')
+            raise ValueError(f'fixture file exceeds 256KiB: {name}')
         parsed = reference.strict_json(raw)
         if parsed.get('profile') != PROFILE:
             raise ValueError(f'wrong fixture profile: {name}')

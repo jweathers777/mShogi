@@ -37,7 +37,7 @@ pub enum ClaimPolicy {
 /// Hashing is only an index: the entire identity is compared on collisions.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct RepetitionIdentity {
-    // Lossless canonical34bytes: two piece codes per byte, side/rights flags,
+    // Lossless canonical 34 bytes: two piece codes per byte, side/rights flags,
     // legal EP (64=None). This is the identity itself, not a probabilistic hash
     // or public saved-state encoding. Full equality checks every encoded field.
     packed: [u8; 34],

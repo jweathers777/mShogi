@@ -420,7 +420,7 @@ fn history_prefix_obligations_takeback_and_reopen_are_exact_and_fresh() {
     send(&mut c, SessionOperation::Undo {}).unwrap();
     assert!(current(&c).game.repetition().is_none());
     assert_eq!(current(&c).game.events().len(), 6);
-    // One atomic human decision restores event5, retaining complete7/6 histories.
+    // One atomic human decision restores event 5, retaining complete 7/6 histories.
     send(&mut c, SessionOperation::TakeBack {}).unwrap();
     assert_eq!(current(&c).game.events().len(), 5);
     let dir = directory("history");

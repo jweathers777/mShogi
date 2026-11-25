@@ -174,7 +174,7 @@ fn actual_reversal_properties_require_snapshots_not_claims() {
 }
 #[test]
 fn generated_snapshot_and_material_mutations_are_detected() {
-    // Deterministic property-based harness test over2000 generated snapshots, seed fixed.
+    // Deterministic property-based harness test over 2000 generated snapshots, seed fixed.
     let mut seed = 0x126_u64;
     for _ in 0..2000 {
         seed ^= seed << 13;

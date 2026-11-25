@@ -61,7 +61,7 @@ fn bare_general_fast_proof_is_a_closed_board_invariant_not_a_penalty_or_forced_w
             }
         }
     }
-    // 9x9 placements minus27 facing pairs, times2turns. Each General always
+    // 9x9 placements minus 27 facing pairs, times 2 turns. Each General always
     // has a vertical palace move on its different file. No capture/check exists.
     assert_eq!(admitted, 108);
 }

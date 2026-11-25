@@ -577,9 +577,9 @@ fn every_geometry_choice_rotates_and_reverses_exactly() {
     }
     assert!(
         checked > 500,
-        "all29 movement families must exercise complete native choices"
+        "all 29 movement families must exercise complete native choices"
     );
     eprintln!(
-        "Chu rotation and exact reversal covered {checked} actual native choices across29 faces"
+        "Chu rotation and exact reversal covered {checked} actual native choices across 29 faces"
     );
 }

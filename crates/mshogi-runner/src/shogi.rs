@@ -94,7 +94,7 @@ impl Config {
     /// Strict, bounded input parsing.
     pub fn from_json(text: &str) -> Result<Self, RunnerError> {
         if text.len() > 1_048_576 {
-            return Err(RunnerError("shogi config exceeds1MiB".into()));
+            return Err(RunnerError("shogi config exceeds 1MiB".into()));
         }
         let config: Self = serde_json::from_str(text).map_err(|e| RunnerError(e.to_string()))?;
         config.validate()?;
@@ -253,7 +253,7 @@ impl Report {
     /// Strict bounded report decoding followed by native replay.
     pub fn from_json(text: &str) -> Result<Self, RunnerError> {
         if text.len() > 67_108_864 {
-            return Err(RunnerError("shogi report exceeds64MiB".into()));
+            return Err(RunnerError("shogi report exceeds 64MiB".into()));
         }
         let report: Self = serde_json::from_str(text).map_err(|e| RunnerError(e.to_string()))?;
         report.replay()?;
@@ -263,7 +263,7 @@ impl Report {
     pub fn to_json(&self) -> Result<String, RunnerError> {
         let text = serde_json::to_string(self).map_err(|e| RunnerError(e.to_string()))?;
         if text.len() > 67_108_864 {
-            return Err(RunnerError("report exceeds supported64MiB bound".into()));
+            return Err(RunnerError("report exceeds supported 64MiB bound".into()));
         }
         Ok(text)
     }

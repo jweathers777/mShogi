@@ -1,10 +1,10 @@
 ---
 id: MSH-54
 title: Establish and meet measured xiangqi engine strength criteria
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-19T19:42:00Z'
+updated_date: '2026-11-25T07:39:00Z'
 labels:
   - handle:conventional-xiangqi
 milestone: m-5
@@ -21,28 +21,22 @@ ordinal: 179000
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-Functional xiangqi search/play does not satisfy P-02. This ticket owns the xiangqi-specific opponent pool, transparent baseline, release-strength criteria, search/evaluation improvement and measured verdict, using MSH-48 shared infrastructure. An initial learned evaluator improvement is separately owned by MSH-55; no requirement for an identical neural architecture in every game is inferred.
-
-Open D-09 questions: establish meaningful xiangqi opponents and starting positions, resource/fairness conditions, release-strength targets and uncertainty criteria from baseline/pilot evidence; record owner decisions on material targets before claiming success. Search tuning, evaluator choices and compute budgets remain empirical, not resolved by this planning ticket.
-
-Project direction 2026-11-13 (AGENTS.md, "Current Chess strength direction"): Xiangqi moves to the one shared search core and supplies its own search position, evaluation and special rules; do not build a separate search for this game. docs/m5/shared-search-core.md records what Xiangqi needs from the core. Project decision 2026-11-15: Shogi and Xiangqi move to the shared core first, then Chu Shogi and Tenjiku Shogi. Transfer useful techniques, not Chess constants, pruning assumptions, royal semantics or repetition identities; preserve the accepted native profile(s). Routine correctness/tactical tests and bounded profiling accompany coherent increments. Game tests follow "Game tests in this direction" in docs/m5/strength-roadmap.md; the earlier 15-minute match allowance no longer applies (revised 2026-11-15). Formal studies require owner approval at a substantially complete conventional-engine or new-evaluation milestone. Routine algorithm and implementation choices are autonomous. See AGENTS.md and docs/m5/strength-roadmap.md.
+Bring the Xiangqi engine to its classical baseline through the per-game strength program in docs/m5/strength-roadmap.md (D-09). John decides when the baseline is reached. The baseline is the start point for learned evaluation (MSH-55, MSH-135).
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 A reproducible xiangqi baseline and suitable independent opponent pool are established, with profile compatibility, limits, openings/colors, failures and executable identities recorded. Unavailable external opponents remain explicit measurement limitations; self-play alone is not independent strength evidence.
-- [ ] #2 Game-specific xiangqi strength targets and comparison/uncertainty criteria are explicitly decided and documented from baseline evidence before a release-strength verdict. Numeric targets are not fabricated from other games or nodes-per-second results.
-- [ ] #3 The mShogi xiangqi engine has measured search/evaluation improvements and meets the agreed criteria in reproducible matches against the defined pool. Search correctness, legal complete actions, history-aware terminal behavior and regression evidence remain intact; speedups alone do not establish stronger play.
-- [ ] #4 The final xiangqi report records the tested revision, all experimental conditions and uncertainty, actual successes/failures and independent review. Open required targets block completion and M5 closure rather than being absorbed into optional M6 research.
-- [ ] #5 A substantially complete conventional engine for this game, on the shared search core with its own search position, evaluation and special rules, is independently verified before the major strength study; established techniques are adapted to native tactics, history and outcomes, and development game tests follow docs/m5/strength-roadmap.md without per-optimization formal studies.
+- [x] #1 The program steps in docs/m5/strength-roadmap.md are done, or skipped with a recorded reason.
+- [x] #2 John's stop decision is recorded, with the accepted baseline revision.
+- [x] #3 The evidence and its limits are recorded in the step tasks; no target or rating is invented.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Notes
@@ -79,4 +73,17 @@ Direction, 2026-11-18 (John): Xiangqi follows the per-game classical strength pr
 2026-11-19: Xiangqi program steps done: MSH-194 harness, MSH-195 selectivity (+166 Elo vs predecessor), MSH-196 evaluation (+221 confirmation), MSH-197 ladder (mShogi +18 vs Pikafish 1,000 nodes; about 110 below ElephantEye 3.31, 270 below classical Fairy-Stockfish), MSH-198 blunder screen (no gross single weakness; 42% of errors avoided with 10 s). Awaiting John's stop-or-continue decision (program step 6).
 
 Decision, 2026-11-19 (John, verbatim: "Accept baseline"): the Xiangqi classical engine after MSH-194..198 and MSH-203 (main 8c7f487d; ladder MSH-197 measured before MSH-203: +18 Elo relative to Pikafish at 1,000 nodes; MSH-203 then added about +41 Elo against its predecessor) is accepted as the Xiangqi baseline for later learned evaluation (MSH-55, MSH-135). No further Xiangqi classical round is planned unless John asks. This task keeps the formal criteria and final verdict for M5 closure.
+
+2026-11-25 (John): the October criteria (independent opponent pool, release targets met in matches) are replaced by the strength program criteria above, as done earlier for MSH-49 (Chess). This task is closed at the accepted baseline.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Baseline accepted by John on 2026-11-19 ("Accept baseline"): main 8c7f487d.
+- Steps: harness MSH-194; selectivity MSH-195 (+166 Elo against the predecessor); evaluation MSH-196 (+221); reference ladder MSH-197; blunder screen MSH-198; speed MSH-203 (+41 against the predecessor, after the ladder).
+- Ladder (relative Elo, before MSH-203): +18 against Pikafish at 1,000 nodes, about 110 below ElephantEye 3.31, about 270 below classical Fairy-Stockfish.
+- Blunder screen: no single large weakness; a 10 s search avoids 42% of the errors.
+- Further strength work goes to learned evaluation (MSH-55, MSH-135).
+- Review: no separate review applies to this decision record; the step tasks hold their own checks.
+<!-- SECTION:FINAL_SUMMARY:END -->

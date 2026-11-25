@@ -1,9 +1,10 @@
 ---
 id: MSH-222
 title: Shared Engine Adapters for Chu and Tenjiku
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-11-21T23:10:00Z'
+updated_date: '2026-11-25T07:39:00Z'
 labels:
   - engine
   - refactor

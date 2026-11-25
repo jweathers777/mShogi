@@ -1,10 +1,10 @@
 ---
 id: MSH-51
 title: Establish and meet measured tori shogi engine strength criteria
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-21T22:40:00Z'
+updated_date: '2026-11-25T07:39:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -18,28 +18,22 @@ ordinal: 176000
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-Functional tori shogi search/play does not satisfy P-02. This ticket owns the tori shogi-specific opponent pool, transparent baseline, release-strength criteria, search/evaluation improvement and measured verdict, using MSH-48 shared infrastructure. An initial learned evaluator improvement is separately owned by MSH-55; no requirement for an identical neural architecture in every game is inferred.
-
-Open D-09 questions: establish meaningful tori shogi opponents and starting positions, resource/fairness conditions, release-strength targets and uncertainty criteria from baseline/pilot evidence; record owner decisions on material targets before claiming success. Search tuning, evaluator choices and compute budgets remain empirical, not resolved by this planning ticket.
-
-Project direction 2026-11-13 (AGENTS.md, "Current Chess strength direction"): Tori Shogi moves to the one shared search core and supplies its own search position, evaluation and special rules; do not build a separate search for this game. docs/m5/shared-search-core.md records what Tori Shogi needs from the core. Tori already searches through the shared core (MSH-165 (Tori Search Core Adoption), done 2026-11-14); remaining work is its strength criteria, evaluation and time use. Project decision 2026-11-15: Shogi and Xiangqi move to the shared core first, then Chu Shogi and Tenjiku Shogi. Transfer useful techniques, not Chess constants, pruning assumptions, royal semantics or repetition identities; preserve the accepted native profile(s). Routine correctness/tactical tests and bounded profiling accompany coherent increments. Game tests follow "Game tests in this direction" in docs/m5/strength-roadmap.md; the earlier 15-minute match allowance no longer applies (revised 2026-11-15). Formal studies require owner approval at a substantially complete conventional-engine or new-evaluation milestone. Routine algorithm and implementation choices are autonomous. See AGENTS.md and docs/m5/strength-roadmap.md.
+Bring the Tori Shogi engine to its classical baseline through the per-game strength program in docs/m5/strength-roadmap.md (D-09). John decides when the baseline is reached. The baseline is the start point for learned evaluation (MSH-55, MSH-135).
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 A reproducible tori shogi baseline and suitable independent opponent pool are established, with profile compatibility, limits, openings/colors, failures and executable identities recorded. Unavailable external opponents remain explicit measurement limitations; self-play alone is not independent strength evidence.
-- [ ] #2 Game-specific tori shogi strength targets and comparison/uncertainty criteria are explicitly decided and documented from baseline evidence before a release-strength verdict. Numeric targets are not fabricated from other games or nodes-per-second results.
-- [ ] #3 The mShogi tori shogi engine has measured search/evaluation improvements and meets the agreed criteria in reproducible matches against the defined pool. Search correctness, legal complete actions, history-aware terminal behavior and regression evidence remain intact; speedups alone do not establish stronger play.
-- [ ] #4 The final tori shogi report records the tested revision, all experimental conditions and uncertainty, actual successes/failures and independent review. Open required targets block completion and M5 closure rather than being absorbed into optional M6 research.
-- [ ] #5 A substantially complete conventional engine for this game, on the shared search core with its own search position, evaluation and special rules, is independently verified before the major strength study; established techniques are adapted to native tactics, history and outcomes, and development game tests follow docs/m5/strength-roadmap.md without per-optimization formal studies.
+- [x] #1 The program steps in docs/m5/strength-roadmap.md are done, or skipped with a recorded reason.
+- [x] #2 John's stop decision is recorded, with the accepted baseline revision.
+- [x] #3 The evidence and its limits are recorded in the step tasks; no target or rating is invented.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Notes
@@ -58,4 +52,18 @@ Move generation discussion slot: MSH-200 (Tori Move Generation Deep Dive).
 2026-11-19 (John: "Let's move on to Tori Shogi now."): program step tasks MSH-204 (Tori Strength Harness), MSH-205 (Tori Selectivity Round), MSH-206 (Tori Evaluation Round), MSH-207 (Tori Strength Assessment, no external opponents); MSH-200 (Tori Move Generation Deep Dive) is the discussion slot with John.
 
 Owner decision (John, 2026-11-21): the current classical Tori engine (main e012786, MSH-206 fit2 evaluation) is the accepted baseline for later learned-evaluation experiments; Tori strength work stops here and further strength work is deferred to learned evaluation (MSH-55). Evidence (MSH-207): no external opponents (Games after Xiangqi rule); scaling curve 2x time +346 Elo at 1.25 s to +261 at 20 s; same-family judge 0.49 clear blunders and 1.49 mistakes per 100 moves at 5 s + 0.1 s; the one fix round (drop_refutation) was rejected at -55 Elo. Suite tools/strength/data/tori-blunders-v1.json.
+
+2026-11-25 (John): the October criteria (independent opponent pool, release targets met in matches) are replaced by the strength program criteria above, as done earlier for MSH-49 (Chess). This task is closed at the accepted baseline.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Baseline accepted by John on 2026-11-21: main e012786 (MSH-206 fitted evaluation).
+- Steps: harness MSH-204; speed MSH-200; selectivity MSH-205; evaluation MSH-206; assessment MSH-207. No external opponents (no anchor step), as John directed for games after Xiangqi.
+- Scaling: 2x time gives +346 Elo at 1.25 s, falling to +261 at 20 s.
+- Same-family judge: 0.49 clear blunders and 1.49 mistakes per 100 moves at 5 s + 0.1 s. This is weaker evidence than an independent judge.
+- The one fix round (drop_refutation) was rejected at -55 Elo. Suite tools/strength/data/tori-blunders-v1.json.
+- Further strength work goes to learned evaluation (MSH-55, MSH-135).
+- Review: no separate review applies to this decision record; the step tasks hold their own checks.
+<!-- SECTION:FINAL_SUMMARY:END -->

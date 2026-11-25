@@ -4,7 +4,7 @@ title: Independently verify strength and learned evaluation delivery and close M
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-15T16:29:00Z'
+updated_date: '2026-11-25T07:39:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -33,7 +33,7 @@ M5 must account for every promised game-specific strength obligation and the ini
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 M4 is closed at MSH-47, shared infrastructure MSH-48 is complete, and all six game-specific strength tasks MSH-49 through MSH-54 meet their recorded targets with reproducible evidence. No game disappears from the strength scope for lack of an easy opponent.
+- [ ] #1 M4 is closed at MSH-47, shared infrastructure MSH-48 is complete, and all six game strength tasks MSH-49 through MSH-54 reached the classical baseline that John accepted, with the evidence recorded. No game disappears from the strength scope for lack of an easy opponent.
 - [ ] #2 MSH-55 demonstrates the required initial learned-evaluator lifecycle, native integration and reproducible improvement. It does not imply that all six games require the same model or that optional policy/value research succeeded.
 - [ ] #3 Independent review checks integrated product behavior, reproducibility, uncertainty and correctness/strength separation, resolves material findings, and records the M5 verdict with exact revisions and remaining M6 work. Incomplete required delivery cannot be waived by task-count percentage or moved into optional research.
 - [ ] #4 The required MSH-104 per-game opening-knowledge experiment is complete with independently reviewed reproducible evidence and recommendations. Adoption/shipping of a book or learned opening policy is not mandatory; an evidence-supported no-special-opening conclusion is valid. Original six-game strength targets and MSH-55 learned-evaluator improvement remain required and separate.
@@ -53,4 +53,6 @@ M5 must account for every promised game-specific strength obligation and the ini
 Owner-approved roadmap addition2026-10-27: MSH104 next availableID is future scope-level opening-knowledge experiment including first-class compactteacher-distilledpolicy arm distinctfrom55evaluator and59optionalpolicy/value. All original AC1–3,DoD and47–55dependencies preserved; adds104 and experiment-completion criterion, not mechanism-adoption requirement. No M5implementation/runtimePython dependency introduced.
 
 Owner strength strategy2026-11-08 changes engineering/measurement sequencing, not original M5 closure scope: six conventional game-strength obligations, initialChesslearned improvement and all-game opening-knowledge research remain required. Dependencies unchanged. MSH-135 is a separately tracked later learned-extension direction, not an additional hiddenM5gate. Majorengine/evaluation studiesrequireownerapproval; smallengineeringincrements do not triggerformalstudies.
+
+2026-11-25 (John): criterion 1 now requires the baseline that John accepted for each game, not the October release targets. MSH-55 (learned evaluator) and MSH-104 (opening knowledge) stay required for M5.
 <!-- SECTION:NOTES:END -->

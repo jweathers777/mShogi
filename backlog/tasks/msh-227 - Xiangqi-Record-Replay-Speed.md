@@ -1,10 +1,10 @@
 ---
 id: MSH-227
 title: Xiangqi Record Replay Speed
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-11-22T15:18:00Z'
-updated_date: '2026-11-23T11:09:00Z'
+updated_date: '2026-11-25T07:39:00Z'
 labels:
   - core
   - performance

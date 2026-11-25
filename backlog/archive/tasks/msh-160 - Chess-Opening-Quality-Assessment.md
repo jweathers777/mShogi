@@ -4,7 +4,7 @@ title: Chess Opening Quality Assessment
 status: To Do
 assignee: []
 created_date: '2026-11-10T18:28:00Z'
-updated_date: '2026-11-15T16:49:00Z'
+updated_date: '2026-11-25T07:39:00Z'
 labels:
   - handle:chess-opening-quality-assessment
 milestone: m-5
@@ -69,4 +69,8 @@ MSH-161 (Competitive Gameplay Diagnosis) completed the integrated opening questi
 Status check, 2026-11-15: still held by docs/m5/strength-roadmap.md. MSH-161 (Competitive Gameplay Diagnosis) is complete, so acceptance criterion 1 (coordinate within the MSH-161 study) refers to finished work and must be restated when John activates this task. The game-test rules in docs/m5/strength-roadmap.md apply to any engine games it runs.
 
 Status check, 2026-11-15: MSH-153 (Classical Compensation Calibration), named in the description, is archived; MSH-168 (Classical Endgame and King Evaluation) covers its subject.
+
+Archived 2026-11-25 by John's decision.
+
+Reason: superseded by MSH-161 (Competitive Gameplay Diagnosis), which answered the opening questions.
 <!-- SECTION:NOTES:END -->

@@ -108,8 +108,8 @@ Steps 5 and 6 change accordingly.
 | Standard Shogi | Baseline accepted 2026-11-18. Floodgate-referenced index about 2765 (MSH-191); blunder screen MSH-193. | Final criteria: MSH-50 |
 | Xiangqi | Baseline accepted 2026-11-19. Ladder and blunder screen: MSH-197, MSH-198. | Final criteria: MSH-54 |
 | Tori Shogi | Baseline accepted 2026-11-21 (MSH-207): 2x time about +260 to +350 Elo; 0.49 clear blunders per 100 moves (same-family judge). | Final criteria: MSH-51 |
-| Chu Shogi | Harness, speed, selectivity, evaluation, internal scaling and deeper blunder screen complete (0 clear blunders in 512 sampled moves); stop decision with John. | MSH-213 (harness), MSH-201 (speed), MSH-52.1 (selectivity), MSH-52.2 (evaluation), MSH-52.3 (assessment); final criteria MSH-52 |
-| Tenjiku Shogi | Not started. | MSH-214 (harness), MSH-202 (speed); final criteria MSH-53 |
+| Chu Shogi | Baseline accepted 2026-11-25 (MSH-52.3): 2x time about +370 to +600 Elo; 0 clear blunders in 512 sampled moves (same-family judge). | Final criteria: MSH-52 |
+| Tenjiku Shogi | Not started. Next: harness, then speed. | MSH-214 (harness), MSH-202 (speed); final criteria MSH-53 |
 
 ## Clock allocation of the native experiment runner
 

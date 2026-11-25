@@ -1,10 +1,10 @@
 ---
 id: MSH-209
 title: Native Game Consistency Review
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-11-20T07:34:00Z'
-updated_date: '2026-11-23T11:09:00Z'
+updated_date: '2026-11-25T07:40:00Z'
 labels:
   - handle:native-consistency-review
   - architecture
@@ -51,4 +51,6 @@ Handle: Native Consistency Review
 
 <!-- SECTION:NOTES:BEGIN -->
 MSH-229 now records a codebase-wide audit/exactness inventory in its task notes. Concrete simplification work is split into MSH-230 (operational Stop history), MSH-231 (redundant record metadata), MSH-232 (native resource admission/copies), MSH-233 (execution identity/validation), with Xiangqi replay costs in existing MSH-227. Use that inventory as current input and avoid duplicate implementation tasks; no rules change was made by MSH-229.
+
+Status check, 2026-11-25 (ticket review approved by John): MSH-229 to MSH-233 (all Done) removed the separate replay-work counts and whole-history copies in native admission (MSH-232), redundant record metadata (MSH-231) and repeated execution validation (MSH-233). Still to inventory and decide here: entry and byte limits per game; repetition detection against all earlier positions; Game::fork (now Xiangqi, Tori, Chu, Tenjiku; not Chess or Shogi); incremental engine sessions (now Shogi, Tori, Chu); repetition scans in search for drop games. Start from the current code, not from the 2026-11-20 list in the description.
 <!-- SECTION:NOTES:END -->

@@ -4,6 +4,7 @@ title: Tori Exchange Values from the Fitted Evaluation
 status: To Do
 assignee: []
 created_date: '2026-11-21T17:47:00Z'
+updated_date: '2026-11-25T07:39:00Z'
 labels: []
 dependencies: []
 priority: low
@@ -21,3 +22,11 @@ MSH-206 (Tori Evaluation Round) fitted the Tori board and hand values, but stati
 - [ ] #1 SEE and ordering use values derived from eval::DEFAULT, or the null result is recorded and the change is reverted
 - [ ] #2 The change passes the sequential predecessor test (H1 about 10) against the MSH-206 result, or the null result is reported
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Archived 2026-11-25 by John's decision.
+
+Reason: John stopped Tori strength work at the accepted baseline on 2026-11-21 (MSH-51); further strength work goes to learned evaluation.
+<!-- SECTION:NOTES:END -->

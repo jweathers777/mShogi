@@ -1,10 +1,10 @@
 ---
 id: MSH-221
 title: Chu and Tenjiku GUI Fixture Generators
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-11-21T23:10:00Z'
-updated_date: '2026-11-22T11:32:00Z'
+updated_date: '2026-11-25T07:39:00Z'
 labels:
   - desktop
   - fixtures

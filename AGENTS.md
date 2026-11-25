@@ -143,6 +143,12 @@ checkpoint, not only at the end.
   criteria that say when it is done. Add notes only when they help the next
   session.
 - Add a dependency only on a task that directly blocks it.
+- Status To Do means the task waits for a dependency or for John's choice.
+  Ready means an agent may start it now. When John defers or releases a task,
+  set the status to match.
+- When a decision of John's replaces a task's goal or acceptance criteria,
+  rewrite them to match at once. Do not leave obsolete criteria that no one
+  can check.
 - Refer to a task by ID and title, for example "MSH-205 (Tori Selectivity
   Round)".
 

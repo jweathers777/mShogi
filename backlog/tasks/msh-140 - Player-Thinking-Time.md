@@ -4,10 +4,10 @@ title: Player Thinking Time
 status: To Do
 assignee: []
 created_date: '2026-11-09T11:26:00Z'
-updated_date: '2026-11-15T16:29:00Z'
+updated_date: '2026-11-25T07:40:00Z'
 labels:
   - handle:player-thinking-time
-milestone: m-5
+milestone: m-6
 dependencies:
   - MSH-138
 priority: medium
@@ -17,7 +17,7 @@ ordinal: 173000
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-Handle: Player Thinking Time. Owner consolidation2026-11-09 wants the player eventually to choose faster responses or stronger searches. This is future product work after MSH-138 (Desktop Search Limits), not a reason to expand the current one-second default change. Start with ordinary Chess per-move time; do not imply timed support for other games before their engines support it. Align exposed choices with bounded supervision/resource policy and existing document/execution contracts.
+Let the player choose faster responses or stronger searches in desktop play. Desktop play now uses 1 s per move for Chess and Shogi and node limits for Xiangqi, Tori, Chu and Tenjiku, although all six engines accept a per-move time limit through the shared core (MSH-167). Start with the games that already play by time; offer a choice for another game only after its desktop play uses time. Keep the choices inside the existing process-supervision limits and document/execution contracts.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
@@ -39,4 +39,6 @@ Handle: Player Thinking Time. Owner consolidation2026-11-09 wants the player eve
 
 <!-- SECTION:NOTES:BEGIN -->
 Status check, 2026-11-15: MSH-167 (Engine Time Management) added clock-based time allocation to the shared core and the Chess engine; the desktop default stayed fixed time per move. This task can build the player choice on that mechanism. Tori and the other games still use node limits only.
+
+2026-11-25: moved from M5 (strength) to M6 (product polish) and the description updated to the current desktop limits (John approved the ticket review).
 <!-- SECTION:NOTES:END -->

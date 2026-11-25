@@ -1,10 +1,11 @@
 ---
 id: MSH-209
 title: Codebase Consistency and Duplication Review
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-20T07:34:00Z'
-updated_date: '2026-11-25T11:58:00Z'
+updated_date: '2026-11-25T12:01:00Z'
 labels:
   - handle:native-consistency-review
   - architecture

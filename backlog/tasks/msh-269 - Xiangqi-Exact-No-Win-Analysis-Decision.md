@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-25T18:40:00Z'
+updated_date: '2026-11-25T18:43:00Z'
 labels:
   - rules
   - xiangqi
@@ -30,6 +30,18 @@ John (2026-11-25): remove the optional Xiangqi exact Article 3.2A analysis and k
 - [ ] #3 Xiangqi rules tests of the remaining behavior keep their expected results; perft and workspace, frontend and affected checks pass; production line counts before and after are recorded.
 - [ ] #4 One review by a fresh agent session.
 <!-- AC:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Core: delete xiangqi/exact.rs, exact_request.rs, tests/xiangqi_exact.rs, examples/xiangqi_exact_probe.rs; remove UnknownExactIncomplete and ExactReport::assessment; rename the fast miss UnknownExactUnavailable to Unknown (the old name promises an exact request that no longer exists).
+2. Search: remove search_requiring_root_exact, Decision::ExactNoWin, Unresolved::Exact, SearchError::Exact and AssessmentEvidence (result keeps the fast NoWinAssessment); update engine, console UCI and the xiangqi_baseline example.
+3. Console: remove nowin exact/poll/wait/cancel and the worker; keep nowin fast.
+4. Desktop session: remove XiangqiExactEvidence, exact_observations, the generic SessionGame Evidence type and its session plumbing, and the xiangqi-exact-evidence verification fixture; keep the other verification fixtures.
+5. Frontend: remove the exact report UI from XiangqiAssessment.tsx and native.ts types; regenerate fixtures with write_frontend_fixtures; remove the xiangqi-exact-evidence phase from the GUI scripts only.
+6. Docs: profile-proposal.md and related Xiangqi, desktop and search documents state that only the fast recognition applies.
+7. Checks, line counts, fresh review, integrate.
+<!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
 

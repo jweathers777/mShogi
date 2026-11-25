@@ -1,10 +1,11 @@
 ---
 id: MSH-270
 title: Remove Uncalled Search Material Code
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-25T13:01:00Z'
-updated_date: '2026-11-25T15:25:00Z'
+updated_date: '2026-11-25T22:34:00Z'
 labels:
   - cleanup
   - search

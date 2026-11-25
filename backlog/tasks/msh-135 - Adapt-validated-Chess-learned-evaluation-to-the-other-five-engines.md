@@ -4,8 +4,10 @@ title: Adapt validated Chess learned evaluation to the other five engines
 status: To Do
 assignee: []
 created_date: '2026-11-08T13:07:00Z'
-updated_date: '2026-11-15T16:29:00Z'
-labels: []
+updated_date: '2026-11-25T09:15:00Z'
+labels:
+  - model:large
+  - effort:xhigh
 dependencies:
   - MSH-55
 documentation:

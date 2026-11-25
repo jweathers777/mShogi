@@ -4,11 +4,13 @@ title: Codebase Consistency and Duplication Review
 status: Ready
 assignee: []
 created_date: '2026-11-20T07:34:00Z'
-updated_date: '2026-11-25T08:51:00Z'
+updated_date: '2026-11-25T09:15:00Z'
 labels:
   - handle:native-consistency-review
   - architecture
   - rules
+  - model:large
+  - effort:xhigh
 milestone: m-5
 dependencies:
   - MSH-208

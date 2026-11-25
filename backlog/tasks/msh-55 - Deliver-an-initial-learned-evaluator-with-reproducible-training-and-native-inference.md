@@ -6,8 +6,10 @@ title: >-
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-15T16:29:00Z'
-labels: []
+updated_date: '2026-11-25T09:15:00Z'
+labels:
+  - model:large
+  - effort:max
 milestone: m-5
 dependencies:
   - MSH-48

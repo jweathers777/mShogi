@@ -4,7 +4,10 @@ title: Remove the fixed ten-minute experiment cap
 status: Ready
 assignee: []
 created_date: '2026-11-24T22:29:00Z'
-labels: []
+updated_date: '2026-11-25T09:15:00Z'
+labels:
+  - model:medium
+  - effort:medium
 dependencies: []
 documentation:
   - docs/m5/chu-strength-harness.md

@@ -4,9 +4,11 @@ title: Reconcile and Prune Durable Documentation
 status: Ready
 assignee: []
 created_date: '2026-11-23T17:53:00Z'
-updated_date: '2026-11-25T08:51:00Z'
+updated_date: '2026-11-25T09:15:00Z'
 labels:
   - documentation
+  - model:medium
+  - effort:high
 milestone: m-6
 dependencies: []
 documentation:

@@ -4,8 +4,10 @@ title: Complete six-game desktop analysis accessibility and product polish
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-15T16:29:00Z'
-labels: []
+updated_date: '2026-11-25T09:15:00Z'
+labels:
+  - model:large
+  - effort:high
 milestone: m-6
 dependencies:
   - MSH-47

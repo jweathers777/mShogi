@@ -4,9 +4,11 @@ title: Remove obsolete development-version compatibility code
 status: Ready
 assignee: []
 created_date: '2026-11-24T20:31:00Z'
-updated_date: '2026-11-25T08:51:00Z'
+updated_date: '2026-11-25T09:15:00Z'
 labels:
   - cleanup
+  - model:medium
+  - effort:high
 dependencies: []
 references:
   - crates/mshogi-engine/src/chu.rs

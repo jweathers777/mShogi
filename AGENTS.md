@@ -152,6 +152,43 @@ checkpoint, not only at the end.
 - Refer to a task by ID and title, for example "MSH-205 (Tori Selectivity
   Round)".
 
+## Agent level
+
+Each open task has two labels that recommend the agent for the work:
+`model:large|medium|small` and `effort:low|medium|high|xhigh|max`. The
+labels are the same for every tool; this table maps the model tier.
+
+| Tier | Claude Code | Codex | Use for |
+| --- | --- | --- | --- |
+| `model:large` | `opus` | `gpt-6.2-astra` | Rules, search and evaluation design, cross-crate refactors, reviews, research |
+| `model:medium` | `sonnet` | `gpt-6.2-sol` | Bounded engineering with clear criteria in one or two areas |
+| `model:small` | `haiku` | `gpt-6.1-terra` | Mechanical edits: renames, small fixes, simple regeneration |
+
+Both tools use the effort names directly (Claude Code `effort`, Codex
+`model_reasoning_effort`). Choose effort by how much judgment and how many
+steps the task needs: `low` for one obvious change, `medium` for routine
+work, `high` for multi-step engineering, `xhigh` for design or broad
+review, `max` for open research. When you create or split a task, add both
+labels. Change them only with a reason in the notes.
+
+**Coordinator.** When John tells a coordinator session to start a task:
+
+1. Read the task (`backlog task view <id> --plain`). If a label is missing,
+   choose it with this section, add it, and say so.
+2. Start one subagent (or new session) with the mapped model and effort, in
+   its own worktree. Give it the task ID and this instruction: "Do this task
+   by AGENTS.md: claim it, do the work, run the checks, integrate, write the
+   final summary, clean up. Report what changed, check results and anything
+   for John." The subagent asks John's questions through the coordinator.
+3. If the tool cannot set the model or effort for a subagent, use the
+   nearest available setting and tell John.
+4. Check the subagent's result (task status, criteria, commits on `main`)
+   before you report to John. If the subagent stopped because the work is
+   above its level, start a new one a level higher and record the change in
+   the task notes.
+
+The coordinator does not do the task work itself.
+
 ## Documentation
 
 - `docs/` holds durable knowledge: the design, rules profiles, how-to guides,

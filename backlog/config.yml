@@ -1,7 +1,7 @@
 project_name: "mShogi"
 default_status: "To Do"
 statuses: ["To Do", "Ready", "In Progress", "In Review", "Done"]
-labels: []
+labels: ["model:large", "model:medium", "model:small", "effort:low", "effort:medium", "effort:high", "effort:xhigh", "effort:max"]
 date_format: yyyy-mm-dd
 max_column_width: 20
 auto_open_browser: false

@@ -4,9 +4,11 @@ title: Explore policy value search and budgeted learning experiments optionally
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-15T16:29:00Z'
+updated_date: '2026-11-25T09:15:00Z'
 labels:
   - optional-research
+  - model:large
+  - effort:max
 milestone: m-6
 dependencies:
   - MSH-48

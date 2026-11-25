@@ -4,10 +4,12 @@ title: Desktop GUI Fixture Generators
 status: Ready
 assignee: []
 created_date: '2026-11-21T23:10:00Z'
-updated_date: '2026-11-25T08:51:00Z'
+updated_date: '2026-11-25T09:15:00Z'
 labels:
   - desktop
   - fixtures
+  - model:medium
+  - effort:medium
 milestone: m-6
 dependencies: []
 priority: low

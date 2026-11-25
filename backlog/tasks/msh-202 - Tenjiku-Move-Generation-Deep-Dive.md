@@ -4,10 +4,12 @@ title: Tenjiku Search Speed
 status: To Do
 assignee: []
 created_date: '2026-11-19T07:12:00Z'
-updated_date: '2026-11-25T08:51:00Z'
+updated_date: '2026-11-25T09:15:00Z'
 labels:
   - tenjiku
   - search
+  - model:large
+  - effort:xhigh
 milestone: m-5
 dependencies:
   - MSH-214

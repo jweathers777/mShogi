@@ -4,9 +4,11 @@ title: Player Thinking Time
 status: To Do
 assignee: []
 created_date: '2026-11-09T11:26:00Z'
-updated_date: '2026-11-25T07:40:00Z'
+updated_date: '2026-11-25T09:15:00Z'
 labels:
   - handle:player-thinking-time
+  - model:medium
+  - effort:high
 milestone: m-6
 dependencies:
   - MSH-138

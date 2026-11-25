@@ -4,9 +4,12 @@ title: Uniform Desktop Operations and Board Components
 status: Ready
 assignee: []
 created_date: '2026-11-25T08:51:00Z'
+updated_date: '2026-11-25T09:15:00Z'
 labels:
   - desktop
   - refactor
+  - model:large
+  - effort:high
 milestone: m-6
 dependencies: []
 priority: medium

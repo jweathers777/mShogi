@@ -2,8 +2,7 @@
 use mshogi_core::native::{CanonicalRecord, RulesProfile};
 use mshogi_engine::WorkLimits;
 use mshogi_runner::experiments::{
-    ClockAllocation, Config, FischerClock, Opening, Player, ProfileLimits, SCHEMA, Split,
-    fresh_root,
+    Config, FischerClock, Opening, Player, ProfileLimits, SCHEMA, Split, fresh_root,
 };
 
 #[allow(dead_code)]
@@ -37,7 +36,6 @@ impl Args {
         let mut random_plies = 0;
         let mut base = None;
         let mut increment = None;
-        let mut allocation = ClockAllocation::Hard;
         let mut candidate_time_factor = 1;
         let positional = if profile { 11 } else { 10 };
         while values.len() > positional {
@@ -51,13 +49,6 @@ impl Args {
                 "--clock-base-ms" => base = Some(value.parse().unwrap()),
                 "--clock-increment-ms" => increment = Some(value.parse().unwrap()),
                 "--candidate-time-factor" => candidate_time_factor = value.parse().unwrap(),
-                "--clock-allocation" => {
-                    allocation = match value.as_str() {
-                        "hard" => ClockAllocation::Hard,
-                        "nominal" => ClockAllocation::Nominal,
-                        _ => panic!("clock allocation is hard or nominal"),
-                    }
-                }
                 _ => panic!("unknown flag {flag}"),
             }
         }
@@ -77,7 +68,6 @@ impl Args {
         let clock = base.map(|base_ms| FischerClock {
             base_ms,
             increment_ms: increment.unwrap(),
-            allocation,
         });
         (
             Self {
@@ -113,7 +103,6 @@ impl Args {
             .map(|c| FischerClock {
                 base_ms: c.base_ms * self.candidate_time_factor,
                 increment_ms: c.increment_ms * self.candidate_time_factor,
-                ..c
             });
         let player = |id: &str, executable: &str, depth: u16, nodes: u64| Player {
             clock: None,

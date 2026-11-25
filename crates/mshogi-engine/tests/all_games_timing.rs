@@ -260,11 +260,11 @@ fn record_timed_native_games() {
             let before_ms = remaining_ms[side];
             let allocation =
                 mshogi_search::alphabeta::timing::TimeBudget::from_clock_ms(before_ms, 100, 30);
-            let clock_hard_ms = allocation.hard.as_millis() as u64;
+            let clock_share_ms = allocation.soft.as_millis() as u64;
             // Fixed thinking time excludes Chess setup/delivery. The caller
             // reserves transport time from its shared game-clock allocation.
-            let reserve_ms = if ply == 0 { 300 } else { 50 }.min(clock_hard_ms / 2);
-            let requested_ms = clock_hard_ms.saturating_sub(reserve_ms);
+            let reserve_ms = if ply == 0 { 300 } else { 50 }.min(clock_share_ms / 2);
+            let requested_ms = clock_share_ms.saturating_sub(reserve_ms);
             request.context.limits.time_ms = Some(requested_ms);
             let sent = Instant::now();
             serde_json::to_writer(&mut input, &request).unwrap();
@@ -279,7 +279,7 @@ fn record_timed_native_games() {
             current = played(&current, &response);
             let spent_ms = elapsed.as_micros().div_ceil(1_000) as u64;
             remaining_ms[side] = before_ms.saturating_sub(spent_ms).saturating_add(100);
-            receipts.push(json!({"profile": current.profile(), "ply": ply + 1, "elapsed_us": elapsed.as_micros(), "requested_ms": requested_ms, "transport_setup_reserve_ms": reserve_ms, "clock_hard_ms": clock_hard_ms, "clock_before_ms": before_ms, "clock_after_ms": remaining_ms[side], "increment_ms":100, "native_admitted": true, "request": request, "response": response}));
+            receipts.push(json!({"profile": current.profile(), "ply": ply + 1, "elapsed_us": elapsed.as_micros(), "requested_ms": requested_ms, "transport_setup_reserve_ms": reserve_ms, "clock_share_ms": clock_share_ms, "clock_before_ms": before_ms, "clock_after_ms": remaining_ms[side], "increment_ms":100, "native_admitted": true, "request": request, "response": response}));
         }
         drop(input);
         assert!(child.wait().unwrap().success());
@@ -294,8 +294,8 @@ fn record_timed_native_games() {
     for receipt in evidence["requests"].as_array().unwrap() {
         assert!(
             receipt["elapsed_us"].as_u64().unwrap()
-                <= receipt["clock_hard_ms"].as_u64().unwrap() * 1_000,
-            "hard limit exceeded: {} ply {} took {} us",
+                <= receipt["clock_share_ms"].as_u64().unwrap() * 1_000,
+            "clock share exceeded: {} ply {} took {} us",
             receipt["profile"],
             receipt["ply"],
             receipt["elapsed_us"]

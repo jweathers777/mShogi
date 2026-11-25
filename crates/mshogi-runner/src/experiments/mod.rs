@@ -148,19 +148,6 @@ pub struct FischerClock {
     pub base_ms: u64,
     /// Added only after an accepted native command.
     pub increment_ms: u64,
-    /// Move-time policy, part of the configuration identity.
-    pub allocation: ClockAllocation,
-}
-/// The move time the runner gives the engine from the remaining clock. The
-/// engine treats it as a fixed move time.
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
-pub enum ClockAllocation {
-    /// Three times the nominal allocation. It spends the base time within a
-    /// few moves.
-    Hard,
-    /// The nominal allocation (MSH-204, Tori Strength Harness).
-    Nominal,
 }
 /// Replayable clock receipt, charged for transport and process overhead too.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -173,6 +160,15 @@ pub struct ClockReceipt {
     /// Time after charge and any accepted-command increment.
     pub after_ms: u64,
 }
+/// The normal share of the remaining clock: the soft budget of the shared
+/// allocation, at most 60 seconds.
+fn clock_share_ms(clock: FischerClock, remaining: u64) -> u64 {
+    mshogi_search::alphabeta::timing::TimeBudget::from_clock_ms(remaining, clock.increment_ms, 30)
+        .soft
+        .as_millis()
+        .min(60_000) as u64
+}
+/// The engine treats its share, less a transport reserve, as a fixed move time.
 fn clock_work(
     mut work: WorkLimits,
     clock: Option<FischerClock>,
@@ -180,18 +176,7 @@ fn clock_work(
     first: bool,
 ) -> WorkLimits {
     if let Some(clock) = clock {
-        let allocation = mshogi_search::alphabeta::timing::TimeBudget::from_clock_ms(
-            remaining,
-            clock.increment_ms,
-            30,
-        );
-        // The recorded policy selects the move time.
-        let allotted = (match clock.allocation {
-            ClockAllocation::Hard => allocation.hard,
-            ClockAllocation::Nominal => allocation.soft,
-        }
-        .as_millis() as u64)
-            .min(60_000);
+        let allotted = clock_share_ms(clock, remaining);
         let reserve = (if first { 300 } else { 50 }).min(allotted / 2);
         work.time_ms = Some(allotted.saturating_sub(reserve));
     }
@@ -246,27 +231,13 @@ impl Config {
             if clock.base_ms == 0 || clock.base_ms > 600_000 || clock.increment_ms > 60_000 {
                 return Err(err("invalid finite Fischer clock"));
             }
-            if self
-                .clock
-                .is_some_and(|shared| shared.allocation != clock.allocation)
-            {
-                return Err(err("participant clocks must share the allocation policy"));
-            }
         }
         for clock in (0..self.players.len()).filter_map(|p| self.player_clock(p)) {
             // Upper bound even if every command earns an increment without time charge.
             let remaining = clock
                 .base_ms
                 .saturating_add(clock.increment_ms.saturating_mul(u64::from(self.max_steps)));
-            let hard = mshogi_search::alphabeta::timing::TimeBudget::from_clock_ms(
-                remaining,
-                clock.increment_ms,
-                30,
-            )
-            .hard
-            .as_millis()
-            .min(60_000) as u64;
-            if self.watchdog_ms < hard {
+            if self.watchdog_ms < clock_share_ms(clock, remaining) {
                 return Err(err("engine watchdog is below possible clock allocation"));
             }
         }

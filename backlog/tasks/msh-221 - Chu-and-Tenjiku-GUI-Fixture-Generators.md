@@ -1,17 +1,17 @@
 ---
 id: MSH-221
-title: Chu and Tenjiku GUI Fixture Generators
+title: Desktop GUI Fixture Generators
 status: Ready
 assignee: []
 created_date: '2026-11-21T23:10:00Z'
-updated_date: '2026-11-25T07:39:00Z'
+updated_date: '2026-11-25T08:51:00Z'
 labels:
   - desktop
   - fixtures
 milestone: m-6
 dependencies: []
 priority: low
-ordinal: 228000
+ordinal: 9000
 ---
 
 ## Description
@@ -31,4 +31,6 @@ Goal: make the committed desktop GUI fixtures reproducible again. On main c0f67d
 
 <!-- SECTION:NOTES:BEGIN -->
 Found in MSH-224 (2026-11-22): regenerating with write_frontend_fixtures changes Chess (shared-chess-analysis-moves, shared-chess-capacity) and all Xiangqi frontend fixtures because of earlier engine changes (play limits, selective_depth, saved play_mode). Only the Shogi fixtures were updated in MSH-224.
+
+2026-11-25: this task runs after the cleanup tasks (MSH-237 to MSH-238), which change saved formats and engine output again. Regenerate the committed fixtures of all six games once here, not only Chu and Tenjiku.
 <!-- SECTION:NOTES:END -->

@@ -9,7 +9,7 @@ dependencies: []
 documentation:
   - docs/m5/chu-strength-harness.md
 priority: medium
-ordinal: 248000
+ordinal: 8000
 ---
 
 ## Description

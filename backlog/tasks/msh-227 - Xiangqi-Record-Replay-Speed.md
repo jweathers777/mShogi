@@ -4,14 +4,14 @@ title: Xiangqi Record Replay Speed
 status: Ready
 assignee: []
 created_date: '2026-11-22T15:18:00Z'
-updated_date: '2026-11-25T07:39:00Z'
+updated_date: '2026-11-25T08:51:00Z'
 labels:
   - core
   - performance
 milestone: m-6
 dependencies: []
-priority: low
-ordinal: 234000
+priority: medium
+ordinal: 6000
 ---
 
 ## Description

@@ -4,6 +4,7 @@ title: Remove obsolete development-version compatibility code
 status: Ready
 assignee: []
 created_date: '2026-11-24T20:31:00Z'
+updated_date: '2026-11-25T08:51:00Z'
 labels:
   - cleanup
 dependencies: []
@@ -13,8 +14,8 @@ references:
   - crates/mshogi-engine/tests/all_games_timing.rs
 documentation:
   - AGENTS.md
-priority: medium
-ordinal: 246000
+priority: high
+ordinal: 1000
 ---
 
 ## Description

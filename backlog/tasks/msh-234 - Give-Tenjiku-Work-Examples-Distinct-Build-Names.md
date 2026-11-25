@@ -4,12 +4,13 @@ title: Give Tenjiku Work Examples Distinct Build Names
 status: Ready
 assignee: []
 created_date: '2026-11-23T12:31:00Z'
+updated_date: '2026-11-25T08:51:00Z'
 labels:
   - tooling
 dependencies: []
-priority: low
+priority: high
 type: chore
-ordinal: 241000
+ordinal: 2000
 ---
 
 ## Description

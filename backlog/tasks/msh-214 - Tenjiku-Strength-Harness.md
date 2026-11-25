@@ -1,15 +1,16 @@
 ---
 id: MSH-214
 title: Tenjiku Strength Harness
-status: Ready
+status: To Do
 assignee: []
 created_date: '2026-11-20T22:51:00Z'
+updated_date: '2026-11-25T08:51:00Z'
 labels:
   - tenjiku
   - search
 milestone: m-5
 dependencies: []
-ordinal: 221000
+ordinal: 11000
 ---
 
 ## Description
@@ -25,3 +26,9 @@ Goal: the harness step of the per-game classical strength program (docs/m5/stren
 - [ ] #3 A game-test control at which the median late-game depth is at least 8, or a lower target with its reason and cost recorded; a game test against a frozen predecessor runs end to end in the cloud
 - [ ] #4 A self-play export for Texel data with a split, and a time-odds measurement (2x time) recorded
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+2026-11-25 (John): Tenjiku comes last, after the codebase cleanup (MSH-237 to MSH-235). Set to Ready when John releases Tenjiku.
+<!-- SECTION:NOTES:END -->

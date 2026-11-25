@@ -1,11 +1,11 @@
 ---
 id: MSH-209
 title: Codebase Consistency and Duplication Review
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-11-20T07:34:00Z'
-updated_date: '2026-11-25T12:25:00Z'
+updated_date: '2026-11-25T12:26:00Z'
 labels:
   - handle:native-consistency-review
   - architecture
@@ -33,18 +33,18 @@ Start from the MSH-229 inventory and the current code. Known findings already ha
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 An inventory in the task notes lists each duplicated, inconsistent or overengineered mechanism with its location, size in lines and the reason it differs (game rule, measurement or none).
-- [ ] #2 Each finding has a proposed shared design, or a recorded rule or measurement reason to keep it separate.
-- [ ] #3 Proposals that change a game rule or a recorded native contract (limits, adjudication) are approved by John before implementation.
-- [ ] #4 Each approved change is a bounded Ready task with a priority and ordinal that place it before MSH-238; no task duplicates an existing one.
-- [ ] #5 Each of John's three decisions of 2026-11-25 in the notes (one Chess judging mode, one clock policy, no test-only evaluators) has a bounded Ready task or is done.
+- [x] #1 An inventory in the task notes lists each duplicated, inconsistent or overengineered mechanism with its location, size in lines and the reason it differs (game rule, measurement or none).
+- [x] #2 Each finding has a proposed shared design, or a recorded rule or measurement reason to keep it separate.
+- [x] #3 Proposals that change a game rule or a recorded native contract (limits, adjudication) are approved by John before implementation.
+- [x] #4 Each approved change is a bounded Ready task with a priority and ordinal that place it before MSH-238; no task duplicates an existing one.
+- [x] #5 Each of John's three decisions of 2026-11-25 in the notes (one Chess judging mode, one clock policy, no test-only evaluators) has a bounded Ready task or is done.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
@@ -138,4 +138,12 @@ I2. tools/experiments helpers that overlap tools/strength (environment, file has
 Existing tasks kept as they are: MSH-222, MSH-227 (note), MSH-235 (note), MSH-238, MSH-239 (note), MSH-241, MSH-243, MSH-221.
 Not reviewed in depth: per-game legal-move generation in core and search, the alpha-beta core, desktop-session internals inside MSH-239 scope, docs/ content, CI workflow files (grep only), CSS beyond grep.
 Estimated removal (code and tests) if all Ready follow-ups are done: about 9,000 lines, most from MSH-246, MSH-252/253, MSH-254-258, MSH-261/262, MSH-266; MSH-269, if approved, about 1,600 more.
+
+Evidence for the criteria: inventory above (AC1, AC2). Proposals that change a user-reachable limit or product behavior wait for John as To Do with needs-john: MSH-268 (one record size limit) and MSH-269 (Xiangqi exact analysis); none of them is Ready (AC3). Approved changes are Ready, priority medium, ordinals 6100-7850, before MSH-238 (7910): MSH-244 to MSH-267 (AC4). John's decisions: MSH-246 (one Chess judging mode), MSH-245 (one clock policy), MSH-244 (no test-only evaluators) (AC5). Existing tasks were not reworded; notes were added to MSH-227, MSH-235, MSH-239, and measurement notes to the new MSH-250, MSH-251, MSH-261. No separate review: this task changed no code; I verified the subagent sweep findings that tasks use in the code. Checks: only Backlog task files changed, so cargo, frontend and Python checks did not run.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Reviewed the codebase outside the strength tooling for duplicated, inconsistent and overengineered code and wrote a compact inventory (about 45 findings) in the notes, each with location, size, the reason for the difference and a task or a recorded reason to keep it. Created 24 Ready follow-ups (MSH-244 to MSH-267, ordinals 6100-7850, before MSH-238): John's three decisions (MSH-246 Chess judging mode, MSH-245 clock policy, MSH-244 test-only evaluators), deletions (test-only redo, unused console and frontend code, damaged number text), and consolidations (token-only request context, one repetition index, one native history owner, one compact record codec, one perft, console shell and protocol front end, search root adapter and repetition scan, incremental sessions for every game, runner helpers and transport, experiment table, frontend tables, Tauri host, desktop scripts, Python rules checks). Two questions wait for John as To Do with needs-john: MSH-268 (one native record size limit) and MSH-269 (remove Xiangqi exact no-win analysis). Estimated removal about 9,000 lines. Only Backlog files changed; no build or test ran.
+<!-- SECTION:FINAL_SUMMARY:END -->

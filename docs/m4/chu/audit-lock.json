@@ -3,7 +3,7 @@
   "scope": "Source-derived data anchor; no native execution",
   "sha256": {
     "profile.json": "630b585312e7e0ac63516a4c55f2e8acf5ee96a5e2be71f1f653fc68e9afaf5c",
-    "fixtures.json": "545f23e7c805949e7d67c64c3e2fd39927d5bdae2401065d4d5f5bfc0c9fea2a",
+    "fixtures.json": "4ddfdcc55fbda3a9bb229f8a1eb14aaa804223dda241dd350a0a0c23e1f64b37",
     "sources.json": "eadecbb96224daecf504af70c3fa96bbad51906369416ab401e8ab2d23ad0fcf"
   }
 }

@@ -113,7 +113,7 @@ fn material(p: &LocalPosition) -> Value {
             .collect::<Vec<_>>()
     )
 }
-fn unchanged(p: &LocalPosition) -> (StructuralState, (u64, u64, u64, u64)) {
+fn unchanged(p: &LocalPosition) -> (StructuralState, (u64, u64, u64)) {
     (p.position().state().clone(), runtime(p.position()))
 }
 #[test]
@@ -569,7 +569,7 @@ fn inspection_is_owner_specific_immutable_complete_and_not_live_permission() {
     );
 }
 #[test]
-fn exact_legal_apply_undo_redo_material_and_atomic_capacity() {
+fn exact_legal_apply_undo_material_and_atomic_capacity() {
     let c = Corpus::embedded().unwrap();
     let mut count = 0;
     for f in c.fixtures().iter().filter(|f| {
@@ -581,14 +581,10 @@ fn exact_legal_apply_undo_redo_material_and_atomic_capacity() {
         let before = p.position().state().clone();
         let initial = material(&p);
         assert!(p.legal_actions().contains(&a));
-        let (effects, mut undo) = p.apply(a).unwrap();
-        let applied = p.position().state().clone();
+        let (_, mut undo) = p.apply(a).unwrap();
         properties::preserves_material(&initial, &material(&p)).unwrap();
-        let mut redo = p.undo(&mut undo).unwrap();
+        p.undo(&mut undo).unwrap();
         assert_eq!(p.position().state(), &before);
-        let (repeated, _) = p.redo(&mut redo).unwrap();
-        assert_eq!(effects, repeated);
-        assert_eq!(p.position().state(), &applied);
         let mut copy = LocalPosition::admit(root(&f.given["root"]).unwrap()).unwrap();
         properties::round_trip(
             &mut copy,
@@ -706,18 +702,11 @@ fn deterministic_legal_sequences_restore_every_prefix_and_inspection_is_nonmutat
             moves.len()
         );
         let final_state = p.position().state().clone();
-        let mut redos = Vec::new();
         for (i, u) in tokens.iter_mut().enumerate().rev() {
-            redos.push(p.undo(u).unwrap());
+            p.undo(u).unwrap();
             assert_eq!(p.position().state(), &snapshots[i]);
         }
         assert_eq!(p.position().state(), &initial);
-        for (i, r) in redos.iter_mut().rev().enumerate() {
-            let (e, _) = p.redo(r).unwrap();
-            assert_eq!(e.action, moves[i]);
-            assert_eq!(p.position().state(), &snapshots[i + 1]);
-        }
-        assert_eq!(p.position().state(), &final_state);
         (moves, final_state)
     }
     assert_eq!(run(), run());

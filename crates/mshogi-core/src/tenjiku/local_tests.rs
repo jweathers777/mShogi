@@ -167,6 +167,7 @@ fn lion_paths_capture_in_order_without_chu_protection_or_royal_safety() {
         );
         let a = play((8, 8), &[(9, 8), (10, 8)], false);
         let (before, _) = l.simulate(&a).unwrap();
+        let original = l.position().clone();
         let (e, mut undo) = l.apply(&a).unwrap();
         assert_eq!(
             e.captures().map(|c| c.square).collect::<Vec<_>>(),
@@ -178,10 +179,8 @@ fn lion_paths_capture_in_order_without_chu_protection_or_royal_safety() {
             before.position().piece(sq(10, 8)),
             l.position().piece(sq(10, 8))
         );
-        let after = l.position().clone();
-        let mut redo = l.undo(&mut undo).unwrap();
-        assert_eq!(l.redo(&mut redo).unwrap().0, e);
-        assert_eq!(l.position(), &after);
+        l.undo(&mut undo).unwrap();
+        assert_eq!(l.position(), &original);
     }
 }
 
@@ -528,7 +527,7 @@ fn first_refusal_belongs_to_original_and_only_its_next_move_is_restricted() {
 }
 
 #[test]
-fn reversal_is_instance_lifo_single_use_and_branch_bound() {
+fn reversal_is_instance_lifo_and_single_use() {
     let mut l = local(
         Profile::AdamsModern,
         Side::Sente,
@@ -543,12 +542,10 @@ fn reversal_is_instance_lifo_single_use_and_branch_bound() {
     assert!(clone.undo(&mut a).is_err());
     let (_, mut b) = l.apply(&play((1, 1), &[(2, 1)], false)).unwrap();
     assert!(l.undo(&mut a).is_err());
-    let mut rb = l.undo(&mut b).unwrap();
+    l.undo(&mut b).unwrap();
     assert!(l.undo(&mut b).is_err());
-    let _ = l.undo(&mut a).unwrap();
+    l.undo(&mut a).unwrap();
     assert_eq!(l.position(), &initial);
-    l.apply(&play((8, 8), &[(9, 8)], false)).unwrap();
-    assert!(l.redo(&mut rb).is_err());
 }
 
 #[test]

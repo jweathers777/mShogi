@@ -119,15 +119,12 @@ pub struct InspectedChoice {
 /// Single-use local reversal token; fields are private and no structural caller can forge it.
 #[derive(Debug)]
 pub struct LocalUndo(transition::Undo);
-/// Single-use local forward restoration retired by newly applied branches.
-#[derive(Debug)]
-pub struct LocalRedo(transition::Redo);
 /// Failed reversal preserves position and token.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum ReversalError {
-    /// Wrong instance, order, used token, state or retired branch.
+    /// Wrong instance, order, used token or state.
     InvalidToken,
-    /// Non-rewound revision/node cannot advance.
+    /// Non-rewound revision cannot advance.
     Capacity,
 }
 impl fmt::Display for ReversalError {
@@ -153,9 +150,8 @@ impl From<transition::TransitionError> for ReversalError {
 /// let action = position.legal_actions()[0];
 /// let original = position.position().state().clone();
 /// let (_, mut undo) = position.apply(action).unwrap();
-/// let mut redo = position.undo(&mut undo).unwrap();
+/// position.undo(&mut undo).unwrap();
 /// assert_eq!(position.position().state(), &original);
-/// position.redo(&mut redo).unwrap();
 /// ```
 #[derive(Clone, Debug)]
 pub struct LocalPosition {
@@ -242,13 +238,8 @@ impl LocalPosition {
         Ok((effects, LocalUndo(undo)))
     }
     /// Exact position-bound LIFO reversal, not semantic full-game undo.
-    pub fn undo(&mut self, undo: &mut LocalUndo) -> Result<LocalRedo, ReversalError> {
-        Ok(LocalRedo(self.position.undo_structural(&mut undo.0)?))
-    }
-    /// Exact forward restoration with fresh local Undo authority.
-    pub fn redo(&mut self, redo: &mut LocalRedo) -> Result<(Effects, LocalUndo), ReversalError> {
-        let (e, u) = self.position.redo_structural(&mut redo.0)?;
-        Ok((e, LocalUndo(u)))
+    pub fn undo(&mut self, undo: &mut LocalUndo) -> Result<(), ReversalError> {
+        Ok(self.position.undo_structural(&mut undo.0)?)
     }
     /// Exact local check/no-action observation. Counters cannot manufacture a mate.
     pub fn status(&self) -> LocalStatus {

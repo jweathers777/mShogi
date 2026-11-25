@@ -16,6 +16,6 @@ validation and engine processes interruptible.
 A private transaction holds the original local owner and the lengths of
 append-only history vectors. On failure it restores the owner and truncates
 appended history. Runtime identity changes are published only after the fallible
-checks. Undo tokens retain a prefix checkpoint or index; redo retains the command
-and history nodes. Forks and explicit historical records can copy history for
-private analysis without granting permission to change the live game.
+checks. Undo tokens retain a prefix checkpoint or index and history nodes.
+Forks and explicit historical records can copy history for private analysis
+without granting permission to change the live game.

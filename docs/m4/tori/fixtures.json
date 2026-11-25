@@ -655,7 +655,6 @@
         ],
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -706,7 +705,6 @@
         ],
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -800,7 +798,6 @@
         "reason": "admitted",
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -896,7 +893,6 @@
         "reason": "admitted",
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -946,7 +942,6 @@
         "reason": "admitted",
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -1147,7 +1142,6 @@
         "promotion_timer": null,
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -1200,7 +1194,6 @@
         ],
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -1253,7 +1246,6 @@
         ],
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -1305,7 +1297,6 @@
         "promotion_timer": null,
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -1356,7 +1347,6 @@
         "no_extra_promotion_privilege": true,
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -2013,7 +2003,6 @@
         },
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -2072,7 +2061,6 @@
         },
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -2131,7 +2119,6 @@
         },
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -2181,7 +2168,6 @@
         ],
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -2276,7 +2262,6 @@
         "resulting_goose_does_not_attack_straight_forward_one": true,
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -2327,7 +2312,6 @@
         },
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -2383,7 +2367,6 @@
         },
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -2443,7 +2426,6 @@
         "conclusion": null,
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -2539,7 +2521,6 @@
         "own_phoenix_in_check_after": false,
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -2640,7 +2621,6 @@
         ],
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -2868,7 +2848,6 @@
         "repetition_occurrence_delta": 0,
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -3191,7 +3170,7 @@
           "encode_native_record",
           "strict_replay",
           "undo_last",
-          "redo_last",
+          "resubmit_last",
           "select_prefix4",
           "return_live"
         ]
@@ -3199,7 +3178,7 @@
       "expected": {
         "strict_replay_equals_original": true,
         "undo_at6_repetition": null,
-        "redo_at7_repetition_side": "gote",
+        "resubmit_at7_repetition_side": "gote",
         "prefix4_occurrences": [
           0,
           4
@@ -3760,7 +3739,6 @@
         ],
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -3812,7 +3790,6 @@
         ],
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -3908,7 +3885,6 @@
         "reason": "admitted",
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -4006,7 +3982,6 @@
         "reason": "admitted",
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -4057,7 +4032,6 @@
         "reason": "admitted",
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -4256,7 +4230,6 @@
         "promotion_timer": null,
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -4310,7 +4283,6 @@
         ],
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -4364,7 +4336,6 @@
         ],
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -4417,7 +4388,6 @@
         "promotion_timer": null,
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -4469,7 +4439,6 @@
         "no_extra_promotion_privilege": true,
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -4658,7 +4627,6 @@
         },
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -4718,7 +4686,6 @@
         },
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -4778,7 +4745,6 @@
         },
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -4829,7 +4795,6 @@
         ],
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -4926,7 +4891,6 @@
         "resulting_goose_does_not_attack_straight_forward_one": true,
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -4978,7 +4942,6 @@
         },
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -5030,7 +4993,6 @@
         ],
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -5091,7 +5053,6 @@
         "conclusion": null,
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -5141,7 +5102,6 @@
         "own_phoenix_in_check_after": false,
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -5244,7 +5204,6 @@
         ],
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },
@@ -5477,7 +5436,6 @@
         "repetition_occurrence_delta": 0,
         "reversal_contract": {
           "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
-          "redo": "same_transition_effects_and_history",
           "retired_execution": "not_revived"
         }
       },

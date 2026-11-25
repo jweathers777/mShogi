@@ -40,8 +40,8 @@ fn resources(p: &Position) -> Value {
             .collect::<Vec<_>>()
     )
 }
-fn runtime(p: &Position) -> (u64, u64, u64, u64) {
-    (p.node, p.next_node, p.branch, p.revision)
+fn runtime(p: &Position) -> (u64, u64, u64) {
+    (p.node, p.next_node, p.revision)
 }
 fn rotate(p: &Position) -> Position {
     let entries: Vec<_> = Square::all()
@@ -177,10 +177,8 @@ fn roots_preserve_identity_inventory_and_counter_provenance() {
         .unwrap();
     assert_eq!(q.declared_total_plies(), 988);
     assert_eq!(q.root(), &meta);
-    let mut r = q.undo_structural(&mut u).unwrap();
+    q.undo_structural(&mut u).unwrap();
     assert_eq!(q.accepted_plies(), 0);
-    assert_eq!(q.root(), &meta);
-    q.redo_structural(&mut r).unwrap();
     assert_eq!(q.root(), &meta);
     assert_eq!(
         Position::from_diagram(&entries, [Hand::empty(); 2], Side::Sente, p.root().clone())
@@ -267,7 +265,6 @@ fn all_40_accepted_board_transitions_execute_reversal_two_resignations_stay_pend
         let (effect, mut undo) = p
             .apply_structural(a)
             .unwrap_or_else(|e| panic!("{}: {e:?}", f.id));
-        let applied = p.state().clone();
         assert_eq!(p.accepted_plies(), 1);
         assert_eq!(p.side_to_move(), before.side.opponent());
         assert_eq!(p.root(), &before.root);
@@ -281,12 +278,9 @@ fn all_40_accepted_board_transitions_execute_reversal_two_resignations_stay_pend
                 );
             }
         }
-        let mut redo = p.undo_structural(&mut undo).unwrap();
+        p.undo_structural(&mut undo).unwrap();
         assert_eq!(p.state(), &before);
         assert!(p.revision > r0);
-        let (repeated, _) = p.redo_structural(&mut redo).unwrap();
-        assert_eq!(p.state(), &applied);
-        assert_eq!(effect, repeated);
         // Shared helper invokes real native operations; no expected snapshots echoed.
         let mut q = root(&f.given["root"]).unwrap();
         properties::round_trip(
@@ -440,10 +434,8 @@ fn all_nonroyal_faces_capture_demote_and_preserve_handed_inventory() {
             );
             assert_eq!(e.hand_change, Some((victim.base(), 1)));
             assert_eq!(p.hand(owner).count(victim.base()), 1);
-            let mut r = p.undo_structural(&mut u).unwrap();
+            p.undo_structural(&mut u).unwrap();
             assert_eq!(p.state(), &original);
-            p.redo_structural(&mut r).unwrap();
-            assert_eq!(p.hand(owner).count(victim.base()), 1);
         }
     }
 }
@@ -549,7 +541,7 @@ fn basic_invalid_actions_reject_all_state_and_runtime_atomically() {
     assert_eq!(checked, 14);
 }
 #[test]
-fn undo_redo_are_single_use_bound_lifo_and_branch_safe() {
+fn undo_is_single_use_bound_lifo_and_never_revived() {
     let mut p = diagram(
         &[
             ("7g", Side::Sente, Face::Phoenix),
@@ -585,41 +577,30 @@ fn undo_redo_are_single_use_bound_lifo_and_branch_safe() {
     );
     let (_, mut uc) = p.apply_structural(c).unwrap();
     let applied = p.state().clone();
-    let mut rc = p.undo_structural(&mut uc).unwrap();
-    let mut rb = p.undo_structural(&mut ub).unwrap();
-    let mut ra = p.undo_structural(&mut ua).unwrap();
+    p.undo_structural(&mut uc).unwrap();
+    p.undo_structural(&mut ub).unwrap();
+    p.undo_structural(&mut ua).unwrap();
     assert_eq!(p.state(), &initial);
     assert_eq!(
         p.undo_structural(&mut ua).unwrap_err(),
         TransitionError::InvalidToken
     );
-    assert_eq!(
-        p.redo_structural(&mut rc).unwrap_err(),
-        TransitionError::InvalidToken
-    );
-    let (_, mut newa) = p.redo_structural(&mut ra).unwrap();
-    let (_, mut newb) = p.redo_structural(&mut rb).unwrap();
-    let (_, mut newc) = p.redo_structural(&mut rc).unwrap();
+    let (_, mut newa) = p.apply_structural(a).unwrap();
+    let (_, mut newb) = p.apply_structural(b).unwrap();
+    let (_, mut newc) = p.apply_structural(c).unwrap();
     assert_eq!(p.state(), &applied);
-    assert_eq!(
-        p.redo_structural(&mut rc).unwrap_err(),
-        TransitionError::InvalidToken
-    );
+    // A used token stays dead on an equal state.
     assert_eq!(
         p.undo_structural(&mut uc).unwrap_err(),
         TransitionError::InvalidToken
     );
     p.undo_structural(&mut newc).unwrap();
     p.undo_structural(&mut newb).unwrap();
-    let mut stale = p.undo_structural(&mut newa).unwrap();
+    p.undo_structural(&mut newa).unwrap();
     assert_eq!(p.state(), &initial);
-    let (_, mut branch) = p.apply_structural(a).unwrap();
-    p.undo_structural(&mut branch).unwrap();
+    let (_, mut again) = p.apply_structural(a).unwrap();
+    p.undo_structural(&mut again).unwrap();
     assert_eq!(p.state(), &initial);
-    assert_eq!(
-        p.redo_structural(&mut stale).unwrap_err(),
-        TransitionError::InvalidToken
-    );
     assert!(p.revision >= 14);
 }
 #[test]
@@ -646,15 +627,12 @@ fn explicit_capacity_boundaries_preserve_state_and_tokens() {
     );
     assert_eq!(p.state(), &state);
     assert_eq!(runtime(&p), rt);
-    let mut r = p.undo_structural(&mut u).unwrap();
-    p.redo_structural(&mut r).unwrap();
-    assert_eq!(p.state(), &state);
-    for which in 0..4 {
+    p.undo_structural(&mut u).unwrap();
+    for which in 0..3 {
         let mut q = Position::standard();
         match which {
             0 => q.state.accepted_plies = u64::MAX,
             1 => q.next_node = u64::MAX,
-            2 => q.branch = u64::MAX,
             _ => q.revision = u64::MAX,
         };
         let before = q.state().clone();
@@ -707,18 +685,11 @@ fn deterministic_generated_structural_sequences_restore_all_native_state() {
         }
         assert_eq!(actions.len(), 512);
         let final_state = p.state().clone();
-        let mut redo = Vec::new();
         for (i, u) in tokens.iter_mut().enumerate().rev() {
-            redo.push(p.undo_structural(u).unwrap());
+            p.undo_structural(u).unwrap();
             assert_eq!(p.state(), &snapshots[i]);
         }
         assert_eq!(p.state(), &initial);
-        for (i, r) in redo.iter_mut().rev().enumerate() {
-            let (e, _) = p.redo_structural(r).unwrap();
-            assert_eq!(e.action, actions[i]);
-            assert_eq!(p.state(), &snapshots[i + 1]);
-        }
-        assert_eq!(p.state(), &final_state);
         (actions, final_state)
     }
     assert_eq!(run(), run());

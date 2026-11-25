@@ -23,7 +23,7 @@ mod tests;
 mod transition;
 pub use legal::{
     ActionError, AdmissionError, Effects, InspectedChoice, InspectionOrigin, LocalPosition,
-    LocalRedo, LocalStatus, LocalUndo, ReversalError,
+    LocalStatus, LocalUndo, ReversalError,
 };
 mod perft;
 pub use perft::{
@@ -405,7 +405,6 @@ pub struct Position {
     owner: Arc<()>,
     node: u64,
     next_node: u64,
-    branch: u64,
     revision: u64,
 }
 impl Clone for Position {
@@ -421,7 +420,6 @@ impl Position {
             owner: Arc::new(()),
             node: 0,
             next_node: 1,
-            branch: 0,
             revision: 0,
         }
     }

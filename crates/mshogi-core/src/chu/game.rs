@@ -317,17 +317,6 @@ pub struct GameUndo {
     before: Option<Checkpoint>,
     used: bool,
 }
-/// Single-use semantic redo; intervening commands retire its branch.
-#[derive(Debug)]
-pub struct GameRedo {
-    instance: u64,
-    branch: u64,
-    before_node: u64,
-    after_node: u64,
-    actor: Side,
-    command: GameCommand,
-    used: bool,
-}
 /// Sole authoritative native Chu game owner.
 #[derive(Debug)]
 pub struct Game {
@@ -335,7 +324,6 @@ pub struct Game {
     runtime: RuntimeToken,
     node: u64,
     next_node: u64,
-    branch: u64,
 }
 impl Game {
     /// Copy an admitted game for private analysis without replaying its history.
@@ -360,7 +348,6 @@ impl Game {
             },
             node: self.node,
             next_node: self.next_node,
-            branch: self.branch,
         })
     }
 
@@ -419,7 +406,6 @@ impl Game {
             },
             node: 0,
             next_node: 1,
-            branch: 0,
         };
         game.data.root_snapshot.conclusion = game.adjudicate(true)?;
         if super::record::encode(&game)
@@ -660,17 +646,9 @@ impl Game {
         self.data.snapshots.truncate(before.snapshots);
     }
     fn commit(&mut self, actor: Side, command: GameCommand) -> Result<GameUndo, GameError> {
-        self.commit_branch(actor, command, true)
-    }
-    fn commit_branch(
-        &mut self,
-        actor: Side,
-        command: GameCommand,
-        new_branch: bool,
-    ) -> Result<GameUndo, GameError> {
         let before = self.checkpoint();
         let before_node = self.node;
-        match self.commit_inner(actor, command, new_branch) {
+        match self.commit_inner(actor, command) {
             Ok(()) => Ok(GameUndo {
                 instance: self.runtime.instance,
                 before_node,
@@ -684,12 +662,7 @@ impl Game {
             }
         }
     }
-    fn commit_inner(
-        &mut self,
-        actor: Side,
-        command: GameCommand,
-        new_branch: bool,
-    ) -> Result<(), GameError> {
+    fn commit_inner(&mut self, actor: Side, command: GameCommand) -> Result<(), GameError> {
         if self.conclusion().is_some() {
             return Err(GameError::Concluded);
         }
@@ -701,10 +674,6 @@ impl Game {
         let node = self.next_node;
         let next_node = node
             .checked_add(1)
-            .ok_or(GameError::Capacity(Resource::Counter))?;
-        let branch = self
-            .branch
-            .checked_add(u64::from(new_branch))
             .ok_or(GameError::Capacity(Resource::Counter))?;
         let previous = self.snapshot().clone();
         let mut next = previous.clone();
@@ -799,12 +768,11 @@ impl Game {
         self.runtime.revision = revision;
         self.node = node;
         self.next_node = next_node;
-        self.branch = branch;
         Ok(())
     }
 
     /// Exact logical undo; runtime revision advances and retired work stays retired.
-    pub fn undo(&mut self, token: &mut GameUndo) -> Result<GameRedo, GameError> {
+    pub fn undo(&mut self, token: &mut GameUndo) -> Result<(), GameError> {
         if token.used || token.instance != self.runtime.instance || token.after_node != self.node {
             return Err(GameError::InvalidToken);
         }
@@ -817,37 +785,12 @@ impl Game {
         let next = node
             .checked_add(1)
             .ok_or(GameError::Capacity(Resource::Counter))?;
-        let event = self.data.events.last().expect("undo current");
-        let redo = GameRedo {
-            instance: self.runtime.instance,
-            branch: self.branch,
-            before_node: token.before_node,
-            after_node: self.node,
-            actor: event.actor,
-            command: event.command.clone(),
-            used: false,
-        };
         self.restore(token.before.take().expect("unused token"));
         self.node = token.before_node;
         self.next_node = next;
         self.runtime.revision = revision;
         token.used = true;
-        Ok(redo)
-    }
-    /// Restore exact semantic post-state while advancing authority; wrong branches reject.
-    pub fn redo(&mut self, token: &mut GameRedo) -> Result<GameUndo, GameError> {
-        if token.used
-            || token.instance != self.runtime.instance
-            || token.branch != self.branch
-            || token.before_node != self.node
-        {
-            return Err(GameError::InvalidToken);
-        }
-        let mut undo = self.commit_branch(token.actor, token.command.clone(), false)?;
-        self.node = token.after_node;
-        undo.after_node = self.node;
-        token.used = true;
-        Ok(undo)
+        Ok(())
     }
     /// Immutable exact event prefix; no future obligations or outcomes.
     pub fn event_prefix(&self, count: usize) -> Result<HistorySnapshot, GameError> {

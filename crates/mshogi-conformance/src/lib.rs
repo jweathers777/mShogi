@@ -11,10 +11,10 @@ use sha2::{Digest, Sha256};
 use std::collections::{BTreeMap, BTreeSet};
 
 /// Audited MSH-81 bytes, not generated from implementation output.
-pub const CORPUS_SHA256: &str = "e947f1d81815ba4520443308493b2a6430917b10d5624c1456ee343aad278526";
+pub const CORPUS_SHA256: &str = "65322c80eec34a28bb6cac0d382b32f299ff67f335f7dd4c66c600384de7d597";
 /// Exact selected profile.
 pub const PROFILE: &str = "mshogi.tori.modern.v1";
-/// Native fixture specification bytes, unchanged from MSH-81.
+/// Audited native fixture specification bytes.
 pub const FIXTURES: &str = include_str!("../../../docs/m4/tori/fixtures.json");
 /// Complete native and later consumer ownership.
 pub const OWNERSHIP: &str = include_str!("../../../docs/m4/tori/native-fixture-ownership.json");

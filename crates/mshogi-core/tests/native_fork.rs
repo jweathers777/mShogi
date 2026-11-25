@@ -35,17 +35,21 @@ macro_rules! check {
             assert_eq!(fork.legal_actions(), replay.legal_actions());
             let action = fork.legal_actions()[0].clone();
             for game in [&mut fork, &mut replay] {
-                let mut undo = game
-                    .submit(GameRequest {
-                        expected: game.context(),
-                        actor: game.position().side_to_move(),
-                        command: GameCommand::Play {
-                            action: action.clone(),
-                        },
-                    })
-                    .unwrap();
-                let mut redo = game.undo(&mut undo).unwrap();
-                game.redo(&mut redo).unwrap();
+                // Play the action, take it back and play it again.
+                for take_back in [true, false] {
+                    let mut undo = game
+                        .submit(GameRequest {
+                            expected: game.context(),
+                            actor: game.position().side_to_move(),
+                            command: GameCommand::Play {
+                                action: action.clone(),
+                            },
+                        })
+                        .unwrap();
+                    if take_back {
+                        game.undo(&mut undo).unwrap();
+                    }
+                }
             }
             assert_eq!(
                 GameRecord::from_game(&fork).unwrap(),

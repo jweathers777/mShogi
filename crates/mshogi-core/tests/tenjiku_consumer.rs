@@ -127,16 +127,14 @@ fn public_complete_effects_history_replay_inspection_and_fresh_authority() {
                 .unwrap_err(),
             GameError::StaleContext
         );
-        let mut redo = game.undo(&mut undo).unwrap();
-        assert_eq!(GameRecord::from_game(&game).unwrap(), root);
-        assert_ne!(game.context(), root_context);
-        game.redo(&mut redo).unwrap();
-        assert_eq!(GameRecord::from_game(&game).unwrap(), accepted);
         assert_eq!(
             accepted.to_game_with_stop(&mut || true).unwrap_err(),
             RecordError::Stopped
         );
         assert_eq!(GameRecord::from_game(&game).unwrap(), accepted);
+        game.undo(&mut undo).unwrap();
+        assert_eq!(GameRecord::from_game(&game).unwrap(), root);
+        assert_ne!(game.context(), root_context);
     }
 }
 

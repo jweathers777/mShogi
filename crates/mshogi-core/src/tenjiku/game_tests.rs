@@ -77,24 +77,20 @@ fn first_repetition_atomic_distinct_saved_and_runtime_domains() {
     }
 }
 #[test]
-fn exact_undo_redo_retire_runtime_and_new_branch_tokens() {
+fn exact_undo_retires_runtime_and_rejects_used_and_foreign_tokens() {
     for profile in Profile::ALL {
         let mut g = corner(profile);
         let before = GameRecord::from_game(&g).unwrap();
         let old = g.context();
         let mut u = play(&mut g, (16, 16), (15, 16));
         let after = GameRecord::from_game(&g).unwrap();
-        let mut r = g.undo(&mut u).unwrap();
+        g.undo(&mut u).unwrap();
         assert_eq!(before, GameRecord::from_game(&g).unwrap());
         assert_ne!(old, g.context());
         assert!(old.same_semantics(&g.context()));
         assert_eq!(g.undo(&mut u).unwrap_err(), GameError::InvalidToken);
-        let mut u2 = g.redo(&mut r).unwrap();
+        let mut u2 = play(&mut g, (16, 16), (15, 16));
         assert_eq!(after, GameRecord::from_game(&g).unwrap());
-        assert!(g.redo(&mut r).is_err());
-        let mut abandoned = g.undo(&mut u2).unwrap();
-        play(&mut g, (16, 16), (16, 15));
-        assert_eq!(g.redo(&mut abandoned).unwrap_err(), GameError::InvalidToken);
         let mut other = corner(profile);
         assert_eq!(other.undo(&mut u2).unwrap_err(), GameError::InvalidToken);
     }
@@ -198,10 +194,8 @@ fn bare_winning_royal_reply_and_simultaneous_effect_priority() {
         let before = GameRecord::from_game(&h).unwrap();
         let mut undo = play(&mut h, (8, 9), (8, 8));
         assert_eq!(h.conclusion(), Some(Conclusion::SimultaneousRoyalLoss));
-        let mut redo = h.undo(&mut undo).unwrap();
+        h.undo(&mut undo).unwrap();
         assert_eq!(before, GameRecord::from_game(&h).unwrap());
-        h.redo(&mut redo).unwrap();
-        assert_eq!(h.conclusion(), Some(Conclusion::SimultaneousRoyalLoss));
     }
 }
 #[test]
@@ -253,7 +247,7 @@ fn root_provenance_and_declared_counter_are_not_played_history() {
 #[test]
 fn actual_ending_runtime_headroom_is_reserved_before_ordinary_admission() {
     let mut g = corner(Profile::AdamsModern);
-    g.set_test_authority(u64::MAX - 1, u64::MAX - 1, u64::MAX - 1);
+    g.set_test_authority(u64::MAX - 1, u64::MAX - 1);
     let before = GameRecord::from_game(&g).unwrap();
     let context = g.context();
     assert_eq!(
@@ -269,7 +263,7 @@ fn actual_ending_runtime_headroom_is_reserved_before_ordinary_admission() {
 fn undo_cannot_spend_reserved_ending_authority_and_failure_keeps_token() {
     let mut g = corner(Profile::AdamsModern);
     let mut u = play(&mut g, (16, 16), (15, 16));
-    g.set_test_authority(u64::MAX - 1, 5, 5);
+    g.set_test_authority(u64::MAX - 1, 5);
     let before = GameRecord::from_game(&g).unwrap();
     let context = g.context();
     assert_eq!(
@@ -278,7 +272,7 @@ fn undo_cannot_spend_reserved_ending_authority_and_failure_keeps_token() {
     );
     assert_eq!(context, g.context());
     assert_eq!(before, GameRecord::from_game(&g).unwrap());
-    g.set_test_authority(20, 5, 5);
+    g.set_test_authority(20, 5);
     assert!(g.undo(&mut u).is_ok());
 }
 fn rotated_position(p: &Position) -> Position {
@@ -435,7 +429,8 @@ fn deterministic_admitted_sequences_preserve_capture_accounting_reversal_and_rep
                     GameError::WrongActor
                 );
                 assert_eq!(context, g.context());
-                let mut token = submit(&mut g, actor, GameCommand::Play { action }).unwrap();
+                let command = GameCommand::Play { action };
+                let mut token = submit(&mut g, actor, command.clone()).unwrap();
                 let effects = g.events().last().unwrap().effects.as_ref().unwrap();
                 let removed =
                     effects.captures().count() + usize::from(effects.mover_after.is_none());
@@ -449,10 +444,10 @@ fn deterministic_admitted_sequences_preserve_capture_accounting_reversal_and_rep
                 let restored = after.to_game().unwrap();
                 assert!(g.context().same_semantics(&restored.context()));
                 assert_eq!(after, GameRecord::from_game(&restored).unwrap());
-                let mut redo = g.undo(&mut token).unwrap();
+                g.undo(&mut token).unwrap();
                 assert_eq!(before, GameRecord::from_game(&g).unwrap());
                 assert_eq!(snap, *g.snapshot());
-                g.redo(&mut redo).unwrap();
+                submit(&mut g, actor, command).unwrap();
                 assert_eq!(after, GameRecord::from_game(&g).unwrap());
                 count += 1;
             }

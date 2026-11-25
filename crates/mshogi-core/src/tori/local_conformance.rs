@@ -22,8 +22,8 @@ pub(super) fn action_value(action: Action) -> Value {
         Action::Drop { face, to } => json!({"kind":"drop","piece":face.code(),"to":to.to_string()}),
     }
 }
-pub(super) fn runtime(p: &Position) -> (u64, u64, u64, u64) {
-    (p.node, p.next_node, p.branch, p.revision)
+pub(super) fn runtime(p: &Position) -> (u64, u64, u64) {
+    (p.node, p.next_node, p.revision)
 }
 fn local_snapshot(p: &LocalPosition) -> Value {
     json!({"state":snapshot(p.position()),"runtime":runtime(p.position())})
@@ -111,15 +111,6 @@ impl NativeAdapter for LocalAdapter {
                 p.undo(&mut undo).map_err(|e| e.to_string())?;
                 properties::snapshots(&original, &snapshot(p.position()))
             }
-            "reversal_contract/redo" => {
-                let applied = snapshot(p.position());
-                let mut redo = p.undo(&mut undo).map_err(|e| e.to_string())?;
-                let (again, _) = p.redo(&mut redo).map_err(|e| e.to_string())?;
-                if effects != again {
-                    return Err("local redo effects differ".into());
-                }
-                properties::snapshots(&applied, &snapshot(p.position()))
-            }
             "check" | "own_phoenix_in_check_after" => {
                 let side = if a.field == "check" {
                     p.position().side_to_move()
@@ -187,7 +178,7 @@ fn actual_local_and_structural_fixture_observations() {
             report.pending,
             report.failed
         ),
-        (483, 483, 244, 0)
+        (403, 403, 202, 0)
     );
     eprintln!(
         "TORI-128 native assertions: {} executed / {} passed / {} pending / {} failed; {} later consumer requirements pending",

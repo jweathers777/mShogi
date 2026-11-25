@@ -26591,7 +26591,6 @@
       },
       "expected": {
         "apply_then_undo": "exact_original_logical_state_and_caches",
-        "redo": "same_derived_effects_and_history",
         "runtime_authority": "never_rewound"
       },
       "expectation_method": "Independent source transcription and explicit hand-worked example; no engine output",
@@ -26611,7 +26610,6 @@
       },
       "expected": {
         "apply_then_undo": "exact_original_logical_state_and_caches",
-        "redo": "same_derived_effects_and_history",
         "runtime_authority": "never_rewound"
       },
       "expectation_method": "Independent source transcription and explicit hand-worked example; no engine output",
@@ -26631,7 +26629,6 @@
       },
       "expected": {
         "apply_then_undo": "exact_original_logical_state_and_caches",
-        "redo": "same_derived_effects_and_history",
         "runtime_authority": "never_rewound"
       },
       "expectation_method": "Independent source transcription and explicit hand-worked example; no engine output",
@@ -26651,7 +26648,6 @@
       },
       "expected": {
         "apply_then_undo": "exact_original_logical_state_and_caches",
-        "redo": "same_derived_effects_and_history",
         "runtime_authority": "never_rewound"
       },
       "expectation_method": "Independent source transcription and explicit hand-worked example; no engine output",

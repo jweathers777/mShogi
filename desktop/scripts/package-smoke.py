@@ -79,7 +79,7 @@ context = {
     },
     'limits': {'depth': 1, 'nodes': 1000},
 }
-request = {'protocol': 6, 'context': context}
+request = {'protocol': 7, 'context': context}
 def query(request, game_kind="chess"):
     # Bytes avoid platform text-mode newline conversion in the request digest.
     encoded = json.dumps(request).encode('utf-8')
@@ -133,19 +133,19 @@ for index, profile in enumerate(('adams', 'muller')):
     ctx = {'purpose': {'kind': 'engine_turn'}, 'request_id': 100 + index * 2,
         'session_version': 1,
         'game': native, 'limits': {'depth': 1, 'nodes': 1024}}
-    move_request = {'protocol': 6, 'context': ctx}
+    move_request = {'protocol': request['protocol'], 'context': ctx}
     move = query(move_request, 'tenjiku')
     result = move['observation']['result']['result']; telemetry = result['telemetry']
     assert result['kind'] == 'choice' and telemetry['completed_depth'] == 1
     assert telemetry['score'] == 999999 and 0 < telemetry['nodes'] <= 1024
-    assert telemetry['perspective'] == 'sente' and telemetry['principal_variation'][0] == result['action']
+    assert telemetry['perspective'] == 'sente' and telemetry['principal_variation'][0] == result['choice']
     assert telemetry['evaluator_id'] == 'mshogi.tenjiku.material-placement.v1' and telemetry['search_id'] == 'mshogi.tenjiku.shared-core.v1'
     analysis = copy.deepcopy(move_request)
     analysis['context'].update(request_id=101+index*2,
         purpose={'kind':'move_analysis','target':{'selection_id':1,'event_index':0,'board_ply':0,'session_version':1,
             'label':'Packaged Tenjiku independent royal diagram','turn':{'game_kind':'tenjiku','side':turn}}})
     analyzed = query(analysis, 'tenjiku')
-    assert analyzed['observation']['result']['result']['action'] == result['action']
+    assert analyzed['observation']['result']['result']['choice'] == result['choice']
     tenjiku_responses.append({'profile':native['payload']['root']['profile'],'source_fixture':str(source),
         'source_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'engine_turn':move,'analysis':analyzed})
 report = {

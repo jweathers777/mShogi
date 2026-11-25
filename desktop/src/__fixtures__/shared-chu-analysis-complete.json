@@ -1708,7 +1708,7 @@
         "kind": "chu",
         "result": {
           "kind": "choice",
-          "action": {
+          "choice": {
             "from": [
               6,
               6
@@ -1782,7 +1782,7 @@
           "kind": "chu",
           "result": {
             "kind": "choice",
-            "action": {
+            "choice": {
               "from": [
                 6,
                 6

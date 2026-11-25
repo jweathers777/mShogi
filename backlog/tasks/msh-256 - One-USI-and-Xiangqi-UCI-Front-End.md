@@ -4,7 +4,7 @@ title: One USI and Xiangqi UCI Front End
 status: Ready
 assignee: []
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-25T12:46:00Z'
+updated_date: '2026-11-25T23:11:00Z'
 labels:
   - console
   - protocol
@@ -34,4 +34,6 @@ In crates/mshogi-console, usi.rs (731 lines) and xiangqi_uci.rs (632) share abou
 
 <!-- SECTION:NOTES:BEGIN -->
 John, 2026-11-25: MSH-268 removes the input line cap for game records and position commands; do not add it back in the shared front end.
+
+MSH-222 (2026-11-26), finding in this scope: ShogiSearchSession and XiangqiSearchSession now live in mshogi-engine/src/server.rs. They could be one SearchSession<G: EngineGame> that uses EngineGame::extends; the Xiangqi session compares events directly, which is cheaper than a committed_prefix replay, so measure before merging.
 <!-- SECTION:NOTES:END -->

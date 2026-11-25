@@ -196,7 +196,7 @@ its private full-width minimax. The trait and the core did not change.
 - Observations: the new search has the identities `mshogi.tori.shared-core.v1`
   and `mshogi.tori.material-placement.v1`. Its score is not the static value
   of the end of its line, so no exact score check applies to it. Observation
-  admission accepts only the current identities (`mshogi-engine/src/tori.rs`).
+  admission accepts only the current identities (`mshogi-engine/src/adapter.rs`).
 - Evaluation (MSH-206, Tori Evaluation Round) is linear in 148 Texel-tuned
   weights (`tori/eval.rs`): board and hand values, rank and column tables for
   each piece, Phoenix safety (own and attacked neighbors, enemy pieces near

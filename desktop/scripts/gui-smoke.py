@@ -225,7 +225,7 @@ def completed_tenjiku_analysis(before, after, request_floor, depth=1, nodes=1024
             and target['event_index']==selected['event_index'] and target['board_ply']==selected['board_ply'] and target['turn']==turn
             and result['kind']=='tenjiku' and value['kind']=='choice' and telemetry['completed_depth']==depth
             and telemetry['perspective']==turn['side'] and type(telemetry['score']) is int
-            and 0<telemetry['nodes']<=nodes and telemetry['principal_variation'][0]==value['action']
+            and 0<telemetry['nodes']<=nodes and telemetry['principal_variation'][0]==value['choice']
             and telemetry['evaluator_id']=='mshogi.tenjiku.material-placement.v1' and telemetry['search_id']=='mshogi.tenjiku.shared-core.v1')
     except (KeyError,TypeError,IndexError):
         return False

@@ -4,6 +4,7 @@ title: One Per-Game Table for Native Experiments
 status: Ready
 assignee: []
 created_date: '2026-11-25T12:23:00Z'
+updated_date: '2026-11-25T23:11:00Z'
 labels:
   - runner
   - refactor
@@ -26,3 +27,9 @@ crates/mshogi-runner/src/experiments/native.rs repeats one match arm per game in
 - [ ] #1 Per-game experiment behavior comes from one trait or table; arms of the same shape are merged; the run and the validation share one decision function.
 - [ ] #2 Experiment tests and recorded-report replay pass; production line counts before and after are recorded.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+MSH-222 (2026-11-26), finding in this scope: EngineResult::validate (line replay), EngineGame::command and EngineGame::submit now serve Shogi, Xiangqi, Tori, Chu and Tenjiku, so the five admit arms in experiments/native.rs can be one generic function (validate, then the command of the choice; Finished; Incomplete or Unresolved). experiments/mod.rs valid_work can read EngineGame::MAX_DEPTH and MAX_NODES.
+<!-- SECTION:NOTES:END -->

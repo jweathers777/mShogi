@@ -25,7 +25,7 @@ pub use server::{ShogiSearchSession, XiangqiSearchSession, serve, serve_once};
 pub use shared::*;
 
 /// Current internal protocol version.
-pub const PROTOCOL_VERSION: u32 = 6;
+pub const PROTOCOL_VERSION: u32 = 7;
 /// Maximum retained stderr bytes per child.
 pub const MAX_STDERR_BYTES: usize = 4096;
 

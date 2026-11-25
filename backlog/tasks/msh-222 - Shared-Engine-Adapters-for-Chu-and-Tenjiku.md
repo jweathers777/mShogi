@@ -1,10 +1,11 @@
 ---
 id: MSH-222
 title: Shared Engine Adapters
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-21T23:10:00Z'
-updated_date: '2026-11-25T09:15:00Z'
+updated_date: '2026-11-25T22:44:00Z'
 labels:
   - engine
   - refactor

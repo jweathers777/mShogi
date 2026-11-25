@@ -1,10 +1,11 @@
 ---
 id: MSH-244
 title: Remove Test-Only Material Evaluators
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-25T12:20:00Z'
-updated_date: '2026-11-25T12:41:00Z'
+updated_date: '2026-11-25T12:51:00Z'
 labels:
   - cleanup
   - search

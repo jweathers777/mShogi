@@ -1,11 +1,11 @@
 ---
 id: MSH-247
 title: Remove Test-Only Native Redo
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-25T17:29:00Z'
+updated_date: '2026-11-25T17:30:00Z'
 labels:
   - cleanup
   - core
@@ -25,9 +25,9 @@ Tori, Chu and Tenjiku have redo tokens at two levels: Game::redo with GameRedo a
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Game and LocalPosition redo, GameRedo, LocalRedo, transition::Redo and the branch counters that exist only to retire redo tokens are removed from Tori, Chu and Tenjiku; undo returns no redo token.
-- [ ] #2 Tests that only check redo are removed; undo, rules, perft and record tests pass with unchanged expected results.
-- [ ] #3 Production line counts before and after are recorded.
+- [x] #1 Game and LocalPosition redo, GameRedo, LocalRedo, transition::Redo and the branch counters that exist only to retire redo tokens are removed from Tori, Chu and Tenjiku; undo returns no redo token.
+- [x] #2 Tests that only check redo are removed; undo, rules, perft and record tests pass with unchanged expected results.
+- [x] #3 Production line counts before and after are recorded.
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -56,4 +56,12 @@ Tests: redo parts removed. Where a test continued from the redone state, it subm
 Production lines (8 changed mshogi-core files: tori game/legal/transition/mod, chu game/legal, tenjiku game/legal): 6284 before, 5935 after. All non-test crates/*/src files: 71653 before, 71301 after.
 
 Review: one fresh-session review (the change edits pinned conformance data and undo tests in the rules crate). 3 findings, all fixed: the dropped repetition-side expectation and two stale documentation statements.
+
+Checks after the review fixes: cargo fmt --check and clippy -D warnings pass; cargo test --workspace --locked 1172 passed, 0 failed, 11 ignored; Chu data validate.py passes (its 17 tests passed). There are no release-only or ignored perft tests for Tori, Chu or Tenjiku; their perft tests run in the workspace tests. No platform CI, strength match or cloud job (not applicable). The claim handoff note above is obsolete.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Removed the test-only redo paths of Tori, Chu and Tenjiku at Game and LocalPosition level, with their tokens, branch counters and undo-token effects (commit 7a97a6a). Undo returns no token; undo behavior and stale-token checks are unchanged. Redo tests and 46 redo conformance entries are removed, and corpus hashes, totals and docs are updated; remaining expected results are unchanged. Production lines in the 8 changed core files: 6284 to 5935. Workspace checks pass. No follow-up tasks.
+<!-- SECTION:FINAL_SUMMARY:END -->

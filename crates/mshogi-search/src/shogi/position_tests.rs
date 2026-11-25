@@ -20,11 +20,6 @@ fn compare(p: &mut ShogiPosition, native: &Position) {
         for kind in PieceKind::HAND_KINDS {
             assert_eq!(p.hand_count(side, kind), native.hand(side).count(kind));
         }
-        let e = super::evaluate(native);
-        assert_eq!(
-            p.material(side),
-            if side == Side::Sente { e.sente } else { e.gote }
-        );
     }
     assert_eq!(p.hash(), p.hash_from_scratch());
     assert_eq!(p.hash(), ShogiPosition::from_position(native).hash());

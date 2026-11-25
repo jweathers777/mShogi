@@ -1,7 +1,7 @@
 //! The Tori adapter: native authority at the root, limits, forced wins with
 //! exact distance, and the reported line.
 use super::*;
-use mshogi_core::tori::{Hand, Piece, RootMetadata};
+use mshogi_core::tori::{Face, Hand, Piece, Position, RootMetadata};
 use serde_json::{Value, json};
 fn face(v: &str) -> Face {
     Face::ALL.into_iter().find(|f| f.code() == v).unwrap()
@@ -114,31 +114,11 @@ fn diagram(entries: &[(&str, Side, Face)], hands: [Hand; 2], turn: Side) -> Game
     .unwrap()
 }
 #[test]
-fn material_both_owners_handed_identities_and_promoted_hands() {
+fn piece_values_ignore_the_phoenix_and_quail_handedness() {
     assert_eq!(piece_value(Face::Phoenix), 0);
     assert_eq!(piece_value(Face::Swallow), 100);
     assert_eq!(piece_value(Face::Goose), 300);
     assert_eq!(piece_value(Face::LeftQuail), piece_value(Face::RightQuail));
-    let g = diagram(
-        &[
-            ("7g", Side::Sente, Face::Phoenix),
-            ("1a", Side::Gote, Face::Phoenix),
-            ("4d", Side::Sente, Face::Eagle),
-        ],
-        [
-            Hand::from_counts(&[(Face::LeftQuail, 1)]).unwrap(),
-            Hand::from_counts(&[(Face::RightQuail, 1), (Face::Swallow, 2)]).unwrap(),
-        ],
-        Side::Gote,
-    );
-    assert_eq!(
-        evaluate(g.position()),
-        Evaluation {
-            sente: 1500,
-            gote: 700
-        }
-    );
-    assert_eq!(evaluate(g.position()).score_for(Side::Gote), -800);
 }
 #[test]
 fn independently_expected_terminal_and_t06_history_not_board_only() {

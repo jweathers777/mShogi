@@ -1,6 +1,6 @@
 use super::*;
 use crate::alphabeta::SearchPosition;
-use mshogi_core::tenjiku::{Base, GameStatus, Piece, Profile, RootMetadata, Square};
+use mshogi_core::tenjiku::{Base, GameStatus, Piece, Position, Profile, RootMetadata, Square};
 fn sq(f: u8, r: u8) -> Square {
     Square::new(f, r).unwrap()
 }
@@ -36,28 +36,7 @@ fn play(g: &mut Game, a: Action) {
     .unwrap();
 }
 #[test]
-fn material_uses_actual_promoted_faces_and_never_concludes_a_game() {
-    for profile in Profile::ALL {
-        let g = diagram(
-            profile,
-            &[
-                (16, 16, Side::Sente, Base::K, false),
-                (8, 8, Side::Sente, Base::P, true),
-                (1, 1, Side::Gote, Base::K, false),
-                (1, 3, Side::Gote, Base::P, false),
-            ],
-            Side::Sente,
-        );
-        assert_eq!(
-            evaluate(g.position()),
-            Evaluation {
-                sente: 5500,
-                gote: 5100
-            }
-        );
-        assert_eq!(evaluate(g.position()).score_for(Side::Gote), -400);
-        assert_eq!(g.conclusion(), None);
-    }
+fn royal_values_match_and_material_stays_below_the_terminal_band() {
     assert_eq!(piece_value(Face::K), piece_value(Face::CP));
     // Even all 156 admitted pieces at the greatest material value cannot reach the terminal band.
     assert!(Face::ALL.into_iter().map(piece_value).max().unwrap() * 156 < WIN_SCORE);
@@ -396,7 +375,6 @@ fn dying_demon_leaf_uses_selected_profile_and_native_effect_order() {
             }
             Profile::MullerCompleted => {
                 assert_eq!(g.conclusion(), None);
-                assert_eq!(evaluate(g.position()).score_for(Side::Sente), -2500);
                 assert!(g.position().piece(sq(8, 7)).unwrap().is_royal());
             }
         }

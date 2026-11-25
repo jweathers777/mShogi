@@ -23,4 +23,3 @@
 .xiangqi-point:focus-visible .xiangqi-focus { stroke:#163e4b; stroke-dasharray:7 4; }
 .xiangqi-help { display:flex; align-items:center; justify-content:space-between; gap:10px; }
 .xiangqi-help>span:last-child { flex:none; }
-.game-mark.xiangqi { font-family:"mShogi Xiangqi Pieces",serif; }

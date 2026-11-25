@@ -101,7 +101,7 @@ fn profile_help_protocol_and_normal_start_are_explicit() {
 #[test]
 fn ordered_captures_returns_royals_history_and_undo_are_lossless() {
     let o = shell(&format!(
-        "position record-json {}\nrecord print\nshow\nlegal\nmove Ln6fx6ex6d\nhistory\nundo\nrecord print\nmove Ln6fx6e-6f\nhistory\nundo\nmove Ln6f-5e-6f\nhistory\n",
+        "record load-json {}\nrecord print\nshow\nlegal\nmove Ln6fx6ex6d\nhistory\nundo\nrecord print\nmove Ln6fx6e-6f\nhistory\nundo\nmove Ln6f-5e-6f\nhistory\n",
         encode(&root())
     ));
     success(&o);
@@ -121,7 +121,7 @@ fn ordered_captures_returns_royals_history_and_undo_are_lossless() {
 #[test]
 fn malformed_batch_and_resource_diagnostics_preserve_canonical_session() {
     let o = shell(&format!(
-        "position record-json {}\nrecord print\nmove Ln6fx6d Ln6d-6e\nrecord print\nmove Ln6f-6d\nrecord print\nperft 2 1\nrecord print\nrecord load-json {{\"game\":\"chu\",\"game\":\"chess\"}}\nrecord print\n",
+        "record load-json {}\nrecord print\nmove Ln6fx6d Ln6d-6e\nrecord print\nmove Ln6f-6d\nrecord print\nperft 2 1\nrecord print\nrecord load-json {{\"game\":\"chu\",\"game\":\"chess\"}}\nrecord print\n",
         encode(&root())
     ));
     assert!(!o.status.success());
@@ -137,7 +137,7 @@ fn malformed_batch_and_resource_diagnostics_preserve_canonical_session() {
 #[test]
 fn actual_offers_and_nonmove_commands_preserve_turn_and_atomic_failure() {
     let o = shell(&format!(
-        "position record-json {}\nrecord print\noffer-draw gote\nhistory\ndecline-draw sente\nundo 2\nrecord print\noffer-draw sente\naccept-draw gote\nhistory\nundo 2\nstop work\nresign gote\nhistory\nundo 1\nrecord print\n",
+        "record load-json {}\nrecord print\noffer-draw gote\nhistory\ndecline-draw sente\nundo 2\nrecord print\noffer-draw sente\naccept-draw gote\nhistory\nundo 2\nresign gote\nhistory\nundo 1\nrecord print\n",
         encode(&root())
     ));
     success(&o);
@@ -149,7 +149,6 @@ fn actual_offers_and_nonmove_commands_preserve_turn_and_atomic_failure() {
     for s in [
         "AgreedDraw",
         "Resignation { winner: Sente }",
-        "incomplete work is unscored",
         "board-ply 0 actor gote action OfferDraw",
     ] {
         assert!(text.contains(s), "{s}\n{text}");
@@ -178,7 +177,7 @@ fn atomic_canonical_save_and_strict_load_preserve_existing_files_and_live_game()
     let dir = Dir::new();
     let path = dir.0.join("complete chu.json");
     let o = shell(&format!(
-        "position record-json {}\nmove Ln6fx6e-6f\nrecord print\nrecord save {}\nrecord save {}\nposition startpos\nrecord load-file {}\nrecord print\n",
+        "record load-json {}\nmove Ln6fx6e-6f\nrecord print\nrecord save {}\nrecord save {}\nposition startpos\nrecord load-file {}\nrecord print\n",
         encode(&root()),
         path.display(),
         path.display(),
@@ -212,7 +211,7 @@ fn promotion_and_terminal_action_remain_native_not_display_inference() {
     .unwrap();
     let g = c::Game::from_root(p).unwrap();
     let o = shell(&format!(
-        "position record-json {}\nmove P6e-6d^\nhistory\nshow\nundo\nmove P6e-6d\nhistory\n",
+        "record load-json {}\nmove P6e-6d^\nhistory\nshow\nundo\nmove P6e-6d\nhistory\n",
         encode(&g)
     ));
     success(&o);
@@ -232,7 +231,7 @@ fn promotion_and_terminal_action_remain_native_not_display_inference() {
     )
     .unwrap();
     let o = shell(&format!(
-        "position record-json {}\nmove Ln6fx6e\nstatus\nundo\nrecord print\n",
+        "record load-json {}\nmove Ln6fx6e\nstatus\nundo\nrecord print\n",
         encode(&c::Game::from_root(p).unwrap())
     ));
     success(&o);
@@ -258,7 +257,7 @@ fn accepted_repetition_fixture_keeps_obligation_admission_and_refusal_atomic() {
     let g = c::Game::from_root(p).unwrap();
     let cycle = "K1l-1k K12a-12b K1k-1l K12b-12a";
     let o = shell(&format!(
-        "position record-json {}\nmove {cycle} {cycle} K1l-1k K12a-12b\nrecord print\nmove K1k-1l\nrecord print\nlegal\nhistory\n",
+        "record load-json {}\nmove {cycle} {cycle} K1l-1k K12a-12b\nrecord print\nmove K1k-1l\nrecord print\nlegal\nhistory\n",
         encode(&g)
     ));
     assert!(!o.status.success());

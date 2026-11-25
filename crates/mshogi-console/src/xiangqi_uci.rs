@@ -133,7 +133,6 @@ struct Adapter {
     limits: Limits,
     running: Option<Running>,
     worker: Worker,
-    ended: bool,
     game_generation: u64,
     table_mb: usize,
 }
@@ -197,18 +196,13 @@ impl Adapter {
             }
             "ucinewgame" if args.is_empty() => self.retire().map(|()| {
                 self.game = Game::standard(ClaimPolicy::AutoValidClaims).expect("standard native root");
-                self.ended = false;
                 self.game_generation += 1;
             }),
             "position" => self
                 .retire()
-                .and_then(|()| parse_position(args, &mut self.game))
-                .map(|()| self.ended = false),
+                .and_then(|()| parse_position(args, &mut self.game)),
             "setoption" => self.set_option(args),
             "go" => self.retire().and_then(|()| {
-                if self.ended {
-                    return Err("gameover retired this game; send position or ucinewgame".into());
-                }
                 let (limits, hold, time) =
                     parse_go(args, self.limits, self.game.position().side_to_move())?;
                 self.next_id = self
@@ -564,7 +558,6 @@ pub fn run() -> ExitCode {
         limits: search::DEFAULT_LIMITS,
         running: None,
         worker,
-        ended: false,
         game_generation: 0,
         table_mb: search::DEFAULT_TABLE_MB,
     };

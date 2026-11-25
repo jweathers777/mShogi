@@ -71,9 +71,6 @@ impl Session {
 
     /// Run one input line. On error nothing in the session changes.
     pub fn execute(&mut self, line: &str, out: &mut String) -> Result<Next, String> {
-        if line.len() > MAX_LINE_BYTES {
-            return Err(format!("line exceeds {MAX_LINE_BYTES} bytes"));
-        }
         let line = line.trim_matches(separator);
         if line.is_empty() || line.starts_with('#') {
             return Ok(Next::Continue);
@@ -381,25 +378,5 @@ fn piece_char(color: Color, kind: PieceKind) -> char {
     match color {
         Color::White => letter.to_ascii_uppercase(),
         Color::Black => letter,
-    }
-}
-
-/// Transient diagnostic-console interruption; never part of a native record.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) enum OperationalStop {
-    Cancelled,
-    ResourceLimit,
-    EngineFailure,
-    WorkLimit,
-}
-impl OperationalStop {
-    pub(crate) fn parse(args: &[&str]) -> Result<Self, String> {
-        match args {
-            ["cancelled"] => Ok(Self::Cancelled),
-            ["resource"] => Ok(Self::ResourceLimit),
-            ["engine"] => Ok(Self::EngineFailure),
-            ["work"] => Ok(Self::WorkLimit),
-            _ => Err("usage: stop cancelled|resource|engine|work".into()),
-        }
     }
 }

@@ -41,13 +41,12 @@ replay or local-rule work, so historical Moves uses the actual source face.
 
 The console is available with `cargo run --release --locked --bin mshogi --
 --game tori shell`. Type `help`. The standard root is `position startpos`;
-`position record-file <path>` and `position record-json <JSON>` admit supported
+`record load-file <path>` and `record load-json <JSON>` admit supported
 custom roots or complete games through strict canonical replay. There is no
 second text-only diagram grammar. Board cells use `s`/`g` owner prefixes without
 colons and fixed widths (`sLQ`, `gRQ`, `sEa`). Hands retain separate native counts.
 
-`move` batches are all-or-none. `resign` is a native event. `stop` changes only
-the session interruption message; it is unscored and is not saved. `undo` reverses
+`move` batches are all-or-none. `resign` is a native event. `undo` reverses
 complete player events. `history` reports board actions in readable notation and non-board events
 separately with exact event/board-ply indices. `perft` and `divide` are explicitly
 bounded local diagnostics and do not replace history-aware game permission.

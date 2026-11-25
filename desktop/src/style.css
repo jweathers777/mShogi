@@ -28,8 +28,7 @@ button:disabled {
   opacity: 0.45;
 }
 button:focus-visible,
-select:focus-visible,
-.history-scroll:focus-visible {
+select:focus-visible {
   outline: 3px solid #b9d78d;
   outline-offset: 3px;
 }
@@ -107,25 +106,6 @@ p {
   font-size: 9px;
   letter-spacing: 0.2em;
   margin-top: 3px;
-}
-.session-badges {
-  display: flex;
-  gap: 10px;
-}
-.session-badges span {
-  font-size: 12px;
-  border: 1px solid #3a4e54;
-  border-radius: 20px;
-  padding: 7px 12px;
-  color: #b6c8c6;
-}
-.session-badges i {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #c3dca5;
-  margin-right: 5px;
 }
 .workspace {
   display: grid;
@@ -319,23 +299,6 @@ p {
 .card > .caption {
   margin-top: 8px;
 }
-.new-game label {
-  display: block;
-  font-size: 13px;
-  margin-bottom: 9px;
-  color: #d3dfd9;
-}
-.new-game-controls {
-  display: flex;
-  gap: 9px;
-}
-.new-game-controls select {
-  flex: 1;
-  font-size: 12px;
-}
-.new-game-controls button {
-  font-size: 12px;
-}
 .engine-phase {
   font-size: 10px;
   text-transform: capitalize;
@@ -343,59 +306,6 @@ p {
   background: #2d4248;
   color: #b1c6c3;
   padding: 3px 8px;
-}
-.engine-phase.thinking {
-  background: #3c5135;
-  color: #d1e9ad;
-}
-.engine-phase.failed {
-  background: #593c37;
-  color: #ffcebb;
-}
-.engine-choice {
-  margin: 12px 0 3px;
-  font-size: 13px;
-  color: #d2e5bd;
-  overflow-wrap: anywhere;
-}
-.telemetry {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-  margin: 14px 0 7px;
-}
-.telemetry dt {
-  color: #9db5b6;
-  font-size: 10px;
-}
-.telemetry dd {
-  color: #e1e9da;
-  margin: 4px 0 0;
-  font-size: 18px;
-  font-variant-numeric: tabular-nums;
-}
-.variation {
-  font-family: ui-monospace, monospace;
-  font-size: 11px;
-  overflow-wrap: anywhere;
-  margin-top: 10px;
-  color: #bbcfbe;
-}
-.variation span {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  color: #91aaaa;
-}
-.engine-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 10px;
-}
-.engine-actions:empty {
-  display: none;
-}
-.engine-actions button {
-  width: 100%;
-  font-size: 12px;
 }
 .notice {
   padding: 14px;
@@ -412,14 +322,10 @@ p {
 .notice strong {
   font-size: 12px;
 }
-.notice p,
-.failure-detail {
+.notice p {
   font-size: 11px;
   margin-top: 5px;
   overflow-wrap: anywhere;
-}
-.failure-detail {
-  color: #f4c5ae;
 }
 .claims select {
   max-width: 100%;
@@ -430,53 +336,6 @@ p {
 .claims button {
   width: 100%;
   font-size: 12px;
-}
-.history-scroll {
-  max-height: 156px;
-  overflow-y: auto;
-  border-top: 1px solid #344a50;
-  margin-top: 12px;
-}
-.history-scroll table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-  font-size: 12px;
-  font-variant-numeric: tabular-nums;
-}
-.history-scroll th,
-.history-scroll td {
-  padding: 7px 9px;
-}
-.history-scroll thead {
-  color: #9eb4b6;
-  font-size: 10px;
-}
-.history-scroll tbody th {
-  color: #8fa8ab;
-  font-weight: 400;
-}
-.history-scroll tbody tr:nth-child(odd) {
-  background: #21363c;
-}
-.history-scroll td {
-  font-family: ui-monospace, monospace;
-  color: #d9e5d5;
-}
-.empty-history {
-  padding: 20px 0;
-  font-size: 12px;
-  color: #94acae;
-}
-.app-footer {
-  display: flex;
-  justify-content: space-between;
-  margin: 24px 0 19px;
-  padding-top: 13px;
-  border-top: 1px solid #2e444b;
-  font-size: 10px;
-  color: #849da0;
-  gap: 10px;
 }
 .loading {
   max-width: 900px;
@@ -552,9 +411,6 @@ p {
   .card {
     padding: 13px;
   }
-  .session-badges span:last-child {
-    display: none;
-  }
   .flip-button span {
     display: none;
   }
@@ -570,8 +426,7 @@ p {
   .app-header {
     height: 76px;
   }
-  .game-footnote,
-  .app-footer {
+  .game-footnote {
     font-size: 10px;
   }
 }
@@ -603,24 +458,12 @@ p {
   .game-footnote {
     margin-top: 8px;
   }
-  .app-footer {
-    margin-top: 14px;
-    padding-top: 8px;
-  }
 }
 
 .resign-button {
   width: 100%;
   margin-top: 12px;
   font-size: 12px;
-}
-.resign-dialog .dialog-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 24px;
-}
-.resign-dialog .dialog-actions button {
-  flex: 1;
 }
 button.danger {
   background: #b8523f;
@@ -630,34 +473,21 @@ button.danger {
 button.danger:hover:enabled {
   background: #c7614d;
 }
-.resign-dialog p.resign-stale {
-  color: #ffd2b8;
-  margin-top: 14px;
-}
 .outcome-card {
   border-color: #6c8c62;
   background: #253e31;
-}
-.outcome-card.unresolved {
-  border-color: #9b8551;
-  background: #3c3828;
 }
 .outcome-card > p:not(.eyebrow) {
   margin-top: 10px;
   font-size: 12px;
   color: #d8e3cc;
 }
-.outcome-card.unresolved > p:not(.eyebrow) {
-  color: #f0e1bc;
-}
-.notice details,
-.failure-detail {
+.notice details {
   font-size: 11px;
   overflow-wrap: anywhere;
   margin-top: 10px;
 }
-.notice summary,
-.failure-detail summary {
+.notice summary {
   cursor: pointer;
   color: #c4d2c7;
 }
@@ -689,62 +519,10 @@ button.danger:hover:enabled {
   background: #385349;
   color: #e5efd8;
 }
-.analysis-card h3 {
-  font-size: 13px;
-  font-weight: 600;
-  margin: 13px 0 10px;
-}
-.analysis-card h4 {
-  font-size: 13px;
-  color: #d8e9bd;
-  margin: 12px 0 8px;
-}
-.analysis-form {
-  margin: 15px 0;
-}
-.analysis-fields {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-.analysis-form label {
-  display: block;
-  color: #bed0c9;
-  font-size: 11px;
-}
-.analysis-form input,
-.analysis-form select {
-  display: block;
-  width: 100%;
-  min-width: 0;
-  margin: 6px 0 10px;
-  border: 1px solid #455f62;
-  border-radius: 5px;
-  padding: 8px 7px;
-  font: inherit;
-  background: #13252b;
-  color: #e5ecdf;
-}
-.analysis-form input:focus-visible {
-  outline: 3px solid #b9d78d;
-  outline-offset: 2px;
-}
-.analysis-form button,
-.cancel-analysis,
 .play-paused button {
   width: 100%;
   margin-top: 8px;
   font-size: 12px;
-}
-.technical-analysis {
-  margin-top: 15px;
-  border-top: 1px solid #385158;
-  padding-top: 12px;
-  font-size: 11px;
-  color: #bed2c7;
-}
-.technical-analysis summary {
-  cursor: pointer;
 }
 .analysis-score {
   font-size: 16px;
@@ -761,19 +539,6 @@ button.danger:hover:enabled {
 .analysis-result {
   margin-top: 15px;
   border-top: 1px solid #3d565a;
-}
-.analysis-suggestion {
-  margin-top: 12px;
-  color: #cbe2b4;
-  font-size: 12px;
-}
-.technical-analysis pre {
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-  max-height: 220px;
-  overflow: auto;
-  font-size: 10px;
-  color: #adbfba;
 }
 .validation-error {
   font-size: 12px;
@@ -799,22 +564,6 @@ button.danger:hover:enabled {
   }
 }
 
-.footer-details {
-  text-align: right;
-}
-.footer-details summary {
-  cursor: pointer;
-}
-.footer-details > span {
-  display: block;
-  margin-top: 5px;
-}
-
-.document-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
 .document-card .card-title h2 {
   overflow-wrap: anywhere;
 }
@@ -825,18 +574,6 @@ button.danger:hover:enabled {
 .document-dirty.dirty {
   color: #edc78c;
 }
-.document-details {
-  font-size: 0.78rem;
-  margin-top: 0.8rem;
-  overflow-wrap: anywhere;
-}
-.document-details p {
-  margin: 0.6rem 0;
-}
-.io-failure,
-.guard-message {
-  color: #f1baad;
-}
 .document-guard {
   max-width: 480px;
 }
@@ -846,53 +583,6 @@ button.danger:hover:enabled {
 .historical-notice p {
   font-size: 0.83rem;
   line-height: 1.5;
-}
-.event-timeline {
-  list-style: none;
-  padding: 0;
-  margin: 0.8rem 0;
-  max-height: 240px;
-  overflow: auto;
-}
-.event-timeline button {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
-  text-align: left;
-  border-radius: 4px;
-  padding: 0.55rem;
-}
-.event-timeline button[aria-current="step"] {
-  background: #31453c;
-  color: #e4efd9;
-}
-.event-timeline small {
-  flex-shrink: 0;
-  color: var(--muted);
-}
-.played-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem 1.6rem;
-  padding-left: 1.4rem;
-  font-size: 0.85rem;
-}
-.archived-observation {
-  border-top: 1px solid var(--border);
-  padding-top: 0.8rem;
-  margin-top: 0.8rem;
-}
-.archived-observation h3 {
-  font-size: 0.9rem;
-}
-.archived-observation p {
-  font-size: 0.82rem;
-  line-height: 1.5;
-}
-.analysis-selection {
-  font-size: 0.82rem;
-  color: #e3cd9d;
 }
 .capacity-notice {
   border-color: #d4ad67;

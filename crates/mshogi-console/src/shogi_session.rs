@@ -1,8 +1,5 @@
 //! Explicit human console adapter; native game owns all rules and admission.
-use crate::{
-    record_io,
-    session::{MAX_LINE_BYTES, Next},
-};
+use crate::{record_io, session::Next};
 use mshogi_core::{native::CanonicalRecord, shogi::*};
 use std::fmt::Write as _;
 
@@ -61,9 +58,6 @@ impl Session {
         Ok(Self { game: replay, undo })
     }
     pub fn execute(&mut self, line: &str, out: &mut String) -> Result<Next, String> {
-        if line.len() > MAX_LINE_BYTES {
-            return Err(format!("line exceeds {MAX_LINE_BYTES} bytes"));
-        }
         let line = line.trim_matches([' ', '\t', '\r', '\x0b', '\x0c']);
         if line.is_empty() || line.starts_with('#') {
             return Ok(Next::Continue);

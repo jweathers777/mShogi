@@ -62,8 +62,8 @@
 .game-shell .shell-card { background:var(--shell-panel); border:1px solid var(--shell-border); border-radius:9px; padding:13px; }
 .game-shell .shell-analysis { min-height:218px; }
 .game-shell .shell-history { height:236px; min-height:236px; overflow:auto; }
-.game-shell .shell-history>.history-card,.game-shell .shell-history>.shogi-history { height:100%; display:flex; flex-direction:column; }
-.game-shell .shell-history .event-timeline,.game-shell .shell-history .shogi-history ol { flex:1; min-height:45px; max-height:none; margin:8px 0; overflow:auto; }
+.game-shell .shell-history>.shogi-history { height:100%; display:flex; flex-direction:column; }
+.game-shell .shell-history .shogi-history ol { flex:1; min-height:45px; max-height:none; margin:8px 0; overflow:auto; }
 .game-shell .shell-section-title { font-size:13px; margin:0 0 9px; }
 .game-shell.game-shell .shell-sidebar .card,.game-shell.game-shell .shogi-analysis,.game-shell.game-shell .shogi-history,.game-shell.game-shell .shogi-game-actions { background:transparent; color:var(--shell-text); padding:0; margin:0; border:0; border-radius:0; }
 .game-shell .shell-card h2,.game-shell .shogi-section-heading h2 { font-size:13px; color:var(--shell-text); }
@@ -97,17 +97,15 @@
 .game-shell .moves-events summary { cursor:pointer; color:var(--shell-muted); }
 .game-shell .moves-events small { color:var(--shell-muted); }
 .game-shell .shell-history .moves-events ol { flex:initial; min-height:0; max-height:80px; overflow:auto; margin:5px 0; }
-.game-shell .shogi-history li button,.game-shell .native-history-row { color:var(--shell-text); }
+.game-shell .shogi-history li button { color:var(--shell-text); }
 .game-shell .shogi-history li button:hover:enabled { background:#2a4247; }
-.game-shell .shogi-history li button[aria-current="step"],.game-shell .native-history-row[aria-current="step"] { color:#e5eddc; background:#344b41; }
-.native-history-row { display:flex; align-items:center; gap:10px; padding:7px 6px; font-size:11px; border-radius:4px; }
+.game-shell .shogi-history li button[aria-current="step"] { color:#e5eddc; background:#344b41; }
 .game-shell .shell-actions .resign-button { width:auto; margin:0; }
 .game-shell .shogi-game-actions button { margin:0 4px 0 0; }
 .game-shell .shogi-notice,.game-shell .shogi-resume { color:var(--shell-text); border:1px solid #72816a; background:#263d36; border-radius:8px; padding:12px; }
 .game-shell .shogi-notice h3,.game-shell .shogi-notice p,.game-shell .shogi-resume p { color:#d5e2ce; }
 .game-shell .shogi-notice.error { background:#402c31; border-color:#c28c8c; color:#f3c4bf; }
 .game-shell .shogi-notice button { background:#345b50; color:#eaf1e6; border-color:#56796c; }
-.game-shell .shogi-history-banner { flex-shrink:0; color:#e2d3a9; background:#383a2d; border-color:#837752; }
 .game-shell .shogi-promotion { color:var(--shell-text); background:var(--shell-panel); border-color:var(--shell-border); }
 .game-shell .shogi-promotion p { color:var(--shell-muted); }
 .product-dialog.product-dialog { color:#e7ece5; background:#1b2e35; border-color:#56716f; color-scheme:dark; }
@@ -115,7 +113,7 @@
 .product-dialog.product-dialog .quiet { color:#e7ece5; border-color:#56716f; }
 .product-dialog.product-dialog .primary { color:#192e29; background:#d5e4bd; }
 .product-dialog.product-dialog .secondary { background:#345b50; color:#eaf1e6; }
-.product-dialog.product-dialog .game-choices button,.product-dialog.product-dialog .side-choices button { background:#243b42; color:#e7ece5; border-color:#56716f; }
+.product-dialog.product-dialog .side-choices button { background:#243b42; color:#e7ece5; border-color:#56716f; }
 .product-dialog.product-dialog button.chosen { background:#345448; border-color:#c3dca5; box-shadow:inset 0 0 0 1px #c3dca5; }
 @media(max-width:960px) {
  .game-shell .shell-header { padding:0 18px; gap:13px; }
@@ -148,7 +146,7 @@
 /* The empty notice slot retains its existing eight-pixel separation in every game. */
 .shell-position-notice:empty { display:block; }
 .shell-position-notice { flex-shrink:0; margin-bottom:8px; }
-.game-shell .shell-position-notice .historical-notice,.game-shell .shell-position-notice .shogi-history-banner { background:#383a2d; color:#e2d3a9; border:1px solid #837752; border-radius:6px; padding:8px 10px; margin:0; font-size:11px; }
+.game-shell .shell-position-notice .historical-notice { background:#383a2d; color:#e2d3a9; border:1px solid #837752; border-radius:6px; padding:8px 10px; margin:0; font-size:11px; }
 .game-shell .shell-position-notice .historical-notice p { font-size:10px; margin:3px 0; }
 .game-shell .shell-position-notice button { padding:5px 9px; font-size:11px; }
 .game-shell .shell-history-notice.shell-history-notice { display:block; }

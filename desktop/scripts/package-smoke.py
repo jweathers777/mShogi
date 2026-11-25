@@ -28,7 +28,6 @@ assert len(hosts) == 1, f'expected one packaged desktop host, got {hosts}'
 host_bytes = hosts[0].read_bytes()
 for marker in (b'MSHOGI_DESKTOP_FIXTURE', b'MSHOGI_VERIFICATION_ENGINE', b'Native Cocoa Quit (verification)',
                b'synthetic_snapshot', b'synthetic_command', b'desktop_verification_mode',
-               b'native_contract_snapshot', b'native_contract_command', b'native_contract_file',
                b'mshogi.synthetic.strider16.v1', b'mshogi-verification-window-size',
                b'Verification window size', b'xiangqi-exact-evidence', b'MSHOGI_R6_REAL_ENGINE', b'MSHOGI_R6_DELAY_MS', b'xiangqi-capacity', b'xiangqi-warning', b'xiangqi-control-capacity', b'shogi-control-capacity', b'tenjiku-adams-standard', b'tenjiku-muller-standard'):
     assert marker not in host_bytes, f'verification marker entered a normal host: {marker!r}'

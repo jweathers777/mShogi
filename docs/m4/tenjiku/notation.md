@@ -95,12 +95,11 @@ uses the same core effect formatter for exact admitted event phases. Rejected
 batches publish neither partial action confirmations nor partial effect text.
 `undo` reverses
 native events, including non-move events. `offer-draw`, `accept-draw`,
-`decline-draw` and `resign` use an explicit Sente/Gote actor. `stop` sets an
-unscored session interruption; it adds no native event and is not saved.
+`decline-draw` and `resign` use an explicit Sente/Gote actor.
 
-`position record-file`/`record-json` accept strict canonical standard/custom roots.
-`record print`, `record save`, `record load-file` and `record load-json` share the
-existing bounded file adapter. Save requires a new path and preserves an existing
+`record load-file` and `record load-json` accept strict canonical standard/custom
+roots. They share the existing bounded file adapter with `record print` and
+`record save`. Save requires a new path and preserves an existing
 file; strict complete replay succeeds before Load replaces the current session.
 Records preserve profile/edition, original identities/rights, complete actions,
 native effects and match history. Human labels never replace canonical semantics.

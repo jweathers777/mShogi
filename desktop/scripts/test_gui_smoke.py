@@ -553,7 +553,7 @@ class XiangqiRuntimeEvidenceTests(unittest.TestCase):
         actual = module.selected_gui_phases('all')
         self.assertEqual(len(actual), len(set(actual)))
         self.assertTrue(set(previous) <= set(actual))
-        self.assertTrue({'current-claim', 'pending-chess',
+        self.assertTrue({'current-claim', 'concluded', 'pending-chess',
                          'pending-shogi', 'pending-xiangqi'} <= set(actual))
         xiangqi = module.selected_gui_phases('verification-xiangqi')
         self.assertEqual(set(xiangqi), {'xiangqi-warning', 'xiangqi-fourth', 'xiangqi-count',

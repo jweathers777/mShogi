@@ -394,6 +394,7 @@ impl DesktopController {
             "promotion" => "7k/P7/8/8/8/8/8/7K w - - 0 1",
             "claim" => "7k/8/8/8/8/8/R7/K7 w - - 99 1",
             "current-claim" => "7k/8/8/8/8/8/R7/K7 w - - 100 1",
+            "concluded" => "7k/6Q1/5K2/8/8/8/8/8 b - - 0 1",
             _ => return Err("Unknown desktop verification fixture.".into()),
         };
         let game = if fen == STANDARD_START_FEN {
@@ -401,7 +402,7 @@ impl DesktopController {
         } else {
             AdjudicatedGame::from_fen(fen, ClaimPolicy::ExplicitOnly).map_err(|e| e.to_string())?
         };
-        let human = if fixture == "incomplete" {
+        let human = if matches!(fixture, "incomplete" | "concluded") {
             Color::Black
         } else {
             Color::White

@@ -163,7 +163,7 @@ def xiangqi_retained_state(diagnostics):
 
 def selected_gui_phases(choice):
     """Keep independent native-process journeys explicit and individually runnable."""
-    chess = ["standard", "promotion", "claim", "current-claim", "capacity", "synthetic", "pending-chess", "pending-shogi", "pending-xiangqi", "pending-tori", "tori-recovery", "pending-chu", "chu-recovery"]
+    chess = ["standard", "promotion", "claim", "current-claim", "concluded", "capacity", "synthetic", "pending-chess", "pending-shogi", "pending-xiangqi", "pending-tori", "tori-recovery", "pending-chu", "chu-recovery"]
     shogi = ["shogi-hands", "shogi-promotion", "shogi-forced", "shogi-declaration",
              "shogi-concluded", "shogi-capacity"]
     xiangqi = ["xiangqi-warning", "xiangqi-fourth", "xiangqi-count", "xiangqi-offer", "xiangqi-agreed", "xiangqi-fast-proof", "xiangqi-resigned", "xiangqi-capacity", "xiangqi-failure", "xiangqi-exact-evidence"]
@@ -3472,6 +3472,10 @@ class Journey:
             wait(lambda: "claimed fifty-move rule" in w.text(".outcome-card"), "native claim conclusion")
             self.plies(0)
             self.record("Optional current/intended claim concludes without playing intention", w.text(".outcome-card"))
+        elif name == "concluded":
+            # The terminal QA root is already checkmate.
+            assert w.has(".outcome-card")
+            self.record("Concluded checkmate root shows its outcome", w.text(".outcome-card"))
         elif name == "capacity":
             w.button("Analyze position")
             assert session_chess_evidence_count(w.text(".recorded-chess-evidence summary"), 255)

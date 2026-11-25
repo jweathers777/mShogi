@@ -136,29 +136,26 @@ impl ExecutionContext {
                 && target.label.len() <= 256
         };
         let ordinary_limits_valid = |analysis: bool| match self.game.game_kind() {
-            // Preserve prior accepted unscored failure observations whose
-            // requests used these generic bounds before search was implemented.
-            // Real execution/result admission separately enforces the native
-            // limits of each game; transport parsing does not advertise work.
-            // Tori searches through the shared core and admits its larger
-            // depth; this bound includes the earlier generic bound.
-            GameKind::Tori => {
-                (1..=crate::TORI_MAX_DEPTH.max(MAX_ANALYSIS_DEPTH)).contains(&self.limits.depth)
-                    && self.limits.nodes <= MAX_ANALYSIS_NODES
-            }
-            GameKind::Chu => {
-                (1..=crate::CHU_MAX_DEPTH.max(MAX_ANALYSIS_DEPTH)).contains(&self.limits.depth)
-                    && self.limits.nodes <= crate::CHU_MAX_NODES.max(MAX_ANALYSIS_NODES)
-            }
-            GameKind::Tenjiku => {
-                (1..=crate::TENJIKU_MAX_DEPTH.max(MAX_ANALYSIS_DEPTH)).contains(&self.limits.depth)
-                    && self.limits.nodes <= crate::TENJIKU_MAX_NODES.max(MAX_ANALYSIS_NODES)
-            }
             GameKind::Chess if analysis => {
                 (1..=MAX_ANALYSIS_DEPTH).contains(&self.limits.depth)
                     && self.limits.nodes <= MAX_ANALYSIS_NODES
             }
             GameKind::Chess => (1..=mshogi_search::search::MAX_DEPTH).contains(&self.limits.depth),
+            GameKind::Tori => mshogi_search::tori::Limits {
+                depth: self.limits.depth,
+                nodes: self.limits.nodes,
+            }
+            .valid(),
+            GameKind::Chu => mshogi_search::chu::Limits {
+                depth: self.limits.depth,
+                nodes: self.limits.nodes,
+            }
+            .valid(),
+            GameKind::Tenjiku => mshogi_search::tenjiku::Limits {
+                depth: self.limits.depth,
+                nodes: self.limits.nodes,
+            }
+            .valid(),
             GameKind::Shogi => mshogi_search::shogi::Limits {
                 depth: self.limits.depth,
                 nodes: self.limits.nodes,

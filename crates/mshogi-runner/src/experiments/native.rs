@@ -994,8 +994,8 @@ mod tests {
         let root = standard_root(RulesProfile::ToriModernV1).unwrap();
         let mut state = NativeState::from_root(&root).unwrap();
         let telemetry = mshogi_engine::ToriTelemetry {
-            evaluator_id: "mshogi.tori.material.v1".into(),
-            search_id: "mshogi.tori.full-width.v1".into(),
+            evaluator_id: mshogi_search::tori::EVALUATOR_ID.into(),
+            search_id: mshogi_search::tori::SEARCH_ID.into(),
             perspective: tori::Side::Sente,
             score: None,
             completed_depth: 0,

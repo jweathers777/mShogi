@@ -80,7 +80,7 @@ cancellation, process failure and incomplete first iterations are unscored, neve
 draws or losses. A completed prior iteration is usable only where its existing
 native result contract permits it. No fallback move or score is fabricated.
 Observations precede accepted actions and preserve exact request, purpose,
-participant, session, process-generation, limits, history and profile identities.
+participant, session, limits, history and profile identities.
 All native continuations, including compound routes and claims, replay through
 native owners. Replay consistency is not proof of optimal or honest search.
 

@@ -262,6 +262,7 @@ fn complete_standard_game() -> (ValidatedChuDocument, Value) {
     // standard-root record, NOT natural self-play completion or strength proof.
     let mut d = document(&c::Game::standard(), c::Side::Sente);
     let mut turns = vec![];
+    let mut engine = String::new();
     for id in 1..=12 {
         let observation = actual_observation(&d, id);
         let ExecutionResult::Chu {
@@ -272,6 +273,7 @@ fn complete_standard_game() -> (ValidatedChuDocument, Value) {
         };
         assert_eq!(telemetry.completed_depth, 1);
         assert!(telemetry.nodes <= 512);
+        engine.clone_from(&telemetry.search_id);
         let action = action.clone();
         let actor = d.record().to_game().unwrap().position().side_to_move();
         turns.push(json!({"actor":actor,"action":action.clone(),"nodes":telemetry.nodes}));
@@ -294,7 +296,7 @@ fn complete_standard_game() -> (ValidatedChuDocument, Value) {
     assert_eq!(g.position().accepted_plies(), 12);
     assert_eq!(g.events().len(), 13);
     replay(&d);
-    let metadata = json!({"root":"standard_start","engine":"mshogi.chu.full-width.v1","work_limits":{"depth":1,"nodes":512},
+    let metadata = json!({"root":"standard_start","engine":engine,"work_limits":{"depth":1,"nodes":512},
         "observed_turns":turns,"ending":"explicit_scripted_sente_resignation","conclusion":{"kind":"resignation","winner":"gote"},
         "known_board_actions":12,"native_events":13,"observations":12,
         "limitation":"Complete standard-root recorded game with explicit resignation; not natural self-play completion or competitive-strength evidence."});
@@ -329,6 +331,7 @@ fn complete_natural_engine_game() -> (ValidatedChuDocument, Value) {
     assert_eq!(telemetry.completed_depth, 1);
     assert_eq!(action.route.len(), 2);
     let actual_action = action.clone();
+    let engine = telemetry.search_id.clone();
     let actor = d.record().to_game().unwrap().position().side_to_move();
     d = d
         .with_command(
@@ -380,7 +383,7 @@ fn complete_natural_engine_game() -> (ValidatedChuDocument, Value) {
         d,
         json!({"root":"independently_authored_diagram","source_fixture":"CHU-ROYAL-BOTH-COMPOUND",
         "diagram_extension":"Remote Gote Gold11a prevents a single royal capture from also receiving a material award; original fixture remains unchanged.",
-        "engine":"mshogi.chu.full-width.v1","work_limits":{"depth":1,"nodes":512},"actual_action":actual_action,
+        "engine":engine,"work_limits":{"depth":1,"nodes":512},"actual_action":actual_action,
         "ending":"native_royal_capture_after_actual_engine_choice","conclusion":{"kind":"royal_capture","winner":"sente"},
         "known_board_actions":1,"native_events":1,"observations":2,"response_sequence":["choice","finished"],
         "limitation":"Naturally completed game from explicitly limited independently authored diagram, not a standard-root self-play completion or strength measurement."}),

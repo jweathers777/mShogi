@@ -392,6 +392,7 @@ fn terminal_claim_allowance_does_not_admit_extra_board_depth() {
     } = &mut result
     {
         telemetry.completed_depth = 1;
+        telemetry.selective_depth = 1;
     }
     assert!(
         admit_bounded(

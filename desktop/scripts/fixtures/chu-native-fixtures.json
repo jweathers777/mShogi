@@ -211,7 +211,7 @@
           "winner": "gote"
         },
         "ending": "explicit_scripted_sente_resignation",
-        "engine": "mshogi.chu.full-width.v1",
+        "engine": "mshogi.chu.shared-core.v1",
         "known_board_actions": 12,
         "limitation": "Complete standard-root recorded game with explicit resignation; not natural self-play completion or competitive-strength evidence.",
         "native_events": 13,
@@ -220,19 +220,155 @@
           {
             "action": {
               "from": [
-                7,
+                10,
+                12
+              ],
+              "promote": false,
+              "route": [
+                [
+                  11,
+                  11
+                ]
+              ]
+            },
+            "actor": "sente",
+            "nodes": 39
+          },
+          {
+            "action": {
+              "from": [
+                10,
+                1
+              ],
+              "promote": false,
+              "route": [
+                [
+                  11,
+                  2
+                ]
+              ]
+            },
+            "actor": "gote",
+            "nodes": 38
+          },
+          {
+            "action": {
+              "from": [
+                3,
+                12
+              ],
+              "promote": false,
+              "route": [
+                [
+                  2,
+                  11
+                ]
+              ]
+            },
+            "actor": "sente",
+            "nodes": 35
+          },
+          {
+            "action": {
+              "from": [
+                3,
+                1
+              ],
+              "promote": false,
+              "route": [
+                [
+                  2,
+                  2
+                ]
+              ]
+            },
+            "actor": "gote",
+            "nodes": 34
+          },
+          {
+            "action": {
+              "from": [
+                9,
                 10
               ],
               "promote": false,
               "route": [
                 [
-                  7,
-                  8
+                  9,
+                  11
                 ]
               ]
             },
             "actor": "sente",
-            "nodes": 38
+            "nodes": 30
+          },
+          {
+            "action": {
+              "from": [
+                9,
+                1
+              ],
+              "promote": false,
+              "route": [
+                [
+                  9,
+                  2
+                ]
+              ]
+            },
+            "actor": "gote",
+            "nodes": 29
+          },
+          {
+            "action": {
+              "from": [
+                4,
+                10
+              ],
+              "promote": false,
+              "route": [
+                [
+                  4,
+                  11
+                ]
+              ]
+            },
+            "actor": "sente",
+            "nodes": 31
+          },
+          {
+            "action": {
+              "from": [
+                4,
+                1
+              ],
+              "promote": false,
+              "route": [
+                [
+                  4,
+                  2
+                ]
+              ]
+            },
+            "actor": "gote",
+            "nodes": 30
+          },
+          {
+            "action": {
+              "from": [
+                9,
+                11
+              ],
+              "promote": false,
+              "route": [
+                [
+                  10,
+                  12
+                ]
+              ]
+            },
+            "actor": "sente",
+            "nodes": 32
           },
           {
             "action": {
@@ -249,177 +385,41 @@
               ]
             },
             "actor": "gote",
-            "nodes": 39
+            "nodes": 28
           },
           {
             "action": {
               "from": [
                 9,
-                8
+                12
               ],
               "promote": false,
               "route": [
                 [
                   9,
-                  7
+                  11
                 ]
               ]
             },
             "actor": "sente",
-            "nodes": 51
+            "nodes": 40
           },
           {
             "action": {
               "from": [
-                12,
-                4
-              ],
-              "promote": false,
-              "route": [
-                [
-                  12,
-                  5
-                ]
-              ]
-            },
-            "actor": "gote",
-            "nodes": 54
-          },
-          {
-            "action": {
-              "from": [
-                4,
-                8
-              ],
-              "promote": false,
-              "route": [
-                [
-                  4,
-                  7
-                ]
-              ]
-            },
-            "actor": "sente",
-            "nodes": 62
-          },
-          {
-            "action": {
-              "from": [
-                11,
-                4
-              ],
-              "promote": false,
-              "route": [
-                [
-                  11,
-                  5
-                ]
-              ]
-            },
-            "actor": "gote",
-            "nodes": 55
-          },
-          {
-            "action": {
-              "from": [
-                12,
-                9
-              ],
-              "promote": false,
-              "route": [
-                [
-                  12,
-                  8
-                ]
-              ]
-            },
-            "actor": "sente",
-            "nodes": 65
-          },
-          {
-            "action": {
-              "from": [
-                10,
-                4
-              ],
-              "promote": false,
-              "route": [
-                [
-                  10,
-                  5
-                ]
-              ]
-            },
-            "actor": "gote",
-            "nodes": 56
-          },
-          {
-            "action": {
-              "from": [
-                12,
-                8
-              ],
-              "promote": false,
-              "route": [
-                [
-                  12,
-                  7
-                ]
-              ]
-            },
-            "actor": "sente",
-            "nodes": 61
-          },
-          {
-            "action": {
-              "from": [
-                8,
-                4
-              ],
-              "promote": false,
-              "route": [
-                [
-                  8,
-                  5
-                ]
-              ]
-            },
-            "actor": "gote",
-            "nodes": 58
-          },
-          {
-            "action": {
-              "from": [
-                11,
-                9
-              ],
-              "promote": false,
-              "route": [
-                [
-                  11,
-                  8
-                ]
-              ]
-            },
-            "actor": "sente",
-            "nodes": 66
-          },
-          {
-            "action": {
-              "from": [
-                6,
-                4
+                5,
+                2
               ],
               "promote": false,
               "route": [
                 [
                   6,
-                  5
+                  3
                 ]
               ]
             },
             "actor": "gote",
-            "nodes": 61
+            "nodes": 40
           }
         ],
         "root": "standard_start",
@@ -455,7 +455,7 @@
         },
         "diagram_extension": "Remote Gote Gold11a prevents a single royal capture from also receiving a material award; original fixture remains unchanged.",
         "ending": "native_royal_capture_after_actual_engine_choice",
-        "engine": "mshogi.chu.full-width.v1",
+        "engine": "mshogi.chu.shared-core.v1",
         "known_board_actions": 1,
         "limitation": "Naturally completed game from explicitly limited independently authored diagram, not a standard-root self-play completion or strength measurement.",
         "native_events": 1,

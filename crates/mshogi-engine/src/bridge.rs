@@ -669,7 +669,6 @@ mod tests {
         bridge.submit(request(2)).unwrap();
         published(&bridge);
         assert_eq!(bridge.submit(request(2)), Err(SubmitError::IdentityReused));
-        // Recorded generation remains metadata, not a second monotonic authority.
         bridge.submit(request(3)).unwrap();
         published(&bridge);
         assert_eq!(bridge.poll().unwrap().observation.context.request_id, 3);

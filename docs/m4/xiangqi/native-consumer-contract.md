@@ -118,7 +118,7 @@ conduct classification and blocks `submit`; exact-analysis Unknown is separate.
 | Canonical record | Validated game/profile/edition/schema and complete semantic ledger; strict replay checks redundant events/current state and field presence. Runtime tokens are absent. | Equal canonical bytes after undo/reopen do not mean equal runtime context. Envelope version is not a rules-profile edition. |
 | Exact proof state | Private46-byte full placement+turn key for the independently reviewed intrinsic goal, normalized private counters; per-run cache only. | This is not a general game search cache, repetition state or history-sensitive score key. |
 | Native request/session | `GameContext` fresh instance + monotonic revision; `ExactAnalysis` fresh session + monotonic generation, purpose/target/limits/full context equality. | Undo, selection/return, cancellation, replacement and reopen cannot revive retired work. Preserve the original carriers. |
-| Shared execution | Whole `SharedRequest`: typed canonical context, purpose/target, request ID, session version, real process generation and limits. | A transport echo or native tag does not advertise real Xiangqi engine execution. Native in-process exact requests have no engine process ID to invent. |
+| Shared execution | Whole `SharedRequest`: typed canonical context, purpose/target, request ID, session version and limits. | A transport echo or native tag does not advertise real Xiangqi engine execution. Native in-process exact requests have no engine process ID to invent. |
 
 History selections use event counts, not board plies; multiple events can share
 a ply. The exact request retains the full source record and the selected event

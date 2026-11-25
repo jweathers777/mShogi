@@ -18,9 +18,9 @@ accepted live state. Other games do not retain a dormant Chess game.
 `RuntimeMetadata` owns common document/session/selection revisions, document
 epoch and identity, monotonic request floor, saved/content revisions, path and
 capacity. Native execution contexts retain complete game history, purpose,
-request/session/process identities and limits. A saved identity is provenance,
-never permission to resume old work. The single supervisor's process generation
-and cancellation remain authoritative across game replacement.
+request/session identities and limits. A saved identity is provenance, never
+permission to resume old work. The single supervisor's cancellation remains
+authoritative across game replacement.
 
 The controller captures a native candidate and exact operation authority under
 serialization. Bounded worker execution performs native command application,
@@ -153,8 +153,7 @@ does not grant new authority. ReturnLive retires historical analysis and clears
 the selection. Only a game suspended solely by browsing restores running intent;
 its restart is recorded with the normal Resume control within the same bounded
 candidate admission, including complete journal and reserved close capacity.
-A later engine turn allocates fresh request, version and process-generation
-identities. No stored request, saved observation or expensive exact operation
+A later engine turn allocates fresh request and version identities. No stored request, saved observation or expensive exact operation
 is resumed.
 
 Load, Take back, explicit cancellation, failed/incomplete work, conclusion and

@@ -149,7 +149,8 @@ if __name__=='__main__':unittest.main()
 
 def native_report(m, seed):
     e=m['build']['engines'];index=(seed-1)%6;opening=m['openings']['openings'][index]
-    cfg={'seed':seed,'clock':{'base_ms':5000,'increment_ms':m['protocol']['increment_ms']},'max_steps':320,
+    cfg={'seed':seed,'clock':{'base_ms':5000,'increment_ms':m['protocol']['increment_ms'],'allocation':'hard'},
+         'max_steps':320,
          'wall_budget_ms':cloud.bundle(m)['pair_ms'],'rounds':1,
          'players':[{'executable':e[name]['path'],'limits':[{'profile':'mshogi.shogi.csa36.v1',
                        'work':{'depth':64,'nodes':5000000}}]} for name in ('candidate','baseline')],
@@ -290,7 +291,7 @@ class Round3Tests(unittest.TestCase):
     def test_report_clock_and_pair_bound_cannot_cross(self):
         m=round3_manifest();r=native_report(m,1)
         self.assertEqual(cloud.audit_report(r,r['config'],m,1)['pair_score'],.5)
-        for field,value in [('clock',{'base_ms':5000,'increment_ms':200}),('wall_budget_ms',180000)]:
+        for field,value in [('clock',{'base_ms':5000,'increment_ms':200,'allocation':'hard'}),('wall_budget_ms',180000)]:
             bad=copy.deepcopy(r);bad['config'][field]=value
             with self.assertRaises(ValueError):cloud.audit_report(bad,bad['config'],m,1)
 

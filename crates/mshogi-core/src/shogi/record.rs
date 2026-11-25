@@ -14,8 +14,6 @@ use super::{
     PROFILE_ID, Position, RootCategory, Side, WinReason,
 };
 
-/// Bounded native input/output; independent of later console/archive transports.
-pub const MAX_RECORD_BYTES: usize = 1024 * 1024;
 /// Native game/match record schema, distinct from profile and transport identities.
 pub const SHOGI_RECORD_SCHEMA_VERSION: u32 = 2;
 
@@ -51,11 +49,8 @@ impl GameDelta {
     pub fn end_event(&self) -> Option<usize> {
         self.start_event.checked_add(self.events.len())
     }
-    /// Strict duplicate-preserving typed parsing, bounded as native records.
+    /// Strict duplicate-preserving typed parsing.
     pub fn from_json(text: &str) -> Result<Self, RecordError> {
-        if text.len() > MAX_RECORD_BYTES {
-            return Err(RecordError::Capacity);
-        }
         let delta: Self =
             serde_json::from_str(text).map_err(|e| RecordError::Json(e.to_string()))?;
         delta.check_capacity()?;
@@ -64,11 +59,7 @@ impl GameDelta {
     /// Compact transport encoding; unchanged saved-game records use GameRecord.
     pub fn to_json(&self) -> Result<String, RecordError> {
         self.check_capacity()?;
-        let text = serde_json::to_string(self).map_err(|e| RecordError::Json(e.to_string()))?;
-        if text.len() > MAX_RECORD_BYTES {
-            return Err(RecordError::Capacity);
-        }
-        Ok(text)
+        serde_json::to_string(self).map_err(|e| RecordError::Json(e.to_string()))
     }
     fn check_capacity(&self) -> Result<(), RecordError> {
         if self.end_event().is_none() {
@@ -128,7 +119,7 @@ impl crate::native::incremental::IncrementalRecord for GameRecord {
 /// Explicit rejection of malformed, unsupported or inconsistent native records.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum RecordError {
-    /// Input/output exceeds the native byte or event bound.
+    /// The event index overflows its native integer type.
     Capacity,
     /// Strict typed JSON decoding failed, including duplicate and unknown fields.
     Json(String),
@@ -221,12 +212,8 @@ impl GameRecord {
 
     /// Compact UTF-8 JSON in stable field order, without a trailing newline.
     pub fn to_json(&self) -> Result<String, RecordError> {
-        let json = serde_json::to_string(&SavedRecord::from_record(self))
-            .map_err(|e| RecordError::Json(e.to_string()))?;
-        if json.len() > MAX_RECORD_BYTES {
-            return Err(RecordError::Capacity);
-        }
-        Ok(json)
+        serde_json::to_string(&SavedRecord::from_record(self))
+            .map_err(|e| RecordError::Json(e.to_string()))
     }
 
     /// Decode directly into strict typed fields, then validate the entire ledger.
@@ -237,9 +224,6 @@ impl GameRecord {
 
     /// Parse and validate once, retaining the reconstructed game for the caller.
     pub fn from_json_with_game(json: &str) -> Result<(Self, Game), RecordError> {
-        if json.len() > MAX_RECORD_BYTES {
-            return Err(RecordError::Capacity);
-        }
         crate::record::reject_duplicates(json).map_err(|e| RecordError::Json(e.to_string()))?;
         let wire: SavedRecord =
             serde_json::from_str(json).map_err(|e| RecordError::Json(e.to_string()))?;
@@ -667,16 +651,6 @@ impl From<&GameEvent> for WireEvent {
         }
     }
 }
-
-// Capacity argument for all rules-owned ledgers: live roots below the length
-// limit admit at most 320 board actions, or 319 plus a terminal command. Roots
-// already at the limit admit zero events. The conservative 321-event bound is
-// therefore never an extra restriction on accepted play. Canonical SFEN has at
-// most 40 pieces (80 piece bytes), rank separators/empty runs, 14 bounded hand
-// entries, side and u32 counter; it fits 256 bytes. A serialized event has only
-// an actor and a command with at most one <=5-byte action: <2048 bytes. The
-// fixed envelope/root is <8192 bytes. Thus 8192 + 321*2048 = 665600 < 1 MiB.
-// These deliberately loose limits include all supported encoded alternatives.
 
 impl Serialize for GameRecord {
     fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {

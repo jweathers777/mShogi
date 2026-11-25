@@ -280,7 +280,7 @@ pub enum GameError {
     Root(LocalPositionError),
     /// No opponent offer is available to accept/withdraw.
     DrawOffer,
-    /// A pre-commit native record/event/command/token limit was reached.
+    /// A native runtime instance or revision counter was exhausted.
     Capacity,
     /// Historical selection is not the end of a committed native command.
     /// Automatic derived events remain viewable through `event_prefix`.
@@ -860,12 +860,6 @@ impl Game {
             result,
             event_end: candidate.events.len(),
         });
-        let terminal = candidate.conclusion.is_some();
-        let encoded = super::record::GameRecord::encoded_candidate(&candidate)
-            .map_err(|_| GameError::Capacity)?;
-        if !terminal && encoded.len() > super::record::MAX_GAME_RECORD_BYTES - 4096 {
-            return Err(GameError::Capacity);
-        }
         candidate.token.revision = revision;
         candidate.lineage.push(revision);
         let after_lineage = candidate.lineage.clone();

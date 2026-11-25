@@ -12,7 +12,7 @@ pub mod notation;
 mod record;
 pub use game::*;
 pub use record::{
-    GAME_RECORD_SCHEMA_VERSION, GameDelta, GameRecord, MAX_GAME_RECORD_BYTES, RecordError,
+    GAME_RECORD_SCHEMA_VERSION, GameDelta, GameRecord, RecordError,
 };
 
 #[cfg(test)]

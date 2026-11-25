@@ -7,8 +7,6 @@ use serde_json::value::RawValue;
 use std::{error::Error, fmt};
 /// Native record version, distinct from immutable rules edition and outer transport.
 pub const GAME_RECORD_SCHEMA_VERSION: u32 = 3;
-/// Native encoded payload bound, leaving space in the existing shared envelope.
-pub const MAX_GAME_RECORD_BYTES: usize = 512 * 1024;
 /// Exact validated canonical record, excluding runtime/undo handles.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct GameRecord {
@@ -25,7 +23,7 @@ pub struct GameRecord {
 /// Bounded syntax/identity/replay refusal, never a game conclusion.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum RecordError {
-    /// Input/event/replay resource limit.
+    /// A command is too large, or a native runtime counter or root bound was exceeded.
     Capacity,
     /// Duplicate/unknown/missing/malformed input.
     Json,
@@ -82,9 +80,6 @@ impl GameRecord {
     /// Encode all accepted native semantics without truncation.
     pub fn from_game(g: &Game) -> Result<Self, RecordError> {
         let json = encode(g)?;
-        if json.len() > MAX_GAME_RECORD_BYTES {
-            return Err(RecordError::Capacity);
-        }
         Ok(Self {
             json,
             events: g.events().len(),
@@ -171,7 +166,7 @@ impl GameRecord {
         text: &str,
         stop: &mut impl FnMut() -> bool,
     ) -> Result<(Game, Vec<GameUndo>), RecordError> {
-        strict(text, MAX_GAME_RECORD_BYTES)?;
+        strict(text)?;
         let w: WireRecord = serde_json::from_str(text).map_err(|_| RecordError::Json)?;
         if w.profile != PROFILE_ID
             || w.edition != PROFILE_EDITION
@@ -266,7 +261,7 @@ impl GameDelta {
     }
     /// Strict duplicate-free syntax; native admission happens on advance.
     pub fn from_json(text: &str) -> Result<Self, RecordError> {
-        strict(text, MAX_GAME_RECORD_BYTES)?;
+        strict(text)?;
         let wire: DeltaWire = serde_json::from_str(text).map_err(|_| RecordError::Json)?;
         let actual: serde_json::Value =
             serde_json::from_str(text).map_err(|_| RecordError::Json)?;
@@ -277,14 +272,10 @@ impl GameDelta {
         delta.check_capacity()?;
         Ok(delta)
     }
-    /// Bounded transport encoding.
+    /// Compact transport encoding.
     pub fn to_json(&self) -> Result<String, RecordError> {
         self.check_capacity()?;
-        let text = serde_json::to_string(self).map_err(|_| RecordError::Json)?;
-        if text.len() > MAX_GAME_RECORD_BYTES {
-            return Err(RecordError::Capacity);
-        }
-        Ok(text)
+        serde_json::to_string(self).map_err(|_| RecordError::Json)
     }
     fn apply(&self, game: &mut Game) -> Result<(), RecordError> {
         self.check_capacity()?;
@@ -337,25 +328,29 @@ impl crate::native::incremental::IncrementalRecord for GameRecord {
 impl GameCommand {
     /// Strict bounded syntax; Game still owns actor/context/rules admission.
     pub fn from_json(text: &str) -> Result<Self, RecordError> {
-        strict(text, 4096)?;
+        strict_command(text)?;
         serde_json::from_str(text).map_err(|_| RecordError::Json)
     }
 }
 impl Action {
     /// Strict complete native action syntax; local/Game admission still required.
     pub fn from_json(text: &str) -> Result<Self, RecordError> {
-        strict(text, 4096)?;
+        strict_command(text)?;
         serde_json::from_str(text).map_err(|_| RecordError::Json)
     }
 }
 
 // A visitor rather than an intermediate Value/map: duplicate tags/nested fields
 // are rejected before serde's internally tagged enum buffering can normalize them.
-fn strict(text: &str, limit: usize) -> Result<(), RecordError> {
-    if text.len() > limit {
+fn strict(text: &str) -> Result<(), RecordError> {
+    crate::record::reject_duplicates(text).map_err(|_| RecordError::Json)
+}
+/// One command has a small fixed size, independent of game length.
+fn strict_command(text: &str) -> Result<(), RecordError> {
+    if text.len() > 4096 {
         return Err(RecordError::Capacity);
     }
-    crate::record::reject_duplicates(text).map_err(|_| RecordError::Json)
+    strict(text)
 }
 
 #[cfg(test)]

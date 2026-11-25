@@ -1,4 +1,4 @@
-//! Bounded native canonical records. Native replay derives all event results.
+//! Native canonical records. Native replay derives all event results.
 use super::{
     ClaimPolicy, Conclusion, Game, GameError, GameRequest, NoWinAssessment, PositionRoot, Side,
 };
@@ -6,8 +6,6 @@ use crate::record::RecordedCommand;
 use serde::{Deserialize, Serialize};
 use serde_json::value::RawValue;
 use std::{error::Error, fmt};
-/// Actual encoded native payload bound, independent of later shared/desktop envelopes.
-pub const MAX_GAME_RECORD_BYTES: usize = 1024 * 1024;
 /// Native record schema; profile, governing edition and transport remain distinct.
 pub const GAME_RECORD_SCHEMA_VERSION: u32 = 2;
 /// Native game record validated against every authoritative command/event prefix.
@@ -24,7 +22,7 @@ pub struct GameRecord {
 /// Malformed, unsupported, resource-limited or forged data is never a game outcome.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum RecordError {
-    /// Encoded bytes, commands or events exceed the native bound.
+    /// A native runtime counter was exhausted.
     Capacity,
     /// Duplicate/unknown/missing/malformed field or unsupported JSON value.
     Json,
@@ -71,18 +69,11 @@ impl WireRecord {
     }
 }
 impl GameRecord {
-    pub(super) fn encoded_candidate(game: &Game) -> Result<String, RecordError> {
-        let json =
-            serde_json::to_string(&WireRecord::from_game(game)).map_err(|_| RecordError::Json)?;
-        if json.len() > MAX_GAME_RECORD_BYTES {
-            return Err(RecordError::Capacity);
-        }
-        Ok(json)
-    }
     /// Export the complete currently accepted native commands/events, including audits.
     pub fn from_game(game: &Game) -> Result<Self, RecordError> {
         Ok(Self {
-            json: Self::encoded_candidate(game)?,
+            json: serde_json::to_string(&WireRecord::from_game(game))
+                .map_err(|_| RecordError::Json)?,
             event_count: game.events().len(),
             known_board_actions: game
                 .events()
@@ -135,9 +126,6 @@ impl GameRecord {
         json: &str,
         retain_undo: bool,
     ) -> Result<(Game, Vec<super::GameUndo>), RecordError> {
-        if json.len() > MAX_GAME_RECORD_BYTES {
-            return Err(RecordError::Capacity);
-        }
         crate::record::reject_duplicates(json).map_err(|_| RecordError::Json)?;
         let wire: WireRecord = serde_json::from_str(json).map_err(|_| RecordError::Json)?;
         if wire.schema_version != GAME_RECORD_SCHEMA_VERSION {

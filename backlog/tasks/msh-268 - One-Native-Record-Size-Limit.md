@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-25T19:23:00Z'
+updated_date: '2026-11-25T21:41:00Z'
 labels:
   - core
   - model:large
@@ -30,6 +30,18 @@ John (2026-11-25): no limit on game size or on requests to the engine; the limit
 - [ ] #4 One review by a fresh agent session.
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Inventory every length/byte/event/ply cap on games, saved files, engine requests and replies (core, engine, console, runner, desktop session, Tauri host, frontend, scripts, tools), including derived constants and reserved headroom.
+2. Remove the per-game record byte caps, the envelope cap, the engine request/response caps, the desktop archive cap and the console line cap; remove derived checks and headroom; remove resulting dead errors, resource categories and UI messages.
+3. Remove or update tests, fixtures (with their generators) and scripts that enforce removed limits; add no proof-of-removal tests.
+4. Update docs that name removed limits.
+5. Record kept limits with reasons; record open questions with needs-john.
+6. Run fmt, clippy, workspace tests, frontend check and tests, touched Python tests; CI on Linux/macOS/Windows incl. process and persistence suites.
+7. Fresh-agent review; fix findings; integrate; finalize; clean up.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
@@ -42,4 +54,6 @@ John, 2026-11-25: I prefer no limit on the game size or the requests to the engi
 John, 2026-11-25: also remove the 2 MiB cap on the engine reply, and any tests that enforce these limits.
 
 John, 2026-11-25: no new tests to show that the removed limits are gone; update the documentation that refers to them.
+
+Checkpoint 1 (claude, branch claude/msh-268-remove-size-limits): core production caps removed (WIP, tests not yet updated, does not build its tests yet): native envelope cap, Shogi/Xiangqi/Tori/Chu/Tenjiku record byte caps, Xiangqi per-submit 4 KiB record headroom check. Kept: per-command 4096-byte parse cap in Tori/Chu/Tenjiku (strict_command; one command, not game length), MAX_COMPACT_ROOT_BYTES (root metadata), Xiangqi MAX_POSITION_BYTES/MAX_FEN_BYTES (position strings), u32/u64 counter overflow checks (integer representation). Production lines before: crates/*/src without test/conformance files 68538; desktop/src + src-tauri without tests/fixtures 3930. Next: core tests; engine MAX_REQUEST_BYTES/MAX_RESPONSE_BYTES (lib, server, bridge, incremental, shared; FailureKind::OversizedResponse); console MAX_LINE_BYTES and record_io; runner experiments (admit_with_match_capacity, request/response checks, max_steps>1024 derived from Tori limit); desktop MAX_ARCHIVE_BYTES, EncodedDocumentBytes/CanonicalRecordBytes, shared.rs envelope+4096 check, capacity fixtures; frontend; scripts; docs.
 <!-- SECTION:NOTES:END -->

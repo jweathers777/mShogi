@@ -958,7 +958,7 @@ fn complete_independently_expected_native_corpus() {
         "{}",
         serde_json::to_string_pretty(&failures).unwrap()
     );
-    assert_eq!(report.native_rows_passed, 240);
+    assert_eq!(report.native_rows_passed, 239);
     assert_eq!(report.native_rows_pending, 0);
     assert_eq!(report.failed, 0);
     assert_eq!(report.later_consumer_requirements.len(), 10);

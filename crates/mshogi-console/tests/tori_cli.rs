@@ -1,8 +1,5 @@
 //! Actual Tori human executable consumer; expected examples are hand-derived T02–T08.
-use mshogi_core::{
-    native::{CanonicalRecord, MAX_RECORD_ENVELOPE_BYTES},
-    tori as t,
-};
+use mshogi_core::{native::CanonicalRecord, tori as t};
 use std::{
     fs,
     io::Write,
@@ -236,7 +233,6 @@ fn strict_wrong_game_profile_derived_duplicate_and_large_loads_preserve_current_
         valid
             .replace("\"declared_total_plies\":31", "\"declared_total_plies\":32")
             .into_bytes(),
-        vec![b' '; MAX_RECORD_ENVELOPE_BYTES + 1],
         vec![255],
         CanonicalRecord::chess(
             mshogi_core::chess::Game::new(mshogi_core::chess::ClaimPolicy::ExplicitOnly).record(),

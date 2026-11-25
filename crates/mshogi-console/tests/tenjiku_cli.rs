@@ -5,6 +5,7 @@ use std::{
     fs,
     io::Write,
     process::{Command, Output, Stdio},
+    sync::atomic::{AtomicU64, Ordering},
 };
 fn run(args: &[&str], input: &str) -> Output {
     let mut child = Command::new(env!("CARGO_BIN_EXE_mshogi"))

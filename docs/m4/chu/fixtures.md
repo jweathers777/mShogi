@@ -1,6 +1,6 @@
 > Historical MSH-82 preimplementation accounting below is preserved: its
 > zero-execution numbers describe that source/data checkpoint. Actual native86
-> acceptance covers239 native rows.
+> acceptance is 1,069 checks across239 native rows.
 > The ten shared/product obligations are reconciled in the current
 > MSH-43 coverage matrix.
 

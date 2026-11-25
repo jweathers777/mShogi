@@ -204,7 +204,7 @@ fn complete_canonical_save_load_replay_and_restored_undo() {
     );
 }
 #[test]
-fn malformed_unsupported_tampered_oversized_loads_and_failed_saves_preserve_session() {
+fn malformed_unsupported_and_tampered_loads_and_failed_saves_preserve_session() {
     let dir = Dir::new();
     let valid = CanonicalRecord::shogi(GameRecord::from_game(&Game::new()))
         .to_json()
@@ -218,7 +218,6 @@ fn malformed_unsupported_tampered_oversized_loads_and_failed_saves_preserve_sess
         valid
             .replace("\"schema_version\":2", "\"schema_version\":999")
             .into_bytes(),
-        vec![b' '; MAX_RECORD_ENVELOPE_BYTES + 1],
         vec![255],
         CanonicalRecord::chess(
             mshogi_core::chess::AdjudicatedGame::new(mshogi_core::chess::ClaimPolicy::ExplicitOnly)

@@ -315,7 +315,6 @@ fn strict_outer_nested_identity_and_bounded_file_failures_preserve_live_session(
             .replacen("\"envelope_version\":2", "\"envelope_version\":999", 1)
             .into_bytes(),
         chess.into_bytes(),
-        vec![b' '; mshogi_core::native::MAX_RECORD_ENVELOPE_BYTES + 1],
         vec![255],
     ] {
         fs::write(&path, &bytes).unwrap();

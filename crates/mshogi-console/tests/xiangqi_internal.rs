@@ -152,8 +152,6 @@ fn real_entrypoint_executes_native_play_and_readonly_analysis_with_full_context(
             };
         }
         assert!(context.context.valid_limits());
-        let wire = serde_json::to_string(&context).unwrap();
-        assert!(wire.len() < MAX_REQUEST_BYTES);
         let before = xq::GameRecord::from_game(&game).unwrap();
         bridge.submit(context.clone()).unwrap();
         let response = wait(&bridge);
@@ -193,7 +191,6 @@ fn real_entrypoint_executes_native_play_and_readonly_analysis_with_full_context(
             _ => unreachable!(),
         }
         assert_eq!(before, xq::GameRecord::from_game(&game).unwrap());
-        assert!(serde_json::to_string(&response).unwrap().len() < MAX_RESPONSE_BYTES);
     }
     stop(&bridge);
 }

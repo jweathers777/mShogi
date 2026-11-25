@@ -1,10 +1,11 @@
 ---
 id: MSH-268
 title: Remove Game Size and Engine Request Limits
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-25T12:50:00Z'
+updated_date: '2026-11-25T19:23:00Z'
 labels:
   - core
   - model:large

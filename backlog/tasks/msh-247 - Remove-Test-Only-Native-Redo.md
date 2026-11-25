@@ -1,10 +1,11 @@
 ---
 id: MSH-247
 title: Remove Test-Only Native Redo
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-25T12:41:00Z'
+updated_date: '2026-11-25T17:13:00Z'
 labels:
   - cleanup
   - core
@@ -33,4 +34,6 @@ Tori, Chu and Tenjiku have redo tokens at two levels: Game::redo with GameRedo a
 
 <!-- SECTION:NOTES:BEGIN -->
 John, 2026-11-25: deletion tasks run before MSH-222, so later consolidation has less code.
+
+Handoff: claimed by @claude on branch claude/msh-247-remove-redo. No code change yet.
 <!-- SECTION:NOTES:END -->

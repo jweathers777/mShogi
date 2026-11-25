@@ -62,7 +62,11 @@ fn real_internal_entry_point_supports_bounded_chu() {
             context: c.clone()
         }));
         let ExecutionResult::Chu {
-            result: ChuResult::Choice { action, telemetry },
+            result:
+                ChuResult::Choice {
+                    choice: action,
+                    telemetry,
+                },
         } = &response.observation.result
         else {
             panic!("{response:?}")

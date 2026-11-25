@@ -266,7 +266,11 @@ fn complete_standard_game() -> (ValidatedChuDocument, Value) {
     for id in 1..=12 {
         let observation = actual_observation(&d, id);
         let ExecutionResult::Chu {
-            result: ChuResult::Choice { action, telemetry },
+            result:
+                ChuResult::Choice {
+                    choice: action,
+                    telemetry,
+                },
         } = &observation.result
         else {
             panic!("representative completed search required: {observation:?}")
@@ -323,7 +327,10 @@ fn complete_natural_engine_game() -> (ValidatedChuDocument, Value) {
     assert!(d.record().to_game().unwrap().conclusion().is_none());
     let choice = actual_observation(&d, 1);
     let ExecutionResult::Chu {
-        result: ChuResult::Choice { action, telemetry },
+        result: ChuResult::Choice {
+            choice: action,
+            telemetry,
+        },
     } = &choice.result
     else {
         panic!("actual naturally finishing choice required: {choice:?}")

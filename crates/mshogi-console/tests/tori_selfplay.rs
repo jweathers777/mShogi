@@ -96,7 +96,11 @@ fn bounded(mut game: t::Game, maximum_plies: usize) -> Trace {
             panic!("expected native Tori search")
         };
         result.validate(&game).unwrap();
-        let ToriResult::Choice { action, telemetry } = result else {
+        let ToriResult::Choice {
+            choice: action,
+            telemetry,
+        } = result
+        else {
             panic!("representative depth 1 must complete: {result:?}")
         };
         assert_eq!(telemetry.completed_depth, 1);

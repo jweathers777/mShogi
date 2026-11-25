@@ -83,7 +83,7 @@ fn request(id: u64, g: &c::Game, analysis: bool) -> ExecutionRequest {
             request_id: id,
             session_version: 2,
             game,
-            limits: TENJIKU_PLAY_LIMITS,
+            limits: game::Tenjiku::PLAY_LIMITS,
         },
     }
 }
@@ -165,7 +165,11 @@ fn actual_child_executes_complete_tenjiku_choices_for_full_known_history_and_pur
                 )
             };
             result.validate(&g).unwrap();
-            let TenjikuResult::Choice { action, telemetry } = result else {
+            let TenjikuResult::Choice {
+                choice: action,
+                telemetry,
+            } = result
+            else {
                 panic!("{result:?}")
             };
             assert!(g.legal_actions().contains(action));
@@ -192,7 +196,7 @@ fn actual_controller_readonly_analysis_save_reopen_and_stale_identity_retirement
             },
         );
         let submitted = ctl
-            .verify_tenjiku_execution(TENJIKU_PLAY_LIMITS, true)
+            .verify_tenjiku_execution(game::Tenjiku::PLAY_LIMITS, true)
             .unwrap();
         for case in 0..7 {
             let mut ctx = submitted.clone();
@@ -439,7 +443,7 @@ fn actual_engine_turns_for_both_player_assignments_admit_observation_then_action
             ));
             assert!(observation.matches(&observation.context));
             let ExecutionResult::Tenjiku {
-                result: TenjikuResult::Choice { action, .. },
+                result: TenjikuResult::Choice { choice: action, .. },
             } = &observation.result
             else {
                 panic!("{observation:?}")
@@ -638,7 +642,7 @@ fn real_historical_analysis_saves_exact_prefix_and_reopens_stopped_without_futur
         let selected = ctl.shared_snapshot();
         assert!(selected.historical);
         let submitted = ctl
-            .verify_tenjiku_execution(TENJIKU_PLAY_LIMITS, true)
+            .verify_tenjiku_execution(game::Tenjiku::PLAY_LIMITS, true)
             .unwrap();
         assert_eq!(submitted.game, initial);
         let ExecutionPurpose::MoveAnalysis { target } = &submitted.purpose else {

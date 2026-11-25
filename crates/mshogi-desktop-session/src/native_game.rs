@@ -6,7 +6,7 @@
 use crate::ResourceScope;
 pub use crate::native_chess::Chess;
 use mshogi_core::native::{CanonicalRecord, GameKind, NativeSide, RulesProfile};
-use mshogi_engine::ExecutionResult;
+use mshogi_engine::{EngineGame, ExecutionResult};
 use serde::{Serialize, de::DeserializeOwned};
 use std::fmt::Debug;
 
@@ -186,9 +186,39 @@ macro_rules! canonical_record {
     };
 }
 
+// The five games on the shared search core use one engine adapter.
+macro_rules! engine_glue {
+    ($engine:ident) => {
+        type EngineResult = mshogi_engine::EngineResult<mshogi_engine::game::$engine>;
+        fn engine_result(result: &ExecutionResult) -> Option<&Self::EngineResult> {
+            <mshogi_engine::game::$engine as EngineGame>::result(result)
+        }
+        fn engine_command(
+            result: &Self::EngineResult,
+            game: &Self::Game,
+        ) -> Option<(Self::Side, Self::Command)> {
+            use mshogi_engine::game::$engine as E;
+            match result {
+                mshogi_engine::EngineResult::Choice { choice, .. } => {
+                    Some(E::command(choice, E::side_to_move(game)))
+                }
+                _ => None,
+            }
+        }
+        fn validate_result(
+            result: &Self::EngineResult,
+            _context: &mshogi_engine::ExecutionContext,
+            game: &Self::Game,
+            stop: &mut impl FnMut() -> bool,
+        ) -> Result<(), String> {
+            result.validate_with_stop(game, stop)
+        }
+    };
+}
+
 /// The Chu and Tenjiku cores have the same API; one impl serves both.
 macro_rules! large_shogi_game {
-    ($game:ident, $core:ident, $glue:ident, $engine_result:ident, $result_variant:ident, $scope:ident,
+    ($game:ident, $core:ident, $glue:ident, $result_variant:ident, $scope:ident,
      profile: |$r:ident| $profile:expr, game_profile: |$g:ident| $game_profile:expr) => {
         /// Marker of the native game behind the generic document and session.
         pub struct $game;
@@ -206,7 +236,6 @@ macro_rules! large_shogi_game {
             type Action = mshogi_core::$core::Action;
             type Game = mshogi_core::$core::Game;
             type Record = mshogi_core::$core::GameRecord;
-            type EngineResult = mshogi_engine::$engine_result;
             type Settings = crate::game_document::GameSettings<Self::Side>;
 
             fn native_side(side: Self::Side) -> NativeSide {
@@ -281,34 +310,7 @@ macro_rules! large_shogi_game {
             fn resign() -> Self::Command {
                 mshogi_core::$core::GameCommand::Resign
             }
-            fn engine_result(result: &ExecutionResult) -> Option<&Self::EngineResult> {
-                match result {
-                    ExecutionResult::$result_variant { result } => Some(result),
-                    _ => None,
-                }
-            }
-            fn engine_command(
-                result: &Self::EngineResult,
-                game: &Self::Game,
-            ) -> Option<(Self::Side, Self::Command)> {
-                match result {
-                    mshogi_engine::$engine_result::Choice { action, .. } => Some((
-                        game.position().side_to_move(),
-                        mshogi_core::$core::GameCommand::Play {
-                            action: action.clone(),
-                        },
-                    )),
-                    _ => None,
-                }
-            }
-            fn validate_result(
-                result: &Self::EngineResult,
-                _context: &mshogi_engine::ExecutionContext,
-                game: &Self::Game,
-                stop: &mut impl FnMut() -> bool,
-            ) -> Result<(), String> {
-                result.validate_with_stop(game, stop)
-            }
+            engine_glue!($game);
         }
         mod $glue {
             use super::*;
@@ -337,9 +339,9 @@ macro_rules! large_shogi_game {
     };
 }
 
-large_shogi_game!(Chu, chu, chu_glue, ChuResult, Chu, Chu,
+large_shogi_game!(Chu, chu, chu_glue, Chu, Chu,
     profile: |_r| RulesProfile::ChuJcsa2019V1, game_profile: |_g| RulesProfile::ChuJcsa2019V1);
-large_shogi_game!(Tenjiku, tenjiku, tenjiku_glue, TenjikuResult, Tenjiku, Tenjiku,
+large_shogi_game!(Tenjiku, tenjiku, tenjiku_glue, Tenjiku, Tenjiku,
     profile: |r| RulesProfile::from(r.profile()), game_profile: |g| RulesProfile::from(g.profile()));
 
 /// Marker of the native Tori game behind the generic document and session.
@@ -358,7 +360,6 @@ impl NativeGame for Tori {
     type Action = mshogi_core::tori::Action;
     type Game = mshogi_core::tori::Game;
     type Record = mshogi_core::tori::GameRecord;
-    type EngineResult = mshogi_engine::ToriResult;
     type Settings = crate::game_document::GameSettings<Self::Side>;
 
     fn native_side(side: Self::Side) -> NativeSide {
@@ -436,37 +437,7 @@ impl NativeGame for Tori {
     fn resign() -> Self::Command {
         mshogi_core::tori::GameCommand::Resign
     }
-    fn engine_result(result: &ExecutionResult) -> Option<&Self::EngineResult> {
-        match result {
-            ExecutionResult::Tori { result } => Some(result),
-            _ => None,
-        }
-    }
-    fn engine_command(
-        result: &Self::EngineResult,
-        game: &Self::Game,
-    ) -> Option<(Self::Side, Self::Command)> {
-        match result {
-            mshogi_engine::ToriResult::Choice { action, .. } => Some((
-                game.position().side_to_move(),
-                mshogi_core::tori::GameCommand::Play { action: *action },
-            )),
-            _ => None,
-        }
-    }
-    fn validate_result(
-        result: &Self::EngineResult,
-        _context: &mshogi_engine::ExecutionContext,
-        game: &Self::Game,
-        stop: &mut impl FnMut() -> bool,
-    ) -> Result<(), String> {
-        if stop() {
-            return Err("Tori observation validation stopped".into());
-        }
-        // Validation copies the game without replay and plays the line.
-        result.validate(game)?;
-        Ok(())
-    }
+    engine_glue!(Tori);
 }
 mod tori_glue {
     use super::*;
@@ -508,7 +479,6 @@ impl NativeGame for Shogi {
     type Action = mshogi_core::shogi::Action;
     type Game = mshogi_core::shogi::Game;
     type Record = mshogi_core::shogi::GameRecord;
-    type EngineResult = mshogi_engine::ShogiResult;
     type Settings = crate::shared::archive::ShogiSettings;
 
     fn native_side(side: Self::Side) -> NativeSide {
@@ -607,71 +577,7 @@ impl NativeGame for Shogi {
     fn resign() -> Self::Command {
         mshogi_core::shogi::GameCommand::Resign
     }
-    fn engine_result(result: &ExecutionResult) -> Option<&Self::EngineResult> {
-        match result {
-            ExecutionResult::Shogi { result } => Some(result),
-            _ => None,
-        }
-    }
-    fn engine_command(
-        result: &Self::EngineResult,
-        game: &Self::Game,
-    ) -> Option<(Self::Side, Self::Command)> {
-        match result {
-            // An engine declares only for the side to move.
-            mshogi_engine::ShogiResult::Choice { choice, .. } => Some(shogi_choice(choice, game))
-                .filter(|(actor, _)| *actor == game.position().side_to_move()),
-            _ => None,
-        }
-    }
-    fn validate_result(
-        result: &Self::EngineResult,
-        _context: &mshogi_engine::ExecutionContext,
-        game: &Self::Game,
-        stop: &mut impl FnMut() -> bool,
-    ) -> Result<(), String> {
-        // The result identity is checked with the observation; replay its line
-        // on a private copy of the game.
-        let line = match result {
-            mshogi_engine::ShogiResult::Choice { telemetry, .. }
-            | mshogi_engine::ShogiResult::Finished { telemetry, .. }
-            | mshogi_engine::ShogiResult::Incomplete { telemetry } => {
-                &telemetry.principal_variation
-            }
-        };
-        if let mshogi_engine::ShogiResult::Choice {
-            choice: mshogi_engine::ShogiChoice::Declare { actor },
-            ..
-        } = result
-            && *actor != game.position().side_to_move()
-        {
-            return Err("Shogi engine declaration is not for the side to move".into());
-        }
-        let mut probe = game.clone();
-        for choice in line {
-            let (actor, command) = shogi_choice(choice, &probe);
-            Self::submit(&mut probe, actor, command, stop).map_err(|e| match e {
-                NativeFailure::Stopped => "Shogi observation validation stopped".to_string(),
-                NativeFailure::Capacity(_, d) | NativeFailure::Invalid(d) => d,
-            })?;
-        }
-        Ok(())
-    }
-}
-/// The actor and command of an engine choice in `game`.
-fn shogi_choice(
-    choice: &mshogi_engine::ShogiChoice,
-    game: &mshogi_core::shogi::Game,
-) -> (mshogi_core::shogi::Side, mshogi_core::shogi::GameCommand) {
-    match choice {
-        mshogi_engine::ShogiChoice::Move { action } => (
-            game.position().side_to_move(),
-            mshogi_core::shogi::GameCommand::Play(*action),
-        ),
-        mshogi_engine::ShogiChoice::Declare { actor } => {
-            (*actor, mshogi_core::shogi::GameCommand::DeclareEnteringKing)
-        }
-    }
+    engine_glue!(Shogi);
 }
 
 /// Marker of the native Xiangqi game behind the generic document and session.
@@ -690,7 +596,6 @@ impl NativeGame for Xiangqi {
     type Action = mshogi_core::xiangqi::Action;
     type Game = mshogi_core::xiangqi::Game;
     type Record = mshogi_core::xiangqi::GameRecord;
-    type EngineResult = mshogi_engine::XiangqiResult;
     type Settings = crate::shared::xiangqi::XiangqiSettings;
 
     fn native_side(side: Self::Side) -> NativeSide {
@@ -800,65 +705,5 @@ impl NativeGame for Xiangqi {
     fn resign() -> Self::Command {
         mshogi_core::xiangqi::GameCommand::Resign
     }
-    fn engine_result(result: &ExecutionResult) -> Option<&Self::EngineResult> {
-        match result {
-            ExecutionResult::Xiangqi { result } => Some(result),
-            _ => None,
-        }
-    }
-    fn engine_command(
-        result: &Self::EngineResult,
-        game: &Self::Game,
-    ) -> Option<(Self::Side, Self::Command)> {
-        match result {
-            mshogi_engine::XiangqiResult::Choice { choice, .. } => {
-                Some(xiangqi_choice(*choice, game.position().side_to_move()))
-            }
-            _ => None,
-        }
-    }
-    fn validate_result(
-        result: &Self::EngineResult,
-        _context: &mshogi_engine::ExecutionContext,
-        game: &Self::Game,
-        stop: &mut impl FnMut() -> bool,
-    ) -> Result<(), String> {
-        let line = match result {
-            mshogi_engine::XiangqiResult::Choice { telemetry, .. }
-            | mshogi_engine::XiangqiResult::Finished { telemetry, .. }
-            | mshogi_engine::XiangqiResult::Incomplete { telemetry }
-            | mshogi_engine::XiangqiResult::Unresolved { telemetry, .. } => {
-                &telemetry.principal_variation
-            }
-        };
-        if line.is_empty() {
-            return Ok(());
-        }
-        let mut probe = game.fork().map_err(|e| e.to_string())?;
-        for choice in line {
-            let (actor, command) = xiangqi_choice(*choice, probe.position().side_to_move());
-            Self::submit(&mut probe, actor, command, stop).map_err(|e| match e {
-                NativeFailure::Stopped => "Xiangqi observation validation stopped".to_string(),
-                NativeFailure::Capacity(_, d) | NativeFailure::Invalid(d) => d,
-            })?;
-        }
-        Ok(())
-    }
-}
-/// The actor and command of an engine choice.
-fn xiangqi_choice(
-    choice: mshogi_engine::XiangqiChoice,
-    turn: mshogi_core::xiangqi::Side,
-) -> (
-    mshogi_core::xiangqi::Side,
-    mshogi_core::xiangqi::GameCommand,
-) {
-    match choice {
-        mshogi_engine::XiangqiChoice::Move { action } => {
-            (turn, mshogi_core::xiangqi::GameCommand::Play { action })
-        }
-        mshogi_engine::XiangqiChoice::Claim { actor } => {
-            (actor, mshogi_core::xiangqi::GameCommand::ClaimNaturalCount)
-        }
-    }
+    engine_glue!(Xiangqi);
 }

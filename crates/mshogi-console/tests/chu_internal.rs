@@ -133,7 +133,11 @@ fn actual_child_executes_complete_chu_choices_for_full_known_history_and_purpose
             panic!("actual native Chu result required: {r:?}")
         };
         result.validate(&g).unwrap();
-        let ChuResult::Choice { action, telemetry } = result else {
+        let ChuResult::Choice {
+            choice: action,
+            telemetry,
+        } = result
+        else {
             panic!("{result:?}")
         };
         assert!(g.legal_actions().contains(action));
@@ -163,7 +167,11 @@ fn clocked_child_admits_suffixes_and_resets_after_takeback() {
             panic!("Chu result required")
         };
         result.validate(&game).unwrap();
-        let ChuResult::Choice { action, telemetry } = result else {
+        let ChuResult::Choice {
+            choice: action,
+            telemetry,
+        } = result
+        else {
             panic!("complete clocked choice required")
         };
         assert_eq!(telemetry.completed_depth, 1);
@@ -390,7 +398,7 @@ fn engine_turns_for_both_player_assignments(production_limits: bool) {
         };
         let expected_limits = if production_limits {
             send(&mut ctl, SessionOperation::Resume {});
-            CHU_PLAY_LIMITS
+            game::Chu::PLAY_LIMITS
         } else {
             ctl.verify_chu_execution(CONTRACT_LIMITS, false).unwrap();
             CONTRACT_LIMITS
@@ -410,7 +418,7 @@ fn engine_turns_for_both_player_assignments(production_limits: bool) {
         ));
         assert!(observation.matches(&observation.context));
         let ExecutionResult::Chu {
-            result: ChuResult::Choice { action, .. },
+            result: ChuResult::Choice { choice: action, .. },
         } = &observation.result
         else {
             panic!("{observation:?}")

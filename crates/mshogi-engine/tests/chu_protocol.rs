@@ -41,7 +41,7 @@ fn context(g: &c::Game) -> ExecutionContext {
         request_id: 42,
         session_version: 9,
         game: CanonicalRecord::chu(c::GameRecord::from_game(g).unwrap()),
-        limits: CHU_PLAY_LIMITS,
+        limits: game::Chu::PLAY_LIMITS,
     }
 }
 fn execute(c: &ExecutionContext) -> ExecutionObservation {
@@ -82,7 +82,11 @@ fn compound_result_native_replay_and_atomic_validation() {
     result.validate_with_stop(&g, &mut || false).unwrap();
     assert!(result.validate_with_stop(&g, &mut || true).is_err());
     assert_eq!(c::GameRecord::from_game(&g).unwrap(), before);
-    let ChuResult::Choice { action, telemetry } = &result else {
+    let ChuResult::Choice {
+        choice: action,
+        telemetry,
+    } = &result
+    else {
         panic!()
     };
     let mut branch = before.to_game().unwrap();
@@ -105,14 +109,22 @@ fn compound_result_native_replay_and_atomic_validation() {
         Some("Win in 1 board action")
     );
     let mut forged = result.clone();
-    let ChuResult::Choice { action, telemetry } = &mut forged else {
+    let ChuResult::Choice {
+        choice: action,
+        telemetry,
+    } = &mut forged
+    else {
         panic!()
     };
     action.route.reverse();
     telemetry.principal_variation = vec![action.clone()];
     assert!(forged.validate(&g).is_ok());
     let mut forged = result.clone();
-    let ChuResult::Choice { action, telemetry } = &mut forged else {
+    let ChuResult::Choice {
+        choice: action,
+        telemetry,
+    } = &mut forged
+    else {
         panic!()
     };
     action.route = vec!["1a".parse().unwrap()];
@@ -129,13 +141,20 @@ fn compound_result_native_replay_and_atomic_validation() {
         panic!()
     };
     telemetry.evaluator_id = "mshogi.chu.unknown.v1".into();
-    assert!(forged.validate(&g).is_err());
+    // Identity is an admission check of the observation, not of the replay.
+    assert!(
+        !ExecutionObservation::new(ctx.clone(), ExecutionResult::Chu { result: forged })
+            .matches(&ctx)
+    );
     let mut forged = result.clone();
     let ChuResult::Choice { telemetry, .. } = &mut forged else {
         panic!()
     };
     telemetry.principal_variation[0].route.pop();
-    assert!(forged.validate(&g).is_err());
+    assert!(
+        !ExecutionObservation::new(ctx.clone(), ExecutionResult::Chu { result: forged })
+            .matches(&ctx)
+    );
 }
 #[test]
 fn full_context_purpose_history_and_limits_are_never_interchangeable() {
@@ -241,8 +260,8 @@ fn limits_stay_finite() {
     let mut c = context(&game());
     c.limits = WorkLimits {
         time_ms: None,
-        depth: CHU_MAX_DEPTH + 1,
-        nodes: CHU_MAX_NODES + 1,
+        depth: game::Chu::MAX_DEPTH + 1,
+        nodes: game::Chu::MAX_NODES + 1,
     };
     assert!(!c.valid_limits());
     let refused = execute(&c);
@@ -285,7 +304,7 @@ fn bounded_standard_progression_has_both_sides_real_legal_choices_and_exact_reco
             panic!("{obs:?}")
         };
         result.validate(&g).unwrap();
-        let ChuResult::Choice { action, .. } = result else {
+        let ChuResult::Choice { choice: action, .. } = result else {
             panic!("{result:?}")
         };
         let action = action.clone();

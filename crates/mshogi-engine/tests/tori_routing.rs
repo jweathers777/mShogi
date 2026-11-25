@@ -62,7 +62,11 @@ fn real_internal_entry_point_supports_bounded_tori() {
             context: c.clone()
         }));
         let ExecutionResult::Tori {
-            result: ToriResult::Choice { action, telemetry },
+            result:
+                ToriResult::Choice {
+                    choice: action,
+                    telemetry,
+                },
         } = &response.observation.result
         else {
             panic!("{response:?}")

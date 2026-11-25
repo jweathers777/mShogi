@@ -5,16 +5,13 @@ use super::*;
 use crate::native_game::NativeGame;
 pub(crate) use crate::native_game::Xiangqi;
 use mshogi_core::xiangqi as x;
-use mshogi_engine::{XiangqiChoice, XiangqiResult, XiangqiStop};
+use mshogi_engine::{EngineGame, XiangqiChoice, XiangqiResult, game::Xiangqi as Engine};
 #[cfg(test)]
 #[path = "shared_xiangqi_label_tests.rs"]
 mod label_tests;
 #[cfg(feature = "desktop-verification")]
 #[path = "shared_xiangqi_verification.rs"]
 mod verification;
-
-// Matches MSH-97's measured interactive default; requests also undergo native validation.
-const PLAY_LIMITS: WorkLimits = mshogi_engine::XIANGQI_PLAY_LIMITS;
 
 /// The Xiangqi session.
 pub(crate) type XiangqiSession = NativeSession<Xiangqi>;
@@ -101,13 +98,13 @@ impl Default for XiangqiSettings {
         Self {
             play_mode: crate::PlayMode::default(),
             orientation: x::Side::Red,
-            analysis_defaults: PLAY_LIMITS,
+            analysis_defaults: Engine::PLAY_LIMITS,
         }
     }
 }
 fn valid_limits(limits: WorkLimits) -> Result<(), String> {
-    if !(1..=mshogi_engine::XIANGQI_MAX_DEPTH).contains(&limits.depth)
-        || !(1..=mshogi_engine::XIANGQI_MAX_NODES).contains(&limits.nodes)
+    if !(1..=Engine::MAX_DEPTH).contains(&limits.depth)
+        || !(1..=Engine::MAX_NODES).contains(&limits.nodes)
         || limits.time_ms.is_some()
     {
         return Err(
@@ -149,9 +146,7 @@ fn error(e: impl ToString) -> String {
 
 impl SessionGame for Xiangqi {
     type Presentation = ();
-    const PLAY_LIMITS: WorkLimits = PLAY_LIMITS;
-    const MAX_DEPTH: u16 = mshogi_engine::XIANGQI_MAX_DEPTH;
-    const MAX_NODES: u64 = mshogi_engine::XIANGQI_MAX_NODES;
+    engine_limits!(Xiangqi);
     const BOARD_SIZE: u8 = 9;
     const BOARD_LABEL: &'static str = "Xiangqi intersection board";
     const INITIAL_FOCUS: &'static str = "e3";
@@ -251,37 +246,13 @@ impl SessionGame for Xiangqi {
         }
     }
     fn telemetry(result: &XiangqiResult) -> TelemetryView {
-        let t = match result {
-            XiangqiResult::Choice { telemetry, .. }
-            | XiangqiResult::Finished { telemetry, .. }
-            | XiangqiResult::Incomplete { telemetry }
-            | XiangqiResult::Unresolved { telemetry, .. } => telemetry,
-        };
-        TelemetryView {
-            score: t.score_label(),
-            completed_depth: t.completed_depth,
-            nodes: t.nodes,
-            variation: t
-                .principal_variation
-                .iter()
-                .map(|c| match c {
-                    XiangqiChoice::Move { action } => action.to_string(),
-                    XiangqiChoice::Claim { actor } => format!("{actor:?} count claim"),
-                })
-                .collect(),
-            status: match t.status {
-                XiangqiStop::Complete => "Complete",
-                XiangqiStop::NodeLimit => "Node limit reached",
-                XiangqiStop::Stopped => "Stopped",
-                XiangqiStop::Unresolved => "Unresolved, unscored",
-            },
-        }
+        engine_telemetry(result, |c| match c {
+            XiangqiChoice::Move { action } => action.to_string(),
+            XiangqiChoice::Claim { actor } => format!("{actor:?} count claim"),
+        })
     }
     fn incomplete(result: &XiangqiResult) -> bool {
-        matches!(
-            result,
-            XiangqiResult::Incomplete { .. } | XiangqiResult::Unresolved { .. }
-        )
+        engine_incomplete(result)
     }
     fn edition(_game: &x::Game) -> &'static str {
         RulesProfile::XiangqiWxf2018V1.edition()

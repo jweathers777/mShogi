@@ -4,6 +4,7 @@
 use super::*;
 use crate::game_document::{SettingsOf, ValidatedGameDocument};
 use crate::native_game::{DocumentSettings, NativeGame};
+use mshogi_engine::{EngineGame, EngineResult};
 use std::sync::Arc;
 
 /// Kind of a native command, as the session needs it.
@@ -1212,7 +1213,42 @@ pub(crate) fn stop_label(status: mshogi_engine::StopReason) -> &'static str {
         mshogi_engine::StopReason::Complete => "Complete",
         mshogi_engine::StopReason::NodeLimit => "Node limit reached",
         mshogi_engine::StopReason::Stopped => "Search stopped",
+        mshogi_engine::StopReason::Unresolved => "Unresolved, unscored",
     }
+}
+
+/// Telemetry of a result of a game on the shared search core; `label` names
+/// each choice of the reported line.
+pub(crate) fn engine_telemetry<E: EngineGame>(
+    result: &EngineResult<E>,
+    label: impl Fn(&E::Choice) -> String,
+) -> TelemetryView {
+    let t = result.telemetry();
+    TelemetryView {
+        score: t.score_label(),
+        completed_depth: t.completed_depth,
+        nodes: t.nodes,
+        variation: t.principal_variation.iter().map(label).collect(),
+        status: stop_label(t.status),
+    }
+}
+/// The engine completed no scored work.
+pub(crate) fn engine_incomplete<E: EngineGame>(result: &EngineResult<E>) -> bool {
+    matches!(
+        result,
+        EngineResult::Incomplete { .. } | EngineResult::Unresolved { .. }
+    )
+}
+/// Engine limits of a game on the shared search core.
+macro_rules! engine_limits {
+    ($engine:ident) => {
+        const PLAY_LIMITS: WorkLimits =
+            <mshogi_engine::game::$engine as mshogi_engine::EngineGame>::PLAY_LIMITS;
+        const MAX_DEPTH: u16 =
+            <mshogi_engine::game::$engine as mshogi_engine::EngineGame>::MAX_DEPTH;
+        const MAX_NODES: u64 =
+            <mshogi_engine::game::$engine as mshogi_engine::EngineGame>::MAX_NODES;
+    };
 }
 
 fn analysis_limits<G: SessionGame>(
@@ -1327,16 +1363,14 @@ macro_rules! session_wiring {
 
 /// The Chu and Tenjiku sessions differ only by names and the PV label.
 macro_rules! large_shogi_session {
-    ($game:ident, $core:ident, $engine:ident, $limits:ident, $max_depth:ident, $max_nodes:ident,
+    ($game:ident, $core:ident,
      operation: $op:ident, preferences: $prefs:ident,
      state: $state:ident, $state_mut:ident, field: $field:ident,
      board: $size:expr, $label:expr, $focus:expr, score_meaning: $meaning:expr,
      pv: |$a:ident| $pv:expr) => {
         impl SessionGame for $game {
             type Presentation = presentation::Presentation;
-            const PLAY_LIMITS: WorkLimits = mshogi_engine::$limits;
-            const MAX_DEPTH: u16 = mshogi_engine::$max_depth;
-            const MAX_NODES: u64 = mshogi_engine::$max_nodes;
+            engine_limits!($game);
 
             session_wiring!($game, c, operation: $op, preferences: $prefs,
                 state: $state, $state_mut, field: $field);
@@ -1372,18 +1406,11 @@ macro_rules! large_shogi_session {
                     _ => CommandKind::Other,
                 }
             }
-            fn telemetry(result: &mshogi_engine::$engine) -> TelemetryView {
-                let t = result.telemetry();
-                TelemetryView {
-                    score: t.score_label(),
-                    completed_depth: t.completed_depth,
-                    nodes: t.nodes,
-                    variation: t.principal_variation.iter().map(|$a| $pv).collect(),
-                    status: stop_label(t.status),
-                }
+            fn telemetry(result: &Self::EngineResult) -> TelemetryView {
+                engine_telemetry(result, |$a| $pv)
             }
-            fn incomplete(result: &mshogi_engine::$engine) -> bool {
-                matches!(result, mshogi_engine::$engine::Incomplete { .. })
+            fn incomplete(result: &Self::EngineResult) -> bool {
+                engine_incomplete(result)
             }
             const BOARD_SIZE: u8 = $size;
             const BOARD_LABEL: &'static str = $label;

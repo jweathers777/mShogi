@@ -180,8 +180,9 @@ pub(super) fn bounded(error: impl ToString) -> String {
 
 fn valid_limits(limits: WorkLimits) -> Result<(), String> {
     // The same bounds as Analyze (native_session::validate_limits).
-    if !(1..=mshogi_engine::SHOGI_MAX_DEPTH).contains(&limits.depth)
-        || !(1..=mshogi_engine::SHOGI_MAX_NODES).contains(&limits.nodes)
+    use mshogi_engine::{EngineGame, game::Shogi};
+    if !(1..=Shogi::MAX_DEPTH).contains(&limits.depth)
+        || !(1..=Shogi::MAX_NODES).contains(&limits.nodes)
         || limits.time_ms.is_some()
     {
         Err(

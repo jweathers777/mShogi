@@ -5,7 +5,9 @@ mod run;
 use crate::{EngineIdentity, RunnerError};
 pub use evidence::*;
 use mshogi_core::native::RulesProfile;
-use mshogi_engine::{ExecutionContext, ExecutionObservation, ExecutionPurpose, WorkLimits};
+use mshogi_engine::{
+    EngineGame, ExecutionContext, ExecutionObservation, ExecutionPurpose, WorkLimits,
+};
 pub use native::{Root, fresh_root, standard_root};
 pub use run::{run, run_with_stop};
 use serde::{Deserialize, Serialize};
@@ -394,15 +396,17 @@ fn valid_work(profile: RulesProfile, work: WorkLimits) -> bool {
             mshogi_search::shogi::MAX_DEPTH,
             mshogi_search::shogi::MAX_NODES,
         ),
-        mshogi_core::native::GameKind::Tori => {
-            (mshogi_engine::TORI_MAX_DEPTH, mshogi_engine::TORI_MAX_NODES)
-        }
-        mshogi_core::native::GameKind::Chu => {
-            (mshogi_engine::CHU_MAX_DEPTH, mshogi_engine::CHU_MAX_NODES)
-        }
+        mshogi_core::native::GameKind::Tori => (
+            mshogi_engine::game::Tori::MAX_DEPTH,
+            mshogi_engine::game::Tori::MAX_NODES,
+        ),
+        mshogi_core::native::GameKind::Chu => (
+            mshogi_engine::game::Chu::MAX_DEPTH,
+            mshogi_engine::game::Chu::MAX_NODES,
+        ),
         mshogi_core::native::GameKind::Tenjiku => (
-            mshogi_engine::TENJIKU_MAX_DEPTH,
-            mshogi_engine::TENJIKU_MAX_NODES,
+            mshogi_engine::game::Tenjiku::MAX_DEPTH,
+            mshogi_engine::game::Tenjiku::MAX_NODES,
         ),
         _ => (
             mshogi_engine::MAX_ANALYSIS_DEPTH,

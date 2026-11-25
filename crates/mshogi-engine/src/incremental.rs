@@ -288,11 +288,7 @@ impl Adapter for ShogiAdapter {
         }
     }
     fn valid_limits(meta: &Metadata) -> bool {
-        (mshogi_search::shogi::Limits {
-            depth: meta.limits.depth,
-            nodes: meta.limits.nodes,
-        })
-        .valid()
+        crate::game::Shogi::valid_limits(meta.limits)
     }
     fn valid_target(meta: &Metadata, game: &shogi::Game) -> bool {
         let ExecutionPurpose::MoveAnalysis { target } = &meta.purpose else {
@@ -332,11 +328,7 @@ macro_rules! turn_adapter {
                 }
             }
             fn valid_limits(meta: &Metadata) -> bool {
-                (mshogi_search::$game::Limits {
-                    depth: meta.limits.depth,
-                    nodes: meta.limits.nodes,
-                })
-                .valid()
+                crate::game::$variant::valid_limits(meta.limits)
                     && matches!(meta.purpose, ExecutionPurpose::EngineTurn {})
             }
             fn valid_target(_meta: &Metadata, _game: &$game::Game) -> bool {

@@ -486,7 +486,8 @@ impl NativeState {
                 ShogiResult::Finished { conclusion, .. } => {
                     finished(game.conclusion(), *conclusion)
                 }
-                ShogiResult::Incomplete { telemetry } => {
+                ShogiResult::Incomplete { telemetry }
+                | ShogiResult::Unresolved { telemetry, .. } => {
                     Ok(Admission::Incomplete(format!("{:?}", telemetry.status)))
                 }
             },
@@ -555,7 +556,7 @@ impl NativeState {
             (Self::Tori(game), ExecutionResult::Tori { result }) => {
                 result.validate(game)?;
                 match result {
-                    ToriResult::Choice { action, .. } => {
+                    ToriResult::Choice { choice: action, .. } => {
                         game.submit(tori::GameRequest {
                             expected: game.context(),
                             actor: game.position().side_to_move(),
@@ -567,7 +568,8 @@ impl NativeState {
                     ToriResult::Finished { conclusion, .. } => {
                         finished(game.conclusion(), *conclusion)
                     }
-                    ToriResult::Incomplete { telemetry } => {
+                    ToriResult::Incomplete { telemetry }
+                    | ToriResult::Unresolved { telemetry, .. } => {
                         Ok(Admission::Incomplete(format!("{:?}", telemetry.status)))
                     }
                 }
@@ -575,7 +577,7 @@ impl NativeState {
             (Self::Chu(game), ExecutionResult::Chu { result }) => {
                 result.validate(game)?;
                 match result {
-                    ChuResult::Choice { action, .. } => {
+                    ChuResult::Choice { choice: action, .. } => {
                         game.submit(chu::GameRequest {
                             expected: game.context(),
                             actor: game.position().side_to_move(),
@@ -589,7 +591,8 @@ impl NativeState {
                     ChuResult::Finished { conclusion, .. } => {
                         finished(game.conclusion(), *conclusion)
                     }
-                    ChuResult::Incomplete { telemetry } => {
+                    ChuResult::Incomplete { telemetry }
+                    | ChuResult::Unresolved { telemetry, .. } => {
                         Ok(Admission::Incomplete(format!("{:?}", telemetry.status)))
                     }
                 }
@@ -597,7 +600,7 @@ impl NativeState {
             (Self::Tenjiku(game), ExecutionResult::Tenjiku { result }) => {
                 result.validate(game)?;
                 match result {
-                    TenjikuResult::Choice { action, .. } => {
+                    TenjikuResult::Choice { choice: action, .. } => {
                         game.submit(tenjiku::GameRequest {
                             expected: game.context(),
                             actor: game.position().side_to_move(),
@@ -611,7 +614,8 @@ impl NativeState {
                     TenjikuResult::Finished { conclusion, .. } => {
                         finished(game.conclusion(), *conclusion)
                     }
-                    TenjikuResult::Incomplete { telemetry } => {
+                    TenjikuResult::Incomplete { telemetry }
+                    | TenjikuResult::Unresolved { telemetry, .. } => {
                         Ok(Admission::Incomplete(format!("{:?}", telemetry.status)))
                     }
                 }

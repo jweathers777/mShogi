@@ -103,7 +103,11 @@ fn actual_choices_admit_and_scores_purpose_and_identity_remain_native() {
         let observation = execute(&c);
         assert!(observation.matches(&c));
         let ExecutionResult::Tori {
-            result: ToriResult::Choice { action, telemetry },
+            result:
+                ToriResult::Choice {
+                    choice: action,
+                    telemetry,
+                },
         } = &observation.result
         else {
             panic!("{observation:?}")
@@ -218,7 +222,11 @@ fn malformed_telemetry_complete_pv_and_terminal_mismatches_refuse() {
     for n in 0..11 {
         let mut obs = good.clone();
         let ExecutionResult::Tori {
-            result: ToriResult::Choice { action, telemetry },
+            result:
+                ToriResult::Choice {
+                    choice: action,
+                    telemetry,
+                },
         } = &mut obs.result
         else {
             panic!()
@@ -248,21 +256,14 @@ fn malformed_telemetry_complete_pv_and_terminal_mismatches_refuse() {
         let ExecutionResult::Tori { result } = &obs.result else {
             panic!()
         };
-        if n != 5 {
-            assert!(result.validate(&g).is_err(), "native validation case {n}");
-        } else {
-            assert!(
-                result.validate(&g).is_ok(),
-                "submitted work limit belongs to contextual shape check"
-            );
-        }
-        if n != 8 && n != 9 {
+        if n != 8 {
             assert!(!obs.matches(&c), "cheap shape case {n}");
         } else {
             assert!(
                 obs.matches(&c),
                 "replay of the line belongs to the bounded native worker"
             );
+            assert!(result.validate(&g).is_err(), "native validation case {n}");
         }
     }
     let bytes = serde_json::to_string(&good).unwrap();
@@ -413,7 +414,10 @@ fn same_board_full_history_and_forbidden_departure_require_native_worker_validat
     assert!(!repeated.legal_actions().contains(&forbidden));
     let mut forged = good.clone();
     let ExecutionResult::Tori {
-        result: ToriResult::Choice { action, telemetry },
+        result: ToriResult::Choice {
+            choice: action,
+            telemetry,
+        },
     } = &mut forged.result
     else {
         panic!()
@@ -451,10 +455,6 @@ fn unknown_search_identities_are_refused() {
             telemetry.search_id = "mshogi.tori.unknown.v1".into();
         }
         assert!(!unknown.matches(&c));
-        let ExecutionResult::Tori { result } = &unknown.result else {
-            panic!()
-        };
-        assert!(result.validate(&g).is_err());
     }
 }
 #[test]

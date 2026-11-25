@@ -1,7 +1,7 @@
 //! Singular internal execution context, transport, and durable observations.
 use crate::{
-    ChessResult, EngineFailure, FailureKind, MAX_ANALYSIS_DEPTH, MAX_ANALYSIS_NODES,
-    MAX_STDERR_BYTES, WorkLimits,
+    ChessResult, EngineFailure, EngineGame, FailureKind, MAX_ANALYSIS_DEPTH, MAX_ANALYSIS_NODES,
+    MAX_STDERR_BYTES, WorkLimits, adapter::for_game,
 };
 use mshogi_core::native::{CanonicalRecord, GameKind, NativeSide};
 use serde::{Deserialize, Serialize};
@@ -57,61 +57,26 @@ impl ExecutionContext {
             return false;
         }
 
+        let kind = self.game.game_kind();
         let target_valid = |target: &ExecutionTarget| {
             target.selection_id > 0
                 && target.session_version == self.session_version
                 && target.event_index == self.game.event_count() as u64
                 && target.board_ply == self.game.known_board_actions() as u64
-                && target.turn.game() == self.game.game_kind()
-                && match &self.game {
-                    CanonicalRecord::Tenjiku(record) => {
-                        target.turn == NativeSide::Tenjiku(record.side_to_move())
-                    }
-                    CanonicalRecord::Chu(record) => {
-                        target.turn == NativeSide::Chu(record.side_to_move())
-                    }
-                    CanonicalRecord::Tori(record) => {
-                        target.turn == NativeSide::Tori(record.side_to_move())
-                    }
-                    CanonicalRecord::Xiangqi(record) => {
-                        target.turn == NativeSide::Xiangqi(record.side_to_move())
-                    }
-                    _ => true,
-                }
+                && target.turn.game() == kind
+                && for_game!(kind, G => G::record(&self.game)
+                    .is_some_and(|record| target.turn == G::native_side(G::record_side(record))),
+                    chess => true)
                 && !target.label.is_empty()
                 && target.label.len() <= 256
         };
-        let ordinary_limits_valid = |analysis: bool| match self.game.game_kind() {
-            GameKind::Chess if analysis => {
+        let ordinary_limits_valid = |analysis: bool| {
+            for_game!(kind, G => G::valid_limits(self.limits), chess => if analysis {
                 (1..=MAX_ANALYSIS_DEPTH).contains(&self.limits.depth)
                     && self.limits.nodes <= MAX_ANALYSIS_NODES
-            }
-            GameKind::Chess => (1..=mshogi_search::search::MAX_DEPTH).contains(&self.limits.depth),
-            GameKind::Tori => mshogi_search::tori::Limits {
-                depth: self.limits.depth,
-                nodes: self.limits.nodes,
-            }
-            .valid(),
-            GameKind::Chu => mshogi_search::chu::Limits {
-                depth: self.limits.depth,
-                nodes: self.limits.nodes,
-            }
-            .valid(),
-            GameKind::Tenjiku => mshogi_search::tenjiku::Limits {
-                depth: self.limits.depth,
-                nodes: self.limits.nodes,
-            }
-            .valid(),
-            GameKind::Shogi => mshogi_search::shogi::Limits {
-                depth: self.limits.depth,
-                nodes: self.limits.nodes,
-            }
-            .valid(),
-            GameKind::Xiangqi => mshogi_search::xiangqi::Limits {
-                depth: self.limits.depth,
-                nodes: self.limits.nodes,
-            }
-            .valid(),
+            } else {
+                (1..=mshogi_search::search::MAX_DEPTH).contains(&self.limits.depth)
+            })
         };
         match &self.purpose {
             ExecutionPurpose::EngineTurn {} => ordinary_limits_valid(false),

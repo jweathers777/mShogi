@@ -36,7 +36,7 @@ fn context(g: &t::Game) -> ExecutionContext {
         request_id: 1,
         session_version: 1,
         game: CanonicalRecord::tenjiku(t::GameRecord::from_game(g).unwrap()),
-        limits: TENJIKU_PLAY_LIMITS,
+        limits: game::Tenjiku::PLAY_LIMITS,
     }
 }
 fn run(ctx: ExecutionContext) -> ExecutionObservation {
@@ -59,11 +59,16 @@ fn actual_royal_capture_score_and_native_pv_validation_for_both_profiles() {
     for profile in t::Profile::ALL {
         let g = game(profile);
         let before = t::GameRecord::from_game(&g).unwrap();
-        let observation = run(context(&g));
+        let ctx = context(&g);
+        let observation = run(ctx.clone());
         let ExecutionResult::Tenjiku { result } = observation.result else {
             panic!("real result required")
         };
-        let TenjikuResult::Choice { action, telemetry } = &result else {
+        let TenjikuResult::Choice {
+            choice: action,
+            telemetry,
+        } = &result
+        else {
             panic!("completed choice required")
         };
         assert_eq!(action.from, t::Square::new(8, 8).unwrap());
@@ -103,7 +108,11 @@ fn actual_royal_capture_score_and_native_pv_validation_for_both_profiles() {
         assert_eq!(t::GameRecord::from_game(&g).unwrap(), before);
         for field in 0..6 {
             let mut forged = result.clone();
-            let TenjikuResult::Choice { action, telemetry } = &mut forged else {
+            let TenjikuResult::Choice {
+                choice: action,
+                telemetry,
+            } = &mut forged
+            else {
                 unreachable!()
             };
             match field {
@@ -114,7 +123,18 @@ fn actual_royal_capture_score_and_native_pv_validation_for_both_profiles() {
                 4 => telemetry.completed_depth = 0,
                 _ => action.route.clear(),
             }
-            assert!(forged.validate(&g).is_err(), "forgery {field}");
+            // Shape and identity belong to the observation check; the replay
+            // of the line to validation. Admission needs both.
+            let observation = ExecutionObservation::new(
+                ctx.clone(),
+                ExecutionResult::Tenjiku {
+                    result: forged.clone(),
+                },
+            );
+            assert!(
+                !observation.matches(&ctx) || forged.validate(&g).is_err(),
+                "forgery {field}"
+            );
         }
         let mut terminal = before.to_game().unwrap();
         terminal
@@ -154,7 +174,7 @@ fn no_completed_iteration_publishes_no_fallback_and_limits_are_enforced() {
             matches!(&result,TenjikuResult::Incomplete{telemetry} if telemetry.score.is_none() && telemetry.nodes==0 && telemetry.principal_variation.is_empty())
         );
         result.validate(&g).unwrap();
-        ctx.limits.depth = TENJIKU_MAX_DEPTH + 1;
+        ctx.limits.depth = game::Tenjiku::MAX_DEPTH + 1;
         assert!(!ctx.valid_limits());
         let refused = run(ctx.clone());
         assert!(!refused.matches(&ctx));

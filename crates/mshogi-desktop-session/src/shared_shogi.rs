@@ -10,9 +10,7 @@ pub(crate) type ShogiSession = NativeSession<Shogi>;
 
 impl SessionGame for Shogi {
     type Presentation = ();
-    const PLAY_LIMITS: WorkLimits = mshogi_engine::SHOGI_PLAY_LIMITS;
-    const MAX_DEPTH: u16 = mshogi_engine::SHOGI_MAX_DEPTH;
-    const MAX_NODES: u64 = mshogi_engine::SHOGI_MAX_NODES;
+    engine_limits!(Shogi);
     const HANDS: bool = true;
     const BOARD_SIZE: u8 = 9;
     const BOARD_LABEL: &'static str = "Shogi board";
@@ -95,21 +93,10 @@ impl SessionGame for Shogi {
         }
     }
     fn telemetry(result: &mshogi_engine::ShogiResult) -> TelemetryView {
-        let t = match result {
-            mshogi_engine::ShogiResult::Choice { telemetry, .. }
-            | mshogi_engine::ShogiResult::Finished { telemetry, .. }
-            | mshogi_engine::ShogiResult::Incomplete { telemetry } => telemetry,
-        };
-        TelemetryView {
-            score: t.score_label(),
-            completed_depth: t.completed_depth,
-            nodes: t.nodes,
-            variation: t.principal_variation.iter().map(choice_label).collect(),
-            status: stop_label(t.status),
-        }
+        engine_telemetry(result, choice_label)
     }
     fn incomplete(result: &mshogi_engine::ShogiResult) -> bool {
-        matches!(result, mshogi_engine::ShogiResult::Incomplete { .. })
+        engine_incomplete(result)
     }
     fn declaration_advice(game: &s::Game) -> Vec<DeclarationAdvice> {
         [s::Side::Sente, s::Side::Gote]

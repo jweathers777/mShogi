@@ -1,4 +1,5 @@
 use super::*;
+use mshogi_engine::EngineGame;
 use std::sync::atomic::{AtomicU64, Ordering};
 fn path(label: &str) -> PathBuf {
     static NEXT: AtomicU64 = AtomicU64::new(0);
@@ -618,7 +619,7 @@ fn prior_shogi_fixed_play_observation_reopens_with_new_time_default() {
         decoded.record(),
         &s::GameRecord::from_game(&c.session.shogi().unwrap().game)
     );
-    assert_eq!(mshogi_engine::SHOGI_PLAY_LIMITS.time_ms, Some(1_000));
+    assert_eq!(mshogi_engine::game::Shogi::PLAY_LIMITS.time_ms, Some(1_000));
 }
 
 #[test]

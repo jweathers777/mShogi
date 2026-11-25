@@ -346,6 +346,7 @@ fn display_chess_observation(
                     "Thinking time reached"
                 }
                 mshogi_engine::StopReason::Stopped => "Analysis stopped",
+                mshogi_engine::StopReason::Unresolved => "Unresolved, unscored",
             },
         }
     };

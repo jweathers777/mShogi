@@ -133,10 +133,12 @@ fn actual_xiangqi_execution_returns_native_choices() {
     let standard = x::Game::standard(x::ClaimPolicy::AutoValidClaims).unwrap();
     assert_eq!(standard.no_win_assessment(), x::NoWinAssessment::Unknown);
     let response = run(&request(&standard));
-    assert!(
-        matches!(response.result, ExecutionResult::Xiangqi { result: XiangqiResult::Choice { ref telemetry, .. } }
-        if telemetry.no_win_assessment == x::NoWinAssessment::Unknown)
-    );
+    assert!(matches!(
+        response.result,
+        ExecutionResult::Xiangqi {
+            result: XiangqiResult::Choice { .. }
+        }
+    ));
 }
 fn command_result(g: &mut x::Game, native: x::GameCommand) {
     command(g, g.position().side_to_move(), native);

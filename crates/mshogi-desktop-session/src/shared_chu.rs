@@ -8,7 +8,7 @@ use mshogi_core::chu as c;
 /// The Chu session.
 pub(crate) type ChuSession = NativeSession<Chu>;
 
-large_shogi_session!(Chu, chu, ChuResult, CHU_PLAY_LIMITS, CHU_MAX_DEPTH, CHU_MAX_NODES,
+large_shogi_session!(Chu, chu,
 operation: Chu, preferences: ChuPreferences,
 state: chu, chu_mut, field: chu,
     board: 12, "Chu Shogi 12×12 board", "6g",

@@ -4,28 +4,25 @@
 //! The authoritative host must check the entire echoed context immediately before
 //! accepting a choice. Cancellation invalidates publication, even after completion.
 
+mod adapter;
 mod analysis;
+pub use adapter::{EngineGame, EngineResult, EngineTelemetry, NoPending, Pending};
 pub use analysis::*;
 mod bridge;
-mod chu;
+pub mod game;
 pub mod incremental;
 mod server;
 mod shared;
-mod shogi;
-mod tenjiku;
-mod tori;
-mod xiangqi;
 pub use bridge::{BridgeOptions, EngineBridge, SubmitError};
-pub use chu::*;
+pub use game::{
+    ChuResult, ChuTelemetry, ShogiChoice, ShogiResult, ShogiTelemetry, TenjikuResult,
+    TenjikuTelemetry, ToriResult, ToriTelemetry, XiangqiChoice, XiangqiResult, XiangqiTelemetry,
+};
 use mshogi_core::chess::{Action, ChessOutcome, ClaimRequest, Color, DrawClaim};
 use mshogi_search::search::{SearchChoice, SearchDecision, SearchResult, SearchStatus};
 use serde::{Deserialize, Serialize};
-pub use server::{serve, serve_once};
+pub use server::{ShogiSearchSession, XiangqiSearchSession, serve, serve_once};
 pub use shared::*;
-pub use shogi::*;
-pub use tenjiku::*;
-pub use tori::*;
-pub use xiangqi::*;
 
 /// Current internal protocol version.
 pub const PROTOCOL_VERSION: u32 = 6;
@@ -110,6 +107,17 @@ pub enum StopReason {
     NodeLimit,
     /// External stop observed.
     Stopped,
+    /// A required adjudication paused the search without a score (Xiangqi).
+    Unresolved,
+}
+impl From<SearchStatus> for StopReason {
+    fn from(status: SearchStatus) -> Self {
+        match status {
+            SearchStatus::Complete => Self::Complete,
+            SearchStatus::NodeLimit => Self::NodeLimit,
+            SearchStatus::Stopped => Self::Stopped,
+        }
+    }
 }
 /// Observations from the last fully completed native iteration.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
@@ -148,6 +156,7 @@ impl Telemetry {
             .count();
         self.completed_depth <= limits.depth
             && self.nodes <= limits.nodes
+            && self.status != StopReason::Unresolved
             && self.score.is_some() == (self.completed_depth > 0)
             && self
                 .score
@@ -261,11 +270,7 @@ impl ChessResult {
                 .into_iter()
                 .map(Into::into)
                 .collect(),
-            status: match result.status {
-                SearchStatus::Complete => StopReason::Complete,
-                SearchStatus::NodeLimit => StopReason::NodeLimit,
-                SearchStatus::Stopped => StopReason::Stopped,
-            },
+            status: result.status.into(),
         };
         match result.decision {
             Some(SearchDecision::Choose(SearchChoice::Move(action))) => {

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-25T18:43:00Z'
+updated_date: '2026-11-25T18:49:00Z'
 labels:
   - rules
   - xiangqi
@@ -49,4 +49,6 @@ John (2026-11-25): remove the optional Xiangqi exact Article 3.2A analysis and k
 Question for John (MSH-209, 2026-11-25): apply decision 1 (one Chess judging mode) to Xiangqi as well, and keep only the fast sound no-win recognition? Recommendation: yes, for the same reasons as for Chess: expensive exact proofs are not delivery gates, and the usual practice is to detect only material cases. It removes about 1,150 lines in mshogi-core (solver, request and tests) plus the desktop evidence and UI. If John says no, archive this task. Set it to Ready when John approves.
 
 John, 2026-11-25: Yes, remove it. This answers the question above and approves the rules profile change.
+
+Checkpoint (claude, branch claude/msh-269-remove-xiangqi-exact): code removal committed (core solver/request/test/probe, search exact path and AssessmentEvidence/Unresolved enums, engine, console nowin exact, desktop evidence and Evidence type, frontend UI, fixtures regenerated, GUI script phase). fmt and clippy pass. Next: docs, full tests, perft, frontend checks, review, integrate.
 <!-- SECTION:NOTES:END -->

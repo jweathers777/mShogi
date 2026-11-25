@@ -64,10 +64,10 @@ fn actual_core_consumer_uses_native_choices_effects_history_inspection_context_a
     assert_eq!(historical.occurrences, [0]);
     assert!(historical.conclusion.is_none());
     assert!(!historical.local_position().legal_actions().is_empty());
-    let mut redo = g.undo(&mut u).unwrap();
+    g.undo(&mut u).unwrap();
     assert!(g.context().same_semantics(&before));
     assert_ne!(g.context(), before);
-    g.redo(&mut redo).unwrap();
+    play(&mut g, a);
     let actor = t::Side::Sente;
     let request = t::GameRequest {
         expected: g.context(),

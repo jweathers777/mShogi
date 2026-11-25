@@ -19,8 +19,8 @@ native wire schema. Future native representation may map without altering meanin
   board, not whole legal positions. Limited rays and jumps are distinct.
 - `native_admission`/`native_admission_rotated`: concrete diagram and submitted
   command; accepted/rejected plus named effect or unchanged-state expectations.
-  Every accepted transition also requires apply→undo→redo, restoring all native
-  state/history/caches exactly and reproducing the reviewed effects. This includes
+  Every accepted transition also requires apply→undo, restoring all native
+  state/history/caches exactly. This includes
   capture/demotion/hands, drops and forced promotion for both owners.
   Unlisted legal choices are not claimed excluded. Effects are independently
   derived from published geometry/selected clauses. A rotated row is the exact
@@ -58,14 +58,13 @@ The103 immutable specs now have an explicit [ownership manifest](native-fixture-
 and bounded native queue.126 supplies executable infrastructure
 for all IDs,127/128/129 implement structural/local/game assertions. Real process
 acceptance, desktop preservation and human notation assertions remain explicit
-77/42 obligations; a native-only pass cannot claim those future journeys. The
-selected fixture bytes and independently expected outcomes are unchanged.
+77/42 obligations; a native-only pass cannot claim those future journeys.
 
 ## Executable machinery — MSH-126
 
-The engine-independent Rust harness now loads this unchanged corpus
+The engine-independent Rust harness now loads this corpus
 and the full owner manifest. Fixture-data admission passes separately from native
-assertions: without actual native observations all727 assertions are pending,
+assertions: without actual native observations all605 assertions are pending,
 with0executed/passed; four prose proofs are annotations and83 consumer requirements
 remain pending. Selected property/mutation/rotation machinery is executable now;
 that does not claim native legality or replay. No external comparator is required.
@@ -73,9 +72,8 @@ that does not claim native legality or replay. No external comparator is require
 
 ## Current native local execution — MSH-128
 
-The immutable specification file and its original data-only metadata remain
-unchanged. Actual execution is recorded separately in native local evidence:
-483fields pass across83rows (all14primary127 and69primary128),244history/record/
+Actual execution is recorded separately in native local evidence:
+403fields pass across83rows (all14primary127 and69primary128),202history/record/
 consumer assertions pending,83later-consumer requirements pending. The four prose
 proof annotations are not automatic passes. Local status and legal choices are
 implemented; actual full-game conclusions/history/records and real consumers
@@ -86,10 +84,9 @@ remain129/85/77/42. No expectation was generated from native or external output.
 
 The native game evidence records the actual authoritative
 T05/T06 Game, exact full context/retirement/reversal, immutable history and complete
-prefix records, strict native schema1 replay and typed core dispatch. All713native
-assertions execute and pass (202127+281128+230129),14genuinely later assertions and
-83real-consumer requirements remain pending. Selected profile/corpus/ownership are
-unchanged. Native bounds are measured separately from later desktop quotas;
+prefix records, strict native schema1 replay and typed core dispatch. All591native
+assertions execute and pass (162127+241128+188129),14genuinely later assertions and
+83real-consumer requirements remain pending. Native bounds are measured separately from later desktop quotas;
 ordinary admission preserves complete encoding and reserved resignation headroom.
 Tori execution remains explicitly unsupported/unscored and unadvertised; no Tori
 session, engine, console, desktop codec/UI or chooser is supplied.85 retains separate

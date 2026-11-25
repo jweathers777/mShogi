@@ -10,7 +10,7 @@ use std::collections::{BTreeMap, BTreeSet};
 /// Exact MSH-82 ratified profile identity.
 pub const PROFILE: &str = "mshogi.chu.jcsa2019.v1";
 /// Independently reviewed immutable corpus digest from MSH-82's audit lock.
-pub const CORPUS_SHA256: &str = "545f23e7c805949e7d67c64c3e2fd39927d5bdae2401065d4d5f5bfc0c9fea2a";
+pub const CORPUS_SHA256: &str = "4ddfdcc55fbda3a9bb229f8a1eb14aaa804223dda241dd350a0a0c23e1f64b37";
 /// Independently expected input; never implementation observations.
 pub const FIXTURES: &str = include_str!("../../../docs/m4/chu/fixtures.json");
 /// Development-only input bound: measured corpus is 563,575 bytes, exceeding Tori's bound.
@@ -129,7 +129,7 @@ fn explanatory_lion_reason(field: &str, expected: &Value) -> bool {
 }
 fn predicate(field: &str) -> Predicate {
     match field {
-        "apply_then_undo" | "redo" | "roundtrip" => Predicate::EquivalentSnapshots,
+        "apply_then_undo" | "roundtrip" => Predicate::EquivalentSnapshots,
         "runtime_authority" => Predicate::DifferentSnapshots,
         "board"
         | "step_offsets"

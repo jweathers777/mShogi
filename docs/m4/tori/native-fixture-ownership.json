@@ -2,7 +2,7 @@
   "schema": "mshogi.tori.native-fixture-ownership.v1",
   "profile": "mshogi.tori.modern.v1",
   "corpus_revision": "MSH208-MODERN-2026-11-20",
-  "corpus_sha256": "e947f1d81815ba4520443308493b2a6430917b10d5624c1456ee343aad278526",
+  "corpus_sha256": "65322c80eec34a28bb6cac0d382b32f299ff67f335f7dd4c66c600384de7d597",
   "corpus_unchanged": true,
   "coordinator": "MSH-85",
   "corpus_owner": "MSH-126",
@@ -194,7 +194,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -221,7 +221,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -275,7 +275,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -329,7 +329,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -356,7 +356,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -468,7 +468,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -496,7 +496,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -524,7 +524,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -552,7 +552,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -580,7 +580,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -803,7 +803,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -832,7 +832,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -861,7 +861,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -888,7 +888,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -943,7 +943,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -970,7 +970,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -998,7 +998,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -1027,7 +1027,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -1069,7 +1069,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -1124,7 +1124,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -1257,7 +1257,7 @@
       "supplementary_native_checks": [
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -1337,7 +1337,7 @@
       "expected_fields": [
         "strict_replay_equals_original",
         "undo_at6_repetition",
-        "redo_at7_repetition_side",
+        "resubmit_at7_repetition_side",
         "prefix4_occurrences",
         "prefix4_repetition",
         "live_occurrences",
@@ -1529,7 +1529,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -1556,7 +1556,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -1610,7 +1610,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -1664,7 +1664,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -1691,7 +1691,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -1802,7 +1802,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -1830,7 +1830,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -1858,7 +1858,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -1886,7 +1886,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -1914,7 +1914,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -2018,7 +2018,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -2047,7 +2047,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -2076,7 +2076,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -2103,7 +2103,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -2158,7 +2158,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -2185,7 +2185,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -2212,7 +2212,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -2241,7 +2241,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -2269,7 +2269,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -2324,7 +2324,7 @@
         },
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [
@@ -2457,7 +2457,7 @@
       "supplementary_native_checks": [
         {
           "owner": "MSH-129",
-          "scope": "full Game apply/undo/redo through authoritative event/history and monotonic native lineage, not just Position undo"
+          "scope": "full Game apply/undo through authoritative event/history and monotonic native lineage, not just Position undo"
         }
       ],
       "later_consumer_checks": [

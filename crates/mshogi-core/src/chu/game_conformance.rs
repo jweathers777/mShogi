@@ -834,10 +834,8 @@ fn reversal(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
         let (actor, cmd) = command(&v, &game)?;
         undos.push(submit(&mut game, actor, cmd).map_err(|e| e.to_string())?);
     }
-    let after = logical(&game);
-    let mut redos = Vec::new();
     for undo in undos.iter_mut().rev() {
-        redos.push(game.undo(undo).map_err(|e| e.to_string())?);
+        game.undo(undo).map_err(|e| e.to_string())?;
     }
     let mut out = BTreeMap::new();
     put(
@@ -849,14 +847,6 @@ fn reversal(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
         &mut out,
         "runtime_authority",
         json!({"before":format!("{:?}",runtime.runtime()),"after":format!("{:?}",game.context().runtime())}),
-    );
-    for redo in redos.iter_mut().rev() {
-        game.redo(redo).map_err(|e| e.to_string())?;
-    }
-    put(
-        &mut out,
-        "redo",
-        json!({"before":after,"after":logical(&game)}),
     );
     Ok(out)
 }

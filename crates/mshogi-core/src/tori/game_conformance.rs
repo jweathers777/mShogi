@@ -99,19 +99,12 @@ impl NativeAdapter for GameAdapter {
                 }
                 "board_ply_delta" => json!(g.snapshot().board_ply - before_ply),
                 "repetition_occurrence_delta" => json!(g.occurrences().len() - before_occ),
-                "reversal_contract/apply_then_undo"
-                | "reversal_contract/redo"
-                | "reversal_contract/retired_execution" => {
+                "reversal_contract/apply_then_undo" | "reversal_contract/retired_execution" => {
                     let mut u = result.map_err(|e| e.to_string())?;
-                    let after = g.cache_snapshot();
-                    let mut redo = g.undo(&mut u).map_err(|e| e.to_string())?;
+                    g.undo(&mut u).map_err(|e| e.to_string())?;
                     match field {
                         "reversal_contract/apply_then_undo" => {
                             properties::snapshots(&json!(before), &json!(g.cache_snapshot()))
-                        }
-                        "reversal_contract/redo" => {
-                            g.redo(&mut redo).map_err(|e| e.to_string())?;
-                            properties::snapshots(&json!(after), &json!(g.cache_snapshot()))
                         }
                         _ => properties::snapshots(
                             &json!(format!("{context:?}")),
@@ -175,22 +168,29 @@ impl NativeAdapter for GameAdapter {
                     )
                 }
                 "undo_at6_repetition"
-                | "redo_at7_repetition_side"
+                | "resubmit_at7_repetition_side"
                 | "all_native_fields_and_caches_exactly_restored" => {
                     let before = g.cache_snapshot();
                     let (mut replay, mut undos) = GameRecord::from_game(&g)
                         .unwrap()
                         .to_game_with_undo()
                         .unwrap();
-                    let mut r = replay.undo(undos.last_mut().unwrap()).unwrap();
+                    replay.undo(undos.last_mut().unwrap()).unwrap();
                     if field == "undo_at6_repetition" {
                         repetition(replay.repetition())
                     } else {
-                        replay.redo(&mut r).unwrap();
-                        if field == "redo_at7_repetition_side" {
+                        // Undo restores the earlier prefix exactly, and the
+                        // undone action then restores the complete game.
+                        let (last, earlier) =
+                            f.given["actions"].as_array().unwrap().split_last().unwrap();
+                        let mut prefix = f.given.clone();
+                        prefix["actions"] = json!(earlier);
+                        let undone = replay.cache_snapshot() == sequence(&prefix).cache_snapshot();
+                        play(&mut replay, action(last)).unwrap();
+                        if field == "resubmit_at7_repetition_side" {
                             json!(replay.repetition().unwrap().side)
                         } else {
-                            json!(before == replay.cache_snapshot())
+                            json!(undone && before == replay.cache_snapshot())
                         }
                     }
                 }
@@ -368,10 +368,10 @@ fn actual_complete_native_fixture_observations() {
             report.pending,
             report.failed
         ),
-        (713, 713, 14, 0)
+        (591, 591, 14, 0)
     );
     eprintln!(
-        "TORI129 actual native:713 executed/713 passed/14 pending/0 failed; {} later consumer requirements pending",
+        "TORI129 actual native:591 executed/591 passed/14 pending/0 failed; {} later consumer requirements pending",
         report.later_consumer_requirements.len()
     );
 }

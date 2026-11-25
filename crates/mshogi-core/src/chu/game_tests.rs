@@ -35,7 +35,7 @@ fn bytes(g: &Game) -> String {
 }
 
 #[test]
-fn lifo_full_game_undo_redo_and_branch_retirement() {
+fn lifo_full_game_undo() {
     let f = fixture("CHU-REP-QUIET");
     let mut g = game("CHU-REP-QUIET");
     let before = g.cache_snapshot();
@@ -44,29 +44,13 @@ fn lifo_full_game_undo_redo_and_branch_retirement() {
     for a in f["given"]["commands"].as_array().unwrap().iter().take(4) {
         tokens.push(play(&mut g, action(a)).unwrap());
     }
-    let after = g.cache_snapshot();
     assert_eq!(g.undo(&mut tokens[0]).unwrap_err(), GameError::InvalidToken);
-    let mut redos = vec![];
     for t in tokens.iter_mut().rev() {
-        redos.push(g.undo(t).unwrap());
+        g.undo(t).unwrap();
     }
     assert_eq!(g.cache_snapshot(), before);
     assert_ne!(g.context(), old);
     assert!(g.context().same_semantics(&old));
-    for r in redos.iter_mut().rev() {
-        g.redo(r).unwrap();
-    }
-    assert_eq!(g.cache_snapshot(), after);
-    assert_eq!(g.redo(&mut redos[0]).unwrap_err(), GameError::InvalidToken);
-    let mut t = play(&mut g, action(&f["given"]["commands"][4])).unwrap();
-    let mut r = g.undo(&mut t).unwrap();
-    let alternate = g
-        .legal_actions()
-        .into_iter()
-        .find(|a| *a != action(&f["given"]["commands"][4]))
-        .unwrap();
-    play(&mut g, alternate).unwrap();
-    assert_eq!(g.redo(&mut r).unwrap_err(), GameError::InvalidToken);
 }
 #[test]
 fn stale_actor_selection_and_reopening_never_revive_work() {
@@ -252,12 +236,12 @@ fn deterministic_real_sequences_preserve_exact_logical_caches_and_replay() {
             let a = choices[(rng as usize) % choices.len()].clone();
             let before = g.cache_snapshot();
             let c = g.context();
-            let mut u = play(&mut g, a).unwrap();
+            let mut u = play(&mut g, a.clone()).unwrap();
             let after = g.cache_snapshot();
-            let mut r = g.undo(&mut u).unwrap();
+            g.undo(&mut u).unwrap();
             assert_eq!(g.cache_snapshot(), before);
             assert_ne!(c, g.context());
-            g.redo(&mut r).unwrap();
+            play(&mut g, a).unwrap();
             assert_eq!(g.cache_snapshot(), after);
             let record = GameRecord::from_game(&g).unwrap();
             let restored = record.to_game().unwrap();

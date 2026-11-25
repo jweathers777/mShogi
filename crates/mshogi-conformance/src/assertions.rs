@@ -161,7 +161,6 @@ pub fn plan(corpus: &Corpus) -> Vec<Assertion> {
             if field == "reversal_contract" {
                 for (part, predicate) in [
                     ("apply_then_undo", Predicate::EquivalentSnapshots),
-                    ("redo", Predicate::EquivalentSnapshots),
                     ("retired_execution", Predicate::DifferentSnapshots),
                 ] {
                     out.push(Assertion {
@@ -252,16 +251,14 @@ pub fn plan(corpus: &Corpus) -> Vec<Assertion> {
                 {
                     continue;
                 }
-                for part in ["apply_then_undo", "redo"] {
-                    out.push(Assertion {
-                        fixture_id: f.id.clone(),
-                        field: format!("reversal_contract/{part}"),
-                        owner: native_owner.into(),
-                        boundary,
-                        predicate: Predicate::EquivalentSnapshots,
-                        expected: f.expected["reversal_contract"][part].clone(),
-                    });
-                }
+                out.push(Assertion {
+                    fixture_id: f.id.clone(),
+                    field: "reversal_contract/apply_then_undo".into(),
+                    owner: native_owner.into(),
+                    boundary,
+                    predicate: Predicate::EquivalentSnapshots,
+                    expected: f.expected["reversal_contract"]["apply_then_undo"].clone(),
+                });
             }
         }
         if f.expected

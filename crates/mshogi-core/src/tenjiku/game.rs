@@ -207,17 +207,6 @@ pub struct GameUndo {
     before_len: usize,
     used: bool,
 }
-/// Single-use redo, retired by a new native command branch.
-#[derive(Debug)]
-pub struct GameRedo {
-    instance: u64,
-    branch: u64,
-    before_node: u64,
-    after_node: u64,
-    actor: Side,
-    command: GameCommand,
-    used: bool,
-}
 /// Actual current native capacity facts plus bounded ending headroom.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 #[allow(missing_docs)]
@@ -246,7 +235,6 @@ pub struct Game {
     runtime: RuntimeToken,
     node: u64,
     next_node: u64,
-    branch: u64,
 }
 impl Game {
     /// Copy an admitted game for private analysis without replaying its history.
@@ -268,15 +256,13 @@ impl Game {
             },
             node: self.node,
             next_node: self.next_node,
-            branch: self.branch,
         })
     }
 
     #[cfg(test)]
-    pub(super) fn set_test_authority(&mut self, revision: u64, next_node: u64, branch: u64) {
+    pub(super) fn set_test_authority(&mut self, revision: u64, next_node: u64) {
         self.runtime.revision = revision;
         self.next_node = next_node;
-        self.branch = branch;
     }
     /// Admit a declared known-history root; no earlier history is invented.
     pub fn from_root(root: Position) -> Result<Self, GameError> {
@@ -326,7 +312,6 @@ impl Game {
             },
             node: 0,
             next_node: 1,
-            branch: 0,
         };
         if record::encode(&game).map_err(|_| GameError::Record)?.len()
             > crate::record::MAX_COMPACT_ROOT_BYTES
@@ -533,20 +518,19 @@ impl Game {
         {
             return Err(GameError::StaleContext);
         }
-        self.commit(request.actor, request.command, true, stop)
+        self.commit(request.actor, request.command, stop)
     }
     fn commit(
         &mut self,
         actor: Side,
         command: GameCommand,
-        new_branch: bool,
         stop: &mut impl FnMut() -> bool,
     ) -> Result<GameUndo, GameError> {
         let working = self.local.clone();
         let local = std::mem::replace(&mut self.local, working);
         let events = self.events.len();
         let keys = self.keys.len();
-        let result = self.commit_inner(actor, command, new_branch, stop);
+        let result = self.commit_inner(actor, command, stop);
         if result.is_err() {
             self.local = local;
             self.events.truncate(events);
@@ -559,7 +543,6 @@ impl Game {
         &mut self,
         actor: Side,
         command: GameCommand,
-        new_branch: bool,
         stop: &mut impl FnMut() -> bool,
     ) -> Result<GameUndo, GameError> {
         check(stop)?;
@@ -625,7 +608,7 @@ impl Game {
         )?;
         check(stop)?;
         let counter_reserve = u64::from(self.conclusion().is_none());
-        for value in [self.runtime.revision, self.next_node, self.branch] {
+        for value in [self.runtime.revision, self.next_node] {
             if value
                 .checked_add(1)
                 .and_then(|v| v.checked_add(counter_reserve))
@@ -643,10 +626,6 @@ impl Game {
             .next_node
             .checked_add(1)
             .ok_or(GameError::Capacity(Resource::Counter))?;
-        let branch = self
-            .branch
-            .checked_add(u64::from(new_branch))
-            .ok_or(GameError::Capacity(Resource::Counter))?;
         let token = GameUndo {
             instance: self.runtime.instance,
             before_node: self.node,
@@ -657,7 +636,6 @@ impl Game {
         self.runtime.revision = revision;
         self.node = self.next_node;
         self.next_node = next_node;
-        self.branch = branch;
         Ok(token)
     }
     #[allow(clippy::too_many_arguments)]
@@ -701,7 +679,7 @@ impl Game {
     }
 
     /// LIFO exact logical undo; runtime revisions advance rather than rewind.
-    pub fn undo(&mut self, undo: &mut GameUndo) -> Result<GameRedo, GameError> {
+    pub fn undo(&mut self, undo: &mut GameUndo) -> Result<(), GameError> {
         if undo.used
             || undo.instance != self.runtime.instance
             || undo.after_node != self.node
@@ -718,22 +696,10 @@ impl Game {
         let local = LocalPosition::admit(Position::install(before.state).map_err(GameError::Root)?)
             .map_err(GameError::Root)?;
         let reserve = u64::from(before.conclusion.is_none());
-        if revision.checked_add(reserve).is_none()
-            || self.next_node.checked_add(reserve).is_none()
-            || self.branch.checked_add(reserve).is_none()
+        if revision.checked_add(reserve).is_none() || self.next_node.checked_add(reserve).is_none()
         {
             return Err(GameError::Capacity(Resource::Counter));
         }
-        let event = self.events.last().expect("undo current");
-        let redo = GameRedo {
-            instance: self.runtime.instance,
-            branch: self.branch,
-            before_node: undo.before_node,
-            after_node: undo.after_node,
-            actor: event.actor,
-            command: event.command.clone(),
-            used: false,
-        };
         self.events.truncate(undo.before_len);
         self.snapshots.truncate(undo.before_len);
         self.keys.truncate(before.board_ply + 1);
@@ -741,22 +707,7 @@ impl Game {
         self.runtime.revision = revision;
         self.node = undo.before_node;
         undo.used = true;
-        Ok(redo)
-    }
-    /// Redo without reviving old runtime requests; new commands retire the redo branch.
-    pub fn redo(&mut self, redo: &mut GameRedo) -> Result<GameUndo, GameError> {
-        if redo.used
-            || redo.instance != self.runtime.instance
-            || redo.branch != self.branch
-            || redo.before_node != self.node
-        {
-            return Err(GameError::InvalidToken);
-        }
-        let mut undo = self.commit(redo.actor, redo.command.clone(), false, &mut || false)?;
-        self.node = redo.after_node;
-        undo.after_node = self.node;
-        redo.used = true;
-        Ok(undo)
+        Ok(())
     }
 }
 fn check(stop: &mut impl FnMut() -> bool) -> Result<(), GameError> {

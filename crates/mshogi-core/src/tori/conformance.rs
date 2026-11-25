@@ -226,19 +226,6 @@ impl NativeAdapter for StructuralAdapter {
                     .map_err(|e| format!("undo failed: {e:?}"))?;
                 Ok(Some(properties::snapshots(&snap, &snapshot(&p))))
             }
-            "reversal_contract/redo" => {
-                let snap = snapshot(&p);
-                let mut redo = p
-                    .undo_structural(&mut undo)
-                    .map_err(|e| format!("undo failed: {e:?}"))?;
-                let (redone, _) = p
-                    .redo_structural(&mut redo)
-                    .map_err(|e| format!("redo failed: {e:?}"))?;
-                if redone != effects {
-                    return Err("redo effects differ".into());
-                }
-                Ok(Some(properties::snapshots(&snap, &snapshot(&p))))
-            }
             _ => Ok(Some(observed)),
         }
     }
@@ -329,7 +316,7 @@ pub(super) fn transition_field(
                     && !m.rays.iter().any(|r| (r.0, r.1) == (0, 1))
             )
         }
-        "reversal_contract/apply_then_undo" | "reversal_contract/redo" => Value::Null,
+        "reversal_contract/apply_then_undo" => Value::Null,
         _ => return Err(format!("unprojected transition field {field}")),
     })
 }

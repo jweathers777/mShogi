@@ -89,17 +89,6 @@ pub(crate) struct Undo {
     before_node: u64,
     after_node: u64,
     used: bool,
-    effects: Effects,
-}
-/// A single-use forward restoration, invalidated by any newly applied branch.
-#[derive(Debug)]
-pub(crate) struct Redo {
-    owner: Arc<()>,
-    before: StructuralState,
-    after: StructuralState,
-    branch: u64,
-    used: bool,
-    effects: Effects,
 }
 impl Position {
     /// Face geometry and blocking only. Includes friendly endpoints/royals so it
@@ -238,10 +227,6 @@ impl Position {
             .next_node
             .checked_add(1)
             .ok_or(TransitionError::Capacity)?;
-        let branch = self
-            .branch
-            .checked_add(1)
-            .ok_or(TransitionError::Capacity)?;
         let revision = self
             .revision
             .checked_add(1)
@@ -253,19 +238,17 @@ impl Position {
             before_node: self.node,
             after_node: self.next_node,
             used: false,
-            effects,
         };
         self.state = after;
         self.node = self.next_node;
         self.next_node = next;
-        self.branch = branch;
         self.revision = revision;
         Ok((effects, undo))
     }
     /// Exact logical restoration. Tokens are single-use, position-bound and LIFO.
     /// Node identities allow unwinding earlier valid tokens; runtime revision is
     /// never rewound and old consumed tokens cannot revive on equal diagrams.
-    pub(crate) fn undo_structural(&mut self, undo: &mut Undo) -> Result<Redo, TransitionError> {
+    pub(crate) fn undo_structural(&mut self, undo: &mut Undo) -> Result<(), TransitionError> {
         if undo.used
             || !Arc::ptr_eq(&self.owner, &undo.owner)
             || self.node != undo.after_node
@@ -277,56 +260,10 @@ impl Position {
             .revision
             .checked_add(1)
             .ok_or(TransitionError::Capacity)?;
-        let redo = Redo {
-            owner: Arc::clone(&self.owner),
-            before: undo.before.clone(),
-            after: undo.after.clone(),
-            branch: self.branch,
-            used: false,
-            effects: undo.effects,
-        };
         self.state = undo.before.clone();
         self.node = undo.before_node;
         self.revision = revision;
         undo.used = true;
-        Ok(redo)
-    }
-    /// Exact accepted post-state restoration, never reusing old reversal authority.
-    /// A newly applied action retires all outstanding redo tokens; a chain of
-    /// undo/redo alone can restore a sequence in order, each with fresh Undo.
-    pub(crate) fn redo_structural(
-        &mut self,
-        redo: &mut Redo,
-    ) -> Result<(Effects, Undo), TransitionError> {
-        if redo.used
-            || !Arc::ptr_eq(&self.owner, &redo.owner)
-            || self.branch != redo.branch
-            || self.state != redo.before
-        {
-            return Err(TransitionError::InvalidToken);
-        }
-        let next = self
-            .next_node
-            .checked_add(1)
-            .ok_or(TransitionError::Capacity)?;
-        let revision = self
-            .revision
-            .checked_add(1)
-            .ok_or(TransitionError::Capacity)?;
-        let undo = Undo {
-            owner: Arc::clone(&self.owner),
-            before: self.state.clone(),
-            after: redo.after.clone(),
-            before_node: self.node,
-            after_node: self.next_node,
-            used: false,
-            effects: redo.effects,
-        };
-        self.state = redo.after.clone();
-        self.node = self.next_node;
-        self.next_node = next;
-        self.revision = revision;
-        redo.used = true;
-        Ok((redo.effects, undo))
+        Ok(())
     }
 }

@@ -191,7 +191,7 @@ impl Error for ActionError {}
 /// Invalid/stale/foreign local reversal, or exhausted authority.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum ReversalError {
-    /// Token is used, foreign, out of order or belongs to a retired branch.
+    /// Token is used, foreign or out of order.
     InvalidToken,
     /// Monotonic local runtime authority exhausted.
     Capacity,
@@ -211,19 +211,6 @@ pub struct LocalUndo {
     before_node: u64,
     after_node: u64,
     used: bool,
-    effects: Effects,
-}
-/// Single-use exact forward restoration; a newly accepted branch retires it.
-#[derive(Debug)]
-pub struct LocalRedo {
-    owner: Arc<()>,
-    before: Position,
-    after: Position,
-    before_node: u64,
-    after_node: u64,
-    branch: u64,
-    used: bool,
-    effects: Effects,
 }
 /// Explicit hypothetical complete choice; never live-game permission.
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -242,7 +229,6 @@ pub struct LocalPosition {
     owner: Arc<()>,
     node: u64,
     next_node: u64,
-    branch: u64,
     revision: u64,
 }
 impl Clone for LocalPosition {
@@ -263,7 +249,6 @@ impl LocalPosition {
             owner: Arc::new(()),
             node: 0,
             next_node: 1,
-            branch: 0,
             revision: 0,
         }
     }
@@ -435,7 +420,6 @@ impl LocalPosition {
         let (after, effects) = resolve(&self.position, action, true, true, &mut w)?;
         let revision = self.revision.checked_add(1).ok_or(ActionError::Capacity)?;
         let next = self.next_node.checked_add(1).ok_or(ActionError::Capacity)?;
-        let branch = self.branch.checked_add(1).ok_or(ActionError::Capacity)?;
         w.check()?;
         let token = LocalUndo {
             owner: self.owner.clone(),
@@ -444,17 +428,15 @@ impl LocalPosition {
             before_node: self.node,
             after_node: self.next_node,
             used: false,
-            effects: effects.clone(),
         };
         self.position = after;
         self.node = self.next_node;
         self.next_node = next;
-        self.branch = branch;
         self.revision = revision;
         Ok((effects, token))
     }
     /// Exact instance-bound LIFO restoration; runtime identity remains monotonic.
-    pub fn undo(&mut self, t: &mut LocalUndo) -> Result<LocalRedo, ReversalError> {
+    pub fn undo(&mut self, t: &mut LocalUndo) -> Result<(), ReversalError> {
         if t.used
             || !Arc::ptr_eq(&self.owner, &t.owner)
             || self.node != t.after_node
@@ -466,50 +448,11 @@ impl LocalPosition {
             .revision
             .checked_add(1)
             .ok_or(ReversalError::Capacity)?;
-        let redo = LocalRedo {
-            owner: self.owner.clone(),
-            before: t.before.clone(),
-            after: t.after.clone(),
-            before_node: t.before_node,
-            after_node: t.after_node,
-            branch: self.branch,
-            used: false,
-            effects: t.effects.clone(),
-        };
         self.position = t.before.clone();
         self.node = t.before_node;
         self.revision = revision;
         t.used = true;
-        Ok(redo)
-    }
-    /// Exact semantic redo only on its original surviving branch.
-    pub fn redo(&mut self, t: &mut LocalRedo) -> Result<(Effects, LocalUndo), ReversalError> {
-        if t.used
-            || !Arc::ptr_eq(&self.owner, &t.owner)
-            || self.node != t.before_node
-            || self.branch != t.branch
-            || self.position != t.before
-        {
-            return Err(ReversalError::InvalidToken);
-        }
-        let revision = self
-            .revision
-            .checked_add(1)
-            .ok_or(ReversalError::Capacity)?;
-        let undo = LocalUndo {
-            owner: self.owner.clone(),
-            before: t.before.clone(),
-            after: t.after.clone(),
-            before_node: t.before_node,
-            after_node: t.after_node,
-            used: false,
-            effects: t.effects.clone(),
-        };
-        self.position = t.after.clone();
-        self.node = t.after_node;
-        self.revision = revision;
-        t.used = true;
-        Ok((t.effects.clone(), undo))
+        Ok(())
     }
 }
 struct Cancellation<'a> {

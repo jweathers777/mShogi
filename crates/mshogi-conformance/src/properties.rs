@@ -36,7 +36,7 @@ pub fn rejection<S, V: PartialEq, T, E>(
     }
 }
 
-/// Supply actual complete before/undo, applied/redo, or source/replayed snapshots.
+/// Supply actual complete before/undo or source/replayed snapshots.
 /// Native callers include authoritative caches for internal restoration checks.
 pub fn snapshots(before: &Value, after: &Value) -> Value {
     json!({"before":before,"after":after})

@@ -120,24 +120,11 @@ pub struct LocalUndo {
     before_node: u64,
     after_node: u64,
     used: bool,
-    effects: Effects,
-}
-/// Single-use forward restoration, invalidated by any newly accepted branch.
-#[derive(Debug)]
-pub struct LocalRedo {
-    owner: Arc<()>,
-    before: LogicalState,
-    after: LogicalState,
-    before_node: u64,
-    after_node: u64,
-    branch: u64,
-    used: bool,
-    effects: Effects,
 }
 /// Reversal failure, with state and token unchanged.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum ReversalError {
-    /// Wrong instance, order, retired branch, altered state or used token.
+    /// Wrong instance, order, altered state or used token.
     InvalidToken,
     /// Monotonic runtime identity exhausted.
     Capacity,
@@ -171,7 +158,6 @@ pub struct LocalPosition {
     owner: Arc<()>,
     node: u64,
     next_node: u64,
-    branch: u64,
     revision: u64,
 }
 impl Clone for LocalPosition {
@@ -193,7 +179,6 @@ impl LocalPosition {
             owner: Arc::new(()),
             node: 0,
             next_node: 1,
-            branch: 0,
             revision: 0,
         }
     }
@@ -350,7 +335,6 @@ impl LocalPosition {
         let (after, effects) = self.resolve(action, true)?;
         let revision = self.revision.checked_add(1).ok_or(ActionError::Capacity)?;
         let next = self.next_node.checked_add(1).ok_or(ActionError::Capacity)?;
-        let branch = self.branch.checked_add(1).ok_or(ActionError::Capacity)?;
         let before = self.logical();
         let before_node = self.node;
         let after_node = self.next_node;
@@ -359,9 +343,8 @@ impl LocalPosition {
         self.node = after_node;
         self.next_node = next;
         self.revision = revision;
-        self.branch = branch;
         Ok((
-            effects.clone(),
+            effects,
             LocalUndo {
                 owner: self.owner.clone(),
                 before,
@@ -369,12 +352,11 @@ impl LocalPosition {
                 before_node,
                 after_node,
                 used: false,
-                effects,
             },
         ))
     }
     /// Exact restoration, including route effects, counters, metadata and rights.
-    pub fn undo(&mut self, token: &mut LocalUndo) -> Result<LocalRedo, ReversalError> {
+    pub fn undo(&mut self, token: &mut LocalUndo) -> Result<(), ReversalError> {
         if token.used
             || !Arc::ptr_eq(&self.owner, &token.owner)
             || self.node != token.after_node
@@ -391,48 +373,7 @@ impl LocalPosition {
         self.node = token.before_node;
         self.revision = revision;
         token.used = true;
-        Ok(LocalRedo {
-            owner: self.owner.clone(),
-            before: token.before.clone(),
-            after: token.after.clone(),
-            before_node: token.before_node,
-            after_node: token.after_node,
-            branch: self.branch,
-            used: false,
-            effects: token.effects.clone(),
-        })
-    }
-    /// Restore a reversed action only while its exact branch remains current.
-    pub fn redo(&mut self, token: &mut LocalRedo) -> Result<(Effects, LocalUndo), ReversalError> {
-        if token.used
-            || !Arc::ptr_eq(&self.owner, &token.owner)
-            || self.branch != token.branch
-            || self.node != token.before_node
-            || self.logical() != token.before
-        {
-            return Err(ReversalError::InvalidToken);
-        }
-        let revision = self
-            .revision
-            .checked_add(1)
-            .ok_or(ReversalError::Capacity)?;
-        self.position = token.after.position.clone();
-        self.protection = token.after.protection.clone();
-        self.node = token.after_node;
-        self.revision = revision;
-        token.used = true;
-        Ok((
-            token.effects.clone(),
-            LocalUndo {
-                owner: self.owner.clone(),
-                before: token.before.clone(),
-                after: token.after.clone(),
-                before_node: token.before_node,
-                after_node: token.after_node,
-                used: false,
-                effects: token.effects.clone(),
-            },
-        ))
+        Ok(())
     }
     fn logical(&self) -> LogicalState {
         LogicalState {

@@ -568,15 +568,10 @@ fn every_geometry_choice_rotates_and_reverses_exactly() {
         for action in choices {
             let mut subject = native.clone();
             let before = snapshot(&subject);
-            let (effects, mut undo) = subject.apply(&action).unwrap();
-            let after = snapshot(&subject);
-            let mut redo = subject.undo(&mut undo).unwrap();
+            let (_, mut undo) = subject.apply(&action).unwrap();
+            subject.undo(&mut undo).unwrap();
             assert_eq!(snapshot(&subject), before, "undo {} {action:?}", fixture.id);
             assert!(subject.undo(&mut undo).is_err(), "single-use token");
-            let (replayed, _) = subject.redo(&mut redo).unwrap();
-            assert_eq!(snapshot(&subject), after, "redo {} {action:?}", fixture.id);
-            assert_eq!(effects, replayed);
-            assert!(subject.redo(&mut redo).is_err(), "single-use redo token");
             checked += 1;
         }
     }

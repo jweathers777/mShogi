@@ -300,7 +300,7 @@ fn malformed_and_friendly_compound_actions_are_atomic() {
     }
 }
 #[test]
-fn all_central_actions_exactly_reverse_and_tokens_cannot_cross_clones_or_branches() {
+fn all_central_actions_exactly_reverse_and_tokens_cannot_cross_clones() {
     for code in ["Ln", "DK+", "DH+", "R", "P", "DE"] {
         let original = local(
             &[(6, 6, Side::Sente, code), (8, 5, Side::Gote, "P")],
@@ -308,24 +308,15 @@ fn all_central_actions_exactly_reverse_and_tokens_cannot_cross_clones_or_branche
         );
         for a in original.legal_actions() {
             let mut p = original.clone();
-            let (effects, mut undo) = p.apply(&a).unwrap();
-            let after = p.clone();
+            let (_, mut undo) = p.apply(&a).unwrap();
             let mut foreign = p.clone();
             assert_eq!(
                 foreign.undo(&mut undo).unwrap_err(),
                 ReversalError::InvalidToken
             );
-            let mut redo = p.undo(&mut undo).unwrap();
+            p.undo(&mut undo).unwrap();
             assert_eq!(p, original);
             assert_eq!(p.undo(&mut undo).unwrap_err(), ReversalError::InvalidToken);
-            let (again, _) = p.redo(&mut redo).unwrap();
-            assert_eq!(again, effects);
-            assert_eq!(p, after);
-            let mut p = original.clone();
-            let (_, mut undo) = p.apply(&a).unwrap();
-            let mut redo = p.undo(&mut undo).unwrap();
-            p.apply(&a).unwrap();
-            assert_eq!(p.redo(&mut redo).unwrap_err(), ReversalError::InvalidToken);
         }
     }
 }

@@ -210,15 +210,14 @@ fn native_commands_are_atomic_out_of_turn_resignation_preserve_board_identity() 
         ),
         record(&g)
     );
-    let mut redo = g.undo(&mut undo).unwrap();
-    assert_eq!(record(&g), before);
-    g.redo(&mut redo).unwrap();
     rejection(
         &mut g,
         Side::Sente,
         GameCommand::Resign,
         GameError::Concluded,
     );
+    g.undo(&mut undo).unwrap();
+    assert_eq!(record(&g), before);
 }
 #[test]
 fn exact_reversal_every_prefix_replay_and_selection_never_restore_native_authority() {
@@ -258,19 +257,6 @@ fn exact_reversal_every_prefix_replay_and_selection_never_restore_native_authori
         .unwrap_err(),
         GameError::StaleContext
     );
-    let mut redos = vec![];
-    for i in (0..undos.len()).rev() {
-        redos.push(g.undo(&mut undos[i]).unwrap());
-        assert_eq!(g.cache_snapshot(), snapshots[i]);
-        assert_eq!(record(&g), records[i]);
-    }
-    assert!(stale.same_semantics(&g.context()));
-    assert_ne!(stale, g.context());
-    for (i, r) in (1..).zip(redos.iter_mut().rev()) {
-        g.redo(r).unwrap();
-        assert_eq!(g.cache_snapshot(), snapshots[i]);
-    }
-    assert_eq!(g.cache_snapshot(), live_snapshot);
     let restored = GameRecord::from_json(&record(&g))
         .unwrap()
         .to_game()
@@ -285,9 +271,16 @@ fn exact_reversal_every_prefix_replay_and_selection_never_restore_native_authori
             .inspect(InspectionOrigin::Board(sq("2f")))
             .is_empty()
     );
+    for i in (0..undos.len()).rev() {
+        g.undo(&mut undos[i]).unwrap();
+        assert_eq!(g.cache_snapshot(), snapshots[i]);
+        assert_eq!(record(&g), records[i]);
+    }
+    assert!(stale.same_semantics(&g.context()));
+    assert_ne!(stale, g.context());
 }
 #[test]
-fn undo_redo_reject_foreign_used_out_of_order_and_retired_branches_atomically() {
+fn undo_rejects_foreign_used_and_out_of_order_tokens_atomically() {
     let mut a = Game::standard();
     let mut b = Game::standard();
     let action = a.legal_actions()[0];
@@ -300,17 +293,8 @@ fn undo_redo_reject_foreign_used_out_of_order_and_retired_branches_atomically() 
     let before = a.context();
     assert_eq!(a.undo(&mut u1).unwrap_err(), GameError::InvalidToken);
     assert_eq!(a.context(), before);
-    let mut r2 = a.undo(&mut u2).unwrap();
+    a.undo(&mut u2).unwrap();
     assert_eq!(a.undo(&mut u2).unwrap_err(), GameError::InvalidToken);
-    let different = a
-        .legal_actions()
-        .into_iter()
-        .find(|a| *a != action2)
-        .unwrap();
-    play(&mut a, different).unwrap();
-    let before = a.context();
-    assert_eq!(a.redo(&mut r2).unwrap_err(), GameError::InvalidToken);
-    assert_eq!(a.context(), before);
 }
 fn rotate_action(a: Action) -> Action {
     match a {
@@ -632,14 +616,9 @@ fn long_deterministic_real_history_replays_and_remains_closable() {
         .unwrap()
         .to_game_with_undo()
         .unwrap();
-    let mut redos = vec![];
     for (i, u) in replay_undos.iter_mut().enumerate().rev() {
-        redos.push(restored.undo(u).unwrap());
+        restored.undo(u).unwrap();
         assert_eq!(restored.cache_snapshot(), snapshots[i]);
-    }
-    for (i, r) in redos.iter_mut().rev().enumerate() {
-        restored.redo(r).unwrap();
-        assert_eq!(restored.cache_snapshot(), snapshots[i + 1]);
     }
     eprintln!(
         "TORI208 capacity real: {accepted}board/{events}events/{bytes}bytes; captures{captures}/drops{drops}/promotions{promotions}; generation+candidate probes {admission_ms}ms; strict parse+two replays {replay_ms}ms; resigned {final_usage:?}",
@@ -680,7 +659,7 @@ fn choose_live(g: &Game, seed: &mut u64) -> Action {
 }
 #[test]
 fn complete_records_remain_saveable_after_every_operation() {
-    // Exercise commands, undo, redo and prefixes with the event-count bound.
+    // Exercise commands, undo and prefixes with the event-count bound.
     let exact = |g: &Game| {
         let saved = GameRecord::from_game(g).unwrap();
         assert!(saved.to_json().len() <= MAX_GAME_RECORD_BYTES);
@@ -706,9 +685,9 @@ fn complete_records_remain_saveable_after_every_operation() {
             let mut undo = submit(&mut g, side, GameCommand::Play { action }).unwrap();
             exact(&g);
             if ply % 7 == 3 {
-                let mut redo = g.undo(&mut undo).unwrap();
+                g.undo(&mut undo).unwrap();
                 exact(&g);
-                g.redo(&mut redo).unwrap();
+                submit(&mut g, side, GameCommand::Play { action }).unwrap();
                 exact(&g);
             }
             if ply % 31 == 0 {

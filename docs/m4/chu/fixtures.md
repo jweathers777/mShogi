@@ -1,16 +1,15 @@
 > Historical MSH-82 preimplementation accounting below is preserved: its
 > zero-execution numbers describe that source/data checkpoint. Actual native86
-> acceptance is 1,076 checks across240 native rows.
+> acceptance is 1,072 checks across240 native rows.
 > The ten shared/product obligations are reconciled in the current
-> MSH-43 coverage matrix. The original expected corpus,
-> source provenance and audit hashes remain unchanged.
+> MSH-43 coverage matrix.
 
 # Independent Chu fixture accounting
 
 The [corpus](fixtures.json) contains **250 rows:221 authored and29 explicitly
 owner-exchanged180° rotations**.240 belong to native86;10 record future shared/
-product obligations for78/43. There are1141 top-level expected fields, including
-explanations and future assertions: this is **not1141 executed assertions**,250
+product obligations for78/43. There are1137 top-level expected fields, including
+explanations and future assertions: this is **not1137 executed assertions**,250
 unique positions or native conformance. Native Chu: **0 executed,0 passed**.
 
 Expectations precede implementation. C1/C2/C3 diagrams and prose, the selected

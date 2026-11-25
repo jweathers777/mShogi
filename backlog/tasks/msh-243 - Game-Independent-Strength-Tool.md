@@ -1,10 +1,10 @@
 ---
 id: MSH-243
 title: Game-Independent Strength Tool
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-11-25T11:47:00Z'
-updated_date: '2026-11-25T11:50:00Z'
+updated_date: '2026-11-25T11:58:00Z'
 labels:
   - cleanup
   - tooling
@@ -13,7 +13,7 @@ labels:
 milestone: m-5
 dependencies: []
 priority: medium
-ordinal: 248000
+ordinal: 7930
 ---
 
 ## Description
@@ -32,3 +32,9 @@ Includes the scope of the former MSH-242 (folded in by John, 2026-11-25): the Ru
 - [ ] #4 One review by a fresh agent session.
 - [ ] #5 Each Rust strength example is used by the tool, merged into one game-independent implementation, or removed with its support files and tests because nothing in the tool or an open task needs it; the reason is recorded, documents are updated, rules, search and evaluation are unchanged and the workspace checks pass.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+John, 2026-11-25: part of the cleanup; no longer waits for the Tenjiku release. Run after the MSH-209 follow-ups, MSH-222 and MSH-238, and before MSH-241. This task also reviews the strength tooling, which MSH-209 leaves out. MSH-240 task notes list known duplicates.
+<!-- SECTION:NOTES:END -->

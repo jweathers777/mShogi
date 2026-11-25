@@ -4,7 +4,7 @@ title: Codebase Consistency and Duplication Review
 status: Ready
 assignee: []
 created_date: '2026-11-20T07:34:00Z'
-updated_date: '2026-11-25T11:47:00Z'
+updated_date: '2026-11-25T11:58:00Z'
 labels:
   - handle:native-consistency-review
   - architecture
@@ -25,7 +25,7 @@ ordinal: 3000
 <!-- SECTION:DESCRIPTION:BEGIN -->
 Find overengineered, inconsistent and duplicated code across the whole codebase, and turn each finding into a bounded task. John (2026-11-20 and 2026-11-25): one consistent design style, shared code wherever it is efficient (AGENTS.md, Do not repeat yourself); really clean up before Tenjiku work.
 
-Scope: mshogi-core native mechanisms (resource limits, repetition detection, record encoding, fork, undo and prefix, incremental sessions); mshogi-search positions and repetition scans; mshogi-engine adapters; mshogi-desktop-session; the desktop frontend and Tauri host; console, runner and match tools; examples; and tools/strength Python (per-game cloud, judge, self-play, openings and assessment scripts, about 7,500 lines).
+Scope: mshogi-core native mechanisms (resource limits, repetition detection, record encoding, fork, undo and prefix, incremental sessions); mshogi-search positions and repetition scans; mshogi-engine adapters; mshogi-desktop-session; the desktop frontend and Tauri host; console, runner and match tools; and examples that are not strength tools. Out of scope: the strength tooling (tools/strength and the Rust strength examples in crates/mshogi-runner/examples and crates/mshogi-search/examples), which MSH-243 (Game-Independent Strength Tool) reviews and consolidates.
 
 Start from the MSH-229 inventory and the current code. Known findings already have tasks: MSH-222 (Shared Engine Adapters), MSH-227 (Xiangqi Record Replay Speed), MSH-239 (Uniform Desktop Operations and Board Components). Do not duplicate them.
 <!-- SECTION:DESCRIPTION:END -->
@@ -66,5 +66,5 @@ Order update by John, 2026-11-25: MSH-240 runs before this review.
 
 John, 2026-11-25: renaming unclear uses of "native" is MSH-241 (Replace Unclear Uses of Native in Names); do not add it as a review follow-up.
 
-John, 2026-11-25: consolidation of tools/strength is MSH-243 (Game-Independent Strength Tool). List tools/strength findings for it; do not create duplicate tasks.
+John, 2026-11-25: the strength tooling is out of scope; MSH-243 (Game-Independent Strength Tool) reviews and consolidates it. Do not create tasks for it. The single clock policy decision (item 2) stays here and includes its changes to the match tool and runner. Follow-up tasks keep ordinals 6100 to 7900, so they run before MSH-238, MSH-243 and MSH-241.
 <!-- SECTION:NOTES:END -->

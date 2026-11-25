@@ -327,7 +327,7 @@ fn strict_outer_purpose_target_envelope_and_native_bytes_survive_routing() {
 }
 
 #[test]
-fn long_shogi_history_request_echoes_its_context() {
+fn long_histories_request_echoes_their_context() {
     // Deterministic walk to the Shogi move-count rule; not a rules oracle.
     let mut game = shogi::Game::new();
     let mut seed = 0x67_c5a3_6d91_u64;
@@ -356,6 +356,20 @@ fn long_shogi_history_request_echoes_its_context() {
     }
     let mut context = request(&AdjudicatedGame::new(ClaimPolicy::ExplicitOnly));
     context.game = CanonicalRecord::shogi(shogi::GameRecord::from_game(&game));
+    let response = run(context.clone());
+    assert!(response.matches(&context));
+    let mut record = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record();
+    for _ in 0..4100 {
+        record.push_event(RecordEvent {
+            ply: 0,
+            kind: RecordEventKind::Observation(MatchObservation::Clock {
+                at_ns: u64::MAX,
+                remaining_ns: [u64::MAX; 2],
+                active: Some(Color::Black),
+            }),
+        });
+    }
+    context.game = CanonicalRecord::chess(record);
     let response = run(context.clone());
     assert!(response.matches(&context));
 }

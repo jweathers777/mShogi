@@ -138,7 +138,7 @@ impl<G: NativeGame> Errors<G> {
             NativeFailure::Capacity(resource, diagnostic) => (resource, diagnostic),
         };
         let category = match resource {
-            NativeResource::EncodedBytes => ResourceCategory::CanonicalRecordBytes,
+            NativeResource::EncodedBytes => ResourceCategory::NativeRootBytes,
             NativeResource::Counter => ResourceCategory::Unknown,
         };
         Self::capacity(category, diagnostic)

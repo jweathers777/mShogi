@@ -14,7 +14,7 @@ pub const MAX_RESOURCE_DIAGNOSTIC_BYTES: usize = 4096;
 #[serde(rename_all = "snake_case")]
 pub enum ResourceCategory {
     /// Encoded native root size, a fixed bound independent of game length.
-    CanonicalRecordBytes,
+    NativeRootBytes,
     /// Monotonic execution, request, session or document identity space.
     IdentityHeadroom,
     /// Elapsed validation time allowance.
@@ -47,8 +47,6 @@ pub enum ResourceScope {
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ResourceUnit {
-    /// Encoded UTF-8 bytes.
-    Bytes,
     /// Monotonic identity increments.
     Identities,
     /// Elapsed or reserved milliseconds.

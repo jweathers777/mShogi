@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-25T19:01:00Z'
+updated_date: '2026-11-25T19:07:00Z'
 labels:
   - rules
   - xiangqi
@@ -53,4 +53,6 @@ John, 2026-11-25: Yes, remove it. This answers the question above and approves t
 Checkpoint (claude, branch claude/msh-269-remove-xiangqi-exact): code removal committed (core solver/request/test/probe, search exact path and AssessmentEvidence/Unresolved enums, engine, console nowin exact, desktop evidence and Evidence type, frontend UI, fixtures regenerated, GUI script phase). fmt and clippy pass. Next: docs, full tests, perft, frontend checks, review, integrate.
 
 Checkpoint 2 (claude): code and docs done on branch claude/msh-269-remove-xiangqi-exact. Decision: the fast miss variant UnknownExactUnavailable is renamed NoWinAssessment::Unknown (wire 'unknown'), because the old name promised an exact request that no longer exists; results are unchanged. search::Unresolved and AssessmentEvidence collapsed to Option<PendingAdjudication> and NoWinAssessment; XiangqiResult::searched is now infallible. Mixed tests kept their fast parts (search: fast miss is Unknown and not a draw, possible win is not a forced-win score; engine handoff: fast proof/Unknown across reopen; console: nowin fast is read-only). Checks so far: fmt, clippy (workspace and desktop-session all features), cargo test --workspace, desktop-session --all-features (197 passed), Xiangqi perft incl. ignored (release), npm run check, vitest 588 passed, python test_gui_smoke+test_macos_verification 141 passed. Production lines (crates/*/src without test/conformance files): 69742 before, 68548 after; Xiangqi-named files 10182 -> 9084; desktop/src + src-tauri without tests/fixtures 3960 -> 3930. Next: fresh review, merge main, integrate.
+
+Review (fresh subagent, opus, read-only, diff origin/main...HEAD): no bugs; fast assessment results unchanged; rename to Unknown consistent; no other rule changed. Fixed: (1) the deleted exact test also held an independent palace legality oracle (General+General and +Advisor universes, 108/510/510 states, legal sets and transitions) - restored without the exact assertions in tests/xiangqi_board.rs; (2) restored the two-ply fast-miss facts (5k3/R8 b: fast Unknown, only f9e9, f9e9 a8f8 stalemate) in xiangqi_game_boundary.rs; (3) removed NATURAL_WIN_GOAL (no users; the goal stays documented); merged search run into search_with_state; removed a stale doc phrase; removed two record checks that named the removed bounded_exact mode (generic unknown-field rejection stays tested); trimmed dated history notes in docs (kept in the profile and D-15). Not changed: rustfmt-only reformat in xiangqi_uci.rs (caused by a shorter string).
 <!-- SECTION:NOTES:END -->

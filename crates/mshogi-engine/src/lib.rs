@@ -28,7 +28,7 @@ pub use tori::*;
 pub use xiangqi::*;
 
 /// Current internal protocol version.
-pub const PROTOCOL_VERSION: u32 = 5;
+pub const PROTOCOL_VERSION: u32 = 6;
 /// Maximum encoded request line, excluding its newline.
 pub const MAX_REQUEST_BYTES: usize = 1024 * 1024;
 /// Maximum encoded response line, excluding its newline.

@@ -301,7 +301,6 @@ mod identity_tests {
             purpose: ExecutionPurpose::EngineTurn {},
             request_id: 1,
             session_version: 1,
-            process_generation: 1,
             game: CanonicalRecord::shogi(GameRecord::from_game(&Game::new())),
             limits: crate::WorkLimits {
                 depth: 2,

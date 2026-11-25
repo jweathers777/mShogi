@@ -24,7 +24,6 @@ fn request(game: &Game, id: u64) -> ExecutionRequest {
             purpose: ExecutionPurpose::EngineTurn {},
             request_id: id,
             session_version: id,
-            process_generation: id,
             game: CanonicalRecord::shogi(GameRecord::from_game(game)),
             limits: WorkLimits {
                 time_ms: None,
@@ -236,7 +235,6 @@ fn actual_cross_game_cancel_replacement_and_historical_selection_retire_old_work
             purpose: ExecutionPurpose::EngineTurn {},
             request_id: 3,
             session_version: 3,
-            process_generation: 3,
             game: CanonicalRecord::chess(
                 mshogi_core::chess::AdjudicatedGame::new(
                     mshogi_core::chess::ClaimPolicy::ExplicitOnly,
@@ -313,7 +311,6 @@ fn timed_incremental_child_survives_continuations_takeback_and_process_retiremen
     bridge.cancel();
     let mut next = c.clone();
     next.context.request_id = id;
-    next.context.process_generation = id;
     bridge.submit(next.clone()).unwrap();
     assert!(wait(&bridge).matches(&next));
     stop(&bridge);

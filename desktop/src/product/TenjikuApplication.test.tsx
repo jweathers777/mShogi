@@ -9,8 +9,8 @@ import { NativeAnalysis, NativeRecovery } from "./NativeSessionPanels";
 import type { TenjikuSnapshot } from "./native";
 import adamsStandard from "../__fixtures__/shared-tenjiku-adams-standard.json";
 import mullerStandard from "../__fixtures__/shared-tenjiku-muller-standard.json";
-import adamsUnsupported from "../__fixtures__/shared-tenjiku-adams-unsupported.json";
-import mullerUnsupported from "../__fixtures__/shared-tenjiku-muller-unsupported.json";
+import adamsIncomplete from "../__fixtures__/shared-tenjiku-adams-incomplete.json";
+import mullerIncomplete from "../__fixtures__/shared-tenjiku-muller-incomplete.json";
 import adamsEnded from "../__fixtures__/shared-tenjiku-adams-ending-stopped.json";
 import mullerEnded from "../__fixtures__/shared-tenjiku-muller-ending-stopped.json";
 vi.mock("./useGameSession", () => ({ useGameSession: vi.fn() }));
@@ -99,7 +99,7 @@ it.each([adams, muller])("blocks $profile QA replacement while a modal or native
   for (const button of within(screen.getByRole("complementary", { name: "Tenjiku contract verification" })).getAllByRole("button")) expect((button as HTMLButtonElement).disabled).toBe(true);
 });
 
-it.each([adamsUnsupported, mullerUnsupported])("shows actual $profile incomplete observations without a fabricated score or PV", value => {
+it.each([adamsIncomplete, mullerIncomplete])("shows actual $profile incomplete observations without a fabricated score or PV", value => {
   const source = value as unknown as TenjikuSnapshot, command = vi.fn();
   expect(source.observations.length).toBeGreaterThan(0);
   expect(source.observations.at(-1)!.observation.result).toMatchObject({ kind: "tenjiku", result: { kind: "incomplete", telemetry: { score: null, completed_depth: 0, principal_variation: [] } } });

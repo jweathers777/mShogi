@@ -21,7 +21,6 @@ fn real_subprocess_preserves_tori_context_supplies_native_action_and_roundtrips_
             purpose: ExecutionPurpose::EngineTurn {},
             request_id: 129,
             session_version: 9,
-            process_generation: 2,
             game: CanonicalRecord::tori(tori::GameRecord::from_game(&game).unwrap()),
             limits: WorkLimits {
                 time_ms: None,

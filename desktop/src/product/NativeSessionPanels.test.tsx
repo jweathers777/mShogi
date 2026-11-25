@@ -92,7 +92,7 @@ it("announces native suggestions once with named target and no synthetic progres
 it("announces replacement by exact native request identity and retires stale target language", () => {
   const snapshot = chess(movesJson); snapshot.chess.analysis.status = "thinking"; snapshot.chess.analysis.result = null;
   const { rerender, props } = panel(snapshot); const status = screen.getByRole("status", { name: "Analysis status" }); expect(status.textContent).toContain("Move analysis started for");
-  const replacement = structuredClone(snapshot); replacement.chess.analysis.context!.request_id++; replacement.chess.analysis.context!.process_generation++;
+  const replacement = structuredClone(snapshot); replacement.chess.analysis.context!.request_id++;
   rerender(<NativeAnalysis {...props} snapshot={replacement} />); expect(status.textContent).toContain("replacement started for");
   const stale = chess(unknownJson); stale.token.selection++; rerender(<NativeAnalysis {...props} snapshot={stale} />); expect(status.textContent).toContain("recorded target"); expect(status.textContent).toContain("does not describe the current position"); expect(status.textContent).not.toContain("query incomplete for");
 });

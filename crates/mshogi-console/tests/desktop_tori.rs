@@ -238,7 +238,6 @@ fn real_supervised_tori_failure_cancel_replace_cleanup_and_cross_game_retirement
         )
         .unwrap();
     assert!(replacement.request_id > slow.request_id);
-    assert!(replacement.process_generation > slow.process_generation);
     let marker = started(&replacement);
     command(
         &mut c,

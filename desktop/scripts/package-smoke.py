@@ -69,7 +69,6 @@ finally:
 # UCI's compatibility mapping. This verifier is external to normal packages.
 context = {
     'purpose': {'kind': 'engine_turn'}, 'request_id': 1, 'session_version': 1,
-    'process_generation': 1,
     'game': {
         'envelope_version': 2, 'game_kind': 'chess',
         'payload': {
@@ -81,7 +80,7 @@ context = {
     },
     'limits': {'depth': 1, 'nodes': 1000},
 }
-request = {'protocol': 5, 'context': context}
+request = {'protocol': 6, 'context': context}
 def query(request, game_kind="chess"):
     # Bytes avoid platform text-mode newline conversion in the request digest.
     encoded = json.dumps(request).encode('utf-8')
@@ -118,12 +117,12 @@ target = {'selection_id': 1, 'event_index': 0, 'board_ply': 0, 'session_version'
           'label': 'Package verification: standard start',
           'turn': {'game_kind': 'chess', 'side': 'white'}}
 analysis_request = copy.deepcopy(request)
-analysis_request['context'].update(request_id=2, process_generation=2,
+analysis_request['context'].update(request_id=2,
     purpose={'kind': 'move_analysis', 'target': target})
 analysis_response = query(analysis_request)
 check_chess_choice(analysis_response['observation']['result']['result'])
 full_request = copy.deepcopy(request)
-full_request['context'].update(request_id=3, process_generation=3,
+full_request['context'].update(request_id=3,
     limits={'depth': 1, 'nodes': 0},
     purpose={'kind': 'chess_full_reachability', 'target': target, 'mate': 'either',
              'limits': {'max_positions': 1, 'max_transitions': 1}})
@@ -143,9 +142,9 @@ for index, profile in enumerate(('adams', 'muller')):
     turn = native['payload']['root']['side']
     assert turn == 'sente' and native['payload']['events'] == []
     ctx = {'purpose': {'kind': 'engine_turn'}, 'request_id': 100 + index * 2,
-        'session_version': 1, 'process_generation': 100 + index * 2,
+        'session_version': 1,
         'game': native, 'limits': {'depth': 1, 'nodes': 1024}}
-    move_request = {'protocol': 5, 'context': ctx}
+    move_request = {'protocol': 6, 'context': ctx}
     move = query(move_request, 'tenjiku')
     result = move['observation']['result']['result']; telemetry = result['telemetry']
     assert result['kind'] == 'choice' and telemetry['completed_depth'] == 1
@@ -153,7 +152,7 @@ for index, profile in enumerate(('adams', 'muller')):
     assert telemetry['perspective'] == 'sente' and telemetry['principal_variation'][0] == result['action']
     assert telemetry['evaluator_id'] == 'mshogi.tenjiku.material-placement.v1' and telemetry['search_id'] == 'mshogi.tenjiku.shared-core.v1'
     analysis = copy.deepcopy(move_request)
-    analysis['context'].update(request_id=101+index*2,process_generation=101+index*2,
+    analysis['context'].update(request_id=101+index*2,
         purpose={'kind':'move_analysis','target':{'selection_id':1,'event_index':0,'board_ply':0,'session_version':1,
             'label':'Packaged Tenjiku independent royal diagram','turn':{'game_kind':'tenjiku','side':turn}}})
     analyzed = query(analysis, 'tenjiku')

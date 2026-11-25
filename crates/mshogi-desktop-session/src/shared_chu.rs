@@ -67,7 +67,6 @@ mod observation_compatibility_tests {
                     purpose: ExecutionPurpose::EngineTurn {},
                     request_id: 1,
                     session_version: 1,
-                    process_generation: 1,
                     game: CanonicalRecord::chu(record.clone()),
                     limits: WorkLimits {
                         time_ms: None,

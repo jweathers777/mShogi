@@ -148,27 +148,19 @@ pub struct FischerClock {
     pub base_ms: u64,
     /// Added only after an accepted native command.
     pub increment_ms: u64,
-    /// Move-time policy. Absent in earlier configurations, which used the
-    /// hard ceiling; it is part of the configuration identity when present.
-    #[serde(default, skip_serializing_if = "ClockAllocation::is_hard")]
+    /// Move-time policy, part of the configuration identity.
     pub allocation: ClockAllocation,
 }
 /// The move time the runner gives the engine from the remaining clock. The
 /// engine treats it as a fixed move time.
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ClockAllocation {
-    /// Three times the nominal allocation (until MSH-204). It spends the base
-    /// time within a few moves; kept so earlier reports replay unchanged.
-    #[default]
+    /// Three times the nominal allocation. It spends the base time within a
+    /// few moves.
     Hard,
     /// The nominal allocation (MSH-204, Tori Strength Harness).
     Nominal,
-}
-impl ClockAllocation {
-    fn is_hard(&self) -> bool {
-        *self == Self::Hard
-    }
 }
 /// Replayable clock receipt, charged for transport and process overhead too.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -193,8 +185,7 @@ fn clock_work(
             clock.increment_ms,
             30,
         );
-        // The recorded policy selects the move time (MSH-204): earlier
-        // configurations replay with the hard ceiling they used.
+        // The recorded policy selects the move time.
         let allotted = (match clock.allocation {
             ClockAllocation::Hard => allocation.hard,
             ClockAllocation::Nominal => allocation.soft,
@@ -550,7 +541,6 @@ fn admit_with_match_capacity(
             purpose: ExecutionPurpose::EngineTurn {},
             request_id: u64::MAX,
             session_version: u64::MAX,
-            process_generation: u64::MAX,
             game: after.record,
             limits,
         },
@@ -817,7 +807,6 @@ impl Report {
                         )
                     || c.request_id <= last_id
                     || c.session_version != c.request_id
-                    || c.process_generation != c.request_id
                     || c.purpose != (ExecutionPurpose::EngineTurn {})
                 {
                     return Err(err("stale/wrong participant, history, purpose or limits"));
@@ -949,7 +938,6 @@ fn decode_step(raw: &serde_json::Value, state: &native::NativeState) -> Result<S
         purpose: ExecutionPurpose,
         request_id: u64,
         session_version: u64,
-        process_generation: u64,
         limits: WorkLimits,
     }
     #[derive(Deserialize)]
@@ -981,7 +969,6 @@ fn decode_step(raw: &serde_json::Value, state: &native::NativeState) -> Result<S
             purpose: wire.request.purpose,
             request_id: wire.request.request_id,
             session_version: wire.request.session_version,
-            process_generation: wire.request.process_generation,
             game,
             limits: wire.request.limits,
         },

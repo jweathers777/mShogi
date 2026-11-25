@@ -11,15 +11,15 @@ from pathlib import Path
 
 
 def run(engine, record, depth):
-    request = dict(protocol=5, context=dict(
-        purpose={'kind':'engine_turn'}, request_id=1, session_version=1, process_generation=1,
+    request = dict(protocol=6, context=dict(
+        purpose={'kind':'engine_turn'}, request_id=1, session_version=1,
         game=dict(envelope_version=2, game_kind='chu', payload=record),
         limits=dict(depth=depth, nodes=500000)))
     raw = json.dumps(request, separators=(',', ':')).encode()
     done = subprocess.run([engine, 'internal-search'], input=raw+b'\n',
                           capture_output=True, check=True, timeout=60)
     response = json.loads(done.stdout)
-    assert response['protocol'] == 5
+    assert response['protocol'] == 6
     assert response['request_digest'] == list(hashlib.sha256(raw).digest())
     result = response['result']
     assert result['kind'] == 'chu' and result['result']['kind'] == 'choice'

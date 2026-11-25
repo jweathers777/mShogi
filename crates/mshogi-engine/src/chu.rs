@@ -283,7 +283,6 @@ mod identity_tests {
             purpose: ExecutionPurpose::EngineTurn {},
             request_id: 1,
             session_version: 1,
-            process_generation: 1,
             game: CanonicalRecord::chu(mshogi_core::chu::GameRecord::from_game(&game).unwrap()),
             limits: CHU_PLAY_LIMITS,
         };

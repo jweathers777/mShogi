@@ -157,7 +157,6 @@ mod tests {
                 .unwrap();
         let context = ExecutionContext {
             request_id: 1,
-            process_generation: 1,
             session_version: 1,
             game: CanonicalRecord::chess(game.record()),
             limits: mshogi_engine::FULL_SENTINEL,

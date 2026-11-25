@@ -522,7 +522,6 @@ fn strict_payload_context_and_transport_preserve_identity_through_real_execution
         purpose: ExecutionPurpose::EngineTurn {},
         request_id: 41,
         session_version: 7,
-        process_generation: 3,
         game: saved.clone(),
         limits: WorkLimits {
             time_ms: None,

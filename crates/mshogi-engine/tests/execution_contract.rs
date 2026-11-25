@@ -15,7 +15,6 @@ fn request() -> ExecutionRequest {
             purpose: ExecutionPurpose::EngineTurn {},
             request_id: 1,
             session_version: 7,
-            process_generation: 3,
             game: CanonicalRecord::chess(AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record()),
             limits: WorkLimits {
                 time_ms: None,
@@ -65,7 +64,7 @@ fn outer_wrapper_context_native_and_observation_reject_duplicates_and_unknowns()
     let request = request();
     let text = serde_json::to_string(&request).unwrap();
     for (needle, replacement) in [
-        ("\"protocol\":5", "\"protocol\":5,\"protocol\":5"),
+        ("\"protocol\":6", "\"protocol\":6,\"protocol\":6"),
         ("\"context\":{", "\"context\":{},\"context\":{"),
         ("\"request_id\":1", "\"request_id\":1,\"request_id\":1"),
         (
@@ -98,7 +97,7 @@ fn outer_wrapper_context_native_and_observation_reject_duplicates_and_unknowns()
     serve_once(Cursor::new(format!("{text}\n")), &mut output).unwrap();
     let encoded = String::from_utf8(output).unwrap();
     for (needle, replacement) in [
-        ("\"protocol\":5", "\"protocol\":5,\"protocol\":5"),
+        ("\"protocol\":6", "\"protocol\":6,\"protocol\":6"),
         ("\"endpoint\":null", "\"endpoint\":null,\"endpoint\":null"),
         ("\"result\":{", "\"result\":{},\"result\":{"),
     ] {
@@ -144,11 +143,7 @@ fn saved_observation_has_semantic_schema_and_no_transport_identity_or_wrapper() 
         foreign.protocol = version;
         assert!(!foreign.matches(&request));
     }
-    for (field, changed) in [
-        ("request_id", 2),
-        ("session_version", 8),
-        ("process_generation", 4),
-    ] {
+    for (field, changed) in [("request_id", 2), ("session_version", 8)] {
         let mut value = serde_json::to_value(&request.context).unwrap();
         value[field] = json!(changed);
         let foreign: ExecutionContext = serde_json::from_value(value).unwrap();

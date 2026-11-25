@@ -18,7 +18,6 @@ pub struct Metadata {
     purpose: ExecutionPurpose,
     request_id: u64,
     session_version: u64,
-    process_generation: u64,
     limits: WorkLimits,
 }
 impl Metadata {
@@ -39,7 +38,6 @@ impl Metadata {
             purpose: c.purpose.clone(),
             request_id: c.request_id,
             session_version: c.session_version,
-            process_generation: c.process_generation,
             limits: c.limits,
         }
     }
@@ -461,7 +459,6 @@ where
         let meta = &request.session;
         if request.protocol != PROTOCOL_VERSION
             || meta.request_id == 0
-            || meta.process_generation == 0
             || meta.limits.time_ms.is_none_or(|n| n > 60_000)
             || !A::valid_limits(meta)
         {
@@ -519,7 +516,6 @@ mod tests {
             context: ExecutionContext {
                 purpose: ExecutionPurpose::EngineTurn {},
                 request_id: id,
-                process_generation: id,
                 session_version: id,
                 game: CanonicalRecord::shogi(shogi::GameRecord::from_game(game)),
                 limits: WorkLimits {
@@ -579,10 +575,7 @@ mod tests {
         play(&mut game, "3c3d");
         assert!(!cycle(&mut client, &mut server, request(&game, 2), &game));
         // An identical request may retain state; no command is applied twice.
-        // Recorded generation is metadata, not a second monotonic authority.
-        let mut next = (*request(&game, 3)).clone();
-        next.context.process_generation = 1;
-        assert!(!cycle(&mut client, &mut server, Arc::new(next), &game));
+        assert!(!cycle(&mut client, &mut server, request(&game, 3), &game));
         let mut takeback = shogi::Game::new();
         play(&mut takeback, "7g7f");
         assert!(cycle(
@@ -730,7 +723,6 @@ mod tests {
         let original = serde_json::to_value(&*submitted).unwrap();
         for (pointer, value) in [
             ("/context/request_id", serde_json::json!(2)),
-            ("/context/process_generation", serde_json::json!(2)),
             ("/context/session_version", serde_json::json!(2)),
             ("/context/limits/nodes", serde_json::json!(123)),
             ("/context/purpose", serde_json::json!({"kind":"other"})),
@@ -784,7 +776,6 @@ mod tests {
             context: ExecutionContext {
                 purpose: ExecutionPurpose::EngineTurn {},
                 request_id: id,
-                process_generation: id,
                 session_version: id,
                 game: CanonicalRecord::tori(tori::GameRecord::from_game(game).unwrap()),
                 limits: WorkLimits {
@@ -898,7 +889,6 @@ mod tests {
                 context: ExecutionContext {
                     purpose: ExecutionPurpose::EngineTurn {},
                     request_id: id,
-                    process_generation: id,
                     session_version: id,
                     game: CanonicalRecord::chu(record.clone()),
                     limits: WorkLimits {
@@ -961,7 +951,6 @@ mod tests {
                 context: ExecutionContext {
                     purpose: ExecutionPurpose::EngineTurn {},
                     request_id: id,
-                    process_generation: id,
                     session_version: id,
                     game: CanonicalRecord::chu(chu::GameRecord::from_game(&game).unwrap()),
                     limits: WorkLimits {

@@ -19,7 +19,6 @@ const VALIDATION_BUDGET: std::time::Duration = std::time::Duration::from_secs(15
 #[serde(deny_unknown_fields)]
 pub struct DesktopSettings {
     /// Persisted ownership of the two native participants.
-    #[serde(default)]
     pub play_mode: crate::PlayMode,
     /// View orientation, independent of player color.
     pub orientation: Color,

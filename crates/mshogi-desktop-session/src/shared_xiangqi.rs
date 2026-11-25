@@ -92,7 +92,6 @@ pub struct XiangqiTerminalActions {
 #[serde(deny_unknown_fields)]
 pub struct XiangqiSettings {
     /// Persisted ownership of the two native participants.
-    #[serde(default)]
     pub play_mode: crate::PlayMode,
     /// Native side at the bottom, independent of human ownership.
     pub orientation: x::Side,

@@ -13,7 +13,6 @@ fn context(id: u64, shogi: bool) -> ExecutionRequest {
             purpose: ExecutionPurpose::EngineTurn {},
             request_id: id,
             session_version: 2,
-            process_generation: id,
             game: if shogi {
                 CanonicalRecord::shogi(shogi::GameRecord::from_game(&shogi::Game::new()))
             } else {

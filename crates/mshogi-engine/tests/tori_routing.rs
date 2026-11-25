@@ -8,7 +8,6 @@ fn context() -> ExecutionContext {
         purpose: ExecutionPurpose::EngineTurn {},
         request_id: 129,
         session_version: 7,
-        process_generation: 3,
         game: CanonicalRecord::tori(t::GameRecord::from_game(&t::Game::standard()).unwrap()),
         limits: WorkLimits {
             time_ms: None,
@@ -83,12 +82,11 @@ fn real_internal_entry_point_supports_bounded_tori_without_foreign_operations() 
         assert_eq!(telemetry.perspective, t::Side::Sente);
         assert_eq!(telemetry.completed_depth, 1);
         assert!(telemetry.score.is_some());
-        for index in 0..4 {
+        for index in 0..3 {
             let mut wrong = c.clone();
             match index {
                 0 => wrong.request_id += 1,
                 1 => wrong.session_version += 1,
-                2 => wrong.process_generation += 1,
                 _ => wrong.limits.nodes += 1,
             };
             assert!(!response.matches(&ExecutionRequest {

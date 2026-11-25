@@ -96,9 +96,6 @@ pub struct ExecutionContext {
     pub request_id: u64,
     /// Host-owned session version, independent of board ply and semantic undo.
     pub session_version: u64,
-    /// Positive historical request metadata retained for recorded observations.
-    /// Live authority uses request_id; this does not count child processes.
-    pub process_generation: u64,
     /// Actual canonical native history, policies and root provenance.
     pub game: CanonicalRecord,
     /// Complete deterministic ordinary-search limits (Full uses FULL_SENTINEL).
@@ -342,7 +339,6 @@ impl ExecutionObservation {
             purpose: ExecutionPurpose,
             request_id: u64,
             session_version: u64,
-            process_generation: u64,
             #[serde(default)]
             game: Option<Box<serde_json::value::RawValue>>,
             limits: WorkLimits,
@@ -389,7 +385,6 @@ impl ExecutionObservation {
                 purpose: context.purpose,
                 request_id: context.request_id,
                 session_version: context.session_version,
-                process_generation: context.process_generation,
                 game,
                 limits: context.limits,
             },
@@ -409,7 +404,6 @@ impl ExecutionObservation {
     pub fn matches(&self, submitted: &ExecutionContext) -> bool {
         if self.schema_version != OBSERVATION_SCHEMA_VERSION
             || submitted.request_id == 0
-            || submitted.process_generation == 0
             || !submitted.valid_limits()
             || self.context != *submitted
         {
@@ -573,14 +567,10 @@ impl ExecutionRequest {
     pub fn valid(&self) -> bool {
         self.protocol == crate::PROTOCOL_VERSION
             && self.context.request_id > 0
-            && self.context.process_generation > 0
             && self.context.valid_limits()
     }
     pub(crate) fn request_id(&self) -> u64 {
         self.context.request_id
-    }
-    pub(crate) fn generation(&self) -> u64 {
-        self.context.process_generation
     }
     pub(crate) fn failure(&self, kind: FailureKind, message: impl ToString) -> ExecutionResponse {
         ExecutionResponse {

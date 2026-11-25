@@ -115,14 +115,12 @@ pub fn write_all(dir: &Path) {
             .unwrap();
         let pending = probe.verify_tori_pending_snapshot().unwrap();
         assert_eq!(pending.phase, mshogi_desktop_session::EnginePhase::Thinking);
-        write(dir, "pending-unsupported", &pending);
+        write(dir, "pending-incomplete", &pending);
         let deadline = Instant::now() + Duration::from_secs(10);
         loop {
             let snapshot = probe.shared_snapshot();
-            // Historical filename retained for fixture compatibility: this is now
-            // actual bounded incomplete native work, not UnsupportedMode.
             if snapshot.observations.len() == 1 {
-                write(dir, "unsupported", &snapshot);
+                write(dir, "incomplete", &snapshot);
                 break;
             }
             assert!(Instant::now() < deadline);

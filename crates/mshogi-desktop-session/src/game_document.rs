@@ -17,7 +17,6 @@ use std::marker::PhantomData;
 /// Saved settings of a game without game-specific fields.
 pub struct GameSettings<S> {
     /// Persisted ownership of the two native participants.
-    #[serde(default)]
     pub play_mode: crate::PlayMode,
     /// Native side displayed at the bottom.
     pub orientation: S,

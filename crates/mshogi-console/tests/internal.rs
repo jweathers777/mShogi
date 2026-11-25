@@ -16,7 +16,6 @@ fn request(id: u64) -> ExecutionRequest {
             purpose: ExecutionPurpose::EngineTurn {},
             request_id: id,
             session_version: 2,
-            process_generation: id,
             game: CanonicalRecord::chess(AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record()),
             limits: WorkLimits {
                 time_ms: None,

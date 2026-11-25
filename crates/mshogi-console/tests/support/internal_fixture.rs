@@ -102,7 +102,6 @@ fn main() {
             thread::sleep(Duration::from_secs(30));
             return;
         }
-        6 | 20 => context.process_generation += 1,
         9 => {
             let _ = io::stderr().write_all(&vec![b'e'; MAX_STDERR_BYTES * 10]);
             std::process::exit(19);
@@ -116,7 +115,7 @@ fn main() {
             return;
         }
         21 => context.request_id += 1,
-        22 => context.session_version += 1,
+        6 | 20 | 22 => context.session_version += 1,
         23 => context.limits.nodes += 1,
         24 => context.purpose = ExecutionPurpose::EngineTurn {},
         25 => {

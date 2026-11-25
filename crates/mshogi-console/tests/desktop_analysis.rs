@@ -177,15 +177,6 @@ fn actual_full_budget_exhaustion_and_cancelled_replacement_leave_match_unchanged
             .request_id
             > old_context.request_id
     );
-    assert!(
-        chess(&replaced)
-            .analysis
-            .context
-            .as_ref()
-            .unwrap()
-            .process_generation
-            > old_context.process_generation
-    );
     let cancelled = controller
         .settled(replaced.token, SessionOperation::Cancel {})
         .unwrap();

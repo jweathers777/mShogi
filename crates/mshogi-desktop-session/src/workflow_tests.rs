@@ -157,11 +157,7 @@ fn engine_return_allocates_fresh_purpose_version_request_generation_and_rejects_
         let live = send(&mut c, SessionOperation::ReturnLive {}).unwrap();
         assert!(!live.paused && !live.historical);
         let fresh = pending(&mut c);
-        assert!(
-            fresh.request_id > old.request_id
-                && fresh.process_generation > old.process_generation
-                && fresh.session_version > old.session_version
-        );
+        assert!(fresh.request_id > old.request_id && fresh.session_version > old.session_version);
         assert_eq!(fresh.game, old.game);
         assert_eq!(fresh.limits, old.limits);
         assert!(matches!(fresh.purpose, ExecutionPurpose::EngineTurn {}));

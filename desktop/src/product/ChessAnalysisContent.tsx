@@ -53,7 +53,7 @@ export function ChessAnalysisContent({ snapshot, disabled, command, defaults }: 
   const accepted = Boolean(analysis && current && (analysis.status === "complete" || analysis.status === "incomplete") && analysis.result !== null &&
     (full ? purpose?.kind === "chess_full_reachability" && analysis.result.kind === "reachability" : purpose?.kind === "move_analysis" && analysis.result.kind !== "reachability" && analysis.result.kind !== "failure"));
   const summary = analysis ? analysisSummary(analysis, current, accepted) : "";
-  const requestKey = analysis?.context ? `${analysis.context.session_version}:${analysis.context.request_id}:${analysis.context.process_generation}` : "";
+  const requestKey = analysis?.context ? `${analysis.context.session_version}:${analysis.context.request_id}` : "";
   const working = analysis?.status === "thinking";
   useEffect(() => {
     const replaced = working && previousRequest.current?.working && previousRequest.current.key !== requestKey;

@@ -91,7 +91,6 @@ export interface ExecutionTarget {
 export interface ExecutionContext {
   request_id: number;
   session_version: number;
-  process_generation: number;
   game: unknown;
   limits: { depth: number; nodes: number; time_ms?: number };
   purpose:

@@ -44,7 +44,6 @@ fn played(case: &str, game: &t::Game) -> (t::Game, t::Action, TenjikuTelemetry) 
             purpose: ExecutionPurpose::EngineTurn {},
             request_id: 1,
             session_version: 2,
-            process_generation: 3,
             game: CanonicalRecord::tenjiku(before.clone()),
             limits: TENJIKU_PLAY_LIMITS,
         },

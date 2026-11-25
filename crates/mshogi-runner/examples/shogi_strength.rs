@@ -153,7 +153,6 @@ fn probe(spec: &Value, engine: &str, time_ms: u64) -> Value {
                 purpose: ExecutionPurpose::EngineTurn {},
                 request_id: 1,
                 session_version: 1,
-                process_generation: 1,
                 game: CanonicalRecord::shogi(GameRecord::from_game(&game)),
                 limits,
             },

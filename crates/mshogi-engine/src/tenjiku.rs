@@ -286,7 +286,6 @@ mod identity_tests {
             purpose: ExecutionPurpose::EngineTurn {},
             request_id: 1,
             session_version: 1,
-            process_generation: 1,
             game: CanonicalRecord::tenjiku(
                 mshogi_core::tenjiku::GameRecord::from_game(&game).unwrap(),
             ),

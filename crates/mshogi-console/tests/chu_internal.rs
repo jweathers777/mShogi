@@ -38,7 +38,6 @@ fn request(id: u64, g: &c::Game, analysis: bool) -> ExecutionRequest {
             },
             request_id: id,
             session_version: 2,
-            process_generation: id,
             game,
             limits: CONTRACT_LIMITS,
         },
@@ -196,15 +195,14 @@ fn actual_controller_readonly_analysis_save_reopen_and_stale_identity_retirement
         },
     );
     let submitted = ctl.verify_chu_execution(CONTRACT_LIMITS, true).unwrap();
-    for case in 0..7 {
+    for case in 0..6 {
         let mut ctx = submitted.clone();
         match case {
             0 => ctx.request_id += 1,
-            1 => ctx.process_generation += 1,
-            2 => ctx.session_version += 1,
-            3 => ctx.limits.nodes += 1,
-            4 => ctx.purpose = ExecutionPurpose::EngineTurn {},
-            5 => {
+            1 => ctx.session_version += 1,
+            2 => ctx.limits.nodes += 1,
+            3 => ctx.purpose = ExecutionPurpose::EngineTurn {},
+            4 => {
                 if let ExecutionPurpose::MoveAnalysis { target } = &mut ctx.purpose {
                     target.selection_id += 1
                 }
@@ -534,7 +532,6 @@ fn actual_slow_child_cancellation_replacement_cross_game_and_cleanup_are_bounded
         )
         .unwrap();
     assert!(replacement.request_id > slow.request_id);
-    assert!(replacement.process_generation > slow.process_generation);
     let second = started(&replacement);
     send(
         &mut ctl,

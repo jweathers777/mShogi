@@ -263,7 +263,6 @@ fn observation_decoder_keeps_duplicates_and_wire_size_visible() {
         purpose: ExecutionPurpose::EngineTurn {},
         request_id: 1,
         session_version: 1,
-        process_generation: 1,
         game: root.record,
         limits: WorkLimits {
             time_ms: None,
@@ -421,7 +420,7 @@ fn fischer_allocation_charge_and_replay_refuse_tampering() {
         nodes: 512,
         time_ms: None,
     };
-    // Hard policy (earlier configurations): (9950 / 30 + 75) * 3 = 1218;
+    // Hard policy: (9950 / 30 + 75) * 3 = 1218;
     // first-request transport reserve = 300.
     assert_eq!(
         clock_work(work, Some(clock), 10_000, true).time_ms,
@@ -431,7 +430,7 @@ fn fischer_allocation_charge_and_replay_refuse_tampering() {
         clock_work(work, Some(clock), 10_000, false).time_ms,
         Some(1168)
     );
-    // Nominal policy (MSH-204): 9950 / 30 + 75 = 406; reserve
+    // Nominal policy: 9950 / 30 + 75 = 406; reserve
     // min(300, 406 / 2) = 203 first, then 50.
     let nominal = FischerClock {
         allocation: ClockAllocation::Nominal,
@@ -445,14 +444,13 @@ fn fischer_allocation_charge_and_replay_refuse_tampering() {
         clock_work(work, Some(nominal), 10_000, false).time_ms,
         Some(356)
     );
-    // An absent policy is the earlier hard policy, and the hard policy is not
-    // written, so earlier configuration identities are unchanged.
-    let old: FischerClock =
-        serde_json::from_str(r#"{"base_ms":10000,"increment_ms":100}"#).unwrap();
-    assert_eq!(old.allocation, ClockAllocation::Hard);
+    // The policy is always stated.
+    assert!(
+        serde_json::from_str::<FischerClock>(r#"{"base_ms":10000,"increment_ms":100}"#).is_err()
+    );
     assert_eq!(
-        serde_json::to_string(&old).unwrap(),
-        r#"{"base_ms":10000,"increment_ms":100}"#
+        serde_json::to_string(&clock).unwrap(),
+        r#"{"base_ms":10000,"increment_ms":100,"allocation":"hard"}"#
     );
     assert_eq!(
         serde_json::to_string(&nominal).unwrap(),
@@ -476,7 +474,6 @@ fn fischer_allocation_charge_and_replay_refuse_tampering() {
         purpose: ExecutionPurpose::EngineTurn {},
         request_id: 1,
         session_version: 1,
-        process_generation: 1,
         game: c.openings[0].root.record.clone(),
         limits: clock_work(
             c.players[player]
@@ -561,7 +558,6 @@ fn successful_shogi_clock_steps_replay_both_players_and_colors() {
                 purpose: ExecutionPurpose::EngineTurn {},
                 request_id,
                 session_version: request_id,
-                process_generation: request_id,
                 game: state.root().unwrap().record,
                 limits,
             };

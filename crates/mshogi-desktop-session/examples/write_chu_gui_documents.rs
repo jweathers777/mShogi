@@ -242,7 +242,6 @@ fn actual_observation_at_limits(
             purpose: ExecutionPurpose::EngineTurn {},
             request_id: id,
             session_version: id,
-            process_generation: id,
             game: CanonicalRecord::chu(d.record().clone()),
             limits,
         },

@@ -129,7 +129,7 @@ fn main() {
         "compound",
         "compound-played",
         "selected-root",
-        "unsupported",
+        "incomplete",
         "ending-stopped",
         "all-faces",
         "engine-played",
@@ -157,7 +157,7 @@ fn main() {
                 let construct_admission_install_us = begin.elapsed().as_micros();
                 let snapshot = controller.shared_snapshot();
                 assert!(snapshot.capabilities.engine_turn && snapshot.capabilities.move_analysis);
-                if scenario == "unsupported" {
+                if scenario == "incomplete" {
                     assert_eq!(snapshot.observations.len(), 1);
                     let observation = &snapshot.observations[0].observation;
                     assert!(matches!(

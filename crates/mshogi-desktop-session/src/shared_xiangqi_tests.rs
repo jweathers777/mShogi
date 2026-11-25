@@ -380,19 +380,18 @@ fn actual_read_only_analysis_rejects_every_context_mismatch_and_cannot_apply_cho
         different_history.position(),
         c.session.xiangqi().unwrap().game.position()
     );
-    for mismatch in 0..8 {
+    for mismatch in 0..7 {
         let mut wrong = response.clone();
         match mismatch {
             0 => wrong.context.request_id += 1,
             1 => wrong.context.session_version += 1,
-            2 => wrong.context.process_generation += 1,
-            3 => wrong.context.limits.nodes += 1,
-            4 => wrong.context.purpose = ExecutionPurpose::EngineTurn {},
-            5 => {
+            2 => wrong.context.limits.nodes += 1,
+            3 => wrong.context.purpose = ExecutionPurpose::EngineTurn {},
+            4 => {
                 wrong.context.game =
                     CanonicalRecord::xiangqi(x::GameRecord::from_game(&different_history).unwrap())
             }
-            6 => {
+            5 => {
                 if let ExecutionPurpose::MoveAnalysis { target } = &mut wrong.context.purpose {
                     target.selection_id += 1
                 }

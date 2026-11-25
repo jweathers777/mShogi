@@ -199,12 +199,12 @@ def replacement_analysis_accepted(game, before, after, analyzing):
         old, new = before['analysis'].get('context'), after['analysis'].get('context')
         return bool(old and new and new['purpose']['kind'] == 'move_analysis'
                     and old['purpose']['kind'] == 'move_analysis'
-                    and (new['request_id'], new['session_version'], new['process_generation'])
-                    != (old['request_id'], old['session_version'], old['process_generation']))
+                    and (new['request_id'], new['session_version'])
+                    != (old['request_id'], old['session_version']))
     return game in ('shogi', 'xiangqi', 'tori', 'chu', 'tenjiku')
 
 
-def completed_tenjiku_analysis(before, after, request_floor, generation_floor, depth=1, nodes=1024):
+def completed_tenjiku_analysis(before, after, request_floor, depth=1, nodes=1024):
     """A retained old result/status cannot prove a newly requested analysis."""
     try:
         previous=before['observations'];current=after['observations']
@@ -218,7 +218,7 @@ def completed_tenjiku_analysis(before, after, request_floor, generation_floor, d
         observation=current[-1]['observation'];context=observation['context'];purpose=context['purpose'];target=purpose['target']
         result=observation['result'];value=result['result'];telemetry=value['telemetry']
         return (observation['schema_version']==1 and after['analysis']['observation']==observation
-            and context['request_id']>request_floor and context['process_generation']>generation_floor
+            and context['request_id']>request_floor
             and context['session_version']==before['token']['version'] and target['session_version']==context['session_version']
             and purpose['kind']=='move_analysis' and context['game']==before['context']
             and context['limits']=={'depth':depth,'nodes':nodes}
@@ -2501,16 +2501,15 @@ class Journey:
         w.set('.shogi-analysis input[name="depth"]',1);w.set('.shogi-analysis input[name="nodes"]',1024)
         before=self.native_diagnostics()
         request_floor=max((item['observation']['context']['request_id'] for item in before['observations']),default=0)
-        generation_floor=max((item['observation']['context']['process_generation'] for item in before['observations']),default=0)
-        self.record('Capture pre-click native Tenjiku analysis identity floor and exact selected source',{'observations':len(before['observations']),'request_floor':request_floor,'generation_floor':generation_floor,'source':before['context'],'selected_event':before['tenjiku']['selected']['event_index'],'board_ply':before['tenjiku']['selected']['board_ply'],'token':before['token']})
+        self.record('Capture pre-click native Tenjiku analysis identity floor and exact selected source',{'observations':len(before['observations']),'request_floor':request_floor,'source':before['context'],'selected_event':before['tenjiku']['selected']['event_index'],'board_ply':before['tenjiku']['selected']['board_ply'],'token':before['token']})
         w.click('[data-analysis-start="tenjiku"]')
         def newly_completed():
             after=self.native_diagnostics()
-            assert completed_tenjiku_analysis(before,after,request_floor,generation_floor),{'observations':len(after['observations']),'expected_count':len(before['observations'])+1,'selected':after['tenjiku']['selected']['event_index'],'diagnostic':after['diagnostic'],'latest_result':after['observations'][-1]['observation']['result'] if after['observations'] else None}
+            assert completed_tenjiku_analysis(before,after,request_floor),{'observations':len(after['observations']),'expected_count':len(before['observations'])+1,'selected':after['tenjiku']['selected']['event_index'],'diagnostic':after['diagnostic'],'latest_result':after['observations'][-1]['observation']['result'] if after['observations'] else None}
             return after
         after=wait(newly_completed,'new genuine Tenjiku move-analysis observation for exact selected prefix with fresh execution identity',45)
         assert 'Analysis result available' in w.text('.shogi-analysis-state') and 'No move was played.' in w.text('.shogi-analysis')
-        self.record('New real read-only analysis appends exact-context observation without changing live or selected native game',{'before_count':len(before['observations']),'after':after,'request_floor':request_floor,'generation_floor':generation_floor})
+        self.record('New real read-only analysis appends exact-context observation without changing live or selected native game',{'before_count':len(before['observations']),'after':after,'request_floor':request_floor})
         return after
 
     def tenjiku_load_fixture(self, profile, name):

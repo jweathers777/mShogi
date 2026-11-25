@@ -37,7 +37,6 @@ fn request(record: &CanonicalRecord, id: u64, timed: bool) -> ExecutionRequest {
             purpose: ExecutionPurpose::EngineTurn {},
             request_id: id,
             session_version: id,
-            process_generation: 1,
             game: record.clone(),
             limits: WorkLimits {
                 depth: 2,

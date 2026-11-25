@@ -39,7 +39,6 @@ fn context(profile: t::Profile) -> ExecutionContext {
         purpose: ExecutionPurpose::EngineTurn {},
         request_id: 129,
         session_version: 7,
-        process_generation: 3,
         game: record(profile),
         limits: WorkLimits {
             time_ms: None,
@@ -167,15 +166,14 @@ fn complete_context_mismatch_cannot_accept_a_real_native_observation() {
         let mut c = context(profile);
         c.purpose = ExecutionPurpose::MoveAnalysis { target: target(&c) };
         let response = run(&c);
-        for field in 0..10 {
+        for field in 0..9 {
             let mut wrong = c.clone();
             match field {
                 0 => wrong.request_id += 1,
                 1 => wrong.session_version += 1,
-                2 => wrong.process_generation += 1,
-                3 => wrong.limits.nodes += 1,
-                4 => wrong.purpose = ExecutionPurpose::EngineTurn {},
-                5 => {
+                2 => wrong.limits.nodes += 1,
+                3 => wrong.purpose = ExecutionPurpose::EngineTurn {},
+                4 => {
                     wrong.game = record(match profile {
                         t::Profile::AdamsModern => t::Profile::MullerCompleted,
                         t::Profile::MullerCompleted => t::Profile::AdamsModern,

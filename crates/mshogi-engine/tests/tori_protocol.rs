@@ -10,7 +10,6 @@ fn context(game: &t::Game) -> ExecutionContext {
         purpose: ExecutionPurpose::EngineTurn {},
         request_id: 42,
         session_version: 9,
-        process_generation: 3,
         game: CanonicalRecord::tori(t::GameRecord::from_game(game).unwrap()),
         limits: WorkLimits {
             time_ms: None,
@@ -125,14 +124,13 @@ fn actual_choices_admit_and_scores_purpose_and_identity_remain_native() {
             let expected = -search::eval::score(&position, &search::eval::DEFAULT);
             assert_eq!(telemetry.score, Some(expected));
         }
-        for n in 0..6 {
+        for n in 0..5 {
             let mut wrong = c.clone();
             match n {
                 0 => wrong.request_id += 1,
                 1 => wrong.session_version += 1,
-                2 => wrong.process_generation += 1,
-                3 => wrong.limits.nodes += 1,
-                4 => wrong.limits.depth += 1,
+                2 => wrong.limits.nodes += 1,
+                3 => wrong.limits.depth += 1,
                 _ => {
                     wrong.purpose = ExecutionPurpose::MoveAnalysis {
                         target: ExecutionTarget {

@@ -40,7 +40,6 @@ fn context(g: &c::Game) -> ExecutionContext {
         purpose: ExecutionPurpose::EngineTurn {},
         request_id: 42,
         session_version: 9,
-        process_generation: 3,
         game: CanonicalRecord::chu(c::GameRecord::from_game(g).unwrap()),
         limits: CHU_PLAY_LIMITS,
     }
@@ -143,15 +142,14 @@ fn full_context_purpose_history_and_limits_are_never_interchangeable() {
     let g = game();
     let c = context(&g);
     let obs = execute(&c);
-    for n in 0..7 {
+    for n in 0..6 {
         let mut wrong = c.clone();
         match n {
             0 => wrong.request_id += 1,
             1 => wrong.session_version += 1,
-            2 => wrong.process_generation += 1,
-            3 => wrong.limits.nodes += 1,
-            4 => wrong.limits.depth += 1,
-            5 => {
+            2 => wrong.limits.nodes += 1,
+            3 => wrong.limits.depth += 1,
+            4 => {
                 wrong.purpose = ExecutionPurpose::MoveAnalysis {
                     target: ExecutionTarget {
                         selection_id: 1,

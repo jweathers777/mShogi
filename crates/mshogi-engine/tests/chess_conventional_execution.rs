@@ -15,7 +15,6 @@ fn context() -> ExecutionContext {
         purpose: ExecutionPurpose::EngineTurn {},
         request_id: 1,
         session_version: 3,
-        process_generation: 2,
         game: CanonicalRecord::chess(AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record()),
         limits: WorkLimits {
             depth: 128,

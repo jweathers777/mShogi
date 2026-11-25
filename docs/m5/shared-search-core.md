@@ -195,9 +195,8 @@ its private full-width minimax. The trait and the core did not change.
   most eight actions, because a saved document keeps and replays each line.
 - Observations: the new search has the identities `mshogi.tori.shared-core.v1`
   and `mshogi.tori.material-placement.v1`. Its score is not the static value
-  of the end of its line, so the earlier exact score check does not apply to
-  it. Saved observations of the earlier identities stay valid and keep their
-  exact score check (`mshogi-engine/src/tori.rs`).
+  of the end of its line, so no exact score check applies to it. Observation
+  admission accepts only the current identities (`mshogi-engine/src/tori.rs`).
 - Evaluation (MSH-206, Tori Evaluation Round) is linear in 148 Texel-tuned
   weights (`tori/eval.rs`): board and hand values, rank and column tables for
   each piece, Phoenix safety (own and attacked neighbors, enemy pieces near
@@ -314,12 +313,9 @@ Mandatory native root checks can exceed a minimum time budget. Fixed-work search
 keeps its prior incomplete-result semantics. No evaluation or selectivity policy
 changes are part of this task.
 
-The new identities are `mshogi.shogi.shared-core.v1` and
-`mshogi.shogi.material-placement.v1`. A shared observation helper classifies
-both Shogi and Tori identities. Earlier saved observations retain their
-identity-specific bounds and checks; selective lines can extend beyond nominal
-depth. The earlier Shogi material function remains available for historical
-arithmetic, but no private full-width search remains.
+The identities are `mshogi.shogi.shared-core.v1` and
+`mshogi.shogi.material-placement.v1`. Observation admission accepts only the
+current identities; selective lines can extend beyond nominal depth.
 
 Verification and the predecessor comparison are recorded in
 evidence/msh180/README.md. The later search round's
@@ -365,9 +361,8 @@ Private approximations are explicit:
 Depth is 1–64 and nodes are bounded at 5,000,000. Default UCI 0–9 and desktop
 play use depth 64 and 300,000 nodes. The reported line has at most eight actions.
 Fixed-limit requests start with empty tables; timed requests use the shared
-session policy above. Saved full-width observations retain their old identities,
-limits and checks through the shared identity helper. Current identities are
-`mshogi.xiangqi.shared-core.v1` and `mshogi.xiangqi.material-placement.v1`.
+session policy above. The identities are `mshogi.xiangqi.shared-core.v1` and
+`mshogi.xiangqi.material-placement.v1`.
 
 See verification and predecessor evidence.
 
@@ -394,8 +389,6 @@ Native conclusions are reported exactly; a live root without board actions stays
 unscored. A selected action must pass native submission. The reported line is
 replayed natively and stops at a conclusion or refusal; a refusal of its first
 action is an error. A native one-action conclusion replaces a private score.
-Saved full-width observations retain old identity, limits and exact score checks
-through the shared identity helper.
 
 Private analysis remains separate from native adjudication:
 
@@ -488,8 +481,7 @@ The adapter obtains exact native root conclusions and legal actions, including
 repetition admission. It checks the selected action and replays the reported
 line through native submission. A refused first action is an error; a later
 refusal clips the line. A native first-action conclusion replaces the private
-score. Legacy observations retain their old identity, limits and exact score
-validation through the shared observation helper.
+score.
 
 Private analysis has these limits:
 

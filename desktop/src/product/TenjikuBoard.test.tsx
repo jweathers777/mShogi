@@ -79,7 +79,7 @@ it.each(fixtures)("renders the actual $label 16×16 board in both orientations w
   expect(square("1a").querySelector("[data-tenjiku-piece]")?.getAttribute("transform")).toBe("rotate(180 50 50)");
   fireEvent.keyDown(square("8h"), { key: "ArrowRight" });
   expect(document.activeElement).toBe(square("7h"));
-  const flipped = { ...props.snapshot, document: { ...props.snapshot.document, settings: { ...props.snapshot.document.settings, settings: { orientation: "gote" as const } } } };
+  const flipped = { ...props.snapshot, document: { ...props.snapshot.document, settings: { ...props.snapshot.document.settings, settings: { ...props.snapshot.document.settings.settings, orientation: "gote" as const } } } };
   rerender(<TenjikuBoard {...props} snapshot={flipped} />);
   expect(container.querySelector("svg [role=button]")?.getAttribute("aria-label")).toMatch(/^1p,/);
   expect(square("1a").querySelector("[data-tenjiku-piece]")?.getAttribute("transform")).toBeNull();

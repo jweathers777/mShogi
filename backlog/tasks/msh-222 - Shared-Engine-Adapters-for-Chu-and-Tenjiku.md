@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-21T23:10:00Z'
-updated_date: '2026-11-25T22:52:00Z'
+updated_date: '2026-11-25T23:06:00Z'
 labels:
   - engine
   - refactor
@@ -42,3 +42,9 @@ Production lines before: mshogi-engine 4,921; mshogi-desktop-session 12,732; msh
 5. Update callers (desktop-session, runner, console, tests, examples), fixtures with their generators, and documents.
 6. Checks; fixed-search baseline unchanged; line counts after; fresh-agent review; integrate.
 <!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Checkpoint 2026-11-26 (branch claude/msh-222-engine-adapters): adapter.rs (trait EngineGame, EngineResult<G>, EngineTelemetry<G>, one matches, validate and score_label) and game.rs (five impls) replace shogi.rs, xiangqi.rs, tori.rs, chu.rs, tenjiku.rs; server.rs has one execute path and one engine slot. Callers in desktop-session, runner, console and tests updated; engine tests pass (fixed-search baseline unchanged). Next: workspace and desktop checks, fixture regeneration, docs, line counts, review.
+<!-- SECTION:NOTES:END -->

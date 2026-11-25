@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-21T23:10:00Z'
-updated_date: '2026-11-25T22:44:00Z'
+updated_date: '2026-11-25T22:52:00Z'
 labels:
   - engine
   - refactor
@@ -29,3 +29,16 @@ The per-game adapter modules in crates/mshogi-engine (shogi.rs, xiangqi.rs, tori
 - [ ] #2 Engine protocol tests, desktop-session tests and the workspace checks pass; changed fixtures are regenerated.
 - [ ] #3 One review by a fresh agent session.
 <!-- AC:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Measured 2026-11-25 (main c7ad8ba): the per-game adapter files are 1,760 lines (shogi 475, xiangqi 384, tori 262, chu 317, tenjiku 322; inline tests included), plus 250 lines of per-game execute functions in server.rs. Chu and Tenjiku differ only in names and two stop-aware calls; Tori has the same structure (it lacks the identity check in score_label and validate_with_stop, and adds a complete-depth check). Shogi and Xiangqi have the same result and telemetry shape with real differences: a choice type with a formal command (declaration, count claim), timed fallback (the shared core gives it to both, but only the Shogi adapter accepts it), and for Xiangqi an unresolved-adjudication result and an echoed no-win assessment.
+Production lines before: mshogi-engine 4,921; mshogi-desktop-session 12,732; mshogi-runner 8,971; mshogi-console 4,813 (src files, without *tests.rs).
+1. New module adapter.rs: trait EngineGame (native types, search identities and bounds, record queries, command and submit for line replay, search call) and generic EngineResult<G> and EngineTelemetry<G> with one score_label, one matches and one validate. Markers in mshogi_engine::game; ChuResult and similar names stay as type aliases.
+2. One rule set for all five games: Choice/Finished/Incomplete/Unresolved shapes, timed fallback, complete-depth check (from Tori), node-limit check, choice never wins at its own root. Unresolved is a StopReason value; games without pending adjudication use an empty Pending type. Choice field is choice for every game; the redundant Xiangqi no_win_assessment echo is removed (the record holds it).
+3. validate replays the reported line only; matches owns identity, limit and shape checks (every caller calls matches first).
+4. server.rs: one generic execute for the five games; retained engines in one slot; incremental adapters use the trait for limits. ExecutionContext::valid_limits uses the trait for limits and analysis turn.
+5. Update callers (desktop-session, runner, console, tests, examples), fixtures with their generators, and documents.
+6. Checks; fixed-search baseline unchanged; line counts after; fresh-agent review; integrate.
+<!-- SECTION:PLAN:END -->

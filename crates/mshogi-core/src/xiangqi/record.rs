@@ -106,11 +106,11 @@ impl GameRecord {
     pub const fn side_to_move(&self) -> Side {
         self.side_to_move
     }
-    /// Already replay-validated native conclusion; no replay or exact work here.
+    /// Already replay-validated native conclusion; no replay here.
     pub const fn conclusion(&self) -> Option<Conclusion> {
         self.conclusion
     }
-    /// Already replay-validated fast-mode assessment, never an exact proof.
+    /// Already replay-validated sound fast no-win assessment.
     pub fn no_win_assessment(&self) -> &NoWinAssessment {
         &self.assessment
     }
@@ -178,7 +178,7 @@ impl GameRecord {
     }
     /// Authoritative bounded replay with fresh runtime identity and LIFO command
     /// undo handles. Consumers must not reconstruct commands from derived events.
-    /// Root automatic conclusions have no command handle; exact work is not run.
+    /// Root automatic conclusions have no command handle.
     pub fn to_game_with_undo(&self) -> Result<(Game, Vec<super::GameUndo>), RecordError> {
         Self::replay_with_undo(&self.json, true)
     }

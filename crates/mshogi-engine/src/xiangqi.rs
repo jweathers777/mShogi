@@ -1,4 +1,4 @@
-//! Actual native Xiangqi ordinary-search results, distinct from exact proof operations.
+//! Actual native Xiangqi ordinary-search results.
 use crate::ExecutionContext;
 use mshogi_core::{
     native::CanonicalRecord,

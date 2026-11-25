@@ -10,7 +10,7 @@ import xiangqi from "../__fixtures__/shared-xiangqi-standard.json";
 afterEach(cleanup);
 const base: ResourceFact = { category: "canonical_record_bytes", measurement: "candidate", count: 8192, reserved: 1, limit: 8192, scope: "shogi", unit: "bytes" };
 // Ambiguous diagnostic text must not override the typed resource facts.
-const diagnostic = "Application capacity: The archive retains 256 total ordinary/exact observations and 8192 controls including stop/close.";
+const diagnostic = "Application capacity: The archive retains 256 total observations and 8192 controls including stop/close.";
 function paused(game: "chess" | "shogi" | "xiangqi", fact: ResourceFact | null = base): GameSnapshot {
   const native = structuredClone(game === "chess" ? chess : game === "shogi" ? shogi : xiangqi);
   return { ...native, capacity: { id: 1, status: "paused", message: diagnostic, resource: fact && { fact: { ...fact, scope: game }, diagnostic } } } as unknown as GameSnapshot;

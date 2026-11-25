@@ -3,9 +3,9 @@ id: MSH-52.3
 title: Chu Strength Assessment
 status: In Progress
 assignee:
-  - '@codex'
+  - '@claude'
 created_date: '2026-11-24T21:07:00Z'
-updated_date: '2026-11-24T22:31:00Z'
+updated_date: '2026-11-25T06:32:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -108,4 +108,6 @@ HANDOFF UPDATE — live job is now msh213-msh523-judge-finish (execution session
 Validated longer-clock result:20s+0.2s versus40s+0.4s,16/16 scored pairs,31W/0D/1L; conditional relative estimate+596.5 Elo (95% lower+323.5, upper unbounded). Median late depths2x/1x7/6, both pooled and per-game. At40s+0.4s versus80s+0.8s, only1/8 pairs scored (1W/1L); seven second games stopped at the600s pair experiment budget. This point has no useful strength estimate. The fixed ten-minute runner/driver ceiling is separately tracked as MSH-238 (Remove the fixed ten-minute experiment cap), Ready and unassigned; do not expand this task to implement it.
 
 Latest full handoff archive: gs://mshogi-experiments-216675633801/runs/msh-52.3/handoff-judge-finish.tar.gz. It includes the new live-job ownership intent/manifest, completed long-scaling-2 result and cleanup receipts, scripts and control inputs. All eight judge-finish workers have started. The source-history verification also passed on all four local smoke rows; those low-node smoke results remain excluded.
+
+Handoff taken by @claude after Codex stopped. judge-finish finished (SUCCEEDED, 22.8 min, bound US$0.59716); cleanup verified absent, independent job/VM/disk lists empty. Saved 511/512 rows; only sample-352 was not started (worker 2 reached its 1200 s stop limit). Per-move runtime max 262 s. Cumulative bound before final stage US$2.52438; campaign wall about 89 min of 120. Final stage msh213-msh523-judge-finish-2: one c3-standard-4 VM, same pinned worker and binary, queue contains only sample-352. prepare-recovery.py now also accepts stage judge-finish-2 (one worker); no sample, node or rule change. Next: download-screen.py, verify-screen.py, assess.
 <!-- SECTION:NOTES:END -->

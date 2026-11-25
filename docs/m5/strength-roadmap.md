@@ -113,13 +113,14 @@ Steps 5 and 6 change accordingly.
 
 ## Clock allocation of the native experiment runner
 
-A clocked experiment configuration records how the runner turns the remaining
-clock into the fixed move time it gives the engine (`clock.allocation`):
+In a clocked experiment, every game uses one policy. For each request, the
+runner takes the normal share of the engine's remaining clock (the soft budget
+of the shared allocation for 30 moves, at most 60 s). It subtracts a transport
+reserve and gives the engine the result as a fixed move time. The watchdog of a
+configuration must not be shorter than the largest share that its clocks permit.
 
-- `hard` (default when absent): three times the nominal allocation. All
-  clocked Shogi runs used it, and it stays the default so that those results
-  stay comparable. It spends the base time within a few moves, so games are
-  decided mostly on increment.
-- `nominal`: the nominal allocation. Tori runs (`native_match.py --game tori`)
-  select it. A game that changes its policy must say so in its task and must
-  not compare results across the change.
+John decided on this policy on 2026-11-25. Earlier, the runner also had a `hard`
+policy (three times this share). Clocked runs of games other than Tori and Chu
+used it, for example all clocked Shogi runs of this runner. Results from `hard`
+runs are not comparable with results under the current policy. Tori and Chu runs
+already used the normal share.

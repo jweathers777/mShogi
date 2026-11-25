@@ -68,10 +68,6 @@ def run_pair(args, seed, out):
     if getattr(args, 'base', None) is not None:
         command.extend(['--clock-base-ms', str(round(args.base * 1000)),
                         '--clock-increment-ms', str(round(args.increment * 1000))])
-        # MSH-204/MSH-213: Tori and Chu use the nominal move time; other games
-        # keep the earlier hard-ceiling policy so their evidence stays comparable.
-        if args.game in ('tori', 'chu'):
-            command.extend(['--clock-allocation', 'nominal'])
         if getattr(args, 'candidate_time_factor', 1) != 1:
             command.extend(['--candidate-time-factor', str(args.candidate_time_factor)])
     if getattr(args, 'openings', None):

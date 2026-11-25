@@ -1,4 +1,4 @@
-"""Chu clock policy and outcome-only data projection checks."""
+"""Chu clocked pair and outcome-only data projection checks."""
 import contextlib
 import io
 import json
@@ -12,7 +12,7 @@ from tools.strength import native_match, texel_data
 
 
 class ChuHarnessTests(unittest.TestCase):
-    def test_clocked_catalog_pair_uses_nominal_and_retains_time_odds(self):
+    def test_clocked_catalog_pair_retains_time_odds(self):
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp)
             report = {'games': [dict(pairing={'swapped': swap}, score_first_twice=2,
@@ -27,7 +27,6 @@ class ChuHarnessTests(unittest.TestCase):
                 proc.return_value.wait.return_value = 0
                 result = native_match.run_pair(args, 1, out)
             command = run.call_args_list[0].args[0]
-            self.assertEqual(command[command.index('--clock-allocation') + 1], 'nominal')
             self.assertEqual(command[command.index('--candidate-time-factor') + 1], '2')
             self.assertEqual(command[command.index('--opening-index') + 1], '0')
             self.assertEqual(result['scores_twice'], [2, 0])

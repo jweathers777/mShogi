@@ -90,16 +90,7 @@ fn failure(response: &ExecutionObservation, kind: FailureKind) {
 }
 
 #[test]
-fn actual_xiangqi_execution_is_advertised_and_full_remains_explicitly_unsupported() {
-    assert_eq!(
-        execution_capabilities(GameKind::Xiangqi),
-        &[
-            ExecutionOperation::EngineTurn,
-            ExecutionOperation::MoveAnalysis,
-        ]
-    );
-    assert_eq!(execution_capabilities(GameKind::Chess).len(), 3);
-    assert_eq!(execution_capabilities(GameKind::Shogi).len(), 2);
+fn actual_xiangqi_execution_returns_native_choices() {
     let g = warned();
     let before = x::GameRecord::from_game(&g).unwrap();
     let mut context = request(&g);
@@ -129,19 +120,6 @@ fn actual_xiangqi_execution_is_advertised_and_full_remains_explicitly_unsupporte
         command_result(&mut candidate, command);
         assert_eq!(before, x::GameRecord::from_game(&g).unwrap());
     }
-    context.limits = FULL_SENTINEL;
-    context.purpose = ExecutionPurpose::ChessFullReachability {
-        target: target(&context),
-        mate: ReachabilityTarget::Either,
-        limits: FullLimits {
-            max_positions: 1,
-            max_transitions: 1,
-        },
-    };
-    assert!(context.valid_limits());
-    let unsupported = run(&context);
-    assert!(unsupported.matches(&context));
-    failure(&unsupported, FailureKind::UnsupportedMode);
     let proof = x::Game::from_root(
         x::PositionRoot::from_fen("5k3/9/9/9/9/9/9/9/9/3K5 w - - 0 1").unwrap(),
         x::ClaimPolicy::Explicit,
@@ -260,7 +238,7 @@ fn response_acceptance_requires_every_identity_setting_and_full_native_history()
     let mut overlong = response;
     overlong.result = ExecutionResult::Failure {
         failure: EngineFailure {
-            kind: FailureKind::UnsupportedMode,
+            kind: FailureKind::Search,
             message: "x".repeat(MAX_STDERR_BYTES + 1),
         },
     };

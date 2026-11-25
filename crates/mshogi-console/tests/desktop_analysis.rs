@@ -1,5 +1,5 @@
 //! Actual subprocess analysis through the public desktop resource owner.
-use mshogi_core::chess::{Color, MateReachability};
+use mshogi_core::chess::Color;
 use mshogi_core::native::NativeSide;
 use mshogi_desktop_session::{
     AnalysisOperation, AnalysisPhase, DesktopController, EnginePhase, SharedSnapshot,
@@ -43,7 +43,7 @@ fn shutdown(controller: &mut DesktopController) {
     }
 }
 fn moves(depth: u16, nodes: u64) -> AnalysisOperation {
-    AnalysisOperation::Moves { depth, nodes }
+    AnalysisOperation { depth, nodes }
 }
 
 #[test]
@@ -126,41 +126,34 @@ fn actual_analysis_suggestions_never_commit_a_turn_and_resume_is_explicit() {
 }
 
 #[test]
-fn actual_full_budget_exhaustion_and_cancelled_replacement_leave_match_unchanged() {
+fn actual_budget_exhaustion_and_cancelled_replacement_leave_match_unchanged() {
     let mut controller = controller();
     let initial = controller.shared_snapshot();
     let started = controller
         .settled(
             initial.token,
             SessionOperation::Analyze {
-                operation: AnalysisOperation::FullReachability {
-                    target: mshogi_engine::ReachabilityTarget::Either,
-                    max_positions: 1,
-                    max_transitions: 1,
-                },
+                operation: moves(1, 0),
             },
         )
         .unwrap();
-    let full = until(&mut controller, |s| {
+    let exhausted = until(&mut controller, |s| {
         chess(s).analysis.status == AnalysisPhase::Incomplete
     });
-    assert_eq!(fen(&full), fen(&initial));
-    assert!(history(&full).is_empty() && chess(&full).live_conclusion.is_none());
-    let Some(ChessResult::Reachability {
-        result: MateReachability::Unknown { work, .. },
-    }) = &chess(&full).analysis.result
-    else {
-        panic!(
-            "bounded Full did not remain unknown: {:?}",
-            chess(&full).analysis
-        )
-    };
-    assert!(work.positions <= 1 && work.transitions <= 1);
-    assert_eq!(chess(&full).rules_mode, "m2");
-    let old_context = chess(&full).analysis.context.as_ref().unwrap();
+    assert_eq!(fen(&exhausted), fen(&initial));
+    assert!(history(&exhausted).is_empty() && chess(&exhausted).live_conclusion.is_none());
+    assert!(
+        matches!(
+            chess(&exhausted).analysis.result,
+            Some(ChessResult::Incomplete { .. })
+        ),
+        "a zero node budget did not remain incomplete: {:?}",
+        chess(&exhausted).analysis
+    );
+    let old_context = chess(&exhausted).analysis.context.as_ref().unwrap();
     let replaced = controller
         .settled(
-            full.token,
+            exhausted.token,
             SessionOperation::Analyze {
                 operation: moves(8, 5_000_000),
             },

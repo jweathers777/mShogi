@@ -52,7 +52,7 @@ duplicate fields must not disappear through an intermediate object map.
 | `game_finish_close` | Approve only the complete current `SharedOpenToken`, after command/file reservations release |
 
 Chess keeps current/intended claims, match command history, ordinary read-only
-analysis, cooperative Full proof/Unknown/cancellation/failure, preferences,
+analysis with cancellation/failure, preferences,
 telemetry, unresolved outcomes and Take back. Its actual observations and native
 MatchRecord are available through the current snapshot, not empty placeholders.
 Shogi keeps native drops/promotions/declarations and advisory eligibility.
@@ -160,7 +160,7 @@ Load, Take back, explicit cancellation, failed/incomplete work, conclusion and
 capacity stops do not acquire browse-only permission. A newer cancellation or
 failed historical analysis supersedes older stopped-state recovery. Reopen
 clears all browse intent and stops work. Return from a concluded game is
-view-only; explicitly finishing existing Chess Full/ordinary analysis retires
+view-only; explicitly finishing existing Chess analysis retires
 analysis without changing its conclusion or permitting a board action.
 
 Native close first stops execution. `close_requires_save` distinguishes the

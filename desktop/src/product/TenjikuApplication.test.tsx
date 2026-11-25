@@ -140,7 +140,7 @@ it.each([adams, muller])("admits shared-core analysis bounds through the normal 
   fireEvent.change(depth, { target: { value: "64" } });
   fireEvent.change(nodes, { target: { value: "5000000" } });
   fireEvent.click(screen.getByRole("button", { name: "Start move analysis" }));
-  expect(session.command).toHaveBeenCalledExactlyOnceWith(source, { kind: "analyze", operation: { kind: "moves", depth: 64, nodes: 5000000 } });
+  expect(session.command).toHaveBeenCalledExactlyOnceWith(source, { kind: "analyze", operation: { depth: 64, nodes: 5000000 } });
 });
 
 it.each([adams, muller])("refuses work above the shared-core bounds without changing $profile", source => {

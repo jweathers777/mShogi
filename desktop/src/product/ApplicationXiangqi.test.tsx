@@ -95,12 +95,12 @@ it("submits bounded read-only work, replacement and cancellation with exact sour
   expect(depth.max).toBe("64"); expect(nodes.max).toBe("5000000"); expect(nodes.min).toBe("1");
   fireEvent.change(depth, { target: { value: "64" } }); fireEvent.change(nodes, { target: { value: "5000000" } });
   fireEvent.click(screen.getByRole("button", { name: "Start move analysis" }));
-  expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "analyze", operation: { kind: "moves", depth: 64, nodes: 5000000 } });
+  expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "analyze", operation: { depth: 64, nodes: 5000000 } });
   const analyzing = { ...standard, phase: "thinking" as const, execution_purpose: "move_analysis", paused: true };
   rerender(<XiangqiApp {...props} snapshot={analyzing} />);
   expect(screen.queryByRole("button", { name: "Cancel search" })).toBeNull();
   fireEvent.click(screen.getByRole("button", { name: "Replace analysis" }));
-  expect(session.command).toHaveBeenLastCalledWith(analyzing, { kind: "analyze", operation: { kind: "moves", depth: 64, nodes: 5000000 } });
+  expect(session.command).toHaveBeenLastCalledWith(analyzing, { kind: "analyze", operation: { depth: 64, nodes: 5000000 } });
   fireEvent.click(screen.getByRole("button", { name: "Cancel analysis" })); expect(session.command).toHaveBeenLastCalledWith(analyzing, { kind: "cancel" });
   fireEvent.change(nodes, { target: { value: "5000001" } });
   expect(nodes.checkValidity()).toBe(false);

@@ -133,10 +133,7 @@ impl Client {
     pub fn supports(request: &ExecutionRequest) -> bool {
         request.context.limits.time_ms.is_some()
             && match request.context.game {
-                CanonicalRecord::Shogi(_) => !matches!(
-                    request.context.purpose,
-                    ExecutionPurpose::ChessFullReachability { .. }
-                ),
+                CanonicalRecord::Shogi(_) => true,
                 // Tori adopts engine turns; analysis keeps full requests.
                 CanonicalRecord::Tori(_) | CanonicalRecord::Chu(_) => {
                     matches!(request.context.purpose, ExecutionPurpose::EngineTurn {})
@@ -302,7 +299,6 @@ impl Adapter for ShogiAdapter {
             nodes: meta.limits.nodes,
         })
         .valid()
-            && !matches!(meta.purpose, ExecutionPurpose::ChessFullReachability { .. })
     }
     fn valid_target(meta: &Metadata, game: &shogi::Game) -> bool {
         let ExecutionPurpose::MoveAnalysis { target } = &meta.purpose else {

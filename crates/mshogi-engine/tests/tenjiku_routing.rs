@@ -101,14 +101,7 @@ fn assert_failure(response: &ExecutionResponse, kind: FailureKind) {
 }
 
 #[test]
-fn actual_internal_entry_point_searches_each_profile_and_rejects_chess_full() {
-    assert_eq!(
-        execution_capabilities(GameKind::Tenjiku),
-        &[
-            ExecutionOperation::EngineTurn,
-            ExecutionOperation::MoveAnalysis
-        ]
-    );
+fn actual_internal_entry_point_searches_each_profile() {
     for profile in t::Profile::ALL {
         let mut c = context(profile);
         let selection = target(&c);
@@ -117,23 +110,11 @@ fn actual_internal_entry_point_searches_each_profile_and_rejects_chess_full() {
             ExecutionPurpose::MoveAnalysis {
                 target: selection.clone(),
             },
-            ExecutionPurpose::ChessFullReachability {
-                target: selection.clone(),
-                mate: ReachabilityTarget::Either,
-                limits: FullLimits {
-                    max_positions: 1,
-                    max_transitions: 0,
-                },
-            },
         ] {
-            c.limits = if matches!(purpose, ExecutionPurpose::ChessFullReachability { .. }) {
-                FULL_SENTINEL
-            } else {
-                WorkLimits {
-                    time_ms: None,
-                    depth: 1,
-                    nodes: 512,
-                }
+            c.limits = WorkLimits {
+                time_ms: None,
+                depth: 1,
+                nodes: 512,
             };
             c.purpose = purpose;
             assert!(c.valid_limits());
@@ -144,18 +125,14 @@ fn actual_internal_entry_point_searches_each_profile_and_rejects_chess_full() {
                 response.observation.context.game.profile(),
                 RulesProfile::from(profile)
             );
-            if matches!(c.purpose, ExecutionPurpose::ChessFullReachability { .. }) {
-                assert_failure(&response, FailureKind::UnsupportedMode);
-            } else {
-                let ExecutionResult::Tenjiku { result } = &response.observation.result else {
-                    panic!("{response:?}")
-                };
-                let CanonicalRecord::Tenjiku(record) = &c.game else {
-                    unreachable!()
-                };
-                result.validate(&record.to_game().unwrap()).unwrap();
-                assert!(matches!(result, TenjikuResult::Choice { .. }));
-            }
+            let ExecutionResult::Tenjiku { result } = &response.observation.result else {
+                panic!("{response:?}")
+            };
+            let CanonicalRecord::Tenjiku(record) = &c.game else {
+                unreachable!()
+            };
+            result.validate(&record.to_game().unwrap()).unwrap();
+            assert!(matches!(result, TenjikuResult::Choice { .. }));
         }
     }
 }

@@ -81,23 +81,6 @@ fn actual_native_payloads_round_trip_with_derived_identity_and_provenance() {
             }
         }
     }
-    let full = c::AdjudicatedGame::from_fen_with_mode(
-        "7k/8/8/8/8/8/8/K7 w - - 0 1",
-        c::ClaimPolicy::ExplicitOnly,
-        c::AdjudicationMode::Full {
-            limits: c::ReachabilityLimits {
-                max_positions: Some(1),
-                max_transitions: Some(1),
-            },
-        },
-    )
-    .unwrap();
-    let full = CanonicalRecord::chess(full.record());
-    assert_eq!(full.native_schema(), NativeSchema::ChessFull);
-    assert_eq!(
-        CanonicalRecord::from_json(&full.to_json().unwrap()).unwrap(),
-        full
-    );
 }
 
 #[test]

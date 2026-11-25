@@ -49,8 +49,8 @@ pub(crate) trait SessionGame: NativeGame {
     const PLAY_LIMITS: WorkLimits;
     const MAX_DEPTH: u16;
     const MAX_NODES: u64;
-    /// Only Chess exposes the cooperative mating-reachability operation.
-    const FULL_ANALYSIS: bool = false;
+    /// Analysis uses the fixed move-analysis budgets instead of the play limits.
+    const ANALYSIS_BUDGETS: bool = false;
     const FINISH_CONCLUDED_ANALYSIS: bool = false;
     fn cancellation_phase(_analysis: bool) -> EnginePhase {
         EnginePhase::Cancelled
@@ -414,7 +414,7 @@ impl<G: SessionGame> NativeSession<G> {
                 return Ok(false);
             }
             Err(SessionOperation::Analyze { operation }) => {
-                analysis_limits::<G>(operation)?;
+                let limits = analysis_limits::<G>(operation)?;
                 let stop = if self.viewed.is_some() {
                     self.browse_stop.clone()
                 } else {
@@ -424,7 +424,7 @@ impl<G: SessionGame> NativeSession<G> {
                 let remembered = self
                     .document
                     .settings()
-                    .with_analysis_operation(operation)
+                    .with_analysis_defaults(limits)
                     .filter(|s| s != self.document.settings());
                 let durable = remembered.is_some();
                 if let Some(settings) = remembered {
@@ -905,7 +905,7 @@ impl DesktopController {
     ) -> Result<(), OperationFailure> {
         self.start_game_operation::<G>(
             limits,
-            analysis.then_some(AnalysisOperation::Moves {
+            analysis.then_some(AnalysisOperation {
                 depth: limits.depth,
                 nodes: limits.nodes,
             }),
@@ -928,7 +928,7 @@ impl DesktopController {
         let historical = state.viewed.is_some();
         self.session.next_request += 1;
         let context = ExecutionContext {
-            purpose: if let Some(operation) = operation {
+            purpose: if operation.is_some() {
                 let target = ExecutionTarget {
                     selection_id: self.session.selection_id,
                     event_index: game.event_count() as u64,
@@ -942,21 +942,7 @@ impl DesktopController {
                     ),
                     turn: G::native_side(turn),
                 };
-                match operation {
-                    AnalysisOperation::Moves { .. } => ExecutionPurpose::MoveAnalysis { target },
-                    AnalysisOperation::FullReachability {
-                        target: mate,
-                        max_positions,
-                        max_transitions,
-                    } => ExecutionPurpose::ChessFullReachability {
-                        target,
-                        mate,
-                        limits: mshogi_engine::FullLimits {
-                            max_positions,
-                            max_transitions,
-                        },
-                    },
-                }
+                ExecutionPurpose::MoveAnalysis { target }
             } else {
                 ExecutionPurpose::EngineTurn {}
             },
@@ -1201,7 +1187,6 @@ impl DesktopController {
                 undo: !historical && G::last_command_start(&state.game).is_some(),
                 engine_turn: !settings.play_mode().is_two_humans(),
                 move_analysis: true,
-                chess_full: false,
                 claims: false,
                 declaration: !historical
                     && !ended
@@ -1223,7 +1208,6 @@ impl DesktopController {
             execution_purpose: state.pending.as_ref().map(|p| match p.purpose {
                 ExecutionPurpose::EngineTurn {} => "engine_turn",
                 ExecutionPurpose::MoveAnalysis { .. } => "move_analysis",
-                ExecutionPurpose::ChessFullReachability { .. } => "chess_full_reachability",
             }),
             diagnostic: state.diagnostic.clone(),
             declaration_advice: G::declaration_advice(game),
@@ -1270,31 +1254,17 @@ pub(crate) fn stop_label(status: mshogi_engine::StopReason) -> &'static str {
 fn analysis_limits<G: SessionGame>(
     operation: AnalysisOperation,
 ) -> Result<WorkLimits, OperationFailure> {
-    match operation {
-        AnalysisOperation::Moves { depth, nodes } => {
-            let limits = WorkLimits {
-                time_ms: None,
-                depth,
-                nodes,
-            };
-            if G::FULL_ANALYSIS {
-                operation.validate()?;
-            } else {
-                validate_limits::<G>(limits)?;
-            }
-            Ok(limits)
-        }
-        AnalysisOperation::FullReachability { .. } if G::FULL_ANALYSIS => {
-            operation.validate()?;
-            Ok(mshogi_engine::FULL_SENTINEL)
-        }
-        _ => Err(format!(
-            "Unsupported {} analysis operation: Chess Full analysis is not {} analysis.",
-            G::NAME,
-            G::NAME
-        )
-        .into()),
+    let limits = WorkLimits {
+        time_ms: None,
+        depth: operation.depth,
+        nodes: operation.nodes,
+    };
+    if G::ANALYSIS_BUDGETS {
+        operation.validate()?;
+    } else {
+        validate_limits::<G>(limits)?;
     }
+    Ok(limits)
 }
 
 fn validate_limits<G: SessionGame>(limits: WorkLimits) -> Result<(), OperationFailure> {
@@ -1341,11 +1311,6 @@ pub(crate) fn display_observation<G: SessionGame>(
         status: match telemetry.as_ref().map(|t| t.status) {
             Some(status) => status,
             None => match &o.result {
-                ExecutionResult::Failure { failure }
-                    if failure.kind == mshogi_engine::FailureKind::UnsupportedMode =>
-                {
-                    "Unsupported execution · unscored"
-                }
                 ExecutionResult::Failure { failure }
                     if failure.kind == mshogi_engine::FailureKind::Search =>
                 {

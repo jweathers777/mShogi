@@ -116,7 +116,7 @@ fn real_internal_tori_analysis_save_reopen_stopped_then_explicit_analysis_and_re
     command(
         &mut c,
         SessionOperation::Analyze {
-            operation: AnalysisOperation::Moves {
+            operation: AnalysisOperation {
                 depth: 1,
                 nodes: 100,
             },
@@ -221,7 +221,7 @@ fn real_supervised_tori_failure_cancel_replace_cleanup_and_cross_game_retirement
             slow.clone(),
             ExecutionResult::Failure {
                 failure: EngineFailure {
-                    kind: FailureKind::UnsupportedMode,
+                    kind: FailureKind::Search,
                     message: "delayed retired response".into()
                 }
             }
@@ -254,7 +254,7 @@ fn real_supervised_tori_failure_cancel_replace_cleanup_and_cross_game_retirement
             replacement,
             ExecutionResult::Failure {
                 failure: EngineFailure {
-                    kind: FailureKind::UnsupportedMode,
+                    kind: FailureKind::Search,
                     message: "old Tori result for Shogi".into()
                 }
             }

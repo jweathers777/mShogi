@@ -97,7 +97,7 @@ fn failure(ctx: ExecutionContext) -> ExecutionResponse {
             ctx,
             ExecutionResult::Failure {
                 failure: EngineFailure {
-                    kind: FailureKind::UnsupportedMode,
+                    kind: FailureKind::Search,
                     message: "Constructed stale-result probe".into(),
                 },
             },
@@ -125,13 +125,6 @@ fn actual_child_executes_complete_chu_choices_for_full_known_history_and_purpose
         .unwrap();
         let req = request(if analysis { 2 } else { 1 }, &g, analysis);
         assert!(req.valid());
-        assert_eq!(
-            execution_capabilities(GameKind::Chu),
-            &[
-                ExecutionOperation::EngineTurn,
-                ExecutionOperation::MoveAnalysis
-            ]
-        );
         bridge.submit(req.clone()).unwrap();
         let r = wait(&bridge);
         assert!(r.matches(&req));

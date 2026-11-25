@@ -20,21 +20,16 @@ identity. These observations are historical information on reopening. They do
 not become pending requests, resume processes, apply moves or recreate an
 analysis result for the currently selected position.
 
-Only untimed M2 live sessions with the documented initial play limits are
-restorable. Full live adjudication and timed sessions are rejected before
-expensive replay. Advanced read-only Full observations retain their original
-query caps and M2 target record; this does not convert the live game to Full.
+Only untimed live sessions with the documented initial play limits are
+restorable. Timed sessions are rejected before expensive replay.
 Unsupported profiles, limits, identities or mismatched records fail explicitly.
 No FEN/move-list fallback or silent policy downgrade is permitted.
 
 Externally supplied mating witnesses on match commands are also rejected before
 replay; this desktop profile does not create them. This avoids routing a long
-witness through uncontrolled match adjudication. Saved advanced Full analysis
-witnesses are different: their legal geometric route and requested mating side
-are checked step by step on the bounded document worker, without rerunning the
-reachability solver. Historical rejected engine responses retain their raw wire
-evidence and explicit application-failure diagnostic, never a promoted action,
-score or proof.
+witness through uncontrolled match adjudication. Historical rejected engine
+responses retain their raw wire evidence and explicit application-failure
+diagnostic, never a promoted action, score or proof.
 
 ## Resource and replacement rules
 

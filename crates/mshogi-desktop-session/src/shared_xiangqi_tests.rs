@@ -53,7 +53,7 @@ fn analyze(c: &mut DesktopController, nodes: u64) -> ExecutionContext {
     send(
         c,
         SessionOperation::Analyze {
-            operation: AnalysisOperation::Moves { depth: 1, nodes },
+            operation: AnalysisOperation { depth: 1, nodes },
         },
     )
     .unwrap();
@@ -231,7 +231,6 @@ fn native_identity_intersection_palaces_river_and_capability_scope() {
     assert!(!initial.capabilities.promotion);
     assert!(!initial.capabilities.declaration);
     assert!(initial.capabilities.save, "MSH-99 native archive admission");
-    assert!(!initial.capabilities.chess_full);
     assert_eq!(
         initial.play_limits,
         WorkLimits {
@@ -558,7 +557,7 @@ fn incomplete_failure_retry_and_limits_are_not_chess_outcomes() {
             send(
                 &mut c,
                 SessionOperation::Analyze {
-                    operation: AnalysisOperation::Moves {
+                    operation: AnalysisOperation {
                         depth: limits.0,
                         nodes: limits.1
                     }
@@ -599,7 +598,7 @@ fn typed_native_command_boundary_rejects_unknown_duplicate_and_conflicting_field
 }
 
 #[test]
-fn chess_full_and_historical_mutation_are_explicitly_unsupported_without_retiring_work() {
+fn historical_mutation_is_explicitly_unsupported_without_retiring_work() {
     let mut c = controller();
     replace(
         &mut c,
@@ -607,23 +606,6 @@ fn chess_full_and_historical_mutation_are_explicitly_unsupported_without_retirin
         x::Side::Red,
     );
     let request = analyze(&mut c, 128);
-    let token = c.shared_token();
-    assert!(
-        send(
-            &mut c,
-            SessionOperation::Analyze {
-                operation: AnalysisOperation::FullReachability {
-                    target: mshogi_engine::ReachabilityTarget::Either,
-                    max_positions: 100,
-                    max_transitions: 1000
-                }
-            }
-        )
-        .unwrap_err()
-        .contains("not Xiangqi")
-    );
-    assert_eq!(c.shared_token(), token);
-    assert_eq!(pending(&c), request);
     send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
     let before = c.shared_token();
     assert!(send(&mut c, SessionOperation::Resume {}).is_err());

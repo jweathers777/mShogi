@@ -237,7 +237,7 @@ fn zero_budget_incomplete_and_native_agreement_are_distinct() {
     assert_eq!(result.telemetry().score, Some(0));
 }
 #[test]
-fn limits_stay_finite_and_chess_purposes_are_refused() {
+fn limits_stay_finite() {
     let mut c = context(&game());
     c.limits = WorkLimits {
         time_ms: None,
@@ -252,32 +252,6 @@ fn limits_stay_finite_and_chess_purposes_are_refused() {
         ExecutionResult::Failure {
             failure: EngineFailure {
                 kind: FailureKind::InvalidRequest,
-                ..
-            }
-        }
-    ));
-    let mut c = context(&game());
-    c.purpose = ExecutionPurpose::ChessFullReachability {
-        target: ExecutionTarget {
-            selection_id: 1,
-            event_index: 0,
-            board_ply: 0,
-            session_version: c.session_version,
-            label: "not Chu analysis".into(),
-            turn: NativeSide::Chu(c::Side::Sente),
-        },
-        mate: ReachabilityTarget::White,
-        limits: FullLimits {
-            max_positions: 1,
-            max_transitions: 1,
-        },
-    };
-    c.limits = FULL_SENTINEL;
-    assert!(matches!(
-        execute(&c).result,
-        ExecutionResult::Failure {
-            failure: EngineFailure {
-                kind: FailureKind::UnsupportedMode,
                 ..
             }
         }

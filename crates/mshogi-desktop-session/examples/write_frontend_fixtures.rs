@@ -8,7 +8,6 @@ use mshogi_desktop_session::{
     AnalysisOperation, AnalysisPhase, DesktopController, IoPhase, SessionOperation,
     SharedDesktopCommand, SharedSnapshot,
 };
-use mshogi_engine::ReachabilityTarget;
 fn main() {
     if std::env::args().nth(1).as_deref() == Some("internal-search") {
         mshogi_engine::serve_once(std::io::stdin().lock(), std::io::stdout().lock()).unwrap();
@@ -60,7 +59,7 @@ fn main() {
         (
             "moves",
             STANDARD_START_FEN,
-            AnalysisOperation::Moves {
+            AnalysisOperation {
                 depth: 1,
                 nodes: 1000,
             },
@@ -68,7 +67,7 @@ fn main() {
         (
             "mate",
             "7k/8/5KQ1/8/8/8/8/8 w - - 0 1",
-            AnalysisOperation::Moves {
+            AnalysisOperation {
                 depth: 1,
                 nodes: 1000,
             },
@@ -76,36 +75,9 @@ fn main() {
         (
             "mated",
             "7k/6Q1/5K2/8/8/8/8/8 b - - 0 1",
-            AnalysisOperation::Moves {
+            AnalysisOperation {
                 depth: 1,
                 nodes: 1000,
-            },
-        ),
-        (
-            "possible",
-            "7k/6Q1/5K2/8/8/8/8/8 b - - 0 1",
-            AnalysisOperation::FullReachability {
-                target: ReachabilityTarget::Either,
-                max_positions: 10,
-                max_transitions: 10,
-            },
-        ),
-        (
-            "impossible",
-            "7k/8/8/8/8/8/8/K7 w - - 0 1",
-            AnalysisOperation::FullReachability {
-                target: ReachabilityTarget::Either,
-                max_positions: 10,
-                max_transitions: 10,
-            },
-        ),
-        (
-            "unknown",
-            STANDARD_START_FEN,
-            AnalysisOperation::FullReachability {
-                target: ReachabilityTarget::Either,
-                max_positions: 0,
-                max_transitions: 0,
             },
         ),
     ] {
@@ -132,7 +104,7 @@ fn main() {
     send(
         &mut c,
         SessionOperation::Analyze {
-            operation: AnalysisOperation::Moves {
+            operation: AnalysisOperation {
                 depth: 8,
                 nodes: 5_000_000,
             },

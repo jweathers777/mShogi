@@ -129,6 +129,21 @@ fn independent_automatic_results_and_bounded_dead_recognition() {
 }
 
 #[test]
+fn blocked_dead_position_outside_the_material_subset_is_not_adjudicated() {
+    // Locked pawns keep each king in its own region, so neither side can mate.
+    // Only the material subset is judged; this game stays ongoing.
+    let wall = "8/7k/8/p1p1p1p1/P1P1P1P1/8/K7/8 w - - 0 1";
+    let game = AdjudicatedGame::from_fen(wall, ClaimPolicy::ExplicitOnly).unwrap();
+    assert_eq!(game.position().dead_recognition(), DeadRecognition::Unknown);
+    assert_eq!(game.outcome(), None);
+    assert!(
+        game.record()
+            .to_json()
+            .starts_with("{\"schema_version\":1,")
+    );
+}
+
+#[test]
 fn optional_claims_conclude_only_when_exercised_and_round_trip_without_playing_intention() {
     for intended in [false, true] {
         let mut g = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly);

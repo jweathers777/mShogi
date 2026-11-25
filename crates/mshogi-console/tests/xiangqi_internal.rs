@@ -123,10 +123,9 @@ fn assert_failure(response: &ExecutionResponse, expected: FailureKind) {
 
 #[test]
 fn real_entrypoint_executes_native_play_and_readonly_analysis_with_full_context() {
-    assert_eq!(execution_capabilities(GameKind::Xiangqi).len(), 2);
     let bridge = bridge(env!("CARGO_BIN_EXE_mshogi"), Duration::from_secs(15));
     let mut game = game();
-    for id in 1..=4 {
+    for id in [1, 2, 4] {
         // A formal native resignation adds events while preserving board ply.
         if id == 4 {
             let ply = xq::GameRecord::from_game(&game)
@@ -151,17 +150,6 @@ fn real_entrypoint_executes_native_play_and_readonly_analysis_with_full_context(
             context.context.purpose = ExecutionPurpose::MoveAnalysis {
                 target: target(&context, 1),
             };
-        }
-        if id == 3 {
-            context.context.purpose = ExecutionPurpose::ChessFullReachability {
-                target: target(&context, 2),
-                mate: ReachabilityTarget::Either,
-                limits: FullLimits {
-                    max_positions: 100,
-                    max_transitions: 1000,
-                },
-            };
-            context.context.limits = FULL_SENTINEL;
         }
         assert!(context.context.valid_limits());
         let wire = serde_json::to_string(&context).unwrap();
@@ -198,7 +186,6 @@ fn real_entrypoint_executes_native_play_and_readonly_analysis_with_full_context(
                     })
                     .unwrap();
             }
-            3 => assert_failure(&response, FailureKind::UnsupportedMode),
             4 => assert!(
                 matches!(response.observation.result, ExecutionResult::Xiangqi { result: XiangqiResult::Finished { conclusion, ref telemetry } }
                 if Some(conclusion) == game.conclusion() && telemetry.perspective == xq::Side::Red && telemetry.score.unwrap() > 0)
@@ -265,7 +252,7 @@ fn one_supervisor_replaces_sleeping_work_in_both_game_directions() {
                 }
             ));
         } else {
-            assert_failure(&response, FailureKind::UnsupportedMode);
+            assert_failure(&response, FailureKind::Search);
         }
         assert!(bridge.poll().is_none());
         assert_eq!(bridge.submit(old), Err(SubmitError::IdentityReused));
@@ -314,7 +301,7 @@ fn native_undo_reopen_and_reselected_identical_history_cannot_revive_retired_wor
     bridge.submit(current.clone()).unwrap();
     let response = wait(&bridge);
     assert_eq!(response.observation.context, current.context);
-    assert_failure(&response, FailureKind::UnsupportedMode);
+    assert_failure(&response, FailureKind::Search);
     assert!(bridge.poll().is_none());
     stop(&bridge);
 }

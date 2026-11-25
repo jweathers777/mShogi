@@ -163,7 +163,7 @@ def xiangqi_retained_state(diagnostics):
 
 def selected_gui_phases(choice):
     """Keep independent native-process journeys explicit and individually runnable."""
-    chess = ["standard", "promotion", "claim", "current-claim", "concluded", "full-unknown", "capacity", "synthetic", "pending-chess", "pending-shogi", "pending-xiangqi", "pending-tori", "tori-recovery", "pending-chu", "chu-recovery"]
+    chess = ["standard", "promotion", "claim", "current-claim", "concluded", "capacity", "synthetic", "pending-chess", "pending-shogi", "pending-xiangqi", "pending-tori", "tori-recovery", "pending-chu", "chu-recovery"]
     shogi = ["shogi-hands", "shogi-promotion", "shogi-forced", "shogi-declaration",
              "shogi-concluded", "shogi-capacity"]
     xiangqi = ["xiangqi-warning", "xiangqi-fourth", "xiangqi-count", "xiangqi-offer", "xiangqi-agreed", "xiangqi-fast-proof", "xiangqi-resigned", "xiangqi-capacity", "xiangqi-failure", "xiangqi-exact-evidence"]
@@ -3321,53 +3321,6 @@ class Journey:
             'saved_sha256': digest(path), 'reopened': reopened})
         self.quit()
 
-    def chess_full(self):
-        """The terminal QA root already satisfies the cooperative mate goal."""
-        w = self.web
-        assert w.has('.outcome-card')
-        before = self.native_diagnostics()
-        w.button('Analyze position')
-        w.click('.advanced-analysis > summary')
-        # Native inputs are identified by their containing labels, not numerical DOM positions.
-        w.set('.advanced-analysis .shogi-analysis-fields label:first-child input', 10)
-        w.set('.advanced-analysis .shogi-analysis-fields label:last-child input', 10)
-        w.click('[data-analysis-start="full"]')
-        wait(lambda: 'cooperative mating route exists' in w.text('.reachability-result').lower(), 'actual Full cooperative proof on already-mated root')
-        assert 'not forced-win search or a live-game outcome' in w.text('[aria-label="Analysis status"]')
-        after = self.native_diagnostics()
-        assert after['context'] == before['context']
-        assert after['chess']['live_conclusion'] == before['chess']['live_conclusion']
-        evidence = after['chess']['analysis']
-        assert evidence['context']['purpose']['kind'] == 'chess_full_reachability'
-        assert 'possible' in evidence['result']['result']
-        self.capture('full-cooperative-proof-concluded')
-        self.record('Actual bounded Chess Full proof remains read-only', {'before': before, 'after': after})
-
-    def full_unknown(self):
-        self.start('standard', gated=True, phase_name='verification-full-unknown-cancel')
-        w = self.web
-        before = self.native_diagnostics()
-        w.button('Analyze position'); w.click('.advanced-analysis > summary')
-        w.set('.advanced-analysis .shogi-analysis-fields label:first-child input', 0)
-        w.set('.advanced-analysis .shogi-analysis-fields label:last-child input', 0)
-        w.click('[data-analysis-start="full"]')
-        wait(lambda: 'Unknown' in w.text('.reachability-result'), 'actual zero-budget Full Unknown')
-        unknown = self.native_diagnostics()
-        assert 'unknown' in unknown['chess']['analysis']['result']['result']
-        assert unknown['context'] == before['context'] and not w.has('.outcome-card')
-        self.capture('full-budget-unknown')
-        w.set('.advanced-analysis .shogi-analysis-fields label:first-child input', 100000)
-        w.set('.advanced-analysis .shogi-analysis-fields label:last-child input', 1000000)
-        w.click('[data-analysis-start="full"]')
-        wait(lambda: w.has('.shogi-analysis[data-phase="analyzing"]'), 'actual independently terminable Full work')
-        w.button('Cancel analysis')
-        wait(lambda: 'cancelled' in w.text('[aria-label="Analysis status"]').lower(), 'Full cancellation establishes no result')
-        cancelled = self.native_diagnostics()
-        assert cancelled['context'] == before['context'] and not w.has('.outcome-card')
-        self.capture('full-cancelled-unscored')
-        self.record('Actual Full Unknown and independently terminated execution', {'unknown': unknown, 'cancelled': cancelled})
-        self.quit()
-
     def xiangqi_fixture(self, name):
         self.start(name)
         w = self.web
@@ -3520,7 +3473,9 @@ class Journey:
             self.plies(0)
             self.record("Optional current/intended claim concludes without playing intention", w.text(".outcome-card"))
         elif name == "concluded":
-            self.chess_full()
+            # The terminal QA root is already checkmate.
+            assert w.has(".outcome-card")
+            self.record("Concluded checkmate root shows its outcome", w.text(".outcome-card"))
         elif name == "capacity":
             w.button("Analyze position")
             assert session_chess_evidence_count(w.text(".recorded-chess-evidence summary"), 255)
@@ -3691,8 +3646,6 @@ def main():
                     journey.chu_recovery()
                 elif fixture == "tori-recovery":
                     journey.tori_recovery()
-                elif fixture == "full-unknown":
-                    journey.full_unknown()
                 elif fixture.startswith("pending-"):
                     journey.pending(fixture.removeprefix("pending-"))
                 elif fixture.startswith("xiangqi-"):

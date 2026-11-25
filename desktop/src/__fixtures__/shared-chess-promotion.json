@@ -22,7 +22,6 @@
         "play_mode": "human_engine",
         "orientation": "white",
         "analysis_defaults": {
-          "kind": "moves",
           "depth": 4,
           "nodes": 100000
         }
@@ -319,7 +318,6 @@
     "undo": false,
     "engine_turn": true,
     "move_analysis": true,
-    "chess_full": true,
     "claims": false,
     "declaration": false,
     "resign": true,
@@ -351,7 +349,7 @@
   "analysis": null,
   "observations": [],
   "search_observations": [],
-  "score_meaning": "Chess root-side centipawns; native mate distance and bounded cooperative Full proof remain distinct (see chess analysis).",
+  "score_meaning": "Chess root-side centipawns; native mate distance remains distinct (see chess analysis).",
   "chess": {
     "claims": [],
     "live_conclusion": null,
@@ -367,8 +365,7 @@
     },
     "last_engine_result": null,
     "last_engine_turn": null,
-    "searched_version": null,
-    "rules_mode": "m2"
+    "searched_version": null
   },
   "chess_match": {
     "schema_version": 1,

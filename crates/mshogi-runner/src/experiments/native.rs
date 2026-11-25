@@ -55,9 +55,6 @@ pub enum Admission {
 /// match's commands, offers or clocks from its canonical history alone.
 pub fn fresh_root(record: CanonicalRecord) -> Result<Root, String> {
     let chess_match = if let CanonicalRecord::Chess(history) = &record {
-        if history.adjudication_mode() != chess::AdjudicationMode::M2 {
-            return Err("internal experiments do not support Chess Full live replay".into());
-        }
         let game = chess::AdjudicatedGame::replay_record(history).map_err(|e| e.to_string())?;
         let mut game =
             chess::ChessMatch::new(game, chess::TimeControl::Untimed).map_err(|e| e.to_string())?;
@@ -205,9 +202,6 @@ impl NativeState {
         }
         match &root.record {
             CanonicalRecord::Chess(record) => {
-                if record.adjudication_mode() != chess::AdjudicationMode::M2 {
-                    return Err("internal experiments do not support Chess Full live replay".into());
-                }
                 let text = root
                     .chess_match
                     .as_ref()
@@ -216,16 +210,9 @@ impl NativeState {
                     return Err("Chess match root exceeds one MiB".into());
                 }
                 let matched = chess::MatchRecord::from_json(text).map_err(|e| e.to_string())?;
-                // Preflight before replay: Full replay can execute substantial
-                // reachability, and timed play is a different experiment contract.
-                if matched.time_control() != chess::TimeControl::Untimed
-                    || matched
-                        .initial_record()
-                        .map_err(|e| e.to_string())?
-                        .adjudication_mode()
-                        != chess::AdjudicationMode::M2
-                {
-                    return Err("internal Chess experiments require untimed M2 matches".into());
+                // Timed play is a different experiment contract.
+                if matched.time_control() != chess::TimeControl::Untimed {
+                    return Err("internal Chess experiments require untimed matches".into());
                 }
                 let mut game = matched.replay().map_err(|e| e.to_string())?;
                 if game.game().record() != **record {
@@ -458,9 +445,6 @@ impl NativeState {
                     "{:?}: {}",
                     failure.kind, failure.message
                 ))),
-                ChessResult::Reachability { .. } => {
-                    Err("reachability analysis cannot be admitted as an engine turn".into())
-                }
             },
             (Self::Shogi(game), ExecutionResult::Shogi { result }) => match result {
                 ShogiResult::Choice { choice, telemetry } => {
@@ -706,21 +690,6 @@ mod tests {
         start_chess(&mut timed).unwrap();
         assert!(
             NativeState::from_root(&NativeState::Chess(Box::new(timed)).root().unwrap()).is_err()
-        );
-        let full = chess::AdjudicatedGame::from_fen_with_mode(
-            chess::STANDARD_START_FEN,
-            chess::ClaimPolicy::AutoClaim,
-            chess::AdjudicationMode::Full {
-                limits: chess::ReachabilityLimits {
-                    max_positions: Some(0),
-                    max_transitions: Some(0),
-                },
-            },
-        )
-        .unwrap();
-        let full = chess::ChessMatch::new(full, chess::TimeControl::Untimed).unwrap();
-        assert!(
-            NativeState::from_root(&NativeState::Chess(Box::new(full)).root().unwrap()).is_err()
         );
     }
 

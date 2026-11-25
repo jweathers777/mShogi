@@ -173,7 +173,7 @@ fn historical_analysis_is_retired_before_return_but_cancel_and_failure_override_
             send(
                 &mut c,
                 SessionOperation::Analyze {
-                    operation: AnalysisOperation::Moves {
+                    operation: AnalysisOperation {
                         depth: 1,
                         nodes: 32,
                     },
@@ -398,7 +398,7 @@ fn newer_historical_analysis_stop_supersedes_older_engine_failure() {
             send(
                 &mut c,
                 SessionOperation::Analyze {
-                    operation: AnalysisOperation::Moves {
+                    operation: AnalysisOperation {
                         depth: 1,
                         nodes: 32,
                     },
@@ -451,24 +451,20 @@ fn newer_historical_analysis_stop_supersedes_older_engine_failure() {
     }
 }
 #[test]
-fn finishing_concluded_chess_full_analysis_retires_work_without_reopening_game() {
+fn finishing_concluded_chess_analysis_retires_work_without_reopening_game() {
     let mut c = running(GameKind::Chess, false);
     let ended = send(&mut c, SessionOperation::Resign {}).unwrap();
     send(
         &mut c,
         SessionOperation::Analyze {
-            operation: AnalysisOperation::FullReachability {
-                target: mshogi_engine::ReachabilityTarget::Either,
-                max_positions: 1,
-                max_transitions: 1,
-            },
+            operation: AnalysisOperation { depth: 1, nodes: 1 },
         },
     )
     .unwrap();
     let analysis = pending(&mut c);
     assert!(matches!(
         analysis.purpose,
-        ExecutionPurpose::ChessFullReachability { .. }
+        ExecutionPurpose::MoveAnalysis { .. }
     ));
     let finished = send(&mut c, SessionOperation::Resume {}).unwrap();
     assert!(finished.status.concluded && !finished.capabilities.board_action);

@@ -58,19 +58,6 @@ pub trait DocumentSettings:
     fn validate(&self) -> Result<(), String> {
         Ok(())
     }
-    /// Remember a supported analysis kind, including game-specific operations.
-    fn with_analysis_operation(&self, operation: crate::AnalysisOperation) -> Option<Self> {
-        match operation {
-            crate::AnalysisOperation::Moves { depth, nodes } => {
-                self.with_analysis_defaults(mshogi_engine::WorkLimits {
-                    time_ms: None,
-                    depth,
-                    nodes,
-                })
-            }
-            _ => None,
-        }
-    }
     /// These settings with `limits` as the remembered analysis limits, for a
     /// game whose settings remember them.
     fn with_analysis_defaults(&self, _limits: mshogi_engine::WorkLimits) -> Option<Self> {

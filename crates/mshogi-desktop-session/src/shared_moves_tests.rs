@@ -220,7 +220,7 @@ fn request(c: &mut DesktopController) -> ExecutionContext {
     send(
         c,
         SessionOperation::Analyze {
-            operation: AnalysisOperation::Moves {
+            operation: AnalysisOperation {
                 depth: 1,
                 nodes: 32,
             },

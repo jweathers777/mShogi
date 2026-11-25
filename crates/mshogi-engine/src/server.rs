@@ -1,5 +1,5 @@
 use crate::*;
-use mshogi_core::chess::{AdjudicatedGame, AdjudicationMode};
+use mshogi_core::chess::AdjudicatedGame;
 use mshogi_search::{
     alphabeta::timing::{RequestTime, TimeBudget},
     coordination::SearchCoordinator,
@@ -176,7 +176,6 @@ fn write_response(output: &mut impl Write, response: &impl serde::Serialize) -> 
 /// Malformed/oversized envelopes produce an I/O error (there is no trustworthy
 /// context to echo). Valid envelopes with unsupported settings/history return a
 /// typed failure. The request runs with a new session.
-/// Full mode is rejected *before* any live replay can run reachability work.
 pub fn serve_once(mut input: impl BufRead, mut output: impl Write) -> io::Result<()> {
     let Some(request) = read_request(&mut input)? else {
         return Err(io::Error::new(
@@ -310,18 +309,11 @@ fn execute_chess(context: &ExecutionContext, session: &mut Session) -> ChessResu
     let mshogi_core::native::CanonicalRecord::Chess(record) = &context.game else {
         unreachable!()
     };
-    if record.adjudication_mode() != AdjudicationMode::M2 {
-        return ChessResult::failure(
-            FailureKind::UnsupportedMode,
-            "Live record reconstruction supports M2 only; Full records were not replayed or downgraded. Advanced Full reachability is a separate analysis operation.",
-        );
-    }
     let game = match AdjudicatedGame::replay_record(record) {
         Ok(game) => game,
         Err(error) => return ChessResult::failure(FailureKind::InvalidRequest, error),
     };
-    if let ExecutionPurpose::MoveAnalysis { target }
-    | ExecutionPurpose::ChessFullReachability { target, .. } = &context.purpose
+    if let ExecutionPurpose::MoveAnalysis { target } = &context.purpose
         && (target.board_ply != game.history().ply_count() as u64
             || target.turn
                 != mshogi_core::native::NativeSide::Chess(game.position().side_to_move()))
@@ -330,18 +322,6 @@ fn execute_chess(context: &ExecutionContext, session: &mut Session) -> ChessResu
             FailureKind::InvalidRequest,
             "analysis target provenance disagrees with its exact history",
         );
-    }
-    if let ExecutionPurpose::ChessFullReachability { mate, limits, .. } = context.purpose {
-        return ChessResult::Reachability {
-            result: game.position().mate_reachability(
-                mate.into(),
-                mshogi_core::chess::ReachabilityLimits {
-                    max_positions: Some(limits.max_positions),
-                    max_transitions: Some(limits.max_transitions),
-                },
-                || false,
-            ),
-        };
     }
     let coordinator = match session.chess.acquire(
         context,
@@ -409,15 +389,6 @@ fn execute_shogi(
     session: &mut Session,
     time: &RequestTime,
 ) -> ExecutionResult {
-    if matches!(
-        context.purpose,
-        ExecutionPurpose::ChessFullReachability { .. }
-    ) {
-        return ExecutionResult::failure(
-            FailureKind::UnsupportedMode,
-            "Chess Full reachability is not a shogi operation; no shogi Full or tsume capability is advertised.",
-        );
-    }
     let mshogi_core::native::CanonicalRecord::Shogi(record) = &context.game else {
         unreachable!()
     };
@@ -466,15 +437,6 @@ fn execute_xiangqi(
     session: &mut Session,
     time: &RequestTime,
 ) -> ExecutionResult {
-    if matches!(
-        context.purpose,
-        ExecutionPurpose::ChessFullReachability { .. }
-    ) {
-        return ExecutionResult::failure(
-            FailureKind::UnsupportedMode,
-            "Chess Full is not Xiangqi natural-board reachability. Exact Xiangqi work remains an explicit bounded native operation, not an advertised child capability.",
-        );
-    }
     let mshogi_core::native::CanonicalRecord::Xiangqi(record) = &context.game else {
         unreachable!()
     };
@@ -518,15 +480,6 @@ fn execute_tori(
     session: &mut Session,
     time: &RequestTime,
 ) -> ExecutionResult {
-    if !matches!(
-        context.purpose,
-        ExecutionPurpose::EngineTurn {} | ExecutionPurpose::MoveAnalysis { .. }
-    ) {
-        return ExecutionResult::failure(
-            FailureKind::UnsupportedMode,
-            "Chess Full reachability is not a Tori operation; no declarations or exact analysis are advertised.",
-        );
-    }
     if !(mshogi_search::tori::Limits {
         depth: context.limits.depth,
         nodes: context.limits.nodes,
@@ -579,15 +532,6 @@ fn execute_chu(
     session: &mut Session,
     time: &RequestTime,
 ) -> ExecutionResult {
-    if !matches!(
-        context.purpose,
-        ExecutionPurpose::EngineTurn {} | ExecutionPurpose::MoveAnalysis { .. }
-    ) {
-        return ExecutionResult::failure(
-            FailureKind::UnsupportedMode,
-            "Chess Full reachability is not a Chu operation; no declarations or exact analysis are advertised.",
-        );
-    }
     if !(mshogi_search::chu::Limits {
         depth: context.limits.depth,
         nodes: context.limits.nodes,
@@ -640,15 +584,6 @@ fn execute_tenjiku(
     session: &mut Session,
     time: &RequestTime,
 ) -> ExecutionResult {
-    if !matches!(
-        context.purpose,
-        ExecutionPurpose::EngineTurn {} | ExecutionPurpose::MoveAnalysis { .. }
-    ) {
-        return ExecutionResult::failure(
-            FailureKind::UnsupportedMode,
-            "Chess Full reachability is not a Tenjiku operation; no declarations or exact analysis are advertised.",
-        );
-    }
     if !(mshogi_search::tenjiku::Limits {
         depth: context.limits.depth,
         nodes: context.limits.nodes,

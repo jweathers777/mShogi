@@ -1,9 +1,6 @@
 //! Additive Chess thinking-time and selective-search execution contracts.
 mod support;
-use mshogi_core::{
-    chess::*,
-    native::{CanonicalRecord, NativeSide},
-};
+use mshogi_core::{chess::*, native::CanonicalRecord};
 use mshogi_engine::*;
 use std::{
     io::Cursor,
@@ -89,26 +86,6 @@ fn thinking_time_is_exact_request_identity_and_only_ordinary_work_accepts_it() {
     timed.limits = SHOGI_PLAY_LIMITS;
     timed.limits.time_ms = Some(1);
     assert!(timed.valid_limits());
-    timed = original;
-    timed.purpose = ExecutionPurpose::ChessFullReachability {
-        target: ExecutionTarget {
-            selection_id: 1,
-            event_index: 0,
-            board_ply: 0,
-            session_version: timed.session_version,
-            label: "Start".into(),
-            turn: NativeSide::Chess(Color::White),
-        },
-        mate: ReachabilityTarget::Either,
-        limits: FullLimits {
-            max_positions: 1,
-            max_transitions: 1,
-        },
-    };
-    timed.limits = FULL_SENTINEL;
-    assert!(timed.valid_limits());
-    timed.limits.time_ms = Some(1);
-    assert!(!timed.valid_limits());
 }
 #[test]
 fn actual_zero_time_request_is_honest_incomplete_without_action_or_score() {

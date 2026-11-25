@@ -161,7 +161,7 @@ fn main() {
     } else {
         ExecutionResult::Failure {
             failure: EngineFailure {
-                kind: FailureKind::UnsupportedMode,
+                kind: FailureKind::Search,
                 message: "Separate supervisor verification fixture; no native search performed"
                     .into(),
             },

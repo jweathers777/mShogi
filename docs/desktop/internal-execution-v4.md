@@ -44,7 +44,7 @@ an explicit unscored InvalidRequest response; an old flat shape is malformed.
 mandatory `depth` and `nodes`, with optional `time_ms` (0–60,000 milliseconds)
 for ordinary engine turns or move analysis in all six games. The exact time
 limit is part of context equality, request replacement and observations.
-Chess Full refuses this field. Fixed work omits it. The host does not retry
+Fixed work omits it. The host does not retry
 with downgraded limits or a different protocol. Bundled host/child are built
 together. The process watchdog is separate and must accommodate the requested
 thinking interval plus transport and cleanup; it is never a game clock result.
@@ -60,8 +60,8 @@ native states, sides, actions, rule-dependent commands or score meanings.
 
 ## Purpose and native results
 
-`ExecutionPurpose` distinguishes live `engine_turn`, read-only `move_analysis`
-and Chess-only `chess_full_reachability`. Analysis binds `ExecutionTarget`:
+`ExecutionPurpose` distinguishes live `engine_turn` and read-only
+`move_analysis`. Analysis binds `ExecutionTarget`:
 selection identity, complete native `event_index`, known `board_ply`, session
 version, native label and game-qualified side. Same board placement is not a
 substitute for exact canonical context/history.
@@ -69,17 +69,15 @@ substitute for exact canonical context/history.
 The result tag selects native `ChessResult`, `ShogiResult`, `XiangqiResult`,
 `ToriResult`, `ChuResult` or `TenjikuResult`,
 or a bounded unscored `Failure`. Chess retains move versus intended/current
-claim, concluded root, incomplete work, actual telemetry and Full cooperative
-proof/Unknown. Shogi retains complete move/drop/promotion, formal declaration,
-conclusion and native incomplete work. Xiangqi retains Red/Black semantics,
+claim, concluded root, incomplete work and actual telemetry. Shogi retains
+complete move/drop/promotion, formal declaration, conclusion and native
+incomplete work. Xiangqi retains Red/Black semantics,
 complete WXF history, warning/claim state, sound-fast-only search and unresolved
-adjudication without a fabricated score. Chess Full is not forced-win search or
-a Shogi/Xiangqi analysis capability. Native Xiangqi in-process exact evidence
+adjudication without a fabricated score. Native Xiangqi in-process exact evidence
 retains its separate explicit bounded operation and original provenance.
 
-The server executes Chess directly from its native canonical record, rejecting
-unsupported Full live restoration before replay. It never creates a retired
-Chess request. The authoritative desktop owner checks exact current context,
+The server executes Chess directly from its native canonical record. It never
+creates a retired Chess request. The authoritative desktop owner checks exact current context,
 purpose and native command admission. Ordinary analysis uses a separate read-only
 acceptance handler and cannot issue a live move or claim.
 

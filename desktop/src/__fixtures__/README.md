@@ -2,7 +2,7 @@
 
 Generated through the current `DesktopController::shared_command_with_receipt`
 and `shared_snapshot` contract, using authoritative native records. Chess fixtures
-use explicit-claim M2 adjudication. The `shared-chess-*` family contains native
+use explicit-claim adjudication. The `shared-chess-*` family contains native
 Chess capability details within the same application snapshot as Shogi/Xiangqi;
 there is no embedded former Chess Snapshot DTO. Analysis fixtures run the actual
 engine through the generator executable's isolated `internal-search` child mode. They exercise frontend selection

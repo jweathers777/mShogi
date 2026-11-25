@@ -30,7 +30,7 @@ impl Default for DesktopSettings {
         Self {
             play_mode: crate::PlayMode::default(),
             orientation: Color::White,
-            analysis_defaults: AnalysisOperation::Moves {
+            analysis_defaults: AnalysisOperation {
                 depth: 4,
                 nodes: 100_000,
             },

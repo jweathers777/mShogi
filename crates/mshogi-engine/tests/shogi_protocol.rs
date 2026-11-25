@@ -260,53 +260,19 @@ fn precise_limits_and_incomplete_work_do_not_invent_scores_or_moves() {
     }
 }
 #[test]
-fn capabilities_and_result_families_do_not_make_chess_full_a_shogi_operation() {
-    assert_eq!(
-        execution_capabilities(GameKind::Shogi),
-        &[
-            ExecutionOperation::EngineTurn,
-            ExecutionOperation::MoveAnalysis
-        ]
-    );
+fn shogi_result_families_do_not_match_a_chess_context() {
     let mut c = request(&Game::new());
     let ordinary = run(c.clone());
-    c.purpose = ExecutionPurpose::ChessFullReachability {
-        target: target(&c, Side::Sente),
-        mate: ReachabilityTarget::Either,
-        limits: FullLimits {
-            max_positions: 10,
-            max_transitions: 10,
-        },
-    };
-    c.limits = FULL_SENTINEL;
-    let response = run(c.clone());
-    assert!(response.matches(&c));
-    assert!(matches!(
-        response.result,
-        ExecutionResult::Failure {
-            failure: EngineFailure {
-                kind: FailureKind::UnsupportedMode,
-                ..
-            }
-        }
-    ));
-    let text = serde_json::to_string(&response).unwrap();
-    assert!(!text.contains("\"score\""));
-    assert!(!text.contains("\"telemetry\""));
-    let mut forged = ordinary;
-    forged.context = c.clone();
-    assert!(!forged.matches(&c));
-    let chess = CanonicalRecord::chess(
+    c.game = CanonicalRecord::chess(
         mshogi_core::chess::AdjudicatedGame::new(mshogi_core::chess::ClaimPolicy::ExplicitOnly)
             .record(),
     );
-    c.purpose = ExecutionPurpose::EngineTurn {};
     c.limits = WorkLimits {
         time_ms: None,
         depth: 1,
         nodes: 1000,
     };
-    c.game = chess;
+    let mut forged = ordinary;
     forged.context = c.clone();
     assert!(!forged.matches(&c));
 }

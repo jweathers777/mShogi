@@ -207,8 +207,6 @@ pub struct CommandCapabilities {
     pub engine_turn: bool,
     /// Whether bounded read-only ordinary analysis is supported.
     pub move_analysis: bool,
-    /// Whether the separately bounded chess Full operation is supported.
-    pub chess_full: bool,
     /// Whether native optional draw claims are currently available.
     pub claims: bool,
     /// Whether a formal native declaration may be submitted; eligibility is advisory.
@@ -328,11 +326,6 @@ fn display_chess_observation(
             target.event_index as usize,
             target.board_ply as usize,
         ),
-        ExecutionPurpose::ChessFullReachability { target, .. } => (
-            "chess_full_reachability",
-            target.event_index as usize,
-            target.board_ply as usize,
-        ),
     };
     let result =
         chess_observation_result(&observation.observation).expect("admitted Chess observation");
@@ -347,15 +340,6 @@ fn display_chess_observation(
         "Rejected engine result"
     } else {
         match &result {
-            ChessResult::Reachability {
-                result: MateReachability::Possible { .. },
-            } => "Cooperative mate witness",
-            ChessResult::Reachability {
-                result: MateReachability::Impossible { .. },
-            } => "Mating reachability disproved",
-            ChessResult::Reachability {
-                result: MateReachability::Unknown { .. },
-            } => "Unknown mating reachability",
             ChessResult::Failure { .. } => "Engine failure",
             _ => match telemetry.expect("search telemetry").status {
                 mshogi_engine::StopReason::Complete => "Complete",
@@ -523,7 +507,7 @@ pub struct ChessPresentation {
     pub selected_conclusion: Option<MatchConclusion>,
     /// Native check status at the selected position.
     pub in_check: bool,
-    /// Actual read-only analysis, including Full proof/Unknown and exact context.
+    /// Actual read-only analysis and its exact context.
     pub analysis: AnalysisState,
     /// Latest actual engine result, with native score meaning.
     pub last_engine_result: Option<ChessResult>,
@@ -531,8 +515,6 @@ pub struct ChessPresentation {
     pub last_engine_turn: Option<Color>,
     /// Exact live version searched by that result.
     pub searched_version: Option<u64>,
-    /// Explicit interactive adjudication mode.
-    pub rules_mode: &'static str,
 }
 /// The request still carries a mandatory game tag, even for common operations.
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -594,7 +576,7 @@ pub enum SessionOperation {
         /// Native claimant, reason and optional intended action.
         claim: EngineClaim,
     },
-    /// Native Chess document preferences, retaining Full analysis defaults.
+    /// Native Chess document preferences, including analysis defaults.
     ChessPreferences {
         /// Native orientation.
         orientation: Color,

@@ -40,14 +40,7 @@ fn run(context: &ExecutionContext) -> ExecutionResponse {
     .unwrap()
 }
 #[test]
-fn real_internal_entry_point_supports_bounded_tori_without_foreign_operations() {
-    assert_eq!(
-        execution_capabilities(GameKind::Tori),
-        &[
-            ExecutionOperation::EngineTurn,
-            ExecutionOperation::MoveAnalysis
-        ]
-    );
+fn real_internal_entry_point_supports_bounded_tori() {
     let mut c = context();
     for analysis in [false, true] {
         if analysis {

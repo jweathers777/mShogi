@@ -63,7 +63,7 @@ fn current_chess_contract_contains_actual_claims_match_and_search_observations()
     c.test_chess_record(game.record(), Color::White);
     let (_, receipt) = c
         .test_chess_operation(SessionOperation::Analyze {
-            operation: AnalysisOperation::Moves {
+            operation: AnalysisOperation {
                 depth: 1,
                 nodes: 100,
             },
@@ -84,7 +84,6 @@ fn current_chess_contract_contains_actual_claims_match_and_search_observations()
     let expected = c.session.chess().unwrap().game.record().to_json();
     let snapshot = c.shared_snapshot();
     assert!(!snapshot.chess.as_ref().unwrap().claims.is_empty());
-    assert!(snapshot.capabilities.chess_full);
     assert_eq!(snapshot.chess_match.unwrap().to_json(), expected);
     assert_eq!(snapshot.observations.len(), 1);
     assert_eq!(snapshot.observations[0].observation, observation);
@@ -173,7 +172,7 @@ fn direct_identity_refusals_publish_native_facts_without_mutating_the_game() {
     assert!(
         c.test_chess_operation(SessionOperation::ChessPreferences {
             orientation: Color::Black,
-            analysis_defaults: AnalysisOperation::Moves { depth: 1, nodes: 1 }
+            analysis_defaults: AnalysisOperation { depth: 1, nodes: 1 }
         })
         .is_err()
     );
@@ -340,7 +339,6 @@ fn current_chess_presentation_has_native_capabilities_without_a_second_applicati
         "last_engine_result",
         "last_engine_turn",
         "searched_version",
-        "rules_mode",
     ] {
         assert!(
             value["chess"].get(field).is_some(),

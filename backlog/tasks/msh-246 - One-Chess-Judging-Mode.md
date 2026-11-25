@@ -1,10 +1,11 @@
 ---
 id: MSH-246
 title: One Chess Judging Mode
-status: Ready
-assignee: []
+status: Done
+assignee:
+  - '@claude'
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-25T12:41:00Z'
+updated_date: '2026-11-25T17:05:00Z'
 labels:
   - rules
   - chess
@@ -25,14 +26,29 @@ John decided on 2026-11-25 (MSH-209 decision 1; a rules change that John approve
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 mshogi-core has one Chess judging behavior (the M2 behavior of today) and one record schema; AdjudicationMode, the Full solver, schema 2 and the name M2 are gone from code, tests and fixtures.
-- [ ] #2 ExecutionPurpose::ChessFullReachability, the engine and desktop Full analysis paths, the frontend panel, its fixtures and its GUI-script steps are removed; desktop, engine and frontend tests pass.
-- [ ] #3 docs/rules (chess-adjudication, chess-completeness, chess-coverage, chess-match-api) describe the one behavior; rules tests whose expected results come from the rules pass and perft is unchanged.
-- [ ] #4 One review by a fresh agent session.
+- [x] #1 mshogi-core has one Chess judging behavior (the M2 behavior of today) and one record schema; AdjudicationMode, the Full solver, schema 2 and the name M2 are gone from code, tests and fixtures.
+- [x] #2 ExecutionPurpose::ChessFullReachability, the engine and desktop Full analysis paths, the frontend panel, its fixtures and its GUI-script steps are removed; desktop, engine and frontend tests pass.
+- [x] #3 docs/rules (chess-adjudication, chess-completeness, chess-coverage, chess-match-api) describe the one behavior; rules tests whose expected results come from the rules pass and perft is unchanged.
+- [x] #4 One review by a fresh agent session.
 <!-- AC:END -->
 
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 John, 2026-11-25: deletion tasks run before MSH-222, so later consolidation has less code.
+
+Handoff (2026-11-25, claude, stopped at usage limit). Branch: claude/msh-246-one-chess-judging (WIP commit dd7f27a).
+Done: removed AdjudicationMode, the Full solver (chess/completeness.rs and tests/completeness.rs), CHESS_FULL_RECORD_SCHEMA_VERSION and NativeSchema::ChessFull (ChessM2 renamed ChessV1), feasibility_evidence, MatchRecord schema 2, replay_with_stop and mating_feasibility_with_stop; ExecutionPurpose::ChessFullReachability, ChessResult::Reachability, FullLimits/ReachabilityTarget/FULL_SENTINEL/MAX_FULL_*, and the now-dead FailureKind::UnsupportedMode, ExecutionOperation and execution_capabilities (only tests used them); desktop AnalysisOperation is now a plain {depth,nodes} struct (no kind tag), with_analysis_operation removed, FULL_ANALYSIS renamed ANALYSIS_BUDGETS; capabilities.chess_full and ChessPresentation.rules_mode removed; frontend Full panel, ReachabilityEvidence, reachabilityDescription, unsupported_mode notice and CSS removed; frontend fixtures regenerated with all four generators (Full fixtures deleted); gui-smoke 'concluded' and 'full-unknown' phases, the verification 'concluded' chess fixture and the package-smoke Full query removed; docs/rules (chess-completeness rewritten as coverage of the one behavior, chess-adjudication, chess-coverage, chess-match-api, chess-match-v1, chess-history-record-v1), docs/search.md, docs/desktop/*, desktop/README.md updated. No conflict with open tasks found.
+Checks so far: cargo fmt --check passed; cargo clippy --workspace --all-targets -D warnings passed; npm run check passed; vitest 589 tests passed (after one test fix); python unittest test_gui*.py 166 passed. NOT yet run to completion: cargo test --workspace --locked (stopped part way), Chess perft tests.
+Next: run cargo test --workspace --locked and the perft tests, fix failures; get the fresh-agent review (AC #4) and record it; merge main, rerun checks, merge into main as 'Merge MSH-246 (One Chess Judging Mode)', push; check ACs, final summary, Done; clean up (delete branch, cargo clean, remove desktop/node_modules and desktop/scripts/__pycache__).
+
+Resumed 2026-11-25. Correction to the handoff note: the gui-smoke 'concluded' phase and its verification Chess fixture are kept. The phase checked one thing besides Full analysis (the checkmate root shows its outcome card); that check stays.
+Review (fresh subagent, opus, read-only, diff origin/main...HEAD): no bugs; Chess behavior equals the former M2 path, schema 1 bytes unchanged, other games lose no validation. Fixed: restored a test that the blocked pawn wall stays undecided (core tests/adjudication.rs) and a desktop test that Chess move analysis stays read-only and remembers its limits (shared_chess.rs); renamed a stale engine test; rewrapped edited docs. Not changed: docs/m4/* milestone contracts still mention Chess Full; they are historical milestone records, outside the task's listed docs.
+Checks: cargo fmt --check, clippy -D warnings, cargo test --workspace --locked (all passed), Chess perft incl. deep (release, --include-ignored: 6 passed), npm run check, vitest 589 passed, python test_gui*.py 166 passed. CI ubuntu-24.04: push routine checks, workflow_dispatch fixtures (45659659073), process (45659662659), persistence (45659666636) all passed. No strength match, cloud job or spending.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Chess now has one judging behavior (the former M2 material-subset dead-position rule) and one record schema (1), as John decided in MSH-209 decision 1. Removed: AdjudicationMode and the name M2, the Full reachability solver and its tests, record and match schema 2 with feasibility evidence, ExecutionPurpose::ChessFullReachability and ChessResult::Reachability, the engine/desktop Full paths, the desktop 'Advanced: Full mating reachability' panel, Full fixtures, GUI-smoke and package-smoke Full steps. Simplified what became needless: FailureKind::UnsupportedMode (no producer left), ExecutionOperation/execution_capabilities (test-only, same for every game), desktop AnalysisOperation is now a {depth, nodes} struct. docs/rules now describe the one behavior (chess-completeness.md rewritten as coverage of the subset). Game behavior is unchanged; perft unchanged. All local checks, frontend tests, script tests and Ubuntu CI (routine, fixtures, process, persistence) passed. Review found no bugs; two kept-behavior tests restored. Follow-up: none required; docs/m4 milestone contracts still mention Chess Full as history.
+<!-- SECTION:FINAL_SUMMARY:END -->

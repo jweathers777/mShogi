@@ -196,7 +196,7 @@ fn response(context: ExecutionContext) -> ExecutionObservation {
         context,
         ExecutionResult::Failure {
             failure: mshogi_engine::EngineFailure {
-                kind: mshogi_engine::FailureKind::UnsupportedMode,
+                kind: mshogi_engine::FailureKind::Search,
                 message: "Constructed context-negative observation; actual child tested separately"
                     .into(),
             },
@@ -448,7 +448,7 @@ fn history_prefix_obligations_takeback_and_reopen_are_exact_and_fresh() {
     send(
         &mut c,
         SessionOperation::Analyze {
-            operation: AnalysisOperation::Moves {
+            operation: AnalysisOperation {
                 depth: 1,
                 nodes: 100,
             },
@@ -1163,7 +1163,7 @@ fn actual_engine_turns_both_assignments_and_exact_historical_analysis_have_separ
         send(
             &mut c,
             SessionOperation::Analyze {
-                operation: AnalysisOperation::Moves {
+                operation: AnalysisOperation {
                     depth: 1,
                     nodes: 1000,
                 },
@@ -1366,7 +1366,7 @@ fn tori_historical_analysis_preserves_only_browse_intent_and_explicit_stops_win(
         send(
             &mut c,
             SessionOperation::Analyze {
-                operation: AnalysisOperation::Moves {
+                operation: AnalysisOperation {
                     depth: 1,
                     nodes: 10000,
                 },

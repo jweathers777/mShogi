@@ -736,7 +736,6 @@ button.danger:hover:enabled {
   margin-top: 8px;
   font-size: 12px;
 }
-.advanced-analysis,
 .technical-analysis {
   margin-top: 15px;
   border-top: 1px solid #385158;
@@ -744,12 +743,8 @@ button.danger:hover:enabled {
   font-size: 11px;
   color: #bed2c7;
 }
-.advanced-analysis summary,
 .technical-analysis summary {
   cursor: pointer;
-}
-.advanced-analysis > p {
-  margin-top: 10px;
 }
 .analysis-score {
   font-size: 16px;
@@ -757,8 +752,7 @@ button.danger:hover:enabled {
   margin: 13px 0 8px;
   line-height: 1.45;
 }
-.analysis-notice,
-.reachability-result > p {
+.analysis-notice {
   color: #cfdbc6;
   font-size: 12px;
   line-height: 1.6;

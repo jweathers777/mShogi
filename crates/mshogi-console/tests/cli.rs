@@ -505,32 +505,3 @@ fn invalid_or_observation_bearing_records_never_replace_the_diagnostic_game() {
     assert!(out.contains("history 4 origin standard_start policy explicit_only repetitions 2"));
     assert!(out.ends_with("history 0 origin standard_start policy explicit_only repetitions 1\n"));
 }
-
-#[test]
-fn diagnostic_import_cannot_silently_drop_full_adjudication_mode() {
-    use mshogi_core::{chess::*, native::CanonicalRecord};
-    let game = AdjudicatedGame::from_fen_with_mode(
-        STANDARD_START_FEN,
-        ClaimPolicy::ExplicitOnly,
-        AdjudicationMode::Full {
-            limits: ReachabilityLimits {
-                max_positions: Some(0),
-                max_transitions: None,
-            },
-        },
-    )
-    .unwrap();
-    let output = shell(
-        format!(
-            "move e2e4\nrecord load-json {}\nhistory\n",
-            CanonicalRecord::chess(game.record()).to_json().unwrap()
-        )
-        .as_bytes(),
-    );
-    assert_eq!(output.status.code(), Some(1));
-    assert!(text(output.stderr).contains("cannot restore that mode"));
-    assert!(
-        text(output.stdout)
-            .ends_with("history 1 origin standard_start policy explicit_only repetitions 1\n")
-    );
-}

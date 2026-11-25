@@ -40,7 +40,7 @@ pub enum GameKind {
 /// Immutable profile identity, never inferred from board dimensions or sides.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum RulesProfile {
-    /// Existing chess match/history semantics, including recorded mode and policy.
+    /// Chess match/history semantics, including the recorded claim policy.
     ChessMatchV1,
     /// Selected standard-shogi CSA software convention.
     ShogiCsa36V1,
@@ -131,10 +131,8 @@ impl<'de> Deserialize<'de> for RulesProfile {
 /// Native schema meaning, rather than an unqualified number shared across games.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum NativeSchema {
-    /// Existing chess M2 history schema one.
-    ChessM2,
-    /// Existing chess completeness-mode history schema two.
-    ChessFull,
+    /// Chess history schema one.
+    ChessV1,
     /// Approved Shogi command history schema two.
     ShogiV2,
     /// Xiangqi native command history schema two.
@@ -150,8 +148,7 @@ impl NativeSchema {
     /// Native wire number, scoped to the game/profile.
     pub const fn version(self) -> u32 {
         match self {
-            Self::ChessM2 => chess::CHESS_RECORD_SCHEMA_VERSION,
-            Self::ChessFull => chess::CHESS_FULL_RECORD_SCHEMA_VERSION,
+            Self::ChessV1 => chess::CHESS_RECORD_SCHEMA_VERSION,
             Self::ShogiV2 => shogi::SHOGI_RECORD_SCHEMA_VERSION,
             Self::XiangqiV2 => xiangqi::GAME_RECORD_SCHEMA_VERSION,
             Self::ToriV4 => tori::GAME_RECORD_SCHEMA_VERSION,
@@ -246,12 +243,7 @@ impl CanonicalRecord {
     /// Schema derived from the authoritative payload.
     pub fn native_schema(&self) -> NativeSchema {
         match self {
-            Self::Chess(record)
-                if record.schema_version() == chess::CHESS_RECORD_SCHEMA_VERSION =>
-            {
-                NativeSchema::ChessM2
-            }
-            Self::Chess(_) => NativeSchema::ChessFull,
+            Self::Chess(_) => NativeSchema::ChessV1,
             Self::Shogi(_) => NativeSchema::ShogiV2,
             Self::Xiangqi(_) => NativeSchema::XiangqiV2,
             Self::Tori(_) => NativeSchema::ToriV4,

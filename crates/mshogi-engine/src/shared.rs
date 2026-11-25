@@ -1,53 +1,11 @@
 //! Singular internal execution context, transport, and durable observations.
 use crate::{
-    ChessResult, EngineFailure, FULL_SENTINEL, FailureKind, FullLimits, MAX_ANALYSIS_DEPTH,
-    MAX_ANALYSIS_NODES, MAX_FULL_POSITIONS, MAX_FULL_TRANSITIONS, MAX_STDERR_BYTES,
-    ReachabilityTarget, WorkLimits,
+    ChessResult, EngineFailure, FailureKind, MAX_ANALYSIS_DEPTH, MAX_ANALYSIS_NODES,
+    MAX_STDERR_BYTES, WorkLimits,
 };
 use mshogi_core::native::{CanonicalRecord, GameKind, NativeSide};
 use serde::{Deserialize, Serialize};
 
-/// Actual implemented operations; a tagged context alone adds no execution capability.
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
-pub enum ExecutionOperation {
-    /// Complete live-turn choice.
-    EngineTurn,
-    /// Read-only bounded ordinary search observations.
-    MoveAnalysis,
-    /// Chess cooperative mating reachability, not shogi tsume or ordinary search.
-    ChessFullReachability,
-}
-/// Advertise only real native execution consumers. Shogi has no chess Full operation.
-pub fn execution_capabilities(game: GameKind) -> &'static [ExecutionOperation] {
-    match game {
-        GameKind::Tenjiku => &[
-            ExecutionOperation::EngineTurn,
-            ExecutionOperation::MoveAnalysis,
-        ],
-        GameKind::Chu => &[
-            ExecutionOperation::EngineTurn,
-            ExecutionOperation::MoveAnalysis,
-        ],
-        GameKind::Tori => &[
-            ExecutionOperation::EngineTurn,
-            ExecutionOperation::MoveAnalysis,
-        ],
-        GameKind::Chess => &[
-            ExecutionOperation::EngineTurn,
-            ExecutionOperation::MoveAnalysis,
-            ExecutionOperation::ChessFullReachability,
-        ],
-        GameKind::Xiangqi => &[
-            ExecutionOperation::EngineTurn,
-            ExecutionOperation::MoveAnalysis,
-        ],
-        GameKind::Shogi => &[
-            ExecutionOperation::EngineTurn,
-            ExecutionOperation::MoveAnalysis,
-        ],
-    }
-}
 /// Exact historical-selection provenance alongside the full native record.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -76,15 +34,6 @@ pub enum ExecutionPurpose {
         /// Native target provenance.
         target: ExecutionTarget,
     },
-    /// Existing chess Full operation; never interpreted as shogi analysis.
-    ChessFullReachability {
-        /// Native target provenance.
-        target: ExecutionTarget,
-        /// Existing chess-specific cooperative target.
-        mate: ReachabilityTarget,
-        /// Existing bounded independently terminable work settings.
-        limits: FullLimits,
-    },
 }
 /// Full execution context. Equality includes every submitted identity and setting.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
@@ -98,16 +47,13 @@ pub struct ExecutionContext {
     pub session_version: u64,
     /// Actual canonical native history, policies and root provenance.
     pub game: CanonicalRecord,
-    /// Complete deterministic ordinary-search limits (Full uses FULL_SENTINEL).
+    /// Complete deterministic ordinary-search limits.
     pub limits: WorkLimits,
 }
 impl ExecutionContext {
     /// Cheap bounded static admission. Native live replay stays in the supervised child.
     pub fn valid_limits(&self) -> bool {
-        if self.limits.time_ms.is_some_and(|ms| ms > 60_000)
-            || (self.limits.time_ms.is_some()
-                && matches!(self.purpose, ExecutionPurpose::ChessFullReachability { .. }))
-        {
+        if self.limits.time_ms.is_some_and(|ms| ms > 60_000) {
             return false;
         }
 
@@ -172,12 +118,6 @@ impl ExecutionContext {
             ExecutionPurpose::MoveAnalysis { target } => {
                 target_valid(target) && ordinary_limits_valid(true)
             }
-            ExecutionPurpose::ChessFullReachability { target, limits, .. } => {
-                target_valid(target)
-                    && self.limits == FULL_SENTINEL
-                    && limits.max_positions <= MAX_FULL_POSITIONS
-                    && limits.max_transitions <= MAX_FULL_TRANSITIONS
-            }
         }
     }
 }
@@ -201,19 +141,19 @@ pub enum ExecutionResult {
         /// Tori-owned result and score interpretation.
         result: crate::ToriResult,
     },
-    /// Real chess result, retaining native action/claim/outcome/incomplete/Full distinctions.
+    /// Real chess result, retaining native action/claim/outcome/incomplete distinctions.
     Chess {
         /// Existing native chess result and score interpretation.
         result: ChessResult,
     },
-    /// Actual native shogi result, never a chess or cooperative Full score.
+    /// Actual native shogi result, never a chess score.
     Shogi {
         /// Native board/declaration choice, conclusion or incomplete observation.
         result: crate::ShogiResult,
     },
     /// Actual native Xiangqi choice, conclusion, incomplete work or unresolved history.
     Xiangqi {
-        /// Native Red/Black observations, not Chess Full reachability.
+        /// Native Red/Black observations.
         result: crate::XiangqiResult,
     },
     /// Unscored unsupported/invalid/process failure, independent of native game outcomes.
@@ -417,49 +357,35 @@ impl ExecutionObservation {
                 if submitted.game.game_kind() != GameKind::Chess {
                     return false;
                 }
-                if let ChessResult::Failure { failure } = result {
-                    return failure.message.len() <= MAX_STDERR_BYTES;
-                }
-                // Search results state an explicit bounded continuation depth and
-                // must agree with the complete request work/choice shape before
-                // admission.
                 let telemetry = match result {
+                    ChessResult::Failure { failure } => {
+                        return failure.message.len() <= MAX_STDERR_BYTES;
+                    }
                     ChessResult::Move { telemetry, .. }
                     | ChessResult::Claim { telemetry, .. }
                     | ChessResult::Finished { telemetry, .. }
-                    | ChessResult::Incomplete { telemetry } => Some(telemetry),
-                    _ => None,
+                    | ChessResult::Incomplete { telemetry } => telemetry,
                 };
-                if let Some(t) = telemetry
-                    && (!t.valid_selective_shape(submitted.limits)
-                        || match result {
-                            ChessResult::Move { action, .. } => {
-                                t.principal_variation.first()
-                                    != Some(&crate::EngineChoice::Move { action: *action })
-                            }
-                            ChessResult::Claim { claim, .. } => {
-                                t.principal_variation.first()
-                                    != Some(&crate::EngineChoice::Claim { claim: *claim })
-                            }
-                            ChessResult::Finished { .. } => !t.principal_variation.is_empty(),
-                            ChessResult::Incomplete { .. } => {
-                                t.completed_depth != 0 || t.status == crate::StopReason::Complete
-                            }
-                            _ => false,
-                        })
-                {
-                    return false;
-                }
-                matches!(
-                    (&submitted.purpose, result),
-                    (
-                        ExecutionPurpose::ChessFullReachability { .. },
-                        ChessResult::Reachability { .. }
-                    )
-                ) || (!matches!(
-                    submitted.purpose,
-                    ExecutionPurpose::ChessFullReachability { .. }
-                ) && !matches!(result, ChessResult::Reachability { .. }))
+                // Search results state an explicit bounded continuation depth and
+                // must agree with the complete request work/choice shape before
+                // admission.
+                telemetry.valid_selective_shape(submitted.limits)
+                    && match result {
+                        ChessResult::Move { action, .. } => {
+                            telemetry.principal_variation.first()
+                                == Some(&crate::EngineChoice::Move { action: *action })
+                        }
+                        ChessResult::Claim { claim, .. } => {
+                            telemetry.principal_variation.first()
+                                == Some(&crate::EngineChoice::Claim { claim: *claim })
+                        }
+                        ChessResult::Finished { .. } => telemetry.principal_variation.is_empty(),
+                        ChessResult::Incomplete { .. } => {
+                            telemetry.completed_depth == 0
+                                && telemetry.status != crate::StopReason::Complete
+                        }
+                        ChessResult::Failure { .. } => unreachable!(),
+                    }
             }
         }
     }

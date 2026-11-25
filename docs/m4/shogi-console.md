@@ -126,10 +126,9 @@ the complete envelope/profile/edition/schema and routes raw bytes to the native
 strict parser, then restores the accepted game. This retains supplied/defaulted
 counter provenance, root category, native policies, complete event history,
 declaration evidence and conclusions. No FEN/SFEN-only or move-only fallback is
-used. Wrong-game, malformed, duplicate/unknown, unsupported, tampered or oversized
+used. Wrong-game, malformed, duplicate/unknown, unsupported or tampered
 input leaves the current session and its undo history intact. `record load-json
-<JSON>` takes an explicit inline envelope, subject to the command-line bound;
-`load-file` always takes a path. Neither command guesses from its argument.
+<JSON>` takes an explicit inline envelope; `load-file` always takes a path. Neither command guesses from its argument.
 Both chess and shogi use these same canonical commands and the same strict
 RawValue boundary, so duplicate nested native fields remain visible to rejection.
 
@@ -138,10 +137,7 @@ envelope. Chess restoration accepts only native M2 move/history state; match obs
 and Full mode reject clearly, rather than being silently discarded. No desktop
 archive capability is supplied here.
 
-Files are limited to1,048,576 encoded input bytes, including whitespace and outer
-metadata. Reading uses at most cap+1 bytes and rejects excess before parsing.
-The native event/record limits remain in effect; none were increased. Complete
-record sizes are independent of the4096-byte interactive line cap. Paths consume
+Record files and input lines have no byte limit (MSH-268). Paths consume
 the remainder of the command (no shell quoting syntax) and may contain spaces or
 UTF-8. Short text commands/SFEN/USI retain their native ASCII grammars.
 
@@ -154,7 +150,7 @@ mode. This is a bounded console export, not the later desktop archive feature or
 a cross-filesystem power-loss durability claim. The output must be a normal
 filesystem file. Results go to stdout, escaped errors to stderr with a line
 number. Exit0 means every command succeeded,1 means any failed,2 means invalid
-program arguments. Oversized command lines drain to LF and recover.
+program arguments. Command lines have no byte limit.
 
 To save/reopen a complete capture and terminal history (choose a new path):
 
@@ -219,6 +215,6 @@ or protocol support by itself. MSH-41–47 and M4 remain open.
 MSH-90 adds `tests/common_console.rs`: actual canonical subprocess journeys,
 selected help/profile/argument failures, UCI stdout isolation, both-game shared
 file/JSON roundtrips, restored undo/provenance, wrong-game/strict nested failures,
-unsupported chess observations/Full, byte/line limits, no-clobber saves, exact
+unsupported chess observations/Full, no-clobber saves, exact
 owner-supplied board and promoted alignment. Earlier MSH-68/70 evidence is
 preserved; MSH-71/72 remain unstarted by this follow-up.

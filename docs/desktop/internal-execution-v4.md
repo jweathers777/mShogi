@@ -119,9 +119,9 @@ not restore execution authority. Current document reopening allocates fresh
 runtime identities and leaves work stopped until explicit Resume.
 
 The existing one-worker/one-replaceable-pending/one-result supervision model,
-watchdogs, bounded pipes, cleanup and diagnostic handling remain. Encoded caps
-are unchanged: request1MiB, response2MiB, retained diagnostic4096UTF-8bytes.
-Admission measures actual current framing, not an inner payload estimate.
+watchdogs, pipe workers, cleanup and diagnostic handling remain. Requests and
+responses have no byte limit (MSH-268); retained diagnostics stay at 4096 UTF-8
+bytes.
 Cancellation/Unknown/incomplete work/failure never invents a fallback move,
 score or game outcome. Cancellation retires the active runtime request;
 absence of a final observation does not invent search telemetry.
@@ -138,7 +138,7 @@ empty results and stopped execution. It does not restore a history selection.
 Chess uses the same minimal document and session lifecycle (MSH-225). Its
 record retains accepted player commands through the native match API. No
 development-era document compatibility is promised; see design A-09. Atomic file failures preserve the
-accepted document and save path. The encoded document limit remains 16 MiB.
+accepted document and save path. The document has no byte limit.
 
 Subsequent MSH-117/R2 delivered the sole current outer desktop envelope and
 deleted old desktop version/read branches. MSH-118/R3 and MSH-119/R4 delivered

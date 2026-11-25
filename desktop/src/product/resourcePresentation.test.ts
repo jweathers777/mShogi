@@ -5,10 +5,10 @@ const events: ResourceFact = { category: "canonical_record_bytes", measurement: 
 function failure(fact: ResourceFact, diagnostic = "Application capacity: retains 256 observations and 8192 controls") : ResourceFailure { return { fact, diagnostic }; }
 it("uses authoritative event facts despite ambiguous combined native diagnostic text", () => {
   const text = resourceExplanation(failure(events));
-  expect(text).toContain("record byte"); expect(text).not.toContain("256"); expect(text).not.toContain("observations");
+  expect(text).toContain("root byte"); expect(text).not.toContain("256"); expect(text).not.toContain("observations");
 });
 it.each([
-  ["encoded_document_bytes", "document would exceed"], ["canonical_record_bytes", "record byte"], ["identity_headroom", "execution-identity"], ["validation_budget", "validation"],
+  ["canonical_record_bytes", "root byte"], ["identity_headroom", "execution-identity"], ["validation_budget", "validation"],
 ] as const)("keeps %s separate from observation/control exhaustion", (category, text) => {
   const message = resourceExplanation(failure({ ...events, category }));
   expect(message).toContain(text); expect(message).not.toContain("256 recorded"); expect(message).not.toContain("control capacity");

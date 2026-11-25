@@ -218,10 +218,9 @@ Apply/undo must restore board, hands, face, side, declared metadata, event/board
 indices, occurrence ledger, obligation, conclusion and incremental caches exactly.
 Undo/history/reopen cannot revive retired execution identities. Saved observations
 retain exact target history, purpose, limits, native score perspective and proof
-provenance where relevant; they are historical data, not pending work. Capacity
-admission reserves a resignation event. Bounded compact root and command sizes
-prove that every supported event prefix fits the record byte limit, preserving
-the complete-saveability guarantee.
+provenance where relevant; they are historical data, not pending work. Records
+have no byte or event limit (MSH-268); compact root and command sizes stay
+bounded, so every event prefix stays saveable.
 
 ## T08 — notation and consumer boundaries (S)
 

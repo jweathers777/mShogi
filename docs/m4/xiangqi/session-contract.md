@@ -56,7 +56,7 @@ Read-only opponent inspection takes the exact snapshot token and selected native
 
 ## Bounds and persistence boundary
 
-Native admission retains existing record byte/command/event bounds and exact parsing. MSH-99 extends the original observation retention guard with complete archive admission before every accepted native change: actual encoded bytes, controls, native history, observation count and measured replay work, including reserved stop/close headroom. No limit or deadline was raised and no accepted history/observation is dropped. Save/reopen cannot enlarge a structural limit. The native archive consumer is available; normal Tauri New Game, game commands and product Open remain explicitly gated until the existing UI owners complete them. MSH-61 Chess/Shogi saveability evidence remains applicable and is regression-tested.
+Native admission keeps exact parsing; records have no byte, command or event limit (MSH-268). No accepted history/observation is dropped. The native archive consumer is available; normal Tauri New Game, game commands and product Open remain explicitly gated until the existing UI owners complete them. MSH-61 Chess/Shogi saveability evidence remains applicable and is regression-tested.
 
 ## Verification
 

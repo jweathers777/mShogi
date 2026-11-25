@@ -100,8 +100,8 @@ stdin writes/acknowledgements, stdout queue, escaped diagnostic capture,
 watchdogs, quit/kill/reap and pipe cleanup. Config <=1MiB, at most4 openings,
 paired assignments optional, <=32 accepted engine actions/game, <=600000ms
 overall/game. Existing process validation applies; Xiangqi additionally caps
-stdout line4096, queue32, transcript1MiB/game and stderr4096/child. Native
-record envelope1MiB and report64MiB count actual encoded bytes, including
+stdout line4096, queue32, transcript1MiB/game and stderr4096/child. The
+report64MiB counts actual encoded bytes, including
 traffic and canonical envelope overhead. Retention failures pause before the
 candidate action commits and preserve the accepted native prefix.
 

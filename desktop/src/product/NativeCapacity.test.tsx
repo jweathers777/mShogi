@@ -20,7 +20,7 @@ for (const game of ["chess", "shogi", "xiangqi"] as const) {
   it(`${game} shows native event exhaustion with zero observations and no fictional 256`, () => {
     const snapshot = paused(game); expect(snapshot.observations).toHaveLength(0); notice(snapshot);
     const message = screen.getByRole("alert", { name: "Document capacity" });
-    expect(message.textContent).toContain("record byte"); expect(message.textContent).toContain("current game can still be saved");
+    expect(message.textContent).toContain("root byte"); expect(message.textContent).toContain("current game can still be saved");
     expect(message.textContent).not.toContain("256"); expect(message.textContent).not.toContain("Engine connection failed");
     expect(message.textContent).toContain("Saving and reopening does not reset this limit");
     expect(document.activeElement).toBe(message);
@@ -29,7 +29,7 @@ for (const game of ["chess", "shogi", "xiangqi"] as const) {
     notice(paused(game, null));
     expect(screen.getByRole("alert").textContent).toContain("Your current game can still be saved");
     expect(screen.getByRole("alert").textContent).not.toContain("256");
-    expect(screen.getByRole("alert").textContent).not.toContain("record byte");
+    expect(screen.getByRole("alert").textContent).not.toContain("root byte");
   });
   it(`${game} keeps independent failed Save feedback visible alongside capacity`, () => {
     const snapshot = paused(game); snapshot.document.dirty = true; snapshot.io = { id: 2, phase: "failed", message: "Permission denied", resource: null };
@@ -38,7 +38,7 @@ for (const game of ["chess", "shogi", "xiangqi"] as const) {
     expect(snapshot.document.dirty).toBe(true);
   });
 }
-it.each(["encoded_document_bytes", "identity_headroom"] as const)("preserves %s as an independent resource", (category) => {
+it.each(["identity_headroom", "validation_budget"] as const)("preserves %s as an independent resource", (category) => {
   notice(paused("xiangqi", { ...base, category }));
   expect(screen.getByRole("alert").textContent).not.toContain("256 recorded"); expect(screen.getByRole("alert").textContent).not.toContain("control capacity");
 });
@@ -60,5 +60,5 @@ it("reports capacity checking separately from search progress and no alarm when 
   snapshot.capacity = { id: 8, status: "available", message: null, resource: null }; rerender(<NativeRecovery snapshot={snapshot} error="" disabled={false} command={vi.fn()} />); expect(screen.queryByLabelText("Document capacity")).toBeNull();
 });
 it("uses authoritative capacity instead of duplicating its failed command as an unrelated connection error", () => {
-  notice(paused("xiangqi"), diagnostic); expect(screen.getAllByRole("alert")).toHaveLength(1); expect(screen.getByRole("alert").textContent).toContain("record byte");
+  notice(paused("xiangqi"), diagnostic); expect(screen.getAllByRole("alert")).toHaveLength(1); expect(screen.getByRole("alert").textContent).toContain("root byte");
 });

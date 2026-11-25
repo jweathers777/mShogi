@@ -82,12 +82,10 @@ execution: save the complete current document, then start a new document. Merely
 saving/reopening does not reset limits, and retrying the same impossible save is
 not offered as a remedy. No history or observation is dropped.
 
-The existing numerical archive limits remain unchanged:16MiB encoded archive,
-256 observations,8192 controls. Shogi uses its **native321-event parser ceiling**,
-not chess's4096-event bound; the selected game policy normally concludes after
-320 board actions (terminal commands remain separate events). Encoded native
-canonical context and engine request/result must also fit their existing1MiB/2MiB
-transport bounds. Limits apply to actual envelope plus payload bytes.
+MSH-268 removed every byte and event limit on documents, native records and
+engine requests and replies. The selected Shogi game policy normally concludes
+after 320 board actions (terminal commands remain separate events); that is a
+game rule, not a size limit.
 
 A potentially active journal reserves one control and1024 encoded bytes for
 native stop/close, and budgets maximum-width future identity fields. A private
@@ -103,8 +101,7 @@ it is an additional, game-specific admission policy, not an increased constant.
 Parsing has a separate bounded cost: a raw first stage rejects excessive counts
 before native parsing, then probes native event counts and conservative journal work before
 authoritative validation. At most258 native records (initial/current plus256
-contexts), each bounded by the native321-event/1MiB parser, remain possible within
-the16,000-work total. Cancellation
+contexts) remain possible within the16,000-work total. Cancellation
 checks separate records, observations and controls. Each individual native record
 validation is atomic; it does not check cancellation at every native event.
 Control replay has its own stop/deadline checkpoints. This is a bounded worker,

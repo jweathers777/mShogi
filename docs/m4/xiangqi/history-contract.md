@@ -131,12 +131,8 @@ runtime revision never rewinds, and newly admitted branches receive fresh
 command lineage IDs. Returning to the same board
 or record cannot revive old requests or undo handles from a different reopen.
 
-Admission constructs a private candidate and measures its complete encoded
-record before committing. Bounds are512 commands,2048 events,1MiB encoded
-native JSON. Nonterminal admission reserves one command, four events and4096
-bytes for native closure. Audited rejected claims consume capacity too. Exhaustion
-refuses new work while preserving the entire current saveable record and a close
-path; no accepted history is dropped. At511 rejected claim commands, command512
-cannot be another audit but can be resignation, and both records reopen.
+Admission constructs a private candidate before committing. Records have no
+command, event or byte limit (MSH-268); audited rejected claims are kept like
+other commands and no accepted history is dropped.
 Later shared envelope/archive owners must measure their own additional overhead
 and preserve MSH-61; this native limit is not approval of future desktop limits.

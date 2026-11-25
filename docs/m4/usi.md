@@ -48,8 +48,8 @@ wait for an unsupported operation. Duplicate/unknown controls reject explicitly;
 unknown option/value diagnostics never change the profile. Valid option changes
 retire old work. Unknown option commands do not alter current work or settings.
 
-ASCII CR/LF input lines are bounded at4096 bytes with bounded draining/recovery.
-There are32 pending input events. One persistent native worker has one replaceable
+ASCII CR/LF input lines have no byte limit, so a long position command is
+accepted (MSH-268). There are32 pending input events. One persistent native worker has one replaceable
 pending job and one completion slot. No unbounded progress stream is created.
 Every accepted search uses full native context, exact work limits, monotonic
 request identity and session version. The process itself is the execution generation.
@@ -130,7 +130,7 @@ are not chess clocks. The action limit1–32 and overall time limit stop unfinis
 experiments without awarding a draw or loss. Overall deadlines also cap reads
 and writes; cleanup has a separate total deadline including commands/draining/
 kill/reap. Native CSA length320 is unchanged. Up to4 openings may be paired;
-configuration input is1MiB, native envelopes1MiB, protocol lines/commands4096,
+configuration input is1MiB, protocol lines/commands4096,
 queued output32, transcript retention at most1MiB/game, stderr4096/child and
 report input/output64MiB. These caps account for serialized event overhead.
 Resource failures stop admission. Incomplete/oversized/failed retirement capture

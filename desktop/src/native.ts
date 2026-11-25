@@ -45,7 +45,6 @@ export type FailureKind =
   | "io"
   | "unexpected_exit"
   | "malformed_response"
-  | "oversized_response"
   | "missing_response"
   | "timeout"
   | "context_mismatch"

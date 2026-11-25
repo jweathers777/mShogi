@@ -1,7 +1,7 @@
 // Native admission facts. R4 consumes these in the shared application notices;
 // callers must never derive a category or count from diagnostic text.
 export interface ResourceFact {
-  category: "encoded_document_bytes" | "canonical_record_bytes"
+  category: "canonical_record_bytes"
     | "identity_headroom"
     | "validation_budget" | "unknown";
   measurement: "accepted" | "candidate" | "unknown";

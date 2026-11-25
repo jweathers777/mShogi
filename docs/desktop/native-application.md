@@ -77,7 +77,7 @@ whose close guard opened while the picker was visible.
 
 The [current document envelope](document-v1.md) and its atomic Save/Open contract
 remain unchanged. Failed Save preserves the prior valid file and dirty state;
-invalid, oversized, inconsistent, stale or resource-limited Open preserves the
+invalid, inconsistent, stale or resource-limited Open preserves the
 current accepted document. All native histories and observations remain lossless.
 
 ## Authoritative resource facts
@@ -95,12 +95,10 @@ already occupied before starting work. Unknown facts contain no fabricated
 count. Multiple established causes remain explicit; bounded omission is reported.
 Native categories are never inferred from a number or phrase in a diagnostic.
 
-Categories distinguish complete encoded bytes, retained observation bytes and
-their response reserve, native-record bytes, native
-events, controls, ordinary/exact/combined observations, native replay units,
-identity headroom, validation budget and unknown causes. Illegal commands,
-engine failures and game outcomes remain separate. The16MiB/256-observation/
-8192-control limits, native costs and stop/close reserves are unchanged.
+Categories distinguish native root bytes, identity headroom, validation budget
+and unknown causes. Illegal commands, engine failures and game outcomes remain
+separate. Documents, records, engine requests and replies have no byte or event
+limit (MSH-268).
 
 R4 consumes these facts in one shared notice/recovery implementation. The
 truthful generic fallback remains appropriate whenever the exact cause cannot

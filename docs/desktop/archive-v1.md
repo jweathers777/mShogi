@@ -36,20 +36,19 @@ diagnostic, never a promoted action, score or proof.
 One long-lived native document worker has bounded pending and completion slots.
 All filesystem access, serialization, validation/replay and historical-prefix
 construction run there, separate from the serialized controller and engine
-worker. Replacement cancels obsolete work. Byte/event caps and cooperative
+worker. Replacement cancels obsolete work. Cooperative cancellation and
 15-second checks bound supported work; operating-system scheduling and blocked
 filesystem calls are not hard realtime guarantees.
 
-Supported documents contain at most 16 MiB, 4,096 combined initial-history and
-match events, 256 accepted engine observations and 8,192 desktop controls.
-MSH-61 makes these native admission limits: an immutable candidate is fully
-encoded and validated on a separate bounded worker before an ordinary command
-or engine/analysis response changes the accepted document. The current accepted
-snapshot remains authoritative while this check runs. Cancellation, replacement
-and late results cannot install a superseded candidate. Reserved journal, byte
-and runtime-identity headroom preserves the stop/save/close path.
+Documents have no byte, event or game-length limit (MSH-268). An immutable
+candidate is fully encoded and validated on a separate worker before an
+ordinary command or engine/analysis response changes the accepted document.
+The current accepted snapshot remains authoritative while this check runs.
+Cancellation, replacement and late results cannot install a superseded
+candidate. Runtime-identity headroom preserves the stop/save/close path.
 
-An operation which would exceed capacity is refused before acceptance. Work
+An operation which would exhaust runtime identities or the validation time
+budget is refused before acceptance. Work
 pauses with an **Application limit reached** notice, separate from an illegal
 move, engine failure or chess outcome. The complete previously accepted game,
 command history and observations remain available to Save and Save As. Nothing
@@ -57,7 +56,6 @@ is silently discarded. Save and reopening retain the observation and history
 counts; they do not replenish capacity. Save the complete document, then
 explicitly start a new game/document or open a different document to continue.
 Retrying the same save is not the remedy for a structural capacity limit.
-Open still rejects unsupported oversized input without changing the live game.
 
 Save captures an immutable complete document and its contents revision. An
 exclusive same-directory temporary file is written, flushed and synchronized;

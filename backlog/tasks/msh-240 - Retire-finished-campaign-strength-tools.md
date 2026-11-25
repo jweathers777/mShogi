@@ -1,10 +1,11 @@
 ---
 id: MSH-240
 title: Retire finished-campaign strength tools
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-25T09:51:00Z'
-updated_date: '2026-11-25T10:20:00Z'
+updated_date: '2026-11-25T11:02:00Z'
 labels:
   - cleanup
   - model:medium

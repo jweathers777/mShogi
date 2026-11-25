@@ -1,11 +1,11 @@
 ---
 id: MSH-52.3
 title: Chu Strength Assessment
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-11-24T21:07:00Z'
-updated_date: '2026-11-25T06:32:00Z'
+updated_date: '2026-11-25T06:44:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -25,9 +25,9 @@ Measure the accepted Chu engine with internal time odds and a much deeper same-f
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 A frozen internal scaling curve reports paired outcomes, uncertainty, search depths and all unfinished games.
-- [ ] #2 A deeper-search screen reports coverage, clear blunders, classes and reusable positions with a held-out split; rules are fixed before results.
-- [ ] #3 Any general fix follows the declared fix rule and predecessor test; checks, costs, run identities and cleanup are recorded.
+- [x] #1 A frozen internal scaling curve reports paired outcomes, uncertainty, search depths and all unfinished games.
+- [x] #2 A deeper-search screen reports coverage, clear blunders, classes and reusable positions with a held-out split; rules are fixed before results.
+- [x] #3 Any general fix follows the declared fix rule and predecessor test; checks, costs, run identities and cleanup are recorded.
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -110,4 +110,19 @@ Validated longer-clock result:20s+0.2s versus40s+0.4s,16/16 scored pairs,31W/0D/
 Latest full handoff archive: gs://mshogi-experiments-216675633801/runs/msh-52.3/handoff-judge-finish.tar.gz. It includes the new live-job ownership intent/manifest, completed long-scaling-2 result and cleanup receipts, scripts and control inputs. All eight judge-finish workers have started. The source-history verification also passed on all four local smoke rows; those low-node smoke results remain excluded.
 
 Handoff taken by @claude after Codex stopped. judge-finish finished (SUCCEEDED, 22.8 min, bound US$0.59716); cleanup verified absent, independent job/VM/disk lists empty. Saved 511/512 rows; only sample-352 was not started (worker 2 reached its 1200 s stop limit). Per-move runtime max 262 s. Cumulative bound before final stage US$2.52438; campaign wall about 89 min of 120. Final stage msh213-msh523-judge-finish-2: one c3-standard-4 VM, same pinned worker and binary, queue contains only sample-352. prepare-recovery.py now also accepts stage judge-finish-2 (one worker); no sample, node or rule change. Next: download-screen.py, verify-screen.py, assess.
+
+Final judge stage msh213-msh523-judge-finish-2 (1 VM, 4.3 min, bound US$0.11429) saved sample-352; cleanup verified absent, independent lists empty. Total conservative compute bound US$2.63868 (cap US$10); total campaign wall about 93 min of 120.
+Verifier correction before scoring: chu_judge writes the native observation after report replay, and that value adds context.game (the pre-move record) which stored reports omit. verify-screen.py now removes that field, asserts it equals the exact expected prefix, and compares the rest exactly. All 512 rows pass: coverage, source identity, prefix, played action, observation, clock, side change, judge nodes 5M. No sample, score or rule change.
+Deeper screen (frozen rules, 512/512 judged, 16 opening clusters): 0 clear blunders; 14 mistakes (8 other, 4 other_capture, 1 missed_capture, 1 promotion_refutation; split 13 development, 1 held-out). Mean win-probability loss 0.0194 (95% opening-cluster bootstrap 0.0146..0.0250). Blunder bootstrap interval is degenerate at 0; exact binomial 95% upper bound 0.58 clear blunders per 100 moves (ignores clustering). Judge deeper on 100% of moves: median depth 12 vs player 5, median node ratio 315. No class reaches 30% of clear blunders, so the fix rule does not apply; accepted engine e2658c7 stays unchanged.
+Evidence: gs://mshogi-experiments-216675633801/runs/msh-52.3/final/ (screen-result.json, blunder-suite.json with 14 full-history mistake positions split by opening, handoff-final.tar.gz with all scripts, manifests, controller receipts and 512 rows); rows also in runs/msh-52.3/judge-samples/.
+Checks on final branch (main unchanged at db9875b): fmt pass; workspace all-target Clippy -D warnings pass; 1188 workspace tests pass, 12 ignored, 0 failed; 3 chu_judge tests pass; 4 chu_assessment Python tests pass.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Measured the frozen Chu engine (e2658c7) with internal time odds and a deeper same-family blunder screen. Engine unchanged.
+- Scaling (2x vs 1x clock): 5s +492 Elo (lower +215), 10s +372 (lower +226), 20s +597 (lower +324; 31W/0D/1L, 16/16 pairs). 2.5s unusable (first-iteration timeouts) and 40s unusable (7/8 pairs hit the 600 s runner cap, MSH-238). Equal-clock control interval includes zero. Estimates are conditional on fully scored pairs; no absolute rating.
+- Deeper screen: 512 sampled moves, judge median depth 12 vs player 5. 0 clear blunders (95% upper bound 0.58/100 moves), 14 mistakes, mean loss 0.019. Fix rule not triggered.
+- Added chu_judge, chu_assessment and harness docs. Cost bound US$2.64. Follow-up: MSH-238 (Remove the fixed ten-minute experiment cap). The Chu baseline stop decision (MSH-52) stays with John.
+<!-- SECTION:FINAL_SUMMARY:END -->

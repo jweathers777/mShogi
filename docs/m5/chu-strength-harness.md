@@ -117,7 +117,9 @@ spaced move indices across each game, including unfinished prefixes, and
 searches the position before and immediately after each move with fresh tables
 and full history. Shards partition that fixed sample. Rows retain native
 records, player observations, judge depths, native terminal outcomes and
-ordered capture facts. Use a materially larger search than the player and
+ordered capture facts. The player observation is the native value after
+replay, so its context also holds the pre-move game record that stored reports
+omit; compare it to the report after removing that field. Use a materially larger search than the player and
 report how often the judge actually reaches a greater depth.
 
 `python3 -m tools.strength.chu_assessment JUDGED.jsonl --out REPORT.json`

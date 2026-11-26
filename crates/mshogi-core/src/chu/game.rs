@@ -1,6 +1,10 @@
 //! Complete Chu game admission. Local geometry never grants live history permission.
 use super::*;
-pub use crate::native::GameContext;
+use crate::native::history::{AppendGame, GameHistory, Snapshot};
+pub use crate::native::{
+    GameContext,
+    history::{CapacityUsage, GameUndo},
+};
 use crate::repetition::RepetitionIndex;
 use serde::{Deserialize, Serialize};
 
@@ -192,21 +196,13 @@ impl HistorySnapshot {
     }
 }
 /// Context-bound request; wrong actor/history/retired work is refused atomically.
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct GameRequest {
-    /// Request token of the game when the command was chosen.
-    pub expected: GameContext,
-    /// Actual participant.
-    pub actor: Side,
-    /// Complete command.
-    pub command: GameCommand,
-}
+pub type GameRequest = crate::native::history::Request<Side, GameCommand>;
 /// Exhausted resource, distinct from illegal actions and game outcomes.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Resource {
     /// Encoded native root bytes at admission.
     EncodedBytes,
-    /// Counter/runtime identity.
+    /// Declared board counter.
     Counter,
 }
 /// Atomic native refusal.
@@ -243,14 +239,6 @@ impl std::fmt::Display for GameError {
     }
 }
 impl std::error::Error for GameError {}
-/// Exact native resource usage; outer desktop limits remain with MSH-78.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct CapacityUsage {
-    /// Full encoded native record size.
-    pub encoded_bytes: usize,
-    /// Native event count.
-    pub events: usize,
-}
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub(super) struct NativeRoot {
@@ -258,69 +246,144 @@ pub(super) struct NativeRoot {
     pub protection: LionProtection,
 }
 #[derive(Clone, Debug, Eq, PartialEq)]
-struct Ply {
+/// Rules evidence for an accepted Chu board action.
+#[doc(hidden)]
+pub struct Ply {
     actor: Side,
     action: Action,
     quiet_return: bool,
     check: bool,
     attack: bool,
 }
-#[derive(Debug)]
-struct GameData {
-    root: NativeRoot,
-    local: LocalPosition,
-    events: Vec<GameEvent>,
-    repetitions: RepetitionIndex<RepetitionKey>,
-    plies: Vec<Ply>,
-    snapshots: Vec<HistorySnapshot>,
-    root_snapshot: HistorySnapshot,
-}
-/// Only the current local owner and append-only prefix lengths are needed for rollback.
-#[derive(Debug)]
-struct Checkpoint {
-    local: LocalPosition,
-    events: usize,
-    keys: usize,
-    plies: usize,
-    snapshots: usize,
-}
-/// Single-use LIFO reversal of every logical component/cache, never of runtime identity.
-#[derive(Debug)]
-pub struct GameUndo {
-    instance: u64,
-    before_node: u64,
-    after_node: u64,
-    before: Option<Checkpoint>,
-    used: bool,
-}
-/// Sole authoritative native Chu game owner.
-#[derive(Debug)]
-pub struct Game {
-    data: GameData,
-    context: GameContext,
-    node: u64,
-    next_node: u64,
+/// Authoritative Chu history and adjudication.
+pub type Game = GameHistory<HistorySnapshot>;
+impl Snapshot for HistorySnapshot {
+    type Side = Side;
+    type Command = GameCommand;
+    const STALE: GameError = GameError::StaleContext;
+    const LARGE_ROOT: GameError = GameError::Capacity(Resource::EncodedBytes);
+    type Local = LocalPosition;
+    type Key = RepetitionKey;
+    type Ply = Ply;
+    type Event = GameEvent;
+    type Error = GameError;
+    const INVALID_UNDO: GameError = GameError::InvalidToken;
+    const INVALID_PREFIX: GameError = GameError::InvalidToken;
+    fn board_ply(&self) -> usize {
+        self.board_ply
+    }
+    fn restore_local(&self) -> LocalPosition {
+        self.local_position()
+    }
+    fn encoded_size(game: &Game) -> Result<usize, GameError> {
+        record::encode(game)
+            .map(|text| text.len())
+            .map_err(|_| GameError::Capacity(Resource::EncodedBytes))
+    }
+    fn step(
+        game: &mut Game,
+        actor: Side,
+        command: GameCommand,
+        _stop: &mut impl FnMut() -> bool,
+    ) -> Result<(), GameError> {
+        if game.conclusion().is_some() {
+            return Err(GameError::Concluded);
+        }
+        let previous = game.snapshot().clone();
+        let mut next = previous.clone();
+        let mut effects = None;
+        match &command {
+            GameCommand::Play { action } => {
+                if actor != game.position().side_to_move() {
+                    return Err(GameError::WrongActor);
+                }
+                let influence_before = game.local.capture_influence(actor);
+                let (e, _) = game.local.apply(action).map_err(|e| {
+                    if e == ActionError::Capacity {
+                        GameError::Capacity(Resource::Counter)
+                    } else {
+                        GameError::Action(e)
+                    }
+                })?;
+                let key = RepetitionKey::from_local(&game.local);
+                if !game.permits_next(&key, actor) {
+                    return Err(GameError::RepetitionDeparture);
+                }
+                let influence_after = game.local.capture_influence(actor);
+                let moved_to = *action.route.last().expect("native admitted route");
+                let attack = influence_after
+                    .iter()
+                    .any(|pair| pair.0 == moved_to || !influence_before.contains(pair));
+                let enemy_royals = royals(&game.local, actor.opponent());
+                let check = enemy_royals.len() == 1
+                    && influence_after.iter().any(|p| p.1 == enemy_royals[0]);
+                game.plies.push(Ply {
+                    actor,
+                    action: action.clone(),
+                    quiet_return: e.quiet_return,
+                    check,
+                    attack,
+                });
+                game.keys.push(key);
+                next.occurrences = game.keys.current_occurrences();
+                next.obligations =
+                    game.derive_obligations(&previous.obligations, &next.occurrences);
+                next.draw_offer = None;
+                // Install history for finite reply checks, without recursive mate adjudication.
+                next.state = game.position().state().clone();
+                next.protection = game.local.protection().clone();
+                next.event_count = game.events().len() + 1;
+                next.board_ply = game.plies.len();
+                game.snapshots.push(next.clone());
+                next.conclusion = game.adjudicate(true)?;
+                game.snapshots.pop();
+                effects = Some(e);
+            }
+            GameCommand::Resign => {
+                next.conclusion = Some(Conclusion::Resignation {
+                    winner: actor.opponent(),
+                })
+            }
+            GameCommand::OfferDraw => {
+                if previous.draw_offer.is_some() {
+                    return Err(GameError::DuplicateControl);
+                }
+                next.draw_offer = Some(actor);
+            }
+            GameCommand::AcceptDraw => {
+                if previous.draw_offer != Some(actor.opponent()) {
+                    return Err(GameError::NoMatchingOffer);
+                }
+                next.conclusion = Some(Conclusion::AgreedDraw);
+                next.draw_offer = None;
+            }
+            GameCommand::DeclineDraw => {
+                if previous.draw_offer != Some(actor.opponent()) {
+                    return Err(GameError::NoMatchingOffer);
+                }
+                next.draw_offer = None;
+            }
+        }
+        next.state = game.position().state().clone();
+        next.protection = game.local.protection().clone();
+        next.event_count = game.events().len() + 1;
+        next.board_ply = game.plies.len();
+        game.events.push(GameEvent {
+            index: game.events().len(),
+            board_ply: next.board_ply,
+            actor,
+            command: command.clone(),
+            effects,
+            occurrences: next.occurrences.clone(),
+            obligations: next.obligations.clone(),
+            conclusion: next.conclusion,
+            draw_offer: next.draw_offer,
+        });
+        game.snapshots.push(next);
+        Ok(())
+    }
 }
 impl Game {
-    /// Copy an admitted game for private analysis without replaying its history.
-    /// The copy has a fresh runtime identity; existing reversal tokens cannot apply.
-    pub fn fork(&self) -> Self {
-        Self {
-            data: GameData {
-                root: self.data.root.clone(),
-                local: self.data.local.clone(),
-                events: self.data.events.clone(),
-                repetitions: self.data.repetitions.clone(),
-                plies: self.data.plies.clone(),
-                snapshots: self.data.snapshots.clone(),
-                root_snapshot: self.data.root_snapshot.clone(),
-            },
-            context: GameContext::fresh(),
-            node: self.node,
-            next_node: self.next_node,
-        }
-    }
-
     /// Standard game, empty known history.
     pub fn standard() -> Self {
         Self::from_root(Position::standard()).expect("standard native root")
@@ -343,13 +406,9 @@ impl Game {
         if royals(&local, Side::Sente).is_empty() && royals(&local, Side::Gote).is_empty() {
             return Err(GameError::Root);
         }
-        let root = NativeRoot {
+        let snapshot = HistorySnapshot {
             state: local.position().state().clone(),
             protection: local.protection().clone(),
-        };
-        let snapshot = HistorySnapshot {
-            state: root.state.clone(),
-            protection: root.protection.clone(),
             event_count: 0,
             board_ply: 0,
             occurrences: vec![0],
@@ -357,48 +416,15 @@ impl Game {
             conclusion: None,
             draw_offer: None,
         };
-        let mut game = Self {
-            data: GameData {
-                root,
-                repetitions: RepetitionIndex::new(RepetitionKey::from_local(&local)),
-                local,
-                events: vec![],
-                plies: vec![],
-                snapshots: vec![],
-                root_snapshot: snapshot,
-            },
-            context: GameContext::fresh(),
-            node: 0,
-            next_node: 1,
-        };
-        game.data.root_snapshot.conclusion = game.adjudicate(true)?;
-        if super::record::encode(&game)
-            .map_err(|_| GameError::Capacity(Resource::EncodedBytes))?
-            .len()
-            > crate::record::MAX_COMPACT_ROOT_BYTES
-        {
-            return Err(GameError::Capacity(Resource::EncodedBytes));
-        }
+        let keys = RepetitionIndex::new(RepetitionKey::from_local(&local));
+        let mut game = Self::from_snapshot(local, keys, snapshot);
+        game.root.conclusion = game.adjudicate(true)?;
+        game.check_root_size()?;
         Ok(game)
     }
     /// Current native board/provenance.
     pub fn position(&self) -> &Position {
-        self.data.local.position()
-    }
-    /// Current local owner; local choices are not live game admission.
-    pub fn local_position(&self) -> &LocalPosition {
-        &self.data.local
-    }
-    /// Exact accepted event history.
-    pub fn events(&self) -> &[GameEvent] {
-        &self.data.events
-    }
-    /// Current immutable full native snapshot.
-    pub fn snapshot(&self) -> &HistorySnapshot {
-        self.data
-            .snapshots
-            .last()
-            .unwrap_or(&self.data.root_snapshot)
+        self.local.position()
     }
     /// Current actual conclusion, never an operation failure.
     pub fn conclusion(&self) -> Option<Conclusion> {
@@ -412,14 +438,6 @@ impl Game {
     pub fn occurrences(&self) -> &[usize] {
         &self.snapshot().occurrences
     }
-    /// Current repetition projection, distinct from full saved/search context.
-    pub fn repetition_key(&self) -> &RepetitionKey {
-        self.data.repetitions.current()
-    }
-    /// Current request token; it changes at each accepted command, undo and retirement.
-    pub fn context(&self) -> GameContext {
-        self.context
-    }
     /// Actual board status; no-action alone is unscored.
     pub fn status(&self) -> GameStatus {
         if self.conclusion().is_some() {
@@ -432,7 +450,7 @@ impl Game {
     }
     /// Actual remaining royal squares for a native side.
     pub fn royal_squares(&self, side: Side) -> Vec<Square> {
-        royals(&self.data.local, side)
+        royals(&self.local, side)
     }
     /// Actual complete board choices filtered by full native history admission.
     pub fn legal_actions(&self) -> Vec<Action> {
@@ -451,7 +469,7 @@ impl Game {
             return Ok(vec![]);
         }
         let mut out = vec![];
-        for action in self.data.local.legal_actions() {
+        for action in self.local.legal_actions() {
             if stop() {
                 return Err(GameError::Stopped);
             }
@@ -465,7 +483,7 @@ impl Game {
         if self.obligations().is_empty() {
             return true;
         }
-        let Ok((local, _)) = self.data.local.simulate(action) else {
+        let Ok((local, _)) = self.local.simulate(action) else {
             return false;
         };
         let next = RepetitionKey::from_local(&local);
@@ -475,10 +493,10 @@ impl Game {
         self.obligations().iter().all(|o| {
             let [_, b, c] = o.occurrences;
             let period = c - b;
-            if o.progress >= period || next != &self.data.repetitions.keys()[b + o.progress + 1] {
+            if o.progress >= period || next != &self.keys.keys()[b + o.progress + 1] {
                 return true;
             }
-            let last = (0..period).rfind(|i| self.data.repetitions.keys()[b + i].side == actor);
+            let last = (0..period).rfind(|i| self.keys.keys()[b + i].side == actor);
             !(o.responsible_sides.contains(&actor) && last == Some(o.progress))
         })
     }
@@ -487,8 +505,8 @@ impl Game {
         previous: &[Obligation],
         occurrences: &[usize],
     ) -> Vec<Obligation> {
-        let keys = self.data.repetitions.keys();
-        let n = self.data.plies.len();
+        let keys = self.keys.keys();
+        let n = self.plies.len();
         let mut out: Vec<_> = previous
             .iter()
             .filter_map(|o| {
@@ -521,7 +539,7 @@ impl Game {
                 progress: 0,
                 responsible_sides,
                 category,
-                closing_mover: self.data.plies[n - 1].actor,
+                closing_mover: self.plies[n - 1].actor,
             };
             if !out.contains(&o) {
                 out.push(o);
@@ -530,19 +548,19 @@ impl Game {
         out
     }
     pub(super) fn cycle_responsibility(&self, b: usize, n: usize) -> (Vec<Side>, Responsibility) {
-        let segment = &self.data.plies[b..n];
+        let segment = &self.plies[b..n];
         let both_pass = segment.iter().all(|p| p.quiet_return);
         let checks = [Side::Sente, Side::Gote]
             .map(|s| segment.iter().filter(|p| p.actor == s).all(|p| p.check));
         let attacks = [Side::Sente, Side::Gote]
             .map(|s| segment.iter().filter(|p| p.actor == s).all(|p| p.attack));
         if both_pass {
-            let start = self.data.plies[..n]
+            let start = self.plies[..n]
                 .iter()
                 .rposition(|p| !p.quiet_return)
                 .map_or(0, |i| i + 1);
             (
-                vec![self.data.plies[start].actor],
+                vec![self.plies[start].actor],
                 Responsibility::FirstQuietReturnMover,
             )
         } else if checks[0] || checks[1] {
@@ -564,17 +582,10 @@ impl Game {
             )
         } else {
             (
-                vec![self.data.repetitions.keys()[n].side],
+                vec![self.keys.keys()[n].side],
                 Responsibility::SideToMoveFallback,
             )
         }
-    }
-    /// Atomic context-bound participant command. Resource refusal preserves all state.
-    pub fn submit(&mut self, request: GameRequest) -> Result<GameUndo, GameError> {
-        if request.expected != self.context {
-            return Err(GameError::StaleContext);
-        }
-        self.commit(request.actor, request.command)
     }
     /// `submit` behind a stop check: one Chu command is a bounded native step.
     pub fn submit_with_stop(
@@ -587,193 +598,14 @@ impl Game {
         }
         self.submit(request)
     }
-    fn checkpoint(&mut self) -> Checkpoint {
-        let working = self.data.local.clone();
-        let local = std::mem::replace(&mut self.data.local, working);
-        Checkpoint {
-            local,
-            events: self.data.events.len(),
-            keys: self.data.repetitions.len(),
-            plies: self.data.plies.len(),
-            snapshots: self.data.snapshots.len(),
-        }
-    }
-    fn restore(&mut self, before: Checkpoint) {
-        self.data.local = before.local;
-        self.data.events.truncate(before.events);
-        self.data.repetitions.truncate(before.keys);
-        self.data.plies.truncate(before.plies);
-        self.data.snapshots.truncate(before.snapshots);
-    }
     fn commit(&mut self, actor: Side, command: GameCommand) -> Result<GameUndo, GameError> {
-        let before = self.checkpoint();
-        let before_node = self.node;
-        match self.commit_inner(actor, command) {
-            Ok(()) => Ok(GameUndo {
-                instance: self.context.instance(),
-                before_node,
-                after_node: self.node,
-                before: Some(before),
-                used: false,
-            }),
-            Err(error) => {
-                self.restore(before);
-                Err(error)
-            }
-        }
-    }
-    fn commit_inner(&mut self, actor: Side, command: GameCommand) -> Result<(), GameError> {
-        if self.conclusion().is_some() {
-            return Err(GameError::Concluded);
-        }
-        let context = self.next_context()?;
-        let node = self.next_node;
-        let next_node = node
-            .checked_add(1)
-            .ok_or(GameError::Capacity(Resource::Counter))?;
-        let previous = self.snapshot().clone();
-        let mut next = previous.clone();
-        let mut effects = None;
-        match &command {
-            GameCommand::Play { action } => {
-                if actor != self.position().side_to_move() {
-                    return Err(GameError::WrongActor);
-                }
-                let influence_before = self.data.local.capture_influence(actor);
-                let (e, _) = self.data.local.apply(action).map_err(|e| {
-                    if e == ActionError::Capacity {
-                        GameError::Capacity(Resource::Counter)
-                    } else {
-                        GameError::Action(e)
-                    }
-                })?;
-                let key = RepetitionKey::from_local(&self.data.local);
-                if !self.permits_next(&key, actor) {
-                    return Err(GameError::RepetitionDeparture);
-                }
-                let influence_after = self.data.local.capture_influence(actor);
-                let moved_to = *action.route.last().expect("native admitted route");
-                let attack = influence_after
-                    .iter()
-                    .any(|pair| pair.0 == moved_to || !influence_before.contains(pair));
-                let enemy_royals = royals(&self.data.local, actor.opponent());
-                let check = enemy_royals.len() == 1
-                    && influence_after.iter().any(|p| p.1 == enemy_royals[0]);
-                self.data.plies.push(Ply {
-                    actor,
-                    action: action.clone(),
-                    quiet_return: e.quiet_return,
-                    check,
-                    attack,
-                });
-                self.data.repetitions.push(key);
-                next.occurrences = self.data.repetitions.current_occurrences();
-                next.obligations =
-                    self.derive_obligations(&previous.obligations, &next.occurrences);
-                next.draw_offer = None;
-                // Install history for finite reply checks, without recursive mate adjudication.
-                next.state = self.position().state().clone();
-                next.protection = self.data.local.protection().clone();
-                next.event_count = self.events().len() + 1;
-                next.board_ply = self.data.plies.len();
-                self.data.snapshots.push(next.clone());
-                next.conclusion = self.adjudicate(true)?;
-                self.data.snapshots.pop();
-                effects = Some(e);
-            }
-            GameCommand::Resign => {
-                next.conclusion = Some(Conclusion::Resignation {
-                    winner: actor.opponent(),
-                })
-            }
-            GameCommand::OfferDraw => {
-                if previous.draw_offer.is_some() {
-                    return Err(GameError::DuplicateControl);
-                }
-                next.draw_offer = Some(actor);
-            }
-            GameCommand::AcceptDraw => {
-                if previous.draw_offer != Some(actor.opponent()) {
-                    return Err(GameError::NoMatchingOffer);
-                }
-                next.conclusion = Some(Conclusion::AgreedDraw);
-                next.draw_offer = None;
-            }
-            GameCommand::DeclineDraw => {
-                if previous.draw_offer != Some(actor.opponent()) {
-                    return Err(GameError::NoMatchingOffer);
-                }
-                next.draw_offer = None;
-            }
-        }
-        next.state = self.position().state().clone();
-        next.protection = self.data.local.protection().clone();
-        next.event_count = self.events().len() + 1;
-        next.board_ply = self.data.plies.len();
-        self.data.events.push(GameEvent {
-            index: self.events().len(),
-            board_ply: next.board_ply,
+        self.submit(GameRequest {
+            expected: self.context(),
             actor,
-            command: command.clone(),
-            effects,
-            occurrences: next.occurrences.clone(),
-            obligations: next.obligations.clone(),
-            conclusion: next.conclusion,
-            draw_offer: next.draw_offer,
-        });
-        self.data.snapshots.push(next);
-        self.context = context;
-        self.node = node;
-        self.next_node = next_node;
-        Ok(())
+            command,
+        })
     }
 
-    /// Exact logical undo; runtime revision advances and retired work stays retired.
-    pub fn undo(&mut self, token: &mut GameUndo) -> Result<(), GameError> {
-        if token.used || token.instance != self.context.instance() || token.after_node != self.node
-        {
-            return Err(GameError::InvalidToken);
-        }
-        let context = self.next_context()?;
-        let node = self.next_node;
-        let next = node
-            .checked_add(1)
-            .ok_or(GameError::Capacity(Resource::Counter))?;
-        self.restore(token.before.take().expect("unused token"));
-        self.node = token.before_node;
-        self.next_node = next;
-        self.context = context;
-        token.used = true;
-        Ok(())
-    }
-    /// Immutable exact event prefix; no future obligations or outcomes.
-    pub fn event_prefix(&self, count: usize) -> Result<HistorySnapshot, GameError> {
-        if count == 0 {
-            Ok(self.data.root_snapshot.clone())
-        } else {
-            self.data
-                .snapshots
-                .get(count - 1)
-                .cloned()
-                .ok_or(GameError::InvalidToken)
-        }
-    }
-    /// Explicit selection retires work without changing the live history.
-    pub fn select_prefix(&mut self, count: usize) -> Result<HistorySnapshot, GameError> {
-        let s = self.event_prefix(count)?;
-        self.retire_context()?;
-        Ok(s)
-    }
-    /// Return-to-live/cancellation retirement, never semantic rewind.
-    pub fn retire_context(&mut self) -> Result<(), GameError> {
-        self.context = self.next_context()?;
-        Ok(())
-    }
-    fn next_context(&self) -> Result<GameContext, GameError> {
-        self.context
-            .advanced()
-            .ok_or(GameError::Capacity(Resource::Counter))
-    }
     /// Canonical exact event prefix; reopening always receives fresh native authority.
     pub fn record_prefix(&self, count: usize) -> Result<GameRecord, RecordError> {
         self.record_prefix_with_stop(count, &mut || false)
@@ -785,8 +617,7 @@ impl Game {
         stop: &mut impl FnMut() -> bool,
     ) -> Result<GameRecord, RecordError> {
         self.event_prefix(count).map_err(|_| RecordError::Prefix)?;
-        let mut game =
-            Self::from_native_root(self.data.root.clone()).map_err(|_| RecordError::Root)?;
+        let mut game = Self::from_native_root(self.native_root()).map_err(|_| RecordError::Root)?;
         for e in &self.events()[..count] {
             if stop() {
                 return Err(RecordError::Stopped);
@@ -804,35 +635,28 @@ impl Game {
         let l = LocalPosition::from_parts(p, root.protection).map_err(|_| GameError::Root)?;
         Self::from_local_root(l)
     }
-    pub(super) fn native_root(&self) -> &NativeRoot {
-        &self.data.root
-    }
-    /// Complete encoded native size and events.
-    pub fn capacity_usage(&self) -> Result<CapacityUsage, GameError> {
-        Ok(CapacityUsage {
-            encoded_bytes: super::record::encode(self)
-                .map_err(|_| GameError::Capacity(Resource::EncodedBytes))?
-                .len(),
-            events: self.events().len(),
-        })
+    pub(super) fn native_root(&self) -> NativeRoot {
+        NativeRoot {
+            state: self.root.state.clone(),
+            protection: self.root.protection.clone(),
+        }
     }
     /// Native turn-appropriate material exception replies, not general win search.
     pub fn immediate_material_replies(&self) -> Vec<Action> {
-        let Some((_, bare)) = material_configuration(&self.data.local) else {
+        let Some((_, bare)) = material_configuration(&self.local) else {
             return vec![];
         };
         if bare != self.position().side_to_move() {
             return vec![];
         }
-        self.data
-            .local
+        self.local
             .legal_actions()
             .into_iter()
             .filter(|a| {
                 if !self.history_permits(a) {
                     return false;
                 }
-                let Ok((local, _)) = self.data.local.simulate(a) else {
+                let Ok((local, _)) = self.local.simulate(a) else {
                     return false;
                 };
                 royals(&local, bare.opponent()).is_empty()
@@ -844,16 +668,16 @@ impl Game {
     fn adjudicate(&mut self, mate: bool) -> Result<Option<Conclusion>, GameError> {
         let side = self.position().side_to_move();
         for loser in [side, side.opponent()] {
-            if royals(&self.data.local, loser).is_empty() {
+            if royals(&self.local, loser).is_empty() {
                 return Ok(Some(Conclusion::RoyalCapture {
                     winner: loser.opponent(),
                 }));
             }
         }
         let threatened =
-            mate && royals(&self.data.local, side).len() == 1 && self.has_capture_all(side)?;
+            mate && royals(&self.local, side).len() == 1 && self.has_capture_all(side)?;
         if threatened {
-            let replies = self.data.local.legal_actions();
+            let replies = self.local.legal_actions();
             let mut escaped = false;
             for action in replies {
                 if !self.history_permits(&action) {
@@ -883,7 +707,7 @@ impl Game {
                 }));
             }
         }
-        if let Some((winner, _)) = material_configuration(&self.data.local)
+        if let Some((winner, _)) = material_configuration(&self.local)
             && self.immediate_material_replies().is_empty()
         {
             return Ok(Some(Conclusion::Material { winner }));
@@ -893,52 +717,46 @@ impl Game {
     fn apply_for_reply(&mut self, action: &Action) -> Result<(), GameError> {
         let before = self.snapshot().clone();
         let actor = self.position().side_to_move();
-        let influence_before = self.data.local.capture_influence(actor);
-        let (next_local, e) = self
-            .data
-            .local
-            .simulate(action)
-            .map_err(GameError::Action)?;
-        self.data.local = next_local;
-        let influence_after = self.data.local.capture_influence(actor);
+        let influence_before = self.local.capture_influence(actor);
+        let (next_local, e) = self.local.simulate(action).map_err(GameError::Action)?;
+        self.local = next_local;
+        let influence_after = self.local.capture_influence(actor);
         let moved_to = *action.route.last().expect("native route");
         let attack = influence_after
             .iter()
             .any(|p| p.0 == moved_to || !influence_before.contains(p));
-        let enemy = royals(&self.data.local, actor.opponent());
+        let enemy = royals(&self.local, actor.opponent());
         let check = enemy.len() == 1 && influence_after.iter().any(|p| p.1 == enemy[0]);
-        self.data.plies.push(Ply {
+        self.plies.push(Ply {
             actor,
             action: action.clone(),
             quiet_return: e.quiet_return,
             check,
             attack,
         });
-        self.data
-            .repetitions
-            .push(RepetitionKey::from_local(&self.data.local));
+        self.keys.push(RepetitionKey::from_local(&self.local));
         let mut next = before.clone();
         next.state = self.position().state().clone();
-        next.protection = self.data.local.protection().clone();
+        next.protection = self.local.protection().clone();
         next.board_ply += 1;
-        next.occurrences = self.data.repetitions.current_occurrences();
+        next.occurrences = self.keys.current_occurrences();
         next.obligations = self.derive_obligations(&before.obligations, &next.occurrences);
         next.conclusion = None;
         next.draw_offer = None;
-        self.data.snapshots.push(next);
+        self.snapshots.push(next);
         Ok(())
     }
     /// A single admitted opponent action capturing all royals, not separate attacks/minimax.
     pub fn has_capture_all(&self, victim: Side) -> Result<bool, GameError> {
-        let targets = royals(&self.data.local, victim);
+        let targets = royals(&self.local, victim);
         if targets.is_empty() {
             return Ok(false);
         }
-        let actions = self.data.local.legal_actions_for(victim.opponent());
+        let actions = self.local.legal_actions_for(victim.opponent());
         for action in actions {
             // A hypothetical future turn with the same placement must respect native history.
             // At actual replies the opponent is side-to-move; root threat is advisory geometry.
-            let local = &self.data.local;
+            let local = &self.local;
             let effects = local.preview_for(victim.opponent(), &action);
             if let Ok(e) = effects
                 && targets
@@ -957,14 +775,13 @@ impl Game {
         format!(
             "{:?}",
             (
-                &self.data.root,
                 self.position().state(),
-                self.data.local.protection(),
-                &self.data.events,
-                self.data.repetitions.keys(),
-                &self.data.plies,
-                &self.data.snapshots,
-                &self.data.root_snapshot,
+                self.local.protection(),
+                &self.events,
+                self.keys.keys(),
+                &self.plies,
+                &self.snapshots,
+                &self.root,
             )
         )
     }
@@ -1043,7 +860,7 @@ mod attack_metadata_tests {
                 },
             )
             .unwrap();
-        assert!(discovered.data.plies[0].attack);
+        assert!(discovered.plies[0].attack);
         assert!(
             discovered
                 .local_position()
@@ -1059,7 +876,7 @@ mod attack_metadata_tests {
                 },
             )
             .unwrap();
-        assert!(!incidental.data.plies[0].attack);
+        assert!(!incidental.plies[0].attack);
         assert!(
             incidental
                 .local_position()

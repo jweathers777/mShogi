@@ -22,6 +22,7 @@ pub struct Root {
 }
 
 /// Concrete authoritative owners, borrowed by the experiment controller.
+#[derive(Clone)]
 pub enum NativeState {
     /// Untimed M2 Chess match with its full command ledger.
     Chess(Box<chess::ChessMatch>),
@@ -238,17 +239,6 @@ impl NativeState {
                 .to_game()
                 .map(|g| Self::Tenjiku(Box::new(g)))
                 .map_err(|e| e.to_string()),
-        }
-    }
-
-    /// Exact transaction copy. Games with a native fork copy without replay
-    /// (MSH-204); the others replay their complete root.
-    pub fn fork(&self) -> Result<Self, String> {
-        match self {
-            Self::Xiangqi(game) => Ok(Self::Xiangqi(Box::new(game.fork()))),
-            Self::Tori(game) => Ok(Self::Tori(Box::new(game.fork()))),
-            Self::Chu(game) => Ok(Self::Chu(Box::new(game.fork()))),
-            _ => Self::from_root(&self.root()?),
         }
     }
 
@@ -489,10 +479,7 @@ impl NativeState {
             },
             (Self::Xiangqi(game), ExecutionResult::Xiangqi { result }) => match result {
                 XiangqiResult::Choice { choice, telemetry } => {
-                    let mut pv = xiangqi::GameRecord::from_game(game)
-                        .map_err(|e| e.to_string())?
-                        .to_game()
-                        .map_err(|e| e.to_string())?;
+                    let mut pv = game.clone();
                     for choice in &telemetry.principal_variation {
                         if pv.conclusion().is_some() || pv.pending_adjudication().is_some() {
                             return Err("Xiangqi PV continues after native stop".into());

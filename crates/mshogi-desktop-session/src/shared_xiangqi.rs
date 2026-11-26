@@ -146,8 +146,8 @@ impl SessionGame for Xiangqi {
         }
         game.position().legal_actions().map_err(error)
     }
-    fn retire_context(_game: &mut x::Game) {
-        // Execution identities are retired by the session version.
+    fn retire_context(game: &mut x::Game) {
+        game.retire_context();
     }
     fn event(game: &x::Game, index: usize) -> (x::Side, CommandKind) {
         let event = &game.events()[index];

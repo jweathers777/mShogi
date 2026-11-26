@@ -61,7 +61,7 @@ impl WireRecord {
             profile: PROFILE_ID.into(),
             edition: PROFILE_EDITION.into(),
             schema_version: GAME_RECORD_SCHEMA_VERSION,
-            root: g.native_root().clone(),
+            root: g.native_root(),
             events: g
                 .events()
                 .iter()
@@ -86,7 +86,7 @@ impl GameRecord {
             board_plies: g.snapshot().board_ply,
             side: g.position().side_to_move(),
             conclusion: g.conclusion(),
-            root: g.native_root().clone(),
+            root: g.native_root(),
             ledger: g.events().to_vec(),
         })
     }

@@ -46,7 +46,7 @@ pub trait EngineGame: Copy + Debug + Eq + 'static {
     /// Required adjudication that stops a search without a score.
     type Pending: Pending;
     /// Game with full history.
-    type Game;
+    type Game: Clone;
     /// Canonical game record.
     type Record;
     /// Complete game command.
@@ -74,8 +74,6 @@ pub trait EngineGame: Copy + Debug + Eq + 'static {
     fn extends(current: &Self::Record, game: &Self::Game, earlier: &Self::Record) -> bool;
     /// Player to move.
     fn side_to_move(game: &Self::Game) -> Self::Side;
-    /// Independent copy of a game, with its own request token.
-    fn fork(game: &Self::Game) -> Self::Game;
     /// Actor and command of a choice when `turn` is to move.
     fn command(choice: &Self::Choice, turn: Self::Side) -> (Self::Side, Self::Command);
     /// Submit a command in the current context of `game`.
@@ -351,7 +349,7 @@ impl<G: EngineGame> EngineResult<G> {
         if line.is_empty() {
             return Ok(());
         }
-        let mut branch = G::fork(game);
+        let mut branch = game.clone();
         for choice in line {
             if stop() {
                 return Err(stopped());

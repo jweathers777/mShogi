@@ -2,6 +2,7 @@
 
 use super::{Action, ActionError, CounterSource, PieceKind, Position, RepetitionIdentity, Side};
 pub use crate::native::GameContext;
+use crate::native::history::{AppendGame, Authority, GameUndo as Binding};
 use crate::repetition::RepetitionIndex;
 
 /// Root category is retained, rather than presenting an imported diagram as a recovered game.
@@ -322,7 +323,7 @@ struct CheckStep {
 }
 
 /// Complete known game state. Position queries and game conclusions remain separate.
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Game {
     root: GameRoot,
     position: Position,
@@ -330,24 +331,7 @@ pub struct Game {
     identities: RepetitionIndex<RepetitionIdentity>,
     checks: Vec<CheckStep>,
     conclusion: Option<Conclusion>,
-    context: GameContext,
-    /// Revision of the last command that is still in the history; 0 at the root.
-    node: u64,
-}
-/// A clone is a new game instance: requests and undo tokens of the original do not apply to it.
-impl Clone for Game {
-    fn clone(&self) -> Self {
-        Self {
-            root: self.root.clone(),
-            position: self.position.clone(),
-            events: self.events.clone(),
-            identities: self.identities.clone(),
-            checks: self.checks.clone(),
-            conclusion: self.conclusion,
-            context: GameContext::fresh(),
-            node: 0,
-        }
-    }
+    authority: Authority,
 }
 /// Equal games have the same root and history; the request token is not compared.
 impl PartialEq for Game {
@@ -359,8 +343,7 @@ impl PartialEq for Game {
             identities,
             checks,
             conclusion,
-            context: _,
-            node: _,
+            authority: _,
         } = self;
         (root, position, events, identities, checks, conclusion)
             == (
@@ -377,7 +360,7 @@ impl Eq for Game {}
 
 /// State before a command. The history vectors only grow, so their lengths restore them.
 #[derive(Debug)]
-pub(super) struct Checkpoint {
+pub(crate) struct Checkpoint {
     position: Position,
     conclusion: Option<Conclusion>,
     events: usize,
@@ -389,9 +372,7 @@ pub(super) struct Checkpoint {
 #[derive(Debug)]
 pub struct GameUndo {
     before: Checkpoint,
-    instance: u64,
-    before_node: u64,
-    after_node: u64,
+    binding: Binding,
 }
 /// The reversal token is not for the current history of this game instance.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -417,8 +398,7 @@ impl Game {
             events: vec![],
             checks: vec![],
             conclusion: None,
-            context: GameContext::fresh(),
-            node: 0,
+            authority: Authority::default(),
         };
         game.conclusion = game.local_or_length_conclusion();
         game
@@ -441,7 +421,11 @@ impl Game {
     }
     /// Current request token; it changes at each accepted command and undo.
     pub fn context(&self) -> GameContext {
-        self.context
+        self.authority.context()
+    }
+    /// Invalidate outstanding requests without changing the command history.
+    pub fn retire_context(&mut self) {
+        self.authority.retire();
     }
     /// Known position indices for this board/hand/turn identity. Counters are excluded.
     pub fn occurrences(&self) -> Vec<usize> {
@@ -481,19 +465,12 @@ impl Game {
     }
     /// Atomically accept a context-bound command. A legal losing repetition action is retained.
     pub fn submit(&mut self, request: GameRequest) -> Result<GameUndo, GameError> {
-        if request.expected != self.context {
+        if request.expected != self.context() {
             return Err(GameError::StaleContext);
         }
-        let instance = self.context.instance();
-        let before_node = self.node;
-        let ((), before) =
+        let ((), before, binding) =
             self.append_transaction(|game| game.apply_command(request.actor, request.command))?;
-        Ok(GameUndo {
-            before,
-            instance,
-            before_node,
-            after_node: self.node,
-        })
+        Ok(GameUndo { before, binding })
     }
 
     /// Rules-owned command execution after a caller has bound the prior state.
@@ -559,53 +536,13 @@ impl Game {
         Ok(())
     }
 
-    /// Atomic append-only transaction without copying the accepted history; it never
-    /// rewrites a prefix. A refusal changes nothing. Success advances the request
-    /// token and returns the state before, for undo.
-    pub(super) fn append_transaction<T, E>(
-        &mut self,
-        apply: impl FnOnce(&mut Self) -> Result<T, E>,
-    ) -> Result<(T, Checkpoint), E> {
-        let before = Checkpoint {
-            position: self.position.clone(),
-            conclusion: self.conclusion,
-            events: self.events.len(),
-            identities: self.identities.len(),
-            checks: self.checks.len(),
-        };
-        match apply(self) {
-            Ok(value) => {
-                self.context = self.next_context();
-                self.node = self.context.revision();
-                Ok((value, before))
-            }
-            Err(error) => {
-                self.restore(before);
-                Err(error)
-            }
-        }
-    }
-    fn restore(&mut self, before: Checkpoint) {
-        self.position = before.position;
-        self.conclusion = before.conclusion;
-        self.events.truncate(before.events);
-        self.identities.truncate(before.identities);
-        self.checks.truncate(before.checks);
-    }
-    fn next_context(&self) -> GameContext {
-        self.context
-            .advanced()
-            .expect("a 64-bit revision count cannot run out")
-    }
     /// Restore board, commands, counters, occurrences and checks exactly. The request
     /// token advances, so requests made before the undo are refused.
     pub fn undo(&mut self, undo: GameUndo) -> Result<(), GameUndoError> {
-        if undo.instance != self.context.instance() || undo.after_node != self.node {
+        if !self.authority.undo(&undo.binding) {
             return Err(GameUndoError);
         }
         self.restore(undo.before);
-        self.context = self.next_context();
-        self.node = undo.before_node;
         Ok(())
     }
     /// Authoritatively reconstruct an accepted event prefix. Same-ply terminal commands count.
@@ -699,6 +636,29 @@ impl Game {
         }
         Ok((self.position.completed_actions() >= 320)
             .then_some(Conclusion::Draw(DrawReason::Length)))
+    }
+}
+
+impl AppendGame for Game {
+    type Checkpoint = Checkpoint;
+    fn authority(&mut self) -> &mut Authority {
+        &mut self.authority
+    }
+    fn checkpoint(&mut self) -> Checkpoint {
+        Checkpoint {
+            position: self.position.clone(),
+            conclusion: self.conclusion,
+            events: self.events.len(),
+            identities: self.identities.len(),
+            checks: self.checks.len(),
+        }
+    }
+    fn restore(&mut self, before: Checkpoint) {
+        self.position = before.position;
+        self.conclusion = before.conclusion;
+        self.events.truncate(before.events);
+        self.identities.truncate(before.identities);
+        self.checks.truncate(before.checks);
     }
 }
 

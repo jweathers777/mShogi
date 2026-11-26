@@ -243,37 +243,6 @@ fn root_provenance_and_declared_counter_are_not_played_history() {
     assert_eq!(GameRecord::from_game(&restored).unwrap(), saved);
     restored.retire_context().unwrap();
 }
-#[test]
-fn actual_ending_runtime_headroom_is_reserved_before_ordinary_admission() {
-    let mut g = corner(Profile::AdamsModern);
-    g.set_test_authority(u64::MAX - 1, u64::MAX - 1);
-    let before = GameRecord::from_game(&g).unwrap();
-    let context = g.context();
-    assert_eq!(
-        submit(&mut g, Side::Sente, GameCommand::OfferDraw).unwrap_err(),
-        GameError::Capacity(Resource::Counter)
-    );
-    assert_eq!(before, GameRecord::from_game(&g).unwrap());
-    assert_eq!(context, g.context());
-    submit(&mut g, Side::Gote, GameCommand::Resign).unwrap();
-    assert!(GameRecord::from_game(&g).is_ok());
-}
-#[test]
-fn undo_cannot_spend_reserved_ending_authority_and_failure_keeps_token() {
-    let mut g = corner(Profile::AdamsModern);
-    let mut u = play(&mut g, (16, 16), (15, 16));
-    g.set_test_authority(u64::MAX - 1, 5);
-    let before = GameRecord::from_game(&g).unwrap();
-    let context = g.context();
-    assert_eq!(
-        g.undo(&mut u).unwrap_err(),
-        GameError::Capacity(Resource::Counter)
-    );
-    assert_eq!(context, g.context());
-    assert_eq!(before, GameRecord::from_game(&g).unwrap());
-    g.set_test_authority(20, 5);
-    assert!(g.undo(&mut u).is_ok());
-}
 fn rotated_position(p: &Position) -> Position {
     let entries = p
         .pieces()

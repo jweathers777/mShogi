@@ -157,7 +157,7 @@ pub fn run_with_stop(
             if observation.is_none() {
                 bridges[player].cancel();
             }
-            let mut candidate = state.fork().map_err(err)?;
+            let mut candidate = state.clone();
             let decision = if let Some(o) = &observation {
                 if config.clock.is_some() && elapsed_ns.div_ceil(1_000_000) >= remaining[player] {
                     failure = Some("clock_limit".into());

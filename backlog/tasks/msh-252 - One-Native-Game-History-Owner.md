@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-26T15:00:00Z'
+updated_date: '2026-11-26T15:12:00Z'
 labels:
   - core
   - refactor
@@ -38,6 +38,12 @@ Xiangqi still clones commands, events, snapshots, steps and identities in transa
 - [ ] #7 The final desktop Xiangqi record-open and validation paths are measured again with long records; record the results without restoring the removed desktop work model or document limit.
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Measure post-MSH-251 release replay and desktop Open/decode on the same 1,000-move walk. Share the event and snapshot owner, rollback, context, copy, reversal, and retirement. Keep rule data and adjudication in each game. Replace Xiangqi full-history copies with append rollback. Check unchanged rules, perft, records, and fixtures; measure the final code, obtain independent review, then integrate.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
@@ -59,4 +65,8 @@ John approved consolidation on 2026-11-26: this task retains the full scope of M
 Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
 
 Claimed on codex/msh-252-shared-history at 23a0fd0. Next: measure the post-MSH-251 replay baseline and inspect history ownership.
+
+Baseline on Apple M1 Pro, 23a0fd0: resource_admission xiangqi 1000 (release, median of five), 1,000 moves/59,375 bytes, 153,474.958 us replay (153.475 us/move), 78.291 us last-command admission. Branch codex/msh-252-shared-history.
+
+Checkpoint on codex/msh-252-shared-history: Tori, Chu and Tenjiku share the history owner, prefix selection, rollback, compact undo and request lifecycle. Shogi and Xiangqi share the transaction and authority but retain their specialized allocations: Shogi replays prefixes without storing board snapshots; Xiangqi has several viewable events per command, including root events and claim audits. All game owners now clone their full admitted state directly. Xiangqi history-copy removal alone brought full replay to 127.745 ms and last admission to 8.500 us. Original 59,593-byte desktop document median of five: decode 157.357 ms, product Open 163.023 ms. Added short-circuit terminal testing to the existing Xiangqi legal-action generator; next are final timings, full checks and independent review.
 <!-- SECTION:NOTES:END -->

@@ -640,13 +640,8 @@ impl NativeGame for Xiangqi {
         if stop() {
             return Err(RecordFailure::Stopped);
         }
-        let parsed =
-            mshogi_core::xiangqi::GameRecord::from_json_with_game(text).map_err(|e| match e {
-                mshogi_core::xiangqi::RecordError::Capacity => {
-                    RecordFailure::Capacity(e.to_string())
-                }
-                e => RecordFailure::Invalid(e.to_string()),
-            })?;
+        let parsed = mshogi_core::xiangqi::GameRecord::from_json_with_game(text)
+            .map_err(|e| RecordFailure::Invalid(e.to_string()))?;
         if stop() {
             return Err(RecordFailure::Stopped);
         }
@@ -672,20 +667,17 @@ impl NativeGame for Xiangqi {
         if stop() {
             return Err(RecordFailure::Stopped);
         }
-        let game = record.to_game().map_err(|e| match e {
-            mshogi_core::xiangqi::RecordError::Capacity => RecordFailure::Capacity(e.to_string()),
-            e => RecordFailure::Invalid(e.to_string()),
-        })?;
+        let game = record
+            .to_game()
+            .map_err(|e| RecordFailure::Invalid(e.to_string()))?;
         if stop() {
             return Err(RecordFailure::Stopped);
         }
         Ok(game)
     }
     fn from_game(game: &Self::Game) -> Result<Self::Record, RecordFailure> {
-        mshogi_core::xiangqi::GameRecord::from_game(game).map_err(|e| match e {
-            mshogi_core::xiangqi::RecordError::Capacity => RecordFailure::Capacity(e.to_string()),
-            e => RecordFailure::Invalid(e.to_string()),
-        })
+        mshogi_core::xiangqi::GameRecord::from_game(game)
+            .map_err(|e| RecordFailure::Invalid(e.to_string()))
     }
     fn record_prefix(
         game: &Self::Game,

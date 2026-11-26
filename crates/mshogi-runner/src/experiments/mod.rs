@@ -472,7 +472,7 @@ fn admit_bounded(
     result: &mshogi_engine::ExecutionResult,
     limits: WorkLimits,
 ) -> Result<native::Admission, String> {
-    let mut candidate = state.fork()?;
+    let mut candidate = state.clone();
     let decision = candidate.admit(result)?;
     let after = candidate
         .root()

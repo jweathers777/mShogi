@@ -173,25 +173,25 @@ impl Position {
     /// General captures are never board actions. Requires static live admission.
     pub fn pseudo_legal_actions(&self) -> Result<Vec<Action>, LocalPositionError> {
         self.validate_local()?;
-        Ok(self.pseudo_unchecked())
+        Ok(self.pseudo_unchecked().collect())
     }
-    fn pseudo_unchecked(&self) -> Vec<Action> {
-        let mut actions = Vec::new();
-        for (from, _) in self.pieces().filter(|(_, piece)| piece.side == self.side) {
-            for to in Intersection::all() {
-                let target = self.piece(to);
-                if target.is_some_and(|target| {
-                    target.side == self.side || target.kind == PieceKind::General
-                }) {
-                    continue;
-                }
-                let action = Action { from, to };
-                if self.geometry(action, target.is_some()) {
-                    actions.push(action);
-                }
-            }
-        }
-        actions
+    fn pseudo_unchecked(&self) -> impl Iterator<Item = Action> + '_ {
+        self.pieces()
+            .filter(|(_, piece)| piece.side == self.side)
+            .flat_map(|(from, _)| {
+                Intersection::all().filter_map(move |to| {
+                    let target = self.piece(to);
+                    if target.is_some_and(|p| p.side == self.side || p.kind == PieceKind::General) {
+                        return None;
+                    }
+                    let action = Action { from, to };
+                    self.geometry(action, target.is_some()).then_some(action)
+                })
+            })
+    }
+    fn legal_unchecked(&self) -> impl Iterator<Item = Action> + '_ {
+        self.pseudo_unchecked()
+            .filter(|action| self.safe_after(*action))
     }
     fn safe_after(&self, action: Action) -> bool {
         let mut after = self.clone();
@@ -203,11 +203,7 @@ impl Position {
     /// Invalid structural roots return an error, never a misleading empty set.
     pub fn legal_actions(&self) -> Result<Vec<Action>, LocalPositionError> {
         self.validate_local()?;
-        Ok(self
-            .pseudo_unchecked()
-            .into_iter()
-            .filter(|action| self.safe_after(*action))
-            .collect())
+        Ok(self.legal_unchecked().collect())
     }
     /// Read-only complete movement inspection for either native participant.
     ///
@@ -221,16 +217,13 @@ impl Position {
         self.validate_local()?;
         let mut inspected = self.clone();
         inspected.side = side;
-        Ok(inspected
-            .pseudo_unchecked()
-            .into_iter()
-            .filter(|action| inspected.safe_after(*action))
-            .collect())
+        Ok(inspected.legal_unchecked().collect())
     }
     /// Local no-action reasons are preserved for the future game owner.
     pub fn local_status(&self) -> Result<LocalStatus, LocalPositionError> {
+        self.validate_local()?;
         let checked = self.is_in_check(self.side);
-        if self.legal_actions()?.is_empty() {
+        if self.legal_unchecked().next().is_none() {
             Ok(LocalStatus::NoLegalAction {
                 reason: if checked {
                     NoActionReason::Checkmate

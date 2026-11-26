@@ -82,8 +82,8 @@ impl SessionGame for Shogi {
             game.position().legal_actions()
         })
     }
-    fn retire_context(_game: &mut s::Game) {
-        // A Shogi game has no runtime identity; its context is its history.
+    fn retire_context(game: &mut s::Game) {
+        game.retire_context();
     }
     fn event(game: &s::Game, index: usize) -> (s::Side, CommandKind) {
         let event = &game.events()[index];

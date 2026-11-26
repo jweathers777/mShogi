@@ -5,6 +5,7 @@ use super::{
     Position, PositionRoot, Side,
 };
 pub use crate::native::GameContext;
+use crate::native::history::{AppendGame, Authority, GameUndo as Binding};
 use crate::repetition::RepetitionIndex;
 use serde::{Deserialize, Serialize};
 use std::{error::Error, fmt};
@@ -262,8 +263,6 @@ pub enum GameError {
     Root(LocalPositionError),
     /// No opponent offer is available to accept/withdraw.
     DrawOffer,
-    /// The request token revision counter was exhausted.
-    Capacity,
     /// Historical selection is not the end of a committed native command.
     /// Automatic derived events remain viewable through `event_prefix`.
     NotCommandBoundary,
@@ -277,7 +276,7 @@ impl fmt::Display for GameError {
 }
 impl Error for GameError {}
 #[derive(Debug)]
-struct Checkpoint {
+pub(crate) struct Checkpoint {
     position: Position,
     ids: [Option<u8>; 90],
     command_len: usize,
@@ -295,9 +294,7 @@ struct Checkpoint {
 #[derive(Debug)]
 pub struct GameUndo {
     before: Checkpoint,
-    instance: u64,
-    before_node: u64,
-    after_node: u64,
+    binding: Binding,
 }
 /// Admitted result with exact reversal, including rejected-claim audit entries.
 #[derive(Debug)]
@@ -308,7 +305,7 @@ pub struct Submission {
     pub undo: GameUndo,
 }
 /// Bounded native known game. Each concrete consumer advertises its own capabilities.
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Game {
     pub(super) root: PositionRoot,
     pub(super) policy: ClaimPolicy,
@@ -324,9 +321,7 @@ pub struct Game {
     pub(super) conclusion: Option<Conclusion>,
     pending: Option<PendingAdjudication>,
     assessment: NoWinAssessment,
-    context: GameContext,
-    /// Revision of the last command that is still in the history; 0 at the root.
-    node: u64,
+    authority: Authority,
     last_offer_ply: [Option<usize>; 2],
 }
 #[derive(Clone, Debug, Eq, PartialEq, Hash)]
@@ -367,8 +362,7 @@ impl Game {
             offered_by: None,
             conclusion: None,
             pending: None,
-            context: GameContext::fresh(),
-            node: 0,
+            authority: Authority::default(),
             last_offer_ply: [None; 2],
         };
         game.resolve_board_terminal()?;
@@ -460,7 +454,11 @@ impl Game {
     }
     /// Current request token; it changes at each accepted command and undo.
     pub fn context(&self) -> GameContext {
-        self.context
+        self.authority.context()
+    }
+    /// Invalidate outstanding requests without changing the command history.
+    pub fn retire_context(&mut self) {
+        self.authority.retire();
     }
     /// Query claimant-specific known count without submitting or accepting a claim.
     pub fn natural_count_eligibility(&self, claimant: Side) -> NaturalCountEligibility {
@@ -500,42 +498,6 @@ impl Game {
         self.conclusion.is_none()
             && self.pending.is_none()
             && self.offered_by == Some(actor.opponent())
-    }
-    fn transaction_copy(&self) -> Self {
-        Self {
-            root: self.root.clone(),
-            policy: self.policy,
-            position: self.position.clone(),
-            ids: self.ids,
-            commands: self.commands.clone(),
-            events: self.events.clone(),
-            snapshots: self.snapshots.clone(),
-            steps: self.steps.clone(),
-            identities: self.identities.clone(),
-            warnings: self.warnings.clone(),
-            offered_by: self.offered_by,
-            conclusion: self.conclusion,
-            pending: self.pending.clone(),
-            assessment: self.assessment.clone(),
-            context: self.context,
-            node: self.node,
-            last_offer_ply: self.last_offer_ply,
-        }
-    }
-    fn checkpoint(&self) -> Checkpoint {
-        Checkpoint {
-            position: self.position.clone(),
-            ids: self.ids,
-            command_len: self.commands.len(),
-            event_len: self.events.len(),
-            step_len: self.steps.len(),
-            warnings: self.warnings.clone(),
-            offered_by: self.offered_by,
-            conclusion: self.conclusion,
-            pending: self.pending.clone(),
-            assessment: self.assessment.clone(),
-            last_offer_ply: self.last_offer_ply,
-        }
     }
     fn snapshot(&self) -> HistorySnapshot {
         HistorySnapshot {
@@ -697,7 +659,7 @@ impl Game {
     /// Serialize admission, actions, automatic events and claims atomically. Invalid
     /// admitted claims retain only their bounded audit; no board state or result changes.
     pub fn submit(&mut self, request: GameRequest) -> Result<Submission, GameError> {
-        if request.expected != self.context {
+        if request.expected != self.context() {
             return Err(GameError::StaleContext);
         }
         if self.conclusion.is_some() {
@@ -706,40 +668,40 @@ impl Game {
         if self.pending.is_some() {
             return Err(GameError::AdjudicationPending);
         }
-        let context = self.context.advanced().ok_or(GameError::Capacity)?;
-        let before = self.checkpoint();
-        let mut candidate = self.transaction_copy();
+        let (result, before, binding) =
+            self.append_transaction(|game| game.apply_command(request))?;
+        Ok(Submission {
+            result,
+            undo: GameUndo { before, binding },
+        })
+    }
+    fn apply_command(&mut self, request: GameRequest) -> Result<CommandResult, GameError> {
         let result = match request.command {
             GameCommand::Play { action } => {
                 if request.actor != self.position.side_to_move() {
                     return Err(GameError::WrongActor);
                 }
-                let before_position = candidate.position.clone();
-                let before_ids = candidate.ids;
-                let moving_id = candidate.ids[action.from.index()]
+                let before_position = self.position.clone();
+                let before_ids = self.ids;
+                let moving_id = self.ids[action.from.index()]
                     .ok_or(GameError::Action(ActionError::EmptySource))?;
-                let captured_id = candidate.ids[action.to.index()];
-                candidate
-                    .position
-                    .apply(action)
-                    .map_err(GameError::Action)?;
-                candidate.assessment = super::assess_natural_win(&candidate.position);
-                candidate.ids[action.from.index()] = None;
-                candidate.ids[action.to.index()] = Some(moving_id);
-                candidate.steps.push(Step {
+                let captured_id = self.ids[action.to.index()];
+                self.position.apply(action).map_err(GameError::Action)?;
+                self.assessment = super::assess_natural_win(&self.position);
+                self.ids[action.from.index()] = None;
+                self.ids[action.to.index()] = Some(moving_id);
+                self.steps.push(Step {
                     before: before_position,
-                    after: candidate.position.clone(),
+                    after: self.position.clone(),
                     action,
                     actor: request.actor,
                     ids_before: before_ids,
-                    ids_after: candidate.ids,
+                    ids_after: self.ids,
                 });
-                candidate
-                    .identities
-                    .push(BoardIdentity::from(&candidate.position));
-                candidate.offered_by = None;
-                let gave_check = candidate.position.is_in_check(request.actor.opponent());
-                candidate.emit(
+                self.identities.push(BoardIdentity::from(&self.position));
+                self.offered_by = None;
+                let gave_check = self.position.is_in_check(request.actor.opponent());
+                self.emit(
                     Some(request.actor),
                     EventKind::BoardAction {
                         action,
@@ -748,20 +710,20 @@ impl Game {
                         gave_check,
                     },
                 );
-                candidate.resolve_board_terminal()?;
-                if candidate.conclusion.is_none() {
-                    candidate.resolve_repetition()?;
+                self.resolve_board_terminal()?;
+                if self.conclusion.is_none() {
+                    self.resolve_repetition()?;
                 }
-                if candidate.conclusion.is_none() && candidate.pending.is_none() {
-                    candidate.resolve_fast_no_win();
+                if self.conclusion.is_none() && self.pending.is_none() {
+                    self.resolve_fast_no_win();
                 }
-                if candidate.conclusion.is_none()
-                    && candidate.pending.is_none()
-                    && candidate.policy == ClaimPolicy::AutoValidClaims
+                if self.conclusion.is_none()
+                    && self.pending.is_none()
+                    && self.policy == ClaimPolicy::AutoValidClaims
                 {
                     for claimant in [Side::Red, Side::Black] {
-                        if candidate.natural_count_eligibility(claimant).eligible {
-                            candidate.claim(claimant, true);
+                        if self.natural_count_eligibility(claimant).eligible {
+                            self.claim(claimant, true);
                             break;
                         }
                     }
@@ -769,90 +731,65 @@ impl Game {
                 CommandResult::Accepted
             }
             GameCommand::Resign => {
-                candidate.emit(Some(request.actor), EventKind::Resigned);
-                candidate.conclude(Conclusion::Win {
+                self.emit(Some(request.actor), EventKind::Resigned);
+                self.conclude(Conclusion::Win {
                     winner: request.actor.opponent(),
                     reason: WinReason::Resignation,
                 });
                 CommandResult::Accepted
             }
             GameCommand::OfferDraw => {
-                if !candidate.can_offer_draw(request.actor) {
+                if !self.can_offer_draw(request.actor) {
                     return Err(GameError::DrawOffer);
                 }
-                candidate.last_offer_ply[request.actor.index()] = Some(candidate.steps.len());
-                candidate.offered_by = Some(request.actor);
-                candidate.emit(
+                self.last_offer_ply[request.actor.index()] = Some(self.steps.len());
+                self.offered_by = Some(request.actor);
+                self.emit(
                     Some(request.actor),
                     EventKind::DrawOffer {
-                        offered_by: candidate.offered_by,
+                        offered_by: self.offered_by,
                     },
                 );
                 CommandResult::Accepted
             }
             GameCommand::DeclineDraw => {
-                if !candidate.can_respond_to_draw(request.actor) {
+                if !self.can_respond_to_draw(request.actor) {
                     return Err(GameError::DrawOffer);
                 }
-                candidate.offered_by = None;
-                candidate.emit(
+                self.offered_by = None;
+                self.emit(
                     Some(request.actor),
                     EventKind::DrawOffer { offered_by: None },
                 );
                 CommandResult::Accepted
             }
             GameCommand::AcceptDraw => {
-                if !candidate.can_respond_to_draw(request.actor) {
+                if !self.can_respond_to_draw(request.actor) {
                     return Err(GameError::DrawOffer);
                 }
-                candidate.offered_by = None;
-                candidate.emit(Some(request.actor), EventKind::AgreementAccepted);
-                candidate.conclude(Conclusion::Draw {
+                self.offered_by = None;
+                self.emit(Some(request.actor), EventKind::AgreementAccepted);
+                self.conclude(Conclusion::Draw {
                     reason: DrawReason::Agreement,
                 });
                 CommandResult::Accepted
             }
-            GameCommand::ClaimNaturalCount => candidate.claim(request.actor, false),
+            GameCommand::ClaimNaturalCount => self.claim(request.actor, false),
         };
-        candidate.commands.push(CommandEntry {
+        self.commands.push(CommandEntry {
             actor: request.actor,
             command: request.command,
             result,
-            event_end: candidate.events.len(),
+            event_end: self.events.len(),
         });
-        let undo = GameUndo {
-            before,
-            instance: context.instance(),
-            before_node: self.node,
-            after_node: context.revision(),
-        };
-        candidate.context = context;
-        candidate.node = context.revision();
-        *self = candidate;
-        Ok(Submission { result, undo })
+        Ok(result)
     }
     /// Exact semantic reversal with a fresh monotonic runtime revision.
     pub fn undo(&mut self, undo: GameUndo) -> Result<(), GameError> {
-        if self.context.instance() != undo.instance || self.node != undo.after_node {
+        if !self.authority.undo(&undo.binding) {
             return Err(GameError::StaleContext);
         }
-        let context = self.context.advanced().ok_or(GameError::Capacity)?;
-        let b = undo.before;
-        self.position = b.position;
-        self.ids = b.ids;
-        self.commands.truncate(b.command_len);
-        self.events.truncate(b.event_len);
-        self.snapshots.truncate(b.event_len);
-        self.steps.truncate(b.step_len);
-        self.identities.truncate(b.step_len + 1);
-        self.warnings = b.warnings;
-        self.offered_by = b.offered_by;
-        self.conclusion = b.conclusion;
-        self.pending = b.pending;
-        self.assessment = b.assessment;
-        self.last_offer_ply = b.last_offer_ply;
-        self.context = context;
-        self.node = undo.before_node;
+        self.restore(undo.before);
         Ok(())
     }
     /// Exact copy of the complete committed game with a fresh runtime identity.
@@ -861,11 +798,7 @@ impl Game {
     /// without replay. Reversal tokens of this game do not apply to the copy.
     /// Use it for private analysis copies; it admits nothing new.
     pub fn fork(&self) -> Self {
-        Self {
-            context: GameContext::fresh(),
-            node: 0,
-            ..self.transaction_copy()
-        }
+        self.clone()
     }
     /// Reconstruct a complete committed command prefix with fresh runtime identity.
     ///
@@ -930,5 +863,42 @@ impl Game {
             });
         }
         Ok(self.snapshots[count - 1].clone())
+    }
+}
+
+impl AppendGame for Game {
+    type Checkpoint = Checkpoint;
+    fn authority(&mut self) -> &mut Authority {
+        &mut self.authority
+    }
+    fn checkpoint(&mut self) -> Checkpoint {
+        Checkpoint {
+            position: self.position.clone(),
+            ids: self.ids,
+            command_len: self.commands.len(),
+            event_len: self.events.len(),
+            step_len: self.steps.len(),
+            warnings: self.warnings.clone(),
+            offered_by: self.offered_by,
+            conclusion: self.conclusion,
+            pending: self.pending.clone(),
+            assessment: self.assessment.clone(),
+            last_offer_ply: self.last_offer_ply,
+        }
+    }
+    fn restore(&mut self, b: Checkpoint) {
+        self.position = b.position;
+        self.ids = b.ids;
+        self.commands.truncate(b.command_len);
+        self.events.truncate(b.event_len);
+        self.snapshots.truncate(b.event_len);
+        self.steps.truncate(b.step_len);
+        self.identities.truncate(b.step_len + 1);
+        self.warnings = b.warnings;
+        self.offered_by = b.offered_by;
+        self.conclusion = b.conclusion;
+        self.pending = b.pending;
+        self.assessment = b.assessment;
+        self.last_offer_ply = b.last_offer_ply;
     }
 }

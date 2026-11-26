@@ -13,6 +13,7 @@ use super::{
     GameEvent, GamePrefixError, GameRequest, GameRoot, INITIAL_SFEN, MutualCheckDiagnostic,
     PROFILE_ID, Position, RootCategory, Side, WinReason,
 };
+use crate::native::history::AppendGame;
 
 /// Native game/match record schema, distinct from profile and transport identities.
 pub const SHOGI_RECORD_SCHEMA_VERSION: u32 = 2;

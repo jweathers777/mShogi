@@ -23,12 +23,10 @@ impl GameContext {
             revision: 0,
         }
     }
-    /// The next revision of the same instance, if the counter has one.
-    pub(crate) fn advanced(self) -> Option<Self> {
-        Some(Self {
-            revision: self.revision.checked_add(1)?,
-            ..self
-        })
+    /// Advance after a command, undo or retirement. A native runtime cannot
+    /// perform 2^64 operations in the lifetime of the process.
+    pub(crate) fn advance(&mut self) {
+        self.revision += 1;
     }
     /// Identity of the game instance, which binds its undo tokens.
     pub(crate) fn instance(self) -> u64 {
@@ -38,10 +36,5 @@ impl GameContext {
     /// A copy starts its node at 0, which no command revision can be.
     pub(crate) fn revision(self) -> u64 {
         self.revision
-    }
-    /// Test hook for counter limits.
-    #[cfg(test)]
-    pub(crate) fn at_revision(self, revision: u64) -> Self {
-        Self { revision, ..self }
     }
 }

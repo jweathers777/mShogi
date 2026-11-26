@@ -265,7 +265,7 @@ impl WireRecord {
             profile: PROFILE_ID.into(),
             edition: PROFILE_EDITION.into(),
             schema_version: GAME_RECORD_SCHEMA_VERSION,
-            root: WirePosition::from_state(&game.root),
+            root: WirePosition::from_state(game.root_snapshot().state()),
             events: vec![],
         }
     }
@@ -283,7 +283,7 @@ impl GameRecord {
             board_plies: game.snapshot().board_ply,
             side: game.position().side_to_move(),
             conclusion: game.conclusion(),
-            root: WirePosition::from_state(&game.root),
+            root: WirePosition::from_state(game.root_snapshot().state()),
             root_conclusion: game.event_prefix(0).expect("root").conclusion,
             ledger: game.events.clone(),
         })

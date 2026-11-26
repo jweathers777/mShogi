@@ -1,6 +1,10 @@
 //! Authoritative Tori history and admission; local board rules remain in LocalPosition.
 use super::*;
-pub use crate::native::GameContext;
+use crate::native::history::{GameHistory, Snapshot};
+pub use crate::native::{
+    GameContext,
+    history::{CapacityUsage, GameUndo},
+};
 use crate::repetition::RepetitionIndex;
 use serde::{Deserialize, Serialize};
 use std::hash::{Hash, Hasher};
@@ -131,6 +135,8 @@ pub struct GameEvent {
 pub struct HistorySnapshot {
     /// All board/hand/turn/root/counter semantics at this exact prefix.
     state: StructuralState,
+    /// Sides whose position has already occurred twice in this prefix.
+    seen_twice: [bool; 2],
     /// Exact event prefix length.
     pub event_count: usize,
     /// Known board-action prefix length.
@@ -156,21 +162,13 @@ impl HistorySnapshot {
     }
 }
 /// Context-checked complete request.
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct GameRequest {
-    /// Request token of the game when the command was chosen.
-    pub expected: GameContext,
-    /// Native actor; turn validation applies only to Play.
-    pub actor: Side,
-    /// Complete command.
-    pub command: GameCommand,
-}
+pub type GameRequest = crate::native::history::Request<Side, GameCommand>;
 /// Exhausted native resource, never an illegal move or a game outcome.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Resource {
     /// Encoded native root bytes at admission.
     EncodedBytes,
-    /// Counter or monotonic native authority exhausted.
+    /// Declared board counter.
     Counter,
 }
 /// Atomic native admission/reversal error; failures do not commit audit events.
@@ -203,266 +201,54 @@ impl fmt::Display for GameError {
     }
 }
 impl Error for GameError {}
-/// Exact native persistence/replay metadata for later outer document admission.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct CapacityUsage {
-    /// Actual full encoded native bytes.
-    pub encoded_bytes: usize,
-    /// Native events and commands (one-to-one).
-    pub events: usize,
-}
-#[derive(Debug)]
-/// Single-use instance/order-bound full-game reversal, not serialized history.
-pub struct GameUndo {
-    instance: u64,
-    before_node: u64,
-    after_node: u64,
-    before_len: usize,
-    used: bool,
-}
-/// Authoritative game owner. Neither LocalPosition nor a repetition key grants live permission.
-#[derive(Debug)]
-pub struct Game {
-    pub(super) root: StructuralState,
-    local: LocalPosition,
-    pub(super) events: Vec<GameEvent>,
-    keys: RepetitionIndex<RepetitionKey>,
-    /// First board ply on which each side-to-move had a twice-seen key.
-    first_repeat: [Option<usize>; 2],
-    actions: Vec<Action>,
-    snapshots: Vec<HistorySnapshot>,
-    root_snapshot: HistorySnapshot,
-    context: GameContext,
-    node: u64,
-}
-impl Game {
-    #[cfg(test)]
-    pub(super) fn transaction_for_test(&self) -> Self {
-        self.transaction_copy()
+/// Authoritative Tori history and adjudication.
+pub type Game = GameHistory<HistorySnapshot>;
+impl Snapshot for HistorySnapshot {
+    type Side = Side;
+    type Command = GameCommand;
+    const STALE: GameError = GameError::StaleContext;
+    const LARGE_ROOT: GameError = GameError::Capacity(Resource::EncodedBytes);
+    type Local = LocalPosition;
+    type Key = RepetitionKey;
+    type Ply = ();
+    type Event = GameEvent;
+    type Error = GameError;
+    const INVALID_UNDO: GameError = GameError::InvalidToken;
+    const INVALID_PREFIX: GameError = GameError::InvalidToken;
+    fn board_ply(&self) -> usize {
+        self.board_ply
     }
-    #[cfg(test)]
-    pub(super) fn cache_snapshot(&self) -> String {
-        format!(
-            "{:?}",
-            (
-                &self.root,
-                self.position().state(),
-                &self.events,
-                self.keys.keys(),
-                &self.actions,
-                &self.snapshots,
-                &self.root_snapshot
-            )
-        )
+    fn restore_local(&self) -> LocalPosition {
+        self.local_position()
     }
-    /// Admit a complete known-history root, including immediate T05 terminal outcomes.
-    pub fn from_root(root: Position) -> Result<Self, GameError> {
-        if root.accepted_plies() != 0 {
-            return Err(GameError::NotRoot);
-        }
-        let local = LocalPosition::admit(root).map_err(GameError::Root)?;
-        let root = local.position().state().clone();
-        let conclusion = board_conclusion(local.status(), local.position().side_to_move());
-        let root_snapshot = HistorySnapshot {
-            state: root.clone(),
-            event_count: 0,
-            board_ply: 0,
-            occurrences: vec![0],
-            repetition: None,
-            conclusion,
-        };
-        let key = RepetitionKey::from_position(local.position());
-        let game = Self {
-            root,
-            local,
-            events: vec![],
-            keys: RepetitionIndex::new(key),
-            first_repeat: [None; 2],
-            actions: vec![],
-            snapshots: vec![],
-            root_snapshot,
-            context: GameContext::fresh(),
-            node: 0,
-        };
-        if record::encode(&game)
-            .map_err(|_| GameError::Capacity(Resource::EncodedBytes))?
-            .len()
-            > crate::record::MAX_COMPACT_ROOT_BYTES
-        {
-            return Err(GameError::Capacity(Resource::EncodedBytes));
-        }
-        Ok(game)
-    }
-    /// Full standard game with empty known history and the standard root as occurrence 1.
-    pub fn standard() -> Self {
-        Self::from_root(Position::standard()).expect("standard root")
-    }
-    /// Current immutable local board owner; legal board choices are not game permission.
-    pub fn local_position(&self) -> &LocalPosition {
-        &self.local
-    }
-    /// Current native position and provenance.
-    pub fn position(&self) -> &Position {
-        self.local.position()
-    }
-    /// Full ordered accepted native events.
-    pub fn events(&self) -> &[GameEvent] {
-        &self.events
-    }
-    /// Exact semantic snapshot at the current committed prefix.
-    pub fn snapshot(&self) -> &HistorySnapshot {
-        self.snapshots.last().unwrap_or(&self.root_snapshot)
-    }
-    /// Actual concluded native result.
-    pub fn conclusion(&self) -> Option<Conclusion> {
-        self.snapshot().conclusion
-    }
-    /// Current third-occurrence restriction of the side to move.
-    pub fn repetition(&self) -> Option<&Repetition> {
-        self.snapshot().repetition.as_ref()
-    }
-    /// Current request token; it changes at each accepted command, undo and retirement.
-    pub fn context(&self) -> GameContext {
-        self.context
-    }
-    /// Current repetition-only identity; not a saved game/context identity.
-    pub fn repetition_key(&self) -> &RepetitionKey {
-        self.keys.current()
-    }
-    /// Current known key occurrences, including root where appropriate.
-    pub fn occurrences(&self) -> &[usize] {
-        &self.snapshot().occurrences
-    }
-    /// Complete permitted native choices; concluded games have none even if local choices exist.
-    pub fn legal_actions(&self) -> Vec<Action> {
-        if self.conclusion().is_some() {
-            return vec![];
-        }
-        self.local
-            .legal_actions()
-            .into_iter()
-            .filter(|a| self.repetition().is_none_or(|r| r.permits(*a)))
-            .collect()
-    }
-    /// Immutable historical query. Selection retirement is explicitly separate below.
-    pub fn event_prefix(&self, count: usize) -> Result<HistorySnapshot, GameError> {
-        if count == 0 {
-            return Ok(self.root_snapshot.clone());
-        }
-        self.snapshots
-            .get(count - 1)
-            .cloned()
-            .ok_or(GameError::InvalidToken)
-    }
-    /// Complete canonical history at an exact committed event prefix, for read-only
-    /// historical analysis/inspection. Future commands and obligations are absent.
-    /// This does not branch, rewind or replace the live Game; restoring the record
-    /// later always creates fresh native authority.
-    pub fn record_prefix(&self, count: usize) -> Result<GameRecord, RecordError> {
-        let snapshot = self.event_prefix(count).map_err(|_| RecordError::Prefix)?;
-        let mut prefix = self.transaction_copy();
-        prefix.events.truncate(count);
-        prefix.snapshots.truncate(count);
-        prefix.actions.truncate(snapshot.board_ply);
-        prefix.truncate_keys(snapshot.board_ply + 1);
-        prefix.local = LocalPosition::admit(Position::install(snapshot.state))
-            .expect("native historical state");
-        GameRecord::from_game(&prefix)
-    }
-    /// Select an immutable historical prefix and retire current native command authority.
-    /// The view has no Game constructor/branch operation and cannot submit a live action.
-    pub fn select_prefix(&mut self, count: usize) -> Result<HistorySnapshot, GameError> {
-        let snapshot = self.event_prefix(count)?;
-        self.retire_context()?;
-        Ok(snapshot)
-    }
-    /// Retire native authority without altering canonical semantics (e.g. Return to live).
-    pub fn retire_context(&mut self) -> Result<(), GameError> {
-        self.context = self.next_context()?;
-        Ok(())
-    }
-    fn next_context(&self) -> Result<GameContext, GameError> {
-        self.context
-            .advanced()
-            .ok_or(GameError::Capacity(Resource::Counter))
-    }
-    /// Actual native encoded bytes and accepted event count.
-    pub fn capacity_usage(&self) -> Result<CapacityUsage, GameError> {
-        Ok(CapacityUsage {
-            encoded_bytes: self.encoded_len()?,
-            events: self.events.len(),
-        })
-    }
-    /// Exact size is computed only for an explicit diagnostic query.
-    fn encoded_len(&self) -> Result<usize, GameError> {
-        record::encode(self)
+    fn encoded_size(game: &Game) -> Result<usize, GameError> {
+        record::encode(game)
             .map(|text| text.len())
             .map_err(|_| GameError::Capacity(Resource::EncodedBytes))
     }
-    fn transaction_copy(&self) -> Self {
-        Self {
-            root: self.root.clone(),
-            local: self.local.clone(),
-            events: self.events.clone(),
-            keys: self.keys.clone(),
-            first_repeat: self.first_repeat,
-            actions: self.actions.clone(),
-            snapshots: self.snapshots.clone(),
-            root_snapshot: self.root_snapshot.clone(),
-            context: self.context,
-            node: self.node,
-        }
-    }
-    /// Exact copy of the committed game with a fresh runtime identity, without
-    /// replay (MSH-204). Reversal tokens of this game do not apply to the copy.
-    /// Use it for private analysis copies; it admits nothing new.
-    pub fn fork(&self) -> Self {
-        Self {
-            context: GameContext::fresh(),
-            node: 0,
-            ..self.transaction_copy()
-        }
-    }
-    /// Atomic participant admission. Failed private changes restore the accepted prefix.
-    pub fn submit(&mut self, request: GameRequest) -> Result<GameUndo, GameError> {
-        if request.expected != self.context {
-            return Err(GameError::StaleContext);
-        }
-        self.commit(request.actor, request.command)
-    }
-    fn commit(&mut self, actor: Side, command: GameCommand) -> Result<GameUndo, GameError> {
-        let working = self.local.clone();
-        let local = std::mem::replace(&mut self.local, working);
-        let events = self.events.len();
-        let plies = self.actions.len();
-        let result = self.commit_inner(actor, command);
-        if result.is_err() {
-            self.local = local;
-            self.events.truncate(events);
-            self.snapshots.truncate(events);
-            self.actions.truncate(plies);
-            self.truncate_keys(plies + 1);
-        }
-        result
-    }
-    fn commit_inner(&mut self, actor: Side, command: GameCommand) -> Result<GameUndo, GameError> {
-        if self.conclusion().is_some() {
+    fn step(
+        game: &mut Game,
+        actor: Side,
+        command: GameCommand,
+        _stop: &mut impl FnMut() -> bool,
+    ) -> Result<(), GameError> {
+        if game.conclusion().is_some() {
             return Err(GameError::Concluded);
         }
-        let context = self.next_context()?;
+        let mut seen_twice = game.snapshot().seen_twice;
         let mut effects = None;
-        let mut occurrences = self.occurrences().to_vec();
-        let mut repetition = self.repetition().cloned();
+        let mut occurrences = game.occurrences().to_vec();
+        let mut repetition = game.repetition().cloned();
         let mut conclusion;
         match command {
             GameCommand::Play { action } => {
-                if actor != self.position().side_to_move() {
+                if actor != game.position().side_to_move() {
                     return Err(GameError::WrongActor);
                 }
                 // Validate local rules first so history cannot excuse an illegal choice.
-                if !self.local.is_legal(action) {
+                if !game.local.is_legal(action) {
                     return Err(GameError::Action(
-                        self.local
+                        game.local
                             .clone()
                             .apply(action)
                             .expect_err("not locally legal"),
@@ -472,7 +258,7 @@ impl Game {
                     return Err(GameError::ThirdOccurrence);
                 }
                 effects = Some(
-                    self.local
+                    game.local
                         .apply(action)
                         .map_err(|e| {
                             if e == ActionError::Capacity {
@@ -483,17 +269,16 @@ impl Game {
                         })?
                         .0,
                 );
-                self.actions.push(action);
-                let key = RepetitionKey::from_position(self.position());
-                self.keys.push(key);
-                occurrences = self.keys.current_occurrences();
+                let key = RepetitionKey::from_position(game.position());
+                game.keys.push(key);
+                occurrences = game.keys.current_occurrences();
                 if occurrences.len() >= 2 {
-                    let side = self.position().side_to_move();
-                    self.first_repeat[side as usize].get_or_insert(self.actions.len());
+                    let side = game.position().side_to_move();
+                    seen_twice[side.index()] = true;
                 }
-                let local_choices = self.local.legal_actions();
-                let side = self.position().side_to_move();
-                let status = match (self.local.is_in_check(side), local_choices.is_empty()) {
+                let local_choices = game.local.legal_actions();
+                let side = game.position().side_to_move();
+                let status = match (game.local.is_in_check(side), local_choices.is_empty()) {
                     (true, true) => LocalStatus::Checkmate,
                     (false, true) => LocalStatus::QuietNoAction,
                     (true, false) => LocalStatus::Check,
@@ -502,7 +287,7 @@ impl Game {
                 conclusion = board_conclusion(status, side);
                 repetition = None;
                 if conclusion.is_none() {
-                    repetition = self.third_occurrences(&local_choices);
+                    repetition = game.third_occurrences(&local_choices, seen_twice);
                     if repetition
                         .as_ref()
                         .is_some_and(|r| r.forces_loss(&local_choices))
@@ -521,8 +306,8 @@ impl Game {
             }
         }
         let event = GameEvent {
-            index: self.events.len(),
-            board_ply: self.actions.len(),
+            index: game.events.len(),
+            board_ply: game.keys.len() - 1,
             actor,
             command,
             effects,
@@ -530,31 +315,109 @@ impl Game {
             conclusion,
         };
         debug_assert!(event.occurrences.len() <= 2, "third occurrence admitted");
-        self.events.push(event.clone());
-        self.snapshots.push(HistorySnapshot {
-            state: self.position().state().clone(),
-            event_count: self.events.len(),
-            board_ply: self.actions.len(),
+        game.events.push(event.clone());
+        game.snapshots.push(HistorySnapshot {
+            seen_twice,
+            state: game.position().state().clone(),
+            event_count: game.events.len(),
+            board_ply: game.keys.len() - 1,
             occurrences: event.occurrences.clone(),
             repetition,
             conclusion,
         });
-        let undo = GameUndo {
-            instance: context.instance(),
-            before_node: self.node,
-            after_node: context.revision(),
-            before_len: self.events.len() - 1,
-            used: false,
-        };
-        self.context = context;
-        self.node = context.revision();
-        Ok(undo)
+        Ok(())
     }
+}
+impl Game {
+    #[cfg(test)]
+    pub(super) fn transaction_for_test(&self) -> Self {
+        self.clone()
+    }
+    #[cfg(test)]
+    pub(super) fn cache_snapshot(&self) -> String {
+        format!(
+            "{:?}",
+            (
+                self.position().state(),
+                &self.events,
+                self.keys.keys(),
+                &self.snapshots,
+                &self.root
+            )
+        )
+    }
+    /// Admit a complete known-history root, including immediate T05 terminal outcomes.
+    pub fn from_root(root: Position) -> Result<Self, GameError> {
+        if root.accepted_plies() != 0 {
+            return Err(GameError::NotRoot);
+        }
+        let local = LocalPosition::admit(root).map_err(GameError::Root)?;
+        let conclusion = board_conclusion(local.status(), local.position().side_to_move());
+        let root_snapshot = HistorySnapshot {
+            state: local.position().state().clone(),
+            seen_twice: [false; 2],
+            event_count: 0,
+            board_ply: 0,
+            occurrences: vec![0],
+            repetition: None,
+            conclusion,
+        };
+        let key = RepetitionKey::from_position(local.position());
+        let game = Self::from_snapshot(local, RepetitionIndex::new(key), root_snapshot);
+        game.check_root_size()?;
+        Ok(game)
+    }
+    /// Full standard game with empty known history and the standard root as occurrence 1.
+    pub fn standard() -> Self {
+        Self::from_root(Position::standard()).expect("standard root")
+    }
+    /// Current native position and provenance.
+    pub fn position(&self) -> &Position {
+        self.local.position()
+    }
+    /// Actual concluded native result.
+    pub fn conclusion(&self) -> Option<Conclusion> {
+        self.snapshot().conclusion
+    }
+    /// Current third-occurrence restriction of the side to move.
+    pub fn repetition(&self) -> Option<&Repetition> {
+        self.snapshot().repetition.as_ref()
+    }
+    /// Current known key occurrences, including root where appropriate.
+    pub fn occurrences(&self) -> &[usize] {
+        &self.snapshot().occurrences
+    }
+    /// Complete permitted native choices; concluded games have none even if local choices exist.
+    pub fn legal_actions(&self) -> Vec<Action> {
+        if self.conclusion().is_some() {
+            return vec![];
+        }
+        self.local
+            .legal_actions()
+            .into_iter()
+            .filter(|a| self.repetition().is_none_or(|r| r.permits(*a)))
+            .collect()
+    }
+    /// Complete canonical history at an exact committed event prefix, for read-only
+    /// historical analysis/inspection. Future commands and obligations are absent.
+    /// This does not branch, rewind or replace the live Game; restoring the record
+    /// later always creates fresh native authority.
+    pub fn record_prefix(&self, count: usize) -> Result<GameRecord, RecordError> {
+        if count > self.events.len() {
+            return Err(RecordError::Prefix);
+        }
+        let mut prefix = self.clone();
+        prefix.truncate_to(count);
+        GameRecord::from_game(&prefix)
+    }
+
     /// Actions of the side to move that would create a third occurrence.
-    fn third_occurrences(&self, local: &[Action]) -> Option<Repetition> {
+    fn third_occurrences(&self, local: &[Action], seen_twice: [bool; 2]) -> Option<Repetition> {
         let side = self.position().side_to_move();
         // Only a position that already occurred twice can occur a third time.
-        self.first_repeat[side.opponent() as usize]?;
+        if !seen_twice[side.opponent().index()] {
+            return None;
+        }
         let forbidden: Vec<Action> = local
             .iter()
             .copied()
@@ -566,36 +429,6 @@ impl Game {
             })
             .collect();
         (!forbidden.is_empty()).then_some(Repetition { side, forbidden })
-    }
-    fn truncate_keys(&mut self, len: usize) {
-        self.keys.truncate(len);
-        for first in &mut self.first_repeat {
-            if first.is_some_and(|ply| ply >= len) {
-                *first = None;
-            }
-        }
-    }
-    /// Exact LIFO semantic undo. Monotonic runtime authority advances, never rewinds.
-    pub fn undo(&mut self, undo: &mut GameUndo) -> Result<(), GameError> {
-        if undo.used
-            || undo.instance != self.context.instance()
-            || undo.after_node != self.node
-            || self.events.len() != undo.before_len + 1
-        {
-            return Err(GameError::InvalidToken);
-        }
-        let context = self.next_context()?;
-        let before = self.event_prefix(undo.before_len)?;
-        self.events.truncate(undo.before_len);
-        self.snapshots.truncate(undo.before_len);
-        self.actions.truncate(before.board_ply);
-        self.truncate_keys(before.board_ply + 1);
-        self.local =
-            LocalPosition::admit(Position::install(before.state)).expect("native previous state");
-        self.context = context;
-        self.node = undo.before_node;
-        undo.used = true;
-        Ok(())
     }
 }
 fn board_conclusion(status: LocalStatus, side: Side) -> Option<Conclusion> {

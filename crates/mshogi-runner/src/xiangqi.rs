@@ -349,11 +349,6 @@ pub(crate) fn score(conclusion: Conclusion) -> [u8; 2] {
         } => [0, 2],
     }
 }
-fn copy_game(game: &Game) -> Result<Game, String> {
-    GameRecord::from_game(game)
-        .and_then(|r| r.to_game())
-        .map_err(|e| e.to_string())
-}
 use protocol::option_value;
 pub(crate) fn reply(text: &str) -> Result<GameCommand, String> {
     let words: Vec<_> = text.split_ascii_whitespace().collect();
@@ -710,14 +705,9 @@ impl Native for Adapter {
             phase: "search",
             detail,
         })?;
-        let mut candidate = copy_game(game).map_err(|detail| Rejection {
-            kind: FailureKind::Native,
-            phase: "reconstruction",
-            detail,
-        })?;
+        let mut candidate = game.clone();
         admit(&mut candidate, command).map_err(|e| Rejection {
             kind: match e {
-                GameError::Capacity => FailureKind::ResourceLimit,
                 GameError::Action(_) | GameError::WrongActor => FailureKind::IllegalAction,
                 GameError::AdjudicationPending => FailureKind::UnresolvedWork,
                 _ => FailureKind::Native,

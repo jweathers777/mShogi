@@ -4,6 +4,7 @@
 //! match admission still belongs to `ChessMatch`; shogi admission belongs to `Game`.
 
 mod context;
+pub(crate) mod history;
 /// Reusable authoritative game retention for incremental execution sessions.
 pub mod incremental;
 pub use context::GameContext;

@@ -22,8 +22,6 @@ pub struct GameRecord {
 /// Malformed, unsupported, resource-limited or forged data is never a game outcome.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum RecordError {
-    /// A native runtime counter was exhausted.
-    Capacity,
     /// Duplicate/unknown/missing/malformed field or unsupported JSON value.
     Json,
     /// Wrong game/profile/edition/schema/mode or verification goal.
@@ -144,7 +142,6 @@ impl GameRecord {
                 })
                 .map_err(|error| match error {
                     GameError::Invariant => RecordError::Invariant(i),
-                    GameError::Capacity => RecordError::Capacity,
                     _ => RecordError::Command(i),
                 })?;
             if retain_undo {

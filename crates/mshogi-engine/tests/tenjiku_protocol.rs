@@ -123,18 +123,11 @@ fn actual_royal_capture_score_and_native_pv_validation_for_both_profiles() {
                 4 => telemetry.completed_depth = 0,
                 _ => action.route.clear(),
             }
-            // Shape and identity belong to the observation check; the replay
-            // of the line to validation. Admission needs both.
-            let observation = ExecutionObservation::new(
-                ctx.clone(),
-                ExecutionResult::Tenjiku {
-                    result: forged.clone(),
-                },
-            );
-            assert!(
-                !observation.matches(&ctx) || forged.validate(&g).is_err(),
-                "forgery {field}"
-            );
+            // Each forgery changes the identity, score, side, work or the
+            // first choice of the line: the observation check refuses it.
+            let observation =
+                ExecutionObservation::new(ctx.clone(), ExecutionResult::Tenjiku { result: forged });
+            assert!(!observation.matches(&ctx), "forgery {field}");
         }
         let mut terminal = before.to_game().unwrap();
         terminal

@@ -387,27 +387,16 @@ fn valid_work(profile: RulesProfile, work: WorkLimits) -> bool {
     if work.time_ms.is_some() {
         return false;
     }
+    fn bounds<G: EngineGame>() -> (u16, u64) {
+        (G::MAX_DEPTH, G::MAX_NODES)
+    }
+    use mshogi_engine::game;
     let (depth, nodes) = match profile.game() {
-        mshogi_core::native::GameKind::Xiangqi => (
-            mshogi_search::xiangqi::MAX_DEPTH,
-            mshogi_search::xiangqi::MAX_NODES,
-        ),
-        mshogi_core::native::GameKind::Shogi => (
-            mshogi_search::shogi::MAX_DEPTH,
-            mshogi_search::shogi::MAX_NODES,
-        ),
-        mshogi_core::native::GameKind::Tori => (
-            mshogi_engine::game::Tori::MAX_DEPTH,
-            mshogi_engine::game::Tori::MAX_NODES,
-        ),
-        mshogi_core::native::GameKind::Chu => (
-            mshogi_engine::game::Chu::MAX_DEPTH,
-            mshogi_engine::game::Chu::MAX_NODES,
-        ),
-        mshogi_core::native::GameKind::Tenjiku => (
-            mshogi_engine::game::Tenjiku::MAX_DEPTH,
-            mshogi_engine::game::Tenjiku::MAX_NODES,
-        ),
+        mshogi_core::native::GameKind::Xiangqi => bounds::<game::Xiangqi>(),
+        mshogi_core::native::GameKind::Shogi => bounds::<game::Shogi>(),
+        mshogi_core::native::GameKind::Tori => bounds::<game::Tori>(),
+        mshogi_core::native::GameKind::Chu => bounds::<game::Chu>(),
+        mshogi_core::native::GameKind::Tenjiku => bounds::<game::Tenjiku>(),
         _ => (
             mshogi_engine::MAX_ANALYSIS_DEPTH,
             mshogi_engine::MAX_ANALYSIS_NODES,

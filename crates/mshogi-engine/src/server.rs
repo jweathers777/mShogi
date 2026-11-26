@@ -41,9 +41,17 @@ impl Session {
     }
 }
 /// The engine of the session game.
-fn kept<T: Reset>(engine: &mut Box<dyn Reset>) -> &mut T {
+fn session_engine<T: Reset>(engine: &mut Box<dyn Reset>) -> &mut T {
     let engine: &mut dyn Any = engine.as_mut();
     engine.downcast_mut().expect("engine of the session game")
+}
+/// New engine of a game, as the session keeps it.
+fn new_engine<G: EngineGame>() -> Result<Box<dyn Reset>, Infallible> {
+    Ok(Box::new(G::new_engine()))
+}
+/// `current` (the record of `game`) extends the record of the kept engine.
+fn extends<G: EngineGame>(current: &G::Record, game: &G::Game, last: &CanonicalRecord) -> bool {
+    G::record(last).is_some_and(|earlier| G::extends(current, game, earlier))
 }
 /// One lifecycle rule for every game. Fixed-limit requests do not touch this slot.
 pub(crate) struct Slot<T> {
@@ -275,22 +283,17 @@ fn execute_retained<G: EngineGame>(
     record: Option<&CanonicalRecord>,
 ) -> ExecutionResult {
     session.select(G::KIND);
-    let create = || Ok::<_, Infallible>(Box::new(G::new_engine()) as Box<dyn Reset>);
     let mut engine = match record {
         Some(record) => session.engine.acquire_relation(
             record,
             true,
-            |last| {
-                G::record(record)
-                    .zip(G::record(last))
-                    .is_some_and(|(current, earlier)| G::extends(current, game, earlier))
-            },
-            create,
+            |last| G::record(record).is_some_and(|current| extends::<G>(current, game, last)),
+            new_engine::<G>,
         ),
-        None => session.engine.acquire_incremental(reset, create),
+        None => session.engine.acquire_incremental(reset, new_engine::<G>),
     }
     .expect("infallible engine allocation");
-    search::<G>(game, limits, time, kept(&mut engine))
+    search::<G>(game, limits, time, session_engine(&mut engine))
 }
 
 pub(crate) fn execute(context: &ExecutionContext, session: &mut Session) -> ExecutionResult {
@@ -321,11 +324,11 @@ fn execute_game<G: EngineGame>(
         .acquire_relation(
             &context.game,
             context.limits.time_ms.is_some(),
-            |last| G::record(last).is_some_and(|earlier| G::extends(record, &game, earlier)),
-            || Ok::<_, Infallible>(Box::new(G::new_engine()) as Box<dyn Reset>),
+            |last| extends::<G>(record, &game, last),
+            new_engine::<G>,
         )
         .expect("infallible engine allocation");
-    search::<G>(&game, context.limits, time, kept(&mut engine))
+    search::<G>(&game, context.limits, time, session_engine(&mut engine))
 }
 
 fn search<G: EngineGame>(
@@ -365,7 +368,7 @@ fn execute_chess(context: &ExecutionContext, session: &mut Session) -> ChessResu
         Ok(coordinator) => coordinator,
         Err(error) => return ChessResult::failure(FailureKind::Search, error),
     };
-    let coordinator: &mut SearchCoordinator = kept(&mut coordinator);
+    let coordinator: &mut SearchCoordinator = session_engine(&mut coordinator);
     if let Err(error) = coordinator.submit_with_time(
         &game,
         context.session_version,

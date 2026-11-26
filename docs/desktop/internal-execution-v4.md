@@ -156,7 +156,7 @@ execution interface.
 ## Engine session
 
 MSH-169 (Engine Session Persistence) and MSH-179 (Clock and Session for All Games).
-The session retention policy remains the same under protocol 6.
+The session retention policy remains the same under protocol 7.
 
 - One child serves successive requests. A response is accepted when its line is
   complete and matches the request; the bridge does not wait for the child to

@@ -310,11 +310,6 @@ impl ExecutionObservation {
         }
         match &self.result {
             ExecutionResult::Failure { failure } => failure.message.len() <= MAX_STDERR_BYTES,
-            ExecutionResult::Tenjiku { result } => result.matches(submitted),
-            ExecutionResult::Chu { result } => result.matches(submitted),
-            ExecutionResult::Tori { result } => result.matches(submitted),
-            ExecutionResult::Shogi { result } => result.matches(submitted),
-            ExecutionResult::Xiangqi { result } => result.matches(submitted),
             ExecutionResult::Chess { result } => {
                 if submitted.game.game_kind() != GameKind::Chess {
                     return false;
@@ -349,6 +344,9 @@ impl ExecutionObservation {
                         ChessResult::Failure { .. } => unreachable!(),
                     }
             }
+            result => for_game!(submitted.game.game_kind(),
+                G => G::result(result).is_some_and(|result| result.matches(submitted)),
+                chess => false),
         }
     }
 }

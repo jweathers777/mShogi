@@ -115,8 +115,27 @@ const fn untimed(depth: u16, nodes: u64) -> WorkLimits {
         time_ms: None,
     }
 }
-/// Distance unit of the games whose terminal distance counts board actions.
-const BOARD_ACTIONS: [&str; 2] = ["board action", "board actions"];
+
+/// The large-board games: a choice is one board action, the terminal
+/// distance counts board actions and play is untimed.
+macro_rules! board_action_game {
+    ($core:ident) => {
+        const DISTANCE_UNIT: [&'static str; 2] = ["board action", "board actions"];
+        const PLAY_LIMITS: WorkLimits = untimed(
+            mshogi_search::$core::DEFAULT_LIMITS.depth,
+            mshogi_search::$core::DEFAULT_LIMITS.nodes,
+        );
+        type Choice = $core::Action;
+        type Pending = NoPending;
+        fn fork(game: &Self::Game) -> Result<Self::Game, String> {
+            game.fork().map_err(|e| e.to_string())
+        }
+        fn command(choice: &$core::Action, turn: $core::Side) -> ($core::Side, $core::GameCommand) {
+            let action = choice.clone();
+            (turn, $core::GameCommand::Play { action })
+        }
+    };
+}
 
 /// Chu Shogi.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -125,22 +144,9 @@ impl EngineGame for Chu {
     wiring!(Chu, chu, ChuPosition);
     search!(chu);
     const SCORE_UNIT: &'static str = "Pawns";
-    const DISTANCE_UNIT: [&'static str; 2] = BOARD_ACTIONS;
-    const PLAY_LIMITS: WorkLimits = untimed(
-        mshogi_search::chu::DEFAULT_LIMITS.depth,
-        mshogi_search::chu::DEFAULT_LIMITS.nodes,
-    );
-    type Choice = chu::Action;
-    type Pending = NoPending;
+    board_action_game!(chu);
     fn extends(current: &Self::Record, _game: &Self::Game, earlier: &Self::Record) -> bool {
         current.has_prefix(earlier)
-    }
-    fn fork(game: &Self::Game) -> Result<Self::Game, String> {
-        game.fork().map_err(|e| e.to_string())
-    }
-    fn command(choice: &chu::Action, turn: chu::Side) -> (chu::Side, chu::GameCommand) {
-        let action = choice.clone();
-        (turn, chu::GameCommand::Play { action })
     }
     fn submit(
         game: &mut chu::Game,
@@ -167,26 +173,10 @@ impl EngineGame for Tenjiku {
     wiring!(Tenjiku, tenjiku, TenjikuPosition);
     search!(tenjiku);
     const SCORE_UNIT: &'static str = "Pawns";
-    const DISTANCE_UNIT: [&'static str; 2] = BOARD_ACTIONS;
-    const PLAY_LIMITS: WorkLimits = untimed(
-        mshogi_search::tenjiku::DEFAULT_LIMITS.depth,
-        mshogi_search::tenjiku::DEFAULT_LIMITS.nodes,
-    );
-    type Choice = tenjiku::Action;
-    type Pending = NoPending;
+    board_action_game!(tenjiku);
     fn extends(_current: &Self::Record, game: &Self::Game, earlier: &Self::Record) -> bool {
         game.record_prefix(earlier.event_count())
             .is_ok_and(|prefix| prefix == *earlier)
-    }
-    fn fork(game: &Self::Game) -> Result<Self::Game, String> {
-        game.fork().map_err(|e| e.to_string())
-    }
-    fn command(
-        choice: &tenjiku::Action,
-        turn: tenjiku::Side,
-    ) -> (tenjiku::Side, tenjiku::GameCommand) {
-        let action = choice.clone();
-        (turn, tenjiku::GameCommand::Play { action })
     }
     fn submit(
         game: &mut tenjiku::Game,
@@ -213,21 +203,9 @@ impl EngineGame for Tori {
     wiring!(Tori, tori, ToriPosition);
     search!(tori);
     const SCORE_UNIT: &'static str = "Swallows";
-    const DISTANCE_UNIT: [&'static str; 2] = BOARD_ACTIONS;
-    const PLAY_LIMITS: WorkLimits = untimed(
-        mshogi_search::tori::DEFAULT_LIMITS.depth,
-        mshogi_search::tori::DEFAULT_LIMITS.nodes,
-    );
-    type Choice = tori::Action;
-    type Pending = NoPending;
+    board_action_game!(tori);
     fn extends(current: &Self::Record, _game: &Self::Game, earlier: &Self::Record) -> bool {
         current.has_prefix(earlier)
-    }
-    fn fork(game: &Self::Game) -> Result<Self::Game, String> {
-        game.fork().map_err(|e| e.to_string())
-    }
-    fn command(choice: &tori::Action, turn: tori::Side) -> (tori::Side, tori::GameCommand) {
-        (turn, tori::GameCommand::Play { action: *choice })
     }
     /// A Tori command is short; the caller checks the stop between commands.
     fn submit(

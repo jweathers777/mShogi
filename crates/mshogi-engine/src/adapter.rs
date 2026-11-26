@@ -607,4 +607,122 @@ mod tests {
         c.limits.time_ms = None;
         assert!(!result.matches(&c));
     }
+
+    fn line<G: EngineGame>(
+        perspective: G::Side,
+        score: i32,
+        depth: u16,
+        nodes: u64,
+        line: Vec<G::Choice>,
+    ) -> EngineTelemetry<G> {
+        EngineTelemetry::current(
+            perspective,
+            Some(score),
+            depth,
+            nodes,
+            line,
+            StopReason::Complete,
+        )
+    }
+    #[test]
+    fn choice_work_and_root_score_rules_hold_in_every_game() {
+        let c = shogi_context();
+        let sente = shogi::Side::Sente;
+        let action = ShogiChoice::Move {
+            action: "7g7f".parse().unwrap(),
+        };
+        let choice = |t: EngineTelemetry<Shogi>| ShogiResult::Choice {
+            choice: action,
+            telemetry: t,
+        };
+        assert!(choice(line(sente, 0, 2, 100, vec![action])).matches(&c));
+        // A node limit is the exact budget.
+        let mut t = line(sente, 0, 1, 100, vec![action]);
+        t.status = StopReason::NodeLimit;
+        assert!(!choice(t.clone()).matches(&c));
+        t.nodes = c.limits.nodes;
+        assert!(choice(t).matches(&c));
+        // A complete search reaches the requested depth unless it proves a win.
+        assert!(!choice(line(sente, 0, 1, 100, vec![action])).matches(&c));
+        assert!(choice(line(sente, MATE_BOUND, 1, 100, vec![action])).matches(&c));
+        // A choice never wins or loses at its own root.
+        let win = Shogi::WIN_SCORE;
+        assert!(!choice(line(sente, win, 2, 100, vec![action])).matches(&c));
+        assert!(!choice(line(sente, -win, 2, 100, vec![action])).matches(&c));
+    }
+    #[test]
+    fn formal_commands_have_their_own_shape() {
+        let c = shogi_context();
+        let declare = |actor| ShogiChoice::Declare { actor };
+        let shogi = |actor, nodes| ShogiResult::Choice {
+            choice: declare(actor),
+            telemetry: line(
+                shogi::Side::Sente,
+                Shogi::WIN_SCORE - 1,
+                1,
+                nodes,
+                vec![declare(actor)],
+            ),
+        };
+        assert!(shogi(shogi::Side::Sente, 2).matches(&c));
+        assert!(!shogi(shogi::Side::Gote, 2).matches(&c));
+        assert!(!shogi(shogi::Side::Sente, 3).matches(&c));
+        let root = xiangqi::Game::standard(xiangqi::ClaimPolicy::Explicit).unwrap();
+        let c = context(
+            CanonicalRecord::xiangqi(xiangqi::GameRecord::from_game(&root).unwrap()),
+            Xiangqi::PLAY_LIMITS,
+        );
+        let depth = c.limits.depth;
+        let claim = |actor| XiangqiChoice::Claim { actor };
+        let xiangqi = |actor, score| XiangqiResult::Choice {
+            choice: claim(actor),
+            telemetry: line(xiangqi::Side::Red, score, depth, 100, vec![claim(actor)]),
+        };
+        assert!(xiangqi(xiangqi::Side::Red, 0).matches(&c));
+        assert!(!xiangqi(xiangqi::Side::Black, 0).matches(&c));
+        assert!(!xiangqi(xiangqi::Side::Red, 10).matches(&c));
+    }
+    #[test]
+    fn xiangqi_timed_fallback_and_unresolved_status_agree_with_the_result() {
+        let root = xiangqi::Game::standard(xiangqi::ClaimPolicy::Explicit).unwrap();
+        let mut c = context(
+            CanonicalRecord::xiangqi(xiangqi::GameRecord::from_game(&root).unwrap()),
+            WorkLimits {
+                depth: 4,
+                nodes: 1000,
+                time_ms: Some(10),
+            },
+        );
+        let action = XiangqiChoice::Move {
+            action: "b0c2".parse().unwrap(),
+        };
+        let mut t = telemetry::<Xiangqi>(xiangqi::Side::Red);
+        t.nodes = 10;
+        t.principal_variation = vec![action];
+        let fallback = XiangqiResult::Choice {
+            choice: action,
+            telemetry: t,
+        };
+        assert!(fallback.matches(&c));
+        c.limits.time_ms = None;
+        assert!(!fallback.matches(&c));
+        let pending = xiangqi::PendingAdjudication {
+            occurrences: vec![0, 4],
+            reason: "classification required".into(),
+        };
+        let mut t = telemetry::<Xiangqi>(xiangqi::Side::Red);
+        t.nodes = 1;
+        t.status = StopReason::Unresolved;
+        let unresolved = |t: &XiangqiTelemetry| XiangqiResult::Unresolved {
+            pending: pending.clone(),
+            telemetry: t.clone(),
+        };
+        assert!(unresolved(&t).matches(&c));
+        let incomplete = XiangqiResult::Incomplete {
+            telemetry: t.clone(),
+        };
+        assert!(!incomplete.matches(&c));
+        t.status = StopReason::Stopped;
+        assert!(!unresolved(&t).matches(&c));
+    }
 }

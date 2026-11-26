@@ -73,36 +73,55 @@ must be able to start the next task without chat history and without help.
 
 ## Checks
 
-For code changes:
+Choose checks by the code and behavior that can change. Do not run the full
+check set after every save, commit or checkpoint push.
 
-```bash
-cargo fmt --all -- --check
-cargo clippy --workspace --all-targets --locked -- -D warnings
-cargo test --workspace --locked
-```
+During implementation, run focused checks after meaningful changes. Before
+merging into `main`, complete the checks below on the code to be integrated.
+Repeat a completed check only when later changes, including changes merged
+from `main`, can invalidate its result.
 
-For documentation-only or Backlog-only changes, validate the changed content,
-links and task structure. Do not run product builds or tests for these changes.
+- **Documentation or Backlog only:** validate the changed content, links and
+  task structure. Do not run product builds or tests.
+- **Rust code:** run:
+
+  ```bash
+  cargo fmt --all -- --check
+  cargo clippy --workspace --all-targets --locked -- -D warnings
+  cargo test --workspace --locked
+  ```
+
+- **Frontend code:** run the TypeScript check and frontend tests. Run affected
+  desktop integration checks when behavior crosses the frontend/host boundary.
+- **Python or other scripts:** run the relevant syntax, static and test checks.
+  Run affected integration checks when a script changes how it builds, starts
+  or controls another component.
+- **Shared interfaces, toolchain, dependencies or build configuration:** check
+  the affected producers and consumers, including examples and fixtures. A
+  change outside Rust can still require Rust checks.
 
 Also, by type of change:
 
-- **Rules (`mshogi-core`):** perft and tests whose expected results come from
-  the rules, not from running the code. External engines are not rules oracles.
-- **Search-side positions:** perft and differential tests against the native
-  rules.
-- **Engine strength:** the blunder suite and an SPRT match against the frozen
-  predecessor at a fast time control. This match has standing authorization.
-  Keep a change only when it wins, or when it is neutral and makes the code
-  simpler. Faster search is not stronger play. Node counts and PVs do not have
-  to stay the same.
+- **Rules (`mshogi-core`):** run perft and tests whose expected results come
+  from the rules, not from running the code. External engines are not rules
+  oracles.
+- **Search-side positions:** run perft and differential tests against the
+  native rules.
+- **Engine strength:** run the blunder suite and an SPRT match against the
+  frozen predecessor at a fast time control. This match has standing
+  authorization. Keep a change only when it wins, or when it is neutral and
+  makes the code simpler. Faster search is not stronger play. Node counts
+  and PVs do not have to stay the same.
 - **Platform-sensitive code** (processes, files and persistence, Tauri,
   toolchain, dependencies): run CI on the affected operating systems. Full
   three-platform and packaged GUI checks are for releases only.
 - **Review:** rules changes, saved-format changes and large refactors get one
-  review by a fresh agent session or subagent, given the diff and the task. Fix
-  the real findings. Other changes need no separate review.
+  review by a fresh agent session or subagent, given the diff and the task.
+  Fix the real findings. Other changes need no separate review.
 
-Report results honestly: say what passed, what failed and what did not run.
+Use the heavy-compute rules below when checks need substantial resources.
+Report what passed, what failed and what did not run. Do not mark a task Done
+while a required check is unresolved.
 
 ## Heavy compute and run data
 
@@ -124,8 +143,9 @@ Report results honestly: say what passed, what failed and what did not run.
 
 ## Finish
 
-1. Merge `main` into the branch, run the checks again, then merge the branch
-   into `main` and push.
+1. Merge `main` into the branch. Complete the required checks on the code to be
+   integrated, reusing earlier results where subsequent changes have not
+   invalidated them. Then merge the branch into `main` and push.
 2. Check the acceptance criteria that have evidence. Write a final summary of a
    few lines: what changed, why, results, follow-up tasks. Set the status to
    Done.

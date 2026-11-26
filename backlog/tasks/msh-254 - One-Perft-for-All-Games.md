@@ -1,11 +1,11 @@
 ---
 id: MSH-254
 title: One Perft for All Games
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-26T17:04:00Z'
+updated_date: '2026-11-26T17:08:00Z'
 labels:
   - core
   - console
@@ -26,9 +26,9 @@ Each game has its own perft and divide API in mshogi-core: chess/perft.rs (u32 d
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 One generic perft and divide with depth limit, visit budget and stop serves all six games in mshogi-core; per-game perft code keeps only what the game needs, such as its node order.
-- [ ] #2 Console perft and divide use it for every game with one budget rule; the console Chu recursion and the copied order_key are removed.
-- [ ] #3 All perft expected values and conformance results are unchanged; workspace checks pass.
+- [x] #1 One generic perft and divide with depth limit, visit budget and stop serves all six games in mshogi-core; per-game perft code keeps only what the game needs, such as its node order.
+- [x] #2 Console perft and divide use it for every game with one budget rule; the console Chu recursion and the copied order_key are removed.
+- [x] #3 All perft expected values and conformance results are unchanged; workspace checks pass.
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -51,4 +51,12 @@ Checkpoint on codex/msh-254-one-perft: all native callers now use one exact-dept
 Fresh review of 094c31d..4e51a9f confirmed native mode/order, restoration on cancellation and unchanged fixture expectations. Fixed its Chess test binding finding. Preserved an absolute full-Game Tenjiku ceiling using the same 1,000,000-visit constant as the shell and native Tori, and test the ceiling. Next: finish workspace and deep Chess checks, then integrate.
 
 All three deep Chess divides match the independently established fixture order and totals in release. The perft_baseline example passed all six cases, including depth-five totals 193,690,690, 89,941,194 and 164,075,551. Preserved the previous console incomplete-result assertions and the Chess depth-zero/depth-two doctest. Next: finish workspace verification, merge and finalize.
+
+Verified source 8c5a366 on macOS arm64 with Rust 1.99.1 and Node 24.21.0. python3 tools/checks.py run --base origin/main passed formatting, Clippy, 1,162 Rust tests, TypeScript and 575 frontend tests. The workspace runner marked 10 Rust tests ignored. cargo test --release --locked -p mshogi-core --test perft -- --ignored separately passed the deep Chess divide cases. The documented release perft baseline also passed at depths 4 and 5. The existing fixture files and expected counts are unchanged. The six shell entry points passed the common budget regression. Fast-forwarded source onto main at 8c5a366.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+One bounded native perft and divide traversal now serves all six games and their conformance callers. All shells use an optional visit allowance with a 1,000,000 default and cap. Chu divide includes the root in its visit count. Tenjiku still uses full native history and endings. Existing fixture counts, workspace checks, deep Chess perft and fresh review passed. This unblocks MSH-255 (Shared Console Sessions and Test Support).
+<!-- SECTION:FINAL_SUMMARY:END -->

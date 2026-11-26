@@ -257,7 +257,7 @@ impl Engine {
             single_exit_sample: false,
         };
         if let Some(e) = thread_error {
-            let _ = engine.cleanup(100);
+            let _ = engine.cleanup_until(Instant::now() + Duration::from_millis(100), false);
             return Err(format!("pipe worker creation: {e}"));
         }
         Ok(engine)
@@ -386,21 +386,20 @@ impl Engine {
             || thread::sleep(Duration::from_millis(1)),
         )
     }
-    pub fn cleanup(&mut self, cleanup_ms: u64) -> EngineObservation {
-        self.cleanup_with_grace(cleanup_ms, true)
-    }
-    /// The controller already consumed this cleanup's natural-exit grace.
-    pub(crate) fn cleanup_after_exit_grace(&mut self, cleanup_ms: u64) -> EngineObservation {
-        self.cleanup_with_grace(cleanup_ms, false)
-    }
-    fn cleanup_with_grace(&mut self, cleanup_ms: u64, grace_allowed: bool) -> EngineObservation {
-        let deadline = Instant::now() + Duration::from_millis(cleanup_ms);
+    /// Terminate and reap within the original absolute retirement deadline.
+    pub fn cleanup_until(
+        &mut self,
+        deadline: Instant,
+        allow_natural_exit: bool,
+    ) -> EngineObservation {
         let mut problems = Vec::new();
         if self.observe_exit().ok().flatten().is_none() {
             // The controller records and attempts quit before entering cleanup.
             // This function never writes hidden protocol commands.
-            let grace = if grace_allowed {
-                Instant::now() + Duration::from_millis((cleanup_ms / 4).min(100))
+            let grace = if allow_natural_exit {
+                Instant::now()
+                    + (deadline.saturating_duration_since(Instant::now()) / 4)
+                        .min(Duration::from_millis(100))
             } else {
                 Instant::now()
             };
@@ -415,17 +414,19 @@ impl Engine {
             {
                 problems.push(format!("kill: {e}"));
             }
-            while self.exit.is_none() && Instant::now() < deadline {
+            while self.exit.is_none() {
                 match self.observe_exit() {
-                    Ok(_) => {}
+                    Ok(Some(_)) => break,
+                    Ok(None) => {}
                     Err(e) => {
                         problems.push(format!("reap: {e}"));
                         break;
                     }
                 }
-                if self.exit.is_none() {
-                    thread::sleep(Duration::from_millis(1));
+                if Instant::now() >= deadline {
+                    break;
                 }
+                thread::sleep(Duration::from_millis(1));
             }
             if self.exit.is_none() {
                 problems.push("child not reaped within cleanup watchdog".into());

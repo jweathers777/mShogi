@@ -501,6 +501,9 @@ impl<J: Journal> Transport<J> {
     pub fn retire(&mut self, engine: &mut Engine) -> (EngineObservation, Option<Failure>) {
         let budget = Duration::from_millis(self.watchdogs.cleanup_ms);
         let deadline = Instant::now() + budget;
+        // Reserve half the watchdog for forced termination and the pipe joins.
+        // Small receive intervals also limit oversleep on coalesced OS timers.
+        let drain = deadline - budget / 2;
         let pending = engine.unsettled_pipe;
         if pending {
             let grace = (budget / 4).min(Duration::from_millis(100));
@@ -509,7 +512,7 @@ impl<J: Journal> Transport<J> {
         let mut failure = None;
         let mut quit_written = false;
         for command in ["stop", "quit"] {
-            let left = deadline.saturating_duration_since(Instant::now());
+            let left = drain.saturating_duration_since(Instant::now());
             if left.is_zero() {
                 break;
             }
@@ -528,7 +531,7 @@ impl<J: Journal> Transport<J> {
                 failure.get_or_insert(e);
             }
         }
-        let drain = deadline - budget / 4;
+        let mut reached_eof = false;
         loop {
             let left = drain.saturating_duration_since(Instant::now());
             if left.is_zero() {
@@ -545,7 +548,11 @@ impl<J: Journal> Transport<J> {
             }
             // When quit failed, a live child can keep stdout open indefinitely.
             // Keep queued evidence, then spend the remaining budget on reaping.
-            let wait = if quit_written { left } else { Duration::ZERO };
+            let wait = if quit_written {
+                left.min(Duration::from_millis(5))
+            } else {
+                Duration::ZERO
+            };
             match engine.receive(wait) {
                 Ok(Output::Line(bytes)) => {
                     if let Err(e) = self.log(
@@ -578,7 +585,10 @@ impl<J: Journal> Transport<J> {
                         });
                     }
                 }
-                Ok(Output::Eof) | Err(RecvTimeoutError::Disconnected) => break,
+                Ok(Output::Eof) | Err(RecvTimeoutError::Disconnected) => {
+                    reached_eof = true;
+                    break;
+                }
                 Ok(Output::Oversized) => {
                     self.complete = false;
                     failure.get_or_insert_with(|| {
@@ -602,14 +612,8 @@ impl<J: Journal> Transport<J> {
                 Err(RecvTimeoutError::Timeout) => (),
             }
         }
-        let left = deadline
-            .saturating_duration_since(Instant::now())
-            .as_millis() as u64;
-        let mut observation = if pending {
-            engine.cleanup_after_exit_grace(left)
-        } else {
-            engine.cleanup(left)
-        };
+        let mut observation =
+            engine.cleanup_until(deadline, !pending && quit_written && reached_eof);
         if !observation.cleanup_failures.is_empty()
             || observation.exit.as_ref().is_none_or(|e| !e.success)
         {

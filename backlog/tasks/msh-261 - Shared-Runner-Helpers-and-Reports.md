@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T23:01:00Z'
+updated_date: '2026-11-26T23:16:00Z'
 labels:
   - runner
   - refactor
@@ -63,4 +63,6 @@ Transport checkpoint on codex/msh-261-shared-runner. All three runners use one t
 Hosted process CI 45906698510 passed on Ubuntu and Windows. macOS exposed a reap-budget failure when a live child had closed stdin. Retirement now drains already queued stdout without waiting for EOF after an unsuccessful quit, preserving the remaining budget to terminate and reap. Nine controlled process tests passed locally using the original 100 ms watchdog. Final production count is 7939 to 7326 (613 fewer). Next: repeat the release process matrix and workspace check on the fixed branch, then integrate.
 
 Review of the cleanup fix separated successful wire writes from transcript retention, and incomplete stdout capture from remaining journal capacity. A slow-quit child now exits naturally even with zero transcript bytes. A failed child with open stdout does not suppress the other child’s cleanup evidence. Two real subprocess regressions cover these paths. Superseded CI 45908103363 was cancelled. Corrected production line count is 7939 before and 7333 after (606 fewer). Next: verify final revision on all three hosted platforms, integrate and clean up.
+
+edb4f7b passed the workspace checks and its hosted Ubuntu and Windows jobs (45908447797). The controlled closed-stdin case also passed on macOS, but its Xiangqi retirement test observed an unreaped child under a 300 ms budget. The updated transport gives stop/quit and stdout capture the first half of the absolute deadline, polls stdout in intervals up to 5 ms, and reserves the other half for forced termination, reaping and joining pipe workers. It samples exit status even after a delayed wakeup. The watchdog, native rules and test expectations remain the same. The local full runner suite and the final focused Xiangqi check passed. Production source now totals 7338 lines, 601 fewer than the baseline. Next: final workspace check, affected process CI and integration.
 <!-- SECTION:NOTES:END -->

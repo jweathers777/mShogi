@@ -329,7 +329,7 @@ fn missing_retirement_eof_cannot_hide_a_delayed_duplicate_bestmove() {
         assert_eq!(game.stop, Stop::Failure);
         let failure = game.failure.as_ref().unwrap();
         assert_eq!(failure.phase, "retired");
-        // The fixture emits at 390ms, beyond the 375ms drain cutoff. A delayed
+        // The fixture emits at 390ms, beyond the 250ms drain cutoff. A delayed
         // host wakeup can still receive the queued duplicate before observing
         // that cutoff. Require evidence for the actual first refusal; neither
         // classification authorizes its candidate or complete retirement.

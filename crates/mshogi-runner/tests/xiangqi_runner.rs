@@ -91,7 +91,11 @@ fn watchdog_cancels_and_retires_late_result_then_reaps_child() {
         for e in &report.games {
             assert!(e.turns.is_empty() && e.score.is_none());
             assert_eq!(e.stop, Stop::Failure);
-            assert!(e.processes.iter().all(|p| p.observation.exit.is_some()));
+            assert!(
+                e.processes.iter().all(|p| p.observation.exit.is_some()),
+                "{mode}: {:?}",
+                e.processes
+            );
             if mode == "late" {
                 assert!(
                     e.traffic

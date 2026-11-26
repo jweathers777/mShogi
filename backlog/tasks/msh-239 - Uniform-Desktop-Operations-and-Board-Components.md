@@ -1,11 +1,11 @@
 ---
 id: MSH-239
 title: Uniform Desktop Operations and Board Components
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-11-25T08:51:00Z'
-updated_date: '2026-11-26T08:02:00Z'
+updated_date: '2026-11-26T08:17:00Z'
 labels:
   - desktop
   - refactor
@@ -31,10 +31,10 @@ Saved formats and protocols may change (A-09); update callers and fixtures.
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 One play, one game-command and one preferences operation serve all six games in the session and the frontend; the per-game variants and the duplicate wire enum are removed, and game data is only in the action or settings payload.
-- [ ] #2 One piece component with per-game face tables and one large-board component for Chu and Tenjiku; per-game frontend code holds only real differences (artwork, hands, intersection board, Chess claims).
-- [ ] #3 Settings have the same shape in every game; production line counts before and after are recorded; workspace, session and frontend tests pass.
-- [ ] #4 One review by a fresh agent session.
+- [x] #1 One play, one game-command and one preferences operation serve all six games in the session and the frontend; the per-game variants and the duplicate wire enum are removed, and game data is only in the action or settings payload.
+- [x] #2 One piece component with per-game face tables and one large-board component for Chu and Tenjiku; per-game frontend code holds only real differences (artwork, hands, intersection board, Chess claims).
+- [x] #3 Settings have the same shape in every game; production line counts before and after are recorded; workspace, session and frontend tests pass.
+- [x] #4 One review by a fresh agent session.
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -64,4 +64,12 @@ User-visible changes (accidental drift unified to the most common form): (1) Sho
 Checks 2026-11-26: fmt; clippy workspace and desktop-session all features; workspace tests 1,156 passed (10 ignored); desktop-session all features 197 passed; frontend tsc, 575 vitest passed (was 586: piece tests merged into Piece.test, dead NativeBoard adapter tests removed; their behaviors stay covered by ShogiBoard/SquareBoard tests), normal and verification builds; desktop scripts 177 Python tests passed. Browser check (Vite + mocked Tauri invoke, real fixtures): Chess, Shogi (promotion dialog), Tori, Xiangqi, Chu (Lion route overlay and footer), Tenjiku (all 44 faces) render; flip sends one preferences operation; no console errors. Packaged GUI not run.
 
 Review (fresh subagent, 2026-11-26, given the diff and the task): no defects. It confirmed that actor derivation is stricter than before (Tori, Chu and Tenjiku took a client actor without an ownership check), that paused/historical checks, analysis bounds, duplicate-field refusal, settings defaults and frontend payloads match the Rust serde shapes. Fixed from its findings: gui-smoke Tenjiku evidence read dataset.face; dead .piece.white/.black CSS selectors; chess glyphs passed only for Chess; Chess play parse error uses Display; one viewed-history exclusion list; ActiveDocument::kind uses profile().game(); Xiangqi label computes the kind once; a duplicate actor-parser test removed; stale ToriBirdPiece comment. Accepted risks, noted: (a) the generic Command path also admits Chess OfferDraw/AcceptDraw/DeclineDraw for the local player (native admission decides; the frontend sends only claims and resign); (b) a malformed play/command/preferences payload is refused at admission instead of at parse time, like an illegal move already was; (c) additional visible change: the selected-route overlay now also draws on the synthetic verification board. Left for MSH-264 (One Frontend Game Table and Wire Types): SyntheticApp re-derives files/ranks like TestBoard's displayedSquares; NativeBoardSnapshot and nativeSnapshotIsNewer still live in NativeBoard.tsx (the component is gone). Remaining per-game dispatch chains in shared_inspection.rs and shared_transaction.rs and the per-variant ActiveDocument accessors can use with_game!; recorded here as a follow-up candidate.
+
+Final checks after merging main (b594c80; main changed only a task file): fmt; clippy workspace and desktop-session all features; workspace tests 1,155 passed (10 ignored); desktop-session all features 196 passed; frontend tsc, 575 vitest, normal and verification builds; desktop scripts 177 Python tests. CI: Rust workspace passed on the branch; Desktop host checks (frontend check/test, Tauri fmt/clippy/test incl. desktop-verification) passed on Linux, macOS and Windows (runs 45778186673 and 45779854867). Packaged GUI journey not run (release-only). No cloud job or spending.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+One operation shape and shared board components for all six games. The session operation is game-neutral: Play (the opaque action of a presented choice), Command (a native command payload) and Preferences (document settings), plus the common controls; the session derives the actor and refuses a command for a side that no local human owns. The per-game variants, the OperationWire duplicate, GameOperation and the custom deserializer are gone; duplicate JSON fields are refused in SharedDesktopCommand::from_json. One GameSettings {play_mode, orientation, analysis_defaults} replaces DesktopSettings, ShogiSettings, XiangqiSettings, the Tori/Chu/Tenjiku aliases and NativeDesktopSettings; limits, new records and record conversion moved to NativeGame and one with_game! dispatch replaces the per-game if-chains. The frontend has the same three operations and one settings shape; one Piece component with per-game face tables replaces four piece components; one SquareBoard serves Chess, Chu and Tenjiku (ChuBoard, TenjikuBoard and the NativeBoard adapter are gone); Board, ShogiBoard and XiangqiBoard share one footer, completion dialog and square label. Shogi and Xiangqi native labels now carry the wording the frontend used. Fixtures were regenerated (only settings and these labels change); GUI scripts, their tests and documents were updated. Production lines -835 (session 12,550 -> 11,882; frontend ts/tsx 2,428 -> 2,310 lines, -8.6% bytes; CSS 1,002 -> 953). User-visible changes are listed in the notes (modal promotion dialog for Shogi/Tori, uniform help line, analysis limits remembered in every game, small artwork drift). Checks, three-platform desktop host CI and a fresh-agent review (no defects; nits fixed) pass. Follow-up candidates are in the notes for MSH-264 (One Frontend Game Table and Wire Types) and for the remaining per-game dispatch in the session.
+<!-- SECTION:FINAL_SUMMARY:END -->

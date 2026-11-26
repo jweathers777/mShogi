@@ -1,17 +1,26 @@
 ---
 id: MSH-243
 title: Game-Independent Strength Tool
-status: Ready
+status: To Do
 assignee: []
 created_date: '2026-11-25T11:47:00Z'
-updated_date: '2026-11-25T11:58:00Z'
+updated_date: '2026-11-26T11:46:00Z'
 labels:
   - cleanup
   - tooling
   - model:large
   - effort:high
 milestone: m-5
-dependencies: []
+dependencies:
+  - MSH-253
+  - MSH-255
+  - MSH-256
+  - MSH-258
+  - MSH-259
+  - MSH-263
+  - MSH-264
+  - MSH-265
+  - MSH-267
 priority: medium
 ordinal: 7930
 ---
@@ -37,4 +46,8 @@ Includes the scope of the former MSH-242 (folded in by John, 2026-11-25): the Ru
 
 <!-- SECTION:NOTES:BEGIN -->
 John, 2026-11-25: part of the cleanup; no longer waits for the Tenjiku release. Run after the MSH-209 follow-ups, MSH-222 and MSH-238, and before MSH-241. This task also reviews the strength tooling, which MSH-209 leaves out. MSH-240 task notes list known duplicates.
+
+Consolidation order approved by John, 2026-11-26: dependency fields record the structural cleanup prerequisites. MSH-263 now includes the duration and game-length budget work. MSH-266 now includes final fixture regeneration and therefore follows MSH-241, rather than blocking this strength-tool task. This supersedes the earlier blanket instruction to wait for every MSH-209 follow-up; no strength-tool scope is removed.
+
+Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Status is To Do while an unfinished dependency blocks work; otherwise Ready. No implementation has started.
 <!-- SECTION:NOTES:END -->

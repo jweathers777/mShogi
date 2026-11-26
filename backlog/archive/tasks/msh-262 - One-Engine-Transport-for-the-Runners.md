@@ -1,9 +1,10 @@
 ---
 id: MSH-262
 title: One Engine Transport for the Runners
-status: Ready
+status: To Do
 assignee: []
 created_date: '2026-11-25T12:22:00Z'
+updated_date: '2026-11-26T11:47:00Z'
 labels:
   - runner
   - refactor
@@ -27,3 +28,9 @@ crates/mshogi-runner talks to engine processes in three places: run.rs GameRun (
 - [ ] #2 Each drift is resolved to one behavior and recorded in the notes; one clock ledger type is used where the clocks are the same.
 - [ ] #3 Runner tests pass, including the process tests in CI on the affected operating systems.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+John approved consolidation on 2026-11-26. Entire implementation scope, acceptance criteria (updated only for superseded requirements), references and relevant context are now owned by MSH-261. This record is archived as superseded, not Done. No implementation or acceptance check was completed by consolidation. Use the surviving task for future work.
+<!-- SECTION:NOTES:END -->

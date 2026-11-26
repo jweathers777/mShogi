@@ -1,9 +1,10 @@
 ---
 id: MSH-257
 title: Shared Console Test Helpers
-status: Ready
+status: To Do
 assignee: []
 created_date: '2026-11-25T12:22:00Z'
+updated_date: '2026-11-26T11:47:00Z'
 labels:
   - console
   - tests
@@ -27,3 +28,9 @@ crates/mshogi-console/tests repeat helpers: the subprocess run helper six times 
 - [ ] #1 One tests/support module holds the shared helpers and the test files use it; one success rule (stderr checked or not) applies to all files.
 - [ ] #2 Test coverage is unchanged (same tests and assertions); console tests pass; test line counts before and after are recorded.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+John approved consolidation on 2026-11-26. Entire implementation scope, acceptance criteria (updated only for superseded requirements), references and relevant context are now owned by MSH-255. This record is archived as superseded, not Done. No implementation or acceptance check was completed by consolidation. Use the surviving task for future work.
+<!-- SECTION:NOTES:END -->

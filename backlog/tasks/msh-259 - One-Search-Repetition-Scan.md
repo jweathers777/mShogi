@@ -4,6 +4,7 @@ title: One Search Repetition Scan
 status: Ready
 assignee: []
 created_date: '2026-11-25T12:22:00Z'
+updated_date: '2026-11-26T11:46:00Z'
 labels:
   - search
   - refactor
@@ -27,3 +28,9 @@ Each search position scans its key history in rule_score with its own loop: Shog
 - [ ] #2 Shogi and Tori use one scan bound rule, chosen by measurement; a change in search behavior passes the blunder suite and an SPRT match against the frozen predecessor for each affected game, and each unchanged game shows identical fixed-depth results.
 - [ ] #3 Perft and differential tests pass.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Status is To Do while an unfinished dependency blocks work; otherwise Ready. No implementation has started.
+<!-- SECTION:NOTES:END -->

@@ -1,10 +1,10 @@
 ---
 id: MSH-273
 title: Runner Game Length Limits
-status: Ready
+status: To Do
 assignee: []
 created_date: '2026-11-25T22:13:00Z'
-updated_date: '2026-11-26T07:44:00Z'
+updated_date: '2026-11-26T11:47:00Z'
 labels:
   - runner
   - model:medium
@@ -34,4 +34,6 @@ John decided on 2026-11-26: the developer runners keep the stop settings that th
 Question for John: do the runner limits above fall under 'no limit on game size'? Recommendation: keep the per-experiment stop settings that the operator chooses (max_steps, max_plies, max_actions) and the 128 MiB report budget as experiment budgets, but remove their fixed upper bounds and the byte caps that grow with game length (command_bytes 4096 on position commands, the 1 MiB replay entry check, the 4096 total-step schedule cap as a per-game limit), and do not count opening records against the 1 MiB configuration cap.
 
 John, 2026-11-26, answer to the question above: Yes, as recommended.
+
+John approved consolidation on 2026-11-26. Entire implementation scope, acceptance criteria (updated only for superseded requirements), references and relevant context are now owned by MSH-263. This record is archived as superseded, not Done. No implementation or acceptance check was completed by consolidation. Use the surviving task for future work.
 <!-- SECTION:NOTES:END -->

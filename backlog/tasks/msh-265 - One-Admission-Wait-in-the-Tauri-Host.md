@@ -4,6 +4,7 @@ title: One Admission Wait in the Tauri Host
 status: Ready
 assignee: []
 created_date: '2026-11-25T12:23:00Z'
+updated_date: '2026-11-26T11:46:00Z'
 labels:
   - desktop
   - tauri
@@ -27,3 +28,9 @@ desktop/src-tauri/src/main.rs (1,499 lines) repeats the reserve, receipt and 15 
 - [ ] #1 One admit-and-wait helper serves the host commands; the duplicate snapshot code and the verification modes that render the same application are merged.
 - [ ] #2 Host tests use shared helpers; the Tauri tests pass, and the host CI passes on the affected operating systems.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Status is To Do while an unfinished dependency blocks work; otherwise Ready. No implementation has started.
+<!-- SECTION:NOTES:END -->

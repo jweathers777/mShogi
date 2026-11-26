@@ -1,10 +1,10 @@
 ---
 id: MSH-271
 title: Remove Remaining Retired Desktop References
-status: Ready
+status: To Do
 assignee: []
 created_date: '2026-11-25T17:50:00Z'
-updated_date: '2026-11-25T17:50:00Z'
+updated_date: '2026-11-26T11:47:00Z'
 labels:
   - cleanup
   - model:small
@@ -27,3 +27,9 @@ MSH-248 (Remove Unused Console and Frontend Code) found leftovers outside its li
 - [ ] #2 The desktop session and archive documents do not say that a current surface shows a 'DEVELOPMENT CONTRACT' label.
 - [ ] #3 No style sheet uses a custom property that is not defined; the document state label stays readable.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+John approved consolidation on 2026-11-26. Entire implementation scope, acceptance criteria (updated only for superseded requirements), references and relevant context are now owned by MSH-264. This record is archived as superseded, not Done. No implementation or acceptance check was completed by consolidation. Use the surviving task for future work.
+<!-- SECTION:NOTES:END -->

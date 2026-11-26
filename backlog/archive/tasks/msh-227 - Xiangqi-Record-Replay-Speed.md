@@ -1,10 +1,10 @@
 ---
 id: MSH-227
 title: Xiangqi Record Replay Speed
-status: Ready
+status: To Do
 assignee: []
 created_date: '2026-11-22T15:18:00Z'
-updated_date: '2026-11-26T08:57:00Z'
+updated_date: '2026-11-26T11:46:00Z'
 labels:
   - core
   - performance
@@ -41,4 +41,6 @@ MSH-209 (2026-11-25): two cross-game follow-ups touch the same Xiangqi code. MSH
 John, 2026-11-25: run after MSH-250 and MSH-251, which change the same replay cost. Measure again first; they may already meet this goal.
 
 MSH-250 (Token-Only Native Request Context), 2026-11-26, changed Xiangqi: requests now carry only the shared GameContext token (crates/mshogi-core/src/native/context.rs), so Game::context() no longer copies root, policy and the command ledger and submit no longer compares them. GameUndo is bound by instance and history node (O(1) check); the per-submit copies in GameUndo (after checkpoint, after_commands, after_lineage) and the lineage vector are gone; fork() is infallible. Not changed (left for this task): transaction_copy (whole-game clone per submit), occurrences scan (MSH-251), assess_natural_win per board action. Measured with the extended resource_admission example (now has shogi and xiangqi), Apple M1 Pro release, target/release/examples/resource_admission xiangqi 1000: replay 160.6 ms before, 154-155 ms after (about 155 us per event); admission 91.8 -> 84-91 us; undo 2.2 -> 0.04 us. So the context copy was not the main cost; transaction_copy dominates. Measure again from this state.
+
+John approved consolidation on 2026-11-26. Entire implementation scope, acceptance criteria (updated only for superseded requirements), references and relevant context are now owned by MSH-252 (Shared Game History and Xiangqi Replay). This record is archived as superseded, not Done. No implementation or acceptance check was completed by consolidation. Use the surviving task for future work.
 <!-- SECTION:NOTES:END -->

@@ -1,16 +1,17 @@
 ---
 id: MSH-235
 title: Reconcile and Prune Durable Documentation
-status: Ready
+status: To Do
 assignee: []
 created_date: '2026-11-23T17:53:00Z'
-updated_date: '2026-11-25T12:23:00Z'
+updated_date: '2026-11-26T11:46:00Z'
 labels:
   - documentation
   - model:medium
   - effort:high
 milestone: m-6
-dependencies: []
+dependencies:
+  - MSH-266
 documentation:
   - docs/desktop/native-application.md
 priority: low
@@ -34,4 +35,8 @@ Do this after the cleanup tasks, so the documents describe the final code. docs/
 
 <!-- SECTION:NOTES:BEGIN -->
 MSH-209 (2026-11-25): an earlier bulk edit removed the space between a word and the number after it (for example 'exceeds1MiB', 'rank12') in about 190 places; most are in docs/m4. MSH-249 (Restore Spaces Lost Before Numbers) fixes crates/, desktop/ and tools/ only; fix the documents that this task keeps.
+
+Consolidation order approved by John, 2026-11-26: run after MSH-266 (Desktop Scripts and Reproducible Fixtures), which follows MSH-241 and all structural cleanup. Reconcile documents only after final names and generated fixtures are settled.
+
+Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Status is To Do while an unfinished dependency blocks work; otherwise Ready. No implementation has started.
 <!-- SECTION:NOTES:END -->

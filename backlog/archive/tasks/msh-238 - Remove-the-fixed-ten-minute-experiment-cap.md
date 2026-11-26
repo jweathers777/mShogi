@@ -1,10 +1,10 @@
 ---
 id: MSH-238
 title: Remove the fixed ten-minute experiment cap
-status: Ready
+status: To Do
 assignee: []
 created_date: '2026-11-24T22:29:00Z'
-updated_date: '2026-11-25T11:58:00Z'
+updated_date: '2026-11-26T11:47:00Z'
 labels:
   - model:medium
   - effort:medium
@@ -32,4 +32,6 @@ MSH-52.3 truncated seven of eight 40s+0.4s versus 80s+0.8s color pairs at the fi
 
 <!-- SECTION:NOTES:BEGIN -->
 John, 2026-11-25: runs after the MSH-209 follow-ups and before MSH-243, which uses the runner.
+
+John approved consolidation on 2026-11-26. Entire implementation scope, acceptance criteria (updated only for superseded requirements), references and relevant context are now owned by MSH-263. This record is archived as superseded, not Done. No implementation or acceptance check was completed by consolidation. Use the surviving task for future work.
 <!-- SECTION:NOTES:END -->

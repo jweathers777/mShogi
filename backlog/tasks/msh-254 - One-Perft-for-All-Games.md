@@ -4,6 +4,7 @@ title: One Perft for All Games
 status: Ready
 assignee: []
 created_date: '2026-11-25T12:21:00Z'
+updated_date: '2026-11-26T11:46:00Z'
 labels:
   - core
   - console
@@ -28,3 +29,9 @@ Each game has its own perft and divide API in mshogi-core: chess/perft.rs (u32 d
 - [ ] #2 Console perft and divide use it for every game with one budget rule; the console Chu recursion and the copied order_key are removed.
 - [ ] #3 All perft expected values and conformance results are unchanged; workspace checks pass.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Status is To Do while an unfinished dependency blocks work; otherwise Ready. No implementation has started.
+<!-- SECTION:NOTES:END -->

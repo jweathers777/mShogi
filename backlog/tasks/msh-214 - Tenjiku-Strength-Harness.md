@@ -4,15 +4,16 @@ title: Tenjiku Strength Harness
 status: To Do
 assignee: []
 created_date: '2026-11-20T22:51:00Z'
-updated_date: '2026-11-25T11:47:00Z'
+updated_date: '2026-11-26T11:46:00Z'
 labels:
   - tenjiku
   - search
   - model:large
   - effort:high
+  - needs-john
 milestone: m-5
 dependencies:
-  - MSH-243
+  - MSH-235
 ordinal: 11000
 ---
 
@@ -36,4 +37,6 @@ Goal: the harness step of the per-game classical strength program (docs/m5/stren
 2026-11-25 (John): Tenjiku comes last, after the codebase cleanup (MSH-237 to MSH-235). Set to Ready when John releases Tenjiku.
 
 John, 2026-11-25: use the game-independent strength tool of MSH-243 (Game-Independent Strength Tool); do not write new Tenjiku-only copies. MSH-240 removed the earlier per-game tools; MSH-243 records where to read them.
+
+Backlog consolidation, 2026-11-26: MSH-235 is the final cleanup prerequisite and transitively includes MSH-243 (Game-Independent Strength Tool). The existing instruction that John must release Tenjiku remains in force; needs-john makes that gate visible. No harness work has started.
 <!-- SECTION:NOTES:END -->

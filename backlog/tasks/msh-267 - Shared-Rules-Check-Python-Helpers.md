@@ -4,6 +4,7 @@ title: Shared Rules-Check Python Helpers
 status: Ready
 assignee: []
 created_date: '2026-11-25T12:23:00Z'
+updated_date: '2026-11-26T11:46:00Z'
 labels:
   - tools
   - refactor
@@ -26,3 +27,9 @@ The rules-check tools outside tools/strength repeat helpers. tools/check_chess_*
 - [ ] #1 One shared helper module serves the chess checks (one script with subcommands, or shared functions), and tools/shogi and tools/xiangqi use shared helpers; each check gives the same result on the committed fixtures.
 - [ ] #2 compare_perft.py is removed or documented; the Python tests of these tools run in CI, or the notes record why not.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Status is To Do while an unfinished dependency blocks work; otherwise Ready. No implementation has started.
+<!-- SECTION:NOTES:END -->

@@ -4,7 +4,7 @@ title: One Repetition Index for All Games
 status: Ready
 assignee: []
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-26T08:57:00Z'
+updated_date: '2026-11-26T11:46:00Z'
 labels:
   - core
   - simplification
@@ -12,7 +12,8 @@ labels:
   - model:large
   - effort:high
 milestone: m-6
-dependencies: []
+dependencies:
+  - MSH-250
 priority: medium
 ordinal: 6800
 ---
@@ -36,4 +37,6 @@ Each native game finds earlier occurrences of a position in its own way: Chess k
 Measurement tools that exist (MSH-209): mshogi-core examples record_replay, resource_admission and tenjiku_rules_work.
 
 MSH-250 (Token-Only Native Request Context), 2026-11-26: did not change any occurrences or repetition function. Chu replay at 1000 events is still about 615 us per event after MSH-250 (was 674); its repetition scans dominate. Baseline for this task: target/release/examples/resource_admission GAME N (shogi and xiangqi added), numbers in MSH-250 notes.
+
+Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Status is To Do while an unfinished dependency blocks work; otherwise Ready. No implementation has started.
 <!-- SECTION:NOTES:END -->

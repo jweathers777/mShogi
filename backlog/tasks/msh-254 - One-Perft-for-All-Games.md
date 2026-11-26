@@ -1,10 +1,11 @@
 ---
 id: MSH-254
 title: One Perft for All Games
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-26T11:55:00Z'
+updated_date: '2026-11-26T16:49:00Z'
 labels:
   - core
   - console
@@ -34,4 +35,6 @@ Each game has its own perft and divide API in mshogi-core: chess/perft.rs (u32 d
 
 <!-- SECTION:NOTES:BEGIN -->
 Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
+
+Checkpoint: claimed MSH-254 on codex/msh-254-one-perft. Next, map native rules traversal and console callers, then consolidate and verify.
 <!-- SECTION:NOTES:END -->

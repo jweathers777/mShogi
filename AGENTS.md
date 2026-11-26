@@ -73,32 +73,16 @@ must be able to start the next task without chat history and without help.
 
 ## Checks
 
-Choose checks by the code and behavior that can change. Do not run the full
-check set after every save, commit or checkpoint push.
+Install the repository hooks with `python3 tools/checks.py install-hooks` during
+setup. Before integration, run `python3 tools/checks.py run --base origin/main`.
+The shared command selects mechanical checks from the changes; hooks run only
+fast staged checks, with no builds or tests. Setup, prerequisites, explicit suites
+and CI use are in [docs/development.md](docs/development.md#checks-and-git-hooks).
 
-During implementation, run focused checks after meaningful changes. Before
-merging into `main`, complete the checks below on the code to be integrated.
-Repeat a completed check only when later changes, including changes merged
-from `main`, can invalidate its result.
-
-- **Documentation or Backlog only:** validate the changed content, links and
-  task structure. Do not run product builds or tests.
-- **Rust code:** run:
-
-  ```bash
-  cargo fmt --all -- --check
-  cargo clippy --workspace --all-targets --locked -- -D warnings
-  cargo test --workspace --locked
-  ```
-
-- **Frontend code:** run the TypeScript check and frontend tests. Run affected
-  desktop integration checks when behavior crosses the frontend/host boundary.
-- **Python or other scripts:** run the relevant syntax, static and test checks.
-  Run affected integration checks when a script changes how it builds, starts
-  or controls another component.
-- **Shared interfaces, toolchain, dependencies or build configuration:** check
-  the affected producers and consumers, including examples and fixtures. A
-  change outside Rust can still require Rust checks.
+During implementation, use focused checks after meaningful changes. Do not repeat
+checks after every save, commit or checkpoint push. Reuse earlier results when
+later changes have not invalidated them. Documentation-only and Backlog-only
+changes need content, link and task checks, not product builds or tests.
 
 Also, by type of change:
 

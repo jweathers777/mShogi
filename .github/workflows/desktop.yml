@@ -50,6 +50,9 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version-file: desktop/.node-version
@@ -66,14 +69,7 @@ jobs:
         working-directory: desktop
         run: |
           npm ci
-          npm run check
-          npm test
-          npm run engine:prepare
-          cd src-tauri
-          cargo fmt --all -- --check
-          cargo clippy --locked --all-targets -- -D warnings
-          cargo test --locked
-          cargo test --locked --features desktop-verification
+          python3 ../tools/checks.py run --suite frontend --suite host
       - name: Verify stable macOS QA identities and external fixture selection
         if: runner.os == 'macOS'
         run: python3 -m unittest discover -s desktop/scripts -p test_macos_verification.py -v
@@ -94,6 +90,9 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version-file: desktop/.node-version
@@ -110,14 +109,7 @@ jobs:
         working-directory: desktop
         run: |
           npm ci
-          npm run check
-          npm test
-          npm run engine:prepare
-          cd src-tauri
-          cargo fmt --all -- --check
-          cargo clippy --locked --all-targets -- -D warnings
-          cargo test --locked
-          cargo test --locked --features desktop-verification
+          python3 ../tools/checks.py run --suite frontend --suite host
       - name: Verify stable macOS QA identities and external fixture selection
         if: runner.os == 'macOS'
         run: python3 -m unittest discover -s desktop/scripts -p test_macos_verification.py -v

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Small CI input/path checks; product test commands stay visible in workflows."""
+"""Shared path selection and CI inputs; executable checks live in checks.py."""
 import argparse
 import json
 import os
@@ -23,13 +23,20 @@ def platforms(value):
 
 def affected(paths):
     """Union all changed paths, including deletions and both sides of renames."""
-    shared = any(p in ("Cargo.toml", "Cargo.lock", "rust-toolchain.toml", "tools/ci_checks.py")
+    paths = [p for p in paths if not p.endswith(".md") and not p.startswith(("docs/", "backlog/"))]
+    shared = any(p in ("Cargo.toml", "Cargo.lock", "rust-toolchain.toml",
+                              "rust-toolchain", "rustfmt.toml", ".rustfmt.toml")
                  or p.startswith((".cargo/", ".github/workflows/")) for p in paths)
     rust = shared or any(p.startswith("crates/") for p in paths)
     frontend = shared or any(p.startswith(("desktop/", "crates/mshogi-core/",
                                            "crates/mshogi-engine/",
                                            "crates/mshogi-desktop-session/")) for p in paths)
     return rust, frontend
+
+
+def tooling_affected(paths):
+    return any(p in ('tools/checks.py', 'tools/ci_checks.py', 'tools/test_checks.py')
+               or p.startswith(('.githooks/', '.github/workflows/')) for p in paths)
 
 
 def changed_paths(event, cwd=None):
@@ -61,11 +68,12 @@ def plan(kind, event_name, event, paths=None):
         if inputs.get("suite", "configuration") not in SUITES:
             raise ValueError("Unsupported native suite")
         return {"matrix": {"os": platforms(inputs.get("platform", PLATFORMS[0]))},
-                "rust": False, "frontend": False}
+                "rust": False, "frontend": False, "tooling": False}
     if event_name not in ("push", "pull_request"):
         raise ValueError("Unsupported automatic event")
     rust, frontend = (True, True) if paths is None else affected(paths)
-    return {"matrix": {"os": [PLATFORMS[0]]}, "rust": rust, "frontend": frontend}
+    return {"matrix": {"os": [PLATFORMS[0]]}, "rust": rust, "frontend": frontend,
+            "tooling": paths is None or tooling_affected(paths)}
 
 
 class PolicyTests(unittest.TestCase):
@@ -82,7 +90,7 @@ class PolicyTests(unittest.TestCase):
         self.assertEqual(affected(["crates/mshogi-search/src/lib.rs", "desktop/src/App.tsx"]),
                          (True, True))
         for name in ["Cargo.lock", "Cargo.toml", "rust-toolchain.toml", ".cargo/config.toml",
-                     ".github/workflows/desktop.yml", "tools/ci_checks.py"]:
+                     ".github/workflows/desktop.yml"]:
             self.assertEqual(affected([name]), (True, True))
 
     def test_large_diff_does_not_hide_late_source_or_rename(self):

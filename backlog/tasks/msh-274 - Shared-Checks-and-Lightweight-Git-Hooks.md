@@ -5,6 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-26T12:57:00Z'
+updated_date: '2026-11-26T13:02:00Z'
 labels:
   - tooling
   - ci
@@ -34,3 +35,9 @@ Centralize mechanical check selection and commands so local work and CI use the 
 <!-- SECTION:PLAN:BEGIN -->
 1. Extend the existing CI path policy with a shared executable check command. 2. Add staged-snapshot formatting hooks and setup, with isolated Git tests. 3. Reuse commands in CI and document setup and scope. 4. Run focused tooling tests and cross-platform CI, integrate, record results and clean up.
 <!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Checkpoint: shared command, staged-snapshot pre-commit hook, installer, CI command reuse and shorter AGENTS.md implemented on codex/msh-274-shared-checks. Focused local policy and real Git tests pass (including partial staging, initial commits, worktrees and actual rustfmt without product builds). Next: validate CI on Linux/macOS/Windows, fix findings, install hook in this clone, integrate and clean up. No pre-push hook; pushes never trigger local builds/tests.
+<!-- SECTION:NOTES:END -->

@@ -1,0 +1,7 @@
+#!/bin/sh
+# Fast checks only. Pushes intentionally have no hook.
+root=$(git rev-parse --show-toplevel) || exit 1
+if command -v python3 >/dev/null 2>&1; then
+    exec python3 "$root/tools/checks.py" hook
+fi
+exec python "$root/tools/checks.py" hook

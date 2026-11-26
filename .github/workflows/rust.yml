@@ -30,11 +30,15 @@ jobs:
     timeout-minutes: 15
     outputs:
       matrix: ${{ steps.scope.outputs.matrix }}
+      tooling: ${{ steps.scope.outputs.tooling }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           fetch-depth: 0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
       - name: Validate CI policy cases
         run: python3 tools/ci_checks.py --self-test
       - name: Identify applicable checks
@@ -43,11 +47,10 @@ jobs:
       - name: Native formatting and consumer compilation
         if: steps.scope.outputs.rust == 'true'
         run: |
-          cargo fmt --all -- --check
-          cargo clippy --workspace --all-targets --locked -- -D warnings
+          python3 tools/checks.py run --suite rust-format --suite rust-lint
       - name: Focused native search regressions
         if: steps.scope.outputs.rust == 'true'
-        run: cargo test --release --locked -p mshogi-search --lib
+        run: python3 tools/checks.py run --suite search-smoke
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         if: steps.scope.outputs.frontend == 'true'
         with:
@@ -56,11 +59,29 @@ jobs:
           cache-dependency-path: desktop/package-lock.json
       - name: Frontend checks for changed UI or shared native contracts
         if: steps.scope.outputs.frontend == 'true'
-        working-directory: desktop
         run: |
-          npm ci
-          npm run check
-          npm test
+          npm --prefix desktop ci
+          python3 tools/checks.py run --suite frontend
+
+  tooling:
+    name: Check tooling (${{ matrix.os }})
+    needs: routine
+    if: needs.routine.outputs.tooling == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-15, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Check policy, staged formatting and real Git hooks without product builds
+        run: python tools/checks.py run --suite tooling
 
   targeted:
     name: Targeted ${{ inputs.suite }} (${{ matrix.os }})
@@ -138,17 +159,20 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
       - name: Install and identify the pinned toolchain
         run: |
           rustup show
           rustc --version --verbose
           cargo --version
       - name: Format
-        run: cargo fmt --all -- --check
+        run: python3 tools/checks.py run --suite rust-format
       - name: Lint
-        run: cargo clippy --workspace --all-targets --locked -- -D warnings
+        run: python3 tools/checks.py run --suite rust-lint
       - name: Test
-        run: cargo test --workspace --locked
+        run: python3 tools/checks.py run --suite rust-test
       - name: Verify time-primary desktop Chess through actual release subprocesses
         run: cargo test --release --locked -p mshogi-console --test desktop_play
       - name: Verify production Tenjiku subprocess and standard-root journeys

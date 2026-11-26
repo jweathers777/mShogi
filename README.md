@@ -33,9 +33,8 @@ as described in the development guide. From a clean checkout of `main`:
 cargo build --workspace --locked
 cargo run --locked --bin mshogi -- --help
 cargo run --locked --bin mshogi -- --version
-cargo fmt --all -- --check
-cargo clippy --workspace --all-targets --locked -- -D warnings
-cargo test --workspace --locked
+python3 tools/checks.py install-hooks
+python3 tools/checks.py run --suite rust-format --suite rust-lint --suite rust-test
 ```
 
 For the desktop, install its platform prerequisites, then:

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T22:10:00Z'
+updated_date: '2026-11-26T22:15:00Z'
 labels:
   - search
   - refactor
@@ -26,7 +26,7 @@ Each search position scans its key history in rule_score with its own loop: Shog
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [x] #1 One shared repetition-history helper in the search core gives each game its earlier occurrences; per-game code keeps only its scoring.
-- [ ] #2 Shogi and Tori use one scan bound rule, chosen by measurement; a change in search behavior passes the blunder suite and an SPRT match against the frozen predecessor for each affected game, and each unchanged game shows identical fixed-depth results.
+- [x] #2 Shogi and Tori use one scan bound rule, chosen by measurement; a change in search behavior passes the blunder suite and an SPRT match against the frozen predecessor for each affected game, and each unchanged game shows identical fixed-depth results.
 - [x] #3 Perft and differential tests pass.
 <!-- AC:END -->
 
@@ -70,4 +70,6 @@ Common capture/drop candidate 47de96f. The shorter bound is a search approximati
 Short candidate 47de96f vs 7c15e68: all 154 fixed-depth signatures matched, including 38 real Tori positions, 36 Chess, 28 Xiangqi, 28 Chu and 24 Tenjiku. Both review follow-ups are in the branch. The early Shogi blunder probe hit the default 300k nodes before depth 6; all 226 rows rerun with explicit engine maximum 5M. The first broad check flagged a private-search test expecting the former across-drop cycle shortcut. In 678b97a all native legal-move, board, identity, hash and undo assertions remain, the private search callback is tested against its new bound, and an exact native fourfold at ply 18 is tested on that same three-Gold fixture, with both reconstructed and played search histories. Both focused checks passed. Current jobs msh259-final-check, msh259-shogi-match, msh259-shogi-blunders. Match native report confirms 5000ms+100ms and identical depth 64/5M caps. Continue from branch codex/msh-259-repetition.
 
 Short shared bound, Shogi 47de96f vs frozen 7c15e68, c3-standard-4, 5s+0.1s, H0 -15/H1 0: the fixed-order SPRT reached H1 at seed 373. All 373 color-reversed pairs scored. W/L/D 390/340/16, pentanomial [78,3,182,11,99], LLR +2.982 crossed +2.944; +23.32 Elo, 95% CI [-1.10,+47.97]. This passes the non-inferiority gate. No partial pairs or earlier candidates were pooled. Exact command and native reports: gs://mshogi-experiments-216675633801/runs/msh-259/method/short/ and shogi-match/. Reviewer confirmed all prior native legality/differential checks and the exact ply-18 adjudication are retained in 678b97a. Next: receive all Shogi blunder results, full checks and perft, verify cloud teardown, and integrate the clean branch.
+
+All 226 Shogi blunder positions reached depth 6 on both frozen engines, including 62 held out; both engines chose the same move in every position. Both avoided 107 of 226 recorded errors and matched 54 reference choices (29 and 14 of 62 held out). Nodes 20,154,695 base / 20,242,072 candidate. Three complete result files and the 154 exact fixed-depth signatures are in verification3/. The common-bound strength/equivalence criterion is complete. Current outstanding validation is the final-check Batch run (shared checks, differentials and deep perft), then teardown and integration.
 <!-- SECTION:NOTES:END -->

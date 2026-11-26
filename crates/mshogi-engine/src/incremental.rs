@@ -52,7 +52,7 @@ impl Metadata {
     }
 }
 /// Native suffix families. Additional games use the same session protocol.
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize)]
 #[serde(
     tag = "kind",
     content = "delta",
@@ -70,6 +70,33 @@ pub enum Delta {
     Xiangqi(xiangqi::GameDelta),
     /// Exact Tenjiku events under the retained profile.
     Tenjiku(tenjiku::GameDelta),
+}
+// Capture the native bytes before dispatch. Serde's adjacent-tag buffering
+// cannot preserve a RawValue when the content field precedes the tag.
+impl<'de> Deserialize<'de> for Delta {
+    fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        #[derive(Deserialize)]
+        #[serde(deny_unknown_fields)]
+        struct TaggedDelta {
+            kind: GameKind,
+            delta: Box<serde_json::value::RawValue>,
+        }
+        let wire = TaggedDelta::deserialize(d)?;
+        let text = wire.delta.get();
+        match wire.kind {
+            GameKind::Shogi => serde_json::from_str(text).map(Self::Shogi),
+            GameKind::Xiangqi => serde_json::from_str(text).map(Self::Xiangqi),
+            GameKind::Tori => serde_json::from_str(text).map(Self::Tori),
+            GameKind::Chu => serde_json::from_str(text).map(Self::Chu),
+            GameKind::Tenjiku => serde_json::from_str(text).map(Self::Tenjiku),
+            GameKind::Chess => {
+                return Err(serde::de::Error::custom(
+                    "Chess has no native record suffix",
+                ));
+            }
+        }
+        .map_err(serde::de::Error::custom)
+    }
 }
 /// A full validated reset or a suffix of one exact acknowledged endpoint.
 #[derive(Clone, Debug, Serialize, Deserialize)]

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-26T15:59:00Z'
+updated_date: '2026-11-26T16:01:00Z'
 labels:
   - core
   - persistence
@@ -60,4 +60,6 @@ Claimed on codex/msh-253-record-codec at a63fa47. Next: baseline evidence, codec
 Checkpoint on codex/msh-253-record-codec. Implemented one codec for the three shared GameHistory games, Xiangqi multi-event suffixes, and generic retained engine sessions. Shogi keeps its schema-specific canonical SFEN, declaration/score and diagnostic conversion, while using the same engine session. Xiangqi retains its root codec, claim policy and many-events-per-command replay. Chess retains its distinct adjudicated match record with clocks and observations, has no validated suffix, and uses full requests. Frozen and new envelope suites passed with 23 distinct byte-identical envelopes. Baseline complete-game measurements (seed 253, release, nine final zero-node timed requests) on macOS arm64: Xiangqi 81 events 15,746 us; Adams 175 events 3,703 us; Muller 161 events 3,456 us. Next: finish added regression tests, compare 42 committed game documents, run workspace and platform checks and fresh review, then integrate.
 
 Independent review of a63fa47..66a670a found a preflight performance regression, a coverage gap and stale protocol documentation. The branch now checks Xiangqi request tokens before checkpointing, tests retained move analysis against valid and forged same-ply targets, and documents timed retention for all five adapters. Byte comparison of reconstructed canonical records in all 42 committed .mshogi files, 23 envelope-test outputs and six generated full/base records succeeded. Clippy type alias and Xiangqi test expectation corrected: a rejected count claim emits two audit events; resignation emits two more. Next: finish workspace checks, compare native admission at 1,000 commands, collect targeted CI, integrate and clean up.
+
+The retained-analysis regression exposed a decoder defect: when the outer delta content preceded its kind, Serde buffered and lost the raw inner bytes. The transport now captures that field as RawValue before selecting the native decoder. A reordered forged request returns InvalidRequest and the valid target still searches. The focused engine test passes. Long 1,000-command comparisons and end-to-end workspace/CI verification are in progress. Branch codex/msh-253-record-codec.
 <!-- SECTION:NOTES:END -->

@@ -208,13 +208,11 @@ p {
   pointer-events: none;
   paint-order: stroke fill;
 }
-.piece.white,
 .piece.native-first-owner {
   fill: #fffdf1;
   stroke: #283a35;
   stroke-width: 2.1px;
 }
-.piece.black,
 .piece.native-second-owner {
   fill: #172d2a;
   stroke: #e1e7d7;

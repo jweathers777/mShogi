@@ -206,17 +206,14 @@ impl SessionGame for Xiangqi {
             .filter_map(|point| {
                 position.piece(point).map(|p| {
                     let owner = xiangqi_side(p.side);
+                    let kind = format!("{:?}", p.kind).to_lowercase();
                     PresentedPiece {
                         square: point.to_string(),
+                        label: format!("{point}, {} {kind}", owner.label),
                         owner: owner.key,
-                        kind: format!("{:?}", p.kind).to_lowercase(),
+                        kind,
                         promoted: false,
                         text: format!("{:?}", p.kind),
-                        label: format!(
-                            "{point}, {} {}",
-                            owner.label,
-                            format!("{:?}", p.kind).to_lowercase()
-                        ),
                     }
                 })
             })

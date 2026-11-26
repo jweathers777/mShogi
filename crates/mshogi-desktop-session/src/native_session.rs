@@ -782,8 +782,8 @@ impl DesktopController {
                     | SessionOperation::ReturnLive {}
                     | SessionOperation::Analyze { .. }
                     | SessionOperation::Cancel {}
+                    | SessionOperation::Preferences { .. }
             )
-            && !matches!(operation, SessionOperation::Preferences { .. })
         {
             return Err("Return to live before changing the game.".into());
         }

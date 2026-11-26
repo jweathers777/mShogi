@@ -24,8 +24,8 @@ export function SquareBoard({ snapshot, disabled, onPlay, onInspect, inspectionD
     bottomOwner={bottom.key} firstOwner={snapshot.sides.find(side => side.first_mover)!.key}
     contextKey={JSON.stringify([game, snapshot.profile, snapshot.token])} humanOwner={snapshot.local_actor.key}
     disabled={disabled || !snapshot.capabilities.board_action} inspectionDisabled={inspectionDisabled} onInspect={onInspect} onPlay={onPlay} completedAction={completedAction}
-    glyphs={chessGlyphs} promotion={game === "chess"} coordinateFrame={game !== "chess"}
-    {...(game === "chess" ? {} : { renderPiece: (piece, rotated) => {
+    promotion={game === "chess"} coordinateFrame={game !== "chess"}
+    {...(game === "chess" ? { glyphs: chessGlyphs } : { renderPiece: (piece, rotated) => {
       const identity = identities.find(identity => identity.square === piece.square);
       return identity ? <Piece game={game} face={identity.face} base={identity.piece.base} promoted={identity.piece.promoted} rotated={rotated} /> : null;
     } })}

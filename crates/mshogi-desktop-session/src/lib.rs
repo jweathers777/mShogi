@@ -210,15 +210,7 @@ impl std::ops::DerefMut for ActiveDocument {
 impl ActiveDocument {
     /// The game of the installed document.
     fn kind(&self) -> mshogi_core::native::GameKind {
-        use mshogi_core::native::GameKind;
-        match self {
-            Self::Chess { .. } => GameKind::Chess,
-            Self::Shogi { .. } => GameKind::Shogi,
-            Self::Xiangqi { .. } => GameKind::Xiangqi,
-            Self::Tori { .. } => GameKind::Tori,
-            Self::Chu { .. } => GameKind::Chu,
-            Self::Tenjiku { .. } => GameKind::Tenjiku,
-        }
+        self.profile().game()
     }
     fn chess(&self) -> Option<&shared::chess::ChessSession> {
         match self {

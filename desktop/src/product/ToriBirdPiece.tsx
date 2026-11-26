@@ -1,4 +1,4 @@
-// Dormant original artwork alternative. Traditional kanji in ToriPiece is the product default.
+// Dormant original artwork alternative. Traditional kanji in the shared Piece tile is the product default.
 import type { ReactNode } from "react";
 import "./tori-birds.css";
 

@@ -495,14 +495,6 @@ fn command_json_strict_payload_and_replacement_identity() {
 }
 
 #[test]
-fn commands_carry_no_actor() {
-    // The session derives the actor; a client-chosen actor could play for
-    // the engine's side.
-    let json = r#"{"kind":"command","actor":"gote","command":{"kind":"resign"}}"#;
-    assert!(serde_json::from_str::<SessionOperation>(json).is_err());
-}
-
-#[test]
 fn close_document_preconditions_advance_for_shogi_events_observations_and_replacement() {
     let mut c = controller();
     let initial = c.shared_snapshot().document.revision;

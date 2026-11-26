@@ -35,7 +35,7 @@ impl SessionGame for Chess {
         action
             .parse()
             .map(MatchCommand::Move)
-            .map_err(|e: ActionParseError| format!("{e:?}"))
+            .map_err(|e: ActionParseError| e.to_string())
     }
     session_wiring!(Chess, state: chess, chess_mut, field: chess);
     const BOARD_SIZE: u8 = 8;

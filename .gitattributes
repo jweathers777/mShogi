@@ -8,3 +8,6 @@
 /docs/m4/tenjiku/profile.json text eol=lf
 /desktop/scripts/fixtures/tenjiku-*.mshogi text eol=lf
 /desktop/scripts/fixtures/tenjiku-native-fixtures.json text eol=lf
+
+# Git shell hooks must execute unchanged on Windows checkouts.
+/.githooks/* text eol=lf

@@ -32,6 +32,12 @@ class SelectionTests(unittest.TestCase):
         self.assertEqual(affected(['tools/ci_checks.py']), (False, False))
         self.assertTrue(tooling_affected(['.githooks/pre-commit']))
 
+    @unittest.skipUnless(shutil.which('npm'), 'npm is not installed')
+    def test_command_runner_launches_npm_on_this_platform(self):
+        # Verify .cmd resolution on Windows; this neither builds nor tests a product.
+        with contextlib.redirect_stdout(io.StringIO()):
+            checks.execute(SOURCE, [(['npm', '--version'], '.')])
+
     def test_product_commands_fail_without_continuing(self):
         with patch('checks.subprocess.run', side_effect=subprocess.CalledProcessError(4, 'cargo')) as run:
             with self.assertRaises(subprocess.CalledProcessError), contextlib.redirect_stdout(io.StringIO()):
@@ -60,12 +66,15 @@ class GitTests(unittest.TestCase):
         self.base = self.git('rev-parse', 'HEAD').decode().strip()
 
     def git(self, *args):
-        return checks.git(self.root, *args)
+        try:
+            return checks.git(self.root, *args)
+        except subprocess.CalledProcessError as error:
+            self.fail(error.stderr.decode(errors='replace'))
 
     def write(self, path, content):
         file = self.root / path
         file.parent.mkdir(parents=True, exist_ok=True)
-        file.write_text(content)
+        file.write_text(content, newline="\n")
 
     def test_package_selection_and_global_configuration(self):
         cmds = checks.format_commands(self.root, ['crates/one/src/lib.rs'])
@@ -142,7 +151,7 @@ class GitTests(unittest.TestCase):
         initial = self.root / 'initial'
         initial.mkdir()
         checks.git(initial, 'init', '-q')
-        (initial / 'notes.md').write_text('first commit\n')
+        (initial / 'notes.md').write_text('first commit\n', newline='\n')
         checks.git(initial, 'add', 'notes.md')
         checks.hook(initial)
 
@@ -187,6 +196,20 @@ class GitTests(unittest.TestCase):
         self.assertFalse((self.root / 'target').exists())
         self.assertEqual(checks.python_tests(self.root, ['tools/xiangqi/test_reference.py']), [])
 
+    def test_hook_checkout_keeps_lf_with_autocrlf_enabled(self):
+        self.write('.gitattributes', '/.githooks/* text eol=lf\n')
+        self.git('add', '.gitattributes')
+        self.git('commit', '-qm', 'hook attributes')
+        self.git('config', 'core.autocrlf', 'true')
+        (self.root / '.githooks/pre-commit').unlink()
+        self.git('checkout', '--', '.githooks/pre-commit')
+        self.assertNotIn(b'\r', (self.root / '.githooks/pre-commit').read_bytes())
+        with contextlib.redirect_stdout(io.StringIO()):
+            checks.install(self.root)
+        self.write('notes.md', 'windows checkout\n')
+        self.git('add', 'notes.md')
+        self.git('commit', '-qm', 'commit with autocrlf')
+
     def test_installer_preserves_existing_hook_configuration(self):
         self.git('config', 'core.hooksPath', '/custom/hooks')
         with self.assertRaises(RuntimeError):
@@ -203,7 +226,7 @@ class GitTests(unittest.TestCase):
         other = Path(self.temp.name) / 'linked worktree'
         self.git('worktree', 'add', '-qb', 'linked', str(other))
         (other / '.githooks/pre-commit').chmod(0o755)
-        (other / 'notes.md').write_text('linked worktree\n')
+        (other / 'notes.md').write_text('linked worktree\n', newline='\n')
         checks.git(other, 'add', 'notes.md')
         checks.git(other, 'commit', '-qm', 'linked commit')
         self.assertEqual(checks.git(other, 'config', '--get', 'core.hooksPath').strip(), b'.githooks')

@@ -1,12 +1,12 @@
 use super::{Action, LocalPosition, LocalUndo};
-use crate::perft::{PerftPosition, TraversalError};
+use crate::perft::{PerftPosition, STANDARD_VISIT_LIMIT, TraversalError};
 
 impl PerftPosition for LocalPosition {
     type Action = Action;
     type Undo = LocalUndo;
 
     const MAX_DEPTH: u32 = 8;
-    const MAX_VISITS: u64 = 1_000_000;
+    const MAX_VISITS: u64 = STANDARD_VISIT_LIMIT;
 
     fn perft_copy(&self) -> Result<Self, TraversalError> {
         Ok(self.board_probe())

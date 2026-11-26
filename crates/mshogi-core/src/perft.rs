@@ -2,6 +2,9 @@
 
 use std::{error::Error, fmt};
 
+/// Standard visit allowance for interactive diagnostics and detailed traversals.
+pub const STANDARD_VISIT_LIMIT: u64 = 1_000_000;
+
 /// Native operations required by the shared perft and divide traversal.
 pub trait PerftPosition: Sized {
     /// A complete native action, including promotion, drop or route choices.

@@ -1,7 +1,7 @@
 use super::{Action, ActionError, Game, GameCommand, GameError, GameRequest, LocalPosition};
 use crate::{
     native::history::GameUndo,
-    perft::{PerftPosition, TraversalError},
+    perft::{PerftPosition, STANDARD_VISIT_LIMIT, TraversalError},
 };
 
 impl PerftPosition for Game {
@@ -9,6 +9,7 @@ impl PerftPosition for Game {
     type Undo = GameUndo;
 
     const MAX_DEPTH: u32 = 3;
+    const MAX_VISITS: u64 = STANDARD_VISIT_LIMIT;
 
     fn perft_copy(&self) -> Result<Self, TraversalError> {
         Ok(self.clone())

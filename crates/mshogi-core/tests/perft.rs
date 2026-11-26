@@ -197,7 +197,7 @@ fn depth_semantics_and_errors_are_explicit() {
     // depth-one divide counts each root action once.
     let entries = divide(&initial, 1, 21, || false).unwrap().entries;
     assert_eq!(entries.len(), 20);
-    assert!(report.entries.iter().all(|entry| entry.leaves == 1));
+    assert!(entries.iter().all(|entry| entry.leaves == 1));
     assert_eq!(text(entries[0].action), "b1a3");
     assert_eq!(text(entries[19].action), "h2h4");
     // Malformed positions never reach perft: the FEN boundary rejects them.

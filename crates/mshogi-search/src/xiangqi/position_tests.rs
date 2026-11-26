@@ -158,8 +158,8 @@ fn existing_independent_board_fixtures_and_perft_agree() {
         if let Some(check) = fixture["in_check"].as_bool() {
             assert_eq!(p.in_check(), check);
         }
-        if let Some(perft) = fixture["perft"].as_object() {
-            for (depth, count) in perft {
+        if let Some(totals) = fixture["perft"].as_object() {
+            for (depth, count) in totals {
                 let depth: u8 = depth.parse().unwrap();
                 let expected = count.as_u64().unwrap();
                 assert_eq!(
@@ -181,7 +181,7 @@ fn existing_independent_board_fixtures_and_perft_agree() {
     assert!(checked >= 30, "{checked}");
     let native = Position::initial();
     let mut p = XiangqiPosition::from_position(&native);
-    for depth in 1..=3 {
+    for depth in 1..=3u8 {
         assert_eq!(
             p.perft(depth.into()),
             perft(&native, u32::from(depth), 1_000_000, || false)

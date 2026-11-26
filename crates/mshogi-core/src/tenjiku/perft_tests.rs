@@ -82,10 +82,14 @@ fn limits_budget_and_stop_never_return_partial_exact_or_mutate_original() {
         perft(&game, Game::MAX_DEPTH + 1, 100, || false),
         Err(PerftError::DepthLimit { max: 3 })
     );
-    assert_eq!(
-        perft(&game, 1, 0, || false),
-        Err(PerftError::VisitLimit { max: u64::MAX })
-    );
+    for limit in [0, STANDARD_VISIT_LIMIT + 1] {
+        assert_eq!(
+            perft(&game, 1, limit, || false),
+            Err(PerftError::VisitLimit {
+                max: STANDARD_VISIT_LIMIT
+            })
+        );
+    }
     assert_eq!(
         divide(&game, 0, 10, || false),
         Err(PerftError::ZeroDivideDepth)

@@ -2,9 +2,7 @@
 
 use std::fmt::Write as _;
 
-use mshogi_core::perft::{PerftPosition, divide, perft};
-
-const VISIT_LIMIT: u64 = 1_000_000;
+use mshogi_core::perft::{PerftPosition, STANDARD_VISIT_LIMIT, divide, perft};
 
 pub enum Style {
     Chess,
@@ -65,12 +63,12 @@ pub fn execute<P: PerftPosition>(
 
 fn limits(command: &str, args: &[&str], max_depth: u32) -> Result<(u32, u64), String> {
     let (depth, visits) = match args {
-        [depth] => (*depth, VISIT_LIMIT),
+        [depth] => (*depth, STANDARD_VISIT_LIMIT),
         [depth, visits] => (
             *depth,
             ascii_number(visits)
-                .filter(|n| (1..=VISIT_LIMIT).contains(n))
-                .ok_or_else(|| format!("visits must be ASCII 1..{VISIT_LIMIT}"))?,
+                .filter(|n| (1..=STANDARD_VISIT_LIMIT).contains(n))
+                .ok_or_else(|| format!("visits must be ASCII 1..{STANDARD_VISIT_LIMIT}"))?,
         ),
         _ => return Err(format!("usage: {command} <depth> [visits]")),
     };

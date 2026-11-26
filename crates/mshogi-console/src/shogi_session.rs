@@ -1,8 +1,10 @@
 //! Explicit human console adapter; native game owns all rules and admission.
-use crate::{diagnostics, record_io, session::Next};
+use crate::{
+    diagnostics,
+    shell::{self, Variant, diagnostic},
+};
 use mshogi_core::{native::CanonicalRecord, shogi::*};
 use std::fmt::Write as _;
-
 pub const MAX_DIAGNOSTIC_DEPTH: u32 = 2;
 const HELP: &str = "Untimed shogi diagnostic console (not USI protocol):
   position startpos                  Complete standard-root history
@@ -27,18 +29,58 @@ retains existing promoted identity. Readable labels are output, USI is input.
 Compact board: uppercase = Sente, lowercase = Gote; K R B G S N L P.
 Prefix + marks promotion (+P/+p); two-character cells keep piece/file alignment.";
 
-pub struct Session {
-    game: Game,
-    undo: Vec<GameUndo>,
-}
-impl Session {
-    pub fn new() -> Self {
-        Self {
-            game: Game::new(),
-            undo: Vec::new(),
-        }
+impl Variant for Game {
+    type Undo = GameUndo;
+    type Command = GameCommand;
+    const NAME: &'static str = "shogi";
+    const HELP: &'static str = HELP;
+    const MOVE_SYNTAX: &'static str = "USI-action";
+    const LOADED: &'static str = "loaded complete native record";
+    fn position_command(&self, rest: &str) -> Result<Self, String> {
+        let game = if rest == "startpos" {
+            Game::new()
+        } else {
+            let Some(("sfen", rest)) = rest.split_once(' ') else {
+                return Err("usage: position startpos | position sfen full|reduced <SFEN>".into());
+            };
+            let Some((category, text)) = rest.trim().split_once(' ') else {
+                return Err("SFEN requires full|reduced material category".into());
+            };
+            let category = match category {
+                "full" => RootCategory::FullMaterialDiagram,
+                "reduced" => RootCategory::ReducedMaterialDiagram,
+                _ => return Err("SFEN requires full|reduced material category".into()),
+            };
+            let position = Position::from_sfen(text.trim()).map_err(diagnostic)?;
+            Game::from_root(
+                GameRoot::import(position, category, CounterSource::Supplied)
+                    .map_err(root_error)?,
+            )
+        };
+        Ok(game)
     }
-    fn restored(game: Game) -> Result<Self, String> {
+    fn after_position(&self, out: &mut String) -> Result<(), String> {
+        self.write_status(out)?;
+        writeln!(
+            out,
+            "history-segment earlier-history {}",
+            if self.root().has_complete_initial_history() {
+                "complete"
+            } else {
+                "unknown"
+            }
+        )
+        .unwrap();
+        Ok(())
+    }
+    fn record(&self) -> Result<CanonicalRecord, String> {
+        Ok(CanonicalRecord::shogi(GameRecord::from_game(self)))
+    }
+    fn restore(record: CanonicalRecord) -> Result<(Self, Vec<GameUndo>), String> {
+        let CanonicalRecord::Shogi(record) = record else {
+            return Err("record is not shogi; session preserved".into());
+        };
+        let game = record.to_game().map_err(diagnostic)?;
         let mut replay = Game::from_root(game.root().clone());
         let mut undo = Vec::new();
         for event in game.events() {
@@ -49,296 +91,175 @@ impl Session {
                         actor: event.actor,
                         command: event.command,
                     })
-                    .map_err(|e| format!("native replay failed: {e:?}"))?,
+                    .map_err(game_error)?,
             );
         }
         if replay != game {
             return Err("native replay disagrees with complete recorded game".into());
         }
-        Ok(Self { game: replay, undo })
+        Ok((replay, undo))
     }
-    /// Submit one USI action on the live game; its undo token stays valid there.
-    fn play(&mut self, text: &str) -> Result<(GameUndo, String), String> {
-        let action: Action = text.parse().map_err(|e: ActionParseError| e.to_string())?;
-        let label = readable(self.game.position(), action)?;
+    fn play(&mut self, text: &str, out: &mut String) -> Result<GameUndo, String> {
+        let action: Action = text.parse().map_err(diagnostic)?;
+        let label = readable(self.position(), action)?;
         let undo = self
-            .game
             .submit(GameRequest {
-                expected: self.game.context(),
-                actor: self.game.position().side_to_move(),
+                expected: self.context(),
+                actor: self.position().side_to_move(),
                 command: GameCommand::Play(action),
             })
-            .map_err(|e| format!("native action rejected: {e:?}; no actions applied"))?;
-        Ok((undo, format!("played {action} {label}")))
+            .map_err(game_error)?;
+        writeln!(out, "played {action} {label}").unwrap();
+        Ok(undo)
     }
-    pub fn execute(&mut self, line: &str, out: &mut String) -> Result<Next, String> {
-        let line = line.trim_matches([' ', '\t', '\r', '\x0b', '\x0c']);
-        if line.is_empty() || line.starts_with('#') {
-            return Ok(Next::Continue);
-        }
-        let (command, rest) = line
-            .split_once(|c: char| c.is_ascii_whitespace())
-            .map_or((line, ""), |(a, b)| (a, b.trim()));
-        let args: Vec<_> = rest.split_ascii_whitespace().collect();
+    fn submit_actor(
+        &mut self,
+        args: &[&str],
+        command: GameCommand,
+        _out: &mut String,
+    ) -> Result<GameUndo, String> {
+        self.submit(GameRequest {
+            expected: self.context(),
+            actor: side(args)?,
+            command,
+        })
+        .map_err(game_error)
+    }
+    fn undo_event(&mut self, undo: GameUndo) -> Result<(), String> {
+        self.undo(undo)
+            .map_err(|_| "native undo token rejected".into())
+    }
+    fn actor_command(command: &str) -> Option<GameCommand> {
         match command {
-            "help" => {
-                empty(&args)?;
-                writeln!(out, "{HELP}").unwrap();
-            }
-            "quit" => {
-                empty(&args)?;
-                return Ok(Next::Quit);
-            }
-            "position" => {
-                let game = if rest == "startpos" {
-                    Game::new()
-                } else {
-                    let Some(("sfen", rest)) = rest.split_once(' ') else {
-                        return Err(
-                            "usage: position startpos | position sfen full|reduced <SFEN>".into(),
-                        );
-                    };
-                    let Some((category, text)) = rest.trim().split_once(' ') else {
-                        return Err("SFEN requires full|reduced material category".into());
-                    };
-                    let category = match category {
-                        "full" => RootCategory::FullMaterialDiagram,
-                        "reduced" => RootCategory::ReducedMaterialDiagram,
-                        _ => return Err("SFEN requires full|reduced material category".into()),
-                    };
-                    let position = Position::from_sfen(text.trim()).map_err(|e| e.to_string())?;
-                    Game::from_root(
-                        GameRoot::import(position, category, CounterSource::Supplied)
-                            .map_err(|e| format!("native root rejected: {e:?}"))?,
-                    )
-                };
-                *self = Self::restored(game)?;
-                self.status(out);
-                writeln!(
-                    out,
-                    "history-segment earlier-history {}",
-                    if self.game.root().has_complete_initial_history() {
-                        "complete"
-                    } else {
-                        "unknown"
-                    }
-                )
-                .unwrap();
-            }
-            "sfen" => {
-                empty(&args)?;
-                writeln!(out, "sfen {}", self.game.position().to_sfen()).unwrap();
-            }
-            "show" => {
-                empty(&args)?;
-                compact_board(self.game.position(), out);
-                self.hands(out);
-                self.status(out);
-            }
-            "hands" => {
-                empty(&args)?;
-                self.hands(out);
-            }
-            "status" => {
-                empty(&args)?;
-                self.status(out);
-            }
-            "legal" => {
-                empty(&args)?;
-                let actions = self.game.position().legal_actions();
-                writeln!(
-                    out,
-                    "legal-local {} (game admission also checks conclusion)",
-                    actions.len()
-                )
-                .unwrap();
-                for action in actions {
-                    writeln!(out, "{action} {}", readable(self.game.position(), action)?).unwrap();
-                }
-            }
-            "move" => {
-                if args.is_empty() {
-                    return Err("usage: move <USI-action>...".into());
-                }
-                let mut undo = Vec::new();
-                let mut labels = Vec::new();
-                for text in args {
-                    match self.play(text) {
-                        Ok((token, label)) => {
-                            undo.push(token);
-                            labels.push(label);
-                        }
-                        Err(error) => {
-                            // All or none: take back the actions of this command.
-                            for token in undo.into_iter().rev() {
-                                self.game
-                                    .undo(token)
-                                    .expect("undo of a just-accepted action");
-                            }
-                            return Err(error);
-                        }
-                    }
-                }
-                self.undo.extend(undo);
-                for label in labels {
-                    writeln!(out, "{label}").unwrap();
-                }
-                self.status(out);
-            }
-            "eligibility" | "declare" | "resign" => {
-                let actor = side(&args)?;
-                if command == "eligibility" {
-                    let evidence = self.game.declaration_eligibility(actor);
-                    writeln!(
-                        out,
-                        "eligibility {} {} {evidence:?} (advisory; no command submitted)",
-                        side_text(actor),
-                        evidence.eligible()
-                    )
-                    .unwrap();
-                } else {
-                    let command = if command == "declare" {
-                        GameCommand::DeclareEnteringKing
-                    } else {
-                        GameCommand::Resign
-                    };
-                    let undo = self
-                        .game
-                        .submit(GameRequest {
-                            expected: self.game.context(),
-                            actor,
-                            command,
-                        })
-                        .map_err(|e| format!("native command rejected: {e:?}"))?;
-                    self.undo.push(undo);
-                    self.status(out);
-                }
-            }
-            "undo" => {
-                let count = match args.as_slice() {
-                    [] => 1,
-                    [n] => decimal(n)
-                        .filter(|n| *n > 0)
-                        .ok_or("undo requires a positive ASCII count")?,
-                    _ => return Err("usage: undo [n]".into()),
-                };
-                if count > self.undo.len() {
-                    return Err(format!(
-                        "cannot undo {count}: only {} events",
-                        self.undo.len()
-                    ));
-                }
-                for _ in 0..count {
-                    self.game
-                        .undo(self.undo.pop().expect("count checked"))
-                        .map_err(|e| format!("native undo failed: {e:?}"))?;
-                }
-                self.status(out);
-            }
-            "history" => {
-                empty(&args)?;
-                writeln!(out, "profile {PROFILE_ID} edition {PROFILE_EDITION}").unwrap();
-                writeln!(
-                    out,
-                    "root {:?} counter {:?} complete-initial-history {} root-sfen {}",
-                    self.game.root().category(),
-                    self.game.root().counter_source(),
-                    self.game.root().has_complete_initial_history(),
-                    self.game.root().position().to_sfen()
-                )
-                .unwrap();
-                writeln!(
-                    out,
-                    "events {} known-board-actions {} occurrences {:?}",
-                    self.game.events().len(),
-                    CanonicalRecord::shogi(GameRecord::from_game(&self.game)).known_board_actions(),
-                    self.game.occurrences()
-                )
-                .unwrap();
-                for event in self.game.events() {
-                    writeln!(out,"event {} actor {} command {:?} check {:?} declaration {:?} conclusion {:?} after {}",event.index,side_text(event.actor),event.command,event.gave_check,event.declaration,event.conclusion,event.after_sfen).unwrap();
-                }
-            }
-            "record" => {
-                use record_io::Operation;
-                match record_io::parse(rest)? {
-                    Operation::Print => {
-                        writeln!(out, "record {}", self.record_json()?).unwrap();
-                    }
-                    Operation::Save(path) => record_io::save(path, &self.record_json()?, out)?,
-                    Operation::LoadFile(path) => self.restore_json(&record_io::read(path)?, out)?,
-                    Operation::LoadJson(json) => self.restore_json(json, out)?,
-                }
-            }
-            "perft" | "divide" => diagnostics::execute(
-                self.game.position(),
-                command,
-                &args,
-                MAX_DIAGNOSTIC_DEPTH,
-                diagnostics::Style::Local,
-                out,
-                |action| Ok(action.to_string()),
-            )?,
-            _ => return Err(format!("unknown shogi command '{}'", line.escape_default())),
+            "resign" => Some(GameCommand::Resign),
+            "declare" => Some(GameCommand::DeclareEnteringKing),
+            _ => None,
         }
-        Ok(Next::Continue)
     }
-    fn record_json(&self) -> Result<String, String> {
-        CanonicalRecord::shogi(GameRecord::from_game(&self.game))
-            .to_json()
-            .map_err(|e| record_io::diagnostic(&e.to_string()))
-    }
-    fn restore_json(&mut self, json: &str, out: &mut String) -> Result<(), String> {
-        let CanonicalRecord::Shogi(record) =
-            CanonicalRecord::from_json(json).map_err(|e| record_io::diagnostic(&e.to_string()))?
-        else {
-            return Err("record is not shogi; session preserved".into());
-        };
-        let replacement = Self::restored(
-            record
-                .to_game()
-                .map_err(|e| record_io::diagnostic(&e.to_string()))?,
-        )?;
-        *self = replacement;
-        writeln!(out, "loaded complete native record").unwrap();
-        self.status(out);
-        Ok(())
-    }
-    fn status(&self, out: &mut String) {
-        writeln!(out, "sfen {}", self.game.position().to_sfen()).unwrap();
+    fn write_status(&self, out: &mut String) -> Result<(), String> {
+        writeln!(out, "sfen {}", self.position().to_sfen()).unwrap();
         writeln!(
             out,
             "side {} declared-completed {} known-events {} conclusion {:?}",
-            side_text(self.game.position().side_to_move()),
-            self.game.position().completed_actions(),
-            self.game.events().len(),
-            self.game.conclusion()
+            side_text(self.position().side_to_move()),
+            self.position().completed_actions(),
+            self.events().len(),
+            self.conclusion()
         )
         .unwrap();
+        Ok(())
     }
-    fn hands(&self, out: &mut String) {
-        for side in [Side::Sente, Side::Gote] {
-            let hand = self.game.position().hand(side);
-            let kinds: Vec<_> = PieceKind::HAND_KINDS
-                .into_iter()
-                .map(|kind| format!("{}:{}", kind_text(kind), hand.count(kind)))
-                .collect();
-            writeln!(out, "hands {} {}", side_text(side), kinds.join(" ")).unwrap();
+    fn board(&self, out: &mut String) {
+        compact_board(self.position(), out);
+        hands(self, out);
+    }
+    fn legal(&self, out: &mut String) -> Result<(), String> {
+        let actions = self.position().legal_actions();
+        writeln!(
+            out,
+            "legal-local {} (game admission also checks conclusion)",
+            actions.len()
+        )
+        .unwrap();
+        for action in actions {
+            writeln!(out, "{action} {}", readable(self.position(), action)?).unwrap();
+        }
+        Ok(())
+    }
+    fn history(&self, out: &mut String) -> Result<(), String> {
+        writeln!(out, "profile {PROFILE_ID} edition {PROFILE_EDITION}").unwrap();
+        writeln!(
+            out,
+            "root {:?} counter {:?} complete-initial-history {} root-sfen {}",
+            self.root().category(),
+            self.root().counter_source(),
+            self.root().has_complete_initial_history(),
+            self.root().position().to_sfen()
+        )
+        .unwrap();
+        writeln!(
+            out,
+            "events {} known-board-actions {} occurrences {:?}",
+            self.events().len(),
+            CanonicalRecord::shogi(GameRecord::from_game(self)).known_board_actions(),
+            self.occurrences()
+        )
+        .unwrap();
+        for event in self.events() {
+            writeln!(out,"event {} actor {} command {:?} check {:?} declaration {:?} conclusion {:?} after {}",event.index,side_text(event.actor),event.command,event.gave_check,event.declaration,event.conclusion,event.after_sfen).unwrap();
+        }
+        Ok(())
+    }
+    fn perft(&self, command: &str, args: &[&str], out: &mut String) -> Result<(), String> {
+        diagnostics::execute(
+            self.position(),
+            command,
+            args,
+            MAX_DIAGNOSTIC_DEPTH,
+            diagnostics::Style::Local,
+            out,
+            |action| Ok(action.to_string()),
+        )
+    }
+    fn extra(&self, command: &str, args: &[&str], out: &mut String) -> Result<(), String> {
+        match command {
+            "hands" => {
+                shell::empty(command, args)?;
+                hands(self, out);
+                Ok(())
+            }
+            "sfen" => {
+                shell::empty(command, args)?;
+                writeln!(out, "sfen {}", self.position().to_sfen()).unwrap();
+                Ok(())
+            }
+            "eligibility" => {
+                let actor = side(args)?;
+
+                let evidence = self.declaration_eligibility(actor);
+                writeln!(
+                    out,
+                    "eligibility {} {} {evidence:?} (advisory; no command submitted)",
+                    side_text(actor),
+                    evidence.eligible()
+                )
+                .unwrap();
+                Ok(())
+            }
+            _ => Err(shell::unknown::<Self>(command)),
         }
     }
 }
-fn empty(args: &[&str]) -> Result<(), String> {
-    if args.is_empty() {
-        Ok(())
-    } else {
-        Err("command takes no arguments".into())
+fn hands(game: &Game, out: &mut String) {
+    for side in [Side::Sente, Side::Gote] {
+        let hand = game.position().hand(side);
+        let kinds: Vec<_> = PieceKind::HAND_KINDS
+            .into_iter()
+            .map(|kind| format!("{}:{}", kind_text(kind), hand.count(kind)))
+            .collect();
+        writeln!(out, "hands {} {}", side_text(side), kinds.join(" ")).unwrap();
     }
 }
-fn decimal(s: &str) -> Option<usize> {
-    (!s.is_empty() && s.bytes().all(|b| b.is_ascii_digit()))
-        .then(|| s.parse().ok())
-        .flatten()
+
+fn root_error(error: RootError) -> String {
+    match error {
+        RootError::StandardRequiresInitialRoot => "standard root requires the initial position",
+        RootError::CategoryMismatch => "material does not match the root category",
+        RootError::CounterProvenance => "invalid root counter source",
+        RootError::NonmovingKingAttacked => "the nonmoving king is attacked",
+    }
+    .into()
 }
+fn game_error(error: GameError) -> String {
+    match error {
+        GameError::StaleContext => "stale game context".into(),
+        GameError::Concluded => "game has concluded".into(),
+        GameError::WrongActor => "wrong actor for board action".into(),
+        GameError::IllegalAction(error) => diagnostic(error),
+        GameError::MutualCheckInvariant(_) => "native mutual-check invariant failed".into(),
+    }
+}
+
 fn side(args: &[&str]) -> Result<Side, String> {
     match args {
         ["sente"] => Ok(Side::Sente),

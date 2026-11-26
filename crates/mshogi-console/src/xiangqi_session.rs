@@ -1,6 +1,10 @@
 //! Native Xiangqi diagnostic consumer. No local rules or evaluator are implemented here.
-use crate::{diagnostics, record_io, session::Next};
-use mshogi_core::{native::CanonicalRecord, perft::PerftPosition, xiangqi::*};
+use crate::{
+    diagnostics,
+    shell::{self, Variant, diagnostic},
+};
+use mshogi_core::perft::PerftPosition;
+use mshogi_core::{native::CanonicalRecord, xiangqi::*};
 use std::fmt::Write as _;
 const HELP: &str = "Untimed Xiangqi diagnostic console (not UCCI/UCI protocol):
   position [explicit|auto_valid_claims] startpos|fen <FEN>|json <root-JSON>
@@ -8,7 +12,7 @@ const HELP: &str = "Untimed Xiangqi diagnostic console (not UCCI/UCI protocol):
   move <a0a1>...                     Atomic complete native actions
   undo [n]                          Native commands, including same-ply claims
   eligibility red|black             Advisory claimant-specific natural count
-  claim|resign|offer|accept|decline red|black
+  claim|resign|offer-draw|accept-draw|decline-draw red|black
   record print|save <path>|load-file <path>|load-json <JSON>
   perft <0..3> [visits] | divide <1..3> [visits]  Local board counts, not match outcomes
   nowin fast                        Scoped native fast assessment
@@ -19,339 +23,244 @@ FEN import starts known history; it never restores earlier warnings/claims.
 Use the canonical envelope for full restoration. Saves require a new path.
 The fast no-win assessment is Unknown when it finds no sound proof; Unknown and
 failure are not game results.";
-pub struct Session {
-    game: Game,
-    undo: Vec<GameUndo>,
-}
-impl Session {
-    pub fn new() -> Result<Self, String> {
-        Ok(Self {
-            game: Game::standard(ClaimPolicy::Explicit).map_err(error)?,
-            undo: vec![],
-        })
+impl Variant for Game {
+    type Undo = GameUndo;
+    type Command = GameCommand;
+    const NAME: &'static str = "xiangqi";
+    const HELP: &'static str = HELP;
+    const MOVE_SYNTAX: &'static str = "a0a1";
+    const LOADED: &'static str = "loaded complete native record; fresh runtime";
+    shell::native_record!(xiangqi, Xiangqi);
+    fn position_command(&self, rest: &str) -> Result<Self, String> {
+        let (policy, body) = if let Some(body) = rest.strip_prefix("auto_valid_claims ") {
+            (ClaimPolicy::AutoValidClaims, body)
+        } else {
+            (
+                ClaimPolicy::Explicit,
+                rest.strip_prefix("explicit ").unwrap_or(rest),
+            )
+        };
+        let root = if body == "startpos" {
+            PositionRoot::standard()
+        } else if let Some(fen) = body.strip_prefix("fen ") {
+            PositionRoot::from_fen(fen).map_err(diagnostic)?
+        } else if let Some(json) = body.strip_prefix("json ") {
+            PositionRoot::from_json(json).map_err(diagnostic)?
+        } else {
+            return Err(
+                "usage: position [explicit|auto_valid_claims] startpos|fen <FEN>|json <root-JSON>"
+                    .into(),
+            );
+        };
+        Game::from_root(root, policy).map_err(diagnostic)
     }
-    fn record(&self) -> Result<CanonicalRecord, String> {
-        Ok(CanonicalRecord::xiangqi(
-            GameRecord::from_game(&self.game).map_err(error)?,
-        ))
-    }
-    fn candidate(&self) -> Result<(Game, Vec<GameUndo>), String> {
-        GameRecord::from_game(&self.game)
-            .map_err(error)?
-            .to_game_with_undo()
-            .map_err(error)
-    }
-    fn replace(&mut self, game: Game, undo: Vec<GameUndo>) -> Result<(), String> {
-        // Measure the actual accepted wrapper before committing; native limits alone
-        // cannot promise space for the envelope overhead.
-        CanonicalRecord::xiangqi(GameRecord::from_game(&game).map_err(error)?)
-            .to_json()
-            .map_err(error)?;
-        self.game = game;
-        self.undo = undo;
+    fn after_position(&self, out: &mut String) -> Result<(), String> {
+        self.write_status(out)?;
+        writeln!(
+            out,
+            "history-segment starts-at-root; earlier imported history unknown"
+        )
+        .unwrap();
         Ok(())
     }
-    pub fn execute(&mut self, line: &str, out: &mut String) -> Result<Next, String> {
-        let line = line.trim_matches(|c: char| c.is_ascii_whitespace());
-        if line.is_empty() || line.starts_with('#') {
-            return Ok(Next::Continue);
+    fn play(&mut self, text: &str, out: &mut String) -> Result<GameUndo, String> {
+        let action = text.parse::<Action>().map_err(diagnostic)?;
+        let result = self
+            .submit(GameRequest {
+                expected: self.context(),
+                actor: self.position().side_to_move(),
+                command: GameCommand::Play { action },
+            })
+            .map_err(diagnostic)?;
+        if out.is_empty() {
+            out.push_str("played");
         }
-        let (command, rest) = line
-            .split_once(|c: char| c.is_ascii_whitespace())
-            .map_or((line, ""), |(a, b)| (a, b.trim()));
-        let args: Vec<_> = rest.split_ascii_whitespace().collect();
-        match command {
-            "help" => {
-                empty(&args)?;
-                writeln!(out, "{HELP}").unwrap();
-            }
-            "quit" => {
-                empty(&args)?;
-                return Ok(Next::Quit);
-            }
-            "position" => {
-                let (policy, body) = if let Some(body) = rest.strip_prefix("auto_valid_claims ") {
-                    (ClaimPolicy::AutoValidClaims, body)
-                } else {
-                    (
-                        ClaimPolicy::Explicit,
-                        rest.strip_prefix("explicit ").unwrap_or(rest),
-                    )
-                };
-                let root = if body == "startpos" {
-                    PositionRoot::standard()
-                } else if let Some(fen) = body.strip_prefix("fen ") {
-                    PositionRoot::from_fen(fen).map_err(error)?
-                } else if let Some(json) = body.strip_prefix("json ") {
-                    PositionRoot::from_json(json).map_err(error)?
-                } else {
-                    return Err("usage: position [explicit|auto_valid_claims] startpos|fen <FEN>|json <root-JSON>".into());
-                };
-                self.replace(Game::from_root(root, policy).map_err(error)?, vec![])?;
-                self.status(out)?;
-                writeln!(
-                    out,
-                    "history-segment starts-at-root; earlier imported history unknown"
-                )
-                .unwrap();
-            }
-            "fen" => {
-                empty(&args)?;
-                writeln!(out, "fen {}", self.game.position().to_fen().map_err(error)?).unwrap();
-            }
-            "show" => {
-                empty(&args)?;
-                for rank in (0..10).rev() {
-                    write!(out, "{rank} ").unwrap();
-                    for file in 0..9 {
-                        let token = self
-                            .game
-                            .position()
-                            .piece(Intersection::new(file, rank).unwrap())
-                            .map_or('.', |p| {
-                                let code = letter(p.kind);
-                                if p.side == Side::Red {
-                                    code
-                                } else {
-                                    code.to_ascii_lowercase()
-                                }
-                            });
-                        if file > 0 {
-                            write!(out, " ").unwrap();
-                        }
-                        write!(out, "{token}").unwrap();
-                    }
-                    writeln!(out).unwrap();
-                    if rank == 5 {
-                        writeln!(out, "  ----- river -----").unwrap();
-                    }
-                }
-                writeln!(out, "  a b c d e f g h i (intersections)").unwrap();
-                self.status(out)?;
-            }
-            "status" => {
-                empty(&args)?;
-                self.status(out)?;
-            }
-            "legal" => {
-                empty(&args)?;
-                let choices = self.game.position().legal_actions().map_err(error)?;
-                writeln!(
-                    out,
-                    "legal-local {} (actual command admission also checks history/conclusion)",
-                    choices.len()
-                )
-                .unwrap();
-                for a in choices {
-                    writeln!(out, "{a}").unwrap();
-                }
-            }
-            "move" => {
-                if args.is_empty() {
-                    return Err("usage: move <a0a1>...".into());
-                }
-                let (mut game, mut undo) = self.candidate()?;
-                for text in &args {
-                    let action = text.parse::<Action>().map_err(error)?;
-                    let result = game
-                        .submit(GameRequest {
-                            expected: game.context(),
-                            actor: game.position().side_to_move(),
-                            command: GameCommand::Play { action },
-                        })
-                        .map_err(|e| {
-                            format!("native action rejected: {e:?}; no actions applied")
-                        })?;
-                    undo.push(result.undo);
-                }
-                self.replace(game, undo)?;
-                writeln!(out, "played {}", args.join(" ")).unwrap();
-                self.status(out)?;
-            }
-            "eligibility" | "claim" | "resign" | "offer" | "accept" | "decline" => {
-                let actor = side(&args)?;
-                if command == "eligibility" {
-                    writeln!(
-                        out,
-                        "eligibility {} {} (advisory)",
-                        side_text(actor),
-                        serde_json::to_string(&self.game.natural_count_eligibility(actor))
-                            .map_err(error)?
-                    )
-                    .unwrap();
-                } else {
-                    let cmd = match command {
-                        "claim" => GameCommand::ClaimNaturalCount,
-                        "resign" => GameCommand::Resign,
-                        "offer" => GameCommand::OfferDraw,
-                        "accept" => GameCommand::AcceptDraw,
-                        _ => GameCommand::DeclineDraw,
-                    };
-                    let (mut game, mut undo) = self.candidate()?;
-                    let result = game
-                        .submit(GameRequest {
-                            expected: game.context(),
-                            actor,
-                            command: cmd,
-                        })
-                        .map_err(error)?;
-                    let kind = result.result;
-                    undo.push(result.undo);
-                    self.replace(game, undo)?;
-                    writeln!(
-                        out,
-                        "command-result {}",
-                        serde_json::to_string(&kind).map_err(error)?
-                    )
-                    .unwrap();
-                    self.status(out)?;
-                }
-            }
-            "undo" => {
-                let count = match args.as_slice() {
-                    [] => 1,
-                    [n] => number(n)
-                        .filter(|v| *v > 0)
-                        .ok_or("undo requires a positive ASCII command count")?,
-                    _ => return Err("usage: undo [n]".into()),
-                };
-                if count > self.undo.len() {
-                    return Err(format!(
-                        "cannot undo {count}: only {} commands",
-                        self.undo.len()
-                    ));
-                }
-                // Native handles are owned and known LIFO; any invariant failure is
-                // explicit, never an invented outcome. Ordinary bounds are checked first.
-                for _ in 0..count {
-                    self.game.undo(self.undo.pop().unwrap()).map_err(error)?;
-                }
-                self.status(out)?;
-            }
-            "history" | "warnings" => {
-                empty(&args)?;
-                if command == "history" {
-                    writeln!(out, "profile {PROFILE_ID} edition {PROFILE_EDITION}").unwrap();
-                    writeln!(out, "root {}", self.game.root().to_json()).unwrap();
-                    for event in self.game.events() {
-                        writeln!(
-                            out,
-                            "event {}",
-                            serde_json::to_string(event).map_err(error)?
-                        )
-                        .unwrap();
-                    }
-                }
-                writeln!(
-                    out,
-                    "warnings {}",
-                    serde_json::to_string(self.game.warnings()).map_err(error)?
-                )
-                .unwrap();
-                self.status(out)?;
-            }
-            "record" => {
-                use record_io::Operation;
-                match record_io::parse(rest)? {
-                    Operation::Print => {
-                        writeln!(out, "record {}", self.record()?.to_json().map_err(error)?)
-                            .unwrap();
-                    }
-                    Operation::Save(path) => {
-                        record_io::save(path, &self.record()?.to_json().map_err(error)?, out)?
-                    }
-                    Operation::LoadFile(path) => self.load(&record_io::read(path)?, out)?,
-                    Operation::LoadJson(json) => self.load(json, out)?,
-                }
-            }
-            "perft" | "divide" => diagnostics::execute(
-                self.game.position(),
+        write!(out, " {text}").unwrap();
+        Ok(result.undo)
+    }
+    fn submit_actor(
+        &mut self,
+        args: &[&str],
+        command: GameCommand,
+        out: &mut String,
+    ) -> Result<GameUndo, String> {
+        let result = self
+            .submit(GameRequest {
+                expected: self.context(),
+                actor: side(args)?,
                 command,
-                &args,
-                Position::MAX_DEPTH,
-                diagnostics::Style::Local,
-                out,
-                |action| Ok(action.to_string()),
-            )?,
-            "nowin" => self.nowin(&args, out)?,
-            _ => {
-                return Err(format!(
-                    "unknown xiangqi command '{}'",
-                    record_io::diagnostic(line)
-                ));
-            }
+            })
+            .map_err(diagnostic)?;
+        writeln!(
+            out,
+            "command-result {}",
+            serde_json::to_string(&result.result).map_err(diagnostic)?
+        )
+        .unwrap();
+        Ok(result.undo)
+    }
+    fn undo_event(&mut self, undo: GameUndo) -> Result<(), String> {
+        self.undo(undo).map_err(diagnostic)
+    }
+    fn actor_command(command: &str) -> Option<GameCommand> {
+        match command {
+            "resign" => Some(GameCommand::Resign),
+            "offer-draw" => Some(GameCommand::OfferDraw),
+            "accept-draw" => Some(GameCommand::AcceptDraw),
+            "decline-draw" => Some(GameCommand::DeclineDraw),
+            "claim" => Some(GameCommand::ClaimNaturalCount),
+            _ => None,
         }
-        Ok(Next::Continue)
     }
-    fn load(&mut self, text: &str, out: &mut String) -> Result<(), String> {
-        let CanonicalRecord::Xiangqi(record) = CanonicalRecord::from_json(text).map_err(error)?
-        else {
-            return Err("record is not xiangqi; session preserved".into());
-        };
-        let (game, undo) = record.to_game_with_undo().map_err(error)?;
-        self.replace(game, undo)?;
-        writeln!(out, "loaded complete native record; fresh runtime").unwrap();
-        self.status(out)
-    }
-    fn status(&self, out: &mut String) -> Result<(), String> {
-        if let Ok(fen) = self.game.position().to_fen() {
+    fn write_status(&self, out: &mut String) -> Result<(), String> {
+        if let Ok(fen) = self.position().to_fen() {
             writeln!(out, "fen {fen}").unwrap();
         } else {
             writeln!(
                 out,
                 "position-json {}",
-                PositionRoot::analysis(self.game.position().clone()).to_json()
+                PositionRoot::analysis(self.position().clone()).to_json()
             )
             .unwrap();
         }
-        let r = GameRecord::from_game(&self.game).map_err(error)?;
+        let r = GameRecord::from_game(&self).map_err(diagnostic)?;
         writeln!(
             out,
             "side {} policy {} known-board-plies {} known-events {} conclusion {} pending {}",
-            side_text(self.game.position().side_to_move()),
-            serde_json::to_string(&self.game.claim_policy()).map_err(error)?,
+            side_text(self.position().side_to_move()),
+            serde_json::to_string(&self.claim_policy()).map_err(diagnostic)?,
             r.known_board_actions(),
             r.event_count(),
-            serde_json::to_string(&self.game.conclusion()).map_err(error)?,
-            serde_json::to_string(&self.game.pending_adjudication()).map_err(error)?
+            serde_json::to_string(&self.conclusion()).map_err(diagnostic)?,
+            serde_json::to_string(&self.pending_adjudication()).map_err(diagnostic)?
         )
         .unwrap();
         writeln!(
             out,
             "no-win-fast {} (not an ongoing-game verdict)",
-            serde_json::to_string(&self.game.no_win_assessment()).map_err(error)?
+            serde_json::to_string(&self.no_win_assessment()).map_err(diagnostic)?
         )
         .unwrap();
         Ok(())
     }
-    fn nowin(&self, args: &[&str], out: &mut String) -> Result<(), String> {
-        if args != ["fast"] {
-            return Err("usage: nowin fast".into());
+    fn board(&self, out: &mut String) {
+        for rank in (0..10).rev() {
+            write!(out, "{rank} ").unwrap();
+            for file in 0..9 {
+                let token = self
+                    .position()
+                    .piece(Intersection::new(file, rank).unwrap())
+                    .map_or('.', |p| {
+                        let code = letter(p.kind);
+                        if p.side == Side::Red {
+                            code
+                        } else {
+                            code.to_ascii_lowercase()
+                        }
+                    });
+                if file > 0 {
+                    write!(out, " ").unwrap();
+                }
+                write!(out, "{token}").unwrap();
+            }
+            writeln!(out).unwrap();
+            if rank == 5 {
+                writeln!(out, "  ----- river -----").unwrap();
+            }
         }
+        writeln!(out, "  a b c d e f g h i (intersections)").unwrap();
+    }
+    fn legal(&self, out: &mut String) -> Result<(), String> {
+        let choices = self.position().legal_actions().map_err(diagnostic)?;
         writeln!(
             out,
-            "no-win-fast {}",
-            serde_json::to_string(&self.game.no_win_assessment()).map_err(error)?
+            "legal-local {} (actual command admission also checks history/conclusion)",
+            choices.len()
         )
         .unwrap();
+        for a in choices {
+            writeln!(out, "{a}").unwrap();
+        }
         Ok(())
     }
-}
-fn error(e: impl std::fmt::Display) -> String {
-    record_io::diagnostic(&e.to_string())
-}
-fn empty(args: &[&str]) -> Result<(), String> {
-    if args.is_empty() {
+    fn history(&self, out: &mut String) -> Result<(), String> {
+        {
+            writeln!(out, "profile {PROFILE_ID} edition {PROFILE_EDITION}").unwrap();
+            writeln!(out, "root {}", self.root().to_json()).unwrap();
+            for event in self.events() {
+                writeln!(
+                    out,
+                    "event {}",
+                    serde_json::to_string(event).map_err(diagnostic)?
+                )
+                .unwrap();
+            }
+        }
+        warnings(self, out)?;
         Ok(())
-    } else {
-        Err("command takes no arguments".into())
+    }
+    fn perft(&self, command: &str, args: &[&str], out: &mut String) -> Result<(), String> {
+        diagnostics::execute(
+            self.position(),
+            command,
+            args,
+            Position::MAX_DEPTH,
+            diagnostics::Style::Local,
+            out,
+            |action| Ok(action.to_string()),
+        )
+    }
+    fn extra(&self, command: &str, args: &[&str], out: &mut String) -> Result<(), String> {
+        match command {
+            "fen" => {
+                shell::empty(command, args)?;
+                writeln!(out, "fen {}", self.position().to_fen().map_err(diagnostic)?).unwrap();
+                Ok(())
+            }
+            "eligibility" => {
+                let actor = side(args)?;
+
+                writeln!(
+                    out,
+                    "eligibility {} {} (advisory)",
+                    side_text(actor),
+                    serde_json::to_string(&self.natural_count_eligibility(actor))
+                        .map_err(diagnostic)?
+                )
+                .unwrap();
+                Ok(())
+            }
+            "nowin" => nowin(self, args, out),
+            "warnings" => {
+                shell::empty(command, args)?;
+                warnings(self, out)
+            }
+            _ => Err(shell::unknown::<Self>(command)),
+        }
     }
 }
-fn number(s: &str) -> Option<usize> {
-    (!s.is_empty() && s.bytes().all(|b| b.is_ascii_digit()))
-        .then(|| s.parse().ok())
-        .flatten()
+fn nowin(game: &Game, args: &[&str], out: &mut String) -> Result<(), String> {
+    if args != ["fast"] {
+        return Err("usage: nowin fast".into());
+    }
+    writeln!(
+        out,
+        "no-win-fast {}",
+        serde_json::to_string(&game.no_win_assessment()).map_err(diagnostic)?
+    )
+    .unwrap();
+    Ok(())
 }
+fn warnings(game: &Game, out: &mut String) -> Result<(), String> {
+    writeln!(
+        out,
+        "warnings {}",
+        serde_json::to_string(game.warnings()).map_err(diagnostic)?
+    )
+    .unwrap();
+    game.write_status(out)
+}
+
 fn side(args: &[&str]) -> Result<Side, String> {
     match args {
         ["red"] => Ok(Side::Red),

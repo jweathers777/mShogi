@@ -202,7 +202,7 @@ fn advisory_count_claims_are_claimant_specific_and_terminal_commands_preserve_pl
 #[test]
 fn agreement_and_off_turn_resignation_are_not_board_actions() {
     let out = shell(
-        "move a0a1\nrecord print\noffer red\naccept black\nrecord print\nundo\nresign red\nrecord print\nundo\nrecord print\n",
+        "move a0a1\nrecord print\noffer-draw red\naccept-draw black\nrecord print\nundo\nresign red\nrecord print\nundo\nrecord print\n",
     );
     success(&out);
     let g = games(&out);
@@ -229,7 +229,7 @@ fn offer_windows_and_decline_keep_native_admission_and_atomic_refusal() {
     // Documented minimal untimed offer window: after one's own move, once per
     // window. Declining does not permit a repeated offer at the same board ply.
     let out = shell(
-        "move a0a1\nrecord print\noffer black\nrecord print\noffer red\ndecline black\nrecord print\noffer red\nrecord print\n",
+        "move a0a1\nrecord print\noffer-draw black\nrecord print\noffer-draw red\ndecline-draw black\nrecord print\noffer-draw red\nrecord print\n",
     );
     assert!(!out.status.success());
     assert_eq!(

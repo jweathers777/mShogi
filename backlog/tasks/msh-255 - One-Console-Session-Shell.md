@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T17:16:00Z'
+updated_date: '2026-11-26T17:22:00Z'
 labels:
   - console
   - refactor
@@ -38,6 +38,12 @@ crates/mshogi-console/tests repeat helpers: the subprocess run helper six times 
 - [ ] #5 Test coverage is unchanged (same tests and assertions); console tests pass; test line counts before and after are recorded.
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Use a shared line parser, command session, record transaction and export check, with native adapters for game-specific commands and presentation. 2. Extract the test process, protocol, bridge, desktop, record and self-play helpers, preserving all tests and assertions. 3. Compare test inventories and line counts, run the console and workspace checks and affected CI, fix independent review findings, then integrate.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
@@ -46,4 +52,8 @@ John approved consolidation on 2026-11-26: this task retains the full scope of M
 Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
 
 Claimed on codex/msh-255-console-sessions from c7e99bb. Next: consolidate the shell and test helpers, compare coverage, review, and run checks.
+
+Baseline c7e99bb has 4,680 Rust source lines under crates/mshogi-console/src and 9,345 under tests including support.
+
+Checkpoint on codex/msh-255-console-sessions: all six shells share line parsing and record dispatch. Five games share the candidate, move batch, undo and command session; Chess uses its own history and the common export check. All seven focused shell test binaries passed. Next: finish test support, compare coverage, fresh review, workspace and targeted process CI.
 <!-- SECTION:NOTES:END -->

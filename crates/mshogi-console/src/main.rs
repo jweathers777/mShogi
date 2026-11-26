@@ -1,10 +1,6 @@
 //! Explicit game-selected human console and isolated machine entry points.
 
-use std::{
-    env,
-    io::{self, BufRead, Write},
-    process::ExitCode,
-};
+use std::{env, io, process::ExitCode};
 
 use mshogi_core::CHESS_POSITION_PROFILE_ID;
 
@@ -20,7 +16,7 @@ mod usi;
 mod xiangqi_session;
 mod xiangqi_uci;
 
-use session::{Next, Session};
+mod shell;
 
 #[derive(Clone, Copy, PartialEq)]
 enum Game {
@@ -231,40 +227,7 @@ fn main() -> ExitCode {
                 );
             }
         },
-        "shell" => match game {
-            Game::Chess => {
-                let mut session = Session::new();
-                return shell(|line, out| session.execute(line, out));
-            }
-            Game::Shogi => {
-                let mut session = shogi_session::Session::new();
-                return shell(|line, out| session.execute(line, out));
-            }
-            Game::Xiangqi => {
-                let mut session = match xiangqi_session::Session::new() {
-                    Ok(session) => session,
-                    Err(error) => {
-                        eprintln!("error: {error}");
-                        return ExitCode::FAILURE;
-                    }
-                };
-                return shell(|line, out| session.execute(line, out));
-            }
-            Game::Tori => {
-                let mut session = tori_session::Session::new();
-                return shell(|line, out| session.execute(line, out));
-            }
-            Game::Chu => {
-                let mut session = chu_session::Session::new();
-                return shell(|line, out| session.execute(line, out));
-            }
-            Game::Tenjiku => {
-                let mut session = tenjiku_session::Session::new(
-                    profile.expect("validated explicit Tenjiku profile"),
-                );
-                return shell(|line, out| session.execute(line, out));
-            }
-        },
+        "shell" => return shell::run(game, profile),
         "uci" => {
             return match game {
                 Game::Chess => uci::run(),
@@ -286,66 +249,7 @@ fn main() -> ExitCode {
     ExitCode::SUCCESS
 }
 
-fn shell(mut execute: impl FnMut(&str, &mut String) -> Result<Next, String>) -> ExitCode {
-    let stdin = io::stdin();
-    let mut stdout = io::stdout().lock();
-    let mut stderr = io::stderr().lock();
-    let mut failed = false;
-    let mut input = stdin.lock();
-    for index in 0usize.. {
-        let number = index + 1;
-        let line = match read_line(&mut input) {
-            Ok(Some(bytes)) => bytes,
-            Ok(None) => break,
-            Err(error) => {
-                let _ = writeln!(stderr, "error: line {number}: cannot read input: {error}");
-                return ExitCode::FAILURE;
-            }
-        };
-        let Ok(text) = String::from_utf8(line) else {
-            let _ = writeln!(stderr, "error: line {number}: input is not valid UTF-8");
-            failed = true;
-            continue;
-        };
-        let mut out = String::new();
-        let result = execute(&text, &mut out);
-        // Report output before errors so the streams stay in command order.
-        if stdout
-            .write_all(out.as_bytes())
-            .and_then(|()| stdout.flush())
-            .is_err()
-        {
-            return ExitCode::FAILURE;
-        }
-        match result {
-            Ok(Next::Continue) => {}
-            Ok(Next::Quit) => break,
-            Err(message) => {
-                let _ = writeln!(stderr, "error: line {number}: {message}");
-                failed = true;
-            }
-        }
-    }
-    if failed {
-        ExitCode::FAILURE
-    } else {
-        ExitCode::SUCCESS
-    }
-}
-
 fn invalid_arguments(message: &str) -> ExitCode {
     eprintln!("error: {message}; run 'mshogi --help'");
     ExitCode::from(2)
-}
-
-/// Read one line without its LF; a possible CR stays in the line.
-fn read_line(input: &mut impl BufRead) -> io::Result<Option<Vec<u8>>> {
-    let mut line = Vec::new();
-    if input.read_until(b'\n', &mut line)? == 0 {
-        return Ok(None);
-    }
-    if line.last() == Some(&b'\n') {
-        line.pop();
-    }
-    Ok(Some(line))
 }

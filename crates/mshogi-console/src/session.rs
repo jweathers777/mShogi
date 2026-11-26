@@ -4,13 +4,15 @@
 //! output is meant for people and simple scripts. All rules come from
 //! `mshogi-core`; this module only parses text and formats results.
 
-use crate::{diagnostics, record_io};
+use crate::{
+    diagnostics, record_io,
+    shell::{HumanSession, diagnostic, empty as no_args},
+};
 use mshogi_core::native::CanonicalRecord;
 use std::fmt::Write as _;
 
 use mshogi_core::chess::{
-    Action, ClaimPolicy, Color, Game, GameRecord, HistoryOrigin, PieceKind, Square,
-    sort_divide_actions,
+    Action, ClaimPolicy, Color, Game, HistoryOrigin, PieceKind, Square, sort_divide_actions,
 };
 
 /// Maximum perft and divide depth in the Chess shell.
@@ -21,7 +23,7 @@ fn separator(c: char) -> bool {
 }
 
 fn escaped(text: &str) -> String {
-    text.escape_default().to_string()
+    record_io::diagnostic(text)
 }
 
 fn decimal(text: &str) -> bool {
@@ -50,12 +52,6 @@ pub const SHELL_HELP: &str =
 Actions are lowercase coordinates: e2e4, e7e8q (q/r/b/n promotion),
 castling as the king's move (e1g1), en passant as the pawn's move.";
 
-/// What a command asks the session loop to do next.
-pub enum Next {
-    Continue,
-    Quit,
-}
-
 /// Adapter state delegates every rule-relevant history field to the library.
 pub struct Session {
     game: Game,
@@ -67,34 +63,36 @@ impl Session {
             game: Game::new(ClaimPolicy::ExplicitOnly),
         }
     }
-
-    /// Run one input line. On error nothing in the session changes.
-    pub fn execute(&mut self, line: &str, out: &mut String) -> Result<Next, String> {
-        let line = line.trim_matches(separator);
-        if line.is_empty() || line.starts_with('#') {
-            return Ok(Next::Continue);
-        }
-        let (command, rest) = line
-            .split_once(separator)
-            .map_or((line, ""), |(command, rest)| {
-                (command, rest.trim_matches(separator))
-            });
-        if !line.is_ascii() && command != "record" {
+}
+impl HumanSession for Session {
+    fn help(&self) -> &'static str {
+        SHELL_HELP
+    }
+    fn record(&self) -> Result<CanonicalRecord, String> {
+        Ok(CanonicalRecord::chess(self.game.record()))
+    }
+    fn command(
+        &mut self,
+        command: &str,
+        rest: &str,
+        args: &[&str],
+        out: &mut String,
+    ) -> Result<(), String> {
+        if !command.is_ascii() || !rest.is_ascii() {
             return Err("input must be ASCII".into());
         }
-        let args: Vec<&str> = rest.split(separator).filter(|s| !s.is_empty()).collect();
         match command {
             "position" => self.load(rest, out)?,
             "fen" => {
-                no_args(command, &args)?;
+                no_args(command, args)?;
                 writeln!(out, "fen {}", self.game.position()).unwrap();
             }
             "show" => {
-                no_args(command, &args)?;
+                no_args(command, args)?;
                 self.show(out);
             }
             "legal" => {
-                no_args(command, &args)?;
+                no_args(command, args)?;
                 let mut legal = self.game.position().legal_actions();
                 sort_divide_actions(&mut legal);
                 let texts: Vec<String> = legal.into_iter().map(action_text).collect();
@@ -104,10 +102,10 @@ impl Session {
                     writeln!(out, "legal {} {}", texts.len(), texts.join(" ")).unwrap();
                 }
             }
-            "move" => self.apply(&args, out)?,
-            "undo" => self.undo(&args, out)?,
+            "move" => self.apply(args, out)?,
+            "undo" => self.undo(args, out)?,
             "history" => {
-                no_args(command, &args)?;
+                no_args(command, args)?;
                 writeln!(
                     out,
                     "history {} origin {} policy {} repetitions {}",
@@ -124,43 +122,51 @@ impl Session {
                 )
                 .unwrap();
             }
-            "record" => self.record(rest, out)?,
             "status" => {
-                no_args(command, &args)?;
+                no_args(command, args)?;
                 writeln!(out, "status {}", self.game.position().classify()).unwrap();
             }
             "perft" | "divide" => diagnostics::execute(
                 self.game.position(),
                 command,
-                &args,
+                args,
                 MAX_DIAGNOSTIC_DEPTH,
                 diagnostics::Style::Chess,
                 out,
                 |action| Ok(action_text(action)),
             )?,
-            "help" => {
-                no_args(command, &args)?;
-                writeln!(out, "{SHELL_HELP}").unwrap();
-            }
-            "quit" => {
-                no_args(command, &args)?;
-                return Ok(Next::Quit);
-            }
             other => return Err(format!("unknown command '{}'; type 'help'", escaped(other))),
         }
-        Ok(Next::Continue)
+        Ok(())
     }
 
+    fn load_record(&mut self, record: CanonicalRecord, out: &mut String) -> Result<(), String> {
+        let CanonicalRecord::Chess(record) = record else {
+            return Err("record is not chess; session preserved".into());
+        };
+        let replay = record.replay_history().map_err(diagnostic)?;
+        if !replay.observations.is_empty() {
+            return Err(
+                "record includes match observations; diagnostic shell cannot restore match state"
+                    .into(),
+            );
+        }
+        record_io::install(self, Self { game: replay.game }, Self::record_json)?;
+        writeln!(out, "fen {}", self.game.position()).unwrap();
+        Ok(())
+    }
+}
+impl Session {
     fn load(&mut self, rest: &str, out: &mut String) -> Result<(), String> {
         let game = match rest.split_once(separator) {
             _ if rest == "startpos" => Game::new(ClaimPolicy::ExplicitOnly),
             Some(("fen", fen)) => {
                 Game::from_fen(fen.trim_matches(separator), ClaimPolicy::ExplicitOnly)
-                    .map_err(|e| e.to_string())?
+                    .map_err(diagnostic)?
             }
             _ => return Err("usage: position startpos | position fen <FEN>".into()),
         };
-        self.game = game;
+        record_io::install(self, Self { game }, Self::record_json)?;
         writeln!(out, "fen {}", self.game.position()).unwrap();
         Ok(())
     }
@@ -184,7 +190,7 @@ impl Session {
             game.apply(action)
                 .map_err(|error| failure(error.to_string()))?;
         }
-        self.game = game;
+        record_io::install(self, Self { game }, Self::record_json)?;
         writeln!(out, "fen {}", self.game.position()).unwrap();
         Ok(())
     }
@@ -219,47 +225,6 @@ impl Session {
         Ok(())
     }
 
-    fn record(&mut self, rest: &str, out: &mut String) -> Result<(), String> {
-        use record_io::Operation;
-        let operation = record_io::parse(rest)?;
-        let record = match operation {
-            Operation::Print | Operation::Save(_) => {
-                let encoded = CanonicalRecord::chess(self.game.record())
-                    .to_json()
-                    .map_err(|e| record_io::diagnostic(&e.to_string()))?;
-                if let Operation::Save(path) = operation {
-                    record_io::save(path, &encoded, out)?;
-                } else {
-                    writeln!(out, "record {encoded}").unwrap();
-                }
-                return Ok(());
-            }
-            Operation::LoadFile(path) => Self::parse_envelope(&record_io::read(path)?)?,
-            Operation::LoadJson(json) => Self::parse_envelope(json)?,
-        };
-        let replay = record
-            .replay_history()
-            .map_err(|e| record_io::diagnostic(&e.to_string()))?;
-        if !replay.observations.is_empty() {
-            return Err(
-                "record includes match observations; diagnostic shell cannot restore match state"
-                    .into(),
-            );
-        }
-        self.game = replay.game;
-        writeln!(out, "fen {}", self.game.position()).unwrap();
-        Ok(())
-    }
-
-    fn parse_envelope(json: &str) -> Result<Box<GameRecord>, String> {
-        let CanonicalRecord::Chess(record) =
-            CanonicalRecord::from_json(json).map_err(|e| record_io::diagnostic(&e.to_string()))?
-        else {
-            return Err("record is not chess; session preserved".into());
-        };
-        Ok(record)
-    }
-
     fn show(&self, out: &mut String) {
         let p = self.game.position();
         for rank in (0..8).rev() {
@@ -292,14 +257,6 @@ impl Session {
         writeln!(out, "fullmove {}", p.fullmove_number()).unwrap();
         writeln!(out, "status {}", p.classify()).unwrap();
         writeln!(out, "history {}", self.game.ply_count()).unwrap();
-    }
-}
-
-fn no_args(command: &str, args: &[&str]) -> Result<(), String> {
-    if args.is_empty() {
-        Ok(())
-    } else {
-        Err(format!("'{command}' takes no arguments"))
     }
 }
 

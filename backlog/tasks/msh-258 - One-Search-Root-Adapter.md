@@ -1,11 +1,11 @@
 ---
 id: MSH-258
 title: One Search Root Adapter
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T19:05:00Z'
+updated_date: '2026-11-26T19:10:00Z'
 labels:
   - search
   - refactor
@@ -27,7 +27,7 @@ crates/mshogi-search has one root adapter per game: chu.rs, tenjiku.rs, tori.rs,
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [x] #1 One generic root search in mshogi-search serves the five games; per-game code holds only real differences (Xiangqi pending adjudication, Shogi declarations, conclusion scores, line limits).
-- [ ] #2 Search results, node counts and best moves at fixed depth are identical before and after (the fixed-depth comparison is recorded, so no game test is needed); workspace checks pass.
+- [x] #2 Search results, node counts and best moves at fixed depth are identical before and after (the fixed-depth comparison is recorded, so no game test is needed); workspace checks pass.
 - [x] #3 Production line counts before and after are recorded.
 <!-- AC:END -->
 
@@ -53,4 +53,12 @@ Implementation is on codex/msh-258-search-root. One generic root now drives all 
 Independent review identified two issues: charge Xiangqi natural-count history inspection before the private search receives its time budget, and keep each named game entry point type-specific. Fixed both. The engine still checks each reported claim against a private native game. Next: compare fixed-depth observations again and finish workspace and CI checks.
 
 Reviewed product commit 22e2417 vs baseline 02cc9a2. Physical production lines (including comments and blank lines, excluding cfg(test) imports, declarations and inline test modules): root modules 1342 → 862; all changed production Rust files 2608 → 2066. With test-only sections included the corresponding file totals are 1358 → 884 and 2956 → 2420. On an Apple M1 Pro, cargo run --offline --manifest-path runs/msh-258/probe/Cargo.toml produced byte-identical full observations on both commits. Each two-action PV by square index: Shogi 76→67, 4→13; Xiangqi 1→20, 82→65; Tori 45→39, 3→9 (both Phoenix); Chu 134→121, 2→13; Tenjiku both profiles 164→148, 65→81. All actions unpromoted. Each search chose the first action of its PV; the scores and visits are recorded above. Reproducible probe, lockfile and both outputs: gs://mshogi-experiments-216675633801/runs/msh-258/. No cloud compute or VMs used. Candidate routine CI passed in run 45880607542. Local fmt and Clippy passed. Next: finish local workspace and frontend tests, then integrate and clean codex/msh-258-search-root.
+
+Final checks on 22e2417 passed with python3 tools/checks.py run --base origin/main on Apple M1 Pro and the pinned Node 24.19.0. Rust formatting and workspace all-target Clippy passed. Workspace tests passed (1165 passed, 10 ignored by the repository). TypeScript and all 575 frontend tests passed. Ubuntu routine CI 45880607542 passed release search regressions, formatting and consumer compilation. The change affects root orchestration with no rules, private search position, search-strength or OS-specific code changes. No strength match or release packaging was required. No paid compute used.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+One root search in mshogi-search now handles Shogi, Xiangqi, Tori, Chu and Tenjiku. The engine maps all five results in one place. All six depth-2 runs matched the predecessor in best move, full line, score, nodes and other reported observations. Production root code fell from 1342 to 862 lines. Independent review fixes, workspace checks and routine CI passed. The direct dependent is MSH-243 (Game-Independent Strength Tool).
+<!-- SECTION:FINAL_SUMMARY:END -->

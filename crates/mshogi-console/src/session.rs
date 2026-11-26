@@ -4,15 +4,16 @@
 //! output is meant for people and simple scripts. All rules come from
 //! `mshogi-core`; this module only parses text and formats results.
 
-use crate::record_io;
+use crate::{diagnostics, record_io};
 use mshogi_core::native::CanonicalRecord;
 use std::fmt::Write as _;
 
 use mshogi_core::chess::{
-    Action, ClaimPolicy, Color, Game, GameRecord, HistoryOrigin, PieceKind, Promotion, Square,
+    Action, ClaimPolicy, Color, Game, GameRecord, HistoryOrigin, PieceKind, Square,
+    sort_divide_actions,
 };
 
-/// Interactive diagnostics are deliberately bounded; the library remains uncapped.
+/// Maximum perft and divide depth in the Chess shell.
 pub const MAX_DIAGNOSTIC_DEPTH: u32 = 4;
 
 fn separator(c: char) -> bool {
@@ -42,8 +43,8 @@ pub const SHELL_HELP: &str =
   record load-file <path>  Bounded strict envelope load before replacement
   record load-json <JSON>  Strict inline canonical envelope
   status                   Print quiet, check, checkmate or stalemate
-  perft <depth>            Count legal action sequences of that depth
-  divide <depth>           Per-root-action perft counts and total
+  perft <depth> [visits]   Count legal action sequences of that depth
+  divide <depth> [visits]  Per-root-action perft counts and total
   help                     Show this help
   quit                     End the session
 Actions are lowercase coordinates: e2e4, e7e8q (q/r/b/n promotion),
@@ -95,7 +96,7 @@ impl Session {
             "legal" => {
                 no_args(command, &args)?;
                 let mut legal = self.game.position().legal_actions();
-                legal.sort_by_key(|action| order_key(*action));
+                sort_divide_actions(&mut legal);
                 let texts: Vec<String> = legal.into_iter().map(action_text).collect();
                 if texts.is_empty() {
                     writeln!(out, "legal 0").unwrap();
@@ -128,31 +129,15 @@ impl Session {
                 no_args(command, &args)?;
                 writeln!(out, "status {}", self.game.position().classify()).unwrap();
             }
-            "perft" => {
-                let depth = depth(command, &args)?;
-                let nodes = self
-                    .game
-                    .position()
-                    .perft(depth)
-                    .map_err(|e| e.to_string())?;
-                writeln!(out, "perft {depth} {nodes}").unwrap();
-            }
-            "divide" => {
-                let depth = depth(command, &args)?;
-                let entries = self
-                    .game
-                    .position()
-                    .divide(depth)
-                    .map_err(|e| e.to_string())?;
-                let mut total: u64 = 0;
-                for entry in entries {
-                    writeln!(out, "{} {}", action_text(entry.action), entry.nodes).unwrap();
-                    total = total
-                        .checked_add(entry.nodes)
-                        .ok_or("perft: node count exceeds u64")?;
-                }
-                writeln!(out, "total {total}").unwrap();
-            }
+            "perft" | "divide" => diagnostics::execute(
+                self.game.position(),
+                command,
+                &args,
+                MAX_DIAGNOSTIC_DEPTH,
+                diagnostics::Style::Chess,
+                out,
+                |action| Ok(action_text(action)),
+            )?,
             "help" => {
                 no_args(command, &args)?;
                 writeln!(out, "{SHELL_HELP}").unwrap();
@@ -318,22 +303,6 @@ fn no_args(command: &str, args: &[&str]) -> Result<(), String> {
     }
 }
 
-fn depth(command: &str, args: &[&str]) -> Result<u32, String> {
-    match args {
-        [depth] => decimal(depth)
-            .then(|| depth.parse::<u32>().ok())
-            .flatten()
-            .filter(|&n| n <= MAX_DIAGNOSTIC_DEPTH)
-            .ok_or_else(|| {
-                format!(
-                    "invalid depth '{}'; expected ASCII decimal from 0 to {MAX_DIAGNOSTIC_DEPTH}",
-                    escaped(depth)
-                )
-            }),
-        _ => Err(format!("usage: {command} <depth>")),
-    }
-}
-
 /// Parse syntax through the shared core adapter; keep human shell diagnostics.
 pub fn parse_action(text: &str) -> Result<Action, String> {
     text.parse().map_err(|_| {
@@ -346,22 +315,6 @@ pub fn parse_action(text: &str) -> Result<Action, String> {
 
 pub fn action_text(action: Action) -> String {
     action.to_string()
-}
-
-// The library's documented divide order: source, destination, promotion.
-fn order_key(action: Action) -> (u8, u8, u8) {
-    let promotion = match action.promotion {
-        None => 0,
-        Some(Promotion::Queen) => 1,
-        Some(Promotion::Rook) => 2,
-        Some(Promotion::Bishop) => 3,
-        Some(Promotion::Knight) => 4,
-    };
-    (
-        action.from.rank() * 8 + action.from.file(),
-        action.to.rank() * 8 + action.to.file(),
-        promotion,
-    )
 }
 
 fn piece_char(color: Color, kind: PieceKind) -> char {

@@ -5,6 +5,7 @@
 mod legal;
 /// Complete native human action formatting and local-choice parsing.
 pub mod notation;
+mod perft;
 mod position;
 pub use legal::*;
 pub use position::*;

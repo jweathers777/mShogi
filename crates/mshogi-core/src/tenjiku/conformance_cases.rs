@@ -1,5 +1,8 @@
 //! Actual native projections for concrete inputs. This module never receives expected values.
-use crate::tenjiku::*;
+use crate::{
+    perft::{divide, perft},
+    tenjiku::*,
+};
 use serde_json::{Value, json};
 fn fail(e: impl std::fmt::Display) -> String {
     e.to_string()
@@ -331,16 +334,16 @@ fn concrete_sequence(id: &str, given: &Value, profile: Profile) -> Result<Value,
 fn simple_action(action: &Action) -> Value {
     json!({"from":action.from,"route":action.route,"promote":action.promote})
 }
-fn perft(given: &Value, profile: Profile) -> Result<Value, String> {
+fn project_perft(given: &Value, profile: Profile) -> Result<Value, String> {
     let game = Game::from_root(triples_position(given, profile)?).map_err(fail)?;
     let actions = game
         .legal_actions()
         .iter()
         .map(simple_action)
         .collect::<Vec<_>>();
-    let d = game.divide(2, 100).map_err(fail)?;
+    let d = divide(&game, 2, 100, || false).map_err(fail)?;
     Ok(
-        json!({"legal_all":actions,"perft":{"0":game.perft(0,100).map_err(fail)?.leaves,"1":game.perft(1,100).map_err(fail)?.leaves,"2":game.perft(2,100).map_err(fail)?.leaves},
+        json!({"legal_all":actions,"perft":{"0":perft(&game,0,100,|| false).map_err(fail)?.leaves,"1":perft(&game,1,100,|| false).map_err(fail)?.leaves,"2":perft(&game,2,100,|| false).map_err(fail)?.leaves},
         "divide_depth2":d.entries.iter().map(|e|json!({"action":simple_action(&e.action),"nodes":e.leaves})).collect::<Vec<_>>()}),
     )
 }
@@ -376,7 +379,7 @@ pub(super) fn observe(id: &str, given: &Value, profile: Profile) -> Result<Optio
         return concrete_sequence(id, given, profile).map(Some);
     }
     if id == "TEN-PERFT-4-16" {
-        return perft(given, profile).map(Some);
+        return project_perft(given, profile).map(Some);
     }
     if matches!(
         id,

@@ -5,6 +5,7 @@ use super::eval;
 use super::position::{Move, ToriPosition};
 use crate::alphabeta::mate::{self, MateLimits, MateResult, MateTable};
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
+use mshogi_core::perft::perft;
 use mshogi_core::tori::{
     Action, Face, Game, GameCommand, GameRequest, Hand, Piece, Position, RootMetadata, Side, Square,
 };
@@ -287,9 +288,7 @@ fn perft_agrees_with_the_native_perft() {
     let game = Game::standard();
     let mut position = ToriPosition::from_game(&game);
     for depth in 1..=3u8 {
-        let native = game
-            .local_position()
-            .perft(depth, 1_000_000)
+        let native = perft(game.local_position(), u32::from(depth), 1_000_000, || false)
             .unwrap()
             .leaves;
         assert_eq!(position.perft(u32::from(depth)), native, "depth {depth}");
@@ -324,9 +323,7 @@ fn perft_agrees_with_the_native_perft() {
     );
     let mut position = ToriPosition::from_game(&game);
     for depth in 1..=2u8 {
-        let native = game
-            .local_position()
-            .perft(depth, 1_000_000)
+        let native = perft(game.local_position(), u32::from(depth), 1_000_000, || false)
             .unwrap()
             .leaves;
         assert_eq!(position.perft(u32::from(depth)), native, "depth {depth}");

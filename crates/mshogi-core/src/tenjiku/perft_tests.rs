@@ -1,4 +1,6 @@
+use super::super::{Base, GameRecord, Piece, Position, Profile, RootMetadata, Side, Square};
 use super::*;
+use crate::perft::{PerftError, PerftReport, divide, perft};
 fn square(file: u8, rank: u8) -> Square {
     Square::new(file, rank).unwrap()
 }
@@ -35,7 +37,7 @@ fn independent_full_game_corner_king_and_remote_pawn_counts_and_divide() {
         let before = GameRecord::from_game(&game).unwrap();
         let authority = game.context();
         assert_eq!(
-            game.perft(0, 1).unwrap(),
+            perft(&game, 0, 1, || false).unwrap(),
             PerftReport {
                 depth: 0,
                 leaves: 1,
@@ -43,7 +45,7 @@ fn independent_full_game_corner_king_and_remote_pawn_counts_and_divide() {
             }
         );
         assert_eq!(
-            game.perft(1, 5).unwrap(),
+            perft(&game, 1, 5, || false).unwrap(),
             PerftReport {
                 depth: 1,
                 leaves: 4,
@@ -51,18 +53,18 @@ fn independent_full_game_corner_king_and_remote_pawn_counts_and_divide() {
             }
         );
         assert_eq!(
-            game.perft(2, 21).unwrap(),
+            perft(&game, 2, 21, || false).unwrap(),
             PerftReport {
                 depth: 2,
                 leaves: 16,
                 visited: 21
             }
         );
-        let divide = game.divide(2, 21).unwrap();
-        assert_eq!(divide.total.leaves, 16);
-        assert_eq!(divide.total.visited, 21);
-        assert_eq!(divide.entries.len(), 4);
-        assert!(divide.entries.iter().all(|entry| entry.leaves == 4));
+        let report = divide(&game, 2, 21, || false).unwrap();
+        assert_eq!(report.total.leaves, 16);
+        assert_eq!(report.total.visited, 21);
+        assert_eq!(report.entries.len(), 4);
+        assert!(report.entries.iter().all(|entry| entry.leaves == 4));
         assert_eq!(GameRecord::from_game(&game).unwrap(), before);
         assert_eq!(game.context(), authority);
     }
@@ -73,22 +75,28 @@ fn limits_budget_and_stop_never_return_partial_exact_or_mutate_original() {
     let before = GameRecord::from_game(&game).unwrap();
     let context = game.context();
     assert!(matches!(
-        game.perft(2, 20),
+        perft(&game, 2, 20, || false),
         Err(PerftError::WorkLimit { .. })
     ));
     assert_eq!(
-        game.perft(MAX_PERFT_DEPTH + 1, 100),
-        Err(PerftError::Limits)
+        perft(&game, Game::MAX_DEPTH + 1, 100, || false),
+        Err(PerftError::DepthLimit { max: 3 })
     );
-    assert_eq!(game.perft(1, 0), Err(PerftError::Limits));
-    assert_eq!(game.divide(0, 10), Err(PerftError::Limits));
+    assert_eq!(
+        perft(&game, 1, 0, || false),
+        Err(PerftError::VisitLimit { max: u64::MAX })
+    );
+    assert_eq!(
+        divide(&game, 0, 10, || false),
+        Err(PerftError::ZeroDivideDepth)
+    );
     assert!(matches!(
-        game.perft_with_stop(2, 100, &mut || true),
+        perft(&game, 2, 100, || true),
         Err(PerftError::Stopped { .. })
     ));
     let mut calls = 0;
     assert!(matches!(
-        game.divide_with_stop(2, 100, &mut || {
+        divide(&game, 2, 100, || {
             calls += 1;
             calls > 20
         }),

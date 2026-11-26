@@ -15,7 +15,6 @@ mod perft;
 mod record;
 mod sfen;
 pub use legal::RepetitionIdentity;
-pub use perft::{DivideEntry, PerftError};
 pub use record::{GameDelta, GameRecord, RecordError, SHOGI_RECORD_SCHEMA_VERSION};
 #[cfg(test)]
 mod tests;

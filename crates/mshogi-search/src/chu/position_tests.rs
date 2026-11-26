@@ -5,6 +5,7 @@ use mshogi_core::chu::{
     Action, Game, GameCommand, GameRequest, LocalPosition, Piece, Position, RootMetadata, Side,
     Square,
 };
+use mshogi_core::perft::perft;
 use serde_json::Value;
 use std::collections::BTreeSet;
 fn fixtures() -> Vec<Value> {
@@ -215,20 +216,6 @@ fn all_independent_local_profile_fixtures_agree() {
     assert!(count > 150, "{count}");
     assert!(lion >= 15, "{lion}");
 }
-fn native_perft(native: &LocalPosition, depth: u32) -> u64 {
-    if depth == 0 {
-        return 1;
-    }
-    native
-        .legal_actions()
-        .iter()
-        .map(|a| {
-            let mut next = native.clone();
-            next.apply(a).unwrap();
-            native_perft(&next, depth - 1)
-        })
-        .sum()
-}
 #[test]
 fn independent_remote_perft_and_native_compound_perft_agree() {
     let fs = fixtures();
@@ -243,7 +230,7 @@ fn independent_remote_perft_and_native_compound_perft_agree() {
         let native = root(&f["given"]["root"]);
         let mut p = ChuPosition::from_local(&native);
         for depth in 1..=2 {
-            let n = native_perft(&native, depth);
+            let n = perft(&native, depth, 1_000_000, || false).unwrap().leaves;
             assert_eq!(p.perft(depth), n, "{id} depth {depth}");
             if id == "CHU-PERFT-REMOTE" {
                 assert_eq!(n, if depth == 1 { 7 } else { 42 });
@@ -252,7 +239,10 @@ fn independent_remote_perft_and_native_compound_perft_agree() {
     }
     let native = LocalPosition::standard();
     let mut p = ChuPosition::from_local(&native);
-    assert_eq!(p.perft(2), native_perft(&native, 2));
+    assert_eq!(
+        p.perft(2),
+        perft(&native, 2, 1_000_000, || false).unwrap().leaves
+    );
 }
 fn next(state: &mut u64) -> u64 {
     *state ^= *state << 13;

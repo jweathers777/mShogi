@@ -1,5 +1,6 @@
 //! Frozen independent WXF board facts, exact reversible actions and board-only diagnostics.
 //! History-dependent WXF warnings, claims and game conclusions are deliberately absent.
+use mshogi_core::perft::{divide, perft};
 use mshogi_core::xiangqi::{
     Action, Counters, Intersection, LocalStatus, NoActionReason, Piece, PieceKind, Position, Side,
 };
@@ -160,7 +161,9 @@ fn frozen_independent_board_facts_and_every_generated_action_restore_exactly() {
         if let Some(expected) = case.get("perft").and_then(Value::as_object) {
             for (depth, nodes) in expected {
                 assert_eq!(
-                    position.perft(depth.parse().unwrap()).unwrap(),
+                    perft(&position, depth.parse().unwrap(), 1_000_000, || false)
+                        .unwrap()
+                        .leaves,
                     nodes.as_u64().unwrap(),
                     "{id}: hand-derived perft {depth}"
                 );
@@ -168,12 +171,13 @@ fn frozen_independent_board_facts_and_every_generated_action_restore_exactly() {
         }
         if let Some(expected) = case.get("divide").and_then(Value::as_object) {
             for (depth, branches) in expected {
-                let actual: BTreeMap<_, _> = position
-                    .divide(depth.parse().unwrap())
-                    .unwrap()
-                    .into_iter()
-                    .map(|(action, nodes)| (action.to_string(), nodes))
-                    .collect();
+                let actual: BTreeMap<_, _> =
+                    divide(&position, depth.parse().unwrap(), 1_000_000, || false)
+                        .unwrap()
+                        .entries
+                        .into_iter()
+                        .map(|entry| (entry.action.to_string(), entry.leaves))
+                        .collect();
                 let expected: BTreeMap<_, _> = branches
                     .as_object()
                     .unwrap()
@@ -192,7 +196,7 @@ fn frozen_independent_board_facts_and_every_generated_action_restore_exactly() {
 fn opening_and_pinned_geometry_are_not_game_outcomes() {
     let initial = Position::initial();
     assert_eq!(initial.legal_actions().unwrap().len(), 44);
-    assert_eq!(initial.perft(1).unwrap(), 44);
+    assert_eq!(perft(&initial, 1, 1_000_000, || false).unwrap().leaves, 44);
     assert_eq!(
         initial.local_status().unwrap(),
         LocalStatus::Ongoing { in_check: false }

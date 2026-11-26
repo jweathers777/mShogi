@@ -94,7 +94,12 @@ fn non_unicode_argument_is_a_usage_error_instead_of_a_panic() {
 
 // Run `mshogi shell` with the given standard input.
 fn shell(input: &[u8]) -> Output {
+    shell_with_args(&[], input)
+}
+
+fn shell_with_args(args: &[&str], input: &[u8]) -> Output {
     let mut child = command()
+        .args(args)
         .arg("shell")
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
@@ -256,7 +261,7 @@ fen rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
         lines[8],
         "error: line 10: invalid depth '-1'; expected ASCII decimal from 0 to 4"
     );
-    assert_eq!(lines[9], "error: line 11: usage: perft <depth>");
+    assert_eq!(lines[9], "error: line 11: usage: perft <depth> [visits]");
     assert_eq!(
         lines[10],
         "error: line 12: perft: divide requires depth of at least 1"
@@ -488,4 +493,41 @@ fn invalid_or_observation_bearing_records_never_replace_the_diagnostic_game() {
     let out = text(output.stdout);
     assert!(out.contains("history 4 origin standard_start policy explicit_only repetitions 2"));
     assert!(out.ends_with("history 0 origin standard_start policy explicit_only repetitions 1\n"));
+}
+
+#[test]
+fn all_games_use_the_shared_visit_budget_for_perft_and_divide() {
+    for args in [
+        &["--game", "chess"][..],
+        &["--game", "shogi"],
+        &["--game", "xiangqi"],
+        &["--game", "tori"],
+        &["--game", "chu"],
+        &["--game", "tenjiku", "--profile", "adams"],
+    ] {
+        let output = shell_with_args(
+            args,
+            b"perft 0 1000000\nperft 0 1000001\nperft 0 0\nperft 1 1\ndivide 1 1\ndivide 0\n",
+        );
+        assert_eq!(output.status.code(), Some(1), "{args:?}");
+        let stdout = text(output.stdout);
+        assert!(stdout.starts_with("perft"), "{args:?}: {stdout}");
+        assert_eq!(stdout.lines().count(), 1, "{args:?}: {stdout}");
+        let stderr = text(output.stderr);
+        assert_eq!(stderr.lines().count(), 5, "{args:?}: {stderr}");
+        assert_eq!(
+            stderr.matches("visits must be ASCII 1..1000000").count(),
+            2,
+            "{args:?}: {stderr}"
+        );
+        assert_eq!(
+            stderr.matches("visit limit 1 reached").count(),
+            2,
+            "{args:?}: {stderr}"
+        );
+        assert!(
+            stderr.contains("divide requires depth of at least 1"),
+            "{args:?}: {stderr}"
+        );
+    }
 }

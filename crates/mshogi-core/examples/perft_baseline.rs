@@ -5,7 +5,7 @@
 
 use std::time::Instant;
 
-use mshogi_core::chess::Position;
+use mshogi_core::{chess::Position, perft::perft};
 
 // Totals are the independent expectations in tests/fixtures/chess/divide.json.
 const CASES: [(&str, &str, u32, u64); 3] = [
@@ -62,7 +62,9 @@ fn main() {
     for &(name, fen, depth, expected) in cases {
         let position = Position::from_fen(fen).expect("valid reference FEN");
         let start = Instant::now();
-        let nodes = position.perft(depth).expect("perft");
+        let nodes = perft(&position, depth, 200_000_000, || false)
+            .expect("perft")
+            .leaves;
         let seconds = start.elapsed().as_secs_f64();
         assert_eq!(nodes, expected, "{name}: independent total");
         println!(

@@ -9,6 +9,7 @@ use std::{
 use mshogi_core::CHESS_POSITION_PROFILE_ID;
 
 mod chu_session;
+mod diagnostics;
 mod record_io;
 mod session;
 mod shogi_session;
@@ -171,7 +172,8 @@ ordered captures and returns, actual draw agreements, canonical history and boun
 Tenjiku: explicit whole profile, native 16x16 original/promoted identities, ordered
 travel and stationary igui, full-history bounded perft/divide and search.
 All: position/show/legal/move/undo/history/status; canonical envelope record
-print/save/load-file/load-json. Saves require a new file. No shared board engine.");
+print/save/load-file/load-json. Saves require a new file.
+Perft and divide accept an optional visit budget, with a default and maximum of 1,000,000.");
 }
 fn main() -> ExitCode {
     let Invocation {

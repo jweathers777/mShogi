@@ -27,7 +27,6 @@ pub use action::{
 };
 pub use codec::{MAX_FEN_BYTES, MAX_POSITION_BYTES, PositionRoot, RootOrigin};
 pub use legal::{LocalPositionError, LocalStatus, NoActionReason};
-pub use perft::{MAX_PERFT_DEPTH, PerftError};
 #[cfg(test)]
 mod tests;
 

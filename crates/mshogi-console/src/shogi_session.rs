@@ -1,5 +1,5 @@
 //! Explicit human console adapter; native game owns all rules and admission.
-use crate::{record_io, session::Next};
+use crate::{diagnostics, record_io, session::Next};
 use mshogi_core::{native::CanonicalRecord, shogi::*};
 use std::fmt::Write as _;
 
@@ -19,7 +19,7 @@ const HELP: &str = "Untimed shogi diagnostic console (not USI protocol):
   record save <path>                  Atomic new-file save; never overwrite
   record load-file <path>             Bounded strict load/replay before replacement
   record load-json <JSON>             Strict inline canonical envelope
-  perft <0..2> | divide <1..2>         Position-only local legality; ignores outcomes
+  perft <0..2> [visits] | divide <1..2> [visits]  Position-only local legality; ignores outcomes
   help | quit
 USI actions: 7g7f, 5c5b+, P*5e. Readable long notation: S:Pawn[7g->7f;keep],
 S:Pawn[5c->5b;promote], S:Pawn[hand->5e;drop]. Always include source; keep
@@ -270,34 +270,15 @@ impl Session {
                     Operation::LoadJson(json) => self.restore_json(json, out)?,
                 }
             }
-            "perft" | "divide" => {
-                let [n] = args.as_slice() else {
-                    return Err("diagnostic requires one depth".into());
-                };
-                let depth = decimal(n)
-                    .filter(|n| *n <= MAX_DIAGNOSTIC_DEPTH as usize)
-                    .ok_or("shogi diagnostic depth must be ASCII 0..2 (divide 1..2)")?
-                    as u32;
-                if command == "perft" {
-                    let nodes = self
-                        .game
-                        .position()
-                        .perft(depth)
-                        .map_err(|e| e.to_string())?;
-                    writeln!(out, "perft-local {depth} {nodes}").unwrap();
-                } else {
-                    let entries = self
-                        .game
-                        .position()
-                        .divide(depth)
-                        .map_err(|e| e.to_string())?;
-                    let total: u64 = entries.iter().map(|e| e.nodes).sum();
-                    for entry in entries {
-                        writeln!(out, "{} {}", entry.action, entry.nodes).unwrap();
-                    }
-                    writeln!(out, "total-local {total}").unwrap();
-                }
-            }
+            "perft" | "divide" => diagnostics::execute(
+                self.game.position(),
+                command,
+                &args,
+                MAX_DIAGNOSTIC_DEPTH,
+                diagnostics::Style::Local,
+                out,
+                |action| Ok(action.to_string()),
+            )?,
             _ => return Err(format!("unknown shogi command '{}'", line.escape_default())),
         }
         Ok(Next::Continue)

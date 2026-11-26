@@ -1,4 +1,5 @@
 //! Verification-only JSONL bridge. Not a console/engine protocol or bundled app.
+use mshogi_core::perft::{divide, perft};
 use mshogi_core::shogi::{Action, Position};
 use serde::Deserialize;
 use serde_json::json;
@@ -37,15 +38,15 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         "in_check": position.is_in_check(position.side_to_move()),
     });
     if let Some(depth) = request.perft_depth {
-        response["perft"] = json!(position.perft(depth)?);
+        response["perft"] = json!(perft(&position, depth, 1_000_000, || false)?.leaves);
         response["divide"] = if depth == 0 {
             json!([])
         } else {
             json!(
-                position
-                    .divide(depth)?
+                divide(&position, depth, 1_000_000, || false)?
+                    .entries
                     .into_iter()
-                    .map(|entry| json!({"action":entry.action.to_string(),"nodes":entry.nodes}))
+                    .map(|entry| json!({"action":entry.action.to_string(),"nodes":entry.leaves}))
                     .collect::<Vec<_>>()
             )
         };

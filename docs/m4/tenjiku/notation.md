@@ -105,9 +105,9 @@ Records preserve profile/edition, original identities/rights, complete actions,
 native effects and match history. Human labels never replace canonical semantics.
 
 `perft` and `divide` use the **full native Game**, including history and endings:
-depth 0–3 for perft, 1–3 for divide, at most 100,000 visited nodes across the whole
-request. An incomplete traversal returns an explicit error rather than a partial
-exact count. `analyze [depth nodes]` uses bounded native history-aware search on a
+depth 0–3 for perft and 1–3 for divide. The default and maximum budget is
+1,000,000 visits for the whole request, including the root. An incomplete
+traversal returns an explicit error. `analyze [depth nodes]` uses bounded native history-aware search on a
 private copy; it leaves the live record unchanged. Zero work has no fallback move
 or score. Current native search limits apply, independently of diagnostic bounds.
 

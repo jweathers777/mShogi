@@ -1,13 +1,12 @@
 //! Human Chu adapter. Native Game alone owns rules, history and admission.
-use crate::{record_io, session::Next};
+use crate::{diagnostics, record_io, session::Next};
 use mshogi_core::{
     chu::{self as c, notation},
     native::CanonicalRecord,
 };
 use std::fmt::Write as _;
 
-const MAX_DIAGNOSTIC_DEPTH: u8 = 2;
-const MAX_DIAGNOSTIC_VISITS: u64 = 100_000;
+const MAX_DIAGNOSTIC_DEPTH: u32 = 2;
 const HELP: &str = "Untimed Chu Shogi diagnostic console (not USI/SFEN):
   position startpos                Standard root with complete known history
   show | status                    Board, native royal status and exact history
@@ -188,57 +187,15 @@ impl Session {
                     Operation::LoadJson(json) => self.restore_json(json, out)?,
                 }
             }
-            "perft" | "divide" => {
-                let (depth, visits) = match args.as_slice() {
-                    [depth] => (*depth, MAX_DIAGNOSTIC_VISITS),
-                    [depth, visits] => (
-                        *depth,
-                        decimal(visits)
-                            .filter(|n| *n > 0 && *n <= 100_000)
-                            .ok_or("visits must be ASCII 1..100000")?
-                            as u64,
-                    ),
-                    _ => return Err("usage: perft <0..2> [visits] | divide <1..2> [visits]".into()),
-                };
-                let depth = decimal(depth)
-                    .filter(|n| *n <= usize::from(MAX_DIAGNOSTIC_DEPTH))
-                    .ok_or("Chu diagnostic depth must be ASCII 0..2")?
-                    as u8;
-                if command == "divide" && depth == 0 {
-                    return Err("divide requires depth 1..2".into());
-                }
-                let mut visited = 0;
-                let mut candidate = self.game.local_position().clone();
-                if command == "perft" {
-                    let leaves = perft(&mut candidate, depth, visits, &mut visited)?;
-                    writeln!(out,"perft-local {depth} leaves {leaves} visited {visited} (ignores history/outcomes)").unwrap();
-                } else {
-                    let mut rows = Vec::new();
-                    let mut total = 0u64;
-                    for action in candidate.legal_actions() {
-                        let (_, mut token) = candidate.apply(&action).map_err(diagnostic)?;
-                        let counted = perft(&mut candidate, depth - 1, visits, &mut visited);
-                        candidate.undo(&mut token).map_err(diagnostic)?;
-                        let leaves = counted?;
-                        total = total
-                            .checked_add(leaves)
-                            .ok_or("diagnostic count overflow")?;
-                        rows.push((
-                            notation::format_action(self.game.position(), action)
-                                .map_err(diagnostic)?,
-                            leaves,
-                        ));
-                    }
-                    for (label, leaves) in rows {
-                        writeln!(out, "{label} {leaves}").unwrap();
-                    }
-                    writeln!(
-                        out,
-                        "total-local {total} visited {visited} (ignores history/outcomes)"
-                    )
-                    .unwrap();
-                }
-            }
+            "perft" | "divide" => diagnostics::execute(
+                self.game.local_position(),
+                command,
+                &args,
+                MAX_DIAGNOSTIC_DEPTH,
+                diagnostics::Style::LocalWithVisits,
+                out,
+                |action| notation::format_action(self.game.position(), action).map_err(diagnostic),
+            )?,
             "analyze" => {
                 use mshogi_search::chu::{self as search, Limits};
                 let limits = match args.as_slice() {
@@ -388,33 +345,4 @@ fn side_text(side: c::Side) -> &'static str {
         c::Side::Sente => "sente",
         c::Side::Gote => "gote",
     }
-}
-
-// Local-only diagnostic recursion. The private candidate is always reversed,
-// including resource refusal; no logical or runtime live-game state is touched.
-fn perft(
-    local: &mut c::LocalPosition,
-    depth: u8,
-    limit: u64,
-    visited: &mut u64,
-) -> Result<u64, String> {
-    if *visited >= limit {
-        return Err(format!(
-            "local diagnostic visit limit {limit} reached; incomplete, unscored; live session preserved"
-        ));
-    }
-    *visited += 1;
-    if depth == 0 {
-        return Ok(1);
-    }
-    let mut total = 0u64;
-    for action in local.legal_actions() {
-        let (_, mut undo) = local.apply(&action).map_err(diagnostic)?;
-        let counted = perft(local, depth - 1, limit, visited);
-        local.undo(&mut undo).map_err(diagnostic)?;
-        total = total
-            .checked_add(counted?)
-            .ok_or("diagnostic count overflow")?;
-    }
-    Ok(total)
 }

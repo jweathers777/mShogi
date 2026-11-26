@@ -31,7 +31,7 @@ pub use game::{ClaimPolicy, Game, HistoryOrigin, RepetitionIdentity, STANDARD_ST
 pub use legal::Classification;
 pub use matchplay::*;
 pub use notation::ActionParseError;
-pub use perft::{DivideEntry, PerftError};
+pub use perft::sort_divide_actions;
 pub use record::*;
 
 /// One of the two colors in orthodox chess.

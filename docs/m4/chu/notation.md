@@ -52,9 +52,9 @@ complete action is admitted.
 one-event native reversal. Actual `offer-draw`, `accept-draw` and `decline-draw`
 commands retain the chosen actor and do not pretend an offer is consent.
 `analyze` is read-only history-aware native search.
-Perft/divide are explicitly position-local, depth0–2 (divide1–2), at most100,000
-visited positions; an exhausted diagnostic is incomplete/unscored and leaves the
-live session untouched. There are no captured-piece hands in Chu.
+Perft and divide count local legal actions, with depths 0–2 for perft and 1–2 for
+divide. The default and maximum budget is 1,000,000 visits, including the root.
+Budget exhaustion returns an error and leaves the live session untouched. There are no captured-piece hands in Chu.
 
 Canonical Save uses the existing bounded atomic no-replacement publisher. A save
 to an existing path fails while preserving that file; strict replay must succeed

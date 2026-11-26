@@ -93,6 +93,8 @@ and the documentation; their dates and source revisions limit their claims.
 
 This example exercises atomic rejection and exact undo. The failed castling
 command emits the recorded diagnostic and exits with status 1.
+In every game, perft and divide accept an optional visit allowance from 1 to
+1,000,000. The default is 1,000,000. Divide needs a positive depth.
 
 <!-- console-example:input -->
 ```text

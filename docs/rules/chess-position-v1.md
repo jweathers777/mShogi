@@ -164,7 +164,7 @@ Perft/divide (MSH-10, below) traverse independently of the counters; console exp
 
 ## Rust perft and divide API
 
-MSH-10 adds `Position::perft(depth) -> Result<u64, PerftError>` and `Position::divide(depth) -> Result<Vec<DivideEntry>, PerftError>`. These are correctness diagnostics, not search, evaluation or strength measurements.
+Use `mshogi_core::perft::{perft, divide}` with the position, depth, visit allowance and cancellation callback. Completed reports include the exact leaf count and all visited nodes, including the root. Divide also gives the exact count for each root action.
 
 **Depth semantics.**
 
@@ -173,16 +173,16 @@ MSH-10 adds `Position::perft(depth) -> Result<u64, PerftError>` and `Position::d
 - Every legal action, including each promotion choice, castling and en passant, is a separate branch.
 - Nothing stops early at a draw counter, a repetition or an insufficient-material shortcut.
 - `divide(depth)` needs `depth >= 1` and returns `PerftError::ZeroDivideDepth` otherwise. Each entry is a complete legal root action with `perft(depth - 1)` of its result, and the entries sum to `perft(depth)`.
-- Depth is a `u32`. Cost grows exponentially, so callers choose bounded depths.
+- Depth is a `u32` with a maximum of 64. Cost grows exponentially, so choose a depth and visit allowance for the position. A work limit or cancellation ends traversal with an error.
 
 **Order.** Divide entries are sorted by source square (a1 to h8, file fastest), then destination square, then promotion (none, queen, rook, bishop, knight). Two divides in this order can be compared entry by entry. Descending into the first root action whose count differs, with `divide(depth - 1)` on the position after it, localizes a disagreement to one branch.
 
-**State and inputs.** Both methods take `&self` and traverse a private copy with `apply`/`undo`, so the caller's complete position is unchanged. Malformed positions cannot reach them: the FEN boundary rejects them first.
+**State and inputs.** Both functions borrow the position and traverse a private copy with `apply`/`undo`, so the caller's complete position is unchanged. Malformed positions cannot reach them: the FEN boundary rejects them first.
 
 **Counters (owner requirement from MSH-9).** Traversal never skips a legal branch and never treats counter overflow as a terminal leaf.
 
 - The private copy's counters are normalized at the root (halfmove 0, fullmove 1). Counters never affect move generation.
-- Along any line of at most `u32::MAX` plies, the halfmove clock stays at or below the depth, and the fullmove number at or below 1 + depth/2. No `CounterOverflow` can therefore occur.
+- The halfmove clock stays at or below the depth, and the fullmove number stays at or below 1 + depth/2. No `CounterOverflow` can therefore occur.
 - So a starting position at the u32 limit gives exactly the same perft and divide as one with ordinary counters.
 - An unexpected `apply` or `undo` failure during traversal is reported as `PerftError::Traversal` or `PerftError::Restore`, never skipped.
 - A total beyond `u64` is reported as `PerftError::CountOverflow`.
@@ -196,4 +196,4 @@ MSH-10 adds `Position::perft(depth) -> Result<u64, PerftError>` and `Position::d
 
 ## Structured rejection identities (MSH-24)
 
-`FenError::category()` retains syntax/range/structure precedence and `FenError::reason()` returns `FenErrorReason`, including every structural reason. Callers match enum values rather than diagnostic text. `ActionError::IllegalPosition` retains that source and describes a rejected resulting position without assuming every structural error is king safety. Display remains a human diagnostic, not a stable parsing protocol. The shell ASCII grammar and depth-4 cap are adapter limits documented in README; they do not restrict the FEN or perft library APIs.
+`FenError::category()` retains syntax/range/structure precedence and `FenError::reason()` returns `FenErrorReason`, including every structural reason. Callers match enum values rather than diagnostic text. `ActionError::IllegalPosition` retains that source and describes a rejected resulting position without assuming every structural error is king safety. Display remains a human diagnostic, not a stable parsing protocol. The shell applies its ASCII grammar, depth-4 cap and visit limit at the console boundary.

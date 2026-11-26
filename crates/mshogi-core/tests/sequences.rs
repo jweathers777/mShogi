@@ -7,6 +7,7 @@
 
 use std::collections::BTreeSet;
 
+use mshogi_core::perft::perft;
 use mshogi_core::{
     CHESS_POSITION_PROFILE_ID,
     chess::{
@@ -131,7 +132,8 @@ fn check_position(position: &Position) -> Result<(), String> {
     if unique.len() != legal.len() {
         return Err("duplicate legal actions".into());
     }
-    if position.perft(1) != Ok(legal.len() as u64) {
+    if perft(position, 1, 1_000_000, || false).map(|report| report.leaves) != Ok(legal.len() as u64)
+    {
         return Err("perft(1) differs from the legal count".into());
     }
     // A candidate may be rejected only because the moving king would be in

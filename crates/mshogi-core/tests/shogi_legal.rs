@@ -1,5 +1,6 @@
 //! Independent board fixtures plus exact native state/reversal checks.
-use mshogi_core::shogi::{Action, ActionError, PerftError, PieceKind, Position, Side, Square};
+use mshogi_core::perft::{PerftError, divide, perft};
+use mshogi_core::shogi::{Action, ActionError, PieceKind, Position, Side, Square};
 use serde_json::Value;
 use std::collections::BTreeSet;
 
@@ -86,23 +87,26 @@ fn corpus(text: &str) {
             assert_eq!(position, before, "{id}: {text} did not restore");
             assert_eq!(position.repetition_identity(), key);
         }
-        if let Some(perft) = expected.get("perft").and_then(Value::as_object) {
-            for (depth, want) in perft {
+        if let Some(totals) = expected.get("perft").and_then(Value::as_object) {
+            for (depth, want) in totals {
                 assert_eq!(
-                    position.perft(depth.parse().unwrap()).unwrap(),
+                    perft(&position, depth.parse().unwrap(), 1_000_000, || false)
+                        .unwrap()
+                        .leaves,
                     want.as_u64().unwrap(),
                     "{id}: perft {depth}"
                 );
             }
         }
-        if let Some(divide) = expected.get("divide").and_then(Value::as_object) {
-            for (depth, want) in divide {
-                let got: std::collections::BTreeMap<_, _> = position
-                    .divide(depth.parse().unwrap())
-                    .unwrap()
-                    .into_iter()
-                    .map(|e| (e.action.to_string(), e.nodes))
-                    .collect();
+        if let Some(divides) = expected.get("divide").and_then(Value::as_object) {
+            for (depth, want) in divides {
+                let got: std::collections::BTreeMap<_, _> =
+                    divide(&position, depth.parse().unwrap(), 1_000_000, || false)
+                        .unwrap()
+                        .entries
+                        .into_iter()
+                        .map(|e| (e.action.to_string(), e.leaves))
+                        .collect();
                 let want: std::collections::BTreeMap<_, _> = want
                     .as_object()
                     .unwrap()
@@ -146,15 +150,18 @@ fn counter_domain_never_changes_local_legality_or_identity() {
     assert_ne!(initial, max);
     assert_eq!(initial.legal_actions(), max.legal_actions());
     assert_eq!(initial.pseudo_legal_actions(), max.pseudo_legal_actions());
-    assert_eq!(max.perft(1).unwrap(), 30);
+    assert_eq!(perft(&max, 1, 1_000_000, || false).unwrap().leaves, 30);
     for action in max.legal_actions() {
         let before = max.clone();
         assert!(max.is_legal(action));
         assert_eq!(max.apply(action).unwrap_err(), ActionError::CounterOverflow);
         assert_eq!(max, before);
     }
-    assert_eq!(initial.perft(0).unwrap(), 1);
-    assert_eq!(initial.divide(0), Err(PerftError::ZeroDivideDepth));
+    assert_eq!(perft(&initial, 0, 1, || false).unwrap().leaves, 1);
+    assert_eq!(
+        divide(&initial, 0, 1, || false),
+        Err(PerftError::ZeroDivideDepth)
+    );
 }
 
 #[test]

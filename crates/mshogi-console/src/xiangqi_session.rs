@@ -1,6 +1,6 @@
 //! Native Xiangqi diagnostic consumer. No local rules or evaluator are implemented here.
-use crate::{record_io, session::Next};
-use mshogi_core::{native::CanonicalRecord, xiangqi::*};
+use crate::{diagnostics, record_io, session::Next};
+use mshogi_core::{native::CanonicalRecord, perft::PerftPosition, xiangqi::*};
 use std::fmt::Write as _;
 const HELP: &str = "Untimed Xiangqi diagnostic console (not UCCI/UCI protocol):
   position [explicit|auto_valid_claims] startpos|fen <FEN>|json <root-JSON>
@@ -10,7 +10,7 @@ const HELP: &str = "Untimed Xiangqi diagnostic console (not UCCI/UCI protocol):
   eligibility red|black             Advisory claimant-specific natural count
   claim|resign|offer|accept|decline red|black
   record print|save <path>|load-file <path>|load-json <JSON>
-  perft <0..3> | divide <1..3>        Local board counts, not match outcomes
+  perft <0..3> [visits] | divide <1..3> [visits]  Local board counts, not match outcomes
   nowin fast                        Scoped native fast assessment
   help | quit
 Native coordinate dialect: files a-i from Red left, ranks 0-9 from Red baseline;
@@ -264,31 +264,15 @@ impl Session {
                     Operation::LoadJson(json) => self.load(json, out)?,
                 }
             }
-            "perft" | "divide" => {
-                let [value] = args.as_slice() else {
-                    return Err("diagnostic requires one ASCII depth".into());
-                };
-                let depth = number(value)
-                    .filter(|d| *d <= MAX_PERFT_DEPTH as usize)
-                    .ok_or("xiangqi depth must be 0..3 (divide 1..3)")?
-                    as u8;
-                if command == "perft" {
-                    writeln!(
-                        out,
-                        "perft-local {depth} {}",
-                        self.game.position().perft(depth).map_err(error)?
-                    )
-                    .unwrap();
-                } else {
-                    let branches = self.game.position().divide(depth).map_err(error)?;
-                    let mut total = 0;
-                    for (a, n) in branches {
-                        writeln!(out, "{a} {n}").unwrap();
-                        total += n;
-                    }
-                    writeln!(out, "total-local {total}").unwrap();
-                }
-            }
+            "perft" | "divide" => diagnostics::execute(
+                self.game.position(),
+                command,
+                &args,
+                Position::MAX_DEPTH,
+                diagnostics::Style::Local,
+                out,
+                |action| Ok(action.to_string()),
+            )?,
             "nowin" => self.nowin(&args, out)?,
             _ => {
                 return Err(format!(

@@ -1,6 +1,7 @@
 //! Native differential checks and independently specified Xiangqi fixtures.
 use super::position::XiangqiPosition;
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
+use mshogi_core::perft::perft;
 use mshogi_core::xiangqi::{
     Action, ClaimPolicy, Game, GameCommand, GameRequest, Intersection, Position, PositionRoot, Side,
 };
@@ -167,7 +168,12 @@ fn existing_independent_board_fixtures_and_perft_agree() {
                     "{} depth {depth}",
                     fixture["id"]
                 );
-                assert_eq!(native.perft(depth).unwrap(), expected);
+                assert_eq!(
+                    perft(&native, u32::from(depth), 1_000_000, || false)
+                        .unwrap()
+                        .leaves,
+                    expected
+                );
             }
         }
         checked += 1;
@@ -176,7 +182,12 @@ fn existing_independent_board_fixtures_and_perft_agree() {
     let native = Position::initial();
     let mut p = XiangqiPosition::from_position(&native);
     for depth in 1..=3 {
-        assert_eq!(p.perft(depth.into()), native.perft(depth).unwrap());
+        assert_eq!(
+            p.perft(depth.into()),
+            perft(&native, u32::from(depth), 1_000_000, || false)
+                .unwrap()
+                .leaves
+        );
     }
 }
 fn play(p: &mut XiangqiPosition, native: &mut Position, text: &str) {

@@ -2,6 +2,7 @@
 use super::position::{ShogiPosition, VALUE, face_index};
 use crate::alphabeta::mate::{self, MateLimits, MateResult, MateTable};
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
+use mshogi_core::perft::perft;
 use mshogi_core::shogi::{
     Action, Game, GameCommand, GameRequest, PieceKind, Position, Side, Square,
 };
@@ -182,7 +183,10 @@ fn initial_and_drop_promotion_perft_agree() {
     // Established standard start counts, also independently checked with native generation.
     for (depth, count) in [(1, 30), (2, 900), (3, 25470)] {
         assert_eq!(p.perft(depth), count);
-        assert_eq!(native.perft(depth).unwrap(), count);
+        assert_eq!(
+            perft(&native, depth, 1_000_000, || false).unwrap().leaves,
+            count
+        );
     }
     for sfen in [
         "4k4/9/4P4/9/9/9/9/9/4K4 b Np 1",
@@ -192,7 +196,11 @@ fn initial_and_drop_promotion_perft_agree() {
         let native = Position::from_sfen(sfen).unwrap();
         let mut p = ShogiPosition::from_position(&native);
         compare(&mut p, &native);
-        assert_eq!(p.perft(2), native.perft(2).unwrap(), "{sfen}");
+        assert_eq!(
+            p.perft(2),
+            perft(&native, 2, 1_000_000, || false).unwrap().leaves,
+            "{sfen}"
+        );
     }
 }
 #[test]

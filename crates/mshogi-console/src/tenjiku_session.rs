@@ -1,13 +1,13 @@
 //! Human Tenjiku adapter. Native Game alone owns rules, history and admission.
-use crate::{record_io, session::Next};
+use crate::{diagnostics, record_io, session::Next};
 use mshogi_core::{
     native::CanonicalRecord,
+    perft::PerftPosition,
     tenjiku::{self as c, notation},
 };
 use std::fmt::Write as _;
 
-const MAX_DIAGNOSTIC_DEPTH: u8 = c::MAX_PERFT_DEPTH;
-const MAX_DIAGNOSTIC_VISITS: u64 = c::MAX_PERFT_VISITS;
+const MAX_DIAGNOSTIC_DEPTH: u32 = c::Game::MAX_DEPTH;
 const HELP: &str = "Untimed Tenjiku Shogi diagnostic console (not USI/SFEN):
   position startpos                Standard root with complete known history
   show | status                    Board, native royal status and exact history
@@ -204,53 +204,15 @@ impl Session {
                     Operation::LoadJson(json) => self.restore_json(json, out)?,
                 }
             }
-            "perft" | "divide" => {
-                let (depth, visits) = match args.as_slice() {
-                    [depth] => (*depth, MAX_DIAGNOSTIC_VISITS),
-                    [depth, visits] => (
-                        *depth,
-                        decimal(visits)
-                            .filter(|n| *n > 0 && *n <= 100_000)
-                            .ok_or("visits must be ASCII 1..100000")?
-                            as u64,
-                    ),
-                    _ => return Err("usage: perft <0..3> [visits] | divide <1..3> [visits]".into()),
-                };
-                let depth = decimal(depth)
-                    .filter(|n| *n <= usize::from(MAX_DIAGNOSTIC_DEPTH))
-                    .ok_or("Tenjiku diagnostic depth must be ASCII 0..3")?
-                    as u8;
-                if command == "divide" && depth == 0 {
-                    return Err("divide requires depth 1..3".into());
-                }
-                if command == "perft" {
-                    let report = self.game.perft(depth, visits).map_err(diagnostic)?;
-                    writeln!(
-                        out,
-                        "perft-game {depth} leaves {} visited {} (full native history/endings)",
-                        report.leaves, report.visited
-                    )
-                    .unwrap();
-                } else {
-                    let report = self.game.divide(depth, visits).map_err(diagnostic)?;
-                    for row in report.entries {
-                        writeln!(
-                            out,
-                            "{} {}",
-                            notation::format_action(self.game.position(), row.action)
-                                .map_err(diagnostic)?,
-                            row.leaves
-                        )
-                        .unwrap();
-                    }
-                    writeln!(
-                        out,
-                        "total-game {} visited {} (full native history/endings)",
-                        report.total.leaves, report.total.visited
-                    )
-                    .unwrap();
-                }
-            }
+            "perft" | "divide" => diagnostics::execute(
+                &self.game,
+                command,
+                &args,
+                MAX_DIAGNOSTIC_DEPTH,
+                diagnostics::Style::Game,
+                out,
+                |action| notation::format_action(self.game.position(), action).map_err(diagnostic),
+            )?,
             "analyze" => {
                 use mshogi_search::tenjiku::{self as search, Limits};
                 let limits = match args.as_slice() {

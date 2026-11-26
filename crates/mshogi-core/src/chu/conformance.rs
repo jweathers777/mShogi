@@ -1,6 +1,7 @@
 //! Production-native fixture projections. Expected answers are only read by the
 //! shared comparator; the adapter uses fixture inputs and admitted native APIs.
 use super::*;
+use crate::perft::{divide, perft};
 use mshogi_conformance::{
     assertions::Assertion,
     chu::{Fixture, NativeAdapter},
@@ -99,19 +100,6 @@ fn commands(f: &Fixture) -> Vec<Action> {
             .unwrap_or_default()
     }
 }
-fn perft(p: &LocalPosition, depth: u8) -> u64 {
-    if depth == 0 {
-        return 1;
-    }
-    p.legal_actions()
-        .iter()
-        .map(|a| {
-            let mut next = p.clone();
-            next.apply(a).expect("complete local choice admitted");
-            perft(&next, depth - 1)
-        })
-        .sum()
-}
 fn project(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
     let mut out = BTreeMap::new();
     if !f.given["root"].is_object() && f.given["root"] != "standard_start" {
@@ -142,18 +130,17 @@ fn project(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
     }
     let local = LocalPosition::admit(p.clone());
     if f.id == "CHU-PERFT-REMOTE" {
-        put(&mut out, "perft_depth1", perft(&local, 1));
-        put(&mut out, "perft_depth2", perft(&local, 2));
-        let divide: Vec<_> = local
-            .legal_actions()
+        let depth1 = perft(&local, 1, 100, || false).map_err(|error| error.to_string())?;
+        put(&mut out, "perft_depth1", depth1.leaves);
+        let depth2 = perft(&local, 2, 100, || false).map_err(|error| error.to_string())?;
+        put(&mut out, "perft_depth2", depth2.leaves);
+        let report = divide(&local, 2, 100, || false).map_err(|error| error.to_string())?;
+        let entries: Vec<_> = report
+            .entries
             .iter()
-            .map(|a| {
-                let mut next = local.clone();
-                next.apply(a).expect("native divide choice");
-                json!({"action":action_value(a),"nodes":perft(&next,1)})
-            })
+            .map(|entry| json!({"action": action_value(&entry.action), "nodes": entry.leaves}))
             .collect();
-        put(&mut out, "divide_depth2", divide);
+        put(&mut out, "divide_depth2", entries);
         return Ok(out);
     }
     if f.id.starts_with("CHU-MOVE-") {

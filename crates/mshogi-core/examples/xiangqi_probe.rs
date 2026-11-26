@@ -1,5 +1,6 @@
 //! Developer-only bounded board probe for admitted-reference comparison.
 //! Not a game protocol, console feature or product execution capability.
+use mshogi_core::perft::{divide, perft};
 use mshogi_core::xiangqi::{Action, Position, Undo};
 use serde::{Deserialize, Serialize};
 use std::io::{self, Read};
@@ -60,18 +61,21 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             return Err("choice restoration mismatch".into());
         }
     }
-    let depth = request.perft_depth;
+    let depth = u32::from(request.perft_depth);
     let perft = if depth > 0 {
-        Some(position.perft(depth)?)
+        Some(perft(&position, depth, 1_000_000, || false)?.leaves)
     } else {
         None
     };
     let divide = if depth > 0 {
         Some(
-            position
-                .divide(depth)?
+            divide(&position, depth, 1_000_000, || false)?
+                .entries
                 .into_iter()
-                .map(|(action, nodes)| Branch { action, nodes })
+                .map(|entry| Branch {
+                    action: entry.action,
+                    nodes: entry.leaves,
+                })
                 .collect(),
         )
     } else {

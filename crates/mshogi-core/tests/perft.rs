@@ -3,7 +3,8 @@
 
 use mshogi_core::{
     CHESS_POSITION_PROFILE_ID,
-    chess::{Action, DivideEntry, PerftError, Position, Promotion},
+    chess::{Action, Position, Promotion},
+    perft::{DivideEntry, PerftError, divide, perft},
 };
 use serde_json::Value;
 
@@ -34,10 +35,10 @@ fn first_disagreement(actual: &[(String, u64)], expected: &[(String, u64)]) -> O
     None
 }
 
-fn pairs(entries: &[DivideEntry]) -> Vec<(String, u64)> {
+fn pairs(entries: &[DivideEntry<Action>]) -> Vec<(String, u64)> {
     entries
         .iter()
-        .map(|entry| (text(entry.action), entry.nodes))
+        .map(|entry| (text(entry.action), entry.leaves))
         .collect()
 }
 
@@ -65,14 +66,14 @@ fn check_divide_case(case: &Value) {
     let position = Position::from_fen(case["fen"].as_str().unwrap()).unwrap();
     let before = position.clone();
     let depth = case["depth"].as_u64().unwrap() as u32;
-    let divide = position.divide(depth).unwrap();
-    if let Some(problem) = first_disagreement(&pairs(&divide), &expected_pairs(case)) {
+    let report = divide(&position, depth, 5_000_000, || false).unwrap();
+    if let Some(problem) = first_disagreement(&pairs(&report.entries), &expected_pairs(case)) {
         panic!("{id} depth {depth}: first disagreement at {problem}");
     }
-    let total: u64 = divide.iter().map(|entry| entry.nodes).sum();
+    let total: u64 = report.entries.iter().map(|entry| entry.leaves).sum();
     assert_eq!(total, case["total"].as_u64().unwrap(), "{id}");
     assert_eq!(
-        position.perft(depth).unwrap(),
+        perft(&position, depth, 5_000_000, || false).unwrap().leaves,
         total,
         "{id}: perft equals divide sum"
     );
@@ -85,16 +86,16 @@ fn corpus_perft_totals_match_at_documented_depths() {
         serde_json::from_str(include_str!("../../../tests/fixtures/chess/corpus.json")).unwrap();
     let mut checked = 0;
     for case in corpus["cases"].as_array().unwrap() {
-        let Some(perft) = case["expected"]["perft"].as_object() else {
+        let Some(totals) = case["expected"]["perft"].as_object() else {
             continue;
         };
         let id = case["id"].as_str().unwrap();
         let position = Position::from_fen(case["input"]["fen"].as_str().unwrap()).unwrap();
         let before = position.clone();
-        for (depth, expected) in perft {
+        for (depth, expected) in totals {
             let depth: u32 = depth.parse().unwrap();
             assert_eq!(
-                position.perft(depth).unwrap(),
+                perft(&position, depth, 5_000_000, || false).unwrap().leaves,
                 expected.as_u64().unwrap(),
                 "{id} depth {depth}"
             );
@@ -163,10 +164,13 @@ fn the_disagreement_locator_names_the_first_differing_root_action() {
 fn depth_semantics_and_errors_are_explicit() {
     let initial =
         Position::from_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1").unwrap();
-    assert_eq!(initial.perft(0), Ok(1));
-    assert_eq!(initial.divide(0), Err(PerftError::ZeroDivideDepth));
+    assert_eq!(perft(&initial, 0, 1, || false).unwrap().leaves, 1);
     assert_eq!(
-        PerftError::ZeroDivideDepth.to_string(),
+        divide(&initial, 0, 1, || false),
+        Err(PerftError::ZeroDivideDepth)
+    );
+    assert_eq!(
+        PerftError::<Action>::ZeroDivideDepth.to_string(),
         "perft: divide requires depth of at least 1"
     );
     // Mate and stalemate: depth zero is 1; every positive depth is 0.
@@ -175,19 +179,27 @@ fn depth_semantics_and_errors_are_explicit() {
         "7k/5Q2/6K1/8/8/8/8/8 b - - 0 1",
     ] {
         let position = Position::from_fen(fen).unwrap();
-        assert_eq!(position.perft(0), Ok(1), "{fen}");
+        assert_eq!(perft(&position, 0, 1, || false).unwrap().leaves, 1, "{fen}");
         for depth in 1..=4 {
-            assert_eq!(position.perft(depth), Ok(0), "{fen}");
+            assert_eq!(
+                perft(&position, depth, 1, || false).unwrap().leaves,
+                0,
+                "{fen}"
+            );
         }
-        assert_eq!(position.divide(3), Ok(vec![]), "{fen}");
+        assert_eq!(
+            divide(&position, 3, 1, || false).unwrap().entries,
+            vec![],
+            "{fen}"
+        );
     }
     // Divide entries are complete actions in the documented order, and
     // depth-one divide counts each root action once.
-    let divide = initial.divide(1).unwrap();
-    assert_eq!(divide.len(), 20);
-    assert!(divide.iter().all(|entry| entry.nodes == 1));
-    assert_eq!(text(divide[0].action), "b1a3");
-    assert_eq!(text(divide[19].action), "h2h4");
+    let entries = divide(&initial, 1, 21, || false).unwrap().entries;
+    assert_eq!(entries.len(), 20);
+    assert!(report.entries.iter().all(|entry| entry.leaves == 1));
+    assert_eq!(text(entries[0].action), "b1a3");
+    assert_eq!(text(entries[19].action), "h2h4");
     // Malformed positions never reach perft: the FEN boundary rejects them.
     assert!(Position::from_fen("8/8/8/8/8/8/8/8 w - - 0 1").is_err());
 }
@@ -207,8 +219,16 @@ fn counters_never_limit_traversal() {
         let normal = Position::from_fen(fen).unwrap();
         let limit = Position::from_fen(&limit_fen).unwrap();
         let depth = case["depth"].as_u64().unwrap() as u32;
-        assert_eq!(limit.divide(depth), normal.divide(depth), "{limit_fen}");
-        assert_eq!(limit.perft(depth), normal.perft(depth), "{limit_fen}");
+        assert_eq!(
+            divide(&limit, depth, 5_000_000, || false),
+            divide(&normal, depth, 5_000_000, || false),
+            "{limit_fen}"
+        );
+        assert_eq!(
+            perft(&limit, depth, 5_000_000, || false),
+            perft(&normal, depth, 5_000_000, || false),
+            "{limit_fen}"
+        );
         assert_eq!(limit.to_fen(), limit_fen, "{limit_fen}: caller state");
     }
 }

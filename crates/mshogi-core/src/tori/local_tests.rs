@@ -3,6 +3,7 @@ use super::{
     local_conformance::runtime,
     *,
 };
+use crate::perft::{PerftError, PerftPosition, PerftReport, divide, perft};
 use mshogi_conformance::{Corpus, properties};
 use serde_json::{Value, json};
 use std::collections::HashSet;
@@ -613,7 +614,7 @@ fn exact_legal_apply_undo_material_and_atomic_capacity() {
     assert!(p.is_legal(choices[0]));
     assert_eq!(p.apply(choices[0]).unwrap_err(), ActionError::Capacity);
     assert_eq!(unchanged(&p), before);
-    assert_eq!(p.perft(2, 13).unwrap().leaves, 9);
+    assert_eq!(perft(&p, 2, 13, || false).unwrap().leaves, 9);
     // A capacity-neutral board-defense probe must not mistake a full declared
     // counter on the accepted post-state for the absence of a legal defense.
     let f = fixture("TORI-D-LEGAL-DEFENSE");
@@ -727,29 +728,32 @@ fn bounded_perft_and_divide_use_independent_counts_and_preserve_native_paths() {
     // Each distant corner king has 3 moves. No first move can influence the other,
     // so depth 2=3×3=9, visited=1+3+9=13; not measured generator expectations.
     assert_eq!(
-        p.perft(0, 1).unwrap(),
+        perft(&p, 0, 1, || false).unwrap(),
         PerftReport {
             depth: 0,
             leaves: 1,
             visited: 1
         }
     );
-    assert_eq!(p.perft(1, 4).unwrap().leaves, 3);
+    assert_eq!(perft(&p, 1, 4, || false).unwrap().leaves, 3);
     assert_eq!(
-        p.perft(2, 13).unwrap(),
+        perft(&p, 2, 13, || false).unwrap(),
         PerftReport {
             depth: 2,
             leaves: 9,
             visited: 13
         }
     );
-    let divide = p.divide(2, 13).unwrap();
-    assert_eq!(divide.total, p.perft(2, 13).unwrap());
-    assert_eq!(divide.entries.len(), 3);
-    assert!(divide.entries.iter().all(|row| row.leaves == 3));
-    assert_eq!(divide, p.divide(2, 13).unwrap());
-    for error in [p.perft(2, 12).unwrap_err(), p.divide(2, 12).unwrap_err()] {
-        let PerftError::WorkLimit { path } = error else {
+    let report = divide(&p, 2, 13, || false).unwrap();
+    assert_eq!(report.total, perft(&p, 2, 13, || false).unwrap());
+    assert_eq!(report.entries.len(), 3);
+    assert!(report.entries.iter().all(|row| row.leaves == 3));
+    assert_eq!(report, divide(&p, 2, 13, || false).unwrap());
+    for error in [
+        perft(&p, 2, 12, || false).unwrap_err(),
+        divide(&p, 2, 12, || false).unwrap_err(),
+    ] {
+        let PerftError::WorkLimit { path, limit: 12 } = error else {
             panic!("wrong failure")
         };
         assert_eq!(path.len(), 2);
@@ -759,14 +763,26 @@ fn bounded_perft_and_divide_use_independent_counts_and_preserve_native_paths() {
             probe.apply(a).unwrap();
         }
     }
-    for (depth, limit) in [(9, 100), (1, 0), (1, MAX_PERFT_VISITS + 1)] {
-        assert_eq!(p.perft(depth, limit), Err(PerftError::Limits));
+    assert_eq!(
+        perft(&p, 9, 100, || false),
+        Err(PerftError::DepthLimit { max: 8 })
+    );
+    for limit in [0, LocalPosition::MAX_VISITS + 1] {
+        assert_eq!(
+            perft(&p, 1, limit, || false),
+            Err(PerftError::VisitLimit {
+                max: LocalPosition::MAX_VISITS
+            })
+        );
     }
-    assert_eq!(p.divide(0, 10), Err(PerftError::Limits));
+    assert_eq!(
+        divide(&p, 0, 10, || false),
+        Err(PerftError::ZeroDivideDepth)
+    );
     for id in ["TORI-O-MATE", "TORI-O-QUIET"] {
         let end = local_fixture(id);
-        assert_eq!(end.perft(0, 1).unwrap().leaves, 1);
-        assert_eq!(end.perft(1, 1).unwrap().leaves, 0);
+        assert_eq!(perft(&end, 0, 1, || false).unwrap().leaves, 1);
+        assert_eq!(perft(&end, 1, 1, || false).unwrap().leaves, 0);
     }
     assert_eq!(unchanged(&p), before);
 }

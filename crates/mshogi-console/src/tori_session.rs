@@ -1,13 +1,12 @@
 //! Human Tori adapter. Native Game alone owns rules, history and admission.
-use crate::{record_io, session::Next};
+use crate::{diagnostics, record_io, session::Next};
 use mshogi_core::{
     native::CanonicalRecord,
     tori::{self as t, notation},
 };
 use std::fmt::Write as _;
 
-const MAX_DIAGNOSTIC_DEPTH: u8 = 3;
-const MAX_DIAGNOSTIC_VISITS: u64 = 100_000;
+const MAX_DIAGNOSTIC_DEPTH: u32 = 3;
 const HELP: &str = "Untimed Tori Shogi diagnostic console (not USI/SFEN):
   position startpos                 Standard root with complete known history
   show | hands | status             Board, resources and native game state
@@ -20,7 +19,7 @@ const HELP: &str = "Untimed Tori Shogi diagnostic console (not USI/SFEN):
   record save <path>                Atomic new-file save; never overwrite
   record load-file <path>           Strict bounded replay before replacement
   record load-json <JSON>           Strict inline canonical envelope
-  perft <0..3> | divide <1..3> [visits]  Local diagnostics, default 100000 visits
+  perft <0..3> [visits] | divide <1..3> [visits]  Bounded local diagnostics
   analyze [depth nodes]             Read-only bounded native history-aware search
   help | quit
 Tori actions: Sw3d-3c, capture Fa7cx7b=Ea, drop RQ*5e. Source face and
@@ -192,58 +191,15 @@ impl Session {
                     Operation::LoadJson(json) => self.restore_json(json, out)?,
                 }
             }
-            "perft" | "divide" => {
-                let (depth, visits) = match args.as_slice() {
-                    [depth] => (*depth, MAX_DIAGNOSTIC_VISITS),
-                    [depth, visits] => (
-                        *depth,
-                        decimal(visits)
-                            .filter(|n| *n > 0 && *n <= t::MAX_PERFT_VISITS as usize)
-                            .ok_or("visits must be ASCII 1..1000000")?
-                            as u64,
-                    ),
-                    _ => return Err("usage: perft <0..3> [visits] | divide <1..3> [visits]".into()),
-                };
-                let depth = decimal(depth)
-                    .filter(|n| *n <= usize::from(MAX_DIAGNOSTIC_DEPTH))
-                    .ok_or("Tori diagnostic depth must be ASCII 0..3 (divide 1..3)")?
-                    as u8;
-                if command == "perft" {
-                    let report = self
-                        .game
-                        .local_position()
-                        .perft(depth, visits)
-                        .map_err(diagnostic)?;
-                    writeln!(
-                        out,
-                        "perft-local {} leaves {} visited {} (ignores history/outcomes)",
-                        depth, report.leaves, report.visited
-                    )
-                    .unwrap();
-                } else {
-                    let report = self
-                        .game
-                        .local_position()
-                        .divide(depth, visits)
-                        .map_err(diagnostic)?;
-                    for row in report.entries {
-                        writeln!(
-                            out,
-                            "{} {}",
-                            notation::format_action(self.game.position(), row.action)
-                                .map_err(diagnostic)?,
-                            row.leaves
-                        )
-                        .unwrap();
-                    }
-                    writeln!(
-                        out,
-                        "total-local {} visited {} (ignores history/outcomes)",
-                        report.total.leaves, report.total.visited
-                    )
-                    .unwrap();
-                }
-            }
+            "perft" | "divide" => diagnostics::execute(
+                self.game.local_position(),
+                command,
+                &args,
+                MAX_DIAGNOSTIC_DEPTH,
+                diagnostics::Style::LocalWithVisits,
+                out,
+                |action| notation::format_action(self.game.position(), action).map_err(diagnostic),
+            )?,
             "analyze" => {
                 use mshogi_search::tori::{self as search, Limits};
                 let limits = match args.as_slice() {

@@ -1,6 +1,7 @@
 //! Independent profile expectations and differential private/native projections.
 use super::position::TenjikuPosition;
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
+use mshogi_core::perft::perft;
 use mshogi_core::tenjiku::*;
 use serde_json::Value;
 use std::collections::BTreeSet;
@@ -200,15 +201,6 @@ fn independent_concrete_routes_and_sequences_match_native_full_effects() {
     assert!(roots >= 200, "{roots}");
     assert!(steps >= 200, "{steps}");
 }
-fn native_perft(p: &LocalPosition, depth: u32) -> u64 {
-    if depth == 0 {
-        return 1;
-    }
-    p.legal_actions()
-        .iter()
-        .map(|a| native_perft(&p.simulate(a).unwrap().0, depth - 1))
-        .sum()
-}
 #[test]
 fn independent_remote_perft_and_initial_native_counts() {
     for profile in Profile::ALL {
@@ -232,7 +224,7 @@ fn independent_remote_perft_and_initial_native_counts() {
         let mut p = TenjikuPosition::from_local(&n);
         assert_eq!(p.perft(1), 3);
         assert_eq!(p.perft(2), 9);
-        assert_eq!(native_perft(&n, 2), 9);
+        assert_eq!(perft(&n, 2, 1_000_000, || false).unwrap().leaves, 9);
         let n = LocalPosition::standard(profile);
         let mut p = TenjikuPosition::from_local(&n);
         compare(&mut p, &n, "standard");
@@ -730,7 +722,11 @@ fn complete_compound_perft_two_agrees_for_both_profiles() {
             );
             let n = LocalPosition::admit(pos).unwrap();
             let mut p = TenjikuPosition::from_local(&n);
-            assert_eq!(p.perft(2), native_perft(&n, 2), "{profile:?} {base:?}");
+            assert_eq!(
+                p.perft(2),
+                perft(&n, 2, 1_000_000, || false).unwrap().leaves,
+                "{profile:?} {base:?}"
+            );
             state(&p, n.position());
         }
     }

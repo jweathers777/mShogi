@@ -24,9 +24,6 @@ pub use legal::{
     LocalStatus, LocalUndo, ReversalError,
 };
 mod perft;
-pub use perft::{
-    DivideEntry, DivideReport, MAX_PERFT_DEPTH, MAX_PERFT_VISITS, PerftError, PerftReport,
-};
 
 /// Selected immutable rules identity.
 pub const PROFILE_ID: &str = "mshogi.tori.modern.v1";

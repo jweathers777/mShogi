@@ -1,4 +1,5 @@
 use super::*;
+use crate::perft::{PerftError, divide, perft};
 
 fn point(text: &str) -> Intersection {
     text.parse().unwrap()
@@ -399,7 +400,10 @@ fn local_sets_and_perft_ignore_counter_exhaustion_but_commit_is_atomic() {
         ordinary.counters = Counters::new(Some(0), Some(1)).unwrap();
         assert_eq!(position.legal_actions(), ordinary.legal_actions());
         assert_eq!(position.local_status(), ordinary.local_status());
-        assert_eq!(position.perft(2), ordinary.perft(2));
+        assert_eq!(
+            perft(&position, 2, 1_000, || false),
+            perft(&ordinary, 2, 1_000, || false)
+        );
         let action = quiet.parse().unwrap();
         assert!(position.legal_actions().unwrap().contains(&action));
         assert_eq!(
@@ -480,8 +484,8 @@ fn structural_geography_and_nonmoving_threats_are_not_false_empty_legal_sets() {
         );
         assert!(position.legal_actions().is_err());
         assert!(position.local_status().is_err());
-        assert!(position.perft(0).is_err());
-        assert!(position.divide(0).is_err());
+        assert!(perft(&position, 0, 1, || false).is_err());
+        assert!(divide(&position, 1, 100, || false).is_err());
     }
     let facing = Position::from_fen("4k4/9/9/9/9/9/9/9/9/4K4 w - - 0 1").unwrap();
     assert!(facing.is_in_check(Side::Red));
@@ -491,7 +495,10 @@ fn structural_geography_and_nonmoving_threats_are_not_false_empty_legal_sets() {
         Err(LocalPositionError::NonMovingGeneralAttacked)
     );
     assert!(facing.legal_actions().is_err());
-    assert_eq!(Position::initial().perft(4), Err(PerftError::DepthLimit));
+    assert_eq!(
+        perft(&Position::initial(), 4, 100, || false),
+        Err(PerftError::DepthLimit { max: 3 })
+    );
 }
 
 #[test]

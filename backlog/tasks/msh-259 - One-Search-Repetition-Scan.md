@@ -5,7 +5,7 @@ status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T22:26:00Z'
+updated_date: '2026-11-26T22:27:00Z'
 labels:
   - search
   - refactor
@@ -73,11 +73,11 @@ Short shared bound, Shogi 47de96f vs frozen 7c15e68, c3-standard-4, 5s+0.1s, H0 
 
 All 226 Shogi blunder positions reached depth 6 on both frozen engines, including 62 held out; both engines chose the same move in every position. Both avoided 107 of 226 recorded errors and matched 54 reference choices (29 and 14 of 62 held out). Nodes 20,154,695 base / 20,242,072 candidate. Three complete result files and the 154 exact fixed-depth signatures are in verification3/. The common-bound strength/equivalence criterion is complete. Current outstanding validation is the final-check Batch run (shared checks, differentials and deep perft), then teardown and integration.
 
-Integrated on main as a fast-forward from 7c15e68 to 92ecf7b after merging origin/main. Final shared command on 678b97a: python3 tools/checks.py run --base origin/main; rustfmt, Clippy, 1,167 workspace tests passed, 0 failed, 10 ignored by default. Per-game native differential and perft checks passed. Explicit release deep Chess perft passed, as did native depth-4 counts 197281/4085603/422333. All acceptance criteria have evidence. Cloud evidence under gs://mshogi-experiments-216675633801/runs/msh-259/ (checks6, verification3, shogi-match, method, jobs). All 20 Batch jobs reached terminal state. Resource estimate: 18.40 machine-hours times US$0.201608 = US$3.71 in VM compute, before storage and billing adjustments; no remaining project VMs or disks. Next eligible dependent: MSH-243 (Game-Independent Strength Tool).
+Integrated on main as a fast-forward from 7c15e68 to 92ecf7b after merging origin/main. Final shared command on 678b97a: python3 tools/checks.py run --base origin/main; rustfmt, Clippy, 1,167 workspace tests passed, 0 failed, 10 ignored by default. Per-game native differential and perft checks passed. Explicit release deep Chess perft passed, as did native depth-4 counts 197281/4085603/422333. All acceptance criteria have evidence. Cloud evidence under gs://mshogi-experiments-216675633801/runs/msh-259/ (checks6, verification3, shogi-match, method, jobs). All 20 Batch jobs reached terminal state. Resource estimate: 18.40 machine-hours times US$0.201608 = US$3.71 in VM compute, before storage and billing adjustments; no remaining project VMs or disks. MSH-243 (Game-Independent Strength Tool) has other open dependencies. The next eligible task is MSH-261 (Shared Runner Reports and Engine Transport).
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary
 
 <!-- SECTION:FINAL_SUMMARY:BEGIN -->
-All six searches now share a same-side repetition scan and retain their game-specific scores. Measurements and frozen-predecessor tests favored the shorter bound for Shogi and Tori. It can miss a search cycle across a capture or drop; the native game still adjudicates the full history. All 226 Shogi blunder choices and 154 fixed-depth results in the five unchanged games matched. The Shogi non-inferiority SPRT passed at 373 pairs (390 wins, 16 draws, 340 losses, LLR +2.982). The full-history Tori alternatives failed qualification and were discarded. Workspace, perft, differential and independent review checks passed. MSH-243 is unblocked.
+All six searches now share a same-side repetition scan and retain their game-specific scores. Measurements and frozen-predecessor tests favored the shorter bound for Shogi and Tori. It can miss a search cycle across a capture or drop; the native game still adjudicates the full history. All 226 Shogi blunder choices and 154 fixed-depth results in the five unchanged games matched. The Shogi non-inferiority SPRT passed at 373 pairs (390 wins, 16 draws, 340 losses, LLR +2.982). The full-history Tori alternatives failed qualification and were discarded. Workspace, perft, differential and independent review checks passed. The next eligible task is MSH-261 (Shared Runner Reports and Engine Transport).
 <!-- SECTION:FINAL_SUMMARY:END -->

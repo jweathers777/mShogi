@@ -1,10 +1,11 @@
 ---
 id: MSH-256
 title: One USI and Xiangqi UCI Front End
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T11:55:00Z'
+updated_date: '2026-11-26T18:22:00Z'
 labels:
   - console
   - protocol
@@ -38,4 +39,6 @@ John, 2026-11-25: MSH-268 removes the input line cap for game records and positi
 MSH-222 (2026-11-26), finding in this scope: ShogiSearchSession and XiangqiSearchSession now live in mshogi-engine/src/server.rs. They could be one SearchSession<G: EngineGame> that uses EngineGame::extends; the Xiangqi session compares events directly, which is cheaper than a committed_prefix replay, so measure before merging.
 
 Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
+
+Claimed on codex/msh-256-protocol at 655e63b. Next: compare the protocol paths and record the implementation plan.
 <!-- SECTION:NOTES:END -->

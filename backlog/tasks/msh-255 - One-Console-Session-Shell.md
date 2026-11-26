@@ -1,10 +1,11 @@
 ---
 id: MSH-255
 title: Shared Console Sessions and Test Support
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T11:55:00Z'
+updated_date: '2026-11-26T17:16:00Z'
 labels:
   - console
   - refactor
@@ -43,4 +44,6 @@ crates/mshogi-console/tests repeat helpers: the subprocess run helper six times 
 John approved consolidation on 2026-11-26: this task retains the full scope of MSH-255 (One Console Session Shell), MSH-257 (Shared Console Test Helpers). Session consolidation and test-support consolidation touch the same console tests; retain all assertions. Agent labels are model:large, effort:high for the combined scope. Absorbed task records are archived, not completed; all implementation criteria remain unchecked.
 
 Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
+
+Claimed on codex/msh-255-console-sessions from c7e99bb. Next: consolidate the shell and test helpers, compare coverage, review, and run checks.
 <!-- SECTION:NOTES:END -->

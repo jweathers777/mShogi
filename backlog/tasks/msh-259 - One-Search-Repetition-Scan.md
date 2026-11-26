@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T19:58:00Z'
+updated_date: '2026-11-26T20:35:00Z'
 labels:
   - search
   - refactor
@@ -50,4 +50,6 @@ Independent review found the old Tori bound and score in docs/m5/shared-search-c
 Matched both bounds on every prefix from 315 Shogi and 218 Tori published openings. M1 Pro single core, optimized scan (bounded/full): Shogi 4,498 queries, 14,591/16,095 keys, 0/0 hits, 3.09/3.25 ns. Tori 1,744 queries, 934/3,488 keys, 2/2 hits, 0.92/1.83 ns. Frozen 7c15e68 vs candidate 75a10d2, c3-standard-4: 134 identical fixed-depth signatures (move, score, PV, nodes): Chess 36, Shogi 18, Xiangqi 28, Chu 28, Tenjiku 24 including both profiles. Full 280-position Tori blunder suite at depth 5: identical 280 choices, 163 avoid the played error, 65 match the judge. Held out 43/64 avoided and 17/64 matched. First match submission used the wrong safety caps (512 nodes, baseline depth 1); stopped at the first incomplete:NodeLimit and discarded all scores. MSH259-match2 uses the harness clock caps symmetrically (5M nodes, depth 64), same planned clock and hypotheses; no invalid data pooled. The first cloud checks archive carried macOS extended metadata; clean archive resubmitted as msh259-checks2. Next: monitor checks and match, collect cleanup/cost, integrate if gates pass. Evidence gs://mshogi-experiments-216675633801/runs/msh-259/.
 
 The exact shared pre-integration command passed on 268ae68 in msh259-checks3, c3-standard-4: workspace rustfmt, Clippy with warnings denied, 1,166 tests passed, zero failed, 10 ignored by default. Regular perft and randomized differential tests cover all six search positions. Explicit release deep Chess perft passed and native depth-4 totals matched 197281, 4085603, 422333. The preceding checks2 worker reached the end of workspace tests but could not replace the first log because it has create-only bucket access; checks3 wrote a fresh prefix and all three commands passed. Match2 is active: only its ordered SPRT and cleanup remain. Baseline/candidate Tori blunder-suite node totals 4,271,347/4,275,371; 11 positions changed node count, all 280 choices identical.
+
+Full linear scan, 75a10d2 vs 7c15e68: msh259-match2 closed at the preset 1200-pair cap, 1197 scored, 3 step-limited (native reports replayed). W/L/D 1154/1240/0, pentanomial [269,0,702,0,226], Elo -12.49 [-25.16,+0.15], LLR -1.799 (bounds +/-2.944), no decision. This candidate did not pass AC2. A root membership mask in a timing diagnostic on the two actual games from seed 1 found all 120,000 occurrences in 3.56M queries and reduced lookup from 29.03 to 4.93 ns. Revise the implementation to skip pre-root positions only when no full key can match. Independently test the new candidate on predeclared disjoint seeds 1201..3600, 5s +0.1s, H0 -15/H1 0, alpha=beta .05, minimum 30 scored, maximum 2400 attempts; no pooling with the first comparison. Repeat full blunders, unchanged-game fixed depth, perft, shared checks and review. All compute stays under the task cap.
 <!-- SECTION:NOTES:END -->

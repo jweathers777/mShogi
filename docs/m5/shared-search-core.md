@@ -250,7 +250,8 @@ Private analysis uses these approximations:
 - The table is keyed by board, hands and turn, without history or move count.
 - A repeated position on the search path scores as a draw, or a loss for a
   side that checked on every move in the cycle. Pre-root history requires four
-  occurrences. The scan crosses captures and drops; a null move sets a barrier.
+  occurrences. Search stops at the last capture, drop or null move. The native
+  game still recognizes fourfold repetitions across captures and drops.
 - At 320 completed actions, the position is drawn unless it has no legal move,
   which takes priority. Null moves do not advance this count.
 - Entering-king declarations are checked only at the root, not inside the tree.

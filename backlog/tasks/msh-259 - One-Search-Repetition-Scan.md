@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T21:47:00Z'
+updated_date: '2026-11-26T21:52:00Z'
 labels:
   - search
   - refactor
@@ -34,6 +34,8 @@ Each search position scans its key history in rule_score with its own loop: Shog
 
 <!-- SECTION:PLAN:BEGIN -->
 1. Measure both drop-game bounds on native repetition fixtures and timed key histories. Preserve null-move boundaries. 2. Share occurrence traversal and retain the scoring and priority of each game. 3. Compare fixed-depth decisions, PV, scores and nodes against 7c15e68. For the game whose bound changes, compare the published blunder suite and test non-inferiority with paired openings at 5 s + 0.1 s, H0 -15 Elo, H1 0, alpha and beta 0.05, at most 1200 pairs. Keep the simpler search only if the strength and blunder results support it. 4. Run perft, differential and repository checks, obtain review, integrate and clean up. All cloud work within US$10.
+
+5. After Tori full-history H0, test the common capture/drop cutoff. Preserve native adjudication. Require exact fixed-depth signatures for Tori, Chess, Xiangqi, Chu and both Tenjiku profiles; compare all 226 Shogi blunders against 7c15e68. Run a fresh Shogi non-inferiority SPRT: frozen 7c15e68, 315 published balanced openings, seed-ordered 1..2400, two colors, 5 s +0.1 s, max 320 native steps, symmetric 5M nodes/depth 64, pair wall ceiling 600 s, H0 -15/H1 0 Elo, alpha=beta .05, min 30 scored, max 2400 attempts. Native incomplete pairs stop the trial. Use the same machine class and build image. Repeat repository checks, perft/differentials and review.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
@@ -60,4 +62,6 @@ Final candidate 93de32f passed 134/134 unchanged-game fixed-depth comparisons an
 msh259-filter-match (match3) stopped and diagnosed by its predeclared incomplete-pair rule at attempt 1275, seed 2475. First native game reached its 1000-step limit; the return game reached the runner-wide 180 s wall deadline after 655 plies. Neither has a score. 1270 scored pairs before the interruption, LLR -1.492; no decision. Native paired report is preserved. There is no resume of the original process at ply 655, and substituting one replayed game would mix reports. Close this trial without using its rows for acceptance. Repeat the full SAME seed range 1201..3600 from the beginning under the original clock, step cap, player limits and unchanged sequential boundaries. Set the pair-wide operational ceiling uniformly to 600 s (each game can consume 10 s of initial clocks plus 100 s of increments over 1000 plies, so 180 s for both games can expire). No outcome-based replacements, no pooling of earlier games. Task spending projection remains under US$10.
 
 The full clean retry (match4, 93de32f vs 7c15e68, c3-standard-4, same original seeds/clocks/step cap) reached H0 at attempt 865. 863 scored, 2 step-limited, W/L/D 813/913/0, pentanomial [221,0,471,0,171], LLR -3.006 below -2.944, Elo -20.15 [-35.81,-4.57]. No scores from interrupted match3 or the first full-scan candidate were pooled. Reject the filtered full-history implementation for integration. The project has not integrated any MSH-259 code; AC2 remains open. Next: reconcile fixed-depth speed diagnostic and evaluate the shorter common bound using the same frozen predecessor. Keep branch codex/msh-259-repetition for evidence.
+
+Whole-search timing for Tori at depth 7 on 19 real positions (20,60,100,140-ply prefixes when available from both games, seeds 1..3): five randomized interleaved runs per engine, 285 searches. Sum of per-root median times 0.7536 s predecessor, 0.7769 s full linear, 0.7669 s full filtered; nodes 442564/442557/442557. Only one position changed node count. The shorter cutoff was fastest and retained stronger Tori play in the SPRT. Select it for the next candidate. Estimate through all finished jobs about US$3.35 (task-count times Batch runtime); next match ceiling US$2.42 plus small build/check cost puts task under US$6.5 estimated compute. Next: implement and test common short bound on branch codex/msh-259-repetition. Counts and profiles in gs://mshogi-experiments-216675633801/runs/msh-259/verification2/speed.json.
 <!-- SECTION:NOTES:END -->

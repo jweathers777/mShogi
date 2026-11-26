@@ -2,13 +2,11 @@
 //! calls and constants of its game; the shared wiring is in the macros below.
 use crate::{
     EngineGame, EngineResult, EngineTelemetry, ExecutionResult, NoPending, StopReason, WorkLimits,
-    adapter::Decision,
 };
 use mshogi_core::{
     chu, native::CanonicalRecord, native::GameKind, native::NativeSide, shogi, tenjiku, tori,
     xiangqi,
 };
-use mshogi_search::alphabeta::{Searcher, timing::TimeBudget};
 use serde::{Deserialize, Serialize};
 
 // Shogi events record check and declaration facts instead of a board-ply counter.
@@ -31,10 +29,6 @@ macro_rules! wiring {
         const KIND: GameKind = GameKind::$variant;
         const EVALUATOR_ID: &'static str = mshogi_search::$core::EVALUATOR_ID;
         const SEARCH_ID: &'static str = mshogi_search::$core::SEARCH_ID;
-        const WIN_SCORE: i32 = mshogi_search::$core::WIN_SCORE;
-        const MAX_DEPTH: u16 = mshogi_search::$core::MAX_DEPTH;
-        const MAX_NODES: u64 = mshogi_search::$core::MAX_NODES;
-        const MAX_LINE: usize = mshogi_search::$core::MAX_LINE;
 
         type Side = $core::Side;
         type Conclusion = $core::Conclusion;
@@ -85,56 +79,8 @@ macro_rules! wiring {
         fn record_conclusion(record: &Self::Record) -> Option<Self::Conclusion> {
             record.conclusion()
         }
-        fn terminal_score(conclusion: Self::Conclusion, side: Self::Side) -> i32 {
-            mshogi_search::$core::terminal_score(conclusion, side, 0)
-        }
         fn to_game(record: &Self::Record) -> Result<Self::Game, String> {
             record.to_game().map_err(|e| e.to_string())
-        }
-        fn side_to_move(game: &Self::Game) -> Self::Side {
-            game.position().side_to_move()
-        }
-        fn new_engine() -> Searcher<Self::Position> {
-            mshogi_search::$core::new_engine()
-        }
-    };
-}
-
-/// Search call of a game whose search result has no pending adjudication.
-macro_rules! search {
-    ($core:ident) => {
-        fn search(
-            game: &Self::Game,
-            limits: WorkLimits,
-            time: Option<TimeBudget>,
-            engine: &mut Searcher<Self::Position>,
-            stop: impl FnMut() -> bool,
-        ) -> Result<EngineResult<Self>, String> {
-            use mshogi_search::$core as s;
-            let r = s::search_with_state(
-                game,
-                s::Limits {
-                    depth: limits.depth,
-                    nodes: limits.nodes,
-                },
-                time,
-                engine,
-                stop,
-            )
-            .map_err(|e| e.to_string())?;
-            let telemetry = EngineTelemetry::current(
-                r.perspective,
-                r.score,
-                r.completed_depth,
-                r.nodes,
-                r.principal_variation.into_iter().map(Into::into).collect(),
-                r.status.into(),
-            );
-            let decision = r.decision.map(|d| match d {
-                s::Decision::Choose(choice) => Decision::Choose(choice.into()),
-                s::Decision::Finished(conclusion) => Decision::Finished(conclusion),
-            });
-            Ok(EngineResult::searched(decision, telemetry))
         }
     };
 }
@@ -171,7 +117,6 @@ macro_rules! board_action_game {
 pub struct Chu;
 impl EngineGame for Chu {
     wiring!(Chu, chu, ChuPosition);
-    search!(chu);
     const SCORE_UNIT: &'static str = "Pawns";
     board_action_game!(chu);
     fn submit(
@@ -197,7 +142,6 @@ impl EngineGame for Chu {
 pub struct Tenjiku;
 impl EngineGame for Tenjiku {
     wiring!(Tenjiku, tenjiku, TenjikuPosition);
-    search!(tenjiku);
     const SCORE_UNIT: &'static str = "Pawns";
     board_action_game!(tenjiku);
     fn submit(
@@ -223,7 +167,6 @@ impl EngineGame for Tenjiku {
 pub struct Tori;
 impl EngineGame for Tori {
     wiring!(Tori, tori, ToriPosition);
-    search!(tori);
     const SCORE_UNIT: &'static str = "Swallows";
     board_action_game!(tori);
     /// A Tori command is short; the caller checks the stop between commands.
@@ -272,7 +215,6 @@ impl From<mshogi_search::shogi::Choice> for ShogiChoice {
 pub struct Shogi;
 impl EngineGame for Shogi {
     wiring!(Shogi, shogi, ShogiPosition);
-    search!(shogi);
     const SCORE_UNIT: &'static str = "pawns";
     const DISTANCE_UNIT: [&'static str; 2] = [
         "command edge (including declarations)",
@@ -389,36 +331,6 @@ impl EngineGame for Xiangqi {
             }
         }
     }
-    fn search(
-        game: &xiangqi::Game,
-        limits: WorkLimits,
-        time: Option<TimeBudget>,
-        engine: &mut Searcher<Self::Position>,
-        stop: impl FnMut() -> bool,
-    ) -> Result<EngineResult<Self>, String> {
-        use mshogi_search::xiangqi as s;
-        let limits = s::Limits {
-            depth: limits.depth,
-            nodes: limits.nodes,
-        };
-        let r =
-            s::search_with_state(game, limits, time, engine, stop).map_err(|e| e.to_string())?;
-        let telemetry = EngineTelemetry::current(
-            r.perspective,
-            r.score,
-            r.completed_depth,
-            r.nodes,
-            r.principal_variation.into_iter().map(Into::into).collect(),
-            r.status.into(),
-        );
-        let decision = match (r.unresolved, r.decision) {
-            (Some(pending), _) => Some(Decision::Unresolved(pending)),
-            (None, Some(s::Decision::Choose(choice))) => Some(Decision::Choose(choice.into())),
-            (None, Some(s::Decision::Finished(conclusion))) => Some(Decision::Finished(conclusion)),
-            (None, None) => None,
-        };
-        Ok(EngineResult::searched(decision, telemetry))
-    }
     /// The search claims after a completed iteration that scores no better
     /// than a draw.
     fn command_shape(choice: &XiangqiChoice, t: &EngineTelemetry<Self>) -> Option<bool> {
@@ -449,14 +361,3 @@ pub type ShogiTelemetry = EngineTelemetry<Shogi>;
 pub type XiangqiResult = EngineResult<Xiangqi>;
 /// Xiangqi telemetry.
 pub type XiangqiTelemetry = EngineTelemetry<Xiangqi>;
-
-impl From<mshogi_search::xiangqi::Status> for StopReason {
-    fn from(status: mshogi_search::xiangqi::Status) -> Self {
-        match status {
-            mshogi_search::xiangqi::Status::Complete => Self::Complete,
-            mshogi_search::xiangqi::Status::NodeLimit => Self::NodeLimit,
-            mshogi_search::xiangqi::Status::Stopped => Self::Stopped,
-            mshogi_search::xiangqi::Status::Unresolved => Self::Unresolved,
-        }
-    }
-}

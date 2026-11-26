@@ -4,31 +4,20 @@ pub mod eval;
 pub mod position;
 #[cfg(test)]
 mod position_tests;
-use crate::alphabeta::{self, SearchPosition, Searcher};
+use crate::alphabeta::SearchPosition;
+pub use crate::root::Status;
+use crate::root::{self, RootGame};
 use mshogi_core::xiangqi::{
     Action, Conclusion, Game, GameCommand, GameError, GameRequest, NoWinAssessment,
-    PendingAdjudication, PieceKind, RecordError, Side,
+    PendingAdjudication, PieceKind, Side,
 };
 use position::XiangqiPosition;
-use std::{error::Error, fmt};
 
 /// Untrained material and soldier advancement, independent of WXF adjudication.
 pub const EVALUATOR_ID: &str = "mshogi.xiangqi.material-placement.v1";
 /// Shared alpha-beta search identity.
 pub const SEARCH_ID: &str = "mshogi.xiangqi.shared-core.v1";
-/// Maximum reported native continuation length.
-pub const MAX_LINE: usize = 8;
-/// Native terminal win minus command-edge distance; not necessarily checkmate.
-pub const WIN_SCORE: i32 = 1_000_000;
-/// Largest nominal search depth.
-pub const MAX_DEPTH: u16 = 64;
-/// Includes iterative revisits and discarded partial work, not just scored leaves.
-pub const MAX_NODES: u64 = 5_000_000;
-/// Default bounded interactive work.
-pub const DEFAULT_LIMITS: Limits = Limits {
-    depth: MAX_DEPTH,
-    nodes: 300_000,
-};
+
 /// Hundredths of an unadvanced soldier. A General is valued only by native outcomes.
 pub const fn piece_value(kind: PieceKind) -> i32 {
     match kind {
@@ -38,20 +27,6 @@ pub const fn piece_value(kind: PieceKind) -> i32 {
         PieceKind::Rook => 900,
         PieceKind::Cannon => 450,
         PieceKind::Soldier => 100,
-    }
-}
-/// Mandatory finite deterministic work. Zero visits is explicitly supported.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct Limits {
-    /// Maximum nominal depth, 1..=MAX_DEPTH.
-    pub depth: u16,
-    /// Total admitted visits including iterative/partial work.
-    pub nodes: u64,
-}
-impl Limits {
-    /// Same admitted bounds in native search and shared child execution.
-    pub const fn valid(self) -> bool {
-        self.depth >= 1 && self.depth <= MAX_DEPTH && self.nodes <= MAX_NODES
     }
 }
 /// Complete board action versus optional formal count claim.
@@ -74,244 +49,58 @@ impl Choice {
         }
     }
 }
-/// Actual completed decision, never a fabricated first legal fallback.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum Decision {
-    /// Proposed complete native choice.
-    Choose(Choice),
-    /// Already committed native root conclusion.
-    Finished(Conclusion),
-}
-/// Real execution state, distinct from a game outcome.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum Status {
-    /// Requested iteration work completed.
-    Complete,
-    /// Deterministic total visit bound reached.
-    NodeLimit,
-    /// Cooperative external stop observed.
-    Stopped,
-    /// Required native adjudication has no score.
-    Unresolved,
-}
-/// Native observations; the immutable caller game is the analyzed source.
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct SearchResult {
-    /// Last complete decision; absent before completion or when unresolved.
-    pub decision: Option<Decision>,
-    /// Native root-side heuristic or actual terminal distance. None when unscored.
-    pub score: Option<i32>,
-    /// Native root side for every observation.
-    pub perspective: Side,
-    /// Last fully completed board depth; zero when no scored iteration completed.
-    pub completed_depth: u16,
-    /// Total admitted visits including iterative/partial work.
-    pub nodes: u64,
-    /// Continuation from completed work, possibly ending in a count claim.
-    pub principal_variation: Vec<Choice>,
-    /// Actual execution completion/stop reason.
-    pub status: Status,
-    /// Native history/conduct classification that blocks all commands; never
-    /// an invented score.
-    pub unresolved: Option<PendingAdjudication>,
-    /// Sound fast root no-win assessment, including a fast miss; not a minimax evaluation.
-    pub assessment: NoWinAssessment,
-}
-/// Native failures remain unscored, retaining concrete diagnostics.
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub enum SearchError {
-    /// Outside documented finite settings.
-    InvalidLimits,
-    /// Authoritative private reconstruction failed.
-    Record(RecordError),
-    /// Native command admission/invariant failed.
-    Transition(GameError),
-    /// Balanced native reversal or canonical root comparison failed.
-    Restore,
-    /// Native live node lacked choices or a sound assessment.
-    Invariant,
-}
-impl fmt::Display for SearchError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "xiangqi search failed: {self:?}")
-    }
-}
-impl Error for SearchError {}
+root::root_api!(300_000);
 
-/// Deterministic recorded-policy search with mandatory finite limits.
-pub fn search(game: &Game, limits: Limits) -> Result<SearchResult, SearchError> {
-    search_with_stop(game, limits, || false)
-}
-/// Persistent search state for one Xiangqi game.
-pub type Engine = Searcher<XiangqiPosition>;
-/// Default search table size in megabytes.
-pub const DEFAULT_TABLE_MB: usize = 64;
-/// Start with an empty transposition table and move statistics.
-pub fn new_engine() -> Engine {
-    Searcher::new(DEFAULT_TABLE_MB)
-}
+impl RootGame for Game {
+    root::native_types!(XiangqiPosition, Choice, fork, action);
+    root::timed_moves!(XiangqiPosition);
 
-/// Recorded sound_fast_only policy. Fast Unknown is retained as uncertainty,
-/// not a claim of winnability.
-/// Each call starts with empty state.
-pub fn search_with_stop(
-    game: &Game,
-    limits: Limits,
-    stop: impl FnMut() -> bool,
-) -> Result<SearchResult, SearchError> {
-    search_with_state(game, limits, None, &mut new_engine(), stop)
-}
-/// Search with caller-owned state and an optional total adapter time budget.
-/// Use a fresh engine for reproducible fixed-limit requests.
-pub fn search_with_state(
-    game: &Game,
-    limits: Limits,
-    time: Option<alphabeta::timing::TimeBudget>,
-    engine: &mut Engine,
-    mut stop: impl FnMut() -> bool,
-) -> Result<SearchResult, SearchError> {
-    // The core enforces the hard deadline through its limits, so a timed
-    // request that expires is not a cancellation and may use its fallback.
-    let timing = &alphabeta::timing::RequestTime::new(time);
-    let stop: &mut dyn FnMut() -> bool = &mut stop;
-    if !limits.valid() {
-        return Err(SearchError::InvalidLimits);
+    const TABLE_MB: usize = 64;
+    type Pending = PendingAdjudication;
+    type Assessment = NoWinAssessment;
+    fn assessment(&self) -> NoWinAssessment {
+        self.no_win_assessment()
     }
-    let mut result = SearchResult {
-        decision: None,
-        score: None,
-        perspective: game.position().side_to_move(),
-        completed_depth: 0,
-        nodes: 0,
-        principal_variation: vec![],
-        status: Status::Complete,
-        unresolved: None,
-        assessment: game.no_win_assessment(),
-    };
-    // Cooperative stop before bounded native reconstruction; process owner also
-    // retains the independent watchdog/kill path for parsing/replay/queries.
-    if stop() {
-        result.status = Status::Stopped;
-        return Ok(result);
+    fn pending(&self) -> Option<PendingAdjudication> {
+        self.pending_adjudication().cloned()
     }
-    if limits.nodes == 0 {
-        result.status = Status::NodeLimit;
-        return Ok(result);
+    fn root_decision(
+        &self,
+        result: &mut SearchResult,
+        _: Limits,
+        _: bool,
+        _: &mut dyn FnMut() -> bool,
+    ) -> Result<bool, SearchError> {
+        if matches!(result.assessment, NoWinAssessment::Failure) {
+            return Err(SearchError::Invariant);
+        }
+        Ok(false)
     }
-    if let Some(conclusion) = game.conclusion() {
-        result.decision = Some(Decision::Finished(conclusion));
-        result.score = Some(terminal_score(conclusion, result.perspective, 0));
-        result.completed_depth = 1;
-        result.nodes = 1;
-        return Ok(result);
+    fn legal(&self, _: &mut dyn FnMut() -> bool) -> Result<Option<Vec<Action>>, SearchError> {
+        self.position()
+            .legal_actions()
+            .map(Some)
+            .map_err(|_| SearchError::Invariant)
     }
-    if let Some(pending) = game.pending_adjudication() {
-        result.status = Status::Unresolved;
-        result.unresolved = Some(pending.clone());
-        result.nodes = 1;
-        return Ok(result);
-    }
-    if matches!(result.assessment, NoWinAssessment::Failure) {
-        return Err(SearchError::Invariant);
-    }
-    let legal = game
-        .position()
-        .legal_actions()
-        .map_err(|_| SearchError::Invariant)?;
-    if legal.is_empty() {
-        return Err(SearchError::Invariant);
-    }
-    let root = result.perspective;
-    let claim = game.natural_count_eligibility(root).eligible;
-    let mut position = XiangqiPosition::from_game(game);
-    let outcome = if timing.remaining().is_some() {
-        // A timed request always returns a legal move (native root order).
-        let fallback = position.find(legal[0]).ok_or(SearchError::Invariant)?;
-        engine.search_with_timed_fallback(
-            &mut position,
-            timing.limits(limits.depth, Some(limits.nodes)),
-            stop,
-            fallback,
-        )
-    } else {
-        engine.search(
-            &mut position,
-            timing.limits(limits.depth, Some(limits.nodes)),
-            stop,
-        )
-    };
-    result.nodes = outcome.nodes;
-    result.completed_depth = outcome.depth;
-    result.status = match outcome.status {
-        alphabeta::Status::Complete => Status::Complete,
-        alphabeta::Status::NodeLimit => Status::NodeLimit,
-        alphabeta::Status::Stopped => Status::Stopped,
-    };
-    let Some(best) = outcome.best else {
-        result.completed_depth = 0;
-        return Ok(result);
-    };
-    let mut native = game.fork();
-    // A valid root claim is an option, not an automatic draw. A completed
-    // search must prefer it when the move score is no better than zero.
-    if claim && outcome.score.is_some_and(|score| score <= 0) {
-        let choice = Choice::Claim { actor: root };
+    fn claim(&self, score: Option<i32>) -> Result<Option<Choice>, SearchError> {
+        let actor = self.side();
+        if !score.is_some_and(|s| s <= 0) || !self.natural_count_eligibility(actor).eligible {
+            return Ok(None);
+        }
+        let choice = Choice::Claim { actor };
+        let mut native = self.fork();
         native
-            .submit(GameRequest {
-                expected: native.context(),
-                actor: root,
-                command: choice.command(),
-            })
+            .play(&choice, &mut || false)
             .map_err(SearchError::Transition)?;
         if !matches!(native.conclusion(), Some(Conclusion::Draw { .. })) {
             return Err(SearchError::Invariant);
         }
-        result.decision = Some(Decision::Choose(choice));
-        result.principal_variation.push(choice);
-        result.score = Some(0);
-        return Ok(result);
+        Ok(Some(choice))
     }
-    let action = position.action(best);
-    if !legal.contains(&action) {
-        return Err(SearchError::Invariant);
-    }
-    for &m in outcome.pv.iter().take(MAX_LINE) {
-        if !result.principal_variation.is_empty() && timing.expired() {
-            break;
+    fn winner(c: Conclusion) -> Option<Side> {
+        match c {
+            Conclusion::Draw { .. } => None,
+            Conclusion::Win { winner, .. } => Some(winner),
         }
-        if native.conclusion().is_some() || native.pending_adjudication().is_some() {
-            break;
-        }
-        let action = position.action(m);
-        let request = GameRequest {
-            expected: native.context(),
-            actor: native.position().side_to_move(),
-            command: GameCommand::Play { action },
-        };
-        match native.submit(request) {
-            Ok(_) => {}
-            Err(error) if result.principal_variation.is_empty() => {
-                return Err(SearchError::Transition(error));
-            }
-            Err(_) => break,
-        }
-        if !position.make(m) {
-            return Err(SearchError::Invariant);
-        }
-        result.principal_variation.push(Choice::Move(action));
-    }
-    if result.principal_variation.first() != Some(&Choice::Move(action)) {
-        return Err(SearchError::Invariant);
-    }
-    result.decision = Some(Decision::Choose(Choice::Move(action)));
-    result.score = outcome.score;
-    Ok(result)
-}
-/// Native terminal score from the captured root side.
-pub fn terminal_score(conclusion: Conclusion, root: Side, distance: u16) -> i32 {
-    match conclusion {
-        Conclusion::Draw { .. } => 0,
-        Conclusion::Win { winner, .. } if winner == root => WIN_SCORE - i32::from(distance),
-        Conclusion::Win { .. } => -WIN_SCORE + i32::from(distance),
     }
 }

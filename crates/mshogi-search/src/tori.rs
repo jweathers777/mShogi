@@ -9,242 +9,55 @@
 pub mod eval;
 pub mod position;
 
-use crate::{
-    alphabeta::{self, SearchPosition, Searcher, Status},
-    search::SearchStatus,
-};
-use mshogi_core::tori::{
-    Action, Conclusion, Game, GameCommand, GameError, GameRequest, RecordError, Side,
-};
+use crate::alphabeta::SearchPosition;
+#[cfg(test)]
+use crate::root::Status as SearchStatus;
+use crate::root::{self, RootGame};
+use mshogi_core::tori::{Action, Conclusion, Game, GameCommand, GameError, GameRequest, Side};
 use position::ToriPosition;
 pub use position::piece_value;
 #[doc(hidden)]
 pub use position::{ProfileRow, movegen_profile};
-use std::{error::Error, fmt};
 
 /// Evaluation identity: the linear Texel-fitted evaluation (`tori/eval.rs`).
 /// MSH-206 kept the identity; shared-core scores have no exact score check.
 pub const EVALUATOR_ID: &str = "mshogi.tori.material-placement.v1";
 /// Search identity: the shared alpha-beta core.
 pub const SEARCH_ID: &str = "mshogi.tori.shared-core.v1";
-/// Native terminal win minus board-action distance; not specifically a mate score.
-pub const WIN_SCORE: i32 = alphabeta::MATE_SCORE;
-/// Largest nominal depth of a request.
-pub const MAX_DEPTH: u16 = 64;
-/// Largest node limit of a request.
-pub const MAX_NODES: u64 = 5_000_000;
-/// Largest length of a reported line, in board actions. A saved document
-/// keeps each line and replays it when it opens, so the line is kept short.
-pub const MAX_LINE: usize = 8;
-/// Interactive budget: the node limit ends the search.
-pub const DEFAULT_LIMITS: Limits = Limits {
-    depth: MAX_DEPTH,
-    nodes: 300_000,
-};
-const TABLE_MEGABYTES: usize = 16;
 
-/// Mandatory finite deterministic limits.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct Limits {
-    /// Maximum completed depth.
-    pub depth: u16,
-    /// Total admitted visits; zero publishes no choice.
-    pub nodes: u64,
-}
-impl Limits {
-    /// Native and supervised consumers share these limits.
-    pub const fn valid(self) -> bool {
-        self.depth >= 1 && self.depth <= MAX_DEPTH && self.nodes <= MAX_NODES
-    }
-}
-/// A completed iteration decision, never an already applied board action.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum Decision {
-    /// Complete permitted native action.
-    Choose(Action),
-    /// Exact native root conclusion.
-    Finished(Conclusion),
-}
-/// Actual work observations, always in the captured root-side perspective.
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct SearchResult {
-    /// None until a complete iteration.
-    pub decision: Option<Decision>,
-    /// Heuristic or native win-distance score; no score without completed work.
-    pub score: Option<i32>,
-    /// Native analyzed side.
-    pub perspective: Side,
-    /// Fully completed depth.
-    pub completed_depth: u16,
-    /// All admitted node visits.
-    pub nodes: u64,
-    /// Complete native actions from completed work.
-    pub principal_variation: Vec<Action>,
-    /// Actual completion or interruption.
-    pub status: SearchStatus,
-}
-/// Native admission/restoration failure is unscored, not a game conclusion.
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub enum SearchError {
-    /// Unsupported limits.
-    InvalidLimits,
-    /// Private native copy of the game failed.
-    Record(RecordError),
-    /// Native command refusal.
-    Transition(GameError),
-    /// The search and the native rules disagree on the root actions.
-    Invariant,
-}
-impl fmt::Display for SearchError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "Tori search failed: {self:?}")
-    }
-}
-impl Error for SearchError {}
-/// Deterministic bounded search of the current position of a native game.
-/// The game is not changed. Each call starts with an empty table, so equal
-/// requests give equal results.
-pub fn search(game: &Game, limits: Limits) -> Result<SearchResult, SearchError> {
-    search_with_stop(game, limits, || false)
-}
-/// Persistent search state for one Tori game. Native history stays outside it.
-pub type Engine = Searcher<ToriPosition>;
+root::root_api!(300_000);
 
-/// Start with an empty transposition table and move statistics.
-pub fn new_engine() -> Engine {
-    Searcher::new(TABLE_MEGABYTES)
-}
-
-/// Search with a cooperative stop. The stop callback must be cheap.
-/// Each call starts with empty state.
-pub fn search_with_stop(
-    game: &Game,
-    limits: Limits,
-    stop: impl FnMut() -> bool,
-) -> Result<SearchResult, SearchError> {
-    search_with_state(game, limits, None, &mut new_engine(), stop)
-}
-
-/// Search with caller-owned state and an optional total adapter time budget.
-/// Use a fresh engine for reproducible fixed-limit requests.
-pub fn search_with_state(
-    game: &Game,
-    limits: Limits,
-    time: Option<alphabeta::timing::TimeBudget>,
-    engine: &mut Engine,
-    mut stop: impl FnMut() -> bool,
-) -> Result<SearchResult, SearchError> {
-    let timing = alphabeta::timing::RequestTime::new(time);
-    let mut stop = || stop() || timing.expired();
-    if !limits.valid() {
-        return Err(SearchError::InvalidLimits);
+impl RootGame for Game {
+    root::native_types!(ToriPosition, Action, fork, action);
+    root::no_adjudication!();
+    fn choice(action: Action) -> Action {
+        action
     }
-    let side = game.position().side_to_move();
-    let mut r = SearchResult {
-        decision: None,
-        score: None,
-        perspective: side,
-        completed_depth: 0,
-        nodes: 0,
-        principal_variation: vec![],
-        status: SearchStatus::Complete,
-    };
-    if stop() {
-        r.status = SearchStatus::Stopped;
-        return Ok(r);
-    }
-    if limits.nodes == 0 {
-        r.status = SearchStatus::NodeLimit;
-        return Ok(r);
-    }
-    if let Some(conclusion) = game.conclusion() {
-        r.decision = Some(Decision::Finished(conclusion));
-        r.score = Some(terminal_score(conclusion, side, 0));
-        r.completed_depth = 1;
-        r.nodes = 1;
-        return Ok(r);
-    }
-    let legal = game.legal_actions();
-    if legal.is_empty() {
-        return Err(SearchError::Invariant);
-    }
-    let mut position = ToriPosition::from_game(game);
-    let outcome = engine.search(
-        &mut position,
-        timing.limits(limits.depth, Some(limits.nodes)),
-        &mut stop,
-    );
-    r.nodes = outcome.nodes;
-    r.completed_depth = outcome.depth;
-    r.status = match outcome.status {
-        Status::Complete => SearchStatus::Complete,
-        Status::NodeLimit => SearchStatus::NodeLimit,
-        Status::Stopped => SearchStatus::Stopped,
-    };
-    let Some(best) = outcome.best else {
-        r.completed_depth = 0;
-        return Ok(r);
-    };
-    // The native rules are the authority: an action that they do not list is
-    // never returned.
-    let action = position.action(best);
-    if !legal.contains(&action) {
-        return Err(SearchError::Invariant);
-    }
-    // Report the line as far as the native game accepts it. The search uses an
-    // approximation of the repetition rule, so the native game can refuse an
-    // action of the line or conclude before its end.
-    let mut line = Vec::with_capacity(MAX_LINE);
-    let mut made = 0;
-    for &m in outcome.pv.iter().take(MAX_LINE) {
-        line.push(position.action(m));
-        if !position.make(m) {
-            line.pop();
-            break;
-        }
-        made += 1;
-    }
-    for _ in 0..made {
-        position.unmake();
-    }
-    let mut native = game.fork();
-    let mut accepted = 0;
-    for &action in &line {
-        if accepted > 0 && timing.expired() {
-            break;
-        }
-        if native.conclusion().is_some() {
-            break;
-        }
+    fn play(&mut self, action: &Action, _stop: &mut dyn FnMut() -> bool) -> Result<(), GameError> {
         let request = GameRequest {
-            expected: native.context(),
-            actor: native.position().side_to_move(),
-            command: GameCommand::Play { action },
+            expected: self.context(),
+            actor: self.side(),
+            command: GameCommand::Play { action: *action },
         };
-        match native.submit(request) {
-            Ok(_) => accepted += 1,
-            Err(error) if accepted == 0 => return Err(SearchError::Transition(error)),
-            Err(_) => break,
-        }
+        self.submit(request).map(drop)
     }
-    line.truncate(accepted.min(MAX_LINE));
-    r.decision = Some(Decision::Choose(action));
-    r.score = outcome.score;
-    r.principal_variation = line;
-    Ok(r)
-}
-/// Root-side native terminal score; stalemate/repetition losses are not mate claims.
-pub fn terminal_score(c: Conclusion, side: Side, distance: u16) -> i32 {
-    let winner = match c {
-        Conclusion::Checkmate { winner } | Conclusion::Resignation { winner } => winner,
-        Conclusion::StalemateLoss { loser } | Conclusion::RepetitionForfeit { loser } => {
-            loser.opponent()
-        }
-    };
-    if winner == side {
-        WIN_SCORE - i32::from(distance)
-    } else {
-        -WIN_SCORE + i32::from(distance)
+    fn legal(&self, _: &mut dyn FnMut() -> bool) -> Result<Option<Vec<Action>>, SearchError> {
+        Ok(Some(self.legal_actions()))
+    }
+    fn winner(c: Conclusion) -> Option<Side> {
+        Some(match c {
+            Conclusion::Checkmate { winner } | Conclusion::Resignation { winner } => winner,
+            Conclusion::StalemateLoss { loser } | Conclusion::RepetitionForfeit { loser } => {
+                loser.opponent()
+            }
+        })
+    }
+    fn position_for_search(&self, _: &[Action]) -> ToriPosition {
+        ToriPosition::from_game(self)
+    }
+    fn replay_action(pos: &mut ToriPosition, m: position::Move) -> Option<Action> {
+        let action = pos.action(m);
+        pos.make(m).then_some(action)
     }
 }
 #[cfg(test)]

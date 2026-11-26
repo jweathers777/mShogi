@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T18:56:00Z'
+updated_date: '2026-11-26T19:01:00Z'
 labels:
   - search
   - refactor
@@ -47,4 +47,6 @@ Backlog consolidation, 2026-11-26: the dependency fields and current acceptance 
 Claimed on codex/msh-258-search-root from 02cc9a2. Next: capture baseline and consolidate the five root adapters.
 
 Baseline on 02cc9a2: fresh engine, depth 2, 500000 nodes, no clock, standard starts. All six cases completed depth 2. Shogi 125 nodes, score 0, 76→67; Xiangqi explicit claims 787, 0, 1→20 (no pending, Unknown); Tori 358, +8, 45→39 Phoenix; Chu 149, 0, 134→121; Tenjiku Adams Modern 426 and Muller Completed 579, both +10, 164→148 travel. Coordinates are zero-based square indices. Captured decisions, full PV, perspective, depth, score, status, nodes and Xiangqi observations in runs/msh-258/before.txt. Baseline root module physical lines: Shogi 285, Xiangqi 317, Tori 253, Chu 234, Tenjiku 269 (1358 total). Next: implement on codex/msh-258-search-root.
+
+Implementation is on codex/msh-258-search-root. One generic root now drives all five games and one engine conversion handles the typed result. All workspace targets compile. Before and after depth-2 observations are byte-identical in all six cases; SHA-256 0785eb03170ad4834e485e34f067e2270326385558a07bfc254b08296d1d0f25. Next: independent review, repository checks, any fixes, then integration.
 <!-- SECTION:NOTES:END -->

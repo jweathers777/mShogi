@@ -7,6 +7,7 @@
 use crate::{ExecutionContext, ExecutionResult, MAX_STDERR_BYTES, StopReason, WorkLimits};
 use mshogi_core::native::{CanonicalRecord, GameKind, NativeSide};
 use mshogi_search::alphabeta::{MATE_BOUND, SearchPosition, Searcher, timing::TimeBudget};
+use mshogi_search::root::{self, RootGame};
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use std::fmt::Debug;
 
@@ -27,26 +28,32 @@ pub trait EngineGame: Copy + Debug + Eq + 'static {
     /// Search identity of current results.
     const SEARCH_ID: &'static str;
     /// Score of a win at the analyzed position; a win in `d` scores `WIN_SCORE - d`.
-    const WIN_SCORE: i32;
+    const WIN_SCORE: i32 = root::WIN_SCORE;
     /// Largest supported nominal depth.
-    const MAX_DEPTH: u16;
+    const MAX_DEPTH: u16 = root::MAX_DEPTH;
     /// Largest supported node budget.
-    const MAX_NODES: u64;
+    const MAX_NODES: u64 = root::MAX_NODES;
     /// Largest reported line, in choices.
-    const MAX_LINE: usize;
+    const MAX_LINE: usize = root::MAX_LINE;
     /// Measured default work of interactive play.
     const PLAY_LIMITS: WorkLimits;
 
     /// Player.
     type Side: Copy + Eq + Debug + Serialize + DeserializeOwned;
     /// Proposed choice and element of a reported line.
-    type Choice: Clone + Eq + Debug + Serialize + DeserializeOwned;
+    type Choice: Clone
+        + Eq
+        + Debug
+        + Serialize
+        + DeserializeOwned
+        + From<<Self::Game as RootGame>::Choice>;
     /// Game result decided by the rules.
     type Conclusion: Copy + Eq + Debug + Serialize + DeserializeOwned;
     /// Required adjudication that stops a search without a score.
-    type Pending: Pending;
+    type Pending: Pending + From<<Self::Game as RootGame>::Pending>;
     /// Game with full history.
-    type Game: Clone;
+    type Game: Clone
+        + RootGame<Position = Self::Position, Side = Self::Side, Conclusion = Self::Conclusion>;
     /// Canonical game record.
     type Record: mshogi_core::native::incremental::IncrementalRecord<
             Game = Self::Game,
@@ -70,7 +77,9 @@ pub trait EngineGame: Copy + Debug + Eq + 'static {
     /// Conclusion at the end of a record.
     fn record_conclusion(record: &Self::Record) -> Option<Self::Conclusion>;
     /// Score of a conclusion at the analyzed position, for `side`.
-    fn terminal_score(conclusion: Self::Conclusion, side: Self::Side) -> i32;
+    fn terminal_score(conclusion: Self::Conclusion, side: Self::Side) -> i32 {
+        root::terminal_score::<Self::Game>(conclusion, side, 0)
+    }
     /// Replay a record.
     fn to_game(record: &Self::Record) -> Result<Self::Game, String>;
     /// Does the current record extend the exact earlier root and history?
@@ -84,7 +93,9 @@ pub trait EngineGame: Copy + Debug + Eq + 'static {
     /// Event and board-action counts in the retained game.
     fn progress(game: &Self::Game) -> (usize, usize);
     /// Player to move.
-    fn side_to_move(game: &Self::Game) -> Self::Side;
+    fn side_to_move(game: &Self::Game) -> Self::Side {
+        game.side()
+    }
     /// Actor and command of a choice when `turn` is to move.
     fn command(choice: &Self::Choice, turn: Self::Side) -> (Self::Side, Self::Command);
     /// Submit a command in the current context of `game`.
@@ -95,7 +106,9 @@ pub trait EngineGame: Copy + Debug + Eq + 'static {
         stop: &mut impl FnMut() -> bool,
     ) -> Result<(), String>;
     /// Search state with an empty table.
-    fn new_engine() -> Searcher<Self::Position>;
+    fn new_engine() -> Searcher<Self::Position> {
+        Searcher::new(Self::Game::TABLE_MB)
+    }
     /// Search `game` with caller-owned state.
     fn search(
         game: &Self::Game,
@@ -103,7 +116,20 @@ pub trait EngineGame: Copy + Debug + Eq + 'static {
         time: Option<TimeBudget>,
         engine: &mut Searcher<Self::Position>,
         stop: impl FnMut() -> bool,
-    ) -> Result<EngineResult<Self>, String>;
+    ) -> Result<EngineResult<Self>, String> {
+        let result = root::search_with_state(
+            game,
+            root::Limits {
+                depth: limits.depth,
+                nodes: limits.nodes,
+            },
+            time,
+            engine,
+            stop,
+        )
+        .map_err(|error| error.to_string())?;
+        Ok(EngineResult::from_search(result))
+    }
     /// Shape check of a choice that is a formal command, not a board move
     /// (a Shogi declaration, a Xiangqi count claim); `None` for a board move.
     fn command_shape(_choice: &Self::Choice, _telemetry: &EngineTelemetry<Self>) -> Option<bool> {
@@ -112,7 +138,11 @@ pub trait EngineGame: Copy + Debug + Eq + 'static {
 
     /// Supported depth and node budget.
     fn valid_limits(limits: WorkLimits) -> bool {
-        (1..=Self::MAX_DEPTH).contains(&limits.depth) && limits.nodes <= Self::MAX_NODES
+        root::Limits {
+            depth: limits.depth,
+            nodes: limits.nodes,
+        }
+        .valid()
     }
 }
 
@@ -124,6 +154,11 @@ pub trait Pending: Clone + Eq + Debug + Serialize + DeserializeOwned {
 /// Pending adjudication of a game that has none.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 pub enum NoPending {}
+impl From<std::convert::Infallible> for NoPending {
+    fn from(value: std::convert::Infallible) -> Self {
+        match value {}
+    }
+}
 impl Pending for NoPending {
     fn bounded(&self) -> bool {
         match *self {}
@@ -247,22 +282,30 @@ pub enum EngineResult<G: EngineGame> {
         telemetry: EngineTelemetry<G>,
     },
 }
-/// Root decision of a search.
-pub(crate) enum Decision<G: EngineGame> {
-    Choose(G::Choice),
-    Finished(G::Conclusion),
-    Unresolved(G::Pending),
-}
 impl<G: EngineGame> EngineResult<G> {
-    pub(crate) fn searched(decision: Option<Decision<G>>, telemetry: EngineTelemetry<G>) -> Self {
-        match decision {
-            Some(Decision::Choose(choice)) => Self::Choice { choice, telemetry },
-            Some(Decision::Finished(conclusion)) => Self::Finished {
+    fn from_search(r: root::ResultFor<G::Game>) -> Self {
+        let telemetry = EngineTelemetry::current(
+            r.perspective,
+            r.score,
+            r.completed_depth,
+            r.nodes,
+            r.principal_variation.into_iter().map(Into::into).collect(),
+            r.status.into(),
+        );
+        match (r.unresolved, r.decision) {
+            (Some(pending), _) => Self::Unresolved {
+                pending: pending.into(),
+                telemetry,
+            },
+            (None, Some(root::Decision::Choose(choice))) => Self::Choice {
+                choice: choice.into(),
+                telemetry,
+            },
+            (None, Some(root::Decision::Finished(conclusion))) => Self::Finished {
                 conclusion,
                 telemetry,
             },
-            Some(Decision::Unresolved(pending)) => Self::Unresolved { pending, telemetry },
-            None => Self::Incomplete { telemetry },
+            (None, None) => Self::Incomplete { telemetry },
         }
     }
     /// Actual telemetry of any result.

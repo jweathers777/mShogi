@@ -39,16 +39,8 @@ pub enum SearchDecision {
     Finished(ChessOutcome),
 }
 
-/// Why execution ended; a limit never establishes a chess outcome.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum SearchStatus {
-    /// Requested depth completed, or root was already concluded.
-    Complete,
-    /// Deterministic node budget was exhausted before the next iteration finished.
-    NodeLimit,
-    /// External stop predicate requested cancellation or a timed stop.
-    Stopped,
-}
+/// Reason a bounded search ended.
+pub use crate::root::Status as SearchStatus;
 
 /// Last fully completed iteration, plus observations of all attempted work.
 #[derive(Clone, Debug, Eq, PartialEq)]

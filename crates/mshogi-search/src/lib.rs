@@ -11,6 +11,7 @@ pub mod chess_engine;
 pub mod chess_eval;
 mod chess_kpk;
 pub mod chu;
+pub mod root;
 pub mod shogi;
 mod square_set;
 pub mod tenjiku;

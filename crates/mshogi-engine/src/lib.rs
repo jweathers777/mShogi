@@ -116,6 +116,7 @@ impl From<SearchStatus> for StopReason {
             SearchStatus::Complete => Self::Complete,
             SearchStatus::NodeLimit => Self::NodeLimit,
             SearchStatus::Stopped => Self::Stopped,
+            SearchStatus::Unresolved => Self::Unresolved,
         }
     }
 }

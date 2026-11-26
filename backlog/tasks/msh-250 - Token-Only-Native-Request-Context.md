@@ -4,7 +4,7 @@ title: Token-Only Native Request Context
 status: Ready
 assignee: []
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-25T12:24:00Z'
+updated_date: '2026-11-26T08:22:00Z'
 labels:
   - core
   - simplification
@@ -20,7 +20,7 @@ ordinal: 6700
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-Each native command request carries a full GameContext: the root and the complete event or command history, plus a runtime token in Xiangqi, Tori, Chu and Tenjiku. Callers build it with game.context(), which copies the whole history (about 150 call sites outside tests), and submit compares it field by field. Record replay does this for each event, so replay is quadratic in game length. Shogi submit also clones the whole Game three times per command (its GameUndo keeps full before and after copies). The runtime token alone already changes at each accepted command and at each retirement. Do this after MSH-227 (Xiangqi Record Replay Speed); if MSH-227 has already changed the Xiangqi context check, record that and leave Xiangqi as it is.
+Each native command request carries a full GameContext: the root and the complete event or command history, plus a runtime token in Xiangqi, Tori, Chu and Tenjiku. Callers build it with game.context(), which copies the whole history (about 150 call sites outside tests), and submit compares it field by field. Record replay does this for each event, so replay is quadratic in game length. Shogi submit also clones the whole Game three times per command (its GameUndo keeps full before and after copies). The runtime token alone already changes at each accepted command and at each retirement. This task includes Xiangqi and runs before MSH-227 (Xiangqi Record Replay Speed), as John decided on 2026-11-25; record in MSH-227 what changes for Xiangqi.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria

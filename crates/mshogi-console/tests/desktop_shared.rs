@@ -154,18 +154,11 @@ fn product_new_gote_real_engine_play_analysis_archive_and_resume_use_native_path
     assert_initial_native_move(&first);
     assert_eq!(first.search_observations[0].purpose, "engine_turn");
     assert_eq!(first.search_observations[0].event_index, 0);
-    match first.document.settings {
-        NativeDesktopSettings::Shogi { settings } => {
-            assert_eq!(settings.orientation, s::Side::Gote);
-        }
-        _ => panic!("native shogi settings"),
-    }
-    command(
-        &mut c,
-        SessionOperation::Play {
-            action: "7c7d".parse().unwrap(),
-        },
+    assert_eq!(
+        first.document.settings.orientation,
+        NativeSide::Shogi(s::Side::Gote)
     );
+    command(&mut c, SessionOperation::play("7c7d"));
     wait(&mut c, |view| view.event_index == 3);
     let observed = analyze(&mut c);
     let response = observed.analysis.as_ref().unwrap().observation.clone();

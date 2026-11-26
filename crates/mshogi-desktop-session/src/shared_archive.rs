@@ -3,93 +3,6 @@ use super::*;
 use crate::persistence::{self, Completed, Work};
 use std::{fs, io::Read};
 
-/// Native shogi preferences; presentation does not prescribe artwork or layout.
-#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-pub struct ShogiSettings {
-    /// Durable local participant arrangement.
-    pub play_mode: PlayMode,
-    /// Native side placed at the bottom by a presentation consumer.
-    pub orientation: s::Side,
-    /// Explicit default bounded ordinary analysis settings.
-    pub analysis_defaults: WorkLimits,
-}
-impl Default for ShogiSettings {
-    fn default() -> Self {
-        Self {
-            play_mode: PlayMode::HumanEngine,
-            orientation: s::Side::Sente,
-            analysis_defaults: WorkLimits {
-                time_ms: None,
-                depth: 1,
-                nodes: 1000,
-            },
-        }
-    }
-}
-impl crate::native_game::DocumentSettings for ShogiSettings {
-    type Side = s::Side;
-    fn new(orientation: s::Side, play_mode: PlayMode) -> Self {
-        Self {
-            play_mode,
-            orientation,
-            ..Self::default()
-        }
-    }
-    fn play_mode(&self) -> PlayMode {
-        self.play_mode
-    }
-    fn set_play_mode(&mut self, play_mode: PlayMode) {
-        self.play_mode = play_mode;
-    }
-    fn validate(&self) -> Result<(), String> {
-        valid_limits(self.analysis_defaults)
-    }
-    fn with_analysis_defaults(&self, limits: WorkLimits) -> Option<Self> {
-        Some(Self {
-            analysis_defaults: limits,
-            ..self.clone()
-        })
-    }
-}
-
-/// Game-qualified settings without a common board or rules representation.
-#[derive(Clone, Debug, Serialize)]
-#[serde(tag = "game_kind", rename_all = "snake_case")]
-pub enum NativeDesktopSettings {
-    /// Native Tenjiku orientation; the immutable profile stays in the record.
-    Tenjiku {
-        /// Persisted native orientation.
-        settings: crate::tenjiku_document::TenjikuSettings,
-    },
-    /// Native Chu document orientation; no execution defaults implied.
-    Chu {
-        /// Persisted native orientation.
-        settings: crate::chu_document::ChuSettings,
-    },
-    /// Native Tori settings; no search capabilities implied.
-    Tori {
-        /// Persisted native orientation without engine defaults.
-        settings: crate::tori_document::ToriSettings,
-    },
-    /// Native Xiangqi document preferences.
-    Xiangqi {
-        /// Explicit native board orientation.
-        orientation: mshogi_core::xiangqi::Side,
-        /// Supported ordinary sound-fast-only analysis defaults.
-        analysis_defaults: WorkLimits,
-    },
-    /// Unchanged native chess settings, including explicit Full defaults.
-    Chess {
-        /// Existing persisted chess preferences.
-        settings: DesktopSettings,
-    },
-    /// Native shogi settings.
-    Shogi {
-        /// Supported untimed shogi preferences.
-        settings: ShogiSettings,
-    },
-}
 /// Complete shared document metadata; execution ownership is never a saved setting.
 #[derive(Clone, Debug, Serialize)]
 pub struct SharedDocumentState {
@@ -99,8 +12,8 @@ pub struct SharedDocumentState {
     pub dirty: bool,
     /// Native path of the current document, if any.
     pub path: Option<String>,
-    /// Native game-qualified desktop preferences.
-    pub settings: NativeDesktopSettings,
+    /// Document settings, the same shape in every game.
+    pub settings: crate::game_document::GameSettings<NativeSide>,
 }
 /// Stable replacement precondition, unaffected by I/O progress snapshots.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -178,22 +91,6 @@ pub(super) fn bounded(error: impl ToString) -> String {
     message
 }
 
-fn valid_limits(limits: WorkLimits) -> Result<(), String> {
-    // The same bounds as Analyze (native_session::validate_limits).
-    use mshogi_engine::{EngineGame, game::Shogi};
-    if !(1..=Shogi::MAX_DEPTH).contains(&limits.depth)
-        || !(1..=Shogi::MAX_NODES).contains(&limits.nodes)
-        || limits.time_ms.is_some()
-    {
-        Err(
-            "Unsupported Shogi limits: depth 1–64 and 1 to 5,000,000 nodes; untimed play only."
-                .into(),
-        )
-    } else {
-        Ok(())
-    }
-}
-
 fn read(
     path: &std::path::Path,
     stopped: &mut impl FnMut() -> bool,
@@ -229,14 +126,8 @@ pub(crate) fn execute(
         NativeWork::Open { path, token } => {
             let bytes = read(&path, stopped)?;
             let value = crate::document::DocumentEnvelope::parse(&bytes)?;
-            let game = match value.game_kind {
-                GameKind::Tenjiku => native_session::open::<Tenjiku>(&bytes, stopped)?,
-                GameKind::Chu => native_session::open::<Chu>(&bytes, stopped)?,
-                GameKind::Tori => native_session::open::<Tori>(&bytes, stopped)?,
-                GameKind::Chess => native_session::open::<Chess>(&bytes, stopped)?,
-                GameKind::Shogi => native_session::open::<Shogi>(&bytes, stopped)?,
-                GameKind::Xiangqi => native_session::open::<Xiangqi>(&bytes, stopped)?,
-            };
+            let game =
+                with_game!(value.game_kind, G => native_session::open::<G>(&bytes, stopped)?);
             persistence::check(stopped)?;
             Ok(NativeCompleted::Opened { game, path, token })
         }
@@ -252,34 +143,11 @@ impl DesktopController {
         }
     }
     pub(crate) fn shared_document(&self) -> SharedDocumentState {
-        let settings = if let Some(state) = self.session.chess() {
-            NativeDesktopSettings::Chess {
-                settings: state.document.settings().clone(),
-            }
-        } else if let Some(state) = self.session.tenjiku() {
-            NativeDesktopSettings::Tenjiku {
-                settings: state.document.settings().clone(),
-            }
-        } else if let Some(state) = self.session.chu() {
-            NativeDesktopSettings::Chu {
-                settings: state.document.settings().clone(),
-            }
-        } else if let Some(state) = self.session.tori() {
-            NativeDesktopSettings::Tori {
-                settings: state.document.settings().clone(),
-            }
-        } else if let Some(state) = self.session.xiangqi() {
-            NativeDesktopSettings::Xiangqi {
-                orientation: state.document.settings().orientation,
-                analysis_defaults: state.document.settings().analysis_defaults,
-            }
-        } else if let Some(state) = self.session.shogi() {
-            NativeDesktopSettings::Shogi {
-                settings: state.document.settings().clone(),
-            }
-        } else {
-            unreachable!("all native games handled")
-        };
+        let settings = with_game!(self.session.kind(), G => G::state(&self.session)
+            .expect("native owner")
+            .document
+            .settings()
+            .map(G::native_side));
         SharedDocumentState {
             revision: self.session.document_revision,
             dirty: self.session.document_revision != self.session.saved_revision,
@@ -293,25 +161,7 @@ impl DesktopController {
     }
     /// Queue a complete current-format document using native payload encoding.
     pub fn queue_shared_save(&mut self, path: PathBuf) -> Result<u64, String> {
-        if self.session.chess().is_some() {
-            return self.queue_game_save::<Chess>(path);
-        }
-        if self.session.tenjiku().is_some() {
-            return self.queue_game_save::<Tenjiku>(path);
-        }
-        if self.session.chu().is_some() {
-            return self.queue_game_save::<Chu>(path);
-        }
-        if self.session.tori().is_some() {
-            return self.queue_game_save::<Tori>(path);
-        }
-        if self.session.xiangqi().is_some() {
-            return self.queue_game_save::<Xiangqi>(path);
-        }
-        if self.session.shogi().is_some() {
-            return self.queue_game_save::<Shogi>(path);
-        }
-        unreachable!("all native games handled")
+        with_game!(self.session.kind(), G => self.queue_game_save::<G>(path))
     }
     /// Queue strict current-envelope native dispatch. Open never installs resumable work.
     pub fn queue_shared_open(

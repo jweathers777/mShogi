@@ -6,7 +6,8 @@
 mod roots;
 
 use mshogi_core::{chu as c, native::CanonicalRecord};
-use mshogi_desktop_session::chu_document::ValidatedChuDocument;
+use mshogi_desktop_session::{game_document::ValidatedGameDocument, native_game::Chu};
+type ValidatedChuDocument = ValidatedGameDocument<Chu>;
 use mshogi_engine::{
     ChuResult, ExecutionContext, ExecutionPurpose, ExecutionRequest, ExecutionResponse,
     ExecutionResult, PROTOCOL_VERSION,

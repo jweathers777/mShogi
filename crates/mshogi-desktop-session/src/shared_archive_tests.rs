@@ -205,13 +205,7 @@ fn imported_capture_hand_and_drop_after_reopen_preserve_counter_provenance() {
             .has_complete_initial_history()
     );
     send(&mut reopened, SessionOperation::Resume {}).unwrap();
-    send(
-        &mut reopened,
-        SessionOperation::Play {
-            action: "P*5e".parse().unwrap(),
-        },
-    )
-    .unwrap();
+    send(&mut reopened, SessionOperation::play("P*5e")).unwrap();
     assert_eq!(
         reopened
             .session
@@ -241,7 +235,11 @@ fn same_ply_terminal_history_and_saved_selection_remain_distinct() {
         &imported("K8/1RB6/1+P+P+P+P+P+P+P+P/9/9/9/9/9/8k b B5P 1"),
         s::Side::Sente,
     );
-    send(&mut c, SessionOperation::Declare {}).unwrap();
+    send(
+        &mut c,
+        SessionOperation::command(&s::GameCommand::DeclareEnteringKing),
+    )
+    .unwrap();
     let expected = record(&c);
     let file = path("selection");
     send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
@@ -393,11 +391,10 @@ fn concurrent_save_as_keeps_new_admission_dirty_and_open_retires_it() {
     replace(&mut c, &s::Game::new(), s::Side::Sente);
     let original = path("before-admission");
     save(&mut c, &original);
-    let settings = ShogiSettings {
+    let settings = crate::game_document::GameSettings {
         play_mode: PlayMode::HumanEngine,
         orientation: s::Side::Gote,
-        analysis_defaults: WorkLimits {
-            time_ms: None,
+        analysis_defaults: AnalysisOperation {
             depth: 2,
             nodes: 12,
         },
@@ -407,8 +404,8 @@ fn concurrent_save_as_keeps_new_admission_dirty_and_open_retires_it() {
         .shared_command_with_receipt(SharedDesktopCommand {
             expected: c.shared_token(),
             game: GameKind::Shogi,
-            operation: SessionOperation::ShogiPreferences {
-                settings: settings.clone(),
+            operation: SessionOperation::Preferences {
+                settings: settings.map(NativeSide::Shogi),
             },
         })
         .unwrap();
@@ -469,19 +466,18 @@ fn persisted_preferences_keep_exact_pending_execution_and_original_limits() {
     .unwrap();
     let request = c.session.shogi().unwrap().pending.clone().unwrap();
     let version = c.shared_token().version;
-    let settings = ShogiSettings {
+    let settings = crate::game_document::GameSettings {
         play_mode: PlayMode::HumanEngine,
         orientation: s::Side::Gote,
-        analysis_defaults: WorkLimits {
-            time_ms: None,
+        analysis_defaults: AnalysisOperation {
             depth: 3,
             nodes: 77,
         },
     };
     send(
         &mut c,
-        SessionOperation::ShogiPreferences {
-            settings: settings.clone(),
+        SessionOperation::Preferences {
+            settings: settings.map(NativeSide::Shogi),
         },
     )
     .unwrap();
@@ -545,12 +541,10 @@ fn product_new_game_archive_reopens_native_human_orientation_stopped_and_fresh()
     assert!(reopened.paused);
     assert!(reopened.token.document > before.token.document);
     assert!(reopened.token.version > pending.session_version);
-    match &reopened.document.settings {
-        NativeDesktopSettings::Shogi { settings } => {
-            assert_eq!(settings.orientation, s::Side::Gote)
-        }
-        _ => panic!("native shogi settings"),
-    }
+    assert_eq!(
+        reopened.document.settings.orientation,
+        NativeSide::Shogi(s::Side::Gote)
+    );
     assert!(c.session.shogi().unwrap().pending.is_none());
     let old_response = run(pending);
     assert!(!c.accept_observation(old_response));
@@ -582,9 +576,7 @@ fn shared_core_shogi_analysis_limits_are_admitted_and_bounded() {
         },
     )
     .unwrap();
-    let NativeDesktopSettings::Shogi { settings } = accepted.document.settings else {
-        panic!()
-    };
+    let settings = accepted.document.settings;
     assert_eq!(settings.analysis_defaults.depth, 64);
     assert_eq!(settings.analysis_defaults.nodes, 5_000_000);
     send(&mut c, SessionOperation::Cancel {}).unwrap();

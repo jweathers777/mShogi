@@ -138,12 +138,9 @@ fn main() {
         if name == "captures" {
             let s = send(
                 &mut c,
-                SessionOperation::Chu {
-                    actor: c::Side::Sente,
-                    command: c::GameCommand::Play {
-                        action: roots::action(&f["given"]["commands"][0]),
-                    },
-                },
+                SessionOperation::play(
+                    serde_json::to_string(&roots::action(&f["given"]["commands"][0])).unwrap(),
+                ),
             );
             write("captured", &s);
         }

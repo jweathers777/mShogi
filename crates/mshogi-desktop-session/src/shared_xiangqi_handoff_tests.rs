@@ -54,19 +54,18 @@ fn warning_inspection_archive_reopen_and_resume_preserve_one_native_context() {
     assert_eq!(native(&c), canonical, "analysis is read-only");
     let late = execute(&analyze(&mut c, 128));
     // Analysis remembers its submitted limits; set the desired document defaults last.
-    let settings = XiangqiSettings {
+    let settings = crate::game_document::GameSettings {
         play_mode: PlayMode::HumanEngine,
         orientation: x::Side::Black,
-        analysis_defaults: WorkLimits {
-            time_ms: None,
+        analysis_defaults: AnalysisOperation {
             depth: 2,
             nodes: 64,
         },
     };
     send(
         &mut c,
-        SessionOperation::XiangqiPreferences {
-            settings: settings.clone(),
+        SessionOperation::Preferences {
+            settings: settings.map(NativeSide::Xiangqi),
         },
     )
     .unwrap();

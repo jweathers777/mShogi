@@ -19,10 +19,6 @@ fn player_events(game: &ChessMatch) -> impl Iterator<Item = &MatchRequest> {
 }
 impl SessionGame for Chess {
     type Presentation = ChessPresentation;
-    const PLAY_LIMITS: WorkLimits = crate::PLAY_LIMITS;
-    const MAX_DEPTH: u16 = 128;
-    const MAX_NODES: u64 = crate::PLAY_NODE_CEILING;
-    const ANALYSIS_BUDGETS: bool = true;
     const FINISH_CONCLUDED_ANALYSIS: bool = true;
     fn cancellation_phase(analysis: bool) -> EnginePhase {
         if analysis {
@@ -35,19 +31,13 @@ impl SessionGame for Chess {
         matches!(command, MatchCommand::Move(_) | MatchCommand::Claim { .. })
     }
     const UNDO: bool = false;
-    fn validate_command(
-        _game: &ChessMatch,
-        human: Color,
-        settings: &DesktopSettings,
-        actor: Color,
-        _command: &MatchCommand,
-    ) -> Result<(), String> {
-        if settings.play_mode.owns(human, actor) {
-            Ok(())
-        } else {
-            Err("This command belongs to the other player.".into())
-        }
+    fn play(action: &str) -> Result<MatchCommand, String> {
+        action
+            .parse()
+            .map(MatchCommand::Move)
+            .map_err(|e: ActionParseError| format!("{e:?}"))
     }
+    session_wiring!(Chess, state: chess, chess_mut, field: chess);
     const BOARD_SIZE: u8 = 8;
     const BOARD_LABEL: &'static str = "Chess board";
     const INITIAL_FOCUS: &'static str = "e2";
@@ -160,54 +150,6 @@ impl SessionGame for Chess {
     fn incomplete(result: &ChessResult) -> bool {
         matches!(result, ChessResult::Incomplete { .. })
     }
-    fn operation(operation: SessionOperation) -> Result<GameOperation<Self>, SessionOperation> {
-        match operation {
-            SessionOperation::ChessCommand { actor, command } => {
-                Ok(GameOperation::Command { actor, command })
-            }
-            SessionOperation::ChessPlay { action } => Ok(GameOperation::Local {
-                command: MatchCommand::Move(action),
-            }),
-            SessionOperation::ChessClaim { claim } => Ok(GameOperation::Command {
-                actor: claim.actor,
-                command: MatchCommand::Claim {
-                    reason: claim.reason,
-                    intended: claim.intended,
-                },
-            }),
-            SessionOperation::ChessPreferences {
-                orientation,
-                analysis_defaults,
-            } => Ok(GameOperation::Preferences {
-                settings: DesktopSettings {
-                    orientation,
-                    analysis_defaults,
-                    ..DesktopSettings::default()
-                },
-            }),
-            operation => Err(operation),
-        }
-    }
-    fn command_operation(actor: Color, command: MatchCommand) -> SessionOperation {
-        SessionOperation::ChessCommand { actor, command }
-    }
-    fn opened(state: Box<ChessSession>) -> archive::OpenedNative {
-        archive::OpenedNative::Chess(state)
-    }
-    fn state(session: &ActiveDocument) -> Option<&ChessSession> {
-        if let ActiveDocument::Chess { state, .. } = session {
-            Some(state)
-        } else {
-            None
-        }
-    }
-    fn state_mut(session: &mut ActiveDocument) -> Option<&mut ChessSession> {
-        if let ActiveDocument::Chess { state, .. } = session {
-            Some(state)
-        } else {
-            None
-        }
-    }
     fn take_back_target(game: &ChessMatch, human: Color, two_humans: bool) -> Option<usize> {
         let target = crate::takeback::target_mode(
             game,
@@ -290,9 +232,6 @@ impl SessionGame for Chess {
     }
     fn board_ply(game: &ChessMatch) -> u64 {
         game.game().history().ply_count() as u64
-    }
-    fn present_in(snapshot: &mut SharedSnapshot, presentation: ChessPresentation) {
-        snapshot.chess = Some(presentation);
     }
     fn finish_snapshot(snapshot: &mut SharedSnapshot, state: &ChessSession) {
         let files: Vec<_> = (b'a'..=b'h').map(|c| char::from(c).to_string()).collect();
@@ -577,12 +516,7 @@ mod tests {
             .unwrap();
         settle(&mut c);
         command(&mut c, SessionOperation::Resume {});
-        command(
-            &mut c,
-            SessionOperation::ChessPlay {
-                action: "e7e5".parse().unwrap(),
-            },
-        );
+        command(&mut c, SessionOperation::play("e7e5"));
         let moved = c.shared_snapshot();
         assert_eq!(moved.event_index, 2);
         command(&mut c, SessionOperation::Inspect { event_index: 0 });

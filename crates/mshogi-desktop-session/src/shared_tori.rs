@@ -10,14 +10,18 @@ pub(crate) type ToriSession = NativeSession<Tori>;
 
 impl SessionGame for Tori {
     type Presentation = ToriPresentation;
-    engine_limits!(Tori);
     const HANDS: bool = true;
     const BOARD_SIZE: u8 = 7;
     const BOARD_LABEL: &'static str = "Tori Shogi 7×7 board";
     const INITIAL_FOCUS: &'static str = "4e";
     const SCORE_MEANING: &'static str = "Native root-side evaluation in hundredths of a Swallow. Win/loss distances count board actions; failures and incomplete work are unscored.";
 
-    session_wiring!(Tori, t, operation: Tori, preferences: ToriPreferences, state: tori, tori_mut, field: tori);
+    session_wiring!(Tori, state: tori, tori_mut, field: tori);
+
+    fn play(action: &str) -> Result<t::GameCommand, String> {
+        let action = serde_json::from_str(action).map_err(|e| e.to_string())?;
+        Ok(t::GameCommand::Play { action })
+    }
 
     fn presentation(selected: &t::Game, live: &t::Game) -> ToriPresentation {
         ToriPresentation::new(selected, live)

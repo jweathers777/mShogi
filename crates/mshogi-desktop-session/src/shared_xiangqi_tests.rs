@@ -90,15 +90,7 @@ fn native(c: &DesktopController) -> CanonicalRecord {
     )
 }
 fn human_play(c: &mut DesktopController, action: &str) -> SharedSnapshot {
-    send(
-        c,
-        SessionOperation::Xiangqi {
-            command: x::GameCommand::Play {
-                action: action.parse().unwrap(),
-            },
-        },
-    )
-    .unwrap()
+    send(c, SessionOperation::play(action)).unwrap()
 }
 fn submit(game: &mut x::Game, action: &str) {
     game.submit(x::GameRequest {
@@ -123,9 +115,7 @@ fn native_terminal_advice_tracks_human_actor_pause_history_and_pending_engine_re
     let old = pending(&c);
     let offered = send(
         &mut c,
-        SessionOperation::Xiangqi {
-            command: x::GameCommand::OfferDraw,
-        },
+        SessionOperation::command(&x::GameCommand::OfferDraw),
     )
     .unwrap();
     assert!(!offered.xiangqi.unwrap().terminal_actions.offer_draw);
@@ -159,9 +149,7 @@ fn native_terminal_advice_tracks_human_actor_pause_history_and_pending_engine_re
     send(&mut c, SessionOperation::Resume {}).unwrap();
     let accepted = send(
         &mut c,
-        SessionOperation::Xiangqi {
-            command: x::GameCommand::AcceptDraw,
-        },
+        SessionOperation::command(&x::GameCommand::AcceptDraw),
     )
     .unwrap();
     assert_eq!(accepted.board_ply, 2);
@@ -272,36 +260,16 @@ fn native_claim_audit_and_nonmoving_resignation_preserve_board_ply_and_atomicity
     send(&mut c, SessionOperation::Resume {}).unwrap();
     let initial = native(&c);
     let token = c.shared_token();
-    assert!(
-        send(
-            &mut c,
-            SessionOperation::Xiangqi {
-                command: x::GameCommand::Play {
-                    action: "a0a9".parse().unwrap()
-                }
-            }
-        )
-        .is_err()
-    );
+    assert!(send(&mut c, SessionOperation::play("a0a9")).is_err());
     assert_eq!(native(&c), initial);
     // A refused command keeps the session version and selection.
     assert_eq!(c.shared_token().version, token.version);
     assert_eq!(c.shared_token().selection, token.selection);
-    assert!(
-        send(
-            &mut c,
-            SessionOperation::Play {
-                action: "7g7f".parse().unwrap()
-            }
-        )
-        .is_err()
-    );
+    assert!(send(&mut c, SessionOperation::play("7g7f")).is_err());
     assert_eq!(native(&c), initial);
     let claim = send(
         &mut c,
-        SessionOperation::Xiangqi {
-            command: x::GameCommand::ClaimNaturalCount,
-        },
+        SessionOperation::command(&x::GameCommand::ClaimNaturalCount),
     )
     .unwrap();
     assert_eq!((claim.event_index, claim.board_ply), (2, 0));
@@ -484,17 +452,7 @@ fn native_opponent_inspection_is_immutable_nonactionable_and_selection_bound() {
     assert_eq!(native(&c), before);
     assert_eq!(c.shared_token(), snapshot.token);
     send(&mut c, SessionOperation::Resume {}).unwrap();
-    assert!(
-        send(
-            &mut c,
-            SessionOperation::Xiangqi {
-                command: x::GameCommand::Play {
-                    action: "e8e7".parse().unwrap()
-                }
-            }
-        )
-        .is_err()
-    );
+    assert!(send(&mut c, SessionOperation::play("e8e7")).is_err());
     assert_eq!(native(&c), before);
     assert!(
         c.shared_inspection(MovementInspectionQuery {
@@ -572,15 +530,11 @@ fn incomplete_failure_retry_and_limits_are_not_chess_outcomes() {
 
 #[test]
 fn typed_native_command_boundary_rejects_unknown_duplicate_and_conflicting_fields() {
-    let c = controller();
+    let mut c = controller();
     let base = serde_json::to_string(&SharedDesktopCommand {
         expected: c.shared_token(),
         game: GameKind::Xiangqi,
-        operation: SessionOperation::Xiangqi {
-            command: x::GameCommand::Play {
-                action: "a3a4".parse().unwrap(),
-            },
-        },
+        operation: SessionOperation::play("a3a4"),
     })
     .unwrap();
     assert!(SharedDesktopCommand::from_json(&base).is_ok());
@@ -588,13 +542,21 @@ fn typed_native_command_boundary_rejects_unknown_duplicate_and_conflicting_field
         base.replace("\"kind\":\"play\"", "\"kind\":\"play\",\"kind\":\"resign\""),
         base.replace("\"action\":", "\"unexpected\":true,\"action\":"),
         base.replace("\"xiangqi\"", "\"unknown_game\""),
-        base.replace("\"a3a4\"", "\"a3a4junk\""),
     ] {
         assert!(
             SharedDesktopCommand::from_json(&malformed).is_err(),
             "accepted malformed command {malformed}"
         );
     }
+    // The opaque action is parsed by the active game.
+    replace(
+        &mut c,
+        &x::Game::standard(x::ClaimPolicy::Explicit).unwrap(),
+        x::Side::Red,
+    );
+    let before = native(&c);
+    assert!(send(&mut c, SessionOperation::play("a3a4junk")).is_err());
+    assert_eq!(native(&c), before);
 }
 
 #[test]
@@ -612,9 +574,7 @@ fn historical_mutation_is_explicitly_unsupported_without_retiring_work() {
     assert!(
         send(
             &mut c,
-            SessionOperation::Xiangqi {
-                command: x::GameCommand::ClaimNaturalCount
-            }
+            SessionOperation::command(&x::GameCommand::ClaimNaturalCount)
         )
         .is_err()
     );
@@ -709,9 +669,7 @@ fn paused_terminal_capabilities_match_admission_without_erasing_claim_advice() {
     );
     let claimed = send(
         &mut c,
-        SessionOperation::Xiangqi {
-            command: x::GameCommand::ClaimNaturalCount,
-        },
+        SessionOperation::command(&x::GameCommand::ClaimNaturalCount),
     )
     .unwrap();
     assert!(claimed.status.concluded);

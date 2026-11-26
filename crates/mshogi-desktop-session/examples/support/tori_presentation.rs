@@ -50,14 +50,16 @@ fn write(dir: &Path, name: &str, s: &SharedSnapshot) {
     )
     .unwrap();
 }
+/// Put `side` at the bottom.
+fn orient(c: &mut DesktopController, side: t::Side) -> SharedSnapshot {
+    let settings = mshogi_desktop_session::game_document::GameSettings {
+        orientation: NativeSide::Tori(side),
+        ..c.shared_snapshot().document.settings
+    };
+    send(c, SessionOperation::Preferences { settings })
+}
 fn submit(c: &mut DesktopController, command: t::GameCommand) -> SharedSnapshot {
-    let _snapshot = send(
-        c,
-        SessionOperation::Tori {
-            actor: t::Side::Sente,
-            command,
-        },
-    );
+    let _snapshot = send(c, SessionOperation::command(&command));
     #[cfg(feature = "desktop-verification")]
     {
         c.verify_tori_pause_play().unwrap();
@@ -202,25 +204,9 @@ pub fn write_all(dir: &Path) {
         serde_json::to_string_pretty(&inspections).unwrap() + "\n",
     )
     .unwrap();
-    let flipped = send(
-        &mut c,
-        SessionOperation::ToriPreferences {
-            settings: mshogi_desktop_session::tori_document::ToriSettings {
-                play_mode: mshogi_desktop_session::PlayMode::HumanEngine,
-                orientation: t::Side::Gote,
-            },
-        },
-    );
+    let flipped = orient(&mut c, t::Side::Gote);
     write(dir, "gote", &flipped);
-    send(
-        &mut c,
-        SessionOperation::ToriPreferences {
-            settings: mshogi_desktop_session::tori_document::ToriSettings {
-                play_mode: mshogi_desktop_session::PlayMode::HumanEngine,
-                orientation: t::Side::Sente,
-            },
-        },
-    );
+    orient(&mut c, t::Side::Sente);
     let action = t::Action::Move {
         from: "7c".parse().unwrap(),
         to: "7b".parse().unwrap(),

@@ -12,29 +12,6 @@ use std::{
 /// Maximum retained accepted observations in the current session.
 pub const MAX_ARCHIVE_OBSERVATIONS: usize = 256;
 const VALIDATION_BUDGET: std::time::Duration = std::time::Duration::from_secs(15);
-/// Native preferences persist independently of game/search identity.
-#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-pub struct DesktopSettings {
-    /// Persisted ownership of the two native participants.
-    pub play_mode: crate::PlayMode,
-    /// View orientation, independent of player color.
-    pub orientation: Color,
-    /// Initial analysis form choices; actual requests retain their own limits.
-    pub analysis_defaults: AnalysisOperation,
-}
-impl Default for DesktopSettings {
-    fn default() -> Self {
-        Self {
-            play_mode: crate::PlayMode::default(),
-            orientation: Color::White,
-            analysis_defaults: AnalysisOperation {
-                depth: 4,
-                nodes: 100_000,
-            },
-        }
-    }
-}
 /// A stable open precondition, unaffected by I/O progress snapshots.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]

@@ -106,38 +106,7 @@ fn send(c: &mut DesktopController, operation: SessionOperation) -> Result<Shared
     Ok(snapshot)
 }
 fn operation(snapshot: &SharedSnapshot) -> SessionOperation {
-    let choice = &snapshot.choices[0].action;
-    match snapshot.local_actor.id {
-        NativeSide::Chess(_) => SessionOperation::ChessPlay {
-            action: choice.parse().unwrap(),
-        },
-        NativeSide::Shogi(_) => SessionOperation::Play {
-            action: choice.parse().unwrap(),
-        },
-        NativeSide::Xiangqi(_) => SessionOperation::Xiangqi {
-            command: mshogi_core::xiangqi::GameCommand::Play {
-                action: choice.parse().unwrap(),
-            },
-        },
-        NativeSide::Tori(actor) => SessionOperation::Tori {
-            actor,
-            command: mshogi_core::tori::GameCommand::Play {
-                action: serde_json::from_str(choice).unwrap(),
-            },
-        },
-        NativeSide::Chu(actor) => SessionOperation::Chu {
-            actor,
-            command: mshogi_core::chu::GameCommand::Play {
-                action: serde_json::from_str(choice).unwrap(),
-            },
-        },
-        NativeSide::Tenjiku(actor) => SessionOperation::Tenjiku {
-            actor,
-            command: mshogi_core::tenjiku::GameCommand::Play {
-                action: serde_json::from_str(choice).unwrap(),
-            },
-        },
-    }
+    SessionOperation::play(&snapshot.choices[0].action)
 }
 fn play(c: &mut DesktopController) -> SharedSnapshot {
     let snapshot = c.shared_snapshot();

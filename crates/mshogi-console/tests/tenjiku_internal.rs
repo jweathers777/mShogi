@@ -324,10 +324,7 @@ fn actual_controller_readonly_analysis_save_reopen_and_stale_identity_retirement
         let action = representative(profile).legal_actions()[0].clone();
         send(
             &mut ctl,
-            SessionOperation::Tenjiku {
-                actor: c::Side::Sente,
-                command: c::GameCommand::Play { action },
-            },
+            SessionOperation::play(serde_json::to_string(&action).unwrap()),
         );
         send(&mut ctl, SessionOperation::TakeBack {});
         assert_eq!(ctl.shared_snapshot().context, native);
@@ -420,10 +417,7 @@ fn actual_engine_turns_for_both_player_assignments_admit_observation_then_action
                 let action = game.legal_actions()[0].clone();
                 send(
                     &mut ctl,
-                    SessionOperation::Tenjiku {
-                        actor: human,
-                        command: c::GameCommand::Play { action },
-                    },
+                    SessionOperation::play(serde_json::to_string(&action).unwrap()),
                 )
             } else {
                 before
@@ -628,12 +622,9 @@ fn real_historical_analysis_saves_exact_prefix_and_reopens_stopped_without_futur
         let game = record.to_game().unwrap();
         send(
             &mut ctl,
-            SessionOperation::Tenjiku {
-                actor: c::Side::Sente,
-                command: c::GameCommand::Play {
-                    action: game.legal_actions()[0].clone(),
-                },
-            },
+            SessionOperation::play(
+                serde_json::to_string(&game.legal_actions()[0].clone()).unwrap(),
+            ),
         );
         send(&mut ctl, SessionOperation::Resume {});
         let played = wait_observation(&mut ctl, 1);

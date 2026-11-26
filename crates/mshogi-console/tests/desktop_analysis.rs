@@ -51,12 +51,7 @@ fn actual_analysis_suggestions_never_commit_a_turn_and_resume_is_explicit() {
     let mut controller = controller();
     let initial = controller.shared_snapshot();
     let turn = controller
-        .settled(
-            initial.token,
-            SessionOperation::ChessPlay {
-                action: "e2e4".parse().unwrap(),
-            },
-        )
+        .settled(initial.token, SessionOperation::play("e2e4"))
         .unwrap();
     // Analyze is serialized before any poll can apply an engine-turn reply.
     let analyzing = controller

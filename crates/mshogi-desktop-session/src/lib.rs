@@ -3,6 +3,37 @@
 mod synthetic;
 #[cfg(feature = "desktop-verification")]
 pub use synthetic::*;
+/// Evaluate `$body` with `$g` naming the marker type of the game `$kind`.
+macro_rules! with_game {
+    ($kind:expr, $g:ident => $body:expr) => {
+        match $kind {
+            mshogi_core::native::GameKind::Chess => {
+                type $g = crate::Chess;
+                $body
+            }
+            mshogi_core::native::GameKind::Shogi => {
+                type $g = crate::Shogi;
+                $body
+            }
+            mshogi_core::native::GameKind::Xiangqi => {
+                type $g = crate::Xiangqi;
+                $body
+            }
+            mshogi_core::native::GameKind::Tori => {
+                type $g = crate::Tori;
+                $body
+            }
+            mshogi_core::native::GameKind::Chu => {
+                type $g = crate::Chu;
+                $body
+            }
+            mshogi_core::native::GameKind::Tenjiku => {
+                type $g = crate::Tenjiku;
+                $body
+            }
+        }
+    };
+}
 mod participants;
 pub use participants::PlayMode;
 mod shared;
@@ -17,8 +48,6 @@ pub use capacity::*;
 mod chess_observation;
 /// Minimal accepted-command Chess records for desktop persistence.
 pub mod chess_record;
-/// Immutable Chu candidates for the same document envelope and file worker.
-pub mod chu_document;
 mod document;
 /// Generic native document of the games behind `native_game::NativeGame`.
 pub mod game_document;
@@ -27,10 +56,6 @@ mod native_chess;
 pub mod native_game;
 pub(crate) use native_game::{Chess, Chu, Shogi, Tenjiku, Tori, Xiangqi};
 mod resource;
-/// Immutable two-profile Tenjiku candidates for the existing document and worker.
-pub mod tenjiku_document;
-/// Tori document: the generic native document for Tori.
-pub mod tori_document;
 pub use resource::*;
 mod lifecycle;
 pub use lifecycle::*;
@@ -183,6 +208,18 @@ impl std::ops::DerefMut for ActiveDocument {
     }
 }
 impl ActiveDocument {
+    /// The game of the installed document.
+    fn kind(&self) -> mshogi_core::native::GameKind {
+        use mshogi_core::native::GameKind;
+        match self {
+            Self::Chess { .. } => GameKind::Chess,
+            Self::Shogi { .. } => GameKind::Shogi,
+            Self::Xiangqi { .. } => GameKind::Xiangqi,
+            Self::Tori { .. } => GameKind::Tori,
+            Self::Chu { .. } => GameKind::Chu,
+            Self::Tenjiku { .. } => GameKind::Tenjiku,
+        }
+    }
     fn chess(&self) -> Option<&shared::chess::ChessSession> {
         match self {
             Self::Chess { state, .. } => Some(state),
@@ -509,12 +546,10 @@ impl DesktopController {
             ) {
                 send(
                     &mut controller,
-                    SessionOperation::Tenjiku {
-                        actor: mshogi_core::tenjiku::Side::Sente,
-                        command: mshogi_core::tenjiku::GameCommand::Play {
-                            action: roots::action(scenario)?,
-                        },
-                    },
+                    SessionOperation::play(
+                        serde_json::to_string(&roots::action(scenario)?)
+                            .map_err(|e| e.to_string())?,
+                    ),
                 )?;
             }
             if matches!(scenario, "selected-root" | "incomplete") {
@@ -524,13 +559,7 @@ impl DesktopController {
                 )?;
             }
             if scenario == "ending-stopped" {
-                send(
-                    &mut controller,
-                    SessionOperation::Tenjiku {
-                        actor: mshogi_core::tenjiku::Side::Sente,
-                        command: mshogi_core::tenjiku::GameCommand::Resign,
-                    },
-                )?;
+                send(&mut controller, SessionOperation::Resign {})?;
                 send(&mut controller, SessionOperation::Cancel {})?;
             }
             if scenario == "incomplete" {

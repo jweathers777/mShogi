@@ -9,7 +9,6 @@ use mshogi_core::chu as c;
 pub(crate) type ChuSession = NativeSession<Chu>;
 
 large_shogi_session!(Chu, chu,
-operation: Chu, preferences: ChuPreferences,
 state: chu, chu_mut, field: chu,
     board: 12, "Chu Shogi 12×12 board", "6g",
     score_meaning: "Native root-side evaluation in hundredths of a Pawn. Win/loss distances count complete board actions, not necessarily mate. Failures and incomplete work are unscored.",
@@ -74,9 +73,11 @@ mod failure_observation_tests {
                     },
                 },
             );
-            let doc =
-                crate::chu_document::ValidatedChuDocument::new(record.clone(), c::Side::Sente)
-                    .unwrap();
+            let doc = crate::game_document::ValidatedGameDocument::<crate::native_game::Chu>::new(
+                record.clone(),
+                c::Side::Sente,
+            )
+            .unwrap();
             let mut state = ChuSession::restore(doc, &mut || false).unwrap();
             // A result from earlier work in this session, not a current one.
             state.observations.push(observation.clone());
@@ -139,8 +140,11 @@ mod stop_tests {
     fn chu_restore_checks_the_stop_per_replayed_event() {
         let checks = |n| {
             let document =
-                crate::chu_document::ValidatedChuDocument::new(played_n(n), c::Side::Sente)
-                    .unwrap();
+                crate::game_document::ValidatedGameDocument::<crate::native_game::Chu>::new(
+                    played_n(n),
+                    c::Side::Sente,
+                )
+                .unwrap();
             let mut calls = 0;
             ChuSession::restore(document, &mut || {
                 calls += 1;
@@ -154,8 +158,11 @@ mod stop_tests {
 
     #[test]
     fn chu_restore_and_browse_stop_at_every_check() {
-        let document =
-            crate::chu_document::ValidatedChuDocument::new(played(), c::Side::Sente).unwrap();
+        let document = crate::game_document::ValidatedGameDocument::<crate::native_game::Chu>::new(
+            played(),
+            c::Side::Sente,
+        )
+        .unwrap();
         stops_everywhere(|stop| {
             ChuSession::restore(document.clone(), &mut || stop())
                 .map(|_| ())

@@ -1,6 +1,7 @@
 //! Real Chu consumers. Fixture expectations remain in the independently reviewed corpus.
 use super::*;
 use crate::chu_fixture_roots as f;
+use crate::game_document::GameSettings;
 use mshogi_core::chu as c;
 use mshogi_engine::EngineGame;
 use std::{fs, time::Duration};
@@ -41,13 +42,9 @@ fn native(c: &DesktopController) -> c::GameRecord {
     c::GameRecord::from_game(&c.session.chu().unwrap().game).unwrap()
 }
 fn play(c: &mut DesktopController, a: c::Action) -> Result<SharedSnapshot, String> {
-    let actor = c.session.chu().unwrap().game.position().side_to_move();
     send(
         c,
-        SessionOperation::Chu {
-            actor,
-            command: c::GameCommand::Play { action: a },
-        },
+        SessionOperation::play(serde_json::to_string(&a).unwrap()),
     )
 }
 fn fixture_game(id: &str) -> c::Game {
@@ -173,60 +170,36 @@ fn real_compound_effects_royals_promotion_outcomes_and_exact_prefixes() {
 #[test]
 fn commands_keep_actor_admission_native_and_board_ply_distinct_from_events() {
     let mut ctl = controller();
+    let draw =
+        |ctl: &mut DesktopController, command| send(ctl, SessionOperation::command(&command));
     replace(&mut ctl, &c::Game::standard(), c::Side::Gote);
+    // The human offers out of turn; only the opponent of the offer responds,
+    // and the engine's side is never a local command actor.
+    draw(&mut ctl, c::GameCommand::OfferDraw).unwrap();
+    let before = native(&ctl);
+    assert!(draw(&mut ctl, c::GameCommand::AcceptDraw).is_err());
+    assert_eq!(native(&ctl), before);
+    let mut ctl = controller();
+    ctl.replace_two_humans::<Chu>(
+        c::GameRecord::from_game(&c::Game::standard()).unwrap(),
+        c::Side::Sente,
+    );
     // Non-turn terminal/offer actors are admitted by Game, not a shared turn filter.
-    send(
-        &mut ctl,
-        SessionOperation::Chu {
-            actor: c::Side::Gote,
-            command: c::GameCommand::OfferDraw,
-        },
-    )
-    .unwrap();
-    let s = send(
-        &mut ctl,
-        SessionOperation::Chu {
-            actor: c::Side::Sente,
-            command: c::GameCommand::DeclineDraw,
-        },
-    )
-    .unwrap();
+    draw(&mut ctl, c::GameCommand::OfferDraw).unwrap();
+    let s = draw(&mut ctl, c::GameCommand::DeclineDraw).unwrap();
     assert_eq!(s.board_ply, 0);
     assert_eq!(s.event_index, 2);
     assert!(s.moves.entries.is_empty());
     let before = native(&ctl);
-    assert!(
-        send(
-            &mut ctl,
-            SessionOperation::Chu {
-                actor: c::Side::Gote,
-                command: c::GameCommand::AcceptDraw
-            }
-        )
-        .is_err()
-    );
+    assert!(draw(&mut ctl, c::GameCommand::AcceptDraw).is_err());
     assert_eq!(native(&ctl), before);
-    send(
-        &mut ctl,
-        SessionOperation::Chu {
-            actor: c::Side::Sente,
-            command: c::GameCommand::OfferDraw,
-        },
-    )
-    .unwrap();
-    let s = send(
-        &mut ctl,
-        SessionOperation::Chu {
-            actor: c::Side::Gote,
-            command: c::GameCommand::AcceptDraw,
-        },
-    )
-    .unwrap();
+    draw(&mut ctl, c::GameCommand::OfferDraw).unwrap();
+    let s = draw(&mut ctl, c::GameCommand::AcceptDraw).unwrap();
     assert_eq!(s.status.label, "Draw by agreement");
     send(&mut ctl, SessionOperation::Undo {}).unwrap();
     assert!(native(&ctl).conclusion().is_none());
     let s = send(&mut ctl, SessionOperation::Resign {}).unwrap();
-    assert_eq!(s.status.label, "Sente wins by resignation");
+    assert_eq!(s.status.label, "Gote wins by resignation");
 }
 #[test]
 fn atomic_file_reopen_history_branch_and_normal_product_gate() {
@@ -244,19 +217,18 @@ fn atomic_file_reopen_history_branch_and_normal_product_gate() {
     send(&mut ctl, SessionOperation::TakeBack {}).unwrap();
     send(
         &mut ctl,
-        SessionOperation::Chu {
-            actor: c::Side::Gote,
-            command: c::GameCommand::OfferDraw,
-        },
+        SessionOperation::command(&c::GameCommand::OfferDraw),
     )
     .unwrap();
     send(&mut ctl, SessionOperation::Inspect { event_index: 0 }).unwrap();
     let s = send(
         &mut ctl,
-        SessionOperation::ChuPreferences {
-            settings: crate::chu_document::ChuSettings {
+        SessionOperation::Preferences {
+            settings: GameSettings {
                 play_mode: PlayMode::HumanEngine,
-                orientation: c::Side::Gote,
+                orientation: NativeSide::Chu(c::Side::Gote),
+                analysis_defaults:
+                    <crate::native_game::Chu as crate::native_game::NativeGame>::ANALYSIS_DEFAULTS,
             },
         },
     )
@@ -301,10 +273,12 @@ fn atomic_file_reopen_history_branch_and_normal_product_gate() {
     fs::write(&path, &bytes).unwrap();
     send(
         &mut ctl,
-        SessionOperation::ChuPreferences {
-            settings: crate::chu_document::ChuSettings {
+        SessionOperation::Preferences {
+            settings: GameSettings {
                 play_mode: PlayMode::HumanEngine,
-                orientation: c::Side::Gote,
+                orientation: NativeSide::Chu(c::Side::Gote),
+                analysis_defaults:
+                    <crate::native_game::Chu as crate::native_game::NativeGame>::ANALYSIS_DEFAULTS,
             },
         },
     )
@@ -317,7 +291,11 @@ fn atomic_file_reopen_history_branch_and_normal_product_gate() {
     assert_eq!(fs::read(&path).unwrap(), bytes);
     ctl.pause_shared_for_close();
     let closed = ctl.session.chu().unwrap().document.clone();
-    crate::chu_document::ValidatedChuDocument::decode(closed.bytes(), &mut || false).unwrap();
+    crate::game_document::ValidatedGameDocument::<crate::native_game::Chu>::decode(
+        closed.bytes(),
+        &mut || false,
+    )
+    .unwrap();
     assert!(ctl.close_requires_save());
     ctl.pause_shared_for_close();
     assert_eq!(closed.bytes(), ctl.session.chu().unwrap().document.bytes());
@@ -328,7 +306,7 @@ fn before_fourth_refusal_and_same_diagram_different_history_survive_shared_bound
     let fixture = f::fixture("CHU-REP-QUIET");
     let mut g = f::root(&fixture["given"]["root"]);
     let mut ctl = controller();
-    replace(&mut ctl, &g, c::Side::Sente);
+    ctl.replace_two_humans::<Chu>(c::GameRecord::from_game(&g).unwrap(), c::Side::Sente);
     // Drive the independently expected complete route until the native obligation refuses.
     let commands = fixture["given"]["commands"].as_array().unwrap();
     for cmd in commands {
@@ -480,8 +458,11 @@ fn maximum_declared_counter_keeps_exact_native_presentation_and_unknown_history(
     assert_eq!(native(&ctl), before);
     assert!(!refusal.status.concluded);
     let d = ctl.session.chu().unwrap().document.clone();
-    let reopened =
-        crate::chu_document::ValidatedChuDocument::decode(d.bytes(), &mut || false).unwrap();
+    let reopened = crate::game_document::ValidatedGameDocument::<crate::native_game::Chu>::decode(
+        d.bytes(),
+        &mut || false,
+    )
+    .unwrap();
     assert_eq!(
         reopened
             .record()
@@ -537,7 +518,7 @@ fn known_root_pair_numbering_preserves_first_gote_action_order() {
         .unwrap(),
     )
     .unwrap();
-    replace(&mut ctl, &root, c::Side::Gote);
+    ctl.replace_two_humans::<Chu>(c::GameRecord::from_game(&root).unwrap(), c::Side::Gote);
     play(
         &mut ctl,
         c::Action {

@@ -175,13 +175,7 @@ fn main() {
     assert_eq!(restored.context, live);
     assert!(restored.paused);
     let resumed = send(&mut c, SessionOperation::Resume {});
-    let action = resumed.choices[0].action.parse().unwrap();
-    send(
-        &mut c,
-        SessionOperation::Xiangqi {
-            command: x::GameCommand::Play { action },
-        },
-    );
+    send(&mut c, SessionOperation::play(&resumed.choices[0].action));
     let played = wait(&mut c);
     assert_eq!(played.board_ply, 3);
     assert!(

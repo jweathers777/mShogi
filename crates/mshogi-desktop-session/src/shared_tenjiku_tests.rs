@@ -2,7 +2,7 @@
 //! Seven shared consumer obligations and five profile-boundary obligations are covered here;
 //! the five full product obligations remain with MSH-44.
 use super::*;
-use crate::tenjiku_document::TenjikuSettings;
+use crate::game_document::GameSettings;
 use mshogi_core::tenjiku as c;
 use mshogi_engine::EngineGame;
 use serde_json::{Value, json};
@@ -111,22 +111,11 @@ fn replace(ctl: &mut DesktopController, game: &c::Game, human: c::Side) -> Share
     )
     .unwrap()
 }
-fn command(
-    ctl: &mut DesktopController,
-    actor: c::Side,
-    command: c::GameCommand,
-) -> Result<SharedSnapshot, String> {
-    send(ctl, SessionOperation::Tenjiku { actor, command })
-}
 fn play(ctl: &mut DesktopController, action: c::Action) -> Result<SharedSnapshot, String> {
-    let actor = ctl
-        .session
-        .tenjiku()
-        .unwrap()
-        .game
-        .position()
-        .side_to_move();
-    command(ctl, actor, c::GameCommand::Play { action })
+    send(
+        ctl,
+        SessionOperation::play(serde_json::to_string(&action).unwrap()),
+    )
 }
 fn wait_file(ctl: &mut DesktopController, id: u64) -> SharedSnapshot {
     let deadline = Instant::now() + Duration::from_secs(30);
@@ -257,12 +246,13 @@ fn strict_profile_dispatch_fresh_new_other_profile_and_stale_contexts_in_both_di
         let mut forged = serde_json::to_value(SharedDesktopCommand {
             expected: ctl.shared_token(),
             game: GameKind::Tenjiku,
-            operation: SessionOperation::TenjikuPreferences {
-                settings: TenjikuSettings {
-                    play_mode: PlayMode::HumanEngine,
-                    orientation: c::Side::Sente,
-                },
+            operation: SessionOperation::Preferences {
+            settings: GameSettings {
+                play_mode: PlayMode::HumanEngine,
+                orientation: NativeSide::Tenjiku(c::Side::Sente),
+                analysis_defaults: <crate::native_game::Tenjiku as crate::native_game::NativeGame>::ANALYSIS_DEFAULTS,
             },
+        },
         })
         .unwrap();
         forged["operation"]["rules_profile"] = json!(RulesProfile::from(match profile {
@@ -444,22 +434,9 @@ fn complete_route_choices_roundtrip_without_collapsing_landings_and_partial_wire
             matches!(&choice.tenjiku, Some(tenjiku::TenjikuChoiceShape::Travel { route }) if route == &vec!["8g", "9g"])
         );
         let accepted = record(&ctl);
-        let mut partial = serde_json::to_value(SharedDesktopCommand {
-            expected: ctl.shared_token(),
-            game: GameKind::Tenjiku,
-            operation: SessionOperation::Tenjiku {
-                actor: c::Side::Sente,
-                command: c::GameCommand::Play {
-                    action: action.clone(),
-                },
-            },
-        })
-        .unwrap();
-        partial["operation"]["command"]["action"]
-            .as_object_mut()
-            .unwrap()
-            .remove("route");
-        assert!(SharedDesktopCommand::from_json(&partial.to_string()).is_err());
+        let mut partial = serde_json::to_value(&action).unwrap();
+        partial.as_object_mut().unwrap().remove("route");
+        assert!(send(&mut ctl, SessionOperation::play(partial)).is_err());
         assert_eq!(record(&ctl), accepted);
         let snapshot = play(&mut ctl, serde_json::from_str(&choice.action).unwrap()).unwrap();
         assert_eq!(snapshot.moves.last_action.unwrap().steps, vec!["8g", "9g"]);
@@ -472,9 +449,9 @@ fn complete_route_choices_roundtrip_without_collapsing_landings_and_partial_wire
 fn promotion_choices_and_per_original_first_refusal_rights_survive_shared_admission() {
     let mut ctl = controller();
     for profile in c::Profile::ALL {
-        replace(
-            &mut ctl,
-            &root(profile, &[(8, 6, c::Side::Sente, c::Base::G)]),
+        ctl.replace_two_humans::<Tenjiku>(
+            c::GameRecord::from_game(&root(profile, &[(8, 6, c::Side::Sente, c::Base::G)]))
+                .unwrap(),
             c::Side::Sente,
         );
         let snapshot = ctl.shared_snapshot();
@@ -863,12 +840,13 @@ fn stopped_product_reopen_and_failed_files_preserve_whole_profile_prior_file_and
         assert!(!reopened.document.dirty);
         send(
             &mut ctl,
-            SessionOperation::TenjikuPreferences {
-                settings: TenjikuSettings {
-                    play_mode: PlayMode::HumanEngine,
-                    orientation: c::Side::Gote,
-                },
+            SessionOperation::Preferences {
+            settings: GameSettings {
+                play_mode: PlayMode::HumanEngine,
+                orientation: NativeSide::Tenjiku(c::Side::Gote),
+                analysis_defaults: <crate::native_game::Tenjiku as crate::native_game::NativeGame>::ANALYSIS_DEFAULTS,
             },
+        },
         )
         .unwrap();
         assert!(ctl.shared_snapshot().document.dirty);

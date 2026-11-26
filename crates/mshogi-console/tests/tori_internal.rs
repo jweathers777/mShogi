@@ -65,8 +65,8 @@ fn real_subprocess_preserves_tori_context_supplies_native_action_and_roundtrips_
     let accepted_action = *action;
     // The engine's action is played into the saved game; engine results
     // themselves are not saved (MSH-228).
-    use mshogi_desktop_session::tori_document::ValidatedToriDocument;
-    let document = ValidatedToriDocument::new(
+    use mshogi_desktop_session::{game_document::ValidatedGameDocument, native_game::Tori};
+    let document = ValidatedGameDocument::<Tori>::new(
         tori::GameRecord::from_game(&game).unwrap(),
         tori::Side::Sente,
     )
@@ -79,7 +79,7 @@ fn real_subprocess_preserves_tori_context_supplies_native_action_and_roundtrips_
         &mut || false,
     )
     .unwrap();
-    let reopened = ValidatedToriDocument::decode(document.bytes(), &mut || false).unwrap();
+    let reopened = ValidatedGameDocument::<Tori>::decode(document.bytes(), &mut || false).unwrap();
     game.submit(tori::GameRequest {
         expected: game.context(),
         actor: tori::Side::Gote,

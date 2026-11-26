@@ -175,13 +175,7 @@ fn presented_budget_matches_submitted_play_and_board_ply_ignores_terminal_events
 
     replace(&mut c, s::Game::new(), s::Side::Sente);
     send(&mut c, SessionOperation::Resume {}).unwrap();
-    let moved = send(
-        &mut c,
-        SessionOperation::Play {
-            action: "7g7f".parse().unwrap(),
-        },
-    )
-    .unwrap();
+    let moved = send(&mut c, SessionOperation::play("7g7f")).unwrap();
     assert_eq!((moved.event_index, moved.board_ply), (1, 1));
     send(&mut c, SessionOperation::Cancel {}).unwrap();
     let ended = send(&mut c, SessionOperation::Resign {}).unwrap();
@@ -224,24 +218,10 @@ fn actual_complete_drop_promotion_capture_and_atomic_rejection() {
     send(&mut c, SessionOperation::Resume {}).unwrap();
     assert_eq!(c.game_snapshot::<Shogi>().phase, EnginePhase::Idle);
     let before = c.shared_token();
-    assert!(
-        send(
-            &mut c,
-            SessionOperation::Play {
-                action: "5e4d".parse().unwrap()
-            }
-        )
-        .is_err()
-    );
+    assert!(send(&mut c, SessionOperation::play("5e4d")).is_err());
     assert_eq!(before.version, c.shared_token().version);
     assert_eq!(before.selection, c.shared_token().selection);
-    let captured = send(
-        &mut c,
-        SessionOperation::Play {
-            action: "5e5c+".parse().unwrap(),
-        },
-    )
-    .unwrap();
+    let captured = send(&mut c, SessionOperation::play("5e5c+")).unwrap();
     assert_eq!(
         captured
             .pieces
@@ -269,13 +249,7 @@ fn actual_complete_drop_promotion_capture_and_atomic_rejection() {
     assert!(matches!(drop.origin, ChoiceOrigin::Hand { .. }));
     assert!(drop.from.starts_with("hand:"));
     send(&mut c, SessionOperation::Resume {}).unwrap();
-    let dropped = send(
-        &mut c,
-        SessionOperation::Play {
-            action: "P*5e".parse().unwrap(),
-        },
-    )
-    .unwrap();
+    let dropped = send(&mut c, SessionOperation::play("P*5e")).unwrap();
     assert_eq!(
         dropped
             .hands
@@ -294,7 +268,11 @@ fn declaration_advice_terminal_history_and_native_wrong_turn_semantics() {
     let view = replace(&mut c, root.clone(), s::Side::Sente);
     assert!(view.declaration_advice[0].eligible);
     assert!(view.events.is_empty());
-    let ended = send(&mut c, SessionOperation::Declare {}).unwrap();
+    let ended = send(
+        &mut c,
+        SessionOperation::command(&s::GameCommand::DeclareEnteringKing),
+    )
+    .unwrap();
     assert!(ended.status.label.contains("Sente wins"));
     assert_eq!(ended.event_index, 1);
     assert_eq!(ended.events[0].board_ply, 0);
@@ -307,7 +285,13 @@ fn declaration_advice_terminal_history_and_native_wrong_turn_semantics() {
         CanonicalRecord::shogi(s::GameRecord::from_game(&root))
     );
     assert!(!before.capabilities.declaration);
-    assert!(send(&mut c, SessionOperation::Declare {}).is_err());
+    assert!(
+        send(
+            &mut c,
+            SessionOperation::command(&s::GameCommand::DeclareEnteringKing)
+        )
+        .is_err()
+    );
     let after = send(&mut c, SessionOperation::Inspect { event_index: 1 }).unwrap();
     assert!(after.status.concluded);
     assert_eq!(after.event_index, 1);
@@ -318,7 +302,11 @@ fn declaration_advice_terminal_history_and_native_wrong_turn_semantics() {
     assert!(undone.paused);
     assert!(undone.token.selection > ended.token.selection);
     replace(&mut c, root, s::Side::Gote);
-    let wrong = send(&mut c, SessionOperation::Declare {}).unwrap();
+    let wrong = send(
+        &mut c,
+        SessionOperation::command(&s::GameCommand::DeclareEnteringKing),
+    )
+    .unwrap();
     assert_eq!(wrong.events.len(), 1);
     assert!(
         wrong
@@ -407,10 +395,8 @@ fn replacement_retires_chess_files_and_pending_admission() {
     // also returns a snapshot and may already accept a fast worker completion;
     // that legitimately completed command is not pending work to retire.
     c.admissions.hold_results_for_test(true);
-    c.test_chess_operation(SessionOperation::ChessPlay {
-        action: "e2e4".parse().unwrap(),
-    })
-    .unwrap();
+    c.test_chess_operation(SessionOperation::play("e2e4"))
+        .unwrap();
     let receipt = c.admission_receipt.clone().unwrap();
     assert!(receipt.completion().is_none());
     c.admissions.hold_results_for_test(false);
@@ -430,10 +416,18 @@ fn semantic_undo_replay_does_not_revive_retired_work() {
         imported("K8/1RB6/1+P+P+P+P+P+P+P+P/9/9/9/9/9/8k b B5P 1"),
         s::Side::Sente,
     );
-    send(&mut c, SessionOperation::Declare {}).unwrap();
+    send(
+        &mut c,
+        SessionOperation::command(&s::GameCommand::DeclareEnteringKing),
+    )
+    .unwrap();
     let old = analyze(&mut c);
     send(&mut c, SessionOperation::Undo {}).unwrap();
-    send(&mut c, SessionOperation::Declare {}).unwrap();
+    send(
+        &mut c,
+        SessionOperation::command(&s::GameCommand::DeclareEnteringKing),
+    )
+    .unwrap();
     let fresh = analyze(&mut c);
     assert_eq!(fresh.game, old.game);
     assert_ne!(fresh.session_version, old.session_version);
@@ -454,8 +448,35 @@ fn semantic_undo_replay_does_not_revive_retired_work() {
     assert!(c.game_snapshot::<Shogi>().status.concluded);
 }
 #[test]
-fn command_json_strict_native_payload_and_encoded_capacity() {
+fn command_json_strict_payload_and_replacement_identity() {
     let mut c = controller();
+    let json = serde_json::to_string(&SharedDesktopCommand {
+        expected: c.shared_token(),
+        game: GameKind::Chess,
+        operation: SessionOperation::command(&MatchCommand::Resign { witness: None }),
+    })
+    .unwrap();
+    assert!(SharedDesktopCommand::from_json(&json).is_ok());
+    for text in [
+        json.replacen(
+            "\"game\":\"chess\"",
+            "\"game\":\"chess\",\"game\":\"chess\"",
+            1,
+        ),
+        // Duplicates inside the game payload are refused too.
+        json.replacen("\"witness\":null", "\"witness\":null,\"witness\":null", 1),
+        json.replacen(
+            "\"kind\":\"command\"",
+            "\"kind\":\"command\",\"actor\":\"white\"",
+            1,
+        ),
+        // Records load only through files and fixtures, never as a command.
+        json.replacen("\"kind\":\"command\"", "\"kind\":\"replace\"", 1),
+    ] {
+        // Ensure the mutation matched: otherwise this would be a vacuous parser test.
+        assert_ne!(text, json);
+        assert!(SharedDesktopCommand::from_json(&text).is_err(), "{text}");
+    }
     let command = SharedDesktopCommand {
         expected: c.shared_token(),
         game: GameKind::Chess,
@@ -464,43 +485,6 @@ fn command_json_strict_native_payload_and_encoded_capacity() {
             human: NativeSide::Shogi(s::Side::Sente),
         },
     };
-    let json = serde_json::to_string(&command).unwrap();
-    assert!(
-        SharedDesktopCommand::from_json(&json).is_ok(),
-        "{:?}",
-        SharedDesktopCommand::from_json(&json)
-    );
-    for text in [
-        json.replacen(
-            "\"game\":\"chess\"",
-            "\"game\":\"chess\",\"game\":\"chess\"",
-            1,
-        ),
-        json.replacen(
-            "\"envelope_version\":2",
-            "\"envelope_version\":2,\"envelope_version\":2",
-            1,
-        ),
-        json.replacen(
-            "\"profile_id\":\"mshogi.shogi.csa36.v1\"",
-            "\"profile_id\":\"mshogi.chess.match.v1\"",
-            1,
-        ),
-        json.replacen(
-            "\"schema_version\":2",
-            "\"schema_version\":2,\"schema_version\":2",
-            1,
-        ),
-        json.replacen(
-            "\"profile_edition\":",
-            "\"unsupported\":0,\"profile_edition\":",
-            1,
-        ),
-    ] {
-        // Ensure the mutation matched: otherwise this would be a vacuous parser test.
-        assert_ne!(text, json);
-        assert!(SharedDesktopCommand::from_json(&text).is_err());
-    }
     let old = c.shared_token();
     let mut wrong = command;
     if let SessionOperation::Replace { human, .. } = &mut wrong.operation {
@@ -511,10 +495,10 @@ fn command_json_strict_native_payload_and_encoded_capacity() {
 }
 
 #[test]
-fn shogi_commands_with_an_actor_are_internal_only() {
-    // The frontend submits Shogi commands as Play and Declare for the local
-    // actor; an actor-carrying command could play for the engine's side.
-    let json = r#"{"kind":"shogi","actor":"gote","command":{"kind":"resign"}}"#;
+fn commands_carry_no_actor() {
+    // The session derives the actor; a client-chosen actor could play for
+    // the engine's side.
+    let json = r#"{"kind":"command","actor":"gote","command":{"kind":"resign"}}"#;
     assert!(serde_json::from_str::<SessionOperation>(json).is_err());
 }
 
@@ -773,7 +757,11 @@ fn product_declaration_capability_is_advisory_eligibility_but_native_terminal_se
         s::Side::Sente,
     );
     assert!(eligibility.capabilities.declaration);
-    let declared = send(&mut c, SessionOperation::Declare {}).unwrap();
+    let declared = send(
+        &mut c,
+        SessionOperation::command(&s::GameCommand::DeclareEnteringKing),
+    )
+    .unwrap();
     assert_eq!(
         declared.status.label,
         "Sente wins by entering-king declaration"

@@ -1,5 +1,6 @@
 //! Presentation expectations independent of opaque action strings and layout.
 use super::*;
+use crate::game_document::GameSettings;
 use crate::tori_fixture_roots as roots;
 #[test]
 fn all_native_faces_handed_hands_forced_choices_and_orientation_are_explicit() {
@@ -65,10 +66,12 @@ fn all_native_faces_handed_hands_forced_choices_and_orientation_are_explicit() {
     let raw = native(&c);
     let flipped = send(
         &mut c,
-        SessionOperation::ToriPreferences {
-            settings: crate::tori_document::ToriSettings {
+        SessionOperation::Preferences {
+            settings: GameSettings {
                 play_mode: PlayMode::HumanEngine,
-                orientation: t::Side::Gote,
+                orientation: NativeSide::Tori(t::Side::Gote),
+                analysis_defaults:
+                    <crate::native_game::Tori as crate::native_game::NativeGame>::ANALYSIS_DEFAULTS,
             },
         },
     )
@@ -89,16 +92,14 @@ fn play_only_rows_preserve_terminal_prefix_and_selected_geometry_without_replay(
     replace(&mut c, &roots::contract_game(), t::Side::Sente);
     let played = send(
         &mut c,
-        SessionOperation::Tori {
-            actor: t::Side::Sente,
-            command: t::GameCommand::Play {
-                action: t::Action::Move {
-                    from: "7c".parse().unwrap(),
-                    to: "7b".parse().unwrap(),
-                    result_face: t::Face::Eagle,
-                },
-            },
-        },
+        SessionOperation::play(
+            serde_json::to_string(&t::Action::Move {
+                from: "7c".parse().unwrap(),
+                to: "7b".parse().unwrap(),
+                result_face: t::Face::Eagle,
+            })
+            .unwrap(),
+        ),
     )
     .unwrap();
     assert!(
@@ -176,15 +177,13 @@ fn both_quail_owners_keep_native_hand_identity_and_drop_destination_only() {
         }));
         let snapshot = send(
             &mut c,
-            SessionOperation::Tori {
-                actor: owner,
-                command: t::GameCommand::Play {
-                    action: t::Action::Drop {
-                        face,
-                        to: to.parse().unwrap(),
-                    },
-                },
-            },
+            SessionOperation::play(
+                serde_json::to_string(&t::Action::Drop {
+                    face,
+                    to: to.parse().unwrap(),
+                })
+                .unwrap(),
+            ),
         )
         .unwrap();
         let cue = snapshot.moves.last_action.unwrap();

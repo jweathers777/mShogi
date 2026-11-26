@@ -2,8 +2,8 @@
 //! persistence stay native-owned; each game supplies its presentation, limits
 //! and the wrappers of the shared runtime enums through [`SessionGame`].
 use super::*;
-use crate::game_document::{SettingsOf, ValidatedGameDocument};
-use crate::native_game::{DocumentSettings, NativeGame};
+use crate::game_document::{GameSettings, SettingsOf, ValidatedGameDocument};
+use crate::native_game::{NativeGame, analysis_limits, validate_limits};
 use mshogi_engine::{EngineGame, EngineResult};
 use std::sync::Arc;
 
@@ -14,16 +14,6 @@ pub(crate) enum CommandKind {
     /// A human's final command: resignation or a formal declaration.
     Terminal,
     Other,
-}
-
-/// A game-specific session operation.
-pub(crate) enum GameOperation<G: NativeGame> {
-    /// A complete native command of an actor.
-    Command { actor: G::Side, command: G::Command },
-    /// Orientation preferences; the play mode stays the document's.
-    Preferences { settings: SettingsOf<G> },
-    /// A complete native command of the local actor.
-    Local { command: G::Command },
 }
 
 /// A change of the saved document.
@@ -47,11 +37,6 @@ pub(crate) struct TelemetryView {
 pub(crate) trait SessionGame: NativeGame {
     /// Frontend presentation of the selected and live games.
     type Presentation: Clone;
-    const PLAY_LIMITS: WorkLimits;
-    const MAX_DEPTH: u16;
-    const MAX_NODES: u64;
-    /// Analysis uses the fixed move-analysis budgets instead of the play limits.
-    const ANALYSIS_BUDGETS: bool = false;
     const FINISH_CONCLUDED_ANALYSIS: bool = false;
     fn cancellation_phase(_analysis: bool) -> EnginePhase {
         EnginePhase::Cancelled
@@ -60,15 +45,8 @@ pub(crate) trait SessionGame: NativeGame {
         false
     }
     const UNDO: bool = true;
-    fn validate_command(
-        _game: &Self::Game,
-        _human: Self::Side,
-        _settings: &SettingsOf<Self>,
-        _actor: Self::Side,
-        _command: &Self::Command,
-    ) -> Result<(), String> {
-        Ok(())
-    }
+    /// The play command of the presented choice identifier `action`.
+    fn play(action: &str) -> Result<Self::Command, String>;
 
     fn presentation(selected: &Self::Game, live: &Self::Game) -> Self::Presentation;
     fn status(selected: &Self::Game, has_actions: bool) -> PresentedStatus;
@@ -87,9 +65,6 @@ pub(crate) trait SessionGame: NativeGame {
     fn telemetry(result: &Self::EngineResult) -> TelemetryView;
     fn incomplete(result: &Self::EngineResult) -> bool;
 
-    /// This game's operation, or the operation back if it is not one.
-    fn operation(operation: SessionOperation) -> Result<GameOperation<Self>, SessionOperation>;
-    fn command_operation(actor: Self::Side, command: Self::Command) -> SessionOperation;
     /// A restored session as an opened document.
     fn opened(state: Box<NativeSession<Self>>) -> archive::OpenedNative;
     fn state(session: &ActiveDocument) -> Option<&NativeSession<Self>>;
@@ -111,7 +86,7 @@ pub(crate) trait SessionGame: NativeGame {
             .rev()
             .find(|&i| Self::event(game, i) == (human, CommandKind::Play))
     }
-    /// The actor of a local command; for most games the local actor.
+    /// The actor of a command of the local player; for most games the local actor.
     fn command_actor(
         _game: &Self::Game,
         _settings: &SettingsOf<Self>,
@@ -266,14 +241,14 @@ impl<G: SessionGame> NativeSession<G> {
     fn local_actor(&self) -> G::Side {
         self.document
             .settings()
-            .play_mode()
+            .play_mode
             .actor(self.document.human(), G::side_to_move(&self.game))
     }
     pub(crate) fn take_back_target(&self) -> Option<usize> {
         G::take_back_target(
             &self.game,
             self.document.human(),
-            self.document.settings().play_mode().is_two_humans(),
+            self.document.settings().play_mode.is_two_humans(),
         )
     }
     /// A history position is selected.
@@ -294,60 +269,66 @@ impl<G: SessionGame> NativeSession<G> {
         Ok(())
     }
 
+    /// Admit a command of `actor` before the native game's own admission.
+    fn command(
+        &mut self,
+        actor: G::Side,
+        command: G::Command,
+    ) -> Result<Change<G>, OperationFailure> {
+        let kind = G::command_kind(&command);
+        let play_mode = self.document.settings().play_mode;
+        if self.paused
+            && (G::requires_running(&command)
+                || (play_mode.is_two_humans() && kind == CommandKind::Play))
+        {
+            return Err("Resume play before moving.".into());
+        }
+        if self.viewed.is_some() {
+            return Err("Return to live before changing the game.".into());
+        }
+        if !play_mode.owns(self.document.human(), actor) {
+            return Err("This command belongs to the other player.".into());
+        }
+        // Actor/turn/terminal/draw admission belongs to the native Game.
+        // The immutable document candidate admits the complete command below.
+        if kind == CommandKind::Terminal {
+            self.paused = true;
+        }
+        Ok(Change::Command { actor, command })
+    }
+
     fn apply(
         &mut self,
         operation: SessionOperation,
         stopped: &mut impl FnMut() -> bool,
     ) -> Result<bool, OperationFailure> {
         persistence::check(stopped)?;
-        let control: Option<Change<G>> = match G::operation(operation) {
-            Ok(GameOperation::Command { actor, command }) => {
-                let kind = G::command_kind(&command);
-                if self.paused
-                    && (G::requires_running(&command)
-                        || (self.document.settings().play_mode().is_two_humans()
-                            && kind == CommandKind::Play))
-                {
-                    return Err("Resume play before moving.".into());
-                }
-                if self.viewed.is_some() {
-                    return Err("Return to live before changing the game.".into());
-                }
-                G::validate_command(
-                    &self.game,
-                    self.document.human(),
-                    self.document.settings(),
-                    actor,
-                    &command,
-                )?;
-                // Actor/turn/terminal/draw admission belongs to the native Game.
-                // The immutable document candidate admits the complete command below.
-                if matches!(kind, CommandKind::Terminal) {
-                    self.paused = true;
-                }
-                Some(Change::Command { actor, command })
-            }
-            Ok(GameOperation::Local { command }) => {
+        let local = self.local_actor();
+        let change = match operation {
+            SessionOperation::Play { action } => self.command(local, G::play(&action)?)?,
+            SessionOperation::Command { command } => {
+                let command: G::Command = serde_json::from_value(command)
+                    .map_err(|e| format!("Invalid {} command: {e}", G::NAME))?;
                 let actor = G::command_actor(
                     &self.game,
                     self.document.settings(),
                     self.document.human(),
                     &command,
-                    self.local_actor(),
+                    local,
                 );
-                return self.apply(G::command_operation(actor, command), stopped);
+                self.command(actor, command)?
             }
-            Ok(GameOperation::Preferences { mut settings }) => {
-                settings.set_play_mode(self.document.settings().play_mode());
-                Some(Change::Settings(settings))
+            SessionOperation::Resign {} => self.command(local, G::resign())?,
+            SessionOperation::Preferences { settings } => {
+                let orientation = G::side_of(settings.orientation)
+                    .ok_or("The orientation side does not belong to this game.")?;
+                Change::Settings(GameSettings {
+                    play_mode: self.document.settings().play_mode,
+                    orientation,
+                    analysis_defaults: settings.analysis_defaults,
+                })
             }
-            Err(SessionOperation::Resign {}) => {
-                return self.apply(
-                    G::command_operation(self.local_actor(), G::resign()),
-                    stopped,
-                );
-            }
-            Err(operation @ (SessionOperation::Undo {} | SessionOperation::TakeBack {})) => {
+            SessionOperation::Undo {} | SessionOperation::TakeBack {} => {
                 if self.viewed.is_some() {
                     return Err("Return to live before changing history.".into());
                 }
@@ -361,9 +342,9 @@ impl<G: SessionGame> NativeSession<G> {
                         .ok_or("No earlier playable human decision is available.")?
                 };
                 self.paused = true;
-                Some(Change::Rewind(event_index))
+                Change::Rewind(event_index)
             }
-            Err(SessionOperation::Inspect { event_index }) => {
+            SessionOperation::Inspect { event_index } => {
                 let record =
                     G::record_prefix(&self.game, event_index, stopped).map_err(record_text)?;
                 let stop = if self.viewed.is_none() {
@@ -384,7 +365,7 @@ impl<G: SessionGame> NativeSession<G> {
                 );
                 return Ok(false);
             }
-            Err(SessionOperation::ReturnLive {}) => {
+            SessionOperation::ReturnLive {} => {
                 let was_viewed = self.viewed.is_some();
                 let stop = self.browse_stop.take().unwrap_or(BrowseStop {
                     paused: true,
@@ -407,26 +388,25 @@ impl<G: SessionGame> NativeSession<G> {
                 self.diagnostic = stop.diagnostic;
                 return Ok(false);
             }
-            Err(SessionOperation::Cancel {}) => {
+            SessionOperation::Cancel {} => {
                 self.cancel();
                 return Ok(false);
             }
-            Err(SessionOperation::Analyze { operation }) => {
-                let limits = analysis_limits::<G>(operation)?;
+            SessionOperation::Analyze { operation } => {
+                analysis_limits::<G>(operation)?;
                 let stop = if self.viewed.is_some() {
                     self.browse_stop.clone()
                 } else {
                     None
                 };
-                // A game whose settings remember analysis limits saves them.
-                let remembered = self
-                    .document
-                    .settings()
-                    .with_analysis_defaults(limits)
-                    .filter(|s| s != self.document.settings());
-                let durable = remembered.is_some();
-                if let Some(settings) = remembered {
-                    self.document = Arc::new(self.document.with_settings(settings)?);
+                // The settings remember the last analysis limits.
+                let settings = *self.document.settings();
+                let durable = settings.analysis_defaults != operation;
+                if durable {
+                    self.document = Arc::new(self.document.with_settings(GameSettings {
+                        analysis_defaults: operation,
+                        ..settings
+                    })?);
                 }
                 self.retire();
                 self.browse_stop = stop;
@@ -435,7 +415,7 @@ impl<G: SessionGame> NativeSession<G> {
                 self.diagnostic = None;
                 return Ok(durable);
             }
-            Err(SessionOperation::Resume {} | SessionOperation::Retry {}) => {
+            SessionOperation::Resume {} | SessionOperation::Retry {} => {
                 if self.viewed.is_some() {
                     return Err("Return to live before resuming play.".into());
                 }
@@ -455,32 +435,28 @@ impl<G: SessionGame> NativeSession<G> {
                 self.diagnostic = None;
                 return Ok(false);
             }
-            Err(_) => {
+            SessionOperation::Replace { .. } => {
                 return Err(
                     format!("Unsupported operation for the native {} profile.", G::NAME).into(),
                 );
             }
         };
-        if let Some(control) = control {
-            match control {
-                // Preferences change no game and keep current work.
-                Change::Settings(settings) => {
-                    self.document = Arc::new(self.document.with_settings(settings)?);
-                    return Ok(true);
-                }
-                Change::Command { actor, command } => {
-                    self.apply_command(actor, command, stopped)?
-                }
-                Change::Rewind(event_index) => {
-                    self.current_observations.clear();
-                    let document = self.document.with_rewind(event_index, stopped)?;
-                    self.game = G::to_game(document.record(), stopped).map_err(record_text)?;
-                    self.document = Arc::new(document);
-                }
+        match change {
+            // Preferences change no game and keep current work.
+            Change::Settings(settings) => {
+                self.document = Arc::new(self.document.with_settings(settings)?);
+                return Ok(true);
             }
-            self.viewed = None;
-            self.retire();
+            Change::Command { actor, command } => self.apply_command(actor, command, stopped)?,
+            Change::Rewind(event_index) => {
+                self.current_observations.clear();
+                let document = self.document.with_rewind(event_index, stopped)?;
+                self.game = G::to_game(document.record(), stopped).map_err(record_text)?;
+                self.document = Arc::new(document);
+            }
         }
+        self.viewed = None;
+        self.retire();
         Ok(true)
     }
     /// Completed work was refused by document admission: retire it and keep
@@ -758,6 +734,32 @@ impl DesktopController {
         )?;
         Ok(self.shared_snapshot())
     }
+    /// Install a record as a resumed two-humans document, so that a test can
+    /// submit the commands of both sides.
+    #[cfg(test)]
+    pub(crate) fn replace_two_humans<G: SessionGame>(
+        &mut self,
+        record: G::Record,
+        bottom: G::Side,
+    ) {
+        let receipt = self
+            .queue_game_candidate::<G>(
+                RuntimeSeed::Record {
+                    record: Box::new(record),
+                    human: bottom,
+                    play_mode: PlayMode::TwoHumans,
+                },
+                Some(SessionOperation::Resume {}),
+                None,
+                true,
+            )
+            .expect("queued two-humans document");
+        while receipt.completion().is_none() {
+            self.shared_snapshot();
+            std::thread::sleep(std::time::Duration::from_millis(1));
+        }
+        receipt.completion().unwrap().expect("two-humans document");
+    }
     pub(super) fn game_command<G: SessionGame>(
         &mut self,
         operation: SessionOperation,
@@ -781,14 +783,13 @@ impl DesktopController {
                     | SessionOperation::Analyze { .. }
                     | SessionOperation::Cancel {}
             )
-            && G::operation(operation.clone())
-                .map_or(true, |o| !matches!(o, GameOperation::Preferences { .. }))
+            && !matches!(operation, SessionOperation::Preferences { .. })
         {
             return Err("Return to live before changing the game.".into());
         }
         // Refuse a malformed analysis request at once; it changes nothing.
         if let SessionOperation::Analyze { operation } = &operation {
-            analysis_limits::<G>(*operation).map_err(|e| e.diagnostic)?;
+            analysis_limits::<G>(*operation)?;
         }
 
         let state = G::state(&self.session).expect("native owner");
@@ -941,10 +942,11 @@ impl DesktopController {
                 && state
                     .document
                     .settings()
-                    .play_mode()
+                    .play_mode
                     .engine_turn(state.document.human(), G::side_to_move(&state.game));
             if let Some(operation) = analysis {
                 let started = analysis_limits::<G>(operation)
+                    .map_err(OperationFailure::from)
                     .and_then(|limits| self.start_game_operation::<G>(limits, Some(operation)));
                 if let Err(e) = started {
                     self.pause_native_failure(e);
@@ -1111,10 +1113,10 @@ impl DesktopController {
             game: G::KIND,
             profile,
             edition: G::edition(game),
-            play_mode: settings.play_mode(),
+            play_mode: settings.play_mode,
             local_actor: side(
                 profile,
-                G::native_side(settings.play_mode().actor(human, turn)),
+                G::native_side(settings.play_mode.actor(human, turn)),
             ),
             human: side(profile, G::native_side(human)),
             turn: side(profile, G::native_side(turn)),
@@ -1143,19 +1145,19 @@ impl DesktopController {
             choices: state.choices.clone(),
             capabilities: CommandCapabilities {
                 board_action: !historical
-                    && (!settings.play_mode().is_two_humans() || !state.paused)
+                    && (!settings.play_mode.is_two_humans() || !state.paused)
                     && !ended
-                    && settings.play_mode().owns(human, turn),
+                    && settings.play_mode.owns(human, turn),
                 drops: G::HANDS,
                 promotion: true,
                 take_back: !historical && state.take_back_target().is_some(),
                 undo: !historical && G::last_command_start(&state.game).is_some(),
-                engine_turn: !settings.play_mode().is_two_humans(),
+                engine_turn: !settings.play_mode.is_two_humans(),
                 move_analysis: true,
                 claims: false,
                 declaration: !historical
                     && !ended
-                    && G::can_declare(&state.game, settings.play_mode().actor(human, turn)),
+                    && G::can_declare(&state.game, settings.play_mode.actor(human, turn)),
                 resign: !historical && !ended,
                 hands: G::HANDS,
                 history: true,
@@ -1239,49 +1241,6 @@ pub(crate) fn engine_incomplete<E: EngineGame>(result: &EngineResult<E>) -> bool
         EngineResult::Incomplete { .. } | EngineResult::Unresolved { .. }
     )
 }
-/// Engine limits of a game on the shared search core.
-macro_rules! engine_limits {
-    ($engine:ident) => {
-        const PLAY_LIMITS: WorkLimits =
-            <mshogi_engine::game::$engine as mshogi_engine::EngineGame>::PLAY_LIMITS;
-        const MAX_DEPTH: u16 =
-            <mshogi_engine::game::$engine as mshogi_engine::EngineGame>::MAX_DEPTH;
-        const MAX_NODES: u64 =
-            <mshogi_engine::game::$engine as mshogi_engine::EngineGame>::MAX_NODES;
-    };
-}
-
-fn analysis_limits<G: SessionGame>(
-    operation: AnalysisOperation,
-) -> Result<WorkLimits, OperationFailure> {
-    let limits = WorkLimits {
-        time_ms: None,
-        depth: operation.depth,
-        nodes: operation.nodes,
-    };
-    if G::ANALYSIS_BUDGETS {
-        operation.validate()?;
-    } else {
-        validate_limits::<G>(limits)?;
-    }
-    Ok(limits)
-}
-
-fn validate_limits<G: SessionGame>(limits: WorkLimits) -> Result<(), OperationFailure> {
-    if limits.depth == 0
-        || limits.depth > G::MAX_DEPTH
-        || limits.nodes == 0
-        || limits.nodes > G::MAX_NODES
-    {
-        return Err(format!(
-            "Unsupported {} work limits. Use a positive bounded native depth and visit limit.",
-            G::NAME
-        )
-        .into());
-    }
-    Ok(())
-}
-
 pub(crate) fn display_observation<G: SessionGame>(
     index: usize,
     o: &ExecutionObservation,
@@ -1324,27 +1283,10 @@ pub(crate) fn display_observation<G: SessionGame>(
     }
 }
 
-/// The wrappers of the shared runtime enums for one game: its session
-/// operations, worker jobs, active-document variant and snapshot field.
+/// The wrappers of the shared runtime enums for one game: its worker jobs,
+/// active-document variant and snapshot field.
 macro_rules! session_wiring {
-    ($game:ident, $core:ident, operation: $op:ident, preferences: $prefs:ident,
-     state: $state:ident, $state_mut:ident $(, field: $field:ident)?
-     $(, local: { $($local:pat => $command:expr),* $(,)? })?) => {
-        fn operation(operation: SessionOperation) -> Result<GameOperation<Self>, SessionOperation> {
-            match operation {
-                SessionOperation::$op { actor, command } => {
-                    Ok(GameOperation::Command { actor, command })
-                }
-                SessionOperation::$prefs { settings } => {
-                    Ok(GameOperation::Preferences { settings })
-                }
-                $($($local => Ok(GameOperation::Local { command: $command }),)*)?
-                operation => Err(operation),
-            }
-        }
-        fn command_operation(actor: $core::Side, command: $core::GameCommand) -> SessionOperation {
-            SessionOperation::$op { actor, command }
-        }
+    ($game:ident, state: $state:ident, $state_mut:ident $(, field: $field:ident)?) => {
         fn opened(state: Box<NativeSession<Self>>) -> archive::OpenedNative {
             archive::OpenedNative::$game(state)
         }
@@ -1364,16 +1306,12 @@ macro_rules! session_wiring {
 /// The Chu and Tenjiku sessions differ only by names and the PV label.
 macro_rules! large_shogi_session {
     ($game:ident, $core:ident,
-     operation: $op:ident, preferences: $prefs:ident,
      state: $state:ident, $state_mut:ident, field: $field:ident,
      board: $size:expr, $label:expr, $focus:expr, score_meaning: $meaning:expr,
      pv: |$a:ident| $pv:expr) => {
         impl SessionGame for $game {
             type Presentation = presentation::Presentation;
-            engine_limits!($game);
-
-            session_wiring!($game, c, operation: $op, preferences: $prefs,
-                state: $state, $state_mut, field: $field);
+            session_wiring!($game, state: $state, $state_mut, field: $field);
 
             fn presentation(selected: &c::Game, live: &c::Game) -> Self::Presentation {
                 presentation::Presentation::new(selected, live)
@@ -1383,6 +1321,25 @@ macro_rules! large_shogi_session {
             }
             fn choice(_game: &c::Game, action: c::Action, all: &[c::Action]) -> PresentedChoice {
                 presentation::choice(action, all)
+            }
+            fn play(action: &str) -> Result<c::GameCommand, String> {
+                let action = serde_json::from_str(action).map_err(|e| e.to_string())?;
+                Ok(c::GameCommand::Play { action })
+            }
+            fn command_actor(
+                game: &c::Game,
+                _settings: &crate::game_document::SettingsOf<Self>,
+                _human: c::Side,
+                command: &c::GameCommand,
+                local: c::Side,
+            ) -> c::Side {
+                // The draw response belongs to the opponent of the offer.
+                match command {
+                    c::GameCommand::AcceptDraw | c::GameCommand::DeclineDraw => {
+                        game.snapshot().draw_offer.map_or(local, c::Side::opponent)
+                    }
+                    _ => local,
+                }
             }
             fn legal_actions(
                 game: &c::Game,

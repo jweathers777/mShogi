@@ -249,17 +249,9 @@ fn takeback_and_capacity_stops_cannot_be_overridden_by_browsing() {
             GameKind::Tori | GameKind::Chu | GameKind::Tenjiku => {
                 unreachable!("This fixture covers the original three games")
             }
-            GameKind::Chess => SessionOperation::ChessPlay {
-                action: "e2e4".parse().unwrap(),
-            },
-            GameKind::Shogi => SessionOperation::Play {
-                action: "7g7f".parse().unwrap(),
-            },
-            GameKind::Xiangqi => SessionOperation::Xiangqi {
-                command: x::GameCommand::Play {
-                    action: "a3a4".parse().unwrap(),
-                },
-            },
+            GameKind::Chess => SessionOperation::play("e2e4"),
+            GameKind::Shogi => SessionOperation::play("7g7f"),
+            GameKind::Xiangqi => SessionOperation::play("a3a4"),
         };
         send(&mut c, operation).unwrap();
         let old = pending(&mut c);

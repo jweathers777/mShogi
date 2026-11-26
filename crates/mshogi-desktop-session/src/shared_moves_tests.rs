@@ -258,13 +258,7 @@ fn shared_moves_chess_real_admission_reopen_and_takeback_do_not_fabricate_cues()
         root.event_index, 0,
         "runtime Start is not a saved player command"
     );
-    let played = send(
-        &mut c,
-        SessionOperation::ChessPlay {
-            action: "e2e4".parse().unwrap(),
-        },
-    )
-    .unwrap();
+    let played = send(&mut c, SessionOperation::play("e2e4")).unwrap();
     assert_eq!(played.moves.entries.len(), 1);
     let first = &played.moves.entries[0];
     assert_eq!((first.number, first.column, first.event_index), (1, 0, 1));

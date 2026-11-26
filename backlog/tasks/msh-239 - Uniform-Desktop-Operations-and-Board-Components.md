@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-25T08:51:00Z'
-updated_date: '2026-11-26T03:35:00Z'
+updated_date: '2026-11-26T07:42:00Z'
 labels:
   - desktop
   - refactor
@@ -56,4 +56,6 @@ Production lines before (src, no *tests.rs / *.test.*, no fixtures): desktop-ses
 MSH-209 (2026-11-25), findings that fall under AC2 and AC3 (no scope change): Board.tsx (47-127), product/ShogiBoard.tsx (36-114) and product/XiangqiBoard.tsx (20-108) repeat the same board controls (square list, help text, route controls, square labels, inspection rings, completion dialog) and have drifted (modal or inline dialog, label wording, help through a portal or inline). Chess still goes through the old colour-piece path of Board.tsx (GameBoard.tsx converts pieces); the hands group of Board.tsx and the Xiangqi guard and Tori hand filter of NativeBoard.tsx have only test callers. In desktop-session, ResourceScope (resource.rs) repeats GameKind plus Application. MSH-264 (One Frontend Game Table and Wire Types) runs after this task and covers game tables, wire types and test helpers.
 
 Checkpoint 2026-11-26 (branch claude/msh-239-uniform-desktop): Rust session part done (one SessionOperation shape, GameSettings for all games, NativeGame limits/new_record/record_of, with_game! dispatch, chu/tori/tenjiku_document alias modules removed). Session tests compile and pass except the committed GUI fixture documents (need regeneration: Tori/Chu/Tenjiku settings now have analysis_defaults). Next: frontend operations and settings, piece/board components, fixtures, scripts, docs.
+
+Checkpoint 2026-11-26 (ed8860c, branch claude/msh-239-uniform-desktop): session operations/settings done; Shogi/Xiangqi native piece labels use frontend wording; GUI documents and frontend fixtures regenerated (only settings and these labels change, checked by JSON comparison). Frontend done: Operation = play/command/preferences + common controls; GameSettings one shape; Piece.tsx (one tile, per-game face tables) replaces ShogiPiece/ToriPiece/ChuPiece/TenjikuPiece; SquareBoard (Chess, Chu, Tenjiku) replaces ChuBoard/TenjikuBoard/NativeBoard adapter; BoardControls (footer, completion dialog, point label) shared by Board, ShogiBoard, XiangqiBoard. Frontend tsc, 575 vitest tests and both builds pass. Next: gui-smoke.py/test_gui_smoke.py selectors and settings shape, docs, Tauri build, full checks, browser check of six boards, CI, line counts, review, integrate.
 <!-- SECTION:NOTES:END -->

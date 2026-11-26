@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T22:58:00Z'
+updated_date: '2026-11-26T23:01:00Z'
 labels:
   - runner
   - refactor
@@ -61,4 +61,6 @@ Transport checkpoint on codex/msh-261-shared-runner. All three runners use one t
 9b2d1a5 contains the reviewed implementation. Fresh review approved after separate CLI verification of delayed EOF, duplicate advertisements, readiness info, token padding and retirement diagnostics. python3 tools/checks.py run --base origin/main passed on macOS (format, workspace Clippy, 1172 passing tests/doc tests). No cloud experiments or new compute resources. Remaining: wait for all three process jobs on https://github.com/jweathers777/mShogi/actions/runs/45906698510 , integrate and clean up codex/msh-261-shared-runner.
 
 Hosted process CI 45906698510 passed on Ubuntu and Windows. macOS exposed a reap-budget failure when a live child had closed stdin. Retirement now drains already queued stdout without waiting for EOF after an unsuccessful quit, preserving the remaining budget to terminate and reap. Nine controlled process tests passed locally using the original 100 ms watchdog. Final production count is 7939 to 7326 (613 fewer). Next: repeat the release process matrix and workspace check on the fixed branch, then integrate.
+
+Review of the cleanup fix separated successful wire writes from transcript retention, and incomplete stdout capture from remaining journal capacity. A slow-quit child now exits naturally even with zero transcript bytes. A failed child with open stdout does not suppress the other child’s cleanup evidence. Two real subprocess regressions cover these paths. Superseded CI 45908103363 was cancelled. Corrected production line count is 7939 before and 7333 after (606 fewer). Next: verify final revision on all three hosted platforms, integrate and clean up.
 <!-- SECTION:NOTES:END -->

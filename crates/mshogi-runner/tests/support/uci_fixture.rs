@@ -114,6 +114,9 @@ fn main() {
                 println!("bestmove h8g8")
             }
         } else if line == "quit" {
+            if mode == "slow_quit" {
+                std::thread::sleep(std::time::Duration::from_millis(250));
+            }
             break;
         }
         let _ = io::stdout().flush();

@@ -411,9 +411,16 @@ fn all_stream_and_metadata_buffers_are_bounded_with_truncation_markers() {
         r.games[0].failure.as_ref().unwrap().kind,
         FailureKind::ResourceLimit
     );
-    let mut c = config("mate");
+    let mut c = config("slow_quit");
+    c.watchdogs.cleanup_ms = 1000;
     c.io.transcript_bytes = 0;
     let r = run(&c);
+    assert!(
+        r.games[0]
+            .engines
+            .iter()
+            .all(|e| e.exit.as_ref().is_some_and(|status| status.success))
+    );
     assert!(r.games[0].transcript.entries.is_empty());
     assert!(r.games[0].transcript.truncated);
     let mut c = config("mate");

@@ -112,7 +112,7 @@ pub(crate) struct Transport<J: Journal> {
     pub phase_budget: (u64, u64),
     pub watchdogs: Watchdogs,
     io: IoLimits,
-    bytes: usize,
+    bytes_left: usize,
     deadline: Option<Instant>,
 }
 impl<J: Journal> Transport<J> {
@@ -128,7 +128,7 @@ impl<J: Journal> Transport<J> {
             phase_budget: (0, 0),
             watchdogs,
             io,
-            bytes: 0,
+            bytes_left: io.transcript_bytes,
             deadline: game_ms.map(|ms| start + Duration::from_millis(ms)),
         }
     }
@@ -172,7 +172,8 @@ impl<J: Journal> Transport<J> {
             written,
         });
         let cost = serde_json::to_vec(&entry).expect("finite event").len() + 1;
-        if !self.complete || self.bytes.saturating_add(cost) > self.io.transcript_bytes {
+        if cost > self.bytes_left {
+            self.bytes_left = 0;
             self.complete = false;
             self.journal.dropped(length);
             return Err(self.failure(
@@ -182,7 +183,7 @@ impl<J: Journal> Transport<J> {
                 "transcript limit reached",
             ));
         }
-        self.bytes += cost;
+        self.bytes_left -= cost;
         self.journal.retain(entry);
         Ok(())
     }
@@ -201,34 +202,37 @@ impl<J: Journal> Transport<J> {
         line: &str,
         timeout: Duration,
         at: u64,
-    ) -> Result<(), Failure> {
+    ) -> (bool, Result<(), Failure>) {
         self.observed = elapsed_ns(self.start);
         self.phase_budget = (at, timeout.as_millis() as u64);
         if line.len() + 1 > self.io.command_bytes {
-            return Err(self.failure(
-                engine.index,
-                FailureKind::ResourceLimit,
-                phase,
-                "command exceeds byte cap",
-            ));
+            return (
+                false,
+                Err(self.failure(
+                    engine.index,
+                    FailureKind::ResourceLimit,
+                    phase,
+                    "command exceeds byte cap",
+                )),
+            );
         }
         let deadline = self.deadline.filter(|_| phase != "cleanup");
         let timeout = deadline.map_or(timeout, |d| {
             timeout.min(d.saturating_duration_since(Instant::now()))
         });
         if timeout.is_zero() && deadline.is_some() {
-            return Err(self.overall_timeout(engine.index));
+            return (false, Err(self.overall_timeout(engine.index)));
         }
         let result = engine.write(format!("{line}\n").into_bytes(), timeout);
         self.observed = elapsed_ns(self.start);
         let retained = self.log(engine.index, phase, line.into(), Some(result.is_ok()), at);
         if deadline.is_some_and(|d| Instant::now() >= d) {
-            return Err(self.overall_timeout(engine.index));
+            return (result.is_ok(), Err(self.overall_timeout(engine.index)));
         }
         if let Err(e) = result {
-            return Err(self.write_failure(engine, phase, e));
+            return (false, Err(self.write_failure(engine, phase, e)));
         }
-        retained
+        (true, retained)
     }
     pub fn write_failure(&self, engine: &mut Engine, phase: &str, error: WriteFailure) -> Failure {
         let timed_out = error.timed_out();
@@ -247,13 +251,14 @@ impl<J: Journal> Transport<J> {
         self.failure(engine.index, kind, phase, error)
     }
     pub fn send(&mut self, engine: &mut Engine, phase: &str, text: &str) -> Result<(), Failure> {
-        self.write_at(
+        let (_, result) = self.write_at(
             engine,
             phase,
             text,
             Duration::from_millis(self.watchdogs.write_ms),
             elapsed_ns(self.start),
-        )
+        );
+        result
     }
     pub fn line(
         &mut self,
@@ -508,18 +513,19 @@ impl<J: Journal> Transport<J> {
             if left.is_zero() {
                 break;
             }
-            match self.write_at(
+            let (completed, result) = self.write_at(
                 engine,
                 "cleanup",
                 command,
                 left.min(budget / 4)
                     .min(Duration::from_millis(self.watchdogs.write_ms)),
                 elapsed_ns(self.start),
-            ) {
-                Ok(()) => quit_written = command == "quit",
-                Err(e) => {
-                    failure.get_or_insert(e);
-                }
+            );
+            if command == "quit" {
+                quit_written = completed;
+            }
+            if let Err(e) = result {
+                failure.get_or_insert(e);
             }
         }
         let drain = deadline - budget / 4;

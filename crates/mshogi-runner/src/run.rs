@@ -179,7 +179,7 @@ impl<'a> GameRun<'a> {
             budget = budget.min(Duration::from_nanos(deadline.saturating_sub(self.now())));
         }
         self.log.version = self.game.version() as usize;
-        let result = self.log.write_at(
+        let (_, result) = self.log.write_at(
             self.engines[index].as_mut().unwrap(),
             phase,
             line,
@@ -525,6 +525,7 @@ pub fn run_experiment(config: &ExperimentConfig) -> Result<ExperimentReport, Run
             let engines_by_color = if pairing == 0 { [0, 1] } else { [1, 0] };
             let (stop, mut failure, mut diagnostic_failures) = run.play(engines_by_color);
             let engines = run.cleanup(failure.as_mut().or_else(|| diagnostic_failures.first_mut()));
+            run.log.journal.truncated |= !run.log.complete;
             games.push(GameReport {
                 opening_index,
                 opening_id: opening.id.clone(),
@@ -748,6 +749,9 @@ mod tests {
         assert!(child.observe_exit().unwrap().is_none());
         child.close_stdin_for_test();
         let mut run = controlled_run(&c, child);
+        let mut peer = exited_child(false);
+        peer.index = 1;
+        run.engines[1] = Some(peer);
         let failure = run.send(0, "uci", "handshake").unwrap_err();
         let (_, failure, _) = run.failed(failure);
         let mut failure = failure.unwrap();
@@ -758,6 +762,14 @@ mod tests {
         assert_eq!(failure.at_ns, receipt);
         assert!(!observations[0].exit.as_ref().unwrap().success);
         assert!(observations[0].cleanup_failures.is_empty());
+        assert!(!run.log.complete);
+        assert!(
+            run.log
+                .journal
+                .entries
+                .iter()
+                .any(|e| e.engine == 1 && e.phase == "cleanup" && e.text == "quit")
+        );
         assert_eq!(run.game.conclusion(), None);
     }
     #[test]

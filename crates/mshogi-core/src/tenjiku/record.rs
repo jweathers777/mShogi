@@ -21,7 +21,7 @@ pub struct GameRecord {
 /// Typed record refusal; neither cancellation nor capacity is a game outcome.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum RecordError {
-    /// A command is too large, or a native runtime counter or root bound was exceeded.
+    /// The command, root, declared counter or event index exceeds its representation.
     Capacity,
     /// Malformed, duplicate, unknown, missing or trailing JSON.
     Json,

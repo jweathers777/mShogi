@@ -391,7 +391,7 @@ impl<'de> Deserialize<'de> for CanonicalRecord {
 /// Explicit unsupported identity, malformed input or resource rejection.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum EnvelopeError {
-    /// A native runtime counter or root bound was exceeded.
+    /// A native record field or root exceeds its representation.
     Capacity,
     /// Cooperative native replay/parser stop; no partial record is published.
     Stopped,

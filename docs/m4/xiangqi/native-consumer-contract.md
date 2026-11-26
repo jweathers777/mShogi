@@ -106,7 +106,6 @@ a ply.
 | Rejected claim | `Submission.result == RejectedNaturalCount` plus audit events | Admitted audit with no semantic penalty/board change. Different from pre-admission refusal. |
 | WXF warning | `Warning` / `EventKind::Warning` | Active obligation, not a conclusion or process error. |
 | Stale / wrong game | `StaleContext`, typed `DispatchMismatch` | No fallback to another game or old execution. |
-| Native counter capacity | `GameError::Capacity`, `RecordError::Capacity`, `EnvelopeError::Capacity` | Runtime counter exhaustion only; refuse before acceptance and retain the current complete saveable session. |
 | Execution/invariant failure | `GameError::Invariant`, fast `Failure` | Separate failure; no manufactured win/loss/draw or positive proof. |
 | Strict record rejection | `RecordError` / `EnvelopeError` | Duplicate/unknown/missing/conflicting/unsupported/capacity or replay inconsistency; never normalize through a map before native strict parsing. |
 

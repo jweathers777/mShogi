@@ -18,7 +18,7 @@ Pursuit uses persistent IDs, so two equal pieces are not one victim.
 `GameRequest` binds an expected `GameContext`, actor and `GameCommand`. The
 context is the request token of one game instance: a fresh instance identity and
 a revision that advances at each accepted command (including a rejected claim
-audit) and undo, and never goes back. Only `Play` requires the
+audit), undo and explicit retirement, and never goes back. Only `Play` requires the
 actor to move. Resignation and claimant-specific natural-count requests need
 not consume a board ply or belong to the side to move. No caller supplies a
 warning or a conclusion. Stale, illegal, concluded, pending and resource-limited

@@ -47,9 +47,12 @@
 .game-shell.game-shell .shell-board-slot .board-wrap,.game-shell.game-shell .shell-board-slot .shogi-board-frame { width:min(100cqw,calc(100cqh - 24px)); max-width:none; margin:0 auto; flex:none; }
 .game-shell .board-help { font-size:10px; padding-top:5px; color:var(--shell-muted); }
 .game-shell .shell-game-footer { min-width:0; font-size:10px; color:var(--shell-muted); }
-.game-shell.game-shell .shogi-board-help { width:100%; max-width:none; padding-top:5px; font-size:10px; color:var(--shell-muted); }
 .game-shell .game-footnote { margin:0; font-size:10px; }
 .game-shell .shell-board-help .board-help { text-align:left; margin:0; padding-top:5px; line-height:1.3; }
+.game-shell .shell-board-help:has(.route-selection) .board-help:not(.movement-inspection-status):not(.selected-piece-status) { display:none; }
+.game-shell .shell-board-help .route-selection { display:flex; align-items:center; gap:6px; margin:0; padding:2px 0; border:0; font-size:10px; }
+.game-shell .shell-board-help .route-selection p { margin:0; line-height:1.2; }
+.game-shell .shell-board-help .route-selection button { flex-shrink:0; padding:3px 6px; margin:0; font-size:10px; }
 .game-shell .shell-game-footer .game-footnote { font-size:9px; line-height:1.2; margin-top:2px; }
 .game-shell .movement-inspection-status { color:#ffd3df; background:#3c2430; border-color:#f59ab0; }
 .game-shell .hand-piece.inspecting { outline-color:#f59ab0; }
@@ -106,8 +109,6 @@
 .game-shell .shogi-notice h3,.game-shell .shogi-notice p,.game-shell .shogi-resume p { color:#d5e2ce; }
 .game-shell .shogi-notice.error { background:#402c31; border-color:#c28c8c; color:#f3c4bf; }
 .game-shell .shogi-notice button { background:#345b50; color:#eaf1e6; border-color:#56796c; }
-.game-shell .shogi-promotion { color:var(--shell-text); background:var(--shell-panel); border-color:var(--shell-border); }
-.game-shell .shogi-promotion p { color:var(--shell-muted); }
 .product-dialog.product-dialog { color:#e7ece5; background:#1b2e35; border-color:#56716f; color-scheme:dark; }
 .product-dialog.product-dialog p,.product-dialog.product-dialog small { color:#b9cbc7; }
 .product-dialog.product-dialog .quiet { color:#e7ece5; border-color:#56716f; }

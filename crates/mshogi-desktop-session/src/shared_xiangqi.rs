@@ -5,7 +5,7 @@ use super::*;
 use crate::native_game::NativeGame;
 pub(crate) use crate::native_game::Xiangqi;
 use mshogi_core::xiangqi as x;
-use mshogi_engine::{EngineGame, XiangqiChoice, XiangqiResult, game::Xiangqi as Engine};
+use mshogi_engine::{XiangqiChoice, XiangqiResult};
 #[cfg(test)]
 #[path = "shared_xiangqi_label_tests.rs"]
 mod label_tests;
@@ -82,80 +82,23 @@ pub struct XiangqiTerminalActions {
     pub decline_draw: bool,
 }
 
-/// Persisted native preferences; execution ownership is never a setting.
-#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-pub struct XiangqiSettings {
-    /// Persisted ownership of the two native participants.
-    pub play_mode: crate::PlayMode,
-    /// Native side at the bottom, independent of human ownership.
-    pub orientation: x::Side,
-    /// Ordinary sound-fast-only analysis defaults.
-    pub analysis_defaults: WorkLimits,
-}
-impl Default for XiangqiSettings {
-    fn default() -> Self {
-        Self {
-            play_mode: crate::PlayMode::default(),
-            orientation: x::Side::Red,
-            analysis_defaults: Engine::PLAY_LIMITS,
-        }
-    }
-}
-fn valid_limits(limits: WorkLimits) -> Result<(), String> {
-    if !(1..=Engine::MAX_DEPTH).contains(&limits.depth)
-        || !(1..=Engine::MAX_NODES).contains(&limits.nodes)
-        || limits.time_ms.is_some()
-    {
-        return Err(
-            "Xiangqi analysis requires depth 1–64 and 1–5,000,000 nodes; no downgrade was applied."
-                .into(),
-        );
-    }
-    Ok(())
-}
-
-impl crate::native_game::DocumentSettings for XiangqiSettings {
-    type Side = x::Side;
-    fn new(orientation: x::Side, play_mode: crate::PlayMode) -> Self {
-        Self {
-            play_mode,
-            orientation,
-            ..Self::default()
-        }
-    }
-    fn play_mode(&self) -> crate::PlayMode {
-        self.play_mode
-    }
-    fn set_play_mode(&mut self, play_mode: crate::PlayMode) {
-        self.play_mode = play_mode;
-    }
-    fn validate(&self) -> Result<(), String> {
-        valid_limits(self.analysis_defaults)
-    }
-    fn with_analysis_defaults(&self, limits: WorkLimits) -> Option<Self> {
-        Some(Self {
-            analysis_defaults: limits,
-            ..self.clone()
-        })
-    }
-}
 fn error(e: impl ToString) -> String {
     archive::bounded(e)
 }
 
 impl SessionGame for Xiangqi {
     type Presentation = ();
-    engine_limits!(Xiangqi);
     const BOARD_SIZE: u8 = 9;
     const BOARD_LABEL: &'static str = "Xiangqi intersection board";
     const INITIAL_FOCUS: &'static str = "e3";
     const SCORE_MEANING: &'static str = "Native Red/Black root-side hundredths of soldier. Terminal distances count command edges; heuristic evaluation and existential win witnesses never establish a forced win. Ordinary analysis uses sound_fast_only; Unknown is unscored evidence, not proof of win capability.";
 
-    session_wiring!(Xiangqi, x, operation: XiangqiCommand, preferences: XiangqiPreferences,
-    state: xiangqi, xiangqi_mut, local: {
-        SessionOperation::Xiangqi { command } => command,
-    });
+    session_wiring!(Xiangqi, state: xiangqi, xiangqi_mut);
+
+    fn play(action: &str) -> Result<x::GameCommand, String> {
+        let action = action.parse().map_err(error)?;
+        Ok(x::GameCommand::Play { action })
+    }
 
     fn presentation(_selected: &x::Game, _live: &x::Game) {}
     fn status(game: &x::Game, _has_actions: bool) -> PresentedStatus {
@@ -232,7 +175,7 @@ impl SessionGame for Xiangqi {
     }
     fn command_actor(
         game: &x::Game,
-        settings: &XiangqiSettings,
+        settings: &crate::game_document::SettingsOf<Xiangqi>,
         human: x::Side,
         command: &x::GameCommand,
         local: x::Side,
@@ -263,13 +206,14 @@ impl SessionGame for Xiangqi {
             .filter_map(|point| {
                 position.piece(point).map(|p| {
                     let owner = xiangqi_side(p.side);
+                    let kind = format!("{:?}", p.kind).to_lowercase();
                     PresentedPiece {
                         square: point.to_string(),
+                        label: format!("{point}, {} {kind}", owner.label),
                         owner: owner.key,
-                        kind: format!("{:?}", p.kind).to_lowercase(),
+                        kind,
                         promoted: false,
                         text: format!("{:?}", p.kind),
-                        label: format!("{point}, {} {:?}", owner.label, p.kind),
                     }
                 })
             })
@@ -373,7 +317,11 @@ impl SessionGame for Xiangqi {
 fn xiangqi_side(side: x::Side) -> PresentedSide {
     shared::side(RulesProfile::XiangqiWxf2018V1, NativeSide::Xiangqi(side))
 }
-fn draw_offer_actor(game: &x::Game, settings: &XiangqiSettings, human: x::Side) -> x::Side {
+fn draw_offer_actor(
+    game: &x::Game,
+    settings: &crate::game_document::SettingsOf<Xiangqi>,
+    human: x::Side,
+) -> x::Side {
     if settings.play_mode.is_two_humans() {
         game.position().side_to_move().opponent()
     } else {
@@ -382,7 +330,7 @@ fn draw_offer_actor(game: &x::Game, settings: &XiangqiSettings, human: x::Side) 
 }
 fn draw_response_actor(
     game: &x::Game,
-    settings: &XiangqiSettings,
+    settings: &crate::game_document::SettingsOf<Xiangqi>,
     human: x::Side,
     local: x::Side,
 ) -> x::Side {

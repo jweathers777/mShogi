@@ -1,4 +1,3 @@
-@font-face { font-family: "mShogi Pieces"; src: url("../assets/fonts/mshogi-pieces.woff2") format("woff2"); font-style: normal; font-weight: 400; font-display: swap; }
 /* Native board/piece/hand presentation only. Shared chrome lives in shell.css. */
 .shogi-hand { display:flex; justify-content:flex-end; align-items:center; gap:3px; min-height:40px; }
 .empty-hand { color:#53634f; font-size:10px; font-style:italic; }
@@ -19,23 +18,9 @@
 .shogi-square:focus-visible .shogi-focus-ring { stroke:#163e4b; stroke-dasharray:7 4; }
 .shogi-destination { fill:#355e42; stroke:#244b38; stroke-width:4; pointer-events:none; }
 .shogi-destination path { fill:none; }
-.shogi-piece { pointer-events:none; }
-.piece-shadow { fill:#87613680; }
-.piece-body { fill:#f6deb0; stroke:#8c6433; stroke-width:2; }
-.piece-bevel { fill:none; stroke:#fff0cb; stroke-width:1.2; }
-.shogi-piece text { font-family:"mShogi Pieces",serif; font-size:35px; font-weight:400; fill:#262622; stroke:none; }
-.shogi-piece.promoted text { fill:#94382b; }
 .shogi-coordinate { font-family:system-ui,sans-serif; font-size:18px; fill:#715a3c; }
 
 .shogi-board-frame { min-height:0; position:relative; aspect-ratio:1; filter:drop-shadow(0 8px 9px #030e1240); }
-.shogi-board-help { display:flex; justify-content:space-between; gap:8px; line-height:1.3; }
-.shogi-route { font-size:12px; }
-.shogi-promotion { position:absolute; z-index:5; left:50%; transform:translateX(-50%); width:270px; padding:15px; border:1px solid; border-radius:9px; box-shadow:0 9px 35px #030e1255; }
-.shogi-promotion strong { font-family:Georgia,serif; font-size:19px; font-weight:500; }
-.shogi-promotion p { font-size:11px; margin:4px 0 10px; }
-.shogi-promotion>div { display:flex; gap:7px; margin-bottom:8px; }
-.shogi-promotion>div button { flex:1; }
-.shogi-promotion>button { width:100%; padding:7px; }
 .shogi-section-heading { display:flex; align-items:center; justify-content:space-between; gap:8px; }
 .shogi-section-heading h2 { font-size:13px; font-weight:600; }
 .shogi-history ol { list-style:none; padding:0; margin:9px -5px 0; overflow-y:auto; }
@@ -72,5 +57,4 @@
  .hand-piece { width:26px; height:33px; }
  .hand-piece svg { width:26px; height:29px; }
  .shogi-hand { gap:1px; }
- .shogi-board-help>span:first-child { max-width:70%; }
 }

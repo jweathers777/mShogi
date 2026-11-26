@@ -1,0 +1,13 @@
+/* Chu and Tenjiku: wooden squares and dense coordinates on the shared square board. */
+.large-board-frame { position:relative; aspect-ratio:1; width:min(100cqw,100cqh); filter:drop-shadow(0 8px 9px #030e1240); }
+.game-shell.game-shell .shell-board-slot .large-board-frame .board-wrap { width:100%; max-width:none; margin:0; }
+.large-board-frame .chess-board { filter:none; }
+.large-board-frame .board-border { fill:#bd945b; }
+.large-board-frame .square.light .square-fill,.large-board-frame .square.dark .square-fill { fill:#e5c58d; stroke:#947344; stroke-width:1.5; }
+.large-board-frame .square.selected.light .square-fill,.large-board-frame .square.selected.dark .square-fill { fill:#c1c690; }
+.large-board-frame .square.target.light .square-fill,.large-board-frame .square.target.dark .square-fill { fill:#ced29b; }
+.large-board-frame .coordinate { fill:#513f28; font-size:34px; }
+.large-board-frame .move-marker { fill:#355e42; }
+.large-board-frame .capture-marker { fill:none; stroke:#355e42; stroke-width:5; }
+.large-board-frame .completed-action-origin,.large-board-frame .completed-action-destination { stroke:#513b14; filter:none; }
+.large-board-frame .completed-action-capture { stroke:#7f3024; }

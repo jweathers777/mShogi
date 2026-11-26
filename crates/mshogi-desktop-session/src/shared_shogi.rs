@@ -10,17 +10,20 @@ pub(crate) type ShogiSession = NativeSession<Shogi>;
 
 impl SessionGame for Shogi {
     type Presentation = ();
-    engine_limits!(Shogi);
     const HANDS: bool = true;
     const BOARD_SIZE: u8 = 9;
     const BOARD_LABEL: &'static str = "Shogi board";
     const INITIAL_FOCUS: &'static str = "5g";
     const SCORE_MEANING: &'static str = "Native shogi root-side hundredths of pawn; terminal win distance counts complete command edges, including declarations. Not a chess mate score.";
 
-    session_wiring!(Shogi, s, operation: Shogi, preferences: ShogiPreferences, state: shogi, shogi_mut, local: {
-        SessionOperation::Play { action } => s::GameCommand::Play(action),
-        SessionOperation::Declare {} => s::GameCommand::DeclareEnteringKing,
-    });
+    session_wiring!(Shogi, state: shogi, shogi_mut);
+
+    fn play(action: &str) -> Result<s::GameCommand, String> {
+        action
+            .parse()
+            .map(s::GameCommand::Play)
+            .map_err(|e: s::ActionParseError| e.to_string())
+    }
 
     fn presentation(_selected: &s::Game, _live: &s::Game) {}
     fn status(game: &s::Game, _has_actions: bool) -> PresentedStatus {
@@ -136,9 +139,14 @@ impl SessionGame for Shogi {
                     PresentedPiece {
                         square: square.to_string(),
                         owner: owner.key,
-                        kind: format!("{:?}", p.kind).to_lowercase(),
+                        kind: kind_name(p.kind),
                         promoted: p.promoted,
-                        label: format!("{square}, {} {text}", owner.label),
+                        label: format!(
+                            "{square}, {} {}{}",
+                            owner.label,
+                            if p.promoted { "promoted " } else { "" },
+                            kind_name(p.kind)
+                        ),
                         text,
                     }
                 })
@@ -156,9 +164,9 @@ impl SessionGame for Shogi {
                 hands.push(PresentedHand {
                     origin: format!("hand:{}:{text}", owner.key),
                     owner: owner.key.clone(),
-                    kind: format!("{kind:?}").to_lowercase(),
+                    kind: kind_name(kind),
                     count,
-                    label: format!("{} hand {text}, {count}", owner.label),
+                    label: format!("{} {} in hand, {count}", owner.label, kind_name(kind)),
                     text,
                 });
             }
@@ -273,4 +281,8 @@ fn status(game: &s::Game) -> PresentedStatus {
         label,
         score_half_points: game.conclusion().map(|c| c.score_half_points()),
     }
+}
+/// Lowercase native piece name, as the presentation spells it.
+fn kind_name(kind: s::PieceKind) -> String {
+    format!("{kind:?}").to_lowercase()
 }

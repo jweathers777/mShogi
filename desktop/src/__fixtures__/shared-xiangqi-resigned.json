@@ -101,8 +101,11 @@
     "dirty": true,
     "path": null,
     "settings": {
-      "game_kind": "xiangqi",
-      "orientation": "red",
+      "play_mode": "human_engine",
+      "orientation": {
+        "game_kind": "xiangqi",
+        "side": "red"
+      },
       "analysis_defaults": {
         "depth": 64,
         "nodes": 300000
@@ -450,7 +453,7 @@
       "kind": "rook",
       "promoted": false,
       "text": "Rook",
-      "label": "a0, Red Rook"
+      "label": "a0, Red rook"
     },
     {
       "square": "b0",
@@ -458,7 +461,7 @@
       "kind": "horse",
       "promoted": false,
       "text": "Horse",
-      "label": "b0, Red Horse"
+      "label": "b0, Red horse"
     },
     {
       "square": "c0",
@@ -466,7 +469,7 @@
       "kind": "elephant",
       "promoted": false,
       "text": "Elephant",
-      "label": "c0, Red Elephant"
+      "label": "c0, Red elephant"
     },
     {
       "square": "d0",
@@ -474,7 +477,7 @@
       "kind": "advisor",
       "promoted": false,
       "text": "Advisor",
-      "label": "d0, Red Advisor"
+      "label": "d0, Red advisor"
     },
     {
       "square": "e0",
@@ -482,7 +485,7 @@
       "kind": "general",
       "promoted": false,
       "text": "General",
-      "label": "e0, Red General"
+      "label": "e0, Red general"
     },
     {
       "square": "f0",
@@ -490,7 +493,7 @@
       "kind": "advisor",
       "promoted": false,
       "text": "Advisor",
-      "label": "f0, Red Advisor"
+      "label": "f0, Red advisor"
     },
     {
       "square": "g0",
@@ -498,7 +501,7 @@
       "kind": "elephant",
       "promoted": false,
       "text": "Elephant",
-      "label": "g0, Red Elephant"
+      "label": "g0, Red elephant"
     },
     {
       "square": "h0",
@@ -506,7 +509,7 @@
       "kind": "horse",
       "promoted": false,
       "text": "Horse",
-      "label": "h0, Red Horse"
+      "label": "h0, Red horse"
     },
     {
       "square": "i0",
@@ -514,7 +517,7 @@
       "kind": "rook",
       "promoted": false,
       "text": "Rook",
-      "label": "i0, Red Rook"
+      "label": "i0, Red rook"
     },
     {
       "square": "b2",
@@ -522,7 +525,7 @@
       "kind": "cannon",
       "promoted": false,
       "text": "Cannon",
-      "label": "b2, Red Cannon"
+      "label": "b2, Red cannon"
     },
     {
       "square": "h2",
@@ -530,7 +533,7 @@
       "kind": "cannon",
       "promoted": false,
       "text": "Cannon",
-      "label": "h2, Red Cannon"
+      "label": "h2, Red cannon"
     },
     {
       "square": "a3",
@@ -538,7 +541,7 @@
       "kind": "soldier",
       "promoted": false,
       "text": "Soldier",
-      "label": "a3, Red Soldier"
+      "label": "a3, Red soldier"
     },
     {
       "square": "c3",
@@ -546,7 +549,7 @@
       "kind": "soldier",
       "promoted": false,
       "text": "Soldier",
-      "label": "c3, Red Soldier"
+      "label": "c3, Red soldier"
     },
     {
       "square": "e3",
@@ -554,7 +557,7 @@
       "kind": "soldier",
       "promoted": false,
       "text": "Soldier",
-      "label": "e3, Red Soldier"
+      "label": "e3, Red soldier"
     },
     {
       "square": "g3",
@@ -562,7 +565,7 @@
       "kind": "soldier",
       "promoted": false,
       "text": "Soldier",
-      "label": "g3, Red Soldier"
+      "label": "g3, Red soldier"
     },
     {
       "square": "i3",
@@ -570,7 +573,7 @@
       "kind": "soldier",
       "promoted": false,
       "text": "Soldier",
-      "label": "i3, Red Soldier"
+      "label": "i3, Red soldier"
     },
     {
       "square": "a6",
@@ -578,7 +581,7 @@
       "kind": "soldier",
       "promoted": false,
       "text": "Soldier",
-      "label": "a6, Black Soldier"
+      "label": "a6, Black soldier"
     },
     {
       "square": "c6",
@@ -586,7 +589,7 @@
       "kind": "soldier",
       "promoted": false,
       "text": "Soldier",
-      "label": "c6, Black Soldier"
+      "label": "c6, Black soldier"
     },
     {
       "square": "e6",
@@ -594,7 +597,7 @@
       "kind": "soldier",
       "promoted": false,
       "text": "Soldier",
-      "label": "e6, Black Soldier"
+      "label": "e6, Black soldier"
     },
     {
       "square": "g6",
@@ -602,7 +605,7 @@
       "kind": "soldier",
       "promoted": false,
       "text": "Soldier",
-      "label": "g6, Black Soldier"
+      "label": "g6, Black soldier"
     },
     {
       "square": "i6",
@@ -610,7 +613,7 @@
       "kind": "soldier",
       "promoted": false,
       "text": "Soldier",
-      "label": "i6, Black Soldier"
+      "label": "i6, Black soldier"
     },
     {
       "square": "b7",
@@ -618,7 +621,7 @@
       "kind": "cannon",
       "promoted": false,
       "text": "Cannon",
-      "label": "b7, Black Cannon"
+      "label": "b7, Black cannon"
     },
     {
       "square": "h7",
@@ -626,7 +629,7 @@
       "kind": "cannon",
       "promoted": false,
       "text": "Cannon",
-      "label": "h7, Black Cannon"
+      "label": "h7, Black cannon"
     },
     {
       "square": "a9",
@@ -634,7 +637,7 @@
       "kind": "rook",
       "promoted": false,
       "text": "Rook",
-      "label": "a9, Black Rook"
+      "label": "a9, Black rook"
     },
     {
       "square": "b9",
@@ -642,7 +645,7 @@
       "kind": "horse",
       "promoted": false,
       "text": "Horse",
-      "label": "b9, Black Horse"
+      "label": "b9, Black horse"
     },
     {
       "square": "c9",
@@ -650,7 +653,7 @@
       "kind": "elephant",
       "promoted": false,
       "text": "Elephant",
-      "label": "c9, Black Elephant"
+      "label": "c9, Black elephant"
     },
     {
       "square": "d9",
@@ -658,7 +661,7 @@
       "kind": "advisor",
       "promoted": false,
       "text": "Advisor",
-      "label": "d9, Black Advisor"
+      "label": "d9, Black advisor"
     },
     {
       "square": "e9",
@@ -666,7 +669,7 @@
       "kind": "general",
       "promoted": false,
       "text": "General",
-      "label": "e9, Black General"
+      "label": "e9, Black general"
     },
     {
       "square": "f9",
@@ -674,7 +677,7 @@
       "kind": "advisor",
       "promoted": false,
       "text": "Advisor",
-      "label": "f9, Black Advisor"
+      "label": "f9, Black advisor"
     },
     {
       "square": "g9",
@@ -682,7 +685,7 @@
       "kind": "elephant",
       "promoted": false,
       "text": "Elephant",
-      "label": "g9, Black Elephant"
+      "label": "g9, Black elephant"
     },
     {
       "square": "h9",
@@ -690,7 +693,7 @@
       "kind": "horse",
       "promoted": false,
       "text": "Horse",
-      "label": "h9, Black Horse"
+      "label": "h9, Black horse"
     },
     {
       "square": "i9",
@@ -698,7 +701,7 @@
       "kind": "rook",
       "promoted": false,
       "text": "Rook",
-      "label": "i9, Black Rook"
+      "label": "i9, Black rook"
     }
   ],
   "hands": [],

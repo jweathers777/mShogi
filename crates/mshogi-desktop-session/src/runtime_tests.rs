@@ -102,9 +102,7 @@ fn rejected_chess_worker_command_is_not_capacity_engine_failure_or_outcome() {
         .shared_command_with_receipt(SharedDesktopCommand {
             expected: c.shared_token(),
             game: GameKind::Chess,
-            operation: SessionOperation::ChessPlay {
-                action: "e2e5".parse().unwrap(),
-            },
+            operation: SessionOperation::play("e2e5"),
         })
         .unwrap();
     let deadline = Instant::now() + std::time::Duration::from_secs(10);
@@ -170,9 +168,12 @@ fn direct_identity_refusals_publish_native_facts_without_mutating_the_game() {
     c.io_state.id = 0;
     c.session.capacity.id = MAX_SAFE_ID - 32;
     assert!(
-        c.test_chess_operation(SessionOperation::ChessPreferences {
-            orientation: Color::Black,
-            analysis_defaults: AnalysisOperation { depth: 1, nodes: 1 }
+        c.test_chess_operation(SessionOperation::Preferences {
+            settings: crate::game_document::GameSettings {
+                play_mode: PlayMode::HumanEngine,
+                orientation: NativeSide::Chess(Color::Black),
+                analysis_defaults: AnalysisOperation { depth: 1, nodes: 1 },
+            },
         })
         .is_err()
     );
@@ -242,7 +243,7 @@ fn reopened_all_game_identities_exceed_runtime_only_revisions_without_spending_s
 }
 
 #[test]
-fn current_flat_chess_claim_keeps_the_intended_action_unplayed_and_rejects_old_transport() {
+fn chess_claim_keeps_the_intended_action_unplayed() {
     let game =
         AdjudicatedGame::from_fen("7k/8/8/8/8/8/R7/K7 w - - 99 1", ClaimPolicy::ExplicitOnly)
             .unwrap();
@@ -263,11 +264,13 @@ fn current_flat_chess_claim_keeps_the_intended_action_unplayed_and_rejects_old_t
     let command = SharedDesktopCommand {
         expected: before.token,
         game: GameKind::Chess,
-        operation: SessionOperation::ChessClaim { claim },
+        operation: SessionOperation::command(&MatchCommand::Claim {
+            reason: claim.reason,
+            intended: claim.intended,
+        }),
     };
     let json = serde_json::to_string(&command).unwrap();
-    assert!(json.contains("\"kind\":\"chess_claim\""));
-    assert!(!json.contains("\"command\""));
+    assert!(json.contains("\"kind\":\"command\""));
     let (_, receipt) = c
         .shared_command_with_receipt(SharedDesktopCommand::from_json(&json).unwrap())
         .unwrap();
@@ -289,11 +292,6 @@ fn current_flat_chess_claim_keeps_the_intended_action_unplayed_and_rejects_old_t
             .is_err(),
         "the exact old outer token cannot be reused"
     );
-    let old = serde_json::json!({"expected":before.token,"game":"chess","operation":{"kind":"chess","command":{"kind":"claim","version":before.token.version,"claim":claim}}});
-    assert!(
-        SharedDesktopCommand::from_json(&old.to_string()).is_err(),
-        "retired nested command is not a compatibility transport"
-    );
     let duplicate = json.replace(
         "\"claim\":",
         &format!(
@@ -303,7 +301,7 @@ fn current_flat_chess_claim_keeps_the_intended_action_unplayed_and_rejects_old_t
     );
     assert!(SharedDesktopCommand::from_json(&duplicate).is_err());
     let duplicate_action = format!(
-        "{{\"expected\":{},\"game\":\"chess\",\"operation\":{{\"kind\":\"chess_play\",\"action\":\"e2e4\",\"action\":\"d2d4\"}}}}",
+        "{{\"expected\":{},\"game\":\"chess\",\"operation\":{{\"kind\":\"play\",\"action\":\"e2e4\",\"action\":\"d2d4\"}}}}",
         serde_json::to_string(&before.token).unwrap()
     );
     assert!(SharedDesktopCommand::from_json(&duplicate_action).is_err());

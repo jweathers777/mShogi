@@ -72,8 +72,9 @@ complete native action, ordered `steps` and optional explicit completion. The
 same endpoints need not mean the same route/action. Optional promotion supplies
 both Promote/Do not promote choices; compulsory promotion supplies only Promote.
 The shared `Board` retains the M3 synthetic route/complete-action handling and
-adds hand selection and native coordinate order. `NativeBoard` adapts only DTO
-presentation. Click, arrows, Enter/Space, Escape and completion-dialog focus
+adds native coordinate order. `SquareBoard` (Chess, Chu, Tenjiku), `ShogiBoard`
+(Shogi, Tori, with hands) and `XiangqiBoard` adapt only DTO presentation and
+share one footer, completion dialog and square label (`BoardControls`). Click, arrows, Enter/Space, Escape and completion-dialog focus
 operate over supplied choices. A selected hand, route prefix or promotion dialog
 is never a committed action. Game/document/version/selection/orientation changes
 retire partial choices. No Chu/Tenjiku interaction implementation is claimed.
@@ -114,8 +115,8 @@ with its existing score/perspective and Full meaning.
 Existing bridge watchdog, bounded queues, cancellation and child cleanup remain.
 Engine requests, replies, shared desktop commands and native envelopes have no
 byte limit (MSH-268); diagnostics stay 4 KiB.
-Raw `SessionOperation` replacement dispatch preserves duplicate fields through
-strict native parsing, avoiding serde's internally tagged enum buffering.
+`SharedDesktopCommand::from_json` refuses duplicate fields anywhere, including
+the game payloads, before the operation is parsed.
 Diagnostics truncate at a valid UTF-8 boundary.
 Shogi history/reconstruction follows the 320-action move-count rule, with no Full reachability reconstruction. Retained
 observations are capped at 256; new analysis/resume/retry is refused before
@@ -167,8 +168,8 @@ appropriate game-specific pieces using those fields. Coordinates and ordered
 orientations prescribe no pixels, viewport sizing, scrolling or zoom policy.
 Typed hand origins/counts prescribe no button-row layout. Analysis/observations
 carry provenance without requiring raw diagnostics in the normal interface.
-`NativeBoard` is one concrete renderer/verification consumer, not a mandate for
-identical chess/shogi/large-variant product layouts.
+The board renderers are concrete consumers, not a mandate for identical
+chess/shogi/large-variant product layouts.
 
 MSH-74 owns the actual shogi UI design and implementation: full9x9 visible
 without scrolling at supported normal window sizes; deliberate shogi-specific

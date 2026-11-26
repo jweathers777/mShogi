@@ -138,7 +138,7 @@ it("uses the native close contract and exact rendered document token", async () 
 
 it.each([chessJson, standardJson, xiangqiJson])("serializes direct $game resignation and rejects obsolete rendered authority without inferring an outcome", async fixture => {
   const source = fixture as unknown as GameSnapshot; const reply = deferred<GameSnapshot>();
-  const operation = source.game === "xiangqi" ? { kind: "xiangqi" as const, command: { kind: "resign" as const } } : { kind: "resign" as const };
+  const operation = { kind: "resign" as const };
   vi.mocked(invoke).mockResolvedValueOnce(source).mockReturnValueOnce(reply.promise);
   const { result } = renderHook(useGameSession); await flush();
   let pending!: Promise<GameSnapshot | null>;

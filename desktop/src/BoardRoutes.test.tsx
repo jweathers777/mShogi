@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { Board, displayedSquares } from "./Board";
+import { TestBoard as Board, displayedSquares } from "./testing/TestBoard";
 import type { BoardGeometry, NativeChoice } from "./boardPresentation";
 import type { BoardPiece } from "./native";
 import nativeJson from "./__fixtures__/synthetic.json";
@@ -27,7 +27,7 @@ function square(name: string) {
 function board() {
   const onPlay = vi.fn();
   const props = { pieces: fixture.pieces, choices: fixture.choices,
-    version: fixture.version, profile: fixture.profile, geometry,
+    version: fixture.version, contextKey: fixture.profile, geometry,
     orientation: "white" as const, disabled: false,
     glyphs: { strider: "S", stone: "●" }, onPlay };
   return { ...render(<Board {...props} />), props, onPlay };
@@ -104,7 +104,7 @@ it("retires partial routes on native version, profile, disabled state and orient
   rerender(<Board {...props} version={props.version + 1} />);
   expect(screen.queryByText("Complete action here", { selector: "button" })).toBeNull();
   fireEvent.click(square("i9")); fireEvent.click(square("j10"));
-  rerender(<Board {...props} profile="a-different-presentation-context" />);
+  rerender(<Board {...props} contextKey="a-different-presentation-context" />);
   expect(screen.queryByText("Complete action here", { selector: "button" })).toBeNull();
   fireEvent.click(square("i9")); fireEvent.click(square("j10"));
   rerender(<Board {...props} disabled />);

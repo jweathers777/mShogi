@@ -808,10 +808,14 @@
     "dirty": true,
     "path": null,
     "settings": {
-      "game_kind": "tenjiku",
-      "settings": {
-        "play_mode": "human_engine",
-        "orientation": "sente"
+      "play_mode": "human_engine",
+      "orientation": {
+        "game_kind": "tenjiku",
+        "side": "sente"
+      },
+      "analysis_defaults": {
+        "depth": 64,
+        "nodes": 50000
       }
     }
   },

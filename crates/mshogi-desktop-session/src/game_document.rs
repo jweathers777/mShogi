@@ -3,44 +3,36 @@
 //! native record (start position and every command), the human's side and
 //! the settings. Opening a document parses the record, which replays and
 //! checks every command in the rules core.
-use crate::native_game::{
-    DocumentSettings, NativeFailure, NativeGame, NativeResource, RecordFailure,
-};
+use crate::native_game::{NativeFailure, NativeGame, NativeResource, RecordFailure};
 use crate::{document, *};
 use mshogi_core::native::RulesProfile;
 use serde::{Deserialize, Serialize};
 use std::fmt;
 use std::marker::PhantomData;
 
-#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
+/// Saved settings of a document, in the same shape for every game.
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-/// Saved settings of a game without game-specific fields.
 pub struct GameSettings<S> {
     /// Persisted ownership of the two native participants.
     pub play_mode: crate::PlayMode,
     /// Native side displayed at the bottom.
     pub orientation: S,
-}
-impl<S> DocumentSettings for GameSettings<S>
-where
-    S: Clone + Eq + fmt::Debug + Serialize + serde::de::DeserializeOwned + Send + Sync + 'static,
-{
-    type Side = S;
-    fn new(orientation: S, play_mode: crate::PlayMode) -> Self {
-        Self {
-            play_mode,
-            orientation,
-        }
-    }
-    fn play_mode(&self) -> crate::PlayMode {
-        self.play_mode
-    }
-    fn set_play_mode(&mut self, play_mode: crate::PlayMode) {
-        self.play_mode = play_mode;
-    }
+    /// Limits that the analysis form starts with; Analyze remembers the last ones.
+    pub analysis_defaults: crate::AnalysisOperation,
 }
 /// The settings of game `G`.
-pub type SettingsOf<G> = <G as NativeGame>::Settings;
+pub type SettingsOf<G> = GameSettings<<G as NativeGame>::Side>;
+impl<S> GameSettings<S> {
+    /// The same settings with another orientation type.
+    pub fn map<T>(self, f: impl FnOnce(S) -> T) -> GameSettings<T> {
+        GameSettings {
+            play_mode: self.play_mode,
+            orientation: f(self.orientation),
+            analysis_defaults: self.analysis_defaults,
+        }
+    }
+}
 
 #[derive(Serialize)]
 #[serde(bound(serialize = ""))]
@@ -54,7 +46,7 @@ impl<G: NativeGame> Clone for Payload<G> {
         Self {
             record: self.record.clone(),
             human: self.human,
-            settings: self.settings.clone(),
+            settings: self.settings,
         }
     }
 }
@@ -181,7 +173,11 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
         Self::accept(Payload {
             record,
             human,
-            settings: G::Settings::new(human, play_mode),
+            settings: GameSettings {
+                play_mode,
+                orientation: human,
+                analysis_defaults: G::ANALYSIS_DEFAULTS,
+            },
         })
     }
     /// Read a saved document: strict fields, then the native record parse,
@@ -224,7 +220,8 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
     }
     fn accept(payload: Payload<G>) -> Result<Self, GameDocumentError> {
         type E<G> = Errors<G>;
-        payload.settings.validate().map_err(E::<G>::invalid)?;
+        crate::native_game::analysis_limits::<G>(payload.settings.analysis_defaults)
+            .map_err(E::<G>::invalid)?;
         let bytes = document::encode(G::KIND, &payload).map_err(E::<G>::invalid)?;
         Ok(Self { payload, bytes })
     }
@@ -278,7 +275,7 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
     }
     /// This document with new settings; the play mode stays the document's.
     pub fn with_settings(&self, settings: SettingsOf<G>) -> Result<Self, GameDocumentError> {
-        if settings.play_mode() != self.payload.settings.play_mode() {
+        if settings.play_mode != self.payload.settings.play_mode {
             return Err(Errors::<G>::invalid(
                 "participant mode can only be selected for a new game",
             ));

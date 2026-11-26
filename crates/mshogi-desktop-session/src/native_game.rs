@@ -4,9 +4,10 @@
 //! code makes; the rules stay in `mshogi_core`. A constant here records a real
 //! difference between games, never a copy that drifted.
 use crate::ResourceScope;
+use crate::analysis::AnalysisOperation;
 pub use crate::native_chess::Chess;
 use mshogi_core::native::{CanonicalRecord, GameKind, NativeSide, RulesProfile};
-use mshogi_engine::{EngineGame, ExecutionResult};
+use mshogi_engine::{EngineGame, ExecutionResult, WorkLimits};
 use serde::{Serialize, de::DeserializeOwned};
 use std::fmt::Debug;
 
@@ -41,30 +42,6 @@ pub enum NativeFailure {
     Invalid(String),
 }
 
-/// Saved document settings of a game: at least the native orientation and
-/// the participant mode.
-pub trait DocumentSettings:
-    Clone + Eq + Debug + Serialize + DeserializeOwned + Send + Sync + 'static
-{
-    /// Native participant.
-    type Side;
-    /// Settings of a new document.
-    fn new(orientation: Self::Side, play_mode: crate::PlayMode) -> Self;
-    /// Persisted ownership of the two native participants.
-    fn play_mode(&self) -> crate::PlayMode;
-    /// Keep the document's participant mode.
-    fn set_play_mode(&mut self, play_mode: crate::PlayMode);
-    /// Check game-specific settings fields.
-    fn validate(&self) -> Result<(), String> {
-        Ok(())
-    }
-    /// These settings with `limits` as the remembered analysis limits, for a
-    /// game whose settings remember them.
-    fn with_analysis_defaults(&self, _limits: mshogi_engine::WorkLimits) -> Option<Self> {
-        None
-    }
-}
-
 /// A game that the generic document and session serve.
 pub trait NativeGame: Sized + Send + Sync + 'static {
     /// Display name in diagnostics.
@@ -75,6 +52,19 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
     const SCOPE: ResourceScope;
     /// Both native participants, Sente first.
     const SIDES: [Self::Side; 2];
+    /// Work limits of an engine turn.
+    const PLAY_LIMITS: WorkLimits;
+    /// Largest accepted search depth.
+    const MAX_DEPTH: u16;
+    /// Largest accepted visit budget.
+    const MAX_NODES: u64;
+    /// Analysis uses the fixed move-analysis budgets instead of the bounds above.
+    const ANALYSIS_BUDGETS: bool = false;
+    /// Analysis limits of a new document.
+    const ANALYSIS_DEFAULTS: AnalysisOperation = AnalysisOperation {
+        depth: Self::PLAY_LIMITS.depth,
+        nodes: Self::PLAY_LIMITS.nodes,
+    };
 
     /// Native participant.
     type Side: Copy + Eq + Debug + Serialize + DeserializeOwned + Send + Sync;
@@ -88,11 +78,19 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
     type Record: Clone + PartialEq + Debug + Serialize + Send + Sync;
     /// This game's engine result.
     type EngineResult;
-    /// Saved document settings.
-    type Settings: DocumentSettings<Side = Self::Side>;
 
     /// Wrap a native participant.
     fn native_side(side: Self::Side) -> NativeSide;
+    /// The native participant of a game-qualified side of this game.
+    fn side_of(side: NativeSide) -> Option<Self::Side> {
+        Self::SIDES
+            .into_iter()
+            .find(|s| Self::native_side(*s) == side)
+    }
+    /// Record of a new standard game under `profile`.
+    fn new_record(profile: RulesProfile) -> Result<Self::Record, String>;
+    /// The native record of a canonical record of this game.
+    fn record_of(record: CanonicalRecord) -> Option<Self::Record>;
     /// Exact canonical context sent to the engine.
     fn context(game: &Self::Game) -> Result<CanonicalRecord, RecordFailure>;
     /// Side to move in an admitted engine context, without replay.
@@ -176,6 +174,12 @@ macro_rules! canonical_record {
         fn context(game: &Self::Game) -> Result<CanonicalRecord, RecordFailure> {
             Self::from_game(game).map(|record| CanonicalRecord::$variant(Box::new(record)))
         }
+        fn record_of(record: CanonicalRecord) -> Option<Self::Record> {
+            match record {
+                CanonicalRecord::$variant(record) => Some(*record),
+                _ => None,
+            }
+        }
         /// Side to move in an engine context, without replay.
         fn context_side(record: &CanonicalRecord) -> Self::Side {
             let CanonicalRecord::$variant(record) = record else {
@@ -189,6 +193,9 @@ macro_rules! canonical_record {
 // The five games on the shared search core use one engine adapter.
 macro_rules! engine_glue {
     ($engine:ident) => {
+        const PLAY_LIMITS: WorkLimits = <mshogi_engine::game::$engine as EngineGame>::PLAY_LIMITS;
+        const MAX_DEPTH: u16 = <mshogi_engine::game::$engine as EngineGame>::MAX_DEPTH;
+        const MAX_NODES: u64 = <mshogi_engine::game::$engine as EngineGame>::MAX_NODES;
         type EngineResult = mshogi_engine::EngineResult<mshogi_engine::game::$engine>;
         fn engine_result(result: &ExecutionResult) -> Option<&Self::EngineResult> {
             <mshogi_engine::game::$engine as EngineGame>::result(result)
@@ -219,7 +226,8 @@ macro_rules! engine_glue {
 /// The Chu and Tenjiku cores have the same API; one impl serves both.
 macro_rules! large_shogi_game {
     ($game:ident, $core:ident, $glue:ident, $result_variant:ident, $scope:ident,
-     profile: |$r:ident| $profile:expr, game_profile: |$g:ident| $game_profile:expr) => {
+     profile: |$r:ident| $profile:expr, game_profile: |$g:ident| $game_profile:expr,
+     new_game: |$p:ident| $new_game:expr) => {
         /// Marker of the native game behind the generic document and session.
         pub struct $game;
         impl NativeGame for $game {
@@ -236,12 +244,15 @@ macro_rules! large_shogi_game {
             type Action = mshogi_core::$core::Action;
             type Game = mshogi_core::$core::Game;
             type Record = mshogi_core::$core::GameRecord;
-            type Settings = crate::game_document::GameSettings<Self::Side>;
 
             fn native_side(side: Self::Side) -> NativeSide {
                 NativeSide::$result_variant(side)
             }
             canonical_record!($result_variant);
+            fn new_record($p: RulesProfile) -> Result<Self::Record, String> {
+                let game = $new_game;
+                mshogi_core::$core::GameRecord::from_game(&game).map_err(|e| e.to_string())
+            }
             fn parse_record(
                 text: &str,
                 stop: &mut impl FnMut() -> bool,
@@ -340,9 +351,13 @@ macro_rules! large_shogi_game {
 }
 
 large_shogi_game!(Chu, chu, chu_glue, Chu, Chu,
-    profile: |_r| RulesProfile::ChuJcsa2019V1, game_profile: |_g| RulesProfile::ChuJcsa2019V1);
+    profile: |_r| RulesProfile::ChuJcsa2019V1, game_profile: |_g| RulesProfile::ChuJcsa2019V1,
+    new_game: |_p| mshogi_core::chu::Game::standard());
 large_shogi_game!(Tenjiku, tenjiku, tenjiku_glue, Tenjiku, Tenjiku,
-    profile: |r| RulesProfile::from(r.profile()), game_profile: |g| RulesProfile::from(g.profile()));
+profile: |r| RulesProfile::from(r.profile()), game_profile: |g| RulesProfile::from(g.profile()),
+new_game: |p| mshogi_core::tenjiku::Game::standard(
+    p.tenjiku().ok_or("Tenjiku requires an explicit supported rules profile.")?,
+));
 
 /// Marker of the native Tori game behind the generic document and session.
 pub struct Tori;
@@ -360,12 +375,15 @@ impl NativeGame for Tori {
     type Action = mshogi_core::tori::Action;
     type Game = mshogi_core::tori::Game;
     type Record = mshogi_core::tori::GameRecord;
-    type Settings = crate::game_document::GameSettings<Self::Side>;
 
     fn native_side(side: Self::Side) -> NativeSide {
         NativeSide::Tori(side)
     }
     canonical_record!(Tori);
+    fn new_record(_profile: RulesProfile) -> Result<Self::Record, String> {
+        mshogi_core::tori::GameRecord::from_game(&mshogi_core::tori::Game::standard())
+            .map_err(|e| e.to_string())
+    }
     fn parse_record(
         text: &str,
         stop: &mut impl FnMut() -> bool,
@@ -479,12 +497,21 @@ impl NativeGame for Shogi {
     type Action = mshogi_core::shogi::Action;
     type Game = mshogi_core::shogi::Game;
     type Record = mshogi_core::shogi::GameRecord;
-    type Settings = crate::shared::archive::ShogiSettings;
+    // Analysis stays quick by default; play uses the full engine budget.
+    const ANALYSIS_DEFAULTS: AnalysisOperation = AnalysisOperation {
+        depth: 1,
+        nodes: 1000,
+    };
 
     fn native_side(side: Self::Side) -> NativeSide {
         NativeSide::Shogi(side)
     }
     canonical_record!(Shogi);
+    fn new_record(_profile: RulesProfile) -> Result<Self::Record, String> {
+        Ok(mshogi_core::shogi::GameRecord::from_game(
+            &mshogi_core::shogi::Game::new(),
+        ))
+    }
     fn parse_record(
         text: &str,
         stop: &mut impl FnMut() -> bool,
@@ -596,12 +623,16 @@ impl NativeGame for Xiangqi {
     type Action = mshogi_core::xiangqi::Action;
     type Game = mshogi_core::xiangqi::Game;
     type Record = mshogi_core::xiangqi::GameRecord;
-    type Settings = crate::shared::xiangqi::XiangqiSettings;
 
     fn native_side(side: Self::Side) -> NativeSide {
         NativeSide::Xiangqi(side)
     }
     canonical_record!(Xiangqi);
+    fn new_record(_profile: RulesProfile) -> Result<Self::Record, String> {
+        use mshogi_core::xiangqi as x;
+        let game = x::Game::standard(x::ClaimPolicy::Explicit).map_err(|e| e.to_string())?;
+        x::GameRecord::from_game(&game).map_err(|e| e.to_string())
+    }
     fn parse_record(
         text: &str,
         stop: &mut impl FnMut() -> bool,
@@ -706,4 +737,36 @@ impl NativeGame for Xiangqi {
         mshogi_core::xiangqi::GameCommand::Resign
     }
     engine_glue!(Xiangqi);
+}
+
+/// Work limits of an analysis request, checked against the game's bounds.
+pub(crate) fn analysis_limits<G: NativeGame>(
+    operation: AnalysisOperation,
+) -> Result<WorkLimits, String> {
+    let limits = WorkLimits {
+        time_ms: None,
+        depth: operation.depth,
+        nodes: operation.nodes,
+    };
+    if G::ANALYSIS_BUDGETS {
+        operation.validate()?;
+    } else {
+        validate_limits::<G>(limits)?;
+    }
+    Ok(limits)
+}
+
+/// Check engine work limits against the game's bounds.
+pub(crate) fn validate_limits<G: NativeGame>(limits: WorkLimits) -> Result<(), String> {
+    if limits.depth == 0
+        || limits.depth > G::MAX_DEPTH
+        || limits.nodes == 0
+        || limits.nodes > G::MAX_NODES
+    {
+        return Err(format!(
+            "Unsupported {} work limits. Use a positive bounded native depth and visit limit.",
+            G::NAME
+        ));
+    }
+    Ok(())
 }

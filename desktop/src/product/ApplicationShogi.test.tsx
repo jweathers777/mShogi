@@ -106,7 +106,7 @@ it("requires native declaration capability plus a formal confirmation and preser
   expect(session.command).not.toHaveBeenCalled();
   expect(screen.getByRole("dialog", { name: "Declare entering king?" })).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: "Confirm declaration" }));
-  expect(session.command).toHaveBeenCalledExactlyOnceWith(eligible, { kind: "declare" });
+  expect(session.command).toHaveBeenCalledExactlyOnceWith(eligible, { kind: "command", command: { kind: "declare_entering_king" } });
 });
 it("retains cancellation and exact-context protection for declaration confirmations", () => {
   const eligible = { ...standard, capabilities: { ...standard.capabilities, declaration: true } };

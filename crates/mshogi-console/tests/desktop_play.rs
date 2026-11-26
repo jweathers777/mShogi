@@ -154,12 +154,7 @@ fn human_white_plays_two_turns_against_actual_bounded_native_replies() {
     assert_eq!(initial.phase, EnginePhase::Idle);
     assert_eq!(initial.choices.len(), 20);
     let thinking = controller
-        .settled(
-            initial.token,
-            SessionOperation::ChessPlay {
-                action: "e2e4".parse().unwrap(),
-            },
-        )
+        .settled(initial.token, SessionOperation::play("e2e4"))
         .unwrap();
     assert_eq!(thinking.phase, EnginePhase::Thinking);
     assert_eq!(history(&thinking), ["e2e4"]);
@@ -169,9 +164,9 @@ fn human_white_plays_two_turns_against_actual_bounded_native_replies() {
     assert!(replied.token.version > thinking.token.version);
     real_observations(&replied, Color::Black, thinking.token.version);
     replay(&replied);
-    let next = replied.choices.first().unwrap().action.parse().unwrap();
+    let next = &replied.choices.first().unwrap().action;
     let thinking = controller
-        .settled(replied.token, SessionOperation::ChessPlay { action: next })
+        .settled(replied.token, SessionOperation::play(next))
         .unwrap();
     assert_eq!(history(&thinking).len(), 3);
     assert_eq!(&history(&thinking)[..2], &history(&replied));
@@ -227,9 +222,9 @@ fn human_black_gets_an_automatic_native_opening_and_can_answer_it() {
     assert_eq!(history(&replied).len(), 1);
     real_observations(&replied, Color::White, thinking.token.version);
     replay(&replied);
-    let next = replied.choices.first().unwrap().action.parse().unwrap();
+    let next = &replied.choices.first().unwrap().action;
     let thinking = controller
-        .settled(replied.token, SessionOperation::ChessPlay { action: next })
+        .settled(replied.token, SessionOperation::play(next))
         .unwrap();
     assert_eq!(history(&thinking).len(), 2);
     let replied = human_turn(&mut controller);
@@ -298,12 +293,7 @@ fn cancel_new_game_stale_commands_and_retry_protect_the_live_game() {
         .unwrap();
     assert!(
         controller
-            .settled(
-                superseded.token,
-                SessionOperation::ChessPlay {
-                    action: "e2e4".parse().unwrap(),
-                }
-            )
+            .settled(superseded.token, SessionOperation::play("e2e4"))
             .is_err()
     );
     for _ in 0..10 {
@@ -316,12 +306,7 @@ fn cancel_new_game_stale_commands_and_retry_protect_the_live_game() {
         thread::sleep(Duration::from_millis(2));
     }
     let thinking = controller
-        .settled(
-            fresh.token,
-            SessionOperation::ChessPlay {
-                action: "e2e4".parse().unwrap(),
-            },
-        )
+        .settled(fresh.token, SessionOperation::play("e2e4"))
         .unwrap();
     let replied = human_turn(&mut controller);
     assert_eq!(history(&replied).len(), 2);
@@ -339,12 +324,7 @@ fn actual_missing_response_and_failed_process_pause_without_a_chess_score() {
     // Start the first request in this session, without relying on the runtime
     // identity floor allocated by New Game installation.
     let started = controller
-        .settled(
-            initial.token,
-            SessionOperation::ChessPlay {
-                action: "e2e4".parse().unwrap(),
-            },
-        )
+        .settled(initial.token, SessionOperation::play("e2e4"))
         .unwrap();
     let accepted_history = history(&started);
     let failed = until(&mut controller, |snapshot| {

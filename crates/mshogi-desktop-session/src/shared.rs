@@ -3,7 +3,7 @@
 use super::*;
 #[path = "shared_archive.rs"]
 pub(super) mod archive;
-pub use archive::{NativeDesktopSettings, SharedDocumentState, SharedOpenToken, ShogiSettings};
+pub use archive::{SharedDocumentState, SharedOpenToken};
 #[path = "native_session.rs"]
 #[macro_use]
 pub(super) mod native_session;
@@ -23,6 +23,7 @@ pub(super) mod tori;
 mod transaction;
 #[path = "shared_xiangqi.rs"]
 pub(super) mod xiangqi;
+use crate::native_game::NativeGame;
 pub use inspection::{MovementInspection, MovementInspectionQuery};
 pub use mshogi_core::native::{GameKind, NativeSide, RulesProfile};
 pub use mshogi_core::shogi::Side as ShogiSide;
@@ -33,7 +34,8 @@ use mshogi_engine::{
     ExecutionContext, ExecutionObservation, ExecutionPurpose, ExecutionRequest, ExecutionResponse,
     ExecutionResult, ExecutionTarget,
 };
-pub use xiangqi::{IntersectionTopology, Palace, XiangqiPresentation, XiangqiSettings};
+use native_session::SessionGame;
+pub use xiangqi::{IntersectionTopology, Palace, XiangqiPresentation};
 
 /// Exact UI precondition; neither board ply nor semantic undo restores this token.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -523,15 +525,16 @@ pub struct SharedDesktopCommand {
     pub expected: SessionToken,
     /// Explicit native game identity.
     pub game: GameKind,
-    /// Typed native/common operation; game-specific commands retain admission ownership.
+    /// Game-neutral operation; the active game admits its payload.
     pub operation: SessionOperation,
 }
 impl SharedDesktopCommand {
-    /// Parse the complete command from raw JSON; retain duplicate native
-    /// record fields for the authoritative strict canonical parser.
+    /// Parse the complete command from raw JSON. Duplicate fields are refused
+    /// anywhere, also in the game payloads.
     pub fn from_json(json: &str) -> Result<Self, String> {
-        serde_json::from_str(json).map_err(|e| {
-            let mut message = e.to_string();
+        let parsed = document::reject_duplicates(json.as_bytes())
+            .and_then(|()| serde_json::from_str(json).map_err(|e| e.to_string()));
+        parsed.map_err(|mut message| {
             let mut end = message
                 .len()
                 .min(mshogi_core::native::MAX_RECORD_DIAGNOSTIC_BYTES);
@@ -543,114 +546,35 @@ impl SharedDesktopCommand {
         })
     }
 }
-/// Small concrete dispatch across three native games; product admission is separate.
-#[derive(Clone, Debug, Serialize)]
+/// A session operation. The kind names no game: game data is only in the
+/// action, command or settings payload, which the active game parses.
+#[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum SessionOperation {
-    /// Explicit replacement approval is tied to the entire current token. Records
-    /// use native strict parsing (including duplicate fields); not a desktop archive.
+    /// Load a native record as a new unsaved document. Verification fixtures
+    /// and tests only; the application opens documents through files.
+    #[serde(skip_deserializing)]
     Replace {
         /// Strict authoritative native canonical record; not a desktop archive.
         record: CanonicalRecord,
         /// Native side controlled by the human.
         human: NativeSide,
     },
-    /// Complete native Chess match command, admitted under the outer token.
-    ChessCommand {
-        /// Explicit player.
-        actor: Color,
-        /// Native move, claim, offer or resignation.
-        command: MatchCommand,
-    },
-    /// Complete native Chess board action, admitted under the outer token.
-    ChessPlay {
-        /// Complete authoritative action.
-        action: Action,
-    },
-    /// Native optional claim; intended actions are claimed without being played.
-    ChessClaim {
-        /// Native claimant, reason and optional intended action.
-        claim: EngineClaim,
-    },
-    /// Native Chess document preferences, including analysis defaults.
-    ChessPreferences {
-        /// Native orientation.
-        orientation: Color,
-        /// Purpose-specific analysis defaults.
-        analysis_defaults: AnalysisOperation,
-    },
-    /// Native Xiangqi command; actor is the assigned human, not inferred from turn.
-    Xiangqi {
-        /// Authoritative native command including board actions, claims and agreement.
-        command: mshogi_core::xiangqi::GameCommand,
-    },
-    /// Complete native Xiangqi command with its explicit actor.
-    XiangqiCommand {
-        /// Explicit native actor.
-        actor: mshogi_core::xiangqi::Side,
-        /// Complete native command.
-        command: mshogi_core::xiangqi::GameCommand,
-    },
-    /// Native document preferences; does not change human ownership or execution.
-    XiangqiPreferences {
-        /// Persisted orientation and ordinary analysis defaults.
-        settings: XiangqiSettings,
-    },
-    /// Complete native Tori command; actor retains native terminal semantics.
-    Tori {
-        /// Explicit participant/administrative actor.
-        actor: mshogi_core::tori::Side,
-        /// Authoritative complete native command.
-        command: mshogi_core::tori::GameCommand,
-    },
-    /// Complete Chu command; native board and terminal actor semantics remain distinct.
-    Chu {
-        /// Explicit native actor.
-        actor: mshogi_core::chu::Side,
-        /// Complete native command, never a partial route.
-        command: mshogi_core::chu::GameCommand,
-    },
-    /// Complete native Tenjiku command under the immutable document profile.
-    Tenjiku {
-        /// Explicit native actor.
-        actor: mshogi_core::tenjiku::Side,
-        /// Complete action/control, never client-supplied effects.
-        command: mshogi_core::tenjiku::GameCommand,
-    },
-    /// Native Tenjiku orientation preferences.
-    TenjikuPreferences {
-        /// Native document preferences.
-        settings: crate::tenjiku_document::TenjikuSettings,
-    },
-    /// Native Chu orientation preferences; no engine defaults implied.
-    ChuPreferences {
-        /// Native document preferences.
-        settings: crate::chu_document::ChuSettings,
-    },
-    /// Native Tori document preferences, with no invented engine defaults.
-    ToriPreferences {
-        /// Persisted native orientation.
-        settings: crate::tori_document::ToriSettings,
-    },
-    /// Complete native Shogi command with its explicit actor.
-    Shogi {
-        /// Explicit native actor.
-        actor: s::Side,
-        /// Complete native command.
-        command: s::GameCommand,
-    },
-    /// Shogi complete action is admitted by Game::submit, never reconstructed in JS.
+    /// Play the complete native action of a presented choice for the local player.
     Play {
-        /// Opaque complete native action identifier.
-        action: s::Action,
+        /// Opaque action identifier of a presented choice.
+        action: String,
     },
-    /// Save native shogi desktop preferences; no rules are computed by the client.
-    ShogiPreferences {
-        /// Supported native shogi settings.
-        settings: ShogiSettings,
+    /// Submit a complete native command of the active game for the local player.
+    Command {
+        /// The native command, as the game's records spell it.
+        command: serde_json::Value,
     },
-    /// Submit formal native declaration, distinct from advisory eligibility.
-    Declare {},
+    /// Save the orientation and analysis defaults; the play mode stays the document's.
+    Preferences {
+        /// Settings of the active game.
+        settings: crate::game_document::GameSettings<NativeSide>,
+    },
     /// Submit native human resignation.
     Resign {},
     /// Undo the last accepted native event while retiring all execution work.
@@ -666,7 +590,7 @@ pub enum SessionOperation {
     ReturnLive {},
     /// Replace execution with bounded read-only analysis of the selected prefix.
     Analyze {
-        /// Typed native/common operation; game-specific commands retain admission ownership.
+        /// Requested analysis limits.
         operation: AnalysisOperation,
     },
     /// Retire pending work without a fallback move or outcome.
@@ -676,134 +600,17 @@ pub enum SessionOperation {
     /// Start fresh execution after incomplete or failed work.
     Retry {},
 }
-#[derive(Deserialize)]
-#[serde(
-    remote = "SessionOperation",
-    tag = "kind",
-    rename_all = "snake_case",
-    deny_unknown_fields
-)]
-enum OperationWire {
-    // Explicit replacement approval is tied to the entire current token. Records
-    // use native strict parsing (including duplicate fields); not a desktop archive.
-    Replace {
-        // Strict authoritative native canonical record; not a desktop archive.
-        record: CanonicalRecord,
-        // Native side controlled by the human.
-        human: NativeSide,
-    },
-    ChessPlay {
-        action: Action,
-    },
-    ChessClaim {
-        claim: EngineClaim,
-    },
-    ChessPreferences {
-        orientation: Color,
-        analysis_defaults: AnalysisOperation,
-    },
-    Xiangqi {
-        command: mshogi_core::xiangqi::GameCommand,
-    },
-    // Internal only: the frontend submits Xiangqi commands for the local actor.
-    #[serde(skip_deserializing)]
-    XiangqiCommand {
-        actor: mshogi_core::xiangqi::Side,
-        command: mshogi_core::xiangqi::GameCommand,
-    },
-    XiangqiPreferences {
-        settings: XiangqiSettings,
-    },
-    Tori {
-        actor: mshogi_core::tori::Side,
-        command: mshogi_core::tori::GameCommand,
-    },
-    ToriPreferences {
-        settings: crate::tori_document::ToriSettings,
-    },
-    Chu {
-        actor: mshogi_core::chu::Side,
-        command: mshogi_core::chu::GameCommand,
-    },
-    Tenjiku {
-        actor: mshogi_core::tenjiku::Side,
-        command: mshogi_core::tenjiku::GameCommand,
-    },
-    TenjikuPreferences {
-        settings: crate::tenjiku_document::TenjikuSettings,
-    },
-    ChuPreferences {
-        settings: crate::chu_document::ChuSettings,
-    },
-    // Internal only: the frontend submits Shogi commands as Play and Declare,
-    // always for the local actor.
-    #[serde(skip_deserializing)]
-    Shogi {
-        actor: s::Side,
-        command: s::GameCommand,
-    },
-    // Shogi complete action is admitted by Game::submit, never reconstructed in JS.
-    Play {
-        // Opaque complete native action identifier.
-        action: s::Action,
-    },
-    ShogiPreferences {
-        settings: ShogiSettings,
-    },
-    // Submit a formal entering-king declaration, including its native false-declaration semantics.
-    Declare {},
-    // Submit native human resignation.
-    Resign {},
-    // Undo the last accepted native event while retiring all execution work.
-    Undo {},
-    /// Restore the preceding human decision while retiring all execution work.
-    TakeBack {},
-    // Select a read-only native event prefix.
-    Inspect {
-        // Selected complete event prefix, not a board move number.
-        event_index: usize,
-    },
-    // Return to live, restoring only native browse-suspended running intent.
-    ReturnLive {},
-    // Replace execution with bounded read-only analysis of the selected prefix.
-    Analyze {
-        // Typed native/common operation; game-specific commands retain admission ownership.
-        operation: AnalysisOperation,
-    },
-    // Retire pending work without a fallback move or outcome.
-    Cancel {},
-    // Explicitly resume live play after inspection or analysis.
-    Resume {},
-    // Start fresh execution after incomplete or failed work.
-    Retry {},
-}
-impl<'de> Deserialize<'de> for SessionOperation {
-    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
-        let raw = Box::<serde_json::value::RawValue>::deserialize(deserializer)?;
-        #[derive(Deserialize)]
-        struct Header {
-            kind: String,
+impl SessionOperation {
+    /// A native command operation.
+    pub fn command(command: &impl Serialize) -> Self {
+        Self::Command {
+            command: serde_json::to_value(command).expect("native command serializes"),
         }
-        document::reject_duplicates(raw.get().as_bytes()).map_err(serde::de::Error::custom)?;
-        let header: Header = serde_json::from_str(raw.get()).map_err(serde::de::Error::custom)?;
-        if header.kind == "replace" {
-            #[derive(Deserialize)]
-            #[serde(deny_unknown_fields)]
-            struct Replacement {
-                kind: String,
-                record: CanonicalRecord,
-                human: NativeSide,
-            }
-            let wire: Replacement =
-                serde_json::from_str(raw.get()).map_err(serde::de::Error::custom)?;
-            debug_assert_eq!(wire.kind, "replace");
-            Ok(Self::Replace {
-                record: wire.record,
-                human: wire.human,
-            })
-        } else {
-            OperationWire::deserialize(&mut serde_json::Deserializer::from_str(raw.get()))
-                .map_err(serde::de::Error::custom)
+    }
+    /// A play operation for the presented choice identifier `action`.
+    pub fn play(action: impl ToString) -> Self {
+        Self::Play {
+            action: action.to_string(),
         }
     }
 }
@@ -872,115 +679,21 @@ impl DesktopController {
         if self.session.document_epoch >= MAX_SAFE_ID - 64 {
             return Err("Application capacity: document identity exhausted.".into());
         }
-        let receipt = match human {
-            NativeSide::Tenjiku(human) => {
-                let native_profile = profile
-                    .tenjiku()
-                    .ok_or("Tenjiku requires an explicit supported rules profile.")?;
-                let record = mshogi_core::tenjiku::GameRecord::from_game(
-                    &mshogi_core::tenjiku::Game::standard(native_profile),
-                )
-                .map_err(|e| e.to_string())?;
-                self.queue_game_candidate::<Tenjiku>(
-                    native_session::RuntimeSeed::<Tenjiku>::Record {
-                        record: Box::new(record),
-                        human,
-                        play_mode,
-                    },
-                    Some(SessionOperation::Resume {}),
-                    None,
-                    true,
-                )?
-            }
-            NativeSide::Chu(human) => {
-                let record =
-                    mshogi_core::chu::GameRecord::from_game(&mshogi_core::chu::Game::standard())
-                        .map_err(|e| e.to_string())?;
-                self.queue_game_candidate::<Chu>(
-                    native_session::RuntimeSeed::<Chu>::Record {
-                        record: Box::new(record),
-                        human,
-                        play_mode,
-                    },
-                    Some(SessionOperation::Resume {}),
-                    None,
-                    true,
-                )?
-            }
-            NativeSide::Tori(human) => {
-                let record =
-                    mshogi_core::tori::GameRecord::from_game(&mshogi_core::tori::Game::standard())
-                        .map_err(|e| e.to_string())?;
-                self.queue_game_candidate::<Tori>(
-                    native_session::RuntimeSeed::<Tori>::Record {
-                        record: Box::new(record),
-                        human,
-                        play_mode,
-                    },
-                    Some(SessionOperation::Resume {}),
-                    None,
-                    true,
-                )?
-            }
-            NativeSide::Xiangqi(human) => {
-                use mshogi_core::xiangqi as x;
-                let game =
-                    x::Game::standard(x::ClaimPolicy::Explicit).map_err(|e| e.to_string())?;
-                let record = x::GameRecord::from_game(&game).map_err(|e| e.to_string())?;
-                self.queue_game_candidate::<Xiangqi>(
-                    native_session::RuntimeSeed::<Xiangqi>::Record {
-                        record: Box::new(record),
-                        human,
-                        play_mode,
-                    },
-                    Some(SessionOperation::Resume {}),
-                    None,
-                    true,
-                )?
-            }
-            NativeSide::Shogi(human) => self.queue_game_candidate::<Shogi>(
-                native_session::RuntimeSeed::<Shogi>::Record {
-                    record: Box::new(s::GameRecord::from_game(&s::Game::new())),
+        let receipt = with_game!(game, G => {
+            let human = G::side_of(human).expect("side of this game");
+            let record = G::new_record(profile).map_err(|e| e.to_string())?;
+            self.queue_game_candidate::<G>(
+                native_session::RuntimeSeed::Record {
+                    record: Box::new(record),
                     human,
                     play_mode,
                 },
                 Some(SessionOperation::Resume {}),
                 None,
                 true,
-            )?,
-            NativeSide::Chess(human) => {
-                let record = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record();
-                self.queue_chess_replacement_with_mode(record, human, false, play_mode)?
-            }
-        };
-        self.last_command_receipt = Some(receipt.clone());
+            )?
+        });
         Ok((self.shared_snapshot(), receipt))
-    }
-    fn queue_chess_replacement(
-        &mut self,
-        record: GameRecord,
-        human: Color,
-        paused: bool,
-    ) -> Result<AdmissionReceipt, String> {
-        self.queue_chess_replacement_with_mode(record, human, paused, PlayMode::HumanEngine)
-    }
-    fn queue_chess_replacement_with_mode(
-        &mut self,
-        record: GameRecord,
-        human: Color,
-        paused: bool,
-        play_mode: PlayMode,
-    ) -> Result<AdmissionReceipt, String> {
-        self.queue_game_candidate::<Chess>(
-            native_session::RuntimeSeed::Record {
-                record: Box::new(crate::chess_record::ChessRecord::new(&record)),
-                human,
-                play_mode,
-            },
-            (!paused).then_some(SessionOperation::Resume {}),
-            None,
-            true,
-        )
     }
 
     /// Apply a native-qualified operation. Cancellation/replacement is processed
@@ -999,19 +712,7 @@ impl DesktopController {
                 "The session or selected event changed; use its current native snapshot.".into(),
             );
         }
-        let active = if self.session.tenjiku().is_some() {
-            GameKind::Tenjiku
-        } else if self.session.chu().is_some() {
-            GameKind::Chu
-        } else if self.session.tori().is_some() {
-            GameKind::Tori
-        } else if self.session.xiangqi().is_some() {
-            GameKind::Xiangqi
-        } else if self.session.shogi().is_some() {
-            GameKind::Shogi
-        } else {
-            GameKind::Chess
-        };
+        let active = self.session.kind();
         if command.game != active {
             return Err("Command game does not match the active native session.".into());
         }
@@ -1023,63 +724,13 @@ impl DesktopController {
             if record.game_kind() != human.game() {
                 return Err("Replacement side and game disagree.".into());
             }
-            if let CanonicalRecord::Tenjiku(record) = record {
-                let NativeSide::Tenjiku(human) = human else {
-                    return Err("Wrong native Tenjiku side.".into());
-                };
-                return self.replace_game::<Tenjiku>(*record, human);
-            }
-            if let CanonicalRecord::Chu(record) = record {
-                let NativeSide::Chu(human) = human else {
-                    unreachable!()
-                };
-                return self.replace_game::<Chu>(*record, human);
-            }
-            if let CanonicalRecord::Tori(record) = record {
-                let NativeSide::Tori(human) = human else {
-                    unreachable!()
-                };
-                return self.replace_game::<Tori>(*record, human);
-            }
-            if let CanonicalRecord::Xiangqi(record) = record {
-                let NativeSide::Xiangqi(human) = human else {
-                    unreachable!()
-                };
-                return self.replace_game::<Xiangqi>(*record, human);
-            }
-            if let CanonicalRecord::Shogi(record) = record {
-                let NativeSide::Shogi(human) = human else {
-                    unreachable!()
-                };
-                return self.replace_game::<Shogi>(*record, human);
-            }
-            if let CanonicalRecord::Chess(record) = record {
-                let NativeSide::Chess(human) = human else {
-                    unreachable!()
-                };
-                let receipt = self.queue_chess_replacement(*record, human, true)?;
-                self.last_command_receipt = Some(receipt);
-            } else {
-                return Err("Unsupported desktop game; the current document was preserved.".into());
-            }
-            return Ok(self.shared_snapshot());
+            return with_game!(record.game_kind(), G => {
+                let record = G::record_of(record).expect("record of this game");
+                let human = G::side_of(human).expect("side of this game");
+                self.replace_game::<G>(record, human)
+            });
         }
-        if self.session.chess().is_some() {
-            return self.game_command::<Chess>(command.operation);
-        }
-        if self.session.tenjiku().is_some() {
-            return self.game_command::<Tenjiku>(command.operation);
-        }
-        if self.session.chu().is_some() {
-            return self.game_command::<Chu>(command.operation);
-        }
-        if self.session.tori().is_some() {
-            return self.game_command::<Tori>(command.operation);
-        }
-        if self.session.xiangqi().is_some() {
-            return self.game_command::<Xiangqi>(command.operation);
-        }
-        self.game_command::<Shogi>(command.operation)
+        with_game!(active, G => self.game_command::<G>(command.operation))
     }
     /// Exact acceptance, separate read-only observation path and native command admission.
     pub fn accept_shared(&mut self, response: ExecutionResponse) -> bool {
@@ -1089,75 +740,17 @@ impl DesktopController {
         self.accept_observation(response.observation)
     }
     pub(crate) fn accept_observation(&mut self, response: ExecutionObservation) -> bool {
-        if self.session.chess().is_some() {
-            return self.accept_game_observation::<Chess>(response);
-        }
-        if self.session.tenjiku().is_some() {
-            return self.accept_game_observation::<Tenjiku>(response);
-        }
-        if self.session.chu().is_some() {
-            return self.accept_game_observation::<Chu>(response);
-        }
-        if self.session.tori().is_some() {
-            return self.accept_game_observation::<Tori>(response);
-        }
-        if self.session.xiangqi().is_some() {
-            return self.accept_game_observation::<Xiangqi>(response);
-        }
-        if self.session.shogi().is_some() {
-            return self.accept_game_observation::<Shogi>(response);
-        }
-        false
+        with_game!(self.session.kind(), G => self.accept_game_observation::<G>(response))
     }
     /// Poll only the active game and return its native presentation and provenance.
     pub fn shared_snapshot(&mut self) -> SharedSnapshot {
         self.poll_native_admission();
         self.poll_files();
-        if self.session.chess().is_some() {
-            return self.poll_game::<Chess>();
-        }
-        if self.session.tenjiku().is_some() {
-            return self.poll_game::<Tenjiku>();
-        }
-        if self.session.chu().is_some() {
-            return self.poll_game::<Chu>();
-        }
-        if self.session.tori().is_some() {
-            return self.poll_game::<Tori>();
-        }
-        if self.session.xiangqi().is_some() {
-            return self.poll_game::<Xiangqi>();
-        }
-        if self.session.shogi().is_some() {
-            return self.poll_game::<Shogi>();
-        }
-        unreachable!("all native games handled")
+        with_game!(self.session.kind(), G => self.poll_game::<G>())
     }
     pub(super) fn pause_shared_for_close(&mut self) {
         self.retire_admission();
-        if self.session.chess().is_some() {
-            self.close_game::<Chess>();
-            return;
-        }
-        if self.session.tenjiku().is_some() {
-            self.close_game::<Tenjiku>();
-            return;
-        }
-        if self.session.chu().is_some() {
-            self.close_game::<Chu>();
-            return;
-        }
-        if self.session.tori().is_some() {
-            self.close_game::<Tori>();
-            return;
-        }
-        if self.session.shogi().is_some() {
-            self.close_game::<Shogi>();
-            return;
-        }
-        if self.session.xiangqi().is_some() {
-            self.close_game::<Xiangqi>();
-        }
+        with_game!(self.session.kind(), G => self.close_game::<G>())
     }
 }
 

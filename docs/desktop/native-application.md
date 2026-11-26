@@ -111,8 +111,11 @@ MSH-119/R4 deletes the finite R3 frontend forwarder and its consumers.
 `ProductApp` mounts one `useGameSession` and renders all games through the same
 `ApplicationView`, common sections and `GameFrame` player/board/footer slots.
 Chess supplies `ChessPresentation` native capability details rather than a second
-application snapshot; `chess_play`, `chess_claim` and `chess_preferences` are
-direct current operations under the complete outer token.
+application snapshot. Every game uses the same operations under the complete
+outer token: `play` carries the opaque action of a presented choice, `command`
+carries a native command of the active game (the session derives the actor and
+refuses a command for a side that no local human owns), and `preferences`
+carries the document settings, which have the same shape in every game.
 
 Only `game_snapshot`, `game_command`, `game_file`, `game_new` and the current
 inspection/close routes are product IPC. Old `desktop_*` snapshot/command/file/

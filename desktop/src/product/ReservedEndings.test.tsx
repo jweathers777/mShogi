@@ -35,8 +35,7 @@ it.each(fixtures)("keeps native $game resignation and Save available at an ordin
   expect((container.querySelector('button[data-analysis-start]') as HTMLButtonElement).disabled).toBe(true);
   expect([...container.querySelectorAll<HTMLButtonElement>('.shogi-game-actions button:not(.resign-button)')].every(button => button.disabled)).toBe(true);
   fireEvent.click(resign); fireEvent.click(resign);
-  expect(command).toHaveBeenCalledExactlyOnceWith(snapshot, snapshot.game === "xiangqi"
-    ? { kind: "xiangqi", command: { kind: "resign" } } : { kind: "resign" });
+  expect(command).toHaveBeenCalledExactlyOnceWith(snapshot, { kind: "resign" });
   // A refused/native pending command cannot optimistically conclude the game.
   expect(snapshot.context).toEqual(before);
   expect(screen.queryByLabelText("Game outcome")).toBeNull();

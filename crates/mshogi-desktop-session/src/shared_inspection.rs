@@ -265,9 +265,7 @@ mod tests {
     fn chess_pending_engine_work_and_historical_prefix_are_not_touched() {
         let mut c = controller();
         let (_, receipt) = c
-            .test_chess_operation(SessionOperation::ChessPlay {
-                action: "e2e4".parse().unwrap(),
-            })
+            .test_chess_operation(SessionOperation::play("e2e4"))
             .unwrap();
         while receipt.completion().is_none() {
             c.shared_snapshot();

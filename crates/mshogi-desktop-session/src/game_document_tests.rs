@@ -50,8 +50,8 @@ fn commands_rewind_and_settings_round_trip_through_saved_bytes() {
     assert!(cut.with_rewind(0, &mut || false).is_err());
     let flipped = moved
         .with_settings(GameSettings {
-            play_mode: crate::PlayMode::default(),
             orientation: t::Side::Gote,
+            ..*doc.settings()
         })
         .unwrap();
     assert_eq!(
@@ -73,7 +73,7 @@ fn the_rules_core_refuses_an_illegal_command_and_a_play_mode_change() {
     assert!(
         doc.with_settings(GameSettings {
             play_mode: crate::PlayMode::TwoHumans,
-            orientation: t::Side::Sente,
+            ..*doc.settings()
         })
         .is_err()
     );

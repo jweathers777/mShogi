@@ -53,7 +53,13 @@ fn main() {
         .into_iter()
         .find(|v| v.intended.is_some())
         .unwrap();
-    let claimed = send(&mut c, SessionOperation::ChessClaim { claim });
+    let claimed = send(
+        &mut c,
+        SessionOperation::command(&mshogi_core::chess::MatchCommand::Claim {
+            reason: claim.reason,
+            intended: claim.intended,
+        }),
+    );
     write_snapshot(&directory, "shared-chess-claimed", &claimed);
     for (name, fen, operation) in [
         (

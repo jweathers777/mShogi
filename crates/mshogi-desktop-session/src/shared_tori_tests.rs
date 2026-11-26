@@ -1,5 +1,6 @@
 //! Actual sole-controller acceptance, distinct from native rules and GUI acceptance.
 use super::*;
+use crate::game_document::GameSettings;
 use mshogi_engine::EngineGame;
 use serde_json::{Value, json};
 use std::{fs, time::Duration};
@@ -256,13 +257,7 @@ fn actual_controller_seventy_native_admission_cases_and_rotations() {
         assert!(inspected.read_only);
         assert_eq!(exact(&c), before);
         assert_eq!(token, c.shared_token());
-        let result = send(
-            &mut c,
-            SessionOperation::Tori {
-                actor,
-                command: command(&v["command"]),
-            },
-        );
+        let result = send(&mut c, SessionOperation::command(&command(&v["command"])));
         assert_eq!(
             result.is_ok(),
             expected["accepted"].as_bool().unwrap(),
@@ -327,20 +322,13 @@ fn actual_controller_seventy_native_admission_cases_and_rotations() {
             assert_eq!(native(&c), before_native, "{id} exact semantic undo");
             assert!(!submit_observation(&mut c, response(stale_context)));
             // Complete action reapplication uses new authority, not an old request.
-            send(
-                &mut c,
-                SessionOperation::Tori {
-                    actor,
-                    command: command(&v["command"]),
-                },
-            )
-            .unwrap();
+            send(&mut c, SessionOperation::command(&command(&v["command"]))).unwrap();
             assert_eq!(
                 native(&c),
                 after,
                 "{id} replay same authoritative transition"
             );
-            crate::tori_document::ValidatedToriDocument::decode(
+            crate::game_document::ValidatedGameDocument::<crate::native_game::Tori>::decode(
                 current(&c).document.bytes(),
                 &mut || false,
             )
@@ -372,10 +360,7 @@ fn history_prefix_obligations_takeback_and_reopen_are_exact_and_fresh() {
     let board_a = current(&c).game.repetition_key().clone();
     send(
         &mut c,
-        SessionOperation::Tori {
-            actor: t::Side::Gote,
-            command: t::GameCommand::Play { action: back },
-        },
+        SessionOperation::play(serde_json::to_string(&back).unwrap()),
     )
     .unwrap();
     send(&mut c, SessionOperation::Undo {}).unwrap();
@@ -392,10 +377,7 @@ fn history_prefix_obligations_takeback_and_reopen_are_exact_and_fresh() {
     assert!(
         send(
             &mut c,
-            SessionOperation::Tori {
-                actor: t::Side::Gote,
-                command: t::GameCommand::Play { action: back }
-            }
+            SessionOperation::play(serde_json::to_string(&back).unwrap())
         )
         .is_err()
     );
@@ -518,10 +500,7 @@ fn all_identity_dimensions_wrong_game_and_return_to_same_diagram_reject() {
     }
     send(
         &mut c,
-        SessionOperation::Tori {
-            actor: t::Side::Sente,
-            command: t::GameCommand::Play { action: a },
-        },
+        SessionOperation::play(serde_json::to_string(&a).unwrap()),
     )
     .unwrap();
     send(&mut c, SessionOperation::Undo {}).unwrap();
@@ -577,16 +556,7 @@ fn session_cancel_and_unsupported_commands_are_unscored() {
         let before = exact(&c);
         let native = native(&c);
         for command in [t::GameCommand::AgreeDraw, t::GameCommand::DeclareImpasse] {
-            assert!(
-                send(
-                    &mut c,
-                    SessionOperation::Tori {
-                        actor: t::Side::Sente,
-                        command
-                    }
-                )
-                .is_err()
-            );
+            assert!(send(&mut c, SessionOperation::command(&command)).is_err());
             assert_eq!(exact(&c), before);
         }
         assert_eq!(self::native(&c), native);
@@ -622,18 +592,17 @@ fn seven_reject_fixtures_actual_open_preserves_live_document_and_execution() {
     let action = current(&c).game.legal_actions()[0];
     send(
         &mut c,
-        SessionOperation::Tori {
-            actor: t::Side::Sente,
-            command: t::GameCommand::Play { action },
-        },
+        SessionOperation::play(serde_json::to_string(&action).unwrap()),
     )
     .unwrap();
     send(
         &mut c,
-        SessionOperation::ToriPreferences {
-            settings: crate::tori_document::ToriSettings {
+        SessionOperation::Preferences {
+            settings: GameSettings {
                 play_mode: PlayMode::HumanEngine,
-                orientation: t::Side::Gote,
+                orientation: NativeSide::Tori(t::Side::Gote),
+                analysis_defaults:
+                    <crate::native_game::Tori as crate::native_game::NativeGame>::ANALYSIS_DEFAULTS,
             },
         },
     )
@@ -644,7 +613,7 @@ fn seven_reject_fixtures_actual_open_preserves_live_document_and_execution() {
     let pending = context(&c, 500, true);
     c.session.tori_mut().unwrap().pending = Some(pending.clone());
     let before = exact(&c);
-    let settings = current(&c).document.settings().clone();
+    let settings = *current(&c).document.settings();
     let token = c.shared_open_token();
     let template: Value = serde_json::from_slice(&before).unwrap();
     let mut ids = vec![];
@@ -710,10 +679,7 @@ fn seven_reject_fixtures_actual_open_preserves_live_document_and_execution() {
     let valid = serde_json::to_string(&SharedDesktopCommand {
         expected: c.shared_token(),
         game: GameKind::Tori,
-        operation: SessionOperation::Tori {
-            actor: t::Side::Sente,
-            command: t::GameCommand::Resign,
-        },
+        operation: SessionOperation::command(&t::GameCommand::Resign),
     })
     .unwrap();
     assert!(SharedDesktopCommand::from_json(&valid).is_ok());
@@ -722,11 +688,19 @@ fn seven_reject_fixtures_actual_open_preserves_live_document_and_execution() {
             "\"kind\":\"resign\"",
             "\"kind\":\"resign\",\"kind\":\"resign\"",
         ),
-        valid.replace("\"actor\":\"sente\"", "\"actor\":\"sente\",\"extra\":1"),
-        valid.replace("\"actor\":\"sente\",", ""),
+        valid.replace("\"kind\":\"command\"", "\"kind\":\"command\",\"extra\":1"),
+        valid.replace(",\"command\":{\"kind\":\"resign\"}", ""),
     ] {
+        assert_ne!(raw, valid);
         assert!(SharedDesktopCommand::from_json(&raw).is_err(), "{raw}");
     }
+    // The active game parses its payload: an unknown native command is refused.
+    let before = exact(&c);
+    let unknown = SessionOperation::Command {
+        command: json!({"kind": "offer_draw"}),
+    };
+    assert!(send(&mut c, unknown).is_err());
+    assert_eq!(exact(&c), before);
     fs::remove_dir_all(dir).unwrap();
 }
 #[test]
@@ -770,10 +744,12 @@ fn stale_and_cancelled_open_and_save_receipts_never_replace_or_clean_newer_conte
     };
     send(
         &mut c,
-        SessionOperation::ToriPreferences {
-            settings: crate::tori_document::ToriSettings {
+        SessionOperation::Preferences {
+            settings: GameSettings {
                 play_mode: PlayMode::HumanEngine,
-                orientation: t::Side::Gote,
+                orientation: NativeSide::Tori(t::Side::Gote),
+                analysis_defaults:
+                    <crate::native_game::Tori as crate::native_game::NativeGame>::ANALYSIS_DEFAULTS,
             },
         },
     )
@@ -795,10 +771,12 @@ fn stale_and_cancelled_open_and_save_receipts_never_replace_or_clean_newer_conte
     let identity = c.session.document_identity;
     send(
         &mut c,
-        SessionOperation::ToriPreferences {
-            settings: crate::tori_document::ToriSettings {
+        SessionOperation::Preferences {
+            settings: GameSettings {
                 play_mode: PlayMode::HumanEngine,
-                orientation: t::Side::Sente,
+                orientation: NativeSide::Tori(t::Side::Sente),
+                analysis_defaults:
+                    <crate::native_game::Tori as crate::native_game::NativeGame>::ANALYSIS_DEFAULTS,
             },
         },
     )
@@ -816,10 +794,13 @@ fn stale_and_cancelled_open_and_save_receipts_never_replace_or_clean_newer_conte
     assert!(matches!(wait_file(&mut c, id).io.phase, IoPhase::Complete));
     assert_eq!(
         native(&c),
-        crate::tori_document::ValidatedToriDocument::decode(&before, &mut || false)
-            .unwrap()
-            .record()
-            .clone()
+        crate::game_document::ValidatedGameDocument::<crate::native_game::Tori>::decode(
+            &before,
+            &mut || false
+        )
+        .unwrap()
+        .record()
+        .clone()
     );
     assert!(c.queue_product_open(path, c.shared_open_token()).is_ok());
     let id = c.io_state.id;
@@ -828,9 +809,12 @@ fn stale_and_cancelled_open_and_save_receipts_never_replace_or_clean_newer_conte
     assert!(opened.paused && current(&c).pending.is_none());
     assert_eq!(
         current(&c).document.record(),
-        crate::tori_document::ValidatedToriDocument::decode(&before, &mut || false)
-            .unwrap()
-            .record()
+        crate::game_document::ValidatedGameDocument::<crate::native_game::Tori>::decode(
+            &before,
+            &mut || false
+        )
+        .unwrap()
+        .record()
     );
     fs::remove_dir_all(dir).unwrap();
 }
@@ -912,10 +896,11 @@ fn typed_identity_refusal_and_interrupted_save_keep_complete_accepted_document_d
     assert!(
         send(
             &mut c,
-            SessionOperation::ToriPreferences {
-                settings: crate::tori_document::ToriSettings {
+            SessionOperation::Preferences {
+                settings: GameSettings {
                     play_mode: PlayMode::HumanEngine,
-                    orientation: t::Side::Gote
+                    orientation: NativeSide::Tori(t::Side::Gote),
+                    analysis_defaults: <Tori as crate::native_game::NativeGame>::ANALYSIS_DEFAULTS,
                 }
             }
         )
@@ -980,10 +965,7 @@ fn forced_conclusion_and_capture_drop_restriction_are_derived_by_final_controlle
         let action = action(v["actions"].as_array().unwrap().last().unwrap());
         let after = send(
             &mut c,
-            SessionOperation::Tori {
-                actor,
-                command: t::GameCommand::Play { action },
-            },
+            SessionOperation::play(serde_json::to_string(&action).unwrap()),
         )
         .unwrap();
         assert_eq!(native(&c), t::GameRecord::from_game(&full).unwrap());
@@ -1056,12 +1038,11 @@ fn rejected_outgoing_replacements_preserve_tori_document_and_accepted_execution(
                 record: Box::new(s::GameRecord::from_game(&s::Game::new())),
                 human: s::Side::Sente,
             },
-            Some(SessionOperation::ShogiPreferences {
-                settings: ShogiSettings {
+            Some(SessionOperation::Preferences {
+                settings: GameSettings {
                     play_mode: PlayMode::HumanEngine,
-                    orientation: s::Side::Gote,
-                    analysis_defaults: WorkLimits {
-                        time_ms: None,
+                    orientation: NativeSide::Shogi(s::Side::Gote),
+                    analysis_defaults: AnalysisOperation {
                         depth: 99,
                         nodes: 100,
                     },
@@ -1084,12 +1065,11 @@ fn rejected_outgoing_replacements_preserve_tori_document_and_accepted_execution(
                 human: mshogi_core::xiangqi::Side::Red,
                 play_mode: PlayMode::HumanEngine,
             },
-            Some(SessionOperation::XiangqiPreferences {
-                settings: XiangqiSettings {
+            Some(SessionOperation::Preferences {
+                settings: GameSettings {
                     play_mode: PlayMode::HumanEngine,
-                    orientation: mshogi_core::xiangqi::Side::Black,
-                    analysis_defaults: WorkLimits {
-                        time_ms: None,
+                    orientation: NativeSide::Xiangqi(mshogi_core::xiangqi::Side::Black),
+                    analysis_defaults: AnalysisOperation {
                         depth: 99,
                         nodes: 100,
                     },
@@ -1132,10 +1112,7 @@ fn actual_engine_turns_both_assignments_and_exact_historical_analysis_have_separ
             let a = current(&c).game.legal_actions()[0];
             send(
                 &mut c,
-                SessionOperation::Tori {
-                    actor: human,
-                    command: t::GameCommand::Play { action: a },
-                },
+                SessionOperation::play(serde_json::to_string(&a).unwrap()),
             )
             .unwrap();
         } else {
@@ -1229,7 +1206,7 @@ fn actual_engine_turns_both_assignments_and_exact_historical_analysis_have_separ
         let exact_rewind = native(&c);
         assert!(!submit_observation(&mut c, retired_reply));
         assert_eq!(native(&c), exact_rewind);
-        crate::tori_document::ValidatedToriDocument::decode(
+        crate::game_document::ValidatedGameDocument::<crate::native_game::Tori>::decode(
             current(&c).document.bytes(),
             &mut || false,
         )
@@ -1285,9 +1262,10 @@ fn consumed_real_response_admission_identity_refusal_retires_thinking_and_preser
     assert!(matches!(current(&c).phase, EnginePhase::Paused));
     assert!(c.session.capacity.resource.is_some());
     assert!(!c.accept_observation(response));
-    crate::tori_document::ValidatedToriDocument::decode(current(&c).document.bytes(), &mut || {
-        false
-    })
+    crate::game_document::ValidatedGameDocument::<crate::native_game::Tori>::decode(
+        current(&c).document.bytes(),
+        &mut || false,
+    )
     .unwrap();
 }
 
@@ -1305,10 +1283,7 @@ fn reopened_human_turn_manual_action_cannot_resume_engine_until_explicit_resume(
     let action = current(&c).game.legal_actions()[0];
     send(
         &mut c,
-        SessionOperation::Tori {
-            actor: t::Side::Sente,
-            command: t::GameCommand::Play { action },
-        },
+        SessionOperation::play(serde_json::to_string(&action).unwrap()),
     )
     .unwrap();
     assert!(current(&c).paused);

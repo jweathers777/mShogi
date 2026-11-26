@@ -2,7 +2,7 @@
 // Real Rust-produced snapshots; renderer tests do not establish game legality.
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { ChuBoard } from "./ChuBoard";
+import { SquareBoard } from "./SquareBoard";
 import type { ChuSnapshot } from "./native";
 import routesJson from "../__fixtures__/shared-chu-routes.json";
 import royalsJson from "../__fixtures__/shared-chu-royals.json";
@@ -11,27 +11,28 @@ import inspectionJson from "../__fixtures__/shared-chu-inspection.json";
 import type { MovementInspection } from "./movementInspection";
 import capturedJson from "../__fixtures__/shared-chu-captured.json";
 const routes = routesJson as unknown as ChuSnapshot;
+import { oriented } from "../testing/snapshots";
 afterEach(cleanup);
 function square(key: string) { return document.querySelector<SVGGElement>(`svg [role="button"][aria-label^="${key},"]`)!; }
 function board(snapshot = routes) {
   const props = { snapshot, disabled: false, inspectionDisabled: false, onPlay: vi.fn(), onInspect: vi.fn() };
-  return { ...render(<ChuBoard {...props} />), props };
+  return { ...render(<SquareBoard {...props} />), props };
 }
 it("uses shared player/board/footer slots, full native geometry, traditional faces and no hands", () => {
   const { container, props, rerender } = board(royalsJson as unknown as ChuSnapshot);
   expect(container.querySelectorAll("svg [role=button]")).toHaveLength(144);
-  expect(container.querySelector('[data-chu-face="King"]')?.textContent).toBe("玉将");
-  expect(container.querySelector('[data-chu-face="Prince"]')?.textContent).toBe("太子");
+  expect(container.querySelector('[data-face="King"]')?.textContent).toBe("玉将");
+  expect(container.querySelector('[data-face="Prince"]')?.textContent).toBe("太子");
   expect(container.querySelector('[data-position-status]')).toBeTruthy();
   expect(container.querySelector('[data-game-slot="upper-player"]')).toBeTruthy();
   expect(container.querySelector('[data-game-slot="lower-player"]')).toBeTruthy();
   expect(container.querySelector(".shogi-hand,[data-development-contract]")).toBeNull();
-  expect(square("6e").querySelector(".chu-piece")?.getAttribute("transform")).toBe("rotate(180 50 50)");
-  const flipped = { ...props.snapshot, document: { ...props.snapshot.document, settings: { ...props.snapshot.document.settings, settings: { ...props.snapshot.document.settings.settings, orientation: "gote" as const } } } };
-  rerender(<ChuBoard {...props} snapshot={flipped} />);
+  expect(square("6e").querySelector(".piece-tile")?.getAttribute("transform")).toBe("rotate(180 50 50)");
+  const flipped = oriented(props.snapshot, "gote");
+  rerender(<SquareBoard {...props} snapshot={flipped} />);
   expect(container.querySelector("svg [role=button]")?.getAttribute("aria-label")).toMatch(/^1l,/);
-  expect(square("6e").querySelector(".chu-piece")?.getAttribute("transform")).toBeNull();
-  expect(square("1l").querySelector(".chu-piece")?.getAttribute("transform")).toBe("rotate(180 50 50)");
+  expect(square("6e").querySelector(".piece-tile")?.getAttribute("transform")).toBeNull();
+  expect(square("1l").querySelector(".piece-tile")?.getAttribute("transform")).toBe("rotate(180 50 50)");
 });
 it("decorates native partial routes without submitting and commits exact same-endpoint return choices", () => {
   const { props, rerender, container } = board();
@@ -42,7 +43,7 @@ it("decorates native partial routes without submitting and commits exact same-en
     expect(container.querySelector("[data-selected-route]")?.getAttribute("data-selected-route")).toBe(`6f>${pivot}`);
     expect(container.querySelector('[data-game-slot="footer"] [aria-label="Partial route selection"]')).toBeTruthy();
     fireEvent.click(square("6f"));expect(props.onPlay).toHaveBeenLastCalledWith(choice.action);
-    rerender(<ChuBoard {...props} snapshot={{ ...routes, token: { ...routes.token, selection: routes.token.selection + (pivot === "7e" ? 1 : 2) } }} />);
+    rerender(<SquareBoard {...props} snapshot={{ ...routes, token: { ...routes.token, selection: routes.token.selection + (pivot === "7e" ? 1 : 2) } }} />);
   }
   expect(props.onPlay).toHaveBeenCalledTimes(2);
 });
@@ -52,7 +53,7 @@ it("preserves keyboard cancellation/focus and explicit promotion choice", () => 
   expect(container.querySelector("[data-selected-route]")).toBeTruthy();
   fireEvent.keyDown(square("7e"), { key: "Escape" });
   expect(document.activeElement).toBe(square("6f"));expect(props.onPlay).not.toHaveBeenCalled();
-  const promotion = promotionJson as unknown as ChuSnapshot;rerender(<ChuBoard {...props} snapshot={promotion} />);
+  const promotion = promotionJson as unknown as ChuSnapshot;rerender(<SquareBoard {...props} snapshot={promotion} />);
   fireEvent.click(square("6e"));fireEvent.click(square("6d"));
   expect(props.onPlay).not.toHaveBeenCalled();expect(screen.getByRole("dialog")).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: "Promote" }));
@@ -60,7 +61,7 @@ it("preserves keyboard cancellation/focus and explicit promotion choice", () => 
 });
 it("preserves ordered native intermediate captures and complete historical geometry", () => {
   const s = capturedJson as unknown as ChuSnapshot;
-  const { container } = render(<ChuBoard snapshot={s} disabled inspectionDisabled={false} onPlay={vi.fn()} onInspect={vi.fn()} completedAction={s.moves.last_action} />);
+  const { container } = render(<SquareBoard snapshot={s} disabled inspectionDisabled={false} onPlay={vi.fn()} onInspect={vi.fn()} completedAction={s.moves.last_action} />);
   expect([...container.querySelectorAll("[data-native-capture]")].map(node => node.getAttribute("data-native-capture"))).toEqual(["2b", "1b"]);
   expect(container.querySelector("[data-route]")?.getAttribute("data-route")).toBe("3c>2b>1b");
   expect(container.querySelector('[data-last-move="origin"]')?.getAttribute("data-location")).toBe("3c");
@@ -73,7 +74,7 @@ it("keeps native enemy inspection visibly distinct and non-actionable in the act
   const s = { ...routes, historical: true, capabilities: { ...routes.capabilities, board_action: false } };
   const response = inspectionJson as unknown as MovementInspection;
   const onPlay = vi.fn(), onInspect = vi.fn().mockResolvedValue(response);
-  const { container } = render(<ChuBoard snapshot={s} disabled inspectionDisabled={false} onPlay={onPlay} onInspect={onInspect} />);
+  const { container } = render(<SquareBoard snapshot={s} disabled inspectionDisabled={false} onPlay={onPlay} onInspect={onInspect} />);
   fireEvent.click(square("11a"));
   await vi.waitFor(() => expect(screen.getByText("Inspecting Gote Pawn · Esc clears")).toBeTruthy());
   expect(container.querySelectorAll(".inspection-marker")).toHaveLength(1);
@@ -95,7 +96,7 @@ it("commits the sole one-leg native choice from the footer and cancels either fo
   expect(document.activeElement).toBe(square("7e"));
   expect(container.querySelector("[data-selected-route]")).toBeNull();
   for (const [index, control] of ["Complete action here", "Cancel selection"].entries()) {
-    rerender(<ChuBoard {...props} snapshot={{ ...routes, token: { ...routes.token, selection: routes.token.selection + index + 1 } }} />);
+    rerender(<SquareBoard {...props} snapshot={{ ...routes, token: { ...routes.token, selection: routes.token.selection + index + 1 } }} />);
     fireEvent.keyDown(square("6f"), { key: "Enter" });fireEvent.keyDown(square("7e"), { key: " " });
     const button = screen.getByRole("button", { name: control });
     button.focus();expect(document.activeElement).toBe(button);
@@ -122,8 +123,8 @@ it("puts legible coordinate labels outside the Chu grid while retaining native r
   const center = (key: string) => { const i = displayed.indexOf(key);return `${90 + i % 12 * 100},${90 + Math.floor(i / 12) * 100}`; };
   expect(container.querySelector(".native-selected-route polyline")?.getAttribute("points")).toBe(["6f", "7e"].map(center).join(" "));
   expect(props.onPlay).not.toHaveBeenCalled();
-  const flipped = { ...routes, document: { ...routes.document, settings: { ...routes.document.settings, settings: { ...routes.document.settings.settings, orientation: "gote" as const } } } };
-  rerender(<ChuBoard {...props} snapshot={flipped} />);
+  const flipped = oriented(routes, "gote");
+  rerender(<SquareBoard {...props} snapshot={flipped} />);
   expect(container.querySelector('[data-coordinate-axis="file"]')?.textContent).toBe("1");
   expect(container.querySelector('[data-coordinate-axis="rank"]')?.textContent).toBe("l");
 });

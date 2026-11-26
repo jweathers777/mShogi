@@ -24,17 +24,10 @@ export function ApplicationView({ snapshot, session, onNewGame, onOpen, blocked 
   const capacity = nativeCapacityReached(snapshot);
   const thinking = snapshot.capabilities.engine_turn && snapshot.phase === "thinking" && snapshot.execution_purpose === "engine_turn";
   const analyzing = snapshot.capabilities.move_analysis && snapshot.execution_purpose === "move_analysis" || snapshot.game === "chess" && snapshot.chess.analysis.status === "thinking";
-  const orientation = snapshot.game === "xiangqi" ? snapshot.document.settings.orientation : snapshot.document.settings.settings.orientation;
+  const settings = snapshot.document.settings;
+  const orientation = settings.orientation.side;
   const side = snapshot.sides.find(s => s.id.side === orientation)!;
-  function flip() {
-    if (snapshot.game === "chess") return command({ kind: "chess_preferences", orientation: orientation === "white" ? "black" : "white", analysis_defaults: snapshot.document.settings.settings.analysis_defaults });
-    if (snapshot.game === "tenjiku") return command({ kind: "tenjiku_preferences", settings: { ...snapshot.document.settings.settings, orientation: orientation === "sente" ? "gote" : "sente" } });
-    if (snapshot.game === "chu") return command({ kind: "chu_preferences", settings: { ...snapshot.document.settings.settings, orientation: orientation === "sente" ? "gote" : "sente" } });
-    if (snapshot.game === "tori") return command({ kind: "tori_preferences", settings: { ...snapshot.document.settings.settings, orientation: orientation === "sente" ? "gote" : "sente" } });
-    if (snapshot.game === "shogi") return command({ kind: "shogi_preferences", settings: { ...snapshot.document.settings.settings, orientation: orientation === "sente" ? "gote" : "sente" } });
-    return command({ kind: "xiangqi_preferences", settings: { play_mode: snapshot.play_mode, analysis_defaults: snapshot.document.settings.analysis_defaults, orientation: orientation === "red" ? "black" : "red" } });
-  }
-  const defaults = (snapshot.game === "tori" || snapshot.game === "chu" || snapshot.game === "tenjiku") ? snapshot.play_limits : snapshot.game === "xiangqi" ? snapshot.document.settings.analysis_defaults : snapshot.document.settings.settings.analysis_defaults;
+  const flip = () => command({ kind: "preferences", settings: { ...settings, orientation: snapshot.sides.find(s => s.key !== side.key)!.id } });
   const exactPrefix = snapshot.game !== "xiangqi" || snapshot.xiangqi.canonical_context_scope === "selected_committed";
   return <ApplicationShell game={snapshot.game} historical={snapshot.historical} blocked={confirmation !== null || supportOpen} onFocusCapture={focus}
     runtime={thinking ? "mShogi is thinking" : analyzing ? "Analyzing selected position" : "Local engine"}
@@ -53,9 +46,9 @@ export function ApplicationView({ snapshot, session, onNewGame, onOpen, blocked 
     board={<GameBoard snapshot={snapshot} disabled={disabled || capacity || !snapshot.capabilities.board_action}
       inspectionDisabled={disabled} command={command} />}
     notices={<NativeRecovery snapshot={snapshot} error={session.error} disabled={disabled} command={command} />}
-    analysis={<NativeAnalysis snapshot={snapshot} defaults={defaults} disabled={disabled || capacity} command={command}
+    analysis={<NativeAnalysis snapshot={snapshot} defaults={settings.analysis_defaults} disabled={disabled || capacity} command={command}
       maxDepth={snapshot.game === "chess" ? 8 : 64}
-      maxNodes={5000000} minNodes={snapshot.game === "xiangqi" || snapshot.game === "tori" || snapshot.game === "chu" || snapshot.game === "tenjiku" ? 1 : 0}
+      maxNodes={5000000} minNodes={snapshot.game === "chess" ? 0 : 1}
       unavailable={!exactPrefix ? "Analysis is unavailable between a move and its following event. Select a completed event or return to live." : undefined} />}
     history={<NativeHistory snapshot={snapshot} disabled={disabled} command={command} />}
     gameActions={<GameActions snapshot={snapshot} disabled={disabled || capacity} resignDisabled={disabled} command={command} confirm={setConfirmation} />}

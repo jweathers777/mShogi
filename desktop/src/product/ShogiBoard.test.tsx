@@ -8,6 +8,7 @@ import standardJson from "../__fixtures__/shared-shogi-standard.json";
 import promotionJson from "../__fixtures__/shared-shogi-promotion.json";
 import forcedJson from "../__fixtures__/shared-shogi-forced.json";
 import dropsJson from "../__fixtures__/shared-shogi-drops.json";
+import { oriented } from "../testing/snapshots";
 afterEach(cleanup);
 const standard = standardJson as GameSnapshot;
 function square(key: string) { const node = document.querySelector<SVGGElement>(`.shogi-square[data-square="${key}"]`); if (!node) throw Error(`Missing square ${key}`); return node; }
@@ -18,16 +19,16 @@ it("renders native identities independently of Japanese decoration and flips own
   expect(screen.getByRole("group", { name: "Shogi board, Sente at bottom" })).toBeTruthy();
   expect(square("5i").getAttribute("aria-label")).toBe("5i, Sente king");
   expect(square("5a").getAttribute("aria-label")).toBe("5a, Gote king");
-  expect(square("5a").querySelector(".shogi-piece")?.getAttribute("transform")).toBe("rotate(180 50 50)");
-  expect(square("5i").querySelector(".shogi-piece")?.getAttribute("transform")).toBeNull();
+  expect(square("5a").querySelector(".piece-tile")?.getAttribute("transform")).toBe("rotate(180 50 50)");
+  expect(square("5i").querySelector(".piece-tile")?.getAttribute("transform")).toBeNull();
   expect(document.querySelectorAll(".hand-piece")).toHaveLength(0);
-  const flipped = { ...standard, document: { ...standard.document, settings: { ...standard.document.settings, settings: { ...standard.document.settings.settings, orientation: "gote" as const } } } };
+  const flipped = oriented(standard, "gote");
   rerender(<ShogiBoard {...props} snapshot={flipped} />);
   expect(screen.getByRole("group", { name: "Shogi board, Gote at bottom" })).toBeTruthy();
   expect(document.querySelector(".shogi-square")?.getAttribute("data-square")).toBe("1i");
   expect(square("5a").getAttribute("aria-label")).toBe("5a, Gote king");
-  expect(square("5a").querySelector(".shogi-piece")?.getAttribute("transform")).toBeNull();
-  expect(square("5i").querySelector(".shogi-piece")?.getAttribute("transform")).toBe("rotate(180 50 50)");
+  expect(square("5a").querySelector(".piece-tile")?.getAttribute("transform")).toBeNull();
+  expect(square("5i").querySelector(".piece-tile")?.getAttribute("transform")).toBe("rotate(180 50 50)");
   fireEvent.keyDown(square("5g"), { key: "ArrowDown" }); expect(document.activeElement).toBe(square("5f"));
 });
 it("submits exactly the native board choice and cancels partial keyboard selection", () => {
@@ -84,7 +85,7 @@ const gote = standard.sides.find((side) => side.id.side === "gote")!;
 const inspectionReply = { game: "shogi" as const, token: standard.token, origin: "3c", side: gote, label: "Gote pawn", read_only: true as const, choices: [{ action: "3c3d", from: "3c", steps: ["3d"], completion: null }] };
 it.each(["sente", "gote"])("uses read-only board inspection and actionable friendly switching in %s orientation", async (orientation) => {
   const onPlay = vi.fn(), onInspect = vi.fn().mockImplementation(async (origin: string) => ({ ...inspectionReply, origin, label: origin === "4a" ? "Gote gold" : "Gote pawn", choices: origin === "4a" ? [] : inspectionReply.choices }));
-  const snapshot = { ...standard, document: { ...standard.document, settings: { ...standard.document.settings, settings: { ...standard.document.settings.settings, orientation: orientation as "sente" | "gote" } } } };
+  const snapshot = oriented(standard, orientation);
   render(<ShogiBoard snapshot={snapshot} disabled={false} onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} />);
   square("3c").focus(); fireEvent.keyDown(square("3c"), { key: "Enter" }); const status = await screen.findByText("Inspecting Gote pawn · Esc clears");
   expect(status.textContent).toBe("Inspecting Gote pawn · Esc clears");
@@ -101,8 +102,8 @@ it.each(["sente", "gote"])("uses read-only board inspection and actionable frien
 it("inspects available opponent hand drops by keyboard during historical viewing without committing", async () => {
   const source = dropsJson as GameSnapshot;
   const snapshot = { ...source, historical: true, capabilities: { ...source.capabilities, board_action: false }, hands: [...source.hands,
-    { origin: "gote-pawn-hand", owner: gote.key, kind: "pawn", count: 1, text: "P", label: "Gote pawn in hand" },
-    { origin: "gote-rook-zero", owner: gote.key, kind: "rook", count: 0, text: "R", label: "Gote rook in hand" },
+    { origin: "gote-pawn-hand", owner: gote.key, kind: "pawn", count: 1, text: "P", label: "Gote pawn in hand, 1" },
+    { origin: "gote-rook-zero", owner: gote.key, kind: "rook", count: 0, text: "R", label: "Gote rook in hand, 0" },
   ] };
   const onPlay = vi.fn(), onInspect = vi.fn().mockResolvedValue({ ...inspectionReply, token: snapshot.token, origin: "gote-pawn-hand", label: "Gote pawn in hand", choices: [{ action: "P*5e", from: "gote-pawn-hand", steps: ["5e"], completion: null }] });
   render(<ShogiBoard snapshot={snapshot} disabled onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} />);
@@ -132,7 +133,7 @@ it("keeps occupied native inspection destinations readable and never prompts to 
   ] });
   render(<ShogiBoard snapshot={standard} disabled onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} />);
   fireEvent.click(square("5a")); await screen.findByText(/Inspecting Gote king · Esc clears/); fireEvent.click(square("5b"));
-  expect(square("5i").querySelector(".shogi-piece")).toBeTruthy(); expect(square("5i").querySelector(".inspection-marker")?.getAttribute("r")).toBe("46");
+  expect(square("5i").querySelector(".piece-tile")).toBeTruthy(); expect(square("5i").querySelector(".inspection-marker")?.getAttribute("r")).toBe("46");
   fireEvent.click(square("5i")); expect(onPlay).not.toHaveBeenCalled(); expect(screen.queryByRole("dialog")).toBeNull(); expect(screen.getByRole("status").textContent).toContain("Promote or Do not promote");
 });
 it("uses the shared player/board/footer slots while retaining native hands and keyboard focus", async () => {
@@ -146,12 +147,12 @@ it("uses the shared player/board/footer slots while retaining native hands and k
   expect(upper.querySelector('[data-player="gote"]')).toBeTruthy();
   expect(lower.querySelector('[data-player="sente"]')).toBeTruthy();
   expect(area.querySelectorAll('[data-game-slot="board"] .shogi-square')).toHaveLength(81);
-  expect(area.querySelector('[data-game-slot="footer"] .shogi-board-help')).toBeTruthy();
+  expect(area.querySelector('[data-game-slot="footer"] .board-help')).toBeTruthy();
   const pawn = screen.getByRole("button", { name: "Sente pawn in hand, 1" });
   pawn.focus(); await userEvent.setup().keyboard("{Enter}");
   fireEvent.keyDown(pawn, { key: "ArrowDown" }); expect(document.activeElement).toBe(square("5g"));
   fireEvent.keyDown(square("5g"), { key: "Escape" }); expect(document.activeElement).toBe(pawn);
-  const flipped = { ...snapshot, document: { ...snapshot.document, settings: { ...snapshot.document.settings, settings: { ...snapshot.document.settings.settings, orientation: "gote" as const } } } };
+  const flipped = oriented(snapshot, "gote");
   rerender(<ShogiBoard {...props} snapshot={flipped} />);
   expect(upper.querySelector('[data-player="sente"]')).toBeTruthy(); expect(lower.querySelector('[data-player="gote"]')).toBeTruthy();
   const movedPawn = screen.getByRole("button", { name: "Sente pawn in hand, 1" });

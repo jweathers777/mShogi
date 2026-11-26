@@ -1,7 +1,7 @@
 //! Independent native diagrams for ordinary packaged Tenjiku Load journeys.
 //! Development-only writer; archives and writer are never application assets.
 use mshogi_core::tenjiku as t;
-use mshogi_desktop_session::tenjiku_document::ValidatedTenjikuDocument;
+use mshogi_desktop_session::{game_document::ValidatedGameDocument, native_game::Tenjiku};
 use serde_json::{Value, json};
 use std::path::PathBuf;
 
@@ -191,10 +191,13 @@ fn main() {
                 game.conclusion().is_none(),
                 "{name} root must be playable/unscored"
             );
-            let doc =
-                ValidatedTenjikuDocument::new(t::GameRecord::from_game(&game).unwrap(), human)
-                    .unwrap();
-            let replay = ValidatedTenjikuDocument::decode(doc.bytes(), &mut || false).unwrap();
+            let doc = ValidatedGameDocument::<Tenjiku>::new(
+                t::GameRecord::from_game(&game).unwrap(),
+                human,
+            )
+            .unwrap();
+            let replay =
+                ValidatedGameDocument::<Tenjiku>::decode(doc.bytes(), &mut || false).unwrap();
             assert_eq!(replay.bytes(), doc.bytes());
             assert_eq!(replay.record(), doc.record());
             let filename = format!("tenjiku-{key}-{name}.mshogi");

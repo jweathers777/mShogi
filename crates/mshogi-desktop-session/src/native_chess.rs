@@ -6,34 +6,6 @@ use crate::native_game::*;
 /// Native Chess match behind the generic desktop document.
 pub struct Chess;
 
-impl DocumentSettings for DesktopSettings {
-    type Side = Color;
-    fn new(orientation: Color, play_mode: PlayMode) -> Self {
-        Self {
-            orientation,
-            play_mode,
-            ..Self::default()
-        }
-    }
-    fn play_mode(&self) -> PlayMode {
-        self.play_mode
-    }
-    fn set_play_mode(&mut self, play_mode: PlayMode) {
-        self.play_mode = play_mode;
-    }
-    fn validate(&self) -> Result<(), String> {
-        self.analysis_defaults.validate()
-    }
-    fn with_analysis_defaults(&self, limits: WorkLimits) -> Option<Self> {
-        Some(Self {
-            analysis_defaults: AnalysisOperation {
-                depth: limits.depth,
-                nodes: limits.nodes,
-            },
-            ..self.clone()
-        })
-    }
-}
 fn invalid(error: impl ToString) -> RecordFailure {
     RecordFailure::Invalid(error.to_string())
 }
@@ -66,13 +38,20 @@ impl NativeGame for Chess {
     const KIND: GameKind = GameKind::Chess;
     const SCOPE: ResourceScope = ResourceScope::Chess;
     const SIDES: [Color; 2] = [Color::White, Color::Black];
+    const PLAY_LIMITS: WorkLimits = crate::PLAY_LIMITS;
+    const MAX_DEPTH: u16 = 128;
+    const MAX_NODES: u64 = crate::PLAY_NODE_CEILING;
+    const ANALYSIS_BUDGETS: bool = true;
+    const ANALYSIS_DEFAULTS: AnalysisOperation = AnalysisOperation {
+        depth: 4,
+        nodes: 100_000,
+    };
     type Side = Color;
     type Command = MatchCommand;
     type Action = Action;
     type Game = ChessMatch;
     type Record = ChessRecord;
     type EngineResult = ChessResult;
-    type Settings = DesktopSettings;
     fn native_side(side: Color) -> NativeSide {
         NativeSide::Chess(side)
     }
@@ -81,6 +60,17 @@ impl NativeGame for Chess {
         stop: &mut impl FnMut() -> bool,
     ) -> Result<(ChessRecord, ChessMatch), RecordFailure> {
         ChessRecord::decode(text, stop)
+    }
+    fn new_record(_profile: RulesProfile) -> Result<ChessRecord, String> {
+        Ok(ChessRecord::new(
+            &AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record(),
+        ))
+    }
+    fn record_of(record: CanonicalRecord) -> Option<ChessRecord> {
+        match record {
+            CanonicalRecord::Chess(record) => Some(ChessRecord::new(&record)),
+            _ => None,
+        }
     }
     fn context(game: &ChessMatch) -> Result<CanonicalRecord, RecordFailure> {
         Ok(CanonicalRecord::chess(game.game().record()))

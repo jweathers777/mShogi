@@ -1,9 +1,10 @@
 import { useId } from "react";
 import type { CompletedActionGeometry } from "../boardPresentation";
 import { gridNeighbor, useNativeChoiceController } from "../interaction/useNativeChoiceController";
-import type { XiangqiSnapshot as GameSnapshot } from "./native";
-import { inspectionStatus, type InspectMovement } from "./movementInspection";
-import { GameFrame } from "./GameFrame";
+import { BoardFooter, CompletionDialog, pointLabel } from "../BoardControls";
+import type { XiangqiSnapshot } from "./native";
+import type { InspectMovement } from "./movementInspection";
+import { GameFrame, bottomSide } from "./GameFrame";
 import { CompletedActionCue } from "../CompletedActionCue";
 import "../movement-inspection.css";
 import "./xiangqi.css";
@@ -17,27 +18,27 @@ export function xiangqiGlyph(kind: string, red: boolean): string {
   return glyphs[kind]?.[red ? 0 : 1] ?? "?";
 }
 
-export function XiangqiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDisabled = disabled, completedAction }: {
-  snapshot: GameSnapshot; disabled: boolean; onPlay: (action: string) => void;
-  onInspect?: InspectMovement; inspectionDisabled?: boolean;
+export function XiangqiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDisabled = disabled, completedAction = null }: {
+  snapshot: XiangqiSnapshot; disabled: boolean; onPlay: (action: string) => void;
+  onInspect?: InspectMovement | undefined; inspectionDisabled?: boolean;
   // Separate read-only presentation input for MSH-123; never controller state.
   completedAction?: CompletedActionGeometry | null;
 }) {
+  const bottom = bottomSide(snapshot);
   const id = useId().replaceAll(":", "");
   const topology = snapshot.board.intersections;
-  const bottom = snapshot.document.settings.orientation;
-  const orientation = snapshot.orientations.find((o) => o.side.id.side === bottom) ?? snapshot.orientations[0]!;
+  const orientation = snapshot.orientations.find(o => o.side.key === bottom.key)!;
   const points = orientation.ranks.flatMap((rank) => orientation.files.map((file) => `${file}${rank}`));
   const columns = orientation.files.length;
   const interaction = useNativeChoiceController({
-    contextKey: JSON.stringify([snapshot.game, snapshot.profile, snapshot.edition, snapshot.token, bottom]),
+    contextKey: JSON.stringify([snapshot.game, snapshot.profile, snapshot.edition, snapshot.token, bottom.key]),
     choices: snapshot.choices,
     origins: snapshot.pieces.map((piece) => ({ key: piece.square, label: piece.label, owner: piece.owner, inspectable: true })),
-    humanOwner: snapshot.local_actor.key, disabled, inspectionDisabled, onInspect, onPlay,
+    humanOwner: snapshot.local_actor.key, disabled: disabled || !snapshot.capabilities.board_action, inspectionDisabled, onInspect, onPlay,
     initialFocus: snapshot.board.initial_focus, boardKeys: points,
     neighbor: (key, direction) => gridNeighbor(points, columns, key, direction),
   });
-  const { selected, selectedLabel, prefix, focused, inspection, inspectionPending: loading, announcement, destinations, completions, continuation, terminals } = interaction;
+  const { selected, focused, inspection, inspectionPending: loading, destinations } = interaction;
   if (!topology) return <p role="alert">The native intersection board is unavailable.</p>;
 
   const position = (point: string): [number, number] => {
@@ -73,7 +74,7 @@ export function XiangqiBoard({ snapshot, disabled, onPlay, onInspect, inspection
           className={`xiangqi-point${selected === point && !inspection && !loading ? " selected" : ""}`}
           role="button" tabIndex={(points.includes(focused) ? focused : snapshot.board.initial_focus) === point ? 0 : -1}
           aria-disabled={interaction.interactionDisabled} aria-pressed={selected === point}
-          aria-label={`${point}, ${piece ? `${owner?.label ?? "Player"} ${piece.kind}` : "empty"}${selected === point ? inspection ? `, Inspecting ${inspection.label}` : loading ? ", loading movement inspection" : ", selected" : ""}${target ? inspection ? ", read-only inspection destination" : ", legal destination" : ""}${prefix.includes(point) ? ", route step" : ""}`}
+          aria-label={pointLabel(piece?.label ?? `${point}, empty`, point, interaction)}
           ref={(node) => interaction.register(point, node)}
           onFocus={() => interaction.onFocus(point)} onClick={() => interaction.select(point)} onKeyDown={(event) => interaction.keyDown(event, point)}>
           <circle className="xiangqi-hit" r="49" />
@@ -91,18 +92,9 @@ export function XiangqiBoard({ snapshot, disabled, onPlay, onInspect, inspection
       })}
       <CompletedActionCue action={completedAction} center={key => points.includes(key) ? position(key) : null} radius={47} />
     </svg>
-    {completions.length > 0 && <div ref={interaction.completionRef} role="dialog" aria-modal="true" aria-label="Choose complete action" className="shogi-promotion xiangqi-completion" style={{ top: `${Math.floor(points.indexOf(interaction.completionTarget) / columns) < orientation.ranks.length / 2 ? 28 : 54}%` }} onKeyDown={interaction.completionKey}>
-      <strong>Complete action</strong><p>Choose the native action for this route.</p><div>{completions.map((choice) => <button key={choice.action} className="primary" onClick={() => interaction.chooseCompletion(choice.action)}>{choice.completion?.label ?? "Complete action"}</button>)}</div><button className="quiet" onClick={interaction.cancel}>Cancel selection</button>
-    </div>}
+    <CompletionDialog interaction={interaction} promotion={false} />
   </div>;
-  const footer = <>
-    <div className="shell-board-help"><div className={`board-help xiangqi-help${inspection || loading ? " movement-inspection-status" : selectedLabel ? " selected-piece-status" : ""}`}>
-      <span>{inspection ? inspectionStatus(inspection.label) : loading ? "Loading read-only movement inspection…" : selectedLabel ? `Selected ${selectedLabel} · Esc clears` : "Arrows: move focus · Enter/Space: select · Esc: cancel"}</span>
-    </div></div>
-    {continuation && <div className="shogi-route xiangqi-route" onKeyDown={(event) => { if (event.key === "Escape") { event.preventDefault(); interaction.cancel(); } }}><p>{announcement}</p>{terminals.length > 0 && !inspection && <button onClick={interaction.completeHere}>Complete action here</button>}<button onClick={interaction.cancel}>Cancel selection</button></div>}
-    <span className="sr-only" role="status" aria-live="polite">{announcement}</span>
-  </>;
-  return <GameFrame className="xiangqi-stage" snapshot={snapshot} bottom={orientation.side} board={board} help={footer}
+  return <GameFrame className="xiangqi-stage" snapshot={snapshot} board={board} help={<BoardFooter interaction={interaction} disabled={disabled} />}
     onFocusCapture={interaction.onFocusCapture}
     onBlurCapture={interaction.onBlurCapture} />;
 }

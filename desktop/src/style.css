@@ -167,6 +167,9 @@ p {
 .route-selection button {
   margin: 6px 8px 0 0;
 }
+.native-selected-route polyline { fill:none; stroke:#264c45; stroke-width:5; stroke-dasharray:10 7; }
+.native-selected-route circle { fill:#203e37; stroke:#f8e9bc; stroke-width:2; }
+.native-selected-route text { fill:#fff5d6; font:600 19px system-ui,sans-serif; }
 .chess-board {
   width: 100%;
   display: block;
@@ -205,13 +208,11 @@ p {
   pointer-events: none;
   paint-order: stroke fill;
 }
-.piece.white,
 .piece.native-first-owner {
   fill: #fffdf1;
   stroke: #283a35;
   stroke-width: 2.1px;
 }
-.piece.black,
 .piece.native-second-owner {
   fill: #172d2a;
   stroke: #e1e7d7;

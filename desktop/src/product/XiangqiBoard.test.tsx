@@ -18,7 +18,7 @@ function point(key: string) {
   return node;
 }
 function flipped(snapshot = standard) {
-  return { ...snapshot, document: { ...snapshot.document, settings: { ...snapshot.document.settings, orientation: "black" } } } as GameSnapshot;
+  return { ...snapshot, document: { ...snapshot.document, settings: { ...snapshot.document.settings, orientation: { game_kind: "xiangqi", side: "black" } } } } as GameSnapshot;
 }
 function board(snapshot = standard) {
   const props = { snapshot, disabled: false, onPlay: vi.fn(), onInspect: vi.fn().mockResolvedValue(inspection), inspectionDisabled: false };

@@ -2284,8 +2284,11 @@
     "dirty": true,
     "path": null,
     "settings": {
-      "game_kind": "xiangqi",
-      "orientation": "red",
+      "play_mode": "human_engine",
+      "orientation": {
+        "game_kind": "xiangqi",
+        "side": "red"
+      },
       "analysis_defaults": {
         "depth": 64,
         "nodes": 300000
@@ -2633,7 +2636,7 @@
       "kind": "rook",
       "promoted": false,
       "text": "Rook",
-      "label": "a0, Black Rook"
+      "label": "a0, Black rook"
     },
     {
       "square": "g1",
@@ -2641,7 +2644,7 @@
       "kind": "rook",
       "promoted": false,
       "text": "Rook",
-      "label": "g1, Red Rook"
+      "label": "g1, Red rook"
     },
     {
       "square": "d2",
@@ -2649,7 +2652,7 @@
       "kind": "general",
       "promoted": false,
       "text": "General",
-      "label": "d2, Red General"
+      "label": "d2, Red general"
     },
     {
       "square": "e8",
@@ -2657,7 +2660,7 @@
       "kind": "general",
       "promoted": false,
       "text": "General",
-      "label": "e8, Black General"
+      "label": "e8, Black general"
     }
   ],
   "hands": [],

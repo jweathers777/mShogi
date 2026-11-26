@@ -58,14 +58,8 @@ fn replace(c: &mut DesktopController, game: GameKind, second: bool) {
 }
 fn play(c: &mut DesktopController, action: &str) {
     let op = match game_kind(c) {
-        GameKind::Shogi => SessionOperation::Play {
-            action: action.parse().unwrap(),
-        },
-        GameKind::Xiangqi => SessionOperation::Xiangqi {
-            command: x::GameCommand::Play {
-                action: action.parse().unwrap(),
-            },
-        },
+        GameKind::Shogi => SessionOperation::play(action),
+        GameKind::Xiangqi => SessionOperation::play(action),
         _ => unreachable!(),
     };
     send(c, op).unwrap();

@@ -17,14 +17,14 @@
     "dirty": true,
     "path": null,
     "settings": {
-      "game_kind": "shogi",
-      "settings": {
-        "play_mode": "human_engine",
-        "orientation": "sente",
-        "analysis_defaults": {
-          "depth": 1,
-          "nodes": 1000
-        }
+      "play_mode": "human_engine",
+      "orientation": {
+        "game_kind": "shogi",
+        "side": "sente"
+      },
+      "analysis_defaults": {
+        "depth": 1,
+        "nodes": 1000
       }
     }
   },
@@ -198,7 +198,7 @@
       "kind": "lance",
       "promoted": false,
       "text": "L",
-      "label": "9a, Gote L"
+      "label": "9a, Gote lance"
     },
     {
       "square": "8a",
@@ -206,7 +206,7 @@
       "kind": "knight",
       "promoted": false,
       "text": "N",
-      "label": "8a, Gote N"
+      "label": "8a, Gote knight"
     },
     {
       "square": "7a",
@@ -214,7 +214,7 @@
       "kind": "silver",
       "promoted": false,
       "text": "S",
-      "label": "7a, Gote S"
+      "label": "7a, Gote silver"
     },
     {
       "square": "6a",
@@ -222,7 +222,7 @@
       "kind": "gold",
       "promoted": false,
       "text": "G",
-      "label": "6a, Gote G"
+      "label": "6a, Gote gold"
     },
     {
       "square": "5a",
@@ -230,7 +230,7 @@
       "kind": "king",
       "promoted": false,
       "text": "K",
-      "label": "5a, Gote K"
+      "label": "5a, Gote king"
     },
     {
       "square": "4a",
@@ -238,7 +238,7 @@
       "kind": "gold",
       "promoted": false,
       "text": "G",
-      "label": "4a, Gote G"
+      "label": "4a, Gote gold"
     },
     {
       "square": "3a",
@@ -246,7 +246,7 @@
       "kind": "silver",
       "promoted": false,
       "text": "S",
-      "label": "3a, Gote S"
+      "label": "3a, Gote silver"
     },
     {
       "square": "2a",
@@ -254,7 +254,7 @@
       "kind": "knight",
       "promoted": false,
       "text": "N",
-      "label": "2a, Gote N"
+      "label": "2a, Gote knight"
     },
     {
       "square": "1a",
@@ -262,7 +262,7 @@
       "kind": "lance",
       "promoted": false,
       "text": "L",
-      "label": "1a, Gote L"
+      "label": "1a, Gote lance"
     },
     {
       "square": "8b",
@@ -270,7 +270,7 @@
       "kind": "rook",
       "promoted": false,
       "text": "R",
-      "label": "8b, Gote R"
+      "label": "8b, Gote rook"
     },
     {
       "square": "2b",
@@ -278,7 +278,7 @@
       "kind": "bishop",
       "promoted": false,
       "text": "B",
-      "label": "2b, Gote B"
+      "label": "2b, Gote bishop"
     },
     {
       "square": "9c",
@@ -286,7 +286,7 @@
       "kind": "pawn",
       "promoted": false,
       "text": "P",
-      "label": "9c, Gote P"
+      "label": "9c, Gote pawn"
     },
     {
       "square": "8c",
@@ -294,7 +294,7 @@
       "kind": "pawn",
       "promoted": false,
       "text": "P",
-      "label": "8c, Gote P"
+      "label": "8c, Gote pawn"
     },
     {
       "square": "7c",
@@ -302,7 +302,7 @@
       "kind": "pawn",
       "promoted": false,
       "text": "P",
-      "label": "7c, Gote P"
+      "label": "7c, Gote pawn"
     },
     {
       "square": "6c",
@@ -310,7 +310,7 @@
       "kind": "pawn",
       "promoted": false,
       "text": "P",
-      "label": "6c, Gote P"
+      "label": "6c, Gote pawn"
     },
     {
       "square": "5c",
@@ -318,7 +318,7 @@
       "kind": "pawn",
       "promoted": false,
       "text": "P",
-      "label": "5c, Gote P"
+      "label": "5c, Gote pawn"
     },
     {
       "square": "4c",
@@ -326,7 +326,7 @@
       "kind": "pawn",
       "promoted": false,
       "text": "P",
-      "label": "4c, Gote P"
+      "label": "4c, Gote pawn"
     },
     {
       "square": "3c",
@@ -334,7 +334,7 @@
       "kind": "pawn",
       "promoted": false,
       "text": "P",
-      "label": "3c, Gote P"
+      "label": "3c, Gote pawn"
     },
     {
       "square": "2c",
@@ -342,7 +342,7 @@
       "kind": "pawn",
       "promoted": false,
       "text": "P",
-      "label": "2c, Gote P"
+      "label": "2c, Gote pawn"
     },
     {
       "square": "1c",
@@ -350,7 +350,7 @@
       "kind": "pawn",
       "promoted": false,
       "text": "P",
-      "label": "1c, Gote P"
+      "label": "1c, Gote pawn"
     },
     {
       "square": "9g",
@@ -358,7 +358,7 @@
       "kind": "pawn",
       "promoted": false,
       "text": "P",
-      "label": "9g, Sente P"
+      "label": "9g, Sente pawn"
     },
     {
       "square": "8g",
@@ -366,7 +366,7 @@
       "kind": "pawn",
       "promoted": false,
       "text": "P",
-      "label": "8g, Sente P"
+      "label": "8g, Sente pawn"
     },
     {
       "square": "7g",
@@ -374,7 +374,7 @@
       "kind": "pawn",
       "promoted": false,
       "text": "P",
-      "label": "7g, Sente P"
+      "label": "7g, Sente pawn"
     },
     {
       "square": "6g",
@@ -382,7 +382,7 @@
       "kind": "pawn",
       "promoted": false,
       "text": "P",
-      "label": "6g, Sente P"
+      "label": "6g, Sente pawn"
     },
     {
       "square": "5g",
@@ -390,7 +390,7 @@
       "kind": "pawn",
       "promoted": false,
       "text": "P",
-      "label": "5g, Sente P"
+      "label": "5g, Sente pawn"
     },
     {
       "square": "4g",
@@ -398,7 +398,7 @@
       "kind": "pawn",
       "promoted": false,
       "text": "P",
-      "label": "4g, Sente P"
+      "label": "4g, Sente pawn"
     },
     {
       "square": "3g",
@@ -406,7 +406,7 @@
       "kind": "pawn",
       "promoted": false,
       "text": "P",
-      "label": "3g, Sente P"
+      "label": "3g, Sente pawn"
     },
     {
       "square": "2g",
@@ -414,7 +414,7 @@
       "kind": "pawn",
       "promoted": false,
       "text": "P",
-      "label": "2g, Sente P"
+      "label": "2g, Sente pawn"
     },
     {
       "square": "1g",
@@ -422,7 +422,7 @@
       "kind": "pawn",
       "promoted": false,
       "text": "P",
-      "label": "1g, Sente P"
+      "label": "1g, Sente pawn"
     },
     {
       "square": "8h",
@@ -430,7 +430,7 @@
       "kind": "bishop",
       "promoted": false,
       "text": "B",
-      "label": "8h, Sente B"
+      "label": "8h, Sente bishop"
     },
     {
       "square": "2h",
@@ -438,7 +438,7 @@
       "kind": "rook",
       "promoted": false,
       "text": "R",
-      "label": "2h, Sente R"
+      "label": "2h, Sente rook"
     },
     {
       "square": "9i",
@@ -446,7 +446,7 @@
       "kind": "lance",
       "promoted": false,
       "text": "L",
-      "label": "9i, Sente L"
+      "label": "9i, Sente lance"
     },
     {
       "square": "8i",
@@ -454,7 +454,7 @@
       "kind": "knight",
       "promoted": false,
       "text": "N",
-      "label": "8i, Sente N"
+      "label": "8i, Sente knight"
     },
     {
       "square": "7i",
@@ -462,7 +462,7 @@
       "kind": "silver",
       "promoted": false,
       "text": "S",
-      "label": "7i, Sente S"
+      "label": "7i, Sente silver"
     },
     {
       "square": "6i",
@@ -470,7 +470,7 @@
       "kind": "gold",
       "promoted": false,
       "text": "G",
-      "label": "6i, Sente G"
+      "label": "6i, Sente gold"
     },
     {
       "square": "5i",
@@ -478,7 +478,7 @@
       "kind": "king",
       "promoted": false,
       "text": "K",
-      "label": "5i, Sente K"
+      "label": "5i, Sente king"
     },
     {
       "square": "4i",
@@ -486,7 +486,7 @@
       "kind": "gold",
       "promoted": false,
       "text": "G",
-      "label": "4i, Sente G"
+      "label": "4i, Sente gold"
     },
     {
       "square": "3i",
@@ -494,7 +494,7 @@
       "kind": "silver",
       "promoted": false,
       "text": "S",
-      "label": "3i, Sente S"
+      "label": "3i, Sente silver"
     },
     {
       "square": "2i",
@@ -502,7 +502,7 @@
       "kind": "knight",
       "promoted": false,
       "text": "N",
-      "label": "2i, Sente N"
+      "label": "2i, Sente knight"
     },
     {
       "square": "1i",
@@ -510,7 +510,7 @@
       "kind": "lance",
       "promoted": false,
       "text": "L",
-      "label": "1i, Sente L"
+      "label": "1i, Sente lance"
     }
   ],
   "hands": [
@@ -520,7 +520,7 @@
       "kind": "rook",
       "count": 0,
       "text": "R",
-      "label": "Sente hand R, 0"
+      "label": "Sente rook in hand, 0"
     },
     {
       "origin": "hand:mshogi.shogi.csa36.v1:sente:B",
@@ -528,7 +528,7 @@
       "kind": "bishop",
       "count": 0,
       "text": "B",
-      "label": "Sente hand B, 0"
+      "label": "Sente bishop in hand, 0"
     },
     {
       "origin": "hand:mshogi.shogi.csa36.v1:sente:G",
@@ -536,7 +536,7 @@
       "kind": "gold",
       "count": 0,
       "text": "G",
-      "label": "Sente hand G, 0"
+      "label": "Sente gold in hand, 0"
     },
     {
       "origin": "hand:mshogi.shogi.csa36.v1:sente:S",
@@ -544,7 +544,7 @@
       "kind": "silver",
       "count": 0,
       "text": "S",
-      "label": "Sente hand S, 0"
+      "label": "Sente silver in hand, 0"
     },
     {
       "origin": "hand:mshogi.shogi.csa36.v1:sente:N",
@@ -552,7 +552,7 @@
       "kind": "knight",
       "count": 0,
       "text": "N",
-      "label": "Sente hand N, 0"
+      "label": "Sente knight in hand, 0"
     },
     {
       "origin": "hand:mshogi.shogi.csa36.v1:sente:L",
@@ -560,7 +560,7 @@
       "kind": "lance",
       "count": 0,
       "text": "L",
-      "label": "Sente hand L, 0"
+      "label": "Sente lance in hand, 0"
     },
     {
       "origin": "hand:mshogi.shogi.csa36.v1:sente:P",
@@ -568,7 +568,7 @@
       "kind": "pawn",
       "count": 0,
       "text": "P",
-      "label": "Sente hand P, 0"
+      "label": "Sente pawn in hand, 0"
     },
     {
       "origin": "hand:mshogi.shogi.csa36.v1:gote:R",
@@ -576,7 +576,7 @@
       "kind": "rook",
       "count": 0,
       "text": "R",
-      "label": "Gote hand R, 0"
+      "label": "Gote rook in hand, 0"
     },
     {
       "origin": "hand:mshogi.shogi.csa36.v1:gote:B",
@@ -584,7 +584,7 @@
       "kind": "bishop",
       "count": 0,
       "text": "B",
-      "label": "Gote hand B, 0"
+      "label": "Gote bishop in hand, 0"
     },
     {
       "origin": "hand:mshogi.shogi.csa36.v1:gote:G",
@@ -592,7 +592,7 @@
       "kind": "gold",
       "count": 0,
       "text": "G",
-      "label": "Gote hand G, 0"
+      "label": "Gote gold in hand, 0"
     },
     {
       "origin": "hand:mshogi.shogi.csa36.v1:gote:S",
@@ -600,7 +600,7 @@
       "kind": "silver",
       "count": 0,
       "text": "S",
-      "label": "Gote hand S, 0"
+      "label": "Gote silver in hand, 0"
     },
     {
       "origin": "hand:mshogi.shogi.csa36.v1:gote:N",
@@ -608,7 +608,7 @@
       "kind": "knight",
       "count": 0,
       "text": "N",
-      "label": "Gote hand N, 0"
+      "label": "Gote knight in hand, 0"
     },
     {
       "origin": "hand:mshogi.shogi.csa36.v1:gote:L",
@@ -616,7 +616,7 @@
       "kind": "lance",
       "count": 0,
       "text": "L",
-      "label": "Gote hand L, 0"
+      "label": "Gote lance in hand, 0"
     },
     {
       "origin": "hand:mshogi.shogi.csa36.v1:gote:P",
@@ -624,7 +624,7 @@
       "kind": "pawn",
       "count": 0,
       "text": "P",
-      "label": "Gote hand P, 0"
+      "label": "Gote pawn in hand, 0"
     }
   ],
   "choices": [

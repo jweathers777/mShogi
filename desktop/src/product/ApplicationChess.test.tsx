@@ -21,19 +21,19 @@ it.each([["intended", claimJson], ["current", currentClaimJson]])("submits the c
   const snapshot = fixture as ChessSnapshot; const { session } = app(snapshot);
   expect(screen.getByText("Draw claim available")).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: "Claim selected draw" }));
-  expect(session.command).toHaveBeenCalledExactlyOnceWith(snapshot, { kind: "chess_claim", claim: snapshot.chess.claims[0] });
+  expect(session.command).toHaveBeenCalledExactlyOnceWith(snapshot, { kind: "command", command: { claim: { reason: snapshot.chess.claims[0]!.reason, intended: snapshot.chess.claims[0]!.intended } } });
 });
 it("renders native coordinates, side artwork and only complete native board actions", () => {
   const { session } = app(); const square = (name: string) => screen.getByRole("button", { name: new RegExp(`^${name},`) });
-  expect(square("e2").querySelector("text.piece")?.getAttribute("class")).toContain("white");
-  expect(square("e7").querySelector("text.piece")?.getAttribute("class")).toContain("black");
+  expect(square("e2").querySelector("text.piece")?.getAttribute("class")).toContain("native-first-owner");
+  expect(square("e7").querySelector("text.piece")?.getAttribute("class")).toContain("native-second-owner");
   fireEvent.click(square("e2")); fireEvent.click(square("e4"));
-  expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "chess_play", action: "e2e4" });
+  expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "play", action: "e2e4" });
 });
 it("persists orientation independently of the human side and displays the readable native conclusion", () => {
   const { session, props, rerender } = app();
   fireEvent.click(screen.getByRole("button", { name: /Flip board/ }));
-  expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "chess_preferences", orientation: "black", analysis_defaults: standard.document.settings.settings.analysis_defaults });
+  expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "preferences", settings: { ...standard.document.settings, orientation: { game_kind: "chess", side: "black" } } });
   rerender(<ApplicationView {...props} snapshot={claimedJson as ChessSnapshot} />);
   expect(document.querySelector("[data-game-status]")?.textContent).toContain("Draw — claimed");
 });

@@ -1,9 +1,6 @@
-// Concrete presentation adapter. Native side labels, ordering, hands and complete
-// choices arrive from Rust. No notation, promotion or legality is calculated here.
-import type { ReactNode } from "react";
-import type { InspectMovement } from "./product/movementInspection";
-import { Board } from "./Board";
-import type { CompletedActionGeometry, NativeChoice, NativeHand, NativePiece } from "./boardPresentation";
+// Native board snapshot fields. Side labels, ordering, hands and complete choices
+// arrive from Rust. No notation, promotion or legality is calculated here.
+import type { NativeChoice, NativeHand, NativePiece } from "./boardPresentation";
 export interface NativeBoardSnapshot {
   token: { document: number; version: number; revision: number; selection: number };
   game: "chess" | "shogi" | "xiangqi" | "tori" | "chu" | "tenjiku";
@@ -22,27 +19,4 @@ export interface NativeBoardSnapshot {
 export function nativeSnapshotIsNewer(current: NativeBoardSnapshot | null, incoming: NativeBoardSnapshot): boolean {
   if (current === null) return true;
   return incoming.token.document > current.token.document || (incoming.token.document === current.token.document && incoming.game === current.game && incoming.profile === current.profile && incoming.token.revision > current.token.revision);
-}
-export function NativeBoard({ snapshot, bottomSide, onPlay, completedAction, onInspect, disabled, inspectionDisabled, helpTarget, renderNativePiece, coordinateFrame }: {
-  snapshot: NativeBoardSnapshot; bottomSide: string; onPlay: (action: string) => void;
-  completedAction?: CompletedActionGeometry | null;
-  onInspect?: InspectMovement; disabled?: boolean; inspectionDisabled?: boolean;
-  helpTarget?: HTMLElement | null;
-  renderNativePiece?: (piece: NativePiece, rotated: boolean) => ReactNode;
-  coordinateFrame?: boolean;
-}) {
-  if (snapshot.board.intersections) return <p role="alert">This game requires its native intersection renderer.</p>;
-  const actor = snapshot.local_actor ?? snapshot.human;
-  const orientation = snapshot.orientations.find((o) => o.side.key === bottomSide);
-  if (!orientation) return <p role="alert">Unsupported native orientation.</p>;
-  return <Board completedAction={completedAction ?? null} pieces={snapshot.pieces} choices={snapshot.choices} hands={snapshot.game === "tori" ? snapshot.hands.filter(h => h.count > 0) : snapshot.hands}
-    geometry={{ ...snapshot.board, initialFocus: snapshot.board.initial_focus }}
-    nativeOrientation={{ files: orientation.files, ranks: orientation.ranks, label: orientation.side.label, bottomOwner: orientation.side.key }}
-    nativeFirstOwner={snapshot.sides.find((side) => side.first_mover)!.key}
-    orientation="white" version={snapshot.token.selection}
-    profile={`${snapshot.profile}:${snapshot.token.document}:${snapshot.token.version}`}
-    {...(actor ? { humanOwner: actor.key } : {})} onInspect={onInspect} inspectionDisabled={inspectionDisabled ?? disabled ?? !snapshot.capabilities.board_action} inspectionContextKey={JSON.stringify(snapshot.token)}
-    {...(coordinateFrame !== undefined ? { coordinateFrame } : {})}
-    {...(helpTarget !== undefined ? { helpTarget } : {})} {...(renderNativePiece ? { renderNativePiece } : {})}
-    disabled={Boolean(disabled) || !snapshot.capabilities.board_action} onPlay={onPlay} />;
 }

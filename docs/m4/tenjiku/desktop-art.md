@@ -111,10 +111,10 @@ historical witness.
 
 ## Native ownership and rendering
 
-`TenjikuBoard.tsx` decorates the existing shared `NativeBoard` inside the
+`SquareBoard.tsx` draws Tenjiku, like Chu, on the shared `Board` inside the
 accepted `GameFrame`. It reads `tenjiku.selected.identities` by square; native
 `face` supplies lettering while native original `base` and `promoted` remain
-separate. Native selected `royals` supplies royal metadata. No frontend promotion
+separate. The shared `Piece.tsx` tile holds the face table. No frontend promotion
 table, movement rule, check filter, second controller, hands or alternate shell
 is introduced. The two immutable profiles use the same lettering; their native
 choices and effects remain distinct.
@@ -217,13 +217,13 @@ No native UI evidence is claimed by jsdom component tests.
 
 ## Bounded implementation evidence
 
-`TenjikuPiece.test.tsx` checks all forty-four source-aligned face names, reused
+`Piece.test.tsx` checks all forty-four source-aligned face names, reused
 Chu spelling, full three-character ordering, original/promoted identities with
-the same face, non-color promotion marks, whole-piece rotation, native royal
-metadata and unknown-face rejection. `TenjikuArtwork.test.tsx` checks both
-native profiles, authoritative selected identities despite conflicting
-diagnostic presentation fields, accessible square-label preservation, royalty,
-256 targets, shared footer and orientation.
+the same face, non-color promotion marks, whole-piece rotation and unknown-face
+rejection. `TenjikuArtwork.test.tsx` checks both native profiles, authoritative
+selected identities despite conflicting diagnostic presentation fields,
+accessible square-label preservation, 256 targets, shared footer and
+orientation.
 
 The existing native-generated board tests continue to exercise complete routes,
 promotion, igui, profile-specific effects, ranked jumps, historical inspection

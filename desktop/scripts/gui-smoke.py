@@ -1288,7 +1288,7 @@ class Journey:
         w.click(square(destination))
         time.sleep(0.35)  # Observe across native snapshot polls, not only local selection state.
         self.assert_inspection_unchanged(before, 'Board inspection complete route preserves authoritative context')
-        assert not w.has('.promotion-dialog,.shogi-promotion')
+        assert not w.has('.promotion-dialog')
         w.key('\ue00c')
         wait(lambda:not w.has('.inspection-marker,.inspection-origin-ring'), 'Escape clears read-only inspection')
         self.assert_inspection_unchanged(before, 'Board inspection Escape preserves authoritative context')
@@ -2226,7 +2226,7 @@ class Journey:
             w.key(key)
         time.sleep(0.35)
         self.assert_inspection_unchanged(before, 'Opponent hand inspection complete route preserves authoritative context')
-        assert not w.has('.shogi-promotion')
+        assert not w.has('.promotion-dialog')
         w.key('\ue00c')
         wait(lambda:not w.has('.inspection-marker'),'Escape clears opponent drop inspection')
         self.assert_inspection_unchanged(before, 'Opponent hand inspection Escape preserves authoritative context')
@@ -2289,11 +2289,11 @@ class Journey:
         elif name == "shogi-promotion":
             self.shogi_events(0)
             w.click(self.shogi_square("5d")); w.click(self.shogi_square("5c"))
-            wait(lambda: w.has(".shogi-promotion"), "optional promotion has two complete native choices")
+            wait(lambda: w.has(".promotion-dialog"), "optional promotion has two complete native choices")
             self.shogi_events(0)
             self.capture("optional-promotion")
             w.key("\ue00c")
-            wait(lambda: not w.has(".shogi-promotion"), "cancel optional promotion")
+            wait(lambda: not w.has(".promotion-dialog"), "cancel optional promotion")
             self.shogi_events(0)
             w.click(self.shogi_square("5d")); w.click(self.shogi_square("5c"))
             w.button("Promote")
@@ -2303,7 +2303,7 @@ class Journey:
             self.shogi_events(0)
             w.click(self.shogi_square("5b")); w.click(self.shogi_square("5a"))
             wait(lambda: "promoted pawn" in str(w.read(f"document.querySelector({json.dumps(self.shogi_square('5a'))})?.getAttribute('aria-label')")), "mandatory native promotion commits directly")
-            assert not w.has(".shogi-promotion")
+            assert not w.has(".promotion-dialog")
             self.shogi_events(2)
         elif name == "shogi-declaration":
             self.shogi_events(0)
@@ -2441,7 +2441,7 @@ class Journey:
         observed=w.read("""(() => {const board=document.querySelector('.tenjiku-board-frame .chess-board'),cells=[...document.querySelectorAll('.tenjiku-board-frame .square')];
             const rect=e=>{const r=e.getBoundingClientRect();return {left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:r.width,height:r.height};};
             const visible=e=>{if(!e)return false;const r=rect(e),clip={left:0,top:0,right:innerWidth,bottom:innerHeight};for(let p=e.parentElement;p;p=p.parentElement){const c=getComputedStyle(p),b=rect(p);if(/^(auto|scroll|hidden|clip)$/.test(c.overflowX)){clip.left=Math.max(clip.left,b.left);clip.right=Math.min(clip.right,b.right);}if(/^(auto|scroll|hidden|clip)$/.test(c.overflowY)){clip.top=Math.max(clip.top,b.top);clip.bottom=Math.min(clip.bottom,b.bottom);}}return r.width>0&&r.height>0&&r.left>=clip.left-1&&r.top>=clip.top-1&&r.right<=clip.right+1&&r.bottom<=clip.bottom+1;};
-            return {viewport:{width:innerWidth,height:innerHeight,dpr:devicePixelRatio},board:board?rect(board):null,cells:cells.length,visibleCells:cells.filter(visible).length,boardVisible:visible(board),cell:cells[0]?rect(cells[0]):null,glyphCount:document.querySelectorAll('.tenjiku-face text').length,minimumGlyphEm:Math.min(...[...document.querySelectorAll('.tenjiku-face text')].map(e=>parseFloat(getComputedStyle(e).fontSize)*Math.hypot(e.getScreenCTM().a,e.getScreenCTM().b))),orientation:document.querySelector('.game-shell')?.dataset.orientation,fontLoaded:document.fonts.check('16px "mShogi Tenjiku Pieces"'),pageWidth:document.documentElement.scrollWidth,hands:document.querySelectorAll('[aria-label="Native hands"],.hand-piece').length};})()""")
+            return {viewport:{width:innerWidth,height:innerHeight,dpr:devicePixelRatio},board:board?rect(board):null,cells:cells.length,visibleCells:cells.filter(visible).length,boardVisible:visible(board),cell:cells[0]?rect(cells[0]):null,glyphCount:document.querySelectorAll('.tenjiku-board-frame .piece-tile-face text').length,minimumGlyphEm:Math.min(...[...document.querySelectorAll('.tenjiku-board-frame .piece-tile-face text')].map(e=>parseFloat(getComputedStyle(e).fontSize)*Math.hypot(e.getScreenCTM().a,e.getScreenCTM().b))),orientation:document.querySelector('.game-shell')?.dataset.orientation,fontLoaded:document.fonts.check('16px "mShogi Tenjiku Pieces"'),pageWidth:document.documentElement.scrollWidth,hands:document.querySelectorAll('[aria-label="Native hands"],.hand-piece').length};})()""")
         assert observed['cells']==observed['visibleCells']==256 and observed['boardVisible'] and observed['fontLoaded'] and observed['glyphCount']>0 and observed['minimumGlyphEm']>0 and not observed['hands'],observed
         assert observed['pageWidth']<=observed['viewport']['width']+1 and observed['cell']['width']>0,observed
         self.record('Actual responsive 16x16 fit and glyph measurements; small-window fit is not all-kanji reading comfort',observed)
@@ -2464,8 +2464,8 @@ class Journey:
         self.selected_footer_fits('Selected 9m, Sente Great General · Esc clears')
         observed=w.read("""(() => {const rect=e=>{const r=e.getBoundingClientRect();return {left:r.left,top:r.top,width:r.width,height:r.height};};
             return {viewport:{width:innerWidth,height:innerHeight,dpr:devicePixelRatio},footer:document.querySelector('.selected-piece-status')?.textContent,
-            markers:[...document.querySelectorAll('.tenjiku-board-frame circle.capture-marker')].map(marker=>{const square=marker.closest('.square'),piece=square.querySelector('[data-tenjiku-piece]'),matrix=marker.getScreenCTM(),center=new DOMPoint(marker.cx.baseVal.value,marker.cy.baseVal.value).matrixTransform(matrix),point=new DOMPoint(90,50).matrixTransform(matrix),hit=document.elementFromPoint(point.x,point.y),style=getComputedStyle(marker);
-                return {square:square.getAttribute('aria-label').split(',')[0],label:square.getAttribute('aria-label'),occupied:!!piece,pieceFace:piece?.dataset.tenjikuFace,afterPiece:!!piece&&!!(piece.compareDocumentPosition(marker)&Node.DOCUMENT_POSITION_FOLLOWING),pointerEvents:style.pointerEvents,ariaHidden:marker.getAttribute('aria-hidden'),fill:style.fill,stroke:style.stroke,strokeWidth:parseFloat(style.strokeWidth),scale:Math.hypot(matrix.a,matrix.b),center:{x:center.x,y:center.y},radius:marker.r.baseVal.value*Math.hypot(matrix.a,matrix.b),rect:rect(marker),hitSquare:hit?.closest('.square')?.getAttribute('aria-label')?.split(',')[0],markerIntercepted:hit===marker||marker.contains(hit)};})};})()""")
+            markers:[...document.querySelectorAll('.tenjiku-board-frame circle.capture-marker')].map(marker=>{const square=marker.closest('.square'),piece=square.querySelector('[data-face]'),matrix=marker.getScreenCTM(),center=new DOMPoint(marker.cx.baseVal.value,marker.cy.baseVal.value).matrixTransform(matrix),point=new DOMPoint(90,50).matrixTransform(matrix),hit=document.elementFromPoint(point.x,point.y),style=getComputedStyle(marker);
+                return {square:square.getAttribute('aria-label').split(',')[0],label:square.getAttribute('aria-label'),occupied:!!piece,pieceFace:piece?.dataset.face,afterPiece:!!piece&&!!(piece.compareDocumentPosition(marker)&Node.DOCUMENT_POSITION_FOLLOWING),pointerEvents:style.pointerEvents,ariaHidden:marker.getAttribute('aria-hidden'),fill:style.fill,stroke:style.stroke,strokeWidth:parseFloat(style.strokeWidth),scale:Math.hypot(matrix.a,matrix.b),center:{x:center.x,y:center.y},radius:marker.r.baseVal.value*Math.hypot(matrix.a,matrix.b),rect:rect(marker),hitSquare:hit?.closest('.square')?.getAttribute('aria-label')?.split(',')[0],markerIntercepted:hit===marker||marker.contains(hit)};})};})()""")
         assert sorted(marker['square'] for marker in observed['markers'])==['1e','9a','9b','9c','9d','9e'],observed
         for marker in observed['markers']:
             assert marker['occupied'] and 'Gote' in marker['label'] and marker['afterPiece'] and marker['pointerEvents']=='none' and marker['ariaHidden']=='true',marker
@@ -2596,7 +2596,7 @@ class Journey:
         self.capture('normal-dirty-quit-cancel');self.quit(save=True)
         saved_path=Path(dirty['document']['path']);saved=json.loads(saved_path.read_text(encoding='utf-8'));saved_body=desktop_document_payload(saved,'tenjiku')
         assert saved_body['record']['root']['profile']==self.tenjiku_profile_id(profile) and saved_body['record']==concluded['context']['payload']
-        assert saved_body['settings']==dirty['document']['settings']['settings']
+        assert saved_body['settings']=={**dirty['document']['settings'],'orientation':dirty['document']['settings']['orientation']['side']}
         assert set(saved_body) == {'record', 'human', 'settings'}
         self.record('Actual dirty Quit Save retains native profile, complete game/history, settings on disk',{'profile':profile,'path':str(saved_path),'sha256':digest(saved_path),'settings':saved_body['settings']})
 
@@ -2615,7 +2615,7 @@ class Journey:
         assert next(item for item in iguied['tenjiku']['selected']['identities'] if item['square']=='8h')['piece']['base']=='ChS'
         self.capture('stationary-capture-accessible-effects')
         self.tenjiku_load_fixture(profile,'promotion');promoted=self.tenjiku_action('8f',['8e'],1,promote=True)
-        assert w.read("document.querySelector('.square[aria-label^=\"8e,\"] [data-tenjiku-face=G][data-promoted=true]')!==null")
+        assert w.read("document.querySelector('.square[aria-label^=\"8e,\"] [data-face=G][data-promoted=true]')!==null")
         assert promoted['tenjiku']['selected']['conclusion'] is None;self.capture('native-optional-promotion-identity')
         self.tenjiku_load_fixture(profile,'burn');burned=self.tenjiku_action('8j',['7i','7h','8h'],1)
         phases=burned['tenjiku']['selected']['last_effects']['phases']
@@ -2692,7 +2692,7 @@ class Journey:
                 squares:squares.length,allVisible:squares.length===144&&squares.every(visible),boardVisible:visible(board),
                 minimumSquareWidth:Math.min(...squares.map(e=>e.getBoundingClientRect().width)),
                 uniqueSquares:new Set(squares.map(e=>e.getAttribute('aria-label')?.split(',')[0])).size,
-                kanjiTexts:[...document.querySelectorAll('.chu-piece text')].map(e=>({text:e.textContent,pixels:parseFloat(getComputedStyle(e).fontSize)*Math.hypot(e.getScreenCTM().a,e.getScreenCTM().b)})),
+                kanjiTexts:[...document.querySelectorAll('.chu-board-frame .piece-tile-face text')].map(e=>({text:e.textContent,pixels:parseFloat(getComputedStyle(e).fontSize)*Math.hypot(e.getScreenCTM().a,e.getScreenCTM().b)})),
                 pageWidth:document.documentElement.scrollWidth,orientation:board?.getAttribute('aria-label'),nativeOrientation:document.querySelector('.game-shell')?.dataset.orientation,
                 hands:document.querySelectorAll('[aria-label="Native hands"],.hand-piece').length};})()""")
         assert geometry['allVisible'] and geometry['boardVisible'] and geometry['hands'] == 0 and geometry['uniqueSquares'] == 144, geometry
@@ -2865,7 +2865,7 @@ class Journey:
         w.click(self.chu_square('6e')); w.click(self.chu_square('6d')); wait(lambda:w.has('.promotion-dialog'),'native optional promotion alternatives')
         self.assert_chu_promotion_choices(); w.key('\ue00c'); self.chu_events(0)
         promoted = self.chu_action('6e',['6d'],1,promote=True)
-        assert w.read(f"document.querySelector({json.dumps(self.chu_square('6d'))})?.querySelector('[data-chu-face=Prince]')!==null")
+        assert w.read(f"document.querySelector({json.dumps(self.chu_square('6d'))})?.querySelector('[data-face=Prince]')!==null")
         assert len([royal for royal in promoted['chu']['live']['royals'] if royal['identity']['piece']['side']=='sente']) == 2
         assert promoted['chu']['selected']['conclusion'] is None
         self.capture('normal-promoted-Prince-and-surviving-King'); self.chu_save(self.args.output/'normal-chu-promoted.mshogi')
@@ -3104,7 +3104,7 @@ class Journey:
         w = self.web
         before = self.native_diagnostics()
         assert before['document']['path'] and before['document']['dirty'] is False, before
-        orientation = before['document']['settings']['settings']['orientation']
+        orientation = before['document']['settings']['orientation']['side']
         event = len(before['context']['payload']['events'])
         w.click('.flip-button')
         def admitted():
@@ -3123,7 +3123,7 @@ class Journey:
         assert after['document']['dirty'] is True and after['close_requires_save'] is True, after
         assert after['document']['path'] == before['document']['path']
         assert after['document']['revision'] > before['document']['revision']
-        assert after['document']['settings']['settings']['orientation'] == observed['orientation']
+        assert after['document']['settings']['orientation']['side'] == observed['orientation']
         assert after['token']['document'] == before['token']['document']
         assert after['token']['version'] > before['token']['version']
         assert after['context'] == before['context'], 'Flip changes preferences, never the concluded game'
@@ -3140,8 +3140,8 @@ class Journey:
         self.capture('all-nine-traditional-faces-and-native-hands')
         w.click(self.shogi_square('7c')); w.click(self.shogi_square('7b'))
         self.tori_events(1)
-        assert not w.has('.shogi-promotion'), 'Tori promotion is compulsory, never an optional choice'
-        assert w.read(f"document.querySelector({json.dumps(self.shogi_square('7b'))})?.querySelector('[data-tori-face=Ea]')!==null")
+        assert not w.has('.promotion-dialog'), 'Tori promotion is compulsory, never an optional choice'
+        assert w.read(f"document.querySelector({json.dumps(self.shogi_square('7b'))})?.querySelector('[data-face=Ea]')!==null")
         promoted = self.native_diagnostics()
         assert promoted['context']['payload']['events'][0]['command']['action'] == {'kind':'move','from':'7c','to':'7b','result_face':'eagle'}
         assert w.has('.play-paused'), 'manual action after Load preserves stopped execution'

@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render } from "@testing-library/react";
-import { Board } from "./Board";
+import { TestBoard as Board } from "./testing/TestBoard";
 import type { CompletedActionGeometry } from "./boardPresentation";
 import { ShogiBoard } from "./product/ShogiBoard";
 import { XiangqiBoard } from "./product/XiangqiBoard";

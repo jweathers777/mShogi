@@ -5,8 +5,8 @@ use mshogi_desktop_session::{
     AnalysisOperation, AnalysisPhase, DesktopController, EnginePhase, IoPhase, SharedSnapshot,
 };
 use mshogi_desktop_session::{
-    ChessPresentation, NativeDesktopSettings, SessionOperation, SessionToken, SharedDesktopCommand,
-    SharedOpenToken,
+    ChessPresentation, PlayMode, SessionOperation, SessionToken, SharedDesktopCommand,
+    SharedOpenToken, game_document,
 };
 use std::{
     fs,
@@ -79,12 +79,7 @@ fn minimal_document_reopens_paused_and_historical_analysis_uses_only_its_prefix(
     let mut controller = controller();
     let initial = controller.shared_snapshot();
     controller
-        .settled(
-            initial.token,
-            SessionOperation::ChessPlay {
-                action: "e2e4".parse().unwrap(),
-            },
-        )
+        .settled(initial.token, SessionOperation::play("e2e4"))
         .unwrap();
     let played = until(&mut controller, |s| {
         history(s).len() == 2 && s.phase == EnginePhase::Idle
@@ -107,11 +102,14 @@ fn minimal_document_reopens_paused_and_historical_analysis_uses_only_its_prefix(
     controller
         .settled(
             controller.shared_token(),
-            SessionOperation::ChessPreferences {
-                orientation: Color::Black,
-                analysis_defaults: AnalysisOperation {
-                    depth: 3,
-                    nodes: 12_345,
+            SessionOperation::Preferences {
+                settings: game_document::GameSettings {
+                    play_mode: PlayMode::HumanEngine,
+                    orientation: NativeSide::Chess(Color::Black),
+                    analysis_defaults: AnalysisOperation {
+                        depth: 3,
+                        nodes: 12_345,
+                    },
                 },
             },
         )
@@ -221,11 +219,14 @@ fn failed_save_and_corrupt_open_preserve_the_valid_file_and_live_document() {
     let changed = controller
         .settled(
             controller.shared_token(),
-            SessionOperation::ChessPreferences {
-                orientation: Color::Black,
-                analysis_defaults: AnalysisOperation {
-                    depth: 2,
-                    nodes: 2000,
+            SessionOperation::Preferences {
+                settings: game_document::GameSettings {
+                    play_mode: PlayMode::HumanEngine,
+                    orientation: NativeSide::Chess(Color::Black),
+                    analysis_defaults: AnalysisOperation {
+                        depth: 2,
+                        nodes: 2000,
+                    },
                 },
             },
         )
@@ -331,10 +332,10 @@ fn fen(snapshot: &SharedSnapshot) -> String {
     live_game(snapshot).position().to_fen()
 }
 fn orientation(snapshot: &SharedSnapshot) -> Color {
-    let NativeDesktopSettings::Chess { settings } = &snapshot.document.settings else {
+    let NativeSide::Chess(orientation) = snapshot.document.settings.orientation else {
         panic!("Chess settings")
     };
-    settings.orientation
+    orientation
 }
 trait SettledCommand {
     fn settled(

@@ -23,6 +23,8 @@ export type NativeSide = { game_kind: "chess"; side: "white" | "black" }
   | { game_kind: "chu"; side: "sente" | "gote" }
   | { game_kind: "tenjiku"; side: "sente" | "gote" };
 export interface Side { id: NativeSide; key: string; label: string; first_mover: boolean }
+// Document settings have the same shape in every game.
+export interface GameSettings { play_mode: PlayMode; orientation: NativeSide; analysis_defaults: AnalysisOperation }
 export interface OpenToken { document: number; version: number; document_revision: number }
 export interface SearchView {
   selected: boolean; observation_index: number; purpose: string; event_index: number; board_ply: number;
@@ -42,7 +44,7 @@ interface GameSnapshotBase extends Omit<NativeBoardSnapshot, "game" | "orientati
   play_mode: PlayMode; local_actor: Side;
   human: Side; turn: Side; sides: Side[];
   orientations: { side: Side; files: string[]; ranks: string[] }[];
-  document: { revision: number; dirty: boolean; path: string | null };
+  document: { revision: number; dirty: boolean; path: string | null; settings: GameSettings };
   // Native close admission can exempt only its own unchanged stop journal.
   // The document's canonical dirty state remains independent and authoritative.
   close_requires_save: boolean;
@@ -77,13 +79,10 @@ export interface ChessPresentation {
 export type ChessSnapshot = GameSnapshotBase & {
   game: "chess";
   chess: ChessPresentation;
-  document: GameSnapshotBase["document"] & { settings: { game_kind: "chess"; settings: { play_mode: PlayMode; orientation: Color; analysis_defaults: AnalysisOperation } } };
 };
 export type ShogiSnapshot = GameSnapshotBase & {
   game: "shogi";
-  document: GameSnapshotBase["document"] & { settings: { game_kind: "shogi"; settings: { play_mode: PlayMode; orientation: "sente" | "gote"; analysis_defaults: { depth: number; nodes: number } } } };
 };
-// Preserve the authoritative flat Xiangqi settings encoding; no native/archive migration.
 export type XiangqiSnapshot = GameSnapshotBase & {
   game: "xiangqi";
   xiangqi: {
@@ -97,50 +96,44 @@ export type XiangqiSnapshot = GameSnapshotBase & {
     conclusion: unknown | null; pending: { reason: string; occurrences: number[] } | null;
     no_win_assessment: { kind: "proven_neither_can_win" | "proven_natural_win" | "unknown" | "failure"; winner?: "red" | "black"; witness?: string[] };
   };
-  document: GameSnapshotBase["document"] & { settings: { game_kind: "xiangqi"; play_mode: PlayMode; orientation: "red" | "black"; analysis_defaults: { depth: number; nodes: number } } };
 };
-export type ToriSide = "sente" | "gote";
+// The side of the four shogi-family games.
+export type ShogiSide = "sente" | "gote";
 export type ToriFace = "phoenix" | "falcon" | "eagle" | "crane" | "pheasant" | "left_quail" | "right_quail" | "swallow" | "goose";
 export type ToriAction = { kind: "move"; from: string; to: string; result_face: ToriFace } | { kind: "drop"; face: ToriFace; to: string };
-export type ToriConclusion = { kind: "checkmate" | "resignation"; winner: ToriSide } | { kind: "stalemate_loss" | "repetition_forfeit"; loser: ToriSide };
+export type ToriConclusion = { kind: "checkmate" | "resignation"; winner: ShogiSide } | { kind: "stalemate_loss" | "repetition_forfeit"; loser: ShogiSide };
 export interface ToriHistory {
   event_index: number; board_ply: number; in_check: boolean; occurrences: number[];
-  repetition: { side: ToriSide; forbidden: ToriAction[] } | null;
+  repetition: { side: ShogiSide; forbidden: ToriAction[] } | null;
   conclusion: ToriConclusion | null;
 }
 export type ToriSnapshot = GameSnapshotBase & {
   game: "tori";
   tori: { root_kind: "standard" | "diagram" | "imported"; root_source: string | null; declared_root_plies: string;
     earlier_history_unknown: boolean; historical_reachability_proven: boolean; selected: ToriHistory; live: ToriHistory };
-  document: GameSnapshotBase["document"] & { settings: { game_kind: "tori"; settings: { play_mode: PlayMode; orientation: ToriSide } } };
 };
 // Real native Chu session used by the ordinary fifth-game product.
 export interface ChuHistory {
   event_index: number; board_ply: number; declared_total_plies: string;
-  identities: { square: string; piece: { side: ToriSide; base: string; promoted: boolean }; face: string }[];
+  identities: { square: string; piece: { side: ShogiSide; base: string; promoted: boolean }; face: string }[];
   royals: { identity: ChuHistory["identities"][number]; local_capture_threat: boolean }[];
   capture_all_royals_threat: [boolean | null, boolean | null]; threat_diagnostics: string[];
   lion_rights: unknown; occurrences: number[]; obligations: unknown[];
-  conclusion: unknown | null; draw_offer: ToriSide | null; last_effects: unknown | null;
+  conclusion: unknown | null; draw_offer: ShogiSide | null; last_effects: unknown | null;
 }
-export type ChuSquare = [number, number];
-export type ChuAction = { from: ChuSquare; route: ChuSquare[]; promote: boolean };
 export type ChuSnapshot = GameSnapshotBase & {
   game: "chu";
   chu: { root: unknown; declared_root_plies: string; earlier_history_unknown: boolean; historical_reachability_proven: boolean; selected: ChuHistory; live: ChuHistory; execution_supported: boolean };
-  document: GameSnapshotBase["document"] & { settings: { game_kind: "chu"; settings: { play_mode: PlayMode; orientation: ToriSide } } };
 };
-export type TenjikuAction = { kind: "travel"; from: ChuSquare; route: ChuSquare[]; promote: boolean }
-  | { kind: "igui"; from: ChuSquare; route: []; promote: false; target: ChuSquare };
 export interface TenjikuPieceIdentity {
   square: string; face: string;
-  piece: { id: number; side: ToriSide; base: string; promoted: boolean; right: string };
+  piece: { id: number; side: ShogiSide; base: string; promoted: boolean; right: string };
 }
 export interface TenjikuHistory {
   event_index: number; board_ply: number; declared_total_plies: string;
   identities: TenjikuPieceIdentity[]; royals: TenjikuPieceIdentity[];
   repetition_key: unknown; known_repetition_positions: number; first_recurrence_forbidden: true;
-  pending_bare: ToriSide | null; conclusion: unknown | null; draw_offer: ToriSide | null;
+  pending_bare: ShogiSide | null; conclusion: unknown | null; draw_offer: ShogiSide | null;
   last_effects: unknown | null;
 }
 export type TenjikuSnapshot = GameSnapshotBase & {
@@ -148,27 +141,20 @@ export type TenjikuSnapshot = GameSnapshotBase & {
   tenjiku: { profile: TenjikuProfile; edition: string; root: unknown; declared_root_plies: string;
     earlier_history_unknown: boolean; historical_reachability_proven: boolean;
     selected: TenjikuHistory; live: TenjikuHistory; execution_supported: boolean };
-  document: GameSnapshotBase["document"] & { settings: { game_kind: "tenjiku"; settings: { play_mode: PlayMode; orientation: ToriSide } } };
 };
 export type GameSnapshot = ChessSnapshot | ShogiSnapshot | XiangqiSnapshot | ToriSnapshot | ChuSnapshot | TenjikuSnapshot;
 export interface Observation {
   historical: boolean; application_error: string | null;
   observation: ExecutionObservation;
 }
+// A native command of the active game, as its records spell it.
+export type NativeCommand = { kind: "offer_draw" | "accept_draw" | "decline_draw" | "claim_natural_count" | "declare_entering_king" }
+  | { claim: { reason: Claim["reason"]; intended: string | null } };
+// Operation kinds name no game: game data is only in the payload.
 export type Operation =
-  | { kind: "tenjiku"; actor: ToriSide; command: { kind: "play"; action: TenjikuAction } | { kind: "resign" | "offer_draw" | "accept_draw" | "decline_draw" } }
-  | { kind: "tenjiku_preferences"; settings: { play_mode: PlayMode; orientation: ToriSide } }
-  | { kind: "chu"; actor: ToriSide; command: { kind: "play"; action: ChuAction } | { kind: "resign" | "offer_draw" | "accept_draw" | "decline_draw" } }
-  | { kind: "chu_preferences"; settings: { play_mode: PlayMode; orientation: ToriSide } }
-  | { kind: "tori"; actor: ToriSide; command: { kind: "play"; action: ToriAction } | { kind: "resign" | "agree_draw" | "declare_impasse" } }
-  | { kind: "tori_preferences"; settings: { play_mode: PlayMode; orientation: ToriSide } }
-  | { kind: "chess_play"; action: string }
-  | { kind: "chess_claim"; claim: Claim }
-  | { kind: "chess_preferences"; orientation: Color; analysis_defaults: AnalysisOperation }
-  | { kind: "xiangqi"; command: { kind: "play"; action: string } | { kind: "resign" | "offer_draw" | "accept_draw" | "decline_draw" | "claim_natural_count" } }
-  | { kind: "xiangqi_preferences"; settings: { play_mode: PlayMode; orientation: "red" | "black"; analysis_defaults: { depth: number; nodes: number } } }
   | { kind: "play"; action: string }
-  | { kind: "resume" | "retry" | "cancel" | "take_back" | "undo" | "return_live" | "resign" | "declare" }
+  | { kind: "command"; command: NativeCommand }
+  | { kind: "preferences"; settings: GameSettings }
+  | { kind: "resume" | "retry" | "cancel" | "take_back" | "undo" | "return_live" | "resign" }
   | { kind: "inspect"; event_index: number }
-  | { kind: "analyze"; operation: AnalysisOperation }
-  | { kind: "shogi_preferences"; settings: { play_mode: PlayMode; orientation: string; analysis_defaults: { depth: number; nodes: number } } };
+  | { kind: "analyze"; operation: AnalysisOperation };

@@ -30,7 +30,7 @@ const cast = (value: unknown) => value as GameSnapshot;
 const cases = [
   { label: "Chess", source: cast(chessJson), first: "e2", name: "e2, White pawn", second: "d2", nextName: "d2, White pawn" },
   { label: "Shogi", source: cast(shogiJson), first: "1g", name: "1g, Sente pawn", second: "1i", nextName: "1i, Sente lance" },
-  { label: "Xiangqi", source: cast(xiangqiJson), first: "a0", name: "a0, Red Rook", second: "b0", nextName: "b0, Red Horse" },
+  { label: "Xiangqi", source: cast(xiangqiJson), first: "a0", name: "a0, Red rook", second: "b0", nextName: "b0, Red horse" },
   { label: "Tori", source: cast(toriJson), first: "7c", name: "7c, Sente Falcon", second: "2d", nextName: "2d, Sente Swallow" },
   { label: "Chu", source: cast(chuJson), first: "6f", name: "6f, Sente Lion", second: "12l", nextName: "12l, Sente King" },
   { label: "Adams Tenjiku", source: cast(adamsJson), first: "9m", name: "9m, Sente Great General", second: "5k", nextName: "5k, Sente Dog" },
@@ -153,18 +153,18 @@ it("retires the computed name on a changed native context and after an ordinary 
   expect(quiet.getAttribute("aria-hidden")).toBe("true");
   expect(quiet.getAttribute("pointer-events")).toBe("none");
   fireEvent.click(target(container, "e3"));
-  expect(command).toHaveBeenCalledExactlyOnceWith({ kind: "chess_play", action: "e2e3" });
+  expect(command).toHaveBeenCalledExactlyOnceWith({ kind: "play", action: "e2e3" });
   expect(container.querySelector(".selected-piece-status")).toBeNull();
 });
 
 it.each([
   { label: "Chess pawn presentation contract", source: cast(chessJson), from: "e2", destination: "e7", art: ".piece", marker: ".capture-marker", contract: true },
-  { label: "Shogi pawn presentation contract", source: cast(shogiJson), from: "1g", destination: "1a", art: ".shogi-piece", marker: ".shogi-destination", contract: true },
+  { label: "Shogi pawn presentation contract", source: cast(shogiJson), from: "1g", destination: "1a", art: ".piece-tile", marker: ".shogi-destination", contract: true },
   { label: "Xiangqi cannon", source: cast(xiangqiJson), from: "b2", destination: "b9", art: ".xiangqi-piece", marker: ".xiangqi-destination" },
-  { label: "Tori falcon", source: cast(toriJson), from: "7c", destination: "7b", art: ".tori-piece", marker: ".shogi-destination" },
-  { label: "Chu lion", source: cast(chuJson), from: "6f", destination: "7e", art: ".chu-piece", marker: ".capture-marker" },
-  { label: "Adams dense Great General", source: cast(adamsJson), from: "9m", destination: "9d", art: ".tenjiku-piece", marker: ".capture-marker" },
-  { label: "Muller dense Great General", source: cast(mullerJson), from: "9m", destination: "9d", art: ".tenjiku-piece", marker: ".capture-marker" },
+  { label: "Tori falcon", source: cast(toriJson), from: "7c", destination: "7b", art: ".piece-tile", marker: ".shogi-destination" },
+  { label: "Chu lion", source: cast(chuJson), from: "6f", destination: "7e", art: ".piece-tile", marker: ".capture-marker" },
+  { label: "Adams dense Great General", source: cast(adamsJson), from: "9m", destination: "9d", art: ".piece-tile", marker: ".capture-marker" },
+  { label: "Muller dense Great General", source: cast(mullerJson), from: "9m", destination: "9d", art: ".piece-tile", marker: ".capture-marker" },
 ])("paints the $label capture outline after the occupied native piece without taking pointer events", ({ source, from, destination, art, marker, contract }) => {
   // These two adapters isolate the plain-text Chess and Shogi art paths. Their
   // supplied choices test paint/hit dispatch only, not game-rule correctness.

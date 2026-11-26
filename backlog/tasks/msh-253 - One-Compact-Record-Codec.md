@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-26T16:01:00Z'
+updated_date: '2026-11-26T16:06:00Z'
 labels:
   - core
   - persistence
@@ -62,4 +62,6 @@ Checkpoint on codex/msh-253-record-codec. Implemented one codec for the three sh
 Independent review of a63fa47..66a670a found a preflight performance regression, a coverage gap and stale protocol documentation. The branch now checks Xiangqi request tokens before checkpointing, tests retained move analysis against valid and forged same-ply targets, and documents timed retention for all five adapters. Byte comparison of reconstructed canonical records in all 42 committed .mshogi files, 23 envelope-test outputs and six generated full/base records succeeded. Clippy type alias and Xiangqi test expectation corrected: a rejected count claim emits two audit events; resignation emits two more. Next: finish workspace checks, compare native admission at 1,000 commands, collect targeted CI, integrate and clean up.
 
 The retained-analysis regression exposed a decoder defect: when the outer delta content preceded its kind, Serde buffered and lost the raw inner bytes. The transport now captures that field as RawValue before selecting the native decoder. A reordered forged request returns InvalidRequest and the valid target still searches. The focused engine test passes. Long 1,000-command comparisons and end-to-end workspace/CI verification are in progress. Branch codex/msh-253-record-codec.
+
+Evidence on Apple M1 Pro, Rust 1.99.1 release, a63fa47 versus 25805f0. Deterministic resource_admission walk through the 1,000th command (999-command base plus one board action), median of nine requests. Time for request decode, native replay and prefix admission excluding search/process I/O, in microseconds: Xiangqi 82,906 -> 50; Tenjiku Adams 15,825 -> 50; Muller 15,463 -> 48. Whole zero-node timed request over process pipes: Xiangqi 83,131 -> 87 us and 59,577 -> 511 bytes; Adams 16,461 -> 104 us and 135,695 -> 781 bytes; Muller 15,999 -> 105 us and 136,298 -> 751 bytes. Each advance admits the one new command. Complete seed-253 games ended at 81, 175 and 161 events respectively. Their final native admission was 15,747 -> 54 us, 3,383 -> 49 us and 3,201 -> 51 us. All 42 committed .mshogi native record outputs, 23 distinct envelope-test outputs and six generated complete/prefix envelopes compared byte for byte. Production lines in all changed Rust src files, with blank/comment lines and without test-only items/files: 8,075 -> 7,620 (-455). Inputs, workload source, commands and results: gs://mshogi-experiments-216675633801/runs/msh-253/record-admission.tar.gz (64,087 bytes). No cloud VM or build; cloud compute cost US$0. Current branch: codex/msh-253-record-codec. Remaining: final workspace, frontend fixture comparison, process CI 45854759990 and persistence CI 45854765652; then integrate, finalize, clean up.
 <!-- SECTION:NOTES:END -->

@@ -47,8 +47,6 @@ pub enum PerftError {
         /// Complete native action prefix.
         path: Vec<Action>,
     },
-    /// Native semantic reconstruction refused the private working root.
-    Record(RecordError),
     /// An enumerated native action could not be committed.
     Action {
         /// Complete native prefix.
@@ -112,14 +110,8 @@ fn setup(
         return Err(PerftError::Limits);
     }
     check(stop, &[])?;
-    let record = GameRecord::from_game(game).map_err(PerftError::Record)?;
-    let copy = record.to_game_with_stop(stop).map_err(|error| {
-        if error == RecordError::Stopped {
-            PerftError::Stopped { path: vec![] }
-        } else {
-            PerftError::Record(error)
-        }
-    })?;
+    let copy = game.clone();
+    check(stop, &[])?;
     Ok((
         copy,
         Budget {

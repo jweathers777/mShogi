@@ -1,6 +1,8 @@
 use super::*;
 use crate::alphabeta::SearchPosition;
-use mshogi_core::tenjiku::{Base, GameStatus, Piece, Position, Profile, RootMetadata, Square};
+use mshogi_core::tenjiku::{
+    Base, GameRecord, GameStatus, Piece, Position, Profile, RootMetadata, Square,
+};
 fn sq(f: u8, r: u8) -> Square {
     Square::new(f, r).unwrap()
 }

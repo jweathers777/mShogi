@@ -5,8 +5,7 @@ mod position_tests;
 use crate::alphabeta::{self, Searcher};
 use crate::search::SearchStatus;
 use mshogi_core::tenjiku::{
-    Action, Conclusion, Face, Game, GameCommand, GameError, GameRecord, GameRequest, RecordError,
-    Side,
+    Action, Conclusion, Face, Game, GameCommand, GameError, GameRequest, Side,
 };
 use position::TenjikuPosition;
 use std::{error::Error, fmt};
@@ -94,8 +93,6 @@ pub struct SearchResult {
 pub enum SearchError {
     /// Unsupported limits.
     InvalidLimits,
-    /// Private owner reconstruction failed.
-    Record(RecordError),
     /// Native command refusal.
     Transition(GameError),
     /// Private search output or restoration invariant failed.
@@ -204,16 +201,12 @@ pub fn search_with_state(
     if !legal.contains(&action) {
         return Err(SearchError::Restore);
     }
-    let mut native =
-        match GameRecord::from_game(game).and_then(|record| record.to_game_with_stop(&mut stop)) {
-            Ok(native) => native,
-            Err(RecordError::Stopped) => {
-                r.status = SearchStatus::Stopped;
-                r.completed_depth = 0;
-                return Ok(r);
-            }
-            Err(error) => return Err(SearchError::Record(error)),
-        };
+    if stop() {
+        r.status = SearchStatus::Stopped;
+        r.completed_depth = 0;
+        return Ok(r);
+    }
+    let mut native = game.clone();
     let mut first_conclusion = None;
     for &m in outcome.pv.iter().take(MAX_LINE) {
         if !r.principal_variation.is_empty() && timing.expired() {

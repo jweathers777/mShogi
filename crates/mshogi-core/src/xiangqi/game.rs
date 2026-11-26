@@ -5,6 +5,7 @@ use super::{
     Position, PositionRoot, Side,
 };
 pub use crate::native::GameContext;
+use crate::repetition::RepetitionIndex;
 use serde::{Deserialize, Serialize};
 use std::{error::Error, fmt};
 /// Initial unattended software policy, independent of native claim eligibility.
@@ -317,7 +318,7 @@ pub struct Game {
     pub(super) events: Vec<GameEvent>,
     snapshots: Vec<HistorySnapshot>,
     steps: Vec<Step>,
-    identities: Vec<BoardIdentity>,
+    identities: RepetitionIndex<BoardIdentity>,
     warnings: Vec<Warning>,
     offered_by: Option<Side>,
     pub(super) conclusion: Option<Conclusion>,
@@ -328,7 +329,7 @@ pub struct Game {
     node: u64,
     last_offer_ply: [Option<usize>; 2],
 }
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq, Hash)]
 struct BoardIdentity {
     board: [Option<super::Piece>; 90],
     side: Side,
@@ -355,7 +356,7 @@ impl Game {
             assessment,
             root,
             policy,
-            identities: vec![BoardIdentity::from(&position)],
+            identities: RepetitionIndex::new(BoardIdentity::from(&position)),
             position,
             ids,
             commands: vec![],
@@ -579,14 +580,6 @@ impl Game {
             });
         }
     }
-    fn occurrences(&self) -> Vec<usize> {
-        let key = self.identities.last().expect("known root");
-        self.identities
-            .iter()
-            .enumerate()
-            .filter_map(|(i, k)| (k == key).then_some(i))
-            .collect()
-    }
     fn resolve_repetition(&mut self) -> Result<(), GameError> {
         // An unanswered response is not proof of variation. Conversely a known
         // non-chase/check change need not wait for the next anchor return.
@@ -627,7 +620,7 @@ impl Game {
                 },
             );
         }
-        let occurrences = self.occurrences();
+        let occurrences = self.identities.current_occurrences();
         if occurrences.len() < 3 {
             return Ok(());
         }

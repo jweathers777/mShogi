@@ -1,8 +1,13 @@
 //! One authoritative Tenjiku history owner. Local geometry is not live permission.
 use super::*;
 pub use crate::native::GameContext;
+use crate::repetition::RepetitionIndex;
 use serde::{Deserialize, Serialize};
-use std::{error::Error, fmt};
+use std::{
+    error::Error,
+    fmt,
+    hash::{Hash, Hasher},
+};
 
 /// Native conclusions are separate from search, cancellation and operational failures.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
@@ -143,6 +148,21 @@ pub struct RepetitionKey {
     side: Side,
     board: Vec<Option<(Side, Base, bool)>>,
 }
+impl Hash for RepetitionKey {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.profile.hash(state);
+        self.side.hash(state);
+        // Hash the 16x16 board in one write. Each square fits in one byte:
+        // 36 original types, two owners and two promotion states, plus empty.
+        let mut board = [0; 256];
+        for (code, piece) in board.iter_mut().zip(&self.board) {
+            *code = piece.map_or(0, |(side, base, promoted)| {
+                1 + 4 * base as u8 + 2 * side as u8 + u8::from(promoted)
+            });
+        }
+        state.write(&board);
+    }
+}
 impl RepetitionKey {
     /// The selected profile is part of identity even when boards match.
     pub fn from_position(p: &Position) -> Self {
@@ -197,7 +217,7 @@ pub struct Game {
     root: StructuralState,
     local: LocalPosition,
     events: Vec<GameEvent>,
-    keys: Vec<RepetitionKey>,
+    keys: RepetitionIndex<RepetitionKey>,
     snapshots: Vec<HistorySnapshot>,
     root_snapshot: HistorySnapshot,
     context: GameContext,
@@ -246,7 +266,7 @@ impl Game {
         }
         let local = LocalPosition::admit(root).map_err(GameError::Root)?;
         let root = local.position().state().clone();
-        let key = RepetitionKey::from_position(local.position());
+        let keys = RepetitionIndex::new(RepetitionKey::from_position(local.position()));
         let mut snapshot = HistorySnapshot {
             state: root.clone(),
             event_count: 0,
@@ -255,14 +275,14 @@ impl Game {
             pending_bare: None,
             draw_offer: None,
         };
-        let (conclusion, pending) = adjudicate(&local, std::slice::from_ref(&key), stop)?;
+        let (conclusion, pending) = adjudicate(&local, &keys, stop)?;
         snapshot.conclusion = conclusion;
         snapshot.pending_bare = pending;
         let game = Self {
             root,
             local,
             events: vec![],
-            keys: vec![key],
+            keys,
             snapshots: vec![],
             root_snapshot: snapshot,
             context: GameContext::fresh(),
@@ -319,7 +339,7 @@ impl Game {
     }
     /// Repetition-only native identity, excluding serials/counters/refusal flags.
     pub fn repetition_key(&self) -> &RepetitionKey {
-        self.keys.last().expect("known root")
+        self.keys.current()
     }
     /// All surviving royal identities and positions for one owner.
     pub fn royals(&self, side: Side) -> Vec<(Square, Piece)> {
@@ -422,15 +442,8 @@ impl Game {
             check(stop)?;
             let (next, _) = self.local.simulate_with_stop(&action, &mut *stop)?;
             let key = RepetitionKey::from_position(next.position());
-            let mut repeated = false;
-            for old in &self.keys {
-                check(stop)?;
-                if old == &key {
-                    repeated = true;
-                    break;
-                }
-            }
-            if !repeated {
+            check(stop)?;
+            if self.keys.occurrences(&key).next().is_none() {
                 out.push(action)
             }
         }
@@ -504,11 +517,9 @@ impl Game {
                 }
                 let (e, _) = self.local.apply_with_stop(action, &mut *stop)?;
                 let key = RepetitionKey::from_position(self.position());
-                for old in &self.keys {
-                    check(stop)?;
-                    if old == &key {
-                        return Err(GameError::Repetition);
-                    }
+                check(stop)?;
+                if self.keys.occurrences(&key).next().is_some() {
+                    return Err(GameError::Repetition);
                 }
                 self.keys.push(key);
                 board_ply += 1;
@@ -672,7 +683,7 @@ fn bare(p: &Position, side: Side) -> bool {
 }
 fn adjudicate(
     local: &LocalPosition,
-    keys: &[RepetitionKey],
+    keys: &RepetitionIndex<RepetitionKey>,
     stop: &mut impl FnMut() -> bool,
 ) -> Result<(Option<Conclusion>, Option<Side>), GameError> {
     check(stop)?;
@@ -700,15 +711,8 @@ fn adjudicate(
         check(stop)?;
         let (next, _) = local.simulate_with_stop(&action, &mut *stop)?;
         let key = RepetitionKey::from_position(next.position());
-        let mut repeated = false;
-        for old in keys {
-            check(stop)?;
-            if old == &key {
-                repeated = true;
-                break;
-            }
-        }
-        if repeated {
+        check(stop)?;
+        if keys.occurrences(&key).next().is_some() {
             continue;
         }
         let escape = terminal_royals(next.position())

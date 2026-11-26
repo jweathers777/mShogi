@@ -1,11 +1,12 @@
 //! Complete Chu game admission. Local geometry never grants live history permission.
 use super::*;
 pub use crate::native::GameContext;
+use crate::repetition::RepetitionIndex;
 use serde::{Deserialize, Serialize};
 
 /// Repetition projection: native original/once-promoted placement, turn and Lion rights.
 /// Counters, provenance, derived obligations, events and runtime identities are excluded.
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq, Hash)]
 pub struct RepetitionKey {
     board: Vec<(Square, Piece)>,
     side: Side,
@@ -269,7 +270,7 @@ struct GameData {
     root: NativeRoot,
     local: LocalPosition,
     events: Vec<GameEvent>,
-    keys: Vec<RepetitionKey>,
+    repetitions: RepetitionIndex<RepetitionKey>,
     plies: Vec<Ply>,
     snapshots: Vec<HistorySnapshot>,
     root_snapshot: HistorySnapshot,
@@ -309,7 +310,7 @@ impl Game {
                 root: self.data.root.clone(),
                 local: self.data.local.clone(),
                 events: self.data.events.clone(),
-                keys: self.data.keys.clone(),
+                repetitions: self.data.repetitions.clone(),
                 plies: self.data.plies.clone(),
                 snapshots: self.data.snapshots.clone(),
                 root_snapshot: self.data.root_snapshot.clone(),
@@ -359,7 +360,7 @@ impl Game {
         let mut game = Self {
             data: GameData {
                 root,
-                keys: vec![RepetitionKey::from_local(&local)],
+                repetitions: RepetitionIndex::new(RepetitionKey::from_local(&local)),
                 local,
                 events: vec![],
                 plies: vec![],
@@ -413,7 +414,7 @@ impl Game {
     }
     /// Current repetition projection, distinct from full saved/search context.
     pub fn repetition_key(&self) -> &RepetitionKey {
-        self.data.keys.last().expect("root")
+        self.data.repetitions.current()
     }
     /// Current request token; it changes at each accepted command, undo and retirement.
     pub fn context(&self) -> GameContext {
@@ -474,29 +475,25 @@ impl Game {
         self.obligations().iter().all(|o| {
             let [_, b, c] = o.occurrences;
             let period = c - b;
-            if o.progress >= period || next != &self.data.keys[b + o.progress + 1] {
+            if o.progress >= period || next != &self.data.repetitions.keys()[b + o.progress + 1] {
                 return true;
             }
-            let last = (0..period).rfind(|i| self.data.keys[b + i].side == actor);
+            let last = (0..period).rfind(|i| self.data.repetitions.keys()[b + i].side == actor);
             !(o.responsible_sides.contains(&actor) && last == Some(o.progress))
         })
     }
-    fn current_occurrences(&self) -> Vec<usize> {
-        self.data
-            .keys
-            .iter()
-            .enumerate()
-            .filter_map(|(i, k)| (k == self.repetition_key()).then_some(i))
-            .collect()
-    }
-    fn derive_obligations(&self, previous: &[Obligation]) -> Vec<Obligation> {
+    fn derive_obligations(
+        &self,
+        previous: &[Obligation],
+        occurrences: &[usize],
+    ) -> Vec<Obligation> {
+        let keys = self.data.repetitions.keys();
         let n = self.data.plies.len();
         let mut out: Vec<_> = previous
             .iter()
             .filter_map(|o| {
                 let [_, b, c] = o.occurrences;
-                if o.progress + 1 < c - b && self.data.keys[n] == self.data.keys[b + o.progress + 1]
-                {
+                if o.progress + 1 < c - b && keys[n] == keys[b + o.progress + 1] {
                     let mut o = o.clone();
                     o.progress += 1;
                     Some(o)
@@ -505,10 +502,17 @@ impl Game {
                 }
             })
             .collect();
-        for period in 2..=n / 2 {
-            let a = n - 2 * period;
-            let b = n - period;
-            if self.data.keys[a..=b] != self.data.keys[b..=n] {
+        // Each pair of equal cycles must return to the current key at its midpoint.
+        // Walk nearest midpoints first to keep the shortest periods first.
+        for &b in occurrences.iter().rev().skip(1) {
+            let period = n - b;
+            let Some(a) = b.checked_sub(period) else {
+                break;
+            };
+            if period < 2 {
+                continue;
+            }
+            if keys[a..=b] != keys[b..=n] {
                 continue;
             }
             let (responsible_sides, category) = self.cycle_responsibility(b, n);
@@ -560,7 +564,7 @@ impl Game {
             )
         } else {
             (
-                vec![self.data.keys[n].side],
+                vec![self.data.repetitions.keys()[n].side],
                 Responsibility::SideToMoveFallback,
             )
         }
@@ -589,7 +593,7 @@ impl Game {
         Checkpoint {
             local,
             events: self.data.events.len(),
-            keys: self.data.keys.len(),
+            keys: self.data.repetitions.len(),
             plies: self.data.plies.len(),
             snapshots: self.data.snapshots.len(),
         }
@@ -597,7 +601,7 @@ impl Game {
     fn restore(&mut self, before: Checkpoint) {
         self.data.local = before.local;
         self.data.events.truncate(before.events);
-        self.data.keys.truncate(before.keys);
+        self.data.repetitions.truncate(before.keys);
         self.data.plies.truncate(before.plies);
         self.data.snapshots.truncate(before.snapshots);
     }
@@ -662,9 +666,10 @@ impl Game {
                     check,
                     attack,
                 });
-                self.data.keys.push(key);
-                next.occurrences = self.current_occurrences();
-                next.obligations = self.derive_obligations(&previous.obligations);
+                self.data.repetitions.push(key);
+                next.occurrences = self.data.repetitions.current_occurrences();
+                next.obligations =
+                    self.derive_obligations(&previous.obligations, &next.occurrences);
                 next.draw_offer = None;
                 // Install history for finite reply checks, without recursive mate adjudication.
                 next.state = self.position().state().clone();
@@ -910,14 +915,14 @@ impl Game {
             attack,
         });
         self.data
-            .keys
+            .repetitions
             .push(RepetitionKey::from_local(&self.data.local));
         let mut next = before.clone();
         next.state = self.position().state().clone();
         next.protection = self.data.local.protection().clone();
         next.board_ply += 1;
-        next.occurrences = self.current_occurrences();
-        next.obligations = self.derive_obligations(&before.obligations);
+        next.occurrences = self.data.repetitions.current_occurrences();
+        next.obligations = self.derive_obligations(&before.obligations, &next.occurrences);
         next.conclusion = None;
         next.draw_offer = None;
         self.data.snapshots.push(next);
@@ -956,7 +961,7 @@ impl Game {
                 self.position().state(),
                 self.data.local.protection(),
                 &self.data.events,
-                &self.data.keys,
+                self.data.repetitions.keys(),
                 &self.data.plies,
                 &self.data.snapshots,
                 &self.data.root_snapshot,

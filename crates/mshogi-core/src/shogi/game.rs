@@ -2,6 +2,7 @@
 
 use super::{Action, ActionError, CounterSource, PieceKind, Position, RepetitionIdentity, Side};
 pub use crate::native::GameContext;
+use crate::repetition::RepetitionIndex;
 
 /// Root category is retained, rather than presenting an imported diagram as a recovered game.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -326,7 +327,7 @@ pub struct Game {
     root: GameRoot,
     position: Position,
     events: Vec<GameEvent>,
-    identities: Vec<RepetitionIdentity>,
+    identities: RepetitionIndex<RepetitionIdentity>,
     checks: Vec<CheckStep>,
     conclusion: Option<Conclusion>,
     context: GameContext,
@@ -410,7 +411,7 @@ impl Game {
     pub fn from_root(root: GameRoot) -> Self {
         let position = root.position.clone();
         let mut game = Self {
-            identities: vec![position.repetition_identity()],
+            identities: RepetitionIndex::new(position.repetition_identity()),
             root,
             position,
             events: vec![],
@@ -444,12 +445,7 @@ impl Game {
     }
     /// Known position indices for this board/hand/turn identity. Counters are excluded.
     pub fn occurrences(&self) -> Vec<usize> {
-        let current = self.identities.last().expect("root occurrence");
-        self.identities
-            .iter()
-            .enumerate()
-            .filter_map(|(i, id)| (id == current).then_some(i))
-            .collect()
+        self.identities.current_occurrences()
     }
     /// Read-only declaration evidence for either side, regardless of turn or conclusion.
     pub fn declaration_eligibility(&self, actor: Side) -> DeclarationEligibility {

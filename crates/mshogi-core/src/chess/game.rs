@@ -1,10 +1,8 @@
 //! Rules-owned action history. Adjudication is added by MSH-17/18.
 
+use crate::repetition::RepetitionIndex;
 use serde::{Deserialize, Serialize};
-use std::{
-    collections::HashMap,
-    hash::{Hash, Hasher},
-};
+use std::hash::{Hash, Hasher};
 
 use super::{Action, ActionError, Color, FenError, PieceKind, Position, Square};
 
@@ -88,7 +86,6 @@ impl Position {
 struct Step {
     action: Action,
     before: Position,
-    previous_identity: RepetitionIdentity,
     previous_reversible_repeat: bool,
 }
 
@@ -104,8 +101,7 @@ pub struct Game {
     policy: ClaimPolicy,
     position: Position,
     steps: Vec<Step>,
-    current_identity: RepetitionIdentity,
-    occurrences: HashMap<RepetitionIdentity, usize>,
+    occurrences: RepetitionIndex<RepetitionIdentity>,
     // Exact prerequisite for a current/intended repetition claim. The public
     // occurrence table remains complete, including unreachable old identities.
     reversible_repeat: bool,
@@ -142,8 +138,7 @@ impl Game {
             origin,
             policy,
             steps: Vec::new(),
-            current_identity: key.clone(),
-            occurrences: HashMap::from([(key, 1)]),
+            occurrences: RepetitionIndex::new(key),
             reversible_repeat: false,
         }
     }
@@ -179,18 +174,18 @@ impl Game {
     }
 
     /// Exact current repetition identity.
-    pub const fn repetition_identity(&self) -> &RepetitionIdentity {
-        &self.current_identity
+    pub fn repetition_identity(&self) -> &RepetitionIdentity {
+        self.occurrences.current()
     }
 
     /// Number of occurrences in known history only, including the initial state.
     pub fn occurrences(&self, identity: &RepetitionIdentity) -> usize {
-        self.occurrences.get(identity).copied().unwrap_or(0)
+        self.occurrences.occurrences(identity).count()
     }
 
     /// Occurrences of the current rule-equivalent position in known history.
     pub fn current_occurrences(&self) -> usize {
-        self.occurrences(&self.current_identity)
+        self.occurrences(self.occurrences.current())
     }
 
     // Necessary, not sufficient, for any current or intended threefold claim.
@@ -215,15 +210,14 @@ impl Game {
         self.steps.push(Step {
             action,
             before: std::mem::replace(&mut self.position, after),
-            previous_identity: std::mem::replace(&mut self.current_identity, identity.clone()),
             previous_reversible_repeat: self.reversible_repeat,
         });
-        let count = self.occurrences.entry(identity).or_default();
-        *count += 1;
+        self.occurrences.push(identity);
         // No identity after a pawn move, capture or rights loss can equal an
         // identity before it. Thus this complete-map count is also the count
         // within the current reversible segment; no second map is needed.
-        self.reversible_repeat = !irreversible && (self.reversible_repeat || *count >= 2);
+        self.reversible_repeat =
+            !irreversible && (self.reversible_repeat || self.current_occurrences() >= 2);
     }
 
     /// Restore the last whole action's position and every history field.
@@ -231,16 +225,8 @@ impl Game {
     /// This is analysis branching, not a live-match command retracting results.
     pub fn undo(&mut self) -> Option<Action> {
         let step = self.steps.pop()?;
-        let count = self
-            .occurrences
-            .get_mut(&self.current_identity)
-            .expect("owned occurrence");
-        *count -= 1;
-        if *count == 0 {
-            self.occurrences.remove(&self.current_identity);
-        }
+        self.occurrences.truncate(self.steps.len() + 1);
         self.position = step.before;
-        self.current_identity = step.previous_identity;
         self.reversible_repeat = step.previous_reversible_repeat;
         Some(step.action)
     }

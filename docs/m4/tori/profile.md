@@ -176,8 +176,8 @@ Abstract Games Museum as "third occurrence; change the repeating move".
   separate perpetual-check rule; check and quiet cycles are treated the same.
 - Records store the occurrence list of each event (replay-checked). The set of
   refused actions is derived from history on replay and is not stored.
-- Implementation: a 64-bit digest per position, scanned two plies at a time, with
-  full-key comparison on each digest match. A digest never decides a game.
+- The shared repetition index locates earlier positions by hash and checks the
+  full Tori key on each match.
 
 The earlier edition (MSH81-MODERN-2026-11-01, schema 1) let the move that created
 the third occurrence stand and obliged the other side to depart differently; an

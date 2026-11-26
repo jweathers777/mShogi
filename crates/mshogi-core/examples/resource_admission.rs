@@ -27,6 +27,14 @@ fn measure<G, C: Clone, U>(
     )?;
     let build_us = start.elapsed().as_micros();
     let json = encode(&game)?;
+    let mut choice_times = Vec::new();
+    for _ in 0..11 {
+        let start = Instant::now();
+        let available = choices(black_box(&game), accepted);
+        choice_times.push(start.elapsed().as_nanos());
+        black_box(available);
+    }
+    choice_times.sort();
     let mut admissions = Vec::new();
     let mut undos = Vec::new();
     let mut command_bytes = 0;
@@ -54,8 +62,9 @@ fn measure<G, C: Clone, U>(
     undos.sort();
     replays.sort();
     println!(
-        "{accepted},{},{command_bytes},{build_us},{:.3},{:.3},{:.3}",
+        "{accepted},{},{command_bytes},{build_us},{:.3},{:.3},{:.3},{:.3}",
         json.len(),
+        choice_times[5] as f64 / 1000.0,
         admissions[5] as f64 / 1000.0,
         undos[5] as f64 / 1000.0,
         replays[2] as f64 / 1000.0
@@ -115,6 +124,23 @@ macro_rules! run {
         )
     }};
 }
+fn chess(count: usize) -> Result<(), Failure> {
+    use mshogi_core::chess::*;
+    measure(
+        Game::new(ClaimPolicy::ExplicitOnly),
+        count,
+        |game: &Game, _| game.position().legal_actions(),
+        |game, action| Ok(game.apply(action)?),
+        |game, _| game.undo().map(|_| ()).ok_or("no move to undo".into()),
+        |game| game.position().legal_actions().is_empty(),
+        |game| Ok(game.record().to_json()),
+        |text| {
+            black_box(GameRecord::from_json(text)?.replay_history()?);
+            Ok(())
+        },
+    )
+}
+
 /// Shogi and Xiangqi consume their reversal by value and name actions differently.
 fn shogi(count: usize) -> Result<(), Failure> {
     use mshogi_core::shogi::*;
@@ -187,17 +213,20 @@ fn main() -> Result<(), Failure> {
     let args: Vec<_> = std::env::args().skip(1).collect();
     let kind = args
         .first()
-        .ok_or("game: shogi|xiangqi|tori|chu|tenjiku-adams|tenjiku-muller")?;
+        .ok_or("game: chess|shogi|xiangqi|tori|chu|tenjiku-adams|tenjiku-muller")?;
     let count = args.get(1).ok_or("history length")?.parse::<usize>()?;
     if count > 1000 {
         return Err("history length must be <=1000".into());
     }
     let controls = args.get(2).is_some_and(|s| s == "controls");
-    println!("events,record_bytes,command_bytes,build_us,admission_us,undo_us,replay_us");
+    println!(
+        "events,record_bytes,command_bytes,build_us,choices_us,admission_us,undo_us,replay_us"
+    );
     match kind.as_str() {
-        "shogi" | "xiangqi" | "tori" if controls => {
+        "chess" | "shogi" | "xiangqi" | "tori" if controls => {
             Err("this game has no measured controls".into())
         }
+        "chess" => chess(count),
         "shogi" => shogi(count),
         "xiangqi" => xiangqi(count),
         "tori" => run!(tori, Game::standard(), count, false),

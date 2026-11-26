@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-26T14:29:00Z'
+updated_date: '2026-11-26T14:38:00Z'
 labels:
   - core
   - simplification
@@ -32,6 +32,12 @@ Each native game finds earlier occurrences of a position in its own way: Chess k
 - [ ] #3 Rules, perft and record tests pass unchanged; replay and legal-action time at full length are measured before and after.
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Measure release replay and legal choices on the same deterministic full-length histories, including Chess and both Tenjiku profiles. 2. Introduce one exact-key index with ordered occurrences and truncation. Use it for all six game histories, including Chu cycle anchors and Tenjiku admission. 3. Check unchanged rule, perft and record fixtures, compare timings, review the diff, integrate and clean up.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
@@ -42,4 +48,6 @@ MSH-250 (Token-Only Native Request Context), 2026-11-26: did not change any occu
 Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
 
 Claimed by Codex on codex/msh-251-repetition-index. Next: measure the baseline and implement the shared index.
+
+Checkpoint on codex/msh-251-repetition-index: all six games use the shared index. It stores keys in order and links matching hash buckets by board ply, with full equality checks on collision. Chu tries only indexed cycle midpoints, Tori tracks the earliest doubled key for each turn, and Tenjiku checks the index in admission and bare-royal replies. First design used an allocation per key and slowed Xiangqi copies; the replacement uses contiguous vectors. Baseline comparisons cover all six games and both Tenjiku profiles. Next: run interleaved final measurements, independent review, shared checks and deep perft, then integrate.
 <!-- SECTION:NOTES:END -->

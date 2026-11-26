@@ -36,3 +36,4 @@ pub mod chu;
 pub mod tenjiku;
 
 mod record;
+mod repetition;

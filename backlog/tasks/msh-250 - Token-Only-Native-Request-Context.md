@@ -1,10 +1,11 @@
 ---
 id: MSH-250
 title: Token-Only Native Request Context
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-26T08:22:00Z'
+updated_date: '2026-11-26T08:23:00Z'
 labels:
   - core
   - simplification

@@ -22,7 +22,7 @@ use std::{
 pub trait Dialect:
     EngineGame<Game: Send + Sync, Choice: Send, Side: Send, Pending: Send, Conclusion: Send>
 {
-    type Root: Eq;
+    type Root: Eq + Clone + Send + Sync;
     type Action: Copy + Eq + Display + FromStr<Err: Display> + Send + Sync;
     const PROTOCOL: &'static str;
     const GAME: &'static str;
@@ -47,20 +47,30 @@ pub trait Dialect:
 // All positions start from a native root and contain only admitted board moves.
 // Each dialect has a fixed claim policy. Together, root and moves identify
 // the complete native history, including automatic events.
+struct History<D: Dialect> {
+    root: D::Root,
+    moves: Vec<D::Action>,
+}
+impl<D: Dialect> History<D> {
+    fn extends(&self, earlier: &Self) -> bool {
+        self.root == earlier.root && self.moves.starts_with(&earlier.moves)
+    }
+}
 struct Position<D: Dialect> {
     game: D::Game,
-    moves: Vec<D::Action>,
+    history: Arc<History<D>>,
 }
 impl<D: Dialect> Position<D> {
     fn start() -> Self {
-        Self {
-            game: D::start(),
+        let game = D::start();
+        let history = History {
+            root: D::root(&game).clone(),
             moves: Vec::new(),
+        };
+        Self {
+            game,
+            history: Arc::new(history),
         }
-    }
-
-    fn is_prefix_of(&self, root: &D::Root, moves: &[D::Action]) -> bool {
-        D::root(&self.game) == root && moves.starts_with(&self.moves)
     }
 
     fn parse(&self, words: &[&str]) -> Result<Self, String> {
@@ -78,17 +88,21 @@ impl<D: Dialect> Position<D> {
                     .map_err(|e| format!("move {}: {e}", i + 1))
             })
             .collect::<Result<Vec<_>, _>>()?;
-        let (mut game, offset) = if self.is_prefix_of(&root, &moves) {
-            (self.game.clone(), self.moves.len())
+        let history = History::<D> { root, moves };
+        let (mut game, offset) = if history.extends(&self.history) {
+            (self.game.clone(), self.history.moves.len())
         } else {
-            (D::from_root(root)?, 0)
+            (D::from_root(history.root.clone())?, 0)
         };
-        for (i, &action) in moves.iter().enumerate().skip(offset) {
+        for (i, &action) in history.moves.iter().enumerate().skip(offset) {
             let actor = D::side_to_move(&game);
             D::submit(&mut game, actor, D::play(action), &mut || false)
                 .map_err(|e| format!("move {} native rejection: {e}", i + 1))?;
         }
-        Ok(Self { game, moves })
+        Ok(Self {
+            game,
+            history: Arc::new(history),
+        })
     }
 }
 
@@ -226,6 +240,53 @@ struct Request<D: Dialect> {
     stop: AtomicBool,
     started: Instant,
 }
+// Keep only the history needed to check the next timed search. The worker
+// can release the old native game as soon as it finishes the request.
+struct TimedTable<D: Dialect> {
+    engine: Searcher<D::Position>,
+    hash: usize,
+    generation: u64,
+    history: Arc<History<D>>,
+}
+
+fn search<D: Dialect>(
+    request: &Request<D>,
+    retained: &mut Option<TimedTable<D>>,
+) -> Result<EngineResult<D>, String> {
+    let timing = RequestTime::new(request.controls.time);
+    // Every request observes a resize or new game, including fixed work.
+    if retained
+        .as_ref()
+        .is_some_and(|t| t.hash != request.hash || t.generation != request.generation)
+    {
+        *retained = None;
+    }
+    let position = &request.position;
+    let mut fresh;
+    let engine = if request.controls.time.is_some() {
+        let table = retained.get_or_insert_with(|| TimedTable {
+            engine: Searcher::new(request.hash),
+            hash: request.hash,
+            generation: request.generation,
+            history: Arc::clone(&position.history),
+        });
+        if !position.history.extends(&table.history) {
+            table.engine.clear();
+        }
+        table.history = Arc::clone(&position.history);
+        &mut table.engine
+    } else {
+        fresh = Searcher::new(request.hash);
+        &mut fresh
+    };
+    D::search(
+        &position.game,
+        request.controls.limits,
+        timing.remaining(),
+        engine,
+        || request.stop.load(Ordering::Acquire),
+    )
+}
 struct Completion<D: Dialect> {
     request: Arc<Request<D>>,
     result: Result<EngineResult<D>, String>,
@@ -252,7 +313,7 @@ impl<D: Dialect> Worker<D> {
             .name(format!("mshogi-{}-search", D::GAME))
             .spawn(move || {
                 let (lock, wake) = &*work;
-                let mut retained: Option<(Arc<Request<D>>, Searcher<D::Position>)> = None;
+                let mut retained = None;
                 loop {
                     let request = {
                         let mut mailbox = wake
@@ -265,35 +326,7 @@ impl<D: Dialect> Worker<D> {
                         }
                         mailbox.pending.take().unwrap()
                     };
-                    let timing = RequestTime::new(request.controls.time);
-                    let mut fresh;
-                    let engine = if request.controls.time.is_some() {
-                        let (last, engine) = retained.get_or_insert_with(|| {
-                            (Arc::clone(&request), Searcher::new(request.hash))
-                        });
-                        if last.hash != request.hash {
-                            *engine = Searcher::new(request.hash);
-                        } else if last.generation != request.generation
-                            || !last.position.is_prefix_of(
-                                D::root(&request.position.game),
-                                &request.position.moves,
-                            )
-                        {
-                            engine.clear();
-                        }
-                        *last = Arc::clone(&request);
-                        engine
-                    } else {
-                        fresh = Searcher::new(request.hash);
-                        &mut fresh
-                    };
-                    let result = D::search(
-                        &request.position.game,
-                        request.controls.limits,
-                        timing.remaining(),
-                        engine,
-                        || request.stop.load(Ordering::Acquire),
-                    );
+                    let result = search(&request, &mut retained);
                     lock.lock().unwrap().completed = Some(Completion { request, result });
                 }
             })?;
@@ -790,5 +823,44 @@ mod tests {
             shogi(&["btime", "6000", "byoyomi", "100"]).unwrap().time,
             Some(TimeBudget::from_clock_ms(6000, 100, 30).with_response_margin())
         );
+    }
+    #[test]
+    fn fixed_work_releases_an_incompatible_timed_table() {
+        let mut request = Request::<Shogi> {
+            position: Arc::new(Position::start()),
+            controls: parse_go::<Shogi>(
+                &["movetime", "1"],
+                default_limits::<Shogi>(),
+                false,
+                Side::Sente,
+            )
+            .unwrap(),
+            generation: 0,
+            hash: 1,
+            stop: AtomicBool::new(true),
+            started: Instant::now(),
+        };
+        let timed = request.controls;
+        let fixed = parse_go::<Shogi>(
+            &["nodes", "0"],
+            default_limits::<Shogi>(),
+            false,
+            Side::Sente,
+        )
+        .unwrap();
+        let mut retained = None;
+        super::search(&request, &mut retained).unwrap();
+        request.controls = fixed;
+        super::search(&request, &mut retained).unwrap();
+        assert!(retained.is_some());
+        request.hash = 2;
+        super::search(&request, &mut retained).unwrap();
+        assert!(retained.is_none());
+        request.controls = timed;
+        super::search(&request, &mut retained).unwrap();
+        request.controls = fixed;
+        request.generation += 1;
+        super::search(&request, &mut retained).unwrap();
+        assert!(retained.is_none());
     }
 }

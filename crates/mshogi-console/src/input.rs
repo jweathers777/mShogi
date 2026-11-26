@@ -50,4 +50,18 @@ mod tests {
         }
         assert!(line(&mut input, Ending::Protocol).unwrap().is_none());
     }
+
+    #[test]
+    fn large_unterminated_line_survives_buffer_boundaries() {
+        let mut bytes = b"position startpos".to_vec();
+        bytes.resize(1_100_000, b' ');
+        bytes.extend_from_slice(b"moves 7g7f");
+        for ending in [Ending::Shell, Ending::Protocol] {
+            let mut input = io::BufReader::with_capacity(17, &bytes[..]);
+            assert_eq!(line(&mut input, ending).unwrap().unwrap(), bytes);
+        }
+        assert!(protocol_text(&bytes).is_some());
+        assert!(protocol_text(b"isready\0").is_none());
+        assert!(protocol_text(b"usi\xff").is_none());
+    }
 }

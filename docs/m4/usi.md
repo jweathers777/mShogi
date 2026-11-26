@@ -45,7 +45,9 @@ continues to take its game from the structured request and rejects `--game`.
 Use `go movetime MS` for 1–60,000 ms, or give the moving side's clock with
 `btime` (Sente) or `wtime` (Gote). The clock accepts `binc`, `winc`,
 `byoyomi` and positive `movestogo` (default 30). Clock and move-time requests
-require time-based play. Pondering, ponderhit and searchmoves are unsupported.
+require time-based play. The allocator currently treats byoyomi as an increment and caps spending at
+remaining main time. With zero main time it assigns zero thinking time (MSH-275).
+Pondering, ponderhit and searchmoves are unsupported.
 Invalid go controls produce a bounded stderr diagnostic, no bestmove, and leave
 the adapter available for a corrected request. An external controller must not
 wait for an unsupported operation. Duplicate/unknown controls reject explicitly;

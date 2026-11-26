@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T18:31:00Z'
+updated_date: '2026-11-26T18:34:00Z'
 labels:
   - console
   - protocol
@@ -49,4 +49,6 @@ Backlog consolidation, 2026-11-26: the dependency fields and current acceptance 
 Claimed on codex/msh-256-protocol at 655e63b. Next: compare the protocol paths and record the implementation plan.
 
 Both protocols now use the same worker and exact immutable request identity, covering generation, position, hash, time and limits. Bare go uses one second unless Depth or Nodes selected fixed work. Both reuse an admitted move prefix, accept Hash (1–1024 MiB, defaults 16 for Shogi and 64 for Xiangqi) and positive movestogo (default 30). Hash applies to timed and fresh fixed-work tables. USI alone accepts byoyomi, gameover and go mate. Shared CR/LF protocol framing and byte checks preserve unlimited input; shell framing remains LF. On the Apple silicon Mac, release benchmark at 655e63b, 32 legal Xiangqi moves vs its 31-move prefix: canonical record construction + has_prefix 6864 ns, native root/policy/events 176 ns, native root + parsed protocol moves 98 ns per comparison (5000/50000/50000 repetitions with black_box). Each protocol fixes claim policy and can submit only board moves. This permits one generic search session using exact root and admitted actions. Existing 39 focused release tests passed before adding new coverage. Branch codex/msh-256-protocol. Next: independent review, final local/CI checks and counts.
+
+Fresh independent review found an incompatible timed table could remain allocated after a new game or Hash resize followed by fixed work. Every request now drops that state before selecting its search mode; a fixed-work regression covers resize and new game. The retained table holds only a shared root/move list, so it releases the previous native game. Review also exercised 128 KiB input, CR framing, invalid bytes, retirement, suffixes and shutdown in both release processes. A pre-existing zero-main-time byoyomi defect is tracked separately in MSH-275 (Use the Current Byoyomi Period in USI Overtime). The USI guide describes the limitation. Console production Rust lines (excluding trailing cfg(test) modules) 3967 to 3579; all .rs lines under console/src 4144 to 3828. Protocol/reader files alone, production lines, 1760 to 1382. Next: finish local and three-platform process checks, integrate and clean.
 <!-- SECTION:NOTES:END -->

@@ -1,6 +1,6 @@
 //! Bounded command, reply and retirement evidence for UCI, USI and UCCI.
 use crate::{
-    common::elapsed_ns,
+    common::{elapsed_ns, observed_ns},
     process::{Engine, Output, WriteFailure, escaped, valid_protocol_byte},
     protocol::{Failure, Traffic, option_value},
     *,
@@ -271,7 +271,7 @@ impl<J: Journal> Transport<J> {
         let deadline = self.deadline.map_or(deadline, |d| d.min(deadline));
         loop {
             let now = Instant::now();
-            self.observed = elapsed_ns(self.start);
+            self.observed = observed_ns(self.start, now);
             if overall_first && now >= deadline {
                 return Err(self.overall_timeout(engine.index));
             }
@@ -305,11 +305,16 @@ impl<J: Journal> Transport<J> {
                     .min(Duration::from_millis(2)),
             );
             let received = Instant::now();
-            self.observed = elapsed_ns(self.start);
+            self.observed = observed_ns(self.start, received);
             let retained = match &output {
                 Ok(Output::Line(bytes)) => {
                     let text = escaped(bytes);
                     engine.last_output = Some(text.clone());
+                    let phase = if received >= deadline {
+                        "retired"
+                    } else {
+                        phase
+                    };
                     self.log(engine.index, phase, text, None, self.observed)
                 }
                 Ok(Output::Oversized) => {

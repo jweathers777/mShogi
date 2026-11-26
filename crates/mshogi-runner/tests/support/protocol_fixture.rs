@@ -65,11 +65,7 @@ pub fn serve(hello: &str, banner: &str, legal: &str, duplicate: &str, illegal: &
                 }
                 "hungquit" => println!("bestmove resign"),
                 "delayed_duplicate" => println!("bestmove {legal}"),
-                "timeout" => {}
-                "late" => {
-                    thread::sleep(Duration::from_millis(80));
-                    println!("bestmove {legal}");
-                }
+                "timeout" | "late" => {}
                 "duplicate" => println!("bestmove {legal}\nbestmove {duplicate}"),
                 "oversize" => println!("{}", "x".repeat(5000)),
                 "flood" => {
@@ -79,6 +75,9 @@ pub fn serve(hello: &str, banner: &str, legal: &str, duplicate: &str, illegal: &
                 }
                 _ => panic!("unknown verification mode"),
             },
+            // The retired request replies only after the controller observes
+            // its watchdog and sends stop. No scheduler delay can make it timely.
+            Some("stop") if mode == "late" => println!("bestmove {legal}"),
             Some("quit") if mode == "delayed_duplicate" => {
                 thread::sleep(Duration::from_millis(390));
                 println!("bestmove {duplicate}");

@@ -62,7 +62,11 @@ pub(crate) fn platform() -> String {
 }
 
 pub(crate) fn elapsed_ns(start: Instant) -> u64 {
-    u64::try_from(start.elapsed().as_nanos()).unwrap_or(u64::MAX)
+    observed_ns(start, Instant::now())
+}
+
+pub(crate) fn observed_ns(start: Instant, receipt: Instant) -> u64 {
+    u64::try_from(receipt.duration_since(start).as_nanos()).unwrap_or(u64::MAX)
 }
 
 pub(crate) fn sha256(bytes: impl AsRef<[u8]>) -> String {

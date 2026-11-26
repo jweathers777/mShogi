@@ -101,7 +101,10 @@ fn watchdog_and_late_reply_retirement_preserve_native_game_and_reap_children() {
                 assert!(
                     game.traffic
                         .iter()
-                        .any(|e| e.phase == "retired" && e.text.starts_with("bestmove"))
+                        .any(|e| e.phase == "retired" && e.text.starts_with("bestmove")),
+                    "late reply missing: {:?}, {:?}",
+                    game.traffic,
+                    game.processes
                 );
             }
         }

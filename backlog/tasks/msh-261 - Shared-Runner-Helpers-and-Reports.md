@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T23:16:00Z'
+updated_date: '2026-11-26T23:30:00Z'
 labels:
   - runner
   - refactor
@@ -65,4 +65,6 @@ Hosted process CI 45906698510 passed on Ubuntu and Windows. macOS exposed a reap
 Review of the cleanup fix separated successful wire writes from transcript retention, and incomplete stdout capture from remaining journal capacity. A slow-quit child now exits naturally even with zero transcript bytes. A failed child with open stdout does not suppress the other child’s cleanup evidence. Two real subprocess regressions cover these paths. Superseded CI 45908103363 was cancelled. Corrected production line count is 7939 before and 7333 after (606 fewer). Next: verify final revision on all three hosted platforms, integrate and clean up.
 
 edb4f7b passed the workspace checks and its hosted Ubuntu and Windows jobs (45908447797). The controlled closed-stdin case also passed on macOS, but its Xiangqi retirement test observed an unreaped child under a 300 ms budget. The updated transport gives stop/quit and stdout capture the first half of the absolute deadline, polls stdout in intervals up to 5 ms, and reserves the other half for forced termination, reaping and joining pipe workers. It samples exit status even after a delayed wakeup. The watchdog, native rules and test expectations remain the same. The local full runner suite and the final focused Xiangqi check passed. Production source now totals 7338 lines, 601 fewer than the baseline. Next: final workspace check, affected process CI and integration.
+
+a41e89d passed local workspace, Ubuntu and Windows checks. macOS run 45909991524 found that a real deadline-racing reply can be dequeued during search after its retirement. The transport now records that response as retired and uses one monotonic receipt for its timestamp and deadline classification. The fixture produces its late reply on stop instead of depending on an 80 ms scheduling delay. Shogi and Xiangqi still require the exact retired bestmove and reaped child. Both focused process tests pass locally. Updated production count: 7939 to 7347 (592 fewer). Next: complete the release matrix, then integrate and clean up.
 <!-- SECTION:NOTES:END -->

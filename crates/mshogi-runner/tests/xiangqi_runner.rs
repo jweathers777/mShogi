@@ -100,7 +100,10 @@ fn watchdog_cancels_and_retires_late_result_then_reaps_child() {
                 assert!(
                     e.traffic
                         .iter()
-                        .any(|t| t.phase == "retired" && t.text == "bestmove a3a4")
+                        .any(|t| t.phase == "retired" && t.text == "bestmove a3a4"),
+                    "late reply missing: {:?}, {:?}",
+                    e.traffic,
+                    e.processes
                 );
             }
         }

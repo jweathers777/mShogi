@@ -182,12 +182,11 @@ its private full-width minimax. The trait and the core did not change.
   action must be in `Game::legal_actions`, which excludes the departures that
   the repetition rule forbids. The reported line is replayed in a private
   native game and cut where that game refuses an action or concludes.
-- Repetition: the native rule makes the side to move leave a position at its
-  third occurrence and gives no draw. The search scores a position that
-  occurs again as level (zero). This is an approximation: the scan looks back
-  only to the last capture or drop, and in a drop game a position can also
-  come back through a capture and a drop. The forbidden departures of the root
-  come from the native game and are removed from the root move list.
+- The native rule forbids a move that would create a third occurrence of a
+  position. In search, that move scores as a loss for the mover. A second
+  occurrence scores level if the earlier position is on the search path,
+  including its root. Tori and Standard Shogi both scan the full known
+  history, including captures and drops, up to the latest search-only null move.
 - Limits: depth 1 to 64 and at most 5,000,000 nodes. The desktop plays with
   300,000 nodes. Requests without a time budget start with an empty table
   and equal requests give equal results. Timed requests use the shared session

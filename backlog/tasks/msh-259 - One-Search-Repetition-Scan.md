@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T19:32:00Z'
+updated_date: '2026-11-26T19:33:00Z'
 labels:
   - search
   - refactor
@@ -44,4 +44,6 @@ Backlog consolidation, 2026-11-26: the dependency fields and current acceptance 
 Claimed on codex/msh-259-repetition. Frozen predecessor 7c15e68. Compare whole-game and irreversible-move bounds before selecting the shared drop-game scan. Next: measure bounds, consolidate, and verify all six games.
 
 Branch codex/msh-259-repetition. At Tori fixture TORI-H-CAPTURE-DROP plies 6 and 11, full history found both hand-derived prior positions; the capture/drop cutoff missed both. M1 Pro release microbenchmark, 1M lookups per case (15/16 absent): full 8/32/128/320-ply histories 9/23/70/171 ns per lookup; four-ply bound 3–5 ns. Selected full known history since last null for Shogi and Tori. Shared scan in all six positions; native rules untouched. Bounded Batch frozen build in progress. Next: review, paired blunder and SPRT evidence, fixed-depth results, perft/differentials/checks.
+
+Independent review found the old Tori bound and score in docs/m5/shared-search-core.md. Corrected the guide. Review found no defect in scan bounds, null undo, root thresholds or score priority. Focused capture/drop regression passed on the M1 Pro.
 <!-- SECTION:NOTES:END -->

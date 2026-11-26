@@ -3,6 +3,8 @@
 How to build, test and check mShogi. The checks each change needs are in
 [AGENTS.md](../AGENTS.md#checks). Desktop development is in
 [desktop/README.md](../desktop/README.md).
+Model and reasoning-setting recommendations are in
+[agent selection](agent-selection.md).
 
 ## Setup
 

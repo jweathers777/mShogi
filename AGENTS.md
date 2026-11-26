@@ -168,26 +168,31 @@ checkpoint, not only at the end.
 
 Each open task has two labels that recommend the agent for the work:
 `model:large|medium|small` and `effort:low|medium|high|xhigh|max`. The
-labels are the same for every tool; this table maps the model tier.
+labels describe the capability and reasoning depth the task needs, independent
+of the agent tool or model provider.
 
-| Tier | Claude Code | Codex | Use for |
-| --- | --- | --- | --- |
-| `model:large` | `opus` | `gpt-6.2-astra` | Rules, search and evaluation design, cross-crate refactors, reviews, research |
-| `model:medium` | `sonnet` | `gpt-6.2-sol` | Bounded engineering with clear criteria in one or two areas |
-| `model:small` | `haiku` | `gpt-6.1-terra` | Mechanical edits: renames, small fixes, simple regeneration |
+| Capability tier | Use for |
+| --- | --- |
+| `model:large` | Rules, search and evaluation design, cross-crate refactors, reviews, research |
+| `model:medium` | Bounded engineering with clear criteria in one or two areas |
+| `model:small` | Mechanical edits: renames, small fixes, simple regeneration |
 
-Both tools use the effort names directly (Claude Code `effort`, Codex
-`model_reasoning_effort`). Choose effort by how much judgment and how many
-steps the task needs: `low` for one obvious change, `medium` for routine
-work, `high` for multi-step engineering, `xhigh` for design or broad
-review, `max` for open research. When you create or split a task, add both
-labels. Change them only with a reason in the notes.
+Choose effort by how much judgment and how many steps the task needs: `low`
+for one obvious change, `medium` for routine work, `high` for multi-step
+engineering, `xhigh` for design or broad review, `max` for open research.
+When you create or split a task, add both labels. Change them only with a
+reason in the notes.
+
+Use [agent selection](docs/agent-selection.md) to map these labels to the
+models and settings available in the chosen tool. More reasoning effort does
+not establish a higher model capability. Keep the task labels when access is
+limited; record any selection fallback in the task notes.
 
 **Coordinator.** When John tells a coordinator session to start a task:
 
 1. Read the task (`backlog task view <id> --plain`). If a label is missing,
    choose it with this section, add it, and say so.
-2. Start one subagent (or new session) with the mapped model and effort, in
+2. Start one subagent (or new session) with the selected model and effort, in
    its own worktree. Give it the task ID and this instruction: "Do this task
    by AGENTS.md: claim it, do the work, run the checks, integrate, write the
    final summary, clean up. Report what changed, check results and anything
@@ -196,8 +201,9 @@ labels. Change them only with a reason in the notes.
    nearest available setting and tell John.
 4. Check the subagent's result (task status, criteria, commits on `main`)
    before you report to John. If the subagent stopped because the work is
-   above its level, start a new one a level higher and record the change in
-   the task notes.
+   above its capability, use a more capable available model and record the
+   change in the task notes. If none is available, record the limitation and
+   a handoff; do not lower the task's capability label to fit current access.
 
 The coordinator does not do the task work itself.
 Run the coordinator itself at `model:medium`, `effort:medium`. Use

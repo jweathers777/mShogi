@@ -87,9 +87,9 @@ conduct classification and blocks `submit`; fast Unknown is separate.
 | --- | --- | --- |
 | Board/local legality | Native owner/kind per intersection and turn determine local geometry/safety. `Position` value equality **also includes declared counters**; `ResolvedAction`/`Undo` guard that full value. | Neither Position equality nor a board hash is live-game/request equality. Counter overflow is a representation error, not mate. |
 | Repetition/conduct | Private Game board/turn anchor equality plus full contiguous known actions, root-assigned persistent piece IDs/victims and warning obligations for classification. | Identical types swapping locations can return the board while exchanging IDs; a repeated key alone is not responsibility. |
-| Complete game/history | Opaque `GameContext`: root/provenance, claim policy, full command/result/event-end ledger and runtime token. Derived events remain native. | FEN, declared counters, move count or current board cannot replace it. |
+| Complete game/history | The `Game`: root/provenance, claim policy, full command/result/event-end ledger. Derived events remain native. | FEN, declared counters, move count or current board cannot replace it. |
 | Canonical record | Validated game/profile/edition/schema and complete semantic ledger; strict replay checks redundant events/current state and field presence. Runtime tokens are absent. | Equal canonical bytes after undo/reopen do not mean equal runtime context. Envelope version is not a rules-profile edition. |
-| Native request/session | `GameContext` fresh instance + monotonic revision. | Undo, selection/return, cancellation, replacement and reopen cannot revive retired work. |
+| Native request/session | Opaque `GameContext`: fresh instance + monotonic revision, without a copy of the history. A fork, replay or reopen is a new instance. | Undo, selection/return, cancellation, replacement and reopen cannot revive retired work. |
 | Shared execution | Whole `SharedRequest`: typed canonical context, purpose/target, request ID, session version and limits. | A transport echo or native tag does not advertise real Xiangqi engine execution. |
 
 History selections use event counts, not board plies; multiple events can share

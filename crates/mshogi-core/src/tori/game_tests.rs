@@ -124,7 +124,7 @@ fn repetition_equality_and_semantic_context_are_distinct_and_root_counters_are_n
         b.repetition_key()
     );
     assert_ne!(a.repetition_key(), b.repetition_key());
-    assert!(!a.context().same_semantics(&b.context()));
+    assert_ne!((&a.root, a.events()), (&b.root, b.events()));
     let forbidden = action(&f["forbidden_attempt"]);
     rejection(
         &mut b,
@@ -276,7 +276,6 @@ fn exact_reversal_every_prefix_replay_and_selection_never_restore_native_authori
         assert_eq!(g.cache_snapshot(), snapshots[i]);
         assert_eq!(record(&g), records[i]);
     }
-    assert!(stale.same_semantics(&g.context()));
     assert_ne!(stale, g.context());
 }
 #[test]

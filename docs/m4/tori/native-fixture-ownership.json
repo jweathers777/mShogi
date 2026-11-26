@@ -755,7 +755,7 @@
       "supplementary_native_checks": [
         {
           "owner": "MSH-129",
-          "scope": "actual native GameContext uses full root/history and fresh never-rewound lineage; undo/reconstruction cannot make old native requests current"
+          "scope": "actual native GameContext is the fresh-instance never-rewound request token; undo/reconstruction cannot make old native requests current"
         }
       ],
       "later_consumer_checks": [

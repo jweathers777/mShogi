@@ -3,8 +3,10 @@
 //! Chess history observations are data, not commands to execute. Complete chess
 //! match admission still belongs to `ChessMatch`; shogi admission belongs to `Game`.
 
+mod context;
 /// Reusable authoritative game retention for incremental execution sessions.
 pub mod incremental;
+pub use context::GameContext;
 
 use crate::{chess, chu, shogi, tenjiku, tori, xiangqi};
 use serde::{Deserialize, Serialize, Serializer};

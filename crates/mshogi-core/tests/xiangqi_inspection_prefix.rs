@@ -160,7 +160,7 @@ fn committed_history_preserves_prefix_context_without_future_warnings_or_command
                     assert!(prefix.warnings().is_empty());
                 }
                 let stale = prefix.submit(GameRequest {
-                    expected: source_context.clone(),
+                    expected: source_context,
                     actor: Side::Red,
                     command: GameCommand::Resign,
                 });

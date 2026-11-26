@@ -1,6 +1,7 @@
 //! Untimed rules-owned game history. A `Position` by itself is not a history.
 
 use super::{Action, ActionError, CounterSource, PieceKind, Position, RepetitionIdentity, Side};
+pub use crate::native::GameContext;
 
 /// Root category is retained, rather than presenting an imported diagram as a recovered game.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -258,30 +259,14 @@ pub struct GameEvent {
     pub conclusion: Option<Conclusion>,
 }
 
-/// Exact rules context, including root provenance and event order, not merely board identity.
-/// This is not a future engine request/session/process identity. A host must add those identities.
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct GameContext {
-    root: GameRoot,
-    commands: Vec<(Side, GameCommand)>,
-}
-impl GameContext {
-    /// Exact admitted root, including material category and counter/history provenance.
-    pub fn root(&self) -> &GameRoot {
-        &self.root
-    }
-    /// Ordered actors and commands, including any candidate action in an invariant diagnostic.
-    pub fn commands(&self) -> &[(Side, GameCommand)] {
-        &self.commands
-    }
-}
-
 /// Evidence for an internal violation of the reviewed mutual-check impossibility invariant.
 /// This is a defect/corruption diagnostic, never a game outcome or tournament penalty.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct MutualCheckDiagnostic {
-    /// Complete root and command history including the uncommitted candidate action.
-    pub candidate_context: GameContext,
+    /// Exact admitted root of the history.
+    pub root: GameRoot,
+    /// Ordered actors and commands, including the uncommitted candidate action.
+    pub candidate_commands: Vec<(Side, GameCommand)>,
     /// Exact candidate board, hands, turn and declared counter.
     pub candidate_sfen: String,
     /// All known indices of the candidate repetition identity, root indexed zero.
@@ -289,10 +274,10 @@ pub struct MutualCheckDiagnostic {
     /// Actor and stored check observation for each action after first through fourth occurrence.
     pub interval_checks: Vec<(Side, bool)>,
 }
-/// Admission request bound to the entire known rules context.
+/// Admission request bound to the request token of the game.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct GameRequest {
-    /// Context captured when choosing this command.
+    /// Request token of the game when the command was chosen.
     pub expected: GameContext,
     /// Side making this command.
     pub actor: Side,
@@ -302,7 +287,7 @@ pub struct GameRequest {
 /// Rejected admission changes no game state or ledger.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum GameError {
-    /// Request targets another known event prefix or root.
+    /// The request token is not the current one: the game changed, or it is another instance.
     StaleContext,
     /// No further play or result-changing command is accepted.
     Concluded,
@@ -336,7 +321,7 @@ struct CheckStep {
 }
 
 /// Complete known game state. Position queries and game conclusions remain separate.
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Debug)]
 pub struct Game {
     root: GameRoot,
     position: Position,
@@ -344,15 +329,70 @@ pub struct Game {
     identities: Vec<RepetitionIdentity>,
     checks: Vec<CheckStep>,
     conclusion: Option<Conclusion>,
+    context: GameContext,
+    /// Revision of the last command that is still in the history; 0 at the root.
+    node: u64,
 }
+/// A clone is a new game instance: requests and undo tokens of the original do not apply to it.
+impl Clone for Game {
+    fn clone(&self) -> Self {
+        Self {
+            root: self.root.clone(),
+            position: self.position.clone(),
+            events: self.events.clone(),
+            identities: self.identities.clone(),
+            checks: self.checks.clone(),
+            conclusion: self.conclusion,
+            context: GameContext::fresh(),
+            node: self.node,
+        }
+    }
+}
+/// Equal games have the same root and history; the request token is not compared.
+impl PartialEq for Game {
+    fn eq(&self, other: &Self) -> bool {
+        let Self {
+            root,
+            position,
+            events,
+            identities,
+            checks,
+            conclusion,
+            context: _,
+            node: _,
+        } = self;
+        (root, position, events, identities, checks, conclusion)
+            == (
+                &other.root,
+                &other.position,
+                &other.events,
+                &other.identities,
+                &other.checks,
+                &other.conclusion,
+            )
+    }
+}
+impl Eq for Game {}
 
-/// Exact semantic reversal token, checked against the complete resulting state.
+/// State before a command. The history vectors only grow, so their lengths restore them.
+#[derive(Debug)]
+pub(super) struct Checkpoint {
+    position: Position,
+    conclusion: Option<Conclusion>,
+    events: usize,
+    identities: usize,
+    checks: usize,
+}
+/// Single reversal of one accepted command, bound to the game instance and the
+/// history node after that command.
 #[derive(Debug)]
 pub struct GameUndo {
-    before: Game,
-    after: Game,
+    before: Checkpoint,
+    instance: u64,
+    before_node: u64,
+    after_node: u64,
 }
-/// A reversal token belongs to a different current state.
+/// The reversal token is not for the current history of this game instance.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct GameUndoError;
 
@@ -376,6 +416,8 @@ impl Game {
             events: vec![],
             checks: vec![],
             conclusion: None,
+            context: GameContext::fresh(),
+            node: 0,
         };
         game.conclusion = game.local_or_length_conclusion();
         game
@@ -396,12 +438,9 @@ impl Game {
     pub fn conclusion(&self) -> Option<Conclusion> {
         self.conclusion
     }
-    /// Captures full rules context; equal boards can have different contexts.
+    /// Current request token; it changes at each accepted command and undo.
     pub fn context(&self) -> GameContext {
-        GameContext {
-            root: self.root.clone(),
-            commands: self.events.iter().map(|e| (e.actor, e.command)).collect(),
-        }
+        self.context
     }
     /// Known position indices for this board/hand/turn identity. Counters are excluded.
     pub fn occurrences(&self) -> Vec<usize> {
@@ -446,16 +485,18 @@ impl Game {
     }
     /// Atomically accept a context-bound command. A legal losing repetition action is retained.
     pub fn submit(&mut self, request: GameRequest) -> Result<GameUndo, GameError> {
-        if request.expected != self.context() {
+        if request.expected != self.context {
             return Err(GameError::StaleContext);
         }
-        let before = self.clone();
-        let mut candidate = self.clone();
-        candidate.apply_command(request.actor, request.command)?;
-        *self = candidate;
+        let instance = self.context.instance();
+        let before_node = self.node;
+        let ((), before) =
+            self.append_transaction(|game| game.apply_command(request.actor, request.command))?;
         Ok(GameUndo {
             before,
-            after: self.clone(),
+            instance,
+            before_node,
+            after_node: self.node,
         })
     }
 
@@ -522,34 +563,53 @@ impl Game {
         Ok(())
     }
 
-    /// Atomic append-only transaction without copying the accepted history.
-    /// Only the record adapter can use this path, and it never rewrites a prefix.
+    /// Atomic append-only transaction without copying the accepted history; it never
+    /// rewrites a prefix. A refusal changes nothing. Success advances the request
+    /// token and returns the state before, for undo.
     pub(super) fn append_transaction<T, E>(
         &mut self,
         apply: impl FnOnce(&mut Self) -> Result<T, E>,
-    ) -> Result<T, E> {
-        let position = self.position.clone();
-        let conclusion = self.conclusion;
-        let events = self.events.len();
-        let identities = self.identities.len();
-        let checks = self.checks.len();
-        let result = apply(self);
-        if result.is_err() {
-            self.position = position;
-            self.conclusion = conclusion;
-            self.events.truncate(events);
-            self.identities.truncate(identities);
-            self.checks.truncate(checks);
+    ) -> Result<(T, Checkpoint), E> {
+        let before = Checkpoint {
+            position: self.position.clone(),
+            conclusion: self.conclusion,
+            events: self.events.len(),
+            identities: self.identities.len(),
+            checks: self.checks.len(),
+        };
+        match apply(self) {
+            Ok(value) => {
+                self.context = self.next_context();
+                self.node = self.context.revision();
+                Ok((value, before))
+            }
+            Err(error) => {
+                self.restore(before);
+                Err(error)
+            }
         }
-        result
     }
-    /// Restore board, commands, counters, occurrences and checks exactly. Runtime hosts must
-    /// separately invalidate pending execution identities when changing their session.
+    fn restore(&mut self, before: Checkpoint) {
+        self.position = before.position;
+        self.conclusion = before.conclusion;
+        self.events.truncate(before.events);
+        self.identities.truncate(before.identities);
+        self.checks.truncate(before.checks);
+    }
+    fn next_context(&self) -> GameContext {
+        self.context
+            .advanced()
+            .expect("a 64-bit revision count cannot run out")
+    }
+    /// Restore board, commands, counters, occurrences and checks exactly. The request
+    /// token advances, so requests made before the undo are refused.
     pub fn undo(&mut self, undo: GameUndo) -> Result<(), GameUndoError> {
-        if *self != undo.after {
+        if undo.instance != self.context.instance() || undo.after_node != self.node {
             return Err(GameUndoError);
         }
-        *self = undo.before;
+        self.restore(undo.before);
+        self.context = self.next_context();
+        self.node = undo.before_node;
         Ok(())
     }
     /// Authoritatively reconstruct an accepted event prefix. Same-ply terminal commands count.
@@ -613,13 +673,16 @@ impl Game {
                 // The reviewed chain in docs/m4/mutual-check-chain-review.md excludes
                 // this for every admitted root and checked local continuation. Preserve
                 // the complete candidate for diagnosing corrupted caches or a defect.
-                let mut candidate_context = self.context();
-                candidate_context
-                    .commands
-                    .push((actor, GameCommand::Play(action)));
+                let candidate_commands = self
+                    .events
+                    .iter()
+                    .map(|e| (e.actor, e.command))
+                    .chain([(actor, GameCommand::Play(action))])
+                    .collect();
                 return Err(GameError::MutualCheckInvariant(Box::new(
                     MutualCheckDiagnostic {
-                        candidate_context,
+                        root: self.root.clone(),
+                        candidate_commands,
                         candidate_sfen: self.position.to_sfen(),
                         occurrences,
                         interval_checks: self.checks[first..fourth]
@@ -697,23 +760,21 @@ mod invariant_tests {
         assert_eq!(diagnostic.occurrences, vec![0, 4, 8, 12]);
         assert_eq!(diagnostic.interval_checks.len(), 12);
         assert!(diagnostic.interval_checks.iter().all(|(_, check)| *check));
-        assert_eq!(diagnostic.candidate_context.root(), game.root());
-        assert_eq!(diagnostic.candidate_context.commands().len(), 12);
+        assert_eq!(&diagnostic.root, game.root());
+        assert_eq!(diagnostic.candidate_commands.len(), 12);
         assert_eq!(
-            diagnostic.candidate_context.commands().last(),
+            diagnostic.candidate_commands.last(),
             Some(&(actor, GameCommand::Play(action)))
         );
         let mut expected_position = game.position.clone();
         expected_position.apply(action).unwrap();
         assert_eq!(diagnostic.candidate_sfen, expected_position.to_sfen());
-        assert_eq!(
-            diagnostic.candidate_context.commands()[..11],
-            game.context().commands()[..]
-        );
+        let committed: Vec<_> = game.events().iter().map(|e| (e.actor, e.command)).collect();
+        assert_eq!(diagnostic.candidate_commands[..11], committed[..]);
         // Authoritative replay recomputes the actual checks; this is an ordinary
         // one-sided checking loss, demonstrating that the injected data is corrupt.
-        let mut replay = Game::from_root(diagnostic.candidate_context.root().clone());
-        for &(actor, command) in diagnostic.candidate_context.commands() {
+        let mut replay = Game::from_root(diagnostic.root.clone());
+        for &(actor, command) in &diagnostic.candidate_commands {
             replay
                 .submit(GameRequest {
                     expected: replay.context(),

@@ -179,7 +179,7 @@ pub fn search_with_state(
     if !legal.contains(&action) {
         return Err(SearchError::Restore);
     }
-    let mut native = game.fork().map_err(SearchError::Transition)?;
+    let mut native = game.fork();
     let mut first_conclusion = None;
     for &m in outcome.pv.iter().take(MAX_LINE) {
         if !r.principal_variation.is_empty() && timing.expired() {

@@ -1,9 +1,7 @@
 //! Complete Chu game admission. Local geometry never grants live history permission.
 use super::*;
+pub use crate::native::GameContext;
 use serde::{Deserialize, Serialize};
-use std::sync::atomic::{AtomicU64, Ordering};
-
-static NEXT_INSTANCE: AtomicU64 = AtomicU64::new(1);
 
 /// Repetition projection: native original/once-promoted placement, turn and Lion rights.
 /// Counters, provenance, derived obligations, events and runtime identities are excluded.
@@ -192,33 +190,10 @@ impl HistorySnapshot {
         .expect("native rights")
     }
 }
-/// Fresh never-rewound native execution authority, not serialized game history.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct RuntimeToken {
-    instance: u64,
-    revision: u64,
-}
-/// Complete native context plus runtime authority. Outer purpose, process and limits belong to the shared contracts of MSH-78 and the Chu integration of MSH-43.
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct GameContext {
-    root: NativeRoot,
-    events: Vec<GameEvent>,
-    runtime: RuntimeToken,
-}
-impl GameContext {
-    /// Compare canonical semantics independently of runtime retirement.
-    pub fn same_semantics(&self, other: &Self) -> bool {
-        self.root == other.root && self.events == other.events
-    }
-    /// Native runtime identity, for exact stale-result tests/technical details.
-    pub fn runtime(&self) -> RuntimeToken {
-        self.runtime
-    }
-}
 /// Context-bound request; wrong actor/history/retired work is refused atomically.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct GameRequest {
-    /// Complete expected native context.
+    /// Request token of the game when the command was chosen.
     pub expected: GameContext,
     /// Actual participant.
     pub actor: Side,
@@ -240,7 +215,7 @@ pub enum GameError {
     Root,
     /// Played positions cannot reset their known history.
     NotRoot,
-    /// Full submitted context does not match.
+    /// The request token is not the current one.
     StaleContext,
     /// Play actor differs from native turn.
     WrongActor,
@@ -321,18 +296,15 @@ pub struct GameUndo {
 #[derive(Debug)]
 pub struct Game {
     data: GameData,
-    runtime: RuntimeToken,
+    context: GameContext,
     node: u64,
     next_node: u64,
 }
 impl Game {
     /// Copy an admitted game for private analysis without replaying its history.
     /// The copy has a fresh runtime identity; existing reversal tokens cannot apply.
-    pub fn fork(&self) -> Result<Self, GameError> {
-        let instance = NEXT_INSTANCE
-            .try_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
-            .map_err(|_| GameError::Capacity(Resource::Counter))?;
-        Ok(Self {
+    pub fn fork(&self) -> Self {
+        Self {
             data: GameData {
                 root: self.data.root.clone(),
                 local: self.data.local.clone(),
@@ -342,13 +314,10 @@ impl Game {
                 snapshots: self.data.snapshots.clone(),
                 root_snapshot: self.data.root_snapshot.clone(),
             },
-            runtime: RuntimeToken {
-                instance,
-                revision: self.runtime.revision,
-            },
+            context: GameContext::fresh(),
             node: self.node,
             next_node: self.next_node,
-        })
+        }
     }
 
     /// Standard game, empty known history.
@@ -373,9 +342,6 @@ impl Game {
         if royals(&local, Side::Sente).is_empty() && royals(&local, Side::Gote).is_empty() {
             return Err(GameError::Root);
         }
-        let instance = NEXT_INSTANCE
-            .try_update(Ordering::Relaxed, Ordering::Relaxed, |v| v.checked_add(1))
-            .map_err(|_| GameError::Capacity(Resource::Counter))?;
         let root = NativeRoot {
             state: local.position().state().clone(),
             protection: local.protection().clone(),
@@ -400,10 +366,7 @@ impl Game {
                 snapshots: vec![],
                 root_snapshot: snapshot,
             },
-            runtime: RuntimeToken {
-                instance,
-                revision: 0,
-            },
+            context: GameContext::fresh(),
             node: 0,
             next_node: 1,
         };
@@ -452,13 +415,9 @@ impl Game {
     pub fn repetition_key(&self) -> &RepetitionKey {
         self.data.keys.last().expect("root")
     }
-    /// Native full-history and runtime identity.
+    /// Current request token; it changes at each accepted command, undo and retirement.
     pub fn context(&self) -> GameContext {
-        GameContext {
-            root: self.data.root.clone(),
-            events: self.data.events.clone(),
-            runtime: self.runtime,
-        }
+        self.context
     }
     /// Actual board status; no-action alone is unscored.
     pub fn status(&self) -> GameStatus {
@@ -608,10 +567,7 @@ impl Game {
     }
     /// Atomic context-bound participant command. Resource refusal preserves all state.
     pub fn submit(&mut self, request: GameRequest) -> Result<GameUndo, GameError> {
-        if request.expected.runtime != self.runtime
-            || request.expected.root != self.data.root
-            || request.expected.events != self.data.events
-        {
+        if request.expected != self.context {
             return Err(GameError::StaleContext);
         }
         self.commit(request.actor, request.command)
@@ -650,7 +606,7 @@ impl Game {
         let before_node = self.node;
         match self.commit_inner(actor, command) {
             Ok(()) => Ok(GameUndo {
-                instance: self.runtime.instance,
+                instance: self.context.instance(),
                 before_node,
                 after_node: self.node,
                 before: Some(before),
@@ -666,11 +622,7 @@ impl Game {
         if self.conclusion().is_some() {
             return Err(GameError::Concluded);
         }
-        let revision = self
-            .runtime
-            .revision
-            .checked_add(1)
-            .ok_or(GameError::Capacity(Resource::Counter))?;
+        let context = self.next_context()?;
         let node = self.next_node;
         let next_node = node
             .checked_add(1)
@@ -765,7 +717,7 @@ impl Game {
             draw_offer: next.draw_offer,
         });
         self.data.snapshots.push(next);
-        self.runtime.revision = revision;
+        self.context = context;
         self.node = node;
         self.next_node = next_node;
         Ok(())
@@ -773,14 +725,11 @@ impl Game {
 
     /// Exact logical undo; runtime revision advances and retired work stays retired.
     pub fn undo(&mut self, token: &mut GameUndo) -> Result<(), GameError> {
-        if token.used || token.instance != self.runtime.instance || token.after_node != self.node {
+        if token.used || token.instance != self.context.instance() || token.after_node != self.node
+        {
             return Err(GameError::InvalidToken);
         }
-        let revision = self
-            .runtime
-            .revision
-            .checked_add(1)
-            .ok_or(GameError::Capacity(Resource::Counter))?;
+        let context = self.next_context()?;
         let node = self.next_node;
         let next = node
             .checked_add(1)
@@ -788,7 +737,7 @@ impl Game {
         self.restore(token.before.take().expect("unused token"));
         self.node = token.before_node;
         self.next_node = next;
-        self.runtime.revision = revision;
+        self.context = context;
         token.used = true;
         Ok(())
     }
@@ -812,12 +761,13 @@ impl Game {
     }
     /// Return-to-live/cancellation retirement, never semantic rewind.
     pub fn retire_context(&mut self) -> Result<(), GameError> {
-        self.runtime.revision = self
-            .runtime
-            .revision
-            .checked_add(1)
-            .ok_or(GameError::Capacity(Resource::Counter))?;
+        self.context = self.next_context()?;
         Ok(())
+    }
+    fn next_context(&self) -> Result<GameContext, GameError> {
+        self.context
+            .advanced()
+            .ok_or(GameError::Capacity(Resource::Counter))
     }
     /// Canonical exact event prefix; reopening always receives fresh native authority.
     pub fn record_prefix(&self, count: usize) -> Result<GameRecord, RecordError> {

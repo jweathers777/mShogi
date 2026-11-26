@@ -1,13 +1,8 @@
 //! One authoritative Tenjiku history owner. Local geometry is not live permission.
 use super::*;
+pub use crate::native::GameContext;
 use serde::{Deserialize, Serialize};
-use std::{
-    error::Error,
-    fmt,
-    sync::atomic::{AtomicU64, Ordering},
-};
-
-static NEXT_INSTANCE: AtomicU64 = AtomicU64::new(1);
+use std::{error::Error, fmt};
 
 /// Native conclusions are separate from search, cancellation and operational failures.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
@@ -163,33 +158,6 @@ impl RepetitionKey {
         }
     }
 }
-/// Fresh runtime authority, distinct from saved/repetition/search semantics.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct RuntimeToken {
-    instance: u64,
-    revision: u64,
-}
-/// Exact immutable native context; later consumers add request/purpose/process limits.
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct GameContext {
-    root: StructuralState,
-    events: Vec<GameEvent>,
-    runtime: RuntimeToken,
-}
-impl GameContext {
-    /// Full saved semantic equality, deliberately excluding retired runtime authority.
-    pub fn same_semantics(&self, other: &Self) -> bool {
-        self.root == other.root && self.events == other.events
-    }
-    /// Explicit whole-profile identity.
-    pub fn profile(&self) -> Profile {
-        self.root.profile()
-    }
-    /// Captured runtime identity for diagnostics/equality.
-    pub fn runtime(&self) -> RuntimeToken {
-        self.runtime
-    }
-}
 /// Context-checked complete request.
 #[derive(Clone, Debug, Eq, PartialEq)]
 #[allow(missing_docs)]
@@ -232,36 +200,30 @@ pub struct Game {
     keys: Vec<RepetitionKey>,
     snapshots: Vec<HistorySnapshot>,
     root_snapshot: HistorySnapshot,
-    runtime: RuntimeToken,
+    context: GameContext,
     node: u64,
     next_node: u64,
 }
 impl Game {
     /// Copy an admitted game for private analysis without replaying its history.
     /// The copy has a fresh runtime identity; existing reversal tokens cannot apply.
-    pub fn fork(&self) -> Result<Self, GameError> {
-        let instance = NEXT_INSTANCE
-            .try_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
-            .map_err(|_| GameError::Capacity(Resource::Counter))?;
-        Ok(Self {
+    pub fn fork(&self) -> Self {
+        Self {
             root: self.root.clone(),
             local: self.local.clone(),
             events: self.events.clone(),
             keys: self.keys.clone(),
             snapshots: self.snapshots.clone(),
             root_snapshot: self.root_snapshot.clone(),
-            runtime: RuntimeToken {
-                instance,
-                revision: self.runtime.revision,
-            },
+            context: GameContext::fresh(),
             node: self.node,
             next_node: self.next_node,
-        })
+        }
     }
 
     #[cfg(test)]
     pub(super) fn set_test_authority(&mut self, revision: u64, next_node: u64) {
-        self.runtime.revision = revision;
+        self.context = self.context.at_revision(revision);
         self.next_node = next_node;
     }
     /// Admit a declared known-history root; no earlier history is invented.
@@ -285,9 +247,6 @@ impl Game {
         let local = LocalPosition::admit(root).map_err(GameError::Root)?;
         let root = local.position().state().clone();
         let key = RepetitionKey::from_position(local.position());
-        let instance = NEXT_INSTANCE
-            .try_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
-            .map_err(|_| GameError::Capacity(Resource::Counter))?;
         let mut snapshot = HistorySnapshot {
             state: root.clone(),
             event_count: 0,
@@ -306,10 +265,7 @@ impl Game {
             keys: vec![key],
             snapshots: vec![],
             root_snapshot: snapshot,
-            runtime: RuntimeToken {
-                instance,
-                revision: 0,
-            },
+            context: GameContext::fresh(),
             node: 0,
             next_node: 1,
         };
@@ -357,17 +313,9 @@ impl Game {
     pub fn conclusion(&self) -> Option<Conclusion> {
         self.snapshot().conclusion
     }
-    /// Full saved semantics plus never-rewound runtime authority.
+    /// Current request token; it changes at each accepted command, undo and retirement.
     pub fn context(&self) -> GameContext {
-        GameContext {
-            root: self.root.clone(),
-            events: self.events.clone(),
-            runtime: self.runtime,
-        }
-    }
-    /// Full context suitable for search identity; never a board-only cache key.
-    pub fn search_identity(&self) -> GameContext {
-        self.context()
+        self.context
     }
     /// Repetition-only native identity, excluding serials/counters/refusal flags.
     pub fn repetition_key(&self) -> &RepetitionKey {
@@ -399,17 +347,15 @@ impl Game {
     }
     /// Advance runtime authority without rewriting any saved semantic state.
     pub fn retire_context(&mut self) -> Result<(), GameError> {
-        let reserve = u64::from(self.conclusion().is_none());
-        let revision = self
-            .runtime
-            .revision
-            .checked_add(1)
-            .ok_or(GameError::Capacity(Resource::Counter))?;
-        if revision.checked_add(reserve).is_none() {
-            return Err(GameError::Capacity(Resource::Counter));
-        }
-        self.runtime.revision = revision;
+        self.context = self.next_context(self.conclusion().is_none())?;
         Ok(())
+    }
+    /// Next request token; with `reserve`, one more revision stays free for an ending.
+    fn next_context(&self, reserve: bool) -> Result<GameContext, GameError> {
+        self.context
+            .advanced()
+            .filter(|next| !reserve || next.advanced().is_some())
+            .ok_or(GameError::Capacity(Resource::Counter))
     }
     /// Canonical exact prefix reconstructed with fresh native authority.
     pub fn record_prefix(&self, count: usize) -> Result<GameRecord, RecordError> {
@@ -512,10 +458,7 @@ impl Game {
         request: GameRequest,
         stop: &mut impl FnMut() -> bool,
     ) -> Result<GameUndo, GameError> {
-        if request.expected.runtime != self.runtime
-            || request.expected.root != self.root
-            || request.expected.events != self.events
-        {
+        if request.expected != self.context {
             return Err(GameError::StaleContext);
         }
         self.commit(request.actor, request.command, stop)
@@ -607,33 +550,21 @@ impl Game {
             actor, command, effects, board_ply, conclusion, pending, offer,
         )?;
         check(stop)?;
-        let counter_reserve = u64::from(self.conclusion().is_none());
-        for value in [self.runtime.revision, self.next_node] {
-            if value
-                .checked_add(1)
-                .and_then(|v| v.checked_add(counter_reserve))
-                .is_none()
-            {
-                return Err(GameError::Capacity(Resource::Counter));
-            }
-        }
-        let revision = self
-            .runtime
-            .revision
-            .checked_add(1)
-            .ok_or(GameError::Capacity(Resource::Counter))?;
+        let reserve = self.conclusion().is_none();
+        let context = self.next_context(reserve)?;
         let next_node = self
             .next_node
             .checked_add(1)
+            .filter(|next| next.checked_add(u64::from(reserve)).is_some())
             .ok_or(GameError::Capacity(Resource::Counter))?;
         let token = GameUndo {
-            instance: self.runtime.instance,
+            instance: context.instance(),
             before_node: self.node,
             after_node: self.next_node,
             before_len: self.events.len() - 1,
             used: false,
         };
-        self.runtime.revision = revision;
+        self.context = context;
         self.node = self.next_node;
         self.next_node = next_node;
         Ok(token)
@@ -681,30 +612,25 @@ impl Game {
     /// LIFO exact logical undo; runtime revisions advance rather than rewind.
     pub fn undo(&mut self, undo: &mut GameUndo) -> Result<(), GameError> {
         if undo.used
-            || undo.instance != self.runtime.instance
+            || undo.instance != self.context.instance()
             || undo.after_node != self.node
             || self.events.len() != undo.before_len + 1
         {
             return Err(GameError::InvalidToken);
         }
-        let revision = self
-            .runtime
-            .revision
-            .checked_add(1)
-            .ok_or(GameError::Capacity(Resource::Counter))?;
         let before = self.event_prefix(undo.before_len)?;
-        let local = LocalPosition::admit(Position::install(before.state).map_err(GameError::Root)?)
-            .map_err(GameError::Root)?;
-        let reserve = u64::from(before.conclusion.is_none());
-        if revision.checked_add(reserve).is_none() || self.next_node.checked_add(reserve).is_none()
-        {
+        let reserve = before.conclusion.is_none();
+        let context = self.next_context(reserve)?;
+        if self.next_node.checked_add(u64::from(reserve)).is_none() {
             return Err(GameError::Capacity(Resource::Counter));
         }
+        let local = LocalPosition::admit(Position::install(before.state).map_err(GameError::Root)?)
+            .map_err(GameError::Root)?;
         self.events.truncate(undo.before_len);
         self.snapshots.truncate(undo.before_len);
         self.keys.truncate(before.board_ply + 1);
         self.local = local;
-        self.runtime.revision = revision;
+        self.context = context;
         self.node = undo.before_node;
         undo.used = true;
         Ok(())

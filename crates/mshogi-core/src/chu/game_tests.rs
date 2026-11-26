@@ -50,7 +50,6 @@ fn lifo_full_game_undo() {
     }
     assert_eq!(g.cache_snapshot(), before);
     assert_ne!(g.context(), old);
-    assert!(g.context().same_semantics(&old));
 }
 #[test]
 fn stale_actor_selection_and_reopening_never_revive_work() {
@@ -60,7 +59,7 @@ fn stale_actor_selection_and_reopening_never_revive_work() {
     let before = g.cache_snapshot();
     assert_eq!(
         g.submit(GameRequest {
-            expected: c.clone(),
+            expected: c,
             actor: Side::Gote,
             command: GameCommand::Play { action: a.clone() }
         })
@@ -83,7 +82,7 @@ fn stale_actor_selection_and_reopening_never_revive_work() {
     assert_ne!(retired, g.context());
     let saved = GameRecord::from_game(&g).unwrap();
     let reopened = saved.to_game().unwrap();
-    assert!(g.context().same_semantics(&reopened.context()));
+    assert_eq!(GameRecord::from_game(&reopened).unwrap(), saved);
     assert_ne!(g.context(), reopened.context());
     play(&mut g, a).unwrap();
     assert_eq!(g.event_prefix(0).unwrap().board_ply, 0);
@@ -245,7 +244,7 @@ fn deterministic_real_sequences_preserve_exact_logical_caches_and_replay() {
             let record = GameRecord::from_game(&g).unwrap();
             let restored = record.to_game().unwrap();
             assert_eq!(bytes(&restored), record.to_json());
-            assert!(g.context().same_semantics(&restored.context()));
+            assert_eq!(GameRecord::from_game(&restored).unwrap(), record);
             assert_ne!(g.context(), restored.context());
         }
     }
@@ -294,7 +293,7 @@ fn long_history_continues_and_remains_closable_and_replayable() {
         .unwrap()
         .to_game()
         .unwrap();
-    assert!(g.context().same_semantics(&restored.context()));
+    assert_eq!(restored.events(), g.events());
     eprintln!(
         "Chu long native record: events={}, bytes={}, parse+replay_ms={}",
         usage.events,
@@ -384,7 +383,7 @@ fn incremental_suffixes_preserve_sourced_lion_windows_and_must_vary_history() {
             if index == accepted {
                 let before = bytes(&source);
                 assert!(play(&mut source, action.clone()).is_err(), "{id}");
-                let mut retained = session.game().unwrap().fork().unwrap();
+                let mut retained = session.game().unwrap().fork();
                 assert!(play(&mut retained, action).is_err(), "{id}");
                 assert_eq!(bytes(&source), before);
                 break;

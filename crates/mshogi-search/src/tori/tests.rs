@@ -449,7 +449,7 @@ fn self_play_gives_only_native_legal_actions_and_native_playable_lines() {
         assert_eq!(r.principal_variation.first(), Some(&action));
         assert!(r.principal_variation.len() <= MAX_LINE);
         assert_eq!(r.perspective, g.position().side_to_move());
-        let mut line = g.fork().unwrap();
+        let mut line = g.fork();
         for a in &r.principal_variation {
             play(&mut line, *a);
         }

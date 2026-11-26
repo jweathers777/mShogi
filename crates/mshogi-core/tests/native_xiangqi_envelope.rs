@@ -146,7 +146,7 @@ fn shared_dispatch_preserves_audit_result_native_actor_admission_undo_and_atomic
     assert_ne!(g.context(), stale);
     let before = g.context();
     let request = x::GameRequest {
-        expected: before.clone(),
+        expected: before,
         actor: x::Side::Black,
         command: x::GameCommand::Play {
             action: "f8e8".parse().unwrap(),

@@ -70,7 +70,7 @@ fn public_complete_effects_history_replay_inspection_and_fresh_authority() {
         assert_eq!(GameRecord::from_game(&game).unwrap(), root);
         let mut undo = game
             .submit(GameRequest {
-                expected: root_context.clone(),
+                expected: root_context,
                 actor: Side::Sente,
                 command: GameCommand::Play {
                     action: action.clone(),
@@ -99,7 +99,7 @@ fn public_complete_effects_history_replay_inspection_and_fresh_authority() {
             accepted.as_json()
         );
         let mut restored = consume(&envelope).unwrap();
-        assert!(game.context().same_semantics(&restored.context()));
+        assert_eq!(GameRecord::from_game(&restored).unwrap(), accepted);
         assert_ne!(game.context(), restored.context());
         assert_eq!(restored.profile(), profile);
         assert_eq!(

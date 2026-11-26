@@ -74,8 +74,8 @@ pub trait EngineGame: Copy + Debug + Eq + 'static {
     fn extends(current: &Self::Record, game: &Self::Game, earlier: &Self::Record) -> bool;
     /// Player to move.
     fn side_to_move(game: &Self::Game) -> Self::Side;
-    /// Independent copy of a game.
-    fn fork(game: &Self::Game) -> Result<Self::Game, String>;
+    /// Independent copy of a game, with its own request token.
+    fn fork(game: &Self::Game) -> Self::Game;
     /// Actor and command of a choice when `turn` is to move.
     fn command(choice: &Self::Choice, turn: Self::Side) -> (Self::Side, Self::Command);
     /// Submit a command in the current context of `game`.
@@ -351,7 +351,7 @@ impl<G: EngineGame> EngineResult<G> {
         if line.is_empty() {
             return Ok(());
         }
-        let mut branch = G::fork(game)?;
+        let mut branch = G::fork(game);
         for choice in line {
             if stop() {
                 return Err(stopped());

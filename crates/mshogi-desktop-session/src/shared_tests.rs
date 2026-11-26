@@ -370,7 +370,7 @@ fn exact_analysis_context_retirement_and_same_board_history() {
     let result = decode_execution_observation(&output, &second);
     assert!(c.accept_observation(result));
     settle(&mut c);
-    assert_eq!(c.session.shogi().unwrap().game.context(), root.context());
+    assert_eq!(c.session.shogi().unwrap().game, root);
     assert!(c.game_snapshot::<Shogi>().analysis.is_some());
     send(&mut c, SessionOperation::Inspect { event_index: 2 }).unwrap();
     let historic = analyze(&mut c);

@@ -87,7 +87,6 @@ fn exact_undo_retires_runtime_and_rejects_used_and_foreign_tokens() {
         g.undo(&mut u).unwrap();
         assert_eq!(before, GameRecord::from_game(&g).unwrap());
         assert_ne!(old, g.context());
-        assert!(old.same_semantics(&g.context()));
         assert_eq!(g.undo(&mut u).unwrap_err(), GameError::InvalidToken);
         let mut u2 = play(&mut g, (16, 16), (15, 16));
         assert_eq!(after, GameRecord::from_game(&g).unwrap());
@@ -104,7 +103,7 @@ fn two_profiles_contexts_cannot_cross_even_equal_boards() {
         a.position().pieces().collect::<Vec<_>>(),
         b.position().pieces().collect::<Vec<_>>()
     );
-    assert!(!a.context().same_semantics(&b.context()));
+    assert_ne!(a.native_root(), b.native_root());
     assert_ne!(a.repetition_key(), b.repetition_key());
     assert_eq!(
         a.submit(GameRequest {
@@ -208,7 +207,7 @@ fn cancellation_during_candidates_preserves_every_accepted_component() {
     let e = g
         .submit_with_stop(
             GameRequest {
-                expected: context.clone(),
+                expected: context,
                 actor: Side::Sente,
                 command: GameCommand::Play { action: a },
             },
@@ -241,7 +240,7 @@ fn root_provenance_and_declared_counter_are_not_played_history() {
     let (mut restored, undo) = saved.to_game_with_undo().unwrap();
     assert!(!restored.context().eq(&context));
     assert!(undo.is_empty());
-    assert!(restored.context().same_semantics(&context));
+    assert_eq!(GameRecord::from_game(&restored).unwrap(), saved);
     restored.retire_context().unwrap();
 }
 #[test]
@@ -419,7 +418,7 @@ fn deterministic_admitted_sequences_preserve_capture_accounting_reversal_and_rep
                 let context = g.context();
                 assert_eq!(
                     g.submit(GameRequest {
-                        expected: context.clone(),
+                        expected: context,
                         actor: actor.opponent(),
                         command: GameCommand::Play {
                             action: action.clone()
@@ -442,7 +441,6 @@ fn deterministic_admitted_sequences_preserve_capture_accounting_reversal_and_rep
                 assert_eq!(ids.len(), effects.captures().count());
                 let after = GameRecord::from_game(&g).unwrap();
                 let restored = after.to_game().unwrap();
-                assert!(g.context().same_semantics(&restored.context()));
                 assert_eq!(after, GameRecord::from_game(&restored).unwrap());
                 g.undo(&mut token).unwrap();
                 assert_eq!(before, GameRecord::from_game(&g).unwrap());

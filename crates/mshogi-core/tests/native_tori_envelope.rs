@@ -23,6 +23,7 @@ fn record(g: &t::Game) -> CanonicalRecord {
 fn actual_core_consumer_uses_native_choices_effects_history_inspection_context_and_records() {
     let mut g = t::Game::standard();
     let before = g.context();
+    let before_record = record(&g);
     let a = g.legal_actions()[0];
     let mut u = play(&mut g, a);
     assert_eq!(g.events().len(), 1);
@@ -47,7 +48,7 @@ fn actual_core_consumer_uses_native_choices_effects_history_inspection_context_a
         panic!()
     };
     let mut restored = native.to_game().unwrap();
-    assert!(g.context().same_semantics(&restored.context()));
+    assert_eq!(restored.events(), g.events());
     assert_ne!(g.context(), restored.context());
     assert_eq!(
         restored
@@ -65,7 +66,7 @@ fn actual_core_consumer_uses_native_choices_effects_history_inspection_context_a
     assert!(historical.conclusion.is_none());
     assert!(!historical.local_position().legal_actions().is_empty());
     g.undo(&mut u).unwrap();
-    assert!(g.context().same_semantics(&before));
+    assert_eq!(record(&g), before_record);
     assert_ne!(g.context(), before);
     play(&mut g, a);
     let actor = t::Side::Sente;

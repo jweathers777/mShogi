@@ -189,7 +189,7 @@ mod tests {
         let action = parse_action(game.position(), "Fa7cx7b=Ea").unwrap();
         let mut undo = game
             .submit(GameRequest {
-                expected: old.clone(),
+                expected: old,
                 actor: Side::Sente,
                 command: GameCommand::Play { action },
             })

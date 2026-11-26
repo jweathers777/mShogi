@@ -4,14 +4,9 @@ use super::{
     Action, ActionError, LocalPositionError, LocalStatus, NoActionReason, NoWinAssessment,
     Position, PositionRoot, Side,
 };
+pub use crate::native::GameContext;
 use serde::{Deserialize, Serialize};
-use std::{
-    error::Error,
-    fmt,
-    sync::atomic::{AtomicU64, Ordering},
-};
-
-static NEXT_INSTANCE: AtomicU64 = AtomicU64::new(1);
+use std::{error::Error, fmt};
 /// Initial unattended software policy, independent of native claim eligibility.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
@@ -222,24 +217,10 @@ pub struct HistorySnapshot {
     /// Assessment tied to this exact historical position.
     pub no_win_assessment: NoWinAssessment,
 }
-/// Actual runtime acceptance identity; never serialized as canonical history.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct RuntimeToken {
-    instance: u64,
-    revision: u64,
-}
-/// A request matches full root, policy, commands and a never-rewound runtime token.
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct GameContext {
-    root: PositionRoot,
-    policy: ClaimPolicy,
-    commands: Vec<CommandEntry>,
-    token: RuntimeToken,
-}
 /// Context-bound participant request, separate from derived warning/conclusion events.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct GameRequest {
-    /// Complete submitted context.
+    /// Request token of the game when the command was chosen.
     pub expected: GameContext,
     /// Native actor.
     pub actor: Side,
@@ -266,7 +247,7 @@ pub(super) struct CommandEntry {
 /// Admission refusal leaves both game and audit untouched.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum GameError {
-    /// Request has retired runtime work or a different full history.
+    /// The request token is not the current one.
     StaleContext,
     /// Already concluded; no overwrite is permitted.
     Concluded,
@@ -280,7 +261,7 @@ pub enum GameError {
     Root(LocalPositionError),
     /// No opponent offer is available to accept/withdraw.
     DrawOffer,
-    /// A native runtime instance or revision counter was exhausted.
+    /// The request token revision counter was exhausted.
     Capacity,
     /// Historical selection is not the end of a committed native command.
     /// Automatic derived events remain viewable through `event_prefix`.
@@ -294,7 +275,7 @@ impl fmt::Display for GameError {
     }
 }
 impl Error for GameError {}
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Debug)]
 struct Checkpoint {
     position: Position,
     ids: [Option<u8>; 90],
@@ -308,14 +289,14 @@ struct Checkpoint {
     assessment: NoWinAssessment,
     last_offer_ply: [Option<usize>; 2],
 }
-/// Consumed local reversal token. Undo retires execution work instead of restoring its token.
+/// Consumed local reversal, bound to the game instance and the history node after
+/// its command. Undo retires requests instead of restoring their token.
 #[derive(Debug)]
 pub struct GameUndo {
     before: Checkpoint,
-    after: Checkpoint,
-    after_commands: Vec<CommandEntry>,
     instance: u64,
-    after_lineage: Vec<u64>,
+    before_node: u64,
+    after_node: u64,
 }
 /// Admitted result with exact reversal, including rejected-claim audit entries.
 #[derive(Debug)]
@@ -342,8 +323,9 @@ pub struct Game {
     pub(super) conclusion: Option<Conclusion>,
     pending: Option<PendingAdjudication>,
     assessment: NoWinAssessment,
-    token: RuntimeToken,
-    lineage: Vec<u64>,
+    context: GameContext,
+    /// Revision of the last command that is still in the history; 0 at the root.
+    node: u64,
     last_offer_ply: [Option<usize>; 2],
 }
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -363,9 +345,6 @@ impl Game {
     /// Admit a known root without inventing pre-root repetitions or checks.
     pub fn from_root(root: PositionRoot, policy: ClaimPolicy) -> Result<Self, GameError> {
         root.position().validate_local().map_err(GameError::Root)?;
-        let instance = NEXT_INSTANCE
-            .try_update(Ordering::Relaxed, Ordering::Relaxed, |v| v.checked_add(1))
-            .map_err(|_| GameError::Capacity)?;
         let position = root.position().clone();
         let mut ids = [None; 90];
         for (id, (at, _)) in position.pieces().enumerate() {
@@ -387,12 +366,9 @@ impl Game {
             offered_by: None,
             conclusion: None,
             pending: None,
-            lineage: vec![],
+            context: GameContext::fresh(),
+            node: 0,
             last_offer_ply: [None; 2],
-            token: RuntimeToken {
-                instance,
-                revision: 0,
-            },
         };
         game.resolve_board_terminal()?;
         if game.conclusion.is_none() {
@@ -481,14 +457,9 @@ impl Game {
     pub fn no_win_assessment(&self) -> NoWinAssessment {
         self.assessment.clone()
     }
-    /// Exact native request identity, not a board/FEN digest.
+    /// Current request token; it changes at each accepted command and undo.
     pub fn context(&self) -> GameContext {
-        GameContext {
-            root: self.root.clone(),
-            policy: self.policy,
-            commands: self.commands.clone(),
-            token: self.token,
-        }
+        self.context
     }
     /// Query claimant-specific known count without submitting or accepting a claim.
     pub fn natural_count_eligibility(&self, claimant: Side) -> NaturalCountEligibility {
@@ -545,8 +516,8 @@ impl Game {
             conclusion: self.conclusion,
             pending: self.pending.clone(),
             assessment: self.assessment.clone(),
-            token: self.token,
-            lineage: self.lineage.clone(),
+            context: self.context,
+            node: self.node,
             last_offer_ply: self.last_offer_ply,
         }
     }
@@ -733,7 +704,7 @@ impl Game {
     /// Serialize admission, actions, automatic events and claims atomically. Invalid
     /// admitted claims retain only their bounded audit; no board state or result changes.
     pub fn submit(&mut self, request: GameRequest) -> Result<Submission, GameError> {
-        if request.expected != self.context() {
+        if request.expected != self.context {
             return Err(GameError::StaleContext);
         }
         if self.conclusion.is_some() {
@@ -742,11 +713,7 @@ impl Game {
         if self.pending.is_some() {
             return Err(GameError::AdjudicationPending);
         }
-        let revision = self
-            .token
-            .revision
-            .checked_add(1)
-            .ok_or(GameError::Capacity)?;
+        let context = self.context.advanced().ok_or(GameError::Capacity)?;
         let before = self.checkpoint();
         let mut candidate = self.transaction_copy();
         let result = match request.command {
@@ -860,43 +827,27 @@ impl Game {
             result,
             event_end: candidate.events.len(),
         });
-        candidate.token.revision = revision;
-        candidate.lineage.push(revision);
-        let after_lineage = candidate.lineage.clone();
-        let after = candidate.checkpoint();
-        let after_commands = candidate.commands.clone();
-        let instance = candidate.token.instance;
+        let undo = GameUndo {
+            before,
+            instance: context.instance(),
+            before_node: self.node,
+            after_node: context.revision(),
+        };
+        candidate.context = context;
+        candidate.node = context.revision();
         *self = candidate;
-        Ok(Submission {
-            result,
-            undo: GameUndo {
-                before,
-                after,
-                after_commands,
-                instance,
-                after_lineage,
-            },
-        })
+        Ok(Submission { result, undo })
     }
     /// Exact semantic reversal with a fresh monotonic runtime revision.
     pub fn undo(&mut self, undo: GameUndo) -> Result<(), GameError> {
-        if self.token.instance != undo.instance
-            || self.checkpoint() != undo.after
-            || self.commands != undo.after_commands
-            || self.lineage != undo.after_lineage
-        {
+        if self.context.instance() != undo.instance || self.node != undo.after_node {
             return Err(GameError::StaleContext);
         }
-        let revision = self
-            .token
-            .revision
-            .checked_add(1)
-            .ok_or(GameError::Capacity)?;
+        let context = self.context.advanced().ok_or(GameError::Capacity)?;
         let b = undo.before;
         self.position = b.position;
         self.ids = b.ids;
         self.commands.truncate(b.command_len);
-        self.lineage.truncate(b.command_len);
         self.events.truncate(b.event_len);
         self.snapshots.truncate(b.event_len);
         self.steps.truncate(b.step_len);
@@ -907,7 +858,8 @@ impl Game {
         self.pending = b.pending;
         self.assessment = b.assessment;
         self.last_offer_ply = b.last_offer_ply;
-        self.token.revision = revision;
+        self.context = context;
+        self.node = undo.before_node;
         Ok(())
     }
     /// Exact copy of the complete committed game with a fresh runtime identity.
@@ -915,16 +867,11 @@ impl Game {
     /// The copy has the same root, policy, commands, events and derived state,
     /// without replay. Reversal tokens of this game do not apply to the copy.
     /// Use it for private analysis copies; it admits nothing new.
-    pub fn fork(&self) -> Result<Self, GameError> {
-        let instance = NEXT_INSTANCE
-            .try_update(Ordering::Relaxed, Ordering::Relaxed, |v| v.checked_add(1))
-            .map_err(|_| GameError::Capacity)?;
-        let mut copy = self.transaction_copy();
-        copy.token = RuntimeToken {
-            instance,
-            revision: self.token.revision,
-        };
-        Ok(copy)
+    pub fn fork(&self) -> Self {
+        Self {
+            context: GameContext::fresh(),
+            ..self.transaction_copy()
+        }
     }
     /// Reconstruct a complete committed command prefix with fresh runtime identity.
     ///

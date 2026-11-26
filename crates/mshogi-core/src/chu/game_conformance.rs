@@ -629,7 +629,7 @@ fn different_history(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
     put(
         &mut out,
         "same_search_context",
-        a.context().same_semantics(&b.context()),
+        (a.native_root(), a.events()) == (b.native_root(), b.events()),
     );
     for (label, g) in [("next_cycle_A", &mut a), ("next_cycle_B", &mut b)] {
         let mut result = "ongoing";
@@ -676,7 +676,7 @@ fn lion_history(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
         &mut out,
         "same_repetition_or_search_identity",
         known.repetition_key() == fresh.repetition_key()
-            || known.context().same_semantics(&fresh.context()),
+            || (known.native_root(), known.events()) == (fresh.native_root(), fresh.events()),
     );
     put(
         &mut out,
@@ -846,7 +846,7 @@ fn reversal(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
     put(
         &mut out,
         "runtime_authority",
-        json!({"before":format!("{:?}",runtime.runtime()),"after":format!("{:?}",game.context().runtime())}),
+        json!({"before":format!("{runtime:?}"),"after":format!("{:?}",game.context())}),
     );
     Ok(out)
 }
@@ -871,8 +871,8 @@ fn records(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
         put(
             &mut out,
             "derive_facts_from_native_replay",
-            game.context().same_semantics(&replay.context())
-                && game.context().runtime() != replay.context().runtime(),
+            (game.native_root(), game.events()) == (replay.native_root(), replay.events())
+                && game.context() != replay.context(),
         );
         return Ok(out);
     }

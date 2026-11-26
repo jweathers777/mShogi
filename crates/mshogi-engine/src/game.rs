@@ -127,8 +127,8 @@ macro_rules! board_action_game {
         );
         type Choice = $core::Action;
         type Pending = NoPending;
-        fn fork(game: &Self::Game) -> Result<Self::Game, String> {
-            game.fork().map_err(|e| e.to_string())
+        fn fork(game: &Self::Game) -> Self::Game {
+            game.fork()
         }
         fn command(choice: &$core::Action, turn: $core::Side) -> ($core::Side, $core::GameCommand) {
             let action = choice.clone();
@@ -270,8 +270,8 @@ impl EngineGame for Shogi {
     fn extends(current: &Self::Record, _game: &Self::Game, earlier: &Self::Record) -> bool {
         current.has_prefix(earlier)
     }
-    fn fork(game: &Self::Game) -> Result<Self::Game, String> {
-        Ok(game.clone())
+    fn fork(game: &Self::Game) -> Self::Game {
+        game.clone()
     }
     fn command(choice: &ShogiChoice, turn: shogi::Side) -> (shogi::Side, shogi::GameCommand) {
         match *choice {
@@ -355,8 +355,8 @@ impl EngineGame for Xiangqi {
             .and_then(|prefix| xiangqi::GameRecord::from_game(&prefix).ok())
             .is_some_and(|prefix| prefix == *earlier)
     }
-    fn fork(game: &Self::Game) -> Result<Self::Game, String> {
-        game.fork().map_err(|e| e.to_string())
+    fn fork(game: &Self::Game) -> Self::Game {
+        game.fork()
     }
     fn command(
         choice: &XiangqiChoice,

@@ -224,7 +224,7 @@ impl Adapter {
                 let stop = Arc::new(AtomicBool::new(false));
                 self.worker.submit(Job {
                     context: context.clone(),
-                    game: self.game.fork().map_err(|e| e.to_string())?,
+                    game: self.game.fork(),
                     stop: stop.clone(),
                 });
                 self.running = Some(Running {
@@ -320,10 +320,7 @@ impl Adapter {
         let result = r.result.unwrap();
         let text = match result.decision.unwrap() {
             Decision::Choose(choice) => {
-                let mut candidate = self
-                    .game
-                    .fork()
-                    .map_err(|e| io::Error::other(format!("{e:?}")))?;
+                let mut candidate = self.game.fork();
                 candidate
                     .submit(GameRequest {
                         expected: candidate.context(),
@@ -492,7 +489,7 @@ fn parse_position(args: &[&str], current: &mut Game) -> Result<(), String> {
                 && known.len() <= actions.len()
                 && known[..] == actions[..known.len()] =>
         {
-            (current.fork().map_err(|e| format!("{e:?}"))?, known.len())
+            (current.fork(), known.len())
         }
         _ => (
             Game::from_root(root, ClaimPolicy::AutoValidClaims)

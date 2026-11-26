@@ -750,7 +750,7 @@ fn exposed_seed12_root_completes_an_iteration_with_the_same_100k_budget() {
         panic!("no completed choice");
     };
     assert!(game.legal_actions().contains(&choice));
-    assert!(game.context().same_semantics(&before));
+    assert_eq!(game.context(), before);
 }
 
 #[test]

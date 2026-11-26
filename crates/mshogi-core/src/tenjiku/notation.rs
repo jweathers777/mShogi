@@ -341,7 +341,7 @@ mod tests {
             let action = parse_local_action(game.local_position(), "Ln8hx8g-8h").unwrap();
             let mut undo = game
                 .submit(GameRequest {
-                    expected: before.clone(),
+                    expected: before,
                     actor: Side::Sente,
                     command: GameCommand::Play {
                         action: action.clone(),

@@ -556,7 +556,7 @@ fn native_command_refusals_are_atomic_and_unknown_no_win_is_not_a_result() {
         let context = game.context();
         let result = game
             .submit(GameRequest {
-                expected: context.clone(),
+                expected: context,
                 actor,
                 command: cmd,
             })

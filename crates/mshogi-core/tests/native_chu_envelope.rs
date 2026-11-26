@@ -79,7 +79,7 @@ fn real_chu_identity_history_commands_and_duplicate_preserving_routing() {
         panic!()
     };
     let restored = restored.to_game().unwrap();
-    assert!(g.context().same_semantics(&restored.context()));
+    assert_eq!(restored.events(), g.events());
     assert_ne!(g.context(), restored.context());
     assert_eq!(
         restored.position().root().source(),

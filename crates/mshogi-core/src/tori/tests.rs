@@ -814,7 +814,7 @@ fn fork_copies_the_committed_game_without_replay_and_keeps_tokens_apart() {
             .unwrap(),
         );
     }
-    let mut fork = game.fork().unwrap();
+    let mut fork = game.fork();
     assert_eq!(
         GameRecord::from_game(&fork).unwrap(),
         GameRecord::from_game(&GameRecord::from_game(&game).unwrap().to_game().unwrap()).unwrap()

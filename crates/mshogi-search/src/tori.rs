@@ -207,7 +207,7 @@ pub fn search_with_state(
     for _ in 0..made {
         position.unmake();
     }
-    let mut native = game.fork().map_err(SearchError::Transition)?;
+    let mut native = game.fork();
     let mut accepted = 0;
     for &action in &line {
         if accepted > 0 && timing.expired() {

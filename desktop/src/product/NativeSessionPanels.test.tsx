@@ -15,7 +15,7 @@ import shogiJson from "../__fixtures__/shared-shogi-standard.json";
 afterEach(cleanup);
 const chess = (value: unknown) => structuredClone(value) as ChessSnapshot;
 function panel(snapshot = chess(standardJson)) {
-  const command = vi.fn(); const props = { snapshot, defaults: snapshot.document.settings.settings.analysis_defaults, command, disabled: false, minNodes: 0, maxDepth: 8, maxNodes: 5000000 };
+  const command = vi.fn(); const props = { snapshot, defaults: snapshot.document.settings.analysis_defaults, command, disabled: false, minNodes: 0, maxDepth: 8, maxNodes: 5000000 };
   const view = render(<NativeAnalysis {...props} />); fireEvent.click(screen.getByRole("button", { name: "Analyze position" })); return { ...view, command, props };
 }
 it("viewing Chess analysis never starts work; ordinary work uses the current read-only command", () => {
@@ -34,7 +34,7 @@ it.each([[mateJson, "Mate for White"], [matedJson, "Mate for White · already ch
 });
 it("cancels and replaces active analysis work through common commands without an engine-turn shortcut", () => {
   const snapshot = chess(movesJson); snapshot.chess.analysis.status = "thinking"; snapshot.chess.analysis.result = null;
-  const { command } = panel(snapshot); fireEvent.click(screen.getByRole("button", { name: "Cancel analysis" })); expect(command).toHaveBeenLastCalledWith({ kind: "cancel" }); fireEvent.click(screen.getByRole("button", { name: "Replace analysis" })); expect(command).toHaveBeenLastCalledWith({ kind: "analyze", operation: snapshot.document.settings.settings.analysis_defaults });
+  const { command } = panel(snapshot); fireEvent.click(screen.getByRole("button", { name: "Cancel analysis" })); expect(command).toHaveBeenLastCalledWith({ kind: "cancel" }); fireEvent.click(screen.getByRole("button", { name: "Replace analysis" })); expect(command).toHaveBeenLastCalledWith({ kind: "analyze", operation: snapshot.document.settings.analysis_defaults });
 });
 it.each(["selection", "version", "purpose", "event", "board", "side", "limits"] as const)("withholds native analysis when %s does not match the accepted selected context", (field) => {
   const snapshot = chess(movesJson); const purpose = snapshot.chess.analysis.context!.purpose;
@@ -91,7 +91,7 @@ it("does not display rejected archived scores as accepted analysis", () => {
   panel(snapshot); expect(screen.getByText("Rejected response. No valid score or proof is presented.")).toBeTruthy(); expect(screen.queryByText(/Suggested move:/)).toBeNull();
 });
 it("restores saved analysis defaults on a fresh document while ordinary polls preserve typed work limits", () => {
-  const snapshot = chess(standardJson); snapshot.document.settings.settings.analysis_defaults = { depth: 3, nodes: 4321 };
+  const snapshot = chess(standardJson); snapshot.document.settings.analysis_defaults = { depth: 3, nodes: 4321 };
   const { props, rerender } = panel(snapshot); const nodes = screen.getByRole("spinbutton", { name: "Node limit" }) as HTMLInputElement; expect(nodes.value).toBe("4321"); fireEvent.change(nodes, { target: { value: "9999" } });
   rerender(<NativeAnalysis {...props} snapshot={{ ...snapshot, token: { ...snapshot.token, revision: snapshot.token.revision + 1 } }} />); expect(nodes.value).toBe("9999");
   rerender(<NativeAnalysis {...props} snapshot={{ ...snapshot, token: { ...snapshot.token, document: snapshot.token.document + 1 } }} />); expect(nodes.value).toBe("4321");

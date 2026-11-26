@@ -33,18 +33,17 @@ it.each(fixtures)("shows two human participants and an explicit side to resign f
   expect(screen.queryByRole("button", { name: "Cancel search" })).toBeNull();
   expect(session.command).not.toHaveBeenCalled();
   fireEvent.click(screen.getByRole("button", { name: `Resign ${local.label}` }));
-  expect(session.command).toHaveBeenCalledExactlyOnceWith(snapshot, snapshot.game === "xiangqi" ? { kind: "xiangqi", command: { kind: "resign" } } : { kind: "resign" });
+  expect(session.command).toHaveBeenCalledExactlyOnceWith(snapshot, { kind: "resign" });
 });
 it.each([chu, adams, muller] as GameSnapshot[])("lets the other local human respond to a $profile draw offer before the turn changes", fixture => {
   if (fixture.game !== "chu" && fixture.game !== "tenjiku") throw new Error("draw fixture");
   const offerer = fixture.turn;
-  const responder = fixture.sides.find(side => side.key !== offerer.key)!;
   const native = fixture.game === "chu" ? fixture.chu : fixture.tenjiku;
   const snapshot = { ...fixture, play_mode: "two_humans" as const, local_actor: offerer,
     [fixture.game]: { ...native, live: { ...native.live, draw_offer: offerer.id.side } } } as GameSnapshot;
   const { session } = app(snapshot);
   fireEvent.click(screen.getByRole("button", { name: "Decline draw" }));
-  expect(session.command).toHaveBeenCalledExactlyOnceWith(snapshot, { kind: fixture.game, actor: responder.id.side, command: { kind: "decline_draw" } });
+  expect(session.command).toHaveBeenCalledExactlyOnceWith(snapshot, { kind: "command", command: { kind: "decline_draw" } });
 });
 it.each([...fixtures, toriGote as GameSnapshot])("plays a complete native action for the local actor rather than the fixed human anchor in $profile", fixture => {
   const snapshot = { ...fixture, play_mode: "two_humans" as const, local_actor: fixture.turn,
@@ -54,11 +53,8 @@ it.each([...fixtures, toriGote as GameSnapshot])("plays a complete native action
   const choice = snapshot.choices.find(choice => choice.from !== null && choice.steps.length === 1 && choice.completion === null)!;
   const square = (name: string) => screen.getByRole("button", { name: new RegExp(`^${name},`) });
   fireEvent.click(square(choice.from!)); fireEvent.click(square(choice.steps[0]!));
-  const operation = snapshot.game === "chess" ? { kind: "chess_play", action: choice.action }
-    : snapshot.game === "shogi" ? { kind: "play", action: choice.action }
-    : snapshot.game === "xiangqi" ? { kind: "xiangqi", command: { kind: "play", action: choice.action } }
-    : { kind: snapshot.game, actor: snapshot.local_actor.id.side, command: { kind: "play", action: JSON.parse(choice.action) } };
-  expect(session.command).toHaveBeenCalledExactlyOnceWith(snapshot, operation);
+  // The session derives the actor; the operation carries only the opaque action.
+  expect(session.command).toHaveBeenCalledExactlyOnceWith(snapshot, { kind: "play", action: choice.action });
 });
 
 it("lets the local Shogi actor drop from hand independently of the fixed human anchor", () => {
@@ -83,7 +79,7 @@ it("uses native Xiangqi actor advice to label off-turn draw controls", () => {
   expect(screen.getByRole("button", { name: `Offer draw for ${second.label}…` })).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: `Accept draw for ${second.label}…` }));
   fireEvent.click(screen.getByRole("button", { name: `Accept draw for ${second.label}` }));
-  expect(session.command).toHaveBeenCalledExactlyOnceWith(snapshot, { kind: "xiangqi", command: { kind: "accept_draw" } });
+  expect(session.command).toHaveBeenCalledExactlyOnceWith(snapshot, { kind: "command", command: { kind: "accept_draw" } });
 });
 
 it.each(fixtures)("shows local play details without an automatic engine budget for $profile", fixture => {

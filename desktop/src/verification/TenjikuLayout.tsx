@@ -21,7 +21,7 @@ function measure() {
     }
     return true;
   };
-  const glyphs = [...svg.querySelectorAll<SVGTextElement>(".tenjiku-face text")].map(glyph => {
+  const glyphs = [...svg.querySelectorAll<SVGTextElement>(".piece-tile-face text")].map(glyph => {
     const matrix = glyph.getScreenCTM();
     return { text: glyph.textContent, font_family: getComputedStyle(glyph).fontFamily, box: rect(glyph), logical_em: parseFloat(getComputedStyle(glyph).fontSize) * (matrix ? Math.hypot(matrix.a, matrix.b) : 0) };
   });

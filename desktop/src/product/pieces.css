@@ -1,0 +1,23 @@
+@font-face { font-family:"mShogi Pieces"; src:url("../assets/fonts/mshogi-pieces.woff2") format("woff2"); font-style:normal; font-weight:400; font-display:swap; }
+@font-face { font-family:"mShogi Tori Pieces"; src:url("../assets/fonts/mshogi-tori-pieces.woff2") format("woff2"); font-style:normal; font-weight:400; font-display:swap; }
+@font-face { font-family:"mShogi Chu Pieces"; src:url("../assets/fonts/mshogi-chu-pieces.woff2") format("woff2"); font-style:normal; font-weight:400; font-display:swap; }
+@font-face { font-family:"mShogi Tenjiku Pieces"; src:url("../assets/fonts/mshogi-tenjiku-pieces.woff2") format("woff2"); font-style:normal; font-weight:400; font-display:swap; }
+/* One warm pentagonal tile; each game has its own subset font. */
+.piece-tile { pointer-events:none; }
+.piece-tile-shadow { fill:#87613680; }
+.piece-tile-body { fill:#f6deb0; stroke:#8c6433; stroke-width:2; }
+.piece-tile-bevel { fill:none; stroke:#fff0cb; stroke-width:1.2; }
+.piece-tile.large .piece-tile-body { fill:#f8e3b8; stroke-width:1.8; }
+.piece-tile.large .piece-tile-bevel { stroke:#fff2d0; stroke-width:1; }
+.piece-tile text { font-weight:400; font-size:35px; fill:#28231d; stroke:none; }
+.piece-tile.promoted text { fill:#8b2d25; }
+.piece-tile-mark { fill:none; stroke:#8b2d25; stroke-width:3; stroke-linecap:round; stroke-linejoin:round; }
+.piece-tile.standard.glyphs-1 text { font-size:58px; }
+.piece-tile.large text { font-size:47px; }
+.piece-tile.large.glyphs-1 text { font-size:62px; }
+/* Preserve the full three-character 四天王 name; no invented abbreviation. */
+.piece-tile.large.glyphs-3 text { font-size:32px; }
+.piece-tile.shogi text { font-family:"mShogi Pieces",serif; }
+.piece-tile.tori text { font-family:"mShogi Tori Pieces",serif; }
+.piece-tile.chu text { font-family:"mShogi Chu Pieces",serif; }
+.piece-tile.tenjiku text { font-family:"mShogi Tenjiku Pieces",serif; }

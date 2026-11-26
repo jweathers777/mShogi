@@ -9,7 +9,7 @@ import { ShogiBoard as ShogiBoardForTori } from "./ShogiBoard";
 import { GameBoard } from "./GameBoard";
 import { ApplicationView } from "./ApplicationView";
 import { NativeHistory } from "./NativeSessionPanels";
-import { NativeBoard } from "../NativeBoard";
+import { ShogiBoard } from "./ShogiBoard";
 import type { ToriSnapshot, GameSnapshot } from "./native";
 import type { GameSession } from "./useGameSession";
 import type { MovementInspection } from "./movementInspection";
@@ -52,7 +52,7 @@ it("submits one complete forced promotion with capture, without an optional prom
   const user = userEvent.setup(), { command } = board();
   await user.click(screen.getByRole("button", { name: "7c, Sente Falcon" }));
   await user.click(screen.getByRole("button", { name: /7b, Gote Swallow.*legal destination/ }));
-  expect(command).toHaveBeenCalledExactlyOnceWith({ kind: "tori", actor: "sente", command: { kind: "play", action: { kind: "move", from: "7c", to: "7b", result_face: "eagle" } } });
+  expect(command).toHaveBeenCalledExactlyOnceWith({ kind: "play", action: JSON.stringify({ kind: "move", from: "7c", to: "7b", result_face: "eagle" }) });
   expect(screen.queryByRole("dialog")).toBeNull();
   await user.click(screen.getByRole("button", { name: /7b, Gote Swallow/ })); expect(command).toHaveBeenCalledTimes(1);
 });
@@ -61,7 +61,7 @@ it("uses the native handed drop identity and restores keyboard focus on Escape",
   const hand = screen.getByRole("button", { name: "Sente Right Quail in hand, 1" }); hand.focus();
   await user.keyboard("{Enter}{Escape}"); expect(document.activeElement).toBe(hand); expect(command).not.toHaveBeenCalled();
   await user.click(hand); await user.click(screen.getByRole("button", { name: /5e, empty.*legal destination/ }));
-  expect(command).toHaveBeenCalledExactlyOnceWith({ kind: "tori", actor: "sente", command: { kind: "play", action: { kind: "drop", face: "right_quail", to: "5e" } } });
+  expect(command).toHaveBeenCalledExactlyOnceWith({ kind: "play", action: JSON.stringify({ kind: "drop", face: "right_quail", to: "5e" }) });
 });
 it("keyboard board navigation cancels partial selection without applying anything", async () => {
   const user = userEvent.setup(), { command } = board();
@@ -91,7 +91,7 @@ it("retires a delayed inspection across exact selection and game replacement", a
 });
 it("cannot override native historical admission with disabled=false, while readonly inspection stays enabled", async () => {
   const native = historyJson as unknown as ToriSnapshot, onPlay = vi.fn();
-  const onInspect = vi.fn().mockResolvedValue(null); render(<NativeBoard snapshot={native} bottomSide={native.sides[0]!.key} disabled={false} inspectionDisabled={false} onInspect={onInspect} onPlay={onPlay} />);
+  const onInspect = vi.fn().mockResolvedValue(null); render(<ShogiBoard snapshot={native} disabled={false} inspectionDisabled={false} onInspect={onInspect} onPlay={onPlay} />);
   await userEvent.click(screen.getByRole("button", { name: "4g, Sente Phoenix" })); expect(onPlay).not.toHaveBeenCalled(); expect(onInspect).toHaveBeenCalledWith("4g");
 });
 it("projects only board rows, native nonmove events and selected completed geometry", () => {
@@ -180,16 +180,16 @@ it("renders native face and owner orientation on the production shared board, wi
   const { container, rerender } = board();
   for (const piece of root.pieces) {
     const square = container.querySelector(`[data-square="${piece.square}"]`)!;
-    const artwork = square.querySelector(".tori-piece")!;
-    expect(artwork.getAttribute("data-tori-face")).toBe(piece.kind);
+    const artwork = square.querySelector(".piece-tile")!;
+    expect(artwork.getAttribute("data-face")).toBe(piece.kind);
     expect(artwork.classList.contains("promoted")).toBe(piece.promoted);
     expect(artwork.getAttribute("transform")).toBe(piece.owner === root.sides[0]!.key ? null : "rotate(180 50 50)");
     expect(square.querySelector("title")?.textContent).toBe(piece.label);
   }
   rerender(<GameBoard snapshot={goteJson as unknown as ToriSnapshot} disabled={false} inspectionDisabled={false} command={vi.fn()} />);
   expect(container.querySelector(".shogi-square")?.getAttribute("data-square")).toBe("1g");
-  expect(container.querySelector('[data-square="4a"] .tori-piece')?.getAttribute("transform")).toBeNull();
-  expect(container.querySelector('[data-square="4g"] .tori-piece')?.getAttribute("transform")).toBe("rotate(180 50 50)");
+  expect(container.querySelector('[data-square="4a"] .piece-tile')?.getAttribute("transform")).toBeNull();
+  expect(container.querySelector('[data-square="4g"] .piece-tile')?.getAttribute("transform")).toBe("rotate(180 50 50)");
 });
 it("keeps finished Tori in the common shell without engineering prose, encoded PV or misplaced controls", async () => {
   const { container } = app(analysisJson as unknown as ToriSnapshot);
@@ -215,7 +215,7 @@ it("announces native human hand names without qualified origin encodings, while 
   expect(announcement).toContain('Sente Right Quail in hand, 1 selected.');
   expect(announcement).not.toContain('hand:mshogi');
   await userEvent.click(screen.getByRole('button', { name: /5e, empty.*legal destination/ }));
-  expect(command).toHaveBeenCalledExactlyOnceWith({ kind: 'tori', actor: 'sente', command: { kind: 'play', action: { kind: 'drop', face: 'right_quail', to: '5e' } } });
+  expect(command).toHaveBeenCalledExactlyOnceWith({ kind: "play", action: JSON.stringify({ kind: 'drop', face: 'right_quail', to: '5e' }) });
 });
 
 it("distinguishes an available idle Tori engine from paused play without fabricating work", () => {

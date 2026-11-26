@@ -23,7 +23,7 @@ it.each([chess, shogi, xiangqi])("submits $game Resign directly once with captur
   const receipt = deferred<GameSnapshot | null>(); vi.mocked(session.command).mockReturnValue(receipt.promise);
   const resign = screen.getByRole("button", { name: "Resign" });
   fireEvent.click(resign); fireEvent.click(resign);
-  expect(session.command).toHaveBeenCalledExactlyOnceWith(source, source.game === "xiangqi" ? { kind: "xiangqi", command: { kind: "resign" } } : { kind: "resign" });
+  expect(session.command).toHaveBeenCalledExactlyOnceWith(source, { kind: "resign" });
   expect(screen.queryByRole("dialog")).toBeNull(); expect(screen.queryByRole("region", { name: "Game outcome" })).toBeNull();
   await act(async () => { receipt.resolve(null); await receipt.promise; });
   expect(screen.getByRole("button", { name: "Resign" })).toBe(resign); expect(session.snapshot).toBe(source);

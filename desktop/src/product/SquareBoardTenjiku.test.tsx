@@ -3,7 +3,7 @@
 // These tests establish frontend consumption, not new rules or search conformance.
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { TenjikuBoard } from "./TenjikuBoard";
+import { SquareBoard } from "./SquareBoard";
 import { GameBoard } from "./GameBoard";
 import type { TenjikuSnapshot } from "./native";
 import type { MovementInspection } from "./movementInspection";
@@ -49,6 +49,7 @@ const fixtures = [
   { label: "Muller Completed", compound: mullerCompound, played: mullerPlayed, promotion: mullerPromotion, promoted: mullerPromoted, declined: mullerDeclined, igui: mullerIgui, iguied: mullerIguied, burned: mullerBurned, selected: mullerSelected, inspection: mullerInspection, hawk: mullerHawk, hawkPlayed: mullerHawkPlayed, promotedHawk: mullerPromotedHawk, area: mullerArea, areaPlayed: mullerAreaPlayed, jump: mullerJump, jumpPlayed: mullerJumpPlayed, blocked: mullerBlocked },
 ];
 const snapshot = (value: unknown) => value as TenjikuSnapshot;
+import { oriented } from "../testing/snapshots";
 afterEach(cleanup);
 function square(key: string) {
   const node = document.querySelector<SVGGElement>(`svg [role="button"][aria-label^="${key},"]`);
@@ -57,7 +58,7 @@ function square(key: string) {
 }
 function board(value: unknown) {
   const props = { snapshot: snapshot(value), disabled: false, inspectionDisabled: false, onPlay: vi.fn(), onInspect: vi.fn() };
-  return { ...render(<TenjikuBoard {...props} />), props };
+  return { ...render(<SquareBoard {...props} />), props };
 }
 function returningChoices(value: TenjikuSnapshot) {
   return value.choices.filter(choice => choice.steps.length === 2 && choice.steps[1] === choice.from);
@@ -76,13 +77,13 @@ it.each(fixtures)("renders the actual $label 16×16 board in both orientations w
   expect(props.snapshot.hands).toEqual([]);
   expect(props.snapshot.capabilities.engine_turn).toBe(true);
   expect(props.snapshot.capabilities.move_analysis).toBe(true);
-  expect(square("1a").querySelector("[data-tenjiku-piece]")?.getAttribute("transform")).toBe("rotate(180 50 50)");
+  expect(square("1a").querySelector("[data-base]")?.getAttribute("transform")).toBe("rotate(180 50 50)");
   fireEvent.keyDown(square("8h"), { key: "ArrowRight" });
   expect(document.activeElement).toBe(square("7h"));
-  const flipped = { ...props.snapshot, document: { ...props.snapshot.document, settings: { ...props.snapshot.document.settings, settings: { ...props.snapshot.document.settings.settings, orientation: "gote" as const } } } };
-  rerender(<TenjikuBoard {...props} snapshot={flipped} />);
+  const flipped = oriented(props.snapshot, "gote");
+  rerender(<SquareBoard {...props} snapshot={flipped} />);
   expect(container.querySelector("svg [role=button]")?.getAttribute("aria-label")).toMatch(/^1p,/);
-  expect(square("1a").querySelector("[data-tenjiku-piece]")?.getAttribute("transform")).toBeNull();
+  expect(square("1a").querySelector("[data-base]")?.getAttribute("transform")).toBeNull();
   fireEvent.keyDown(square("8h"), { key: "ArrowRight" });
   expect(document.activeElement).toBe(square("9h"));
   expect(props.onPlay).not.toHaveBeenCalled();
@@ -119,7 +120,7 @@ it.each(fixtures)("requires explicit completion of a native $label terminal pref
   expect(document.activeElement).toBe(square(route.steps[0]!));
   // A changed native selection retires old submission authority; actions remain
   // the exact generated choices, with no local movement reconstruction.
-  rerender(<TenjikuBoard {...props} snapshot={{ ...source, token: { ...source.token, selection: source.token.selection + 1 } }} />);
+  rerender(<SquareBoard {...props} snapshot={{ ...source, token: { ...source.token, selection: source.token.selection + 1 } }} />);
   fireEvent.keyDown(square(route.from), { key: "Enter" }); fireEvent.keyDown(square(route.steps[0]!), { key: " " });
   const cancel = screen.getByRole("button", { name: "Cancel selection" }); cancel.focus();
   fireEvent.keyDown(cancel, { key: "Escape" });
@@ -155,7 +156,7 @@ it.each(fixtures)("commits $label promotion only on its selected native completi
   fireEvent.keyDown(square(promote.from), { key: "Enter" }); fireEvent.keyDown(square(promote.steps[0]!), { key: " " });
   expect(command).not.toHaveBeenCalled();
   fireEvent.click(screen.getByRole("button", { name: "Promote" }));
-  expect(command).toHaveBeenCalledExactlyOnceWith({ kind: "tenjiku", actor: source.human.id.side, command: { kind: "play", action: JSON.parse(promote.action) } });
+  expect(command).toHaveBeenCalledExactlyOnceWith({ kind: "play", action: promote.action });
 });
 
 it.each(fixtures)("selects a $label stationary target without creating a movement route", fixture => {
@@ -175,7 +176,7 @@ it.each(fixtures)("selects a $label stationary target without creating a movemen
 
 it.each(fixtures)("decorates source-correct $label burn/death phases independently of the actual mover route", fixture => {
   const source = snapshot(fixture.burned);
-  const { container } = render(<TenjikuBoard snapshot={source} disabled inspectionDisabled={false} onPlay={vi.fn()} onInspect={vi.fn()} completedAction={source.moves.last_action} />);
+  const { container } = render(<SquareBoard snapshot={source} disabled inspectionDisabled={false} onPlay={vi.fn()} onInspect={vi.fn()} completedAction={source.moves.last_action} />);
   const phases = [...container.querySelectorAll("[data-native-effect-phase]")].map(node => [node.getAttribute("data-native-effect-phase"), node.getAttribute("data-effect-phase-index"), node.getAttribute("data-location")]);
   expect(phases).toEqual(fixture.label === "Adams Modern" ? [["burn", "1", "8g"], ["mover_dies", "2", "8h"]] : [["mover_dies", "1", "8h"]]);
   expect(container.querySelector("[data-route]")).toBeNull();
@@ -187,7 +188,7 @@ it.each(fixtures)("decorates source-correct $label burn/death phases independent
 it.each(fixtures)("retains $label compound, promotion and stationary completed geometry without fake travel", fixture => {
   for (const value of [fixture.played, fixture.promoted, fixture.iguied]) {
     const source = snapshot(value), action = source.moves.last_action!;
-    const { container, unmount } = render(<TenjikuBoard snapshot={source} disabled inspectionDisabled={false} onPlay={vi.fn()} onInspect={vi.fn()} completedAction={action} />);
+    const { container, unmount } = render(<SquareBoard snapshot={source} disabled inspectionDisabled={false} onPlay={vi.fn()} onInspect={vi.fn()} completedAction={action} />);
     if (value === fixture.played) {
       expect(action.steps).toHaveLength(2);
       expect(container.querySelector("[data-route]")?.getAttribute("data-route")).toBe(`${action.origin.kind === "board" ? action.origin.square : ""}>${action.steps.join(">")}`);
@@ -213,7 +214,7 @@ it.each(fixtures)("keeps exact native $label historical inspection visibly read-
   expect(response.token).toEqual(source.token);
   expect(response.profile).toBe(source.profile);
   const onPlay = vi.fn(), onInspect = vi.fn().mockResolvedValue(response);
-  const { container } = render(<TenjikuBoard snapshot={source} disabled inspectionDisabled={false} onPlay={onPlay} onInspect={onInspect} />);
+  const { container } = render(<SquareBoard snapshot={source} disabled inspectionDisabled={false} onPlay={onPlay} onInspect={onInspect} />);
   fireEvent.click(square(response.origin));
   await vi.waitFor(() => expect(screen.getByText(`Inspecting ${response.label} · Esc clears`)).toBeTruthy());
   expect(container.querySelectorAll(".inspection-marker").length).toBeGreaterThan(0);
@@ -246,7 +247,7 @@ it.each(fixtures)("consumes native $label Lion Hawk and promoted-Lion complete t
     shortcut.unmount();
   }
   const source = snapshot(fixture.hawkPlayed);
-  const { container } = render(<TenjikuBoard snapshot={source} disabled inspectionDisabled={false} onPlay={vi.fn()} onInspect={vi.fn()} completedAction={source.moves.last_action} />);
+  const { container } = render(<SquareBoard snapshot={source} disabled inspectionDisabled={false} onPlay={vi.fn()} onInspect={vi.fn()} completedAction={source.moves.last_action} />);
   expect([...container.querySelectorAll('[data-native-effect-phase="capture"]')].map(node => node.getAttribute("data-location"))).toEqual(["9h", "10h"]);
 });
 
@@ -274,7 +275,7 @@ it.each(fixtures)("keeps a native $label ranked jump as one landing and never ex
   }
   expect(props.onPlay).toHaveBeenCalledExactlyOnceWith(choice.action);
   unmount();
-  const rendered = render(<TenjikuBoard snapshot={played} disabled inspectionDisabled={false} onPlay={vi.fn()} onInspect={vi.fn()} completedAction={played.moves.last_action} />);
+  const rendered = render(<SquareBoard snapshot={played} disabled inspectionDisabled={false} onPlay={vi.fn()} onInspect={vi.fn()} completedAction={played.moves.last_action} />);
   expect(rendered.container.querySelector("[data-route]")).toBeNull();
   expect(rendered.container.querySelector('[data-native-capture="11e"]')).toBeTruthy();
   expect(rendered.container.querySelector('[data-last-move="destination"]')?.getAttribute("data-location")).toBe("11e");
@@ -301,7 +302,7 @@ it.each(fixtures)("plays the native $label first quiet return and keeps historic
   expect(live.props.onPlay).toHaveBeenCalledExactlyOnceWith(quiet.action);
   live.unmount();
   const onPlay = vi.fn(), onInspect = vi.fn().mockResolvedValue(response);
-  render(<TenjikuBoard snapshot={source} disabled inspectionDisabled={false} onPlay={onPlay} onInspect={onInspect} />);
+  render(<SquareBoard snapshot={source} disabled inspectionDisabled={false} onPlay={onPlay} onInspect={onInspect} />);
   fireEvent.click(square(response.origin));
   await vi.waitFor(() => expect(screen.getByText(`Inspecting ${response.label} · Esc clears`)).toBeTruthy());
   fireEvent.click(square("7h"));

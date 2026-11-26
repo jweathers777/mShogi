@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { Board } from "./Board";
+import { TestBoard as Board } from "./testing/TestBoard";
 import userEvent from "@testing-library/user-event";
 import type { ChessSnapshot } from "./product/native";
 import standardJson from "./__fixtures__/shared-chess-standard.json";
@@ -20,6 +20,7 @@ function board(snapshot = standard) {
     version: snapshot.version,
     disabled: false,
     orientation: "white" as const,
+    promotion: true,
     onPlay,
   };
   return { ...render(<Board {...props} />), props, onPlay };
@@ -151,10 +152,10 @@ it.each(["white", "black"] as const)("inspects an opponent in %s orientation, sw
 it("keeps historical/engine-turn inspection available when board actions are disabled and retires late results", async () => {
   let resolve!: (value: typeof inspectedPawn) => void;
   const onInspect = vi.fn().mockReturnValue(new Promise((r) => { resolve = r; })), onPlay = vi.fn();
-  const props = { pieces: standard.pieces, choices: standard.choices, version: 0, orientation: "white" as const, disabled: true, humanOwner: "white", onPlay, onInspect, inspectionDisabled: false, inspectionContextKey: "historical-1" };
+  const props = { pieces: standard.pieces, choices: standard.choices, version: 0, orientation: "white" as const, disabled: true, humanOwner: "white", onPlay, onInspect, inspectionDisabled: false, contextKey: "historical-1" };
   const { rerender } = render(<Board {...props} />);
   fireEvent.click(square("e7")); expect(onInspect).toHaveBeenCalledWith("e7");
-  rerender(<Board {...props} inspectionContextKey="historical-2" />);
+  rerender(<Board {...props} contextKey="historical-2" />);
   await act(async () => resolve(inspectedPawn)); expect(screen.queryByText(/Inspecting Black pawn · Esc clears/)).toBeNull();
   onInspect.mockResolvedValue(inspectedPawn); fireEvent.click(square("e7")); await screen.findByText(/Inspecting Black pawn · Esc clears/);
   fireEvent.click(square("e6")); expect(onPlay).not.toHaveBeenCalled();
@@ -189,22 +190,19 @@ it("keeps a marked inspection destination read-only, then permits explicit frien
   fireEvent.click(square("e2")); expect(square("e4").getAttribute("aria-label")).toContain("legal destination"); expect(onPlay).not.toHaveBeenCalled();
 });
 it("keeps live inspection help in the shell footer without changing board selection or keyboard clearing", async () => {
-  const helpTarget = document.createElement("div");
-  document.body.append(helpTarget);
   const onPlay = vi.fn(), onInspect = vi.fn().mockResolvedValue(inspectedPawn);
-  const { container, unmount } = render(<Board pieces={standard.pieces} choices={standard.choices} version={0} orientation="white" disabled={false} humanOwner="white" onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} helpTarget={helpTarget} />);
-  expect(helpTarget.textContent).toContain("Arrows: move focus");
-  expect(container.querySelector(".board-wrap .board-help")).toBeNull();
+  const { container } = render(<Board pieces={standard.pieces} choices={standard.choices} version={0} orientation="white" disabled={false} humanOwner="white" onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false}
+    frame={(board, footer, focus) => <div {...focus}><div className="slot">{board}</div><footer>{footer}</footer></div>} />);
+  const help = container.querySelector("footer")!;
+  expect(help.textContent).toContain("Arrows: move focus");
+  expect(container.querySelector(".slot .board-help")).toBeNull();
   fireEvent.click(square("e7"));
   await screen.findByText(/Inspecting Black pawn · Esc clears/);
-  expect(helpTarget.querySelector(".movement-inspection-status")).not.toBeNull();
+  expect(help.querySelector(".movement-inspection-status")).not.toBeNull();
   expect(document.activeElement).toBe(square("e7"));
   fireEvent.keyDown(square("e7"), { key: "Escape" });
-  expect(helpTarget.textContent).toContain("Arrows: move focus");
+  expect(help.textContent).toContain("Arrows: move focus");
   expect(onPlay).not.toHaveBeenCalled();
-  unmount();
-  expect(helpTarget.textContent).toBe("");
-  helpTarget.remove();
 });
 
 it("retires completion focus to the board but never steals an unrelated input on native context changes", () => {

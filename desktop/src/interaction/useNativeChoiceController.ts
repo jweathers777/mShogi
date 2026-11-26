@@ -215,3 +215,4 @@ export function useNativeChoiceController(options: ChoiceControllerOptions) {
     canInteractOrigin,
   };
 }
+export type NativeChoiceController = ReturnType<typeof useNativeChoiceController>;

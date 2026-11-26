@@ -92,20 +92,20 @@ it("keeps Resume and Retry engine-turn intents distinct from analysis cancellati
   rerender(<NativeRecovery snapshot={{ ...engineTurn, execution_purpose: "move_analysis" }} error="" disabled={false} command={command} />);
   expect(screen.queryByRole("button", { name: "Retry engine turn" })).toBeNull();
 });
-it("uses game-qualified native draw commands and retains the shared direct resign intent", () => {
+it("uses native draw commands without an actor and retains the shared direct resign intent", () => {
   const command = vi.fn().mockResolvedValue(null), confirm = vi.fn();
   const { rerender } = render(<GameActions snapshot={complete} disabled={false} command={command} confirm={confirm} />);
   fireEvent.click(screen.getByRole("button", { name: "Offer draw…" }));
-  expect(confirm).toHaveBeenLastCalledWith(expect.objectContaining({ source: complete, operation: { kind: "chu", actor: "sente", command: { kind: "offer_draw" } } }));
+  expect(confirm).toHaveBeenLastCalledWith(expect.objectContaining({ source: complete, operation: { kind: "command", command: { kind: "offer_draw" } } }));
   expect(command).not.toHaveBeenCalled();
   // Construct only the authoritative presentation field for a pending Gote offer;
   // native offer legality and actual agreement are verified by controller tests.
   const offered: ChuSnapshot = { ...complete, chu: { ...complete.chu, live: { ...complete.chu.live, draw_offer: "gote" } } };
   rerender(<GameActions snapshot={offered} disabled={false} command={command} confirm={confirm} />);
   fireEvent.click(screen.getByRole("button", { name: "Accept draw…" }));
-  expect(confirm).toHaveBeenLastCalledWith(expect.objectContaining({ source: offered, operation: { kind: "chu", actor: "sente", command: { kind: "accept_draw" } } }));
+  expect(confirm).toHaveBeenLastCalledWith(expect.objectContaining({ source: offered, operation: { kind: "command", command: { kind: "accept_draw" } } }));
   fireEvent.click(screen.getByRole("button", { name: "Decline draw" }));
-  expect(command).toHaveBeenNthCalledWith(1, { kind: "chu", actor: "sente", command: { kind: "decline_draw" } });
+  expect(command).toHaveBeenNthCalledWith(1, { kind: "command", command: { kind: "decline_draw" } });
   fireEvent.click(screen.getByRole("button", { name: "Resign" }));
   // Generic shared intent; the native runtime supplies the current human actor.
   expect(command).toHaveBeenNthCalledWith(2, { kind: "resign" });

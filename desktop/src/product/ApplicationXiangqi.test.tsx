@@ -46,15 +46,15 @@ it("uses the accepted shell, actual native play limits and shared document/statu
   expect(screen.queryByRole("spinbutton")).toBeNull();
   expect((screen.getByRole("button", { name: "Analyze position" }) as HTMLButtonElement).disabled).toBe(false);
 });
-it("sends the opaque native action through the Xiangqi command wrapper, never generic Shogi play", () => {
+it("sends the opaque native action as the one play operation", () => {
   const { session } = app();
   fireEvent.click(point("e3")); fireEvent.click(point("e4"));
-  expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "xiangqi", command: { kind: "play", action: "e3e4" } });
+  expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "play", action: "e3e4" });
 });
 it("flips using native Xiangqi preferences while preserving existing document and play controls", () => {
   const { session, props } = app();
   fireEvent.click(screen.getByRole("button", { name: "Flip board; currently Red at bottom" }));
-  expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "xiangqi_preferences", settings: { play_mode: "human_engine", orientation: "black", analysis_defaults: { depth: 64, nodes: 300000 } } });
+  expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "preferences", settings: { play_mode: "human_engine", orientation: { game_kind: "xiangqi", side: "black" }, analysis_defaults: { depth: 64, nodes: 300000 } } });
   fireEvent.click(screen.getByRole("button", { name: "New game" })); expect(props.onNewGame).toHaveBeenCalledOnce();
   fireEvent.click(screen.getByRole("button", { name: "Save" })); expect(session.file).toHaveBeenLastCalledWith(standard, "save");
   fireEvent.click(screen.getByRole("button", { name: "Load" })); expect(props.onOpen).toHaveBeenCalledOnce();
@@ -151,7 +151,7 @@ it("shows native warning and eligible claim as opportunities, not concluded outc
   fireEvent.click(screen.getByRole("button", { name: "Claim natural-count draw…" }));
   expect(session.command).not.toHaveBeenCalled();
   fireEvent.click(screen.getByRole("button", { name: "Claim draw" }));
-  expect(session.command).toHaveBeenCalledExactlyOnceWith(claim, { kind: "xiangqi", command: { kind: "claim_natural_count" } });
+  expect(session.command).toHaveBeenCalledExactlyOnceWith(claim, { kind: "command", command: { kind: "claim_natural_count" } });
 }, 15000);
 it("adapts native terminal capabilities independently of board turn and protects captured confirmation", () => {
   const offer = offerJson as unknown as GameSnapshot;
@@ -164,7 +164,7 @@ it("adapts native terminal capabilities independently of board turn and protects
   fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
   fireEvent.click(screen.getByRole("button", { name: "Decline draw…" }));
   fireEvent.click(screen.getByRole("button", { name: "Decline draw" }));
-  expect(session.command).toHaveBeenCalledExactlyOnceWith(changed, { kind: "xiangqi", command: { kind: "decline_draw" } });
+  expect(session.command).toHaveBeenCalledExactlyOnceWith(changed, { kind: "command", command: { kind: "decline_draw" } });
 });
 for (const [label, json] of [["fourth occurrence", fourthJson], ["agreement", agreedJson], ["resignation", resignedJson], ["fast no-win proof", fastJson]] as const) {
   it(`presents the authoritative ${label} conclusion without heuristic adjudication`, () => {

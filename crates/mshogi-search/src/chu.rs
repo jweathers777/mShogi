@@ -24,9 +24,6 @@ impl RootGame for Game {
     root::native_types!(ChuPosition, Action, fork, to_native);
     root::no_adjudication!();
     root::restricted_board!(ChuPosition);
-    fn choice(action: Action) -> Action {
-        action
-    }
     fn play(&mut self, action: &Action, _stop: &mut dyn FnMut() -> bool) -> Result<(), GameError> {
         let request = GameRequest {
             expected: self.context(),

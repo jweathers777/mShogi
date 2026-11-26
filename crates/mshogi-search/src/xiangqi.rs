@@ -40,6 +40,11 @@ pub enum Choice {
         actor: Side,
     },
 }
+impl From<Action> for Choice {
+    fn from(action: Action) -> Self {
+        Self::Move(action)
+    }
+}
 impl Choice {
     /// No outcome/score is applied by this conversion.
     pub const fn command(self) -> GameCommand {
@@ -61,8 +66,8 @@ impl RootGame for Game {
     fn assessment(&self) -> NoWinAssessment {
         self.no_win_assessment()
     }
-    fn pending(&self) -> Option<PendingAdjudication> {
-        self.pending_adjudication().cloned()
+    fn pending(&self) -> Option<&PendingAdjudication> {
+        self.pending_adjudication()
     }
     fn root_decision(
         &self,
@@ -82,20 +87,11 @@ impl RootGame for Game {
             .map(Some)
             .map_err(|_| SearchError::Invariant)
     }
-    fn claim(&self, score: Option<i32>) -> Result<Option<Choice>, SearchError> {
+    fn draw_claim(&self) -> Option<Choice> {
         let actor = self.side();
-        if !score.is_some_and(|s| s <= 0) || !self.natural_count_eligibility(actor).eligible {
-            return Ok(None);
-        }
-        let choice = Choice::Claim { actor };
-        let mut native = self.fork();
-        native
-            .play(&choice, &mut || false)
-            .map_err(SearchError::Transition)?;
-        if !matches!(native.conclusion(), Some(Conclusion::Draw { .. })) {
-            return Err(SearchError::Invariant);
-        }
-        Ok(Some(choice))
+        self.natural_count_eligibility(actor)
+            .eligible
+            .then_some(Choice::Claim { actor })
     }
     fn winner(c: Conclusion) -> Option<Side> {
         match c {

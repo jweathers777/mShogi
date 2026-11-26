@@ -24,6 +24,11 @@ pub enum Choice {
         actor: Side,
     },
 }
+impl From<Action> for Choice {
+    fn from(action: Action) -> Self {
+        Self::Move(action)
+    }
+}
 impl Choice {
     /// Retain native command semantics; admission still belongs to Game::submit.
     pub const fn command(self) -> GameCommand {

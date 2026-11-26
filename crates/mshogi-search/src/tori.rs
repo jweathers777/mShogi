@@ -30,9 +30,6 @@ root::root_api!(300_000);
 impl RootGame for Game {
     root::native_types!(ToriPosition, Action, fork, action);
     root::no_adjudication!();
-    fn choice(action: Action) -> Action {
-        action
-    }
     fn play(&mut self, action: &Action, _stop: &mut dyn FnMut() -> bool) -> Result<(), GameError> {
         let request = GameRequest {
             expected: self.context(),

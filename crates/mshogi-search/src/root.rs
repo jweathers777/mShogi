@@ -121,7 +121,7 @@ pub trait RootGame: Sized {
     /// Native board action.
     type Action: PartialEq;
     /// Board action or formal command.
-    type Choice: Clone + PartialEq;
+    type Choice: Clone + PartialEq + From<Self::Action>;
     /// Native side to move.
     type Side: Copy + Eq;
     /// Native conclusion.
@@ -129,7 +129,7 @@ pub trait RootGame: Sized {
     /// Native request error.
     type GameError: fmt::Debug;
     /// Required adjudication (uninhabited in games without it).
-    type Pending;
+    type Pending: Clone;
     /// Native no-win assessment, or unit.
     type Assessment;
     /// Megabytes in a fresh search table.
@@ -152,7 +152,7 @@ pub trait RootGame: Sized {
     /// Root assessment, including on interrupted requests.
     fn assessment(&self) -> Self::Assessment;
     /// A witness that blocks play at this position.
-    fn pending(&self) -> Option<Self::Pending> {
+    fn pending(&self) -> Option<&Self::Pending> {
         None
     }
     /// Handle game-specific adjudication or declaration before generating moves.
@@ -181,8 +181,6 @@ pub trait RootGame: Sized {
     ) -> Result<Option<Move<Self>>, Failure<Self>> {
         Ok(None)
     }
-    /// Represent a board action as a published choice.
-    fn choice(action: Self::Action) -> Self::Choice;
     /// Submit a choice in this copy's current context.
     fn play(
         &mut self,
@@ -197,9 +195,9 @@ pub trait RootGame: Sized {
     fn stop_before_replay(_stop: &mut dyn FnMut() -> bool) -> bool {
         false
     }
-    /// Prefer a formal claim when the completed evaluation warrants one.
-    fn claim(&self, _score: Option<i32>) -> Result<Option<Self::Choice>, Failure<Self>> {
-        Ok(None)
+    /// Formal draw claim available at this root. Check history before allocating search time.
+    fn draw_claim(&self) -> Option<Self::Choice> {
+        None
     }
     /// Decode the next move, optionally ending the private line.
     fn replay_action(position: &mut Self::Position, m: Move<Self>) -> Option<Self::Action> {
@@ -277,7 +275,7 @@ pub fn search_with_state<G: RootGame>(
         return Ok(result);
     }
     if let Some(pending) = game.pending() {
-        result.unresolved = Some(pending);
+        result.unresolved = Some(pending.clone());
         result.status = Status::Unresolved;
         result.nodes = 1;
         return Ok(result);
@@ -290,6 +288,7 @@ pub fn search_with_state<G: RootGame>(
         return Ok(result);
     };
     let first = legal.first().ok_or(SearchError::NoBoardActions)?;
+    let draw_claim = game.draw_claim();
     let mut position = game.position_for_search(&legal);
     let fallback = if time.is_some() {
         G::fallback(&position, first)?
@@ -307,7 +306,15 @@ pub fn search_with_state<G: RootGame>(
         return Ok(result);
     };
     result.completed_depth = outcome.depth;
-    if let Some(choice) = game.claim(outcome.score)? {
+    if let Some(choice) = draw_claim.filter(|_| outcome.score.is_some_and(|score| score <= 0)) {
+        let mut native = game.copy_for_replay();
+        native
+            .play(&choice, &mut stop)
+            .map_err(SearchError::Transition)?;
+        let conclusion = native.finished().ok_or(SearchError::Invariant)?;
+        if G::winner(conclusion).is_some() {
+            return Err(SearchError::Invariant);
+        }
         result.decision = Some(Decision::Choose(choice.clone()));
         result.principal_variation.push(choice);
         result.score = Some(0);
@@ -333,7 +340,7 @@ pub fn search_with_state<G: RootGame>(
         let Some(action) = G::replay_action(&mut position, m) else {
             break;
         };
-        let choice = G::choice(action);
+        let choice = G::Choice::from(action);
         match native.play(&choice, &mut stop) {
             Ok(()) => {}
             Err(error) if G::stopped(&error) => {
@@ -353,7 +360,7 @@ pub fn search_with_state<G: RootGame>(
         }
         result.principal_variation.push(choice);
     }
-    let choice = G::choice(action);
+    let choice = G::Choice::from(action);
     if result.principal_variation.first() != Some(&choice) {
         return Err(SearchError::Invariant);
     }
@@ -365,10 +372,7 @@ pub fn search_with_state<G: RootGame>(
 // Per-game names used by the engine and existing search callers.
 macro_rules! root_api {
     ($nodes:literal) => {
-        pub use crate::root::{
-            Limits, MAX_DEPTH, MAX_LINE, MAX_NODES, WIN_SCORE, search, search_with_state,
-            search_with_stop,
-        };
+        pub use crate::root::{Limits, MAX_DEPTH, MAX_LINE, MAX_NODES, WIN_SCORE};
         /// Finite interactive work limits for this game.
         pub const DEFAULT_LIMITS: Limits = Limits {
             depth: MAX_DEPTH,
@@ -387,6 +391,28 @@ macro_rules! root_api {
         /// Start with an empty table and move statistics.
         pub fn new_engine() -> Engine {
             Engine::new(DEFAULT_TABLE_MB)
+        }
+        /// Deterministic search with fresh state.
+        pub fn search(game: &Game, limits: Limits) -> Result<SearchResult, SearchError> {
+            crate::root::search(game, limits)
+        }
+        /// Search with fresh state and cooperative cancellation.
+        pub fn search_with_stop(
+            game: &Game,
+            limits: Limits,
+            stop: impl FnMut() -> bool,
+        ) -> Result<SearchResult, SearchError> {
+            crate::root::search_with_stop(game, limits, stop)
+        }
+        /// Search with caller-owned state and an optional total time budget.
+        pub fn search_with_state(
+            game: &Game,
+            limits: Limits,
+            time: Option<crate::alphabeta::timing::TimeBudget>,
+            engine: &mut Engine,
+            stop: impl FnMut() -> bool,
+        ) -> Result<SearchResult, SearchError> {
+            crate::root::search_with_state(game, limits, time, engine, stop)
         }
         /// Terminal score in native command distance.
         pub fn terminal_score(c: Conclusion, side: Side, distance: u16) -> i32 {
@@ -458,9 +484,6 @@ macro_rules! timed_moves {
             action: &Action,
         ) -> Result<Option<position::Move>, SearchError> {
             pos.find(*action).map(Some).ok_or(SearchError::Invariant)
-        }
-        fn choice(action: Action) -> Choice {
-            Choice::Move(action)
         }
         fn advance(pos: &mut Self::Position, m: position::Move) -> Result<(), SearchError> {
             if pos.make(m) {

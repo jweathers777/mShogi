@@ -42,9 +42,6 @@ impl RootGame for Game {
     root::native_types!(TenjikuPosition, Action, clone, to_native);
     root::no_adjudication!();
     root::restricted_board!(TenjikuPosition);
-    fn choice(action: Action) -> Action {
-        action
-    }
     fn play(
         &mut self,
         action: &Action,

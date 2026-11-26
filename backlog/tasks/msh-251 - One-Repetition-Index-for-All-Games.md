@@ -1,10 +1,11 @@
 ---
 id: MSH-251
 title: One Repetition Index for All Games
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-26T11:55:00Z'
+updated_date: '2026-11-26T14:29:00Z'
 labels:
   - core
   - simplification
@@ -39,4 +40,6 @@ Measurement tools that exist (MSH-209): mshogi-core examples record_replay, reso
 MSH-250 (Token-Only Native Request Context), 2026-11-26: did not change any occurrences or repetition function. Chu replay at 1000 events is still about 615 us per event after MSH-250 (was 674); its repetition scans dominate. Baseline for this task: target/release/examples/resource_admission GAME N (shogi and xiangqi added), numbers in MSH-250 notes.
 
 Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
+
+Claimed by Codex on codex/msh-251-repetition-index. Next: measure the baseline and implement the shared index.
 <!-- SECTION:NOTES:END -->

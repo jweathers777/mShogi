@@ -101,6 +101,7 @@ impl GameDelta {
             }
             Ok(())
         })
+        .map(drop)
     }
 }
 

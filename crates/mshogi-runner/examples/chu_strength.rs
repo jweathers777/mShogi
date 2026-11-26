@@ -202,7 +202,7 @@ fn igui_contract(game: &Game, action: &Action) -> bool {
     if !position.legal_moves().contains(&m) || !position.make(m) {
         return false;
     }
-    let mut native = game.fork().unwrap();
+    let mut native = game.fork();
     if native
         .submit(GameRequest {
             expected: native.context(),

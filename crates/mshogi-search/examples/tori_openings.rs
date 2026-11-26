@@ -43,7 +43,7 @@ fn scored(game: &Game, depth: u16) -> Vec<(mshogi_core::tori::Action, i32)> {
     game.legal_actions()
         .into_iter()
         .map(|a| {
-            let mut child = game.fork().unwrap();
+            let mut child = game.fork();
             play(&mut child, a);
             let s = if child.conclusion().is_some() {
                 search::terminal_score(

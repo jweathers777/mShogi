@@ -235,7 +235,8 @@ impl NativeAdapter for GameAdapter {
             return Ok(Some(match field {
                 "same_board_hands_turn" => json!(ga.repetition_key() == gb.repetition_key()),
                 "different_event_and_execution_context" => json!(
-                    ga.context() != gb.context() && !ga.context().same_semantics(&gb.context())
+                    ga.context() != gb.context()
+                        && (&ga.root, ga.events()) != (&gb.root, gb.events())
                 ),
                 "A_repetition" => repetition(ga.repetition()),
                 "B_repetition_side" => json!(gb.repetition().unwrap().side),

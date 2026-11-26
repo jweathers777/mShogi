@@ -176,7 +176,10 @@ fn same_board_history_repetition_is_not_a_search_cache_key() {
         let forbidden = Action::single(sq(2, 1), sq(1, 1));
         assert!(fresh.legal_actions().contains(&forbidden));
         assert!(!g.legal_actions().contains(&forbidden));
-        assert!(!g.search_identity().same_semantics(&fresh.search_identity()));
+        assert_ne!(
+            (g.native_root(), g.events()),
+            (fresh.native_root(), fresh.events())
+        );
         let r = search(
             &g,
             Limits {
@@ -344,7 +347,6 @@ fn dying_demon_leaf_uses_selected_profile_and_native_effect_order() {
             Side::Sente,
         );
         let before = GameRecord::from_game(&g).unwrap();
-        let ctx = g.search_identity();
         let a = Action {
             route: vec![sq(8, 10), sq(8, 9), sq(8, 8)],
             ..Action::single(sq(8, 11), sq(8, 8))
@@ -382,7 +384,6 @@ fn dying_demon_leaf_uses_selected_profile_and_native_effect_order() {
         assert_eq!(fast.hash(), hash);
         g.undo(&mut undo).unwrap();
         assert_eq!(GameRecord::from_game(&g).unwrap(), before);
-        assert!(g.search_identity().same_semantics(&ctx));
     }
 }
 #[test]

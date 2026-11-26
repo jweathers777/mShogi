@@ -29,7 +29,7 @@ pub fn wins(game: &Game, attacker: Side, plies: u8, visits: &mut u64) -> Option<
     let attacking = game.position().side_to_move() == attacker;
     let mut unknown = false;
     for action in actions {
-        let mut child = game.fork().unwrap();
+        let mut child = game.fork();
         play(&mut child, action);
         match wins(&child, attacker, plies - 1, visits) {
             Some(value) if value == attacking => return Some(attacking),
@@ -47,7 +47,7 @@ pub fn answers(game: &Game, plies: u8, cap: u64) -> Option<Vec<Action>> {
     let mut visits = cap;
     let mut result = vec![];
     for action in game.legal_actions() {
-        let mut child = game.fork().unwrap();
+        let mut child = game.fork();
         play(&mut child, action.clone());
         if wins(&child, attacker, plies - 1, &mut visits)? {
             result.push(action);

@@ -3,8 +3,10 @@
 //! Chess history observations are data, not commands to execute. Complete chess
 //! match admission still belongs to `ChessMatch`; shogi admission belongs to `Game`.
 
+mod context;
 /// Reusable authoritative game retention for incremental execution sessions.
 pub mod incremental;
+pub use context::GameContext;
 
 use crate::{chess, chu, shogi, tenjiku, tori, xiangqi};
 use serde::{Deserialize, Serialize, Serializer};
@@ -518,15 +520,15 @@ pub enum NativeCommandTarget<'a> {
 pub enum NativeCommand {
     /// Chess command, with native timestamp/version and optional claim intention.
     Chess(chess::MatchRequest),
-    /// Shogi action, formal declaration or resignation with complete expected context.
+    /// Shogi action, formal declaration or resignation with its request token.
     Shogi(Box<shogi::GameRequest>),
-    /// Complete Xiangqi action or terminal/claim request with exact native context.
+    /// Complete Xiangqi action or terminal/claim request with its request token.
     Xiangqi(Box<xiangqi::GameRequest>),
     /// Complete context-bound Tori board/terminal/administrative command.
     Tori(Box<tori::GameRequest>),
-    /// Complete native Chu command and expected history.
+    /// Complete native Chu command with its request token.
     Chu(Box<chu::GameRequest>),
-    /// Exact native Tenjiku command/context; profile mismatch remains native refusal.
+    /// Exact native Tenjiku command and request token; a token of another game is refused.
     Tenjiku(Box<tenjiku::GameRequest>),
 }
 /// Native admission result, preserving rules-owned semantics and errors.

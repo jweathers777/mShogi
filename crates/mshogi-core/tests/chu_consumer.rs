@@ -55,7 +55,7 @@ fn actual_complete_payloads_choices_effects_prefixes_and_fresh_authority() {
     assert!(!choices.is_empty());
     let old = g.context();
     g.submit(GameRequest {
-        expected: old.clone(),
+        expected: old,
         actor: Side::Sente,
         command: GameCommand::Play {
             action: selected.clone(),
@@ -70,7 +70,10 @@ fn actual_complete_payloads_choices_effects_prefixes_and_fresh_authority() {
     );
     let wire=json!({"profile":chu::PROFILE_ID,"record":serde_json::from_str::<serde_json::Value>(GameRecord::from_game(&g).unwrap().to_json()).unwrap()}).to_string();
     let mut reopened = consume(&wire).unwrap();
-    assert!(g.context().same_semantics(&reopened.context()));
+    assert_eq!(
+        GameRecord::from_game(&reopened).unwrap(),
+        GameRecord::from_game(&g).unwrap()
+    );
     assert_ne!(g.context(), reopened.context());
     assert_eq!(
         reopened.position().root().source(),

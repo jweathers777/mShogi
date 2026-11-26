@@ -57,6 +57,20 @@ impl Session {
         }
         Ok(Self { game: replay, undo })
     }
+    /// Submit one USI action on the live game; its undo token stays valid there.
+    fn play(&mut self, text: &str) -> Result<(GameUndo, String), String> {
+        let action: Action = text.parse().map_err(|e: ActionParseError| e.to_string())?;
+        let label = readable(self.game.position(), action)?;
+        let undo = self
+            .game
+            .submit(GameRequest {
+                expected: self.game.context(),
+                actor: self.game.position().side_to_move(),
+                command: GameCommand::Play(action),
+            })
+            .map_err(|e| format!("native action rejected: {e:?}; no actions applied"))?;
+        Ok((undo, format!("played {action} {label}")))
+    }
     pub fn execute(&mut self, line: &str, out: &mut String) -> Result<Next, String> {
         let line = line.trim_matches([' ', '\t', '\r', '\x0b', '\x0c']);
         if line.is_empty() || line.starts_with('#') {
@@ -146,27 +160,25 @@ impl Session {
                 if args.is_empty() {
                     return Err("usage: move <USI-action>...".into());
                 }
-                let mut candidate = self.game.clone();
                 let mut undo = Vec::new();
                 let mut labels = Vec::new();
                 for text in args {
-                    let action: Action =
-                        text.parse().map_err(|e: ActionParseError| e.to_string())?;
-                    let label = readable(candidate.position(), action)?;
-                    undo.push(
-                        candidate
-                            .submit(GameRequest {
-                                expected: candidate.context(),
-                                actor: candidate.position().side_to_move(),
-                                command: GameCommand::Play(action),
-                            })
-                            .map_err(|e| {
-                                format!("native action rejected: {e:?}; no actions applied")
-                            })?,
-                    );
-                    labels.push(format!("played {action} {label}"));
+                    match self.play(text) {
+                        Ok((token, label)) => {
+                            undo.push(token);
+                            labels.push(label);
+                        }
+                        Err(error) => {
+                            // All or none: take back the actions of this command.
+                            for token in undo.into_iter().rev() {
+                                self.game
+                                    .undo(token)
+                                    .expect("undo of a just-accepted action");
+                            }
+                            return Err(error);
+                        }
+                    }
                 }
-                self.game = candidate;
                 self.undo.extend(undo);
                 for label in labels {
                     writeln!(out, "{label}").unwrap();

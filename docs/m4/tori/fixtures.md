@@ -83,7 +83,7 @@ remain129/85/77/42. No expectation was generated from native or external output.
 ## MSH-129 native Game handoff
 
 The native game evidence records the actual authoritative
-T05/T06 Game, exact full context/retirement/reversal, immutable history and complete
+T05/T06 Game, exact request token/retirement/reversal, immutable history and complete
 prefix records, strict native schema1 replay and typed core dispatch. All591native
 assertions execute and pass (162127+241128+188129),14genuinely later assertions and
 83real-consumer requirements remain pending. Native bounds are measured separately from later desktop quotas;

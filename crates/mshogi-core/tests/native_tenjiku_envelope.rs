@@ -132,7 +132,7 @@ fn both_profiles_keep_native_effects_root_history_and_fresh_authority() {
             panic!("lost native Tenjiku record")
         };
         let restored = restored.to_game().unwrap();
-        assert!(game.context().same_semantics(&restored.context()));
+        assert_eq!(restored.events(), game.events());
         assert_ne!(game.context(), restored.context());
         assert_eq!(restored.profile(), profile);
         assert_eq!(

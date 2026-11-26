@@ -172,7 +172,7 @@ fn canonical_fixture_roundtrips_preserve_native_root_history_and_all_outcomes() 
         let before = c.shared_token();
         let opened = open(&mut c, &file).unwrap();
         assert_eq!(record(&c), expected, "{name}");
-        assert_eq!(c.session.shogi().unwrap().game.context(), g.context());
+        assert_eq!(c.session.shogi().unwrap().game, g);
         assert!(opened.paused);
         assert!(opened.token.version > before.version);
         assert!(c.session.shogi().unwrap().pending.is_none());

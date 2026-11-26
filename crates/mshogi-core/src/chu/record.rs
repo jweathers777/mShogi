@@ -284,7 +284,7 @@ impl GameDelta {
         }
         // Fork copies the admitted state without replay. Install only after all
         // native commands, derived effects and the final result agree.
-        let mut candidate = game.fork().map_err(|_| RecordError::Root)?;
+        let mut candidate = game.fork();
         for event in &self.0.events {
             candidate
                 .submit(GameRequest {

@@ -45,6 +45,35 @@ fn submit(game: &mut Game, actor: Side, command: GameCommand) -> mshogi_core::sh
     })
     .unwrap()
 }
+#[test]
+fn request_and_undo_tokens_bind_one_game_instance() {
+    let play = |game: &mut Game, text: &str| {
+        let actor = game.position().side_to_move();
+        submit(game, actor, GameCommand::Play(text.parse().unwrap()))
+    };
+    let mut game = Game::new();
+    let first = play(&mut game, "7g7f");
+    let second = play(&mut game, "3c3d");
+    // A clone has the same history but is another instance.
+    let mut copy = game.clone();
+    assert_eq!(copy, game);
+    let stale = GameRequest {
+        expected: game.context(),
+        actor: Side::Sente,
+        command: GameCommand::Play("2g2f".parse().unwrap()),
+    };
+    assert_eq!(
+        copy.submit(stale.clone()).unwrap_err(),
+        GameError::StaleContext
+    );
+    let on_copy = play(&mut copy, "2g2f");
+    assert!(game.undo(on_copy).is_err());
+    // Chained undo on the original; a request from before the undo stays refused.
+    game.undo(second).unwrap();
+    game.undo(first).unwrap();
+    assert_eq!(game, Game::new());
+    assert_eq!(game.submit(stale).unwrap_err(), GameError::StaleContext);
+}
 fn expect_conclusion(actual: Option<Conclusion>, expected: &Value, label: &str) {
     if expected.is_null() {
         assert_eq!(actual, None, "{label}");

@@ -245,13 +245,9 @@ impl NativeState {
     /// (MSH-204); the others replay their complete root.
     pub fn fork(&self) -> Result<Self, String> {
         match self {
-            Self::Xiangqi(game) => Ok(Self::Xiangqi(Box::new(
-                game.fork().map_err(|e| e.to_string())?,
-            ))),
-            Self::Tori(game) => Ok(Self::Tori(Box::new(
-                game.fork().map_err(|e| e.to_string())?,
-            ))),
-            Self::Chu(game) => Ok(Self::Chu(Box::new(game.fork().map_err(|e| e.to_string())?))),
+            Self::Xiangqi(game) => Ok(Self::Xiangqi(Box::new(game.fork()))),
+            Self::Tori(game) => Ok(Self::Tori(Box::new(game.fork()))),
+            Self::Chu(game) => Ok(Self::Chu(Box::new(game.fork()))),
             _ => Self::from_root(&self.root()?),
         }
     }

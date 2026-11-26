@@ -21,7 +21,7 @@ macro_rules! check {
         }
         let record = GameRecord::from_game(&original).unwrap();
         let mut replay = record.to_game().unwrap();
-        let mut fork = original.fork().unwrap();
+        let mut fork = original.fork();
         assert_eq!(GameRecord::from_game(&fork).unwrap(), record);
         assert_ne!(fork.context(), original.context());
         let mut token = last.unwrap();

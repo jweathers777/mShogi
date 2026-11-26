@@ -747,7 +747,7 @@
       "fixture_id": "TORI-C-IDENTITY",
       "corpus_owner": "MSH-126",
       "primary_native_owner": "MSH-129",
-      "native_boundary": "native full-history context mismatch/retirement projection only; no pretend engine consumer",
+      "native_boundary": "native request token mismatch/retirement projection only; no pretend engine consumer",
       "expected_fields": [
         "accept_late_A_for_B",
         "undo_back_to_same_diagram_does_not_restore_A"
@@ -755,7 +755,7 @@
       "supplementary_native_checks": [
         {
           "owner": "MSH-129",
-          "scope": "actual native GameContext uses full root/history and fresh never-rewound lineage; undo/reconstruction cannot make old native requests current"
+          "scope": "actual native GameContext is the fresh-instance never-rewound request token; undo/reconstruction cannot make old native requests current"
         }
       ],
       "later_consumer_checks": [

@@ -213,7 +213,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     let ordinary = native_record.to_game()?;
     let replay_us = micros(replay_start);
     let replay_exact = record(&ordinary)? == native_record
-        && ordinary.context().same_semantics(&game.context())
+        && ordinary.native_root() == game.native_root()
+        && ordinary.events() == game.events()
         && ordinary.context() != game.context();
     if !replay_exact {
         return Err("ordinary replay failed semantic/fresh-authority comparison".into());
@@ -269,7 +270,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let start = Instant::now();
     let stopped = admission_probe.submit_with_stop(
         GameRequest {
-            expected: old_context.clone(),
+            expected: old_context,
             actor: Side::Sente,
             command: GameCommand::Resign,
         },

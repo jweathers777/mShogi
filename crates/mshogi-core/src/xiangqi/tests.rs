@@ -530,7 +530,7 @@ fn fork_copies_the_committed_game_without_replay_and_keeps_tokens_apart() {
             .undo,
         );
     }
-    let mut fork = game.fork().unwrap();
+    let mut fork = game.fork();
     // The same committed game as an independent native replay.
     let replay = game.committed_prefix(game.events().len()).unwrap();
     assert_eq!(

@@ -256,7 +256,7 @@ pub fn search_with_state(
         result.completed_depth = 0;
         return Ok(result);
     };
-    let mut native = game.fork().map_err(SearchError::Transition)?;
+    let mut native = game.fork();
     // A valid root claim is an option, not an automatic draw. A completed
     // search must prefer it when the move score is no better than zero.
     if claim && outcome.score.is_some_and(|score| score <= 0) {

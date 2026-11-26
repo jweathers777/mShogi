@@ -284,6 +284,7 @@ fn the_native_game_adjudicates_a_cycle_across_captures_and_drops() {
         submit(&mut game, token);
     }
     assert_eq!(search.rule_score(), None);
+    assert_eq!(ShogiPosition::from_game(&game).rule_score(), None);
     assert_eq!(
         run(&game, 1).decision,
         Some(Decision::Finished(Conclusion::Draw(DrawReason::Fourfold {

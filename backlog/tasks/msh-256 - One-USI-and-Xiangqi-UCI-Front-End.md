@@ -1,11 +1,11 @@
 ---
 id: MSH-256
 title: One USI and Xiangqi UCI Front End
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T18:42:00Z'
+updated_date: '2026-11-26T18:52:00Z'
 labels:
   - console
   - protocol
@@ -26,9 +26,9 @@ In crates/mshogi-console, usi.rs (731 lines) and xiangqi_uci.rs (632) share abou
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 One generic protocol worker and loop serves USI and Xiangqi UCI through a dialect trait that holds only real dialect differences; the Chess UCI front end uses the same line reader and byte check, without restoring the removed input line cap for records and position commands.
-- [ ] #2 Each difference without a reason is resolved to one behavior and recorded in the notes; console protocol tests pass.
-- [ ] #3 Production line counts before and after are recorded.
+- [x] #1 One generic protocol worker and loop serves USI and Xiangqi UCI through a dialect trait that holds only real dialect differences; the Chess UCI front end uses the same line reader and byte check, without restoring the removed input line cap for records and position commands.
+- [x] #2 Each difference without a reason is resolved to one behavior and recorded in the notes; console protocol tests pass.
+- [x] #3 Production line counts before and after are recorded.
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -53,4 +53,12 @@ Both protocols now use the same worker and exact immutable request identity, cov
 Fresh independent review found an incompatible timed table could remain allocated after a new game or Hash resize followed by fixed work. Every request now drops that state before selecting its search mode; a fixed-work regression covers resize and new game. The retained table holds only a shared root/move list, so it releases the previous native game. Review also exercised 128 KiB input, CR framing, invalid bytes, retirement, suffixes and shutdown in both release processes. A pre-existing zero-main-time byoyomi defect is tracked separately in MSH-275 (Use the Current Byoyomi Period in USI Overtime). The USI guide describes the limitation. Console production Rust lines (excluding trailing cfg(test) modules) 3967 to 3579; all .rs lines under console/src 4144 to 3828. Protocol/reader files alone, production lines, 1760 to 1382. Next: finish local and three-platform process checks, integrate and clean.
 
 Verified code 35967d3 against 655e63b on the arm64 Mac. CARGO_BUILD_JOBS=2 RUST_TEST_THREADS=2 python3 tools/checks.py run --base origin/main passed formatting, workspace Clippy and all 1165 Rust tests (10 pre-existing ignored). TypeScript passed. Embedded Node 24 could not load the signed native test dependency; the standalone Node 24.21.0 rerun of python3 tools/checks.py run --suite frontend passed TypeScript and all 575 tests. Backlog doctor and git diff --check passed. Targeted release process CI is running on all three systems at https://github.com/jweathers777/mShogi/actions/runs/45877067728 on 35967d3. Next: confirm all three, integrate, close MSH-256 and clean codex/msh-256-protocol.
+
+Commit 35967d3 passed the GitHub push checks and all three release process jobs in run 45877067728: Ubuntu 24.04, macOS 15 and Windows 2022 ran cargo test --release --locked -p mshogi-engine -p mshogi-runner -p mshogi-console --tests. Merged into main at 2712943. Local verification and the original 655e63b baseline are recorded above. No Cloud Batch or Cloud Build jobs, GCP cost or GCS run artifacts. The independent benchmark built mshogi-core in release, then ran a rustc -O harness selecting legal[(17*i+7) % legal.len()] for plies i=0..31 from the standard Xiangqi root, and compared against the 31-move prefix.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+USI and Xiangqi UCI share search, clocks, position updates and request retirement. All three machine protocols use the same uncapped line reader and byte validation. Production console Rust fell from 3967 to 3579 lines. Independent review, local checks and release process CI passed on Ubuntu, macOS and Windows. MSH-275 tracks the existing USI overtime issue. Next eligible task: MSH-258 (One Search Root Adapter).
+<!-- SECTION:FINAL_SUMMARY:END -->

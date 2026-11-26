@@ -1,4 +1,5 @@
 //! Bounded UCI adapter; protocol output belongs only to this event loop.
+use crate::input::{self, Ending};
 use mshogi_core::chess::{AdjudicatedGame, ClaimPolicy, Color};
 use mshogi_search::{
     chess_engine::TimeBudget,
@@ -6,7 +7,7 @@ use mshogi_search::{
     search::{MATE_SCORE, MAX_DEPTH, SearchChoice, SearchDecision, SearchLimits},
 };
 use std::{
-    io::{self, BufRead, Write},
+    io::{self, Write},
     process::ExitCode,
     sync::mpsc::{self, Receiver, RecvTimeoutError},
     thread,
@@ -51,7 +52,7 @@ pub fn run() -> ExitCode {
             let stdin = io::stdin();
             let mut input = stdin.lock();
             loop {
-                let event = match uci_line(&mut input) {
+                let event = match input::line(&mut input, Ending::Protocol) {
                     Ok(Some(bytes)) => Input::Line(bytes),
                     Ok(None) => Input::End,
                     Err(error) => {
@@ -85,28 +86,6 @@ pub fn run() -> ExitCode {
         }
     }
 }
-// UCI permits CR and LF line endings. Treat CRLF as an empty extra line;
-// empty commands are ignored.
-pub(super) fn uci_line(input: &mut impl BufRead) -> io::Result<Option<Vec<u8>>> {
-    let mut line = Vec::new();
-    let mut seen = false;
-    loop {
-        let chunk = input.fill_buf()?;
-        if chunk.is_empty() {
-            return Ok(seen.then_some(line));
-        }
-        seen = true;
-        let end = chunk
-            .iter()
-            .position(|&byte| byte == b'\r' || byte == b'\n');
-        let take = end.unwrap_or(chunk.len());
-        line.extend_from_slice(&chunk[..take]);
-        input.consume(take + usize::from(end.is_some()));
-        if end.is_some() {
-            return Ok(Some(line));
-        }
-    }
-}
 fn event_loop(
     adapter: &mut Adapter,
     input: Receiver<Input>,
@@ -114,13 +93,8 @@ fn event_loop(
 ) -> io::Result<()> {
     loop {
         match input.recv_timeout(TICK) {
-            Ok(Input::Line(bytes)) => match std::str::from_utf8(&bytes) {
-                Ok(line)
-                    if line.is_ascii()
-                        && !line
-                            .bytes()
-                            .any(|b| b.is_ascii_control() && !b.is_ascii_whitespace()) =>
-                {
+            Ok(Input::Line(bytes)) => match input::protocol_text(&bytes) {
+                Some(line) => {
                     if adapter.command(line, out)? {
                         break;
                     }
@@ -582,13 +556,5 @@ mod tests {
         ] {
             assert!(parse_go(&args, Color::White).is_err(), "{args:?}");
         }
-    }
-    #[test]
-    fn cr_and_lf_both_end_a_line() {
-        let mut input = std::io::Cursor::new(b"uci\risready\r\nquit\n");
-        for expected in ["uci", "isready", "", "quit"] {
-            assert_eq!(uci_line(&mut input).unwrap().unwrap(), expected.as_bytes());
-        }
-        assert!(uci_line(&mut input).unwrap().is_none());
     }
 }

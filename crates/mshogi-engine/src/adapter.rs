@@ -102,6 +102,7 @@ pub trait EngineGame: Copy + Debug + Eq + 'static {
         limits: WorkLimits,
         time: Option<TimeBudget>,
         engine: &mut Searcher<Self::Position>,
+        stop: impl FnMut() -> bool,
     ) -> Result<EngineResult<Self>, String>;
     /// Shape check of a choice that is a formal command, not a board move
     /// (a Shogi declaration, a Xiangqi count claim); `None` for a board move.
@@ -554,7 +555,7 @@ mod tests {
             time_ms: Some(1),
         };
         let time = Some(TimeBudget::from_hard_ms(0));
-        Shogi::search(game, limits, time, &mut Shogi::new_engine()).unwrap()
+        Shogi::search(game, limits, time, &mut Shogi::new_engine(), || false).unwrap()
     }
     #[test]
     fn timed_zero_depth_choice_matches_without_inventing_score_or_work() {

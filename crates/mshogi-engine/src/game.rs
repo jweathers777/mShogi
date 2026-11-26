@@ -108,6 +108,7 @@ macro_rules! search {
             limits: WorkLimits,
             time: Option<TimeBudget>,
             engine: &mut Searcher<Self::Position>,
+            stop: impl FnMut() -> bool,
         ) -> Result<EngineResult<Self>, String> {
             use mshogi_search::$core as s;
             let r = s::search_with_state(
@@ -118,7 +119,7 @@ macro_rules! search {
                 },
                 time,
                 engine,
-                || false,
+                stop,
             )
             .map_err(|e| e.to_string())?;
             let telemetry = EngineTelemetry::current(
@@ -393,14 +394,15 @@ impl EngineGame for Xiangqi {
         limits: WorkLimits,
         time: Option<TimeBudget>,
         engine: &mut Searcher<Self::Position>,
+        stop: impl FnMut() -> bool,
     ) -> Result<EngineResult<Self>, String> {
         use mshogi_search::xiangqi as s;
         let limits = s::Limits {
             depth: limits.depth,
             nodes: limits.nodes,
         };
-        let r = s::search_with_state(game, limits, time, engine, || false)
-            .map_err(|e| e.to_string())?;
+        let r =
+            s::search_with_state(game, limits, time, engine, stop).map_err(|e| e.to_string())?;
         let telemetry = EngineTelemetry::current(
             r.perspective,
             r.score,

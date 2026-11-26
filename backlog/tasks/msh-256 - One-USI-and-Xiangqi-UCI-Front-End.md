@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T18:22:00Z'
+updated_date: '2026-11-26T18:31:00Z'
 labels:
   - console
   - protocol
@@ -31,6 +31,12 @@ In crates/mshogi-console, usi.rs (731 lines) and xiangqi_uci.rs (632) share abou
 - [ ] #3 Production line counts before and after are recorded.
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Measure the cost of checking a Xiangqi history prefix before replacing the two console search sessions. 2. Share input framing, byte validation, the search worker, result admission, position replay, options and time controls. Keep native roots, side names, score units, special commands and result encoding in the dialects. 3. Verify protocol regressions, production line counts, repository checks, independent review and process CI on all supported operating systems.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
@@ -41,4 +47,6 @@ MSH-222 (2026-11-26), finding in this scope: ShogiSearchSession and XiangqiSearc
 Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
 
 Claimed on codex/msh-256-protocol at 655e63b. Next: compare the protocol paths and record the implementation plan.
+
+Both protocols now use the same worker and exact immutable request identity, covering generation, position, hash, time and limits. Bare go uses one second unless Depth or Nodes selected fixed work. Both reuse an admitted move prefix, accept Hash (1–1024 MiB, defaults 16 for Shogi and 64 for Xiangqi) and positive movestogo (default 30). Hash applies to timed and fresh fixed-work tables. USI alone accepts byoyomi, gameover and go mate. Shared CR/LF protocol framing and byte checks preserve unlimited input; shell framing remains LF. On the Apple silicon Mac, release benchmark at 655e63b, 32 legal Xiangqi moves vs its 31-move prefix: canonical record construction + has_prefix 6864 ns, native root/policy/events 176 ns, native root + parsed protocol moves 98 ns per comparison (5000/50000/50000 repetitions with black_box). Each protocol fixes claim policy and can submit only board moves. This permits one generic search session using exact root and admitted actions. Existing 39 focused release tests passed before adding new coverage. Branch codex/msh-256-protocol. Next: independent review, final local/CI checks and counts.
 <!-- SECTION:NOTES:END -->

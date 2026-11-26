@@ -327,7 +327,7 @@ fn search<G: EngineGame>(
     time: &RequestTime,
     engine: &mut Searcher<G::Position>,
 ) -> ExecutionResult {
-    match G::search(game, limits, time.remaining(), engine) {
+    match G::search(game, limits, time.remaining(), engine, || false) {
         Ok(result) => G::wrap(result),
         Err(error) => ExecutionResult::failure(FailureKind::Search, error),
     }
@@ -386,95 +386,6 @@ fn execute_chess(context: &ExecutionContext, session: &mut Session) -> ChessResu
             };
         }
         thread::sleep(Duration::from_millis(1));
-    }
-}
-
-/// Shogi front-end access to the same timed history-prefix policy as the internal protocol.
-/// Fixed-work searches use fresh state and leave the retained timed state alone.
-#[derive(Default)]
-pub struct ShogiSearchSession {
-    slot: Slot<mshogi_search::shogi::Engine>,
-}
-impl ShogiSearchSession {
-    /// Search one native history with optional elapsed-time control.
-    pub fn search(
-        &mut self,
-        game: &mshogi_core::shogi::Game,
-        limits: mshogi_search::shogi::Limits,
-        time: Option<TimeBudget>,
-        stop: impl FnMut() -> bool,
-    ) -> Result<mshogi_search::shogi::SearchResult, mshogi_search::shogi::SearchError> {
-        let timing = RequestTime::new(time);
-        let record = mshogi_core::shogi::GameRecord::from_game(game);
-        let mut engine = self
-            .slot
-            .acquire_relation(
-                &CanonicalRecord::shogi(record.clone()),
-                time.is_some(),
-                |last| matches!(last, CanonicalRecord::Shogi(previous) if record.has_prefix(previous)),
-                || Ok::<_, Infallible>(mshogi_search::shogi::new_engine()),
-            )
-            .expect("infallible engine allocation");
-        mshogi_search::shogi::search_with_state(game, limits, timing.remaining(), &mut engine, stop)
-    }
-}
-
-/// Xiangqi front-end access to the shared timed history-prefix policy.
-/// Timed searches keep the table while each request extends the previous
-/// native history (same root, policy and event prefix); fixed-work searches
-/// use fresh state and leave the kept state alone.
-#[derive(Default)]
-pub struct XiangqiSearchSession {
-    slot: Slot<mshogi_search::xiangqi::Engine>,
-    /// Table size in megabytes for timed searches; 0 means the default.
-    table_mb: usize,
-    last: Option<(
-        mshogi_core::xiangqi::PositionRoot,
-        mshogi_core::xiangqi::ClaimPolicy,
-        Vec<mshogi_core::xiangqi::GameEvent>,
-    )>,
-}
-impl XiangqiSearchSession {
-    /// Session whose timed searches use a table of `megabytes`.
-    pub fn with_table(megabytes: usize) -> Self {
-        Self {
-            table_mb: megabytes,
-            ..Self::default()
-        }
-    }
-    /// Search one native history with optional elapsed-time control.
-    pub fn search(
-        &mut self,
-        game: &mshogi_core::xiangqi::Game,
-        limits: mshogi_search::xiangqi::Limits,
-        time: Option<TimeBudget>,
-        stop: impl FnMut() -> bool,
-    ) -> Result<mshogi_search::xiangqi::SearchResult, mshogi_search::xiangqi::SearchError> {
-        use mshogi_search::xiangqi as search;
-        let timing = RequestTime::new(time);
-        if time.is_none() {
-            return search::search_with_state(game, limits, None, &mut search::new_engine(), stop);
-        }
-        let events = game.events();
-        let reset = self.last.as_ref().is_none_or(|(root, policy, previous)| {
-            root != game.root()
-                || *policy != game.claim_policy()
-                || previous.len() > events.len()
-                || previous[..] != events[..previous.len()]
-        });
-        self.last = Some((game.root().clone(), game.claim_policy(), events.to_vec()));
-        let table_mb = self.table_mb;
-        let mut engine = self
-            .slot
-            .acquire_incremental(reset, || {
-                Ok::<_, Infallible>(if table_mb == 0 {
-                    search::new_engine()
-                } else {
-                    search::new_engine_sized(table_mb)
-                })
-            })
-            .expect("infallible engine allocation");
-        search::search_with_state(game, limits, timing.remaining(), &mut engine, stop)
     }
 }
 

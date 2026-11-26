@@ -28,20 +28,24 @@ continues to take its game from the structured request and rejects `--game`.
 | --- | --- |
 | `usi` | `id`, actual supported `option` lines, `usiok` |
 | `isready` | Immediate `readyok`, including while searching or holding a result |
-| `setoption name Depth value N` | Default2; supported1–4 |
-| `setoption name Nodes value N` | Default5000; supported0–20000 |
+| `setoption name Depth value N` | Default 64, range 1–64 |
+| `setoption name Nodes value N` | Default 300,000, range 0–5,000,000 |
+| `setoption name Hash value N` | Search table in MiB, default 16, range 1–1,024 |
 | `setoption name RulesProfile value mshogi.shogi.csa36.v1` | Only this immutable profile is accepted |
 | `usinewgame` | Retire work and reset the native standard-root game; retain options |
 | `position startpos [moves ...]` | Standard root plus the entire supplied known sequence |
 | `position sfen <four fields> [moves ...]` | Imported root/counter plus complete supplied suffix |
-| `go [depth N] [nodes N]` | Measured MSH-70 defaults for omitted limits; finite native search |
+| `go [depth N] [nodes N]` | A bare request uses one second. An explicit depth or node limit, including a configured option, selects fixed work. |
 | `go infinite [depth N] [nodes N]` | Same finite work, then hold its real result until `stop` |
 | `stop` | Cooperatively stop current work; publish its legitimate last complete iteration if available |
 | `gameover win\|lose\|draw` | Retire work and mark protocol game ended; no native adjudication |
 | `quit` / EOF | Retire work and terminate, suppressing pending bestmove |
 | `go mate ...` | `checkmate notimplemented`; no tsume or Full operation |
 
-Clock controls, movetime, pondering/ponderhit and searchmoves are unsupported.
+Use `go movetime MS` for 1–60,000 ms, or give the moving side's clock with
+`btime` (Sente) or `wtime` (Gote). The clock accepts `binc`, `winc`,
+`byoyomi` and positive `movestogo` (default 30). Clock and move-time requests
+require time-based play. Pondering, ponderhit and searchmoves are unsupported.
 Invalid go controls produce a bounded stderr diagnostic, no bestmove, and leave
 the adapter available for a corrected request. An external controller must not
 wait for an unsupported operation. Duplicate/unknown controls reject explicitly;
@@ -51,8 +55,8 @@ retire old work. Unknown option commands do not alter current work or settings.
 ASCII CR/LF input lines have no byte limit, so a long position command is
 accepted (MSH-268). There are32 pending input events. One persistent native worker has one replaceable
 pending job and one completion slot. No unbounded progress stream is created.
-Every accepted search uses full native context, exact work limits, monotonic
-request identity and session version. The process itself is the execution generation.
+Each result must match the active request, including its position, time and work limits,
+table size and game generation. A new game, position or search retires the old request.
 
 ## History, lifetime and honest result mapping
 

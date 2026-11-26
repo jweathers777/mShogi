@@ -21,6 +21,12 @@ fn handshake_options_readiness_defaults_alias_and_incompatible_selection() {
                 .iter()
                 .all(|s| s.starts_with("id ") || s.starts_with("option ") || s == "usiok")
         );
+        assert!(
+            lines
+                .iter()
+                .any(|s| s == "option name Hash type spin default 16 min 1 max 1024")
+        );
+        e.send("setoption name Hash value 1");
         e.send("isready");
         assert_eq!(e.until("readyok"), vec!["readyok"]);
         e.send("usinewgame");

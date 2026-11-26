@@ -112,9 +112,12 @@ pub fn search(game: &Game, limits: Limits) -> Result<SearchResult, SearchError> 
 /// Persistent search state for one Shogi game. Native history stays outside it.
 pub type Engine = Searcher<ShogiPosition>;
 
+/// Default size of the search table in megabytes.
+pub const DEFAULT_TABLE_MB: usize = 16;
+
 /// Start with an empty transposition table and move statistics.
 pub fn new_engine() -> Engine {
-    Searcher::new(16)
+    Searcher::new(DEFAULT_TABLE_MB)
 }
 
 /// Search a private position with cooperative stop polling. A partial

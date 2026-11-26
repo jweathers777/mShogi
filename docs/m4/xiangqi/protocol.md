@@ -9,7 +9,7 @@ not implement desktop UI, archives, new rules or strength measurement. MSH-98 is
 
 The minimum delivered dialect is **`pikafish_uci0_9`**, pinned to the actually
 built immutable-release Pikafish `4c17cee11f888ae1d48a9494f2e2239f019f0a1f`. The executable
-`mshogi --game xiangqi uci` implements the compatible bounded untimed subset.
+`mshogi --game xiangqi uci` implements the compatible time- and work-limited subset.
 Bare `mshogi uci` remains Chess; Shogi still uses USI. Neither UCCI nor Fairy's
 generic UCI1-10 dialect is advertised or silently converted.
 
@@ -21,14 +21,17 @@ generic UCI1-10 dialect is advertised or silently converted.
 - `position startpos [moves ...]` or `position fen <six fields> [moves ...]`
   supplies the entire known ordinary-action prefix. An imported FEN starts
   known history; supplied counters do not invent preceding actions/checks.
-- `uci`, `setoption name Depth|Nodes|RulesProfile value ...`, `isready`,
-  `ucinewgame`, `go [depth D] [nodes N] [infinite]`, `stop`, `quit`.
-  Native default depth1/128 total visits and hard depth1..3/visits0..512 remain
-  the measured MSH-97 bounds. Duplicate controls, unsupported clocks,
-  pondering, searchmoves, mate/exact operations and profile changes reject
-  explicitly. Zero work can finish without a decision; it never selects a
-  first-legal fallback. `infinite` holds publication until `stop`; computation
-  remains bounded by the selected finite native limits.
+- `uci`, `setoption name Depth|Nodes|Hash|RulesProfile value ...`, `isready`,
+  `ucinewgame`, `position`, `go`, `stop`, `quit`.
+- A bare `go` uses one second. An explicit depth or node limit, including a
+  configured option, selects fixed work. Fixed work defaults to depth 64 and
+  300,000 nodes. The allowed range is depth 1–64 and 0–5,000,000 nodes.
+  `go infinite` holds a bounded result until `stop`. Hash accepts 1–1,024 MiB
+  and defaults to 64 MiB.
+- `go movetime MS` accepts 1–60,000 ms. Clock play uses `wtime` for Red and
+  `btime` for Black, optional increments `winc` and `binc`, and positive
+  `movestogo` (default 30). Clock and move-time requests require time-based
+  play. Pondering, searchmoves, mate searches and profile changes are unsupported.
 - Actual native score/perspective, completed depth, visits, elapsed time and
   board PV are reported. Native scores are soldier-hundredths or native
   terminal command-edge distance, not a falsely labeled Chess centipawn or

@@ -3,7 +3,7 @@ use crate::{Game, record_io, session};
 use mshogi_core::{chu, native::CanonicalRecord, shogi, tenjiku, tori, xiangqi};
 use std::{
     fmt::{Display, Write as _},
-    io::{self, BufRead, Write},
+    io::{self, Write},
     process::ExitCode,
 };
 
@@ -453,7 +453,7 @@ pub fn run(game: Game, profile: Option<tenjiku::Profile>) -> ExitCode {
     let mut input = stdin.lock();
     for index in 0usize.. {
         let number = index + 1;
-        let line = match read_line(&mut input) {
+        let line = match crate::input::line(&mut input, crate::input::Ending::Shell) {
             Ok(Some(bytes)) => bytes,
             Ok(None) => break,
             Err(error) => {
@@ -490,16 +490,4 @@ pub fn run(game: Game, profile: Option<tenjiku::Profile>) -> ExitCode {
     } else {
         ExitCode::SUCCESS
     }
-}
-
-/// Read one line without its LF; a possible CR stays in the line.
-fn read_line(input: &mut impl BufRead) -> io::Result<Option<Vec<u8>>> {
-    let mut line = Vec::new();
-    if input.read_until(b'\n', &mut line)? == 0 {
-        return Ok(None);
-    }
-    if line.last() == Some(&b'\n') {
-        line.pop();
-    }
-    Ok(Some(line))
 }

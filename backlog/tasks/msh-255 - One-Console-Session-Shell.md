@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T17:32:00Z'
+updated_date: '2026-11-26T17:40:00Z'
 labels:
   - console
   - refactor
@@ -60,4 +60,6 @@ Checkpoint on codex/msh-255-console-sessions: all six shells share line parsing 
 Shared test support now holds console execution and success checks, protocol children, temporary directories, desktop/bridge helpers, Chess snapshots and both self-play harnesses. Focused Clippy passes. Next: inspect preserved test coverage, finish independent review and run workspace and platform checks on codex/msh-255-console-sessions.
 
 Independent review found repeated Shogi history replay, an inconsistent record separator, three remaining success checks, two duplicate desktop waits and stale Xiangqi help documentation. Fixed all findings. Native undo tokens now roll back only an uncommitted batch, including export failures. First 90 plies of msh187-round2-failed-0002.usi as individual human shell moves on the Mac, debug: reviewer measured 3.70 s before the fix. Median of three after the fix was 0.092 s versus 0.048 s on the original binary, with exactly equal final records. New code checks export on each move. Source lines 4680 to 4144 and test lines 9345 to 8423 (all .rs under src and tests). All 164 original integration and five unit tests retain their names, including the release-only Chu test. Clippy passes. Next: tracked workspace checks and three-platform process CI, integrate, close and clean.
+
+Final Mac check on 0577740: CARGO_BUILD_JOBS=2 RUST_TEST_THREADS=2 python3 tools/checks.py run --base origin/main passed workspace formatting, Clippy and all default tests (1,162 passed, 10 pre-existing ignored). Console accounted for 168 passes and one debug-only skip of a release test. Manual duplicate rollback checks for Chess, Shogi and Xiangqi passed. Backlog doctor, guide links and git diff --check passed. Waiting for GitHub release process suite run 45868580340 on Ubuntu 24.04, macOS 15 and Windows 2022, then integrate codex/msh-255-console-sessions and clean.
 <!-- SECTION:NOTES:END -->

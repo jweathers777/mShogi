@@ -178,7 +178,7 @@ impl Position {
     fn pseudo_unchecked(&self) -> impl Iterator<Item = Action> + '_ {
         self.pieces()
             .filter(|(_, piece)| piece.side == self.side)
-            .flat_map(|(from, _)| {
+            .flat_map(move |(from, _)| {
                 Intersection::all().filter_map(move |to| {
                     let target = self.piece(to);
                     if target.is_some_and(|p| p.side == self.side || p.kind == PieceKind::General) {

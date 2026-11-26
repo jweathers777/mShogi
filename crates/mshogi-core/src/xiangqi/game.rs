@@ -902,3 +902,54 @@ impl AppendGame for Game {
         self.last_offer_ply = b.last_offer_ply;
     }
 }
+
+#[cfg(test)]
+mod transaction_tests {
+    use super::*;
+
+    #[test]
+    fn late_refusal_restores_the_board_and_all_appended_events() {
+        let mut game = Game::standard(ClaimPolicy::Explicit).unwrap();
+        let first = GameRequest {
+            expected: game.context(),
+            actor: Side::Red,
+            command: GameCommand::Play {
+                action: game.position().legal_actions().unwrap()[0],
+            },
+        };
+        let undo = game.submit(first).unwrap().undo;
+        let before = game.clone();
+        let expected = game.context();
+        let play = GameRequest {
+            expected,
+            actor: Side::Black,
+            command: GameCommand::Play {
+                action: game.position().legal_actions().unwrap()[0],
+            },
+        };
+        // Model a late invariant error after a board event and a multi-event
+        // control. This exercises the same append transaction used by submit.
+        let refused = game.append_transaction(|game| {
+            game.apply_command(play.clone())?;
+            game.apply_command(GameRequest {
+                expected,
+                actor: Side::Red,
+                command: GameCommand::Resign,
+            })?;
+            Err::<(), _>(GameError::Invariant)
+        });
+        assert!(matches!(refused, Err(GameError::Invariant)));
+        assert_eq!(game.context(), expected);
+        assert_eq!(game.snapshot(), before.snapshot());
+        assert_eq!(game.commands, before.commands);
+        assert_eq!(game.events, before.events);
+        assert_eq!(game.snapshots, before.snapshots);
+        assert_eq!(game.steps, before.steps);
+        assert_eq!(game.ids, before.ids);
+        assert_eq!(game.identities, before.identities);
+        let next = game.submit(play).unwrap().undo;
+        game.undo(next).unwrap();
+        game.undo(undo).unwrap();
+        assert!(game.events().is_empty());
+    }
+}

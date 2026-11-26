@@ -140,7 +140,7 @@ impl<A: fmt::Debug> fmt::Display for PerftError<A> {
             Self::WorkLimit { path, limit } => {
                 write!(
                     f,
-                    "perft: WorkLimit at {path:?} (visit limit {limit} reached)"
+                    "perft incomplete: WorkLimit at {path:?} (visit limit {limit} reached, incomplete, unscored)"
                 )
             }
             Self::Traversal { path, reason } => write!(f, "perft: traversal at {path:?}: {reason}"),
@@ -154,6 +154,14 @@ impl<A: fmt::Debug> Error for PerftError<A> {}
 /// Count legal sequences of exactly the requested depth on a private copy.
 /// Depth zero counts the root. A position without legal actions contributes
 /// zero at positive depth. The budget includes every node, also at depth zero.
+///
+/// ```
+/// use mshogi_core::{chess::{Position, STANDARD_START_FEN}, perft::perft};
+/// let position = Position::from_fen(STANDARD_START_FEN)?;
+/// assert_eq!(perft(&position, 0, 1, || false)?.leaves, 1);
+/// assert_eq!(perft(&position, 2, 421, || false)?.leaves, 400);
+/// # Ok::<(), Box<dyn std::error::Error>>(())
+/// ```
 pub fn perft<P: PerftPosition>(
     root: &P,
     depth: u32,

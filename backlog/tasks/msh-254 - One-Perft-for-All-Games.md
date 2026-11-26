@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-26T17:00:00Z'
+updated_date: '2026-11-26T17:04:00Z'
 labels:
   - core
   - console
@@ -49,4 +49,6 @@ Checkpoint: claimed MSH-254 on codex/msh-254-one-perft. Next, map native rules t
 Checkpoint on codex/msh-254-one-perft: all native callers now use one exact-depth traversal. The six shells use one optional ASCII visit budget, with a default and cap of 1,000,000. Chess, Standard Shogi and Xiangqi now accept an explicit budget. Chu divide visits include the root, as do the other divides. Xiangqi divide depth zero now returns the common error, consistent with its documented positive depth. Tenjiku retains full Game history and endings in the shell. Next: complete workspace checks and fresh review, then integrate.
 
 Fresh review of 094c31d..4e51a9f confirmed native mode/order, restoration on cancellation and unchanged fixture expectations. Fixed its Chess test binding finding. Preserved an absolute full-Game Tenjiku ceiling using the same 1,000,000-visit constant as the shell and native Tori, and test the ceiling. Next: finish workspace and deep Chess checks, then integrate.
+
+All three deep Chess divides match the independently established fixture order and totals in release. The perft_baseline example passed all six cases, including depth-five totals 193,690,690, 89,941,194 and 164,075,551. Preserved the previous console incomplete-result assertions and the Chess depth-zero/depth-two doctest. Next: finish workspace verification, merge and finalize.
 <!-- SECTION:NOTES:END -->

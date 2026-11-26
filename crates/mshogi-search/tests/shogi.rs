@@ -273,11 +273,11 @@ fn the_native_game_adjudicates_a_cycle_across_captures_and_drops() {
     use mshogi_search::alphabeta::SearchPosition;
     use mshogi_search::shogi::position::ShogiPosition;
 
-    let mut game = game("9/9/4k4/9/7p1/7K1/9/9/9 b - 1");
+    let mut game = game("8k/9/9/9/4Gg3/9/9/9/K8 b g 1");
     let mut search = ShogiPosition::from_game(&game);
-    // Each king takes the pawn and its new owner drops it back. The sixth
-    // ply restores the board and both hands, with the same side to move.
-    let cycle = ["2f2e", "5c5b", "P*5c", "5b5c", "2e2f", "P*2e"];
+    // Two captures and two drops restore all three golds, both hands, and
+    // the side to move. Native adjudication uses the full game history.
+    let cycle = ["5e4e", "G*5e", "G*5d", "5e5d", "4e5e", "5d4e"];
     for &token in cycle.iter().cycle().take(18) {
         let m = search.find(token.parse().unwrap()).unwrap();
         assert!(search.make(m));

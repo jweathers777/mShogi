@@ -331,7 +331,7 @@ fn gote_perpetual_checker_loses_on_the_repeated_path() {
 }
 
 #[test]
-fn repetition_cycle_crosses_captures_and_drops() {
+fn a_capture_drop_cycle_restores_the_position_but_falls_outside_the_search_window() {
     // Three Golds circulate between board and hands. The two captures and
     // two drops restore the exact board, hands and turn after six plies.
     let mut native = Position::from_sfen("8k/9/9/9/4Gg3/9/9/9/K8 b g 1").unwrap();
@@ -339,11 +339,11 @@ fn repetition_cycle_crosses_captures_and_drops() {
     let mut p = ShogiPosition::from_position(&native);
     let initial_hash = p.hash();
     let cycle = ["5e4e", "G*5e", "G*5d", "5e5d", "4e5e", "5d4e"];
-    for (index, action) in cycle.into_iter().enumerate() {
+    for action in cycle {
         native.apply(action.parse().unwrap()).unwrap();
         play_position(&mut p, action);
         compare(&mut p, &native);
-        assert_eq!(p.rule_score(), (index == 5).then_some(0));
+        assert_eq!(p.rule_score(), None);
     }
     assert_eq!(native.repetition_identity(), initial);
     assert_eq!(p.hash(), initial_hash);

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-26T14:38:00Z'
+updated_date: '2026-11-26T14:42:00Z'
 labels:
   - core
   - simplification
@@ -50,4 +50,6 @@ Backlog consolidation, 2026-11-26: the dependency fields and current acceptance 
 Claimed by Codex on codex/msh-251-repetition-index. Next: measure the baseline and implement the shared index.
 
 Checkpoint on codex/msh-251-repetition-index: all six games use the shared index. It stores keys in order and links matching hash buckets by board ply, with full equality checks on collision. Chu tries only indexed cycle midpoints, Tori tracks the earliest doubled key for each turn, and Tenjiku checks the index in admission and bare-royal replies. First design used an allocation per key and slowed Xiangqi copies; the replacement uses contiguous vectors. Baseline comparisons cover all six games and both Tenjiku profiles. Next: run interleaved final measurements, independent review, shared checks and deep perft, then integrate.
+
+Fresh independent review of fecbcf5..179087e found no rule, collision, scan, rollback or undo defect. Fixed the benchmark finding: control walks now time the same native legal-choice query as board walks, separately from the scripted control command. A 1000-event Tenjiku control walk completed. Board-record lengths and bytes matched in all three interleaved baseline/candidate runs for each profile. First integration check stopped on a Clippy question-mark suggestion in the Tori guard; fixed it. Next: complete checks, upload timings and integrate codex/msh-251-repetition-index.
 <!-- SECTION:NOTES:END -->

@@ -554,9 +554,7 @@ impl Game {
     fn third_occurrences(&self, local: &[Action]) -> Option<Repetition> {
         let side = self.position().side_to_move();
         // Only a position that already occurred twice can occur a third time.
-        if self.first_repeat[side.opponent() as usize].is_none() {
-            return None;
-        }
+        self.first_repeat[side.opponent() as usize]?;
         let forbidden: Vec<Action> = local
             .iter()
             .copied()

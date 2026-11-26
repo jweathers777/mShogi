@@ -9,7 +9,8 @@ type Failure = Box<dyn Error>;
 fn measure<G, C: Clone, U>(
     mut game: G,
     requested: usize,
-    mut choices: impl FnMut(&G, usize) -> Vec<C>,
+    choices: impl Fn(&G) -> Vec<C>,
+    control: impl Fn(usize) -> Option<C>,
     mut submit: impl FnMut(&mut G, C) -> Result<U, Failure>,
     mut undo: impl FnMut(&mut G, &mut U) -> Result<(), Failure>,
     ended: impl Fn(&G) -> bool,
@@ -20,7 +21,7 @@ fn measure<G, C: Clone, U>(
     let (accepted, command) = walk::prefix(
         &mut game,
         requested,
-        &mut choices,
+        |game, index| control(index).map_or_else(|| choices(game), |command| vec![command]),
         &mut submit,
         &mut undo,
         ended,
@@ -30,7 +31,7 @@ fn measure<G, C: Clone, U>(
     let mut choice_times = Vec::new();
     for _ in 0..11 {
         let start = Instant::now();
-        let available = choices(black_box(&game), accepted);
+        let available = choices(black_box(&game));
         choice_times.push(start.elapsed().as_nanos());
         black_box(available);
     }
@@ -92,18 +93,13 @@ macro_rules! run {
         measure(
             $game,
             $count,
-            |game: &Game, _index| {
-                if let Some(command) = control!($module, $controls, _index) {
-                    vec![command]
-                } else {
-                    game.legal_actions()
-                        .into_iter()
-                        .map(|action| {
-                            (game.position().side_to_move(), GameCommand::Play { action })
-                        })
-                        .collect()
-                }
+            |game: &Game| {
+                game.legal_actions()
+                    .into_iter()
+                    .map(|action| (game.position().side_to_move(), GameCommand::Play { action }))
+                    .collect()
             },
+            |_index| control!($module, $controls, _index),
             |game, (actor, command)| {
                 Ok(game.submit(GameRequest {
                     expected: game.context(),
@@ -124,13 +120,18 @@ macro_rules! run {
         )
     }};
 }
+/// Chess analysis history permits any locally legal continuation at a drawn position.
 fn chess(count: usize) -> Result<(), Failure> {
     use mshogi_core::chess::*;
     measure(
         Game::new(ClaimPolicy::ExplicitOnly),
         count,
-        |game: &Game, _| game.position().legal_actions(),
-        |game, action| Ok(game.apply(action)?),
+        |game: &Game| game.position().legal_actions(),
+        |_| None,
+        |game, action| {
+            game.apply(action)?;
+            Ok(())
+        },
         |game, _| game.undo().map(|_| ()).ok_or("no move to undo".into()),
         |game| game.position().legal_actions().is_empty(),
         |game| Ok(game.record().to_json()),
@@ -147,7 +148,7 @@ fn shogi(count: usize) -> Result<(), Failure> {
     measure(
         Game::new(),
         count,
-        |game: &Game, _| {
+        |game: &Game| {
             let side = game.position().side_to_move();
             game.position()
                 .legal_actions()
@@ -155,6 +156,7 @@ fn shogi(count: usize) -> Result<(), Failure> {
                 .map(|action| (side, GameCommand::Play(action)))
                 .collect()
         },
+        |_| None,
         |game, (actor, command)| {
             let request = GameRequest {
                 expected: game.context(),
@@ -180,7 +182,7 @@ fn xiangqi(count: usize) -> Result<(), Failure> {
     measure(
         Game::standard(ClaimPolicy::Explicit)?,
         count,
-        |game: &Game, _| {
+        |game: &Game| {
             let side = game.position().side_to_move();
             game.position()
                 .legal_actions()
@@ -189,6 +191,7 @@ fn xiangqi(count: usize) -> Result<(), Failure> {
                 .map(|action| (side, GameCommand::Play { action }))
                 .collect()
         },
+        |_| None,
         |game, (actor, command)| {
             let request = GameRequest {
                 expected: game.context(),

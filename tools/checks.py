@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Shared local/CI checks. Hooks only check whitespace, syntax and formatting."""
 import argparse
+import json
 import os
 from pathlib import Path
 import shlex
@@ -11,7 +12,7 @@ import tempfile
 import tomllib
 
 sys.dont_write_bytecode = True
-from ci_checks import affected, tooling_affected
+from ci_checks import affected, changed_paths, tooling_affected
 
 
 def git(root, *args, input=None):
@@ -85,20 +86,19 @@ def python_tests(root, paths):
     """Select existing script test directories; external-oracle checks stay explicit."""
     groups = [('tools/strength/', 'tools/strength/tests'),
               ('tools/experiments/', 'tools/experiments/tests'),
-              ('desktop/scripts/', 'desktop/scripts'),
-              ('tools/xiangqi/', 'tools/xiangqi'), ('tools/shogi/', 'tools/shogi')]
+              ('desktop/scripts/', 'desktop/scripts')]
     return [([sys.executable, '-B', '-m', 'unittest', 'discover', '-s', tests, '-p', 'test_*.py'], '.')
             for prefix, tests in groups if any(p.startswith(prefix) and p.endswith('.py') for p in paths)
             and any((root / tests).glob('test_*.py'))]
 
 
-def execute(root, commands, dry_run=False):
+def execute(root, commands, dry_run=False, env=None):
     for command, directory in commands:
         print(f'[{directory}] {shlex.join(command)}', flush=True)
         if not dry_run:
             # Resolve npm.cmd on Windows without using a shell on other platforms.
             command = [shutil.which(command[0]) or command[0], *command[1:]]
-            subprocess.run(command, cwd=root / directory, check=True)
+            subprocess.run(command, cwd=root / directory, check=True, env=env)
 
 
 def syntax(root, paths, staged=False):
@@ -136,7 +136,8 @@ def hook(root):
         snapshot = Path(folder)
         git(root, 'checkout-index', '--prefix=' + snapshot.as_posix() + '/', '-z', '--stdin',
             input=('\0'.join(names) + '\0').encode('utf-8', errors='surrogateescape'))
-        execute(snapshot, format_commands(snapshot, paths))
+        execute(snapshot, format_commands(snapshot, paths),
+                env=dict(os.environ, CARGO_NET_OFFLINE="true", RUSTUP_AUTO_INSTALL="0"))
 
 
 def install(root):
@@ -163,10 +164,14 @@ def main():
     parser.add_argument('mode', choices=['run', 'hook', 'install-hooks'])
     parser.add_argument('--base', default='origin/main', help='Integration diff base (merge-base plus local changes)')
     parser.add_argument('--suite', action='append', choices=SUITES, help='Explicit CI/local suite; repeatable')
+    parser.add_argument('--ci', action='store_true', help='Use the GitHub event diff instead of --base')
+    parser.add_argument('--scripts-only', action='store_true', help='Only Python syntax and relevant script tests')
     parser.add_argument('--dry-run', action='store_true', help='Print commands without running checks')
     args = parser.parse_args()
-    if args.mode != 'run' and (args.suite or args.dry_run):
-        parser.error('--suite and --dry-run apply only to run')
+    if args.mode != 'run' and (args.suite or args.dry_run or args.ci or args.scripts_only):
+        parser.error('Check selection options apply only to run')
+    if args.suite and (args.ci or args.scripts_only):
+        parser.error('Explicit --suite cannot be combined with --ci or --scripts-only')
     root = Path(git(Path.cwd(), 'rev-parse', '--show-toplevel').decode().strip())
     if args.mode == 'install-hooks':
         install(root)
@@ -176,20 +181,28 @@ def main():
         if args.suite:
             commands = [command for suite in dict.fromkeys(args.suite) for command in SUITES[suite]]
         else:
-            paths = changed(root, base=args.base)
-            commands = [command for suite in integration_suites(paths) for command in SUITES[suite]]
+            if args.ci:
+                event = json.loads(Path(os.environ['GITHUB_EVENT_PATH']).read_text())
+                paths = changed_paths(event, cwd=root)
+                if paths is None:
+                    paths = paths_from(git(root, 'ls-files', '-z'))
+            else:
+                paths = changed(root, base=args.base)
+            suites = [] if args.scripts_only else integration_suites(paths)
+            commands = [command for suite in suites for command in SUITES[suite]]
             commands += python_tests(root, paths)
             if not args.dry_run:
-                subprocess.run(['git', 'diff', '--check', git(root, 'merge-base', args.base, 'HEAD').decode().strip()],
-                               cwd=root, check=True)
+                if not args.ci:
+                    subprocess.run(['git', 'diff', '--check', git(root, 'merge-base', args.base, 'HEAD').decode().strip()],
+                                   cwd=root, check=True)
                 syntax(root, paths)
-            print('Changed-path checks: ' + (', '.join(integration_suites(paths)) or 'no product suites'))
+            print('Changed-path checks: ' + (', '.join(suites) or 'no product suites'))
         execute(root, commands, args.dry_run)
 
 
 if __name__ == '__main__':
     try:
         main()
-    except (subprocess.CalledProcessError, OSError, ValueError, SyntaxError, RuntimeError) as error:
+    except (subprocess.CalledProcessError, OSError, ValueError, SyntaxError, RuntimeError, KeyError) as error:
         print(f'checks: {error}', file=sys.stderr)
         sys.exit(1)

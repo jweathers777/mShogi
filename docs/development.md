@@ -61,7 +61,9 @@ it checks formatting of affected packages, including the separate Tauri package.
 It exports formatting inputs from the index to a temporary directory, so partial
 staging is checked correctly and neither the index nor working files are changed.
 A root manifest, toolchain or formatting configuration change checks all packages.
-The hook performs no builds, tests or dependency installation. There is no pre-push
+The hook performs no builds, tests or dependency installation. Cargo runs offline
+and automatic toolchain installation is disabled; install the pinned formatter
+during setup before committing Rust changes. There is no pre-push
 hook: unfinished checkpoints and handoffs can be pushed normally. CI also checks
 formatting, since local hooks can be bypassed or not installed.
 
@@ -78,7 +80,8 @@ untracked files. Use an explicit earlier base when checking a change already on
 Markdown documentation and Backlog changes select no product suites; content,
 links and task structure still need review. Python syntax checks do not import
 scripts or create bytecode. Known script test directories are selected when their
-Python code changes; external-oracle scripts still need their documented checks.
+Python code changes (strength, experiments and desktop scripts). External-oracle
+scripts receive syntax checks only and still need their documented verification.
 
 Rust changes select workspace formatting, Clippy and tests. Shared rules/engine/
 desktop-session changes also select frontend checks. Frontend changes select
@@ -88,7 +91,9 @@ with `npm ci` in `desktop` before those checks and use the platform prerequisite
 in the desktop guide. Changes to shared build configuration select broad checks.
 Tooling changes select the check-policy and Git-hook tests.
 
-CI and local runs use the same named suites and path policy. To run a focused
+CI and local runs use the same named suites and path policy. CI uses
+`--ci --scripts-only` for the same Python syntax and script-test selection, based
+on the event diff. To run a focused
 suite explicitly, use `python3 tools/checks.py run --suite tooling`, or select
 `rust-format`, `rust-lint`, `rust-test`, `search-smoke`, `frontend` or `host`.
 Repeat `--suite` for several suites. `--dry-run` prints commands without executing

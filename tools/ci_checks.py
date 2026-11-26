@@ -68,12 +68,13 @@ def plan(kind, event_name, event, paths=None):
         if inputs.get("suite", "configuration") not in SUITES:
             raise ValueError("Unsupported native suite")
         return {"matrix": {"os": platforms(inputs.get("platform", PLATFORMS[0]))},
-                "rust": False, "frontend": False, "tooling": False}
+                "rust": False, "frontend": False, "tooling": False, "scripts": False}
     if event_name not in ("push", "pull_request"):
         raise ValueError("Unsupported automatic event")
     rust, frontend = (True, True) if paths is None else affected(paths)
     return {"matrix": {"os": [PLATFORMS[0]]}, "rust": rust, "frontend": frontend,
-            "tooling": paths is None or tooling_affected(paths)}
+            "tooling": paths is None or tooling_affected(paths),
+            "scripts": paths is None or any(p.endswith(".py") for p in paths)}
 
 
 class PolicyTests(unittest.TestCase):

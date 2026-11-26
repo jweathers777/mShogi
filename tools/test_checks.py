@@ -1,6 +1,7 @@
 """Check policy and real Git/index behavior; never build or test product code."""
 import contextlib
 import io
+import json
 import os
 from pathlib import Path
 import shutil
@@ -121,6 +122,17 @@ class GitTests(unittest.TestCase):
             checks.hook(self.root)
         self.assertFalse((self.root / 'target').exists())
 
+    def test_hook_formatting_cannot_download_dependencies_or_toolchains(self):
+        self.write('crates/one/src/lib.rs', 'pub fn value() -> u8 {\n    2\n}\n')
+        self.git('add', 'crates/one/src/lib.rs')
+        with patch('checks.execute') as execute:
+            checks.hook(self.root)
+        commands = execute.call_args.args[1]
+        self.assertTrue(commands)
+        self.assertTrue(all(command[:2] == ['cargo', 'fmt'] for command, _ in commands))
+        self.assertEqual(execute.call_args.kwargs['env']['CARGO_NET_OFFLINE'], 'true')
+        self.assertEqual(execute.call_args.kwargs['env']['RUSTUP_AUTO_INSTALL'], '0')
+
     def test_initial_commit_and_deleted_python(self):
         self.write('example.py', 'answer = 42\n')
         self.git('add', 'example.py')
@@ -148,6 +160,32 @@ class GitTests(unittest.TestCase):
         self.assertFalse((self.root / '.githooks/pre-push').exists())
         self.assertFalse((self.root / 'target').exists())
         self.assertFalse((self.root / 'desktop/node_modules').exists())
+
+    def test_cli_ci_script_selection_uses_event_and_no_product_commands(self):
+        self.write('example.py', 'answer = 42\n')
+        self.git('add', 'example.py')
+        self.git('commit', '-qm', 'script change')
+        event = Path(self.temp.name) / 'event.json'
+        event.write_text(json.dumps({'before': self.base}))
+        env = dict(os.environ, GITHUB_EVENT_PATH=str(event), GITHUB_EVENT_NAME='push')
+        command = [checks.sys.executable, 'tools/checks.py', 'run', '--ci', '--scripts-only']
+        result = subprocess.run(command, cwd=self.root, env=env, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('no product suites', result.stdout)
+        self.assertNotIn('cargo', result.stdout)
+        self.write('example.py', 'def broken(:\n')
+        result = subprocess.run(command, cwd=self.root, env=env, capture_output=True, text=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('example.py', result.stderr)
+
+    def test_dry_run_and_external_oracle_do_not_execute_checks(self):
+        self.write('crates/one/src/lib.rs', 'pub fn broken(\n')
+        command = [checks.sys.executable, 'tools/checks.py', 'run', '--base', self.base, '--dry-run']
+        result = subprocess.run(command, cwd=self.root, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('cargo test', result.stdout)
+        self.assertFalse((self.root / 'target').exists())
+        self.assertEqual(checks.python_tests(self.root, ['tools/xiangqi/test_reference.py']), [])
 
     def test_installer_preserves_existing_hook_configuration(self):
         self.git('config', 'core.hooksPath', '/custom/hooks')

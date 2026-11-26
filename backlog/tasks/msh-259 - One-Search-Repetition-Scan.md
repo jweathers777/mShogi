@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T22:04:00Z'
+updated_date: '2026-11-26T22:10:00Z'
 labels:
   - search
   - refactor
@@ -68,4 +68,6 @@ Whole-search timing for Tori at depth 7 on 19 real positions (20,60,100,140-ply 
 Common capture/drop candidate 47de96f. The shorter bound is a search approximation; a new hand-derived Shogi cycle verifies exact native fourfold adjudication at ply 18 despite the search cutoff. Focused shared-window, null/perpetual-check, Tori history-restoration and native fourfold tests passed. Fresh review found one stale Shogi-guide sentence, corrected; no implementation defect. Full verification is underway. Shogi blunders use depth 6 on all 226 rows; both engines see the same fixed catalog openings without random extra plies.
 
 Short candidate 47de96f vs 7c15e68: all 154 fixed-depth signatures matched, including 38 real Tori positions, 36 Chess, 28 Xiangqi, 28 Chu and 24 Tenjiku. Both review follow-ups are in the branch. The early Shogi blunder probe hit the default 300k nodes before depth 6; all 226 rows rerun with explicit engine maximum 5M. The first broad check flagged a private-search test expecting the former across-drop cycle shortcut. In 678b97a all native legal-move, board, identity, hash and undo assertions remain, the private search callback is tested against its new bound, and an exact native fourfold at ply 18 is tested on that same three-Gold fixture, with both reconstructed and played search histories. Both focused checks passed. Current jobs msh259-final-check, msh259-shogi-match, msh259-shogi-blunders. Match native report confirms 5000ms+100ms and identical depth 64/5M caps. Continue from branch codex/msh-259-repetition.
+
+Short shared bound, Shogi 47de96f vs frozen 7c15e68, c3-standard-4, 5s+0.1s, H0 -15/H1 0: the fixed-order SPRT reached H1 at seed 373. All 373 color-reversed pairs scored. W/L/D 390/340/16, pentanomial [78,3,182,11,99], LLR +2.982 crossed +2.944; +23.32 Elo, 95% CI [-1.10,+47.97]. This passes the non-inferiority gate. No partial pairs or earlier candidates were pooled. Exact command and native reports: gs://mshogi-experiments-216675633801/runs/msh-259/method/short/ and shogi-match/. Reviewer confirmed all prior native legality/differential checks and the exact ply-18 adjudication are retained in 678b97a. Next: receive all Shogi blunder results, full checks and perft, verify cloud teardown, and integrate the clean branch.
 <!-- SECTION:NOTES:END -->

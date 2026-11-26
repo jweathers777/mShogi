@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-26T14:42:00Z'
+updated_date: '2026-11-26T14:44:00Z'
 labels:
   - core
   - simplification
@@ -52,4 +52,7 @@ Claimed by Codex on codex/msh-251-repetition-index. Next: measure the baseline a
 Checkpoint on codex/msh-251-repetition-index: all six games use the shared index. It stores keys in order and links matching hash buckets by board ply, with full equality checks on collision. Chu tries only indexed cycle midpoints, Tori tracks the earliest doubled key for each turn, and Tenjiku checks the index in admission and bare-royal replies. First design used an allocation per key and slowed Xiangqi copies; the replacement uses contiguous vectors. Baseline comparisons cover all six games and both Tenjiku profiles. Next: run interleaved final measurements, independent review, shared checks and deep perft, then integrate.
 
 Fresh independent review of fecbcf5..179087e found no rule, collision, scan, rollback or undo defect. Fixed the benchmark finding: control walks now time the same native legal-choice query as board walks, separately from the scripted control command. A 1000-event Tenjiku control walk completed. Board-record lengths and bytes matched in all three interleaved baseline/candidate runs for each profile. First integration check stopped on a Clippy question-mark suggestion in the Tori guard; fixed it. Next: complete checks, upload timings and integrate codex/msh-251-repetition-index.
+
+Full-length timings, Apple M1 Pro, Rust 1.99.1 release, single process, fecbcf5 versus 179087e with the same final resource_admission example from 2ea7376 (only candidate product edit in 2ea7376 uses the equivalent Option guard). Command: target/release/examples/resource_admission GAME N. Three interleaved baseline/candidate pairs; median of each run’s 5 replay or 11 legal-choice samples. N=1000, except Shogi 318 near its 320-ply limit. Chess uses native analysis-history replay and locally legal actions. Results below give complete replay in ms, then legal choices in microseconds, before -> after.
+Chess: 0.478 -> 0.564, 0.291 -> 0.334. Shogi: 13.03 -> 13.31, 28.00 -> 27.63. Xiangqi: 153.10 -> 152.44, 1.625 -> 1.666. Tori: 23.13 -> 26.28, 23.25 -> 28.25; undo 154.08 -> 1.46 us. Chu: 592.76 -> 593.47, 1.459 -> 1.500. Tenjiku Adams: 7.015 -> 5.806, 161.42 -> 42.29. Tenjiku Muller: 8.237 -> 5.532, 83.08 -> 12.46. Chu full replay was effectively flat after removing the two scans. Chess and Tori replay were slower. No expected rule, perft or record test changed. Timing data and comparison script: gs://mshogi-experiments-216675633801/runs/msh-251/. No cloud compute or VMs; storage/requests estimated below US/bin/zsh.01.
 <!-- SECTION:NOTES:END -->

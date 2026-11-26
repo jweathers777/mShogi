@@ -1,11 +1,11 @@
 ---
 id: MSH-259
 title: One Search Repetition Scan
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T22:15:00Z'
+updated_date: '2026-11-26T22:26:00Z'
 labels:
   - search
   - refactor
@@ -72,4 +72,12 @@ Short candidate 47de96f vs 7c15e68: all 154 fixed-depth signatures matched, incl
 Short shared bound, Shogi 47de96f vs frozen 7c15e68, c3-standard-4, 5s+0.1s, H0 -15/H1 0: the fixed-order SPRT reached H1 at seed 373. All 373 color-reversed pairs scored. W/L/D 390/340/16, pentanomial [78,3,182,11,99], LLR +2.982 crossed +2.944; +23.32 Elo, 95% CI [-1.10,+47.97]. This passes the non-inferiority gate. No partial pairs or earlier candidates were pooled. Exact command and native reports: gs://mshogi-experiments-216675633801/runs/msh-259/method/short/ and shogi-match/. Reviewer confirmed all prior native legality/differential checks and the exact ply-18 adjudication are retained in 678b97a. Next: receive all Shogi blunder results, full checks and perft, verify cloud teardown, and integrate the clean branch.
 
 All 226 Shogi blunder positions reached depth 6 on both frozen engines, including 62 held out; both engines chose the same move in every position. Both avoided 107 of 226 recorded errors and matched 54 reference choices (29 and 14 of 62 held out). Nodes 20,154,695 base / 20,242,072 candidate. Three complete result files and the 154 exact fixed-depth signatures are in verification3/. The common-bound strength/equivalence criterion is complete. Current outstanding validation is the final-check Batch run (shared checks, differentials and deep perft), then teardown and integration.
+
+Integrated on main as a fast-forward from 7c15e68 to 92ecf7b after merging origin/main. Final shared command on 678b97a: python3 tools/checks.py run --base origin/main; rustfmt, Clippy, 1,167 workspace tests passed, 0 failed, 10 ignored by default. Per-game native differential and perft checks passed. Explicit release deep Chess perft passed, as did native depth-4 counts 197281/4085603/422333. All acceptance criteria have evidence. Cloud evidence under gs://mshogi-experiments-216675633801/runs/msh-259/ (checks6, verification3, shogi-match, method, jobs). All 20 Batch jobs reached terminal state. Resource estimate: 18.40 machine-hours times US$0.201608 = US$3.71 in VM compute, before storage and billing adjustments; no remaining project VMs or disks. Next eligible dependent: MSH-243 (Game-Independent Strength Tool).
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+All six searches now share a same-side repetition scan and retain their game-specific scores. Measurements and frozen-predecessor tests favored the shorter bound for Shogi and Tori. It can miss a search cycle across a capture or drop; the native game still adjudicates the full history. All 226 Shogi blunder choices and 154 fixed-depth results in the five unchanged games matched. The Shogi non-inferiority SPRT passed at 373 pairs (390 wins, 16 draws, 340 losses, LLR +2.982). The full-history Tori alternatives failed qualification and were discarded. Workspace, perft, differential and independent review checks passed. MSH-243 is unblocked.
+<!-- SECTION:FINAL_SUMMARY:END -->

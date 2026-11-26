@@ -1,44 +1,10 @@
 //! Actual Tori human executable consumer; expected examples are hand-derived T02–T08.
+mod support;
 use mshogi_core::{native::CanonicalRecord, tori as t};
-use std::{
-    fs,
-    io::Write,
-    path::PathBuf,
-    process::{Command, Output, Stdio},
-    sync::atomic::{AtomicU64, Ordering},
-};
-fn run(args: &[&str], input: &str) -> Output {
-    let mut child = Command::new(env!("CARGO_BIN_EXE_mshogi"))
-        .args(args)
-        .current_dir(std::env::temp_dir())
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .spawn()
-        .unwrap();
-    child
-        .stdin
-        .take()
-        .unwrap()
-        .write_all(input.as_bytes())
-        .unwrap();
-    child.wait_with_output().unwrap()
-}
+use std::{fs, process::Output};
+use support::cli::{Dir, records, run, stdout as output, success};
 fn shell(input: &str) -> Output {
     run(&["--game", "tori", "shell"], input)
-}
-fn output(o: &Output) -> String {
-    String::from_utf8(o.stdout.clone()).unwrap()
-}
-fn success(o: &Output) {
-    assert!(o.status.success(), "{}", String::from_utf8_lossy(&o.stderr));
-    assert!(o.stderr.is_empty());
-}
-fn records(o: &Output) -> Vec<String> {
-    output(o)
-        .lines()
-        .filter_map(|l| l.strip_prefix("record ").map(str::to_owned))
-        .collect()
 }
 fn root(pieces: &[(&str, t::Side, t::Face)], hand: t::Hand, counter: u64) -> t::Game {
     t::Game::from_root(
@@ -73,24 +39,6 @@ fn encode(game: &t::Game) -> String {
     CanonicalRecord::tori(t::GameRecord::from_game(game).unwrap())
         .to_json()
         .unwrap()
-}
-struct Dir(PathBuf);
-impl Dir {
-    fn new() -> Self {
-        static N: AtomicU64 = AtomicU64::new(0);
-        let p = std::env::temp_dir().join(format!(
-            "mshogi-tori42-{}-{}",
-            std::process::id(),
-            N.fetch_add(1, Ordering::Relaxed)
-        ));
-        fs::create_dir(&p).unwrap();
-        Self(p)
-    }
-}
-impl Drop for Dir {
-    fn drop(&mut self) {
-        let _ = fs::remove_dir_all(&self.0);
-    }
 }
 
 #[test]

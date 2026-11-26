@@ -66,27 +66,19 @@ fn limits(command: &str, args: &[&str], max_depth: u32) -> Result<(u32, u64), St
         [depth] => (*depth, STANDARD_VISIT_LIMIT),
         [depth, visits] => (
             *depth,
-            ascii_number(visits)
+            crate::shell::number::<u64>(visits)
                 .filter(|n| (1..=STANDARD_VISIT_LIMIT).contains(n))
                 .ok_or_else(|| format!("visits must be ASCII 1..{STANDARD_VISIT_LIMIT}"))?,
         ),
         _ => return Err(format!("usage: {command} <depth> [visits]")),
     };
-    let depth = ascii_number(depth)
+    let depth = crate::shell::number::<u64>(depth)
         .filter(|&n| n <= u64::from(max_depth))
         .ok_or_else(|| {
             format!(
                 "invalid depth '{}'; expected ASCII decimal from 0 to {max_depth}",
-                depth.escape_default()
+                crate::record_io::diagnostic(depth)
             )
         })?;
     Ok((depth as u32, visits))
-}
-
-fn ascii_number(text: &str) -> Option<u64> {
-    if text.bytes().all(|b| b.is_ascii_digit()) {
-        text.parse().ok()
-    } else {
-        None
-    }
 }

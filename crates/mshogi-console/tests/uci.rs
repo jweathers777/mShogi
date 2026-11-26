@@ -1,56 +1,18 @@
 //! Exercise the actual UCI child process, including simultaneous search/input.
+mod support;
 use mshogi_core::chess::{AdjudicatedGame, ClaimPolicy};
 use std::{
-    io::{BufRead, BufReader, Read, Write},
-    process::{Child, ChildStdin, Command, Stdio},
-    sync::mpsc::{self, Receiver},
+    io::Write,
     thread,
     time::{Duration, Instant},
 };
-
-struct Engine {
-    child: Child,
-    input: ChildStdin,
-    lines: Receiver<String>,
-    stderr: Option<thread::JoinHandle<String>>,
+use support::protocol::Engine;
+trait ChessProtocol {
+    fn line(&self) -> String;
+    fn best(&self) -> (String, Vec<String>);
+    fn finish_chess(self) -> String;
 }
-impl Engine {
-    fn new() -> Self {
-        let mut child = Command::new(env!("CARGO_BIN_EXE_mshogi"))
-            .arg("uci")
-            .current_dir(std::env::temp_dir())
-            .stdin(Stdio::piped())
-            .stdout(Stdio::piped())
-            .stderr(Stdio::piped())
-            .spawn()
-            .unwrap();
-        let input = child.stdin.take().unwrap();
-        let output = child.stdout.take().unwrap();
-        let mut error = child.stderr.take().unwrap();
-        let (send, lines) = mpsc::channel();
-        thread::spawn(move || {
-            for line in BufReader::new(output).lines() {
-                if send.send(line.unwrap()).is_err() {
-                    break;
-                }
-            }
-        });
-        let stderr = Some(thread::spawn(move || {
-            let mut text = String::new();
-            error.read_to_string(&mut text).unwrap();
-            text
-        }));
-        Self {
-            child,
-            input,
-            lines,
-            stderr,
-        }
-    }
-    fn send(&mut self, text: &str) {
-        self.input.write_all(text.as_bytes()).unwrap();
-        self.input.flush().unwrap();
-    }
+impl ChessProtocol for Engine {
     fn line(&self) -> String {
         let line = self
             .lines
@@ -77,24 +39,10 @@ impl Engine {
             info.push(line);
         }
     }
-    fn finish(mut self) -> String {
-        self.send("quit\n");
-        let deadline = Instant::now() + Duration::from_secs(15);
-        loop {
-            if let Some(status) = self.child.try_wait().unwrap() {
-                assert!(status.success());
-                break;
-            }
-            assert!(Instant::now() < deadline, "quit did not terminate process");
-            thread::sleep(Duration::from_millis(1));
-        }
-        self.stderr.take().unwrap().join().unwrap()
-    }
-}
-impl Drop for Engine {
-    fn drop(&mut self) {
-        let _ = self.child.kill();
-        let _ = self.child.wait();
+    fn finish_chess(self) -> String {
+        let (code, errors, _) = self.finish_with_timeout(true, Duration::from_secs(15));
+        assert_eq!(code, 0);
+        errors
     }
 }
 fn legal(fen: &str, text: &str) {
@@ -110,8 +58,8 @@ const START: &str = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 #[test]
 fn handshake_readiness_and_live_stop_keep_stdout_protocol_only() {
-    let mut engine = Engine::new();
-    engine.send("  ignored-token  uci\r\n");
+    let mut engine = Engine::new(&["uci"]);
+    engine.raw("  ignored-token  uci\r\n");
     assert!(engine.line().starts_with("id name mShogi "));
     assert_eq!(engine.line(), "id author John Weathers");
     assert_eq!(
@@ -123,7 +71,7 @@ fn handshake_readiness_and_live_stop_keep_stdout_protocol_only() {
         "option name Hash type spin default 64 min 1 max 4096"
     );
     assert_eq!(engine.line(), "uciok");
-    engine.send("ucinewgame\nisready\nposition startpos\ngo infinite\nisready\n");
+    engine.raw("ucinewgame\nisready\nposition startpos\ngo infinite\nisready\n");
     assert_eq!(engine.line(), "readyok");
     assert_eq!(
         engine.line(),
@@ -137,25 +85,25 @@ fn handshake_readiness_and_live_stop_keep_stdout_protocol_only() {
             .is_err(),
         "infinite must await stop"
     );
-    engine.send("stop\n");
+    engine.raw("stop\n");
     let (best, info) = engine.best();
     legal(START, &best);
     assert_eq!(info.len(), 1, "one final bounded info line");
-    let errors = engine.finish();
+    let errors = engine.finish_chess();
     assert!(errors.is_empty() || errors.contains("no completed iteration"));
 }
 #[test]
 fn deterministic_depth_and_node_limits_return_legal_bestmoves() {
-    let mut engine = Engine::new();
-    engine.send("position fen 7k/8/5KQ1/8/8/8/8/8 w - - 0 1\ngo depth 1\n");
+    let mut engine = Engine::new(&["uci"]);
+    engine.raw("position fen 7k/8/5KQ1/8/8/8/8/8 w - - 0 1\ngo depth 1\n");
     let (best, info) = engine.best();
     assert_eq!(best, "g6g7");
     assert!(info[0].contains("score mate 1"));
-    engine.send("position startpos\ngo nodes 0\n");
+    engine.raw("position startpos\ngo nodes 0\n");
     let (best, info) = engine.best();
     assert_eq!(best, "a2a3", "zero-work deterministic legal fallback");
     assert!(info[0].contains("depth 0 nodes 0"));
-    engine.send("go depth 1 nodes 20\n");
+    engine.raw("go depth 1 nodes 20\n");
     let (best, info) = engine.best();
     legal(START, &best);
     assert!(
@@ -163,7 +111,7 @@ fn deterministic_depth_and_node_limits_return_legal_bestmoves() {
         "root plus 20 legal leaves require at least 21 visits"
     );
     assert!(!info[0].contains("score "));
-    engine.send("go depth 1 nodes 1000\n");
+    engine.raw("go depth 1 nodes 1000\n");
     let (best, info) = engine.best();
     legal(START, &best);
     let fields: Vec<_> = info[0].split_whitespace().collect();
@@ -175,14 +123,14 @@ fn deterministic_depth_and_node_limits_return_legal_bestmoves() {
     );
     assert!(info[0].contains("seldepth 1"));
     assert!(info[0].contains("score cp 52"));
-    assert!(engine.finish().contains("no completed iteration"));
+    assert!(engine.finish_chess().contains("no completed iteration"));
 }
 #[test]
 fn position_replays_history_and_invalid_sequence_is_atomic() {
-    let mut engine = Engine::new();
-    engine.send("position startpos moves e2e4\nisready\n");
+    let mut engine = Engine::new(&["uci"]);
+    engine.raw("position startpos moves e2e4\nisready\n");
     assert_eq!(engine.line(), "readyok");
-    engine.send("position startpos moves d2d4 e7e4\ngo depth 1\n");
+    engine.raw("position startpos moves d2d4 e7e4\ngo depth 1\n");
     let (best, _) = engine.best();
     let mut game = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly);
     game.apply("e2e4".parse().unwrap()).unwrap();
@@ -196,7 +144,7 @@ fn position_replays_history_and_invalid_sequence_is_atomic() {
         game.position().piece_at(action.from).unwrap().color,
         mshogi_core::chess::Color::Black
     );
-    assert!(engine.finish().contains("move 2:"));
+    assert!(engine.finish_chess().contains("move 2:"));
 }
 #[test]
 fn uci_gives_a_move_where_a_claim_exists_and_scores_rule_draws_as_draws() {
@@ -204,17 +152,17 @@ fn uci_gives_a_move_where_a_claim_exists_and_scores_rule_draws_as_draws() {
     // move. The search still scores a position that the fifty-move rule or a
     // repetition decides as a draw, because the opponent or the controller can
     // claim it. A mate is never hidden by the move counter.
-    let mut engine = Engine::new();
+    let mut engine = Engine::new(&["uci"]);
     for policy in ["explicit", "auto"] {
-        engine.send(&format!("setoption name ClaimPolicy value {policy}\n"));
-        engine.send("position fen 7k/8/5KQ1/8/8/8/8/8 w - - 100 1\ngo depth 1\n");
+        engine.raw(&format!("setoption name ClaimPolicy value {policy}\n"));
+        engine.raw("position fen 7k/8/5KQ1/8/8/8/8/8 w - - 100 1\ngo depth 1\n");
         let (best, info) = engine.best();
         assert_eq!(best, "g6g7", "the move counter must not hide mate");
         assert!(info[0].contains("score mate 1"));
         for clock in [98, 99, 100] {
             // Black is down a rook and no capture or pawn move is possible.
             let fen = format!("7k/8/8/8/8/8/8/KR6 b - - {clock} 1");
-            engine.send(&format!("position fen {fen}\ngo depth 2\n"));
+            engine.raw(&format!("position fen {fen}\ngo depth 2\n"));
             let (best, info) = engine.best();
             legal(&fen, &best);
             assert!(info[0].starts_with("info depth 2 "));
@@ -222,25 +170,25 @@ fn uci_gives_a_move_where_a_claim_exists_and_scores_rule_draws_as_draws() {
             assert_eq!(first_pv_move(&info[0]), Some(best.as_str()));
         }
         // With the counter at zero the same material is lost for Black.
-        engine.send("position fen 7k/8/8/8/8/8/8/KR6 b - - 0 1\ngo depth 2\n");
+        engine.raw("position fen 7k/8/8/8/8/8/8/KR6 b - - 0 1\ngo depth 2\n");
         assert!(losing_rook_score(&engine.best().1[0]));
     }
-    let stderr = engine.finish();
+    let stderr = engine.finish_chess();
     assert!(!stderr.contains("fallback"), "{stderr}");
 }
 #[test]
 fn uci_scores_a_repetition_as_a_draw_and_stops_at_native_fivefold() {
-    let mut engine = Engine::new();
+    let mut engine = Engine::new(&["uci"]);
     let cycle = "g8f6 g1f3 f6g8 f3g1 ";
     // Black is down a rook. One repeat: the game is not yet a draw.
-    engine.send(&format!(
+    engine.raw(&format!(
         "position fen 6nk/8/8/8/8/8/8/KR4N1 b - - 0 1 moves {cycle}\ngo depth 1\n"
     ));
     let (best, info) = engine.best();
     assert_ne!(best, "0000");
     assert!(losing_rook_score(&info[0]), "{}", info[0]);
     for repeats in [2, 3, 4] {
-        engine.send(&format!(
+        engine.raw(&format!(
             "position fen 6nk/8/8/8/8/8/8/KR4N1 b - - 0 1 moves {}\ngo depth 1\n",
             cycle.repeat(repeats)
         ));
@@ -255,33 +203,33 @@ fn uci_scores_a_repetition_as_a_draw_and_stops_at_native_fivefold() {
             assert_eq!(first_pv_move(&info[0]), Some(best.as_str()));
         }
     }
-    assert!(!engine.finish().contains("fallback"));
+    assert!(!engine.finish_chess().contains("fallback"));
 }
 #[test]
 fn movetime_and_increment_clock_budgets_stop_live_search() {
-    let mut engine = Engine::new();
+    let mut engine = Engine::new(&["uci"]);
     for go in [
         "go movetime 15",
         "go wtime 100 btime 100 winc 2 binc 2 movestogo 10",
     ] {
-        engine.send(&format!("position startpos\n{go}\n"));
+        engine.raw(&format!("position startpos\n{go}\n"));
         let (best, info) = engine.best();
         legal(START, &best);
         assert!(info[0].contains("time "));
     }
-    engine.send("position startpos moves e2e4\ngo wtime 1000 btime 0 winc 10 binc 0\n");
+    engine.raw("position startpos moves e2e4\ngo wtime 1000 btime 0 winc 10 binc 0\n");
     let (_, info) = engine.best();
     assert!(
         info[0].contains("depth 0 nodes 0"),
         "zero own clock stops before first node"
     );
-    let errors = engine.finish();
+    let errors = engine.finish_chess();
     assert!(errors.is_empty() || errors.contains("no completed iteration"));
 }
 #[test]
 fn infinite_terminal_waits_for_stop_and_new_position_suppresses_stale_output() {
-    let mut engine = Engine::new();
-    engine.send("position fen 7k/5K2/6Q1/8/8/8/8/8 b - - 0 1\ngo infinite\nisready\n");
+    let mut engine = Engine::new(&["uci"]);
+    engine.raw("position fen 7k/5K2/6Q1/8/8/8/8/8 b - - 0 1\ngo infinite\nisready\n");
     assert_eq!(engine.line(), "readyok");
     assert!(
         engine
@@ -289,7 +237,7 @@ fn infinite_terminal_waits_for_stop_and_new_position_suppresses_stale_output() {
             .recv_timeout(Duration::from_millis(20))
             .is_err()
     );
-    engine.send("position startpos\nisready\n");
+    engine.raw("position startpos\nisready\n");
     assert_eq!(engine.line(), "readyok");
     assert!(
         engine
@@ -298,24 +246,29 @@ fn infinite_terminal_waits_for_stop_and_new_position_suppresses_stale_output() {
             .is_err(),
         "no bestmove from superseded infinite search"
     );
-    engine.send("position fen 7k/5K2/6Q1/8/8/8/8/8 b - - 0 1\ngo infinite\nstop\n");
+    engine.raw("position fen 7k/5K2/6Q1/8/8/8/8/8 b - - 0 1\ngo infinite\nstop\n");
     assert_eq!(engine.best().0, "0000");
-    let errors = engine.finish();
+    let errors = engine.finish_chess();
     assert!(errors.is_empty() || errors.contains("no completed iteration"));
 }
 #[test]
 fn invalid_input_and_unsupported_controls_recover_without_stdout_diagnostics() {
-    let mut engine = Engine::new();
-    engine.send(
+    let mut engine = Engine::new(&["uci"]);
+    engine.raw(
         "go ponder\ngo depth -1\ngo searchmoves e2e4\ngo winc 100\nsetoption name Ponder value true\n\
          setoption name Hash value 0\nsetoption name Hash value 16\n",
     );
-    engine.input.write_all(&[0xff, b'\n']).unwrap();
-    engine.send("isready\n");
+    engine
+        .input
+        .as_mut()
+        .unwrap()
+        .write_all(&[0xff, b'\n'])
+        .unwrap();
+    engine.raw("isready\n");
     assert_eq!(engine.line(), "readyok");
-    engine.send("position startpos\ngo depth 1\n");
+    engine.raw("position startpos\ngo depth 1\n");
     legal(START, &engine.best().0);
-    let errors = engine.finish();
+    let errors = engine.finish_chess();
     assert!(errors.contains("unsupported go control"));
     assert!(errors.contains("unsigned decimal"));
     assert!(errors.contains("unsupported option"));
@@ -325,19 +278,19 @@ fn invalid_input_and_unsupported_controls_recover_without_stdout_diagnostics() {
 }
 #[test]
 fn quit_terminates_during_unbounded_search_without_waiting_for_join() {
-    let mut engine = Engine::new();
-    engine.send("position startpos\ngo infinite\nisready\n");
+    let mut engine = Engine::new(&["uci"]);
+    engine.raw("position startpos\ngo infinite\nisready\n");
     assert_eq!(engine.line(), "readyok");
-    let errors = engine.finish();
+    let errors = engine.finish_chess();
     assert!(errors.is_empty() || errors.contains("no completed iteration"));
 }
 
 fn assert_representation_failure(go: &str) {
-    let mut engine = Engine::new();
+    let mut engine = Engine::new(&["uci"]);
     // Black has legal root actions, but the native game cannot represent any
     // of them: each one would overflow the fullmove counter. Do not disguise
     // that as a selected root move or an alleged zero-node search.
-    engine.send(&format!(
+    engine.raw(&format!(
         "position fen 7k/8/8/8/8/8/8/KR6 b - - 0 4294967295\n{go}\n"
     ));
     let deadline = Instant::now() + Duration::from_secs(15);
@@ -354,7 +307,7 @@ fn assert_representation_failure(go: &str) {
         stdout.is_empty(),
         "no invented info or bestmove: {stdout:?}"
     );
-    let errors = engine.stderr.take().unwrap().join().unwrap();
+    let errors = engine.errors.take().unwrap().join().unwrap();
     assert!(errors.contains("search request"), "{errors}");
     assert!(errors.contains("CounterOverflow"), "{errors}");
     assert!(!errors.contains("returning legal fallback"), "{errors}");

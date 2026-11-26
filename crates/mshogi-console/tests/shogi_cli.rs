@@ -1,30 +1,10 @@
 //! Actual executable journeys, with facts from the independent MSH-64/67 corpus.
+mod support;
 use mshogi_core::{native::*, shogi::*};
-use std::{
-    fs,
-    io::Write,
-    path::PathBuf,
-    process::{Command, Output, Stdio},
-    sync::atomic::{AtomicU64, Ordering},
-};
+use std::{fs, process::Output};
+use support::cli::{Dir, stdout as text, success};
 fn run(input: &str) -> Output {
-    let mut child = Command::new(env!("CARGO_BIN_EXE_mshogi"))
-        .args(["--game", "shogi", "shell"])
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .spawn()
-        .unwrap();
-    child
-        .stdin
-        .take()
-        .unwrap()
-        .write_all(input.as_bytes())
-        .unwrap();
-    child.wait_with_output().unwrap()
-}
-fn text(out: &Output) -> String {
-    String::from_utf8(out.stdout.clone()).unwrap()
+    support::cli::run(&["--game", "shogi", "shell"], input)
 }
 fn record(out: &Output) -> String {
     text(out)
@@ -33,35 +13,14 @@ fn record(out: &Output) -> String {
         .unwrap()
         .to_string()
 }
-struct Dir(PathBuf);
-impl Dir {
-    fn new() -> Self {
-        static ID: AtomicU64 = AtomicU64::new(1);
-        let p = std::env::temp_dir().join(format!(
-            "mshogi-68-{}-{}",
-            std::process::id(),
-            ID.fetch_add(1, Ordering::Relaxed)
-        ));
-        fs::create_dir(&p).unwrap();
-        Self(p)
-    }
-}
-impl Drop for Dir {
-    fn drop(&mut self) {
-        let _ = fs::remove_dir_all(&self.0);
-    }
-}
+
 #[test]
 fn drop_capture_hands_optional_forced_and_already_promoted_choices() {
     // SH-F011, SH-F005, SH-F003 and SH-F010, independently established roots.
     let out = run(
         "position sfen reduced 8k/9/9/9/9/9/9/9/K8 b 2RBGSNLP 1\nmove P*5e\nhands\nundo\nposition sfen reduced 8k/9/9/4P4/9/9/9/9/K8 b - 1\nlegal\nmove 5d5c\nundo\nmove 5d5c+\nposition sfen reduced 8k/4P4/9/9/9/9/9/9/K8 b - 1\nlegal\nmove 5b5a+\nposition sfen reduced 8k/9/9/9/4+P4/9/9/9/K8 b - 1\nmove 5e5d\nposition sfen reduced 8k/9/4+p4/9/4R4/9/9/9/K8 b - 1\nmove 5e5c+\nhands\n",
     );
-    assert!(
-        out.status.success(),
-        "{}",
-        String::from_utf8_lossy(&out.stderr)
-    );
+    success(&out);
     let s = text(&out);
     for expected in [
         "P*5e S:Pawn[hand->5e;drop]",
@@ -87,11 +46,7 @@ fn drop_capture_hands_optional_forced_and_already_promoted_choices() {
 #[test]
 fn undo_reverses_actions_of_earlier_move_commands() {
     let out = run("record print\nmove 7g7f\nmove 3c3d 2g2f\nundo 3\nrecord print\n");
-    assert!(
-        out.status.success(),
-        "{}",
-        String::from_utf8_lossy(&out.stderr)
-    );
+    success(&out);
     let s = text(&out);
     let records: Vec<_> = s.lines().filter(|l| l.starts_with("record ")).collect();
     assert_eq!(records.len(), 2);
@@ -128,11 +83,7 @@ fn declarations_queries_and_resignation_preserve_native_terminal_semantics() {
     let out = run(&format!(
         "position sfen reduced {root}\nrecord print\neligibility sente\nrecord print\ndeclare sente\nhistory\nundo\nposition startpos\ndeclare gote\nhistory\nundo\nmove 7g7f 3c3d\nresign sente\nhistory\nundo\nstatus\n"
     ));
-    assert!(
-        out.status.success(),
-        "{}",
-        String::from_utf8_lossy(&out.stderr)
-    );
+    success(&out);
     let s = text(&out);
     let records: Vec<_> = s.lines().filter(|l| l.starts_with("record ")).collect();
     assert_eq!(records[0], records[1]);
@@ -165,7 +116,7 @@ fn actual_history_conclusions_are_not_reconstructed_from_sfen_counter() {
         let out = run(&format!(
             "position sfen reduced {root}\nmove {cycle} {cycle} {cycle}\nhistory\nundo\nstatus\n"
         ));
-        assert!(out.status.success());
+        success(&out);
         let s = text(&out);
         assert!(s.contains(expected));
         assert!(s.contains("occurrences [0, 4, 8, 12]"));
@@ -186,11 +137,7 @@ fn complete_canonical_save_load_replay_and_restored_undo() {
         path.display(),
         path.display()
     ));
-    assert!(
-        out.status.success(),
-        "{}",
-        String::from_utf8_lossy(&out.stderr)
-    );
+    success(&out);
     let s = text(&out);
     let records: Vec<_> = s
         .lines()
@@ -288,7 +235,7 @@ fn large_pretty_record_file_loads() {
         "position sfen reduced 4k4/9/5R3/9/9/9/9/9/K8 b - 1\nmove {moves}\nrecord save {}\n",
         path.display()
     ));
-    assert!(out.status.success());
+    success(&out);
     // Pretty JSON is a valid full-record encoding, not a command-line payload.
     let value: serde_json::Value =
         serde_json::from_str(&fs::read_to_string(&path).unwrap()).unwrap();
@@ -308,7 +255,7 @@ fn large_pretty_record_file_loads() {
 #[test]
 fn standard_diagnostics_remain_position_only_and_preserve_state() {
     let out = run("record print\nperft 0\nperft 1\nperft 2\ndivide 1\nrecord print\n");
-    assert!(out.status.success());
+    success(&out);
     let s = text(&out);
     assert!(s.contains("perft-local 0 1"));
     assert!(s.contains("perft-local 1 30"));

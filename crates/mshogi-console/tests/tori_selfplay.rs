@@ -1,158 +1,20 @@
 //! Reproducible bounded real-subprocess Tori self-play, not strength measurement.
+mod support;
 use mshogi_core::{native::CanonicalRecord, tori as t};
 use mshogi_engine::*;
-use std::{
-    io::{Read, Write},
-    process::{Command, Stdio},
-    thread,
-    time::{Duration, Instant},
-};
-
-/// A small depth-1 budget; quiescence after depth 1 decides how much it needs.
 const NODES: u64 = 1_024;
-
-fn request(game: &t::Game, id: u64) -> ExecutionRequest {
-    ExecutionRequest {
-        protocol: PROTOCOL_VERSION,
-        context: ExecutionContext {
-            purpose: ExecutionPurpose::EngineTurn {},
-            request_id: id,
-            session_version: id,
-            game: CanonicalRecord::tori(t::GameRecord::from_game(game).unwrap()),
-            limits: WorkLimits {
-                time_ms: None,
-                depth: 1,
-                nodes: NODES,
-            },
+fn bounded(game: t::Game, maximum_plies: usize) -> support::selfplay::Trace<t::Action> {
+    support::selfplay::bounded::<game::Tori>(
+        game,
+        maximum_plies,
+        WorkLimits {
+            time_ms: None,
+            depth: 1,
+            nodes: NODES,
         },
-    }
-}
-fn actual(request: &ExecutionRequest) -> ExecutionResponse {
-    let mut child = Command::new(env!("CARGO_BIN_EXE_mshogi"))
-        .arg("internal-search")
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .spawn()
-        .unwrap();
-    writeln!(
-        child.stdin.take().unwrap(),
-        "{}",
-        serde_json::to_string(request).unwrap()
+        |depth| assert_eq!(depth, 1),
     )
-    .unwrap();
-    // Drain both pipes while the process runs (especially Windows' small pipe
-    // buffers); retain only bounded diagnostics.
-    let mut stdout = child.stdout.take().unwrap();
-    let stdout = thread::spawn(move || {
-        let mut bytes = Vec::new();
-        stdout.read_to_end(&mut bytes).unwrap();
-        bytes
-    });
-    let stderr = child.stderr.take().unwrap();
-    let stderr = thread::spawn(move || {
-        let mut bytes = Vec::new();
-        stderr
-            .take((MAX_STDERR_BYTES + 1) as u64)
-            .read_to_end(&mut bytes)
-            .unwrap();
-        bytes
-    });
-    let deadline = Instant::now() + Duration::from_secs(20);
-    while child.try_wait().unwrap().is_none() {
-        if Instant::now() >= deadline {
-            child.kill().unwrap();
-            let _ = child.wait();
-            panic!("bounded Tori child exceeded independent 20-second watchdog");
-        }
-        thread::sleep(Duration::from_millis(1));
-    }
-    let status = child.wait().unwrap();
-    let stdout = stdout.join().unwrap();
-    let stderr = stderr.join().unwrap();
-    assert!(status.success(), "{}", String::from_utf8_lossy(&stderr));
-    assert!(stderr.is_empty());
-    let response: ExecutionResponse = ExecutionResponse::decode(&stdout, request).unwrap();
-    assert!(response.matches(request));
-    response
 }
-
-#[derive(Debug, Eq, PartialEq)]
-struct Trace {
-    record: String,
-    actions: Vec<t::Action>,
-    observations: Vec<ExecutionObservation>,
-}
-fn bounded(mut game: t::Game, maximum_plies: usize) -> Trace {
-    let mut actions = vec![];
-    let mut observations = vec![];
-    for id in 1..=maximum_plies as u64 {
-        if game.conclusion().is_some() {
-            break;
-        }
-        let request = request(&game, id);
-        let response = actual(&request);
-        let ExecutionResult::Tori { result } = &response.observation.result else {
-            panic!("expected native Tori search")
-        };
-        result.validate(&game).unwrap();
-        let ToriResult::Choice {
-            choice: action,
-            telemetry,
-        } = result
-        else {
-            panic!("representative depth 1 must complete: {result:?}")
-        };
-        assert_eq!(telemetry.completed_depth, 1);
-        assert!(telemetry.score.is_some());
-        assert!(telemetry.nodes <= NODES);
-        assert_eq!(telemetry.perspective, game.position().side_to_move());
-        assert!(game.legal_actions().contains(action));
-        actions.push(*action);
-        game.submit(t::GameRequest {
-            expected: game.context(),
-            actor: game.position().side_to_move(),
-            command: t::GameCommand::Play { action: *action },
-        })
-        .unwrap();
-        observations.push(response.observation);
-    }
-    // A ply cutoff belongs to this run, not to the saved native game.
-    if game.conclusion().is_some() {
-        // The next actual process sees the exact native conclusion, not a
-        // synthetic zero-move/heuristic result or an already retired request.
-        let response = actual(&request(&game, maximum_plies as u64 + 1));
-        let ExecutionResult::Tori {
-            result:
-                ToriResult::Finished {
-                    conclusion,
-                    telemetry,
-                },
-        } = &response.observation.result
-        else {
-            panic!("expected native terminal root")
-        };
-        assert_eq!(Some(*conclusion), game.conclusion());
-        assert!(telemetry.principal_variation.is_empty());
-        observations.push(response.observation);
-    }
-    let native = t::GameRecord::from_game(&game).unwrap();
-    let record = CanonicalRecord::tori(native.clone()).to_json().unwrap();
-    let CanonicalRecord::Tori(restored) = CanonicalRecord::from_json(&record).unwrap() else {
-        panic!()
-    };
-    assert_eq!(*restored, native);
-    assert_eq!(
-        t::GameRecord::from_game(&restored.to_game().unwrap()).unwrap(),
-        native
-    );
-    Trace {
-        record,
-        actions,
-        observations,
-    }
-}
-
 #[test]
 fn actual_standard_selfplay_is_deterministic_bounded_and_unscored_at_work_stop() {
     let first = bounded(t::Game::standard(), 8);

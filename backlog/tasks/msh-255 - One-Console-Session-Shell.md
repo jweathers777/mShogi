@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T17:22:00Z'
+updated_date: '2026-11-26T17:27:00Z'
 labels:
   - console
   - refactor
@@ -56,4 +56,6 @@ Claimed on codex/msh-255-console-sessions from c7e99bb. Next: consolidate the sh
 Baseline c7e99bb has 4,680 Rust source lines under crates/mshogi-console/src and 9,345 under tests including support.
 
 Checkpoint on codex/msh-255-console-sessions: all six shells share line parsing and record dispatch. Five games share the candidate, move batch, undo and command session; Chess uses its own history and the common export check. All seven focused shell test binaries passed. Next: finish test support, compare coverage, fresh review, workspace and targeted process CI.
+
+Shared test support now holds console execution and success checks, protocol children, temporary directories, desktop/bridge helpers, Chess snapshots and both self-play harnesses. Focused Clippy passes. Next: inspect preserved test coverage, finish independent review and run workspace and platform checks on codex/msh-255-console-sessions.
 <!-- SECTION:NOTES:END -->

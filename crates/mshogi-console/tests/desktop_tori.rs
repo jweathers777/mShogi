@@ -1,4 +1,5 @@
 //! Actual native controller and supervised Tori child; no gameplay GUI claim.
+mod support;
 use mshogi_core::{native::*, tori};
 use mshogi_desktop_session::*;
 use mshogi_engine::*;
@@ -6,26 +7,8 @@ use std::{
     thread,
     time::{Duration, Instant},
 };
-fn command(c: &mut DesktopController, operation: SessionOperation) -> SharedSnapshot {
-    let s = c.shared_snapshot();
-    let (_, r) = c
-        .shared_command_with_receipt(SharedDesktopCommand {
-            expected: s.token,
-            game: s.game,
-            operation,
-        })
-        .unwrap();
-    let deadline = Instant::now() + Duration::from_secs(20);
-    loop {
-        let s = c.shared_snapshot();
-        if let Some(r) = r.completion() {
-            r.unwrap();
-            return s;
-        }
-        assert!(Instant::now() < deadline);
-        thread::sleep(Duration::from_millis(1));
-    }
-}
+use support::bridge::started;
+use support::desktop::command;
 fn controller(path: &str) -> DesktopController {
     let mut c = DesktopController::new(path.into()).unwrap();
     // Explicit test-root provenance supplies a marker namespace to the separate
@@ -161,21 +144,6 @@ fn wait_file(c: &mut DesktopController, id: u64) {
         thread::sleep(Duration::from_millis(1));
     }
 }
-fn started(context: &ExecutionContext) -> std::path::PathBuf {
-    let marker = std::env::temp_dir().join(format!(
-        "msh131-started-{}-{}.txt",
-        std::process::id(),
-        context.request_id
-    ));
-    let deadline = Instant::now() + Duration::from_secs(5);
-    while !marker.is_file() {
-        assert!(Instant::now() < deadline, "actual child did not start");
-        thread::sleep(Duration::from_millis(1));
-    }
-    let child: u32 = std::fs::read_to_string(&marker).unwrap().parse().unwrap();
-    assert_ne!(child, std::process::id());
-    marker
-}
 #[test]
 fn real_supervised_tori_failure_cancel_replace_cleanup_and_cross_game_retirement() {
     let mut c = controller(env!("CARGO_BIN_EXE_mshogi-internal-fixture"));
@@ -210,7 +178,7 @@ fn real_supervised_tori_failure_cancel_replace_cleanup_and_cross_game_retirement
             true,
         )
         .unwrap();
-    let marker = started(&slow);
+    let marker = started("msh131", &slow);
     let started_at = Instant::now();
     command(&mut c, SessionOperation::Cancel {});
     assert!(started_at.elapsed() < Duration::from_secs(5));
@@ -238,7 +206,7 @@ fn real_supervised_tori_failure_cancel_replace_cleanup_and_cross_game_retirement
         )
         .unwrap();
     assert!(replacement.request_id > slow.request_id);
-    let marker = started(&replacement);
+    let marker = started("msh131", &replacement);
     command(
         &mut c,
         SessionOperation::Replace {

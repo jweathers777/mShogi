@@ -31,12 +31,22 @@ pub fn empty(command: &str, args: &[&str]) -> Result<(), String> {
     }
 }
 
-fn separator(c: char) -> bool {
+pub fn separator(c: char) -> bool {
     matches!(c, ' ' | '\t' | '\n' | '\r' | '\x0b' | '\x0c')
+}
+
+pub fn words(text: &str) -> (&str, &str) {
+    text.split_once(separator)
+        .map_or((text, ""), |(head, tail)| {
+            (head, tail.trim_matches(separator))
+        })
 }
 
 pub trait HumanSession {
     fn help(&self) -> &'static str;
+    fn ascii_commands_only(&self) -> bool {
+        false
+    }
     fn command(
         &mut self,
         command: &str,
@@ -55,11 +65,10 @@ pub trait HumanSession {
         if line.is_empty() || line.starts_with('#') {
             return Ok(Next::Continue);
         }
-        let (command, rest) = line
-            .split_once(separator)
-            .map_or((line, ""), |(cmd, value)| {
-                (cmd, value.trim_matches(separator))
-            });
+        let (command, rest) = words(line);
+        if self.ascii_commands_only() && command != "record" && !line.is_ascii() {
+            return Err("input must be ASCII".into());
+        }
         let args: Vec<_> = rest.split(separator).filter(|s| !s.is_empty()).collect();
         match command {
             "quit" => {
@@ -276,6 +285,37 @@ pub fn shogi_board(out: &mut String, size: u8, width: usize, cell: impl Fn(u8, u
 
 // The native modules expose distinct request, record and result types with the
 // same operations. Keep that wiring here, next to the shared session.
+macro_rules! sides {
+    ($first:ident => $a:literal, $second:ident => $b:literal) => {
+        fn side(args: &[&str]) -> Result<Side, String> {
+            match args {
+                [$a] => Ok(Side::$first),
+                [$b] => Ok(Side::$second),
+                _ => Err(concat!("actor must be ", $a, " or ", $b).into()),
+            }
+        }
+        fn side_text(side: Side) -> &'static str {
+            match side {
+                Side::$first => $a,
+                Side::$second => $b,
+            }
+        }
+    };
+}
+pub(crate) use sides;
+
+macro_rules! draw_command {
+    ($command:expr) => {
+        match $command {
+            "offer-draw" => Some(GameCommand::OfferDraw),
+            "accept-draw" => Some(GameCommand::AcceptDraw),
+            "decline-draw" => Some(GameCommand::DeclineDraw),
+            _ => None,
+        }
+    };
+}
+pub(crate) use draw_command;
+
 macro_rules! native_record {
     ($game:ident, $kind:ident) => {
         fn record(&self) -> Result<CanonicalRecord, String> {
@@ -294,7 +334,18 @@ macro_rules! native_record {
 pub(crate) use native_record;
 
 macro_rules! variant_actions {
-    ($parse:expr) => {
+    ($parse:expr, $rule:literal $(, $effects:ident)?) => {
+        fn legal(&self,out:&mut String)->Result<(),String>{
+            let actions=self.legal_actions();
+            writeln!(out,"legal-game {} (complete native choices; {})", actions.len(),$rule).unwrap();
+            for action in actions {
+                let json=serde_json::to_string(&action).expect("native action");
+                let label=notation::format_action(self.position(),action).map_err(diagnostic)?;
+                writeln!(out,"{label} {json}").unwrap();
+            }
+            Ok(())
+        }
+
         fn play(&mut self, label: &str, out: &mut String) -> Result<GameUndo, String> {
             let action = $parse(self, label).map_err(diagnostic)?;
             let token = self
@@ -305,7 +356,7 @@ macro_rules! variant_actions {
                 })
                 .map_err(diagnostic)?;
             writeln!(out, "played {label}").unwrap();
-            self.print_effects(out);
+            $( $effects(self,out); )?
             Ok(token)
         }
         fn submit_actor(
@@ -327,12 +378,6 @@ macro_rules! variant_actions {
     };
 }
 pub(crate) use variant_actions;
-pub trait PlayEffects {
-    fn print_effects(&self, _out: &mut String) {}
-}
-impl PlayEffects for tori::Game {}
-impl PlayEffects for chu::Game {}
-
 // Search crates use game-specific types for their limits, decisions and PVs.
 macro_rules! analyze {
     ($search:ident,$game:expr,$args:expr,$out:expr) => {{

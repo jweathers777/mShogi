@@ -1,29 +1,9 @@
 //! Actual Tenjiku console adapter. Expected geometry/effects are specified from
 //! the accepted Lion/Tetrarch/fire profile fixtures, never copied console output.
+mod support;
 use mshogi_core::{native::CanonicalRecord, tenjiku as t};
-use std::{
-    fs,
-    io::Write,
-    process::{Command, Output, Stdio},
-    sync::atomic::{AtomicU64, Ordering},
-};
-fn run(args: &[&str], input: &str) -> Output {
-    let mut child = Command::new(env!("CARGO_BIN_EXE_mshogi"))
-        .args(args)
-        .current_dir(std::env::temp_dir())
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .spawn()
-        .unwrap();
-    // Write from another thread: a large record line must not wait on a full stdout pipe.
-    let mut stdin = child.stdin.take().unwrap();
-    let input = input.to_owned();
-    let writer = std::thread::spawn(move || stdin.write_all(input.as_bytes()).unwrap());
-    let output = child.wait_with_output().unwrap();
-    writer.join().unwrap();
-    output
-}
+use std::{fs, process::Output};
+use support::cli::{Dir, records, run, stdout as output, success};
 fn profile(p: t::Profile) -> &'static str {
     if p == t::Profile::AdamsModern {
         "adams"
@@ -34,25 +14,8 @@ fn profile(p: t::Profile) -> &'static str {
 fn shell(p: t::Profile, input: &str) -> Output {
     run(
         &["--game", "tenjiku", "--profile", profile(p), "shell"],
-        &format!("{input}\n"),
+        format!("{input}\n"),
     )
-}
-fn output(o: &Output) -> String {
-    String::from_utf8(o.stdout.clone()).unwrap()
-}
-fn success(o: &Output) {
-    assert!(
-        o.status.success(),
-        "{}\n{}",
-        String::from_utf8_lossy(&o.stderr),
-        output(o)
-    );
-}
-fn records(o: &Output) -> Vec<String> {
-    output(o)
-        .lines()
-        .filter_map(|l| l.strip_prefix("record ").map(str::to_owned))
-        .collect()
 }
 fn sq(f: u8, r: u8) -> t::Square {
     t::Square::new(f, r).unwrap()
@@ -328,13 +291,9 @@ fn promotion_derived_profile_specific_burn_and_mover_death_are_lossless() {
 }
 #[test]
 fn canonical_save_load_profile_identity_existing_file_and_repetition_admission() {
-    static NEXT: AtomicU64 = AtomicU64::new(0);
     for p in t::Profile::ALL {
-        let path = std::env::temp_dir().join(format!(
-            "mshogi-ten44-{}-{}.json",
-            std::process::id(),
-            NEXT.fetch_add(1, Ordering::Relaxed)
-        ));
+        let dir = Dir::new();
+        let path = dir.0.join("game.json");
         let other = if p == t::Profile::AdamsModern {
             t::Profile::MullerCompleted
         } else {

@@ -1,11 +1,10 @@
 //! The public desktop controller driving actual native engine subprocesses.
 //! GUI/package interaction evidence is separate; these tests use no Tauri hooks.
+mod support;
 use mshogi_core::chess::{AdjudicatedGame, ClaimPolicy, Color};
-use mshogi_core::native::{CanonicalRecord, NativeSide};
-use mshogi_desktop_session::{
-    ChessPresentation, SessionOperation, SessionToken, SharedDesktopCommand, SharedOpenToken,
-};
+use mshogi_core::native::CanonicalRecord;
 use mshogi_desktop_session::{DesktopController, EnginePhase, PLAY_LIMITS, SharedSnapshot};
+use mshogi_desktop_session::{SessionOperation, SharedOpenToken};
 use mshogi_engine::{
     ChessResult, EngineChoice, ExecutionPurpose, ExecutionResult, FailureKind, StopReason,
 };
@@ -14,31 +13,13 @@ use std::{
     thread,
     time::{Duration, Instant},
 };
+use support::desktop::*;
 
 fn controller(executable: &str) -> DesktopController {
     DesktopController::new(PathBuf::from(executable)).unwrap()
 }
-fn until(
-    controller: &mut DesktopController,
-    ready: impl Fn(&SharedSnapshot) -> bool,
-) -> SharedSnapshot {
-    let deadline = Instant::now() + Duration::from_secs(20);
-    loop {
-        let snapshot = controller.shared_snapshot();
-        if ready(&snapshot) {
-            return snapshot;
-        }
-        assert!(
-            Instant::now() < deadline,
-            "desktop completion deadline: phase {:?}, message {:?}",
-            snapshot.phase,
-            snapshot.diagnostic
-        );
-        thread::sleep(Duration::from_millis(1));
-    }
-}
 fn human_turn(controller: &mut DesktopController) -> SharedSnapshot {
-    until(controller, |snapshot| {
+    until(controller, 20, |snapshot| {
         assert_ne!(
             snapshot.phase,
             EnginePhase::Failed,
@@ -131,17 +112,6 @@ fn real_observations(snapshot: &SharedSnapshot, perspective: Color, searched_ver
             EngineChoice::Move { action } => before_reply.apply(*action).unwrap(),
             EngineChoice::Claim { claim } => before_reply.claim((*claim).into()).unwrap(),
         }
-    }
-}
-fn shutdown(controller: &mut DesktopController) {
-    controller.begin_shutdown();
-    let deadline = Instant::now() + Duration::from_secs(5);
-    while !controller.shutdown_acknowledged() {
-        assert!(
-            Instant::now() < deadline,
-            "desktop supervisor shutdown acknowledgement"
-        );
-        thread::sleep(Duration::from_millis(1));
     }
 }
 
@@ -327,7 +297,7 @@ fn actual_missing_response_and_failed_process_pause_without_a_chess_score() {
         .settled(initial.token, SessionOperation::play("e2e4"))
         .unwrap();
     let accepted_history = history(&started);
-    let failed = until(&mut controller, |snapshot| {
+    let failed = until(&mut controller, 20, |snapshot| {
         snapshot.phase == EnginePhase::Failed
     });
     assert!(
@@ -346,7 +316,7 @@ fn actual_missing_response_and_failed_process_pause_without_a_chess_score() {
         .settled(failed.token, SessionOperation::Retry {})
         .unwrap();
     assert_eq!(retry.phase, EnginePhase::Thinking);
-    let failed = until(&mut controller, |snapshot| {
+    let failed = until(&mut controller, 20, |snapshot| {
         snapshot.phase == EnginePhase::Failed
     });
     assert!(
@@ -362,87 +332,4 @@ fn actual_missing_response_and_failed_process_pause_without_a_chess_score() {
             .contains("Engine failure")
     );
     shutdown(&mut controller);
-}
-
-fn chess(snapshot: &SharedSnapshot) -> &ChessPresentation {
-    snapshot.chess.as_ref().expect("native Chess capabilities")
-}
-fn history(snapshot: &SharedSnapshot) -> Vec<String> {
-    live_game(snapshot)
-        .history()
-        .actions()
-        .map(|a| a.to_string())
-        .collect()
-}
-fn fen(snapshot: &SharedSnapshot) -> String {
-    live_game(snapshot).position().to_fen()
-}
-fn side_to_move(snapshot: &SharedSnapshot) -> Color {
-    let NativeSide::Chess(side) = snapshot.turn.id else {
-        panic!("Chess turn")
-    };
-    side
-}
-fn human(snapshot: &SharedSnapshot) -> Color {
-    let NativeSide::Chess(side) = snapshot.human.id else {
-        panic!("Chess human")
-    };
-    side
-}
-trait SettledCommand {
-    fn settled(
-        &mut self,
-        expected: SessionToken,
-        operation: SessionOperation,
-    ) -> Result<SharedSnapshot, String>;
-    fn fresh(&mut self, expected: SharedOpenToken, human: Color) -> Result<SharedSnapshot, String>;
-}
-fn complete(
-    controller: &mut DesktopController,
-    mut snapshot: SharedSnapshot,
-    receipt: mshogi_desktop_session::AdmissionReceipt,
-) -> Result<SharedSnapshot, String> {
-    let deadline = Instant::now() + Duration::from_secs(20);
-    loop {
-        if let Some(result) = receipt.completion() {
-            result?;
-            return Ok(snapshot);
-        }
-        assert!(Instant::now() < deadline);
-        thread::sleep(Duration::from_millis(1));
-        snapshot = controller.shared_snapshot();
-    }
-}
-impl SettledCommand for DesktopController {
-    fn settled(
-        &mut self,
-        expected: SessionToken,
-        operation: SessionOperation,
-    ) -> Result<SharedSnapshot, String> {
-        let (snapshot, receipt) = self.shared_command_with_receipt(SharedDesktopCommand {
-            expected,
-            game: mshogi_desktop_session::GameKind::Chess,
-            operation,
-        })?;
-        complete(self, snapshot, receipt)
-    }
-    fn fresh(&mut self, expected: SharedOpenToken, human: Color) -> Result<SharedSnapshot, String> {
-        let (snapshot, receipt) = self.shared_new_game(
-            expected,
-            mshogi_core::native::RulesProfile::ChessMatchV1,
-            NativeSide::Chess(human),
-        )?;
-        complete(self, snapshot, receipt)
-    }
-}
-
-fn live_game(snapshot: &SharedSnapshot) -> mshogi_core::chess::AdjudicatedGame {
-    snapshot
-        .chess_match
-        .as_ref()
-        .unwrap()
-        .replay()
-        .unwrap()
-        .game()
-        .clone()
 }

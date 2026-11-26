@@ -1,13 +1,14 @@
 //! Actual native Chu subprocess and sole desktop controller; no packaged GUI claim.
+mod support;
 use mshogi_core::{chu as c, native::*};
-use mshogi_desktop_session::{
-    DesktopController, SessionOperation, SharedDesktopCommand, SharedSnapshot,
-};
+use mshogi_desktop_session::{DesktopController, SessionOperation, SharedSnapshot};
 use mshogi_engine::*;
 use std::{
     thread,
     time::{Duration, Instant},
 };
+use support::bridge::{started, wait};
+use support::desktop::command as send;
 // These tests need one complete native iteration, not production playing depth.
 // The standard root completes depth one in 38 nodes; 512 leaves room for the
 // tested opening/history prefixes. Normal Resume limits are checked separately.
@@ -41,36 +42,6 @@ fn request(id: u64, g: &c::Game, analysis: bool) -> ExecutionRequest {
             game,
             limits: CONTRACT_LIMITS,
         },
-    }
-}
-fn wait(b: &EngineBridge) -> ExecutionResponse {
-    let end = Instant::now() + Duration::from_secs(20);
-    loop {
-        if let Some(r) = b.poll() {
-            return r;
-        }
-        assert!(Instant::now() < end);
-        thread::sleep(Duration::from_millis(1));
-    }
-}
-fn send(c: &mut DesktopController, op: SessionOperation) -> SharedSnapshot {
-    let s = c.shared_snapshot();
-    let (_, r) = c
-        .shared_command_with_receipt(SharedDesktopCommand {
-            expected: s.token,
-            game: s.game,
-            operation: op,
-        })
-        .unwrap();
-    let end = Instant::now() + Duration::from_secs(20);
-    loop {
-        let s = c.shared_snapshot();
-        if let Some(done) = r.completion() {
-            done.unwrap();
-            return s;
-        }
-        assert!(Instant::now() < end);
-        thread::sleep(Duration::from_millis(1));
     }
 }
 fn wait_file(ctl: &mut DesktopController, id: u64) -> SharedSnapshot {
@@ -463,21 +434,6 @@ fn actual_child_incomplete_work_has_no_fallback_score_or_conclusion() {
         thread::sleep(Duration::from_millis(1));
     }
 }
-fn started(context: &ExecutionContext) -> std::path::PathBuf {
-    let marker = std::env::temp_dir().join(format!(
-        "msh43-started-{}-{}.txt",
-        std::process::id(),
-        context.request_id
-    ));
-    let deadline = Instant::now() + Duration::from_secs(5);
-    while !marker.is_file() {
-        assert!(Instant::now() < deadline, "actual Chu child did not start");
-        thread::sleep(Duration::from_millis(1));
-    }
-    let child: u32 = std::fs::read_to_string(&marker).unwrap().parse().unwrap();
-    assert_ne!(child, std::process::id());
-    marker
-}
 #[test]
 fn actual_slow_child_cancellation_replacement_cross_game_and_cleanup_are_bounded() {
     let mut ctl =
@@ -509,7 +465,7 @@ fn actual_slow_child_cancellation_replacement_cross_game_and_cleanup_are_bounded
             true,
         )
         .unwrap();
-    let first = started(&slow);
+    let first = started("msh43", &slow);
     let at = Instant::now();
     send(&mut ctl, SessionOperation::Cancel {});
     assert!(at.elapsed() < Duration::from_secs(5));
@@ -527,7 +483,7 @@ fn actual_slow_child_cancellation_replacement_cross_game_and_cleanup_are_bounded
         )
         .unwrap();
     assert!(replacement.request_id > slow.request_id);
-    let second = started(&replacement);
+    let second = started("msh43", &replacement);
     send(
         &mut ctl,
         SessionOperation::Replace {

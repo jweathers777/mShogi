@@ -1,12 +1,10 @@
 //! Actual internal entrypoint and separately labeled cross-game process fixtures.
 //! Actual child establishes ordinary native execution; separate fixtures establish supervision.
+mod support;
 use mshogi_core::{chess, native::*, xiangqi as xq};
 use mshogi_engine::*;
-use std::{
-    path::PathBuf,
-    thread,
-    time::{Duration, Instant},
-};
+use std::{thread, time::Duration};
+use support::bridge::{bridge, stop, wait};
 
 fn game() -> xq::Game {
     let mut game = xq::Game::from_root(
@@ -72,40 +70,6 @@ fn chess_request(id: u64) -> ExecutionRequest {
                 nodes: 1000,
             },
         },
-    }
-}
-fn bridge(path: &str, watchdog: Duration) -> EngineBridge {
-    EngineBridge::with_options(
-        PathBuf::from(path),
-        BridgeOptions {
-            watchdog,
-            cleanup: Duration::from_secs(1),
-        },
-    )
-    .unwrap()
-}
-fn wait(bridge: &EngineBridge) -> ExecutionResponse {
-    let deadline = Instant::now() + Duration::from_secs(20);
-    loop {
-        if let Some(response) = bridge.poll() {
-            return response;
-        }
-        assert!(
-            Instant::now() < deadline,
-            "Xiangqi routing response deadline"
-        );
-        thread::sleep(Duration::from_millis(1));
-    }
-}
-fn stop(bridge: &EngineBridge) {
-    bridge.shutdown();
-    let deadline = Instant::now() + Duration::from_secs(5);
-    while !bridge.shutdown_acknowledged() {
-        assert!(
-            Instant::now() < deadline,
-            "native supervisor shutdown deadline"
-        );
-        thread::sleep(Duration::from_millis(1));
     }
 }
 fn assert_failure(response: &ExecutionResponse, expected: FailureKind) {

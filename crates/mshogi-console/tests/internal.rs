@@ -1,14 +1,12 @@
 //! Actual native executable and portable supervised pipe/process fixtures.
+mod support;
 use mshogi_core::{
     chess::{AdjudicatedGame, ClaimPolicy},
     native::CanonicalRecord,
 };
 use mshogi_engine::*;
-use std::{
-    path::PathBuf,
-    thread,
-    time::{Duration, Instant},
-};
+use std::{thread, time::Duration};
+use support::bridge::{bridge, stop, wait};
 fn request(id: u64) -> ExecutionRequest {
     ExecutionRequest {
         protocol: PROTOCOL_VERSION,
@@ -23,40 +21,6 @@ fn request(id: u64) -> ExecutionRequest {
                 nodes: 1000,
             },
         },
-    }
-}
-fn bridge(path: &str, watchdog: Duration) -> EngineBridge {
-    EngineBridge::with_options(
-        PathBuf::from(path),
-        BridgeOptions {
-            watchdog,
-            cleanup: Duration::from_secs(1),
-        },
-    )
-    .unwrap()
-}
-fn wait(bridge: &EngineBridge) -> ExecutionResponse {
-    let deadline = Instant::now() + Duration::from_secs(20);
-    loop {
-        if let Some(response) = bridge.poll() {
-            return response;
-        }
-        assert!(
-            Instant::now() < deadline,
-            "engine bridge completion deadline"
-        );
-        thread::sleep(Duration::from_millis(1));
-    }
-}
-fn stop(bridge: &EngineBridge) {
-    bridge.shutdown();
-    let deadline = Instant::now() + Duration::from_secs(5);
-    while !bridge.shutdown_acknowledged() {
-        assert!(
-            Instant::now() < deadline,
-            "engine cleanup shutdown acknowledgement"
-        );
-        thread::sleep(Duration::from_millis(1));
     }
 }
 #[test]

@@ -1,11 +1,12 @@
 //! Actual console entrypoint plus separately labeled supervisor instrumentation.
+mod support;
 use mshogi_core::{chess::*, native::*, shogi};
 use mshogi_engine::*;
 use std::{
-    path::PathBuf,
     thread,
     time::{Duration, Instant},
 };
+use support::bridge::{stop, wait};
 fn context(id: u64, shogi: bool) -> ExecutionRequest {
     ExecutionRequest {
         protocol: PROTOCOL_VERSION,
@@ -27,32 +28,7 @@ fn context(id: u64, shogi: bool) -> ExecutionRequest {
     }
 }
 fn bridge(path: &str) -> EngineBridge {
-    EngineBridge::with_options(
-        PathBuf::from(path),
-        BridgeOptions {
-            watchdog: Duration::from_secs(15),
-            cleanup: Duration::from_secs(1),
-        },
-    )
-    .unwrap()
-}
-fn wait(bridge: &EngineBridge) -> ExecutionResponse {
-    let deadline = Instant::now() + Duration::from_secs(20);
-    loop {
-        if let Some(response) = bridge.poll() {
-            return response;
-        }
-        assert!(Instant::now() < deadline, "shared completion deadline");
-        thread::sleep(Duration::from_millis(1));
-    }
-}
-fn stop(bridge: &EngineBridge) {
-    bridge.shutdown();
-    let deadline = Instant::now() + Duration::from_secs(5);
-    while !bridge.shutdown_acknowledged() {
-        assert!(Instant::now() < deadline);
-        thread::sleep(Duration::from_millis(1));
-    }
+    support::bridge::bridge(path, Duration::from_secs(15))
 }
 #[test]
 fn real_entrypoint_executes_both_native_games() {

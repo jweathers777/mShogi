@@ -1,7 +1,7 @@
 //! Human Chu adapter. Native Game alone owns rules, history and admission.
 use crate::{
     diagnostics,
-    shell::{self, PlayEffects, Variant, diagnostic},
+    shell::{self, Variant, diagnostic},
 };
 use mshogi_core::{chu::*, native::CanonicalRecord};
 use std::fmt::Write as _;
@@ -37,17 +37,14 @@ impl Variant for Game {
     fn position_command(&self, rest: &str) -> Result<Self, String> {
         shell::startpos(rest, Game::standard)
     }
-    shell::variant_actions!(|game: &Game, label| notation::parse_local_action(
-        game.local_position(),
-        label
-    ));
+    shell::variant_actions!(
+        |game: &Game, label| notation::parse_local_action(game.local_position(), label),
+        "pre-fourth repetition history applied"
+    );
     fn actor_command(command: &str) -> Option<GameCommand> {
         match command {
             "resign" => Some(GameCommand::Resign),
-            "offer-draw" => Some(GameCommand::OfferDraw),
-            "accept-draw" => Some(GameCommand::AcceptDraw),
-            "decline-draw" => Some(GameCommand::DeclineDraw),
-            _ => None,
+            _ => shell::draw_command!(command),
         }
     }
     fn write_status(&self, out: &mut String) -> Result<(), String> {
@@ -86,25 +83,6 @@ impl Variant for Game {
                 })
         });
     }
-    fn legal(&self, out: &mut String) -> Result<(), String> {
-        let actions = self.legal_actions();
-        writeln!(
-            out,
-            "legal-game {} (complete native choices; pre-fourth repetition history applied)",
-            actions.len()
-        )
-        .unwrap();
-        for action in actions {
-            writeln!(
-                out,
-                "{} {}",
-                notation::format_action(self.position(), action.clone()).map_err(diagnostic)?,
-                serde_json::to_string(&action).expect("native action")
-            )
-            .unwrap();
-        }
-        Ok(())
-    }
     fn history(&self, out: &mut String) -> Result<(), String> {
         self.write_status(out)?;
         for event in self.events() {
@@ -139,16 +117,4 @@ impl Variant for Game {
     }
 }
 
-fn side(args: &[&str]) -> Result<Side, String> {
-    match args {
-        ["sente"] => Ok(Side::Sente),
-        ["gote"] => Ok(Side::Gote),
-        _ => Err("actor must be sente or gote".into()),
-    }
-}
-fn side_text(side: Side) -> &'static str {
-    match side {
-        Side::Sente => "sente",
-        Side::Gote => "gote",
-    }
-}
+shell::sides!(Sente => "sente", Gote => "gote");

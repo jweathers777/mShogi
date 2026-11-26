@@ -1,18 +1,8 @@
 //! Verify the real headless process boundary, including stdout/stderr and errors.
 
-use std::{
-    io::Write,
-    process::{Command, Output, Stdio},
-};
-
-fn command() -> Command {
-    let mut command = Command::new(env!("CARGO_BIN_EXE_mshogi"));
-    // No checkout-relative resources or input stream may be required to start.
-    command
-        .current_dir(std::env::temp_dir())
-        .stdin(Stdio::null());
-    command
-}
+mod support;
+use std::process::Output;
+use support::cli::{command, success};
 
 fn run(args: &[&str]) -> Output {
     command().args(args).output().expect("console must start")
@@ -22,8 +12,7 @@ fn run(args: &[&str]) -> Output {
 fn help_and_default_invocation_are_headless() {
     for args in [&[][..], &["--help"][..], &["-h"][..]] {
         let output = run(args);
-        assert!(output.status.success());
-        assert!(output.stderr.is_empty());
+        success(&output);
         let stdout = String::from_utf8(output.stdout).unwrap();
         assert!(stdout.contains("Usage: mshogi"));
         assert!(stdout.contains("shell          Read chess commands from standard input"));
@@ -35,8 +24,7 @@ fn help_and_default_invocation_are_headless() {
 fn version_is_available_without_resources() {
     for flag in ["--version", "-V"] {
         let output = run(&[flag]);
-        assert!(output.status.success());
-        assert!(output.stderr.is_empty());
+        success(&output);
         assert_eq!(
             String::from_utf8(output.stdout).unwrap(),
             format!("mshogi {}\n", env!("CARGO_PKG_VERSION"))
@@ -47,8 +35,7 @@ fn version_is_available_without_resources() {
 #[test]
 fn profile_identifies_coverage_without_claiming_game_adjudication() {
     let output = run(&["profile"]);
-    assert!(output.status.success());
-    assert!(output.stderr.is_empty());
+    success(&output);
     assert_eq!(
         String::from_utf8(output.stdout).unwrap(),
         "Target rules profile: mshogi.chess.position.v1\nCoverage: position/FEN, all chess actions with undo, attacks, legal actions, check/mate/stalemate and perft; diagnostic status is position-only\n"
@@ -98,16 +85,9 @@ fn shell(input: &[u8]) -> Output {
 }
 
 fn shell_with_args(args: &[&str], input: &[u8]) -> Output {
-    let mut child = command()
-        .args(args)
-        .arg("shell")
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .spawn()
-        .expect("console must start");
-    child.stdin.take().unwrap().write_all(input).unwrap();
-    child.wait_with_output().unwrap()
+    let mut args = args.to_vec();
+    args.push("shell");
+    support::cli::run(&args, input)
 }
 
 fn text(bytes: Vec<u8>) -> String {
@@ -408,8 +388,7 @@ fn diagnostic_depth_limit_is_inclusive() {
 #[test]
 fn history_is_rules_owned_and_import_resets_known_repetitions() {
     let output = shell(b"history\nmove g1f3 g8f6 f3g1 f6g8\nhistory\nundo 4\nhistory\nposition fen rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 8 5\nhistory\n");
-    assert!(output.status.success());
-    assert!(output.stderr.is_empty());
+    success(&output);
     let stdout = text(output.stdout);
     let histories: Vec<_> = stdout
         .lines()
@@ -433,7 +412,7 @@ fn exported_record_restores_position_history_policy_and_undo_in_a_fresh_process(
         native::CanonicalRecord,
     };
     let first = shell(b"move g1f3 g8f6 f3g1 f6g8\nrecord print\n");
-    assert!(first.status.success());
+    success(&first);
     let stdout = text(first.stdout);
     let json = stdout
         .lines()
@@ -441,7 +420,7 @@ fn exported_record_restores_position_history_policy_and_undo_in_a_fresh_process(
         .unwrap();
     let second =
         shell(format!("move e2e4\nrecord load-json {json}\nhistory\nundo 4\nhistory\n").as_bytes());
-    assert!(second.status.success(), "{}", text(second.stderr));
+    success(&second);
     let out = text(second.stdout);
     assert!(out.contains("history 4 origin standard_start policy explicit_only repetitions 2"));
     assert!(out.ends_with("history 0 origin standard_start policy explicit_only repetitions 1\n"));
@@ -455,7 +434,7 @@ fn exported_record_restores_position_history_policy_and_undo_in_a_fresh_process(
     .to_json()
     .unwrap();
     let output = shell(format!("record load-json {imported}\nhistory\n").as_bytes());
-    assert!(output.status.success());
+    success(&output);
     assert_eq!(
         text(output.stdout),
         "fen 7k/8/8/8/8/8/8/KR6 w - - 100 77\nhistory 0 origin imported_fen policy auto_claim repetitions 1\n"

@@ -1,44 +1,10 @@
 //! Actual user-facing entry points; board expectation supplied by the owner.
+mod support;
 use mshogi_core::{chess, native::CanonicalRecord, shogi};
-use std::{
-    fs,
-    io::Write,
-    path::PathBuf,
-    process::{Command, Output, Stdio},
-    sync::atomic::{AtomicU64, Ordering},
-};
-fn run(args: &[&str], input: &str) -> Output {
-    let mut child = Command::new(env!("CARGO_BIN_EXE_mshogi"))
-        .args(args)
-        .current_dir(std::env::temp_dir())
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .spawn()
-        .unwrap();
-    child
-        .stdin
-        .take()
-        .unwrap()
-        .write_all(input.as_bytes())
-        .unwrap();
-    child.wait_with_output().unwrap()
-}
+use std::{fs, process::Output};
+use support::cli::{Dir, records, run, stdout, success};
 fn shell(game: &str, input: &str) -> Output {
     run(&["--game", game, "shell"], input)
-}
-fn stdout(out: &Output) -> String {
-    String::from_utf8(out.stdout.clone()).unwrap()
-}
-fn records(out: &Output) -> Vec<String> {
-    stdout(out)
-        .lines()
-        .filter_map(|l| l.strip_prefix("record ").map(str::to_owned))
-        .collect()
-}
-fn success(out: &Output) {
-    assert!(out.status.success(), "{out:?}");
-    assert!(out.stderr.is_empty(), "{out:?}");
 }
 fn initial(game: &str) -> String {
     match game {
@@ -50,24 +16,7 @@ fn initial(game: &str) -> String {
     .to_json()
     .unwrap()
 }
-struct Dir(PathBuf);
-impl Dir {
-    fn new() -> Self {
-        static N: AtomicU64 = AtomicU64::new(0);
-        let path = std::env::temp_dir().join(format!(
-            "mshogi-common-{}-{}",
-            std::process::id(),
-            N.fetch_add(1, Ordering::Relaxed)
-        ));
-        fs::create_dir(&path).unwrap();
-        Self(path)
-    }
-}
-impl Drop for Dir {
-    fn drop(&mut self) {
-        let _ = fs::remove_dir_all(&self.0);
-    }
-}
+
 const BOARD: &str = "a  l  n  s  g  k  g  s  n  l
 b  .  r  .  .  .  .  .  b  .
 c  p  p  p  p  p  p  .  p  p

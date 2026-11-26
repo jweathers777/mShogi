@@ -40,18 +40,16 @@ impl Variant for Game {
         let game = if rest == "startpos" {
             Game::new()
         } else {
-            let Some(("sfen", rest)) = rest.split_once(' ') else {
+            let ("sfen", rest) = shell::words(rest) else {
                 return Err("usage: position startpos | position sfen full|reduced <SFEN>".into());
             };
-            let Some((category, text)) = rest.trim().split_once(' ') else {
-                return Err("SFEN requires full|reduced material category".into());
-            };
+            let (category, text) = shell::words(rest);
             let category = match category {
                 "full" => RootCategory::FullMaterialDiagram,
                 "reduced" => RootCategory::ReducedMaterialDiagram,
                 _ => return Err("SFEN requires full|reduced material category".into()),
             };
-            let position = Position::from_sfen(text.trim()).map_err(diagnostic)?;
+            let position = Position::from_sfen(text).map_err(diagnostic)?;
             Game::from_root(
                 GameRoot::import(position, category, CounterSource::Supplied)
                     .map_err(root_error)?,
@@ -260,19 +258,7 @@ fn game_error(error: GameError) -> String {
     }
 }
 
-fn side(args: &[&str]) -> Result<Side, String> {
-    match args {
-        ["sente"] => Ok(Side::Sente),
-        ["gote"] => Ok(Side::Gote),
-        _ => Err("actor must be sente or gote".into()),
-    }
-}
-fn side_text(side: Side) -> &'static str {
-    match side {
-        Side::Sente => "sente",
-        Side::Gote => "gote",
-    }
-}
+shell::sides!(Sente => "sente", Gote => "gote");
 fn kind_text(kind: PieceKind) -> &'static str {
     match kind {
         PieceKind::King => "King",
@@ -315,38 +301,26 @@ fn readable(position: &Position, action: Action) -> Result<String, String> {
 }
 /// Human board tokens are deliberately independent of long action labels.
 fn compact_board(position: &Position, out: &mut String) {
-    for rank in 1..=9 {
-        let cells: Vec<_> = (1..=9)
-            .rev()
-            .map(|file| {
-                position
-                    .piece(Square::new(file, rank).unwrap())
-                    .map_or(".".into(), |piece| {
-                        let code = match piece.kind {
-                            PieceKind::King => 'K',
-                            PieceKind::Rook => 'R',
-                            PieceKind::Bishop => 'B',
-                            PieceKind::Gold => 'G',
-                            PieceKind::Silver => 'S',
-                            PieceKind::Knight => 'N',
-                            PieceKind::Lance => 'L',
-                            PieceKind::Pawn => 'P',
-                        };
-                        let code = if piece.side == Side::Sente {
-                            code
-                        } else {
-                            code.to_ascii_lowercase()
-                        };
-                        format!("{}{code}", if piece.promoted { "+" } else { "" })
-                    })
+    shell::shogi_board(out, 9, 2, |file, rank| {
+        position
+            .piece(Square::new(file, rank).unwrap())
+            .map_or(".".into(), |piece| {
+                let code = match piece.kind {
+                    PieceKind::King => 'K',
+                    PieceKind::Rook => 'R',
+                    PieceKind::Bishop => 'B',
+                    PieceKind::Gold => 'G',
+                    PieceKind::Silver => 'S',
+                    PieceKind::Knight => 'N',
+                    PieceKind::Lance => 'L',
+                    PieceKind::Pawn => 'P',
+                };
+                let code = if piece.side == Side::Sente {
+                    code
+                } else {
+                    code.to_ascii_lowercase()
+                };
+                format!("{}{code}", if piece.promoted { "+" } else { "" })
             })
-            .collect();
-        let row = cells
-            .iter()
-            .map(|token| format!("{token:>2}"))
-            .collect::<Vec<_>>()
-            .join(" ");
-        writeln!(out, "{} {}", char::from(b'a' + rank - 1), row.trim_end()).unwrap();
-    }
-    writeln!(out, "   9  8  7  6  5  4  3  2  1").unwrap();
+    });
 }

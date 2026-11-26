@@ -6,7 +6,7 @@
 
 use crate::{
     diagnostics, record_io,
-    shell::{HumanSession, diagnostic, empty as no_args},
+    shell::{HumanSession, diagnostic, empty as no_args, number, separator},
 };
 use mshogi_core::native::CanonicalRecord;
 use std::fmt::Write as _;
@@ -17,18 +17,6 @@ use mshogi_core::chess::{
 
 /// Maximum perft and divide depth in the Chess shell.
 pub const MAX_DIAGNOSTIC_DEPTH: u32 = 4;
-
-fn separator(c: char) -> bool {
-    matches!(c, ' ' | '\t' | '\r' | '\x0b' | '\x0c')
-}
-
-fn escaped(text: &str) -> String {
-    record_io::diagnostic(text)
-}
-
-fn decimal(text: &str) -> bool {
-    !text.is_empty() && text.bytes().all(|b| b.is_ascii_digit())
-}
 
 pub const SHELL_HELP: &str =
     "Commands (one per line; blank lines and lines starting with # are ignored):
@@ -65,6 +53,10 @@ impl Session {
     }
 }
 impl HumanSession for Session {
+    fn ascii_commands_only(&self) -> bool {
+        true
+    }
+
     fn help(&self) -> &'static str {
         SHELL_HELP
     }
@@ -78,9 +70,6 @@ impl HumanSession for Session {
         args: &[&str],
         out: &mut String,
     ) -> Result<(), String> {
-        if !command.is_ascii() || !rest.is_ascii() {
-            return Err("input must be ASCII".into());
-        }
         match command {
             "position" => self.load(rest, out)?,
             "fen" => {
@@ -135,7 +124,12 @@ impl HumanSession for Session {
                 out,
                 |action| Ok(action_text(action)),
             )?,
-            other => return Err(format!("unknown command '{}'; type 'help'", escaped(other))),
+            other => {
+                return Err(format!(
+                    "unknown command '{}'; type 'help'",
+                    record_io::diagnostic(other)
+                ));
+            }
         }
         Ok(())
     }
@@ -181,7 +175,7 @@ impl Session {
             let failure = |error: String| {
                 format!(
                     "{} (action {} of {}): {error}; no actions applied",
-                    escaped(text),
+                    record_io::diagnostic(text),
                     index + 1,
                     args.len()
                 )
@@ -198,16 +192,12 @@ impl Session {
     fn undo(&mut self, args: &[&str], out: &mut String) -> Result<(), String> {
         let count = match args {
             [] => 1,
-            [n] => decimal(n)
-                .then(|| n.parse::<usize>().ok())
-                .flatten()
-                .filter(|&n| n > 0)
-                .ok_or_else(|| {
-                    format!(
-                        "invalid undo count '{}'; expected a positive ASCII decimal integer",
-                        escaped(n)
-                    )
-                })?,
+            [n] => number::<usize>(n).filter(|&n| n > 0).ok_or_else(|| {
+                format!(
+                    "invalid undo count '{}'; expected a positive ASCII decimal integer",
+                    record_io::diagnostic(n)
+                )
+            })?,
             _ => return Err("usage: undo [n]".into()),
         };
         if count > self.game.ply_count() {
@@ -265,7 +255,7 @@ pub fn parse_action(text: &str) -> Result<Action, String> {
     text.parse().map_err(|_| {
         format!(
             "invalid action '{}'; expected e.g. e2e4 or e7e8q",
-            escaped(text)
+            record_io::diagnostic(text)
         )
     })
 }

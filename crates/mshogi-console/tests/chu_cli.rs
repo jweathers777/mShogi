@@ -1,49 +1,11 @@
 //! Real human console boundary. Expected routes follow independently established
 //! central-Lion capture/return geometry from the accepted Chu local fixtures.
+mod support;
 use mshogi_core::{chu as c, native::CanonicalRecord};
-use std::{
-    fs,
-    io::Write,
-    path::PathBuf,
-    process::{Command, Output, Stdio},
-    sync::atomic::{AtomicU64, Ordering},
-};
-fn run(args: &[&str], text: &str) -> Output {
-    let mut child = Command::new(env!("CARGO_BIN_EXE_mshogi"))
-        .args(args)
-        .current_dir(std::env::temp_dir())
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .spawn()
-        .unwrap();
-    child
-        .stdin
-        .take()
-        .unwrap()
-        .write_all(text.as_bytes())
-        .unwrap();
-    child.wait_with_output().unwrap()
-}
+use std::{fs, process::Output};
+use support::cli::{Dir, records, run, stdout as output, success};
 fn shell(text: &str) -> Output {
     run(&["--game", "chu", "shell"], text)
-}
-fn output(o: &Output) -> String {
-    String::from_utf8(o.stdout.clone()).unwrap()
-}
-fn success(o: &Output) {
-    assert!(
-        o.status.success(),
-        "{}\n{}",
-        String::from_utf8_lossy(&o.stderr),
-        output(o)
-    );
-}
-fn records(o: &Output) -> Vec<String> {
-    output(o)
-        .lines()
-        .filter_map(|l| l.strip_prefix("record ").map(str::to_owned))
-        .collect()
 }
 fn root() -> c::Game {
     c::Game::from_root(
@@ -154,24 +116,7 @@ fn actual_offers_and_nonmove_commands_preserve_turn_and_atomic_failure() {
         assert!(text.contains(s), "{s}\n{text}");
     }
 }
-struct Dir(PathBuf);
-impl Dir {
-    fn new() -> Self {
-        static N: AtomicU64 = AtomicU64::new(0);
-        let path = std::env::temp_dir().join(format!(
-            "mshogi-chu43-{}-{}",
-            std::process::id(),
-            N.fetch_add(1, Ordering::Relaxed)
-        ));
-        fs::create_dir(&path).unwrap();
-        Self(path)
-    }
-}
-impl Drop for Dir {
-    fn drop(&mut self) {
-        let _ = fs::remove_dir_all(&self.0);
-    }
-}
+
 #[test]
 fn atomic_canonical_save_and_strict_load_preserve_existing_files_and_live_game() {
     let dir = Dir::new();

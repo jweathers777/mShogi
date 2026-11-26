@@ -1,48 +1,14 @@
 //! Actual subprocess journeys using independently established MSH-92/94 facts.
+mod support;
 use mshogi_core::{native::CanonicalRecord, xiangqi as x};
 use serde_json::Value;
-use std::{
-    fs,
-    io::Write,
-    path::PathBuf,
-    process::{Command, Output, Stdio},
-    sync::atomic::{AtomicU64, Ordering},
-};
+use std::{fs, process::Output};
+use support::cli::{Dir, run, stdout as text, success, tagged};
 
 const CYCLE_ROOT: &str = "4R4/5k3/9/9/9/9/9/9/9/3K5 w - - 0 1";
 const CYCLE: &str = "e9f9 f8e8 f9e9 e8f8";
-fn run(args: &[&str], input: &str) -> Output {
-    let mut child = Command::new(env!("CARGO_BIN_EXE_mshogi"))
-        .args(args)
-        .current_dir(std::env::temp_dir())
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .spawn()
-        .unwrap();
-    child
-        .stdin
-        .take()
-        .unwrap()
-        .write_all(input.as_bytes())
-        .unwrap();
-    child.wait_with_output().unwrap()
-}
 fn shell(input: &str) -> Output {
     run(&["--game", "xiangqi", "shell"], input)
-}
-fn text(out: &Output) -> String {
-    String::from_utf8(out.stdout.clone()).unwrap()
-}
-fn success(out: &Output) {
-    assert!(out.status.success(), "{out:?}");
-    assert!(out.stderr.is_empty(), "{out:?}");
-}
-fn tagged(out: &Output, tag: &str) -> Vec<String> {
-    text(out)
-        .lines()
-        .filter_map(|l| l.strip_prefix(tag).map(str::to_owned))
-        .collect()
 }
 fn games(out: &Output) -> Vec<x::Game> {
     tagged(out, "record ")
@@ -54,24 +20,6 @@ fn games(out: &Output) -> Vec<x::Game> {
             r.to_game().unwrap()
         })
         .collect()
-}
-struct Dir(PathBuf);
-impl Dir {
-    fn new() -> Self {
-        static N: AtomicU64 = AtomicU64::new(0);
-        let path = std::env::temp_dir().join(format!(
-            "mshogi-96-{}-{}",
-            std::process::id(),
-            N.fetch_add(1, Ordering::Relaxed)
-        ));
-        fs::create_dir(&path).unwrap();
-        Self(path)
-    }
-}
-impl Drop for Dir {
-    fn drop(&mut self) {
-        let _ = fs::remove_dir_all(&self.0);
-    }
 }
 
 #[test]

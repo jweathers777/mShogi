@@ -1,28 +1,11 @@
 //! Actual shared desktop controller through the bundled executable's internal entry point.
+mod support;
+use support::desktop::command;
+
 use mshogi_core::{chess, native::*, shogi as s};
 use mshogi_desktop_session::*;
 use mshogi_engine::{ExecutionResponse, PROTOCOL_VERSION};
 use std::time::{Duration, Instant};
-fn command(c: &mut DesktopController, operation: SessionOperation) -> SharedSnapshot {
-    let snapshot = c.shared_snapshot();
-    let (_, receipt) = c
-        .shared_command_with_receipt(SharedDesktopCommand {
-            expected: snapshot.token,
-            game: snapshot.game,
-            operation,
-        })
-        .unwrap();
-    let deadline = Instant::now() + Duration::from_secs(20);
-    loop {
-        let snapshot = c.shared_snapshot();
-        if let Some(result) = receipt.completion() {
-            result.unwrap();
-            return snapshot;
-        }
-        assert!(Instant::now() < deadline);
-        std::thread::sleep(Duration::from_millis(1));
-    }
-}
 fn wait(c: &mut DesktopController, done: impl Fn(&SharedSnapshot) -> bool) -> SharedSnapshot {
     let deadline = Instant::now() + Duration::from_secs(15);
     loop {

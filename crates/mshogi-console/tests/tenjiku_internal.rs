@@ -1,13 +1,14 @@
 //! Actual native Tenjiku subprocess and sole desktop controller; no packaged GUI claim.
+mod support;
 use mshogi_core::{native::*, tenjiku as c};
-use mshogi_desktop_session::{
-    DesktopController, SessionOperation, SharedDesktopCommand, SharedSnapshot,
-};
+use mshogi_desktop_session::{DesktopController, SessionOperation, SharedSnapshot};
 use mshogi_engine::*;
 use std::{
     thread,
     time::{Duration, Instant},
 };
+use support::bridge::{started, wait};
+use support::desktop::command as send;
 // These actual full-history subprocess journeys share this host's CPU. Keep
 // independent watchdog assertions meaningful by avoiding test-thread contention.
 static JOURNEY: std::sync::Mutex<()> = std::sync::Mutex::new(());
@@ -85,36 +86,6 @@ fn request(id: u64, g: &c::Game, analysis: bool) -> ExecutionRequest {
             game,
             limits: game::Tenjiku::PLAY_LIMITS,
         },
-    }
-}
-fn wait(b: &EngineBridge) -> ExecutionResponse {
-    let end = Instant::now() + Duration::from_secs(20);
-    loop {
-        if let Some(r) = b.poll() {
-            return r;
-        }
-        assert!(Instant::now() < end);
-        thread::sleep(Duration::from_millis(1));
-    }
-}
-fn send(c: &mut DesktopController, op: SessionOperation) -> SharedSnapshot {
-    let s = c.shared_snapshot();
-    let (_, r) = c
-        .shared_command_with_receipt(SharedDesktopCommand {
-            expected: s.token,
-            game: s.game,
-            operation: op,
-        })
-        .unwrap();
-    let end = Instant::now() + Duration::from_secs(20);
-    loop {
-        let s = c.shared_snapshot();
-        if let Some(done) = r.completion() {
-            done.unwrap();
-            return s;
-        }
-        assert!(Instant::now() < end);
-        thread::sleep(Duration::from_millis(1));
     }
 }
 fn failure(ctx: ExecutionContext) -> ExecutionResponse {
@@ -492,28 +463,6 @@ fn actual_child_incomplete_work_has_no_fallback_score_or_conclusion() {
         }
     }
 }
-fn started(context: &ExecutionContext) -> std::path::PathBuf {
-    let marker = std::env::temp_dir().join(format!(
-        "msh44-started-{}-{}.txt",
-        std::process::id(),
-        context.request_id
-    ));
-    let deadline = Instant::now() + Duration::from_secs(5);
-    while !marker.is_file() {
-        assert!(
-            Instant::now() < deadline,
-            "actual Tenjiku child did not start"
-        );
-        thread::sleep(Duration::from_millis(1));
-    }
-    let child: u32 = std::fs::read_to_string(&marker).unwrap().parse().unwrap();
-    assert_ne!(child, std::process::id());
-    println!(
-        "TENJIKU-STARTED-CHILD request={} pid={child}",
-        context.request_id
-    );
-    marker
-}
 #[test]
 fn actual_slow_child_cancellation_replacement_cross_game_and_cleanup_are_bounded() {
     let _journey = JOURNEY.lock().unwrap_or_else(|e| e.into_inner());
@@ -549,7 +498,7 @@ fn actual_slow_child_cancellation_replacement_cross_game_and_cleanup_are_bounded
                 true,
             )
             .unwrap();
-        let first = started(&slow);
+        let first = started("msh44", &slow);
         let at = Instant::now();
         send(&mut ctl, SessionOperation::Cancel {});
         assert!(at.elapsed() < Duration::from_secs(5));
@@ -567,7 +516,7 @@ fn actual_slow_child_cancellation_replacement_cross_game_and_cleanup_are_bounded
             )
             .unwrap();
         assert!(replacement.request_id > slow.request_id);
-        let second = started(&replacement);
+        let second = started("msh44", &replacement);
         let other = if profile == c::Profile::AdamsModern {
             c::Profile::MullerCompleted
         } else {

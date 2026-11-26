@@ -1,7 +1,7 @@
 //! Human Tori adapter. Native Game alone owns rules, history and admission.
 use crate::{
     diagnostics,
-    shell::{self, PlayEffects, Variant, diagnostic},
+    shell::{self, Variant, diagnostic},
 };
 use mshogi_core::{native::CanonicalRecord, tori::*};
 use std::fmt::Write as _;
@@ -38,7 +38,10 @@ impl Variant for Game {
     fn position_command(&self, rest: &str) -> Result<Self, String> {
         shell::startpos(rest, Game::standard)
     }
-    shell::variant_actions!(|game: &Game, label| notation::parse_action(game.position(), label));
+    shell::variant_actions!(
+        |game: &Game, label| notation::parse_action(game.position(), label),
+        "T06 history applied"
+    );
     fn actor_command(command: &str) -> Option<GameCommand> {
         match command {
             "resign" => Some(GameCommand::Resign),
@@ -65,25 +68,6 @@ impl Variant for Game {
                 })
         });
         hands(self, out);
-    }
-    fn legal(&self, out: &mut String) -> Result<(), String> {
-        let actions = self.legal_actions();
-        writeln!(
-            out,
-            "legal-game {} (complete native choices; T06 history applied)",
-            actions.len()
-        )
-        .unwrap();
-        for action in actions {
-            writeln!(
-                out,
-                "{} {}",
-                notation::format_action(self.position(), action).map_err(diagnostic)?,
-                serde_json::to_string(&action).expect("native action")
-            )
-            .unwrap();
-        }
-        Ok(())
     }
     fn history(&self, out: &mut String) -> Result<(), String> {
         self.write_status(out)?;
@@ -143,16 +127,4 @@ fn hands(game: &Game, out: &mut String) {
     }
 }
 
-fn side(args: &[&str]) -> Result<Side, String> {
-    match args {
-        ["sente"] => Ok(Side::Sente),
-        ["gote"] => Ok(Side::Gote),
-        _ => Err("actor must be sente or gote".into()),
-    }
-}
-fn side_text(side: Side) -> &'static str {
-    match side {
-        Side::Sente => "sente",
-        Side::Gote => "gote",
-    }
-}
+shell::sides!(Sente => "sente", Gote => "gote");

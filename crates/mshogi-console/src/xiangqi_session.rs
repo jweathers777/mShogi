@@ -32,25 +32,21 @@ impl Variant for Game {
     const LOADED: &'static str = "loaded complete native record; fresh runtime";
     shell::native_record!(xiangqi, Xiangqi);
     fn position_command(&self, rest: &str) -> Result<Self, String> {
-        let (policy, body) = if let Some(body) = rest.strip_prefix("auto_valid_claims ") {
-            (ClaimPolicy::AutoValidClaims, body)
-        } else {
-            (
-                ClaimPolicy::Explicit,
-                rest.strip_prefix("explicit ").unwrap_or(rest),
-            )
+        let (policy, body) = match shell::words(rest) {
+            ("auto_valid_claims", body) => (ClaimPolicy::AutoValidClaims, body),
+            ("explicit", body) => (ClaimPolicy::Explicit, body),
+            _ => (ClaimPolicy::Explicit, rest),
         };
-        let root = if body == "startpos" {
-            PositionRoot::standard()
-        } else if let Some(fen) = body.strip_prefix("fen ") {
-            PositionRoot::from_fen(fen).map_err(diagnostic)?
-        } else if let Some(json) = body.strip_prefix("json ") {
-            PositionRoot::from_json(json).map_err(diagnostic)?
-        } else {
-            return Err(
+        let root = match shell::words(body) {
+            ("startpos", "") => PositionRoot::standard(),
+            ("fen", fen) => PositionRoot::from_fen(fen).map_err(diagnostic)?,
+            ("json", json) => PositionRoot::from_json(json).map_err(diagnostic)?,
+            _ => {
+                return Err(
                 "usage: position [explicit|auto_valid_claims] startpos|fen <FEN>|json <root-JSON>"
                     .into(),
             );
+            }
         };
         Game::from_root(root, policy).map_err(diagnostic)
     }
@@ -105,11 +101,8 @@ impl Variant for Game {
     fn actor_command(command: &str) -> Option<GameCommand> {
         match command {
             "resign" => Some(GameCommand::Resign),
-            "offer-draw" => Some(GameCommand::OfferDraw),
-            "accept-draw" => Some(GameCommand::AcceptDraw),
-            "decline-draw" => Some(GameCommand::DeclineDraw),
             "claim" => Some(GameCommand::ClaimNaturalCount),
-            _ => None,
+            _ => shell::draw_command!(command),
         }
     }
     fn write_status(&self, out: &mut String) -> Result<(), String> {
@@ -123,7 +116,7 @@ impl Variant for Game {
             )
             .unwrap();
         }
-        let r = GameRecord::from_game(&self).map_err(diagnostic)?;
+        let r = GameRecord::from_game(self).map_err(diagnostic)?;
         writeln!(
             out,
             "side {} policy {} known-board-plies {} known-events {} conclusion {} pending {}",
@@ -184,20 +177,17 @@ impl Variant for Game {
         Ok(())
     }
     fn history(&self, out: &mut String) -> Result<(), String> {
-        {
-            writeln!(out, "profile {PROFILE_ID} edition {PROFILE_EDITION}").unwrap();
-            writeln!(out, "root {}", self.root().to_json()).unwrap();
-            for event in self.events() {
-                writeln!(
-                    out,
-                    "event {}",
-                    serde_json::to_string(event).map_err(diagnostic)?
-                )
-                .unwrap();
-            }
+        writeln!(out, "profile {PROFILE_ID} edition {PROFILE_EDITION}").unwrap();
+        writeln!(out, "root {}", self.root().to_json()).unwrap();
+        for event in self.events() {
+            writeln!(
+                out,
+                "event {}",
+                serde_json::to_string(event).map_err(diagnostic)?
+            )
+            .unwrap();
         }
-        warnings(self, out)?;
-        Ok(())
+        warnings(self, out)
     }
     fn perft(&self, command: &str, args: &[&str], out: &mut String) -> Result<(), String> {
         diagnostics::execute(
@@ -261,19 +251,7 @@ fn warnings(game: &Game, out: &mut String) -> Result<(), String> {
     game.write_status(out)
 }
 
-fn side(args: &[&str]) -> Result<Side, String> {
-    match args {
-        ["red"] => Ok(Side::Red),
-        ["black"] => Ok(Side::Black),
-        _ => Err("actor must be red or black".into()),
-    }
-}
-fn side_text(s: Side) -> &'static str {
-    match s {
-        Side::Red => "red",
-        Side::Black => "black",
-    }
-}
+shell::sides!(Red => "red", Black => "black");
 fn letter(k: PieceKind) -> char {
     match k {
         PieceKind::General => 'K',

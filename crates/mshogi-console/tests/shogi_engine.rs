@@ -1,21 +1,13 @@
 //! Real supervised native child play/analysis; separate tests, never packaged.
+mod support;
 use mshogi_core::{native::*, shogi::*};
 use mshogi_engine::*;
 use mshogi_search::shogi as search;
 use serde_json::json;
-use std::{
-    thread,
-    time::{Duration, Instant},
-};
+use std::{thread, time::Duration};
+use support::bridge::stop;
 fn bridge() -> EngineBridge {
-    EngineBridge::with_options(
-        env!("CARGO_BIN_EXE_mshogi").into(),
-        BridgeOptions {
-            watchdog: Duration::from_secs(30),
-            cleanup: Duration::from_secs(1),
-        },
-    )
-    .unwrap()
+    support::bridge::bridge(env!("CARGO_BIN_EXE_mshogi"), Duration::from_secs(30))
 }
 fn request(game: &Game, id: u64) -> ExecutionRequest {
     ExecutionRequest {
@@ -34,22 +26,7 @@ fn request(game: &Game, id: u64) -> ExecutionRequest {
     }
 }
 fn wait(bridge: &EngineBridge) -> ExecutionResponse {
-    let deadline = Instant::now() + Duration::from_secs(35);
-    loop {
-        if let Some(response) = bridge.poll() {
-            return response;
-        }
-        assert!(Instant::now() < deadline, "actual shogi child deadline");
-        thread::sleep(Duration::from_millis(1));
-    }
-}
-fn stop(bridge: &EngineBridge) {
-    bridge.shutdown();
-    let deadline = Instant::now() + Duration::from_secs(5);
-    while !bridge.shutdown_acknowledged() {
-        assert!(Instant::now() < deadline);
-        thread::sleep(Duration::from_millis(1));
-    }
+    support::bridge::wait_for(bridge, Duration::from_secs(35))
 }
 #[test]
 fn actual_child_plays_both_assignments_with_native_admission_and_recorded_observations() {

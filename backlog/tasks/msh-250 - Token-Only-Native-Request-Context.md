@@ -1,11 +1,11 @@
 ---
 id: MSH-250
 title: Token-Only Native Request Context
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-26T08:50:00Z'
+updated_date: '2026-11-26T09:03:00Z'
 labels:
   - core
   - simplification
@@ -26,10 +26,10 @@ Each native command request carries a full GameContext: the root and the complet
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Shogi, Xiangqi, Tori, Chu and Tenjiku requests are bound by one small token type without a copy of the history, with the same stale-request refusals as before; Chess keeps its version admission or uses the same token.
-- [ ] #2 Shogi admission and undo no longer copy the whole game per command.
-- [ ] #3 Rules, perft and record tests pass unchanged; replay time per move at full length is measured before and after for each changed game.
-- [ ] #4 One review by a fresh agent session.
+- [x] #1 Shogi, Xiangqi, Tori, Chu and Tenjiku requests are bound by one small token type without a copy of the history, with the same stale-request refusals as before; Chess keeps its version admission or uses the same token.
+- [x] #2 Shogi admission and undo no longer copy the whole game per command.
+- [x] #3 Rules, perft and record tests pass unchanged; replay time per move at full length is measured before and after for each changed game.
+- [x] #4 One review by a fresh agent session.
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -59,4 +59,15 @@ Tests: assertions that used same_semantics now compare GameRecord or (root, even
 After measurement (commit 7cce8b2, same machine and command, us; pass 2 / three Xiangqi passes): shogi 318: admission 61.7 (was 91.8), undo 0.08 (44.3), replay 13988 = 44.0 per event (62.7); xiangqi 1000: admission 84-91 (91.8), undo 0.04 (2.2), replay 154.2-155.2 ms = 155 per event (160.6), transaction_copy still dominates (MSH-227); tori 1000: admission 33.3 (65.6), undo 171.8 (155.7, unchanged code: recompute_repeated), replay 24874 = 24.9 per event (42.0); chu 1000: admission 12.5 (106.1), replay 615265 = 615 per event (674; repetition scans dominate, MSH-251); tenjiku-adams 1000: admission 6.3 (81.9), replay 8256 = 8.3 per event (47.4); tenjiku-muller 1000: admission 8.6 (84.0), replay 9215 = 9.2 per event (48.8). Record bytes and event counts are equal before and after.
 Production lines (crates/*/src and desktop/src-tauri/src, no test files): 72686 before, 72569 after (-117). game.rs: shogi 759->820 (manual Clone/PartialEq, checkpoint), xiangqi 993->940, tori 708->664, chu 1115->1065, tenjiku 837->763; new native/context.rs 46.
 Checks at 7cce8b2: fmt pass; clippy workspace all targets pass; workspace tests 1155 passed, 0 failed, 10 ignored (fixed_search_matches_recorded_baseline passed); desktop-session --all-features 196 passed and clippy pass; core perft including deep (release) 6 passed; desktop/src-tauri Cargo.lock current (cargo metadata --locked); src-tauri does not use the changed APIs and was not built. No frontend or Python code changed. Not platform-sensitive: no CI run needed.
+
+Review (fresh Opus subagent, given the diff and the task, 2026-11-26): one real defect and two minor findings, all fixed in af80ec0. (1) Shogi console move cloned the game, submitted into the clone and installed it; with clones now new instances, undo n across two move commands failed (GameUndoError). Fixed: move plays on the live game and takes back its own actions if a later one is refused (all or none as before); CLI test undo_reverses_actions_of_earlier_move_commands added. (2) Copies kept the source history node while their revision restarted at 0; no wrong acceptance was possible, but copies (Shogi clone, Xiangqi and Tori fork) now start at node 0. (3) Stale comments that described the full-history context (native.rs NativeCommand, Tenjiku submit, Xiangqi can_offer_draw, conformance assertion text, Tori ownership JSON) now name the request token. Added core test request_and_undo_tokens_bind_one_game_instance (Shogi). Reviewer confirmed: every history change advances the token in all five games; refusals and stops change nothing; Tenjiku counter reserve behavior unchanged; no rules, perft or record expectation loosened.
+Final checks at af80ec0 (main unchanged since 88e9572): fmt pass; clippy workspace all targets and desktop-session all features pass; workspace tests 1157 passed, 0 failed, 10 ignored (fixed_search_matches_recorded_baseline passed); desktop-session --all-features 196 passed; core perft including deep (release) passed earlier; src-tauri Cargo.lock current. Production lines 72686 -> 72584 (-102).
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Native requests in Shogi, Xiangqi, Tori, Chu and Tenjiku now carry one small shared token, mshogi_core::native::GameContext (instance + revision), instead of a copy of the root and history. Each game re-exports it, so callers keep expected: game.context(). The revision advances at each accepted command, undo and retirement; every new game, fork, clone and replay is a new instance. Stale-request refusals are kept in all cases; Shogi is now as strict as the other games (it accepted requests on equal-history copies before). Shogi submit and undo use a length checkpoint instead of three Game clones; Shogi and Xiangqi undo tokens are bound by instance and history node. Removed RuntimeToken, same_semantics, search_identity, four instance statics and the Xiangqi lineage copies; fork() and EngineGame::fork are infallible. Chess keeps its version admission.
+Measured (resource_admission, M1 Pro, release, per event at full length): Shogi 318 replay 62.7 -> 44.0 us, admission 92 -> 62 us, undo 44 -> 0.1 us; Xiangqi 1000 replay 161 -> 155 us (transaction_copy remains, MSH-227); Tori 1000 42.0 -> 24.9 us; Chu 1000 674 -> 615 us (repetition scans, MSH-251); Tenjiku 1000 47.4 -> 8.3 us (Adams) and 48.8 -> 9.2 us (Muller). Production lines 72686 -> 72584.
+Checks pass (fmt, clippy, 1157 workspace tests, fixed-search baseline, desktop-session all features, perft). Fresh review found one defect (Shogi console undo across move commands) and minor items; all fixed. Notes for MSH-227, MSH-251 and MSH-252 record what changed. No follow-up task; Shogi retire_context is noted in MSH-252.
+<!-- SECTION:FINAL_SUMMARY:END -->

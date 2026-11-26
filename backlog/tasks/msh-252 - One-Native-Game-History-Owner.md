@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-26T15:18:00Z'
+updated_date: '2026-11-26T15:22:00Z'
 labels:
   - core
   - refactor
@@ -29,13 +29,13 @@ Xiangqi still clones commands, events, snapshots, steps and identities in transa
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 One generic history owner in mshogi-core serves Tori, Chu and Tenjiku; each game supplies only its rules step (legality, effects, repetition rule, conclusions) and its snapshot data; Xiangqi and Shogi use it too, or the notes record why not.
-- [ ] #2 A game is copied the same way in every game; u64 counter checks and Resource::Counter are removed where overflow cannot occur.
+- [x] #1 One generic history owner in mshogi-core serves Tori, Chu and Tenjiku; each game supplies only its rules step (legality, effects, repetition rule, conclusions) and its snapshot data; Xiangqi and Shogi use it too, or the notes record why not.
+- [x] #2 A game is copied the same way in every game; u64 counter checks and Resource::Counter are removed where overflow cannot occur.
 - [ ] #3 Rules, perft and record tests and the committed record fixtures are unchanged; production line counts before and after are recorded.
-- [ ] #4 One review by a fresh agent session.
-- [ ] #5 A measurement of replay time per move at full length, before and after, with the cause named
-- [ ] #6 Replay is at least twice as fast, or the task records why not; Xiangqi rules tests and perft are unchanged
-- [ ] #7 The final desktop Xiangqi record-open and validation paths are measured again with long records; record the results without restoring the removed desktop work model or document limit.
+- [x] #4 One review by a fresh agent session.
+- [x] #5 A measurement of replay time per move at full length, before and after, with the cause named
+- [x] #6 Replay is at least twice as fast, or the task records why not; Xiangqi rules tests and perft are unchanged
+- [x] #7 The final desktop Xiangqi record-open and validation paths are measured again with long records; record the results without restoring the removed desktop work model or document limit.
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -71,4 +71,6 @@ Baseline on Apple M1 Pro, 23a0fd0: resource_admission xiangqi 1000 (release, med
 Checkpoint on codex/msh-252-shared-history: Tori, Chu and Tenjiku share the history owner, prefix selection, rollback, compact undo and request lifecycle. Shogi and Xiangqi share the transaction and authority but retain their specialized allocations: Shogi replays prefixes without storing board snapshots; Xiangqi has several viewable events per command, including root events and claim audits. All game owners now clone their full admitted state directly. Xiangqi history-copy removal alone brought full replay to 127.745 ms and last admission to 8.500 us. Original 59,593-byte desktop document median of five: decode 157.357 ms, product Open 163.023 ms. Added short-circuit terminal testing to the existing Xiangqi legal-action generator; next are final timings, full checks and independent review.
 
 Independent review cleared dd27c8b after two fixes: Tenjiku search PV validation and full-game perft now clone the admitted game directly, with cooperative stop checks. New Xiangqi regression forces a refusal after both a board action and a multi-event control, checks all ledgers, and uses the previous undo chain. Six release Chess perft cases passed, including deep divides. Initial native replay 28.719 ms after short-circuiting terminal checks. Next on codex/msh-252-shared-history: final workspace checks, interleaved benchmark runs, and integration.
+
+Final release timings on Apple M1 Pro, Rust 1.99.1, 23a0fd0 versus dd27c8b. Three alternating pairs, each reporting the median of five replays or eleven admissions. resource_admission xiangqi 1000 generated the same 1,000 board moves and 59,375 native bytes. Replay fell from 154.510 to 27.668 ms (154.510 to 27.668 us/move, 5.58x). Last-move admission fell from 87.375 to 3.917 us. Append rollback eliminates repeated whole-history clones. The remaining large cost was evaluating one-ply win witnesses: local_status generated every legal reply for each candidate. It now ends the same native iterator at the first legal reply. All witness ordering, declared-counter checks and ordinary move legality stay intact. On one fixed 59,593-byte desktop document with the same 1,000 moves, ValidatedGameDocument::<Xiangqi>::decode fell from 153.594 to 28.352 ms (5.42x). DesktopController::queue_product_open through receipt of its installed snapshot fell from 158.427 to 31.248 ms (5.07x). No document limit or desktop work model was added. Production Rust in all changed source files, counting physical lines with comments/blank lines and excluding test-only files/items: 12,345 before, 11,984 after (361 fewer). No fixture or rule/perft/record expectation changed. Two synthetic Tenjiku runtime-exhaustion tests and their test hook were removed with that obsolete refusal. Declared board counters can reach their limits through imports; those typed refusals and tests stay. Routine CI for dd27c8b and the six release deep/ordinary Chess perft cases passed. Final workspace check running.
 <!-- SECTION:NOTES:END -->

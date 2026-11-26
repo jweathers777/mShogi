@@ -502,12 +502,13 @@ impl<J: Journal> Transport<J> {
             engine.pre_cleanup_status = engine.observe_exit_for(grace);
         }
         let mut failure = None;
+        let mut quit_written = false;
         for command in ["stop", "quit"] {
             let left = deadline.saturating_duration_since(Instant::now());
             if left.is_zero() {
                 break;
             }
-            if let Err(e) = self.write_at(
+            match self.write_at(
                 engine,
                 "cleanup",
                 command,
@@ -515,7 +516,10 @@ impl<J: Journal> Transport<J> {
                     .min(Duration::from_millis(self.watchdogs.write_ms)),
                 elapsed_ns(self.start),
             ) {
-                failure.get_or_insert(e);
+                Ok(()) => quit_written = command == "quit",
+                Err(e) => {
+                    failure.get_or_insert(e);
+                }
             }
         }
         let drain = deadline - budget / 4;
@@ -533,7 +537,10 @@ impl<J: Journal> Transport<J> {
                 });
                 break;
             }
-            match engine.receive(left) {
+            // When quit failed, a live child can keep stdout open indefinitely.
+            // Keep queued evidence, then spend the remaining budget on reaping.
+            let wait = if quit_written { left } else { Duration::ZERO };
+            match engine.receive(wait) {
                 Ok(Output::Line(bytes)) => {
                     if let Err(e) = self.log(
                         engine.index,
@@ -581,6 +588,10 @@ impl<J: Journal> Transport<J> {
                     failure.get_or_insert_with(|| {
                         self.failure(engine.index, FailureKind::UnexpectedExit, "retired", e)
                     });
+                }
+                Err(RecvTimeoutError::Timeout) if !quit_written => {
+                    self.complete = false;
+                    break;
                 }
                 Err(RecvTimeoutError::Timeout) => (),
             }

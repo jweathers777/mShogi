@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T22:51:00Z'
+updated_date: '2026-11-26T22:58:00Z'
 labels:
   - runner
   - refactor
@@ -59,4 +59,6 @@ Checkpoint: generic recorded and clocked game reports now replay through native 
 Transport checkpoint on codex/msh-261-shared-runner. All three runners use one transport. Record bounded command and response evidence, including info and deadline-racing output. The first retention overflow stops further admission with resource_limit. All dialects validate configured options against the first matching advertisement; up to 256 nonempty intermediate lines per handshake/readiness phase; USI readiness before newgame, UCI and UCCI also check readiness after newgame. Accept padded ASCII and tabs; reject invalid bytes. Clean EOF is missing_reply, nonzero natural exit is unexpected_exit, and a supervisor kill does not reclassify an earlier EOF. Preserve receipt timestamps and earliest deadline. All children retire with stop, quit, bounded drain, kill/reap and diagnostics. Fresh-process candidates commit only after retirement; already established native outcomes keep subsequent diagnostics. Shared Fischer settings allow base 1..3600000 ms, increment 0..60000 ms, charge before increment; ChessMatch owns Chess clocks and claims. Shared fixture support covers engines, protocol modes, wrapper replay and create-new report files. Native runner production source: 7939 physical lines at b003738 to 7315, 624 fewer, counting src/**/*.rs with comments and blanks but excluding experiments/tests.rs and cfg(test) items. Local runner tests pass; review fixes include contradictory ads, readiness info, receipt ordering, natural exit status, padded tokens and retirement evidence. Next: finish the required workspace check and GitHub process matrix; then integrate and clean up.
 
 9b2d1a5 contains the reviewed implementation. Fresh review approved after separate CLI verification of delayed EOF, duplicate advertisements, readiness info, token padding and retirement diagnostics. python3 tools/checks.py run --base origin/main passed on macOS (format, workspace Clippy, 1172 passing tests/doc tests). No cloud experiments or new compute resources. Remaining: wait for all three process jobs on https://github.com/jweathers777/mShogi/actions/runs/45906698510 , integrate and clean up codex/msh-261-shared-runner.
+
+Hosted process CI 45906698510 passed on Ubuntu and Windows. macOS exposed a reap-budget failure when a live child had closed stdin. Retirement now drains already queued stdout without waiting for EOF after an unsuccessful quit, preserving the remaining budget to terminate and reap. Nine controlled process tests passed locally using the original 100 ms watchdog. Final production count is 7939 to 7326 (613 fewer). Next: repeat the release process matrix and workspace check on the fixed branch, then integrate.
 <!-- SECTION:NOTES:END -->

@@ -5,7 +5,7 @@ status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T17:49:00Z'
+updated_date: '2026-11-26T17:50:00Z'
 labels:
   - console
   - refactor
@@ -69,5 +69,5 @@ Verified code 0577740, integrated through 371c84e on main. GitHub Actions https:
 ## Final Summary
 
 <!-- SECTION:FINAL_SUMMARY:BEGIN -->
-All six games share shell input, record handling and export checks. Five games use one session for atomic moves and undo. Xiangqi uses offer-draw, accept-draw and decline-draw. Console tests share process, protocol, desktop and self-play helpers. Rust source fell from 4,680 to 4,144 lines and test code from 9,345 to 8,423. All 169 original console test cases remain. Workspace checks and release process tests passed on all three target systems. Independent review findings are fixed. Next dependency released: MSH-243 (Game-Independent Strength Tool).
+All six games share shell input, record handling and export checks. Five games use one session for atomic moves and undo. Xiangqi uses offer-draw, accept-draw and decline-draw. Console tests share process, protocol, desktop and self-play helpers. Rust source fell from 4,680 to 4,144 lines and test code from 9,345 to 8,423. All 169 original console test cases remain. Workspace checks passed locally. Release process tests passed on Linux, macOS and Windows. Independent review findings are fixed. MSH-256 (One USI and Xiangqi UCI Front End) is first in the eligible Ready queue. MSH-243 has other open prerequisites.
 <!-- SECTION:FINAL_SUMMARY:END -->

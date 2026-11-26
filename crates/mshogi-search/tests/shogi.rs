@@ -269,6 +269,30 @@ fn same_board_different_history_changes_choice_and_score() {
     ));
 }
 #[test]
+fn the_native_game_adjudicates_a_cycle_across_captures_and_drops() {
+    use mshogi_search::alphabeta::SearchPosition;
+    use mshogi_search::shogi::position::ShogiPosition;
+
+    let mut game = game("9/9/4k4/9/7p1/7K1/9/9/9 b - 1");
+    let mut search = ShogiPosition::from_game(&game);
+    // Each king takes the pawn and its new owner drops it back. The sixth
+    // ply restores the board and both hands, with the same side to move.
+    let cycle = ["2f2e", "5c5b", "P*5c", "5b5c", "2e2f", "P*2e"];
+    for &token in cycle.iter().cycle().take(18) {
+        let m = search.find(token.parse().unwrap()).unwrap();
+        assert!(search.make(m));
+        submit(&mut game, token);
+    }
+    assert_eq!(search.rule_score(), None);
+    assert_eq!(
+        run(&game, 1).decision,
+        Some(Decision::Finished(Conclusion::Draw(DrawReason::Fourfold {
+            first: 0,
+            fourth: 18,
+        })))
+    );
+}
+#[test]
 fn native_terminal_winner_precedes_static_score_and_declared_length() {
     for (root, cycle, score) in [
         (

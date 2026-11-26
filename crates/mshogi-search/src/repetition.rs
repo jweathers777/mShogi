@@ -29,45 +29,23 @@ pub(crate) fn cycle_start(
         .map(|(_, index)| index)
 }
 
-/// The immutable part of a drop game's history before the search root.
-/// A clear bit rules out every pre-root match. A set bit still requires
-/// comparing the full keys, and the search path is always eligible.
-#[derive(Clone, Default)]
-pub(crate) struct GamePrefix {
-    pub(crate) len: usize,
-    buckets: [u64; 16],
-}
+/// Search approximation for drop games: a capture or drop resets the scan.
+/// The native rules still check the full known history of the game.
+#[derive(Clone, Copy, Default)]
+pub(crate) struct DropGameWindow(u16);
 
-impl GamePrefix {
-    pub(crate) fn new(keys: &[u64]) -> Self {
-        let mut prefix = Self {
-            len: keys.len(),
-            ..Self::default()
-        };
-        for &key in keys {
-            let (bucket, bit) = Self::slot(key);
-            prefix.buckets[bucket] |= bit;
-        }
-        prefix
-    }
-
-    fn slot(key: u64) -> (usize, u64) {
-        ((key as usize >> 6) & 15, 1 << (key & 63))
-    }
-
-    pub(crate) fn occurrences<'a>(
-        &self,
-        keys: &'a [u64],
-        after_null: usize,
-    ) -> impl Iterator<Item = usize> + 'a {
-        let (&key, prior) = keys.split_last().expect("current position key");
-        let (bucket, bit) = Self::slot(key);
-        let first = if self.buckets[bucket] & bit == 0 {
-            after_null.max(self.len)
+impl DropGameWindow {
+    pub(crate) fn advance(&mut self, capture_or_drop: bool) {
+        self.0 = if capture_or_drop {
+            0
         } else {
-            after_null
+            self.0.saturating_add(1)
         };
-        earlier_occurrences(prior, key, 2..=prior.len() - first)
+    }
+
+    pub(crate) fn occurrences(self, keys: &[u64]) -> impl Iterator<Item = usize> + '_ {
+        let (&key, prior) = keys.split_last().expect("current position key");
+        earlier_occurrences(prior, key, 2..=usize::from(self.0))
     }
 }
 
@@ -76,13 +54,22 @@ mod tests {
     use super::*;
 
     #[test]
-    fn a_bucket_collision_still_checks_full_keys_and_the_null_boundary() {
-        let keys = [7, 8, 7 + 1024, 9, 7, 10, 7];
-        let prefix = GamePrefix::new(&keys[..4]);
-        assert_eq!(prefix.occurrences(&keys, 0).collect::<Vec<_>>(), [4, 0]);
-        assert_eq!(prefix.occurrences(&keys, 2).collect::<Vec<_>>(), [4]);
-        assert_eq!(prefix.occurrences(&keys, 5).next(), None);
-        let keys = [7, 8, 9, 10, 11, 12, 11];
-        assert_eq!(prefix.occurrences(&keys, 0).collect::<Vec<_>>(), [4]);
+    fn capture_or_drop_excludes_old_keys_and_quiet_plies_include_the_new_boundary() {
+        let mut window = DropGameWindow::default();
+        for _ in 0..4 {
+            window.advance(false);
+        }
+        assert_eq!(window.occurrences(&[5, 7, 8, 9, 5]).next(), Some(0));
+        window.advance(true);
+        assert_eq!(window.occurrences(&[5, 7, 8, 9, 5, 7]).next(), None);
+        for _ in 0..4 {
+            window.advance(false);
+        }
+        assert_eq!(
+            window
+                .occurrences(&[5, 7, 8, 9, 5, 7, 1, 2, 3, 7])
+                .collect::<Vec<_>>(),
+            [5]
+        );
     }
 }

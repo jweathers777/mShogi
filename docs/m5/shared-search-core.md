@@ -185,8 +185,9 @@ its private full-width minimax. The trait and the core did not change.
 - The native rule forbids a move that would create a third occurrence of a
   position. In search, that move scores as a loss for the mover. A second
   occurrence scores level if the earlier position is on the search path,
-  including its root. Tori and Standard Shogi both scan the full known
-  history, including captures and drops, up to the latest search-only null move.
+  including its root. Standard Shogi and Tori search back to the most recent
+  capture, drop or search-only null move. This can miss a board-and-hand cycle
+  that crosses a capture or drop. The native rules use the complete history.
 - Limits: depth 1 to 64 and at most 5,000,000 nodes. The desktop plays with
   300,000 nodes. Requests without a time budget start with an empty table
   and equal requests give equal results. Timed requests use the shared session

@@ -1,7 +1,7 @@
 //! Private Shogi board, hands, move generation and evaluation for the shared core.
 //! Native rules remain authoritative for real moves and outcomes.
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
-use crate::repetition::{GamePrefix, cycle_start};
+use crate::repetition::{DropGameWindow, cycle_start};
 use mshogi_core::shogi::{Action, Game, GameCommand, Piece, PieceKind, Position, Side, Square};
 use std::sync::LazyLock;
 
@@ -296,7 +296,7 @@ struct Undo {
     captured: u8,
     hash: u64,
     check: bool,
-    history_start: usize,
+    reversible: DropGameWindow,
     completed: u32,
 }
 
@@ -315,14 +315,14 @@ pub struct ShogiPosition {
     accumulated: [i32; 2],
     /// True if the side to move is in check.
     check: bool,
-    /// Earliest key after the latest null move, or the start of the game.
-    history_start: usize,
+    /// Scan window since the last capture, drop or null move.
+    reversible: DropGameWindow,
     completed: u32,
     stack: Vec<Undo>,
     /// Hash of each position from the start of the known game to this one.
     keys: Vec<u64>,
-    /// Game keys before this search began.
-    prefix: GamePrefix,
+    /// Index in `keys` of the search root.
+    root: usize,
     /// Check status of the side to move at each key.
     checks: Vec<bool>,
 }
@@ -347,11 +347,11 @@ impl ShogiPosition {
             hash: 0,
             accumulated: [0; 2],
             check: false,
-            history_start: 0,
+            reversible: DropGameWindow::default(),
             completed: position.completed_actions(),
             stack: Vec::with_capacity(160),
             keys: Vec::with_capacity(700),
-            prefix: GamePrefix::default(),
+            root: 0,
             checks: Vec::new(),
         };
         for square in Square::all() {
@@ -385,17 +385,21 @@ impl ShogiPosition {
     pub fn from_game(game: &Game) -> Self {
         let mut p = Self::from_position(game.position());
         let start = Self::from_position(game.root().position());
+        let mut on_board = (start.occupied[0] | start.occupied[1]).count_ones();
         p.keys = vec![start.hash];
         p.checks = vec![start.check];
         for event in game.events() {
             if let GameCommand::Play(_) = event.command {
                 let native = Position::from_sfen(&event.after_sfen).expect("native event SFEN");
                 let earlier = Self::from_position(&native);
+                let next = (earlier.occupied[0] | earlier.occupied[1]).count_ones();
+                p.reversible.advance(on_board != next);
+                on_board = next;
                 p.keys.push(earlier.hash);
                 p.checks.push(earlier.check);
             }
         }
-        p.prefix = GamePrefix::new(&p.keys[..p.keys.len() - 1]);
+        p.root = p.keys.len() - 1;
         p
     }
     /// Convert a compact move into a complete native action.
@@ -699,7 +703,7 @@ impl ShogiPosition {
         })
     }
     fn ply(&self) -> usize {
-        self.keys.len() - 1 - self.prefix.len
+        self.keys.len() - 1 - self.root
     }
     /// Squares from which a piece of `side` with `face` attacks `king`.
     fn check_squares(&self, side: usize, face: usize, king: usize, occupied: u128) -> u128 {
@@ -1094,7 +1098,7 @@ impl SearchPosition for ShogiPosition {
             captured: self.board[to],
             hash: self.hash,
             check: self.check,
-            history_start: self.history_start,
+            reversible: self.reversible,
             completed: self.completed,
         };
         let mut pawn_drop = false;
@@ -1115,6 +1119,7 @@ impl SearchPosition for ShogiPosition {
             let result = self.moved_face(face, m);
             self.put(side, result, to);
         }
+        self.reversible.advance(from >= DROP || undo.captured != 0);
         self.side ^= 1;
         self.hash ^= TABLES.side;
         self.completed = self.completed.saturating_add(1);
@@ -1161,7 +1166,7 @@ impl SearchPosition for ShogiPosition {
         }
         self.hash = undo.hash;
         self.check = undo.check;
-        self.history_start = undo.history_start;
+        self.reversible = undo.reversible;
         self.completed = undo.completed;
     }
     fn make_null(&mut self) {
@@ -1171,7 +1176,7 @@ impl SearchPosition for ShogiPosition {
             captured: 0,
             hash: self.hash,
             check: self.check,
-            history_start: self.history_start,
+            reversible: self.reversible,
             completed: self.completed,
         });
         self.side ^= 1;
@@ -1180,7 +1185,7 @@ impl SearchPosition for ShogiPosition {
         self.checks.push(false);
         self.check = false;
         // A pass is not a position of the game: no repetition across it.
-        self.history_start = self.keys.len() - 1;
+        self.reversible = DropGameWindow::default();
     }
     fn unmake_null(&mut self) {
         let undo = self.stack.pop().expect("a null move to take back");
@@ -1189,7 +1194,7 @@ impl SearchPosition for ShogiPosition {
         self.side ^= 1;
         self.hash = undo.hash;
         self.check = undo.check;
-        self.history_start = undo.history_start;
+        self.reversible = undo.reversible;
         self.completed = undo.completed;
     }
     fn null_move_safe(&self) -> bool {
@@ -1201,10 +1206,9 @@ impl SearchPosition for ShogiPosition {
     }
     fn rule_score(&self) -> Option<i32> {
         let current = self.keys.len() - 1;
-        let occurrences = self.prefix.occurrences(&self.keys, self.history_start);
-        if let Some(index) = cycle_start(occurrences, self.prefix.len, 3) {
+        if let Some(index) = cycle_start(self.reversible.occurrences(&self.keys), self.root, 3) {
             // On a repeated search cycle, a side checking on every one
-            // of its moves loses. Board/hand cycles can cross captures.
+            // of its moves loses.
             for side in 0..2 {
                 let all_check = (index + 1..=current)
                     .filter(|&i| {

@@ -199,44 +199,6 @@ fn independently_expected_terminal_and_t06_history_not_board_only() {
     assert!(cycle.repetition().unwrap().permits(a));
 }
 #[test]
-fn capture_and_drop_cycles_span_the_game_and_search_history() {
-    let game = seq("TORI-H-CAPTURE-DROP");
-    let actions: Vec<_> = game
-        .events()
-        .iter()
-        .map(|event| match event.command {
-            GameCommand::Play { action } => action,
-            _ => panic!("fixture contains only board moves"),
-        })
-        .collect();
-    let root = game.event_prefix(0).unwrap().local_position();
-    for root_ply in [0, 5] {
-        let mut prefix = Game::from_root(root.position().clone()).unwrap();
-        for &action in &actions[..root_ply] {
-            play(&mut prefix, action);
-        }
-        let mut pos = ToriPosition::from_game(&prefix);
-        // The final drop would make the third occurrence in the native fixture.
-        for ply in root_ply + 1..=12 {
-            let action = actions[(ply - 1) % 6];
-            assert!(pos.make(pos.find(action).unwrap()));
-            if ply == 6 {
-                assert_eq!(pos.rule_score(), (root_ply == 0).then_some(0));
-                pos.make_null();
-                pos.make_null();
-                assert_eq!(pos.rule_score(), None);
-                pos.unmake_null();
-                pos.unmake_null();
-                assert_eq!(pos.rule_score(), (root_ply == 0).then_some(0));
-            }
-        }
-        assert_eq!(
-            pos.rule_score(),
-            Some(crate::alphabeta::MATE_SCORE - (12 - root_ply) as i32)
-        );
-    }
-}
-#[test]
 fn independently_proved_native_mate_in_one_uses_descendant_terminal_distance() {
     // TORI-O-MATE's independently reviewed final diagram is reached by Ea4c-4b.
     // Gote 3a/5a/3b/5b blockers and Pt4d protect Ea4b, leaving no defense.

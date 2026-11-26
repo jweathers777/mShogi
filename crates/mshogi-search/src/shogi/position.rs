@@ -1,6 +1,7 @@
 //! Private Shogi board, hands, move generation and evaluation for the shared core.
 //! Native rules remain authoritative for real moves and outcomes.
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
+use crate::repetition::{cycle_start, earlier_occurrences};
 use mshogi_core::shogi::{Action, Game, GameCommand, Piece, PieceKind, Position, Side, Square};
 use std::sync::LazyLock;
 
@@ -295,7 +296,7 @@ struct Undo {
     captured: u8,
     hash: u64,
     check: bool,
-    reversible: usize,
+    history_start: usize,
     completed: u32,
 }
 
@@ -314,8 +315,8 @@ pub struct ShogiPosition {
     accumulated: [i32; 2],
     /// True if the side to move is in check.
     check: bool,
-    /// Plies since the latest null move, or all known plies.
-    reversible: usize,
+    /// Earliest key after the latest null move, or the start of the game.
+    history_start: usize,
     completed: u32,
     stack: Vec<Undo>,
     /// Hash of each position from the start of the known game to this one.
@@ -346,7 +347,7 @@ impl ShogiPosition {
             hash: 0,
             accumulated: [0; 2],
             check: false,
-            reversible: 0,
+            history_start: 0,
             completed: position.completed_actions(),
             stack: Vec::with_capacity(160),
             keys: Vec::with_capacity(700),
@@ -395,7 +396,6 @@ impl ShogiPosition {
             }
         }
         p.root = p.keys.len() - 1;
-        p.reversible = p.root;
         p
     }
     /// Convert a compact move into a complete native action.
@@ -1094,7 +1094,7 @@ impl SearchPosition for ShogiPosition {
             captured: self.board[to],
             hash: self.hash,
             check: self.check,
-            reversible: self.reversible,
+            history_start: self.history_start,
             completed: self.completed,
         };
         let mut pawn_drop = false;
@@ -1103,7 +1103,6 @@ impl SearchPosition for ShogiPosition {
             self.remove_hand(side, index);
             self.put(side, HAND_FACE[index], to);
             pawn_drop = HAND_FACE[index] == PAWN;
-            self.reversible = self.reversible.saturating_add(1);
         } else {
             undo.moved = self.board[from];
             let (_, face) = decode_piece(undo.moved);
@@ -1111,9 +1110,6 @@ impl SearchPosition for ShogiPosition {
                 let (owner, victim) = decode_piece(undo.captured);
                 self.take(owner, victim, to);
                 self.add_hand(side, hand_index(victim));
-                self.reversible = self.reversible.saturating_add(1);
-            } else {
-                self.reversible = self.reversible.saturating_add(1);
             }
             self.take(side, face, from);
             let result = self.moved_face(face, m);
@@ -1165,7 +1161,7 @@ impl SearchPosition for ShogiPosition {
         }
         self.hash = undo.hash;
         self.check = undo.check;
-        self.reversible = undo.reversible;
+        self.history_start = undo.history_start;
         self.completed = undo.completed;
     }
     fn make_null(&mut self) {
@@ -1175,7 +1171,7 @@ impl SearchPosition for ShogiPosition {
             captured: 0,
             hash: self.hash,
             check: self.check,
-            reversible: self.reversible,
+            history_start: self.history_start,
             completed: self.completed,
         });
         self.side ^= 1;
@@ -1184,7 +1180,7 @@ impl SearchPosition for ShogiPosition {
         self.checks.push(false);
         self.check = false;
         // A pass is not a position of the game: no repetition across it.
-        self.reversible = 0;
+        self.history_start = self.keys.len() - 1;
     }
     fn unmake_null(&mut self) {
         let undo = self.stack.pop().expect("a null move to take back");
@@ -1193,7 +1189,7 @@ impl SearchPosition for ShogiPosition {
         self.side ^= 1;
         self.hash = undo.hash;
         self.check = undo.check;
-        self.reversible = undo.reversible;
+        self.history_start = undo.history_start;
         self.completed = undo.completed;
     }
     fn null_move_safe(&self) -> bool {
@@ -1205,34 +1201,30 @@ impl SearchPosition for ShogiPosition {
     }
     fn rule_score(&self) -> Option<i32> {
         let current = self.keys.len() - 1;
-        let limit = self.reversible.min(current);
-        let mut earlier = 0;
-        for back in (2..=limit).step_by(2) {
-            let index = current - back;
-            if self.keys[index] != self.hash {
-                continue;
-            }
-            earlier += 1;
-            if index >= self.root || earlier >= 3 {
-                // On a repeated search cycle, a side checking on every one
-                // of its moves loses. Board/hand cycles can cross captures.
-                for side in 0..2 {
-                    let all_check = (index + 1..=current)
-                        .filter(|&i| {
-                            let mover = self.side ^ ((current - i) & 1) ^ 1;
-                            mover == side
-                        })
-                        .all(|i| self.checks[i]);
-                    if all_check {
-                        return Some(if side == self.side {
-                            -MATE_SCORE + self.ply() as i32
-                        } else {
-                            MATE_SCORE - self.ply() as i32
-                        });
-                    }
+        let occurrences = earlier_occurrences(
+            &self.keys[..current],
+            self.hash,
+            2..=current - self.history_start,
+        );
+        if let Some(index) = cycle_start(occurrences, self.root, 3) {
+            // On a repeated search cycle, a side checking on every one
+            // of its moves loses. Board/hand cycles can cross captures.
+            for side in 0..2 {
+                let all_check = (index + 1..=current)
+                    .filter(|&i| {
+                        let mover = self.side ^ ((current - i) & 1) ^ 1;
+                        mover == side
+                    })
+                    .all(|i| self.checks[i]);
+                if all_check {
+                    return Some(if side == self.side {
+                        -MATE_SCORE + self.ply() as i32
+                    } else {
+                        MATE_SCORE - self.ply() as i32
+                    });
                 }
-                return Some(0);
             }
+            return Some(0);
         }
         if self.completed >= 320 {
             // The native length rule follows mate/stalemate in priority.

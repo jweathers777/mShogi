@@ -1,6 +1,7 @@
 //! Private Tenjiku board and complete-action projection for the shared core.
 //! Native Game remains authoritative for actual history, admission and outcomes.
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
+use crate::repetition::earlier_occurrences;
 use crate::square_set::SquareSet;
 use mshogi_core::tenjiku::{
     Action, ActionKind, Base, Face, Game, GameCommand, LocalPosition, Piece, Position, Profile,
@@ -1391,10 +1392,9 @@ impl SearchPosition for TenjikuPosition {
             return Some(MATE_SCORE - ply - 1);
         }
         let current = self.keys.len() - 1;
-        if self.keys[..current].contains(&self.board.repeat) {
-            return Some(0);
-        }
-        None
+        let mut occurrences =
+            earlier_occurrences(&self.keys[..current], self.board.repeat, 2..=current);
+        occurrences.next().map(|_| 0)
     }
     fn no_move_score(&self, _ply: i32) -> i32 {
         0

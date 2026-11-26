@@ -10,6 +10,7 @@
 //! Sente moves toward row 0.
 use super::eval;
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
+use crate::repetition::earlier_occurrences;
 use mshogi_core::tori::{Action, Face, Game, Piece, Position, Side, Square};
 use std::sync::LazyLock;
 
@@ -303,7 +304,7 @@ struct Undo {
     captured: u8,
     hash: u64,
     check: bool,
-    reversible: u16,
+    history_start: usize,
 }
 
 /// Search-internal Tori position.
@@ -321,8 +322,8 @@ pub struct ToriPosition {
     accumulated: [i32; 2],
     /// True if the side to move is in check.
     check: bool,
-    /// Plies since the last capture or drop.
-    reversible: u16,
+    /// Earliest key after the latest null move, or the start of the game.
+    history_start: usize,
     stack: Vec<Undo>,
     /// Hash of each position from the start of the known game to this one.
     keys: Vec<u64>,
@@ -352,7 +353,7 @@ impl ToriPosition {
             hash: 0,
             accumulated: [0; 2],
             check: false,
-            reversible: 0,
+            history_start: 0,
             stack: Vec::with_capacity(160),
             keys: Vec::with_capacity(700),
             root: 0,
@@ -383,28 +384,21 @@ impl ToriPosition {
     pub fn from_game(game: &Game) -> Self {
         let mut p = Self::from_position(game.position());
         let mut keys = Vec::with_capacity(game.events().len() + 1);
-        let mut reversible = 0u16;
-        let mut last: Option<(usize, u32)> = None;
+        let mut last = None;
         for count in 0..=game.events().len() {
             let Ok(snapshot) = game.event_prefix(count) else {
                 break;
             };
-            if last.is_some_and(|(ply, _)| ply == snapshot.board_ply) {
+            if last == Some(snapshot.board_ply) {
                 continue;
             }
             let local = snapshot.local_position();
             let earlier = Self::from_position(local.position());
-            let on_board = (earlier.occupied[0] | earlier.occupied[1]).count_ones();
-            reversible = match last {
-                Some((_, before)) if before == on_board => reversible.saturating_add(1),
-                _ => 0,
-            };
-            last = Some((snapshot.board_ply, on_board));
+            last = Some(snapshot.board_ply);
             keys.push(earlier.hash);
         }
         if keys.last() == Some(&p.hash) {
             p.keys = keys;
-            p.reversible = reversible;
         }
         p.root = p.keys.len() - 1;
         if let Some(repetition) = game.repetition() {
@@ -1154,7 +1148,7 @@ impl SearchPosition for ToriPosition {
             captured: self.board[to],
             hash: self.hash,
             check: self.check,
-            reversible: self.reversible,
+            history_start: self.history_start,
         };
         let mut swallow_drop = false;
         let placed;
@@ -1164,7 +1158,6 @@ impl SearchPosition for ToriPosition {
             placed = HAND_FACE[index];
             self.put(side, placed, to);
             swallow_drop = placed == SWALLOW;
-            self.reversible = 0;
         } else {
             undo.moved = self.board[from];
             let (_, face) = decode_piece(undo.moved);
@@ -1172,9 +1165,6 @@ impl SearchPosition for ToriPosition {
                 let (owner, victim) = decode_piece(undo.captured);
                 self.take(owner, victim, to);
                 self.add_hand(side, hand_index(victim));
-                self.reversible = 0;
-            } else {
-                self.reversible = self.reversible.saturating_add(1);
             }
             self.take(side, face, from);
             placed = self.moved_face(side, face, from, to);
@@ -1226,7 +1216,7 @@ impl SearchPosition for ToriPosition {
         }
         self.hash = undo.hash;
         self.check = undo.check;
-        self.reversible = undo.reversible;
+        self.history_start = undo.history_start;
     }
     fn make_null(&mut self) {
         self.stack.push(Undo {
@@ -1235,14 +1225,14 @@ impl SearchPosition for ToriPosition {
             captured: 0,
             hash: self.hash,
             check: self.check,
-            reversible: self.reversible,
+            history_start: self.history_start,
         });
         self.side ^= 1;
         self.hash ^= TABLES.side;
         self.keys.push(self.hash);
         self.check = false;
         // A pass is not a position of the game: no repetition across it.
-        self.reversible = 0;
+        self.history_start = self.keys.len() - 1;
     }
     fn unmake_null(&mut self) {
         let undo = self.stack.pop().expect("a null move to take back");
@@ -1250,7 +1240,7 @@ impl SearchPosition for ToriPosition {
         self.side ^= 1;
         self.hash = undo.hash;
         self.check = undo.check;
-        self.reversible = undo.reversible;
+        self.history_start = undo.history_start;
     }
     fn null_move_safe(&self) -> bool {
         // With a piece in hand, or a piece other than Phoenix and Swallows,
@@ -1263,27 +1253,18 @@ impl SearchPosition for ToriPosition {
         // Tori repetition rule (T06, MSH-208): a move that creates the third
         // occurrence of a position is illegal, so the side that moved here
         // loses. A position that occurred once before inside this search is a
-        // cycle without progress and scores level. The scan looks back only to
-        // the last capture or drop; in a drop game a position can also come
-        // back through a capture and a drop, so the search can miss a
-        // repetition. The root uses the exact native restriction.
+        // cycle without progress and scores level. The native rules check the root.
         let current = self.keys.len() - 1;
-        let limit = usize::from(self.reversible).min(current);
-        let mut earlier = 0;
-        let mut in_search = false;
-        let mut back = 2;
-        while back <= limit {
-            let index = current - back;
-            if self.keys[index] == self.hash {
-                earlier += 1;
-                in_search |= index >= self.root;
-                if earlier >= 2 {
-                    return Some(MATE_SCORE - self.ply() as i32);
-                }
-            }
-            back += 2;
+        let mut occurrences = earlier_occurrences(
+            &self.keys[..current],
+            self.hash,
+            2..=current - self.history_start,
+        );
+        let latest = occurrences.next()?;
+        if occurrences.next().is_some() {
+            return Some(MATE_SCORE - self.ply() as i32);
         }
-        in_search.then_some(0)
+        (latest >= self.root).then_some(0)
     }
     fn draw_claimable(&self) -> bool {
         false

@@ -603,21 +603,10 @@ impl ChessPosition {
     }
 
     fn repetition(&self) -> bool {
-        let limit = usize::from(self.halfmove.min(self.since_null)).min(self.keys.len());
-        let mut earlier = false;
-        let mut back = 4;
-        // The same side is to move each two plies; a repetition needs four.
-        while back <= limit {
-            let at = self.keys.len() - back;
-            if self.keys[at] == self.hash {
-                if at >= self.root_keys || earlier {
-                    return true;
-                }
-                earlier = true;
-            }
-            back += 2;
-        }
-        false
+        let limit = usize::from(self.halfmove.min(self.since_null));
+        // The same side is to move each two plies; a Chess repetition needs four.
+        let occurrences = crate::repetition::earlier_occurrences(&self.keys, self.hash, 4..=limit);
+        crate::repetition::cycle_start(occurrences, self.root_keys, 2).is_some()
     }
 
     /// Legality of a pseudo-legal quiet move of a piece that is not a pawn,

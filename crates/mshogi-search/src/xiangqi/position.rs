@@ -1,6 +1,7 @@
 //! Private Xiangqi board and classical evaluation for the shared search core.
 //! Real move admission and WXF adjudication remain native responsibilities.
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
+use crate::repetition::{cycle_start, earlier_occurrences};
 use mshogi_core::xiangqi::{
     Action, EventKind, Game, Intersection, Piece, PieceKind, Position, Side,
 };
@@ -1398,41 +1399,33 @@ impl SearchPosition for XiangqiPosition {
         }
 
         let current = self.keys.len() - 1;
-        let mut earlier = 0;
-        for back in (2..=self.reversible.min(current)).step_by(2) {
-            let index = current - back;
-            if self.keys[index] != self.hash {
-                continue;
-            }
-            earlier += 1;
-            if index >= self.root || earlier >= 2 {
-                // Approximate WXF conduct. A side whose every move in the
-                // cycle checks loses; otherwise a side whose every move
-                // checks or chases loses; both or neither: draw. Native
-                // rules adjudicate the real game.
-                let moves_of = |side: usize| {
-                    (index + 1..=current)
-                        .filter(move |&i| self.side ^ ((current - i) & 1) ^ 1 == side)
-                };
-                let checker = [0, 1].map(|side| moves_of(side).all(|i| self.checks[i]));
-                let loser = if checker[0] != checker[1] {
-                    Some(usize::from(checker[1]))
+        let occurrences =
+            earlier_occurrences(&self.keys[..current], self.hash, 2..=self.reversible);
+        if let Some(index) = cycle_start(occurrences, self.root, 2) {
+            // Approximate WXF conduct. A side whose every move in the
+            // cycle checks loses; otherwise a side whose every move
+            // checks or chases loses; both or neither: draw. Native
+            // rules adjudicate the real game.
+            let moves_of = |side: usize| {
+                (index + 1..=current).filter(move |&i| self.side ^ ((current - i) & 1) ^ 1 == side)
+            };
+            let checker = [0, 1].map(|side| moves_of(side).all(|i| self.checks[i]));
+            let loser = if checker[0] != checker[1] {
+                Some(usize::from(checker[1]))
+            } else {
+                let chases = self.chase_flags(index + 1);
+                let violator = [0, 1]
+                    .map(|side| moves_of(side).all(|i| self.checks[i] || chases[i - index - 1]));
+                (violator[0] != violator[1]).then(|| usize::from(violator[1]))
+            };
+            if let Some(side) = loser {
+                return Some(if side == self.side {
+                    -MATE_SCORE + self.ply() as i32
                 } else {
-                    let chases = self.chase_flags(index + 1);
-                    let violator = [0, 1].map(|side| {
-                        moves_of(side).all(|i| self.checks[i] || chases[i - index - 1])
-                    });
-                    (violator[0] != violator[1]).then(|| usize::from(violator[1]))
-                };
-                if let Some(side) = loser {
-                    return Some(if side == self.side {
-                        -MATE_SCORE + self.ply() as i32
-                    } else {
-                        MATE_SCORE - self.ply() as i32
-                    });
-                }
-                return Some(0);
+                    MATE_SCORE - self.ply() as i32
+                });
             }
+            return Some(0);
         }
         None
     }

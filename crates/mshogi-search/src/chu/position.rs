@@ -2,6 +2,7 @@
 //! Native movement descriptors are geometry data; generation, projection,
 //! Lion protection and restoration below are independent search operations.
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
+use crate::repetition::{cycle_start, earlier_occurrences};
 use mshogi_core::chu::{
     Action, Base, Game, GameCommand, LionProtection, LocalPosition, Movement, Piece, Position,
     Side, SpecialMovement, Square, movement,
@@ -994,17 +995,9 @@ impl SearchPosition for ChuPosition {
             return Some(MATE_SCORE - ply - 1);
         }
         let current = self.keys.len() - 1;
-        let mut previous = 0;
-        for back in (2..=self.reversible.min(current)).step_by(2) {
-            let index = current - back;
-            if self.keys[index] == self.board.hash {
-                previous += 1;
-                if index >= self.root || previous >= 2 {
-                    return Some(0);
-                }
-            }
-        }
-        None
+        let occurrences =
+            earlier_occurrences(&self.keys[..current], self.board.hash, 2..=self.reversible);
+        cycle_start(occurrences, self.root, 2).map(|_| 0)
     }
     fn draw_claimable(&self) -> bool {
         false

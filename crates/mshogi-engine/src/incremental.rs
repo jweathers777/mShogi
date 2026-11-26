@@ -161,14 +161,14 @@ impl Client {
             .and_then(|previous| {
                 let current = &request.context.game;
                 let old = &previous.context.game;
-                for_game!(current.game_kind(),G=>{
-                    let current=G::record(current)?;
-                    let earlier=G::record(old)?;
-                    G::extends(current,earlier).then(||Update::Advance {
-                        base:Metadata::from_context(&previous.context).stamp(),
-                        delta:G::suffix(current, old.event_count())
+                for_game!(current.game_kind(), G => {
+                    let current = G::record(current)?;
+                    let earlier = G::record(old)?;
+                    G::extends(current, earlier).then(|| Update::Advance {
+                        base: Metadata::from_context(&previous.context).stamp(),
+                        delta: G::suffix(current, old.event_count()),
                     })
-                },chess=>None)
+                }, chess => None)
             })
             .unwrap_or_else(|| Update::Reset {
                 game: request.context.game.clone(),

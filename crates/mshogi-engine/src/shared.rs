@@ -75,7 +75,8 @@ impl ExecutionContext {
 
         let kind = self.game.game_kind();
         let target_valid = |target: &ExecutionTarget| {
-            let turn = for_game!(kind,G=>G::record(&self.game).map(|r|G::native_side(G::record_side(r))),chess=>Some(target.turn));
+            let turn = for_game!(kind, G => G::record(&self.game)
+                .map(|record| G::native_side(G::record_side(record))), chess => Some(target.turn));
             target.turn.game() == kind
                 && turn.is_some_and(|turn| {
                     target.matches(

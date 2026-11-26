@@ -234,17 +234,23 @@ fn dispatch_request(
     output: &mut impl Write,
 ) -> io::Result<()> {
     if let Ok(request) = serde_json::from_slice::<crate::incremental::Request>(bytes) {
-        let response = for_game!(request.game_kind(),G=>
-            native.session::<G>().execute(request, |game,reset,limits,time|execute_retained::<G>(session,game,reset,limits,time,None)),
-            chess=>crate::incremental::Response::new(bytes, ExecutionResult::failure(FailureKind::InvalidRequest,"Chess has no incremental session")));
+        let response = for_game!(request.game_kind(), G => {
+            native.session::<G>().execute(request, |game, reset, limits, time| {
+                execute_retained::<G>(session, game, reset, limits, time, None)
+            })
+        }, chess => crate::incremental::Response::new(bytes, ExecutionResult::failure(
+            FailureKind::InvalidRequest, "Chess has no incremental session",
+        )));
         return write_response(output, &response.bind(bytes));
     }
     let request: ExecutionRequest = serde_json::from_slice(bytes).map_err(io::Error::other)?;
     if crate::incremental::Client::supports(&request) {
         let record = Some(&request.context.game);
-        let response = for_game!(request.context.game.game_kind(),G=>
-            native.session::<G>().begin(&request,|game,reset,limits,time|execute_retained::<G>(session,game,reset,limits,time,record)),
-            chess=>unreachable!("unsupported incremental request"));
+        let response = for_game!(request.context.game.game_kind(), G => {
+            native.session::<G>().begin(&request, |game, reset, limits, time| {
+                execute_retained::<G>(session, game, reset, limits, time, record)
+            })
+        }, chess => unreachable!("unsupported incremental request"));
         return write_response(output, &response.bind(bytes));
     }
     if request.context.limits.time_ms.is_some() {

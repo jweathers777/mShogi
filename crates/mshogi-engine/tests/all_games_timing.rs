@@ -266,3 +266,70 @@ fn continuing_process_admits_native_suffixes_for_every_supported_profile() {
         ));
     }
 }
+
+#[test]
+fn retained_analysis_checks_the_target_after_same_ply_xiangqi_events() {
+    use mshogi_core::native::NativeSide;
+    use mshogi_engine::incremental::Client;
+    use std::sync::Arc;
+    let mut game = xiangqi::Game::standard(xiangqi::ClaimPolicy::Explicit).unwrap();
+    let record = |game: &xiangqi::Game| {
+        CanonicalRecord::xiangqi(xiangqi::GameRecord::from_game(game).unwrap())
+    };
+    let initial = Arc::new(request(&record(&game), 1, true));
+    let mut client = Client::default();
+    let mut root_line = client.encode(&initial).unwrap();
+    root_line.push(b'\n');
+    let mut ack = Vec::new();
+    serve_once(root_line.as_slice(), &mut ack).unwrap();
+    client.decode(&ack).unwrap();
+    game.submit(xiangqi::GameRequest {
+        expected: game.context(),
+        actor: xiangqi::Side::Red,
+        command: xiangqi::GameCommand::ClaimNaturalCount,
+    })
+    .unwrap();
+    let mut next = request(&record(&game), 2, true);
+    next.context.purpose = ExecutionPurpose::MoveAnalysis {
+        target: ExecutionTarget {
+            selection_id: 1,
+            event_index: 2,
+            board_ply: 0,
+            session_version: 2,
+            label: "Rejected claim".into(),
+            turn: NativeSide::Xiangqi(xiangqi::Side::Red),
+        },
+    };
+    let next = Arc::new(next);
+    let wire = client.encode(&next).unwrap();
+    let mut forged: Value = serde_json::from_slice(&wire).unwrap();
+    assert!(forged["update"]["advance"].is_object());
+    forged["session"]["purpose"]["target"]["board_ply"] = json!(1);
+    for (bytes, valid) in [(serde_json::to_vec(&forged).unwrap(), false), (wire, true)] {
+        let mut input = root_line.clone();
+        input.extend(bytes);
+        input.push(b'\n');
+        let mut out = Vec::new();
+        serve(input.as_slice(), &mut out).unwrap();
+        let reply = out.split(|&c| c == b'\n').nth(1).unwrap();
+        if valid {
+            let response = client.decode(reply).unwrap();
+            assert!(response.matches(&next));
+            assert!(matches!(
+                response.observation.result,
+                ExecutionResult::Xiangqi { .. }
+            ));
+        } else {
+            let response: incremental::Response = serde_json::from_slice(reply).unwrap();
+            assert!(matches!(
+                response.into_result(),
+                ExecutionResult::Failure {
+                    failure: EngineFailure {
+                        kind: FailureKind::InvalidRequest,
+                        ..
+                    }
+                }
+            ));
+        }
+    }
+}

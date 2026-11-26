@@ -182,9 +182,11 @@ The session retention policy remains the same under protocol 7.
   comparison includes the initial state and immutable profile. A timed switch
   of game kind drops the previous game state. Desktop defaults are unchanged.
 - The bridge requires strictly increasing nonzero `request_id` values.
-- Timed Shogi and Tori engine turns retain their measured native incremental
-  sessions. A suffix names the exact acknowledged request ID. A missing or
-  different base cannot apply a suffix. Every reply uses the same compact shape,
+- Timed engine turns and move analysis for Shogi, Xiangqi, Tori, Chu and
+  both Tenjiku profiles retain the native game. A suffix names the exact
+  acknowledged request ID. The child checks the resulting native events and
+  the selected analysis target. Chess sends its full adjudicated match record.
+  Every reply uses the same compact shape,
   including the initial full request and fixed-work requests.
 
 ## Native result admission

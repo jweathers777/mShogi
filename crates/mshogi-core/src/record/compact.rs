@@ -71,6 +71,10 @@ pub(crate) struct Wire<R, E> {
     pub(crate) root: R,
     events: E,
 }
+type ParsedWire<S> = Wire<
+    <S as Compact>::Root,
+    Vec<RecordedCommand<<S as Snapshot>::Side, <S as Snapshot>::Command>>,
+>;
 impl<R, E> Wire<R, E> {
     pub(crate) fn new<S: Compact<Root = R>>(root: R, events: E) -> Self {
         Self {
@@ -205,7 +209,7 @@ impl<S: Compact> CompactRecord<S> {
         stop: &mut impl FnMut() -> bool,
     ) -> Result<(GameHistory<S>, Vec<GameUndo>), RecordError> {
         check(stop)?;
-        let wire: Wire<S::Root, Vec<RecordedCommand<S::Side, S::Command>>> = parse(text)?;
+        let wire: ParsedWire<S> = parse(text)?;
         check(stop)?;
         if wire.profile.as_deref() != S::PROFILE
             || wire.edition != S::edition(&wire.root)

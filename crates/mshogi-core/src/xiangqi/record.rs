@@ -235,18 +235,20 @@ impl IncrementalRecord for GameRecord {
         game.append_transaction(|game| {
             for entry in &delta.commands {
                 let index = game.commands.len();
-                game.apply_request(GameRequest {
+                let request = GameRequest {
                     expected: game.context(),
                     actor: entry.actor,
                     command: entry.command,
-                })
-                .map_err(|e| {
-                    if e == GameError::Invariant {
-                        RecordError::Invariant(index)
-                    } else {
-                        RecordError::Command(index)
-                    }
-                })?;
+                };
+                game.check_request(&request)
+                    .and_then(|()| game.apply_command(request))
+                    .map_err(|e| {
+                        if e == GameError::Invariant {
+                            RecordError::Invariant(index)
+                        } else {
+                            RecordError::Command(index)
+                        }
+                    })?;
                 if game.commands.last() != Some(entry) {
                     return Err(RecordError::Derived);
                 }
@@ -280,8 +282,11 @@ mod tests {
         }
         let full = GameRecord::from_game(&game).unwrap();
         assert!(full.has_prefix(&base));
-        assert_eq!(full.event_count(), 3);
-        assert_eq!(full.suffix(2), Err(RecordError::Prefix));
+        // A rejected claim emits submission and refusal. Resignation emits the command and conclusion.
+        assert_eq!(full.event_count(), 4);
+        assert_eq!(full.suffix(1), Err(RecordError::Prefix));
+        assert_eq!(full.suffix(2).unwrap().events.len(), 2);
+        assert_eq!(full.suffix(3), Err(RecordError::Prefix));
         let delta = full.suffix(0).unwrap();
         let mut session = Session::<GameRecord>::new();
         session.reset(&base).unwrap();

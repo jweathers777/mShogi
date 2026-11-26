@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-25T08:51:00Z'
-updated_date: '2026-11-26T03:21:00Z'
+updated_date: '2026-11-26T03:35:00Z'
 labels:
   - desktop
   - refactor
@@ -54,4 +54,6 @@ Production lines before (src, no *tests.rs / *.test.*, no fixtures): desktop-ses
 
 <!-- SECTION:NOTES:BEGIN -->
 MSH-209 (2026-11-25), findings that fall under AC2 and AC3 (no scope change): Board.tsx (47-127), product/ShogiBoard.tsx (36-114) and product/XiangqiBoard.tsx (20-108) repeat the same board controls (square list, help text, route controls, square labels, inspection rings, completion dialog) and have drifted (modal or inline dialog, label wording, help through a portal or inline). Chess still goes through the old colour-piece path of Board.tsx (GameBoard.tsx converts pieces); the hands group of Board.tsx and the Xiangqi guard and Tori hand filter of NativeBoard.tsx have only test callers. In desktop-session, ResourceScope (resource.rs) repeats GameKind plus Application. MSH-264 (One Frontend Game Table and Wire Types) runs after this task and covers game tables, wire types and test helpers.
+
+Checkpoint 2026-11-26 (branch claude/msh-239-uniform-desktop): Rust session part done (one SessionOperation shape, GameSettings for all games, NativeGame limits/new_record/record_of, with_game! dispatch, chu/tori/tenjiku_document alias modules removed). Session tests compile and pass except the committed GUI fixture documents (need regeneration: Tori/Chu/Tenjiku settings now have analysis_defaults). Next: frontend operations and settings, piece/board components, fixtures, scripts, docs.
 <!-- SECTION:NOTES:END -->

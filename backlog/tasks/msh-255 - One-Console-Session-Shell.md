@@ -1,11 +1,11 @@
 ---
 id: MSH-255
 title: Shared Console Sessions and Test Support
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T17:40:00Z'
+updated_date: '2026-11-26T17:49:00Z'
 labels:
   - console
   - refactor
@@ -31,11 +31,11 @@ crates/mshogi-console/tests repeat helpers: the subprocess run helper six times 
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 One generic console session serves Tori, Chu and Tenjiku, and Shogi and Xiangqi where the skeleton fits; per-game code holds only notation, board drawing, hands, draw and profile commands and other real differences.
-- [ ] #2 All sessions use one error text style, one draw command vocabulary and one export check; shared items live in a shell module; main.rs dispatches once.
-- [ ] #3 Console tests pass, updated for unified command names; production line counts before and after are recorded.
-- [ ] #4 One tests/support module holds the shared helpers and the test files use it; one success rule (stderr checked or not) applies to all files.
-- [ ] #5 Test coverage is unchanged (same tests and assertions); console tests pass; test line counts before and after are recorded.
+- [x] #1 One generic console session serves Tori, Chu and Tenjiku, and Shogi and Xiangqi where the skeleton fits; per-game code holds only notation, board drawing, hands, draw and profile commands and other real differences.
+- [x] #2 All sessions use one error text style, one draw command vocabulary and one export check; shared items live in a shell module; main.rs dispatches once.
+- [x] #3 Console tests pass, updated for unified command names; production line counts before and after are recorded.
+- [x] #4 One tests/support module holds the shared helpers and the test files use it; one success rule (stderr checked or not) applies to all files.
+- [x] #5 Test coverage is unchanged (same tests and assertions); console tests pass; test line counts before and after are recorded.
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -62,4 +62,12 @@ Shared test support now holds console execution and success checks, protocol chi
 Independent review found repeated Shogi history replay, an inconsistent record separator, three remaining success checks, two duplicate desktop waits and stale Xiangqi help documentation. Fixed all findings. Native undo tokens now roll back only an uncommitted batch, including export failures. First 90 plies of msh187-round2-failed-0002.usi as individual human shell moves on the Mac, debug: reviewer measured 3.70 s before the fix. Median of three after the fix was 0.092 s versus 0.048 s on the original binary, with exactly equal final records. New code checks export on each move. Source lines 4680 to 4144 and test lines 9345 to 8423 (all .rs under src and tests). All 164 original integration and five unit tests retain their names, including the release-only Chu test. Clippy passes. Next: tracked workspace checks and three-platform process CI, integrate, close and clean.
 
 Final Mac check on 0577740: CARGO_BUILD_JOBS=2 RUST_TEST_THREADS=2 python3 tools/checks.py run --base origin/main passed workspace formatting, Clippy and all default tests (1,162 passed, 10 pre-existing ignored). Console accounted for 168 passes and one debug-only skip of a release test. Manual duplicate rollback checks for Chess, Shogi and Xiangqi passed. Backlog doctor, guide links and git diff --check passed. Waiting for GitHub release process suite run 45868580340 on Ubuntu 24.04, macOS 15 and Windows 2022, then integrate codex/msh-255-console-sessions and clean.
+
+Verified code 0577740, integrated through 371c84e on main. GitHub Actions https://github.com/jweathers777/mShogi/actions/runs/45868580340 ran cargo test --release --locked -p mshogi-engine -p mshogi-runner -p mshogi-console --tests on Ubuntu 24.04, macOS 15 and Windows 2022. All three passed, including the production Chu case skipped in debug. No Cloud Batch or Cloud Build jobs, no GCP cost and no GCS run artifacts.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+All six games share shell input, record handling and export checks. Five games use one session for atomic moves and undo. Xiangqi uses offer-draw, accept-draw and decline-draw. Console tests share process, protocol, desktop and self-play helpers. Rust source fell from 4,680 to 4,144 lines and test code from 9,345 to 8,423. All 169 original console test cases remain. Workspace checks and release process tests passed on all three target systems. Independent review findings are fixed. Next dependency released: MSH-243 (Game-Independent Strength Tool).
+<!-- SECTION:FINAL_SUMMARY:END -->

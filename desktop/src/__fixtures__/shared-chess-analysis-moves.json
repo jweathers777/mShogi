@@ -17,14 +17,14 @@
     "dirty": true,
     "path": null,
     "settings": {
-      "game_kind": "chess",
-      "settings": {
-        "play_mode": "human_engine",
-        "orientation": "white",
-        "analysis_defaults": {
-          "depth": 1,
-          "nodes": 1000
-        }
+      "play_mode": "human_engine",
+      "orientation": {
+        "game_kind": "chess",
+        "side": "white"
+      },
+      "analysis_defaults": {
+        "depth": 1,
+        "nodes": 1000
       }
     }
   },

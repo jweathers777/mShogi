@@ -212,7 +212,11 @@ impl SessionGame for Xiangqi {
                         kind: format!("{:?}", p.kind).to_lowercase(),
                         promoted: false,
                         text: format!("{:?}", p.kind),
-                        label: format!("{point}, {} {:?}", owner.label, p.kind),
+                        label: format!(
+                            "{point}, {} {}",
+                            owner.label,
+                            format!("{:?}", p.kind).to_lowercase()
+                        ),
                     }
                 })
             })

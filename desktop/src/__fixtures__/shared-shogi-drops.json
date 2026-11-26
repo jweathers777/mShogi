@@ -17,14 +17,14 @@
     "dirty": true,
     "path": null,
     "settings": {
-      "game_kind": "shogi",
-      "settings": {
-        "play_mode": "human_engine",
-        "orientation": "sente",
-        "analysis_defaults": {
-          "depth": 1,
-          "nodes": 1000
-        }
+      "play_mode": "human_engine",
+      "orientation": {
+        "game_kind": "shogi",
+        "side": "sente"
+      },
+      "analysis_defaults": {
+        "depth": 1,
+        "nodes": 1000
       }
     }
   },
@@ -198,7 +198,7 @@
       "kind": "king",
       "promoted": false,
       "text": "K",
-      "label": "1a, Gote K"
+      "label": "1a, Gote king"
     },
     {
       "square": "9i",
@@ -206,7 +206,7 @@
       "kind": "king",
       "promoted": false,
       "text": "K",
-      "label": "9i, Sente K"
+      "label": "9i, Sente king"
     }
   ],
   "hands": [
@@ -216,7 +216,7 @@
       "kind": "rook",
       "count": 2,
       "text": "R",
-      "label": "Sente hand R, 2"
+      "label": "Sente rook in hand, 2"
     },
     {
       "origin": "hand:mshogi.shogi.csa36.v1:sente:B",
@@ -224,7 +224,7 @@
       "kind": "bishop",
       "count": 1,
       "text": "B",
-      "label": "Sente hand B, 1"
+      "label": "Sente bishop in hand, 1"
     },
     {
       "origin": "hand:mshogi.shogi.csa36.v1:sente:G",
@@ -232,7 +232,7 @@
       "kind": "gold",
       "count": 1,
       "text": "G",
-      "label": "Sente hand G, 1"
+      "label": "Sente gold in hand, 1"
     },
     {
       "origin": "hand:mshogi.shogi.csa36.v1:sente:S",
@@ -240,7 +240,7 @@
       "kind": "silver",
       "count": 1,
       "text": "S",
-      "label": "Sente hand S, 1"
+      "label": "Sente silver in hand, 1"
     },
     {
       "origin": "hand:mshogi.shogi.csa36.v1:sente:N",
@@ -248,7 +248,7 @@
       "kind": "knight",
       "count": 1,
       "text": "N",
-      "label": "Sente hand N, 1"
+      "label": "Sente knight in hand, 1"
     },
     {
       "origin": "hand:mshogi.shogi.csa36.v1:sente:L",
@@ -256,7 +256,7 @@
       "kind": "lance",
       "count": 1,
       "text": "L",
-      "label": "Sente hand L, 1"
+      "label": "Sente lance in hand, 1"
     },
     {
       "origin": "hand:mshogi.shogi.csa36.v1:sente:P",
@@ -264,7 +264,7 @@
       "kind": "pawn",
       "count": 1,
       "text": "P",
-      "label": "Sente hand P, 1"
+      "label": "Sente pawn in hand, 1"
     },
     {
       "origin": "hand:mshogi.shogi.csa36.v1:gote:R",
@@ -272,7 +272,7 @@
       "kind": "rook",
       "count": 0,
       "text": "R",
-      "label": "Gote hand R, 0"
+      "label": "Gote rook in hand, 0"
     },
     {
       "origin": "hand:mshogi.shogi.csa36.v1:gote:B",
@@ -280,7 +280,7 @@
       "kind": "bishop",
       "count": 0,
       "text": "B",
-      "label": "Gote hand B, 0"
+      "label": "Gote bishop in hand, 0"
     },
     {
       "origin": "hand:mshogi.shogi.csa36.v1:gote:G",
@@ -288,7 +288,7 @@
       "kind": "gold",
       "count": 0,
       "text": "G",
-      "label": "Gote hand G, 0"
+      "label": "Gote gold in hand, 0"
     },
     {
       "origin": "hand:mshogi.shogi.csa36.v1:gote:S",
@@ -296,7 +296,7 @@
       "kind": "silver",
       "count": 0,
       "text": "S",
-      "label": "Gote hand S, 0"
+      "label": "Gote silver in hand, 0"
     },
     {
       "origin": "hand:mshogi.shogi.csa36.v1:gote:N",
@@ -304,7 +304,7 @@
       "kind": "knight",
       "count": 0,
       "text": "N",
-      "label": "Gote hand N, 0"
+      "label": "Gote knight in hand, 0"
     },
     {
       "origin": "hand:mshogi.shogi.csa36.v1:gote:L",
@@ -312,7 +312,7 @@
       "kind": "lance",
       "count": 0,
       "text": "L",
-      "label": "Gote hand L, 0"
+      "label": "Gote lance in hand, 0"
     },
     {
       "origin": "hand:mshogi.shogi.csa36.v1:gote:P",
@@ -320,7 +320,7 @@
       "kind": "pawn",
       "count": 0,
       "text": "P",
-      "label": "Gote hand P, 0"
+      "label": "Gote pawn in hand, 0"
     }
   ],
   "choices": [

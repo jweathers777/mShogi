@@ -138,10 +138,14 @@
     "dirty": true,
     "path": null,
     "settings": {
-      "game_kind": "tori",
-      "settings": {
-        "play_mode": "human_engine",
-        "orientation": "sente"
+      "play_mode": "human_engine",
+      "orientation": {
+        "game_kind": "tori",
+        "side": "sente"
+      },
+      "analysis_defaults": {
+        "depth": 64,
+        "nodes": 300000
       }
     }
   },

@@ -139,9 +139,14 @@ impl SessionGame for Shogi {
                     PresentedPiece {
                         square: square.to_string(),
                         owner: owner.key,
-                        kind: format!("{:?}", p.kind).to_lowercase(),
+                        kind: kind_name(p.kind),
                         promoted: p.promoted,
-                        label: format!("{square}, {} {text}", owner.label),
+                        label: format!(
+                            "{square}, {} {}{}",
+                            owner.label,
+                            if p.promoted { "promoted " } else { "" },
+                            kind_name(p.kind)
+                        ),
                         text,
                     }
                 })
@@ -159,9 +164,9 @@ impl SessionGame for Shogi {
                 hands.push(PresentedHand {
                     origin: format!("hand:{}:{text}", owner.key),
                     owner: owner.key.clone(),
-                    kind: format!("{kind:?}").to_lowercase(),
+                    kind: kind_name(kind),
                     count,
-                    label: format!("{} hand {text}, {count}", owner.label),
+                    label: format!("{} {} in hand, {count}", owner.label, kind_name(kind)),
                     text,
                 });
             }
@@ -276,4 +281,8 @@ fn status(game: &s::Game) -> PresentedStatus {
         label,
         score_half_points: game.conclusion().map(|c| c.score_half_points()),
     }
+}
+/// Lowercase native piece name, as the presentation spells it.
+fn kind_name(kind: s::PieceKind) -> String {
+    format!("{kind:?}").to_lowercase()
 }

@@ -291,10 +291,14 @@
     "dirty": true,
     "path": null,
     "settings": {
-      "game_kind": "chu",
-      "settings": {
-        "play_mode": "human_engine",
-        "orientation": "gote"
+      "play_mode": "human_engine",
+      "orientation": {
+        "game_kind": "chu",
+        "side": "gote"
+      },
+      "analysis_defaults": {
+        "depth": 64,
+        "nodes": 300000
       }
     }
   },

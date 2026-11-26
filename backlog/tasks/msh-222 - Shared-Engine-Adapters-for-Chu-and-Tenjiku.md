@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-21T23:10:00Z'
-updated_date: '2026-11-25T23:06:00Z'
+updated_date: '2026-11-26T02:42:00Z'
 labels:
   - engine
   - refactor
@@ -47,4 +47,6 @@ Production lines before: mshogi-engine 4,921; mshogi-desktop-session 12,732; msh
 
 <!-- SECTION:NOTES:BEGIN -->
 Checkpoint 2026-11-26 (branch claude/msh-222-engine-adapters): adapter.rs (trait EngineGame, EngineResult<G>, EngineTelemetry<G>, one matches, validate and score_label) and game.rs (five impls) replace shogi.rs, xiangqi.rs, tori.rs, chu.rs, tenjiku.rs; server.rs has one execute path and one engine slot. Callers in desktop-session, runner, console and tests updated; engine tests pass (fixed-search baseline unchanged). Next: workspace and desktop checks, fixture regeneration, docs, line counts, review.
+
+Checkpoint 2026-11-26 (1e95c95): protocol version 7; choice field in every game; Chu, Tori and Tenjiku frontend fixtures regenerated (diff is only action -> choice, 11 fields: search output unchanged); scripts and docs updated. Checks: fmt, clippy (workspace and desktop-session all features), workspace tests 1152 passed and 1 contract test fixed after (protocol literal), desktop-session all features 197 passed, frontend check and 586 tests passed, script Python tests passed, src-tauri lock current. CI process suite (run 45720363450) passed on Linux, macOS and Windows. Next: fresh-agent review (first attempt stopped by a usage limit), fixes, merge main, final checks, integrate.
 <!-- SECTION:NOTES:END -->

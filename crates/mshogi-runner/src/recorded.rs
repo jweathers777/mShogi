@@ -6,6 +6,85 @@ use crate::{
     *,
 };
 use serde::{Deserialize, Serialize};
+/// Explicit untimed, restart-per-turn experiment input, independent of chess config.
+#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Config<O, P> {
+    /// Additional fields required by this native protocol.
+    #[serde(flatten)]
+    pub policy: P,
+    /// Current report/config version, one.
+    pub schema_version: u32,
+    /// Exact immutable native identity.
+    pub profile: String,
+    /// Experiment label.
+    pub id: String,
+    /// Must be untimed; no clock adjudication is supplied here.
+    pub time_control: String,
+    /// Must be fresh_per_turn; no untagged reply crosses request generations.
+    pub process_policy: String,
+    /// Individual executable/option settings (existing bounded process configuration).
+    pub engines: [EngineConfig; 2],
+    /// Complete roots/prefixes, at most four.
+    pub openings: Vec<O>,
+    /// Reverse engine assignments for every opening.
+    pub paired: bool,
+    /// Per-engine finite work, no movetime.
+    pub work: [WorkLimit; 2],
+    /// Maximum engine commands after the opening; an experiment cutoff, not a rule.
+    pub max_actions: u32,
+    /// Overall per-game experiment watchdog; expiry is unfinished, not a chess clock.
+    pub max_game_ms: u64,
+    /// Independent process watchdogs.
+    pub watchdogs: Watchdogs,
+    /// Explicit stream/report bounds.
+    pub io: IoLimits,
+}
+impl<O, P> Config<O, P> {
+    pub(crate) fn settings(&self) -> protocol::Settings<'_> {
+        protocol::Settings {
+            engines: &self.engines,
+            watchdogs: self.watchdogs,
+            io: self.io,
+            max_game_ms: self.max_game_ms,
+            max_actions: self.max_actions,
+            work: self.work,
+        }
+    }
+
+    pub(crate) fn schedule(&self) -> Schedule<'_, O> {
+        Schedule {
+            settings: self.settings(),
+            openings: &self.openings,
+            paired: self.paired,
+        }
+    }
+    pub(crate) fn validate_common(
+        &self,
+        profile: &str,
+        depth: u16,
+        nodes: u64,
+        validate_open: impl Fn(&O) -> Result<(), RunnerError>,
+    ) -> Result<(), RunnerError> {
+        if self.schema_version != 1
+            || self.profile != profile
+            || self.time_control != "untimed"
+            || self.process_policy != "fresh_per_turn"
+        {
+            return Err(RunnerError(
+                "unsupported version/profile/time control/process policy".into(),
+            ));
+        }
+        let settings = self.settings();
+        settings.validate_bounds(&self.id, self.openings.len())?;
+        settings.validate_work(profile, depth, nodes)?;
+        for opening in &self.openings {
+            validate_open(opening)?;
+        }
+        settings.validate_processes(profile)
+    }
+}
+
 /// One complete accepted native game plus bounded external observations.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]

@@ -48,49 +48,13 @@ impl Opening {
         Ok(game)
     }
 }
-/// Explicit untimed, restart-per-turn experiment input, independent of chess config.
+/// Protocol-specific configuration fields.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-pub struct Config {
-    /// Current report/config version, one.
-    pub schema_version: u32,
-    /// Exact immutable native identity.
-    pub profile: String,
-    /// Experiment label.
-    pub id: String,
-    /// Must be untimed; no clock adjudication is supplied here.
-    pub time_control: String,
-    /// Must be fresh_per_turn; no untagged reply crosses request generations.
-    pub process_policy: String,
-    /// Individual executable/option settings (existing bounded process configuration).
-    pub engines: [EngineConfig; 2],
-    /// Complete roots/prefixes, at most four.
-    pub openings: Vec<Opening>,
-    /// Reverse engine assignments for every opening.
-    pub paired: bool,
-    /// Per-engine finite work, no movetime.
-    pub work: [WorkLimit; 2],
-    /// Maximum engine commands after the opening; an experiment cutoff, not a rule.
-    pub max_actions: u32,
-    /// Overall per-game experiment watchdog; expiry is unfinished, not a chess clock.
-    pub max_game_ms: u64,
-    /// Independent process watchdogs.
-    pub watchdogs: Watchdogs,
-    /// Explicit stream/report bounds.
-    pub io: IoLimits,
-}
+pub struct NoPolicy {}
+/// Finite-work games using this native adapter.
+pub type Config = crate::recorded::Config<Opening, NoPolicy>;
 impl Config {
-    fn settings(&self) -> protocol::Settings<'_> {
-        protocol::Settings {
-            engines: &self.engines,
-            watchdogs: self.watchdogs,
-            io: self.io,
-            max_game_ms: self.max_game_ms,
-            max_actions: self.max_actions,
-            work: self.work,
-        }
-    }
-
     /// Strict, bounded input parsing.
     pub fn from_json(text: &str) -> Result<Self, RunnerError> {
         let config: Self = common::decode(text, common::CONFIG_BYTES)?;
@@ -99,33 +63,21 @@ impl Config {
     }
     /// Validate typed callers before starting children.
     pub fn validate(&self) -> Result<(), RunnerError> {
-        if self.schema_version != 1
-            || self.profile != PROFILE_ID
-            || self.time_control != "untimed"
-            || self.process_policy != "fresh_per_turn"
-        {
-            return Err(RunnerError(
-                "unsupported shogi version/profile/time_control/process_policy".into(),
-            ));
-        }
-        let settings = self.settings();
-        settings.validate_bounds(&self.id, self.openings.len())?;
-        settings.validate_work(
-            "Shogi",
+        self.validate_common(
+            PROFILE_ID,
             mshogi_search::shogi::MAX_DEPTH,
             mshogi_search::shogi::MAX_NODES,
-        )?;
-        for o in &self.openings {
-            if o.id.is_empty()
-                || o.id.len() > 128
-                || o.moves.len() > 320
-                || o.sfen.as_ref().is_some_and(|s| s.len() > 4096)
-            {
-                return Err(RunnerError("invalid opening bounds".into()));
-            }
-            o.game()?;
-        }
-        settings.validate_processes("shogi")
+            |o| {
+                if o.id.is_empty()
+                    || o.id.len() > 128
+                    || o.moves.len() > 320
+                    || o.sfen.as_ref().is_some_and(|s| s.len() > 4096)
+                {
+                    return Err(RunnerError("invalid opening bounds".into()));
+                }
+                o.game().map(|_| ())
+            },
+        )
     }
 }
 pub use crate::{
@@ -200,16 +152,6 @@ impl crate::recorded::Opening for Opening {
         self.game()
     }
 }
-impl Config {
-    fn schedule(&self) -> Result<crate::recorded::Schedule<'_, Opening>, RunnerError> {
-        self.validate()?;
-        Ok(crate::recorded::Schedule {
-            settings: self.settings(),
-            openings: &self.openings,
-            paired: self.paired,
-        })
-    }
-}
 impl Report {
     /// Decode bounded evidence and verify the native history.
     pub fn from_json(text: &str) -> Result<Self, RunnerError> {
@@ -223,12 +165,14 @@ impl Report {
     }
     /// Recreate each game from its opening and recorded replies.
     pub fn replay(&self) -> Result<Vec<Game>, RunnerError> {
-        crate::recorded::replay(self, self.config.schedule()?)
+        self.config.validate()?;
+        crate::recorded::replay(self, self.config.schedule())
     }
 }
 /// Run each opening and engine assignment through the native protocol adapter.
 pub fn run(config: &Config) -> Result<Report, RunnerError> {
-    let report = crate::recorded::run(config, config.schedule()?)?;
+    config.validate()?;
+    let report = crate::recorded::run(config, config.schedule())?;
     report.to_json()?;
     Ok(report)
 }
@@ -248,10 +192,7 @@ impl Native for Adapter {
     fn score(conclusion: Conclusion) -> [u8; 2] {
         conclusion.score_half_points()
     }
-    const HELLO: &'static str = "usi";
-    const OK: &'static str = "usiok";
-    const NEWGAME: &'static str = "usinewgame";
-    const READY_AFTER_NEWGAME: bool = false;
+    const DIALECT: crate::transport::Dialect = crate::transport::Dialect::Usi;
     fn actor(game: &Game) -> Side {
         game.position().side_to_move()
     }
@@ -270,17 +211,14 @@ impl Native for Adapter {
     fn position(game: &Game) -> String {
         position(game)
     }
-    fn apply_reply(game: &mut Game, text: &str) -> Result<(), RunnerError> {
-        submit(game, reply(text).map_err(RunnerError)?).map_err(RunnerError)
-    }
-    fn admit_turn(game: &Game, text: &str) -> Result<Option<String>, Rejection> {
+    fn admit_turn(game: &mut Game, text: &str) -> Result<Option<String>, Rejection> {
         let command = reply(text).map_err(|detail| Rejection {
             kind: FailureKind::MalformedReply,
             phase: "search",
             detail,
         })?;
-        let mut candidate = game.clone();
-        submit(&mut candidate, command).map_err(|detail| Rejection {
+        let actor = game.position().side_to_move();
+        submit(game, command).map_err(|detail| Rejection {
             kind: if matches!(command, GameCommand::Play(_)) {
                 FailureKind::IllegalAction
             } else {
@@ -289,10 +227,10 @@ impl Native for Adapter {
             phase: "admission",
             detail,
         })?;
-        Ok(candidate.conclusion().map(|conclusion| {
+        Ok(game.conclusion().map(|conclusion| {
             let notice = match conclusion {
                 Conclusion::Draw(_) => "draw",
-                Conclusion::Win { winner, .. } if winner == game.position().side_to_move() => "win",
+                Conclusion::Win { winner, .. } if winner == actor => "win",
                 _ => "lose",
             };
             format!("gameover {notice}")

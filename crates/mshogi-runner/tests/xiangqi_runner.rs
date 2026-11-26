@@ -1,25 +1,22 @@
 //! Actual native-owned protocol admission, bounded failures and independent history expectations.
+#[path = "support/engine.rs"]
+mod engine_fixture;
 use mshogi_core::{native::CanonicalRecord, xiangqi as x};
 use mshogi_runner::{
     xiangqi::{self, FailureKind, Stop},
     *,
 };
 fn engine(mode: &str) -> EngineConfig {
-    EngineConfig {
-        path: env!("CARGO_BIN_EXE_mshogi-xiangqi-fixture").into(),
-        args: vec![mode.into()],
-        options: vec![],
-        model_path: None,
-        model_identity: Some("verification fixture".into()),
-        deterministic: true,
-    }
+    engine_fixture::fixture(env!("CARGO_BIN_EXE_mshogi-xiangqi-fixture"), mode)
 }
 fn config(mode: &str) -> xiangqi::Config {
     xiangqi::Config {
         schema_version: 1,
         profile: x::PROFILE_ID.into(),
-        dialect: "pikafish_uci0_9".into(),
-        claim_policy: x::ClaimPolicy::AutoValidClaims,
+        policy: xiangqi::Policy {
+            dialect: "pikafish_uci0_9".into(),
+            claim_policy: x::ClaimPolicy::AutoValidClaims,
+        },
         id: "native-xiangqi-fixture".into(),
         time_control: "untimed".into(),
         process_policy: "fresh_per_turn".into(),
@@ -184,8 +181,8 @@ fn unsupported_policy_dialects_limits_and_live_nonboard_history_reject_losslessl
     for kind in 0..5 {
         let mut c = base.clone();
         match kind {
-            0 => c.claim_policy = x::ClaimPolicy::Explicit,
-            1 => c.dialect = "fairy_generic_uci1_10".into(),
+            0 => c.policy.claim_policy = x::ClaimPolicy::Explicit,
+            1 => c.policy.dialect = "fairy_generic_uci1_10".into(),
             2 => c.work[0].nodes = Some(mshogi_search::xiangqi::MAX_NODES + 1),
             3 => c.work[1].movetime_ms = Some(1),
             _ => c.time_control = "timed".into(),
@@ -388,22 +385,45 @@ fn replay_requires_actual_supported_advertisement_for_each_configured_option() {
     }
 }
 
+#[path = "support/wrapper.rs"]
+mod wrapper;
 #[test]
 fn shared_experiment_wrapper_uses_actual_existing_adapter_and_replays() {
-    use mshogi_runner::experiments::{ExternalProtocol, ExternalReport, run_external};
-    let config = config("resign");
-    let wrapped = run_external(
-        ExternalProtocol::XiangqiUci09,
-        &serde_json::to_string(&config).unwrap(),
-    )
-    .unwrap();
-    wrapped.validate().unwrap();
-    let mut decoded: ExternalReport =
-        serde_json::from_str(&serde_json::to_string(&wrapped).unwrap()).unwrap();
-    decoded.validate().unwrap();
-    decoded.report_json.push(' ');
-    assert!(decoded.validate().is_err());
+    wrapper::verify_wrapper(
+        mshogi_runner::experiments::ExternalProtocol::XiangqiUci09,
+        config("resign"),
+    );
 }
 
 include!("support/protocol_cases.rs");
 protocol_failure_cases!(xiangqi, ["win" => MalformedReply, "null" => MalformedReply, "incomplete" => IncompleteWork, "unresolved" => UnresolvedWork], |_: &x::Game| {});
+
+#[test]
+fn duplicate_option_uses_the_first_advertisement_in_run_and_replay() {
+    let mut c = config("duplicate_option");
+    c.engines[0].options = vec![UciOption {
+        name: "Conflicting".into(),
+        value: "2".into(),
+    }];
+    let report = xiangqi::run(&c).unwrap();
+    assert_eq!(
+        report.games[0].failure.as_ref().unwrap().kind,
+        FailureKind::Configuration
+    );
+    c.engines[0].options[0].value = "1".into();
+    let report = xiangqi::run(&c).unwrap();
+    assert_eq!(report.games[0].stop, Stop::NativeConclusion);
+    report.replay().unwrap();
+}
+
+#[test]
+fn readiness_information_is_independent_of_search_failure_messages() {
+    let report = xiangqi::run(&config("readiness_info")).unwrap();
+    assert!(
+        report
+            .games
+            .iter()
+            .all(|g| g.stop == Stop::NativeConclusion)
+    );
+    report.replay().unwrap();
+}

@@ -1,4 +1,6 @@
 //! Persistent, clocked USI games: native results, unscored stops and replay.
+#[path = "support/engine.rs"]
+mod engine_fixture;
 use mshogi_runner::{
     shogi::{FailureKind, Opening},
     shogi_match::{Clock, MatchConfig, MatchReport, MatchStop, run},
@@ -6,14 +8,7 @@ use mshogi_runner::{
 };
 
 fn fixture(mode: &str) -> EngineConfig {
-    EngineConfig {
-        path: env!("CARGO_BIN_EXE_mshogi-usi-fixture").into(),
-        args: vec![mode.into()],
-        options: vec![],
-        model_path: None,
-        model_identity: Some("verification fixture".into()),
-        deterministic: true,
-    }
+    engine_fixture::fixture(env!("CARGO_BIN_EXE_mshogi-usi-fixture"), mode)
 }
 
 fn config(engines: [EngineConfig; 2], sente: usize, base_ms: u64) -> MatchConfig {
@@ -152,4 +147,4 @@ fn actual_mshogi_mate_in_one_has_a_native_conclusion() {
 }
 
 include!("support/clocked_cases.rs");
-clocked_failure_cases!();
+clocked_failure_cases!("shogi-match");

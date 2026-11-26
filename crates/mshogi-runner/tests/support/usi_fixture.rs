@@ -1,74 +1,11 @@
-//! Deliberately named external verification process, excluded from distributables.
-use std::{
-    io::{self, BufRead, Write},
-    thread,
-    time::Duration,
-};
+//! Test-only protocol engine.
+mod protocol_fixture;
 fn main() {
-    let args: Vec<_> = std::env::args().collect();
-    let mode = args.get(1).map_or("resign", String::as_str);
-    let mut script_index = 0;
-    for line in io::stdin().lock().lines() {
-        let line = line.unwrap();
-        let words: Vec<_> = line.split_ascii_whitespace().collect();
-        match words.first().copied() {
-            Some("usi") => println!(
-                "id name mshogi-USI-verification-fixture\noption name Nodes type spin default 5000 min 0 max 20000\noption name RulesProfile type combo default mshogi.shogi.csa36.v1 var mshogi.shogi.csa36.v1\nusiok"
-            ),
-            Some("isready") => println!("readyok"),
-            Some("position") if mode == "script" => {
-                // The shared script includes the opening, so each persistent
-                // child selects its reply from the complete supplied history.
-                let moves = words
-                    .iter()
-                    .position(|w| *w == "moves")
-                    .map_or(&[][..], |i| &words[i + 1..]);
-                assert_eq!(moves, &args[2..2 + moves.len()]);
-                script_index = moves.len();
-            }
-            Some("go") => match mode {
-                "script" => println!(
-                    "bestmove {}",
-                    args.get(2 + script_index).expect("script reply")
-                ),
-                "win" => println!("bestmove win"),
-                "resign" => println!("bestmove resign"),
-                "move" => println!("bestmove {}", args.get(2).unwrap()),
-                "malformed" => println!("bestmove win garbage"),
-                "illegal" => println!("bestmove 9a9b"),
-                "missing" => return,
-                "crash" => std::process::exit(7),
-                "post_crash" => {
-                    println!("bestmove resign");
-                    io::stdout().flush().unwrap();
-                    std::process::exit(7);
-                }
-                "hungquit" => println!("bestmove resign"),
-                "delayed_duplicate" => println!("bestmove 7g7f"),
-                "timeout" => {}
-                "late" => {
-                    thread::sleep(Duration::from_millis(80));
-                    println!("bestmove 7g7f");
-                }
-                "duplicate" => println!("bestmove 7g7f\nbestmove 2g2f"),
-                "oversize" => println!("{}", "x".repeat(5000)),
-                "flood" => {
-                    for _ in 0..2000 {
-                        println!("info string bounded-verification-flood");
-                    }
-                }
-                _ => panic!("unknown verification mode"),
-            },
-            Some("quit") if mode == "delayed_duplicate" => {
-                thread::sleep(Duration::from_millis(390));
-                println!("bestmove 2g2f");
-                io::stdout().flush().unwrap();
-                return;
-            }
-            Some("quit") if mode == "hungquit" => thread::sleep(Duration::from_secs(2)),
-            Some("quit") => return,
-            _ => {}
-        }
-        io::stdout().flush().unwrap();
-    }
+    protocol_fixture::serve(
+        "usi",
+        "id name mshogi-USI-verification-fixture\noption name Nodes type spin default 5000 min 0 max 20000\noption name RulesProfile type combo default mshogi.shogi.csa36.v1 var mshogi.shogi.csa36.v1\nusiok",
+        "7g7f",
+        "2g2f",
+        "9a9b",
+    );
 }

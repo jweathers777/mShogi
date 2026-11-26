@@ -1,15 +1,9 @@
 //! Shared fresh-process runner. Native adapters own notation and rules admission;
 //! this module owns request generations, bounded traffic and process retirement.
-use crate::{
-    process::{Engine, Output, escaped},
-    *,
-};
+use crate::{process::Engine, *};
 use serde::{Deserialize, Serialize};
 
-use std::{
-    sync::mpsc::RecvTimeoutError,
-    time::{Duration, Instant},
-};
+use std::time::{Duration, Instant};
 
 /// Bounded explicit failure evidence.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
@@ -178,29 +172,16 @@ pub(crate) struct Rejection {
     pub detail: String,
 }
 pub(crate) trait Native {
-    type Game;
+    type Game: Clone;
     type Side: Copy + Eq;
     type Conclusion: Copy + PartialEq;
     type Pending: PartialEq;
     fn conclusion(game: &Self::Game) -> Option<Self::Conclusion>;
     fn pending(game: &Self::Game) -> Option<Self::Pending>;
     fn score(conclusion: Self::Conclusion) -> [u8; 2];
-    const HELLO: &'static str;
-    const OK: &'static str;
-    const NEWGAME: &'static str;
-    const READY_AFTER_NEWGAME: bool;
-    fn banner(_line: &str) -> bool {
-        false
-    }
+    const DIALECT: crate::transport::Dialect;
     fn search_failure(_line: &str) -> Option<(FailureKind, &str)> {
         None
-    }
-    fn replay_traffic(
-        _events: &[&Traffic],
-        _turn: &Turn<Self::Side>,
-        _config: &EngineConfig,
-    ) -> Result<(), RunnerError> {
-        Ok(())
     }
     fn actor(game: &Self::Game) -> Self::Side;
     fn side(side: Self::Side) -> usize;
@@ -208,8 +189,7 @@ pub(crate) trait Native {
     fn end(game: &Self::Game) -> Option<End>;
     fn canonical(game: &Self::Game) -> Result<String, RunnerError>;
     fn position(game: &Self::Game) -> String;
-    fn apply_reply(game: &mut Self::Game, reply: &str) -> Result<(), RunnerError>;
-    fn admit_turn(game: &Self::Game, reply: &str) -> Result<Option<String>, Rejection>;
+    fn admit_turn(game: &mut Self::Game, reply: &str) -> Result<Option<String>, Rejection>;
 }
 pub(crate) fn digest<G: Native>(game: &G::Game) -> Result<String, RunnerError> {
     Ok(crate::common::sha256(G::canonical(game)?))
@@ -230,17 +210,14 @@ pub(crate) fn run_game<G: Native>(
     assignment: [usize; 2],
     generation: &mut u64,
 ) -> Result<Completed<G>, RunnerError> {
-    let mut host = Controller::<G> {
-        config,
-        native: std::marker::PhantomData,
-        start: Instant::now(),
-        generation: *generation,
-        version: G::events(&game),
-        traffic: vec![],
-        bytes: 0,
-        complete: true,
-        processes: vec![],
-    };
+    let mut host = crate::transport::Transport::new(
+        config.watchdogs,
+        config.io,
+        Some(config.max_game_ms),
+        Vec::new(),
+    );
+    host.generation = *generation;
+    let mut processes = Vec::new();
     let mut turns = Vec::new();
     let mut failure = None;
     let stop = loop {
@@ -270,9 +247,17 @@ pub(crate) fn run_game<G: Native>(
             go: go(config.work[engine]),
             reply: String::new(),
         };
-        match host.turn(&game, engine, context) {
+        let mut candidate = game.clone();
+        match turn::<G>(
+            &mut host,
+            &config,
+            &mut processes,
+            &mut candidate,
+            engine,
+            context,
+        ) {
             Ok(turn) => {
-                G::apply_reply(&mut game, &turn.reply)?;
+                game = candidate;
                 turns.push(turn);
             }
             Err(e) if e.phase == "experiment_limit" => break End::TimeLimit,
@@ -288,479 +273,93 @@ pub(crate) fn run_game<G: Native>(
         stop,
         failure,
         turns,
-        traffic: host.traffic,
+        traffic: host.journal,
         traffic_complete: host.complete,
-        processes: host.processes,
+        processes,
         elapsed_ns: crate::common::elapsed_ns(host.start),
     })
 }
-struct Controller<'a, G: Native> {
-    config: Settings<'a>,
-    native: std::marker::PhantomData<G>,
-    start: Instant,
-    generation: u64,
-    version: usize,
-    traffic: Vec<Traffic>,
-    bytes: usize,
-    complete: bool,
-    processes: Vec<Process>,
-}
-impl<G: Native> Controller<'_, G> {
-    fn failure(
-        &self,
-        engine: usize,
-        kind: FailureKind,
-        phase: &str,
-        detail: impl Into<String>,
-    ) -> Failure {
-        Failure {
-            kind,
-            engine,
-            generation: self.generation,
-            phase: phase.into(),
-            detail: detail.into().chars().take(1024).collect(),
-        }
-    }
-    fn log(
-        &mut self,
-        engine: usize,
-        direction: &str,
-        phase: &str,
-        text: String,
-        written: Option<bool>,
-    ) -> Result<(), Failure> {
-        let event = Traffic {
-            engine,
-            generation: self.generation,
-            version: self.version,
-            at_ns: crate::common::elapsed_ns(self.start),
-            direction: direction.into(),
-            phase: phase.into(),
-            text,
-            written,
-        };
-        let size = serde_json::to_vec(&event).unwrap().len();
-        if self.bytes + size > self.config.io.transcript_bytes {
-            self.complete = false;
-            return Err(self.failure(
-                engine,
-                FailureKind::ResourceLimit,
-                phase,
-                "protocol retention limit reached; no further actions accepted",
-            ));
-        }
-        self.bytes += size;
-        self.traffic.push(event);
-        Ok(())
-    }
-    fn write(
-        &mut self,
-        engine: &mut Engine,
-        phase: &str,
-        text: &str,
-        budget: Duration,
-    ) -> Result<(), Failure> {
-        if text.len() + 1 > self.config.io.command_bytes {
-            return Err(self.failure(
-                engine.index,
-                FailureKind::ResourceLimit,
-                phase,
-                "command exceeds configured limit",
-            ));
-        }
-        let result = engine.write(format!("{text}\n").into_bytes(), budget);
-        self.log(
-            engine.index,
-            "command",
-            phase,
-            text.into(),
-            Some(result.is_ok()),
+fn turn<G: Native>(
+    host: &mut crate::transport::Transport<Vec<Traffic>>,
+    config: &Settings<'_>,
+    processes: &mut Vec<Process>,
+    game: &mut G::Game,
+    engine_index: usize,
+    turn: Turn<G::Side>,
+) -> Result<Turn<G::Side>, Failure> {
+    let mut engine = Engine::spawn(engine_index, &config.engines[engine_index], config.io)
+        .map_err(|e| host.failure(engine_index, FailureKind::ProcessStart, "spawn", e))?;
+    let mut result = (|| {
+        host.prepare(
+            &mut engine,
+            G::DIALECT,
+            &config.engines[engine_index].options,
+            None,
+            None,
         )?;
-        result.map_err(|e| self.failure(engine.index, FailureKind::UnexpectedExit, phase, e))
-    }
-    fn send(&mut self, engine: &mut Engine, phase: &str, text: &str) -> Result<(), Failure> {
-        let deadline = self.start + Duration::from_millis(self.config.max_game_ms);
-        let left = deadline.saturating_duration_since(Instant::now());
-        if left.is_zero() {
-            return Err(self.failure(
-                engine.index,
-                FailureKind::Watchdog,
-                "experiment_limit",
-                "overall experiment time limit",
-            ));
-        }
-        let result = self.write(
-            engine,
-            phase,
-            text,
-            left.min(Duration::from_millis(self.config.watchdogs.write_ms)),
-        );
-        if Instant::now() >= deadline {
-            return Err(self.failure(
-                engine.index,
-                FailureKind::Watchdog,
-                "experiment_limit",
-                "command after overall experiment time limit",
-            ));
-        }
-        result
-    }
-    fn line(
-        &mut self,
-        engine: &mut Engine,
-        phase: &str,
-        deadline: Instant,
-    ) -> Result<String, Failure> {
-        let total_deadline = self.start + Duration::from_millis(self.config.max_game_ms);
-        let deadline = deadline.min(total_deadline);
-        loop {
-            let now = Instant::now();
-            if now >= total_deadline {
-                return Err(self.failure(
-                    engine.index,
-                    FailureKind::Watchdog,
-                    "experiment_limit",
-                    "overall experiment time limit; request retired unaccepted",
-                ));
-            }
-            if now >= deadline {
-                return Err(self.failure(
-                    engine.index,
-                    FailureKind::Watchdog,
-                    phase,
-                    "required reply deadline exceeded",
-                ));
-            }
-            match engine.receive((deadline - now).min(Duration::from_millis(5))) {
-                Ok(Output::Line(bytes)) => {
-                    self.log(engine.index, "response", phase, escaped(&bytes), None)?;
-                    if Instant::now() >= total_deadline {
-                        return Err(self.failure(
-                            engine.index,
-                            FailureKind::Watchdog,
-                            "experiment_limit",
-                            "reply after experiment time limit; request retired",
-                        ));
-                    }
-                    if Instant::now() >= deadline {
-                        return Err(self.failure(
-                            engine.index,
-                            FailureKind::LateReply,
-                            phase,
-                            "reply observed after retired deadline",
-                        ));
-                    }
-                    if bytes.is_empty() {
-                        continue;
-                    }
-                    if !bytes.is_ascii()
-                        || bytes
-                            .iter()
-                            .any(|b| b.is_ascii_control() && !b.is_ascii_whitespace())
-                    {
-                        return Err(self.failure(
-                            engine.index,
-                            FailureKind::MalformedReply,
-                            phase,
-                            "non-ASCII/control output",
-                        ));
-                    }
-                    return Ok(String::from_utf8(bytes).unwrap());
-                }
-                Ok(Output::Oversized) => {
-                    self.complete = false;
-                    return Err(self.failure(
-                        engine.index,
-                        FailureKind::ResourceLimit,
-                        phase,
-                        "oversized protocol line",
-                    ));
-                }
-                Ok(Output::Eof) => {
-                    let status = engine.settle_exit();
-                    let kind = if status.is_some_and(|s| !s.success) {
-                        FailureKind::UnexpectedExit
-                    } else {
-                        FailureKind::MissingReply
-                    };
-                    return Err(self.failure(
-                        engine.index,
-                        kind,
-                        phase,
-                        "EOF before required reply",
-                    ));
-                }
-                Ok(Output::Error(e)) => {
-                    return Err(self.failure(engine.index, FailureKind::UnexpectedExit, phase, e));
-                }
-                Err(RecvTimeoutError::Disconnected) => {
-                    return Err(self.failure(
-                        engine.index,
-                        FailureKind::MissingReply,
-                        phase,
-                        "stdout reader closed",
-                    ));
-                }
-                Err(RecvTimeoutError::Timeout) => {}
-            }
-        }
-    }
-    fn await_token(
-        &mut self,
-        engine: &mut Engine,
-        phase: &str,
-        token: &str,
-        millis: u64,
-    ) -> Result<Vec<String>, Failure> {
-        let deadline = Instant::now() + Duration::from_millis(millis);
-        let mut lines = Vec::new();
-        loop {
-            let line = self.line(engine, phase, deadline)?;
-            if line == token {
-                return Ok(lines);
-            }
-            if line.starts_with("bestmove") {
-                return Err(self.failure(
-                    engine.index,
-                    FailureKind::LateReply,
-                    phase,
-                    "unsolicited bestmove outside current search",
-                ));
-            }
-            if phase == "handshake"
-                && (line.starts_with("id ") || line.starts_with("option ") || G::banner(&line))
-            {
-                if lines.len() >= 256 {
-                    return Err(self.failure(
-                        engine.index,
-                        FailureKind::ResourceLimit,
-                        phase,
-                        "too many handshake lines",
-                    ));
-                }
-                lines.push(line);
-            } else if !line.starts_with("info ") {
-                return Err(self.failure(
-                    engine.index,
-                    FailureKind::MalformedReply,
-                    phase,
-                    "unexpected reply",
-                ));
-            }
-        }
-    }
-    fn turn(
-        &mut self,
-        game: &G::Game,
-        engine_index: usize,
-        turn: Turn<G::Side>,
-    ) -> Result<Turn<G::Side>, Failure> {
-        let mut engine = Engine::spawn(
-            engine_index,
-            &self.config.engines[engine_index],
-            self.config.io,
-        )
-        .map_err(|e| self.failure(engine_index, FailureKind::ProcessStart, "spawn", e))?;
-        let result = (|| {
-            self.send(&mut engine, "handshake", G::HELLO)?;
-            let lines = self.await_token(
-                &mut engine,
-                "handshake",
-                G::OK,
-                self.config.watchdogs.handshake_ms,
-            )?;
-            engine.identity = lines
-                .iter()
-                .filter(|l| l.starts_with("id "))
-                .cloned()
-                .collect();
-            for option in &self.config.engines[engine_index].options {
-                let prefix = format!("option name {} type ", option.name);
-                let advertised =
-                    lines
-                        .iter()
-                        .find(|l| l.starts_with(&prefix))
-                        .ok_or_else(|| {
-                            self.failure(
-                                engine_index,
-                                FailureKind::Configuration,
-                                "options",
-                                format!("option not advertised: {}", option.name),
-                            )
-                        })?;
-                if !option_value(advertised, &option.value) {
-                    return Err(self.failure(
+        host.send(&mut engine, "position", &turn.position)?;
+        host.send(&mut engine, "search", &turn.go)?;
+        let deadline = Instant::now() + Duration::from_millis(config.watchdogs.response_ms);
+        let response = loop {
+            let line = host
+                .line(&mut engine, "search", deadline, None)?
+                .ok_or_else(|| {
+                    host.failure(
                         engine_index,
-                        FailureKind::Configuration,
-                        "options",
-                        "option value not supported by advertisement",
-                    ));
-                }
-                self.send(
-                    &mut engine,
-                    "options",
-                    &format!("setoption name {} value {}", option.name, option.value),
-                )?;
-            }
-            self.send(&mut engine, "readiness", "isready")?;
-            self.await_token(
-                &mut engine,
-                "readiness",
-                "readyok",
-                self.config.watchdogs.ready_ms,
-            )?;
-            self.send(&mut engine, "newgame", G::NEWGAME)?;
-            if G::READY_AFTER_NEWGAME {
-                self.send(&mut engine, "newgame_ready", "isready")?;
-                self.await_token(
-                    &mut engine,
-                    "newgame_ready",
-                    "readyok",
-                    self.config.watchdogs.ready_ms,
-                )?;
-            }
-            self.send(&mut engine, "position", &turn.position)?;
-            self.send(&mut engine, "search", &turn.go)?;
-            let deadline =
-                Instant::now() + Duration::from_millis(self.config.watchdogs.response_ms);
-            let response = loop {
-                let line = self.line(&mut engine, "search", deadline)?;
-                if let Some((kind, detail)) = G::search_failure(&line) {
-                    return Err(Failure {
-                        kind,
-                        engine: engine_index,
-                        generation: self.generation,
-                        phase: "search".into(),
-                        detail: detail.chars().take(1024).collect(),
-                    });
-                }
-                if line.starts_with("bestmove") {
-                    break line;
-                }
-                if !line.starts_with("info ") {
-                    return Err(self.failure(
-                        engine_index,
-                        FailureKind::MalformedReply,
+                        FailureKind::Watchdog,
                         "search",
-                        "unexpected search response",
-                    ));
-                }
-            };
-            let notice = G::admit_turn(game, &response).map_err(|e| Failure {
-                kind: e.kind,
-                engine: engine_index,
-                generation: self.generation,
-                phase: e.phase.into(),
-                detail: e.detail.chars().take(1024).collect(),
-            })?;
-            if let Some(notice) = notice {
-                self.send(&mut engine, "gameover", &notice)?;
+                        "required reply deadline exceeded",
+                    )
+                })?;
+            if let Some((kind, detail)) = G::search_failure(line.trim()) {
+                return Err(Failure {
+                    kind,
+                    engine: engine_index,
+                    generation: host.generation,
+                    phase: "search".into(),
+                    detail: detail.chars().take(1024).collect(),
+                });
             }
-            Ok(Turn {
-                reply: response,
-                ..turn
-            })
-        })();
-        // Retire before cleanup. Even a well-formed late reply cannot commit.
-        let cleanup_deadline =
-            Instant::now() + Duration::from_millis(self.config.watchdogs.cleanup_ms);
-        let mut cleanup_failure = None;
-        let mut reached_eof = false;
-        for command in ["stop", "quit"] {
-            let left = cleanup_deadline.saturating_duration_since(Instant::now());
-            if left.is_zero() {
-                break;
+            if line.trim_start().starts_with("bestmove") {
+                break line;
             }
-            if let Err(e) = self.write(
-                &mut engine,
-                "cleanup",
-                command,
-                left.min(Duration::from_millis(self.config.watchdogs.write_ms)),
-            ) {
-                cleanup_failure.get_or_insert(e);
-            }
-        }
-        let drain_deadline =
-            cleanup_deadline - Duration::from_millis(self.config.watchdogs.cleanup_ms / 4);
-        loop {
-            if Instant::now() >= drain_deadline {
-                break;
-            }
-            match engine.receive(
-                drain_deadline
-                    .saturating_duration_since(Instant::now())
-                    .min(Duration::from_millis(5)),
-            ) {
-                Ok(Output::Line(bytes)) => {
-                    if let Err(e) =
-                        self.log(engine_index, "response", "retired", escaped(&bytes), None)
-                    {
-                        cleanup_failure.get_or_insert(e);
-                    }
-                    if bytes.starts_with(b"bestmove") {
-                        cleanup_failure.get_or_insert_with(|| {
-                            self.failure(
-                                engine_index,
-                                FailureKind::LateReply,
-                                "retired",
-                                "reply after generation retired",
-                            )
-                        });
-                    }
-                }
-                Ok(Output::Oversized) => {
-                    self.complete = false;
-                    cleanup_failure.get_or_insert_with(|| {
-                        self.failure(
-                            engine_index,
-                            FailureKind::ResourceLimit,
-                            "retired",
-                            "oversized retired output",
-                        )
-                    });
-                }
-                Ok(Output::Error(e)) => {
-                    cleanup_failure.get_or_insert_with(|| {
-                        self.failure(engine_index, FailureKind::UnexpectedExit, "retired", e)
-                    });
-                }
-                Ok(Output::Eof) | Err(RecvTimeoutError::Disconnected) => {
-                    reached_eof = true;
-                    break;
-                }
-                Err(RecvTimeoutError::Timeout) => {}
-            }
-        }
-        if !reached_eof {
-            self.complete = false;
-            cleanup_failure.get_or_insert_with(||self.failure(engine_index,FailureKind::ResourceLimit,"retired","retirement capture did not establish EOF within deadline; candidate not accepted"));
-        }
-        let left = cleanup_deadline
-            .saturating_duration_since(Instant::now())
-            .as_millis()
-            .max(1) as u64;
-        let observation = engine.cleanup(left);
-        if !observation.cleanup_failures.is_empty()
-            || observation.exit.as_ref().is_none_or(|e| !e.success)
-        {
-            cleanup_failure.get_or_insert_with(|| {
-                self.failure(
+            if !line.trim_start().starts_with("info ") {
+                return Err(host.failure(
                     engine_index,
-                    FailureKind::UnexpectedExit,
-                    "cleanup",
-                    "child did not exit successfully within bounded cleanup",
-                )
-            });
+                    FailureKind::MalformedReply,
+                    "search",
+                    "unexpected search response",
+                ));
+            }
+        };
+        let notice = G::admit_turn(game, &response).map_err(|e| Failure {
+            kind: e.kind,
+            engine: engine_index,
+            generation: host.generation,
+            phase: e.phase.into(),
+            detail: e.detail.chars().take(1024).collect(),
+        })?;
+        if let Some(notice) = notice {
+            host.send(&mut engine, "gameover", &notice)?;
         }
-        self.processes.push(Process {
-            generation: self.generation,
-            observation,
-        });
-        match result {
-            Err(e) => Err(e),
-            Ok(_) if cleanup_failure.is_some() => Err(cleanup_failure.unwrap()),
-            result => result,
-        }
+        Ok(Turn {
+            reply: response,
+            ..turn
+        })
+    })();
+    // Retire before cleanup. Even a well-formed late reply cannot commit.
+    let (observation, cleanup_failure) = host.retire(&mut engine);
+    if let Err(f) = &mut result {
+        engine.refine_pipe_failure(&mut f.kind, &mut f.detail);
+    }
+    processes.push(Process {
+        generation: host.generation,
+        observation,
+    });
+    match result {
+        Err(e) => Err(e),
+        Ok(_) if cleanup_failure.is_some() => Err(cleanup_failure.unwrap()),
+        result => result,
     }
 }
 
@@ -827,26 +426,9 @@ pub(crate) fn replay<G: Native>(
             .iter()
             .filter(|e| e.generation == turn.generation)
             .collect();
-        let command_index = |phase: &str, text: &str| {
-            traffic.iter().position(|e| {
-                e.direction == "command"
-                    && e.phase == phase
-                    && e.text == text
-                    && e.written == Some(true)
-            })
-        };
-        let position_index = command_index("position", &turn.position);
-        let go_index = command_index("search", &turn.go);
-        let response_index = traffic.iter().position(|e| {
-            e.direction == "response"
-                && e.phase == "search"
-                && e.text == escaped(turn.reply.as_bytes())
-                && e.written.is_none()
-        });
         if traffic
             .iter()
             .any(|e| e.engine != turn.engine || e.version != turn.version)
-            || !matches!((position_index,go_index,response_index),(Some(p),Some(g),Some(r)) if p<g&&g<r)
             || entry
                 .processes
                 .iter()
@@ -855,6 +437,7 @@ pub(crate) fn replay<G: Native>(
                         && p.observation.engine == engine
                         && p.observation.exit.as_ref().is_some_and(|e| e.success)
                         && p.observation.cleanup_failures.is_empty()
+                        && p.observation.retirement_failure.is_none()
                 })
                 .count()
                 != 1
@@ -863,9 +446,9 @@ pub(crate) fn replay<G: Native>(
                 "accepted result lacks matching process/command/response evidence".into(),
             ));
         }
-        G::replay_traffic(&traffic, turn, &config.engines[engine])?;
+        let notice = G::admit_turn(game, &turn.reply).map_err(|e| RunnerError(e.detail))?;
+        replay_traffic::<G>(&traffic, turn, &config.engines[engine], notice)?;
         *generation = turn.generation;
-        G::apply_reply(game, &turn.reply)?;
     }
     if entry.processes.iter().any(|p| p.observation.engine > 1)
         || entry
@@ -874,6 +457,147 @@ pub(crate) fn replay<G: Native>(
             .any(|t| t.engine > 1 || t.text.len() > config.io.line_bytes * 4)
     {
         return Err(RunnerError("invalid process/traffic bounds".into()));
+    }
+    Ok(())
+}
+/// Validate the actual accepted-generation protocol, not merely the existence
+/// of a matching bestmove somewhere in a contradictory transcript.
+fn replay_traffic<G: Native>(
+    events: &[&Traffic],
+    turn: &Turn<G::Side>,
+    config: &EngineConfig,
+    notice: Option<String>,
+) -> Result<(), RunnerError> {
+    let invalid = || RunnerError("accepted generation protocol phase/order/reply mismatch".into());
+    let (hello, ok, newgame) = G::DIALECT.tokens();
+    let ready_again = G::DIALECT != crate::transport::Dialect::Usi;
+    let mut expected = vec![("handshake", hello.to_owned())];
+    expected.extend(config.options.iter().map(|o| {
+        (
+            "options",
+            format!("setoption name {} value {}", o.name, o.value),
+        )
+    }));
+    expected.extend([
+        ("readiness", "isready".to_owned()),
+        ("newgame", newgame.to_owned()),
+    ]);
+    if ready_again {
+        expected.push(("newgame_ready", "isready".into()));
+    }
+    expected.extend([
+        ("position", turn.position.clone()),
+        ("search", turn.go.clone()),
+    ]);
+    if let Some(notice) = notice {
+        expected.push(("gameover", notice));
+    }
+    expected.extend([
+        ("cleanup", "stop".to_owned()),
+        ("cleanup", "quit".to_owned()),
+    ]);
+    let mut written = 0;
+    let mut awaiting = "";
+    let mut handshake = false;
+    let mut ready = false;
+    let mut new_ready = !ready_again;
+    let mut replied = false;
+    let mut advertisements = Vec::new();
+    let mut count = 0usize;
+    for event in events {
+        match event.direction.as_str() {
+            "command" => {
+                let Some((phase, text)) = expected.get(written) else {
+                    return Err(invalid());
+                };
+                if event.phase != *phase || event.text != *text || event.written != Some(true) {
+                    return Err(invalid());
+                }
+                let admitted = match *phase {
+                    "handshake" => awaiting.is_empty() && !handshake,
+                    "options" | "readiness" => handshake && awaiting.is_empty(),
+                    "newgame" => ready && awaiting.is_empty(),
+                    "newgame_ready" => ready && awaiting.is_empty(),
+                    "position" => new_ready && awaiting.is_empty(),
+                    "search" => new_ready && awaiting.is_empty() && !replied,
+                    "gameover" => replied && awaiting.is_empty(),
+                    "cleanup" => replied && (awaiting.is_empty() || awaiting == "retired"),
+                    _ => false,
+                };
+                if !admitted {
+                    return Err(invalid());
+                }
+                awaiting = match *phase {
+                    "handshake" | "readiness" | "newgame_ready" | "search" => phase,
+                    "cleanup" => "retired",
+                    _ => "",
+                };
+                written += 1;
+                count = 0;
+            }
+            "response" => {
+                if event.written.is_some() || event.phase != awaiting || awaiting.is_empty() {
+                    return Err(invalid());
+                }
+                let raw = crate::process::protocol_text(&event.text).ok_or_else(invalid)?;
+                let text = raw.trim();
+                if !text.is_empty()
+                    && matches!(awaiting, "handshake" | "readiness" | "newgame_ready")
+                    && text != ok
+                    && text != "readyok"
+                {
+                    count += 1;
+                    if count > crate::transport::HANDSHAKE_LINES {
+                        return Err(invalid());
+                    }
+                }
+                match awaiting {
+                    "handshake" if text == ok => {
+                        for option in &config.options {
+                            if !crate::transport::supports_option(
+                                advertisements.iter().map(String::as_str),
+                                G::DIALECT,
+                                option,
+                            ) {
+                                return Err(invalid());
+                            }
+                        }
+                        handshake = true;
+                        awaiting = "";
+                    }
+                    "readiness" if text == "readyok" => {
+                        ready = true;
+                        awaiting = "";
+                    }
+                    "newgame_ready" if text == "readyok" => {
+                        new_ready = true;
+                        awaiting = "";
+                    }
+                    "search" if raw == turn.reply && text.starts_with("bestmove") => {
+                        replied = true;
+                        awaiting = "";
+                    }
+                    "handshake" if crate::transport::handshake_header(text) => {
+                        if text.starts_with("option ") {
+                            advertisements.push(text.to_owned());
+                        }
+                    }
+                    "handshake" if text.is_empty() || text.starts_with("info ") => {}
+                    "readiness" | "newgame_ready"
+                        if text.is_empty() || text.starts_with("info ") => {}
+                    "search"
+                        if text.is_empty()
+                            || (text.starts_with("info ") && G::search_failure(text).is_none()) => {
+                    }
+                    "retired" if !text.starts_with("bestmove") => {}
+                    _ => return Err(invalid()),
+                }
+            }
+            _ => return Err(invalid()),
+        }
+    }
+    if written != expected.len() || !handshake || !ready || !new_ready || !replied {
+        return Err(invalid());
     }
     Ok(())
 }

@@ -1,7 +1,23 @@
 // Shared persistent-runner contracts. Each caller supplies its native config,
 // fixture, report and stop types; native notation and outcome tests stay local.
 macro_rules! clocked_failure_cases {
-    () => {
+    ($command:literal) => {
+        #[test]
+        fn report_file_survives_a_second_run() {
+            use std::{fs, process::Command};
+            let dir=std::env::temp_dir().join(format!("mshogi-{}-{}",$command,std::process::id()));
+            fs::create_dir(&dir).unwrap();
+            let input=dir.join("config.json");
+            let output=dir.join("report.json");
+            fs::write(&input, serde_json::to_vec(&config([fixture("resign"), fixture("resign")],0,1000)).unwrap()).unwrap();
+            let run=|| Command::new(env!("CARGO_BIN_EXE_mshogi-match")).arg($command).arg(&input).arg(&output).output().unwrap();
+            assert!(run().status.success());
+            let original=fs::read(&output).unwrap();
+            assert!(!run().status.success());
+            assert_eq!(fs::read(&output).unwrap(),original);
+            fs::remove_dir_all(dir).unwrap();
+        }
+
         #[test]
         fn illegal_move_and_silence_are_unscored() {
             let illegal = run(&config([fixture("illegal"), fixture("resign")], 0, 1000)).unwrap();

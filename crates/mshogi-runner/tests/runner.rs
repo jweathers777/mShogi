@@ -1,18 +1,13 @@
 //! Real cross-platform child processes; fixtures are explicitly not opponents.
+#[path = "support/engine.rs"]
+mod engine_fixture;
 use mshogi_core::chess::*;
 use mshogi_runner::*;
 use serde_json::{Value, json};
 use std::time::{Duration, Instant};
 const OPENING: &str = "7k/8/6K1/5Q2/8/8/8/8 b - - 0 1";
 fn config(mode: &str) -> ExperimentConfig {
-    let engine = EngineConfig {
-        path: env!("CARGO_BIN_EXE_mshogi-runner-fixture").into(),
-        args: vec![mode.into()],
-        options: vec![],
-        model_path: None,
-        model_identity: Some("scripted test fixture, no strength identity".into()),
-        deterministic: true,
-    };
+    let engine = engine_fixture::fixture(env!("CARGO_BIN_EXE_mshogi-runner-fixture"), mode);
     ExperimentConfig {
         schema_version: 1,
         id: "native-process-test".into(),
@@ -383,15 +378,26 @@ fn all_stream_and_metadata_buffers_are_bounded_with_truncation_markers() {
     c.io.transcript_bytes = 1024;
     let r = run(&c);
     let g = &r.games[0];
-    assert_eq!(g.stop, GameStop::ChessConclusion);
+    assert_eq!(g.stop, GameStop::Failure);
+    assert_eq!(g.failure.as_ref().unwrap().kind, FailureKind::ResourceLimit);
     assert!(g.transcript.truncated);
     assert!(g.transcript.entries.len() < 10);
-    assert!(g.transcript.observed_entries > 2000);
-    for e in &g.engines {
-        assert!(e.identity_truncated);
-        assert!(e.uci_identity.len() <= 32);
-        assert!(e.uci_identity.iter().map(String::len).sum::<usize>() <= 4096);
-    }
+    assert!(g.transcript.observed_entries > g.transcript.entries.len() as u64);
+    let mut c = config("id_flood");
+    c.io.transcript_bytes = 1_048_576;
+    let r = run(&c);
+    assert_eq!(
+        r.games[0].failure.as_ref().unwrap().kind,
+        FailureKind::ResourceLimit
+    );
+    assert!(
+        r.games[0]
+            .failure
+            .as_ref()
+            .unwrap()
+            .detail
+            .contains("too many")
+    );
     let mut c = config("stderr_flood");
     c.io.stderr_bytes = 64;
     let r = run(&c);
@@ -403,7 +409,7 @@ fn all_stream_and_metadata_buffers_are_bounded_with_truncation_markers() {
     let r = run(&c);
     assert_eq!(
         r.games[0].failure.as_ref().unwrap().kind,
-        FailureKind::MalformedReply
+        FailureKind::ResourceLimit
     );
     let mut c = config("mate");
     c.io.transcript_bytes = 0;
@@ -415,7 +421,7 @@ fn all_stream_and_metadata_buffers_are_bounded_with_truncation_markers() {
     let r = run(&c);
     assert_eq!(
         r.games[0].failure.as_ref().unwrap().kind,
-        FailureKind::MalformedReply
+        FailureKind::ResourceLimit
     );
 }
 #[test]
@@ -596,21 +602,14 @@ fn non_utf8_cli_arguments_fail_normally_without_panicking() {
     assert!(!error.contains("panicked"));
 }
 
+#[path = "support/wrapper.rs"]
+mod wrapper;
 #[test]
 fn shared_experiment_wrapper_uses_actual_existing_adapter_and_replays() {
-    use mshogi_runner::experiments::{ExternalProtocol, ExternalReport, run_external};
-    let config = config("mate");
-    let wrapped = run_external(
-        ExternalProtocol::Uci,
-        &serde_json::to_string(&config).unwrap(),
-    )
-    .unwrap();
-    wrapped.validate().unwrap();
-    let mut decoded: ExternalReport =
-        serde_json::from_str(&serde_json::to_string(&wrapped).unwrap()).unwrap();
-    decoded.validate().unwrap();
-    decoded.report_json.push(' ');
-    assert!(decoded.validate().is_err());
+    wrapper::verify_wrapper(
+        mshogi_runner::experiments::ExternalProtocol::Uci,
+        config("mate"),
+    );
 }
 
 #[test]
@@ -747,4 +746,17 @@ fn explicit_only_runner_passes_fifty_moves_but_obeys_seventy_five() {
             ClaimPolicy::ExplicitOnly
         );
     }
+}
+
+#[test]
+fn padded_handshake_and_readiness_preserve_wire_evidence() {
+    let report = run(&config("padded"));
+    assert_eq!(report.games[0].stop, GameStop::ChessConclusion);
+    assert!(
+        report.games[0]
+            .transcript
+            .entries
+            .iter()
+            .any(|e| e.text == "  readyok\\t")
+    );
 }

@@ -15,6 +15,7 @@ mod run;
 pub mod shogi;
 /// Persistent, clocked USI Shogi games for external strength studies.
 pub mod shogi_match;
+mod transport;
 /// Native Xiangqi UCI0-9 experiments, explicit profile and unscored limits.
 pub mod xiangqi;
 /// Persistent, clocked UCI Xiangqi games for strength studies.

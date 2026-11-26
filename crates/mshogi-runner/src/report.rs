@@ -136,6 +136,9 @@ pub struct Diagnostic {
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct EngineObservation {
+    /// First protocol failure detected while retiring this process.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub retirement_failure: Option<crate::protocol::Failure>,
     /// Configuration engine index.
     pub engine: usize,
     /// Native process ID, not a reproducibility identity.

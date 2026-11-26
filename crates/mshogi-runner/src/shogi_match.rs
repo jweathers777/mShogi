@@ -12,8 +12,8 @@
 use crate::protocol_match::MatchNative;
 use crate::shogi::Adapter;
 use crate::{
-    clocked::Dialect,
     shogi::{FailureKind, Opening, position, reply, submit},
+    transport::Dialect,
     *,
 };
 use mshogi_core::shogi::*;
@@ -148,12 +148,7 @@ pub fn run(config: &MatchConfig) -> Result<MatchReport, RunnerError> {
 impl MatchNative for Adapter {
     type Wire = ();
     fn dialect(_: ()) -> Dialect {
-        Dialect {
-            hello: "usi",
-            ok: "usiok",
-            newgame: "usinewgame",
-            ucci_options: false,
-        }
+        Dialect::Usi
     }
     fn position_for(_: (), game: &Game) -> String {
         position(game)

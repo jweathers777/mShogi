@@ -1,45 +1,15 @@
 //! Serialized controller: protocol failures cannot fabricate chess outcomes.
 use crate::{
-    process::{Engine, Output, WriteFailure, escaped},
+    process::Engine,
+    protocol::Failure,
     report::summaries,
+    transport::{Dialect, Transport},
     *,
 };
 use mshogi_core::chess::*;
 
-use std::{
-    sync::mpsc::RecvTimeoutError,
-    time::{Duration, Instant},
-};
+use std::time::Duration;
 
-struct Log {
-    transcript: Transcript,
-    bytes: usize,
-    cap: usize,
-}
-impl Log {
-    fn new(cap: usize) -> Self {
-        Self {
-            transcript: Transcript::new(),
-            bytes: 0,
-            cap,
-        }
-    }
-    fn record(&mut self, mut entry: TranscriptEntry) {
-        self.transcript.observed_entries = self.transcript.observed_entries.saturating_add(1);
-        entry.sequence = self.transcript.observed_entries;
-        let cost = serde_json::to_vec(&entry).expect("finite event").len() + 1;
-        if self.bytes + cost <= self.cap {
-            self.bytes += cost;
-            self.transcript.entries.push(entry)
-        } else {
-            self.transcript.truncated = true;
-            self.transcript.dropped_bytes = self
-                .transcript
-                .dropped_bytes
-                .saturating_add(entry.text.len() as u64);
-        }
-    }
-}
 type Ending = (GameStop, Option<RunnerFailure>, Vec<RunnerFailure>);
 enum Await {
     Reply(String, u64),
@@ -121,14 +91,12 @@ struct GameRun<'a> {
     config: &'a ExperimentConfig,
     game: ChessMatch,
     engines: [Option<Engine>; 2],
-    origin: Instant,
     last_match_ns: u64,
-    log: Log,
-    pending_pipe_exit: Option<usize>,
+    log: Transport<Transcript>,
 }
 impl<'a> GameRun<'a> {
     fn now(&self) -> u64 {
-        crate::common::elapsed_ns(self.origin)
+        crate::common::elapsed_ns(self.log.start)
     }
     fn failure(
         &self,
@@ -206,91 +174,39 @@ impl<'a> GameRun<'a> {
         timeout_ms: u64,
         at: u64,
     ) -> Result<(), Box<RunnerFailure>> {
-        if line.len() + 1 > self.config.io.command_bytes {
-            return Err(Box::new(self.failure(
-                FailureKind::MalformedReply,
-                index,
-                phase,
-                "generated command exceeds configured byte cap",
-                None,
-            )));
+        let mut budget = Duration::from_millis(timeout_ms);
+        if let Some((deadline, _)) = self.clock_deadline() {
+            budget = budget.min(Duration::from_nanos(deadline.saturating_sub(self.now())));
         }
-        let mut duration = Duration::from_millis(timeout_ms);
-        if let Some((at, _)) = self.clock_deadline() {
-            duration = duration.min(Duration::from_nanos(at.saturating_sub(self.now())));
-        }
-        let mut bytes = line.as_bytes().to_vec();
-        bytes.push(b'\n');
-        let result = self.engines[index]
-            .as_mut()
-            .expect("spawned engine")
-            .write(bytes, duration);
-        let observed_at = self.now();
-        self.log.record(TranscriptEntry {
-            sequence: 0,
-            engine: index,
-            direction: TransportDirection::Command,
-            at_ns: at,
-            game_version: self.game.version(),
-            phase: phase.into(),
-            text: line.into(),
-            truncated: false,
-            write_completed: Some(result.is_ok()),
-        });
-        if let Err(error) = result {
-            return Err(Box::new(self.write_failure(
-                index,
-                phase,
-                error,
-                timeout_ms,
-                at,
-                observed_at,
-            )));
-        }
-        Ok(())
+        self.log.version = self.game.version() as usize;
+        let result = self.log.write_at(
+            self.engines[index].as_mut().unwrap(),
+            phase,
+            line,
+            budget,
+            at,
+        );
+        result.map_err(|e| {
+            Box::new(self.transport_failure(e, Some(timeout_ms), at, self.log.observed))
+        })
     }
-    fn write_failure(
-        &mut self,
-        index: usize,
-        phase: &str,
-        error: WriteFailure,
-        timeout_ms: u64,
-        dispatched_at: u64,
-        observed_at: u64,
+    fn transport_failure(
+        &self,
+        error: Failure,
+        timeout: Option<u64>,
+        dispatch: u64,
+        observed: u64,
     ) -> RunnerFailure {
-        let timed_out = error.timed_out();
-        if !timed_out && phase != "cleanup" {
-            // A hard pipe failure can precede OS exit-status visibility, just
-            // like stdout EOF. Reuse that existing bounded settlement period.
-            self.engines[index].as_mut().unwrap().settle_exit();
-        } else {
-            // Never add settlement waits to cleanup's stop/quit write budget
-            // or reinterpret a live blocked writer as having exited.
-            let _ = self.engines[index].as_mut().unwrap().observe_exit();
-        }
-        let kind = if self.engines[index]
-            .as_ref()
-            .unwrap()
-            .exit
-            .as_ref()
-            .is_some_and(|s| !s.success)
-        {
-            FailureKind::UnexpectedExit
-        } else if timed_out {
-            FailureKind::Watchdog
-        } else {
-            FailureKind::MissingReply
-        };
-        if !timed_out && phase != "cleanup" && self.engines[index].as_ref().unwrap().exit.is_none()
-        {
-            self.pending_pipe_exit = Some(index);
-        }
-        let mut failure = self.failure(kind, index, phase, error, Some(timeout_ms));
-        // Diagnostic acquisition must not move an earlier write failure
-        // beyond a later native chess-clock deadline.
-        failure.at_ns = observed_at;
-        if kind == FailureKind::Watchdog {
-            failure.deadline_ns = dispatched_at.checked_add(timeout_ms * 1_000_000);
+        let mut failure = self.failure(
+            error.kind,
+            error.engine,
+            &error.phase,
+            error.detail,
+            timeout,
+        );
+        failure.at_ns = observed;
+        if failure.kind == FailureKind::Watchdog {
+            failure.deadline_ns = timeout.and_then(|ms| dispatch.checked_add(ms * 1_000_000));
         }
         failure
     }
@@ -330,172 +246,50 @@ impl<'a> GameRun<'a> {
         watchdog_ms: u64,
         expected: &str,
     ) -> Await {
-        let deadline = Instant::now() + Duration::from_millis(watchdog_ms);
-        let deadline_ns = self.now() + watchdog_ms * 1_000_000;
+        let dispatch = self.now();
+        let watchdog = dispatch + watchdog_ms * 1_000_000;
+        let deadline = self
+            .clock_deadline()
+            .map_or(watchdog, |(n, _)| n.min(watchdog));
+        self.log.version = self.game.version() as usize;
         loop {
+            let [first, second] = &mut self.engines;
+            let (active, peer) = if index == 0 {
+                (first, second)
+            } else {
+                (second, first)
+            };
+            let result = self.log.line(
+                active.as_mut().unwrap(),
+                phase,
+                self.log.start + Duration::from_nanos(deadline),
+                peer.as_mut(),
+            );
+            let observed = self.log.observed;
             if let Some(event) =
-                self.expired_await(index, phase, watchdog_ms, expected, deadline_ns, self.now())
+                self.expired_await(index, phase, watchdog_ms, expected, watchdog, observed)
             {
                 return event;
             }
-            // A non-active opponent may die while this engine is searching.
-            for other in 0..2 {
-                if other != index && self.engines[other].is_some() {
-                    let observed = self.engines[other].as_mut().unwrap().observe_exit();
-                    match observed {
-                        Ok(Some(_)) => {
-                            return Await::Failure(self.failure(
-                                FailureKind::UnexpectedExit,
-                                other,
-                                phase,
-                                "idle engine exited",
-                                None,
-                            ));
-                        }
-                        Err(e) => {
-                            return Await::Failure(self.failure(
-                                FailureKind::UnexpectedExit,
-                                other,
-                                phase,
-                                e,
-                                None,
-                            ));
-                        }
-                        Ok(None) => {}
-                    }
+            match result {
+                Ok(Some(line)) if line.split_ascii_whitespace().next() == Some(expected) => {
+                    return Await::Reply(line, observed);
                 }
-            }
-            let remaining = deadline
-                .saturating_duration_since(Instant::now())
-                .min(Duration::from_millis(2));
-            let output = self.engines[index].as_ref().unwrap().receive(remaining);
-            let observed_at = self.now();
-            if let Some(event) = self.expired_await(
-                index,
-                phase,
-                watchdog_ms,
-                expected,
-                deadline_ns,
-                observed_at,
-            ) {
-                return event;
-            }
-            match output {
-                Err(RecvTimeoutError::Timeout) => continue,
-                Err(RecvTimeoutError::Disconnected) | Ok(Output::Eof) => {
-                    self.engines[index].as_mut().unwrap().settle_exit();
-                    if self.engines[index].as_ref().unwrap().exit.is_none() {
-                        self.pending_pipe_exit = Some(index);
-                    }
-                    let kind = if self.engines[index]
-                        .as_ref()
-                        .unwrap()
-                        .exit
-                        .as_ref()
-                        .is_some_and(|s| !s.success)
-                    {
-                        FailureKind::UnexpectedExit
-                    } else {
-                        FailureKind::MissingReply
-                    };
+                Ok(Some(line)) if !line.trim_start().starts_with("info ") => {
                     let mut failure = self.failure(
-                        kind,
-                        index,
-                        phase,
-                        format!("EOF before required {expected}"),
-                        None,
-                    );
-                    // Metadata/status acquisition must never move an already
-                    // observed EOF past a later chess-clock deadline.
-                    failure.at_ns = observed_at;
-                    return Await::Failure(failure);
-                }
-                Ok(Output::Error(e)) => {
-                    let mut f = self.failure(
-                        FailureKind::MissingReply,
-                        index,
-                        phase,
-                        format!("stdout read error: {e}"),
-                        None,
-                    );
-                    f.at_ns = observed_at;
-                    return Await::Failure(f);
-                }
-                Ok(Output::Oversized) => {
-                    let mut f = self.failure(
                         FailureKind::MalformedReply,
                         index,
                         phase,
-                        "stdout line exceeds configured cap",
+                        "unexpected search output",
                         None,
                     );
-                    f.at_ns = observed_at;
-                    return Await::Failure(f);
+                    failure.at_ns = observed;
+                    return Await::Failure(failure);
                 }
-                Ok(Output::Line(bytes)) => {
-                    let at = observed_at;
-                    // Arrival is serialized controller receipt, not a guessed
-                    // kernel-pipe write time or a helper thread's scheduling.
-                    if let Some(event) = self.expired_await(
-                        index,
-                        phase,
-                        watchdog_ms,
-                        expected,
-                        deadline_ns,
-                        observed_at,
-                    ) {
-                        return event;
-                    }
-                    let text = escaped(&bytes);
-                    self.engines[index].as_mut().unwrap().last_output = Some(text.clone());
-                    self.log.record(TranscriptEntry {
-                        sequence: 0,
-                        engine: index,
-                        direction: TransportDirection::Response,
-                        at_ns: at,
-                        game_version: self.game.version(),
-                        phase: phase.into(),
-                        text,
-                        truncated: false,
-                        write_completed: None,
-                    });
-                    if !bytes.is_ascii()
-                        || bytes
-                            .iter()
-                            .any(|b| b.is_ascii_control() && !b.is_ascii_whitespace())
-                    {
-                        let mut f = self.failure(
-                            FailureKind::MalformedReply,
-                            index,
-                            phase,
-                            "stdout must be ASCII UCI text",
-                            None,
-                        );
-                        f.at_ns = observed_at;
-                        return Await::Failure(f);
-                    }
-                    let line = String::from_utf8(bytes).expect("ASCII");
-                    let line = line.trim().to_owned();
-                    if line.starts_with("id ") {
-                        let engine = self.engines[index].as_mut().unwrap();
-                        let remaining =
-                            4096usize.saturating_sub(engine.identity.iter().map(String::len).sum());
-                        if engine.identity.len() < 32 && remaining != 0 {
-                            engine
-                                .identity
-                                .push(line[..line.len().min(remaining)].to_owned());
-                            engine.identity_truncated |= line.len() > remaining;
-                        } else {
-                            engine.identity_truncated = true;
-                        }
-                    }
-                    if line == expected
-                        || (expected == "bestmove"
-                            && line.split_ascii_whitespace().next() == Some("bestmove"))
-                    {
-                        return Await::Reply(line, observed_at);
-                    }
+                Err(e) => {
+                    return Await::Failure(self.transport_failure(e, None, dispatch, observed));
                 }
+                _ => (),
             }
         }
     }
@@ -517,7 +311,9 @@ impl<'a> GameRun<'a> {
         {
             failure.exit = engine.observe_exit().ok().flatten();
         }
-        if self.pending_pipe_exit == Some(failure.engine)
+        if self.engines[failure.engine]
+            .as_ref()
+            .is_some_and(|e| e.unsettled_pipe)
             && let Some(status) = failure.exit.as_ref()
         {
             failure.kind = if status.success {
@@ -525,7 +321,10 @@ impl<'a> GameRun<'a> {
             } else {
                 FailureKind::UnexpectedExit
             };
-            self.pending_pipe_exit = None;
+            self.engines[failure.engine]
+                .as_mut()
+                .unwrap()
+                .unsettled_pipe = false;
         }
         if self.game.conclusion().is_some() {
             (GameStop::ChessConclusion, None, vec![failure])
@@ -571,66 +370,27 @@ impl<'a> GameRun<'a> {
             }
         }
         for index in 0..2 {
-            if let Err(f) = self.send(index, "uci", "handshake") {
+            let [first, second] = &mut self.engines;
+            let (active, peer) = if index == 0 {
+                (first, second)
+            } else {
+                (second, first)
+            };
+            let policy = if self.config.claim_policy == ClaimPolicy::AutoClaim {
+                "auto"
+            } else {
+                "explicit"
+            };
+            if let Err(e) = self.log.prepare(
+                active.as_mut().unwrap(),
+                Dialect::Uci,
+                &self.config.engines[index].options,
+                Some(policy),
+                peer.as_mut(),
+            ) {
+                let (dispatch, millis) = self.log.phase_budget;
+                let f = self.transport_failure(e, Some(millis), dispatch, self.log.observed);
                 return self.failed(f);
-            }
-            let awaited = self.await_reply(
-                index,
-                "handshake",
-                self.config.watchdogs.handshake_ms,
-                "uciok",
-            );
-            if let Err(end) = self.handle_await(awaited) {
-                return *end;
-            }
-            // UCI provides no setoption acknowledgement. Record requested
-            // settings and subsequent readiness without inventing acceptance.
-            for option in &self.config.engines[index].options.clone() {
-                if let Err(f) = self.send(
-                    index,
-                    &format!("setoption name {} value {}", option.name, option.value),
-                    "options",
-                ) {
-                    return self.failed(f);
-                }
-            }
-            // The own adapter's declared option is protocol-specific. External
-            // engines retain their own search preferences; controller claims
-            // remain authoritative regardless of those preferences.
-            let name = self.engines[index]
-                .as_ref()
-                .unwrap()
-                .identity
-                .iter()
-                .find_map(|s| s.strip_prefix("id name "));
-            if name.is_some_and(|n| n.starts_with("mShogi ")) {
-                let policy = if self.config.claim_policy == ClaimPolicy::AutoClaim {
-                    "auto"
-                } else {
-                    "explicit"
-                };
-                if let Err(f) = self.send(
-                    index,
-                    &format!("setoption name ClaimPolicy value {policy}"),
-                    "options",
-                ) {
-                    return self.failed(f);
-                }
-            }
-            if let Err(f) = self.send(index, "ucinewgame", "new_game") {
-                return self.failed(f);
-            }
-            if let Err(f) = self.send(index, "isready", "readiness") {
-                return self.failed(f);
-            }
-            let awaited = self.await_reply(
-                index,
-                "readiness",
-                self.config.watchdogs.ready_ms,
-                "readyok",
-            );
-            if let Err(end) = self.handle_await(awaited) {
-                return *end;
             }
         }
         let side = self.game.game().position().side_to_move();
@@ -703,7 +463,7 @@ impl<'a> GameRun<'a> {
                 Ok(a) => a,
                 Err(e) => {
                     let mut failure = self.failure(
-                        FailureKind::IllegalAction,
+                        FailureKind::MalformedReply,
                         index,
                         "bestmove",
                         format!("raw {line:?}: {e}"),
@@ -729,60 +489,16 @@ impl<'a> GameRun<'a> {
     }
     fn cleanup(&mut self, mut failure: Option<&mut RunnerFailure>) -> Vec<EngineObservation> {
         let mut observations = Vec::new();
-        for index in 0..2 {
-            if self.engines[index].is_some() {
-                // Log the actual attempted stop/quit commands, including write
-                // failures, even when a game or process has already concluded.
-                let started = Instant::now();
-                let budget = self.config.watchdogs.cleanup_ms;
-                let pending = self.pending_pipe_exit == Some(index)
-                    && failure.as_ref().is_some_and(|f| f.engine == index);
-                if pending {
-                    // Move (do not duplicate) the existing cleanup grace before
-                    // stop/quit/kill. Only definitive, pre-intervention status
-                    // can finalize the original pipe failure.
-                    let left = Duration::from_millis(budget).saturating_sub(started.elapsed());
-                    let grace = Duration::from_millis((budget / 4).min(100)).min(left);
-                    let status = self.engines[index]
-                        .as_mut()
-                        .unwrap()
-                        .observe_exit_for(grace);
-                    if let Some(status) = status {
-                        let f = failure.as_deref_mut().unwrap();
-                        f.kind = if status.success {
-                            FailureKind::MissingReply
-                        } else {
-                            FailureKind::UnexpectedExit
-                        };
-                        f.exit = Some(status);
-                    } else {
-                        failure
-                            .as_deref_mut()
-                            .unwrap()
-                            .detail
-                            .push_str("; exit status unavailable before cleanup intervention");
-                    }
-                    self.pending_pipe_exit = None;
-                }
-                let write_budget = (budget / 4).max(1);
-                let left = budget.saturating_sub(started.elapsed().as_millis() as u64);
-                if left != 0 && self.game.conclusion().is_none() {
-                    let _ =
-                        self.send_with_timeout(index, "stop", "cleanup", write_budget.min(left));
-                }
-                let left = budget.saturating_sub(started.elapsed().as_millis() as u64);
-                if left != 0 {
-                    let _ =
-                        self.send_with_timeout(index, "quit", "cleanup", write_budget.min(left));
-                }
-                let left = budget.saturating_sub(started.elapsed().as_millis() as u64);
-                let engine = self.engines[index].as_mut().unwrap();
-                observations.push(if pending {
-                    engine.cleanup_after_exit_grace(left)
-                } else {
-                    engine.cleanup(left)
-                });
+        self.log.version = self.game.version() as usize;
+        for engine in self.engines.iter_mut().flatten() {
+            let (observation, _) = self.log.retire(engine);
+            if engine.unsettled_pipe
+                && let Some(f) = failure.as_deref_mut().filter(|f| f.engine == engine.index)
+                && let Some(status) = engine.refine_pipe_failure(&mut f.kind, &mut f.detail)
+            {
+                f.exit = Some(status);
             }
+            observations.push(observation);
         }
         observations
     }
@@ -803,10 +519,8 @@ pub fn run_experiment(config: &ExperimentConfig) -> Result<ExperimentReport, Run
                 config,
                 game,
                 engines: [None, None],
-                origin: Instant::now(),
                 last_match_ns: 0,
-                log: Log::new(config.io.transcript_bytes),
-                pending_pipe_exit: None,
+                log: Transport::new(config.watchdogs, config.io, None, Transcript::new()),
             };
             let engines_by_color = if pairing == 0 { [0, 1] } else { [1, 0] };
             let (stop, mut failure, mut diagnostic_failures) = run.play(engines_by_color);
@@ -821,7 +535,7 @@ pub fn run_experiment(config: &ExperimentConfig) -> Result<ExperimentReport, Run
                 failure,
                 diagnostic_failures,
                 match_record_json: run.game.record().to_json(),
-                transcript: run.log.transcript,
+                transcript: run.log.journal,
                 engines,
             });
         }
@@ -844,6 +558,8 @@ pub fn run_experiment(config: &ExperimentConfig) -> Result<ExperimentReport, Run
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::process::WriteFailure;
+    use std::time::Instant;
     // Invoked as a real subprocess of this test executable, never as an engine
     // opponent. Normal test discovery must not terminate its own test process.
     #[test]
@@ -889,6 +605,9 @@ mod tests {
             child.exit.as_ref().unwrap().code,
             Some(if nonzero { 7 } else { 0 })
         );
+        // The test harness prints its own banner. Drain it before observing
+        // the closed stdout channel as the missing protocol reply.
+        while let Ok(crate::process::Output::Line(_)) = child.receive(Duration::from_secs(1)) {}
         child.defer_exit_observations(2);
         child
     }
@@ -905,10 +624,8 @@ mod tests {
             config: &c,
             game,
             engines: [Some(exited_child(true)), None],
-            origin: Instant::now(),
             last_match_ns: 0,
-            log: Log::new(4096),
-            pending_pipe_exit: None,
+            log: Transport::new(c.watchdogs, c.io, None, Transcript::new()),
         };
         let before = run.game.record().clone();
         // Real closed stdin yields a real failed write; two subsequent exit
@@ -934,6 +651,20 @@ mod tests {
         assert_eq!(run.game.record(), &before);
         assert_eq!(before.replay().unwrap(), run.game);
     }
+    fn write_failure(
+        run: &mut GameRun<'_>,
+        index: usize,
+        phase: &str,
+        error: WriteFailure,
+        timeout_ms: u64,
+        dispatch: u64,
+        observed: u64,
+    ) -> RunnerFailure {
+        let error = run
+            .log
+            .write_failure(run.engines[index].as_mut().unwrap(), phase, error);
+        run.transport_failure(error, Some(timeout_ms), dispatch, observed)
+    }
     fn controlled_run(c: &ExperimentConfig, child: Engine) -> GameRun<'_> {
         GameRun {
             config: c,
@@ -944,10 +675,8 @@ mod tests {
             )
             .unwrap(),
             engines: [Some(child), None],
-            origin: Instant::now(),
             last_match_ns: 0,
-            log: Log::new(4096),
-            pending_pipe_exit: None,
+            log: Transport::new(c.watchdogs, c.io, None, Transcript::new()),
         }
     }
     #[test]
@@ -1094,7 +823,8 @@ mod tests {
                 child.defer_exit_observations(lag);
                 let mut run = controlled_run(&c, child);
                 run.submit(0, Color::White, MatchCommand::Start);
-                let failure = run.write_failure(
+                let failure = write_failure(
+                    &mut run,
                     0,
                     "go",
                     WriteFailure::Transport("closed pipe".into()),
@@ -1147,7 +877,7 @@ mod tests {
             let mut child = exited_child(true);
             child.defer_exit_observations(if phase == "cleanup" { 2 } else { usize::MAX });
             let mut run = controlled_run(&c, child);
-            let failure = run.write_failure(0, phase, error, 10, 40_000_000, 60_000_000);
+            let failure = write_failure(&mut run, 0, phase, error, 10, 40_000_000, 60_000_000);
             assert_eq!(failure.kind, expected);
             assert_eq!(failure.at_ns, 60_000_000);
             assert_eq!(failure.exit, None);
@@ -1241,10 +971,8 @@ mod tests {
             config: &c,
             game,
             engines: [None, None],
-            origin: Instant::now(),
             last_match_ns: 0,
-            log: Log::new(1024),
-            pending_pipe_exit: None,
+            log: Transport::new(c.watchdogs, c.io, None, Transcript::new()),
         };
         run.submit(0, Color::White, MatchCommand::Start);
         let (line, receipt) = run
@@ -1298,10 +1026,8 @@ mod tests {
                 config: &c,
                 game,
                 engines: [None, None],
-                origin: Instant::now(),
                 last_match_ns: 0,
-                log: Log::new(1024),
-                pending_pipe_exit: None,
+                log: Transport::new(c.watchdogs, c.io, None, Transcript::new()),
             };
             run.submit(0, Color::White, MatchCommand::Start);
             let deadline = 50_000_000;

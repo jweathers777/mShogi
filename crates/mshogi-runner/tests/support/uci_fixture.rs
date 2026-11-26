@@ -21,6 +21,7 @@ fn main() {
         std::thread::sleep(std::time::Duration::from_secs(60));
         return;
     }
+    let mut newgame = false;
     let mut position = String::new();
     for line in io::stdin().lock().lines() {
         let line = match line {
@@ -46,15 +47,31 @@ fn main() {
             } else {
                 println!("id name runner fixture");
             }
-            println!("uciok");
+            if mode == "blocked_writer" {
+                for n in 0..64 {
+                    println!("option name option{n} type string");
+                }
+            }
+            println!("option name ClaimPolicy type combo default auto var auto var explicit");
+            if mode == "padded" {
+                println!("  \tuciok  ");
+            } else {
+                println!("uciok");
+            }
             let _ = io::stdout().flush();
             if mode == "blocked_writer" {
                 std::thread::sleep(std::time::Duration::from_secs(60));
                 return;
             }
+        } else if line == "ucinewgame" {
+            newgame = true;
         } else if line == "isready" {
-            println!("readyok");
-            if mode == "idle_exit" {
+            if mode == "padded" {
+                println!("  readyok\t");
+            } else {
+                println!("readyok");
+            }
+            if mode == "idle_exit" && newgame {
                 let _ = io::stdout().flush();
                 return;
             }

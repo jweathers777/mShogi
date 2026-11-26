@@ -12,8 +12,8 @@ use crate::protocol_match::MatchNative;
 use crate::xiangqi::Adapter;
 use crate::{
     FischerClock as Clock,
-    clocked::Dialect,
-    xiangqi::{Opening, canonical, position, reply, submit},
+    transport::Dialect,
+    xiangqi::{Opening, position, reply, submit},
     *,
 };
 use mshogi_core::xiangqi::*;
@@ -270,18 +270,8 @@ fn reply_for(wire: Wire, line: &str) -> Result<GameCommand, String> {
 
 fn dialect(wire: Wire) -> Dialect {
     match wire.protocol {
-        Protocol::Uci => Dialect {
-            hello: "uci",
-            ok: "uciok",
-            newgame: "ucinewgame",
-            ucci_options: false,
-        },
-        Protocol::Ucci => Dialect {
-            hello: "ucci",
-            ok: "ucciok",
-            newgame: "setoption newgame",
-            ucci_options: true,
-        },
+        Protocol::Uci => Dialect::Uci,
+        Protocol::Ucci => Dialect::Ucci,
     }
 }
 

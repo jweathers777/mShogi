@@ -1,20 +1,16 @@
 //! Actual USI child admission/failure/replay. Expected outcomes use accepted native fixtures.
+#[path = "support/engine.rs"]
+mod engine_fixture;
 use mshogi_runner::{
     shogi::{self, FailureKind, Stop},
     *,
 };
 fn engine(mode: &str) -> EngineConfig {
-    EngineConfig {
-        path: env!("CARGO_BIN_EXE_mshogi-usi-fixture").into(),
-        args: vec![mode.into()],
-        options: vec![],
-        model_path: None,
-        model_identity: Some("verification fixture".into()),
-        deterministic: true,
-    }
+    engine_fixture::fixture(env!("CARGO_BIN_EXE_mshogi-usi-fixture"), mode)
 }
 fn config(mode: &str) -> shogi::Config {
     shogi::Config {
+        policy: shogi::NoPolicy {},
         schema_version: 1,
         profile: "mshogi.shogi.csa36.v1".into(),
         id: "actual-fixture".into(),
@@ -340,7 +336,7 @@ fn missing_retirement_eof_cannot_hide_a_delayed_duplicate_bestmove() {
         match failure.kind {
             FailureKind::ResourceLimit => assert_eq!(
                 failure.detail,
-                "retirement capture did not establish EOF within deadline; candidate not accepted"
+                "retirement capture did not establish EOF within deadline"
             ),
             FailureKind::LateReply => {
                 assert_eq!(failure.detail, "reply after generation retired");
@@ -365,21 +361,14 @@ fn missing_retirement_eof_cannot_hide_a_delayed_duplicate_bestmove() {
     report.replay().unwrap();
 }
 
+#[path = "support/wrapper.rs"]
+mod wrapper;
 #[test]
 fn shared_experiment_wrapper_uses_actual_existing_adapter_and_replays() {
-    use mshogi_runner::experiments::{ExternalProtocol, ExternalReport, run_external};
-    let config = config("resign");
-    let wrapped = run_external(
-        ExternalProtocol::Usi,
-        &serde_json::to_string(&config).unwrap(),
-    )
-    .unwrap();
-    wrapped.validate().unwrap();
-    let mut decoded: ExternalReport =
-        serde_json::from_str(&serde_json::to_string(&wrapped).unwrap()).unwrap();
-    decoded.validate().unwrap();
-    decoded.report_json.push(' ');
-    assert!(decoded.validate().is_err());
+    wrapper::verify_wrapper(
+        mshogi_runner::experiments::ExternalProtocol::Usi,
+        config("resign"),
+    );
 }
 
 include!("support/protocol_cases.rs");

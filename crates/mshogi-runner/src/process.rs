@@ -17,6 +17,30 @@ pub(crate) fn escaped(bytes: &[u8]) -> String {
         .map(char::from)
         .collect()
 }
+pub(crate) fn valid_protocol_byte(b: u8) -> bool {
+    b.is_ascii() && (!b.is_ascii_control() || b == b'\t')
+}
+/// Decode the escaped form of a protocol response for semantic replay.
+pub(crate) fn protocol_text(text: &str) -> Option<String> {
+    let mut bytes = text.bytes();
+    let mut decoded = Vec::with_capacity(text.len());
+    while let Some(byte) = bytes.next() {
+        let b = if byte == b'\\' {
+            match bytes.next()? {
+                b't' => b'\t',
+                c @ (b'\\' | b'"' | b'\'') => c,
+                _ => return None,
+            }
+        } else {
+            byte
+        };
+        if !valid_protocol_byte(b) {
+            return None;
+        }
+        decoded.push(b);
+    }
+    String::from_utf8(decoded).ok()
+}
 pub(crate) fn status(status: ExitStatus) -> ProcessExit {
     #[cfg(unix)]
     let signal = {
@@ -92,6 +116,8 @@ pub(crate) struct Engine {
     pub identity_truncated: bool,
     pub last_output: Option<String>,
     pub exit: Option<ProcessExit>,
+    pub unsettled_pipe: bool,
+    pub pre_cleanup_status: Option<ProcessExit>,
     // A real reaped child's status can be withheld to control observation order
     // in unit regressions. No synthesized exit or production timing hook.
     #[cfg(test)]
@@ -223,6 +249,8 @@ impl Engine {
             identity_truncated: false,
             last_output: None,
             exit: None,
+            unsettled_pipe: false,
+            pre_cleanup_status: None,
             #[cfg(test)]
             deferred_exit: None,
             #[cfg(test)]
@@ -301,6 +329,35 @@ impl Engine {
         self.writer.take();
     }
     /// Existing bounded pipe-failure/status settlement; no wait() or kill.
+    /// Finalize a provisional EOF/pipe cause using a natural exit observed
+    /// before stop, quit or kill. An intervention cannot explain the original failure.
+    pub fn refine_pipe_failure(
+        &mut self,
+        kind: &mut crate::FailureKind,
+        detail: &mut String,
+    ) -> Option<ProcessExit> {
+        if !self.unsettled_pipe || *kind != crate::FailureKind::MissingReply {
+            return None;
+        }
+        if let Some(status) = self.pre_cleanup_status.take() {
+            if !status.success {
+                *kind = crate::FailureKind::UnexpectedExit;
+            }
+            Some(status)
+        } else {
+            detail.push_str("; exit status unavailable before cleanup intervention");
+            None
+        }
+    }
+    pub fn settle_pipe(&mut self) -> crate::FailureKind {
+        let status = self.settle_exit();
+        self.unsettled_pipe = status.is_none();
+        if status.is_some_and(|s| !s.success) {
+            crate::FailureKind::UnexpectedExit
+        } else {
+            crate::FailureKind::MissingReply
+        }
+    }
     pub fn settle_exit(&mut self) -> Option<ProcessExit> {
         self.observe_exit_for(EXIT_SETTLEMENT)
     }
@@ -389,6 +446,7 @@ impl Engine {
             }
         }
         EngineObservation {
+            retirement_failure: None,
             engine: self.index,
             process_id: self.child.id(),
             uci_identity: self.identity.clone(),

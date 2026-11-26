@@ -1,9 +1,10 @@
 //! Shared clock ledger, native turn execution and persistent process lifecycle.
 use crate::{
-    clocked::{Dialect, Host, Outcome},
+    clocked::Outcome,
     process::{Engine, escaped},
     protocol::{self, End, Native},
     protocol::{Failure, Process, Traffic},
+    transport::{Dialect, Transport},
     *,
 };
 use serde::{Deserialize, Serialize};
@@ -30,7 +31,7 @@ pub struct ClockedTurn<S> {
     pub clock_before_ms: [u64; 2],
     /// Wall time from the written go to the bestmove line (rounded up).
     pub elapsed_ms: u64,
-    /// Info lines received during this search (not retained).
+    /// Info lines received during this search.
     pub info_lines: u64,
 }
 
@@ -76,7 +77,7 @@ pub struct MatchReport<C, S, O> {
     pub exhaustion: Option<Exhaustion<S>>,
     /// Accepted replies in order.
     pub turns: Vec<ClockedTurn<S>>,
-    /// Retained protocol traffic except search `info` lines.
+    /// Retained protocol traffic.
     pub traffic: Vec<Traffic>,
     /// False if traffic retention hit its bound.
     pub traffic_complete: bool,
@@ -186,17 +187,13 @@ pub(crate) fn run<G: MatchNative>(
     mut game: G::Game,
 ) -> Result<Completed<G>, RunnerError> {
     let identities = crate::common::identities(config.engines);
-    let mut host = Host {
-        dialects: config.wire.map(G::dialect),
-        engines: config.engines,
-        watchdogs: config.watchdogs,
-        io: config.io,
-        start: Instant::now(),
-        version: G::events(&game),
-        traffic: vec![],
-        bytes: 0,
-        complete: true,
-    };
+    let mut host = Transport::new(
+        config.watchdogs,
+        config.io,
+        Some(config.max_game_ms),
+        Vec::new(),
+    );
+    host.version = G::events(&game);
     let mut engines: Vec<Engine> = Vec::new();
     let mut failure = None;
     let mut engine_ids: [Vec<String>; 2] = [vec![], vec![]];
@@ -211,8 +208,14 @@ pub(crate) fn run<G: MatchNative>(
     }
     if failure.is_none() {
         for index in 0..2 {
-            match host.prepare(&mut engines[index]) {
-                Ok(ids) => engine_ids[index] = ids,
+            match host.prepare(
+                &mut engines[index],
+                G::dialect(config.wire[index]),
+                &config.engines[index].options,
+                None,
+                None,
+            ) {
+                Ok(()) => engine_ids[index] = engines[index].identity.clone(),
                 Err(e) => {
                     failure = Some(e);
                     break;
@@ -224,7 +227,13 @@ pub(crate) fn run<G: MatchNative>(
     let mut turns = Vec::new();
     let mut exhaustion = None;
     let deadline = host.start + Duration::from_millis(config.max_game_ms);
-    let stop = if failure.is_some() {
+    let stop = if failure
+        .as_ref()
+        .is_some_and(|e| e.phase == "experiment_limit")
+    {
+        failure = None;
+        MatchStop::TimeLimit
+    } else if failure.is_some() {
         MatchStop::Failure
     } else {
         loop {
@@ -290,6 +299,7 @@ pub(crate) fn run<G: MatchNative>(
                     });
                     break MatchStop::ClockExhausted;
                 }
+                Err(e) if e.phase == "experiment_limit" => break MatchStop::TimeLimit,
                 Err(e) => {
                     failure = Some(e);
                     break MatchStop::Failure;
@@ -305,10 +315,13 @@ pub(crate) fn run<G: MatchNative>(
     }
     let mut processes = Vec::new();
     for engine in engines.iter_mut() {
-        let _ = host.send(engine, "cleanup", "quit");
+        let (observation, _) = host.retire(engine);
+        if let Some(f) = failure.as_mut().filter(|f| f.engine == engine.index) {
+            engine.refine_pipe_failure(&mut f.kind, &mut f.detail);
+        }
         processes.push(Process {
             generation: 1,
-            observation: engine.cleanup(config.watchdogs.cleanup_ms),
+            observation,
         });
     }
     Ok(Completed {
@@ -319,7 +332,7 @@ pub(crate) fn run<G: MatchNative>(
         failure,
         exhaustion,
         turns,
-        traffic: host.traffic,
+        traffic: host.journal,
         traffic_complete: host.complete,
         processes,
         elapsed_ns: crate::common::elapsed_ns(host.start),
@@ -330,7 +343,6 @@ pub(crate) fn replay<G: MatchNative>(
     game: &mut G::Game,
     turns: &[ClockedTurn<G::Side>],
     traffic: &[Traffic],
-    traffic_complete: bool,
 ) -> Result<[u64; 2], RunnerError> {
     let mut clock = c.clock;
     for turn in turns {
@@ -358,11 +370,15 @@ pub(crate) fn replay<G: MatchNative>(
                     && t.version == turn.version
                     && t.direction == direction
                     && t.text == text
+                    && t.written
+                        == if direction == "command" {
+                            Some(true)
+                        } else {
+                            None
+                        }
             })
         };
-        if traffic_complete
-            && !(logged("command", &turn.go) && logged("response", &escaped(turn.reply.as_bytes())))
-        {
+        if !(logged("command", &turn.go) && logged("response", &escaped(turn.reply.as_bytes()))) {
             return Err(RunnerError("turn lacks command/response evidence".into()));
         }
         clock[side] = crate::common::balance_after(clock[side], turn.elapsed_ms, c.increment[side]);
@@ -379,13 +395,7 @@ pub(crate) fn replay_report<G: MatchNative, C>(
     if report.schema_version != 1 {
         return Err(RunnerError("unsupported match report version".into()));
     }
-    let clock = replay::<G>(
-        &settings,
-        &mut game,
-        &report.turns,
-        &report.traffic,
-        report.traffic_complete,
-    )?;
+    let clock = replay::<G>(&settings, &mut game, &report.turns, &report.traffic)?;
     crate::recorded::check_canonical::<G>(&report.game, &game)?;
     let conclusion = G::conclusion(&game);
     let end = G::end(&game);

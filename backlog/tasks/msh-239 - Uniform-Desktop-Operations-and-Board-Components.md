@@ -1,10 +1,11 @@
 ---
 id: MSH-239
 title: Uniform Desktop Operations and Board Components
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-25T08:51:00Z'
-updated_date: '2026-11-25T12:23:00Z'
+updated_date: '2026-11-26T03:13:00Z'
 labels:
   - desktop
   - refactor

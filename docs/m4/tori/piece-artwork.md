@@ -7,7 +7,7 @@ clarified this during the MSH-42 visual checkpoint: retain original bird artwork
 as a possible future alternative, while traditional native glyphs remain the
 default for Shogi variants. No artwork selector or new preference is introduced.
 
-`ToriPiece.tsx` uses exactly the selected profile T02 bird names:
+The shared `Piece.tsx` tile uses exactly the selected profile T02 bird names for Tori:
 
 | Native face | Display | Native name |
 | --- | --- | --- |
@@ -23,7 +23,7 @@ default for Shogi variants. No artwork selector or new preference is introduced.
 
 Single kanji use a large centered face; quails use two vertically arranged
 characters, preserving explicit handedness. The warm pentagonal tile outline
-and bevel reuse the project's existing `ShogiPiece` geometry. Ownership rotates
+and bevel are the same tile as Shogi. Ownership rotates
 all of the tile and glyphs without exchanging Left Quail and Right Quail.
 The native promoted flag supplies dark-red engraving plus two small corner
 chevrons, so promotion is not conveyed by color alone. Eagle and Goose retain
@@ -82,7 +82,7 @@ coverage and reproducibility; actual application screenshots establish rendering
 
 `ToriBirdPiece.tsx` and `tori-birds.css` preserve the first MSH-42 original vector
 bird engravings and small-cap identity aids as a possible future alternative.
-The production board imports `ToriPiece`, not this component. No player-facing
+The production board draws `Piece`, not this component. No player-facing
 selector, stored preference, or activation is included. Its class names are
 isolated from the kanji default.
 

@@ -60,8 +60,9 @@ Chess needs a match command list because a board GameRecord alone cannot retain
 player draw offers and match conclusions. It uses the same document envelope,
 file worker, admission receipts, session lifecycle and history controls.
 
-Settings include `play_mode` (`human_engine` or `two_humans`), orientation and
-analysis defaults. A missing play mode defaults to `human_engine`. Display
+Settings have the same shape in every game: `play_mode` (`human_engine` or
+`two_humans`), `orientation` (the native side at the bottom) and
+`analysis_defaults` (`depth`, `nodes`), which Analyze updates. Display
 preferences cannot change ownership during a game.
 
 ## Session state and history

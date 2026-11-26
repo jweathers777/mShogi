@@ -1572,13 +1572,13 @@ class ToriDirtyCloseAdmissionTests(unittest.TestCase):
 
     def native(self):
         before = {'document':{'path':'current.mshogi','dirty':False,'revision':14,
-                   'settings':{'game_kind':'tori','settings':{'orientation':'sente'}}},
+                   'settings':{'play_mode':'human_engine','orientation':{'game_kind':'tori','side':'sente'},'analysis_defaults':{'depth':64,'nodes':300000}}},
                   'context':{'payload':{'events':[{'exact':i} for i in range(3)],
                                        'conclusion':{'kind':'resignation','winner':'gote'}}},
                   'token':{'document':4,'version':40},'close_requires_save':False}
         after = copy.deepcopy(before)
         after['document'].update(dirty=True, revision=15)
-        after['document']['settings']['settings']['orientation']='gote'
+        after['document']['settings']['orientation']['side']='gote'
         after['token']['version']=41
         after['close_requires_save']=True
         return before, after
@@ -1622,7 +1622,7 @@ class ToriDirtyCloseAdmissionTests(unittest.TestCase):
                        lambda a:a['token'].update(version=40),
                        lambda a:a['token'].update(document=5),
                        lambda a:a['document'].update(revision=14),
-                       lambda a:a['document']['settings']['settings'].update(orientation='sente'),
+                       lambda a:a['document']['settings']['orientation'].update(side='sente'),
                        lambda a:a['context']['payload']['events'].append({'unexpected':'move'})):
             changed=copy.deepcopy(after);mutate(changed)
             journey=self.journey([self.controls()],[before,changed])

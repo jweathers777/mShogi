@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-26T15:12:00Z'
+updated_date: '2026-11-26T15:18:00Z'
 labels:
   - core
   - refactor
@@ -69,4 +69,6 @@ Claimed on codex/msh-252-shared-history at 23a0fd0. Next: measure the post-MSH-2
 Baseline on Apple M1 Pro, 23a0fd0: resource_admission xiangqi 1000 (release, median of five), 1,000 moves/59,375 bytes, 153,474.958 us replay (153.475 us/move), 78.291 us last-command admission. Branch codex/msh-252-shared-history.
 
 Checkpoint on codex/msh-252-shared-history: Tori, Chu and Tenjiku share the history owner, prefix selection, rollback, compact undo and request lifecycle. Shogi and Xiangqi share the transaction and authority but retain their specialized allocations: Shogi replays prefixes without storing board snapshots; Xiangqi has several viewable events per command, including root events and claim audits. All game owners now clone their full admitted state directly. Xiangqi history-copy removal alone brought full replay to 127.745 ms and last admission to 8.500 us. Original 59,593-byte desktop document median of five: decode 157.357 ms, product Open 163.023 ms. Added short-circuit terminal testing to the existing Xiangqi legal-action generator; next are final timings, full checks and independent review.
+
+Independent review cleared dd27c8b after two fixes: Tenjiku search PV validation and full-game perft now clone the admitted game directly, with cooperative stop checks. New Xiangqi regression forces a refusal after both a board action and a multi-event control, checks all ledgers, and uses the previous undo chain. Six release Chess perft cases passed, including deep divides. Initial native replay 28.719 ms after short-circuiting terminal checks. Next on codex/msh-252-shared-history: final workspace checks, interleaved benchmark runs, and integration.
 <!-- SECTION:NOTES:END -->

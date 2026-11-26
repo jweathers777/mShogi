@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T20:49:00Z'
+updated_date: '2026-11-26T21:21:00Z'
 labels:
   - search
   - refactor
@@ -56,4 +56,6 @@ Full linear scan, 75a10d2 vs 7c15e68: msh259-match2 closed at the preset 1200-pa
 Revised candidate 93de32f uses one 1024-bit pre-root mask shared by the two drop games. A clear bit can exclude the immutable prefix only; a matching bit always checks full 64-bit keys. Focused collision, null-undo and capture/drop tests passed. Independent review of the revised candidate found no defects. Original SPRT was closed at its cap and job deleted. Current jobs msh259-filter-build and msh259-filter-check; next run msh259-filter-probe and msh259-filter-match with the predeclared comparison. No action on main yet.
 
 Final candidate 93de32f passed 134/134 unchanged-game fixed-depth comparisons and retained all 280 Tori blunder choices (163 avoided, 65 judge choices, 43/64 and 17/64 held out). The Tori node counts matched the first full-scan implementation. Pre-integration rustfmt, Clippy and workspace tests passed (1167 passed, 0 failed, 10 ignored by default). Release deep Chess perft and native baseline depth-4 counts passed again. Checks, review, fixed-depth and blunder evidence are complete; only the independent SPRT and integration remain. Filter trials use the match3, verification2 and checks4 prefixes in the task GCS folder.
+
+msh259-filter-match (match3) stopped and diagnosed by its predeclared incomplete-pair rule at attempt 1275, seed 2475. First native game reached its 1000-step limit; the return game reached the runner-wide 180 s wall deadline after 655 plies. Neither has a score. 1270 scored pairs before the interruption, LLR -1.492; no decision. Native paired report is preserved. There is no resume of the original process at ply 655, and substituting one replayed game would mix reports. Close this trial without using its rows for acceptance. Repeat the full SAME seed range 1201..3600 from the beginning under the original clock, step cap, player limits and unchanged sequential boundaries. Set the pair-wide operational ceiling uniformly to 600 s (each game can consume 10 s of initial clocks plus 100 s of increments over 1000 plies, so 180 s for both games can expire). No outcome-based replacements, no pooling of earlier games. Task spending projection remains under US$10.
 <!-- SECTION:NOTES:END -->

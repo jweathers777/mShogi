@@ -100,12 +100,13 @@ forced-win evidence, and fast Unknown cannot be settled here by heuristics.
 
 The runner uses the existing supervised process transport unchanged: bounded
 stdin writes/acknowledgements, stdout queue, escaped diagnostic capture,
-watchdogs, quit/kill/reap and pipe cleanup. Config <=1MiB, at most4 openings,
-paired assignments optional, <=32 accepted engine actions/game, <=600000ms
-overall/game. Existing process validation applies; Xiangqi additionally caps
-stdout line4096, queue32, transcript1MiB/game and stderr4096/child. The
-report64MiB counts actual encoded bytes, including
-traffic and canonical envelope overhead. Retention failures pause before the
+watchdogs, quit/kill/reap and pipe cleanup. Configuration metadata can use 1 MiB. Opening histories are excluded.
+The operator can pair up to four openings, choose a positive action budget
+and set the overall game watchdog up to 600000 ms. Stdout lines can use 4096
+bytes, the output queue holds 32 events, a command and its replies can use
+1 MiB, and stderr can use 4096 bytes per child. A position command carries
+the full history. The 128 MiB report budget counts all encoded traffic and
+native records. Retention failures pause before the
 candidate action commits and preserve the accepted native prefix.
 
 Reports retain configuration, executable/model file hashes, platform,

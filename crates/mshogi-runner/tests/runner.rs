@@ -39,7 +39,7 @@ fn config(mode: &str) -> ExperimentConfig {
 }
 fn run(c: &ExperimentConfig) -> ExperimentReport {
     let report = run_experiment(c).unwrap();
-    let decoded = ExperimentReport::from_json(&report.to_json()).unwrap();
+    let decoded = ExperimentReport::from_json(&report.to_json().unwrap()).unwrap();
     assert_eq!(decoded, report);
     assert_eq!(decoded.replay().unwrap().len(), report.games.len());
     report
@@ -448,7 +448,7 @@ fn strict_configuration_and_replay_reject_inconsistent_or_oversized_evidence() {
     for (key, value) in [
         ("schema_version", json!(2)),
         ("claim_policy", json!("unknown_policy")),
-        ("max_plies", json!(513)),
+        ("max_plies", json!(0)),
         ("unknown", json!(true)),
     ] {
         let mut v = base.clone();
@@ -476,7 +476,8 @@ fn strict_configuration_and_replay_reject_inconsistent_or_oversized_evidence() {
         .collect();
     oversized.paired = true;
     oversized.io.transcript_bytes = 4_194_304;
-    assert!(oversized.validate().is_err());
+    oversized.max_plies = usize::MAX;
+    oversized.validate().unwrap();
     let r = run(&c);
     let base = serde_json::to_value(&r).unwrap();
     for path in [

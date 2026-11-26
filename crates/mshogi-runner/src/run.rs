@@ -413,7 +413,7 @@ impl<'a> GameRun<'a> {
                 );
                 continue;
             }
-            if self.game.game().history().ply_count() >= self.config.max_plies as usize {
+            if self.game.game().history().ply_count() >= self.config.max_plies {
                 return (GameStop::PlyLimit, None, Vec::new());
             }
             let side = self.game.game().position().side_to_move();

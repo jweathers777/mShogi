@@ -101,7 +101,7 @@ impl MatchConfig {
 
     /// Strict bounded parsing.
     pub fn from_json(text: &str) -> Result<Self, RunnerError> {
-        let config: Self = common::decode(text, common::CONFIG_BYTES)?;
+        let config: Self = crate::common::decode_config(text)?;
         config.validate()?;
         Ok(config)
     }
@@ -121,8 +121,7 @@ impl MatchConfig {
         {
             return Err(RunnerError("unsupported clock or experiment bounds".into()));
         }
-        if self.opening.moves.len() > 300
-            || self.opening.fen.as_ref().is_some_and(|s| s.len() > 4096)
+        if self.opening.fen.as_ref().is_some_and(|s| s.len() > 4096)
             || self.opening.canonical.is_some()
         {
             return Err(RunnerError("invalid opening bounds".into()));

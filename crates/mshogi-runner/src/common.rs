@@ -80,6 +80,43 @@ pub(crate) fn rerun_eligible(config: &ExperimentConfig, identities: &[EngineIden
         })
 }
 
+/// Bound configuration text apart from the exact JSON spans of opening histories.
+/// Read the spans only when the complete input exceeds the metadata allowance.
+pub(crate) fn decode_config<T: DeserializeOwned>(text: &str) -> Result<T, RunnerError> {
+    const METADATA_BYTES: usize = 1024 * 1024;
+    if text.len() > METADATA_BYTES {
+        use serde_json::value::RawValue;
+        #[derive(Deserialize)]
+        struct Opening<'a> {
+            #[serde(borrow)]
+            root: Option<&'a RawValue>,
+            #[serde(borrow)]
+            canonical: Option<&'a RawValue>,
+            #[serde(borrow)]
+            moves: Option<&'a RawValue>,
+        }
+        #[derive(Deserialize)]
+        struct Config<'a> {
+            #[serde(borrow, default)]
+            openings: Vec<Opening<'a>>,
+            #[serde(borrow)]
+            opening: Option<Opening<'a>>,
+        }
+        let cfg: Config = serde_json::from_str(text).map_err(|e| RunnerError(e.to_string()))?;
+        let history: usize = cfg
+            .openings
+            .into_iter()
+            .chain(cfg.opening)
+            .flat_map(|o| [o.root, o.canonical, o.moves].into_iter().flatten())
+            .map(|raw| raw.get().len())
+            .sum();
+        if text.len() - history > METADATA_BYTES {
+            return Err(RunnerError("configuration metadata exceeds 1 MiB".into()));
+        }
+    }
+    serde_json::from_str(text).map_err(|e| RunnerError(e.to_string()))
+}
+
 pub(crate) fn decode<T: DeserializeOwned>(text: &str, cap: usize) -> Result<T, RunnerError> {
     if text.len() > cap {
         return Err(RunnerError(format!("JSON exceeds {cap} bytes")));
@@ -90,12 +127,11 @@ pub(crate) fn decode<T: DeserializeOwned>(text: &str, cap: usize) -> Result<T, R
 pub(crate) fn encode_report<T: Serialize>(value: &T) -> Result<String, RunnerError> {
     let text = serde_json::to_string(value).map_err(|e| RunnerError(e.to_string()))?;
     if text.len() > REPORT_BYTES {
-        return Err(RunnerError("report exceeds 64 MiB".into()));
+        return Err(RunnerError("report exceeds 128 MiB".into()));
     }
     Ok(text)
 }
-pub(crate) const REPORT_BYTES: usize = 64 * 1024 * 1024;
-pub(crate) const CONFIG_BYTES: usize = 1024 * 1024;
+pub(crate) const REPORT_BYTES: usize = crate::experiments::MAX_BYTES;
 
 pub(crate) fn identity(path: &str) -> FileIdentity {
     let mut result = FileIdentity {

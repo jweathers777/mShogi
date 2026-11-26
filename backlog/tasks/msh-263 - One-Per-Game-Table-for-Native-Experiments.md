@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-26T23:48:00Z'
+updated_date: '2026-11-26T23:55:00Z'
 labels:
   - runner
   - refactor
@@ -45,6 +45,12 @@ John decided on 2026-11-26: the developer runners keep the stop settings that th
 - [ ] #8 Tests and documents match; the documents say which experiment budgets stay and why; workspace and Python checks pass.
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Consolidate native game dispatch, command admission, player selection and run/replay decisions. 2. Remove length-dependent limits from configuration, transport, report replay and current drivers. Charge native evidence against the encoded report budget. 3. Add boundary and interruption tests, update the measurement guides, run workspace/Python and affected platform checks, get a fresh review and integrate.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
@@ -63,4 +69,6 @@ John approved consolidation on 2026-11-26: this task retains the full scope of M
 Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
 
 Claimed by Codex on codex/msh-263-experiment-budgets from eb3f697. Next: inventory dispatch and budgets, implement, verify and integrate.
+
+Checkpoint on codex/msh-263-experiment-budgets: dispatch and replay now share admission and player selection. Removed game-length and pair-duration ceilings, updated CLI/driver entry points and guides. Runner all-target compilation passed before final boundary tests. Next: finish review, resolve findings, verify platform and workspace checks, then integrate.
 <!-- SECTION:NOTES:END -->

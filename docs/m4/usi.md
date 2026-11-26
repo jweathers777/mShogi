@@ -132,13 +132,15 @@ retirement/cleanup; a post-reply process failure cannot commit the candidate.
 A native conclusion alone produces the appropriate `gameover` notice.
 
 Experiments are untimed: work bounds and wall-clock process/experiment watchdogs
-are not chess clocks. The action limit1–32 and overall time limit stop unfinished
+are not chess clocks. The operator-selected positive action budget and overall time limit stop unfinished
 experiments without awarding a draw or loss. Overall deadlines also cap reads
 and writes; cleanup has a separate total deadline including commands/draining/
 kill/reap. Native CSA length320 is unchanged. Up to4 openings may be paired;
-configuration input is1MiB, protocol lines/commands4096,
-queued output32, transcript retention at most1MiB/game, stderr4096/child and
-report input/output64MiB. These caps account for serialized event overhead.
+configuration metadata can use 1 MiB, excluding opening histories. A stdout
+line or control command can use 4096 bytes. The queue holds 32 output events.
+A command and its replies can use 1 MiB including event overhead. Position
+commands carry the full history. Stderr can use 4096 bytes per child. The
+128 MiB report budget covers all games and their evidence.
 Resource failures stop admission. Incomplete/oversized/failed retirement capture
 sets `traffic_complete=false`; stderr truncation is separately explicit. Normal
 retained runs have complete traffic. No accepted native history is dropped.

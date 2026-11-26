@@ -92,11 +92,11 @@ pub struct IoLimits {
     pub line_bytes: usize,
     /// Bounded pending stdout events per child.
     pub queued_lines: usize,
-    /// Maximum retained protocol transcript bytes per game.
+    /// Maximum transcript bytes for one command and its replies, excluding position history.
     pub transcript_bytes: usize,
     /// Maximum retained stderr bytes per child, with truncation evidence.
     pub stderr_bytes: usize,
-    /// Maximum command bytes, including LF.
+    /// Maximum bytes for a control command, including LF. Position commands carry full history.
     pub command_bytes: usize,
 }
 impl Default for IoLimits {
@@ -110,7 +110,7 @@ impl Default for IoLimits {
         }
     }
 }
-fn default_plies() -> u32 {
+fn default_plies() -> usize {
     512
 }
 /// Versioned complete experiment input. The runner uses the M2 software profile.
@@ -137,9 +137,9 @@ pub struct ExperimentConfig {
     /// Absent preserves the shared limit and its historical configuration digest.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub engine_work: Option<[WorkLimit; 2]>,
-    /// Total action-ply cap including the opening prefix, at most 512.
+    /// Operator-selected action-ply budget, including the opening prefix.
     #[serde(default = "default_plies")]
-    pub max_plies: u32,
+    pub max_plies: usize,
     /// Protocol watchdogs, separate from chess clocks.
     #[serde(default)]
     pub watchdogs: Watchdogs,
@@ -154,13 +154,9 @@ fn uci_text(s: &str, cap: usize) -> bool {
     s.len() <= cap && s.is_ascii() && !s.bytes().any(|b| b.is_ascii_control())
 }
 impl ExperimentConfig {
-    /// Strict decoding with one-megabyte input bound and semantic validation.
+    /// Strict decoding and semantic validation of the configuration and opening records.
     pub fn from_json(text: &str) -> Result<Self, RunnerError> {
-        if text.len() > 1_048_576 {
-            return Err(RunnerError("configuration exceeds one MiB".into()));
-        }
-        let c: Self = serde_json::from_str(text)
-            .map_err(|e| RunnerError(format!("configuration JSON: {e}")))?;
+        let c: Self = crate::common::decode_config(text)?;
         c.validate()?;
         Ok(c)
     }
@@ -173,19 +169,10 @@ impl ExperimentConfig {
         if !text(&self.id, 128) || self.openings.is_empty() || self.openings.len() > 32 {
             return err("invalid label/opening count (1..=32)");
         }
-        if self.max_plies == 0 || self.max_plies > 512 {
-            return err("max_plies must be 1..=512");
+        if self.max_plies == 0 {
+            return err("max_plies must be positive");
         }
         validate_processes(&self.engines, self.watchdogs, self.io)?;
-        // Conservative JSON envelope bound, including escaped diagnostics,
-        // bounded last-line failures, identities and per-game metadata. Protocol
-        // entry accounting itself uses serialized JSON size, not payload only.
-        let io = self.io;
-        let games = self.openings.len() * if self.paired { 2 } else { 1 };
-        let per_game = io.transcript_bytes + io.stderr_bytes * 16 + io.line_bytes * 32 + 65536;
-        if games * per_game > 120 * 1024 * 1024 {
-            return err("aggregate report bound exceeds 120 MiB; reduce games or I/O caps");
-        }
         for work in std::iter::once(self.work).chain(self.engine_work.into_iter().flatten()) {
             if work.depth.is_some_and(|n| n == 0 || n > 128) {
                 return err("depth must be 1..=128");
@@ -210,7 +197,7 @@ impl ExperimentConfig {
         for opening in &self.openings {
             if !text(&opening.id, 128)
                 || !ids.insert(&opening.id)
-                || opening.moves.len() >= self.max_plies as usize
+                || opening.moves.len() >= self.max_plies
                 || opening.fen.as_ref().is_some_and(|s| !uci_text(s, 256))
             {
                 return err("invalid/duplicate opening or prefix too long");

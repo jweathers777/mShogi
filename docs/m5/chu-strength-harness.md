@@ -69,6 +69,12 @@ increment. An unfinished Chu pair stops the campaign and remains unscored. Do
 not convert a move or clock limit to a draw. A small capped sample can give no
 statistical decision.
 
+Set `--pair-wall-ms` to a positive 64-bit millisecond duration for both colors
+together. Set `--wall-seconds` for the campaign. The driver starts a new pair
+only when the campaign has time for the pair budget and its 45-second shutdown
+allowance. Use `--max-steps` to stop each game after the chosen number of
+engine commands. The runner also applies the shared 128 MiB report budget.
+
 `chu_strength export REPORT_PATHS.json OUT.jsonl EVERY` validates and replays
 the source reports, then samples board positions at the requested interval.
 Only native concluded games supply outcome labels. Unfinished games remain

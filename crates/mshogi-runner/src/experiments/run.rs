@@ -55,7 +55,13 @@ pub fn run_with_stop(
                 + 8192,
         );
     }
-    let deadline = Instant::now() + Duration::from_millis(config.wall_budget_ms);
+    if charged > MAX_BYTES {
+        return Err(err(
+            "scheduled opening evidence exceeds the 128 MiB report budget",
+        ));
+    }
+    let started = Instant::now();
+    let wall_budget = Duration::from_millis(config.wall_budget_ms);
     let mut id = 0u64;
     for pairing in config.schedule() {
         let opening = &config.openings[pairing.opening];
@@ -95,25 +101,15 @@ pub fn run_with_stop(
                 game.stop = "cancelled".into();
                 break;
             }
-            if Instant::now() >= deadline {
+            if started.elapsed() >= wall_budget {
                 game.stop = "wall_budget".into();
                 break;
             }
-            if game.steps.len() >= usize::from(config.max_steps) {
-                break;
-            }
-            // Reserve room for one more transition before submitting; do not
-            // search and then discard evidence.
-            if charged > MAX_BYTES - 8 * 1024 * 1024 {
-                game.stop = "artifact_limit".into();
+            if game.steps.len() >= config.max_steps {
                 break;
             }
             let before = state.root().map_err(err)?;
-            let player = if first_side(state.turn()) != game.pairing.swapped {
-                0
-            } else {
-                game.pairing.baseline
-            };
+            let player = game.pairing.player(&state);
             id += 1;
             let request = ExecutionRequest {
                 protocol: PROTOCOL_VERSION,
@@ -138,7 +134,7 @@ pub fn run_with_stop(
                     failure = Some("cancelled".to_owned());
                     break None;
                 }
-                if Instant::now() >= deadline {
+                if started.elapsed() >= wall_budget {
                     failure = Some("wall_budget".to_owned());
                     break None;
                 }
@@ -158,28 +154,15 @@ pub fn run_with_stop(
                 bridges[player].cancel();
             }
             let mut candidate = state.clone();
-            let decision = if let Some(o) = &observation {
-                if config.clock.is_some() && elapsed_ns.div_ceil(1_000_000) >= remaining[player] {
-                    failure = Some("clock_limit".into());
-                    native::Admission::Failed("clock_limit".into())
-                } else if !o.matches(&request.context) {
-                    failure = Some("observation:context".into());
-                    native::Admission::Failed("observation:context".into())
-                } else if !within_limits(o) {
-                    failure = Some("observation:limits".into());
-                    native::Admission::Failed("observation:limits".into())
-                } else {
-                    match admit_bounded(&mut candidate, &o.result, request.context.limits) {
-                        Ok(a) => a,
-                        Err(e) => {
-                            failure = Some(e.clone());
-                            native::Admission::Failed(format!("admission:{e}"))
-                        }
-                    }
-                }
-            } else {
-                native::Admission::Failed(failure.clone().unwrap())
-            };
+            let exhausted =
+                config.clock.is_some() && elapsed_ns.div_ceil(1_000_000) >= remaining[player];
+            let (decision, failure) = decide_step(
+                &mut candidate,
+                &request.context,
+                observation.as_ref(),
+                failure.as_deref(),
+                exhausted,
+            )?;
             let clock = config.player_clock(player).map(|c| {
                 clock_receipt(
                     c,
@@ -209,12 +192,11 @@ pub fn run_with_stop(
                 .map_err(err)?
                 .len()
                 + after_len.saturating_sub(root_len)
-                + 1024;
+                + usize::from(!game.steps.is_empty());
             root_len = root_len.max(after_len);
-            if cost > 8 * 1024 * 1024 {
-                return Err(err(
-                    "bounded protocol/native evidence exceeded reserved transition capacity",
-                ));
+            if cost > MAX_BYTES - charged {
+                game.stop = "artifact_limit".into();
+                break;
             }
             charged += cost;
             state = candidate;

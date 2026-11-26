@@ -240,12 +240,9 @@ pub fn run_external(
     protocol: ExternalProtocol,
     config_json: &str,
 ) -> Result<ExternalReport, RunnerError> {
-    if config_json.len() > 1024 * 1024 {
-        return Err(err("external config exceeds 1MiB"));
-    }
     let report_json = match protocol {
         ExternalProtocol::Uci => {
-            crate::run_experiment(&crate::ExperimentConfig::from_json(config_json)?)?.to_json()
+            crate::run_experiment(&crate::ExperimentConfig::from_json(config_json)?)?.to_json()?
         }
         ExternalProtocol::Usi => {
             crate::shogi::run(&crate::shogi::Config::from_json(config_json)?)?.to_json()?

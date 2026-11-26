@@ -74,7 +74,7 @@ pub type Config = crate::recorded::Config<Opening, Policy>;
 impl Config {
     /// Strict, bounded input parsing.
     pub fn from_json(text: &str) -> Result<Self, RunnerError> {
-        let config: Self = common::decode(text, common::CONFIG_BYTES)?;
+        let config: Self = crate::common::decode_config(text)?;
         config.validate()?;
         Ok(config)
     }
@@ -94,9 +94,7 @@ impl Config {
             |o| {
                 if o.id.is_empty()
                     || o.id.len() > 128
-                    || o.moves.len() > 320
                     || o.fen.as_ref().is_some_and(|s| s.len() > 256)
-                    || o.canonical.as_ref().is_some_and(|s| s.len() > 1_048_576)
                 {
                     return Err(RunnerError("invalid opening bounds".into()));
                 }

@@ -1,13 +1,11 @@
 //! Experiment orchestration over the existing native owners. No rules live here.
 use mshogi_core::{
     chess, chu,
-    native::{CanonicalRecord, NativeSide, RulesProfile},
+    native::{CanonicalRecord, GameKind, RulesProfile},
     shogi, tenjiku, tori, xiangqi,
 };
-use mshogi_engine::{
-    ChessResult, ChuResult, ExecutionResult, ShogiChoice, ShogiResult, TenjikuResult, ToriResult,
-    XiangqiChoice, XiangqiResult,
-};
+use mshogi_engine::{ChessResult, EngineGame, EngineResult, ExecutionResult, WorkLimits, game};
+use mshogi_search::root::RootGame;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -19,23 +17,6 @@ pub struct Root {
     pub record: CanonicalRecord,
     /// Required only for Chess; an exact native MatchRecord JSON string.
     pub chess_match: Option<String>,
-}
-
-/// Concrete authoritative owners, borrowed by the experiment controller.
-#[derive(Clone)]
-pub enum NativeState {
-    /// Untimed M2 Chess match with its full command ledger.
-    Chess(Box<chess::ChessMatch>),
-    /// Standard Shogi's native game owner.
-    Shogi(Box<shogi::Game>),
-    /// Xiangqi's native history/adjudication owner.
-    Xiangqi(Box<xiangqi::Game>),
-    /// Modern Tori's native history owner.
-    Tori(Box<tori::Game>),
-    /// JCSA Chu's native complete-action/history owner.
-    Chu(Box<chu::Game>),
-    /// Tenjiku's native owner under one immutable whole profile.
-    Tenjiku(Box<tenjiku::Game>),
 }
 
 /// Result of admitting a supervised native engine observation.
@@ -73,30 +54,17 @@ pub fn fresh_root(record: CanonicalRecord) -> Result<Root, String> {
 
 /// The selected baseline starts are untimed; Chess uses explicit AutoClaim M2.
 pub fn standard_root(profile: RulesProfile) -> Result<Root, String> {
-    let state = match profile {
-        RulesProfile::ChessMatchV1 => {
-            let mut game = chess::ChessMatch::new(
-                chess::AdjudicatedGame::new(chess::ClaimPolicy::AutoClaim),
-                chess::TimeControl::Untimed,
-            )
-            .map_err(|e| e.to_string())?;
-            start_chess(&mut game)?;
-            NativeState::Chess(Box::new(game))
-        }
-        RulesProfile::ShogiCsa36V1 => NativeState::Shogi(Box::new(shogi::Game::new())),
-        RulesProfile::XiangqiWxf2018V1 => NativeState::Xiangqi(Box::new(
-            xiangqi::Game::standard(xiangqi::ClaimPolicy::AutoValidClaims)
-                .map_err(|e| e.to_string())?,
-        )),
-        RulesProfile::ToriModernV1 => NativeState::Tori(Box::new(tori::Game::standard())),
-        RulesProfile::ChuJcsa2019V1 => NativeState::Chu(Box::new(chu::Game::standard())),
-        RulesProfile::TenjikuAdamsModernV1 | RulesProfile::TenjikuMullerCompletedV1 => {
-            NativeState::Tenjiku(Box::new(tenjiku::Game::standard(
-                profile.tenjiku().expect("explicit Tenjiku profile"),
-            )))
-        }
-    };
-    state.root()
+    NativeState::standard(profile)?.root()
+}
+
+fn standard_chess() -> Result<chess::ChessMatch, String> {
+    let mut game = chess::ChessMatch::new(
+        chess::AdjudicatedGame::new(chess::ClaimPolicy::AutoClaim),
+        chess::TimeControl::Untimed,
+    )
+    .map_err(|e| e.to_string())?;
+    start_chess(&mut game)?;
+    Ok(game)
 }
 
 fn chess_command(
@@ -195,156 +163,175 @@ fn chess_choice(
     Ok(())
 }
 
-impl NativeState {
-    /// Replay the actual native owner and reject unsupported/mismatched roots.
-    pub fn from_root(root: &Root) -> Result<Self, String> {
-        if !matches!(root.record, CanonicalRecord::Chess(_)) && root.chess_match.is_some() {
-            return Err("only Chess roots may carry a Chess match record".into());
+fn replay_chess(root: &Root, record: &chess::GameRecord) -> Result<chess::ChessMatch, String> {
+    let text = root
+        .chess_match
+        .as_ref()
+        .ok_or("Chess root requires its complete native match record")?;
+    let matched = chess::MatchRecord::from_json(text).map_err(|e| e.to_string())?;
+    // Timed play is a different experiment contract.
+    if matched.time_control() != chess::TimeControl::Untimed {
+        return Err("internal Chess experiments require untimed matches".into());
+    }
+    let mut game = matched.replay().map_err(|e| e.to_string())?;
+    if game.game().record() != *record {
+        return Err("Chess canonical history and match record disagree".into());
+    }
+    start_chess(&mut game)?;
+    Ok(game)
+}
+
+fn admit_engine<G: EngineGame>(
+    game: &mut G::Game,
+    result: &ExecutionResult,
+) -> Result<Admission, String> {
+    let result = G::result(result).ok_or("execution result belongs to a different native game")?;
+    result.validate(game)?;
+    match result {
+        EngineResult::Choice { choice, .. } => {
+            let (actor, command) = G::command(choice, G::side_to_move(game));
+            G::submit(game, actor, command, &mut || false)?;
+            Ok(Admission::Applied)
         }
-        match &root.record {
-            CanonicalRecord::Chess(record) => {
-                let text = root
-                    .chess_match
-                    .as_ref()
-                    .ok_or("Chess root requires its complete native match record")?;
-                let matched = chess::MatchRecord::from_json(text).map_err(|e| e.to_string())?;
-                // Timed play is a different experiment contract.
-                if matched.time_control() != chess::TimeControl::Untimed {
-                    return Err("internal Chess experiments require untimed matches".into());
-                }
-                let mut game = matched.replay().map_err(|e| e.to_string())?;
-                if game.game().record() != **record {
-                    return Err("Chess canonical history and match record disagree".into());
-                }
-                start_chess(&mut game)?;
-                Ok(Self::Chess(Box::new(game)))
+        EngineResult::Finished { conclusion, .. } => finished(game.finished(), *conclusion),
+        EngineResult::Incomplete { telemetry } => {
+            Ok(Admission::Incomplete(format!("{:?}", telemetry.status)))
+        }
+        EngineResult::Unresolved { pending, .. } => Ok(Admission::Incomplete(format!(
+            "native unresolved adjudication: {pending:?}"
+        ))),
+    }
+}
+
+// The five shared-engine adapters use the same admission and replay operations.
+// Each row supplies the starting position, record encoding and native first side.
+macro_rules! experiment_games {
+    ($(($variant:ident, $rules:ident, $first:ident, $start:expr, $record:expr, $score:expr)),+ $(,)?) => {
+        #[derive(Clone)]
+        pub(super) enum NativeState {
+            Chess(Box<chess::ChessMatch>),
+            $($variant(Box<$rules::Game>),)+
+        }
+
+        pub(super) fn valid_work(profile: RulesProfile, work: WorkLimits) -> bool {
+            work.time_ms.is_none() && match profile.game() {
+                GameKind::Chess => (1..=mshogi_engine::MAX_ANALYSIS_DEPTH).contains(&work.depth)
+                    && work.nodes <= mshogi_engine::MAX_ANALYSIS_NODES,
+                $(GameKind::$variant => game::$variant::valid_limits(work),)+
             }
-            CanonicalRecord::Shogi(record) => record
-                .to_game()
-                .map(|g| Self::Shogi(Box::new(g)))
-                .map_err(|e| e.to_string()),
-            CanonicalRecord::Xiangqi(record) => record
-                .to_game()
-                .map(|g| Self::Xiangqi(Box::new(g)))
-                .map_err(|e| e.to_string()),
-            CanonicalRecord::Tori(record) => record
-                .to_game()
-                .map(|g| Self::Tori(Box::new(g)))
-                .map_err(|e| e.to_string()),
-            CanonicalRecord::Chu(record) => record
-                .to_game()
-                .map(|g| Self::Chu(Box::new(g)))
-                .map_err(|e| e.to_string()),
-            CanonicalRecord::Tenjiku(record) => record
-                .to_game()
-                .map(|g| Self::Tenjiku(Box::new(g)))
-                .map_err(|e| e.to_string()),
         }
-    }
 
-    /// Capture complete native history and the additional Chess match ledger.
-    pub fn root(&self) -> Result<Root, String> {
-        let (record, chess_match) = match self {
-            Self::Chess(game) => (
-                CanonicalRecord::chess(game.game().record()),
-                Some(game.record().to_json()),
-            ),
-            Self::Shogi(game) => (
-                CanonicalRecord::shogi(shogi::GameRecord::from_game(game)),
-                None,
-            ),
-            Self::Xiangqi(game) => (
-                CanonicalRecord::xiangqi(
-                    xiangqi::GameRecord::from_game(game).map_err(|e| e.to_string())?,
-                ),
-                None,
-            ),
-            Self::Tori(game) => (
-                CanonicalRecord::tori(
-                    tori::GameRecord::from_game(game).map_err(|e| e.to_string())?,
-                ),
-                None,
-            ),
-            Self::Chu(game) => (
-                CanonicalRecord::chu(chu::GameRecord::from_game(game).map_err(|e| e.to_string())?),
-                None,
-            ),
-            Self::Tenjiku(game) => (
-                CanonicalRecord::tenjiku(
-                    tenjiku::GameRecord::from_game(game).map_err(|e| e.to_string())?,
-                ),
-                None,
-            ),
-        };
-        Ok(Root {
-            record,
-            chess_match,
-        })
-    }
+        impl NativeState {
+            fn standard(profile: RulesProfile) -> Result<Self, String> {
+                Ok(match profile.game() {
+                    GameKind::Chess => Self::Chess(Box::new(standard_chess()?)),
+                    $(GameKind::$variant => Self::$variant(Box::new(($start)(profile)?)),)+
+                })
+            }
 
-    /// Native side to move, retaining the game-qualified side identity.
-    pub fn turn(&self) -> NativeSide {
-        match self {
-            Self::Chess(g) => NativeSide::Chess(g.game().position().side_to_move()),
-            Self::Shogi(g) => NativeSide::Shogi(g.position().side_to_move()),
-            Self::Xiangqi(g) => NativeSide::Xiangqi(g.position().side_to_move()),
-            Self::Tori(g) => NativeSide::Tori(g.position().side_to_move()),
-            Self::Chu(g) => NativeSide::Chu(g.position().side_to_move()),
-            Self::Tenjiku(g) => NativeSide::Tenjiku(g.position().side_to_move()),
-        }
-    }
-
-    /// Exact native conclusion representation, absent for unfinished play.
-    pub fn outcome(&self) -> Option<Value> {
-        match self {
-            Self::Chess(g) => g.conclusion().map(native_value),
-            Self::Shogi(g) => g.conclusion().map(native_value),
-            Self::Xiangqi(g) => g.conclusion().map(native_value),
-            Self::Tori(g) => g.conclusion().map(native_value),
-            Self::Chu(g) => g.conclusion().map(native_value),
-            Self::Tenjiku(g) => g.conclusion().map(native_value),
-        }
-    }
-
-    /// First native side's doubled score, absent for unfinished/uncertain play.
-    pub fn score_first_twice(&self) -> Option<u8> {
-        match self {
-            Self::Chess(g) => g
-                .conclusion()
-                .and_then(chess::MatchConclusion::white_score_twice),
-            Self::Shogi(g) => g.conclusion().map(|c| c.score_half_points()[0]),
-            Self::Xiangqi(g) => g.conclusion().map(|c| match c {
-                xiangqi::Conclusion::Draw { .. } => 1,
-                xiangqi::Conclusion::Win { winner, .. } => {
-                    if winner == xiangqi::Side::Red {
-                        2
-                    } else {
-                        0
-                    }
+            pub fn from_root(root: &Root) -> Result<Self, String> {
+                if !matches!(root.record, CanonicalRecord::Chess(_)) && root.chess_match.is_some() {
+                    return Err("only Chess roots may carry a Chess match record".into());
                 }
-            }),
-            Self::Tori(g) => g.conclusion().map(|c| {
-                let winner = match c {
-                    tori::Conclusion::Checkmate { winner }
-                    | tori::Conclusion::Resignation { winner } => winner,
-                    tori::Conclusion::StalemateLoss { loser }
-                    | tori::Conclusion::RepetitionForfeit { loser } => loser.opponent(),
-                };
-                if winner == tori::Side::Sente { 2 } else { 0 }
-            }),
-            Self::Chu(g) => g.conclusion().map(|c| match c.winner() {
-                Some(chu::Side::Sente) => 2,
-                Some(chu::Side::Gote) => 0,
-                None => 1,
-            }),
-            Self::Tenjiku(g) => g.conclusion().map(|c| match c.winner() {
-                Some(tenjiku::Side::Sente) => 2,
-                Some(tenjiku::Side::Gote) => 0,
-                None => 1,
-            }),
-        }
-    }
+                Ok(match &root.record {
+                    CanonicalRecord::Chess(record) => Self::Chess(Box::new(replay_chess(root, record)?)),
+                    $(CanonicalRecord::$variant(record) => Self::$variant(Box::new(game::$variant::to_game(record)?)),)+
+                })
+            }
 
+            pub fn root(&self) -> Result<Root, String> {
+                let (record, chess_match) = match self {
+                    Self::Chess(g) => (CanonicalRecord::chess(g.game().record()), Some(g.record().to_json())),
+                    $(Self::$variant(g) => (CanonicalRecord::$rules(($record)(g)?), None),)+
+                };
+                Ok(Root { record, chess_match })
+            }
+
+            pub fn first_to_move(&self) -> bool {
+                match self {
+                    Self::Chess(g) => g.game().position().side_to_move() == chess::Color::White,
+                    $(Self::$variant(g) => g.side() == $rules::Side::$first,)+
+                }
+            }
+
+            pub fn outcome(&self) -> Option<Value> {
+                match self {
+                    Self::Chess(g) => g.conclusion().map(native_value),
+                    $(Self::$variant(g) => g.conclusion().map(native_value),)+
+                }
+            }
+
+            pub fn score_first_twice(&self) -> Option<u8> {
+                match self {
+                    Self::Chess(g) => g.conclusion().and_then(chess::MatchConclusion::white_score_twice),
+                    $(Self::$variant(g) => g.conclusion().map($score),)+
+                }
+            }
+
+            pub fn admit(&mut self, result: &ExecutionResult) -> Result<Admission, String> {
+                if let ExecutionResult::Failure { failure } = result {
+                    return Ok(Admission::Failed(format!("{:?}: {}", failure.kind, failure.message)));
+                }
+                match self {
+                    Self::Chess(g) => admit_chess(g, result),
+                    $(Self::$variant(g) => admit_engine::<game::$variant>(g, result),)+
+                }
+            }
+        }
+    };
+}
+
+fn winner_score<G: RootGame>(conclusion: G::Conclusion, first: G::Side) -> u8 {
+    G::winner(conclusion).map_or(1, |winner| if winner == first { 2 } else { 0 })
+}
+
+experiment_games!(
+    (
+        Shogi,
+        shogi,
+        Sente,
+        |_| Ok::<_, String>(shogi::Game::new()),
+        |g| Ok::<_, String>(shogi::GameRecord::from_game(g)),
+        |c| c.score_half_points()[0]
+    ),
+    (
+        Xiangqi,
+        xiangqi,
+        Red,
+        |_| xiangqi::Game::standard(xiangqi::ClaimPolicy::AutoValidClaims)
+            .map_err(|e| e.to_string()),
+        |g| xiangqi::GameRecord::from_game(g).map_err(|e| e.to_string()),
+        |c| crate::xiangqi::score(c)[0]
+    ),
+    (
+        Tori,
+        tori,
+        Sente,
+        |_| Ok::<_, String>(tori::Game::standard()),
+        |g| tori::GameRecord::from_game(g).map_err(|e| e.to_string()),
+        |c| winner_score::<tori::Game>(c, tori::Side::Sente)
+    ),
+    (
+        Chu,
+        chu,
+        Sente,
+        |_| Ok::<_, String>(chu::Game::standard()),
+        |g| chu::GameRecord::from_game(g).map_err(|e| e.to_string()),
+        |c| winner_score::<chu::Game>(c, chu::Side::Sente)
+    ),
+    (
+        Tenjiku,
+        tenjiku,
+        Sente,
+        |p: RulesProfile| Ok::<_, String>(tenjiku::Game::standard(
+            p.tenjiku().expect("Tenjiku profile")
+        )),
+        |g| tenjiku::GameRecord::from_game(g).map_err(|e| e.to_string()),
+        |c| winner_score::<tenjiku::Game>(c, tenjiku::Side::Sente)
+    ),
+);
+
+impl NativeState {
     /// A stopped experiment never manufactures a native win or draw.
     pub fn stop_reason(&self) -> Option<String> {
         if self.outcome().is_some() {
@@ -370,241 +357,62 @@ impl NativeState {
             _ => None,
         }
     }
+}
 
-    /// Submit a proposed complete action/claim/declaration to its native owner.
-    /// The caller separately verifies observation identity and requested limits.
-    pub fn admit(&mut self, result: &ExecutionResult) -> Result<Admission, String> {
-        if let ExecutionResult::Failure { failure } = result {
-            return Ok(Admission::Failed(format!(
-                "{:?}: {}",
-                failure.kind, failure.message
-            )));
+fn admit_chess(
+    game: &mut chess::ChessMatch,
+    result: &ExecutionResult,
+) -> Result<Admission, String> {
+    let ExecutionResult::Chess { result } = result else {
+        return Err("execution result belongs to a different native game".into());
+    };
+    match result {
+        ChessResult::Move { action, telemetry } => {
+            chess_choice(
+                game,
+                telemetry,
+                mshogi_engine::EngineChoice::Move { action: *action },
+            )?;
+            chess_command(
+                game,
+                game.game().position().side_to_move(),
+                chess::MatchCommand::Move(*action),
+            )?;
+            Ok(Admission::Applied)
         }
-        match (self, result) {
-            (Self::Chess(game), ExecutionResult::Chess { result }) => match result {
-                ChessResult::Move { action, telemetry } => {
-                    chess_choice(
-                        game,
-                        telemetry,
-                        mshogi_engine::EngineChoice::Move { action: *action },
-                    )?;
-                    chess_command(
-                        game,
-                        game.game().position().side_to_move(),
-                        chess::MatchCommand::Move(*action),
-                    )?;
-                    Ok(Admission::Applied)
-                }
-                ChessResult::Claim { claim, telemetry } => {
-                    chess_choice(
-                        game,
-                        telemetry,
-                        mshogi_engine::EngineChoice::Claim { claim: *claim },
-                    )?;
-                    chess_command(
-                        game,
-                        claim.actor,
-                        chess::MatchCommand::Claim {
-                            reason: claim.reason,
-                            intended: claim.intended,
-                        },
-                    )?;
-                    Ok(Admission::Applied)
-                }
-                ChessResult::Finished { outcome, .. } => {
-                    finished(game.conclusion(), chess::MatchConclusion::Chess(*outcome))
-                }
-                ChessResult::Incomplete { telemetry } => {
-                    if telemetry.completed_depth != 0
-                        || telemetry.score.is_some()
-                        || !telemetry.principal_variation.is_empty()
-                        || telemetry.status == mshogi_engine::StopReason::Complete
-                    {
-                        return Err("Chess incomplete result claims completed work".into());
-                    }
-                    Ok(Admission::Incomplete(format!("{:?}", telemetry.status)))
-                }
-                ChessResult::Failure { failure } => Ok(Admission::Failed(format!(
-                    "{:?}: {}",
-                    failure.kind, failure.message
-                ))),
-            },
-            (Self::Shogi(game), ExecutionResult::Shogi { result }) => match result {
-                ShogiResult::Choice { choice, telemetry } => {
-                    let mut pv = (**game).clone();
-                    for choice in &telemetry.principal_variation {
-                        if pv.conclusion().is_some() {
-                            return Err("Shogi PV continues after conclusion".into());
-                        }
-                        let (actor, command) = match choice {
-                            ShogiChoice::Move { action } => (
-                                pv.position().side_to_move(),
-                                shogi::GameCommand::Play(*action),
-                            ),
-                            ShogiChoice::Declare { actor } => {
-                                (*actor, shogi::GameCommand::DeclareEnteringKing)
-                            }
-                        };
-                        pv.submit(shogi::GameRequest {
-                            expected: pv.context(),
-                            actor,
-                            command,
-                        })
-                        .map_err(|e| format!("Shogi PV: {e:?}"))?;
-                    }
-                    let (actor, command) = match choice {
-                        ShogiChoice::Move { action } => (
-                            game.position().side_to_move(),
-                            shogi::GameCommand::Play(*action),
-                        ),
-                        ShogiChoice::Declare { actor } => {
-                            (*actor, shogi::GameCommand::DeclareEnteringKing)
-                        }
-                    };
-                    game.submit(shogi::GameRequest {
-                        expected: game.context(),
-                        actor,
-                        command,
-                    })
-                    .map_err(|e| format!("{e:?}"))?;
-                    Ok(Admission::Applied)
-                }
-                ShogiResult::Finished { conclusion, .. } => {
-                    finished(game.conclusion(), *conclusion)
-                }
-                ShogiResult::Incomplete { telemetry }
-                | ShogiResult::Unresolved { telemetry, .. } => {
-                    Ok(Admission::Incomplete(format!("{:?}", telemetry.status)))
-                }
-            },
-            (Self::Xiangqi(game), ExecutionResult::Xiangqi { result }) => match result {
-                XiangqiResult::Choice { choice, telemetry } => {
-                    let mut pv = game.clone();
-                    for choice in &telemetry.principal_variation {
-                        if pv.conclusion().is_some() || pv.pending_adjudication().is_some() {
-                            return Err("Xiangqi PV continues after native stop".into());
-                        }
-                        let (actor, command) = match choice {
-                            XiangqiChoice::Move { action } => (
-                                pv.position().side_to_move(),
-                                xiangqi::GameCommand::Play { action: *action },
-                            ),
-                            XiangqiChoice::Claim { actor } => {
-                                (*actor, xiangqi::GameCommand::ClaimNaturalCount)
-                            }
-                        };
-                        let submitted = pv
-                            .submit(xiangqi::GameRequest {
-                                expected: pv.context(),
-                                actor,
-                                command,
-                            })
-                            .map_err(|e| format!("Xiangqi PV: {e}"))?;
-                        if submitted.result != xiangqi::CommandResult::Accepted {
-                            return Err("Xiangqi PV rejected claim".into());
-                        }
-                    }
-                    let (actor, command) = match choice {
-                        XiangqiChoice::Move { action } => (
-                            game.position().side_to_move(),
-                            xiangqi::GameCommand::Play { action: *action },
-                        ),
-                        XiangqiChoice::Claim { actor } => {
-                            (*actor, xiangqi::GameCommand::ClaimNaturalCount)
-                        }
-                    };
-                    let submission = game
-                        .submit(xiangqi::GameRequest {
-                            expected: game.context(),
-                            actor,
-                            command,
-                        })
-                        .map_err(|e| e.to_string())?;
-                    if submission.result != xiangqi::CommandResult::Accepted {
-                        game.undo(submission.undo).map_err(|e| e.to_string())?;
-                        return Err("Xiangqi native count claim was rejected".into());
-                    }
-                    Ok(Admission::Applied)
-                }
-                XiangqiResult::Finished { conclusion, .. } => {
-                    finished(game.conclusion(), *conclusion)
-                }
-                XiangqiResult::Incomplete { telemetry } => {
-                    Ok(Admission::Incomplete(format!("{:?}", telemetry.status)))
-                }
-                XiangqiResult::Unresolved { pending, .. } => Ok(Admission::Incomplete(format!(
-                    "native unresolved adjudication: {pending:?}"
-                ))),
-            },
-            (Self::Tori(game), ExecutionResult::Tori { result }) => {
-                result.validate(game)?;
-                match result {
-                    ToriResult::Choice { choice: action, .. } => {
-                        game.submit(tori::GameRequest {
-                            expected: game.context(),
-                            actor: game.position().side_to_move(),
-                            command: tori::GameCommand::Play { action: *action },
-                        })
-                        .map_err(|e| e.to_string())?;
-                        Ok(Admission::Applied)
-                    }
-                    ToriResult::Finished { conclusion, .. } => {
-                        finished(game.conclusion(), *conclusion)
-                    }
-                    ToriResult::Incomplete { telemetry }
-                    | ToriResult::Unresolved { telemetry, .. } => {
-                        Ok(Admission::Incomplete(format!("{:?}", telemetry.status)))
-                    }
-                }
-            }
-            (Self::Chu(game), ExecutionResult::Chu { result }) => {
-                result.validate(game)?;
-                match result {
-                    ChuResult::Choice { choice: action, .. } => {
-                        game.submit(chu::GameRequest {
-                            expected: game.context(),
-                            actor: game.position().side_to_move(),
-                            command: chu::GameCommand::Play {
-                                action: action.clone(),
-                            },
-                        })
-                        .map_err(|e| e.to_string())?;
-                        Ok(Admission::Applied)
-                    }
-                    ChuResult::Finished { conclusion, .. } => {
-                        finished(game.conclusion(), *conclusion)
-                    }
-                    ChuResult::Incomplete { telemetry }
-                    | ChuResult::Unresolved { telemetry, .. } => {
-                        Ok(Admission::Incomplete(format!("{:?}", telemetry.status)))
-                    }
-                }
-            }
-            (Self::Tenjiku(game), ExecutionResult::Tenjiku { result }) => {
-                result.validate(game)?;
-                match result {
-                    TenjikuResult::Choice { choice: action, .. } => {
-                        game.submit(tenjiku::GameRequest {
-                            expected: game.context(),
-                            actor: game.position().side_to_move(),
-                            command: tenjiku::GameCommand::Play {
-                                action: action.clone(),
-                            },
-                        })
-                        .map_err(|e| e.to_string())?;
-                        Ok(Admission::Applied)
-                    }
-                    TenjikuResult::Finished { conclusion, .. } => {
-                        finished(game.conclusion(), *conclusion)
-                    }
-                    TenjikuResult::Incomplete { telemetry }
-                    | TenjikuResult::Unresolved { telemetry, .. } => {
-                        Ok(Admission::Incomplete(format!("{:?}", telemetry.status)))
-                    }
-                }
-            }
-            _ => Err("execution result belongs to a different native game".into()),
+        ChessResult::Claim { claim, telemetry } => {
+            chess_choice(
+                game,
+                telemetry,
+                mshogi_engine::EngineChoice::Claim { claim: *claim },
+            )?;
+            chess_command(
+                game,
+                claim.actor,
+                chess::MatchCommand::Claim {
+                    reason: claim.reason,
+                    intended: claim.intended,
+                },
+            )?;
+            Ok(Admission::Applied)
         }
+        ChessResult::Finished { outcome, .. } => {
+            finished(game.conclusion(), chess::MatchConclusion::Chess(*outcome))
+        }
+        ChessResult::Incomplete { telemetry } => {
+            if telemetry.completed_depth != 0
+                || telemetry.score.is_some()
+                || !telemetry.principal_variation.is_empty()
+                || telemetry.status == mshogi_engine::StopReason::Complete
+            {
+                return Err("Chess incomplete result claims completed work".into());
+            }
+            Ok(Admission::Incomplete(format!("{:?}", telemetry.status)))
+        }
+        ChessResult::Failure { failure } => Ok(Admission::Failed(format!(
+            "{:?}: {}",
+            failure.kind, failure.message
+        ))),
     }
 }
 
@@ -617,15 +425,8 @@ mod tests {
     use super::*;
     use mshogi_engine::{StopReason, Telemetry};
 
-    const PROFILES: [RulesProfile; 7] = [
-        RulesProfile::ChessMatchV1,
-        RulesProfile::ShogiCsa36V1,
-        RulesProfile::XiangqiWxf2018V1,
-        RulesProfile::ToriModernV1,
-        RulesProfile::ChuJcsa2019V1,
-        RulesProfile::TenjikuAdamsModernV1,
-        RulesProfile::TenjikuMullerCompletedV1,
-    ];
+    use super::super::PROFILES;
+    use mshogi_engine::ToriResult;
 
     fn same_root(a: &Root, b: &Root) {
         assert_eq!(a.record, b.record);
@@ -638,7 +439,7 @@ mod tests {
             let root = standard_root(profile).unwrap();
             assert_eq!(root.record.profile(), profile);
             let state = NativeState::from_root(&root).unwrap();
-            assert_eq!(state.turn().game(), profile.game());
+            assert!(state.first_to_move());
             assert!(state.outcome().is_none());
             assert_eq!(state.score_first_twice(), None);
             same_root(&state.root().unwrap(), &root);

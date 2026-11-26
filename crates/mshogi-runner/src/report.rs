@@ -267,12 +267,12 @@ pub(crate) fn summaries(config: &ExperimentConfig, games: &[GameReport]) -> Vec<
 }
 impl ExperimentReport {
     /// Canonical compact JSON, not an engine rerun.
-    pub fn to_json(&self) -> String {
-        serde_json::to_string(self).expect("finite report data")
+    pub fn to_json(&self) -> Result<String, RunnerError> {
+        crate::common::encode_report(self)
     }
     /// Decode a bounded strict report; call replay to validate derived evidence.
     pub fn from_json(text: &str) -> Result<Self, RunnerError> {
-        if text.len() > 134_217_728 {
+        if text.len() > crate::common::REPORT_BYTES {
             return Err(RunnerError("report exceeds 128 MiB".into()));
         }
         serde_json::from_str(text).map_err(|e| RunnerError(format!("report JSON: {e}")))
@@ -443,7 +443,7 @@ impl ExperimentReport {
                 }
             }
             if g.stop == GameStop::PlyLimit
-                && m.game().history().ply_count() != self.config.max_plies as usize
+                && m.game().history().ply_count() != self.config.max_plies
             {
                 return Err(RunnerError("ply-limit evidence mismatch".into()));
             }
@@ -462,16 +462,9 @@ impl ExperimentReport {
             {
                 return Err(RunnerError("transcript ordering invalid".into()));
             }
-            let retained_cost: usize = g
-                .transcript
-                .entries
-                .iter()
-                .map(|e| serde_json::to_vec(e).expect("finite event").len() + 1)
-                .sum();
-            if retained_cost > self.config.io.transcript_bytes
-                || (!g.transcript.truncated
-                    && (g.transcript.observed_entries != g.transcript.entries.len() as u64
-                        || g.transcript.dropped_bytes != 0))
+            if !g.transcript.truncated
+                && (g.transcript.observed_entries != g.transcript.entries.len() as u64
+                    || g.transcript.dropped_bytes != 0)
             {
                 return Err(RunnerError(
                     "transcript bound/truncation evidence mismatch".into(),

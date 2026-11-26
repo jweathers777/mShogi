@@ -74,7 +74,7 @@ class NativeClockDispatch(unittest.TestCase):
             out = Path(directory)
             args = SimpleNamespace(config_writer='writer', candidate='new', baseline='old',
                 candidate_nodes=5_000_000, baseline_depth=64, baseline_nodes=5_000_000,
-                calibrate=False, max_steps=320, pair_wall_ms=1000, game='shogi',
+                calibrate=False, max_steps=100_000, pair_wall_ms=900_000, game='shogi',
                 watchdog_ms=None, runner='runner', base=10, increment=.1,
                 openings='frozen.json', opening_count=4)
             (out / 'pair-0006.report.json').write_text(json.dumps(report))
@@ -84,6 +84,7 @@ class NativeClockDispatch(unittest.TestCase):
                  mock.patch.object(native_match.subprocess, 'run') as run:
                 result = native_match.run_pair(args, 6, out)
             command = run.call_args_list[0].args[0]
+            self.assertEqual(command[7:9], ['100000', '900000'])
             self.assertEqual(command[-8:], ['--clock-base-ms', '10000', '--clock-increment-ms', '100',
                                            '--openings', 'frozen.json', '--opening-index', '1'])
             self.assertEqual(run.call_args_list[1].args[0][1], 'experiment-replay')

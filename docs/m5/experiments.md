@@ -102,11 +102,18 @@ Native re-admission checks both replay and proposed effects. Imported observatio
 the existing duplicate-aware bounded decoder. Profiles/history are never reduced
 to board-only identities.
 
-Experiment bounds: config 1 MiB, report/data 128 MiB, at most 16 roots, 4 participants,
-16 cycles, 128 games and 4096 scheduled requests. Existing native search limits
-still apply; native records, engine requests and replies have no byte limit.
-Before search, the harness reserves bounded transition evidence capacity. Artifact
-exhaustion ends remaining work honestly. Watchdog and cleanup use EngineBridge;
+The operator chooses the positive whole-run wall budget in milliseconds and the
+accepted step count per game. Zero steps produces a replayable opening-only
+sample. A batch can have up to 16 roots, 4 participants, 16 cycles and 128
+games. These bounds control the sample size. Each game can use the full step
+budget. Native search retains its own work limits.
+
+The 1 MiB configuration metadata budget excludes opening histories. The 128 MiB
+report budget limits storage for a batch. The runner allows for the scheduled
+final roots and diagnostics, and charges the encoded step and final-root growth
+before it commits a transition. When the next transition cannot fit, the report
+retains the accepted prefix and marks the game unscored. Exported data has a
+separate 128 MiB output budget. Watchdog and cleanup use EngineBridge;
 no alternate supervisor is introduced. Cancellation is polled before/while child
 work. Cleanup acknowledgement indicates supervisor termination, not an independent
 OS-process audit; missing acknowledgement is recorded. Bridge cleanup errors

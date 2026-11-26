@@ -155,6 +155,10 @@ impl<J: Journal> Transport<J> {
         written: Option<bool>,
         at_ns: u64,
     ) -> Result<(), Failure> {
+        if written.is_some() {
+            self.bytes_left = self.io.transcript_bytes;
+        }
+        let is_position = written.is_some() && phase == "position";
         let length = text.len();
         let entry = self.journal.entry(Traffic {
             engine,
@@ -171,7 +175,11 @@ impl<J: Journal> Transport<J> {
             text,
             written,
         });
-        let cost = serde_json::to_vec(&entry).expect("finite event").len() + 1;
+        let cost = if is_position {
+            0
+        } else {
+            serde_json::to_vec(&entry).expect("finite event").len() + 1
+        };
         if cost > self.bytes_left {
             self.bytes_left = 0;
             self.complete = false;
@@ -180,7 +188,7 @@ impl<J: Journal> Transport<J> {
                 engine,
                 FailureKind::ResourceLimit,
                 phase,
-                "transcript limit reached",
+                "command and reply transcript limit reached",
             ));
         }
         self.bytes_left -= cost;
@@ -205,7 +213,7 @@ impl<J: Journal> Transport<J> {
     ) -> (bool, Result<(), Failure>) {
         self.observed = elapsed_ns(self.start);
         self.phase_budget = (at, timeout.as_millis() as u64);
-        if line.len() + 1 > self.io.command_bytes {
+        if phase != "position" && line.len() + 1 > self.io.command_bytes {
             return (
                 false,
                 Err(self.failure(

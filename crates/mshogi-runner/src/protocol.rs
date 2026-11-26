@@ -109,7 +109,7 @@ pub(crate) struct Settings<'a> {
     pub watchdogs: Watchdogs,
     pub io: IoLimits,
     pub max_game_ms: u64,
-    pub max_actions: u32,
+    pub max_actions: usize,
     pub work: [WorkLimit; 2],
 }
 impl Settings<'_> {
@@ -117,7 +117,7 @@ impl Settings<'_> {
         if id.is_empty()
             || id.len() > 128
             || !(1..=4).contains(&openings)
-            || !(1..=32).contains(&self.max_actions)
+            || self.max_actions == 0
             || !(1..=600_000).contains(&self.max_game_ms)
         {
             return Err(RunnerError("unsupported experiment bounds".into()));
@@ -224,7 +224,7 @@ pub(crate) fn run_game<G: Native>(
         if let Some(end) = G::end(&game) {
             break end;
         }
-        if turns.len() >= config.max_actions as usize {
+        if turns.len() >= config.max_actions {
             break End::ActionLimit;
         }
         if host.start.elapsed() >= Duration::from_millis(config.max_game_ms) {
@@ -368,7 +368,6 @@ pub(crate) struct Replay<'a, G: Native> {
     pub traffic: &'a [Traffic],
     pub processes: &'a [Process],
     pub elapsed_ns: u64,
-    pub game: &'a str,
 }
 pub(crate) fn replay<G: Native>(
     config: Settings<'_>,
@@ -377,23 +376,8 @@ pub(crate) fn replay<G: Native>(
     assignment: [usize; 2],
     generation: &mut u64,
 ) -> Result<(), RunnerError> {
-    if entry.turns.len() > config.max_actions as usize
-        || entry.processes.len() > config.max_actions as usize
-        || entry.game.len() > 1_048_576
-    {
+    if entry.turns.len() > config.max_actions || entry.processes.len() > config.max_actions {
         return Err(RunnerError("report collection bounds exceeded".into()));
-    }
-    let traffic_bytes = entry
-        .traffic
-        .iter()
-        .try_fold(0usize, |total, event| {
-            serde_json::to_vec(event)
-                .ok()
-                .and_then(|bytes| total.checked_add(bytes.len()))
-        })
-        .ok_or_else(|| RunnerError("invalid traffic size".into()))?;
-    if traffic_bytes > config.io.transcript_bytes {
-        return Err(RunnerError("traffic exceeds configured capacity".into()));
     }
     let mut previous = 0;
     for event in entry.traffic {

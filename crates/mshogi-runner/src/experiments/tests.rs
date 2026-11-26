@@ -49,7 +49,10 @@ fn strict_effective_limits_and_bounded_aggregate_work() {
     bad.players[0].limits[2].work.nodes = mshogi_search::xiangqi::MAX_NODES + 1;
     assert!(bad.validate().is_err());
     let mut bad = c.clone();
-    bad.max_steps = 512;
+    bad.wall_budget_ms = u64::MAX;
+    bad.max_steps = usize::MAX;
+    bad.validate().unwrap();
+    bad.wall_budget_ms = 0;
     assert!(bad.validate().is_err());
     let mut bad = c.clone();
     bad.players[0].limits.remove(0);

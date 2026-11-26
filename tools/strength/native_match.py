@@ -58,6 +58,18 @@ def summarize(report):
             'plies': [len(g['steps']) for g in games]}
 
 
+def wait_for_pair(process, pair_wall_ms):
+    # OS wait calls may have narrower timeout types than the experiment budget.
+    deadline = time.monotonic_ns() + (pair_wall_ms + 45_000) * 1_000_000
+    while True:
+        remaining_ns = deadline - time.monotonic_ns()
+        try:
+            return process.wait(timeout=max(0, min(remaining_ns / 1e9, 86400)))
+        except subprocess.TimeoutExpired:
+            if time.monotonic_ns() >= deadline:
+                raise
+
+
 def run_pair(args, seed, out):
     config = out / f'pair-{seed:04d}.config.json'
     report_path = out / f'pair-{seed:04d}.report.json'
@@ -85,7 +97,7 @@ def run_pair(args, seed, out):
     with open(out / f'pair-{seed:04d}.log', 'x') as log:
         process = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
         try:
-            code = process.wait(timeout=args.pair_wall_ms / 1000 + 45)
+            code = wait_for_pair(process, args.pair_wall_ms)
         except BaseException:
             # The runner owns its children. At the outer hard watchdog, stop
             # the entire session so a child cannot survive a killed controller.
@@ -177,7 +189,7 @@ def main():
     parser.add_argument('--out', required=True)
     parser.add_argument('--workers', type=int, default=4)
     parser.add_argument('--max-pairs', type=int, default=600)
-    parser.add_argument('--max-steps', type=int, help='native event cap per game, 1..1024; unfinished games stay unscored')
+    parser.add_argument('--max-steps', type=int, help='positive native event budget per game; unfinished games stay unscored')
     parser.add_argument('--min-pairs', type=int, default=30)
     parser.add_argument('--first-seed', type=int, default=1)
     parser.add_argument('--wall-seconds', type=int, default=1800)
@@ -196,8 +208,8 @@ def main():
     depth, nodes, default_steps = defaults[args.game]
     if args.max_steps is None:
         args.max_steps = default_steps
-    if not 1 <= args.max_steps <= 1024:
-        parser.error('--max-steps must be 1..1024')
+    if not 1 <= args.max_steps < 2**64:
+        parser.error('--max-steps must be a positive 64-bit count')
     if args.candidate_time_factor != 1 and args.base is None:
         parser.error('--candidate-time-factor needs a clock (--base)')
     if args.base is not None:
@@ -222,7 +234,7 @@ def main():
     if args.config_writer is None:
         args.config_writer = f'target/release/examples/{args.game}_match_config'
     if not (1 <= args.workers <= 8 and 1 <= args.max_pairs <= 10000
-            and 0 < args.wall_seconds <= 3600 and 0 < args.pair_wall_ms <= 600000):
+            and args.wall_seconds > 0 and 0 < args.pair_wall_ms < 2**64):
         parser.error('invalid finite campaign bounds')
     if args.watchdog_ms is not None and not 1 <= args.watchdog_ms <= 60000:
         parser.error('watchdog must be within 1..60000 ms')
@@ -257,8 +269,7 @@ def main():
     try:
         with concurrent.futures.ThreadPoolExecutor(max_workers=args.workers) as pool:
             for offset in range(0, args.max_pairs, args.workers):
-                remaining = args.wall_seconds - (time.monotonic() - start)
-                if remaining < args.pair_wall_ms / 1000 + 45:
+                if args.wall_seconds * 1000 - int((time.monotonic() - start) * 1000) < args.pair_wall_ms + 45_000:
                     break
                 seeds = range(args.first_seed + offset,
                               args.first_seed + min(offset + args.workers, args.max_pairs))

@@ -5,9 +5,7 @@ mod run;
 use crate::{EngineIdentity, RunnerError};
 pub use evidence::*;
 use mshogi_core::native::RulesProfile;
-use mshogi_engine::{
-    EngineGame, ExecutionContext, ExecutionObservation, ExecutionPurpose, WorkLimits,
-};
+use mshogi_engine::{ExecutionContext, ExecutionObservation, ExecutionPurpose, WorkLimits};
 pub use native::{Root, fresh_root, standard_root};
 pub use run::{run, run_with_stop};
 use serde::{Deserialize, Serialize};
@@ -15,9 +13,6 @@ use sha2::{Digest, Sha256};
 use std::{collections::BTreeSet, path::Path};
 
 /// Aggregate config/report/data bound for one experiment batch.
-// Encoded steps omit the native record that native replay restores (MSH-204),
-// so a report grows linearly with game length; the runner reserves 8 MiB of
-// this budget per transition and retains all schedule caps.
 pub const MAX_BYTES: usize = 128 * 1024 * 1024;
 /// Versioned schedule and evidence family.
 pub const SCHEMA: u32 = 1;
@@ -127,7 +122,7 @@ pub struct Config {
     /// Complete seeded catalog cycles; every opening is used in each cycle.
     pub rounds: u16,
     /// Accepted engine commands per game; exhaustion is unscored, never a draw.
-    pub max_steps: u16,
+    pub max_steps: usize,
     /// Whole-run soft wall budget, checked before/while native child work.
     pub wall_budget_ms: u64,
     /// Existing BridgeOptions watchdog per submitted request.
@@ -206,10 +201,7 @@ pub fn digest(text: &str) -> String {
 impl Config {
     /// Strict bounded decoding retains native-record duplicate-field admission.
     pub fn from_json(text: &str) -> Result<Self, RunnerError> {
-        if text.len() > 1024 * 1024 {
-            return Err(err("experiment config exceeds 1MiB"));
-        }
-        let value: Self = serde_json::from_str(text).map_err(err)?;
+        let value: Self = crate::common::decode_config(text)?;
         value.validate()?;
         Ok(value)
     }
@@ -232,7 +224,7 @@ impl Config {
             // Upper bound even if every command earns an increment without time charge.
             let remaining = clock
                 .base_ms
-                .saturating_add(clock.increment_ms.saturating_mul(u64::from(self.max_steps)));
+                .saturating_add(clock.increment_ms.saturating_mul(self.max_steps as u64));
             if self.watchdog_ms < clock_share_ms(clock, remaining) {
                 return Err(err("engine watchdog is below possible clock allocation"));
             }
@@ -245,13 +237,7 @@ impl Config {
             || self.openings.len() > 16
             || !(1..=16).contains(&self.rounds)
             || self.openings.len() * usize::from(self.rounds) * (self.players.len() - 1) * 2 > 128
-            || self.openings.len()
-                * usize::from(self.rounds)
-                * (self.players.len() - 1)
-                * 2
-                * usize::from(self.max_steps)
-                > 4096
-            || !(1..=600_000).contains(&self.wall_budget_ms)
+            || self.wall_budget_ms == 0
             || !(1..=60_000).contains(&self.watchdog_ms)
             || !(1..=2000).contains(&self.cleanup_ms)
         {
@@ -271,7 +257,8 @@ impl Config {
             }
             let mut profiles = BTreeSet::new();
             for limits in &p.limits {
-                if !profiles.insert(limits.profile.id()) || !valid_work(limits.profile, limits.work)
+                if !profiles.insert(limits.profile.id())
+                    || !native::valid_work(limits.profile, limits.work)
                 {
                     return Err(err(
                         "duplicate profile or unsupported effective work limits",
@@ -281,7 +268,6 @@ impl Config {
         }
         let mut ids = BTreeSet::new();
         let mut root_splits = std::collections::BTreeMap::new();
-        let mut root_sizes = Vec::new();
         for o in &self.openings {
             if !bounded(&o.id)
                 || !bounded(&o.group)
@@ -292,7 +278,6 @@ impl Config {
             }
             let state = native::NativeState::from_root(&o.root).map_err(err)?;
             let normalized = serde_json::to_string(&state.root().map_err(err)?).map_err(err)?;
-            root_sizes.push(normalized.len() + 8192);
             if let Some(split) = root_splits.insert(digest(&normalized), o.split)
                 && split != o.split
             {
@@ -310,20 +295,6 @@ impl Config {
             for p in &self.players {
                 p.work(o.root.record.profile())?;
             }
-        }
-        if self
-            .schedule()
-            .iter()
-            .map(|p| root_sizes[p.opening])
-            .sum::<usize>()
-            > MAX_BYTES / 2
-        {
-            return Err(err(
-                "final-root schedule alone exceeds evidence budget; use smaller batches",
-            ));
-        }
-        if serde_json::to_vec(self).map_err(err)?.len() > 1024 * 1024 {
-            return Err(err("config encoding exceeds 1MiB"));
         }
         Ok(())
     }
@@ -374,46 +345,6 @@ impl Player {
             .ok_or_else(|| err("participant has no effective limits for selected profile"))
     }
 }
-fn valid_work(profile: RulesProfile, work: WorkLimits) -> bool {
-    // This existing experiment format promises deterministic depth/node work.
-    // Timed Chess execution is available through the child and UCI contracts;
-    // it must not silently become a deterministic native experiment.
-    if work.time_ms.is_some() {
-        return false;
-    }
-    fn bounds<G: EngineGame>() -> (u16, u64) {
-        (G::MAX_DEPTH, G::MAX_NODES)
-    }
-    use mshogi_engine::game;
-    let (depth, nodes) = match profile.game() {
-        mshogi_core::native::GameKind::Xiangqi => bounds::<game::Xiangqi>(),
-        mshogi_core::native::GameKind::Shogi => bounds::<game::Shogi>(),
-        mshogi_core::native::GameKind::Tori => bounds::<game::Tori>(),
-        mshogi_core::native::GameKind::Chu => bounds::<game::Chu>(),
-        mshogi_core::native::GameKind::Tenjiku => bounds::<game::Tenjiku>(),
-        _ => (
-            mshogi_engine::MAX_ANALYSIS_DEPTH,
-            mshogi_engine::MAX_ANALYSIS_NODES,
-        ),
-    };
-    if work.depth == 0 || work.depth > depth || work.nodes > nodes {
-        return false;
-    }
-    match profile.game() {
-        mshogi_core::native::GameKind::Shogi => mshogi_search::shogi::Limits {
-            depth: work.depth,
-            nodes: work.nodes,
-        }
-        .valid(),
-        mshogi_core::native::GameKind::Xiangqi => mshogi_search::xiangqi::Limits {
-            depth: work.depth,
-            nodes: work.nodes,
-        }
-        .valid(),
-        _ => true,
-    }
-}
-
 /// Stable seed/cycle/opening/baseline/color identity, retained in every game.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -429,6 +360,16 @@ pub struct Pairing {
     /// Candidate plays second native side.
     pub swapped: bool,
 }
+impl Pairing {
+    fn player(&self, state: &native::NativeState) -> usize {
+        if state.first_to_move() != self.swapped {
+            0
+        } else {
+            self.baseline
+        }
+    }
+}
+
 /// Exact native observation before the authoritative accepted transition.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -484,6 +425,36 @@ fn admit_bounded(
     *state = candidate;
     Ok(decision)
 }
+// The only input without a response is the host's observed interruption.
+fn decide_step(
+    state: &mut native::NativeState,
+    request: &ExecutionContext,
+    observation: Option<&ExecutionObservation>,
+    interruption: Option<&str>,
+    exhausted: bool,
+) -> Result<(native::Admission, Option<String>), RunnerError> {
+    let refusal = match observation {
+        None => match interruption {
+            Some(reason @ ("cancelled" | "wall_budget")) => reason,
+            Some("clock_limit") if exhausted => "clock_limit",
+            _ => return Err(err("missing response without valid interruption")),
+        },
+        Some(_) if exhausted => "clock_limit",
+        Some(o) if !o.matches(request) => "observation:context",
+        Some(o) if !within_limits(o) => "observation:limits",
+        Some(o) => {
+            return Ok(match admit_bounded(state, &o.result, request.limits) {
+                Ok(decision) => (decision, None),
+                Err(e) => (native::Admission::Failed(format!("admission:{e}")), Some(e)),
+            });
+        }
+    };
+    Ok((
+        native::Admission::Failed(refusal.into()),
+        Some(refusal.into()),
+    ))
+}
+
 /// One native game and its honest ending, including unscored failures/caps.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -702,7 +673,7 @@ impl Report {
         }
         let mut last_id = 0;
         for (game, expected) in self.games.iter().zip(schedule) {
-            if game.pairing != expected || game.steps.len() > usize::from(self.config.max_steps) {
+            if game.pairing != expected || game.steps.len() > self.config.max_steps {
                 return Err(err("pairing/step count mismatch"));
             }
             let mut state =
@@ -717,12 +688,7 @@ impl Report {
                 if state.stop_reason().is_some() {
                     return Err(err("observation after native stop"));
                 }
-                let first = first_side(state.turn());
-                let player = if first != expected.swapped {
-                    0
-                } else {
-                    expected.baseline
-                };
+                let player = expected.player(&state);
                 let c = &step.request;
                 if step.player != player
                     || c.game != state.root().map_err(err)?.record
@@ -753,67 +719,16 @@ impl Report {
                 }
                 moved[player] = true;
                 last_id = c.request_id;
-                let Some(observation) = &step.observation else {
-                    let reason = step
-                        .failure
-                        .as_deref()
-                        .ok_or_else(|| err("missing response without recorded interruption"))?;
-                    if !["cancelled", "wall_budget", "clock_limit"].contains(&reason)
-                        || step.applied
-                        || (reason == "clock_limit" && !exhausted)
-                    {
-                        return Err(err("invalid interrupted request"));
-                    }
-                    last_stop = Some(native::Admission::Failed(reason.into()));
-                    if game
-                        .steps
-                        .last()
-                        .is_none_or(|s| s.request.request_id != c.request_id)
-                    {
-                        return Err(err("continued after interruption"));
-                    }
-                    continue;
-                };
-                let refusal = if exhausted {
-                    Some("clock_limit")
-                } else if !observation.matches(c) {
-                    Some("observation:context")
-                } else if !within_limits(observation) {
-                    Some("observation:limits")
-                } else {
-                    None
-                };
-                if let Some(reason) = refusal {
-                    if step.applied || step.failure.as_deref() != Some(reason) {
-                        return Err(err("unrecorded observation refusal"));
-                    }
-                    last_stop = Some(native::Admission::Failed(reason.into()));
-                    if game
-                        .steps
-                        .last()
-                        .is_none_or(|s| s.request.request_id != c.request_id)
-                    {
-                        return Err(err("continued after refused observation"));
-                    }
-                    continue;
+                let (decision, failure) = decide_step(
+                    &mut state,
+                    c,
+                    step.observation.as_ref(),
+                    step.failure.as_deref(),
+                    exhausted,
+                )?;
+                if step.failure != failure {
+                    return Err(err("observation/admission diagnostic mismatch"));
                 }
-                let before = state.root().map_err(err)?;
-                let decision = match admit_bounded(&mut state, &observation.result, c.limits) {
-                    Ok(d) => {
-                        if step.failure.is_some() {
-                            return Err(err("invented admission failure"));
-                        }
-                        d
-                    }
-                    Err(e) => {
-                        if step.failure.as_deref() != Some(e.as_str())
-                            || state.root().map_err(err)? != before
-                        {
-                            return Err(err("admission diagnostic/atomicity mismatch"));
-                        }
-                        native::Admission::Failed(format!("admission:{e}"))
-                    }
-                };
                 if step.applied != matches!(decision, native::Admission::Applied) {
                     return Err(err("native applied marker mismatch"));
                 }
@@ -840,8 +755,7 @@ impl Report {
                 }
             } else if !["step_limit", "wall_budget", "cancelled", "artifact_limit"]
                 .contains(&game.stop.as_str())
-                || (game.stop == "step_limit"
-                    && game.steps.len() != usize::from(self.config.max_steps))
+                || (game.stop == "step_limit" && game.steps.len() != self.config.max_steps)
             {
                 return Err(err("unsupported experiment stop"));
             }
@@ -947,17 +861,5 @@ fn within_limits(o: &ExecutionObservation) -> bool {
             .and_then(|x| x.as_u64())
             .is_none_or(|n| n <= o.context.limits.nodes)
 }
-fn first_side(side: mshogi_core::native::NativeSide) -> bool {
-    use mshogi_core::{chess, chu, native::NativeSide as N, shogi, tenjiku, tori, xiangqi};
-    match side {
-        N::Chess(s) => s == chess::Color::White,
-        N::Shogi(s) => s == shogi::Side::Sente,
-        N::Xiangqi(s) => s == xiangqi::Side::Red,
-        N::Tori(s) => s == tori::Side::Sente,
-        N::Chu(s) => s == chu::Side::Sente,
-        N::Tenjiku(s) => s == tenjiku::Side::Sente,
-    }
-}
-
 #[cfg(test)]
 mod tests;

@@ -30,6 +30,14 @@ fn strict_cli_replay_export_and_prior_file_integrity() {
     c.openings.truncate(1);
     c.players.truncate(2);
     c.max_steps = 0;
+    c.wall_budget_ms = u64::MAX;
+    // Enlarge the Chess opening ledger without changing its replay.
+    c.openings[0]
+        .root
+        .chess_match
+        .as_mut()
+        .unwrap()
+        .extend(std::iter::repeat_n(' ', 1_048_576));
     fs::write(&config, serde_json::to_vec(&c).unwrap()).unwrap();
     assert!(
         run(vec![
@@ -104,7 +112,8 @@ fn actual_incompatible_child_failure_is_retained_unscored() {
     let mut c = template(env!("CARGO_BIN_EXE_mshogi-runner-fixture")).unwrap();
     c.players.truncate(2);
     c.openings.truncate(1);
-    c.max_steps = 1;
+    c.max_steps = usize::MAX;
+    c.wall_budget_ms = 600_001;
     c.watchdog_ms = 100;
     let r = run(&c).unwrap();
     assert!(r.games.iter().all(|g| g.stop.starts_with("failure:")
@@ -120,4 +129,24 @@ fn actual_incompatible_child_failure_is_retained_unscored() {
         assert_eq!(row["terminal_value_available"], false);
         assert_eq!(row["usable_action_target"], false);
     }
+}
+
+#[test]
+fn whole_run_deadline_preserves_unscored_scheduled_games() {
+    use mshogi_runner::experiments::{run_with_stop, template};
+    let mut c = template(env!("CARGO_BIN_EXE_mshogi-runner-fixture")).unwrap();
+    c.players.truncate(2);
+    c.openings.truncate(1);
+    c.wall_budget_ms = 1;
+    let r = run_with_stop(&c, &mut || {
+        std::thread::sleep(std::time::Duration::from_millis(5));
+        false
+    })
+    .unwrap();
+    assert_eq!(r.games.len(), 2);
+    assert!(r.games.iter().all(|g| g.stop == "wall_budget"
+        && g.steps.is_empty()
+        && g.native_outcome.is_none()
+        && g.score_first_twice.is_none()));
+    Report::from_json(&r.to_json().unwrap()).unwrap();
 }

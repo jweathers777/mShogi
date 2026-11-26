@@ -32,7 +32,7 @@ pub struct Config<O, P> {
     /// Per-engine finite work, no movetime.
     pub work: [WorkLimit; 2],
     /// Maximum engine commands after the opening; an experiment cutoff, not a rule.
-    pub max_actions: u32,
+    pub max_actions: usize,
     /// Overall per-game experiment watchdog; expiry is unfinished, not a chess clock.
     pub max_game_ms: u64,
     /// Independent process watchdogs.
@@ -180,7 +180,6 @@ pub(crate) fn replay<C, G: Native, O: Opening<Adapter = G>>(
                 traffic: &entry.traffic,
                 processes: &entry.processes,
                 elapsed_ns: entry.elapsed_ns,
-                game: &entry.game,
             },
             &mut game,
             assignment,
@@ -201,7 +200,7 @@ pub(crate) fn replay<C, G: Native, O: Opening<Adapter = G>>(
             || (entry.stop == Stop::Unresolved) != pending.is_some()
             || (entry.stop == Stop::Failure) != entry.failure.is_some()
             || (entry.stop == Stop::ActionLimit
-                && entry.turns.len() != schedule.settings.max_actions as usize)
+                && entry.turns.len() != schedule.settings.max_actions)
         {
             return Err(RunnerError("experiment stop/score mismatch".into()));
         }

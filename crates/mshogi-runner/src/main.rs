@@ -13,6 +13,9 @@ fn read(path: &str, cap: u64) -> Result<String, String> {
     }
     Ok(text)
 }
+fn read_config(path: &str) -> Result<String, String> {
+    fs::read_to_string(path).map_err(|e| e.to_string())
+}
 fn execute() -> Result<(), String> {
     let args: Vec<_> = std::env::args_os()
         .map(|arg| {
@@ -26,7 +29,7 @@ fn execute() -> Result<(), String> {
             write_new(output,&serde_json::to_string_pretty(&c).map_err(|e|e.to_string())?)
         }
         [_, command, input, output] if command == "experiment-run" => {
-            let c=mshogi_runner::experiments::Config::from_json(&read(input,1_048_576)?).map_err(|e|e.to_string())?;
+            let c=mshogi_runner::experiments::Config::from_json(&read_config(input)?).map_err(|e|e.to_string())?;
             let r=mshogi_runner::experiments::run(&c).map_err(|e|e.to_string())?;
             write_new(output,&r.to_json().map_err(|e|e.to_string())?)?;
             println!("{}",serde_json::to_string(&r.summaries().map_err(|e|e.to_string())?).map_err(|e|e.to_string())?);Ok(())
@@ -42,14 +45,14 @@ fn execute() -> Result<(), String> {
         [_, command, protocol, input, output] if command == "experiment-external" => {
             use mshogi_runner::experiments::{ExternalProtocol as P,run_external};
             let p=match protocol.as_str(){"uci"=>P::Uci,"usi"=>P::Usi,"xiangqi-uci09"=>P::XiangqiUci09,_=>return Err("unsupported actual external adapter".into())};
-            let r=run_external(p,&read(input,1_048_576)?).map_err(|e|e.to_string())?;
+            let r=run_external(p,&read_config(input)?).map_err(|e|e.to_string())?;
             write_new(output,&r.to_json().map_err(|e|e.to_string())?)
         }
         [_, command, input] if command == "experiment-external-replay" => {
             mshogi_runner::experiments::ExternalReport::from_json(&read(input,mshogi_runner::experiments::MAX_BYTES as u64)?).map_err(|e|e.to_string())?;println!("replayed actual external adapter evidence");Ok(())
         }
         [_, command, config, output] if command == "xiangqi-run" => {
-            let config = mshogi_runner::xiangqi::Config::from_json(&read(config, 1_048_576)?)
+            let config = mshogi_runner::xiangqi::Config::from_json(&read_config(config)?)
                 .map_err(|e| e.to_string())?;
             let report = mshogi_runner::xiangqi::run(&config).map_err(|e| e.to_string())?;
             let encoded = report.to_json().map_err(|e| e.to_string())?;
@@ -60,13 +63,13 @@ fn execute() -> Result<(), String> {
             Ok(())
         }
         [_, command, input] if command == "xiangqi-replay" => {
-            let report = mshogi_runner::xiangqi::Report::from_json(&read(input, 67_108_864)?)
+            let report = mshogi_runner::xiangqi::Report::from_json(&read(input, mshogi_runner::experiments::MAX_BYTES as u64)?)
                 .map_err(|e| e.to_string())?;
             println!("replayed {} xiangqi game(s)", report.games.len());
             Ok(())
         }
         [_, command, config, output] if command == "shogi-run" => {
-            let config = mshogi_runner::shogi::Config::from_json(&read(config, 1_048_576)?)
+            let config = mshogi_runner::shogi::Config::from_json(&read_config(config)?)
                 .map_err(|e| e.to_string())?;
             let report = mshogi_runner::shogi::run(&config).map_err(|e| e.to_string())?;
             let encoded = report.to_json().map_err(|e| e.to_string())?;
@@ -77,7 +80,7 @@ fn execute() -> Result<(), String> {
             Ok(())
         }
         [_, command, config, output] if command == "shogi-match" => {
-            let config = mshogi_runner::shogi_match::MatchConfig::from_json(&read(config, 1_048_576)?)
+            let config = mshogi_runner::shogi_match::MatchConfig::from_json(&read_config(config)?)
                 .map_err(|e| e.to_string())?;
             let report = mshogi_runner::shogi_match::run(&config).map_err(|e| e.to_string())?;
             write_new(output, &report.to_json().map_err(|e| e.to_string())?)?;
@@ -89,13 +92,13 @@ fn execute() -> Result<(), String> {
             Ok(())
         }
         [_, command, input] if command == "shogi-match-replay" => {
-            let report = mshogi_runner::shogi_match::MatchReport::from_json(&read(input, 67_108_864)?)
+            let report = mshogi_runner::shogi_match::MatchReport::from_json(&read(input, mshogi_runner::experiments::MAX_BYTES as u64)?)
                 .map_err(|e| e.to_string())?;
             println!("replayed clocked shogi game: {} accepted replies", report.turns.len());
             Ok(())
         }
         [_, command, config, output] if command == "xiangqi-match" => {
-            let config = mshogi_runner::xiangqi_match::MatchConfig::from_json(&read(config, 1_048_576)?)
+            let config = mshogi_runner::xiangqi_match::MatchConfig::from_json(&read_config(config)?)
                 .map_err(|e| e.to_string())?;
             let report = mshogi_runner::xiangqi_match::run(&config).map_err(|e| e.to_string())?;
             write_new(output, &report.to_json().map_err(|e| e.to_string())?)?;
@@ -107,25 +110,25 @@ fn execute() -> Result<(), String> {
             Ok(())
         }
         [_, command, input] if command == "xiangqi-match-replay" => {
-            let report = mshogi_runner::xiangqi_match::MatchReport::from_json(&read(input, 67_108_864)?)
+            let report = mshogi_runner::xiangqi_match::MatchReport::from_json(&read(input, mshogi_runner::experiments::MAX_BYTES as u64)?)
                 .map_err(|e| e.to_string())?;
             println!("replayed clocked xiangqi game: {} accepted replies", report.turns.len());
             Ok(())
         }
         [_, command, input] if command == "shogi-replay" => {
-            let report = mshogi_runner::shogi::Report::from_json(&read(input, 67_108_864)?)
+            let report = mshogi_runner::shogi::Report::from_json(&read(input, mshogi_runner::experiments::MAX_BYTES as u64)?)
                 .map_err(|e| e.to_string())?;
             println!("replayed {} shogi game(s)", report.games.len());
             Ok(())
         }
         [_, command, config, output] if command == "run" => {
-            let config = ExperimentConfig::from_json(&read(config, 1_048_576)?)
+            let config = ExperimentConfig::from_json(&read_config(config)?)
                 .map_err(|e| e.to_string())?;
             let report = run_experiment(&config).map_err(|e| e.to_string())?;
             report
                 .replay()
                 .map_err(|e| format!("generated report did not replay: {e}"))?;
-            write_new(output, &report.to_json())?;
+            write_new(output, &report.to_json().map_err(|e| e.to_string())?)?;
             println!(
                 "{}",
                 serde_json::to_string(&report.summaries).map_err(|e| e.to_string())?
@@ -133,7 +136,7 @@ fn execute() -> Result<(), String> {
             Ok(())
         }
         [_, command, input] if command == "replay" => {
-            let report = ExperimentReport::from_json(&read(input, 134_217_728)?)
+            let report = ExperimentReport::from_json(&read(input, mshogi_runner::experiments::MAX_BYTES as u64)?)
                 .map_err(|e| e.to_string())?;
             let games = report.replay().map_err(|e| e.to_string())?;
             println!("replayed {} game(s)", games.len());

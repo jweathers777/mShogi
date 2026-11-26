@@ -55,7 +55,7 @@ must be able to start the next task without chat history and without help.
 - Do not repeat yourself. This applies to all code, not only to code shared
   between games. When two places do the same thing, put it in one function,
   type or generic implementation behind a trait. When you touch duplicated
-  code, prefer to merge it.
+  code, prefer to extract a common shared piece of code.
 - Use judgment. Do not force an abstraction that makes a hot path slower or the
   code harder to read. Search code can keep a specialized form when a
   measurement shows that it matters.

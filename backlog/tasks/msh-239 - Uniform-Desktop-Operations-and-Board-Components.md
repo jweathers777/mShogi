@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-25T08:51:00Z'
-updated_date: '2026-11-26T03:13:00Z'
+updated_date: '2026-11-26T03:21:00Z'
 labels:
   - desktop
   - refactor
@@ -36,6 +36,19 @@ Saved formats and protocols may change (A-09); update callers and fixtures.
 - [ ] #3 Settings have the same shape in every game; production line counts before and after are recorded; workspace, session and frontend tests pass.
 - [ ] #4 One review by a fresh agent session.
 <!-- AC:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Checked 2026-11-26 on main f01c74c: findings still apply (MSH-222 changed only engine glue).
+Production lines before (src, no *tests.rs / *.test.*, no fixtures): desktop-session 12,550; Tauri main.rs 1,499; frontend ts/tsx 2,428 lines (189,924 bytes; lines are long); frontend CSS 1,002.
+1. Session: SessionOperation keeps only game-neutral kinds: Play {action: opaque choice id}, Command {command: native command JSON}, Preferences {settings JSON}, plus Resign, Undo, TakeBack, Inspect, ReturnLive, Analyze, Cancel, Resume, Retry and the Rust-only Replace. The session parses the payload for the active game (SessionGame::play), derives the actor (local actor, or the game's command_actor for draw responses) and checks one ownership rule for all games. Remove the per-game variants, GameOperation, the OperationWire duplicate and the custom deserializer; duplicate JSON fields are refused in SharedDesktopCommand::from_json.
+2. Settings: one GameSettings<Side> {play_mode, orientation, analysis_defaults} for all six games (DocumentSettings trait, ShogiSettings, XiangqiSettings, DesktopSettings and the per-game aliases go); the snapshot has document.settings with the same shape in every game (NativeDesktopSettings goes). Tori, Chu and Tenjiku now remember analysis limits like the other games.
+3. Frontend: Operation has the same three game-neutral kinds; GameBoard, GameActions and flip build them once. One Piece component with per-game face tables (Shogi, Tori, Chu, Tenjiku); one LargeBoard for Chu and Tenjiku; merged piece and large-board CSS.
+4. Frontend board controls: one footer (help line, route controls, live status), one completion dialog and one square-label helper for Board, ShogiBoard and XiangqiBoard; Chess uses the native piece path; remove the Board hands group, the NativeBoard guards that only tests reach and the help portal.
+5. Update tests (keep checks of kept behavior), console tests, examples, fixtures with their generators, GUI scripts and their Python tests, docs.
+6. Checks (fmt, clippy incl. desktop-session all features, workspace and session tests, frontend tsc/test/build, script tests), browser check of the six boards, CI on affected OS, line counts after, fresh-agent review, integrate.
+<!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
 

@@ -79,3 +79,5 @@ pub(crate) fn serialize_json<S: serde::Serializer>(
         serde_json::from_str(text).map_err(serde::ser::Error::custom)?;
     raw.serialize(serializer)
 }
+
+pub(crate) mod compact;

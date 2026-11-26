@@ -659,6 +659,17 @@ impl Game {
     /// Serialize admission, actions, automatic events and claims atomically. Invalid
     /// admitted claims retain only their bounded audit; no board state or result changes.
     pub fn submit(&mut self, request: GameRequest) -> Result<Submission, GameError> {
+        let (result, before, binding) =
+            self.append_transaction(|game| game.apply_request(request))?;
+        Ok(Submission {
+            result,
+            undo: GameUndo { before, binding },
+        })
+    }
+    pub(super) fn apply_request(
+        &mut self,
+        request: GameRequest,
+    ) -> Result<CommandResult, GameError> {
         if request.expected != self.context() {
             return Err(GameError::StaleContext);
         }
@@ -668,14 +679,6 @@ impl Game {
         if self.pending.is_some() {
             return Err(GameError::AdjudicationPending);
         }
-        let (result, before, binding) =
-            self.append_transaction(|game| game.apply_command(request))?;
-        Ok(Submission {
-            result,
-            undo: GameUndo { before, binding },
-        })
-    }
-    fn apply_command(&mut self, request: GameRequest) -> Result<CommandResult, GameError> {
         let result = match request.command {
             GameCommand::Play { action } => {
                 if request.actor != self.position.side_to_move() {
@@ -930,8 +933,8 @@ mod transaction_tests {
         // Model a late invariant error after a board event and a multi-event
         // control. This exercises the same append transaction used by submit.
         let refused = game.append_transaction(|game| {
-            game.apply_command(play.clone())?;
-            game.apply_command(GameRequest {
+            game.apply_request(play.clone())?;
+            game.apply_request(GameRequest {
                 expected,
                 actor: Side::Red,
                 command: GameCommand::Resign,

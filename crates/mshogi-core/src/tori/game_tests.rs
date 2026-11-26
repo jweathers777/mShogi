@@ -647,7 +647,7 @@ fn complete_records_remain_saveable_after_every_operation() {
     // Exercise commands, undo and prefixes.
     let exact = |g: &Game| {
         let saved = GameRecord::from_game(g).unwrap();
-        assert_eq!(saved.to_json(), record::encode(g).unwrap());
+        assert_eq!(saved.to_json(), crate::record::compact::encode(g).unwrap());
     };
     for seed in 1..=6u64 {
         let mut state = seed.wrapping_mul(0x9E37_79B9_7F4A_7C15) | 1;

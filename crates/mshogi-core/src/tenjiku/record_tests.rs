@@ -33,7 +33,10 @@ fn both_profiles_replay_actual_commands_metadata_and_fresh_authority() {
         assert_eq!(restored.position().state(), game.position().state());
         assert_ne!(restored.context(), game.context());
         assert_eq!(GameRecord::from_game(&restored).unwrap(), record);
-        assert_eq!(encoded_size(&game).unwrap(), record.to_json().len());
+        assert_eq!(
+            compact::encode(&game).unwrap().len(),
+            record.to_json().len()
+        );
     }
 }
 #[test]
@@ -211,5 +214,34 @@ fn complete_records_encode_after_board_controls_and_reversal() {
             game.undo(undo).unwrap();
             GameRecord::from_game(&game).unwrap();
         }
+    }
+}
+
+#[test]
+fn retained_suffix_checks_both_profiles_and_preserves_the_base_on_refusal() {
+    use crate::native::incremental::Session;
+    for profile in Profile::ALL {
+        let root = GameRecord::from_game(&Game::standard(profile)).unwrap();
+        let other = Profile::ALL.into_iter().find(|p| *p != profile).unwrap();
+        let full = GameRecord::from_game(&sample(profile)).unwrap();
+        assert!(full.has_prefix(&root));
+        assert!(!full.has_prefix(&GameRecord::from_game(&Game::standard(other)).unwrap()));
+        let delta = full.suffix(0).unwrap();
+        let mut session = Session::<GameRecord>::new();
+        session.reset(&root).unwrap();
+        let context = session.game().unwrap().context();
+        let mut forged = serde_json::to_value(&delta).unwrap();
+        forged["events"][2]["index"] = json!(999);
+        let forged = GameDelta::from_json(&forged.to_string()).unwrap();
+        assert!(session.advance(&forged).is_err());
+        assert_eq!(session.game().unwrap().context(), context);
+        assert_eq!(
+            GameRecord::from_game(session.game().unwrap()).unwrap(),
+            root
+        );
+        assert_eq!(
+            GameRecord::from_game(session.advance(&delta).unwrap()).unwrap(),
+            full
+        );
     }
 }

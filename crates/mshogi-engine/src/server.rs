@@ -50,8 +50,8 @@ fn new_engine<G: EngineGame>() -> Result<Box<dyn Reset>, Infallible> {
     Ok(Box::new(G::new_engine()))
 }
 /// `current` (the record of `game`) extends the record of the kept engine.
-fn extends<G: EngineGame>(current: &G::Record, game: &G::Game, last: &CanonicalRecord) -> bool {
-    G::record(last).is_some_and(|earlier| G::extends(current, game, earlier))
+fn extends<G: EngineGame>(current: &G::Record, last: &CanonicalRecord) -> bool {
+    G::record(last).is_some_and(|earlier| G::extends(current, earlier))
 }
 /// One lifecycle rule for every game. Fixed-limit requests do not touch this slot.
 pub(crate) struct Slot<T> {
@@ -234,33 +234,17 @@ fn dispatch_request(
     output: &mut impl Write,
 ) -> io::Result<()> {
     if let Ok(request) = serde_json::from_slice::<crate::incremental::Request>(bytes) {
-        let response = match request.game_kind() {
-            GameKind::Tori => native.tori.execute(request, |game, reset, limits, time| {
-                execute_retained::<game::Tori>(session, game, reset, limits, time, None)
-            }),
-            GameKind::Chu => native.chu.execute(request, |game, reset, limits, time| {
-                execute_retained::<game::Chu>(session, game, reset, limits, time, None)
-            }),
-            _ => native.shogi.execute(request, |game, reset, limits, time| {
-                execute_retained::<game::Shogi>(session, game, reset, limits, time, None)
-            }),
-        };
+        let response = for_game!(request.game_kind(),G=>
+            native.session::<G>().execute(request, |game,reset,limits,time|execute_retained::<G>(session,game,reset,limits,time,None)),
+            chess=>crate::incremental::Response::new(bytes, ExecutionResult::failure(FailureKind::InvalidRequest,"Chess has no incremental session")));
         return write_response(output, &response.bind(bytes));
     }
     let request: ExecutionRequest = serde_json::from_slice(bytes).map_err(io::Error::other)?;
     if crate::incremental::Client::supports(&request) {
         let record = Some(&request.context.game);
-        let response = match request.context.game.game_kind() {
-            GameKind::Tori => native.tori.begin(&request, |game, reset, limits, time| {
-                execute_retained::<game::Tori>(session, game, reset, limits, time, record)
-            }),
-            GameKind::Chu => native.chu.begin(&request, |game, reset, limits, time| {
-                execute_retained::<game::Chu>(session, game, reset, limits, time, record)
-            }),
-            _ => native.shogi.begin(&request, |game, reset, limits, time| {
-                execute_retained::<game::Shogi>(session, game, reset, limits, time, record)
-            }),
-        };
+        let response = for_game!(request.context.game.game_kind(),G=>
+            native.session::<G>().begin(&request,|game,reset,limits,time|execute_retained::<G>(session,game,reset,limits,time,record)),
+            chess=>unreachable!("unsupported incremental request"));
         return write_response(output, &response.bind(bytes));
     }
     if request.context.limits.time_ms.is_some() {
@@ -287,7 +271,7 @@ fn execute_retained<G: EngineGame>(
         Some(record) => session.engine.acquire_relation(
             record,
             true,
-            |last| G::record(record).is_some_and(|current| extends::<G>(current, game, last)),
+            |last| G::record(record).is_some_and(|current| extends::<G>(current, last)),
             new_engine::<G>,
         ),
         None => session.engine.acquire_incremental(reset, new_engine::<G>),
@@ -324,7 +308,7 @@ fn execute_game<G: EngineGame>(
         .acquire_relation(
             &context.game,
             context.limits.time_ms.is_some(),
-            |last| extends::<G>(record, &game, last),
+            |last| extends::<G>(record, last),
             new_engine::<G>,
         )
         .expect("infallible engine allocation");

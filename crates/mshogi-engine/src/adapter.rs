@@ -48,7 +48,10 @@ pub trait EngineGame: Copy + Debug + Eq + 'static {
     /// Game with full history.
     type Game: Clone;
     /// Canonical game record.
-    type Record;
+    type Record: mshogi_core::native::incremental::IncrementalRecord<
+            Game = Self::Game,
+            Error: std::fmt::Display,
+        >;
     /// Complete game command.
     type Command;
     /// Search position of the shared core.
@@ -70,8 +73,16 @@ pub trait EngineGame: Copy + Debug + Eq + 'static {
     fn terminal_score(conclusion: Self::Conclusion, side: Self::Side) -> i32;
     /// Replay a record.
     fn to_game(record: &Self::Record) -> Result<Self::Game, String>;
-    /// Whether `earlier` is an event prefix of `current`, the record of `game`.
-    fn extends(current: &Self::Record, game: &Self::Game, earlier: &Self::Record) -> bool;
+    /// Does the current record extend the exact earlier root and history?
+    fn extends(current: &Self::Record, earlier: &Self::Record) -> bool;
+    /// New commands and effects after a transport-authenticated prefix.
+    fn suffix(current: &Self::Record, start: usize) -> crate::incremental::Delta;
+    /// Select this game's suffix from a transport request.
+    fn delta(
+        delta: &crate::incremental::Delta,
+    ) -> Option<&<Self::Record as mshogi_core::native::incremental::IncrementalRecord>::Delta>;
+    /// Event and board-action counts in the retained game.
+    fn progress(game: &Self::Game) -> (usize, usize);
     /// Player to move.
     fn side_to_move(game: &Self::Game) -> Self::Side;
     /// Actor and command of a choice when `turn` is to move.

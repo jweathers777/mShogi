@@ -222,7 +222,7 @@ impl Snapshot for HistorySnapshot {
         self.local_position()
     }
     fn encoded_size(game: &Game) -> Result<usize, GameError> {
-        record::encode(game)
+        crate::record::compact::encode(game)
             .map(|text| text.len())
             .map_err(|_| GameError::Capacity(Resource::EncodedBytes))
     }

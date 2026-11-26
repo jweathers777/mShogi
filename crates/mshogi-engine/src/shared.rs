@@ -23,6 +23,22 @@ pub struct ExecutionTarget {
     /// Native game-qualified perspective; White and Sente are not synonyms.
     pub turn: NativeSide,
 }
+impl ExecutionTarget {
+    pub(crate) fn matches(
+        &self,
+        version: u64,
+        (events, plies): (usize, usize),
+        turn: NativeSide,
+    ) -> bool {
+        self.selection_id > 0
+            && self.session_version == version
+            && self.event_index == events as u64
+            && self.board_ply == plies as u64
+            && self.turn == turn
+            && !self.label.is_empty()
+            && self.label.len() <= 256
+    }
+}
 /// Purpose is explicit and remains separate from any command-admission path.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
@@ -59,16 +75,15 @@ impl ExecutionContext {
 
         let kind = self.game.game_kind();
         let target_valid = |target: &ExecutionTarget| {
-            target.selection_id > 0
-                && target.session_version == self.session_version
-                && target.event_index == self.game.event_count() as u64
-                && target.board_ply == self.game.known_board_actions() as u64
-                && target.turn.game() == kind
-                && for_game!(kind, G => G::record(&self.game)
-                    .is_some_and(|record| target.turn == G::native_side(G::record_side(record))),
-                    chess => true)
-                && !target.label.is_empty()
-                && target.label.len() <= 256
+            let turn = for_game!(kind,G=>G::record(&self.game).map(|r|G::native_side(G::record_side(r))),chess=>Some(target.turn));
+            target.turn.game() == kind
+                && turn.is_some_and(|turn| {
+                    target.matches(
+                        self.session_version,
+                        (self.game.event_count(), self.game.known_board_actions()),
+                        turn,
+                    )
+                })
         };
         let ordinary_limits_valid = |analysis: bool| {
             for_game!(kind, G => G::valid_limits(self.limits), chess => if analysis {

@@ -1,7 +1,11 @@
 //! Compact transport for a retained native session. Saved observations still
 //! contain the complete original context; only process traffic is incremental.
-use crate::*;
-use mshogi_core::{chu, native::CanonicalRecord, shogi, tori};
+use crate::{adapter::for_game, *};
+use mshogi_core::{
+    chu,
+    native::{CanonicalRecord, GameKind},
+    shogi, tenjiku, tori, xiangqi,
+};
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
@@ -62,6 +66,10 @@ pub enum Delta {
     Tori(tori::GameDelta),
     /// Exact native Chu suffix (MSH-213).
     Chu(chu::GameDelta),
+    /// Complete Xiangqi command groups and their native events.
+    Xiangqi(xiangqi::GameDelta),
+    /// Exact Tenjiku events under the retained profile.
+    Tenjiku(tenjiku::GameDelta),
 }
 /// A full validated reset or a suffix of one exact acknowledged endpoint.
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -132,14 +140,7 @@ impl Client {
     /// Only adopted game families use incremental timed traffic.
     pub fn supports(request: &ExecutionRequest) -> bool {
         request.context.limits.time_ms.is_some()
-            && match request.context.game {
-                CanonicalRecord::Shogi(_) => true,
-                // Tori adopts engine turns; analysis keeps full requests.
-                CanonicalRecord::Tori(_) | CanonicalRecord::Chu(_) => {
-                    matches!(request.context.purpose, ExecutionPurpose::EngineTurn {})
-                }
-                _ => false,
-            }
+            && request.context.game.game_kind() != GameKind::Chess
     }
     /// Prepare bytes without advancing the acknowledged endpoint.
     pub fn encode(
@@ -158,40 +159,16 @@ impl Client {
             .previous
             .as_ref()
             .and_then(|previous| {
-                let base = || Metadata::from_context(&previous.context).stamp();
-                match (&request.context.game, &previous.context.game) {
-                    (CanonicalRecord::Shogi(current), CanonicalRecord::Shogi(old))
-                        if current.has_prefix(old) =>
-                    {
-                        Some(Update::Advance {
-                            base: base(),
-                            delta: Delta::Shogi(
-                                current.suffix(old.event_count()).expect("validated prefix"),
-                            ),
-                        })
-                    }
-                    (CanonicalRecord::Tori(current), CanonicalRecord::Tori(old))
-                        if current.has_prefix(old) =>
-                    {
-                        Some(Update::Advance {
-                            base: base(),
-                            delta: Delta::Tori(
-                                current.suffix(old.event_count()).expect("validated prefix"),
-                            ),
-                        })
-                    }
-                    (CanonicalRecord::Chu(current), CanonicalRecord::Chu(old))
-                        if current.has_prefix(old) =>
-                    {
-                        Some(Update::Advance {
-                            base: base(),
-                            delta: Delta::Chu(
-                                current.suffix(old.event_count()).expect("validated prefix"),
-                            ),
-                        })
-                    }
-                    _ => None,
-                }
+                let current = &request.context.game;
+                let old = &previous.context.game;
+                for_game!(current.game_kind(),G=>{
+                    let current=G::record(current)?;
+                    let earlier=G::record(old)?;
+                    G::extends(current,earlier).then(||Update::Advance {
+                        base:Metadata::from_context(&previous.context).stamp(),
+                        delta:G::suffix(current, old.event_count())
+                    })
+                },chess=>None)
             })
             .unwrap_or_else(|| Update::Reset {
                 game: request.context.game.clone(),
@@ -252,99 +229,12 @@ impl Client {
     }
 }
 
-/// Game adapter for the shared transport lifecycle. It supplies native types and
-/// metadata checks, not another reset/advance/acknowledgement implementation.
-pub trait Adapter {
-    /// Native record adapter, also used by the game-independent native session.
-    type Record: mshogi_core::native::incremental::IncrementalRecord;
-    /// Select this game's record without reconstructing it.
-    fn record(record: &CanonicalRecord) -> Option<&Self::Record>;
-    /// Select this game's strictly decoded native suffix.
-    fn delta(
-        delta: &Delta,
-    ) -> Option<&<Self::Record as mshogi_core::native::incremental::IncrementalRecord>::Delta>;
-    /// Validate supported search limits and purpose before changing state.
-    fn valid_limits(meta: &Metadata) -> bool;
-    /// Check target identity against the admitted authoritative state.
-    fn valid_target(
-        meta: &Metadata,
-        game: &<Self::Record as mshogi_core::native::incremental::IncrementalRecord>::Game,
-    ) -> bool;
-}
-/// First adapter; other games keep this exact session lifecycle.
-pub struct ShogiAdapter;
-impl Adapter for ShogiAdapter {
-    type Record = shogi::GameRecord;
-    fn record(record: &CanonicalRecord) -> Option<&Self::Record> {
-        match record {
-            CanonicalRecord::Shogi(r) => Some(r),
-            _ => None,
-        }
-    }
-    fn delta(delta: &Delta) -> Option<&shogi::GameDelta> {
-        match delta {
-            Delta::Shogi(d) => Some(d),
-            _ => None,
-        }
-    }
-    fn valid_limits(meta: &Metadata) -> bool {
-        crate::game::Shogi::valid_limits(meta.limits)
-    }
-    fn valid_target(meta: &Metadata, game: &shogi::Game) -> bool {
-        let ExecutionPurpose::MoveAnalysis { target } = &meta.purpose else {
-            return true;
-        };
-        target.selection_id > 0
-            && target.session_version == meta.session_version
-            && target.event_index == game.events().len() as u64
-            && target.board_ply
-                == game
-                    .events()
-                    .iter()
-                    .filter(|e| matches!(e.command, shogi::GameCommand::Play(_)))
-                    .count() as u64
-            && target.turn == mshogi_core::native::NativeSide::Shogi(game.position().side_to_move())
-            && !target.label.is_empty()
-            && target.label.len() <= 256
-    }
-}
-// Native engine-turn adapters share validation and differ only in their types.
-macro_rules! turn_adapter {
-    ($adapter:ident, $game:ident, $variant:ident) => {
-        /// Native engine-turn adoption of the shared session lifecycle.
-        pub struct $adapter;
-        impl Adapter for $adapter {
-            type Record = $game::GameRecord;
-            fn record(record: &CanonicalRecord) -> Option<&Self::Record> {
-                match record {
-                    CanonicalRecord::$variant(r) => Some(r),
-                    _ => None,
-                }
-            }
-            fn delta(delta: &Delta) -> Option<&$game::GameDelta> {
-                match delta {
-                    Delta::$variant(d) => Some(d),
-                    _ => None,
-                }
-            }
-            fn valid_limits(meta: &Metadata) -> bool {
-                crate::game::$variant::valid_limits(meta.limits)
-                    && matches!(meta.purpose, ExecutionPurpose::EngineTurn {})
-            }
-            fn valid_target(_meta: &Metadata, _game: &$game::Game) -> bool {
-                true
-            }
-        }
-    };
-}
-turn_adapter!(ToriAdapter, tori, Tori);
-turn_adapter!(ChuAdapter, chu, Chu);
 /// Shared transport lifecycle around any adopted native record adapter.
-pub struct SessionServer<A: Adapter> {
+pub struct SessionServer<A: EngineGame> {
     native: mshogi_core::native::incremental::Session<A::Record>,
     endpoint: Option<Stamp>,
 }
-impl<A: Adapter> Default for SessionServer<A> {
+impl<A: EngineGame> Default for SessionServer<A> {
     fn default() -> Self {
         Self {
             native: Default::default(),
@@ -352,46 +242,49 @@ impl<A: Adapter> Default for SessionServer<A> {
         }
     }
 }
-/// The adopted game sessions of one engine process.
+/// A process retains just the active game's authenticated endpoint.
 #[derive(Default)]
 pub struct Server {
-    /// Shogi session (MSH-189).
-    pub shogi: SessionServer<ShogiAdapter>,
-    /// Tori session (MSH-204).
-    pub tori: SessionServer<ToriAdapter>,
-    /// Chu session (MSH-213).
-    pub chu: SessionServer<ChuAdapter>,
+    active: Option<Box<dyn std::any::Any>>,
+}
+impl Server {
+    pub(crate) fn session<G: EngineGame>(&mut self) -> &mut SessionServer<G> {
+        if self
+            .active
+            .as_ref()
+            .is_none_or(|s| !s.is::<SessionServer<G>>())
+        {
+            self.active = Some(Box::new(SessionServer::<G>::default()));
+        }
+        self.active
+            .as_mut()
+            .unwrap()
+            .downcast_mut()
+            .expect("selected game session")
+    }
 }
 impl Request {
     /// The game family of this request, from its full record or suffix.
     pub fn game_kind(&self) -> mshogi_core::native::GameKind {
         match &self.update {
             Update::Reset { game } => game.game_kind(),
-            Update::Advance {
-                delta: Delta::Shogi(_),
-                ..
-            } => mshogi_core::native::GameKind::Shogi,
-            Update::Advance {
-                delta: Delta::Tori(_),
-                ..
-            } => mshogi_core::native::GameKind::Tori,
-            Update::Advance {
-                delta: Delta::Chu(_),
-                ..
-            } => mshogi_core::native::GameKind::Chu,
+            Update::Advance { delta, .. } => match delta {
+                Delta::Shogi(_) => GameKind::Shogi,
+                Delta::Tori(_) => GameKind::Tori,
+                Delta::Chu(_) => GameKind::Chu,
+                Delta::Xiangqi(_) => GameKind::Xiangqi,
+                Delta::Tenjiku(_) => GameKind::Tenjiku,
+            },
         }
     }
 }
-impl<A: Adapter> SessionServer<A>
-where
-    <A::Record as mshogi_core::native::incremental::IncrementalRecord>::Error: std::fmt::Display,
-{
+impl<A: EngineGame> SessionServer<A> {
     /// Admit the initial full request and advertise only an exact prepared endpoint.
     pub fn begin(
         &mut self,
         request: &ExecutionRequest,
         run: impl FnOnce(
-            &<A::Record as mshogi_core::native::incremental::IncrementalRecord>::Game,
+            &A::Game,
             bool,
             WorkLimits,
             &mshogi_search::alphabeta::timing::RequestTime,
@@ -421,7 +314,7 @@ where
         &mut self,
         request: Request,
         run: impl FnOnce(
-            &<A::Record as mshogi_core::native::incremental::IncrementalRecord>::Game,
+            &A::Game,
             bool,
             WorkLimits,
             &mshogi_search::alphabeta::timing::RequestTime,
@@ -442,7 +335,7 @@ where
         if request.protocol != PROTOCOL_VERSION
             || meta.request_id == 0
             || meta.limits.time_ms.is_none_or(|n| n > 60_000)
-            || !A::valid_limits(meta)
+            || !A::valid_limits(meta.limits)
         {
             return result;
         }
@@ -477,7 +370,13 @@ where
             return result;
         }
         let game = self.native.game().expect("admitted native session");
-        if !A::valid_target(meta, game) {
+        if let ExecutionPurpose::MoveAnalysis { target } = &meta.purpose
+            && !target.matches(
+                meta.session_version,
+                A::progress(game),
+                A::native_side(A::side_to_move(game)),
+            )
+        {
             self.endpoint = None;
             return result;
         }
@@ -525,20 +424,25 @@ mod tests {
         let bytes = client.encode(&request).unwrap();
         let (reset, response_bytes) = if let Ok(wire) = serde_json::from_slice::<Request>(&bytes) {
             let reset = matches!(wire.update, Update::Reset { .. });
-            let response = server.shogi.execute(wire, |game, actual_reset, _, _| {
-                assert_eq!(game, expected);
-                assert_eq!(actual_reset, reset);
-                ExecutionResult::failure(FailureKind::Search, "admission-only test")
-            });
+            let response =
+                server
+                    .session::<game::Shogi>()
+                    .execute(wire, |game, actual_reset, _, _| {
+                        assert_eq!(game, expected);
+                        assert_eq!(actual_reset, reset);
+                        ExecutionResult::failure(FailureKind::Search, "admission-only test")
+                    });
             assert!(response.endpoint.is_some());
             (reset, serde_json::to_vec(&response.bind(&bytes)).unwrap())
         } else {
             let full: ExecutionRequest = serde_json::from_slice(&bytes).unwrap();
-            let response = server.shogi.begin(&full, |game, reset, _, _| {
-                assert_eq!(game, expected);
-                assert!(reset);
-                ExecutionResult::failure(FailureKind::Search, "admission-only test")
-            });
+            let response = server
+                .session::<game::Shogi>()
+                .begin(&full, |game, reset, _, _| {
+                    assert_eq!(game, expected);
+                    assert!(reset);
+                    ExecutionResult::failure(FailureKind::Search, "admission-only test")
+                });
             assert!(response.endpoint.is_some());
             (true, serde_json::to_vec(&response.bind(&bytes)).unwrap())
         };
@@ -614,10 +518,13 @@ mod tests {
         };
         base.request_id += 1;
         let response = server
-            .shogi
+            .session::<game::Shogi>()
             .execute(wire, |_, _, _, _| panic!("invalid base must not search"));
         assert!(response.endpoint.is_none());
-        assert_eq!(server.shogi.native.game(), Some(&shogi::Game::new()));
+        assert_eq!(
+            server.session::<game::Shogi>().native.game(),
+            Some(&shogi::Game::new())
+        );
         // Failure clears the client endpoint. The next request resynchronizes fully.
         client
             .decode(&serde_json::to_vec(&response.clone().bind(&encoded)).unwrap())
@@ -639,12 +546,17 @@ mod tests {
         value["update"]["advance"]["delta"]["delta"]["events"][0]["command"]["action"] =
             serde_json::json!("3c3e");
         let wire: Request = serde_json::from_value(value).unwrap();
-        let prior = server.shogi.native.game().unwrap().clone();
+        let prior = server
+            .session::<game::Shogi>()
+            .native
+            .game()
+            .unwrap()
+            .clone();
         let response = server
-            .shogi
+            .session::<game::Shogi>()
             .execute(wire, |_, _, _, _| panic!("illegal suffix must not search"));
         assert!(response.endpoint.is_none());
-        assert_eq!(server.shogi.native.game(), Some(&prior));
+        assert_eq!(server.session::<game::Shogi>().native.game(), Some(&prior));
     }
     #[test]
     fn fixed_work_encoding_and_timed_endpoint_are_unchanged() {
@@ -784,19 +696,24 @@ mod tests {
         };
         let (reset, response_bytes) = if let Ok(wire) = serde_json::from_slice::<Request>(&bytes) {
             let reset = matches!(wire.update, Update::Reset { .. });
-            let response = server.tori.execute(wire, |game, actual_reset, _, _| {
-                check(game);
-                assert_eq!(actual_reset, reset);
-                ExecutionResult::failure(FailureKind::Search, "admission-only test")
-            });
+            let response =
+                server
+                    .session::<game::Tori>()
+                    .execute(wire, |game, actual_reset, _, _| {
+                        check(game);
+                        assert_eq!(actual_reset, reset);
+                        ExecutionResult::failure(FailureKind::Search, "admission-only test")
+                    });
             (reset, serde_json::to_vec(&response.bind(&bytes)).unwrap())
         } else {
             let full: ExecutionRequest = serde_json::from_slice(&bytes).unwrap();
-            let response = server.tori.begin(&full, |game, reset, _, _| {
-                check(game);
-                assert!(reset);
-                ExecutionResult::failure(FailureKind::Search, "admission-only test")
-            });
+            let response = server
+                .session::<game::Tori>()
+                .begin(&full, |game, reset, _, _| {
+                    check(game);
+                    assert!(reset);
+                    ExecutionResult::failure(FailureKind::Search, "admission-only test")
+                });
             (true, serde_json::to_vec(&response.bind(&bytes)).unwrap())
         };
         let restored = client.decode(&response_bytes).unwrap();
@@ -890,11 +807,11 @@ mod tests {
                     ExecutionResult::failure(FailureKind::Search, "admission-only test")
                 };
             let response = if id == 1 {
-                server.chu.begin(&request, check)
+                server.session::<game::Chu>().begin(&request, check)
             } else {
                 let wire: Request = serde_json::from_slice(&bytes).unwrap();
                 assert_eq!(matches!(wire.update, Update::Advance { .. }), id != 4);
-                server.chu.execute(wire, check)
+                server.session::<game::Chu>().execute(wire, check)
             };
             let encoded = serde_json::to_vec(&response.bind(&bytes)).unwrap();
             assert!(client.decode(&encoded).is_ok());

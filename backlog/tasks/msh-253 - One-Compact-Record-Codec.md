@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-26T15:42:00Z'
+updated_date: '2026-11-26T15:53:00Z'
 labels:
   - core
   - persistence
@@ -39,6 +39,12 @@ The engine keeps a retained native game between turns (incremental session: msho
 - [ ] #5 Engine protocol and incremental tests cover each game; the replay cost per request at full length is measured before and after for Xiangqi and Tenjiku.
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Capture exact envelope/fixture output and full-length replay timings from a63fa47. 2. Use the shared history owner for a generic compact codec and atomic suffix. Adapt Xiangqi command boundaries and Shogi through the common session interface. 3. Dispatch retained engine requests through EngineGame, exercise protocol and suffix rejections, and compare wire bytes, production counts and costs. 4. Run selected workspace and platform checks, independent review, integrate and clean up.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
@@ -50,4 +56,6 @@ John approved consolidation on 2026-11-26: this task retains the full scope of M
 Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
 
 Claimed on codex/msh-253-record-codec at a63fa47. Next: baseline evidence, codec and retained adapter, then checks and review.
+
+Checkpoint on codex/msh-253-record-codec. Implemented one codec for the three shared GameHistory games, Xiangqi multi-event suffixes, and generic retained engine sessions. Shogi keeps its schema-specific canonical SFEN, declaration/score and diagnostic conversion, while using the same engine session. Xiangqi retains its root codec, claim policy and many-events-per-command replay. Chess retains its distinct adjudicated match record with clocks and observations, has no validated suffix, and uses full requests. Frozen and new envelope suites passed with 23 distinct byte-identical envelopes. Baseline complete-game measurements (seed 253, release, nine final zero-node timed requests) on macOS arm64: Xiangqi 81 events 15,746 us; Adams 175 events 3,703 us; Muller 161 events 3,456 us. Next: finish added regression tests, compare 42 committed game documents, run workspace and platform checks and fresh review, then integrate.
 <!-- SECTION:NOTES:END -->

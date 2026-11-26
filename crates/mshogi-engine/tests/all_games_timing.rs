@@ -226,3 +226,43 @@ fn takeback_and_game_switch_clear_timed_state() {
         );
     }
 }
+
+#[test]
+fn continuing_process_admits_native_suffixes_for_every_supported_profile() {
+    use mshogi_engine::incremental::Client;
+    use std::sync::Arc;
+
+    for root in roots() {
+        let mut client = Client::default();
+        let first = Arc::new(request(&root, 1, true));
+        let mut input = client.encode(&first).unwrap();
+        input.push(b'\n');
+        let mut initial = Vec::new();
+        serve_once(input.as_slice(), &mut initial).unwrap();
+        let next = played(&root, &client.decode(&initial).unwrap());
+        let second = Arc::new(request(&next, 2, true));
+        let line = client.encode(&second).unwrap();
+        let wire: Value = serde_json::from_slice(&line).unwrap();
+        if matches!(root, CanonicalRecord::Chess(_)) {
+            assert!(wire.get("context").is_some());
+        } else {
+            assert_eq!(wire["update"]["advance"]["base"]["request_id"], 1);
+            assert_eq!(
+                wire["update"]["advance"]["delta"]["delta"]["start_event"],
+                root.event_count()
+            );
+        }
+        input.extend_from_slice(&line);
+        input.push(b'\n');
+        let mut output = Vec::new();
+        serve(input.as_slice(), &mut output).unwrap();
+        let response = client
+            .decode(output.split(|&c| c == b'\n').nth(1).unwrap())
+            .unwrap();
+        assert!(response.matches(&second));
+        assert!(!matches!(
+            response.observation.result,
+            ExecutionResult::Failure { .. }
+        ));
+    }
+}

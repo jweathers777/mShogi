@@ -241,9 +241,10 @@ impl std::fmt::Display for GameError {
 impl std::error::Error for GameError {}
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-pub(super) struct NativeRoot {
-    pub state: StructuralState,
-    pub protection: LionProtection,
+/// Chu root position and initial Lion protection.
+pub struct NativeRoot {
+    pub(super) state: StructuralState,
+    pub(super) protection: LionProtection,
 }
 #[derive(Clone, Debug, Eq, PartialEq)]
 /// Rules evidence for an accepted Chu board action.
@@ -276,7 +277,7 @@ impl Snapshot for HistorySnapshot {
         self.local_position()
     }
     fn encoded_size(game: &Game) -> Result<usize, GameError> {
-        record::encode(game)
+        crate::record::compact::encode(game)
             .map(|text| text.len())
             .map_err(|_| GameError::Capacity(Resource::EncodedBytes))
     }

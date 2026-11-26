@@ -214,7 +214,9 @@ impl Snapshot for HistorySnapshot {
         self.local_position()
     }
     fn encoded_size(game: &Game) -> Result<usize, GameError> {
-        record::encoded_size(game).map_err(|_| GameError::Record)
+        crate::record::compact::encode(game)
+            .map(|s| s.len())
+            .map_err(|_| GameError::Record)
     }
     fn step(
         game: &mut Game,

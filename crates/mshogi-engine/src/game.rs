@@ -11,6 +11,19 @@ use mshogi_core::{
 use mshogi_search::alphabeta::{Searcher, timing::TimeBudget};
 use serde::{Deserialize, Serialize};
 
+// Shogi events record check and declaration facts instead of a board-ply counter.
+macro_rules! board_plies {
+    (shogi,$events:expr) => {
+        $events
+            .iter()
+            .filter(|event| matches!(event.command, shogi::GameCommand::Play(_)))
+            .count()
+    };
+    ($core:ident,$events:expr) => {
+        $events.last().map_or(0, |event| event.board_ply)
+    };
+}
+
 /// Wiring that only names the game's enum variant and search module.
 macro_rules! wiring {
     ($variant:ident, $core:ident, $position:ident) => {
@@ -35,6 +48,24 @@ macro_rules! wiring {
                 CanonicalRecord::$variant(record) => Some(record),
                 _ => None,
             }
+        }
+        fn extends(current: &Self::Record, earlier: &Self::Record) -> bool {
+            current.has_prefix(earlier)
+        }
+        fn suffix(current: &Self::Record, start: usize) -> crate::incremental::Delta {
+            crate::incremental::Delta::$variant(
+                current.suffix(start).expect("validated committed prefix"),
+            )
+        }
+        fn delta(delta: &crate::incremental::Delta) -> Option<&$core::GameDelta> {
+            match delta {
+                crate::incremental::Delta::$variant(d) => Some(d),
+                _ => None,
+            }
+        }
+        fn progress(game: &Self::Game) -> (usize, usize) {
+            let events = game.events();
+            (events.len(), board_plies!($core, events))
         }
         fn result(result: &ExecutionResult) -> Option<&EngineResult<Self>> {
             match result {
@@ -142,9 +173,6 @@ impl EngineGame for Chu {
     search!(chu);
     const SCORE_UNIT: &'static str = "Pawns";
     board_action_game!(chu);
-    fn extends(current: &Self::Record, _game: &Self::Game, earlier: &Self::Record) -> bool {
-        current.has_prefix(earlier)
-    }
     fn submit(
         game: &mut chu::Game,
         actor: chu::Side,
@@ -171,10 +199,6 @@ impl EngineGame for Tenjiku {
     search!(tenjiku);
     const SCORE_UNIT: &'static str = "Pawns";
     board_action_game!(tenjiku);
-    fn extends(_current: &Self::Record, game: &Self::Game, earlier: &Self::Record) -> bool {
-        game.record_prefix(earlier.event_count())
-            .is_ok_and(|prefix| prefix == *earlier)
-    }
     fn submit(
         game: &mut tenjiku::Game,
         actor: tenjiku::Side,
@@ -201,9 +225,6 @@ impl EngineGame for Tori {
     search!(tori);
     const SCORE_UNIT: &'static str = "Swallows";
     board_action_game!(tori);
-    fn extends(current: &Self::Record, _game: &Self::Game, earlier: &Self::Record) -> bool {
-        current.has_prefix(earlier)
-    }
     /// A Tori command is short; the caller checks the stop between commands.
     fn submit(
         game: &mut tori::Game,
@@ -264,9 +285,6 @@ impl EngineGame for Shogi {
     };
     type Choice = ShogiChoice;
     type Pending = NoPending;
-    fn extends(current: &Self::Record, _game: &Self::Game, earlier: &Self::Record) -> bool {
-        current.has_prefix(earlier)
-    }
     fn command(choice: &ShogiChoice, turn: shogi::Side) -> (shogi::Side, shogi::GameCommand) {
         match *choice {
             ShogiChoice::Move { action } => (turn, shogi::GameCommand::Play(action)),
@@ -342,13 +360,6 @@ impl EngineGame for Xiangqi {
     );
     type Choice = XiangqiChoice;
     type Pending = xiangqi::PendingAdjudication;
-    /// History changes only at command boundaries (MSH-226).
-    fn extends(_current: &Self::Record, game: &Self::Game, earlier: &Self::Record) -> bool {
-        game.committed_prefix(earlier.event_count())
-            .ok()
-            .and_then(|prefix| xiangqi::GameRecord::from_game(&prefix).ok())
-            .is_some_and(|prefix| prefix == *earlier)
-    }
     fn command(
         choice: &XiangqiChoice,
         turn: xiangqi::Side,

@@ -9,6 +9,8 @@ pub(crate) mod history;
 pub mod incremental;
 pub use context::GameContext;
 
+/// Refusal of a native compact record or retained suffix.
+pub use crate::record::compact::RecordError;
 use crate::{chess, chu, shogi, tenjiku, tori, xiangqi};
 use serde::{Deserialize, Serialize, Serializer};
 use serde_json::value::RawValue;
@@ -275,34 +277,19 @@ impl CanonicalRecord {
                     shogi::GameRecord::from_json(payload).map_err(EnvelopeError::encoding)?,
                 ),
                 GameKind::Xiangqi => Self::xiangqi(
-                    xiangqi::GameRecord::from_json(payload).map_err(EnvelopeError::encoding)?,
+                    xiangqi::GameRecord::from_json(payload).map_err(EnvelopeError::from)?,
                 ),
                 GameKind::Tori => Self::tori(
-                    tori::GameRecord::from_json_with_stop(payload, stop).map_err(|error| {
-                        match error {
-                            tori::RecordError::Stopped => EnvelopeError::Stopped,
-                            tori::RecordError::Capacity => EnvelopeError::Capacity,
-                            error => EnvelopeError::encoding(error),
-                        }
-                    })?,
+                    tori::GameRecord::from_json_with_stop(payload, stop)
+                        .map_err(EnvelopeError::from)?,
                 ),
-                GameKind::Chu => {
-                    Self::chu(chu::GameRecord::from_json_with_stop(payload, stop).map_err(
-                        |error| match error {
-                            chu::RecordError::Stopped => EnvelopeError::Stopped,
-                            chu::RecordError::Capacity => EnvelopeError::Capacity,
-                            error => EnvelopeError::encoding(error),
-                        },
-                    )?)
-                }
+                GameKind::Chu => Self::chu(
+                    chu::GameRecord::from_json_with_stop(payload, stop)
+                        .map_err(EnvelopeError::from)?,
+                ),
                 GameKind::Tenjiku => Self::tenjiku(
-                    tenjiku::GameRecord::from_json_with_stop(payload, stop).map_err(|error| {
-                        match error {
-                            tenjiku::RecordError::Stopped => EnvelopeError::Stopped,
-                            tenjiku::RecordError::Capacity => EnvelopeError::Capacity,
-                            error => EnvelopeError::encoding(error),
-                        }
-                    })?,
+                    tenjiku::GameRecord::from_json_with_stop(payload, stop)
+                        .map_err(EnvelopeError::from)?,
                 ),
             };
             Ok((record, ()))
@@ -576,5 +563,15 @@ pub fn dispatch_command(
             Ok(NativeReply::Tenjiku(game.submit(*request).map(Box::new)))
         }
         _ => Err(DispatchMismatch),
+    }
+}
+
+impl From<RecordError> for EnvelopeError {
+    fn from(error: RecordError) -> Self {
+        match error {
+            RecordError::Stopped => Self::Stopped,
+            RecordError::Capacity => Self::Capacity,
+            other => Self::encoding(other),
+        }
     }
 }

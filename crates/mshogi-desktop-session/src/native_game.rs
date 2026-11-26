@@ -258,7 +258,7 @@ macro_rules! large_shogi_game {
                 stop: &mut impl FnMut() -> bool,
             ) -> Result<(Self::Record, Self::Game), RecordFailure> {
                 mshogi_core::$core::GameRecord::from_json_with_game(text, stop)
-                    .map_err($glue::record_failure)
+                    .map_err(RecordFailure::from)
             }
             fn profile($r: &Self::Record) -> RulesProfile {
                 $profile
@@ -276,12 +276,10 @@ macro_rules! large_shogi_game {
                 record: &Self::Record,
                 stop: &mut impl FnMut() -> bool,
             ) -> Result<Self::Game, RecordFailure> {
-                record
-                    .to_game_with_stop(stop)
-                    .map_err($glue::record_failure)
+                record.to_game_with_stop(stop).map_err(RecordFailure::from)
             }
             fn from_game(game: &Self::Game) -> Result<Self::Record, RecordFailure> {
-                mshogi_core::$core::GameRecord::from_game(game).map_err($glue::record_failure)
+                mshogi_core::$core::GameRecord::from_game(game).map_err(RecordFailure::from)
             }
             fn record_prefix(
                 game: &Self::Game,
@@ -289,7 +287,7 @@ macro_rules! large_shogi_game {
                 stop: &mut impl FnMut() -> bool,
             ) -> Result<Self::Record, RecordFailure> {
                 game.record_prefix_with_stop(count, stop)
-                    .map_err($glue::record_failure)
+                    .map_err(RecordFailure::from)
             }
             fn submit(
                 game: &mut Self::Game,
@@ -326,13 +324,6 @@ macro_rules! large_shogi_game {
         mod $glue {
             use super::*;
             use mshogi_core::$core as c;
-            pub(super) fn record_failure(e: c::RecordError) -> RecordFailure {
-                match e {
-                    c::RecordError::Stopped => RecordFailure::Stopped,
-                    c::RecordError::Capacity => RecordFailure::Capacity(e.to_string()),
-                    e => RecordFailure::Invalid(e.to_string()),
-                }
-            }
             pub(super) fn native_failure(e: c::GameError) -> NativeFailure {
                 match e {
                     c::GameError::Stopped => NativeFailure::Stopped,
@@ -388,8 +379,7 @@ impl NativeGame for Tori {
         text: &str,
         stop: &mut impl FnMut() -> bool,
     ) -> Result<(Self::Record, Self::Game), RecordFailure> {
-        mshogi_core::tori::GameRecord::from_json_with_game(text, stop)
-            .map_err(tori_glue::record_failure)
+        mshogi_core::tori::GameRecord::from_json_with_game(text, stop).map_err(RecordFailure::from)
     }
     fn profile(_record: &Self::Record) -> RulesProfile {
         RulesProfile::ToriModernV1
@@ -407,12 +397,10 @@ impl NativeGame for Tori {
         record: &Self::Record,
         stop: &mut impl FnMut() -> bool,
     ) -> Result<Self::Game, RecordFailure> {
-        record
-            .to_game_with_stop(stop)
-            .map_err(tori_glue::record_failure)
+        record.to_game_with_stop(stop).map_err(RecordFailure::from)
     }
     fn from_game(game: &Self::Game) -> Result<Self::Record, RecordFailure> {
-        mshogi_core::tori::GameRecord::from_game(game).map_err(tori_glue::record_failure)
+        mshogi_core::tori::GameRecord::from_game(game).map_err(RecordFailure::from)
     }
     fn record_prefix(
         game: &Self::Game,
@@ -423,7 +411,7 @@ impl NativeGame for Tori {
         if stop() {
             return Err(RecordFailure::Stopped);
         }
-        game.record_prefix(count).map_err(tori_glue::record_failure)
+        game.record_prefix(count).map_err(RecordFailure::from)
     }
     fn submit(
         game: &mut Self::Game,
@@ -460,13 +448,6 @@ impl NativeGame for Tori {
 mod tori_glue {
     use super::*;
     use mshogi_core::tori as t;
-    pub(super) fn record_failure(e: t::RecordError) -> RecordFailure {
-        match e {
-            t::RecordError::Stopped => RecordFailure::Stopped,
-            t::RecordError::Capacity => RecordFailure::Capacity(e.to_string()),
-            e => RecordFailure::Invalid(e.to_string()),
-        }
-    }
     pub(super) fn native_failure(e: t::GameError) -> NativeFailure {
         match e {
             t::GameError::Capacity(r) => NativeFailure::Capacity(
@@ -761,4 +742,15 @@ pub(crate) fn validate_limits<G: NativeGame>(limits: WorkLimits) -> Result<(), S
         ));
     }
     Ok(())
+}
+
+impl From<mshogi_core::native::RecordError> for RecordFailure {
+    fn from(e: mshogi_core::native::RecordError) -> Self {
+        use mshogi_core::native::RecordError;
+        match e {
+            RecordError::Stopped => Self::Stopped,
+            RecordError::Capacity => Self::Capacity(e.to_string()),
+            e => Self::Invalid(e.to_string()),
+        }
+    }
 }

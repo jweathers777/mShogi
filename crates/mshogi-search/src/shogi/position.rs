@@ -1,7 +1,7 @@
 //! Private Shogi board, hands, move generation and evaluation for the shared core.
 //! Native rules remain authoritative for real moves and outcomes.
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
-use crate::repetition::{cycle_start, earlier_occurrences};
+use crate::repetition::{GamePrefix, cycle_start};
 use mshogi_core::shogi::{Action, Game, GameCommand, Piece, PieceKind, Position, Side, Square};
 use std::sync::LazyLock;
 
@@ -321,8 +321,8 @@ pub struct ShogiPosition {
     stack: Vec<Undo>,
     /// Hash of each position from the start of the known game to this one.
     keys: Vec<u64>,
-    /// Index in `keys` of the search root.
-    root: usize,
+    /// Game keys before this search began.
+    prefix: GamePrefix,
     /// Check status of the side to move at each key.
     checks: Vec<bool>,
 }
@@ -351,7 +351,7 @@ impl ShogiPosition {
             completed: position.completed_actions(),
             stack: Vec::with_capacity(160),
             keys: Vec::with_capacity(700),
-            root: 0,
+            prefix: GamePrefix::default(),
             checks: Vec::new(),
         };
         for square in Square::all() {
@@ -395,7 +395,7 @@ impl ShogiPosition {
                 p.checks.push(earlier.check);
             }
         }
-        p.root = p.keys.len() - 1;
+        p.prefix = GamePrefix::new(&p.keys[..p.keys.len() - 1]);
         p
     }
     /// Convert a compact move into a complete native action.
@@ -699,7 +699,7 @@ impl ShogiPosition {
         })
     }
     fn ply(&self) -> usize {
-        self.keys.len() - 1 - self.root
+        self.keys.len() - 1 - self.prefix.len
     }
     /// Squares from which a piece of `side` with `face` attacks `king`.
     fn check_squares(&self, side: usize, face: usize, king: usize, occupied: u128) -> u128 {
@@ -1201,12 +1201,8 @@ impl SearchPosition for ShogiPosition {
     }
     fn rule_score(&self) -> Option<i32> {
         let current = self.keys.len() - 1;
-        let occurrences = earlier_occurrences(
-            &self.keys[..current],
-            self.hash,
-            2..=current - self.history_start,
-        );
-        if let Some(index) = cycle_start(occurrences, self.root, 3) {
+        let occurrences = self.prefix.occurrences(&self.keys, self.history_start);
+        if let Some(index) = cycle_start(occurrences, self.prefix.len, 3) {
             // On a repeated search cycle, a side checking on every one
             // of its moves loses. Board/hand cycles can cross captures.
             for side in 0..2 {

@@ -10,7 +10,7 @@
 //! Sente moves toward row 0.
 use super::eval;
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
-use crate::repetition::earlier_occurrences;
+use crate::repetition::GamePrefix;
 use mshogi_core::tori::{Action, Face, Game, Piece, Position, Side, Square};
 use std::sync::LazyLock;
 
@@ -327,8 +327,8 @@ pub struct ToriPosition {
     stack: Vec<Undo>,
     /// Hash of each position from the start of the known game to this one.
     keys: Vec<u64>,
-    /// Index in `keys` of the search root.
-    root: usize,
+    /// Game keys before this search began.
+    prefix: GamePrefix,
     /// Departures that the native repetition rule forbids at the root.
     root_forbidden: Vec<Move>,
 }
@@ -356,7 +356,7 @@ impl ToriPosition {
             history_start: 0,
             stack: Vec::with_capacity(160),
             keys: Vec::with_capacity(700),
-            root: 0,
+            prefix: GamePrefix::default(),
             root_forbidden: Vec::new(),
         };
         for square in Square::all() {
@@ -400,7 +400,7 @@ impl ToriPosition {
         if keys.last() == Some(&p.hash) {
             p.keys = keys;
         }
-        p.root = p.keys.len() - 1;
+        p.prefix = GamePrefix::new(&p.keys[..p.keys.len() - 1]);
         if let Some(repetition) = game.repetition() {
             p.root_forbidden = repetition
                 .forbidden
@@ -962,7 +962,7 @@ impl ToriPosition {
         })
     }
     fn ply(&self) -> usize {
-        self.keys.len() - 1 - self.root
+        self.keys.len() - 1 - self.prefix.len
     }
     /// Per-node terms (Phoenix safety, mobility), side to move minus
     /// opponent. With `all` false, terms whose compiled weight is zero are
@@ -1254,17 +1254,12 @@ impl SearchPosition for ToriPosition {
         // occurrence of a position is illegal, so the side that moved here
         // loses. A position that occurred once before inside this search is a
         // cycle without progress and scores level. The native rules check the root.
-        let current = self.keys.len() - 1;
-        let mut occurrences = earlier_occurrences(
-            &self.keys[..current],
-            self.hash,
-            2..=current - self.history_start,
-        );
+        let mut occurrences = self.prefix.occurrences(&self.keys, self.history_start);
         let latest = occurrences.next()?;
         if occurrences.next().is_some() {
             return Some(MATE_SCORE - self.ply() as i32);
         }
-        (latest >= self.root).then_some(0)
+        (latest >= self.prefix.len).then_some(0)
     }
     fn draw_claimable(&self) -> bool {
         false

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T21:21:00Z'
+updated_date: '2026-11-26T21:47:00Z'
 labels:
   - search
   - refactor
@@ -58,4 +58,6 @@ Revised candidate 93de32f uses one 1024-bit pre-root mask shared by the two drop
 Final candidate 93de32f passed 134/134 unchanged-game fixed-depth comparisons and retained all 280 Tori blunder choices (163 avoided, 65 judge choices, 43/64 and 17/64 held out). The Tori node counts matched the first full-scan implementation. Pre-integration rustfmt, Clippy and workspace tests passed (1167 passed, 0 failed, 10 ignored by default). Release deep Chess perft and native baseline depth-4 counts passed again. Checks, review, fixed-depth and blunder evidence are complete; only the independent SPRT and integration remain. Filter trials use the match3, verification2 and checks4 prefixes in the task GCS folder.
 
 msh259-filter-match (match3) stopped and diagnosed by its predeclared incomplete-pair rule at attempt 1275, seed 2475. First native game reached its 1000-step limit; the return game reached the runner-wide 180 s wall deadline after 655 plies. Neither has a score. 1270 scored pairs before the interruption, LLR -1.492; no decision. Native paired report is preserved. There is no resume of the original process at ply 655, and substituting one replayed game would mix reports. Close this trial without using its rows for acceptance. Repeat the full SAME seed range 1201..3600 from the beginning under the original clock, step cap, player limits and unchanged sequential boundaries. Set the pair-wide operational ceiling uniformly to 600 s (each game can consume 10 s of initial clocks plus 100 s of increments over 1000 plies, so 180 s for both games can expire). No outcome-based replacements, no pooling of earlier games. Task spending projection remains under US$10.
+
+The full clean retry (match4, 93de32f vs 7c15e68, c3-standard-4, same original seeds/clocks/step cap) reached H0 at attempt 865. 863 scored, 2 step-limited, W/L/D 813/913/0, pentanomial [221,0,471,0,171], LLR -3.006 below -2.944, Elo -20.15 [-35.81,-4.57]. No scores from interrupted match3 or the first full-scan candidate were pooled. Reject the filtered full-history implementation for integration. The project has not integrated any MSH-259 code; AC2 remains open. Next: reconcile fixed-depth speed diagnostic and evaluate the shorter common bound using the same frozen predecessor. Keep branch codex/msh-259-repetition for evidence.
 <!-- SECTION:NOTES:END -->

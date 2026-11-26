@@ -1,11 +1,11 @@
 ---
 id: MSH-261
 title: Shared Runner Reports and Engine Transport
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T23:30:00Z'
+updated_date: '2026-11-26T23:47:00Z'
 labels:
   - runner
   - refactor
@@ -34,7 +34,7 @@ crates/mshogi-runner talks to engine processes in three places: run.rs GameRun (
 - [x] #3 Runner tests pass; production line counts before and after are recorded.
 - [x] #4 One engine transport serves the three runners; per-runner code holds only its game and clock logic (Chess clocks and claims stay with ChessMatch).
 - [x] #5 Each drift is resolved to one behavior and recorded in the notes; one clock ledger type is used where the clocks are the same.
-- [ ] #6 Runner tests pass, including the process tests in CI on the affected operating systems.
+- [x] #6 Runner tests pass, including the process tests in CI on the affected operating systems.
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -67,4 +67,12 @@ Review of the cleanup fix separated successful wire writes from transcript reten
 edb4f7b passed the workspace checks and its hosted Ubuntu and Windows jobs (45908447797). The controlled closed-stdin case also passed on macOS, but its Xiangqi retirement test observed an unreaped child under a 300 ms budget. The updated transport gives stop/quit and stdout capture the first half of the absolute deadline, polls stdout in intervals up to 5 ms, and reserves the other half for forced termination, reaping and joining pipe workers. It samples exit status even after a delayed wakeup. The watchdog, native rules and test expectations remain the same. The local full runner suite and the final focused Xiangqi check passed. Production source now totals 7338 lines, 601 fewer than the baseline. Next: final workspace check, affected process CI and integration.
 
 a41e89d passed local workspace, Ubuntu and Windows checks. macOS run 45909991524 found that a real deadline-racing reply can be dequeued during search after its retirement. The transport now records that response as retired and uses one monotonic receipt for its timestamp and deadline classification. The fixture produces its late reply on stop instead of depending on an 80 ms scheduling delay. Shogi and Xiangqi still require the exact retired bestmove and reaped child. Both focused process tests pass locally. Updated production count: 7939 to 7347 (592 fewer). Next: complete the release matrix, then integrate and clean up.
+
+Integrated implementation 515cd54 into main. Final count is 7939 to 7347 production Rust lines under crates/mshogi-runner/src (592 fewer). Independent review approved. Final macOS checks: python3 tools/checks.py run --base origin/main passed format, Clippy and 1172 workspace tests/doc tests (10 configured ignores). The release process suite passed on Ubuntu 24.04, macOS 15 and Windows 2022: https://github.com/jweathers777/mShogi/actions/runs/45911369728. Command: gh workflow run 393975947 --ref codex/msh-261-shared-runner -f suite=process -f platform=all. Used standard public-repository GitHub-hosted runners and no cloud experiment. No GCS data or follow-up issue. Next dependent task: MSH-263 (Shared Experiment Dispatch and Operator Budgets).
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+One transport now owns bounded engine I/O, option negotiation, deadline evidence and retirement. Shogi and Xiangqi share configuration, recorded and clocked game reporting and native replay. All report commands preserve existing files. ChessMatch continues to own Chess claims and clock outcomes. Production source fell by 592 lines. Workspace checks, fresh review and release process CI passed on all three operating systems. MSH-263 can proceed.
+<!-- SECTION:FINAL_SUMMARY:END -->

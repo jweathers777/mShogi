@@ -448,7 +448,7 @@ impl Game {
             GameStatus::Ongoing
         }
     }
-    /// Atomic full-context admission; all effects/capacity validate before publication.
+    /// Atomic token-bound admission; all effects/capacity validate before publication.
     pub fn submit(&mut self, request: GameRequest) -> Result<GameUndo, GameError> {
         self.submit_with_stop(request, &mut || false)
     }

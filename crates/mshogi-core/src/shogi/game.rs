@@ -344,7 +344,7 @@ impl Clone for Game {
             checks: self.checks.clone(),
             conclusion: self.conclusion,
             context: GameContext::fresh(),
-            node: self.node,
+            node: 0,
         }
     }
 }

@@ -424,6 +424,7 @@ impl Game {
     pub fn fork(&self) -> Self {
         Self {
             context: GameContext::fresh(),
+            node: 0,
             ..self.transaction_copy()
         }
     }

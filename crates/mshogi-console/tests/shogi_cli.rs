@@ -85,6 +85,19 @@ fn drop_capture_hands_optional_forced_and_already_promoted_choices() {
     );
 }
 #[test]
+fn undo_reverses_actions_of_earlier_move_commands() {
+    let out = run("record print\nmove 7g7f\nmove 3c3d 2g2f\nundo 3\nrecord print\n");
+    assert!(
+        out.status.success(),
+        "{}",
+        String::from_utf8_lossy(&out.stderr)
+    );
+    let s = text(&out);
+    let records: Vec<_> = s.lines().filter(|l| l.starts_with("record ")).collect();
+    assert_eq!(records.len(), 2);
+    assert_eq!(records[0], records[1]);
+}
+#[test]
 fn same_piece_destinations_have_explicit_sources_and_illegal_batches_are_atomic() {
     // Independent manual geometry: two silvers each have five unobstructed
     // choices; Sente king 9i has 3. Both 4e/6e can move 5d without promotion.

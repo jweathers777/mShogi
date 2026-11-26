@@ -35,6 +35,7 @@ impl GameContext {
         self.instance
     }
     /// Current revision; unique in its instance, so it can name a history node.
+    /// A copy starts its node at 0, which no command revision can be.
     pub(crate) fn revision(self) -> u64 {
         self.revision
     }

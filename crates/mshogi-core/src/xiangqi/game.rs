@@ -485,7 +485,7 @@ impl Game {
         }
     }
     /// Advisory offer admission for this actor. Querying never commits an offer;
-    /// the formal request still requires the complete current game context.
+    /// the formal request still requires the current request token.
     pub fn can_offer_draw(&self, actor: Side) -> bool {
         self.conclusion.is_none()
             && self.pending.is_none()
@@ -870,6 +870,7 @@ impl Game {
     pub fn fork(&self) -> Self {
         Self {
             context: GameContext::fresh(),
+            node: 0,
             ..self.transaction_copy()
         }
     }

@@ -1,10 +1,10 @@
 ---
 id: MSH-241
 title: Replace Unclear Uses of Native in Names
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-11-25T10:40:00Z'
-updated_date: '2026-11-26T11:46:00Z'
+updated_date: '2026-11-26T11:55:00Z'
 labels:
   - cleanup
   - model:medium
@@ -34,5 +34,5 @@ John (2026-11-25): rename things so that unclear uses of "native" are gone. The 
 <!-- SECTION:NOTES:BEGIN -->
 Consolidation order approved by John, 2026-11-26: MSH-243 completes the structural cleanup prerequisites. MSH-266 follows this task for the final all-six-game fixture regeneration and reproducibility check. This task still updates current callers and regenerates changed fixtures as its criteria require.
 
-Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Status is To Do while an unfinished dependency blocks work; otherwise Ready. No implementation has started.
+Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
 <!-- SECTION:NOTES:END -->

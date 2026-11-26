@@ -4,7 +4,7 @@ title: One Perft for All Games
 status: Ready
 assignee: []
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-26T11:46:00Z'
+updated_date: '2026-11-26T11:55:00Z'
 labels:
   - core
   - console
@@ -33,5 +33,5 @@ Each game has its own perft and divide API in mshogi-core: chess/perft.rs (u32 d
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
-Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Status is To Do while an unfinished dependency blocks work; otherwise Ready. No implementation has started.
+Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
 <!-- SECTION:NOTES:END -->

@@ -1,10 +1,10 @@
 ---
 id: MSH-253
 title: Shared Record Codec and Incremental Engine Sessions
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-26T11:46:00Z'
+updated_date: '2026-11-26T11:55:00Z'
 labels:
   - core
   - persistence
@@ -46,5 +46,5 @@ MSH-222 (2026-11-26), finding in this scope: EngineGame (mshogi-engine adapter.r
 
 John approved consolidation on 2026-11-26: this task retains the full scope of MSH-253 (One Compact Record Codec), MSH-260 (Incremental Engine Sessions for Every Game). The shared codec provides the record suffix used by incremental engine sessions; verify both ends together. Agent labels are model:large, effort:high for the combined scope. Absorbed task records are archived, not completed; all implementation criteria remain unchecked.
 
-Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Status is To Do while an unfinished dependency blocks work; otherwise Ready. No implementation has started.
+Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
 <!-- SECTION:NOTES:END -->

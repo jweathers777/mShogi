@@ -73,13 +73,16 @@ must be able to start the next task without chat history and without help.
 
 ## Checks
 
-Every change:
+For code changes:
 
 ```bash
 cargo fmt --all -- --check
 cargo clippy --workspace --all-targets --locked -- -D warnings
 cargo test --workspace --locked
 ```
+
+For documentation-only or Backlog-only changes, validate the changed content,
+links and task structure. Do not run product builds or tests for these changes.
 
 Also, by type of change:
 
@@ -143,9 +146,14 @@ checkpoint, not only at the end.
   criteria that say when it is done. Add notes only when they help the next
   session.
 - Add a dependency only on a task that directly blocks it.
-- Status To Do means the task waits for a dependency or for John's choice.
-  Ready means an agent may start it now. When John defers or releases a task,
-  set the status to match.
+- Status To Do means the task is not yet approved or defined well enough for
+  implementation, including work waiting for John's choice.
+- Ready means the task is approved for implementation. Keep it Ready when an
+  unfinished dependency blocks it. Select tasks whose dependencies are satisfied
+  with `backlog task list --status Ready --ready --plain`. Completing a dependency
+  makes a Ready task eligible without a manual status change.
+- When John defers or releases a task, set the status to match. Do not use
+  To Do solely because a dependency is unfinished.
 - When a decision of John's replaces a task's goal or acceptance criteria,
   rewrite them to match at once. Do not leave obsolete criteria that no one
   can check.

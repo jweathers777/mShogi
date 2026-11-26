@@ -1,10 +1,10 @@
 ---
 id: MSH-252
 title: Shared Game History and Xiangqi Replay
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-26T11:46:00Z'
+updated_date: '2026-11-26T11:55:00Z'
 labels:
   - core
   - refactor
@@ -55,5 +55,5 @@ MSH-250 (Token-Only Native Request Context), 2026-11-26, changed Xiangqi: reques
 
 John approved consolidation on 2026-11-26: this task retains the full scope of MSH-252 (One Native Game History Owner), MSH-227 (Xiangqi Record Replay Speed). History ownership and Xiangqi replay copies change the same mechanism; retain before-and-after replay evidence in the shared refactor. Agent labels are model:large, effort:xhigh for the combined scope. Absorbed task records are archived, not completed; all implementation criteria remain unchecked.
 
-Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Status is To Do while an unfinished dependency blocks work; otherwise Ready. No implementation has started.
+Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
 <!-- SECTION:NOTES:END -->

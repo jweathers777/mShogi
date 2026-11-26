@@ -1,10 +1,10 @@
 ---
 id: MSH-243
 title: Game-Independent Strength Tool
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-11-25T11:47:00Z'
-updated_date: '2026-11-26T11:46:00Z'
+updated_date: '2026-11-26T11:55:00Z'
 labels:
   - cleanup
   - tooling
@@ -49,5 +49,5 @@ John, 2026-11-25: part of the cleanup; no longer waits for the Tenjiku release. 
 
 Consolidation order approved by John, 2026-11-26: dependency fields record the structural cleanup prerequisites. MSH-263 now includes the duration and game-length budget work. MSH-266 now includes final fixture regeneration and therefore follows MSH-241, rather than blocking this strength-tool task. This supersedes the earlier blanket instruction to wait for every MSH-209 follow-up; no strength-tool scope is removed.
 
-Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Status is To Do while an unfinished dependency blocks work; otherwise Ready. No implementation has started.
+Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
 <!-- SECTION:NOTES:END -->

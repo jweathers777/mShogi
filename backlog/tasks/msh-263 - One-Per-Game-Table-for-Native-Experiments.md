@@ -1,10 +1,10 @@
 ---
 id: MSH-263
 title: Shared Experiment Dispatch and Operator Budgets
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-26T11:46:00Z'
+updated_date: '2026-11-26T11:55:00Z'
 labels:
   - runner
   - refactor
@@ -59,5 +59,5 @@ John, 2026-11-26, answer to the question above: Yes, as recommended.
 
 John approved consolidation on 2026-11-26: this task retains the full scope of MSH-263 (One Per-Game Table for Native Experiments), MSH-238 (Remove the fixed ten-minute experiment cap), MSH-273 (Runner Game Length Limits). Experiment dispatch, configuration, execution, replay and operator-selected budgets overlap; apply the existing approved budget decisions together. Agent labels are model:large, effort:high for the combined scope. Absorbed task records are archived, not completed; all implementation criteria remain unchecked.
 
-Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Status is To Do while an unfinished dependency blocks work; otherwise Ready. No implementation has started.
+Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
 <!-- SECTION:NOTES:END -->

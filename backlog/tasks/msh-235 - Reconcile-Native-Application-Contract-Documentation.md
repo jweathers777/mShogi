@@ -1,10 +1,10 @@
 ---
 id: MSH-235
 title: Reconcile and Prune Durable Documentation
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-11-23T17:53:00Z'
-updated_date: '2026-11-26T11:46:00Z'
+updated_date: '2026-11-26T11:55:00Z'
 labels:
   - documentation
   - model:medium
@@ -38,5 +38,5 @@ MSH-209 (2026-11-25): an earlier bulk edit removed the space between a word and 
 
 Consolidation order approved by John, 2026-11-26: run after MSH-266 (Desktop Scripts and Reproducible Fixtures), which follows MSH-241 and all structural cleanup. Reconcile documents only after final names and generated fixtures are settled.
 
-Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Status is To Do while an unfinished dependency blocks work; otherwise Ready. No implementation has started.
+Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
 <!-- SECTION:NOTES:END -->

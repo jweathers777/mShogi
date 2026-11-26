@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T21:55:00Z'
+updated_date: '2026-11-26T22:04:00Z'
 labels:
   - search
   - refactor
@@ -66,4 +66,6 @@ The full clean retry (match4, 93de32f vs 7c15e68, c3-standard-4, same original s
 Whole-search timing for Tori at depth 7 on 19 real positions (20,60,100,140-ply prefixes when available from both games, seeds 1..3): five randomized interleaved runs per engine, 285 searches. Sum of per-root median times 0.7536 s predecessor, 0.7769 s full linear, 0.7669 s full filtered; nodes 442564/442557/442557. Only one position changed node count. The shorter cutoff was fastest and retained stronger Tori play in the SPRT. Select it for the next candidate. Estimate through all finished jobs about US$3.35 (task-count times Batch runtime); next match ceiling US$2.42 plus small build/check cost puts task under US$6.5 estimated compute. Next: implement and test common short bound on branch codex/msh-259-repetition. Counts and profiles in gs://mshogi-experiments-216675633801/runs/msh-259/verification2/speed.json.
 
 Common capture/drop candidate 47de96f. The shorter bound is a search approximation; a new hand-derived Shogi cycle verifies exact native fourfold adjudication at ply 18 despite the search cutoff. Focused shared-window, null/perpetual-check, Tori history-restoration and native fourfold tests passed. Fresh review found one stale Shogi-guide sentence, corrected; no implementation defect. Full verification is underway. Shogi blunders use depth 6 on all 226 rows; both engines see the same fixed catalog openings without random extra plies.
+
+Short candidate 47de96f vs 7c15e68: all 154 fixed-depth signatures matched, including 38 real Tori positions, 36 Chess, 28 Xiangqi, 28 Chu and 24 Tenjiku. Both review follow-ups are in the branch. The early Shogi blunder probe hit the default 300k nodes before depth 6; all 226 rows rerun with explicit engine maximum 5M. The first broad check flagged a private-search test expecting the former across-drop cycle shortcut. In 678b97a all native legal-move, board, identity, hash and undo assertions remain, the private search callback is tested against its new bound, and an exact native fourfold at ply 18 is tested on that same three-Gold fixture, with both reconstructed and played search histories. Both focused checks passed. Current jobs msh259-final-check, msh259-shogi-match, msh259-shogi-blunders. Match native report confirms 5000ms+100ms and identical depth 64/5M caps. Continue from branch codex/msh-259-repetition.
 <!-- SECTION:NOTES:END -->

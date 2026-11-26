@@ -1,10 +1,11 @@
 ---
 id: MSH-259
 title: One Search Repetition Scan
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T11:55:00Z'
+updated_date: '2026-11-26T19:27:00Z'
 labels:
   - search
   - refactor
@@ -33,4 +34,6 @@ Each search position scans its key history in rule_score with its own loop: Shog
 
 <!-- SECTION:NOTES:BEGIN -->
 Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
+
+Claimed on codex/msh-259-repetition. Frozen predecessor 7c15e68. Compare whole-game and irreversible-move bounds before selecting the shared drop-game scan. Next: measure bounds, consolidate, and verify all six games.
 <!-- SECTION:NOTES:END -->

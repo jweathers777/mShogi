@@ -21,7 +21,7 @@ pub use game::{
 use mshogi_core::chess::{Action, ChessOutcome, ClaimRequest, Color, DrawClaim};
 use mshogi_search::search::{SearchChoice, SearchDecision, SearchResult, SearchStatus};
 use serde::{Deserialize, Serialize};
-pub use server::{ShogiSearchSession, XiangqiSearchSession, serve, serve_once};
+pub use server::{serve, serve_once};
 pub use shared::*;
 
 /// Current internal protocol version.

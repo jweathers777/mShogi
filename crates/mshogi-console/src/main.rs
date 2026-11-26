@@ -6,6 +6,8 @@ use mshogi_core::CHESS_POSITION_PROFILE_ID;
 
 mod chu_session;
 mod diagnostics;
+mod input;
+mod protocol;
 mod record_io;
 mod session;
 mod shogi_session;
@@ -149,7 +151,7 @@ Usage: mshogi [--game chess|shogi|xiangqi|tori|chu|tenjiku] [--profile adams|mul
   profile        Show the selected native rules profile and actual coverage
   shell          Read {game} commands from standard input, one per line
   uci            Selected Chess UCI or Xiangqi UCI0-9 adapter (rejects shogi)
-  usi            Untimed bounded USI shogi adapter (bare usi selects shogi)
+  usi            Time- or work-limited USI shogi adapter (bare usi selects shogi)
   internal-search  Structured native search, one request line per search until end of input; request supplies game, no --game
 
 Use 'mshogi --game {game}{profile_option} shell' and type 'help' for native commands.
@@ -201,7 +203,7 @@ fn main() -> ExitCode {
                 println!("Target rules profile: {}", mshogi_core::xiangqi::PROFILE_ID);
                 println!("Edition: {}", mshogi_core::xiangqi::PROFILE_EDITION);
                 println!(
-                    "Coverage: untimed native intersection board, complete legal actions/undo, known history/WXF warnings/claims/conclusions, strict canonical envelopes, local perft/divide 0..3, sound fast no-win assessment (Unknown is not a result). Bounded native engine-turn and read-only move-analysis execution are available through internal-search; untimed bounded Pikafish-compatible UCI0-9 is available via --game xiangqi uci."
+                    "Coverage: untimed native intersection board, complete legal actions/undo, known history/WXF warnings/claims/conclusions, strict canonical envelopes, local perft/divide 0..3, sound fast no-win assessment (Unknown is not a result). Bounded native engine-turn and read-only move-analysis execution are available through internal-search; time- or work-limited Pikafish-compatible UCI0-9 is available via --game xiangqi uci."
                 );
             }
             Game::Tori => {
@@ -231,13 +233,13 @@ fn main() -> ExitCode {
         "uci" => {
             return match game {
                 Game::Chess => uci::run(),
-                Game::Xiangqi => xiangqi_uci::run(),
+                Game::Xiangqi => protocol::run::<mshogi_engine::game::Xiangqi>(),
                 Game::Shogi | Game::Tori | Game::Chu | Game::Tenjiku => {
                     unreachable!("validated protocol")
                 }
             };
         }
-        "usi" => return usi::run(),
+        "usi" => return protocol::run::<mshogi_engine::game::Shogi>(),
         "internal-search" => {
             if let Err(error) = mshogi_engine::serve(io::stdin().lock(), io::stdout().lock()) {
                 eprintln!("internal search failed: {error}");

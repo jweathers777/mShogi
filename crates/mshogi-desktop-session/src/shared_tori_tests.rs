@@ -1,5 +1,6 @@
 //! Actual sole-controller acceptance, distinct from native rules and GUI acceptance.
 use super::*;
+use mshogi_engine::EngineGame;
 use serde_json::{Value, json};
 use std::{fs, time::Duration};
 fn face(s: &str) -> t::Face {
@@ -1142,7 +1143,7 @@ fn actual_engine_turns_both_assignments_and_exact_historical_analysis_have_separ
         }
         let pending = current(&c).pending.clone().unwrap();
         assert!(matches!(pending.purpose, ExecutionPurpose::EngineTurn {}));
-        assert_eq!(pending.limits, mshogi_engine::TORI_PLAY_LIMITS);
+        assert_eq!(pending.limits, mshogi_engine::game::Tori::PLAY_LIMITS);
         let before = native(&c);
         let result = searched(pending.clone());
         assert!(matches!(
@@ -1247,7 +1248,11 @@ fn real_completed_choice_cancel_replace_and_worker_refusal_cannot_mutate_current
     send(&mut c, SessionOperation::Resume {}).unwrap();
     let mut bad = searched(current(&c).pending.clone().unwrap());
     if let ExecutionResult::Tori {
-        result: mshogi_engine::ToriResult::Choice { action, telemetry },
+        result:
+            mshogi_engine::ToriResult::Choice {
+                choice: action,
+                telemetry,
+            },
     } = &mut bad.result
     {
         // A line that the native game refuses after its first action.

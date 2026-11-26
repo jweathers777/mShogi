@@ -51,7 +51,11 @@ fn real_subprocess_preserves_tori_context_supplies_native_action_and_roundtrips_
         panic!("expected actual Tori result")
     };
     result.validate(&game).unwrap();
-    let ToriResult::Choice { action, telemetry } = result else {
+    let ToriResult::Choice {
+        choice: action,
+        telemetry,
+    } = result
+    else {
         panic!("complete depth 1 must select a legal action")
     };
     assert!(game.legal_actions().contains(action));

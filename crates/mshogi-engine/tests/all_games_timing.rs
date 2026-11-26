@@ -172,19 +172,19 @@ fn played(record: &CanonicalRecord, response: &ExecutionResponse) -> CanonicalRe
         (
             CanonicalRecord::Tori(record),
             ExecutionResult::Tori {
-                result: ToriResult::Choice { action, .. },
+                result: ToriResult::Choice { choice: action, .. },
             },
         ) => native!(record, action, tori, tori),
         (
             CanonicalRecord::Chu(record),
             ExecutionResult::Chu {
-                result: ChuResult::Choice { action, .. },
+                result: ChuResult::Choice { choice: action, .. },
             },
         ) => native!(record, action, chu, chu),
         (
             CanonicalRecord::Tenjiku(record),
             ExecutionResult::Tenjiku {
-                result: TenjikuResult::Choice { action, .. },
+                result: TenjikuResult::Choice { choice: action, .. },
             },
         ) => native!(record, action, tenjiku, tenjiku),
         _ => panic!("expected a native move: {:?}", response.observation.result),

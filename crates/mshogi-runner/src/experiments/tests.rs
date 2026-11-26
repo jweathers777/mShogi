@@ -304,10 +304,6 @@ fn shogi_and_xiangqi_reject_illegal_later_pv_commands_atomically() {
     let invalid = XiangqiChoice::Move {
         action: "a1a2".parse().unwrap(),
     };
-    let no_win_assessment = match &root.record {
-        mshogi_core::native::CanonicalRecord::Xiangqi(r) => r.no_win_assessment().clone(),
-        _ => unreachable!(),
-    };
     let result = ExecutionResult::Xiangqi {
         result: XiangqiResult::Choice {
             choice: first,
@@ -319,8 +315,7 @@ fn shogi_and_xiangqi_reject_illegal_later_pv_commands_atomically() {
                 completed_depth: 2,
                 nodes: 100,
                 principal_variation: vec![first, invalid],
-                status: XiangqiStop::Complete,
-                no_win_assessment,
+                status: StopReason::Complete,
             },
         },
     };

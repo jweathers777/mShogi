@@ -4,6 +4,7 @@ title: One Search Root Adapter
 status: Ready
 assignee: []
 created_date: '2026-11-25T12:22:00Z'
+updated_date: '2026-11-25T23:11:00Z'
 labels:
   - search
   - refactor
@@ -27,3 +28,9 @@ crates/mshogi-search has one root adapter per game: chu.rs, tenjiku.rs, tori.rs,
 - [ ] #2 Search results, node counts and best moves at fixed depth are identical before and after (the fixed-depth comparison is recorded, so no game test is needed); workspace checks pass.
 - [ ] #3 Production line counts before and after are recorded.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+MSH-222 (2026-11-26), finding in this scope: mshogi-engine/src/game.rs converts each search module's SearchResult with a search! macro (Shogi, Tori, Chu, Tenjiku) and a separate Xiangqi impl; StopReason has From impls for search::SearchStatus and xiangqi::Status. One generic search SearchResult (decision, status) lets these become one conversion. The engine trait EngineGame reads EVALUATOR_ID, SEARCH_ID, WIN_SCORE, MAX_DEPTH, MAX_NODES, MAX_LINE, DEFAULT_LIMITS, terminal_score and new_engine from each search module; Limits::valid is the same in all five and the engine now checks it once (EngineGame::valid_limits).
+<!-- SECTION:NOTES:END -->

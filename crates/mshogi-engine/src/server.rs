@@ -1,11 +1,19 @@
-use crate::*;
-use mshogi_core::chess::AdjudicatedGame;
+use crate::{adapter::for_game, *};
+use mshogi_core::{
+    chess::AdjudicatedGame,
+    native::{CanonicalRecord, GameKind, NativeSide},
+};
 use mshogi_search::{
-    alphabeta::timing::{RequestTime, TimeBudget},
+    alphabeta::{
+        Searcher,
+        timing::{RequestTime, TimeBudget},
+    },
     coordination::SearchCoordinator,
     search::SearchLimits,
 };
 use std::{
+    any::Any,
+    convert::Infallible,
     io::{self, BufRead, Write},
     thread,
     time::Duration,
@@ -15,21 +23,40 @@ use std::{
 ///
 /// The desktop keeps one engine process and sends one request for each
 /// search. The state lets a timed search use the transposition table
-/// and move statistics of the earlier moves of the same game.
+/// and move statistics of the earlier moves of the same game. Only the
+/// engine of one game is kept; a timed request for another game starts a
+/// new session.
 #[derive(Default)]
 pub(crate) struct Session {
-    kind: Option<mshogi_core::native::GameKind>,
-    chess: Slot<SearchCoordinator>,
-    shogi: Slot<mshogi_search::shogi::Engine>,
-    xiangqi: Slot<mshogi_search::xiangqi::Engine>,
-    tori: Slot<mshogi_search::tori::Engine>,
-    chu: Slot<mshogi_search::chu::Engine>,
-    tenjiku: Slot<mshogi_search::tenjiku::Engine>,
+    kind: Option<GameKind>,
+    engine: Slot<Box<dyn Reset>>,
+}
+impl Session {
+    /// Keep only the engine of `kind`.
+    fn select(&mut self, kind: GameKind) {
+        if self.kind != Some(kind) {
+            *self = Self::default();
+            self.kind = Some(kind);
+        }
+    }
+}
+/// The engine of the session game.
+fn session_engine<T: Reset>(engine: &mut Box<dyn Reset>) -> &mut T {
+    let engine: &mut dyn Any = engine.as_mut();
+    engine.downcast_mut().expect("engine of the session game")
+}
+/// New engine of a game, as the session keeps it.
+fn new_engine<G: EngineGame>() -> Result<Box<dyn Reset>, Infallible> {
+    Ok(Box::new(G::new_engine()))
+}
+/// `current` (the record of `game`) extends the record of the kept engine.
+fn extends<G: EngineGame>(current: &G::Record, game: &G::Game, last: &CanonicalRecord) -> bool {
+    G::record(last).is_some_and(|earlier| G::extends(current, game, earlier))
 }
 /// One lifecycle rule for every game. Fixed-limit requests do not touch this slot.
 pub(crate) struct Slot<T> {
     kept: Option<T>,
-    record: Option<mshogi_core::native::CanonicalRecord>,
+    record: Option<CanonicalRecord>,
 }
 impl<T> Default for Slot<T> {
     fn default() -> Self {
@@ -39,15 +66,20 @@ impl<T> Default for Slot<T> {
         }
     }
 }
-pub(crate) trait Reset {
+pub(crate) trait Reset: Any {
     fn reset(&mut self);
+}
+impl Reset for Box<dyn Reset> {
+    fn reset(&mut self) {
+        self.as_mut().reset();
+    }
 }
 impl Reset for SearchCoordinator {
     fn reset(&mut self) {
         self.new_game();
     }
 }
-impl<P: mshogi_search::alphabeta::SearchPosition> Reset for mshogi_search::alphabeta::Searcher<P> {
+impl<P: mshogi_search::alphabeta::SearchPosition + 'static> Reset for Searcher<P> {
     fn reset(&mut self) {
         self.clear();
     }
@@ -56,35 +88,21 @@ impl<T: Reset> Slot<T> {
     fn acquire<E>(
         &mut self,
         context: &ExecutionContext,
-        prefix: impl FnOnce(usize) -> Option<mshogi_core::native::CanonicalRecord>,
-        create: impl FnOnce() -> Result<T, E>,
-    ) -> Result<EngineState<'_, T>, E> {
-        self.acquire_record(
-            &context.game,
-            context.limits.time_ms.is_some(),
-            prefix,
-            create,
-        )
-    }
-    pub(crate) fn acquire_record<E>(
-        &mut self,
-        record: &mshogi_core::native::CanonicalRecord,
-        timed: bool,
-        prefix: impl FnOnce(usize) -> Option<mshogi_core::native::CanonicalRecord>,
+        prefix: impl FnOnce(usize) -> Option<CanonicalRecord>,
         create: impl FnOnce() -> Result<T, E>,
     ) -> Result<EngineState<'_, T>, E> {
         self.acquire_relation(
-            record,
-            timed,
+            &context.game,
+            context.limits.time_ms.is_some(),
             |last| prefix(last.event_count()).as_ref() == Some(last),
             create,
         )
     }
     pub(crate) fn acquire_relation<E>(
         &mut self,
-        record: &mshogi_core::native::CanonicalRecord,
+        record: &CanonicalRecord,
         timed: bool,
-        is_prefix: impl FnOnce(&mshogi_core::native::CanonicalRecord) -> bool,
+        is_prefix: impl FnOnce(&CanonicalRecord) -> bool,
         create: impl FnOnce() -> Result<T, E>,
     ) -> Result<EngineState<'_, T>, E> {
         if !timed {
@@ -217,18 +235,14 @@ fn dispatch_request(
 ) -> io::Result<()> {
     if let Ok(request) = serde_json::from_slice::<crate::incremental::Request>(bytes) {
         let response = match request.game_kind() {
-            mshogi_core::native::GameKind::Tori => {
-                native.tori.execute(request, |game, reset, limits, time| {
-                    execute_incremental_tori(session, game, reset, limits, time, None)
-                })
-            }
-            mshogi_core::native::GameKind::Chu => {
-                native.chu.execute(request, |game, reset, limits, time| {
-                    execute_incremental_chu(session, game, reset, limits, time, None)
-                })
-            }
+            GameKind::Tori => native.tori.execute(request, |game, reset, limits, time| {
+                execute_retained::<game::Tori>(session, game, reset, limits, time, None)
+            }),
+            GameKind::Chu => native.chu.execute(request, |game, reset, limits, time| {
+                execute_retained::<game::Chu>(session, game, reset, limits, time, None)
+            }),
             _ => native.shogi.execute(request, |game, reset, limits, time| {
-                execute_incremental_shogi(session, game, reset, limits, time, None)
+                execute_retained::<game::Shogi>(session, game, reset, limits, time, None)
             }),
         };
         return write_response(output, &response.bind(bytes));
@@ -236,19 +250,15 @@ fn dispatch_request(
     let request: ExecutionRequest = serde_json::from_slice(bytes).map_err(io::Error::other)?;
     if crate::incremental::Client::supports(&request) {
         let record = Some(&request.context.game);
-        let response = match &request.context.game {
-            mshogi_core::native::CanonicalRecord::Tori(_) => {
-                native.tori.begin(&request, |game, reset, limits, time| {
-                    execute_incremental_tori(session, game, reset, limits, time, record)
-                })
-            }
-            mshogi_core::native::CanonicalRecord::Chu(_) => {
-                native.chu.begin(&request, |game, reset, limits, time| {
-                    execute_incremental_chu(session, game, reset, limits, time, record)
-                })
-            }
+        let response = match request.context.game.game_kind() {
+            GameKind::Tori => native.tori.begin(&request, |game, reset, limits, time| {
+                execute_retained::<game::Tori>(session, game, reset, limits, time, record)
+            }),
+            GameKind::Chu => native.chu.begin(&request, |game, reset, limits, time| {
+                execute_retained::<game::Chu>(session, game, reset, limits, time, record)
+            }),
             _ => native.shogi.begin(&request, |game, reset, limits, time| {
-                execute_incremental_shogi(session, game, reset, limits, time, record)
+                execute_retained::<game::Shogi>(session, game, reset, limits, time, record)
             }),
         };
         return write_response(output, &response.bind(bytes));
@@ -261,43 +271,80 @@ fn dispatch_request(
         &crate::incremental::Response::new(bytes, request.execute(session)),
     )
 }
-// The games supply their native types; retained engine lifecycle is identical.
-macro_rules! incremental_engine {
-    ($function:ident, $game:ident, $variant:ident, $result:ident) => {
-        fn $function(
-            session: &mut Session,
-            game: &mshogi_core::$game::Game,
-            reset: bool,
-            limits: WorkLimits,
-            time: &RequestTime,
-            record: Option<&mshogi_core::native::CanonicalRecord>,
-        ) -> ExecutionResult {
-            use mshogi_core::native::{CanonicalRecord,GameKind};
-            if session.kind != Some(GameKind::$variant) {
-                *session = Session::default();
-                session.kind = Some(GameKind::$variant);
-            }
-            let create = || Ok::<_,std::convert::Infallible>(mshogi_search::$game::new_engine());
-            let mut engine = match record {
-                Some(record) => session.$game.acquire_relation(record,true,
-                    |last| matches!((record,last),(CanonicalRecord::$variant(current),CanonicalRecord::$variant(old)) if current.has_prefix(old)),create),
-                None => session.$game.acquire_incremental(reset,create),
-            }.expect("infallible engine allocation");
-            match mshogi_search::$game::search_with_state(game,
-                mshogi_search::$game::Limits {depth:limits.depth,nodes:limits.nodes},
-                time.remaining(),&mut engine,||false) {
-                Ok(result) => ExecutionResult::$variant {result:$result::searched(result)},
-                Err(error) => ExecutionResult::failure(FailureKind::Search,error),
-            }
-        }
-    };
+
+/// Search a game that the incremental session admitted. A full first request
+/// supplies its record; a suffix supplies only whether the session was reset.
+fn execute_retained<G: EngineGame>(
+    session: &mut Session,
+    game: &G::Game,
+    reset: bool,
+    limits: WorkLimits,
+    time: &RequestTime,
+    record: Option<&CanonicalRecord>,
+) -> ExecutionResult {
+    session.select(G::KIND);
+    let mut engine = match record {
+        Some(record) => session.engine.acquire_relation(
+            record,
+            true,
+            |last| G::record(record).is_some_and(|current| extends::<G>(current, game, last)),
+            new_engine::<G>,
+        ),
+        None => session.engine.acquire_incremental(reset, new_engine::<G>),
+    }
+    .expect("infallible engine allocation");
+    search::<G>(game, limits, time, session_engine(&mut engine))
 }
-incremental_engine!(execute_incremental_shogi, shogi, Shogi, ShogiResult);
-incremental_engine!(execute_incremental_tori, tori, Tori, ToriResult);
-incremental_engine!(execute_incremental_chu, chu, Chu, ChuResult);
+
+pub(crate) fn execute(context: &ExecutionContext, session: &mut Session) -> ExecutionResult {
+    let time = RequestTime::new(context.limits.time_ms.map(TimeBudget::from_hard_ms));
+    // Untimed probes leave the timed session alone.
+    let kind = context.game.game_kind();
+    if context.limits.time_ms.is_some() {
+        session.select(kind);
+    }
+    for_game!(kind, G => execute_game::<G>(context, session, &time),
+        chess => ExecutionResult::Chess { result: execute_chess(context, session) })
+}
+
+/// Replay the full record and search it. A timed request keeps the engine
+/// while each request extends the record of the previous one.
+fn execute_game<G: EngineGame>(
+    context: &ExecutionContext,
+    session: &mut Session,
+    time: &RequestTime,
+) -> ExecutionResult {
+    let record = G::record(&context.game).expect("request dispatched by game kind");
+    let game = match G::to_game(record) {
+        Ok(game) => game,
+        Err(error) => return ExecutionResult::failure(FailureKind::InvalidRequest, error),
+    };
+    let mut engine = session
+        .engine
+        .acquire_relation(
+            &context.game,
+            context.limits.time_ms.is_some(),
+            |last| extends::<G>(record, &game, last),
+            new_engine::<G>,
+        )
+        .expect("infallible engine allocation");
+    search::<G>(&game, context.limits, time, session_engine(&mut engine))
+}
+
+fn search<G: EngineGame>(
+    game: &G::Game,
+    limits: WorkLimits,
+    time: &RequestTime,
+    engine: &mut Searcher<G::Position>,
+) -> ExecutionResult {
+    match G::search(game, limits, time.remaining(), engine) {
+        Ok(result) => G::wrap(result),
+        Err(error) => ExecutionResult::failure(FailureKind::Search, error),
+    }
+}
 
 fn execute_chess(context: &ExecutionContext, session: &mut Session) -> ChessResult {
-    let mshogi_core::native::CanonicalRecord::Chess(record) = &context.game else {
+    let CanonicalRecord::Chess(record) = &context.game else {
         unreachable!()
     };
     let game = match AdjudicatedGame::replay_record(record) {
@@ -306,26 +353,22 @@ fn execute_chess(context: &ExecutionContext, session: &mut Session) -> ChessResu
     };
     if let ExecutionPurpose::MoveAnalysis { target } = &context.purpose
         && (target.board_ply != game.history().ply_count() as u64
-            || target.turn
-                != mshogi_core::native::NativeSide::Chess(game.position().side_to_move()))
+            || target.turn != NativeSide::Chess(game.position().side_to_move()))
     {
         return ChessResult::failure(
             FailureKind::InvalidRequest,
             "analysis target provenance disagrees with its exact history",
         );
     }
-    let coordinator = match session.chess.acquire(
+    let mut coordinator = match session.engine.acquire(
         context,
-        |n| {
-            record
-                .prefix(n)
-                .map(mshogi_core::native::CanonicalRecord::chess)
-        },
-        SearchCoordinator::new,
+        |n| record.prefix(n).map(CanonicalRecord::chess),
+        || SearchCoordinator::new().map(|c| Box::new(c) as Box<dyn Reset>),
     ) {
         Ok(coordinator) => coordinator,
         Err(error) => return ChessResult::failure(FailureKind::Search, error),
     };
+    let coordinator: &mut SearchCoordinator = session_engine(&mut coordinator);
     if let Err(error) = coordinator.submit_with_time(
         &game,
         context.session_version,
@@ -356,268 +399,92 @@ fn execute_chess(context: &ExecutionContext, session: &mut Session) -> ChessResu
     }
 }
 
-pub(crate) fn execute(context: &ExecutionContext, session: &mut Session) -> ExecutionResult {
-    let time = RequestTime::new(context.limits.time_ms.map(TimeBudget::from_hard_ms));
-    // Only one game's tables are retained. Untimed probes leave the timed session alone.
-    if context.limits.time_ms.is_some() && session.kind != Some(context.game.game_kind()) {
-        *session = Session::default();
-        session.kind = Some(context.game.game_kind());
-    }
-    match context.game.game_kind() {
-        mshogi_core::native::GameKind::Tenjiku => execute_tenjiku(context, session, &time),
-        mshogi_core::native::GameKind::Chu => execute_chu(context, session, &time),
-        mshogi_core::native::GameKind::Tori => execute_tori(context, session, &time),
-        mshogi_core::native::GameKind::Xiangqi => execute_xiangqi(context, session, &time),
-        mshogi_core::native::GameKind::Shogi => execute_shogi(context, session, &time),
-        mshogi_core::native::GameKind::Chess => ExecutionResult::Chess {
-            result: execute_chess(context, session),
-        },
+/// Shogi front-end access to the same timed history-prefix policy as the internal protocol.
+/// Fixed-work searches use fresh state and leave the retained timed state alone.
+#[derive(Default)]
+pub struct ShogiSearchSession {
+    slot: Slot<mshogi_search::shogi::Engine>,
+}
+impl ShogiSearchSession {
+    /// Search one native history with optional elapsed-time control.
+    pub fn search(
+        &mut self,
+        game: &mshogi_core::shogi::Game,
+        limits: mshogi_search::shogi::Limits,
+        time: Option<TimeBudget>,
+        stop: impl FnMut() -> bool,
+    ) -> Result<mshogi_search::shogi::SearchResult, mshogi_search::shogi::SearchError> {
+        let timing = RequestTime::new(time);
+        let record = mshogi_core::shogi::GameRecord::from_game(game);
+        let mut engine = self
+            .slot
+            .acquire_relation(
+                &CanonicalRecord::shogi(record.clone()),
+                time.is_some(),
+                |last| matches!(last, CanonicalRecord::Shogi(previous) if record.has_prefix(previous)),
+                || Ok::<_, Infallible>(mshogi_search::shogi::new_engine()),
+            )
+            .expect("infallible engine allocation");
+        mshogi_search::shogi::search_with_state(game, limits, timing.remaining(), &mut engine, stop)
     }
 }
 
-fn execute_shogi(
-    context: &ExecutionContext,
-    session: &mut Session,
-    time: &RequestTime,
-) -> ExecutionResult {
-    let mshogi_core::native::CanonicalRecord::Shogi(record) = &context.game else {
-        unreachable!()
-    };
-    let game = match record.to_game() {
-        Ok(game) => game,
-        Err(error) => return ExecutionResult::failure(FailureKind::InvalidRequest, error),
-    };
-    if let ExecutionPurpose::MoveAnalysis { target } = &context.purpose
-        && (target.turn != mshogi_core::native::NativeSide::Shogi(game.position().side_to_move())
-            || target.event_index != game.events().len() as u64
-            || target.board_ply != record.known_board_actions() as u64)
-    {
-        return ExecutionResult::failure(
-            FailureKind::InvalidRequest,
-            "shogi analysis target disagrees with exact native history and side",
-        );
-    }
-    let mut engine = session
-        .shogi
-        .acquire_relation(
-            &context.game,
-            context.limits.time_ms.is_some(),
-            |last| matches!(last, mshogi_core::native::CanonicalRecord::Shogi(previous) if record.has_prefix(previous)),
-            || Ok::<_, std::convert::Infallible>(mshogi_search::shogi::new_engine()),
-        )
-        .expect("infallible engine allocation");
-    match mshogi_search::shogi::search_with_state(
-        &game,
-        mshogi_search::shogi::Limits {
-            depth: context.limits.depth,
-            nodes: context.limits.nodes,
-        },
-        time.remaining(),
-        &mut engine,
-        || false,
-    ) {
-        Ok(result) => ExecutionResult::Shogi {
-            result: ShogiResult::searched(result),
-        },
-        Err(error) => ExecutionResult::failure(FailureKind::Search, error),
-    }
+/// Xiangqi front-end access to the shared timed history-prefix policy.
+/// Timed searches keep the table while each request extends the previous
+/// native history (same root, policy and event prefix); fixed-work searches
+/// use fresh state and leave the kept state alone.
+#[derive(Default)]
+pub struct XiangqiSearchSession {
+    slot: Slot<mshogi_search::xiangqi::Engine>,
+    /// Table size in megabytes for timed searches; 0 means the default.
+    table_mb: usize,
+    last: Option<(
+        mshogi_core::xiangqi::PositionRoot,
+        mshogi_core::xiangqi::ClaimPolicy,
+        Vec<mshogi_core::xiangqi::GameEvent>,
+    )>,
 }
-
-fn execute_xiangqi(
-    context: &ExecutionContext,
-    session: &mut Session,
-    time: &RequestTime,
-) -> ExecutionResult {
-    let mshogi_core::native::CanonicalRecord::Xiangqi(record) = &context.game else {
-        unreachable!()
-    };
-    let game = match record.to_game() {
-        Ok(game) => game,
-        Err(error) => return ExecutionResult::failure(FailureKind::InvalidRequest, error),
-    };
-    let mut engine = session
-        .xiangqi
-        .acquire(
-            context,
-            |n| {
-                game.committed_prefix(n)
-                    .ok()
-                    .and_then(|g| mshogi_core::xiangqi::GameRecord::from_game(&g).ok())
-                    .map(mshogi_core::native::CanonicalRecord::xiangqi)
-            },
-            || Ok::<_, std::convert::Infallible>(mshogi_search::xiangqi::new_engine()),
-        )
-        .expect("infallible engine allocation");
-    match mshogi_search::xiangqi::search_with_state(
-        &game,
-        mshogi_search::xiangqi::Limits {
-            depth: context.limits.depth,
-            nodes: context.limits.nodes,
-        },
-        time.remaining(),
-        &mut engine,
-        || false,
-    ) {
-        Ok(result) => ExecutionResult::Xiangqi {
-            result: XiangqiResult::searched(result),
-        },
-        Err(error) => ExecutionResult::failure(FailureKind::Search, error),
+impl XiangqiSearchSession {
+    /// Session whose timed searches use a table of `megabytes`.
+    pub fn with_table(megabytes: usize) -> Self {
+        Self {
+            table_mb: megabytes,
+            ..Self::default()
+        }
     }
-}
-
-fn execute_tori(
-    context: &ExecutionContext,
-    session: &mut Session,
-    time: &RequestTime,
-) -> ExecutionResult {
-    if !(mshogi_search::tori::Limits {
-        depth: context.limits.depth,
-        nodes: context.limits.nodes,
-    })
-    .valid()
-    {
-        return ExecutionResult::failure(
-            FailureKind::InvalidRequest,
-            "Tori execution limits exceed the bounded native search profile",
-        );
-    }
-    let mshogi_core::native::CanonicalRecord::Tori(record) = &context.game else {
-        unreachable!()
-    };
-    let game = match record.to_game() {
-        Ok(game) => game,
-        Err(e) => return ExecutionResult::failure(FailureKind::InvalidRequest, e),
-    };
-    let mut engine = session
-        .tori
-        .acquire(
-            context,
-            |n| {
-                game.record_prefix(n)
-                    .ok()
-                    .map(mshogi_core::native::CanonicalRecord::tori)
-            },
-            || Ok::<_, std::convert::Infallible>(mshogi_search::tori::new_engine()),
-        )
-        .expect("infallible engine allocation");
-    match mshogi_search::tori::search_with_state(
-        &game,
-        mshogi_search::tori::Limits {
-            depth: context.limits.depth,
-            nodes: context.limits.nodes,
-        },
-        time.remaining(),
-        &mut engine,
-        || false,
-    ) {
-        Ok(result) => ExecutionResult::Tori {
-            result: ToriResult::searched(result),
-        },
-        Err(e) => ExecutionResult::failure(FailureKind::Search, e),
-    }
-}
-
-fn execute_chu(
-    context: &ExecutionContext,
-    session: &mut Session,
-    time: &RequestTime,
-) -> ExecutionResult {
-    if !(mshogi_search::chu::Limits {
-        depth: context.limits.depth,
-        nodes: context.limits.nodes,
-    })
-    .valid()
-    {
-        return ExecutionResult::failure(
-            FailureKind::InvalidRequest,
-            "Chu execution limits exceed the bounded native search profile",
-        );
-    }
-    let mshogi_core::native::CanonicalRecord::Chu(record) = &context.game else {
-        unreachable!()
-    };
-    let game = match record.to_game() {
-        Ok(game) => game,
-        Err(e) => return ExecutionResult::failure(FailureKind::InvalidRequest, e),
-    };
-    let mut engine = session
-        .chu
-        .acquire(
-            context,
-            |n| {
-                game.record_prefix(n)
-                    .ok()
-                    .map(mshogi_core::native::CanonicalRecord::chu)
-            },
-            || Ok::<_, std::convert::Infallible>(mshogi_search::chu::new_engine()),
-        )
-        .expect("infallible engine allocation");
-    match mshogi_search::chu::search_with_state(
-        &game,
-        mshogi_search::chu::Limits {
-            depth: context.limits.depth,
-            nodes: context.limits.nodes,
-        },
-        time.remaining(),
-        &mut engine,
-        || false,
-    ) {
-        Ok(result) => ExecutionResult::Chu {
-            result: ChuResult::searched(result),
-        },
-        Err(e) => ExecutionResult::failure(FailureKind::Search, e),
-    }
-}
-
-fn execute_tenjiku(
-    context: &ExecutionContext,
-    session: &mut Session,
-    time: &RequestTime,
-) -> ExecutionResult {
-    if !(mshogi_search::tenjiku::Limits {
-        depth: context.limits.depth,
-        nodes: context.limits.nodes,
-    })
-    .valid()
-    {
-        return ExecutionResult::failure(
-            FailureKind::InvalidRequest,
-            "Tenjiku execution limits exceed the bounded native search profile",
-        );
-    }
-    let mshogi_core::native::CanonicalRecord::Tenjiku(record) = &context.game else {
-        unreachable!()
-    };
-    let game = match record.to_game() {
-        Ok(game) => game,
-        Err(e) => return ExecutionResult::failure(FailureKind::InvalidRequest, e),
-    };
-    let mut engine = session
-        .tenjiku
-        .acquire(
-            context,
-            |n| {
-                game.record_prefix(n)
-                    .ok()
-                    .map(mshogi_core::native::CanonicalRecord::tenjiku)
-            },
-            || Ok::<_, std::convert::Infallible>(mshogi_search::tenjiku::new_engine()),
-        )
-        .expect("infallible engine allocation");
-    match mshogi_search::tenjiku::search_with_state(
-        &game,
-        mshogi_search::tenjiku::Limits {
-            depth: context.limits.depth,
-            nodes: context.limits.nodes,
-        },
-        time.remaining(),
-        &mut engine,
-        || false,
-    ) {
-        Ok(result) => ExecutionResult::Tenjiku {
-            result: TenjikuResult::searched(result),
-        },
-        Err(e) => ExecutionResult::failure(FailureKind::Search, e),
+    /// Search one native history with optional elapsed-time control.
+    pub fn search(
+        &mut self,
+        game: &mshogi_core::xiangqi::Game,
+        limits: mshogi_search::xiangqi::Limits,
+        time: Option<TimeBudget>,
+        stop: impl FnMut() -> bool,
+    ) -> Result<mshogi_search::xiangqi::SearchResult, mshogi_search::xiangqi::SearchError> {
+        use mshogi_search::xiangqi as search;
+        let timing = RequestTime::new(time);
+        if time.is_none() {
+            return search::search_with_state(game, limits, None, &mut search::new_engine(), stop);
+        }
+        let events = game.events();
+        let reset = self.last.as_ref().is_none_or(|(root, policy, previous)| {
+            root != game.root()
+                || *policy != game.claim_policy()
+                || previous.len() > events.len()
+                || previous[..] != events[..previous.len()]
+        });
+        self.last = Some((game.root().clone(), game.claim_policy(), events.to_vec()));
+        let table_mb = self.table_mb;
+        let mut engine = self
+            .slot
+            .acquire_incremental(reset, || {
+                Ok::<_, Infallible>(if table_mb == 0 {
+                    search::new_engine()
+                } else {
+                    search::new_engine_sized(table_mb)
+                })
+            })
+            .expect("infallible engine allocation");
+        search::search_with_state(game, limits, timing.remaining(), &mut engine, stop)
     }
 }
 
@@ -641,9 +508,18 @@ mod prefix_slot_tests {
         timed: bool,
     ) -> EngineState<'a, Marker> {
         let record = mshogi_core::shogi::GameRecord::from_game(game);
-        slot.acquire_relation(&mshogi_core::native::CanonicalRecord::shogi(record.clone()), timed,
-            |last| matches!(last, mshogi_core::native::CanonicalRecord::Shogi(previous) if record.has_prefix(previous)),
-            || Ok::<_, std::convert::Infallible>(Marker { value: 7, resets: 0 })).unwrap()
+        slot.acquire_relation(
+            &CanonicalRecord::shogi(record.clone()),
+            timed,
+            |last| matches!(last, CanonicalRecord::Shogi(previous) if record.has_prefix(previous)),
+            || {
+                Ok::<_, Infallible>(Marker {
+                    value: 7,
+                    resets: 0,
+                })
+            },
+        )
+        .unwrap()
     }
     #[test]
     fn exact_shogi_relation_retains_only_timed_native_descendants() {

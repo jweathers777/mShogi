@@ -9,13 +9,13 @@ Xiangqi interoperability are separate functional contracts.
 
 - `ExecutionContext`: `purpose`, `request_id`, `session_version`,
   `game: CanonicalRecord`, and `limits: WorkLimits`.
-- `ExecutionRequest`: `{ protocol: 6, context: ExecutionContext }`.
+- `ExecutionRequest`: `{ protocol: 7, context: ExecutionContext }`.
 - `ExecutionObservation`: `{ schema_version: 1, context: ExecutionContext,
   result: ExecutionResult }`. This is semantic evidence, with no wire
   version or pending-execution meaning.
-- Process reply: `{ protocol: 6, request_digest: [32 SHA-256 bytes],
+- Process reply: `{ protocol: 7, request_digest: [32 SHA-256 bytes],
   endpoint: null | { request_id }, result: ExecutionResult }`.
-- `ExecutionResponse`: the host's admitted `{ protocol: 6, observation }`.
+- `ExecutionResponse`: the host's admitted `{ protocol: 7, observation }`.
   This is not the child wire shape.
 
 The digest covers the exact encoded request bytes, excluding one framing newline.
@@ -66,14 +66,18 @@ selection identity, complete native `event_index`, known `board_ply`, session
 version, native label and game-qualified side. Same board placement is not a
 substitute for exact canonical context/history.
 
-The result tag selects native `ChessResult`, `ShogiResult`, `XiangqiResult`,
-`ToriResult`, `ChuResult` or `TenjikuResult`,
-or a bounded unscored `Failure`. Chess retains move versus intended/current
-claim, concluded root, incomplete work and actual telemetry. Shogi retains
-complete move/drop/promotion, formal declaration, conclusion and native
-incomplete work. Xiangqi retains Red/Black semantics,
-complete WXF history, warning/claim state, sound-fast-only search and unresolved
-adjudication without a fabricated score.
+The result tag selects `ChessResult`, the result of one of the five games on
+the shared search core, or a bounded unscored `Failure`. Chess retains move
+versus intended/current claim, concluded root, incomplete work and actual
+telemetry. Shogi, Xiangqi, Tori, Chu and Tenjiku use one generic adapter
+(`mshogi-engine` `adapter.rs`; each game's types and calls are in `game.rs`):
+a `choice` (a board move, a Shogi declaration or a Xiangqi count claim), a
+`finished` conclusion, `incomplete` work, or for Xiangqi an `unresolved`
+required adjudication without a fabricated score. Their telemetry has the same
+fields in every game; one admission check (`matches`) and one line replay
+(`validate`) serve all five. Each game keeps its own score unit and its terminal
+distance unit. A timed request can return the first legal move without a
+completed iteration and without a score.
 
 The server executes Chess directly from its native canonical record. It never
 creates a retired Chess request. The authoritative desktop owner checks exact current context,
@@ -152,7 +156,7 @@ execution interface.
 ## Engine session
 
 MSH-169 (Engine Session Persistence) and MSH-179 (Clock and Session for All Games).
-The session retention policy remains the same under protocol 6.
+The session retention policy remains the same under protocol 7.
 
 - One child serves successive requests. A response is accepted when its line is
   complete and matches the request; the bridge does not wait for the child to

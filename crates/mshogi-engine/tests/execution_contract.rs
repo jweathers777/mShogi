@@ -63,8 +63,10 @@ fn wire_rejects_other_versions_and_shapes() {
 fn outer_wrapper_context_native_and_observation_reject_duplicates_and_unknowns() {
     let request = request();
     let text = serde_json::to_string(&request).unwrap();
+    let protocol = format!("\"protocol\":{PROTOCOL_VERSION}");
+    let protocol_twice = format!("{protocol},{protocol}");
     for (needle, replacement) in [
-        ("\"protocol\":6", "\"protocol\":6,\"protocol\":6"),
+        (protocol.as_str(), protocol_twice.as_str()),
         ("\"context\":{", "\"context\":{},\"context\":{"),
         ("\"request_id\":1", "\"request_id\":1,\"request_id\":1"),
         (
@@ -97,7 +99,7 @@ fn outer_wrapper_context_native_and_observation_reject_duplicates_and_unknowns()
     serve_once(Cursor::new(format!("{text}\n")), &mut output).unwrap();
     let encoded = String::from_utf8(output).unwrap();
     for (needle, replacement) in [
-        ("\"protocol\":6", "\"protocol\":6,\"protocol\":6"),
+        (protocol.as_str(), protocol_twice.as_str()),
         ("\"endpoint\":null", "\"endpoint\":null,\"endpoint\":null"),
         ("\"result\":{", "\"result\":{},\"result\":{"),
     ] {

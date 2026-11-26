@@ -2119,7 +2119,7 @@
         "kind": "tori",
         "result": {
           "kind": "choice",
-          "action": {
+          "choice": {
             "kind": "drop",
             "face": "crane",
             "to": "3b"
@@ -2217,7 +2217,7 @@
           "kind": "tori",
           "result": {
             "kind": "choice",
-            "action": {
+            "choice": {
               "kind": "drop",
               "face": "crane",
               "to": "3b"

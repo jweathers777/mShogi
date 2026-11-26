@@ -16,7 +16,7 @@ fn request(game: &t::Game, id: u64) -> ExecutionRequest {
             request_id: id,
             session_version: id,
             game: CanonicalRecord::tenjiku(t::GameRecord::from_game(game).unwrap()),
-            limits: TENJIKU_PLAY_LIMITS,
+            limits: game::Tenjiku::PLAY_LIMITS,
         },
     }
 }
@@ -89,12 +89,16 @@ fn bounded(mut game: t::Game, maximum_plies: usize) -> Trace {
             panic!("expected native Tenjiku search")
         };
         result.validate(&game).unwrap();
-        let TenjikuResult::Choice { action, telemetry } = result else {
+        let TenjikuResult::Choice {
+            choice: action,
+            telemetry,
+        } = result
+        else {
             panic!("representative configured work must complete: {result:?}")
         };
         assert!(telemetry.completed_depth >= 1);
         assert!(telemetry.score.is_some());
-        assert!(telemetry.nodes <= TENJIKU_PLAY_LIMITS.nodes);
+        assert!(telemetry.nodes <= game::Tenjiku::PLAY_LIMITS.nodes);
         assert_eq!(telemetry.perspective, game.position().side_to_move());
         assert!(game.legal_actions().contains(action));
         actions.push(action.clone());
@@ -213,7 +217,7 @@ fn actual_selfplay_is_deterministic_bounded_and_unscored_at_work_stop() {
         assert!(record.conclusion().is_none());
         println!(
             "TENJIKU-SELFPLAY-SMOKE {}",
-            serde_json::json!({"profile":profile.id(),"root":if cfg!(debug_assertions){"independent_corner_diagram"}else{"standard"},"command":"mshogi internal-search","limits":TENJIKU_PLAY_LIMITS,"maximum_plies":4,"record":first.record,"observations":first.observations})
+            serde_json::json!({"profile":profile.id(),"root":if cfg!(debug_assertions){"independent_corner_diagram"}else{"standard"},"command":"mshogi internal-search","limits":game::Tenjiku::PLAY_LIMITS,"maximum_plies":4,"record":first.record,"observations":first.observations})
         );
     }
 }
@@ -284,7 +288,7 @@ fn actual_complete_custom_game_captures_both_independently_expected_native_royal
         assert_eq!(first.observations.len(), 2);
         println!(
             "TENJIKU-SELFPLAY-COMPLETE {}",
-            serde_json::json!({"profile":profile.id(),"command":"mshogi internal-search","limits":TENJIKU_PLAY_LIMITS,"maximum_plies":4,"record":first.record,"observations":first.observations})
+            serde_json::json!({"profile":profile.id(),"command":"mshogi internal-search","limits":game::Tenjiku::PLAY_LIMITS,"maximum_plies":4,"record":first.record,"observations":first.observations})
         );
     }
 }

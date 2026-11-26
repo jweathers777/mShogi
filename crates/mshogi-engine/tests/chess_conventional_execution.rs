@@ -83,7 +83,7 @@ fn thinking_time_is_exact_request_identity_and_only_ordinary_work_accepts_it() {
     timed.game = CanonicalRecord::shogi(mshogi_core::shogi::GameRecord::from_game(
         &mshogi_core::shogi::Game::new(),
     ));
-    timed.limits = SHOGI_PLAY_LIMITS;
+    timed.limits = game::Shogi::PLAY_LIMITS;
     timed.limits.time_ms = Some(1);
     assert!(timed.valid_limits());
 }

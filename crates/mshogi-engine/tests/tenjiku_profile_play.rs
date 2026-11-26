@@ -45,7 +45,7 @@ fn played(case: &str, game: &t::Game) -> (t::Game, t::Action, TenjikuTelemetry) 
             request_id: 1,
             session_version: 2,
             game: CanonicalRecord::tenjiku(before.clone()),
-            limits: TENJIKU_PLAY_LIMITS,
+            limits: game::Tenjiku::PLAY_LIMITS,
         },
     };
     assert_eq!(
@@ -75,7 +75,11 @@ fn played(case: &str, game: &t::Game) -> (t::Game, t::Action, TenjikuTelemetry) 
         panic!("{case}: actual native result required")
     };
     result.validate(game).unwrap();
-    let TenjikuResult::Choice { action, telemetry } = result else {
+    let TenjikuResult::Choice {
+        choice: action,
+        telemetry,
+    } = result
+    else {
         panic!("{case}: complete result required")
     };
     assert!(telemetry.completed_depth >= 1);
@@ -84,7 +88,7 @@ fn played(case: &str, game: &t::Game) -> (t::Game, t::Action, TenjikuTelemetry) 
         StopReason::Complete | StopReason::NodeLimit
     ));
     assert_eq!(telemetry.perspective, t::Side::Sente);
-    assert!(telemetry.nodes > 1 && telemetry.nodes <= TENJIKU_PLAY_LIMITS.nodes);
+    assert!(telemetry.nodes > 1 && telemetry.nodes <= game::Tenjiku::PLAY_LIMITS.nodes);
     assert_eq!(telemetry.principal_variation.first(), Some(&action));
     assert!(telemetry.principal_variation.len() <= mshogi_search::tenjiku::MAX_LINE);
     assert!(telemetry.score.is_some());

@@ -76,7 +76,7 @@ fn incomplete(context: ExecutionContext) -> ExecutionObservation {
                     completed_depth: 0,
                     nodes: 0,
                     principal_variation: vec![],
-                    status: mshogi_engine::StopReason::NodeLimit,
+                    status: mshogi_engine::StopReason::Stopped,
                 },
             },
         },

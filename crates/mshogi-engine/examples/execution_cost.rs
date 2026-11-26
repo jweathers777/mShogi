@@ -100,7 +100,7 @@ macro_rules! run {
             |game| game.conclusion().is_some(),
         )?;
         let result = mshogi_engine::$result::Choice {
-            action: Clone::clone(&action),
+            choice: Clone::clone(&action),
             telemetry: mshogi_engine::$telemetry {
                 evaluator_id: search::EVALUATOR_ID.into(),
                 search_id: search::SEARCH_ID.into(),

@@ -82,15 +82,11 @@ fn actual_child_plays_both_assignments_with_native_admission_and_recorded_observ
                 assert_eq!(telemetry.perspective, engine);
                 assert!(telemetry.completed_depth > 0);
                 assert!(telemetry.nodes <= c.context.limits.nodes);
-                let selected: search::Choice = (*choice).into();
-                let actor = match selected {
-                    search::Choice::Move(_) => engine,
-                    search::Choice::Declare { actor } => actor,
-                };
+                let (actor, command) = game::Shogi::command(choice, engine);
                 game.submit(GameRequest {
                     expected: game.context(),
                     actor,
-                    command: selected.command(),
+                    command,
                 })
                 .unwrap();
                 observations.push(response);
@@ -153,11 +149,11 @@ fn actual_analysis_declaration_incomplete_and_history_contexts_remain_distinct()
     else {
         panic!()
     };
-    let choice: search::Choice = choice.into();
+    let (actor, command) = game::Shogi::command(&choice, Side::Sente);
     game.submit(GameRequest {
         expected: game.context(),
-        actor: Side::Sente,
-        command: choice.command(),
+        actor,
+        command,
     })
     .unwrap();
     assert_eq!(game.position(), before.position());

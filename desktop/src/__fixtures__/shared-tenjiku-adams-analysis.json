@@ -8146,7 +8146,7 @@
         "kind": "tenjiku",
         "result": {
           "kind": "choice",
-          "action": {
+          "choice": {
             "kind": "travel",
             "from": [
               5,
@@ -8222,7 +8222,7 @@
           "kind": "tenjiku",
           "result": {
             "kind": "choice",
-            "action": {
+            "choice": {
               "kind": "travel",
               "from": [
                 5,

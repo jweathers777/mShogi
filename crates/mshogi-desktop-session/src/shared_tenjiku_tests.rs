@@ -4,6 +4,7 @@
 use super::*;
 use crate::tenjiku_document::TenjikuSettings;
 use mshogi_core::tenjiku as c;
+use mshogi_engine::EngineGame;
 use serde_json::{Value, json};
 use std::{
     fs,
@@ -990,12 +991,12 @@ fn real_stationary_capture_analysis_preserves_target_in_presented_pv() {
         )
         .unwrap();
         let before = record(&ctl);
-        ctl.start_game_work::<Tenjiku>(mshogi_engine::TENJIKU_PLAY_LIMITS, true)
+        ctl.start_game_work::<Tenjiku>(mshogi_engine::game::Tenjiku::PLAY_LIMITS, true)
             .unwrap();
         let pending = ctl.session.tenjiku().unwrap().pending.clone().unwrap();
         let response = execute(&pending);
         let ExecutionResult::Tenjiku {
-            result: mshogi_engine::TenjikuResult::Choice { action, .. },
+            result: mshogi_engine::TenjikuResult::Choice { choice: action, .. },
         } = &response.observation.result
         else {
             panic!("{response:?}")
@@ -1039,7 +1040,10 @@ fn shared_core_analysis_bounds_preserve_both_profile_states_and_reject_excess() 
         )
         .unwrap();
         assert_eq!(snapshot.execution_purpose, Some("move_analysis"));
-        assert_eq!(snapshot.play_limits, mshogi_engine::TENJIKU_PLAY_LIMITS);
+        assert_eq!(
+            snapshot.play_limits,
+            mshogi_engine::game::Tenjiku::PLAY_LIMITS
+        );
         assert_eq!(record(&ctl), before);
         send(&mut ctl, SessionOperation::Cancel {}).unwrap();
         for (depth, nodes) in [(65, 1), (1, 5_000_001), (1, 0)] {

@@ -97,11 +97,11 @@ fn real_native_choices_conclusions_and_score_perspective_roundtrip() {
         assert_eq!(telemetry.evaluator_id, search::EVALUATOR_ID);
         assert_eq!(telemetry.search_id, search::SEARCH_ID);
         assert_eq!(telemetry.completed_depth, 1);
-        let selected: search::Choice = choice.into();
+        let (actor, command) = game::Shogi::command(&choice, game.position().side_to_move());
         game.submit(GameRequest {
             expected: game.context(),
-            actor: game.position().side_to_move(),
-            command: selected.command(),
+            actor,
+            command,
         })
         .unwrap();
         let c = request(&game);

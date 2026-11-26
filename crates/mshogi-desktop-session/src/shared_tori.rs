@@ -10,9 +10,7 @@ pub(crate) type ToriSession = NativeSession<Tori>;
 
 impl SessionGame for Tori {
     type Presentation = ToriPresentation;
-    const PLAY_LIMITS: WorkLimits = mshogi_engine::TORI_PLAY_LIMITS;
-    const MAX_DEPTH: u16 = mshogi_engine::TORI_MAX_DEPTH;
-    const MAX_NODES: u64 = mshogi_engine::TORI_MAX_NODES;
+    engine_limits!(Tori);
     const HANDS: bool = true;
     const BOARD_SIZE: u8 = 7;
     const BOARD_LABEL: &'static str = "Tori Shogi 7×7 board";
@@ -72,23 +70,12 @@ impl SessionGame for Tori {
         }
     }
     fn telemetry(result: &mshogi_engine::ToriResult) -> TelemetryView {
-        let t = result.telemetry();
-        TelemetryView {
-            score: t.score_label(),
-            completed_depth: t.completed_depth,
-            nodes: t.nodes,
-            // Complete native encodings remain honest technical continuation
-            // data; readable action notation is projected by the Moves adapter.
-            variation: t
-                .principal_variation
-                .iter()
-                .map(|a| serde_json::to_string(a).expect("native action"))
-                .collect(),
-            status: stop_label(t.status),
-        }
+        // Complete native encodings remain honest technical continuation
+        // data; readable action notation is projected by the Moves adapter.
+        engine_telemetry(result, |a| serde_json::to_string(a).expect("native action"))
     }
     fn incomplete(result: &mshogi_engine::ToriResult) -> bool {
-        matches!(result, mshogi_engine::ToriResult::Incomplete { .. })
+        engine_incomplete(result)
     }
     fn edition(_game: &t::Game) -> &'static str {
         t::PROFILE_EDITION

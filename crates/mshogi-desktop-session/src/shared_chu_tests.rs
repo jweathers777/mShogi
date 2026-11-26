@@ -2,6 +2,7 @@
 use super::*;
 use crate::chu_fixture_roots as f;
 use mshogi_core::chu as c;
+use mshogi_engine::EngineGame;
 use std::{fs, time::Duration};
 fn controller() -> DesktopController {
     DesktopController::new("/unused/chu-engine".into()).unwrap()
@@ -583,7 +584,7 @@ fn shared_core_analysis_bounds_preserve_native_state_and_reject_excess() {
     )
     .unwrap();
     assert_eq!(snapshot.execution_purpose, Some("move_analysis"));
-    assert_eq!(snapshot.play_limits, mshogi_engine::CHU_PLAY_LIMITS);
+    assert_eq!(snapshot.play_limits, mshogi_engine::game::Chu::PLAY_LIMITS);
     assert_eq!(native(&ctl), before);
     send(&mut ctl, SessionOperation::Cancel {}).unwrap();
     for (depth, nodes) in [(65, 1), (1, 5_000_001), (1, 0)] {

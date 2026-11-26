@@ -5,7 +5,7 @@
 use crate::{
     process::{Engine, Output, escaped},
     protocol::option_value,
-    shogi::{Failure, FailureKind, Traffic},
+    protocol::{Failure, Traffic},
     *,
 };
 use std::{
@@ -68,7 +68,7 @@ impl Host<'_> {
             engine,
             generation: 1,
             version: self.version,
-            at_ns: self.start.elapsed().as_nanos().min(u128::from(u64::MAX)) as u64,
+            at_ns: crate::common::elapsed_ns(self.start),
             direction: direction.into(),
             phase: phase.into(),
             text,

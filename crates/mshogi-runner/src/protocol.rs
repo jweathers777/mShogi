@@ -5,43 +5,18 @@ use crate::{
     *,
 };
 use serde::{Deserialize, Serialize};
-use sha2::{Digest, Sha256};
+
 use std::{
     sync::mpsc::RecvTimeoutError,
     time::{Duration, Instant},
 };
 
-/// Experiment failure, never a native foul or competition score.
-#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
-pub enum FailureKind {
-    /// Child launch failed.
-    ProcessStart,
-    /// Unexpected child exit.
-    UnexpectedExit,
-    /// Clean EOF without reply.
-    MissingReply,
-    /// Invalid protocol grammar/output.
-    MalformedReply,
-    /// Board action rejected by native admission.
-    IllegalAction,
-    /// Required reply missed process watchdog.
-    Watchdog,
-    /// Untagged reply arrived outside its request.
-    LateReply,
-    /// Stream/record resource cap reached.
-    ResourceLimit,
-    /// Advertised options/configuration mismatch.
-    Configuration,
-    /// Native invariant/admission failure unrelated to action legality.
-    Native,
-}
 /// Bounded explicit failure evidence.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-pub struct Failure<K> {
+pub struct Failure {
     /// Stable unscored category.
-    pub kind: K,
+    pub kind: FailureKind,
     /// Configured engine index.
     pub engine: usize,
     /// Request generation, zero before a child starts.
@@ -182,23 +157,34 @@ impl Settings<'_> {
         Ok(())
     }
 }
-#[derive(Clone, Copy, PartialEq, Eq)]
-pub(crate) enum End {
+/// Why this experiment stopped; distinct from the native conclusion.
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum End {
+    /// Native authoritative conclusion.
     NativeConclusion,
+    /// Native adjudication is pending.
     Unresolved,
+    /// Accepted-action cap.
     ActionLimit,
+    /// Overall game watchdog.
     TimeLimit,
+    /// Unscored process, protocol or admission failure.
     Failure,
 }
-pub(crate) struct Rejection<K> {
-    pub kind: K,
+pub(crate) struct Rejection {
+    pub kind: FailureKind,
     pub phase: &'static str,
     pub detail: String,
 }
 pub(crate) trait Native {
     type Game;
     type Side: Copy + Eq;
-    type Kind: From<FailureKind>;
+    type Conclusion: Copy + PartialEq;
+    type Pending: PartialEq;
+    fn conclusion(game: &Self::Game) -> Option<Self::Conclusion>;
+    fn pending(game: &Self::Game) -> Option<Self::Pending>;
+    fn score(conclusion: Self::Conclusion) -> [u8; 2];
     const HELLO: &'static str;
     const OK: &'static str;
     const NEWGAME: &'static str;
@@ -206,7 +192,7 @@ pub(crate) trait Native {
     fn banner(_line: &str) -> bool {
         false
     }
-    fn search_failure(_line: &str) -> Option<(Self::Kind, &str)> {
+    fn search_failure(_line: &str) -> Option<(FailureKind, &str)> {
         None
     }
     fn replay_traffic(
@@ -223,25 +209,15 @@ pub(crate) trait Native {
     fn canonical(game: &Self::Game) -> Result<String, RunnerError>;
     fn position(game: &Self::Game) -> String;
     fn apply_reply(game: &mut Self::Game, reply: &str) -> Result<(), RunnerError>;
-    fn admit_turn(game: &Self::Game, reply: &str) -> Result<Option<String>, Rejection<Self::Kind>>;
+    fn admit_turn(game: &Self::Game, reply: &str) -> Result<Option<String>, Rejection>;
 }
 pub(crate) fn digest<G: Native>(game: &G::Game) -> Result<String, RunnerError> {
-    Ok(format!(
-        "{:x}",
-        Sha256::digest(G::canonical(game)?.as_bytes())
-    ))
-}
-pub(crate) fn identities(engines: &[EngineConfig; 2]) -> [EngineIdentity; 2] {
-    engines.each_ref().map(|e| EngineIdentity {
-        executable: crate::run::identity(&e.path),
-        model: e.model_path.as_ref().map(|p| crate::run::identity(p)),
-        model_identity: e.model_identity.clone(),
-    })
+    Ok(crate::common::sha256(G::canonical(game)?))
 }
 pub(crate) struct Completed<G: Native> {
     pub game: G::Game,
     pub stop: End,
-    pub failure: Option<Failure<G::Kind>>,
+    pub failure: Option<Failure>,
     pub turns: Vec<Turn<G::Side>>,
     pub traffic: Vec<Traffic>,
     pub traffic_complete: bool,
@@ -315,7 +291,7 @@ pub(crate) fn run_game<G: Native>(
         traffic: host.traffic,
         traffic_complete: host.complete,
         processes: host.processes,
-        elapsed_ns: host.start.elapsed().as_nanos().min(u128::from(u64::MAX)) as u64,
+        elapsed_ns: crate::common::elapsed_ns(host.start),
     })
 }
 struct Controller<'a, G: Native> {
@@ -336,9 +312,9 @@ impl<G: Native> Controller<'_, G> {
         kind: FailureKind,
         phase: &str,
         detail: impl Into<String>,
-    ) -> Failure<G::Kind> {
+    ) -> Failure {
         Failure {
-            kind: kind.into(),
+            kind,
             engine,
             generation: self.generation,
             phase: phase.into(),
@@ -352,12 +328,12 @@ impl<G: Native> Controller<'_, G> {
         phase: &str,
         text: String,
         written: Option<bool>,
-    ) -> Result<(), Failure<G::Kind>> {
+    ) -> Result<(), Failure> {
         let event = Traffic {
             engine,
             generation: self.generation,
             version: self.version,
-            at_ns: self.start.elapsed().as_nanos().min(u128::from(u64::MAX)) as u64,
+            at_ns: crate::common::elapsed_ns(self.start),
             direction: direction.into(),
             phase: phase.into(),
             text,
@@ -383,7 +359,7 @@ impl<G: Native> Controller<'_, G> {
         phase: &str,
         text: &str,
         budget: Duration,
-    ) -> Result<(), Failure<G::Kind>> {
+    ) -> Result<(), Failure> {
         if text.len() + 1 > self.config.io.command_bytes {
             return Err(self.failure(
                 engine.index,
@@ -402,12 +378,7 @@ impl<G: Native> Controller<'_, G> {
         )?;
         result.map_err(|e| self.failure(engine.index, FailureKind::UnexpectedExit, phase, e))
     }
-    fn send(
-        &mut self,
-        engine: &mut Engine,
-        phase: &str,
-        text: &str,
-    ) -> Result<(), Failure<G::Kind>> {
+    fn send(&mut self, engine: &mut Engine, phase: &str, text: &str) -> Result<(), Failure> {
         let deadline = self.start + Duration::from_millis(self.config.max_game_ms);
         let left = deadline.saturating_duration_since(Instant::now());
         if left.is_zero() {
@@ -439,7 +410,7 @@ impl<G: Native> Controller<'_, G> {
         engine: &mut Engine,
         phase: &str,
         deadline: Instant,
-    ) -> Result<String, Failure<G::Kind>> {
+    ) -> Result<String, Failure> {
         let total_deadline = self.start + Duration::from_millis(self.config.max_game_ms);
         let deadline = deadline.min(total_deadline);
         loop {
@@ -540,7 +511,7 @@ impl<G: Native> Controller<'_, G> {
         phase: &str,
         token: &str,
         millis: u64,
-    ) -> Result<Vec<String>, Failure<G::Kind>> {
+    ) -> Result<Vec<String>, Failure> {
         let deadline = Instant::now() + Duration::from_millis(millis);
         let mut lines = Vec::new();
         loop {
@@ -583,7 +554,7 @@ impl<G: Native> Controller<'_, G> {
         game: &G::Game,
         engine_index: usize,
         turn: Turn<G::Side>,
-    ) -> Result<Turn<G::Side>, Failure<G::Kind>> {
+    ) -> Result<Turn<G::Side>, Failure> {
         let mut engine = Engine::spawn(
             engine_index,
             &self.config.engines[engine_index],

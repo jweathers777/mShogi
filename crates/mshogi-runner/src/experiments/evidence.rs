@@ -226,10 +226,10 @@ impl ExternalReport {
                 crate::ExperimentReport::from_json(&self.report_json)?.replay()?;
             }
             ExternalProtocol::Usi => {
-                crate::shogi::Report::from_json(&self.report_json)?.replay()?;
+                crate::shogi::Report::from_json(&self.report_json)?;
             }
             ExternalProtocol::XiangqiUci09 => {
-                crate::xiangqi::Report::from_json(&self.report_json)?.replay()?;
+                crate::xiangqi::Report::from_json(&self.report_json)?;
             }
         }
         Ok(())

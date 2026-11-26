@@ -46,17 +46,14 @@ fn execute() -> Result<(), String> {
             write_new(output,&r.to_json().map_err(|e|e.to_string())?)
         }
         [_, command, input] if command == "experiment-external-replay" => {
-            let r=mshogi_runner::experiments::ExternalReport::from_json(&read(input,mshogi_runner::experiments::MAX_BYTES as u64)?).map_err(|e|e.to_string())?;r.validate().map_err(|e|e.to_string())?;println!("replayed actual external adapter evidence");Ok(())
+            mshogi_runner::experiments::ExternalReport::from_json(&read(input,mshogi_runner::experiments::MAX_BYTES as u64)?).map_err(|e|e.to_string())?;println!("replayed actual external adapter evidence");Ok(())
         }
         [_, command, config, output] if command == "xiangqi-run" => {
             let config = mshogi_runner::xiangqi::Config::from_json(&read(config, 1_048_576)?)
                 .map_err(|e| e.to_string())?;
             let report = mshogi_runner::xiangqi::run(&config).map_err(|e| e.to_string())?;
             let encoded = report.to_json().map_err(|e| e.to_string())?;
-            use std::io::Write;
-            let mut file = fs::OpenOptions::new().write(true).create_new(true)
-                .open(output).map_err(|e| e.to_string())?;
-            file.write_all(encoded.as_bytes()).map_err(|e| e.to_string())?;
+            write_new(output, &encoded)?;
             for (i, game) in report.games.iter().enumerate() {
                 println!("game {i}: {:?} native {:?} score {:?}", game.stop, game.conclusion, game.score);
             }
@@ -65,7 +62,7 @@ fn execute() -> Result<(), String> {
         [_, command, input] if command == "xiangqi-replay" => {
             let report = mshogi_runner::xiangqi::Report::from_json(&read(input, 67_108_864)?)
                 .map_err(|e| e.to_string())?;
-            println!("replayed {} xiangqi game(s)", report.replay().map_err(|e| e.to_string())?.len());
+            println!("replayed {} xiangqi game(s)", report.games.len());
             Ok(())
         }
         [_, command, config, output] if command == "shogi-run" => {
@@ -73,10 +70,7 @@ fn execute() -> Result<(), String> {
                 .map_err(|e| e.to_string())?;
             let report = mshogi_runner::shogi::run(&config).map_err(|e| e.to_string())?;
             let encoded = report.to_json().map_err(|e| e.to_string())?;
-            use std::io::Write;
-            let mut file = fs::OpenOptions::new().write(true).create_new(true)
-                .open(output).map_err(|e| e.to_string())?;
-            file.write_all(encoded.as_bytes()).map_err(|e| e.to_string())?;
+            write_new(output, &encoded)?;
             for (i, game) in report.games.iter().enumerate() {
                 println!("game {i}: {:?} native {:?} score {:?}", game.stop, game.conclusion, game.score);
             }
@@ -86,8 +80,7 @@ fn execute() -> Result<(), String> {
             let config = mshogi_runner::shogi_match::MatchConfig::from_json(&read(config, 1_048_576)?)
                 .map_err(|e| e.to_string())?;
             let report = mshogi_runner::shogi_match::run(&config).map_err(|e| e.to_string())?;
-            std::fs::write(output, report.to_json().map_err(|e| e.to_string())?)
-                .map_err(|e| e.to_string())?;
+            write_new(output, &report.to_json().map_err(|e| e.to_string())?)?;
             println!(
                 "{}",
                 serde_json::json!({"stop": report.stop, "conclusion": report.conclusion,
@@ -105,8 +98,7 @@ fn execute() -> Result<(), String> {
             let config = mshogi_runner::xiangqi_match::MatchConfig::from_json(&read(config, 1_048_576)?)
                 .map_err(|e| e.to_string())?;
             let report = mshogi_runner::xiangqi_match::run(&config).map_err(|e| e.to_string())?;
-            std::fs::write(output, report.to_json().map_err(|e| e.to_string())?)
-                .map_err(|e| e.to_string())?;
+            write_new(output, &report.to_json().map_err(|e| e.to_string())?)?;
             println!(
                 "{}",
                 serde_json::json!({"stop": report.stop, "conclusion": report.conclusion,
@@ -123,7 +115,7 @@ fn execute() -> Result<(), String> {
         [_, command, input] if command == "shogi-replay" => {
             let report = mshogi_runner::shogi::Report::from_json(&read(input, 67_108_864)?)
                 .map_err(|e| e.to_string())?;
-            println!("replayed {} shogi game(s)", report.replay().map_err(|e| e.to_string())?.len());
+            println!("replayed {} shogi game(s)", report.games.len());
             Ok(())
         }
         [_, command, config, output] if command == "run" => {
@@ -133,15 +125,7 @@ fn execute() -> Result<(), String> {
             report
                 .replay()
                 .map_err(|e| format!("generated report did not replay: {e}"))?;
-            // Refuse overwriting any existing evidence artifact.
-            use std::io::Write;
-            let mut file = fs::OpenOptions::new()
-                .write(true)
-                .create_new(true)
-                .open(output)
-                .map_err(|e| e.to_string())?;
-            file.write_all(report.to_json().as_bytes())
-                .map_err(|e| e.to_string())?;
+            write_new(output, &report.to_json())?;
             println!(
                 "{}",
                 serde_json::to_string(&report.summaries).map_err(|e| e.to_string())?

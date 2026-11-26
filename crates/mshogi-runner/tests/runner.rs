@@ -155,10 +155,10 @@ fn explicit_auto_claim_uses_known_history_before_any_go() {
 fn process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored() {
     for (mode, expected, faulty_engine) in [
         ("exit", FailureKind::UnexpectedExit, 0),
-        ("clean_eof", FailureKind::MissingResponse, 0),
+        ("clean_eof", FailureKind::MissingReply, 0),
         ("search_exit", FailureKind::UnexpectedExit, 1),
-        ("search_eof", FailureKind::MissingResponse, 1),
-        ("invalid", FailureKind::InvalidMove, 1),
+        ("search_eof", FailureKind::MissingReply, 1),
+        ("invalid", FailureKind::IllegalAction, 1),
     ] {
         // Fault only the awaited engine. Two independently exiting children
         // race between required-response EOF and the other child's idle exit,
@@ -210,7 +210,7 @@ fn process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored() {
     let r = run(&c);
     assert_eq!(
         r.games[0].failure.as_ref().unwrap().kind,
-        FailureKind::ProcessStartFailure
+        FailureKind::ProcessStart
     );
     assert!(r.engine_identities[0].executable.error.is_some());
     assert!(!r.deterministic_rerun_eligible);
@@ -219,7 +219,7 @@ fn process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored() {
 fn partial_streams_and_early_stderr_preserve_precise_failure_and_reaping() {
     for (mode, kind, code) in [
         ("partial_exit", FailureKind::UnexpectedExit, 7),
-        ("partial_clean_eof", FailureKind::MissingResponse, 0),
+        ("partial_clean_eof", FailureKind::MissingReply, 0),
     ] {
         let mut c = config("mate");
         c.engines[0].args = vec![mode.into()];
@@ -245,7 +245,7 @@ fn partial_streams_and_early_stderr_preserve_precise_failure_and_reaping() {
     let report = run(&c);
     assert_eq!(
         report.games[0].failure.as_ref().unwrap().kind,
-        FailureKind::InvalidResponse
+        FailureKind::MalformedReply
     );
     assert_eq!(report.games[0].conclusion, None);
     assert!(
@@ -265,7 +265,7 @@ fn aborted_startup_retires_and_reaps_already_spawned_child() {
     assert_eq!(game.conclusion, None);
     assert_eq!(
         game.failure.as_ref().unwrap().kind,
-        FailureKind::ProcessStartFailure
+        FailureKind::ProcessStart
     );
     assert_eq!(game.failure.as_ref().unwrap().engine, 1);
     assert_eq!(game.engines.len(), 1);
@@ -315,7 +315,7 @@ fn separate_watchdog_and_chess_clock_expiry_preserve_observations() {
     let r = run(&c);
     assert_eq!(
         r.games[0].failure.as_ref().unwrap().kind,
-        FailureKind::ResponseTimeout
+        FailureKind::Watchdog
     );
     assert_eq!(r.games[0].conclusion, None);
     c.watchdogs.response_ms = 1000;
@@ -346,7 +346,7 @@ fn separate_watchdog_and_chess_clock_expiry_preserve_observations() {
     assert_eq!(r.games[0].stop, GameStop::Failure);
     assert_eq!(
         r.games[0].failure.as_ref().unwrap().kind,
-        FailureKind::ResponseTimeout
+        FailureKind::Watchdog
     );
 }
 #[test]
@@ -359,7 +359,7 @@ fn silent_and_blocked_stdin_children_cannot_block_cleanup() {
     assert!(start.elapsed() < Duration::from_secs(5));
     assert_eq!(
         r.games[0].failure.as_ref().unwrap().kind,
-        FailureKind::ResponseTimeout
+        FailureKind::Watchdog
     );
     let mut c = config("blocked_writer");
     c.engines[0].options = (0..64)
@@ -374,7 +374,7 @@ fn silent_and_blocked_stdin_children_cannot_block_cleanup() {
     let r = run(&c);
     assert!(start.elapsed() < Duration::from_secs(5));
     let f = r.games[0].failure.as_ref().unwrap();
-    assert_eq!(f.kind, FailureKind::ResponseTimeout);
+    assert_eq!(f.kind, FailureKind::Watchdog);
     assert_eq!(f.phase, "options");
 }
 #[test]
@@ -403,7 +403,7 @@ fn all_stream_and_metadata_buffers_are_bounded_with_truncation_markers() {
     let r = run(&c);
     assert_eq!(
         r.games[0].failure.as_ref().unwrap().kind,
-        FailureKind::InvalidResponse
+        FailureKind::MalformedReply
     );
     let mut c = config("mate");
     c.io.transcript_bytes = 0;
@@ -415,7 +415,7 @@ fn all_stream_and_metadata_buffers_are_bounded_with_truncation_markers() {
     let r = run(&c);
     assert_eq!(
         r.games[0].failure.as_ref().unwrap().kind,
-        FailureKind::InvalidResponse
+        FailureKind::MalformedReply
     );
 }
 #[test]
@@ -576,7 +576,7 @@ fn nonregular_identity_paths_are_rejected_without_opening_a_fifo() {
     );
     assert_eq!(
         r.games[0].failure.as_ref().unwrap().kind,
-        FailureKind::ProcessStartFailure
+        FailureKind::ProcessStart
     );
     std::fs::remove_dir_all(&dir).unwrap();
 }

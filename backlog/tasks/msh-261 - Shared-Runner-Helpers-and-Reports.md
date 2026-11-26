@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T22:27:00Z'
+updated_date: '2026-11-26T22:32:00Z'
 labels:
   - runner
   - refactor
@@ -37,6 +37,12 @@ crates/mshogi-runner talks to engine processes in three places: run.rs GameRun (
 - [ ] #6 Runner tests pass, including the process tests in CI on the affected operating systems.
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Extract shared evidence, failure categories, clock accounting, report decoding and CLI output. 2. Consolidate recorded and clocked run/replay around native game adapters. 3. Unify bounded engine transport, handshakes and retirement while preserving ChessMatch timing precedence. 4. Consolidate fixture support, exercise drift cases, run affected process CI, obtain fresh review and integrate.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
@@ -47,4 +53,6 @@ John approved consolidation on 2026-11-26: this task retains the full scope of M
 Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
 
 Claimed on codex/msh-261-shared-runner from b003738. Next: consolidate runner code, verify process tests and request review.
+
+Checkpoint: generic recorded and clocked game reports now replay through native adapters. Shared evidence helpers, failure enum, Fischer accounting and create-new CLI output are in place. cargo check --locked -j 2 -p mshogi-runner --all-targets passes. Next: transport, test fixtures, complete verification, review and integration on codex/msh-261-shared-runner.
 <!-- SECTION:NOTES:END -->

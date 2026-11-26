@@ -19,7 +19,7 @@ pub fn run_with_stop(
         .players
         .iter()
         .map(|p| EngineIdentity {
-            executable: crate::run::identity(&p.executable),
+            executable: crate::common::identity(&p.executable),
             model: None,
             model_identity: Some("executable-embedded".into()),
         })
@@ -153,7 +153,7 @@ pub fn run_with_stop(
                 }
                 thread::sleep(Duration::from_millis(1));
             };
-            let elapsed_ns = began.elapsed().as_nanos().min(u128::from(u64::MAX)) as u64;
+            let elapsed_ns = crate::common::elapsed_ns(began);
             if observation.is_none() {
                 bridges[player].cancel();
             }

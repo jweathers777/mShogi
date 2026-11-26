@@ -16,19 +16,10 @@ use crate::{
     shogi::{FailureKind, Opening, position, reply, submit},
     *,
 };
-use mshogi_core::{native::CanonicalRecord, shogi::*};
+use mshogi_core::shogi::*;
 use serde::{Deserialize, Serialize};
 
-/// Equal Fischer clock for both sides, in milliseconds.
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-pub struct Clock {
-    /// Initial time per side.
-    pub base_ms: u64,
-    /// Increment added after each accepted move.
-    pub increment_ms: u64,
-}
-
+pub use crate::FischerClock as Clock;
 /// One clocked game between two USI engines.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -77,10 +68,7 @@ impl MatchConfig {
 
     /// Strict bounded parsing.
     pub fn from_json(text: &str) -> Result<Self, RunnerError> {
-        if text.len() > 1_048_576 {
-            return Err(RunnerError("match config exceeds 1 MiB".into()));
-        }
-        let config: Self = serde_json::from_str(text).map_err(|e| RunnerError(e.to_string()))?;
+        let config: Self = common::decode(text, common::CONFIG_BYTES)?;
         config.validate()?;
         Ok(config)
     }
@@ -91,8 +79,7 @@ impl MatchConfig {
         }
         if self.id.is_empty()
             || self.id.len() > 128
-            || !(1_000..=3_600_000).contains(&self.clock.base_ms)
-            || self.clock.increment_ms > 60_000
+            || !self.clock.valid()
             || self.grace_ms > 5_000
             || !(1..=21_600_000).contains(&self.max_game_ms)
         {
@@ -110,13 +97,6 @@ impl MatchConfig {
         crate::config::validate_processes(&self.engines, self.watchdogs, self.io)?;
         Ok(())
     }
-    fn engine_for(&self, side: Side) -> usize {
-        if side == Side::Sente {
-            self.sente
-        } else {
-            1 - self.sente
-        }
-    }
 }
 
 /// Accepted reply and native-side clock ledger.
@@ -124,22 +104,9 @@ pub type ClockedTurn = crate::protocol_match::ClockedTurn<Side>;
 /// Unscored clock exhaustion evidence.
 pub type Exhaustion = crate::protocol_match::Exhaustion<Side>;
 
-/// Why the experiment stopped.
-#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
-pub enum MatchStop {
-    /// Native conclusion; the game is scored.
-    NativeConclusion,
-    /// A side's clock ran out; unscored.
-    ClockExhausted,
-    /// Overall experiment watchdog; unscored.
-    TimeLimit,
-    /// Protocol, process or admission failure; unscored.
-    Failure,
-}
-
+pub use crate::protocol_match::MatchStop;
 /// Complete native clocked game evidence, with the recorded game-specific schema.
-pub type MatchReport = crate::protocol_match::MatchReport<MatchConfig, Side, Conclusion, MatchStop>;
+pub type MatchReport = crate::protocol_match::MatchReport<MatchConfig, Side, Conclusion>;
 
 fn go(clock: [u64; 2], increment: u64) -> String {
     format!(
@@ -149,112 +116,31 @@ fn go(clock: [u64; 2], increment: u64) -> String {
 }
 
 impl MatchReport {
-    /// Strict decoding followed by native replay.
+    /// Decode and verify the native history and clock ledger.
     pub fn from_json(text: &str) -> Result<Self, RunnerError> {
-        if text.len() > 67_108_864 {
-            return Err(RunnerError("match report exceeds 64 MiB".into()));
-        }
-        let report: Self = serde_json::from_str(text).map_err(|e| RunnerError(e.to_string()))?;
+        let report: Self = common::decode(text, common::REPORT_BYTES)?;
         report.replay()?;
         Ok(report)
     }
-    /// Canonical JSON.
+    /// Encode bounded evidence.
     pub fn to_json(&self) -> Result<String, RunnerError> {
-        serde_json::to_string(self).map_err(|e| RunnerError(e.to_string()))
+        common::encode_report(self)
     }
-    /// Replay every accepted reply through the native rules and recompute
-    /// the clock ledger, stop and score.
+    /// Replay the native history and verify stop, score and clock receipts.
     pub fn replay(&self) -> Result<Game, RunnerError> {
-        let c = &self.config;
-        c.validate()?;
-        if self.schema_version != 1 {
-            return Err(RunnerError("unsupported match report version".into()));
-        }
-        let mut game = c.opening.game()?;
-        let clock = crate::protocol_match::replay::<Adapter>(
-            &c.settings(),
-            &mut game,
-            &self.turns,
-            &self.traffic,
-            self.traffic_complete,
-        )?;
-        let CanonicalRecord::Shogi(record) =
-            CanonicalRecord::from_json(&self.game).map_err(|e| RunnerError(e.to_string()))?
-        else {
-            return Err(RunnerError("report game is not Shogi".into()));
-        };
-        if record.to_game().map_err(|e| RunnerError(e.to_string()))? != game
-            || self.conclusion != game.conclusion()
-        {
-            return Err(RunnerError("canonical game or conclusion mismatch".into()));
-        }
-        let expected_score = match (&self.stop, game.conclusion()) {
-            (MatchStop::NativeConclusion, Some(conclusion)) => {
-                let [sente, gote] = conclusion.score_half_points();
-                Some(if c.sente == 0 {
-                    [sente, gote]
-                } else {
-                    [gote, sente]
-                })
-            }
-            _ => None,
-        };
-        let consistent = match self.stop {
-            MatchStop::NativeConclusion => game.conclusion().is_some() && self.failure.is_none(),
-            MatchStop::ClockExhausted => {
-                game.conclusion().is_none()
-                    && self.exhaustion.as_ref().is_some_and(|e| {
-                        let actor = game.position().side_to_move();
-                        let side = usize::from(actor == Side::Gote);
-                        e.actor == actor
-                            && e.engine == c.engine_for(actor)
-                            && e.remaining_ms == clock[side]
-                            && e.elapsed_ms > clock[side].saturating_add(c.grace_ms)
-                    })
-            }
-            MatchStop::TimeLimit => game.conclusion().is_none(),
-            // Failures stop an open game; a concluded game cannot also fail.
-            MatchStop::Failure => game.conclusion().is_none() && self.failure.is_some(),
-        };
-        if !consistent
-            || self.engine_score != expected_score
-            || (self.stop != MatchStop::ClockExhausted && self.exhaustion.is_some())
-            || (self.stop != MatchStop::Failure && self.failure.is_some())
-        {
-            return Err(RunnerError("stop, score or exhaustion mismatch".into()));
-        }
-        Ok(game)
+        self.config.validate()?;
+        crate::protocol_match::replay_report(
+            self,
+            self.config.settings(),
+            self.config.opening.game()?,
+        )
     }
 }
-
-/// Play one clocked game. Native admission alone decides results.
+/// Play and verify one clocked native game.
 pub fn run(config: &MatchConfig) -> Result<MatchReport, RunnerError> {
     config.validate()?;
-    let completed =
-        crate::protocol_match::run::<Adapter>(config.settings(), config.opening.game()?)?;
-    let stop = match completed.stop {
-        crate::protocol_match::Stop::Native(crate::protocol::End::NativeConclusion) => {
-            MatchStop::NativeConclusion
-        }
-        crate::protocol_match::Stop::ClockExhausted => MatchStop::ClockExhausted,
-        crate::protocol_match::Stop::TimeLimit => MatchStop::TimeLimit,
-        crate::protocol_match::Stop::Failure => MatchStop::Failure,
-        crate::protocol_match::Stop::Native(_) => unreachable!("native terminal state"),
-    };
-    let conclusion = completed.game.conclusion();
-    let engine_score = if stop == MatchStop::NativeConclusion {
-        conclusion.map(|conclusion| {
-            let points = conclusion.score_half_points();
-            if config.sente == 0 {
-                points
-            } else {
-                [points[1], points[0]]
-            }
-        })
-    } else {
-        None
-    };
-    let report = completed.report(config.clone(), conclusion, engine_score, stop)?;
+    let report =
+        crate::protocol_match::run_report(config, config.settings(), config.opening.game()?)?;
     report.replay()?;
     Ok(report)
 }

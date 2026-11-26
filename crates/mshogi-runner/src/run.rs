@@ -5,70 +5,12 @@ use crate::{
     *,
 };
 use mshogi_core::chess::*;
-use sha2::{Digest, Sha256};
+
 use std::{
-    fs::File,
-    io::Read,
     sync::mpsc::RecvTimeoutError,
     time::{Duration, Instant},
 };
 
-pub(crate) fn identity(path: &str) -> FileIdentity {
-    let mut result = FileIdentity {
-        path: path.into(),
-        canonical_path: None,
-        bytes: None,
-        sha256: None,
-        error: None,
-    };
-    let read = || -> Result<(String, u64, String), String> {
-        let canonical = std::fs::canonicalize(path).map_err(|e| e.to_string())?;
-        let metadata = std::fs::metadata(&canonical).map_err(|e| e.to_string())?;
-        if !metadata.is_file() {
-            return Err("identity path is not a regular file".into());
-        }
-        let mut file = File::open(&canonical).map_err(|e| e.to_string())?;
-        let metadata = file.metadata().map_err(|e| e.to_string())?;
-        if !metadata.is_file() {
-            return Err("opened identity is not a regular file".into());
-        }
-        let size = metadata.len();
-        if size > 2_147_483_648 {
-            return Err("identity file exceeds 2 GiB hashing bound".into());
-        }
-        let mut digest = Sha256::new();
-        let mut bytes = [0u8; 32768];
-        let mut total = 0u64;
-        loop {
-            let n = file.read(&mut bytes).map_err(|e| e.to_string())?;
-            if n == 0 {
-                break;
-            }
-            total += n as u64;
-            if total > 2_147_483_648 {
-                return Err("identity file grew beyond hashing bound".into());
-            }
-            digest.update(&bytes[..n]);
-        }
-        if total != size {
-            return Err("identity file size changed during hashing".into());
-        }
-        Ok((
-            canonical.to_string_lossy().into_owned(),
-            size,
-            format!("{:x}", digest.finalize()),
-        ))
-    };
-    match read() {
-        Ok((canonical, size, sha)) => {
-            result.canonical_path = Some(canonical);
-            result.bytes = Some(size);
-            result.sha256 = Some(sha)
-        }
-        Err(e) => result.error = Some(e),
-    }
-    result
-}
 struct Log {
     transcript: Transcript,
     bytes: usize,
@@ -120,10 +62,7 @@ pub(crate) fn position_command(history: &Game) -> String {
     position
 }
 pub(crate) fn config_digest(config: &ExperimentConfig) -> String {
-    format!(
-        "{:x}",
-        Sha256::digest(serde_json::to_vec(config).expect("finite configuration"))
-    )
+    crate::common::sha256(serde_json::to_vec(config).expect("finite configuration"))
 }
 pub(crate) fn go_command(
     config: &ExperimentConfig,
@@ -189,8 +128,7 @@ struct GameRun<'a> {
 }
 impl<'a> GameRun<'a> {
     fn now(&self) -> u64 {
-        u64::try_from(self.origin.elapsed().as_nanos())
-            .expect("experiment duration below 584 years")
+        crate::common::elapsed_ns(self.origin)
     }
     fn failure(
         &self,
@@ -270,7 +208,7 @@ impl<'a> GameRun<'a> {
     ) -> Result<(), Box<RunnerFailure>> {
         if line.len() + 1 > self.config.io.command_bytes {
             return Err(Box::new(self.failure(
-                FailureKind::InvalidResponse,
+                FailureKind::MalformedReply,
                 index,
                 phase,
                 "generated command exceeds configured byte cap",
@@ -339,9 +277,9 @@ impl<'a> GameRun<'a> {
         {
             FailureKind::UnexpectedExit
         } else if timed_out {
-            FailureKind::ResponseTimeout
+            FailureKind::Watchdog
         } else {
-            FailureKind::MissingResponse
+            FailureKind::MissingReply
         };
         if !timed_out && phase != "cleanup" && self.engines[index].as_ref().unwrap().exit.is_none()
         {
@@ -351,7 +289,7 @@ impl<'a> GameRun<'a> {
         // Diagnostic acquisition must not move an earlier write failure
         // beyond a later native chess-clock deadline.
         failure.at_ns = observed_at;
-        if kind == FailureKind::ResponseTimeout {
+        if kind == FailureKind::Watchdog {
             failure.deadline_ns = dispatched_at.checked_add(timeout_ms * 1_000_000);
         }
         failure
@@ -373,7 +311,7 @@ impl<'a> GameRun<'a> {
             }),
             Expiry::Watchdog(at) => {
                 let mut failure = self.failure(
-                    FailureKind::ResponseTimeout,
+                    FailureKind::Watchdog,
                     index,
                     phase,
                     format!("required {expected} reply absent at watchdog"),
@@ -458,7 +396,7 @@ impl<'a> GameRun<'a> {
                     {
                         FailureKind::UnexpectedExit
                     } else {
-                        FailureKind::MissingResponse
+                        FailureKind::MissingReply
                     };
                     let mut failure = self.failure(
                         kind,
@@ -474,7 +412,7 @@ impl<'a> GameRun<'a> {
                 }
                 Ok(Output::Error(e)) => {
                     let mut f = self.failure(
-                        FailureKind::MissingResponse,
+                        FailureKind::MissingReply,
                         index,
                         phase,
                         format!("stdout read error: {e}"),
@@ -485,7 +423,7 @@ impl<'a> GameRun<'a> {
                 }
                 Ok(Output::Oversized) => {
                     let mut f = self.failure(
-                        FailureKind::InvalidResponse,
+                        FailureKind::MalformedReply,
                         index,
                         phase,
                         "stdout line exceeds configured cap",
@@ -527,7 +465,7 @@ impl<'a> GameRun<'a> {
                             .any(|b| b.is_ascii_control() && !b.is_ascii_whitespace())
                     {
                         let mut f = self.failure(
-                            FailureKind::InvalidResponse,
+                            FailureKind::MalformedReply,
                             index,
                             phase,
                             "stdout must be ASCII UCI text",
@@ -583,7 +521,7 @@ impl<'a> GameRun<'a> {
             && let Some(status) = failure.exit.as_ref()
         {
             failure.kind = if status.success {
-                FailureKind::MissingResponse
+                FailureKind::MissingReply
             } else {
                 FailureKind::UnexpectedExit
             };
@@ -623,7 +561,7 @@ impl<'a> GameRun<'a> {
                 Ok(engine) => self.engines[index] = Some(engine),
                 Err(e) => {
                     return self.failed(self.failure(
-                        FailureKind::ProcessStartFailure,
+                        FailureKind::ProcessStart,
                         index,
                         "spawn",
                         e,
@@ -765,7 +703,7 @@ impl<'a> GameRun<'a> {
                 Ok(a) => a,
                 Err(e) => {
                     let mut failure = self.failure(
-                        FailureKind::InvalidMove,
+                        FailureKind::IllegalAction,
                         index,
                         "bestmove",
                         format!("raw {line:?}: {e}"),
@@ -778,7 +716,7 @@ impl<'a> GameRun<'a> {
             let reply = self.submit(received_at, side, MatchCommand::Move(action));
             if let Some(rejection) = reply.rejection {
                 let mut failure = self.failure(
-                    FailureKind::InvalidMove,
+                    FailureKind::IllegalAction,
                     index,
                     "bestmove",
                     format!("raw {line:?}: {}", rejection.detail),
@@ -812,7 +750,7 @@ impl<'a> GameRun<'a> {
                     if let Some(status) = status {
                         let f = failure.as_deref_mut().unwrap();
                         f.kind = if status.success {
-                            FailureKind::MissingResponse
+                            FailureKind::MissingReply
                         } else {
                             FailureKind::UnexpectedExit
                         };
@@ -854,15 +792,8 @@ impl<'a> GameRun<'a> {
 /// produce successful report values whose games are explicitly unscored.
 pub fn run_experiment(config: &ExperimentConfig) -> Result<ExperimentReport, RunnerError> {
     config.validate()?;
-    let engine_identities = std::array::from_fn(|i| EngineIdentity {
-        executable: identity(&config.engines[i].path),
-        model: config.engines[i].model_path.as_ref().map(|p| identity(p)),
-        model_identity: config.engines[i].model_identity.clone(),
-    });
-    let deterministic_rerun_eligible = config.rerun_determinism_eligible()
-        && engine_identities.iter().all(|e| {
-            e.executable.sha256.is_some() && e.model.as_ref().is_none_or(|m| m.sha256.is_some())
-        });
+    let engine_identities = crate::common::identities(&config.engines);
+    let deterministic_rerun_eligible = crate::common::rerun_eligible(config, &engine_identities);
     let mut games = Vec::new();
     for (opening_index, opening) in config.openings.iter().enumerate() {
         for pairing in 0..if config.paired { 2 } else { 1 } {
@@ -1027,7 +958,7 @@ mod tests {
         let (stop, failure, _) = run.failed(failure);
         let failure = failure.unwrap();
         assert_eq!(stop, GameStop::Failure);
-        assert_eq!(failure.kind, FailureKind::MissingResponse);
+        assert_eq!(failure.kind, FailureKind::MissingReply);
         assert!(failure.exit.as_ref().unwrap().success);
         assert_eq!(failure.exit.as_ref().unwrap().code, Some(0));
         assert_eq!(run.game.conclusion(), None);
@@ -1045,14 +976,14 @@ mod tests {
             let failure = run.send(0, "uci", "handshake").unwrap_err();
             let (_, failure, _) = run.failed(failure);
             let mut failure = failure.unwrap();
-            assert_eq!(failure.kind, FailureKind::MissingResponse);
+            assert_eq!(failure.kind, FailureKind::MissingReply);
             assert_eq!(failure.exit, None);
             let receipt = failure.at_ns;
             let observations = run.cleanup(Some(&mut failure));
             let expected = if nonzero {
                 FailureKind::UnexpectedExit
             } else {
-                FailureKind::MissingResponse
+                FailureKind::MissingReply
             };
             assert_eq!(failure.kind, expected);
             assert_eq!(
@@ -1093,7 +1024,7 @@ mod tests {
         let mut failure = failure.unwrap();
         let receipt = failure.at_ns;
         let observations = run.cleanup(Some(&mut failure));
-        assert_eq!(failure.kind, FailureKind::MissingResponse);
+        assert_eq!(failure.kind, FailureKind::MissingReply);
         assert_eq!(failure.exit, None);
         assert_eq!(failure.at_ns, receipt);
         assert!(!observations[0].exit.as_ref().unwrap().success);
@@ -1112,7 +1043,7 @@ mod tests {
         };
         let (_, failure, _) = run.failed(failure);
         let mut failure = failure.unwrap();
-        assert_eq!(failure.kind, FailureKind::MissingResponse);
+        assert_eq!(failure.kind, FailureKind::MissingReply);
         let receipt = failure.at_ns;
         let observations = run.cleanup(Some(&mut failure));
         assert_eq!(failure.kind, FailureKind::UnexpectedExit);
@@ -1132,7 +1063,7 @@ mod tests {
         let failure = run.send(0, "uci", "handshake").unwrap_err();
         let (_, failure, _) = run.failed(failure);
         let mut failure = failure.unwrap();
-        assert_eq!(failure.kind, FailureKind::MissingResponse);
+        assert_eq!(failure.kind, FailureKind::MissingReply);
         assert_eq!(failure.exit, None);
         let actual = run.cleanup(Some(&mut failure));
         assert_eq!(actual[0].exit.as_ref().unwrap().code, Some(7));
@@ -1200,17 +1131,17 @@ mod tests {
             (
                 "options",
                 WriteFailure::Timeout("acknowledgement deadline".into()),
-                FailureKind::ResponseTimeout,
+                FailureKind::Watchdog,
             ),
             (
                 "options",
                 WriteFailure::Transport("peer says timed out".into()),
-                FailureKind::MissingResponse,
+                FailureKind::MissingReply,
             ),
             (
                 "cleanup",
                 WriteFailure::Transport("closed pipe".into()),
-                FailureKind::MissingResponse,
+                FailureKind::MissingReply,
             ),
         ] {
             let mut child = exited_child(true);
@@ -1222,7 +1153,7 @@ mod tests {
             assert_eq!(failure.exit, None);
             assert_eq!(
                 failure.deadline_ns,
-                (expected == FailureKind::ResponseTimeout).then_some(50_000_000)
+                (expected == FailureKind::Watchdog).then_some(50_000_000)
             );
             run.engines[0].as_mut().unwrap().defer_exit_observations(0);
             assert!(run.cleanup(None)[0].cleanup_failures.is_empty());
@@ -1336,7 +1267,7 @@ mod tests {
         );
         assert_eq!(reply.remaining_ns, Some([1_000_000, 50_000_000]));
         let eof = RunnerFailure {
-            kind: FailureKind::MissingResponse,
+            kind: FailureKind::MissingReply,
             engine: 0,
             phase: "bestmove".into(),
             at_ns: 20,
@@ -1348,7 +1279,7 @@ mod tests {
         };
         assert!(25 > eof.deadline_ns.unwrap_or(eof.at_ns));
         let timeout = RunnerFailure {
-            kind: FailureKind::ResponseTimeout,
+            kind: FailureKind::Watchdog,
             at_ns: 60,
             deadline_ns: Some(40),
             ..eof
@@ -1388,7 +1319,7 @@ mod tests {
                 "poll" => assert!(run.clock_if_due_at(observed)),
                 "failure" => {
                     let failure = RunnerFailure {
-                        kind: FailureKind::ResponseTimeout,
+                        kind: FailureKind::Watchdog,
                         engine: 0,
                         phase: "bestmove".into(),
                         at_ns: observed,

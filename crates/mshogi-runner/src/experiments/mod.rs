@@ -142,15 +142,7 @@ pub struct Config {
     /// Explicit finite distribution: uniform catalog, seeded permutation per cycle.
     pub openings: Vec<Opening>,
 }
-/// Caller clock accounting. Exhaustion is an unscored experiment stop.
-#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-pub struct FischerClock {
-    /// Initial time for each participant.
-    pub base_ms: u64,
-    /// Added only after an accepted native command.
-    pub increment_ms: u64,
-}
+pub use crate::FischerClock;
 /// Replayable clock receipt, charged for transport and process overhead too.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -194,9 +186,11 @@ fn clock_receipt(
     ClockReceipt {
         before_ms,
         charged_ms,
-        after_ms: before_ms
-            .saturating_sub(charged_ms)
-            .saturating_add(if applied { clock.increment_ms } else { 0 }),
+        after_ms: crate::common::balance_after(
+            before_ms,
+            charged_ms,
+            if applied { clock.increment_ms } else { 0 },
+        ),
     }
 }
 fn bounded(s: &str) -> bool {
@@ -207,7 +201,7 @@ fn err(s: impl ToString) -> RunnerError {
 }
 /// Lowercase SHA256 of exact UTF8 evidence bytes.
 pub fn digest(text: &str) -> String {
-    format!("{:x}", Sha256::digest(text.as_bytes()))
+    crate::common::sha256(text)
 }
 impl Config {
     /// Strict bounded decoding retains native-record duplicate-field admission.
@@ -230,7 +224,7 @@ impl Config {
             return Err(err("a participant clock requires the shared clock"));
         }
         for clock in (0..self.players.len()).filter_map(|p| self.player_clock(p)) {
-            if clock.base_ms == 0 || clock.base_ms > 600_000 || clock.increment_ms > 60_000 {
+            if !clock.valid() {
                 return Err(err("invalid finite Fischer clock"));
             }
         }

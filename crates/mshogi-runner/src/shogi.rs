@@ -93,10 +93,7 @@ impl Config {
 
     /// Strict, bounded input parsing.
     pub fn from_json(text: &str) -> Result<Self, RunnerError> {
-        if text.len() > 1_048_576 {
-            return Err(RunnerError("shogi config exceeds 1MiB".into()));
-        }
-        let config: Self = serde_json::from_str(text).map_err(|e| RunnerError(e.to_string()))?;
+        let config: Self = common::decode(text, common::CONFIG_BYTES)?;
         config.validate()?;
         Ok(config)
     }
@@ -131,69 +128,17 @@ impl Config {
         settings.validate_processes("shogi")
     }
 }
-pub use crate::protocol::FailureKind;
-/// Bounded protocol failure with this game's native categories.
-pub type Failure = protocol::Failure<FailureKind>;
-pub use crate::protocol::{Process, Traffic};
+pub use crate::{
+    FailureKind,
+    protocol::{Failure, Process, Traffic},
+};
 /// Accepted external reply with this game's native actor.
 pub type Turn = protocol::Turn<Side>;
-/// Why this experiment stopped; distinct from the native conclusion.
-#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
-pub enum Stop {
-    /// Native authoritative conclusion.
-    NativeConclusion,
-    /// Engine command experiment cap.
-    ActionLimit,
-    /// Overall experiment watchdog, not a clock loss.
-    TimeLimit,
-    /// Unscored failure.
-    Failure,
-}
-/// One complete accepted native game plus bounded external observations.
-#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-pub struct GameReport {
-    /// Opening index.
-    pub opening: usize,
-    /// Engine indices assigned to Sente/Gote.
-    pub assignment: [usize; 2],
-    /// Complete typed canonical envelope string preserves strict native raw parsing.
-    pub game: String,
-    /// Native conclusion independently checked on replay.
-    pub conclusion: Option<Conclusion>,
-    /// Half-point competition units only for completed successful experiments.
-    pub score: Option<[u8; 2]>,
-    /// Experiment stop reason.
-    pub stop: Stop,
-    /// Unscored execution failure if present.
-    pub failure: Option<Failure>,
-    /// Every accepted engine proposal with exact context provenance.
-    pub turns: Vec<Turn>,
-    /// Bounded complete traffic unless resource failure explicitly marks otherwise.
-    pub traffic: Vec<Traffic>,
-    /// Whether a hostile output exceeded retention capacity.
-    pub traffic_complete: bool,
-    /// Every fresh process's actual exit/diagnostic/cleanup evidence.
-    pub processes: Vec<Process>,
-    /// Actual overall elapsed experiment time, not a rules clock.
-    pub elapsed_ns: u64,
-}
-/// Self-contained replay evidence. External engines are not launched on replay.
-#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-pub struct Report {
-    /// Current report schema, one.
-    pub schema_version: u32,
-    /// Effective configuration including finite limits and all options.
-    pub config: Config,
-    /// Actual executable/model hashes (no PATH lookup).
-    pub identities: [EngineIdentity; 2],
-    /// Platform which actually ran these processes.
-    pub platform: String,
-    /// Opening/assignment-specific games.
-    pub games: Vec<GameReport>,
-}
+pub use crate::recorded::Stop;
+/// One native game and its bounded process observations.
+pub type GameReport = crate::recorded::GameReport<Side, Conclusion, ()>;
+/// Recorded games with their effective configuration and executable identities.
+pub type Report = crate::recorded::Report<Config, Side, Conclusion, ()>;
 pub(crate) fn canonical(game: &Game) -> Result<String, RunnerError> {
     CanonicalRecord::shogi(GameRecord::from_game(game))
         .to_json()
@@ -249,140 +194,41 @@ pub(crate) fn reply(text: &str) -> Result<GameCommand, String> {
             .map_err(|e| e.to_string()),
     }
 }
+impl crate::recorded::Opening for Opening {
+    type Adapter = Adapter;
+    fn open(&self) -> Result<Game, RunnerError> {
+        self.game()
+    }
+}
+impl Config {
+    fn schedule(&self) -> Result<crate::recorded::Schedule<'_, Opening>, RunnerError> {
+        self.validate()?;
+        Ok(crate::recorded::Schedule {
+            settings: self.settings(),
+            openings: &self.openings,
+            paired: self.paired,
+        })
+    }
+}
 impl Report {
-    /// Strict bounded report decoding followed by native replay.
+    /// Decode bounded evidence and verify the native history.
     pub fn from_json(text: &str) -> Result<Self, RunnerError> {
-        if text.len() > 67_108_864 {
-            return Err(RunnerError("shogi report exceeds 64MiB".into()));
-        }
-        let report: Self = serde_json::from_str(text).map_err(|e| RunnerError(e.to_string()))?;
+        let report: Self = common::decode(text, common::REPORT_BYTES)?;
         report.replay()?;
         Ok(report)
     }
-    /// Canonical report JSON; all accepted history remains in the native envelope.
+    /// Encode bounded evidence.
     pub fn to_json(&self) -> Result<String, RunnerError> {
-        let text = serde_json::to_string(self).map_err(|e| RunnerError(e.to_string()))?;
-        if text.len() > 67_108_864 {
-            return Err(RunnerError("report exceeds supported 64MiB bound".into()));
-        }
-        Ok(text)
+        common::encode_report(self)
     }
-    /// Verify root, all accepted responses, context/limits/provenance and conclusions.
+    /// Recreate each game from its opening and recorded replies.
     pub fn replay(&self) -> Result<Vec<Game>, RunnerError> {
-        self.config.validate()?;
-        if self.schema_version != 1
-            || self.games.len()
-                != self.config.openings.len() * if self.config.paired { 2 } else { 1 }
-        {
-            return Err(RunnerError("report version/game count mismatch".into()));
-        }
-        let mut games = Vec::new();
-        let mut generation = 0;
-        for (index, entry) in self.games.iter().enumerate() {
-            let opening = index / if self.config.paired { 2 } else { 1 };
-            let assignment = if self.config.paired && index % 2 == 1 {
-                [1, 0]
-            } else {
-                [0, 1]
-            };
-            if entry.opening != opening || entry.assignment != assignment {
-                return Err(RunnerError("opening/assignment mismatch".into()));
-            }
-            let mut game = self.config.openings[opening].game()?;
-            protocol::replay::<Adapter>(
-                self.config.settings(),
-                protocol::Replay {
-                    turns: &entry.turns,
-                    traffic: &entry.traffic,
-                    processes: &entry.processes,
-                    elapsed_ns: entry.elapsed_ns,
-                    game: &entry.game,
-                },
-                &mut game,
-                assignment,
-                &mut generation,
-            )?;
-            let CanonicalRecord::Shogi(record) =
-                CanonicalRecord::from_json(&entry.game).map_err(|e| RunnerError(e.to_string()))?
-            else {
-                return Err(RunnerError("report game is not shogi".into()));
-            };
-            if record.to_game().map_err(|e| RunnerError(e.to_string()))? != game
-                || entry.conclusion != game.conclusion()
-            {
-                return Err(RunnerError("canonical game/conclusion mismatch".into()));
-            }
-            let score = if entry.stop == Stop::NativeConclusion && entry.failure.is_none() {
-                game.conclusion().map(Conclusion::score_half_points)
-            } else {
-                None
-            };
-            if (!entry.traffic_complete && !matches!(entry.stop, Stop::Failure | Stop::TimeLimit))
-                || entry.score != score
-                || (entry.stop == Stop::NativeConclusion) != game.conclusion().is_some()
-                    && entry.stop != Stop::Failure
-                || (entry.stop == Stop::Failure) != entry.failure.is_some()
-                || entry.turns.len() > self.config.max_actions as usize
-                || (entry.stop == Stop::ActionLimit
-                    && entry.turns.len() != self.config.max_actions as usize)
-            {
-                return Err(RunnerError("experiment stop/score mismatch".into()));
-            }
-            games.push(game);
-        }
-        Ok(games)
+        crate::recorded::replay(self, self.config.schedule()?)
     }
 }
 /// Run each opening and engine assignment through the native protocol adapter.
 pub fn run(config: &Config) -> Result<Report, RunnerError> {
-    config.validate()?;
-    let identities = protocol::identities(&config.engines);
-    let mut report = Report {
-        schema_version: 1,
-        config: config.clone(),
-        identities,
-        platform: format!("{}-{}", std::env::consts::OS, std::env::consts::ARCH),
-        games: Vec::new(),
-    };
-    let mut generation = 0;
-    for (opening_index, opening) in config.openings.iter().enumerate() {
-        for reversed in 0..if config.paired { 2 } else { 1 } {
-            let assignment = if reversed == 1 { [1, 0] } else { [0, 1] };
-            let completed = protocol::run_game::<Adapter>(
-                config.settings(),
-                opening.game()?,
-                assignment,
-                &mut generation,
-            )?;
-            let game = completed.game;
-            let stop = match completed.stop {
-                End::NativeConclusion => Stop::NativeConclusion,
-                End::ActionLimit => Stop::ActionLimit,
-                End::TimeLimit => Stop::TimeLimit,
-                End::Failure => Stop::Failure,
-                End::Unresolved => unreachable!("Shogi has no pending adjudication"),
-            };
-            report.games.push(GameReport {
-                opening: opening_index,
-                assignment,
-                game: canonical(&game)?,
-                conclusion: game.conclusion(),
-                score: if stop == Stop::NativeConclusion {
-                    game.conclusion().map(Conclusion::score_half_points)
-                } else {
-                    None
-                },
-                stop,
-                failure: completed.failure,
-                turns: completed.turns,
-                traffic: completed.traffic,
-                traffic_complete: completed.traffic_complete,
-                processes: completed.processes,
-                elapsed_ns: completed.elapsed_ns,
-            });
-        }
-    }
-    report.replay()?;
+    let report = crate::recorded::run(config, config.schedule()?)?;
     report.to_json()?;
     Ok(report)
 }
@@ -391,7 +237,17 @@ pub(crate) struct Adapter;
 impl Native for Adapter {
     type Game = Game;
     type Side = Side;
-    type Kind = FailureKind;
+    type Conclusion = Conclusion;
+    type Pending = ();
+    fn conclusion(game: &Game) -> Option<Conclusion> {
+        game.conclusion()
+    }
+    fn pending(_game: &Game) -> Option<Self::Pending> {
+        None
+    }
+    fn score(conclusion: Conclusion) -> [u8; 2] {
+        conclusion.score_half_points()
+    }
     const HELLO: &'static str = "usi";
     const OK: &'static str = "usiok";
     const NEWGAME: &'static str = "usinewgame";
@@ -417,7 +273,7 @@ impl Native for Adapter {
     fn apply_reply(game: &mut Game, text: &str) -> Result<(), RunnerError> {
         submit(game, reply(text).map_err(RunnerError)?).map_err(RunnerError)
     }
-    fn admit_turn(game: &Game, text: &str) -> Result<Option<String>, Rejection<FailureKind>> {
+    fn admit_turn(game: &Game, text: &str) -> Result<Option<String>, Rejection> {
         let command = reply(text).map_err(|detail| Rejection {
             kind: FailureKind::MalformedReply,
             phase: "search",

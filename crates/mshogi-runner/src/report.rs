@@ -1,4 +1,5 @@
 //! Typed experiment observations; chess results are recomputed by core replay.
+use crate::FailureKind;
 use crate::{ExperimentConfig, RunnerError};
 use mshogi_core::chess::{ChessMatch, MatchConclusion, MatchRecord, MatchRequest};
 use serde::{Deserialize, Serialize};
@@ -28,23 +29,6 @@ pub struct EngineIdentity {
     pub model: Option<FileIdentity>,
     /// User-supplied embedded/model/evaluator label.
     pub model_identity: Option<String>,
-}
-/// Stable unscored experiment failure category.
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
-pub enum FailureKind {
-    /// Process could not be started.
-    ProcessStartFailure,
-    /// Nonzero exit, signal, or an idle engine exiting unexpectedly.
-    UnexpectedExit,
-    /// Bestmove syntax or rules-owned legality rejected the action.
-    InvalidMove,
-    /// Required reply was absent at clean EOF/closed output.
-    MissingResponse,
-    /// Live process missed the configured phase watchdog.
-    ResponseTimeout,
-    /// Malformed/oversized output or command/I/O resource exhaustion.
-    InvalidResponse,
 }
 /// Portable process exit details, including Unix signal when applicable.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
@@ -508,10 +492,7 @@ impl ExperimentReport {
         if self.summaries != summaries(&self.config, &self.games) {
             return Err(RunnerError("opening aggregate mismatch".into()));
         }
-        let expected = self.config.rerun_determinism_eligible()
-            && self.engine_identities.iter().all(|e| {
-                e.executable.sha256.is_some() && e.model.as_ref().is_none_or(|m| m.sha256.is_some())
-            });
+        let expected = crate::common::rerun_eligible(&self.config, &self.engine_identities);
         if self.deterministic_rerun_eligible != expected {
             return Err(RunnerError("rerun eligibility mismatch".into()));
         }

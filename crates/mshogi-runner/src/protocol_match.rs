@@ -3,7 +3,7 @@ use crate::{
     clocked::{Dialect, Host, Outcome},
     process::{Engine, escaped},
     protocol::{self, End, Native},
-    shogi::{Failure, FailureKind, Process, Traffic},
+    protocol::{Failure, Process, Traffic},
     *,
 };
 use serde::{Deserialize, Serialize};
@@ -51,7 +51,7 @@ pub struct Exhaustion<S> {
 /// Complete evidence of one clocked game.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-pub struct MatchReport<C, S, O, E> {
+pub struct MatchReport<C, S, O> {
     /// Report version, one.
     pub schema_version: u32,
     /// Effective configuration.
@@ -69,7 +69,7 @@ pub struct MatchReport<C, S, O, E> {
     /// Half points of engine 0 and engine 1, only for native conclusions.
     pub engine_score: Option<[u8; 2]>,
     /// Stop reason.
-    pub stop: E,
+    pub stop: MatchStop,
     /// Failure evidence for `Failure`.
     pub failure: Option<Failure>,
     /// Clock exhaustion evidence for `ClockExhausted`.
@@ -113,23 +113,38 @@ pub(crate) struct Settings<'a, G: MatchNative> {
 }
 impl<G: MatchNative> Settings<'_, G> {
     fn engine_for(&self, side: G::Side) -> usize {
-        if G::side(side) == 0 {
-            self.first
-        } else {
-            1 - self.first
+        engine_for(self.first, G::side(side))
+    }
+    fn score(&self, stop: MatchStop, conclusion: Option<G::Conclusion>) -> Option<[u8; 2]> {
+        if stop != MatchStop::NativeConclusion {
+            return None;
         }
+        let points = G::score(conclusion?);
+        Some([points[self.first], points[1 - self.first]])
     }
 }
-#[derive(Clone, Copy, PartialEq, Eq)]
-pub(crate) enum Stop {
-    Native(End),
+pub(crate) fn engine_for(first: usize, side: usize) -> usize {
+    [first, 1 - first][side]
+}
+/// Why the experiment stopped.
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum MatchStop {
+    /// Native conclusion; the game is scored.
+    NativeConclusion,
+    /// Native adjudication is pending (for example a chase question); unscored.
+    Unresolved,
+    /// A side's clock ran out; unscored.
     ClockExhausted,
+    /// Overall experiment watchdog; unscored.
     TimeLimit,
+    /// Protocol, process or admission failure; unscored.
     Failure,
 }
+
 pub(crate) struct Completed<G: MatchNative> {
     pub game: G::Game,
-    pub stop: Stop,
+    pub stop: MatchStop,
     pub identities: [EngineIdentity; 2],
     pub engine_ids: [Vec<String>; 2],
     pub failure: Option<Failure>,
@@ -140,39 +155,37 @@ pub(crate) struct Completed<G: MatchNative> {
     pub processes: Vec<Process>,
     pub elapsed_ns: u64,
 }
-impl<G: MatchNative> Completed<G> {
-    pub fn report<C, O, E>(
-        self,
-        config: C,
-        conclusion: Option<O>,
-        engine_score: Option<[u8; 2]>,
-        stop: E,
-    ) -> Result<MatchReport<C, G::Side, O, E>, RunnerError> {
-        Ok(MatchReport {
-            schema_version: 1,
-            config,
-            identities: self.identities,
-            platform: format!("{}-{}", std::env::consts::OS, std::env::consts::ARCH),
-            engine_ids: self.engine_ids,
-            game: G::canonical(&self.game)?,
-            conclusion,
-            engine_score,
-            stop,
-            failure: self.failure,
-            exhaustion: self.exhaustion,
-            turns: self.turns,
-            traffic: self.traffic,
-            traffic_complete: self.traffic_complete,
-            processes: self.processes,
-            elapsed_ns: self.elapsed_ns,
-        })
-    }
+pub(crate) fn run_report<C: Clone, G: MatchNative>(
+    config: &C,
+    settings: Settings<'_, G>,
+    game: G::Game,
+) -> Result<MatchReport<C, G::Side, G::Conclusion>, RunnerError> {
+    let completed = run::<G>(&settings, game)?;
+    let conclusion = G::conclusion(&completed.game);
+    Ok(MatchReport {
+        schema_version: 1,
+        config: config.clone(),
+        identities: completed.identities,
+        platform: crate::common::platform(),
+        engine_ids: completed.engine_ids,
+        game: G::canonical(&completed.game)?,
+        conclusion,
+        engine_score: settings.score(completed.stop, conclusion),
+        stop: completed.stop,
+        failure: completed.failure,
+        exhaustion: completed.exhaustion,
+        turns: completed.turns,
+        traffic: completed.traffic,
+        traffic_complete: completed.traffic_complete,
+        processes: completed.processes,
+        elapsed_ns: completed.elapsed_ns,
+    })
 }
 pub(crate) fn run<G: MatchNative>(
-    config: Settings<'_, G>,
+    config: &Settings<'_, G>,
     mut game: G::Game,
 ) -> Result<Completed<G>, RunnerError> {
-    let identities = protocol::identities(config.engines);
+    let identities = crate::common::identities(config.engines);
     let mut host = Host {
         dialects: config.wire.map(G::dialect),
         engines: config.engines,
@@ -212,14 +225,18 @@ pub(crate) fn run<G: MatchNative>(
     let mut exhaustion = None;
     let deadline = host.start + Duration::from_millis(config.max_game_ms);
     let stop = if failure.is_some() {
-        Stop::Failure
+        MatchStop::Failure
     } else {
         loop {
             if let Some(end) = G::end(&game) {
-                break Stop::Native(end);
+                break match end {
+                    End::NativeConclusion => MatchStop::NativeConclusion,
+                    End::Unresolved => MatchStop::Unresolved,
+                    _ => unreachable!("native terminal state"),
+                };
             }
             if Instant::now() >= deadline {
-                break Stop::TimeLimit;
+                break MatchStop::TimeLimit;
             }
             host.version = G::events(&game);
             let actor = G::actor(&game);
@@ -252,9 +269,10 @@ pub(crate) fn run<G: MatchNative>(
                         G::admit(&mut game, config.wire[index], &line)
                     {
                         failure = Some(host.failure(index, kind, phase, detail));
-                        break Stop::Failure;
+                        break MatchStop::Failure;
                     }
-                    clock[side] = clock[side].saturating_sub(elapsed) + config.increment[side];
+                    clock[side] =
+                        crate::common::balance_after(clock[side], elapsed, config.increment[side]);
                     turns.push(ClockedTurn {
                         reply: line,
                         elapsed_ms: elapsed,
@@ -262,7 +280,7 @@ pub(crate) fn run<G: MatchNative>(
                         ..context
                     });
                 }
-                Ok(Outcome::Watchdog) => break Stop::TimeLimit,
+                Ok(Outcome::Watchdog) => break MatchStop::TimeLimit,
                 Ok(Outcome::Exhausted(elapsed)) => {
                     exhaustion = Some(Exhaustion {
                         engine: index,
@@ -270,11 +288,11 @@ pub(crate) fn run<G: MatchNative>(
                         remaining_ms: clock[side],
                         elapsed_ms: elapsed,
                     });
-                    break Stop::ClockExhausted;
+                    break MatchStop::ClockExhausted;
                 }
                 Err(e) => {
                     failure = Some(e);
-                    break Stop::Failure;
+                    break MatchStop::Failure;
                 }
             }
         }
@@ -304,7 +322,7 @@ pub(crate) fn run<G: MatchNative>(
         traffic: host.traffic,
         traffic_complete: host.complete,
         processes,
-        elapsed_ns: host.start.elapsed().as_nanos().min(u128::from(u64::MAX)) as u64,
+        elapsed_ns: crate::common::elapsed_ns(host.start),
     })
 }
 pub(crate) fn replay<G: MatchNative>(
@@ -347,8 +365,53 @@ pub(crate) fn replay<G: MatchNative>(
         {
             return Err(RunnerError("turn lacks command/response evidence".into()));
         }
-        clock[side] = clock[side].saturating_sub(turn.elapsed_ms) + c.increment[side];
+        clock[side] = crate::common::balance_after(clock[side], turn.elapsed_ms, c.increment[side]);
         G::admit(game, c.wire[turn.engine], &turn.reply).map_err(|e| RunnerError(e.2))?;
     }
     Ok(clock)
+}
+
+pub(crate) fn replay_report<G: MatchNative, C>(
+    report: &MatchReport<C, G::Side, G::Conclusion>,
+    settings: Settings<'_, G>,
+    mut game: G::Game,
+) -> Result<G::Game, RunnerError> {
+    if report.schema_version != 1 {
+        return Err(RunnerError("unsupported match report version".into()));
+    }
+    let clock = replay::<G>(
+        &settings,
+        &mut game,
+        &report.turns,
+        &report.traffic,
+        report.traffic_complete,
+    )?;
+    crate::recorded::check_canonical::<G>(&report.game, &game)?;
+    let conclusion = G::conclusion(&game);
+    let end = G::end(&game);
+    let consistent = match report.stop {
+        MatchStop::NativeConclusion => end == Some(End::NativeConclusion),
+        MatchStop::Unresolved => end == Some(End::Unresolved),
+        MatchStop::ClockExhausted => {
+            end.is_none()
+                && report.exhaustion.as_ref().is_some_and(|e| {
+                    let actor = G::actor(&game);
+                    let side = G::side(actor);
+                    e.actor == actor
+                        && e.engine == settings.engine_for(actor)
+                        && e.remaining_ms == clock[side]
+                        && e.elapsed_ms > clock[side].saturating_add(settings.grace_ms)
+                })
+        }
+        MatchStop::TimeLimit | MatchStop::Failure => end.is_none(),
+    };
+    if !consistent
+        || report.conclusion != conclusion
+        || report.engine_score != settings.score(report.stop, conclusion)
+        || (report.stop == MatchStop::ClockExhausted) != report.exhaustion.is_some()
+        || (report.stop == MatchStop::Failure) != report.failure.is_some()
+    {
+        return Err(RunnerError("stop, score or exhaustion mismatch".into()));
+    }
+    Ok(game)
 }

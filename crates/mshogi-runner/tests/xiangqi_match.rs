@@ -1,7 +1,6 @@
 //! Persistent, clocked UCI Xiangqi games: native results, unscored stops and replay.
 use mshogi_runner::{
-    shogi::FailureKind,
-    shogi_match::Clock,
+    FischerClock as Clock,
     xiangqi::Opening,
     xiangqi_match::{MatchConfig, MatchReport, MatchStop, run},
     *,

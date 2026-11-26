@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-21T23:10:00Z'
-updated_date: '2026-11-26T02:42:00Z'
+updated_date: '2026-11-26T02:51:00Z'
 labels:
   - engine
   - refactor
@@ -49,4 +49,6 @@ Production lines before: mshogi-engine 4,921; mshogi-desktop-session 12,732; msh
 Checkpoint 2026-11-26 (branch claude/msh-222-engine-adapters): adapter.rs (trait EngineGame, EngineResult<G>, EngineTelemetry<G>, one matches, validate and score_label) and game.rs (five impls) replace shogi.rs, xiangqi.rs, tori.rs, chu.rs, tenjiku.rs; server.rs has one execute path and one engine slot. Callers in desktop-session, runner, console and tests updated; engine tests pass (fixed-search baseline unchanged). Next: workspace and desktop checks, fixture regeneration, docs, line counts, review.
 
 Checkpoint 2026-11-26 (1e95c95): protocol version 7; choice field in every game; Chu, Tori and Tenjiku frontend fixtures regenerated (diff is only action -> choice, 11 fields: search output unchanged); scripts and docs updated. Checks: fmt, clippy (workspace and desktop-session all features), workspace tests 1152 passed and 1 contract test fixed after (protocol literal), desktop-session all features 197 passed, frontend check and 586 tests passed, script Python tests passed, src-tauri lock current. CI process suite (run 45720363450) passed on Linux, macOS and Windows. Next: fresh-agent review (first attempt stopped by a usage limit), fixes, merge main, final checks, integrate.
+
+Review (fresh subagent, 2026-11-26, given the diff and the task): no real defects. It checked each unified admission rule against the shared core and the root adapters (complete-depth, node-limit, nodes >= depth, root-win, Shogi declaration, Xiangqi claim), the engine slot and game switching in server.rs, and the callers (matches is always called before validate). Fixed from its suggestions: ExecutionObservation::matches uses one for_game dispatch; server.rs has one new_engine and one extends helper and kept() is now session_engine(); Chu, Tenjiku and Tori share a board_action_game macro; runner valid_work reads EngineGame bounds; new adapter tests for the unified rules (node limit, complete depth, root win, Shogi declaration and Xiangqi claim shapes, Xiangqi timed fallback, Unresolved status); the Tenjiku forgery test asserts the observation check; protocol 7 in the engine-session doc. Not done here: one generic runner admit function (MSH-263 scope, noted there); one SearchSession for Shogi and Xiangqi (MSH-256, noted there). Visible text changes, accepted as consistency fixes: Xiangqi stop label Stopped -> Search stopped; Xiangqi distance labels use the singular and 'Win at the analyzed position'; unknown Tori identities get no score label (as the other games).
 <!-- SECTION:NOTES:END -->

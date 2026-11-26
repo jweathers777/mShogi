@@ -1,11 +1,11 @@
 ---
 id: MSH-252
 title: Shared Game History and Xiangqi Replay
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-26T15:22:00Z'
+updated_date: '2026-11-26T15:30:00Z'
 labels:
   - core
   - refactor
@@ -31,7 +31,7 @@ Xiangqi still clones commands, events, snapshots, steps and identities in transa
 <!-- AC:BEGIN -->
 - [x] #1 One generic history owner in mshogi-core serves Tori, Chu and Tenjiku; each game supplies only its rules step (legality, effects, repetition rule, conclusions) and its snapshot data; Xiangqi and Shogi use it too, or the notes record why not.
 - [x] #2 A game is copied the same way in every game; u64 counter checks and Resource::Counter are removed where overflow cannot occur.
-- [ ] #3 Rules, perft and record tests and the committed record fixtures are unchanged; production line counts before and after are recorded.
+- [x] #3 Rules, perft and record tests and the committed record fixtures are unchanged; production line counts before and after are recorded.
 - [x] #4 One review by a fresh agent session.
 - [x] #5 A measurement of replay time per move at full length, before and after, with the cause named
 - [x] #6 Replay is at least twice as fast, or the task records why not; Xiangqi rules tests and perft are unchanged
@@ -73,4 +73,12 @@ Checkpoint on codex/msh-252-shared-history: Tori, Chu and Tenjiku share the hist
 Independent review cleared dd27c8b after two fixes: Tenjiku search PV validation and full-game perft now clone the admitted game directly, with cooperative stop checks. New Xiangqi regression forces a refusal after both a board action and a multi-event control, checks all ledgers, and uses the previous undo chain. Six release Chess perft cases passed, including deep divides. Initial native replay 28.719 ms after short-circuiting terminal checks. Next on codex/msh-252-shared-history: final workspace checks, interleaved benchmark runs, and integration.
 
 Final release timings on Apple M1 Pro, Rust 1.99.1, 23a0fd0 versus dd27c8b. Three alternating pairs, each reporting the median of five replays or eleven admissions. resource_admission xiangqi 1000 generated the same 1,000 board moves and 59,375 native bytes. Replay fell from 154.510 to 27.668 ms (154.510 to 27.668 us/move, 5.58x). Last-move admission fell from 87.375 to 3.917 us. Append rollback eliminates repeated whole-history clones. The remaining large cost was evaluating one-ply win witnesses: local_status generated every legal reply for each candidate. It now ends the same native iterator at the first legal reply. All witness ordering, declared-counter checks and ordinary move legality stay intact. On one fixed 59,593-byte desktop document with the same 1,000 moves, ValidatedGameDocument::<Xiangqi>::decode fell from 153.594 to 28.352 ms (5.42x). DesktopController::queue_product_open through receipt of its installed snapshot fell from 158.427 to 31.248 ms (5.07x). No document limit or desktop work model was added. Production Rust in all changed source files, counting physical lines with comments/blank lines and excluding test-only files/items: 12,345 before, 11,984 after (361 fewer). No fixture or rule/perft/record expectation changed. Two synthetic Tenjiku runtime-exhaustion tests and their test hook were removed with that obsolete refusal. Declared board counters can reach their limits through imports; those typed refusals and tests stay. Routine CI for dd27c8b and the six release deep/ordinary Chess perft cases passed. Final workspace check running.
+
+The reviewed code is on main at 19072f5. Final python3 tools/checks.py run --base origin/main (base 23a0fd0) passed formatting, workspace/all-target Clippy, 1,157 Rust tests (10 ignored by default), TypeScript and 575 frontend tests. The independent release perft target passed all six tests including deep divides. Native Xiangqi board, perft, record, archive and rollback tests retained their expectations. All committed fixtures are identical. An additional 74,172-byte document with 1,000 board actions and 256 rejected count claims (512 audit events) validated in 171.007 -> 28.444 ms and completed product Open in 175.215 -> 32.531 ms on the same machine. Both inputs, probe, timing output, count script and final local check log are at gs://mshogi-experiments-216675633801/runs/msh-252/. No cloud compute or VMs. Estimated GCS cost below US$0.01. Routine CI passed at https://github.com/jweathers777/mShogi/actions/runs/45847286033. All required checks resolved.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Tori, Chu and Tenjiku use one history owner. Shogi and Xiangqi share command transactions, copy isolation and runtime retirement. Xiangqi now rolls back appended state on failure and stops terminal checks at the first legal reply. Native replay of 1,000 moves was 5.58x faster; desktop Open was 5.07x faster. The full check suite, independent perft and fresh review passed. Next is MSH-253 (Shared Record Codec and Incremental Engine Sessions).
+<!-- SECTION:FINAL_SUMMARY:END -->

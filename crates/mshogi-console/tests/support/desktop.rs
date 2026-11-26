@@ -135,3 +135,12 @@ pub fn until(
         thread::sleep(Duration::from_millis(1));
     }
 }
+
+pub fn wait_file(controller: &mut DesktopController, id: u64) -> SharedSnapshot {
+    use mshogi_desktop_session::IoPhase;
+    let snapshot = until(controller, 20, |s| {
+        s.io.id == id && matches!(s.io.phase, IoPhase::Complete | IoPhase::Failed)
+    });
+    assert_eq!(snapshot.io.phase, IoPhase::Complete, "{:?}", snapshot.io);
+    snapshot
+}

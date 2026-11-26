@@ -173,7 +173,7 @@ fn both_games_roundtrip_common_files_json_and_restored_undo() {
         let out = shell(
             game,
             &format!(
-                "move {moves}\nrecord print\nrecord save {}\nposition startpos\nrecord load-file {}\nrecord print\nundo {undo}\nrecord print\n",
+                "move {moves}\nrecord print\nrecord\x0bsave\x0b{}\nposition startpos\nrecord load-file {}\nrecord print\nundo {undo}\nrecord print\n",
                 path.display(),
                 path.display()
             ),

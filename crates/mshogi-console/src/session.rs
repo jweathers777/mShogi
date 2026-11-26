@@ -145,7 +145,7 @@ impl HumanSession for Session {
                     .into(),
             );
         }
-        record_io::install(self, Self { game: replay.game }, Self::record_json)?;
+        self.replace(Self { game: replay.game })?;
         writeln!(out, "fen {}", self.game.position()).unwrap();
         Ok(())
     }
@@ -160,7 +160,7 @@ impl Session {
             }
             _ => return Err("usage: position startpos | position fen <FEN>".into()),
         };
-        record_io::install(self, Self { game }, Self::record_json)?;
+        self.replace(Self { game })?;
         writeln!(out, "fen {}", self.game.position()).unwrap();
         Ok(())
     }
@@ -184,7 +184,7 @@ impl Session {
             game.apply(action)
                 .map_err(|error| failure(error.to_string()))?;
         }
-        record_io::install(self, Self { game }, Self::record_json)?;
+        self.replace(Self { game })?;
         writeln!(out, "fen {}", self.game.position()).unwrap();
         Ok(())
     }

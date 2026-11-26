@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:22:00Z'
-updated_date: '2026-11-26T17:27:00Z'
+updated_date: '2026-11-26T17:32:00Z'
 labels:
   - console
   - refactor
@@ -58,4 +58,6 @@ Baseline c7e99bb has 4,680 Rust source lines under crates/mshogi-console/src and
 Checkpoint on codex/msh-255-console-sessions: all six shells share line parsing and record dispatch. Five games share the candidate, move batch, undo and command session; Chess uses its own history and the common export check. All seven focused shell test binaries passed. Next: finish test support, compare coverage, fresh review, workspace and targeted process CI.
 
 Shared test support now holds console execution and success checks, protocol children, temporary directories, desktop/bridge helpers, Chess snapshots and both self-play harnesses. Focused Clippy passes. Next: inspect preserved test coverage, finish independent review and run workspace and platform checks on codex/msh-255-console-sessions.
+
+Independent review found repeated Shogi history replay, an inconsistent record separator, three remaining success checks, two duplicate desktop waits and stale Xiangqi help documentation. Fixed all findings. Native undo tokens now roll back only an uncommitted batch, including export failures. First 90 plies of msh187-round2-failed-0002.usi as individual human shell moves on the Mac, debug: reviewer measured 3.70 s before the fix. Median of three after the fix was 0.092 s versus 0.048 s on the original binary, with exactly equal final records. New code checks export on each move. Source lines 4680 to 4144 and test lines 9345 to 8423 (all .rs under src and tests). All 164 original integration and five unit tests retain their names, including the release-only Chu test. Clippy passes. Next: tracked workspace checks and three-platform process CI, integrate, close and clean.
 <!-- SECTION:NOTES:END -->

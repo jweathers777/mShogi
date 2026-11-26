@@ -9,6 +9,7 @@ use std::{
 };
 use support::bridge::started;
 use support::desktop::command;
+use support::desktop::wait_file;
 fn controller(path: &str) -> DesktopController {
     let mut c = DesktopController::new(path.into()).unwrap();
     // Explicit test-root provenance supplies a marker namespace to the separate
@@ -132,18 +133,7 @@ fn real_internal_tori_analysis_save_reopen_stopped_then_explicit_analysis_and_re
     std::fs::remove_file(path).unwrap();
     c.begin_shutdown();
 }
-fn wait_file(c: &mut DesktopController, id: u64) {
-    let deadline = Instant::now() + Duration::from_secs(20);
-    loop {
-        let s = c.shared_snapshot();
-        if s.io.id == id && matches!(s.io.phase, IoPhase::Complete | IoPhase::Failed) {
-            assert!(matches!(s.io.phase, IoPhase::Complete), "{s:?}");
-            return;
-        }
-        assert!(Instant::now() < deadline);
-        thread::sleep(Duration::from_millis(1));
-    }
-}
+
 #[test]
 fn real_supervised_tori_failure_cancel_replace_cleanup_and_cross_game_retirement() {
     let mut c = controller(env!("CARGO_BIN_EXE_mshogi-internal-fixture"));

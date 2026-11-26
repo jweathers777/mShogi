@@ -50,8 +50,8 @@ quit
 - `move <action>...` is one atomic batch: all native commands must admit and the
   actual final canonical envelope must fit before the session is replaced.
   A failed batch does not change the current game.
-- `eligibility red|black` is advisory. `claim`, `resign`, `offer`, `accept`,
-  `decline` submit actual native commands with the specified actor. Claims use
+- `eligibility red|black` is advisory. `claim`, `resign`, `offer-draw`,
+  `accept-draw`, `decline-draw` submit actual native commands with the specified actor. Claims use
   claimant-specific history and can return an admitted rejection audit without
   a board action or penalty. Turn admission remains native and command-specific.
 - `undo [n]` reverses **native commands**, not arbitrary individual derived events.

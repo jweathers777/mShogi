@@ -60,6 +60,19 @@ pub trait HumanSession {
         self.record()?.to_json().map_err(diagnostic)
     }
 
+    fn check_export(&self) -> Result<(), String> {
+        self.record_json().map(drop)
+    }
+
+    fn replace(&mut self, candidate: Self) -> Result<(), String>
+    where
+        Self: Sized,
+    {
+        candidate.check_export()?;
+        *self = candidate;
+        Ok(())
+    }
+
     fn execute(&mut self, line: &str, out: &mut String) -> Result<Next, String> {
         let line = line.trim_matches(separator);
         if line.is_empty() || line.starts_with('#') {
@@ -122,16 +135,31 @@ impl<G: Variant> Session<G> {
         out: &mut String,
         apply: impl FnOnce(&mut Self, &mut String) -> Result<(), String>,
     ) -> Result<(), String> {
-        let (game, undo) = G::restore(self.record()?)?;
-        let mut candidate = Self { game, undo };
+        // Native undo restores the exact command prefix, including the validity
+        // of older undo tokens. Keep the batch private until export succeeds.
+        let mark = self.undo.len();
         let mut pending = String::new();
-        apply(&mut candidate, &mut pending)?;
-        record_io::install(self, candidate, Self::record_json)?;
-        if !pending.is_empty() && !pending.ends_with('\n') {
-            pending.push('\n');
+        let result = apply(self, &mut pending).and_then(|()| {
+            self.check_export()?;
+            if !pending.is_empty() && !pending.ends_with('\n') {
+                pending.push('\n');
+            }
+            self.game.write_status(&mut pending)
+        });
+        if let Err(error) = result {
+            self.undo_to(mark)?;
+            return Err(error);
         }
         out.push_str(&pending);
-        self.game.write_status(out)
+        Ok(())
+    }
+
+    fn undo_to(&mut self, mark: usize) -> Result<(), String> {
+        while self.undo.len() > mark {
+            self.game
+                .undo_event(self.undo.pop().expect("checked length"))?;
+        }
+        Ok(())
     }
 }
 
@@ -159,8 +187,9 @@ pub trait Variant: Sized {
         &mut self,
         args: &[&str],
         command: Self::Command,
+        undo: &mut Vec<Self::Undo>,
         out: &mut String,
-    ) -> Result<Self::Undo, String>;
+    ) -> Result<(), String>;
     fn undo_event(&mut self, undo: Self::Undo) -> Result<(), String>;
     fn extra(&self, command: &str, args: &[&str], out: &mut String) -> Result<(), String>;
 }
@@ -174,7 +203,7 @@ impl<G: Variant> HumanSession for Session<G> {
     }
     fn load_record(&mut self, record: CanonicalRecord, out: &mut String) -> Result<(), String> {
         let (game, undo) = G::restore(record)?;
-        record_io::install(self, Self { game, undo }, Self::record_json)?;
+        self.replace(Self { game, undo })?;
         writeln!(out, "{}", G::LOADED).unwrap();
         self.game.write_status(out)
     }
@@ -188,7 +217,7 @@ impl<G: Variant> HumanSession for Session<G> {
         match command {
             "position" => {
                 let candidate = Self::new(self.game.position_command(rest)?);
-                record_io::install(self, candidate, Self::record_json)?;
+                self.replace(candidate)?;
                 self.game.after_position(out)
             }
             "show" | "status" | "legal" | "history" => {
@@ -207,10 +236,10 @@ impl<G: Variant> HumanSession for Session<G> {
                 if args.is_empty() {
                     return Err(format!("usage: move <{}>...", G::MOVE_SYNTAX));
                 }
-                self.transaction(out, |candidate, pending| {
+                self.transaction(out, |session, pending| {
                     for label in args {
-                        candidate.undo.push(
-                            candidate
+                        session.undo.push(
+                            session
                                 .game
                                 .play(label, pending)
                                 .map_err(|e| format!("{e}; no actions applied"))?,
@@ -233,20 +262,16 @@ impl<G: Variant> HumanSession for Session<G> {
                         self.undo.len()
                     ));
                 }
-                for _ in 0..count {
-                    self.game
-                        .undo_event(self.undo.pop().expect("count checked"))?;
-                }
+                self.undo_to(self.undo.len() - count)?;
                 self.game.write_status(out)
             }
             "perft" | "divide" => self.game.perft(command, args, out),
             _ => {
                 if let Some(cmd) = G::actor_command(command) {
-                    self.transaction(out, |candidate, pending| {
-                        candidate
-                            .undo
-                            .push(candidate.game.submit_actor(args, cmd, pending)?);
-                        Ok(())
+                    self.transaction(out, |session, pending| {
+                        session
+                            .game
+                            .submit_actor(args, cmd, &mut session.undo, pending)
                     })
                 } else {
                     self.game.extra(command, args, out)
@@ -335,13 +360,13 @@ pub(crate) use native_record;
 
 macro_rules! variant_actions {
     ($parse:expr, $rule:literal $(, $effects:ident)?) => {
-        fn legal(&self,out:&mut String)->Result<(),String>{
-            let actions=self.legal_actions();
-            writeln!(out,"legal-game {} (complete native choices; {})", actions.len(),$rule).unwrap();
+        fn legal(&self, out: &mut String) -> Result<(), String> {
+            let actions = self.legal_actions();
+            writeln!(out, "legal-game {} (complete native choices; {})", actions.len(), $rule).unwrap();
             for action in actions {
-                let json=serde_json::to_string(&action).expect("native action");
-                let label=notation::format_action(self.position(),action).map_err(diagnostic)?;
-                writeln!(out,"{label} {json}").unwrap();
+                let json = serde_json::to_string(&action).expect("native action");
+                let label = notation::format_action(self.position(), action).map_err(diagnostic)?;
+                writeln!(out, "{label} {json}").unwrap();
             }
             Ok(())
         }
@@ -356,21 +381,23 @@ macro_rules! variant_actions {
                 })
                 .map_err(diagnostic)?;
             writeln!(out, "played {label}").unwrap();
-            $( $effects(self,out); )?
+            $( $effects(self, out); )?
             Ok(token)
         }
         fn submit_actor(
             &mut self,
             args: &[&str],
             command: GameCommand,
+            undo: &mut Vec<GameUndo>,
             _out: &mut String,
-        ) -> Result<GameUndo, String> {
-            self.submit(GameRequest {
+        ) -> Result<(), String> {
+            let token = self.submit(GameRequest {
                 expected: self.context(),
                 actor: side(args)?,
                 command,
-            })
-            .map_err(diagnostic)
+            }).map_err(diagnostic)?;
+            undo.push(token);
+            Ok(())
         }
         fn undo_event(&mut self, mut undo: GameUndo) -> Result<(), String> {
             self.undo(&mut undo).map_err(diagnostic)
@@ -380,18 +407,23 @@ macro_rules! variant_actions {
 pub(crate) use variant_actions;
 // Search crates use game-specific types for their limits, decisions and PVs.
 macro_rules! analyze {
-    ($search:ident,$game:expr,$args:expr,$out:expr) => {{
+    ($search:ident, $game:expr, $args:expr, $out:expr) => {{
         use mshogi_search::$search as search;
         let limits = match $args {
             [] => search::DEFAULT_LIMITS,
-            [depth,nodes] => search::Limits {
+            [depth, nodes] => search::Limits {
                 depth: crate::shell::number(depth).ok_or("invalid ASCII depth")?,
-                nodes: crate::shell::number(nodes).ok_or("invalid ASCII nodes")?
+                nodes: crate::shell::number(nodes).ok_or("invalid ASCII nodes")?,
             },
             _ => return Err("usage: analyze [depth nodes]".into()),
         };
-        let result = search::search($game,limits).map_err(diagnostic)?;
-        writeln!($out,"analysis-read-only perspective {:?} status {:?} decision {:?} score {:?} completed-depth {} visited {} pv {:?}",result.perspective,result.status,result.decision,result.score,result.completed_depth,result.nodes,result.principal_variation).unwrap();
+        let result = search::search($game, limits).map_err(diagnostic)?;
+        writeln!(
+            $out,
+            "analysis-read-only perspective {:?} status {:?} decision {:?} score {:?} completed-depth {} visited {} pv {:?}",
+            result.perspective, result.status, result.decision, result.score,
+            result.completed_depth, result.nodes, result.principal_variation
+        ).unwrap();
         Ok(())
     }}
 }

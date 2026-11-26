@@ -14,21 +14,14 @@ pub enum Operation<'a> {
     LoadJson(&'a str),
 }
 pub fn parse(rest: &str) -> Result<Operation<'_>, String> {
-    if rest == "print" {
-        return Ok(Operation::Print);
+    match crate::shell::words(rest) {
+        ("print", "") => Ok(Operation::Print),
+        (_, "") => Err(usage()),
+        ("save", path) => Ok(Operation::Save(path)),
+        ("load-file", path) => Ok(Operation::LoadFile(path)),
+        ("load-json", json) => Ok(Operation::LoadJson(json)),
+        _ => Err(usage()),
     }
-    if let Some((op, argument)) = rest.split_once(|c: char| c.is_ascii_whitespace()) {
-        let argument = argument.trim_matches(|c: char| c.is_ascii_whitespace());
-        if !argument.is_empty() {
-            return match op {
-                "save" => Ok(Operation::Save(argument)),
-                "load-file" => Ok(Operation::LoadFile(argument)),
-                "load-json" => Ok(Operation::LoadJson(argument)),
-                _ => Err(usage()),
-            };
-        }
-    }
-    Err(usage())
 }
 fn usage() -> String {
     "usage: record print | record save <path> | record load-file <path> | record load-json <JSON>"
@@ -80,15 +73,4 @@ fn save_new(path: &Path, bytes: &[u8]) -> std::io::Result<()> {
     })();
     let _ = fs::remove_file(temp);
     result
-}
-
-/// Publish a console candidate only after its complete record can be exported.
-pub fn install<S>(
-    live: &mut S,
-    candidate: S,
-    encode: impl FnOnce(&S) -> Result<String, String>,
-) -> Result<(), String> {
-    encode(&candidate)?;
-    *live = candidate;
-    Ok(())
 }

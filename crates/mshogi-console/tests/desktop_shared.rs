@@ -5,18 +5,7 @@ use support::desktop::command;
 use mshogi_core::{chess, native::*, shogi as s};
 use mshogi_desktop_session::*;
 use mshogi_engine::{ExecutionResponse, PROTOCOL_VERSION};
-use std::time::{Duration, Instant};
-fn wait(c: &mut DesktopController, done: impl Fn(&SharedSnapshot) -> bool) -> SharedSnapshot {
-    let deadline = Instant::now() + Duration::from_secs(15);
-    loop {
-        let snapshot = c.shared_snapshot();
-        if done(&snapshot) {
-            return snapshot;
-        }
-        assert!(Instant::now() < deadline, "{snapshot:?}");
-        std::thread::sleep(Duration::from_millis(2));
-    }
-}
+
 fn analyze(c: &mut DesktopController) -> SharedSnapshot {
     command(
         c,
@@ -27,7 +16,7 @@ fn analyze(c: &mut DesktopController) -> SharedSnapshot {
             },
         },
     );
-    wait(c, |s| {
+    support::desktop::until(c, 15, |s| {
         s.analysis.is_some()
             || s.chess
                 .as_ref()
@@ -57,7 +46,7 @@ fn real_chess_shogi_chess_execution_uses_one_supervisor_and_fresh_ids() {
         },
     );
     command(&mut c, SessionOperation::Resume {});
-    let played = wait(&mut c, |s| s.event_index == 1);
+    let played = support::desktop::until(&mut c, 15, |s| s.event_index == 1);
     assert_initial_native_move(&played);
     assert_eq!(played.turn.label, "Gote");
     assert!(played.observations[0].observation.context.request_id > old.request_id);
@@ -104,7 +93,7 @@ fn actual_engine_declaration_is_a_terminal_command_and_analysis_cannot_apply_it(
     assert!(!observed.status.concluded);
     assert!(observed.analysis.is_some());
     command(&mut c, SessionOperation::Resume {});
-    let ended = wait(&mut c, |s| s.status.concluded);
+    let ended = support::desktop::until(&mut c, 15, |s| s.status.concluded);
     assert_eq!(ended.event_index, 1);
     assert_eq!(ended.events[0].board_ply, 0);
     assert!(ended.status.label.contains("entering-king declaration"));
@@ -129,9 +118,9 @@ fn product_new_gote_real_engine_play_analysis_archive_and_resume_use_native_path
             NativeSide::Shogi(s::Side::Gote),
         )
         .unwrap();
-    wait(&mut c, |_| receipt.completion().is_some());
+    support::desktop::until(&mut c, 15, |_| receipt.completion().is_some());
     receipt.completion().unwrap().unwrap();
-    let first = wait(&mut c, |view| view.event_index == 1);
+    let first = support::desktop::until(&mut c, 15, |view| view.event_index == 1);
     assert_eq!(first.human.id, NativeSide::Shogi(s::Side::Gote));
     assert_eq!(first.turn.id, NativeSide::Shogi(s::Side::Gote));
     assert_initial_native_move(&first);
@@ -142,7 +131,7 @@ fn product_new_gote_real_engine_play_analysis_archive_and_resume_use_native_path
         NativeSide::Shogi(s::Side::Gote)
     );
     command(&mut c, SessionOperation::play("7c7d"));
-    wait(&mut c, |view| view.event_index == 3);
+    support::desktop::until(&mut c, 15, |view| view.event_index == 3);
     let observed = analyze(&mut c);
     let response = observed.analysis.as_ref().unwrap().observation.clone();
     assert_eq!(observed.event_index, 3);
@@ -153,13 +142,13 @@ fn product_new_gote_real_engine_play_analysis_archive_and_resume_use_native_path
         std::process::id()
     ));
     let save_id = c.queue_shared_save(path.clone()).unwrap();
-    let saved = wait(&mut c, |view| {
+    let saved = support::desktop::until(&mut c, 15, |view| {
         view.io.id == save_id && matches!(view.io.phase, IoPhase::Complete | IoPhase::Failed)
     });
     assert_eq!(saved.io.phase, IoPhase::Complete, "{:?}", saved.io);
     assert!(!saved.document.dirty);
     let open_id = c.queue_shared_open(path.clone(), saved.open_token).unwrap();
-    let opened = wait(&mut c, |view| {
+    let opened = support::desktop::until(&mut c, 15, |view| {
         view.io.id == open_id && matches!(view.io.phase, IoPhase::Complete | IoPhase::Failed)
     });
     assert_eq!(opened.io.phase, IoPhase::Complete, "{:?}", opened.io);

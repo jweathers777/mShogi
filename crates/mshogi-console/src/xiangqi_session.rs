@@ -42,10 +42,7 @@ impl Variant for Game {
             ("fen", fen) => PositionRoot::from_fen(fen).map_err(diagnostic)?,
             ("json", json) => PositionRoot::from_json(json).map_err(diagnostic)?,
             _ => {
-                return Err(
-                "usage: position [explicit|auto_valid_claims] startpos|fen <FEN>|json <root-JSON>"
-                    .into(),
-            );
+                return Err("usage: position [explicit|auto_valid_claims] startpos|fen <FEN>|json <root-JSON>".into());
             }
         };
         Game::from_root(root, policy).map_err(diagnostic)
@@ -78,8 +75,9 @@ impl Variant for Game {
         &mut self,
         args: &[&str],
         command: GameCommand,
+        undo: &mut Vec<GameUndo>,
         out: &mut String,
-    ) -> Result<GameUndo, String> {
+    ) -> Result<(), String> {
         let result = self
             .submit(GameRequest {
                 expected: self.context(),
@@ -87,13 +85,14 @@ impl Variant for Game {
                 command,
             })
             .map_err(diagnostic)?;
+        undo.push(result.undo);
         writeln!(
             out,
             "command-result {}",
             serde_json::to_string(&result.result).map_err(diagnostic)?
         )
         .unwrap();
-        Ok(result.undo)
+        Ok(())
     }
     fn undo_event(&mut self, undo: GameUndo) -> Result<(), String> {
         self.undo(undo).map_err(diagnostic)

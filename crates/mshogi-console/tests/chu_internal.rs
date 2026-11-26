@@ -9,6 +9,7 @@ use std::{
 };
 use support::bridge::{started, wait};
 use support::desktop::command as send;
+use support::desktop::wait_file;
 // These tests need one complete native iteration, not production playing depth.
 // The standard root completes depth one in 38 nodes; 512 leaves room for the
 // tested opening/history prefixes. Normal Resume limits are checked separately.
@@ -44,23 +45,7 @@ fn request(id: u64, g: &c::Game, analysis: bool) -> ExecutionRequest {
         },
     }
 }
-fn wait_file(ctl: &mut DesktopController, id: u64) -> SharedSnapshot {
-    let end = Instant::now() + Duration::from_secs(20);
-    loop {
-        let s = ctl.shared_snapshot();
-        if s.io.id == id
-            && matches!(
-                s.io.phase,
-                mshogi_desktop_session::IoPhase::Complete | mshogi_desktop_session::IoPhase::Failed
-            )
-        {
-            assert_eq!(s.io.phase, mshogi_desktop_session::IoPhase::Complete);
-            return s;
-        }
-        assert!(Instant::now() < end);
-        thread::sleep(Duration::from_millis(1));
-    }
-}
+
 fn failure(ctx: ExecutionContext) -> ExecutionResponse {
     ExecutionResponse {
         protocol: PROTOCOL_VERSION,

@@ -119,8 +119,7 @@ divide 2
 quit
 ";
     let output = shell(input.as_bytes());
-    assert_eq!(output.status.code(), Some(0), "{output:?}");
-    assert_eq!(text(output.stderr), "");
+    success(&output);
     let stdout = text(output.stdout);
     let expected_start = "\
 fen r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1
@@ -256,17 +255,16 @@ fen rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
 #[test]
 fn quit_ends_the_session_and_end_of_input_is_success() {
     let output = shell(b"perft 1\nquit\nfrobnicate\n");
-    assert_eq!(output.status.code(), Some(0));
+    success(&output);
     assert_eq!(text(output.stdout), "perft 1 20\n");
-    assert!(output.stderr.is_empty());
 
     let output = shell(b"");
-    assert_eq!(output.status.code(), Some(0));
-    assert!(output.stdout.is_empty() && output.stderr.is_empty());
+    success(&output);
+    assert!(output.stdout.is_empty());
 
     // Windows line endings and a missing final newline are accepted.
     let output = shell(b"move e2e4\r\nfen");
-    assert_eq!(output.status.code(), Some(0), "{output:?}");
+    success(&output);
     assert_eq!(
         text(output.stdout),
         "fen rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1\n".repeat(2)
@@ -287,7 +285,7 @@ fn invalid_utf8_lines_are_reported_and_skipped() {
 #[test]
 fn help_lists_every_shell_command() {
     let output = shell(b"help\n");
-    assert_eq!(output.status.code(), Some(0));
+    success(&output);
     let stdout = text(output.stdout);
     for command in [
         "position startpos",
@@ -380,8 +378,7 @@ fn ascii_grammar_numeric_bounds_and_escaped_diagnostics() {
 fn diagnostic_depth_limit_is_inclusive() {
     // A terminal diagram makes the highest accepted depth inexpensive.
     let output = shell(b"position fen 7k/5Q2/6K1/8/8/8/8/8 b - - 0 1\nperft 4\ndivide 4\n");
-    assert_eq!(output.status.code(), Some(0));
-    assert!(output.stderr.is_empty());
+    success(&output);
     assert!(text(output.stdout).ends_with("perft 4 0\ntotal 0\n"));
 }
 

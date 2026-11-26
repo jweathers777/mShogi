@@ -1,10 +1,7 @@
 //! Actual bundled native Tori entry point.
+mod support;
 use mshogi_core::{native::CanonicalRecord, tori};
 use mshogi_engine::*;
-use std::{
-    io::Write,
-    process::{Command, Stdio},
-};
 #[test]
 fn real_subprocess_preserves_tori_context_supplies_native_action_and_roundtrips_observation() {
     let mut game = tori::Game::standard();
@@ -29,21 +26,11 @@ fn real_subprocess_preserves_tori_context_supplies_native_action_and_roundtrips_
             },
         },
     };
-    let mut child = Command::new(env!("CARGO_BIN_EXE_mshogi"))
-        .arg("internal-search")
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .spawn()
-        .unwrap();
-    writeln!(
-        child.stdin.take().unwrap(),
-        "{}",
-        serde_json::to_string(&request).unwrap()
-    )
-    .unwrap();
-    let output = child.wait_with_output().unwrap();
-    assert!(output.status.success(), "{:?}", output.stderr);
+    let output = support::cli::run(
+        &["internal-search"],
+        format!("{}\n", serde_json::to_string(&request).unwrap()),
+    );
+    support::cli::success(&output);
     let response: ExecutionResponse = ExecutionResponse::decode(&output.stdout, &request).unwrap();
     assert!(response.matches(&request));
     assert_eq!(response.observation.context, request.context);

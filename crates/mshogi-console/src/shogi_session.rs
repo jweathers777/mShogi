@@ -114,14 +114,18 @@ impl Variant for Game {
         &mut self,
         args: &[&str],
         command: GameCommand,
+        undo: &mut Vec<GameUndo>,
         _out: &mut String,
-    ) -> Result<GameUndo, String> {
-        self.submit(GameRequest {
-            expected: self.context(),
-            actor: side(args)?,
-            command,
-        })
-        .map_err(game_error)
+    ) -> Result<(), String> {
+        undo.push(
+            self.submit(GameRequest {
+                expected: self.context(),
+                actor: side(args)?,
+                command,
+            })
+            .map_err(game_error)?,
+        );
+        Ok(())
     }
     fn undo_event(&mut self, undo: GameUndo) -> Result<(), String> {
         self.undo(undo)

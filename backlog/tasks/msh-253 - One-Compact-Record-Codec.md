@@ -1,11 +1,11 @@
 ---
 id: MSH-253
 title: Shared Record Codec and Incremental Engine Sessions
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:21:00Z'
-updated_date: '2026-11-26T16:06:00Z'
+updated_date: '2026-11-26T16:24:00Z'
 labels:
   - core
   - persistence
@@ -32,11 +32,11 @@ The engine keeps a retained native game between turns (incremental session: msho
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 One generic compact record codec in mshogi-core serves Tori, Chu and Tenjiku, including a suffix delta for each; per-game code holds only its root data and command type; Xiangqi and Shogi use it too, or the notes record why not.
-- [ ] #2 native.rs maps one record error type; committed records, fixtures and envelope test outputs are byte-identical before and after.
-- [ ] #3 Production line counts before and after are recorded; workspace checks pass.
-- [ ] #4 Incremental sessions are a capability of the generic engine adapter; each game that has a record suffix uses them without per-game session code; a game left out has a recorded reason.
-- [ ] #5 Engine protocol and incremental tests cover each game; the replay cost per request at full length is measured before and after for Xiangqi and Tenjiku.
+- [x] #1 One generic compact record codec in mshogi-core serves Tori, Chu and Tenjiku, including a suffix delta for each; per-game code holds only its root data and command type; Xiangqi and Shogi use it too, or the notes record why not.
+- [x] #2 native.rs maps one record error type; committed records, fixtures and envelope test outputs are byte-identical before and after.
+- [x] #3 Production line counts before and after are recorded; workspace checks pass.
+- [x] #4 Incremental sessions are a capability of the generic engine adapter; each game that has a record suffix uses them without per-game session code; a game left out has a recorded reason.
+- [x] #5 Engine protocol and incremental tests cover each game; the replay cost per request at full length is measured before and after for Xiangqi and Tenjiku.
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -64,4 +64,12 @@ Independent review of a63fa47..66a670a found a preflight performance regression,
 The retained-analysis regression exposed a decoder defect: when the outer delta content preceded its kind, Serde buffered and lost the raw inner bytes. The transport now captures that field as RawValue before selecting the native decoder. A reordered forged request returns InvalidRequest and the valid target still searches. The focused engine test passes. Long 1,000-command comparisons and end-to-end workspace/CI verification are in progress. Branch codex/msh-253-record-codec.
 
 Evidence on Apple M1 Pro, Rust 1.99.1 release, a63fa47 versus 25805f0. Deterministic resource_admission walk through the 1,000th command (999-command base plus one board action), median of nine requests. Time for request decode, native replay and prefix admission excluding search/process I/O, in microseconds: Xiangqi 82,906 -> 50; Tenjiku Adams 15,825 -> 50; Muller 15,463 -> 48. Whole zero-node timed request over process pipes: Xiangqi 83,131 -> 87 us and 59,577 -> 511 bytes; Adams 16,461 -> 104 us and 135,695 -> 781 bytes; Muller 15,999 -> 105 us and 136,298 -> 751 bytes. Each advance admits the one new command. Complete seed-253 games ended at 81, 175 and 161 events respectively. Their final native admission was 15,747 -> 54 us, 3,383 -> 49 us and 3,201 -> 51 us. All 42 committed .mshogi native record outputs, 23 distinct envelope-test outputs and six generated complete/prefix envelopes compared byte for byte. Production lines in all changed Rust src files, with blank/comment lines and without test-only items/files: 8,075 -> 7,620 (-455). Inputs, workload source, commands and results: gs://mshogi-experiments-216675633801/runs/msh-253/record-admission.tar.gz (64,087 bytes). No cloud VM or build; cloud compute cost US$0. Current branch: codex/msh-253-record-codec. Remaining: final workspace, frontend fixture comparison, process CI 45854759990 and persistence CI 45854765652; then integrate, finalize, clean up.
+
+Verification of the integrated source at 25805f0: python3 tools/checks.py run --base origin/main passed on macOS, including formatting, Clippy, 1,161 Rust tests (10 marked ignored), perft and rules conformance, TypeScript and 575 frontend tests. The four frontend fixture writers produced 115 byte-identical outputs in separate baseline and candidate destinations. SHA-256 manifests and the workspace log are in gs://mshogi-experiments-216675633801/runs/msh-253/verification.txt.gz. Targeted process CI https://github.com/jweathers777/mShogi/actions/runs/45854759990 and persistence CI https://github.com/jweathers777/mShogi/actions/runs/45854765652 passed on Ubuntu 24.04, macOS 15 and Windows 2022. GitHub could not allocate the first macOS persistence runner; retry 2 passed. Final code and evidence fast-forwarded onto main at 2466540.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Tori, Chu and both Tenjiku profiles share strict record reconstruction and atomic suffix validation. Five engine adapters retain native games for timed turns and analysis. Xiangqi supports multi-event commands; Chess keeps its full match record. At 1,000 commands, native admission fell from 82.9 ms to 0.050 ms for Xiangqi, 15.8 ms to 0.050 ms for Tenjiku Adams and 15.5 ms to 0.048 ms for Muller. Production code fell by 455 lines. Wire and fixture comparisons, workspace checks, independent review and platform CI passed. This completes the prerequisite for MSH-243 (Game-Independent Strength Tool).
+<!-- SECTION:FINAL_SUMMARY:END -->

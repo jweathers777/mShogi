@@ -4,7 +4,7 @@ title: Establish and meet measured tenjiku shogi engine strength criteria
 status: Ready
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-27T15:26:00Z'
+updated_date: '2026-11-27T22:11:00Z'
 labels:
   - model:medium
   - effort:medium
@@ -66,4 +66,6 @@ Move generation discussion slot: MSH-202 (Tenjiku Move Generation Deep Dive).
 John, 2026-11-25: use the game-independent strength tool of MSH-243 (Game-Independent Strength Tool); do not write new Tenjiku-only copies. MSH-240 removed the earlier per-game tools; MSH-243 records where to read them.
 
 2026-11-27 (John): Released MSH-53 to Ready. The current authorization is the Tenjiku selectivity round tracked in MSH-53.1. Later steps and the baseline stop decision remain separate. MSH-277 through MSH-283 remain deferred.
+
+John authorized the Tenjiku same-family reference ladder and deeper blunder screen for Adams and Muller in MSH-53.3 (Tenjiku Reference Ladder and Blunder Screen), using accepted engine 0bbfd9c. The child records the frozen budgets, methods and evidence. The parent remains open for John’s separate baseline stop decision after measurement.
 <!-- SECTION:NOTES:END -->

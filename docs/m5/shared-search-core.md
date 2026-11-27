@@ -467,7 +467,9 @@ Private analysis has these limits:
   Longer exchanges, repeated threats and delayed burn effects can be missed.
   The initial eight-ply setting exhausted even 100,000 nodes before completing
   an iteration on an ordinary game position. The shorter bound controls that
-  cost; its playing effect is assessed separately through predecessor games.
+  cost. Both profiles omit the optional quiet-check stage. At normal search
+  nodes they use the shared table move, killers, history and continuation
+  scores to order quiet moves.
 - Both profiles use royal capture and bare-royal outcomes. A side may leave
   its royal exposed. The shared df-pn solver requires a checked defender
   with no legal reply and excludes positions decided by a rule score. Its

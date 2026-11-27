@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-27T15:26:00Z'
-updated_date: '2026-11-27T15:46:00Z'
+updated_date: '2026-11-27T15:50:00Z'
 labels:
   - tenjiku
   - search
@@ -51,4 +51,6 @@ Combined candidate 6592f51 is frozen and pushed. The generator checks complete q
 
 Combined pilot 6592f51 vs d6274cb completed all twelve depth-3 roots in every repeat. Sums of per-root median times (baseline/candidate) were 3.690/4.353 s Adams and 3.697/4.479 s Muller, nodes 56080/65604 and 200241/195246. Tactics stayed 144/144 development and 72/72 held out for both profiles. Focused single-core release tests: 22 passed, including both-profile differential and perft, discovered threat and root restrictions; two manual timing tests ignored. Cloud build and pilot jobs, disks and VMs verified absent; compute upper bounds $0.01637 and $0.03902. The placement-only ablation is conditional on combined-set pilot failure, so it is not triggered.
 Game batching fixed before any game result: eight distinct seeds per profile per batch, four c3-standard-4 VMs per profile, two pairs per VM. Start with seeds 1..8 for both. Use the original full-opening population and clock. The paired driver stops for diagnosis on any unfinished pair. Stop further batches as inconclusive if over half of either profile's pairs in a batch lack a native result in both colors: a majority-censored, clock-dependent sample cannot qualify this population. Otherwise continue consecutive batches until a decision or the original caps. Preserve every completed side and unscored side separately. No selective retries, clock substitutions, or pooling across profiles. First-move calibration is running independently; no game result seen. Next: run clocked pairs, verify replay hashes and resources, and retain or revert on the frozen thresholds.
+
+Calibration finished on eight paired full-opening roots per profile, 60 s + 1.5 s, two pairs per c3-standard-4. Both engines had all 8/8 first moves admitted in both profiles. Adams candidate depth 4/5 on 5/3 roots, predecessor 6/2; Muller both depth 3/4/5 on 1/6/1. All 32 single-turn games stopped at the planned step limit; they supply no score. All 16 native replay report hashes match. Calibration resources verified absent, VM upper bound $0.06564. Strength job strength-msh531-games-1 was submitted for seeds 1..8 per profile. Full workspace checks run with one build/test worker. Current branch codex/msh-53.1-tenjiku-selectivity. Evidence and operator helper are in the task GCS prefix. Next: finish all launched game pairs and inspect the predeclared censoring guard.
 <!-- SECTION:NOTES:END -->

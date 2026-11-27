@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-27T21:36:00Z'
-updated_date: '2026-11-27T21:43:00Z'
+updated_date: '2026-11-27T21:50:00Z'
 labels:
   - tenjiku
   - strength
@@ -51,4 +51,8 @@ Frozen before play. Accepted engine 0bbfd9c68abb18b424bb82f2b4aa118c5a22ce5a. Re
 Claimed on codex/msh-53.3-tenjiku-assessment. Next freeze the paired ladder and deeper judge protocol from the accepted evaluation and shared harness, then run both authorized measurements.
 
 Pre-dispatch controller setup failure in strength-msh533-16k-4k: a missing local google-cloud-pubsub module stopped completion monitoring and the controller deleted the job before any worker started. tasks.json empty, zero worker claims and zero games. Retain this original prefix and charge $0.009295 upper bound. Install tools/experiments/requirements-controller.txt and verify both imports. Before any play: submit the unchanged first edge to 16k-4k-v2, then the two other edges. Judge groups 9..12 and 13..16 will share one allocation (two frozen commands per VM); groups 1 and 5 as planned. Seven total allocations maximum, identical sampling and caps, no played seed repeated. Inputs are hash-verified under gs://mshogi-experiments-216675633801/runs/msh-53.3/inputs/. Branch codex/msh-53.3-tenjiku-assessment.
+
+First 16000/4000 block: 32/32 raw pairs replayed and verified. Adams 0/32 native scores, Muller 1 higher-work win/32; no complete pairs. Node-limit stops 32/31, mostly on the 4000-node side. Keep this failed measurement and all prefixes. Spending bound through two cleaned allocations is recorded in operator receipts. Continue both remaining frozen node edges without change.
+Supplement, frozen independently before clock or judge results: a separate Fischer clock curve on fresh catalog indices 41..46, both colors and same engine. Compare 60+1.5 vs 30+0.75 and 120+3 vs 60+1.5. Two bins of three concurrent pairs per profile per edge, c3-standard-4 only. Same 768 events/game, 1200 s/pair, 1260 s/bin, depth-64/5M safety limits, no substitution, no early decision, same independent scoring, late depth and censor bounds. The clocks inherit the accepted 60+1.5 control, and avoid a small hard node limit in difficult positions. Four cells, six openings each, limited precision. This is an independent supplement, not replacement games.
+To make room INSIDE the original seven allocations, three-and-a-half hours and $6.65 total bound: judge in two blocks of eight successive openings/profile (1..8 and 9..16), two independent report lanes per VM. Preserve the same 512000-node/depth-64 native helper, all eight frozen midpoint samples and unchanged criteria. The pre-dispatch scheduler groups only reports; no scored sample has been inspected. A thin Cloud Build layer on the existing worker permits two concurrent shared judge calls and records individual missing searches (original 60 s native watchdog), including if the cleanup reserve precludes a call. Preserve worker errors, unjudged histories, and a cluster sensitivity by coverage. Reserve the seventh 30-minute allocation for both supplemental edges. Carry all previous costs and retain $1 for incidental services. Next complete remaining node blocks, both judge blocks, clock supplement, then audit.
 <!-- SECTION:NOTES:END -->

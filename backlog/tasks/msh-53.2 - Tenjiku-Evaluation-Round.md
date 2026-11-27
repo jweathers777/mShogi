@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-27T16:53:00Z'
-updated_date: '2026-11-27T20:17:00Z'
+updated_date: '2026-11-27T20:28:00Z'
 labels:
   - tenjiku
   - evaluation
@@ -84,4 +84,6 @@ Trial 6855d62, binary SHA256 84fb903bb5c1320166fdae80407f43ff68a76be9f53571407fa
 Clock block 1, seeds 1..8 per profile, produced all 16 color pairs and all replay/hash checks passed. Adams 7 scored, pentanomial [0,0,1,0,6], LLR .5405, individual 14W/0D/1L/1 unscored (native incomplete:Stopped). Muller 8 scored, [0,0,0,0,8], LLR .9075, 16W. Neither SPRT eligible before 30 scored pairs. The match wrapper returns nonzero on an unscored native game, so Batch is marked failed for this block; verified complete worker outputs, native reports and zero remaining jobs/VMs/disks. No seed discarded or retried. VM cost upper bound $0.536040, cumulative $4.499579. Next: consecutive seeds 9..16 on the same 8 VMs and ongoing frozen profile gates. Branch codex/msh-53.2-tenjiku-evaluation.
 
 Verified the archived clock configurations directly against the native reports: candidate and predecessor SHA256, identical 60,000+1,500 ms clocks and depth-64/5,000,000-node safety limits, 768 events/1,200,000 ms pair, ordered color swaps and recalculation of the candidate-side score. Candidate deterministic depth-2 root fingerprints are limited to the two Tenjiku rows at 0e6e85a and follow the trial decision. The candidate passes 1175 Rust tests (10 ignored) and all 578 frontend tests; verified official Node 24.19.0 was used because the embedded runtime rejects native library signatures. Six Cloud Build source archives and exact task-specific container manifests/configs/layers were copied to expiring GCS operator/ storage and verified. Temporary Cloud Build staging generations and all six task-specific image versions are gone; the shared predecessor image stays available.
+
+Clock block 2, seeds 9..16: Adams all eight pairs scored; Muller six scored, two native incomplete:Stopped pairs. All 16 reports replayed and independently verified including equal clocks, score orientation and binary hashes; verified zero residual Batch resources. Cumulative Adams 15 scored, pentanomial [0,0,2,0,13], LLR 1.6741, individual 29W/2L/1 unscored. Muller 14 scored, [0,0,1,0,13], LLR 1.8688, 29W/1L/2 unscored. Zero draws. The H1 bound is 2.9444 and min 30 scored pairs per profile. Block VM upper bound $0.321370, task VM bound $4.820948. Full candidate checks with official Node 24.19.0 passed: fmt/Clippy, 1175 Rust tests (10 ignored), frontend types and 578 tests, 58 strength tests. Next: seeds 17..24 under the frozen independent tests. Branch codex/msh-53.2-tenjiku-evaluation.
 <!-- SECTION:NOTES:END -->

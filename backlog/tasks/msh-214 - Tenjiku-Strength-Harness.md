@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-20T22:51:00Z'
-updated_date: '2026-11-27T13:27:00Z'
+updated_date: '2026-11-27T13:36:00Z'
 labels:
   - tenjiku
   - search
@@ -26,7 +26,7 @@ Goal: the harness step of the per-game classical strength program (docs/m5/stren
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [ ] #1 At least 100 balanced openings, with their source and the balance rule fixed before screening
-- [ ] #2 A tactical suite of at least 200 positions with independently established answers (for example from a native mate prover) and a held-out part, with the baseline score
+- [x] #2 A tactical suite of at least 200 positions with independently established answers (for example from a native mate prover) and a held-out part, with the baseline score
 - [ ] #3 A game-test control at which the median late-game depth is at least 8, or a lower target with its reason and cost recorded; a game test against a frozen predecessor runs end to end in the cloud
 - [ ] #4 A self-play export for Texel data with a split, and a time-odds measurement (2x time) recorded
 <!-- AC:END -->
@@ -59,4 +59,6 @@ Clock pilot sampling frozen before game results: for each profile use the first 
 Screen/proof job strength-msh214-screen1 complete and cleanup verified (no remaining job, disks or VMs; VM cost <= $0.131). Adams admitted 100/505 (scores -97 to +92), Muller 100/448 (-100 to +98). The native one-ply proof and both baseline splits completed for every row. Each profile contains 216 independent rule-proved diagrams, 144 development and 72 held-out. Each scored 144/144 and 72/72 at depth 2 and 500000 nodes. These composed elementary tactics are saturated at that budget. Grouped families and all alternative winning actions are retained. Source, proof, probe and screen receipts are under runs/msh-214/screen1 in the experiment bucket. Next: verify consolidated cross-shard uniqueness and inspect equal-clock and 2x pilot results; no task completion yet.
 
 The 30 s + 0.5 s pilot exposed incomplete first iterations at 608 to 1231 ms, including both colors of a Muller odds pair. Both profiles also completed full equal-clock pairs; typical late depth was 3 to 4. Calibration consequence fixed before the next run: increase to 60 s + 1.5 s, double both terms for time odds, play the same three Texel-stratified openings at equal clocks and all 12 additional catalog openings (indices 4 to 15, 1-based) at 2x. Keep unfinished pairs and do not use them to decide an SPRT. Use all six equal-clock pilot games per profile for export, with zero samples from unscored games. Re-screen each consolidated catalog to verify cross-shard board uniqueness. Per-pair wall budget 1200 s; no more than four pairs per c3-standard-4.
+
+Pilot1 finished on c3-standard-4. All 24 games remained in evidence: at equal 30 s + 0.5 s, Adams 5/6 and Muller 4/6 games concluded, with 2/3 and 1/3 complete predecessor pairs. Median depth from post-opening ply 40 was 4 for each profile (960 and 1551 accepted turns, including retained prefixes). At 2x, Adams 4 wins and 2 unfinished, Muller 3 wins, 1 loss and 2 unfinished for the longer clock. Pilot1 is a calibration failure: incomplete first iterations and 768-ply step limits, no SPRT decision. VM upper bound $0.461 and verified zero remaining resources. The next run, strength-msh214-control2, uses the already frozen 60 s + 1.5 s control and twelve further odds pairs, plus export/uniqueness checks. Branch codex/msh-214-tenjiku-harness.
 <!-- SECTION:NOTES:END -->

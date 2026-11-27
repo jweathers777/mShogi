@@ -56,6 +56,34 @@ For a development blunder screen use `blunders --suite FILE --depth N --nodes N`
 It records whether each move avoided the known error and matched one reference
 alternative. Add `--movetime MS` for a timed screen.
 
+### Tenjiku inputs
+
+Use the catalogs in `tools/strength/data/`. Replace `PROFILE` with `adams`
+or `muller` in both the filename and the command. A full opening history binds
+the game to its selected rules profile.
+
+- **Openings**. Each `tenjiku-PROFILE-openings-v1.json` has 100 openings.
+  The source is four seeded legal actions from the standard position. The
+  frozen engine at `2e4b9ad` screened each live position at depth 2 with a
+  500,000-node budget and accepted an absolute score of at most 100 pawn
+  hundredths. The catalog records the seeds, budgets and individual scores.
+  This is a shallow balance estimate for color-swapped tests.
+- **Tactics**. Each `tenjiku-PROFILE-tactics-v1.json` has 216 composed
+  diagrams. The shared one-ply prover applied every legal board action
+  through the game rules and retained every immediate win. The nine
+  families exercise Fire Demon burns, ranked general captures over
+  intervening pieces and two-leg Lion captures. Variants of one family
+  stay together. Three whole families (72 positions) are held out.
+  The frozen baseline solved all positions at depth 2. Use this suite
+  to detect tactical regressions. It has no headroom at that limit.
+  A slower forced win can fail the one-ply criterion.
+
+For example, run the held-out Muller suite with a frozen executable:
+
+```sh
+python3 -m tools.strength.cli probe --game tenjiku --profile muller --suite tools/strength/data/tenjiku-muller-tactics-v1.json --split held-out --engine ENGINE --depth 2 --nodes 500000 --out runs/TASK/muller-held-out.json
+```
+
 ## Comparisons and time odds
 
 ```sh

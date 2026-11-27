@@ -1,10 +1,11 @@
 ---
 id: MSH-266
 title: Desktop Scripts and Reproducible Fixtures
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-26T11:55:00Z'
+updated_date: '2026-11-27T06:35:00Z'
 labels:
   - desktop
   - scripts
@@ -47,4 +48,6 @@ Found in MSH-224 (2026-11-22): regenerating with write_frontend_fixtures changes
 John approved consolidation on 2026-11-26: this task retains the full scope of MSH-266 (Shared Desktop Script Helpers), MSH-221 (Desktop GUI Fixture Generators). Script helpers and fixture lists must be verified with working generators and reproducible outputs; final regeneration follows the naming cleanup. Agent labels are model:medium, effort:high for the combined scope. Absorbed task records are archived, not completed; all implementation criteria remain unchecked.
 
 Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
+
+Handoff: codex/msh-266-desktop-scripts starts at cb89ef1. Next, inspect generations, desktop helper seams and CI before implementing.
 <!-- SECTION:NOTES:END -->

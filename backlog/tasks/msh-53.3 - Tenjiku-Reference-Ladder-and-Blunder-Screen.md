@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-27T21:36:00Z'
-updated_date: '2026-11-27T21:40:00Z'
+updated_date: '2026-11-27T21:43:00Z'
 labels:
   - tenjiku
   - strength
@@ -49,4 +49,6 @@ Frozen before play. Accepted engine 0bbfd9c68abb18b424bb82f2b4aa118c5a22ce5a. Re
 
 <!-- SECTION:NOTES:BEGIN -->
 Claimed on codex/msh-53.3-tenjiku-assessment. Next freeze the paired ladder and deeper judge protocol from the accepted evaluation and shared harness, then run both authorized measurements.
+
+Pre-dispatch controller setup failure in strength-msh533-16k-4k: a missing local google-cloud-pubsub module stopped completion monitoring and the controller deleted the job before any worker started. tasks.json empty, zero worker claims and zero games. Retain this original prefix and charge $0.009295 upper bound. Install tools/experiments/requirements-controller.txt and verify both imports. Before any play: submit the unchanged first edge to 16k-4k-v2, then the two other edges. Judge groups 9..12 and 13..16 will share one allocation (two frozen commands per VM); groups 1 and 5 as planned. Seven total allocations maximum, identical sampling and caps, no played seed repeated. Inputs are hash-verified under gs://mshogi-experiments-216675633801/runs/msh-53.3/inputs/. Branch codex/msh-53.3-tenjiku-assessment.
 <!-- SECTION:NOTES:END -->

@@ -1,11 +1,11 @@
 ---
 id: MSH-53.1
 title: Tenjiku Selectivity Round
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-27T15:26:00Z'
-updated_date: '2026-11-27T16:35:00Z'
+updated_date: '2026-11-27T16:37:00Z'
 labels:
   - tenjiku
   - search
@@ -29,9 +29,9 @@ Run the classical selectivity round for both accepted Tenjiku profiles using the
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Quiescence checks, full SEE, game-scaled margins, move ordering and shared df-pn mate search each have a measured result or a concrete reason they do not apply, for both profiles as applicable.
-- [ ] #2 Freeze the predecessor and record the test method, reachable depth, caps and decision threshold before trials. Kept changes pass applicable perft, differential and tactical checks and qualify in a clocked predecessor test when search behavior changes. Record rejected or inconclusive trials and unscored games.
-- [ ] #3 Required checks pass, affected durable documentation is current, and task notes record revisions, settings, measurements, costs, run paths and cleanup.
+- [x] #1 Quiescence checks, full SEE, game-scaled margins, move ordering and shared df-pn mate search each have a measured result or a concrete reason they do not apply, for both profiles as applicable.
+- [x] #2 Freeze the predecessor and record the test method, reachable depth, caps and decision threshold before trials. Kept changes pass applicable perft, differential and tactical checks and qualify in a clocked predecessor test when search behavior changes. Record rejected or inconclusive trials and unscored games.
+- [x] #3 Required checks pass, affected durable documentation is current, and task notes record revisions, settings, measurements, costs, run paths and cleanup.
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -60,4 +60,12 @@ Full-game batch 2, seeds 9..16. Adams 3W/0D/8L, 5 unscored (2 incomplete searche
 Technique decisions for Adams and Muller: (1) Eight quiet royal threats at the quiescence frontier were tested with (2) quiet placement ordering. Both were removed after the set failed to qualify; no individual strength effect claimed. The ordering-only pilot was conditional on combined pilot rejection and was not triggered. Existing table, tactical gain, killers, history and continuation ordering remain. (3) The existing bounded exchange search already uses both players' complete recapture moves and allows either to stop, including off-target burns, compound captures, promotion and suicide. Work exhaustion retains the move. Tenjiku differential and exchange tests passed. A single-square swap list cannot represent these effects. (4) MARGIN_UNIT 100 equals the board Pawn and captures have no hand value. No rescaling applies. (5) The shared df-pn proof uses check with no legal replies and excludes rule-score terminals. Both profiles allow a royal to remain exposed and end on royal capture or bare-royal outcomes. That solver does not apply.
 Restored the accepted engine, tests and snapshot in 731e510. Final product and tooling diff against af4a48c is empty. The candidate passed fmt, Clippy, 1176 Rust tests (10 ignored), TypeScript and 578 frontend tests. The standalone compatible Node 24.21.0 rerun resolved the default runtime problem without any repository changes. Final documentation is updated in the strength roadmap and shared search reference. Final shared checks select no product suites. No rules, format or large refactor survives to require separate review. Next step is Tenjiku evaluation under MSH-53.
 Reproduction: shared bench, probe and match CLI arguments, input and binary hashes and pinned images are in the project storage manifests. Campaigns used c3-standard-4 only, Rust 1.99.1 release Linux x86-64. Cumulative VM upper bound $1.322431 (build $0.016364, pilot $0.039014, calibration $0.065633, games $0.603121 + $0.598302, figures rounded). Incidental storage excluded. All five Batch jobs, VMs and disks verified absent. All run outputs, operator scripts and checks under gs://mshogi-experiments-216675633801/runs/msh-53.1/. No new container build. Branch codex/msh-53.1-tenjiku-selectivity. Next: finish integration and remove its worktree and local run and build files.
+
+Integrated at 6940e67 on main with only Backlog and the two search/roadmap documents changed. Restored-engine focused release checks passed: 21 Tenjiku tests, including both-profile perft, complete moves, randomized restoration, and exchange effects; 2 manual clocks ignored. All final operator receipts and check logs are in project storage. Parent MSH-53 stays Ready. The task worktree, build output and feature branch are being removed after this record is pushed.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Completed the selectivity round for Adams and Muller. The quiet-threat and placement-ordering candidate solved all 216 tactics per profile, but the clocked comparison stopped when 5 of 8 Muller pairs in batch two were incomplete. Across both batches Adams scored 9/16 pairs and Muller 7/16. Neither reached an SPRT decision. The candidate was reverted; the accepted MSH-202 engine carries forward. Both profiles already have compound exchange search and 100-point Pawn margins. The shared mate solver's terminal test does not fit Tenjiku. Required checks passed, all five cloud jobs were cleaned up, and the VM cost upper bound was $1.323. Next is Tenjiku evaluation under MSH-53.
+<!-- SECTION:FINAL_SUMMARY:END -->

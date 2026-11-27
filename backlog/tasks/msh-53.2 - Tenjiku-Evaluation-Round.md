@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-27T16:53:00Z'
-updated_date: '2026-11-27T17:18:00Z'
+updated_date: '2026-11-27T17:20:00Z'
 labels:
   - tenjiku
   - evaluation
@@ -60,4 +60,6 @@ Production frozen before generation: both players use d6274cb, depth 1, 500000-n
 Production1 launched as corpus-msh532-production1. The project Cloud Build image is digest-pinned in production1/manifest.json and the local intent (the manifest pins all binaries and catalogs, the intent pins the worker). Cloud Build receipts and the operator are archived in GCS operator/. Source 5308d41 supplies the exact fitter; build-msh532-fit builds its Linux binary on one c3-standard-4. Native release perft/differential and 3 fitter tests pass. Shared workflow selected workspace fmt, all-target Clippy, 1175 Rust tests passed (10 ignored) and 57 strength tests passed. Next: monitor production progress and verified cleanup, measure true unique quiet coverage, run frozen fit and qualification gates. Branch codex/msh-53.2-tenjiku-evaluation.
 
 First available eight-pair production groups measured without fitting: Adams 678 unique quiet boards /199.80 lane-seconds, Muller 507/221.13. The slower realized generation+native export throughput still projects about $2.49 of fully utilized c3-standard-4 execution for 500000 before setup/deduplication. Keep the two-batch cap and reserve match funds. Linux fitter at 5308d41 built successfully (130.07 s; SHA256 1fa150fc91689687d5acb1dcbbc0c7a7fda13e88b2f1cb9a4518357d819f08a0). The shared Pub/Sub subscription can deliver a terminal event to another simultaneous controller. The authoritative Batch describe recorded SUCCEEDED before its waiting local controller was interrupted to perform cleanup. Zero build jobs/VMs/disks remain, cost upper bound $0.022952. Next: finish production, global split/fit and result gates. Branch codex/msh-53.2-tenjiku-evaluation.
+
+Separate clocked data pilot d6274cb vs itself (60 s + 1.5 s, 1200 s pair cap): Adams 2 concluded / 4 wall stops, 386 unique quiet rows (196/0/190); Muller 3 concluded /3 wall stops, 844 quiet rows (215/391/238). No complete pair in either profile. All six reports had matching hashes and native replays, wall stops supplied zero labels and neither these nor the depth-one pilot samples enter production. Frozen engine solved all 144 development/72 heldout tactical rows for each profile. The three pilot jobs and fitter build have zero remaining jobs/VMs/disks, total VM upper bound $0.756869. Production continues. Next: finish both planned corpus stages as needed, verify full split and data size, then fit and qualify the candidate only through the declared conditions.
 <!-- SECTION:NOTES:END -->

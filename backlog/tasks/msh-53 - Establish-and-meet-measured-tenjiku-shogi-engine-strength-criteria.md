@@ -4,7 +4,7 @@ title: Establish and meet measured tenjiku shogi engine strength criteria
 status: Ready
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-27T22:11:00Z'
+updated_date: '2026-11-27T23:04:00Z'
 labels:
   - model:medium
   - effort:medium
@@ -68,4 +68,6 @@ John, 2026-11-25: use the game-independent strength tool of MSH-243 (Game-Indepe
 2026-11-27 (John): Released MSH-53 to Ready. The current authorization is the Tenjiku selectivity round tracked in MSH-53.1. Later steps and the baseline stop decision remain separate. MSH-277 through MSH-283 remain deferred.
 
 John authorized the Tenjiku same-family reference ladder and deeper blunder screen for Adams and Muller in MSH-53.3 (Tenjiku Reference Ladder and Blunder Screen), using accepted engine 0bbfd9c. The child records the frozen budgets, methods and evidence. The parent remains open for John’s separate baseline stop decision after measurement.
+
+MSH-53.3 measured accepted revision 0bbfd9c separately for Adams and Muller. The deeper ordinary-clock screen found 1/72 and 2/72 clear blunders. Phase-weighted rates were 0.93 and 13.04 per 100 eligible moves; the latter is dominated by one late case representing 154 turns. Full uncertainty, low-work source limitations and all reusable cases are in MSH-53.3. No multi-rung curve could be estimated: zero fully scored fixed-node pairs and one fully scored clock pair per profile. The clock pilot failed the completion gates. MSH-53.3 remains In Progress for a new independently budgeted color-game ladder, subject to a separate feasibility pilot and release. MSH-284 records a shallow Adams development pattern for later confirmation. John has not made a baseline decision.
 <!-- SECTION:NOTES:END -->

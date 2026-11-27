@@ -4,6 +4,7 @@ title: Confirm the Adams Tenjiku heavy-piece development pattern at ordinary clo
 status: To Do
 assignee: []
 created_date: '2026-11-27T22:25:00Z'
+updated_date: '2026-11-27T23:04:00Z'
 labels:
   - tenjiku
   - strength
@@ -28,3 +29,9 @@ MSH-53.3 found 14 of 18 clear errors in the shallow Adams sample where a quiet c
 - [ ] #2 Report the frequency and loss of missed heavy-piece development against the full eligible denominator; replay native lines and distinguish the effect from alternate moves, same-family instability and chance.
 - [ ] #3 Record whether the evidence warrants a separately approved, general, inexpensive change. Keep the evaluation unchanged during confirmation and leave the baseline decision to John.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+MSH-53.3 later screened 72 accepted 60+1.5 Adams moves from eight distinct archive openings, disjoint from the weak fixed-node source. The one clear ordinary-clock error, on a held-out opening, missed a Vice General multi-landing alternative. No ordinary-clock clear error repeated the central pawn pattern, so the shallow pattern is not established as a normal-playing defect. Keep this proposed confirmation work unstarted.
+<!-- SECTION:NOTES:END -->

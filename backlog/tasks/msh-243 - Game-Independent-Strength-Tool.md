@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T11:47:00Z'
-updated_date: '2026-11-27T01:03:00Z'
+updated_date: '2026-11-27T01:16:00Z'
 labels:
   - cleanup
   - tooling
@@ -43,6 +43,12 @@ Includes the scope of the former MSH-242 (folded in by John, 2026-11-25): the Ru
 - [ ] #5 Each Rust strength example is used by the tool, merged into one game-independent implementation, or removed with its support files and tests because nothing in the tool or an open task needs it; the reason is recorded, documents are updated, rules, search and evaluation are unchanged and the workspace checks pass.
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Reuse the native experiment runner for all six games and both Tenjiku profiles. Replace the three pairing drivers and five config writers with one path. 2. Add one native position and evidence helper plus shared Python commands for opening balance, independent tactical answers and splits, self-play export, Texel splits, time odds and deeper-search judging. Generalize the bounded Batch worker. 3. Inventory Rust examples against current tasks, keep the relevant model-specific fitting and diagnostics, update docs, run a short real workflow and workspace checks. Obtain fresh review, fix findings and integrate.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
@@ -53,4 +59,6 @@ Consolidation order approved by John, 2026-11-26: dependency fields record the s
 Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
 
 Claimed on codex/msh-243-strength-tool from 94d1b5d. Next: inventory the earlier Python workflows, data contracts and Rust examples, then implement and verify the shared entry point.
+
+Checkpoint on codex/msh-243-strength-tool. Read the deleted drivers at 52f39b8, retained scripts and MSH-240 notes. Replaced the three pair drivers and five game config writers with one native path, plus shared opening, suite, export, judge, fitting, time-odds and Batch commands. Native helper compiles and 51 focused Python tests pass. Next: independent review, all-profile smoke evidence, workspace/CI and integration.
 <!-- SECTION:NOTES:END -->

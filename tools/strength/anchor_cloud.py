@@ -15,11 +15,13 @@ import threading
 import time
 import urllib.request
 import uuid
+from contextlib import contextmanager
 from dataclasses import dataclass
 from pathlib import Path
 
 from tools.experiments import gcp
-from tools.experiments.core import encode, digest, environment
+from tools.experiments.core import decode, encode, digest, environment
+from .common import write_new as save
 
 
 @dataclass(frozen=True)
@@ -62,11 +64,34 @@ def cloud_environment():
     return result
 
 
-def save(path, value):
-    path = Path(path)
-    with path.open('x') as stream:
-        json.dump(value, stream, indent=2, allow_nan=False)
-        stream.write('\n')
+def read_uri(uri):
+    bucket, key = gcp.parse_uri(uri)
+    return gcp.GCSStore('gs://' + bucket).get(key)
+
+
+@contextmanager
+def worker_task(manifest_uri, store_uri, validate):
+    raw = read_uri(manifest_uri)
+    manifest = decode(raw)
+    validate(manifest)
+    index = int(os.environ['BATCH_TASK_INDEX'])
+    require(0 <= index < len(manifest['bins']), 'task index outside manifest')
+    require(os.environ.get('BATCH_TASK_RETRY_ATTEMPT', '0') == '0', 'no worker retries')
+    store = gcp.GCSStore(store_uri)
+    claim = {'manifest_sha256': digest(raw), 'task_index': index, 'started_epoch': time.time()}
+    prefix = f'tasks/{index}/'
+    put_new(store, prefix + 'started.json', encode(claim))
+    receipt = dict(claim, complete=False)
+    try:
+        receipt['environment'] = cloud_environment()
+        yield manifest, store, receipt
+        receipt['complete'] = True
+    except BaseException as error:
+        receipt['error'] = repr(error)
+        raise
+    finally:
+        receipt['ended_epoch'] = time.time()
+        put_new(store, prefix + 'receipt.json', encode(receipt))
 
 
 def cloud(args, timeout=60):
@@ -137,8 +162,8 @@ def run(args, *, policy, manifest_validator):
     manifest = json.loads(Path(args.manifest).read_text())
     manifest_validator(manifest)
     config = gcp.validate_config(json.loads(Path(args.config).read_text()))
-    if config['project'] != 'mshogi' or config['machine_type'] != 'c3-standard-4' or config['parallelism'] != 8:
-        raise ValueError('The approved project, machine and eight-worker limit are required')
+    if config['project'] != 'mshogi' or config['machine_type'] != 'c3-standard-4' or config['parallelism'] > 8:
+        raise ValueError('The approved project, machine and at most eight workers are required')
     if config['max_retries'] != 0 or not 1 <= len(manifest['bins']) <= 8:
         raise ValueError('No retries; at most eight nonempty worker bins')
     if any(not rows for rows in manifest['bins']):
@@ -164,7 +189,8 @@ def run(args, *, policy, manifest_validator):
     if 'vm_hourly_usd' not in config:
         raise ValueError('Recorded VM hourly rate required')
     # At most eight VMs for the entire remaining campaign: a conservative reserve.
-    reserve = 8 * (deadline - start) / 3600 * config['vm_hourly_usd']
+    workers = min(len(manifest['bins']), config['parallelism'])
+    reserve = workers * (deadline - start) / 3600 * config['vm_hourly_usd']
     if manifest['estimated_compute_before_usd'] + reserve > policy.compute_usd:
         raise ValueError('Remaining maximum allocation would exceed compute cap')
     if jobs_named(args.job, config['region']):
@@ -252,8 +278,8 @@ def run(args, *, policy, manifest_validator):
             save(out/'resources.json', {'started_epoch': start, 'ended_epoch': end,
                  'allocation_end_epoch': measured_end, 'wall_seconds': end-start,
                  'cleanup_error': cleanup_error,
-                 'conservative_vm_hours_upper_bound': None if cleanup_error else 8*(measured_end-start)/3600,
-                 'conservative_compute_usd_upper_bound': None if cleanup_error else 8*(measured_end-start)/3600*config['vm_hourly_usd'],
+                 'conservative_vm_hours_upper_bound': None if cleanup_error else workers*(measured_end-start)/3600,
+                 'conservative_compute_usd_upper_bound': None if cleanup_error else workers*(measured_end-start)/3600*config['vm_hourly_usd'],
                  'rate_usd_vm_hour': config['vm_hourly_usd'],
                  'note': 'Upper bound through verified cleanup, not actual VM-hours. Unknown if cleanup failed. Obtain lifecycle logs.'})
         if cleanup_error:

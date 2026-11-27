@@ -9,18 +9,18 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest import mock
 
-from tools.strength import native_match
+from tools.strength import cli, native_match
 from tools.strength.native_match import summarize
 
 
 class PairScoring(unittest.TestCase):
     def test_tenjiku_requires_an_explicit_immutable_profile(self):
-        common = ['native_match', '--candidate', 'unused', '--baseline', 'unused',
+        common = ['strength','match', '--candidate', 'unused', '--baseline', 'unused',
                   '--candidate-nodes', '1000', '--out', 'unused']
         for extra in [['--game', 'tenjiku'], ['--game', 'chu', '--profile', 'adams']]:
             with self.subTest(extra=extra), mock.patch('sys.argv', common + extra):
                 with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as raised:
-                    native_match.main()
+                    cli.main()
                 self.assertEqual(raised.exception.code, 2)
 
     def report(self, first, second):
@@ -71,7 +71,7 @@ class NativeClockDispatch(unittest.TestCase):
     def test_operator_can_schedule_an_hour_long_pair(self):
         with tempfile.TemporaryDirectory() as directory:
             out = Path(directory) / 'campaign'
-            command = ['native_match', '--candidate', 'new', '--baseline', 'old',
+            command = ['strength','match', '--game','shogi','--candidate', 'new', '--baseline', 'old',
                        '--candidate-nodes', '512', '--out', str(out),
                        '--pair-wall-ms', '3600001', '--wall-seconds', '3800',
                        '--max-steps', '100000', '--max-pairs', '1']
@@ -81,7 +81,7 @@ class NativeClockDispatch(unittest.TestCase):
                  mock.patch.object(native_match, 'engine_identity', return_value={}), \
                  mock.patch.object(native_match, 'run_pair', return_value=row) as play, \
                  contextlib.redirect_stdout(io.StringIO()):
-                native_match.main()
+                cli.main()
             args = play.call_args.args[0]
             self.assertEqual((args.pair_wall_ms, args.max_steps), (3600001, 100000))
             self.assertEqual(json.loads((out / 'summary.json').read_text())['scored_pairs'], 1)
@@ -90,7 +90,7 @@ class NativeClockDispatch(unittest.TestCase):
         report = PairScoring().report(2, 0)
         with tempfile.TemporaryDirectory() as directory:
             out = Path(directory)
-            args = SimpleNamespace(config_writer='writer', candidate='new', baseline='old',
+            args = SimpleNamespace(helper='writer', profile=None, candidate='new', baseline='old',
                 candidate_nodes=5_000_000, baseline_depth=64, baseline_nodes=5_000_000,
                 calibrate=False, max_steps=100_000, pair_wall_ms=900_000, game='shogi',
                 watchdog_ms=None, runner='runner', base=10, increment=.1,
@@ -102,8 +102,8 @@ class NativeClockDispatch(unittest.TestCase):
                  mock.patch.object(native_match.subprocess, 'run') as run:
                 result = native_match.run_pair(args, 6, out)
             command = run.call_args_list[0].args[0]
-            self.assertEqual(command[7:9], ['100000', '900000'])
-            self.assertEqual(command[-8:], ['--clock-base-ms', '10000', '--clock-increment-ms', '100',
+            self.assertEqual(command[8:10], ['100000', '900000'])
+            self.assertEqual(command[-10:-2], ['--clock-base-ms', '10000', '--clock-increment-ms', '100',
                                            '--openings', 'frozen.json', '--opening-index', '1'])
             self.assertEqual(run.call_args_list[1].args[0][1], 'experiment-replay')
             self.assertEqual(result['pair_score'], 1)
@@ -114,7 +114,7 @@ class NativeClockDispatch(unittest.TestCase):
             out = Path(directory)
             raw = out / 'pair-0001.report.json'
             raw.write_text('{}')
-            args = SimpleNamespace(config_writer='writer', candidate='new', baseline='old',
+            args = SimpleNamespace(helper='writer', profile=None, candidate='new', baseline='old',
                 candidate_nodes=100, baseline_depth=1, baseline_nodes=100, calibrate=False,
                 max_steps=320, pair_wall_ms=1000, game='shogi', watchdog_ms=None, runner='runner')
             child = mock.Mock()

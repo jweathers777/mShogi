@@ -18,7 +18,7 @@ class ChuHarnessTests(unittest.TestCase):
             report = {'games': [dict(pairing={'swapped': swap}, score_first_twice=2,
                                      steps=[], stop='native_concluded') for swap in (False, True)]}
             (out / 'pair-0001.report.json').write_text(json.dumps(report))
-            args = SimpleNamespace(config_writer='writer', candidate='candidate', baseline='baseline',
+            args = SimpleNamespace(helper='writer', profile=None, candidate='candidate', baseline='baseline',
                 candidate_nodes=5_000_000, baseline_depth=64, baseline_nodes=5_000_000,
                 calibrate=False, max_steps=500, pair_wall_ms=180000, base=5, increment=.1,
                 game='chu', candidate_time_factor=2, openings='openings.json', opening_count=100,
@@ -33,15 +33,15 @@ class ChuHarnessTests(unittest.TestCase):
             self.assertEqual(result['pair_score'], .5)
 
     def test_cloud_run_uses_only_manifested_tools(self):
-        from tools.strength.chu_cloud import validate
+        from tools.strength.batch import validate
         manifest = dict(schema=1, campaign_started_epoch=0, deadline_epoch=1800,
                         estimated_compute_before_usd=0,
                         files={'bench': {'uri': 'gs://bucket/bench', 'sha256': 'a' * 64}},
-                        bins=[[['run', 'bench', 'bench', 'input.json', 'out.json', '3', '3']]])
+                        bins=[[['bench', '--source', 'input.json', '--out', 'out.json']]])
         validate(manifest)
-        for command in (['run'], ['run', '../bench'], ['run', 'missing']):
+        for command in ([], ['cloud-submit'], ['unknown']):
             manifest['bins'] = [[command]]
-            with self.assertRaises(AssertionError):
+            with self.assertRaises(ValueError):
                 validate(manifest)
 
     def test_chu_unfinished_pairs_stop_instead_of_becoming_draws(self):

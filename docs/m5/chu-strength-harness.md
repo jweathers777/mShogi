@@ -1,139 +1,20 @@
-# Chu strength harness
+# Chu strength inputs
 
-Chu uses the shared clocked native experiment runner and structured internal
-protocol. No external opponent or text protocol is needed. Timed engine turns retain a
-native game in the shared incremental session. An authenticated exact prefix
-permits a suffix; takeback, unrelated roots and process restarts require a full
-reset. Every suffix command and its derived event are checked before the new
-state is installed. Native rules admit every complete action and decide the result. Measurements and costs belong in
-the relevant Backlog task and its ignored `runs/` directory.
+Use the [shared strength harness](strength-harness.md) with `--game chu`.
+The frozen opening catalog `tools/strength/data/chu-openings-v1.json`
+contains full native histories. The balance screen used depth 3, a 500,000-node
+cap and an absolute score bound of 100 Pawn hundredths.
 
-Build the tools with `tools.strength.cloud_build` for cloud work:
+The frozen suites `chu-tactics-v1.json` and `chu-forcing-v1.json` in the same
+directory contain native positions, complete independently proved answer sets
+and explicit partitions. Use `probe --split development` or
+`probe --split held-out` with either suite. The first is an elementary Lion
+and royal capture screen. Its held-out positions share construction templates
+with the development positions. The second asks for a win within three plies.
+A slower forced win can fail its criterion.
 
-- `mshogi-console:bin:mshogi`
-- `mshogi-runner:bin:mshogi-match`
-- `mshogi-runner:example:chu_match_config`
-- `mshogi-runner:example:chu_strength`
-- `mshogi-runner:example:chu_judge` (deeper-search assessment)
-
-Freeze the accepted predecessor separately. Record each binary's source commit
-and SHA-256. Use a digest-pinned worker image built with Cloud Build. The
-`tools.strength.chu_cloud` module runs bounded commands through the existing
-Batch controller, which records completion and verifies resource deletion.
-
-## Inputs and independent answers
-
-`chu_strength openings OUT COUNT DEPTH` creates standard-root candidates from
-eight seeded quiet rear-zone moves. It removes duplicate repetition positions
-and screens at fixed depth, with a 500,000-node cap and an absolute score limit
-of 100 Pawn hundredths. Only completed searches can admit an opening. Fix the
-count, depth and balance rule in the task before screening. Preserve the full
-screen as run evidence; the reusable catalog needs the admitted native records,
-source and rule. The config writer replays those records before a match.
-
-`chu_strength tactics OUT` constructs elementary Lion and royal positions and
-lists every one-turn native winning action. The reference proof uses full
-native transitions and terminal outcomes, independently of the search engine's
-score, ordering and pruning. It treats a visit cutoff as unknown and does not
-invent a result for unresolved no-action positions. Cases cover double capture,
-capture-return, the qualifying intermediate capture of a defended Lion and
-capture of both opposing royals.
-
-`chu_strength forcing OUT COUNT` separately constructs three-ply material wins.
-It enumerates every defender reply with the native proof, rejects one-ply wins
-and omits a position if a complete answer set exceeds 200,000 proof visits.
-These positions also share construction templates; retain this limitation.
-The frozen inputs are `tools/strength/data/chu-tactics-v1.json` and
-`tools/strength/data/chu-forcing-v1.json`. The latter accepts only actions that
-force a win within three plies. An action that wins later can fail this test;
-inspect the native line before calling a failed answer a blunder.
-
-The first suite is an elementary screen, not a deep tactical-strength measure.
-Its held-out part uses unseen placements from shared construction templates.
-Keep that limitation when reporting scores. `chu_strength probe SUITE OUT MS`
-compares the search choice with the complete independently proved answer set.
-It separately scores an exact igui route/effect contract in both native and
-search positions. Ordinary winning captures cannot satisfy that contract.
-
-## Clocked comparisons and data
-
-Run `python3 -m tools.strength.native_match --game chu` with `--candidate`,
-`--baseline`, `--runner`, `--config-writer`, `--openings`, `--base`,
-`--increment` and `--out`. The driver records all executable identities and
-plays both colors of each opening. The runner gives each engine the normal share
-of its remaining clock, the one
-[clock policy](strength-roadmap.md#clock-allocation-of-the-native-experiment-runner)
-for all games. Earlier results from the removed `hard` policy are not
-comparable. `--candidate-time-factor 2` doubles both candidate base time and
-increment. An unfinished Chu pair stops the campaign and remains unscored. Do
-not convert a move or clock limit to a draw. A small capped sample can give no
-statistical decision.
-
-Set `--pair-wall-ms` to a positive 64-bit millisecond duration for both colors
-together. Set `--wall-seconds` for the campaign. The driver starts a new pair
-only when the campaign has time for the pair budget and its 45-second shutdown
-allowance. Use `--max-steps` to stop each game after the chosen number of
-engine commands. The runner also applies the shared 128 MiB report budget.
-
-`chu_strength export REPORT_PATHS.json OUT.jsonl EVERY` validates and replays
-the source reports, then samples board positions at the requested interval.
-Only native concluded games supply outcome labels. Unfinished games remain
-listed with no samples. Exported board inputs include side to move and Lion
-protection; these are evaluation inputs, not complete saved games.
-
-Split with `python3 -m tools.strength.texel_data split CORPUS MANIFEST --game
-chu --by-opening`. Both colors and every prefix of an opening stay together.
-The shared splitter removes board duplicates across partitions. A small
-export demonstration may use `--allow-empty-demonstration`; its manifest says
-that empty partitions are not ready for training. Weight fitting requires a
-sufficiently large quiet-position corpus with native outcome labels.
-
-## Classical evaluation tools
-
-`mshogi-search --example chu_texel` uses the shared Texel fitter. Its `fit`,
-`check` and `stats` commands read the exported `diagram` field. The model has
-material, advancement and central-file weights for each movement face, plus
-side-to-move tempo. Pawn material fixes the score scale. King and Prince
-material stay fixed; only native adjudication determines a win. Lion
-advancement saturates at seven ranks. The search board caches placement and
-material, and static exchange uses the same material values.
-
-The fitting filter excludes positions with a threat to all surviving royals
-or a capture/promotion that has a positive static exchange. An unresolved
-exchange is also excluded. Freeze the filtering binary with the corpus so a
-later material fit does not change which positions enter the comparison.
-
-`chu_selfplay OPENINGS OUT START COUNT NODES MAX_PLIES SECONDS_PER_GAME`
-generates records directly through the native Game. It adds eight seeded
-quiet rear-zone moves to each catalog opening, then uses two separate search
-states. If a turn has no completed first iteration, it doubles that turn's
-node allowance up to the engine maximum and retries. It samples both sides
-to move. Every admitted action is retained with the initial record, so the game can be replayed. Only native concluded games
-supply labels. A game stopped by a search failure, time limit or move limit
-has no samples and no inferred draw result. All continuations of one catalog
-opening must stay in the same corpus partition.
-
-## Internal scaling and move quality
-
-Use the same frozen engine on both sides with `--candidate-time-factor 2`
-to measure the benefit of more time. Report paired uncertainty and every
-unscored pair at each clock. A first-iteration timeout supplies no game result;
-it can make a short-clock estimate unusable. This is an internal scaling
-measure, not an independent rating.
-
-`chu_judge REPORT_PATHS OUT NODES SAMPLES_PER_GAME SHARD SHARDS` reads native
-validated reports and writes one JSONL row per selected move. It takes evenly
-spaced move indices across each game, including unfinished prefixes, and
-searches the position before and immediately after each move with fresh tables
-and full history. Shards partition that fixed sample. Rows retain native
-records, player observations, judge depths, native terminal outcomes and
-ordered capture facts. The player observation is the native value after
-replay, so its context also holds the pre-move game record that stored reports
-omit; compare it to the report after removing that field. Use a materially larger search than the player and
-report how often the judge actually reaches a greater depth.
-
-Apply the blunder rule of the [strength roadmap](strength-roadmap.md) to these
-rows. Keep both colors of an opening in the same split and keep the error
-positions with run evidence in GCS, not in Git. Error classes alone do not
-prove a search defect. A same-family judge can miss shared errors; a sample
-rate does not describe every move in the games.
+The shared export preserves side to move and Lion protection. The Chu Texel
+model filters threats to all surviving royals, positive static-exchange
+captures and promotions, and unresolved exchanges. Freeze the fitting binary
+with the corpus. Use the [strength roadmap](strength-roadmap.md) for judging
+and time-odds comparisons.

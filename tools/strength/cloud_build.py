@@ -118,21 +118,8 @@ def pack(args):
 
 def worker(manifest_uri, store_uri):
     import os
-    from tools.experiments import gcp
-    from tools.experiments.core import decode, digest, encode
-    from tools.strength.anchor_cloud import cloud_environment, put_new, require
-    bucket, key = gcp.parse_uri(manifest_uri)
-    raw = gcp.GCSStore('gs://' + bucket).get(key)
-    m = decode(raw)
-    validate_manifest(m)
-    require(os.environ.get('BATCH_TASK_INDEX') == '0', 'one build task')
-    require(os.environ.get('BATCH_TASK_RETRY_ATTEMPT', '0') == '0', 'no worker retries')
-    store = gcp.GCSStore(store_uri)
-    claim = {'manifest_sha256': digest(raw), 'task_index': 0, 'started_epoch': time.time()}
-    put_new(store, 'tasks/0/started.json', encode(claim))
-    receipt = dict(claim, complete=False)
-    try:
-        receipt['environment'] = cloud_environment()
+    from tools.strength.anchor_cloud import put_new, require, worker_task
+    with worker_task(manifest_uri, store_uri, validate_manifest) as (m, store, receipt):
         data = store.get('source.tar.gz')
         require(hashlib.sha256(data).hexdigest() == m['source_sha256'], 'source hash differs')
         with tempfile.TemporaryDirectory(prefix='build-') as tmp:
@@ -161,13 +148,6 @@ def worker(manifest_uri, store_uri):
             put_new(store, 'out/rustc.txt', rustc.encode())
             receipt['outputs'] = outputs
             receipt['rustc'] = rustc.strip()
-        receipt['complete'] = True
-    except Exception as error:
-        receipt['error'] = repr(error)
-        raise
-    finally:
-        receipt['ended_epoch'] = time.time()
-        put_new(store, 'tasks/0/receipt.json', encode(receipt))
 
 
 def fetch(args):

@@ -1,19 +1,15 @@
-"""Prepare self-generated Texel data; never use search scores as result labels.
-
-Generate with the frozen chess_selfplay example, then run:
-python3 -m tools.strength.texel_data split CORPUS_DIR MANIFEST.json
-Raw games and derived datasets stay outside Git; the manifest records their hashes.
-"""
+"""Split native outcome-labelled self-play data by source family and board identity."""
 import argparse
 import collections
 import hashlib
 import json
 from pathlib import Path
+from tools.experiments.core import file_hash as digest
 
 
-FIELDS = {'chess': 4, 'shogi': 3, 'xiangqi': 2, 'tori': None, 'chu': None}
-POSITION = {'chess': 'fen', 'shogi': 'sfen', 'xiangqi': 'fen', 'tori': 'diagram', 'chu': 'diagram'}
-OUTCOME = {'chess': 'white_outcome', 'shogi': 'sente_outcome', 'xiangqi': 'red_outcome', 'tori': 'sente_outcome', 'chu': 'sente_outcome'}
+FIELDS = {'chess': 4, 'shogi': 3, 'xiangqi': 2, 'tori': None, 'chu': None, 'tenjiku': None}
+POSITION = {'chess': 'fen', 'shogi': 'sfen', 'xiangqi': 'fen', 'tori': 'diagram', 'chu': 'diagram', 'tenjiku': 'diagram'}
+OUTCOME = {'chess': 'white_outcome', 'shogi': 'sente_outcome', 'xiangqi': 'red_outcome', 'tori': 'sente_outcome', 'chu': 'sente_outcome', 'tenjiku': 'sente_outcome'}
 
 
 def key(fen, game='chess'):
@@ -21,18 +17,10 @@ def key(fen, game='chess'):
     # (its fourth field is only the move counter), Xiangqi FEN board and side,
     # Tori compact diagram (board, both hands, side; MSH-204) as canonical JSON.
     if isinstance(fen, dict):
-        if game == 'chu':
+        if game in ('chu','tenjiku'):
             fen = dict(fen, pieces=sorted(fen['pieces'], key=lambda p: json.dumps(p, sort_keys=True, separators=(',', ':'))))
         return json.dumps(fen, sort_keys=True, separators=(',', ':'))
     return ' '.join(fen.split()[:FIELDS[game]])
-
-
-def digest(path):
-    result = hashlib.sha256()
-    with path.open('rb') as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b''):
-            result.update(chunk)
-    return result.hexdigest()
 
 
 def game_rows(files):
@@ -64,8 +52,8 @@ def samples(g, game, by_opening):
 def split(root, manifest_path, game='chess', allow_empty=False, by_opening=False):
     if game not in FIELDS:
         raise ValueError('unsupported game')
-    if game in ('tori', 'chu') and not by_opening:
-        raise ValueError('Tori/Chu exports carry no initial diagram; split --by-opening')
+    if game in ('tori', 'chu', 'tenjiku') and not by_opening:
+        raise ValueError('Diagram exports carry no initial diagram; split --by-opening')
     files = sorted(root.glob('games-*.jsonl'))
     game_ids, stops = set(), collections.Counter()
     boards = {}

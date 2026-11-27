@@ -17,13 +17,13 @@ import time
 from pathlib import Path
 
 from . import stats
-from .cli import engine_identity, environment, write_new
+from .common import engine_identity, environment, write_new, game_options, profile
 
 
 def telemetry(value):
     """Find the game telemetry in the versioned observation envelope."""
     if isinstance(value, dict):
-        if 'search_id' in value and 'completed_depth' in value:
+        if 'nodes' in value and 'completed_depth' in value:
             return value
         for child in value.values():
             found = telemetry(child)
@@ -50,7 +50,7 @@ def summarize(report):
                 turns[step['player']].append({
                     'seconds': step['elapsed_ns'] / 1e9,
                     'depth': t['completed_depth'], 'nodes': t['nodes'],
-                    'search_id': t['search_id'], 'applied': step['applied'],
+                    'search_id': t.get('search_id'), 'applied': step['applied'],
                 })
     return {'scores_twice': scores,
             'pair_score': None if None in scores else sum(scores) / 4,
@@ -74,7 +74,7 @@ def run_pair(args, seed, out):
     config = out / f'pair-{seed:04d}.config.json'
     report_path = out / f'pair-{seed:04d}.report.json'
     start = time.monotonic()
-    command = [args.config_writer, args.candidate, args.baseline, str(seed),
+    command = [args.helper, 'config', args.candidate, args.baseline, str(seed),
                str(args.candidate_nodes), str(args.baseline_depth), str(args.baseline_nodes),
                '1' if args.calibrate else str(args.max_steps), str(args.pair_wall_ms), str(config)]
     if getattr(args, 'base', None) is not None:
@@ -87,12 +87,11 @@ def run_pair(args, seed, out):
                         str((seed - 1) % args.opening_count)])
         if getattr(args, 'random_plies', 0):
             command.extend(['--random-plies', str(args.random_plies)])
-    if args.game == 'tenjiku':
-        command.append(args.profile)
+    command.extend(['--profile', profile(args.game, args.profile)])
     if args.watchdog_ms is not None:
         command.extend(['--watchdog-ms', str(args.watchdog_ms)])
     with open(out / f'pair-{seed:04d}.config.log', 'x') as log:
-        subprocess.run(command, check=True, stdout=log, stderr=subprocess.STDOUT, timeout=15)
+        subprocess.run(command, check=True, stdout=log, stderr=subprocess.STDOUT, timeout=120)
     command = [args.runner, 'experiment-run', str(config), str(report_path)]
     with open(out / f'pair-{seed:04d}.log', 'x') as log:
         process = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
@@ -163,7 +162,7 @@ def summary(args, rows, start, failure=None):
     scores = [s for row in rows for s in row['scores_twice'] if s is not None]
     return {'pairs': len(rows), 'scored_pairs': sum(counts), 'pentanomial': counts,
             'length_limited_pairs': sum(length_limited(args, row) for row in rows),
-            'decision': 'calibration' if args.calibrate else sprt.status(counts)['decision'] or 'no decision',
+            'decision': 'calibration' if args.calibrate else 'data collection' if args.selfplay else sprt.status(counts)['decision'] or 'no decision',
             'wins_draws_losses': [scores.count(2), scores.count(1), scores.count(0)],
             'sprt': sprt.status(counts), 'estimate': stats.estimate(counts),
             'wall_seconds': time.monotonic() - start,
@@ -171,20 +170,21 @@ def summary(args, rows, start, failure=None):
             'players': players, 'failure': failure, 'rows': rows}
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--game', choices=['shogi', 'xiangqi', 'tori', 'chu', 'tenjiku'], default='shogi')
-    parser.add_argument('--profile', choices=['adams', 'muller'])
-    parser.add_argument('--candidate', required=True)
-    parser.add_argument('--baseline', required=True)
+def options(parser, *, selfplay=False):
+    game_options(parser)
+    if selfplay:
+        parser.add_argument('--engine', required=True)
+    else:
+        parser.add_argument('--candidate', required=True)
+        parser.add_argument('--baseline', required=True)
     parser.add_argument('--candidate-nodes', type=int)
-    parser.add_argument('--base', type=float, help='Fischer initial time in seconds (Shogi)')
+    parser.add_argument('--base', type=float, help='Fischer initial time in seconds')
     parser.add_argument('--increment', type=float, default=0, help='Fischer increment in seconds')
-    parser.add_argument('--openings', help='fixed Shogi opening JSON catalog')
+    parser.add_argument('--openings', help='frozen opening JSON catalog')
     parser.add_argument('--baseline-depth', type=int)
     parser.add_argument('--baseline-nodes', type=int)
     parser.add_argument('--runner', default='target/release/mshogi-match')
-    parser.add_argument('--config-writer')
+    parser.add_argument('--random-plies', type=int, default=0, help='seeded continuations of catalog roots')
     parser.add_argument('--watchdog-ms', type=int, help='symmetric engine watchdog; writer default is 60000 for clocks, 30000 for fixed work')
     parser.add_argument('--out', required=True)
     parser.add_argument('--workers', type=int, default=4)
@@ -201,10 +201,23 @@ def main():
     parser.add_argument('--calibrate', action='store_true')
     parser.add_argument('--candidate-time-factor', type=int, default=1,
                         help='time odds: the candidate clock is this multiple of --base/--increment')
-    args = parser.parse_args()
+    parser.set_defaults(func=campaign, selfplay=selfplay)
+
+
+def campaign(args):
+    parser = argparse.ArgumentParser(prog="strength match")
+    if args.selfplay:
+        args.candidate = args.baseline = args.engine
+        if args.baseline_nodes is not None or args.baseline_depth is not None or args.candidate_time_factor != 1:
+            parser.error('self-play uses identical work for both participants')
+        if args.base is None:
+            args.baseline_nodes = args.candidate_nodes
+            args.baseline_depth = 64
+    if args.random_plies and (not args.openings or not 0 <= args.random_plies <= 128):
+        parser.error('--random-plies requires a catalog and at most 128 plies')
     if (args.game == 'tenjiku') != (args.profile is not None):
         parser.error('--profile adams|muller is required only for --game tenjiku')
-    defaults = {'shogi': (2, 5000, 320), 'xiangqi': (1, 128, 500), 'tori': (1, 512, 1000), 'chu': (1, 512, 500), 'tenjiku': (1, 1024, 500)}
+    defaults = {'chess': (2, 5000, 500), 'shogi': (2, 5000, 320), 'xiangqi': (1, 128, 500), 'tori': (1, 512, 1000), 'chu': (1, 512, 500), 'tenjiku': (1, 1024, 500)}
     depth, nodes, default_steps = defaults[args.game]
     if args.max_steps is None:
         args.max_steps = default_steps
@@ -213,8 +226,8 @@ def main():
     if args.candidate_time_factor != 1 and args.base is None:
         parser.error('--candidate-time-factor needs a clock (--base)')
     if args.base is not None:
-        if args.game not in ('shogi', 'tori', 'chu') or not (0.001 <= args.base <= 600 and 0 <= args.increment <= 60):
-            parser.error('clock mode requires Shogi, Tori or Chu, base 0.001..600 and increment 0..60 seconds')
+        if not (0.001 <= args.base <= 600 and 0 <= args.increment <= 60):
+            parser.error('clock mode requires base 0.001..600 and increment 0..60 seconds')
         if not 1 <= args.candidate_time_factor <= 8:
             parser.error('--candidate-time-factor must be 1..8')
         if args.candidate_nodes is not None or args.baseline_nodes is not None or args.baseline_depth is not None:
@@ -223,16 +236,12 @@ def main():
         args.baseline_depth = 64
     elif args.candidate_nodes is None or args.increment != 0:
         parser.error('fixed-work mode requires --candidate-nodes; increment requires --base')
-    if args.openings and args.game not in ('shogi', 'tori', 'chu'):
-        parser.error('--openings currently requires Shogi, Tori or Chu')
-    if args.first_seed < 0:
-        parser.error('--first-seed must be nonnegative')
+    if not 0 <= args.first_seed <= 2**64 - args.max_pairs:
+        parser.error('seed range exceeds unsigned 64-bit values')
     if args.baseline_depth is None:
         args.baseline_depth = depth
     if args.baseline_nodes is None:
         args.baseline_nodes = nodes
-    if args.config_writer is None:
-        args.config_writer = f'target/release/examples/{args.game}_match_config'
     if not (1 <= args.workers <= 8 and 1 <= args.max_pairs <= 10000
             and args.wall_seconds > 0 and 0 < args.pair_wall_ms < 2**64):
         parser.error('invalid finite campaign bounds')
@@ -244,6 +253,8 @@ def main():
     if args.openings:
         raw = Path(args.openings).read_bytes()
         catalog = json.loads(raw)
+        if catalog.get('profile') not in (None, profile(args.game, args.profile)):
+            parser.error('opening catalog has another profile')
         openings = catalog.get('openings')
         if not isinstance(openings, list) or not openings or len({r['id'] for r in openings}) != len(openings):
             parser.error('opening catalog must have nonempty unique records')
@@ -254,9 +265,9 @@ def main():
             stream.write(raw)
         args.openings = str(frozen)
     write_new(out / 'manifest.json', {'kind': f'{args.game}-paired-predecessor', 'schema': 1,
-              'settings': vars(args), 'environment': environment(),
+              'settings': {k:v for k,v in vars(args).items() if k != 'func'}, 'environment': environment(),
               'candidate': engine_identity(args.candidate), 'baseline': engine_identity(args.baseline),
-              'runner': engine_identity(args.runner), 'config_writer': engine_identity(args.config_writer),
+              'runner': engine_identity(args.runner), 'helper': engine_identity(args.helper),
               'timing': 'native runner request/launch/search/receipt, including process overhead',
               'sampling': ('fixed catalog index (seed-1) modulo count; both colors; source frozen before play'
                            if args.openings else 'one seeded opening per pair; no discarded unfinished pairs'),
@@ -287,6 +298,12 @@ def main():
                 print(json.dumps({k: result[k] for k in ('pairs', 'wins_draws_losses', 'sprt', 'wall_seconds')}), flush=True)
                 if args.calibrate:
                     continue
+                if args.selfplay:
+                    if any(stop not in ('native_concluded', 'step_limit', 'wall_budget',
+                                        'native_pending_adjudication', 'native_no_board_actions', 'artifact_limit') for
+                           row in rows for stop in row['stops']):
+                        raise RuntimeError('self-play encountered an unexpected stop; see native reports')
+                    continue
                 reason = unfinished(args, rows)
                 if reason:
                     raise RuntimeError(reason)
@@ -296,9 +313,5 @@ def main():
         failure = str(error)
     result = summary(args, rows, start, failure)
     write_new(out / 'summary.json', result)
-    if failure:
-        raise SystemExit(failure)
-
-
-if __name__ == '__main__':
-    main()
+    if failure or not rows:
+        raise SystemExit(failure or 'campaign budget allowed no pairs')

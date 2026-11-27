@@ -31,7 +31,7 @@ def file_hash(path):
     return h.hexdigest()
 
 def environment():
-    value = {'platform': platform.platform(), 'architecture': platform.machine(), 'python': platform.python_version(), 'hostname': socket.gethostname(), 'cpu_count': os.cpu_count(), 'load': list(os.getloadavg())}
+    value = {'platform': platform.platform(), 'architecture': platform.machine(), 'python': platform.python_version(), 'hostname': socket.gethostname(), 'cpu_count': os.cpu_count(), 'load': list(os.getloadavg()) if hasattr(os, 'getloadavg') else None}
     value['packages']={}
     for name in ('google-cloud-storage','google-cloud-pubsub'):
         try: value['packages'][name]=importlib.metadata.version(name)

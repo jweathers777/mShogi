@@ -45,10 +45,9 @@ capture through `rule_score`, so that solver's terminal contract does not fit.
 Alpha-beta handles those capture threats. Selectivity margins use one Pawn
 (100 evaluation units); captured pieces do not also enter a hand.
 
-`chu_bench` measures fixed-depth searches from frozen native records, with fresh
-tables for each repeat. A separate wrapper times generation/admission,
-make/threat checks, unmake, rule/threat checks and exchange evaluation. It asserts
-that instrumentation leaves the complete search result unchanged. These coarse
-categories include their nested calls and timer overhead; use the uninstrumented
-runs for speed comparisons. Benchmark inputs, results and costs belong in the
-Backlog task and Cloud Storage, not this note.
+For fixed-depth comparisons, run the [strength harness](strength-harness.md)
+on frozen native records with fresh engine state. For cost attribution,
+measure generation/admission, make/threat checks, unmake, rule/threat
+checks and exchange evaluation separately. Compare the instrumented and
+uninstrumented decisions and node counts. These coarse categories include
+nested calls and timer overhead. Use uninstrumented runs for speed comparisons.

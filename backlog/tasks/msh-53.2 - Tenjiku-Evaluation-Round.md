@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-27T16:53:00Z'
-updated_date: '2026-11-27T17:00:00Z'
+updated_date: '2026-11-27T17:02:00Z'
 labels:
   - tenjiku
   - evaluation
@@ -49,4 +49,6 @@ For a qualifying full corpus: jointly fit once, require lower heldout MSE separa
 Claimed on codex/msh-53.2-tenjiku-evaluation from b0ab5ac. The frozen predecessor is the accepted MSH-202 product at d6274cb. Next: freeze the sampling, fitting and qualification gates before looking at pilot outcomes.
 
 Pilot protocol f7870d4 is published. Clock pilot strength-msh532-clock (six separate opening pairs, two tactical probes) and fixed-2000-node pilot strength-msh532-fixed (six pairs) use frozen MSH-202 engine binaries and digest-pinned MSH-214 worker. Directories under gs://mshogi-experiments-216675633801/runs/msh-53.2/. Added an offline model for the shared fitter, compound SEE quiet filtering, a score check in the existing differential and undo suite, and deduplication independent of physical piece IDs. Product search is unchanged. Next: inspect exact game stops, export and check quiet yield before scaling, run checks and fit. Branch codex/msh-53.2-tenjiku-evaluation.
+
+Fixed 2000-node pilot finished: all 12 games stopped at an incomplete iteration, 11..56 applied plies, no labels. All six native reports replayed, cleanup verified, VM bound $0.062943. Add one prespecified production-feasibility check to address the low node ceiling before declaring a shortfall: same six catalog roots, one pair each, both sides depth 1 with a 500000-node safety cap, 768 plies, 600 seconds per pair. This gives expensive first iterations room to finish without spending time on deeper iterations. Use frozen native engine/helper/runner with only depth fields changed after config generation. New control goes into the same family split if games conclude. Its yield and minimum per-game execution cost (four simultaneous pairs per four-core machine for projection) also inform the scaling decision. No change to match protocol; no results from this new control seen.
 <!-- SECTION:NOTES:END -->

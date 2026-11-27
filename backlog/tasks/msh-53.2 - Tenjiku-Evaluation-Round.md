@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-27T16:53:00Z'
-updated_date: '2026-11-27T18:37:00Z'
+updated_date: '2026-11-27T19:06:00Z'
 labels:
   - tenjiku
   - evaluation
@@ -72,4 +72,6 @@ Production1: all eight worker receipts show complete; 3042 seed attempts, one op
 Production1 verified VM upper bound $1.512388; cumulative completed VM bound $2.269257. First eight pairs on every lane plus exact paired-trajectory collapse gave an upper bound of 508425. Applying the frozen filter to the next eight pairs on every lane tightened it to 484227: use their actual quiet counts, then generously treat every remaining board as quiet after collapsing only byte-identical pair trajectories. This establishes the shortfall directly. Production2 submitted as corpus-msh532-production2, non-overlapping seeds starting 4197, same native engine, openings and search. Maximum additional VM cost $1.613. Reproduction scripts, bound evidence and both pinned worker images are recorded in GCS operator/. Next: verify production2, global opening split and dedup across both batches, exact quiet count and frozen fit. Branch codex/msh-53.2-tenjiku-evaluation.
 
 Audited all 3041 archived production1 native reports against their SHA256 values, fixed work settings and original catalog family. Both profiles cover all 100 families. Shared split/quiet worker passed a small end-to-end check of duplicate collapse, split coverage and reassembled chunk hashes on both profiles. At 18:36 UTC production2 had completed 1536 pairs, supplying 540254 raw rows; 2860 games concluded, 210 reached 768 plies, and two Adams games stopped at the 500000-node limit. The stopped games supplied zero samples. No production fit has run. Next: complete batch 2, audit reports, run the joint opening split and frozen fitter; GCS operator/ stores the scripts and evidence. Branch codex/msh-53.2-tenjiku-evaluation.
+
+Production2 succeeded through normal terminal notification. Adams 3022 concluded, 226 ply stops and 2 node stops, 587564 raw rows; Muller 3156 concluded, 240 ply stops and 2 node stops, 576518 rows. No job/VM/disk remains. Batch 2 cost upper bound $1.456491; cumulative completed VM cost <=$3.725747. Two batches: 6365 native pair reports replayed at export and subsequently checked for SHA256, depth/node caps and original catalog family; each batch covers all 100 families/profile. 11806 native conclusions provided 2225188 raw rows and 924 unscored games provided none. Each profile is being globally split and deduplicated across both batches in analyse-msh532-prepare; profile participates in board identity and the shared opening hash uses the same assignment across profiles. Next: read exact quiet totals and per-split coverage, run the one predeclared fit, check both profile losses and candidate gates. Branch codex/msh-53.2-tenjiku-evaluation.
 <!-- SECTION:NOTES:END -->

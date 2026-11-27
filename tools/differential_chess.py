@@ -30,7 +30,7 @@ from chess_check_helpers import PROFILE, ROOT, classification, load_oracle, perf
 U32_MAX = 4294967295
 
 
-def start_positions():
+def start_positions(corpus):
     """Every start position of the documented fixture families, deduplicated.
 
     Families: the corpus position cases, attacks, special actions,
@@ -39,7 +39,6 @@ def start_positions():
     actions as CounterOverflow, a representation limit python-chess lacks.
     """
     fens = []
-    corpus = read_fixture("corpus.json")
     fens += [c["input"]["fen"] for c in corpus["cases"] if c["operation"] == "position"]
     for name, key in [("attacks.json", "cases"), ("special-actions.json", "positions"), ("classification.json", "cases"), ("ordinary-candidates.json", "cases")]:
         data = read_fixture(name)
@@ -174,7 +173,8 @@ def main():
     parser.add_argument("--save", type=Path, help="append disagreements as regression cases to this file")
     parser.add_argument("--fill", type=Path, help="add oracle expectations to cases lacking them, then exit")
     args = parser.parse_args()
-    chess = load_oracle(read_fixture("corpus.json")["sources"])
+    corpus = read_fixture("corpus.json")
+    chess = load_oracle(corpus["sources"])
 
     if args.fill:
         data = load_regressions(args.fill)
@@ -188,7 +188,7 @@ def main():
         return 0
 
     rng = random.Random(args.seed)
-    starts = start_positions()
+    starts = start_positions(corpus)
     disagreements = []
     plies = 0
     for index, fen in enumerate(starts):

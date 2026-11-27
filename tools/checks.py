@@ -88,8 +88,8 @@ def python_tests(root, paths):
               ('tools/experiments/', 'tools/experiments/tests'),
               ('desktop/scripts/', 'desktop/scripts')]
     commands = [([sys.executable, '-B', '-m', 'unittest', 'discover', '-s', tests, '-p', 'test_*.py'], '.')
-            for prefix, tests in groups if any(p.startswith(prefix) and p.endswith('.py') for p in paths)
-            and any((root / tests).glob('test_*.py'))]
+                for prefix, tests in groups if any(p.startswith(prefix) and p.endswith('.py') for p in paths)
+                and any((root / tests).glob('test_*.py'))]
     if any(p == 'tools/rules_check_helpers.py' or
            (p.startswith('tools/xiangqi/') and p.endswith('.py')) for p in paths):
         commands.append(([sys.executable, '-B', 'tools/xiangqi/test_reference.py',

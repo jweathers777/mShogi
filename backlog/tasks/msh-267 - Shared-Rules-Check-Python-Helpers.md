@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-27T00:58:00Z'
+updated_date: '2026-11-27T01:01:00Z'
 labels:
   - tools
   - refactor
@@ -45,4 +45,6 @@ Backlog consolidation, 2026-11-26: the dependency fields and current acceptance 
 Branch codex/msh-267-rules-check-helpers. Claim pushed. Next establish reference runs, extract the common code, and verify parity. No fixture or rules changes planned.
 
 Shared helpers, documentation, and CI selection are implemented on codex/msh-267-rules-check-helpers. Baseline and refactor agree for all seven Chess fixture scripts and the 15,008-ply differential, and for 105 Xiangqi fixture entries and 34 walk positions. All 15 Xiangqi sentinels passed. Local integration checks passed with the installed nvm Node/npm pair because Homebrew Node cannot load libsimdjson. Next finish Shogi and Xiangqi history parity, confirm CI, then integrate.
+
+Pinned cshogi and Pikafish rebuilt and locally admitted. Before/after payloads match exactly for 101 Shogi board fixtures, 99 seeded Shogi sequences, 13 admission plus 4 API-gap sentinels, 4 diagnostic injections, 101 depth-2 Shogi divides, Xiangqi board and walks, and 17 Xiangqi histories (492 prefixes). GitHub run 45919886214 passed Routine and tooling on Linux, macOS, and Windows. Its Routine log confirms eight local Xiangqi sentinels. The seven upstream Xiangqi sentinels run manually with the admitted binary per conformance policy. All code and validation are on codex/msh-267-rules-check-helpers. Next verify CI on the final code checkpoint and integrate.
 <!-- SECTION:NOTES:END -->

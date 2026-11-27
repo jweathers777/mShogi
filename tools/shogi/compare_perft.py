@@ -67,7 +67,7 @@ def run():
                 if result.returncode or result.stderr:
                     stderr = result.stderr.decode('utf-8', errors='replace')[-2000:]
                     raise ValueError(f'probe exit={result.returncode}, stderr={stderr}')
-                response = strict_json(result.stdout)
+                response = strict_json(result.stdout.decode('utf-8'))
                 native_divide = {e['action']: e['nodes'] for e in response['divide']}
                 if len(native_divide) != len(response['divide']):
                     raise ValueError('duplicate divide entry')

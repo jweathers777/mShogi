@@ -125,31 +125,12 @@ reservations; dialogs and disk/native replay never hold the controller lock.
 Close/quit retains native unsaved-change approval and child cleanup. Cancelling
 Save in Save-and-close or Save-then-Open cannot discard dirty work.
 
-## Development reproduction
+## MSH-73 verification
 
-Normal desktop remains the chess product. For archive verification only:
-
-```sh
-cd desktop
-npm ci
-npm run engine:prepare
-npm run tauri -- build --features desktop-verification --config src-tauri/tauri.verification.conf.json --bundles app
-MSHOGI_DESKTOP_FIXTURE=shared-contract 'src-tauri/target/release/bundle/macos/mShogi Verification.app/Contents/MacOS/mshogi-desktop'
-```
-
-The clearly labeled **MSH-73 DEVELOPMENT CONTRACT** provides minimal native Save,
-Save As and Open pickers, preferences, event inspection, explicit Resume and
-unsaved-change guards. Example: Resume→7g7f→actual engine reply→Analyze→Save As;
-quit, relaunch fixture→Open saved file→inspect Root→Return to live→Resume. Saved
-observations appear only in technical history. There is no archive of resumable
-pending work. Other systems build their native Tauri bundle; applicable CI records
-its actual tests separately from local macOS harness interaction.
-
-This harness is not evidence of approved/completed shogi visual design. MSH-74
-must deliver full9x9 visibility, deliberate owner-oriented pieces/promotions,
-integrated hands/drop, coherent hierarchy and polished pointer/keyboard use with
-diagnostics separated. Future12x12/16x16 products must display full boards without
-requiring zoom/pan; no common renderer/layout imposes the harness's scrolling.
+MSH-73 exercised native file pickers, preferences, position inspection,
+explicit Resume and unsaved-change guards on an early Shogi verification surface.
+See [desktop development](../../desktop/README.md#isolated-verification-application)
+for the current verification build and fixture setup.
 
 ## Xiangqi extension (MSH-99)
 

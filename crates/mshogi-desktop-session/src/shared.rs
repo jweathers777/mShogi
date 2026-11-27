@@ -836,7 +836,7 @@ impl DesktopController {
                 depth: 1,
                 nodes: 1,
             };
-            for _ in 0..MAX_ARCHIVE_OBSERVATIONS - 1 {
+            for _ in 0..native_session::KEPT_RESULTS - 1 {
                 self.start_game_work::<Shogi>(limits, true)
                     .map_err(|e| e.diagnostic)?;
                 let request = self

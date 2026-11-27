@@ -671,7 +671,7 @@ pub(crate) fn open<G: SessionGame>(
 }
 
 /// Results kept in memory per session; the oldest is dropped beyond this.
-const KEPT_RESULTS: usize = 256;
+pub(crate) const KEPT_RESULTS: usize = 256;
 fn keep_newest<T>(list: &mut Vec<T>, item: T) -> Option<T> {
     let evicted = (list.len() >= KEPT_RESULTS).then(|| list.remove(0));
     list.push(item);

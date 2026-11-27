@@ -1,7 +1,8 @@
+import type { GameSnapshot, NativeCommand, Operation } from "../native";
 import { useRef, useState } from "react";
 import { claimName } from "../presentation";
 import { TakeBackControl } from "./TakeBackControl";
-import type { GameSnapshot, NativeCommand, Operation } from "./native";
+
 export interface Confirmation { source: GameSnapshot; operation: Operation; title: string; action: string; meaning: string }
 export function GameActions({ snapshot, disabled, resignDisabled = disabled, command, confirm }: {
   snapshot: GameSnapshot; disabled: boolean; resignDisabled?: boolean; command: (operation: Operation) => Promise<unknown>;

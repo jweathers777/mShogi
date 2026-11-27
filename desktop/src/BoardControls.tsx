@@ -1,13 +1,14 @@
+import { inspectionStatus } from "./product/movementInspection";
 import { useId } from "react";
 import type { NativeChoiceController } from "./interaction/useNativeChoiceController";
-import { inspectionStatus } from "./product/movementInspection";
 
 // The controls that every board shares: one help line, route controls, live
 // announcement, completion dialog and square state wording.
 
 /** Accessible name of a board point: its native label plus the selection state. */
-export function pointLabel(base: string, key: string, interaction: NativeChoiceController) {
+export function pointLabel(key: string, piece: { label: string } | undefined, interaction: NativeChoiceController) {
   const { selected, inspection, inspectionPending, prefix, destinations } = interaction;
+  const base = piece?.label ?? `${key}, empty`;
   const target = destinations.includes(key);
   return `${base}${selected === key ? inspection ? `, Inspecting ${inspection.label}` : inspectionPending ? ", loading movement inspection" : ", selected" : ""}${prefix.includes(key) ? ", selected route step" : ""}${target ? inspection ? ", read-only inspection destination" : ", legal destination" : ""}`;
 }

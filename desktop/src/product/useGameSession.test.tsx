@@ -1,11 +1,14 @@
 // @vitest-environment jsdom
+import { deferred } from "../testing/helpers";
+import { games } from "../games";
+import type { GameSnapshot, ShogiSnapshot } from "../native";
 import { StrictMode } from "react";
 import { act, cleanup, renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { useGameSession } from "./useGameSession";
-import { playableProfiles, type GameSnapshot, type ShogiSnapshot } from "./native";
+
 import toriJson from "../__fixtures__/shared-tori-contract.json";
 import selectedToriJson from "../__fixtures__/shared-tori-selected-root.json";
 import chessJson from "../__fixtures__/shared-chess-standard.json";
@@ -14,7 +17,6 @@ import standardJson from "../__fixtures__/shared-shogi-standard.json";
 vi.mock("@tauri-apps/api/core", () => ({ invoke: vi.fn() }));
 vi.mock("@tauri-apps/api/event", () => ({ listen: vi.fn() }));
 const standard = standardJson as ShogiSnapshot;
-function deferred<T>() { let resolve!: (value: T) => void; const promise = new Promise<T>((done) => { resolve = done; }); return { resolve, promise }; }
 beforeEach(() => { vi.useFakeTimers(); vi.mocked(invoke).mockReset(); vi.mocked(listen).mockReset().mockResolvedValue(() => {}); });
 afterEach(() => { cleanup(); vi.useRealTimers(); });
 const flush = async () => { await act(async () => { await Promise.resolve(); }); };
@@ -176,7 +178,7 @@ it.each([chessJson, standardJson, xiangqiJson])("keeps dirty $game during cancel
     expect(invoke).toHaveBeenLastCalledWith("game_file", { action: "open", expected: source.open_token });
     expect(result.current.snapshot).toBe(source); expect(result.current.error).toBe(reason);
   }
-  await act(async () => { expect(await result.current.newGame(source.open_token, source.game, source.human.id, playableProfiles[source.game])).toBeNull(); });
+  await act(async () => { expect(await result.current.newGame(source.open_token, source.game, source.human.id, games[source.game].profile)).toBeNull(); });
   expect(invoke).toHaveBeenLastCalledWith("game_new", { expected: source.open_token, game: source.game, profile: source.profile, human: source.human.id, playMode: "human_engine" });
   expect(result.current.snapshot).toBe(source); expect(result.current.error).toBe("New Game admission failed.");
 });

@@ -1,4 +1,5 @@
-import type { XiangqiSnapshot } from "./native";
+import type { XiangqiSnapshot } from "../native";
+
 export function XiangqiAssessment({ snapshot }: { snapshot: XiangqiSnapshot }) {
   const assessment = snapshot.xiangqi.no_win_assessment;
   const label = assessment.kind === "proven_neither_can_win" ? "No natural board win is possible"

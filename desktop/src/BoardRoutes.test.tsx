@@ -1,36 +1,21 @@
 // @vitest-environment jsdom
-import { afterEach, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { renderBoard, square } from "./testing/helpers";
+import type { BoardGeometry } from "./testing/TestBoard";
+import type { SyntheticSnapshot } from "./native";
+import { afterEach, expect, it } from "vitest";
+import { cleanup, fireEvent, screen } from "@testing-library/react";
 import { TestBoard as Board, displayedSquares } from "./testing/TestBoard";
-import type { BoardGeometry, NativeChoice } from "./boardPresentation";
-import type { BoardPiece } from "./native";
+
 import nativeJson from "./__fixtures__/synthetic.json";
 
-interface Fixture {
-  profile: string;
-  version: number;
-  geometry: Omit<BoardGeometry, "initialFocus"> & { initial_focus: string };
-  pieces: BoardPiece[];
-  choices: NativeChoice[];
-}
-const fixture = nativeJson as Fixture;
+const fixture = nativeJson as SyntheticSnapshot;
 const geometry: BoardGeometry = { ...fixture.geometry, initialFocus: fixture.geometry.initial_focus };
 afterEach(cleanup);
-function square(name: string) {
-  // Coordinates already have native presentation labels. Avoid repeatedly
-  // computing 256 SVG accessible names in jsdom; accessibility is asserted
-  // separately below and in the actual packaged application.
-  const element = document.querySelector<SVGGElement>(`svg [role="button"][aria-label^="${name},"]`);
-  if (element === null) throw new Error(`Missing native square ${name}`);
-  return element;
-}
+
 function board() {
-  const onPlay = vi.fn();
-  const props = { pieces: fixture.pieces, choices: fixture.choices,
+  return renderBoard(Board, { pieces: fixture.pieces, choices: fixture.choices,
     version: fixture.version, contextKey: fixture.profile, geometry,
-    orientation: "white" as const, disabled: false,
-    glyphs: { strider: "S", stone: "●" }, onPlay };
-  return { ...render(<Board {...props} />), props, onPlay };
+    orientation: "white" as const, glyphs: { strider: "S", stone: "●" } });
 }
 it("uses native geometry for all 256 squares, full two-digit ranks and orientation", () => {
   const { props, rerender } = board();

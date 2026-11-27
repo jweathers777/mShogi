@@ -1,19 +1,18 @@
 // @vitest-environment jsdom
-import { afterEach, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { fakeSession, renderApplication } from "../testing/helpers";
+import type { GameSnapshot } from "../native";
+import { afterEach, expect, it } from "vitest";
+import { cleanup, fireEvent, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ApplicationView } from "./ApplicationView";
-import type { GameSnapshot } from "./native";
-import type { GameSession } from "./useGameSession";
+
 import chess from "../__fixtures__/shared-chess-standard.json";
 import shogi from "../__fixtures__/shared-shogi-standard.json";
 import xiangqi from "../__fixtures__/shared-xiangqi-standard.json";
 afterEach(cleanup);
 function app(value: unknown) {
  const snapshot = value as GameSnapshot;
- const session: GameSession = { snapshot, busy:false, error:"native failure detail", closeRequested:false, command:vi.fn(), file:vi.fn(), newGame:vi.fn(), cancelClose:vi.fn(), finishClose:vi.fn(), requestClose:vi.fn() };
- const props = {snapshot,session,onNewGame:vi.fn(),onOpen:vi.fn(),blocked:false};
- return {...render(<ApplicationView {...props}/>),props,session};
+ return renderApplication(snapshot, fakeSession(snapshot, { error: "native failure detail" }));
 }
 it.each([chess,shogi,xiangqi])("keeps common support outside the sidebar and retains full native evidence and notices", async value => {
  const {container,session}=app(value);

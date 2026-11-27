@@ -1,10 +1,11 @@
 // @vitest-environment jsdom
+import { fakeSession } from "../testing/helpers";
+import type { GameSnapshot } from "../native";
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { DiagnosticText, DIAGNOSTIC_PAGE_CHARACTERS } from "./DiagnosticText";
 import { SupportDialog } from "./SupportDialog";
-import type { GameSnapshot } from "./native";
-import type { GameSession } from "./useGameSession";
+
 import chess from "../__fixtures__/shared-chess-standard.json";
 import chuAnalysis from "../__fixtures__/shared-chu-analysis-complete.json";
 
@@ -36,7 +37,7 @@ it("keeps a supplementary Unicode character intact at a page boundary", () => {
   expect(container.querySelector("pre")!.textContent).toBe("🦁終");
 });
 it("captures one complete diagnostic snapshot on disclosure and refreshes only after closing it", async () => {
-  const session = { error: "first", requestClose: vi.fn() } as unknown as GameSession;
+  const session = fakeSession(chess as GameSnapshot, { error: "first" });
   const props = { snapshot: chess as GameSnapshot, session, close: vi.fn() };
   const { container, rerender } = render(<SupportDialog {...props} />);
   expect(container.querySelector("pre[data-native-diagnostics]")).toBeNull();

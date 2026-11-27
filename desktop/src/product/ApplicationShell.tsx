@@ -1,4 +1,6 @@
 import type { FocusEvent, FocusEventHandler, ReactNode, Ref } from "react";
+import { gameHeader, type GameKind } from "../games";
+import { revealInViewport } from "../interaction/focus";
 import { documentState } from "../documentState";
 import "./shell.css";
 
@@ -78,7 +80,7 @@ export function AnalysisActions({ children }: { children: ReactNode }) {
 }
 
 export function ApplicationShell({ game, runtime, document, actions, heading, board, positionNotice, notices, analysis, history, gameActions, support, overlays, blocked, historical, attributes = {}, onFocusCapture }: {
-  game: "chess" | "shogi" | "xiangqi" | "tori" | "chu" | "tenjiku"; runtime: string; document: ReactNode; actions: ReactNode;
+  game: GameKind; runtime: string; document: ReactNode; actions: ReactNode;
   heading: ReactNode; board: ReactNode; positionNotice?: ReactNode; notices?: ReactNode; analysis: ReactNode;
   history: ReactNode; gameActions: ReactNode; support: ReactNode; overlays?: ReactNode;
   blocked?: boolean; historical?: boolean; attributes?: Record<string, string | number | boolean>;
@@ -87,7 +89,7 @@ export function ApplicationShell({ game, runtime, document, actions, heading, bo
   return <main className={`game-shell shell-${game} ${game === "chess" ? "application" : "shogi-application"}`} data-theme="mshogi-dark" data-historical={historical} {...attributes} onFocusCapture={onFocusCapture}>
     <div className="shell-content" inert={blocked}>
       <header className="shell-header app-header shogi-header">
-        <div className="product-brand brand"><span className="brand-mark" aria-hidden="true">歩</span><div><div className="brand-name"><h1>mShogi</h1>{support}</div><p>{game === "tori" ? "TORI SHOGI" : game.toUpperCase()}</p><span className="shell-runtime" role="status">{runtime}</span></div></div>
+        <div className="product-brand brand"><span className="brand-mark" aria-hidden="true">歩</span><div><div className="brand-name"><h1>mShogi</h1>{support}</div><p>{gameHeader(game)}</p><span className="shell-runtime" role="status">{runtime}</span></div></div>
         <div className="shell-document document-card" aria-label="Game file">{document}</div><div className="product-file-actions shell-file-actions">{actions}</div>
       </header>
       <div className="shell-workspace workspace shogi-workspace">
@@ -107,14 +109,9 @@ export function ApplicationShell({ game, runtime, document, actions, heading, bo
 // each nested scroll viewport, rather than hiding/insetting the indicator.
 function revealSidebarFocus(event: FocusEvent<HTMLElement>) {
   if (!(event.target instanceof HTMLElement)) return;
-  const target = event.target, margin = 8;
+  const target = event.target;
   for (let viewport = target.parentElement; viewport; viewport = viewport.parentElement) {
-    const style = getComputedStyle(viewport);
-    if (/^(auto|scroll)$/.test(style.overflowY)) {
-      const frame = viewport.getBoundingClientRect(), rect = target.getBoundingClientRect();
-      if (rect.top - margin < frame.top) viewport.scrollTop -= frame.top - rect.top + margin;
-      else if (rect.bottom + margin > frame.bottom) viewport.scrollTop += rect.bottom + margin - frame.bottom;
-    }
+    if (/^(auto|scroll)$/.test(getComputedStyle(viewport).overflowY)) revealInViewport(viewport, target);
     if (viewport === event.currentTarget) break;
   }
 }

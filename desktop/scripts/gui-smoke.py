@@ -2248,7 +2248,6 @@ class Journey:
         w = self.web
         self.viewport(1180, 820)
         self.shogi_board_fits()
-        assert not w.has(".shared-contract-application")
         if name == "shogi-hands":
             self.shogi_events(2)
             for side in ("sente", "gote"):

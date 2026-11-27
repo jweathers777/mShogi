@@ -1,9 +1,10 @@
 // @vitest-environment jsdom
+import { fakeSession, renderApplication, square as point } from "../testing/helpers";
+import type { XiangqiSnapshot as GameSnapshot, SearchView } from "../native";
 import { afterEach, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import { cleanup, fireEvent, screen, within } from "@testing-library/react";
 import { ApplicationView as XiangqiApp } from "./ApplicationView";
-import type { XiangqiSnapshot as GameSnapshot, SearchView } from "./native";
-import type { GameSession } from "./useGameSession";
+
 import standardJson from "../__fixtures__/shared-xiangqi-standard.json";
 import warningJson from "../__fixtures__/shared-xiangqi-warning.json";
 import fourthJson from "../__fixtures__/shared-xiangqi-fourth.json";
@@ -18,16 +19,9 @@ vi.mock("@tauri-apps/api/core", () => ({ invoke: vi.fn() }));
 const standard = standardJson as unknown as GameSnapshot;
 afterEach(cleanup);
 function app(snapshot = standard, error = "") {
-  const session: GameSession = { snapshot, busy: false, error, closeRequested: false,
-    command: vi.fn().mockResolvedValue(snapshot), file: vi.fn().mockResolvedValue(snapshot),
-    newGame: vi.fn().mockResolvedValue(snapshot), cancelClose: vi.fn().mockResolvedValue(true), finishClose: vi.fn().mockResolvedValue(true), requestClose: vi.fn().mockResolvedValue(undefined) };
-  const props = { snapshot, session, onNewGame: vi.fn(), onOpen: vi.fn(), blocked: false };
-  return { ...render(<XiangqiApp {...props} />), props, session };
+  return renderApplication(snapshot, fakeSession(snapshot, { error }));
 }
-function point(origin: string) {
-  const node = document.querySelector<SVGGElement>(`[data-intersection="${origin}"]`);
-  if (!node) throw Error(`Missing intersection ${origin}`); return node;
-}
+
 it("uses the accepted shell, actual native play limits and shared document/status hierarchy", () => {
   const { container } = app();
   expect(container.querySelector(".game-shell")?.getAttribute("data-theme")).toBe("mshogi-dark");
@@ -60,7 +54,7 @@ it("flips using native Xiangqi preferences while preserving existing document an
   fireEvent.click(screen.getByRole("button", { name: "Load" })); expect(props.onOpen).toHaveBeenCalledOnce();
 });
 it("shows real engine work and cancellation without fabricated telemetry or analysis execution", () => {
-  const snapshot = { ...standard, human: standard.sides[1]!, phase: "thinking" as const, execution_purpose: "engine_turn", capabilities: { ...standard.capabilities, engine_turn: true, board_action: false } };
+  const snapshot = { ...standard, human: standard.sides[1]!, phase: "thinking" as const, execution_purpose: "engine_turn" as const, capabilities: { ...standard.capabilities, engine_turn: true, board_action: false } };
   const { session } = app(snapshot);
   expect(screen.getByRole("status", { name: "Engine turn status" }).textContent).toBe("Searching");
   expect(screen.queryByText("Completed depth")).toBeNull();
@@ -96,7 +90,7 @@ it("submits bounded read-only work, replacement and cancellation with exact sour
   fireEvent.change(depth, { target: { value: "64" } }); fireEvent.change(nodes, { target: { value: "5000000" } });
   fireEvent.click(screen.getByRole("button", { name: "Start move analysis" }));
   expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "analyze", operation: { depth: 64, nodes: 5000000 } });
-  const analyzing = { ...standard, phase: "thinking" as const, execution_purpose: "move_analysis", paused: true };
+  const analyzing = { ...standard, phase: "thinking" as const, execution_purpose: "move_analysis" as const, paused: true };
   rerender(<XiangqiApp {...props} snapshot={analyzing} />);
   expect(screen.queryByRole("button", { name: "Cancel search" })).toBeNull();
   fireEvent.click(screen.getByRole("button", { name: "Replace analysis" }));
@@ -190,7 +184,7 @@ it("separates unresolved assessment and process failure and retains retry and Sa
   fireEvent.click(screen.getByRole("button", { name: "Save" })); expect(session.file).toHaveBeenLastCalledWith(pending, "save");
 });
 it("reports asynchronous native file failures without clearing document state", () => {
-  app({ ...standard, io: { id: 1, phase: "failed", message: "Corrupt archive" }, document: { ...standard.document, dirty: true } });
+  app({ ...standard, io: { id: 1, phase: "failed", message: "Corrupt archive", resource: null }, document: { ...standard.document, dirty: true } });
   expect(screen.getByRole("alert").textContent).toContain("unsaved changes have been kept");
   expect(screen.getByText("Unsaved")).toBeTruthy();
 });
@@ -213,7 +207,7 @@ it("retains native structural refusal across successful Save and separates file 
   expect(screen.getByRole("heading", { name: "Application limit reached" })).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
   expect((screen.getByRole("button", { name: "Start move analysis" }) as HTMLButtonElement).disabled).toBe(true);
-  const failedSave = { ...saved, document: { ...saved.document, dirty: true }, io: { id: 2, phase: "failed", message: "File write failed" } };
+  const failedSave = { ...saved, document: { ...saved.document, dirty: true }, io: { id: 2, phase: "failed" as const, message: "File write failed", resource: null } };
   rerender(<XiangqiApp {...props} snapshot={failedSave} session={{ ...props.session, error: "Save failed" }} />);
   expect(screen.getByText(/file operation could not complete/)).toBeTruthy();
   expect(screen.getByRole("heading", { name: "Application limit reached" })).toBeTruthy();

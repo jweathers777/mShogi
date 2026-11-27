@@ -1,9 +1,10 @@
 // @vitest-environment jsdom
-import { afterEach, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import { fakeSession, renderApplication } from "../testing/helpers";
+import type { ShogiSnapshot as GameSnapshot, SearchView } from "../native";
+import { afterEach, expect, it } from "vitest";
+import { cleanup, fireEvent, screen, within } from "@testing-library/react";
 import { ApplicationView as ShogiApp } from "./ApplicationView";
-import type { ShogiSnapshot as GameSnapshot, SearchView } from "./native";
-import type { GameSession } from "./useGameSession";
+
 import standardJson from "../__fixtures__/shared-shogi-standard.json";
 afterEach(cleanup);
 const standard = standardJson as GameSnapshot;
@@ -22,11 +23,9 @@ it("uses disk-aware document labels, supplied play budget and native selected bo
   expect(container.querySelector("[data-document-state]")?.textContent).toBe("Unsaved changes");
 });
 function app(snapshot = standard, error = "") {
-  const session: GameSession = { snapshot, busy: false, error, closeRequested: false, command: vi.fn().mockResolvedValue(snapshot), file: vi.fn().mockResolvedValue(snapshot), newGame: vi.fn().mockResolvedValue(snapshot), cancelClose: vi.fn().mockResolvedValue(true), finishClose: vi.fn().mockResolvedValue(true), requestClose: vi.fn().mockResolvedValue(undefined) };
-  const props = { snapshot, session, onNewGame: vi.fn(), onOpen: vi.fn(), blocked: false };
-  const rendered = render(<ShogiApp {...props} />);
+  const rendered = renderApplication(snapshot, fakeSession(snapshot, { error }));
   fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
-  return { ...rendered, props, session };
+  return rendered;
 }
 it("allows clearing and typing numeric work limits without inserting a leading zero", () => {
   const { session } = app();
@@ -49,7 +48,7 @@ it("routes bounded analysis through the read-only operation and cancellation pat
   fireEvent.change(screen.getByRole("spinbutton", { name: "Node limit" }), { target: { value: "700" } });
   fireEvent.click(screen.getByRole("button", { name: "Start move analysis" }));
   expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "analyze", operation: { depth: 3, nodes: 700 } });
-  const analyzing = { ...standard, phase: "thinking" as const, execution_purpose: "move_analysis", paused: true };
+  const analyzing = { ...standard, phase: "thinking" as const, execution_purpose: "move_analysis" as const, paused: true };
   rerender(<ShogiApp {...props} snapshot={analyzing} />);
   expect(screen.getByText("Analyzing the selected position…")).toBeTruthy();
   expect(screen.queryByRole("button", { name: "Cancel search" })).toBeNull();
@@ -59,7 +58,7 @@ it("routes bounded analysis through the read-only operation and cancellation pat
   expect(session.command).toHaveBeenLastCalledWith(analyzing, { kind: "cancel" });
 });
 it("keeps engine-turn cancellation distinct from analysis and invents no progress", () => {
-  const snapshot = { ...standard, human: standard.sides[1]!, phase: "thinking" as const, execution_purpose: "engine_turn", capabilities: { ...standard.capabilities, engine_turn: true, board_action: false } };
+  const snapshot = { ...standard, human: standard.sides[1]!, phase: "thinking" as const, execution_purpose: "engine_turn" as const, capabilities: { ...standard.capabilities, engine_turn: true, board_action: false } };
   const { session } = app(snapshot);
   expect(screen.getByRole("button", { name: "Cancel search" })).toBeTruthy();
   expect(screen.queryByRole("button", { name: "Cancel analysis" })).toBeNull();

@@ -1,9 +1,11 @@
 // @vitest-environment jsdom
+import { deferred, renderBoard, square } from "./testing/helpers";
+import type { ChessSnapshot } from "./native";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { TestBoard as Board } from "./testing/TestBoard";
 import userEvent from "@testing-library/user-event";
-import type { ChessSnapshot } from "./product/native";
+
 import standardJson from "./__fixtures__/shared-chess-standard.json";
 import promotionJson from "./__fixtures__/shared-chess-promotion.json";
 function boardFacts(value: ChessSnapshot) {
@@ -13,21 +15,10 @@ const standard = boardFacts(standardJson as ChessSnapshot);
 const promotion = boardFacts(promotionJson as ChessSnapshot);
 afterEach(cleanup);
 function board(snapshot = standard) {
-  const onPlay = vi.fn();
-  const props = {
-    pieces: snapshot.pieces,
-    choices: snapshot.choices,
-    version: snapshot.version,
-    disabled: false,
-    orientation: "white" as const,
-    promotion: true,
-    onPlay,
-  };
-  return { ...render(<Board {...props} />), props, onPlay };
+  return renderBoard(Board, { pieces: snapshot.pieces, choices: snapshot.choices,
+    version: snapshot.version, orientation: "white" as const, promotion: true });
 }
-function square(name: string) {
-  return screen.getByRole("button", { name: new RegExp(`^${name},`) });
-}
+
 describe("native complete choice selection", () => {
   it("sends only a supplied native action, not an unavailable destination", () => {
     const { onPlay } = board();
@@ -150,8 +141,8 @@ it.each(["white", "black"] as const)("inspects an opponent in %s orientation, sw
   fireEvent.click(square("e2")); fireEvent.click(square("e4")); expect(onPlay).toHaveBeenCalledExactlyOnceWith("e2e4");
 });
 it("keeps historical/engine-turn inspection available when board actions are disabled and retires late results", async () => {
-  let resolve!: (value: typeof inspectedPawn) => void;
-  const onInspect = vi.fn().mockReturnValue(new Promise((r) => { resolve = r; })), onPlay = vi.fn();
+  const { promise, resolve } = deferred<typeof inspectedPawn>();
+  const onInspect = vi.fn().mockReturnValue(promise), onPlay = vi.fn();
   const props = { pieces: standard.pieces, choices: standard.choices, version: 0, orientation: "white" as const, disabled: true, humanOwner: "white", onPlay, onInspect, inspectionDisabled: false, contextKey: "historical-1" };
   const { rerender } = render(<Board {...props} />);
   fireEvent.click(square("e7")); expect(onInspect).toHaveBeenCalledWith("e7");
@@ -218,7 +209,7 @@ it("retires completion focus to the board but never steals an unrelated input on
 it("keeps completed-history geometry separate from current selection and inspection state", () => {
   const { props, rerender, onPlay } = board();
   fireEvent.click(square("e2"));
-  rerender(<Board {...props} completedAction={{ origin: { kind: "board", square: "b8" }, steps: ["c6"] }} />);
+  rerender(<Board {...props} completedAction={{ action: "b8c6", event_index: 1, effects: [], origin: { kind: "board", square: "b8" }, steps: ["c6"] }} />);
   expect(square("e4").getAttribute("aria-label")).toContain("legal destination");
   expect(square("b8").getAttribute("aria-pressed")).toBe("false");
   expect(document.querySelector('[data-last-move="origin"]')?.getAttribute("data-location")).toBe("b8");

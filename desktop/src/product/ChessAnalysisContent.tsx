@@ -1,8 +1,9 @@
+import type { AnalysisState, ExecutionObservation, GameSnapshot } from "../native";
 import { useEffect, useRef, useState } from "react";
 import { choiceDescription, readableAction, resultTelemetry, scoreDescription } from "../analysisPresentation";
+import { sideLabel } from "../games";
+import { sessionStatus } from "../sessionState";
 import { conclusionName } from "../presentation";
-import type { AnalysisState, ExecutionObservation } from "../native";
-import type { GameSnapshot } from "./native";
 
 function sameTarget(analysis: AnalysisState, snapshot: GameSnapshot) {
   const target = analysis.target;
@@ -16,14 +17,14 @@ function sameTarget(analysis: AnalysisState, snapshot: GameSnapshot) {
     purpose?.kind === "move_analysis" && analysis.operation !== null &&
     analysis.context?.limits.depth === analysis.operation.depth && analysis.context.limits.nodes === analysis.operation.nodes;
 }
-function analysisSummary(analysis: AnalysisState, current: boolean, accepted: boolean): string {
+function analysisSummary(analysis: AnalysisState, current: boolean, accepted: boolean, working: boolean): string {
   if (analysis.status === "idle" || analysis.status === "failed") return "";
   if (analysis.status === "cancelled") return "Analysis cancelled. No conclusion was established; play remains paused until you explicitly resume.";
   if (!analysis.target) return "Waiting for the selected analysis position.";
-  const side = analysis.target.turn.game_kind === "chess" ? (analysis.target.turn.side === "white" ? "White" : "Black") : "Unknown side";
+  const side = analysis.target.turn.game_kind === "chess" ? sideLabel("chess", analysis.target.turn.side) : "Unknown side";
   const position = `${analysis.target.label}, ${side} to move`;
   if (!current) return `Analysis for recorded target ${position} belongs to an earlier position or request. It does not describe the current position.`;
-  if (analysis.status === "thinking") return `Move analysis started for ${position}. Read-only suggestions will not be played. Waiting for a completed result.`;
+  if (working) return `Move analysis started for ${position}. Read-only suggestions will not be played. Waiting for a completed result.`;
   if (!accepted) return `No accepted analysis observation for ${position}. No live-game command was issued.`;
   if (analysis.status === "incomplete") return `Analysis incomplete. A work limit or stop ended the request for ${position}; it does not conclude the live game. Suggestions were not played.`;
   if (analysis.result?.kind === "move") return `Move analysis completed for ${position}. Suggested move: ${readableAction(analysis.result.action)}; not played.`;
@@ -37,9 +38,9 @@ export function ChessAnalysisContent({ snapshot }: { snapshot: GameSnapshot }) {
   const current = analysis ? Boolean(sameTarget(analysis, snapshot)) : false;
   const accepted = Boolean(analysis && current && (analysis.status === "complete" || analysis.status === "incomplete") && analysis.result !== null &&
     analysis.context?.purpose.kind === "move_analysis" && analysis.result.kind !== "failure");
-  const summary = analysis ? analysisSummary(analysis, current, accepted) : "";
+  const working = analysis !== null && sessionStatus(snapshot) === "analyzing";
+  const summary = analysis ? analysisSummary(analysis, current, accepted, working) : "";
   const requestKey = analysis?.context ? `${analysis.context.session_version}:${analysis.context.request_id}` : "";
-  const working = analysis?.status === "thinking";
   useEffect(() => {
     const replaced = working && previousRequest.current?.working && previousRequest.current.key !== requestKey;
     previousRequest.current = { key: requestKey, working };
@@ -53,8 +54,8 @@ export function ChessAnalysisContent({ snapshot }: { snapshot: GameSnapshot }) {
   return <>
     <p className="analysis-notice" role="status" aria-label="Analysis status" aria-live="polite" aria-atomic="true">{announcement}</p>
     {analysis.status === "failed" && <p role="alert">Analysis process failed. No analysis conclusion or chess outcome was assigned. You may replace the analysis or resume play.</p>}
-    {analysis.target && <div className="analysis-result" aria-label="Analysis result"><h3>{analysis.target.label}</h3><p className="analysis-perspective">{turn === "white" ? "White" : turn === "black" ? "Black" : "Unknown side"} perspective · Bounded move search</p><p className="caption">{analysis.operation ? `Recorded limit: depth ${analysis.operation.depth}, ${analysis.operation.nodes.toLocaleString()} nodes.` : ""}</p>
-      {!current && analysis.result ? <p>This result belongs to an earlier position or request. It does not describe the current position.</p> : !accepted ? <p>{analysis.status === "thinking" ? "Waiting for a completed result." : "No accepted result to display. Rejected responses are available in About mShogi."}</p> : <>
+    {analysis.target && <div className="analysis-result" aria-label="Analysis result"><h3>{analysis.target.label}</h3><p className="analysis-perspective">{turn === null ? "Unknown side" : sideLabel("chess", turn)} perspective · Bounded move search</p><p className="caption">{analysis.operation ? `Recorded limit: depth ${analysis.operation.depth}, ${analysis.operation.nodes.toLocaleString()} nodes.` : ""}</p>
+      {!current && analysis.result ? <p>This result belongs to an earlier position or request. It does not describe the current position.</p> : !accepted ? <p>{working ? "Waiting for a completed result." : "No accepted result to display. Rejected responses are available in About mShogi."}</p> : <>
         {analysis.result?.kind === "move" && <p>Suggested move: {readableAction(analysis.result.action)} · not played</p>}
         {analysis.result?.kind === "claim" && <p>Suggested {choiceDescription({ kind: "claim", claim: analysis.result.claim })} · not exercised</p>}
         {analysis.result?.kind === "finished" && <p>{conclusionName({ chess: analysis.result.outcome })}. This analyzed position is concluded; no live-game command was issued.</p>}

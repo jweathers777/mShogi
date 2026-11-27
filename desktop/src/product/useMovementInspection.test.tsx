@@ -1,15 +1,16 @@
 // @vitest-environment jsdom
+import { deferred } from "../testing/helpers";
+import { inspectionContextKey } from "./movementInspection";
+import type { InspectionContext, MovementInspection } from "../native";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { act, cleanup, renderHook } from "@testing-library/react";
 import { invoke } from "@tauri-apps/api/core";
 import { useMovementInspection } from "./useMovementInspection";
 import { useNativeChoiceController } from "../interaction/useNativeChoiceController";
-import { inspectionContextKey } from "./movementInspection";
-import type { InspectionContext, MovementInspection } from "./movementInspection";
+
 vi.mock("@tauri-apps/api/core", () => ({ invoke: vi.fn() }));
 const context: InspectionContext = { game: "shogi", token: { document: 4, version: 8, revision: 12, selection: 2 } };
 const reply: MovementInspection = { ...context, origin: "5a", side: { id: { game_kind: "shogi", side: "gote" }, key: "gote", label: "Gote", first_mover: false }, label: "Gote king", choices: [], read_only: true };
-function deferred<T>() { let resolve!: (value: T) => void; const promise = new Promise<T>((r) => { resolve = r; }); return { promise, resolve }; }
 beforeEach(() => { vi.mocked(invoke).mockReset(); }); afterEach(cleanup);
 it("queries the read-only boundary with the exact native selection token", async () => {
   vi.mocked(invoke).mockResolvedValue(reply);

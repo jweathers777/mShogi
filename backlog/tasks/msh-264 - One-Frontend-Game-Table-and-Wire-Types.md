@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-27T00:18:00Z'
+updated_date: '2026-11-27T00:29:00Z'
 labels:
   - desktop
   - frontend
@@ -44,6 +44,14 @@ The desktop session keeps the newest 256 engine results with KEPT_RESULTS (nativ
 - [ ] #7 Workspace, desktop-session all-features and GUI script tests pass.
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Put game metadata, native wire types, and session status in shared modules. Verify the wire shape against Rust and existing snapshots.
+2. Consolidate focus, scrolling, and test setup. Remove retired assertions and labels, fix undefined CSS variables, and share the Rust result cap.
+3. Record TypeScript line counts, run the required suites, get fresh review, and integrate.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
@@ -52,4 +60,8 @@ John approved consolidation on 2026-11-26: this task retains the full scope of M
 Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
 
 Claimed on branch codex/msh-264-frontend-consistency. Next: inspect the desktop frontend and Rust wire types, then implement the approved consolidation.
+
+Baseline: 6,762 lines across tracked TypeScript and TSX files under desktop/src (includes tests and excludes fixtures). The claim is pushed. Next: implement the recorded plan.
+
+Checkpoint: shared game metadata, wire types, request status, focus and test helpers are in place. The retained result limit has one definition. Desktop-session all-features passed 196 tests. Fresh review caught short live headers required by the GUI journey; the game table now preserves CHU and TENJIKU, with coverage for all six headers. Next: resolve any remaining review findings, complete the workspace/frontend/script gate, and integrate.
 <!-- SECTION:NOTES:END -->

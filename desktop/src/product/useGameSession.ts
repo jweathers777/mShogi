@@ -1,8 +1,10 @@
+import { nativeSnapshotIsNewer } from "../sessionState";
+import type { GameKind, RulesProfile } from "../games";
+import type { DesktopCommand, GameSnapshot, NativeSide, OpenToken, Operation, PlayMode } from "../native";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
-import { nativeSnapshotIsNewer } from "../NativeBoard";
-import type { GameKind, RulesProfile, GameSnapshot, NativeSide, OpenToken, Operation, PlayMode } from "./native";
+
 export function useGameSession() {
   const [snapshot, setSnapshot] = useState<GameSnapshot | null>(null);
   const latest = useRef<GameSnapshot | null>(null);
@@ -54,7 +56,7 @@ export function useGameSession() {
   // Every operation uses the exact snapshot on which its UI was rendered. A
   // newer poll must never upgrade an old click's authority.
   const command = (source: GameSnapshot, operation: Operation) => perform("game_command", {
-    commandJson: JSON.stringify({ expected: source.token, game: source.game, operation }),
+    commandJson: JSON.stringify({ expected: source.token, game: source.game, operation } satisfies DesktopCommand),
   });
   const file = (source: GameSnapshot, action: "save" | "save_as" | "open") => perform("game_file", { action, expected: source.open_token });
   const newGame = (expected: OpenToken, game: GameKind, human: NativeSide, profile: RulesProfile, playMode: PlayMode = "human_engine") => perform("game_new", { expected, game, profile, human, playMode });

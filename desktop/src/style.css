@@ -568,13 +568,6 @@ button.danger:hover:enabled {
 .document-card .card-title h2 {
   overflow-wrap: anywhere;
 }
-.document-dirty {
-  font-size: 0.72rem;
-  color: var(--muted);
-}
-.document-dirty.dirty {
-  color: #edc78c;
-}
 .document-guard {
   max-width: 480px;
 }

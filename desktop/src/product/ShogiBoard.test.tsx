@@ -1,9 +1,11 @@
 // @vitest-environment jsdom
+import { deferred, renderBoard, square } from "../testing/helpers";
+import type { ShogiSnapshot as GameSnapshot } from "../native";
 import { afterEach, expect, it, vi } from "vitest";
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ShogiBoard } from "./ShogiBoard";
-import type { ShogiSnapshot as GameSnapshot } from "./native";
+
 import standardJson from "../__fixtures__/shared-shogi-standard.json";
 import promotionJson from "../__fixtures__/shared-shogi-promotion.json";
 import forcedJson from "../__fixtures__/shared-shogi-forced.json";
@@ -11,8 +13,8 @@ import dropsJson from "../__fixtures__/shared-shogi-drops.json";
 import { oriented } from "../testing/snapshots";
 afterEach(cleanup);
 const standard = standardJson as GameSnapshot;
-function square(key: string) { const node = document.querySelector<SVGGElement>(`.shogi-square[data-square="${key}"]`); if (!node) throw Error(`Missing square ${key}`); return node; }
-function board(snapshot = standard) { const onPlay = vi.fn(); const props = { snapshot, disabled: false, onPlay }; return { ...render(<ShogiBoard {...props} />), props, onPlay }; }
+
+const board = (snapshot = standard) => renderBoard(ShogiBoard, { snapshot });
 it("renders native identities independently of Japanese decoration and flips ownership correctly", () => {
   const { props, rerender } = board();
   expect(document.querySelectorAll(".shogi-square")).toHaveLength(81);
@@ -116,8 +118,8 @@ it("inspects available opponent hand drops by keyboard during historical viewing
   fireEvent.keyDown(square("5e"), { key: "Escape" }); expect(document.activeElement).toBe(pawn); expect(screen.queryByText(/Inspecting Gote pawn in hand · Esc clears/)).toBeNull();
 });
 it("retires asynchronous inspection after friendly switching and native historical selection", async () => {
-  let resolve!: (value: typeof inspectionReply) => void;
-  const onInspect = vi.fn().mockReturnValue(new Promise((r) => { resolve = r; })), onPlay = vi.fn();
+  const { promise, resolve } = deferred<typeof inspectionReply>();
+  const onInspect = vi.fn().mockReturnValue(promise), onPlay = vi.fn();
   const props = { snapshot: standard, disabled: false, onPlay, onInspect, inspectionDisabled: false };
   const { rerender } = render(<ShogiBoard {...props} />);
   fireEvent.click(square("3c")); fireEvent.click(square("7g"));
@@ -161,7 +163,7 @@ it("uses the shared player/board/footer slots while retaining native hands and k
 });
 it("keeps rendered read-only completed geometry separate from the pending native choice", () => {
   const { props, rerender, onPlay } = board(); fireEvent.click(square("7g"));
-  rerender(<ShogiBoard {...props} completedAction={{ origin: { kind: "hand", owner: gote.key, piece_kind: "pawn" }, steps: ["3d"] }} />);
+  rerender(<ShogiBoard {...props} completedAction={{ action: "P*3d", event_index: 1, effects: [], origin: { kind: "hand", owner: gote.key, piece_kind: "pawn" }, steps: ["3d"] }} />);
   expect(square("7f").getAttribute("aria-label")).toContain("legal destination");
   expect(document.querySelector('[data-last-move="destination"]')?.getAttribute("data-location")).toBe("3d");
   fireEvent.click(square("7f")); expect(onPlay).toHaveBeenCalledExactlyOnceWith("7g7f");

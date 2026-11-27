@@ -1,12 +1,13 @@
+import { cycleTabFocus } from "./focus";
+import type { BoardChoice, MovementInspection } from "../native";
+import type { InspectMovement } from "../product/movementInspection";
 import { useLayoutEffect, useRef, useState, type FocusEvent, type KeyboardEvent } from "react";
-import type { NativeChoice } from "../boardPresentation";
-import type { InspectMovement, MovementInspection } from "../product/movementInspection";
 
 export type Direction = "ArrowLeft" | "ArrowRight" | "ArrowUp" | "ArrowDown";
 export interface SelectionOrigin { key: string; label?: string; owner: string | undefined; inspectable: boolean }
 export interface ChoiceControllerOptions {
   contextKey: string;
-  choices: NativeChoice[];
+  choices: BoardChoice[];
   origins: SelectionOrigin[];
   humanOwner?: string | undefined;
   disabled: boolean;
@@ -22,7 +23,7 @@ type State = {
   context: string;
   selected: string | null;
   prefix: string[];
-  completions: NativeChoice[];
+  completions: BoardChoice[];
   inspection: MovementInspection | null;
   inspectionPending: boolean;
   announcement: string;
@@ -105,7 +106,7 @@ export function useNativeChoiceController(options: ChoiceControllerOptions) {
     const target = state.completions.length ? returnFocus.current : state.selected ?? returnFocus.current;
     clear(); focus(target);
   }
-  function submit(choice: NativeChoice, route: string[], origin: string | null) {
+  function submit(choice: BoardChoice, route: string[], origin: string | null) {
     if (!currentSelection() || lifetime.current.submitted || disabled || state.inspection || state.inspectionPending
       || choice.from !== origin || choice.steps.length !== route.length || !route.every((step, i) => step === choice.steps[i])
       || !choices.some(native => JSON.stringify(native) === JSON.stringify(choice))) return;
@@ -113,7 +114,7 @@ export function useNativeChoiceController(options: ChoiceControllerOptions) {
     clear("Complete native action submitted."); focus(returnFocus.current);
     options.onPlay(choice.action);
   }
-  function finish(matches: NativeChoice[], route = state.prefix, origin = state.selected) {
+  function finish(matches: BoardChoice[], route = state.prefix, origin = state.selected) {
     if (!currentSelection() || state.inspection || disabled || !matches.length) return;
     returnFocus.current = route.at(-1) ?? origin ?? initialFocus;
     if (matches.length === 1) submit(matches[0]!, route, origin);
@@ -190,12 +191,7 @@ export function useNativeChoiceController(options: ChoiceControllerOptions) {
   }
   function completionKey(event: KeyboardEvent<HTMLDivElement>) {
     if (event.key === "Escape") { event.preventDefault(); event.stopPropagation(); cancel(); }
-    else if (event.key === "Tab") {
-      event.preventDefault();
-      const buttons = [...(completionRef.current?.querySelectorAll<HTMLButtonElement>("button:not(:disabled)") ?? [])];
-      const index = buttons.indexOf(document.activeElement as HTMLButtonElement);
-      buttons[(index + (event.shiftKey ? -1 : 1) + buttons.length) % buttons.length]?.focus();
-    }
+    else if (event.key === "Tab") cycleTabFocus(event);
   }
   function onFocusCapture() { hadFocus.current = true; }
   function onBlurCapture(event: FocusEvent) {

@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
+import type { GameSnapshot, ResourceFact } from "../native";
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import { NativeRecovery } from "./NativeSessionPanels";
-import type { GameSnapshot } from "./native";
-import type { ResourceFact } from "../resources";
+
 import chess from "../__fixtures__/shared-chess-standard.json";
 import shogi from "../__fixtures__/shared-shogi-standard.json";
 import xiangqi from "../__fixtures__/shared-xiangqi-standard.json";

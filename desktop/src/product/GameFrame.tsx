@@ -1,11 +1,7 @@
+import type { GameSnapshot, Side } from "../native";
 import type { FocusEventHandler, ReactNode } from "react";
+import { bottomSide, sessionStatus } from "../sessionState";
 import { GameArea, GamePositionStatus, PlayerArea } from "./ApplicationShell";
-import type { GameSnapshot, Side } from "./native";
-
-/** The side that the document settings place at the bottom of the board. */
-export function bottomSide(snapshot: GameSnapshot): Side {
-  return snapshot.sides.find(side => side.id.side === snapshot.document.settings.orientation.side)!;
-}
 
 // Application-owned player/status placement; hands and board help remain native
 // renderer content. The shared native-choice controller owns board interaction;
@@ -25,5 +21,5 @@ export function GameFrame({ snapshot, board, help, upperContent, lowerContent, c
     lowerPlayer={player(bottom, lowerContent)} board={board} {...(onFocusCapture ? { onFocusCapture } : {})} {...(onBlurCapture ? { onBlurCapture } : {})}
     footer={<>{help}<GamePositionStatus historical={snapshot.historical} concluded={snapshot.status.concluded}
       paused={snapshot.paused} humanTurn={snapshot.local_actor.key === snapshot.turn.key} stateLabel={snapshot.play_mode === "two_humans" && !snapshot.historical && !snapshot.status.concluded && !snapshot.paused ? `${snapshot.turn.label} to move` : undefined}
-      thinking={snapshot.capabilities.engine_turn && snapshot.phase === "thinking" && snapshot.execution_purpose === "engine_turn"} ply={snapshot.board_ply} /></>} />;
+      thinking={sessionStatus(snapshot) === "thinking"} ply={snapshot.board_ply} /></>} />;
 }

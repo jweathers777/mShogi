@@ -1,9 +1,11 @@
-import type { CompletedActionGeometry } from "../boardPresentation";
+import type { CompletedActionGeometry, ShogiSnapshot, ToriSnapshot, Side } from "../native";
+import type { InspectMovement } from "./movementInspection";
+
 import { gridNeighbor, useNativeChoiceController } from "../interaction/useNativeChoiceController";
 import { BoardFooter, CompletionDialog, pointLabel } from "../BoardControls";
-import type { ShogiSnapshot, ToriSnapshot, Side } from "./native";
-import type { InspectMovement } from "./movementInspection";
-import { GameFrame, bottomSide } from "./GameFrame";
+
+import { bottomSide } from "../sessionState";
+import { GameFrame } from "./GameFrame";
 import { Piece } from "./Piece";
 import { CompletedActionCue } from "../CompletedActionCue";
 import "../movement-inspection.css";
@@ -55,7 +57,7 @@ export function ShogiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDi
         return <g key={square} className={`shogi-square${selected === square && !inspection && !inspectionPending ? " selected" : ""}${target && !inspection ? " target" : ""}`} data-square={square}
           transform={`translate(${28 + column * 100},${28 + row * 100})`} ref={node => interaction.register(square, node)}
           role="button" tabIndex={(squares.includes(focused) ? focused : snapshot.board.initial_focus) === square ? 0 : -1} aria-disabled={interaction.interactionDisabled} aria-pressed={selected === square}
-          aria-label={pointLabel(piece?.label ?? `${square}, empty`, square, interaction)}
+          aria-label={pointLabel(square, piece, interaction)}
           onFocus={() => interaction.onFocus(square)} onClick={() => interaction.select(square)} onKeyDown={event => interaction.keyDown(event, square)}>
           {piece && <title>{piece.label}</title>}
           <rect className="shogi-cell" width="100" height="100" />

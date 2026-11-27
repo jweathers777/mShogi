@@ -1,7 +1,7 @@
+import { tenjikuProfiles } from "../games";
 import "./tenjiku-verification.css";
 import { TenjikuLayout } from "./TenjikuLayout";
 import type { VerificationControlsProps } from "../product/ProductApp";
-import { tenjikuProfiles } from "../product/native";
 
 export function TenjikuControls({ snapshot, session, blocked }: VerificationControlsProps) {
   if (snapshot.game !== "tenjiku") return null;

@@ -1,6 +1,7 @@
+import { inspectionContextKey, type InspectMovement } from "./movementInspection";
+import type { InspectionContext, MovementInspection, MovementInspectionQuery } from "../native";
 import { useCallback } from "react";
 import { invoke } from "@tauri-apps/api/core";
-import { inspectionContextKey, type InspectionContext, type MovementInspection, type InspectMovement } from "./movementInspection";
 
 // Stable native query/identity validator only. The shared choice controller is
 // the sole owner of pending inspection, supersession, retirement and unmount.
@@ -11,7 +12,7 @@ export function useMovementInspection(context: InspectionContext | null): Inspec
     if (context === null) return null;
     try {
       const result = await invoke<MovementInspection>("game_inspection", {
-        queryJson: JSON.stringify({ expected: context.token, origin }),
+        queryJson: JSON.stringify({ expected: context.token, origin } satisfies MovementInspectionQuery),
       });
       return result.read_only === true && result.origin === origin && inspectionContextKey(result) === key ? result : null;
     } catch {

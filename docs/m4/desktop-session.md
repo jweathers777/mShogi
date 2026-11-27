@@ -1,6 +1,10 @@
 # Shared desktop session and selection contract (MSH-72)
 
-This is the concrete two-game native boundary, using the existing Rust chess
+The sections below record the development of the shared desktop interface in
+MSH-72 through MSH-74. See the [current execution contract](../desktop/internal-execution-v4.md)
+for the six-game application.
+
+MSH-72 established a concrete two-game native boundary, using the existing Rust chess
 match/session and selected standard-shogi `mshogi.shogi.csa36.v1` game. It does
 not deliver shogi desktop archives (MSH-73) or claim the completed shogi desktop
 application (MSH-74). M2/M3 and their chess evidence remain closed. MSH-41–47
@@ -49,8 +53,8 @@ A legacy polling call cannot restart hidden chess work. The close compatibility
 view reports an unsaved document; shogi semantic changes, accepted observations
 and replacement advance document revision, so old close approvals cannot become
 current again. File/admission jobs and engine work retire before game switching.
-The separately labeled development surface offers explicit discard/keep-open
-handling. Shogi has `save: false`; no `.mshogi` support or persistence guarantee
+The early verification surface offered explicit discard and keep-open
+controls. Shogi has `save: false`; no `.mshogi` support or persistence guarantee
 is claimed for it here. MSH-61 admission/save guarantees for chess remain intact.
 
 ## Presentation and complete choices
@@ -118,48 +122,18 @@ byte limit (MSH-268); diagnostics stay 4 KiB.
 `SharedDesktopCommand::from_json` refuses duplicate fields anywhere, including
 the game payloads, before the operation is parsed.
 Diagnostics truncate at a valid UTF-8 boundary.
-Shogi history/reconstruction follows the 320-action move-count rule, with no Full reachability reconstruction. Retained
-observations are capped at 256; new analysis/resume/retry is refused before
-committing at capacity. Native accepted history/observations are not truncated.
-This is in-memory bounded development support, not an archive design.
+Shogi history and reconstruction follow the 320-action move-count rule.
+The current application keeps the newest 256 engine results in memory.
+When a new result fills the list, it replaces the oldest result. Saved game
+documents preserve the game history.
 
-## Development surface and reproduction
+## MSH-72 verification
 
-Normal app launch remains `cd desktop && npm run desktop:dev` (Node 24.19.0;
-Tauri/native prerequisites in `desktop/README.md`). It remains the chess product.
-The development contract surface is compiled only in the separate verification
-host/frontend:
-
-```sh
-cd desktop
-npm ci
-npm run engine:prepare
-npm run tauri -- build --features desktop-verification --config src-tauri/tauri.verification.conf.json --bundles app
-# macOS: run the executable directly so it receives the selected fixture.
-MSHOGI_DESKTOP_FIXTURE=shared-contract 'src-tauri/target/release/bundle/macos/mShogi Verification.app/Contents/MacOS/mshogi-desktop'
-```
-
-Use Resume before board play. The test surface exposes the shared board/hands,
-orientation, bounded analysis/cancel, event inspection, Return to live, undo,
-declaration/resignation, exact technical observations and unsaved-discard close.
-It is deliberately not the final shogi application or Save/Open implementation.
-Other platforms use their Tauri bundle format and the same environment selection.
-Native endpoints accept raw bounded command JSON; they are absent from normal
-builds. Frontend build guards and package inventory/host marker checks enforce
-instrumentation exclusion.
-
-Verification and independent-review results belong to
-the MSH-72 evidence record. Earlier M2/M3,
-MSH-63–71 research, fixtures and platform evidence are reused only for unchanged
-behavior. MSH-73 is next; MSH-74/75 and MSH-41–47 stay open.
-
-## Visual-design boundary (owner clarification, 2026-10-26)
-
-**MSH-72 DEVELOPMENT CONTRACT is a development-only verification harness.**
-Its visual design, layout, sizing, Latin-letter piece rendering, hand buttons,
-control strip and raw technical state are not completed or approved shogi product
-design and are not the design basis/acceptance target for MSH-74. No further
-harness polish is required to close MSH-72's semantic/verification scope.
+MSH-72 exercised native board and hand choices, orientation, bounded analysis,
+event inspection, Return to live, Undo, declaration, resignation and close guards.
+The early Shogi verification layout preceded the product design delivered in MSH-74.
+See [desktop development](../../desktop/README.md#isolated-verification-application)
+for the current verification build and fixture setup.
 
 The DTO's `kind`, `promoted`, `owner`, geometry, native orientations and hand
 resources are authoritative semantics; `text`/labels are readable fallbacks for
@@ -192,9 +166,8 @@ The historical MSH-72 evidence and its then-missing Save/Open limitation above
 remain a record of that revision. MSH-73 now adds native shared Save/Open via the
 versioned [archive contract](desktop-archive.md), including strict chess v1
 compatibility, shogi v2 lossless replay, pre-commit capacity and fresh stopped
-reopen. The separately built surface is now labeled **MSH-73 DEVELOPMENT
-CONTRACT**; minimal file/unsaved-change controls do not turn it into product UI.
-MSH-74 remains next and owns all product visual acceptance. The owner requirement
+reopen. The early verification surface exercised file operations and close guards.
+MSH-74 delivered the Shogi product interface. The owner requirement
 for future12x12/16x16 is full-board display without requiring zoom or pan; prior
 capability demonstrations must not be read as requiring either technique.
 

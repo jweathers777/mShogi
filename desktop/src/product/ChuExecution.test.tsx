@@ -2,11 +2,12 @@
 // Successful telemetry comes only from Rust snapshots generated through the real
 // Chu subprocess. Explicit status/error constructions below test presentation
 // intents; they are not additional native execution or rule-conformance evidence.
+import type { ChuSnapshot } from "../native";
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { NativeAnalysis, NativeRecovery } from "./NativeSessionPanels";
 import { GameActions } from "./GameCapabilities";
-import type { ChuSnapshot } from "./native";
+
 import completeJson from "../__fixtures__/shared-chu-analysis-complete.json";
 import incompleteJson from "../__fixtures__/shared-chu-analysis-incomplete.json";
 const complete = completeJson as unknown as ChuSnapshot;

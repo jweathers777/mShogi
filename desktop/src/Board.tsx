@@ -1,7 +1,9 @@
-import type { FocusEventHandler, ReactNode } from "react";
-import type { CompletedActionGeometry, NativeChoice } from "./boardPresentation";
-import { gridNeighbor, useNativeChoiceController } from "./interaction/useNativeChoiceController";
+import type { CompletedActionGeometry, BoardChoice } from "./native";
 import type { InspectMovement } from "./product/movementInspection";
+import type { FocusEventHandler, ReactNode } from "react";
+
+import { gridNeighbor, useNativeChoiceController } from "./interaction/useNativeChoiceController";
+
 import { BoardFooter, CompletionDialog, pointLabel } from "./BoardControls";
 import { CompletedActionCue } from "./CompletedActionCue";
 import "./movement-inspection.css";
@@ -11,7 +13,7 @@ export interface GridPiece { square: string; owner: string; kind: string; label:
 export interface BoardFocus { onFocusCapture: FocusEventHandler<HTMLDivElement>; onBlurCapture: FocusEventHandler<HTMLDivElement> }
 interface Props<P extends GridPiece> {
   pieces: P[];
-  choices: NativeChoice[];
+  choices: BoardChoice[];
   // Native coordinates in display order, bottom owner's view.
   files: string[];
   ranks: string[];
@@ -63,7 +65,7 @@ export function Board<P extends GridPiece>({ pieces, choices, files, ranks, labe
         const target = destinations.includes(square), available = choices.some(choice => choice.from === square);
         return <g key={square} ref={node => interaction.register(square, node)} transform={`translate(${padding + column * 100}, ${padding + row * 100})`}
           role="button" tabIndex={(squares.includes(interaction.focused) ? interaction.focused : initialFocus) === square ? 0 : -1}
-          aria-label={pointLabel(piece?.label ?? `${square}, empty`, square, interaction)} aria-pressed={selected === square} aria-disabled={interaction.interactionDisabled}
+          aria-label={pointLabel(square, piece, interaction)} aria-pressed={selected === square} aria-disabled={interaction.interactionDisabled}
           className={`square ${(row + column) % 2 === 0 ? "light" : "dark"} ${selected === square && !inspection && !inspectionPending ? "selected" : ""} ${target && !inspection ? "target" : ""} ${available && !disabled ? "available" : ""}`}
           onFocus={() => interaction.onFocus(square)} onClick={() => interaction.select(square)} onKeyDown={event => interaction.keyDown(event, square)}>
           <rect width="100" height="100" className="square-fill" />

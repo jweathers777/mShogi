@@ -1,9 +1,10 @@
 // @vitest-environment jsdom
+import { square } from "../testing/helpers";
+import type { SyntheticSnapshot, GameSnapshot } from "../native";
 import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { SyntheticApp } from "./SyntheticApp";
-import type { SyntheticSnapshot } from "./native";
-import type { GameSnapshot } from "../product/native";
+
 import syntheticJson from "../__fixtures__/synthetic.json";
 import standardJson from "../__fixtures__/shared-chess-standard.json";
 
@@ -34,13 +35,7 @@ beforeEach(() => {
   });
 });
 afterEach(cleanup);
-function square(name: string) {
-  // The native square label is its accessible name. Avoid recomputing names
-  // and visibility for all 256 SVG buttons for every interaction.
-  const element = document.querySelector<SVGGElement>(`svg [role="button"][aria-label^="${name},"]`);
-  if (element === null) throw new Error(`Missing native square button: ${name}`);
-  return element;
-}
+
 async function open() {
   render(<SyntheticApp />);
   await screen.findByRole("heading", { name: "Choose a complete route" });

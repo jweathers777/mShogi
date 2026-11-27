@@ -1,4 +1,4 @@
-import type { ResourceFailure } from "../resources";
+import type { ResourceFailure } from "../native";
 
 // Resource identity and counts come from native admission. Diagnostic text is
 // deliberately not an input: it may describe several supported bounds at once.

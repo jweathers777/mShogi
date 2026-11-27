@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
+import { fakeSession, renderApplication } from "../testing/helpers";
+import type { GameSnapshot } from "../native";
 import { afterEach, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { ApplicationView } from "./ApplicationView";
-import type { GameSnapshot } from "./native";
-import type { GameSession } from "./useGameSession";
+import { cleanup, fireEvent, screen } from "@testing-library/react";
+
 import chess from "../__fixtures__/shared-chess-standard.json";
 import shogi from "../__fixtures__/shared-shogi-standard.json";
 import xiangqi from "../__fixtures__/shared-xiangqi-standard.json";
@@ -20,9 +20,7 @@ function paused(fixture: GameSnapshot) {
 }
 function app(snapshot: GameSnapshot, busy = false, blocked = false) {
   const command = vi.fn().mockResolvedValue(null);
-  const session: GameSession = { snapshot, busy, error: "", closeRequested: false, command,
-    file: vi.fn(), newGame: vi.fn(), cancelClose: vi.fn(), finishClose: vi.fn(), requestClose: vi.fn() };
-  return { ...render(<ApplicationView snapshot={snapshot} session={session} onNewGame={vi.fn()} onOpen={vi.fn()} blocked={blocked} />), command };
+  return { ...renderApplication(snapshot, fakeSession(snapshot, { busy, command }), blocked), command };
 }
 it.each(fixtures)("keeps native $game resignation and Save available at an ordinary capacity pause", fixture => {
   const snapshot = paused(fixture), before = structuredClone(snapshot.context);

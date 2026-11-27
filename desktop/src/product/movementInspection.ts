@@ -1,19 +1,5 @@
-import type { NativeChoice } from "../boardPresentation";
-import type { NativeBoardSnapshot } from "../NativeBoard";
-import type { Side } from "./native";
+import type { InspectionContext, MovementInspection } from "../native";
 
-export interface InspectionContext {
-  token: NativeBoardSnapshot["token"];
-  game: NativeBoardSnapshot["game"];
-  profile?: string;
-}
-export interface MovementInspection extends InspectionContext {
-  origin: string;
-  side: Side;
-  label: string;
-  choices: NativeChoice[];
-  read_only: true;
-}
 export type InspectMovement = (origin: string) => Promise<MovementInspection | null>;
 // Common player-facing copy; side/piece terminology stays in the native label.
 // Accessible read-only explanations and action admission are separate concerns.

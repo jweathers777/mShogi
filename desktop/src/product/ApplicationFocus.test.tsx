@@ -1,9 +1,10 @@
 // @vitest-environment jsdom
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { afterEach, expect, it, vi } from "vitest";
+import { renderApplication } from "../testing/helpers";
+import type { GameSnapshot, ChessSnapshot } from "../native";
+import { cleanup, fireEvent, screen } from "@testing-library/react";
+import { afterEach, expect, it } from "vitest";
 import { ApplicationView } from "./ApplicationView";
-import type { GameSnapshot, ChessSnapshot } from "./native";
-import type { GameSession } from "./useGameSession";
+
 import standardJson from "../__fixtures__/shared-chess-standard.json";
 import claimJson from "../__fixtures__/shared-chess-claim.json";
 import claimedJson from "../__fixtures__/shared-chess-claimed.json";
@@ -12,14 +13,13 @@ import xiangqiJson from "../__fixtures__/shared-xiangqi-standard.json";
 const standard = standardJson as ChessSnapshot;
 afterEach(cleanup);
 function app(snapshot: GameSnapshot = standard) {
-  const session: GameSession = { snapshot, busy: false, error: "", closeRequested: false, command: vi.fn().mockResolvedValue(snapshot), file: vi.fn().mockResolvedValue(snapshot), newGame: vi.fn().mockResolvedValue(snapshot), cancelClose: vi.fn().mockResolvedValue(true), finishClose: vi.fn().mockResolvedValue(true), requestClose: vi.fn().mockResolvedValue(undefined) };
-  const props = { snapshot, session, onNewGame: vi.fn(), onOpen: vi.fn(), blocked: false };
-  return { ...render(<ApplicationView {...props} />), props, session };
+  return renderApplication(snapshot);
 }
 it.each([standardJson, shogiJson, xiangqiJson])("recovers a removed Cancel control to common analysis, without stealing input focus", fixture => {
   const base = fixture as GameSnapshot;
-  const working = { ...base, phase: "thinking" as const, execution_purpose: "move_analysis", paused: true, ...(base.game === "chess" ? { chess: { ...base.chess, analysis: { ...base.chess.analysis, status: "thinking" as const } } } : {}) } as GameSnapshot;
+  const working = { ...base, phase: "thinking" as const, execution_purpose: "move_analysis" as const, paused: true } satisfies GameSnapshot;
   const { props, session, rerender } = app(working);
+  expect(screen.getByText("Analyzing selected position")).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
   const cancel = screen.getByRole("button", { name: "Cancel analysis" }); cancel.focus(); fireEvent.click(cancel);
   expect(session.command).toHaveBeenCalledExactlyOnceWith(working, { kind: "cancel" });
@@ -40,7 +40,7 @@ it("restores a button blurred by WebKit while disabled, without overriding newly
   rerender(<ApplicationView {...props} />); expect(document.activeElement).toBe(input);
 });
 it("recovers engine cancellation to Retry, then to the board after the control disappears", () => {
-  const working = { ...standard, human: standard.sides[1]!, phase: "thinking" as const, execution_purpose: "engine_turn", capabilities: { ...standard.capabilities, engine_turn: true, board_action: false } };
+  const working = { ...standard, human: standard.sides[1]!, phase: "thinking" as const, execution_purpose: "engine_turn" as const, capabilities: { ...standard.capabilities, engine_turn: true, board_action: false } };
   const { props, rerender } = app(working); screen.getByRole("button", { name: "Cancel search" }).focus();
   rerender(<ApplicationView {...props} snapshot={{ ...working, phase: "cancelled" }} />);
   const retry = screen.getByRole("button", { name: "Retry engine turn" }); expect(document.activeElement).toBe(retry);

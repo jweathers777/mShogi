@@ -1,3 +1,5 @@
+import { tenjikuProfiles } from "../games";
+import type { GameSnapshot, Operation } from "../native";
 import { useEffect, useState } from "react";
 import { ApplicationShell, DocumentState, HistoricalNotice, LiveGameHeading } from "./ApplicationShell";
 import { GameBoard } from "./GameBoard";
@@ -5,8 +7,9 @@ import { GameActions, type Confirmation } from "./GameCapabilities";
 import { NativeAnalysis, NativeHistory, NativeRecovery, nativeCapacityReached } from "./NativeSessionPanels";
 import { Dialog } from "./Dialog";
 import { useApplicationFocus } from "./useApplicationFocus";
-import { tenjikuProfiles, type GameSnapshot, type Operation } from "./native";
+
 import type { GameSession } from "./useGameSession";
+import { bottomSide, sessionStatus } from "../sessionState";
 import { gameStatus } from "../presentation";
 import { SupportDialog } from "./SupportDialog";
 import "./shogi.css";
@@ -22,15 +25,14 @@ export function ApplicationView({ snapshot, session, onNewGame, onOpen, blocked 
   useEffect(() => { if (blocked) { setConfirmation(null); setSupportOpen(false); } }, [blocked]);
   const command = (operation: Operation) => session.command(snapshot, operation);
   const capacity = nativeCapacityReached(snapshot);
-  const thinking = snapshot.capabilities.engine_turn && snapshot.phase === "thinking" && snapshot.execution_purpose === "engine_turn";
-  const analyzing = snapshot.capabilities.move_analysis && snapshot.execution_purpose === "move_analysis" || snapshot.game === "chess" && snapshot.chess.analysis.status === "thinking";
+  const status = sessionStatus(snapshot);
   const settings = snapshot.document.settings;
   const orientation = settings.orientation.side;
-  const side = snapshot.sides.find(s => s.id.side === orientation)!;
+  const side = bottomSide(snapshot);
   const flip = () => command({ kind: "preferences", settings: { ...settings, orientation: snapshot.sides.find(s => s.key !== side.key)!.id } });
   const exactPrefix = snapshot.game !== "xiangqi" || snapshot.xiangqi.canonical_context_scope === "selected_committed";
   return <ApplicationShell game={snapshot.game} historical={snapshot.historical} blocked={confirmation !== null || supportOpen} onFocusCapture={focus}
-    runtime={thinking ? "mShogi is thinking" : analyzing ? "Analyzing selected position" : "Local engine"}
+    runtime={status === "thinking" ? "mShogi is thinking" : status === "analyzing" ? "Analyzing selected position" : "Local engine"}
     attributes={{ "data-current-event": snapshot.event_index, "data-live-events": snapshot.events.filter(event => event.index !== 0).length, "data-paused": snapshot.paused, "data-orientation": orientation }}
     document={<><DocumentState document={snapshot.document} /><h2 title={snapshot.document.path ?? undefined}>{snapshot.document.path?.split(/[\\/]/).at(-1) ?? "Untitled game"}</h2>
       {["saving", "opening", "viewing"].includes(snapshot.io.phase) && <p role="status">{snapshot.io.phase === "saving" ? "Saving your game…" : snapshot.io.phase === "opening" ? "Opening your game…" : "Opening the selected position…"}</p>}</>}
@@ -38,7 +40,7 @@ export function ApplicationView({ snapshot, session, onNewGame, onOpen, blocked 
       <button className="quiet" onClick={() => { void session.file(snapshot, "save"); }} disabled={disabled || !snapshot.capabilities.save}>Save</button>
       <button className="quiet" onClick={onOpen} disabled={disabled}>Load</button></>}
     heading={<LiveGameHeading eyebrow={snapshot.historical ? "HISTORY · READ ONLY" : snapshot.status.concluded ? "GAME CONCLUDED" : "YOUR GAME"}
-      status={snapshot.historical ? "Viewing history" : thinking ? "mShogi is thinking" : (snapshot.game === "chess" ? gameStatus({ conclusion: snapshot.chess.selected_conclusion, turn: snapshot.turn.id.side, in_check: snapshot.chess.in_check }) : snapshot.status.label)}
+      status={snapshot.historical ? "Viewing history" : status === "thinking" ? "mShogi is thinking" : (snapshot.game === "chess" ? gameStatus({ conclusion: snapshot.chess.selected_conclusion, turn: snapshot.turn.label, in_check: snapshot.chess.in_check }) : snapshot.status.label)}
       player={<>{snapshot.play_mode === "two_humans" ? "Two humans · local play" : <>You play {snapshot.human.label} against mShogi</>}{snapshot.game === "tenjiku" && <> · <span data-rules-profile={snapshot.profile}>{tenjikuProfiles.find(profile => profile.id === snapshot.profile)!.label}</span></>}</>}
       flip={<button className="quiet flip-button" disabled={disabled} aria-label={`Flip board; currently ${side.label} at bottom`} onClick={() => { void flip(); }}>↕ <span>Flip board</span></button>} />}
     positionNotice={snapshot.historical && <HistoricalNotice action={<button disabled={disabled} onClick={() => { void command({ kind: "return_live" }); }}>Return to live</button>}>

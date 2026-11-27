@@ -1,4 +1,5 @@
-import type { CompletedActionGeometry } from "./boardPresentation";
+import type { CompletedActionGeometry } from "./native";
+
 import "./completed-action.css";
 
 // Decoration only: centers and ordered phases are native-provided facts. No

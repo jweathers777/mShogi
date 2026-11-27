@@ -1,10 +1,6 @@
-import type {
-  Color,
-  EngineChoice,
-  ChessResult,
-  Telemetry,
-} from "./native";
-import { colorName } from "./presentation";
+import type { Color, EngineChoice, ChessResult, Telemetry } from "./native";
+
+import { sideLabel } from "./games";
 // Native Chess score contract: material is below MATE_SCORE-MAX_DEPTH.
 const MATE_SCORE = 1_000_000;
 const MAX_NATIVE_DEPTH = 128;
@@ -18,11 +14,11 @@ export function scoreDescription(
     if (turn === null)
       return `Mate distance: ${plies} plies (perspective unavailable)`;
     const winner = score >= 0 ? turn : turn === "white" ? "black" : "white";
-    if (plies === 0) return `Mate for ${colorName(winner)} · already checkmate`;
+    if (plies === 0) return `Mate for ${sideLabel("chess", winner)} · already checkmate`;
     const moves = Math.ceil(plies / 2);
-    return `Mate for ${colorName(winner)} in ${moves} ${moves === 1 ? "move" : "moves"} (${plies} ${plies === 1 ? "ply" : "plies"})`;
+    return `Mate for ${sideLabel("chess", winner)} in ${moves} ${moves === 1 ? "move" : "moves"} (${plies} ${plies === 1 ? "ply" : "plies"})`;
   }
-  return `${score > 0 ? "+" : ""}${(score / 100).toFixed(2)} pawns from ${turn === null ? "the recorded side-to-move" : colorName(turn)} perspective`;
+  return `${score > 0 ? "+" : ""}${(score / 100).toFixed(2)} pawns from ${turn === null ? "the recorded side-to-move" : sideLabel("chess", turn)} perspective`;
 }
 export function readableAction(action: string): string {
   const match = /^([a-h][1-8])([a-h][1-8])([qrbn])?$/.exec(action);

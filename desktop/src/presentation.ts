@@ -1,11 +1,6 @@
-import type {
-  ChessOutcome,
-  Claim,
-  DrawReason,
-  MatchConclusion,
-} from "./native";
-export const colorName = (color: string) =>
-  color === "white" ? "White" : "Black";
+import { sideLabel } from "./games";
+import type { ChessOutcome, Claim, DrawReason, MatchConclusion } from "./native";
+
 export function claimName(claim: Claim): string {
   const rule =
     claim.reason === "threefold" ? "threefold repetition" : "fifty-move rule";
@@ -25,17 +20,17 @@ function drawName(reason: DrawReason): string {
 }
 function chessOutcome(outcome: ChessOutcome): string {
   return "checkmate" in outcome
-    ? `Checkmate — ${colorName(outcome.checkmate.winner)} wins`
+    ? `Checkmate — ${sideLabel("chess", outcome.checkmate.winner)} wins`
     : `Draw — ${drawName(outcome.draw)}`;
 }
 export function conclusionName(conclusion: MatchConclusion): string {
   if ("chess" in conclusion) return chessOutcome(conclusion.chess);
   if ("unresolved" in conclusion) return "Unresolved — unscored";
   if ("win" in conclusion)
-    return `${colorName(conclusion.win.winner)} wins — ${conclusion.win.trigger === "flag_fall" ? "time expired" : "resignation"}`;
+    return `${sideLabel("chess", conclusion.win.winner)} wins — ${conclusion.win.trigger === "flag_fall" ? "time expired" : "resignation"}`;
   return `Draw — ${conclusion.draw.trigger === null ? "agreement" : "opponent cannot mate"}`;
 }
 export function gameStatus(snapshot: { conclusion: MatchConclusion | null; turn: string; in_check: boolean }): string {
   if (snapshot.conclusion !== null) return conclusionName(snapshot.conclusion);
-  return `${colorName(snapshot.turn)} to move${snapshot.in_check ? " · check" : ""}`;
+  return `${snapshot.turn} to move${snapshot.in_check ? " · check" : ""}`;
 }

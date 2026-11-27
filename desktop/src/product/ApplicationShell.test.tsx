@@ -5,7 +5,10 @@ import { ApplicationShell, DocumentState, GamePositionStatus, LiveGameHeading, N
 
 afterEach(cleanup);
 describe("one application shell for native games", () => {
-  for (const game of ["chess", "shogi", "xiangqi"] as const) {
+  for (const [game, label] of [
+    ["chess", "CHESS"], ["shogi", "SHOGI"], ["xiangqi", "XIANGQI"],
+    ["tori", "TORI SHOGI"], ["chu", "CHU"], ["tenjiku", "TENJIKU"],
+  ] as const) {
     it(`keeps ${game} common controls and sections in the shared locations`, () => {
       const { container } = render(<ApplicationShell game={game} runtime="Local engine"
         document={<><span>Unsaved</span><h2>Untitled game</h2></>}
@@ -22,6 +25,7 @@ describe("one application shell for native games", () => {
       expect(header.contains(screen.getByRole("button", { name: "About mShogi" }))).toBe(true);
       expect(container.querySelector(".shell-sidebar details")).toBeNull();
       expect(header.textContent).toContain("歩");
+      expect(header.querySelector(".product-brand p")?.textContent).toBe(label);
       expect(container.querySelector("main")?.classList.contains(`shell-${game}`)).toBe(true);
     });
   }

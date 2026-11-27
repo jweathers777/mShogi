@@ -1,12 +1,14 @@
 // @vitest-environment jsdom
 // UI requests are mocked; all rendered native records/choices/results are Rust fixtures.
+import { fakeSession } from "../testing/helpers";
+import type { TenjikuSnapshot } from "../native";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { ProductApp } from "./ProductApp";
 import { TenjikuControls } from "../verification/TenjikuControls";
 import { useGameSession, type GameSession } from "./useGameSession";
 import { NativeAnalysis, NativeRecovery } from "./NativeSessionPanels";
-import type { TenjikuSnapshot } from "./native";
+
 import adamsStandard from "../__fixtures__/shared-tenjiku-adams-standard.json";
 import mullerStandard from "../__fixtures__/shared-tenjiku-muller-standard.json";
 import adamsIncomplete from "../__fixtures__/shared-tenjiku-adams-incomplete.json";
@@ -17,10 +19,7 @@ vi.mock("./useGameSession", () => ({ useGameSession: vi.fn() }));
 const adams = adamsStandard as unknown as TenjikuSnapshot, muller = mullerStandard as unknown as TenjikuSnapshot;
 let session: GameSession;
 beforeEach(() => {
-  session = { snapshot: adams, busy: false, error: "", closeRequested: false,
-    command: vi.fn().mockResolvedValue(adams), file: vi.fn().mockResolvedValue(adams),
-    newGame: vi.fn().mockResolvedValue(adams), cancelClose: vi.fn().mockResolvedValue(true),
-    finishClose: vi.fn().mockResolvedValue(true), requestClose: vi.fn().mockResolvedValue(undefined) };
+  session = fakeSession(adams);
   vi.mocked(useGameSession).mockImplementation(() => session);
 });
 afterEach(cleanup);
@@ -127,7 +126,6 @@ it.each([adamsEnded, mullerEnded])("retains the native $profile winner after ses
   expect(screen.queryByText(/No game result or score is assigned/)).toBeNull();
   expect(screen.queryByText("Work stopped")).toBeNull();
 });
-
 
 it.each([adams, muller])("admits shared-core analysis bounds through the normal $profile application", source => {
   session.snapshot = source;

@@ -1,9 +1,9 @@
-import type { CompletedActionGeometry } from "../boardPresentation";
+import type { CompletedActionGeometry, GameSnapshot, Operation } from "../native";
+
 import { ShogiBoard } from "./ShogiBoard";
 import { SquareBoard } from "./SquareBoard";
 import { XiangqiBoard } from "./XiangqiBoard";
 import { useMovementInspection } from "./useMovementInspection";
-import type { GameSnapshot, Operation } from "./native";
 
 // Every game plays the opaque action of a native choice; the renderers differ
 // only in artwork, hands and the Xiangqi intersection board.

@@ -1,8 +1,9 @@
 // @vitest-environment jsdom
+import type { TenjikuSnapshot } from "../native";
 import { cleanup, render } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 import { SquareBoard } from "./SquareBoard";
-import type { TenjikuSnapshot } from "./native";
+
 import adams from "../__fixtures__/shared-tenjiku-adams-promoted-hawk.json";
 import muller from "../__fixtures__/shared-tenjiku-muller-promoted-hawk.json";
 import adamsFaces from "../__fixtures__/shared-tenjiku-adams-all-faces.json";

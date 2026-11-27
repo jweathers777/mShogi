@@ -1,9 +1,11 @@
-import { Board } from "../Board";
-import type { CompletedActionGeometry } from "../boardPresentation";
+import type { CompletedActionGeometry, ChessSnapshot, ChuSnapshot, TenjikuSnapshot } from "../native";
 import type { InspectMovement } from "./movementInspection";
-import { GameFrame, bottomSide } from "./GameFrame";
+import { Board } from "../Board";
+
+import { bottomSide } from "../sessionState";
+import { GameFrame } from "./GameFrame";
 import { Piece } from "./Piece";
-import type { ChessSnapshot, ChuSnapshot, TenjikuSnapshot } from "./native";
+
 import "./large-board.css";
 
 const chessGlyphs: Record<string, string> = { king: "♚", queen: "♛", rook: "♜", bishop: "♝", knight: "♞", pawn: "♟" };

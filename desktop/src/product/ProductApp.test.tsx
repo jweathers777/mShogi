@@ -1,9 +1,12 @@
 // @vitest-environment jsdom
+import { deferred, fakeSession } from "../testing/helpers";
+import { games, type GameKind } from "../games";
+import type { GameSnapshot, ShogiSnapshot } from "../native";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { ProductApp } from "./ProductApp";
 import { useGameSession, type GameSession } from "./useGameSession";
-import { playableProfiles, type PlayableGameKind, type GameSnapshot, type ShogiSnapshot } from "./native";
+
 import shogiJson from "../__fixtures__/shared-shogi-standard.json";
 import xiangqiJson from "../__fixtures__/shared-xiangqi-standard.json";
 import toriJson from "../__fixtures__/shared-tori-contract.json";
@@ -15,10 +18,9 @@ vi.mock("./useGameSession", () => ({ useGameSession: vi.fn() }));
 const standard = shogiJson as ShogiSnapshot;
 const fixtures = [chessJson, shogiJson, xiangqiJson, toriJson, chuJson, adamsJson, mullerJson] as GameSnapshot[];
 let session: GameSession;
-function deferred<T>() { let resolve!: (value: T) => void; const promise = new Promise<T>(done => { resolve = done; }); return { resolve, promise }; }
 function dirty(fixture: GameSnapshot) { return { ...fixture, close_requires_save: true, document: { ...fixture.document, dirty: true } } as GameSnapshot; }
 beforeEach(() => {
-  session = { snapshot: dirty(standard), busy: false, error: "", closeRequested: false, command: vi.fn().mockResolvedValue(standard), file: vi.fn().mockResolvedValue(standard), newGame: vi.fn().mockResolvedValue(standard), cancelClose: vi.fn().mockResolvedValue(true), finishClose: vi.fn().mockResolvedValue(true), requestClose: vi.fn().mockResolvedValue(undefined) };
+  session = fakeSession(dirty(standard), { command: vi.fn().mockResolvedValue(standard), file: vi.fn().mockResolvedValue(standard), newGame: vi.fn().mockResolvedValue(standard) });
   vi.mocked(useGameSession).mockImplementation(() => session);
 });
 afterEach(cleanup);
@@ -27,7 +29,7 @@ it.each([["Shogi", "Sente", "shogi", "sente"], ["Shogi", "Gote", "shogi", "gote"
   fireEvent.change(screen.getByRole("combobox", { name: "Game" }), { target: { value: game } });
   fireEvent.click(screen.getByRole("radio", { name: sideLabel }));
   fireEvent.click(screen.getByRole("button", { name: "Start game" }));
-  expect(session.newGame).toHaveBeenCalledExactlyOnceWith(standard.open_token, game, { game_kind: game, side }, playableProfiles[game as PlayableGameKind], "human_engine");
+  expect(session.newGame).toHaveBeenCalledExactlyOnceWith(standard.open_token, game, { game_kind: game, side }, games[game as GameKind].profile, "human_engine");
   await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
   expect(session.file).not.toHaveBeenCalled();
 });
@@ -174,7 +176,7 @@ it.each([["tori", 0, "sente"], ["tori", 1, "gote"], ["chu", 0, "sente"], ["chu",
     fireEvent.change(screen.getByRole("combobox", { name: "Game" }), { target: { value: game } });
     fireEvent.click(screen.getByRole("radio", { name: "Random" }));
     fireEvent.click(screen.getByRole("button", { name: "Start game" }));
-    await waitFor(() => expect(session.newGame).toHaveBeenCalledExactlyOnceWith(standard.open_token, game, { game_kind: game, side }, playableProfiles[game], "human_engine"));
+    await waitFor(() => expect(session.newGame).toHaveBeenCalledExactlyOnceWith(standard.open_token, game, { game_kind: game, side }, games[game].profile, "human_engine"));
   } finally { entropy.mockRestore(); }
 });
 

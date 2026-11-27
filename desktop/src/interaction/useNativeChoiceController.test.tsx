@@ -1,9 +1,10 @@
 // @vitest-environment jsdom
+import { deferred } from "../testing/helpers";
+import type { GameSnapshot, ChessSnapshot, MovementInspection } from "../native";
 import { afterEach, expect, it, vi } from "vitest";
 import { act, cleanup, renderHook } from "@testing-library/react";
 import { gridNeighbor, useNativeChoiceController, type ChoiceControllerOptions } from "./useNativeChoiceController";
-import type { GameSnapshot, ChessSnapshot } from "../product/native";
-import type { MovementInspection } from "../product/movementInspection";
+
 import chessJson from "../__fixtures__/shared-chess-standard.json";
 import promotionJson from "../__fixtures__/shared-chess-promotion.json";
 import shogiJson from "../__fixtures__/shared-shogi-standard.json";
@@ -26,9 +27,8 @@ function options(snapshot: GameSnapshot = chess): ChoiceControllerOptions {
 const inspection: MovementInspection = {
   game: "chess", token: chess.token, origin: "e7", label: "Black pawn", read_only: true,
   side: chess.sides.find(side => side.id.side === "black")!,
-  choices: [{ action: "e7e6", from: "e7", steps: ["e6"], completion: null }],
+  choices: [{ action: "e7e6", from: "e7", origin: { kind: "board", square: "e7" }, steps: ["e6"], completion: null }],
 };
-function deferred() { let resolve!: (value: MovementInspection) => void; const promise = new Promise<MovementInspection>(r => { resolve = r; }); return { promise, resolve }; }
 
 it.each([
   [chessJson, "e2", "e4", "e2e4"],
@@ -68,7 +68,7 @@ it("does not revive a retired promotion completion handler after cancellation or
   expect(props.onPlay).toHaveBeenCalledExactlyOnceWith("a7a8n");
 });
 it.each(["document", "version", "revision", "selection"] as const)("retires a pending query and old handlers after native %s changes", async field => {
-  const pending = deferred(), props = { ...options(), onInspect: vi.fn(() => pending.promise) };
+  const pending = deferred<MovementInspection>(), props = { ...options(), onInspect: vi.fn(() => pending.promise) };
   const { result, rerender } = renderHook(value => useNativeChoiceController(value), { initialProps: props });
   act(() => result.current.select("e7")); const oldSelect = result.current.select;
   rerender({ ...props, contextKey: JSON.stringify({ ...chess.token, [field]: chess.token[field] + 1 }) });
@@ -77,7 +77,7 @@ it.each(["document", "version", "revision", "selection"] as const)("retires a pe
   act(() => oldSelect("e2")); expect(result.current.selected).toBeNull(); expect(props.onPlay).not.toHaveBeenCalled();
 });
 it.each(["orientation", "disabled", "inspectionDisabled", "provider", "owner", "origins"] as const)("retires query/selection on changed %s", async change => {
-  const pending = deferred(), props = { ...options(), onInspect: vi.fn(() => pending.promise) };
+  const pending = deferred<MovementInspection>(), props = { ...options(), onInspect: vi.fn(() => pending.promise) };
   const { result, rerender } = renderHook(value => useNativeChoiceController(value), { initialProps: props });
   act(() => result.current.select("e7"));
   const next = { ...props };
@@ -91,7 +91,7 @@ it.each(["orientation", "disabled", "inspectionDisabled", "provider", "owner", "
   expect(result.current.inspection).toBeNull(); expect(result.current.selected).toBeNull(); expect(props.onPlay).not.toHaveBeenCalled();
 });
 it("keeps a pending query through identical polls but retires superseded origins, Escape and unmount", async () => {
-  const first = deferred(), second = deferred();
+  const first = deferred<MovementInspection>(), second = deferred<MovementInspection>();
   const onInspect = vi.fn().mockReturnValueOnce(first.promise).mockReturnValueOnce(second.promise);
   const props = { ...options(), onInspect };
   const { result, rerender, unmount } = renderHook(value => useNativeChoiceController(value), { initialProps: props });
@@ -101,7 +101,7 @@ it("keeps a pending query through identical polls but retires superseded origins
   await act(async () => first.resolve(inspection)); expect(result.current.inspection).toBeNull(); expect(result.current.selected).toBe("d7");
   act(() => result.current.cancel()); await act(async () => second.resolve({ ...inspection, origin: "d7", choices: [] }));
   expect(result.current.selected).toBeNull(); expect(result.current.inspection).toBeNull();
-  const late = deferred(); onInspect.mockReturnValueOnce(late.promise); act(() => result.current.select("e7"));
+  const late = deferred<MovementInspection>(); onInspect.mockReturnValueOnce(late.promise); act(() => result.current.select("e7"));
   unmount(); await act(async () => late.resolve(inspection)); expect(props.onPlay).not.toHaveBeenCalled();
 });
 it.each(["read_only", "origin", "choice_origin"] as const)("never accepts a malformed %s inspection as actionable work", async difference => {

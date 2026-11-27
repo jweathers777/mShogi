@@ -1,10 +1,11 @@
 // @vitest-environment jsdom
 // Reproducible contract-render measurements, not native WebView responsiveness.
+import type { TenjikuSnapshot } from "../native";
 import { Profiler } from "react";
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, render } from "@testing-library/react";
 import { SquareBoard } from "./SquareBoard";
-import type { TenjikuSnapshot } from "./native";
+
 import adamsJson from "../__fixtures__/shared-tenjiku-adams-standard.json";
 import mullerJson from "../__fixtures__/shared-tenjiku-muller-standard.json";
 afterEach(cleanup);

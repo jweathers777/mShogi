@@ -1,9 +1,10 @@
 // @vitest-environment jsdom
-import { afterEach, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { renderApplication, square } from "../testing/helpers";
+import type { ChessSnapshot, GameSnapshot } from "../native";
+import { afterEach, expect, it } from "vitest";
+import { cleanup, fireEvent, screen } from "@testing-library/react";
 import { ApplicationView } from "./ApplicationView";
-import type { ChessSnapshot, GameSnapshot } from "./native";
-import type { GameSession } from "./useGameSession";
+
 import standardJson from "../__fixtures__/shared-chess-standard.json";
 import claimJson from "../__fixtures__/shared-chess-claim.json";
 import currentClaimJson from "../__fixtures__/shared-chess-current-claim.json";
@@ -13,9 +14,7 @@ import xiangqiJson from "../__fixtures__/shared-xiangqi-standard.json";
 const standard = standardJson as ChessSnapshot;
 afterEach(cleanup);
 function app(snapshot: GameSnapshot = standard) {
-  const session: GameSession = { snapshot, busy: false, error: "", closeRequested: false, command: vi.fn().mockResolvedValue(snapshot), file: vi.fn().mockResolvedValue(snapshot), newGame: vi.fn().mockResolvedValue(snapshot), cancelClose: vi.fn().mockResolvedValue(true), finishClose: vi.fn().mockResolvedValue(true), requestClose: vi.fn().mockResolvedValue(undefined) };
-  const props = { snapshot, session, onNewGame: vi.fn(), onOpen: vi.fn(), blocked: false };
-  return { ...render(<ApplicationView {...props} />), props, session };
+  return renderApplication(snapshot);
 }
 it.each([["intended", claimJson], ["current", currentClaimJson]])("submits the complete %s native draw claim without a board action", (_name, fixture) => {
   const snapshot = fixture as ChessSnapshot; const { session } = app(snapshot);
@@ -24,7 +23,7 @@ it.each([["intended", claimJson], ["current", currentClaimJson]])("submits the c
   expect(session.command).toHaveBeenCalledExactlyOnceWith(snapshot, { kind: "command", command: { claim: { reason: snapshot.chess.claims[0]!.reason, intended: snapshot.chess.claims[0]!.intended } } });
 });
 it("renders native coordinates, side artwork and only complete native board actions", () => {
-  const { session } = app(); const square = (name: string) => screen.getByRole("button", { name: new RegExp(`^${name},`) });
+  const { session } = app();
   expect(square("e2").querySelector("text.piece")?.getAttribute("class")).toContain("native-first-owner");
   expect(square("e7").querySelector("text.piece")?.getAttribute("class")).toContain("native-second-owner");
   fireEvent.click(square("e2")); fireEvent.click(square("e4"));

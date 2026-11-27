@@ -1,10 +1,12 @@
+import type { CompletedActionGeometry, XiangqiSnapshot } from "../native";
+import type { InspectMovement } from "./movementInspection";
 import { useId } from "react";
-import type { CompletedActionGeometry } from "../boardPresentation";
+
 import { gridNeighbor, useNativeChoiceController } from "../interaction/useNativeChoiceController";
 import { BoardFooter, CompletionDialog, pointLabel } from "../BoardControls";
-import type { XiangqiSnapshot } from "./native";
-import type { InspectMovement } from "./movementInspection";
-import { GameFrame, bottomSide } from "./GameFrame";
+
+import { bottomSide } from "../sessionState";
+import { GameFrame } from "./GameFrame";
 import { CompletedActionCue } from "../CompletedActionCue";
 import "../movement-inspection.css";
 import "./xiangqi.css";
@@ -74,7 +76,7 @@ export function XiangqiBoard({ snapshot, disabled, onPlay, onInspect, inspection
           className={`xiangqi-point${selected === point && !inspection && !loading ? " selected" : ""}`}
           role="button" tabIndex={(points.includes(focused) ? focused : snapshot.board.initial_focus) === point ? 0 : -1}
           aria-disabled={interaction.interactionDisabled} aria-pressed={selected === point}
-          aria-label={pointLabel(piece?.label ?? `${point}, empty`, point, interaction)}
+          aria-label={pointLabel(point, piece, interaction)}
           ref={(node) => interaction.register(point, node)}
           onFocus={() => interaction.onFocus(point)} onClick={() => interaction.select(point)} onKeyDown={(event) => interaction.keyDown(event, point)}>
           <circle className="xiangqi-hit" r="49" />

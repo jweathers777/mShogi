@@ -124,7 +124,7 @@ impl DesktopController {
         if fixture == "xiangqi-capacity" {
             // Real native results, not a forged count or fabricated observations.
             // Poll only admission here so the supervised child is not also submitted.
-            for _ in 0..MAX_ARCHIVE_OBSERVATIONS - 1 {
+            for _ in 0..KEPT_RESULTS - 1 {
                 self.start_game_work::<Xiangqi>(
                     WorkLimits {
                         time_ms: None,
@@ -176,7 +176,7 @@ mod tests {
         controller.shared.manual_engine = true;
         let state = controller.session.xiangqi().unwrap();
         let observations = &state.observations;
-        assert_eq!(observations.len(), MAX_ARCHIVE_OBSERVATIONS - 1);
+        assert_eq!(observations.len(), KEPT_RESULTS - 1);
         assert!(observations.iter().all(|o| matches!(
             &o.result,
             ExecutionResult::Xiangqi {

@@ -1,23 +1,23 @@
 // @vitest-environment jsdom
 // Real Rust-produced snapshots; renderer tests do not establish game legality.
+import { renderBoard, square } from "../testing/helpers";
+import type { ChuSnapshot, MovementInspection } from "../native";
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { SquareBoard } from "./SquareBoard";
-import type { ChuSnapshot } from "./native";
+
 import routesJson from "../__fixtures__/shared-chu-routes.json";
 import royalsJson from "../__fixtures__/shared-chu-royals.json";
 import promotionJson from "../__fixtures__/shared-chu-promotion.json";
 import inspectionJson from "../__fixtures__/shared-chu-inspection.json";
-import type { MovementInspection } from "./movementInspection";
+
 import capturedJson from "../__fixtures__/shared-chu-captured.json";
 const routes = routesJson as unknown as ChuSnapshot;
 import { oriented } from "../testing/snapshots";
 afterEach(cleanup);
-function square(key: string) { return document.querySelector<SVGGElement>(`svg [role="button"][aria-label^="${key},"]`)!; }
-function board(snapshot = routes) {
-  const props = { snapshot, disabled: false, inspectionDisabled: false, onPlay: vi.fn(), onInspect: vi.fn() };
-  return { ...render(<SquareBoard {...props} />), props };
-}
+
+const board = (snapshot = routes) =>
+  renderBoard(SquareBoard, { snapshot, inspectionDisabled: false, onInspect: vi.fn() });
 it("uses shared player/board/footer slots, full native geometry, traditional faces and no hands", () => {
   const { container, props, rerender } = board(royalsJson as unknown as ChuSnapshot);
   expect(container.querySelectorAll("svg [role=button]")).toHaveLength(144);
@@ -26,7 +26,7 @@ it("uses shared player/board/footer slots, full native geometry, traditional fac
   expect(container.querySelector('[data-position-status]')).toBeTruthy();
   expect(container.querySelector('[data-game-slot="upper-player"]')).toBeTruthy();
   expect(container.querySelector('[data-game-slot="lower-player"]')).toBeTruthy();
-  expect(container.querySelector(".shogi-hand,[data-development-contract]")).toBeNull();
+  expect(container.querySelector(".shogi-hand")).toBeNull();
   expect(square("6e").querySelector(".piece-tile")?.getAttribute("transform")).toBe("rotate(180 50 50)");
   const flipped = oriented(props.snapshot, "gote");
   rerender(<SquareBoard {...props} snapshot={flipped} />);

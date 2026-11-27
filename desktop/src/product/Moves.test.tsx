@@ -1,9 +1,10 @@
 // @vitest-environment jsdom
+import type { GameSnapshot, MovesPresentation } from "../native";
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { NativeHistory } from "./NativeSessionPanels";
-import type { GameSnapshot, MovesPresentation } from "./native";
+
 import shogiJson from "../__fixtures__/shared-shogi-standard.json";
 import chessJson from "../__fixtures__/shared-chess-standard.json";
 import xiangqiJson from "../__fixtures__/shared-xiangqi-standard.json";

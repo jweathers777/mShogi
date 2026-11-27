@@ -9,8 +9,6 @@ use std::{
     },
     thread,
 };
-/// Maximum retained accepted observations in the current session.
-pub const MAX_ARCHIVE_OBSERVATIONS: usize = 256;
 const VALIDATION_BUDGET: std::time::Duration = std::time::Duration::from_secs(15);
 /// A stable open precondition, unaffected by I/O progress snapshots.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]

@@ -1,9 +1,10 @@
 // @vitest-environment jsdom
+import { deferred, renderBoard, square as point } from "../testing/helpers";
+import type { XiangqiSnapshot as GameSnapshot, MovementInspection } from "../native";
 import { afterEach, expect, it, vi } from "vitest";
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { XiangqiBoard } from "./XiangqiBoard";
-import type { XiangqiSnapshot as GameSnapshot } from "./native";
-import type { MovementInspection } from "./movementInspection";
+
 import standardJson from "../__fixtures__/shared-xiangqi-standard.json";
 import inspectionJson from "../__fixtures__/shared-xiangqi-inspection.json";
 
@@ -12,18 +13,12 @@ import inspectionJson from "../__fixtures__/shared-xiangqi-inspection.json";
 const standard = standardJson as unknown as GameSnapshot;
 const inspection = inspectionJson as MovementInspection;
 afterEach(cleanup);
-function point(key: string) {
-  const node = document.querySelector<SVGGElement>(`.xiangqi-point[data-intersection="${key}"]`);
-  if (!node) throw Error(`Missing native intersection ${key}`);
-  return node;
-}
+
 function flipped(snapshot = standard) {
   return { ...snapshot, document: { ...snapshot.document, settings: { ...snapshot.document.settings, orientation: { game_kind: "xiangqi", side: "black" } } } } as GameSnapshot;
 }
-function board(snapshot = standard) {
-  const props = { snapshot, disabled: false, onPlay: vi.fn(), onInspect: vi.fn().mockResolvedValue(inspection), inspectionDisabled: false };
-  return { ...render(<XiangqiBoard {...props} />), props };
-}
+const board = (snapshot = standard) =>
+  renderBoard(XiangqiBoard, { snapshot, onInspect: vi.fn().mockResolvedValue(inspection), inspectionDisabled: false });
 
 it("renders all native intersections, river and palace diagonals without square cells or foreign game controls", () => {
   const { container } = board();
@@ -114,12 +109,12 @@ it.each(["red", "black"])("presents native read-only inspection with hollow and 
 });
 
 it.each(["context", "orientation", "origin", "friendly", "cancel"])("retires a deferred native inspection after %s changes", async (change) => {
-  let resolve!: (reply: MovementInspection) => void;
-  const onInspect = vi.fn().mockImplementation(() => new Promise<MovementInspection>((done) => { resolve = done; }));
+  let pending = deferred<MovementInspection>();
+  const onInspect = vi.fn().mockImplementation(() => { pending = deferred<MovementInspection>(); return pending.promise; });
   const props = { snapshot: standard, disabled: false, onPlay: vi.fn(), onInspect, inspectionDisabled: false };
   const { rerender, container } = render(<XiangqiBoard {...props} />);
   fireEvent.click(point("b7"));
-  const oldResolve = resolve;
+  const oldResolve = pending.resolve;
   if (change === "context") rerender(<XiangqiBoard {...props} snapshot={{ ...standard, token: { ...standard.token, selection: standard.token.selection + 1 } }} />);
   else if (change === "orientation") rerender(<XiangqiBoard {...props} snapshot={flipped()} />);
   else if (change === "origin") fireEvent.click(point("h7"));
@@ -146,9 +141,9 @@ it("allows native inspection of a historical position while all game actions rem
 // identifiers and ordered routes must survive presentation without interpretation.
 it("preserves ordered routes, terminal-prefix alternatives and native completion identities", () => {
   const snapshot: GameSnapshot = { ...standard, choices: [
-    { action: "contract-short-A", from: "a3", steps: ["a4"], completion: { label: "Finish A", glyph: null } },
-    { action: "contract-short-B", from: "a3", steps: ["a4"], completion: { label: "Finish B", glyph: null } },
-    { action: "contract-long", from: "a3", steps: ["a4", "b4", "a3"], completion: null },
+    { action: "contract-short-A", from: "a3", origin: { kind: "intersection", point: "a3" }, steps: ["a4"], completion: { label: "Finish A", glyph: null } },
+    { action: "contract-short-B", from: "a3", origin: { kind: "intersection", point: "a3" }, steps: ["a4"], completion: { label: "Finish B", glyph: null } },
+    { action: "contract-long", from: "a3", origin: { kind: "intersection", point: "a3" }, steps: ["a4", "b4", "a3"], completion: null },
   ] };
   const { props } = board(snapshot);
   fireEvent.click(point("a3")); fireEvent.click(point("a4"));
@@ -163,8 +158,8 @@ it("preserves ordered routes, terminal-prefix alternatives and native completion
 });
 it("keeps different native routes with identical endpoints distinct", () => {
   const snapshot: GameSnapshot = { ...standard, choices: [
-    { action: "contract-via-a4", from: "a3", steps: ["a4", "b4"], completion: null },
-    { action: "contract-via-b3", from: "a3", steps: ["b3", "b4"], completion: null },
+    { action: "contract-via-a4", from: "a3", origin: { kind: "intersection", point: "a3" }, steps: ["a4", "b4"], completion: null },
+    { action: "contract-via-b3", from: "a3", origin: { kind: "intersection", point: "a3" }, steps: ["b3", "b4"], completion: null },
   ] };
   const { props } = board(snapshot); fireEvent.click(point("a3")); fireEvent.click(point("b3"));
   expect(props.onPlay).not.toHaveBeenCalled(); expect(point("b4").getAttribute("aria-label")).toContain("legal destination");
@@ -172,7 +167,7 @@ it("keeps different native routes with identical endpoints distinct", () => {
 });
 it("keeps rendered read-only completed geometry separate from current selection", () => {
   const { props, rerender } = board(); fireEvent.click(point("a3"));
-  rerender(<XiangqiBoard {...props} completedAction={{ origin: { kind: "intersection", point: "a6" }, steps: ["a5"] }} />);
+  rerender(<XiangqiBoard {...props} completedAction={{ action: "a6a5", event_index: 1, effects: [], origin: { kind: "intersection", point: "a6" }, steps: ["a5"] }} />);
   expect(point("a4").getAttribute("aria-label")).toContain("legal destination");
   expect(document.querySelector('[data-last-move="destination"]')?.getAttribute("data-location")).toBe("a5");
   fireEvent.click(point("a4")); expect(props.onPlay).toHaveBeenCalledExactlyOnceWith("a3a4");

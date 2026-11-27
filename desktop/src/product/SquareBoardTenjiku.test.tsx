@@ -1,12 +1,13 @@
 // @vitest-environment jsdom
 // Native-generated controller snapshots supply every complete action and effect.
 // These tests establish frontend consumption, not new rules or search conformance.
+import { renderBoard, square } from "../testing/helpers";
+import type { TenjikuSnapshot, MovementInspection } from "../native";
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { SquareBoard } from "./SquareBoard";
 import { GameBoard } from "./GameBoard";
-import type { TenjikuSnapshot } from "./native";
-import type { MovementInspection } from "./movementInspection";
+
 import adamsCompound from "../__fixtures__/shared-tenjiku-adams-compound.json";
 import mullerCompound from "../__fixtures__/shared-tenjiku-muller-compound.json";
 import adamsPlayed from "../__fixtures__/shared-tenjiku-adams-compound-played.json";
@@ -51,15 +52,9 @@ const fixtures = [
 const snapshot = (value: unknown) => value as TenjikuSnapshot;
 import { oriented } from "../testing/snapshots";
 afterEach(cleanup);
-function square(key: string) {
-  const node = document.querySelector<SVGGElement>(`svg [role="button"][aria-label^="${key},"]`);
-  if (!node) throw new Error(`Missing native Tenjiku coordinate ${key}`);
-  return node;
-}
-function board(value: unknown) {
-  const props = { snapshot: snapshot(value), disabled: false, inspectionDisabled: false, onPlay: vi.fn(), onInspect: vi.fn() };
-  return { ...render(<SquareBoard {...props} />), props };
-}
+
+const board = (value: unknown) =>
+  renderBoard(SquareBoard, { snapshot: snapshot(value), inspectionDisabled: false, onInspect: vi.fn() });
 function returningChoices(value: TenjikuSnapshot) {
   return value.choices.filter(choice => choice.steps.length === 2 && choice.steps[1] === choice.from);
 }

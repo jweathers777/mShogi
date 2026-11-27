@@ -1,9 +1,10 @@
+import type { Color } from "../native";
 // Test support only: renders the shared Board from colour pieces and a geometry,
 // as the Chess snapshot fixtures and the synthetic fixture supply them.
 import type { ComponentProps } from "react";
 import { Board } from "../Board";
-import type { BoardGeometry } from "../boardPresentation";
-import type { Color } from "../native";
+
+export interface BoardGeometry { files: string[]; ranks: string[]; label: string; initialFocus: string }
 
 const chess: BoardGeometry = { files: [..."abcdefgh"], ranks: [..."12345678"], label: "Chess board", initialFocus: "e2" };
 const chessGlyphs = { king: "♚", queen: "♛", rook: "♜", bishop: "♝", knight: "♞", pawn: "♟" };

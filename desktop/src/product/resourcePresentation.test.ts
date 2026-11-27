@@ -1,6 +1,7 @@
+import type { ResourceFact, ResourceFailure } from "../native";
 import { expect, it } from "vitest";
 import { resourceExplanation } from "./resourcePresentation";
-import type { ResourceFact, ResourceFailure } from "../resources";
+
 const events: ResourceFact = { category: "native_root_bytes", measurement: "candidate", count: 8192, reserved: 1, limit: 8192, scope: "xiangqi", unit: null };
 function failure(fact: ResourceFact, diagnostic = "Application capacity: retains 256 observations and 8192 controls") : ResourceFailure { return { fact, diagnostic }; }
 it("uses authoritative event facts despite ambiguous combined native diagnostic text", () => {

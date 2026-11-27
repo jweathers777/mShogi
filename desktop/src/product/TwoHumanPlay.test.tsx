@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
-import { afterEach, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { ApplicationView } from "./ApplicationView";
-import type { GameSnapshot } from "./native";
-import type { GameSession } from "./useGameSession";
+import { renderApplication, square } from "../testing/helpers";
+import type { GameSnapshot } from "../native";
+import { afterEach, expect, it } from "vitest";
+import { cleanup, fireEvent, screen } from "@testing-library/react";
+
 import chess from "../__fixtures__/shared-chess-standard.json";
 import shogi from "../__fixtures__/shared-shogi-standard.json";
 import xiangqi from "../__fixtures__/shared-xiangqi-standard.json";
@@ -15,12 +15,7 @@ import toriGote from "../__fixtures__/shared-tori-gote.json";
 import muller from "../__fixtures__/shared-tenjiku-muller-standard.json";
 afterEach(cleanup);
 const fixtures = [chess, shogi, xiangqi, tori, chu, adams, muller] as GameSnapshot[];
-function app(snapshot: GameSnapshot) {
-  const session: GameSession = { snapshot, busy: false, error: "", closeRequested: false,
-    command: vi.fn().mockResolvedValue(snapshot), file: vi.fn().mockResolvedValue(snapshot), newGame: vi.fn().mockResolvedValue(snapshot),
-    cancelClose: vi.fn(), finishClose: vi.fn(), requestClose: vi.fn() };
-  return { session, ...render(<ApplicationView snapshot={snapshot} session={session} blocked={false} onNewGame={vi.fn()} onOpen={vi.fn()} />) };
-}
+const app = renderApplication;
 it.each(fixtures)("shows two human participants and an explicit side to resign for $profile", fixture => {
   const local = fixture.sides[1]!;
   const snapshot = { ...fixture, play_mode: "two_humans" as const, local_actor: local, turn: local, paused: false,
@@ -51,7 +46,6 @@ it.each([...fixtures, toriGote as GameSnapshot])("plays a complete native action
     capabilities: { ...fixture.capabilities, engine_turn: false, board_action: true } } as GameSnapshot;
   const { session } = app(snapshot);
   const choice = snapshot.choices.find(choice => choice.from !== null && choice.steps.length === 1 && choice.completion === null)!;
-  const square = (name: string) => screen.getByRole("button", { name: new RegExp(`^${name},`) });
   fireEvent.click(square(choice.from!)); fireEvent.click(square(choice.steps[0]!));
   // The session derives the actor; the operation carries only the opaque action.
   expect(session.command).toHaveBeenCalledExactlyOnceWith(snapshot, { kind: "play", action: choice.action });

@@ -1,14 +1,16 @@
 // @vitest-environment jsdom
 // Actual Rust/controller DTOs; this tests consumers, not independently new rules.
+import { deferred, renderBoard, square } from "../testing/helpers";
+import type { ChuSnapshot, MovementInspection } from "../native";
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { SquareBoard } from "./SquareBoard";
 import { oriented } from "../testing/snapshots";
-import type { ChuSnapshot } from "./native";
+
 import { NativeAnalysis, NativeRecovery, NativeHistory } from "./NativeSessionPanels";
 import { GameBoard } from "./GameBoard";
 import inspectionJson from "../__fixtures__/shared-chu-inspection.json";
-import type { MovementInspection } from "./movementInspection";
+
 import routesJson from "../__fixtures__/shared-chu-routes.json";
 import promotionJson from "../__fixtures__/shared-chu-promotion.json";
 import royalsJson from "../__fixtures__/shared-chu-royals.json";
@@ -16,14 +18,8 @@ import counterJson from "../__fixtures__/shared-chu-counter.json";
 import capturedJson from "../__fixtures__/shared-chu-captured.json";
 const routes = routesJson as unknown as ChuSnapshot, promotion = promotionJson as unknown as ChuSnapshot;
 afterEach(cleanup);
-function square(key: string) {
-  const node = document.querySelector<SVGGElement>(`svg [role="button"][aria-label^="${key},"]`);
-  if (!node) throw new Error(`Missing native square ${key}`); return node;
-}
-function board(snapshot = routes) {
-  const onPlay = vi.fn(); const props = { snapshot, onPlay, disabled: false };
-  return { ...render(<SquareBoard {...props} />), props, onPlay };
-}
+
+const board = (snapshot = routes) => renderBoard(SquareBoard, { snapshot });
 it("preserves actual 12x12 geometry, native ownership, both orientations and multiple royal identities", () => {
   const { props, rerender } = board(royalsJson as unknown as ChuSnapshot);
   expect(document.querySelectorAll("svg [role=button]")).toHaveLength(144);
@@ -76,7 +72,6 @@ it("uses the production renderer with bounded native execution and no invented s
     <NativeRecovery snapshot={routes} error="" disabled={false} command={command} />
     <NativeAnalysis snapshot={routes} defaults={routes.play_limits} disabled={false} command={command} maxDepth={1} minNodes={1} maxNodes={1} /></>);
   expect(document.querySelector(".chu-board-frame")).toBeTruthy();
-  expect(screen.queryByText(/CHU DEVELOPMENT CONTRACT/)).toBeNull();
   expect(screen.queryByText(/Chu execution is unsupported/)).toBeNull();
   expect(screen.getByRole("button", { name: "Resume play" })).toBeTruthy();
   expect(screen.getByText("No engine search has completed in this game.")).toBeTruthy();
@@ -89,8 +84,7 @@ it("distinguishes native terminal prefix from continued action and invalidates h
   fireEvent.click(square("6f"));fireEvent.click(square("7e"));expect(onPlay).not.toHaveBeenCalled();
   fireEvent.click(screen.getByRole("button", { name: "Complete action here" }));expect(onPlay).toHaveBeenCalledExactlyOnceWith(short.action);
   const response = inspectionJson as unknown as MovementInspection;
-  let resolveOld!: (value: MovementInspection) => void;
-  const old = new Promise<MovementInspection>(resolve => { resolveOld = resolve; });
+  const { promise: old, resolve: resolveOld } = deferred<MovementInspection>();
   const onInspect = vi.fn().mockReturnValueOnce(old);
   const historical = { ...routes, historical: true, capabilities: { ...routes.capabilities, board_action: false }, token: { ...routes.token, selection: routes.token.selection + 1 } };
   rerender(<SquareBoard {...props} snapshot={historical} onInspect={onInspect} inspectionDisabled={false} />);

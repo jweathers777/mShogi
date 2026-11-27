@@ -1,13 +1,13 @@
 // @vitest-environment jsdom
+import type { CompletedActionGeometry, ChessSnapshot, ShogiSnapshot, XiangqiSnapshot } from "./native";
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render } from "@testing-library/react";
 import { TestBoard as Board } from "./testing/TestBoard";
-import type { CompletedActionGeometry } from "./boardPresentation";
+
 import { ShogiBoard } from "./product/ShogiBoard";
 import { XiangqiBoard } from "./product/XiangqiBoard";
 import { GameBoard } from "./product/GameBoard";
-import type { ChessSnapshot } from "./product/native";
-import type { ShogiSnapshot, XiangqiSnapshot } from "./product/native";
+
 import shogiJson from "./__fixtures__/shared-shogi-standard.json";
 import xiangqiJson from "./__fixtures__/shared-xiangqi-standard.json";
 import chessJson from "./__fixtures__/shared-chess-standard.json";

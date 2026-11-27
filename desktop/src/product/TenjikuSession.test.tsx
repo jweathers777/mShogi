@@ -1,15 +1,18 @@
 // @vitest-environment jsdom
 // Transport identities may be forged for negative cases; native choices are never invented.
+import { deferred } from "../testing/helpers";
+import { inspectionContextKey } from "./movementInspection";
+import type { MovementInspection, GameSnapshot, TenjikuSnapshot } from "../native";
+import { nativeSnapshotIsNewer } from "../sessionState";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { act, cleanup, renderHook } from "@testing-library/react";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { useGameSession } from "./useGameSession";
 import { useMovementInspection } from "./useMovementInspection";
-import { inspectionContextKey, type MovementInspection } from "./movementInspection";
+
 import { gridNeighbor, useNativeChoiceController } from "../interaction/useNativeChoiceController";
-import { nativeSnapshotIsNewer } from "../NativeBoard";
-import type { GameSnapshot, TenjikuSnapshot } from "./native";
+
 import adamsStandard from "../__fixtures__/shared-tenjiku-adams-standard.json";
 import mullerStandard from "../__fixtures__/shared-tenjiku-muller-standard.json";
 import adamsReset from "../__fixtures__/shared-tenjiku-adams-reset.json";
@@ -25,7 +28,6 @@ const cases = [
   { source: adams, other: muller, selected: adamsSelected as unknown as TenjikuSnapshot, foreign: mullerSelected as unknown as TenjikuSnapshot, reply: adamsInspection as unknown as MovementInspection },
   { source: muller, other: adams, selected: mullerSelected as unknown as TenjikuSnapshot, foreign: adamsSelected as unknown as TenjikuSnapshot, reply: mullerInspection as unknown as MovementInspection },
 ];
-function deferred<T>() { let resolve!: (value: T) => void; const promise = new Promise<T>(done => { resolve = done; }); return { promise, resolve }; }
 const flush = async () => { await act(async () => { await Promise.resolve(); }); };
 beforeEach(() => { vi.useFakeTimers(); vi.mocked(invoke).mockReset(); vi.mocked(listen).mockReset().mockResolvedValue(() => {}); });
 afterEach(() => { cleanup(); vi.useRealTimers(); });

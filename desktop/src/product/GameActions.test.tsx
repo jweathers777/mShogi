@@ -1,22 +1,18 @@
 // @vitest-environment jsdom
+import { deferred, fakeSession, renderApplication } from "../testing/helpers";
+import type { GameSnapshot } from "../native";
 import { afterEach, expect, it, vi } from "vitest";
-import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { act, cleanup, fireEvent, screen } from "@testing-library/react";
 import { ApplicationView } from "./ApplicationView";
-import type { GameSnapshot } from "./native";
-import type { GameSession } from "./useGameSession";
+
 import chess from "../__fixtures__/shared-chess-standard.json";
 import shogi from "../__fixtures__/shared-shogi-standard.json";
 import xiangqi from "../__fixtures__/shared-xiangqi-standard.json";
 import unresolved from "../__fixtures__/shared-chess-unresolved.json";
 import resigned from "../__fixtures__/shared-xiangqi-resigned.json";
 afterEach(cleanup);
-function deferred<T>() { let resolve!: (value: T) => void; const promise = new Promise<T>(done => { resolve = done; }); return { resolve, promise }; }
 function app(snapshot: GameSnapshot) {
-  const session: GameSession = { snapshot, busy: false, error: "", closeRequested: false,
-    command: vi.fn().mockResolvedValue(null), file: vi.fn().mockResolvedValue(snapshot), newGame: vi.fn().mockResolvedValue(snapshot),
-    cancelClose: vi.fn().mockResolvedValue(true), finishClose: vi.fn().mockResolvedValue(true), requestClose: vi.fn() };
-  const props = { snapshot, session, blocked: false, onNewGame: vi.fn(), onOpen: vi.fn() };
-  return { session, props, ...render(<ApplicationView {...props} />) };
+  return renderApplication(snapshot, fakeSession(snapshot, { command: vi.fn().mockResolvedValue(null) }));
 }
 it.each([chess, shogi, xiangqi])("submits $game Resign directly once with captured native authority and preserves a refused game", async fixture => {
   const source = fixture as GameSnapshot; const { session } = app(source);

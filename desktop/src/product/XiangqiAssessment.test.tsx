@@ -1,8 +1,9 @@
 // @vitest-environment jsdom
+import type { XiangqiSnapshot } from "../native";
 import { afterEach, expect, it } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import { XiangqiAssessment } from "./XiangqiAssessment";
-import type { XiangqiSnapshot } from "./native";
+
 import standard from "../__fixtures__/shared-xiangqi-standard.json";
 import fastProof from "../__fixtures__/shared-xiangqi-fast-proof.json";
 afterEach(cleanup);

@@ -363,7 +363,7 @@ impl DesktopController {
         }
         receipt.completion().unwrap()?;
         if fixture == "capacity" {
-            for _ in 0..MAX_ARCHIVE_OBSERVATIONS - 1 {
+            for _ in 0..KEPT_RESULTS - 1 {
                 self.start_game_work::<Chess>(
                     WorkLimits {
                         depth: 1,

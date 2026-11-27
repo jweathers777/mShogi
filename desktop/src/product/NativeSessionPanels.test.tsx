@@ -1,8 +1,9 @@
 // @vitest-environment jsdom
+import type { ChessSnapshot, GameSnapshot, SearchView } from "../native";
 import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 import { NativeAnalysis, NativeHistory, NativeRecovery, Observation } from "./NativeSessionPanels";
-import type { ChessSnapshot, GameSnapshot, SearchView } from "./native";
+
 import standardJson from "../__fixtures__/shared-chess-standard.json";
 import movesJson from "../__fixtures__/shared-chess-analysis-moves.json";
 import mateJson from "../__fixtures__/shared-chess-analysis-mate.json";
@@ -121,7 +122,6 @@ it("offers finishing concluded Chess analysis only while an actual analysis exis
   expect(command).toHaveBeenCalledExactlyOnceWith({ kind: "resume" });
   expect(screen.getByLabelText("Game outcome").textContent).toContain("no score is assigned");
 });
-
 
 it("shows reported selective depth including zero and omits it when unreported", () => {
   const view: SearchView = { selected: true, observation_index: 0, purpose: "move_analysis", event_index: 0, board_ply: 0, perspective: "White", engine: "mShogi", score: "+0.44 pawns", completed_depth: 1, selective_depth: 5, nodes: 21, variation: ["b1c3"], status: "Complete", historical: false };

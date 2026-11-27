@@ -1,10 +1,10 @@
+import { cycleTabFocus } from "../interaction/focus";
+import type { Color, GameSnapshot, SyntheticCommand, SyntheticSnapshot } from "../native";
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { Board } from "../Board";
-import type { Color } from "../native";
-import type { GameSnapshot } from "../product/native";
-import type { SyntheticCommand, SyntheticSnapshot } from "./native";
+
 import "./synthetic.css";
 
 function CloseDialog({ busy, onCancel, onClose }: { busy: boolean; onCancel: () => void; onClose: () => void }) {
@@ -18,12 +18,7 @@ function CloseDialog({ busy, onCancel, onClose }: { busy: boolean; onCancel: () 
   }, []);
   function key(event: KeyboardEvent<HTMLDivElement>) {
     if (event.key === "Escape" && !busy) { event.preventDefault(); onCancel(); }
-    if (event.key === "Tab") {
-      event.preventDefault();
-      const buttons = [...(dialog.current?.querySelectorAll<HTMLButtonElement>("button:not(:disabled)") ?? [])];
-      const index = buttons.indexOf(document.activeElement as HTMLButtonElement);
-      buttons[(index + (event.shiftKey ? -1 : 1) + buttons.length) % buttons.length]?.focus();
-    }
+    if (event.key === "Tab") cycleTabFocus(event);
   }
   return <div className="modal-backdrop"><div className="promotion-dialog" role="dialog" aria-modal="true" aria-labelledby="synthetic-close-title" ref={dialog} onKeyDown={key}>
     <h2 id="synthetic-close-title">Close synthetic fixture?</h2>

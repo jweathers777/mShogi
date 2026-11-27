@@ -1,6 +1,7 @@
+import type { ChessSnapshot } from "./native";
+import { nativeSnapshotIsNewer } from "./sessionState";
 import { describe, expect, it } from "vitest";
-import type { ChessSnapshot } from "./product/native";
-import { nativeSnapshotIsNewer } from "./NativeBoard";
+
 import { claimName, conclusionName } from "./presentation";
 import standardJson from "./__fixtures__/shared-chess-standard.json";
 import claimJson from "./__fixtures__/shared-chess-claim.json";

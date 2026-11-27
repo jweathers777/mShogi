@@ -1,11 +1,11 @@
 ---
 id: MSH-53.2
 title: Tenjiku Evaluation Round
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-27T16:53:00Z'
-updated_date: '2026-11-27T21:08:00Z'
+updated_date: '2026-11-27T21:31:00Z'
 labels:
   - tenjiku
   - evaluation
@@ -31,8 +31,8 @@ Run the classical evaluation round for both accepted Tenjiku profiles using the 
 <!-- AC:BEGIN -->
 - [x] #1 Use about 500,000 or more quiet self-play positions with rules-adjudicated outcomes, duplicate control and a split by game or opening. Record held-out loss before and after fitting with coverage of both profiles and report any shortfall.
 - [x] #2 Evaluation features agree with search scoring through moves, captures, promotion and undo, including applicable compound effects. Required correctness and tactical checks pass.
-- [ ] #3 Keep weights only with qualifying clocked evidence against the frozen predecessor, using the predeclared method and H1 around 10 Elo. Record incomplete games and unsupported candidates and revert unqualified weights.
-- [ ] #4 Required checks and applicable review pass. Update relevant durable documentation and record revisions, measurement settings, costs, run paths and cleanup in Backlog.
+- [x] #3 Keep weights only with qualifying clocked evidence against the frozen predecessor, using the predeclared method and H1 around 10 Elo. Record incomplete games and unsupported candidates and revert unqualified weights.
+- [x] #4 Required checks and applicable review pass. Update relevant durable documentation and record revisions, measurement settings, costs, run paths and cleanup in Backlog.
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -90,4 +90,14 @@ Clock block 2, seeds 9..16: Adams all eight pairs scored; Muller six scored, two
 Clock block 3, seeds 17..24: Adams seven complete pairs, one wall-budget game unscored; Muller all eight pairs complete. All native replay, hash, equal-clock and config checks passed and the Batch job, VMs and disks were removed. Across 24 scheduled pairs/profile Adams has 22 scored, [0,0,2,0,20], 44W/2L/2 unscored, LLR 3.4230; Muller 22 scored, [0,0,3,0,19], 43W/3L/2 unscored, LLR 2.8155. A numerical bound below 30 scored pairs gives no decision. Block VM bound $0.591668; task VM bound $5.412615. Next: seeds 25..32, same criteria; no unsupported weights will be kept. Branch codex/msh-53.2-tenjiku-evaluation.
 
 Clock block 4, seeds 25..32, supplied seven scored and one unscored pair per profile. Each profile now has 29 scored pairs, [0,0,4,0,25], 57 wins/4 losses/3 unscored and LLR 4.03488. Both exceed 2.94444 but remain ineligible at fewer than 30 pairs. All reports, replay logs, actual configs/hashes and resource cleanup verified. Fourth block VM bound $0.480782; cumulative $5.893397. Next: seeds 33..40 under unchanged limits. Branch codex/msh-53.2-tenjiku-evaluation.
+
+Final clock qualification, trial 6855d62 vs accepted MSH-202 d6274cb (SHA256 84fb903b… vs cd4233cc…). Five consecutive 8-opening blocks per profile, 60 s + 1.5 s equal Fischer clocks, 768 plies, 1200 s pair, two pairs per c3-standard-4, paired 0/10 Elo SPRT, alpha=beta=.05, minimum 30. All 80 native color-pair reports passed SHA256, native replay, repeated score calculation, and actual configuration and binary checks. Adams 37/40 scored pairs, [0,0,5,0,32], LLR 5.5872, H1. Individual 72W/0D/5L, 3 unscored (two native Stopped, one wall). Internal paired Elo estimate +456, approximate 95% interval +327..+1026. Muller 35/40, [0,0,4,0,31], LLR 5.7856, H1. Individual 70W/0D/4L, 6 unscored (four native Stopped, two wall). Internal paired Elo estimate +487, approximate 95% lower bound +343 with no finite upper bound. H1 threshold 2.9444. No unscored result was imputed and no opening was retried. The single 49-term vector is retained for both profiles. The full incoming production implementation is identical to the clock-tested revision; subsequent source changes are test-only.
+
+Reproduction: use tools.strength.cli selfplay --game tenjiku --profile adams|muller --depth 1 --candidate-nodes 500000 --random-plies 4, the archived 100-opening catalogs, shared per-opening split/quiet check, tenjiku_texel fit TRAIN VALIDATION OUTPUT 900, check FROZEN HELDOUT OUTPUT, and the exact match manifests. The production, analysis, and qualification operator, manifests, input hashes, individual pair results, logs and resources are in gs://mshogi-experiments-216675633801/runs/msh-53.2/ (operator-final.tar.gz SHA256 20f1e93727d9df4dfe9c1a0b9d00320d1118075bf71e71fd6ec78717016310e9). All 15 Batch cleanup receipts show no remaining job/VM/disk. VM upper bound $6.499990 at $0.201608 per c3-standard-4-hour. All six Cloud Build jobs total 195.818 seconds; $1 separate allowance for image builds, storage and transfer puts the estimate below $7.50 of the $10 cap. These are bounds and allowances, not a billing statement. Six task-specific image versions and source staging objects were removed after preservation. Focused, shared, frontend, strength-driver and documentation-link checks passed. Separate review is not required for these evaluation, test and harness changes. Next: MSH-53 strength measurement and blunder screen need their own approved campaign.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Retained one classical Tenjiku evaluation for Adams and Muller after fitting 552,061 unique quiet boards. Heldout MSE fell from .174159 to .165594 in Adams and .182986 to .167187 in Muller. Each profile solved all 216 tactical positions and passed its independent clocked predecessor SPRT. Added repeatable fixed-depth self-play and the shared Texel adapter. All selected checks passed. MSH-53 stays Ready for separately approved measurement and the blunder screen.
+<!-- SECTION:FINAL_SUMMARY:END -->

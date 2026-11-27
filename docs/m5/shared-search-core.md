@@ -450,8 +450,10 @@ Private analysis has these limits:
 - No Chess self-check filter or Chu protected-Lion rule is added. Null-move
   pruning is disabled. An internal position with no move scores zero; a live
   game root without board actions remains an unscored error.
-- Evaluation adds placement and tempo to material. Search margins use the
-  100-point Pawn value. Captured pieces leave the board. Tactical ordering uses the full material gain and the value of the
+- Both profiles share the classical Texel-fitted face values, four placement
+  coefficients and side-to-move tempo. Search maintains the material and
+  placement totals through moves and undo. Search margins use the 100-point
+  Pawn value. Captured pieces leave the board. Tactical ordering uses the full material gain and the value of the
   moving piece. The gain includes all direct and burn victims, promotion
   and mover suicide.
   The exchange filter follows complete local recaptures of the last mover,

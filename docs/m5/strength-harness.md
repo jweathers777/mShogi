@@ -87,6 +87,17 @@ and complete answer sets. To score the held-out Muller suite, run
 python3 -m tools.strength.cli probe --game tenjiku --profile muller --suite tools/strength/data/tenjiku-muller-tactics-v1.json --split held-out --engine ENGINE --depth 2 --nodes 500000 --out runs/TASK/muller-held-out.json
 ```
 
+For a clocked Tenjiku comparison, start with 60 s + 1.5 s per move
+(`--base 60 --increment 1.5`). MSH-214 used a 768-ply game limit,
+a 1,200-second pair limit and the shared late-depth boundary of
+40 post-opening plies. The attained late-game target is depth 5 on
+`c3-standard-4` at this control. Use the same machine type and pair
+concurrency on both sides of a comparison. Some searches exhausted
+their time before completing the first iteration. The match driver stops
+on an unfinished pair. Keep its report and diagnose the stop before
+continuing a strength test. MSH-214 records the calibration, paired
+time-odds results and their limits for both profiles.
+
 ## Comparisons and time odds
 
 ```sh

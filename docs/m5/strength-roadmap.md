@@ -109,7 +109,7 @@ Steps 5 and 6 change accordingly.
 | Xiangqi | Baseline accepted 2026-11-19. Ladder and blunder screen: MSH-197, MSH-198. | Final criteria: MSH-54 |
 | Tori Shogi | Baseline accepted 2026-11-21 (MSH-207): 2x time about +260 to +350 Elo; 0.49 clear blunders per 100 moves (same-family judge). | Final criteria: MSH-51 |
 | Chu Shogi | Baseline accepted 2026-11-25 (MSH-52.3): 2x time about +370 to +600 Elo; 0 clear blunders in 512 sampled moves (same-family judge). | Final criteria: MSH-52 |
-| Tenjiku Shogi | Not started. Next: harness, then speed. | MSH-214 (harness), MSH-202 (speed); final criteria MSH-53 |
+| Tenjiku Shogi | Harness inputs and clocked predecessor tests available for both profiles. Median late-game depth 5 at 60 s + 1.5 s. Incomplete searches limit full-opening comparisons. | MSH-214 (harness), MSH-202 (speed); final criteria MSH-53 |
 
 ## Clock allocation of the experiment runner
 

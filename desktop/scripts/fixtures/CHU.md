@@ -13,6 +13,10 @@ cargo run --release --locked -p mshogi-desktop-session --example write_chu_gui_d
 cargo test --locked -p mshogi-desktop-session --example write_chu_gui_documents
 ```
 
+Both engine scenarios use the same fixed probe limits (depth 1, 512 visits,
+no time limit). The generator records these limits in the manifest and checks
+the completed depth against the requested depth.
+
 The generator creates strict `GameRecord`s, current-envelope
 `ValidatedChuDocument`s, and a `chu-game-fixtures.json` manifest. It decodes
 every complete archive and compares its exact bytes, game record and events.

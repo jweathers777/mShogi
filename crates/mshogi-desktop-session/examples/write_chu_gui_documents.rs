@@ -10,10 +10,17 @@ use mshogi_desktop_session::{game_adapter::Chu, game_document::ValidatedGameDocu
 type ValidatedChuDocument = ValidatedGameDocument<Chu>;
 use mshogi_engine::{
     ChuResult, ExecutionContext, ExecutionPurpose, ExecutionRequest, ExecutionResponse,
-    ExecutionResult, PROTOCOL_VERSION,
+    ExecutionResult, PROTOCOL_VERSION, WorkLimits,
 };
 use serde_json::{Value, json};
 use std::{io::Cursor, path::PathBuf};
+
+// Pin the probe independently of the interactive Chu play preset.
+const FIXTURE_LIMITS: WorkLimits = WorkLimits {
+    time_ms: None,
+    depth: 1,
+    nodes: 512,
+};
 
 fn play(g: &mut c::Game, action: c::Action) {
     command(
@@ -222,21 +229,6 @@ fn scenarios() -> Vec<(String, ValidatedChuDocument, Value)> {
 }
 
 fn actual_observation(d: &ValidatedChuDocument, id: u64) -> mshogi_engine::ExecutionObservation {
-    actual_observation_at_limits(
-        d,
-        id,
-        mshogi_engine::WorkLimits {
-            time_ms: None,
-            depth: 1,
-            nodes: 512,
-        },
-    )
-}
-fn actual_observation_at_limits(
-    d: &ValidatedChuDocument,
-    id: u64,
-    limits: mshogi_engine::WorkLimits,
-) -> mshogi_engine::ExecutionObservation {
     let req = ExecutionRequest {
         protocol: PROTOCOL_VERSION,
         context: ExecutionContext {
@@ -244,7 +236,7 @@ fn actual_observation_at_limits(
             request_id: id,
             session_version: id,
             game: CanonicalRecord::chu(d.record().clone()),
-            limits,
+            limits: FIXTURE_LIMITS,
         },
     };
     let mut output = vec![];
@@ -276,8 +268,8 @@ fn complete_standard_game() -> (ValidatedChuDocument, Value) {
         else {
             panic!("representative completed search required: {observation:?}")
         };
-        assert_eq!(telemetry.completed_depth, 1);
-        assert!(telemetry.nodes <= 512);
+        assert_eq!(telemetry.completed_depth, FIXTURE_LIMITS.depth);
+        assert!(telemetry.nodes <= FIXTURE_LIMITS.nodes);
         engine.clone_from(&telemetry.search_id);
         let action = action.clone();
         let actor = d.record().to_game().unwrap().position().side_to_move();
@@ -301,7 +293,7 @@ fn complete_standard_game() -> (ValidatedChuDocument, Value) {
     assert_eq!(g.position().accepted_plies(), 12);
     assert_eq!(g.events().len(), 13);
     replay(&d);
-    let metadata = json!({"root":"standard_start","engine":engine,"work_limits":{"depth":1,"nodes":512},
+    let metadata = json!({"root":"standard_start","engine":engine,"work_limits":FIXTURE_LIMITS,
         "observed_turns":turns,"ending":"explicit_scripted_sente_resignation","conclusion":{"kind":"resignation","winner":"gote"},
         "known_board_actions":12,"game_events":13,"observations":12,
         "limitation":"Complete standard-root recorded game with explicit resignation; not natural self-play completion or competitive-strength evidence."});
@@ -336,7 +328,7 @@ fn complete_natural_engine_game() -> (ValidatedChuDocument, Value) {
     else {
         panic!("actual naturally finishing choice required: {choice:?}")
     };
-    assert_eq!(telemetry.completed_depth, 1);
+    assert_eq!(telemetry.completed_depth, FIXTURE_LIMITS.depth);
     assert_eq!(action.route.len(), 2);
     let actual_action = action.clone();
     let engine = telemetry.search_id.clone();
@@ -391,7 +383,7 @@ fn complete_natural_engine_game() -> (ValidatedChuDocument, Value) {
         d,
         json!({"root":"independently_authored_diagram","source_fixture":"CHU-ROYAL-BOTH-COMPOUND",
         "diagram_extension":"Remote Gote Gold 11a prevents a single royal capture from also receiving a material award; original fixture remains unchanged.",
-        "engine":engine,"work_limits":{"depth":1,"nodes":512},"actual_action":actual_action,
+        "engine":engine,"work_limits":FIXTURE_LIMITS,"actual_action":actual_action,
         "ending":"royal_capture_after_actual_engine_choice","conclusion":{"kind":"royal_capture","winner":"sente"},
         "known_board_actions":1,"game_events":1,"observations":2,"response_sequence":["choice","finished"],
         "limitation":"Naturally completed game from explicitly limited independently authored diagram, not a standard-root self-play completion or strength measurement."}),

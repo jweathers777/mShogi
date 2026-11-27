@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-27T06:46:00Z'
+updated_date: '2026-11-27T06:48:00Z'
 labels:
   - desktop
   - scripts
@@ -62,4 +62,8 @@ Backlog consolidation, 2026-11-26: the dependency fields and current acceptance 
 Handoff: codex/msh-266-desktop-scripts starts at cb89ef1. Next, inspect generations, desktop helper seams and CI before implementing.
 
 Checkpoint: consolidated script, fixture and font helpers are implemented on codex/msh-266-desktop-scripts. Local desktop Python tests passed (178). All five WOFF2 files match their pinned inputs byte for byte. Two current generator passes produced all 159 committed outputs with no byte changes. Current Chu release generation completed. Historical Chu failure reproduction, full integration checks, independent review and platform CI are next.
+
+Historical Chu failure reproduced with the documented release command at c0f67d7. Its completed-depth assertion at line 330 got 9 from CHU_PLAY_LIMITS and expected 1. MSH-228 commit 133fff5 replaced that interactive preset with an untimed depth-1/512-visit fixture request. The generator now uses one FIXTURE_LIMITS constant for requests, assertions and manifest values. Current debug and release generation both complete. Fresh agent review restored the Tenjiku archive profile assertion, made the mocked Linux/macOS path tests portable, and routed release CI through the same fixture check.
+
+Line counts (cb89ef1 to this change): gui-smoke.py 3689 to 3625, gui_linux.py 490 to 480, gui_windows.py 755 to 749, macos-verification.py 175 to 163, shared gui_support.py 0 to 56. Together 5109 to 5073. Five font scripts totaled 289 lines; the combined script has 88. Shared hyphenated test loader adds 12 lines and removes repeated setup in six tests.
 <!-- SECTION:NOTES:END -->

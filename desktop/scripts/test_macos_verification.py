@@ -50,7 +50,7 @@ class StableMacVerificationTests(unittest.TestCase):
             "qa": ("mShogi Verification.app", "org.mshogi.desktop.verification.r6.shogipromotion"),
             "synthetic": ("mShogi Synthetic.app", "org.mshogi.desktop.verification.r6.synthetic"),
         })
-        self.assertIn("target/release/bundle/macos", str(module.bundle("normal")))
+        self.assertIn("target/release/bundle/macos", module.bundle("normal").as_posix())
         self.assertEqual(module.bundle("qa").parent, module.bundle("synthetic").parent)
 
     def test_all_fixture_selections_preserve_every_signed_bundle_byte(self):

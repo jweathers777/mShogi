@@ -2731,10 +2731,12 @@ class Journey:
         wait(lambda: self.web.has('[data-search-purpose="engine_turn"]'),
              f"real {GAME_LABELS[game]} engine retry after identical binary restored", 45)
         assert not self.web.has('.outcome-card')
-        self.save_game(self.args.output / f'{identity}-recovery-complete.mshogi', game)
+        archive = self.save_game(self.args.output / f'{identity}-recovery-complete.mshogi', game)
         snapshot = self.session_diagnostics()
         if profile is not None:
-            assert snapshot['profile'] == self.tenjiku_profile_id(profile), snapshot
+            expected_profile = self.tenjiku_profile_id(profile)
+            assert snapshot['profile'] == expected_profile, snapshot
+            assert archive['payload']['record']['root']['profile'] == expected_profile, archive
         self.record('Actual missing sidecar restored identically before explicit Retry',
                     {'game':game, 'profile':profile, 'engine_sha256':original, 'snapshot':snapshot})
         self.capture('actual-retry-retains-history')

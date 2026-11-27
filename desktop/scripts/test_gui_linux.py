@@ -83,7 +83,7 @@ class FilenameReadbackTests(unittest.TestCase):
   self.native.output=Path('unused-mocked-picker-output')
   self.native._key=Mock();self.native._run=Mock();self.native._activate=Mock();self.native.screenshot=Mock()
   self.native._windows=Mock(return_value=[PICKER.copy()])
-  self.path='/home/runner/work/mShogi/game.mshogi'
+  self.path=str(Path.cwd() / 'work/mShogi/game.mshogi')
  def test_invalid_requested_entry_is_rejected_before_native_input(self):
   for selected in ('', 'relative.mshogi', '/'+'a'*4096, '/tmp/bad\nname.mshogi', '/tmp/bad\x00name'):
    with self.subTest(selected=repr(selected[:40])):
@@ -99,7 +99,7 @@ class FilenameReadbackTests(unittest.TestCase):
   self.native._key.assert_any_call('ctrl+l')
   self.assertFalse(any('Return' in call.args for call in self.native._key.call_args_list))
  def test_observed_missing_prefix_gets_one_verified_replacement_not_another_open(self):
-  suffix='work/mShogi/game.mshogi';self.native._copy_picker_text=Mock(side_effect=[suffix,self.path])
+  suffix=str(Path('work/mShogi/game.mshogi'));self.native._copy_picker_text=Mock(side_effect=[suffix,self.path])
   result=self.native._enter_picker_path(PICKER,self.path,'prefix')
   self.assertTrue(result['observed_prefix_corrected']);self.assertEqual(result['first_readback'],suffix)
   self.assertEqual(self.native._run.call_count,2);self.native._activate.assert_called_once_with(123)

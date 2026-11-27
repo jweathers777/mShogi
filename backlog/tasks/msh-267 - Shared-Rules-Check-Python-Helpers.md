@@ -1,10 +1,11 @@
 ---
 id: MSH-267
 title: Shared Rules-Check Python Helpers
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-26T11:55:00Z'
+updated_date: '2026-11-27T00:52:00Z'
 labels:
   - tools
   - refactor

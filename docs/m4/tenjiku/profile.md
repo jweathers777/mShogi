@@ -136,8 +136,8 @@ causes one mover-destruction event.
 
 **Profile1 A §1.2.4:** active Demon burns enemy non-Demon bystanders **before**
 its own demise beside an enemy Demon. **Profile2 M footnote:** if the moving
-Demon dies, it produces no bystander burns. All such differences remain,
-not renderer or evaluation settings.
+Demon dies, it produces no bystander burns. The rules profile determines
+these differences.
 
 Resolve one atomic action using these phases; S labels serialization/underspecification
 completion rather than claiming the source prints an algorithm:

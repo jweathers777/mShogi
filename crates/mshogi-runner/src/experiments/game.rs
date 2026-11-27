@@ -501,7 +501,7 @@ mod tests {
     }
 
     #[test]
-    fn selective_pv_bound_is_explicit_and_every_extra_board_action_is() {
+    fn checks_selective_pv_bounds_and_replayed_actions() {
         // Constructed admission machinery, not an actual engine observation.
         let root = standard_root(RulesProfile::ChessMatchV1).unwrap();
         let action = "e2e4".parse().unwrap();

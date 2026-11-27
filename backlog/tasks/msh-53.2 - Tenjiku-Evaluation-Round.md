@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-27T16:53:00Z'
-updated_date: '2026-11-27T20:50:00Z'
+updated_date: '2026-11-27T21:08:00Z'
 labels:
   - tenjiku
   - evaluation
@@ -88,4 +88,6 @@ Verified the archived clock configurations directly against the native reports: 
 Clock block 2, seeds 9..16: Adams all eight pairs scored; Muller six scored, two native incomplete:Stopped pairs. All 16 reports replayed and independently verified including equal clocks, score orientation and binary hashes; verified zero residual Batch resources. Cumulative Adams 15 scored, pentanomial [0,0,2,0,13], LLR 1.6741, individual 29W/2L/1 unscored. Muller 14 scored, [0,0,1,0,13], LLR 1.8688, 29W/1L/2 unscored. Zero draws. The H1 bound is 2.9444 and min 30 scored pairs per profile. Block VM upper bound $0.321370, task VM bound $4.820948. Full candidate checks with official Node 24.19.0 passed: fmt/Clippy, 1175 Rust tests (10 ignored), frontend types and 578 tests, 58 strength tests. Next: seeds 17..24 under the frozen independent tests. Branch codex/msh-53.2-tenjiku-evaluation.
 
 Clock block 3, seeds 17..24: Adams seven complete pairs, one wall-budget game unscored; Muller all eight pairs complete. All native replay, hash, equal-clock and config checks passed and the Batch job, VMs and disks were removed. Across 24 scheduled pairs/profile Adams has 22 scored, [0,0,2,0,20], 44W/2L/2 unscored, LLR 3.4230; Muller 22 scored, [0,0,3,0,19], 43W/3L/2 unscored, LLR 2.8155. A numerical bound below 30 scored pairs gives no decision. Block VM bound $0.591668; task VM bound $5.412615. Next: seeds 25..32, same criteria; no unsupported weights will be kept. Branch codex/msh-53.2-tenjiku-evaluation.
+
+Clock block 4, seeds 25..32, supplied seven scored and one unscored pair per profile. Each profile now has 29 scored pairs, [0,0,4,0,25], 57 wins/4 losses/3 unscored and LLR 4.03488. Both exceed 2.94444 but remain ineligible at fewer than 30 pairs. All reports, replay logs, actual configs/hashes and resource cleanup verified. Fourth block VM bound $0.480782; cumulative $5.893397. Next: seeds 33..40 under unchanged limits. Branch codex/msh-53.2-tenjiku-evaluation.
 <!-- SECTION:NOTES:END -->

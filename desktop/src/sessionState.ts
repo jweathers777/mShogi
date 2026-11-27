@@ -6,9 +6,10 @@ export function nativeSnapshotIsNewer(current: GameSnapshot | null, incoming: Ga
 }
 
 export function sessionStatus(snapshot: GameSnapshot): "thinking" | "analyzing" | "idle" {
-  if (snapshot.phase !== "thinking") return "idle";
-  if (snapshot.execution_purpose === "move_analysis") return "analyzing";
-  if (snapshot.execution_purpose === "engine_turn" && snapshot.capabilities.engine_turn) return "thinking";
+  const working = snapshot.phase === "thinking";
+  if (working && snapshot.execution_purpose === "engine_turn" && snapshot.capabilities.engine_turn) return "thinking";
+  if ((working && snapshot.execution_purpose === "move_analysis")
+    || (snapshot.game === "chess" && snapshot.chess.analysis.status === "thinking")) return "analyzing";
   return "idle";
 }
 

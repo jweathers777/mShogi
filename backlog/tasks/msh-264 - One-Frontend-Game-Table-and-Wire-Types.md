@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-27T00:32:00Z'
+updated_date: '2026-11-27T00:35:00Z'
 labels:
   - desktop
   - frontend
@@ -66,4 +66,6 @@ Baseline: 6,762 lines across tracked TypeScript and TSX files under desktop/src 
 Checkpoint: shared game metadata, wire types, request status, focus and test helpers are in place. The retained result limit has one definition. Desktop-session all-features passed 196 tests. Fresh review caught short live headers required by the GUI journey; the game table now preserves CHU and TENJIKU, with coverage for all six headers. Next: resolve any remaining review findings, complete the workspace/frontend/script gate, and integrate.
 
 Checkpoint: fresh review is complete. Preserved approved header labels, clarified in-memory retention, and made the Xiangqi witness type match Rust. Final strict TypeScript and the production frontend build passed. The full shared check gate is running. Next: confirm workspace, frontend and GUI-script results and integrate.
+
+Workspace tests and Rust lint passed. The frontend suite found Chess analysis reports work through its dedicated status and dialogs need document-order sorting when a disclosure opens. Restored both in the shared helpers. The focused tests passed. Next run the full frontend and GUI-script checks and integrate.
 <!-- SECTION:NOTES:END -->

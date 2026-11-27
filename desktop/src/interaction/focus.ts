@@ -8,7 +8,7 @@ export function cycleTabFocus(event: KeyboardEvent<HTMLElement>, selector = "but
       if (ancestor instanceof HTMLDetailsElement && !ancestor.open && item !== ancestor.querySelector(":scope > summary")) return false;
     }
     return !item.hidden;
-  });
+  }).sort((a, b) => a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1);
   const index = items.indexOf(document.activeElement as HTMLElement);
   event.preventDefault();
   items[(index + (event.shiftKey ? -1 : 1) + items.length) % items.length]?.focus();

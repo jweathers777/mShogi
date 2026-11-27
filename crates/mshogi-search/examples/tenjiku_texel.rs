@@ -66,9 +66,9 @@ impl TexelModel for Tenjiku {
         let Ok(mut v) = serde_json::from_str::<Value>(text) else {
             return text.to_string();
         };
-        if let Some(pieces) = v["pieces"].as_array_mut() {
+        if let Some(pieces) = v.get_mut("pieces").and_then(Value::as_array_mut) {
             for piece in pieces.iter_mut() {
-                if let Some(fields) = piece[1].as_object_mut() {
+                if let Some(fields) = piece.get_mut(1).and_then(Value::as_object_mut) {
                     fields.remove("id");
                 }
             }
@@ -160,6 +160,13 @@ mod tests {
                 assert!(Tenjiku::prepare(&d.to_string()).unwrap().is_none());
                 assert_ne!(key, Tenjiku::key(&d.to_string()));
             }
+        }
+    }
+    #[test]
+    fn invalid_diagrams_reach_the_model_validation() {
+        for invalid in ["42", r#"{"pieces":[7],"pending_bare":null}"#] {
+            let _ = Tenjiku::key(invalid);
+            assert!(Tenjiku::prepare(invalid).is_err());
         }
     }
     #[test]

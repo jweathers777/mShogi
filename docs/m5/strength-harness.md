@@ -149,7 +149,7 @@ own quiet-position filters. Build the applicable `mshogi-search` example
 The Tenjiku model uses the search evaluator's 44 face values, four placement
 terms and tempo. It fixes the Pawn, King and Crown Prince values. It excludes
 pending bare-royal replies, terminal positions, immediate royal threats and
-moves with a positive or uncertain compound exchange. The fit reports each
+boards with a positive or uncertain compound exchange. The fit reports each
 profile's loss separately. The corpus splitter keeps each catalog opening in
 one partition and ignores interchangeable physical piece IDs when comparing
 diagrams. Profile, side, piece placement and promotion rights remain part of

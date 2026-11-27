@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-27T16:53:00Z'
-updated_date: '2026-11-27T17:20:00Z'
+updated_date: '2026-11-27T17:34:00Z'
 labels:
   - tenjiku
   - evaluation
@@ -62,4 +62,6 @@ Production1 launched as corpus-msh532-production1. The project Cloud Build image
 First available eight-pair production groups measured without fitting: Adams 678 unique quiet boards /199.80 lane-seconds, Muller 507/221.13. The slower realized generation+native export throughput still projects about $2.49 of fully utilized c3-standard-4 execution for 500000 before setup/deduplication. Keep the two-batch cap and reserve match funds. Linux fitter at 5308d41 built successfully (130.07 s; SHA256 1fa150fc91689687d5acb1dcbbc0c7a7fda13e88b2f1cb9a4518357d819f08a0). The shared Pub/Sub subscription can deliver a terminal event to another simultaneous controller. The authoritative Batch describe recorded SUCCEEDED before its waiting local controller was interrupted to perform cleanup. Zero build jobs/VMs/disks remain, cost upper bound $0.022952. Next: finish production, global split/fit and result gates. Branch codex/msh-53.2-tenjiku-evaluation.
 
 Separate clocked data pilot d6274cb vs itself (60 s + 1.5 s, 1200 s pair cap): Adams 2 concluded / 4 wall stops, 386 unique quiet rows (196/0/190); Muller 3 concluded /3 wall stops, 844 quiet rows (215/391/238). No complete pair in either profile. All six reports had matching hashes and native replays, wall stops supplied zero labels and neither these nor the depth-one pilot samples enter production. Frozen engine solved all 144 development/72 heldout tactical rows for each profile. The three pilot jobs and fitter build have zero remaining jobs/VMs/disks, total VM upper bound $0.756869. Production continues. Next: finish both planned corpus stages as needed, verify full split and data size, then fit and qualify the candidate only through the declared conditions.
+
+First eight pairs of every production lane (128 per profile; 32 lanes total): Adams retained 11382 unique quiet boards/45782 raw boards in 3801.89 lane-seconds, Muller 10134/41506 in 3705.21. Values are a prespecified slice of production, not extra data or heldout loss. At 17:33 UTC the job had exported 293614 raw boards from 840 completed pairs. Estimated generation plus export cost remains about $2.44 for 500000 quiet boards under full concurrent use. Eight production workers are active, first batch deadline 18:11 UTC. Next: finish the first batch, use fresh seeds 4197+ for the predeclared second batch if needed, then global split and fit. Branch codex/msh-53.2-tenjiku-evaluation.
 <!-- SECTION:NOTES:END -->

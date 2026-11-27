@@ -16,8 +16,13 @@ pub const EVALUATOR_ID: &str = "mshogi.tenjiku.material-placement.v1";
 /// Shared alpha-beta search identity.
 pub const SEARCH_ID: &str = "mshogi.tenjiku.shared-core.v1";
 
-/// Untrained material values in hundredths of a pawn.
+/// Playing material values in hundredths of a pawn.
 pub const fn piece_value(face: Face) -> i32 {
+    eval::DEFAULT[face as usize]
+}
+
+/// Frozen material values used to initialize the classical tuning model.
+const fn initial_piece_value(face: Face) -> i32 {
     match face {
         Face::P => 100,
         Face::Dg | Face::N => 200,

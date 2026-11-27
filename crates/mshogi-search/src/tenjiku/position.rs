@@ -1,5 +1,6 @@
 //! Private Tenjiku board and complete-action projection for the shared core.
 //! Game remains authoritative for actual history, admission and outcomes.
+use super::eval;
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
 use crate::repetition::earlier_occurrences;
 use crate::square_set::SquareSet;
@@ -472,9 +473,12 @@ impl Board {
         let central = 7 - (at % 16).abs_diff(7).min((at % 16).abs_diff(8)) as i32;
         match meta(c).face {
             Face::K | Face::CP => 0,
-            Face::P | Face::Dg => advance as i32 * 4,
-            Face::Ln | Face::LHk | Face::FiD => central * 6 + advance.min(10) as i32 * 2,
-            _ => central,
+            Face::P | Face::Dg => advance as i32 * eval::DEFAULT[eval::PAWN_ADVANCE],
+            Face::Ln | Face::LHk | Face::FiD => {
+                central * eval::DEFAULT[eval::LION_CENTRAL]
+                    + advance.min(10) as i32 * eval::DEFAULT[eval::LION_ADVANCE]
+            }
+            _ => central * eval::DEFAULT[eval::OTHER_CENTRAL],
         }
     }
     fn set(&mut self, at: usize, c: u32) {
@@ -1398,7 +1402,7 @@ impl SearchPosition for TenjikuPosition {
         let s = self.board.side;
         self.board.material[s] - self.board.material[s ^ 1] + self.board.placement[s]
             - self.board.placement[s ^ 1]
-            + 10
+            + eval::DEFAULT[eval::TEMPO]
     }
     fn is_tactical(&self, m: Move) -> bool {
         let mut b = self.board;

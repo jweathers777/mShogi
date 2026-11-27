@@ -89,7 +89,7 @@ fn state(p: &TenjikuPosition, n: &Position) {
     }
     let score: i32 = super::eval::features(p)
         .into_iter()
-        .zip(super::eval::initial())
+        .zip(super::eval::DEFAULT)
         .map(|(feature, weight)| feature * weight)
         .sum();
     let sign = if p.side_to_move() == Side::Sente {

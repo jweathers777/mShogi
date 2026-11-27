@@ -212,9 +212,9 @@
         },
         "ending": "explicit_scripted_sente_resignation",
         "engine": "mshogi.chu.shared-core.v1",
+        "game_events": 13,
         "known_board_actions": 12,
         "limitation": "Complete standard-root recorded game with explicit resignation; not natural self-play completion or competitive-strength evidence.",
-        "game_events": 13,
         "observations": 12,
         "observed_turns": [
           {
@@ -456,9 +456,9 @@
         "diagram_extension": "Remote Gote Gold 11a prevents a single royal capture from also receiving a material award; original fixture remains unchanged.",
         "ending": "royal_capture_after_actual_engine_choice",
         "engine": "mshogi.chu.shared-core.v1",
+        "game_events": 1,
         "known_board_actions": 1,
         "limitation": "Naturally completed game from explicitly limited independently authored diagram, not a standard-root self-play completion or strength measurement.",
-        "game_events": 1,
         "observations": 2,
         "response_sequence": [
           "choice",

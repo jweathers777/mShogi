@@ -34,20 +34,20 @@ fn actual_payloads_round_trip_with_derived_identity_and_provenance() {
         }),
     });
     let shogi = shogi_game();
-    for record in [
+    for envelope in [
         CanonicalRecord::chess(record.clone()),
         CanonicalRecord::shogi(s::GameRecord::from_game(&shogi)),
     ] {
-        let text = record.to_json().unwrap();
-        assert_eq!(CanonicalRecord::from_json(&text).unwrap(), record);
+        let text = envelope.to_json().unwrap();
+        assert_eq!(CanonicalRecord::from_json(&text).unwrap(), envelope);
         assert_eq!(
             serde_json::from_str::<CanonicalRecord>(&text).unwrap(),
-            record
+            envelope
         );
         let wire: Value = serde_json::from_str(&text).unwrap();
         assert_eq!(wire["envelope_version"], 2);
         assert_eq!(wire.as_object().unwrap().len(), 3);
-        match record {
+        match envelope {
             CanonicalRecord::Tenjiku(_) => unreachable!("covered by tenjiku_record_envelope"),
             CanonicalRecord::Chu(_) => unreachable!("covered by chu_record_envelope"),
             CanonicalRecord::Tori(_) => unreachable!("covered by tori_record_envelope"),

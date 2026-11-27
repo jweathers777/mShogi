@@ -331,5 +331,5 @@
   "qualification": "Current desktop documents admitted/replayed by public Rust APIs. Unproved diagrams, no fabricated observations, no normal host fixture/IPC activation.",
   "schema": "mshogi.tenjiku.packaged-fixtures.v1",
   "source": "docs/m4/tenjiku/fixtures.json frozen MSH-83/87 independently authored roots and expectations",
-  "source_sha256": "2005e098b507f73248b8f9bd442f7ffe0c2c0c5ae205428d9a3d2371a7c08e82"
+  "source_sha256": "f824ff81a49c01a504879087323f5b8c7bcc98b50468073120fd9f33f0bda577"
 }

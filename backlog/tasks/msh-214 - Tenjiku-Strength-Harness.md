@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-20T22:51:00Z'
-updated_date: '2026-11-27T13:38:00Z'
+updated_date: '2026-11-27T13:47:00Z'
 labels:
   - tenjiku
   - search
@@ -63,4 +63,6 @@ The 30 s + 0.5 s pilot exposed incomplete first iterations at 608 to 1231 ms, in
 Pilot1 finished on c3-standard-4. All 24 games remained in evidence: at equal 30 s + 0.5 s, Adams 5/6 and Muller 4/6 games concluded, with 2/3 and 1/3 complete predecessor pairs. Median depth from post-opening ply 40 was 4 for each profile (960 and 1551 accepted turns, including retained prefixes). At 2x, Adams 4 wins and 2 unfinished, Muller 3 wins, 1 loss and 2 unfinished for the longer clock. Pilot1 is a calibration failure: incomplete first iterations and 768-ply step limits, no SPRT decision. VM upper bound $0.461 and verified zero remaining resources. The next run, strength-msh214-control2, uses the already frozen 60 s + 1.5 s control and twelve further odds pairs, plus export/uniqueness checks. Branch codex/msh-214-tenjiku-harness.
 
 The shared suite builder retained explicit partitions correctly but described every output as a hash split. Corrected the descriptive metadata for future runs; the frozen Tenjiku files state their three exact held-out families. Board records, partitions, winning actions and engine results are unchanged from the cloud proofs. All 56 strength-tool tests passed.
+
+Depth-cost cross-check frozen before its searches: for each of the three equal-clock pilot openings per profile, choose the first color game reaching 40 post-opening plies, truncate the native history after exactly 40, and request fixed depth 8 with a 250000-node cap on c3-standard-4. Use the shared signature command with the same frozen engine on both sides. A missed depth is an explicitly incomplete fixed-depth observation. The target decision also uses all late-game accepted turns and the clocked pair wall cost.
 <!-- SECTION:NOTES:END -->

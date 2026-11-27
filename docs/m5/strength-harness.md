@@ -78,7 +78,10 @@ the game to its selected rules profile.
   to detect tactical regressions. It has no headroom at that limit.
   A slower forced win can fail the one-ply criterion.
 
-For example, run the held-out Muller suite with a frozen executable:
+To regenerate the answers, pass a frozen tactical catalog to `suite`
+as the `--source` with `--proof one-ply`. The game recomputes all terminal
+winning actions from each record. Compare the position IDs, groups, splits
+and complete answer sets. To score the held-out Muller suite, run
 
 ```sh
 python3 -m tools.strength.cli probe --game tenjiku --profile muller --suite tools/strength/data/tenjiku-muller-tactics-v1.json --split held-out --engine ENGINE --depth 2 --nodes 500000 --out runs/TASK/muller-held-out.json

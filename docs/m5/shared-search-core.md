@@ -450,8 +450,10 @@ Private analysis has these limits:
 - No Chess self-check filter or Chu protected-Lion rule is added. Null-move
   pruning is disabled. An internal position with no move scores zero; a live
   game root without board actions remains an unscored error.
-- Material values are unchanged. Placement and tempo supplement them. Move
-  gain includes all direct and burn victims, promotion and mover suicide.
+- Evaluation adds placement and tempo to material. Search margins use the
+  100-point Pawn value. Captured pieces leave the board. Tactical ordering uses the full material gain and the value of the
+  moving piece. The gain includes all direct and burn victims, promotion
+  and mover suicide.
   The exchange filter follows complete local recaptures of the last mover,
   including off-target Demon burns. It permits either side to stop. This is
   a material heuristic, not proof against future checks or other sacrifices.
@@ -461,11 +463,17 @@ Private analysis has these limits:
 - Quiescence uses a four-ply bound and the shared signed tactical table depth.
   Before the horizon it searches quiet evasions when threatened. At the
   horizon a threatened position receives an uncertain zero estimate; other
-  positions use static evaluation. This does not establish a engine result.
+  positions use static evaluation. This does not establish an engine result.
   Longer exchanges, repeated threats and delayed burn effects can be missed.
   The initial eight-ply setting exhausted even 100,000 nodes before completing
   an iteration on an ordinary game position. The shorter bound controls that
-  cost; its playing effect is assessed separately through predecessor games.
+  cost. Both profiles omit the optional quiet-check stage. At normal search
+  nodes they use the shared table move, killers, history and continuation
+  scores to order quiet moves.
+- Both profiles use royal capture and bare-royal outcomes. A side may leave
+  its royal exposed. The shared df-pn solver requires a checked defender
+  with no legal reply and excludes positions decided by a rule score. Its
+  mate condition does not cover these wins.
 - Search generation retains one route for each exactly equal successor in
   each stage. Equality includes every cell's original identity and rights;
   turn and profile are fixed within a stage. Game root admission precedes
@@ -502,10 +510,8 @@ repetition departures.
 - All six games support time budgets and retained state through the internal
   protocol. Desktop choices remain in MSH-140 (Player Thinking Time); existing
   defaults retain their fixed node limits outside Chess.
-- MSH-190 (Shogi Selectivity Round) makes the margins game-scaled
-  (`MARGIN_UNIT`, 100 for Chess, Tori, Xiangqi, Chu and Tenjiku, so their
-  search is unchanged) and adds two opt-in core features: a bounded quiescence
-  check stage (`QUIESCENCE_CHECKS`, `generate_checks`) and a root mate search
-  (`MATE_SEARCH`). Only Shogi enables them so far; another game enables them
-  after its own game test. See Shogi selectivity round.
+- Search margins scale with the game's material unit. Standard Shogi and
+  Tori use 200. Chess, Xiangqi, Chu and Tenjiku use 100. Standard Shogi,
+  Tori and Xiangqi enable both the bounded quiescence check stage and the
+  shared root mate search.
 - The search is single-threaded.

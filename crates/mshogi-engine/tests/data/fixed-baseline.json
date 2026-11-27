@@ -67,7 +67,7 @@
         ]
       ]
     },
-    "nodes": 426,
+    "nodes": 340,
     "profile": "mshogi.tenjiku.adams1999-modern.v1",
     "score": 10
   },
@@ -86,7 +86,7 @@
         ]
       ]
     },
-    "nodes": 579,
+    "nodes": 474,
     "profile": "mshogi.tenjiku.muller-completed.v1",
     "score": 10
   }

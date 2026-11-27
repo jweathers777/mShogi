@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-27T16:53:00Z'
-updated_date: '2026-11-27T19:48:00Z'
+updated_date: '2026-11-27T19:55:00Z'
 labels:
   - tenjiku
   - evaluation
@@ -78,4 +78,6 @@ Production2 succeeded through normal terminal notification. Adams 3022 concluded
 Exact native split and quiet scan: 552061 distinct quiet positions from rules-concluded depth-one games. Adams 275602 (242624 train, 16778 validation, 16200 heldout); Muller 276459 (210522, 20468, 45469). Of 2225188 raw boards, the color-swapped identical trajectories accounted for 1112594 duplicates. Zero further within-partition or cross-partition duplicates; zero draws. Each source group stayed in one partition. Both profiles exceed the joint 500000-position gate together. The single joint 900-second optimizer will run after verified prepare cleanup and an independent SHA256 of every compressed input and full partition. Next: inspect heldout loss separately, then tactics and the paired clock only if qualified. Branch codex/msh-53.2-tenjiku-evaluation.
 
 Single fit 5308d41 after independent SHA256 reproduction of all 270 compressed chunks and six full partitions. K=.05, 3629 objective evaluations, 46 complete sweeps, validation patience after 63.19 s of optimization, 41/49 weights moved. Train MSE .180902 -> .166070, validation .174214 -> .157985, heldout .180668 -> .166768 on 61669 positions from 653 games. Adams heldout .174159 -> .165594 (16200 positions, 168 games); Muller .182986 -> .167187 (45469, 485). Cloud prepare and fit succeeded, no jobs/VMs/disks remain, cumulative completed VM upper bound $3.931705. Trial 6855d62 has exact compiled material, four placement weights and tempo verified against all 49 frozen names and values. Next: candidate correctness and tactical screens; run the clocked predecessor test only if both screens pass, otherwise revert this isolated trial. Branch codex/msh-53.2-tenjiku-evaluation.
+
+Trial 6855d62, binary SHA256 84fb903bb5c1320166fdae80407f43ff68a76be9f53571407fa11a4496eede83, matched frozen d6274cb on all 144 development and 72 heldout tactical positions on each profile. Verified identical suite and helper hashes and correct binaries. The first candidate scoring test found a literal -2400/-2500 written for the old Demon value. TEN-BURN-DYING independently specifies a lost moving Demon in each profile and one burned enemy pawn only in Adams; 92a5c75 computes the exact expected score from those victims and the playing material table. All 21 candidate search/score/compound/perft tests and three model tests then passed; two manual microbenchmarks ignored. No game rule or expectation changed. Build and tactical cleanup verified, cumulative VM upper bound $3.963539. Clock block strength-msh532-games-1 compares the trial with frozen binary cd4233cc0 on seeds 1..8 per profile under the published 60+1.5/1200-second paired method; maximum additional VM bound $0.807. Next: replay/hash all 16 pair reports and apply the profile gates. Branch codex/msh-53.2-tenjiku-evaluation.
 <!-- SECTION:NOTES:END -->

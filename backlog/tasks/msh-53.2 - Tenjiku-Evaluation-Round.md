@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-27T16:53:00Z'
-updated_date: '2026-11-27T18:07:00Z'
+updated_date: '2026-11-27T18:10:00Z'
 labels:
   - tenjiku
   - evaluation
@@ -68,4 +68,6 @@ First eight pairs of every production lane (128 per profile; 32 lanes total): Ad
 Added a symmetric --depth option to the existing fixed-work selfplay CLI so the production route remains reproducible from the repository. It sets the same depth for both participants and rejects clock/depth combinations. Both profiles passed native first-move calibration via the normal selfplay entry point with four random plies, depth 1 and 500000 nodes; the generated config showed those exact limits on both sides. All 58 strength driver tests passed. The generation worker remains frozen at its original equivalent depth settings. Branch codex/msh-53.2-tenjiku-evaluation; next: finish production and split, fit, and apply the existing gates.
 
 Production1: all eight worker receipts show complete; 3042 seed attempts, one opening ended during its four-ply continuation. Adams 2684 rules-concluded games and 242 unlabelled 768-ply stops (520854 raw rows); Muller 2944 concluded and 212 unlabelled ply stops (540252 rows). Total 1061106 raw, before board deduplication and quiet screening. The second eight pairs per lane yielded 10526/12302 quiet Adams/Muller, consistent with about 260000 quiet boards for this batch. The outer controller reached its cleanup reserve before receiving the terminal notification. Independent complete worker receipts and zero remaining job, VMs or disks were verified. To allow the second job to publish its terminal state within the original one-hour limit, stop starting pairs eight minutes before deadline instead of six; reserve seven minutes for export and cleanup when limiting the final pair wall. All search settings, split rules, seed order and native labels stay fixed. Next: compute the strict first-batch bound, then use only seeds 4197+ in batch two if needed. Final shared checks after the CLI change: formatting, Clippy, 1175 Rust tests passed with 10 ignored and 58 strength tests passed. Branch codex/msh-53.2-tenjiku-evaluation.
+
+Production1 verified VM upper bound $1.512388; cumulative completed VM bound $2.269257. First eight pairs on every lane plus exact paired-trajectory collapse gave an upper bound of 508425. Applying the frozen filter to the next eight pairs on every lane tightened it to 484227: use their actual quiet counts, then generously treat every remaining board as quiet after collapsing only byte-identical pair trajectories. This establishes the shortfall directly. Production2 submitted as corpus-msh532-production2, non-overlapping seeds starting 4197, same native engine, openings and search. Maximum additional VM cost $1.613. Reproduction scripts, bound evidence and both pinned worker images are recorded in GCS operator/. Next: verify production2, global opening split and dedup across both batches, exact quiet count and frozen fit. Branch codex/msh-53.2-tenjiku-evaluation.
 <!-- SECTION:NOTES:END -->

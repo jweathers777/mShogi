@@ -17,6 +17,11 @@ def key(fen, game='chess'):
     # (its fourth field is only the move counter), Xiangqi FEN board and side,
     # Tori compact diagram (board, both hands, side; MSH-204) as canonical JSON.
     if isinstance(fen, dict):
+        if game == 'tenjiku':
+            # Physical IDs distinguish game records, but exchanging IDs on
+            # otherwise identical pieces does not change an evaluation input.
+            fen = dict(fen, pieces=[[at, {k: v for k, v in piece.items() if k != 'id'}]
+                                    for at, piece in fen['pieces']])
         if game in ('chu','tenjiku'):
             fen = dict(fen, pieces=sorted(fen['pieces'], key=lambda p: json.dumps(p, sort_keys=True, separators=(',', ':'))))
         return json.dumps(fen, sort_keys=True, separators=(',', ':'))

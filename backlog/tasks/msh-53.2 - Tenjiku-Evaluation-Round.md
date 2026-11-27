@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-27T16:53:00Z'
-updated_date: '2026-11-27T16:56:00Z'
+updated_date: '2026-11-27T17:00:00Z'
 labels:
   - tenjiku
   - evaluation
@@ -47,4 +47,6 @@ For a qualifying full corpus: jointly fit once, require lower heldout MSE separa
 
 <!-- SECTION:NOTES:BEGIN -->
 Claimed on codex/msh-53.2-tenjiku-evaluation from b0ab5ac. The frozen predecessor is the accepted MSH-202 product at d6274cb. Next: freeze the sampling, fitting and qualification gates before looking at pilot outcomes.
+
+Pilot protocol f7870d4 is published. Clock pilot strength-msh532-clock (six separate opening pairs, two tactical probes) and fixed-2000-node pilot strength-msh532-fixed (six pairs) use frozen MSH-202 engine binaries and digest-pinned MSH-214 worker. Directories under gs://mshogi-experiments-216675633801/runs/msh-53.2/. Added an offline model for the shared fitter, compound SEE quiet filtering, a score check in the existing differential and undo suite, and deduplication independent of physical piece IDs. Product search is unchanged. Next: inspect exact game stops, export and check quiet yield before scaling, run checks and fit. Branch codex/msh-53.2-tenjiku-evaluation.
 <!-- SECTION:NOTES:END -->

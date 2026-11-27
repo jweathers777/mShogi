@@ -54,7 +54,7 @@ def main(argv=None):
     internal_match.options(sub.add_parser('selfplay', help='collect paired games with one frozen engine'), selfplay=True)
     workflow.options(sub)
     fit = sub.add_parser('texel', help='run the shared fitter for a game with an evaluation model')
-    fit.add_argument('--game', choices=['chess','shogi','xiangqi','tori','chu'], required=True)
+    fit.add_argument('--game', choices=['chess','shogi','xiangqi','tori','chu','tenjiku'], required=True)
     fit.add_argument('--examples', type=Path, default=Path('target/release/examples'))
     fit.add_argument('operation', choices=['fit','check','stats'])
     fit.add_argument('files', nargs='+')

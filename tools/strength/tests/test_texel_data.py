@@ -76,3 +76,14 @@ class PartitionTests(unittest.TestCase):
         reversed_diagram = dict(diagram, pieces=list(reversed(pieces)))
         self.assertEqual(key(diagram, 'chu'), key(reversed_diagram, 'chu'))
         self.assertNotEqual(key(diagram, 'chu'), key(dict(diagram, side='g'), 'chu'))
+
+    def test_tenjiku_identity_keeps_profile_and_rights_but_ignores_piece_ids(self):
+        piece = dict(id=17, side='sente', base='P', promoted=False, right='unseen')
+        def board(p, **fields):
+            return dict(dict(pieces=[[[2, 12], p]], profile='adams', side='sente',
+                             pending_bare=None), **fields)
+        original = key(board(piece), 'tenjiku')
+        self.assertEqual(original, key(board(dict(piece, id=22)), 'tenjiku'))
+        self.assertNotEqual(original, key(board(dict(piece, right='consumed')), 'tenjiku'))
+        self.assertNotEqual(original, key(board(piece, pending_bare='sente'), 'tenjiku'))
+        self.assertNotEqual(original, key(board(piece, profile='muller'), 'tenjiku'))

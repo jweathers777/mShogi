@@ -1,4 +1,5 @@
 //! Tenjiku adapter for the shared search core. Game owns actual play.
+pub mod eval;
 pub mod position;
 #[cfg(test)]
 mod position_tests;

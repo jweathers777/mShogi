@@ -87,6 +87,17 @@ fn state(p: &TenjikuPosition, n: &Position) {
                 .sum::<i32>()
         );
     }
+    let score: i32 = super::eval::features(p)
+        .into_iter()
+        .zip(super::eval::initial())
+        .map(|(feature, weight)| feature * weight)
+        .sum();
+    let sign = if p.side_to_move() == Side::Sente {
+        1
+    } else {
+        -1
+    };
+    assert_eq!(score, sign * p.evaluate());
     assert_eq!(p.hash(), p.hash_from_scratch());
 }
 fn compare(p: &mut TenjikuPosition, n: &LocalPosition, label: &str) {

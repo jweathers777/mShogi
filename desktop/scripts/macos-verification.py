@@ -14,26 +14,14 @@ import shutil
 import subprocess
 import tempfile
 
+from gui_support import SYNTHETIC_FIXTURE, validate_fixture
+
 ROOT = Path(__file__).resolve().parents[2]
 IDENTITIES = {
     "normal": ("mShogi.app", "org.mshogi.desktop"),
     "qa": ("mShogi Verification.app", "org.mshogi.desktop.verification.r6.shogipromotion"),
     "synthetic": ("mShogi Synthetic.app", "org.mshogi.desktop.verification.r6.synthetic"),
 }
-FIXTURES = frozenset("""standard shared-contract chu-standard chu-gote chu-contract chu-promoted chu-royals chu-captures chu-captured chu-promotion tori-standard tori-contract promotion claim current-claim
-concluded incomplete capacity shogi-standard shogi-gote shogi-failure shogi-capacity
-shogi-control-capacity shogi-hands shogi-promotion shogi-forced shogi-declaration
-shogi-concluded xiangqi-standard xiangqi-failure xiangqi-capacity
-xiangqi-control-capacity xiangqi-offer xiangqi-agreed xiangqi-resigned xiangqi-warning
-xiangqi-fourth xiangqi-count xiangqi-fast-proof""".split())
-# Whole-profile QA scenarios share the existing immutable QA launch identity.
-FIXTURES |= frozenset(f"tenjiku-{profile}-{scenario}"
-    for profile in ("adams", "muller")
-    for scenario in ("standard", "gote", "compound", "compound-played", "selected-root",
-                     "burn", "burned", "igui", "iguied", "promotion", "promoted", "declined",
-                     "hawk", "hawk-played", "promoted-hawk", "area", "area-played",
-                     "ranked-jump", "ranked-jump-played", "ranked-blocked",
-                     "incomplete", "ending-stopped", "all-faces", "engine-played", "analysis"))
 
 
 def directory():
@@ -53,9 +41,9 @@ def selector(kind):
 
 
 def validate(kind, fixture):
-    valid = fixture == "synthetic" if kind == "synthetic" else kind == "qa" and fixture in FIXTURES
-    if not valid or len(fixture.encode("utf-8")) + 1 > 128:
+    if kind not in ("qa", "synthetic"):
         raise ValueError("Unsupported fixture for this fixed QA identity")
+    validate_fixture(fixture, synthetic=kind == "synthetic")
 
 
 def select(kind, fixture):
@@ -125,7 +113,7 @@ def prepare(kind, gate=False):
             raise ValueError("Fixture selector exceeds its 128-byte bound")
         validate(kind, selected.decode("ascii").strip())
     else:
-        select(kind, "synthetic" if kind == "synthetic" else "standard")
+        select(kind, SYNTHETIC_FIXTURE if kind == "synthetic" else "standard")
     with tempfile.TemporaryDirectory(prefix=".prepare-", dir=destination.parent) as temporary:
         staged = Path(temporary) / destination.name
         shutil.copytree(source, staged, symlinks=True)

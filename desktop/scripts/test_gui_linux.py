@@ -1,13 +1,11 @@
 """Focused external-adapter simulation; no app or GUI assertions."""
-import importlib.util
 from pathlib import Path
 import threading
 from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock, patch
 
-spec=importlib.util.spec_from_file_location('gui_linux',Path(__file__).with_name('gui_linux.py'))
-module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+import gui_linux as module
 PICKER={'id':123,'pid':456,'title':'Save mShogi game'}
 
 class PickerFallbackTests(unittest.TestCase):

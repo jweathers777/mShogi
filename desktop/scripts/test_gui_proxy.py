@@ -7,7 +7,6 @@ The peer logs each request and connection, independently of the proxy/client.
 import argparse
 import http.client
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-import importlib.util
 import json
 from pathlib import Path
 import signal
@@ -20,9 +19,9 @@ import time
 import urllib.error
 import urllib.request
 
-spec = importlib.util.spec_from_file_location('gui_smoke', Path(__file__).with_name('gui-smoke.py'))
-gui = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(gui)
+from script_test_support import load_script
+
+gui = load_script("gui-smoke")
 
 
 class Peer(ThreadingHTTPServer):

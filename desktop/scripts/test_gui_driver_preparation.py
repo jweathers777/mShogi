@@ -1,11 +1,10 @@
 """Source and supply boundaries; no claim of a Linux GUI run."""
-import importlib.util
 from pathlib import Path
 import unittest
 
-spec = importlib.util.spec_from_file_location('prepare_driver', Path(__file__).with_name('prepare-linux-gui-driver.py'))
-prepare = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(prepare)
+from script_test_support import load_script
+
+prepare = load_script("prepare-linux-gui-driver")
 
 
 class PreparationTests(unittest.TestCase):

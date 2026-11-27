@@ -39,7 +39,7 @@ checked into the repository. With those tools available:
 curl --fail --location \
   https://raw.githubusercontent.com/notofonts/noto-cjk/9b0f1436e455d902de067a2501422e5dc71ad16b/Serif/OTF/Japanese/NotoSerifCJKjp-Regular.otf \
   --output /tmp/NotoSerifCJKjp-Regular.otf
-python3 desktop/src/assets/fonts/subset.py \
+python3 desktop/src/assets/fonts/subset.py shogi \
   /tmp/NotoSerifCJKjp-Regular.otf \
   desktop/src/assets/fonts/mshogi-pieces.woff2
 ```

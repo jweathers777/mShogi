@@ -166,7 +166,7 @@ or reliance on another game's font-family chain.
 Reproduce with Python 3.11.0, fontTools 4.47.2 and Brotli 1.1.0:
 
 ```sh
-PYTHONPATH=/path/to/brotli python3 desktop/src/assets/fonts/subset-tenjiku.py \
+PYTHONPATH=/path/to/brotli python3 desktop/src/assets/fonts/subset.py tenjiku \
   /path/to/NotoSerifCJKjp-Regular.otf \
   desktop/src/assets/fonts/mshogi-tenjiku-pieces.woff2
 ```
@@ -238,7 +238,7 @@ passed on the shell's Node 23.11.0; supported Node 24 evidence follows.
 
 - `npm --prefix desktop test -- src/product/TenjikuPiece.test.tsx src/product/TenjikuArtwork.test.tsx src/product/TenjikuBoard.test.tsx src/product/TenjikuRender.test.tsx`: **41 passed in four files** on Node 24.22.1 after rules fixture regeneration (earlier 39-test pass retained as prior evidence). Includes all thirty once-promoted identities and both all-faces diagrams: 67 original physical identities, 44 movement faces, 30 promotion marks and three surviving royal identities. The existing board test now expects mShogi and actual engine/analysis capabilities after functional engine integration.
 - `npm --prefix desktop run check`: **passed** on Node 24.22.1.
-- Two `subset-tenjiku.py` runs using the pinned source and temporary Brotli path, followed by `cmp`: **passed**, byte-identical output with the hash above.
+- Two `subset.py tenjiku` runs using the pinned source and temporary Brotli path, followed by `cmp`: **passed**, byte-identical output with the hash above.
 - Direct fontTools inspection: **passed**. All forty-four component labels match exactly the subset's fifty-two codepoints; every outline is nonempty, CFF family/PostScript identity is renamed, OFL metadata remains, and full 四天王 outline bounds at 32 units are `[8.872,34.376]`, `[37.272,65.624]`, `[67.016,93.960]` vertically within the tile.
 - Existing Shogi/Chu/Tori/Xiangqi WOFF2 files and `OFL.txt`: **unchanged** in Git.
 - Actual native window rendering, minimum-size comfort, all-platform visual verification and explicit approval: **not run by this component/asset assignment**. They remain part of the primary MSH-44 checkpoint and verification record.

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-27T06:35:00Z'
+updated_date: '2026-11-27T06:46:00Z'
 labels:
   - desktop
   - scripts
@@ -37,6 +37,16 @@ Make all six games' committed frontend and GUI fixtures reproducible with the fi
 - [ ] #5 desktop/scripts/fixtures/CHU.md and the Tenjiku notes still describe the generators correctly
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Consolidate the five font definitions and verify the bundled bytes from the pinned inputs.
+2. Share GUI journey helpers, fixture selection and native event records while preserving each game’s assertions and both platform transports.
+3. Reproduce the Chu generator failure, verify against the current engine and rules, and correct the assertion with documented evidence.
+4. Add one repeatable generation command for current frontend snapshots and desktop documents, run it twice, and verify the generated test inputs.
+5. Run the desktop and repository checks, obtain a fresh review and verify platform CI before integration.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
@@ -50,4 +60,6 @@ John approved consolidation on 2026-11-26: this task retains the full scope of M
 Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
 
 Handoff: codex/msh-266-desktop-scripts starts at cb89ef1. Next, inspect generations, desktop helper seams and CI before implementing.
+
+Checkpoint: consolidated script, fixture and font helpers are implemented on codex/msh-266-desktop-scripts. Local desktop Python tests passed (178). All five WOFF2 files match their pinned inputs byte for byte. Two current generator passes produced all 159 committed outputs with no byte changes. Current Chu release generation completed. Historical Chu failure reproduction, full integration checks, independent review and platform CI are next.
 <!-- SECTION:NOTES:END -->

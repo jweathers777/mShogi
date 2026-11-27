@@ -7,7 +7,7 @@ Adapters operate real file dialogs and native close/quit requests.
 import argparse
 import base64
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime, timezone
+from contextlib import contextmanager
 import hashlib
 import http.client
 import importlib
@@ -27,9 +27,39 @@ import urllib.error
 import urllib.request
 import zlib
 
+from gui_support import (CHESS_FIXTURES, SHOGI_FIXTURES, SYNTHETIC_FIXTURE,
+                         TENJIKU_PROFILES, XIANGQI_FIXTURES, event_record, stamp,
+                         validate_fixture)
 
-def stamp():
-    return datetime.now(timezone.utc).isoformat()
+GAME_LABELS = {
+    "chess": "Chess", "shogi": "Shogi", "xiangqi": "Xiangqi",
+    "tori": "Tori Shogi", "chu": "Chu Shogi", "tenjiku": "Tenjiku Shogi",
+}
+NEW_DIALOG = '[aria-label="New game"]'
+ENGINE_ACTIVE = '.shogi-analysis[data-phase="thinking"],.shogi-analysis[data-phase="analyzing"]'
+
+# Match the existing one-pixel tolerance. The large boards also have to fit
+# inside each scrolling/clipping ancestor.
+VISIBILITY = """
+    const visibleInViewport = (e, checkAncestors = false) => {
+        if (!e) return false;
+        const r = e.getBoundingClientRect();
+        const clip = {left: 0, top: 0, right: innerWidth, bottom: innerHeight};
+        for (let p = checkAncestors ? e.parentElement : null; p; p = p.parentElement) {
+            const style = getComputedStyle(p), bounds = p.getBoundingClientRect();
+            if (/^(auto|scroll|hidden|clip)$/.test(style.overflowX)) {
+                clip.left = Math.max(clip.left, bounds.left);
+                clip.right = Math.min(clip.right, bounds.right);
+            }
+            if (/^(auto|scroll|hidden|clip)$/.test(style.overflowY)) {
+                clip.top = Math.max(clip.top, bounds.top);
+                clip.bottom = Math.min(clip.bottom, bounds.bottom);
+            }
+        }
+        return r.width > 0 && r.height > 0 && r.left >= clip.left - 1
+            && r.top >= clip.top - 1 && r.right <= clip.right + 1 && r.bottom <= clip.bottom + 1;
+    };
+"""
 
 
 def digest(path):
@@ -163,13 +193,13 @@ def xiangqi_retained_state(diagnostics):
 
 def selected_gui_phases(choice):
     """Keep independent process journeys explicit and individually runnable."""
-    chess = ["standard", "promotion", "claim", "current-claim", "concluded", "capacity", "synthetic", "pending-chess", "pending-shogi", "pending-xiangqi", "pending-tori", "tori-recovery", "pending-chu", "chu-recovery"]
-    shogi = ["shogi-hands", "shogi-promotion", "shogi-forced", "shogi-declaration",
-             "shogi-concluded", "shogi-capacity"]
-    xiangqi = ["xiangqi-warning", "xiangqi-fourth", "xiangqi-count", "xiangqi-offer", "xiangqi-agreed", "xiangqi-fast-proof", "xiangqi-resigned", "xiangqi-capacity", "xiangqi-failure"]
+    chess = [*CHESS_FIXTURES, SYNTHETIC_FIXTURE, "pending-chess", "pending-shogi",
+             "pending-xiangqi", "pending-tori", "tori-recovery", "pending-chu", "chu-recovery"]
+    shogi = list(SHOGI_FIXTURES)
+    xiangqi = list(XIANGQI_FIXTURES)
     normal = [None, "normal-shogi", "normal-shogi-reopened", "normal-xiangqi", "normal-tori", "normal-tori-rules", "normal-chu", "normal-chu-rules"]
-    tenjiku_normal = [f'normal-tenjiku-{profile}{suffix}' for profile in ('adams','muller') for suffix in ('','-rules')]
-    tenjiku_verification = [f'{kind}-tenjiku-{profile}' for profile in ('adams','muller') for kind in ('pending','recovery')]
+    tenjiku_normal = [f'normal-tenjiku-{profile}{suffix}' for profile in TENJIKU_PROFILES for suffix in ('','-rules')]
+    tenjiku_verification = [f'{kind}-tenjiku-{profile}' for profile in TENJIKU_PROFILES for kind in ('pending','recovery')]
     integration_normal = ['normal-cross-game']
     integration_qa = ['pending-cross-game']
     return {"normal": [*normal,*tenjiku_normal,*integration_normal], "cross-game": [*integration_normal,*integration_qa], "normal-shogi": normal[1:3],
@@ -767,7 +797,7 @@ class Journey:
         self.shell_layouts = {}
 
     def record(self, operation, observation):
-        item = {"at_utc": stamp(), "operation": operation, "observation": observation}
+        item = event_record(operation, observation)
         self.phase_report["events"].append(item)
         print(json.dumps(item), flush=True)
 
@@ -802,6 +832,8 @@ class Journey:
         }, indent=2), encoding="utf-8")
 
     def start(self, fixture=None, product=None, gated=False, phase_name=None):
+        if fixture is not None:
+            validate_fixture(fixture, synthetic=fixture == SYNTHETIC_FIXTURE)
         host = self.args.normal_host if fixture is None else self.args.verification_host
         engine = self.args.normal_engine if fixture is None else self.args.verification_engine
         self.phase = ("normal" if product is None else f"normal-{product}") if fixture is None else f"verification-{fixture}"
@@ -856,7 +888,7 @@ class Journey:
         self.web = Webview(endpoint, host, self.record)
         self.phase_report["capabilities"] = self.web.capabilities
         self.phase_report["native_window"] = self.platform_ui.attach(host, engine)
-        wait(lambda: self.web.has(".synthetic-inspector" if fixture == "synthetic" else ".document-card")
+        wait(lambda: self.web.has(".synthetic-inspector" if fixture == SYNTHETIC_FIXTURE else ".document-card")
              or (fixture is not None and fixture.startswith("shogi-") and self.web.has(".shogi-application")),
              "actual application frontend ready")
         self.record("Launch actual packaged application", self.phase_report["native_window"])
@@ -1023,15 +1055,14 @@ class Journey:
     def shogi_board_fits(self, tori=False):
         wait(lambda: self.web.read("[...document.fonts].some(f=>f.family.replaceAll('\"','').replaceAll(\"'\",'')===FONT && f.status==='loaded')".replace("FONT", json.dumps("mShogi Tori Pieces" if tori else "mShogi Pieces"))),
              "bundled Japanese piece font loaded in actual platform webview")
-        geometry = self.web.read("""(() => {
+        geometry = self.web.read("""(() => {""" + VISIBILITY + """
+            const visible = e => visibleInViewport(e);
             const board = document.querySelector('.shogi-board');
             const squares = [...document.querySelectorAll('.shogi-square')];
             const players = [...document.querySelectorAll('.shogi-player')];
             const essential = [...document.querySelectorAll('.shogi-header button, .shogi-status-line')];
             const rect = e => {const r=e.getBoundingClientRect(); return {
                 left:r.left, top:r.top, right:r.right, bottom:r.bottom, width:r.width, height:r.height};};
-            const visible = e => {const r=e.getBoundingClientRect();
-                return r.width>0 && r.height>0 && r.left>=-1 && r.top>=-1 && r.right<=innerWidth+1 && r.bottom<=innerHeight+1;};
             return {viewport:{width:innerWidth,height:innerHeight}, board:board ? rect(board):null,
                 squares:squares.length, allSquaresVisible:squares.length===EXPECTED && squares.every(visible),
                 players:players.map(rect), bothPlayerAreasVisible:players.length===2 && players.every(visible),
@@ -1141,21 +1172,54 @@ class Journey:
         assert not w.has('[data-session-diagnostics]'),'diagnostics absent outside About'
         self.record('Keyboard About / session diagnostics / font license / Escape / restored focus',{'game':game,'summaries':summaries,'profile':snapshot['profile'],'token':snapshot['token']})
 
+    def open_new_game(self):
+        self.web.button('New game')
+        wait(lambda: self.web.has(NEW_DIALOG), 'ordinary New Game chooser')
+        assert not self.web.has('.document-guard'), 'New Game must admit without an unsaved replacement dialog'
+
+    def commit_new_game(self, game):
+        self.web.click('[data-start-game]')
+        wait(lambda: self.web.has(f'.shell-{game}') and not self.web.has(NEW_DIALOG),
+             f"normal product installs {GAME_LABELS[game]} session")
+
+    def select_game_option(self, game):
+        self.web.click('[data-game-select]')
+        self.web.key('\ue011')  # Home
+        for _ in range(tuple(GAME_LABELS).index(game)):
+            self.web.key('\ue015')  # ArrowDown
+        self.web.key('\ue007')
+        wait(lambda: self.web.read("document.querySelector('[data-game-select]').value") == game,
+             f"{GAME_LABELS[game]} option selected")
+
+    def assert_game_options(self):
+        options = self.web.read("[...document.querySelector('[data-game-select]').options].map(e=>({value:e.value,label:e.textContent,disabled:e.disabled}))")
+        assert options == [{'value': value, 'label': label, 'disabled': False}
+                           for value, label in GAME_LABELS.items()], options
+        return options
+
+    def select_tenjiku_profile(self, profile):
+        self.web.click('[data-profile-select]')
+        self.web.key('\ue011')
+        if profile == 'muller':
+            self.web.key('\ue015')
+        self.web.key('\ue007')
+        wait(lambda: self.web.read("document.querySelector('[data-profile-select]').value") == self.tenjiku_profile_id(profile),
+             'explicit immutable Tenjiku profile')
+
+    def start_new_game(self, game, side):
+        self.open_new_game()
+        self.choose_game(game)
+        self.web.click(f'[data-side="{side}"]')
+        self.commit_new_game(game)
+
     def choose_game(self, game):
         """Actual select/radio keys, at normal and minimum dimensions."""
         w=self.web
-        expected=['chess','shogi','xiangqi','tori','chu','tenjiku']
-        observed=w.read("[...document.querySelector('[data-game-select]').options].map(e=>({value:e.value,label:e.textContent,disabled:e.disabled}))")
-        assert observed==[{'value':k,'label':label,'disabled':False} for k,label in zip(expected,['Chess','Shogi','Xiangqi','Tori Shogi','Chu Shogi','Tenjiku Shogi'])],observed
-        def select(kind):
-            w.click('[data-game-select]');w.key('\ue011')  # Home
-            for _ in range(expected.index(kind)):w.key('\ue015')  # ArrowDown
-            w.key('\ue007')
-            wait(lambda:w.read("document.querySelector('[data-game-select]').value")==kind,'game dropdown selection')
+        observed = self.assert_game_options()
         for width,height in ((1180,820),(760,650)):
             self.viewport(width,height)
-            for kind in expected:
-                select(kind)
+            for kind in GAME_LABELS:
+                self.select_game_option(kind)
                 sides={'chess':['White','Black','Random'],'shogi':['Sente','Gote','Random'],'xiangqi':['Red','Black','Random'],'tori':['Sente','Gote','Random'],'chu':['Sente','Gote','Random'],'tenjiku':['Sente','Gote','Random']}[kind]
                 buttons=w.read("[...document.querySelectorAll('.side-choices button')].map(e=>({label:e.textContent,role:e.getAttribute('role'),selected:e.getAttribute('aria-checked'),chosen:e.classList.contains('chosen')}))")
                 assert [e['label'] for e in buttons]==sides and all(e['role']=='radio' for e in buttons),buttons
@@ -1170,15 +1234,15 @@ class Journey:
                 self.capture(f'chooser-{kind}-{width}')
                 self.record('Supported-only game dropdown preserves side radio keys and styling',{'game':kind,'options':observed,'sides':buttons,'viewport':[width,height]})
         self.viewport(1180,820)
-        select(game)
+        self.select_game_option(game)
 
     def shared_shell(self, game):
-        layout = self.web.read("""(() => {
+        layout = self.web.read("""(() => {""" + VISIBILITY + """
+            const visible = e => visibleInViewport(e);
             const root=document.querySelector('.game-shell');
             const rectElement=e=>{if(!e)return null;const r=e.getBoundingClientRect();return {left:r.left,top:r.top,width:r.width,height:r.height};};
             const rect=s=>rectElement(document.querySelector(s));
             const theme=s=>{const e=document.querySelector(s);if(!e)return null;const c=getComputedStyle(e);return Object.fromEntries(['backgroundColor','color','borderTopColor','borderTopWidth','borderRadius','fontSize','fontFamily','colorScheme'].map(k=>[k,c[k]]));};
-            const visible=e=>{if(!e)return false;const r=e.getBoundingClientRect();return r.width>0&&r.height>0&&r.left>=-1&&r.top>=-1&&r.right<=innerWidth+1&&r.bottom<=innerHeight+1;};
             const squares=[...document.querySelectorAll('.square,.shogi-square,.xiangqi-point')];
             return {game:root?.classList.contains('shell-tenjiku')?'tenjiku':root?.classList.contains('shell-chu')?'chu':root?.classList.contains('shell-tori')?'tori':root?.classList.contains('shell-xiangqi')?'xiangqi':root?.classList.contains('shell-shogi')?'shogi':'chess',viewport:{width:innerWidth,height:innerHeight},
                 themeIdentity:root?.dataset.theme,
@@ -1421,14 +1485,20 @@ class Journey:
     def shogi_square(self, square):
         return f'.shogi-square[data-square="{square}"]'
 
-    def shogi_events(self, count, selected=None, historical=False):
-        wait(lambda: self.web.read("document.querySelector('.shogi-application')?.dataset.liveEvents") == str(count),
-             f"shogi history has {count} events")
+    def game_events(self, game, count, selected=None, historical=False):
+        expected = {"live": str(count), "historical": str(historical).lower()}
         if selected is not None:
-            wait(lambda: self.web.read("document.querySelector('.shogi-application')?.dataset.currentEvent") == str(selected),
-                 f"shogi selected event {selected}")
-        wait(lambda: self.web.read("document.querySelector('.shogi-application')?.dataset.historical") == str(historical).lower(),
-             f"shogi historical viewing {historical}")
+            expected["selected"] = str(selected)
+
+        selector = json.dumps(f'.game-shell.shell-{game}')
+
+        def observed():
+            actual = self.web.read(f"""(() => {{const e=document.querySelector({selector});
+                return e ? {{live:e.dataset.liveEvents,selected:e.dataset.currentEvent,
+                    historical:e.dataset.historical}}:null;}})()""")
+            return actual if actual and all(actual[key] == value for key, value in expected.items()) else None
+
+        return wait(observed, f"{GAME_LABELS[game]} event/history boundary {expected}")
 
     def save_game(self, path, game):
         archive = self.save_current(path)
@@ -1444,16 +1514,28 @@ class Journey:
             assert len(self.session_diagnostics()['observations']) == observation_count
         return self.save_game(path, 'shogi')
 
-    def shogi_analysis(self, depth=1, nodes=1000):
-        self.shogi_analysis_tab()
+    def prepare_analysis(self, game, depth, nodes):
+        start = self.analysis_controls(game)
         self.web.set('.shogi-analysis input[name="depth"]', depth)
         self.web.set('.shogi-analysis input[name="nodes"]', nodes)
-        self.web.click('[data-analysis-start="shogi"]')
+        return start
 
-    def shogi_analysis_tab(self):
-        if not self.web.has('[data-analysis-start="shogi"]'):
+    def start_analysis(self, game, depth, nodes):
+        self.web.click(self.prepare_analysis(game, depth, nodes))
+
+    def complete_piece_analysis(self, game, depth, nodes):
+        self.start_analysis(game, depth, nodes)
+        wait(lambda: 'Analysis result available' in self.web.text('.shogi-analysis-state'),
+             f"real {GAME_LABELS[game]} read-only result", 45)
+        assert 'No move was played.' in self.web.text('.shogi-analysis')
+        assert 'perspective' in self.web.text('.analysis-perspective')
+
+    def analysis_controls(self, game):
+        start = f'[data-analysis-start="{game}"]'
+        if not self.web.has(start):
             self.web.button('Analyze position')
-        wait(lambda:self.web.has('[data-analysis-start="shogi"]'),'Shogi analysis tab exposes real bounded analysis controls')
+        wait(lambda: self.web.has(start), f"{GAME_LABELS[game]} bounded analysis controls")
+        return start
 
     def shogi_complete_analysis(self):
         wait(lambda: "Analysis result available" in self.web.text(".shogi-analysis-state"), "actual read-only shogi analysis result", 45)
@@ -1541,25 +1623,16 @@ class Journey:
     def cross_game_new(self, game, profile=None, replacing_work=False):
         """Focused ordinary New input; no all-selector sweep in a pending window."""
         w=self.web
-        w.button('New game')
-        wait(lambda:w.has('.new-game-dialog'),'cross-game New chooser')
-        w.click('[data-game-select]');w.key('\ue011')
-        for _ in range(['chess','shogi','xiangqi','tori','chu','tenjiku'].index(game)):
-            w.key('\ue015')
-        w.key('\ue007')
-        wait(lambda:w.read("document.querySelector('[data-game-select]').value")==game,'focused game selection')
-        if game=='tenjiku':
-            wait(lambda:w.has('[data-profile-select]'),'whole Tenjiku profile picker')
-            w.click('[data-profile-select]');w.key('\ue011')
-            if profile=='muller':w.key('\ue015')
-            w.key('\ue007')
-            wait(lambda:w.read("document.querySelector('[data-profile-select]').value")==self.tenjiku_profile_id(profile),'explicit immutable profile')
+        self.open_new_game()
+        self.select_game_option(game)
+        if game == 'tenjiku':
+            wait(lambda: w.has('[data-profile-select]'), 'whole Tenjiku profile picker')
+            self.select_tenjiku_profile(profile)
         w.click('[data-side="'+{'chess':'white','xiangqi':'red'}.get(game,'sente')+'"]')
         if replacing_work:
-            assert w.has('.shogi-analysis[data-phase="thinking"],.shogi-analysis[data-phase="analyzing"]'), 'source work must still be active immediately before New commits'
+            assert w.has(ENGINE_ACTIVE), 'source work must still be active immediately before New commits'
             self.record('Replace genuinely active work through ordinary New',{'target_game':game,'target_profile':profile})
-        w.click('[data-start-game]')
-        wait(lambda:not w.has('.new-game-dialog') and w.has('.shell-'+game),'new cross-game document installed')
+        self.commit_new_game(game)
         wait(lambda:w.has('.moves-root:not(:disabled)'),'new root controls available')
         assert not w.has('.square.target,.shogi-square.target,.inspection-marker,.promotion-dialog,.compound-dialog'), 'old board input cannot cross documents'
         assert w.read("document.querySelector('.game-shell').dataset.historical")=='false'
@@ -1796,13 +1869,7 @@ class Journey:
 
     def new_shogi(self, side):
         w = self.web
-        w.button("New game")
-        wait(lambda: w.has('[aria-label="New game"]'), "explicit game selection dialog")
-        assert not w.has('.document-guard'), "intentional New Game must not add an unsaved replacement dialog"
-        self.choose_game('shogi')
-        w.click(f'[data-side="{side}"]')
-        w.click("[data-start-game]")
-        wait(lambda: w.has(".shogi-application") and not w.has('[aria-label="New game"]'), "new shogi product game")
+        self.start_new_game('shogi', side)
         wait(lambda: w.read("document.querySelector('.shogi-application')?.dataset.orientation") == side,
              f"human {side} at bottom")
         self.record("Select Shogi and human side in normal New Game", {"side": side, "board_name":
@@ -1812,8 +1879,9 @@ class Journey:
         return f'.xiangqi-point[data-intersection="{point}"]'
 
     def xiangqi_board_fits(self):
-        geometry = self.web.read("""(() => {const points=[...document.querySelectorAll('.xiangqi-point')];
-            const visible=e=>{const r=e.getBoundingClientRect();return r.width>0&&r.height>0&&r.left>=-1&&r.top>=-1&&r.right<=innerWidth+1&&r.bottom<=innerHeight+1;};
+        geometry = self.web.read("""(() => {""" + VISIBILITY + """
+            const visible = e => visibleInViewport(e);
+            const points=[...document.querySelectorAll('.xiangqi-point')];
             return {viewport:{width:innerWidth,height:innerHeight},points:points.length,allVisible:points.every(visible),
                 palaceSides:[...new Set([...document.querySelectorAll('[data-palace]')].map(e=>e.dataset.palace))],
                 river:document.querySelector('.xiangqi-river')?.textContent};})()""")
@@ -1890,25 +1958,6 @@ class Journey:
         self.record('Read completed retry once after visible engine idle and one move', observed)
         return observed
 
-    def xiangqi_events(self, count, selected=None, historical=False):
-        expected = {"live": str(count), "historical": str(historical).lower()}
-        if selected is not None:
-            expected["selected"] = str(selected)
-        def observed():
-            actual = self.web.read("""(() => {const e=document.querySelector('.shell-xiangqi');
-                return e ? {live:e.dataset.liveEvents,selected:e.dataset.currentEvent,
-                    historical:e.dataset.historical}:null;})()""")
-            return actual if actual and all(actual[key] == value for key, value in expected.items()) else None
-        return wait(observed, f"Xiangqi event/history boundary {expected}")
-
-    def xiangqi_analysis(self, depth=1, nodes=128):
-        if not self.web.has('[data-analysis-start="xiangqi"]'):
-            self.web.button("Analyze position")
-        wait(lambda: self.web.has('[data-analysis-start="xiangqi"]'), "Xiangqi analysis controls")
-        self.web.set('.shogi-analysis input[name="depth"]', depth)
-        self.web.set('.shogi-analysis input[name="nodes"]', nodes)
-        self.web.click('[data-analysis-start="xiangqi"]')
-
     def xiangqi_complete_analysis(self, event_count, depth=1, nodes=128):
         def completed():
             snapshot = self.xiangqi_diagnostics()
@@ -1938,13 +1987,9 @@ class Journey:
         """
         self.start(product="xiangqi")
         w = self.web
-        w.button("New game")
-        wait(lambda: w.has('[aria-label="New game"]'), "normal game selection dialog")
-        assert not w.has('.document-guard'), "intentional New Game must not add an unsaved replacement dialog"
-        self.choose_game('xiangqi'); w.click('[data-side="red"]'); w.click('[data-start-game]')
-        wait(lambda: w.has(".shell-xiangqi") and not w.has('[aria-label="New game"]'), "Xiangqi/Red document")
+        self.start_new_game('xiangqi', 'red')
         self.viewport(1180, 820)
-        self.xiangqi_events(0, selected=0)
+        self.game_events('xiangqi', 0, selected=0)
         assert "Red at bottom" in w.read("document.querySelector('.xiangqi-board').getAttribute('aria-label')")
         self.xiangqi_board_fits()
         self.shared_shell("xiangqi")
@@ -1962,11 +2007,11 @@ class Journey:
         w.click(source)
         assert w.read(f"document.querySelector({json.dumps(target)})?.getAttribute('aria-label').includes('legal destination')")
         w.key("\ue00c")
-        self.xiangqi_events(0, selected=0)
+        self.game_events('xiangqi', 0, selected=0)
         assert w.read("document.activeElement?.dataset.intersection") == "a3"
         for key in ("\ue007", "\ue013", "\ue007"):
             w.key(key)
-        self.xiangqi_events(2, selected=2)
+        self.game_events('xiangqi', 2, selected=2)
         wait(lambda: w.has('[data-search-purpose="engine_turn"]'), "actual bundled Xiangqi engine observation")
         played = self.xiangqi_diagnostics()
         assert played["context"]["payload"]["commands"][0]["command"]["action"] == "a3a4", played
@@ -1976,20 +2021,20 @@ class Journey:
         self.moves_navigation("xiangqi", "a3a4", "P9+1", 1, "a3", "a4")
 
         w.focused_button("Take back")
-        self.xiangqi_events(0, selected=0)
+        self.game_events('xiangqi', 0, selected=0)
         assert self.completed_cue() is None, "Xiangqi Take back to root retires cue"
         wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == "true", "Xiangqi Take back is stopped")
         self.capture("takeback-stopped")
         w.button("Resume play")
         wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == "false", "explicit Xiangqi Resume after Take back")
         w.click(source); w.click(target)
-        self.xiangqi_events(2, selected=2)
+        self.game_events('xiangqi', 2, selected=2)
         self.record("Shared Take back / stopped Xiangqi decision / explicit Resume / replay", self.xiangqi_diagnostics())
 
         # The measured Xiangqi maximum is deliberately small. Completion may win
         # the real input race; only report cancellation when game state proves
         # it. Chess/Shogi phases and tests establish forced cancellation.
-        self.xiangqi_analysis(depth=3, nodes=512)
+        self.start_analysis('xiangqi', depth=3, nodes=512)
         wait(lambda: w.has('.shogi-analysis[data-phase="analyzing"]')
              or "Analysis result available" in w.text('.shogi-analysis-state'), "Xiangqi analysis accepts request")
         cancel_dispatched = False
@@ -2007,14 +2052,14 @@ class Journey:
                 self.record("Xiangqi completion removed cancellation control before input", {"driver_error": str(error), "visible_status": w.text('.shogi-analysis-state')})
         wait(lambda: "Search stopped" in w.text('.shogi-analysis-state')
              or "Analysis result available" in w.text('.shogi-analysis-state'), "bounded Xiangqi analysis settles")
-        self.xiangqi_events(2, selected=2)
+        self.game_events('xiangqi', 2, selected=2)
         self.record("Actual bounded Xiangqi analysis completion/cancellation observation", {
             "cancel_dispatched": cancel_dispatched, "visible_status": w.text('.shogi-analysis-state'),
             "snapshot": self.xiangqi_diagnostics(),
             "qualification": "Completion may beat cancellation at the depth 3/512-visit limit; no cancellation is inferred."})
-        self.xiangqi_analysis()
+        self.start_analysis('xiangqi', 1, 128)
         self.xiangqi_complete_analysis(2)
-        self.xiangqi_events(2, selected=2)
+        self.game_events('xiangqi', 2, selected=2)
         self.capture("analysis")
         path = self.args.output / "normal-xiangqi-complete.mshogi"
         archive = self.xiangqi_save(path)
@@ -2023,7 +2068,7 @@ class Journey:
         old = self.xiangqi_diagnostics()
         self.file("open", path)
         wait(lambda: (now := self.xiangqi_diagnostics()) and now["token"]["document"] > old["token"]["document"], "Xiangqi Open installs fresh document identity")
-        self.xiangqi_events(2, selected=2)
+        self.game_events('xiangqi', 2, selected=2)
         assert w.has(".play-paused") and w.read("document.querySelector('.shell-xiangqi').dataset.paused") == "true"
         assert not w.has('.shogi-analysis[data-phase="analyzing"]')
         reopened = self.xiangqi_diagnostics()
@@ -2033,13 +2078,13 @@ class Journey:
         self.capture("reopened-stopped")
 
         w.click('.shogi-history [data-event="1"]')
-        self.xiangqi_events(2, selected=1, historical=True)
+        self.game_events('xiangqi', 2, selected=1, historical=True)
         selected = self.xiangqi_diagnostics()
         assert len(selected["context"]["payload"]["commands"]) == 1, selected
         assert selected["context"]["payload"]["commands"][0]["command"]["action"] == "a3a4", selected
-        self.xiangqi_analysis()
+        self.start_analysis('xiangqi', 1, 128)
         self.xiangqi_complete_analysis(1)
-        self.xiangqi_events(2, selected=1, historical=True)
+        self.game_events('xiangqi', 2, selected=1, historical=True)
         history_path = self.args.output / "normal-xiangqi-history.mshogi"
         historical = self.xiangqi_save(history_path)["payload"]
         context = self.session_diagnostics()["observations"][-1]["observation"]["context"]
@@ -2050,14 +2095,14 @@ class Journey:
         old = self.xiangqi_diagnostics()
         self.file("open", history_path)
         wait(lambda: (now := self.xiangqi_diagnostics()) and now["token"]["document"] > old["token"]["document"], "historical Xiangqi Open establishes fresh authority")
-        self.xiangqi_events(2, selected=2)
+        self.game_events('xiangqi', 2, selected=2)
         assert self.xiangqi_diagnostics()["context"]["payload"] == historical["record"]
         self.capture("reopened-live")
-        self.xiangqi_events(2, selected=2)
+        self.game_events('xiangqi', 2, selected=2)
         assert w.has(".play-paused")
         w.button("Resume play")
         wait(lambda: w.read("document.querySelector('.shell-xiangqi').dataset.paused") == "false", "explicit Xiangqi Resume")
-        self.xiangqi_events(2, selected=2)
+        self.game_events('xiangqi', 2, selected=2)
         self.capture("return-live-resumed")
         w.button("Save")
         self.wait_saved(history_path)
@@ -2080,7 +2125,7 @@ class Journey:
         w.button("Cancel")
         wait(lambda: not w.has(".document-guard"), "cancel Xiangqi close")
         assert self.platform_ui.alive()
-        self.xiangqi_events(2, selected=2)
+        self.game_events('xiangqi', 2, selected=2)
         w.button('Resume play')
         wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == 'false', 'explicit Xiangqi Resume after cancelled close')
         self.direct_resign('xiangqi')
@@ -2093,7 +2138,7 @@ class Journey:
         self.new_shogi("sente")
         self.viewport(1180, 820); self.shogi_board_fits()
         self.shared_shell('shogi')
-        self.shogi_events(0)
+        self.game_events('shogi', 0)
         self.inspect_piece('shogi','7c','7d','Gote pawn')
         self.capture("initial-sente")
         self.viewport(760, 650); self.shogi_board_fits()
@@ -2102,52 +2147,52 @@ class Journey:
         self.inspect_piece('shogi','7c','7d','Gote pawn')
         self.viewport(1180, 820)
         self.new_shogi("gote")
-        self.shogi_events(1)
+        self.game_events('shogi', 1)
         self.shogi_board_fits()
         self.inspect_piece('shogi','5g','5f','Sente pawn')
         assert "Gote at bottom" in w.read("document.querySelector('.shogi-board').getAttribute('aria-label')")
         self.capture("initial-gote")
         self.new_shogi("sente")
-        self.shogi_events(0)
+        self.game_events('shogi', 0)
         self.intentional_replacement_failures('shogi')
         w.click(self.shogi_square("7g"))
         assert w.read(f"document.querySelector({json.dumps(self.shogi_square('7f'))}).classList.contains('target')")
         w.key("\ue00c")  # Escape retains board history and restores origin focus.
-        self.shogi_events(0)
+        self.game_events('shogi', 0)
         assert w.read("document.activeElement?.dataset.square") == "7g"
         for key in ("\ue007", "\ue013", "\ue007"):  # Enter, ArrowUp, Enter.
             w.key(key)
-        self.shogi_events(2)
+        self.game_events('shogi', 2)
         wait(lambda: w.has('[data-search-purpose="engine_turn"]'), "actual bundled shogi engine observation")
         self.capture("play")
         self.record("Pointer selection / Escape / keyboard 7g7f / actual engine reply", w.text(".shogi-history"))
         self.moves_navigation("shogi", "7g7f", "７６歩", 1, "7g", "7f")
 
         w.focused_button("Take back")
-        self.shogi_events(0)
+        self.game_events('shogi', 0)
         assert self.completed_cue() is None, "Shogi Take back to root retires cue"
         wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == "true", "Shogi Take back is stopped")
         self.capture("takeback-stopped")
         w.button("Resume play")
         wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == "false", "explicit Shogi Resume after Take back")
         w.click(self.shogi_square("7g")); w.click(self.shogi_square("7f"))
-        self.shogi_events(2)
+        self.game_events('shogi', 2)
         self.record("Shared Take back / stopped Shogi decision / explicit Resume / replay", self.inspection_state())
 
-        self.shogi_analysis(depth=4, nodes=20_000)
+        self.start_analysis('shogi', depth=4, nodes=20_000)
         wait(lambda: w.has('.shogi-analysis[data-phase="analyzing"]'), "actual active shogi analysis")
         self.capture("active-analysis")
         w.button("Cancel analysis")
         wait(lambda: "Search stopped" in w.text(".shogi-analysis-state"), "cancel active shogi analysis")
-        self.shogi_events(2)
-        self.shogi_analysis(depth=4, nodes=20_000)
+        self.game_events('shogi', 2)
+        self.start_analysis('shogi', depth=4, nodes=20_000)
         wait(lambda: w.has('.shogi-analysis[data-phase="analyzing"]'), "actual shogi analysis before replacement")
         w.set('.shogi-analysis input[name="depth"]', 1)
         w.set('.shogi-analysis input[name="nodes"]', 1000)
         assert w.has('.shogi-analysis[data-phase="analyzing"]'), "original work completed before replacement input; no active-replacement evidence"
         w.click('[data-analysis-start="shogi"]')
         self.shogi_complete_analysis()
-        self.shogi_events(2)
+        self.game_events('shogi', 2)
         self.capture("read-only-analysis")
         self.record("Cancel and replace actual bounded read-only shogi analysis", w.text(".shogi-analysis"))
         self.shogi_save(self.args.output / "normal-shogi-complete.mshogi")
@@ -2158,7 +2203,7 @@ class Journey:
         w.button("Cancel")
         wait(lambda: not w.has(".document-guard"), "cancel shogi window close")
         assert self.platform_ui.alive()
-        self.shogi_events(2)
+        self.game_events('shogi', 2)
         w.button('Resume play')
         wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == 'false', 'explicit Shogi Resume after cancelled close')
         self.direct_resign('shogi')
@@ -2170,19 +2215,19 @@ class Journey:
         self.file("open", self.args.output / "normal-shogi-complete.mshogi")
         wait(lambda: w.has(".shogi-application"), "fresh normal Chess launch dispatches shogi archive")
         self.viewport(1180, 820); self.shogi_board_fits()
-        self.shogi_events(2)
+        self.game_events('shogi', 2)
         assert w.read("document.querySelector('.shogi-application').dataset.paused") == "true"
         assert w.has(".play-paused") and not w.has('.shogi-analysis[data-phase="analyzing"]')
-        self.shogi_analysis_tab()
+        self.analysis_controls('shogi')
         assert not self.session_diagnostics()["observations"]
         self.capture("reopened-stopped")
         w.click('.shogi-history [data-event="1"]')
-        self.shogi_events(2, selected=1, historical=True)
+        self.game_events('shogi', 2, selected=1, historical=True)
         assert "live game is unchanged" in w.text(".shell-history-notice")
         self.inspect_piece('shogi','7c','7d','Gote pawn')
-        self.shogi_analysis()
+        self.start_analysis('shogi', 1, 1000)
         self.shogi_complete_analysis()
-        self.shogi_events(2, selected=1, historical=True)
+        self.game_events('shogi', 2, selected=1, historical=True)
         self.capture("historical-analysis")
         archive = self.shogi_save(self.args.output / "normal-shogi-history.mshogi")
         body = archive["payload"]
@@ -2192,11 +2237,11 @@ class Journey:
         assert len(body["record"]["events"]) == 2
         self.record("Session analysis uses exact game history prefix", context)
         w.button("Return to live")
-        self.shogi_events(2, selected=2)
+        self.game_events('shogi', 2, selected=2)
         assert w.has(".play-paused")
         w.focused_button("Resume play")
         wait(lambda: w.read("document.querySelector('.shogi-application').dataset.paused") == "false", "explicit resumed shogi live play")
-        self.shogi_events(2)
+        self.game_events('shogi', 2)
         assert not w.has(".shell-history-notice")
         self.capture("return-live-resumed")
         # The current writer reconstructs this reduced-material fixture
@@ -2209,7 +2254,7 @@ class Journey:
         captures=self.args.output/'normal-shogi-captures-source.mshogi'
         shutil.copyfile(source_captures,captures)
         self.file('open',captures)
-        self.shogi_events(2)
+        self.game_events('shogi', 2)
         wait(lambda:w.has('.shogi-player[data-player="gote"] .hand-piece[data-hand-piece="pawn"]'),'normal reopened opponent hand resource')
         before_archive=self.shogi_save(self.args.output/'normal-shogi-inspection-before.mshogi')
         before=self.inspection_state()
@@ -2249,16 +2294,16 @@ class Journey:
         self.viewport(1180, 820)
         self.shogi_board_fits()
         if name == "shogi-hands":
-            self.shogi_events(2)
+            self.game_events('shogi', 2)
             for side in ("sente", "gote"):
                 assert "1" in w.text(f'.shogi-player[data-player="{side}"] .hand-piece[data-hand="pawn"]')
             self.capture("both-hands")
             w.click('.shogi-player[data-player="sente"] .hand-piece[data-hand="pawn"]')
             assert w.read(f"document.querySelector({json.dumps(self.shogi_square('5e'))}).classList.contains('target')")
-            self.shogi_events(2)
+            self.game_events('shogi', 2)
             self.capture("drop-selection")
             w.key("\ue00c")  # Escape cancels without a action.
-            self.shogi_events(2)
+            self.game_events('shogi', 2)
             assert not w.has(".hand-piece.selected")
             # Exercise a genuine process failure at a complete action,
             # retaining the same imported root and capture history for retry.
@@ -2271,7 +2316,7 @@ class Journey:
                 w.click('.shogi-player[data-player="sente"] .hand-piece[data-hand="pawn"]')
                 w.click(self.shogi_square("5e"))
                 wait(lambda: "Engine connection failed" in w.text(".shogi-sidebar"), "genuine shogi bundled engine startup failure")
-                self.shogi_events(3)
+                self.game_events('shogi', 3)
                 assert "No game result is implied" in w.text(".shogi-sidebar")
                 assert "Sente pawn" in w.read(f"document.querySelector({json.dumps(self.shogi_square('5e'))}).getAttribute('aria-label')")
                 self.assert_completed_cue("P*5e", 3, [], ["5e"])
@@ -2281,42 +2326,42 @@ class Journey:
                     held.rename(engine)
             assert digest(engine) == original
             w.button("Retry engine turn")
-            self.shogi_events(4)
+            self.game_events('shogi', 4)
             self.record("Capture history / cancelled drop / complete drop / process recovery", {
                 "engine_sha256": original, "history": w.text(".shogi-history"),
                 "status": w.text("[data-game-status]")})
         elif name == "shogi-promotion":
-            self.shogi_events(0)
+            self.game_events('shogi', 0)
             w.click(self.shogi_square("5d")); w.click(self.shogi_square("5c"))
             wait(lambda: w.has(".promotion-dialog"), "optional promotion has two complete game choices")
-            self.shogi_events(0)
+            self.game_events('shogi', 0)
             self.capture("optional-promotion")
             w.key("\ue00c")
             wait(lambda: not w.has(".promotion-dialog"), "cancel optional promotion")
-            self.shogi_events(0)
+            self.game_events('shogi', 0)
             w.click(self.shogi_square("5d")); w.click(self.shogi_square("5c"))
             w.button("Promote")
             wait(lambda: "promoted pawn" in str(w.read(f"document.querySelector({json.dumps(self.shogi_square('5c'))})?.getAttribute('aria-label')")), "promoted piece appears")
-            self.shogi_events(2)
+            self.game_events('shogi', 2)
         elif name == "shogi-forced":
-            self.shogi_events(0)
+            self.game_events('shogi', 0)
             w.click(self.shogi_square("5b")); w.click(self.shogi_square("5a"))
             wait(lambda: "promoted pawn" in str(w.read(f"document.querySelector({json.dumps(self.shogi_square('5a'))})?.getAttribute('aria-label')")), "mandatory promotion commits directly")
             assert not w.has(".promotion-dialog")
-            self.shogi_events(2)
+            self.game_events('shogi', 2)
         elif name == "shogi-declaration":
-            self.shogi_events(0)
+            self.game_events('shogi', 0)
             assert "Eligibility alone does not conclude" in w.text(".shogi-game-actions")
             w.button("Declare entering king…")
             wait(lambda: w.has('[aria-label="Declare entering king?"]'), "formal declaration confirmation")
-            self.shogi_events(0)
+            self.game_events('shogi', 0)
             self.capture("declaration-confirmation")
             w.button("Confirm declaration")
-            self.shogi_events(1)
+            self.game_events('shogi', 1)
             wait(lambda: "Sente wins by entering-king declaration" in w.text("[data-game-status]"), "authoritative declaration conclusion")
             assert w.read("[...document.querySelectorAll('.shogi-game-actions button')].map(e=>({label:e.textContent.trim(),enabled:!e.disabled}))") == [{"label": "Take back", "enabled": True}], "A concluded game exposes only Take back"
             w.focused_button("Take back")
-            self.shogi_events(0)
+            self.game_events('shogi', 0)
             wait(lambda: "Sente to move" in w.text("[data-game-status]"), "declaration Take back restores human decision")
             assert w.read("document.querySelector('.shogi-application').dataset.paused") == "true"
             assert w.read("document.querySelector('.take-back-button').disabled")
@@ -2331,7 +2376,7 @@ class Journey:
             self.file("open", path)
             wait(lambda: (token := self.session_diagnostics()["token"]) and token["document"] > old_token["document"],
                  "Take back archive Open installs fresh document identity")
-            self.shogi_events(0, selected=0, historical=False)
+            self.game_events('shogi', 0, selected=0, historical=False)
             wait(lambda: "Sente to move" in w.text("[data-game-status]"), "reopened Take back retains the ongoing root")
             assert "wins" not in w.text("[data-game-status]")
             assert w.read("document.querySelector('.shogi-application').dataset.paused") == "true"
@@ -2339,7 +2384,7 @@ class Journey:
             self.capture("takeback-reopened-stopped")
             w.button("Resume play")
             wait(lambda: w.read("document.querySelector('.shogi-application').dataset.paused") == "false", "explicit Resume after Take back archive Open")
-            self.shogi_events(0, selected=0, historical=False)
+            self.game_events('shogi', 0, selected=0, historical=False)
             self.record("Declare / Take back / Save Open / stopped identities / explicit Resume", {
                 "path": str(path), "sha256": digest(path),
                 "saved_events": len(body["record"]["events"]),
@@ -2347,38 +2392,38 @@ class Journey:
                 "status": w.text("[data-game-status]")})
             self.capture("takeback-reopened-resumed")
         elif name == "shogi-concluded":
-            self.shogi_events(1)
+            self.game_events('shogi', 1)
             assert "Sente resigned" in w.text("[data-game-status]")
             assert w.read("[...document.querySelectorAll('.shogi-game-actions button')].map(e=>({label:e.textContent.trim(),enabled:!e.disabled}))") == [{"label": "Take back", "enabled": True}], "A concluded game exposes only Take back"
             self.capture("concluded")
             w.click('.shogi-history [data-event="0"]')
-            self.shogi_events(1, selected=0, historical=True)
+            self.game_events('shogi', 1, selected=0, historical=True)
             self.capture("before-terminal-event")
             w.click(".moves-events summary")
             w.click('.shogi-history [data-event="1"]')
-            self.shogi_events(1, selected=1, historical=True)
+            self.game_events('shogi', 1, selected=1, historical=True)
             w.button("Return to live")
-            self.shogi_events(1, selected=1)
+            self.game_events('shogi', 1, selected=1)
             assert "Sente resigned" in w.text("[data-game-status]")
             self.record("Select distinct terminal event at unchanged board ply", w.text(".shogi-history"))
             w.focused_button("Take back")
-            self.shogi_events(0)
+            self.game_events('shogi', 0)
             wait(lambda: "Sente to move" in w.text("[data-game-status]"), "resignation Take back restores human decision")
             assert w.read("document.querySelector('.shogi-application').dataset.paused") == "true"
             assert w.read("document.querySelector('.take-back-button').disabled")
             assert "Position restored" in w.text(".play-paused")
             self.capture("takeback-resignation")
         elif name == "shogi-capacity":
-            self.shogi_analysis_tab()
+            self.analysis_controls('shogi')
             assert "Recorded searches (255)" in w.text(".recorded-searches")
-            self.shogi_analysis(nodes=0)
+            self.start_analysis('shogi', 1, 0)
             wait(lambda: "Recorded searches (256)" in w.text(".recorded-searches"), "shogi observation 256 accepted")
             previous = self.session_diagnostics()["observations"][-1]["observation"]["context"]["request_id"]
-            self.shogi_analysis(nodes=0)
+            self.start_analysis('shogi', 1, 0)
             wait(lambda: self.session_diagnostics()["observations"][-1]["observation"]["context"]["request_id"] > previous, "newest Shogi result replaces oldest")
             assert "Recorded searches (256)" in w.text(".recorded-searches")
             assert not w.has(".capacity-notice")
-            self.shogi_events(0)
+            self.game_events('shogi', 0)
             self.capture("capacity-pause")
             self.shogi_save(self.args.output / "shogi-capacity-complete.mshogi", 256)
             self.shogi_flip()
@@ -2387,11 +2432,6 @@ class Journey:
         self.capture("result")
         self.quit()
 
-    def tenjiku_events(self, count, selected=None, historical=False):
-        root="document.querySelector('.game-shell')"
-        wait(lambda:self.web.read(root+'?.dataset.liveEvents')==str(count),f'Tenjiku exact live event {count}')
-        if selected is not None:wait(lambda:self.web.read(root+'?.dataset.currentEvent')==str(selected),f'Tenjiku selected prefix {selected}')
-        wait(lambda:self.web.read(root+'?.dataset.historical')==str(historical).lower(),f'Tenjiku read-only history {historical}')
 
     def tenjiku_profile_id(self, profile):
         return {'adams':'mshogi.tenjiku.adams1999-modern.v1','muller':'mshogi.tenjiku.muller-completed.v1'}[profile]
@@ -2399,23 +2439,19 @@ class Journey:
     def new_tenjiku(self, profile, side):
         """Use the normal sixth-game and explicit whole-profile selects."""
         w=self.web;before=self.session_diagnostics()
-        w.button('New game');wait(lambda:w.has('[aria-label="New game"]'),'normal New Game dialog')
-        options=w.read("[...document.querySelector('[data-game-select]').options].map(e=>({value:e.value,label:e.textContent,disabled:e.disabled}))")
-        assert options==[{'value':value,'label':label,'disabled':False} for value,label in zip(['chess','shogi','xiangqi','tori','chu','tenjiku'],['Chess','Shogi','Xiangqi','Tori Shogi','Chu Shogi','Tenjiku Shogi'])],options
-        w.click('[data-game-select]');w.key('\ue011')
-        for _ in range(5):w.key('\ue015')
-        w.key('\ue007');wait(lambda:w.has('[data-profile-select]'),'visible Tenjiku whole-profile picker')
+        self.open_new_game()
+        self.assert_game_options()
+        self.select_game_option('tenjiku')
+        wait(lambda: w.has('[data-profile-select]'), 'visible Tenjiku whole-profile picker')
         choices=w.read("[...document.querySelector('[data-profile-select]').options].map(e=>({value:e.value,label:e.textContent,disabled:e.disabled}))")
         assert choices==[{'value':self.tenjiku_profile_id(key),'label':label,'disabled':False} for key,label in [('adams','Adams 1999 Modern'),('muller','Muller Completed')]],choices
         expected_default=before['profile'] if before['context']['game_kind']=='tenjiku' else self.tenjiku_profile_id('adams')
         assert w.read("document.querySelector('[data-profile-select]').value")==expected_default
-        w.click('[data-profile-select]');w.key('\ue011')
-        if profile=='muller':w.key('\ue015')
-        w.key('\ue007');wait(lambda:w.read("document.querySelector('[data-profile-select]').value")==self.tenjiku_profile_id(profile),'explicit profile selection')
-        w.click(f'[data-side="{side}"]');w.click('[data-start-game]')
-        wait(lambda:w.has('.shell-tenjiku') and not w.has('[aria-label="New game"]'),'normal Tenjiku document installed')
+        self.select_tenjiku_profile(profile)
+        w.click(f'[data-side="{side}"]')
+        self.commit_new_game('tenjiku')
         wait(lambda:not w.has('.shogi-analysis[data-phase="thinking"]') and w.read("!!document.querySelector('.moves-root:not(:disabled)')"),'initial actual Tenjiku engine/admission settled',45)
-        self.tenjiku_events(0 if side=='sente' else 1)
+        self.game_events('tenjiku', 0 if side=='sente' else 1)
         snapshot=self.session_diagnostics()
         assert snapshot['profile']==self.tenjiku_profile_id(profile) and snapshot['context']['payload']['root']['profile']==snapshot['profile']
         assert snapshot['token']['document']>before['token']['document']
@@ -2437,9 +2473,9 @@ class Journey:
     def tenjiku_board_fits(self):
         w=self.web
         wait(lambda:w.read("[...document.fonts].some(f=>f.family.replaceAll('\"','').replaceAll(\"'\",'')==='mShogi Tenjiku Pieces'&&f.status==='loaded')"),'bundled Tenjiku font loaded')
-        observed=w.read("""(() => {const board=document.querySelector('.tenjiku-board-frame .chess-board'),cells=[...document.querySelectorAll('.tenjiku-board-frame .square')];
+        observed=w.read("""(() => {""" + VISIBILITY + """const board=document.querySelector('.tenjiku-board-frame .chess-board'),cells=[...document.querySelectorAll('.tenjiku-board-frame .square')];
             const rect=e=>{const r=e.getBoundingClientRect();return {left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:r.width,height:r.height};};
-            const visible=e=>{if(!e)return false;const r=rect(e),clip={left:0,top:0,right:innerWidth,bottom:innerHeight};for(let p=e.parentElement;p;p=p.parentElement){const c=getComputedStyle(p),b=rect(p);if(/^(auto|scroll|hidden|clip)$/.test(c.overflowX)){clip.left=Math.max(clip.left,b.left);clip.right=Math.min(clip.right,b.right);}if(/^(auto|scroll|hidden|clip)$/.test(c.overflowY)){clip.top=Math.max(clip.top,b.top);clip.bottom=Math.min(clip.bottom,b.bottom);}}return r.width>0&&r.height>0&&r.left>=clip.left-1&&r.top>=clip.top-1&&r.right<=clip.right+1&&r.bottom<=clip.bottom+1;};
+            const visible = e => visibleInViewport(e, true);
             return {viewport:{width:innerWidth,height:innerHeight,dpr:devicePixelRatio},board:board?rect(board):null,cells:cells.length,visibleCells:cells.filter(visible).length,boardVisible:visible(board),cell:cells[0]?rect(cells[0]):null,glyphCount:document.querySelectorAll('.tenjiku-board-frame .piece-tile-face text').length,minimumGlyphEm:Math.min(...[...document.querySelectorAll('.tenjiku-board-frame .piece-tile-face text')].map(e=>parseFloat(getComputedStyle(e).fontSize)*Math.hypot(e.getScreenCTM().a,e.getScreenCTM().b))),orientation:document.querySelector('.game-shell')?.dataset.orientation,fontLoaded:document.fonts.check('16px "mShogi Tenjiku Pieces"'),pageWidth:document.documentElement.scrollWidth,hands:document.querySelectorAll('[aria-label="Hands"],.hand-piece').length};})()""")
         assert observed['cells']==observed['visibleCells']==256 and observed['boardVisible'] and observed['fontLoaded'] and observed['glyphCount']>0 and observed['minimumGlyphEm']>0 and not observed['hands'],observed
         assert observed['pageWidth']<=observed['viewport']['width']+1 and observed['cell']['width']>0,observed
@@ -2447,8 +2483,8 @@ class Journey:
         return observed
 
     def selected_footer_fits(self, label, require_route=False):
-        observed=self.web.read("""(() => {const rect=e=>{if(!e)return null;const r=e.getBoundingClientRect();return {left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:r.width,height:r.height};};
-            const visible=e=>{if(!e)return false;const r=rect(e),clip={left:0,top:0,right:innerWidth,bottom:innerHeight};for(let p=e.parentElement;p;p=p.parentElement){const c=getComputedStyle(p),b=rect(p);if(/^(auto|scroll|hidden|clip)$/.test(c.overflowX)){clip.left=Math.max(clip.left,b.left);clip.right=Math.min(clip.right,b.right);}if(/^(auto|scroll|hidden|clip)$/.test(c.overflowY)){clip.top=Math.max(clip.top,b.top);clip.bottom=Math.min(clip.bottom,b.bottom);}}return getComputedStyle(e).display!=='none'&&r.width>0&&r.height>0&&r.left>=clip.left-1&&r.top>=clip.top-1&&r.right<=clip.right+1&&r.bottom<=clip.bottom+1;};
+        observed=self.web.read("""(() => {""" + VISIBILITY + """const rect=e=>{if(!e)return null;const r=e.getBoundingClientRect();return {left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:r.width,height:r.height};};
+            const visible = e => visibleInViewport(e, true);
             const selected=document.querySelector('.selected-piece-status'),route=document.querySelector('.route-selection'),position=document.querySelector('[data-position-status]');
             return {viewport:{width:innerWidth,height:innerHeight},selected:{text:selected?.textContent,visible:visible(selected),rect:rect(selected)},route:{text:route?.textContent,visible:visible(route),rect:rect(route),buttons:[...route?.querySelectorAll('button')??[]].map(e=>({text:e.textContent,visible:visible(e),rect:rect(e)}))},position:{text:position?.textContent,visible:visible(position),rect:rect(position)}};})()""")
         assert observed['selected']['text']==label and observed['selected']['visible'] and observed['position']['visible'],observed
@@ -2494,14 +2530,12 @@ class Journey:
         return after
 
     def tenjiku_analysis(self):
-        w=self.web
-        if not w.has('[data-analysis-start="tenjiku"]'):w.button('Analyze position')
-        wait(lambda:w.has('[data-analysis-start="tenjiku"]'),'Tenjiku bounded analysis inputs')
-        w.set('.shogi-analysis input[name="depth"]',1);w.set('.shogi-analysis input[name="nodes"]',1024)
+        w = self.web
+        start = self.prepare_analysis('tenjiku', depth=1, nodes=1024)
         before=self.session_diagnostics()
         request_floor=max((item['observation']['context']['request_id'] for item in before['observations']),default=0)
         self.record('Capture pre-click Tenjiku analysis identity floor and exact selected source',{'observations':len(before['observations']),'request_floor':request_floor,'source':before['context'],'selected_event':before['tenjiku']['selected']['event_index'],'board_ply':before['tenjiku']['selected']['board_ply'],'token':before['token']})
-        w.click('[data-analysis-start="tenjiku"]')
+        w.click(start)
         def newly_completed():
             after=self.session_diagnostics()
             assert completed_tenjiku_analysis(before,after,request_floor),{'observations':len(after['observations']),'expected_count':len(before['observations'])+1,'selected':after['tenjiku']['selected']['event_index'],'diagnostic':after['diagnostic'],'latest_result':after['observations'][-1]['observation']['result'] if after['observations'] else None}
@@ -2511,15 +2545,29 @@ class Journey:
         self.record('New real read-only analysis appends exact-context observation without changing live or selected game',{'before_count':len(before['observations']),'after':after,'request_floor':request_floor})
         return after
 
-    def tenjiku_load_fixture(self, profile, name):
-        source=Path(__file__).with_name('fixtures')/f'tenjiku-{profile}-{name}.mshogi'
-        path=self.args.output/f'{self.phase}-{name}-source.mshogi';shutil.copyfile(source,path)
-        before=self.session_diagnostics();self.file('open',path);self.wait_opened(path)
-        wait(lambda:self.web.has('.shell-tenjiku'),'ordinary normal-package Tenjiku Load')
-        after=self.session_diagnostics();expected=desktop_document_payload(json.loads(source.read_text()),'tenjiku')
-        assert after['context']['payload']==expected['record'] and after['profile']==self.tenjiku_profile_id(profile) and after['token']['document']>before['token']['document']
-        assert self.web.has('.play-paused') and not after['observations']
-        self.record('Normal OS file-picker Load of independent Tenjiku current document',{'profile':profile,'fixture':name,'source_sha256':digest(source),'snapshot':after})
+    def load_game_fixture(self, game, name, profile=None):
+        identity = f'{game}-{profile}-{name}' if profile else f'{game}-{name}'
+        source = Path(__file__).with_name('fixtures') / f'{identity}.mshogi'
+        path = self.args.output / f'{self.phase}-{name}-source.mshogi'
+        shutil.copyfile(source, path)
+        before = self.session_diagnostics()
+        self.file('open', path)
+        self.wait_opened(path)
+        wait(lambda: self.web.has(f'.shell-{game}'), f"ordinary Load dispatches {GAME_LABELS[game]} document")
+        after = self.session_diagnostics()
+        expected = desktop_document_payload(json.loads(source.read_text(encoding='utf-8')), game)
+        assert after['context']['payload'] == expected['record'], (after['context'], expected['record'])
+        assert after['token']['document'] > before['token']['document'], (before, after)
+        assert self.web.read("document.querySelector('.game-shell').dataset.paused") == 'true'
+        assert not self.web.has(ENGINE_ACTIVE) and not after['observations'], after
+        if profile is not None:
+            assert after['profile'] == self.tenjiku_profile_id(profile), after
+            assert self.web.has('.play-paused')
+        self.record('Ordinary normal-package Load of generated admitted document', {
+            'game':game, 'fixture':name, 'profile':profile, 'source':str(source),
+            'source_sha256':digest(source), 'opened_copy':str(path),
+            'before_token':before['token'], 'after':after,
+            'qualification':'Current document admitted through the OS file picker.'})
         return after
 
     def tenjiku_reject_cross_profile(self, profile):
@@ -2543,12 +2591,12 @@ class Journey:
         for index,step in enumerate(steps):
             w.click(self.square(step))
             if index+1<len(steps):
-                self.tenjiku_events(count-1)
+                self.game_events('tenjiku', count-1)
                 assert w.text('.selected-piece-status')==selected and 'No action submitted' in w.text('.route-selection')
         if promote is not None:
             wait(lambda:w.has('.promotion-dialog'),'Tenjiku promotion alternatives');self.assert_chu_promotion_choices();w.button('Promote' if promote else 'Do not promote')
         if w.has('.route-selection') and not igui:w.focused_button('Complete action here')
-        self.tenjiku_events(count);snapshot=self.session_diagnostics();actual=snapshot['context']['payload']['events'][-1]['command']['action']
+        self.game_events('tenjiku', count);snapshot=self.session_diagnostics();actual=snapshot['context']['payload']['events'][-1]['command']['action']
         coordinate=lambda square:[int(square[:-1]),ord(square[-1])-ord('a')+1]
         expected={'kind':'igui' if igui else 'travel','from':coordinate(origin),'route':[] if igui else [coordinate(step) for step in steps],'promote':bool(promote)}
         if igui:expected['target']=coordinate(steps[-1])
@@ -2569,17 +2617,17 @@ class Journey:
         for origin,destination,count in [('16l','16k',2),('16k','16j',4)]:
             w.click(self.square(origin));wait(lambda:'Sente Pawn' in w.text('.selected-piece-status'),'friendly Pawn identification');w.key('\ue00c')
             w.click(self.square(origin));w.click(self.square(destination))
-            self.tenjiku_events(count);snapshot=self.session_diagnostics();events=snapshot['context']['payload']['events']
+            self.game_events('tenjiku', count);snapshot=self.session_diagnostics();events=snapshot['context']['payload']['events']
             coordinate=lambda square:[int(square[:-1]),ord(square[-1])-ord('a')+1]
             assert events[count-2]['command']['action']=={'kind':'travel','from':coordinate(origin),'route':[coordinate(destination)],'promote':False}
             assert snapshot['profile']==self.tenjiku_profile_id(profile) and len(snapshot['observations'])==count//2
             assert snapshot['observations'][-1]['observation']['result']['kind']=='tenjiku'
             self.record('Genuine packaged human/engine Tenjiku complete turn pair',{'profile':profile,'snapshot':snapshot})
-        self.capture('normal-four-ply-real-progression');w.focused_button('Take back');self.tenjiku_events(2)
+        self.capture('normal-four-ply-real-progression');w.focused_button('Take back');self.game_events('tenjiku', 2)
         taken=self.session_diagnostics();assert taken['context']['payload']['events']==events[:2] and w.has('.play-paused')
-        w.keyboard_activate('.moves-table button[data-event="1"]');self.tenjiku_events(2,selected=1,historical=True);self.assert_historical_notice(1)
+        w.keyboard_activate('.moves-table button[data-event="1"]');self.game_events('tenjiku', 2,selected=1,historical=True);self.assert_historical_notice(1)
         self.tenjiku_analysis();selected=self.session_diagnostics();assert selected['context']['payload']['events']==events[:1]
-        self.capture('historical-exact-prefix-readonly-analysis');w.button('Return to live');self.tenjiku_events(2,selected=2)
+        self.capture('historical-exact-prefix-readonly-analysis');w.button('Return to live');self.game_events('tenjiku', 2,selected=2)
         assert w.has('.play-paused')
         path=self.args.output/f'normal-tenjiku-{profile}-complete.mshogi';body=self.tenjiku_save(path,profile)
         assert body['record']['events'] == events[:2]
@@ -2601,22 +2649,22 @@ class Journey:
 
     def normal_tenjiku_rules(self, profile):
         self.start(product=f'tenjiku-{profile}-rules');w=self.web
-        self.tenjiku_load_fixture(profile,'compound');self.tenjiku_reject_cross_profile(profile)
-        self.tenjiku_load_fixture(profile,'compound');self.tenjiku_events(0);self.tenjiku_minimum();self.tenjiku_board_fits()
+        self.load_game_fixture('tenjiku', 'compound', profile=profile);self.tenjiku_reject_cross_profile(profile)
+        self.load_game_fixture('tenjiku', 'compound', profile=profile);self.game_events('tenjiku', 0);self.tenjiku_minimum();self.tenjiku_board_fits()
         w.click(self.square('8h'));selected=w.text('.selected-piece-status');assert 'Lion Hawk' in selected
-        w.click(self.square('9h'));self.tenjiku_events(0);assert w.text('.selected-piece-status')==selected and 'No action submitted' in w.text('.route-selection')
+        w.click(self.square('9h'));self.game_events('tenjiku', 0);assert w.text('.selected-piece-status')==selected and 'No action submitted' in w.text('.route-selection')
         self.selected_footer_fits(selected,require_route=True);self.capture('compound-partial-friendly-name-retained');w.key('\ue00c');wait(lambda:not w.has('.selected-piece-status'),'compound Escape restores footer')
         self.viewport(1180,820);captured=self.tenjiku_action('8h',['9h','10h'],1)
         assert [phase['victim']['square'] for phase in captured['tenjiku']['selected']['last_effects']['phases']]==[[9,8],[10,8]]
         self.capture('complete-two-ordered-captures');self.tenjiku_save(self.args.output/f'tenjiku-{profile}-compound.mshogi',profile)
-        self.tenjiku_load_fixture(profile,'igui');iguied=self.tenjiku_action('8h',['9h'],1,igui=True)
+        self.load_game_fixture('tenjiku', 'igui', profile=profile);iguied=self.tenjiku_action('8h',['9h'],1,igui=True)
         assert 'stationary origin 8h' in w.read("document.querySelector('.moves-table button[data-event=\"1\"]')?.getAttribute('aria-label')??''")
         assert next(item for item in iguied['tenjiku']['selected']['identities'] if item['square']=='8h')['piece']['base']=='ChS'
         self.capture('stationary-capture-accessible-effects')
-        self.tenjiku_load_fixture(profile,'promotion');promoted=self.tenjiku_action('8f',['8e'],1,promote=True)
+        self.load_game_fixture('tenjiku', 'promotion', profile=profile);promoted=self.tenjiku_action('8f',['8e'],1,promote=True)
         assert w.read("document.querySelector('.square[aria-label^=\"8e,\"] [data-face=G][data-promoted=true]')!==null")
         assert promoted['tenjiku']['selected']['conclusion'] is None;self.capture('optional-promotion-identity')
-        self.tenjiku_load_fixture(profile,'burn');burned=self.tenjiku_action('8j',['7i','7h','8h'],1)
+        self.load_game_fixture('tenjiku', 'burn', profile=profile);burned=self.tenjiku_action('8j',['7i','7h','8h'],1)
         phases=burned['tenjiku']['selected']['last_effects']['phases']
         assert [phase['phase'] for phase in phases]==(['burn','mover_dies'] if profile=='adams' else ['mover_dies'])
         if profile=='adams':assert [victim['square'] for victim in phases[0]['victims']]==[[8,7]]
@@ -2624,27 +2672,27 @@ class Journey:
         assert 'Sente Fire Demon destroyed at 8h' in effects and ('Burned together: Gote Pawn at 8g' in effects)==(profile=='adams')
         self.capture('three-stage-demon-burn-death-and-accessible-phases')
         for name,origin,steps,conclusion in [('simultaneous','8i',['8h'],{'kind':'simultaneous_royal_loss'}),('bare-loss','5a',['5j'],{'kind':'bare_royal_loss','winner':'gote'})]:
-            self.tenjiku_load_fixture(profile,name);ended=self.tenjiku_action(origin,steps,1)
+            self.load_game_fixture('tenjiku', name, profile=profile);ended=self.tenjiku_action(origin,steps,1)
             assert ended['tenjiku']['selected']['conclusion']==conclusion and w.has('.outcome-card')
             self.capture(f'independent-terminal-{name}');self.tenjiku_save(self.args.output/f'tenjiku-{profile}-{name}-concluded.mshogi',profile)
-        self.tenjiku_load_fixture(profile,'no-actions');unscored=self.session_diagnostics()
+        self.load_game_fixture('tenjiku', 'no-actions', profile=profile);unscored=self.session_diagnostics()
         assert unscored['tenjiku']['selected']['conclusion'] is None and not w.has('.outcome-card')
         w.click(self.square('1a'));wait(lambda:'Sente King' in w.text('.movement-inspection-status'),'friendly no-action piece identified read-only')
         w.key('\ue00c');assert self.session_diagnostics()['context']==unscored['context'];self.capture('no-actions-unscored-friendly-inspection')
-        w.focused_button('Offer draw…');w.button('Offer draw');self.tenjiku_events(1)
+        w.focused_button('Offer draw…');w.button('Offer draw');self.game_events('tenjiku', 1)
         offered=self.session_diagnostics();assert offered['tenjiku']['selected']['draw_offer']=='sente' and offered['tenjiku']['selected']['conclusion'] is None
         assert offered['tenjiku']['selected']['board_ply']==0
         self.capture('no-actions-still-allows-unscored-draw-offer')
-        self.tenjiku_load_fixture(profile,'agreement');w.focused_button('Decline draw');self.tenjiku_events(2)
+        self.load_game_fixture('tenjiku', 'agreement', profile=profile);w.focused_button('Decline draw');self.game_events('tenjiku', 2)
         declined=self.session_diagnostics();assert declined['tenjiku']['selected']['draw_offer'] is None and declined['tenjiku']['selected']['conclusion'] is None
-        self.tenjiku_load_fixture(profile,'agreement');w.focused_button('Accept draw…');w.button('Accept draw');self.tenjiku_events(2)
+        self.load_game_fixture('tenjiku', 'agreement', profile=profile);w.focused_button('Accept draw…');w.button('Accept draw');self.game_events('tenjiku', 2)
         agreed=self.session_diagnostics();assert agreed['tenjiku']['selected']['conclusion']=={'kind':'agreement'} and agreed['tenjiku']['selected']['board_ply']==0
         self.capture('opposing-actor-agreement-independent-of-board-turn');self.tenjiku_save(self.args.output/f'tenjiku-{profile}-agreement-complete.mshogi',profile)
 
-        self.tenjiku_load_fixture(profile,'repetition3');self.tenjiku_events(3);before=self.session_diagnostics()
+        self.load_game_fixture('tenjiku', 'repetition3', profile=profile);self.game_events('tenjiku', 3);before=self.session_diagnostics()
         w.click(self.square('2a'));assert not w.read("document.querySelector('.square[aria-label^=\"1a,\"]')?.classList.contains('target')")
         w.key('\ue00c');assert self.session_diagnostics()['context']==before['context'];self.capture('first-recurrence-forbidden-without-invented-result')
-        self.tenjiku_load_fixture(profile,'royal-engine');w.button('Resume play');self.tenjiku_events(1)
+        self.load_game_fixture('tenjiku', 'royal-engine', profile=profile);w.button('Resume play');self.game_events('tenjiku', 1)
         wait(lambda:w.has('.outcome-card'),'actual engine naturally completes independently specified royal game',45)
         complete=self.session_diagnostics();assert complete['tenjiku']['selected']['conclusion']=={'kind':'royal_capture','winner':'sente'}
         assert len(complete['observations'])==1 and complete['observations'][0]['observation']['result']['result']['kind']=='choice'
@@ -2652,41 +2700,52 @@ class Journey:
         self.capture('real-engine-royal-complete-game');path=self.args.output/f'tenjiku-{profile}-natural-engine-complete.mshogi'
         self.tenjiku_save(path,profile);self.tenjiku_reopen_saved(path,profile);self.capture('complete-game-fresh-stopped-reopen');self.quit()
 
-    def tenjiku_recovery(self, profile):
-        self.start(f'tenjiku-{profile}-standard',phase_name=f'verification-recovery-tenjiku-{profile}');w=self.web
-        engine=self.args.verification_engine;held=engine.with_name(engine.name+'.gui-verification-held');original=digest(engine)
-        assert not held.exists()
+    @contextmanager
+    def missing_engine(self):
+        engine = self.args.verification_engine
+        held = engine.with_name(engine.name + '.gui-verification-held')
+        original = digest(engine)
+        assert not held.exists(), held
+        engine.rename(held)
         try:
-            engine.rename(held);w.button('Resume play');wait(lambda:w.read("document.querySelector('.game-shell').dataset.paused")=='false','Tenjiku Resume before missing real sidecar')
-            w.click(self.square('16l'));w.click(self.square('16k'))
-            wait(lambda:'Engine connection failed' in w.text('.shell-notices'),'genuine Tenjiku missing-sidecar failure');self.tenjiku_events(1)
-            assert not w.has('.outcome-card');self.capture('missing-sidecar-unscored')
+            yield original
         finally:
-            if held.exists():held.rename(engine)
-        assert digest(engine)==original
-        w.button('Retry engine turn');self.tenjiku_events(2)
-        wait(lambda:w.has('[data-search-purpose="engine_turn"]'),'actual Tenjiku retry admitted',45)
-        self.tenjiku_save(self.args.output/f'tenjiku-{profile}-recovery-complete.mshogi',profile)
-        self.record('Actual missing engine restored identically before explicit Retry',{'profile':profile,'engine_sha256':original,'snapshot':self.session_diagnostics()})
-        self.capture('real-sidecar-retry-preserves-history');self.quit()
+            held.rename(engine)
+            assert digest(engine) == original
 
-    def chu_events(self, count, selected=None, historical=False):
-        root = "document.querySelector('.game-shell')"
-        wait(lambda: self.web.read(root + '?.dataset.liveEvents') == str(count), f'Chu history has {count} exact events')
-        if selected is not None:
-            wait(lambda: self.web.read(root + '?.dataset.currentEvent') == str(selected), f'Chu selected event {selected}')
-        wait(lambda: self.web.read(root + '?.dataset.historical') == str(historical).lower(), f'Chu historical viewing {historical}')
+    def piece_game_recovery(self, game, profile=None):
+        identity = f'{game}-{profile}' if profile else game
+        self.start(f'{identity}-standard', phase_name=f'verification-{identity}-recovery')
+        with self.missing_engine() as original:
+            self.web.button('Resume play')
+            wait(lambda: self.web.read("document.querySelector('.game-shell').dataset.paused") == 'false',
+                 f"{GAME_LABELS[game]} Resume before missing sidecar")
+            self.cross_game_opening(game)
+            wait(lambda: 'Engine connection failed' in self.web.text('.shell-notices'),
+                 f"genuine {GAME_LABELS[game]} sidecar startup failure")
+            self.game_events(game, 1)
+            assert not self.web.has('.outcome-card')
+            self.capture('actual-missing-sidecar-unscored')
+        self.web.button('Retry engine turn')
+        self.game_events(game, 2)
+        wait(lambda: self.web.has('[data-search-purpose="engine_turn"]'),
+             f"real {GAME_LABELS[game]} engine retry after identical binary restored", 45)
+        assert not self.web.has('.outcome-card')
+        self.save_game(self.args.output / f'{identity}-recovery-complete.mshogi', game)
+        snapshot = self.session_diagnostics()
+        if profile is not None:
+            assert snapshot['profile'] == self.tenjiku_profile_id(profile), snapshot
+        self.record('Actual missing sidecar restored identically before explicit Retry',
+                    {'game':game, 'profile':profile, 'engine_sha256':original, 'snapshot':snapshot})
+        self.capture('actual-retry-retains-history')
+        self.quit()
 
     def chu_board_fits(self):
         wait(lambda: self.web.read("[...document.fonts].some(f=>f.family.replaceAll('\"','').replaceAll(\"'\",'')==='mShogi Chu Pieces' && f.status==='loaded')"), 'bundled Chu traditional piece font loaded')
-        geometry = self.web.read("""(() => {
+        geometry = self.web.read("""(() => {""" + VISIBILITY + """
             const board=document.querySelector('.chu-board-frame .chess-board'),squares=[...document.querySelectorAll('.chu-board-frame .square')];
             const rect=e=>{const r=e.getBoundingClientRect();return {left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:r.width,height:r.height};};
-            const visible=e=>{if(!e)return false;const r=e.getBoundingClientRect(),clip={left:0,top:0,right:innerWidth,bottom:innerHeight};
-                for(let p=e.parentElement;p;p=p.parentElement){const c=getComputedStyle(p),b=p.getBoundingClientRect();
-                    if(/^(auto|scroll|hidden|clip)$/.test(c.overflowX)){clip.left=Math.max(clip.left,b.left);clip.right=Math.min(clip.right,b.right);}
-                    if(/^(auto|scroll|hidden|clip)$/.test(c.overflowY)){clip.top=Math.max(clip.top,b.top);clip.bottom=Math.min(clip.bottom,b.bottom);}}
-                return r.width>0&&r.height>0&&r.left>=clip.left-1&&r.top>=clip.top-1&&r.right<=clip.right+1&&r.bottom<=clip.bottom+1;};
+            const visible = e => visibleInViewport(e, true);
             return {viewport:{width:innerWidth,height:innerHeight},board:board?rect(board):null,
                 squares:squares.length,allVisible:squares.length===144&&squares.every(visible),boardVisible:visible(board),
                 minimumSquareWidth:Math.min(...squares.map(e=>e.getBoundingClientRect().width)),
@@ -2705,14 +2764,12 @@ class Journey:
 
     def new_chu(self, side):
         w = self.web
-        w.button('New game'); wait(lambda: w.has('[aria-label="New game"]'), 'ordinary New Game chooser')
-        self.choose_game('chu'); w.click(f'[data-side="{side}"]'); w.click('[data-start-game]')
-        wait(lambda: w.has('.shell-chu') and not w.has('[aria-label="New game"]'), 'normal product installs Chu session')
+        self.start_new_game('chu', side)
         wait(lambda: not w.has('.shogi-analysis[data-phase="thinking"]') and w.read("(() => {const root=document.querySelector('.moves-root');return !!root&&!root.disabled;})()"), 'initial Chu engine work and admission settle', 45)
         orientation = w.read("document.querySelector('.game-shell').dataset.orientation")
         assert orientation in ('sente','gote'), orientation
         if side != 'random': assert orientation == side, (side, orientation)
-        self.chu_events(0 if orientation == 'sente' else 1)
+        self.game_events('chu', 0 if orientation == 'sente' else 1)
         snapshot = self.session_diagnostics()
         assert snapshot['profile'] == 'mshogi.chu.jcsa2019.v1' and snapshot['context']['game_kind'] == 'chu', snapshot
         if orientation == 'gote':
@@ -2733,21 +2790,6 @@ class Journey:
         self.file('open',actual); self.wait_opened(actual)
         return self.session_diagnostics()
 
-    def chu_load_fixture(self, name):
-        source = Path(__file__).with_name('fixtures') / f'chu-{name}.mshogi'
-        path = self.args.output / f'normal-chu-{name}-source.mshogi'
-        shutil.copyfile(source, path); before = self.session_diagnostics()
-        self.file('open', path); self.wait_opened(path)
-        wait(lambda: self.web.has('.shell-chu'), 'ordinary Load dispatches Chu document')
-        after = self.session_diagnostics()
-        expected = desktop_document_payload(json.loads(source.read_text(encoding='utf-8')), 'chu')
-        assert after['context']['payload'] == expected['record'] and after['token']['document'] > before['token']['document'], after
-        assert self.web.read("document.querySelector('.game-shell').dataset.paused") == 'true'
-        assert not self.web.has('.shogi-analysis[data-phase="thinking"],.shogi-analysis[data-phase="analyzing"]')
-        assert not after['observations']
-        self.record('Ordinary normal-package Load of generated Chu document', {'fixture':name,'source':str(source),'source_sha256':digest(source),'after':after,
-            'qualification':'Current-envelope archive through the OS file picker; no QA activation, IPC or frontend rules.'})
-        return after
 
     def assert_chu_promotion_choices(self):
         # CSS capitalizes rendered button text. Completion labels remain
@@ -2767,7 +2809,7 @@ class Journey:
             wait(lambda: w.has('.promotion-dialog'), 'complete promotion alternatives')
             self.assert_chu_promotion_choices()
             w.button('Promote' if promote else 'Do not promote')
-        self.chu_events(count)
+        self.game_events('chu', count)
         snapshot = self.session_diagnostics()
         actual = snapshot['context']['payload']['events'][-1]['command']['action']
         def coordinate(square): return [int(square[:-1]), ord(square[-1]) - ord('a') + 1]
@@ -2776,14 +2818,6 @@ class Journey:
         self.assert_completed_cue(json.dumps(expected, separators=(',',':')), count, [origin], [steps[-1]], '>'.join([origin,*steps]) if len(steps)>1 else None)
         return snapshot
 
-    def chu_analysis(self, depth=1, nodes=512):
-        w = self.web
-        if not w.has('[data-analysis-start="chu"]'): w.button('Analyze position')
-        wait(lambda: w.has('[data-analysis-start="chu"]'), 'bounded Chu analysis controls')
-        w.set('.shogi-analysis input[name="depth"]', depth); w.set('.shogi-analysis input[name="nodes"]', nodes)
-        w.click('[data-analysis-start="chu"]')
-        wait(lambda: 'Analysis result available' in w.text('.shogi-analysis-state'), 'real Chu read-only result', 45)
-        assert 'No move was played.' in w.text('.shogi-analysis') and 'perspective' in w.text('.analysis-perspective')
 
     def normal_chu(self):
         """Ordinary fifth-game activation, real human/engine play and document lifecycle."""
@@ -2797,26 +2831,26 @@ class Journey:
                                                ('9g','9f',4,{'from':[9,7],'route':[[9,6]],'promote':False})]:
             before = self.session_diagnostics()
             w.click(self.chu_square(origin)); w.key('\ue00c')
-            self.chu_events(count-2)  # Read-only observation preserves board focus for real keyboard input.
+            self.game_events('chu', count-2)  # Read-only observation preserves board focus for real keyboard input.
             if count == 2:
                 assert w.read("document.activeElement?.getAttribute('aria-label')?.startsWith('9h,')")
                 for key in ('\ue007','\ue013','\ue007'): w.key(key)  # Real Enter / Up / Enter.
             else:
                 w.click(self.chu_square(origin)); w.click(self.chu_square(destination))
             if w.has('.route-selection'): w.focused_button('Complete action here')
-            self.chu_events(count); after = self.session_diagnostics(); events = after['context']['payload']['events']
+            self.game_events('chu', count); after = self.session_diagnostics(); events = after['context']['payload']['events']
             assert events[count-2]['command']['action'] == action and len(after['observations']) == count//2, after
             assert after['observations'][-1]['observation']['result']['kind'] == 'chu'
             self.record('Ordinary Chu human complete action and actual bundled engine reply', {'human_complete_action':action,'after':after})
         self.capture('normal-four-ply-progression')
-        w.focused_button('Take back'); self.chu_events(2); taken = self.session_diagnostics()
+        w.focused_button('Take back'); self.game_events('chu', 2); taken = self.session_diagnostics()
         assert taken['context']['payload']['events'] == events[:2] and w.has('.play-paused')
-        w.keyboard_activate('.moves-table button[data-event="1"]'); self.chu_events(2,selected=1,historical=True); self.assert_historical_notice(1)
-        self.chu_analysis(); selected = self.session_diagnostics()
+        w.keyboard_activate('.moves-table button[data-event="1"]'); self.game_events('chu', 2,selected=1,historical=True); self.assert_historical_notice(1)
+        self.complete_piece_analysis('chu', 1, 512); selected = self.session_diagnostics()
         assert selected['context']['payload']['events'] == events[:1]
         assert selected['observations'][-1]['observation']['context']['game']['payload']['events'] == events[:1]
         self.capture('normal-history-exact-prefix-readonly-analysis')
-        w.button('Return to live'); self.chu_events(2,selected=2); assert w.has('.play-paused')
+        w.button('Return to live'); self.game_events('chu', 2,selected=2); assert w.has('.play-paused')
         path = self.args.output/'normal-chu-complete.mshogi'; body = self.chu_save(path)
         assert body['record']['events'] == events[:2]
         before = self.session_diagnostics(); reopened = self.chu_reopen_saved(path)
@@ -2825,7 +2859,7 @@ class Journey:
         assert w.has('.play-paused') and not w.has('.shogi-analysis[data-phase="thinking"]')
         self.capture('normal-reopened-stopped'); w.button('Resume play')
         wait(lambda:w.read("document.querySelector('.game-shell').dataset.paused")=='false','explicit Chu Resume after Load')
-        self.chu_analysis(); assert self.session_diagnostics()['context'] == reopened['context']
+        self.complete_piece_analysis('chu', 1, 512); assert self.session_diagnostics()['context'] == reopened['context']
         w.button('Play details'); self.direct_resign('chu'); concluded = self.session_diagnostics()
         assert concluded['chu']['selected']['conclusion'] == {'kind':'resignation','winner':'gote'}
         final = self.chu_save(self.args.output/'normal-chu-concluded.mshogi')
@@ -2841,67 +2875,67 @@ class Journey:
     def normal_chu_rules(self):
         """Independent compound, promotion, royal, repetition and ending scenarios via normal Load."""
         self.start(product='chu-rules'); w = self.web
-        self.chu_load_fixture('contract'); self.chu_events(0); self.chu_board_fits()
+        self.load_game_fixture('chu', 'contract'); self.game_events('chu', 0); self.chu_board_fits()
         w.click(self.chu_square('6f')); w.click(self.chu_square('7e'))
-        assert 'No action submitted' in w.text('.route-selection'); self.chu_events(0)
-        self.capture('normal-partial-compound-not-committed'); w.key('\ue00c'); self.chu_events(0)
+        assert 'No action submitted' in w.text('.route-selection'); self.game_events('chu', 0)
+        self.capture('normal-partial-compound-not-committed'); w.key('\ue00c'); self.game_events('chu', 0)
         capture_return = self.chu_action('6f',['7e','6f'],1)
         assert len(capture_return['chu']['selected']['last_effects']['captures']) == 1
-        self.capture('normal-capture-return'); w.focused_button('Take back'); self.chu_events(0)
+        self.capture('normal-capture-return'); w.focused_button('Take back'); self.game_events('chu', 0)
         quiet_return = self.chu_action('6f',['6e','6f'],1)
         assert quiet_return['chu']['selected']['last_effects']['captures'] == []
         assert quiet_return['context']['payload']['events'][0]['command']['action'] != capture_return['context']['payload']['events'][0]['command']['action']
         self.capture('normal-quiet-return-same-endpoint'); self.chu_save(self.args.output/'normal-chu-return-branches.mshogi')
-        w.focused_button('Take back'); self.chu_events(0); self.chu_action('6f',['7e'],1,complete_here=True)
+        w.focused_button('Take back'); self.game_events('chu', 0); self.chu_action('6f',['7e'],1,complete_here=True)
         self.capture('normal-explicit-one-stage-completion')
-        self.chu_load_fixture('captures'); self.chu_events(0)
-        w.click(self.chu_square('3c')); w.click(self.chu_square('2b')); self.chu_events(0)
+        self.load_game_fixture('chu', 'captures'); self.game_events('chu', 0)
+        w.click(self.chu_square('3c')); w.click(self.chu_square('2b')); self.game_events('chu', 0)
         assert 'No action submitted' in w.text('.route-selection'); w.key('\ue00c')
         captured = self.chu_action('3c',['2b','1b'],1)
         assert [item['square'] for item in captured['chu']['selected']['last_effects']['captures']] == [[2,2],[1,2]]
         self.capture('normal-two-ordered-captures'); self.chu_save(self.args.output/'normal-chu-compound.mshogi')
-        self.chu_load_fixture('promotion'); self.chu_events(0)
+        self.load_game_fixture('chu', 'promotion'); self.game_events('chu', 0)
         w.click(self.chu_square('6e')); w.click(self.chu_square('6d')); wait(lambda:w.has('.promotion-dialog'),'optional promotion alternatives')
-        self.assert_chu_promotion_choices(); w.key('\ue00c'); self.chu_events(0)
+        self.assert_chu_promotion_choices(); w.key('\ue00c'); self.game_events('chu', 0)
         promoted = self.chu_action('6e',['6d'],1,promote=True)
         assert w.read(f"document.querySelector({json.dumps(self.chu_square('6d'))})?.querySelector('[data-face=Prince]')!==null")
         assert len([royal for royal in promoted['chu']['live']['royals'] if royal['identity']['piece']['side']=='sente']) == 2
         assert promoted['chu']['selected']['conclusion'] is None
         self.capture('normal-promoted-Prince-and-surviving-King'); self.chu_save(self.args.output/'normal-chu-promoted.mshogi')
-        self.chu_load_fixture('royal-survivor'); survived = self.chu_action('12j',['12l'],1,promote=False)
+        self.load_game_fixture('chu', 'royal-survivor'); survived = self.chu_action('12j',['12l'],1,promote=False)
         assert survived['chu']['selected']['conclusion'] is None and not w.has('.outcome-card')
         assert [royal['identity']['square'] for royal in survived['chu']['live']['royals'] if royal['identity']['piece']['side']=='sente'] == ['8j']
         self.capture('normal-one-royal-captured-Prince-survives')
         for name,origin,steps,ending in [('royal-both','6f',['6e','5e'],'royal_capture'),('material-reply','6d',['5c'],'material')]:
-            self.chu_load_fixture(name); ended = self.chu_action(origin,steps,1)
+            self.load_game_fixture('chu', name); ended = self.chu_action(origin,steps,1)
             assert ended['chu']['selected']['conclusion'] == {'kind':ending,'winner':'sente'} and w.has('.outcome-card')
             self.capture(f'normal-{ending}-natural-complete-game'); self.chu_save(self.args.output/f'normal-chu-{ending}-complete.mshogi')
-        self.chu_load_fixture('mate'); assert self.session_diagnostics()['chu']['selected']['conclusion'] == {'kind':'mate','winner':'gote'}
+        self.load_game_fixture('chu', 'mate'); assert self.session_diagnostics()['chu']['selected']['conclusion'] == {'kind':'mate','winner':'gote'}
         assert w.has('.outcome-card'); self.capture('normal-independent-finite-mate')
-        self.chu_load_fixture('agreement-root'); w.focused_button('Offer draw…'); w.button('Offer draw'); self.chu_events(1)
+        self.load_game_fixture('chu', 'agreement-root'); w.focused_button('Offer draw…'); w.button('Offer draw'); self.game_events('chu', 1)
         offered = self.session_diagnostics(); assert offered['chu']['selected']['conclusion'] is None and offered['chu']['selected']['draw_offer']=='sente'
         self.chu_save(self.args.output/'normal-chu-offered.mshogi')
-        self.chu_load_fixture('agreement'); w.focused_button('Decline draw'); self.chu_events(2)
+        self.load_game_fixture('chu', 'agreement'); w.focused_button('Decline draw'); self.game_events('chu', 2)
         assert self.session_diagnostics()['chu']['selected']['draw_offer'] is None and not w.has('.outcome-card')
-        self.chu_load_fixture('agreement'); w.focused_button('Accept draw…'); w.button('Accept draw'); self.chu_events(2)
+        self.load_game_fixture('chu', 'agreement'); w.focused_button('Accept draw…'); w.button('Accept draw'); self.game_events('chu', 2)
         agreed = self.session_diagnostics(); assert agreed['chu']['selected']['conclusion'] == {'kind':'agreed_draw'} and agreed['chu']['selected']['board_ply']==0
         self.capture('normal-opposing-agreement-not-board-turn'); self.chu_save(self.args.output/'normal-chu-agreed.mshogi')
-        self.chu_load_fixture('repetition10'); self.chu_events(10); obligation=self.session_diagnostics()
+        self.load_game_fixture('chu', 'repetition10'); self.game_events('chu', 10); obligation=self.session_diagnostics()
         assert obligation['chu']['live']['obligations'] and obligation['chu']['selected']['conclusion'] is None
         assert 'Repetition obligation' in w.text('.shell-notices')
         w.click(self.chu_square('1k')); assert not w.read(f"document.querySelector({json.dumps(self.chu_square('1l'))})?.classList.contains('target')")
-        w.key('\ue00c'); self.chu_events(10)
-        w.click('.shogi-history [data-event="4"]'); self.chu_events(10,selected=4,historical=True)
+        w.key('\ue00c'); self.game_events('chu', 10)
+        w.click('.shogi-history [data-event="4"]'); self.game_events('chu', 10,selected=4,historical=True)
         prefix=self.session_diagnostics(); assert len(prefix['context']['payload']['events'])==4 and not prefix['chu']['selected']['obligations']
         assert prefix['chu']['live']['obligations']; self.capture('normal-history-without-future-repetition-obligation')
-        w.button('Return to live'); self.chu_events(10,selected=10); assert self.session_diagnostics()['context']==obligation['context']
+        w.button('Return to live'); self.game_events('chu', 10,selected=10); assert self.session_diagnostics()['context']==obligation['context']
         path=self.args.output/'normal-chu-obligation.mshogi'; self.chu_save(path); self.chu_reopen_saved(path)
         assert self.session_diagnostics()['context']==obligation['context'] and w.has('.play-paused')
-        self.chu_load_fixture('complete-royal-engine'); natural = self.session_diagnostics()
+        self.load_game_fixture('chu', 'complete-royal-engine'); natural = self.session_diagnostics()
         assert natural['chu']['selected']['conclusion'] == {'kind':'royal_capture','winner':'sente'}
         assert not natural['observations'] and w.has('.outcome-card')
         self.capture('normal-complete-natural-engine-game')
-        self.chu_load_fixture('complete-resignation'); complete=self.session_diagnostics()
+        self.load_game_fixture('chu', 'complete-resignation'); complete=self.session_diagnostics()
         assert complete['chu']['selected']['conclusion']=={'kind':'resignation','winner':'gote'} and not complete['observations']
         assert not complete['observations']; self.capture('normal-reopen-complete-standard-engine-record')
         self.record('Independent Chu scenarios through normal installed application', {'fixtures_manifest':str(Path(__file__).with_name('fixtures')/'chu-game-fixtures.json'),
@@ -2909,51 +2943,16 @@ class Journey:
             'qualification':'Actual pointer/keyboard complete actions and ordinary Load/Save; immutable independently authored expectations, no external rules engine.'})
         self.quit()
 
-    def chu_recovery(self):
-        self.start('chu-standard',phase_name='verification-chu-recovery'); w=self.web
-        engine=self.args.verification_engine; held=engine.with_name(engine.name+'.gui-verification-held'); original=digest(engine)
-        assert not held.exists()
-        try:
-            engine.rename(held); w.button('Resume play')
-            wait(lambda:w.read("document.querySelector('.game-shell').dataset.paused")=='false','Chu Resume before genuine missing-sidecar probe')
-            w.click(self.chu_square('9h')); w.click(self.chu_square('9g'))
-            wait(lambda:'Engine connection failed' in w.text('.shell-notices'),'genuine Chu sidecar startup failure')
-            self.chu_events(1); assert not w.has('.outcome-card'); self.capture('actual-missing-sidecar-unscored')
-        finally:
-            if held.exists(): held.rename(engine)
-        assert digest(engine)==original
-        w.button('Retry engine turn'); self.chu_events(2)
-        wait(lambda:w.has('[data-search-purpose="engine_turn"]'),'actual Chu retry with identical sidecar restored',45)
-        self.chu_save(self.args.output/'chu-recovery-complete.mshogi')
-        self.record('Actual missing Chu engine / identical restored sidecar / explicit Retry',{'engine_sha256':original,'snapshot':self.session_diagnostics()})
-        self.capture('actual-retry-retains-history'); self.quit()
-
-    def tori_events(self, count, selected=None, historical=False):
-        root = "document.querySelector('.game-shell')"
-        wait(lambda: self.web.read(root + "?.dataset.liveEvents") == str(count),
-             f"Tori history has {count} exact events")
-        if selected is not None:
-            wait(lambda: self.web.read(root + "?.dataset.currentEvent") == str(selected),
-                 f"Tori selected event {selected}")
-        wait(lambda: self.web.read(root + "?.dataset.historical") == str(historical).lower(),
-             f"Tori historical viewing {historical}")
-
     def new_tori(self, side):
         w = self.web
-        w.button('New game')
-        wait(lambda: w.has('[aria-label="New game"]'), 'ordinary New Game chooser')
-        self.choose_game('tori')
-        w.click(f'[data-side="{side}"]')
-        w.click('[data-start-game]')
-        wait(lambda: w.has('.shell-tori') and not w.has('[aria-label="New game"]'),
-             'normal product installs Tori session')
+        self.start_new_game('tori', side)
         wait(lambda: not w.has('.shogi-analysis[data-phase="thinking"]'), 'initial Tori engine turn settles', 45)
         # Ownership is presentation data, not guessed from random's coin.
         orientation = w.read("document.querySelector('.game-shell').dataset.orientation")
         assert orientation in ('sente', 'gote'), orientation
         if side != 'random':
             assert orientation == side, (side, orientation)
-        self.tori_events(0 if orientation == 'sente' else 1)
+        self.game_events('tori', 0 if orientation == 'sente' else 1)
         snapshot = self.session_diagnostics()
         assert snapshot['context']['game_kind'] == 'tori', snapshot
         assert snapshot['profile'] == 'mshogi.tori.modern.v1', snapshot
@@ -2966,39 +2965,6 @@ class Journey:
 
     def tori_save(self, path):
         return self.save_game(path, 'tori')['payload']
-
-    def tori_analysis(self, depth=1, nodes=1000):
-        w = self.web
-        if not w.has('[data-analysis-start="tori"]'):
-            w.button('Analyze position')
-        wait(lambda: w.has('[data-analysis-start="tori"]'), 'bounded Tori analysis controls')
-        w.set('.shogi-analysis input[name="depth"]', depth)
-        w.set('.shogi-analysis input[name="nodes"]', nodes)
-        w.click('[data-analysis-start="tori"]')
-        wait(lambda: 'Analysis result available' in w.text('.shogi-analysis-state'),
-             'real Tori read-only result', 45)
-        assert 'No move was played.' in w.text('.shogi-analysis')
-        assert 'perspective' in w.text('.analysis-perspective')
-        assert not w.has('.outcome-card')
-
-    def tori_load_fixture(self, name):
-        source = Path(__file__).with_name('fixtures') / f'tori-{name}.mshogi'
-        path = self.args.output / f'normal-tori-{name}-source.mshogi'
-        shutil.copyfile(source, path)
-        before = self.session_diagnostics()
-        self.file('open', path); self.wait_opened(path)
-        wait(lambda: self.web.has('.shell-tori'), 'normal Load dispatches Tori document')
-        after = self.session_diagnostics()
-        assert after['token']['document'] > before['token']['document'], (before, after)
-        assert self.web.read("document.querySelector('.game-shell').dataset.paused") == 'true'
-        assert not self.web.has('.shogi-analysis[data-phase="thinking"],.shogi-analysis[data-phase="analyzing"]')
-        expected = desktop_document_payload(json.loads(source.read_text(encoding='utf-8')), 'tori')
-        assert after['context']['payload'] == expected['record'], (after['context'], expected['record'])
-        self.record('Ordinary normal-package Load of generated admitted document', {
-            'fixture': name, 'source': str(source), 'source_sha256': digest(source),
-            'opened_copy': str(path), 'before_token': before['token'], 'after': after,
-            'qualification': 'Current record envelope admitted and saved by external Rust example; no host fixture activation or injected IPC.'})
-        return after
 
     def normal_tori(self):
         """Ordinary installed product, real rules and unchanged sidecar."""
@@ -3016,11 +2982,11 @@ class Journey:
         self.intentional_replacement_failures('tori')
         w.click(self.shogi_square('3d'))
         assert w.read(f"document.querySelector({json.dumps(self.shogi_square('3c'))}).classList.contains('target')")
-        w.key('\ue00c'); self.tori_events(0)
+        w.key('\ue00c'); self.game_events('tori', 0)
         assert w.read('document.activeElement?.dataset.square') == '3d'
         for key in ('\ue007', '\ue013', '\ue007'):
             w.key(key)  # Actual Enter / Up / Enter commits one complete capture.
-        self.tori_events(2)
+        self.game_events('tori', 2)
         wait(lambda: w.has('[data-search-purpose="engine_turn"]'), 'actual bundled Tori reply', 45)
         for side in ('sente', 'gote'):
             assert '1' in w.text(f'.shogi-player[data-player="{side}"] .hand-piece[data-hand="Sw"]')
@@ -3028,31 +2994,32 @@ class Journey:
         w.click('.shogi-player[data-player="sente"] .hand-piece[data-hand="Sw"]')
         assert w.read(f"document.querySelector({json.dumps(self.shogi_square('3d'))}).classList.contains('target')")
         self.capture('normal-drop-choices')
-        w.key('\ue00c'); self.tori_events(2)
+        w.key('\ue00c'); self.game_events('tori', 2)
         w.click('.shogi-player[data-player="sente"] .hand-piece[data-hand="Sw"]')
-        w.click(self.shogi_square('3d')); self.tori_events(4)
+        w.click(self.shogi_square('3d')); self.game_events('tori', 4)
         full = self.session_diagnostics()
         events = full['context']['payload']['events']
         assert events[0]['command']['action'] == {'kind':'move','from':'3d','to':'3c','result_face':'swallow'}
         assert events[2]['command']['action'] == {'kind':'drop','face':'swallow','to':'3d'}
         self.capture('normal-complete-drop-and-engine-reply')
-        w.focused_button('Take back'); self.tori_events(2)
+        w.focused_button('Take back'); self.game_events('tori', 2)
         assert w.read("document.querySelector('.game-shell').dataset.paused") == 'true'
         taken = self.session_diagnostics()
         assert taken['context']['payload']['events'] == events[:2]
         assert 'Earlier engine searches are retained as historical observations.' in w.text('.shell-sidebar')
         assert 'Last engine turn' not in w.text('.shell-sidebar')
         self.capture('normal-takeback-historical-observations')
-        w.click('.shogi-history [data-event="1"]'); self.tori_events(2, selected=1, historical=True)
+        w.click('.shogi-history [data-event="1"]'); self.game_events('tori', 2, selected=1, historical=True)
         self.assert_historical_notice(1)
         self.assert_completed_cue(json.dumps(events[0]['command']['action'], separators=(',', ':')), 1, ['3d'], ['3c'])
-        self.tori_analysis()
+        self.complete_piece_analysis('tori', 1, 1000)
+        assert not self.web.has('.outcome-card')
         selected = self.session_diagnostics()
         assert len(selected['context']['payload']['events']) == 1
         assert selected['context']['payload']['events'] == events[:1]
         assert selected['observations'][-1]['observation']['context']['game']['payload']['events'] == events[:1]
         self.capture('normal-exact-history-readonly-analysis')
-        w.button('Return to live'); self.tori_events(2, selected=2)
+        w.button('Return to live'); self.game_events('tori', 2, selected=2)
         assert w.has('.play-paused')
         path = self.args.output / 'normal-tori-complete.mshogi'
         body = self.tori_save(path)
@@ -3068,7 +3035,8 @@ class Journey:
         self.capture('normal-reopened-work-stopped')
         w.button('Resume play')
         wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == 'false', 'explicit Tori Resume')
-        self.tori_analysis()
+        self.complete_piece_analysis('tori', 1, 1000)
+        assert not self.web.has('.outcome-card')
         after_analysis = self.session_diagnostics()
         assert after_analysis['context'] == reopened['context'], 'normal read-only analysis never plays a result'
         w.button('Play details')
@@ -3134,11 +3102,11 @@ class Journey:
         """Difficult independently expected states through ordinary normal Load."""
         self.start(product='tori-rules')
         w = self.web
-        self.tori_load_fixture('contract'); self.tori_events(0)
+        self.load_game_fixture('tori', 'contract'); self.game_events('tori', 0)
         self.shogi_board_fits(tori=True)
         self.capture('all-nine-traditional-faces-and-hands')
         w.click(self.shogi_square('7c')); w.click(self.shogi_square('7b'))
-        self.tori_events(1)
+        self.game_events('tori', 1)
         assert not w.has('.promotion-dialog'), 'Tori promotion is compulsory, never an optional choice'
         assert w.read(f"document.querySelector({json.dumps(self.shogi_square('7b'))})?.querySelector('[data-face=Ea]')!==null")
         promoted = self.session_diagnostics()
@@ -3146,24 +3114,24 @@ class Journey:
         assert w.has('.play-paused'), 'manual action after Load preserves stopped execution'
         self.capture('normal-load-compulsory-promotion-and-captured-hand')
         self.tori_save(self.args.output / 'normal-tori-promoted.mshogi')
-        self.tori_load_fixture('mate-in-one'); self.tori_events(0)
+        self.load_game_fixture('tori', 'mate-in-one'); self.game_events('tori', 0)
         assert not w.has('.outcome-card')
         w.click(self.shogi_square('4c')); w.click(self.shogi_square('4b'))
-        self.tori_events(1)
+        self.game_events('tori', 1)
         mate = self.session_diagnostics()
         assert mate['tori']['selected']['conclusion'] == {'kind':'checkmate','winner':'sente'}
         assert w.has('.outcome-card') and not w.has('.resign-button')
         self.capture('TORI-O-MATE-natural-complete-game')
         self.tori_save(self.args.output / 'normal-tori-checkmate.mshogi')
-        self.tori_load_fixture('quiet-loss')
+        self.load_game_fixture('tori', 'quiet-loss')
         assert w.has('.outcome-card')
         quiet = self.session_diagnostics()
         assert quiet['tori']['selected']['conclusion'] == {'kind':'stalemate_loss','loser':'gote'}
         self.capture('TORI-O-QUIET-stalemate-loss')
         # MSH-208: Gote's Eagle returns; Sente's only escape would make a third occurrence.
-        self.tori_load_fixture('forced-prefix6'); self.tori_events(6)
+        self.load_game_fixture('tori', 'forced-prefix6'); self.game_events('tori', 6)
         w.click(self.shogi_square('5d')); w.click(self.shogi_square('4d'))
-        self.tori_events(7)
+        self.game_events('tori', 7)
         forced = self.session_diagnostics()
         assert forced['tori']['selected']['conclusion'] == {'kind':'repetition_forfeit','loser':'sente'}
         assert forced['tori']['selected']['occurrences'] == [3,7]
@@ -3171,20 +3139,20 @@ class Journey:
         self.capture('TORI-H-FORCED-FULL-terminal-third-occurrence')
         self.tori_save(self.args.output / 'normal-tori-repetition-forfeit.mshogi')
         # MSH-208: Gote may not play 5a-4a, which would make a third occurrence.
-        self.tori_load_fixture('repetition7'); self.tori_events(7)
+        self.load_game_fixture('tori', 'repetition7'); self.game_events('tori', 7)
         obligation = self.session_diagnostics()
         assert obligation['tori']['selected']['occurrences'] == [3,7]
         assert obligation['tori']['selected']['conclusion'] is None
         assert 'Repetition limit' in w.text('.shell-notices')
         w.click(self.shogi_square('5a'))
         assert not w.read(f"document.querySelector({json.dumps(self.shogi_square('4a'))}).classList.contains('target')"), 'third-occurrence move cannot be entered'
-        w.key('\ue00c'); self.tori_events(7)
-        w.click('.shogi-history [data-event="4"]'); self.tori_events(7, selected=4, historical=True)
+        w.key('\ue00c'); self.game_events('tori', 7)
+        w.click('.shogi-history [data-event="4"]'); self.game_events('tori', 7, selected=4, historical=True)
         prefix = self.session_diagnostics()
         assert len(prefix['context']['payload']['events']) == 4
         assert 'Repetition limit' not in w.text('.shell-notices')
         self.capture('TORI-H-COUNT-exact-prefix-without-future-repetition-limit')
-        w.button('Return to live'); self.tori_events(7, selected=7)
+        w.button('Return to live'); self.game_events('tori', 7, selected=7)
         assert self.session_diagnostics()['context'] == obligation['context']
         path = self.args.output / 'normal-tori-obligation.mshogi'
         self.tori_save(path)
@@ -3197,31 +3165,6 @@ class Journey:
             'qualification':'Immutable independently reviewed fixture expectations; generated admitted normal files, actual pointer actions, no external rules engine.'})
         self.quit()
 
-    def tori_recovery(self):
-        self.start('tori-standard', phase_name='verification-tori-recovery')
-        w = self.web
-        engine = self.args.verification_engine
-        held = engine.with_name(engine.name + '.gui-verification-held')
-        original = digest(engine)
-        assert not held.exists()
-        try:
-            engine.rename(held)
-            w.button('Resume play')
-            w.click(self.shogi_square('3d')); w.click(self.shogi_square('3c'))
-            wait(lambda: 'Engine connection failed' in w.text('.shell-notices'), 'genuine Tori sidecar startup failure')
-            self.tori_events(1)
-            assert not w.has('.outcome-card')
-            self.capture('actual-missing-sidecar-unscored')
-        finally:
-            if held.exists(): held.rename(engine)
-        assert digest(engine) == original
-        w.button('Retry engine turn'); self.tori_events(2)
-        wait(lambda: w.has('[data-search-purpose="engine_turn"]'), 'real Tori engine retry after identical binary restored', 45)
-        assert not w.has('.outcome-card')
-        self.tori_save(self.args.output / 'tori-recovery-complete.mshogi')
-        self.record('Actual missing Tori engine / unchanged document / identical restored sidecar / explicit Retry', {'engine_sha256':original,'snapshot':self.session_diagnostics()})
-        self.capture('actual-retry-retains-history')
-        self.quit()
 
     def resume_pending_analysis(self, game):
         """Observe Resume/layout admission before one inspector click."""
@@ -3384,10 +3327,10 @@ class Journey:
                 self.deferred_file_removals.append(missing)
         elif name == 'xiangqi-capacity':
             assert len(before['observations']) == 255
-            self.xiangqi_analysis(nodes=1)
+            self.start_analysis('xiangqi', 1, 1)
             wait(lambda: 'Recorded searches (256)' in w.text('.recorded-searches'), 'combined observation 256 accepted')
             previous = self.session_diagnostics()['observations'][-1]['observation']['context']['request_id']
-            self.xiangqi_analysis(nodes=1)
+            self.start_analysis('xiangqi', 1, 1)
             wait(lambda: self.session_diagnostics()['observations'][-1]['observation']['context']['request_id'] > previous, 'newest Xiangqi result replaces oldest')
             assert len(self.session_diagnostics()['observations']) == 256
             assert not w.has('.capacity-notice')
@@ -3420,27 +3363,18 @@ class Journey:
             # even while its executable is temporarily absent from the path.
             # The writable QA package keeps this genuine startup fault away
             # from the normal installed application.
-            engine = self.args.verification_engine
-            held = engine.with_name(engine.name + ".gui-verification-held")
-            original = digest(engine)
-            assert not held.exists()
-            try:
-                engine.rename(held)
+            with self.missing_engine() as original:
                 w.click(self.square("e2")); w.click(self.square("e4"))
                 wait(lambda: "Engine connection failed" in w.text(".shell-notices"), "genuine missing engine failure")
                 self.plies(1)
                 assert not w.has(".outcome-card")
                 self.capture("engine-failure")
                 self.record("Genuine missing-engine startup failure preserves the accepted human move", w.text(".shell-notices"))
-            finally:
-                if held.exists():
-                    held.rename(engine)
-            assert digest(engine) == original
             w.button("Retry engine turn")
             self.plies(2)
             assert not w.has(".outcome-card")
             self.record("Restore identical sidecar and Retry without losing history", {
-                "engine_sha256": digest(engine), "result": w.text('[data-search-purpose="engine_turn"]')})
+                "engine_sha256": original, "result": w.text('[data-search-purpose="engine_turn"]')})
         elif name == "promotion":
             w.click(self.square("a7")); w.click(self.square("a8"))
             wait(lambda: w.has(".promotion-dialog"), "actual promotion choices")
@@ -3578,7 +3512,7 @@ def main():
     args.output.mkdir(parents=True, exist_ok=True)
     for name in ("normal_host", "normal_engine", "verification_host", "verification_engine"):
         setattr(args, name, getattr(args, name).resolve())
-    report = {"schema_version": 1, "started_at_utc": stamp(), "status": "running",
+    report = {"schema_version": 2, "started_at_utc": stamp(), "status": "running",
         "source_revision": os.environ.get("GITHUB_SHA") or subprocess.check_output(
             ["git", "rev-parse", "HEAD"], text=True).strip(),
         "workflow_url": f"https://github.com/{os.environ.get('GITHUB_REPOSITORY')}/actions/runs/{os.environ.get('GITHUB_RUN_ID')}",
@@ -3628,11 +3562,11 @@ def main():
                 elif fixture.startswith('pending-tenjiku-'):
                     journey.pending('tenjiku',fixture.removeprefix('pending-tenjiku-'))
                 elif fixture.startswith('recovery-tenjiku-'):
-                    journey.tenjiku_recovery(fixture.removeprefix('recovery-tenjiku-'))
+                    journey.piece_game_recovery('tenjiku', fixture.removeprefix('recovery-tenjiku-'))
                 elif fixture == "chu-recovery":
-                    journey.chu_recovery()
+                    journey.piece_game_recovery('chu')
                 elif fixture == "tori-recovery":
-                    journey.tori_recovery()
+                    journey.piece_game_recovery('tori')
                 elif fixture.startswith("pending-"):
                     journey.pending(fixture.removeprefix("pending-"))
                 elif fixture.startswith("xiangqi-"):

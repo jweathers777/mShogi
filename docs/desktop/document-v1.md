@@ -99,10 +99,8 @@ for never-saved or dirty documents.
 
 ## Verification fixtures
 
-`cargo run --locked -p mshogi-desktop-session --example write_document_fixtures -- desktop/scripts/fixtures`
-reconstructs the GUI hand-inspection document through the current writer.
-`write_frontend_fixtures` builds current session snapshots for frontend tests.
-Neither generator is part of the product application.
+See [desktop fixture regeneration](../../desktop/src/__fixtures__/README.md)
+for the current frontend snapshots and ordinary Load documents.
 
 Retained protocol regression fixtures use the current game record encoding.
 Their canonical-prefix hashes identify those encoded bytes. An encoding update

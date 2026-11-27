@@ -9,17 +9,33 @@ engine through the generator executable's isolated `internal-search` child mode.
 and rendering against actual serialization; they are not an independent rules
 oracle. M1/M2 rules fixtures remain authoritative correctness evidence.
 
-Regenerate from the repository root:
+Regenerate the frontend snapshots for all six games and the ordinary Load
+documents from the repository root:
 
 ```sh
-cargo run --locked -p mshogi-desktop-session --example write_frontend_fixtures -- desktop/src/__fixtures__
+python3 desktop/scripts/regenerate-fixtures.py
+python3 desktop/scripts/regenerate-fixtures.py --check
 ```
 
-Verification-only capacity and terminal-state fixtures also use the actual generator:
+The check generates a fresh set in a temporary directory and compares the file
+names and bytes with the checkout. The frontend generators enable
+`desktop-verification` for capacity and terminal-state scenarios.
 
-```sh
-cargo run --locked -p mshogi-desktop-session --features desktop-verification --example write_frontend_fixtures -- desktop/src/__fixtures__
-```
+The ordinary Load documents cover Shogi captures, Tori rules positions, the
+[Chu journeys](../../scripts/fixtures/CHU.md), and both Tenjiku profiles. Chess
+and Xiangqi GUI startup scenarios are constructed by the QA host. The recorded
+Chess and Tenjiku GUI observations retain their original provenance.
+
+For Tenjiku, `write_tenjiku_frontend_fixtures` writes the current frontend
+snapshots for Adams 1999 Modern and Muller Completed. The ordinary Load
+generator, `write_tenjiku_gui_fixtures`, creates ten documents per profile and
+the `tenjiku-game-fixtures.json` manifest. Its diagrams and manual expectations
+come from the independently authored
+[Tenjiku corpus](../../../docs/m4/tenjiku/fixtures.json). The royal-engine
+diagram adds a remote Gote Pawn so a one-ply win must remove the King. The
+package smoke test separately checks actual engine replies against those
+documents. The document generator uses current settings and checks exact
+decode and replay for all twenty files.
 
 Observations use the current durable observation schema without a transport
 wrapper.

@@ -7,7 +7,6 @@ from __future__ import annotations
 
 import ctypes
 from ctypes import wintypes
-from datetime import datetime, timezone
 import importlib.metadata
 import json
 import os
@@ -18,6 +17,8 @@ import subprocess
 import sys
 import threading
 import time
+
+from gui_support import NativeEventLog
 
 _TIMEOUT = 20.0
 _RUNTIME_KEY = r"Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}"
@@ -214,18 +215,17 @@ def _initialize_com():
         return pythoncom, False
 
 
-class Native:
+class Native(NativeEventLog):
     """Only external native GUI interactions; paths/PIDs are scoped to this app."""
 
     def __init__(self, output: Path):
+        super().__init__()
         self.output = Path(output)
         self.output.mkdir(parents=True, exist_ok=True)
         self.host: str | None = None
         self.engine: str | None = None
         self.pid: int | None = None
         self.hwnd: int | None = None
-        self.events: list[dict] = []
-        self._started = time.monotonic()
         self._serial = 0
         self._com_owner = None
         self._com_owner_thread = None
@@ -237,12 +237,6 @@ class Native:
                 raise RuntimeError("Native Windows GUI verification requires an MTA owner thread; another library initialized STA first")
             self._com_owner = com
             self._com_owner_thread = threading.get_ident()
-
-    def _event(self, event: str, **fields) -> dict:
-        value = {"event": event, "utc": datetime.now(timezone.utc).isoformat(),
-                 "elapsed_ms": round((time.monotonic() - self._started) * 1000), **fields}
-        self.events.append(value)
-        return value
 
     def environment(self) -> dict:
         kernel, user = _windows()

@@ -6,8 +6,11 @@
 /docs/m4/chu/sources.json text eol=lf
 /docs/m4/tenjiku/fixtures.json text eol=lf
 /docs/m4/tenjiku/profile.json text eol=lf
-/desktop/scripts/fixtures/tenjiku-*.mshogi text eol=lf
-/desktop/scripts/fixtures/tenjiku-game-fixtures.json text eol=lf
+
+# Desktop generators compare exact bytes to the checkout.
+/desktop/src/__fixtures__/*.json text eol=lf
+/desktop/scripts/fixtures/*.mshogi text eol=lf
+/desktop/scripts/fixtures/*-game-fixtures.json text eol=lf
 
 # Git shell hooks must execute unchanged on Windows checkouts.
 /.githooks/* text eol=lf

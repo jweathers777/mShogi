@@ -4,7 +4,6 @@ import copy
 import gzip
 import hashlib
 import http.client
-import importlib.util
 import json
 from pathlib import Path
 import tempfile
@@ -12,9 +11,25 @@ import unittest
 from unittest.mock import Mock, patch
 import urllib.error
 
-spec = importlib.util.spec_from_file_location('gui_smoke', Path(__file__).with_name('gui-smoke.py'))
-module = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(module)
+from gui_support import NativeEventLog, event_record
+from script_test_support import load_script
+
+module = load_script("gui-smoke")
+
+
+class EventRecordTests(unittest.TestCase):
+    def test_native_events_use_the_journey_record_shape(self):
+        for adapter in ('gui_linux', 'gui_windows'):
+            with self.subTest(adapter=adapter):
+                driver = __import__(adapter)
+                native = object.__new__(driver.Native)
+                NativeEventLog.__init__(native)
+                fields = native._event('native_file_picker', kind='open')
+                expected = event_record('native_file_picker', fields)
+                self.assertEqual(set(native.events[0]), set(expected))
+                self.assertEqual(native.events[0]['operation'], expected['operation'])
+                self.assertEqual(native.events[0]['observation'], expected['observation'])
+                self.assertEqual(fields['kind'], 'open')
 
 
 class CrossGameProcessEvidenceTests(unittest.TestCase):
@@ -628,7 +643,7 @@ class XiangqiRuntimeEvidenceTests(unittest.TestCase):
             {'live': '4', 'selected': '2', 'historical': 'false'},
             {'live': '4', 'selected': '2', 'historical': 'true'}]
         with patch.object(module.time, 'sleep'):
-            self.assertEqual(journey.xiangqi_events(4, selected=2, historical=True),
+            self.assertEqual(journey.game_events('xiangqi', 4, selected=2, historical=True),
                              {'live': '4', 'selected': '2', 'historical': 'true'})
         self.assertEqual(journey.web.read.call_count, 2)
         journey.web.command.assert_not_called()
@@ -1410,17 +1425,17 @@ class ChuNormalProductEvidenceTests(unittest.TestCase):
 
     def test_chu_royal_survivor_selects_no_promotion_before_committing(self):
         journey=object.__new__(module.Journey);journey.web=Mock()
-        journey.chu_square=lambda square:square;journey.chu_events=Mock()
+        journey.chu_square=lambda square:square;journey.game_events=Mock()
         journey.assert_chu_promotion_choices=Mock();journey.assert_completed_cue=Mock()
         action={'from':[12,10],'route':[[12,12]],'promote':False}
         snapshot={'context':{'payload':{'events':[{'command':{'action':action}}]}}}
         journey.session_diagnostics=Mock(return_value=snapshot)
         sequence=[]
         journey.web.button.side_effect=lambda label:sequence.append(('choice',label))
-        journey.chu_events.side_effect=lambda count:sequence.append(('committed',count))
+        journey.game_events.side_effect=lambda game, count:sequence.append(('committed',game,count))
         with patch.object(module,'wait',side_effect=lambda check,label:check()):
             self.assertEqual(journey.chu_action('12j',['12l'],1,promote=False),snapshot)
-        self.assertEqual(sequence,[('choice','Do not promote'),('committed',1)])
+        self.assertEqual(sequence,[('choice','Do not promote'),('committed','chu',1)])
         journey.assert_chu_promotion_choices.assert_called_once()
         self.assertEqual(journey.web.click.call_args_list,[unittest.mock.call('12j'),unittest.mock.call('12l')])
         journey.web.button.assert_called_once_with('Do not promote')

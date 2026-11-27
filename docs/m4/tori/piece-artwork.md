@@ -66,7 +66,7 @@ The upstream font and temporary Brotli installation remain outside Git.
 Reproduce with those tools available:
 
 ```sh
-python3 desktop/src/assets/fonts/subset-tori.py \
+python3 desktop/src/assets/fonts/subset.py tori \
   /tmp/NotoSerifCJKjp-Regular.otf \
   desktop/src/assets/fonts/mshogi-tori-pieces.woff2
 ```

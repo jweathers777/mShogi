@@ -6,7 +6,6 @@ caller's tauri-driver process. Native dialogs use the locked GTK3 backend.
 """
 from __future__ import annotations
 
-import datetime
 import hashlib
 import json
 import os
@@ -14,23 +13,24 @@ from pathlib import Path
 import shutil
 import signal
 import subprocess
-import threading
 import time
+
+from gui_support import NativeEventLog
 
 
 class FilenameReadbackUnavailable(TimeoutError):
     """Copy did not yield entry text; never an accepted filename."""
 
 
-class Native:
+class Native(NativeEventLog):
     """Operate only the bound application's native X11 windows."""
 
     timeout = 20.0
 
     def __init__(self, output: Path):
+        super().__init__()
         self.output = Path(output).resolve()
         self.output.mkdir(parents=True, exist_ok=True)
-        self.events: list[dict] = []
         self.host: Path | None = None
         self.engine: Path | None = None
         self.pid: int | None = None
@@ -39,7 +39,6 @@ class Native:
         self._wm: subprocess.Popen | None = None
         self._wm_log = None
         self._counter = 0
-        self._event_lock = threading.Lock()
         if not os.environ.get("DISPLAY"):
             raise RuntimeError("Linux GUI verification requires an X11 DISPLAY (use xvfb-run)")
         for tool in ("xdotool", "scrot", "openbox", "xclip"):
@@ -70,15 +69,6 @@ class Native:
                 f"stdout={result.stdout.strip()!r}; stderr={result.stderr.strip()!r}"
             )
         return result
-
-    def _event(self, kind: str, **values) -> dict:
-        event = {
-            "at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
-            "kind": kind, **values,
-        }
-        with self._event_lock:
-            self.events.append(event)
-        return event
 
     def _desktop_ready(self):
         if self._wm is not None and self._wm.poll() is not None:

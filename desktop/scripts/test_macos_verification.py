@@ -1,5 +1,4 @@
 """Stable QA bundle tests; no macOS application is launched or approved."""
-import importlib.util
 import io
 from pathlib import Path
 import plistlib
@@ -9,9 +8,10 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-spec = importlib.util.spec_from_file_location("macos_verification", Path(__file__).with_name("macos-verification.py"))
-module = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(module)
+from gui_support import QA_FIXTURES
+from script_test_support import load_script
+
+module = load_script("macos-verification")
 
 
 class StableMacVerificationTests(unittest.TestCase):
@@ -56,7 +56,7 @@ class StableMacVerificationTests(unittest.TestCase):
     def test_all_fixture_selections_preserve_every_signed_bundle_byte(self):
         before = self.prepare()
         original_commands = list(self.commands)
-        for fixture in sorted(module.FIXTURES):
+        for fixture in sorted(QA_FIXTURES):
             selected = module.select("qa", fixture)
             self.assertEqual(module.selector("qa").read_bytes(), (fixture + "\n").encode())
             self.assertLessEqual(module.selector("qa").stat().st_size, 128)

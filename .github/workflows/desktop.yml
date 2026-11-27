@@ -70,9 +70,8 @@ jobs:
         run: |
           npm ci
           python3 ../tools/checks.py run --suite frontend --suite host
-      - name: Verify stable macOS QA identities and external fixture selection
-        if: runner.os == 'macOS'
-        run: python3 -m unittest discover -s desktop/scripts -p test_macos_verification.py -v
+      - name: Test desktop verification scripts
+        run: python -m unittest discover -s desktop/scripts -p 'test_*.py'
 
   package:
     name: Desktop (${{ matrix.os }})

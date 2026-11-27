@@ -1,10 +1,11 @@
 ---
 id: MSH-243
 title: Game-Independent Strength Tool
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-25T11:47:00Z'
-updated_date: '2026-11-26T11:55:00Z'
+updated_date: '2026-11-27T01:03:00Z'
 labels:
   - cleanup
   - tooling
@@ -50,4 +51,6 @@ John, 2026-11-25: part of the cleanup; no longer waits for the Tenjiku release. 
 Consolidation order approved by John, 2026-11-26: dependency fields record the structural cleanup prerequisites. MSH-263 now includes the duration and game-length budget work. MSH-266 now includes final fixture regeneration and therefore follows MSH-241, rather than blocking this strength-tool task. This supersedes the earlier blanket instruction to wait for every MSH-209 follow-up; no strength-tool scope is removed.
 
 Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
+
+Claimed on codex/msh-243-strength-tool from 94d1b5d. Next: inventory the earlier Python workflows, data contracts and Rust examples, then implement and verify the shared entry point.
 <!-- SECTION:NOTES:END -->

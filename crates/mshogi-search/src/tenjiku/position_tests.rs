@@ -143,6 +143,16 @@ fn all_44_faces_match_independent_complete_geometry_for_both_profiles_and_sides(
             let expected: BTreeSet<Action> =
                 parse!(&f["expected"][profile.id()]["complete_geometry_actions"]);
             assert_eq!(actual, expected, "{} {profile:?}", f["id"]);
+            // A cached move can name any square, including one never emitted by raw generation.
+            for to in Square::all() {
+                let direct = Action::single(at, to);
+                assert_eq!(
+                    p.find(&direct).is_some(),
+                    expected.contains(&direct),
+                    "{} {profile:?} {to}",
+                    f["id"]
+                );
+            }
             count += 1;
         }
     }

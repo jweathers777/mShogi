@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-19T07:12:00Z'
-updated_date: '2026-11-27T14:18:00Z'
+updated_date: '2026-11-27T14:26:00Z'
 labels:
   - tenjiku
   - search
@@ -53,4 +53,6 @@ Harness blocker is now the dependency MSH-214 (Tenjiku Strength Harness).
 2026-11-27 (John): Released MSH-202 for implementation after MSH-214. The architectural tasks MSH-277 through MSH-283 remain deferred and do not block this work.
 
 Claimed on codex/msh-202-tenjiku-speed. Freeze ba6cee4 before any product edit. Next: baseline profile, fixed-depth census and matched predecessor tests for both profiles.
+
+Baseline profile on macOS ARM64: single-core release search from each standard start, depth 3 / 500000 nodes, five seconds of 1 ms sampling. Of 3473 Adams / 3479 Muller main-work samples, inclusive shares respectively were geometry 44.0/43.3%, search move generation 59.2/58.5%, board make/project/restore 47.1/46.2%, attack tests 30.3/30.6% (royal scan 7.0/7.1%), and raw route generation 8.0/8.0%. Categories overlap. Frozen candidate d6274cb builds one displacement table per face/profile. Board occupancy and whole-action projection still decide effects. Removed redundant rank sets. Added the unusual-move note in docs/m5/shared-search-core.md. Focused Tenjiku search checks 21 passed including complete compound perft for both profiles, both move-set directions and randomized undo. Two manual timing tests were skipped. Additional fixture test of 45056 direct cached-move destinations passed. Independent review of ba6cee4..d6274cb found no issues. Frozen baseline build on c3-standard-4 succeeded, cleanup verified, VM upper bound $0.017. Next: compare frozen candidate, full tactical probes, four clocked color pairs per profile, integration checks. Branch codex/msh-202-tenjiku-speed; GCS runs/msh-202/.
 <!-- SECTION:NOTES:END -->

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-20T22:51:00Z'
-updated_date: '2026-11-27T13:19:00Z'
+updated_date: '2026-11-27T13:27:00Z'
 labels:
   - tenjiku
   - search
@@ -57,4 +57,6 @@ Frozen engine/runner/helper from 2e4b9ad built in 169 s on one c3-standard-4. Bu
 Clock pilot sampling frozen before game results: for each profile use the first admitted opening in each Texel hash stratum (train/validation/heldout) for equal-clock predecessor pairs. Use the first three catalog openings in order for 2x-time pilot pairs. Start at 30 s + 0.5 s per move with both base and increment doubled for the odds side. Target a further fixed 12 distinct odds pairs per profile at a viable control, subject to the task cap. A failed trial remains unscored in the record; adjust the control only for measured feasibility. Record small-sample uncertainty and all failures.
 
 Screen/proof job strength-msh214-screen1 complete and cleanup verified (no remaining job, disks or VMs; VM cost <= $0.131). Adams admitted 100/505 (scores -97 to +92), Muller 100/448 (-100 to +98). The native one-ply proof and both baseline splits completed for every row. Each profile contains 216 independent rule-proved diagrams, 144 development and 72 held-out. Each scored 144/144 and 72/72 at depth 2 and 500000 nodes. These composed elementary tactics are saturated at that budget. Grouped families and all alternative winning actions are retained. Source, proof, probe and screen receipts are under runs/msh-214/screen1 in the experiment bucket. Next: verify consolidated cross-shard uniqueness and inspect equal-clock and 2x pilot results; no task completion yet.
+
+The 30 s + 0.5 s pilot exposed incomplete first iterations at 608 to 1231 ms, including both colors of a Muller odds pair. Both profiles also completed full equal-clock pairs; typical late depth was 3 to 4. Calibration consequence fixed before the next run: increase to 60 s + 1.5 s, double both terms for time odds, play the same three Texel-stratified openings at equal clocks and all 12 additional catalog openings (indices 4 to 15, 1-based) at 2x. Keep unfinished pairs and do not use them to decide an SPRT. Use all six equal-clock pilot games per profile for export, with zero samples from unscored games. Re-screen each consolidated catalog to verify cross-shard board uniqueness. Per-pair wall budget 1200 s; no more than four pairs per c3-standard-4.
 <!-- SECTION:NOTES:END -->

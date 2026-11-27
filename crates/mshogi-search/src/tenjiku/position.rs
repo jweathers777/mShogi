@@ -906,7 +906,11 @@ impl Board {
                 c != 0 && meta(c).piece.side.index() != owner && self.cells[at] != c
             })
     }
-    fn generate(&self, stage: Stage, out: &mut Vec<Move>) {
+    fn generate_filtered(
+        &self,
+        out: &mut Vec<Move>,
+        mut include: impl FnMut(&Board, Move, &Undo) -> bool,
+    ) {
         let mut pieces = self.occupied[self.side];
         let mut scratch = *self;
         while let Some(from) = pieces.pop() {
@@ -918,7 +922,7 @@ impl Board {
                     }
                     let m = if promote { m.promoted() } else { m };
                     if let Some(u) = scratch.make(m) {
-                        if scratch.tactical_after(m, &u) == (stage == Stage::Tactical) {
+                        if include(&scratch, m, &u) {
                             out.push(m);
                         }
                         scratch.unmake(&u);
@@ -1327,7 +1331,9 @@ impl SearchPosition for TenjikuPosition {
                     .filter(|&m| self.is_tactical(m) == (stage == Stage::Tactical)),
             );
         } else {
-            self.board.generate(stage, out);
+            self.board.generate_filtered(out, |board, m, undo| {
+                board.tactical_after(m, undo) == (stage == Stage::Tactical)
+            });
         }
     }
     fn generate_search(&self, stage: Stage, out: &mut Vec<Move>) {
@@ -1349,18 +1355,33 @@ impl SearchPosition for TenjikuPosition {
         }
     }
     fn generate_checks(&self, out: &mut Vec<Move>) {
-        // The core permits a superset and omits tactical moves at the quiet frontier.
-        self.generate(Stage::Tactical, out);
-        let mut quiet = Vec::new();
-        self.generate_search(Stage::Quiet, &mut quiet);
-        let mut board = self.board;
-        for m in quiet {
-            if let Some(undo) = board.make(m) {
-                if board.can_win(board.side ^ 1) {
-                    out.push(m);
-                }
-                board.unmake(&undo);
+        let mut seen = Vec::new();
+        let mut include = |board: &Board, m, undo: &Undo| {
+            // Tactical candidates are a permitted superset. The core removes them
+            // at the quiet frontier. Count equivalent quiet threats only once.
+            if board.tactical_after(m, undo) {
+                return true;
             }
+            if !board.can_win(board.side ^ 1) || seen.contains(&(board.hash, board.cells)) {
+                return false;
+            }
+            seen.push((board.hash, board.cells));
+            true
+        };
+        if self.stack.is_empty()
+            && let Some(allowed) = &self.root_allowed
+        {
+            let mut scratch = self.board;
+            for &m in allowed {
+                if let Some(undo) = scratch.make(m) {
+                    if include(&scratch, m, &undo) {
+                        out.push(m);
+                    }
+                    scratch.unmake(&undo);
+                }
+            }
+        } else {
+            self.board.generate_filtered(out, include);
         }
     }
     fn make(&mut self, m: Move) -> bool {

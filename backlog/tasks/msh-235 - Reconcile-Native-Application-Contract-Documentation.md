@@ -1,11 +1,11 @@
 ---
 id: MSH-235
 title: Reconcile and Prune Durable Documentation
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-23T17:53:00Z'
-updated_date: '2026-11-27T07:18:00Z'
+updated_date: '2026-11-27T07:19:00Z'
 labels:
   - documentation
   - model:medium
@@ -29,9 +29,9 @@ Do this after the cleanup tasks, so the documents describe the final code. docs/
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 The desktop documents accurately describe the current document, session, Save/Open, Take back, resource diagnostics and protocol; stale claims are removed.
-- [ ] #2 docs/ holds only durable knowledge: task reports, reviews, verification records and run output are removed (useful run data is first uploaded to GCS), and links to them are updated.
-- [ ] #3 Statements are checked against docs/design.md and the current code; no product behavior or process rule changes.
+- [x] #1 The desktop documents accurately describe the current document, session, Save/Open, Take back, resource diagnostics and protocol; stale claims are removed.
+- [x] #2 docs/ holds only durable knowledge: task reports, reviews, verification records and run output are removed (useful run data is first uploaded to GCS), and links to them are updated.
+- [x] #3 Statements are checked against docs/design.md and the current code; no product behavior or process rule changes.
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -61,3 +61,11 @@ Rewrote current desktop contracts and kept the independent Shogi derivations. Mo
 
 Final prose sweep removed dated search result tables and retained the current design notes, independent rules derivations and reproducible methods. The original search material is in retired-search-results-5b5c35f.tar.gz under the same GCS path, downloaded SHA-256 38d398da129a6c45c2ce7560238209a22b20b1af59f69d0bed42d69dc2390580. The Chu data validator and Shogi geometry comparison passed. The optional standalone Tenjiku validator fails identically against unmodified main 5b5c35f; its projection bookkeeping defect is MSH-276.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Reconciled the six-game desktop session, minimal Save/Load document, Take back, resource facts and protocol 7 against design A-09–A-11 and current code. Removed superseded documents and run evidence after verifying three GCS archives. Retained independent rules derivations and relocated 15 replay inputs and two reference manifests byte for byte. Product behavior and process rules are unchanged.
+
+Required shared checks passed on macOS: Rust formatting, Clippy, 1,175 Rust tests (10 ignored), TypeScript, 578 frontend tests and eight Xiangqi sentinels. Checked 223 local links in 84 Markdown files, Backlog structure, Chu source-data validation and the Shogi geometry check. GUI packages were outside the check scope. The optional Tenjiku data validator reproduces an existing main failure, tracked in MSH-276. The downstream strength work is MSH-214 (Tenjiku Strength Harness).
+<!-- SECTION:FINAL_SUMMARY:END -->

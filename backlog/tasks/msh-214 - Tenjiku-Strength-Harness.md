@@ -1,10 +1,11 @@
 ---
 id: MSH-214
 title: Tenjiku Strength Harness
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-20T22:51:00Z'
-updated_date: '2026-11-27T13:00:00Z'
+updated_date: '2026-11-27T13:01:00Z'
 labels:
   - tenjiku
   - search
@@ -40,4 +41,6 @@ John, 2026-11-25: use the game-independent strength tool of MSH-243 (Game-Indepe
 Backlog consolidation, 2026-11-26: MSH-235 is the final cleanup prerequisite and transitively includes MSH-243 (Game-Independent Strength Tool). The existing instruction that John must release Tenjiku remains in force; needs-john makes that gate visible. No harness work has started.
 
 2026-11-27 (John): Released MSH-214 for implementation. The architectural tasks MSH-277 through MSH-283 remain deferred and do not block this work.
+
+Claimed on codex/msh-214-tenjiku-harness from 2e4b9ad. Next: freeze the opening design and tactical proof protocol before screening. No compute spend yet.
 <!-- SECTION:NOTES:END -->

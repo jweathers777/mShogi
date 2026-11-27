@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-20T22:51:00Z'
-updated_date: '2026-11-27T13:16:00Z'
+updated_date: '2026-11-27T13:19:00Z'
 labels:
   - tenjiku
   - search
@@ -55,4 +55,6 @@ Claimed on codex/msh-214-tenjiku-harness from 2e4b9ad. Next: freeze the opening 
 Frozen engine/runner/helper from 2e4b9ad built in 169 s on one c3-standard-4. Build VM/disks/job deleted, conservative VM cost $0.0166. The corrected measurement worker is pinned to sha256:37596ae339ac4dd92b9ab29c3597d1598783e41451e9e8cbfedb632011853f7e (Cloud Build 470d5397); initial worker-layer build failed at the redundant system pip install. Tactical sources and composition recipe frozen under gs://mshogi-experiments-216675633801/runs/msh-214/inputs/. Nine whole motif groups, 24 authored positions each per profile; three entire families reserved for held-out. Shared screen/proof run strength-msh214-screen1 dispatched under a $0.81 VM ceiling. Next: inspect proofs, baseline and opening counts, then run color-swapped clock trials. Branch codex/msh-214-tenjiku-harness.
 
 Clock pilot sampling frozen before game results: for each profile use the first admitted opening in each Texel hash stratum (train/validation/heldout) for equal-clock predecessor pairs. Use the first three catalog openings in order for 2x-time pilot pairs. Start at 30 s + 0.5 s per move with both base and increment doubled for the odds side. Target a further fixed 12 distinct odds pairs per profile at a viable control, subject to the task cap. A failed trial remains unscored in the record; adjust the control only for measured feasibility. Record small-sample uncertainty and all failures.
+
+Screen/proof job strength-msh214-screen1 complete and cleanup verified (no remaining job, disks or VMs; VM cost <= $0.131). Adams admitted 100/505 (scores -97 to +92), Muller 100/448 (-100 to +98). The native one-ply proof and both baseline splits completed for every row. Each profile contains 216 independent rule-proved diagrams, 144 development and 72 held-out. Each scored 144/144 and 72/72 at depth 2 and 500000 nodes. These composed elementary tactics are saturated at that budget. Grouped families and all alternative winning actions are retained. Source, proof, probe and screen receipts are under runs/msh-214/screen1 in the experiment bucket. Next: verify consolidated cross-shard uniqueness and inspect equal-clock and 2x pilot results; no task completion yet.
 <!-- SECTION:NOTES:END -->

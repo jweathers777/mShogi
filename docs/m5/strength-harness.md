@@ -92,9 +92,11 @@ For a clocked Tenjiku comparison, start with 60 s + 1.5 s per move
 a 1,200-second pair limit and the shared late-depth boundary of
 40 post-opening plies. The attained late-game target is depth 5 on
 `c3-standard-4` at this control. Use the same machine type and pair
-concurrency on both sides of a comparison. Some searches exhausted
-their time before completing the first iteration. The match driver stops
-on an unfinished pair. Keep its report and diagnose the stop before
+concurrency on both sides of a comparison. Tenjiku can play the best move
+from its last completed iteration when a node or time limit interrupts a
+later iteration. If the first iteration does not finish, it can return no
+move and the game stays unscored. The match driver stops on an unfinished
+pair. Keep its report and diagnose the stop before
 continuing a strength test. MSH-214 records the calibration, paired
 time-odds results and their limits for both profiles.
 
@@ -116,9 +118,14 @@ no game score. An unfinished match pair stops the campaign, except for the
 predeclared Tori step-limit exclusion (see MSH-204).
 
 `--max-pairs`, `--max-steps`, `--pair-wall-ms` and `--wall-seconds` bound the
-campaign. The driver reserves another 45 seconds per pair for shutdown. The
-runner also enforces its report-size budget. `bench` measures fixed-depth wall
-time and nodes on a positions file, including cold process and transport cost.
+campaign. Both color games run in sequence and share the pair wall limit. A
+long first game can leave the swapped game with zero turns. A full-game
+pilot at the intended machine and concurrency shows how many games actually
+start and conclude, whether a player misses its first iteration, and how
+much wall time remains after the swap. The driver reserves another 45
+seconds per pair for shutdown. The runner also enforces its report-size
+budget. `bench` measures fixed-depth wall time and nodes on a positions file,
+including cold process and transport cost.
 `signature` compares full fixed-depth engine observations for an opening catalog.
 
 ## Self-play, tuning and deeper judging

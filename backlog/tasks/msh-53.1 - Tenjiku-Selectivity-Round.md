@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-27T15:26:00Z'
-updated_date: '2026-11-27T15:29:00Z'
+updated_date: '2026-11-27T15:38:00Z'
 labels:
   - tenjiku
   - search
@@ -46,4 +46,6 @@ For a surviving set use color-swapped native predecessor games at the same clock
 
 <!-- SECTION:NOTES:BEGIN -->
 Claimed on codex/msh-53.1-tenjiku-selectivity. Freeze af4a48c as the predecessor. Next: inspect existing profiles, prior round results and shared search gates, then freeze trial settings before running either profile.
+
+Combined candidate 6592f51 is frozen and pushed. The generator checks complete quiet moves after projection, deduplicates equivalent threats and honors root restrictions. The bounded Google Batch build is build-msh531-combined. Focused single-core perft, differential, exchange and root threat tests are running. Next: execute the frozen comparison and calibration. Branch codex/msh-53.1-tenjiku-selectivity, evidence prefix gs://mshogi-experiments-216675633801/runs/msh-53.1/.
 <!-- SECTION:NOTES:END -->

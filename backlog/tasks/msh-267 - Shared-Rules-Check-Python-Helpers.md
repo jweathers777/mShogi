@@ -1,11 +1,11 @@
 ---
 id: MSH-267
 title: Shared Rules-Check Python Helpers
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-27T01:01:00Z'
+updated_date: '2026-11-27T01:02:00Z'
 labels:
   - tools
   - refactor
@@ -25,8 +25,8 @@ The rules-check tools outside tools/strength repeat helpers. tools/check_chess_*
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 One shared helper module serves the chess checks (one script with subcommands, or shared functions), and tools/shogi and tools/xiangqi use shared helpers; each check gives the same result on the committed fixtures.
-- [ ] #2 compare_perft.py is removed or documented; the Python tests of these tools run in CI, or the notes record why not.
+- [x] #1 One shared helper module serves the chess checks (one script with subcommands, or shared functions), and tools/shogi and tools/xiangqi use shared helpers; each check gives the same result on the committed fixtures.
+- [x] #2 compare_perft.py is removed or documented; the Python tests of these tools run in CI, or the notes record why not.
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -48,3 +48,12 @@ Shared helpers, documentation, and CI selection are implemented on codex/msh-267
 
 Pinned cshogi and Pikafish rebuilt and locally admitted. Before/after payloads match exactly for 101 Shogi board fixtures, 99 seeded Shogi sequences, 13 admission plus 4 API-gap sentinels, 4 diagnostic injections, 101 depth-2 Shogi divides, Xiangqi board and walks, and 17 Xiangqi histories (492 prefixes). GitHub run 45919886214 passed Routine and tooling on Linux, macOS, and Windows. Its Routine log confirms eight local Xiangqi sentinels. The seven upstream Xiangqi sentinels run manually with the admitted binary per conformance policy. All code and validation are on codex/msh-267-rules-check-helpers. Next verify CI on the final code checkpoint and integrate.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Shared Chess oracle, fixture, classification, perft, and command helpers, plus Shogi/Xiangqi hash, Git, strict JSON, and probe request helpers. Documented Shogi perft.
+Baseline and refactor observations match on the committed fixtures. Chess compared 15,008 plies. Shogi checked 101 fixture positions and depth-2 divides. Xiangqi checked 105 board entries and 492 history prefixes.
+Local integration passed. GitHub Actions run 45920116159 passed Routine checks and tooling on Linux, macOS, and Windows. CI runs eight local Xiangqi sentinels. The seven upstream-dependent tests passed locally with the admitted binary.
+Code on main at b70aeef. Next is MSH-243 (Game-Independent Strength Tool).
+<!-- SECTION:FINAL_SUMMARY:END -->

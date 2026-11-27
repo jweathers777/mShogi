@@ -33,7 +33,10 @@ def game_options(parser):
 
 
 def git(*args):
-    out = subprocess.run(['git', '-C', str(REPO), *args], capture_output=True, text=True)
+    try:
+        out = subprocess.run(['git', '-C', str(REPO), *args], capture_output=True, text=True)
+    except FileNotFoundError:
+        return None
     return out.stdout.strip() if out.returncode == 0 else None
 
 

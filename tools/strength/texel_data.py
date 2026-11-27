@@ -49,7 +49,7 @@ def samples(g, game, by_opening):
         yield identity, row
 
 
-def split(root, manifest_path, game='chess', allow_empty=False, by_opening=False):
+def split(root, manifest_path, game='chess', allow_empty=False, by_opening=False, profile=None):
     if game not in FIELDS:
         raise ValueError('unsupported game')
     if game in ('tori', 'chu', 'tenjiku') and not by_opening:
@@ -95,7 +95,7 @@ def split(root, manifest_path, game='chess', allow_empty=False, by_opening=False
         outputs[part] = {'path': str(path), 'sha256': digest(path),
                          'positions': counts[mask], 'games': len(selected_games[part])}
     manifest = {
-        'schema': 1, 'game': game, 'source': 'Fresh mShogi self-play; native final outcomes',
+        'schema': 1, 'game': game, 'profile': profile, 'source': 'Fresh mShogi self-play; native final outcomes',
         'training_ready': all(counts[mask] for mask in masks.values()),
         'allow_empty_demonstration': allow_empty,
         'use': 'User-authorized internal classical tuning; no imported corpus',

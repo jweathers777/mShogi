@@ -59,7 +59,7 @@ def worker(args):
                     controller.require(remaining > 0, 'campaign deadline')
                     with (root / f'command-{i}.log').open('x') as log:
                         process = subprocess.Popen([sys.executable, '-m', 'tools.strength.cli', *argv],
-                            cwd=root, env=dict(os.environ, PYTHONPATH='/opt/mshogi'),
+                            cwd=root, env=dict(os.environ, PYTHONPATH='/opt/mshogi', MSHOGI_STRENGTH_BATCH='1'),
                             start_new_session=True, stdout=log, stderr=subprocess.STDOUT)
                         try:
                             code = process.wait(timeout=remaining)

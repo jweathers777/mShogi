@@ -3,6 +3,8 @@
 mod config;
 #[path = "support/strength_positions.rs"]
 mod positions;
+#[path = "support/tori_mate_proof.rs"]
+mod tori_mate_proof;
 use mshogi_core::native::{CanonicalRecord, RulesProfile};
 use mshogi_engine::{
     BridgeOptions, EngineBridge, ExecutionContext, ExecutionPurpose, ExecutionRequest,
@@ -133,6 +135,20 @@ fn main() -> Result<()> {
             let profile = serde_json::from_value(json!(profile))?;
             let row = serde_json::from_str(&text)?;
             println!("{}",positions::prepare(profile,&row,seed.parse()?,plies.parse()?,mode=="prove")?);
+        }
+        [op,plies,visits] if op == "unlisted-tori" => {
+            let input:Value=serde_json::from_str(&text)?;
+            let length:u8=plies.parse()?;
+            if !(1..=tori_mate_proof::MAX_PROOF_PLIES).contains(&length) { return Err("unsupported Tori proof length".into()); }
+            let position=mshogi_core::tori::Position::from_compact_diagram(&input["diagram"])?;
+            let choice=serde_json::from_value(input["action"].clone())?;
+            let token=mshogi_core::tori::notation::format_action(&position,choice)?;
+            let mut child=mshogi_core::tori::LocalPosition::admit(position)?;
+            child.apply(choice)?;
+            let cap:u64=visits.parse()?;
+            let mut prover=tori_mate_proof::Prover::full(cap);
+            let win = if cap == 0 { None } else { prover.defender_mated(&child,length-1).ok() };
+            println!("{}",json!({"win":win,"visits":prover.visits,"token":token}));
         }
         [op,engine,depth,nodes,time @ ..] if op == "search" && time.len() <= 1 => {
             let record = CanonicalRecord::from_json(&text)?;

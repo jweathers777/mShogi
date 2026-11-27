@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T11:47:00Z'
-updated_date: '2026-11-27T01:16:00Z'
+updated_date: '2026-11-27T01:22:00Z'
 labels:
   - cleanup
   - tooling
@@ -61,4 +61,6 @@ Backlog consolidation, 2026-11-26: the dependency fields and current acceptance 
 Claimed on codex/msh-243-strength-tool from 94d1b5d. Next: inventory the earlier Python workflows, data contracts and Rust examples, then implement and verify the shared entry point.
 
 Checkpoint on codex/msh-243-strength-tool. Read the deleted drivers at 52f39b8, retained scripts and MSH-240 notes. Replaced the three pair drivers and five game config writers with one native path, plus shared opening, suite, export, judge, fitting, time-odds and Batch commands. Native helper compiles and 51 focused Python tests pass. Next: independent review, all-profile smoke evidence, workspace/CI and integration.
+
+Fresh review of 94d1b5d..2bd1418 found six issues. Fixed frozen Tori checking-only answers with a full-width native verifier and digest-bound proof cache, the separate Chu igui contract, Batch child process groups, executable resolution and optional Git, judge-to-blunder reuse, and calibration failure detection. Also fixed the Chess native depth cap after a real clock run. Seven profiles completed 2x-clock calibration, 1 accepted move per color. Both Tenjiku compound fixtures concluded in both colors, exported a native-labeled deduplicated position, and were judged. Tori/Chu/Shogi/Xiangqi frozen subset probes passed. 56 strength Python tests pass. Next: complete workspace and affected-platform CI checks, integration and cleanup; branch codex/msh-243-strength-tool. Local Mac, $0 cloud compute; smoke fixtures and logs under ignored runs/msh-243.
 <!-- SECTION:NOTES:END -->

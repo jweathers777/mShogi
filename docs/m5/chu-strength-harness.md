@@ -9,7 +9,8 @@ The frozen suites `chu-tactics-v1.json` and `chu-forcing-v1.json` in the same
 directory contain native positions, complete independently proved answer sets
 and explicit partitions. Use `probe --split development` or
 `probe --split held-out` with either suite. The first is an elementary Lion
-and royal capture screen. Its held-out positions share construction templates
+and royal capture screen. It checks the precise igui capture-return route and
+effects in both native and search positions separately from best-move success. Its held-out positions share construction templates
 with the development positions. The second asks for a win within three plies.
 A slower forced win can fail its criterion.
 

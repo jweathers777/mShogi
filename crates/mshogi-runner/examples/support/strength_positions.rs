@@ -241,7 +241,17 @@ pub fn prepare(
         return Err("at most 128 opening plies".into());
     }
     let record = import(profile, row)?;
-    with_board!(&record, |g| prepare_board(g, row, seed, plies, prove))
+    let mut prepared = with_board!(&record, |g| prepare_board(g, row, seed, plies, prove))?;
+    if let Some(action) = row.get("igui_contract").filter(|v| !v.is_null()) {
+        let CanonicalRecord::Chu(record) = &record else {
+            return Err("igui contract requires Chu".into());
+        };
+        prepared["igui_contract_passed"] = json!(igui_contract(
+            &record.to_game()?,
+            &serde_json::from_value(action.clone())?
+        ));
+    }
+    Ok(prepared)
 }
 
 pub fn export_position(record: &CanonicalRecord) -> Result<Option<Value>> {
@@ -281,7 +291,11 @@ fn prepare_board<G: Board>(
                 answers.push(action);
             }
         }
-    } else if let Some(expected) = row.get("answers").or_else(|| row.get("expected_moves")) {
+    } else if let Some(expected) = row
+        .get("answers")
+        .or_else(|| row.get("expected_moves"))
+        .or_else(|| row.get("checking_answers"))
+    {
         for v in expected.as_array().ok_or("expected an answer list")? {
             let action = game.parse(v)?;
             game.clone().play(action.clone())?;
@@ -292,4 +306,50 @@ fn prepare_board<G: Board>(
         json!({"root":fresh_root(game.record()?)?, "position":game.diagram()?,
         "first":game.first(),"score_first_twice":game.score(),"answers":answers}),
     )
+}
+
+/// Score exact igui support separately from best-move success. Ordinary capture
+/// remains a valid winning answer, but cannot satisfy this route/effect check.
+fn igui_contract(game: &chu::Game, action: &chu::Action) -> bool {
+    use mshogi_search::alphabeta::SearchPosition as _;
+    if action.route.len() != 2 || action.route[1] != action.from {
+        return false;
+    }
+    let victim = action.route[0];
+    let Some(lion) = game.position().piece(action.from) else {
+        return false;
+    };
+    if !lion.is_lion()
+        || game
+            .position()
+            .piece(victim)
+            .is_none_or(|p| p.side == lion.side)
+    {
+        return false;
+    }
+    let mut position = mshogi_search::chu::position::ChuPosition::from_game(game);
+    let Some(m) = position.find(action) else {
+        return false;
+    };
+    if !position.legal_moves().contains(&m) || !position.make(m) {
+        return false;
+    }
+    let mut native = game.fork();
+    if native
+        .submit(chu::GameRequest {
+            expected: native.context(),
+            actor: lion.side,
+            command: chu::GameCommand::Play {
+                action: action.clone(),
+            },
+        })
+        .is_err()
+    {
+        return false;
+    }
+    native.position().piece(action.from) == Some(lion)
+        && native.position().piece(victim).is_none()
+        && position.piece(action.from) == Some(lion)
+        && position.piece(victim).is_none()
+        && position.side_to_move() == lion.side.opponent()
 }

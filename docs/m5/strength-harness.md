@@ -44,11 +44,14 @@ answer's legality. Supply a complete set for the test criterion. A bounded mate
 or checking-only suite measures that stated objective. An exclusion from its
 answer set alone cannot establish a blunder.
 
-The builder removes duplicate boards and keeps each source group in one
-partition. The first SHA-256 byte of the group modulo four assigns zero to
+The builder preserves explicit source partitions, removes duplicate boards,
+and keeps each source group in one partition. For unassigned groups it hashes the group. The first SHA-256 byte of the group modulo four assigns zero to
 held-out. The builder requires both partitions. Freeze the suite and reserve
 held-out play for measurement. Existing suites with `answers` or
 `expected_moves` and an explicit `split` can also be probed directly.
+For the Tori checking-only catalog, an unlisted choice is checked against the
+frozen full-width proofs or a bounded native proof. Exhausted proofs are unknown.
+The Chu probe reports the capture-return contract separately.
 For a development blunder screen use `blunders --suite FILE --depth N --nodes N`.
 It records whether each move avoided the known error and matched one reference
 alternative. Add `--movetime MS` for a timed screen.
@@ -66,7 +69,7 @@ chosen limits and hypotheses before play. `--candidate-time-factor 2` doubles
 the candidate's base and increment. Use the same executable on both sides for
 an internal time-odds curve. `--calibrate` requests one turn per color per game.
 The driver retains the native reports, both binary identities, timing and depth,
-the five pair-score counts, Elo interval and SPRT decision. A cutoff supplies
+median accepted depth from `--late-ply` onward, the five pair-score counts, Elo interval and SPRT decision. A cutoff supplies
 no game score. An unfinished match pair stops the campaign, except for the
 predeclared Tori step-limit exclusion (see MSH-204).
 
@@ -107,7 +110,8 @@ games. It searches each full native history before and after the move with a
 fresh engine state. A native terminal score takes precedence after the move.
 Missing scores remain unjudged. The output keeps the inputs, depths, scores,
 actual deeper-search count, clear blunders per 100 judged moves and mean
-positive win-probability loss. Choose materially greater work than the players
+positive win-probability loss. Its `positions` array contains reusable clear-blunder
+records for `blunders --suite QUALITY.json`. Choose materially greater work than the players
 and inspect the achieved depths. See the roadmap for the probability rule and
 the limitations of same-family judging.
 

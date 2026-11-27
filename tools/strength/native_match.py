@@ -44,11 +44,11 @@ def summarize(report):
             raise ValueError('native engine cleanup failed; retained report is unscored')
         score = game['score_first_twice']
         scores.append(None if score is None else (2 - score if game['pairing']['swapped'] else score))
-        for step in game['steps']:
+        for ply, step in enumerate(game['steps']):
             t = telemetry(step['observation'])
             if t is not None:
                 turns[step['player']].append({
-                    'seconds': step['elapsed_ns'] / 1e9,
+                    'ply_after_opening': ply, 'seconds': step['elapsed_ns'] / 1e9,
                     'depth': t['completed_depth'], 'nodes': t['nodes'],
                     'search_id': t.get('search_id'), 'applied': step['applied'],
                 })
@@ -94,12 +94,22 @@ def run_pair(args, seed, out):
         subprocess.run(command, check=True, stdout=log, stderr=subprocess.STDOUT, timeout=120)
     command = [args.runner, 'experiment-run', str(config), str(report_path)]
     with open(out / f'pair-{seed:04d}.log', 'x') as log:
-        process = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+        # The Batch worker owns its entire command group, including every pair.
+        batch_group = os.name == 'posix' and os.environ.get('MSHOGI_STRENGTH_BATCH') == '1' and os.getpid() == os.getpgrp()
+        process = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT,
+                                   start_new_session=os.name == 'posix' and not batch_group)
         try:
             code = wait_for_pair(process, args.pair_wall_ms)
         except BaseException:
             # The runner owns its children. At the outer hard watchdog, stop
             # the entire session so a child cannot survive a killed controller.
+            if os.name == 'nt':
+                subprocess.run(['taskkill', '/F', '/T', '/PID', str(process.pid)], check=False)
+                process.wait(timeout=5)
+                raise
+            if batch_group:
+                # The controller records the failed command and collects its evidence.
+                os.killpg(os.getpgrp(), signal.SIGKILL)
             os.killpg(process.pid, signal.SIGTERM)
             try:
                 process.wait(timeout=5)
@@ -139,6 +149,14 @@ def length_limited(args, row):
             and 'step_limit' in row['stops'])
 
 
+def calibration_failure(rows):
+    for row in rows:
+        if (row['plies'] != [1, 1] or any(stop not in ('native_concluded', 'step_limit') for stop in row['stops'])
+                or any(len(turns) != 1 or not turns[0]['applied'] for turns in row['turns'])):
+            return f"pair {row['seed']}: calibration requires one accepted move by each engine"
+    return None
+
+
 def unfinished(args, rows):
     """The reason to stop the campaign, or None."""
     if any(row['pair_score'] is None and not length_limited(args, row) for row in rows):
@@ -155,7 +173,9 @@ def summary(args, rows, start, failure=None):
     players = []
     for player in range(2):
         turns = [t for row in rows for t in row['turns'][player]]
-        players.append({'turns': len(turns),
+        late_depths = [t['depth'] for t in turns if t['applied'] and t['ply_after_opening'] >= args.late_ply]
+        players.append({'turns': len(turns), 'late_turns': len(late_depths),
+                        'median_late_depth': statistics.median(late_depths) if late_depths else None,
                         'median_seconds': statistics.median(t['seconds'] for t in turns) if turns else None,
                         'median_depth': statistics.median(t['depth'] for t in turns) if turns else None,
                         'total_request_seconds': sum(t['seconds'] for t in turns)})
@@ -187,6 +207,7 @@ def options(parser, *, selfplay=False):
     parser.add_argument('--random-plies', type=int, default=0, help='seeded continuations of catalog roots')
     parser.add_argument('--watchdog-ms', type=int, help='symmetric engine watchdog; writer default is 60000 for clocks, 30000 for fixed work')
     parser.add_argument('--out', required=True)
+    parser.add_argument('--late-ply', type=int, default=40, help='first post-opening ply for late-depth statistics')
     parser.add_argument('--workers', type=int, default=4)
     parser.add_argument('--max-pairs', type=int, default=600)
     parser.add_argument('--max-steps', type=int, help='positive native event budget per game; unfinished games stay unscored')
@@ -206,13 +227,15 @@ def options(parser, *, selfplay=False):
 
 def campaign(args):
     parser = argparse.ArgumentParser(prog="strength match")
+    if args.late_ply < 0:
+        parser.error('--late-ply must be nonnegative')
     if args.selfplay:
         args.candidate = args.baseline = args.engine
         if args.baseline_nodes is not None or args.baseline_depth is not None or args.candidate_time_factor != 1:
             parser.error('self-play uses identical work for both participants')
         if args.base is None:
             args.baseline_nodes = args.candidate_nodes
-            args.baseline_depth = 64
+            args.baseline_depth = 8 if args.game == 'chess' else 64
     if args.random_plies and (not args.openings or not 0 <= args.random_plies <= 128):
         parser.error('--random-plies requires a catalog and at most 128 plies')
     if (args.game == 'tenjiku') != (args.profile is not None):
@@ -233,7 +256,7 @@ def campaign(args):
         if args.candidate_nodes is not None or args.baseline_nodes is not None or args.baseline_depth is not None:
             parser.error('clock mode uses symmetric native safety caps; do not supply fixed work')
         args.candidate_nodes = args.baseline_nodes = 5_000_000
-        args.baseline_depth = 64
+        args.baseline_depth = 8 if args.game == 'chess' else 64
     elif args.candidate_nodes is None or args.increment != 0:
         parser.error('fixed-work mode requires --candidate-nodes; increment requires --base')
     if not 0 <= args.first_seed <= 2**64 - args.max_pairs:
@@ -297,6 +320,9 @@ def campaign(args):
                 write_new(out / f'checkpoint-{len(rows):04d}.json', result)
                 print(json.dumps({k: result[k] for k in ('pairs', 'wins_draws_losses', 'sprt', 'wall_seconds')}), flush=True)
                 if args.calibrate:
+                    reason = calibration_failure(rows)
+                    if reason:
+                        raise RuntimeError(reason)
                     continue
                 if args.selfplay:
                     if any(stop not in ('native_concluded', 'step_limit', 'wall_budget',

@@ -12,7 +12,7 @@ from pathlib import Path
 
 from tools.experiments.core import digest, encode, file_hash
 from . import texel_data
-from .common import engine_identity, game_options, load_json, profile, write_new
+from .common import DATA, engine_identity, game_options, load_json, profile, write_new
 from .native_match import telemetry
 
 
@@ -95,7 +95,8 @@ def openings(args):
         score = t.get('score')
         if (board_action(result, args.game) is not None and t['completed_depth'] == args.depth
                 and score is not None and abs(score) <= args.balance):
-            accepted.append({'id': item['id'], 'record': record, 'screen_score': score})
+            accepted.append({'id': item['id'], 'group': item.get('group', item['id']),
+                             'record': record, 'screen_score': score})
         if len(accepted) == args.count:
             break
     write_new(args.out, dict(evidence(args), openings=accepted, attempts=attempts, requested=args.count,
@@ -103,6 +104,10 @@ def openings(args):
                              source_sha256=file_hash(args.source) if source else None))
     if len(accepted) < args.count:
         raise ValueError(f'only {len(accepted)} of {args.count} balanced openings within the attempt limit')
+
+
+def partition(group):
+    return 'held-out' if int(digest(group.encode())[:2], 16) % 4 == 0 else 'development'
 
 
 def suite(args):
@@ -115,6 +120,8 @@ def suite(args):
         group = item.get('group') or item.get('opening_id') or item.get('family')
         if not isinstance(group, str) or not group:
             raise ValueError(f"{item['id']}: supply the source game or opening group")
+        if args.proof == 'supplied' and 'checking_answers' in item and 'answers' not in item and 'expected_moves' not in item:
+            raise ValueError('incomplete checking-only answers: probe the frozen suite directly')
         if args.proof == 'supplied' and not (item.get('source') or item.get('proof')):
             raise ValueError(f"{item['id']}: supply independent answer provenance")
         row = position(args, item, prove=args.proof == 'one-ply')
@@ -123,10 +130,12 @@ def suite(args):
                 raise ValueError(f"{item['id']}: no live position with independent answers")
             continue
         key = texel_data.key(row['position'], args.game)
+        part = item.get('split', partition(group))
+        if part not in ('development', 'held-out') or groups.setdefault(group, part) != part:
+            raise ValueError(f'{group}: conflicting or unknown suite partition')
         if key in boards:
             continue
         boards.add(key)
-        part = groups.setdefault(group, 'held-out' if int(digest(group.encode())[:2], 16) % 4 == 0 else 'development')
         rows.append({'id': item['id'], 'group': group, 'split': part, 'record': row['root']['record'],
                      'answers': row['answers'], 'proof': item.get('proof') or item.get('source')
                      if args.proof == 'supplied' else 'every native board move ending in a win for its mover'})
@@ -138,17 +147,33 @@ def suite(args):
 
 def probe(args):
     selected = profile(args.game, args.profile)
+    proofs = {}
+    if args.game == 'tori':
+        proofs = load_json(DATA / 'tori-tactics-v1-proofs.json')['proofs']
     rows = []
     for item in inputs(args.suite, 'positions', selected):
-        if item['split'] != args.split:
+        if item.get('split', 'development') != args.split:
             continue
         row = position(args, item)
         if not row['answers']:
             raise ValueError(f"{item['id']}: expected independent answers")
         result = search(args, row['root']['record'])
         choice = board_action(result, args.game)
-        rows.append({'id': item['id'], 'choice': choice, 'passed': choice in row['answers'],
-                     'telemetry': result.get('telemetry')})
+        passed = choice in row['answers']
+        verdict = 'listed' if passed else 'incorrect'
+        if not passed and choice is not None and 'checking_answers' in item and args.game == 'tori':
+            payload = {'diagram': item['diagram'], 'action': choice}
+            spelling = native(args, 'unlisted-tori', payload, item['mate_plies'], 0)['token']
+            key = digest(encode(item['diagram']).rstrip(b'\n'))
+            cached = proofs.get(f"{key}|{spelling}|{item['mate_plies']}|20000000|tori-mate-proof-v2")
+            if cached and cached['verdict'] != 'unknown':
+                verdict = cached['verdict']
+            else:
+                proof = native(args, 'unlisted-tori', payload, item['mate_plies'], args.proof_visits)
+                verdict = {None: 'unknown', False: 'refuted', True: 'proved_win'}[proof['win']]
+            passed = verdict == 'proved_win'
+        rows.append({'id': item['id'], 'choice': choice, 'passed': passed, 'verdict': verdict,
+                     'igui_contract_passed': row.get('igui_contract_passed'), 'telemetry': result.get('telemetry')})
     if not rows:
         raise ValueError('empty requested suite partition')
     write_new(args.out, dict(evidence(args), split=args.split, suite_sha256=file_hash(args.suite),
@@ -191,7 +216,8 @@ def export(args):
                 sample[outcome_field] = label
             game.update({outcome_field: label, 'truncated': label is None})
             stream.write(json.dumps(game, separators=(',', ':')) + '\n')
-    texel_data.split(out, out / 'manifest.json', args.game, args.allow_empty_demonstration, by_opening=True)
+    texel_data.split(out, out / 'manifest.json', args.game, args.allow_empty_demonstration,
+                     by_opening=True, profile=profile(args.game, args.profile))
 
 
 def probability(result):
@@ -227,7 +253,17 @@ def judge(args):
         rows.append(dict(item, judge_before=before, judge_after=after, p_before=p, p_after=q,
                          loss=loss, clear_blunder=loss is not None and p >= .30 and p - q >= .30))
     count = sum(r['clear_blunder'] for r in rows)
-    write_new(args.out, dict(evidence(args), sampled=len(rows), unjudged=len(rows)-len(losses),
+    errors = []
+    for row in rows:
+        if row['clear_blunder']:
+            played = board_action(row['observation']['result'], args.game)
+            reference = board_action(row['judge_before'], args.game)
+            if played is not None and reference is not None:
+                errors.append({'id': f"{row['game_id']}/{row['ply']}", 'group': row['opening_id'],
+                               'split': partition(row['opening_id']), 'record': row['before'],
+                               'played': played, 'judge_move': reference,
+                               'p_before': row['p_before'], 'p_after': row['p_after']})
+    write_new(args.out, dict(evidence(args), positions=errors, sampled=len(rows), unjudged=len(rows)-len(losses),
                              judged=len(losses), deeper_than_player=deeper, clear_blunders=count,
                              clear_blunders_per_100=100*count/len(losses) if losses else None,
                              mean_win_probability_loss=statistics.mean(losses) if losses else None, rows=rows))
@@ -331,6 +367,7 @@ def options(sub):
         elif func == suite:
             p.add_argument('--proof', choices=['one-ply', 'supplied'], required=True)
         elif func == probe:
+            p.add_argument('--proof-visits', type=positive, default=20000, help='maximum native visits for an unlisted Tori move')
             p.add_argument('--suite', required=True)
             p.add_argument('--split', required=True, choices=['development', 'held-out'])
         elif func == export:

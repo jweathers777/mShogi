@@ -118,6 +118,7 @@ impl Args {
         args.config(
             profile,
             serde_json::from_value(prepared["root"].clone())?,
+            row["group"].as_str().unwrap_or(&id).to_owned(),
             id,
             provenance,
         )
@@ -127,6 +128,7 @@ impl Args {
         &self,
         profile: RulesProfile,
         root: mshogi_runner::experiments::Root,
+        group: String,
         id: String,
         provenance: String,
     ) -> Result<()> {
@@ -184,7 +186,11 @@ impl Args {
                     ..player(
                         "candidate",
                         &self.values[1],
-                        64,
+                        if profile == RulesProfile::ChessMatchV1 {
+                            mshogi_engine::MAX_ANALYSIS_DEPTH
+                        } else {
+                            64
+                        },
                         self.values[4].parse().unwrap(),
                     )
                 },
@@ -196,8 +202,8 @@ impl Args {
                 ),
             ],
             openings: vec![Opening {
-                id: id.clone(),
-                group: id,
+                id,
+                group,
                 root,
                 split: Split::Test,
                 provenance,

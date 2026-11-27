@@ -55,39 +55,39 @@
   {
     "action": {
       "from": [
-        5,
-        11
+        9,
+        13
       ],
       "kind": "travel",
       "promote": false,
       "route": [
         [
-          5,
-          10
+          9,
+          4
         ]
       ]
     },
-    "nodes": 426,
+    "nodes": 381,
     "profile": "mshogi.tenjiku.adams1999-modern.v1",
-    "score": 10
+    "score": 42
   },
   {
     "action": {
       "from": [
-        5,
-        11
+        9,
+        13
       ],
       "kind": "travel",
       "promote": false,
       "route": [
         [
-          5,
-          10
+          9,
+          4
         ]
       ]
     },
-    "nodes": 579,
+    "nodes": 395,
     "profile": "mshogi.tenjiku.muller-completed.v1",
-    "score": 10
+    "score": 42
   }
 ]

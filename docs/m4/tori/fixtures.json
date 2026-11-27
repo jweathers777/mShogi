@@ -3696,7 +3696,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -3753,7 +3753,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -3804,7 +3804,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -3850,7 +3850,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -3899,7 +3899,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -3946,7 +3946,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -3996,7 +3996,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4046,7 +4046,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4092,7 +4092,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4142,7 +4142,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4189,7 +4189,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4244,7 +4244,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4297,7 +4297,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4350,7 +4350,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4402,7 +4402,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4453,7 +4453,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4495,7 +4495,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4538,7 +4538,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4583,7 +4583,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4642,7 +4642,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4701,7 +4701,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4759,7 +4759,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4809,7 +4809,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4854,7 +4854,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4905,7 +4905,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4957,7 +4957,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -5008,7 +5008,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -5067,7 +5067,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -5116,7 +5116,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -5163,7 +5163,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -5218,7 +5218,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -5265,7 +5265,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -5311,7 +5311,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -5354,7 +5354,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -5400,7 +5400,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "rotated_game_admission",
+      "scope": "game_admission_rotated",
       "given": {
         "root": {
           "root_kind": "diagram",

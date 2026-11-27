@@ -2,7 +2,7 @@
   "schema": "mshogi.tori.rules-fixture-ownership.v1",
   "profile": "mshogi.tori.modern.v1",
   "corpus_revision": "MSH208-MODERN-2026-11-20",
-  "corpus_sha256": "475400ea3ad0f01fdd95ce989454f4b175b83db4e3575aca02781e9777a6138e",
+  "corpus_sha256": "f2d5e5d7d0008d89eb917bc17f048426536d406eea8ec3d655fc96cbc5923c9e",
   "corpus_unchanged": true,
   "coordinator": "MSH-85",
   "corpus_owner": "MSH-126",

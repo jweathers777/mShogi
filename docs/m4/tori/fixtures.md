@@ -17,7 +17,7 @@ wire schema. Future representation may map without altering meaning.
 
 - `exhaustive_local_geometry`: complete movement tables on an otherwise empty
   board, not whole legal positions. Limited rays and jumps are distinct.
-- `game_admission`/`rotated_game_admission`: concrete diagram and submitted
+- `game_admission`/`game_admission_rotated`: concrete diagram and submitted
   command; accepted/rejected plus named effect or unchanged-state expectations.
   Every accepted transition also requires apply→undo, restoring all
   state/history/caches exactly. This includes

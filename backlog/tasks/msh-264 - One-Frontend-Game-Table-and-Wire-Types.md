@@ -1,11 +1,11 @@
 ---
 id: MSH-264
 title: Frontend Consistency and Desktop Cleanup
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-27T00:35:00Z'
+updated_date: '2026-11-27T00:37:00Z'
 labels:
   - desktop
   - frontend
@@ -35,13 +35,13 @@ The desktop session keeps the newest 256 engine results with KEPT_RESULTS (nativ
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 One game table (kind, name, sides, labels) and one session-status helper serve the frontend; wire types are in one module and match the Rust types, including the Tenjiku result.
-- [ ] #2 Copied helpers and test helpers each live in one shared module; frontend tests and the TypeScript check pass; line counts before and after are recorded.
-- [ ] #3 No test or script asserts only that the retired contract class or label is absent; checks of kept behavior stay.
-- [ ] #4 The desktop session and archive documents do not say that a current surface shows a 'DEVELOPMENT CONTRACT' label.
-- [ ] #5 No style sheet uses a custom property that is not defined; the document state label stays readable.
-- [ ] #6 One constant defines the number of kept engine results; MAX_ARCHIVE_OBSERVATIONS is removed and the verification fixtures use the remaining constant.
-- [ ] #7 Workspace, desktop-session all-features and GUI script tests pass.
+- [x] #1 One game table (kind, name, sides, labels) and one session-status helper serve the frontend; wire types are in one module and match the Rust types, including the Tenjiku result.
+- [x] #2 Copied helpers and test helpers each live in one shared module; frontend tests and the TypeScript check pass; line counts before and after are recorded.
+- [x] #3 No test or script asserts only that the retired contract class or label is absent; checks of kept behavior stay.
+- [x] #4 The desktop session and archive documents do not say that a current surface shows a 'DEVELOPMENT CONTRACT' label.
+- [x] #5 No style sheet uses a custom property that is not defined; the document state label stays readable.
+- [x] #6 One constant defines the number of kept engine results; MAX_ARCHIVE_OBSERVATIONS is removed and the verification fixtures use the remaining constant.
+- [x] #7 Workspace, desktop-session all-features and GUI script tests pass.
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -68,4 +68,18 @@ Checkpoint: shared game metadata, wire types, request status, focus and test hel
 Checkpoint: fresh review is complete. Preserved approved header labels, clarified in-memory retention, and made the Xiangqi witness type match Rust. Final strict TypeScript and the production frontend build passed. The full shared check gate is running. Next: confirm workspace, frontend and GUI-script results and integrate.
 
 Workspace tests and Rust lint passed. The frontend suite found Chess analysis reports work through its dedicated status and dialogs need document-order sorting when a disclosure opens. Restored both in the shared helpers. The focused tests passed. Next run the full frontend and GUI-script checks and integrate.
+
+Frontend size was 6,762 lines at d256279 and is 6,783 lines at 59d4cfe. Counts include every tracked TypeScript and TSX file under desktop/src, including tests, and exclude JSON fixtures.
+
+The workspace check gate passed formatting, Clippy, and all 1,175 enabled Rust tests. Ten existing tests were ignored by the workspace command. Desktop-session all-features passed 196 tests. The final frontend run passed strict TypeScript and 578 tests in 41 files. Both normal and verification bundles built. The GUI script suite passed 177 tests. Fresh review covered all six fixture families and the final status and focus changes. Routine GitHub checks passed on the final feature commit (run 45917598363). Packaged GUI journeys were not run.
+
+All seven CSS custom properties used across 11 stylesheets have definitions. Existing document label colors have contrast ratios of 8.97:1 and 9.08:1 against the header. The revised documentation links resolve.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+The six games share frontend game metadata, active request status, and native wire types, including Tenjiku results. Dialog, scrolling, and frontend test helpers are shared. Retired verification assertions and labels were removed, CSS references were corrected, and the production session and verification fixtures use one 256-result limit.
+
+The required workspace, desktop-session, frontend, and GUI script checks passed. Integrated at 59d4cfe. MSH-243 (Game-Independent Strength Tool) is the direct successor.
+<!-- SECTION:FINAL_SUMMARY:END -->

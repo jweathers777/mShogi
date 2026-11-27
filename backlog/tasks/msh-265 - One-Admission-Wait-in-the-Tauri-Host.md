@@ -1,10 +1,11 @@
 ---
 id: MSH-265
 title: One Admission Wait in the Tauri Host
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-26T11:55:00Z'
+updated_date: '2026-11-27T00:38:00Z'
 labels:
   - desktop
   - tauri
@@ -33,4 +34,6 @@ desktop/src-tauri/src/main.rs (1,499 lines) repeats the reserve, receipt and 15 
 
 <!-- SECTION:NOTES:BEGIN -->
 Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
+
+Claimed on codex/msh-265-tauri-admission. Next: combine the host admission waits and verification entry points, refactor the host tests, and run affected host CI.
 <!-- SECTION:NOTES:END -->

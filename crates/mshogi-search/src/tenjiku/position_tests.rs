@@ -669,14 +669,13 @@ fn exchange_accounts_for_off_target_demon_burn_and_mover_suicide() {
         let p = TenjikuPosition::from_position(&pos);
         let a = Action::single(Square::new(8, 10).unwrap(), Square::new(8, 8).unwrap());
         let m = p.find(&a).unwrap();
-        assert_eq!(
-            p.tactical_gain(m),
-            if profile == Profile::AdamsModern {
-                -2400
-            } else {
-                -2500
-            }
-        );
+        // The moving Demon dies in both profiles. Only Adams burns the enemy pawn.
+        let burned = if profile == Profile::AdamsModern {
+            super::piece_value(Face::P)
+        } else {
+            0
+        };
+        assert_eq!(p.tactical_gain(m), burned - super::piece_value(Face::FiD));
         assert!(!p.exchange_at_least(m, 0));
         assert_eq!(p.hash(), p.hash_from_scratch());
     }

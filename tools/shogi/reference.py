@@ -7,7 +7,6 @@ Only enumerated LegalAll moves are pushed; permissive parsers, is_legal,
 is_draw and is_game_over never determine expected legality or outcomes.
 """
 import argparse
-import hashlib
 import importlib.metadata
 import json
 import os
@@ -20,18 +19,14 @@ import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / 'tools'))
+
+from rules_check_helpers import git, run_json_probe, sha, strict_json
+
 PIN = '6985fe5b516c34072e27c63cf429847f03193522'
 FIXTURES = ROOT / 'tests/fixtures/shogi/board-rules.json'
 MANIFEST = ROOT / 'docs/m4/reference/cshogi-admission.json'
 USI = re.compile(r'(?:[1-9][a-i][1-9][a-i]\+?|[PLNSGBR]\*[1-9][a-i])\Z')
-
-
-def sha(path):
-    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
-
-
-def git(source, *args):
-    return subprocess.check_output(['git', '-C', str(source), *args], text=True).strip()
 
 
 def admit(source, path, build_log):
@@ -66,7 +61,7 @@ def admit(source, path, build_log):
 def reference(manifest_path):
     import cshogi
     import cshogi._cshogi as extension
-    manifest = json.loads(manifest_path.read_text())
+    manifest = strict_json(manifest_path.read_text())
     if manifest['revision'] != PIN or importlib.metadata.version('cshogi') != '1.1.0':
         raise ValueError('unadmitted reference revision/version')
     if sha(extension.__file__) != manifest['extension_sha256']:
@@ -213,7 +208,7 @@ def verify_reversal(board, prefixes, cshogi):
 
 
 def check_fixtures(cshogi, path):
-    data = json.loads(path.read_text())
+    data = strict_json(path.read_text())
     if data.get('format') != 'mshogi.shogi.board-fixtures.v1' or data.get('rules_profile') != 'mshogi.shogi.csa36.v1':
         raise ValueError('unsupported fixture format/profile')
     ids = [case['id'] for case in data['cases']]
@@ -325,21 +320,26 @@ def audit_gap_sentinels(cshogi):
     return out
 
 
+def capture_probe(command, data, timeout):
+    return subprocess.run(command, input=data, capture_output=True, timeout=timeout)
+
+
 def query_probe(command, root, moves, timeout):
     request = {'root_sfen': root, 'moves': moves}
     try:
-        result = subprocess.run(shlex.split(command), input=json.dumps(request) + '\n', capture_output=True, text=True, timeout=timeout)
+        result = run_json_probe(shlex.split(command), request, timeout, capture_probe)
     except subprocess.TimeoutExpired:
         return {'probe_failure': 'timeout', 'timeout_seconds': timeout}
+    stderr = result.stderr.decode('utf-8', errors='replace')[-2000:]
     if result.returncode != 0:
-        return {'probe_failure': 'nonzero exit', 'exit': result.returncode, 'stderr': result.stderr[-2000:]}
-    if result.stderr:
-        return {'probe_failure': 'unexpected stderr', 'stderr': result.stderr[-2000:]}
+        return {'probe_failure': 'nonzero exit', 'exit': result.returncode, 'stderr': stderr}
+    if stderr:
+        return {'probe_failure': 'unexpected stderr', 'stderr': stderr}
     try:
-        lines = result.stdout.splitlines()
+        lines = result.stdout.decode('utf-8').splitlines()
         if len(lines) != 1:
             raise ValueError('expected exactly one JSONL response')
-        data = json.loads(lines[0])
+        data = strict_json(lines[0])
         if not isinstance(data.get('sfen'), str) or type(data.get('in_check')) is not bool or not isinstance(data.get('legal_moves'), list):
             raise ValueError('missing or wrong response field types')
         choices = data['legal_moves']
@@ -348,7 +348,7 @@ def query_probe(command, root, moves, timeout):
         normalized_sfen(data['sfen'])
         return data
     except (ValueError, TypeError, AttributeError) as error:
-        return {'probe_failure': 'invalid response', 'detail': str(error), 'stdout': result.stdout[-2000:]}
+        return {'probe_failure': 'invalid response', 'detail': str(error), 'stdout': result.stdout.decode('utf-8', errors='replace')[-2000:]}
 
 
 def difference(want, got):
@@ -441,6 +441,7 @@ def main():
     report = {'format': 'mshogi.shogi.reference-run.v1', 'revision': PIN,
               'fixture_sha256': sha(args.fixtures), 'manifest_sha256': sha(args.manifest),
               'harness_sha256': sha(__file__),
+              'helpers_sha256': sha(ROOT / 'tools/rules_check_helpers.py'),
               'probe_command': shlex.split(args.probe) if args.probe else None,
               'probe_sha256': sha(shlex.split(args.probe)[0]) if args.probe else None,
               'fixtures': observations, 'reference_domain_sentinels': reference_domain_sentinels(cshogi), 'audit_gap_sentinels': audit_gap_sentinels(cshogi), 'comparisons': [], 'diagnostics_demo': []}
@@ -448,7 +449,7 @@ def main():
     if failed:
         for case in failed:
             print(json.dumps({'fixture_failure': case['id'], 'errors': case['errors']}), file=sys.stderr)
-    roots = list(dict.fromkeys(c['root_sfen'] for c in json.loads(args.fixtures.read_text())['cases']))
+    roots = list(dict.fromkeys(c['root_sfen'] for c in strict_json(args.fixtures.read_text())['cases']))
     if args.probe and not failed:
         for index, root in enumerate(roots):
             for run in range(args.playouts):

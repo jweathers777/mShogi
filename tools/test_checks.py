@@ -38,6 +38,14 @@ class SelectionTests(unittest.TestCase):
         with contextlib.redirect_stdout(io.StringIO()):
             checks.execute(SOURCE, [(['npm', '--version'], '.')])
 
+    def test_reference_tool_changes_select_only_tests_without_an_oracle(self):
+        command = ([checks.sys.executable, '-B', 'tools/xiangqi/test_reference.py',
+                    'LocalSentinels'], '.')
+        for path in ('tools/xiangqi/compare.py', 'tools/xiangqi/test_reference.py',
+                     'tools/rules_check_helpers.py'):
+            self.assertEqual(checks.python_tests(SOURCE, [path]), [command])
+        self.assertEqual(checks.python_tests(SOURCE, ['tools/differential_chess.py']), [])
+
     def test_product_commands_fail_without_continuing(self):
         with patch('checks.subprocess.run', side_effect=subprocess.CalledProcessError(4, 'cargo')) as run:
             with self.assertRaises(subprocess.CalledProcessError), contextlib.redirect_stdout(io.StringIO()):
@@ -187,14 +195,13 @@ class GitTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn('example.py', result.stderr)
 
-    def test_dry_run_and_external_oracle_do_not_execute_checks(self):
+    def test_dry_run_does_not_execute_checks(self):
         self.write('crates/one/src/lib.rs', 'pub fn broken(\n')
         command = [checks.sys.executable, 'tools/checks.py', 'run', '--base', self.base, '--dry-run']
         result = subprocess.run(command, cwd=self.root, capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn('cargo test', result.stdout)
         self.assertFalse((self.root / 'target').exists())
-        self.assertEqual(checks.python_tests(self.root, ['tools/xiangqi/test_reference.py']), [])
 
     def test_hook_checkout_keeps_lf_with_autocrlf_enabled(self):
         self.write('.gitattributes', '/.githooks/* text eol=lf\n')

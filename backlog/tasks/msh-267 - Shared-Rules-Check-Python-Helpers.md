@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-27T00:53:00Z'
+updated_date: '2026-11-27T00:58:00Z'
 labels:
   - tools
   - refactor
@@ -43,4 +43,6 @@ The rules-check tools outside tools/strength repeat helpers. tools/check_chess_*
 Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
 
 Branch codex/msh-267-rules-check-helpers. Claim pushed. Next establish reference runs, extract the common code, and verify parity. No fixture or rules changes planned.
+
+Shared helpers, documentation, and CI selection are implemented on codex/msh-267-rules-check-helpers. Baseline and refactor agree for all seven Chess fixture scripts and the 15,008-ply differential, and for 105 Xiangqi fixture entries and 34 walk positions. All 15 Xiangqi sentinels passed. Local integration checks passed with the installed nvm Node/npm pair because Homebrew Node cannot load libsimdjson. Next finish Shogi and Xiangqi history parity, confirm CI, then integrate.
 <!-- SECTION:NOTES:END -->

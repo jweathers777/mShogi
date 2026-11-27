@@ -7,20 +7,22 @@ search, evaluation, protocol engine or NNUE network is used.
 """
 import argparse
 import collections
-import hashlib
 import json
 import os
 from pathlib import Path
 import re
 import selectors
-import shlex
 import signal
 import subprocess
 import sys
 import time
 
-PIN = '9d7833aa113626b3ea63ad83f49fb9b456bd5839'
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / 'tools'))
+
+from rules_check_helpers import sha, strict_json
+
+PIN = '9d7833aa113626b3ea63ad83f49fb9b456bd5839'
 MANIFEST = ROOT / 'docs/m4/xiangqi/reference/pikafish-admission.json'
 MOVE = re.compile(r'[a-i][0-9][a-i][0-9]\Z')
 MAX_REQUEST = 4096
@@ -32,24 +34,6 @@ class ProbeFailure(ValueError):
     def __init__(self, kind, detail):
         self.kind, self.detail = kind, detail
         super().__init__(kind + ': ' + detail)
-
-
-def sha(path):
-    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
-
-
-def unique_object(pairs):
-    result = {}
-    for key, value in pairs:
-        if key in result:
-            raise ValueError('duplicate JSON field: ' + key)
-        result[key] = value
-    return result
-
-
-def strict_json(data):
-    return json.loads(data, object_pairs_hook=unique_object,
-                      parse_constant=lambda text: (_ for _ in ()).throw(ValueError('nonfinite JSON: ' + text)))
 
 
 def fen_domain(fen, *, root=True):
@@ -214,9 +198,13 @@ def query(request, manifest=MANIFEST, timeout=20):
     depth, fen, moves = validate_request(request)
     data = f'{depth}\t{fen}\t{" ".join(moves)}\n'.encode('ascii')
     raw = bounded_run([str(admitted_binary(manifest))], data, timeout)
+    return decode_response(raw, depth)
+
+
+def decode_response(raw, depth):
     try:
         result = strict_json(raw)
-    except (ValueError, UnicodeError) as error:
+    except ValueError as error:
         raise ProbeFailure('malformed_response', str(error)) from error
     return validate_response(result, depth)
 

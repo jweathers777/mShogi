@@ -1,38 +1,15 @@
 #!/usr/bin/env python3
 """Recheck castling/en passant fixtures using pinned external chess, never mShogi."""
-import hashlib
-import json
-from pathlib import Path
-import sys
-
-
-def require(condition, message):
-    if not condition:
-        raise ValueError(message)
+from chess_check_helpers import check_case, checked_board, load_fixture, require, run_check
 
 
 def check():
-    import chess
-    path = Path(__file__).resolve().parents[1] / "tests/fixtures/chess/special-actions.json"
-    data = json.loads(path.read_text(encoding="utf-8"))
-    require(data["format"] == "mshogi.chess.special-actions.v1", "format")
-    require(data["schema_version"] == 1, "schema version")
-    require(data["rules_profile"] == "mshogi.chess.position.v1", "profile")
-    require(chess.__version__ == "1.11.2", "install chess==1.11.2 in a separate environment")
-    require(hashlib.sha256(Path(chess.__file__).read_bytes()).hexdigest() == data["sources"]["python-chess-1.11.2"]["sha256"], "oracle source hash")
+    chess, data = load_fixture("special-actions")
     ids = set()
 
     def common(case, fen):
-        cid = case["id"]
-        require(cid not in ids, f"{cid}: duplicate ID")
-        ids.add(cid)
-        require(case["rules_profile"] == data["rules_profile"], f"{cid}: profile")
-        require(case["provenance"]["rationale"], f"{cid}: missing rationale")
-        require(all(source in data["sources"] for source in case["provenance"]["sources"]), f"{cid}: sources")
-        board = chess.Board(fen)
-        require(board.is_valid(), f"{cid}: invalid reference position")
-        require(board.fen(en_passant="fen") == fen, f"{cid}: non-canonical FEN")
-        return cid, board
+        cid = check_case(data, case, ids)
+        return cid, checked_board(chess, fen, cid)
 
     for case in data["positions"]:
         cid, board = common(case, case["fen"])
@@ -60,7 +37,4 @@ def check():
 
 
 if __name__ == "__main__":
-    try:
-        check()
-    except (AssertionError, ImportError, OSError, ValueError, KeyError, TypeError) as error:
-        sys.exit(f"FAIL: {error}")
+    run_check(check)

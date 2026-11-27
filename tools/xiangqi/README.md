@@ -35,6 +35,11 @@ reproduced binary gets its own manifest: do not replace its identity with an
 old binary hash. GPL-3.0-or-later source/license provenance is retained. No
 binary or external model is committed or distributed by this tool.
 
+Run the local Python sentinels with
+`python3 tools/xiangqi/test_reference.py LocalSentinels`. These tests use
+temporary probes and run in CI on Xiangqi tool or shared rules-check helper
+changes. Run the full suite with an admitted binary for the upstream checks.
+
 ## Operation and domain
 
 The admitted operation is `Position::set`, complete `MoveList<ALL>` (including

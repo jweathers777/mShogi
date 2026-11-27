@@ -19,46 +19,15 @@ Examples:
   python tools/differential_chess.py --fill tests/fixtures/chess/sequence-regressions.json
 """
 import argparse
-import hashlib
 import json
 from pathlib import Path
 import random
 import subprocess
 import sys
 
-ROOT = Path(__file__).resolve().parents[1]
-FIXTURES = ROOT / "tests/fixtures/chess"
-PROFILE = "mshogi.chess.position.v1"
-ORACLE_SHA = "1fde6a8e932508d14b31f6a584497b49c2969fc3c7cdc675347f819f0d667a5b"
+from chess_check_helpers import PROFILE, ROOT, classification, load_oracle, perft, read_fixture, run_check
+
 U32_MAX = 4294967295
-
-
-def oracle():
-    import chess
-    if chess.__version__ != "1.11.2":
-        sys.exit("FAIL: install chess==1.11.2 in a separate environment")
-    if hashlib.sha256(Path(chess.__file__).read_bytes()).hexdigest() != ORACLE_SHA:
-        sys.exit("FAIL: oracle source hash differs from the recorded python-chess 1.11.2")
-    return chess
-
-
-def classification(board):
-    names = {(False, True): "quiet", (True, True): "check", (True, False): "checkmate", (False, False): "stalemate"}
-    return names[(board.is_check(), any(True for _ in board.legal_moves))]
-
-
-def perft(board, depth):
-    if depth == 0:
-        return 1
-    moves = list(board.legal_moves)
-    if depth == 1:
-        return len(moves)
-    total = 0
-    for move in moves:
-        board.push(move)
-        total += perft(board, depth - 1)
-        board.pop()
-    return total
 
 
 def start_positions():
@@ -70,10 +39,10 @@ def start_positions():
     actions as CounterOverflow, a representation limit python-chess lacks.
     """
     fens = []
-    corpus = json.loads((FIXTURES / "corpus.json").read_text(encoding="utf-8"))
+    corpus = read_fixture("corpus.json")
     fens += [c["input"]["fen"] for c in corpus["cases"] if c["operation"] == "position"]
     for name, key in [("attacks.json", "cases"), ("special-actions.json", "positions"), ("classification.json", "cases"), ("ordinary-candidates.json", "cases")]:
-        data = json.loads((FIXTURES / name).read_text(encoding="utf-8"))
+        data = read_fixture(name)
         fens += [c["fen"] for c in data[key]]
     out = []
     for fen in fens:
@@ -108,7 +77,8 @@ def expectations(chess, start_fen, actions):
     for uci in actions:
         board.push(chess.Move.from_uci(uci))
         after.append(board.fen(en_passant="fen"))
-    return {"after_fens": after, "final_legal": sorted(m.uci() for m in board.legal_moves), "final_classification": classification(board)}
+    legal = sorted(m.uci() for m in board.legal_moves)
+    return {"after_fens": after, "final_legal": legal, "final_classification": classification(board, legal)}
 
 
 def compare_playout(chess, mshogi, start_fen, actions):
@@ -127,7 +97,7 @@ def compare_playout(chess, mshogi, start_fen, actions):
             commands += [f"move {actions[ply - 1]}", "legal", "status"]
             board.push(chess.Move.from_uci(actions[ply - 1]))
         legal = sorted(m.uci() for m in board.legal_moves)
-        expected += [f"fen {board.fen(en_passant='fen')}", legal, f"status {classification(board)}"]
+        expected += [f"fen {board.fen(en_passant='fen')}", legal, f"status {classification(board, legal)}"]
     stdout, stderr, code = run_shell(mshogi, commands)
     for index, want in enumerate(expected):
         ply = 0 if index < 3 else (index - 3) // 3 + 1
@@ -204,7 +174,7 @@ def main():
     parser.add_argument("--save", type=Path, help="append disagreements as regression cases to this file")
     parser.add_argument("--fill", type=Path, help="add oracle expectations to cases lacking them, then exit")
     args = parser.parse_args()
-    chess = oracle()
+    chess = load_oracle(read_fixture("corpus.json")["sources"])
 
     if args.fill:
         data = load_regressions(args.fill)
@@ -275,4 +245,4 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    run_check(main)

@@ -82,8 +82,10 @@ untracked files. Use an explicit earlier base when checking a change already on
 Markdown documentation and Backlog changes select no product suites; content,
 links and task structure still need review. Python syntax checks do not import
 scripts or create bytecode. Known script test directories are selected when their
-Python code changes (strength, experiments and desktop scripts). External-oracle
-scripts receive syntax checks only and still need their documented verification.
+Python code changes (strength, experiments and desktop scripts). Changes to the
+Xiangqi tools or shared rules-check helper also run the local Xiangqi sentinels
+on POSIX. Checks that require external oracles run separately using their
+documented commands.
 
 Rust changes select workspace formatting, Clippy and tests. Shared rules/engine/
 desktop-session changes also select frontend checks. Frontend changes select

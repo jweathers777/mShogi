@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Build an isolated, network-free, source-pinned developer board comparator."""
 import argparse
-import hashlib
 import json
 from pathlib import Path
 import platform
@@ -9,18 +8,15 @@ import shlex
 import subprocess
 import sys
 
-PIN = '9d7833aa113626b3ea63ad83f49fb9b456bd5839'
-ROOT = Path(__file__).resolve().parents[2]
+from reference import PIN
+from rules_check_helpers import git, sha
+
 HARNESS = Path(__file__).with_name('pikafish_board_probe.cpp')
-
-
-def sha(path):
-    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
 def build(source, output, compiler):
     source = source.resolve()
-    if subprocess.check_output(['git', '-C', str(source), 'rev-parse', 'HEAD'], text=True).strip() != PIN:
+    if git(source, 'rev-parse', 'HEAD') != PIN:
         raise ValueError('wrong reference pin')
     if subprocess.check_output(['git', '-C', str(source), 'status', '--porcelain', '--untracked-files=no'], text=True):
         raise ValueError('tracked source differs from audited pin')
@@ -59,7 +55,7 @@ def build(source, output, compiler):
         'format': 'mshogi.xiangqi.board-reference-admission.v1',
         'upstream': 'https://github.com/official-pikafish/Pikafish',
         'revision': PIN,
-        'tree': subprocess.check_output(['git', '-C', str(isolated), 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+        'tree': git(isolated, 'rev-parse', 'HEAD^{tree}'),
         'clean_tracked_base': True,
         'platform': platform.platform(), 'machine': platform.machine(),
         'compiler': subprocess.check_output([compiler, '--version'], text=True).strip(),

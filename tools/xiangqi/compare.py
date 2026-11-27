@@ -12,6 +12,7 @@ import shlex
 import sys
 
 import reference
+from rules_check_helpers import run_json_probe, sha, strict_json
 
 
 def fact_errors(case, actual):
@@ -45,12 +46,8 @@ def fact_errors(case, actual):
 
 
 def native_query(command, request, timeout):
-    raw = reference.bounded_run(command, (json.dumps(request) + '\n').encode(), timeout)
-    try:
-        result = reference.strict_json(raw)
-    except (ValueError, UnicodeError) as error:
-        raise reference.ProbeFailure('malformed_response', str(error)) from error
-    return reference.validate_response(result, request.get('perft_depth', 0))
+    raw = run_json_probe(command, request, timeout, reference.bounded_run)
+    return reference.decode_response(raw, request.get('perft_depth', 0))
 
 
 def local_fen(fen):
@@ -95,10 +92,12 @@ def run_case(case, manifest, native, timeout, depth=0, moves=None):
 
 
 def compare(fixtures, manifest, native, report, timeout, depth, walks, length):
-    before = reference.sha(fixtures)
-    tool_before = reference.sha(__file__)
-    adapter_before = reference.sha(reference.__file__)
-    inventory = reference.strict_json(fixtures.read_text())
+    before = sha(fixtures)
+    tool_before = sha(__file__)
+    adapter_before = sha(reference.__file__)
+    helpers = reference.ROOT / 'tools/rules_check_helpers.py'
+    helpers_before = sha(helpers)
+    inventory = strict_json(fixtures.read_text())
     if inventory.get('format') != 'mshogi.xiangqi.board-fixtures.v1':
         raise ValueError('unsupported fixture format')
     cases = inventory['fixtures']
@@ -120,14 +119,16 @@ def compare(fixtures, manifest, native, report, timeout, depth, walks, length):
             if not choices:
                 break
             moves.append(rng.choice(choices))
-    if before != reference.sha(fixtures):
+    if before != sha(fixtures):
         raise AssertionError('fixture changed during comparison')
-    if tool_before != reference.sha(__file__) or adapter_before != reference.sha(reference.__file__):
+    if (tool_before != sha(__file__) or adapter_before != sha(reference.__file__)
+            or helpers_before != sha(helpers)):
         raise AssertionError('comparison tools changed during execution; rerun stable sources')
     result = {'format': 'mshogi.xiangqi.board-comparison.v1', 'reference_revision': reference.PIN,
-              'manifest_sha256': reference.sha(manifest), 'fixtures_sha256': before,
+              'manifest_sha256': sha(manifest), 'fixtures_sha256': before,
               'tool_sha256': tool_before, 'reference_adapter_sha256': adapter_before,
-              'native_command': native, 'native_binary_sha256': reference.sha(native[0]) if native else None,
+              'helpers_sha256': helpers_before,
+              'native_command': native, 'native_binary_sha256': sha(native[0]) if native else None,
               'depth': depth, 'sequence_seeds': list(range(walks)), 'sequence_length': length,
               'fen_counter_exclusion': 'Pikafish rule60/check10 clock is not native raw no-capture count or WXF adjudication; full native/reference FEN observations retained; compare placement/side/fullmove only',
               'fixture_records': records, 'sequence_observations': sequence_records,

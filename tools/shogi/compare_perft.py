@@ -5,13 +5,14 @@ Independent expectations, where present, are checked separately. Other numbers
 are observations of agreement, not newly invented rules/perft authorities.
 """
 import argparse
-import hashlib
 import json
 from pathlib import Path
 import shlex
 import subprocess
 import sys
+
 import reference
+from rules_check_helpers import run_json_probe, sha, strict_json
 
 
 def count(board, cshogi, depth):
@@ -41,9 +42,10 @@ def run():
     parser.add_argument('--report', type=Path, required=True)
     args = parser.parse_args()
     cshogi = reference.reference(args.manifest)
+    command = shlex.split(args.probe)
     records = []
     for path in args.fixtures:
-        for case in json.loads(path.read_text())['cases']:
+        for case in strict_json(path.read_text())['cases']:
             identity = (case['root_sfen'], tuple(case['moves']))
             # Diagnostic traversal has its own counter headroom, beyond replay.
             reference.admitted_root(cshogi, identity[0], len(identity[1]) + args.depth)
@@ -61,10 +63,11 @@ def run():
             request = {'root_sfen': identity[0], 'moves': list(identity[1]), 'perft_depth': args.depth}
             errors = []
             try:
-                result = subprocess.run(shlex.split(args.probe), input=json.dumps(request) + '\n', capture_output=True, text=True, timeout=args.timeout)
+                result = run_json_probe(command, request, args.timeout, reference.capture_probe)
                 if result.returncode or result.stderr:
-                    raise ValueError(f'probe exit={result.returncode}, stderr={result.stderr[-2000:]}')
-                response = json.loads(result.stdout)
+                    stderr = result.stderr.decode('utf-8', errors='replace')[-2000:]
+                    raise ValueError(f'probe exit={result.returncode}, stderr={stderr}')
+                response = strict_json(result.stdout)
                 native_divide = {e['action']: e['nodes'] for e in response['divide']}
                 if len(native_divide) != len(response['divide']):
                     raise ValueError('duplicate divide entry')
@@ -91,11 +94,12 @@ def run():
                             'independent_expected_nodes': independent, 'errors': errors})
             if errors:
                 print(json.dumps(records[-1]), file=sys.stderr)
-    command = shlex.split(args.probe)
     report = {'format': 'mshogi.shogi.perft-comparison.v1', 'reference_revision': reference.PIN,
-              'manifest_sha256': reference.sha(args.manifest), 'tool_sha256': reference.sha(__file__), 'probe_command': command,
-              'probe_sha256': hashlib.sha256(Path(command[0]).read_bytes()).hexdigest(),
-              'fixtures_sha256': {str(p): reference.sha(p) for p in args.fixtures}, 'records': records,
+              'manifest_sha256': sha(args.manifest), 'tool_sha256': sha(__file__), 'probe_command': command,
+              'reference_adapter_sha256': sha(reference.__file__),
+              'helpers_sha256': sha(reference.ROOT / 'tools/rules_check_helpers.py'),
+              'probe_sha256': sha(command[0]),
+              'fixtures_sha256': {str(p): sha(p) for p in args.fixtures}, 'records': records,
               'interpretation': 'independent expectations checked where present; remaining counts are differential observations only'}
     args.report.write_text(json.dumps(report, indent=2) + '\n')
     failed = sum(bool(r['errors']) for r in records)

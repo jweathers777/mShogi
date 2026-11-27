@@ -4,20 +4,13 @@
 This tool never imports mShogi and does not implement its future FEN parser.
 """
 import argparse
-import hashlib
 import json
 from pathlib import Path
 import re
-import sys
 
-PROFILE = "mshogi.chess.position.v1"
-CORPUS = Path(__file__).resolve().parents[1] / "tests/fixtures/chess/corpus.json"
-MOVE = re.compile(r"[a-h][1-8][a-h][1-8][qrbn]?")
+from chess_check_helpers import FIXTURES, MOVE, PROFILE, classification, load_oracle, perft, require, run_check
 
-
-def require(condition, message):
-    if not condition:
-        raise ValueError(message)
+CORPUS = FIXTURES / "corpus.json"
 
 
 def validate(data):
@@ -68,27 +61,8 @@ def validate(data):
             raise ValueError(f"{cid}: unknown operation")
 
 
-def perft(board, depth):
-    if depth == 0:
-        return 1
-    if depth == 1:
-        return board.legal_moves.count()
-    nodes = 0
-    for move in list(board.legal_moves):
-        board.push(move)
-        nodes += perft(board, depth - 1)
-        board.pop()
-    return nodes
-
-
 def verify_oracle(data):
-    try:
-        import chess
-    except ImportError as error:
-        raise ValueError("--oracle needs a separate environment with chess==1.11.2; see corpus README") from error
-    require(chess.__version__ == "1.11.2", "oracle must be chess==1.11.2")
-    digest = hashlib.sha256(Path(chess.__file__).read_bytes()).hexdigest()
-    require(digest == data["sources"]["python-chess-1.11.2"]["sha256"], "oracle module hash mismatch")
+    chess = load_oracle(data["sources"])
     checked, rejected = 0, 0
     for case in data["cases"]:
         cid, expected = case["id"], case["expected"]
@@ -101,8 +75,7 @@ def verify_oracle(data):
         else:
             moves = sorted(move.uci() for move in board.legal_moves)
             require(moves == expected["legal_moves"], f"{cid}: move set mismatch; missing={sorted(set(expected['legal_moves']) - set(moves))}, extra={sorted(set(moves) - set(expected['legal_moves']))}")
-            classification = "checkmate" if board.is_checkmate() else "stalemate" if board.is_stalemate() else "check" if board.is_check() else "quiet"
-            require(classification == expected["classification"], f"{cid}: classification mismatch")
+            require(classification(board, moves) == expected["classification"], f"{cid}: classification mismatch")
             for depth, nodes in expected.get("perft", {}).items():
                 require(perft(board, int(depth)) == nodes, f"{cid}: perft depth {depth} mismatch")
             for attack in expected.get("attacks", []):
@@ -117,17 +90,12 @@ def main():
     parser.add_argument("--corpus", type=Path, default=CORPUS)
     parser.add_argument("--oracle", action="store_true", help="recheck external reference answers; requires chess==1.11.2")
     args = parser.parse_args()
-    try:
-        data = json.loads(args.corpus.read_text(encoding="utf-8"))
-        validate(data)
-        print(f"PASS structure: {len(data['cases'])} cases with profile, input, operation, expectation and provenance.")
-        if args.oracle:
-            verify_oracle(data)
-    except (OSError, ValueError, KeyError, TypeError) as error:
-        print(f"FAIL: {error}", file=sys.stderr)
-        return 1
-    return 0
+    data = json.loads(args.corpus.read_text(encoding="utf-8"))
+    validate(data)
+    print(f"PASS structure: {len(data['cases'])} cases with profile, input, operation, expectation and provenance.")
+    if args.oracle:
+        verify_oracle(data)
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    run_check(main)

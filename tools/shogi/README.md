@@ -76,6 +76,23 @@ two-move failing prefix. Those injected failures are expected diagnostic tests,
 not observations of defects in mShogi. Native comparison is a separate command;
 MSH-64's admission report contains zero native comparisons.
 
+## Board perft and divide
+
+Build the native probe and use the same admitted cshogi environment to compare
+total counts and root action counts at depth 1 or 2.
+
+```sh
+cargo build --locked -p mshogi-core --example shogi_probe
+/private/tmp/msh64-reference-venv/bin/python tools/shogi/compare_perft.py \
+  --probe target/debug/examples/shogi_probe \
+  --fixtures tests/fixtures/shogi/board-rules.json \
+  --depth 2 --report /private/tmp/shogi-perft.json
+```
+
+Use `--manifest` for a locally admitted build. The tool checks independent
+perft or divide expectations when the fixtures supply them. The other
+counts record agreement between the two implementations.
+
 ## Admitted reference input domain
 
 Before C++ Board construction, roots must be canonical bounded ASCII SFEN

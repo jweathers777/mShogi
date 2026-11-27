@@ -83,13 +83,18 @@ def integration_suites(paths):
 
 
 def python_tests(root, paths):
-    """Select existing script test directories; external-oracle checks stay explicit."""
+    """Select script tests that need no external oracle."""
     groups = [('tools/strength/', 'tools/strength/tests'),
               ('tools/experiments/', 'tools/experiments/tests'),
               ('desktop/scripts/', 'desktop/scripts')]
-    return [([sys.executable, '-B', '-m', 'unittest', 'discover', '-s', tests, '-p', 'test_*.py'], '.')
+    commands = [([sys.executable, '-B', '-m', 'unittest', 'discover', '-s', tests, '-p', 'test_*.py'], '.')
             for prefix, tests in groups if any(p.startswith(prefix) and p.endswith('.py') for p in paths)
             and any((root / tests).glob('test_*.py'))]
+    if any(p == 'tools/rules_check_helpers.py' or
+           (p.startswith('tools/xiangqi/') and p.endswith('.py')) for p in paths):
+        commands.append(([sys.executable, '-B', 'tools/xiangqi/test_reference.py',
+                          'LocalSentinels'], '.'))
+    return commands
 
 
 def execute(root, commands, dry_run=False, env=None):

@@ -23,17 +23,8 @@ FIXTURES = (
 PROFILE = 'mshogi.xiangqi.wxf2018.v1'
 
 
-def digest(data):
-    return hashlib.sha256(data).hexdigest()
-
-
 def encoded(value):
     return json.dumps(value, sort_keys=True, separators=(',', ':')).encode()
-
-
-def git(repo, *arguments):
-    return subprocess.run(['git', '-C', str(repo), *arguments], check=True,
-                          capture_output=True, text=True).stdout.strip()
 
 
 def main():
@@ -50,16 +41,19 @@ def main():
     repo = args.repo.resolve()
     sys.path.insert(0, str(repo / 'tools/xiangqi'))
     import reference
+    from rules_check_helpers import git, sha, strict_json
 
     native = (args.native_probe or repo / 'target/debug/examples/xiangqi_probe').resolve()
     manifest = (args.manifest or repo / 'docs/m4/xiangqi/reference/pikafish-admission.json').resolve()
     if not 0 < args.timeout <= 120:
         raise ValueError('bounded timeout must be greater than 0 and at most 120 seconds')
-    native_sha = reference.sha(native)
+    native_sha = sha(native)
     script = Path(__file__).resolve()
     source_paths = sorted((repo / 'crates/mshogi-core/src/xiangqi').glob('*.rs'))
     source_paths += [repo / 'crates/mshogi-core/examples/xiangqi_probe.rs', repo / 'Cargo.lock']
-    source_hashes = {str(p.relative_to(repo)): reference.sha(p) for p in source_paths}
+    source_hashes = {str(p.relative_to(repo)): sha(p) for p in source_paths}
+    helper_path = repo / 'tools/rules_check_helpers.py'
+    helpers_before = sha(helper_path)
     corpus = []
     input_hashes = {}
     for name in FIXTURES:
@@ -67,10 +61,10 @@ def main():
         raw = path.read_bytes()
         if len(raw) > 262144:
             raise ValueError(f'fixture file exceeds 256KiB: {name}')
-        parsed = reference.strict_json(raw)
+        parsed = strict_json(raw)
         if parsed.get('profile') != PROFILE:
             raise ValueError(f'wrong fixture profile: {name}')
-        input_hashes[str(path.relative_to(repo))] = digest(raw)
+        input_hashes[str(path.relative_to(repo))] = hashlib.sha256(raw).hexdigest()
         members = parsed.get('fixtures', [parsed])
         if not isinstance(members, list) or not members or len(members) > 64:
             raise ValueError(f'invalid bounded fixture collection: {name}')
@@ -86,11 +80,11 @@ def main():
         reference_info = {
             'source_revision': reference.PIN,
             'manifest_path': str(manifest),
-            'manifest_sha256': reference.sha(manifest),
+            'manifest_sha256': sha(manifest),
             'binary_path': str(binary),
-            'binary_sha256': reference.sha(binary),
-            'wrapper_sha256': reference.sha(repo / 'tools/xiangqi/reference.py'),
-            'harness_sha256': reference.sha(repo / 'tools/xiangqi/pikafish_board_probe.cpp'),
+            'binary_sha256': sha(binary),
+            'wrapper_sha256': sha(repo / 'tools/xiangqi/reference.py'),
+            'harness_sha256': sha(repo / 'tools/xiangqi/pikafish_board_probe.cpp'),
         }
     results = []
     all_observations = hashlib.sha256()
@@ -101,9 +95,8 @@ def main():
         for count in range(prefixes):
             prefix = {'root_fen': request['root_fen'], 'moves': request['moves'][:count]}
             data = encoded(prefix)
-            response = reference.strict_json(reference.bounded_run(
-                [str(native)], data, args.timeout))
-            reference.validate_response(response, 0)
+            response = reference.decode_response(
+                reference.bounded_run([str(native)], data, args.timeout), 0)
             other = None
             if not args.native_only:
                 other = reference.query(prefix, manifest, args.timeout)
@@ -138,13 +131,15 @@ def main():
     # Detect concurrent mutation rather than silently associating a report with
     # final files or executable bytes that were not actually observed.
     for name, expected in input_hashes.items():
-        if reference.sha(repo / name) != expected:
+        if sha(repo / name) != expected:
             raise ValueError(f'fixture changed during collection: {name}')
-    if reference.sha(native) != native_sha:
+    if sha(native) != native_sha:
         raise ValueError('native probe changed during collection')
     for name, expected in source_hashes.items():
-        if reference.sha(repo / name) != expected:
+        if sha(repo / name) != expected:
             raise ValueError(f'native source changed during collection: {name}')
+    if sha(helper_path) != helpers_before:
+        raise ValueError('rules-check helpers changed during collection')
     total = sum(item['prefixes'] for item in results)
     result = {
         'format': 'mshogi.xiangqi.history-board-observation-summary.v1',
@@ -156,7 +151,8 @@ def main():
                         'machine': platform.machine(), 'python': platform.python_version()},
         'source_working_tree_dirty': bool(git(repo, 'status', '--porcelain')),
         'native_source_sha256': source_hashes,
-        'collector_sha256': reference.sha(script),
+        'collector_sha256': sha(script),
+        'helpers_sha256': helpers_before,
         'command': shlex.join([sys.executable, str(script), *sys.argv[1:]]),
         'native_probe': {'path': str(native), 'sha256': native_sha},
         'admitted_reference': reference_info,

@@ -1308,6 +1308,7 @@ impl TenjikuPosition {
 impl SearchPosition for TenjikuPosition {
     type Move = Move;
     const QUIESCENCE_PLIES: usize = 4;
+    const QUIESCENCE_CHECKS: usize = 8;
     const HISTORY_SLOTS: usize = 2 * 44 * N;
     fn hash(&self) -> u64 {
         self.board.hash
@@ -1344,6 +1345,21 @@ impl SearchPosition for TenjikuPosition {
                     out.push(m);
                 }
                 scratch.unmake(&u);
+            }
+        }
+    }
+    fn generate_checks(&self, out: &mut Vec<Move>) {
+        // The core permits a superset and omits tactical moves at the quiet frontier.
+        self.generate(Stage::Tactical, out);
+        let mut quiet = Vec::new();
+        self.generate_search(Stage::Quiet, &mut quiet);
+        let mut board = self.board;
+        for m in quiet {
+            if let Some(undo) = board.make(m) {
+                if board.can_win(board.side ^ 1) {
+                    out.push(m);
+                }
+                board.unmake(&undo);
             }
         }
     }
@@ -1411,6 +1427,10 @@ impl SearchPosition for TenjikuPosition {
     fn tactical_gain(&self, m: Move) -> i32 {
         let mut b = self.board;
         b.make(m).map_or(0, |u| u.gain)
+    }
+    fn quiet_order(&self, m: Move) -> i32 {
+        let piece = self.board.cells[m.from()];
+        16 * (Board::placement(piece, m.to()) - Board::placement(piece, m.from()))
     }
     fn tactical_order(&self, m: Move) -> i32 {
         self.tactical_gain(m) * 16 - meta(self.board.cells[m.from()]).value / 16

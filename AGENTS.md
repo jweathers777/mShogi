@@ -6,10 +6,10 @@ must be able to start the next task without chat history and without help.
 
 ## The project
 
-- mShogi is a native Rust engine and desktop application for six games: Chess,
+- mShogi is a Rust engine and desktop application for six games: Chess,
   Standard Shogi, Xiangqi, Tori Shogi, Chu Shogi and Tenjiku Shogi. It is not
   released. John is the sole owner.
-- Product requirements: `docs/design.md`. Game behavior: the native rules in
+- Product requirements: `docs/design.md`. Game behavior: the rules in
   `mshogi-core`, following the selected rules profiles in `docs/rules/`.
 - Never change a game rule, drop a game, or loosen a rules test to make code
   pass. Write the problem and a proposed decision in the task and ask John.
@@ -90,7 +90,7 @@ Also, by type of change:
   from the rules, not from running the code. External engines are not rules
   oracles.
 - **Search-side positions:** run perft and differential tests against the
-  native rules.
+  rules.
 - **Engine strength:** run the blunder suite and an SPRT match against the
   frozen predecessor at a fast time control. This match has standing
   authorization. Keep a change only when it wins, or when it is neutral and

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-27T21:36:00Z'
-updated_date: '2026-11-27T22:04:00Z'
+updated_date: '2026-11-27T22:15:00Z'
 labels:
   - tenjiku
   - strength
@@ -61,4 +61,6 @@ The accepted workflow passes its 58 strength tests. The two-lane operator Cloud 
 64000/16000: all 32 pairs passed exact config, binary, native replay, hash and independent score checks. No complete pairs. Adams 1W/0D/5L with 26 unscored; Muller 3W/0D/2L with 27 unscored. All 53 stopped at the 16000-node player. Bounds over all games 3.1..84.4% Adams and 9.4..93.8% Muller. Both late medians 4 vs 3. The worker returned nonzero for incomplete games as specified. No residual job/VM/disk. Next: finish 64000/4000, judge the frozen prefixes and run the separate clock supplement. The new worker image and exact task-owned layers and source are retained in operator/images; its staging source generation is verified absent.
 
 64000/4000: every one of 64 games stopped at the lower side’s node budget. All native reports and cleanup verified. Late depths Adams 5/2 and Muller 4.5/2. Across three edges, no complete color pair (12/192 individual games concluded), so no fixed-node Elo estimate. Four allocations checked empty; VM cost ceiling $0.529025. The first edge has 924 Adams and 860 Muller played moves, 256 frozen judge positions per profile, with only eight per profile at or beyond post-opening ply 40. The independent 512000-node first judge block is submitted at judge-1/. Next: its second block judge-9/, then clocks/, preserving split membership, limits and receipts.
+
+John asked whether the node stops were artificial. Verified every final observation and every applied action in 96 native two-game reports (192 games). All 180 unscored endings had consumed the full artificial node cap and returned incomplete, completed_depth=0, no choice, no score, an empty principal variation and applied=false; 117 at 4000 nodes and 63 at 16000, none at 64000. Another 6373 turns hit a node limit after at least one completed depth, returned the last completed choice and were applied; 28 additional turns completed normally. There was no rejection of a valid last completed move. These outcomes measure the chosen caps and cannot establish normal-clock playing strength. I selected node limits without first checking that representative full games from the accepted engine could finish on each profile. A short representative full-game completion pilot would have caught this before committing the fixed ladder. No evidence or score was removed. The independent clock supplement addresses completion at ordinary playing controls. Evidence: node_stops.py and node-stops.json in the final operator archive.
 <!-- SECTION:NOTES:END -->

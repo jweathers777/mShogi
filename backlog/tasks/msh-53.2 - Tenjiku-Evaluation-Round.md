@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-27T16:53:00Z'
-updated_date: '2026-11-27T19:55:00Z'
+updated_date: '2026-11-27T20:16:00Z'
 labels:
   - tenjiku
   - evaluation
@@ -80,4 +80,6 @@ Exact native split and quiet scan: 552061 distinct quiet positions from rules-co
 Single fit 5308d41 after independent SHA256 reproduction of all 270 compressed chunks and six full partitions. K=.05, 3629 objective evaluations, 46 complete sweeps, validation patience after 63.19 s of optimization, 41/49 weights moved. Train MSE .180902 -> .166070, validation .174214 -> .157985, heldout .180668 -> .166768 on 61669 positions from 653 games. Adams heldout .174159 -> .165594 (16200 positions, 168 games); Muller .182986 -> .167187 (45469, 485). Cloud prepare and fit succeeded, no jobs/VMs/disks remain, cumulative completed VM upper bound $3.931705. Trial 6855d62 has exact compiled material, four placement weights and tempo verified against all 49 frozen names and values. Next: candidate correctness and tactical screens; run the clocked predecessor test only if both screens pass, otherwise revert this isolated trial. Branch codex/msh-53.2-tenjiku-evaluation.
 
 Trial 6855d62, binary SHA256 84fb903bb5c1320166fdae80407f43ff68a76be9f53571407fa11a4496eede83, matched frozen d6274cb on all 144 development and 72 heldout tactical positions on each profile. Verified identical suite and helper hashes and correct binaries. The first candidate scoring test found a literal -2400/-2500 written for the old Demon value. TEN-BURN-DYING independently specifies a lost moving Demon in each profile and one burned enemy pawn only in Adams; 92a5c75 computes the exact expected score from those victims and the playing material table. All 21 candidate search/score/compound/perft tests and three model tests then passed; two manual microbenchmarks ignored. No game rule or expectation changed. Build and tactical cleanup verified, cumulative VM upper bound $3.963539. Clock block strength-msh532-games-1 compares the trial with frozen binary cd4233cc0 on seeds 1..8 per profile under the published 60+1.5/1200-second paired method; maximum additional VM bound $0.807. Next: replay/hash all 16 pair reports and apply the profile gates. Branch codex/msh-53.2-tenjiku-evaluation.
+
+Clock block 1, seeds 1..8 per profile, produced all 16 color pairs and all replay/hash checks passed. Adams 7 scored, pentanomial [0,0,1,0,6], LLR .5405, individual 14W/0D/1L/1 unscored (native incomplete:Stopped). Muller 8 scored, [0,0,0,0,8], LLR .9075, 16W. Neither SPRT eligible before 30 scored pairs. The match wrapper returns nonzero on an unscored native game, so Batch is marked failed for this block; verified complete worker outputs, native reports and zero remaining jobs/VMs/disks. No seed discarded or retried. VM cost upper bound $0.536040, cumulative $4.499579. Next: consecutive seeds 9..16 on the same 8 VMs and ongoing frozen profile gates. Branch codex/msh-53.2-tenjiku-evaluation.
 <!-- SECTION:NOTES:END -->

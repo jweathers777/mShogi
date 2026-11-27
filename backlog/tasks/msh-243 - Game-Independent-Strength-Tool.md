@@ -1,11 +1,11 @@
 ---
 id: MSH-243
 title: Game-Independent Strength Tool
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-25T11:47:00Z'
-updated_date: '2026-11-27T01:28:00Z'
+updated_date: '2026-11-27T01:46:00Z'
 labels:
   - cleanup
   - tooling
@@ -36,11 +36,11 @@ Includes the scope of the former MSH-242 (folded in by John, 2026-11-25): the Ru
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 One game-independent tool covers the strength program steps that need Python tooling: balanced openings, tactical suites with held-out parts, predecessor matches, self-play data export and split, time-odds measurement, deeper-search move-quality judging, and cost-bounded cloud submission.
-- [ ] #2 Per-game code holds only real differences; duplicate drivers and helpers in the remaining tools/strength scripts are merged into the tool and removed.
-- [ ] #3 Tenjiku can use it without new game-specific copies; each other game is supported or has a recorded reason; Python tests and a short local run pass.
-- [ ] #4 One review by a fresh agent session.
-- [ ] #5 Each Rust strength example is used by the tool, merged into one game-independent implementation, or removed with its support files and tests because nothing in the tool or an open task needs it; the reason is recorded, documents are updated, rules, search and evaluation are unchanged and the workspace checks pass.
+- [x] #1 One game-independent tool covers the strength program steps that need Python tooling: balanced openings, tactical suites with held-out parts, predecessor matches, self-play data export and split, time-odds measurement, deeper-search move-quality judging, and cost-bounded cloud submission.
+- [x] #2 Per-game code holds only real differences; duplicate drivers and helpers in the remaining tools/strength scripts are merged into the tool and removed.
+- [x] #3 Tenjiku can use it without new game-specific copies; each other game is supported or has a recorded reason; Python tests and a short local run pass.
+- [x] #4 One review by a fresh agent session.
+- [x] #5 Each Rust strength example is used by the tool, merged into one game-independent implementation, or removed with its support files and tests because nothing in the tool or an open task needs it; the reason is recorded, documents are updated, rules, search and evaluation are unchanged and the workspace checks pass.
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -67,4 +67,12 @@ Fresh review of 94d1b5d..2bd1418 found six issues. Fixed frozen Tori checking-on
 Rust example dispositions: strength replaces all five *_match_config writers plus opening screening, tactical probing, report depth, export, self-play and judging from shogi_strength, xiangqi_strength, tori_strength, chu_strength, chu_judge, chu_selfplay, chess_selfplay and tori_openings. Supplied suites retain native checking-only Tori proof fallback and exact Chu igui checks. shogi_tsume, shogi_tsume_solve and the Shogi/Xiangqi mine-only proof helpers supported retired campaigns; the frozen answers remain usable, and suite now accepts independent answers or proves one-ply positions for any profile. chess_study_roots, chess_selfplay_audit, xiangqi_baseline, tori_request_cost, xiangqi_request_cost, chu_work, chu_bench and their unshared helpers supported completed anchored studies or investigations. New measurement uses common bench/signature, canonical export and native replay. Kept chess/shogi/xiangqi/tori/chu_texel with the shared fitter and game-specific models, invoked by texel. Kept tenjiku_search_work with tenjiku-work for MSH-202 (Tenjiku Search Speed). experiment_pilot and report_profile diagnose the runner itself; generate_chess_kpk regenerates a production evaluation table. These three have distinct non-strength purposes. No edits to rules, search or evaluation source.
 
 Workspace verification on the local Mac at 0fa306b passed against origin/main 94d1b5d. python3 tools/checks.py run --base origin/main selected rustfmt, Clippy with warnings denied, the full Rust workspace (1,175 passed, 10 ignored by the suite), 56 strength tests and 30 experiment tests. GitHub push CI 45922189537 passed. Published the two-game Tenjiku Adams selfplay, export, judge, held-out Chess probe and workspace log to gs://mshogi-experiments-216675633801/runs/msh-243/0fa306b/. No Batch VMs or Cloud Build images were needed. The remaining gate on codex/msh-243-strength-tool is GitHub process CI 45922216678 on Linux, macOS and Windows, then integration and cleanup.
+
+Integrated 0fa306b (implementation) and 6ed3076 (inventory and workspace evidence) into main. After the first GitHub dispatch returned HTTP 502 without starting jobs, process CI passed on Ubuntu 24.04, macOS 15 and Windows 2022 at 6ed3076 in https://github.com/jweathers777/mShogi/actions/runs/45922842229. Both commits have identical tool and test code. The independent review and fixes are recorded above. No engine strength comparison or paid cloud measurement was needed for these tooling changes.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+One shared strength command now screens openings, builds and probes tactical splits, runs paired predecessor, self-play and time-odds games, exports and splits native evidence, judges moves, and submits bounded cloud work. It supports all six games, including both Tenjiku profiles. Replaced duplicate drivers and Rust examples, retained model-specific fitters and required diagnostics, and updated the guides. All five criteria passed. Workspace and three-platform process checks passed. The next eligible task is MSH-241 (Replace Unclear Uses of Native in Names).
+<!-- SECTION:FINAL_SUMMARY:END -->

@@ -1,11 +1,11 @@
 ---
 id: MSH-265
 title: One Admission Wait in the Tauri Host
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-27T00:47:00Z'
+updated_date: '2026-11-27T00:51:00Z'
 labels:
   - desktop
   - tauri
@@ -29,7 +29,7 @@ desktop/src-tauri/src/main.rs (1,499 lines) repeats the reserve, receipt and 15 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [x] #1 One admit-and-wait helper serves the host commands; the duplicate snapshot code and the verification modes that render the same application are merged.
-- [ ] #2 Host tests use shared helpers; the Tauri tests pass, and the host CI passes on the affected operating systems.
+- [x] #2 Host tests use shared helpers; the Tauri tests pass, and the host CI passes on the affected operating systems.
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -50,4 +50,14 @@ Claimed on codex/msh-265-tauri-admission. Next: combine the host admission waits
 Shared the host waiter and snapshot path, consolidated product verification modes, and made the host tests use common admission, stale-token, and file helpers. Next: run the integration checks and desktop host CI for Linux, macOS, and Windows.
 
 Verified code commit 0deb722 locally with python3 tools/checks.py run --base origin/main. TypeScript, 578 frontend tests, formatting, Clippy, and Tauri tests (8 normal, 16 verification) passed. Both frontend builds passed, including the production verification-marker check. Desktop host CI run 45918215436 on 0deb722 passed on Linux. Next: wait for the macOS and Windows jobs to pass, then complete criterion 2, integrate, and clean up codex/msh-265-tauri-admission.
+
+Host CI for code commit 0deb722 passed on Ubuntu 24.04, macOS 15, and Windows Server 2022. The macOS fixture-selection tests and feature-enabled Clippy also passed locally.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Game commands, New Game, and files share one Tauri admission wait and snapshot route. Chess, Chu, Shogi, Xiangqi, and Tori verification fixtures use one product mode. Tenjiku keeps its controls and the synthetic fixture keeps its own app.
+
+Host tests share completion, stale-token, and Tori/Chu file helpers. Local integration, both frontend builds, and host CI on Linux, macOS, and Windows passed. No follow-up work.
+<!-- SECTION:FINAL_SUMMARY:END -->

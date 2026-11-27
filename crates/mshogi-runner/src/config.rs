@@ -18,7 +18,7 @@ pub struct UciOption {
 pub struct EngineConfig {
     /// Filesystem executable path; no shell or PATH lookup is used.
     pub path: String,
-    /// Individual native process arguments.
+    /// Individual process arguments.
     #[serde(default)]
     pub args: Vec<String>,
     /// Explicit UCI options, retained in their supplied order.

@@ -243,7 +243,7 @@ fn reflect_colors(position: &Position) -> Position {
 }
 
 #[test]
-fn target_queries_match_origin_scan_and_color_reflection_during_native_walks() {
+fn target_queries_match_origin_scan_and_color_reflection_during_walks() {
     let mut seed = 0x1371_a77a_c654_u64;
     let mut positions = 0;
     for fen in [
@@ -261,7 +261,7 @@ fn target_queries_match_origin_scan_and_color_reflection_during_native_walks() {
             assert_eq!(
                 position,
                 Position::from_fen(&position.to_fen()).unwrap(),
-                "incremental occupancy equals native full rebuild"
+                "incremental occupancy equals full rebuild"
             );
             for by in [Color::White, Color::Black] {
                 for target in all_squares() {

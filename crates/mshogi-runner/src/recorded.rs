@@ -1,8 +1,8 @@
-//! Recorded finite-work games and replay against the authoritative native rules.
+//! Recorded finite-work games and replay against the authoritative rules.
 pub use crate::protocol::End as Stop;
 use crate::{
     common::*,
-    protocol::{self, Failure, Native, Process, Traffic, Turn},
+    protocol::{self, Failure, Process, ProtocolGame, Traffic, Turn},
     *,
 };
 use serde::{Deserialize, Serialize};
@@ -10,12 +10,12 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Config<O, P> {
-    /// Additional fields required by this native protocol.
+    /// Additional fields required by this protocol.
     #[serde(flatten)]
     pub policy: P,
     /// Current report/config version, one.
     pub schema_version: u32,
-    /// Exact immutable native identity.
+    /// Exact immutable game identity.
     pub profile: String,
     /// Experiment label.
     pub id: String,
@@ -85,7 +85,7 @@ impl<O, P> Config<O, P> {
     }
 }
 
-/// One complete accepted native game plus bounded external observations.
+/// One complete accepted game plus bounded external observations.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct GameReport<S, O, P> {
@@ -93,11 +93,11 @@ pub struct GameReport<S, O, P> {
     pub opening: usize,
     /// Engine indices assigned to Red/Black.
     pub assignment: [usize; 2],
-    /// Complete typed canonical envelope string preserves strict native raw parsing.
+    /// Complete typed canonical envelope string preserves strict raw parsing.
     pub game: String,
-    /// Native conclusion independently checked on replay.
+    /// Game conclusion independently checked on replay.
     pub conclusion: Option<O>,
-    /// Native pending classification; no heuristic can settle it.
+    /// Pending classification; no heuristic can settle it.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub pending: Option<P>,
     /// Half-point competition units only for completed successful experiments.
@@ -134,8 +134,8 @@ pub struct Report<C, S, O, P> {
 }
 
 pub(crate) trait Opening {
-    type Adapter: Native;
-    fn open(&self) -> Result<<Self::Adapter as Native>::Game, RunnerError>;
+    type Adapter: ProtocolGame;
+    fn open(&self) -> Result<<Self::Adapter as ProtocolGame>::Game, RunnerError>;
 }
 
 pub(crate) struct Schedule<'a, O> {
@@ -156,10 +156,14 @@ impl<O> Schedule<'_, O> {
             })
     }
 }
-type Evidence<C, G> =
-    Report<C, <G as Native>::Side, <G as Native>::Conclusion, <G as Native>::Pending>;
+type Evidence<C, G> = Report<
+    C,
+    <G as ProtocolGame>::Side,
+    <G as ProtocolGame>::Conclusion,
+    <G as ProtocolGame>::Pending,
+>;
 
-pub(crate) fn replay<C, G: Native, O: Opening<Adapter = G>>(
+pub(crate) fn replay<C, G: ProtocolGame, O: Opening<Adapter = G>>(
     report: &Evidence<C, G>,
     schedule: Schedule<'_, O>,
 ) -> Result<Vec<G::Game>, RunnerError> {
@@ -188,7 +192,7 @@ pub(crate) fn replay<C, G: Native, O: Opening<Adapter = G>>(
         check_canonical::<G>(&entry.game, &game)?;
         let conclusion = G::conclusion(&game);
         let pending = G::pending(&game);
-        let score = (entry.stop == Stop::NativeConclusion)
+        let score = (entry.stop == Stop::GameConclusion)
             .then(|| conclusion.map(G::score))
             .flatten();
         if entry.conclusion != conclusion
@@ -196,7 +200,7 @@ pub(crate) fn replay<C, G: Native, O: Opening<Adapter = G>>(
             || entry.score != score
             || (!entry.traffic_complete && !matches!(entry.stop, Stop::Failure | Stop::TimeLimit))
             || (entry.stop != Stop::Failure
-                && (entry.stop == Stop::NativeConclusion) != conclusion.is_some())
+                && (entry.stop == Stop::GameConclusion) != conclusion.is_some())
             || (entry.stop == Stop::Unresolved) != pending.is_some()
             || (entry.stop == Stop::Failure) != entry.failure.is_some()
             || (entry.stop == Stop::ActionLimit
@@ -209,8 +213,11 @@ pub(crate) fn replay<C, G: Native, O: Opening<Adapter = G>>(
     Ok(games)
 }
 
-pub(crate) fn check_canonical<G: Native>(record: &str, game: &G::Game) -> Result<(), RunnerError> {
-    let actual = mshogi_core::native::CanonicalRecord::from_json(record)
+pub(crate) fn check_canonical<G: ProtocolGame>(
+    record: &str,
+    game: &G::Game,
+) -> Result<(), RunnerError> {
+    let actual = mshogi_core::game::CanonicalRecord::from_json(record)
         .and_then(|record| record.to_json())
         .map_err(|e| RunnerError(e.to_string()))?;
     if actual != G::canonical(game)? {
@@ -219,7 +226,7 @@ pub(crate) fn check_canonical<G: Native>(record: &str, game: &G::Game) -> Result
     Ok(())
 }
 
-pub(crate) fn run<C: Clone + Serialize, G: Native, O: Opening<Adapter = G>>(
+pub(crate) fn run<C: Clone + Serialize, G: ProtocolGame, O: Opening<Adapter = G>>(
     config: &C,
     schedule: Schedule<'_, O>,
 ) -> Result<Evidence<C, G>, RunnerError> {
@@ -249,7 +256,7 @@ pub(crate) fn run<C: Clone + Serialize, G: Native, O: Opening<Adapter = G>>(
             game: G::canonical(&game)?,
             conclusion,
             pending: G::pending(&game),
-            score: (outcome.stop == Stop::NativeConclusion)
+            score: (outcome.stop == Stop::GameConclusion)
                 .then(|| conclusion.map(G::score))
                 .flatten(),
             stop: outcome.stop,

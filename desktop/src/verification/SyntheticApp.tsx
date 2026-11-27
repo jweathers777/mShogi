@@ -1,5 +1,5 @@
 import { cycleTabFocus } from "../interaction/focus";
-import type { Color, GameSnapshot, SyntheticCommand, SyntheticSnapshot } from "../native";
+import type { Color, GameSnapshot, SyntheticCommand, SyntheticSnapshot } from "../sessionTypes";
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
@@ -99,7 +99,7 @@ export function SyntheticApp() {
     <header className="app-header"><div><p className="eyebrow">SYNTHETIC DEVELOPMENT FIXTURE</p><h1>Invented strider · 16 by 16</h1></div><span className="synthetic-badge">Verification build</span></header>
     <p className="synthetic-introduction">This invented fixture tests the shared board and staged selection. It is not a real shogi variant. Rust supplies complete choices and accepts one complete action; partial selection never changes its board or record.</p>
     {error && <p className="notice" role="alert">{error}</p>}
-    {snapshot === null ? <p role="status">Connecting to the native synthetic session…</p> : <div className="synthetic-workspace">
+    {snapshot === null ? <p role="status">Connecting to the snapshot synthetic session…</p> : <div className="synthetic-workspace">
       <section className="synthetic-board" aria-label="Synthetic fixture board">
         <div className="board-heading"><h2>{snapshot.complete ? "Complete action accepted" : "Choose a complete route"}</h2><button className="quiet" disabled={blocked} onClick={() => setOrientation((value) => value === "white" ? "black" : "white")} aria-label={`Flip board; currently ${orientation} at bottom`}>↕ Flip board</button></div>
         <Board completedAction={snapshot.last_action ?? null} label={`${snapshot.geometry.label}, ${orientation} at bottom`} initialFocus={snapshot.geometry.initial_focus}
@@ -111,7 +111,7 @@ export function SyntheticApp() {
       </section>
       <aside className="synthetic-inspector" aria-label="Synthetic fixture controls and record">
         <section className="card"><h2>Invented rules</h2><p>The strider S takes one or two adjacent steps. Each enemy stone on its chosen route is captured. It can return to its origin. Stones do not move.</p><p>Choose i9, then j10, then i9 to capture and return. The alternative i9 → h9 → i9 ends on the same square and leaves the stone intact.</p><p>If a step can finish now or continue, choose <strong>Complete action here</strong> to stop at that step. Escape abandons the selection.</p></section>
-        <section className="card"><h2>Native acceptance</h2><p role="status">Version {snapshot.version} · Accepted actions {snapshot.record.actions.length}</p><p>{snapshot.complete ? "The native fixture accepted a complete action. Reset to compare another route." : "No complete action has been accepted in this demonstration."}</p><button className="secondary" disabled={blocked} onClick={() => { void command({ kind: "reset", version: snapshot.version }); }}>Reset synthetic fixture</button><p className="caption">Reset starts another temporary demonstration and advances the native version.</p></section>
+        <section className="card"><h2>Game acceptance</h2><p role="status">Version {snapshot.version} · Accepted actions {snapshot.record.actions.length}</p><p>{snapshot.complete ? "The rules fixture accepted a complete action. Reset to compare another route." : "No complete action has been accepted in this demonstration."}</p><button className="secondary" disabled={blocked} onClick={() => { void command({ kind: "reset", version: snapshot.version }); }}>Reset synthetic fixture</button><p className="caption">Reset starts another temporary demonstration and advances the snapshot version.</p></section>
         <details className="card"><summary>Separate synthetic record</summary><p className="caption">Temporary verification data; not a chess document.</p><pre>{JSON.stringify(snapshot.record, null, 2)}</pre></details>
       </aside>
     </div>}

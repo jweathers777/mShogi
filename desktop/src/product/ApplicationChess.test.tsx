@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { renderApplication, square } from "../testing/helpers";
-import type { ChessSnapshot, GameSnapshot } from "../native";
+import type { ChessSnapshot, GameSnapshot } from "../sessionTypes";
 import { afterEach, expect, it } from "vitest";
 import { cleanup, fireEvent, screen } from "@testing-library/react";
 import { ApplicationView } from "./ApplicationView";
@@ -16,20 +16,20 @@ afterEach(cleanup);
 function app(snapshot: GameSnapshot = standard) {
   return renderApplication(snapshot);
 }
-it.each([["intended", claimJson], ["current", currentClaimJson]])("submits the complete %s native draw claim without a board action", (_name, fixture) => {
+it.each([["intended", claimJson], ["current", currentClaimJson]])("submits the complete %s draw claim without a board action", (_name, fixture) => {
   const snapshot = fixture as ChessSnapshot; const { session } = app(snapshot);
   expect(screen.getByText("Draw claim available")).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: "Claim selected draw" }));
   expect(session.command).toHaveBeenCalledExactlyOnceWith(snapshot, { kind: "command", command: { claim: { reason: snapshot.chess.claims[0]!.reason, intended: snapshot.chess.claims[0]!.intended } } });
 });
-it("renders native coordinates, side artwork and only complete native board actions", () => {
+it("renders coordinates, side artwork and only complete game board actions", () => {
   const { session } = app();
-  expect(square("e2").querySelector("text.piece")?.getAttribute("class")).toContain("native-first-owner");
-  expect(square("e7").querySelector("text.piece")?.getAttribute("class")).toContain("native-second-owner");
+  expect(square("e2").querySelector("text.piece")?.getAttribute("class")).toContain("first-owner");
+  expect(square("e7").querySelector("text.piece")?.getAttribute("class")).toContain("second-owner");
   fireEvent.click(square("e2")); fireEvent.click(square("e4"));
   expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "play", action: "e2e4" });
 });
-it("persists orientation independently of the human side and displays the readable native conclusion", () => {
+it("persists orientation independently of the human side and displays the readable game conclusion", () => {
   const { session, props, rerender } = app();
   fireEvent.click(screen.getByRole("button", { name: /Flip board/ }));
   expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "preferences", settings: { ...standard.document.settings, orientation: { game_kind: "chess", side: "black" } } });
@@ -47,7 +47,7 @@ it.each([standardJson, shogiJson, xiangqiJson])("uses the same actual common sec
   expect(container.querySelector("[data-position-status]")?.textContent).toBe("Your turnLive position · 0 plies");
 });
 
-it("uses the native Chess check fact in the live status without inferring attacks", () => {
+it("uses the Chess check fact in the live status without inferring attacks", () => {
   app({ ...standard, chess: { ...standard.chess, in_check: true } });
   expect(document.querySelector("[data-game-status]")?.textContent).toBe("White to move · check");
 });

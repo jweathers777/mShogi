@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { deferred, fakeSession } from "../testing/helpers";
 import { games, type GameKind } from "../games";
-import type { GameSnapshot, ShogiSnapshot } from "../native";
+import type { GameSnapshot, ShogiSnapshot } from "../sessionTypes";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { ProductApp } from "./ProductApp";
@@ -24,7 +24,7 @@ beforeEach(() => {
   vi.mocked(useGameSession).mockImplementation(() => session);
 });
 afterEach(cleanup);
-it.each([["Shogi", "Sente", "shogi", "sente"], ["Shogi", "Gote", "shogi", "gote"], ["Chess", "White", "chess", "white"], ["Chess", "Black", "chess", "black"], ["Xiangqi", "Red", "xiangqi", "red"], ["Xiangqi", "Black", "xiangqi", "black"], ["Tori Shogi", "Sente", "tori", "sente"], ["Tori Shogi", "Gote", "tori", "gote"], ["Chu Shogi", "Sente", "chu", "sente"], ["Chu Shogi", "Gote", "chu", "gote"]])("chooses %s / %s directly from dirty work with exact native identity", async (_gameLabel, sideLabel, game, side) => {
+it.each([["Shogi", "Sente", "shogi", "sente"], ["Shogi", "Gote", "shogi", "gote"], ["Chess", "White", "chess", "white"], ["Chess", "Black", "chess", "black"], ["Xiangqi", "Red", "xiangqi", "red"], ["Xiangqi", "Black", "xiangqi", "black"], ["Tori Shogi", "Sente", "tori", "sente"], ["Tori Shogi", "Gote", "tori", "gote"], ["Chu Shogi", "Sente", "chu", "sente"], ["Chu Shogi", "Gote", "chu", "gote"]])("chooses %s / %s directly from dirty work with exact game identity", async (_gameLabel, sideLabel, game, side) => {
   render(<ProductApp />); fireEvent.click(screen.getByRole("button", { name: "New game" }));
   fireEvent.change(screen.getByRole("combobox", { name: "Game" }), { target: { value: game } });
   fireEvent.click(screen.getByRole("radio", { name: sideLabel }));
@@ -45,14 +45,14 @@ it.each(fixtures)("keeps $game installed while New game is cancelled or rejected
   await waitFor(() => expect(session.newGame).toHaveBeenCalledOnce());
   expect(screen.getByRole("dialog", { name: "New game" })).toBeTruthy(); expect(session.snapshot).toBe(source);
 });
-it.each(fixtures)("invalidates $game New Game admission on exact native token changes", fixture => {
+it.each(fixtures)("invalidates $game New Game admission on exact session token changes", fixture => {
   session.snapshot = fixture; const { rerender } = render(<ProductApp />); fireEvent.click(screen.getByRole("button", { name: "New game" }));
   session = { ...session, snapshot: { ...fixture, open_token: { ...fixture.open_token, document_revision: fixture.open_token.document_revision + 1 } } };
   rerender(<ProductApp />);
   expect((screen.getByRole("button", { name: "Start game" }) as HTMLButtonElement).disabled).toBe(true);
   fireEvent.click(screen.getByRole("button", { name: "Start game" })); expect(session.newGame).not.toHaveBeenCalled();
 });
-it.each(fixtures)("opens $game Load directly and preserves cancelled/rejected native replacement", async fixture => {
+it.each(fixtures)("opens $game Load directly and preserves cancelled/rejected replacement", async fixture => {
   const source = dirty(fixture); session.snapshot = source; vi.mocked(session.file).mockResolvedValue(null);
   render(<ProductApp />); fireEvent.click(screen.getByRole("button", { name: "Load" }));
   expect(session.file).toHaveBeenCalledExactlyOnceWith(source, "open");
@@ -67,7 +67,7 @@ it.each(fixtures)("protects dirty $game native quit with concise Cancel and exac
   await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
   expect(session.cancelClose).toHaveBeenCalledOnce(); expect(session.finishClose).not.toHaveBeenCalled();
 });
-it.each(fixtures)("closes dirty $game with Discard only after native exact-token admission", async fixture => {
+it.each(fixtures)("closes dirty $game with Discard only after exact-token admission", async fixture => {
   const source = dirty(fixture); session.snapshot = source; session.closeRequested = true; render(<ProductApp />);
   fireEvent.click(await screen.findByRole("button", { name: "Discard" }));
   await waitFor(() => expect(session.finishClose).toHaveBeenCalledExactlyOnceWith(source));
@@ -136,7 +136,7 @@ it("retains Save at capacity with Load and no ordinary Save As", () => {
   expect((screen.getByRole("button", { name: "Save" }) as HTMLButtonElement).disabled).toBe(false);
   expect(screen.getByRole("button", { name: "Load" })).toBeTruthy(); expect(screen.queryByRole("button", { name: /Save as/ })).toBeNull();
 });
-it.each(fixtures)("honors native $game clean-close authority despite a stop-only dirty journal", async fixture => {
+it.each(fixtures)("honors $game clean-close authority despite a stop-only dirty journal", async fixture => {
   const source = { ...fixture, close_requires_save: false, document: { ...fixture.document, dirty: true, path: "/games/saved.mshogi" } } as GameSnapshot;
   session.snapshot = source; session.closeRequested = true;
   render(<ProductApp />);
@@ -145,7 +145,7 @@ it.each(fixtures)("honors native $game clean-close authority despite a stop-only
   // Do not falsify canonical disk equality merely to suppress a prompt.
   expect(session.snapshot?.document.dirty).toBe(true);
 });
-it.each(fixtures)("guards newer native $game dirty-close authority after an earlier saved session", async fixture => {
+it.each(fixtures)("guards newer $game dirty-close authority after an earlier saved session", async fixture => {
   const source = { ...fixture, close_requires_save: true, document: { ...fixture.document, dirty: true, path: "/games/saved.mshogi" } } as GameSnapshot;
   session.snapshot = source; session.closeRequested = true; render(<ProductApp />);
   expect(await screen.findByRole("dialog", { name: "Save Game" })).toBeTruthy();
@@ -169,7 +169,7 @@ it("keeps the approved Tori game selected when opening New game", () => {
   expect((screen.getByRole("combobox", { name: "Game" }) as HTMLSelectElement).value).toBe("tori");
 });
 
-it.each([["tori", 0, "sente"], ["tori", 1, "gote"], ["chu", 0, "sente"], ["chu", 1, "gote"], ["tenjiku", 0, "sente"], ["tenjiku", 1, "gote"]] as const)("records actual %s Random assignment %s in the native request", async (game, random, side) => {
+it.each([["tori", 0, "sente"], ["tori", 1, "gote"], ["chu", 0, "sente"], ["chu", 1, "gote"], ["tenjiku", 0, "sente"], ["tenjiku", 1, "gote"]] as const)("records actual %s Random assignment %s in the request", async (game, random, side) => {
   const entropy = vi.spyOn(crypto, "getRandomValues").mockImplementation(array => { (array as Uint8Array)[0] = random; return array; });
   try {
     render(<ProductApp />); fireEvent.click(screen.getByRole("button", { name: "New game" }));

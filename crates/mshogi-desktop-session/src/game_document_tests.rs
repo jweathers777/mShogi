@@ -1,6 +1,6 @@
 //! The minimal saved document (MSH-228): game, sides and settings only.
 use super::*;
-use crate::native_game::Tori;
+use crate::game_adapter::Tori;
 use mshogi_core::tori as t;
 use serde_json::{Value, json};
 
@@ -107,10 +107,10 @@ fn opening_checks_the_stop() {
 
 #[test]
 fn decoded_documents_return_the_validated_game_for_every_generic_game() {
-    use crate::native_game::{Chu, NativeGame, Shogi, Tenjiku, Xiangqi};
+    use crate::game_adapter::{Chu, GameAdapter, Shogi, Tenjiku, Xiangqi};
     use mshogi_core::{chu, shogi, tenjiku, xiangqi};
 
-    fn check<G: NativeGame>(game: G::Game, events: usize) {
+    fn check<G: GameAdapter>(game: G::Game, events: usize) {
         let doc = ValidatedGameDocument::<G>::new(G::from_game(&game).unwrap(), G::SIDES[1])
             .unwrap()
             .with_command(G::SIDES[0], G::resign(), &mut || false)

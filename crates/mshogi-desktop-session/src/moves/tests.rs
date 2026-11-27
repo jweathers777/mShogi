@@ -21,7 +21,7 @@ fn play_xiangqi(game: &mut x::Game, text: &str) {
     .unwrap();
 }
 #[test]
-fn native_chess_pairs_root_counter_geometry_and_nonmove_boundaries() {
+fn chess_pairs_root_counter_geometry_and_nonmove_boundaries() {
     let mut game = Game::from_fen(
         "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 42",
         ClaimPolicy::ExplicitOnly,
@@ -65,7 +65,7 @@ fn native_chess_pairs_root_counter_geometry_and_nonmove_boundaries() {
     assert_eq!((&*cue.effects[0].from, &*cue.effects[0].to), ("h1", "f1"));
 }
 #[test]
-fn native_shogi_declared_counter_drop_and_terminal_are_not_moves() {
+fn shogi_declared_counter_drop_and_terminal_are_not_moves() {
     let root = s::GameRoot::import(
         s::Position::from_sfen("8k/9/9/9/9/9/9/9/K8 w p 37").unwrap(),
         s::RootCategory::ReducedMaterialDiagram,

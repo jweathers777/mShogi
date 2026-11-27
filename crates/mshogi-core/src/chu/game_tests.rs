@@ -295,7 +295,7 @@ fn long_history_continues_and_remains_closable_and_replayable() {
         .unwrap();
     assert_eq!(restored.events(), g.events());
     eprintln!(
-        "Chu long native record: events={}, bytes={}, parse+replay_ms={}",
+        "Chu long game record: events={}, bytes={}, parse+replay_ms={}",
         usage.events,
         usage.encoded_bytes,
         timer.elapsed().as_millis()
@@ -361,7 +361,7 @@ fn stop_aware_replay_prefix_and_choices_stop_or_match_the_plain_calls() {
 
 #[test]
 fn incremental_suffixes_preserve_sourced_lion_windows_and_must_vary_history() {
-    use crate::native::incremental::Session;
+    use crate::game::incremental::Session;
     for (id, accepted) in [
         ("CHU-LION-NONLION-R", 1),
         ("CHU-LION-PROTECTION-EXPIRES", 4),

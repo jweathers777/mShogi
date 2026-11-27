@@ -1,12 +1,12 @@
-//! Independently sourced native scenarios for ordinary packaged GUI Load.
+//! Independently sourced scenarios for ordinary packaged GUI Load.
 //! Development-only example; neither this generator nor its archives is bundled.
 //! Expected rules facts come from ratified MSH-82/86 fixtures, not engine output.
 #[allow(dead_code)]
 #[path = "support/chu.rs"]
 mod roots;
 
-use mshogi_core::{chu as c, native::CanonicalRecord};
-use mshogi_desktop_session::{game_document::ValidatedGameDocument, native_game::Chu};
+use mshogi_core::{chu as c, game::CanonicalRecord};
+use mshogi_desktop_session::{game_adapter::Chu, game_document::ValidatedGameDocument};
 type ValidatedChuDocument = ValidatedGameDocument<Chu>;
 use mshogi_engine::{
     ChuResult, ExecutionContext, ExecutionPurpose, ExecutionRequest, ExecutionResponse,
@@ -179,11 +179,11 @@ fn scenarios() -> Vec<(String, ValidatedChuDocument, Value)> {
         "CHU-MATERIAL-AGREEMENT",
         &agreement,
         c::Side::Gote,
-        json!({"conclusion":{"kind":"agreed_draw"},"board_plies":0,"native_events":2}),
+        json!({"conclusion":{"kind":"agreed_draw"},"board_plies":0,"game_events":2}),
     ));
 
     // These known final actions are independently expected fixture facts. Save
-    // their actual complete native histories too, not duplicated claimed results.
+    // their actual complete histories too, not duplicated claimed results.
     for (name, id, expected) in [
         (
             "royal-concluded",
@@ -303,7 +303,7 @@ fn complete_standard_game() -> (ValidatedChuDocument, Value) {
     replay(&d);
     let metadata = json!({"root":"standard_start","engine":engine,"work_limits":{"depth":1,"nodes":512},
         "observed_turns":turns,"ending":"explicit_scripted_sente_resignation","conclusion":{"kind":"resignation","winner":"gote"},
-        "known_board_actions":12,"native_events":13,"observations":12,
+        "known_board_actions":12,"game_events":13,"observations":12,
         "limitation":"Complete standard-root recorded game with explicit resignation; not natural self-play completion or competitive-strength evidence."});
     (d, metadata)
 }
@@ -392,8 +392,8 @@ fn complete_natural_engine_game() -> (ValidatedChuDocument, Value) {
         json!({"root":"independently_authored_diagram","source_fixture":"CHU-ROYAL-BOTH-COMPOUND",
         "diagram_extension":"Remote Gote Gold 11a prevents a single royal capture from also receiving a material award; original fixture remains unchanged.",
         "engine":engine,"work_limits":{"depth":1,"nodes":512},"actual_action":actual_action,
-        "ending":"native_royal_capture_after_actual_engine_choice","conclusion":{"kind":"royal_capture","winner":"sente"},
-        "known_board_actions":1,"native_events":1,"observations":2,"response_sequence":["choice","finished"],
+        "ending":"royal_capture_after_actual_engine_choice","conclusion":{"kind":"royal_capture","winner":"sente"},
+        "known_board_actions":1,"game_events":1,"observations":2,"response_sequence":["choice","finished"],
         "limitation":"Naturally completed game from explicitly limited independently authored diagram, not a standard-root self-play completion or strength measurement."}),
     )
 }
@@ -415,7 +415,7 @@ fn main() {
         );
         println!("{}", path.display());
     }
-    std::fs::write(output.join("chu-native-fixtures.json"), serde_json::to_string_pretty(&json!({
+    std::fs::write(output.join("chu-game-fixtures.json"), serde_json::to_string_pretty(&json!({
         "profile":"mshogi.chu.jcsa2019.v1","generator":"write_chu_gui_documents",
         "expectation_source":"ratified MSH-82/86 docs/m4/chu/fixtures.json; independent source transcription and hand-worked expectations, no engine oracle",
         "fixture_diagrams":"Not claimed historically reachable from standard start; known history begins at each diagram root.",
@@ -481,7 +481,7 @@ mod tests {
         assert!(quiet.position().piece("7e".parse().unwrap()).is_some());
     }
     #[test]
-    fn independently_expected_capture_promotion_and_royal_facts_survive_native_replay() {
+    fn independently_expected_capture_promotion_and_royal_facts_survive_replay() {
         for (id, captures, conclusion) in [
             ("CHU-LION-C2-1", vec!["2b", "1b"], None),
             (
@@ -582,7 +582,7 @@ mod tests {
         );
     }
     #[test]
-    fn actual_engine_natural_complete_action_and_finished_response_preserve_native_outcome() {
+    fn actual_engine_natural_complete_action_and_finished_response_preserve_outcome() {
         let (d, m) = complete_natural_engine_game();
         assert_eq!(m["response_sequence"], json!(["choice", "finished"]));
         assert_eq!(

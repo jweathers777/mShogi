@@ -19,7 +19,7 @@ fn sparse(side: Side, counters: Counters) -> Position {
 }
 
 #[test]
-fn intersections_native_palaces_river_and_both_forward_directions() {
+fn intersections_palaces_river_and_both_forward_directions() {
     assert_eq!(Intersection::all().count(), 90);
     for p in Intersection::all() {
         assert_eq!(p.to_string().parse::<Intersection>(), Ok(p));
@@ -538,7 +538,7 @@ fn fork_copies_the_committed_game_without_replay_and_keeps_tokens_apart() {
         );
     }
     let mut fork = game.fork();
-    // The same committed game as an independent native replay.
+    // The same committed game as an independent game replay.
     let replay = game.committed_prefix(game.events().len()).unwrap();
     assert_eq!(
         GameRecord::from_game(&fork).unwrap(),

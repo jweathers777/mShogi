@@ -1,6 +1,6 @@
-//! The sole current desktop envelope. Native payloads retain their own replay.
+//! The sole current desktop envelope. Game payloads retain their own replay.
 //! Runtime-to-codec and validated-codec-to-install bridges end in MSH-118.
-use mshogi_core::native::GameKind;
+use mshogi_core::game::GameKind;
 use serde::{
     Deserialize, Serialize,
     de::{self, MapAccess, SeqAccess, Visitor},
@@ -20,7 +20,7 @@ pub(crate) struct DocumentEnvelope {
 impl DocumentEnvelope {
     pub(crate) fn parse(bytes: &[u8]) -> Result<Self, String> {
         // No intermediate map: duplicate outer fields reject here and every
-        // nested byte reaches the strict native document/record parser intact.
+        // nested byte reaches the strict document/record parser intact.
         let doc: Self = serde_json::from_slice(bytes)
             .map_err(|e| diagnostic(format!("Invalid current desktop document: {e}")))?;
         if doc.format != FORMAT {
@@ -51,7 +51,7 @@ pub(crate) fn encode<T: Serialize>(game_kind: GameKind, payload: &T) -> Result<V
 #[path = "document_tests.rs"]
 mod tests;
 
-// Raw duplicate rejection precedes every buffered native document payload.
+// Raw duplicate rejection precedes every buffered document payload.
 pub(crate) fn reject_duplicates(bytes: &[u8]) -> Result<(), String> {
     struct Unique;
     impl<'de> Deserialize<'de> for Unique {

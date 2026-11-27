@@ -1,4 +1,4 @@
-import type { CompletedActionGeometry, ChessSnapshot, ChuSnapshot, TenjikuSnapshot } from "../native";
+import type { CompletedActionGeometry, ChessSnapshot, ChuSnapshot, TenjikuSnapshot } from "../sessionTypes";
 import type { InspectMovement } from "./movementInspection";
 import { Board } from "../Board";
 
@@ -11,7 +11,7 @@ import "./large-board.css";
 const chessGlyphs: Record<string, string> = { king: "♚", queen: "♛", rook: "♜", bishop: "♝", knight: "♞", pawn: "♟" };
 
 // The square boards of Chess and of the large shogi variants. Chu and Tenjiku
-// draw the native face of each selected identity, including a promoted
+// draw the face of each selected identity, including a promoted
 // piece's original base; nothing is reconstructed from the board.
 export function SquareBoard({ snapshot, disabled, onPlay, onInspect, inspectionDisabled = disabled, completedAction = null }: {
   snapshot: ChessSnapshot | ChuSnapshot | TenjikuSnapshot; disabled: boolean; onPlay: (action: string) => void;

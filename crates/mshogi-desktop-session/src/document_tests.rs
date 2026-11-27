@@ -1,9 +1,9 @@
-//! R2 current-format boundary tests. Expected native transcripts are supplied
+//! R2 current-format boundary tests. Expected transcripts are supplied
 //! independently of the document decoder; these are not packaged GUI evidence.
 use super::*;
 use crate::*;
 use mshogi_core::{
-    native::{NativeSide, RulesProfile},
+    game::{RulesProfile, TaggedSide},
     shogi as s, xiangqi as x,
 };
 use serde_json::{Value, json, value::RawValue};
@@ -90,7 +90,7 @@ fn envelope(profile: RulesProfile) -> String {
     String::from_utf8(
         encode(
             profile.game(),
-            &json!({"native_document":"opaque in outer parser"}),
+            &json!({"document":"opaque in outer parser"}),
         )
         .unwrap(),
     )
@@ -98,7 +98,7 @@ fn envelope(profile: RulesProfile) -> String {
 }
 
 #[test]
-fn current_outer_identity_is_explicit_for_every_native_game() {
+fn current_outer_identity_is_explicit_for_every_game() {
     for profile in [
         RulesProfile::ChessMatchV1,
         RulesProfile::ShogiCsa36V1,
@@ -143,9 +143,9 @@ fn unsupported_conflicting_malformed_and_old_outer_formats_reject() {
         ("rules_profile", json!("mshogi.xiangqi.wxf2018.v1")),
         ("rules_profile", json!("unapproved.profile")),
         ("profile_edition", json!("unapproved-edition")),
-        ("native_schema_version", json!(0)),
-        ("native_schema_version", json!(2)),
-        ("native_schema_version", json!("1")),
+        ("record_schema_version", json!(0)),
+        ("record_schema_version", json!(2)),
+        ("record_schema_version", json!("1")),
         ("unexpected", json!(true)),
     ] {
         let mut value = original.clone();
@@ -163,7 +163,7 @@ fn unsupported_conflicting_malformed_and_old_outer_formats_reject() {
 }
 
 #[test]
-fn raw_payload_bytes_reach_the_native_boundary_without_map_normalization() {
+fn raw_payload_bytes_reach_the_boundary_without_map_normalization() {
     let mut parsed =
         DocumentEnvelope::parse(envelope(RulesProfile::ShogiCsa36V1).as_bytes()).unwrap();
     let raw = "{ \"events\" : [], \"events\" : [1] }";
@@ -174,7 +174,7 @@ fn raw_payload_bytes_reach_the_native_boundary_without_map_normalization() {
 }
 
 #[test]
-fn real_native_transcripts_roundtrip_current_documents_with_fresh_stopped_runtime() {
+fn real_transcripts_roundtrip_current_documents_with_fresh_stopped_runtime() {
     let mut shogi = s::Game::new();
     for action in ["7g7f", "3c3d"] {
         shogi
@@ -204,11 +204,11 @@ fn real_native_transcripts_roundtrip_current_documents_with_fresh_stopped_runtim
     let fixtures = [
         (
             CanonicalRecord::shogi(s::GameRecord::from_game(&shogi)),
-            NativeSide::Shogi(s::Side::Sente),
+            TaggedSide::Shogi(s::Side::Sente),
         ),
         (
             CanonicalRecord::xiangqi(x::GameRecord::from_game(&xiangqi).unwrap()),
-            NativeSide::Xiangqi(x::Side::Red),
+            TaggedSide::Xiangqi(x::Side::Red),
         ),
     ];
     for (expected, human) in fixtures {
@@ -234,12 +234,13 @@ fn real_native_transcripts_roundtrip_current_documents_with_fresh_stopped_runtim
         assert!(!reopened.document.dirty);
         let reopened_document = DocumentEnvelope::parse(&saved(&mut restored)).unwrap();
         #[derive(serde::Deserialize)]
-        struct NativePayload {
+        struct GamePayload {
             record: Box<RawValue>,
         }
-        let native: NativePayload = serde_json::from_str(reopened_document.payload.get()).unwrap();
+        let game_payload: GamePayload =
+            serde_json::from_str(reopened_document.payload.get()).unwrap();
         assert_eq!(
-            serde_json::from_str::<Value>(native.record.get()).unwrap(),
+            serde_json::from_str::<Value>(game_payload.record.get()).unwrap(),
             serde_json::from_str::<Value>(&expected.to_json().unwrap()).unwrap()["payload"]
         );
     }
@@ -307,18 +308,18 @@ fn real_native_transcripts_roundtrip_current_documents_with_fresh_stopped_runtim
 }
 
 #[test]
-fn duplicate_native_schema_fields_reject_atomically_after_raw_outer_dispatch() {
+fn duplicate_schema_fields_reject_atomically_after_raw_outer_dispatch() {
     for (record, human) in [
         (
             CanonicalRecord::shogi(s::GameRecord::from_game(&s::Game::new())),
-            NativeSide::Shogi(s::Side::Sente),
+            TaggedSide::Shogi(s::Side::Sente),
         ),
         (
             CanonicalRecord::xiangqi(
                 x::GameRecord::from_game(&x::Game::standard(x::ClaimPolicy::Explicit).unwrap())
                     .unwrap(),
             ),
-            NativeSide::Xiangqi(x::Side::Red),
+            TaggedSide::Xiangqi(x::Side::Red),
         ),
     ] {
         let mut current = controller();
@@ -328,14 +329,11 @@ fn duplicate_native_schema_fields_reject_atomically_after_raw_outer_dispatch() {
         let mut document = DocumentEnvelope::parse(&bytes).unwrap();
         let text = document.payload.get();
         let needle = "\"schema_version\":";
-        assert!(
-            text.contains(needle),
-            "native payload schema absent: {text}"
-        );
+        assert!(text.contains(needle), "game payload schema absent: {text}");
         let hostile = text.replacen(needle, "\"schema_version\":0,\"schema_version\":", 1);
         document.payload = RawValue::from_string(hostile).unwrap();
         let hostile = serde_json::to_vec(&document).unwrap();
-        // Outer parsing deliberately retains the duplicate; native parsing rejects it.
+        // Outer parsing deliberately retains the duplicate; parsing rejects it.
         assert!(DocumentEnvelope::parse(&hostile).is_ok());
         assert!(open(&mut current, &hostile).is_err());
         let after = current.shared_snapshot();
@@ -367,7 +365,7 @@ fn hostile_identity_diagnostics_are_bounded_and_utf8_safe() {
 }
 
 #[test]
-fn native_payload_failure_diagnostics_stay_bounded_and_open_is_atomic() {
+fn payload_failure_diagnostics_stay_bounded_and_open_is_atomic() {
     let mut current = controller();
     let bytes = saved(&mut current);
     let before = current.shared_snapshot();

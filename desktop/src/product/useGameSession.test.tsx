@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { deferred } from "../testing/helpers";
 import { games } from "../games";
-import type { GameSnapshot, ShogiSnapshot } from "../native";
+import type { GameSnapshot, ShogiSnapshot } from "../sessionTypes";
 import { StrictMode } from "react";
 import { act, cleanup, renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
@@ -20,7 +20,7 @@ const standard = standardJson as ShogiSnapshot;
 beforeEach(() => { vi.useFakeTimers(); vi.mocked(invoke).mockReset(); vi.mocked(listen).mockReset().mockResolvedValue(() => {}); });
 afterEach(() => { cleanup(); vi.useRealTimers(); });
 const flush = async () => { await act(async () => { await Promise.resolve(); }); };
-it("keeps exact rendered authority when a newer native poll precedes an old click", async () => {
+it("keeps exact rendered authority when a newer poll precedes an old click", async () => {
   const poll = deferred<GameSnapshot>(); const next = { ...standard, token: { ...standard.token, revision: standard.token.revision + 1, selection: standard.token.selection + 1 } };
   vi.mocked(invoke).mockResolvedValueOnce(standard).mockReturnValueOnce(poll.promise).mockRejectedValueOnce("Stale command");
   const { result } = renderHook(useGameSession); await flush();
@@ -52,7 +52,7 @@ it("never returns a receipt from a replaced document as current", async () => {
   let returned: GameSnapshot | null = standard; await act(async () => { action.resolve(standard); returned = await pending; });
   expect(returned).toBeNull(); expect(result.current.snapshot).toBe(replacement);
 });
-it("serializes commands and binds new-game and file operations to native preconditions", async () => {
+it("serializes commands and binds new-game and file operations to preconditions", async () => {
   const command = deferred<GameSnapshot>(); vi.mocked(invoke).mockResolvedValueOnce(standard).mockReturnValueOnce(command.promise).mockResolvedValue(standard);
   const { result } = renderHook(useGameSession); await flush();
   let pending!: Promise<GameSnapshot | null>; act(() => { pending = result.current.command(standard, { kind: "resume" }); });
@@ -103,7 +103,7 @@ it("retains the product close request when a Chess replacement precedes its view
   expect(result.current.snapshot).toBe(chess); expect(result.current.closeRequested).toBe(true);
 });
 
-it("retires StrictMode effect callbacks, poll loops and delayed native listeners", async () => {
+it("retires StrictMode effect callbacks, poll loops and delayed listeners", async () => {
   const retiredPoll = deferred<GameSnapshot>(), activePoll = deferred<GameSnapshot>();
   const retiredListener = deferred<() => void>(), activeListener = deferred<() => void>();
   const retiredStop = vi.fn(), activeStop = vi.fn();
@@ -207,7 +207,7 @@ it("uses the same owner for real Tori DTOs and retires old file receipts after e
   await act(async () => { oldSave.resolve(source); returned = await pending; });
   expect(result.current.snapshot).toBe(selected); expect(returned).not.toBe(source);
 });
-it("sends the explicit two-human mode through native new-game admission", async () => {
+it("sends the explicit two-human mode through new-game admission", async () => {
   vi.mocked(invoke).mockResolvedValue(standard);
   const { result } = renderHook(useGameSession); await flush();
   await act(async () => { await result.current.newGame(standard.open_token, "shogi", standard.human.id, "mshogi.shogi.csa36.v1", "two_humans"); });

@@ -1,7 +1,7 @@
 //! Attack tables for the Chess search position: leapers, pawns and magic sliders.
 //!
 //! The tables are built one time at first use from fixed magic constants. Bit 0 is a1 and bit 63 is h8, the same map
-//! as the native `Position::attacks_from`.
+//! as the `Position::attacks_from`.
 use std::sync::LazyLock;
 
 pub(crate) const WHITE: usize = 0;

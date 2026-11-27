@@ -1,14 +1,14 @@
 //! Untimed UCI0-9 experiments. A fresh child per turn gives UCI0-9's untagged replies
 //! an unambiguous execution generation; retired output can never serve a later go.
 use crate::{
-    protocol::{self, End, Native, Rejection},
+    protocol::{self, End, ProtocolGame, Rejection},
     *,
 };
-use mshogi_core::{native::CanonicalRecord, xiangqi::*};
+use mshogi_core::{game::CanonicalRecord, xiangqi::*};
 use serde::{Deserialize, Serialize};
 
-/// One native known-history root and supplied board prefix. Canonical input is
-/// carried as raw JSON text so native duplicate rejection is never normalized.
+/// One known-history root and supplied board prefix. Canonical input is
+/// carried as raw JSON text so duplicate rejection is never normalized.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Opening {
@@ -16,9 +16,9 @@ pub struct Opening {
     pub id: String,
     /// None is the exact standard root; supplied FEN begins known history.
     pub fen: Option<String>,
-    /// Full native canonical envelope, mutually exclusive with FEN and moves.
+    /// Full canonical envelope, mutually exclusive with FEN and moves.
     pub canonical: Option<String>,
-    /// Complete native board-action suffix; supplied counters are not history.
+    /// Complete game board-action suffix; supplied counters are not history.
     pub moves: Vec<String>,
 }
 impl Opening {
@@ -41,7 +41,7 @@ impl Opening {
                 None => PositionRoot::standard(),
             };
             Game::from_root(root, ClaimPolicy::AutoValidClaims)
-                .map_err(|e| RunnerError(format!("native root: {e:?}")))?
+                .map_err(|e| RunnerError(format!("game root: {e:?}")))?
         };
         if game.claim_policy() != ClaimPolicy::AutoValidClaims {
             return Err(RunnerError("unsupported_adjudication_policy: UCI0-9 has no optional claim channel; auto_valid_claims required".into()));
@@ -52,7 +52,7 @@ impl Opening {
                 .map_err(|e| RunnerError(format!("opening action: {e}")))?;
             submit(&mut game, GameCommand::Play { action }).map_err(RunnerError)?;
         }
-        // Terminal native games need no conversion or child. Live external play
+        // Terminal games need no conversion or child. Live external play
         // requires a lossless board-command prefix; never drop terminal-command history.
         if game.conclusion().is_none() && game.pending_adjudication().is_none() {
             external_prefix(&game).map_err(RunnerError)?;
@@ -69,7 +69,7 @@ pub struct Policy {
     /// Exactly auto_valid_claims; retained independently of engine heuristics.
     pub claim_policy: ClaimPolicy,
 }
-/// Finite-work games using this native adapter.
+/// Finite-work games using this adapter.
 pub type Config = crate::recorded::Config<Opening, Policy>;
 impl Config {
     /// Strict, bounded input parsing.
@@ -107,10 +107,10 @@ pub use crate::{
     FailureKind,
     protocol::{Failure, Process, Traffic},
 };
-/// Accepted external reply with this game's native actor.
+/// Accepted external reply with this game's actor.
 pub type Turn = protocol::Turn<Side>;
 pub use crate::recorded::Stop;
-/// One native game and its bounded process observations.
+/// One game and its bounded process observations.
 pub type GameReport = crate::recorded::GameReport<Side, Conclusion, PendingAdjudication>;
 /// Recorded games with their effective configuration and executable identities.
 pub type Report = crate::recorded::Report<Config, Side, Conclusion, PendingAdjudication>;
@@ -143,7 +143,7 @@ fn external_prefix(game: &Game) -> Result<(), String> {
     {
         return Err("unsupported imported root counters for pinned Pikafish: no-capture 0..119, fullmove 1..100000; no normalization".into());
     }
-    // Native parser already validated this payload. Inspect only command encoding,
+    // Record parser already validated this payload. Inspect only command encoding,
     // never reimplement legality/adjudication. Board-only protocol cannot carry offers,
     // rejected claims or other same-ply participant commands.
     let record = GameRecord::from_game(game).map_err(|e| e.to_string())?;
@@ -151,11 +151,11 @@ fn external_prefix(game: &Game) -> Result<(), String> {
         serde_json::from_str(record.to_json()).map_err(|e| e.to_string())?;
     if wire["commands"]
         .as_array()
-        .ok_or("native command ledger absent")?
+        .ok_or("game command ledger absent")?
         .iter()
         .any(|c| c["command"]["kind"] != "play")
     {
-        return Err("unsupported_adjudication: live UCI0-9 context contains non-board command history; use structured native execution".into());
+        return Err("unsupported_adjudication: live UCI0-9 context contains non-board command history; use structured execution".into());
     }
     Ok(())
 }
@@ -214,7 +214,7 @@ pub(crate) fn reply(text: &str) -> Result<GameCommand, String> {
         _ => return Err("expected bestmove <a0a1|resign> [ponder <a0a1>]".into()),
     };
     match token { "resign" => Ok(GameCommand::Resign),
-        "0000" | "(none)" => Err("missing board action: native host owns terminal adjudication; null reply is not a draw or resignation".into()),
+        "0000" | "(none)" => Err("missing board action: desktop host owns terminal adjudication; null reply is not a draw or resignation".into()),
         token => token.parse::<Action>().map(|action| GameCommand::Play { action }).map_err(|e| e.to_string()), }
 }
 impl crate::recorded::Opening for Opening {
@@ -224,7 +224,7 @@ impl crate::recorded::Opening for Opening {
     }
 }
 impl Report {
-    /// Decode bounded evidence and verify the native history.
+    /// Decode bounded evidence and verify the game history.
     pub fn from_json(text: &str) -> Result<Self, RunnerError> {
         let report: Self = common::decode(text, common::REPORT_BYTES)?;
         report.replay()?;
@@ -240,7 +240,7 @@ impl Report {
         crate::recorded::replay(self, self.config.schedule())
     }
 }
-/// Run each opening and engine assignment through the native protocol adapter.
+/// Run each opening and engine assignment through the protocol adapter.
 pub fn run(config: &Config) -> Result<Report, RunnerError> {
     config.validate()?;
     let report = crate::recorded::run(config, config.schedule())?;
@@ -249,7 +249,7 @@ pub fn run(config: &Config) -> Result<Report, RunnerError> {
 }
 
 pub(crate) struct Adapter;
-impl Native for Adapter {
+impl ProtocolGame for Adapter {
     type Game = Game;
     type Side = Side;
     type Conclusion = Conclusion;
@@ -270,8 +270,7 @@ impl Native for Adapter {
             FailureKind::IncompleteWork
         } else if detail.starts_with("unresolved:") {
             FailureKind::UnresolvedWork
-        } else if detail.starts_with("unsupported_adjudication:")
-            || detail.starts_with("native_terminal:")
+        } else if detail.starts_with("unsupported_adjudication:") || detail.starts_with("terminal:")
         {
             FailureKind::UnsupportedAdjudication
         } else {
@@ -290,7 +289,7 @@ impl Native for Adapter {
     }
     fn end(game: &Game) -> Option<End> {
         if game.conclusion().is_some() {
-            Some(End::NativeConclusion)
+            Some(End::GameConclusion)
         } else if game.pending_adjudication().is_some() {
             Some(End::Unresolved)
         } else {
@@ -314,7 +313,7 @@ impl Native for Adapter {
             kind: match e {
                 GameError::Action(_) | GameError::WrongActor => FailureKind::IllegalAction,
                 GameError::AdjudicationPending => FailureKind::UnresolvedWork,
-                _ => FailureKind::Native,
+                _ => FailureKind::GameAdmission,
             },
             phase: "admission",
             detail: e.to_string(),

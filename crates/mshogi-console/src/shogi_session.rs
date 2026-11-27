@@ -1,20 +1,20 @@
-//! Explicit human console adapter; native game owns all rules and admission.
+//! Explicit human console adapter; game owns all rules and admission.
 use crate::{
     diagnostics,
     shell::{self, Variant, diagnostic},
 };
-use mshogi_core::{native::CanonicalRecord, shogi::*};
+use mshogi_core::{game::CanonicalRecord, shogi::*};
 use std::fmt::Write as _;
 pub const MAX_DIAGNOSTIC_DEPTH: u32 = 2;
 const HELP: &str = "Untimed shogi diagnostic console (not USI protocol):
   position startpos                  Complete standard-root history
   position sfen full|reduced <SFEN>   New known-history segment; supplied counter
-  sfen | show | hands | status        Inspect native state and conclusions
+  sfen | show | hands | status        Inspect game state and conclusions
   legal                              Complete local USI choices + readable labels
-  move <USI-action>...                Native actions, all or none
+  move <USI-action>...                Actions, all or none
   eligibility sente|gote              Harmless advisory declaration query
   declare sente|gote                  Formal declaration; false declaration loses
-  resign sente|gote                   Native resignation (not restricted to turn)
+  resign sente|gote                   Resignation (not restricted to turn)
   undo [n]                           Reverse n events, including terminal commands
   history                            Root provenance, complete event/check history
   record print                       Complete canonical envelope (not SFEN alone)
@@ -35,7 +35,7 @@ impl Variant for Game {
     const NAME: &'static str = "shogi";
     const HELP: &'static str = HELP;
     const MOVE_SYNTAX: &'static str = "USI-action";
-    const LOADED: &'static str = "loaded complete native record";
+    const LOADED: &'static str = "loaded complete game record";
     fn position_command(&self, rest: &str) -> Result<Self, String> {
         let game = if rest == "startpos" {
             Game::new()
@@ -93,7 +93,7 @@ impl Variant for Game {
             );
         }
         if replay != game {
-            return Err("native replay disagrees with complete recorded game".into());
+            return Err("game replay disagrees with complete recorded game".into());
         }
         Ok((replay, undo))
     }
@@ -128,8 +128,7 @@ impl Variant for Game {
         Ok(())
     }
     fn undo_event(&mut self, undo: GameUndo) -> Result<(), String> {
-        self.undo(undo)
-            .map_err(|_| "native undo token rejected".into())
+        self.undo(undo).map_err(|_| "undo token rejected".into())
     }
     fn actor_command(command: &str) -> Option<GameCommand> {
         match command {
@@ -258,7 +257,7 @@ fn game_error(error: GameError) -> String {
         GameError::Concluded => "game has concluded".into(),
         GameError::WrongActor => "wrong actor for board action".into(),
         GameError::IllegalAction(error) => diagnostic(error),
-        GameError::MutualCheckInvariant(_) => "native mutual-check invariant failed".into(),
+        GameError::MutualCheckInvariant(_) => "mutual-check invariant failed".into(),
     }
 }
 

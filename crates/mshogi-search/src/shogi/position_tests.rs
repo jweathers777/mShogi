@@ -1,4 +1,4 @@
-//! Differential tests use the independent authoritative native Shogi rules.
+//! Differential tests use the independent authoritative Shogi rules.
 use super::position::{ShogiPosition, VALUE, face_index};
 use crate::alphabeta::mate::{self, MateLimits, MateResult, MateTable};
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
@@ -12,20 +12,29 @@ fn sorted(actions: impl IntoIterator<Item = Action>) -> Vec<String> {
     s.sort();
     s
 }
-fn compare(p: &mut ShogiPosition, native: &Position) {
-    assert_eq!(p.side_to_move(), native.side_to_move());
+fn compare(p: &mut ShogiPosition, rules_position: &Position) {
+    assert_eq!(p.side_to_move(), rules_position.side_to_move());
     for sq in Square::all() {
-        assert_eq!(p.piece(sq), native.piece(sq), "{sq}");
+        assert_eq!(p.piece(sq), rules_position.piece(sq), "{sq}");
     }
     for side in [Side::Sente, Side::Gote] {
         for kind in PieceKind::HAND_KINDS {
-            assert_eq!(p.hand_count(side, kind), native.hand(side).count(kind));
+            assert_eq!(
+                p.hand_count(side, kind),
+                rules_position.hand(side).count(kind)
+            );
         }
     }
     assert_eq!(p.hash(), p.hash_from_scratch());
-    assert_eq!(p.hash(), ShogiPosition::from_position(native).hash());
-    assert_eq!(p.in_check(), native.is_in_check(native.side_to_move()));
-    // King-square safety feature against native attack detection.
+    assert_eq!(
+        p.hash(),
+        ShogiPosition::from_position(rules_position).hash()
+    );
+    assert_eq!(
+        p.in_check(),
+        rules_position.is_in_check(rules_position.side_to_move())
+    );
+    // King-square safety feature against attack detection.
     let mut attacked = 0;
     p.features(&mut |index, value| {
         if index == super::eval::KING_ADJACENT_ATTACKED {
@@ -34,12 +43,12 @@ fn compare(p: &mut ShogiPosition, native: &Position) {
     });
     let mut expected = 0;
     for (sign, side) in [
-        (1, native.side_to_move()),
-        (-1, native.side_to_move().opponent()),
+        (1, rules_position.side_to_move()),
+        (-1, rules_position.side_to_move().opponent()),
     ] {
         let king = Square::all()
             .find(|&sq| {
-                native
+                rules_position
                     .piece(sq)
                     .is_some_and(|q| q.side == side && q.kind == PieceKind::King)
             })
@@ -48,20 +57,20 @@ fn compare(p: &mut ShogiPosition, native: &Position) {
             let near = sq != king
                 && (sq.index() / 9).abs_diff(king.index() / 9) <= 1
                 && (sq.index() % 9).abs_diff(king.index() % 9) <= 1;
-            if near && native.is_square_attacked(sq, side.opponent()) {
+            if near && rules_position.is_square_attacked(sq, side.opponent()) {
                 expected += sign;
             }
         }
     }
-    assert_eq!(attacked, expected, "{}", native.to_sfen());
+    assert_eq!(attacked, expected, "{}", rules_position.to_sfen());
     // The incremental search evaluation equals the full feature sum.
     assert_eq!(p.evaluate(), super::eval::score(p, &super::eval::DEFAULT));
     let legal = p.legal_moves();
     assert_eq!(
         sorted(legal.iter().map(|&m| p.action(m))),
-        sorted(native.legal_actions()),
+        sorted(rules_position.legal_actions()),
         "{}",
-        native.to_sfen()
+        rules_position.to_sfen()
     );
     let mut pseudo = Vec::new();
     p.generate(Stage::Tactical, &mut pseudo);
@@ -126,12 +135,12 @@ fn random_legal_actions_results_hashes_and_restoration_agree() {
     let (mut positions, mut drops, mut captures, mut promotions) = (0, 0, 0, 0);
     for seed in 1..=24u64 {
         let mut rng = seed.wrapping_mul(0x9e3779b97f4a7c15) | 1;
-        let mut native = Position::initial();
-        let mut p = ShogiPosition::from_position(&native);
+        let mut rules_position = Position::initial();
+        let mut p = ShogiPosition::from_position(&rules_position);
         for _ in 0..140 {
-            compare(&mut p, &native);
+            compare(&mut p, &rules_position);
             positions += 1;
-            let legal = native.legal_actions();
+            let legal = rules_position.legal_actions();
             if legal.is_empty() {
                 break;
             }
@@ -141,7 +150,7 @@ fn random_legal_actions_results_hashes_and_restoration_agree() {
                 .filter(|a| match a {
                     Action::Drop { .. } => seed.is_multiple_of(3),
                     Action::Move { to, promote, .. } => {
-                        *promote || seed.is_multiple_of(2) && native.piece(*to).is_some()
+                        *promote || seed.is_multiple_of(2) && rules_position.piece(*to).is_some()
                     }
                 })
                 .collect();
@@ -154,7 +163,7 @@ fn random_legal_actions_results_hashes_and_restoration_agree() {
             match action {
                 Action::Drop { .. } => drops += 1,
                 Action::Move { to, promote, .. } => {
-                    captures += usize::from(native.piece(to).is_some());
+                    captures += usize::from(rules_position.piece(to).is_some());
                     promotions += usize::from(promote);
                 }
             }
@@ -166,9 +175,9 @@ fn random_legal_actions_results_hashes_and_restoration_agree() {
             assert_eq!(p.hash(), before);
             assert_eq!(p.evaluate(), score);
             assert!(p.make(m));
-            native.apply(action).unwrap();
+            rules_position.apply(action).unwrap();
         }
-        compare(&mut p, &native);
+        compare(&mut p, &rules_position);
     }
     assert!(positions > 2000, "{positions}");
     assert!(
@@ -178,13 +187,15 @@ fn random_legal_actions_results_hashes_and_restoration_agree() {
 }
 #[test]
 fn initial_and_drop_promotion_perft_agree() {
-    let native = Position::initial();
-    let mut p = ShogiPosition::from_position(&native);
-    // Established standard start counts, also independently checked with native generation.
+    let rules_position = Position::initial();
+    let mut p = ShogiPosition::from_position(&rules_position);
+    // Established standard start counts, also independently checked with generation.
     for (depth, count) in [(1, 30), (2, 900), (3, 25470)] {
         assert_eq!(p.perft(depth), count);
         assert_eq!(
-            perft(&native, depth, 1_000_000, || false).unwrap().leaves,
+            perft(&rules_position, depth, 1_000_000, || false)
+                .unwrap()
+                .leaves,
             count
         );
     }
@@ -193,12 +204,14 @@ fn initial_and_drop_promotion_perft_agree() {
         "3lkl3/3p1p3/4G4/9/9/9/9/9/K8 b P 1",
         "4k4/9/3+B5/9/9/9/5+r3/9/4K4 w S 1",
     ] {
-        let native = Position::from_sfen(sfen).unwrap();
-        let mut p = ShogiPosition::from_position(&native);
-        compare(&mut p, &native);
+        let rules_position = Position::from_sfen(sfen).unwrap();
+        let mut p = ShogiPosition::from_position(&rules_position);
+        compare(&mut p, &rules_position);
         assert_eq!(
             p.perft(2),
-            perft(&native, 2, 1_000_000, || false).unwrap().leaves,
+            perft(&rules_position, 2, 1_000_000, || false)
+                .unwrap()
+                .leaves,
             "{sfen}"
         );
     }
@@ -213,16 +226,16 @@ fn pawn_drop_mate_dead_ranks_nifu_and_promotion_choices() {
         ("4k4/9/9/9/4P4/9/9/9/K8 b PNL 1", "L*4a", "L*4b"),
         ("8k/9/9/9/9/9/4g4/3P1P3/3LKL3 w p 1", "P*5h", "P*6f"),
     ] {
-        let native = Position::from_sfen(sfen).unwrap();
-        let mut p = ShogiPosition::from_position(&native);
-        compare(&mut p, &native);
+        let rules_position = Position::from_sfen(sfen).unwrap();
+        let mut p = ShogiPosition::from_position(&rules_position);
+        compare(&mut p, &rules_position);
         let actions = sorted(p.legal_moves().iter().map(|&m| p.action(m)));
         assert!(!actions.contains(&illegal.to_string()));
         assert!(actions.contains(&legal.to_string()), "{sfen}: {legal}");
     }
-    let native = Position::from_sfen("4k4/3P5/4S4/9/9/9/9/9/K8 b - 1").unwrap();
-    let mut p = ShogiPosition::from_position(&native);
-    compare(&mut p, &native);
+    let rules_position = Position::from_sfen("4k4/3P5/4S4/9/9/9/9/9/K8 b - 1").unwrap();
+    let mut p = ShogiPosition::from_position(&rules_position);
+    compare(&mut p, &rules_position);
     let actions = sorted(p.legal_moves().iter().map(|&m| p.action(m)));
     for a in ["6b6a+", "5c5b", "5c5b+"] {
         assert!(actions.contains(&a.into()));
@@ -235,8 +248,8 @@ fn play_position(p: &mut ShogiPosition, action: &str) {
 }
 #[test]
 fn path_repetition_and_perpetual_check_have_distinct_scores_and_null_barriers() {
-    let native = Position::from_sfen("4k4/9/9/9/9/9/9/9/4K4 b - 1").unwrap();
-    let mut p = ShogiPosition::from_position(&native);
+    let rules_position = Position::from_sfen("4k4/9/9/9/9/9/9/9/4K4 b - 1").unwrap();
+    let mut p = ShogiPosition::from_position(&rules_position);
     for a in ["5i6i", "5a6a", "6i5i", "6a5a"] {
         play_position(&mut p, a);
     }
@@ -248,8 +261,8 @@ fn path_repetition_and_perpetual_check_have_distinct_scores_and_null_barriers() 
     assert_eq!(p.hash(), hash);
     assert_eq!(p.rule_score(), Some(0));
     // Rook follows the opposing king across files, checking on every turn.
-    let native = Position::from_sfen("4k4/9/5R3/9/9/9/9/9/K8 b - 1").unwrap();
-    let mut p = ShogiPosition::from_position(&native);
+    let rules_position = Position::from_sfen("4k4/9/5R3/9/9/9/9/9/K8 b - 1").unwrap();
+    let mut p = ShogiPosition::from_position(&rules_position);
     for a in ["4c5c", "5a4a", "5c4c", "4a5a"] {
         play_position(&mut p, a);
     }
@@ -257,7 +270,10 @@ fn path_repetition_and_perpetual_check_have_distinct_scores_and_null_barriers() 
     for _ in 0..4 {
         p.unmake();
     }
-    assert_eq!(p.hash(), ShogiPosition::from_position(&native).hash());
+    assert_eq!(
+        p.hash(),
+        ShogiPosition::from_position(&rules_position).hash()
+    );
     assert_eq!(p.rule_score(), None);
 }
 #[test]
@@ -283,12 +299,15 @@ fn game_history_reconstructs_checks_and_fourfold_count() {
 }
 #[test]
 fn length_draw_does_not_override_no_move_loss() {
-    let native = Position::from_sfen("4k4/9/9/9/9/9/9/9/4K4 b - 321").unwrap();
-    assert_eq!(ShogiPosition::from_position(&native).rule_score(), Some(0));
-    let native = Position::from_sfen("3lkl3/3pGp3/4G4/9/9/9/9/9/K8 w - 321").unwrap();
-    assert!(native.legal_actions().is_empty());
+    let rules_position = Position::from_sfen("4k4/9/9/9/9/9/9/9/4K4 b - 321").unwrap();
     assert_eq!(
-        ShogiPosition::from_position(&native).rule_score(),
+        ShogiPosition::from_position(&rules_position).rule_score(),
+        Some(0)
+    );
+    let rules_position = Position::from_sfen("3lkl3/3pGp3/4G4/9/9/9/9/9/K8 w - 321").unwrap();
+    assert!(rules_position.legal_actions().is_empty());
+    assert_eq!(
+        ShogiPosition::from_position(&rules_position).rule_score(),
         Some(-MATE_SCORE)
     );
 }
@@ -299,8 +318,8 @@ fn table_decode_accepts_exactly_generated_moves() {
         "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
         "4k4/9/3+P5/4S4/9/9/9/9/4K4 b RBNLP 1",
     ] {
-        let native = Position::from_sfen(sfen).unwrap();
-        let p = ShogiPosition::from_position(&native);
+        let rules_position = Position::from_sfen(sfen).unwrap();
+        let p = ShogiPosition::from_position(&rules_position);
         let mut pseudo = Vec::new();
         p.generate(Stage::Tactical, &mut pseudo);
         p.generate(Stage::Quiet, &mut pseudo);
@@ -319,12 +338,12 @@ fn table_decode_accepts_exactly_generated_moves() {
 #[test]
 fn gote_perpetual_checker_loses_on_the_repeated_path() {
     // Rotate the Sente checking cycle through 180 degrees and swap owners.
-    let mut native = Position::from_sfen("8k/9/9/9/9/9/3r5/9/4K4 w - 1").unwrap();
-    let mut p = ShogiPosition::from_position(&native);
+    let mut rules_position = Position::from_sfen("8k/9/9/9/9/9/3r5/9/4K4 w - 1").unwrap();
+    let mut p = ShogiPosition::from_position(&rules_position);
     for action in ["6g5g", "5i6i", "5g6g", "6i5i"] {
-        native.apply(action.parse().unwrap()).unwrap();
+        rules_position.apply(action.parse().unwrap()).unwrap();
         play_position(&mut p, action);
-        compare(&mut p, &native);
+        compare(&mut p, &rules_position);
     }
     assert_eq!(p.side_to_move(), Side::Gote);
     assert_eq!(p.rule_score(), Some(-MATE_SCORE + 4));
@@ -334,18 +353,18 @@ fn gote_perpetual_checker_loses_on_the_repeated_path() {
 fn a_capture_drop_cycle_restores_the_position_but_falls_outside_the_search_window() {
     // Three Golds circulate between board and hands. The two captures and
     // two drops restore the exact board, hands and turn after six plies.
-    let mut native = Position::from_sfen("8k/9/9/9/4Gg3/9/9/9/K8 b g 1").unwrap();
-    let initial = native.repetition_identity();
-    let mut p = ShogiPosition::from_position(&native);
+    let mut rules_position = Position::from_sfen("8k/9/9/9/4Gg3/9/9/9/K8 b g 1").unwrap();
+    let initial = rules_position.repetition_identity();
+    let mut p = ShogiPosition::from_position(&rules_position);
     let initial_hash = p.hash();
     let cycle = ["5e4e", "G*5e", "G*5d", "5e5d", "4e5e", "5d4e"];
     for action in cycle {
-        native.apply(action.parse().unwrap()).unwrap();
+        rules_position.apply(action.parse().unwrap()).unwrap();
         play_position(&mut p, action);
-        compare(&mut p, &native);
+        compare(&mut p, &rules_position);
         assert_eq!(p.rule_score(), None);
     }
-    assert_eq!(native.repetition_identity(), initial);
+    assert_eq!(rules_position.repetition_identity(), initial);
     assert_eq!(p.hash(), initial_hash);
     for _ in cycle {
         p.unmake();
@@ -355,16 +374,16 @@ fn a_capture_drop_cycle_restores_the_position_but_falls_outside_the_search_windo
 }
 
 #[test]
-fn incremental_placement_matches_native_recalculation() {
-    let mut native = Position::initial();
-    let mut fast = ShogiPosition::from_position(&native);
+fn incremental_placement_matches_recalculation() {
+    let mut rules_position = Position::initial();
+    let mut fast = ShogiPosition::from_position(&rules_position);
     let mut rng = 0x187_6a09_e667_f3bc;
     for _ in 0..240 {
         let mut totals = [0i32; 2];
         for (i, side) in [Side::Sente, Side::Gote].into_iter().enumerate() {
             let mut king = None;
             for sq in Square::all() {
-                if native
+                if rules_position
                     .piece(sq)
                     .is_some_and(|p| p.side == side && p.kind == PieceKind::King)
                 {
@@ -372,7 +391,7 @@ fn incremental_placement_matches_native_recalculation() {
                 }
             }
             for sq in Square::all() {
-                if let Some(piece) = native.piece(sq).filter(|p| p.side == side) {
+                if let Some(piece) = rules_position.piece(sq).filter(|p| p.side == side) {
                     totals[i] += VALUE[face_index(piece.kind, piece.promoted)];
                     if piece.kind == PieceKind::Pawn && !piece.promoted {
                         totals[i] += 4 * if i == 0 {
@@ -391,24 +410,24 @@ fn incremental_placement_matches_native_recalculation() {
                 }
             }
             for kind in PieceKind::HAND_KINDS {
-                totals[i] += i32::from(native.hand(side).count(kind))
+                totals[i] += i32::from(rules_position.hand(side).count(kind))
                     * (VALUE[face_index(kind, false)] + 10);
             }
         }
-        let side = usize::from(native.side_to_move() == Side::Gote);
+        let side = usize::from(rules_position.side_to_move() == Side::Gote);
         // INITIAL weights reproduce the earlier evaluation exactly.
         assert_eq!(
             super::eval::score(&fast, &super::eval::INITIAL),
             totals[side] - totals[side ^ 1] + 10
         );
-        let actions = native.legal_actions();
+        let actions = rules_position.legal_actions();
         if actions.is_empty() {
             break;
         }
         let action = actions[next(&mut rng) as usize % actions.len()];
         let m = fast.find(action).unwrap();
         assert!(fast.make(m));
-        native.apply(action).unwrap();
+        rules_position.apply(action).unwrap();
     }
 }
 
@@ -423,16 +442,16 @@ fn profile_position_hot_path() {
     .unwrap();
     let mut roots = Vec::new();
     for item in catalog["positions"].as_array().unwrap() {
-        let mut native = item["sfen"]
+        let mut rules_position = item["sfen"]
             .as_str()
             .map(|s| Position::from_sfen(s).unwrap())
             .unwrap_or_else(Position::initial);
         for action in item["moves"].as_array().unwrap() {
-            native
+            rules_position
                 .apply(action.as_str().unwrap().parse().unwrap())
                 .unwrap();
         }
-        roots.push(ShogiPosition::from_position(&native));
+        roots.push(ShogiPosition::from_position(&rules_position));
     }
     // Warm only immutable tables, then keep the work count fixed.
     std::hint::black_box(roots[0].legal_moves());
@@ -473,9 +492,9 @@ fn check_generation_and_evasions_cover_drops_discoveries_and_promotions() {
         "4k4/9/9/9/9/9/9/3g5/4K4 b GSN 1",
         "8k/9/1b5r1/9/9/9/9/9/7K1 b GSNP 1",
     ] {
-        let native = Position::from_sfen(sfen).unwrap();
-        let mut p = ShogiPosition::from_position(&native);
-        compare(&mut p, &native);
+        let rules_position = Position::from_sfen(sfen).unwrap();
+        let mut p = ShogiPosition::from_position(&rules_position);
+        compare(&mut p, &rules_position);
     }
 }
 
@@ -531,8 +550,8 @@ fn mate_search_finds_known_tsume_and_respects_pawn_drop_mate() {
     ))
     .unwrap();
     for row in suite["positions"].as_array().unwrap() {
-        let native = Position::from_sfen(row["sfen"].as_str().unwrap()).unwrap();
-        let mut p = ShogiPosition::from_position(&native);
+        let rules_position = Position::from_sfen(row["sfen"].as_str().unwrap()).unwrap();
+        let mut p = ShogiPosition::from_position(&rules_position);
         let MateResult::Mate(line) = mate_search(&mut p, 100_000) else {
             panic!("no mate found in {}", row["id"]);
         };
@@ -543,27 +562,30 @@ fn mate_search_finds_known_tsume_and_respects_pawn_drop_mate() {
             "{} {first}",
             row["id"]
         );
-        // The line is legal under native rules and ends in mate.
-        let mut native = native.clone();
+        // The line is legal under rules and ends in mate.
+        let mut rules_position = rules_position.clone();
         for &m in &line {
-            native.apply(p.action(m)).unwrap();
+            rules_position.apply(p.action(m)).unwrap();
             assert!(p.make(m));
         }
-        assert!(native.legal_actions().is_empty() && native.is_in_check(native.side_to_move()));
+        assert!(
+            rules_position.legal_actions().is_empty()
+                && rules_position.is_in_check(rules_position.side_to_move())
+        );
     }
     // Pawn drop to 1b would mate at once and is illegal; no other mate.
     let sfen = "8k/9/6NG1/9/9/9/9/9/K8 b P 1";
-    let native = Position::from_sfen(sfen).unwrap();
-    assert!(!native.is_legal("P*1b".parse().unwrap()));
-    let mut p = ShogiPosition::from_position(&native);
+    let rules_position = Position::from_sfen(sfen).unwrap();
+    assert!(!rules_position.is_legal("P*1b".parse().unwrap()));
+    let mut p = ShogiPosition::from_position(&rules_position);
     match mate_search(&mut p, 200_000) {
         MateResult::Mate(line) => {
             assert_ne!(p.action(line[0]).to_string(), "P*1b");
-            let mut native = native.clone();
+            let mut rules_position = rules_position.clone();
             for &m in &line {
-                native.apply(p.action(m)).unwrap();
+                rules_position.apply(p.action(m)).unwrap();
             }
-            assert!(native.legal_actions().is_empty());
+            assert!(rules_position.legal_actions().is_empty());
         }
         MateResult::NoMate | MateResult::Unknown => {}
     }
@@ -572,8 +594,8 @@ fn mate_search_finds_known_tsume_and_respects_pawn_drop_mate() {
 #[test]
 fn mate_search_rejects_a_perpetual_check_cycle() {
     // A lone Rook can check forever but never mate.
-    let native = Position::from_sfen("4k4/9/5R3/9/9/9/9/9/K8 b - 1").unwrap();
-    let mut p = ShogiPosition::from_position(&native);
+    let rules_position = Position::from_sfen("4k4/9/5R3/9/9/9/9/9/K8 b - 1").unwrap();
+    let mut p = ShogiPosition::from_position(&rules_position);
     assert_eq!(mate_search(&mut p, 500_000), MateResult::NoMate);
     // The same after a recorded cycle: the next repetition is a rule result.
     for a in ["4c5c", "5a4a", "5c4c", "4a5a"] {
@@ -597,8 +619,8 @@ fn mate_search_progresses_when_the_table_drops_results() {
         .filter(|r| r["mate_plies"].as_u64() <= Some(5))
         .take(40)
     {
-        let native = Position::from_sfen(row["sfen"].as_str().unwrap()).unwrap();
-        let mut p = ShogiPosition::from_position(&native);
+        let rules_position = Position::from_sfen(row["sfen"].as_str().unwrap()).unwrap();
+        let mut p = ShogiPosition::from_position(&rules_position);
         let limits = MateLimits {
             nodes: 200_000,
             deadline: None,

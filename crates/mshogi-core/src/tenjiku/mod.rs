@@ -1,4 +1,4 @@
-//! Authoritative native Tenjiku rules for two immutable whole profiles.
+//! Authoritative Tenjiku rules for two immutable whole profiles.
 //! Shared application dispatch, search and normal product activation remain separate consumers.
 mod position;
 pub use position::*;
@@ -14,6 +14,6 @@ mod conformance;
 mod game_tests;
 #[cfg(test)]
 mod local_tests;
-/// Complete human action display/input; native Game retains admission authority.
+/// Complete human action display/input; Game retains admission authority.
 pub mod notation;
 mod perft;

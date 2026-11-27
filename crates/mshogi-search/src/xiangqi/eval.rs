@@ -278,9 +278,9 @@ impl crate::texel::TexelModel for XiangqiTexel {
             .join(" ")
     }
     fn prepare(position: &str) -> Result<Option<Prepared>, String> {
-        let native =
+        let rules_position =
             mshogi_core::xiangqi::PositionRoot::from_fen(position).map_err(|e| format!("{e:?}"))?;
-        let p = XiangqiPosition::from_position(native.position());
+        let p = XiangqiPosition::from_position(rules_position.position());
         if !quiet(&p) {
             return Ok(None);
         }

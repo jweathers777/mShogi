@@ -1,4 +1,4 @@
-//! Native complete-action Tori notation, subordinate to admitted event history.
+//! Complete-action Tori notation, subordinate to admitted event history.
 use super::*;
 use mshogi_core::tori as t;
 pub(super) fn project(game: &t::Game) -> MovesProjection {
@@ -36,8 +36,8 @@ pub(super) fn project(game: &t::Game) -> MovesProjection {
             t::Action::Drop { face, to } => (
                 ChoiceOrigin::Hand {
                     owner: shared::side(
-                        mshogi_core::native::RulesProfile::ToriModernV1,
-                        NativeSide::Tori(event.actor),
+                        mshogi_core::game::RulesProfile::ToriModernV1,
+                        TaggedSide::Tori(event.actor),
                     )
                     .key,
                     piece_kind: face.code().into(),
@@ -52,8 +52,8 @@ pub(super) fn project(game: &t::Game) -> MovesProjection {
             column,
             label,
             CompletedActionGeometry {
-                native_effects: None,
-                action: serde_json::to_string(&action).expect("native Tori action"),
+                ordered_effects: None,
+                action: serde_json::to_string(&action).expect("Tori action"),
                 event_index: event.index + 1,
                 origin,
                 steps: vec![to.to_string()],

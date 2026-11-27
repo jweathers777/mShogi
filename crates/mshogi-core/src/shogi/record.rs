@@ -1,4 +1,4 @@
-//! Strict native records for the selected untimed profile.
+//! Strict game records for the selected untimed profile.
 //!
 //! A record is a complete accepted ledger, not an SFEN recovery shortcut. Its
 //! commands restore effects and conclusions through authoritative game replay.
@@ -13,9 +13,9 @@ use super::{
     GameEvent, GamePrefixError, GameRequest, GameRoot, INITIAL_SFEN, MutualCheckDiagnostic,
     PROFILE_ID, Position, RootCategory, Side, WinReason,
 };
-use crate::native::history::AppendGame;
+use crate::game::history::AppendGame;
 
-/// Native game/match record schema, distinct from profile and transport identities.
+/// Game/match record schema, distinct from profile and transport identities.
 pub const SHOGI_RECORD_SCHEMA_VERSION: u32 = 2;
 
 /// Lossless canonical game and untimed match-command ledger.
@@ -24,8 +24,8 @@ pub struct GameRecord {
     wire: CachedRecord,
 }
 
-/// New native events after an exact transport-bound retained state.
-/// Deserialization checks syntax, not legality: admission occurs in a native
+/// New game events after an exact transport-bound retained state.
+/// Deserialization checks syntax, not legality: admission occurs in a
 /// incremental session. This is not a saved-game format or a root identity.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -74,7 +74,7 @@ impl GameDelta {
             return Err(RecordError::Prefix);
         }
         // Parse every command before mutation. Derived diagrams are compared
-        // byte-for-byte to native canonical output; they are never imported.
+        // byte-for-byte to canonical output; they are never imported.
         let commands = self
             .events
             .iter()
@@ -84,12 +84,12 @@ impl GameDelta {
                 if event.index != index {
                     return Err(RecordError::Event(index));
                 }
-                event.command.to_native().ok_or(RecordError::Event(index))
+                event.command.to_command().ok_or(RecordError::Event(index))
             })
             .collect::<Result<Vec<_>, _>>()?;
         game.append_transaction(|game| {
             for (event, command) in self.events.iter().zip(commands) {
-                game.apply_command(event.actor.native(), command)
+                game.apply_command(event.actor.into_side(), command)
                     .map_err(|e| replay_error(event.index, e))?;
                 if *event != WireEvent::from(game.events().last().expect("just appended event")) {
                     return Err(RecordError::Event(event.index));
@@ -106,7 +106,7 @@ impl GameDelta {
     }
 }
 
-impl crate::native::incremental::IncrementalRecord for GameRecord {
+impl crate::game::incremental::IncrementalRecord for GameRecord {
     type Game = Game;
     type Delta = GameDelta;
     type Error = RecordError;
@@ -118,10 +118,10 @@ impl crate::native::incremental::IncrementalRecord for GameRecord {
     }
 }
 
-/// Explicit rejection of malformed, unsupported or inconsistent native records.
+/// Explicit rejection of malformed, unsupported or inconsistent game records.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum RecordError {
-    /// The event index overflows its native integer type.
+    /// The event index overflows its integer type.
     Capacity,
     /// Strict typed JSON decoding failed, including duplicate and unknown fields.
     Json(String),
@@ -135,7 +135,7 @@ pub enum RecordError {
     Invariant {
         /// Event that encountered the internal failure.
         event_index: usize,
-        /// Exact native candidate evidence.
+        /// Exact candidate evidence.
         diagnostic: Box<MutualCheckDiagnostic>,
     },
     /// Final conclusion or half-point score disagrees with replay.
@@ -151,7 +151,7 @@ impl fmt::Display for RecordError {
 impl Error for RecordError {}
 
 impl GameRecord {
-    /// Validated native schema identity.
+    /// Validated record schema identity.
     pub fn schema_version(&self) -> u32 {
         SHOGI_RECORD_SCHEMA_VERSION
     }
@@ -178,12 +178,15 @@ impl GameRecord {
                 event.after_sfen.as_str()
             });
         Position::from_sfen(sfen)
-            .expect("native record diagrams are validated before construction")
+            .expect("game record diagrams are validated before construction")
             .side_to_move()
     }
-    /// Native final conclusion retained in the validated record, without replay.
+    /// Final conclusion retained in the validated record, without replay.
     pub fn conclusion(&self) -> Option<Conclusion> {
-        self.wire.conclusion.clone().map(WireConclusion::native)
+        self.wire
+            .conclusion
+            .clone()
+            .map(WireConclusion::into_conclusion)
     }
     /// Export a rules-owned game, retaining imported-root provenance and every event.
     pub fn from_game(game: &Game) -> Self {
@@ -233,14 +236,14 @@ impl GameRecord {
         Ok((Self::from_game(&game), game))
     }
 
-    /// Reconstruct the complete root and every recorded command through native rules.
+    /// Reconstruct the complete root and every recorded command through rules.
     pub fn to_game(&self) -> Result<Game, RecordError> {
         SavedRecord::from_record(self).to_game()
     }
 
     /// Whether an already validated record is an exact prefix of this record.
     /// This compares cache identity only; it does not admit input or reconstruct
-    /// a native game. Root provenance, policies, every event and the prefix's
+    /// a game. Root provenance, policies, every event and the prefix's
     /// terminal result must agree. Use `prefix` when reconstruction is needed.
     pub fn has_prefix(&self, earlier: &Self) -> bool {
         let current = &self.wire;
@@ -395,13 +398,13 @@ impl SavedRecord {
             .events
             .iter()
             .enumerate()
-            .map(|(index, event)| event.command.to_native().ok_or(RecordError::Event(index)))
+            .map(|(index, event)| event.command.to_command().ok_or(RecordError::Event(index)))
             .collect::<Result<Vec<_>, _>>()?;
         let mut game = Game::from_root(root);
         for (index, (event, command)) in self.events.iter().zip(commands).enumerate() {
             game.submit(GameRequest {
                 expected: game.context(),
-                actor: event.actor.native(),
+                actor: event.actor.into_side(),
                 command,
             })
             .map_err(|error| replay_error(index, error))?;
@@ -431,7 +434,7 @@ enum WireSide {
     Gote,
 }
 impl WireSide {
-    fn native(self) -> Side {
+    fn into_side(self) -> Side {
         match self {
             Self::Sente => Side::Sente,
             Self::Gote => Side::Gote,
@@ -453,7 +456,7 @@ impl Serialize for Side {
 }
 impl<'de> Deserialize<'de> for Side {
     fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        WireSide::deserialize(d).map(WireSide::native)
+        WireSide::deserialize(d).map(WireSide::into_side)
     }
 }
 
@@ -474,7 +477,7 @@ enum WireCommand {
     DeclareEnteringKing {},
 }
 impl WireCommand {
-    fn to_native(&self) -> Option<GameCommand> {
+    fn to_command(&self) -> Option<GameCommand> {
         Some(match self {
             Self::Play { action } => {
                 let parsed: super::Action = action.parse().ok()?;
@@ -579,10 +582,10 @@ impl From<Conclusion> for WireConclusion {
     }
 }
 impl WireConclusion {
-    fn native(self) -> Conclusion {
+    fn into_conclusion(self) -> Conclusion {
         match self {
             Self::NoLegalAction { winner, in_check } => Conclusion::Win {
-                winner: winner.native(),
+                winner: winner.into_side(),
                 reason: WinReason::NoLegalAction { in_check },
             },
             Self::ContinuousCheck {
@@ -590,19 +593,19 @@ impl WireConclusion {
                 first,
                 fourth,
             } => Conclusion::Win {
-                winner: winner.native(),
+                winner: winner.into_side(),
                 reason: WinReason::ContinuousCheck { first, fourth },
             },
             Self::Resignation { winner } => Conclusion::Win {
-                winner: winner.native(),
+                winner: winner.into_side(),
                 reason: WinReason::Resignation,
             },
             Self::EnteringKing { winner } => Conclusion::Win {
-                winner: winner.native(),
+                winner: winner.into_side(),
                 reason: WinReason::EnteringKing,
             },
             Self::FalseDeclaration { winner } => Conclusion::Win {
-                winner: winner.native(),
+                winner: winner.into_side(),
                 reason: WinReason::FalseDeclaration,
             },
             Self::Fourfold { first, fourth } => {
@@ -619,7 +622,7 @@ impl Serialize for Conclusion {
 }
 impl<'de> Deserialize<'de> for Conclusion {
     fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        WireConclusion::deserialize(d).map(WireConclusion::native)
+        WireConclusion::deserialize(d).map(WireConclusion::into_conclusion)
     }
 }
 
@@ -673,7 +676,7 @@ mod prefix_identity_tests {
         .unwrap();
     }
     #[test]
-    fn exact_relation_agrees_with_native_reconstructed_prefixes() {
+    fn exact_relation_agrees_with_reconstructed_prefixes() {
         let mut game = Game::new();
         let mut state = 173_u64;
         for _ in 0..24 {

@@ -5,7 +5,7 @@ use super::{
 };
 use mshogi_conformance::{
     Corpus, Fixture,
-    assertions::{self, Assertion, NativeAdapter, Status},
+    assertions::{self, Assertion, RulesAdapter, Status},
     properties,
 };
 use serde_json::{Value, json};
@@ -42,11 +42,11 @@ fn rejection_reason(error: ActionError, source: Option<Piece>) -> &'static str {
         ActionError::OccupiedDrop => "occupied_drop_square",
         ActionError::MissingHand => "piece_not_in_hand",
         ActionError::InvalidDropFace => "promoted_drop_not_admitted",
-        _ => "unmapped_native_error",
+        _ => "unmapped_error",
     }
 }
 pub(super) struct LocalAdapter;
-impl NativeAdapter for LocalAdapter {
+impl RulesAdapter for LocalAdapter {
     fn observe(&self, f: &Fixture, a: &Assertion) -> Result<Option<Value>, String> {
         if a.owner == "MSH-127" {
             return conformance::StructuralAdapter.observe(f, a);
@@ -82,7 +82,7 @@ impl NativeAdapter for LocalAdapter {
             }));
         }
         let before = p.clone();
-        let native_before = local_snapshot(&p);
+        let before_snapshot = local_snapshot(&p);
         let command = action(&f.given["command"]);
         let source = match command {
             Action::Move { from, .. } => p.position().piece(from),
@@ -100,7 +100,7 @@ impl NativeAdapter for LocalAdapter {
         }
         if a.field == "rejection/local_state" {
             return Ok(Some(properties::snapshots(
-                &native_before,
+                &before_snapshot,
                 &local_snapshot(&p),
             )));
         }
@@ -120,10 +120,10 @@ impl NativeAdapter for LocalAdapter {
                 json!(p.is_in_check(side))
             }
             "own_phoenix_in_check_before" => json!(before.is_in_check(effects.actor)),
-            "legal_defense" => action_value(*p.legal_actions().first().ok_or("no native defense")?),
-            "native_movement_probes" => {
+            "legal_defense" => action_value(*p.legal_actions().first().ok_or("no defense")?),
+            "movement_probes" => {
                 // These dictionary keys are independently specified probe INPUTS;
-                // values below are actual native inspection, not expected booleans.
+                // values below are actual inspection, not expected booleans.
                 let mut probes = serde_json::Map::new();
                 for text in a
                     .expected
@@ -181,7 +181,7 @@ fn actual_local_and_structural_fixture_observations() {
         (403, 403, 202, 0)
     );
     eprintln!(
-        "TORI-128 native assertions: {} executed / {} passed / {} pending / {} failed; {} later consumer requirements pending",
+        "TORI-128 assertions: {} executed / {} passed / {} pending / {} failed; {} later consumer requirements pending",
         report.executed,
         report.passed,
         report.pending,

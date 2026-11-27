@@ -1,7 +1,7 @@
-//! MSH-172 participant policy through the real shared controller and native records.
+//! MSH-172 participant policy through the real shared controller and game records.
 //! These checks exercise application integration, not new rules conformance.
 use super::*;
-use mshogi_core::native::{GameKind, NativeSide, RulesProfile};
+use mshogi_core::game::{GameKind, RulesProfile, TaggedSide};
 use std::{
     fs,
     path::PathBuf,
@@ -42,16 +42,16 @@ fn controller() -> DesktopController {
     controller.shared.manual_engine = true;
     controller
 }
-fn anchor(game: GameKind) -> NativeSide {
+fn anchor(game: GameKind) -> TaggedSide {
     // The second side is deliberately the fixed orientation/human anchor. A local
     // first move must not depend on ownership of that old single-human anchor.
     match game {
-        GameKind::Chess => NativeSide::Chess(Color::Black),
-        GameKind::Shogi => NativeSide::Shogi(mshogi_core::shogi::Side::Gote),
-        GameKind::Xiangqi => NativeSide::Xiangqi(mshogi_core::xiangqi::Side::Black),
-        GameKind::Tori => NativeSide::Tori(mshogi_core::tori::Side::Gote),
-        GameKind::Chu => NativeSide::Chu(mshogi_core::chu::Side::Gote),
-        GameKind::Tenjiku => NativeSide::Tenjiku(mshogi_core::tenjiku::Side::Gote),
+        GameKind::Chess => TaggedSide::Chess(Color::Black),
+        GameKind::Shogi => TaggedSide::Shogi(mshogi_core::shogi::Side::Gote),
+        GameKind::Xiangqi => TaggedSide::Xiangqi(mshogi_core::xiangqi::Side::Black),
+        GameKind::Tori => TaggedSide::Tori(mshogi_core::tori::Side::Gote),
+        GameKind::Chu => TaggedSide::Chu(mshogi_core::chu::Side::Gote),
+        GameKind::Tenjiku => TaggedSide::Tenjiku(mshogi_core::tenjiku::Side::Gote),
     }
 }
 fn settled(c: &mut DesktopController, receipt: AdmissionReceipt) -> Result<SharedSnapshot, String> {
@@ -244,11 +244,11 @@ fn local_resignation_names_current_player_and_terminal_takeback_restores_the_exa
             assert!(resigned.status.concluded, "{profile:?}");
             assert_eq!(resigned.board_ply, before.board_ply);
             if profile.game() == GameKind::Chess {
-                // Native Chess does not invent a mating certificate for resignation.
+                // Chess does not invent a mating certificate for resignation.
                 assert_eq!(resigned.status.score_half_points, None);
                 assert!(matches!(resigned.chess.as_ref().unwrap().live_conclusion,
                     Some(MatchConclusion::Unresolved { actor, trigger: TerminationTrigger::Resignation })
-                    if NativeSide::Chess(actor) == before.turn.id));
+                    if TaggedSide::Chess(actor) == before.turn.id));
             } else {
                 assert_eq!(
                     resigned.status.score_half_points,
@@ -288,7 +288,7 @@ fn local_analysis_is_explicit_and_read_only_for_all_seven_profiles() {
             },
         )
         .unwrap();
-        let context = pending(&c).expect("explicit analysis must allocate native work");
+        let context = pending(&c).expect("explicit analysis must allocate work");
         assert!(matches!(
             context.purpose,
             mshogi_engine::ExecutionPurpose::MoveAnalysis { .. }
@@ -357,7 +357,7 @@ fn local_record(c: &mut DesktopController, record: CanonicalRecord) -> SharedSna
     let resume = Some(SessionOperation::Resume {});
     let receipt = match record {
         CanonicalRecord::Shogi(record) => c.queue_game_candidate::<Shogi>(
-            native_session::RuntimeSeed::<Shogi>::Record {
+            game_session::RuntimeSeed::<Shogi>::Record {
                 record,
                 human: mshogi_core::shogi::Side::Gote,
                 play_mode,
@@ -367,7 +367,7 @@ fn local_record(c: &mut DesktopController, record: CanonicalRecord) -> SharedSna
             true,
         ),
         CanonicalRecord::Tori(record) => c.queue_game_candidate::<Tori>(
-            native_session::RuntimeSeed::<Tori>::Record {
+            game_session::RuntimeSeed::<Tori>::Record {
                 record,
                 human: mshogi_core::tori::Side::Gote,
                 play_mode,
@@ -377,7 +377,7 @@ fn local_record(c: &mut DesktopController, record: CanonicalRecord) -> SharedSna
             true,
         ),
         CanonicalRecord::Chu(record) => c.queue_game_candidate::<Chu>(
-            native_session::RuntimeSeed::<Chu>::Record {
+            game_session::RuntimeSeed::<Chu>::Record {
                 record,
                 human: mshogi_core::chu::Side::Gote,
                 play_mode,
@@ -387,7 +387,7 @@ fn local_record(c: &mut DesktopController, record: CanonicalRecord) -> SharedSna
             true,
         ),
         CanonicalRecord::Tenjiku(record) => c.queue_game_candidate::<Tenjiku>(
-            native_session::RuntimeSeed::<Tenjiku>::Record {
+            game_session::RuntimeSeed::<Tenjiku>::Record {
                 record,
                 human: mshogi_core::tenjiku::Side::Gote,
                 play_mode,
@@ -407,7 +407,7 @@ fn complete(c: &mut DesktopController, action: &str) -> SharedSnapshot {
         before.choices.iter().any(|choice| choice.action == action),
         "{action}"
     );
-    // Reuse the exact selected native wire action, not a frontend partial route.
+    // Reuse the exact selected wire action, not a frontend partial route.
     let mut chosen = c.shared_snapshot();
     let i = chosen
         .choices
@@ -423,11 +423,11 @@ fn complete(c: &mut DesktopController, action: &str) -> SharedSnapshot {
 }
 
 #[test]
-fn local_complete_drop_promotion_and_compound_actions_use_native_shared_transport() {
+fn local_complete_drop_promotion_and_compound_actions_use_shared_transport() {
     use mshogi_core::{chu as ch, shogi as sh, tenjiku as ten, tori as to};
     let mut c = controller();
     // These reduced Shogi roots and explicit actions already appear in the
-    // native desktop complete-action regression, now with the old human anchor
+    // desktop complete-action regression, now with the old human anchor
     // deliberately on the other side.
     for (sfen, action, promoted) in [
         ("8k/9/9/4P4/9/9/9/9/K8 b - 1", "5d5c+", true),
@@ -455,7 +455,7 @@ fn local_complete_drop_promotion_and_compound_actions_use_native_shared_transpor
         );
     }
     // The shared Tori contract root has real hand resources and an optional
-    // Falcon promotion. Select complete native actions in both categories.
+    // Falcon promotion. Select complete actions in both categories.
     for drop in [true, false] {
         let game = crate::tori_fixture_roots::contract_game();
         let snapshot = local_record(

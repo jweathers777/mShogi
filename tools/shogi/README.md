@@ -32,7 +32,7 @@ There is no search-pruned `Legal` or PV substitute. Game conclusions,
 declarations, clocks and pre-root occurrences are outside this tool; MSH-67
 owns their independent fixtures.
 
-## Native probe contract
+## Probe contract
 
 `--probe 'command args'` launches a subprocess for each compared prefix. The
 subprocess reads one JSON line, reconstructs that root and the full ordered
@@ -52,7 +52,7 @@ failures with retained diagnostics.
 preserves source, destination and promotion suffix, or drop piece and target.
 Choices are unordered and must be unique. SFEN compares canonical text and
 reports a separate parsed semantic difference, including ownership, promotion,
-hands, side and counter. No native/reference hash equality is expected.
+hands, side and counter. No mShogi and reference hash equality is expected.
 
 ```sh
 /private/tmp/msh64-reference-venv/bin/python tools/shogi/reference.py \
@@ -73,12 +73,12 @@ response; a transport failure does not masquerade as an empty legal set.
 extra choice, exit 17, and truncated-response injections at ply 2 of a retained
 five-move seeded path. The run must detect each and reduce the evidence to the
 two-move failing prefix. Those injected failures are expected diagnostic tests,
-not observations of defects in mShogi. Native comparison is a separate command;
-MSH-64's admission report contains zero native comparisons.
+not observations of defects in mShogi. Comparison is a separate command;
+MSH-64's admission report contains zero comparisons.
 
 ## Board perft and divide
 
-Build the native probe and use the same admitted cshogi environment to compare
+Build the probe and use the same admitted cshogi environment to compare
 total counts and root action counts at depth 1 or 2.
 
 ```sh
@@ -99,7 +99,7 @@ Before C++ Board construction, roots must be canonical bounded ASCII SFEN
 (at most 512 bytes), have exactly one nonadjacent king per owner, standard
 physical piece caps, no nifu or dead unpromoted board piece, and a positive
 next-ply fitting cshogi's signed 32-bit counter including the requested path.
-These restrictions define this reference process, not a change to native
+These restrictions define this reference process, not a change to
 mShogi's independently specified u32 counter or analysis-position contract.
 
 Before any LegalAll enumeration or push, the public dlshogi feature API is

@@ -52,15 +52,15 @@ reopen them solely for this policy. Prospective Tori/Chu/Tenjiku verification
 must work when no independent implementation exists. No historical acquisition,
 new exact-proof or extra planning gate follows from this decision.
 
-## Native adapter and accounting discipline
+## Adapter and accounting discipline
 
-A fixture loader validates data/provenance, not native behavior. An unimplemented
-native assertion is **pending**, never passed. Reports distinguish data validation,
+A fixture loader validates data/provenance, not game behavior. An unimplemented
+assertion is **pending**, never passed. Reports distinguish data validation,
 executed/pass/fail assertions, documentary source annotations and outstanding
-native/consumer obligations. Constructed observations may test assertion machinery,
+rules and consumer obligations. Constructed observations may test assertion machinery,
 but must be labelled as such; they are not Tori conformance evidence.
 
-Adapters project **actual** native results and authoritative state into fixture
+Adapters project **actual** engine results and authoritative state into fixture
 assertions, without copying the expected answer, implementing a second rules
 engine or inferring outcomes from evaluation/absence of proof. Compare complete
 legal-action sets without losing extra/missing choices; keep event/history order
@@ -70,7 +70,7 @@ internal restoration tests. Rejected commands must preserve state and history;
 semantic undo/reopen must not revive retired execution identities.
 
 The current Tori harness supplies strict admission,
-independently fixed expectations, mutation tests and native property interfaces.
+independently fixed expectations, mutation tests and property interfaces.
 MSH-127/128/129 later supply actual kernel observations; MSH-77/42 retain real
 execution/document/notation consumers. External engines are not needed to run it.
 

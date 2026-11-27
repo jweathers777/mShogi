@@ -1,4 +1,4 @@
-"""The match driver must preserve native scoring and incomplete pairs."""
+"""The match driver must preserve scoring and incomplete pairs."""
 import unittest
 import contextlib
 import io
@@ -9,8 +9,8 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest import mock
 
-from tools.strength import cli, native_match
-from tools.strength.native_match import summarize
+from tools.strength import cli, internal_match
+from tools.strength.internal_match import summarize
 
 
 class PairScoring(unittest.TestCase):
@@ -26,9 +26,9 @@ class PairScoring(unittest.TestCase):
     def report(self, first, second):
         return {'games': [
             {'pairing': {'swapped': False}, 'score_first_twice': first,
-             'steps': [], 'stop': 'native'},
+             'steps': [], 'stop': 'game'},
             {'pairing': {'swapped': True}, 'score_first_twice': second,
-             'steps': [], 'stop': 'native'},
+             'steps': [], 'stop': 'game'},
         ]}
 
     def test_colors_are_reversed_before_pair_statistics(self):
@@ -53,21 +53,21 @@ class PairScoring(unittest.TestCase):
 
     def test_pending_xiangqi_adjudication_stays_unscored(self):
         report = self.report(None, None)
-        report['games'][0]['stop'] = 'native_pending_adjudication'
+        report['games'][0]['stop'] = 'pending_adjudication'
         result = summarize(report)
         self.assertIsNone(result['pair_score'])
-        self.assertEqual(result['stops'][0], 'native_pending_adjudication')
+        self.assertEqual(result['stops'][0], 'pending_adjudication')
 
     def test_chu_capacity_stop_does_not_become_a_draw(self):
         report = self.report(2, None)
-        report['games'][1]['stop'] = 'native_stop:ResourceLimit'
+        report['games'][1]['stop'] = 'stop:ResourceLimit'
         result = summarize(report)
         self.assertIsNone(result['pair_score'])
         self.assertEqual(result['scores_twice'], [2, None])
-        self.assertEqual(result['stops'][1], 'native_stop:ResourceLimit')
+        self.assertEqual(result['stops'][1], 'stop:ResourceLimit')
 
 
-class NativeClockDispatch(unittest.TestCase):
+class ClockDispatch(unittest.TestCase):
     def test_operator_can_schedule_an_hour_long_pair(self):
         with tempfile.TemporaryDirectory() as directory:
             out = Path(directory) / 'campaign'
@@ -77,9 +77,9 @@ class NativeClockDispatch(unittest.TestCase):
                        '--max-steps', '100000', '--max-pairs', '1']
             row = summarize(PairScoring().report(2, 0))
             row['wall_seconds'] = 1
-            with mock.patch('sys.argv', command), mock.patch.object(native_match, 'environment', return_value={}), \
-                 mock.patch.object(native_match, 'engine_identity', return_value={}), \
-                 mock.patch.object(native_match, 'run_pair', return_value=row) as play, \
+            with mock.patch('sys.argv', command), mock.patch.object(internal_match, 'environment', return_value={}), \
+                 mock.patch.object(internal_match, 'engine_identity', return_value={}), \
+                 mock.patch.object(internal_match, 'run_pair', return_value=row) as play, \
                  contextlib.redirect_stdout(io.StringIO()):
                 cli.main()
             args = play.call_args.args[0]
@@ -98,9 +98,9 @@ class NativeClockDispatch(unittest.TestCase):
             (out / 'pair-0006.report.json').write_text(json.dumps(report))
             child = mock.Mock()
             child.wait.return_value = 0
-            with mock.patch.object(native_match.subprocess, 'Popen', return_value=child), \
-                 mock.patch.object(native_match.subprocess, 'run') as run:
-                result = native_match.run_pair(args, 6, out)
+            with mock.patch.object(internal_match.subprocess, 'Popen', return_value=child), \
+                 mock.patch.object(internal_match.subprocess, 'run') as run:
+                result = internal_match.run_pair(args, 6, out)
             command = run.call_args_list[0].args[0]
             self.assertEqual(command[8:10], ['100000', '900000'])
             self.assertEqual(command[-10:-2], ['--clock-base-ms', '10000', '--clock-increment-ms', '100',
@@ -119,10 +119,10 @@ class NativeClockDispatch(unittest.TestCase):
                 max_steps=320, pair_wall_ms=1000, game='shogi', watchdog_ms=None, runner='runner')
             child = mock.Mock()
             child.wait.return_value = 0
-            with mock.patch.object(native_match.subprocess, 'Popen', return_value=child), \
-                 mock.patch.object(native_match.subprocess, 'run', side_effect=[None, subprocess.CalledProcessError(1, 'replay')]), \
+            with mock.patch.object(internal_match.subprocess, 'Popen', return_value=child), \
+                 mock.patch.object(internal_match.subprocess, 'run', side_effect=[None, subprocess.CalledProcessError(1, 'replay')]), \
                  self.assertRaises(subprocess.CalledProcessError):
-                native_match.run_pair(args, 1, out)
+                internal_match.run_pair(args, 1, out)
             self.assertTrue(raw.exists())
             self.assertFalse((out / 'pair-0001.summary.json').exists())
 

@@ -1,6 +1,6 @@
-//! Both immutable Tenjiku identities reach actual native execution with exact context guards.
+//! Both immutable Tenjiku identities reach actual execution with exact context guards.
 mod support;
-use mshogi_core::{native::*, tenjiku as t};
+use mshogi_core::{game::*, tenjiku as t};
 use mshogi_engine::*;
 use serde_json::{Value, json};
 use std::io::Cursor;
@@ -54,8 +54,8 @@ fn target(context: &ExecutionContext) -> ExecutionTarget {
         event_index: context.game.event_count() as u64,
         board_ply: context.game.known_board_actions() as u64,
         session_version: context.session_version,
-        label: "Exact native Tenjiku root".into(),
-        turn: NativeSide::Tenjiku(t::Side::Sente),
+        label: "Exact Tenjiku root".into(),
+        turn: TaggedSide::Tenjiku(t::Side::Sente),
     }
 }
 
@@ -88,7 +88,7 @@ fn run(context: &ExecutionContext) -> ExecutionResponse {
 
 fn assert_failure(response: &ExecutionResponse, kind: FailureKind) {
     let ExecutionResult::Failure { failure } = &response.observation.result else {
-        panic!("unsupported execution published a native result: {response:?}")
+        panic!("unsupported execution published a engine result: {response:?}")
     };
     assert_eq!(failure.kind, kind);
     let wire = serde_json::to_value(&response.observation.result).unwrap();
@@ -138,7 +138,7 @@ fn actual_internal_entry_point_searches_each_profile() {
 }
 
 #[test]
-fn complete_context_mismatch_cannot_accept_a_real_native_observation() {
+fn complete_context_mismatch_cannot_accept_a_real_observation() {
     for profile in t::Profile::ALL {
         let mut c = context(profile);
         c.purpose = ExecutionPurpose::MoveAnalysis { target: target(&c) };
@@ -180,8 +180,8 @@ fn game_qualified_turn_history_and_limits_are_checked_before_execution() {
             let mut c = context(profile);
             let mut selection = target(&c);
             match invalid {
-                0 => selection.turn = NativeSide::Shogi(mshogi_core::shogi::Side::Sente),
-                1 => selection.turn = NativeSide::Tenjiku(t::Side::Gote),
+                0 => selection.turn = TaggedSide::Shogi(mshogi_core::shogi::Side::Sente),
+                1 => selection.turn = TaggedSide::Tenjiku(t::Side::Gote),
                 2 => selection.event_index = 1,
                 3 => selection.board_ply = 120,
                 _ => c.limits.depth = 0,
@@ -194,7 +194,7 @@ fn game_qualified_turn_history_and_limits_are_checked_before_execution() {
 }
 
 #[test]
-fn raw_observation_parser_preserves_strict_native_context_and_cooperative_stop() {
+fn raw_observation_parser_preserves_strict_context_and_cooperative_stop() {
     for profile in t::Profile::ALL {
         let mut c = context(profile);
         c.purpose = ExecutionPurpose::MoveAnalysis { target: target(&c) };

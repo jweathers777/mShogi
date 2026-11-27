@@ -1,15 +1,15 @@
-//! Known native commands and events. A position and a declared counter are not history.
+//! Known game commands and events. A position and a declared counter are not history.
 use super::conduct::{self, FaultKind, Responsibility, Step};
 use super::{
     Action, ActionError, LocalPositionError, LocalStatus, NoActionReason, NoWinAssessment,
     Position, PositionRoot, Side,
 };
-pub use crate::native::GameContext;
-use crate::native::history::{AppendGame, Authority, GameUndo as Binding};
+pub use crate::game::GameContext;
+use crate::game::history::{AppendGame, Authority, GameUndo as Binding};
 use crate::repetition::RepetitionIndex;
 use serde::{Deserialize, Serialize};
 use std::{error::Error, fmt};
-/// Initial unattended software policy, independent of native claim eligibility.
+/// Initial unattended software policy, independent of claim eligibility.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ClaimPolicy {
@@ -22,9 +22,9 @@ pub enum ClaimPolicy {
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum GameCommand {
-    /// Complete ordinary native action.
+    /// Complete ordinary action.
     Play {
-        /// Native origin and destination.
+        /// Origin and destination.
         action: Action,
     },
     /// Resigning actor need not have the move.
@@ -38,7 +38,7 @@ pub enum GameCommand {
     /// Submit an Article 8 claim for this actor, regardless of turn.
     ClaimNaturalCount,
 }
-/// Native score reasons. No external engine failure is a reason for a win.
+/// Reported score reasons. No external engine failure is a reason for a win.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum WinReason {
@@ -49,13 +49,13 @@ pub enum WinReason {
     },
     /// Continued one-sided prohibited conduct.
     Repetition {
-        /// Native conduct class.
+        /// Conduct class.
         fault: FaultKind,
     },
     /// Explicit resignation.
     Resignation,
 }
-/// Native draw reasons, separate from opportunities and unknown assessments.
+/// Draw reasons, separate from opportunities and unknown assessments.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum DrawReason {
@@ -72,16 +72,16 @@ pub enum DrawReason {
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum Conclusion {
-    /// A named native side won.
+    /// A named game side won.
     Win {
         /// Explicit winner, including after a non-board event.
         winner: Side,
-        /// Native reason.
+        /// Reason.
         reason: WinReason,
     },
-    /// A proven or requested native draw.
+    /// A proven or requested draw.
     Draw {
-        /// Native reason.
+        /// Reason.
         reason: DrawReason,
     },
 }
@@ -124,7 +124,7 @@ pub struct PendingAdjudication {
     /// Bounded diagnostic, not an engine score or outcome.
     pub reason: String,
 }
-/// Exact committed native event. Derived records are replay-validated, never trusted input.
+/// Exact committed game event. Derived records are replay-validated, never trusted input.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum EventKind {
@@ -139,7 +139,7 @@ pub enum EventKind {
         /// Authoritative check observation.
         gave_check: bool,
     },
-    /// Native requirement to vary; does not consume board ply.
+    /// Requirement to vary; does not consume board ply.
     Warning {
         /// Exact source-resolved witness.
         warning: Warning,
@@ -171,7 +171,7 @@ pub enum EventKind {
         /// Current offer owner, or none after withdrawal.
         offered_by: Option<Side>,
     },
-    /// Native actor resigned; winner is assigned explicitly afterward.
+    /// Actor resigned; winner is assigned explicitly afterward.
     Resigned,
     /// Agreement was accepted by the opponent of the offeror.
     AgreementAccepted,
@@ -180,9 +180,9 @@ pub enum EventKind {
         /// Exact unscored pending state.
         pending: PendingAdjudication,
     },
-    /// Final native result, never a request or an engine observation.
+    /// Final engine result, never a request or an engine observation.
     Concluded {
-        /// Exact outcome and native reason.
+        /// Exact outcome and reason.
         conclusion: Conclusion,
     },
 }
@@ -194,9 +194,9 @@ pub struct GameEvent {
     pub index: usize,
     /// Number of accepted board actions at this event.
     pub board_ply: usize,
-    /// Actor, absent only for automatic native conclusions.
+    /// Actor, absent only for automatic game conclusions.
     pub actor: Option<Side>,
-    /// Native event payload.
+    /// Game event payload.
     pub event: EventKind,
 }
 /// Snapshot for immutable historical viewing, including inside an atomic command.
@@ -224,7 +224,7 @@ pub struct HistorySnapshot {
 pub struct GameRequest {
     /// Request token of the game when the command was chosen.
     pub expected: GameContext,
-    /// Native actor.
+    /// Actor.
     pub actor: Side,
     /// Complete command.
     pub command: GameCommand,
@@ -233,7 +233,7 @@ pub struct GameRequest {
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum CommandResult {
-    /// Accepted native command.
+    /// Accepted game command.
     Accepted,
     /// Invalid admitted claim; semantic game state is unchanged.
     RejectedNaturalCount,
@@ -259,14 +259,14 @@ pub enum GameError {
     WrongActor,
     /// Local rules or declared representation rejected the action.
     Action(ActionError),
-    /// Root fails the native local-rule domain.
+    /// Root fails the local-rule domain.
     Root(LocalPositionError),
     /// No opponent offer is available to accept/withdraw.
     DrawOffer,
-    /// Historical selection is not the end of a committed native command.
+    /// Historical selection is not the end of a committed game command.
     /// Automatic derived events remain viewable through `event_prefix`.
     NotCommandBoundary,
-    /// A native invariant failed; no result is invented.
+    /// A invariant failed; no result is invented.
     Invariant,
 }
 impl fmt::Display for GameError {
@@ -301,10 +301,10 @@ pub struct GameUndo {
 pub struct Submission {
     /// Accepted command versus semantically rejected claim.
     pub result: CommandResult,
-    /// Exact native reversal token.
+    /// Exact reversal token.
     pub undo: GameUndo,
 }
-/// Bounded native known game. Each concrete consumer advertises its own capabilities.
+/// Bounded known game. Each concrete consumer advertises its own capabilities.
 #[derive(Clone, Debug)]
 pub struct Game {
     pub(super) root: PositionRoot,
@@ -375,7 +375,7 @@ impl Game {
     pub fn standard(policy: ClaimPolicy) -> Result<Self, GameError> {
         Self::from_root(PositionRoot::standard(), policy)
     }
-    /// Recorded optional/automatic native claim policy, independent of turn.
+    /// Recorded optional/automatic claim policy, independent of turn.
     pub const fn claim_policy(&self) -> ClaimPolicy {
         self.policy
     }
@@ -440,7 +440,7 @@ impl Game {
     pub fn warnings(&self) -> &[Warning] {
         &self.warnings
     }
-    /// Explicit native outcome, if concluded.
+    /// Explicit game outcome, if concluded.
     pub fn conclusion(&self) -> Option<Conclusion> {
         self.conclusion
     }
@@ -814,7 +814,7 @@ impl Game {
     /// emit automatic events; those are indivisible too. Use `event_prefix` for
     /// arbitrary immutable historical views. Reconstruction preserves the root,
     /// declared counters, known history and claim policy without future events,
-    /// and performs only the normal bounded native admission/replay path.
+    /// and performs only the normal bounded game admission/replay path.
     pub fn committed_prefix(&self, event_count: usize) -> Result<Self, GameError> {
         if event_count > self.events.len() {
             return Err(GameError::NotCommandBoundary);

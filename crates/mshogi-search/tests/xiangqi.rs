@@ -71,32 +71,32 @@ fn independent_piece_values() {
 }
 
 #[test]
-fn cannon_screen_and_horse_leg_tactics_choose_native_winning_captures() {
+fn cannon_screen_and_horse_leg_tactics_choose_winning_captures() {
     for (fen, action) in [
         // Own soldier c5 is precisely one screen between cannon c3 and rook c7.
         ("5k3/9/2r6/9/2P6/9/2C6/9/9/3K5 w - - 0 1", "c3c7"),
         // Empty c4 is the horse leg for c3-d5; capturing the rook leaves 400.
         ("5k3/9/9/9/3r5/9/2N6/9/9/3K5 w - - 0 1", "c3d5"),
-        // Color/rank-reversed geometry and native Black score perspective.
+        // Color/rank-reversed geometry and Black score perspective.
         ("3k5/9/9/2c6/9/2p6/9/2R6/9/5K3 b - - 0 1", "c6c2"),
         ("3k5/9/9/2n6/9/3R5/9/9/9/5K3 b - - 0 1", "c6d4"),
     ] {
-        let native = game(fen);
-        let result = run(&native, 1);
+        let rules_position = game(fen);
+        let result = run(&rules_position, 1);
         assert_eq!(
             choice(&result),
             Choice::Move(action.parse().unwrap()),
             "{fen}: {result:?}"
         );
         assert!(result.score.is_some_and(|s| s > 0), "{fen}");
-        assert_eq!(result.perspective, native.position().side_to_move());
+        assert_eq!(result.perspective, rules_position.position().side_to_move());
         assert_eq!(result.status, Status::Complete);
-        assert_eq!(result.assessment, native.no_win_assessment());
+        assert_eq!(result.assessment, rules_position.no_win_assessment());
     }
 }
 
 #[test]
-fn immediate_stalemate_is_a_native_win_for_each_side() {
+fn immediate_stalemate_is_a_win_for_each_side() {
     for (fen, action, side) in [
         // MSH-105 P1: rook e8 controls e9 and f8, leaving Black f9 unchecked.
         ("5k3/9/4R4/9/9/9/9/9/9/3K5 w - - 0 1", "e7e8", x::Side::Red),
@@ -106,8 +106,8 @@ fn immediate_stalemate_is_a_native_win_for_each_side() {
             x::Side::Black,
         ),
     ] {
-        let native = game(fen);
-        let result = run(&native, 1);
+        let rules_position = game(fen);
+        let result = run(&rules_position, 1);
         assert_eq!(choice(&result), Choice::Move(action.parse().unwrap()));
         assert_eq!(result.score, Some(WIN_SCORE - 1));
         let mut checked = game(fen);
@@ -203,33 +203,33 @@ fn claimant_specific_history_and_policy_admit_only_valid_turn_claims() {
         .find(|f| f["id"] == "NATURAL-11-CHECKS")
         .unwrap();
     let root = f["root_fen"].as_str().unwrap();
-    let mut native = game(root);
+    let mut rules_position = game(root);
     let mut automatic = x::Game::from_root(
         x::PositionRoot::from_fen(root).unwrap(),
         x::ClaimPolicy::AutoValidClaims,
     )
     .unwrap();
     for action in f["moves"].as_array().unwrap().iter().take(100) {
-        play(&mut native, action.as_str().unwrap());
+        play(&mut rules_position, action.as_str().unwrap());
         play(&mut automatic, action.as_str().unwrap());
     }
     // Frozen claimant arithmetic: Red has 11 checks, so 100-1=99. Black has 100.
     assert_eq!(
-        native
+        rules_position
             .natural_count_eligibility(x::Side::Red)
             .effective_plies,
         99
     );
     assert_eq!(
-        native
+        rules_position
             .natural_count_eligibility(x::Side::Black)
             .effective_plies,
         100
     );
-    assert_eq!(native.position().side_to_move(), x::Side::Red);
-    assert_eq!(native.conclusion(), None);
+    assert_eq!(rules_position.position().side_to_move(), x::Side::Red);
+    assert_eq!(rules_position.conclusion(), None);
     assert!(
-        matches!(choice(&run(&native, 1)), Choice::Move(_)),
+        matches!(choice(&run(&rules_position, 1)), Choice::Move(_)),
         "non-turn Black claim cannot be chosen on Red's behalf"
     );
     assert_eq!(
@@ -239,25 +239,35 @@ fn claimant_specific_history_and_policy_admit_only_valid_turn_claims() {
         })
     );
     assert_eq!(run(&automatic, 1).score, Some(0));
-    play(&mut native, f["moves"][100].as_str().unwrap());
-    assert_eq!(native.position().side_to_move(), x::Side::Black);
-    assert!(native.natural_count_eligibility(x::Side::Black).eligible);
+    play(&mut rules_position, f["moves"][100].as_str().unwrap());
+    assert_eq!(rules_position.position().side_to_move(), x::Side::Black);
+    assert!(
+        rules_position
+            .natural_count_eligibility(x::Side::Black)
+            .eligible
+    );
     // A selective heuristic may prefer play in the balanced material fixture.
-    // The native claim remains an option, and its admission stays root-owned.
-    let result = run(&native, 1);
+    // The claim remains an option, and its admission stays root-owned.
+    let result = run(&rules_position, 1);
     match choice(&result) {
         Choice::Claim { actor } => {
             assert_eq!(actor, x::Side::Black);
             assert_eq!(result.score, Some(0));
         }
         Choice::Move(action) => {
-            assert!(native.position().legal_actions().unwrap().contains(&action));
+            assert!(
+                rules_position
+                    .position()
+                    .legal_actions()
+                    .unwrap()
+                    .contains(&action)
+            );
             assert!(result.score.unwrap() > 0);
         }
     }
-    assert_eq!(native.conclusion(), None);
+    assert_eq!(rules_position.conclusion(), None);
     // Add an untouched Red Horse on c0 to make Black's material disadvantage
-    // explicit. The same native history admits Black's claim at this prefix.
+    // explicit. The same game history admits Black's claim at this prefix.
     let mut losing = game(&root.replace("3K5", "2NK5"));
     for action in f["moves"].as_array().unwrap().iter().take(101) {
         play(&mut losing, action.as_str().unwrap());
@@ -275,15 +285,15 @@ fn claimant_specific_history_and_policy_admit_only_valid_turn_claims() {
 }
 
 #[test]
-fn native_conclusion_winner_is_not_inferred_from_turn() {
+fn conclusion_winner_is_not_inferred_from_turn() {
     for (actor, winner, score) in [
         (x::Side::Red, x::Side::Black, -WIN_SCORE),
         (x::Side::Black, x::Side::Red, WIN_SCORE),
     ] {
-        let mut native = x::Game::standard(x::ClaimPolicy::Explicit).unwrap();
-        submit(&mut native, actor, x::GameCommand::Resign);
-        assert_eq!(native.position().side_to_move(), x::Side::Red);
-        let result = run(&native, 1);
+        let mut rules_position = x::Game::standard(x::ClaimPolicy::Explicit).unwrap();
+        submit(&mut rules_position, actor, x::GameCommand::Resign);
+        assert_eq!(rules_position.position().side_to_move(), x::Side::Red);
+        let result = run(&rules_position, 1);
         assert_eq!(result.score, Some(score));
         assert_eq!(
             result.decision,
@@ -294,23 +304,23 @@ fn native_conclusion_winner_is_not_inferred_from_turn() {
         );
         assert!(result.principal_variation.is_empty());
     }
-    let native = game("5k3/9/9/9/9/9/9/9/9/3K5 w - - 0 1");
+    let rules_position = game("5k3/9/9/9/9/9/9/9/9/3K5 w - - 0 1");
     assert_eq!(
-        run(&native, 1).decision,
+        run(&rules_position, 1).decision,
         Some(Decision::Finished(x::Conclusion::Draw {
             reason: x::DrawReason::NeitherCanWin
         }))
     );
-    assert_eq!(run(&native, 1).score, Some(0));
+    assert_eq!(run(&rules_position, 1).score, Some(0));
 }
 
 #[test]
 fn zero_work_partial_iterations_and_cancellation_publish_only_completed_work() {
-    let native = x::Game::standard(x::ClaimPolicy::Explicit).unwrap();
-    let before = record(&native);
-    let context = native.context();
+    let rules_position = x::Game::standard(x::ClaimPolicy::Explicit).unwrap();
+    let before = record(&rules_position);
+    let context = rules_position.context();
     for (nodes, expected_nodes) in [(0, 0), (1, 1)] {
-        let r = search(&native, Limits { depth: 1, nodes }).unwrap();
+        let r = search(&rules_position, Limits { depth: 1, nodes }).unwrap();
         assert_eq!(r.nodes, expected_nodes);
         assert_eq!(r.status, Status::NodeLimit);
         assert_eq!(r.completed_depth, 0);
@@ -318,10 +328,10 @@ fn zero_work_partial_iterations_and_cancellation_publish_only_completed_work() {
         assert_eq!(r.score, None);
         assert!(r.principal_variation.is_empty());
     }
-    let complete = run(&native, 1);
+    let complete = run(&rules_position, 1);
     assert_eq!(complete.completed_depth, 1);
     let partial = search(
-        &native,
+        &rules_position,
         Limits {
             depth: 2,
             nodes: complete.nodes + 1,
@@ -335,7 +345,7 @@ fn zero_work_partial_iterations_and_cancellation_publish_only_completed_work() {
     assert_eq!(partial.score, complete.score);
     assert_eq!(partial.principal_variation, complete.principal_variation);
     let stopped = search_with_stop(
-        &native,
+        &rules_position,
         Limits {
             depth: MAX_DEPTH,
             nodes: MAX_NODES,
@@ -349,7 +359,7 @@ fn zero_work_partial_iterations_and_cancellation_publish_only_completed_work() {
     assert_eq!(stopped.score, None);
     let mut polls = 0;
     let interrupted = search_with_stop(
-        &native,
+        &rules_position,
         Limits {
             depth: MAX_DEPTH,
             nodes: MAX_NODES,
@@ -367,8 +377,8 @@ fn zero_work_partial_iterations_and_cancellation_publish_only_completed_work() {
     } else {
         assert!(interrupted.score.is_some());
     }
-    assert_eq!(record(&native), before);
-    assert_eq!(native.context(), context);
+    assert_eq!(record(&rules_position), before);
+    assert_eq!(rules_position.context(), context);
     for limits in [
         Limits { depth: 0, nodes: 0 },
         Limits {
@@ -381,7 +391,7 @@ fn zero_work_partial_iterations_and_cancellation_publish_only_completed_work() {
         },
     ] {
         assert!(matches!(
-            search(&native, limits),
+            search(&rules_position, limits),
             Err(SearchError::InvalidLimits)
         ));
     }
@@ -389,12 +399,15 @@ fn zero_work_partial_iterations_and_cancellation_publish_only_completed_work() {
 
 #[test]
 fn fast_miss_is_unknown_and_not_an_installed_game_draw() {
-    let native = game("5k3/9/9/9/9/9/9/9/4A4/3K5 w - - 0 1");
-    assert_eq!(native.no_win_assessment(), x::NoWinAssessment::Unknown);
-    let r = run(&native, 1);
+    let rules_position = game("5k3/9/9/9/9/9/9/9/4A4/3K5 w - - 0 1");
+    assert_eq!(
+        rules_position.no_win_assessment(),
+        x::NoWinAssessment::Unknown
+    );
+    let r = run(&rules_position, 1);
     assert_eq!(r.assessment, x::NoWinAssessment::Unknown);
     assert!(matches!(r.decision, Some(Decision::Choose(_))));
-    assert_eq!(native.conclusion(), None);
+    assert_eq!(rules_position.conclusion(), None);
 }
 
 #[test]
@@ -404,18 +417,18 @@ fn possible_natural_win_is_not_a_forced_win_score() {
 }
 
 #[test]
-fn long_native_history_remains_searchable_and_preserves_complete_source() {
-    let mut native = game(CYCLE_ROOT);
+fn long_history_remains_searchable_and_preserves_complete_source() {
+    let mut rules_position = game(CYCLE_ROOT);
     for _ in 0..600 {
         submit(
-            &mut native,
+            &mut rules_position,
             x::Side::Black,
             x::GameCommand::ClaimNaturalCount,
         );
     }
-    let before = record(&native);
-    let context = native.context();
-    let result = search(&native, DEFAULT_LIMITS).unwrap();
+    let before = record(&rules_position);
+    let context = rules_position.context();
+    let result = search(&rules_position, DEFAULT_LIMITS).unwrap();
     assert!(result.decision.is_some());
     let mut replay = before.to_game().unwrap();
     for choice in &result.principal_variation {
@@ -425,19 +438,25 @@ fn long_native_history_remains_searchable_and_preserves_complete_source() {
         };
         submit(&mut replay, actor, choice.command());
     }
-    assert_eq!(record(&native), before);
-    assert_eq!(native.context(), context);
+    assert_eq!(record(&rules_position), before);
+    assert_eq!(rules_position.context(), context);
 }
 
 #[test]
-fn deterministic_default_work_and_native_lines_are_reproducible() {
-    let native = x::Game::standard(x::ClaimPolicy::Explicit).unwrap();
-    let before = record(&native);
-    let expected = search(&native, DEFAULT_LIMITS).unwrap();
+fn deterministic_default_work_and_lines_are_reproducible() {
+    let rules_position = x::Game::standard(x::ClaimPolicy::Explicit).unwrap();
+    let before = record(&rules_position);
+    let expected = search(&rules_position, DEFAULT_LIMITS).unwrap();
     let Choice::Move(action) = choice(&expected) else {
         panic!()
     };
-    assert!(native.position().legal_actions().unwrap().contains(&action));
+    assert!(
+        rules_position
+            .position()
+            .legal_actions()
+            .unwrap()
+            .contains(&action)
+    );
     assert!(expected.completed_depth > 1);
     assert!(expected.nodes <= DEFAULT_LIMITS.nodes);
     assert!(expected.principal_variation.len() <= MAX_LINE);
@@ -449,6 +468,6 @@ fn deterministic_default_work_and_native_lines_are_reproducible() {
         };
         submit(&mut replay, actor, c.command());
     }
-    assert_eq!(search(&native, DEFAULT_LIMITS).unwrap(), expected);
-    assert_eq!(record(&native), before);
+    assert_eq!(search(&rules_position, DEFAULT_LIMITS).unwrap(), expected);
+    assert_eq!(record(&rules_position), before);
 }

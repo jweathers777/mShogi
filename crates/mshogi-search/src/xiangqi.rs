@@ -1,4 +1,4 @@
-//! Xiangqi adapter for the shared alpha-beta core; native rules own actual play.
+//! Xiangqi adapter for the shared alpha-beta core; rules own actual play.
 /// Tunable classical evaluation weights and the Texel model.
 pub mod eval;
 pub mod position;
@@ -18,7 +18,7 @@ pub const EVALUATOR_ID: &str = "mshogi.xiangqi.material-placement.v1";
 /// Shared alpha-beta search identity.
 pub const SEARCH_ID: &str = "mshogi.xiangqi.shared-core.v1";
 
-/// Hundredths of an unadvanced soldier. A General is valued only by native outcomes.
+/// Hundredths of an unadvanced soldier. A General is valued only by game outcomes.
 pub const fn piece_value(kind: PieceKind) -> i32 {
     match kind {
         PieceKind::General => 0,
@@ -32,11 +32,11 @@ pub const fn piece_value(kind: PieceKind) -> i32 {
 /// Complete board action versus optional formal count claim.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Choice {
-    /// Native complete action, including all history-layer consequences.
+    /// Complete action, including all history-layer consequences.
     Move(Action),
-    /// Only an actually eligible claim is searched; admission remains native.
+    /// Only an actually eligible claim is searched; admission remains.
     Claim {
-        /// Native claimant; ordinary turn search chooses for its mover.
+        /// Claimant; ordinary turn search chooses for its mover.
         actor: Side,
     },
 }
@@ -57,7 +57,7 @@ impl Choice {
 root::root_api!(300_000);
 
 impl RootGame for Game {
-    root::native_types!(XiangqiPosition, Choice, fork, action);
+    root::types!(XiangqiPosition, Choice, fork, action);
     root::timed_moves!(XiangqiPosition);
 
     const TABLE_MB: usize = 64;

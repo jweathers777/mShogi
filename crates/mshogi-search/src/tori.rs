@@ -1,10 +1,10 @@
 //! Tori Shogi engine on the shared search core.
 //!
-//! The native `Game` decides everything about the real game: a concluded
+//! The `Game` decides everything about the real game: a concluded
 //! root, the legal actions (with the departures that the repetition rule
 //! forbids) and each action of the reported line. The shared core searches a
 //! private [`position::ToriPosition`] and proposes a move; this adapter returns
-//! it only if the native legal actions contain it.
+//! it only if the legal actions contain it.
 /// Tunable classical evaluation weights and the Texel model.
 pub mod eval;
 pub mod position;
@@ -28,7 +28,7 @@ pub const SEARCH_ID: &str = "mshogi.tori.shared-core.v1";
 root::root_api!(300_000);
 
 impl RootGame for Game {
-    root::native_types!(ToriPosition, Action, fork, action);
+    root::types!(ToriPosition, Action, fork, action);
     root::no_adjudication!();
     fn play(&mut self, action: &Action, _stop: &mut dyn FnMut() -> bool) -> Result<(), GameError> {
         let request = GameRequest {

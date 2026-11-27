@@ -1,29 +1,29 @@
-//! Human Tori adapter. Native Game alone owns rules, history and admission.
+//! Human Tori adapter. Game alone owns rules, history and admission.
 use crate::{
     diagnostics,
     shell::{self, Variant, diagnostic},
 };
-use mshogi_core::{native::CanonicalRecord, tori::*};
+use mshogi_core::{game::CanonicalRecord, tori::*};
 use std::fmt::Write as _;
 const MAX_DIAGNOSTIC_DEPTH: u32 = 3;
 const HELP: &str = "Untimed Tori Shogi diagnostic console (not USI/SFEN):
   position startpos                 Standard root with complete known history
-  show | hands | status             Board, resources and native game state
-  legal                            Complete history-permitted native choices
-  move <Tori-action>...             Atomic batch; native Game admits each action
-  resign sente|gote                 Native resignation, including out of turn
+  show | hands | status             Board, resources and game state
+  legal                            Complete history-permitted game choices
+  move <Tori-action>...             Atomic batch; Game admits each action
+  resign sente|gote                 Resignation, including out of turn
   undo [n]                         Exact event undo, including resignation
-  history                          Native event ordering, conclusions, repetition limits
+  history                          Game event ordering, conclusions, repetition limits
   record print                     Complete canonical envelope, not display text
   record save <path>                Atomic new-file save; never overwrite
   record load-file <path>           Strict bounded replay before replacement
   record load-json <JSON>           Strict inline canonical envelope
   perft <0..3> [visits] | divide <1..3> [visits]  Bounded local diagnostics
-  analyze [depth nodes]             Read-only bounded native history-aware search
+  analyze [depth nodes]             Read-only bounded game history-aware search
   help | quit
 Tori actions: Sw3d-3c, capture Fa7cx7b=Ea, drop RQ*5e. Source face and
 coordinates are exact; =Ea/=Go records compulsory changed identity. LQ/RQ
-are distinct. Parsing selects native local choices; Game enforces history.
+are distinct. Parsing selects local choices; Game enforces history.
 Board: s/g owner prefixes, no colon; Ph Fa Ea Cr Pt LQ RQ Sw Go in fixed cells.
 Perft/divide ignores history and conclusions, never changes the live game.";
 
@@ -33,8 +33,8 @@ impl Variant for Game {
     const NAME: &'static str = "Tori";
     const HELP: &'static str = HELP;
     const MOVE_SYNTAX: &'static str = "Tori-action";
-    const LOADED: &'static str = "loaded complete native Tori record";
-    shell::native_record!(tori, Tori);
+    const LOADED: &'static str = "loaded complete Tori record";
+    shell::game_record!(tori, Tori);
     fn position_command(&self, rest: &str) -> Result<Self, String> {
         shell::startpos(rest, Game::standard)
     }

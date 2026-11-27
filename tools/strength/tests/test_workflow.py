@@ -8,7 +8,7 @@ from unittest.mock import patch
 
 from tools.strength import workflow
 from tools.strength.common import profile
-from tools.strength.native_match import calibration_failure
+from tools.strength.internal_match import calibration_failure
 
 
 class StrengthWorkflowTests(unittest.TestCase):
@@ -19,7 +19,7 @@ class StrengthWorkflowTests(unittest.TestCase):
             profile('tenjiku', None)
 
     def test_calibration_requires_both_applied_turns(self):
-        row = {'seed': 1, 'plies': [1, 1], 'stops': ['step_limit', 'native_concluded'],
+        row = {'seed': 1, 'plies': [1, 1], 'stops': ['step_limit', 'game_concluded'],
                'turns': [[{'applied': True}], [{'applied': True}]]}
         self.assertIsNone(calibration_failure([row]))
         row['turns'][1][0]['applied'] = False
@@ -29,12 +29,12 @@ class StrengthWorkflowTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             args = SimpleNamespace(source=root/'input', out=root/'suite', game='chess', profile=None, proof='supplied')
-            rows = [{'id': str(i), 'group': grp, 'split': part, 'source': 'native reference proof'}
+            rows = [{'id': str(i), 'group': grp, 'split': part, 'source': 'reference proof'}
                     for i, (grp, part) in enumerate([('g1', 'held-out'), ('g1', 'held-out'), ('g2', 'development')])]
-            def native_position(args, row, **ignored):
+            def position(args, row, **ignored):
                 return {'position': row['id']+' b - - 0 1', 'answers': ['e2e4'],
                         'score_first_twice': None, 'root': {'record': row['id']}}
-            with patch.object(workflow, 'position', native_position):
+            with patch.object(workflow, 'position', position):
                 args.source.write_text(json.dumps({'positions': rows}))
                 workflow.suite(args)
                 result = json.loads(args.out.read_text())

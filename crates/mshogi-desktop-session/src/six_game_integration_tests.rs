@@ -1,7 +1,7 @@
 //! One controller crosses all six games and both immutable Tenjiku profiles.
 //! Manual execution allocation exercises authority retirement, not subprocess play.
 use super::*;
-use mshogi_core::native::{GameKind, NativeSide, RulesProfile};
+use mshogi_core::game::{GameKind, RulesProfile, TaggedSide};
 use std::{
     fs,
     path::{Path, PathBuf},
@@ -60,15 +60,15 @@ fn file(c: &mut DesktopController, id: u64, succeeds: bool) -> SharedSnapshot {
         std::thread::sleep(Duration::from_millis(1));
     }
 }
-fn second_side(game: GameKind) -> NativeSide {
+fn second_side(game: GameKind) -> TaggedSide {
     use mshogi_core::{chu, shogi, tenjiku, tori, xiangqi};
     match game {
-        GameKind::Chess => NativeSide::Chess(Color::Black),
-        GameKind::Shogi => NativeSide::Shogi(shogi::Side::Gote),
-        GameKind::Xiangqi => NativeSide::Xiangqi(xiangqi::Side::Black),
-        GameKind::Tori => NativeSide::Tori(tori::Side::Gote),
-        GameKind::Chu => NativeSide::Chu(chu::Side::Gote),
-        GameKind::Tenjiku => NativeSide::Tenjiku(tenjiku::Side::Gote),
+        GameKind::Chess => TaggedSide::Chess(Color::Black),
+        GameKind::Shogi => TaggedSide::Shogi(shogi::Side::Gote),
+        GameKind::Xiangqi => TaggedSide::Xiangqi(xiangqi::Side::Black),
+        GameKind::Tori => TaggedSide::Tori(tori::Side::Gote),
+        GameKind::Chu => TaggedSide::Chu(chu::Side::Gote),
+        GameKind::Tenjiku => TaggedSide::Tenjiku(tenjiku::Side::Gote),
     }
 }
 fn pending(c: &mut DesktopController) -> ExecutionContext {

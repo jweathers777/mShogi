@@ -2,7 +2,7 @@
 mod support;
 use mshogi_core::{
     chess::{AdjudicatedGame, ClaimPolicy},
-    native::CanonicalRecord,
+    game::CanonicalRecord,
 };
 use mshogi_engine::*;
 use serde_json::json;
@@ -60,7 +60,7 @@ fn wire_rejects_other_versions_and_shapes() {
 }
 
 #[test]
-fn outer_wrapper_context_native_and_observation_reject_duplicates_and_unknowns() {
+fn outer_wrapper_context_and_observation_reject_duplicates_and_unknowns() {
     let request = request();
     let text = serde_json::to_string(&request).unwrap();
     let protocol = format!("\"protocol\":{PROTOCOL_VERSION}");

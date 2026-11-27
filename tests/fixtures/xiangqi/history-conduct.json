@@ -203,7 +203,7 @@
     ],
     "source": "WXF20.6-7; chapter5diagram54 EN76/68 andsection22 EN81/73",
     "independent_expectation": "BlackRookd9/c9 pinned onrank9. On d9 phase BlackAdvisor e8 can actually recapture a RedRook on d9 while still screening RedRooka9 from Generalf9. One real-rooted phase prevents perpetual prohibited chase despite other phase unrooted; permitted.",
-    "status": "facts independently paper-reviewed by separate reviewer before native probe/adjudicator execution",
+    "status": "facts independently paper-reviewed by separate reviewer before probe/adjudicator execution",
     "coordinates": "a-i Red-left files; rank0 Red baseline"
   },
   {
@@ -217,7 +217,7 @@
     ],
     "source": "WXF20.7",
     "independent_expectation": "RedHorseb6 threatens sameBlackHorse d5 viaemptyc6; reverse d5b6 blockedRedCannonc5. RedHorsea4 threatens BlackHorsec3 viaemptyb4; reverse c3a4 blockedRedCannonb3. All actual ownmovementlegs free, target unrooted; Redprohibited.",
-    "status": "facts independently paper-reviewed by separate reviewer before native probe/adjudicator execution",
+    "status": "facts independently paper-reviewed by separate reviewer before probe/adjudicator execution",
     "coordinates": "a-i Red-left files; rank0 Red baseline"
   },
   {
@@ -231,7 +231,7 @@
     ],
     "source": "WXF20.9",
     "independent_expectation": "RedGeneral alternately directly threatens sameBlackCannon; Cannon escapes horizontally with no checking screen, General remainspalace. Generalpursuerexempt.",
-    "status": "facts independently paper-reviewed by separate reviewer before native probe/adjudicator execution",
+    "status": "facts independently paper-reviewed by separate reviewer before probe/adjudicator execution",
     "coordinates": "a-i Red-left files; rank0 Red baseline"
   },
   {
@@ -245,7 +245,7 @@
     ],
     "source": "WXF20.9",
     "independent_expectation": "CrossedRedSoldier a5/b5 laterally moves, threatens sameCannon b6/a6 withforwardcapture, Cannon escapes. Soldierpursuerexempt.",
-    "status": "facts independently paper-reviewed by separate reviewer before native probe/adjudicator execution",
+    "status": "facts independently paper-reviewed by separate reviewer before probe/adjudicator execution",
     "coordinates": "a-i Red-left files; rank0 Red baseline"
   },
   {
@@ -263,7 +263,7 @@
     ],
     "source": "WXF20.9",
     "independent_expectation": "G/R/R/G alternately threaten samecrossedBlackSoldier directlybelow on e1/d1. BlackSoldiercanescapehorizontally butcannot attackGeneralabove (forwarddown). General+Rookcombinationexempt.",
-    "status": "facts independently paper-reviewed by separate reviewer before native probe/adjudicator execution",
+    "status": "facts independently paper-reviewed by separate reviewer before probe/adjudicator execution",
     "coordinates": "a-i Red-left files; rank0 Red baseline"
   },
   {
@@ -277,7 +277,7 @@
     ],
     "source": "WXF20.4",
     "independent_expectation": "RedCannon alternately pursues BlackHorseb6/a6 overRedRookb2/a2 screens. BlackRookb3/a3 adds2ndscreen toresolve. BlackHorsevictimsdistinct, bothunrootedattackedphase; noRedfault. BlackRooktargets differentmutuallyrootedRedRooks; noBlackfault.",
-    "status": "facts independently paper-reviewed by separate reviewer before native probe/adjudicator execution",
+    "status": "facts independently paper-reviewed by separate reviewer before probe/adjudicator execution",
     "coordinates": "a-i Red-left files; rank0 Red baseline"
   },
   {
@@ -293,8 +293,8 @@
       "b6a6",
       "f8f9"
     ],
-    "source": "Selected profile separates board repetition identity from native pursuit identities; independent constructed complete native history",
+    "source": "Selected profile separates board repetition identity from pursuit identities; independent constructed complete game history",
     "independent_expectation": "Sameboard/turn after8plies but twoRedRookidentities exchanged. No checks or nonGeneralvictims; noresponsibility. Closingreplyprojectionmust usecurrentids, not requireoldidsorappendfutureevent.",
-    "status": "separate reviewer paperchecked before native test"
+    "status": "separate reviewer paperchecked before test"
   }
 ]

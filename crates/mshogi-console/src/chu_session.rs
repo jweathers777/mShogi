@@ -1,20 +1,20 @@
-//! Human Chu adapter. Native Game alone owns rules, history and admission.
+//! Human Chu adapter. Game alone owns rules, history and admission.
 use crate::{
     diagnostics,
     shell::{self, Variant, diagnostic},
 };
-use mshogi_core::{chu::*, native::CanonicalRecord};
+use mshogi_core::{chu::*, game::CanonicalRecord};
 use std::fmt::Write as _;
 const MAX_DIAGNOSTIC_DEPTH: u32 = 2;
 const HELP: &str = "Untimed Chu Shogi diagnostic console (not USI/SFEN):
   position startpos                Standard root with complete known history
-  show | status                    Board, native royal status and exact history
-  legal                            Complete history-permitted native actions
+  show | status                    Board, royal status and exact history
+  legal                            Complete history-permitted actions
   move <Chu-action>...              Atomic batch, complete routes only
   resign sente|gote                 Actual resignation, independent of board turn
   offer-draw sente|gote             Actual draw offer; not an automatic result
   accept-draw sente|gote | decline-draw sente|gote
-  undo [n] | history               Exact native events and event reversal
+  undo [n] | history               Exact game events and event reversal
   record print | record save <path> | record load-file <path> | record load-json <JSON>
   perft <0..2> [visits] | divide <1..2> [visits]  Bounded local diagnostics
   analyze [depth nodes]             Read-only bounded history-aware search
@@ -23,7 +23,7 @@ Chu actions: Ln6fx6ex6d ordered double capture, Ln6fx6e-6f capture-return,
 Ln6f-5e-6f quiet-return, P6e-6d^ promotion, P6e-6d no flip. Ki+ means an
 already promoted original Kirin, not an original Lion. Each landing is exact.
 Board: lowercase s/g owner prefix and original piece code, no colon or hands.
-Perft/divide ignores history and conclusions. Search uses native full history.
+Perft/divide ignores history and conclusions. Search uses full history.
 Saves require a new path; strict canonical records preserve complete semantics.";
 
 impl Variant for Game {
@@ -32,8 +32,8 @@ impl Variant for Game {
     const NAME: &'static str = "Chu";
     const HELP: &'static str = HELP;
     const MOVE_SYNTAX: &'static str = "Chu-action";
-    const LOADED: &'static str = "loaded complete native Chu record";
-    shell::native_record!(chu, Chu);
+    const LOADED: &'static str = "loaded complete Chu record";
+    shell::game_record!(chu, Chu);
     fn position_command(&self, rest: &str) -> Result<Self, String> {
         shell::startpos(rest, Game::standard)
     }
@@ -62,7 +62,7 @@ impl Variant for Game {
         }
         writeln!(
             out,
-            "native-status {:?} draw-offer {:?} lion-protection {:?}",
+            "royal-status {:?} draw-offer {:?} lion-protection {:?}",
             self.status(),
             self.snapshot().draw_offer,
             self.local_position().protection()

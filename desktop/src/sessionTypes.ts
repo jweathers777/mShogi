@@ -1,10 +1,10 @@
 // Presentation DTOs mirror mshogi-desktop-session and mshogi-engine serde output.
-// Actions are opaque native identifiers; legality and adjudication stay in Rust.
+// Actions are opaque identifiers; legality and adjudication stay in Rust.
 import type { GameKind, GameSide, RulesProfile, TenjikuProfile } from "./games";
 
 export type Color = GameSide<"chess">;
 export type ShogiSide = GameSide<"shogi">;
-export type NativeSide = { [K in GameKind]: { game_kind: K; side: GameSide<K> } }[GameKind];
+export type TaggedSide = { [K in GameKind]: { game_kind: K; side: GameSide<K> } }[GameKind];
 export type SessionToken = { document: number; version: number; revision: number; selection: number };
 export type WorkLimits = AnalysisOperation & { time_ms?: number };
 export type Purpose = "engine_turn" | "move_analysis";
@@ -51,7 +51,7 @@ interface SearchTelemetry<Choice> {
 export interface Telemetry extends SearchTelemetry<EngineChoice> {
   selective_depth: number;
 }
-interface NativeTelemetry<K extends GameKind> extends SearchTelemetry<unknown> {
+interface VariantTelemetry<K extends GameKind> extends SearchTelemetry<unknown> {
   evaluator_id: string;
   search_id: string;
   perspective: GameSide<K>;
@@ -80,7 +80,7 @@ export interface ExecutionTarget {
   event_index: number;
   session_version: number;
   label: string;
-  turn: NativeSide;
+  turn: TaggedSide;
 }
 export interface ExecutionContext {
   request_id: number;
@@ -107,16 +107,16 @@ export type ChessResult =
   | { kind: "finished"; outcome: ChessOutcome; telemetry: Telemetry }
   | { kind: "incomplete"; telemetry: Telemetry }
   | { kind: "failure"; failure: EngineFailure };
-// Native choices and conclusions remain opaque where the UI uses the native
+// Game choices and conclusions remain opaque where the UI uses the
 // search projection. Only Xiangqi has an unresolved result with a pending witness.
-type NativeResult<K extends GameKind> =
-  | { kind: "choice"; choice: unknown; telemetry: NativeTelemetry<K> }
-  | { kind: "finished"; conclusion: unknown; telemetry: NativeTelemetry<K> }
-  | { kind: "incomplete"; telemetry: NativeTelemetry<K> }
-  | (K extends "xiangqi" ? { kind: "unresolved"; pending: XiangqiPending; telemetry: NativeTelemetry<K> } : never);
+type VariantResult<K extends GameKind> =
+  | { kind: "choice"; choice: unknown; telemetry: VariantTelemetry<K> }
+  | { kind: "finished"; conclusion: unknown; telemetry: VariantTelemetry<K> }
+  | { kind: "incomplete"; telemetry: VariantTelemetry<K> }
+  | (K extends "xiangqi" ? { kind: "unresolved"; pending: XiangqiPending; telemetry: VariantTelemetry<K> } : never);
 export type ExecutionResult =
   | { kind: "chess"; result: ChessResult }
-  | { [K in Exclude<GameKind, "chess">]: { kind: K; result: NativeResult<K> } }[Exclude<GameKind, "chess">]
+  | { [K in Exclude<GameKind, "chess">]: { kind: K; result: VariantResult<K> } }[Exclude<GameKind, "chess">]
   | { kind: "failure"; failure: EngineFailure };
 export interface ExecutionObservation {
   schema_version: number;
@@ -124,10 +124,10 @@ export interface ExecutionObservation {
   result: ExecutionResult;
 }
 
-// Native admission facts. R4 consumes these in the shared application notices;
+// Game admission facts. R4 consumes these in the shared application notices;
 // callers must never derive a category or count from diagnostic text.
 export interface ResourceFact {
-  category: "native_root_bytes"
+  category: "game_root_bytes"
     | "identity_headroom"
     | "validation_budget" | "unknown";
   measurement: "accepted" | "candidate" | "unknown";
@@ -142,7 +142,7 @@ export interface ResourceFailure {
   diagnostic: string;
 }
 
-export type NativeOrigin = { kind: "board"; square: string }
+export type ChoiceOrigin = { kind: "board"; square: string }
   | { kind: "intersection"; point: string }
   | { kind: "hand"; owner: string; piece_kind: string };
 export interface BoardChoice {
@@ -153,22 +153,22 @@ export interface BoardChoice {
   // Input targets are not movement: igui selects a victim while route stays empty.
   tenjiku?: { kind: "travel"; route: string[] } | { kind: "stationary_capture"; target: string };
 }
-export interface NativeChoice extends BoardChoice { origin: NativeOrigin }
-export interface NativePiece { square: string; owner: string; kind: string; promoted: boolean; text: string; label: string }
-export interface NativeHand { origin: string; owner: string; kind: string; count: number; text: string; label: string }
+export interface GameChoice extends BoardChoice { origin: ChoiceOrigin }
+export interface GamePiece { square: string; owner: string; kind: string; promoted: boolean; text: string; label: string }
+export interface HandPiece { origin: string; owner: string; kind: string; count: number; text: string; label: string }
 
-// MSH-123 supplies this from exact native history. It is deliberately not input
+// MSH-123 supplies this from exact game history. It is deliberately not input
 // to the interaction controller. R5 does not derive, remember or draw last moves.
 export interface CompletedActionGeometry {
   readonly action: string;
   readonly event_index: number;
-  readonly origin: NativeOrigin;
+  readonly origin: ChoiceOrigin;
   readonly steps: readonly string[];
-  // Ordered native victims, including intermediate Lion captures. Never inferred
+  // Ordered victims, including intermediate Lion captures. Never inferred
   // from the board currently displayed or from an action spelling.
-  readonly captures?: readonly { readonly square: string; readonly owner: NativeSide; readonly original_kind: string; readonly movement_face: string; readonly promoted: boolean }[];
+  readonly captures?: readonly { readonly square: string; readonly owner: TaggedSide; readonly original_kind: string; readonly movement_face: string; readonly promoted: boolean }[];
   readonly effects: readonly { readonly from: string; readonly to: string }[];
-  readonly native_effects?: { readonly kind: "tenjiku"; readonly stationary_target: string | null; readonly phases: readonly TenjikuEffectPhase[] };
+  readonly ordered_effects?: { readonly kind: "tenjiku"; readonly stationary_target: string | null; readonly phases: readonly TenjikuEffectPhase[] };
 }
 
 export type TenjikuEffectPhase = { readonly phase: "capture"; readonly victim: TenjikuPieceIdentity }
@@ -177,9 +177,9 @@ export type TenjikuEffectPhase = { readonly phase: "capture"; readonly victim: T
   | { readonly phase: "promotion"; readonly before: TenjikuPieceIdentity; readonly after: TenjikuPieceIdentity };
 
 export type PlayMode = "human_engine" | "two_humans";
-export interface Side { id: NativeSide; key: string; label: string; first_mover: boolean }
+export interface Side { id: TaggedSide; key: string; label: string; first_mover: boolean }
 // Document settings have the same shape in every game.
-export interface GameSettings { play_mode: PlayMode; orientation: NativeSide; analysis_defaults: AnalysisOperation }
+export interface GameSettings { play_mode: PlayMode; orientation: TaggedSide; analysis_defaults: AnalysisOperation }
 export interface OpenToken { document: number; version: number; document_revision: number }
 export interface SearchView {
   selected: boolean; observation_index: number; purpose: Purpose; event_index: number; board_ply: number;
@@ -199,9 +199,9 @@ interface GameSnapshotBase<K extends GameKind = GameKind> {
   profile: RulesProfile;
   board: { files: string[]; ranks: string[]; label: string; initial_focus: string;
     intersections?: { points: string[]; river_between_ranks: [number, number]; palaces: { side: Side; points: string[]; diagonals: string[][] }[] } };
-  pieces: NativePiece[];
-  hands: NativeHand[];
-  choices: NativeChoice[];
+  pieces: GamePiece[];
+  hands: HandPiece[];
+  choices: GameChoice[];
   edition: string;
   score_meaning: string;
   open_token: OpenToken;
@@ -266,7 +266,7 @@ export type ToriSnapshot = GameSnapshotBase<"tori"> & {
   tori: { root_kind: "standard" | "diagram" | "imported"; root_source: string | null; declared_root_plies: string;
     earlier_history_unknown: boolean; historical_reachability_proven: boolean; selected: ToriHistory; live: ToriHistory };
 };
-// Real native Chu session used by the ordinary fifth-game product.
+// Real Chu session used by the ordinary fifth-game product.
 export interface ChuHistory {
   event_index: number; board_ply: number; declared_total_plies: string;
   identities: { square: string; piece: { side: ShogiSide; base: string; promoted: boolean }; face: string }[];
@@ -300,13 +300,13 @@ export interface Observation {
   historical: boolean; application_error: string | null;
   observation: ExecutionObservation;
 }
-// A native command of the active game, as its records spell it.
-export type NativeCommand = { kind: "offer_draw" | "accept_draw" | "decline_draw" | "claim_natural_count" | "declare_entering_king" }
+// A game command of the active game, as its records spell it.
+export type GameCommand = { kind: "offer_draw" | "accept_draw" | "decline_draw" | "claim_natural_count" | "declare_entering_king" }
   | { claim: { reason: Claim["reason"]; intended: string | null } };
 // Operation kinds name no game: game data is only in the payload.
 export type Operation =
   | { kind: "play"; action: string }
-  | { kind: "command"; command: NativeCommand }
+  | { kind: "command"; command: GameCommand }
   | { kind: "preferences"; settings: GameSettings }
   | { kind: "resume" | "retry" | "cancel" | "take_back" | "undo" | "return_live" | "resign" }
   | { kind: "inspect"; event_index: number }
@@ -324,7 +324,7 @@ export interface MovementInspection extends InspectionContext {
   origin: string;
   side: Side;
   label: string;
-  choices: NativeChoice[];
+  choices: GameChoice[];
   read_only: true;
 }
 

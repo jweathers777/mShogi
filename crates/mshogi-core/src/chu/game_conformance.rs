@@ -1,10 +1,10 @@
-//! Actual native Game/history/record projections of the independently authored
+//! Actual Game/history/record projections of the independently authored
 //! Chu corpus. Expected answers are read only by the common comparator.
 use super::conformance::{action, action_value, root, side};
 use super::*;
 use mshogi_conformance::{
     assertions::Assertion,
-    chu::{Corpus, Fixture, NativeAdapter},
+    chu::{Corpus, Fixture, RulesAdapter},
 };
 use serde_json::{Value, json};
 use std::{cell::RefCell, collections::BTreeMap};
@@ -15,7 +15,7 @@ type ProjectionCache = RefCell<BTreeMap<String, Result<BTreeMap<String, Value>, 
 struct GameAdapter {
     cache: ProjectionCache,
 }
-impl NativeAdapter for GameAdapter {
+impl RulesAdapter for GameAdapter {
     fn observe(&self, f: &Fixture, a: &Assertion) -> Result<Option<Value>, String> {
         if !self.cache.borrow().contains_key(&f.id) {
             self.cache.borrow_mut().insert(f.id.clone(), project(f));
@@ -34,7 +34,7 @@ struct CompleteAdapter {
     local: super::conformance::LocalAdapter,
     game: GameAdapter,
 }
-impl NativeAdapter for CompleteAdapter {
+impl RulesAdapter for CompleteAdapter {
     fn observe(&self, f: &Fixture, a: &Assertion) -> Result<Option<Value>, String> {
         match self.local.observe(f, a)? {
             Some(v) => Ok(Some(v)),
@@ -268,7 +268,7 @@ fn project(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
     );
     put(&mut out, "accepted_board_plies", g.snapshot().board_ply);
     put(&mut out, "board_plies", g.snapshot().board_ply);
-    put(&mut out, "native_event_count", g.events().len());
+    put(&mut out, "event_count", g.events().len());
     put(&mut out, "occurrences_of_root", root_occurrences(g));
     put(&mut out, "live_root_occurrences", root_occurrences(g));
     put(&mut out, "known_root_occurrences", root_occurrences(g));
@@ -309,7 +309,7 @@ fn project(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
     }
     match f.id.as_str() {
         "CHU-REP-IMPORTED" => {
-            // Read the native cache, not a second count which would conceal an
+            // Read the cache, not a second count which would conceal an
             // implementation inventing duplicate root occurrences from 8000.
             put(&mut out, "known_root_occurrences", g.occurrences().len());
             put(
@@ -326,7 +326,7 @@ fn project(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
                     .iter()
                     .any(|(_, t)| t == s)
             });
-            // The accepted native action leaves the royal exposed; there was no
+            // The accepted action leaves the royal exposed; there was no
             // imported Chess safety rejection.
             put(
                 &mut out,
@@ -562,7 +562,7 @@ fn project(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
             let replies = initial.immediate_material_replies();
             if replies.len() != 1 {
                 return Err(format!(
-                    "expected independently unique equalizer but native returned {}",
+                    "expected independently unique equalizer but returned {}",
                     replies.len()
                 ));
             }
@@ -629,14 +629,14 @@ fn different_history(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
     put(
         &mut out,
         "same_search_context",
-        (a.native_root(), a.events()) == (b.native_root(), b.events()),
+        (a.game_root(), a.events()) == (b.game_root(), b.events()),
     );
     for (label, g) in [("next_cycle_A", &mut a), ("next_cycle_B", &mut b)] {
         let mut result = "ongoing";
         for v in f.given["next_cycle"].as_array().unwrap() {
             if let Err(e) = play(g, action(v)) {
                 if matches!(e, GameError::RepetitionDeparture) && g.snapshot().board_ply == 10 {
-                    result = "move11_native_must_vary_refusal"
+                    result = "move11_must_vary_refusal"
                 } else {
                     return Err(e.to_string());
                 }
@@ -676,7 +676,7 @@ fn lion_history(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
         &mut out,
         "same_repetition_or_search_identity",
         known.repetition_key() == fresh.repetition_key()
-            || (known.native_root(), known.events()) == (fresh.native_root(), fresh.events()),
+            || (known.game_root(), known.events()) == (fresh.game_root(), fresh.events()),
     );
     put(
         &mut out,
@@ -717,7 +717,7 @@ fn route_identity(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
         a.repetition_key() == b.repetition_key(),
     );
     // Build the actual four-turn repetition using an ordinary reversible remote
-    // King move. The two supplied quiet-return routes remain actual native actions.
+    // King move. The two supplied quiet-return routes remain actual actions.
     let mut cycle = fixture_game(f)?;
     let king = cycle
         .position()
@@ -735,7 +735,7 @@ fn route_identity(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
                 && a.route.len() == 1
                 && cycle.position().piece(a.route[0]).is_none()
         })
-        .ok_or("missing remote native King step")?;
+        .ok_or("missing remote King step")?;
     let back = Action::single(step.route[0], king);
     for _ in 0..2 {
         for turn in [aa.clone(), step.clone(), aa.clone(), back.clone()] {
@@ -767,11 +767,11 @@ fn invalid(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
     if raw.get("action").is_some() {
         raw = raw["action"].clone();
     }
-    let mut native = raw.clone();
-    if native["kind"] == "move" {
-        native.as_object_mut().unwrap().remove("kind");
+    let mut rules = raw.clone();
+    if rules["kind"] == "move" {
+        rules.as_object_mut().unwrap().remove("kind");
     }
-    let parse = Action::from_json(&native.to_string());
+    let parse = Action::from_json(&rules.to_string());
     let mut action_error = None;
     let mut parse_error = None;
     let admitted = match parse {
@@ -787,8 +787,8 @@ fn invalid(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
             false
         }
     };
-    // Every explanatory label below is conditional on an actual native refusal.
-    // The fixture action grammar is mapped to the native Action shape without
+    // Every explanatory label below is conditional on an actual refusal.
+    // The fixture action grammar is mapped to the action shape without
     // deleting unknown supplied fields such as client victim lists.
     let reason = match (&action_error, &parse_error) {
         (Some(GameError::WrongActor), _) => "wrong_side",
@@ -804,7 +804,7 @@ fn invalid(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
             "client_victims_not_authority"
         }
         (_, Some(RecordError::Json)) => "offboard",
-        _ => "unexpected_native_result",
+        _ => "unexpected_result",
     };
     let mut out = BTreeMap::new();
     put(&mut out, "admitted", admitted);
@@ -870,8 +870,8 @@ fn records(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
         );
         put(
             &mut out,
-            "derive_facts_from_native_replay",
-            (game.native_root(), game.events()) == (replay.native_root(), replay.events())
+            "derive_facts_from_replay",
+            (game.game_root(), game.events()) == (replay.game_root(), replay.events())
                 && game.context() != replay.context(),
         );
         return Ok(out);
@@ -896,17 +896,17 @@ fn records(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
             raw["edition"] = json!("not-the-selected-edition");
             raw.to_string()
         }
-        "wrong_native_schema" => {
+        "wrong_record_schema" => {
             raw["schema_version"] = json!(999);
             raw.to_string()
         }
         "tampered_capture_effect" => {
-            // Effects are no longer stored. Inject the same tampered native
+            // Effects are no longer stored. Inject the same tampered
             // effect to verify that a record cannot supply its own outcome.
             raw["events"][0]["effects"] = serde_json::to_value(&game.events()[0].effects).unwrap();
             let effect = raw["events"][0]["effects"]["captures"]
                 .as_array_mut()
-                .ok_or("missing real native captured effects")?;
+                .ok_or("missing real captured effects")?;
             if effect.is_empty() {
                 return Err("source fixture did not actually capture".into());
             }
@@ -945,7 +945,7 @@ fn records(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
 }
 
 #[test]
-fn complete_independently_expected_native_corpus() {
+fn complete_independently_expected_corpus() {
     let corpus = Corpus::embedded().unwrap();
     let report = mshogi_conformance::chu::run_adapter(&corpus, &CompleteAdapter::default());
     let failures: Vec<_> = report
@@ -958,14 +958,14 @@ fn complete_independently_expected_native_corpus() {
         "{}",
         serde_json::to_string_pretty(&failures).unwrap()
     );
-    assert_eq!(report.native_rows_passed, 239);
-    assert_eq!(report.native_rows_pending, 0);
+    assert_eq!(report.rules_rows_passed, 239);
+    assert_eq!(report.rules_rows_pending, 0);
     assert_eq!(report.failed, 0);
     assert_eq!(report.later_consumer_requirements.len(), 10);
     eprintln!(
-        "Chu complete native corpus: {} fields passed; {} rows passed; {} documentary annotations; {} future consumer rows remain pending",
+        "Chu complete corpus: {} fields passed; {} rows passed; {} documentary annotations; {} future consumer rows remain pending",
         report.passed,
-        report.native_rows_passed,
+        report.rules_rows_passed,
         report.documentary_annotations,
         report.later_consumer_requirements.len()
     );

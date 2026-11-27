@@ -2,14 +2,14 @@
 
 ## Traditional default
 
-Traditional native kanji are the default Tori piece presentation. The owner
+Traditional kanji are the default Tori piece presentation. The owner
 clarified this during the MSH-42 visual checkpoint: retain original bird artwork
-as a possible future alternative, while traditional native glyphs remain the
+as a possible future alternative, while traditional glyphs remain the
 default for Shogi variants. No artwork selector or new preference is introduced.
 
 The shared `Piece.tsx` tile uses exactly the selected profile T02 bird names for Tori:
 
-| Native face | Display | Native name |
+| Face | Display | Game name |
 | --- | --- | --- |
 | Ph | 鵬 | Phoenix |
 | Fa | 鷹 | Falcon |
@@ -25,13 +25,13 @@ Single kanji use a large centered face; quails use two vertically arranged
 characters, preserving explicit handedness. The warm pentagonal tile outline
 and bevel are the same tile as Shogi. Ownership rotates
 all of the tile and glyphs without exchanging Left Quail and Right Quail.
-The native promoted flag supplies dark-red engraving plus two small corner
+The promoted flag supplies dark-red engraving plus two small corner
 chevrons, so promotion is not conveyed by color alone. Eagle and Goose retain
 their own proper names. The frontend neither infers promotion pairings nor
 computes movement rules from these glyphs.
 
-Accessible names come from the native board and hand presentation. Decorative
-SVG content is hidden from assistive technology. Unknown native faces never
+Accessible names come from the game board and hand presentation. Decorative
+SVG content is hidden from assistive technology. Unknown faces never
 render as a different bird, a standard Shogi piece, or a raw diagnostic label.
 
 ## Bundled font and provenance
@@ -90,7 +90,7 @@ All bird, letter and promotion-mark paths in that alternative were drawn
 specifically for mShogi as original project source. Tile geometry reuses the
 existing project component. No third-party artwork, downloaded image, icon set
 or additional asset license is involved. Its component tests preserve nine
-explicit face identities, quail handedness, orientation and native promotion
+explicit face identities, quail handedness, orientation and promotion
 presentation without establishing owner visual approval.
 
 The finished presentation remains subject to review of genuine running

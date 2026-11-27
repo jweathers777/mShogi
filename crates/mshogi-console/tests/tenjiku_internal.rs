@@ -1,6 +1,6 @@
-//! Actual native Tenjiku subprocess and sole desktop controller; no packaged GUI claim.
+//! Actual Tenjiku subprocess and sole desktop controller; no packaged GUI claim.
 mod support;
-use mshogi_core::{native::*, tenjiku as c};
+use mshogi_core::{game::*, tenjiku as c};
 use mshogi_desktop_session::{DesktopController, SessionOperation, SharedSnapshot};
 use mshogi_engine::*;
 use std::{
@@ -75,7 +75,7 @@ fn request(id: u64, g: &c::Game, analysis: bool) -> ExecutionRequest {
                         board_ply: game.known_board_actions() as u64,
                         session_version: 2,
                         label: "Tenjiku exact prefix".into(),
-                        turn: NativeSide::Tenjiku(g.position().side_to_move()),
+                        turn: TaggedSide::Tenjiku(g.position().side_to_move()),
                     },
                 }
             } else {
@@ -130,10 +130,7 @@ fn actual_child_executes_complete_tenjiku_choices_for_full_known_history_and_pur
             assert!(r.matches(&req));
             assert_eq!(r.observation.context.game, req.context.game);
             let ExecutionResult::Tenjiku { result } = &r.observation.result else {
-                panic!(
-                    "actual native Tenjiku result required: {:?}",
-                    r.observation.result
-                )
+                panic!("actual Tenjiku result required: {:?}", r.observation.result)
             };
             result.validate(&g).unwrap();
             let TenjikuResult::Choice {
@@ -157,13 +154,13 @@ fn actual_controller_readonly_analysis_save_reopen_and_stale_identity_retirement
     let _journey = JOURNEY.lock().unwrap_or_else(|e| e.into_inner());
     for profile in c::Profile::ALL {
         let mut ctl = DesktopController::new(env!("CARGO_BIN_EXE_mshogi").into()).unwrap();
-        let native =
+        let record =
             CanonicalRecord::tenjiku(c::GameRecord::from_game(&representative(profile)).unwrap());
         send(
             &mut ctl,
             SessionOperation::Replace {
-                record: native.clone(),
-                human: NativeSide::Tenjiku(c::Side::Sente),
+                record: record.clone(),
+                human: TaggedSide::Tenjiku(c::Side::Sente),
             },
         );
         let submitted = ctl
@@ -220,7 +217,7 @@ fn actual_controller_readonly_analysis_save_reopen_and_stale_identity_retirement
             assert!(Instant::now() < end);
             thread::sleep(Duration::from_millis(1));
         };
-        assert_eq!(observed.context, native);
+        assert_eq!(observed.context, record);
         assert!(observed.search_observations[0].score.is_some());
         assert!(
             observed.search_observations[0]
@@ -265,7 +262,7 @@ fn actual_controller_readonly_analysis_save_reopen_and_stale_identity_retirement
         assert!(reopened.observations.is_empty());
         assert!(!reopened.historical);
         assert!(!ctl.accept_shared(failure(submitted)));
-        assert_eq!(reopened.context, native);
+        assert_eq!(reopened.context, record);
         std::fs::remove_file(path).unwrap();
         let retired = ctl
             .verify_tenjiku_execution(
@@ -298,7 +295,7 @@ fn actual_controller_readonly_analysis_save_reopen_and_stale_identity_retirement
             SessionOperation::play(serde_json::to_string(&action).unwrap()),
         );
         send(&mut ctl, SessionOperation::TakeBack {});
-        assert_eq!(ctl.shared_snapshot().context, native);
+        assert_eq!(ctl.shared_snapshot().context, record);
         assert!(!ctl.accept_shared(failure(retired)));
         let retired = ctl
             .verify_tenjiku_execution(
@@ -331,7 +328,7 @@ fn actual_controller_readonly_analysis_save_reopen_and_stale_identity_retirement
                     )
                     .record(),
                 ),
-                human: NativeSide::Chess(mshogi_core::chess::Color::White),
+                human: TaggedSide::Chess(mshogi_core::chess::Color::White),
             },
         );
         assert!(!ctl.accept_shared(failure(retired)));
@@ -346,7 +343,7 @@ fn controller(profile: c::Profile, human: c::Side) -> DesktopController {
             record: CanonicalRecord::tenjiku(
                 c::GameRecord::from_game(&representative(profile)).unwrap(),
             ),
-            human: NativeSide::Tenjiku(human),
+            human: TaggedSide::Tenjiku(human),
         },
     );
     ctl
@@ -399,7 +396,7 @@ fn actual_engine_turns_for_both_player_assignments_admit_observation_then_action
                 after.context.known_board_actions(),
                 base.context.known_board_actions() + 1
             );
-            assert_eq!(after.turn.id, NativeSide::Tenjiku(human));
+            assert_eq!(after.turn.id, TaggedSide::Tenjiku(human));
             let observation = &after.observations[0].observation;
             assert_eq!(observation.context.game, base.context);
             assert!(matches!(
@@ -478,14 +475,14 @@ fn actual_slow_child_cancellation_replacement_cross_game_and_cleanup_are_bounded
                 .unwrap(),
         )
         .unwrap();
-        let native = CanonicalRecord::tenjiku(
+        let record = CanonicalRecord::tenjiku(
             c::GameRecord::from_game(&c::Game::from_root(position).unwrap()).unwrap(),
         );
         send(
             &mut ctl,
             SessionOperation::Replace {
-                record: native.clone(),
-                human: NativeSide::Tenjiku(c::Side::Sente),
+                record: record.clone(),
+                human: TaggedSide::Tenjiku(c::Side::Sente),
             },
         );
         let slow = ctl
@@ -502,7 +499,7 @@ fn actual_slow_child_cancellation_replacement_cross_game_and_cleanup_are_bounded
         let at = Instant::now();
         send(&mut ctl, SessionOperation::Cancel {});
         assert!(at.elapsed() < Duration::from_secs(5));
-        assert_eq!(ctl.shared_snapshot().context, native);
+        assert_eq!(ctl.shared_snapshot().context, record);
         assert!(!ctl.accept_shared(failure(slow.clone())));
         std::fs::remove_file(first).unwrap();
         let replacement = ctl
@@ -528,7 +525,7 @@ fn actual_slow_child_cancellation_replacement_cross_game_and_cleanup_are_bounded
                 record: CanonicalRecord::tenjiku(
                     c::GameRecord::from_game(&representative(other)).unwrap(),
                 ),
-                human: NativeSide::Tenjiku(c::Side::Sente),
+                human: TaggedSide::Tenjiku(c::Side::Sente),
             },
         );
         assert_eq!(ctl.shared_snapshot().context.profile(), other.into());
@@ -542,7 +539,7 @@ fn actual_slow_child_cancellation_replacement_cross_game_and_cleanup_are_bounded
                     )
                     .record(),
                 ),
-                human: NativeSide::Chess(mshogi_core::chess::Color::White),
+                human: TaggedSide::Chess(mshogi_core::chess::Color::White),
             },
         );
         assert!(!ctl.accept_shared(failure(replacement)));

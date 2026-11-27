@@ -17,16 +17,16 @@ fn timed_choice(game: &Game, ms: u64, nodes: u64) -> SearchResult {
     .unwrap()
 }
 
-fn assert_native_move(game: &Game, result: &SearchResult) {
+fn assert_move(game: &Game, result: &SearchResult) {
     let Some(Decision::Choose(Choice::Move(action))) = result.decision else {
-        panic!("expected native legal move: {result:?}")
+        panic!("expected legal move: {result:?}")
     };
     assert!(game.position().legal_actions().contains(&action));
-    let mut native = game.clone();
-    native
+    let mut rules_position = game.clone();
+    rules_position
         .submit(GameRequest {
-            expected: native.context(),
-            actor: native.position().side_to_move(),
+            expected: rules_position.context(),
+            actor: rules_position.position().side_to_move(),
             command: GameCommand::Play(action),
         })
         .unwrap();
@@ -38,59 +38,62 @@ fn assert_native_move(game: &Game, result: &SearchResult) {
 }
 
 #[test]
-fn timed_minimum_and_expired_budget_return_native_moves_including_in_check() {
-    for (native, checked) in [
+fn timed_minimum_and_expired_budget_return_moves_including_in_check() {
+    for (rules_position, checked) in [
         (Game::new(), false),
         (game("4k4/9/4R4/9/9/9/9/9/K8 w - 1"), true),
     ] {
         assert_eq!(
-            native
+            rules_position
                 .position()
-                .is_in_check(native.position().side_to_move()),
+                .is_in_check(rules_position.position().side_to_move()),
             checked
         );
-        assert!(native.conclusion().is_none());
-        let before = native.clone();
+        assert!(rules_position.conclusion().is_none());
+        let before = rules_position.clone();
         for ms in [0, 1] {
             for nodes in [0, 1, MAX_NODES] {
-                let result = timed_choice(&native, ms, nodes);
-                assert_native_move(&native, &result);
+                let result = timed_choice(&rules_position, ms, nodes);
+                assert_move(&rules_position, &result);
                 assert!(result.nodes <= nodes);
                 if ms == 0 || nodes == 0 {
                     assert_eq!(result.completed_depth, 0);
                     assert_eq!(result.nodes, 0);
                     assert_eq!(
                         choice(&result),
-                        Choice::Move(native.position().legal_actions()[0])
+                        Choice::Move(rules_position.position().legal_actions()[0])
                     );
                 }
             }
         }
-        assert_eq!(native, before);
+        assert_eq!(rules_position, before);
     }
 }
 
 #[test]
-fn msh187_failed_311_event_history_has_a_native_choice_with_one_millisecond() {
-    let mut native = Game::new();
+fn msh187_failed_311_event_history_has_a_choice_with_one_millisecond() {
+    let mut rules_position = Game::new();
     for action in include_str!("fixtures/msh187-round2-failed-0002.usi")
         .lines()
         .filter(|l| !l.starts_with('#'))
         .flat_map(str::split_whitespace)
     {
-        submit(&mut native, action);
+        submit(&mut rules_position, action);
     }
-    assert_eq!(native.events().len(), 311);
-    assert!(native.conclusion().is_none());
-    let before = native.clone();
+    assert_eq!(rules_position.events().len(), 311);
+    assert!(rules_position.conclusion().is_none());
+    let before = rules_position.clone();
     for ms in [0, 1] {
-        assert_native_move(&native, &timed_choice(&native, ms, MAX_NODES));
+        assert_move(
+            &rules_position,
+            &timed_choice(&rules_position, ms, MAX_NODES),
+        );
     }
-    assert_eq!(native, before);
+    assert_eq!(rules_position, before);
 }
 
 #[test]
-fn timed_fallback_respects_external_cancel_and_native_terminal_declaration() {
+fn timed_fallback_respects_external_cancel_and_terminal_declaration() {
     let live = Game::new();
     for stop_at in [1, 2] {
         let mut polls = 0;
@@ -122,7 +125,7 @@ fn timed_fallback_respects_external_cancel_and_native_terminal_declaration() {
     assert_eq!(result.status, SearchStatus::Complete);
     let declaring = game("K8/1RB6/1+P+P+P+P+P+P+P+P/9/9/9/9/9/8k b B5P 1");
     assert!(declaring.declaration_eligibility(Side::Sente).eligible());
-    assert_native_move(&declaring, &timed_choice(&declaring, 0, 0));
+    assert_move(&declaring, &timed_choice(&declaring, 0, 0));
     let result = timed_choice(&declaring, 0, 2);
     assert_eq!(choice(&result), Choice::Declare { actor: Side::Sente });
     assert_eq!((result.completed_depth, result.nodes), (1, 2));
@@ -195,26 +198,29 @@ fn independent_capture_demote_promotion_and_mating_drop_selections() {
     );
 }
 #[test]
-fn declaration_is_a_native_terminal_choice_at_root() {
+fn declaration_is_a_terminal_choice_at_root() {
     let root = "K8/1RB6/1+P+P+P+P+P+P+P+P/9/9/9/9/9/8k b B5P 1";
-    let mut native = game(root);
-    assert_eq!(native.declaration_eligibility(Side::Sente).points, 28);
-    let result = run(&native, 4);
+    let mut rules_position = game(root);
+    assert_eq!(
+        rules_position.declaration_eligibility(Side::Sente).points,
+        28
+    );
+    let result = run(&rules_position, 4);
     assert_eq!(choice(&result), Choice::Declare { actor: Side::Sente });
     assert_eq!(result.score, Some(WIN_SCORE - 1));
     assert_eq!(result.nodes, 2);
     assert_eq!(result.completed_depth, 1);
-    let before = native.position().clone();
-    native
+    let before = rules_position.position().clone();
+    rules_position
         .submit(GameRequest {
-            expected: native.context(),
+            expected: rules_position.context(),
             actor: Side::Sente,
             command: choice(&result).command(),
         })
         .unwrap();
-    assert_eq!(native.position(), &before);
+    assert_eq!(rules_position.position(), &before);
     assert_eq!(
-        native.conclusion(),
+        rules_position.conclusion(),
         Some(Conclusion::Win {
             winner: Side::Sente,
             reason: WinReason::EnteringKing
@@ -269,14 +275,14 @@ fn same_board_different_history_changes_choice_and_score() {
     ));
 }
 #[test]
-fn the_native_game_adjudicates_a_cycle_across_captures_and_drops() {
+fn the_game_adjudicates_a_cycle_across_captures_and_drops() {
     use mshogi_search::alphabeta::SearchPosition;
     use mshogi_search::shogi::position::ShogiPosition;
 
     let mut game = game("8k/9/9/9/4Gg3/9/9/9/K8 b g 1");
     let mut search = ShogiPosition::from_game(&game);
     // Two captures and two drops restore all three golds, both hands, and
-    // the side to move. Native adjudication uses the full game history.
+    // the side to move. Adjudication uses the full game history.
     let cycle = ["5e4e", "G*5e", "G*5d", "5e5d", "4e5e", "5d4e"];
     for &token in cycle.iter().cycle().take(18) {
         let m = search.find(token.parse().unwrap()).unwrap();
@@ -294,7 +300,7 @@ fn the_native_game_adjudicates_a_cycle_across_captures_and_drops() {
     );
 }
 #[test]
-fn native_terminal_winner_precedes_static_score_and_declared_length() {
+fn terminal_winner_precedes_static_score_and_declared_length() {
     for (root, cycle, score) in [
         (
             "4k4/9/4R4/9/9/9/9/9/K8 w - 1",
@@ -420,7 +426,7 @@ fn bounded_completion_cancellation_and_root_restoration() {
 }
 
 #[test]
-fn optional_promotion_and_drop_branching_produce_native_lines() {
+fn optional_promotion_and_drop_branching_produce_lines() {
     // The Sente King stands on its castled square: tuned king-placement
     // terms (MSH-188) make a King step from the corner worth more than a
     // depth-one promotion, which is not what these cases test.

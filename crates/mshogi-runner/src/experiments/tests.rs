@@ -61,7 +61,7 @@ fn strict_effective_limits_and_bounded_aggregate_work() {
     bad.players[0].limits[0].work.time_ms = Some(1_000);
     assert!(
         bad.validate().is_err(),
-        "timed work cannot claim deterministic native reruns"
+        "timed work cannot claim deterministic reruns"
     );
 }
 #[test]
@@ -77,11 +77,11 @@ fn grouped_roots_cannot_leak_across_dataset_splits() {
     c.openings[1].group = c.openings[0].group.clone();
     c.openings[1].split = Split::Train;
     assert!(c.validate().is_err());
-    // Native descendants retain the same initial lineage even when current
+    // Descendants retain the same initial lineage even when current
     // position, commands, counters and outcome differ.
     let root = &c.openings[2].root;
     let mut game = match &root.record {
-        mshogi_core::native::CanonicalRecord::Xiangqi(r) => r.to_game().unwrap(),
+        mshogi_core::game::CanonicalRecord::Xiangqi(r) => r.to_game().unwrap(),
         _ => unreachable!(),
     };
     let action = game.position().legal_actions().unwrap()[0];
@@ -91,7 +91,7 @@ fn grouped_roots_cannot_leak_across_dataset_splits() {
         command: mshogi_core::xiangqi::GameCommand::Play { action },
     })
     .unwrap();
-    let later = fresh_root(mshogi_core::native::CanonicalRecord::Xiangqi(Box::new(
+    let later = fresh_root(mshogi_core::game::CanonicalRecord::Xiangqi(Box::new(
         mshogi_core::xiangqi::GameRecord::from_game(&game).unwrap(),
     )))
     .unwrap();
@@ -190,7 +190,7 @@ fn chess_corrupt_pv_incomplete_and_scores_are_not_accepted() {
             },
         },
     ] {
-        let mut state = native::NativeState::from_root(&root).unwrap();
+        let mut state = super::game::MatchState::from_root(&root).unwrap();
         assert!(
             admit_bounded(
                 &mut state,
@@ -212,7 +212,7 @@ fn chess_corrupt_pv_incomplete_and_scores_are_not_accepted() {
     {
         telemetry.score = Some(i32::MAX);
     }
-    let mut state = native::NativeState::from_root(&root).unwrap();
+    let mut state = super::game::MatchState::from_root(&root).unwrap();
     assert!(
         admit_bounded(
             &mut state,
@@ -286,7 +286,7 @@ fn shogi_and_xiangqi_reject_illegal_later_pv_commands_atomically() {
             },
         },
     };
-    let mut state = native::NativeState::from_root(&root).unwrap();
+    let mut state = super::game::MatchState::from_root(&root).unwrap();
     assert!(
         admit_bounded(
             &mut state,
@@ -322,7 +322,7 @@ fn shogi_and_xiangqi_reject_illegal_later_pv_commands_atomically() {
             },
         },
     };
-    let mut state = native::NativeState::from_root(&root).unwrap();
+    let mut state = super::game::MatchState::from_root(&root).unwrap();
     assert!(
         admit_bounded(
             &mut state,
@@ -341,7 +341,7 @@ fn shogi_and_xiangqi_reject_illegal_later_pv_commands_atomically() {
 #[test]
 fn terminal_claim_allowance_does_not_admit_extra_board_depth() {
     let root = standard_root(RulesProfile::ChessMatchV1).unwrap();
-    let mut state = native::NativeState::from_root(&root).unwrap();
+    let mut state = super::game::MatchState::from_root(&root).unwrap();
     let mut result = chess_move_result(&["e2e4", "e7e5"]);
     if let mshogi_engine::ExecutionResult::Chess {
         result: mshogi_engine::ChessResult::Move { telemetry, .. },
@@ -465,7 +465,7 @@ fn successful_shogi_clock_steps_replay_both_players_and_colors() {
     let mut report = run_with_stop(&c, &mut || true).unwrap().into_report();
     let mut request_id = 0;
     for game in &mut report.games {
-        let mut state = native::NativeState::from_root(&c.openings[0].root).unwrap();
+        let mut state = super::game::MatchState::from_root(&c.openings[0].root).unwrap();
         for (i, token) in ["7g7f", "3c3d", "2g2f", "8c8d"].iter().enumerate() {
             let first = i % 2 == 0;
             let player = usize::from(first == game.pairing.swapped);
@@ -514,7 +514,7 @@ fn successful_shogi_clock_steps_replay_both_players_and_colors() {
             };
             assert!(matches!(
                 admit_bounded(&mut state, &result, limits).unwrap(),
-                native::Admission::Applied
+                game::Admission::Applied
             ));
             game.steps.push(Step {
                 player,
@@ -551,8 +551,8 @@ fn successful_shogi_clock_steps_replay_both_players_and_colors() {
     c.clock = None;
     assert!(c.validate().is_err());
     assert_eq!(odds.config.player_clock(1).unwrap().base_ms, shared.base_ms);
-    // Encoded steps omit the replay-determined native record (MSH-204); the
-    // decoder restores it by native replay and the result is identical.
+    // Encoded steps omit the replay-determined game record (MSH-204); the
+    // decoder restores it by game replay and the result is identical.
     let text = report.to_json().unwrap();
     let encoded: serde_json::Value = serde_json::from_str(&text).unwrap();
     for step in encoded["games"][0]["steps"].as_array().unwrap() {
@@ -613,19 +613,19 @@ fn clock_control_refuses_watchdog_below_possible_allocation() {
 }
 
 #[test]
-fn native_report_decoder_accepts_evidence_above_old_32_mib_limit() {
+fn report_decoder_accepts_evidence_above_old_32_mib_limit() {
     let mut c = config();
     c.openings.truncate(1);
     c.players.truncate(2);
     let report = run_with_stop(&c, &mut || true).unwrap();
     let mut text = report.to_json().unwrap();
     // Legal insignificant whitespace exercises the actual decoder boundary
-    // without manufacturing thousands of moves or altering native history.
+    // without manufacturing thousands of moves or altering game history.
     text.extend(std::iter::repeat_n(' ', 33 * 1024 * 1024 - text.len()));
     let decoded = ValidatedReport::from_json(&text).unwrap();
     assert_eq!(decoded.config_sha256, report.config_sha256);
     assert_eq!(decoded.games.len(), 2);
-    // Raising the evidence ceiling must not admit fabricated native results.
+    // Raising the evidence ceiling must not admit fabricated engine results.
     let mut bad = decoded.into_report();
     bad.games[0].score_first_twice = Some(2);
     assert!(bad.validate().is_err());

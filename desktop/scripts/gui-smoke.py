@@ -1,8 +1,8 @@
 """External installed-application verification; never bundled with mShogi.
 
-W3C pointer/keyboard commands operate the actual native webview. Script execution
+W3C pointer/keyboard commands operate the actual webview. Script execution
 is read-only DOM observation, never Tauri IPC, injected events, or game mutation.
-Native adapters operate real file dialogs and native close/quit requests.
+Adapters operate real file dialogs and native close/quit requests.
 """
 import argparse
 import base64
@@ -99,8 +99,8 @@ def capture_ring_pixel_evidence(path, observation):
     return {'png':str(path),'sha256':digest(path),'dimensions':[width,height],'scale':[sx,sy],'rings':evidence}
 
 
-def assert_shared_native_card_flow(current, previous):
-    """Native actions may add content; shared anchors, width and flow stay fixed."""
+def assert_shared_card_flow(current, previous):
+    """Actions may add content; shared anchors, width and flow stay fixed."""
     assert [card['name'] for card in current] == [card['name'] for card in previous] == ['analysis','actions','history']
     for now, before in zip(current, previous):
         for axis in ('left','width'):
@@ -120,7 +120,7 @@ def assert_shared_native_card_flow(current, previous):
 
 
 def desktop_document_payload(document, game_kind):
-    """Inspect the one current native envelope; this is not a replay validator."""
+    """Inspect the one current record envelope; this is not a replay validator."""
     assert game_kind in {"chess", "shogi", "xiangqi", "tori", "chu", "tenjiku"}
     assert set(document) == {"format", "game_kind", "payload"}, document
     assert document["format"] == "mshogi.desktop.document.v2", document
@@ -130,8 +130,8 @@ def desktop_document_payload(document, game_kind):
     return document["payload"]
 
 
-def native_record_profile(context):
-    """Read the profile from the native record selected by the dispatch tag."""
+def record_profile(context):
+    """Read the profile from the game record selected by the dispatch tag."""
     game, record = context['game_kind'], context['payload']
     if game == 'chess':
         return record['rules_profile']
@@ -143,10 +143,10 @@ def native_record_profile(context):
 
 
 def xiangqi_retained_state(diagnostics):
-    """Compare accepted native document state, excluding file-operation receipts.
+    """Compare accepted document state, excluding file-operation receipts.
 
     Snapshot revision and I/O status may advance to report a rejected Open. The
-    document/session/selection authority and complete native semantics may not.
+    document/session/selection authority and complete game semantics may not.
     This observer does not replay, classify, or reconstruct Xiangqi rules.
     """
     assert diagnostics["profile"] == "mshogi.xiangqi.wxf2018.v1", diagnostics
@@ -162,13 +162,13 @@ def xiangqi_retained_state(diagnostics):
 
 
 def selected_gui_phases(choice):
-    """Keep independent native-process journeys explicit and individually runnable."""
+    """Keep independent process journeys explicit and individually runnable."""
     chess = ["standard", "promotion", "claim", "current-claim", "concluded", "capacity", "synthetic", "pending-chess", "pending-shogi", "pending-xiangqi", "pending-tori", "tori-recovery", "pending-chu", "chu-recovery"]
     shogi = ["shogi-hands", "shogi-promotion", "shogi-forced", "shogi-declaration",
              "shogi-concluded", "shogi-capacity"]
     xiangqi = ["xiangqi-warning", "xiangqi-fourth", "xiangqi-count", "xiangqi-offer", "xiangqi-agreed", "xiangqi-fast-proof", "xiangqi-resigned", "xiangqi-capacity", "xiangqi-failure"]
-    normal = [None, "normal-shogi", "normal-shogi-reopened", "normal-xiangqi", "normal-tori", "normal-tori-native", "normal-chu", "normal-chu-native"]
-    tenjiku_normal = [f'normal-tenjiku-{profile}{suffix}' for profile in ('adams','muller') for suffix in ('','-native')]
+    normal = [None, "normal-shogi", "normal-shogi-reopened", "normal-xiangqi", "normal-tori", "normal-tori-rules", "normal-chu", "normal-chu-rules"]
+    tenjiku_normal = [f'normal-tenjiku-{profile}{suffix}' for profile in ('adams','muller') for suffix in ('','-rules')]
     tenjiku_verification = [f'{kind}-tenjiku-{profile}' for profile in ('adams','muller') for kind in ('pending','recovery')]
     integration_normal = ['normal-cross-game']
     integration_qa = ['pending-cross-game']
@@ -185,9 +185,9 @@ def engine_processes(processes, engine, gates=()):
 
 
 def replacement_analysis_accepted(game, before, after, analyzing):
-    """Require newly admitted native work, not the prior already-thinking UI.
+    """Require newly admitted work, not the prior already-thinking UI.
 
-    Chess exposes the pending full context; other native games expose pending
+    Chess exposes the pending full context; other games expose pending
     purpose through the analysis phase and exact source through Support. Their
     completed observations retain full execution identities separately.
     """
@@ -251,9 +251,9 @@ def reopened_tenjiku_document_stopped(before, after, ui):
 def warning_prefix_transition(earlier, warned):
     """An intra-command prefix is immutable history, not a forged canonical game.
 
-    Native event 8 precedes its derived warning 9 within one board command.
+    Game event 8 precedes its derived warning 9 within one board command.
     Both have the same diagram and full live canonical context, but distinct
-    native selected event prefixes, warning state and selection authority.
+    selected event prefixes, warning state and selection authority.
     """
     old, new = earlier['xiangqi'], warned['xiangqi']
     before_events, after_events = old['selected_events'], new['selected_events']
@@ -284,7 +284,7 @@ def retained_pending_takeback(game, body, restored):
 
 
 def saved_document_accepted(observation, expected_path):
-    """One DOM observation must establish native acceptance, not an old Saved label."""
+    """One DOM observation must establish acceptance, not an old Saved label."""
     return (observation["path"] == str(expected_path)
             and observation["dirty"].casefold() == "unmodified"
             and observation["buttons"] == [
@@ -298,7 +298,7 @@ def saved_document_accepted(observation, expected_path):
 
 
 def opened_document_accepted(observation, expected_path):
-    """Require the public native Open receipt as well as settled saved state."""
+    """Require the public Open receipt as well as settled saved state."""
     return (saved_document_accepted(observation, expected_path)
             and observation.get("io", {}).get("phase") == "complete"
             and observation["io"].get("id", 0) > observation.get("after_io_id", 0)
@@ -363,16 +363,16 @@ def current_play_limit_matches(game, text):
     return play_limit_matches(text, depth, nodes)
 
 
-def inspection_status_matches(text, native_label):
+def inspection_status_matches(text, label):
     """Exact owner-approved visible copy, independent of accessible explanations."""
-    return text == f"Inspecting {native_label} · Esc clears"
+    return text == f"Inspecting {label} · Esc clears"
 
 
-def native_action_identity_matches(observed, expected):
-    """Compare complete native JSON semantics; object member order is not identity.
+def action_identity_matches(observed, expected):
+    """Compare complete JSON semantics; object member order is not identity.
 
-    About's native JSON passes through WebView object serialization, whose member
-    order may differ from the native action attribute. Other games' notation
+    About's JSON passes through WebView object serialization, whose member
+    order may differ from the action attribute. Other games' notation
     remains an exact string. Never discard fields or tolerate duplicate members.
     """
     if not isinstance(expected, str) or not expected.lstrip().startswith("{"):
@@ -382,7 +382,7 @@ def native_action_identity_matches(observed, expected):
         result = {}
         for key, value in pairs:
             if key in result:
-                raise ValueError("Duplicate native action field")
+                raise ValueError("Duplicate action field")
             result[key] = value
         return result
 
@@ -414,8 +414,8 @@ def native_action_identity_matches(observed, expected):
 
 
 def completed_action_matches(observed, action, event, origins, destinations, route=None):
-    """Validate observed native geometry, never derive moves from board rules."""
-    return (isinstance(observed, dict) and native_action_identity_matches(observed.get("action"), action)
+    """Validate observed board geometry, never derive moves from board rules."""
+    return (isinstance(observed, dict) and action_identity_matches(observed.get("action"), action)
             and observed.get("event") == str(event)
             and observed.get("hidden") == "true" and observed.get("pointerEvents") == "none"
             and observed.get("origins") == origins and observed.get("destinations") == destinations
@@ -424,7 +424,7 @@ def completed_action_matches(observed, action, event, origins, destinations, rou
 
 
 def moves_controls_settled(observed, event, orientation=None, changed_from=None):
-    """Selection alone can render before native capacity admission completes."""
+    """Selection alone can render before capacity admission completes."""
     return (isinstance(observed, dict) and observed.get("event") == str(event)
             and observed.get("rootEnabled") is True and observed.get("flipEnabled") is True
             and observed.get("targetEnabled") is True and observed.get("checkingCapacity") is False
@@ -459,7 +459,7 @@ def focus_outline_visible(observed):
 
 
 def historical_notice_matches(observed, event):
-    """Validate the current shared copy together with actual native selection."""
+    """Validate the current shared copy together with actual game selection."""
     return (isinstance(observed, dict) and observed.get("heading") == "Historical position"
             and observed.get("meaning") == "Your live game is unchanged."
             and observed.get("historical") == "true" and observed.get("event") == str(event)
@@ -472,7 +472,7 @@ def session_chess_evidence_count(text, count):
 
 
 def terminal_transport_closed(error):
-    """Only meaningful after dispatching the known native-close guard action."""
+    """Only meaningful after dispatching the known close guard action."""
     if isinstance(error, (http.client.RemoteDisconnected, ConnectionResetError, BrokenPipeError)):
         return True
     if isinstance(error, urllib.error.URLError):
@@ -589,7 +589,7 @@ class Webview:
                         "target": target})
                 assert ready, {"selector": selector, "attempt": attempts, "target": target}
                 return target
-            # Native operation admission may still be settling when a board
+            # Game operation admission may still be settling when a board
             # renders. Poll read-only target readiness within the existing
             # wait budget; dispatch pointer input exactly once, never in wait().
             target = wait(ready_target, f"board pointer target ready: {selector}")
@@ -690,7 +690,7 @@ class Webview:
     def set(self, selector, value):
         element = self.find(selector)
         self.command("POST", f"/element/{element}/click", {})
-        # Native Select-all/Backspace generates the real input events React's
+        # Select-all/Backspace generates the real input events React's
         # controlled number fields need; WebDriver clear alone can retain state.
         self.command("POST", "/actions", {"actions": [{"type": "key", "id": "keyboard",
             "actions": [{"type": "keyDown", "value": "\ue009"},
@@ -717,7 +717,7 @@ class Webview:
 
     def read(self, expression):
         # Callers supply DOM observations only. Generic script execution through
-        # command() stays single-attempt, as do all input and native mutations.
+        # command() stays single-attempt, as do all input and mutations.
         return self._observe("POST", "/execute/sync", {
             "script": "return " + expression, "args": []})
 
@@ -758,11 +758,11 @@ class Webview:
 class Journey:
     def __init__(self, args, report):
         self.args, self.report = args, report
-        self.native = None
+        self.platform_ui = None
         self.driver = self.web = self.log = None
         self.phase = None
         self.phase_report = None
-        self.native_events = []
+        self.platform_events = []
         self.deferred_file_removals = []
         self.shell_layouts = {}
 
@@ -777,10 +777,10 @@ class Journey:
             self.web.screenshot(prefix.with_suffix(".webview.png"))
         finally:
             # DOM state can precede the X11 compositor's displayed frame. Give
-            # native presentation a bounded settle after webview capture. Also
+            # presentation a bounded settle after webview capture. Also
             # retain the raw desktop if a failed session cannot supply a view.
             time.sleep(0.15)
-            self.native.screenshot(prefix.with_suffix(".desktop.png"))
+            self.platform_ui.screenshot(prefix.with_suffix(".desktop.png"))
         common_actions = self.web.read("""[...document.querySelectorAll('button')]
             .filter(e=>['Cancel analysis','Return to live'].includes(e.textContent.trim()))
             .map(e=>{const h=e.closest('.shell-history-notice-heading'),a=e.closest('.shell-analysis-actions'),s=a?.querySelector('[data-analysis-start]');return {
@@ -811,10 +811,10 @@ class Journey:
             "engine": str(engine), "engine_sha256": digest(engine),
             "events": [], "started_at_utc": stamp()}
         self.report["phases"].append(self.phase_report)
-        self.native = importlib.import_module(
+        self.platform_ui = importlib.import_module(
             "gui_windows" if platform.system() == "Windows" else "gui_linux").Native(
                 self.args.output / self.phase)
-        self.phase_report["native_environment"] = self.native.environment()
+        self.phase_report["native_environment"] = self.platform_ui.environment()
         env = os.environ.copy()
         env.pop("MSHOGI_DESKTOP_FIXTURE", None)
         if fixture is not None:
@@ -825,7 +825,7 @@ class Journey:
             gate = self.args.output / ("r6-engine-gate.exe" if platform.system() == "Windows" else "r6-engine-gate")
             compile_command = ["rustc", "--edition=2024", str(source), "-o", str(gate)]
             subprocess.run(compile_command, check=True, capture_output=True, timeout=60)
-            self.native.verification_paths = [gate]
+            self.platform_ui.verification_paths = [gate]
             env.update(MSHOGI_VERIFICATION_ENGINE=str(gate), MSHOGI_R6_REAL_ENGINE=str(engine), MSHOGI_R6_DELAY_MS="5000")
             self.phase_report["external_gate"] = {"source": str(source), "source_sha256": digest(source), "path": str(gate), "sha256": digest(gate), "real_engine_sha256": digest(engine), "delay_ms": 5000, "compile_command": compile_command, "compiler": subprocess.check_output(["rustc", "--version"], text=True).strip(), "mechanism": "External bounded startup delay then unchanged real bundled engine; Unix exec / Windows kill-on-close job; no fabricated response."}
         command = [self.args.driver, "--port", "4444", "--native-port", "4445"]
@@ -844,7 +844,7 @@ class Journey:
         def ready():
             startup["attempts"] += 1
             if self.driver.poll() is not None:
-                raise ChildProcessError(f"Native driver exited during startup: {self.driver.returncode}")
+                raise ChildProcessError(f"Driver exited during startup: {self.driver.returncode}")
             try:
                 with urllib.request.urlopen(endpoint + "/status", timeout=2) as response:
                     return response.status == 200
@@ -852,22 +852,22 @@ class Journey:
                     ConnectionResetError, TimeoutError) as error:
                 startup["last_transport_error"] = repr(error)
                 return False
-        wait(ready, "external native driver startup")
+        wait(ready, "external driver startup")
         self.web = Webview(endpoint, host, self.record)
         self.phase_report["capabilities"] = self.web.capabilities
-        self.phase_report["native_window"] = self.native.attach(host, engine)
+        self.phase_report["native_window"] = self.platform_ui.attach(host, engine)
         wait(lambda: self.web.has(".synthetic-inspector" if fixture == "synthetic" else ".document-card")
              or (fixture is not None and fixture.startswith("shogi-") and self.web.has(".shogi-application")),
              "actual application frontend ready")
         self.record("Launch actual packaged application", self.phase_report["native_window"])
 
     def stopped(self):
-        wait(lambda: not self.native.alive(), "host exits through native application guard")
-        processes = self.native.processes()
-        wait(lambda: not self.native.processes(), "bundled engine cleanup after native quit", 5)
-        self.record("Observe native shutdown before driver teardown", {
+        wait(lambda: not self.platform_ui.alive(), "host exits through native application guard")
+        processes = self.platform_ui.processes()
+        wait(lambda: not self.platform_ui.processes(), "bundled engine cleanup after native quit", 5)
+        self.record("Observe shutdown before driver teardown", {
             "host_alive": False, "immediate_matching_processes": processes,
-            "final_matching_processes": self.native.processes()})
+            "final_matching_processes": self.platform_ui.processes()})
         self.phase_report["status"] = "passed"
         self.phase_report["finished_at_utc"] = stamp()
 
@@ -897,12 +897,12 @@ class Journey:
         if self.log is not None:
             self.log.close()
             self.log = None
-        if self.native is not None:
-            self.native.cleanup()
+        if self.platform_ui is not None:
+            self.platform_ui.cleanup()
             residual = {}
             def isolated():
-                residual.update(host_alive=self.native.alive(),
-                                matching_processes=self.native.processes())
+                residual.update(host_alive=self.platform_ui.alive(),
+                                matching_processes=self.platform_ui.processes())
                 return not residual["host_alive"] and not residual["matching_processes"]
             try:
                 wait(isolated, "phase cleanup leaves no bound host or engine", 5)
@@ -910,8 +910,8 @@ class Journey:
                 if self.phase_report is not None:
                     self.phase_report["cleanup_isolation"] = {
                         **residual, "scope": "Failure containment only; never native Quit evidence."}
-            self.native_events.extend(getattr(self.native, "events", []))
-            self.native = None
+            self.platform_events.extend(getattr(self.platform_ui, "events", []))
+            self.platform_ui = None
         for path in self.deferred_file_removals:
             path.unlink(missing_ok=True)
         self.deferred_file_removals.clear()
@@ -925,7 +925,7 @@ class Journey:
 
     def completed_cue(self):
         return self.web.read("""(() => {const e=document.querySelector('.completed-action-cue');if(!e)return null;
-            return {action:e.dataset.nativeLastAction,event:e.dataset.lastEvent,hidden:e.getAttribute('aria-hidden'),
+            return {action:e.dataset.lastAction,event:e.dataset.lastEvent,hidden:e.getAttribute('aria-hidden'),
                 pointerEvents:getComputedStyle(e).pointerEvents,
                 origins:[...e.querySelectorAll('[data-last-move="origin"]')].map(p=>p.dataset.location),
                 destinations:[...e.querySelectorAll('[data-last-move="destination"]')].map(p=>p.dataset.location),
@@ -937,7 +937,7 @@ class Journey:
             cue = self.completed_cue()
             assert completed_action_matches(cue, action, event, origins, destinations, route), cue
             return cue
-        cue = wait(observed, f"exact native completed cue {action} at event {event}")
+        cue = wait(observed, f"exact completed cue {action} at event {event}")
         self.record("Observe readonly completed action geometry", cue)
         return cue
 
@@ -951,7 +951,7 @@ class Journey:
                     checkingCapacity:[...document.querySelectorAll('[role="status"]')].some(e=>e.textContent.includes('Checking complete save capacity'))};})()""".replace("SELECTOR", json.dumps(selector)))
             assert moves_controls_settled(state, event, orientation, changed_from), state
             return state
-        state = wait(observed, f"native Moves selection/controls settled at event {event}")
+        state = wait(observed, f"Moves selection/controls settled at event {event}")
         self.record("Observe admitted Moves controls before next real input", state)
         return state
 
@@ -963,8 +963,8 @@ class Journey:
     def moves_navigation(self, game, action, notation, event, origin, destination):
         """Actual shared Moves pointer/Tab/Enter at both supported sizes."""
         w = self.web
-        selector = f'.moves-table button[data-native-action="{action}"][data-event="{event}"]'
-        wait(lambda: w.has(selector), f"native {game} standard notation target")
+        selector = f'.moves-table button[data-action="{action}"][data-event="{event}"]'
+        wait(lambda: w.has(selector), f"{game} standard notation target")
         assert w.text(selector).strip() == notation, (game, w.text(selector))
         live = self.completed_cue()
         assert live and live["action"] != action and live["event"] != str(event), live
@@ -1008,17 +1008,17 @@ class Journey:
         requested_width, requested_height = width, height
         observations = []
         for _ in range(4):
-            native = self.native.resize(requested_width, requested_height)
+            window = self.platform_ui.resize(requested_width, requested_height)
             time.sleep(0.2)
             observed = self.web.read("({width:innerWidth,height:innerHeight,dpr:devicePixelRatio})")
-            observations.append({"native": native, "webview": observed})
+            observations.append({"window": window, "webview": observed})
             if abs(observed["width"] - width) <= 1 and abs(observed["height"] - height) <= 1:
                 self.record("Resize actual application content", {
                     "target": {"width": width, "height": height}, "observations": observations})
                 return observed
             requested_width += width - observed["width"]
             requested_height += height - observed["height"]
-        raise AssertionError(f"Native resize did not establish requested content size {width}x{height}: {observations}")
+        raise AssertionError(f"Resize did not establish requested content size {width}x{height}: {observations}")
 
     def shogi_board_fits(self, tori=False):
         wait(lambda: self.web.read("[...document.fonts].some(f=>f.family.replaceAll('\"','').replaceAll(\"'\",'')===FONT && f.status==='loaded')".replace("FONT", json.dumps("mShogi Tori Pieces" if tori else "mShogi Pieces"))),
@@ -1045,11 +1045,11 @@ class Journey:
         assert geometry["bothPlayerAreasVisible"] and geometry["essentialControlsVisible"], geometry
         assert geometry["pageWidth"] <= geometry["viewport"]["width"] + 1, geometry
         assert geometry["board"]["width"] > 300, geometry
-        self.record(f"Observe complete {7 if tori else 9}x{7 if tori else 9} native product board without scrolling", geometry)
+        self.record(f"Observe complete {7 if tori else 9}x{7 if tori else 9} product board without scrolling", geometry)
         return geometry
 
     def synthetic_board_fits(self, orientation):
-        """Observe all native 16x16 positions in place; never scroll to expose them."""
+        """Observe all 16x16 positions in place; never scroll to expose them."""
         geometry = self.web.read("""(() => {
             const board=document.querySelector('.synthetic-board .chess-board');
             const squares=[...document.querySelectorAll('.synthetic-board .square')];
@@ -1085,16 +1085,16 @@ class Journey:
         return geometry
 
     def synthetic_record(self, actions):
-        """Require the native record and visible acceptance count to agree."""
+        """Require the game record and visible acceptance count to agree."""
         def accepted():
             record = self.web.read("JSON.parse(document.querySelector('.synthetic-inspector pre').textContent)")
             if (record["rules_profile"] != "mshogi.synthetic.strider16.v1" or record["schema_version"] != 1
                     or record["initial_fixture"] != "strider16-capture-and-return-v1"):
-                raise ValueError(f"Unexpected synthetic native record identity: {record!r}")
+                raise ValueError(f"Unexpected synthetic game record identity: {record!r}")
             return record if record["actions"] == actions else None
-        record = wait(accepted, f"exact native synthetic actions {actions!r}")
+        record = wait(accepted, f"exact synthetic actions {actions!r}")
         assert re.search(rf"\bAccepted actions {len(actions)}\b", self.web.text(".synthetic-inspector")), record
-        self.record("Observe exact separate synthetic native acceptance", record)
+        self.record("Observe exact separate synthetic acceptance", record)
         return record
 
     def assert_focus_outline(self, selector, game):
@@ -1125,9 +1125,9 @@ class Journey:
         summaries=w.read("[...document.querySelectorAll('.support-dialog summary')].map(e=>e.textContent)")
         assert summaries==['Diagnostics','Font license'],summaries
         w.keyboard_activate('.support-dialog details:first-of-type summary')
-        native=self.public_diagnostic_pages()
-        assert all(k in native for k in ('token','profile','context','document','capacity','diagnostic','io','error','analysis','observations')),native
-        assert native['context']['game_kind']==game,native
+        snapshot=self.public_diagnostic_pages()
+        assert all(k in snapshot for k in ('token','profile','context','document','capacity','diagnostic','io','error','analysis','observations')),snapshot
+        assert snapshot['context']['game_kind']==game,snapshot
         w.keyboard_activate('.support-dialog details:first-of-type summary')
         w.keyboard_activate('.support-dialog details:nth-of-type(2) summary')
         license=w.text('.support-dialog details:nth-of-type(2)')
@@ -1138,11 +1138,11 @@ class Journey:
         w.key('\ue00c')
         wait(lambda:not w.has('.support-dialog'),'Escape closes About')
         assert w.read("document.activeElement===document.querySelector('[data-support-trigger]')"),'About restores its invoker'
-        assert not w.has('[data-native-diagnostics]'),'diagnostics absent outside About'
-        self.record('Keyboard About / native diagnostics / font license / Escape / restored focus',{'game':game,'summaries':summaries,'profile':native['profile'],'token':native['token']})
+        assert not w.has('[data-session-diagnostics]'),'diagnostics absent outside About'
+        self.record('Keyboard About / session diagnostics / font license / Escape / restored focus',{'game':game,'summaries':summaries,'profile':snapshot['profile'],'token':snapshot['token']})
 
     def choose_game(self, game):
-        """Actual native-select/radio keys, at normal and minimum dimensions."""
+        """Actual select/radio keys, at normal and minimum dimensions."""
         w=self.web
         expected=['chess','shogi','xiangqi','tori','chu','tenjiku']
         observed=w.read("[...document.querySelector('[data-game-select]').options].map(e=>({value:e.value,label:e.textContent,disabled:e.disabled}))")
@@ -1151,7 +1151,7 @@ class Journey:
             w.click('[data-game-select]');w.key('\ue011')  # Home
             for _ in range(expected.index(kind)):w.key('\ue015')  # ArrowDown
             w.key('\ue007')
-            wait(lambda:w.read("document.querySelector('[data-game-select]').value")==kind,'native game dropdown selection')
+            wait(lambda:w.read("document.querySelector('[data-game-select]').value")==kind,'game dropdown selection')
         for width,height in ((1180,820),(760,650)):
             self.viewport(width,height)
             for kind in expected:
@@ -1161,14 +1161,14 @@ class Journey:
                 assert [e['label'] for e in buttons]==sides and all(e['role']=='radio' for e in buttons),buttons
                 assert sum(e['chosen'] and e['selected']=='true' for e in buttons)==1,buttons
                 w.click(f'[data-side="{sides[0].lower()}"]')
-                w.key('\ue014')  # Right: existing native side radio behavior
+                w.key('\ue014')  # Right: existing game side radio behavior
                 wait(lambda:w.read("document.activeElement?.textContent")==sides[1],'side radio arrow selects second side')
                 assert w.read("document.activeElement?.getAttribute('aria-checked')")=='true'
                 w.key('\ue012')  # Left restores first side
                 wait(lambda:w.read("document.activeElement?.textContent")==sides[0],'side radio arrow returns first side')
                 assert w.read("document.activeElement?.classList.contains('chosen')")
                 self.capture(f'chooser-{kind}-{width}')
-                self.record('Supported-only native game dropdown preserves side radio keys and styling',{'game':kind,'options':observed,'sides':buttons,'viewport':[width,height]})
+                self.record('Supported-only game dropdown preserves side radio keys and styling',{'game':kind,'options':observed,'sides':buttons,'viewport':[width,height]})
         self.viewport(1180,820)
         select(game)
 
@@ -1202,7 +1202,7 @@ class Journey:
                 headerButtons:[...document.querySelectorAll('.shell-file-actions button')].map(e=>e.textContent.trim()),
                 brand:document.querySelector('.brand-mark')?.textContent,gameLabel:document.querySelector('.product-brand p')?.textContent,
                 supportOutsideSidebar:!!document.querySelector('[data-support-trigger]')&&!document.querySelector('.shell-sidebar')?.contains(document.querySelector('[data-support-trigger]')),
-                rawDiagnosticsAbsent:!document.querySelector('[data-native-diagnostics],.shell-technical')};
+                rawDiagnosticsAbsent:!document.querySelector('[data-session-diagnostics],.shell-technical')};
         })()""")
         assert layout['game'] == game and layout['sections'] == ['analysis','actions','history'], layout
         assert layout['themeIdentity'] == 'mshogi-dark' and all(layout['themes'].values()), layout
@@ -1235,7 +1235,7 @@ class Journey:
             assert abs(layout['help']['top']-previous['help']['top'])<=3, ('live help moved across games',previous,layout)
             for collection in ['slots','cards']:
                 if collection == 'cards' and any(kind in (game,previous['game']) for kind in ('chu','tenjiku')):
-                    assert_shared_native_card_flow(layout['cards'],previous['cards'])
+                    assert_shared_card_flow(layout['cards'],previous['cards'])
                     continue
                 for current,prior in zip(layout[collection],previous[collection]):
                     assert current['name']==prior['name'],(previous,layout)
@@ -1252,7 +1252,7 @@ class Journey:
                 historical:root?.dataset.historical,event:root?.dataset.currentEvent,returnLiveEnabled:!!back&&!back.disabled};
         })()""")
         assert historical_notice_matches(observed,event),observed
-        self.record('Historical notice preserves exact native prefix and explicit Return to live',observed)
+        self.record('Historical notice preserves exact prefix and explicit Return to live',observed)
 
     def inspection_state(self):
         return self.web.read("""(() => {
@@ -1272,11 +1272,11 @@ class Journey:
         assert after == before, (label, {"before": before, "after": after})
 
     def inspect_piece(self, game, origin, destination, label):
-        """Real native query through normal UI; completing a route stays read-only."""
-        w=self.web; native_before=self.native_diagnostics(); before=self.inspection_state()
+        """Real game query through normal UI; completing a route stays read-only."""
+        w=self.web; diagnostics_before=self.session_diagnostics(); inspection_before=self.inspection_state()
         square=self.square if game=='chess' else self.xiangqi_point if game=='xiangqi' else self.chu_square if game in ('chu','tenjiku') else self.shogi_square
         w.click(square(origin))
-        wait(lambda: f'Inspecting {label}' in w.text('.movement-inspection-status'), 'native opponent movement inspection')
+        wait(lambda: f'Inspecting {label}' in w.text('.movement-inspection-status'), 'opponent movement inspection')
         # Shogi/Xiangqi have a separate keyboard-hint span in this row; Chess
         # places the status directly in the paragraph. Observe the status itself.
         status = w.read("(() => { const e=document.querySelector('.movement-inspection-status'); return e?.querySelector('span')?.textContent ?? e?.textContent; })()")
@@ -1286,22 +1286,22 @@ class Journey:
         assert not w.has('.square.target,.shogi-square.target,.xiangqi-destination')
         self.capture(f'inspect-{game}-{origin}')
         w.click(square(destination))
-        time.sleep(0.35)  # Observe across native snapshot polls, not only local selection state.
-        self.assert_inspection_unchanged(before, 'Board inspection complete route preserves authoritative context')
+        time.sleep(0.35)  # Observe across session snapshot polls, not only local selection state.
+        self.assert_inspection_unchanged(inspection_before, 'Board inspection complete route preserves authoritative context')
         assert not w.has('.promotion-dialog')
         w.key('\ue00c')
         wait(lambda:not w.has('.inspection-marker,.inspection-origin-ring'), 'Escape clears read-only inspection')
-        self.assert_inspection_unchanged(before, 'Board inspection Escape preserves authoritative context')
-        native_after=self.native_diagnostics()
+        self.assert_inspection_unchanged(inspection_before, 'Board inspection Escape preserves authoritative context')
+        after=self.session_diagnostics()
         for key in ('token','context','document','observations'):
-            assert native_before[key] == native_after[key], (key,native_before[key],native_after[key])
-        self.record('Native movement inspection and complete read-only route preserve context',{'game':game,'origin':origin,'destination':destination,'label':label,'native_token':native_before['token'],'history':before['history']})
+            assert diagnostics_before[key] == after[key], (key,diagnostics_before[key],after[key])
+        self.record('Movement inspection and complete read-only route preserve context',{'game':game,'origin':origin,'destination':destination,'label':label,'session_token':diagnostics_before['token'],'history':inspection_before['history']})
 
     def file(self, kind, path, cancel=False, button_label=None, button_selector=None):
         if not self.web.has(".document-guard"):
-            self._file_receipt_floor = self.native_diagnostics()["io"]["id"]
+            self._file_receipt_floor = self.session_diagnostics()["io"]["id"]
         with ThreadPoolExecutor(max_workers=1) as pool:
-            picker = pool.submit(self.native.choose_file, kind, None if cancel else path)
+            picker = pool.submit(self.platform_ui.choose_file, kind, None if cancel else path)
             if button_selector:
                 self.web.click(button_selector)
             else:
@@ -1313,41 +1313,41 @@ class Journey:
 
     def cancel_new_game(self):
         w = self.web
-        before = self.native_diagnostics()
+        before = self.session_diagnostics()
         w.button("New game")
         wait(lambda: w.has('[aria-label="New game"]'), "New Game directly opens its chooser")
         assert not w.has(".document-guard"), "New Game adds no unsaved replacement guard"
         w.click('.new-game-dialog [data-cancel]')
         wait(lambda: not w.has('.new-game-dialog'), "cancel New Game preserves the installed document")
-        after = self.native_diagnostics()
+        after = self.session_diagnostics()
         assert retained_document_state(after) == retained_document_state(before), (before, after)
-        self.record("Cancel intentional New Game before native replacement", {"before": before, "after": after})
+        self.record("Cancel intentional New Game before replacement", {"before": before, "after": after})
 
     def intentional_replacement_failures(self, game):
-        """Real picker/close input, with exact native history retained on failure."""
+        """Real picker/close input, with exact game history retained on failure."""
         w = self.web
         self.cancel_new_game()
-        before = self.native_diagnostics()
+        before = self.session_diagnostics()
         self.file("open", self.args.output / f"unused-{game}.mshogi", cancel=True)
-        after = self.native_diagnostics()
+        after = self.session_diagnostics()
         assert 'cancelled' in after['error'].casefold(), after
         assert retained_document_state(after) == retained_document_state(before), (before, after)
-        self.record("Cancel Load retains complete accepted native document", {"game": game, "before": before, "after": after})
+        self.record("Cancel Load retains complete accepted document", {"game": game, "before": before, "after": after})
 
         corrupt = self.args.output / f"workflow-{game}-corrupt.mshogi"
         corrupt.write_text('{"format":"mshogi.desktop.document.v1",', encoding="utf-8")
         self.file("open", corrupt)
         def failed_load():
-            observed = self.native_diagnostics()
+            observed = self.session_diagnostics()
             return observed if observed['io']['id'] > before['io']['id'] and observed['io']['phase'] == 'failed' else None
         after = wait(failed_load, "rejected malformed Load retains the installed document")
         assert retained_document_state(after) == retained_document_state(before), (before, after)
         self.record("Reject malformed intentional Load without replacing the current game", {"game": game, "before": before, "after": after})
 
-        # First-Save cancellation is also tested inside the actual native-close
+        # First-Save cancellation is also tested inside the actual close
         # guard, where a false successful receipt would otherwise close the app.
         assert never_saved_close_source(before), before
-        self.record("Native close before first Save", self.native.close_window())
+        self.record("Native close before first Save", self.platform_ui.close_window())
         wait(lambda: w.has('.document-guard'), "unsaved native close opens Save Game")
         guard = w.read("""(() => ({title:document.querySelector('.document-guard h2')?.textContent,
             buttons:[...document.querySelectorAll('.document-guard button')].map(e=>e.textContent.trim())}))()""")
@@ -1355,11 +1355,11 @@ class Journey:
         self.file('save', self.args.output / f"never-saved-{game}.mshogi", cancel=True,
                   button_selector='.document-guard button.secondary')
         wait(lambda: "The game was not saved" in w.text('.document-guard'), "cancelled Save retains unsaved close guard")
-        assert self.native.alive() and w.has('.document-guard')
+        assert self.platform_ui.alive() and w.has('.document-guard')
         self.capture(f"workflow-{game}-cancelled-save-keeps-guard")
         w.click('.document-guard [data-cancel]')
         wait(lambda: not w.has('.document-guard'), "Cancel releases the native close reservation")
-        after = self.native_diagnostics()
+        after = self.session_diagnostics()
         assert after['context'] == before['context'], (before, after)
         assert after['document']['path'] is None, after
         assert after['document']['dirty'] == before['document']['dirty'], (before, after)
@@ -1373,14 +1373,14 @@ class Journey:
 
     def direct_resign(self, game):
         w = self.web
-        before = self.native_diagnostics()
+        before = self.session_diagnostics()
         w.focused_button('Resign')
         wait(lambda: not w.has('.resign-button'), "direct authoritative resignation settles")
         assert not w.has('.confirmation-dialog'), "Resign must not open another confirmation"
-        after = self.native_diagnostics()
+        after = self.session_diagnostics()
         if game == 'chess':
             # Ordinary M2 play has not established an exact mate witness. The
-            # native match records an honest unscored resignation, without
+            # match records an honest unscored resignation, without
             # inventing another board move or altering the canonical game.
             expected = {'unresolved': {'trigger': 'resignation', 'actor': 'white'}}
             assert chess_resignation_matches(before, after, 'white', expected), (before, after)
@@ -1388,26 +1388,26 @@ class Journey:
             assert after['context'] != before['context'], (before, after)
             assert 'resign' in json.dumps(after['context']).casefold(), after
         status = w.text('[data-game-status]')
-        assert 'native rules determine' not in status.casefold()
+        assert 'rules determine' not in status.casefold()
         if game == 'chess':
             assert status == 'Unresolved — unscored', status
             assert 'White resigned.' in w.text('.outcome-card')
             assert 'no score is assigned' in w.text('.outcome-card')
-        self.record("Direct Resign submits native actor once and presents actual result", {
+        self.record("Direct Resign submits actor once and presents actual result", {
             "game": game, "before": before, "after": after, "visible_result": status})
         self.capture(f"workflow-{game}-direct-resign")
 
     def save_current(self, evidence_path):
         """Use only ordinary Save; external copies retain evidence, not Save As."""
-        current = self.native_diagnostics()["document"]["path"]
+        current = self.session_diagnostics()["document"]["path"]
         actual = Path(current) if current else evidence_path
         if current:
-            self._file_receipt_floor = self.native_diagnostics()["io"]["id"]
+            self._file_receipt_floor = self.session_diagnostics()["io"]["id"]
             self.web.button("Save")
         else:
             self.file("save", actual)
         self.wait_saved(actual)
-        wait(actual.exists, "native Save created the accepted document path")
+        wait(actual.exists, "Save created the accepted document path")
         if actual != evidence_path:
             shutil.copyfile(actual, evidence_path)
             self.record("Retain external archive evidence copy after ordinary Save", {
@@ -1423,26 +1423,26 @@ class Journey:
 
     def shogi_events(self, count, selected=None, historical=False):
         wait(lambda: self.web.read("document.querySelector('.shogi-application')?.dataset.liveEvents") == str(count),
-             f"native shogi history has {count} events")
+             f"shogi history has {count} events")
         if selected is not None:
             wait(lambda: self.web.read("document.querySelector('.shogi-application')?.dataset.currentEvent") == str(selected),
-                 f"native shogi selected event {selected}")
+                 f"shogi selected event {selected}")
         wait(lambda: self.web.read("document.querySelector('.shogi-application')?.dataset.historical") == str(historical).lower(),
              f"shogi historical viewing {historical}")
 
-    def save_native_game(self, path, game):
+    def save_game(self, path, game):
         archive = self.save_current(path)
         body = desktop_document_payload(archive, game)
-        self.record('Save native game and settings', {
+        self.record('Save game and settings', {
             'path': str(path), 'sha256': digest(path), 'bytes': path.stat().st_size,
             'game': game, 'settings': body['settings'],
-            'native_commands': len(body['record']['commands' if game == 'xiangqi' else 'events'])})
+            'commands': len(body['record']['commands' if game == 'xiangqi' else 'events'])})
         return archive
 
     def shogi_save(self, path, observation_count=None):
         if observation_count is not None:
-            assert len(self.native_diagnostics()['observations']) == observation_count
-        return self.save_native_game(path, 'shogi')
+            assert len(self.session_diagnostics()['observations']) == observation_count
+        return self.save_game(path, 'shogi')
 
     def shogi_analysis(self, depth=1, nodes=1000):
         self.shogi_analysis_tab()
@@ -1465,17 +1465,17 @@ class Journey:
         previous = self.web.read("document.querySelector('.shogi-application')?.dataset.orientation")
         self.web.click(".flip-button")
         wait(lambda: self.web.read("document.querySelector('.shogi-application')?.dataset.orientation") != previous,
-             "native shogi orientation changes")
+             "shogi orientation changes")
 
     def save(self, path, observation_count=None):
-        native = self.native_diagnostics()
+        snapshot = self.session_diagnostics()
         if observation_count is not None:
-            assert len(native["observations"]) == observation_count
+            assert len(snapshot["observations"]) == observation_count
         archive = self.save_current(path)
         body = desktop_document_payload(archive, "chess")
-        self.record("Save native Chess game and settings", {
+        self.record("Save Chess game and settings", {
             "path": str(path), "sha256": digest(path), "bytes": path.stat().st_size,
-            "session_observations": len(native["observations"]),
+            "session_observations": len(snapshot["observations"]),
             "initial_events": len(json.loads(body["record"]["initial_record_json"])["events"]),
             "commands": len(body["record"]["commands"])})
         return archive
@@ -1487,7 +1487,7 @@ class Journey:
                 buttons:[...document.querySelectorAll('.shell-file-actions button')].map(e=>({label:e.textContent.trim(),enabled:!e.disabled})),
                 statuses:[...document.querySelectorAll('.shell-document [role="status"]')].map(e=>e.textContent)
             }))()""")
-        state["io"] = self.native_diagnostics()["io"]
+        state["io"] = self.session_diagnostics()["io"]
         state["after_io_id"] = getattr(self, "_file_receipt_floor", 0)
         return state
 
@@ -1495,22 +1495,22 @@ class Journey:
         def accepted():
             observation = self.document_file_state()
             return observation if saved_document_accepted(observation, path) else None
-        observation = wait(accepted, f"native document accepts exact saved path with file work settled: {path}")
-        self.record('Observe native accepted save path and settled file controls', observation)
+        observation = wait(accepted, f"document accepts exact saved path with file work settled: {path}")
+        self.record('Observe accepted save path and settled file controls', observation)
         return observation
 
     def wait_opened(self, path):
         def accepted():
             observation = self.document_file_state()
             return observation if opened_document_accepted(observation, path) else None
-        observation = wait(accepted, f"native Open accepts exact path with work stopped and file controls settled: {path}")
-        self.record('Observe native accepted Open receipt and stopped document', observation)
+        observation = wait(accepted, f"Open accepts exact path with work stopped and file controls settled: {path}")
+        self.record('Observe accepted Open receipt and stopped document', observation)
         return observation
 
     def quit(self, synthetic=False, save=False):
-        before = None if synthetic else self.native_diagnostics()
+        before = None if synthetic else self.session_diagnostics()
         guard_required = synthetic or before["close_requires_save"]
-        evidence = self.native.quit_app()
+        evidence = self.platform_ui.quit_app()
         self.record("Native Quit request", evidence)
         if not guard_required:
             self.stopped()
@@ -1521,17 +1521,17 @@ class Journey:
         wait(lambda: self.web.has(guard), "native quit reaches its specific application guard")
         label = "Close fixture" if synthetic else "Save" if save else "Discard"
         if save:
-            assert before['document']['path'], "Quit Save verification requires an established native save path"
+            assert before['document']['path'], "Quit Save verification requires an established save path"
         selector = f"//button[normalize-space(.)='{label}']" if synthetic else f"//div[contains(@class,'document-guard')]//button[normalize-space(.)='{label}']"
         element = self.web.find(selector, "xpath")
-        self.record("Dispatch final native-close guard action", {"label": label, "element": element})
+        self.record("Dispatch final close guard action", {"label": label, "element": element})
         try:
             self.web.command("POST", f"/element/{element}/click", {})
         except Exception as error:
             if not terminal_transport_closed(error):
                 raise
             self.record("Final guard click closed its WebDriver transport", {
-                "error": str(error), "qualification": "Not exit proof; native host/engine absence is still required before teardown."})
+                "error": str(error), "qualification": "Not exit proof; desktop host/engine absence is still required before teardown."})
         self.stopped()
         if save:
             path = Path(before['document']['path'])
@@ -1547,7 +1547,7 @@ class Journey:
         for _ in range(['chess','shogi','xiangqi','tori','chu','tenjiku'].index(game)):
             w.key('\ue015')
         w.key('\ue007')
-        wait(lambda:w.read("document.querySelector('[data-game-select]').value")==game,'focused native game selection')
+        wait(lambda:w.read("document.querySelector('[data-game-select]').value")==game,'focused game selection')
         if game=='tenjiku':
             wait(lambda:w.has('[data-profile-select]'),'whole Tenjiku profile picker')
             w.click('[data-profile-select]');w.key('\ue011')
@@ -1557,7 +1557,7 @@ class Journey:
         w.click('[data-side="'+{'chess':'white','xiangqi':'red'}.get(game,'sente')+'"]')
         if replacing_work:
             assert w.has('.shogi-analysis[data-phase="thinking"],.shogi-analysis[data-phase="analyzing"]'), 'source work must still be active immediately before New commits'
-            self.record('Replace genuinely active native work through ordinary New',{'target_game':game,'target_profile':profile})
+            self.record('Replace genuinely active work through ordinary New',{'target_game':game,'target_profile':profile})
         w.click('[data-start-game]')
         wait(lambda:not w.has('.new-game-dialog') and w.has('.shell-'+game),'new cross-game document installed')
         wait(lambda:w.has('.moves-root:not(:disabled)'),'new root controls available')
@@ -1574,24 +1574,24 @@ class Journey:
     def normal_cross_game(self):
         """One real normal host, seven saved profiles, and cross-game replacements."""
         self.start(product='cross-game');w=self.web;self.viewport(1180,820)
-        host_pid=self.native.pid
+        host_pid=self.platform_ui.pid
         choices=[('chess',None),('shogi',None),('xiangqi',None),('tori',None),('chu',None),('tenjiku','adams'),('tenjiku','muller'),('tenjiku','adams'),('chess',None)]
-        saved={};previous=self.native_diagnostics()
+        saved={};previous=self.session_diagnostics()
         for index,(game,profile) in enumerate(choices):
             self.cross_game_new(game,profile)
-            fresh=self.native_diagnostics()
+            fresh=self.session_diagnostics()
             assert fresh['token']['document']>previous['token']['document']
             assert fresh['context']['game_kind']==game and not fresh['observations']
             if profile:assert fresh['profile']==self.tenjiku_profile_id(profile)
-            assert self.native.pid==host_pid and self.native.alive()
+            assert self.platform_ui.pid==host_pid and self.platform_ui.alive()
             origin,point=self.cross_game_opening(game)
             self.plies(2)
             wait(lambda:w.has('[data-search-purpose="engine_turn"]'),'real cross-game engine reply',45)
-            played=self.native_diagnostics()
+            played=self.session_diagnostics()
             assert len(played['observations'])==1
             observation=played['observations'][0]['observation']
             assert observation['context']['game']['game_kind']==game
-            assert native_record_profile(observation['context']['game'])==played['profile']
+            assert record_profile(observation['context']['game'])==played['profile']
             assert observation['context']['purpose']['kind']=='engine_turn'
             key=profile or game;path=self.args.output/f'cross-game-{index}-{key}.mshogi'
             archive=self.save_current(path);desktop_document_payload(archive,game)
@@ -1600,12 +1600,12 @@ class Journey:
             w.keyboard_activate('.moves-root')
             wait(lambda:w.read("document.querySelector('.game-shell').dataset.historical")=='true','historical source before cross-game New')
             w.click(point(origin))
-            previous=self.native_diagnostics()
+            previous=self.session_diagnostics()
             self.record('Same normal host New/play/Save/history before next game replacement',{'host_pid':host_pid,'game':game,'profile':played['profile'],'fresh':fresh,'played':played,'historical':previous,'saved_sha256':digest(path)})
         for key in ('muller','chu','shogi','adams','xiangqi','tori','chess'):
-            path,played=saved[key];before=self.native_diagnostics()
+            path,played=saved[key];before=self.session_diagnostics()
             self.file('open',path);self.wait_opened(path)
-            opened=self.native_diagnostics()
+            opened=self.session_diagnostics()
             assert opened['context']==played['context']
             assert not opened['observations']
             assert opened['token']['document']>before['token']['document']
@@ -1614,32 +1614,32 @@ class Journey:
             assert not w.has('.inspection-marker,.square.target,.shogi-square.target,.shogi-analysis[data-phase="thinking"],.shogi-analysis[data-phase="analyzing"]')
             w.focused_button('Resume play')
             wait(lambda:w.read("document.querySelector('.game-shell').dataset.paused")=='false','explicit cross-game stopped Load Resume')
-            w.keyboard_activate('.moves-root');wait(lambda:w.read("document.querySelector('.game-shell').dataset.historical")=='true','loaded native historical prefix')
+            w.keyboard_activate('.moves-root');wait(lambda:w.read("document.querySelector('.game-shell').dataset.historical")=='true','loaded historical prefix')
             w.focused_button('Return to live')
             wait(lambda:w.read("document.querySelector('.game-shell').dataset.historical")=='false','loaded Return to live')
-            assert self.native_diagnostics()['context']==played['context']
+            assert self.session_diagnostics()['context']==played['context']
             w.focused_button('Take back');self.plies(0)
             wait(lambda:w.read("document.querySelector('.game-shell').dataset.paused")=='true','cross-game Take back stopped')
-            taken=self.native_diagnostics()
+            taken=self.session_diagnostics()
             assert taken['observations'] == opened['observations']
             archive=self.save_current(path);desktop_document_payload(archive,opened['context']['game_kind'])
-            assert self.native.pid==host_pid and self.native.alive()
+            assert self.platform_ui.pid==host_pid and self.platform_ui.alive()
             self.capture('loaded-and-taken-back-'+key)
-            self.record('Cross-game native Load/stopped Resume/history/Return/Take back and complete Save',{'host_pid':host_pid,'key':key,'before':before,'opened':opened,'taken':taken,'saved_sha256':digest(path)})
+            self.record('Cross-game Load/stopped Resume/history/Return/Take back and complete Save',{'host_pid':host_pid,'key':key,'before':before,'opened':opened,'taken':taken,'saved_sha256':digest(path)})
         self.quit()
 
     def pending_cross_game(self):
         """Retire real children across game/profile New and cross-game Load."""
         self.start('standard',gated=True,phase_name='verification-pending-cross-game')
-        w=self.web;self.viewport(1180,820);host_pid=self.native.pid
+        w=self.web;self.viewport(1180,820);host_pid=self.platform_ui.pid
         path=self.args.output/'cross-game-pending-chess-root.mshogi'
         self.save_current(path)
         choices=[('chess',None),('shogi',None),('xiangqi',None),('tori',None),('chu',None),('tenjiku','adams'),('tenjiku','muller'),('tenjiku','adams')]
         for index,(game,profile) in enumerate(choices):
-            before=self.native_diagnostics()
+            before=self.session_diagnostics()
             self.cross_game_opening(game)
             wait(lambda:w.has('.shogi-analysis[data-phase="thinking"]'),'real delayed source engine turn')
-            source_processes=engine_processes(self.native.processes(),self.args.verification_engine,getattr(self.native,'verification_paths',[]))
+            source_processes=engine_processes(self.platform_ui.processes(),self.args.verification_engine,getattr(self.platform_ui,'verification_paths',[]))
             assert source_processes, 'a real bundled-engine or external-gate process must be observed'
             if index+1<len(choices):
                 target,target_profile=choices[index+1]
@@ -1647,26 +1647,26 @@ class Journey:
             else:
                 # file() normally captures a fresh public receipt floor before
                 # opening the picker. Do that before work above, not in its
-                # five-second active window; the native completion still must
+                # five-second active window; the completion still must
                 # exceed this floor and match the exact target path.
                 self._file_receipt_floor=before['io']['id']
                 with ThreadPoolExecutor(max_workers=1) as pool:
-                    picker=pool.submit(self.native.choose_file,'open',path)
+                    picker=pool.submit(self.platform_ui.choose_file,'open',path)
                     assert w.has('.shogi-analysis[data-phase="thinking"]')
                     w.button('Load');evidence=picker.result(timeout=35)
-                self.record('Replace active Tenjiku work with native Chess Load',evidence)
+                self.record('Replace active Tenjiku work with Chess Load',evidence)
                 self.wait_opened(path)
-            installed=self.native_diagnostics()
+            installed=self.session_diagnostics()
             assert installed['token']['document']>before['token']['document']
             assert not installed['observations'], 'retired work cannot become a new-document observation'
             time.sleep(5.2)  # One bounded completion-aware campaign, beyond external gate.
-            after=self.native_diagnostics()
+            after=self.session_diagnostics()
             assert retained_document_state(after)==retained_document_state(installed)
-            remaining=self.native.processes()
+            remaining=self.platform_ui.processes()
             retired_ids={p['pid'] for p in source_processes}
             assert not retired_ids.intersection(p['pid'] for p in remaining)
-            assert self.native.pid==host_pid and self.native.alive()
-            self.record('Cross-game/profile replacement retires real process and preserves exact new authority beyond gate',{'source_game':game,'source_profile':profile,'source_processes':source_processes,'installed':installed,'after_gate':after,'remaining_processes':remaining,'qualification':'Actual child retirement; deterministic native tests separately attempt obsolete response admission.'})
+            assert self.platform_ui.pid==host_pid and self.platform_ui.alive()
+            self.record('Cross-game/profile replacement retires real process and preserves exact new authority beyond gate',{'source_game':game,'source_profile':profile,'source_processes':source_processes,'installed':installed,'after_gate':after,'remaining_processes':remaining,'qualification':'Actual child retirement; deterministic tests separately attempt obsolete response admission.'})
         self.quit()
 
     def normal(self):
@@ -1708,7 +1708,7 @@ class Journey:
         wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == "false", "explicit Chess Resume after Take back")
         w.click(self.square("e2")); w.click(self.square("e4"))
         self.plies(2)
-        self.record("Shared Take back / stopped Chess native decision / explicit Resume / replay", self.inspection_state())
+        self.record("Shared Take back / stopped Chess decision / explicit Resume / replay", self.inspection_state())
 
         self.cancel_new_game()
         self.plies(2)
@@ -1734,11 +1734,11 @@ class Journey:
 
         path = self.args.output / "normal-complete.mshogi"
         archive = self.save(path)
-        assert len(self.native_diagnostics()["observations"]) >= 2
+        assert len(self.session_diagnostics()["observations"]) >= 2
         self.inspect_piece('chess','b8','c6','Black knight')
         before_write=path.stat().st_mtime_ns
         w.button('Save')
-        wait(lambda:path.stat().st_mtime_ns!=before_write,'native Save commits a fresh archive after inspection')
+        wait(lambda:path.stat().st_mtime_ns!=before_write,'Save commits a fresh archive after inspection')
         self.wait_saved(path)
         assert json.loads(path.read_text(encoding='utf-8'))==archive,'inspection changed canonical chess archive'
         self.file("open", path)
@@ -1746,7 +1746,7 @@ class Journey:
         self.plies(2)
         assert w.has(".play-paused")
         w.button("Play details")
-        assert not self.native_diagnostics()["observations"]
+        assert not self.session_diagnostics()["observations"]
         sidebar = w.text(".sidebar")
         assert "No engine search has completed in this game." in sidebar
         assert "Last engine turn" not in sidebar
@@ -1776,7 +1776,7 @@ class Journey:
         self.wait_saved(path)
         archive = json.loads(path.read_text(encoding="utf-8"))
         body = desktop_document_payload(archive, "chess")
-        observation = self.native_diagnostics()["observations"][-1]["observation"]["context"]
+        observation = self.session_diagnostics()["observations"][-1]["observation"]["context"]
         assert observation["purpose"]["kind"] == "move_analysis"
         assert len(observation["game"]["payload"]["events"]) == 1
         self.record("History prefix provenance / Return live / Resume", {
@@ -1784,12 +1784,12 @@ class Journey:
                 len(body["record"]["commands"])})
         w.click(".flip-button")
         wait(lambda: w.text(".document-dirty").casefold() == "unsaved changes", "orientation change is protected")
-        self.record("Native window-close request", self.native.close_window())
+        self.record("Native window-close request", self.platform_ui.close_window())
         wait(lambda: w.has(".document-guard"), "native close protects unsaved work")
-        self.capture("native-close-guard")
+        self.capture("close-guard")
         w.button("Cancel")
         wait(lambda: not w.has(".document-guard"), "cancel native close")
-        assert self.native.alive()
+        assert self.platform_ui.alive()
         self.plies(2)
         self.direct_resign('chess')
         self.quit(save=True)
@@ -1802,7 +1802,7 @@ class Journey:
         self.choose_game('shogi')
         w.click(f'[data-side="{side}"]')
         w.click("[data-start-game]")
-        wait(lambda: w.has(".shogi-application") and not w.has('[aria-label="New game"]'), "new native shogi product game")
+        wait(lambda: w.has(".shogi-application") and not w.has('[aria-label="New game"]'), "new shogi product game")
         wait(lambda: w.read("document.querySelector('.shogi-application')?.dataset.orientation") == side,
              f"human {side} at bottom")
         self.record("Select Shogi and human side in normal New Game", {"side": side, "board_name":
@@ -1820,16 +1820,16 @@ class Journey:
         assert geometry["points"] == 90 and geometry["allVisible"], geometry
         assert set(geometry["palaceSides"]) == {"mshogi.xiangqi.wxf2018.v1:red", "mshogi.xiangqi.wxf2018.v1:black"}, geometry
         assert "楚河" in geometry["river"] and "漢界" in geometry["river"], geometry
-        self.record("Complete native Xiangqi intersections, river and palaces without scrolling", geometry)
+        self.record("Complete Xiangqi intersections, river and palaces without scrolling", geometry)
         return geometry
 
     def public_diagnostic_pages(self):
         """Read complete captured diagnostics through bounded public pages."""
         w=self.web
-        wait(lambda:w.has('[data-native-diagnostics]'), 'captured public diagnostic text')
+        wait(lambda:w.has('[data-session-diagnostics]'), 'captured public diagnostic text')
         chunks=[]; total=0; pages=None
         for page in range(512):
-            value=w.read("""(() => {const e=document.querySelector('[data-native-diagnostics]');return {
+            value=w.read("""(() => {const e=document.querySelector('[data-session-diagnostics]');return {
                 text:e.textContent,page:Number(e.dataset.diagnosticsPage),pages:Number(e.dataset.diagnosticsPages)};})()""")
             assert isinstance(value,dict) and value['page']==page and isinstance(value['text'],str),value
             assert len(value['text'].encode('utf-16-le','surrogatepass')) <= 65536*2,value['page']
@@ -1839,16 +1839,16 @@ class Journey:
             assert total<=32*1024*1024,'diagnostic response exceeds external verification bound'
             if page+1==pages: break
             w.button('Next diagnostics page')
-            wait(lambda:w.read("Number(document.querySelector('[data-native-diagnostics]').dataset.diagnosticsPage)")==page+1,
+            wait(lambda:w.read("Number(document.querySelector('[data-session-diagnostics]').dataset.diagnosticsPage)")==page+1,
                  'actual diagnostic page advanced once')
         else:
             raise AssertionError('complete public diagnostic pages not observed')
         return json.loads(''.join(chunks))
 
-    def native_diagnostics(self):
+    def session_diagnostics(self):
         """Open the public support surface with real input; no hidden DOM/IPC."""
         w=self.web
-        wait(lambda:w.read("!!document.querySelector('[data-support-trigger]:not(:disabled)')"), "support available after native work settles")
+        wait(lambda:w.read("!!document.querySelector('[data-support-trigger]:not(:disabled)')"), "support available after work settles")
         w.click('[data-support-trigger]')
         wait(lambda:w.has('.support-dialog'), "public About dialog")
         try:
@@ -1857,16 +1857,16 @@ class Journey:
             assert isinstance(observed,dict) and observed.get('token') and observed.get('context'), observed
             return observed
         finally:
-            # At the native minimum, expanded multi-page diagnostics can put
+            # At the minimum, expanded multi-page diagnostics can put
             # Close below the modal's scroll clip. Use the ordinary keyboard
             # path, keeping focus inside the dialog before its supported Escape.
             w.keyboard_activate('.support-dialog details:first-of-type summary')
             wait(lambda:w.read("""(() => {const d=document.querySelector('.support-dialog details:first-of-type');
                 return !!d && !d.open && document.activeElement===d.querySelector('summary')
-                    && !document.querySelector('[data-native-diagnostics]');})()"""),'Diagnostics collapsed with actual summary focus before Escape')
+                    && !document.querySelector('[data-session-diagnostics]');})()"""),'Diagnostics collapsed with actual summary focus before Escape')
             w.key('\ue00c')
             wait(lambda:not w.has('.support-dialog'), "Close public About dialog")
-            assert not w.has('[data-native-diagnostics]'),'diagnostics absent outside About'
+            assert not w.has('[data-session-diagnostics]'),'diagnostics absent outside About'
             self.record('Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker',
                 w.read("""(() => ({tag:document.activeElement?.tagName??null,
                     about:document.activeElement===document.querySelector('[data-support-trigger]'),
@@ -1874,20 +1874,20 @@ class Journey:
                     dialog:!!document.activeElement?.closest('[role="dialog"]')}))()"""))
 
     def xiangqi_diagnostics(self):
-        observed=self.native_diagnostics()
+        observed=self.session_diagnostics()
         assert observed['profile']=='mshogi.xiangqi.wxf2018.v1',observed
         return observed
 
     def completed_xiangqi_retry(self):
         # Do not repeatedly open a modal inside a completion poll. Observe the
-        # real result first; support availability can change as native work settles.
+        # real result first; support availability can change as work settles.
         wait(lambda: self.web.read("""(() => document.querySelectorAll('.moves-table [data-event]').length === 1
             && document.querySelector('.shogi-analysis')?.dataset.phase === 'idle'
             && !!document.querySelector('[data-support-trigger]:not(:disabled)'))()"""),
              'real engine retry completes in the visible live game')
         observed = self.xiangqi_diagnostics()
         assert len(observed['moves']['entries']) == 1, observed
-        self.record('Read native completed retry once after visible engine idle and one move', observed)
+        self.record('Read completed retry once after visible engine idle and one move', observed)
         return observed
 
     def xiangqi_events(self, count, selected=None, historical=False):
@@ -1899,22 +1899,22 @@ class Journey:
                 return e ? {live:e.dataset.liveEvents,selected:e.dataset.currentEvent,
                     historical:e.dataset.historical}:null;})()""")
             return actual if actual and all(actual[key] == value for key, value in expected.items()) else None
-        return wait(observed, f"native Xiangqi event/history boundary {expected}")
+        return wait(observed, f"Xiangqi event/history boundary {expected}")
 
     def xiangqi_analysis(self, depth=1, nodes=128):
         if not self.web.has('[data-analysis-start="xiangqi"]'):
             self.web.button("Analyze position")
-        wait(lambda: self.web.has('[data-analysis-start="xiangqi"]'), "native Xiangqi analysis controls")
+        wait(lambda: self.web.has('[data-analysis-start="xiangqi"]'), "Xiangqi analysis controls")
         self.web.set('.shogi-analysis input[name="depth"]', depth)
         self.web.set('.shogi-analysis input[name="nodes"]', nodes)
         self.web.click('[data-analysis-start="xiangqi"]')
 
     def xiangqi_complete_analysis(self, event_count, depth=1, nodes=128):
         def completed():
-            native = self.xiangqi_diagnostics()
-            if not native:
+            snapshot = self.xiangqi_diagnostics()
+            if not snapshot:
                 return None
-            for item in reversed(native["observations"]):
+            for item in reversed(snapshot["observations"]):
                 context = item["observation"]["context"]
                 if (not item["historical"] and context["purpose"]["kind"] == "move_analysis"
                         and context["limits"] == {"depth": depth, "nodes": nodes}
@@ -1922,18 +1922,18 @@ class Journey:
                     return item
             return None
         observation = wait(completed, f"actual Xiangqi analysis observation for event {event_count}, depth {depth}/{nodes} visits", 45)
-        wait(lambda: "Analysis result available" in self.web.text('.shogi-analysis-state'), "native Xiangqi result presentation")
+        wait(lambda: "Analysis result available" in self.web.text('.shogi-analysis-state'), "Xiangqi result presentation")
         assert "No move or claim was played" in self.web.text('.shogi-analysis')
         return observation
 
     def xiangqi_save(self, path):
-        return self.save_native_game(path, 'xiangqi')
+        return self.save_game(path, 'xiangqi')
 
     def normal_xiangqi(self):
         """Current runtime ownership/file/close journey in the normal package.
 
-        Existing native fixtures own WXF correctness. This phase observes actual
-        command admission, engine work and native document identity; it does not
+        Existing rules fixtures own WXF correctness. This phase observes actual
+        command admission, engine work and document identity; it does not
         infer an outcome or score from an incomplete search.
         """
         self.start(product="xiangqi")
@@ -1942,7 +1942,7 @@ class Journey:
         wait(lambda: w.has('[aria-label="New game"]'), "normal game selection dialog")
         assert not w.has('.document-guard'), "intentional New Game must not add an unsaved replacement dialog"
         self.choose_game('xiangqi'); w.click('[data-side="red"]'); w.click('[data-start-game]')
-        wait(lambda: w.has(".shell-xiangqi") and not w.has('[aria-label="New game"]'), "native Xiangqi/Red document")
+        wait(lambda: w.has(".shell-xiangqi") and not w.has('[aria-label="New game"]'), "Xiangqi/Red document")
         self.viewport(1180, 820)
         self.xiangqi_events(0, selected=0)
         assert "Red at bottom" in w.read("document.querySelector('.xiangqi-board').getAttribute('aria-label')")
@@ -1984,14 +1984,14 @@ class Journey:
         wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == "false", "explicit Xiangqi Resume after Take back")
         w.click(source); w.click(target)
         self.xiangqi_events(2, selected=2)
-        self.record("Shared Take back / stopped Xiangqi native decision / explicit Resume / replay", self.xiangqi_diagnostics())
+        self.record("Shared Take back / stopped Xiangqi decision / explicit Resume / replay", self.xiangqi_diagnostics())
 
         # The measured Xiangqi maximum is deliberately small. Completion may win
-        # the real input race; only report cancellation when native state proves
-        # it. Chess/Shogi phases and native tests establish forced cancellation.
+        # the real input race; only report cancellation when game state proves
+        # it. Chess/Shogi phases and tests establish forced cancellation.
         self.xiangqi_analysis(depth=3, nodes=512)
         wait(lambda: w.has('.shogi-analysis[data-phase="analyzing"]')
-             or "Analysis result available" in w.text('.shogi-analysis-state'), "native Xiangqi analysis accepts request")
+             or "Analysis result available" in w.text('.shogi-analysis-state'), "Xiangqi analysis accepts request")
         cancel_dispatched = False
         if w.has('.shogi-analysis[data-phase="analyzing"]') and w.has('.shogi-analysis button[type="button"]'):
             try:
@@ -2010,8 +2010,8 @@ class Journey:
         self.xiangqi_events(2, selected=2)
         self.record("Actual bounded Xiangqi analysis completion/cancellation observation", {
             "cancel_dispatched": cancel_dispatched, "visible_status": w.text('.shogi-analysis-state'),
-            "native": self.xiangqi_diagnostics(),
-            "qualification": "Completion may beat cancellation at the native depth 3/512-visit limit; no cancellation is inferred."})
+            "snapshot": self.xiangqi_diagnostics(),
+            "qualification": "Completion may beat cancellation at the depth 3/512-visit limit; no cancellation is inferred."})
         self.xiangqi_analysis()
         self.xiangqi_complete_analysis(2)
         self.xiangqi_events(2, selected=2)
@@ -2029,7 +2029,7 @@ class Journey:
         reopened = self.xiangqi_diagnostics()
         assert reopened["context"] == old["context"], (old, reopened)
         assert reopened["token"]["selection"] > old["token"]["selection"], (old, reopened)
-        self.record("Xiangqi current document Open preserves native history and retires runtime work", {"before": old, "after": reopened})
+        self.record("Xiangqi current document Open preserves game history and retires runtime work", {"before": old, "after": reopened})
         self.capture("reopened-stopped")
 
         w.click('.shogi-history [data-event="1"]')
@@ -2042,7 +2042,7 @@ class Journey:
         self.xiangqi_events(2, selected=1, historical=True)
         history_path = self.args.output / "normal-xiangqi-history.mshogi"
         historical = self.xiangqi_save(history_path)["payload"]
-        context = self.native_diagnostics()["observations"][-1]["observation"]["context"]
+        context = self.session_diagnostics()["observations"][-1]["observation"]["context"]
         assert context["purpose"]["kind"] == "move_analysis", context
         assert len(context["game"]["payload"]["commands"]) == 1, context
         assert len(historical["record"]["commands"]) == 2, historical
@@ -2066,7 +2066,7 @@ class Journey:
         corrupt.write_text('{"format":"mshogi.desktop.document.v1",', encoding="utf-8")
         before = self.xiangqi_diagnostics()
         self.file("open", corrupt)
-        wait(lambda: (now := self.xiangqi_diagnostics()) and now["io"]["id"] > before["io"]["id"] and now["io"]["phase"] == "failed", "corrupt Xiangqi Open reports native failure")
+        wait(lambda: (now := self.xiangqi_diagnostics()) and now["io"]["id"] > before["io"]["id"] and now["io"]["phase"] == "failed", "corrupt Xiangqi Open reports failure")
         after = self.xiangqi_diagnostics()
         assert xiangqi_retained_state(after) == xiangqi_retained_state(before), {"before": before, "after": after}
         assert "current game" in w.text('.shell-notices').lower()
@@ -2074,12 +2074,12 @@ class Journey:
         self.capture("corrupt-open-preserved")
         w.click(".flip-button")
         wait(lambda: w.text('.document-dirty').casefold() == "unsaved changes", "Xiangqi orientation is protected document state")
-        self.record("Native Xiangqi window-close request", self.native.close_window())
+        self.record("Xiangqi window-close request", self.platform_ui.close_window())
         wait(lambda: w.has(".document-guard"), "native window-close protects Xiangqi unsaved changes")
-        self.capture("native-close-guard")
+        self.capture("close-guard")
         w.button("Cancel")
-        wait(lambda: not w.has(".document-guard"), "cancel native Xiangqi close")
-        assert self.native.alive()
+        wait(lambda: not w.has(".document-guard"), "cancel Xiangqi close")
+        assert self.platform_ui.alive()
         self.xiangqi_events(2, selected=2)
         w.button('Resume play')
         wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == 'false', 'explicit Xiangqi Resume after cancelled close')
@@ -2132,7 +2132,7 @@ class Journey:
         wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == "false", "explicit Shogi Resume after Take back")
         w.click(self.shogi_square("7g")); w.click(self.shogi_square("7f"))
         self.shogi_events(2)
-        self.record("Shared Take back / stopped Shogi native decision / explicit Resume / replay", self.inspection_state())
+        self.record("Shared Take back / stopped Shogi decision / explicit Resume / replay", self.inspection_state())
 
         self.shogi_analysis(depth=4, nodes=20_000)
         wait(lambda: w.has('.shogi-analysis[data-phase="analyzing"]'), "actual active shogi analysis")
@@ -2152,12 +2152,12 @@ class Journey:
         self.record("Cancel and replace actual bounded read-only shogi analysis", w.text(".shogi-analysis"))
         self.shogi_save(self.args.output / "normal-shogi-complete.mshogi")
         self.shogi_flip()
-        self.record("Native shogi window-close request", self.native.close_window())
+        self.record("Shogi window-close request", self.platform_ui.close_window())
         wait(lambda: w.has(".document-guard"), "native close protects shogi unsaved preferences")
-        self.capture("native-close-guard")
+        self.capture("close-guard")
         w.button("Cancel")
-        wait(lambda: not w.has(".document-guard"), "cancel native shogi window close")
-        assert self.native.alive()
+        wait(lambda: not w.has(".document-guard"), "cancel shogi window close")
+        assert self.platform_ui.alive()
         self.shogi_events(2)
         w.button('Resume play')
         wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == 'false', 'explicit Shogi Resume after cancelled close')
@@ -2174,7 +2174,7 @@ class Journey:
         assert w.read("document.querySelector('.shogi-application').dataset.paused") == "true"
         assert w.has(".play-paused") and not w.has('.shogi-analysis[data-phase="analyzing"]')
         self.shogi_analysis_tab()
-        assert not self.native_diagnostics()["observations"]
+        assert not self.session_diagnostics()["observations"]
         self.capture("reopened-stopped")
         w.click('.shogi-history [data-event="1"]')
         self.shogi_events(2, selected=1, historical=True)
@@ -2186,11 +2186,11 @@ class Journey:
         self.capture("historical-analysis")
         archive = self.shogi_save(self.args.output / "normal-shogi-history.mshogi")
         body = archive["payload"]
-        context = self.native_diagnostics()["observations"][-1]["observation"]["context"]
+        context = self.session_diagnostics()["observations"][-1]["observation"]["context"]
         assert context["purpose"]["kind"] == "move_analysis"
         assert len(context["game"]["payload"]["events"]) == 1
         assert len(body["record"]["events"]) == 2
-        self.record("Session analysis uses exact native history prefix", context)
+        self.record("Session analysis uses exact game history prefix", context)
         w.button("Return to live")
         self.shogi_events(2, selected=2)
         assert w.has(".play-paused")
@@ -2199,7 +2199,7 @@ class Journey:
         self.shogi_events(2)
         assert not w.has(".shell-history-notice")
         self.capture("return-live-resumed")
-        # The current native writer reconstructs this reduced-material fixture
+        # The current writer reconstructs this reduced-material fixture
         # from its recorded root and complete actions; historical MSH-74 evidence
         # remains unchanged. No fixture entry point is enabled in this package.
         source_captures=Path(__file__).with_name('fixtures')/'shogi-captures.mshogi'
@@ -2215,7 +2215,7 @@ class Journey:
         before=self.inspection_state()
         hand='.shogi-player[data-player="gote"] .hand-piece[data-hand-piece="pawn"]'
         w.click(hand)
-        wait(lambda:'Inspecting Gote pawn in hand' in w.text('.movement-inspection-status'),'native opponent hand/drop inspection')
+        wait(lambda:'Inspecting Gote pawn in hand' in w.text('.movement-inspection-status'),'opponent hand/drop inspection')
         assert w.read(f"document.querySelector({json.dumps(self.shogi_square('5e'))})?.querySelector('.inspection-marker')!==null")
         assert not w.has('.shogi-square.target')
         self.capture('opponent-hand-inspection')
@@ -2231,19 +2231,19 @@ class Journey:
         wait(lambda:not w.has('.inspection-marker'),'Escape clears opponent drop inspection')
         self.assert_inspection_unchanged(before, 'Opponent hand inspection Escape preserves authoritative context')
         after_archive=self.shogi_save(self.args.output/'normal-shogi-inspection-after.mshogi')
-        assert after_archive==before_archive,'read-only hand inspection changed canonical native archive'
+        assert after_archive==before_archive,'read-only hand inspection changed canonical archive'
         self.record('Normal-package opponent hand inspection preserves complete canonical archive',{
             'source_archive':str(source_captures),'source_sha256':digest(source_captures),
             'loaded_copy':str(captures),
             'root':before_archive['payload']['record']['root'],
-            'native_events':len(before_archive['payload']['record']['events']),
+            'game_events':len(before_archive['payload']['record']['events']),
             'before_sha256':digest(self.args.output/'normal-shogi-inspection-before.mshogi'),
             'after_sha256':digest(self.args.output/'normal-shogi-inspection-after.mshogi')})
-        self.shogi_flip()  # Keep the native unsaved-close guard journey meaningful.
+        self.shogi_flip()  # Keep the unsaved-close guard journey meaningful.
         self.quit()
 
     def shogi_fixture(self, name):
-        """Difficult native states, explicitly separate from normal packages."""
+        """Difficult game states, explicitly separate from normal packages."""
         self.start(name)
         w = self.web
         self.viewport(1180, 820)
@@ -2257,10 +2257,10 @@ class Journey:
             assert w.read(f"document.querySelector({json.dumps(self.shogi_square('5e'))}).classList.contains('target')")
             self.shogi_events(2)
             self.capture("drop-selection")
-            w.key("\ue00c")  # Escape cancels without a native action.
+            w.key("\ue00c")  # Escape cancels without a action.
             self.shogi_events(2)
             assert not w.has(".hand-piece.selected")
-            # Exercise a genuine native process failure at a complete action,
+            # Exercise a genuine process failure at a complete action,
             # retaining the same imported root and capture history for retry.
             engine = self.args.verification_engine
             held = engine.with_name(engine.name + ".gui-verification-held")
@@ -2282,13 +2282,13 @@ class Journey:
             assert digest(engine) == original
             w.button("Retry engine turn")
             self.shogi_events(4)
-            self.record("Capture history / cancelled drop / complete native drop / process recovery", {
+            self.record("Capture history / cancelled drop / complete drop / process recovery", {
                 "engine_sha256": original, "history": w.text(".shogi-history"),
                 "status": w.text("[data-game-status]")})
         elif name == "shogi-promotion":
             self.shogi_events(0)
             w.click(self.shogi_square("5d")); w.click(self.shogi_square("5c"))
-            wait(lambda: w.has(".promotion-dialog"), "optional promotion has two complete native choices")
+            wait(lambda: w.has(".promotion-dialog"), "optional promotion has two complete game choices")
             self.shogi_events(0)
             self.capture("optional-promotion")
             w.key("\ue00c")
@@ -2296,12 +2296,12 @@ class Journey:
             self.shogi_events(0)
             w.click(self.shogi_square("5d")); w.click(self.shogi_square("5c"))
             w.button("Promote")
-            wait(lambda: "promoted pawn" in str(w.read(f"document.querySelector({json.dumps(self.shogi_square('5c'))})?.getAttribute('aria-label')")), "native promoted piece appears")
+            wait(lambda: "promoted pawn" in str(w.read(f"document.querySelector({json.dumps(self.shogi_square('5c'))})?.getAttribute('aria-label')")), "promoted piece appears")
             self.shogi_events(2)
         elif name == "shogi-forced":
             self.shogi_events(0)
             w.click(self.shogi_square("5b")); w.click(self.shogi_square("5a"))
-            wait(lambda: "promoted pawn" in str(w.read(f"document.querySelector({json.dumps(self.shogi_square('5a'))})?.getAttribute('aria-label')")), "mandatory native promotion commits directly")
+            wait(lambda: "promoted pawn" in str(w.read(f"document.querySelector({json.dumps(self.shogi_square('5a'))})?.getAttribute('aria-label')")), "mandatory promotion commits directly")
             assert not w.has(".promotion-dialog")
             self.shogi_events(2)
         elif name == "shogi-declaration":
@@ -2314,10 +2314,10 @@ class Journey:
             w.button("Confirm declaration")
             self.shogi_events(1)
             wait(lambda: "Sente wins by entering-king declaration" in w.text("[data-game-status]"), "authoritative declaration conclusion")
-            assert w.read("[...document.querySelectorAll('.shogi-game-actions button')].map(e=>({label:e.textContent.trim(),enabled:!e.disabled}))") == [{"label": "Take back", "enabled": True}], "A concluded game exposes only native Take back"
+            assert w.read("[...document.querySelectorAll('.shogi-game-actions button')].map(e=>({label:e.textContent.trim(),enabled:!e.disabled}))") == [{"label": "Take back", "enabled": True}], "A concluded game exposes only Take back"
             w.focused_button("Take back")
             self.shogi_events(0)
-            wait(lambda: "Sente to move" in w.text("[data-game-status]"), "declaration Take back restores native human decision")
+            wait(lambda: "Sente to move" in w.text("[data-game-status]"), "declaration Take back restores human decision")
             assert w.read("document.querySelector('.shogi-application').dataset.paused") == "true"
             assert w.read("document.querySelector('.take-back-button').disabled")
             assert "Position restored" in w.text(".play-paused")
@@ -2326,13 +2326,13 @@ class Journey:
             archive = self.shogi_save(path)
             body = desktop_document_payload(archive, "shogi")
             assert not body['record']['events']
-            old_token = self.native_diagnostics()["token"]
+            old_token = self.session_diagnostics()["token"]
             assert old_token is not None
             self.file("open", path)
-            wait(lambda: (token := self.native_diagnostics()["token"]) and token["document"] > old_token["document"],
-                 "Take back archive Open installs fresh native document identity")
+            wait(lambda: (token := self.session_diagnostics()["token"]) and token["document"] > old_token["document"],
+                 "Take back archive Open installs fresh document identity")
             self.shogi_events(0, selected=0, historical=False)
-            wait(lambda: "Sente to move" in w.text("[data-game-status]"), "reopened Take back retains the native ongoing root")
+            wait(lambda: "Sente to move" in w.text("[data-game-status]"), "reopened Take back retains the ongoing root")
             assert "wins" not in w.text("[data-game-status]")
             assert w.read("document.querySelector('.shogi-application').dataset.paused") == "true"
             assert not w.has('.shogi-analysis[data-phase="analyzing"]')
@@ -2340,16 +2340,16 @@ class Journey:
             w.button("Resume play")
             wait(lambda: w.read("document.querySelector('.shogi-application').dataset.paused") == "false", "explicit Resume after Take back archive Open")
             self.shogi_events(0, selected=0, historical=False)
-            self.record("Declare / Take back / native Save Open / stopped identities / explicit Resume", {
+            self.record("Declare / Take back / Save Open / stopped identities / explicit Resume", {
                 "path": str(path), "sha256": digest(path),
-                "saved_native_events": len(body["record"]["events"]),
-                "old_token": old_token, "fresh_token": self.native_diagnostics()["token"],
+                "saved_events": len(body["record"]["events"]),
+                "old_token": old_token, "fresh_token": self.session_diagnostics()["token"],
                 "status": w.text("[data-game-status]")})
             self.capture("takeback-reopened-resumed")
         elif name == "shogi-concluded":
             self.shogi_events(1)
             assert "Sente resigned" in w.text("[data-game-status]")
-            assert w.read("[...document.querySelectorAll('.shogi-game-actions button')].map(e=>({label:e.textContent.trim(),enabled:!e.disabled}))") == [{"label": "Take back", "enabled": True}], "A concluded game exposes only native Take back"
+            assert w.read("[...document.querySelectorAll('.shogi-game-actions button')].map(e=>({label:e.textContent.trim(),enabled:!e.disabled}))") == [{"label": "Take back", "enabled": True}], "A concluded game exposes only Take back"
             self.capture("concluded")
             w.click('.shogi-history [data-event="0"]')
             self.shogi_events(1, selected=0, historical=True)
@@ -2360,10 +2360,10 @@ class Journey:
             w.button("Return to live")
             self.shogi_events(1, selected=1)
             assert "Sente resigned" in w.text("[data-game-status]")
-            self.record("Select distinct native terminal event at unchanged board ply", w.text(".shogi-history"))
+            self.record("Select distinct terminal event at unchanged board ply", w.text(".shogi-history"))
             w.focused_button("Take back")
             self.shogi_events(0)
-            wait(lambda: "Sente to move" in w.text("[data-game-status]"), "resignation Take back restores native human decision")
+            wait(lambda: "Sente to move" in w.text("[data-game-status]"), "resignation Take back restores human decision")
             assert w.read("document.querySelector('.shogi-application').dataset.paused") == "true"
             assert w.read("document.querySelector('.take-back-button').disabled")
             assert "Position restored" in w.text(".play-paused")
@@ -2373,9 +2373,9 @@ class Journey:
             assert "Recorded searches (255)" in w.text(".recorded-searches")
             self.shogi_analysis(nodes=0)
             wait(lambda: "Recorded searches (256)" in w.text(".recorded-searches"), "shogi observation 256 accepted")
-            previous = self.native_diagnostics()["observations"][-1]["observation"]["context"]["request_id"]
+            previous = self.session_diagnostics()["observations"][-1]["observation"]["context"]["request_id"]
             self.shogi_analysis(nodes=0)
-            wait(lambda: self.native_diagnostics()["observations"][-1]["observation"]["context"]["request_id"] > previous, "newest Shogi result replaces oldest")
+            wait(lambda: self.session_diagnostics()["observations"][-1]["observation"]["context"]["request_id"] > previous, "newest Shogi result replaces oldest")
             assert "Recorded searches (256)" in w.text(".recorded-searches")
             assert not w.has(".capacity-notice")
             self.shogi_events(0)
@@ -2397,8 +2397,8 @@ class Journey:
         return {'adams':'mshogi.tenjiku.adams1999-modern.v1','muller':'mshogi.tenjiku.muller-completed.v1'}[profile]
 
     def new_tenjiku(self, profile, side):
-        """Use the normal sixth-game and explicit whole-profile native selects."""
-        w=self.web;before=self.native_diagnostics()
+        """Use the normal sixth-game and explicit whole-profile selects."""
+        w=self.web;before=self.session_diagnostics()
         w.button('New game');wait(lambda:w.has('[aria-label="New game"]'),'normal New Game dialog')
         options=w.read("[...document.querySelector('[data-game-select]').options].map(e=>({value:e.value,label:e.textContent,disabled:e.disabled}))")
         assert options==[{'value':value,'label':label,'disabled':False} for value,label in zip(['chess','shogi','xiangqi','tori','chu','tenjiku'],['Chess','Shogi','Xiangqi','Tori Shogi','Chu Shogi','Tenjiku Shogi'])],options
@@ -2411,27 +2411,27 @@ class Journey:
         assert w.read("document.querySelector('[data-profile-select]').value")==expected_default
         w.click('[data-profile-select]');w.key('\ue011')
         if profile=='muller':w.key('\ue015')
-        w.key('\ue007');wait(lambda:w.read("document.querySelector('[data-profile-select]').value")==self.tenjiku_profile_id(profile),'explicit native profile selection')
+        w.key('\ue007');wait(lambda:w.read("document.querySelector('[data-profile-select]').value")==self.tenjiku_profile_id(profile),'explicit profile selection')
         w.click(f'[data-side="{side}"]');w.click('[data-start-game]')
         wait(lambda:w.has('.shell-tenjiku') and not w.has('[aria-label="New game"]'),'normal Tenjiku document installed')
         wait(lambda:not w.has('.shogi-analysis[data-phase="thinking"]') and w.read("!!document.querySelector('.moves-root:not(:disabled)')"),'initial actual Tenjiku engine/admission settled',45)
         self.tenjiku_events(0 if side=='sente' else 1)
-        native=self.native_diagnostics()
-        assert native['profile']==self.tenjiku_profile_id(profile) and native['context']['payload']['root']['profile']==native['profile']
-        assert native['token']['document']>before['token']['document']
+        snapshot=self.session_diagnostics()
+        assert snapshot['profile']==self.tenjiku_profile_id(profile) and snapshot['context']['payload']['root']['profile']==snapshot['profile']
+        assert snapshot['token']['document']>before['token']['document']
         assert w.read("document.querySelector('.game-shell').dataset.orientation")==side
-        assert w.read("document.querySelector('[data-rules-profile]').dataset.rulesProfile")==native['profile']
-        assert sum(piece is not None for piece in native['context']['payload']['root']['board'])==156
-        if side=='gote':assert native['observations'][0]['observation']['result']['kind']=='tenjiku'
-        self.record('Normal sixth-game New with explicit immutable Tenjiku profile and real player assignment',{'profile':profile,'side':side,'picker':choices,'default_before_explicit_selection':expected_default,'native':native})
-        return native
+        assert w.read("document.querySelector('[data-rules-profile]').dataset.rulesProfile")==snapshot['profile']
+        assert sum(piece is not None for piece in snapshot['context']['payload']['root']['board'])==156
+        if side=='gote':assert snapshot['observations'][0]['observation']['result']['kind']=='tenjiku'
+        self.record('Normal sixth-game New with explicit immutable Tenjiku profile and real player assignment',{'profile':profile,'side':side,'picker':choices,'default_before_explicit_selection':expected_default,'snapshot':snapshot})
+        return snapshot
 
-    def tenjiku_native_minimum(self):
+    def tenjiku_minimum(self):
         # Request the unchanged native application minimum directly. Do not
         # silently enlarge its outer window to manufacture a650px WebView.
-        native=self.native.resize(760,650);time.sleep(0.2)
+        window=self.platform_ui.resize(760,650);time.sleep(0.2)
         viewport=self.web.read("({width:innerWidth,height:innerHeight,dpr:devicePixelRatio})")
-        self.record('Request retained 760x650 native window minimum and measure actual content separately',{'native':native,'viewport':viewport,'limitation':'Full board fit does not make every Tenjiku kanji comfortably readable; larger windows remain recommended, not mandatory.'})
+        self.record('Request retained 760x650 native window minimum and measure actual content separately',{'window':window,'viewport':viewport,'limitation':'Full board fit does not make every Tenjiku kanji comfortably readable; larger windows remain recommended, not mandatory.'})
         return viewport
 
     def tenjiku_board_fits(self):
@@ -2440,7 +2440,7 @@ class Journey:
         observed=w.read("""(() => {const board=document.querySelector('.tenjiku-board-frame .chess-board'),cells=[...document.querySelectorAll('.tenjiku-board-frame .square')];
             const rect=e=>{const r=e.getBoundingClientRect();return {left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:r.width,height:r.height};};
             const visible=e=>{if(!e)return false;const r=rect(e),clip={left:0,top:0,right:innerWidth,bottom:innerHeight};for(let p=e.parentElement;p;p=p.parentElement){const c=getComputedStyle(p),b=rect(p);if(/^(auto|scroll|hidden|clip)$/.test(c.overflowX)){clip.left=Math.max(clip.left,b.left);clip.right=Math.min(clip.right,b.right);}if(/^(auto|scroll|hidden|clip)$/.test(c.overflowY)){clip.top=Math.max(clip.top,b.top);clip.bottom=Math.min(clip.bottom,b.bottom);}}return r.width>0&&r.height>0&&r.left>=clip.left-1&&r.top>=clip.top-1&&r.right<=clip.right+1&&r.bottom<=clip.bottom+1;};
-            return {viewport:{width:innerWidth,height:innerHeight,dpr:devicePixelRatio},board:board?rect(board):null,cells:cells.length,visibleCells:cells.filter(visible).length,boardVisible:visible(board),cell:cells[0]?rect(cells[0]):null,glyphCount:document.querySelectorAll('.tenjiku-board-frame .piece-tile-face text').length,minimumGlyphEm:Math.min(...[...document.querySelectorAll('.tenjiku-board-frame .piece-tile-face text')].map(e=>parseFloat(getComputedStyle(e).fontSize)*Math.hypot(e.getScreenCTM().a,e.getScreenCTM().b))),orientation:document.querySelector('.game-shell')?.dataset.orientation,fontLoaded:document.fonts.check('16px "mShogi Tenjiku Pieces"'),pageWidth:document.documentElement.scrollWidth,hands:document.querySelectorAll('[aria-label="Native hands"],.hand-piece').length};})()""")
+            return {viewport:{width:innerWidth,height:innerHeight,dpr:devicePixelRatio},board:board?rect(board):null,cells:cells.length,visibleCells:cells.filter(visible).length,boardVisible:visible(board),cell:cells[0]?rect(cells[0]):null,glyphCount:document.querySelectorAll('.tenjiku-board-frame .piece-tile-face text').length,minimumGlyphEm:Math.min(...[...document.querySelectorAll('.tenjiku-board-frame .piece-tile-face text')].map(e=>parseFloat(getComputedStyle(e).fontSize)*Math.hypot(e.getScreenCTM().a,e.getScreenCTM().b))),orientation:document.querySelector('.game-shell')?.dataset.orientation,fontLoaded:document.fonts.check('16px "mShogi Tenjiku Pieces"'),pageWidth:document.documentElement.scrollWidth,hands:document.querySelectorAll('[aria-label="Hands"],.hand-piece').length};})()""")
         assert observed['cells']==observed['visibleCells']==256 and observed['boardVisible'] and observed['fontLoaded'] and observed['glyphCount']>0 and observed['minimumGlyphEm']>0 and not observed['hands'],observed
         assert observed['pageWidth']<=observed['viewport']['width']+1 and observed['cell']['width']>0,observed
         self.record('Actual responsive 16x16 fit and glyph measurements; small-window fit is not all-kanji reading comfort',observed)
@@ -2453,13 +2453,13 @@ class Journey:
             return {viewport:{width:innerWidth,height:innerHeight},selected:{text:selected?.textContent,visible:visible(selected),rect:rect(selected)},route:{text:route?.textContent,visible:visible(route),rect:rect(route),buttons:[...route?.querySelectorAll('button')??[]].map(e=>({text:e.textContent,visible:visible(e),rect:rect(e)}))},position:{text:position?.textContent,visible:visible(position),rect:rect(position)}};})()""")
         assert observed['selected']['text']==label and observed['selected']['visible'] and observed['position']['visible'],observed
         if require_route:assert observed['route']['visible'] and observed['route']['buttons'] and all(button['visible'] for button in observed['route']['buttons']),observed
-        self.record('Actual native selected-piece name, route controls and position footer fit without ancestor clipping',observed)
+        self.record('Actual selected-piece name, route controls and position footer fit without ancestor clipping',observed)
         return observed
 
     def tenjiku_capture_paint(self, profile, width):
-        w=self.web;before=self.native_diagnostics()
+        w=self.web;before=self.session_diagnostics()
         w.click(self.square('9m'))
-        wait(lambda:w.text('.selected-piece-status')=='Selected 9m, Sente Great General · Esc clears','native friendly Great General name in stable footer')
+        wait(lambda:w.text('.selected-piece-status')=='Selected 9m, Sente Great General · Esc clears','friendly Great General name in stable footer')
         self.selected_footer_fits('Selected 9m, Sente Great General · Esc clears')
         observed=w.read("""(() => {const rect=e=>{const r=e.getBoundingClientRect();return {left:r.left,top:r.top,width:r.width,height:r.height};};
             return {viewport:{width:innerWidth,height:innerHeight,dpr:devicePixelRatio},footer:document.querySelector('.selected-piece-status')?.textContent,
@@ -2472,69 +2472,69 @@ class Journey:
             assert marker['rect']['left']>=0 and marker['rect']['top']>=0 and marker['rect']['left']+marker['rect']['width']<=observed['viewport']['width']+1,marker
         png=self.args.output/f'{self.phase}-great-general-{width}-paint.png';w.screenshot(png)
         pixels=capture_ring_pixel_evidence(png,observed)
-        self.record('Actual occupied capture markers paint above native pieces, remain green in PNG pixels, and preserve square hit testing',{'profile':profile,'svg':observed,'pixels':pixels})
+        self.record('Actual occupied capture markers paint above pieces, remain green in PNG pixels, and preserve square hit testing',{'profile':profile,'svg':observed,'pixels':pixels})
         self.capture(f'great-general-{width}-friendly-name-capture-outlines')
         w.key('\ue00c');wait(lambda:not w.has('.selected-piece-status,.capture-marker'),'Escape clears actionable friendly selection')
-        assert self.native_diagnostics()['context']==before['context']
+        assert self.session_diagnostics()['context']==before['context']
 
     def tenjiku_save(self, path, profile):
-        archive = self.save_native_game(path, 'tenjiku')
+        archive = self.save_game(path, 'tenjiku')
         assert archive['payload']['record']['root']['profile'] == self.tenjiku_profile_id(profile)
         return archive['payload']
 
     def tenjiku_reopen_saved(self, evidence_path, profile):
-        before=self.native_diagnostics();actual=Path(before['document']['path'])
+        before=self.session_diagnostics();actual=Path(before['document']['path'])
         assert actual.is_file() and digest(actual)==digest(evidence_path)
-        self.file('open',actual);self.wait_opened(actual);after=self.native_diagnostics()
+        self.file('open',actual);self.wait_opened(actual);after=self.session_diagnostics()
         ui=self.web.read("""(() => ({paused:document.querySelector('.shell-tenjiku')?.dataset.paused,
             activeWork:!!document.querySelector('.shogi-analysis[data-phase="thinking"],.shogi-analysis[data-phase="analyzing"]'),
             outcome:!!document.querySelector('.outcome-card'),resume:!!document.querySelector('.play-paused')}))()""")
         assert before['profile']==self.tenjiku_profile_id(profile) and reopened_tenjiku_document_stopped(before,after,ui),ui
-        self.record('Fresh ordinary Tenjiku Open retains exact native state/history and clears results, including concluded games',ui)
+        self.record('Fresh ordinary Tenjiku Open retains exact game state/history and clears results, including concluded games',ui)
         return after
 
     def tenjiku_analysis(self):
         w=self.web
         if not w.has('[data-analysis-start="tenjiku"]'):w.button('Analyze position')
-        wait(lambda:w.has('[data-analysis-start="tenjiku"]'),'native Tenjiku bounded analysis inputs')
+        wait(lambda:w.has('[data-analysis-start="tenjiku"]'),'Tenjiku bounded analysis inputs')
         w.set('.shogi-analysis input[name="depth"]',1);w.set('.shogi-analysis input[name="nodes"]',1024)
-        before=self.native_diagnostics()
+        before=self.session_diagnostics()
         request_floor=max((item['observation']['context']['request_id'] for item in before['observations']),default=0)
-        self.record('Capture pre-click native Tenjiku analysis identity floor and exact selected source',{'observations':len(before['observations']),'request_floor':request_floor,'source':before['context'],'selected_event':before['tenjiku']['selected']['event_index'],'board_ply':before['tenjiku']['selected']['board_ply'],'token':before['token']})
+        self.record('Capture pre-click Tenjiku analysis identity floor and exact selected source',{'observations':len(before['observations']),'request_floor':request_floor,'source':before['context'],'selected_event':before['tenjiku']['selected']['event_index'],'board_ply':before['tenjiku']['selected']['board_ply'],'token':before['token']})
         w.click('[data-analysis-start="tenjiku"]')
         def newly_completed():
-            after=self.native_diagnostics()
+            after=self.session_diagnostics()
             assert completed_tenjiku_analysis(before,after,request_floor),{'observations':len(after['observations']),'expected_count':len(before['observations'])+1,'selected':after['tenjiku']['selected']['event_index'],'diagnostic':after['diagnostic'],'latest_result':after['observations'][-1]['observation']['result'] if after['observations'] else None}
             return after
         after=wait(newly_completed,'new genuine Tenjiku move-analysis observation for exact selected prefix with fresh execution identity',45)
         assert 'Analysis result available' in w.text('.shogi-analysis-state') and 'No move was played.' in w.text('.shogi-analysis')
-        self.record('New real read-only analysis appends exact-context observation without changing live or selected native game',{'before_count':len(before['observations']),'after':after,'request_floor':request_floor})
+        self.record('New real read-only analysis appends exact-context observation without changing live or selected game',{'before_count':len(before['observations']),'after':after,'request_floor':request_floor})
         return after
 
     def tenjiku_load_fixture(self, profile, name):
         source=Path(__file__).with_name('fixtures')/f'tenjiku-{profile}-{name}.mshogi'
         path=self.args.output/f'{self.phase}-{name}-source.mshogi';shutil.copyfile(source,path)
-        before=self.native_diagnostics();self.file('open',path);self.wait_opened(path)
+        before=self.session_diagnostics();self.file('open',path);self.wait_opened(path)
         wait(lambda:self.web.has('.shell-tenjiku'),'ordinary normal-package Tenjiku Load')
-        after=self.native_diagnostics();expected=desktop_document_payload(json.loads(source.read_text()),'tenjiku')
+        after=self.session_diagnostics();expected=desktop_document_payload(json.loads(source.read_text()),'tenjiku')
         assert after['context']['payload']==expected['record'] and after['profile']==self.tenjiku_profile_id(profile) and after['token']['document']>before['token']['document']
         assert self.web.has('.play-paused') and not after['observations']
-        self.record('Normal OS file-picker Load of independent native Tenjiku current document',{'profile':profile,'fixture':name,'source_sha256':digest(source),'native':after})
+        self.record('Normal OS file-picker Load of independent Tenjiku current document',{'profile':profile,'fixture':name,'source_sha256':digest(source),'snapshot':after})
         return after
 
     def tenjiku_reject_cross_profile(self, profile):
-        before=self.native_diagnostics();actual=Path(before['document']['path']);accepted_hash=digest(actual)
+        before=self.session_diagnostics();actual=Path(before['document']['path']);accepted_hash=digest(actual)
         wire=json.loads(actual.read_text(encoding='utf-8'));other='muller' if profile=='adams' else 'adams'
         # Change the root profile without its edition to create a real conflict.
         wire['payload']['record']['root']['profile']=self.tenjiku_profile_id(other)
         path=self.args.output/f'{self.phase}-deliberate-cross-profile-conflict.mshogi';path.write_text(json.dumps(wire),encoding='utf-8')
         self.file('open',path)
         def rejected():
-            current=self.native_diagnostics()
+            current=self.session_diagnostics()
             return current if current['io']['id']>before['io']['id'] and current['io']['phase']=='failed' else None
-        after=wait(rejected,'normal Load rejects conflicting native profile and edition atomically')
+        after=wait(rejected,'normal Load rejects conflicting profile and edition atomically')
         assert retained_document_state(after)==retained_document_state(before) and digest(actual)==accepted_hash
-        self.record('Deliberately conflicting profile Load preserves accepted native context, identities, dirty state and prior file',{'before':before,'after':after,'accepted_sha256':accepted_hash})
+        self.record('Deliberately conflicting profile Load preserves accepted game context, identities, dirty state and prior file',{'before':before,'after':after,'accepted_sha256':accepted_hash})
         self.capture('cross-profile-conflict-rejected-without-reinterpretation')
 
     def tenjiku_action(self, origin, steps, count, promote=None, igui=False):
@@ -2546,63 +2546,63 @@ class Journey:
                 self.tenjiku_events(count-1)
                 assert w.text('.selected-piece-status')==selected and 'No action submitted' in w.text('.route-selection')
         if promote is not None:
-            wait(lambda:w.has('.promotion-dialog'),'native Tenjiku promotion alternatives');self.assert_chu_promotion_choices();w.button('Promote' if promote else 'Do not promote')
+            wait(lambda:w.has('.promotion-dialog'),'Tenjiku promotion alternatives');self.assert_chu_promotion_choices();w.button('Promote' if promote else 'Do not promote')
         if w.has('.route-selection') and not igui:w.focused_button('Complete action here')
-        self.tenjiku_events(count);native=self.native_diagnostics();actual=native['context']['payload']['events'][-1]['command']['action']
+        self.tenjiku_events(count);snapshot=self.session_diagnostics();actual=snapshot['context']['payload']['events'][-1]['command']['action']
         coordinate=lambda square:[int(square[:-1]),ord(square[-1])-ord('a')+1]
         expected={'kind':'igui' if igui else 'travel','from':coordinate(origin),'route':[] if igui else [coordinate(step) for step in steps],'promote':bool(promote)}
         if igui:expected['target']=coordinate(steps[-1])
         assert actual==expected,(actual,expected)
         self.assert_completed_cue(json.dumps(expected,separators=(',',':')),count,[origin],[] if igui else [steps[-1]],None if igui or len(steps)==1 else '>'.join([origin,*steps]))
-        return native
+        return snapshot
 
     def normal_tenjiku(self, profile):
         self.start(product=f'tenjiku-{profile}');w=self.web
         if profile=='muller':
             previous=self.args.output/'normal-tenjiku-adams-concluded.mshogi'
             self.file('open',previous);self.wait_opened(previous)
-            assert self.native_diagnostics()['profile']==self.tenjiku_profile_id('adams')
+            assert self.session_diagnostics()['profile']==self.tenjiku_profile_id('adams')
         self.new_tenjiku(profile,'gote');self.tenjiku_board_fits();self.capture('normal-gote-real-engine')
         self.new_tenjiku(profile,'sente');self.viewport(1180,820);self.shared_shell('tenjiku');self.tenjiku_board_fits();self.tenjiku_capture_paint(profile,1180)
-        self.tenjiku_native_minimum();self.shared_shell('tenjiku');self.tenjiku_board_fits();self.tenjiku_capture_paint(profile,'native-minimum');self.viewport(1180,820)
+        self.tenjiku_minimum();self.shared_shell('tenjiku');self.tenjiku_board_fits();self.tenjiku_capture_paint(profile,'minimum');self.viewport(1180,820)
         self.inspect_piece('tenjiku','16e','16f','Gote Pawn');self.intentional_replacement_failures('tenjiku')
         for origin,destination,count in [('16l','16k',2),('16k','16j',4)]:
-            w.click(self.square(origin));wait(lambda:'Sente Pawn' in w.text('.selected-piece-status'),'friendly native Pawn identification');w.key('\ue00c')
+            w.click(self.square(origin));wait(lambda:'Sente Pawn' in w.text('.selected-piece-status'),'friendly Pawn identification');w.key('\ue00c')
             w.click(self.square(origin));w.click(self.square(destination))
-            self.tenjiku_events(count);native=self.native_diagnostics();events=native['context']['payload']['events']
+            self.tenjiku_events(count);snapshot=self.session_diagnostics();events=snapshot['context']['payload']['events']
             coordinate=lambda square:[int(square[:-1]),ord(square[-1])-ord('a')+1]
             assert events[count-2]['command']['action']=={'kind':'travel','from':coordinate(origin),'route':[coordinate(destination)],'promote':False}
-            assert native['profile']==self.tenjiku_profile_id(profile) and len(native['observations'])==count//2
-            assert native['observations'][-1]['observation']['result']['kind']=='tenjiku'
-            self.record('Genuine packaged human/engine Tenjiku complete turn pair',{'profile':profile,'native':native})
+            assert snapshot['profile']==self.tenjiku_profile_id(profile) and len(snapshot['observations'])==count//2
+            assert snapshot['observations'][-1]['observation']['result']['kind']=='tenjiku'
+            self.record('Genuine packaged human/engine Tenjiku complete turn pair',{'profile':profile,'snapshot':snapshot})
         self.capture('normal-four-ply-real-progression');w.focused_button('Take back');self.tenjiku_events(2)
-        taken=self.native_diagnostics();assert taken['context']['payload']['events']==events[:2] and w.has('.play-paused')
+        taken=self.session_diagnostics();assert taken['context']['payload']['events']==events[:2] and w.has('.play-paused')
         w.keyboard_activate('.moves-table button[data-event="1"]');self.tenjiku_events(2,selected=1,historical=True);self.assert_historical_notice(1)
-        self.tenjiku_analysis();selected=self.native_diagnostics();assert selected['context']['payload']['events']==events[:1]
+        self.tenjiku_analysis();selected=self.session_diagnostics();assert selected['context']['payload']['events']==events[:1]
         self.capture('historical-exact-prefix-readonly-analysis');w.button('Return to live');self.tenjiku_events(2,selected=2)
         assert w.has('.play-paused')
         path=self.args.output/f'normal-tenjiku-{profile}-complete.mshogi';body=self.tenjiku_save(path,profile)
         assert body['record']['events'] == events[:2]
         reopened=self.tenjiku_reopen_saved(path,profile);self.capture('normal-reopened-stopped')
         w.button('Resume play');wait(lambda:w.read("document.querySelector('.game-shell').dataset.paused")=='false','explicit Tenjiku Resume after Load')
-        self.tenjiku_analysis();assert self.native_diagnostics()['context']==reopened['context']
-        w.button('Play details');self.direct_resign('tenjiku');concluded=self.native_diagnostics()
+        self.tenjiku_analysis();assert self.session_diagnostics()['context']==reopened['context']
+        w.button('Play details');self.direct_resign('tenjiku');concluded=self.session_diagnostics()
         assert concluded['tenjiku']['selected']['conclusion']=={'kind':'resignation','winner':'gote'}
         self.tenjiku_save(self.args.output/f'normal-tenjiku-{profile}-concluded.mshogi',profile)
-        dirty=self.dirty_native_close_source('Tenjiku');self.record('Actual dirty Tenjiku native close',self.native.close_window())
+        dirty=self.dirty_close_source('Tenjiku');self.record('Actual dirty Tenjiku native close',self.platform_ui.close_window())
         wait(lambda:w.has('.document-guard'),'dirty Tenjiku Quit protected');w.button('Cancel');wait(lambda:not w.has('.document-guard'),'dirty Tenjiku Quit Cancel')
-        assert self.native.alive() and self.native_diagnostics()['context']==concluded['context']
+        assert self.platform_ui.alive() and self.session_diagnostics()['context']==concluded['context']
         self.capture('normal-dirty-quit-cancel');self.quit(save=True)
         saved_path=Path(dirty['document']['path']);saved=json.loads(saved_path.read_text(encoding='utf-8'));saved_body=desktop_document_payload(saved,'tenjiku')
         assert saved_body['record']['root']['profile']==self.tenjiku_profile_id(profile) and saved_body['record']==concluded['context']['payload']
         assert saved_body['settings']=={**dirty['document']['settings'],'orientation':dirty['document']['settings']['orientation']['side']}
         assert set(saved_body) == {'record', 'human', 'settings'}
-        self.record('Actual dirty Quit Save retains native profile, complete game/history, settings on disk',{'profile':profile,'path':str(saved_path),'sha256':digest(saved_path),'settings':saved_body['settings']})
+        self.record('Actual dirty Quit Save retains profile, complete game/history, settings on disk',{'profile':profile,'path':str(saved_path),'sha256':digest(saved_path),'settings':saved_body['settings']})
 
-    def normal_tenjiku_native(self, profile):
-        self.start(product=f'tenjiku-{profile}-native');w=self.web
+    def normal_tenjiku_rules(self, profile):
+        self.start(product=f'tenjiku-{profile}-rules');w=self.web
         self.tenjiku_load_fixture(profile,'compound');self.tenjiku_reject_cross_profile(profile)
-        self.tenjiku_load_fixture(profile,'compound');self.tenjiku_events(0);self.tenjiku_native_minimum();self.tenjiku_board_fits()
+        self.tenjiku_load_fixture(profile,'compound');self.tenjiku_events(0);self.tenjiku_minimum();self.tenjiku_board_fits()
         w.click(self.square('8h'));selected=w.text('.selected-piece-status');assert 'Lion Hawk' in selected
         w.click(self.square('9h'));self.tenjiku_events(0);assert w.text('.selected-piece-status')==selected and 'No action submitted' in w.text('.route-selection')
         self.selected_footer_fits(selected,require_route=True);self.capture('compound-partial-friendly-name-retained');w.key('\ue00c');wait(lambda:not w.has('.selected-piece-status'),'compound Escape restores footer')
@@ -2615,42 +2615,42 @@ class Journey:
         self.capture('stationary-capture-accessible-effects')
         self.tenjiku_load_fixture(profile,'promotion');promoted=self.tenjiku_action('8f',['8e'],1,promote=True)
         assert w.read("document.querySelector('.square[aria-label^=\"8e,\"] [data-face=G][data-promoted=true]')!==null")
-        assert promoted['tenjiku']['selected']['conclusion'] is None;self.capture('native-optional-promotion-identity')
+        assert promoted['tenjiku']['selected']['conclusion'] is None;self.capture('optional-promotion-identity')
         self.tenjiku_load_fixture(profile,'burn');burned=self.tenjiku_action('8j',['7i','7h','8h'],1)
         phases=burned['tenjiku']['selected']['last_effects']['phases']
         assert [phase['phase'] for phase in phases]==(['burn','mover_dies'] if profile=='adams' else ['mover_dies'])
         if profile=='adams':assert [victim['square'] for victim in phases[0]['victims']]==[[8,7]]
         effects=w.read("document.querySelector('.moves-table button[data-event=\"1\"]')?.getAttribute('aria-label')??''")
         assert 'Sente Fire Demon destroyed at 8h' in effects and ('Burned together: Gote Pawn at 8g' in effects)==(profile=='adams')
-        self.capture('three-stage-demon-native-burn-death-and-accessible-phases')
+        self.capture('three-stage-demon-burn-death-and-accessible-phases')
         for name,origin,steps,conclusion in [('simultaneous','8i',['8h'],{'kind':'simultaneous_royal_loss'}),('bare-loss','5a',['5j'],{'kind':'bare_royal_loss','winner':'gote'})]:
             self.tenjiku_load_fixture(profile,name);ended=self.tenjiku_action(origin,steps,1)
             assert ended['tenjiku']['selected']['conclusion']==conclusion and w.has('.outcome-card')
-            self.capture(f'independent-native-terminal-{name}');self.tenjiku_save(self.args.output/f'tenjiku-{profile}-{name}-concluded.mshogi',profile)
-        self.tenjiku_load_fixture(profile,'no-actions');unscored=self.native_diagnostics()
+            self.capture(f'independent-terminal-{name}');self.tenjiku_save(self.args.output/f'tenjiku-{profile}-{name}-concluded.mshogi',profile)
+        self.tenjiku_load_fixture(profile,'no-actions');unscored=self.session_diagnostics()
         assert unscored['tenjiku']['selected']['conclusion'] is None and not w.has('.outcome-card')
         w.click(self.square('1a'));wait(lambda:'Sente King' in w.text('.movement-inspection-status'),'friendly no-action piece identified read-only')
-        w.key('\ue00c');assert self.native_diagnostics()['context']==unscored['context'];self.capture('no-actions-unscored-friendly-inspection')
+        w.key('\ue00c');assert self.session_diagnostics()['context']==unscored['context'];self.capture('no-actions-unscored-friendly-inspection')
         w.focused_button('Offer draw…');w.button('Offer draw');self.tenjiku_events(1)
-        offered=self.native_diagnostics();assert offered['tenjiku']['selected']['draw_offer']=='sente' and offered['tenjiku']['selected']['conclusion'] is None
+        offered=self.session_diagnostics();assert offered['tenjiku']['selected']['draw_offer']=='sente' and offered['tenjiku']['selected']['conclusion'] is None
         assert offered['tenjiku']['selected']['board_ply']==0
-        self.capture('no-actions-still-allows-native-unscored-draw-offer')
+        self.capture('no-actions-still-allows-unscored-draw-offer')
         self.tenjiku_load_fixture(profile,'agreement');w.focused_button('Decline draw');self.tenjiku_events(2)
-        declined=self.native_diagnostics();assert declined['tenjiku']['selected']['draw_offer'] is None and declined['tenjiku']['selected']['conclusion'] is None
+        declined=self.session_diagnostics();assert declined['tenjiku']['selected']['draw_offer'] is None and declined['tenjiku']['selected']['conclusion'] is None
         self.tenjiku_load_fixture(profile,'agreement');w.focused_button('Accept draw…');w.button('Accept draw');self.tenjiku_events(2)
-        agreed=self.native_diagnostics();assert agreed['tenjiku']['selected']['conclusion']=={'kind':'agreement'} and agreed['tenjiku']['selected']['board_ply']==0
-        self.capture('opposing-actor-native-agreement-independent-of-board-turn');self.tenjiku_save(self.args.output/f'tenjiku-{profile}-agreement-complete.mshogi',profile)
+        agreed=self.session_diagnostics();assert agreed['tenjiku']['selected']['conclusion']=={'kind':'agreement'} and agreed['tenjiku']['selected']['board_ply']==0
+        self.capture('opposing-actor-agreement-independent-of-board-turn');self.tenjiku_save(self.args.output/f'tenjiku-{profile}-agreement-complete.mshogi',profile)
 
-        self.tenjiku_load_fixture(profile,'repetition3');self.tenjiku_events(3);before=self.native_diagnostics()
+        self.tenjiku_load_fixture(profile,'repetition3');self.tenjiku_events(3);before=self.session_diagnostics()
         w.click(self.square('2a'));assert not w.read("document.querySelector('.square[aria-label^=\"1a,\"]')?.classList.contains('target')")
-        w.key('\ue00c');assert self.native_diagnostics()['context']==before['context'];self.capture('first-recurrence-forbidden-without-invented-result')
+        w.key('\ue00c');assert self.session_diagnostics()['context']==before['context'];self.capture('first-recurrence-forbidden-without-invented-result')
         self.tenjiku_load_fixture(profile,'royal-engine');w.button('Resume play');self.tenjiku_events(1)
         wait(lambda:w.has('.outcome-card'),'actual engine naturally completes independently specified royal game',45)
-        complete=self.native_diagnostics();assert complete['tenjiku']['selected']['conclusion']=={'kind':'royal_capture','winner':'sente'}
+        complete=self.session_diagnostics();assert complete['tenjiku']['selected']['conclusion']=={'kind':'royal_capture','winner':'sente'}
         assert len(complete['observations'])==1 and complete['observations'][0]['observation']['result']['result']['kind']=='choice'
-        self.record('Actual installed bundled engine completes native diagram game',{'profile':profile,'native':complete,'qualification':'Independent limited source diagram, real supervised Choice/native action and outcome; not standard-root selfplay or strength evidence.'})
-        self.capture('real-engine-native-royal-complete-game');path=self.args.output/f'tenjiku-{profile}-natural-engine-complete.mshogi'
-        self.tenjiku_save(path,profile);self.tenjiku_reopen_saved(path,profile);self.capture('native-complete-game-fresh-stopped-reopen');self.quit()
+        self.record('Actual installed bundled engine completes diagram game',{'profile':profile,'snapshot':complete,'qualification':'Independent limited source diagram, real supervised Choice/action and outcome; not standard-root selfplay or strength evidence.'})
+        self.capture('real-engine-royal-complete-game');path=self.args.output/f'tenjiku-{profile}-natural-engine-complete.mshogi'
+        self.tenjiku_save(path,profile);self.tenjiku_reopen_saved(path,profile);self.capture('complete-game-fresh-stopped-reopen');self.quit()
 
     def tenjiku_recovery(self, profile):
         self.start(f'tenjiku-{profile}-standard',phase_name=f'verification-recovery-tenjiku-{profile}');w=self.web
@@ -2667,14 +2667,14 @@ class Journey:
         w.button('Retry engine turn');self.tenjiku_events(2)
         wait(lambda:w.has('[data-search-purpose="engine_turn"]'),'actual Tenjiku retry admitted',45)
         self.tenjiku_save(self.args.output/f'tenjiku-{profile}-recovery-complete.mshogi',profile)
-        self.record('Actual missing engine restored identically before explicit Retry',{'profile':profile,'engine_sha256':original,'native':self.native_diagnostics()})
+        self.record('Actual missing engine restored identically before explicit Retry',{'profile':profile,'engine_sha256':original,'snapshot':self.session_diagnostics()})
         self.capture('real-sidecar-retry-preserves-history');self.quit()
 
     def chu_events(self, count, selected=None, historical=False):
         root = "document.querySelector('.game-shell')"
-        wait(lambda: self.web.read(root + '?.dataset.liveEvents') == str(count), f'native Chu history has {count} exact events')
+        wait(lambda: self.web.read(root + '?.dataset.liveEvents') == str(count), f'Chu history has {count} exact events')
         if selected is not None:
-            wait(lambda: self.web.read(root + '?.dataset.currentEvent') == str(selected), f'native Chu selected event {selected}')
+            wait(lambda: self.web.read(root + '?.dataset.currentEvent') == str(selected), f'Chu selected event {selected}')
         wait(lambda: self.web.read(root + '?.dataset.historical') == str(historical).lower(), f'Chu historical viewing {historical}')
 
     def chu_board_fits(self):
@@ -2692,10 +2692,10 @@ class Journey:
                 minimumSquareWidth:Math.min(...squares.map(e=>e.getBoundingClientRect().width)),
                 uniqueSquares:new Set(squares.map(e=>e.getAttribute('aria-label')?.split(',')[0])).size,
                 kanjiTexts:[...document.querySelectorAll('.chu-board-frame .piece-tile-face text')].map(e=>({text:e.textContent,pixels:parseFloat(getComputedStyle(e).fontSize)*Math.hypot(e.getScreenCTM().a,e.getScreenCTM().b)})),
-                pageWidth:document.documentElement.scrollWidth,orientation:board?.getAttribute('aria-label'),nativeOrientation:document.querySelector('.game-shell')?.dataset.orientation,
-                hands:document.querySelectorAll('[aria-label="Native hands"],.hand-piece').length};})()""")
+                pageWidth:document.documentElement.scrollWidth,orientation:board?.getAttribute('aria-label'),gameOrientation:document.querySelector('.game-shell')?.dataset.orientation,
+                hands:document.querySelectorAll('[aria-label="Hands"],.hand-piece').length};})()""")
         assert geometry['allVisible'] and geometry['boardVisible'] and geometry['hands'] == 0 and geometry['uniqueSquares'] == 144, geometry
-        assert geometry['nativeOrientation'] in ('sente','gote') and geometry['orientation'].endswith(f", {geometry['nativeOrientation'].capitalize()} at bottom"), geometry
+        assert geometry['gameOrientation'] in ('sente','gote') and geometry['orientation'].endswith(f", {geometry['gameOrientation'].capitalize()} at bottom"), geometry
         # Guard the owner-approved compact minimum (about 24px cells/11px kanji), not a new visual specification.
         assert geometry['minimumSquareWidth'] >= 23 and geometry['kanjiTexts'], geometry
         assert min(item['pixels'] for item in geometry['kanjiTexts']) >= 10, geometry
@@ -2707,86 +2707,86 @@ class Journey:
         w = self.web
         w.button('New game'); wait(lambda: w.has('[aria-label="New game"]'), 'ordinary New Game chooser')
         self.choose_game('chu'); w.click(f'[data-side="{side}"]'); w.click('[data-start-game]')
-        wait(lambda: w.has('.shell-chu') and not w.has('[aria-label="New game"]'), 'normal product installs native Chu session')
+        wait(lambda: w.has('.shell-chu') and not w.has('[aria-label="New game"]'), 'normal product installs Chu session')
         wait(lambda: not w.has('.shogi-analysis[data-phase="thinking"]') and w.read("(() => {const root=document.querySelector('.moves-root');return !!root&&!root.disabled;})()"), 'initial Chu engine work and admission settle', 45)
         orientation = w.read("document.querySelector('.game-shell').dataset.orientation")
         assert orientation in ('sente','gote'), orientation
         if side != 'random': assert orientation == side, (side, orientation)
         self.chu_events(0 if orientation == 'sente' else 1)
-        native = self.native_diagnostics()
-        assert native['profile'] == 'mshogi.chu.jcsa2019.v1' and native['context']['game_kind'] == 'chu', native
+        snapshot = self.session_diagnostics()
+        assert snapshot['profile'] == 'mshogi.chu.jcsa2019.v1' and snapshot['context']['game_kind'] == 'chu', snapshot
         if orientation == 'gote':
-            assert len(native['observations']) == 1 and native['observations'][0]['observation']['result']['kind'] == 'chu', native
-        self.record('Ordinary New Game / Chu / native player assignment and real engine', {'requested_side':side,'actual_orientation':orientation,'native':native})
+            assert len(snapshot['observations']) == 1 and snapshot['observations'][0]['observation']['result']['kind'] == 'chu', snapshot
+        self.record('Ordinary New Game / Chu / player assignment and real engine', {'requested_side':side,'actual_orientation':orientation,'snapshot':snapshot})
         return orientation
 
     def chu_save(self, path):
-        return self.save_native_game(path, 'chu')['payload']
+        return self.save_game(path, 'chu')['payload']
 
     def chu_reopen_saved(self, evidence_path):
         """Load the actual ordinary Save path; external copies remain evidence only."""
-        before = self.native_diagnostics()
+        before = self.session_diagnostics()
         actual = Path(before['document']['path'])
         assert actual.is_absolute() and actual.is_file() and digest(actual) == digest(evidence_path), (actual,evidence_path)
-        self.record('Load actual native Chu Save path, retaining the separate evidence copy',
+        self.record('Load actual Chu Save path, retaining the separate evidence copy',
             {'saved_path':str(actual),'evidence_copy':str(evidence_path),'sha256':digest(actual)})
         self.file('open',actual); self.wait_opened(actual)
-        return self.native_diagnostics()
+        return self.session_diagnostics()
 
     def chu_load_fixture(self, name):
         source = Path(__file__).with_name('fixtures') / f'chu-{name}.mshogi'
         path = self.args.output / f'normal-chu-{name}-source.mshogi'
-        shutil.copyfile(source, path); before = self.native_diagnostics()
+        shutil.copyfile(source, path); before = self.session_diagnostics()
         self.file('open', path); self.wait_opened(path)
-        wait(lambda: self.web.has('.shell-chu'), 'ordinary Load dispatches native Chu document')
-        after = self.native_diagnostics()
+        wait(lambda: self.web.has('.shell-chu'), 'ordinary Load dispatches Chu document')
+        after = self.session_diagnostics()
         expected = desktop_document_payload(json.loads(source.read_text(encoding='utf-8')), 'chu')
         assert after['context']['payload'] == expected['record'] and after['token']['document'] > before['token']['document'], after
         assert self.web.read("document.querySelector('.game-shell').dataset.paused") == 'true'
         assert not self.web.has('.shogi-analysis[data-phase="thinking"],.shogi-analysis[data-phase="analyzing"]')
         assert not after['observations']
-        self.record('Ordinary normal-package Load of native-generated Chu document', {'fixture':name,'source':str(source),'source_sha256':digest(source),'after':after,
-            'qualification':'Native current-envelope archive through the OS file picker; no QA activation, IPC or frontend rules.'})
+        self.record('Ordinary normal-package Load of generated Chu document', {'fixture':name,'source':str(source),'source_sha256':digest(source),'after':after,
+            'qualification':'Current-envelope archive through the OS file picker; no QA activation, IPC or frontend rules.'})
         return after
 
     def assert_chu_promotion_choices(self):
-        # CSS capitalizes rendered button text. Native completion labels remain
+        # CSS capitalizes rendered button text. Completion labels remain
         # exact DOM textContent; observe them without changing or activating input.
         labels = self.web.read("[...document.querySelectorAll('.promotion-dialog .promotion-choices button')].map(e=>e.textContent.trim())")
         assert sorted(labels) == ['Do not promote', 'Promote'], labels
-        self.record('Observe exact native optional Chu promotion choices', labels)
+        self.record('Observe exact optional Chu promotion choices', labels)
         return labels
 
     def chu_action(self, origin, steps, count, promote=None, complete_here=False):
-        """Enter one independently expected complete native route through real controls."""
+        """Enter one independently expected complete route through real controls."""
         w = self.web
         w.click(self.chu_square(origin))
         for step in steps: w.click(self.chu_square(step))
         if complete_here: w.focused_button('Complete action here')
         if promote is not None:
-            wait(lambda: w.has('.promotion-dialog'), 'native complete promotion alternatives')
+            wait(lambda: w.has('.promotion-dialog'), 'complete promotion alternatives')
             self.assert_chu_promotion_choices()
             w.button('Promote' if promote else 'Do not promote')
         self.chu_events(count)
-        native = self.native_diagnostics()
-        actual = native['context']['payload']['events'][-1]['command']['action']
+        snapshot = self.session_diagnostics()
+        actual = snapshot['context']['payload']['events'][-1]['command']['action']
         def coordinate(square): return [int(square[:-1]), ord(square[-1]) - ord('a') + 1]
         expected = {'from':coordinate(origin),'route':[coordinate(step) for step in steps],'promote':bool(promote)}
         assert actual == expected, (actual, expected)
         self.assert_completed_cue(json.dumps(expected, separators=(',',':')), count, [origin], [steps[-1]], '>'.join([origin,*steps]) if len(steps)>1 else None)
-        return native
+        return snapshot
 
     def chu_analysis(self, depth=1, nodes=512):
         w = self.web
         if not w.has('[data-analysis-start="chu"]'): w.button('Analyze position')
-        wait(lambda: w.has('[data-analysis-start="chu"]'), 'native bounded Chu analysis controls')
+        wait(lambda: w.has('[data-analysis-start="chu"]'), 'bounded Chu analysis controls')
         w.set('.shogi-analysis input[name="depth"]', depth); w.set('.shogi-analysis input[name="nodes"]', nodes)
         w.click('[data-analysis-start="chu"]')
-        wait(lambda: 'Analysis result available' in w.text('.shogi-analysis-state'), 'real native Chu read-only result', 45)
+        wait(lambda: 'Analysis result available' in w.text('.shogi-analysis-state'), 'real Chu read-only result', 45)
         assert 'No move was played.' in w.text('.shogi-analysis') and 'perspective' in w.text('.analysis-perspective')
 
     def normal_chu(self):
-        """Ordinary fifth-game activation, real human/engine play and native document lifecycle."""
+        """Ordinary fifth-game activation, real human/engine play and document lifecycle."""
         self.start(product='chu'); w = self.web
         self.new_chu('gote'); self.chu_board_fits(); self.capture('normal-gote-real-first-engine-move')
         self.new_chu('random'); self.chu_board_fits()
@@ -2795,7 +2795,7 @@ class Journey:
         self.inspect_piece('chu','12d','12e','Gote Pawn'); self.intentional_replacement_failures('chu')
         for origin,destination,count,action in [('9h','9g',2,{'from':[9,8],'route':[[9,7]],'promote':False}),
                                                ('9g','9f',4,{'from':[9,7],'route':[[9,6]],'promote':False})]:
-            before = self.native_diagnostics()
+            before = self.session_diagnostics()
             w.click(self.chu_square(origin)); w.key('\ue00c')
             self.chu_events(count-2)  # Read-only observation preserves board focus for real keyboard input.
             if count == 2:
@@ -2804,43 +2804,43 @@ class Journey:
             else:
                 w.click(self.chu_square(origin)); w.click(self.chu_square(destination))
             if w.has('.route-selection'): w.focused_button('Complete action here')
-            self.chu_events(count); after = self.native_diagnostics(); events = after['context']['payload']['events']
+            self.chu_events(count); after = self.session_diagnostics(); events = after['context']['payload']['events']
             assert events[count-2]['command']['action'] == action and len(after['observations']) == count//2, after
             assert after['observations'][-1]['observation']['result']['kind'] == 'chu'
             self.record('Ordinary Chu human complete action and actual bundled engine reply', {'human_complete_action':action,'after':after})
         self.capture('normal-four-ply-progression')
-        w.focused_button('Take back'); self.chu_events(2); taken = self.native_diagnostics()
+        w.focused_button('Take back'); self.chu_events(2); taken = self.session_diagnostics()
         assert taken['context']['payload']['events'] == events[:2] and w.has('.play-paused')
         w.keyboard_activate('.moves-table button[data-event="1"]'); self.chu_events(2,selected=1,historical=True); self.assert_historical_notice(1)
-        self.chu_analysis(); selected = self.native_diagnostics()
+        self.chu_analysis(); selected = self.session_diagnostics()
         assert selected['context']['payload']['events'] == events[:1]
         assert selected['observations'][-1]['observation']['context']['game']['payload']['events'] == events[:1]
         self.capture('normal-history-exact-prefix-readonly-analysis')
         w.button('Return to live'); self.chu_events(2,selected=2); assert w.has('.play-paused')
         path = self.args.output/'normal-chu-complete.mshogi'; body = self.chu_save(path)
         assert body['record']['events'] == events[:2]
-        before = self.native_diagnostics(); reopened = self.chu_reopen_saved(path)
+        before = self.session_diagnostics(); reopened = self.chu_reopen_saved(path)
         assert reopened['context'] == before['context'] and reopened['token']['document'] > before['token']['document']
         assert reopened['token']['selection'] != before['token']['selection'] and not reopened['observations']
         assert w.has('.play-paused') and not w.has('.shogi-analysis[data-phase="thinking"]')
         self.capture('normal-reopened-stopped'); w.button('Resume play')
         wait(lambda:w.read("document.querySelector('.game-shell').dataset.paused")=='false','explicit Chu Resume after Load')
-        self.chu_analysis(); assert self.native_diagnostics()['context'] == reopened['context']
-        w.button('Play details'); self.direct_resign('chu'); concluded = self.native_diagnostics()
+        self.chu_analysis(); assert self.session_diagnostics()['context'] == reopened['context']
+        w.button('Play details'); self.direct_resign('chu'); concluded = self.session_diagnostics()
         assert concluded['chu']['selected']['conclusion'] == {'kind':'resignation','winner':'gote'}
         final = self.chu_save(self.args.output/'normal-chu-concluded.mshogi')
         assert final['record']['events'][-1] == {'actor':'sente','command':{'kind':'resign'}}
         self.record('Bounded complete ordinary Chu game with explicit resignation', {'accepted_board_actions':4,'retired_board_actions':2,'current_board_actions':2,
             'conclusion':concluded['chu']['selected']['conclusion'],'qualification':'Real human/engine progression then explicit resignation; not natural standard self-play completion or playing-strength evidence.'})
-        self.dirty_native_close_source('Chu')
-        self.record('Native Chu dirty window-close request',self.native.close_window()); wait(lambda:w.has('.document-guard'),'dirty Chu close protected')
+        self.dirty_close_source('Chu')
+        self.record('Chu dirty window-close request',self.platform_ui.close_window()); wait(lambda:w.has('.document-guard'),'dirty Chu close protected')
         w.button('Cancel'); wait(lambda:not w.has('.document-guard'),'Cancel preserves dirty Chu game')
-        assert self.native.alive() and self.native_diagnostics()['context'] == concluded['context']
+        assert self.platform_ui.alive() and self.session_diagnostics()['context'] == concluded['context']
         self.capture('normal-dirty-quit-cancel'); self.quit(save=True)
 
-    def normal_chu_native(self):
-        """Independent native compound, promotion, royal, repetition and ending scenarios via normal Load."""
-        self.start(product='chu-native'); w = self.web
+    def normal_chu_rules(self):
+        """Independent compound, promotion, royal, repetition and ending scenarios via normal Load."""
+        self.start(product='chu-rules'); w = self.web
         self.chu_load_fixture('contract'); self.chu_events(0); self.chu_board_fits()
         w.click(self.chu_square('6f')); w.click(self.chu_square('7e'))
         assert 'No action submitted' in w.text('.route-selection'); self.chu_events(0)
@@ -2861,7 +2861,7 @@ class Journey:
         assert [item['square'] for item in captured['chu']['selected']['last_effects']['captures']] == [[2,2],[1,2]]
         self.capture('normal-two-ordered-captures'); self.chu_save(self.args.output/'normal-chu-compound.mshogi')
         self.chu_load_fixture('promotion'); self.chu_events(0)
-        w.click(self.chu_square('6e')); w.click(self.chu_square('6d')); wait(lambda:w.has('.promotion-dialog'),'native optional promotion alternatives')
+        w.click(self.chu_square('6e')); w.click(self.chu_square('6d')); wait(lambda:w.has('.promotion-dialog'),'optional promotion alternatives')
         self.assert_chu_promotion_choices(); w.key('\ue00c'); self.chu_events(0)
         promoted = self.chu_action('6e',['6d'],1,promote=True)
         assert w.read(f"document.querySelector({json.dumps(self.chu_square('6d'))})?.querySelector('[data-face=Prince]')!==null")
@@ -2876,35 +2876,35 @@ class Journey:
             self.chu_load_fixture(name); ended = self.chu_action(origin,steps,1)
             assert ended['chu']['selected']['conclusion'] == {'kind':ending,'winner':'sente'} and w.has('.outcome-card')
             self.capture(f'normal-{ending}-natural-complete-game'); self.chu_save(self.args.output/f'normal-chu-{ending}-complete.mshogi')
-        self.chu_load_fixture('mate'); assert self.native_diagnostics()['chu']['selected']['conclusion'] == {'kind':'mate','winner':'gote'}
+        self.chu_load_fixture('mate'); assert self.session_diagnostics()['chu']['selected']['conclusion'] == {'kind':'mate','winner':'gote'}
         assert w.has('.outcome-card'); self.capture('normal-independent-finite-mate')
         self.chu_load_fixture('agreement-root'); w.focused_button('Offer draw…'); w.button('Offer draw'); self.chu_events(1)
-        offered = self.native_diagnostics(); assert offered['chu']['selected']['conclusion'] is None and offered['chu']['selected']['draw_offer']=='sente'
+        offered = self.session_diagnostics(); assert offered['chu']['selected']['conclusion'] is None and offered['chu']['selected']['draw_offer']=='sente'
         self.chu_save(self.args.output/'normal-chu-offered.mshogi')
         self.chu_load_fixture('agreement'); w.focused_button('Decline draw'); self.chu_events(2)
-        assert self.native_diagnostics()['chu']['selected']['draw_offer'] is None and not w.has('.outcome-card')
+        assert self.session_diagnostics()['chu']['selected']['draw_offer'] is None and not w.has('.outcome-card')
         self.chu_load_fixture('agreement'); w.focused_button('Accept draw…'); w.button('Accept draw'); self.chu_events(2)
-        agreed = self.native_diagnostics(); assert agreed['chu']['selected']['conclusion'] == {'kind':'agreed_draw'} and agreed['chu']['selected']['board_ply']==0
+        agreed = self.session_diagnostics(); assert agreed['chu']['selected']['conclusion'] == {'kind':'agreed_draw'} and agreed['chu']['selected']['board_ply']==0
         self.capture('normal-opposing-agreement-not-board-turn'); self.chu_save(self.args.output/'normal-chu-agreed.mshogi')
-        self.chu_load_fixture('repetition10'); self.chu_events(10); obligation=self.native_diagnostics()
+        self.chu_load_fixture('repetition10'); self.chu_events(10); obligation=self.session_diagnostics()
         assert obligation['chu']['live']['obligations'] and obligation['chu']['selected']['conclusion'] is None
         assert 'Repetition obligation' in w.text('.shell-notices')
         w.click(self.chu_square('1k')); assert not w.read(f"document.querySelector({json.dumps(self.chu_square('1l'))})?.classList.contains('target')")
         w.key('\ue00c'); self.chu_events(10)
         w.click('.shogi-history [data-event="4"]'); self.chu_events(10,selected=4,historical=True)
-        prefix=self.native_diagnostics(); assert len(prefix['context']['payload']['events'])==4 and not prefix['chu']['selected']['obligations']
+        prefix=self.session_diagnostics(); assert len(prefix['context']['payload']['events'])==4 and not prefix['chu']['selected']['obligations']
         assert prefix['chu']['live']['obligations']; self.capture('normal-history-without-future-repetition-obligation')
-        w.button('Return to live'); self.chu_events(10,selected=10); assert self.native_diagnostics()['context']==obligation['context']
+        w.button('Return to live'); self.chu_events(10,selected=10); assert self.session_diagnostics()['context']==obligation['context']
         path=self.args.output/'normal-chu-obligation.mshogi'; self.chu_save(path); self.chu_reopen_saved(path)
-        assert self.native_diagnostics()['context']==obligation['context'] and w.has('.play-paused')
-        self.chu_load_fixture('complete-royal-engine'); natural = self.native_diagnostics()
+        assert self.session_diagnostics()['context']==obligation['context'] and w.has('.play-paused')
+        self.chu_load_fixture('complete-royal-engine'); natural = self.session_diagnostics()
         assert natural['chu']['selected']['conclusion'] == {'kind':'royal_capture','winner':'sente'}
         assert not natural['observations'] and w.has('.outcome-card')
         self.capture('normal-complete-natural-engine-game')
-        self.chu_load_fixture('complete-resignation'); complete=self.native_diagnostics()
+        self.chu_load_fixture('complete-resignation'); complete=self.session_diagnostics()
         assert complete['chu']['selected']['conclusion']=={'kind':'resignation','winner':'gote'} and not complete['observations']
         assert not complete['observations']; self.capture('normal-reopen-complete-standard-engine-record')
-        self.record('Independent Chu native scenarios through normal installed application', {'fixtures_manifest':str(Path(__file__).with_name('fixtures')/'chu-native-fixtures.json'),
+        self.record('Independent Chu scenarios through normal installed application', {'fixtures_manifest':str(Path(__file__).with_name('fixtures')/'chu-game-fixtures.json'),
             'capture_return':capture_return,'quiet_return':quiet_return,'promoted':promoted,'surviving_Prince':survived,'agreement':agreed,'repetition':obligation,'natural_engine_complete_game':natural,
             'qualification':'Actual pointer/keyboard complete actions and ordinary Load/Save; immutable independently authored expectations, no external rules engine.'})
         self.quit()
@@ -2925,16 +2925,16 @@ class Journey:
         w.button('Retry engine turn'); self.chu_events(2)
         wait(lambda:w.has('[data-search-purpose="engine_turn"]'),'actual Chu retry with identical sidecar restored',45)
         self.chu_save(self.args.output/'chu-recovery-complete.mshogi')
-        self.record('Actual missing Chu engine / identical restored sidecar / explicit Retry',{'engine_sha256':original,'native':self.native_diagnostics()})
-        self.capture('actual-retry-retains-native-history'); self.quit()
+        self.record('Actual missing Chu engine / identical restored sidecar / explicit Retry',{'engine_sha256':original,'snapshot':self.session_diagnostics()})
+        self.capture('actual-retry-retains-history'); self.quit()
 
     def tori_events(self, count, selected=None, historical=False):
         root = "document.querySelector('.game-shell')"
         wait(lambda: self.web.read(root + "?.dataset.liveEvents") == str(count),
-             f"native Tori history has {count} exact events")
+             f"Tori history has {count} exact events")
         if selected is not None:
             wait(lambda: self.web.read(root + "?.dataset.currentEvent") == str(selected),
-                 f"native Tori selected event {selected}")
+                 f"Tori selected event {selected}")
         wait(lambda: self.web.read(root + "?.dataset.historical") == str(historical).lower(),
              f"Tori historical viewing {historical}")
 
@@ -2946,37 +2946,37 @@ class Journey:
         w.click(f'[data-side="{side}"]')
         w.click('[data-start-game]')
         wait(lambda: w.has('.shell-tori') and not w.has('[aria-label="New game"]'),
-             'normal product installs native Tori session')
+             'normal product installs Tori session')
         wait(lambda: not w.has('.shogi-analysis[data-phase="thinking"]'), 'initial Tori engine turn settles', 45)
-        # Ownership is native presentation data, not guessed from random's coin.
+        # Ownership is presentation data, not guessed from random's coin.
         orientation = w.read("document.querySelector('.game-shell').dataset.orientation")
         assert orientation in ('sente', 'gote'), orientation
         if side != 'random':
             assert orientation == side, (side, orientation)
         self.tori_events(0 if orientation == 'sente' else 1)
-        native = self.native_diagnostics()
-        assert native['context']['game_kind'] == 'tori', native
-        assert native['profile'] == 'mshogi.tori.modern.v1', native
+        snapshot = self.session_diagnostics()
+        assert snapshot['context']['game_kind'] == 'tori', snapshot
+        assert snapshot['profile'] == 'mshogi.tori.modern.v1', snapshot
         if orientation == 'gote':
             assert any(item['observation']['context']['purpose']['kind'] == 'engine_turn'
-                       for item in native['observations']), native
-        self.record('Ordinary New Game / Tori / native player assignment and real engine',
-                    {'requested_side': side, 'actual_orientation': orientation, 'native': native})
+                       for item in snapshot['observations']), snapshot
+        self.record('Ordinary New Game / Tori / player assignment and real engine',
+                    {'requested_side': side, 'actual_orientation': orientation, 'snapshot': snapshot})
         return orientation
 
     def tori_save(self, path):
-        return self.save_native_game(path, 'tori')['payload']
+        return self.save_game(path, 'tori')['payload']
 
     def tori_analysis(self, depth=1, nodes=1000):
         w = self.web
         if not w.has('[data-analysis-start="tori"]'):
             w.button('Analyze position')
-        wait(lambda: w.has('[data-analysis-start="tori"]'), 'native bounded Tori analysis controls')
+        wait(lambda: w.has('[data-analysis-start="tori"]'), 'bounded Tori analysis controls')
         w.set('.shogi-analysis input[name="depth"]', depth)
         w.set('.shogi-analysis input[name="nodes"]', nodes)
         w.click('[data-analysis-start="tori"]')
         wait(lambda: 'Analysis result available' in w.text('.shogi-analysis-state'),
-             'real native Tori read-only result', 45)
+             'real Tori read-only result', 45)
         assert 'No move was played.' in w.text('.shogi-analysis')
         assert 'perspective' in w.text('.analysis-perspective')
         assert not w.has('.outcome-card')
@@ -2985,23 +2985,23 @@ class Journey:
         source = Path(__file__).with_name('fixtures') / f'tori-{name}.mshogi'
         path = self.args.output / f'normal-tori-{name}-source.mshogi'
         shutil.copyfile(source, path)
-        before = self.native_diagnostics()
+        before = self.session_diagnostics()
         self.file('open', path); self.wait_opened(path)
-        wait(lambda: self.web.has('.shell-tori'), 'normal Load dispatches native Tori document')
-        after = self.native_diagnostics()
+        wait(lambda: self.web.has('.shell-tori'), 'normal Load dispatches Tori document')
+        after = self.session_diagnostics()
         assert after['token']['document'] > before['token']['document'], (before, after)
         assert self.web.read("document.querySelector('.game-shell').dataset.paused") == 'true'
         assert not self.web.has('.shogi-analysis[data-phase="thinking"],.shogi-analysis[data-phase="analyzing"]')
         expected = desktop_document_payload(json.loads(source.read_text(encoding='utf-8')), 'tori')
         assert after['context']['payload'] == expected['record'], (after['context'], expected['record'])
-        self.record('Ordinary normal-package Load of native-generated admitted document', {
+        self.record('Ordinary normal-package Load of generated admitted document', {
             'fixture': name, 'source': str(source), 'source_sha256': digest(source),
             'opened_copy': str(path), 'before_token': before['token'], 'after': after,
-            'qualification': 'Current native envelope admitted and saved by external Rust example; no host fixture activation or injected IPC.'})
+            'qualification': 'Current record envelope admitted and saved by external Rust example; no host fixture activation or injected IPC.'})
         return after
 
     def normal_tori(self):
-        """Ordinary installed product, real native rules and unchanged sidecar."""
+        """Ordinary installed product, real rules and unchanged sidecar."""
         self.start(product='tori')
         w = self.web
         self.new_tori('gote'); self.shogi_board_fits(tori=True)
@@ -3019,7 +3019,7 @@ class Journey:
         w.key('\ue00c'); self.tori_events(0)
         assert w.read('document.activeElement?.dataset.square') == '3d'
         for key in ('\ue007', '\ue013', '\ue007'):
-            w.key(key)  # Actual Enter / Up / Enter commits one native complete capture.
+            w.key(key)  # Actual Enter / Up / Enter commits one complete capture.
         self.tori_events(2)
         wait(lambda: w.has('[data-search-purpose="engine_turn"]'), 'actual bundled Tori reply', 45)
         for side in ('sente', 'gote'):
@@ -3027,18 +3027,18 @@ class Journey:
         self.capture('normal-captures-both-hands')
         w.click('.shogi-player[data-player="sente"] .hand-piece[data-hand="Sw"]')
         assert w.read(f"document.querySelector({json.dumps(self.shogi_square('3d'))}).classList.contains('target')")
-        self.capture('normal-native-drop-choices')
+        self.capture('normal-drop-choices')
         w.key('\ue00c'); self.tori_events(2)
         w.click('.shogi-player[data-player="sente"] .hand-piece[data-hand="Sw"]')
         w.click(self.shogi_square('3d')); self.tori_events(4)
-        full = self.native_diagnostics()
+        full = self.session_diagnostics()
         events = full['context']['payload']['events']
         assert events[0]['command']['action'] == {'kind':'move','from':'3d','to':'3c','result_face':'swallow'}
         assert events[2]['command']['action'] == {'kind':'drop','face':'swallow','to':'3d'}
         self.capture('normal-complete-drop-and-engine-reply')
         w.focused_button('Take back'); self.tori_events(2)
         assert w.read("document.querySelector('.game-shell').dataset.paused") == 'true'
-        taken = self.native_diagnostics()
+        taken = self.session_diagnostics()
         assert taken['context']['payload']['events'] == events[:2]
         assert 'Earlier engine searches are retained as historical observations.' in w.text('.shell-sidebar')
         assert 'Last engine turn' not in w.text('.shell-sidebar')
@@ -3047,7 +3047,7 @@ class Journey:
         self.assert_historical_notice(1)
         self.assert_completed_cue(json.dumps(events[0]['command']['action'], separators=(',', ':')), 1, ['3d'], ['3c'])
         self.tori_analysis()
-        selected = self.native_diagnostics()
+        selected = self.session_diagnostics()
         assert len(selected['context']['payload']['events']) == 1
         assert selected['context']['payload']['events'] == events[:1]
         assert selected['observations'][-1]['observation']['context']['game']['payload']['events'] == events[:1]
@@ -3057,9 +3057,9 @@ class Journey:
         path = self.args.output / 'normal-tori-complete.mshogi'
         body = self.tori_save(path)
         assert body['record']['events'] == events[:2]
-        before = self.native_diagnostics()
+        before = self.session_diagnostics()
         self.file('open', path); self.wait_opened(path)
-        reopened = self.native_diagnostics()
+        reopened = self.session_diagnostics()
         assert reopened['context'] == before['context']
         assert reopened['token']['document'] > before['token']['document']
         assert reopened['token']['selection'] != before['token']['selection']
@@ -3069,39 +3069,39 @@ class Journey:
         w.button('Resume play')
         wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == 'false', 'explicit Tori Resume')
         self.tori_analysis()
-        after_analysis = self.native_diagnostics()
+        after_analysis = self.session_diagnostics()
         assert after_analysis['context'] == reopened['context'], 'normal read-only analysis never plays a result'
         w.button('Play details')
         self.direct_resign('tori')
-        concluded = self.native_diagnostics()
+        concluded = self.session_diagnostics()
         assert concluded['tori']['selected']['conclusion'] == {'kind':'resignation','winner':'gote'}
         assert len(concluded['context']['payload']['events']) == 3
         final = self.tori_save(self.args.output / 'normal-tori-concluded.mshogi')
         assert final['record']['events'][-1] == {'actor':'sente','command':{'kind':'resign'}}
         self.record('Bounded complete ordinary Tori game', {'root':'standard', 'accepted_board_actions':4,
-            'retired_board_actions':2, 'current_board_actions':2, 'final_native_conclusion':concluded['tori']['selected']['conclusion'],
-            'evidence':'Human capture / real engine capture / human drop / real engine reply / Take back / Save Load / analysis / native resignation. Functional play, not strength evidence.'})
+            'retired_board_actions':2, 'current_board_actions':2, 'final_conclusion':concluded['tori']['selected']['conclusion'],
+            'evidence':'Human capture / real engine capture / human drop / real engine reply / Take back / Save Load / analysis / resignation. Functional play, not strength evidence.'})
         self.dirty_tori_close_source()
-        self.record('Native Tori dirty window-close request', self.native.close_window())
-        wait(lambda: w.has('.document-guard'), 'native dirty Tori close protected')
+        self.record('Tori dirty window-close request', self.platform_ui.close_window())
+        wait(lambda: w.has('.document-guard'), 'dirty Tori close protected')
         w.button('Cancel'); wait(lambda: not w.has('.document-guard'), 'Cancel protects concluded Tori game')
-        assert self.native.alive()
-        assert self.native_diagnostics()['context'] == concluded['context']
+        assert self.platform_ui.alive()
+        assert self.session_diagnostics()['context'] == concluded['context']
         self.capture('normal-dirty-quit-cancel-preserves-game')
         self.quit(save=True)
 
     def dirty_tori_close_source(self):
-        return self.dirty_native_close_source('Tori')
+        return self.dirty_close_source('Tori')
 
-    def dirty_native_close_source(self, game):
-        """Flip once, then prove its native admission before testing dirty Quit.
+    def dirty_close_source(self, game):
+        """Flip once, then prove its game admission before testing dirty Quit.
 
         WM_CLOSE may correctly retire an unaccepted candidate while the current
         accepted document is clean. Do not mistake dispatched pointer input for
         the accepted unsaved document this journey is required to protect.
         """
         w = self.web
-        before = self.native_diagnostics()
+        before = self.session_diagnostics()
         assert before['document']['path'] and before['document']['dirty'] is False, before
         orientation = before['document']['settings']['orientation']['side']
         event = len(before['context']['payload']['events'])
@@ -3118,7 +3118,7 @@ class Journey:
             })()""")
             return observed if dirty_close_controls_settled(observed, orientation, event) else None
         observed = wait(admitted, f'accepted dirty {game} orientation and settled controls before native Close')
-        after = self.native_diagnostics()
+        after = self.session_diagnostics()
         assert after['document']['dirty'] is True and after['close_requires_save'] is True, after
         assert after['document']['path'] == before['document']['path']
         assert after['document']['revision'] > before['document']['revision']
@@ -3126,22 +3126,22 @@ class Journey:
         assert after['token']['document'] == before['token']['document']
         assert after['token']['version'] > before['token']['version']
         assert after['context'] == before['context'], 'Flip changes preferences, never the concluded game'
-        self.record('Native accepted dirty orientation before actual window-close request',
+        self.record('Accepted dirty orientation before actual window-close request',
                     {'before':before, 'settled_controls':observed, 'after':after})
         return after
 
-    def normal_tori_native(self):
+    def normal_tori_rules(self):
         """Difficult independently expected states through ordinary normal Load."""
-        self.start(product='tori-native')
+        self.start(product='tori-rules')
         w = self.web
         self.tori_load_fixture('contract'); self.tori_events(0)
         self.shogi_board_fits(tori=True)
-        self.capture('all-nine-traditional-faces-and-native-hands')
+        self.capture('all-nine-traditional-faces-and-hands')
         w.click(self.shogi_square('7c')); w.click(self.shogi_square('7b'))
         self.tori_events(1)
         assert not w.has('.promotion-dialog'), 'Tori promotion is compulsory, never an optional choice'
         assert w.read(f"document.querySelector({json.dumps(self.shogi_square('7b'))})?.querySelector('[data-face=Ea]')!==null")
-        promoted = self.native_diagnostics()
+        promoted = self.session_diagnostics()
         assert promoted['context']['payload']['events'][0]['command']['action'] == {'kind':'move','from':'7c','to':'7b','result_face':'eagle'}
         assert w.has('.play-paused'), 'manual action after Load preserves stopped execution'
         self.capture('normal-load-compulsory-promotion-and-captured-hand')
@@ -3150,21 +3150,21 @@ class Journey:
         assert not w.has('.outcome-card')
         w.click(self.shogi_square('4c')); w.click(self.shogi_square('4b'))
         self.tori_events(1)
-        mate = self.native_diagnostics()
+        mate = self.session_diagnostics()
         assert mate['tori']['selected']['conclusion'] == {'kind':'checkmate','winner':'sente'}
         assert w.has('.outcome-card') and not w.has('.resign-button')
         self.capture('TORI-O-MATE-natural-complete-game')
         self.tori_save(self.args.output / 'normal-tori-checkmate.mshogi')
         self.tori_load_fixture('quiet-loss')
         assert w.has('.outcome-card')
-        quiet = self.native_diagnostics()
+        quiet = self.session_diagnostics()
         assert quiet['tori']['selected']['conclusion'] == {'kind':'stalemate_loss','loser':'gote'}
-        self.capture('TORI-O-QUIET-native-stalemate-loss')
+        self.capture('TORI-O-QUIET-stalemate-loss')
         # MSH-208: Gote's Eagle returns; Sente's only escape would make a third occurrence.
         self.tori_load_fixture('forced-prefix6'); self.tori_events(6)
         w.click(self.shogi_square('5d')); w.click(self.shogi_square('4d'))
         self.tori_events(7)
-        forced = self.native_diagnostics()
+        forced = self.session_diagnostics()
         assert forced['tori']['selected']['conclusion'] == {'kind':'repetition_forfeit','loser':'sente'}
         assert forced['tori']['selected']['occurrences'] == [3,7]
         assert w.has('.outcome-card')
@@ -3172,29 +3172,29 @@ class Journey:
         self.tori_save(self.args.output / 'normal-tori-repetition-forfeit.mshogi')
         # MSH-208: Gote may not play 5a-4a, which would make a third occurrence.
         self.tori_load_fixture('repetition7'); self.tori_events(7)
-        obligation = self.native_diagnostics()
+        obligation = self.session_diagnostics()
         assert obligation['tori']['selected']['occurrences'] == [3,7]
         assert obligation['tori']['selected']['conclusion'] is None
         assert 'Repetition limit' in w.text('.shell-notices')
         w.click(self.shogi_square('5a'))
-        assert not w.read(f"document.querySelector({json.dumps(self.shogi_square('4a'))}).classList.contains('target')"), 'native third-occurrence move cannot be entered'
+        assert not w.read(f"document.querySelector({json.dumps(self.shogi_square('4a'))}).classList.contains('target')"), 'third-occurrence move cannot be entered'
         w.key('\ue00c'); self.tori_events(7)
         w.click('.shogi-history [data-event="4"]'); self.tori_events(7, selected=4, historical=True)
-        prefix = self.native_diagnostics()
+        prefix = self.session_diagnostics()
         assert len(prefix['context']['payload']['events']) == 4
         assert 'Repetition limit' not in w.text('.shell-notices')
         self.capture('TORI-H-COUNT-exact-prefix-without-future-repetition-limit')
         w.button('Return to live'); self.tori_events(7, selected=7)
-        assert self.native_diagnostics()['context'] == obligation['context']
+        assert self.session_diagnostics()['context'] == obligation['context']
         path = self.args.output / 'normal-tori-obligation.mshogi'
         self.tori_save(path)
         self.file('open', path); self.wait_opened(path)
-        assert self.native_diagnostics()['context'] == obligation['context']
+        assert self.session_diagnostics()['context'] == obligation['context']
         assert w.has('.play-paused')
-        self.record('Native independent terminal and repetition expectations through normal product', {
+        self.record('Independent terminal and repetition expectations through normal product', {
             'fixtures':['TORI-O-MATE','TORI-O-QUIET','TORI-H-FORCED-FULL','TORI-H-COUNT'],
             'mate':mate, 'quiet':quiet, 'forfeit':forced, 'obligation':obligation,
-            'qualification':'Immutable independently reviewed fixture expectations; native-generated admitted normal files, actual pointer actions, no external rules engine.'})
+            'qualification':'Immutable independently reviewed fixture expectations; generated admitted normal files, actual pointer actions, no external rules engine.'})
         self.quit()
 
     def tori_recovery(self):
@@ -3219,12 +3219,12 @@ class Journey:
         wait(lambda: w.has('[data-search-purpose="engine_turn"]'), 'real Tori engine retry after identical binary restored', 45)
         assert not w.has('.outcome-card')
         self.tori_save(self.args.output / 'tori-recovery-complete.mshogi')
-        self.record('Actual missing native Tori engine / unchanged document / identical restored sidecar / explicit Retry', {'engine_sha256':original,'native':self.native_diagnostics()})
-        self.capture('actual-retry-retains-native-history')
+        self.record('Actual missing Tori engine / unchanged document / identical restored sidecar / explicit Retry', {'engine_sha256':original,'snapshot':self.session_diagnostics()})
+        self.capture('actual-retry-retains-history')
         self.quit()
 
     def resume_pending_analysis(self, game):
-        """Observe native Resume/layout admission before one inspector click."""
+        """Observe Resume/layout admission before one inspector click."""
         w = self.web
         w.button('Resume play')
         def resumed():
@@ -3234,7 +3234,7 @@ class Journey:
                     pausedBanner:!!document.querySelector('.play-paused'),analysisEnabled:!!analyze&&!analyze.disabled};})()""")
             assert state and state.get('paused') == 'false' and state.get('rootEnabled') is True and state.get('pausedBanner') is False and state.get('analysisEnabled') is True, state
             return state
-        settled = wait(resumed, 'native Resume settled before opening analysis')
+        settled = wait(resumed, 'Resume settled before opening analysis')
         self.record('Observe resumed play controls before one analysis inspector click', settled)
         w.button('Analyze position')
         def analysis_ready():
@@ -3245,7 +3245,7 @@ class Journey:
                     nodesEnabled:!!nodes&&!nodes.disabled,startEnabled:!!start&&!start.disabled};})()""".replace('START', json.dumps(f'[data-analysis-start="{game}"]')))
             assert state and all(state.get(field) is True for field in ('active', 'depthEnabled', 'nodesEnabled', 'startEnabled')), state
             return state
-        ready = wait(analysis_ready, 'active analysis inspector and native inputs ready')
+        ready = wait(analysis_ready, 'active analysis inspector and inputs ready')
         self.record('Observe active analysis controls before setting work limits', ready)
         return ready
 
@@ -3256,13 +3256,13 @@ class Journey:
         w = self.web
         if game in ('tori', 'chu', 'tenjiku'):
             w.button('Resume play')
-            wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == 'false', 'native Resume before pending human action')
+            wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == 'false', 'Resume before pending human action')
         origin, destination = {'chess': ('e2', 'e4'), 'shogi': ('7g', '7f'), 'xiangqi': ('a3', 'a4'), 'tori': ('3d', '3c'), 'chu': ('9h', '9g'),'tenjiku':('16l','16k')}[game]
         point = self.square if game == 'chess' else self.shogi_square if game in ('shogi', 'tori') else self.chu_square if game in ('chu','tenjiku') else self.xiangqi_point
         w.click(point(origin)); w.click(point(destination))
         wait(lambda: w.has('.shogi-analysis[data-phase="thinking"]') and w.has('.shell-notices button'), 'actual pending engine decision')
         human_event, restored_event = 1, 0
-        before = self.native_diagnostics()
+        before = self.session_diagnostics()
         cue_action = (json.dumps(before['context']['payload']['events'][-1]['command']['action'], separators=(',', ':'))
                       if game in ('tori', 'chu', 'tenjiku') else origin + destination)
         self.assert_completed_cue(cue_action, human_event, [origin], [destination])
@@ -3273,43 +3273,43 @@ class Journey:
         w.button('Return to live')
         wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == 'false', 'browse Return authorizes fresh engine work')
         wait(lambda: w.has('.shogi-analysis[data-phase="thinking"]'), 'fresh real engine turn after Return')
-        returned = self.native_diagnostics()
+        returned = self.session_diagnostics()
         assert returned['token']['selection'] != before['token']['selection'], (before['token'], returned['token'])
         assert returned['context'] == before['context'], 'browsing cannot change the accepted live game'
         w.button('Take back')
         wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == 'true', 'Take back stops pending continuation')
-        wait(lambda: w.read("document.querySelector('.shogi-history').dataset.currentEvent") == str(restored_event), 'Take back restores exact native human decision boundary')
-        restored = self.native_diagnostics()
+        wait(lambda: w.read("document.querySelector('.shogi-history').dataset.currentEvent") == str(restored_event), 'Take back restores exact human decision boundary')
+        restored = self.session_diagnostics()
         assert restored['token']['version'] > returned['token']['version']
         assert not restored['context']['payload']['events']
         time.sleep(5.2)
-        assert self.native_diagnostics()['context'] == restored['context'], 'retired engine work never reappears'
+        assert self.session_diagnostics()['context'] == restored['context'], 'retired engine work never reappears'
         self.capture('takeback-pending-stopped')
         self.resume_pending_analysis(game)
         w.set('.shogi-analysis input[name="depth"]', 1)
         w.set('.shogi-analysis input[name="nodes"]', 128 if game == 'xiangqi' else 1024 if game == 'tenjiku' else 512 if game == 'chu' else 1000)
         w.click(f'[data-analysis-start="{game}"]')
         wait(lambda: w.has('.shogi-analysis[data-phase="analyzing"]'), 'actual delayed read-only analysis')
-        first = self.native_diagnostics()
+        first = self.session_diagnostics()
         w.click(f'[data-analysis-start="{game}"]')
         def accepted_replacement():
-            observed = self.native_diagnostics()
+            observed = self.session_diagnostics()
             return observed if replacement_analysis_accepted(game, first, observed, w.has('.shogi-analysis[data-phase="analyzing"]')) else None
-        replacement = wait(accepted_replacement, 'new native replacement authority and read-only purpose admitted')
+        replacement = wait(accepted_replacement, 'new replacement authority and read-only purpose admitted')
         w.button('Cancel analysis')
         wait(lambda: 'cancelled' in w.text('[aria-label="Analysis status"]').lower() if game == 'chess' else 'Search stopped' in w.text('.shogi-analysis-state'), 'cancelled analysis is unscored')
         assert not w.has('.outcome-card')
-        cancelled = self.native_diagnostics()
+        cancelled = self.session_diagnostics()
         assert cancelled['context'] == restored['context'], 'no analysis move was played'
         self.capture('analysis-replaced-cancelled')
         path = self.args.output / (f'pending-{game}'+(f'-{tenjiku_profile}' if tenjiku_profile else '')+'-complete.mshogi')
         archive = self.save_current(path)
         body = desktop_document_payload(archive, game)
         action = restored['context']
-        assert retained_pending_takeback(game, body, action), 'saved game matches the restored native command prefix'
+        assert retained_pending_takeback(game, body, action), 'saved game matches the restored game command prefix'
         old_token = cancelled['token']
         self.file('open', path); self.wait_opened(path)
-        reopened = self.native_diagnostics()
+        reopened = self.session_diagnostics()
         assert reopened['context'] == restored['context']
         assert reopened['token']['document'] > old_token['document']
         assert w.read("document.querySelector('.game-shell').dataset.paused") == 'true'
@@ -3350,9 +3350,9 @@ class Journey:
             assert before['xiangqi']['count_advice'][0]['claimant'] in ('red', 'black')
             assert 'available to Red' in w.text('.shogi-game-actions')
             w.button('Claim natural-count draw…')
-            wait(lambda: w.has('[aria-label="Claim a natural-count draw?"]'), 'native claimant confirmation')
+            wait(lambda: w.has('[aria-label="Claim a natural-count draw?"]'), 'claimant confirmation')
             w.button('Claim draw')
-            wait(lambda: 'natural' in w.text('.outcome-card').lower(), 'native natural-count claim concludes')
+            wait(lambda: 'natural' in w.text('.outcome-card').lower(), 'natural-count claim concludes')
             after = self.xiangqi_diagnostics()
             assert len(after['moves']['entries']) == len(before['moves']['entries'])
             command = after['context']['payload']['commands'][-1]
@@ -3360,7 +3360,7 @@ class Journey:
         elif name == 'xiangqi-offer':
             assert not w.has('.outcome-card') and 'Draw offered by Black' in w.text('.shell-notices')
             w.button('Accept draw…'); w.button('Accept draw')
-            wait(lambda: 'agreement' in w.text('.outcome-card'), 'native agreement ends game')
+            wait(lambda: 'agreement' in w.text('.outcome-card'), 'agreement ends game')
         elif name in ('xiangqi-fourth', 'xiangqi-agreed', 'xiangqi-fast-proof', 'xiangqi-resigned'):
             expected = {'xiangqi-fourth': 'Black wins · perpetual check', 'xiangqi-agreed': 'Draw · agreement', 'xiangqi-fast-proof': 'Draw · neither side can win', 'xiangqi-resigned': 'Black wins · resignation'}[name]
             assert expected in w.text('.outcome-card'), w.text('.outcome-card')
@@ -3379,23 +3379,23 @@ class Journey:
                 assert not w.has('.outcome-card')
             finally:
                 # A successful retry can keep this process alive. Windows
-                # forbids unlinking its executable until native shutdown (or
+                # forbids unlinking its executable until shutdown (or
                 # explicit failure cleanup) has established process absence.
                 self.deferred_file_removals.append(missing)
         elif name == 'xiangqi-capacity':
             assert len(before['observations']) == 255
             self.xiangqi_analysis(nodes=1)
             wait(lambda: 'Recorded searches (256)' in w.text('.recorded-searches'), 'combined observation 256 accepted')
-            previous = self.native_diagnostics()['observations'][-1]['observation']['context']['request_id']
+            previous = self.session_diagnostics()['observations'][-1]['observation']['context']['request_id']
             self.xiangqi_analysis(nodes=1)
-            wait(lambda: self.native_diagnostics()['observations'][-1]['observation']['context']['request_id'] > previous, 'newest Xiangqi result replaces oldest')
-            assert len(self.native_diagnostics()['observations']) == 256
+            wait(lambda: self.session_diagnostics()['observations'][-1]['observation']['context']['request_id'] > previous, 'newest Xiangqi result replaces oldest')
+            assert len(self.session_diagnostics()['observations']) == 256
             assert not w.has('.capacity-notice')
             assert not w.has('.outcome-card')
         else:
             raise AssertionError(name)
         after = self.xiangqi_diagnostics()
-        self.capture('native-capability-result')
+        self.capture('capability-result')
         path = self.args.output / f'{name}-complete.mshogi'
         archive = self.xiangqi_save(path)
         old_token = after['token']
@@ -3406,7 +3406,7 @@ class Journey:
         assert reopened['token']['document'] > old_token['document']
         assert w.read("document.querySelector('.game-shell').dataset.paused") == 'true'
         assert not w.has('.shogi-analysis[data-phase="analyzing"]')
-        self.record('Actual native Xiangqi capability, complete Save/Load and fresh stopped runtime', {
+        self.record('Actual Xiangqi capability, complete Save/Load and fresh stopped runtime', {
             'name': name, 'before': before, 'after': after, 'reopened': reopened,
             'archive_sha256': digest(path), 'archive_bytes': path.stat().st_size})
         self.quit()
@@ -3449,14 +3449,14 @@ class Journey:
             self.plies(0)
             w.click(self.square("a7")); w.click(self.square("a8")); w.click(".promotion-choices button:nth-child(4)")
             self.plies(1)
-            wait(lambda: "proven dead position" in w.text(".outcome-card"), "native underpromotion outcome")
+            wait(lambda: "proven dead position" in w.text(".outcome-card"), "underpromotion outcome")
             self.record("Cancel promotion then commit complete Knight promotion", w.text(".outcome-card"))
         elif name in ("claim", "current-claim"):
             self.plies(0)
             assert "An opportunity to claim" in w.text()
             assert not w.has(".outcome-card")
             w.button("Claim selected draw")
-            wait(lambda: "claimed fifty-move rule" in w.text(".outcome-card"), "native claim conclusion")
+            wait(lambda: "claimed fifty-move rule" in w.text(".outcome-card"), "claim conclusion")
             self.plies(0)
             self.record("Optional current/intended claim concludes without playing intention", w.text(".outcome-card"))
         elif name == "concluded":
@@ -3470,9 +3470,9 @@ class Journey:
             w.set('.shogi-analysis input[name="nodes"]', 1)
             w.click('[data-analysis-start="chess"]')
             wait(lambda: session_chess_evidence_count(w.text(".recorded-chess-evidence summary"), 256), "accept observation 256")
-            previous = self.native_diagnostics()['observations'][-1]['observation']['context']['request_id']
+            previous = self.session_diagnostics()['observations'][-1]['observation']['context']['request_id']
             w.click('[data-analysis-start="chess"]')
-            wait(lambda: self.native_diagnostics()['observations'][-1]['observation']['context']['request_id'] > previous, "newest Chess result replaces oldest")
+            wait(lambda: self.session_diagnostics()['observations'][-1]['observation']['context']['request_id'] > previous, "newest Chess result replaces oldest")
             assert session_chess_evidence_count(w.text(".recorded-chess-evidence summary"), 256)
             assert not w.has(".capacity-notice") and not w.has(".outcome-card")
             self.capture("recent-chess-searches")
@@ -3498,7 +3498,7 @@ class Journey:
 
             w.key("\ue004")  # Actual Tab from Flip enters the board's single stop.
             wait(lambda: str(w.read("document.activeElement?.getAttribute('aria-label')")).startswith("i9,"),
-                 "keyboard focus enters the fully visible native synthetic board")
+                 "keyboard focus enters the fully visible synthetic board")
             # Black orientation: left/down goes i9 -> j10. The entire board is
             # already visible; keyboard navigation is not a scrolling mechanism.
             for key in ("\ue007", "\ue012", "\ue015", "\ue007"):
@@ -3512,11 +3512,11 @@ class Journey:
             self.synthetic_record([])
 
             # Pointer selection and a real Cancel selection button also preserve
-            # the untouched native record; no route prefix counts as an action.
+            # the untouched game record; no route prefix counts as an action.
             w.click(self.square("i9")); w.click(self.square("j10"))
             self.synthetic_record([])
             w.focused_button("Cancel selection")
-            wait(lambda: not w.has(".route-selection"), "Cancel selection abandons native prefix")
+            wait(lambda: not w.has(".route-selection"), "Cancel selection abandons prefix")
             self.synthetic_record([])
 
             w.click(self.square("i9")); w.click(self.square("j10"))
@@ -3556,9 +3556,9 @@ class Journey:
             assert "stone" in w.read(f"document.querySelector({json.dumps(self.square('j10'))}).getAttribute('aria-label')")
             assert "strider" in w.read(f"document.querySelector({json.dumps(self.square('i9'))}).getAttribute('aria-label')")
             self.capture("alternate-route")
-            self.record("Terminal prefix and distinct equal-endpoint routes retain their exact native effects", {
+            self.record("Terminal prefix and distinct equal-endpoint routes retain their exact game effects", {
                 "terminal_prefix": terminal, "capture_and_return": captured, "alternate_return": alternate,
-                "native_expectation": "136>153 ends on j10; both return routes end on i9; only the j10 route removes its stone."})
+                "expectation": "136>153 ends on j10; both return routes end on i9; only the j10 route removes its stone."})
         else:
             raise AssertionError(name)
         self.capture("result")
@@ -3615,15 +3615,15 @@ def main():
                     journey.normal_xiangqi()
                 elif fixture == "normal-tori":
                     journey.normal_tori()
-                elif fixture == "normal-tori-native":
-                    journey.normal_tori_native()
+                elif fixture == "normal-tori-rules":
+                    journey.normal_tori_rules()
                 elif fixture == "normal-chu":
                     journey.normal_chu()
-                elif fixture == "normal-chu-native":
-                    journey.normal_chu_native()
+                elif fixture == "normal-chu-rules":
+                    journey.normal_chu_rules()
                 elif fixture.startswith('normal-tenjiku-'):
-                    profile=fixture.removeprefix('normal-tenjiku-').removesuffix('-native')
-                    if fixture.endswith('-native'):journey.normal_tenjiku_native(profile)
+                    profile=fixture.removeprefix('normal-tenjiku-').removesuffix('-rules')
+                    if fixture.endswith('-rules'):journey.normal_tenjiku_rules(profile)
                     else:journey.normal_tenjiku(profile)
                 elif fixture.startswith('pending-tenjiku-'):
                     journey.pending('tenjiku',fixture.removeprefix('pending-tenjiku-'))
@@ -3655,7 +3655,7 @@ def main():
                 except Exception as capture_error:
                     failure["capture_error"] = str(capture_error)
             finally:
-                # Each phase owns fresh native processes, a driver and display
+                # Each phase owns fresh processes, a driver and display
                 # adapter. Finish failure cleanup before attempting the next;
                 # cleanup is never graceful-shutdown evidence. A cleanup error
                 # still aborts the run because isolation was not established.
@@ -3676,7 +3676,7 @@ def main():
                 cleanup_failure = error
                 report.update(status="failed", cleanup_error=str(error),
                               cleanup_traceback=traceback.format_exc())
-            report["native_events"] = journey.native_events
+            report["platform_events"] = journey.platform_events
         report["finished_at_utc"] = stamp()
         report["files"] = {str(path.relative_to(args.output)): digest(path)
             for path in sorted(args.output.rglob("*")) if path.is_file() and path.name != "gui-report.json"}

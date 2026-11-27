@@ -1,8 +1,8 @@
-//! Development-only native consumer probe. This is not product desktop UI evidence.
-use mshogi_core::{native::CanonicalRecord, xiangqi as x};
+//! Development-only consumer probe. This is not product desktop UI evidence.
+use mshogi_core::{game::CanonicalRecord, xiangqi as x};
 use mshogi_desktop_session::{
-    AnalysisOperation, DesktopController, EnginePhase, GameKind, IoPhase, NativeSide,
-    SessionOperation, SharedDesktopCommand, SharedSnapshot,
+    AnalysisOperation, DesktopController, EnginePhase, GameKind, IoPhase, SessionOperation,
+    SharedDesktopCommand, SharedSnapshot, TaggedSide,
 };
 use std::{
     path::PathBuf,
@@ -24,7 +24,7 @@ fn send(c: &mut DesktopController, op: SessionOperation) -> SharedSnapshot {
             result.unwrap();
             return snapshot;
         }
-        assert!(Instant::now() < deadline, "native archive admission");
+        assert!(Instant::now() < deadline, "archive admission");
         std::thread::sleep(Duration::from_millis(1));
     }
 }
@@ -59,7 +59,7 @@ fn main() {
     let path = PathBuf::from(
         std::env::args()
             .nth(1)
-            .expect("bundled native engine executable path"),
+            .expect("bundled engine executable path"),
     );
     let mut c = DesktopController::new(path.clone()).unwrap();
     let game = x::Game::standard(x::ClaimPolicy::Explicit).unwrap();
@@ -68,7 +68,7 @@ fn main() {
         &mut c,
         SessionOperation::Replace {
             record,
-            human: NativeSide::Xiangqi(x::Side::Black),
+            human: TaggedSide::Xiangqi(x::Side::Black),
         },
     );
     send(&mut c, SessionOperation::Resume {});
@@ -149,7 +149,7 @@ fn main() {
         assert!(Instant::now() < deadline);
         std::thread::sleep(Duration::from_millis(5));
     }
-    // A genuinely fresh controller starts in Chess; native Open must publish the
+    // A genuinely fresh controller starts in Chess; Open must publish the
     // installed Xiangqi family, preserve exact selection, and launch no work.
     let mut c = DesktopController::new(path).unwrap();
     let token = c.shared_open_token();
@@ -196,6 +196,6 @@ fn main() {
     }
     std::fs::remove_file(file).unwrap();
     println!(
-        "PASS: actual supervised Xiangqi play/live-history analysis/cancel, Save, fresh-controller Open with historical selection and stopped work, Return to live, explicit Resume and continued play, fresh identities and acknowledged cleanup; native/process/archive evidence only, not GUI."
+        "PASS: actual supervised Xiangqi play/live-history analysis/cancel, Save, fresh-controller Open with historical selection and stopped work, Return to live, explicit Resume and continued play, fresh identities and acknowledged cleanup; rules, process and archive evidence only, not GUI."
     );
 }

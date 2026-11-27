@@ -17,12 +17,12 @@ Supported commands:
 | `go infinite` | Search privately and retain any completed result until `stop`; even a mate/terminal root does not emit bestmove early |
 | `stop` | Request cooperative stop; return the last completed iteration or a labeled legal fallback |
 | `quit` | Request shutdown and exit without joining an active search |
-| `setoption name ClaimPolicy value explicit` / `auto` | Select the legacy native record policy, cancel current work and reset the game; send a fresh `position` afterward. Neither value enables optional claims in UCI search |
+| `setoption name ClaimPolicy value explicit` / `auto` | Select the legacy game record policy, cancel current work and reset the game; send a fresh `position` afterward. Neither value enables optional claims in UCI search |
 | `debug on` / `off` | Accepted; no extra diagnostic stream is produced |
 
 ASCII whitespace and CR, LF and CRLF endings are accepted. Leading unknown tokens are skipped until a recognized command; other unknown commands are ignored. The adapter advertises only its implemented ClaimPolicy option. Pondering/ponderhit, searchmoves restrictions, mate-search limits, Chess960, opening books, tablebases, hash/thread controls and other options are unsupported. Recognized unsupported `go` controls are rejected rather than silently searched without the requested restriction. Malformed/duplicate supported numeric controls are also rejected. Such rejected commands produce stderr diagnostics and do not submit work. There is no invented bestmove for an unaccepted `go`. Depth values outside the supported range are rejected explicitly. Unspecified depth defaults to 128 as an implementation ceiling; if an unbounded request reaches that ceiling, it retains the completed result rather than pretending to search deeper.
 
-`position` parses and replays into a temporary rules-owned `AdjudicatedGame`. A failure, including an indexed illegal action or a move after an automatic conclusion, leaves the old game and search unchanged. A successful position replaces the entire known context atomically. Castling, en passant and promotions use the shared complete-action parser and legal rules transitions. The adapter never authors capture/effect lists. Search uses the native private coordinator and exact request identity/game record/version checks before publishing a result.
+`position` parses and replays into a temporary rules-owned `AdjudicatedGame`. A failure, including an indexed illegal action or a move after an automatic conclusion, leaves the old game and search unchanged. A successful position replaces the entire known context atomically. Castling, en passant and promotions use the shared complete-action parser and legal rules transitions. The adapter never authors capture/effect lists. Search uses the private coordinator and exact request identity/game record/version checks before publishing a result.
 
 A conventional controller sends `stop`, waits for its bestmove, then replaces the position or begins another search. Out-of-order successful `position`, `ucinewgame`, policy changes or a new `go` supersede current work; old results are suppressed, including held infinite-search completions. They must never publish a bestmove for the new position. This recovery behavior intentionally does not manufacture a response for a superseded `go`. One accepted, normally sequenced `go` produces one `bestmove`; `stop` when idle is ignored. EOF shuts the process down as quit does.
 
@@ -30,7 +30,7 @@ A conventional controller sends `stop`, waits for its bestmove, then replaces th
 
 UCI has no standard current-position or intended-move draw-claim channel. Its search therefore treats optional claims as **unavailable at every node**, including main-search leaves and quiescence. Threefold/fourfold repetition and the50-move claim threshold do not by themselves stop UCI search or install a draw-score floor. The rules-owned fivefold/75-move automatic outcomes, checkmate, stalemate and dead positions remain authoritative; checkmate retains precedence at the75-move boundary.
 
-The existing custom `ClaimPolicy explicit`/`auto` option remains accepted for native record/context compatibility, with `explicit` the default. Neither value enables optional claims in UCI search. Ordinary native/manual search callers retain their claim-capable defaults, and native manual claims remain available outside UCI. A completed UCI search returns its actual searched board move/PV; an unexpected claim result is an engine error, never an arbitrary claim-induced legal fallback. `bestmove 0000` represents a native concluded game, including mandatory draws.
+The existing custom `ClaimPolicy explicit`/`auto` option remains accepted for game record/context compatibility, with `explicit` the default. Neither value enables optional claims in UCI search. Ordinary internal and manual search callers retain their claim-capable defaults, and manual claims remain available outside UCI. A completed UCI search returns its actual searched board move/PV; an unexpected claim result is an engine error, never an arbitrary claim-induced legal fallback. `bestmove 0000` represents a concluded game, including mandatory draws.
 
 The external runner can use recorded `explicit_only` for automatic-threshold-only play, without exercising optional claims for either engine. Its historical `auto_claim` controller behavior remains available and replayable, but cannot change a current UCI engine's lack of a claim channel. Old engine binary identities and historical results remain separate evidence.
 
@@ -47,7 +47,7 @@ The shared core reduces its iteration target to 60% after three stable best-move
 transitions. A changed best move or an ordinary score fall of at least 30 units
 raises the target to 150%, always capped by the hard limit. A single legal move
 can stop after one complete iteration if there is no draw-claim alternative.
-Clock requests charge queue and native setup time and leave up to 10ms (at most
+Clock requests charge queue and setup time and leave up to 10ms (at most
 half the budget) for response delivery. Their search polls every128 nodes.
 `movetime` overrides clock allocation and retains the fixed-time policy: it does
 not use these adaptive targets or clock-specific deductions. Desktop defaults
@@ -59,20 +59,20 @@ selected limit; infinite plus a wall-clock budget rejects as conflicting. A
 request with no effective limit behaves like infinite and awaits stop. A timed
 request never delays an already completed finite result merely to consume time.
 
-Clock stopping is cooperative. The native conventional search owns soft/hard
+Clock stopping is cooperative. The conventional search owns soft/hard
 time checks; the event loop additionally checks the hard deadline at commands
-and a2ms idle tick. OS scheduling, one native operation and pipe I/O can add
+and a2ms idle tick. OS scheduling, one game operation and pipe I/O can add
 latency; this is not hard realtime. Actual match clocks/adjudication remain in
-the native match layer. Timed runs preserve configured allocations and observed
+the match layer. Timed runs preserve configured allocations and observed
 timing without promising identical reruns. Deterministic depth/node work retains
 its source/evaluator/context identity as described in [search.md](search.md).
 
 ## Channels and bounds
 
-Protocol stdout contains only `id`, `option`, `uciok`, `readyok`, one final bounded `info` line per completed search, and `bestmove`. Every message is newline terminated and flushed. Scores use UCI centipawns or mate distances in moves; a mate-distance search score is converted from plies. Final info preserves nominal completed `depth`, actual deepest attempted `seldepth`, attempted nodes, elapsed milliseconds and the board-action PV. Extensions and quiescence can make the PV longer than nominal depth, within the128-ply native bound. Diagnostic errors and fallback explanations go to stderr. No human shell prompts, command echoes or rules dumps enter stdout.
+Protocol stdout contains only `id`, `option`, `uciok`, `readyok`, one final bounded `info` line per completed search, and `bestmove`. Every message is newline terminated and flushed. Scores use UCI centipawns or mate distances in moves; a mate-distance search score is converted from plies. Final info preserves nominal completed `depth`, actual deepest attempted `seldepth`, attempted nodes, elapsed milliseconds and the board-action PV. Extensions and quiescence can make the PV longer than nominal depth, within the128-ply bound. Diagnostic errors and fallback explanations go to stderr. No human shell prompts, command echoes or rules dumps enter stdout.
 
 One input-reader thread feeds a `sync_channel(32)`; lines have no byte limit, so a long `position ... moves` command is accepted. Non-ASCII/control-byte input is rejected and the next line remains usable. One search worker has one pending and one result slot, with no progress stream. The event loop processes commands while thinking and owns all protocol output. A normal final variation contains at most 128 actions, bounding each final info line. As with any pipe protocol, the controller must drain stdout/stderr; a blocked OS pipe can block its writer. Quit/EOF do not wait for the stdin reader or search thread to join.
 
 ## Verification
 
-`cargo test -p mshogi-console --locked` includes eleven live UCI process tests: handshake/readiness during search, legal/mating bestmoves, depth and node limits, private stop/quit, history-aware third/fourth repetition continuation versus mandatory fifth repetition, atomic rejected positions, optional-claim suppression under both legacy option values at root and future nodes, native fivefold/75-move outcomes, movetime and both-side increment-clock inputs, infinite terminal holding, superseded-result suppression, stdout purity, malformed input recovery and unsupported-control diagnostics, and a descendant counter-overflow search terminating nonzero without a fallback or fabricated statistics. Two focused unit tests independently assert basic-clock allocations/numeric bounds and CR/LF line splitting. Existing 19 human console process tests remain applicable. Independent review and native platform CI are recorded in MSH-22; this adapter's tests alone do not establish external-engine interoperability or playing strength.
+`cargo test -p mshogi-console --locked` includes eleven live UCI process tests: handshake/readiness during search, legal/mating bestmoves, depth and node limits, private stop/quit, history-aware third/fourth repetition continuation versus mandatory fifth repetition, atomic rejected positions, optional-claim suppression under both legacy option values at root and future nodes, fivefold/75-move outcomes, movetime and both-side increment-clock inputs, infinite terminal holding, superseded-result suppression, stdout purity, malformed input recovery and unsupported-control diagnostics, and a descendant counter-overflow search terminating nonzero without a fallback or fabricated statistics. Two focused unit tests independently assert basic-clock allocations/numeric bounds and CR/LF line splitting. Existing 19 human console process tests remain applicable. Independent review and native platform CI are recorded in MSH-22; this adapter's tests alone do not establish external-engine interoperability or playing strength.

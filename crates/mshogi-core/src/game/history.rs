@@ -1,4 +1,4 @@
-//! Append-only native history and the runtime authority for changes to it.
+//! Append-only game history and the runtime authority for changes to it.
 use super::GameContext;
 use crate::repetition::RepetitionIndex;
 use std::{fmt::Debug, hash::Hash};
@@ -82,9 +82,9 @@ pub(crate) trait AppendGame: Sized {
 pub struct Request<A, C> {
     /// Request token of the game when the command was chosen.
     pub expected: GameContext,
-    /// Native participant submitting this command.
+    /// Participant submitting this command.
     pub actor: A,
-    /// Complete native command.
+    /// Complete game command.
     pub command: C,
 }
 
@@ -97,15 +97,15 @@ pub trait Snapshot: Clone + Debug {
     type Key: Clone + Eq + Hash + Debug;
     /// Additional per-board-action facts needed by the rules.
     type Ply: Clone + Debug;
-    /// Committed native event.
+    /// Committed game event.
     type Event: Clone + Debug;
-    /// Native participant.
+    /// Participant.
     type Side;
-    /// Complete native command.
+    /// Complete game command.
     type Command;
     /// A request came from a different or retired context.
     const STALE: Self::Error;
-    /// Native root exceeds the compact root bound.
+    /// Game root exceeds the compact root bound.
     const LARGE_ROOT: Self::Error;
     /// Apply the rules and append the resulting event and snapshot.
     fn step(
@@ -114,7 +114,7 @@ pub trait Snapshot: Clone + Debug {
         command: Self::Command,
         stop: &mut impl FnMut() -> bool,
     ) -> Result<(), Self::Error>;
-    /// Native refusal.
+    /// Refusal.
     type Error;
     /// Report an invalid reversal.
     const INVALID_UNDO: Self::Error;
@@ -124,16 +124,16 @@ pub trait Snapshot: Clone + Debug {
     fn board_ply(&self) -> usize;
     /// Restore the admitted local state.
     fn restore_local(&self) -> Self::Local;
-    /// Size of the native record in bytes, computed only on request.
+    /// Size of the game record in bytes, computed only on request.
     fn encoded_size(game: &GameHistory<Self>) -> Result<usize, Self::Error>;
 }
 
 /// Exact size and event count of a complete record.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct CapacityUsage {
-    /// Encoded native record bytes.
+    /// Encoded game record bytes.
     pub encoded_bytes: usize,
-    /// Committed native events.
+    /// Committed game events.
     pub events: usize,
 }
 
@@ -168,7 +168,7 @@ impl<S: Snapshot> GameHistory<S> {
     pub fn local_position(&self) -> &S::Local {
         &self.local
     }
-    /// Accepted native events in order.
+    /// Accepted game events in order.
     pub fn events(&self) -> &[S::Event] {
         &self.events
     }
@@ -210,7 +210,7 @@ impl<S: Snapshot> GameHistory<S> {
         self.authority.retire();
         Ok(())
     }
-    /// Compute exact native bytes only for an explicit diagnostic.
+    /// Compute exact bytes only for an explicit diagnostic.
     pub fn capacity_usage(&self) -> Result<CapacityUsage, S::Error> {
         Ok(CapacityUsage {
             encoded_bytes: S::encoded_size(self)?,

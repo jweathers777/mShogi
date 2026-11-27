@@ -3,10 +3,10 @@ use crate::{Fixture, strict};
 use serde::Deserialize;
 use sha2::{Digest, Sha256};
 use std::collections::BTreeSet;
-/// Exact reviewed MSH-83 native and downstream expectation bytes.
+/// Exact reviewed MSH-83 and downstream expectation bytes.
 pub const FIXTURES: &str = include_str!("../../../docs/m4/tenjiku/fixtures.json");
-/// Reviewed two-profile corpus hash, not generated from native output.
-pub const CORPUS_SHA256: &str = "2005e098b507f73248b8f9bd442f7ffe0c2c0c5ae205428d9a3d2371a7c08e82";
+/// Reviewed two-profile corpus hash, not generated from output.
+pub const CORPUS_SHA256: &str = "f824ff81a49c01a504879087323f5b8c7bcc98b50468073120fd9f33f0bda577";
 /// Complete immutable profile identities.
 pub const PROFILES: [&str; 2] = [
     "mshogi.tenjiku.adams1999-modern.v1",
@@ -19,7 +19,7 @@ struct Wire {
     revision: String,
     profiles: Vec<String>,
     profile_status: String,
-    native_conformance_executed: bool,
+    rules_conformance_executed: bool,
     source_ids: Vec<String>,
     notation: String,
     fixtures: Vec<Fixture>,
@@ -43,7 +43,7 @@ impl Corpus {
             || w.revision != "MSH83-2026-11-04"
             || w.profiles != PROFILES
             || w.profile_status != "ratified"
-            || w.native_conformance_executed
+            || w.rules_conformance_executed
             || w.source_ids != ["A", "M", "S"]
             || w.notation.is_empty()
         {
@@ -62,7 +62,7 @@ impl Corpus {
                 return Err("Tenjiku fixture identity/applicability".into());
             }
             counts[match f.scope.as_str() {
-                "native" => 0,
+                "rules" => 0,
                 "annotation" => 1,
                 "consumer" => 2,
                 _ => return Err("Tenjiku fixture scope".into()),
@@ -88,7 +88,7 @@ mod tests {
         assert_eq!(Corpus::embedded().unwrap().fixtures().len(), 350);
         for text in [
             FIXTURES.replace('\n', "\r\n"),
-            FIXTURES.replacen("ratified", "native_passed", 1),
+            FIXTURES.replacen("ratified", "rules_passed", 1),
             FIXTURES.replacen("\"schema\":", "\"schema\":0,\"schema\":", 1),
             format!("{FIXTURES}{{}}"),
         ] {

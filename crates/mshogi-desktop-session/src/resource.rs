@@ -1,6 +1,6 @@
 //! Authoritative resource facts, separate from bounded technical diagnostics.
 //!
-//! A diagnostic is never parsed to discover a resource category. Native admission
+//! A diagnostic is never parsed to discover a resource category. Game admission
 //! supplies facts only when it knows them; unknown causes remain
 //! representable without inventing a count or a game outcome.
 
@@ -9,12 +9,12 @@ use serde::Serialize;
 /// Maximum UTF-8 byte length of a technical resource diagnostic.
 pub const MAX_RESOURCE_DIAGNOSTIC_BYTES: usize = 4096;
 
-/// Resource measured by a native admission or file-validation check.
+/// Resource measured by a game admission or file-validation check.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ResourceCategory {
-    /// Encoded native root size, a fixed bound independent of game length.
-    NativeRootBytes,
+    /// Encoded game root size, a fixed bound independent of game length.
+    GameRootBytes,
     /// Monotonic execution, request, session or document identity space.
     IdentityHeadroom,
     /// Elapsed validation time allowance.
@@ -23,23 +23,23 @@ pub enum ResourceCategory {
     Unknown,
 }
 
-/// Native ownership of a resource fact, when its check establishes a scope.
+/// Game ownership of a resource fact, when its check establishes a scope.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ResourceScope {
     /// A common application or document resource.
     Application,
-    /// A Chess-owned native resource.
+    /// A Chess-owned resource.
     Chess,
-    /// A Shogi-owned native resource.
+    /// A Shogi-owned resource.
     Shogi,
-    /// A Xiangqi-owned native resource.
+    /// A Xiangqi-owned resource.
     Xiangqi,
-    /// A Tori-owned native/document resource.
+    /// A Tori-owned game or document resource.
     Tori,
-    /// A Chu-owned native/document resource.
+    /// A Chu-owned game or document resource.
     Chu,
-    /// A Tenjiku-owned native/document resource, qualified by the document profile.
+    /// A Tenjiku-owned game or document resource, qualified by the document profile.
     Tenjiku,
 }
 
@@ -66,7 +66,7 @@ pub enum ResourceMeasurement {
     Unknown,
 }
 
-/// One native-measured resource fact. Missing values mean unknown, never zero.
+/// One measured resource fact. Missing values mean unknown, never zero.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct ResourceFact {
     /// Authoritative category, independent of the diagnostic wording.
@@ -79,7 +79,7 @@ pub struct ResourceFact {
     pub reserved: Option<u64>,
     /// Established supported limit in the same units.
     pub limit: Option<u64>,
-    /// Native scope, when known.
+    /// Scope, when known.
     pub scope: Option<ResourceScope>,
     /// Explicit units, when known.
     pub unit: Option<ResourceUnit>,
@@ -118,7 +118,7 @@ impl ResourceFact {
         self
     }
 
-    /// Attach the native owner established by the check.
+    /// Attach the rules owner established by the check.
     pub fn with_scope(mut self, scope: ResourceScope) -> Self {
         self.scope = Some(scope);
         self
@@ -137,7 +137,7 @@ impl ResourceFact {
     }
 }
 
-/// Bounded native capacity refusal; this is neither an illegal move nor outcome.
+/// Bounded capacity refusal; this is neither an illegal move nor outcome.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct ResourceFailure {
     fact: ResourceFact,

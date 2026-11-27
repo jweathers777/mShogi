@@ -1,15 +1,15 @@
-import type { Color, EngineChoice, ChessResult, Telemetry } from "./native";
+import type { Color, EngineChoice, ChessResult, Telemetry } from "./sessionTypes";
 
 import { sideLabel } from "./games";
-// Native Chess score contract: material is below MATE_SCORE-MAX_DEPTH.
+// Chess score contract: material is below MATE_SCORE-MAX_DEPTH.
 const MATE_SCORE = 1_000_000;
-const MAX_NATIVE_DEPTH = 128;
+const MAX_SEARCH_DEPTH = 128;
 export function scoreDescription(
   score: number | null,
   turn: Color | null,
 ): string {
   if (score === null) return "No completed evaluation";
-  if (Math.abs(score) >= MATE_SCORE - MAX_NATIVE_DEPTH) {
+  if (Math.abs(score) >= MATE_SCORE - MAX_SEARCH_DEPTH) {
     const plies = MATE_SCORE - Math.abs(score);
     if (turn === null)
       return `Mate distance: ${plies} plies (perspective unavailable)`;

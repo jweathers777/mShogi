@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { fakeSession, renderApplication } from "../testing/helpers";
-import type { GameSnapshot } from "../native";
+import type { GameSnapshot } from "../sessionTypes";
 import { afterEach, expect, it } from "vitest";
 import { cleanup, fireEvent, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -12,31 +12,31 @@ import xiangqi from "../__fixtures__/shared-xiangqi-standard.json";
 afterEach(cleanup);
 function app(value: unknown) {
  const snapshot = value as GameSnapshot;
- return renderApplication(snapshot, fakeSession(snapshot, { error: "native failure detail" }));
+ return renderApplication(snapshot, fakeSession(snapshot, { error: "failure detail" }));
 }
-it.each([chess,shogi,xiangqi])("keeps common support outside the sidebar and retains full native evidence and notices", async value => {
+it.each([chess,shogi,xiangqi])("keeps common support outside the sidebar and retains full evidence and notices", async value => {
  const {container,session}=app(value);
  const support=screen.getByRole("button",{name:"About mShogi"});
  expect(support.closest(".shell-header")).toBeTruthy();
  expect(support.querySelector('svg[aria-hidden="true"][focusable="false"]')).toBeTruthy();
  expect(support.querySelectorAll("circle")).toHaveLength(2);
  expect(support.textContent).toBe("");
- expect(container.querySelector(".shell-sidebar [data-native-diagnostics]")).toBeNull();
- expect(container.textContent).not.toMatch(/UNTIMED|Hollow rings|reconstructed|Native rules/);
+ expect(container.querySelector(".shell-sidebar [data-session-diagnostics]")).toBeNull();
+ expect(container.textContent).not.toMatch(/UNTIMED|Hollow rings|reconstructed|Game rules/);
  fireEvent.click(support);
  const dialog=screen.getByRole("dialog",{name:"About mShogi"});
  expect(dialog.textContent).toContain("Chess, Shogi, Xiangqi, Tori Shogi, Chu Shogi and Tenjiku Shogi");
  expect(container.querySelector(".shell-content")?.hasAttribute("inert")).toBe(true);
  expect(within(dialog).getByText("Diagnostics")).toBeTruthy();
- expect(dialog.querySelector("[data-native-diagnostics]")).toBeNull();
+ expect(dialog.querySelector("[data-session-diagnostics]")).toBeNull();
  fireEvent.click(within(dialog).getByText("Diagnostics"));
- await waitFor(() => expect(dialog.querySelector("[data-native-diagnostics]")).toBeTruthy());
- const payload=JSON.parse(dialog.querySelector("[data-native-diagnostics]")!.textContent!);
+ await waitFor(() => expect(dialog.querySelector("[data-session-diagnostics]")).toBeTruthy());
+ const payload=JSON.parse(dialog.querySelector("[data-session-diagnostics]")!.textContent!);
  expect(payload.context).toEqual(session.snapshot!.context);
  expect(payload.token).toEqual(session.snapshot!.token);
  expect(payload.capacity).toEqual(session.snapshot!.capacity);
  expect(payload.moves).toEqual(session.snapshot!.moves);
- expect(payload.error).toBe("native failure detail");
+ expect(payload.error).toBe("failure detail");
  expect(within(dialog).getByText("Font license")).toBeTruthy();
  expect(dialog.textContent).toContain("SIL OPEN FONT LICENSE");
  expect(dialog.querySelector('a[download="mshogi-pieces-OFL.txt"]')).toBeTruthy();
@@ -53,7 +53,7 @@ it("traps keyboard navigation through visible disclosures, skips hidden license 
  await user.tab();expect(document.activeElement).toBe(within(dialog).getByRole("button",{name:"Quit application"}));
  await user.tab({shift:true});expect(document.activeElement).toBe(license);
  // jsdom lacks the browser default Enter action for summary; actual package
- // verification exercises the native keyboard activation. Model its open state here.
+ // verification exercises the keyboard activation. Model its open state here.
  fireEvent.click(license);expect(license.parentElement?.hasAttribute("open")).toBe(true);
  license.focus();fireEvent.keyDown(dialog,{key:"Tab"});expect(document.activeElement?.textContent).toBe("Save the font license");
  await user.keyboard("{Escape}");expect(screen.queryByRole("dialog")).toBeNull();

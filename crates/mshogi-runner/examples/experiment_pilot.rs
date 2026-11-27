@@ -1,7 +1,7 @@
 //! Generate bounded seven-profile diagnostic inputs; this does not run engines.
 use mshogi_core::{
     chess,
-    native::{CanonicalRecord, RulesProfile},
+    game::{CanonicalRecord, RulesProfile},
     shogi, xiangqi,
 };
 use mshogi_runner::experiments::{Config, Opening, Split, fresh_root, template};
@@ -22,8 +22,8 @@ fn add(
         root: fresh_root(record)?,
         split: Split::Test,
         provenance: format!(
-            "Project-authored native diagnostic from {source}. {facts} \
-             Selected as a live predecessor to a genuine native ending. \
+            "Project-authored diagnostic from {source}. {facts} \
+             Selected as a live predecessor to a genuine ending. \
              Test-only diagnostic lineage; no external training corpus or inferred licensing grant."
         ),
     });
@@ -39,7 +39,7 @@ fn fixture(
 ) -> Result<(), String> {
     let record = document_fixture::initial_record(text)?;
     if record.profile() != expected {
-        return Err(format!("{source} has an unexpected native profile"));
+        return Err(format!("{source} has an unexpected profile"));
     }
     add(config, record, source, facts)
 }
@@ -47,8 +47,8 @@ fn fixture(
 fn generate(executable: &str) -> Result<Config, String> {
     let mut config = template(executable).map_err(|e| e.to_string())?;
     config.id = "msh48-seven-profile-bounded-pilot".into();
-    config.protocol = "MSH-48 native infrastructure pilot: seven exact standard roots and seven \
-        authored live tactical predecessors, one seeded catalog cycle, paired native sides, \
+    config.protocol = "MSH-48 infrastructure pilot: seven exact standard roots and seven \
+        authored live tactical predecessors, one seeded catalog cycle, paired game sides, \
         candidate versus two unequal-work baselines. Every lineage is Test-only. \
         Candidate depth1/nodes512, baseline-low depth1/nodes128, baseline-deeper depth2/nodes512; \
         these are finite diagnostic defaults to measure before choosing actual pilot budgets, \
@@ -64,7 +64,7 @@ fn generate(executable: &str) -> Result<Config, String> {
          executable against its Cargo build receipt and observed SHA256. Generator build: \
          revision={}, dirty-diff-sha256={}, rustc={}, target={}, profile={}, flags={}. \
          The generator receipt does not authenticate a separately supplied executable. \
-         Embedded native baseline evaluator; different-work diagnostic, not a strength claim.",
+         Embedded baseline evaluator; different-work diagnostic, not a strength claim.",
         env!("EXPERIMENT_BUILD_REVISION"),
         env!("EXPERIMENT_BUILD_DIRTY_SHA256"),
         env!("EXPERIMENT_BUILD_RUSTC"),
@@ -94,13 +94,13 @@ fn generate(executable: &str) -> Result<Config, String> {
         shogi::RootCategory::ReducedMaterialDiagram,
         shogi::CounterSource::Supplied,
     )
-    .map_err(|e| format!("native Shogi root: {e:?}"))?;
+    .map_err(|e| format!("Shogi root: {e:?}"))?;
     let game = shogi::Game::from_root(root);
     add(
         &mut config,
         CanonicalRecord::shogi(shogi::GameRecord::from_game(&game)),
         "crates/mshogi-console/tests/shogi_engine.rs::actual_analysis_declaration_incomplete_and_history_contexts_remain_distinct",
-        "Authored reduced-material CSA declaration diagram with supplied counter; native entering-king eligibility permits Sente's formal declaration. The actual declaration command, not a board move or advisory score, establishes the native win.",
+        "Authored reduced-material CSA declaration diagram with supplied counter; entering-king eligibility permits Sente's formal declaration. The actual declaration command, not a board move or advisory score, establishes the win.",
     )?;
 
     let game = xiangqi::Game::from_root(
@@ -112,37 +112,37 @@ fn generate(executable: &str) -> Result<Config, String> {
     add(
         &mut config,
         CanonicalRecord::xiangqi(xiangqi::GameRecord::from_game(&game).map_err(|e| e.to_string())?),
-        "crates/mshogi-search/tests/xiangqi.rs::immediate_stalemate_is_a_native_win_for_each_side",
-        "Authored MSH-105 P1 diagram: Red rook e7e8 controls e9 and f8, leaving Black f9 unchecked with no legal action; the selected native profile awards Red a stalemate win. Explicit native claim policy is preserved.",
+        "crates/mshogi-search/tests/xiangqi.rs::immediate_stalemate_is_a_win_for_each_side",
+        "Authored MSH-105 P1 diagram: Red rook e7e8 controls e9 and f8, leaving Black f9 unchecked with no legal action; the selected profile awards Red a stalemate win. Explicit claim policy is preserved.",
     )?;
 
     fixture(
         &mut config,
-        "desktop/scripts/fixtures/tori-mate-in-one.mshogi#payload.record (native root prefix)",
+        "desktop/scripts/fixtures/tori-mate-in-one.mshogi#payload.record (game root prefix)",
         include_str!("../../../desktop/scripts/fixtures/tori-mate-in-one.mshogi"),
         RulesProfile::ToriModernV1,
-        "Accepted native TORI-O-MATE predecessor: Sente Falcon 4c-4b promoting to Eagle, protected by Pheasant 4d, checks the blocked Gote Phoenix at 4a and establishes native checkmate.",
+        "Accepted TORI-O-MATE predecessor: Sente Falcon 4c-4b promoting to Eagle, protected by Pheasant 4d, checks the blocked Gote Phoenix at 4a and establishes checkmate.",
     )?;
     fixture(
         &mut config,
-        "desktop/scripts/fixtures/chu-complete-royal-engine.mshogi#payload.record (native root prefix)",
+        "desktop/scripts/fixtures/chu-complete-royal-engine.mshogi#payload.record (game root prefix)",
         include_str!("../../../desktop/scripts/fixtures/chu-complete-royal-engine.mshogi"),
         RulesProfile::ChuJcsa2019V1,
-        "Accepted native live Lion predecessor: the complete ordered 6f-6e-5e route captures Gote King and promoted Drunk Elephant/Prince in one turn, establishing RoyalCapture. The native root prefix is restored from the concluded document; engine observations are not saved.",
+        "Accepted live Lion predecessor: the complete ordered 6f-6e-5e route captures Gote King and promoted Drunk Elephant/Prince in one turn, establishing RoyalCapture. The game root prefix is restored from the concluded document; engine observations are not saved.",
     )?;
     fixture(
         &mut config,
-        "desktop/scripts/fixtures/tenjiku-adams-royal-engine.mshogi#payload.record (native root prefix)",
+        "desktop/scripts/fixtures/tenjiku-adams-royal-engine.mshogi#payload.record (game root prefix)",
         include_str!("../../../desktop/scripts/fixtures/tenjiku-adams-royal-engine.mshogi"),
         RulesProfile::TenjikuAdamsModernV1,
-        "Accepted native live royal-capture predecessor under immutable Adams1999 Modern semantics; actual complete action and ordered native effects must establish the ending, with no resignation injection.",
+        "Accepted live royal-capture predecessor under immutable Adams1999 Modern semantics; actual complete action and ordered game effects must establish the ending, with no resignation injection.",
     )?;
     fixture(
         &mut config,
-        "desktop/scripts/fixtures/tenjiku-muller-royal-engine.mshogi#payload.record (native root prefix)",
+        "desktop/scripts/fixtures/tenjiku-muller-royal-engine.mshogi#payload.record (game root prefix)",
         include_str!("../../../desktop/scripts/fixtures/tenjiku-muller-royal-engine.mshogi"),
         RulesProfile::TenjikuMullerCompletedV1,
-        "Accepted native live royal-capture predecessor under immutable Muller Completed semantics; actual complete action and ordered native effects must establish the ending, with no resignation injection.",
+        "Accepted live royal-capture predecessor under immutable Muller Completed semantics; actual complete action and ordered game effects must establish the ending, with no resignation injection.",
     )?;
     config.validate().map_err(|e| e.to_string())?;
     Ok(config)
@@ -168,7 +168,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     file.write_all(&json)?;
     file.write_all(b"\n")?;
     println!(
-        "wrote {} Test-only native roots, {} participants, paired sides, {} command cap, {} ms wall budget",
+        "wrote {} Test-only game roots, {} participants, paired sides, {} command cap, {} ms wall budget",
         config.openings.len(),
         config.players.len(),
         config.max_steps,

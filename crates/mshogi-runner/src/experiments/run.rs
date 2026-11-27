@@ -5,11 +5,11 @@ use std::{
     time::{Duration, Instant},
 };
 
-/// Run actual bounded the internal protocol subprocesses over native full-history owners.
+/// Run actual bounded the internal protocol subprocesses over full-history owners.
 pub fn run(config: &Config) -> Result<ValidatedReport, RunnerError> {
     run_with_stop(config, &mut || false)
 }
-/// Cooperative experiment cancellation; never a scored native game result.
+/// Cooperative experiment cancellation; never a scored game result.
 pub fn run_with_stop(
     config: &Config,
     stopped: &mut impl FnMut() -> bool,
@@ -43,12 +43,12 @@ pub fn run_with_stop(
     // for an unacknowledged shutdown from every supervisor until cleanup finishes.
     for pairing in config.schedule() {
         let root = &config.openings[pairing.opening].root;
-        let state = native::NativeState::from_root(root).map_err(err)?;
+        let state = game::MatchState::from_root(root).map_err(err)?;
         report.games.push(Game {
             pairing,
             steps: vec![],
             final_root: state.root().map_err(err)?,
-            native_outcome: state.outcome(),
+            outcome: state.outcome(),
             score_first_twice: state.score_first_twice(),
             stop: state
                 .stop_reason()
@@ -66,10 +66,10 @@ pub fn run_with_stop(
     let wall_budget = Duration::from_millis(config.wall_budget_ms);
     let mut id = 0u64;
     for game in &mut report.games {
-        let mut state = native::NativeState::from_root(&game.final_root).map_err(err)?;
+        let mut state = game::MatchState::from_root(&game.final_root).map_err(err)?;
         let mut ending_bytes = ending_size(
             &game.final_root,
-            &game.native_outcome,
+            &game.outcome,
             game.score_first_twice,
             &game.stop,
         )?;
@@ -164,7 +164,7 @@ pub fn run_with_stop(
                     c,
                     remaining[player],
                     elapsed_ns,
-                    matches!(decision, native::Admission::Applied),
+                    matches!(decision, game::Admission::Applied),
                 )
             });
             if let Some(r) = &clock {
@@ -178,7 +178,7 @@ pub fn run_with_stop(
                 request: request.context,
                 observation,
                 failure,
-                applied: matches!(decision, native::Admission::Applied),
+                applied: matches!(decision, game::Admission::Applied),
             };
             let after = candidate.root().map_err(err)?;
             let outcome = candidate.outcome();
@@ -199,7 +199,7 @@ pub fn run_with_stop(
             state = candidate;
             game.steps.push(step);
             game.final_root = after;
-            game.native_outcome = outcome;
+            game.outcome = outcome;
             game.score_first_twice = score;
             if let Some(reason) = stop {
                 game.stop = reason;
@@ -225,7 +225,7 @@ pub fn run_with_stop(
         charged = charged - ending_bytes - reserved_cleanup
             + ending_size(
                 &game.final_root,
-                &game.native_outcome,
+                &game.outcome,
                 game.score_first_twice,
                 &game.stop,
             )?

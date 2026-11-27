@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { fakeSession, renderApplication, square as point } from "../testing/helpers";
-import type { XiangqiSnapshot as GameSnapshot, SearchView } from "../native";
+import type { XiangqiSnapshot as GameSnapshot, SearchView } from "../sessionTypes";
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, screen, within } from "@testing-library/react";
 import { ApplicationView as XiangqiApp } from "./ApplicationView";
@@ -22,7 +22,7 @@ function app(snapshot = standard, error = "") {
   return renderApplication(snapshot, fakeSession(snapshot, { error }));
 }
 
-it("uses the accepted shell, actual native play limits and shared document/status hierarchy", () => {
+it("uses the accepted shell, actual play limits and shared document/status hierarchy", () => {
   const { container } = app();
   expect(container.querySelector(".game-shell")?.getAttribute("data-theme")).toBe("mshogi-dark");
   expect(screen.getByRole("heading", { name: "mShogi", level: 1 })).toBeTruthy();
@@ -40,12 +40,12 @@ it("uses the accepted shell, actual native play limits and shared document/statu
   expect(screen.queryByRole("spinbutton")).toBeNull();
   expect((screen.getByRole("button", { name: "Analyze position" }) as HTMLButtonElement).disabled).toBe(false);
 });
-it("sends the opaque native action as the one play operation", () => {
+it("sends the opaque action as the one play operation", () => {
   const { session } = app();
   fireEvent.click(point("e3")); fireEvent.click(point("e4"));
   expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "play", action: "e3e4" });
 });
-it("flips using native Xiangqi preferences while preserving existing document and play controls", () => {
+it("flips using Xiangqi preferences while preserving existing document and play controls", () => {
   const { session, props } = app();
   fireEvent.click(screen.getByRole("button", { name: "Flip board; currently Red at bottom" }));
   expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "preferences", settings: { play_mode: "human_engine", orientation: { game_kind: "xiangqi", side: "black" }, analysis_defaults: { depth: 64, nodes: 300000 } } });
@@ -71,7 +71,7 @@ it("keeps resource-limit refusal distinct and retains a complete Save path", () 
   fireEvent.click(point("e3")); fireEvent.click(point("e4")); expect(session.command).not.toHaveBeenCalled();
   fireEvent.click(screen.getByRole("button", { name: "Save" })); expect(session.file).toHaveBeenCalledExactlyOnceWith(snapshot, "save");
 });
-it("shows native WXF capture notation without exposing the canonical diagnostic payload", () => {
+it("shows WXF capture notation without exposing the canonical diagnostic payload", () => {
   const snapshot = playedJson as unknown as GameSnapshot;
   app(snapshot);
   const history = screen.getByRole("region", { name: "Moves" });
@@ -100,8 +100,8 @@ it("submits bounded read-only work, replacement and cancellation with exact sour
   expect(nodes.checkValidity()).toBe(false);
   fireEvent.submit(nodes.closest("form")!); expect(session.command).toHaveBeenCalledTimes(3);
 });
-it("uses selected native observations only, preserving perspective, provenance and unscored incompleteness", () => {
-  // SearchView rendering test: these values are supplied by native, not computed here.
+it("uses selected engine observations only, preserving perspective, provenance and unscored incompleteness", () => {
+  // SearchView rendering test: these values are supplied by, not computed here.
   const view: SearchView = { selected: true, observation_index: 0, purpose: "move_analysis", event_index: 0, board_ply: 0, perspective: "Red", engine: "mShogi", score: "+30 heuristic units", completed_depth: 1, nodes: 45, variation: ["a3a4"], status: "Complete", historical: false };
   const { props, rerender } = app({ ...standard, search_observations: [view] });
   fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
@@ -115,29 +115,29 @@ it("uses selected native observations only, preserving perspective, provenance a
   expect(screen.queryByText(/forced win|draw by evaluation/i)).toBeNull();
 });
 it("navigates by command: a move and its warning are one history position", async () => {
-  const native = warningJson as unknown as GameSnapshot;
-  const { session, props, rerender, container } = app(native);
-  const last = native.moves.entries.at(-1)!;
+  const snapshot = warningJson as unknown as GameSnapshot;
+  const { session, props, rerender, container } = app(snapshot);
+  const last = snapshot.moves.entries.at(-1)!;
   // The last move and the warning it caused share one history position.
-  expect(last.event_index).toBe(native.events.at(-1)!.index);
+  expect(last.event_index).toBe(snapshot.events.at(-1)!.index);
   const button = container.querySelector(`.moves-table button[data-event="${last.event_index}"]`)!;
   fireEvent.click(button);
-  expect(session.command).toHaveBeenLastCalledWith(native, { kind: "inspect", event_index: last.event_index });
-  const history = { ...native, historical: true, paused: true, capabilities: { ...native.capabilities, board_action: false } };
+  expect(session.command).toHaveBeenLastCalledWith(snapshot, { kind: "inspect", event_index: last.event_index });
+  const history = { ...snapshot, historical: true, paused: true, capabilities: { ...snapshot.capabilities, board_action: false } };
   rerender(<XiangqiApp {...props} snapshot={history} />);
   fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
   expect(screen.queryByText(/Analysis is unavailable between a move and its following event/)).toBeNull();
   expect(screen.queryByRole("button", { name: "Resume play" })).toBeNull();
   fireEvent.click(screen.getByRole("button", { name: "Return to live" }));
   expect(session.command).toHaveBeenLastCalledWith(history, { kind: "return_live" });
-  const live = { ...native, paused: true };
+  const live = { ...snapshot, paused: true };
   rerender(<XiangqiApp {...props} snapshot={live} />);
   fireEvent.click(screen.getByRole("button", { name: "Resume play" }));
   expect(session.command).toHaveBeenLastCalledWith(live, { kind: "resume" });
 });
-it("shows native warning and eligible claim as opportunities, not concluded outcomes", () => {
-  const native = warningJson as unknown as GameSnapshot;
-  const { props, rerender, session } = app(native);
+it("shows warning and eligible claim as opportunities, not concluded outcomes", () => {
+  const snapshot = warningJson as unknown as GameSnapshot;
+  const { props, rerender, session } = app(snapshot);
   expect(screen.getByRole("heading", { name: "Repetition warning" })).toBeTruthy();
   expect(screen.getByText(/must vary perpetual check/)).toBeTruthy();
   const claim = countJson as unknown as GameSnapshot;
@@ -147,7 +147,7 @@ it("shows native warning and eligible claim as opportunities, not concluded outc
   fireEvent.click(screen.getByRole("button", { name: "Claim draw" }));
   expect(session.command).toHaveBeenCalledExactlyOnceWith(claim, { kind: "command", command: { kind: "claim_natural_count" } });
 }, 15000);
-it("adapts native terminal capabilities independently of board turn and protects captured confirmation", () => {
+it("adapts terminal capabilities independently of board turn and protects captured confirmation", () => {
   const offer = offerJson as unknown as GameSnapshot;
   const { props, rerender, session } = app(offer);
   expect(screen.getByRole("heading", { name: "Draw offered by Black" })).toBeTruthy();
@@ -162,9 +162,9 @@ it("adapts native terminal capabilities independently of board turn and protects
 });
 for (const [label, json] of [["fourth occurrence", fourthJson], ["agreement", agreedJson], ["resignation", resignedJson], ["fast no-win proof", fastJson]] as const) {
   it(`presents the authoritative ${label} conclusion without heuristic adjudication`, () => {
-    const native = json as unknown as GameSnapshot; app(native);
-    expect(native.status.concluded).toBe(true);
-    expect(document.querySelector("[data-game-status]")?.textContent).toBe(native.status.label);
+    const snapshot = json as unknown as GameSnapshot; app(snapshot);
+    expect(snapshot.status.concluded).toBe(true);
+    expect(document.querySelector("[data-game-status]")?.textContent).toBe(snapshot.status.label);
     expect(screen.queryByRole("button", { name: "Resume play" })).toBeNull();
     expect(screen.queryByRole("button", { name: "Resign" })).toBeNull();
     expect(screen.queryByRole("heading", { name: "Repetition warning" })).toBeNull();
@@ -176,20 +176,20 @@ it("separates unresolved assessment and process failure and retains retry and Sa
   expect(screen.getByText(/The action could not complete/)).toBeTruthy();
   expect(screen.getByText("The current game is intact. No game result is implied.")).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: "Retry engine turn" })); expect(session.command).toHaveBeenCalledExactlyOnceWith(failed, { kind: "retry" });
-  // Defensive presentation branch only: no admitted native fixture claims to reach this state.
+  // Defensive presentation branch only: no admitted rules fixture claims to reach this state.
   const pending = { ...standard, paused: true, xiangqi: { ...standard.xiangqi, pending: { reason: "classification required", occurrences: [0, 4, 8, 12] } } };
   rerender(<XiangqiApp {...props} snapshot={pending} />);
   expect(screen.getByText(/This game is unscored/)).toBeTruthy();
   expect(screen.queryByRole("button", { name: "Resume play" })).toBeNull();
   fireEvent.click(screen.getByRole("button", { name: "Save" })); expect(session.file).toHaveBeenLastCalledWith(pending, "save");
 });
-it("reports asynchronous native file failures without clearing document state", () => {
+it("reports asynchronous file failures without clearing document state", () => {
   app({ ...standard, io: { id: 1, phase: "failed", message: "Corrupt archive", resource: null }, document: { ...standard.document, dirty: true } });
   expect(screen.getByRole("alert").textContent).toContain("unsaved changes have been kept");
   expect(screen.getByText("Unsaved")).toBeTruthy();
 });
 
-it("does not guess capacity from untyped diagnostics and retains complete native controls", () => {
+it("does not guess capacity from untyped diagnostics and retains complete game controls", () => {
   const { session } = app(standard, "Application capacity: retained observations are at their limit; accepted history is saveable.");
   expect(screen.queryByRole("heading", { name: "Application limit reached" })).toBeNull();
   expect(screen.getByRole("alert").textContent).toContain("The action could not complete");
@@ -199,8 +199,8 @@ it("does not guess capacity from untyped diagnostics and retains complete native
   expect(session.file).toHaveBeenCalledExactlyOnceWith(standard, "save");
 });
 
-it("retains native structural refusal across successful Save and separates file failure", () => {
-  const paused = { ...standard, capacity: { ...standard.capacity, status: "paused" as const, message: "Combined diagnostic; native category unavailable" } };
+it("retains structural refusal across successful Save and separates file failure", () => {
+  const paused = { ...standard, capacity: { ...standard.capacity, status: "paused" as const, message: "Combined diagnostic; category unavailable" } };
   const { props, rerender } = app(paused);
   const saved = { ...paused, document: { ...paused.document, path: "/games/retained.mshogi", dirty: false } };
   rerender(<XiangqiApp {...props} snapshot={saved} session={{ ...props.session, error: "" }} />);
@@ -215,7 +215,7 @@ it("retains native structural refusal across successful Save and separates file 
   expect(screen.queryByRole("heading", { name: "Application limit reached" })).toBeNull();
 });
 
-it("uses native Take back availability and one complete shared command, never raw Undo", () => {
+it("uses Take back availability and one complete shared command, never raw Undo", () => {
   const snapshot = { ...standard, capabilities: { ...standard.capabilities, take_back: true } };
   const { session, props, rerender } = app(snapshot);
   const control = screen.getByRole("button", { name: "Take back" });

@@ -1,4 +1,4 @@
-//! Actual native/controller Tori DTOs for contract tests. Never bundled.
+//! Actual Tori controller snapshots for contract tests. Never bundled.
 #[path = "support/tori_presentation.rs"]
 mod fixtures;
 fn main() {

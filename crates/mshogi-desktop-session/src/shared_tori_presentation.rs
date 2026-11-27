@@ -1,20 +1,20 @@
-//! Read-only native projection. No replay, transition or inferred adjudication.
+//! Read-only projection. No replay, transition or inferred adjudication.
 use super::*;
-/// Tori-native selected or live history facts.
+/// Tori selected or live history facts.
 #[derive(Clone, Debug, Serialize)]
 pub struct ToriHistoryPresentation {
-    /// Exact native event count, including administrative commands.
+    /// Exact game event count, including administrative commands.
     pub event_index: usize,
     /// Known board actions, independent of imported counters.
     pub board_ply: usize,
-    /// Actual native royal-safety query.
+    /// Actual royal-safety query.
     pub in_check: bool,
     /// Root-indexed known occurrences at this prefix only.
     pub occurrences: Vec<usize>,
     /// Actions the side to move may not play: each would create a third
     /// occurrence of a position (T06, MSH-208). Not a conclusion by itself.
     pub repetition: Option<t::Repetition>,
-    /// Native concluded outcome only.
+    /// Concluded outcome only.
     pub conclusion: Option<t::Conclusion>,
 }
 impl ToriHistoryPresentation {
@@ -32,10 +32,10 @@ impl ToriHistoryPresentation {
         }
     }
 }
-/// Native Tori provenance and exact selected/live semantic distinction.
+/// Tori provenance and exact selected/live semantic distinction.
 #[derive(Clone, Debug, Serialize)]
 pub struct ToriPresentation {
-    /// Native root category; no historical reachability inferred from a diagram.
+    /// Game root category; no historical reachability inferred from a diagram.
     pub root_kind: t::RootKind,
     /// Supplied source provenance when present.
     pub root_source: Option<String>,
@@ -43,11 +43,11 @@ pub struct ToriPresentation {
     pub declared_root_plies: String,
     /// Unknown earlier history is retained explicitly.
     pub earlier_history_unknown: bool,
-    /// Native provenance guarantee only.
+    /// Provenance guarantee only.
     pub historical_reachability_proven: bool,
     /// Facts at the exact selected prefix, without future knowledge.
     pub selected: ToriHistoryPresentation,
-    /// Live native facts, kept visibly distinct while inspecting history.
+    /// Live facts, kept visibly distinct while inspecting history.
     pub live: ToriHistoryPresentation,
 }
 impl ToriPresentation {
@@ -80,8 +80,8 @@ pub(super) fn face_name(face: t::Face) -> &'static str {
 pub(super) fn status_label(game: &t::Game) -> String {
     let name = |s| {
         side(
-            mshogi_core::native::RulesProfile::ToriModernV1,
-            NativeSide::Tori(s),
+            mshogi_core::game::RulesProfile::ToriModernV1,
+            TaggedSide::Tori(s),
         )
         .label
     };
@@ -114,17 +114,17 @@ pub(super) fn status_label(game: &t::Game) -> String {
 }
 pub(super) fn event_label(event: &t::GameEvent) -> String {
     let actor = side(
-        mshogi_core::native::RulesProfile::ToriModernV1,
-        NativeSide::Tori(event.actor),
+        mshogi_core::game::RulesProfile::ToriModernV1,
+        TaggedSide::Tori(event.actor),
     )
     .label;
     match event.command {
         t::GameCommand::Play { action } => format!(
             "{actor} · Technical action {}",
-            serde_json::to_string(&action).expect("native action")
+            serde_json::to_string(&action).expect("action")
         ),
         t::GameCommand::Resign => format!("{actor} resigned"),
-        // Rejected native commands can never occur in an admitted history.
+        // Rejected game commands can never occur in an admitted history.
         t::GameCommand::AgreeDraw | t::GameCommand::DeclareImpasse => {
             unreachable!("admitted Tori history")
         }

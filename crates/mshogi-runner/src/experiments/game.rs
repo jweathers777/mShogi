@@ -1,7 +1,7 @@
-//! Experiment orchestration over the existing native owners. No rules live here.
+//! Experiment orchestration over the existing rules owners. No rules live here.
 use mshogi_core::{
     chess, chu,
-    native::{CanonicalRecord, GameKind, RulesProfile},
+    game::{CanonicalRecord, GameKind, RulesProfile},
     shogi, tenjiku, tori, xiangqi,
 };
 use mshogi_engine::{ChessResult, EngineGame, EngineResult, ExecutionResult, WorkLimits, game};
@@ -13,26 +13,26 @@ use serde_json::Value;
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Root {
-    /// Complete authoritative native record, retaining immutable profile/history.
+    /// Complete authoritative game record, retaining immutable profile/history.
     pub record: CanonicalRecord,
-    /// Required only for Chess; an exact native MatchRecord JSON string.
+    /// Required only for Chess; an exact MatchRecord JSON string.
     pub chess_match: Option<String>,
 }
 
-/// Result of admitting a supervised native engine observation.
+/// Result of admitting a supervised mShogi engine observation.
 #[derive(Debug, Eq, PartialEq)]
 pub enum Admission {
-    /// Authoritative native owner committed the proposed command.
+    /// Authoritative rules owner committed the proposed command.
     Applied,
-    /// Observation agrees with an already established native conclusion.
+    /// Observation agrees with an already established game conclusion.
     Finished,
     /// Work ended without a usable completed choice or game result.
     Incomplete(String),
-    /// Supervised execution failed without a native game result.
+    /// Supervised execution failed without a game result.
     Failed(String),
 }
 
-/// Begin a fresh untimed experiment match around an existing native history.
+/// Begin a fresh untimed experiment match around an existing game history.
 /// For Chess this explicitly creates a new match; it cannot recover an old
 /// match's commands, offers or clocks from its canonical history alone.
 pub fn fresh_root(record: CanonicalRecord) -> Result<Root, String> {
@@ -49,12 +49,12 @@ pub fn fresh_root(record: CanonicalRecord) -> Result<Root, String> {
         record,
         chess_match,
     };
-    NativeState::from_root(&root)?.root()
+    MatchState::from_root(&root)?.root()
 }
 
 /// The selected baseline starts are untimed; Chess uses explicit AutoClaim M2.
 pub fn standard_root(profile: RulesProfile) -> Result<Root, String> {
-    NativeState::standard(profile)?.root()
+    MatchState::standard(profile)?.root()
 }
 
 fn standard_chess() -> Result<chess::ChessMatch, String> {
@@ -73,7 +73,7 @@ fn chess_command(
     command: chess::MatchCommand,
 ) -> Result<(), String> {
     // Chess records rejected requests too. Keep a refused experiment proposal
-    // atomic by committing the native candidate only after actual acceptance.
+    // atomic by committing the candidate only after actual acceptance.
     let mut candidate = game.clone();
     let at_ns = candidate
         .record()
@@ -87,7 +87,7 @@ fn chess_command(
         command,
     });
     if let Some(rejection) = reply.rejection {
-        return Err(format!("Chess native admission: {rejection:?}"));
+        return Err(format!("Chess game admission: {rejection:?}"));
     }
     *game = candidate;
     Ok(())
@@ -104,15 +104,15 @@ fn start_chess(game: &mut chess::ChessMatch) -> Result<(), String> {
     Ok(())
 }
 
-fn native_value<T: Serialize>(value: T) -> Value {
-    serde_json::to_value(value).expect("native conclusion has finite serializable fields")
+fn conclusion_value<T: Serialize>(value: T) -> Value {
+    serde_json::to_value(value).expect("game conclusion has finite serializable fields")
 }
 
 fn finished<T: Eq>(actual: Option<T>, reported: T) -> Result<Admission, String> {
     if actual == Some(reported) {
         Ok(Admission::Finished)
     } else {
-        Err("finished observation disagrees with authoritative native conclusion".into())
+        Err("finished observation disagrees with authoritative game conclusion".into())
     }
 }
 
@@ -123,7 +123,7 @@ fn chess_choice(
 ) -> Result<(), String> {
     let bound = telemetry
         .variation_depth_bound()
-        .ok_or("Chess selective depth exceeds its native search bound")?;
+        .ok_or("Chess selective depth exceeds its search bound")?;
     if telemetry.completed_depth == 0
         || telemetry.nodes == 0
         || telemetry
@@ -143,7 +143,7 @@ fn chess_choice(
     let mut pv = game.clone();
     for (i, choice) in telemetry.principal_variation.iter().enumerate() {
         if pv.conclusion().is_some() {
-            return Err("Chess PV continues after native conclusion".into());
+            return Err("Chess PV continues after game conclusion".into());
         }
         let actor = pv.game().position().side_to_move();
         let command = match choice {
@@ -167,7 +167,7 @@ fn replay_chess(root: &Root, record: &chess::GameRecord) -> Result<chess::ChessM
     let text = root
         .chess_match
         .as_ref()
-        .ok_or("Chess root requires its complete native match record")?;
+        .ok_or("Chess root requires its complete match record")?;
     let matched = chess::MatchRecord::from_json(text).map_err(|e| e.to_string())?;
     // Timed play is a different experiment contract.
     if matched.time_control() != chess::TimeControl::Untimed {
@@ -185,7 +185,7 @@ fn admit_engine<G: EngineGame>(
     game: &mut G::Game,
     result: &ExecutionResult,
 ) -> Result<Admission, String> {
-    let result = G::result(result).ok_or("execution result belongs to a different native game")?;
+    let result = G::result(result).ok_or("execution result belongs to a different game")?;
     result.validate(game)?;
     match result {
         EngineResult::Choice { choice, .. } => {
@@ -198,17 +198,17 @@ fn admit_engine<G: EngineGame>(
             Ok(Admission::Incomplete(format!("{:?}", telemetry.status)))
         }
         EngineResult::Unresolved { pending, .. } => Ok(Admission::Incomplete(format!(
-            "native unresolved adjudication: {pending:?}"
+            "unresolved adjudication: {pending:?}"
         ))),
     }
 }
 
 // The five shared-engine adapters use the same admission and replay operations.
-// Each row supplies the starting position, record encoding and native first side.
+// Each row supplies the starting position, record encoding and first side.
 macro_rules! experiment_games {
     ($(($variant:ident, $rules:ident, $first:ident, $start:expr, $record:expr, $score:expr)),+ $(,)?) => {
         #[derive(Clone)]
-        pub(super) enum NativeState {
+        pub(super) enum MatchState {
             Chess(Box<chess::ChessMatch>),
             $($variant(Box<$rules::Game>),)+
         }
@@ -221,7 +221,7 @@ macro_rules! experiment_games {
             }
         }
 
-        impl NativeState {
+        impl MatchState {
             fn standard(profile: RulesProfile) -> Result<Self, String> {
                 Ok(match profile.game() {
                     GameKind::Chess => Self::Chess(Box::new(standard_chess()?)),
@@ -256,8 +256,8 @@ macro_rules! experiment_games {
 
             pub fn outcome(&self) -> Option<Value> {
                 match self {
-                    Self::Chess(g) => g.conclusion().map(native_value),
-                    $(Self::$variant(g) => g.conclusion().map(native_value),)+
+                    Self::Chess(g) => g.conclusion().map(conclusion_value),
+                    $(Self::$variant(g) => g.conclusion().map(conclusion_value),)+
                 }
             }
 
@@ -331,28 +331,28 @@ experiment_games!(
     ),
 );
 
-impl NativeState {
-    /// A stopped experiment never manufactures a native win or draw.
+impl MatchState {
+    /// A stopped experiment never manufactures a win or draw.
     pub fn stop_reason(&self) -> Option<String> {
         if self.outcome().is_some() {
             return Some(
                 if self.score_first_twice().is_some() {
-                    "native_concluded"
+                    "game_concluded"
                 } else {
-                    "native_unresolved"
+                    "unresolved"
                 }
                 .into(),
             );
         }
         match self {
             Self::Xiangqi(g) if g.pending_adjudication().is_some() => {
-                Some("native_pending_adjudication".into())
+                Some("pending_adjudication".into())
             }
             Self::Chu(g) if g.status() == chu::GameStatus::NoBoardActions => {
-                Some("native_no_board_actions".into())
+                Some("no_board_actions".into())
             }
             Self::Tenjiku(g) if g.status() == tenjiku::GameStatus::NoBoardActions => {
-                Some("native_no_board_actions".into())
+                Some("no_board_actions".into())
             }
             _ => None,
         }
@@ -364,7 +364,7 @@ fn admit_chess(
     result: &ExecutionResult,
 ) -> Result<Admission, String> {
     let ExecutionResult::Chess { result } = result else {
-        return Err("execution result belongs to a different native game".into());
+        return Err("execution result belongs to a different game".into());
     };
     match result {
         ChessResult::Move { action, telemetry } => {
@@ -438,7 +438,7 @@ mod tests {
         for profile in PROFILES {
             let root = standard_root(profile).unwrap();
             assert_eq!(root.record.profile(), profile);
-            let state = NativeState::from_root(&root).unwrap();
+            let state = MatchState::from_root(&root).unwrap();
             assert!(state.first_to_move());
             assert!(state.outcome().is_none());
             assert_eq!(state.score_first_twice(), None);
@@ -450,10 +450,10 @@ mod tests {
     fn root_refuses_missing_wrong_or_inconsistent_chess_match() {
         let mut chess = standard_root(RulesProfile::ChessMatchV1).unwrap();
         let original = chess.chess_match.take();
-        assert!(NativeState::from_root(&chess).is_err());
+        assert!(MatchState::from_root(&chess).is_err());
         let mut shogi = standard_root(RulesProfile::ShogiCsa36V1).unwrap();
         shogi.chess_match = original.clone();
-        assert!(NativeState::from_root(&shogi).is_err());
+        assert!(MatchState::from_root(&shogi).is_err());
         chess.chess_match = original;
         chess.record = CanonicalRecord::chess(
             chess::AdjudicatedGame::from_fen(
@@ -463,7 +463,7 @@ mod tests {
             .unwrap()
             .record(),
         );
-        assert!(NativeState::from_root(&chess).is_err());
+        assert!(MatchState::from_root(&chess).is_err());
         let mut timed = chess::ChessMatch::new(
             chess::AdjudicatedGame::new(chess::ClaimPolicy::AutoClaim),
             chess::TimeControl::Increment {
@@ -474,7 +474,7 @@ mod tests {
         .unwrap();
         start_chess(&mut timed).unwrap();
         assert!(
-            NativeState::from_root(&NativeState::Chess(Box::new(timed)).root().unwrap()).is_err()
+            MatchState::from_root(&MatchState::Chess(Box::new(timed)).root().unwrap()).is_err()
         );
     }
 
@@ -501,7 +501,7 @@ mod tests {
     }
 
     #[test]
-    fn selective_pv_bound_is_explicit_and_every_extra_board_action_is_native() {
+    fn selective_pv_bound_is_explicit_and_every_extra_board_action_is() {
         // Constructed admission machinery, not an actual engine observation.
         let root = standard_root(RulesProfile::ChessMatchV1).unwrap();
         let action = "e2e4".parse().unwrap();
@@ -513,7 +513,7 @@ mod tests {
             .to_vec();
         for bound in [1, 2, 129] {
             telemetry.selective_depth = bound;
-            let mut state = NativeState::from_root(&root).unwrap();
+            let mut state = MatchState::from_root(&root).unwrap();
             let result = ExecutionResult::Chess {
                 result: ChessResult::Move {
                     action,
@@ -524,7 +524,7 @@ mod tests {
             same_root(&root, &state.root().unwrap());
         }
         telemetry.selective_depth = 3;
-        let mut state = NativeState::from_root(&root).unwrap();
+        let mut state = MatchState::from_root(&root).unwrap();
         let result = ExecutionResult::Chess {
             result: ChessResult::Move {
                 action,
@@ -536,7 +536,7 @@ mod tests {
         telemetry.principal_variation[2] = mshogi_engine::EngineChoice::Move {
             action: "g1g4".parse().unwrap(),
         };
-        let mut state = NativeState::from_root(&root).unwrap();
+        let mut state = MatchState::from_root(&root).unwrap();
         let result = ExecutionResult::Chess {
             result: ChessResult::Move { action, telemetry },
         };
@@ -547,7 +547,7 @@ mod tests {
     #[test]
     fn incomplete_and_wrong_family_do_not_mutate_and_invalid_move_is_atomic() {
         let root = standard_root(RulesProfile::ChessMatchV1).unwrap();
-        let mut state = NativeState::from_root(&root).unwrap();
+        let mut state = MatchState::from_root(&root).unwrap();
         let incomplete = ExecutionResult::Chess {
             result: ChessResult::Incomplete {
                 telemetry: telemetry(),
@@ -559,7 +559,7 @@ mod tests {
         ));
         same_root(&root, &state.root().unwrap());
         let mut shogi =
-            NativeState::from_root(&standard_root(RulesProfile::ShogiCsa36V1).unwrap()).unwrap();
+            MatchState::from_root(&standard_root(RulesProfile::ShogiCsa36V1).unwrap()).unwrap();
         let before = shogi.root().unwrap();
         assert!(shogi.admit(&incomplete).is_err());
         same_root(&before, &shogi.root().unwrap());
@@ -584,7 +584,7 @@ mod tests {
     #[test]
     fn chess_move_and_full_match_history_are_retained() {
         let root = standard_root(RulesProfile::ChessMatchV1).unwrap();
-        let mut state = NativeState::from_root(&root).unwrap();
+        let mut state = MatchState::from_root(&root).unwrap();
         let result = ExecutionResult::Chess {
             result: ChessResult::Move {
                 action: "e2e4".parse().unwrap(),
@@ -599,7 +599,7 @@ mod tests {
         assert_eq!(matched.timestamp_floor(), 2);
         same_root(
             &after,
-            &NativeState::from_root(&after).unwrap().root().unwrap(),
+            &MatchState::from_root(&after).unwrap().root().unwrap(),
         );
         let false_finish = ExecutionResult::Chess {
             result: ChessResult::Finished {
@@ -614,7 +614,7 @@ mod tests {
     }
 
     #[test]
-    fn fresh_match_and_native_auto_claim_preserve_history_without_playing_intention() {
+    fn fresh_match_and_auto_claim_preserve_history_without_playing_intention() {
         let record = CanonicalRecord::chess(
             chess::AdjudicatedGame::from_fen(
                 "7k/8/5KQ1/8/8/8/8/8 w - - 100 1",
@@ -624,7 +624,7 @@ mod tests {
             .record(),
         );
         let root = fresh_root(record).unwrap();
-        let mut state = NativeState::from_root(&root).unwrap();
+        let mut state = MatchState::from_root(&root).unwrap();
         let claim = mshogi_engine::EngineClaim {
             actor: chess::Color::White,
             reason: chess::DrawClaim::FiftyMove,
@@ -650,13 +650,13 @@ mod tests {
         assert_eq!(after.record.event_count(), 1);
         same_root(
             &after,
-            &NativeState::from_root(&after).unwrap().root().unwrap(),
+            &MatchState::from_root(&after).unwrap().root().unwrap(),
         );
     }
 
     #[test]
-    fn complete_native_compound_actions_survive_record_replay() {
-        // These committed native diagrams have independently exercised compound
+    fn complete_compound_actions_survive_record_replay() {
+        // These committed diagrams have independently exercised compound
         // routes. Initial armies deliberately block such routes in some games.
         for (profile, fixture) in [
             (
@@ -673,9 +673,9 @@ mod tests {
             ),
         ] {
             let record = document_fixture::initial_record(fixture).unwrap();
-            let mut state = NativeState::from_root(&fresh_root(record).unwrap()).unwrap();
+            let mut state = MatchState::from_root(&fresh_root(record).unwrap()).unwrap();
             match &mut state {
-                NativeState::Chu(g) => {
+                MatchState::Chu(g) => {
                     let action = g
                         .legal_actions()
                         .into_iter()
@@ -688,7 +688,7 @@ mod tests {
                     })
                     .unwrap();
                 }
-                NativeState::Tenjiku(g) => {
+                MatchState::Tenjiku(g) => {
                     let action = g
                         .legal_actions()
                         .into_iter()
@@ -708,19 +708,19 @@ mod tests {
             assert_eq!(root.record.profile(), profile);
             same_root(
                 &root,
-                &NativeState::from_root(&root).unwrap().root().unwrap(),
+                &MatchState::from_root(&root).unwrap().root().unwrap(),
             );
         }
     }
 
     #[test]
-    fn native_tori_live_game_is_unscored_and_resignation_is_exact() {
+    fn tori_live_game_is_unscored_and_resignation_is_exact() {
         let mut state =
-            NativeState::from_root(&standard_root(RulesProfile::ToriModernV1).unwrap()).unwrap();
+            MatchState::from_root(&standard_root(RulesProfile::ToriModernV1).unwrap()).unwrap();
         assert!(state.stop_reason().is_none());
         assert!(state.outcome().is_none());
         assert_eq!(state.score_first_twice(), None);
-        let NativeState::Tori(g) = &mut state else {
+        let MatchState::Tori(g) = &mut state else {
             unreachable!()
         };
         g.submit(tori::GameRequest {
@@ -731,7 +731,7 @@ mod tests {
         .unwrap();
         assert_eq!(
             state.outcome(),
-            Some(native_value(tori::Conclusion::Resignation {
+            Some(conclusion_value(tori::Conclusion::Resignation {
                 winner: tori::Side::Sente
             }))
         );
@@ -739,14 +739,14 @@ mod tests {
         let root = state.root().unwrap();
         same_root(
             &root,
-            &NativeState::from_root(&root).unwrap().root().unwrap(),
+            &MatchState::from_root(&root).unwrap().root().unwrap(),
         );
     }
 
     #[test]
-    fn native_tori_validation_refuses_forged_finished_and_incomplete_is_noop() {
+    fn tori_validation_refuses_forged_finished_and_incomplete_is_noop() {
         let root = standard_root(RulesProfile::ToriModernV1).unwrap();
-        let mut state = NativeState::from_root(&root).unwrap();
+        let mut state = MatchState::from_root(&root).unwrap();
         let telemetry = mshogi_engine::ToriTelemetry {
             evaluator_id: mshogi_search::tori::EVALUATOR_ID.into(),
             search_id: mshogi_search::tori::SEARCH_ID.into(),

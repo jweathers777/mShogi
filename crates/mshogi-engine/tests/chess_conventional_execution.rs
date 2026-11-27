@@ -1,6 +1,6 @@
 //! Additive Chess thinking-time and selective-search execution contracts.
 mod support;
-use mshogi_core::{chess::*, native::CanonicalRecord};
+use mshogi_core::{chess::*, game::CanonicalRecord};
 use mshogi_engine::*;
 use std::{
     io::Cursor,
@@ -106,7 +106,7 @@ fn actual_zero_time_request_is_honest_incomplete_without_action_or_score() {
     assert_eq!(telemetry.selective_depth, 0);
 }
 #[test]
-fn selective_continuation_bound_is_explicit_and_cannot_exceed_native_path_limit() {
+fn selective_continuation_bound_is_explicit_and_cannot_exceed_path_limit() {
     let mut request = context();
     request.limits.depth = 1;
     let actions: Vec<Action> = ["e2e4", "e7e5", "g1f3"]
@@ -156,7 +156,7 @@ fn selective_continuation_bound_is_explicit_and_cannot_exceed_native_path_limit(
     assert!(!changed.matches(&request));
 }
 #[test]
-fn actual_short_timed_search_is_bounded_and_every_returned_command_is_native() {
+fn short_timed_search_returns_a_legal_command_within_budget() {
     let mut request = context();
     request.limits.time_ms = Some(20);
     let source = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly);

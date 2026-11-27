@@ -25,7 +25,7 @@ class StableMacVerificationTests(unittest.TestCase):
         source = self.root / "desktop/src-tauri/target/release/bundle/macos/mShogi Verification.app/Contents"
         (source / "MacOS").mkdir(parents=True)
         (source / "MacOS/mshogi-desktop").write_bytes(b"actual QA executable fixture")
-        (source / "MacOS/mshogi").write_bytes(b"actual native engine fixture")
+        (source / "MacOS/mshogi").write_bytes(b"actual engine fixture")
         (source / "Info.plist").write_bytes(plistlib.dumps({"CFBundleExecutable": "mshogi-desktop", "LSEnvironment": {"MSHOGI_DESKTOP_FIXTURE": "obsolete-per-app"}}))
         self.commands = []
         self.processes = patch.object(module.subprocess, "run", side_effect=self.command)

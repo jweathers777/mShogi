@@ -55,14 +55,14 @@ impl TimeBudget {
     }
 }
 
-/// One adapter request deadline, including native setup and result validation.
+/// One adapter request deadline, including setup and result validation.
 /// Untimed requests do not read the clock after construction.
 pub struct RequestTime {
     started: Instant,
     budget: Option<TimeBudget>,
 }
 impl RequestTime {
-    /// Start accounting before native reconstruction or other request setup.
+    /// Start accounting before reconstruction or other request setup.
     pub fn new(budget: Option<TimeBudget>) -> Self {
         Self {
             started: Instant::now(),
@@ -87,7 +87,7 @@ impl RequestTime {
             }
         })
     }
-    /// Shared core limits, with a small reserve for native result validation.
+    /// Shared core limits, with a small reserve for engine result validation.
     pub fn limits(&self, depth: u16, nodes: Option<u64>) -> super::Limits {
         let time = self.remaining().map(|time| {
             let reserve = (time.hard / 10).min(Duration::from_millis(50));
@@ -133,7 +133,7 @@ pub(super) fn iteration_target(
 mod tests {
     use super::*;
     #[test]
-    fn request_deadline_charges_setup_and_reserves_native_validation_time() {
+    fn request_deadline_charges_setup_and_reserves_validation_time() {
         for clock in [false, true] {
             let mut request = RequestTime::new(Some(TimeBudget {
                 soft: Duration::from_millis(80),

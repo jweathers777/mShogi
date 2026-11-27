@@ -1,7 +1,7 @@
 //! Independent expectations for the evaluation arithmetic.
 //!
 //! Commit a01eb633 holds the test that proved this evaluation equal, term by
-//! term, to the earlier native-position evaluation on more than 8,000
+//! term, to the earlier position evaluation on more than 8,000
 //! positions. The expected values below are derived by hand from the term
 //! definitions or from independent endgame knowledge.
 use super::*;
@@ -249,11 +249,11 @@ fn evaluation_is_symmetric_under_color_reflection() {
     ];
     let mut checked = 0;
     for game in 0..60 {
-        let mut native = Position::from_fen(starts[game % starts.len()]).unwrap();
-        let mut fast = ChessPosition::from_position(&native);
+        let mut rules_position = Position::from_fen(starts[game % starts.len()]).unwrap();
+        let mut fast = ChessPosition::from_position(&rules_position);
         for _ in 0..100 {
-            if native.en_passant_target().is_none() {
-                let fen = native.to_fen();
+            if rules_position.en_passant_target().is_none() {
+                let fen = rules_position.to_fen();
                 let e = decompose(&fast);
                 let mirrored = decompose(&board(&reflect(&fen)));
                 assert_eq!(e.white, mirrored.black, "{fen}");
@@ -263,7 +263,7 @@ fn evaluation_is_symmetric_under_color_reflection() {
                 checked += 1;
             }
             let legal = fast.legal_moves();
-            if legal.is_empty() || native.halfmove_clock() >= 100 {
+            if legal.is_empty() || rules_position.halfmove_clock() >= 100 {
                 break;
             }
             let captures: Vec<_> = legal
@@ -276,7 +276,7 @@ fn evaluation_is_symmetric_under_color_reflection() {
             } else {
                 legal[(rng.next() % legal.len() as u64) as usize]
             };
-            native.apply(fast.action(m)).unwrap();
+            rules_position.apply(fast.action(m)).unwrap();
             assert!(fast.make(m));
         }
     }
@@ -333,11 +333,11 @@ fn material_scaling_guards_and_tunable_coefficients() {
 #[test]
 fn cached_and_live_weighted_scores_agree() {
     use weights::{DEFAULT, INITIAL, LOWER, Prepared, UPPER, Weights};
-    let mut native =
+    let mut rules_position =
         Position::from_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1").unwrap();
     let mut rng = TestRng(168);
     for _ in 0..150 {
-        let p = ChessPosition::from_position(&native);
+        let p = ChessPosition::from_position(&rules_position);
         let prepared = Prepared::new(&p);
         assert_eq!(prepared.score(&DEFAULT), decompose(&p).white_score());
         for w in [INITIAL, Weights(LOWER), Weights(UPPER)] {
@@ -345,11 +345,11 @@ fn cached_and_live_weighted_scores_agree() {
             assert!(e.endgame_scale.iter().all(|v| (0..=64).contains(v)));
             assert!(e.white_score().abs() < 30_000);
         }
-        let legal = native.legal_actions();
+        let legal = rules_position.legal_actions();
         if legal.is_empty() {
             break;
         }
-        native
+        rules_position
             .apply(legal[(rng.next() % legal.len() as u64) as usize])
             .unwrap();
     }

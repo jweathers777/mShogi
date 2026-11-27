@@ -10,7 +10,7 @@ fn config(mode: &str) -> ExperimentConfig {
     let engine = engine_fixture::fixture(env!("CARGO_BIN_EXE_mshogi-runner-fixture"), mode);
     ExperimentConfig {
         schema_version: 1,
-        id: "native-process-test".into(),
+        id: "process-test".into(),
         engines: [engine.clone(), engine],
         openings: vec![OpeningConfig {
             id: "forced-mate".into(),
@@ -692,7 +692,7 @@ fn participant_limits_follow_engine_across_color_pairs_and_replay() {
 }
 
 #[test]
-fn explicit_only_runner_continues_threefold_fourfold_then_native_fivefold() {
+fn explicit_only_runner_continues_threefold_fourfold_then_fivefold() {
     let mut c = config("cycle");
     c.claim_policy = ClaimPolicy::ExplicitOnly;
     c.openings[0].fen = None;

@@ -1,4 +1,4 @@
-//! Derived occupancy maps and compile-time rays for native Chess geometry.
+//! Derived occupancy maps and compile-time rays for Chess geometry.
 use super::{Piece, PieceKind};
 
 pub(super) const DIRECTIONS: [(i8, i8); 8] = [
@@ -82,7 +82,7 @@ pub(super) fn nearest(blockers: u64, dir: usize) -> usize {
     }
 }
 
-/// Redundant, derived data; canonical state and all native effects remain owned
+/// Redundant, derived data; canonical state and all game effects remain owned
 /// by Position. Only construction and its one cell setter may update this cache.
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
 pub(super) struct AttackCache {

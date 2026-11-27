@@ -1,7 +1,7 @@
-//! Measure current response traffic, decoding, context copies and native PV validation.
+//! Measure current response traffic, decoding, context copies and PV validation.
 #[path = "../../mshogi-core/examples/support/walk.rs"]
 mod walk;
-use mshogi_core::native::CanonicalRecord;
+use mshogi_core::game::CanonicalRecord;
 use mshogi_engine::*;
 use std::{hint::black_box, sync::Arc, time::Instant};
 use walk::Failure;

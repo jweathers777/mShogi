@@ -183,5 +183,5 @@
     "royal capture/missing kings",
     "unreachable-square structural diagrams"
   ],
-  "interpretation": "board comparator only, not rules authority; native fixture expectations must remain independently established"
+  "interpretation": "board comparator only, not rules authority; rules fixture expectations must remain independently established"
 }

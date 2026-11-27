@@ -1,13 +1,13 @@
 // @vitest-environment jsdom
 // Actual Rust/controller DTOs; this tests consumers, not independently new rules.
 import { deferred, renderBoard, square } from "../testing/helpers";
-import type { ChuSnapshot, MovementInspection } from "../native";
+import type { ChuSnapshot, MovementInspection } from "../sessionTypes";
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { SquareBoard } from "./SquareBoard";
 import { oriented } from "../testing/snapshots";
 
-import { NativeAnalysis, NativeRecovery, NativeHistory } from "./NativeSessionPanels";
+import { GameAnalysis, GameRecovery, GameHistory } from "./GameSessionPanels";
 import { GameBoard } from "./GameBoard";
 import inspectionJson from "../__fixtures__/shared-chu-inspection.json";
 
@@ -20,7 +20,7 @@ const routes = routesJson as unknown as ChuSnapshot, promotion = promotionJson a
 afterEach(cleanup);
 
 const board = (snapshot = routes) => renderBoard(SquareBoard, { snapshot });
-it("preserves actual 12x12 geometry, native ownership, both orientations and multiple royal identities", () => {
+it("preserves actual 12x12 geometry, game ownership, both orientations and multiple royal identities", () => {
   const { props, rerender } = board(royalsJson as unknown as ChuSnapshot);
   expect(document.querySelectorAll("svg [role=button]")).toHaveLength(144);
   expect(square("12a")).toBeTruthy(); expect(square("1l")).toBeTruthy();
@@ -59,25 +59,25 @@ it("cancels keyboard routes, resets stale selections, and chooses exact promotio
   const choice = promotion.choices.find(c => c.from === "6e" && c.steps[0] === "6d" && c.completion?.label === "Promote")!;
   expect(onPlay).toHaveBeenCalledExactlyOnceWith(choice.action);
 });
-it("decorates ordered native captures and full routes independently of selection", () => {
+it("decorates ordered captures and full routes independently of selection", () => {
   const s = capturedJson as unknown as ChuSnapshot;
   const { container } = render(<SquareBoard snapshot={s} disabled={false} onPlay={vi.fn()} completedAction={s.moves.last_action} />);
-  expect([...container.querySelectorAll("[data-native-capture]")].map(n => n.getAttribute("data-native-capture"))).toEqual(["2b", "1b"]);
+  expect([...container.querySelectorAll("[data-capture]")].map(n => n.getAttribute("data-capture"))).toEqual(["2b", "1b"]);
   expect(container.querySelector("[data-route]")?.getAttribute("data-route")).toBe("3c>2b>1b");
   expect(container.querySelector('[data-last-move="origin"]')?.getAttribute("data-location")).toBe("3c");
   expect(container.querySelector('[data-last-move="destination"]')?.getAttribute("data-location")).toBe("1b");
 });
-it("uses the production renderer with bounded native execution and no invented scores", () => {
+it("uses the production renderer with bounded execution and no invented scores", () => {
   const command = vi.fn();render(<><GameBoard snapshot={routes} disabled={false} inspectionDisabled={false} command={command} />
-    <NativeRecovery snapshot={routes} error="" disabled={false} command={command} />
-    <NativeAnalysis snapshot={routes} defaults={routes.play_limits} disabled={false} command={command} maxDepth={1} minNodes={1} maxNodes={1} /></>);
+    <GameRecovery snapshot={routes} error="" disabled={false} command={command} />
+    <GameAnalysis snapshot={routes} defaults={routes.play_limits} disabled={false} command={command} maxDepth={1} minNodes={1} maxNodes={1} /></>);
   expect(document.querySelector(".chu-board-frame")).toBeTruthy();
   expect(screen.queryByText(/Chu execution is unsupported/)).toBeNull();
   expect(screen.getByRole("button", { name: "Resume play" })).toBeTruthy();
   expect(screen.getByText("No engine search has completed in this game.")).toBeTruthy();
   expect(screen.queryByText(/Play limit: depth 0/)).toBeNull(); expect(command).not.toHaveBeenCalled();
 });
-it("distinguishes native terminal prefix from continued action and invalidates history/inspection work", async () => {
+it("distinguishes terminal prefix from continued action and invalidates history/inspection work", async () => {
   const { props, rerender, onPlay } = board();
   const short = routes.choices.find(c => c.from === "6f" && c.steps.length === 1 && c.steps[0] === "7e")!;
   expect(short).toBeTruthy();
@@ -101,13 +101,13 @@ it("distinguishes native terminal prefix from continued action and invalidates h
   fireEvent.keyDown(square("11b"), { key: "Escape" });expect(document.querySelectorAll(".inspection-marker")).toHaveLength(0);
 });
 
-it("keeps exact declared counters and native provenance without fabricating prior move rows", () => {
+it("keeps exact declared counters and provenance without fabricating prior move rows", () => {
   const s = counterJson as unknown as ChuSnapshot;
   expect(s.chu.declared_root_plies).toBe("18446744073709551614");
   expect(s.chu.selected.declared_total_plies).toBe("18446744073709551615");
   expect(s.chu.earlier_history_unknown).toBe(true);expect(s.chu.historical_reachability_proven).toBe(false);
   expect(s.moves.entries).toHaveLength(1);expect(s.moves.entries[0]!.number).toBe(1);
-  render(<NativeHistory snapshot={s} disabled={false} command={vi.fn()} />);
+  render(<GameHistory snapshot={s} disabled={false} command={vi.fn()} />);
   expect(screen.getByText(/known-root move pairs · declared root plies 18446744073709551614/)).toBeTruthy();
   expect(screen.getByRole("button", { name: /^1. Sente:/ })).toBeTruthy();
 });

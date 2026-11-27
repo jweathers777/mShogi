@@ -65,7 +65,7 @@ pub(crate) enum TransitionError {
     Capacity,
     InvalidToken,
 }
-/// Native derived facts, with the actual captured promoted face preserved.
+/// Derived facts, with the actual captured promoted face preserved.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, serde::Serialize, serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Effects {

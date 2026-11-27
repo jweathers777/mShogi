@@ -1,10 +1,10 @@
 //! Search-internal Chess position: bitboards, make/unmake in place, incremental
 //! hash and incremental material/placement.
 //!
-//! This is the engine's private analysis board. The native rules in
+//! This is the engine's private analysis board. The rules in
 //! `mshogi_core::chess` stay the authority for each real game, result, claim
 //! and history. Perft and differential tests prove that this board agrees with
-//! the native legal actions and transitions.
+//! the legal actions and transitions.
 pub(crate) mod attacks;
 #[cfg(test)]
 pub(crate) mod tests;
@@ -207,7 +207,7 @@ fn kind_index(kind: PieceKind) -> usize {
 }
 
 impl ChessPosition {
-    /// Copy a native position. The result has no earlier history.
+    /// Copy a position. The result has no earlier history.
     pub fn from_position(position: &Position) -> Self {
         let mut result = Self {
             pieces: [[0; 6]; 2],
@@ -250,7 +250,7 @@ impl ChessPosition {
 
     /// Build the current position of a game with the hashes of its earlier
     /// positions, so that the search can see repetitions of game positions.
-    /// If this board cannot replay the native history, the result is the current
+    /// If this board cannot replay the game history, the result is the current
     /// position without history.
     pub fn from_game(game: &AdjudicatedGame) -> Self {
         let history = game.history();
@@ -266,7 +266,7 @@ impl ChessPosition {
             }
         }
         if !replayed {
-            debug_assert!(false, "search board could not replay the native history");
+            debug_assert!(false, "search board could not replay the game history");
             result = Self::from_position(game.position());
         }
         result.stack.clear();
@@ -275,7 +275,7 @@ impl ChessPosition {
         result
     }
 
-    /// Native action for a move of this board.
+    /// Action for a move of this board.
     pub fn action(&self, m: Move) -> Action {
         Action {
             from: square(m.from()),
@@ -289,7 +289,7 @@ impl ChessPosition {
         }
     }
 
-    /// Pseudo-legal move of this board for a native action, if one matches.
+    /// Pseudo-legal move of this board for a action, if one matches.
     pub fn find(&self, action: Action) -> Option<Move> {
         let mut moves = Vec::with_capacity(64);
         self.generate(Stage::Tactical, &mut moves);
@@ -330,7 +330,7 @@ impl ChessPosition {
         total
     }
 
-    /// Side to move as a native color.
+    /// Side to move as a color.
     pub fn side_to_move(&self) -> Color {
         if self.side == WHITE {
             Color::White
@@ -447,7 +447,7 @@ impl ChessPosition {
     }
 
     /// Attack map of a piece of `kind` and `color` on `sq` with this occupancy:
-    /// the same geometry as the native `attacks_as`.
+    /// the same geometry as the `attacks_as`.
     #[inline(always)]
     pub(crate) fn attacks_as(&self, color: usize, kind: usize, sq: usize) -> u64 {
         let t = &*TABLES;

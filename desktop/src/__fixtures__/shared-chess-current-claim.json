@@ -433,7 +433,7 @@
   "analysis": null,
   "observations": [],
   "search_observations": [],
-  "score_meaning": "Chess root-side centipawns; native mate distance remains distinct (see chess analysis).",
+  "score_meaning": "Chess root-side centipawns; mate distance remains distinct (see chess analysis).",
   "chess": {
     "claims": [
       {

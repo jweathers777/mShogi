@@ -3,7 +3,7 @@
 
 Developer-only: no game/outcome/reference rules-judge, engine weights or search.
 Never writes fixture expectations. The independently expected history outcomes
-are tested by the native Game integration tests, not by this collector.
+are tested by the Game integration tests, not by this collector.
 """
 import argparse
 import hashlib
@@ -30,9 +30,9 @@ def encoded(value):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--repo', type=Path, default=Path.cwd())
-    parser.add_argument('--native-probe', type=Path)
+    parser.add_argument('--rules-probe', type=Path)
     parser.add_argument('--manifest', type=Path)
-    parser.add_argument('--native-only', action='store_true',
+    parser.add_argument('--rules-only', action='store_true',
                         help='Do not run or claim admitted-reference comparisons.')
     parser.add_argument('--timeout', type=float, default=20.0)
     parser.add_argument('--report', required=True, type=Path,
@@ -43,11 +43,11 @@ def main():
     import reference
     from rules_check_helpers import git, sha, strict_json
 
-    native = (args.native_probe or repo / 'target/debug/examples/xiangqi_probe').resolve()
+    rules_probe = (args.rules_probe or repo / 'target/debug/examples/xiangqi_probe').resolve()
     manifest = (args.manifest or repo / 'docs/m4/xiangqi/reference/pikafish-admission.json').resolve()
     if not 0 < args.timeout <= 120:
         raise ValueError('bounded timeout must be greater than 0 and at most 120 seconds')
-    native_sha = sha(native)
+    engine_sha = sha(rules_probe)
     script = Path(__file__).resolve()
     source_paths = sorted((repo / 'crates/mshogi-core/src/xiangqi').glob('*.rs'))
     source_paths += [repo / 'crates/mshogi-core/examples/xiangqi_probe.rs', repo / 'Cargo.lock']
@@ -75,7 +75,7 @@ def main():
     if len({item[1] for item in corpus}) != len(corpus):
         raise ValueError('duplicate fixture identities')
     reference_info = None
-    if not args.native_only:
+    if not args.rules_only:
         binary = reference.admitted_binary(manifest)
         reference_info = {
             'source_revision': reference.PIN,
@@ -96,9 +96,9 @@ def main():
             prefix = {'root_fen': request['root_fen'], 'moves': request['moves'][:count]}
             data = encoded(prefix)
             response = reference.decode_response(
-                reference.bounded_run([str(native)], data, args.timeout), 0)
+                reference.bounded_run([str(rules_probe)], data, args.timeout), 0)
             other = None
-            if not args.native_only:
+            if not args.rules_only:
                 other = reference.query(prefix, manifest, args.timeout)
                 if response['legal_moves'] != other['legal_moves']:
                     raise ValueError(f'{fixture_id} prefix {count}: complete legal-action mismatch; '
@@ -107,7 +107,7 @@ def main():
                 if response['in_check'] != other['in_check']:
                     raise ValueError(f'{fixture_id} prefix {count}: check mismatch')
                 left, right = response['fen'].split(), other['fen'].split()
-                # Pikafish rule60/check10 halfcounter is not the native declared
+                # Pikafish rule60/check10 halfcounter is not the declared
                 # counter or claimant-specific WXF Article 8 history. Only exclude
                 # that one field; retain both raw observations in the hash.
                 if left[:4] + left[5:] != right[:4] + right[5:]:
@@ -115,16 +115,16 @@ def main():
             if response['in_check']:
                 check_prefixes.append(count)
             frame = {'fixture': fixture_id, 'prefix_plies': count,
-                     'request': prefix, 'native': response, 'reference': other}
+                     'request': prefix, 'mshogi': response, 'reference': other}
             line = encoded(frame) + b'\n'
             observations.update(line)
             all_observations.update(line)
         results.append({
             'fixture_file': file_name, 'fixture': fixture_id,
             'complete_actions': len(request['moves']), 'prefixes': prefixes,
-            'native_prefixes_passed': prefixes,
-            'admitted_reference_comparisons_passed': 0 if args.native_only else prefixes,
-            'native_only_prefixes': prefixes if args.native_only else 0,
+            'prefixes_passed': prefixes,
+            'admitted_reference_comparisons_passed': 0 if args.rules_only else prefixes,
+            'rules_only_prefixes': prefixes if args.rules_only else 0,
             'side_to_move_checked_prefixes': check_prefixes,
             'raw_observation_stream_sha256': observations.hexdigest(),
         })
@@ -133,11 +133,11 @@ def main():
     for name, expected in input_hashes.items():
         if sha(repo / name) != expected:
             raise ValueError(f'fixture changed during collection: {name}')
-    if sha(native) != native_sha:
-        raise ValueError('native probe changed during collection')
+    if sha(rules_probe) != engine_sha:
+        raise ValueError('probe changed during collection')
     for name, expected in source_hashes.items():
         if sha(repo / name) != expected:
-            raise ValueError(f'native source changed during collection: {name}')
+            raise ValueError(f'game source changed during collection: {name}')
     if sha(helper_path) != helpers_before:
         raise ValueError('rules-check helpers changed during collection')
     total = sum(item['prefixes'] for item in results)
@@ -150,16 +150,16 @@ def main():
         'environment': {'system': platform.system(), 'release': platform.release(),
                         'machine': platform.machine(), 'python': platform.python_version()},
         'source_working_tree_dirty': bool(git(repo, 'status', '--porcelain')),
-        'native_source_sha256': source_hashes,
+        'engine_source_sha256': source_hashes,
         'collector_sha256': sha(script),
         'helpers_sha256': helpers_before,
         'command': shlex.join([sys.executable, str(script), *sys.argv[1:]]),
-        'native_probe': {'path': str(native), 'sha256': native_sha},
+        'rules_probe': {'path': str(rules_probe), 'sha256': engine_sha},
         'admitted_reference': reference_info,
         'fixture_file_sha256': input_hashes,
-        'fixture_histories': len(results), 'native_prefixes_passed': total,
-        'admitted_reference_comparisons_passed': 0 if args.native_only else total,
-        'native_only_prefixes': total if args.native_only else 0,
+        'fixture_histories': len(results), 'prefixes_passed': total,
+        'admitted_reference_comparisons_passed': 0 if args.rules_only else total,
+        'rules_only_prefixes': total if args.rules_only else 0,
         'comparison': 'complete sorted legal actions, side-to-move check, exact undo, board/side/fullmove; foreign halfcounter excluded only',
         'raw_observation_stream_sha256': all_observations.hexdigest(),
         'raw_retention': 'not stored by collector; deterministic ordered frames hashed; rerun collector to reproduce',
@@ -169,9 +169,9 @@ def main():
     temporary = args.report.with_name(args.report.name + '.tmp')
     temporary.write_text(json.dumps(result, indent=2) + '\n')
     temporary.replace(args.report)
-    print(f'PASS: {len(results)} histories, {total} native prefixes, '
+    print(f'PASS: {len(results)} histories, {total} prefixes, '
           f'{result["admitted_reference_comparisons_passed"]} admitted-reference comparisons, '
-          f'{result["native_only_prefixes"]} native-only prefixes; {args.report}')
+          f'{result["rules_only_prefixes"]} rules-only prefixes; {args.report}')
 
 
 if __name__ == '__main__':

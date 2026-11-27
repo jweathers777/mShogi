@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use sha2::{Digest, Sha256};
 use std::{fs::File, io::Read, time::Instant};
 
-/// Experiment failure, never a native foul or competition score.
+/// Experiment failure, never a foul or competition score.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum FailureKind {
@@ -16,7 +16,7 @@ pub enum FailureKind {
     MissingReply,
     /// Invalid protocol grammar/output.
     MalformedReply,
-    /// Board action rejected by native admission.
+    /// Board action rejected by game admission.
     IllegalAction,
     /// Required reply missed process watchdog.
     Watchdog,
@@ -26,13 +26,13 @@ pub enum FailureKind {
     ResourceLimit,
     /// Advertised options/configuration mismatch.
     Configuration,
-    /// Native invariant/admission failure unrelated to action legality.
-    Native,
+    /// Invariant/admission failure unrelated to action legality.
+    GameAdmission,
     /// Live context cannot be represented losslessly by this external dialect.
     UnsupportedAdjudication,
     /// No completed finite search decision.
     IncompleteWork,
-    /// Required native classification is unresolved.
+    /// Required classification is unresolved.
     UnresolvedWork,
     /// Actual engine error, without a game outcome.
     ExecutionFailure,

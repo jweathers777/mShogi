@@ -1,10 +1,10 @@
-//! MSH-113: real native histories and records; these are controller tests, not GUI evidence.
+//! MSH-113: real histories and records; these are controller tests, not GUI evidence.
 use super::*;
 use mshogi_core::xiangqi as x;
 use std::sync::atomic::{AtomicU64, Ordering};
 
 fn controller() -> DesktopController {
-    let mut c = DesktopController::new("/unused/msh113-native-engine".into()).unwrap();
+    let mut c = DesktopController::new("/unused/msh113-engine".into()).unwrap();
     c.shared.manual_engine = true;
     c
 }
@@ -38,7 +38,7 @@ fn replace(c: &mut DesktopController, game: GameKind, second: bool) {
     let (record, human) = match game {
         GameKind::Shogi => (
             CanonicalRecord::shogi(s::GameRecord::from_game(&s::Game::new())),
-            NativeSide::Shogi(if second {
+            TaggedSide::Shogi(if second {
                 s::Side::Gote
             } else {
                 s::Side::Sente
@@ -49,7 +49,7 @@ fn replace(c: &mut DesktopController, game: GameKind, second: bool) {
                 x::GameRecord::from_game(&x::Game::standard(x::ClaimPolicy::Explicit).unwrap())
                     .unwrap(),
             ),
-            NativeSide::Xiangqi(if second { x::Side::Black } else { x::Side::Red }),
+            TaggedSide::Xiangqi(if second { x::Side::Black } else { x::Side::Red }),
         ),
         _ => unreachable!(),
     };
@@ -126,7 +126,7 @@ fn roundtrip(c: &mut DesktopController, label: &str) {
 }
 
 #[test]
-fn takeback_native_shogi_and_xiangqi_pairs_pending_repeated_and_fresh_contexts() {
+fn takeback_shogi_and_xiangqi_pairs_pending_repeated_and_fresh_contexts() {
     for game in [GameKind::Shogi, GameKind::Xiangqi] {
         let mut c = controller();
         replace(&mut c, game, false);
@@ -180,7 +180,7 @@ fn takeback_native_shogi_and_xiangqi_pairs_pending_repeated_and_fresh_contexts()
     }
 }
 #[test]
-fn takeback_native_preserves_engine_opening_and_repeated_human_decisions() {
+fn takeback_preserves_engine_opening_and_repeated_human_decisions() {
     for game in [GameKind::Shogi, GameKind::Xiangqi] {
         let mut c = controller();
         replace(&mut c, game, true);
@@ -205,7 +205,7 @@ fn takeback_native_preserves_engine_opening_and_repeated_human_decisions() {
     }
 }
 #[test]
-fn takeback_native_terminal_only_human_turn_and_off_turn_resignations() {
+fn takeback_terminal_only_human_turn_and_off_turn_resignations() {
     for game in [GameKind::Shogi, GameKind::Xiangqi] {
         let mut c = controller();
         replace(&mut c, game, false);
@@ -233,7 +233,7 @@ fn takeback_native_terminal_only_human_turn_and_off_turn_resignations() {
     }
 }
 #[test]
-fn takeback_native_history_requires_return_to_live_and_disables_stale_inspection() {
+fn takeback_history_requires_return_to_live_and_disables_stale_inspection() {
     for game in [GameKind::Shogi, GameKind::Xiangqi] {
         let mut c = controller();
         replace(&mut c, game, false);
@@ -290,7 +290,7 @@ fn x_corpus(text: &str, id: &str, maximum: usize) -> x::Game {
     game
 }
 #[test]
-fn takeback_native_xiangqi_warning_fourth_and_claim_use_committed_command_boundaries() {
+fn takeback_xiangqi_warning_fourth_and_claim_use_committed_command_boundaries() {
     for (id, expected_plies, warning) in [("F022-CC", 6, false), ("F023-CCC", 10, true)] {
         let game = x_corpus(
             include_str!("../../../tests/fixtures/xiangqi/history-cycles.json"),
@@ -302,7 +302,7 @@ fn takeback_native_xiangqi_warning_fourth_and_claim_use_committed_command_bounda
             &mut c,
             SessionOperation::Replace {
                 record: CanonicalRecord::xiangqi(x::GameRecord::from_game(&game).unwrap()),
-                human: NativeSide::Xiangqi(x::Side::Red),
+                human: TaggedSide::Xiangqi(x::Side::Red),
             },
         )
         .unwrap();
@@ -348,7 +348,7 @@ fn takeback_native_xiangqi_warning_fourth_and_claim_use_committed_command_bounda
         &mut c,
         SessionOperation::Replace {
             record: CanonicalRecord::xiangqi(x::GameRecord::from_game(&game).unwrap()),
-            human: NativeSide::Xiangqi(x::Side::Red),
+            human: TaggedSide::Xiangqi(x::Side::Red),
         },
     )
     .unwrap();
@@ -368,7 +368,7 @@ fn takeback_native_xiangqi_warning_fourth_and_claim_use_committed_command_bounda
     roundtrip(&mut c, "natural-count");
 }
 #[test]
-fn takeback_native_shogi_declaration_and_fourfold_restore_native_history() {
+fn takeback_shogi_declaration_and_fourfold_restore_history() {
     let imported = |sfen| {
         s::Game::from_root(
             s::GameRoot::import(
@@ -393,7 +393,7 @@ fn takeback_native_shogi_declaration_and_fourfold_restore_native_history() {
         &mut c,
         SessionOperation::Replace {
             record: CanonicalRecord::shogi(s::GameRecord::from_game(&declared)),
-            human: NativeSide::Shogi(s::Side::Sente),
+            human: TaggedSide::Shogi(s::Side::Sente),
         },
     )
     .unwrap();
@@ -417,7 +417,7 @@ fn takeback_native_shogi_declaration_and_fourfold_restore_native_history() {
         &mut c,
         SessionOperation::Replace {
             record: CanonicalRecord::shogi(s::GameRecord::from_game(&repeated)),
-            human: NativeSide::Shogi(s::Side::Sente),
+            human: TaggedSide::Shogi(s::Side::Sente),
         },
     )
     .unwrap();
@@ -429,7 +429,7 @@ fn takeback_native_shogi_declaration_and_fourfold_restore_native_history() {
 }
 
 #[test]
-fn takeback_native_unavailable_engine_first_refusal_keeps_pending_work_atomic() {
+fn takeback_unavailable_engine_first_refusal_keeps_pending_work_atomic() {
     for game in [GameKind::Shogi, GameKind::Xiangqi] {
         let mut c = controller();
         replace(&mut c, game, true);

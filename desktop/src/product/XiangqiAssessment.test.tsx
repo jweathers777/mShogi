@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import type { XiangqiSnapshot } from "../native";
+import type { XiangqiSnapshot } from "../sessionTypes";
 import { afterEach, expect, it } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import { XiangqiAssessment } from "./XiangqiAssessment";

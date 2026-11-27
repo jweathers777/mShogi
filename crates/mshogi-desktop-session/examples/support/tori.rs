@@ -1,4 +1,4 @@
-//! Development fixtures: actual native games, never a substitute rules engine.
+//! Development fixtures: actual games, never a substitute rules engine.
 use mshogi_core::tori as t;
 pub fn contract_game() -> t::Game {
     use t::{Face::*, Side::*};

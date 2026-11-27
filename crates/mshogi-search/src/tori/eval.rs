@@ -259,7 +259,7 @@ pub const DEFAULT: [i32; COUNT] = [
     -24, 30, 16, 30, 8,
 ];
 
-/// Owner-relative rank and column of a square (native index `row * 7 + column`,
+/// Owner-relative rank and column of a square (index `row * 7 + column`,
 /// Sente moves toward row 0).
 pub const fn rank_column(side: usize, square: usize) -> (usize, usize) {
     let (row, column) = (square / 7, square % 7);
@@ -349,8 +349,8 @@ impl crate::texel::TexelModel for ToriTexel {
         position.to_string()
     }
     fn prepare(position: &str) -> Result<Option<Prepared>, String> {
-        let native = mshogi_core::tori::Position::from_compact_diagram_text(position)?;
-        let p = ToriPosition::from_position(&native);
+        let rules_position = mshogi_core::tori::Position::from_compact_diagram_text(position)?;
+        let p = ToriPosition::from_position(&rules_position);
         if !quiet(&p) {
             return Ok(None);
         }

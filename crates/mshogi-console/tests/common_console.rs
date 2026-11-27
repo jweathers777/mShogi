@@ -1,6 +1,6 @@
 //! Actual user-facing entry points; board expectation supplied by the owner.
 mod support;
-use mshogi_core::{chess, native::CanonicalRecord, shogi};
+use mshogi_core::{chess, game::CanonicalRecord, shogi};
 use std::{fs, process::Output};
 use support::cli::{Dir, records, run, stdout, success};
 fn shell(game: &str, input: &str) -> Output {
@@ -28,7 +28,7 @@ h  .  B  .  .  .  .  .  R  .
 i  L  N  S  G  K  G  S  N  L
    9  8  7  6  5  4  3  2  1\n";
 #[test]
-fn canonical_shells_route_native_commands() {
+fn canonical_shells_route_commands() {
     for (game, moves, expected) in [
         ("chess", "e2e4 e7e5", "perft 1 20"),
         ("shogi", "7g7f 3c3d", "perft-local 1 30"),
@@ -113,7 +113,7 @@ fn selected_help_profiles_and_argument_admission_are_explicit() {
     assert!(!stdout(&out).contains("headless console"));
 }
 #[test]
-fn exact_compact_board_and_inspection_preserve_state_and_native_notation() {
+fn exact_compact_board_and_inspection_preserve_state_and_notation() {
     let out = shell(
         "shogi",
         "position startpos\nmove 7g7f 3c3d\nrecord print\nshow\nhands\nstatus\nsfen\nrecord print\n",

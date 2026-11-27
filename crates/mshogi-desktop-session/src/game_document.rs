@@ -1,11 +1,11 @@
 //! The saved game document of every game on the generic session (MSH-217,
 //! reduced in MSH-228). It holds the game, not an audit trail: the current
-//! native record (start position and every command), the human's side and
+//! game record (start position and every command), the human's side and
 //! the settings. Opening a document parses the record, which replays and
 //! checks every command in the rules core.
-use crate::native_game::{NativeFailure, NativeGame, NativeResource, RecordFailure};
+use crate::game_adapter::{GameAdapter, GameFailure, GameResource, RecordFailure};
 use crate::{document, *};
-use mshogi_core::native::RulesProfile;
+use mshogi_core::game::RulesProfile;
 use serde::{Deserialize, Serialize};
 use std::fmt;
 use std::marker::PhantomData;
@@ -14,15 +14,15 @@ use std::marker::PhantomData;
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct GameSettings<S> {
-    /// Persisted ownership of the two native participants.
+    /// Persisted ownership of the two participants.
     pub play_mode: crate::PlayMode,
-    /// Native side displayed at the bottom.
+    /// Game side displayed at the bottom.
     pub orientation: S,
     /// Limits that the analysis form starts with; Analyze remembers the last ones.
     pub analysis_defaults: crate::AnalysisOperation,
 }
 /// The settings of game `G`.
-pub type SettingsOf<G> = GameSettings<<G as NativeGame>::Side>;
+pub type SettingsOf<G> = GameSettings<<G as GameAdapter>::Side>;
 impl<S> GameSettings<S> {
     /// The same settings with another orientation type.
     pub fn map<T>(self, f: impl FnOnce(S) -> T) -> GameSettings<T> {
@@ -36,12 +36,12 @@ impl<S> GameSettings<S> {
 
 #[derive(Serialize)]
 #[serde(bound(serialize = ""))]
-struct Payload<G: NativeGame> {
+struct Payload<G: GameAdapter> {
     record: G::Record,
     human: G::Side,
     settings: SettingsOf<G>,
 }
-impl<G: NativeGame> Clone for Payload<G> {
+impl<G: GameAdapter> Clone for Payload<G> {
     fn clone(&self) -> Self {
         Self {
             record: self.record.clone(),
@@ -87,7 +87,7 @@ impl From<GameDocumentError> for OperationFailure {
 
 /// Error helpers of game `G`: diagnostics name the game and resources its scope.
 pub(crate) struct Errors<G>(PhantomData<G>);
-impl<G: NativeGame> Errors<G> {
+impl<G: GameAdapter> Errors<G> {
     pub(crate) fn invalid(e: impl fmt::Display) -> GameDocumentError {
         GameDocumentError {
             diagnostic: document::diagnostic(format!("Invalid {} document: {e}", G::NAME)),
@@ -123,26 +123,26 @@ impl<G: NativeGame> Errors<G> {
             RecordFailure::Invalid(diagnostic) => Self::invalid(diagnostic),
         }
     }
-    pub(crate) fn native(error: NativeFailure) -> GameDocumentError {
+    pub(crate) fn from_game_failure(error: GameFailure) -> GameDocumentError {
         let (resource, diagnostic) = match error {
-            NativeFailure::Stopped => return Self::stopped(),
-            NativeFailure::Invalid(diagnostic) => return Self::invalid(diagnostic),
-            NativeFailure::Capacity(resource, diagnostic) => (resource, diagnostic),
+            GameFailure::Stopped => return Self::stopped(),
+            GameFailure::Invalid(diagnostic) => return Self::invalid(diagnostic),
+            GameFailure::Capacity(resource, diagnostic) => (resource, diagnostic),
         };
         let category = match resource {
-            NativeResource::EncodedBytes => ResourceCategory::NativeRootBytes,
-            NativeResource::Counter => ResourceCategory::Unknown,
+            GameResource::EncodedBytes => ResourceCategory::GameRootBytes,
+            GameResource::Counter => ResourceCategory::Unknown,
         };
         Self::capacity(category, diagnostic)
     }
 }
 
 /// An accepted, validated game document.
-pub struct ValidatedGameDocument<G: NativeGame> {
+pub struct ValidatedGameDocument<G: GameAdapter> {
     payload: Payload<G>,
     bytes: Vec<u8>,
 }
-impl<G: NativeGame> Clone for ValidatedGameDocument<G> {
+impl<G: GameAdapter> Clone for ValidatedGameDocument<G> {
     fn clone(&self) -> Self {
         Self {
             payload: self.payload.clone(),
@@ -150,7 +150,7 @@ impl<G: NativeGame> Clone for ValidatedGameDocument<G> {
         }
     }
 }
-impl<G: NativeGame> fmt::Debug for ValidatedGameDocument<G> {
+impl<G: GameAdapter> fmt::Debug for ValidatedGameDocument<G> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("ValidatedGameDocument")
             .field("game", &G::NAME)
@@ -158,8 +158,8 @@ impl<G: NativeGame> fmt::Debug for ValidatedGameDocument<G> {
             .finish_non_exhaustive()
     }
 }
-impl<G: NativeGame> ValidatedGameDocument<G> {
-    /// A document for a native record; the human plays `human`.
+impl<G: GameAdapter> ValidatedGameDocument<G> {
+    /// A document for a game record; the human plays `human`.
     pub fn new(record: G::Record, human: G::Side) -> Result<Self, GameDocumentError> {
         Self::new_with_mode(record, human, crate::PlayMode::default(), &mut || false)
     }
@@ -180,7 +180,7 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
             },
         })
     }
-    /// Read a saved document: strict fields, then the native record parse,
+    /// Read a saved document: strict fields, then the game record parse,
     /// which replays and checks every command.
     pub fn decode(
         bytes: &[u8],
@@ -188,7 +188,7 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
     ) -> Result<Self, GameDocumentError> {
         Self::decode_with_game(bytes, stopped).map(|(document, _)| document)
     }
-    /// Keep the native game already reconstructed while checking the file.
+    /// Keep the game already reconstructed while checking the file.
     pub(crate) fn decode_with_game(
         bytes: &[u8],
         stopped: &mut impl FnMut() -> bool,
@@ -202,7 +202,7 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
         }
         #[derive(Deserialize)]
         #[serde(deny_unknown_fields, bound(deserialize = ""))]
-        struct Wire<G: NativeGame> {
+        struct Wire<G: GameAdapter> {
             record: Box<serde_json::value::RawValue>,
             human: G::Side,
             settings: SettingsOf<G>,
@@ -220,7 +220,7 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
     }
     fn accept(payload: Payload<G>) -> Result<Self, GameDocumentError> {
         type E<G> = Errors<G>;
-        crate::native_game::analysis_limits::<G>(payload.settings.analysis_defaults)
+        crate::game_adapter::analysis_limits::<G>(payload.settings.analysis_defaults)
             .map_err(E::<G>::invalid)?;
         let bytes = document::encode(G::KIND, &payload).map_err(E::<G>::invalid)?;
         Ok(Self { payload, bytes })
@@ -229,7 +229,7 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
     pub fn bytes(&self) -> &[u8] {
         &self.bytes
     }
-    /// The native record: start position and every command.
+    /// The game record: start position and every command.
     pub fn record(&self) -> &G::Record {
         &self.payload.record
     }
@@ -254,7 +254,7 @@ impl<G: NativeGame> ValidatedGameDocument<G> {
     ) -> Result<Self, GameDocumentError> {
         type E<G> = Errors<G>;
         let mut game = G::to_game(self.record(), stopped).map_err(E::<G>::record)?;
-        G::submit(&mut game, actor, command, stopped).map_err(E::<G>::native)?;
+        G::submit(&mut game, actor, command, stopped).map_err(E::<G>::from_game_failure)?;
         self.with_game(&game)
     }
     /// This document cut back to the first `event_index` events (Undo, Take back).

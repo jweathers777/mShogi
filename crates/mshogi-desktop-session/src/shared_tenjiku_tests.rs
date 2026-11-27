@@ -1,4 +1,4 @@
-//! MSH-79 shared consumers. These are native controller/file tests, not GUI or search evidence.
+//! MSH-79 shared consumers. These are controller/file tests, not GUI or search evidence.
 //! Seven shared consumer obligations and five profile-boundary obligations are covered here;
 //! the five full product obligations remain with MSH-44.
 use super::*;
@@ -56,7 +56,7 @@ fn root_metadata(
     .unwrap()
 }
 fn fire_root(profile: c::Profile) -> c::Game {
-    // Frozen native consumer root: Adams T04 burns before dying; Muller T04 dies first.
+    // Frozen consumer root: Adams T04 burns before dying; Muller T04 dies first.
     root(
         profile,
         &[
@@ -106,7 +106,7 @@ fn replace(ctl: &mut DesktopController, game: &c::Game, human: c::Side) -> Share
         ctl,
         SessionOperation::Replace {
             record: CanonicalRecord::tenjiku(c::GameRecord::from_game(game).unwrap()),
-            human: NativeSide::Tenjiku(human),
+            human: TaggedSide::Tenjiku(human),
         },
     )
     .unwrap()
@@ -169,7 +169,7 @@ impl Drop for TestDirectory {
 fn strict_profile_dispatch_fresh_new_other_profile_and_stale_contexts_in_both_directions() {
     // TEN-CONSUMER-STRICT_PROFILE_DISPATCH / FRESH-NEW-OTHER-PROFILE / NEW_GAME_IMMUTABLE.
     let mut ctl = controller();
-    let mut previous_native_context = None;
+    let mut previous_context = None;
     let mut previous_session_token = None;
     for profile in [
         c::Profile::AdamsModern,
@@ -182,14 +182,14 @@ fn strict_profile_dispatch_fresh_new_other_profile_and_stale_contexts_in_both_di
             .shared_new_game(
                 expected,
                 RulesProfile::from(profile),
-                NativeSide::Tenjiku(c::Side::Gote),
+                TaggedSide::Tenjiku(c::Side::Gote),
             )
             .unwrap();
         let snapshot = settle(&mut ctl, receipt).unwrap();
         assert_eq!(snapshot.game, GameKind::Tenjiku);
         assert_eq!(snapshot.profile, RulesProfile::from(profile));
         assert_eq!(snapshot.edition, profile.edition());
-        assert_eq!(snapshot.human.id, NativeSide::Tenjiku(c::Side::Gote));
+        assert_eq!(snapshot.human.id, TaggedSide::Tenjiku(c::Side::Gote));
         assert_eq!(snapshot.human.key, format!("{}:gote", profile.id()));
         assert_eq!(snapshot.turn.key, format!("{}:sente", profile.id()));
         assert!(snapshot.token.document > before.document);
@@ -206,7 +206,7 @@ fn strict_profile_dispatch_fresh_new_other_profile_and_stale_contexts_in_both_di
             ctl.shared_new_game(
                 expected,
                 RulesProfile::from(profile),
-                NativeSide::Tenjiku(c::Side::Sente)
+                TaggedSide::Tenjiku(c::Side::Sente)
             )
             .is_err()
         );
@@ -214,12 +214,12 @@ fn strict_profile_dispatch_fresh_new_other_profile_and_stale_contexts_in_both_di
             ctl.shared_new_game(
                 ctl.shared_open_token(),
                 RulesProfile::from(profile),
-                NativeSide::Chu(mshogi_core::chu::Side::Sente)
+                TaggedSide::Chu(mshogi_core::chu::Side::Sente)
             )
             .is_err()
         );
         assert_eq!(record(&ctl), accepted);
-        if let Some(stale) = previous_native_context.take() {
+        if let Some(stale) = previous_context.take() {
             let game = &mut ctl.session.tenjiku_mut().unwrap().game;
             assert_eq!(
                 game.submit(c::GameRequest {
@@ -249,8 +249,8 @@ fn strict_profile_dispatch_fresh_new_other_profile_and_stale_contexts_in_both_di
             operation: SessionOperation::Preferences {
             settings: GameSettings {
                 play_mode: PlayMode::HumanEngine,
-                orientation: NativeSide::Tenjiku(c::Side::Sente),
-                analysis_defaults: <crate::native_game::Tenjiku as crate::native_game::NativeGame>::ANALYSIS_DEFAULTS,
+                orientation: TaggedSide::Tenjiku(c::Side::Sente),
+                analysis_defaults: <crate::game_adapter::Tenjiku as crate::game_adapter::GameAdapter>::ANALYSIS_DEFAULTS,
             },
         },
         })
@@ -261,14 +261,14 @@ fn strict_profile_dispatch_fresh_new_other_profile_and_stale_contexts_in_both_di
         }));
         assert!(SharedDesktopCommand::from_json(&forged.to_string()).is_err());
         assert_eq!(record(&ctl), accepted);
-        previous_native_context = Some(ctl.session.tenjiku().unwrap().game.context());
+        previous_context = Some(ctl.session.tenjiku().unwrap().game.context());
         previous_session_token = Some(ctl.shared_token());
     }
 }
 
 #[test]
-fn native_burn_projection_preserves_profile_specific_order_and_dying_mover() {
-    // TEN-CONSUMER-NATIVE_BURN_PROJECTION: source-derived effects, never travel arrows.
+fn burn_projection_preserves_profile_specific_order_and_dying_mover() {
+    // TEN-CONSUMER-ORDERED_BURN_PROJECTION: source-derived effects, never travel arrows.
     let mut ctl = controller();
     for profile in c::Profile::ALL {
         replace(&mut ctl, &fire_root(profile), c::Side::Sente);
@@ -288,12 +288,12 @@ fn native_burn_projection_preserves_profile_specific_order_and_dying_mover() {
                 "Sente Fire Demon destroyed at 8h"
             })
         );
-        let Some(crate::moves::NativeCompletedEffects::Tenjiku {
+        let Some(crate::moves::OrderedActionEffects::Tenjiku {
             stationary_target,
             phases,
-        }) = &geometry.native_effects
+        }) = &geometry.ordered_effects
         else {
-            panic!("missing native phases")
+            panic!("missing phases")
         };
         assert!(stationary_target.is_none());
         if profile == c::Profile::AdamsModern {
@@ -334,7 +334,7 @@ fn native_burn_projection_preserves_profile_specific_order_and_dying_mover() {
 }
 
 #[test]
-fn stationary_capture_target_is_selectable_while_native_movement_route_stays_empty() {
+fn stationary_capture_target_is_selectable_while_movement_route_stays_empty() {
     let mut ctl = controller();
     for profile in c::Profile::ALL {
         // TEN-TETRARCH-IGUI: an original Chariot Soldier promoted once to HT.
@@ -401,7 +401,7 @@ fn stationary_capture_target_is_selectable_while_native_movement_route_stays_emp
         let geometry = snapshot.moves.last_action.unwrap();
         assert!(geometry.steps.is_empty());
         assert!(
-            matches!(geometry.native_effects, Some(crate::moves::NativeCompletedEffects::Tenjiku { stationary_target: Some(target), phases }) if target == "9h" && matches!(&phases[0], crate::moves::TenjikuEffectPhase::Capture { victim } if victim.square == "9h"))
+            matches!(geometry.ordered_effects, Some(crate::moves::OrderedActionEffects::Tenjiku { stationary_target: Some(target), phases }) if target == "9h" && matches!(&phases[0], crate::moves::TenjikuEffectPhase::Capture { victim } if victim.square == "9h"))
         );
     }
 }
@@ -510,8 +510,8 @@ fn promotion_choices_and_per_original_first_refusal_rights_survive_shared_admiss
                     && i.piece.right == c::PromotionRight::Consumed
                     && i.face == c::Face::R)
         );
-        let Some(crate::moves::NativeCompletedEffects::Tenjiku { phases, .. }) =
-            snapshot.moves.last_action.unwrap().native_effects
+        let Some(crate::moves::OrderedActionEffects::Tenjiku { phases, .. }) =
+            snapshot.moves.last_action.unwrap().ordered_effects
         else {
             panic!()
         };
@@ -537,7 +537,7 @@ fn selected_history_inspection_takeback_retained_branch_and_return_live_use_exac
             })
             .unwrap();
         assert!(inspection.read_only);
-        assert_eq!(inspection.side.id, NativeSide::Tenjiku(c::Side::Gote));
+        assert_eq!(inspection.side.id, TaggedSide::Tenjiku(c::Side::Gote));
         assert_eq!(inspection.side.key, format!("{}:gote", profile.id()));
         assert!(!inspection.choices.is_empty());
         assert_eq!(document_bytes(&ctl), before);
@@ -661,7 +661,7 @@ fn real_search_observations_reject_profile_purpose_and_all_runtime_context_chang
                     if let ExecutionPurpose::MoveAnalysis { target } = &mut other.purpose {
                         target.event_index = 1;
                         target.board_ply = 1;
-                        target.turn = NativeSide::Tenjiku(c::Side::Gote);
+                        target.turn = TaggedSide::Tenjiku(c::Side::Gote);
                     }
                 }
             }
@@ -755,15 +755,15 @@ fn raw_mixed_profile_forged_effects_and_duplicate_commands_never_reach_the_insta
     for profile in c::Profile::ALL {
         replace(&mut ctl, &fire_root(profile), c::Side::Sente);
         play(&mut ctl, c::Action::single(square(8, 10), square(8, 8))).unwrap();
-        let native = record(&ctl);
+        let game = record(&ctl);
         let before = document_bytes(&ctl);
         let expected = ctl.shared_token();
         let request = SharedDesktopCommand {
             expected,
             game: GameKind::Tenjiku,
             operation: SessionOperation::Replace {
-                record: CanonicalRecord::tenjiku(native.clone()),
-                human: NativeSide::Tenjiku(c::Side::Sente),
+                record: CanonicalRecord::tenjiku(game.clone()),
+                human: TaggedSide::Tenjiku(c::Side::Sente),
             },
         };
         let raw = serde_json::to_string(&request).unwrap();
@@ -784,9 +784,9 @@ fn raw_mixed_profile_forged_effects_and_duplicate_commands_never_reach_the_insta
         assert!(SharedDesktopCommand::from_json(&duplicate).is_err());
         let mut forged: Value = serde_json::from_str(&raw).unwrap();
         // Effects are derived, so even a supplied copy is forbidden. Keep the
-        // hostile native-effect probe without relying on an encoded cache.
+        // hostile effect probe without relying on an encoded cache.
         forged["operation"]["record"]["payload"]["events"][0]["effects"] =
-            serde_json::to_value(&native.to_game().unwrap().events()[0].effects).unwrap();
+            serde_json::to_value(&game.to_game().unwrap().events()[0].effects).unwrap();
         let phase =
             &mut forged["operation"]["record"]["payload"]["events"][0]["effects"]["phases"][0];
         if profile == c::Profile::AdamsModern {
@@ -797,7 +797,7 @@ fn raw_mixed_profile_forged_effects_and_duplicate_commands_never_reach_the_insta
         assert!(SharedDesktopCommand::from_json(&forged.to_string()).is_err());
         assert_eq!(ctl.shared_token(), expected);
         assert_eq!(document_bytes(&ctl), before);
-        assert_eq!(record(&ctl), native);
+        assert_eq!(record(&ctl), game);
     }
 }
 
@@ -843,8 +843,8 @@ fn stopped_product_reopen_and_failed_files_preserve_whole_profile_prior_file_and
             SessionOperation::Preferences {
             settings: GameSettings {
                 play_mode: PlayMode::HumanEngine,
-                orientation: NativeSide::Tenjiku(c::Side::Gote),
-                analysis_defaults: <crate::native_game::Tenjiku as crate::native_game::NativeGame>::ANALYSIS_DEFAULTS,
+                orientation: TaggedSide::Tenjiku(c::Side::Gote),
+                analysis_defaults: <crate::game_adapter::Tenjiku as crate::game_adapter::GameAdapter>::ANALYSIS_DEFAULTS,
             },
         },
         )
@@ -885,7 +885,7 @@ fn cancelled_replacement_receipt_cannot_install_other_profile_or_damage_the_save
         save(&mut ctl, &path);
         let bytes = document_bytes(&ctl);
         let file = fs::read(&path).unwrap();
-        let native = record(&ctl);
+        let game = record(&ctl);
         let authority = ctl.session.tenjiku().unwrap().game.context();
         let epoch = ctl.shared_token().document;
         let other = match profile {
@@ -896,7 +896,7 @@ fn cancelled_replacement_receipt_cannot_install_other_profile_or_damage_the_save
         // install even an already completed candidate; no timing race is assumed.
         let receipt = ctl
             .queue_game_candidate::<Tenjiku>(
-                native_session::RuntimeSeed::<Tenjiku>::Record {
+                game_session::RuntimeSeed::<Tenjiku>::Record {
                     play_mode: PlayMode::HumanEngine,
                     record: Box::new(c::GameRecord::from_game(&root(other, &[])).unwrap()),
                     human: c::Side::Sente,
@@ -912,7 +912,7 @@ fn cancelled_replacement_receipt_cannot_install_other_profile_or_damage_the_save
         assert!(receipt.completion().unwrap().is_err());
         ctl.shared_snapshot();
         assert_eq!(ctl.shared_token().document, epoch);
-        assert_eq!(record(&ctl), native);
+        assert_eq!(record(&ctl), game);
         assert_eq!(ctl.session.tenjiku().unwrap().game.context(), authority);
         assert_eq!(document_bytes(&ctl), bytes);
         assert!(!ctl.shared_snapshot().document.dirty);
@@ -921,17 +921,17 @@ fn cancelled_replacement_receipt_cannot_install_other_profile_or_damage_the_save
             .queue_shared_open(path.clone(), ctl.shared_open_token())
             .unwrap();
         let cancel_begin = Instant::now();
-        ctl.retire_native_files().unwrap();
+        ctl.retire_files().unwrap();
         let retire_file_us = cancel_begin.elapsed().as_micros();
         assert!(ctl.io_state.id > id);
         ctl.shared_snapshot();
-        assert_eq!(record(&ctl), native);
+        assert_eq!(record(&ctl), game);
         assert_eq!(ctl.session.tenjiku().unwrap().game.context(), authority);
         assert_eq!(document_bytes(&ctl), bytes);
         assert_eq!(fs::read(&path).unwrap(), file);
         println!(
             "{}",
-            serde_json::json!({"cancel_profile":profile.id(),"retire_admission_us":retire_admission_us,"retire_file_us":retire_file_us,"authority_document_and_prior_file_preserved":true,"scope":"controller retirement latency; native cooperative checkpoints tested separately"})
+            serde_json::json!({"cancel_profile":profile.id(),"retire_admission_us":retire_admission_us,"retire_file_us":retire_file_us,"authority_document_and_prior_file_preserved":true,"scope":"controller retirement latency; cooperative checkpoints tested separately"})
         );
     }
 }
@@ -964,7 +964,7 @@ fn real_stationary_capture_analysis_preserves_target_in_presented_pv() {
             &mut ctl,
             SessionOperation::Replace {
                 record: CanonicalRecord::tenjiku(c::GameRecord::from_game(&game).unwrap()),
-                human: NativeSide::Tenjiku(c::Side::Sente),
+                human: TaggedSide::Tenjiku(c::Side::Sente),
             },
         )
         .unwrap();
@@ -1002,7 +1002,7 @@ fn shared_core_analysis_bounds_preserve_both_profile_states_and_reject_excess() 
             &mut ctl,
             SessionOperation::Replace {
                 record: CanonicalRecord::tenjiku(c::GameRecord::from_game(&game).unwrap()),
-                human: NativeSide::Tenjiku(c::Side::Sente),
+                human: TaggedSide::Tenjiku(c::Side::Sente),
             },
         )
         .unwrap();

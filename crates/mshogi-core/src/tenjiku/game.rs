@@ -1,7 +1,7 @@
 //! One authoritative Tenjiku history owner. Local geometry is not live permission.
 use super::*;
-use crate::native::history::{GameHistory, Snapshot};
-pub use crate::native::{
+use crate::game::history::{GameHistory, Snapshot};
+pub use crate::game::{
     GameContext,
     history::{CapacityUsage, GameUndo},
 };
@@ -13,7 +13,7 @@ use std::{
     hash::{Hash, Hasher},
 };
 
-/// Native conclusions are separate from search, cancellation and operational failures.
+/// Game conclusions are separate from search, cancellation and operational failures.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 #[allow(missing_docs)]
@@ -36,7 +36,7 @@ impl Conclusion {
         }
     }
 }
-/// Complete native participant/administrative commands; no rule switches exist.
+/// Complete participant/administrative commands; no rule switches exist.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 #[allow(missing_docs)]
@@ -74,7 +74,7 @@ pub enum Resource {
     EncodedBytes,
     Counter,
 }
-/// Typed atomic native refusal.
+/// Typed atomic refusal.
 #[derive(Clone, Debug, Eq, PartialEq)]
 #[allow(missing_docs)]
 pub enum GameError {
@@ -123,7 +123,7 @@ pub struct GameEvent {
     pub pending_bare: Option<Side>,
     pub draw_offer: Option<Side>,
 }
-/// A complete immutable committed native prefix; it owns no execution authority.
+/// A complete immutable committed prefix; it owns no execution authority.
 #[derive(Clone, Debug, Eq, PartialEq)]
 #[allow(missing_docs)]
 pub struct HistorySnapshot {
@@ -183,7 +183,7 @@ impl RepetitionKey {
     }
 }
 /// Context-checked complete request.
-pub type GameRequest = crate::native::history::Request<Side, GameCommand>;
+pub type GameRequest = crate::game::history::Request<Side, GameCommand>;
 /// Unscored no-action is not an invented mate, forfeit or draw.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 #[allow(missing_docs)]
@@ -291,7 +291,7 @@ impl Game {
     pub fn from_root(root: Position) -> Result<Self, GameError> {
         Self::from_root_with_stop(root, &mut || false)
     }
-    /// Root admission with cancellation before finite native bare-response queries.
+    /// Root admission with cancellation before finite bare-response queries.
     pub fn from_root_with_stop(
         root: Position,
         stop: &mut impl FnMut() -> bool,
@@ -325,7 +325,7 @@ impl Game {
     }
     /// Exact standard setup under an explicitly selected whole profile.
     pub fn standard(profile: Profile) -> Self {
-        Self::from_root(Position::standard(profile)).expect("standard native root")
+        Self::from_root(Position::standard(profile)).expect("standard game root")
     }
     /// Current accepted position.
     pub fn position(&self) -> &Position {
@@ -336,10 +336,10 @@ impl Game {
         self.position().profile()
     }
     /// Original admitted structural root and declared provenance.
-    pub fn native_root(&self) -> &StructuralState {
+    pub fn game_root(&self) -> &StructuralState {
         self.root.state()
     }
-    /// Exact completed native outcome only.
+    /// Exact completed game outcome only.
     pub fn conclusion(&self) -> Option<Conclusion> {
         self.snapshot().conclusion
     }
@@ -350,7 +350,7 @@ impl Game {
             .filter(|(_, p)| p.side == side && p.is_royal())
             .collect()
     }
-    /// Canonical exact prefix reconstructed with fresh native authority.
+    /// Canonical exact prefix reconstructed with fresh session authority.
     pub fn record_prefix(&self, count: usize) -> Result<GameRecord, RecordError> {
         self.record_prefix_with_stop(count, &mut || false)
     }
@@ -396,12 +396,12 @@ impl Game {
         }
         Ok(record)
     }
-    /// Complete current native choices, with repetition admission separate from geometry.
+    /// Complete current game choices, with repetition admission separate from geometry.
     pub fn legal_actions(&self) -> Vec<Action> {
         self.legal_actions_with_stop(&mut || false)
-            .expect("finite admitted native query")
+            .expect("finite admitted game query")
     }
-    /// Cancellable native Game choices; no process, frontend or implied outcome.
+    /// Cancellable Game choices; no process, frontend or implied outcome.
     pub fn legal_actions_with_stop(
         &self,
         stop: &mut impl FnMut() -> bool,

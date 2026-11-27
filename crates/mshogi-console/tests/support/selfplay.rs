@@ -1,4 +1,4 @@
-use mshogi_core::native::CanonicalRecord;
+use mshogi_core::game::CanonicalRecord;
 use mshogi_engine::*;
 use std::{
     io::{Read, Write},
@@ -71,7 +71,7 @@ pub trait SelfplayGame: EngineGame {
     fn admit(game: &mut Self::Game, action: Self::Choice);
 }
 
-macro_rules! native_game {
+macro_rules! game_adapter {
     ($module:ident, $kind:ident) => {
         impl SelfplayGame for game::$kind {
             fn envelope(game: &Self::Game) -> CanonicalRecord {
@@ -95,10 +95,10 @@ macro_rules! native_game {
         }
     };
 }
-native_game!(tori, Tori);
-native_game!(tenjiku, Tenjiku);
+game_adapter!(tori, Tori);
+game_adapter!(tenjiku, Tenjiku);
 
-/// Check actual choices against native legal actions and independently replay
+/// Check actual choices against legal actions and independently replay
 /// the final, complete record. Each fixture supplies its own depth expectation.
 pub fn bounded<G: SelfplayGame>(
     mut game: G::Game,
@@ -125,7 +125,7 @@ pub fn bounded<G: SelfplayGame>(
             break;
         }
         let response = run(&game, id);
-        let result = G::result(&response.observation.result).expect("expected native result");
+        let result = G::result(&response.observation.result).expect("expected engine result");
         result.validate(&game).unwrap();
         let EngineResult::Choice { choice, telemetry } = result else {
             panic!("expected a completed choice: {result:?}");
@@ -146,18 +146,18 @@ pub fn bounded<G: SelfplayGame>(
             telemetry,
         }) = G::result(&response.observation.result)
         else {
-            panic!("expected native terminal root");
+            panic!("expected terminal root");
         };
         assert_eq!(*conclusion, expected);
         assert!(telemetry.principal_variation.is_empty());
         observations.push(response.observation);
     }
-    let native = G::envelope(&game);
-    let record = native.to_json().unwrap();
+    let game = G::envelope(&game);
+    let record = game.to_json().unwrap();
     let restored = CanonicalRecord::from_json(&record).unwrap();
-    assert_eq!(restored, native);
-    let replay = G::to_game(G::record(&restored).expect("expected native record")).unwrap();
-    assert_eq!(G::envelope(&replay), native);
+    assert_eq!(restored, game);
+    let replay = G::to_game(G::record(&restored).expect("expected game record")).unwrap();
+    assert_eq!(G::envelope(&replay), game);
     Trace {
         actions,
         record,

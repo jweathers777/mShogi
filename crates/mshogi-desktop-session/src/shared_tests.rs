@@ -42,7 +42,7 @@ fn replace(c: &mut DesktopController, g: s::Game, human: s::Side) -> SharedSnaps
         c,
         SessionOperation::Replace {
             record: CanonicalRecord::shogi(s::GameRecord::from_game(&g)),
-            human: NativeSide::Shogi(human),
+            human: TaggedSide::Shogi(human),
         },
     )
     .unwrap()
@@ -84,7 +84,7 @@ fn incomplete(context: ExecutionContext) -> ExecutionObservation {
     }
 }
 #[test]
-fn identities_native_geometry_and_chess_compatibility() {
+fn identities_geometry_and_chess_compatibility() {
     let mut c = controller();
     let chess = c.shared_snapshot();
     assert_eq!(chess.game, GameKind::Chess);
@@ -262,7 +262,7 @@ fn actual_complete_drop_promotion_capture_and_atomic_rejection() {
     assert_eq!(dropped.turn.label, "Gote");
 }
 #[test]
-fn declaration_advice_terminal_history_and_native_wrong_turn_semantics() {
+fn declaration_advice_terminal_history_and_wrong_turn_semantics() {
     let mut c = controller();
     let root = imported("K8/1RB6/1+P+P+P+P+P+P+P+P/9/9/9/9/9/8k b B5P 1");
     let view = replace(&mut c, root.clone(), s::Side::Sente);
@@ -482,13 +482,13 @@ fn command_json_strict_payload_and_replacement_identity() {
         game: GameKind::Chess,
         operation: SessionOperation::Replace {
             record: CanonicalRecord::shogi(s::GameRecord::from_game(&s::Game::new())),
-            human: NativeSide::Shogi(s::Side::Sente),
+            human: TaggedSide::Shogi(s::Side::Sente),
         },
     };
     let old = c.shared_token();
     let mut wrong = command;
     if let SessionOperation::Replace { human, .. } = &mut wrong.operation {
-        *human = NativeSide::Chess(Color::White);
+        *human = TaggedSide::Chess(Color::White);
     }
     assert!(c.shared_command(wrong).is_err());
     assert_eq!(old, c.shared_token());
@@ -518,7 +518,7 @@ fn close_document_preconditions_advance_for_shogi_events_observations_and_replac
         decode_execution_observation(&bytes, &context)
     }));
     while c.admission_token.is_some() {
-        c.poll_native_admission();
+        c.poll_admission();
         std::thread::sleep(std::time::Duration::from_millis(1));
     }
     // An analysis result is not saved: the document does not change.
@@ -530,7 +530,7 @@ fn close_document_preconditions_advance_for_shogi_events_observations_and_replac
             record: CanonicalRecord::chess(
                 AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record(),
             ),
-            human: NativeSide::Chess(Color::White),
+            human: TaggedSide::Chess(Color::White),
         },
     )
     .unwrap();
@@ -543,11 +543,11 @@ fn command_diagnostics_are_bounded_without_splitting_utf8() {
         "{{\"expected\":{{\"{huge}\":1}},\"game\":\"chess\",\"operation\":{{\"kind\":\"cancel\"}}}}"
     );
     let error = SharedDesktopCommand::from_json(&command).unwrap_err();
-    assert!(error.len() <= mshogi_core::native::MAX_RECORD_DIAGNOSTIC_BYTES);
+    assert!(error.len() <= mshogi_core::game::MAX_RECORD_DIAGNOSTIC_BYTES);
     assert!(error.len() > 100);
 }
 #[test]
-fn incomplete_failure_and_retry_preserve_native_history_without_fallback() {
+fn incomplete_failure_and_retry_preserve_history_without_fallback() {
     let mut c = controller();
     replace(&mut c, s::Game::new(), s::Side::Gote);
     send(&mut c, SessionOperation::Resume {}).unwrap();
@@ -589,7 +589,7 @@ fn settle(c: &mut DesktopController) {
 fn new_product_game(
     c: &mut DesktopController,
     game: GameKind,
-    human: NativeSide,
+    human: TaggedSide,
 ) -> SharedSnapshot {
     let (_, receipt) = c
         .shared_new_game(
@@ -610,21 +610,21 @@ fn new_product_game(
     }
 }
 #[test]
-fn product_new_games_are_native_qualified_oriented_and_live_with_fresh_identities() {
+fn product_new_games_are_qualified_oriented_and_live_with_fresh_identities() {
     let mut c = controller();
     let mut previous = c.shared_snapshot().token;
     for human in [
-        NativeSide::Shogi(s::Side::Sente),
-        NativeSide::Shogi(s::Side::Gote),
-        NativeSide::Chess(Color::Black),
-        NativeSide::Chess(Color::White),
-        NativeSide::Xiangqi(mshogi_core::xiangqi::Side::Red),
-        NativeSide::Xiangqi(mshogi_core::xiangqi::Side::Black),
-        NativeSide::Tori(mshogi_core::tori::Side::Sente),
-        NativeSide::Tori(mshogi_core::tori::Side::Gote),
-        NativeSide::Chu(mshogi_core::chu::Side::Sente),
-        NativeSide::Chu(mshogi_core::chu::Side::Gote),
-        NativeSide::Chess(Color::White),
+        TaggedSide::Shogi(s::Side::Sente),
+        TaggedSide::Shogi(s::Side::Gote),
+        TaggedSide::Chess(Color::Black),
+        TaggedSide::Chess(Color::White),
+        TaggedSide::Xiangqi(mshogi_core::xiangqi::Side::Red),
+        TaggedSide::Xiangqi(mshogi_core::xiangqi::Side::Black),
+        TaggedSide::Tori(mshogi_core::tori::Side::Sente),
+        TaggedSide::Tori(mshogi_core::tori::Side::Gote),
+        TaggedSide::Chu(mshogi_core::chu::Side::Sente),
+        TaggedSide::Chu(mshogi_core::chu::Side::Gote),
+        TaggedSide::Chess(Color::White),
     ] {
         let current = new_product_game(&mut c, human.game(), human);
         assert_eq!(current.game, human.game());
@@ -637,16 +637,16 @@ fn product_new_games_are_native_qualified_oriented_and_live_with_fresh_identitie
         assert!(current.document.dirty);
         assert_eq!(current.open_token, c.shared_open_token());
         match human {
-            NativeSide::Tenjiku(_) => unreachable!(
-                "Two explicitly named Tenjiku profiles have separate native consumer fixtures"
+            TaggedSide::Tenjiku(_) => unreachable!(
+                "Two explicitly named Tenjiku profiles have separate consumer fixtures"
             ),
-            NativeSide::Chu(side) => {
+            TaggedSide::Chu(side) => {
                 use mshogi_core::chu;
                 assert_eq!(current.profile.id(), chu::PROFILE_ID);
                 assert_eq!(current.pieces.len(), 92);
                 assert_eq!(current.board.files.len(), 12);
                 assert_eq!(current.board.ranks.len(), 12);
-                assert_eq!(current.turn.id, NativeSide::Chu(chu::Side::Sente));
+                assert_eq!(current.turn.id, TaggedSide::Chu(chu::Side::Sente));
                 assert!(current.capabilities.engine_turn && current.capabilities.move_analysis);
                 assert!(!current.capabilities.hands && !current.capabilities.drops);
                 let state = c.session.chu().unwrap();
@@ -654,13 +654,13 @@ fn product_new_games_are_native_qualified_oriented_and_live_with_fresh_identitie
                 assert_eq!(current.capabilities.board_action, side == chu::Side::Sente);
                 assert_eq!(state.pending.is_some(), side == chu::Side::Gote);
             }
-            NativeSide::Tori(side) => {
+            TaggedSide::Tori(side) => {
                 use mshogi_core::tori as t;
                 assert_eq!(current.profile.id(), t::PROFILE_ID);
                 assert_eq!(current.pieces.len(), 32);
                 assert_eq!(current.board.files.len(), 7);
                 assert_eq!(current.board.ranks.len(), 7);
-                assert_eq!(current.turn.id, NativeSide::Tori(t::Side::Sente));
+                assert_eq!(current.turn.id, TaggedSide::Tori(t::Side::Sente));
                 assert!(current.capabilities.engine_turn && current.capabilities.move_analysis);
                 assert!(
                     current.capabilities.hands
@@ -672,7 +672,7 @@ fn product_new_games_are_native_qualified_oriented_and_live_with_fresh_identitie
                 assert_eq!(current.capabilities.board_action, side == t::Side::Sente);
                 assert_eq!(state.pending.is_some(), side == t::Side::Gote);
             }
-            NativeSide::Xiangqi(side) => {
+            TaggedSide::Xiangqi(side) => {
                 use mshogi_core::xiangqi as x;
                 assert_eq!(current.profile.id(), x::PROFILE_ID);
                 assert_eq!(current.pieces.len(), 32);
@@ -680,17 +680,17 @@ fn product_new_games_are_native_qualified_oriented_and_live_with_fresh_identitie
                 assert_eq!(current.board.intersections.unwrap().points.len(), 90);
                 assert!(current.hands.is_empty());
                 assert!(!current.capabilities.promotion && !current.capabilities.declaration);
-                assert_eq!(current.turn.id, NativeSide::Xiangqi(x::Side::Red));
+                assert_eq!(current.turn.id, TaggedSide::Xiangqi(x::Side::Red));
                 let state = c.session.xiangqi().unwrap();
                 assert_eq!(state.document.settings().orientation, side);
                 assert_eq!(current.capabilities.board_action, side == x::Side::Red);
                 assert_eq!(state.pending.is_some(), side == x::Side::Black);
             }
-            NativeSide::Shogi(side) => {
+            TaggedSide::Shogi(side) => {
                 assert_eq!(current.pieces.len(), 40);
                 assert_eq!(current.choices.len(), 30);
                 assert!(!current.capabilities.declaration);
-                assert_eq!(current.turn.id, NativeSide::Shogi(s::Side::Sente));
+                assert_eq!(current.turn.id, TaggedSide::Shogi(s::Side::Sente));
                 assert_eq!(
                     c.session.shogi().unwrap().document.settings().orientation,
                     side
@@ -701,7 +701,7 @@ fn product_new_games_are_native_qualified_oriented_and_live_with_fresh_identitie
                     side == s::Side::Gote
                 );
             }
-            NativeSide::Chess(side) => {
+            TaggedSide::Chess(side) => {
                 assert_eq!(
                     c.session.chess().unwrap().document.settings().orientation,
                     side
@@ -715,21 +715,21 @@ fn product_new_games_are_native_qualified_oriented_and_live_with_fresh_identitie
 fn product_new_rejects_stale_or_conflicting_choices_before_retiring_live_work() {
     let mut c = controller();
     let stale = c.shared_open_token();
-    let before = new_product_game(&mut c, GameKind::Shogi, NativeSide::Shogi(s::Side::Gote));
+    let before = new_product_game(&mut c, GameKind::Shogi, TaggedSide::Shogi(s::Side::Gote));
     let pending = c.session.shogi().unwrap().pending.clone();
     assert!(
         c.shared_new_game(
             stale,
-            mshogi_core::native::RulesProfile::ChessMatchV1,
-            NativeSide::Chess(Color::White)
+            mshogi_core::game::RulesProfile::ChessMatchV1,
+            TaggedSide::Chess(Color::White)
         )
         .is_err()
     );
     assert!(
         c.shared_new_game(
             c.shared_open_token(),
-            mshogi_core::native::RulesProfile::ChessMatchV1,
-            NativeSide::Shogi(s::Side::Sente)
+            mshogi_core::game::RulesProfile::ChessMatchV1,
+            TaggedSide::Shogi(s::Side::Sente)
         )
         .is_err()
     );
@@ -738,9 +738,9 @@ fn product_new_rejects_stale_or_conflicting_choices_before_retiring_live_work() 
     assert_eq!(c.session.shogi().unwrap().game.events().len(), 0);
 }
 #[test]
-fn product_declaration_capability_is_advisory_eligibility_but_native_terminal_semantics_remain() {
+fn declaration_capability_is_advisory_and_the_rules_set_the_outcome() {
     let mut c = controller();
-    let initial = new_product_game(&mut c, GameKind::Shogi, NativeSide::Shogi(s::Side::Sente));
+    let initial = new_product_game(&mut c, GameKind::Shogi, TaggedSide::Shogi(s::Side::Sente));
     assert!(!initial.declaration_advice[0].eligible);
     assert!(!initial.capabilities.declaration);
     let eligibility = replace(
@@ -760,15 +760,15 @@ fn product_declaration_capability_is_advisory_eligibility_but_native_terminal_se
     );
     assert!(!declared.capabilities.declaration);
     assert_eq!(declared.events[0].board_ply, 0);
-    new_product_game(&mut c, GameKind::Shogi, NativeSide::Shogi(s::Side::Gote));
+    new_product_game(&mut c, GameKind::Shogi, TaggedSide::Shogi(s::Side::Gote));
     let resigned = send(&mut c, SessionOperation::Resign {}).unwrap();
     assert_eq!(resigned.status.label, "Gote resigned · Sente wins");
     assert_eq!(resigned.events[0].board_ply, 0);
-    assert_eq!(resigned.turn.id, NativeSide::Shogi(s::Side::Sente));
+    assert_eq!(resigned.turn.id, TaggedSide::Shogi(s::Side::Sente));
 }
 #[cfg(feature = "desktop-verification")]
 #[test]
-fn product_verification_fixtures_use_real_native_context_and_choices() {
+fn product_verification_fixtures_use_real_context_and_choices() {
     for fixture in [
         "shogi-standard",
         "shogi-gote",
@@ -810,7 +810,7 @@ fn product_verification_fixtures_use_real_native_context_and_choices() {
 }
 
 #[test]
-fn native_search_presentation_preserves_target_purpose_and_real_terminal_distance() {
+fn search_presentation_preserves_target_purpose_and_real_terminal_distance() {
     let mut c = controller();
     replace(
         &mut c,
@@ -863,7 +863,7 @@ fn xiangqi_product_creation_retires_prior_work_and_keeps_archive_admission() {
         let token = c.shared_token();
         let open = c.shared_open_token();
         let pending = c.session.shogi().and_then(|g| g.pending.clone());
-        let after = new_product_game(&mut c, GameKind::Xiangqi, NativeSide::Xiangqi(x::Side::Red));
+        let after = new_product_game(&mut c, GameKind::Xiangqi, TaggedSide::Xiangqi(x::Side::Red));
         assert_eq!(after.game, GameKind::Xiangqi);
         assert_ne!(after.token, token);
         assert!(!after.paused);
@@ -875,17 +875,17 @@ fn xiangqi_product_creation_retires_prior_work_and_keeps_archive_admission() {
         assert!(
             c.shared_new_game(
                 open,
-                mshogi_core::native::RulesProfile::XiangqiWxf2018V1,
-                NativeSide::Xiangqi(x::Side::Black)
+                mshogi_core::game::RulesProfile::XiangqiWxf2018V1,
+                TaggedSide::Xiangqi(x::Side::Black)
             )
             .is_err()
         );
-        assert!(after.capabilities.save, "MSH-99 native archive support");
+        assert!(after.capabilities.save, "MSH-99 archive support");
     }
 }
 
 #[test]
-fn current_wire_frame_is_checked_before_a_durable_native_observation_is_admitted() {
+fn current_wire_frame_is_checked_before_a_durable_observation_is_admitted() {
     let mut c = controller();
     replace(&mut c, s::Game::new(), s::Side::Sente);
     let context = analyze(&mut c);
@@ -913,7 +913,7 @@ fn current_wire_frame_is_checked_before_a_durable_native_observation_is_admitted
 }
 
 #[test]
-fn native_tori_rejects_conflicting_player_before_admission_and_accepts_native_records() {
+fn tori_rejects_conflicting_player_before_admission_and_accepts_records() {
     use mshogi_core::tori;
     let mut c = controller();
     let before = c.shared_snapshot().context;
@@ -922,8 +922,8 @@ fn native_tori_rejects_conflicting_player_before_admission_and_accepts_native_re
     let error = c
         .shared_new_game(
             open,
-            mshogi_core::native::RulesProfile::ToriModernV1,
-            NativeSide::Shogi(s::Side::Sente),
+            mshogi_core::game::RulesProfile::ToriModernV1,
+            TaggedSide::Shogi(s::Side::Sente),
         )
         .unwrap_err();
     assert!(error.contains("side does not belong"));
@@ -935,7 +935,7 @@ fn native_tori_rejects_conflicting_player_before_admission_and_accepts_native_re
             record: CanonicalRecord::tori(
                 tori::GameRecord::from_game(&tori::Game::standard()).unwrap(),
             ),
-            human: NativeSide::Tori(tori::Side::Sente),
+            human: TaggedSide::Tori(tori::Side::Sente),
         },
     )
     .unwrap();

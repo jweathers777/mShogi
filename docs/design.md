@@ -32,7 +32,7 @@ outside the delivery plan.
 
 mShogi is a game-playing engine, not a historical reconstruction project.
 Delivering a game means a clearly identified, coherent, complete playable rules
-profile; independently verified rules and history; a functional native engine;
+profile; independently verified rules and history; a functional mShogi engine;
 and integration into the application. Historical research resolves material
 gameplay uncertainty; acquiring every historical edition is not a requirement.
 Distinguish sourced rules from necessary software conventions. A material
@@ -47,7 +47,7 @@ Xiangqi [WXF2018](m4/xiangqi/profile-proposal.md) (D-15), modern
 [Tori](m4/tori/profile.md), modern JCSA [Chu](m4/chu/profile.md) (D-20), and
 the two Tenjiku profiles [Adams 1999 and Muller](m4/tenjiku/profile.md)
 (D-21). Chu uses capture-based admission, finite immediate royal-threat mate,
-native must-vary admission before the fourth repetition, and narrow material
+must-vary admission before the fourth repetition, and narrow material
 exhaustion with actual replies or agreed draws; it adds no Chess self-check,
 unrestricted forced-mate search, repetition forfeit or general bare-royal award
 ([decisions](m4/chu/decisions.md)).
@@ -56,7 +56,7 @@ unrestricted forced-mate search, repetition forfeit or general bare-royal award
 
 | Layer | Direction |
 | --- | --- |
-| Rules, positions, search, native console | Rust and Cargo |
+| Rules, positions, search, console | Rust and Cargo |
 | Desktop host | Tauri 2 |
 | Desktop frontend | React, strict TypeScript, Vite |
 | Board and surrounding interface | SVG board presentation with HTML/CSS controls |
@@ -77,6 +77,20 @@ choices, turn progression, and rule-dependent outcomes. Search, console, GUI,
 match runner, and training tools use it. The frontend manages selection and
 presentation and must not contain a second implementation of legality.
 Training code must not implement a separate approximation of the game.
+
+#### Terminology
+
+| Term | Meaning |
+| --- | --- |
+| Rules library | `mshogi-core`, which owns the legal actions, history and outcomes for each game. The `game` module supplies shared dispatch for the six games. |
+| Game action | One complete board choice. A game command can also request a non-move operation such as resignation or a draw claim. |
+| Game record | A serialized initial state and command history under a named rules profile. A canonical record is the game-tagged envelope for a record. |
+| Tagged side | A side paired with its game, for example Chess White or Xiangqi Red. |
+| Game adapter | The per-game implementation of a shared consumer interface. A game session owns the current game and its runtime state. |
+| Session snapshot | The current view of a desktop game session, including its token, selection, status and capabilities. |
+| Engine result and observation | The result is the engine's response to an execution request. An observation pairs the result with the exact request context. |
+| Internal execution | mShogi's structured search interface. Console interoperability adapters have their own protocol names. |
+| Native | Use for platform concepts such as a native OS dialog, window or menu. |
 
 ### A-02. Explicit state and complete actions
 
@@ -110,7 +124,7 @@ This rule governs the real game, its saved state and its adjudication. An
 engine's private analysis can key its transposition table on the board state
 alone and detect repetition and move-count rules on the search path, as
 classical engines do. Such analysis can be inexact in rare history-dependent
-cases. It never decides a real game result; the native rules do (2026-11-13).
+cases. It never decides a real game result; the rules library does (2026-11-13).
 
 An undo record restores every affected field and incremental cache. Public
 saved-game records must not depend on the engine's private undo layout.
@@ -130,9 +144,9 @@ and every result identify the request and its base position and version.
 Superseded results cannot change the current game. Cancellation must not
 corrupt the game or block behind unbounded progress messages.
 
-The desktop application supervises the native engine executable for
+The desktop application supervises the engine executable for
 substantial search work. Quick rules queries may call the rules library in
-process. Move generation, evaluation and search nodes stay native, with no
+process. Move generation, evaluation and search run in Rust without
 frontend or Python round trips.
 
 The console stays independently usable. Human interaction and machine protocol
@@ -163,28 +177,28 @@ work stay off the UI event path. Validate the real packaged application on all
 three target systems.
 
 - **Movement inspection** (MSH-101): the visible status is exactly
-  **`Inspecting {side} {piece} · Esc clears`**. The native inspection label
+  **`Inspecting {side} {piece} · Esc clears`**. The inspection label
   supplies game-specific side and piece terms; a shared formatter owns the
-  surrounding words. Native non-actionable inspection, distinct hollow markers,
+  surrounding words. Non-actionable inspection, distinct hollow markers,
   accessible read-only announcements and keyboard/Escape behavior stay
   required.
 - **Pieces** (MSH-42): traditional, variant-appropriate kanji are the default
-  for every shogi-family game, using the variant's own native glyphs and
+  for every shogi-family game, using the variant's own glyphs and
   bundled licensed glyph assets. Bird artwork may stay as an inactive
   alternative.
 - **Console diagrams** follow the
   [compact convention](console-presentation.md): case-based ownership for
   Chess, Standard Shogi and Xiangqi, aligned Shogi promotion markers, and
-  lowercase native owner prefixes for multi-character abbreviations.
+  lowercase side prefixes for multi-character abbreviations.
 - **Xiangqi** shows intersections, river, palaces and its own pieces, with the
   whole board visible at supported desktop sizes without scrolling or zooming.
 
 <a id="owner-acceptance-of-tenjiku-visuals-and-shared-identification-2026-11-05"></a>
 
 - **Piece identification and capture marks** (2026-11-05): selecting a
-  playable friendly piece shows its native piece name in the board footer in
+  playable friendly piece shows its piece name in the board footer in
   all six games, including during compound selection. Legal capture indicators
-  paint above occupied destination pieces as outlined overlays; native
+  paint above occupied destination pieces as outlined overlays; movement
   inspection stays distinct.
 - **Window size**: the application minimum is 760×650. The whole Tenjiku board
   fits there, though not every kanji or route badge is comfortably readable;
@@ -210,7 +224,7 @@ earlier existence or passing tests are not reasons to keep them. Re-express
 behavioral and independently expected fixtures against the replacement; retire
 tests whose only purpose is a removed interface.
 
-Preserve the functional requirements: correct complete native game semantics;
+Preserve the functional requirements: correct complete game semantics;
 authoritative game histories, adjudication and atomic operations; safe
 execution, cancellation and stale-result rejection; save and reopen of the game
 (rules profile, start position, every command, sides and settings);
@@ -227,11 +241,11 @@ product uses.
 
 ### A-10. Application architecture and shared product UI
 
-One application/runtime controller, exactly one active native-tagged document,
+One application/runtime controller, exactly one active game-tagged document,
 one internal execution contract
 ([internal-execution-v4](desktop/internal-execution-v4.md)), one desktop
-envelope with native payloads, one frontend session/operation owner and one
-shared board interaction controller (2026-10-30). Native rules, actions,
+envelope with game payloads, one frontend session/operation owner and one
+shared board interaction controller (2026-10-30). Rules, actions,
 histories, adjudication, search and justified optimized structures stay
 independent per game.
 
@@ -245,10 +259,10 @@ game; game-specific content (Chess claims, Shogi declarations, Xiangqi
 warnings) composes into those sections without its own layout.
 
 Game renderers supply topology, geometry, coordinates and decorations; piece
-art, typography and orientation; hands and other genuine board-adjacent native
+art, typography and orientation; hands and other genuine board-adjacent
 content; and promotion, compound-route and specialized completion views. One
-common native-choice interaction owns selection, cancellation, inspection and
-completion. This does not require a universal board renderer, native rules
+common choice interaction owns selection, cancellation, inspection and
+completion. This does not require a universal board renderer, rules
 model or frontend rules interpreter.
 
 ### A-11. Desktop UX
@@ -259,12 +273,12 @@ model or frontend rules interpreter.
   Diagnostics and required notices are reachable through a nonintrusive
   support/About entry, outside the game sidebar.
 - New Game shows a compact dropdown of **implemented playable games only**,
-  with the existing side buttons and native White/Black, Sente/Gote, Red/Black
+  with the existing side buttons and White/Black, Sente/Gote, Red/Black
   and Random labels. The application brand uses the Shogi selector character
   (歩). No implementation narration; keep meaningful uncertainty, result,
   capacity and recovery information.
-- Moves are native complete board actions in sourced game-appropriate notation,
-  in two player columns. Native warnings, claims and other non-move events stay
+- Moves are complete board actions in sourced game-appropriate notation,
+  in two player columns. Warnings, claims and other non-move events stay
   in the history, attached to the command that caused them, not as extra rows.
   History stops only at command boundaries (MSH-226). The last
   completed action highlights its origin and a stronger destination (drops:
@@ -274,11 +288,11 @@ model or frontend rules interpreter.
   unsaved-changes warning, **only on valid atomic success**; cancellation,
   failure and stale admission keep the current document. Quit with unsaved
   changes asks Save / Discard / Cancel ([macOS Quit](desktop/macos-quit.md)).
-- Resign submits directly and shows the native conclusion or unscored
+- Resign submits directly and shows the game conclusion or unscored
   uncertainty. One-step Return to live restores play suspended only by
-  browsing, with fresh native admission; play stopped by Load, Take back,
+  browsing, with a fresh admission check; play stopped by Load, Take back,
   cancellation or failure stays explicitly stopped (Resume or Retry).
-- [Take back](desktop/take-back.md) restores native human decision points
+- [Take back](desktop/take-back.md) restores human decision points
   atomically by cutting the game's command list, and retires abandoned
   execution; restored play needs an explicit Resume.
 
@@ -287,7 +301,7 @@ model or frontend rules interpreter.
 | Milestone | Outcome | State |
 | --- | --- | --- |
 | M0–M3 | Bootstrap; Chess rules kernel and console; search and match baseline with UCI; desktop vertical slice | Done |
-| M4 | All six games with sourced profiles, conformance, native engines, records and desktop integration (MSH-41–46, closure MSH-47) | Done |
+| M4 | All six games with sourced profiles, conformance, mShogi engines, records and desktop integration (MSH-41–46, closure MSH-47) | Done |
 | M5 | Per-game classical engine strength (MSH-48–54), initial learned evaluator (MSH-55), per-game opening-knowledge experiment (MSH-104); closure MSH-56 | In progress ([roadmap](m5/strength-roadmap.md)) |
 | M6 | Required: analysis, accessibility and product polish (MSH-57), release policy and three-platform distribution (MSH-58); closure MSH-60. Optional: policy/value search and learning research (MSH-59) | Not started |
 
@@ -342,11 +356,11 @@ When authorized, start from the shared shell and interaction controller. Up to
 about 16×16 keep the full-board view; 17×17 to 19×19 investigate a maximized
 window, responsive layout and optional zoom and pan; 25×25 and larger
 investigate a full-board overview with a magnified, navigable playing region,
-accessible zoom/pan and keyboard controls, native legal destinations outside
+accessible zoom/pan and keyboard controls, legal destinations outside
 the detailed view, and preserved complete-action identities. Each game owns its
 rules; shared infrastructure owns session, persistence, execution and
 presentation; no universal variant-rules framework. Each such game needs a
-named, versioned playing profile, independently expected fixtures, native
+named, versioned playing profile, independently expected fixtures,
 rules and complete actions, a functional engine, desktop integration and
 platform verification.
 
@@ -355,7 +369,7 @@ platform verification.
 | ID | State | Decision |
 | --- | --- | --- |
 | D-01 | Accepted | All six named games, own capable engines, console interoperability, and three desktop platforms. |
-| D-02 | Accepted | Rust core and console; Tauri 2 with React/TypeScript/Vite desktop; native rules reused by learning tools (2026-10-22). |
+| D-02 | Accepted | Rust core and console; Tauri 2 with React/TypeScript/Vite desktop; rules reused by learning tools (2026-10-22). |
 | D-03 | Accepted, revised 2026-11-21 | John decides design and product; any coding agent that follows AGENTS.md implements; Backlog.md in the repository. Replaces the 2026-10-22 role of ChatGPT for design. |
 | D-04 | Superseded | The agent workflow is in AGENTS.md (revised 2026-11-20). |
 | D-05 | Done | Rewrite in the existing repository, preserving legacy history (`master`, `main_v2`, `legacy-cpp`). |
@@ -368,7 +382,7 @@ platform verification.
 | D-12 | Done | Standard Shogi first, then Xiangqi, Tori, Chu and Tenjiku. |
 | D-13 | Accepted, 2026-10-26 | Standard Shogi profile `mshogi.shogi.csa36.v1` (SHOGI-P1), with untimed local play, advisory/committed declarations, atomic rejection and declared-counter/bounded-history adaptations. JSA professional and other event conventions are unselected alternatives. See [profile](m4/shogi-profile.md). |
 | D-14 | Accepted, 2026-10-27 | Every game uses the common application shell (A-10). |
-| D-15 | Accepted, 2026-10-27 | Xiangqi profile `mshogi.xiangqi.wxf2018.v1` (XIANGQI-P1): official bilingual WXF2018 with per-case discrepancy reconciliation and no blanket language precedence; third-occurrence warning and fourth continued unilateral loss, or the applicable WXF draw; untimed native claims; Article 3.2A by sound fast recognition only (John removed the exact analysis on 2026-11-25, MSH-269). See [profile](m4/xiangqi/profile-proposal.md). |
+| D-15 | Accepted, 2026-10-27 | Xiangqi profile `mshogi.xiangqi.wxf2018.v1` (XIANGQI-P1): official bilingual WXF2018 with per-case discrepancy reconciliation and no blanket language precedence; third-occurrence warning and fourth continued unilateral loss, or the applicable WXF draw; untimed claims; Article 3.2A by sound fast recognition only (John removed the exact analysis on 2026-11-25, MSH-269). See [profile](m4/xiangqi/profile-proposal.md). |
 | D-16 | Accepted, 2026-10-27 | MSH-104 per-game opening-knowledge experiment is part of M5 closure; adoption is optional. A compact teacher-distilled opening policy, the learned evaluator (MSH-55) and full policy/value search (MSH-59) are distinct. No product Python and no mandatory opening mechanism. |
 | D-17 | Accepted, 2026-10-30 | Pre-release compatibility policy: see A-09. |
 | D-18 | Accepted, 2026-10-30 | Application architecture and shared product UI: see A-10. |

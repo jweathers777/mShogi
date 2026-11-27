@@ -1,13 +1,13 @@
 # MSH-67 independent history and outcome fixture derivations
 
 Fixture source: [history-outcomes.json](../../tests/fixtures/shogi/history-outcomes.json).
-Prepared 2026-10-26 by a separate Codex AI fixture/research agent from the native
+Prepared 2026-10-26 by a separate Codex AI fixture/research agent from the
 history implementer. This is AI derivation and board corroboration, not a claim
 of human rules review. The first fixture review is retained with the then-unmerged implementation at
 `f259bb23834d6156f21aeec53db9ee00ef7242e4` on `codex/shogi-history`.
 That partial implementation and its reviews remain historical evidence. The
 subsequent [complete-chain and supplement resolution](mutual-check-resolution.md)
-now discharges the mutual-check gate. Native final verification and integration
+now discharges the mutual-check gate. Final verification and integration
 are recorded separately in MSH-67 and history validation.
 
 ## Authority, editions and method
@@ -23,8 +23,8 @@ The archived CSA/JSA PDF bytes were checked again with `shasum -a 256`:
 
 The AI first constructed concrete square-by-square histories and hand-counted
 points/occurrences/checks from those clauses. The expectations do not come from
-native game adjudication, `cshogi.is_draw`, search-cycle helpers or opponent
-results. The existing native `Position` probe was subsequently used solely to
+game adjudication, `cshogi.is_draw`, search-cycle helpers or opponent
+results. The existing `Position` probe was subsequently used solely to
 corroborate action legality, check flags, zero legal actions and exact reversal.
 That comparison cannot establish the governing outcome and is not presented as
 an independent rules oracle. The JSON's check ledger has one entry after each
@@ -134,7 +134,7 @@ CSA25 places own-turn among the same prerequisites as material/check. Thus a
 well-formed, properly addressed explicit Sente declaration on Gote's turn is an
 admitted false declaration. A typed request has one actor in its envelope. A second conflicting actor
 embedded in the command is malformed wire data and is a separate admission
-error; this native layer does not claim caller authentication. The corpus also records
+error; this layer does not claim caller authentication. The corpus also records
 harmless eligibility queries and stale-command rejection. A query cannot end a
 game; committed success/failure preserves the board and adds zero board actions.
 Untimed mode satisfies remaining time while live. A request for an unsupported
@@ -143,7 +143,7 @@ false-declaration timeout in untimed play.
 
 Resignation fixtures name either the moving or nonmoving side. The outcome
 belongs to that side and adds zero board actions. Subsequent-event rejection,
-undo and same-board-ply event-prefix distinctions require native record tests.
+undo and same-board-ply event-prefix distinctions require game record tests.
 
 ## IMPORT-LENGTH counter and precedence constructions
 
@@ -175,7 +175,7 @@ root is not asserted.
 
 Environment: macOS27.0.1 build26A434; stable rustc1.89.0; Python3.14.7.
 Board-core source revision: `986a5277f26fe2f41c671bc0f14d2da5f749a156`.
-The outcome fixture expectations were prepared without reading native history
+The outcome fixture expectations were prepared without reading game history
 adjudication code. Commands used:
 
 ```text
@@ -190,5 +190,5 @@ transitions, declared check flags, specified zero-action finals and reversal
 checks passed. Raw local corroboration output is
 `/private/tmp/msh67-fixture-board-corroboration.json`. Temporary scripts/evidence
 are developer-local corroboration, not product dependencies or an outcome oracle.
-Native adjudication, strict replay, rejection and independent fixture review
+Adjudication, strict replay, rejection and independent fixture review
 results must be recorded separately; this document does not infer them.

@@ -3,7 +3,7 @@ use super::position::ChuPosition;
 use crate::alphabeta::{SearchPosition, Stage};
 use mshogi_core::chu::{Face, Piece, Side, Square};
 
-/// Material, advance and central-file weights for each native face, then tempo.
+/// Material, advance and central-file weights for each face, then tempo.
 pub const COUNT: usize = 29 * 3 + 1;
 /// Starting weights reproduce the MSH-201 evaluation exactly.
 pub const INITIAL: [i32; COUNT] = [
@@ -38,7 +38,7 @@ pub const INITIAL: [i32; COUNT] = [
     1300, 1, 1,  // Horned Falcon
     10, // Tempo
 ];
-/// Fitted static Texel weights from the native MSH-52.2 corpus.
+/// Fitted static Texel weights from the MSH-52.2 corpus.
 pub const DEFAULT: [i32; COUNT] = [
     100, 4, 0, // Pawn
     75, 4, 0, // Go-between
@@ -71,7 +71,7 @@ pub const DEFAULT: [i32; COUNT] = [
     1428, 32, 1, // Horned Falcon
     0, // Tempo
 ];
-/// First weight for a face, in native Face::ALL order.
+/// First weight for a face, in Face::ALL order.
 pub const fn index(face: Face) -> usize {
     face as usize * 3
 }

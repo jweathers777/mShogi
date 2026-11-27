@@ -5,7 +5,7 @@
 //! fitting tool (`examples/support/texel.rs`) owns the corpus format, K
 //! calibration, bounded coordinate descent, validation selection and the
 //! separate held-out check. Corpus rows are JSON lines `{POSITION_FIELD,
-//! "result", "split", "game_id"}`; `result` is the first player's native
+//! "result", "split", "game_id"}`; `result` is the first player's
 //! outcome, never a search score.
 
 /// A game's tunable evaluation.

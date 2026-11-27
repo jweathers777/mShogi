@@ -1,7 +1,7 @@
 """Real external-proxy boundary experiment, not packaged application evidence.
 
 Run on Linux with the original and no-pool tauri-driver binaries. A controlled
-native HTTP peer resets a reused socket or resets after accepting a mutation.
+HTTP peer resets a reused socket or resets after accepting a mutation.
 The peer logs each request and connection, independently of the proxy/client.
 """
 import argparse
@@ -96,10 +96,10 @@ def experiment(binary, mode, output):
     port = unused_port()
     endpoint = f'http://127.0.0.1:{port}'
     events, failure = [], None
-    # tauri-driver still supervises its native child; our controlled HTTP peer
+    # tauri-driver still supervises its child; our controlled HTTP peer
     # replaces WebKit for this experiment only. No application is launched.
     with tempfile.TemporaryDirectory() as temp:
-        stub = Path(temp) / 'native-stub'
+        stub = Path(temp) / 'stub'
         stub.write_text('#!/usr/bin/env python3\nimport time\ntime.sleep(300)\n')
         stub.chmod(0o755)
         with (output / f'{binary.name}-{mode}.log').open('w') as log:
@@ -123,7 +123,7 @@ def experiment(binary, mode, output):
                 if mode == 'reuse':
                     # Explicit HTTP/1.1 keep-alive makes reuse deterministic.
                     # urllib's Connection: close would make this stress case
-                    # depend on the native peer's close timing instead.
+                    # depend on the peer's close timing instead.
                     connection = http.client.HTTPConnection('127.0.0.1', port, timeout=5)
                     connection.request('GET', '/status', headers={'Connection': 'keep-alive'})
                     response = connection.getresponse()

@@ -1,12 +1,12 @@
-//! Offline developer experiments over the existing native engines and rules.
+//! Offline developer experiments over the existing mShogi engines and rules.
 mod evidence;
-mod native;
+mod game;
 mod run;
 use crate::{EngineIdentity, RunnerError};
 pub use evidence::*;
-use mshogi_core::native::RulesProfile;
+pub use game::{Root, fresh_root, standard_root};
+use mshogi_core::game::RulesProfile;
 use mshogi_engine::{ExecutionContext, ExecutionObservation, ExecutionPurpose, WorkLimits};
-pub use native::{Root, fresh_root, standard_root};
 pub use run::{run, run_with_stop};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
@@ -45,12 +45,12 @@ pub fn template(executable: &str) -> Result<Config, RunnerError> {
                 group: p.id().into(),
                 root: standard_root(*p).map_err(err)?,
                 split: Split::Test,
-                provenance:
-                    "native standard root; project-generated diagnostic, no external corpus".into(),
+                provenance: "standard root; project-generated diagnostic, no external corpus"
+                    .into(),
             })
         })
         .collect::<Result<_, RunnerError>>()?;
-    let config=Config{schema:SCHEMA,id:"native-diagnostic-template".into(),protocol:"Finite standard-root diagnostic only; unequal-work baseline ablation, not competitive strength. Supply hardware/build/rights/target-distribution protocol before inference.".into(),seed:48,rounds:1,max_steps:2,wall_budget_ms:120_000,watchdog_ms:15_000,cleanup_ms:250,clock:None,players,openings};
+    let config=Config{schema:SCHEMA,id:"diagnostic-template".into(),protocol:"Finite standard-root diagnostic only; unequal-work baseline ablation, not competitive strength. Supply hardware/build/rights/target-distribution protocol before inference.".into(),seed:48,rounds:1,max_steps:2,wall_budget_ms:120_000,watchdog_ms:15_000,cleanup_ms:250,clock:None,players,openings};
     config.validate()?;
     Ok(config)
 }
@@ -92,7 +92,7 @@ pub struct Player {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub clock: Option<FischerClock>,
 }
-/// Complete native starting history and its authored/source provenance.
+/// Complete starting history and its authored/source provenance.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Opening {
@@ -100,7 +100,7 @@ pub struct Opening {
     pub id: String,
     /// Authored parent trajectory/corpus grouping, shared by related imported roots.
     pub group: String,
-    /// Native history, including a complete untimed Chess match where applicable.
+    /// Game history, including a complete untimed Chess match where applicable.
     pub root: Root,
     /// Prevent color-pair/history-prefix split leakage.
     pub split: Split,
@@ -117,13 +117,13 @@ pub struct Config {
     pub id: String,
     /// Caller declaration: question, conditions, rights and hardware description.
     pub protocol: String,
-    /// Seed affects starting-position order only; native search has no seed input.
+    /// Seed affects starting-position order only; search has no seed input.
     pub seed: u64,
     /// Complete seeded catalog cycles; every opening is used in each cycle.
     pub rounds: u16,
     /// Accepted engine commands per game; exhaustion is unscored, never a draw.
     pub max_steps: usize,
-    /// Whole-run soft wall budget, checked before/while native child work.
+    /// Whole-run soft wall budget, checked before/while child work.
     pub wall_budget_ms: u64,
     /// Existing BridgeOptions watchdog per submitted request.
     pub watchdog_ms: u64,
@@ -199,7 +199,7 @@ pub fn digest(text: &str) -> String {
     crate::common::sha256(text)
 }
 impl Config {
-    /// Strict bounded decoding retains native-record duplicate-field admission.
+    /// Strict bounded decoding retains record duplicate-field admission.
     pub fn from_json(text: &str) -> Result<Self, RunnerError> {
         let value: Self = crate::common::decode_config(text)?;
         value.validate()?;
@@ -210,7 +210,7 @@ impl Config {
         self.clock
             .map(|shared| self.players[player].clock.unwrap_or(shared))
     }
-    /// Validate resource limits and concrete native profiles before launching.
+    /// Validate resource limits and concrete profiles before launching.
     pub fn validate(&self) -> Result<(), RunnerError> {
         if self.clock.is_none() && self.players.iter().any(|p| p.clock.is_some()) {
             return Err(err("a participant clock requires the shared clock"));
@@ -258,7 +258,7 @@ impl Config {
             let mut profiles = BTreeSet::new();
             for limits in &p.limits {
                 if !profiles.insert(limits.profile.id())
-                    || !native::valid_work(limits.profile, limits.work)
+                    || !game::valid_work(limits.profile, limits.work)
                 {
                     return Err(err(
                         "duplicate profile or unsupported effective work limits",
@@ -276,20 +276,18 @@ impl Config {
             {
                 return Err(err("invalid/duplicate opening identity"));
             }
-            let state = native::NativeState::from_root(&o.root).map_err(err)?;
+            let state = game::MatchState::from_root(&o.root).map_err(err)?;
             let normalized = serde_json::to_string(&state.root().map_err(err)?).map_err(err)?;
             if let Some(split) = root_splits.insert(digest(&normalized), o.split)
                 && split != o.split
             {
-                return Err(err("same native root assigned to multiple dataset splits"));
+                return Err(err("same game root assigned to multiple dataset splits"));
             }
             for group in [format!("declared:{}", o.group), lineage_key(&o.root)?] {
                 if let Some(split) = root_splits.insert(group, o.split)
                     && split != o.split
                 {
-                    return Err(err(
-                        "related native prefixes/declared group cross dataset splits",
-                    ));
+                    return Err(err("related prefixes/declared group cross dataset splits"));
                 }
             }
             for p in &self.players {
@@ -357,11 +355,11 @@ pub struct Pairing {
     pub opening: usize,
     /// Baseline participant index.
     pub baseline: usize,
-    /// Candidate plays second native side.
+    /// Candidate plays second game side.
     pub swapped: bool,
 }
 impl Pairing {
-    fn player(&self, state: &native::NativeState) -> usize {
+    fn player(&self, state: &game::MatchState) -> usize {
         if state.first_to_move() != self.swapped {
             0
         } else {
@@ -370,7 +368,7 @@ impl Pairing {
     }
 }
 
-/// Exact native observation before the authoritative accepted transition.
+/// Exact engine observation before the authoritative accepted transition.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Step {
@@ -386,9 +384,9 @@ pub struct Step {
     /// Actual the internal protocol observation, never fabricated on cancellation.
     #[serde(deserialize_with = "strict_observation")]
     pub observation: Option<ExecutionObservation>,
-    /// Host cancellation or native-admission refusal.
+    /// Host cancellation or admission refusal.
     pub failure: Option<String>,
-    /// Whether a native command was accepted.
+    /// Whether a game command was accepted.
     pub applied: bool,
 }
 fn strict_observation<'de, D: serde::Deserializer<'de>>(
@@ -403,10 +401,10 @@ fn strict_observation<'de, D: serde::Deserializer<'de>>(
 }
 
 fn admit_bounded(
-    state: &mut native::NativeState,
+    state: &mut game::MatchState,
     result: &mshogi_engine::ExecutionResult,
     limits: WorkLimits,
-) -> Result<native::Admission, String> {
+) -> Result<game::Admission, String> {
     let mut candidate = state.clone();
     let decision = candidate.admit(result)?;
     let after = candidate
@@ -427,12 +425,12 @@ fn admit_bounded(
 }
 // The only input without a response is the host's observed interruption.
 fn decide_step(
-    state: &mut native::NativeState,
+    state: &mut game::MatchState,
     request: &ExecutionContext,
     observation: Option<&ExecutionObservation>,
     interruption: Option<&str>,
     exhausted: bool,
-) -> Result<(native::Admission, Option<String>), RunnerError> {
+) -> Result<(game::Admission, Option<String>), RunnerError> {
     let refusal = match observation {
         None => match interruption {
             Some(reason @ ("cancelled" | "wall_budget")) => reason,
@@ -445,17 +443,17 @@ fn decide_step(
         Some(o) => {
             return Ok(match admit_bounded(state, &o.result, request.limits) {
                 Ok(decision) => (decision, None),
-                Err(e) => (native::Admission::Failed(format!("admission:{e}")), Some(e)),
+                Err(e) => (game::Admission::Failed(format!("admission:{e}")), Some(e)),
             });
         }
     };
     Ok((
-        native::Admission::Failed(refusal.into()),
+        game::Admission::Failed(refusal.into()),
         Some(refusal.into()),
     ))
 }
 
-/// One native game and its honest ending, including unscored failures/caps.
+/// One game and its honest ending, including unscored failures/caps.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Game {
@@ -463,15 +461,15 @@ pub struct Game {
     pub pairing: Pairing,
     /// All observed work, including an incomplete/failed last turn.
     pub steps: Vec<Step>,
-    /// Complete final native game/match history.
+    /// Complete final game/match history.
     pub final_root: Root,
-    /// Native conclusion only; absent for experimental stops.
-    pub native_outcome: Option<serde_json::Value>,
-    /// Native first-side half-point score, absent unless genuinely concluded/scorable.
+    /// Game conclusion only; absent for experimental stops.
+    pub outcome: Option<serde_json::Value>,
+    /// First-side half-point score, absent unless genuinely concluded/scorable.
     pub score_first_twice: Option<u8>,
-    /// Native/experiment stop reason.
+    /// Game or experiment stop reason.
     pub stop: String,
-    /// Cleanup diagnostics never rewrite a native conclusion.
+    /// Cleanup diagnostics never rewrite a game conclusion.
     pub cleanup: Vec<String>,
 }
 /// Observed harness build/runtime; participant build provenance remains declared.
@@ -531,7 +529,7 @@ pub struct Report {
     /// Entire scheduled sample, including unattempted budget stops.
     pub games: Vec<Game>,
 }
-/// An owned report whose complete evidence has passed native validation.
+/// An owned report whose complete evidence has passed rules validation.
 ///
 /// Read access cannot change the report. To edit it, consume it with
 /// [`Self::into_report`]; the resulting report must be validated again.
@@ -545,7 +543,7 @@ pub struct Report {
 #[derive(Clone, Debug)]
 pub struct ValidatedReport(Report);
 impl ValidatedReport {
-    /// Strict external parsing and complete native validation, once.
+    /// Strict external parsing and complete rules validation, once.
     pub fn from_json(text: &str) -> Result<Self, RunnerError> {
         Report::from_json(text).map(Self)
     }
@@ -557,7 +555,7 @@ impl ValidatedReport {
     pub fn into_report(self) -> Report {
         self.0
     }
-    /// Encode this unchanged report without repeating native replay.
+    /// Encode this unchanged report without repeating game replay.
     pub fn to_json(&self) -> Result<String, RunnerError> {
         self.0.encode()
     }
@@ -579,8 +577,8 @@ impl Report {
         report.validate()?;
         Ok(report)
     }
-    /// Encoded form: each step's native record (request and observation
-    /// context) is omitted, because it equals the replayed native history
+    /// Encoded form: each step's game record (request and observation
+    /// context) is omitted, because it equals the replayed game history
     /// before that step (MSH-204, Tori Strength Harness). Without this, report
     /// size grew with the square of game length.
     fn encoded(&self) -> Result<serde_json::Value, RunnerError> {
@@ -592,7 +590,7 @@ impl Report {
         }
         Ok(value)
     }
-    /// Restore each omitted step record from native replay of the recorded
+    /// Restore each omitted step record from game replay of the recorded
     /// observations, without decoding that record again. A step that carries
     /// its record is decoded strictly; validation compares it with replay.
     fn decode(mut value: serde_json::Value) -> Result<Self, RunnerError> {
@@ -605,7 +603,7 @@ impl Report {
                 .openings
                 .get(pairing.opening)
                 .ok_or_else(|| err("pairing opening outside the configuration"))?;
-            let mut state = native::NativeState::from_root(&opening.root).map_err(err)?;
+            let mut state = game::MatchState::from_root(&opening.root).map_err(err)?;
             let raw = std::mem::take(&mut game["steps"]);
             let mut steps = vec![];
             for raw in raw.as_array().into_iter().flatten() {
@@ -627,12 +625,12 @@ impl Report {
         }
         Ok(report)
     }
-    /// Consume editable evidence after one complete native validation.
+    /// Consume editable evidence after one complete rules validation.
     pub fn into_validated(self) -> Result<ValidatedReport, RunnerError> {
         self.validate()?;
         Ok(ValidatedReport(self))
     }
-    /// Encode after checking native replay and complete evidence bounds.
+    /// Encode after checking game replay and complete evidence bounds.
     pub fn to_json(&self) -> Result<String, RunnerError> {
         self.validate()?;
         self.encode()
@@ -677,7 +675,7 @@ impl Report {
                 return Err(err("pairing/step count mismatch"));
             }
             let mut state =
-                native::NativeState::from_root(&self.config.openings[expected.opening].root)
+                game::MatchState::from_root(&self.config.openings[expected.opening].root)
                     .map_err(err)?;
             let mut last_stop = None;
             let mut remaining: Vec<u64> = (0..self.config.players.len())
@@ -686,7 +684,7 @@ impl Report {
             let mut moved = vec![false; self.config.players.len()];
             for step in &game.steps {
                 if state.stop_reason().is_some() {
-                    return Err(err("observation after native stop"));
+                    return Err(err("observation after stop"));
                 }
                 let player = expected.player(&state);
                 let c = &step.request;
@@ -729,8 +727,8 @@ impl Report {
                 if step.failure != failure {
                     return Err(err("observation/admission diagnostic mismatch"));
                 }
-                if step.applied != matches!(decision, native::Admission::Applied) {
-                    return Err(err("native applied marker mismatch"));
+                if step.applied != matches!(decision, game::Admission::Applied) {
+                    return Err(err("applied marker mismatch"));
                 }
                 last_stop = Some(decision);
                 if !step.applied
@@ -743,15 +741,15 @@ impl Report {
                 }
             }
             if state.root().map_err(err)? != game.final_root
-                || state.outcome() != game.native_outcome
+                || state.outcome() != game.outcome
                 || state.score_first_twice() != game.score_first_twice
             {
-                return Err(err("native final history/outcome/score mismatch"));
+                return Err(err("final history/outcome/score mismatch"));
             }
             let expected_stop = state.stop_reason().or_else(|| last_stop.and_then(stop_for));
             if let Some(stop) = expected_stop {
                 if game.stop != stop {
-                    return Err(err("native/observed stop mismatch"));
+                    return Err(err("game and observation stop reasons differ"));
                 }
             } else if !["step_limit", "wall_budget", "cancelled", "artifact_limit"]
                 .contains(&game.stop.as_str())
@@ -764,8 +762,8 @@ impl Report {
     }
 }
 /// One encoded step. Without a request record, the record is the replayed
-/// native history before the step, supplied to both request and observation.
-fn decode_step(raw: &serde_json::Value, state: &native::NativeState) -> Result<Step, RunnerError> {
+/// game history before the step, supplied to both request and observation.
+fn decode_step(raw: &serde_json::Value, state: &game::MatchState) -> Result<Step, RunnerError> {
     if raw["request"].get("game").is_some() {
         return serde_json::from_str(&raw.to_string()).map_err(err);
     }
@@ -814,7 +812,7 @@ fn decode_step(raw: &serde_json::Value, state: &native::NativeState) -> Result<S
         applied: wire.applied,
     })
 }
-/// Remove the replay-determined native record from one encoded step.
+/// Remove the replay-determined game record from one encoded step.
 fn elide(step: &mut serde_json::Value) {
     if let Some(c) = step.get_mut("request").and_then(|c| c.as_object_mut()) {
         c.remove("game");
@@ -833,17 +831,17 @@ pub(super) fn encoded_step(step: &Step) -> Result<serde_json::Value, RunnerError
     elide(&mut value);
     Ok(value)
 }
-fn stop_for(a: native::Admission) -> Option<String> {
+fn stop_for(a: game::Admission) -> Option<String> {
     match a {
-        native::Admission::Applied => None,
-        native::Admission::Finished => Some("native_concluded".into()),
-        native::Admission::Incomplete(s) => Some(format!("incomplete:{s}")),
-        native::Admission::Failed(s)
+        game::Admission::Applied => None,
+        game::Admission::Finished => Some("game_concluded".into()),
+        game::Admission::Incomplete(s) => Some(format!("incomplete:{s}")),
+        game::Admission::Failed(s)
             if s == "cancelled" || s == "wall_budget" || s == "clock_limit" =>
         {
             Some(s)
         }
-        native::Admission::Failed(s) => Some(format!("failure:{s}")),
+        game::Admission::Failed(s) => Some(format!("failure:{s}")),
     }
 }
 fn within_limits(o: &ExecutionObservation) -> bool {

@@ -9,7 +9,7 @@ export function DocumentState({ document }: { document: { path: string | null; d
   return <span className={`document-dirty${state.kind !== "unmodified" ? " dirty" : ""}`} data-document-state={state.kind}>{state.label}</span>;
 }
 
-export function NativeEnginePanel({ status, limits, children }: {
+export function GameEnginePanel({ status, limits, children }: {
   status: string; limits: { depth: number; nodes: number; time_ms?: number }; children: ReactNode;
 }) {
   return <section className="card engine-card">
@@ -47,7 +47,7 @@ export function PlayerArea({ side, human, toMove, playerKey, className = "", chi
   </div>;
 }
 
-// Both games supply native content to these same physical slots. Board selection
+// Both games supply content to these same physical slots. Board selection
 // state remains inside its game adapter; this component owns only composition.
 export function GameArea({ upperPlayer, board, lowerPlayer, footer, className = "", onFocusCapture, onBlurCapture }: {
   upperPlayer: ReactNode; board: ReactNode; lowerPlayer: ReactNode; footer: ReactNode; className?: string;

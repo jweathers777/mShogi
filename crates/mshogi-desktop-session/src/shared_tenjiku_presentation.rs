@@ -1,7 +1,7 @@
-//! Actual native Tenjiku facts and technical choices; playable notation/art belongs to MSH-44.
+//! Actual Tenjiku facts and technical choices; playable notation/art belongs to MSH-44.
 use super::*;
 
-/// Native input targets remain distinct from the mover's actual route.
+/// Input targets remain distinct from the mover's actual route.
 #[derive(Clone, Debug, Serialize)]
 #[serde(tag = "kind", rename_all = "snake_case")]
 pub enum TenjikuChoiceShape {
@@ -10,7 +10,7 @@ pub enum TenjikuChoiceShape {
     /// A capture target selected while the mover remains at its origin.
     StationaryCapture { target: String },
 }
-/// Original physical identity and current native movement face at one coordinate.
+/// Original physical identity and current movement face at one coordinate.
 #[derive(Clone, Debug, Serialize)]
 pub struct TenjikuPieceIdentity {
     pub square: String,
@@ -66,7 +66,7 @@ impl TenjikuHistory {
         }
     }
 }
-/// Both profiles use the same shared owner while retaining native semantics.
+/// Both profiles use the same shared owner while retaining game semantics.
 #[derive(Clone, Debug, Serialize)]
 pub struct Presentation {
     pub profile: RulesProfile,
@@ -100,7 +100,7 @@ impl Presentation {
     }
 }
 fn name(game: &c::Game, owner: c::Side) -> String {
-    side(game.profile().into(), NativeSide::Tenjiku(owner)).label
+    side(game.profile().into(), TaggedSide::Tenjiku(owner)).label
 }
 fn face_name(face: c::Face) -> &'static str {
     c::notation::face_name(face)
@@ -124,10 +124,7 @@ pub(super) fn choice(action: c::Action, alternatives: &[c::Action]) -> Presented
     let stationary = action.kind == c::ActionKind::Igui;
     let completion = if stationary {
         Some(Completion {
-            label: format!(
-                "Capture {} without moving",
-                action.target.expect("native target")
-            ),
+            label: format!("Capture {} without moving", action.target.expect("target")),
             glyph: None,
         })
     } else if action.promote || alternatives.contains(&alternative) {
@@ -145,7 +142,7 @@ pub(super) fn choice(action: c::Action, alternatives: &[c::Action]) -> Presented
     };
     let route: Vec<_> = action.route.iter().map(ToString::to_string).collect();
     let (steps, shape) = if stationary {
-        let target = action.target.expect("native igui target").to_string();
+        let target = action.target.expect("igui target").to_string();
         (
             vec![target.clone()],
             TenjikuChoiceShape::StationaryCapture { target },
@@ -160,7 +157,7 @@ pub(super) fn choice(action: c::Action, alternatives: &[c::Action]) -> Presented
         from: action.from.to_string(),
         steps,
         tenjiku: Some(shape),
-        action: serde_json::to_string(&action).expect("native complete action"),
+        action: serde_json::to_string(&action).expect("complete action"),
         completion,
     }
 }
@@ -171,7 +168,7 @@ pub(super) fn inspect(game: &c::Game, origin: &str) -> Result<inspection::Inspec
     let piece = game
         .position()
         .piece(square)
-        .ok_or("No native piece at this origin.")?;
+        .ok_or("No piece at this origin.")?;
     let actions: Vec<_> = game
         .local_position()
         .inspection(square)
@@ -185,7 +182,7 @@ pub(super) fn inspect(game: &c::Game, origin: &str) -> Result<inspection::Inspec
         .collect();
     Ok((
         GameKind::Tenjiku,
-        NativeSide::Tenjiku(piece.side),
+        TaggedSide::Tenjiku(piece.side),
         format!("{} {}", name(game, piece.side), piece_name(piece)),
         choices,
     ))
@@ -216,7 +213,7 @@ pub(super) fn status(game: &c::Game, has_board_actions: bool) -> PresentedStatus
         Some(c::Conclusion::SimultaneousRoyalLoss) => "Draw: simultaneous final royal loss".into(),
         Some(outcome) => format!(
             "{} wins by {}",
-            name(game, outcome.winner().expect("winning native conclusion")),
+            name(game, outcome.winner().expect("winning game conclusion")),
             match outcome {
                 c::Conclusion::RoyalCapture { .. } => "final royal destruction",
                 c::Conclusion::BareRoyalLoss { .. } => "bare royal loss",
@@ -245,12 +242,12 @@ pub(super) fn edition(game: &c::Game) -> &'static str {
     game.profile().edition()
 }
 pub(super) fn pieces(game: &c::Game) -> Vec<PresentedPiece> {
-    let profile = <super::Tenjiku as crate::native_game::NativeGame>::game_profile(game);
+    let profile = <super::Tenjiku as crate::game_adapter::GameAdapter>::game_profile(game);
     game.position()
         .pieces()
         .map(|(square, p)| PresentedPiece {
             square: square.to_string(),
-            owner: side(profile, NativeSide::Tenjiku(p.side)).key,
+            owner: side(profile, TaggedSide::Tenjiku(p.side)).key,
             kind: p.base.code().into(),
             promoted: p.promoted,
             text: format!("{}{}", if p.promoted { "+" } else { "" }, p.face().code()),

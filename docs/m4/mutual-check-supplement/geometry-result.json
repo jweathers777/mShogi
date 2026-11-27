@@ -750,7 +750,7 @@
     ]
   ],
   "date": "2026-10-26",
-  "method": "Two independently authored necessary-geometry enumerations; neither uses native or reference engine code.",
+  "method": "Two independently authored necessary-geometry enumerations; neither uses or reference engine code.",
   "classifications": {
     "existing_half_plane_cases": 5,
     "new_mixed_pairings_one_symmetry_orbit": 2,

@@ -1,13 +1,13 @@
 import "./pieces.css";
 
 // Decoration only: one pentagonal tile for the four shogi-family games, with
-// each game's traditional face lettering. Native data supplies face, promotion
+// each game's traditional face lettering. Data supplies face, promotion
 // and ownership; these tables are never promotion pairings or movement rules.
 // Sources and font provenance: docs/m4/tori/piece-artwork.md and
 // docs/m4/tenjiku/desktop-art.md.
 export type PieceGame = "shogi" | "tori" | "chu" | "tenjiku";
 const faces: Record<PieceGame, Record<string, string>> = {
-  // Shogi names its pieces by native kind; promotion changes the lettering.
+  // Shogi names its pieces by kind; promotion changes the lettering.
   shogi: { king: "玉将", rook: "飛車", bishop: "角行", gold: "金将", silver: "銀将", knight: "桂馬", lance: "香車", pawn: "歩兵" },
   // The selected profile T02 names.
   tori: { Ph: "鵬", Fa: "鷹", Ea: "鵰", Cr: "鶴", Pt: "雉", LQ: "左鶉", RQ: "右鶉", Sw: "燕", Go: "鴈" },

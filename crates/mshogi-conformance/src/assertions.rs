@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use std::collections::BTreeSet;
 
-/// An actual result projection; future adapters compute values from native results.
+/// An actual result projection; future adapters compute values from engine results.
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 #[allow(missing_docs)]
@@ -14,7 +14,7 @@ pub struct Observation {
     pub owner: String,
     pub value: Value,
 }
-/// Bounded strict observation file for the CLI or a native test driver.
+/// Bounded strict observation file for the CLI or a test driver.
 #[derive(Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 #[allow(missing_docs)]
@@ -57,7 +57,7 @@ pub struct Assertion {
     pub predicate: Predicate,
     pub expected: Value,
 }
-/// Honest execution state; absent native observations remain Pending.
+/// Honest execution state; absent engine observations remain Pending.
 #[derive(Debug, Serialize, PartialEq)]
 #[serde(rename_all = "snake_case")]
 #[allow(missing_docs)]
@@ -78,14 +78,14 @@ pub struct AssertionResult {
     pub status: Status,
     pub diagnostic: Option<Value>,
 }
-/// Test infrastructure report, never a declaration of Tori native conformance.
+/// Test infrastructure report, never a declaration of Tori rules conformance.
 #[derive(Debug, Serialize)]
 #[allow(missing_docs)]
 pub struct Report {
     pub profile: String,
     pub corpus_sha256: String,
     pub fixtures_validated: usize,
-    pub native_conformance_claimed: bool,
+    pub rules_conformance_claimed: bool,
     pub executed: usize,
     pub passed: usize,
     pub pending: usize,
@@ -94,10 +94,10 @@ pub struct Report {
     pub assertions: Vec<AssertionResult>,
     pub later_consumer_requirements: Vec<Value>,
 }
-/// Native test code can project actual outputs without a process or another rules engine.
+/// Test code can project actual outputs without a process or another rules engine.
 /// None means unimplemented/pending; Err is an execution failure, never a chess result.
-pub trait NativeAdapter {
-    /// Compute this field from an actual native operation. Never echo the expected answer.
+pub trait RulesAdapter {
+    /// Compute this field from an actual game operation. Never echo the expected answer.
     fn observe(&self, fixture: &Fixture, assertion: &Assertion) -> Result<Option<Value>, String>;
 }
 fn boundary(f: &Fixture) -> Boundary {
@@ -113,7 +113,7 @@ fn boundary(f: &Fixture) -> Boundary {
         "root_admission" | "terminal_position" => Boundary::LocalLegality,
         "strict_dispatch_contract" | "notation_contract" => Boundary::Record,
         "execution_contract" | "match_contract" => Boundary::Consumer,
-        s if s.starts_with("native_admission") => Boundary::LocalLegality,
+        s if s.starts_with("game_admission") => Boundary::LocalLegality,
         _ => Boundary::History,
     }
 }
@@ -122,7 +122,7 @@ pub fn plan(corpus: &Corpus) -> Vec<Assertion> {
     let mut out = Vec::new();
     for f in corpus.fixtures() {
         for (field, expected) in &f.expected {
-            // These are hand-written explanations, not observable native fields.
+            // These are hand-written explanations, not observable fields.
             if matches!(
                 field.as_str(),
                 "escape_proof"
@@ -156,7 +156,7 @@ pub fn plan(corpus: &Corpus) -> Vec<Assertion> {
                 &corpus
                     .owner(&f.id)
                     .expect("admitted ownership")
-                    .primary_native_owner
+                    .primary_rules_owner
             };
             if field == "reversal_contract" {
                 for (part, predicate) in [
@@ -204,12 +204,12 @@ pub fn plan(corpus: &Corpus) -> Vec<Assertion> {
             }
         }
         if f.id == "TORI-C-IDENTITY" {
-            out.push(Assertion {fixture_id:f.id.clone(),field:"native_context/retired".into(),owner:"MSH-129".into(),boundary:Boundary::History,predicate:Predicate::DifferentSnapshots,expected:Value::String("fresh native request token after retirement; real process acceptance belongs to MSH-77".into())});
+            out.push(Assertion {fixture_id:f.id.clone(),field:"game_context/retired".into(),owner:"MSH-129".into(),boundary:Boundary::History,predicate:Predicate::DifferentSnapshots,expected:Value::String("fresh request token after retirement; real process acceptance belongs to MSH-77".into())});
         }
         let owner = corpus.owner(&f.id).expect("admitted owner");
         // A structural projection is not full legality; the manifest assigns it to MSH-127.
         let structural = owner
-            .supplementary_native_checks
+            .supplementary_rules_checks
             .iter()
             .any(|c| c.owner == "MSH-127");
         if structural {
@@ -242,19 +242,18 @@ pub fn plan(corpus: &Corpus) -> Vec<Assertion> {
             }
         }
         if f.expected.contains_key("reversal_contract") {
-            for (native_owner, boundary) in [
+            for (rules_owner, boundary) in [
                 ("MSH-127", Boundary::Transition),
                 ("MSH-128", Boundary::LocalLegality),
             ] {
-                if native_owner == "MSH-127" && !structural
-                    || f.given["command"]["kind"] == "resign"
+                if rules_owner == "MSH-127" && !structural || f.given["command"]["kind"] == "resign"
                 {
                     continue;
                 }
                 out.push(Assertion {
                     fixture_id: f.id.clone(),
                     field: "reversal_contract/apply_then_undo".into(),
-                    owner: native_owner.into(),
+                    owner: rules_owner.into(),
                     boundary,
                     predicate: Predicate::EquivalentSnapshots,
                     expected: f.expected["reversal_contract"]["apply_then_undo"].clone(),
@@ -365,7 +364,7 @@ fn validate_observations(corpus: &Corpus, items: &[Observation]) -> Result<(), S
     Ok(())
 }
 struct Observations<'a>(&'a [Observation]);
-impl NativeAdapter for Observations<'_> {
+impl RulesAdapter for Observations<'_> {
     fn observe(&self, _f: &Fixture, a: &Assertion) -> Result<Option<Value>, String> {
         Ok(self
             .0
@@ -382,13 +381,13 @@ pub fn run(corpus: &Corpus, items: &[Observation]) -> Result<Report, String> {
 fn clip(v: &Value) -> String {
     v.to_string().chars().take(768).collect()
 }
-/// Run a native test adapter; records every assertion even if an earlier one fails.
-pub fn run_adapter(corpus: &Corpus, adapter: &impl NativeAdapter) -> Report {
+/// Run a test adapter; records every assertion even if an earlier one fails.
+pub fn run_adapter(corpus: &Corpus, adapter: &impl RulesAdapter) -> Report {
     let mut report = Report {
         profile: PROFILE.into(),
         corpus_sha256: CORPUS_SHA256.into(),
         fixtures_validated: corpus.fixtures().len(),
-        native_conformance_claimed: false,
+        rules_conformance_claimed: false,
         executed: 0,
         passed: 0,
         pending: 0,
@@ -416,7 +415,7 @@ pub fn run_adapter(corpus: &Corpus, adapter: &impl NativeAdapter) -> Report {
             .expect("admitted owner")
             .later_consumer_checks
         {
-            report.later_consumer_requirements.push(json!({"fixture_id":f.id,"owner":requirement.owner,"scope":requirement.scope,"status":"pending","reason":"real consumer adapter required; native projection does not establish this"}));
+            report.later_consumer_requirements.push(json!({"fixture_id":f.id,"owner":requirement.owner,"scope":requirement.scope,"status":"pending","reason":"real consumer adapter required; projection does not establish this"}));
         }
     }
     for a in plan(corpus) {

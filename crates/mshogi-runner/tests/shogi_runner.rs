@@ -1,4 +1,4 @@
-//! Actual USI child admission/failure/replay. Expected outcomes use accepted native fixtures.
+//! Actual USI child admission/failure/replay. Expected outcomes use accepted rules fixtures.
 #[path = "support/engine.rs"]
 mod engine_fixture;
 use mshogi_runner::{
@@ -44,12 +44,12 @@ fn config(mode: &str) -> shogi::Config {
     }
 }
 #[test]
-fn resignation_and_false_declaration_are_native_conclusions_not_transport_failures() {
+fn resignation_and_false_declaration_are_conclusions_not_transport_failures() {
     for (mode, reason) in [("resign", "Resignation"), ("win", "FalseDeclaration")] {
         let report = shogi::run(&config(mode)).unwrap();
         assert_eq!(report.games.len(), 2);
         for game in &report.games {
-            assert_eq!(game.stop, Stop::NativeConclusion);
+            assert_eq!(game.stop, Stop::GameConclusion);
             assert_eq!(game.score, Some([0, 2]));
             assert!(format!("{:?}", game.conclusion).contains(reason));
             assert!(game.failure.is_none());
@@ -91,7 +91,7 @@ fn position_history_and_transcript_can_outgrow_one_exchange() {
     }
     let report = shogi::run(&c).unwrap();
     let entry = &report.games[0];
-    assert_eq!(entry.stop, Stop::NativeConclusion);
+    assert_eq!(entry.stop, Stop::GameConclusion);
     assert!(entry.turns[0].position.len() > 4 * c.io.line_bytes);
     assert!(serde_json::to_vec(&entry.traffic).unwrap().len() > c.io.transcript_bytes);
     shogi::Report::from_json(&report.to_json().unwrap()).unwrap();
@@ -106,7 +106,7 @@ fn valid_entering_king_declaration_uses_accepted_28point_fixture() {
     c.openings[0].sfen = Some("K8/1RB6/1+P+P+P+P+P+P+P+P/9/9/9/9/9/8k b B5P 1".into());
     let report = shogi::run(&c).unwrap();
     for game in &report.games {
-        assert_eq!(game.stop, Stop::NativeConclusion);
+        assert_eq!(game.stop, Stop::GameConclusion);
         assert_eq!(game.score, Some([2, 0]));
         assert!(format!("{:?}", game.conclusion).contains("EnteringKing"));
     }
@@ -118,7 +118,7 @@ fn valid_entering_king_declaration_uses_accepted_28point_fixture() {
 }
 
 #[test]
-fn watchdog_and_late_reply_retirement_preserve_native_game_and_reap_children() {
+fn watchdog_and_late_reply_retirement_preserve_game_and_reap_children() {
     for mode in ["timeout", "late"] {
         let mut c = config(mode);
         c.watchdogs.response_ms = 20;
@@ -221,7 +221,7 @@ fn actual_move_drop_promotion_and_action_cutoff_are_not_invented_outcomes() {
     );
 }
 #[test]
-fn strict_replay_rejects_context_limits_traffic_and_native_payload_tampering() {
+fn strict_replay_rejects_context_limits_traffic_and_payload_tampering() {
     let report = shogi::run(&config("resign")).unwrap();
     let mut bad = report.clone();
     bad.games[0].turns[0].version += 1;
@@ -277,7 +277,7 @@ fn clocks_and_unsupported_profiles_reject_before_spawning() {
     report.replay().unwrap();
 }
 #[test]
-fn bounded_traffic_failure_is_explicit_and_keeps_native_prefix() {
+fn bounded_traffic_failure_is_explicit_and_keeps_prefix() {
     let mut c = config("flood");
     c.io.transcript_bytes = 2048;
     let report = shogi::run(&c).unwrap();

@@ -40,7 +40,7 @@ impl Dialect for Shogi {
                     ),
                     other => other,
                 }
-                .map_err(|e| format!("native root: {e:?}"))?;
+                .map_err(|e| format!("game root: {e:?}"))?;
                 Ok((root, rest))
             }
             _ => Err("position requires startpos or four-field sfen".into()),
@@ -72,7 +72,7 @@ impl Dialect for Shogi {
             Ok("win".into())
         } else {
             Err(io::Error::other(
-                "searched declaration did not establish native win",
+                "searched declaration did not establish win",
             ))
         }
     }

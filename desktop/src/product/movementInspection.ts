@@ -1,7 +1,7 @@
-import type { InspectionContext, MovementInspection } from "../native";
+import type { InspectionContext, MovementInspection } from "../sessionTypes";
 
 export type InspectMovement = (origin: string) => Promise<MovementInspection | null>;
-// Common player-facing copy; side/piece terminology stays in the native label.
+// Common player-facing copy; side/piece terminology stays in the label.
 // Accessible read-only explanations and action admission are separate concerns.
 export function inspectionStatus(label: string): string {
   return `Inspecting ${label} · Esc clears`;

@@ -1,4 +1,4 @@
-//! Source inputs for labeled native verification. No expected outputs are read.
+//! Source inputs for labeled verification. No expected outputs are read.
 use mshogi_core::tenjiku as c;
 use serde_json::Value;
 
@@ -122,7 +122,7 @@ pub fn game(profile: c::Profile, scenario: &str) -> Result<c::Game, String> {
                 _ => (c::Base::BGn, true),
             };
             // Relocate one actual standard physical identity. Adding pieces
-            // beyond the native original inventory allotment is forbidden.
+            // beyond the original inventory allotment is forbidden.
             let (at, piece) = board
                 .iter_mut()
                 .find(|(_, piece)| piece.side == c::Side::Sente && piece.base == base)

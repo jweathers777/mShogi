@@ -1,6 +1,6 @@
-//! Durable untimed Chess commands. The native match remains the rules authority;
+//! Durable untimed Chess commands. The match remains the rules authority;
 //! clocks, rejected requests and controller identities are not document data.
-use crate::native_game::RecordFailure;
+use crate::game_adapter::RecordFailure;
 use mshogi_core::chess::*;
 use serde::{Deserialize, Serialize};
 
@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 pub struct ChessCommand {
     /// The player who submitted the command.
     pub actor: Color,
-    /// Complete native command; Start and Observe are not durable commands.
+    /// Complete game command; Start and Observe are not durable commands.
     pub command: MatchCommand,
 }
 
@@ -40,7 +40,7 @@ impl ChessRecord {
             commands: vec![],
         }
     }
-    /// Retain an accepted untimed native match, without its runtime bookkeeping.
+    /// Retain an accepted untimed match, without its runtime bookkeeping.
     pub fn from_match(game: &ChessMatch) -> Result<Self, RecordFailure> {
         let source = game.record();
         if source.time_control() != TimeControl::Untimed {
@@ -73,7 +73,7 @@ impl ChessRecord {
     pub fn initial_record(&self) -> Result<GameRecord, RecordFailure> {
         GameRecord::from_json(&self.initial_record_json).map_err(invalid)
     }
-    /// Restore through the native match API with deterministic untimed requests.
+    /// Restore through the match API with deterministic untimed requests.
     pub fn replay(&self, stop: &mut impl FnMut() -> bool) -> Result<ChessMatch, RecordFailure> {
         check(stop)?;
         let initial = self.initial_record()?;
@@ -126,7 +126,7 @@ impl ChessRecord {
         ) {
             return Err(invalid("Clock bookkeeping is not a saved player command."));
         }
-        // The desktop has never admitted witnessed match commands. Native
+        // The desktop has never admitted witnessed match commands. The rules library’s
         // submit verifies them synchronously.
         if matches!(entry.command, MatchCommand::Resign { witness: Some(_) }) {
             return Err(invalid(
@@ -154,7 +154,7 @@ impl ChessRecord {
         record.commands.truncate(count);
         Some(record)
     }
-    /// Decode strictly and retain the native game produced by replay.
+    /// Decode strictly and retain the game produced by replay.
     pub fn decode(
         text: &str,
         stop: &mut impl FnMut() -> bool,
@@ -337,7 +337,7 @@ mod tests {
         assert!(record.replay(&mut || false).is_ok());
     }
     #[test]
-    fn malformed_saved_commands_fail_native_replay() {
+    fn malformed_saved_commands_fail_replay() {
         let mut record = initial();
         record.commands.push(ChessCommand {
             actor: Color::White,

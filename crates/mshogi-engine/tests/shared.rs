@@ -1,6 +1,6 @@
-//! Shared-boundary facts; chess search and shogi rules remain native.
+//! Shared-boundary facts; chess search and shogi rules remain.
 mod support;
-use mshogi_core::{chess::*, native::*, shogi};
+use mshogi_core::{chess::*, game::*, shogi};
 use mshogi_engine::*;
 use serde_json::{Value, json};
 use std::io::Cursor;
@@ -24,8 +24,8 @@ fn target(context: &ExecutionContext) -> ExecutionTarget {
         event_index: context.game.event_count() as u64,
         board_ply: context.game.known_board_actions() as u64,
         session_version: context.session_version,
-        label: "Native shared target".into(),
-        turn: NativeSide::Chess(Color::White),
+        label: "Shared target".into(),
+        turn: TaggedSide::Chess(Color::White),
     }
 }
 fn raw_run(text: &str) -> std::io::Result<Vec<u8>> {
@@ -54,7 +54,7 @@ fn run(context: ExecutionContext) -> ExecutionObservation {
 }
 fn chess_result(context: ExecutionContext) -> ChessResult {
     let ExecutionResult::Chess { result } = run(context).result else {
-        panic!("expected native chess result")
+        panic!("expected chess result")
     };
     result
 }
@@ -120,7 +120,7 @@ fn actual_chess_play_claim_terminal_incomplete_and_analysis_are_preserved() {
     ));
 }
 #[test]
-fn actual_shogi_records_have_only_implemented_native_operations() {
+fn actual_shogi_records_have_only_implemented_operations() {
     let mut game = shogi::Game::new();
     game.submit(shogi::GameRequest {
         expected: game.context(),
@@ -131,7 +131,7 @@ fn actual_shogi_records_have_only_implemented_native_operations() {
     let mut context = request(&AdjudicatedGame::new(ClaimPolicy::ExplicitOnly));
     context.game = CanonicalRecord::shogi(shogi::GameRecord::from_game(&game));
     let mut t = target(&context);
-    t.turn = NativeSide::Shogi(shogi::Side::Sente);
+    t.turn = TaggedSide::Shogi(shogi::Side::Sente);
     for purpose in [
         ExecutionPurpose::EngineTurn {},
         ExecutionPurpose::MoveAnalysis { target: t },
@@ -214,7 +214,7 @@ fn acceptance_checks_every_execution_and_selection_field() {
     assert!(!response.matches(&turn));
     let mut invalid = context.clone();
     if let ExecutionPurpose::MoveAnalysis { target } = &mut invalid.purpose {
-        target.turn = NativeSide::Chess(Color::Black);
+        target.turn = TaggedSide::Chess(Color::Black);
     }
     assert!(matches!(
         chess_result(invalid),
@@ -257,7 +257,7 @@ fn acceptance_checks_every_execution_and_selection_field() {
     assert!(!overlong.matches(&context));
 }
 #[test]
-fn strict_outer_purpose_target_envelope_and_native_bytes_survive_routing() {
+fn strict_outer_purpose_target_envelope_and_bytes_survive_routing() {
     let context = request(&AdjudicatedGame::new(ClaimPolicy::ExplicitOnly));
     let text = serde_json::to_string(&context).unwrap();
     for (needle, replacement) in [

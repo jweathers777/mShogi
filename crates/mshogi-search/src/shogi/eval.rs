@@ -284,9 +284,9 @@ impl crate::texel::TexelModel for ShogiTexel {
             .join(" ")
     }
     fn prepare(position: &str) -> Result<Option<Prepared>, String> {
-        let native =
+        let rules_position =
             mshogi_core::shogi::Position::from_sfen(position).map_err(|e| format!("{e:?}"))?;
-        let p = ShogiPosition::from_position(&native);
+        let p = ShogiPosition::from_position(&rules_position);
         if !quiet(&p) {
             return Ok(None);
         }
@@ -306,8 +306,10 @@ impl crate::texel::TexelModel for ShogiTexel {
         let hand_pieces = mshogi_core::shogi::PieceKind::HAND_KINDS
             .iter()
             .map(|&k| {
-                native.hand(mshogi_core::shogi::Side::Sente).count(k)
-                    + native.hand(mshogi_core::shogi::Side::Gote).count(k)
+                rules_position
+                    .hand(mshogi_core::shogi::Side::Sente)
+                    .count(k)
+                    + rules_position.hand(mshogi_core::shogi::Side::Gote).count(k)
             })
             .sum();
         Ok(Some(Prepared {

@@ -165,7 +165,7 @@ impl fmt::Display for CastlingRights {
 /// A locally validated analysis position under `mshogi.chess.position.v1`.
 ///
 /// Private state is a direct a1-to-h8 array plus the five remaining FEN fields.
-/// Derived occupancy maps accelerate native geometry and restore with the
+/// Derived occupancy maps accelerate board geometry and restore with the
 /// canonical array. `Eq` compares those invariants and the entire saved-state
 /// tuple, including raw en passant target and both counters. It is **not**
 /// repetition equivalence, match-history equality, or a search-cache identity.

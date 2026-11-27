@@ -2,7 +2,7 @@
 mod support;
 use support::desktop::command;
 
-use mshogi_core::{chess, native::*, shogi as s};
+use mshogi_core::{chess, game::*, shogi as s};
 use mshogi_desktop_session::*;
 use mshogi_engine::{ExecutionResponse, PROTOCOL_VERSION};
 
@@ -42,12 +42,12 @@ fn real_chess_shogi_chess_execution_uses_one_supervisor_and_fresh_ids() {
         &mut c,
         SessionOperation::Replace {
             record: CanonicalRecord::shogi(s::GameRecord::from_game(&s::Game::new())),
-            human: NativeSide::Shogi(s::Side::Gote),
+            human: TaggedSide::Shogi(s::Side::Gote),
         },
     );
     command(&mut c, SessionOperation::Resume {});
     let played = support::desktop::until(&mut c, 15, |s| s.event_index == 1);
-    assert_initial_native_move(&played);
+    assert_initial_move(&played);
     assert_eq!(played.turn.label, "Gote");
     assert!(played.observations[0].observation.context.request_id > old.request_id);
     let before = played.context;
@@ -61,7 +61,7 @@ fn real_chess_shogi_chess_execution_uses_one_supervisor_and_fresh_ids() {
             record: CanonicalRecord::chess(
                 chess::AdjudicatedGame::new(chess::ClaimPolicy::ExplicitOnly).record(),
             ),
-            human: NativeSide::Chess(chess::Color::White),
+            human: TaggedSide::Chess(chess::Color::White),
         },
     );
     assert!(!c.accept_shared(ExecutionResponse {
@@ -85,7 +85,7 @@ fn actual_engine_declaration_is_a_terminal_command_and_analysis_cannot_apply_it(
         &mut c,
         SessionOperation::Replace {
             record: CanonicalRecord::shogi(s::GameRecord::from_game(&game)),
-            human: NativeSide::Shogi(s::Side::Gote),
+            human: TaggedSide::Shogi(s::Side::Gote),
         },
     );
     let observed = analyze(&mut c);
@@ -109,26 +109,26 @@ fn actual_engine_declaration_is_a_terminal_command_and_analysis_cannot_apply_it(
 }
 
 #[test]
-fn product_new_gote_real_engine_play_analysis_archive_and_resume_use_native_paths() {
+fn product_new_gote_real_engine_play_analysis_archive_and_resume_use_paths() {
     let mut c = DesktopController::new(env!("CARGO_BIN_EXE_mshogi").into()).unwrap();
     let (_, receipt) = c
         .shared_new_game(
             c.shared_open_token(),
-            mshogi_core::native::RulesProfile::ShogiCsa36V1,
-            NativeSide::Shogi(s::Side::Gote),
+            mshogi_core::game::RulesProfile::ShogiCsa36V1,
+            TaggedSide::Shogi(s::Side::Gote),
         )
         .unwrap();
     support::desktop::until(&mut c, 15, |_| receipt.completion().is_some());
     receipt.completion().unwrap().unwrap();
     let first = support::desktop::until(&mut c, 15, |view| view.event_index == 1);
-    assert_eq!(first.human.id, NativeSide::Shogi(s::Side::Gote));
-    assert_eq!(first.turn.id, NativeSide::Shogi(s::Side::Gote));
-    assert_initial_native_move(&first);
+    assert_eq!(first.human.id, TaggedSide::Shogi(s::Side::Gote));
+    assert_eq!(first.turn.id, TaggedSide::Shogi(s::Side::Gote));
+    assert_initial_move(&first);
     assert_eq!(first.search_observations[0].purpose, "engine_turn");
     assert_eq!(first.search_observations[0].event_index, 0);
     assert_eq!(
         first.document.settings.orientation,
-        NativeSide::Shogi(s::Side::Gote)
+        TaggedSide::Shogi(s::Side::Gote)
     );
     command(&mut c, SessionOperation::play("7c7d"));
     support::desktop::until(&mut c, 15, |view| view.event_index == 3);
@@ -183,7 +183,7 @@ fn product_new_gote_real_engine_play_analysis_archive_and_resume_use_native_path
     c.begin_shutdown();
 }
 
-fn assert_initial_native_move(snapshot: &SharedSnapshot) {
+fn assert_initial_move(snapshot: &SharedSnapshot) {
     let action: s::Action = snapshot.events[0]
         .label
         .strip_prefix("Sente: ")
@@ -200,7 +200,7 @@ fn assert_initial_native_move(snapshot: &SharedSnapshot) {
             },
     } = &observation.result
     else {
-        panic!("expected searched native action")
+        panic!("expected searched action")
     };
     assert_eq!(*chosen, action);
 }

@@ -1,13 +1,13 @@
 // @vitest-environment jsdom
-// UI requests are mocked; all rendered native records/choices/results are Rust fixtures.
+// UI requests are mocked; all rendered game records/choices/results are Rust fixtures.
 import { fakeSession } from "../testing/helpers";
-import type { TenjikuSnapshot } from "../native";
+import type { TenjikuSnapshot } from "../sessionTypes";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { ProductApp } from "./ProductApp";
 import { TenjikuControls } from "../verification/TenjikuControls";
 import { useGameSession, type GameSession } from "./useGameSession";
-import { NativeAnalysis, NativeRecovery } from "./NativeSessionPanels";
+import { GameAnalysis, GameRecovery } from "./GameSessionPanels";
 
 import adamsStandard from "../__fixtures__/shared-tenjiku-adams-standard.json";
 import mullerStandard from "../__fixtures__/shared-tenjiku-muller-standard.json";
@@ -65,7 +65,7 @@ it.each([adams, muller])("sends both explicit QA profile New/reset requests from
   expect(session.file).not.toHaveBeenCalled();
 });
 
-it("retires board selection after an actual native fresh-document profile replacement", async () => {
+it("retires board selection after an actual fresh-document profile replacement", async () => {
   expect(muller.token.document).toBeGreaterThan(adams.token.document);
   session.snapshot = adams;
   vi.mocked(session.newGame).mockResolvedValue(muller);
@@ -84,7 +84,7 @@ it("retires board selection after an actual native fresh-document profile replac
   expect(screen.getByRole("complementary", { name: "Tenjiku contract verification" }).textContent).toContain("Muller Completed");
 });
 
-it.each([adams, muller])("blocks $profile QA replacement while a modal or native operation owns admission", source => {
+it.each([adams, muller])("blocks $profile QA replacement while a modal or game operation owns admission", source => {
   session.snapshot = source;
   const { rerender } = render(<ProductApp verificationControls={TenjikuControls} />);
   fireEvent.click(screen.getByRole("button", { name: "New game" }));
@@ -104,8 +104,8 @@ it.each([adamsIncomplete, mullerIncomplete])("shows actual $profile incomplete o
   expect(source.observations.at(-1)!.observation.result).toMatchObject({ kind: "tenjiku", result: { kind: "incomplete", telemetry: { score: null, completed_depth: 0, principal_variation: [] } } });
   expect(source.status.concluded).toBe(false);
   expect(source.status.score_half_points).toBeNull();
-  const { container } = render(<><NativeRecovery snapshot={source} error="" disabled={false} command={command} />
-    <NativeAnalysis snapshot={source} defaults={source.play_limits} disabled={false} command={command} maxDepth={64} minNodes={1} maxNodes={5000000} /></>);
+  const { container } = render(<><GameRecovery snapshot={source} error="" disabled={false} command={command} />
+    <GameAnalysis snapshot={source} defaults={source.play_limits} disabled={false} command={command} maxDepth={64} minNodes={1} maxNodes={5000000} /></>);
   expect(screen.getByText("Search incomplete")).toBeTruthy();
   expect(screen.queryByRole("button", { name: "Retry engine turn" })).toBeNull();
   fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
@@ -116,12 +116,12 @@ it.each([adamsIncomplete, mullerIncomplete])("shows actual $profile incomplete o
   expect(command).not.toHaveBeenCalled();
 });
 
-it.each([adamsEnded, mullerEnded])("retains the native $profile winner after session cancellation without calling the outcome unscored", value => {
+it.each([adamsEnded, mullerEnded])("retains the $profile winner after session cancellation without calling the outcome unscored", value => {
   const source = value as unknown as TenjikuSnapshot;
   expect(source.phase).toBe("cancelled");
   expect(source.status.concluded).toBe(true);
   expect(source.status.score_half_points).not.toBeNull();
-  render(<NativeRecovery snapshot={source} error="" disabled={false} command={vi.fn()} />);
+  render(<GameRecovery snapshot={source} error="" disabled={false} command={vi.fn()} />);
   expect(screen.getByRole("region", { name: "Game outcome" }).textContent).toContain(source.status.label);
   expect(screen.queryByText(/No game result or score is assigned/)).toBeNull();
   expect(screen.queryByText("Work stopped")).toBeNull();

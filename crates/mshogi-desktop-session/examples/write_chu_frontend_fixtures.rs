@@ -1,9 +1,9 @@
-//! Actual native/controller Chu DTOs; separate development generator, never bundled.
+//! Actual Chu controller snapshots; separate development generator, never bundled.
 #[path = "support/chu.rs"]
 mod roots;
 use mshogi_core::{
     chu as c,
-    native::{CanonicalRecord, NativeSide},
+    game::{CanonicalRecord, TaggedSide},
 };
 use mshogi_desktop_session::{
     DesktopController, SessionOperation, SharedDesktopCommand, SharedSnapshot,
@@ -38,7 +38,7 @@ fn main() {
     }
     let dir = std::path::PathBuf::from(std::env::args_os().nth(1).expect("output directory"));
     std::fs::create_dir_all(&dir).unwrap();
-    // Use the very same admitted controller snapshots as the live native adapter.
+    // Use the very same admitted controller snapshots as the live adapter.
     for (name, id) in [
         ("routes", "CHU-RETURN-Ln-enemy"),
         ("captures", "CHU-LION-C2-1"),
@@ -82,7 +82,7 @@ fn main() {
             &mut c,
             SessionOperation::Replace {
                 record: CanonicalRecord::chu(c::GameRecord::from_game(&g).unwrap()),
-                human: NativeSide::Chu(g.position().side_to_move()),
+                human: TaggedSide::Chu(g.position().side_to_move()),
             },
         );
         let write = |name: &str, s: &SharedSnapshot| {
@@ -131,7 +131,7 @@ fn main() {
                     );
                     std::thread::sleep(std::time::Duration::from_millis(1));
                 };
-                assert_eq!(snapshot.context, before, "analysis changed native game");
+                assert_eq!(snapshot.context, before, "analysis changed game");
                 write(file, &snapshot);
             }
         }

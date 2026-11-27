@@ -1,7 +1,7 @@
 //! Generate current-format, rules-admitted documents for ordinary packaged GUI
 //! verification. This example is not a host fixture initializer or bundled code.
 use mshogi_core::{
-    native::{CanonicalRecord, NativeSide},
+    game::{CanonicalRecord, TaggedSide},
     shogi as s,
 };
 use mshogi_desktop_session::{
@@ -56,7 +56,7 @@ fn main() {
     for operation in [
         SessionOperation::Replace {
             record: CanonicalRecord::shogi(s::GameRecord::from_game(&game)),
-            human: NativeSide::Shogi(s::Side::Sente),
+            human: TaggedSide::Shogi(s::Side::Sente),
         },
         SessionOperation::Resume {},
     ] {

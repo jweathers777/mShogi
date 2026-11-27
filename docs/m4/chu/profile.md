@@ -2,11 +2,11 @@
 
 **`mshogi.chu.jcsa2019.v1`**, edition
 **`JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02`**.
-Ratified modern rules under MSH-82; no native Chu implementation or executed
+Ratified modern rules under MSH-82; no Chu implementation or executed
 Chu conformance is claimed here.
 
 The recorded 2026-11-02 direction selects faithful modern JCSA play, capture-based
-admission, a narrow immediate royal-threat mate predicate, native enforcement
+admission, a narrow immediate royal-threat mate predicate, enforcement
 before fourth repetition, and the narrow material rule with immediate responses
 and agreed draws. [Decision record](decisions.md) distinguishes that direction
 from withdrawn proposals. No unrestricted forced-mate search, automatic
@@ -42,12 +42,12 @@ In particular Sente King7十二/Elephant6十二 and Lion7十/FreeKing6十 are
 asymmetric. [Machine setup and piece table](profile.json) specify all92 squares.
 C1 I/III and actual C3 setup agree with H1p214.
 
-Retain native original/base identity and a once-only promotion bit. Twenty-one
+Retain original/base identity and a once-only promotion bit. Twenty-one
 initial kinds plus18 promoted-origin states give39 identity states but only29
 movement faces, as counted by C1. A Pawn promoted to Gold cannot become Rook;
-native Gold can. Go-between→Elephant cannot become Prince. There is no ownership
+Gold can. Go-between→Elephant cannot become Prince. There is no ownership
 change or demotion on capture; preserve the discarded victim's original identity
-in effects/history. King/Prince are native royal identities, not generic Chess
+in effects/history. King/Prince are royal identities, not generic Chess
 king metadata. Imported diagrams establish structure, counters and known history,
 not historical reachability; source-derived inventory bounds do not prove reachability.
 
@@ -59,7 +59,7 @@ before friendly occupancy and may capture its first enemy. A jump ignores and
 does not capture intermediate occupants. No friendly capture or off-board action.
 Let O=orthogonal four, D=diagonal four, A=all eight adjacent directions.
 
-| Face (native label) | Steps | Jumps | Rays | Promotion of native original |
+| Face (label) | Steps | Jumps | Rays | Promotion of original |
 | --- | --- | --- | --- | --- |
 | P 歩兵 | forward | — | — | Gold |
 | GB 仲人 | forward/backward | — | — | Elephant |
@@ -114,7 +114,7 @@ friendly **or enemy** intermediate square preserves it; the two-leg version
 captures an enemy intermediate. C3 diagrams/prose and compatible T1 movement.
 
 One choice commits one whole turn. Preserve origin, ordered actual landing route
-and promotion decision; effects are native-derived ordered removals/movement.
+and promotion decision; effects are derived ordered removals/movement.
 Do not accept client victim lists. Two paths sharing endpoints can have different
 victims; return-to-origin is not an empty action. Retain even effect-equivalent
 chosen paths in records. Repetition uses its own semantic equivalence in C07.
@@ -139,7 +139,7 @@ Unpromoted Pawn/Lance on their farthest rank remain dead and occupy/block their
 squares. Promotion is not compulsory. Pawn/Go-between must be promoted before
 they can be the qualifying material extra in C08. C1 IV/C2§1.
 
-No persistent invented 'declined promotion' flag is needed: native base/promotion,
+No persistent invented 'declined promotion' flag is needed: base/promotion,
 current origin/destination/capture and current camp determine these opportunities.
 Imported in-camp identity does not invent a prior quiet-entry entitlement. Preserve
 known history and provenance separately. The C1 VII Kirin capture flips only at
@@ -147,7 +147,7 @@ the end and can create a defended Lion's next-turn protection.
 
 ## C05 — Lion capture law
 
-Only actual Lion movement faces (native Lion or promoted Kirin) receive the Lion
+Only actual Lion movement faces (Lion or promoted Kirin) receive the Lion
 exchange rules; SE/HF Lion-like movement does not make them Lions.
 
 1. Lion may capture an **initially adjacent** enemy Lion irrespective of defense.
@@ -197,15 +197,15 @@ owner's capture-based/narrow-mate direction. Complete capture/mate fixtures and
 Prince rescue must independently verify it in86.
 
 No actual royal threat plus no complete board action is **not** a sourced loss
-or draw. Report native `no_board_actions` with unresolved/unscored status;
+or draw. Report `no_board_actions` with unresolved/unscored status;
 resignation and permitted agreement commands remain available. This records the
 source's silence without inventing a Chess outcome or hiding a control failure.
 A separately applicable sourced material result still applies. No engine fallback,
 evaluation resignation, move-count draw or general insufficient-material proof.
 
-## C07 — native must-vary before fourth recurrence
+## C07 — must-vary before fourth recurrence
 
-Use full known history, not a diagram counter. A repeated position includes native
+Use full known history, not a diagram counter. A repeated position includes
 placement/origin/promotion, owner, side to move and active Lion protection. Physical
 piece serials, runtime IDs and declared move counter are not repetition identity.
 For C1's same-sequence qualification, compare the intervening sequence of complete
@@ -243,7 +243,7 @@ obligations remain enforced. Do not commit the fourth occurrence, append a
 forfeit, silently draw, or delete history. A rejected request changes nothing.
 Quiet4-ply fixture: accept moves9/10, reject Sente's move11, before Gote would
 close move12. Both-jitto: reject the first passer's next jitto, including an
-alternative empty path. This is a bounded native history/admission algorithm,
+alternative empty path. This is a bounded game history/admission algorithm,
 not a new outcome rule. Legal-choice queries/search use the same obligations.
 
 ## C08 — narrow exhaustion and agreement
@@ -280,43 +280,43 @@ atomically rather than manufacture a physical-event forfeiture.
 
 ## C09/C10 — state, reversal and canonical replay
 
-Native Chu owns bounded structure validation, original identity and promotion,
+Chu owns bounded structure validation, original identity and promotion,
 ordered complete actions/effects, all royals, Lion window, complete known history,
 cycle witnesses/progress, command actors/agreement and conclusions. Distinguish
 diagram validity, declared counters, known history and proven reachability. No
 FEN/SFEN/USI/CSA claim for this game. An imported counter supplies no earlier
-occurrences or Lion protection; supplied explicit native root rights/provenance
+occurrences or Lion protection; supplied explicit game root rights/provenance
 must be validated, not guessed from a diagram.
 
 Internal apply/undo restores all logical state/caches exactly. Semantic Undo,
 Take back, history selection and reopened documents never revive retired execution
-IDs. Canonical records contain explicit game/profile/edition/native schema,
+IDs. Canonical records contain explicit game/profile/edition/record schema,
 root/provenance, commands and exact ordered routes. Schema 3 recomputes captures, Lion
-rights, cycles and conclusions by native replay; these derived facts are not
-stored in the record. Duplicate fields must reach the strict native parser
+rights, cycles and conclusions by game replay; these derived facts are not
+stored in the record. Duplicate fields must reach the strict record parser
 through RawValue dispatch, before any map can erase them. Resource/parse/illegal/
 unsupported/incomplete failures remain distinct and unscored.
 
 ## C11 — real consumers and verification boundary
 
-Handoff preserves86(native),78(shared) and43(functional product)
+Handoff preserves 86 rules, 78 shared and 43 functional product cases
 ownership. Current execution envelope/context/controller/document/interaction
-owners suffice with explicit Chu dispatch. Add only native-specific state,
+owners suffice with explicit Chu dispatch. Add only specific state,
 actions/effects, royal/status metadata and a12×12 renderer; no universal rules
 framework or second frontend rules engine. Functional search is full-history,
 bounded and cancellable; playing strength remains52/M5. Exact-context, purpose,
 session/request/process generation and work limits remain acceptance authority.
 
-Console must preserve complete paths and native terminology. Use unambiguous
+Console must preserve complete paths and terminology. Use unambiguous
 file1..12/rank a..l diagnostics; human notation can display JCSA numeric-file/
-Japanese-rank and ordered captures, explicit promotion/decline and native piece
+Japanese-rank and ordered captures, explicit promotion/decline and piece
 names. Canonical actions are authoritative; short notation never loses a path
 or substitutes a rules parser. Finished UI uses actual traditional Chu kanji,
 both orientations and complete board at normal/minimum supported sizes, without
 board scrolling/zoom. Retain shared shell and exact two-player Moves/event mapping.
 
 The [independently expected corpus](fixtures.json) precedes implementation.
-Its validation/review is not execution of native rules.86 must provide actual
+Its validation/review is not execution of rules.86 must provide actual
 adapters, complete LegalAll comparisons, transition/replay/undo, properties,
 valid180° transformations, adversarial checks and hand-established perft/divide.
 78/43 must separately execute real consumer/product obligations. External engines

@@ -26,7 +26,7 @@ fn corpus(text: &str, id: &str, maximum: usize) -> Result<x::Game, String> {
     let fixture = corpus["fixtures"]
         .as_array()
         .and_then(|fixtures| fixtures.iter().find(|f| f["id"] == id))
-        .ok_or("Missing independent native verification fixture.")?;
+        .ok_or("Missing independent verification fixture.")?;
     let root = x::PositionRoot::from_fen(
         fixture["root_fen"]
             .as_str()
@@ -48,7 +48,7 @@ impl DesktopController {
     fn finish_verification_admission(&mut self, receipt: AdmissionReceipt) -> Result<(), String> {
         let deadline = Instant::now() + std::time::Duration::from_secs(30);
         loop {
-            self.poll_native_admission();
+            self.poll_admission();
             if let Some(result) = receipt.completion() {
                 return result;
             }
@@ -114,7 +114,7 @@ impl DesktopController {
             .then_some(SessionOperation::Resume {});
         // There is no control journal any more; the control-capacity fixture
         // is the standard game (MSH-228).
-        let seed = native_session::RuntimeSeed::Record {
+        let seed = game_session::RuntimeSeed::Record {
             record: Box::new(record),
             human,
             play_mode: PlayMode::HumanEngine,
@@ -122,7 +122,7 @@ impl DesktopController {
         let receipt = self.queue_game_candidate::<Xiangqi>(seed, operation, None, true)?;
         self.finish_verification_admission(receipt)?;
         if fixture == "xiangqi-capacity" {
-            // Real native results, not a forged count or fabricated observations.
+            // Real engine results, not a forged count or fabricated observations.
             // Poll only admission here so the supervised child is not also submitted.
             for _ in 0..KEPT_RESULTS - 1 {
                 self.start_game_work::<Xiangqi>(
@@ -150,7 +150,7 @@ impl DesktopController {
                 let response =
                     ExecutionResponse::decode(&response, &execution_request(request.clone()))?;
                 if !self.accept_shared(response) {
-                    return Err("Verification observation failed native context admission.".into());
+                    return Err("Verification observation failed game context admission.".into());
                 }
                 self.finish_verification_admission(
                     self.admission_receipt
@@ -191,7 +191,7 @@ mod tests {
         .unwrap();
     }
     #[test]
-    fn labeled_native_verification_roots_replay_actual_facts() {
+    fn labeled_verification_roots_replay_actual_facts() {
         for name in [
             "xiangqi-standard",
             "xiangqi-warning",
@@ -225,13 +225,13 @@ mod tests {
                     assert!(snapshot.status.concluded)
                 }
                 "xiangqi-failure" => {
-                    assert_eq!(snapshot.human.id, NativeSide::Xiangqi(x::Side::Black))
+                    assert_eq!(snapshot.human.id, TaggedSide::Xiangqi(x::Side::Black))
                 }
                 _ => assert!(!snapshot.status.concluded),
             }
             let record = match snapshot.context {
                 CanonicalRecord::Xiangqi(record) => record,
-                _ => panic!("native Xiangqi context"),
+                _ => panic!("Xiangqi context"),
             };
             assert_eq!(
                 record.to_game().unwrap().events(),

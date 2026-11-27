@@ -75,7 +75,7 @@ pub fn load<M: TexelModel>(path: &str, expected: &str) -> Result<Dataset<M::Prep
             .ok_or_else(|| error("missing numeric result"))?;
         if ![0.0, 0.5, 1.0].contains(&result) {
             return Err(
-                error("result must be the first player's native outcome: 0, 0.5 or 1").into(),
+                error("result must be the first player's game outcome: 0, 0.5 or 1").into(),
             );
         }
         let game = row

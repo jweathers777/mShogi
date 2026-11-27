@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       suite:
-        description: Explicit verification scope (full preserves the complete native campaign)
+        description: Explicit verification scope (full preserves the complete campaign)
         type: choice
         default: configuration
         options: [configuration, search, process, persistence, fixtures, full]
@@ -47,11 +47,11 @@ jobs:
       - name: Changed Python syntax and script tests
         if: steps.scope.outputs.scripts == 'true'
         run: python3 tools/checks.py run --ci --scripts-only
-      - name: Native formatting and consumer compilation
+      - name: Formatting and consumer compilation
         if: steps.scope.outputs.rust == 'true'
         run: |
           python3 tools/checks.py run --suite rust-format --suite rust-lint
-      - name: Focused native search regressions
+      - name: Focused search regressions
         if: steps.scope.outputs.rust == 'true'
         run: python3 tools/checks.py run --suite search-smoke
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
@@ -60,7 +60,7 @@ jobs:
           node-version-file: desktop/.node-version
           cache: npm
           cache-dependency-path: desktop/package-lock.json
-      - name: Frontend checks for changed UI or shared native contracts
+      - name: Frontend checks for changed UI or shared contracts
         if: steps.scope.outputs.frontend == 'true'
         run: |
           npm --prefix desktop ci
@@ -108,7 +108,7 @@ jobs:
         run: |
           rustup show
           rustc --version --verbose
-      - name: Execute selected native checks
+      - name: Execute selected checks
         env:
           SUITE: ${{ inputs.suite }}
         run: |
@@ -120,7 +120,7 @@ jobs:
               cargo test --release --locked -p mshogi-engine -p mshogi-runner -p mshogi-console --tests
               ;;
             persistence)
-              cargo test --release --locked -p mshogi-core --test game_record --test shogi_record --test native_envelope --test native_tori_envelope --test native_chu_envelope --test native_tenjiku_envelope --test native_xiangqi_envelope
+              cargo test --release --locked -p mshogi-core --test game_record --test shogi_record --test game_record_envelope --test tori_record_envelope --test chu_record_envelope --test tenjiku_record_envelope --test xiangqi_record_envelope
               cargo test --release --locked -p mshogi-desktop-session
               cargo test --release --locked -p mshogi-console --test desktop_persistence
               ;;
@@ -186,7 +186,7 @@ jobs:
         run: |
           cargo clippy --locked -p mshogi-desktop-session --all-targets --all-features -- -D warnings
           cargo test --locked -p mshogi-desktop-session --all-features
-      - name: Verify native desktop snapshot fixtures
+      - name: Verify desktop snapshot fixtures
         run: |
           cargo run --locked -p mshogi-desktop-session --example write_frontend_fixtures -- desktop/src/__fixtures__
           cargo run --locked -p mshogi-desktop-session --features desktop-verification --example write_tori_frontend_fixtures -- desktop/src/__fixtures__

@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 // Real Rust-produced snapshots; renderer tests do not establish game legality.
 import { renderBoard, square } from "../testing/helpers";
-import type { ChuSnapshot, MovementInspection } from "../native";
+import type { ChuSnapshot, MovementInspection } from "../sessionTypes";
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { SquareBoard } from "./SquareBoard";
@@ -18,7 +18,7 @@ afterEach(cleanup);
 
 const board = (snapshot = routes) =>
   renderBoard(SquareBoard, { snapshot, inspectionDisabled: false, onInspect: vi.fn() });
-it("uses shared player/board/footer slots, full native geometry, traditional faces and no hands", () => {
+it("uses shared player/board/footer slots, full board geometry, traditional faces and no hands", () => {
   const { container, props, rerender } = board(royalsJson as unknown as ChuSnapshot);
   expect(container.querySelectorAll("svg [role=button]")).toHaveLength(144);
   expect(container.querySelector('[data-face="King"]')?.textContent).toBe("玉将");
@@ -34,7 +34,7 @@ it("uses shared player/board/footer slots, full native geometry, traditional fac
   expect(square("6e").querySelector(".piece-tile")?.getAttribute("transform")).toBeNull();
   expect(square("1l").querySelector(".piece-tile")?.getAttribute("transform")).toBe("rotate(180 50 50)");
 });
-it("decorates native partial routes without submitting and commits exact same-endpoint return choices", () => {
+it("decorates partial routes without submitting and commits exact same-endpoint return choices", () => {
   const { props, rerender, container } = board();
   for (const pivot of ["7e", "5f"]) {
     const choice = routes.choices.find(c => c.from === "6f" && c.steps.length === 2 && c.steps[0] === pivot && c.steps[1] === "6f")!;
@@ -59,18 +59,18 @@ it("preserves keyboard cancellation/focus and explicit promotion choice", () => 
   fireEvent.click(screen.getByRole("button", { name: "Promote" }));
   expect(props.onPlay).toHaveBeenCalledExactlyOnceWith(promotion.choices.find(c => c.from === "6e" && c.steps[0] === "6d" && c.completion?.label === "Promote")!.action);
 });
-it("preserves ordered native intermediate captures and complete historical geometry", () => {
+it("preserves ordered intermediate captures and complete historical geometry", () => {
   const s = capturedJson as unknown as ChuSnapshot;
   const { container } = render(<SquareBoard snapshot={s} disabled inspectionDisabled={false} onPlay={vi.fn()} onInspect={vi.fn()} completedAction={s.moves.last_action} />);
-  expect([...container.querySelectorAll("[data-native-capture]")].map(node => node.getAttribute("data-native-capture"))).toEqual(["2b", "1b"]);
+  expect([...container.querySelectorAll("[data-capture]")].map(node => node.getAttribute("data-capture"))).toEqual(["2b", "1b"]);
   expect(container.querySelector("[data-route]")?.getAttribute("data-route")).toBe("3c>2b>1b");
   expect(container.querySelector('[data-last-move="origin"]')?.getAttribute("data-location")).toBe("3c");
   expect(container.querySelector('[data-last-move="destination"]')?.getAttribute("data-location")).toBe("1b");
-  expect(container.querySelector('[data-native-capture="2b"]')?.getAttribute("transform")).toBe("translate(1090 190)");
+  expect(container.querySelector('[data-capture="2b"]')?.getAttribute("transform")).toBe("translate(1090 190)");
   expect(container.querySelector('[data-last-move="origin"]')?.getAttribute("d")).toMatch(/^M951 263/);
 });
 
-it("keeps native enemy inspection visibly distinct and non-actionable in the actual Chu renderer", async () => {
+it("keeps enemy inspection visibly distinct and non-actionable in the actual Chu renderer", async () => {
   const s = { ...routes, historical: true, capabilities: { ...routes.capabilities, board_action: false } };
   const response = inspectionJson as unknown as MovementInspection;
   const onPlay = vi.fn(), onInspect = vi.fn().mockResolvedValue(response);
@@ -83,7 +83,7 @@ it("keeps native enemy inspection visibly distinct and non-actionable in the act
   fireEvent.keyDown(square("11b"), { key: "Escape" });expect(container.querySelectorAll(".inspection-marker")).toHaveLength(0);
 });
 
-it("commits the sole one-leg native choice from the footer and cancels either footer control with focus recovery", () => {
+it("commits the sole one-leg game choice from the footer and cancels either footer control with focus recovery", () => {
   const { props, container, rerender } = board();
   const short = routes.choices.filter(choice => choice.from === "6f" && choice.steps.length === 1 && choice.steps[0] === "7e");
   expect(short).toHaveLength(1);
@@ -109,19 +109,19 @@ it("commits the sole one-leg native choice from the footer and cancels either fo
   }
 });
 
-it("puts legible coordinate labels outside the Chu grid while retaining native route and cue locations", () => {
+it("puts legible coordinate labels outside the Chu grid while retaining route and cue locations", () => {
   const { container, props, rerender } = board();
   expect(container.querySelector("svg")?.getAttribute("viewBox")).toBe("0 0 1280 1280");
   expect(square("12a").getAttribute("transform")).toBe("translate(40, 40)");
   expect(container.querySelectorAll(".square .coordinate")).toHaveLength(0);
-  expect(container.querySelectorAll(".native-coordinate-frame .coordinate")).toHaveLength(24);
+  expect(container.querySelectorAll(".coordinate-frame .coordinate")).toHaveLength(24);
   const file = container.querySelector('[data-coordinate-axis="file"]')!, rank = container.querySelector('[data-coordinate-axis="rank"]')!;
   expect([file.textContent, file.getAttribute("x"), file.getAttribute("y")]).toEqual(["12", "90", "1272"]);
   expect([rank.textContent, rank.getAttribute("x"), rank.getAttribute("y")]).toEqual(["a", "1260", "102"]);
   fireEvent.click(square("6f"));fireEvent.click(square("7e"));
   const displayed = props.snapshot.orientations[0]!.ranks.flatMap(r => props.snapshot.orientations[0]!.files.map(f => `${f}${r}`));
   const center = (key: string) => { const i = displayed.indexOf(key);return `${90 + i % 12 * 100},${90 + Math.floor(i / 12) * 100}`; };
-  expect(container.querySelector(".native-selected-route polyline")?.getAttribute("points")).toBe(["6f", "7e"].map(center).join(" "));
+  expect(container.querySelector(".selected-route polyline")?.getAttribute("points")).toBe(["6f", "7e"].map(center).join(" "));
   expect(props.onPlay).not.toHaveBeenCalled();
   const flipped = oriented(routes, "gote");
   rerender(<SquareBoard {...props} snapshot={flipped} />);

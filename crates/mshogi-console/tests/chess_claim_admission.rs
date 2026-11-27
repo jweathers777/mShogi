@@ -4,14 +4,14 @@ use mshogi_core::{
         AdjudicatedGame, ChessOutcome, ClaimPolicy, Color, DrawClaim, DrawReason, MatchConclusion,
         MatchRecord,
     },
-    native::{CanonicalRecord, RulesProfile},
+    game::{CanonicalRecord, RulesProfile},
 };
 use mshogi_engine::{ChessResult, EngineChoice, ExecutionResult};
 use mshogi_runner::experiments::{Opening, Report, Split, fresh_root, run, template};
 
 #[test]
 fn actual_depth_one_leaf_claim_tail_is_admitted_without_playing_intended_move() {
-    // This accepted native/search fixture has no claim for White at counter 98.
+    // This accepted rules and search fixture has no claim for White at counter 98.
     // Every quiet move lets Black claim by an intended quiet move at counter 99.
     // Search depth counts board plies; that terminal claim adds a command, not
     // another played board ply. The final actual match must contain one move.
@@ -22,9 +22,9 @@ fn actual_depth_one_leaf_claim_tail_is_admitted_without_playing_intended_move() 
     let root = fresh_root(CanonicalRecord::chess(source.record())).unwrap();
     let mut config = template(env!("CARGO_BIN_EXE_mshogi")).unwrap();
     config.id = "actual-chess-leaf-claim-admission".into();
-    config.protocol = "Actual production child, independently established native fifty-move \
+    config.protocol = "Actual production child, independently established fifty-move \
         intended-claim fixture from search::auto_claim_is_respected_at_leaf_turn_boundaries. \
-        Two identical participants with reversed native colors; not strength evidence."
+        Two identical participants with reversed colors; not strength evidence."
         .into();
     config.players.truncate(2);
     for player in &mut config.players {
@@ -39,7 +39,7 @@ fn actual_depth_one_leaf_claim_tail_is_admitted_without_playing_intended_move() 
     }
     config.openings = vec![Opening {
         id: "counter98-intended-claim".into(),
-        group: "accepted-native-chess-counter98".into(),
+        group: "accepted-chess-counter98".into(),
         root: root.clone(),
         split: Split::Test,
         provenance: "Project-authored accepted search regression; fifty-move count 98, \
@@ -54,7 +54,7 @@ fn actual_depth_one_leaf_claim_tail_is_admitted_without_playing_intended_move() 
     let report = run(&config).unwrap();
     assert_eq!(
         source, original,
-        "native source position/history/policy unchanged"
+        "game source position/history/policy unchanged"
     );
     assert_eq!(serde_json::to_string(&config).unwrap(), input_json);
     assert_eq!(report.games.len(), 2);
@@ -73,7 +73,7 @@ fn actual_depth_one_leaf_claim_tail_is_admitted_without_playing_intended_move() 
             result: ChessResult::Move { action, telemetry },
         } = &observation.result
         else {
-            panic!("expected actual native move observation: {observation:?}");
+            panic!("expected actual move observation: {observation:?}");
         };
         assert_eq!(telemetry.completed_depth, 1);
         assert_eq!(telemetry.score, Some(0));
@@ -102,21 +102,21 @@ fn actual_depth_one_leaf_claim_tail_is_admitted_without_playing_intended_move() 
                 result: ChessResult::Claim { .. }
             }
         ));
-        assert_eq!(game.stop, "native_concluded");
+        assert_eq!(game.stop, "game_concluded");
         assert_eq!(game.score_first_twice, Some(1));
         assert_eq!(game.final_root.record.known_board_actions(), 1);
         assert_eq!(game.final_root.record.profile(), RulesProfile::ChessMatchV1);
-        let native = MatchRecord::from_json(game.final_root.chess_match.as_ref().unwrap())
+        let match_record = MatchRecord::from_json(game.final_root.chess_match.as_ref().unwrap())
             .unwrap()
             .replay()
             .unwrap();
         assert_eq!(
-            native.conclusion(),
+            match_record.conclusion(),
             Some(MatchConclusion::Chess(ChessOutcome::Draw(
                 DrawReason::Claimed(DrawClaim::FiftyMove)
             )))
         );
-        assert_eq!(native.game().history().ply_count(), 1);
+        assert_eq!(match_record.game().history().ply_count(), 1);
         assert!(game.cleanup.is_empty());
     }
     let json = report.to_json().unwrap();

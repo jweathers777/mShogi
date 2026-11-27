@@ -1,7 +1,7 @@
 //! Real files and bundled-engine processes through the public desktop controller.
 mod support;
 use mshogi_core::chess::Color;
-use mshogi_core::native::{CanonicalRecord, NativeSide};
+use mshogi_core::game::{CanonicalRecord, TaggedSide};
 use mshogi_desktop_session::{
     AnalysisOperation, AnalysisPhase, DesktopController, EnginePhase, IoPhase, SharedSnapshot,
 };
@@ -55,7 +55,7 @@ fn minimal_document_reopens_paused_and_historical_analysis_uses_only_its_prefix(
             SessionOperation::Preferences {
                 settings: game_document::GameSettings {
                     play_mode: PlayMode::HumanEngine,
-                    orientation: NativeSide::Chess(Color::Black),
+                    orientation: TaggedSide::Chess(Color::Black),
                     analysis_defaults: AnalysisOperation {
                         depth: 3,
                         nodes: 12_345,
@@ -140,7 +140,7 @@ fn minimal_document_reopens_paused_and_historical_analysis_uses_only_its_prefix(
         chess(s).analysis.status == AnalysisPhase::Complete
     });
     let context = chess(&historical).analysis.context.as_ref().unwrap();
-    let mshogi_core::native::CanonicalRecord::Chess(record) = &context.game else {
+    let mshogi_core::game::CanonicalRecord::Chess(record) = &context.game else {
         panic!("chess analysis context");
     };
     assert!(record.events().is_empty());
@@ -172,7 +172,7 @@ fn failed_save_and_corrupt_open_preserve_the_valid_file_and_live_document() {
             SessionOperation::Preferences {
                 settings: game_document::GameSettings {
                     play_mode: PlayMode::HumanEngine,
-                    orientation: NativeSide::Chess(Color::Black),
+                    orientation: TaggedSide::Chess(Color::Black),
                     analysis_defaults: AnalysisOperation {
                         depth: 2,
                         nodes: 2000,
@@ -269,7 +269,7 @@ fn reopening_retains_unscored_resignation_but_an_earlier_same_ply_view_does_not(
 }
 
 fn orientation(snapshot: &SharedSnapshot) -> Color {
-    let NativeSide::Chess(orientation) = snapshot.document.settings.orientation else {
+    let TaggedSide::Chess(orientation) = snapshot.document.settings.orientation else {
         panic!("Chess settings")
     };
     orientation

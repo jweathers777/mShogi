@@ -1,4 +1,4 @@
-import type { XiangqiSnapshot } from "../native";
+import type { XiangqiSnapshot } from "../sessionTypes";
 
 export function XiangqiAssessment({ snapshot }: { snapshot: XiangqiSnapshot }) {
   const assessment = snapshot.xiangqi.no_win_assessment;

@@ -1,4 +1,4 @@
-//! Tenjiku adapter for the shared search core. Native Game owns actual play.
+//! Tenjiku adapter for the shared search core. Game owns actual play.
 pub mod position;
 #[cfg(test)]
 mod position_tests;
@@ -39,7 +39,7 @@ pub const fn piece_value(face: Face) -> i32 {
 root::root_api!(50_000);
 
 impl RootGame for Game {
-    root::native_types!(TenjikuPosition, Action, clone, to_native);
+    root::types!(TenjikuPosition, Action, clone, to_action);
     root::no_adjudication!();
     root::restricted_board!(TenjikuPosition);
     fn play(

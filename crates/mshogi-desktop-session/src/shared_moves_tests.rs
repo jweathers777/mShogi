@@ -1,4 +1,4 @@
-//! MSH-123 real native/controller projections. These are not packaged GUI tests.
+//! MSH-123 real controller projections. These are not packaged GUI tests.
 use super::*;
 use mshogi_core::xiangqi as x;
 use std::sync::atomic::{AtomicU64, Ordering};
@@ -45,7 +45,7 @@ fn chess_history() -> DesktopController {
     let replaced = replace(
         &mut c,
         CanonicalRecord::chess(game.record()),
-        NativeSide::Chess(Color::White),
+        TaggedSide::Chess(Color::White),
     );
     assert!(replaced.paused && replaced.moves.entries.len() == 2);
     c
@@ -59,7 +59,7 @@ fn controlled_chess_view_waits_for_atomic_admission() {
             send(&mut c, SessionOperation::Inspect { event_index: 1 }).unwrap();
         }
         let before = c.shared_snapshot();
-        let native = before.chess_match.clone();
+        let match_record = before.chess_match.clone();
         c.admissions.hold_results_for_test(true);
         let mut polls = 0;
         let root = send_with_poll(
@@ -86,10 +86,10 @@ fn controlled_chess_view_waits_for_atomic_admission() {
         .unwrap();
         assert!(root.historical && root.event_index == 0 && root.moves.last_action.is_none());
         assert_eq!(root.moves.entries.len(), 2);
-        assert_eq!(root.chess_match, native);
+        assert_eq!(root.chess_match, match_record);
         let live = send(&mut c, SessionOperation::ReturnLive {}).unwrap();
         assert!(!live.historical);
-        assert_eq!(live.chess_match, native);
+        assert_eq!(live.chess_match, match_record);
     }
 }
 #[test]
@@ -134,7 +134,7 @@ fn controlled_chess_view_refuses_superseded_admission() {
 #[test]
 fn controlled_chess_view_rejects_a_changed_token_atomically() {
     let mut c = chess_history();
-    let native = c.shared_snapshot().chess_match;
+    let match_record = c.shared_snapshot().chess_match;
     c.admissions.hold_results_for_test(true);
     let mut invalidated = false;
     let error = send_with_poll(
@@ -153,13 +153,13 @@ fn controlled_chess_view_rejects_a_changed_token_atomically() {
     assert!(error.contains("superseded"));
     let snapshot = c.shared_snapshot();
     assert!(!snapshot.historical);
-    assert_eq!(snapshot.chess_match, native);
+    assert_eq!(snapshot.chess_match, match_record);
 }
 
 fn replace(
     c: &mut DesktopController,
     record: CanonicalRecord,
-    human: NativeSide,
+    human: TaggedSide,
 ) -> SharedSnapshot {
     send(c, SessionOperation::Replace { record, human }).unwrap()
 }
@@ -205,14 +205,14 @@ fn cue(snapshot: &SharedSnapshot, action: &str, event: usize, origin: &str, targ
         .moves
         .last_action
         .as_ref()
-        .expect("selected native completed action");
+        .expect("selected completed action");
     assert_eq!(geometry.action, action);
     assert_eq!(geometry.event_index, event);
     assert_eq!(geometry.steps, [target]);
     match &geometry.origin {
         ChoiceOrigin::Board { square } => assert_eq!(square, origin),
         ChoiceOrigin::Intersection { point } => assert_eq!(point, origin),
-        other => panic!("expected native board origin, got {other:?}"),
+        other => panic!("expected game board origin, got {other:?}"),
     }
 }
 
@@ -315,7 +315,7 @@ fn shared_moves_shogi_exact_prefix_analysis_reopen_and_replacement_keep_identity
     replace(
         &mut c,
         CanonicalRecord::shogi(s::GameRecord::from_game(&game)),
-        NativeSide::Shogi(s::Side::Sente),
+        TaggedSide::Shogi(s::Side::Sente),
     );
     let selected = send(&mut c, SessionOperation::Inspect { event_index: 1 }).unwrap();
     assert_eq!(
@@ -362,7 +362,7 @@ fn shared_moves_shogi_exact_prefix_analysis_reopen_and_replacement_keep_identity
     let fresh = replace(
         &mut c,
         CanonicalRecord::shogi(s::GameRecord::from_game(&s::Game::new())),
-        NativeSide::Shogi(s::Side::Sente),
+        TaggedSide::Shogi(s::Side::Sente),
     );
     assert!(fresh.moves.entries.is_empty() && fresh.moves.last_action.is_none());
     assert!(
@@ -399,7 +399,7 @@ fn shared_moves_xiangqi_action_plus_warning_is_one_command_in_history() {
     assert_eq!(game.events().len(), 9);
     let mut c = controller();
     let record = CanonicalRecord::xiangqi(x::GameRecord::from_game(&game).unwrap());
-    replace(&mut c, record, NativeSide::Xiangqi(x::Side::Red));
+    replace(&mut c, record, TaggedSide::Xiangqi(x::Side::Red));
     assert!(send(&mut c, SessionOperation::Inspect { event_index: 8 }).is_err());
     let before = send(&mut c, SessionOperation::Inspect { event_index: 7 }).unwrap();
     assert!(before.xiangqi.as_ref().unwrap().warnings.is_empty());

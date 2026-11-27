@@ -1,4 +1,4 @@
-//! Native structural and complete position-local rules for `mshogi.tori.modern.v1`.
+//! Structural and complete position-local rules for `mshogi.tori.modern.v1`.
 //!
 //! Public positions are structurally validated diagrams, NOT admitted live games.
 //! LocalPosition owns complete local rules/admission/inspection, distinct from
@@ -30,7 +30,7 @@ pub const PROFILE_ID: &str = "mshogi.tori.modern.v1";
 /// Selected immutable source/software edition.
 pub const PROFILE_EDITION: &str = "MSH208-MODERN-2026-11-20";
 
-/// Native ownership and orientation, independent of other games.
+/// Game ownership and orientation, independent of other games.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Side {
@@ -40,7 +40,7 @@ pub enum Side {
     Gote,
 }
 impl Side {
-    /// Other native player.
+    /// Other player.
     pub const fn opponent(self) -> Self {
         match self {
             Self::Sente => Self::Gote,
@@ -79,7 +79,7 @@ impl Square {
             None
         }
     }
-    /// Native numeric file 1..=7, decreasing toward Sente's right.
+    /// Numeric file 1..=7, decreasing toward Sente's right.
     pub const fn file(self) -> u8 {
         7 - self.0 % 7
     }
@@ -95,7 +95,7 @@ impl Square {
     pub fn all() -> impl Iterator<Item = Self> {
         (0..49).map(Self)
     }
-    /// Rotate 180°; native handed kind is unaffected.
+    /// Rotate 180°; handed kind is unaffected.
     pub const fn rotated(self) -> Self {
         Self(48 - self.0)
     }
@@ -106,7 +106,7 @@ impl Square {
         Self::new(u8::try_from(file).ok()?, u8::try_from(rank).ok()?)
     }
 }
-/// Invalid native square spelling (not a display-action parser).
+/// Invalid square spelling (not a display-action parser).
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct SquareError;
 impl fmt::Display for SquareError {
@@ -131,7 +131,7 @@ impl fmt::Display for Square {
     }
 }
 
-/// All native board faces; invalid base/promotion combinations are unrepresentable.
+/// All game board faces; invalid base/promotion combinations are unrepresentable.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Face {
@@ -155,7 +155,7 @@ pub enum Face {
     Goose,
 }
 impl Face {
-    /// All nine native faces.
+    /// All nine faces.
     pub const ALL: [Self; 9] = [
         Self::Phoenix,
         Self::Falcon,
@@ -198,7 +198,7 @@ impl Face {
     pub const fn is_promoted(self) -> bool {
         matches!(self, Self::Eagle | Self::Goose)
     }
-    /// Stable native short identity; presentation may choose other labels.
+    /// Stable short identity; presentation may choose other labels.
     pub const fn code(self) -> &'static str {
         match self {
             Self::Phoenix => "Ph",
@@ -251,11 +251,11 @@ impl Face {
         }
     }
 }
-/// Owned native face. Handedness belongs to the face, never to the owner.
+/// Owned face. Handedness belongs to the face, never to the owner.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Piece {
-    /// Native owner.
+    /// Rules owner.
     pub side: Side,
     /// Exact current face.
     pub face: Face,
@@ -567,7 +567,7 @@ impl Position {
         position
     }
 }
-/// A complete structural action. Captures/effects are always derived from native state.
+/// A complete structural action. Captures/effects are always derived from game state.
 /// This type alone does not grant legal admission or live-game permission.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]

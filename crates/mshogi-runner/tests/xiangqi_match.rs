@@ -1,4 +1,4 @@
-//! Persistent, clocked UCI Xiangqi games: native results, unscored stops and replay.
+//! Persistent, clocked UCI Xiangqi games: engine results, unscored stops and replay.
 #[path = "support/engine.rs"]
 mod engine_fixture;
 use mshogi_runner::{
@@ -53,7 +53,7 @@ fn resignation_scores_for_the_opponent_by_engine_index() {
     for red in [0, 1] {
         let report = run(&config([fixture("resign"), fixture("resign")], red, 1000)).unwrap();
         assert!(format!("{:?}", report.conclusion).contains("Resign"));
-        assert_eq!(report.stop, MatchStop::NativeConclusion);
+        assert_eq!(report.stop, MatchStop::GameConclusion);
         assert_eq!(report.turns.len(), 1);
         // Red resigns at once: the Black engine wins.
         let expected = if red == 0 { [0, 2] } else { [2, 0] };
@@ -85,7 +85,7 @@ fn a_full_mshogi_game_replays_and_tampering_is_rejected() {
     assert!(
         matches!(
             report.stop,
-            MatchStop::NativeConclusion | MatchStop::Unresolved
+            MatchStop::GameConclusion | MatchStop::Unresolved
         ),
         "{:?} {:?} {:?} {:?}",
         report.stop,

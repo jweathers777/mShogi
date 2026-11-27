@@ -1,4 +1,4 @@
-//! Native MSH-98 consumer verification; no product UI/packaging claim.
+//! MSH-98 consumer verification; no product UI/packaging claim.
 use super::*;
 
 #[path = "shared_xiangqi_handoff_tests.rs"]
@@ -29,10 +29,7 @@ fn send(c: &mut DesktopController, operation: SessionOperation) -> Result<Shared
             result?;
             return Ok(snapshot);
         }
-        assert!(
-            Instant::now() < deadline,
-            "native consumer admission deadline"
-        );
+        assert!(Instant::now() < deadline, "consumer admission deadline");
         std::thread::sleep(std::time::Duration::from_millis(1));
     }
 }
@@ -41,7 +38,7 @@ fn replace(c: &mut DesktopController, game: &x::Game, human: x::Side) -> SharedS
         c,
         SessionOperation::Replace {
             record: CanonicalRecord::xiangqi(x::GameRecord::from_game(game).unwrap()),
-            human: NativeSide::Xiangqi(human),
+            human: TaggedSide::Xiangqi(human),
         },
     )
     .unwrap()
@@ -84,7 +81,7 @@ fn accept(c: &mut DesktopController, response: ExecutionObservation) -> bool {
     }
     accepted
 }
-fn native(c: &DesktopController) -> CanonicalRecord {
+fn game_record(c: &DesktopController) -> CanonicalRecord {
     CanonicalRecord::xiangqi(
         x::GameRecord::from_game(&c.session.xiangqi().as_ref().unwrap().game).unwrap(),
     )
@@ -104,7 +101,7 @@ fn submit(game: &mut x::Game, action: &str) {
 }
 
 #[test]
-fn native_terminal_advice_tracks_human_actor_pause_history_and_pending_engine_retirement() {
+fn terminal_advice_tracks_human_actor_pause_history_and_pending_engine_retirement() {
     let mut c = controller();
     let game = x::Game::standard(x::ClaimPolicy::Explicit).unwrap();
     replace(&mut c, &game, x::Side::Red);
@@ -159,7 +156,7 @@ fn native_terminal_advice_tracks_human_actor_pause_history_and_pending_engine_re
 }
 
 #[test]
-fn native_identity_intersection_palaces_river_and_capability_scope() {
+fn identity_intersection_palaces_river_and_capability_scope() {
     let mut c = controller();
     let chess = c.shared_snapshot();
     assert!(chess.board.intersections.is_none());
@@ -218,7 +215,7 @@ fn native_identity_intersection_palaces_river_and_capability_scope() {
     assert!(!initial.capabilities.drops);
     assert!(!initial.capabilities.promotion);
     assert!(!initial.capabilities.declaration);
-    assert!(initial.capabilities.save, "MSH-99 native archive admission");
+    assert!(initial.capabilities.save, "MSH-99 archive admission");
     assert_eq!(
         initial.play_limits,
         WorkLimits {
@@ -250,7 +247,7 @@ fn native_identity_intersection_palaces_river_and_capability_scope() {
 }
 
 #[test]
-fn native_claim_audit_and_nonmoving_resignation_preserve_board_ply_and_atomicity() {
+fn claim_audit_and_nonmoving_resignation_preserve_board_ply_and_atomicity() {
     let mut c = controller();
     replace(
         &mut c,
@@ -258,15 +255,15 @@ fn native_claim_audit_and_nonmoving_resignation_preserve_board_ply_and_atomicity
         x::Side::Red,
     );
     send(&mut c, SessionOperation::Resume {}).unwrap();
-    let initial = native(&c);
+    let initial = game_record(&c);
     let token = c.shared_token();
     assert!(send(&mut c, SessionOperation::play("a0a9")).is_err());
-    assert_eq!(native(&c), initial);
+    assert_eq!(game_record(&c), initial);
     // A refused command keeps the session version and selection.
     assert_eq!(c.shared_token().version, token.version);
     assert_eq!(c.shared_token().selection, token.selection);
     assert!(send(&mut c, SessionOperation::play("7g7f")).is_err());
-    assert_eq!(native(&c), initial);
+    assert_eq!(game_record(&c), initial);
     let claim = send(
         &mut c,
         SessionOperation::command(&x::GameCommand::ClaimNaturalCount),
@@ -288,7 +285,7 @@ fn native_claim_audit_and_nonmoving_resignation_preserve_board_ply_and_atomicity
     assert_eq!((moved.event_index, moved.board_ply), (3, 1));
     let old = pending(&c);
     assert!(matches!(old.purpose, ExecutionPurpose::EngineTurn {}));
-    // Black has the move. Red may still resign, through native terminal admission.
+    // Black has the move. Red may still resign, through terminal admission.
     let ended = send(&mut c, SessionOperation::Resign {}).unwrap();
     assert_eq!((ended.event_index, ended.board_ply), (5, 1));
     // One command: the resignation and its conclusion are one history entry.
@@ -317,7 +314,7 @@ fn actual_read_only_analysis_rejects_every_context_mismatch_and_cannot_apply_cho
     human_play(&mut c, "a3a4");
     let retired_turn = pending(&c);
     let request = analyze(&mut c, 128);
-    let before = native(&c);
+    let before = game_record(&c);
     assert!(matches!(
         request.purpose,
         ExecutionPurpose::MoveAnalysis { .. }
@@ -370,13 +367,13 @@ fn actual_read_only_analysis_rejects_every_context_mismatch_and_cannot_apply_cho
             }
         }
         assert!(!accept(&mut c, wrong), "mismatch {mismatch}");
-        assert_eq!(native(&c), before);
+        assert_eq!(game_record(&c), before);
     }
     assert!(!accept(&mut c, execute(&retired_turn)));
     assert!(accept(&mut c, response));
     let snapshot = c.shared_snapshot();
     assert!(snapshot.analysis.is_some());
-    assert_eq!(native(&c), before);
+    assert_eq!(game_record(&c), before);
     assert_eq!(snapshot.search_observations[0].perspective, "Black");
     assert!(snapshot.search_observations[0].selected);
     let historic = send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
@@ -413,7 +410,7 @@ fn cancellation_replacement_undo_and_replay_never_revive_retired_engine_work() {
         &mut c,
         SessionOperation::Replace {
             record: CanonicalRecord::shogi(s::GameRecord::from_game(&s::Game::new())),
-            human: NativeSide::Shogi(s::Side::Sente),
+            human: TaggedSide::Shogi(s::Side::Sente),
         },
     )
     .unwrap();
@@ -425,7 +422,7 @@ fn cancellation_replacement_undo_and_replay_never_revive_retired_engine_work() {
 }
 
 #[test]
-fn native_opponent_inspection_is_immutable_nonactionable_and_selection_bound() {
+fn opponent_inspection_is_immutable_nonactionable_and_selection_bound() {
     let game = x::Game::from_root(
         x::PositionRoot::from_fen("4k4/4r4/9/9/9/9/9/9/9/4K4 w - - 0 1").unwrap(),
         x::ClaimPolicy::Explicit,
@@ -433,7 +430,7 @@ fn native_opponent_inspection_is_immutable_nonactionable_and_selection_bound() {
     .unwrap();
     let mut c = controller();
     let snapshot = replace(&mut c, &game, x::Side::Red);
-    let before = native(&c);
+    let before = game_record(&c);
     let inspection = c
         .shared_inspection(MovementInspectionQuery {
             expected: snapshot.token,
@@ -449,11 +446,11 @@ fn native_opponent_inspection_is_immutable_nonactionable_and_selection_bound() {
             .iter()
             .all(|a| a.action.starts_with("e8e"))
     );
-    assert_eq!(native(&c), before);
+    assert_eq!(game_record(&c), before);
     assert_eq!(c.shared_token(), snapshot.token);
     send(&mut c, SessionOperation::Resume {}).unwrap();
     assert!(send(&mut c, SessionOperation::play("e8e7")).is_err());
-    assert_eq!(native(&c), before);
+    assert_eq!(game_record(&c), before);
     assert!(
         c.shared_inspection(MovementInspectionQuery {
             expected: snapshot.token,
@@ -473,7 +470,7 @@ fn incomplete_failure_retry_and_limits_are_not_chess_outcomes() {
     );
     send(&mut c, SessionOperation::Resume {}).unwrap();
     let turn = pending(&c);
-    let before = native(&c);
+    let before = game_record(&c);
     let low = analyze(&mut c, 1);
     let result = execute(&low);
     assert!(matches!(
@@ -486,7 +483,7 @@ fn incomplete_failure_retry_and_limits_are_not_chess_outcomes() {
     let incomplete = c.shared_snapshot();
     assert_eq!(incomplete.phase, EnginePhase::Incomplete);
     assert_eq!(incomplete.status.score_half_points, None);
-    assert_eq!(native(&c), before);
+    assert_eq!(game_record(&c), before);
     assert!(!accept(&mut c, execute(&turn)));
     send(&mut c, SessionOperation::Retry {}).unwrap();
     let retry = pending(&c);
@@ -524,12 +521,12 @@ fn incomplete_failure_retry_and_limits_are_not_chess_outcomes() {
             .is_err()
         );
         assert_eq!(c.shared_token(), token);
-        assert_eq!(native(&c), before);
+        assert_eq!(game_record(&c), before);
     }
 }
 
 #[test]
-fn typed_native_command_boundary_rejects_unknown_duplicate_and_conflicting_fields() {
+fn typed_command_boundary_rejects_unknown_duplicate_and_conflicting_fields() {
     let mut c = controller();
     let base = serde_json::to_string(&SharedDesktopCommand {
         expected: c.shared_token(),
@@ -554,9 +551,9 @@ fn typed_native_command_boundary_rejects_unknown_duplicate_and_conflicting_field
         &x::Game::standard(x::ClaimPolicy::Explicit).unwrap(),
         x::Side::Red,
     );
-    let before = native(&c);
+    let before = game_record(&c);
     assert!(send(&mut c, SessionOperation::play("a3a4junk")).is_err());
-    assert_eq!(native(&c), before);
+    assert_eq!(game_record(&c), before);
 }
 
 #[test]
@@ -590,10 +587,10 @@ fn cancel_retires_pending_cross_game_admission_and_its_receipt_immediately() {
         &x::Game::standard(x::ClaimPolicy::Explicit).unwrap(),
         x::Side::Red,
     );
-    let before = native(&c);
+    let before = game_record(&c);
     let receipt = c
         .queue_game_candidate::<Shogi>(
-            native_session::RuntimeSeed::<Shogi>::Record {
+            game_session::RuntimeSeed::<Shogi>::Record {
                 record: Box::new(s::GameRecord::from_game(&s::Game::new())),
                 human: s::Side::Sente,
                 play_mode: PlayMode::HumanEngine,
@@ -607,7 +604,7 @@ fn cancel_retires_pending_cross_game_admission_and_its_receipt_immediately() {
     assert!(send(&mut c, SessionOperation::Resume {}).is_err());
     let cancelled = send(&mut c, SessionOperation::Cancel {}).unwrap();
     assert_eq!(cancelled.game, GameKind::Xiangqi);
-    assert_eq!(native(&c), before);
+    assert_eq!(game_record(&c), before);
     assert_eq!(cancelled.phase, EnginePhase::Cancelled);
     assert_eq!(cancelled.capacity.status, CapacityPhase::Available);
     assert!(receipt.completion().unwrap().is_err());
@@ -689,7 +686,7 @@ fn history_stops_only_at_command_boundaries_with_consequences_in_one_entry() {
     assert_eq!(game.events().len(), 9);
     let mut c = controller();
     replace(&mut c, &game, x::Side::Red);
-    let canonical = native(&c);
+    let canonical = game_record(&c);
     let warning = send(&mut c, SessionOperation::Inspect { event_index: 9 }).unwrap();
     // Eight commands; the warning is part of the eighth entry, not a step.
     assert_eq!(warning.events.len(), 8);
@@ -704,7 +701,7 @@ fn history_stops_only_at_command_boundaries_with_consequences_in_one_entry() {
     assert!(before.historical);
     assert!(before.xiangqi.as_ref().unwrap().warnings.is_empty());
     assert!(!before.status.concluded);
-    assert_eq!(native(&c), canonical);
+    assert_eq!(game_record(&c), canonical);
 }
 
 #[test]

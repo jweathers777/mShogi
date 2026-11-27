@@ -1,15 +1,15 @@
-//! Transaction plumbing for immutable native document consumers.
+//! Transaction plumbing for immutable document consumers.
 //! Game-specific admission stays in their adapters; this owns no live document.
 use super::*;
 impl DesktopController {
-    pub(super) fn queue_native_transaction(
+    pub(super) fn queue_transaction(
         &mut self,
-        work: archive::NativeWork,
+        work: archive::GameWork,
         consumes_response: bool,
     ) -> Result<AdmissionReceipt, String> {
         self.ensure_runtime_capacity()?;
         if self.admission_token.is_some() {
-            return Err("Wait for native document admission.".into());
+            return Err("Wait for document admission.".into());
         }
         if self.session.capacity.id >= MAX_SAFE_ID - 64 {
             return Err(self.identity_refusal(self.session.capacity.id, MAX_SAFE_ID - 65, false, ResourceMeasurement::Accepted,
@@ -28,14 +28,14 @@ impl DesktopController {
         self.shared.admission = Some((self.session.document_epoch, false));
         self.admissions.submit(
             self.session.capacity.id,
-            persistence::Work::Native(Box::new(work)),
+            persistence::Work::Archive(Box::new(work)),
         );
         self.last_command_receipt = Some(receipt.clone());
         Ok(receipt)
     }
-    pub(super) fn finish_native_transaction(
+    pub(super) fn finish_transaction(
         &mut self,
-        opened: archive::OpenedNative,
+        opened: archive::OpenedGame,
         replacement: bool,
         durable: bool,
         consumes_response: bool,
@@ -54,25 +54,25 @@ impl DesktopController {
                 self.bridge.cancel();
             }
             match (&mut self.session, opened) {
-                (ActiveDocument::Chess { state, .. }, archive::OpenedNative::Chess(next)) => {
+                (ActiveDocument::Chess { state, .. }, archive::OpenedGame::Chess(next)) => {
                     *state = next;
                 }
-                (ActiveDocument::Shogi { state, .. }, archive::OpenedNative::Shogi(next)) => {
+                (ActiveDocument::Shogi { state, .. }, archive::OpenedGame::Shogi(next)) => {
                     *state = next
                 }
-                (ActiveDocument::Xiangqi { state, .. }, archive::OpenedNative::Xiangqi(next)) => {
+                (ActiveDocument::Xiangqi { state, .. }, archive::OpenedGame::Xiangqi(next)) => {
                     *state = next
                 }
-                (ActiveDocument::Tori { state, .. }, archive::OpenedNative::Tori(next)) => {
+                (ActiveDocument::Tori { state, .. }, archive::OpenedGame::Tori(next)) => {
                     *state = next
                 }
-                (ActiveDocument::Chu { state, .. }, archive::OpenedNative::Chu(next)) => {
+                (ActiveDocument::Chu { state, .. }, archive::OpenedGame::Chu(next)) => {
                     *state = next
                 }
-                (ActiveDocument::Tenjiku { state, .. }, archive::OpenedNative::Tenjiku(next)) => {
+                (ActiveDocument::Tenjiku { state, .. }, archive::OpenedGame::Tenjiku(next)) => {
                     *state = next
                 }
-                _ => unreachable!("serialized native transaction owner"),
+                _ => unreachable!("serialized transaction owner"),
             }
             // A read-only result changes revision, not its selected target.
             if !keeps_work && !(consumes_response && !durable) {

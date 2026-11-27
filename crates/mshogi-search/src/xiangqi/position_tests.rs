@@ -1,4 +1,4 @@
-//! Native differential checks and independently specified Xiangqi fixtures.
+//! Differential checks and independently specified Xiangqi fixtures.
 use super::position::XiangqiPosition;
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
 use mshogi_core::perft::perft;
@@ -11,30 +11,33 @@ fn sorted(actions: impl IntoIterator<Item = Action>) -> Vec<String> {
     result.sort();
     result
 }
-fn compare(p: &mut XiangqiPosition, native: &Position) {
-    assert_eq!(p.side_to_move(), native.side_to_move());
+fn compare(p: &mut XiangqiPosition, rules_position: &Position) {
+    assert_eq!(p.side_to_move(), rules_position.side_to_move());
     for at in Intersection::all() {
-        assert_eq!(p.piece(at), native.piece(at), "{at}");
+        assert_eq!(p.piece(at), rules_position.piece(at), "{at}");
     }
     for side in [Side::Red, Side::Black] {
-        let material: i32 = native
+        let material: i32 = rules_position
             .pieces()
             .filter(|(_, p)| p.side == side)
             .map(|(_, p)| super::piece_value(p.kind))
             .sum();
         assert_eq!(p.material(side), material);
     }
-    let fresh = XiangqiPosition::from_position(native);
+    let fresh = XiangqiPosition::from_position(rules_position);
     assert_eq!(p.hash(), p.hash_from_scratch());
     assert_eq!(p.hash(), fresh.hash());
     assert_eq!(p.evaluate(), fresh.evaluate());
-    assert_eq!(p.in_check(), native.is_in_check(native.side_to_move()));
+    assert_eq!(
+        p.in_check(),
+        rules_position.is_in_check(rules_position.side_to_move())
+    );
     let legal = p.legal_moves();
     assert_eq!(
         sorted(legal.iter().map(|&m| p.action(m))),
-        sorted(native.legal_actions().unwrap()),
+        sorted(rules_position.legal_actions().unwrap()),
         "{}",
-        native.to_fen().unwrap()
+        rules_position.to_fen().unwrap()
     );
     let mut pseudo = Vec::new();
     p.generate(Stage::Tactical, &mut pseudo);
@@ -42,7 +45,7 @@ fn compare(p: &mut XiangqiPosition, native: &Position) {
     p.generate(Stage::Quiet, &mut pseudo);
     assert_eq!(
         sorted(pseudo.iter().map(|&m| p.action(m))),
-        sorted(native.pseudo_legal_actions().unwrap())
+        sorted(rules_position.pseudo_legal_actions().unwrap())
     );
     for (i, &m) in pseudo.iter().enumerate() {
         assert_eq!(p.is_tactical(m), i < split);
@@ -62,19 +65,19 @@ fn random_legal_actions_results_hashes_and_restoration_agree() {
     let (mut positions, mut captures) = (0, 0);
     for seed in 1..=24u64 {
         let mut rng = seed.wrapping_mul(0x9e3779b97f4a7c15) | 1;
-        let mut native = Position::initial();
-        let mut p = XiangqiPosition::from_position(&native);
+        let mut rules_position = Position::initial();
+        let mut p = XiangqiPosition::from_position(&rules_position);
         for _ in 0..140 {
-            compare(&mut p, &native);
+            compare(&mut p, &rules_position);
             positions += 1;
-            let legal = native.legal_actions().unwrap();
+            let legal = rules_position.legal_actions().unwrap();
             if legal.is_empty() {
                 break;
             }
             let wanted: Vec<_> = legal
                 .iter()
                 .copied()
-                .filter(|a| native.piece(a.to).is_some())
+                .filter(|a| rules_position.piece(a.to).is_some())
                 .collect();
             let pool =
                 if wanted.is_empty() || !seed.is_multiple_of(2) || next(&mut rng).is_multiple_of(4)
@@ -84,7 +87,7 @@ fn random_legal_actions_results_hashes_and_restoration_agree() {
                     &wanted
                 };
             let action = pool[(next(&mut rng) % pool.len() as u64) as usize];
-            captures += usize::from(native.piece(action.to).is_some());
+            captures += usize::from(rules_position.piece(action.to).is_some());
             let m = p.find(action).unwrap();
             let before = p.hash();
             let score = p.evaluate();
@@ -92,11 +95,11 @@ fn random_legal_actions_results_hashes_and_restoration_agree() {
             p.unmake();
             assert_eq!(p.hash(), before);
             assert_eq!(p.evaluate(), score);
-            compare(&mut p, &native);
+            compare(&mut p, &rules_position);
             assert!(p.make(m));
-            native.apply(action).unwrap();
+            rules_position.apply(action).unwrap();
         }
-        compare(&mut p, &native);
+        compare(&mut p, &rules_position);
     }
     assert!(positions > 2000, "{positions}");
     assert!(captures > 200, "{captures}");
@@ -112,9 +115,9 @@ fn existing_independent_board_fixtures_and_perft_agree() {
         if fixture["domain"] != "live_root" {
             continue;
         }
-        let native = Position::from_fen(fixture["fen"].as_str().unwrap()).unwrap();
-        let mut p = XiangqiPosition::from_position(&native);
-        compare(&mut p, &native);
+        let rules_position = Position::from_fen(fixture["fen"].as_str().unwrap()).unwrap();
+        let mut p = XiangqiPosition::from_position(&rules_position);
+        compare(&mut p, &rules_position);
         let actual = sorted(p.legal_moves().iter().map(|&m| p.action(m)));
         let strings = |value: &serde_json::Value| {
             let mut v: Vec<String> = value
@@ -169,7 +172,7 @@ fn existing_independent_board_fixtures_and_perft_agree() {
                     fixture["id"]
                 );
                 assert_eq!(
-                    perft(&native, u32::from(depth), 1_000_000, || false)
+                    perft(&rules_position, u32::from(depth), 1_000_000, || false)
                         .unwrap()
                         .leaves,
                     expected
@@ -179,23 +182,23 @@ fn existing_independent_board_fixtures_and_perft_agree() {
         checked += 1;
     }
     assert!(checked >= 30, "{checked}");
-    let native = Position::initial();
-    let mut p = XiangqiPosition::from_position(&native);
+    let rules_position = Position::initial();
+    let mut p = XiangqiPosition::from_position(&rules_position);
     for depth in 1..=3u8 {
         assert_eq!(
             p.perft(depth.into()),
-            perft(&native, u32::from(depth), 1_000_000, || false)
+            perft(&rules_position, u32::from(depth), 1_000_000, || false)
                 .unwrap()
                 .leaves
         );
     }
 }
-fn play(p: &mut XiangqiPosition, native: &mut Position, text: &str) {
+fn play(p: &mut XiangqiPosition, rules_position: &mut Position, text: &str) {
     let action: Action = text.parse().unwrap();
     let m = p.find(action).unwrap();
-    native.apply(action).unwrap();
+    rules_position.apply(action).unwrap();
     assert!(p.make(m));
-    compare(p, native);
+    compare(p, rules_position);
 }
 #[test]
 fn continuous_checker_loses_for_both_colors_and_null_move_is_a_barrier() {
@@ -211,10 +214,10 @@ fn continuous_checker_loses_for_both_colors_and_null_move_is_a_barrier() {
             Side::Black,
         ),
     ] {
-        let mut native = Position::from_fen(fen).unwrap();
-        let mut p = XiangqiPosition::from_position(&native);
+        let mut rules_position = Position::from_fen(fen).unwrap();
+        let mut p = XiangqiPosition::from_position(&rules_position);
         for action in cycle {
-            play(&mut p, &mut native, action);
+            play(&mut p, &mut rules_position, action);
         }
         assert_eq!(p.side_to_move(), side);
         assert_eq!(p.rule_score(), Some(-MATE_SCORE + 4));
@@ -257,7 +260,7 @@ fn ordinary_cycle_draws_and_history_events_reconstruct() {
         assert!(reconstructed.make(m));
     }
     assert_eq!(reconstructed.rule_score(), Some(0));
-    // History includes native automatic warning events after checking cycles.
+    // History includes automatic warning events after checking cycles.
     let mut game = Game::from_root(
         PositionRoot::from_fen("4R4/5k3/9/9/9/9/9/9/9/3K5 w - - 0 1").unwrap(),
         ClaimPolicy::Explicit,
@@ -286,17 +289,17 @@ fn stalemate_is_a_loss_before_bare_general_draw() {
         "5k3/4R4/9/9/9/9/9/9/9/3K5 b - - 0 1",
         "3k5/9/9/9/9/9/9/9/4r4/5K3 w - - 0 1",
     ] {
-        let native = Position::from_fen(fen).unwrap();
-        assert!(!native.is_in_check(native.side_to_move()));
-        assert!(native.legal_actions().unwrap().is_empty());
+        let rules_position = Position::from_fen(fen).unwrap();
+        assert!(!rules_position.is_in_check(rules_position.side_to_move()));
+        assert!(rules_position.legal_actions().unwrap().is_empty());
         assert_eq!(
-            XiangqiPosition::from_position(&native).rule_score(),
+            XiangqiPosition::from_position(&rules_position).rule_score(),
             Some(-MATE_SCORE)
         );
     }
-    let native = Position::from_fen("5k3/9/9/9/9/9/9/9/9/3K5 w - - 0 1").unwrap();
+    let rules_position = Position::from_fen("5k3/9/9/9/9/9/9/9/9/3K5 w - - 0 1").unwrap();
     assert_eq!(
-        XiangqiPosition::from_position(&native).rule_score(),
+        XiangqiPosition::from_position(&rules_position).rule_score(),
         Some(0)
     );
 }
@@ -321,8 +324,8 @@ fn reverse_attack_scan_agrees_with_every_piece_target_on_random_games() {
     let mut checked = 0;
     for seed in 1..=40u64 {
         let mut rng = seed.wrapping_mul(0x9e3779b97f4a7c15) | 1;
-        let mut native = Position::initial();
-        let mut p = XiangqiPosition::from_position(&native);
+        let mut rules_position = Position::initial();
+        let mut p = XiangqiPosition::from_position(&rules_position);
         for _ in 0..160 {
             for target in 0..90 {
                 for by in 0..2 {
@@ -334,13 +337,13 @@ fn reverse_attack_scan_agrees_with_every_piece_target_on_random_games() {
                     checked += 1;
                 }
             }
-            let legal = native.legal_actions().unwrap();
+            let legal = rules_position.legal_actions().unwrap();
             if legal.is_empty() {
                 break;
             }
             let action = legal[(next(&mut rng) % legal.len() as u64) as usize];
             assert!(p.make(p.find(action).unwrap()));
-            native.apply(action).unwrap();
+            rules_position.apply(action).unwrap();
         }
     }
     assert!(checked > 500_000, "{checked}");
@@ -351,29 +354,29 @@ fn a_one_sided_chase_cycle_loses_for_the_chaser_and_mutual_or_protected_cycles_d
     // c3b3 attacks b7 along the b-file, b3c3 attacks c9 along the c-file. The
     // Horse's own moves attack nothing. Every Red move chases: Red loses.
     let fen = "4k4/9/1n7/9/9/9/2R6/9/9/3K5 w - - 0 1";
-    let mut native = Position::from_fen(fen).unwrap();
-    let mut p = XiangqiPosition::from_position(&native);
+    let mut rules_position = Position::from_fen(fen).unwrap();
+    let mut p = XiangqiPosition::from_position(&rules_position);
     for action in ["c3b3", "b7c9", "b3c3", "c9b7"] {
-        play(&mut p, &mut native, action);
+        play(&mut p, &mut rules_position, action);
     }
     assert_eq!(p.side_to_move(), Side::Red);
     assert_eq!(p.rule_score(), Some(-MATE_SCORE + 4));
     // The same cycle from Black's side to move: Red, not the mover, loses.
     p.unmake();
-    native = Position::from_fen(fen).unwrap();
-    let mut q = XiangqiPosition::from_position(&native);
+    rules_position = Position::from_fen(fen).unwrap();
+    let mut q = XiangqiPosition::from_position(&rules_position);
     for action in ["c3b3", "b7c9", "b3c3", "c9b7", "c3b3"] {
-        play(&mut q, &mut native, action);
+        play(&mut q, &mut rules_position, action);
     }
     assert_eq!(q.side_to_move(), Side::Black);
     assert_eq!(q.rule_score(), Some(MATE_SCORE - 5));
     // Protected Horse: a Black Chariot on a7 guards b7 along rank 7 and one
     // on a9 guards c9 along rank 9. The Red moves are not chases: draw.
     let protected = "r3k4/9/rn7/9/9/9/2R6/9/9/3K5 w - - 0 1";
-    let mut native = Position::from_fen(protected).unwrap();
-    let mut r = XiangqiPosition::from_position(&native);
+    let mut rules_position = Position::from_fen(protected).unwrap();
+    let mut r = XiangqiPosition::from_position(&rules_position);
     for action in ["c3b3", "b7c9", "b3c3", "c9b7"] {
-        play(&mut r, &mut native, action);
+        play(&mut r, &mut rules_position, action);
     }
     assert_eq!(r.rule_score(), Some(0));
 }
@@ -418,13 +421,13 @@ fn check_generator_contains_every_legal_checking_move_on_random_games() {
     let mut checks = 0;
     for seed in 1..=40u64 {
         let mut rng = seed.wrapping_mul(0x9e3779b97f4a7c15) | 1;
-        let mut native = Position::initial();
-        let mut p = XiangqiPosition::from_position(&native);
+        let mut rules_position = Position::initial();
+        let mut p = XiangqiPosition::from_position(&rules_position);
         for _ in 0..160 {
             let mut generated = Vec::new();
             p.generate_checks(&mut generated);
-            for action in native.legal_actions().unwrap() {
-                let mut after = native.clone();
+            for action in rules_position.legal_actions().unwrap() {
+                let mut after = rules_position.clone();
                 after.apply(action).unwrap();
                 if after.is_in_check(after.side_to_move()) {
                     checks += 1;
@@ -432,13 +435,13 @@ fn check_generator_contains_every_legal_checking_move_on_random_games() {
                     assert!(generated.contains(&m), "seed {seed} missing check {action}");
                 }
             }
-            let legal = native.legal_actions().unwrap();
+            let legal = rules_position.legal_actions().unwrap();
             if legal.is_empty() {
                 break;
             }
             let action = legal[(next(&mut rng) % legal.len() as u64) as usize];
             assert!(p.make(p.find(action).unwrap()));
-            native.apply(action).unwrap();
+            rules_position.apply(action).unwrap();
         }
     }
     assert!(checks > 1_000, "{checks}");
@@ -451,8 +454,8 @@ fn reverse_least_attacker_agrees_with_a_value_ordered_target_scan() {
     let mut compared = 0;
     for seed in 1..=30u64 {
         let mut rng = seed.wrapping_mul(0x9e3779b97f4a7c15) | 1;
-        let mut native = Position::initial();
-        let mut p = XiangqiPosition::from_position(&native);
+        let mut rules_position = Position::initial();
+        let mut p = XiangqiPosition::from_position(&rules_position);
         for _ in 0..140 {
             let mut captures = Vec::new();
             p.generate(Stage::Tactical, &mut captures);
@@ -460,13 +463,13 @@ fn reverse_least_attacker_agrees_with_a_value_ordered_target_scan() {
                 assert_eq!(p.see(m), p.see_by_target_scan(m), "seed {seed}");
                 compared += 1;
             }
-            let legal = native.legal_actions().unwrap();
+            let legal = rules_position.legal_actions().unwrap();
             if legal.is_empty() {
                 break;
             }
             let action = legal[(next(&mut rng) % legal.len() as u64) as usize];
             assert!(p.make(p.find(action).unwrap()));
-            native.apply(action).unwrap();
+            rules_position.apply(action).unwrap();
         }
     }
     assert!(compared > 2_000, "{compared}");
@@ -504,7 +507,7 @@ fn lazy_search_chase_flags_equal_flags_computed_while_replaying_history() {
 }
 #[test]
 fn a_chase_cycle_that_starts_in_game_history_uses_stored_and_lazy_flags() {
-    // The chase cycle of the test above. Six moves are native game history
+    // The chase cycle of the test above. Six moves are game history
     // (flags stored during replay): the start position occurs twice there.
     // Two search moves (lazy flags) give its third occurrence, which a cycle
     // reaching into history needs.
@@ -534,23 +537,23 @@ fn evaluation_equals_the_feature_sum_with_compiled_and_initial_weights() {
     let mut checked = 0;
     for seed in 1..=20u64 {
         let mut rng = seed.wrapping_mul(0x9e3779b97f4a7c15) | 1;
-        let mut native = Position::initial();
-        let mut p = XiangqiPosition::from_position(&native);
+        let mut rules_position = Position::initial();
+        let mut p = XiangqiPosition::from_position(&rules_position);
         for _ in 0..150 {
             if !p.in_check() {
                 assert_eq!(p.evaluate(), score(&p, &DEFAULT), "seed {seed}");
-                // A fresh position from the native board has the same value.
-                let fresh = XiangqiPosition::from_position(&native);
+                // A fresh position from the game board has the same value.
+                let fresh = XiangqiPosition::from_position(&rules_position);
                 assert_eq!(fresh.evaluate(), p.evaluate());
                 checked += 1;
             }
-            let legal = native.legal_actions().unwrap();
+            let legal = rules_position.legal_actions().unwrap();
             if legal.is_empty() {
                 break;
             }
             let action = legal[(next(&mut rng) % legal.len() as u64) as usize];
             assert!(p.make(p.find(action).unwrap()));
-            native.apply(action).unwrap();
+            rules_position.apply(action).unwrap();
         }
     }
     assert!(checked > 1_500, "{checked}");
@@ -560,9 +563,9 @@ fn initial_weights_equal_the_earlier_hand_set_formula_on_random_games() {
     // The predecessor's evaluation, copied as written before MSH-196:
     // material plus placement formulas and a tempo of 10 for the mover.
     use super::eval::{INITIAL, score};
-    fn old(native: &Position) -> i32 {
+    fn old(rules_position: &Position) -> i32 {
         let mut total = [0i32; 2];
-        for (at, piece) in native.pieces() {
+        for (at, piece) in rules_position.pieces() {
             let side = usize::from(piece.side == Side::Black);
             let index = at.index();
             let rank = if side == 0 { index / 9 } else { 9 - index / 9 } as i32;
@@ -581,24 +584,24 @@ fn initial_weights_equal_the_earlier_hand_set_formula_on_random_games() {
             };
             total[side] += value + placement;
         }
-        let me = usize::from(native.side_to_move() == Side::Black);
+        let me = usize::from(rules_position.side_to_move() == Side::Black);
         total[me] - total[me ^ 1] + 10
     }
     let mut checked = 0;
     for seed in 1..=20u64 {
         let mut rng = seed.wrapping_mul(0x9e3779b97f4a7c15) | 1;
-        let mut native = Position::initial();
-        let mut p = XiangqiPosition::from_position(&native);
+        let mut rules_position = Position::initial();
+        let mut p = XiangqiPosition::from_position(&rules_position);
         for _ in 0..150 {
-            assert_eq!(score(&p, &INITIAL), old(&native), "seed {seed}");
+            assert_eq!(score(&p, &INITIAL), old(&rules_position), "seed {seed}");
             checked += 1;
-            let legal = native.legal_actions().unwrap();
+            let legal = rules_position.legal_actions().unwrap();
             if legal.is_empty() {
                 break;
             }
             let action = legal[(next(&mut rng) % legal.len() as u64) as usize];
             assert!(p.make(p.find(action).unwrap()));
-            native.apply(action).unwrap();
+            rules_position.apply(action).unwrap();
         }
     }
     assert!(checked > 2_000, "{checked}");
@@ -631,9 +634,9 @@ fn colour_mirrored_positions_have_equal_evaluations_and_features() {
     let mut checked = 0;
     for seed in 1..=10u64 {
         let mut rng = seed.wrapping_mul(0x9e3779b97f4a7c15) | 1;
-        let mut native = Position::initial();
+        let mut rules_position = Position::initial();
         for _ in 0..120 {
-            let fen = native.to_fen().unwrap();
+            let fen = rules_position.to_fen().unwrap();
             let a = XiangqiPosition::from_position(&Position::from_fen(&fen).unwrap());
             let b = XiangqiPosition::from_position(&Position::from_fen(&mirror(&fen)).unwrap());
             let (mut fa, mut fb) = ([0i32; COUNT], [0i32; COUNT]);
@@ -643,12 +646,12 @@ fn colour_mirrored_positions_have_equal_evaluations_and_features() {
             assert_eq!(a.evaluate(), b.evaluate());
             assert_eq!(score(&a, &INITIAL), score(&b, &INITIAL));
             checked += 1;
-            let legal = native.legal_actions().unwrap();
+            let legal = rules_position.legal_actions().unwrap();
             if legal.is_empty() {
                 break;
             }
             let action = legal[(next(&mut rng) % legal.len() as u64) as usize];
-            native.apply(action).unwrap();
+            rules_position.apply(action).unwrap();
         }
     }
     assert!(checked > 800, "{checked}");
@@ -658,8 +661,8 @@ fn line_tables_equal_the_ray_walk_for_every_square_on_random_games() {
     let mut checked = 0;
     for seed in 1..=30u64 {
         let mut rng = seed.wrapping_mul(0x9e3779b97f4a7c15) | 1;
-        let mut native = Position::initial();
-        let mut p = XiangqiPosition::from_position(&native);
+        let mut rules_position = Position::initial();
+        let mut p = XiangqiPosition::from_position(&rules_position);
         for _ in 0..150 {
             for from in 0..90 {
                 for (kind, capture) in [(4, true), (4, false), (5, true), (5, false)] {
@@ -671,26 +674,26 @@ fn line_tables_equal_the_ray_walk_for_every_square_on_random_games() {
                     checked += 1;
                 }
             }
-            let legal = native.legal_actions().unwrap();
+            let legal = rules_position.legal_actions().unwrap();
             if legal.is_empty() {
                 break;
             }
             let action = legal[(next(&mut rng) % legal.len() as u64) as usize];
             assert!(p.make(p.find(action).unwrap()));
-            native.apply(action).unwrap();
+            rules_position.apply(action).unwrap();
         }
     }
     assert!(checked > 1_000_000, "{checked}");
 }
 #[test]
-fn filtered_legality_and_check_flags_equal_native_for_every_move_on_random_games() {
+fn filtered_legality_and_check_flags_equal_for_every_move_on_random_games() {
     let mut checked = 0;
     for seed in 1..=30u64 {
         let mut rng = seed.wrapping_mul(0x9e3779b97f4a7c15) | 1;
-        let mut native = Position::initial();
-        let mut p = XiangqiPosition::from_position(&native);
+        let mut rules_position = Position::initial();
+        let mut p = XiangqiPosition::from_position(&rules_position);
         for _ in 0..150 {
-            let legal = native.legal_actions().unwrap();
+            let legal = rules_position.legal_actions().unwrap();
             let mut moves = Vec::new();
             p.generate(Stage::Tactical, &mut moves);
             p.generate(Stage::Quiet, &mut moves);
@@ -699,7 +702,7 @@ fn filtered_legality_and_check_flags_equal_native_for_every_move_on_random_games
                 let ok = p.make(m);
                 assert_eq!(ok, legal.contains(&action), "seed {seed} {action}");
                 if ok {
-                    let mut after = native.clone();
+                    let mut after = rules_position.clone();
                     after.apply(action).unwrap();
                     assert_eq!(
                         p.in_check(),
@@ -715,17 +718,17 @@ fn filtered_legality_and_check_flags_equal_native_for_every_move_on_random_games
             }
             let action = legal[(next(&mut rng) % legal.len() as u64) as usize];
             assert!(p.make(p.find(action).unwrap()));
-            native.apply(action).unwrap();
+            rules_position.apply(action).unwrap();
         }
     }
     assert!(checked > 100_000, "{checked}");
 }
 #[test]
-fn filtered_legality_and_check_flags_equal_native_in_targeted_endgames() {
+fn filtered_legality_and_check_flags_equal_in_targeted_endgames() {
     // Endgame roots for the rare cases: facing Generals, a Cannon screen
     // made by a capture on the General's line, discovered Horse-leg checks
     // and Soldier checks. Every pseudo-legal move of every position on
-    // random walks from these roots is compared with the native rules.
+    // random walks from these roots is compared with the rules.
     let roots = [
         "4k4/9/9/9/9/9/9/9/9/3K5 w - - 0 1",
         "3k5/9/9/9/4c4/9/4R4/9/4A4/4K4 w - - 0 1",
@@ -738,10 +741,10 @@ fn filtered_legality_and_check_flags_equal_native_in_targeted_endgames() {
     for (r, fen) in roots.iter().enumerate() {
         for seed in 1..=6u64 {
             let mut rng = (seed + 100 * r as u64).wrapping_mul(0x9e3779b97f4a7c15) | 1;
-            let mut native = Position::from_fen(fen).unwrap();
-            let mut p = XiangqiPosition::from_position(&native);
+            let mut rules_position = Position::from_fen(fen).unwrap();
+            let mut p = XiangqiPosition::from_position(&rules_position);
             for _ in 0..40 {
-                let legal = native.legal_actions().unwrap();
+                let legal = rules_position.legal_actions().unwrap();
                 let mut moves = Vec::new();
                 p.generate(Stage::Tactical, &mut moves);
                 p.generate(Stage::Quiet, &mut moves);
@@ -750,7 +753,7 @@ fn filtered_legality_and_check_flags_equal_native_in_targeted_endgames() {
                     let ok = p.make(m);
                     assert_eq!(ok, legal.contains(&action), "{fen} {action}");
                     if ok {
-                        let mut after = native.clone();
+                        let mut after = rules_position.clone();
                         after.apply(action).unwrap();
                         assert_eq!(
                             p.in_check(),
@@ -766,7 +769,7 @@ fn filtered_legality_and_check_flags_equal_native_in_targeted_endgames() {
                 }
                 let action = legal[(next(&mut rng) % legal.len() as u64) as usize];
                 assert!(p.make(p.find(action).unwrap()));
-                native.apply(action).unwrap();
+                rules_position.apply(action).unwrap();
             }
         }
     }

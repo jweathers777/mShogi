@@ -1,8 +1,8 @@
-# Native snapshot fixtures
+# Session snapshot fixtures
 
 Generated through the current `DesktopController::shared_command_with_receipt`
-and `shared_snapshot` contract, using authoritative native records. Chess fixtures
-use explicit-claim adjudication. The `shared-chess-*` family contains native
+and `shared_snapshot` contract, using authoritative game records. Chess fixtures
+use explicit-claim adjudication. The `shared-chess-*` family contains
 Chess capability details within the same application snapshot as Shogi/Xiangqi;
 there is no embedded former Chess Snapshot DTO. Analysis fixtures run the actual
 engine through the generator executable's isolated `internal-search` child mode. They exercise frontend selection
@@ -25,22 +25,22 @@ Observations use the current durable observation schema without a transport
 wrapper.
 
 Only frontend tests import these JSON files. Vite production imports do not
-reference them, and the native fixture generator is never a bundled sidecar.
+reference them, and the rules fixture generator is never a bundled sidecar.
 
-The Xiangqi standard snapshot, native capture/recapture played ledger and read-only Black-cannon inspection are generated
+The Xiangqi standard snapshot, capture/recapture played ledger and read-only Black-cannon inspection are generated
 by the same authoritative shared controller (`xiangqi::Game::standard`), including
 the settings shape of every game, 90 intersections and complete choices.
 They are interaction/serialization inputs, not a second rules oracle. The frozen
-XQ-B01 opening expectations and independently reviewed native fixtures own rules
+XQ-B01 opening expectations and independently reviewed rules fixtures own rules
 correctness. No fixture, verification controller or fake result enters a normal
 product package.
 
 The generator normalizes only the frontend fixture copy of an **untimed** Chess
 MatchRecord to event-index nanosecond timestamps. The controller's real runtime
 timestamps, product records and saved documents are unchanged. Each fixture
-record is rebuilt by native replay: commands, actors, versions and every native
+record is rebuilt by game replay: commands, actors, versions and every
 reply must remain identical, as must canonical game history, conclusion and
-active/clock state. Timed matches reject normalization. This keeps native match
+active/clock state. Timed matches reject normalization. This keeps match
 history visible while making snapshot fixtures reproducible across runs and OSes.
 The generator example's two unit tests cover preservation, idempotence and timed
 rejection; two consecutive generation runs should produce identical JSON bytes.

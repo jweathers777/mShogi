@@ -1,4 +1,4 @@
-//! Persistent, clocked USI games: native results, unscored stops and replay.
+//! Persistent, clocked USI games: engine results, unscored stops and replay.
 #[path = "support/engine.rs"]
 mod engine_fixture;
 use mshogi_runner::{
@@ -54,7 +54,7 @@ fn resignation_and_false_declaration_score_for_the_opponent_by_engine_index() {
             "Resignation"
         };
         assert!(format!("{:?}", report.conclusion).contains(reason));
-        assert_eq!(report.stop, MatchStop::NativeConclusion);
+        assert_eq!(report.stop, MatchStop::GameConclusion);
         assert_eq!(report.turns.len(), 1);
         // Sente resigns or declares falsely at once: the Gote engine wins.
         let expected = if sente == 0 { [0, 2] } else { [2, 0] };
@@ -82,7 +82,7 @@ fn a_scripted_game_replays_and_tampering_is_rejected() {
     let mut c = config([engine.clone(), engine], 1, 60_000);
     c.opening.moves = script[..2].iter().map(|s| s.to_string()).collect();
     let report = run(&c).unwrap();
-    assert_eq!(report.stop, MatchStop::NativeConclusion, "{report:#?}");
+    assert_eq!(report.stop, MatchStop::GameConclusion, "{report:#?}");
     assert_eq!(report.turns.len(), 12);
     assert_eq!(report.engine_score, Some([1, 1]));
     assert_eq!(
@@ -113,7 +113,7 @@ fn a_scripted_game_replays_and_tampering_is_rejected() {
     assert!(tampered.replay().is_err());
     let mut tampered = report.clone();
     // Swapping [1, 1] does not change a draw report. This must actually
-    // contradict the native score for both draws and decisive conclusions.
+    // contradict the reported score for both draws and decisive conclusions.
     tampered.engine_score = Some([0, 0]);
     assert!(tampered.replay().is_err());
     let mut tampered = report;
@@ -122,7 +122,7 @@ fn a_scripted_game_replays_and_tampering_is_rejected() {
 }
 
 #[test]
-fn actual_mshogi_mate_in_one_has_a_native_conclusion() {
+fn actual_mshogi_mate_in_one_has_a_conclusion() {
     let mshogi =
         std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../target/release/mshogi");
     if !mshogi.exists() {
@@ -139,7 +139,7 @@ fn actual_mshogi_mate_in_one_has_a_native_conclusion() {
     // G*5b checks the boxed-in King, and Sente's King protects the dropped Gold.
     c.opening.sfen = Some("3lkl3/3p1p3/4K4/9/9/9/9/9/9 b G 1".into());
     let report = run(&c).unwrap();
-    assert_eq!(report.stop, MatchStop::NativeConclusion, "{report:#?}");
+    assert_eq!(report.stop, MatchStop::GameConclusion, "{report:#?}");
     assert_eq!(report.turns.len(), 1);
     assert_eq!(report.turns[0].reply, "bestmove G*5b");
     assert_eq!(report.engine_score, Some([0, 2]));

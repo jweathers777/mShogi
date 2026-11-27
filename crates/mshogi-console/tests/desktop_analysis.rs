@@ -41,7 +41,7 @@ fn actual_analysis_suggestions_never_commit_a_turn_and_resume_is_explicit() {
     assert_eq!(side_to_move(&result), Color::Black);
     assert!(result.paused);
     let context = chess(&result).analysis.context.as_ref().unwrap();
-    let mshogi_core::native::CanonicalRecord::Chess(record) = &context.game else {
+    let mshogi_core::game::CanonicalRecord::Chess(record) = &context.game else {
         panic!("chess analysis context");
     };
     assert!(matches!(

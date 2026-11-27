@@ -3,7 +3,7 @@ use super::*;
 use crate::game_document::GameSettings;
 use crate::tori_fixture_roots as roots;
 #[test]
-fn all_native_faces_handed_hands_forced_choices_and_orientation_are_explicit() {
+fn all_faces_handed_hands_forced_choices_and_orientation_are_explicit() {
     let mut c = controller();
     replace(&mut c, &roots::contract_game(), t::Side::Sente);
     let snapshot = c.shared_snapshot();
@@ -63,20 +63,20 @@ fn all_native_faces_handed_hands_forced_choices_and_orientation_are_explicit() {
             .iter()
             .any(|a| a.from == "7c" && a.steps == ["7b"] && a.completion.is_none())
     );
-    let raw = native(&c);
+    let raw = game_record(&c);
     let flipped = send(
         &mut c,
         SessionOperation::Preferences {
             settings: GameSettings {
                 play_mode: PlayMode::HumanEngine,
-                orientation: NativeSide::Tori(t::Side::Gote),
+                orientation: TaggedSide::Tori(t::Side::Gote),
                 analysis_defaults:
-                    <crate::native_game::Tori as crate::native_game::NativeGame>::ANALYSIS_DEFAULTS,
+                    <crate::game_adapter::Tori as crate::game_adapter::GameAdapter>::ANALYSIS_DEFAULTS,
             },
         },
     )
     .unwrap();
-    assert_eq!(native(&c), raw);
+    assert_eq!(game_record(&c), raw);
     assert_eq!(
         flipped.orientations[1].files,
         vec!["1", "2", "3", "4", "5", "6", "7"]
@@ -142,7 +142,7 @@ fn play_only_rows_preserve_terminal_prefix_and_selected_geometry_without_replay(
     assert!(root.moves.last_action.is_none());
 }
 #[test]
-fn both_quail_owners_keep_native_hand_identity_and_drop_destination_only() {
+fn both_quail_owners_keep_hand_identity_and_drop_destination_only() {
     for (owner, face, to) in [
         (t::Side::Sente, t::Face::RightQuail, "5e"),
         (t::Side::Gote, t::Face::LeftQuail, "5e"),
@@ -202,7 +202,7 @@ fn both_quail_owners_keep_native_hand_identity_and_drop_destination_only() {
     }
 }
 #[test]
-fn exact_prefix_repetition_obligations_and_forfeit_are_native_not_inferred() {
+fn exact_prefix_repetition_obligations_and_forfeit_are_not_inferred() {
     let mut c = controller();
     replace(&mut c, &sequence(&given("TORI-H-COUNT")), t::Side::Sente);
     let live = c.shared_snapshot();

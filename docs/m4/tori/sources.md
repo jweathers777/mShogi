@@ -123,7 +123,7 @@ Python retrieval and pypdf then succeeded. Tohoku image acquisition's `status:0`
 is **curl process exit**, not HTTP status0. Modern/metadata status/hash ledgers
 retain errors and derivatives separately. Public local acquisitions are under
 `/private/tmp/msh81-{historical,modern,root}`; manifests below are durable even if
-those temporary files are later cleared. No broad native/build/GUI suite ran.
+those temporary files are later cleared. No broad rules, build or GUI suite ran.
 
 **PROJECT — accepted software requirements, not historical rules.**
 `docs/design.md` A-01/A-02/A-06/A-10/A-11 and the actual R6 consumers at
@@ -155,7 +155,7 @@ created1997-11-13, displayed file timestamp2023-02-13. Actual page read by the
 independent modern researcher; root web reader returned an access error, not a
 successful second retrieval. Explicit compulsory zone promotion, delayed zone-drop
 promotion and nonjumping Eagle corroborate T-M5. Color wording is inconsistent
-with standard setup naming; diagrams/native side coordinates resolve this, with
+with standard setup naming; diagrams/game side coordinates resolve this, with
 no change to geometry. H.G.Muller's first-person2014-05-08 comment documents
 creator-versus-departure responsibility and check-evasion interpretation differences;
 that is comparator-convention evidence, not an adopted association rule.

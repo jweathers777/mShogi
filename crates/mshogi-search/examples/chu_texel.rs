@@ -1,4 +1,4 @@
-//! Fit Chu material and placement using native-outcome JSON diagrams.
+//! Fit Chu material and placement using outcome JSON diagrams.
 use mshogi_core::chu::{Face, LocalPosition, Position, RootMetadata};
 use mshogi_search::{
     chu::{eval, position::ChuPosition},
@@ -141,11 +141,11 @@ mod tests {
     }
     #[test]
     fn features_match_incremental_score_and_undo() {
-        let mut native = LocalPosition::standard();
+        let mut rules_position = LocalPosition::standard();
         let mut captures = 0;
         let mut promotions = 0;
         for ply in 0..200 {
-            let mut p = ChuPosition::from_local(&native);
+            let mut p = ChuPosition::from_local(&rules_position);
             let score = |p: &ChuPosition| {
                 eval::features(p)
                     .iter()
@@ -161,7 +161,7 @@ mod tests {
             assert_eq!(score(&p), sign * p.evaluate());
             let before = score(&p);
             for m in p.legal_moves() {
-                let action = p.to_native(m);
+                let action = p.to_action(m);
                 promotions += usize::from(action.promote);
                 captures += usize::from(action.route.iter().any(|&at| {
                     p.piece(at)
@@ -172,11 +172,13 @@ mod tests {
                 p.unmake();
                 assert_eq!(score(&p), before);
             }
-            let actions = native.legal_actions();
+            let actions = rules_position.legal_actions();
             if actions.is_empty() {
                 break;
             }
-            native.apply(&actions[(ply * 17) % actions.len()]).unwrap();
+            rules_position
+                .apply(&actions[(ply * 17) % actions.len()])
+                .unwrap();
         }
         assert!(captures > 0, "capture coverage");
         assert!(promotions > 0, "promotion coverage");

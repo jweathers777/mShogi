@@ -1,5 +1,5 @@
 //! Separate test helper: never copied into a desktop distributable.
-use mshogi_core::native::{CanonicalRecord, GameKind};
+use mshogi_core::game::{CanonicalRecord, GameKind};
 use mshogi_engine::*;
 use std::{
     io::{self, BufRead, Write},
@@ -156,8 +156,7 @@ fn main() {
         ExecutionResult::Failure {
             failure: EngineFailure {
                 kind: FailureKind::Search,
-                message: "Separate supervisor verification fixture; no native search performed"
-                    .into(),
+                message: "Separate supervisor verification fixture; no search performed".into(),
             },
         }
     };

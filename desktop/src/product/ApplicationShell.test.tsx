@@ -1,10 +1,10 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
-import { ApplicationShell, DocumentState, GamePositionStatus, LiveGameHeading, NativeEnginePanel } from "./ApplicationShell";
+import { ApplicationShell, DocumentState, GamePositionStatus, LiveGameHeading, GameEnginePanel } from "./ApplicationShell";
 
 afterEach(cleanup);
-describe("one application shell for native games", () => {
+describe("one application shell for games", () => {
   for (const [game, label] of [
     ["chess", "CHESS"], ["shogi", "SHOGI"], ["xiangqi", "XIANGQI"],
     ["tori", "TORI SHOGI"], ["chu", "CHU"], ["tenjiku", "TENJIKU"],
@@ -14,7 +14,7 @@ describe("one application shell for native games", () => {
         document={<><span>Unsaved</span><h2>Untitled game</h2></>}
         actions={<><button>New game</button><button>Save</button><button>Load</button></>}
         heading={<LiveGameHeading eyebrow="YOUR GAME" status="Your turn" player="You play the first side" flip={<button>Flip board</button>} />}
-        board={<div>Native board</div>} analysis={<p>Native observations</p>}
+        board={<div>Game board</div>} analysis={<p>Game observations</p>}
         history={<h2>Game history</h2>} gameActions={<button>Resign</button>}
         support={<button>About mShogi</button>} />);
       const header = container.querySelector(".shell-header")!;
@@ -36,21 +36,21 @@ it.each([
   [null, true, "Unsaved", "unsaved"],
   ["/games/game.mshogi", false, "Unmodified", "unmodified"],
   ["/games/game.mshogi", true, "Unsaved changes", "modified"],
-] as const)("labels disk identity %s and native dirty %s consistently", (path, dirty, label, kind) => {
+] as const)("labels disk identity %s and dirty %s consistently", (path, dirty, label, kind) => {
   const { container } = render(<DocumentState document={{ path, dirty }} />);
   expect(container.querySelector("[data-document-state]")?.getAttribute("data-document-state")).toBe(kind);
   expect(screen.getByText(label)).toBeTruthy();
 });
 
-it("keeps actual play limits between native engine status and observations", () => {
-  const { container, rerender } = render(<NativeEnginePanel status="Searching" limits={{ depth: 2, nodes: 5000 }}><p>No completed observation</p></NativeEnginePanel>);
+it("keeps actual play limits between mShogi engine status and observations", () => {
+  const { container, rerender } = render(<GameEnginePanel status="Searching" limits={{ depth: 2, nodes: 5000 }}><p>No completed observation</p></GameEnginePanel>);
   expect([...container.querySelector(".engine-card")!.children].map(e => e.textContent)).toEqual(["EngineSearching", "Play limit: depth 2 · 5,000 nodes", "No completed observation"]);
-  rerender(<NativeEnginePanel status="Play paused" limits={{ depth: 3, nodes: 12345 }}><p>Real observation</p></NativeEnginePanel>);
+  rerender(<GameEnginePanel status="Play paused" limits={{ depth: 3, nodes: 12345 }}><p>Real observation</p></GameEnginePanel>);
   expect(screen.getByText("Play limit: depth 3 · 12,345 nodes")).toBeTruthy();
 });
 
-it.each([1000, 0])("presents native thinking time %s without exposing technical ceilings", (time_ms) => {
-  render(<NativeEnginePanel status="Searching" limits={{ depth: 128, nodes: Number.MAX_SAFE_INTEGER, time_ms }}><p>No completed observation</p></NativeEnginePanel>);
+it.each([1000, 0])("presents thinking time %s without exposing technical ceilings", (time_ms) => {
+  render(<GameEnginePanel status="Searching" limits={{ depth: 128, nodes: Number.MAX_SAFE_INTEGER, time_ms }}><p>No completed observation</p></GameEnginePanel>);
   expect(screen.getByText(`Thinking time: ${(time_ms / 1000).toLocaleString()} s per move`)).toBeTruthy();
   expect(screen.queryByText(/9,007,199,254,740,991/)).toBeNull();
 });

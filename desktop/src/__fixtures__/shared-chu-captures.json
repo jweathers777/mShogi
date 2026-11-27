@@ -1771,7 +1771,7 @@
   "analysis": null,
   "observations": [],
   "search_observations": [],
-  "score_meaning": "Native root-side evaluation in hundredths of a Pawn. Win/loss distances count complete board actions, not necessarily mate. Failures and incomplete work are unscored.",
+  "score_meaning": "Game root-side evaluation in hundredths of a Pawn. Win/loss distances count complete board actions, not necessarily mate. Failures and incomplete work are unscored.",
   "chess": null,
   "chess_match": null
 }

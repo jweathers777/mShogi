@@ -31,7 +31,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Every adjacent board square; there are no neighboring enemy attacks. Central source 5e; exact destination list 4d 5d 6d 4e 6e 4f 5f 6f.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -67,7 +67,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Every adjacent board square; there are no neighboring enemy attacks. Central source 5e; exact destination list 4d 5d 6d 4e 6e 4f 5f 6f. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -103,7 +103,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "One forward, forward diagonals, sideways, and one straight backward; no backward diagonals. Central source 5e; exact destination list 4d 5d 6d 4e 6e 5f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -142,7 +142,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "One forward, forward diagonals, sideways, and one straight backward; no backward diagonals. Central source 5e; exact destination list 4d 5d 6d 4e 6e 5f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -181,7 +181,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "One forward and four diagonals; no sideways or straight backward. Central source 5e; exact destination list 4d 5d 6d 4f 6f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -219,7 +219,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "One forward and four diagonals; no sideways or straight backward. Central source 5e; exact destination list 4d 5d 6d 4f 6f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -257,7 +257,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Jumps two ranks forward and one file sideways. Central source 5e; exact destination list 4c 6c. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -294,7 +294,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Jumps two ranks forward and one file sideways. Central source 5e; exact destination list 4c 6c. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -331,7 +331,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Forward ray only, stopping at board edge; final-rank move must promote. Central source 5e; exact destination list 5d 5c 5b 5a. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -370,7 +370,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Forward ray only, stopping at board edge; final-rank move must promote. Central source 5e; exact destination list 5d 5c 5b 5a. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -409,7 +409,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Exactly one forward step, including captures; no double move. Central source 5e; exact destination list 5d. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -443,7 +443,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Exactly one forward step, including captures; no double move. Central source 5e; exact destination list 5d. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -477,7 +477,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Orthogonal rays to all four board edges. Central source 5e; exact destination list 5d 5c 5b 5a 5f 5g 5h 5i 4e 3e 2e 1e 6e 7e 8e 9e. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -529,7 +529,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Orthogonal rays to all four board edges. Central source 5e; exact destination list 5d 5c 5b 5a 5f 5g 5h 5i 4e 3e 2e 1e 6e 7e 8e 9e. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -581,7 +581,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Diagonal rays to all four board edges. Central source 5e; exact destination list 4d 3c 2b 1a 6d 7c 8b 9a 4f 3g 2h 1i 6f 7g 8h 9i. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -636,7 +636,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Diagonal rays to all four board edges. Central source 5e; exact destination list 4d 3c 2b 1a 6d 7c 8b 9a 4f 3g 2h 1i 6f 7g 8h 9i. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -692,7 +692,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Promoted P has exactly gold movement, with no further promotion. Central source 5e; exact destination list 4d 5d 6d 4e 6e 5f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -732,7 +732,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Promoted P has exactly gold movement, with no further promotion. Central source 5e; exact destination list 4d 5d 6d 4e 6e 5f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -772,7 +772,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Promoted L has exactly gold movement, with no further promotion. Central source 5e; exact destination list 4d 5d 6d 4e 6e 5f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -812,7 +812,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Promoted L has exactly gold movement, with no further promotion. Central source 5e; exact destination list 4d 5d 6d 4e 6e 5f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -852,7 +852,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Promoted N has exactly gold movement, with no further promotion. Central source 5e; exact destination list 4d 5d 6d 4e 6e 5f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -892,7 +892,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Promoted N has exactly gold movement, with no further promotion. Central source 5e; exact destination list 4d 5d 6d 4e 6e 5f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -932,7 +932,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Promoted S has exactly gold movement, with no further promotion. Central source 5e; exact destination list 4d 5d 6d 4e 6e 5f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -972,7 +972,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Promoted S has exactly gold movement, with no further promotion. Central source 5e; exact destination list 4d 5d 6d 4e 6e 5f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -1012,7 +1012,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "All bishop diagonal rays plus the four orthogonal adjacent squares. Central source 5e; exact destination list 4d 3c 2b 1a 6d 7c 8b 9a 4f 3g 2h 1i 6f 7g 8h 9i 4e 6e 5d 5f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -1066,7 +1066,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "All bishop diagonal rays plus the four orthogonal adjacent squares. Central source 5e; exact destination list 4d 3c 2b 1a 6d 7c 8b 9a 4f 3g 2h 1i 6f 7g 8h 9i 4e 6e 5d 5f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -1120,7 +1120,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "All rook orthogonal rays plus the four diagonal adjacent squares. Central source 5e; exact destination list 5d 5c 5b 5a 5f 5g 5h 5i 4e 3e 2e 1e 6e 7e 8e 9e 4d 6d 4f 6f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -1174,7 +1174,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "All rook orthogonal rays plus the four diagonal adjacent squares. Central source 5e; exact destination list 5d 5c 5b 5a 5f 5g 5h 5i 4e 3e 2e 1e 6e 7e 8e 9e 4d 6d 4f 6f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -1227,7 +1227,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Every adjacent board square; there are no neighboring enemy attacks. Edge source 1e; exact destination list 1d 2d 2e 1f 2f. Squares outside file1 are omitted, never wrapped.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -1260,7 +1260,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Every adjacent board square; there are no neighboring enemy attacks. Edge source 1e; exact destination list 1d 2d 2e 1f 2f. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -1293,7 +1293,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "One forward, forward diagonals, sideways, and one straight backward; no backward diagonals. Edge source 1e; exact destination list 1d 2d 2e 1f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -1330,7 +1330,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "One forward, forward diagonals, sideways, and one straight backward; no backward diagonals. Edge source 1e; exact destination list 1d 2d 2e 1f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -1367,7 +1367,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "One forward and four diagonals; no sideways or straight backward. Edge source 1e; exact destination list 1d 2d 2f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Squares outside file1 are omitted, never wrapped.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -1403,7 +1403,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "One forward and four diagonals; no sideways or straight backward. Edge source 1e; exact destination list 1d 2d 2f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -1439,7 +1439,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Jumps two ranks forward and one file sideways. Edge source 1e; exact destination list 2c. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Squares outside file1 are omitted, never wrapped.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -1474,7 +1474,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Jumps two ranks forward and one file sideways. Edge source 1e; exact destination list 2c. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -1509,7 +1509,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Forward ray only, stopping at board edge; final-rank move must promote. Edge source 1e; exact destination list 1d 1c 1b 1a. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Squares outside file1 are omitted, never wrapped.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -1548,7 +1548,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Forward ray only, stopping at board edge; final-rank move must promote. Edge source 1e; exact destination list 1d 1c 1b 1a. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -1587,7 +1587,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Exactly one forward step, including captures; no double move. Edge source 1e; exact destination list 1d. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Squares outside file1 are omitted, never wrapped.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -1621,7 +1621,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Exactly one forward step, including captures; no double move. Edge source 1e; exact destination list 1d. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -1655,7 +1655,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Orthogonal rays to all four board edges. Edge source 1e; exact destination list 1d 1c 1b 1a 1f 1g 1h 1i 2e 3e 4e 5e 6e 7e 8e 9e. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Squares outside file1 are omitted, never wrapped.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -1707,7 +1707,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Orthogonal rays to all four board edges. Edge source 1e; exact destination list 1d 1c 1b 1a 1f 1g 1h 1i 2e 3e 4e 5e 6e 7e 8e 9e. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -1759,7 +1759,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Diagonal rays to all four board edges. Edge source 1e; exact destination list 2d 3c 4b 5a 2f 3g 4h 5i. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Squares outside file1 are omitted, never wrapped.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -1803,7 +1803,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Diagonal rays to all four board edges. Edge source 1e; exact destination list 2d 3c 4b 5a 2f 3g 4h 5i. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -1848,7 +1848,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Promoted P has exactly gold movement, with no further promotion. Edge source 1e; exact destination list 1d 2d 2e 1f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -1886,7 +1886,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Promoted P has exactly gold movement, with no further promotion. Edge source 1e; exact destination list 1d 2d 2e 1f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -1924,7 +1924,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Promoted L has exactly gold movement, with no further promotion. Edge source 1e; exact destination list 1d 2d 2e 1f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -1962,7 +1962,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Promoted L has exactly gold movement, with no further promotion. Edge source 1e; exact destination list 1d 2d 2e 1f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -2000,7 +2000,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Promoted N has exactly gold movement, with no further promotion. Edge source 1e; exact destination list 1d 2d 2e 1f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -2038,7 +2038,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Promoted N has exactly gold movement, with no further promotion. Edge source 1e; exact destination list 1d 2d 2e 1f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -2076,7 +2076,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Promoted S has exactly gold movement, with no further promotion. Edge source 1e; exact destination list 1d 2d 2e 1f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -2114,7 +2114,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Promoted S has exactly gold movement, with no further promotion. Edge source 1e; exact destination list 1d 2d 2e 1f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -2152,7 +2152,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "All bishop diagonal rays plus the four orthogonal adjacent squares. Edge source 1e; exact destination list 2d 3c 4b 5a 2f 3g 4h 5i 2e 1d 1f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -2197,7 +2197,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "All bishop diagonal rays plus the four orthogonal adjacent squares. Edge source 1e; exact destination list 2d 3c 4b 5a 2f 3g 4h 5i 2e 1d 1f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -2242,7 +2242,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "All rook orthogonal rays plus the four diagonal adjacent squares. Edge source 1e; exact destination list 1d 1c 1b 1a 1f 1g 1h 1i 2e 3e 4e 5e 6e 7e 8e 9e 2d 2f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -2294,7 +2294,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "All rook orthogonal rays plus the four diagonal adjacent squares. Edge source 1e; exact destination list 1d 1c 1b 1a 1f 1g 1h 1i 2e 3e 4e 5e 6e 7e 8e 9e 2d 2f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -2345,7 +2345,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Bishop5e has four diagonal rays. Friendly pawn3c stops the4d3c ray before3c; enemy silver7g is capturable after6f and stops the6f7g8h9i ray. Other rays stay open. Only targets7c/8b/9a enter camp and allow promotion;7g does not. Opponent king2a is initially unthreatened.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "contains": [
@@ -2396,7 +2396,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Lance5e advances only to5d before own pawn5c; cannot land on or pass it. Pawn5c advances5b with either promotion flag. King9h contributes its five safe steps; no other board choices exist.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -2432,7 +2432,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Lance5e may advance5d or capture enemy silver5c with either promotion flag, then ray stops. It cannot reach5b/5a beyond the enemy. King9h contributes its five safe steps; no other board choices exist.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -2468,7 +2468,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Pawn5b attacks king5a. All other king destinations4a/6a/4b/6b contain own pieces;5b is protected by gold5c. Lances cannot jump their own4b/6b pawns or capture5b; pawn advances do not remove pawn5b check. There is no capture, interposition against adjacent pawn, king escape or hand drop, so exact legal board set is empty. This is a board-check/empty-choice observation only; no game outcome is asserted.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [],
@@ -2495,7 +2495,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "King1a is not attacked: gold2c attacks1b/2b/3b/1c/3c/2d; knight3c attacks2a/4a. Its only board destinations1b/2a/2b are all attacked. It has no other pieces or hand drops, so exact legal board set is empty while not checked. No history, CSA outcome or chess stalemate result is inferred.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [],
@@ -2522,7 +2522,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Bishop5e has four diagonal rays. Friendly pawn3c stops the4d3c ray before3c; enemy silver7g is capturable after6f and stops the6f7g8h9i ray. Other rays stay open. Only targets7c/8b/9a enter camp and allow promotion;7g does not. Opponent king2a is initially unthreatened. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "contains": [
@@ -2573,7 +2573,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Lance5e advances only to5d before own pawn5c; cannot land on or pass it. Pawn5c advances5b with either promotion flag. King9h contributes its five safe steps; no other board choices exist. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -2609,7 +2609,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Lance5e may advance5d or capture enemy silver5c with either promotion flag, then ray stops. It cannot reach5b/5a beyond the enemy. King9h contributes its five safe steps; no other board choices exist. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -2645,7 +2645,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Pawn5b attacks king5a. All other king destinations4a/6a/4b/6b contain own pieces;5b is protected by gold5c. Lances cannot jump their own4b/6b pawns or capture5b; pawn advances do not remove pawn5b check. There is no capture, interposition against adjacent pawn, king escape or hand drop, so exact legal board set is empty. This is a board-check/empty-choice observation only; no game outcome is asserted. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [],
@@ -2672,7 +2672,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "King1a is not attacked: gold2c attacks1b/2b/3b/1c/3c/2d; knight3c attacks2a/4a. Its only board destinations1b/2a/2b are all attacked. It has no other pieces or hand drops, so exact legal board set is empty while not checked. No history, CSA outcome or chess stalemate result is inferred. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [],
@@ -2699,7 +2699,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Independently named30 opening choices: nine pawns,two lances,four silvers,six golds,three kings,six rook moves. Each first action stays on its own half and neither captures, promotes nor moves an opponent blocker. Pawn advances remain on rankf; other moves remain behind own pawn wall. Opening bishop diagonal after7g7f runs8h7g6f5e4d3c2b and misses opposing king5a and each4b/5b/6b king destination. Thus every first action leaves exactly all30 opponent choices legal: each depth2 divide entry30,total30x30=900.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [
@@ -2795,7 +2795,7 @@
         "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
         "derivation": "Independently named30 opening choices: nine pawns,two lances,four silvers,six golds,three kings,six rook moves. Each first action stays on its own half and neither captures, promotes nor moves an opponent blocker. Pawn advances remain on rankf; other moves remain behind own pawn wall. Opening bishop diagonal after7g7f runs8h7g6f5e4d3c2b and misses opposing king5a and each4b/5b/6b king destination. Thus every first action leaves exactly all30 opponent choices legal: each depth2 divide entry30,total30x30=900. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
         "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
-        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/execution; board facts only"
       },
       "expected": {
         "legal_moves": [

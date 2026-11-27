@@ -108,7 +108,7 @@ impl Position {
     }
 
     // The one candidate traversal behind both complete lists and early-exit
-    // native queries. A break propagates through every piece and phase.
+    // queries. A break propagates through every piece and phase.
     pub(super) fn visit_candidates(
         &self,
         visit: &mut impl FnMut(Action) -> ControlFlow<()>,

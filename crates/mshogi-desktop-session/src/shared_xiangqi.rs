@@ -1,9 +1,9 @@
-//! Xiangqi in the sole desktop runtime: the generic native session (`native_session`)
-//! with the Xiangqi presentation. Rules stay native-owned.
-use super::native_session::*;
+//! Xiangqi in the sole desktop runtime: the generic game session (`game_session`)
+//! with the Xiangqi presentation. Rules stay rules-owned.
+use super::game_session::*;
 use super::*;
-use crate::native_game::NativeGame;
-pub(crate) use crate::native_game::Xiangqi;
+use crate::game_adapter::GameAdapter;
+pub(crate) use crate::game_adapter::Xiangqi;
 use mshogi_core::xiangqi as x;
 use mshogi_engine::{XiangqiChoice, XiangqiResult};
 #[cfg(test)]
@@ -14,67 +14,67 @@ mod label_tests;
 mod verification;
 
 /// The Xiangqi session.
-pub(crate) type XiangqiSession = NativeSession<Xiangqi>;
+pub(crate) type XiangqiSession = GameSession<Xiangqi>;
 
-/// Xiangqi intersection topology; coordinates are native a0–i9, never square cells.
+/// Xiangqi intersection topology; coordinates are a0–i9, never square cells.
 #[derive(Clone, Debug, Serialize)]
 pub struct IntersectionTopology {
-    /// All ninety native intersections.
+    /// All ninety intersections.
     pub points: Vec<String>,
-    /// Native river separation in zero-based ranks.
+    /// River separation in zero-based ranks.
     pub river_between_ranks: (u8, u8),
-    /// Separate native Red and Black palace areas and diagonal geometry.
+    /// Separate Red and Black palace areas and diagonal geometry.
     pub palaces: Vec<Palace>,
 }
-/// Native palace ownership and lines, independent of shell layout.
+/// Palace ownership and lines, independent of shell layout.
 #[derive(Clone, Debug, Serialize)]
 pub struct Palace {
-    /// Native owner with profile-qualified identity.
+    /// Rules owner with profile-qualified identity.
     pub side: PresentedSide,
     /// All nine palace intersections.
     pub points: Vec<String>,
     /// Two palace diagonal lines, including their center.
     pub diagonals: Vec<Vec<String>>,
 }
-/// Native selected-prefix facts, not inferred from heuristic evaluation.
+/// Selected-prefix facts, not inferred from heuristic evaluation.
 #[derive(Clone, Debug, Serialize)]
 pub struct XiangqiPresentation {
-    /// Native human-actor command advice, disabled while viewing or paused.
+    /// Human-actor command advice, disabled while viewing or paused.
     pub terminal_actions: XiangqiTerminalActions,
     /// Whether SharedSnapshot.context describes this committed selection or the live
-    /// game alongside an immutable selection inside an atomic native command.
+    /// game alongside an immutable selection inside an atomic game command.
     pub canonical_context_scope: &'static str,
     /// Exact selected canonical prefix, absent inside an atomic command.
     pub selected_canonical: Option<CanonicalRecord>,
-    /// Exact selected native event prefix; never includes later warnings/outcomes.
+    /// Exact selected game event prefix; never includes later warnings/outcomes.
     pub selected_events: Vec<x::GameEvent>,
-    /// Native selected position document; diagram only, not invented game history.
+    /// Selected position document; diagram only, not invented game history.
     pub selected_position: String,
-    /// Original native root and counter provenance, unchanged by historical selection.
+    /// Original game root and counter provenance, unchanged by historical selection.
     pub root: String,
-    /// Current native claim policy, distinct from available claims.
+    /// Current claim policy, distinct from available claims.
     pub claim_policy: x::ClaimPolicy,
     /// Claimant-specific known-window evidence, including ineligible queries.
     pub count_advice: Vec<x::NaturalCountEligibility>,
-    /// Exact native selected-prefix warnings.
+    /// Exact selected-prefix warnings.
     pub warnings: Vec<x::Warning>,
-    /// Native current offer, separate from a draw conclusion.
+    /// Current offer, separate from a draw conclusion.
     pub offered_by: Option<x::Side>,
-    /// Exact native committed conclusion, never an engine guess.
+    /// Exact committed conclusion, never an engine guess.
     pub conclusion: Option<x::Conclusion>,
     /// Required unresolved classification, unscored.
     pub pending: Option<x::PendingAdjudication>,
     /// Sound-fast-only provenance; Unknown never means positive win capability.
     pub no_win_assessment: x::NoWinAssessment,
 }
-/// Native terminal-command eligibility, independent of board-action turn ownership.
+/// Terminal-command eligibility, independent of board-action turn ownership.
 #[derive(Clone, Debug, Serialize)]
 pub struct XiangqiTerminalActions {
-    /// Native actor eligible to offer a draw.
+    /// Actor eligible to offer a draw.
     pub offer_actor: PresentedSide,
-    /// Native actor for a pending draw response.
+    /// Actor for a pending draw response.
     pub response_actor: PresentedSide,
-    /// Offer a draw after the human's own move under the native profile.
+    /// Offer a draw after the human's own move under the profile.
     pub offer_draw: bool,
     /// Accept the opponent's outstanding offer.
     pub accept_draw: bool,
@@ -91,7 +91,7 @@ impl SessionGame for Xiangqi {
     const BOARD_SIZE: u8 = 9;
     const BOARD_LABEL: &'static str = "Xiangqi intersection board";
     const INITIAL_FOCUS: &'static str = "e3";
-    const SCORE_MEANING: &'static str = "Native Red/Black root-side hundredths of soldier. Terminal distances count command edges; heuristic evaluation and existential win witnesses never establish a forced win. Ordinary analysis uses sound_fast_only; Unknown is unscored evidence, not proof of win capability.";
+    const SCORE_MEANING: &'static str = "Red/Black root-side hundredths of soldier. Terminal distances count command edges; heuristic evaluation and existential win witnesses never establish a forced win. Ordinary analysis uses sound_fast_only; Unknown is unscored evidence, not proof of win capability.";
 
     session_wiring!(Xiangqi, state: xiangqi, xiangqi_mut);
 
@@ -139,7 +139,7 @@ impl SessionGame for Xiangqi {
         stop: &mut impl FnMut() -> bool,
     ) -> Result<Vec<x::Action>, String> {
         if stop() {
-            return Err("Native operation stopped before acceptance.".into());
+            return Err("Game operation stopped before acceptance.".into());
         }
         if game.conclusion().is_some() || game.pending_adjudication().is_some() {
             return Ok(vec![]);
@@ -263,7 +263,7 @@ impl SessionGame for Xiangqi {
             !historical && live.conclusion().is_none() && live.pending_adjudication().is_none();
         let history = game
             .event_prefix(game.events().len())
-            .expect("native current prefix");
+            .expect("current prefix");
         let count_advice: Vec<_> = [x::Side::Red, x::Side::Black]
             .into_iter()
             .map(|s| game.natural_count_eligibility(s))
@@ -315,7 +315,7 @@ impl SessionGame for Xiangqi {
 }
 
 fn xiangqi_side(side: x::Side) -> PresentedSide {
-    shared::side(RulesProfile::XiangqiWxf2018V1, NativeSide::Xiangqi(side))
+    shared::side(RulesProfile::XiangqiWxf2018V1, TaggedSide::Xiangqi(side))
 }
 fn draw_offer_actor(
     game: &x::Game,
@@ -376,7 +376,7 @@ fn topology() -> IntersectionTopology {
 }
 
 impl DesktopController {
-    /// Verification entry into the real native Xiangqi request path.
+    /// Verification entry into the real Xiangqi request path.
     #[cfg(any(test, feature = "desktop-verification"))]
     pub fn verify_xiangqi_execution(
         &mut self,
@@ -399,13 +399,13 @@ fn choice(a: x::Action) -> PresentedChoice {
         completion: None,
     }
 }
-// Presentation only. Native events, actor identity, indices and replay payloads
+// Presentation only. Game events, actor identity, indices and replay payloads
 // remain authoritative; no reconstruction or adjudication runs to make a label.
 fn event_label(event: &x::GameEvent) -> String {
     let name = |s| {
         side(
-            mshogi_core::native::RulesProfile::XiangqiWxf2018V1,
-            NativeSide::Xiangqi(s),
+            mshogi_core::game::RulesProfile::XiangqiWxf2018V1,
+            TaggedSide::Xiangqi(s),
         )
         .label
     };
@@ -465,8 +465,8 @@ fn event_label(event: &x::GameEvent) -> String {
 fn conclusion_label(conclusion: &x::Conclusion) -> String {
     let name = |s| {
         side(
-            mshogi_core::native::RulesProfile::XiangqiWxf2018V1,
-            NativeSide::Xiangqi(s),
+            mshogi_core::game::RulesProfile::XiangqiWxf2018V1,
+            TaggedSide::Xiangqi(s),
         )
         .label
     };
@@ -511,7 +511,7 @@ pub(super) fn inspect(
     let piece = position
         .piece(point)
         .ok_or("No piece at this intersection.")?;
-    let owner = NativeSide::Xiangqi(piece.side);
+    let owner = TaggedSide::Xiangqi(piece.side);
     Ok((
         GameKind::Xiangqi,
         owner,

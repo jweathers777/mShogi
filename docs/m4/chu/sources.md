@@ -36,8 +36,8 @@ between researchers or software is substituted for source evidence.
 | Royal admission | C1 II/C2§5 allow capture/no announcement; owner selects capture-based admission without Chess self-check. C1 IX actually shows King capture while Prince survives. |
 | Mate | Published immediate mate implemented by C06's finite actual-threat/complete-response test. No forced-mate tree. Prince rescue/all-royals-in-one-action fixture challenges a false single-royal filter. |
 | Quiet no action | No extra JCSA clause established. Report unresolved/unscored blocked board, preserving terminal commands, rather than add a loss/draw. |
-| Repetition | C1 VI requires the responsible party to vary before4. The selected decision rejects automatic forfeit proposal. C07 last-opportunity native refusal preserves prefixes and targets the correct party; VIII's first passer is actual streak origin, not rotated anchor. |
-| Action versus cycle identity | Keep every native route. Compare specified semantic complete-turn transitions for repetition; equivalent empty returns remain jitto and cannot evade VIII. No inter-leg occurrence. |
+| Repetition | C1 VI requires the responsible party to vary before4. The selected decision rejects automatic forfeit proposal. C07 last-opportunity refusal preserves prefixes and targets the correct party; VIII's first passer is actual streak origin, not rotated anchor. |
+| Action versus cycle identity | Keep every route. Compare specified semantic complete-turn transitions for repetition; equivalent empty returns remain jitto and cannot evade VIII. No inter-leg occurrence. |
 | Material | C1 II.4–5 narrow count, III royal classification and IX actual immediate recapture. Live P/GB count but cannot be winning extra; dead P/L ignored for counting only. L1 broader bare-royal rule not selected. |
 | Draw | II.6 requires agreement; IX supplies the exhaustion example. Preserve eligibility/offer/consent/concluded draw separately; no automatic bare-royal result. |
 | Physical/historical conventions | Touch-move/foul forgiveness and historical twenty-move interpretations do not enter the digital profile. Invalid requests reject atomically. No new historical acquisition gate. |
@@ -45,7 +45,7 @@ between researchers or software is substituted for source evidence.
 ## Exact diagram reconstructions
 
 Coordinates are file/rank integers, Sente forward rank−1. These are **partial
-source diagrams**, not historical reachability claims. Native fixtures explicitly
+source diagrams**, not historical reachability claims. Rules fixtures explicitly
 add remote King/Pawn completion. A pictured second Lion is assigned promoted
 Kirin origin when needed; this preserves its source movement face without falsely
 attributing that hidden base identity to the drawing.

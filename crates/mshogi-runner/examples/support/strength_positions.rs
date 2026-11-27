@@ -1,7 +1,7 @@
-//! Native root import, admissible board moves and evaluation inputs.
+//! Game root import, admissible board moves and evaluation inputs.
 use mshogi_core::{
     chess, chu,
-    native::{CanonicalRecord, RulesProfile},
+    game::{CanonicalRecord, RulesProfile},
     shogi, tenjiku, tori, xiangqi,
 };
 use mshogi_runner::experiments::{fresh_root, standard_root};
@@ -334,10 +334,10 @@ fn igui_contract(game: &chu::Game, action: &chu::Action) -> bool {
     if !position.legal_moves().contains(&m) || !position.make(m) {
         return false;
     }
-    let mut native = game.fork();
-    if native
+    let mut game = game.fork();
+    if game
         .submit(chu::GameRequest {
-            expected: native.context(),
+            expected: game.context(),
             actor: lion.side,
             command: chu::GameCommand::Play {
                 action: action.clone(),
@@ -347,8 +347,8 @@ fn igui_contract(game: &chu::Game, action: &chu::Action) -> bool {
     {
         return false;
     }
-    native.position().piece(action.from) == Some(lion)
-        && native.position().piece(victim).is_none()
+    game.position().piece(action.from) == Some(lion)
+        && game.position().piece(victim).is_none()
         && position.piece(action.from) == Some(lion)
         && position.piece(victim).is_none()
         && position.side_to_move() == lion.side.opponent()

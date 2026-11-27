@@ -1,6 +1,6 @@
 //! Actual Tori human executable consumer; expected examples are hand-derived T02–T08.
 mod support;
-use mshogi_core::{native::CanonicalRecord, tori as t};
+use mshogi_core::{game::CanonicalRecord, tori as t};
 use std::{fs, process::Output};
 use support::cli::{Dir, records, run, stdout as output, success};
 fn shell(input: &str) -> Output {
@@ -66,7 +66,7 @@ fn selector_profile_help_and_protocol_isolation_are_explicit() {
 }
 
 #[test]
-fn capture_forced_promotion_quails_drop_undo_and_native_history() {
+fn capture_forced_promotion_quails_drop_undo_and_history() {
     let o = shell(&format!(
         "record load-json {}\nshow\nlegal\nmove Fa7cx7b=Ea\nhands\nhistory\nundo\nmove RQ*5e\nshow\nhistory\n",
         encode(&capture_root())
@@ -152,13 +152,13 @@ fn canonical_atomic_save_load_retains_custom_root_events_hands_and_restored_undo
     assert_eq!(r[0], r[1]);
     assert_eq!(fs::read_to_string(&path).unwrap(), r[0]);
     assert_eq!(r[2], encode(&capture_root()));
-    let CanonicalRecord::Tori(native) = CanonicalRecord::from_json(&r[0]).unwrap() else {
+    let CanonicalRecord::Tori(game) = CanonicalRecord::from_json(&r[0]).unwrap() else {
         panic!()
     };
-    assert_eq!(native.known_board_actions(), 1);
-    assert_eq!(native.event_count(), 2);
+    assert_eq!(game.known_board_actions(), 1);
+    assert_eq!(game.event_count(), 2);
     assert_eq!(
-        native.conclusion(),
+        game.conclusion(),
         Some(t::Conclusion::Resignation {
             winner: t::Side::Sente
         })
@@ -206,7 +206,7 @@ fn strict_wrong_game_profile_derived_duplicate_and_large_loads_preserve_current_
 
 #[test]
 fn bounded_local_diagnostics_use_independent_counts_and_never_change_history() {
-    // Native independent perft fixture: distant corner Phoenixes have 3 choices
+    // Independent perft fixture: distant corner Phoenixes have 3 choices
     // each; depth 2=9, total visits 13. Explicit 12 visits must refuse, not count 9.
     let game = root(
         &[
@@ -235,7 +235,7 @@ fn bounded_local_diagnostics_use_independent_counts_and_never_change_history() {
 }
 
 #[test]
-fn read_only_native_analysis_reports_actual_work_and_no_fallback_for_zero_nodes() {
+fn read_only_analysis_reports_actual_work_and_no_fallback_for_zero_nodes() {
     let o = shell("record print\nanalyze 1 0\nanalyze 1 100\nrecord print\n");
     success(&o);
     let text = output(&o);

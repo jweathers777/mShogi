@@ -1,6 +1,6 @@
 //! Texel fitting of the Tori classical evaluation with the shared tool.
 //! fit TRAIN VALIDATION OUTPUT [SECONDS]; check FROZEN HELDOUT OUTPUT;
-//! stats FILE.... Rows use the compact `diagram` field and Sente's native
+//! stats FILE.... Rows use the compact `diagram` field and Sente's
 //! outcome. Positions that are not quiet (in check, or with a capture or
 //! promotion that wins material by static exchange) are skipped and counted.
 use mshogi_search::tori::eval::ToriTexel;
@@ -36,13 +36,13 @@ mod tests {
     #[test]
     fn fitting_score_is_the_search_evaluation_from_sentes_view() {
         let mut fitted = 0;
-        for native in positions() {
-            let text = native.compact_diagram().to_string();
+        for rules_position in positions() {
+            let text = rules_position.compact_diagram().to_string();
             let Some(prepared) = ToriTexel::prepare(&text).unwrap() else {
                 continue;
             };
             fitted += 1;
-            let p = ToriPosition::from_position(&native);
+            let p = ToriPosition::from_position(&rules_position);
             let sign = if p.side_to_move() == Side::Sente {
                 1
             } else {

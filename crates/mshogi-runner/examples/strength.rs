@@ -1,11 +1,11 @@
-//! Native operations of `python3 -m tools.strength.cli`. JSON in, JSON out.
-#[path = "support/native_match_config.rs"]
+//! Game operations of `python3 -m tools.strength.cli`. JSON in, JSON out.
+#[path = "support/internal_match_config.rs"]
 mod config;
 #[path = "support/strength_positions.rs"]
 mod positions;
 #[path = "support/tori_mate_proof.rs"]
 mod tori_mate_proof;
-use mshogi_core::native::{CanonicalRecord, RulesProfile};
+use mshogi_core::game::{CanonicalRecord, RulesProfile};
 use mshogi_engine::{
     BridgeOptions, EngineBridge, ExecutionContext, ExecutionPurpose, ExecutionRequest,
     ExecutionResult, PROTOCOL_VERSION, WorkLimits,
@@ -99,7 +99,7 @@ fn project(text: &str, profile: RulesProfile, mode: &str, count: usize) -> Resul
                 }
                 println!(
                     "{}",
-                    json!({"game_id":game_id,"opening_id":opening.group,"stop":game.stop,"outcome":game.native_outcome,
+                    json!({"game_id":game_id,"opening_id":opening.group,"stop":game.stop,"outcome":game.outcome,
                     "score_first_twice":game.score_first_twice,"samples":samples})
                 );
             }

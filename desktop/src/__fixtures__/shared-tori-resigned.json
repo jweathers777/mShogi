@@ -484,7 +484,7 @@
   "analysis": null,
   "observations": [],
   "search_observations": [],
-  "score_meaning": "Native root-side evaluation in hundredths of a Swallow. Win/loss distances count board actions; failures and incomplete work are unscored.",
+  "score_meaning": "Game root-side evaluation in hundredths of a Swallow. Win/loss distances count board actions; failures and incomplete work are unscored.",
   "chess": null,
   "chess_match": null
 }

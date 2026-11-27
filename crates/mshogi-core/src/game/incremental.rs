@@ -4,7 +4,7 @@
 //! session identity. Event counts alone do not identify history. Full roots,
 //! takebacks, imports and mismatched histories use `reset`, never a delta.
 
-/// Native adapter for one game's already validated full record and typed suffix.
+/// Adapter for one game's already validated full record and typed suffix.
 /// Other games adopt this lifecycle by implementing this trait, without adding
 /// another session implementation. Saved-record formats are not changed.
 pub trait IncrementalRecord {
@@ -12,10 +12,10 @@ pub trait IncrementalRecord {
     type Game;
     /// Strictly decoded, but not yet rules-admitted, suffix.
     type Delta;
-    /// Native reconstruction or suffix-validation failure.
+    /// Reconstruction or suffix-validation failure.
     type Error;
 
-    /// Reconstruct a full root through native rules.
+    /// Reconstruct a full root through rules.
     fn reconstruct(&self) -> Result<Self::Game, Self::Error>;
     /// Apply only new commands and check every claimed effect and result.
     /// Failure must leave the complete prior game unchanged.
@@ -27,15 +27,15 @@ pub trait IncrementalRecord {
 pub enum AdvanceError<E> {
     /// No full root has been admitted, or the session was cleared.
     MissingRoot,
-    /// Native command or redundant metadata validation failed atomically.
-    Native(E),
+    /// Game command or redundant metadata validation failed atomically.
+    Rejected(E),
 }
 
 impl<E: std::fmt::Display> std::fmt::Display for AdvanceError<E> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::MissingRoot => f.write_str("incremental session has no admitted root"),
-            Self::Native(error) => write!(f, "native suffix rejected: {error}"),
+            Self::Rejected(error) => write!(f, "suffix rejected: {error}"),
         }
     }
 }
@@ -43,13 +43,13 @@ impl<E: std::error::Error + 'static> std::error::Error for AdvanceError<E> {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         match self {
             Self::MissingRoot => None,
-            Self::Native(error) => Some(error),
+            Self::Rejected(error) => Some(error),
         }
     }
 }
 
 /// One retained authoritative game. Process/request identity belongs to the
-/// transport; native validation and atomic state changes belong here.
+/// transport; rules validation and atomic state changes belong here.
 pub struct Session<R: IncrementalRecord> {
     game: Option<R::Game>,
 }
@@ -67,7 +67,7 @@ impl<R: IncrementalRecord> Session<R> {
     pub fn game(&self) -> Option<&R::Game> {
         self.game.as_ref()
     }
-    /// Full native validation, used for new games, takebacks and imported roots.
+    /// Full rules validation, used for new games, takebacks and imported roots.
     /// A failure preserves the old game; callers may explicitly clear it.
     pub fn reset(&mut self, record: &R) -> Result<&R::Game, R::Error> {
         let game = record.reconstruct()?;
@@ -78,7 +78,7 @@ impl<R: IncrementalRecord> Session<R> {
     /// before calling; this method does not treat a matching count as identity.
     pub fn advance(&mut self, delta: &R::Delta) -> Result<&R::Game, AdvanceError<R::Error>> {
         let game = self.game.as_mut().ok_or(AdvanceError::MissingRoot)?;
-        R::append(game, delta).map_err(AdvanceError::Native)?;
+        R::append(game, delta).map_err(AdvanceError::Rejected)?;
         Ok(game)
     }
     /// Forget a stopped/restarted or otherwise invalidated session.
@@ -112,7 +112,7 @@ mod tests {
     }
 
     #[test]
-    fn exact_suffix_replays_new_commands_and_matches_complete_native_game() {
+    fn exact_suffix_replays_new_commands_and_matches_complete_game() {
         let mut game = Game::new();
         let initial = GameRecord::from_game(&game);
         let mut session = Session::<GameRecord>::new();
@@ -303,7 +303,7 @@ mod tests {
     }
 
     #[test]
-    fn repetition_and_declared_length_outcomes_match_full_native_admission() {
+    fn repetition_and_declared_length_outcomes_match_full_admission() {
         for (sfen, actions) in [
             (
                 "4k4/9/9/9/9/9/9/9/4K4 b - 1",

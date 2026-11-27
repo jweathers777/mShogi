@@ -1,7 +1,7 @@
-import type { CompletedActionGeometry, ShogiSnapshot, ToriSnapshot, Side } from "../native";
+import type { CompletedActionGeometry, ShogiSnapshot, ToriSnapshot, Side } from "../sessionTypes";
 import type { InspectMovement } from "./movementInspection";
 
-import { gridNeighbor, useNativeChoiceController } from "../interaction/useNativeChoiceController";
+import { gridNeighbor, useBoardChoiceController } from "../interaction/useBoardChoiceController";
 import { BoardFooter, CompletionDialog, pointLabel } from "../BoardControls";
 
 import { bottomSide } from "../sessionState";
@@ -11,7 +11,7 @@ import { CompletedActionCue } from "../CompletedActionCue";
 import "../movement-inspection.css";
 
 // Shogi and Tori share square/tray composition, not piece identities or rules.
-// The native choices and the shared controller own every admitted interaction.
+// The game choices and the shared controller own every admitted interaction.
 export function ShogiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDisabled = disabled, completedAction = null }: {
   snapshot: ShogiSnapshot | ToriSnapshot; disabled: boolean; onPlay: (action: string) => void;
   onInspect?: InspectMovement | undefined; inspectionDisabled?: boolean;
@@ -25,7 +25,7 @@ export function ShogiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDi
   const squares = orientation.ranks.flatMap(rank => orientation.files.map(file => `${file}${rank}`));
   const columns = orientation.files.length, rows = orientation.ranks.length;
   const hands = snapshot.hands.filter(hand => hand.count > 0);
-  const interaction = useNativeChoiceController({
+  const interaction = useBoardChoiceController({
     contextKey: JSON.stringify([game, snapshot.profile, snapshot.edition, snapshot.token, bottom.key]),
     choices: snapshot.choices,
     origins: [...snapshot.pieces.map(piece => ({ key: piece.square, label: piece.label, owner: piece.owner, inspectable: true })),

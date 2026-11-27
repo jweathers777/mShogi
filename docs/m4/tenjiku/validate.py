@@ -97,10 +97,10 @@ def validate(profile, corpus):
     require(('K', (9, 16)) in lower and ('DE', (8, 16)) in lower and
             ('LHk', (9, 14)) in lower and ('FEg', (8, 14)) in lower, 'central setup asymmetry')
     require(set(corpus) == {'schema', 'revision', 'profiles', 'profile_status',
-                           'native_conformance_executed', 'source_ids', 'notation', 'fixtures'}, 'corpus fields')
+                           'rules_conformance_executed', 'source_ids', 'notation', 'fixtures'}, 'corpus fields')
     require(corpus['schema'] == 'mshogi.tenjiku.fixtures.v1' and corpus['revision'] == profile['revision']
             and corpus['profiles'] == list(IDS) and corpus['profile_status'] == profile['status'], 'corpus identity')
-    require(corpus['native_conformance_executed'] is False, 'native execution cannot be claimed by loader')
+    require(corpus['rules_conformance_executed'] is False, 'execution cannot be claimed by loader')
     require(corpus['source_ids'] == ['A', 'M', 'S'], 'sources')
     rows = corpus['fixtures']
     ids = [f.get('id') for f in rows]
@@ -112,7 +112,7 @@ def validate(profile, corpus):
     for f in rows:
         require(set(f) in ({'id', 'clauses', 'sources', 'scope', 'given', 'expected', 'expectation_method'},
                               {'id', 'clauses', 'sources', 'scope', 'given', 'expected', 'expectation_method', 'rotation_of'}), 'fixture fields')
-        require(f['scope'] in {'native', 'consumer', 'annotation'}, 'fixture scope')
+        require(f['scope'] in {'rules', 'consumer', 'annotation'}, 'fixture scope')
         require(f['scope'] == scopes[f['id']], 'reviewed fixture scope changed')
         require(isinstance(f['given'], dict) and set(f['expected']) == set(IDS) and
                 all(isinstance(e, dict) and e for e in f['expected'].values()) and f['expectation_method'], 'two-profile expectations')
@@ -128,7 +128,7 @@ def validate(profile, corpus):
             for p in r['board']:
                 require(set(p) == {'id', 'side', 'original', 'promoted', 'at'} and
                         p['original'] in originals and p['side'] in {'sente', 'gote'} and
-                        type(p['promoted']) is bool and (not p['promoted'] or p['original'] in profile['promotion']), 'native root identity')
+                        type(p['promoted']) is bool and (not p['promoted'] or p['original'] in profile['promotion']), 'game root identity')
                 coord(p['at']);at = tuple(p['at'])
                 require(at not in used, 'root overlap');used.add(at)
                 require(isinstance(p['id'], str) and p['id'] not in piece_ids, 'root piece ID')
@@ -188,8 +188,8 @@ def validate(profile, corpus):
     return {'data_validation': 'PASS', 'rows': len(rows), 'scope_rows': dict(counts),
             'rotated_rows': sum('rotation_of' in f for f in rows),
             'expected_top_level_fields_by_profile': {id: sum(len(f['expected'][id]) for f in rows) for id in IDS},
-            'native_executed': 0, 'native_passed': 0, 'native_owner': 'MSH-87',
-            'consumer_owners': ['MSH-79', 'MSH-44'], 'note': 'Counts include documentary annotations, not executable native assertions.'}
+            'rules_executed': 0, 'rules_passed': 0, 'rules_owner': 'MSH-87',
+            'consumer_owners': ['MSH-79', 'MSH-44'], 'note': 'Counts include documentary annotations, not executable assertions.'}
 
 
 def main():

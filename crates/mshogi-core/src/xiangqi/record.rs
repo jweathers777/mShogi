@@ -1,17 +1,17 @@
-//! Native canonical records. Native replay derives all event results.
+//! Canonical records. Game replay derives all event results.
 use super::game::CommandEntry;
 use super::{
     ClaimPolicy, Conclusion, Game, GameError, GameRequest, NoWinAssessment, PositionRoot, Side,
 };
-use crate::native::history::AppendGame;
-use crate::native::incremental::IncrementalRecord;
+use crate::game::history::AppendGame;
+use crate::game::incremental::IncrementalRecord;
 use crate::record::RecordedCommand;
 pub use crate::record::compact::RecordError;
 use serde::{Deserialize, Serialize};
 use serde_json::value::RawValue;
-/// Native record schema; profile, governing edition and transport remain distinct.
+/// Game record schema; profile, governing edition and transport remain distinct.
 pub const GAME_RECORD_SCHEMA_VERSION: u32 = 2;
-/// Native game record validated against every authoritative command/event prefix.
+/// Game record validated against every authoritative command/event prefix.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct GameRecord {
     json: String,
@@ -38,7 +38,7 @@ impl WireRecord {
         Self {
             schema_version: GAME_RECORD_SCHEMA_VERSION,
             claim_policy: game.policy,
-            root: RawValue::from_string(game.root.to_json()).expect("native root JSON"),
+            root: RawValue::from_string(game.root.to_json()).expect("game root JSON"),
             commands: game
                 .commands
                 .iter()
@@ -51,7 +51,7 @@ impl WireRecord {
     }
 }
 impl GameRecord {
-    /// Export the complete currently accepted native commands/events, including audits.
+    /// Export the complete currently accepted game commands/events, including audits.
     pub fn from_game(game: &Game) -> Result<Self, RecordError> {
         Ok(Self {
             json: serde_json::to_string(&WireRecord::from_game(game))
@@ -78,11 +78,11 @@ impl GameRecord {
     pub const fn known_board_actions(&self) -> usize {
         self.known_board_actions
     }
-    /// Native current turn, not a winner or an execution capability.
+    /// Current turn, not a winner or an execution capability.
     pub const fn side_to_move(&self) -> Side {
         self.side_to_move
     }
-    /// Already replay-validated native conclusion; no replay here.
+    /// Already replay-validated game conclusion; no replay here.
     pub const fn conclusion(&self) -> Option<Conclusion> {
         self.conclusion
     }
@@ -94,7 +94,7 @@ impl GameRecord {
     pub fn to_json(&self) -> &str {
         &self.json
     }
-    /// Strict direct decoding precedes every normalization. Raw native roots retain
+    /// Strict direct decoding precedes every normalization. Raw game roots retain
     /// duplicate fields for their own parser; no map is used ahead of that boundary.
     pub fn from_json(json: &str) -> Result<Self, RecordError> {
         Self::from_json_with_game(json).map(|(record, _)| record)
@@ -134,7 +134,7 @@ impl GameRecord {
                 undo.push(submission.undo);
             }
         }
-        // Strict typed and native parsers above have already rejected duplicates.
+        // Strict typed and record parsers above have already rejected duplicates.
         // This final presence/equality check additionally rejects *missing* nullable
         // fields instead of letting Serde's Option default erase their absence.
         // It allows harmless JSON whitespace and object-key ordering differences.
@@ -265,7 +265,7 @@ impl IncrementalRecord for GameRecord {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::native::incremental::Session;
+    use crate::game::incremental::Session;
     use crate::xiangqi::GameCommand;
 
     #[test]

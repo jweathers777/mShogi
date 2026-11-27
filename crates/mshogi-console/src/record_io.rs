@@ -1,4 +1,4 @@
-//! Human-console file operations; native adapters own restoration.
+//! Human-console file operations; adapters own restoration.
 use std::{
     fmt::Write as _,
     fs::{self, OpenOptions},

@@ -1,27 +1,27 @@
-//! Exact-depth diagnostics over native legal actions.
+//! Exact-depth diagnostics over legal actions.
 
 use std::{error::Error, fmt};
 
 /// Standard visit allowance for interactive diagnostics and detailed traversals.
 pub const STANDARD_VISIT_LIMIT: u64 = 1_000_000;
 
-/// Native operations required by the shared perft and divide traversal.
+/// Game operations required by the shared perft and divide traversal.
 pub trait PerftPosition: Sized {
-    /// A complete native action, including promotion, drop or route choices.
+    /// A complete action, including promotion, drop or route choices.
     type Action: Clone + fmt::Debug;
     /// The information needed to restore one private transition.
     type Undo;
 
     /// Bound recursion depth, independent of the caller's visit allowance.
     const MAX_DEPTH: u32 = 64;
-    /// Maximum visit allowance, when the native diagnostic has a tighter bound.
+    /// Maximum visit allowance, when the diagnostic has a tighter bound.
     const MAX_VISITS: u64 = u64::MAX;
     /// A generated legal action can be counted at the horizon without applying it.
     const COUNT_LEGAL_LEAVES: bool = false;
 
     /// Make the private traversal copy and validate the root where required.
     fn perft_copy(&self) -> Result<Self, TraversalError>;
-    /// Generate complete legal actions in native order.
+    /// Generate complete legal actions in order.
     fn perft_actions(
         &self,
         stop: &mut impl FnMut() -> bool,
@@ -34,22 +34,22 @@ pub trait PerftPosition: Sized {
     ) -> Result<Self::Undo, TraversalError>;
     /// Restore the working copy after one action, including on cancellation.
     fn perft_undo(&mut self, undo: Self::Undo) -> Result<(), String>;
-    /// Order the displayed root entries when native generation order differs.
+    /// Order the displayed root entries when generation order differs.
     fn sort_divide_actions(_actions: &mut [Self::Action]) {}
 }
 
-/// A failure returned by a native traversal operation.
+/// A failure returned by a traversal operation.
 #[derive(Debug)]
 pub enum TraversalError {
-    /// The native operation detected cancellation.
+    /// The game operation detected cancellation.
     Stopped,
-    /// The native diagnostic message.
-    Native(String),
+    /// The diagnostic message.
+    Rules(String),
 }
 
 impl TraversalError {
-    pub(crate) fn native(error: impl fmt::Display) -> Self {
-        Self::Native(error.to_string())
+    pub(crate) fn rules_error(error: impl fmt::Display) -> Self {
+        Self::Rules(error.to_string())
     }
 }
 
@@ -87,45 +87,45 @@ pub struct DivideReport<A> {
 pub enum PerftError<A> {
     /// Divide requires at least one ply.
     ZeroDivideDepth,
-    /// Requested depth exceeds the native diagnostic limit.
+    /// Requested depth exceeds the diagnostic limit.
     DepthLimit {
         /// Highest supported depth.
         max: u32,
     },
-    /// The requested visit allowance is zero or exceeds the native limit.
+    /// The requested visit allowance is zero or exceeds the limit.
     VisitLimit {
         /// Highest supported visit allowance.
         max: u64,
     },
     /// The caller stopped the traversal.
     Stopped {
-        /// Native action prefix at cancellation.
+        /// Action prefix at cancellation.
         path: Vec<A>,
     },
     /// The traversal exhausted its visit allowance.
     WorkLimit {
-        /// Native action prefix to the next unvisited node.
+        /// Action prefix to the next unvisited node.
         path: Vec<A>,
         /// Requested visit allowance.
         limit: u64,
     },
-    /// A native operation could not continue.
+    /// A game operation could not continue.
     Traversal {
-        /// Native action prefix at failure.
+        /// Action prefix at failure.
         path: Vec<A>,
-        /// Native error message.
+        /// Error message.
         reason: String,
     },
     /// An applied private action could not be restored.
     Restore {
-        /// Native action prefix at failure.
+        /// Action prefix at failure.
         path: Vec<A>,
-        /// Native error message.
+        /// Error message.
         reason: String,
     },
     /// The exact count cannot fit in u64.
     CountOverflow {
-        /// Native action prefix where the count overflowed.
+        /// Action prefix where the count overflowed.
         path: Vec<A>,
     },
 }
@@ -206,7 +206,9 @@ fn run<P: PerftPosition>(
         path: Vec::new(),
     };
     walker.visit()?;
-    let mut working = root.perft_copy().map_err(|error| walker.native(error))?;
+    let mut working = root
+        .perft_copy()
+        .map_err(|error| walker.rules_error(error))?;
     let leaves = walker.walk(&mut working, depth, entries)?;
     Ok(PerftReport {
         depth,
@@ -223,12 +225,12 @@ struct Walker<A, F> {
 }
 
 impl<A: Clone, F: FnMut() -> bool> Walker<A, F> {
-    fn native(&self, error: TraversalError) -> PerftError<A> {
+    fn rules_error(&self, error: TraversalError) -> PerftError<A> {
         match error {
             TraversalError::Stopped => PerftError::Stopped {
                 path: self.path.clone(),
             },
-            TraversalError::Native(reason) => PerftError::Traversal {
+            TraversalError::Rules(reason) => PerftError::Traversal {
                 path: self.path.clone(),
                 reason,
             },
@@ -237,7 +239,7 @@ impl<A: Clone, F: FnMut() -> bool> Walker<A, F> {
 
     fn check_stop(&mut self) -> Result<(), PerftError<A>> {
         if (self.stop)() {
-            return Err(self.native(TraversalError::Stopped));
+            return Err(self.rules_error(TraversalError::Stopped));
         }
         Ok(())
     }
@@ -267,7 +269,7 @@ impl<A: Clone, F: FnMut() -> bool> Walker<A, F> {
 
         let mut actions = position
             .perft_actions(&mut self.stop)
-            .map_err(|error| self.native(error))?;
+            .map_err(|error| self.rules_error(error))?;
         self.check_stop()?;
         if entries.is_some() {
             P::sort_divide_actions(&mut actions);
@@ -302,7 +304,7 @@ impl<A: Clone, F: FnMut() -> bool> Walker<A, F> {
             }
             let undo = position
                 .perft_apply(action, &mut self.stop)
-                .map_err(|error| self.native(error))?;
+                .map_err(|error| self.rules_error(error))?;
             let count = self.walk(position, depth, None);
             position
                 .perft_undo(undo)

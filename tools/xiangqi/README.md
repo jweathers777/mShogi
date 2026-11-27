@@ -26,7 +26,7 @@ The output directory must not exist. The builder clones only the clean pinned
 Git tree into it, applies the retained add-only harness patch, and compiles
 specific board source units directly. It does not run the upstream Makefile,
 download a network, call `Engine::perft`/`verify_network`, or evaluate NNUE.
-`k6r2nc2.cpp` is needed for native incremental feature-bookkeeping helpers in
+`k6r2nc2.cpp` is needed for incremental feature-bookkeeping helpers in
 `do_move`; no weights or search are used. Assertions remain enabled.
 
 The build records source/tree hashes, the entire patch, actual compiler
@@ -44,10 +44,10 @@ changes. Run the full suite with an admitted binary for the upstream checks.
 
 The admitted operation is `Position::set`, complete `MoveList<ALL>` (including
 `EVASIONS` under check), `do_move`/`undo_move`, board-only perft/divide, and
-native check state. The adapter verifies FEN round trips and restoration of
-board, native state bytes and pointer, hashes, and complete legal choices
+check state. The adapter verifies FEN round trips and restoration of
+board, game state bytes and pointer, hashes, and complete legal choices
 after every enumerated make/unmake and every replay-prefix undo. These checks
-establish the comparator's restoration behavior; native mShogi restoration
+establish the comparator's restoration behavior; mShogi restoration
 has its own tests.
 
 The public JSONL request is:
@@ -65,12 +65,12 @@ FEN is six fields, canonical single spaces, ranks 9 down to 0, files a–i,
 literal `- -`, `RACPNBK/racpnbk`, `w`=Red and `b`=Black. Complete action
 coordinates are a0–i9, four characters, no promotion/drop suffix. The parser
 domain requires exactly one General each, per-side original material maxima,
-native palace/Advisor/Elephant/Soldier square restrictions, fullmove 1–100000
-and root declared counter 0–119. The native parser additionally rejects a
+palace/Advisor/Elephant/Soldier square restrictions, fullmove 1–100000
+and root declared counter 0–119. The record parser additionally rejects a
 position where the moving side already attacks the non-moving General.
-Successful admission is not proof of historical reachability. Explicit native
+Successful admission is not proof of historical reachability. Explicit
 structural diagnostics outside this domain are skipped, never normalized into
-different positions. Native record/history and counter support are separate.
+different positions. Game record/history and counter support are separate.
 
 Response fields are `fen`, sorted unique `legal_moves`, `in_check` and
 `undo_restored`. Positive depth adds `perft` and sorted
@@ -86,12 +86,12 @@ All history/repetition/chase helpers, natural-count adjudication, no-win
 outcomes, royal-capture continuations, evaluation, search and playing strength
 are excluded. Perft does not stop for historical or impossible-to-win outcomes.
 
-## Native comparison
+## Comparison
 
-The native developer probe may consume the same JSONL contract. Add:
+The developer probe may consume the same JSONL contract. Add:
 
 ```sh
---native-probe '/absolute/path/to/native-probe' --walks 8 --length 64
+--rules-probe '/absolute/path/to/rules-probe' --walks 8 --length 64
 ```
 
 to `compare.py`. It compares both implementations with independently expected
@@ -103,8 +103,8 @@ manifest/binary hashes. It never edits fixtures. Unproven count observations
 must not be relabeled independently established perft expectations.
 
 Pikafish's emitted FEN counter is its rule60/check10-adjusted clock. It is
-explicitly excluded from native counter agreement, while both original FEN
-observations are retained. The native raw/declared counter and WXF history
+explicitly excluded from counter agreement, while both original FEN
+observations are retained. The raw/declared counter and WXF history
 cannot be redefined by this comparator. A 24-ply, 12-check cycle sentinel
 demonstrates the foreign clock reporting 20 while the raw no-capture count
 is 24. Placement, side and fullmove number remain comparable.
@@ -127,9 +127,9 @@ alternative Fairy-Stockfish pin remains unbuilt and unadmitted.
 ## Reviewed MSH-94 history board paths
 
 The four frozen cycle/count/mutual-check/precedence corpora are also exercised
-through the existing board-only native probe and admitted reference. This does
+through the existing board-only probe and admitted reference. This does
 not make reference repetition/count outcomes authoritative. To rebuild the
-native executable from the checked-out source and collect a compact report:
+executable from the checked-out source and collect a compact report:
 
 ```sh
 cargo build --locked -p mshogi-core --example xiangqi_probe
@@ -138,16 +138,16 @@ python3 tools/xiangqi/review_count_history.py --output /tmp/count-arithmetic.jso
 ```
 
 The collector defaults to current directory as repository; `--repo` and
-`--native-probe` can name explicit paths. It checks every prefix (492 over 17
+`--rules-probe` can name explicit paths. It checks every prefix (492 over 17
 histories), all complete legal choices, check, exact undo and comparable FEN
-fields. `--native-only` is explicitly labeled and makes no reference claim.
+fields. `--rules-only` is explicitly labeled and makes no reference claim.
 Each process uses the existing bounded adapter; failure/mismatch names the
 fixture/prefix. Input/source/binary mutations during collection refuse a report.
 Expected fixtures are never regenerated. Reports retain hashes and per-fixture
 counts rather than bulky raw streams; deterministic ordered observation frames
 can be reproduced with the same tools/binaries. Source hashes identify observed
 files; the preceding Cargo build, not the collector, establishes their build
-relationship to the native executable. Independent expected outcomes and their
+relationship to the executable. Independent expected outcomes and their
 source review remain in `docs/m4/xiangqi/history-evidence.md`.
 
 `review_count_history.py` is a deliberately limited independent arithmetic check

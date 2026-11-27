@@ -12,7 +12,7 @@ adjudication modes and limits, claims, conclusions, match commands and events.
 The canonical match owns its original timestamps; reopening offsets the new
 monotonic runtime clock above their saved floor.
 
-The document additionally retains human color, native board orientation and
+The document additionally retains human color, game board orientation and
 analysis defaults, actual play limits, an ordered accepted desktop-control
 journal, and accepted engine observations with their complete protocol-v2
 request context, result, target, history, execution purpose, limits and original
@@ -33,7 +33,7 @@ diagnostic, never a promoted action, score or proof.
 
 ## Resource and replacement rules
 
-One long-lived native document worker has bounded pending and completion slots.
+One long-lived document worker has bounded pending and completion slots.
 All filesystem access, serialization, validation/replay and historical-prefix
 construction run there, separate from the serialized controller and engine
 worker. Replacement cancels obsolete work. Cooperative cancellation and
@@ -82,8 +82,8 @@ preventable Dock route. Forced termination is outside interactive guarantees.
 
 ## Historical provenance
 
-The timeline selects exact native event boundaries, including initial known
-game events and match commands such as claims or resignation. The native worker
+The timeline selects exact game event boundaries, including initial known
+game events and match commands such as claims or resignation. The worker
 replays that prefix, excluding later moves, repetition occurrences and outcomes.
 An initial imported FEN still begins known history; no earlier history is inferred.
 
@@ -98,17 +98,17 @@ no branching or variation editing in MSH-35.
 Chess documents without Take back continue to write schema1/profile
 `mshogi.desktop.archive.v1`. A document retaining a taken-back Chess continuation
 writes schema3/profile `mshogi.desktop.archive.v3`. This is a narrow Chess lineage
-extension, not a replacement native record schema or a common game rules model.
+extension, not a replacement game record schema or a common game rules model.
 Older readers reject the new schema explicitly; the current reader accepts the
 existing schema1, shared schema2 dispatch, and this schema3. Shogi and Xiangqi
-continue to use their shared schema2 archive and native control replay.
+continue to use their shared schema2 archive and control replay.
 
 Schema3 retains the complete authoritative Chess match before each Take back,
-bound to the corresponding ordered desktop control. Native replay independently
+bound to the corresponding ordered desktop control. Game replay independently
 derives the restored human decision point. The next retained match and final
 match must extend that restored decision, with the same root and provenance.
 Every observation must target an exact prefix of the admitted current or retained
-native lineage. An unrelated parsed record is insufficient. These retained
+lineage. An unrelated parsed record is insufficient. These retained
 records count toward byte, event and replay admission; undo does not reclaim the
 observations or abandoned accepted history. Runtime identities and pending work
 are never resurrected from this evidence.

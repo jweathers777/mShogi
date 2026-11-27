@@ -1,12 +1,12 @@
-//! Shogi in the sole desktop runtime: the generic native session (`native_session`)
-//! with the Shogi presentation. Rules and persistence stay native-owned.
-use super::native_session::*;
+//! Shogi in the sole desktop runtime: the generic game session (`game_session`)
+//! with the Shogi presentation. Rules and persistence stay rules-owned.
+use super::game_session::*;
 use super::*;
-pub(crate) use crate::native_game::Shogi;
+pub(crate) use crate::game_adapter::Shogi;
 use mshogi_core::shogi as s;
 
 /// The Shogi session.
-pub(crate) type ShogiSession = NativeSession<Shogi>;
+pub(crate) type ShogiSession = GameSession<Shogi>;
 
 impl SessionGame for Shogi {
     type Presentation = ();
@@ -14,7 +14,7 @@ impl SessionGame for Shogi {
     const BOARD_SIZE: u8 = 9;
     const BOARD_LABEL: &'static str = "Shogi board";
     const INITIAL_FOCUS: &'static str = "5g";
-    const SCORE_MEANING: &'static str = "Native shogi root-side hundredths of pawn; terminal win distance counts complete command edges, including declarations. Not a chess mate score.";
+    const SCORE_MEANING: &'static str = "Shogi root-side hundredths of pawn; terminal win distance counts complete command edges, including declarations. Not a chess mate score.";
 
     session_wiring!(Shogi, state: shogi, shogi_mut);
 
@@ -73,7 +73,7 @@ impl SessionGame for Shogi {
         stop: &mut impl FnMut() -> bool,
     ) -> Result<Vec<s::Action>, String> {
         if stop() {
-            return Err("Native operation stopped before acceptance.".into());
+            return Err("Game operation stopped before acceptance.".into());
         }
         // A concluded game offers no choices.
         Ok(if game.conclusion().is_some() {
@@ -202,7 +202,7 @@ impl SessionGame for Shogi {
 }
 
 fn shogi_side(side: s::Side) -> PresentedSide {
-    shared::side(RulesProfile::ShogiCsa36V1, NativeSide::Shogi(side))
+    shared::side(RulesProfile::ShogiCsa36V1, TaggedSide::Shogi(side))
 }
 pub(super) fn piece_text(kind: s::PieceKind) -> &'static str {
     match kind {
@@ -282,7 +282,7 @@ fn status(game: &s::Game) -> PresentedStatus {
         score_half_points: game.conclusion().map(|c| c.score_half_points()),
     }
 }
-/// Lowercase native piece name, as the presentation spells it.
+/// Lowercase piece name, as the presentation spells it.
 fn kind_name(kind: s::PieceKind) -> String {
     format!("{kind:?}").to_lowercase()
 }

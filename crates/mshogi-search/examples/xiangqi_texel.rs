@@ -1,6 +1,6 @@
 //! Texel fitting of the Xiangqi classical evaluation with the shared tool.
 //! fit TRAIN VALIDATION OUTPUT [SECONDS]; check FROZEN HELDOUT OUTPUT;
-//! stats FILE.... Rows use the `fen` field and Red's native outcome.
+//! stats FILE.... Rows use the `fen` field and Red's game outcome.
 //! Positions that are not quiet (in check, or with a capture that wins
 //! material by static exchange) are skipped and counted.
 use mshogi_search::xiangqi::eval::XiangqiTexel;

@@ -36,7 +36,7 @@ fn game() -> Game {
         Position::from_diagram(
             &entries,
             Side::Sente,
-            RootMetadata::imported("native-consumer-fixture".into(), 120).unwrap(),
+            RootMetadata::imported("consumer-fixture".into(), 120).unwrap(),
         )
         .unwrap(),
     )
@@ -77,7 +77,7 @@ fn actual_complete_payloads_choices_effects_prefixes_and_fresh_authority() {
     assert_ne!(g.context(), reopened.context());
     assert_eq!(
         reopened.position().root().source(),
-        Some("native-consumer-fixture")
+        Some("consumer-fixture")
     );
     assert_eq!(reopened.position().declared_total_plies(), 121);
     let prefix = reopened.record_prefix(0).unwrap().to_game().unwrap();
@@ -102,7 +102,7 @@ fn actual_complete_payloads_choices_effects_prefixes_and_fresh_authority() {
     );
 }
 #[test]
-fn native_handoff_rejects_duplicates_before_an_intermediate_map_can_erase_them() {
+fn handoff_rejects_duplicates_before_an_intermediate_map_can_erase_them() {
     let g = game();
     let raw = GameRecord::from_game(&g).unwrap();
     let bad = raw.to_json().replacen(

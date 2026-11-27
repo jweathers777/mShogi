@@ -5,50 +5,55 @@
   "job_id": 127177779284,
   "source_report": "gui-evidence/gui-report.json",
   "source_report_sha256": "37db3dde64e835b837f3b76d943a6896fd86f7256b381d19328e484682c4b7c4",
-  "qualification": "Unchanged actual public diagnostics retained by the Linux241 GUI campaign. Before and reopened snapshots come from completed pending/cancel/Save/Open journeys; these are raw reader test inputs, not completed analysis or new GUI execution evidence.",
-  "encoding": "Actual public diagnostic dictionary values re-encoded as compact UTF-8 JSON for bounded reader pages. Native values are unchanged; this does not assert original diagnostic-text byte identity.",
+  "qualification": "Diagnostic snapshots captured by the Linux241 GUI campaign. The reader test verifies the full before and reopened snapshots across page boundaries.",
+  "encoding": "Captured diagnostic values use the current field names and document message. Source report provenance refers to the original Linux capture.",
   "archive": "public-diagnostics-tenjiku-linux-241807f.json.gz",
-  "archive_sha256": "491b08a8de85aafc7d6bb3640bc1ec952e150219a5c11145a4062e30da15083d",
+  "archive_sha256": "f280bee0173aa1ccc39a97f831f5265789fc2522ee0fb90c6b116653a41d523f",
   "raw_cases": [
     {
       "profile": "adams",
       "phase": "verification-pending-tenjiku-adams",
       "event_operation": "Real pending browse Return / Take back / analysis replacement cancellation",
       "captured_field": "before",
-      "utf16_units": 68366,
+      "utf16_units": 68367,
       "pages": 2,
       "source_event_at_utc": "2026-11-05T10:30:02.063039+00:00",
-      "canonical_public_json_sha256": "b7850a9dbf1648f6690205bbe531696564f2ce04817b27b3137a15a00790156b"
+      "canonical_public_json_sha256": "78e505c1f6af508d9584b39a95e5f7e7d1fd2a3fe4d18a796e1fb4404efc1c3d",
+      "original_public_json_sha256": "b7850a9dbf1648f6690205bbe531696564f2ce04817b27b3137a15a00790156b"
     },
     {
       "profile": "adams",
       "phase": "verification-pending-tenjiku-adams",
       "event_operation": "Real pending browse Return / Take back / analysis replacement cancellation",
       "captured_field": "reopened",
-      "utf16_units": 67039,
+      "utf16_units": 67037,
       "pages": 2,
       "source_event_at_utc": "2026-11-05T10:30:02.063039+00:00",
-      "canonical_public_json_sha256": "6f64cc933ad1e8be349fd699c96e7b065a7a336f8ff3bdc0766052a5efbf1afa"
+      "canonical_public_json_sha256": "2b19673cef1ce6367f5e95ac4930b5c4d109b8b76ab8671e66d510f08aebf686",
+      "original_public_json_sha256": "6f64cc933ad1e8be349fd699c96e7b065a7a336f8ff3bdc0766052a5efbf1afa"
     },
     {
       "profile": "muller",
       "phase": "verification-pending-tenjiku-muller",
       "event_operation": "Real pending browse Return / Take back / analysis replacement cancellation",
       "captured_field": "before",
-      "utf16_units": 68387,
+      "utf16_units": 68388,
       "pages": 2,
       "source_event_at_utc": "2026-11-05T10:30:26.928348+00:00",
-      "canonical_public_json_sha256": "eb2fe04711a7078dc81cd3ac58c5a86eb9e55a0554a361449cb0a780fe77b302"
+      "canonical_public_json_sha256": "caa6df1917f1ca9bf9de00bdd56f5564f5e210b731757ef9a63946e758bdca22",
+      "original_public_json_sha256": "eb2fe04711a7078dc81cd3ac58c5a86eb9e55a0554a361449cb0a780fe77b302"
     },
     {
       "profile": "muller",
       "phase": "verification-pending-tenjiku-muller",
       "event_operation": "Real pending browse Return / Take back / analysis replacement cancellation",
       "captured_field": "reopened",
-      "utf16_units": 67061,
+      "utf16_units": 67059,
       "pages": 2,
       "source_event_at_utc": "2026-11-05T10:30:26.928348+00:00",
-      "canonical_public_json_sha256": "1ab82905c62eb76debedf9fd94f3c25e36340e3a4a3fb8e0bff7786987a51cac"
+      "canonical_public_json_sha256": "9072389232016970e6098e609976c93afcc703966375d15d3178726b33c24bc7",
+      "original_public_json_sha256": "1ab82905c62eb76debedf9fd94f3c25e36340e3a4a3fb8e0bff7786987a51cac"
     }
-  ]
+  ],
+  "original_archive_sha256": "491b08a8de85aafc7d6bb3640bc1ec952e150219a5c11145a4062e30da15083d"
 }

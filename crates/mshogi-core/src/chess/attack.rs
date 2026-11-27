@@ -99,7 +99,7 @@ impl Position {
     }
 
     fn attacker_bits(&self, target: Square, by: Color, first_only: bool) -> u64 {
-        // Cached occupancy is derived by the same native effect-cell setter.
+        // Cached occupancy is derived by the same effect-cell setter.
         // Leapers are reverse maps; a slider is visible iff it is the nearest
         // occupied square on its ray. Pins and target ownership do not enter.
         let ours = self.attacks.colors[by.index()];

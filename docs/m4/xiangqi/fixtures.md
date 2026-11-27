@@ -42,7 +42,7 @@ Only Red general d0, Red chariot e9, Black general f8; Red to move.
 
 Both cycles return exactly the same board/side, keep generals inside their
 palaces and never expose facing generals. Board-only action sets at that target
-must agree. Native history classification/duty must differ: unilateral checking
+must agree. Game history classification/duty must differ: unilateral checking
 versus neutral cycle. XIANGQI-P1 now fixes the boundary: two C cycles warn Red at ply8/root
 occurrence3; three C cycles lose for Red at ply12/root occurrence4, although
 Black made the last move. Three Q cycles draw at ply12/root occurrence4.
@@ -83,11 +83,11 @@ a passing test. Stable IDs are obligations to carry into the corpus ledger.
 | F014 family | WXF diagram38 alternating mating-threat/chase permitted; diagram109 simultaneous mate-threat/chase resolves to chase,19.16/20/36.4 | Fixture/history review; omitted20.2 enumeration resolved by these examples |
 | F015 family | Block/offer/exchange/check-then-capture/idle and overlapping labels;20.8/10 plus applicable chapter5 examples | History |
 | F016 family | Neither side can win 3.2A by sound fast recognition only, positive/negative proof, uncertainty and terminal precedence | Profile/history |
-| F017 family | Capture reset, starting known root, declared counters versus proven prefix; claim actor/advisory/committed/rejected requests, agreement/resignation;3/8 and selected software policy | History/native records |
-| F018 family | Complete transition/undo identity, deterministic sequences, exact native record/event replay; invalid input atomicity, duplicate/unknown/profile/version conflicts | State/records/typed routing |
+| F017 family | Capture reset, starting known root, declared counters versus proven prefix; claim actor/advisory/committed/rejected requests, agreement/resignation;3/8 and selected software policy | History/game records |
+| F018 family | Complete transition/undo identity, deterministic sequences, exact game record/event replay; invalid input atomicity, duplicate/unknown/profile/version conflicts | State/records/typed routing |
 | F019 family | Wrong purpose/limits/history/session/generation; historical selection/undo/cancel/replacement across games cannot revive work | Transport/engine/session |
 | F020 family | Encoded bytes/events/controls/observations/replay resource admission, reserved stop/close/save path, failed save/open atomicity, MSH-61 | Archive/shared session |
-| F021 family | Actual intersection/palace/river/piece semantics, whole-board sizes, native enemy inspection, keyboard, common-shell control stability, actual packaged flows | Presentation/desktop/shared final acceptance |
+| F021 family | Actual intersection/palace/river/piece semantics, whole-board sizes, enemy inspection, keyboard, common-shell control stability, actual packaged flows | Presentation/desktop/shared final acceptance |
 
 ## Reference comparison and failure evidence
 
@@ -116,9 +116,9 @@ root occurrence1 is the initial known position. Under the selected policy:
 
 | ID | Concrete witness / independent expectation | Remaining admission |
 | --- | --- | --- |
-| F022 warning | C+C reaches root occurrence3 at ply8; Red has checked on every Red move. Record requirement/warning to Red, keep game live and board/turn unchanged by that event. Black's last board action does not make Black responsible. |94 exact native event/replay fixtures |
+| F022 warning | C+C reaches root occurrence3 at ply8; Red has checked on every Red move. Record requirement/warning to Red, keep game live and board/turn unchanged by that event. Black's last board action does not make Black responsible. |94 exact game event/replay fixtures |
 | F023 continued offense | C+C+C returns root occurrence4 at ply12 with the warned one-sided checking obligation continued; Red loses. No loss at occurrence2/3 and no extra fifth occurrence. |94, including warning identity and result ordering |
-| F024 ordinary draw | Q+Q+Q reaches root occurrence4 at ply12, with no check/material chase or one-sided prohibited responsibility; native WXF draw, no invented player loss. |94 legal replay/classification |
+| F024 ordinary draw | Q+Q+Q reaches root occurrence4 at ply12, with no check/material chase or one-sided prohibited responsibility; WXF draw, no invented player loss. |94 legal replay/classification |
 | F025 equal fault / priority | WXF3.2C and20.1 equal prohibited conduct/mutual all-check falls in draw category at fourth occurrence;3.1H all-check against opposing chase still assigns the checking side responsibility. Therefore “both sides have a prohibited label” is not sufficient for equal fault. | Published example board/history transcription or legal witness/impossibility argument must precede implementation; this is an independently sourced classification expectation, not a claimed instantiated legal mutual-check position. |
 | F026 overlapping paths | C+Q and Q+C are legal eight-ply prefixes, same root3x, but Red-check patterns are true,true,false,false versus false,false,true,true. C+Q+C and Q+C+Q reach root4x through differing return paths. Board equality alone cannot select a witness or penalty. | **G-CYCLE blocks94** until WXF example-based witness/anchor/continuation interpretation and independent expected outcomes are fixed. No draw/loss is asserted for these unresolved traces;91/92 are unaffected. |
 | F027 claim/order/audit | Compare otherwise valid100-count request with99 and10/11 claimant checks; manual rejection preserves semantic game state and retains separate bounded request/reason. Already-concluded state cannot be overwritten; board no-action result precedes generated repeat/count requests. | Full legal prefixes avoiding premature repetition conclusions, atomic audit/save-capacity and actual user interaction remain94/99/102 work. |
@@ -132,22 +132,22 @@ accepting affected behavior. This scoped gating satisfies planning without
 pretending the rules implementation already exists.
 
 
-## Executed MSH-94 native history extension
+## Executed MSH-94 game history extension
 
 Current [contract](history-contract.md) / evidence supersede
 planning-only gate/status statements above. Independently expected corpus facts
-were frozen before native adjudication; their original proposal status strings
+were frozen before adjudication; their original proposal status strings
 remain as provenance. Acceptance is established by the independent source review
 and completed-boundary review, not by rewriting expected data to match output.
 
-| Native corpus | Cases / exercised obligations | Current owner |
+| Corpus | Cases / exercised obligations | Current owner |
 | --- | --- | --- |
 | `history-cycles.json` |11 complete same-board/different-history C/Q/D/T histories; first→third/fourth full intervals, changed move words, check/chase variation, warnings/outcomes |94; F002/F022–026 |
 | `history-conduct.json` |20 source witnesses including published37/38/108/109/110, roots/pins/blocked legs, persistent/multiple victims, General/Soldier/river/same-kind exceptions and2:1counterfrequency; identical-Rook identity permutation |94; F009–015; private consequence classifier tests |
 | `natural-count.json` |4 known-history cases:10/11 checks,99/100/101 boundary, capture/reset, declared imported counter without prior evidence |94; F003/F017/F027 |
 | `history-mutual-check.json` |Legal Cannon-screen mutual checking cycle, no unilateral warning, fourth-return equal-fault draw |94; WXF20.1 |
 | `history-precedence.json` |34-ply return word, third68/fourth102; optional versus automatic count100 precedence |94; F017 |
-| `xiangqi_game_boundary.rs` |108 bare-General proof placements/successors; actual mate/stalemate0/1ply witnesses; F002 penalty excluded; strict canonical parsing, reserved closure capacity, undo/stale tokens, offer admission, chase-prefix independent counterexamples |94; F016/F018 and native part of F020 |
+| `xiangqi_game_boundary.rs` |108 bare-General proof placements/successors; actual mate/stalemate0/1ply witnesses; F002 penalty excluded; strict canonical parsing, reserved closure capacity, undo/stale tokens, offer admission, chase-prefix independent counterexamples |94; F016/F018 and part of F020 |
 
 Only the sound fast no-win subset applies; there is no exact natural-board-win
 analysis.

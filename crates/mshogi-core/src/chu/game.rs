@@ -1,14 +1,14 @@
 //! Complete Chu game admission. Local geometry never grants live history permission.
 use super::*;
-use crate::native::history::{AppendGame, GameHistory, Snapshot};
-pub use crate::native::{
+use crate::game::history::{AppendGame, GameHistory, Snapshot};
+pub use crate::game::{
     GameContext,
     history::{CapacityUsage, GameUndo},
 };
 use crate::repetition::RepetitionIndex;
 use serde::{Deserialize, Serialize};
 
-/// Repetition projection: native original/once-promoted placement, turn and Lion rights.
+/// Repetition projection: original/once-promoted placement, turn and Lion rights.
 /// Counters, provenance, derived obligations, events and runtime identities are excluded.
 #[derive(Clone, Debug, Eq, PartialEq, Hash)]
 pub struct RepetitionKey {
@@ -17,7 +17,7 @@ pub struct RepetitionKey {
     protection: LionProtection,
 }
 impl RepetitionKey {
-    /// Projection of actual native state, not a saved/search context.
+    /// Projection of actual game state, not a saved/search context.
     pub fn from_local(local: &LocalPosition) -> Self {
         Self {
             board: local.position().pieces().collect(),
@@ -26,7 +26,7 @@ impl RepetitionKey {
         }
     }
 }
-/// Native repetition responsibility category, not a forfeiture or draw.
+/// Repetition responsibility category, not a forfeiture or draw.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Responsibility {
@@ -49,42 +49,42 @@ pub struct Obligation {
     pub occurrences: [usize; 3],
     /// Number of complete board actions matched since the third boundary.
     pub progress: usize,
-    /// Native responsible players, canonical Sente/Gote order.
+    /// Responsible players, canonical Sente/Gote order.
     pub responsible_sides: Vec<Side>,
     /// Sourced priority category.
     pub category: Responsibility,
     /// Actual prospective closing mover; may differ from the responsible side.
     pub closing_mover: Side,
 }
-/// Native rules conclusion. Process/resource failures never inhabit this type.
+/// Rules conclusion. Process/resource failures never inhabit this type.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum Conclusion {
     /// Actual complete action removed the last opponent royal.
     RoyalCapture {
-        /// Native winner.
+        /// Winner.
         winner: Side,
     },
     /// Finite immediate-threat/complete-response predicate, not forced mate search.
     Mate {
-        /// Native winner.
+        /// Winner.
         winner: Side,
     },
     /// Exact narrow JCSA material-exhaustion award.
     Material {
-        /// Native winner.
+        /// Winner.
         winner: Side,
     },
     /// Actual live resignation, independent of board turn.
     Resignation {
-        /// Native winner.
+        /// Winner.
         winner: Side,
     },
     /// Actual opposing acceptance of a live recorded offer.
     AgreedDraw,
 }
 impl Conclusion {
-    /// Native winner; agreed draws have none.
+    /// Winner; agreed draws have none.
     pub fn winner(self) -> Option<Side> {
         match self {
             Self::RoyalCapture { winner }
@@ -103,16 +103,16 @@ pub enum GameStatus {
     Ongoing,
     /// No admitted board action and no sourced conclusion; unscored.
     NoBoardActions,
-    /// Actual native conclusion exists.
+    /// Actual game conclusion exists.
     Concluded,
 }
-/// Complete native command. Actor is separately bound by GameRequest.
+/// Complete game command. Actor is separately bound by GameRequest.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum GameCommand {
     /// One complete board action, never an intermediate subturn.
     Play {
-        /// Native route and optional once-only flip.
+        /// Route and optional once-only flip.
         action: Action,
     },
     /// Live resignation by either participant.
@@ -124,7 +124,7 @@ pub enum GameCommand {
     /// Opposing refusal of the current offer.
     DeclineDraw,
 }
-/// Complete accepted event and native-derived facts at this exact prefix.
+/// Complete accepted event and derived facts at this exact prefix.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct GameEvent {
@@ -136,19 +136,19 @@ pub struct GameEvent {
     pub actor: Side,
     /// Original complete command.
     pub command: GameCommand,
-    /// Native ordered effects, absent for controls.
+    /// Ordered effects, absent for controls.
     pub effects: Option<Effects>,
     /// Current key's known board-boundary occurrences.
     pub occurrences: Vec<usize>,
     /// Complete active must-vary witnesses/progress.
     pub obligations: Vec<Obligation>,
-    /// Actual native conclusion.
+    /// Actual game conclusion.
     pub conclusion: Option<Conclusion>,
     /// Current actual draw offer.
     pub draw_offer: Option<Side>,
 }
 /// Immutable logical position/history view with no live command authority.
-/// Untrusted structural data cannot overwrite a native historical view:
+/// Untrusted structural data cannot overwrite a historical view:
 /// ```compile_fail,E0616
 /// let mut view = mshogi_core::chu::Game::standard().event_prefix(0).unwrap();
 /// view.state = serde_json::from_str("{}").unwrap();
@@ -162,7 +162,7 @@ pub struct GameEvent {
 pub struct HistorySnapshot {
     /// Complete structural state/provenance/counters.
     pub(super) state: StructuralState,
-    /// Native next-turn Lion rights.
+    /// Next-turn Lion rights.
     pub(super) protection: LionProtection,
     /// Exact event-prefix length, independent of board ply.
     pub event_count: usize,
@@ -170,42 +170,42 @@ pub struct HistorySnapshot {
     pub board_ply: usize,
     /// Known occurrences at this prefix only.
     pub occurrences: Vec<usize>,
-    /// Active native admission obligations.
+    /// Active game admission obligations.
     pub obligations: Vec<Obligation>,
-    /// Actual native outcome only.
+    /// Actual game outcome only.
     pub conclusion: Option<Conclusion>,
     /// Recorded offer, never implied consent.
     pub draw_offer: Option<Side>,
 }
 impl HistorySnapshot {
-    /// Immutable native-validated structural state at this exact prefix.
+    /// Immutable validated structural state at this exact prefix.
     pub fn state(&self) -> &StructuralState {
         &self.state
     }
-    /// Immutable native-derived next-turn Lion protection at this prefix.
+    /// Immutable derived next-turn Lion protection at this prefix.
     pub fn protection(&self) -> &LionProtection {
         &self.protection
     }
-    /// Immutable native local inspection with this prefix's rights and no future history.
+    /// Immutable local inspection with this prefix's rights and no future history.
     pub fn local_position(&self) -> LocalPosition {
         LocalPosition::from_parts(
-            Position::install(self.state.clone()).expect("native state"),
+            Position::install(self.state.clone()).expect("game state"),
             self.protection.clone(),
         )
-        .expect("native rights")
+        .expect("rights")
     }
 }
 /// Context-bound request; wrong actor/history/retired work is refused atomically.
-pub type GameRequest = crate::native::history::Request<Side, GameCommand>;
+pub type GameRequest = crate::game::history::Request<Side, GameCommand>;
 /// Exhausted resource, distinct from illegal actions and game outcomes.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Resource {
-    /// Encoded native root bytes at admission.
+    /// Encoded game root bytes at admission.
     EncodedBytes,
     /// Declared board counter.
     Counter,
 }
-/// Atomic native refusal.
+/// Atomic refusal.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum GameError {
     /// Invalid structural/rights root.
@@ -214,9 +214,9 @@ pub enum GameError {
     NotRoot,
     /// The request token is not the current one.
     StaleContext,
-    /// Play actor differs from native turn.
+    /// Play actor differs from game turn.
     WrongActor,
-    /// Native game is concluded.
+    /// Game is concluded.
     Concluded,
     /// Local complete-action refusal.
     Action(ActionError),
@@ -235,14 +235,14 @@ pub enum GameError {
 }
 impl std::fmt::Display for GameError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Chu native request refused: {self:?}")
+        write!(f, "Chu request refused: {self:?}")
     }
 }
 impl std::error::Error for GameError {}
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 /// Chu root position and initial Lion protection.
-pub struct NativeRoot {
+pub struct GameRoot {
     pub(super) state: StructuralState,
     pub(super) protection: LionProtection,
 }
@@ -311,7 +311,7 @@ impl Snapshot for HistorySnapshot {
                     return Err(GameError::RepetitionDeparture);
                 }
                 let influence_after = game.local.capture_influence(actor);
-                let moved_to = *action.route.last().expect("native admitted route");
+                let moved_to = *action.route.last().expect("admitted route");
                 let attack = influence_after
                     .iter()
                     .any(|pair| pair.0 == moved_to || !influence_before.contains(pair));
@@ -387,13 +387,13 @@ impl Snapshot for HistorySnapshot {
 impl Game {
     /// Standard game, empty known history.
     pub fn standard() -> Self {
-        Self::from_root(Position::standard()).expect("standard native root")
+        Self::from_root(Position::standard()).expect("standard game root")
     }
     /// Admit a diagram with no invented prior rights/occurrences. Root outcomes are derived.
     pub fn from_root(position: Position) -> Result<Self, GameError> {
         Self::from_local_root(LocalPosition::admit(position))
     }
-    /// Admit explicit native root rights; imported rights must already pass native validation.
+    /// Admit explicit game root rights; imported rights must already pass rules validation.
     pub fn from_local_root(local: LocalPosition) -> Result<Self, GameError> {
         if local.position().accepted_plies() != 0 {
             return Err(GameError::NotRoot);
@@ -423,7 +423,7 @@ impl Game {
         game.check_root_size()?;
         Ok(game)
     }
-    /// Current native board/provenance.
+    /// Current game board/provenance.
     pub fn position(&self) -> &Position {
         self.local.position()
     }
@@ -449,16 +449,16 @@ impl Game {
             GameStatus::Ongoing
         }
     }
-    /// Actual remaining royal squares for a native side.
+    /// Actual remaining royal squares for a game side.
     pub fn royal_squares(&self, side: Side) -> Vec<Square> {
         royals(&self.local, side)
     }
-    /// Actual complete board choices filtered by full native history admission.
+    /// Actual complete board choices filtered by full game history admission.
     pub fn legal_actions(&self) -> Vec<Action> {
         self.legal_actions_with_stop(&mut || false)
             .expect("a query that is never stopped completes")
     }
-    /// Cancellable native choices: the stop is checked between candidate actions.
+    /// Cancellable game choices: the stop is checked between candidate actions.
     pub fn legal_actions_with_stop(
         &self,
         stop: &mut impl FnMut() -> bool,
@@ -588,7 +588,7 @@ impl Game {
             )
         }
     }
-    /// `submit` behind a stop check: one Chu command is a bounded native step.
+    /// `submit` behind a stop check: one Chu command is a bounded step.
     pub fn submit_with_stop(
         &mut self,
         request: GameRequest,
@@ -607,7 +607,7 @@ impl Game {
         })
     }
 
-    /// Canonical exact event prefix; reopening always receives fresh native authority.
+    /// Canonical exact event prefix; reopening always receives fresh session authority.
     pub fn record_prefix(&self, count: usize) -> Result<GameRecord, RecordError> {
         self.record_prefix_with_stop(count, &mut || false)
     }
@@ -618,7 +618,7 @@ impl Game {
         stop: &mut impl FnMut() -> bool,
     ) -> Result<GameRecord, RecordError> {
         self.event_prefix(count).map_err(|_| RecordError::Prefix)?;
-        let mut game = Self::from_native_root(self.native_root()).map_err(|_| RecordError::Root)?;
+        let mut game = Self::from_record_root(self.game_root()).map_err(|_| RecordError::Root)?;
         for e in &self.events()[..count] {
             if stop() {
                 return Err(RecordError::Stopped);
@@ -631,18 +631,18 @@ impl Game {
         }
         GameRecord::from_game(&game)
     }
-    pub(super) fn from_native_root(root: NativeRoot) -> Result<Self, GameError> {
+    pub(super) fn from_record_root(root: GameRoot) -> Result<Self, GameError> {
         let p = Position::install(root.state).map_err(|_| GameError::Root)?;
         let l = LocalPosition::from_parts(p, root.protection).map_err(|_| GameError::Root)?;
         Self::from_local_root(l)
     }
-    pub(super) fn native_root(&self) -> NativeRoot {
-        NativeRoot {
+    pub(super) fn game_root(&self) -> GameRoot {
+        GameRoot {
             state: self.root.state.clone(),
             protection: self.root.protection.clone(),
         }
     }
-    /// Native turn-appropriate material exception replies, not general win search.
+    /// Game turn-appropriate material exception replies, not general win search.
     pub fn immediate_material_replies(&self) -> Vec<Action> {
         let Some((_, bare)) = material_configuration(&self.local) else {
             return vec![];
@@ -722,7 +722,7 @@ impl Game {
         let (next_local, e) = self.local.simulate(action).map_err(GameError::Action)?;
         self.local = next_local;
         let influence_after = self.local.capture_influence(actor);
-        let moved_to = *action.route.last().expect("native route");
+        let moved_to = *action.route.last().expect("route");
         let attack = influence_after
             .iter()
             .any(|p| p.0 == moved_to || !influence_before.contains(p));
@@ -755,7 +755,7 @@ impl Game {
         }
         let actions = self.local.legal_actions_for(victim.opponent());
         for action in actions {
-            // A hypothetical future turn with the same placement must respect native history.
+            // A hypothetical future turn with the same placement must respect game history.
             // At actual replies the opponent is side-to-move; root threat is advisory geometry.
             let local = &self.local;
             let effects = local.preview_for(victim.opponent(), &action);

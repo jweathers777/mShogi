@@ -2,7 +2,7 @@
 use super::*;
 use std::sync::{Arc, Mutex};
 
-/// Internal worker refusal keeps semantic/native errors distinct from resource
+/// Internal worker refusal keeps semantic/errors distinct from resource
 /// facts. Public error text is only a bounded diagnostic projection.
 #[derive(Clone, Debug)]
 pub(crate) struct OperationFailure {
@@ -77,16 +77,16 @@ pub enum CapacityPhase {
     /// A candidate was rejected; the complete previously accepted document remains.
     Paused,
 }
-/// Monotonic native admission identity and resource diagnostic.
+/// Monotonic game admission identity and resource diagnostic.
 #[derive(Clone, Debug, Default, Serialize)]
 pub struct CapacityState {
     /// Identifies this admission, including its eventual completion/rejection.
     pub id: u64,
-    /// Current native admission phase.
+    /// Current game admission phase.
     pub status: CapacityPhase,
     /// Actionable resource diagnostic, separate from chess and engine failures.
     pub message: Option<String>,
-    /// Authoritative native category/count/limit; absent for non-resource errors.
+    /// Authoritative category/count/limit; absent for non-resource errors.
     pub resource: Option<ResourceFailure>,
 }
 /// A bounded, caller-owned receipt survives later automatic result admissions.
@@ -110,7 +110,7 @@ impl AdmissionReceipt {
 impl DesktopController {
     pub(crate) fn ensure_runtime_capacity(&mut self) -> Result<(), OperationFailure> {
         if let Err(error) = self.session.ensure_capacity() {
-            self.pause_native_failure(error.clone());
+            self.pause_failure(error.clone());
             Err(error)
         } else {
             Ok(())

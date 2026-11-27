@@ -1,4 +1,4 @@
-//! Native root and commands for the shared compact record.
+//! Game root and commands for the shared compact record.
 use super::*;
 use crate::record::compact::{self, Compact, compact_types};
 pub use compact::RecordError;
@@ -86,11 +86,11 @@ impl WirePosition {
         Ok(root)
     }
 }
-/// Native schema of the saved game.
+/// Record schema of the saved game.
 pub const GAME_RECORD_SCHEMA_VERSION: u32 = 4;
-/// Complete validated native record.
+/// Complete validated game record.
 pub type GameRecord = compact::CompactRecord<HistorySnapshot>;
-/// New native events following an exact retained base.
+/// New game events following an exact retained base.
 pub type GameDelta = compact::CompactDelta<HistorySnapshot>;
 impl Compact for HistorySnapshot {
     compact_types!();

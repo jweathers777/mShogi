@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { renderApplication, square } from "../testing/helpers";
-import type { GameSnapshot } from "../native";
+import type { GameSnapshot } from "../sessionTypes";
 import { afterEach, expect, it } from "vitest";
 import { cleanup, fireEvent, screen } from "@testing-library/react";
 
@@ -33,14 +33,14 @@ it.each(fixtures)("shows two human participants and an explicit side to resign f
 it.each([chu, adams, muller] as GameSnapshot[])("lets the other local human respond to a $profile draw offer before the turn changes", fixture => {
   if (fixture.game !== "chu" && fixture.game !== "tenjiku") throw new Error("draw fixture");
   const offerer = fixture.turn;
-  const native = fixture.game === "chu" ? fixture.chu : fixture.tenjiku;
+  const history = fixture.game === "chu" ? fixture.chu : fixture.tenjiku;
   const snapshot = { ...fixture, play_mode: "two_humans" as const, local_actor: offerer,
-    [fixture.game]: { ...native, live: { ...native.live, draw_offer: offerer.id.side } } } as GameSnapshot;
+    [fixture.game]: { ...history, live: { ...history.live, draw_offer: offerer.id.side } } } as GameSnapshot;
   const { session } = app(snapshot);
   fireEvent.click(screen.getByRole("button", { name: "Decline draw" }));
   expect(session.command).toHaveBeenCalledExactlyOnceWith(snapshot, { kind: "command", command: { kind: "decline_draw" } });
 });
-it.each([...fixtures, toriGote as GameSnapshot])("plays a complete native action for the local actor rather than the fixed human anchor in $profile", fixture => {
+it.each([...fixtures, toriGote as GameSnapshot])("plays a complete action for the local actor rather than the fixed human anchor in $profile", fixture => {
   const snapshot = { ...fixture, play_mode: "two_humans" as const, local_actor: fixture.turn,
     human: fixture.sides.find(side => side.key !== fixture.turn.key)!, paused: false,
     capabilities: { ...fixture.capabilities, engine_turn: false, board_action: true } } as GameSnapshot;
@@ -63,7 +63,7 @@ it("lets the local Shogi actor drop from hand independently of the fixed human a
   fireEvent.click(screen.getByRole("button", { name: new RegExp(`^${choice.steps[0]},`) }));
   expect(session.command).toHaveBeenCalledExactlyOnceWith(snapshot, { kind: "play", action: choice.action });
 });
-it("uses native Xiangqi actor advice to label off-turn draw controls", () => {
+it("uses Xiangqi actor advice to label off-turn draw controls", () => {
   const fixture = xiangqi as unknown as GameSnapshot;
   if (fixture.game !== "xiangqi") throw new Error("Xiangqi fixture");
   const first = fixture.sides[0]!, second = fixture.sides[1]!;

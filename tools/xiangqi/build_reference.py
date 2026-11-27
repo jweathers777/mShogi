@@ -70,7 +70,7 @@ def build(source, output, compiler):
         'dialect': 'six-field FEN RACPNBK/racpnbk, rank 9 to rank 0; w=Red, b=Black; a0-i9 complete board moves; literal - - fields',
         'exclusions': ['rule_judge', 'repetition/chase', 'natural-count adjudication', 'game outcomes',
                        'NNUE/search/evaluation/strength', 'royal capture/missing kings', 'unreachable-square structural diagrams'],
-        'interpretation': 'board comparator only, not rules authority; native fixture expectations must remain independently established',
+        'interpretation': 'board comparator only, not rules authority; rules fixture expectations must remain independently established',
     }
     (output / 'admission.json').write_text(json.dumps(manifest, indent=2) + '\n')
     print(json.dumps({'binary': str(binary), 'manifest': str(output / 'admission.json')}))

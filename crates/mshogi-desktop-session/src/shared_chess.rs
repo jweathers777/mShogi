@@ -1,10 +1,10 @@
-//! Chess presentation and commands on the generic native session.
-use super::native_session::*;
+//! Chess presentation and commands on the generic game session.
+use super::game_session::*;
 use super::*;
-use crate::native_game::{Chess, NativeGame};
-pub(crate) type ChessSession = NativeSession<Chess>;
+use crate::game_adapter::{Chess, GameAdapter};
+pub(crate) type ChessSession = GameSession<Chess>;
 fn player(color: Color) -> PresentedSide {
-    side(RulesProfile::ChessMatchV1, NativeSide::Chess(color))
+    side(RulesProfile::ChessMatchV1, TaggedSide::Chess(color))
 }
 fn player_events(game: &ChessMatch) -> impl Iterator<Item = &MatchRequest> {
     game.record()
@@ -42,7 +42,7 @@ impl SessionGame for Chess {
     const BOARD_LABEL: &'static str = "Chess board";
     const INITIAL_FOCUS: &'static str = "e2";
     const SCORE_MEANING: &'static str =
-        "Chess root-side centipawns; native mate distance remains distinct (see chess analysis).";
+        "Chess root-side centipawns; mate distance remains distinct (see chess analysis).";
     fn presentation(selected: &ChessMatch, live: &ChessMatch) -> ChessPresentation {
         ChessPresentation {
             claims: if live.conclusion().is_none() {
@@ -347,7 +347,7 @@ impl DesktopController {
             Color::White
         };
         let receipt = self.queue_game_candidate::<Chess>(
-            native_session::RuntimeSeed::Record {
+            game_session::RuntimeSeed::Record {
                 record: Box::new(crate::chess_record::ChessRecord::new(&game.record())),
                 human,
                 play_mode: PlayMode::HumanEngine,
@@ -358,7 +358,7 @@ impl DesktopController {
             true,
         )?;
         while receipt.completion().is_none() {
-            self.poll_native_admission();
+            self.poll_admission();
             std::thread::sleep(std::time::Duration::from_millis(1));
         }
         receipt.completion().unwrap()?;
@@ -392,7 +392,7 @@ impl DesktopController {
                 }
                 let receipt = self.admission_receipt.clone().expect("fixture admission");
                 while receipt.completion().is_none() {
-                    self.poll_native_admission();
+                    self.poll_admission();
                     std::thread::sleep(std::time::Duration::from_millis(1));
                 }
                 receipt.completion().unwrap()?;
@@ -417,7 +417,7 @@ mod tests {
     use crate::chess_record::ChessRecord;
     fn settle(c: &mut DesktopController) {
         while c.admission_token.is_some() {
-            c.poll_native_admission();
+            c.poll_admission();
             std::thread::sleep(std::time::Duration::from_millis(1));
         }
     }

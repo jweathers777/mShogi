@@ -1,7 +1,7 @@
-//! Actual native-owned protocol admission, bounded failures and independent history expectations.
+//! Actual rules-owned protocol admission, bounded failures and independent history expectations.
 #[path = "support/engine.rs"]
 mod engine_fixture;
-use mshogi_core::{native::CanonicalRecord, xiangqi as x};
+use mshogi_core::{game::CanonicalRecord, xiangqi as x};
 use mshogi_runner::{
     xiangqi::{self, FailureKind, Stop},
     *,
@@ -17,7 +17,7 @@ fn config(mode: &str) -> xiangqi::Config {
             dialect: "pikafish_uci0_9".into(),
             claim_policy: x::ClaimPolicy::AutoValidClaims,
         },
-        id: "native-xiangqi-fixture".into(),
+        id: "xiangqi-fixture".into(),
         time_control: "untimed".into(),
         process_policy: "fresh_per_turn".into(),
         engines: [engine(mode), engine(mode)],
@@ -49,11 +49,11 @@ fn config(mode: &str) -> xiangqi::Config {
     }
 }
 #[test]
-fn resignation_is_native_same_ply_and_clean_protocol_replays_without_processes() {
+fn resignation_is_same_ply_and_clean_protocol_replays_without_processes() {
     let report = xiangqi::run(&config("resign")).unwrap();
     assert_eq!(report.games.len(), 2);
     for e in &report.games {
-        assert_eq!(e.stop, Stop::NativeConclusion);
+        assert_eq!(e.stop, Stop::GameConclusion);
         assert_eq!(e.score, Some([0, 2]));
         assert_eq!(e.turns.len(), 1);
         assert!(e.failure.is_none());
@@ -110,7 +110,7 @@ fn watchdog_cancels_and_retires_late_result_then_reaps_child() {
     }
 }
 #[test]
-fn actual_action_preserves_full_warned_history_and_native_fourth_occurrence() {
+fn actual_action_preserves_full_warned_history_and_fourth_occurrence() {
     let mut c = config("move");
     for engine in &mut c.engines {
         engine.args.push("e8f8".into());
@@ -122,7 +122,7 @@ fn actual_action_preserves_full_warned_history_and_native_fourth_occurrence() {
         .collect();
     let report = xiangqi::run(&c).unwrap();
     for e in &report.games {
-        assert_eq!(e.stop, Stop::NativeConclusion);
+        assert_eq!(e.stop, Stop::GameConclusion);
         assert_eq!(e.score, Some([0, 2]));
         assert!(
             e.turns[0]
@@ -164,7 +164,7 @@ fn claimant_specific_auto_claim_concludes_before_any_child_is_started() {
         .collect();
     let report = xiangqi::run(&c).unwrap();
     for e in &report.games {
-        assert_eq!(e.stop, Stop::NativeConclusion);
+        assert_eq!(e.stop, Stop::GameConclusion);
         assert_eq!(e.score, Some([1, 1]));
         assert!(e.processes.is_empty() && e.turns.is_empty());
     }
@@ -263,7 +263,7 @@ fn unsupported_policy_dialects_limits_and_live_nonboard_history_reject_losslessl
     }
 }
 #[test]
-fn options_retention_and_transcript_or_native_record_tampering_are_rejected() {
+fn options_retention_and_transcript_or_record_tampering_are_rejected() {
     for (name, value) in [
         ("Unknown", "1"),
         ("Nodes", "513"),
@@ -419,18 +419,13 @@ fn duplicate_option_uses_the_first_advertisement_in_run_and_replay() {
     );
     c.engines[0].options[0].value = "1".into();
     let report = xiangqi::run(&c).unwrap();
-    assert_eq!(report.games[0].stop, Stop::NativeConclusion);
+    assert_eq!(report.games[0].stop, Stop::GameConclusion);
     report.replay().unwrap();
 }
 
 #[test]
 fn readiness_information_is_independent_of_search_failure_messages() {
     let report = xiangqi::run(&config("readiness_info")).unwrap();
-    assert!(
-        report
-            .games
-            .iter()
-            .all(|g| g.stop == Stop::NativeConclusion)
-    );
+    assert!(report.games.iter().all(|g| g.stop == Stop::GameConclusion));
     report.replay().unwrap();
 }

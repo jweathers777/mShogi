@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react";
 import type { ComponentType } from "react";
 import { vi } from "vitest";
-import type { GameSnapshot } from "../native";
+import type { GameSnapshot } from "../sessionTypes";
 import { ApplicationView } from "../product/ApplicationView";
 import { GameBoard } from "../product/GameBoard";
 import type { GameSession } from "../product/useGameSession";
@@ -40,10 +40,10 @@ export function renderBoard<P>(BoardView: ComponentType<NoInfer<P> & { disabled:
   return { ...render(<BoardView {...props} />), props, onPlay };
 }
 
-// Coordinate labels are native. Use the rendered label directly to avoid
+// Coordinate labels are. Use the rendered label directly to avoid
 // recomputing hundreds of SVG accessible names per gesture in jsdom.
 export function square(key: string, container: ParentNode = document): SVGGElement {
   const element = container.querySelector<SVGGElement>('svg [role="button"][aria-label^="' + key + ',"]');
-  if (!element) throw new Error("Missing native board coordinate " + key);
+  if (!element) throw new Error("Missing game board coordinate " + key);
   return element;
 }

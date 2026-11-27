@@ -4,8 +4,7 @@ use crate::{
     EngineGame, EngineResult, EngineTelemetry, ExecutionResult, NoPending, StopReason, WorkLimits,
 };
 use mshogi_core::{
-    chu, native::CanonicalRecord, native::GameKind, native::NativeSide, shogi, tenjiku, tori,
-    xiangqi,
+    chu, game::CanonicalRecord, game::GameKind, game::TaggedSide, shogi, tenjiku, tori, xiangqi,
 };
 use serde::{Deserialize, Serialize};
 
@@ -70,8 +69,8 @@ macro_rules! wiring {
         fn wrap(result: EngineResult<Self>) -> ExecutionResult {
             ExecutionResult::$variant { result }
         }
-        fn native_side(side: Self::Side) -> NativeSide {
-            NativeSide::$variant(side)
+        fn tagged_side(side: Self::Side) -> TaggedSide {
+            TaggedSide::$variant(side)
         }
         fn record_side(record: &Self::Record) -> Self::Side {
             record.side_to_move()
@@ -248,7 +247,7 @@ impl EngineGame for Shogi {
         };
         game.submit(request)
             .map(drop)
-            .map_err(|e| format!("Native shogi command rejected: {e:?}"))
+            .map_err(|e| format!("Shogi command rejected: {e:?}"))
     }
     /// The search declares before it searches: one iteration of two visits.
     fn command_shape(choice: &ShogiChoice, t: &EngineTelemetry<Self>) -> Option<bool> {
@@ -296,7 +295,7 @@ pub struct Xiangqi;
 impl EngineGame for Xiangqi {
     wiring!(Xiangqi, xiangqi, XiangqiPosition);
     const SCORE_UNIT: &'static str = "soldiers";
-    const DISTANCE_UNIT: [&'static str; 2] = ["native command edge", "native command edges"];
+    const DISTANCE_UNIT: [&'static str; 2] = ["game command edge", "game command edges"];
     const PLAY_LIMITS: WorkLimits = untimed(
         mshogi_search::xiangqi::DEFAULT_LIMITS.depth,
         mshogi_search::xiangqi::DEFAULT_LIMITS.nodes,

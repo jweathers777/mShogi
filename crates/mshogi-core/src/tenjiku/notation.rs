@@ -2,7 +2,7 @@
 //!
 //! Original code plus optional `+`, origin, each actual landing prefixed by `-`
 //! or `x`, and optional final `^` for the requested flip. Stationary igui uses
-//! `!x` and its exact target. Native derived burn/death phases remain separate.
+//! `!x` and its exact target. Derived burn/death phases remain separate.
 use super::{
     Action, ActionKind, EffectPhase, Effects, Face, HistorySnapshot, LocalPosition, Piece,
     Position, Side,
@@ -75,7 +75,7 @@ fn effect_piece(piece: Piece) -> String {
     }
 }
 
-/// Describe actual native effects in their supplied phase order, including
+/// Describe actual game effects in their supplied phase order, including
 /// simultaneous burn batches and the original identity of promoted pieces.
 /// This formatter neither resolves an action nor infers victims from a board.
 pub fn format_effects(effects: &Effects) -> String {
@@ -123,14 +123,14 @@ pub fn format_effects(effects: &Effects) -> String {
     parts.join("; ")
 }
 
-/// A human label cannot describe or identify a complete native action.
+/// A human label cannot describe or identify a complete action.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum NotationError {
     /// No current-owner original occupies the source.
     Source,
-    /// Travel/igui fields do not form a complete native action shape.
+    /// Travel/igui fields do not form a complete action shape.
     Shape,
-    /// No complete native local choice has the exact supplied spelling.
+    /// No complete local choice has the exact supplied spelling.
     NoLocalChoice,
 }
 impl fmt::Display for NotationError {
@@ -140,7 +140,7 @@ impl fmt::Display for NotationError {
 }
 impl Error for NotationError {}
 
-/// Describe an admitted action against its exact preceding native prefix.
+/// Describe an admitted action against its exact preceding prefix.
 pub fn format_history_action(
     before: &HistorySnapshot,
     action: Action,
@@ -151,7 +151,7 @@ pub fn format_history_action(
     format_action(&position, action)
 }
 
-/// Describe the complete choice without granting native legality or permission.
+/// Describe the complete choice without granting legality or permission.
 pub fn format_action(position: &Position, action: Action) -> Result<String, NotationError> {
     let source = position
         .piece(action.from)
@@ -190,7 +190,7 @@ pub fn format_action(position: &Position, action: Action) -> Result<String, Nota
     Ok(label)
 }
 
-/// Select a real complete native local choice; Game still owns history admission.
+/// Select a real complete local choice; Game still owns history admission.
 pub fn parse_local_action(local: &LocalPosition, text: &str) -> Result<Action, NotationError> {
     if text.is_empty() || text.len() > 32 || !text.is_ascii() {
         return Err(NotationError::NoLocalChoice);
@@ -515,7 +515,7 @@ mod tests {
         }
     }
     #[test]
-    fn simultaneous_burn_order_promotion_and_quiet_effects_remain_native_facts() {
+    fn simultaneous_burn_order_promotion_and_quiet_effects_remain_facts() {
         for profile in Profile::ALL {
             let demon = local(
                 profile,
@@ -546,7 +546,7 @@ mod tests {
                 format_effects(&effects),
                 "Captured Gote Silver General at 12e; Promoted Sente Pawn to Sente Gold General (promoted Pawn) at 12e"
             );
-            // Presentation must retain supplied native phase order, not regroup
+            // Presentation must retain supplied phase order, not regroup
             // captures/promotions or reconstruct them from occupancy.
             let mut reversed = effects.clone();
             reversed.phases.reverse();

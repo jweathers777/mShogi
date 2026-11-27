@@ -1,5 +1,5 @@
-import type { GameSnapshot } from "../native";
-// Test support only: small changes of native snapshot fixtures.
+import type { GameSnapshot } from "../sessionTypes";
+// Test support only: small changes of session snapshot fixtures.
 
 /** The snapshot with `side` at the bottom of the board. */
 export function oriented<T extends GameSnapshot>(snapshot: T, side: string): T {

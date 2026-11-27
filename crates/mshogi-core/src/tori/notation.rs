@@ -1,18 +1,18 @@
 //! Human-readable mShogi Tori action notation, not a game-record format.
 //!
-//! Formatting describes a complete native action. Parsing selects an actual
-//! native local choice; live admission (including T06 history) remains Game's job.
+//! Formatting describes a complete action. Parsing selects an actual
+//! local choice; live admission (including T06 history) remains Game's job.
 use super::{Action, Face, HistorySnapshot, LocalPosition, Position};
 use std::{error::Error, fmt};
 
-/// A human string cannot identify a complete native local choice at this position.
+/// A human string cannot identify a complete local choice at this position.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum NotationError {
     /// The supplied move has no owned source at this position.
     Source,
     /// A royal or promoted face is not a hand identity.
     DropFace,
-    /// The position cannot supply native local choices.
+    /// The position cannot supply local choices.
     Position,
     /// No complete local action has this exact spelling.
     NoLocalChoice,
@@ -24,7 +24,7 @@ impl fmt::Display for NotationError {
 }
 impl Error for NotationError {}
 
-/// Format an admitted event's action against its exact preceding native prefix.
+/// Format an admitted event's action against its exact preceding prefix.
 /// This copies only structural state; it does not replay or re-admit the game.
 /// The caller still owns the correspondence between prefix and complete action.
 pub fn format_history_action(
@@ -37,7 +37,7 @@ pub fn format_history_action(
 /// Render source face, exact coordinates, capture, drop and changed result face.
 ///
 /// This formatter does not grant legality or live-game permission. Consumers
-/// should supply a native admitted action or re-admit it through Game.submit.
+/// should supply a admitted action or re-admit it through Game.submit.
 pub fn format_action(position: &Position, action: Action) -> Result<String, NotationError> {
     match action {
         Action::Move {

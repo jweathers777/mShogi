@@ -42,7 +42,7 @@ pub enum AnalysisPhase {
 pub struct AnalysisState {
     /// Analysis lifecycle, independent of chess conclusion.
     pub status: AnalysisPhase,
-    /// Native target provenance, currently live position only.
+    /// Target provenance, currently live position only.
     pub target: Option<ExecutionTarget>,
     /// Explicit requested operation and budgets.
     pub operation: Option<AnalysisOperation>,

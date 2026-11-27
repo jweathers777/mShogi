@@ -30,7 +30,7 @@ pub(crate) fn cycle_start(
 }
 
 /// Search approximation for drop games: a capture or drop resets the scan.
-/// The native rules still check the full known history of the game.
+/// The rules still check the full known history of the game.
 #[derive(Clone, Copy, Default)]
 pub(crate) struct DropGameWindow(u16);
 

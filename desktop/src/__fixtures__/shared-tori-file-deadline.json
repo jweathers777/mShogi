@@ -58,7 +58,7 @@
   "io": {
     "id": 1,
     "phase": "failed",
-    "message": "Application capacity: native document validation exceeded its bounded 15-second budget. The accepted current document is preserved.",
+    "message": "Application capacity: document validation exceeded its bounded 15-second budget. The accepted current document is preserved.",
     "resource": {
       "fact": {
         "category": "validation_budget",
@@ -69,7 +69,7 @@
         "scope": "application",
         "unit": "milliseconds"
       },
-      "diagnostic": "Application capacity: native document validation exceeded its bounded 15-second budget. The accepted current document is preserved."
+      "diagnostic": "Application capacity: document validation exceeded its bounded 15-second budget. The accepted current document is preserved."
     }
   },
   "capacity": {
@@ -2107,7 +2107,7 @@
   "analysis": null,
   "observations": [],
   "search_observations": [],
-  "score_meaning": "Native root-side evaluation in hundredths of a Swallow. Win/loss distances count board actions; failures and incomplete work are unscored.",
+  "score_meaning": "Game root-side evaluation in hundredths of a Swallow. Win/loss distances count board actions; failures and incomplete work are unscored.",
   "chess": null,
   "chess_match": null
 }

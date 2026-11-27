@@ -1,21 +1,19 @@
 //! Chess rules boundary for the shared document and session.
 use super::*;
 use crate::chess_record::{ChessCommand, ChessRecord};
-use crate::native_game::*;
+use crate::game_adapter::*;
 
-/// Native Chess match behind the generic desktop document.
+/// Chess match behind the generic desktop document.
 pub struct Chess;
 
 fn invalid(error: impl ToString) -> RecordFailure {
     RecordFailure::Invalid(error.to_string())
 }
-fn native_failure(error: RecordFailure) -> NativeFailure {
+fn failure(error: RecordFailure) -> GameFailure {
     match error {
-        RecordFailure::Stopped => NativeFailure::Stopped,
-        RecordFailure::Capacity(message) => {
-            NativeFailure::Capacity(NativeResource::Counter, message)
-        }
-        RecordFailure::Invalid(message) => NativeFailure::Invalid(message),
+        RecordFailure::Stopped => GameFailure::Stopped,
+        RecordFailure::Capacity(message) => GameFailure::Capacity(GameResource::Counter, message),
+        RecordFailure::Invalid(message) => GameFailure::Invalid(message),
     }
 }
 fn record_side(record: &GameRecord) -> Color {
@@ -33,7 +31,7 @@ fn record_side(record: &GameRecord) -> Color {
         initial.opponent()
     }
 }
-impl NativeGame for Chess {
+impl GameAdapter for Chess {
     const NAME: &'static str = "Chess";
     const KIND: GameKind = GameKind::Chess;
     const SCOPE: ResourceScope = ResourceScope::Chess;
@@ -52,8 +50,8 @@ impl NativeGame for Chess {
     type Game = ChessMatch;
     type Record = ChessRecord;
     type EngineResult = ChessResult;
-    fn native_side(side: Color) -> NativeSide {
-        NativeSide::Chess(side)
+    fn tagged_side(side: Color) -> TaggedSide {
+        TaggedSide::Chess(side)
     }
     fn parse_record(
         text: &str,
@@ -144,16 +142,16 @@ impl NativeGame for Chess {
         actor: Color,
         command: MatchCommand,
         stop: &mut impl FnMut() -> bool,
-    ) -> Result<(), NativeFailure> {
+    ) -> Result<(), GameFailure> {
         if stop() {
-            return Err(NativeFailure::Stopped);
+            return Err(GameFailure::Stopped);
         }
 
-        // Native rejected requests are audit events. Publish only an accepted
+        // Rejected requests are audit events. Publish only an accepted
         // candidate, so they cannot enter the durable command list.
         let mut candidate = game.clone();
         ChessRecord::submit(&mut candidate, &ChessCommand { actor, command }, stop)
-            .map_err(native_failure)?;
+            .map_err(failure)?;
         *game = candidate;
         Ok(())
     }

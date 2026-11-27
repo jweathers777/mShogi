@@ -1,7 +1,7 @@
-//! MSH-84: a consumer uses the public native contract as one system.
+//! MSH-84: a consumer uses the public contract as one system.
 //! Expected rules reuse independently reviewed MSH-91/93/94 cases, not engine outcomes.
 mod support;
-use mshogi_core::{native::*, xiangqi as x};
+use mshogi_core::{game::*, xiangqi as x};
 use mshogi_engine::*;
 use serde_json::Value;
 use std::io::Cursor;
@@ -20,16 +20,16 @@ fn submit(
     command: x::GameCommand,
 ) -> Result<x::Submission, x::GameError> {
     let expected = g.context();
-    let NativeReply::Xiangqi(result) = dispatch_command(
-        NativeCommandTarget::Xiangqi(g),
-        NativeCommand::Xiangqi(Box::new(x::GameRequest {
+    let GameReply::Xiangqi(result) = dispatch_command(
+        GameCommandTarget::Xiangqi(g),
+        GameCommand::Xiangqi(Box::new(x::GameRequest {
             expected,
             actor,
             command,
         })),
     )
     .unwrap() else {
-        panic!("wrong native adapter")
+        panic!("wrong adapter")
     };
     result.map(|s| *s)
 }
@@ -53,11 +53,11 @@ fn reopen(g: &x::Game) -> x::Game {
     assert_eq!(decoded.game_kind(), GameKind::Xiangqi);
     assert_eq!(decoded.profile().id(), x::PROFILE_ID);
     assert_eq!(decoded.profile().edition(), x::PROFILE_EDITION);
-    assert_eq!(decoded.native_schema(), NativeSchema::XiangqiV2);
-    let CanonicalRecord::Xiangqi(native) = decoded else {
+    assert_eq!(decoded.record_schema(), RecordSchema::XiangqiV2);
+    let CanonicalRecord::Xiangqi(game) = decoded else {
         panic!()
     };
-    let reopened = native.to_game().unwrap();
+    let reopened = game.to_game().unwrap();
     assert_eq!(reopened.root(), g.root());
     assert_eq!(reopened.position(), g.position());
     assert_eq!(reopened.events(), g.events());
@@ -145,8 +145,8 @@ fn admission_complete_capture_effects_local_and_game_undo_cross_canonical_bounda
     let shogi = mshogi_core::shogi::Game::new();
     assert!(
         dispatch_command(
-            NativeCommandTarget::Xiangqi(&mut g),
-            NativeCommand::Shogi(Box::new(mshogi_core::shogi::GameRequest {
+            GameCommandTarget::Xiangqi(&mut g),
+            GameCommand::Shogi(Box::new(mshogi_core::shogi::GameRequest {
                 expected: shogi.context(),
                 actor: mshogi_core::shogi::Side::Sente,
                 command: mshogi_core::shogi::GameCommand::Resign
@@ -157,7 +157,7 @@ fn admission_complete_capture_effects_local_and_game_undo_cross_canonical_bounda
     assert_eq!(record(&g), original);
 }
 #[test]
-fn warnings_same_board_different_history_undo_and_fourth_occurrence_are_native() {
+fn xiangqi_execution_preserves_repetition_history_through_undo() {
     let mut g = game(F002);
     for a in C.into_iter().cycle().take(7) {
         play(&mut g, a);
@@ -330,7 +330,7 @@ fn check_terminal_reasons_agreement_resignation_and_command_admission_remain_dis
     reopen(&g);
 }
 #[test]
-fn fast_proof_and_unknown_cross_native_record() {
+fn fast_proof_and_unknown_cross_record() {
     let fast = game("5k3/9/9/9/9/9/9/9/9/3K5 w - - 0 1");
     assert_eq!(
         fast.no_win_assessment(),
@@ -367,12 +367,12 @@ fn strict_payload_context_and_transport_preserve_identity_through_real_execution
         1,
     );
     assert!(CanonicalRecord::from_json(&duplicated).is_err());
-    let duplicate_native = text.replacen(
+    let duplicate = text.replacen(
         "\"schema_version\":2",
         "\"schema_version\":2,\"schema_version\":2",
         1,
     );
-    assert!(CanonicalRecord::from_json(&duplicate_native).is_err());
+    assert!(CanonicalRecord::from_json(&duplicate).is_err());
     let mut forged: Value = serde_json::from_str(&text).unwrap();
     forged["payload"]["events"] = serde_json::json!([]);
     assert!(CanonicalRecord::from_json(&forged.to_string()).is_err());

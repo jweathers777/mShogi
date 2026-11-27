@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { renderApplication } from "../testing/helpers";
-import type { GameSnapshot, ChessSnapshot } from "../native";
+import type { GameSnapshot, ChessSnapshot } from "../sessionTypes";
 import { cleanup, fireEvent, screen } from "@testing-library/react";
 import { afterEach, expect, it } from "vitest";
 import { ApplicationView } from "./ApplicationView";
@@ -47,7 +47,7 @@ it("recovers engine cancellation to Retry, then to the board after the control d
   rerender(<ApplicationView {...props} snapshot={standard} />);
   expect(document.activeElement).toBe(document.querySelector('[data-game-slot="board"] [tabindex="0"]'));
 });
-it("focuses the readable native conclusion when claiming removes its control", () => {
+it("focuses the readable game conclusion when claiming removes its control", () => {
   const { props, rerender } = app(claimJson as ChessSnapshot);
   const claim = screen.getByRole("button", { name: "Claim selected draw" }); claim.focus(); fireEvent.click(claim);
   rerender(<ApplicationView {...props} snapshot={claimedJson as unknown as ChessSnapshot} />);

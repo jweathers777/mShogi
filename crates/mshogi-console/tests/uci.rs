@@ -177,7 +177,7 @@ fn uci_gives_a_move_where_a_claim_exists_and_scores_rule_draws_as_draws() {
     assert!(!stderr.contains("fallback"), "{stderr}");
 }
 #[test]
-fn uci_scores_a_repetition_as_a_draw_and_stops_at_native_fivefold() {
+fn uci_scores_a_repetition_as_a_draw_and_stops_at_fivefold() {
     let mut engine = Engine::new(&["uci"]);
     let cycle = "g8f6 g1f3 f6g8 f3g1 ";
     // Black is down a rook. One repeat: the game is not yet a draw.
@@ -195,7 +195,7 @@ fn uci_scores_a_repetition_as_a_draw_and_stops_at_native_fivefold() {
         let (best, info) = engine.best();
         assert_eq!(score(&info[0]), Some(0), "{}", info[0]);
         if repeats == 4 {
-            // Native fivefold: the game is concluded and there is no move.
+            // Fivefold: the game is concluded and there is no move.
             assert_eq!(best, "0000");
         } else {
             // A third occurrence can be reached again: Black takes the draw.
@@ -287,7 +287,7 @@ fn quit_terminates_during_unbounded_search_without_waiting_for_join() {
 
 fn assert_representation_failure(go: &str) {
     let mut engine = Engine::new(&["uci"]);
-    // Black has legal root actions, but the native game cannot represent any
+    // Black has legal root actions, but the game cannot represent any
     // of them: each one would overflow the fullmove counter. Do not disguise
     // that as a selected root move or an alleged zero-node search.
     engine.raw(&format!(

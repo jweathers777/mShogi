@@ -1,5 +1,5 @@
 //! Private Shogi board, hands, move generation and evaluation for the shared core.
-//! Native rules remain authoritative for real moves and outcomes.
+//! Rules remain authoritative for real moves and outcomes.
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
 use crate::repetition::{DropGameWindow, cycle_start};
 use mshogi_core::shogi::{Action, Game, GameCommand, Piece, PieceKind, Position, Side, Square};
@@ -336,7 +336,7 @@ fn decode_piece(code: u8) -> (usize, usize) {
 }
 
 impl ShogiPosition {
-    /// Copy a native position. The copy has no earlier history.
+    /// Copy a position. The copy has no earlier history.
     pub fn from_position(position: &Position) -> Self {
         let mut p = Self {
             board: [0; SQUARES],
@@ -380,7 +380,7 @@ impl ShogiPosition {
         p
     }
 
-    /// Copy the current position of a native game with the hashes of its
+    /// Copy the current position of a game with the hashes of its
     /// earlier positions and check observations.
     pub fn from_game(game: &Game) -> Self {
         let mut p = Self::from_position(game.position());
@@ -390,8 +390,9 @@ impl ShogiPosition {
         p.checks = vec![start.check];
         for event in game.events() {
             if let GameCommand::Play(_) = event.command {
-                let native = Position::from_sfen(&event.after_sfen).expect("native event SFEN");
-                let earlier = Self::from_position(&native);
+                let rules_position =
+                    Position::from_sfen(&event.after_sfen).expect("game event SFEN");
+                let earlier = Self::from_position(&rules_position);
                 let next = (earlier.occupied[0] | earlier.occupied[1]).count_ones();
                 p.reversible.advance(on_board != next);
                 on_board = next;
@@ -402,7 +403,7 @@ impl ShogiPosition {
         p.root = p.keys.len() - 1;
         p
     }
-    /// Convert a compact move into a complete native action.
+    /// Convert a compact move into a complete action.
     pub fn action(&self, m: Move) -> Action {
         if m.is_drop() {
             Action::Drop {
@@ -417,7 +418,7 @@ impl ShogiPosition {
             }
         }
     }
-    /// Encode a native action when it is pseudo-legal.
+    /// Encode a action when it is pseudo-legal.
     pub fn find(&self, action: Action) -> Option<Move> {
         let m = match action {
             Action::Move { from, to, promote } => {
@@ -433,7 +434,7 @@ impl ShogiPosition {
         };
         self.pseudo_legal(m).then_some(m)
     }
-    /// All position-local legal moves, independent of native outcomes.
+    /// All position-local legal moves, independent of game outcomes.
     pub fn legal_moves(&mut self) -> Vec<Move> {
         let mut moves = Vec::new();
         self.generate_all(Stage::Tactical, &mut moves);
@@ -1227,7 +1228,7 @@ impl SearchPosition for ShogiPosition {
             return Some(0);
         }
         if self.completed >= 320 {
-            // The native length rule follows mate/stalemate in priority.
+            // The length rule follows mate/stalemate in priority.
             let mut copy = self.clone();
             return Some(if copy.has_legal_move() {
                 0

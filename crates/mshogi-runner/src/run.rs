@@ -807,7 +807,7 @@ mod tests {
         let mut child = exited_child(true);
         child.single_exit_sample_control();
         let mut run = controlled_run(&c, child);
-        // Run on every native CI platform: the original one-sample ordering
+        // Run on every CI platform: the original one-sample ordering
         // freezes the wrong category despite this child's actual exit 7.
         let failure = run.send(0, "uci", "handshake").unwrap_err();
         let (_, failure, _) = run.failed(failure);

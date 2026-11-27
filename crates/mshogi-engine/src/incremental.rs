@@ -1,9 +1,9 @@
-//! Compact transport for a retained native session. Saved observations still
+//! Compact transport for a retained game session. Saved observations still
 //! contain the complete original context; only process traffic is incremental.
 use crate::{adapter::for_game, *};
 use mshogi_core::{
     chu,
-    native::{CanonicalRecord, GameKind},
+    game::{CanonicalRecord, GameKind},
     shogi, tenjiku, tori, xiangqi,
 };
 use serde::{Deserialize, Serialize};
@@ -15,7 +15,7 @@ use std::sync::Arc;
 pub struct Stamp {
     request_id: u64,
 }
-/// All search semantics except the native ledger, echoed without modification.
+/// All search semantics except the ledger, echoed without modification.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Metadata {
@@ -51,7 +51,7 @@ impl Metadata {
         }
     }
 }
-/// Native suffix families. Additional games use the same session protocol.
+/// Suffix families. Additional games use the same session protocol.
 #[derive(Clone, Debug, Serialize)]
 #[serde(
     tag = "kind",
@@ -60,18 +60,18 @@ impl Metadata {
     deny_unknown_fields
 )]
 pub enum Delta {
-    /// Exact native Shogi commands and derived event expectations.
+    /// Exact Shogi commands and derived event expectations.
     Shogi(shogi::GameDelta),
-    /// Exact native Tori commands and derived event expectations (MSH-204).
+    /// Exact Tori commands and derived event expectations (MSH-204).
     Tori(tori::GameDelta),
-    /// Exact native Chu suffix (MSH-213).
+    /// Exact Chu suffix (MSH-213).
     Chu(chu::GameDelta),
-    /// Complete Xiangqi command groups and their native events.
+    /// Complete Xiangqi command groups and their game events.
     Xiangqi(xiangqi::GameDelta),
     /// Exact Tenjiku events under the retained profile.
     Tenjiku(tenjiku::GameDelta),
 }
-// Capture the native bytes before dispatch. Serde's adjacent-tag buffering
+// Capture the bytes before dispatch. Serde's adjacent-tag buffering
 // cannot preserve a RawValue when the content field precedes the tag.
 impl<'de> Deserialize<'de> for Delta {
     fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
@@ -90,9 +90,7 @@ impl<'de> Deserialize<'de> for Delta {
             GameKind::Chu => serde_json::from_str(text).map(Self::Chu),
             GameKind::Tenjiku => serde_json::from_str(text).map(Self::Tenjiku),
             GameKind::Chess => {
-                return Err(serde::de::Error::custom(
-                    "Chess has no native record suffix",
-                ));
+                return Err(serde::de::Error::custom("Chess has no game record suffix"));
             }
         }
         .map_err(serde::de::Error::custom)
@@ -104,14 +102,14 @@ impl<'de> Deserialize<'de> for Delta {
 pub enum Update {
     /// Initial request, unrelated history, takeback or new process.
     Reset {
-        /// Complete native record, validated by its strict decoder.
+        /// Complete game record, validated by its strict decoder.
         game: CanonicalRecord,
     },
     /// Only events after a prior acknowledged request.
     Advance {
         /// Exact endpoint acknowledged by this child.
         base: Stamp,
-        /// Native new events and their expected effects.
+        /// New events and their expected effects.
         delta: Delta,
     },
 }
@@ -256,15 +254,15 @@ impl Client {
     }
 }
 
-/// Shared transport lifecycle around any adopted native record adapter.
+/// Shared transport lifecycle around any adopted game record adapter.
 pub struct SessionServer<A: EngineGame> {
-    native: mshogi_core::native::incremental::Session<A::Record>,
+    game: mshogi_core::game::incremental::Session<A::Record>,
     endpoint: Option<Stamp>,
 }
 impl<A: EngineGame> Default for SessionServer<A> {
     fn default() -> Self {
         Self {
-            native: Default::default(),
+            game: Default::default(),
             endpoint: None,
         }
     }
@@ -292,7 +290,7 @@ impl Server {
 }
 impl Request {
     /// The game family of this request, from its full record or suffix.
-    pub fn game_kind(&self) -> mshogi_core::native::GameKind {
+    pub fn game_kind(&self) -> mshogi_core::game::GameKind {
         match &self.update {
             Update::Reset { game } => game.game_kind(),
             Update::Advance { delta, .. } => match delta {
@@ -370,7 +368,7 @@ impl<A: EngineGame> SessionServer<A> {
         let admission = match request.update {
             Update::Reset { ref game } => match A::record(game) {
                 Some(record) => self
-                    .native
+                    .game
                     .reset(record)
                     .map(|_| ())
                     .map_err(|e| e.to_string()),
@@ -382,7 +380,7 @@ impl<A: EngineGame> SessionServer<A> {
                 } else {
                     match A::delta(delta) {
                         Some(delta) => self
-                            .native
+                            .game
                             .advance(delta)
                             .map(|_| ())
                             .map_err(|e| e.to_string()),
@@ -396,12 +394,12 @@ impl<A: EngineGame> SessionServer<A> {
             result.result = ExecutionResult::failure(FailureKind::InvalidRequest, error);
             return result;
         }
-        let game = self.native.game().expect("admitted native session");
+        let game = self.game.game().expect("admitted game session");
         if let ExecutionPurpose::MoveAnalysis { target } = &meta.purpose
             && !target.matches(
                 meta.session_version,
                 A::progress(game),
-                A::native_side(A::side_to_move(game)),
+                A::tagged_side(A::side_to_move(game)),
             )
         {
             self.endpoint = None;
@@ -479,7 +477,7 @@ mod tests {
         reset
     }
     #[test]
-    fn continuing_requests_send_only_native_suffix_and_reset_on_history_changes() {
+    fn continuing_requests_send_only_suffix_and_reset_on_history_changes() {
         let mut client = Client::default();
         let mut server = Server::default();
         let mut game = shogi::Game::new();
@@ -549,7 +547,7 @@ mod tests {
             .execute(wire, |_, _, _, _| panic!("invalid base must not search"));
         assert!(response.endpoint.is_none());
         assert_eq!(
-            server.session::<game::Shogi>().native.game(),
+            server.session::<game::Shogi>().game.game(),
             Some(&shogi::Game::new())
         );
         // Failure clears the client endpoint. The next request resynchronizes fully.
@@ -565,7 +563,7 @@ mod tests {
                 .is_err()
         );
         assert_eq!(client.previous.as_ref().unwrap().context, next.context);
-        // An illegal command with valid transport identity is still native-rejected.
+        // An illegal command with valid transport identity is still rejected.
         play(&mut game, "3c3d");
         let next = request(&game, 3);
         let mut value: serde_json::Value =
@@ -573,17 +571,12 @@ mod tests {
         value["update"]["advance"]["delta"]["delta"]["events"][0]["command"]["action"] =
             serde_json::json!("3c3e");
         let wire: Request = serde_json::from_value(value).unwrap();
-        let prior = server
-            .session::<game::Shogi>()
-            .native
-            .game()
-            .unwrap()
-            .clone();
+        let prior = server.session::<game::Shogi>().game.game().unwrap().clone();
         let response = server
             .session::<game::Shogi>()
             .execute(wire, |_, _, _, _| panic!("illegal suffix must not search"));
         assert!(response.endpoint.is_none());
-        assert_eq!(server.session::<game::Shogi>().native.game(), Some(&prior));
+        assert_eq!(server.session::<game::Shogi>().game.game(), Some(&prior));
     }
     #[test]
     fn fixed_work_encoding_and_timed_endpoint_are_unchanged() {
@@ -659,7 +652,7 @@ mod tests {
                 "{pointer}"
             );
         }
-        // Two valid complete native profiles with the same request ID cannot cross.
+        // Two valid complete profiles with the same request ID cannot cross.
         for profile in mshogi_core::tenjiku::Profile::ALL {
             let mut other = (*submitted).clone();
             other.context.game = CanonicalRecord::tenjiku(
@@ -707,7 +700,7 @@ mod tests {
         })
     }
     /// One Tori request through client and server (MSH-204); returns whether
-    /// the server reset its native session, and checks the game it searched.
+    /// the server reset its game session, and checks the game it searched.
     fn tori_cycle(
         client: &mut Client,
         server: &mut Server,
@@ -748,7 +741,7 @@ mod tests {
         reset
     }
     #[test]
-    fn tori_requests_send_only_native_suffix_and_reset_on_history_changes() {
+    fn tori_requests_send_only_suffix_and_reset_on_history_changes() {
         let play = |game: &mut tori::Game, index: usize| {
             let action = game.legal_actions()[index];
             game.submit(tori::GameRequest {

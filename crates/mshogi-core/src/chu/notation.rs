@@ -14,9 +14,9 @@ use std::{error::Error, fmt};
 pub enum NotationError {
     /// No owned source exists.
     Source,
-    /// Complete native actions have one or two actual landings.
+    /// Complete actions have one or two actual landings.
     Route,
-    /// No native local choice has this exact spelling.
+    /// No local choice has this exact spelling.
     NoLocalChoice,
 }
 impl fmt::Display for NotationError {
@@ -26,7 +26,7 @@ impl fmt::Display for NotationError {
 }
 impl Error for NotationError {}
 
-/// Describe an admitted event at its exact preceding native prefix.
+/// Describe an admitted event at its exact preceding prefix.
 pub fn format_history_action(
     before: &HistorySnapshot,
     action: Action,
@@ -57,13 +57,13 @@ pub fn format_action(position: &Position, action: Action) -> Result<String, Nota
     Ok(result)
 }
 
-/// Select a real local choice. Native Game must still enforce exact live history.
+/// Select a real local choice. Game must still enforce exact live history.
 /// This structural-root convenience has no imported Lion protection rights.
 pub fn parse_action(position: &Position, text: &str) -> Result<Action, NotationError> {
     parse_local_action(&LocalPosition::admit(position.clone()), text)
 }
 
-/// Select a real local choice with the caller's native Lion protection rights.
+/// Select a real local choice with the caller's Lion protection rights.
 pub fn parse_local_action(local: &LocalPosition, text: &str) -> Result<Action, NotationError> {
     if text.is_empty() || text.len() > 32 || !text.is_ascii() {
         return Err(NotationError::NoLocalChoice);
@@ -143,7 +143,7 @@ mod tests {
         }
     }
     #[test]
-    fn native_choice_roundtrip_both_sides_and_malformed_route_bounds() {
+    fn choice_roundtrip_both_sides_and_malformed_route_bounds() {
         let mut local = LocalPosition::standard();
         for _ in 0..4 {
             let choices = local.legal_actions();

@@ -87,7 +87,7 @@
           "winner": "sente"
         },
         "engine_to_move": "sente",
-        "qualification": "Actual UI Resume must obtain a real engine choice and commit a native terminal game, not a fabricated observation."
+        "qualification": "Actual UI Resume must obtain a real engine choice and commit a terminal game, not a fabricated observation."
       },
       "file": "tenjiku-adams-royal-engine.mshogi",
       "human": "gote",
@@ -249,7 +249,7 @@
           "winner": "sente"
         },
         "engine_to_move": "sente",
-        "qualification": "Actual UI Resume must obtain a real engine choice and commit a native terminal game, not a fabricated observation."
+        "qualification": "Actual UI Resume must obtain a real engine choice and commit a terminal game, not a fabricated observation."
       },
       "file": "tenjiku-muller-royal-engine.mshogi",
       "human": "gote",
@@ -328,7 +328,7 @@
     }
   ],
   "generator": "write_tenjiku_gui_fixtures",
-  "qualification": "Current native desktop documents admitted/replayed by public Rust APIs. Unproved diagrams, no fabricated observations, no normal host fixture/IPC activation.",
+  "qualification": "Current desktop documents admitted/replayed by public Rust APIs. Unproved diagrams, no fabricated observations, no normal host fixture/IPC activation.",
   "schema": "mshogi.tenjiku.packaged-fixtures.v1",
   "source": "docs/m4/tenjiku/fixtures.json frozen MSH-83/87 independently authored roots and expectations",
   "source_sha256": "2005e098b507f73248b8f9bd442f7ffe0c2c0c5ae205428d9a3d2371a7c08e82"

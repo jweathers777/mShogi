@@ -1,7 +1,7 @@
 use crate::{adapter::for_game, *};
 use mshogi_core::{
     chess::AdjudicatedGame,
-    native::{CanonicalRecord, GameKind, NativeSide},
+    game::{CanonicalRecord, GameKind, TaggedSide},
 };
 use mshogi_search::{
     alphabeta::{
@@ -112,7 +112,7 @@ impl<T: Reset> Slot<T> {
         self.record = Some(record.clone());
         self.acquire_state(reset, create)
     }
-    /// Acquire an engine after the shared native session admitted its suffix.
+    /// Acquire an engine after the shared game session admitted its suffix.
     pub(crate) fn acquire_incremental<E>(
         &mut self,
         reset: bool,
@@ -209,7 +209,7 @@ pub fn serve_once(mut input: impl BufRead, mut output: impl Write) -> io::Result
 /// stops a search by stopping the process.
 pub fn serve(mut input: impl BufRead, mut output: impl Write) -> io::Result<()> {
     let mut session = Session::default();
-    let mut native = crate::incremental::Server::default();
+    let mut incremental_server = crate::incremental::Server::default();
     let mut served = false;
     loop {
         let Some(request) = read_request(&mut input)? else {
@@ -222,7 +222,7 @@ pub fn serve(mut input: impl BufRead, mut output: impl Write) -> io::Result<()> 
                 ))
             };
         };
-        dispatch_request(&request, &mut session, &mut native, &mut output)?;
+        dispatch_request(&request, &mut session, &mut incremental_server, &mut output)?;
         served = true;
     }
 }
@@ -230,12 +230,12 @@ pub fn serve(mut input: impl BufRead, mut output: impl Write) -> io::Result<()> 
 fn dispatch_request(
     bytes: &[u8],
     session: &mut Session,
-    native: &mut crate::incremental::Server,
+    incremental_server: &mut crate::incremental::Server,
     output: &mut impl Write,
 ) -> io::Result<()> {
     if let Ok(request) = serde_json::from_slice::<crate::incremental::Request>(bytes) {
         let response = for_game!(request.game_kind(), G => {
-            native.session::<G>().execute(request, |game, reset, limits, time| {
+            incremental_server.session::<G>().execute(request, |game, reset, limits, time| {
                 execute_retained::<G>(session, game, reset, limits, time, None)
             })
         }, chess => crate::incremental::Response::new(bytes, ExecutionResult::failure(
@@ -247,14 +247,14 @@ fn dispatch_request(
     if crate::incremental::Client::supports(&request) {
         let record = Some(&request.context.game);
         let response = for_game!(request.context.game.game_kind(), G => {
-            native.session::<G>().begin(&request, |game, reset, limits, time| {
+            incremental_server.session::<G>().begin(&request, |game, reset, limits, time| {
                 execute_retained::<G>(session, game, reset, limits, time, record)
             })
         }, chess => unreachable!("unsupported incremental request"));
         return write_response(output, &response.bind(bytes));
     }
     if request.context.limits.time_ms.is_some() {
-        *native = crate::incremental::Server::default();
+        *incremental_server = crate::incremental::Server::default();
     }
     write_response(
         output,
@@ -343,7 +343,7 @@ fn execute_chess(context: &ExecutionContext, session: &mut Session) -> ChessResu
     };
     if let ExecutionPurpose::MoveAnalysis { target } = &context.purpose
         && (target.board_ply != game.history().ply_count() as u64
-            || target.turn != NativeSide::Chess(game.position().side_to_move()))
+            || target.turn != TaggedSide::Chess(game.position().side_to_move()))
     {
         return ChessResult::failure(
             FailureKind::InvalidRequest,
@@ -423,7 +423,7 @@ mod prefix_slot_tests {
         .unwrap()
     }
     #[test]
-    fn exact_shogi_relation_retains_only_timed_native_descendants() {
+    fn exact_shogi_relation_retains_only_timed_descendants() {
         use mshogi_core::shogi::*;
         let mut slot = Slot::default();
         let initial = Game::new();

@@ -1,9 +1,9 @@
-//! Independently expected profile differences through the real native line server.
+//! Independently expected profile differences through the real line server.
 //! These are functional engine results, not second rules, subprocess supervision,
 //! competitive-strength or packaged-GUI evidence. Expectations follow the accepted
 //! profile T03 (Free Eagle/Tetrarch), T04 (Demon ordering) and T05 (ranked victims).
 mod support;
-use mshogi_core::{native::CanonicalRecord, tenjiku as t};
+use mshogi_core::{game::CanonicalRecord, tenjiku as t};
 use mshogi_engine::*;
 use std::{io::Cursor, time::Instant};
 
@@ -33,7 +33,7 @@ fn diagram(profile: t::Profile, entries: &[(u8, u8, t::Side, t::Base, bool)]) ->
     .unwrap()
 }
 /// Execute the actual request/parser/server/result boundary, then submit exactly
-/// the returned action to a separately restored authoritative native Game.
+/// the returned action to a separately restored authoritative Game.
 fn played(case: &str, game: &t::Game) -> (t::Game, t::Action, TenjikuTelemetry) {
     let before = t::GameRecord::from_game(game).unwrap();
     let context = game.context();
@@ -72,7 +72,7 @@ fn played(case: &str, game: &t::Game) -> (t::Game, t::Action, TenjikuTelemetry) 
         game.profile().into()
     );
     let ExecutionResult::Tenjiku { result } = response.observation.result else {
-        panic!("{case}: actual native result required")
+        panic!("{case}: actual engine result required")
     };
     result.validate(game).unwrap();
     let TenjikuResult::Choice {
@@ -136,7 +136,7 @@ fn win(branch: &t::Game, telemetry: &TenjikuTelemetry) {
 fn nonterminal_choice(branch: &t::Game, telemetry: &TenjikuTelemetry) {
     assert_eq!(branch.conclusion(), None);
     // A deeper selective search can prove a later win. This fixture requires
-    // only that the first action is not an immediate native conclusion.
+    // only that the first action is not an immediate game conclusion.
     assert!(telemetry.score.unwrap().abs() < mshogi_search::tenjiku::WIN_SCORE);
 }
 #[test]

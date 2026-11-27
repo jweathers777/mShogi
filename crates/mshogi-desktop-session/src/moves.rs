@@ -1,4 +1,4 @@
-//! Presentation only: local native positions/actions, never game adjudication,
+//! Presentation only: local positions/actions, never game adjudication,
 //! exact reachability, notation input, canonical records or frontend replay.
 use crate::*;
 use mshogi_core::{shogi as s, xiangqi as x};
@@ -7,36 +7,36 @@ mod shogi;
 mod tori;
 mod xiangqi;
 
-/// Additional movement derived from native before/after effects (e.g. rook).
+/// Additional movement derived from before/after effects (e.g. rook).
 #[derive(Clone, Debug, Serialize)]
 pub struct MoveEffect {
-    /// Native source coordinate.
+    /// Game source coordinate.
     pub from: String,
-    /// Native destination coordinate.
+    /// Destination coordinate.
     pub to: String,
 }
-/// Exact native-derived victim in complete capture order.
+/// Exact derived victim in complete capture order.
 #[derive(Clone, Debug, Serialize)]
 pub struct CapturedPiece {
-    /// Native victim coordinate.
+    /// Victim coordinate.
     pub square: String,
-    /// Game-qualified native owner.
-    pub owner: NativeSide,
-    /// Original native identity.
+    /// Game-qualified rules owner.
+    pub owner: TaggedSide,
+    /// Original game identity.
     pub original_kind: String,
-    /// Current native movement identity.
+    /// Current movement identity.
     pub movement_face: String,
-    /// Native promotion state.
+    /// Promotion state.
     pub promoted: bool,
 }
-/// Native Tenjiku removal/promotion identity at a supplied presentation coordinate.
+/// Tenjiku removal/promotion identity at a supplied presentation coordinate.
 #[derive(Clone, Debug, Serialize)]
 pub struct TenjikuEffectPiece {
-    /// Exact native coordinate of the effect.
+    /// Exact coordinate of the effect.
     pub square: String,
     /// Original physical identity, owner, promotion and refusal rights.
     pub piece: mshogi_core::tenjiku::Piece,
-    /// Native-derived current movement face.
+    /// Current movement face from the rules library.
     pub face: mshogi_core::tenjiku::Face,
 }
 /// Ordered Tenjiku phases; a burn batch remains simultaneous and canonical.
@@ -48,17 +48,17 @@ pub enum TenjikuEffectPhase {
         /// Actual removed piece.
         victim: TenjikuEffectPiece,
     },
-    /// Simultaneous off-route removal, in native rank/file order.
+    /// Simultaneous off-route removal, in rank/file order.
     Burn {
-        /// Native batch, not separate movement steps.
+        /// Batch, not separate movement steps.
         victims: Vec<TenjikuEffectPiece>,
     },
-    /// Native final-position hazard destroys the mover.
+    /// Final-position hazard destroys the mover.
     MoverDies {
         /// Mover immediately before destruction.
         mover: TenjikuEffectPiece,
     },
-    /// Surviving once-only native promotion, after removals.
+    /// Surviving once-only promotion, after removals.
     Promotion {
         /// Original identity before flipping.
         before: TenjikuEffectPiece,
@@ -69,8 +69,8 @@ pub enum TenjikuEffectPhase {
 /// Narrow game-owned metadata beyond ordinary movement geometry.
 #[derive(Clone, Debug, Serialize)]
 #[serde(tag = "kind", rename_all = "snake_case")]
-pub enum NativeCompletedEffects {
-    /// Tenjiku stationary targets and authoritative ordered native phases.
+pub enum OrderedActionEffects {
+    /// Tenjiku stationary targets and authoritative ordered phases.
     Tenjiku {
         /// Selected capture target when the mover did not travel.
         stationary_target: Option<String>,
@@ -81,40 +81,40 @@ pub enum NativeCompletedEffects {
 /// Completed history, independent of actionable selection/inspection/focus.
 #[derive(Clone, Debug, Serialize)]
 pub struct CompletedActionGeometry {
-    /// Opaque complete native action identity.
+    /// Opaque complete action identity.
     pub action: String,
     /// Exact post-action event-prefix count, not board ply.
     pub event_index: usize,
-    /// Native board, intersection or hand origin.
+    /// Game board, intersection or hand origin.
     pub origin: ChoiceOrigin,
     /// Ordered complete route, including repeated destinations.
     pub steps: Vec<String>,
-    /// Ordered native effects distinct from travel and secondary movement.
+    /// Ordered game effects distinct from travel and secondary movement.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub native_effects: Option<NativeCompletedEffects>,
-    /// Native secondary movement; empty for ordinary actions.
+    pub ordered_effects: Option<OrderedActionEffects>,
+    /// Secondary movement; empty for ordinary actions.
     pub effects: Vec<MoveEffect>,
-    /// Ordered victims supplied by native complete effects; absent if not projected.
+    /// Ordered victims supplied by complete effects; absent if not projected.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub captures: Option<Vec<CapturedPiece>>,
 }
-/// One actual native board action, never a warning or terminal command.
+/// One actual game board action, never a warning or terminal command.
 #[derive(Clone, Debug, Serialize)]
 pub struct PresentedMove {
     /// Exact prefix immediately after the action, before later derived events.
     pub event_index: usize,
     /// Known board-action count, independent of event count.
     pub board_ply: usize,
-    /// Native display pair number; root provenance explains its scope.
+    /// Display pair number; root provenance explains its scope.
     pub number: u64,
-    /// Native first/second mover column, zero or one.
+    /// First/second mover column, zero or one.
     pub column: u8,
     /// Source-based display notation; not a canonical action parser.
     pub notation: String,
-    /// Readable ordered native effects; omitted when no additional facts exist.
+    /// Readable ordered game effects; omitted when no additional facts exist.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub effects_description: Option<String>,
-    /// Exact native complete-action identity.
+    /// Exact complete-action identity.
     pub action: String,
     /// Prefix before this command: associated prefix IDs are (start,end].
     pub command_start: usize,
@@ -131,12 +131,12 @@ pub struct MovesRoot {
     /// Plain-language known-history/counter provenance.
     pub numbering: String,
 }
-/// Cached native board-action projection and selected-prefix decoration.
+/// Cached game board-action projection and selected-prefix decoration.
 #[derive(Clone, Debug, Serialize)]
 pub struct MovesProjection {
     /// Explicit known root and numbering provenance.
     pub root: MovesRoot,
-    /// Only actual completed native board actions.
+    /// Only actual completed game board actions.
     pub entries: Vec<PresentedMove>,
     /// Latest completed action at the exact selected prefix, or none.
     pub last_action: Option<CompletedActionGeometry>,
@@ -157,7 +157,7 @@ impl Cache {
             self.projection = Some(build());
             self.key = Some(key);
         }
-        let mut view = self.projection.as_ref().expect("native projection").clone();
+        let mut view = self.projection.as_ref().expect("projection").clone();
         view.last_action = view
             .entries
             .iter()
@@ -221,7 +221,7 @@ pub(super) fn chess_match_projection(game: &ChessMatch) -> MovesProjection {
         let before = position.clone();
         position.apply(action).expect("admitted Chess action");
         let mut effects = vec![];
-        // Native transition effects identify any secondary moving piece; no
+        // Transition effects identify any secondary moving piece; no
         // frontend castling/file/rank assumption is needed.
         for from in (0..64).map(|n| Square::new(n % 8, n / 8).unwrap()) {
             if from == action.from {
@@ -245,7 +245,7 @@ pub(super) fn chess_match_projection(game: &ChessMatch) -> MovesProjection {
             }
         }
         let geometry = CompletedActionGeometry {
-            native_effects: None,
+            ordered_effects: None,
             action: action.to_string(),
             event_index: index,
             origin: ChoiceOrigin::Board {
@@ -318,8 +318,8 @@ pub(super) fn shogi_projection(game: &s::Game) -> MovesProjection {
                 s::Action::Drop { kind, to } => (
                     ChoiceOrigin::Hand {
                         owner: shared::side(
-                            mshogi_core::native::RulesProfile::ShogiCsa36V1,
-                            NativeSide::Shogi(event.actor),
+                            mshogi_core::game::RulesProfile::ShogiCsa36V1,
+                            TaggedSide::Shogi(event.actor),
                         )
                         .key,
                         piece_kind: format!("{kind:?}").to_lowercase(),
@@ -328,7 +328,7 @@ pub(super) fn shogi_projection(game: &s::Game) -> MovesProjection {
                 ),
             };
             let geometry = CompletedActionGeometry {
-                native_effects: None,
+                ordered_effects: None,
                 action: action.to_string(),
                 event_index: event.index + 1,
                 origin,
@@ -385,11 +385,11 @@ pub(super) fn xiangqi_projection(game: &x::Game) -> MovesProjection {
         if let x::EventKind::BoardAction { action, .. } = event.event {
             let pre = game
                 .event_prefix(event.index)
-                .expect("admitted native event prefix");
+                .expect("admitted game event prefix");
             let column = u8::from(event.actor == Some(x::Side::Black));
             let notation = xiangqi::notation(&pre.position, action);
             let geometry = CompletedActionGeometry {
-                native_effects: None,
+                ordered_effects: None,
                 action: action.to_string(),
                 event_index: command_end(event.index),
                 origin: ChoiceOrigin::Intersection {
@@ -447,8 +447,8 @@ pub(super) fn chu_projection(game: &mshogi_core::chu::Game) -> MovesProjection {
             continue;
         };
         let geometry = CompletedActionGeometry {
-            native_effects: None,
-            action: serde_json::to_string(action).expect("native complete action"),
+            ordered_effects: None,
+            action: serde_json::to_string(action).expect("complete action"),
             event_index: e.index + 1,
             origin: ChoiceOrigin::Board {
                 square: action.from.to_string(),
@@ -461,7 +461,7 @@ pub(super) fn chu_projection(game: &mshogi_core::chu::Game) -> MovesProjection {
                     .iter()
                     .map(|v| CapturedPiece {
                         square: v.square.to_string(),
-                        owner: NativeSide::Chu(v.piece.side),
+                        owner: TaggedSide::Chu(v.piece.side),
                         original_kind: v.piece.base.code().into(),
                         movement_face: v.piece.face().code().into(),
                         promoted: v.piece.promoted,
@@ -471,9 +471,9 @@ pub(super) fn chu_projection(game: &mshogi_core::chu::Game) -> MovesProjection {
         };
         let before = game
             .event_prefix(e.index)
-            .expect("accepted native event prefix");
+            .expect("accepted game event prefix");
         let notation = c::notation::format_history_action(&before, action.clone())
-            .expect("accepted complete native action");
+            .expect("accepted complete action");
         push(
             &mut view,
             number,
@@ -543,12 +543,10 @@ pub(super) fn tenjiku_projection(game: &mshogi_core::tenjiku::Game) -> MovesProj
                 },
             })
             .collect();
-        let before = game
-            .event_prefix(event.index)
-            .expect("accepted native prefix");
-        let notation = t::notation::format_history_action(&before, action.clone())
-            .expect("accepted native action");
-        let technical = serde_json::to_string(action).expect("native complete action");
+        let before = game.event_prefix(event.index).expect("accepted prefix");
+        let notation =
+            t::notation::format_history_action(&before, action.clone()).expect("accepted action");
+        let technical = serde_json::to_string(action).expect("complete action");
         let geometry = CompletedActionGeometry {
             action: technical.clone(),
             event_index: event.index + 1,
@@ -556,7 +554,7 @@ pub(super) fn tenjiku_projection(game: &mshogi_core::tenjiku::Game) -> MovesProj
                 square: action.from.to_string(),
             },
             steps: action.route.iter().map(ToString::to_string).collect(),
-            native_effects: Some(NativeCompletedEffects::Tenjiku {
+            ordered_effects: Some(OrderedActionEffects::Tenjiku {
                 stationary_target: action.target.map(|v| v.to_string()),
                 phases,
             }),
@@ -566,7 +564,7 @@ pub(super) fn tenjiku_projection(game: &mshogi_core::tenjiku::Game) -> MovesProj
                     .captures()
                     .map(|v| CapturedPiece {
                         square: v.square.to_string(),
-                        owner: NativeSide::Tenjiku(v.piece.side),
+                        owner: TaggedSide::Tenjiku(v.piece.side),
                         original_kind: v.piece.base.code().into(),
                         movement_face: v.piece.face().code().into(),
                         promoted: v.piece.promoted,
@@ -586,7 +584,7 @@ pub(super) fn tenjiku_projection(game: &mshogi_core::tenjiku::Game) -> MovesProj
         if !effects.phases.is_empty() || action.kind == t::ActionKind::Igui {
             view.entries
                 .last_mut()
-                .expect("just projected native action")
+                .expect("just projected action")
                 .effects_description = Some(t::notation::format_effects(effects));
         }
         if event.actor == t::Side::Gote {

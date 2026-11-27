@@ -42,7 +42,7 @@
       },
       "game_kind": "chess",
       "rules_profile": "mshogi.chess.match.v1",
-      "native_schema_version": 1
+      "record_schema_version": 1
     },
     "chess_match": {
       "rules_profile": "mshogi.chess.match.v1",
@@ -195,7 +195,7 @@
       },
       "game_kind": "chess",
       "rules_profile": "mshogi.chess.match.v1",
-      "native_schema_version": 1
+      "record_schema_version": 1
     },
     "chess_match": {
       "rules_profile": "mshogi.chess.match.v1",

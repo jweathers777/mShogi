@@ -1,6 +1,6 @@
-//! Actual native controller and supervised Tori child; no gameplay GUI claim.
+//! Actual controller and supervised Tori child; no gameplay GUI claim.
 mod support;
-use mshogi_core::{native::*, tori};
+use mshogi_core::{game::*, tori};
 use mshogi_desktop_session::*;
 use mshogi_engine::*;
 use std::{
@@ -37,7 +37,7 @@ fn controller(path: &str) -> DesktopController {
         &mut c,
         SessionOperation::Replace {
             record: CanonicalRecord::tori(tori::GameRecord::from_game(&game).unwrap()),
-            human: NativeSide::Tori(tori::Side::Sente),
+            human: TaggedSide::Tori(tori::Side::Sente),
         },
     );
     c
@@ -73,7 +73,7 @@ fn real_internal_tori_analysis_save_reopen_stopped_then_explicit_analysis_and_re
         panic!("actual child must execute Tori")
     };
     let ToriResult::Choice { telemetry, .. } = result else {
-        panic!("complete native analysis")
+        panic!("complete analysis")
     };
     assert_eq!(telemetry.completed_depth, 1);
     assert!(telemetry.score.is_some());
@@ -124,7 +124,7 @@ fn real_internal_tori_analysis_save_reopen_stopped_then_explicit_analysis_and_re
         let s = c.shared_snapshot();
         if s.context.known_board_actions() == before.known_board_actions() + 1 {
             assert_eq!(s.context.event_count(), before.event_count() + 1);
-            assert_eq!(s.turn.id, NativeSide::Tori(tori::Side::Sente));
+            assert_eq!(s.turn.id, TaggedSide::Tori(tori::Side::Sente));
             break;
         }
         assert!(Instant::now() < deadline, "{s:?}");
@@ -203,7 +203,7 @@ fn real_supervised_tori_failure_cancel_replace_cleanup_and_cross_game_retirement
             record: CanonicalRecord::shogi(mshogi_core::shogi::GameRecord::from_game(
                 &mshogi_core::shogi::Game::new(),
             )),
-            human: NativeSide::Shogi(mshogi_core::shogi::Side::Sente),
+            human: TaggedSide::Shogi(mshogi_core::shogi::Side::Sente),
         },
     );
     assert!(!c.accept_shared(ExecutionResponse {

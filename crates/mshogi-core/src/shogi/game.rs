@@ -1,8 +1,8 @@
 //! Untimed rules-owned game history. A `Position` by itself is not a history.
 
 use super::{Action, ActionError, CounterSource, PieceKind, Position, RepetitionIdentity, Side};
-pub use crate::native::GameContext;
-use crate::native::history::{AppendGame, Authority, GameUndo as Binding};
+pub use crate::game::GameContext;
+use crate::game::history::{AppendGame, Authority, GameUndo as Binding};
 use crate::repetition::RepetitionIndex;
 
 /// Root category is retained, rather than presenting an imported diagram as a recovered game.
@@ -311,7 +311,7 @@ pub enum GamePrefixError {
     Replay {
         /// Index of the event that could not be reconstructed.
         event_index: usize,
-        /// Original native diagnostic.
+        /// Original diagnostic.
         error: GameError,
     },
 }

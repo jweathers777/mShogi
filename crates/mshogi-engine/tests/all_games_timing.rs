@@ -1,6 +1,6 @@
 //! Shared time admission, retained state and deterministic fixed work.
 mod support;
-use mshogi_core::{chess, chu, native::CanonicalRecord, shogi, tenjiku, tori, xiangqi};
+use mshogi_core::{chess, chu, game::CanonicalRecord, shogi, tenjiku, tori, xiangqi};
 use mshogi_engine::*;
 use serde_json::{Value, json};
 
@@ -68,9 +68,12 @@ fn run(requests: &[ExecutionRequest]) -> Vec<ExecutionResponse> {
 }
 fn fingerprint(response: &ExecutionResponse) -> Value {
     let result = serde_json::to_value(&response.observation.result).unwrap();
-    let native = &result["result"];
-    assert_eq!(native["telemetry"]["completed_depth"], 2, "{result}");
-    json!({"profile": response.observation.context.game.profile(), "action": native.get("action").or_else(|| native.get("choice")), "nodes": native["telemetry"]["nodes"], "score": native["telemetry"]["score"]})
+    let result_payload = &result["result"];
+    assert_eq!(
+        result_payload["telemetry"]["completed_depth"], 2,
+        "{result}"
+    );
+    json!({"profile": response.observation.context.game.profile(), "action": result_payload.get("action").or_else(|| result_payload.get("choice")), "nodes": result_payload["telemetry"]["nodes"], "score": result_payload["telemetry"]["score"]})
 }
 
 /// Fixed-work searches of the standard roots are deterministic. A change that
@@ -113,9 +116,9 @@ fn every_profile_admits_time_and_fixed_work_stays_fresh() {
     }
 }
 
-/// Apply only the returned complete action with the authoritative native rules.
+/// Apply only the returned complete action with the authoritative rules.
 fn played(record: &CanonicalRecord, response: &ExecutionResponse) -> CanonicalRecord {
-    macro_rules! native {
+    macro_rules! result_payload {
         ($record:expr, $action:expr, $module:ident, $wrap:ident) => {{
             let mut game = $record.to_game().unwrap();
             game.submit($module::GameRequest {
@@ -168,26 +171,26 @@ fn played(record: &CanonicalRecord, response: &ExecutionResponse) -> CanonicalRe
                         ..
                     },
             },
-        ) => native!(record, action, xiangqi, xiangqi),
+        ) => result_payload!(record, action, xiangqi, xiangqi),
         (
             CanonicalRecord::Tori(record),
             ExecutionResult::Tori {
                 result: ToriResult::Choice { choice: action, .. },
             },
-        ) => native!(record, action, tori, tori),
+        ) => result_payload!(record, action, tori, tori),
         (
             CanonicalRecord::Chu(record),
             ExecutionResult::Chu {
                 result: ChuResult::Choice { choice: action, .. },
             },
-        ) => native!(record, action, chu, chu),
+        ) => result_payload!(record, action, chu, chu),
         (
             CanonicalRecord::Tenjiku(record),
             ExecutionResult::Tenjiku {
                 result: TenjikuResult::Choice { choice: action, .. },
             },
-        ) => native!(record, action, tenjiku, tenjiku),
-        _ => panic!("expected a native move: {:?}", response.observation.result),
+        ) => result_payload!(record, action, tenjiku, tenjiku),
+        _ => panic!("expected a move: {:?}", response.observation.result),
     }
 }
 
@@ -228,7 +231,7 @@ fn takeback_and_game_switch_clear_timed_state() {
 }
 
 #[test]
-fn continuing_process_admits_native_suffixes_for_every_supported_profile() {
+fn continuing_process_admits_suffixes_for_every_supported_profile() {
     use mshogi_engine::incremental::Client;
     use std::sync::Arc;
 
@@ -269,7 +272,7 @@ fn continuing_process_admits_native_suffixes_for_every_supported_profile() {
 
 #[test]
 fn retained_analysis_checks_the_target_after_same_ply_xiangqi_events() {
-    use mshogi_core::native::NativeSide;
+    use mshogi_core::game::TaggedSide;
     use mshogi_engine::incremental::Client;
     use std::sync::Arc;
     let mut game = xiangqi::Game::standard(xiangqi::ClaimPolicy::Explicit).unwrap();
@@ -297,7 +300,7 @@ fn retained_analysis_checks_the_target_after_same_ply_xiangqi_events() {
             board_ply: 0,
             session_version: 2,
             label: "Rejected claim".into(),
-            turn: NativeSide::Xiangqi(xiangqi::Side::Red),
+            turn: TaggedSide::Xiangqi(xiangqi::Side::Red),
         },
     };
     let next = Arc::new(next);

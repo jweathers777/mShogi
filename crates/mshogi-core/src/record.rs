@@ -1,4 +1,4 @@
-//! Shared strict saved-record primitives. Game admission remains native-owned.
+//! Shared strict saved-record primitives. Game admission remains rules-owned.
 use serde::{
     Deserialize, Serialize,
     de::{self, MapAccess, SeqAccess, Visitor},
@@ -70,7 +70,7 @@ pub(crate) fn reject_duplicates(text: &str) -> serde_json::Result<()> {
     d.end()
 }
 
-/// Serialize validated native JSON without an intermediate object or owned copy.
+/// Serialize validated JSON without an intermediate object or owned copy.
 pub(crate) fn serialize_json<S: serde::Serializer>(
     text: &str,
     serializer: S,

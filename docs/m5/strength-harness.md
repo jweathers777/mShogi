@@ -11,7 +11,7 @@ cargo build --release --locked -p mshogi-runner --example strength --bin mshogi-
 python3 -m tools.strength.cli build-engine REVISION
 ```
 
-The helper uses the same native records, engine transport and rules as ordinary
+The helper uses the same game records, engine transport and rules as ordinary
 experiments. The runner owns legality, clocks, terminal scores and report replay.
 Use new output paths under `runs/<task-id>/`. The commands below use Chess for
 the examples. The other games use the same commands.
@@ -19,7 +19,7 @@ the examples. The other games use the same commands.
 ## Openings and tactics
 
 Fix the population, seed, count, depth, node budget and maximum absolute score
-before screening. The score is from the side to move in native hundredths.
+before screening. The score is from the side to move in hundredths.
 `openings` draws legal continuations from the standard root. It removes duplicate
 boards and accepts a live board only when the frozen engine reaches the specified
 depth and its score is within the chosen bound. An exhausted attempt budget
@@ -27,7 +27,7 @@ writes the admitted rows and returns an error. Use `--source CATALOG` to
 screen authored candidates in file order. The catalog has an `openings` array
 with unique `id` strings. Each row can carry a canonical `record`. Existing
 Chess and Xiangqi FEN/move catalogs, Shogi SFEN/move catalogs, Tori notation
-and Chu native record catalogs can also be read.
+and Chu game record catalogs can also be read.
 
 ```sh
 python3 -m tools.strength.cli openings --game chess --engine ENGINE --depth 4 --nodes 500000 --balance 100 --seed 1 --plies 8 --count 100 --attempts 1000 --out runs/TASK/openings.json
@@ -37,7 +37,7 @@ python3 -m tools.strength.cli probe --game chess --suite runs/TASK/suite.json --
 
 Tactical input has a `positions` array. Each row has an `id`, a `group` naming
 its source game or opening, and the same position fields as an opening.
-`one-ply` tries every legal board move and keeps every move that produces a native
+`one-ply` tries every legal board move and keeps every move that produces a
 win for its mover. `supplied` accepts independently established `answers` (or
 `expected_moves`) and requires their `proof` or `source`. It verifies each
 answer's legality. Supply a complete set for the test criterion. A bounded mate
@@ -50,7 +50,7 @@ held-out. The builder requires both partitions. Freeze the suite and reserve
 held-out play for measurement. Existing suites with `answers` or
 `expected_moves` and an explicit `split` can also be probed directly.
 For the Tori checking-only catalog, an unlisted choice is checked against the
-frozen full-width proofs or a bounded native proof. Exhausted proofs are unknown.
+frozen full-width proofs or a bounded proof. Exhausted proofs are unknown.
 The Chu probe reports the capture-return contract separately.
 For a development blunder screen use `blunders --suite FILE --depth N --nodes N`.
 It records whether each move avoided the known error and matched one reference
@@ -68,7 +68,7 @@ cycles from `--first-seed`. A fixed-work comparison can instead set
 chosen limits and hypotheses before play. `--candidate-time-factor 2` doubles
 the candidate's base and increment. Use the same executable on both sides for
 an internal time-odds curve. `--calibrate` requests one turn per color per game.
-The driver retains the native reports, both binary identities, timing and depth,
+The driver retains the match reports, both binary identities, timing and depth,
 median accepted depth from `--late-ply` onward, the five pair-score counts, Elo interval and SPRT decision. A cutoff supplies
 no game score. An unfinished match pair stops the campaign, except for the
 predeclared Tori step-limit exclusion (see MSH-204).
@@ -77,7 +77,7 @@ predeclared Tori step-limit exclusion (see MSH-204).
 campaign. The driver reserves another 45 seconds per pair for shutdown. The
 runner also enforces its report-size budget. `bench` measures fixed-depth wall
 time and nodes on a positions file, including cold process and transport cost.
-`signature` compares full fixed-depth native observations for an opening catalog.
+`signature` compares full fixed-depth engine observations for an opening catalog.
 
 ## Self-play, tuning and deeper judging
 
@@ -106,8 +106,8 @@ own quiet-position filters. Build the applicable `mshogi-search` example
 before its planned evaluation round supplies a fitting model.
 
 The judge samples evenly spaced board moves, including moves in unfinished
-games. It searches each full native history before and after the move with a
-fresh engine state. A native terminal score takes precedence after the move.
+games. It searches each full game history before and after the move with a
+fresh engine state. A terminal score takes precedence after the move.
 Missing scores remain unjudged. The output keeps the inputs, depths, scores,
 actual deeper-search count, clear blunders per 100 judged moves and mean
 positive win-probability loss. Its `positions` array contains reusable clear-blunder

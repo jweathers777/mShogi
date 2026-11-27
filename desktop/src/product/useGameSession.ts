@@ -1,6 +1,6 @@
-import { nativeSnapshotIsNewer } from "../sessionState";
+import { gameSnapshotIsNewer } from "../sessionState";
 import type { GameKind, RulesProfile } from "../games";
-import type { DesktopCommand, GameSnapshot, NativeSide, OpenToken, Operation, PlayMode } from "../native";
+import type { DesktopCommand, GameSnapshot, TaggedSide, OpenToken, Operation, PlayMode } from "../sessionTypes";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
@@ -12,7 +12,7 @@ export function useGameSession() {
   const [busy, setBusy] = useState(false), [error, setError] = useState("");
   const [closeRequested, setCloseRequested] = useState(false);
   const accept = useCallback((incoming: GameSnapshot) => {
-    if (alive.current && nativeSnapshotIsNewer(latest.current, incoming)) {
+    if (alive.current && gameSnapshotIsNewer(latest.current, incoming)) {
       latest.current = incoming; setSnapshot(incoming);
     }
   }, []);
@@ -45,7 +45,7 @@ export function useGameSession() {
         setError("The response conflicted with this document's immutable rules profile."); return null;
       }
       accept(next);
-      // Polling can observe a later native state before an operation's receipt
+      // Polling can observe a later game state before an operation's receipt
       // arrives. A delayed clean Save must not authorize discarding newer work.
       const current = latest.current;
       return alive.current && current?.token.document === next.token.document ? current : null;
@@ -59,7 +59,7 @@ export function useGameSession() {
     commandJson: JSON.stringify({ expected: source.token, game: source.game, operation } satisfies DesktopCommand),
   });
   const file = (source: GameSnapshot, action: "save" | "save_as" | "open") => perform("game_file", { action, expected: source.open_token });
-  const newGame = (expected: OpenToken, game: GameKind, human: NativeSide, profile: RulesProfile, playMode: PlayMode = "human_engine") => perform("game_new", { expected, game, profile, human, playMode });
+  const newGame = (expected: OpenToken, game: GameKind, human: TaggedSide, profile: RulesProfile, playMode: PlayMode = "human_engine") => perform("game_new", { expected, game, profile, human, playMode });
   const cancelClose = async () => {
     try { await invoke("game_cancel_close"); setCloseRequested(false); accept(await invoke<GameSnapshot>("game_snapshot")); return true; }
     catch (e) { setError(String(e)); return false; }

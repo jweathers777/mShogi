@@ -1,6 +1,6 @@
 //! Actual DesktopController fixtures, not observations copied from expectations.
 use mshogi_core::{
-    native::{CanonicalRecord, NativeSide},
+    game::{CanonicalRecord, TaggedSide},
     tori as t,
 };
 use mshogi_desktop_session::{
@@ -38,7 +38,7 @@ fn install(g: &t::Game) -> DesktopController {
         &mut c,
         SessionOperation::Replace {
             record: CanonicalRecord::tori(t::GameRecord::from_game(g).unwrap()),
-            human: NativeSide::Tori(t::Side::Sente),
+            human: TaggedSide::Tori(t::Side::Sente),
         },
     );
     c
@@ -53,7 +53,7 @@ fn write(dir: &Path, name: &str, s: &SharedSnapshot) {
 /// Put `side` at the bottom.
 fn orient(c: &mut DesktopController, side: t::Side) -> SharedSnapshot {
     let settings = mshogi_desktop_session::game_document::GameSettings {
-        orientation: NativeSide::Tori(side),
+        orientation: TaggedSide::Tori(side),
         ..c.shared_snapshot().document.settings
     };
     send(c, SessionOperation::Preferences { settings })
@@ -92,7 +92,7 @@ pub fn write_all(dir: &Path) {
                 record: CanonicalRecord::tori(
                     t::GameRecord::from_game(&roots::contract_game()).unwrap(),
                 ),
-                human: NativeSide::Tori(t::Side::Sente),
+                human: TaggedSide::Tori(t::Side::Sente),
             },
         );
         submit(
@@ -139,7 +139,7 @@ pub fn write_all(dir: &Path) {
                 record: CanonicalRecord::tori(
                     t::GameRecord::from_game(&roots::contract_game()).unwrap(),
                 ),
-                human: NativeSide::Tori(t::Side::Sente),
+                human: TaggedSide::Tori(t::Side::Sente),
             },
         );
         probe
@@ -248,7 +248,7 @@ pub fn write_all(dir: &Path) {
     write(dir, "stopped", &send(&mut c, SessionOperation::Cancel {}));
     write(dir, "resigned", &submit(&mut c, t::GameCommand::Resign));
     // Independently authored TORI-H-COUNT seven-action history (MSH-208): Gote's
-    // 5a-4a would make the start key's third occurrence. Actual native execution.
+    // 5a-4a would make the start key's third occurrence. Actual execution.
     let board = [("4g", t::Side::Sente), ("4a", t::Side::Gote)].map(|(sq, side)| {
         (
             sq.parse().unwrap(),

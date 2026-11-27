@@ -1,56 +1,56 @@
 //! Per-game boundary of the generic desktop document and session (MSH-217).
 //!
-//! Each game supplies its native types and the native calls that the generic
+//! Each game supplies its game types and the calls that the generic
 //! code makes; the rules stay in `mshogi_core`. A constant here records a real
 //! difference between games, never a copy that drifted.
 use crate::ResourceScope;
 use crate::analysis::AnalysisOperation;
-pub use crate::native_chess::Chess;
-use mshogi_core::native::{CanonicalRecord, GameKind, NativeSide, RulesProfile};
+pub use crate::chess_adapter::Chess;
+use mshogi_core::game::{CanonicalRecord, GameKind, RulesProfile, TaggedSide};
 use mshogi_engine::{EngineGame, ExecutionResult, WorkLimits};
 use serde::{Serialize, de::DeserializeOwned};
 use std::fmt::Debug;
 
-/// A refused native record operation.
+/// A refused game record operation.
 #[derive(Debug)]
 pub enum RecordFailure {
     /// The caller stopped the operation.
     Stopped,
-    /// A native resource limit; the text is the native diagnostic.
+    /// A resource limit; the text is the diagnostic.
     Capacity(String),
-    /// Any other refusal; the text is the native diagnostic.
+    /// Any other refusal; the text is the diagnostic.
     Invalid(String),
 }
 
-/// The native resource of a game capacity refusal.
+/// The resource of a game capacity refusal.
 #[derive(Debug)]
-pub enum NativeResource {
-    /// Encoded native root bytes.
+pub enum GameResource {
+    /// Encoded game root bytes.
     EncodedBytes,
     /// Board counters or runtime identities: no one specific limit.
     Counter,
 }
 
-/// A refused native game command or query.
+/// A refused game command or query.
 #[derive(Debug)]
-pub enum NativeFailure {
+pub enum GameFailure {
     /// The caller stopped the operation.
     Stopped,
-    /// A native resource limit and the native diagnostic.
-    Capacity(NativeResource, String),
-    /// Any other refusal; the text is the native diagnostic.
+    /// A resource limit and the diagnostic.
+    Capacity(GameResource, String),
+    /// Any other refusal; the text is the diagnostic.
     Invalid(String),
 }
 
 /// A game that the generic document and session serve.
-pub trait NativeGame: Sized + Send + Sync + 'static {
+pub trait GameAdapter: Sized + Send + Sync + 'static {
     /// Display name in diagnostics.
     const NAME: &'static str;
     /// Desktop document game kind.
     const KIND: GameKind;
     /// Scope of this game's resource refusals.
     const SCOPE: ResourceScope;
-    /// Both native participants, Sente first.
+    /// Both participants, Sente first.
     const SIDES: [Self::Side; 2];
     /// Work limits of an engine turn.
     const PLAY_LIMITS: WorkLimits;
@@ -66,36 +66,36 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
         nodes: Self::PLAY_LIMITS.nodes,
     };
 
-    /// Native participant.
+    /// Participant.
     type Side: Copy + Eq + Debug + Serialize + DeserializeOwned + Send + Sync;
-    /// Complete native command.
+    /// Complete game command.
     type Command: Clone + Eq + Debug + Serialize + DeserializeOwned + Send + Sync;
-    /// Complete native board action.
+    /// Complete game board action.
     type Action: Clone + Debug;
-    /// Native game with full history.
+    /// Game with full history.
     type Game;
-    /// Canonical native record.
+    /// Canonical game record.
     type Record: Clone + PartialEq + Debug + Serialize + Send + Sync;
     /// This game's engine result.
     type EngineResult;
 
-    /// Wrap a native participant.
-    fn native_side(side: Self::Side) -> NativeSide;
-    /// The native participant of a game-qualified side of this game.
-    fn side_of(side: NativeSide) -> Option<Self::Side> {
+    /// Wrap a participant.
+    fn tagged_side(side: Self::Side) -> TaggedSide;
+    /// The participant of a game-qualified side of this game.
+    fn side_of(side: TaggedSide) -> Option<Self::Side> {
         Self::SIDES
             .into_iter()
-            .find(|s| Self::native_side(*s) == side)
+            .find(|s| Self::tagged_side(*s) == side)
     }
     /// Record of a new standard game under `profile`.
     fn new_record(profile: RulesProfile) -> Result<Self::Record, String>;
-    /// The native record of a canonical record of this game.
+    /// The game record of a canonical record of this game.
     fn record_of(record: CanonicalRecord) -> Option<Self::Record>;
     /// Exact canonical context sent to the engine.
     fn context(game: &Self::Game) -> Result<CanonicalRecord, RecordFailure>;
     /// Side to move in an admitted engine context, without replay.
     fn context_side(record: &CanonicalRecord) -> Self::Side;
-    /// Parse the native payload and keep the game produced by validation.
+    /// Parse the game payload and keep the game produced by validation.
     fn parse_record(
         text: &str,
         stop: &mut impl FnMut() -> bool,
@@ -127,7 +127,7 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
         actor: Self::Side,
         command: Self::Command,
         stop: &mut impl FnMut() -> bool,
-    ) -> Result<(), NativeFailure>;
+    ) -> Result<(), GameFailure>;
     /// Events of a game.
     fn events(game: &Self::Game) -> usize;
     /// Event index where the last command began: one command can produce
@@ -137,13 +137,13 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
     }
     /// Side to move.
     fn side_to_move(game: &Self::Game) -> Self::Side;
-    /// The game has a native conclusion.
+    /// The game has a game conclusion.
     fn concluded(game: &Self::Game) -> bool;
 
     /// Resign command.
     fn resign() -> Self::Command;
 
-    /// Execution failures can be carried by a native result family.
+    /// Execution failures can be carried by a engine result family.
     fn failure(result: &ExecutionResult) -> Option<&mshogi_engine::EngineFailure> {
         match result {
             ExecutionResult::Failure { failure } => Some(failure),
@@ -166,7 +166,7 @@ pub trait NativeGame: Sized + Send + Sync + 'static {
     ) -> Result<(), String>;
 }
 
-// Five games use the same native record for persistence and engine requests.
+// Five games use the same game record for persistence and engine requests.
 // Keep that wiring in one place; Chess supplies a separate match record.
 macro_rules! canonical_record {
     ($variant:ident) => {
@@ -183,7 +183,7 @@ macro_rules! canonical_record {
         /// Side to move in an engine context, without replay.
         fn context_side(record: &CanonicalRecord) -> Self::Side {
             let CanonicalRecord::$variant(record) = record else {
-                panic!("validated native context")
+                panic!("validated game context")
             };
             Self::record_side_to_move(record)
         }
@@ -228,9 +228,9 @@ macro_rules! large_shogi_game {
     ($game:ident, $core:ident, $glue:ident, $result_variant:ident, $scope:ident,
      profile: |$r:ident| $profile:expr, game_profile: |$g:ident| $game_profile:expr,
      new_game: |$p:ident| $new_game:expr) => {
-        /// Marker of the native game behind the generic document and session.
+        /// Marker of the game behind the generic document and session.
         pub struct $game;
-        impl NativeGame for $game {
+        impl GameAdapter for $game {
             const NAME: &'static str = stringify!($result_variant);
             const KIND: GameKind = GameKind::$result_variant;
             const SCOPE: ResourceScope = ResourceScope::$scope;
@@ -245,8 +245,8 @@ macro_rules! large_shogi_game {
             type Game = mshogi_core::$core::Game;
             type Record = mshogi_core::$core::GameRecord;
 
-            fn native_side(side: Self::Side) -> NativeSide {
-                NativeSide::$result_variant(side)
+            fn tagged_side(side: Self::Side) -> TaggedSide {
+                TaggedSide::$result_variant(side)
             }
             canonical_record!($result_variant);
             fn new_record($p: RulesProfile) -> Result<Self::Record, String> {
@@ -294,7 +294,7 @@ macro_rules! large_shogi_game {
                 actor: Self::Side,
                 command: Self::Command,
                 stop: &mut impl FnMut() -> bool,
-            ) -> Result<(), NativeFailure> {
+            ) -> Result<(), GameFailure> {
                 let expected = game.context();
                 game.submit_with_stop(
                     mshogi_core::$core::GameRequest {
@@ -304,7 +304,7 @@ macro_rules! large_shogi_game {
                     },
                     stop,
                 )
-                .map_err($glue::native_failure)
+                .map_err($glue::failure)
                 .map(|_| ())
             }
             fn events(game: &Self::Game) -> usize {
@@ -324,17 +324,17 @@ macro_rules! large_shogi_game {
         mod $glue {
             use super::*;
             use mshogi_core::$core as c;
-            pub(super) fn native_failure(e: c::GameError) -> NativeFailure {
+            pub(super) fn failure(e: c::GameError) -> GameFailure {
                 match e {
-                    c::GameError::Stopped => NativeFailure::Stopped,
-                    c::GameError::Capacity(r) => NativeFailure::Capacity(
+                    c::GameError::Stopped => GameFailure::Stopped,
+                    c::GameError::Capacity(r) => GameFailure::Capacity(
                         match r {
-                            c::Resource::EncodedBytes => NativeResource::EncodedBytes,
-                            c::Resource::Counter => NativeResource::Counter,
+                            c::Resource::EncodedBytes => GameResource::EncodedBytes,
+                            c::Resource::Counter => GameResource::Counter,
                         },
                         e.to_string(),
                     ),
-                    e => NativeFailure::Invalid(e.to_string()),
+                    e => GameFailure::Invalid(e.to_string()),
                 }
             }
         }
@@ -350,9 +350,9 @@ new_game: |p| mshogi_core::tenjiku::Game::standard(
     p.tenjiku().ok_or("Tenjiku requires an explicit supported rules profile.")?,
 ));
 
-/// Marker of the native Tori game behind the generic document and session.
+/// Marker of the Tori game behind the generic document and session.
 pub struct Tori;
-impl NativeGame for Tori {
+impl GameAdapter for Tori {
     const NAME: &'static str = "Tori";
     const KIND: GameKind = GameKind::Tori;
     const SCOPE: ResourceScope = ResourceScope::Tori;
@@ -367,8 +367,8 @@ impl NativeGame for Tori {
     type Game = mshogi_core::tori::Game;
     type Record = mshogi_core::tori::GameRecord;
 
-    fn native_side(side: Self::Side) -> NativeSide {
-        NativeSide::Tori(side)
+    fn tagged_side(side: Self::Side) -> TaggedSide {
+        TaggedSide::Tori(side)
     }
     canonical_record!(Tori);
     fn new_record(_profile: RulesProfile) -> Result<Self::Record, String> {
@@ -418,9 +418,9 @@ impl NativeGame for Tori {
         actor: Self::Side,
         command: Self::Command,
         stop: &mut impl FnMut() -> bool,
-    ) -> Result<(), NativeFailure> {
+    ) -> Result<(), GameFailure> {
         if stop() {
-            return Err(NativeFailure::Stopped);
+            return Err(GameFailure::Stopped);
         }
         let expected = game.context();
         game.submit(mshogi_core::tori::GameRequest {
@@ -428,7 +428,7 @@ impl NativeGame for Tori {
             actor,
             command,
         })
-        .map_err(tori_glue::native_failure)
+        .map_err(tori_glue::failure)
         .map(|_| ())
     }
     fn events(game: &Self::Game) -> usize {
@@ -448,23 +448,23 @@ impl NativeGame for Tori {
 mod tori_glue {
     use super::*;
     use mshogi_core::tori as t;
-    pub(super) fn native_failure(e: t::GameError) -> NativeFailure {
+    pub(super) fn failure(e: t::GameError) -> GameFailure {
         match e {
-            t::GameError::Capacity(r) => NativeFailure::Capacity(
+            t::GameError::Capacity(r) => GameFailure::Capacity(
                 match r {
-                    t::Resource::EncodedBytes => NativeResource::EncodedBytes,
-                    t::Resource::Counter => NativeResource::Counter,
+                    t::Resource::EncodedBytes => GameResource::EncodedBytes,
+                    t::Resource::Counter => GameResource::Counter,
                 },
                 e.to_string(),
             ),
-            e => NativeFailure::Invalid(e.to_string()),
+            e => GameFailure::Invalid(e.to_string()),
         }
     }
 }
 
-/// Marker of the native Shogi game behind the generic document and session.
+/// Marker of the Shogi game behind the generic document and session.
 pub struct Shogi;
-impl NativeGame for Shogi {
+impl GameAdapter for Shogi {
     const NAME: &'static str = "Shogi";
     const KIND: GameKind = GameKind::Shogi;
     const SCOPE: ResourceScope = ResourceScope::Shogi;
@@ -484,8 +484,8 @@ impl NativeGame for Shogi {
         nodes: 1000,
     };
 
-    fn native_side(side: Self::Side) -> NativeSide {
-        NativeSide::Shogi(side)
+    fn tagged_side(side: Self::Side) -> TaggedSide {
+        TaggedSide::Shogi(side)
     }
     canonical_record!(Shogi);
     fn new_record(_profile: RulesProfile) -> Result<Self::Record, String> {
@@ -560,9 +560,9 @@ impl NativeGame for Shogi {
         actor: Self::Side,
         command: Self::Command,
         stop: &mut impl FnMut() -> bool,
-    ) -> Result<(), NativeFailure> {
+    ) -> Result<(), GameFailure> {
         if stop() {
-            return Err(NativeFailure::Stopped);
+            return Err(GameFailure::Stopped);
         }
         let expected = game.context();
         game.submit(mshogi_core::shogi::GameRequest {
@@ -570,7 +570,7 @@ impl NativeGame for Shogi {
             actor,
             command,
         })
-        .map_err(|e| NativeFailure::Invalid(format!("Native shogi command rejected: {e:?}")))
+        .map_err(|e| GameFailure::Invalid(format!("Shogi command rejected: {e:?}")))
         .map(|_| ())
     }
     fn events(game: &Self::Game) -> usize {
@@ -588,9 +588,9 @@ impl NativeGame for Shogi {
     engine_glue!(Shogi);
 }
 
-/// Marker of the native Xiangqi game behind the generic document and session.
+/// Marker of the Xiangqi game behind the generic document and session.
 pub struct Xiangqi;
-impl NativeGame for Xiangqi {
+impl GameAdapter for Xiangqi {
     const NAME: &'static str = "Xiangqi";
     const KIND: GameKind = GameKind::Xiangqi;
     const SCOPE: ResourceScope = ResourceScope::Xiangqi;
@@ -605,8 +605,8 @@ impl NativeGame for Xiangqi {
     type Game = mshogi_core::xiangqi::Game;
     type Record = mshogi_core::xiangqi::GameRecord;
 
-    fn native_side(side: Self::Side) -> NativeSide {
-        NativeSide::Xiangqi(side)
+    fn tagged_side(side: Self::Side) -> TaggedSide {
+        TaggedSide::Xiangqi(side)
     }
     canonical_record!(Xiangqi);
     fn new_record(_profile: RulesProfile) -> Result<Self::Record, String> {
@@ -679,9 +679,9 @@ impl NativeGame for Xiangqi {
         actor: Self::Side,
         command: Self::Command,
         stop: &mut impl FnMut() -> bool,
-    ) -> Result<(), NativeFailure> {
+    ) -> Result<(), GameFailure> {
         if stop() {
-            return Err(NativeFailure::Stopped);
+            return Err(GameFailure::Stopped);
         }
         let expected = game.context();
         game.submit(mshogi_core::xiangqi::GameRequest {
@@ -690,7 +690,7 @@ impl NativeGame for Xiangqi {
             command,
         })
         .map(|s| s.undo)
-        .map_err(|e| NativeFailure::Invalid(e.to_string()))
+        .map_err(|e| GameFailure::Invalid(e.to_string()))
         .map(|_| ())
     }
     fn events(game: &Self::Game) -> usize {
@@ -713,7 +713,7 @@ impl NativeGame for Xiangqi {
 }
 
 /// Work limits of an analysis request, checked against the game's bounds.
-pub(crate) fn analysis_limits<G: NativeGame>(
+pub(crate) fn analysis_limits<G: GameAdapter>(
     operation: AnalysisOperation,
 ) -> Result<WorkLimits, String> {
     let limits = WorkLimits {
@@ -730,23 +730,23 @@ pub(crate) fn analysis_limits<G: NativeGame>(
 }
 
 /// Check engine work limits against the game's bounds.
-pub(crate) fn validate_limits<G: NativeGame>(limits: WorkLimits) -> Result<(), String> {
+pub(crate) fn validate_limits<G: GameAdapter>(limits: WorkLimits) -> Result<(), String> {
     if limits.depth == 0
         || limits.depth > G::MAX_DEPTH
         || limits.nodes == 0
         || limits.nodes > G::MAX_NODES
     {
         return Err(format!(
-            "Unsupported {} work limits. Use a positive bounded native depth and visit limit.",
+            "Unsupported {} work limits. Use a positive bounded depth and visit limit.",
             G::NAME
         ));
     }
     Ok(())
 }
 
-impl From<mshogi_core::native::RecordError> for RecordFailure {
-    fn from(e: mshogi_core::native::RecordError) -> Self {
-        use mshogi_core::native::RecordError;
+impl From<mshogi_core::game::RecordError> for RecordFailure {
+    fn from(e: mshogi_core::game::RecordError) -> Self {
+        use mshogi_core::game::RecordError;
         match e {
             RecordError::Stopped => Self::Stopped,
             RecordError::Capacity => Self::Capacity(e.to_string()),

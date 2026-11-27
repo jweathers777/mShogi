@@ -1,9 +1,9 @@
-//! Actual bundled native Tori entry point.
+//! Actual bundled Tori entry point.
 mod support;
-use mshogi_core::{native::CanonicalRecord, tori};
+use mshogi_core::{game::CanonicalRecord, tori};
 use mshogi_engine::*;
 #[test]
-fn real_subprocess_preserves_tori_context_supplies_native_action_and_roundtrips_observation() {
+fn real_subprocess_preserves_tori_context_supplies_action_and_roundtrips_observation() {
     let mut game = tori::Game::standard();
     let action = game.legal_actions()[0];
     game.submit(tori::GameRequest {
@@ -52,7 +52,7 @@ fn real_subprocess_preserves_tori_context_supplies_native_action_and_roundtrips_
     let accepted_action = *action;
     // The engine's action is played into the saved game; engine results
     // themselves are not saved (MSH-228).
-    use mshogi_desktop_session::{game_document::ValidatedGameDocument, native_game::Tori};
+    use mshogi_desktop_session::{game_adapter::Tori, game_document::ValidatedGameDocument};
     let document = ValidatedGameDocument::<Tori>::new(
         tori::GameRecord::from_game(&game).unwrap(),
         tori::Side::Sente,

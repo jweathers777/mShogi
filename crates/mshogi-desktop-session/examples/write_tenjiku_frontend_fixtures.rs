@@ -1,6 +1,6 @@
-//! Actual two-profile native/controller DTOs. Development generator, never bundled.
+//! Actual controller snapshots for both Tenjiku profiles. Development generator, never bundled.
 use mshogi_core::{
-    native::{NativeSide, RulesProfile},
+    game::{RulesProfile, TaggedSide},
     tenjiku as c,
 };
 use mshogi_desktop_session::{DesktopController, MovementInspectionQuery, SharedSnapshot};
@@ -22,7 +22,7 @@ fn wait(
         }
         assert!(
             Instant::now() < deadline,
-            "native fixture admission deadline"
+            "rules fixture admission deadline"
         );
         std::thread::sleep(Duration::from_millis(1));
     }
@@ -71,7 +71,7 @@ fn measure(controller: &mut DesktopController, profile: &str, scenario: &str) {
     assert_eq!(
         controller.shared_token(),
         token,
-        "inspection changed native authority"
+        "inspection changed session authority"
     );
     println!(
         "{}",
@@ -96,14 +96,14 @@ fn main() {
         ("adams", c::Profile::AdamsModern, "reset"),
     ] {
         let begin = Instant::now();
-        let _native = c::Game::standard(profile);
-        let native_construct_us = begin.elapsed().as_micros();
+        let _game = c::Game::standard(profile);
+        let construct_us = begin.elapsed().as_micros();
         let begin = Instant::now();
         let (_, receipt) = new
             .shared_new_game(
                 new.shared_open_token(),
                 RulesProfile::from(profile),
-                NativeSide::Tenjiku(c::Side::Sente),
+                TaggedSide::Tenjiku(c::Side::Sente),
             )
             .unwrap();
         let new_call_us = begin.elapsed().as_micros();
@@ -112,7 +112,7 @@ fn main() {
         write(&dir, &format!("{label}-{filename}"), &snapshot);
         println!(
             "{}",
-            serde_json::json!({"profile":profile.id(),"scenario":filename,"native_construct_us":native_construct_us,"new_call_us":new_call_us,"new_admission_install_us":new_admission_install_us})
+            serde_json::json!({"profile":profile.id(),"scenario":filename,"construct_us":construct_us,"new_call_us":new_call_us,"new_admission_install_us":new_admission_install_us})
         );
         if filename == "standard" {
             measure(&mut new, label, filename);

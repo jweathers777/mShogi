@@ -1,5 +1,5 @@
-//! Public shared routing retains each native Tenjiku profile and its derived facts.
-use mshogi_core::{native::*, tenjiku as t};
+//! Public shared routing retains each Tenjiku profile and its derived facts.
+use mshogi_core::{game::*, tenjiku as t};
 use serde_json::{Value, json};
 
 fn square(file: u8, rank: u8) -> t::Square {
@@ -58,16 +58,16 @@ fn play(game: &mut t::Game) {
     };
     assert!(matches!(
         dispatch_command(
-            NativeCommandTarget::Tenjiku(game),
-            NativeCommand::Tenjiku(Box::new(request)),
+            GameCommandTarget::Tenjiku(game),
+            GameCommand::Tenjiku(Box::new(request)),
         )
         .unwrap(),
-        NativeReply::Tenjiku(Ok(_))
+        GameReply::Tenjiku(Ok(_))
     ));
 }
 
 #[test]
-fn both_profiles_keep_native_effects_root_history_and_fresh_authority() {
+fn both_profiles_keep_effects_root_history_and_fresh_authority() {
     for profile in t::Profile::ALL {
         let mut game = fixture_game(profile);
         let root = wrapped(&game);
@@ -102,15 +102,15 @@ fn both_profiles_keep_native_effects_root_history_and_fresh_authority() {
         let expected = game.context();
         assert!(matches!(
             dispatch_command(
-                NativeCommandTarget::Tenjiku(&mut game),
-                NativeCommand::Tenjiku(Box::new(t::GameRequest {
+                GameCommandTarget::Tenjiku(&mut game),
+                GameCommand::Tenjiku(Box::new(t::GameRequest {
                     expected,
                     actor: t::Side::Gote,
                     command: t::GameCommand::OfferDraw,
                 })),
             )
             .unwrap(),
-            NativeReply::Tenjiku(Ok(_))
+            GameReply::Tenjiku(Ok(_))
         ));
         let record = wrapped(&game);
         assert_eq!(record.game_kind(), GameKind::Tenjiku);
@@ -118,7 +118,7 @@ fn both_profiles_keep_native_effects_root_history_and_fresh_authority() {
         assert_eq!(record.profile().tenjiku(), Some(profile));
         assert_eq!(record.profile().id(), profile.id());
         assert_eq!(record.profile().edition(), profile.edition());
-        assert_eq!(record.native_schema(), NativeSchema::TenjikuV3);
+        assert_eq!(record.record_schema(), RecordSchema::TenjikuV3);
         assert_eq!(record.event_count(), 2);
         assert_eq!(record.known_board_actions(), 1);
         let raw = record.to_json().unwrap();
@@ -129,7 +129,7 @@ fn both_profiles_keep_native_effects_root_history_and_fresh_authority() {
             record
         );
         let CanonicalRecord::Tenjiku(restored) = CanonicalRecord::from_json(&raw).unwrap() else {
-            panic!("lost native Tenjiku record")
+            panic!("lost Tenjiku record")
         };
         let restored = restored.to_game().unwrap();
         assert_eq!(restored.events(), game.events());
@@ -148,15 +148,15 @@ fn both_profiles_keep_native_effects_root_history_and_fresh_authority() {
         let accepted = game.context();
         assert!(matches!(
             dispatch_command(
-                NativeCommandTarget::Tenjiku(&mut game),
-                NativeCommand::Tenjiku(Box::new(t::GameRequest {
+                GameCommandTarget::Tenjiku(&mut game),
+                GameCommand::Tenjiku(Box::new(t::GameRequest {
                     expected: root_context,
                     actor: t::Side::Sente,
                     command: t::GameCommand::Resign,
                 })),
             )
             .unwrap(),
-            NativeReply::Tenjiku(Err(t::GameError::StaleContext))
+            GameReply::Tenjiku(Err(t::GameError::StaleContext))
         ));
         assert_eq!(game.context(), accepted);
         assert_eq!(wrapped(&game), record);
@@ -169,7 +169,7 @@ fn both_profiles_keep_native_effects_root_history_and_fresh_authority() {
 }
 
 #[test]
-fn exact_profile_edition_schema_and_duplicate_preserving_native_payload() {
+fn exact_profile_edition_schema_and_duplicate_preserving_payload() {
     for profile in t::Profile::ALL {
         let mut game = fixture_game(profile);
         play(&mut game);
@@ -181,7 +181,7 @@ fn exact_profile_edition_schema_and_duplicate_preserving_native_payload() {
         assert!(serde_json::from_value::<CanonicalRecord>(value).is_err());
         for (field, value) in [
             ("profile_edition", json!(other(profile).edition())),
-            ("native_schema_version", json!(99)),
+            ("record_schema_version", json!(99)),
             ("envelope_version", json!(99)),
             ("game_kind", json!("chu")),
         ] {
@@ -217,10 +217,10 @@ fn exact_profile_edition_schema_and_duplicate_preserving_native_payload() {
         assert_eq!(wrapped(&game), record);
     }
     for side in [t::Side::Sente, t::Side::Gote] {
-        let qualified = NativeSide::Tenjiku(side);
+        let qualified = TaggedSide::Tenjiku(side);
         assert_eq!(qualified.game(), GameKind::Tenjiku);
         assert_eq!(
-            serde_json::from_str::<NativeSide>(&serde_json::to_string(&qualified).unwrap())
+            serde_json::from_str::<TaggedSide>(&serde_json::to_string(&qualified).unwrap())
                 .unwrap(),
             qualified
         );
@@ -230,7 +230,7 @@ fn exact_profile_edition_schema_and_duplicate_preserving_native_payload() {
         r#"{"game_kind":"tenjiku","side":"red"}"#,
         r#"{"game_kind":"tenjiku","side":"sente","side":"gote"}"#,
     ] {
-        assert!(serde_json::from_str::<NativeSide>(raw).is_err());
+        assert!(serde_json::from_str::<TaggedSide>(raw).is_err());
     }
 }
 
@@ -243,21 +243,21 @@ fn cross_profile_and_wrong_game_commands_are_atomic_refusals() {
         let authority = game.context();
         assert!(matches!(
             dispatch_command(
-                NativeCommandTarget::Tenjiku(&mut game),
-                NativeCommand::Tenjiku(Box::new(t::GameRequest {
+                GameCommandTarget::Tenjiku(&mut game),
+                GameCommand::Tenjiku(Box::new(t::GameRequest {
                     expected: other.context(),
                     actor: t::Side::Sente,
                     command: t::GameCommand::Resign,
                 })),
             )
             .unwrap(),
-            NativeReply::Tenjiku(Err(t::GameError::StaleContext))
+            GameReply::Tenjiku(Err(t::GameError::StaleContext))
         ));
         let tori = mshogi_core::tori::Game::standard();
         assert!(
             dispatch_command(
-                NativeCommandTarget::Tenjiku(&mut game),
-                NativeCommand::Tori(Box::new(mshogi_core::tori::GameRequest {
+                GameCommandTarget::Tenjiku(&mut game),
+                GameCommand::Tori(Box::new(mshogi_core::tori::GameRequest {
                     expected: tori.context(),
                     actor: mshogi_core::tori::Side::Sente,
                     command: mshogi_core::tori::GameCommand::Resign,
@@ -271,7 +271,7 @@ fn cross_profile_and_wrong_game_commands_are_atomic_refusals() {
 }
 
 #[test]
-fn cooperative_native_replay_stop() {
+fn cooperative_replay_stop() {
     for profile in t::Profile::ALL {
         let mut game = fixture_game(profile);
         play(&mut game);

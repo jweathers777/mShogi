@@ -1,7 +1,7 @@
-//! Compact, original KPK board knowledge generated using native legal actions.
+//! Compact, original KPK board knowledge generated using legal actions.
 //!
 //! This is a clock/history-free pawn-side win/draw bitbase, not adjudication.
-//! Search must process native outcomes and claims first. A theoretical win may
+//! Search must process game outcomes and claims first. A theoretical win may
 //! still be drawn by the actual history or clock. No runtime table generation.
 use mshogi_core::chess::{Color, PieceKind, Position, Square};
 
@@ -48,7 +48,7 @@ pub(crate) fn index_parts(
 
 /// Normalize pawn side to White, pawn file to a..d, preserving turn identity.
 /// Raw EP after the lone pawn's double push is immaterial: no opposing pawn
-/// exists to capture. The native position has already validated that EP state.
+/// exists to capture. The position has already validated that EP state.
 // Used by the table generator example and by the tests of this module.
 #[allow(dead_code)]
 pub(crate) fn index(position: &Position) -> Option<(usize, Color)> {

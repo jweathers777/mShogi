@@ -35,7 +35,7 @@ not claimed explicit source wording. The owner's selection of both coherent
 options permits this named completion; changing either selected contract later
 requires a new reviewed version, not an unnoticed setting change.
 
-New Game selects profile before native root/history; loading preserves the saved
+New Game selects profile before game root/history; loading preserves the saved
 selection. Changing profile means an intentional new game/document. Existing
 runtime/session/envelope/frontend/choice owners remain shared. MSH-87/79/44 must
 implement this selection and its source-faithful differences;83 implements none.

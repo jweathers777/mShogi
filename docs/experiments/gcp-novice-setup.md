@@ -279,7 +279,7 @@ Codex will then record the exact image and build identities before the pilot sta
 If the required setup has an important difference, Codex will ask you about the change.
 
 The prepared configuration is mshogi-pilot-config.json.
-The first pilot runs one complete opening pair, native replay, screening and confirmation analysis.
+The first pilot runs one complete opening pair, game replay, screening and confirmation analysis.
 Codex must review those results before the eight-worker run.
 
 The full 200-game study, sixteen workers and additional spending are **not approved** by this guide.

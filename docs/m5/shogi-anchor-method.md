@@ -45,12 +45,11 @@ vs depth 1, 3-1 vs depth 3, 3-1 vs depth 5 and 1-3 vs depth 7.
 
 ## Conditions
 
-60 s + 1 s Fischer for both sides through the native runner's clocked mode
+60 s + 1 s Fischer for both sides through the runner's clocked mode
 (`mshogi-match shogi-match`): persistent processes, `go btime wtime binc winc`,
 elapsed time charged by the controller from the written `go` to `bestmove`,
-grace 500 ms. Native `mshogi.shogi.csa36.v1` decides every move and result;
-`bestmove win` is a native declaration; the 320-move rule and repetition are
-native. Clock exhaustion, process failures and protocol failures are unscored
+grace 500 ms. The rules profile `mshogi.shogi.csa36.v1` decides every move and result;
+`bestmove win` is a game declaration; the 320-move rule and repetition are. Clock exhaustion, process failures and protocol failures are unscored
 and reported; no result is invented. One game per c3-standard-4 VM in
 us-central1, eight workers.
 

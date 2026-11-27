@@ -1,4 +1,4 @@
-//! Deliberately constructed observation tests, not native Tori conformance.
+//! Deliberately constructed observation tests, not Tori conformance.
 use mshogi_conformance::{
     CORPUS_SHA256, Corpus, FIXTURES, MAX_INPUT_BYTES, OWNERSHIP, assertions::*, properties::*,
 };
@@ -44,7 +44,7 @@ fn all_data_provenance_owners_and_pending_are_accounted() {
     assert_eq!(r.executed, 0);
     assert_eq!(r.passed, 0);
     assert_eq!(r.failed, 0);
-    assert!(!r.native_conformance_claimed);
+    assert!(!r.rules_conformance_claimed);
     assert_eq!(r.pending, r.assertions.len());
     assert!(r.pending > 300);
     assert_eq!(r.documentary_annotations, 4);
@@ -62,14 +62,14 @@ fn all_data_provenance_owners_and_pending_are_accounted() {
     assert_eq!(scopes.len(), 6);
 }
 #[test]
-fn one_constructed_observation_is_not_a_native_fixture_pass() {
+fn one_constructed_observation_is_not_a_fixture_pass() {
     let c = corpus();
     let a = assertion("TORI-CAPTURE-OWNER", "hand_delta");
     let r = run(&c, &[observe(&a, json!({"s:Cr":1}))]).unwrap();
     assert_eq!(r.passed, 1);
     assert_eq!(r.executed, 1);
     assert!(r.pending > 300);
-    assert!(!r.native_conformance_claimed);
+    assert!(!r.rules_conformance_claimed);
 }
 #[test]
 fn missing_extra_and_duplicate_legal_actions_are_detected() {
@@ -294,7 +294,7 @@ fn ownership_missing_duplicate_unknown_wrong_owner_fields_reject() {
             }
             1 => v["fixtures"][0]["fixture_id"] = json!("unknown"),
             2 => v["fixtures"][1] = v["fixtures"][0].clone(),
-            3 => v["fixtures"][0]["primary_native_owner"] = json!("MSH-42"),
+            3 => v["fixtures"][0]["primary_rules_owner"] = json!("MSH-42"),
             _ => v["fixtures"][0]["expected_fields"] = json!([]),
         }
         assert!(Corpus::load(FIXTURES, &v.to_string()).is_err());
@@ -331,7 +331,7 @@ fn strict_observations_reject_unknown_wrong_owner_duplicate_nested_and_identity(
 #[test]
 fn adapter_failure_is_failed_and_diagnostics_are_bounded() {
     struct Failed;
-    impl NativeAdapter for Failed {
+    impl RulesAdapter for Failed {
         fn observe(
             &self,
             _: &mshogi_conformance::Fixture,
@@ -480,7 +480,7 @@ fn game_commands_and_consumer_fields_never_claim_local_conformance() {
 }
 
 #[test]
-fn native_property_closures_exercise_operations_and_detect_bad_undo_or_rejection() {
+fn property_closures_exercise_operations_and_detect_bad_undo_or_rejection() {
     // A vector is an observation-machine example, not a board/rules implementation.
     let mut state = vec![1, 2, 3];
     assert!(

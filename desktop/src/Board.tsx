@@ -1,20 +1,20 @@
-import type { CompletedActionGeometry, BoardChoice } from "./native";
+import type { CompletedActionGeometry, BoardChoice } from "./sessionTypes";
 import type { InspectMovement } from "./product/movementInspection";
 import type { FocusEventHandler, ReactNode } from "react";
 
-import { gridNeighbor, useNativeChoiceController } from "./interaction/useNativeChoiceController";
+import { gridNeighbor, useBoardChoiceController } from "./interaction/useBoardChoiceController";
 
 import { BoardFooter, CompletionDialog, pointLabel } from "./BoardControls";
 import { CompletedActionCue } from "./CompletedActionCue";
 import "./movement-inspection.css";
 
-/** A piece on a grid board: its native square, owner key and accessible label. */
+/** A piece on a grid board: its square, owner key and accessible label. */
 export interface GridPiece { square: string; owner: string; kind: string; label: string; text?: string }
 export interface BoardFocus { onFocusCapture: FocusEventHandler<HTMLDivElement>; onBlurCapture: FocusEventHandler<HTMLDivElement> }
 interface Props<P extends GridPiece> {
   pieces: P[];
   choices: BoardChoice[];
-  // Native coordinates in display order, bottom owner's view.
+  // Coordinates in display order, bottom owner's view.
   files: string[];
   ranks: string[];
   label: string;
@@ -28,7 +28,7 @@ interface Props<P extends GridPiece> {
   onInspect?: InspectMovement | undefined;
   inspectionDisabled?: boolean;
   completedAction?: CompletedActionGeometry | null;
-  // Text glyphs by piece kind; the native piece text otherwise.
+  // Text glyphs by piece kind; the piece text otherwise.
   glyphs?: Record<string, string>;
   // Piece artwork that replaces the glyph; the controller still owns choices.
   renderPiece?: (piece: P, rotated: boolean) => ReactNode;
@@ -44,7 +44,7 @@ export function Board<P extends GridPiece>({ pieces, choices, files, ranks, labe
   frame = (board, footer, focus) => <div className="board-wrap" {...focus}>{board}{footer}</div> }: Props<P>) {
   const squares = ranks.flatMap(rank => files.map(file => `${file}${rank}`));
   const columns = files.length, rows = ranks.length;
-  const interaction = useNativeChoiceController({
+  const interaction = useBoardChoiceController({
     contextKey: JSON.stringify([contextKey, files, ranks]),
     choices, origins: pieces.map(piece => ({ key: piece.square, label: piece.label, owner: piece.owner, inspectable: true })),
     humanOwner, disabled, inspectionDisabled, onInspect, onPlay, initialFocus, boardKeys: squares,
@@ -71,7 +71,7 @@ export function Board<P extends GridPiece>({ pieces, choices, files, ranks, labe
           <rect width="100" height="100" className="square-fill" />
           {target && !inspection && !piece && <circle cx="50" cy="50" r="12" className="move-marker" aria-hidden="true" pointerEvents="none" />}
           {piece && (renderPiece ? renderPiece(piece, piece.owner !== bottomOwner)
-            : <text x="50" y="74" textAnchor="middle" data-owner={piece.owner} className={`piece ${piece.owner === firstOwner ? "native-first-owner" : "native-second-owner"}`} aria-hidden="true">{glyphs[piece.kind] ?? piece.text ?? "?"}</text>)}
+            : <text x="50" y="74" textAnchor="middle" data-owner={piece.owner} className={`piece ${piece.owner === firstOwner ? "first-owner" : "second-owner"}`} aria-hidden="true">{glyphs[piece.kind] ?? piece.text ?? "?"}</text>)}
           {target && !inspection && piece && <circle cx="50" cy="50" r="40" className="capture-marker" aria-hidden="true" pointerEvents="none" />}
           {inspection?.origin === square && <rect className="inspection-origin-ring" x="7" y="7" width="86" height="86" rx="5" aria-hidden="true" />}
           {target && inspection && <circle cx="50" cy="50" r={piece ? "43" : "19"} className="inspection-marker" aria-hidden="true" />}
@@ -80,11 +80,11 @@ export function Board<P extends GridPiece>({ pieces, choices, files, ranks, labe
           <rect x="3" y="3" width="94" height="94" className="focus-ring" />
         </g>;
       })}
-      {coordinateFrame && <g className="native-coordinate-frame" aria-hidden="true" pointerEvents="none">
+      {coordinateFrame && <g className="coordinate-frame" aria-hidden="true" pointerEvents="none">
         {files.map((file, index) => <text key={`file-${index}`} className="coordinate" data-coordinate-axis="file" x={padding + index * 100 + 50} y={height - 8} textAnchor="middle">{file}</text>)}
         {ranks.map((rank, index) => <text key={`rank-${index}`} className="coordinate" data-coordinate-axis="rank" x={width - 20} y={padding + index * 100 + 62} textAnchor="middle">{rank}</text>)}
       </g>}
-      {selected && prefix.length > 0 && !inspection && !stationarySelection && <g className="native-selected-route" aria-hidden="true" pointerEvents="none" data-selected-route={[selected, ...prefix].join(">")}>
+      {selected && prefix.length > 0 && !inspection && !stationarySelection && <g className="selected-route" aria-hidden="true" pointerEvents="none" data-selected-route={[selected, ...prefix].join(">")}>
         <polyline points={[selected, ...prefix].map(key => center(key)?.join(",")).join(" ")} />
         {prefix.map((key, index) => { const [x, y] = center(key)!; return <g key={index} transform={`translate(${x + 34} ${y - 34})`}><circle r="14" /><text textAnchor="middle" y="5">{index + 1}</text></g>; })}
       </g>}

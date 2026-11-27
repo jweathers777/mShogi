@@ -1,4 +1,4 @@
-//! Reproducible native measurements, separate from playing strength and product latency.
+//! Reproducible measurements, separate from playing strength and product latency.
 //!
 //! `cargo run -p mshogi-core --release --example tenjiku_rules_work -- adams 128 play`
 //! Modes: play, controls, replay, undo. Timings are observations on this
@@ -118,12 +118,12 @@ fn main() -> Result<(), Box<dyn Error>> {
                 }
             }
         } else {
-            // Prefer quiet progress with native effects, keeping the source 156-piece
+            // Prefer quiet progress with game effects, keeping the source 156-piece
             // standard game material intact. Repetition admission remains Game-owned.
             let mut choices = game.local_position().legal_actions();
             seed = seed.wrapping_mul(6364136223846793005).wrapping_add(1);
             choices.sort_by_key(|a| {
-                let p = game.position().piece(a.from).expect("native action origin");
+                let p = game.position().piece(a.from).expect("action origin");
                 let to = a.to().unwrap();
                 let forward = match p.side {
                     Side::Sente => to.rank() < a.from.rank(),
@@ -164,8 +164,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             }
             if !accepted {
                 if refusal.is_none() {
-                    refusal =
-                        Some(json!({"error":"no quiet nonpromoting native continuation selected"}));
+                    refusal = Some(json!({"error":"no quiet nonpromoting continuation selected"}));
                 }
                 break;
             }
@@ -173,9 +172,9 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
     let build_us = micros(build_start);
     let encode_start = Instant::now();
-    let native_record = record(&game)?;
+    let game_record = record(&game)?;
     let encode_us = micros(encode_start);
-    let before_queries = native_record.clone();
+    let before_queries = game_record.clone();
     let before_query_context = game.context();
     let query_start = Instant::now();
     let local_choices = game.local_position().legal_actions_with_stop(|| false)?;
@@ -210,10 +209,10 @@ fn main() -> Result<(), Box<dyn Error>> {
         return Err("read-only queries changed accepted record".into());
     }
     let replay_start = Instant::now();
-    let ordinary = native_record.to_game()?;
+    let ordinary = game_record.to_game()?;
     let replay_us = micros(replay_start);
-    let replay_exact = record(&ordinary)? == native_record
-        && ordinary.native_root() == game.native_root()
+    let replay_exact = record(&ordinary)? == game_record
+        && ordinary.game_root() == game.game_root()
         && ordinary.events() == game.events()
         && ordinary.context() != game.context();
     if !replay_exact {
@@ -222,7 +221,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut undo_report = Value::Null;
     if mode == "undo" {
         let start = Instant::now();
-        let (mut restored, mut handles) = native_record.to_game_with_undo()?;
+        let (mut restored, mut handles) = game_record.to_game_with_undo()?;
         let retain_us = micros(start);
         let count = handles.len();
         let capacity = handles.capacity();
@@ -239,7 +238,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
     let cancel_start = Instant::now();
     let mut replay_polls = 0u64;
-    let replay_stopped = native_record.to_game_with_stop(&mut || {
+    let replay_stopped = game_record.to_game_with_stop(&mut || {
         replay_polls += 1;
         replay_polls >= 8
     });
@@ -264,7 +263,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     if !matches!(query_stopped, Err(ActionError::Stopped)) {
         return Err("requested inspection stop was not observed".into());
     }
-    let mut admission_probe = native_record.to_game()?;
+    let mut admission_probe = game_record.to_game()?;
     let old_context = admission_probe.context();
     let mut admission_polls = 0u64;
     let start = Instant::now();
@@ -281,13 +280,13 @@ fn main() -> Result<(), Box<dyn Error>> {
     );
     let cancel_admission_us = micros(start);
     let cancelled_atomic = matches!(stopped, Err(GameError::Stopped))
-        && record(&admission_probe)? == native_record
+        && record(&admission_probe)? == game_record
         && admission_probe.context() == old_context;
     if !cancelled_atomic {
         return Err("cancelled admission changed accepted state".into());
     }
     let usage = game.capacity_usage()?;
-    let mut close = native_record.to_game()?;
+    let mut close = game_record.to_game()?;
     submit(&mut close, Side::Gote, GameCommand::Resign)?;
     let closed = record(&close)?;
     let closed_replayed = closed.to_game()?;
@@ -296,10 +295,10 @@ fn main() -> Result<(), Box<dyn Error>> {
         return Err("actual reserved Resign path failed replay".into());
     }
     let output = json!({
-        "isolated_native_workloads":effect_probe(profile)?,
+        "isolated_workloads":effect_probe(profile)?,
         "profile":profile.id(),"edition":profile.edition(),"mode":mode,"requested":requested,"accepted_events":game.events().len(),"accepted_board_plies":game.snapshot().board_ply,
         "root_us":root_us,"build_us":build_us,"generator_attempts":generator_attempts,"refusal":refusal,
-        "record":{"encoded_bytes":native_record.as_json().len(),"encode_us":encode_us},
+        "record":{"encoded_bytes":game_record.as_json().len(),"encode_us":encode_us},
         "capacity":{"bytes":usage.encoded_bytes,"events":usage.events},
         "local_choices":{"count":local_choices.len(),"query_us":local_query_us,"history_filtered":false},
         "per_origin_inspection":{"origins":inspection_rows.len(),"total_us":inspection_us,"action_serialization_us":action_serialization_us,"total_action_json_bytes":action_bytes,"slowest_three":slowest},

@@ -3,7 +3,7 @@
 mod support;
 use mshogi_core::{
     chess::{AdjudicatedGame, ClaimPolicy},
-    native::CanonicalRecord,
+    game::CanonicalRecord,
 };
 use mshogi_engine::*;
 

@@ -22,7 +22,7 @@ class PartitionTests(unittest.TestCase):
         for i, part in enumerate(['train', 'validation', 'heldout']):
             games.append({'game_id': i, 'initial_fen': roots[part],
                           'white_outcome': 1.0, 'outcome': {'checkmate': {'winner': 'white'}},
-                          'truncated': False, 'stop': 'native_outcome',
+                          'truncated': False, 'stop': 'outcome',
                           'samples': [{'fen': f'unique{i} w - - 0 1', 'white_outcome': 1.0},
                                       {'fen': f'shared w - - {i} 5', 'white_outcome': 1.0}]})
         repeated = dict(games[0], game_id=3)
@@ -52,7 +52,7 @@ class PartitionTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             root=Path(temp)
             g={'game_id':'one','initial_sfen':'board b G 1','sente_outcome':0,
-               'outcome':{'winner':'gote'},'truncated':False,'stop':'native_outcome',
+               'outcome':{'winner':'gote'},'truncated':False,'stop':'outcome',
                'samples':[{'sfen':'board w G 8','sente_outcome':0},
                           {'sfen':'board w G 12','sente_outcome':0},
                           {'sfen':'board w S 12','sente_outcome':0}]}

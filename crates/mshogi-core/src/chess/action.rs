@@ -209,11 +209,11 @@ impl Position {
     /// allocating an undo record. Effects and errors match [`Position::apply`],
     /// including king safety, castling, promotion, en passant and counter limits.
     ///
-    /// This reuses the native Game transition path: validated inputs and resolved
+    /// This reuses the Game transition path: validated inputs and resolved
     /// effects preserve structure, so a repeated whole-board structural scan is
     /// unnecessary. It does not admit a Game action, update history, adjudicate
     /// outcomes or establish a transposition identity. Search must still use
-    /// its native Game/cursor for actual actions and history-sensitive results.
+    /// its Game/cursor for actual actions and history-sensitive results.
     pub fn project(&self, action: Action) -> Result<Self, ActionError> {
         self.checked_after(action)
     }
@@ -260,7 +260,7 @@ impl Position {
         Ok(())
     }
 
-    // Native legal-query path, only from an already validated Position. The
+    // Legal-query path, only from an already validated Position. The
     // same resolver checks ownership, geometry, captures, castling transit,
     // promotion and counters; the same effect primitive builds the candidate.
     // Those effects preserve king/piece counts, pawn ranks, rights and EP
@@ -280,7 +280,7 @@ impl Position {
         !candidate.is_square_attacked(king, self.side_to_move.opponent())
     }
 
-    // Checked native Game transition from a validated position, without public
+    // Checked Game transition from a validated position, without public
     // Undo snapshots that Game would immediately discard. Like legal queries,
     // resolution/effects preserve structure; every new king-safety failure
     // still obtains its exact diagnostic from the complete validator. Public

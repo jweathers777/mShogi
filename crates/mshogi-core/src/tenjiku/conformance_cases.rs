@@ -1,4 +1,4 @@
-//! Actual native projections for concrete inputs. This module never receives expected values.
+//! Actual projections for concrete inputs. This module never receives expected values.
 use crate::{
     perft::{divide, perft},
     tenjiku::*,
@@ -23,7 +23,7 @@ fn face_piece(id: u16, side: Side, face: Face) -> Result<Piece, String> {
     let base = Base::ALL
         .into_iter()
         .find(|b| b.promotion() == Some(face))
-        .ok_or("unknown native face")?;
+        .ok_or("unknown face")?;
     Piece::new(id, side, base, true).map_err(fail)
 }
 pub(super) fn position_from_root(root: &Value, profile: Profile) -> Result<Position, String> {
@@ -183,7 +183,7 @@ fn constructed(given: &Value, profile: Profile) -> Result<Value, String> {
         .filter(|(_, p)| p.base == Base::P)
         .all(|(_, p)| surviving(p.id));
     // Report crossed occupancy from the actual submitted straight route; this
-    // projects geometry and never decides whether the native action is legal.
+    // projects geometry and never decides whether the action is legal.
     let jump_used = if action.route.len() == 1 {
         let to = action.route[0];
         let df = i16::from(to.file()) - i16::from(from.file());
@@ -365,7 +365,7 @@ fn mix(id: &str, profile: Profile) -> Result<Value, String> {
     }
     let result = GameRecord::from_json(&wire.to_string());
     Ok(
-        json!({"accepted":result.is_ok(),"native_state_and_record_unchanged":record(&game)?==before&&game.context()==context}),
+        json!({"accepted":result.is_ok(),"state_and_record_unchanged":record(&game)?==before&&game.context()==context}),
     )
 }
 pub(super) fn observe(id: &str, given: &Value, profile: Profile) -> Result<Option<Value>, String> {

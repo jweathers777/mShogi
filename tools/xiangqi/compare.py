@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Compare immutable independent board facts and optional native JSONL probes.
+"""Compare immutable independent board facts and optional JSONL probes.
 
-Failures retain expected facts separately from reference/native observations;
+Failures retain expected facts separately from reference/engine observations;
 this program never edits fixtures or chooses the winner of a disagreement.
 """
 import argparse
@@ -45,26 +45,26 @@ def fact_errors(case, actual):
     return errors
 
 
-def native_query(command, request, timeout):
+def query(command, request, timeout):
     raw = run_json_probe(command, request, timeout, reference.bounded_run)
     return reference.decode_response(raw, request.get('perft_depth', 0))
 
 
 def local_fen(fen):
-    # Pikafish emits its rule60/check10-adjusted clock. Native position codecs
+    # Pikafish emits its rule60/check10-adjusted clock. Position codecs
     # preserve a declared/raw no-capture counter; neither proves WXF history.
-    # Compare the board, native side and move-number convention, retaining both
+    # Compare the board, game side and move-number convention, retaining both
     # complete FENs as observations but excluding the foreign policy clock.
     fields = fen.split(' ')
     return fields[:4] + fields[5:]
 
 
-def run_case(case, manifest, native, timeout, depth=0, moves=None):
+def run_case(case, manifest, rules_probe, timeout, depth=0, moves=None):
     record = {'id': case['id'], 'expected_facts': {key: case[key] for key in
               ('in_check', 'legal_moves', 'moves_from', 'must_include', 'must_exclude', 'perft', 'divide') if key in case},
               'errors': []}
     if case.get('reference_eligible') is False:
-        record['excluded_domain'] = case.get('domain', 'native structural diagnostic outside admitted reference domain')
+        record['excluded_domain'] = case.get('domain', 'structural diagnostic outside admitted reference domain')
         return record
     # Accepted request provenance is immutable: the caller extends its working
     # sequence after each observation, so never retain that mutable list.
@@ -75,23 +75,23 @@ def run_case(case, manifest, native, timeout, depth=0, moves=None):
         record['reference_observation'] = actual
         expected = dict(case, _depth=depth)
         record['errors'].extend(fact_errors(expected, actual))
-        if native:
-            observed = native_query(native, request, timeout)
-            record['native_observation'] = observed
-            record['errors'].extend({'native_fixture': error} for error in fact_errors(expected, observed))
+        if rules_probe:
+            observed = query(rules_probe, request, timeout)
+            record['engine_observation'] = observed
+            record['errors'].extend({'fixture': error} for error in fact_errors(expected, observed))
             if local_fen(actual['fen']) != local_fen(observed['fen']):
                 record['errors'].append({'differential': 'local_board_side_fullmove',
-                                         'reference': actual['fen'], 'native': observed['fen']})
+                                         'reference': actual['fen'], 'mshogi': observed['fen']})
             for key in ('legal_moves', 'in_check', 'perft', 'divide'):
                 if actual.get(key) != observed.get(key):
                     record['errors'].append({'differential': key,
-                                             'reference': actual.get(key), 'native': observed.get(key)})
+                                             'reference': actual.get(key), 'mshogi': observed.get(key)})
     except (ValueError, OSError, KeyError, TypeError) as error:
         record['errors'].append({'failure': str(error), 'kind': getattr(error, 'kind', 'admission_or_schema')})
     return record
 
 
-def compare(fixtures, manifest, native, report, timeout, depth, walks, length):
+def compare(fixtures, manifest, rules_probe, report, timeout, depth, walks, length):
     before = sha(fixtures)
     tool_before = sha(__file__)
     adapter_before = sha(reference.__file__)
@@ -101,7 +101,7 @@ def compare(fixtures, manifest, native, report, timeout, depth, walks, length):
     if inventory.get('format') != 'mshogi.xiangqi.board-fixtures.v1':
         raise ValueError('unsupported fixture format')
     cases = inventory['fixtures']
-    records = [run_case(case, manifest, native, timeout, depth) for case in cases]
+    records = [run_case(case, manifest, rules_probe, timeout, depth) for case in cases]
     # Broad sequence observations are deliberately not new expected fixtures.
     sequence_records = []
     root = next(case['fen'] for case in cases if case.get('legal_moves') and len(case['legal_moves']) == 44)
@@ -109,7 +109,7 @@ def compare(fixtures, manifest, native, report, timeout, depth, walks, length):
         rng, moves = random.Random(seed), []
         for ply in range(length + 1):
             case = {'id': f'observed-sequence-{seed}-{ply}', 'fen': root}
-            item = run_case(case, manifest, native, timeout, 0, moves)
+            item = run_case(case, manifest, rules_probe, timeout, 0, moves)
             sequence_records.append(item)
             if item['errors']:
                 break
@@ -128,11 +128,11 @@ def compare(fixtures, manifest, native, report, timeout, depth, walks, length):
               'manifest_sha256': sha(manifest), 'fixtures_sha256': before,
               'tool_sha256': tool_before, 'reference_adapter_sha256': adapter_before,
               'helpers_sha256': helpers_before,
-              'native_command': native, 'native_binary_sha256': sha(native[0]) if native else None,
+              'command': rules_probe, 'engine_binary_sha256': sha(rules_probe[0]) if rules_probe else None,
               'depth': depth, 'sequence_seeds': list(range(walks)), 'sequence_length': length,
-              'fen_counter_exclusion': 'Pikafish rule60/check10 clock is not native raw no-capture count or WXF adjudication; full native/reference FEN observations retained; compare placement/side/fullmove only',
+              'fen_counter_exclusion': 'Pikafish rule60/check10 clock is not raw no-capture count or WXF adjudication; full mShogi and reference FEN observations retained; compare placement/side/fullmove only',
               'fixture_records': records, 'sequence_observations': sequence_records,
-              'interpretation': 'expected facts are immutable independent inputs; reference/native outputs and unproven perft totals are observations only'}
+              'interpretation': 'expected facts are immutable independent inputs; reference/outputs and unproven perft totals are observations only'}
     report.write_text(json.dumps(result, indent=2) + '\n')
     failures = sum(bool(item['errors']) for item in records + sequence_records)
     print(json.dumps({'fixtures': len(records), 'excluded': sum('excluded_domain' in item for item in records),
@@ -144,7 +144,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--fixtures', type=Path, required=True)
     parser.add_argument('--manifest', type=Path, default=reference.MANIFEST)
-    parser.add_argument('--native-probe', help='quoted argv for the native JSONL probe, optional')
+    parser.add_argument('--rules-probe', help='quoted argv for the JSONL probe, optional')
     parser.add_argument('--timeout', type=float, default=20)
     parser.add_argument('--depth', type=int, choices=[0, 1, 2, 3], default=0)
     parser.add_argument('--walks', type=int, default=0)
@@ -154,7 +154,7 @@ if __name__ == '__main__':
     try:
         if not 0 <= args.walks <= 32 or not 0 <= args.length <= 256:
             raise ValueError('bounded walks 0..32 and length 0..256 required')
-        sys.exit(compare(args.fixtures, args.manifest, shlex.split(args.native_probe) if args.native_probe else None,
+        sys.exit(compare(args.fixtures, args.manifest, shlex.split(args.rules_probe) if args.rules_probe else None,
                          args.report, args.timeout, args.depth, args.walks, args.length))
     except (ValueError, OSError, KeyError, TypeError, AssertionError) as error:
         print('COMPARISON FAILED: ' + str(error), file=sys.stderr)

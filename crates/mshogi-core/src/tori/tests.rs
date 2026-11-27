@@ -253,7 +253,7 @@ fn all_40_accepted_board_transitions_execute_reversal_two_resignations_stay_pend
     let c = Corpus::embedded().unwrap();
     let mut count = 0;
     for f in c.fixtures().iter().filter(|f| {
-        f.scope.starts_with("native_admission")
+        f.scope.starts_with("game_admission")
             && f.expected.get("accepted") == Some(&json!(true))
             && matches!(f.given["command"]["kind"].as_str(), Some("move" | "drop"))
     }) {
@@ -270,7 +270,7 @@ fn all_40_accepted_board_transitions_execute_reversal_two_resignations_stay_pend
         assert_eq!(p.root(), &before.root);
         assert_eq!(effect.action, a);
         properties::preserves_material(&material, &resources(&p)).unwrap();
-        if let Some(probes) = f.expected.get("native_movement_probes") {
+        if let Some(probes) = f.expected.get("movement_probes") {
             for (text, expected) in probes.as_object().unwrap() {
                 assert_eq!(
                     p.geometrically_reaches(sq(&text[..2]), sq(&text[2..])),
@@ -281,7 +281,7 @@ fn all_40_accepted_board_transitions_execute_reversal_two_resignations_stay_pend
         p.undo_structural(&mut undo).unwrap();
         assert_eq!(p.state(), &before);
         assert!(p.revision > r0);
-        // Shared helper invokes real native operations; no expected snapshots echoed.
+        // Shared helper invokes real game operations; no expected snapshots echoed.
         let mut q = root(&f.given["root"]).unwrap();
         properties::round_trip(
             &mut q,
@@ -303,8 +303,8 @@ fn all_40_accepted_board_transitions_execute_reversal_two_resignations_stay_pend
     );
 }
 #[test]
-fn native_rotation_symmetry_for_every_face_square_and_fixture_transition() {
-    // Independent native rotation, not the harness JSON transformer.
+fn rotation_symmetry_for_every_face_square_and_fixture_transition() {
+    // Independent rotation, not the harness JSON transformer.
     for f in Corpus::embedded().unwrap().fixtures().iter().filter(|f| {
         f.expected.get("accepted") == Some(&json!(true))
             && matches!(f.given["command"]["kind"].as_str(), Some("move" | "drop"))
@@ -507,7 +507,7 @@ fn basic_invalid_actions_reject_all_state_and_runtime_atomically() {
         .unwrap();
     }
     let corpus = Corpus::embedded().unwrap();
-    // Classify from the selected contract, not from whether native resolution
+    // Classify from the selected contract, not from whether resolution
     // happens to reject. Safety/drop restrictions are deliberately NOT in this set.
     let structural_rejections = [
         ("TORI-G-EAGLE-BLOCK", Geometry),
@@ -658,7 +658,7 @@ fn explicit_capacity_boundaries_preserve_state_and_tokens() {
     assert_eq!(p.state(), &before);
 }
 #[test]
-fn deterministic_generated_structural_sequences_restore_all_native_state() {
+fn deterministic_generated_structural_sequences_restore_all_state() {
     fn run() -> (Vec<Action>, StructuralState) {
         let mut p = Position::standard();
         let initial = p.state().clone();
@@ -723,7 +723,7 @@ fn incomplete_legality_boundary_is_explicit_not_silently_partial() {
 
 #[test]
 fn incremental_suffixes_match_full_replay_and_tampering_leaves_the_game_unchanged() {
-    use crate::native::incremental::{IncrementalRecord, Session};
+    use crate::game::incremental::{IncrementalRecord, Session};
     let mut seed = 0x2545_f491_4f6c_dd1du64;
     for _ in 0..12 {
         let mut game = Game::standard();

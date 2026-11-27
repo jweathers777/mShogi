@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import type { CompletedActionGeometry, ChessSnapshot, ShogiSnapshot, XiangqiSnapshot } from "./native";
+import type { CompletedActionGeometry, ChessSnapshot, ShogiSnapshot, XiangqiSnapshot } from "./sessionTypes";
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render } from "@testing-library/react";
 import { TestBoard as Board } from "./testing/TestBoard";
@@ -12,9 +12,9 @@ import shogiJson from "./__fixtures__/shared-shogi-standard.json";
 import xiangqiJson from "./__fixtures__/shared-xiangqi-standard.json";
 import chessJson from "./__fixtures__/shared-chess-standard.json";
 afterEach(cleanup);
-const action: CompletedActionGeometry = { action: "opaque-native-action", event_index: 11, origin: { kind: "board", square: "e2" }, steps: ["e4"], effects: [] };
+const action: CompletedActionGeometry = { action: "opaque-action", event_index: 11, origin: { kind: "board", square: "e2" }, steps: ["e4"], effects: [] };
 function marks(kind: string) { return [...document.querySelectorAll(`[data-last-move="${kind}"]`)].map(node => node.getAttribute("data-location")); }
-it("draws native castling effects without parsing the action or changing available actions", () => {
+it("draws castling effects without parsing the action or changing available actions", () => {
   const onPlay = vi.fn();
   render(<Board pieces={[]} choices={[]} orientation="white" version={1} disabled={false} onPlay={onPlay} completedAction={{ ...action, action: "unparsed-castling", origin: { kind: "board", square: "e1" }, steps: ["g1"], effects: [{ from: "h1", to: "f1" }] }} />);
   expect(marks("origin")).toEqual(["e1", "h1"]); expect(marks("destination")).toEqual(["g1", "f1"]);
@@ -23,7 +23,7 @@ it("draws native castling effects without parsing the action or changing availab
   fireEvent.click(document.querySelector('[data-location="g1"]')!); expect(onPlay).not.toHaveBeenCalled();
   expect(document.querySelectorAll('[role="button"]')).toHaveLength(64);
 });
-it("persists during thinking/polling and changes layout only through orientation, then retires at a native empty prefix", () => {
+it("persists during thinking/polling and changes layout only through orientation, then retires at a empty prefix", () => {
   const props = { pieces: [], choices: [], orientation: "white" as const, version: 1, disabled: true, onPlay: vi.fn() };
   const { rerender } = render(<Board {...props} completedAction={action} />);
   const before = document.querySelector('[data-last-move="destination"]')?.getAttribute("d");
@@ -60,13 +60,13 @@ it("draws a Shogi drop destination only and retains separate inspection/selectio
   expect(document.querySelector(".inspection-marker")).toBeNull();
   expect(document.querySelectorAll('.shogi-square[aria-pressed="true"]')).toHaveLength(0);
 });
-it("uses Xiangqi intersection layout and exact native target rather than square/chess semantics", () => {
+it("uses Xiangqi intersection layout and exact target rather than square/chess semantics", () => {
   render(<XiangqiBoard snapshot={xiangqiJson as unknown as XiangqiSnapshot} disabled={true} onPlay={vi.fn()} completedAction={{ ...action, origin: { kind: "intersection", point: "b2" }, steps: ["e2"] }} />);
   expect(marks("origin")).toEqual(["b2"]); expect(marks("destination")).toEqual(["e2"]);
   expect(document.querySelector('[data-last-move="destination"]')?.getAttribute("d")).toContain("M443 764");
   expect(document.querySelectorAll(".xiangqi-point")).toHaveLength(90);
 });
-it("takes native selected-prefix geometry through the actual game adapter for paused/reopened/history/Take back states", () => {
+it("takes selected-prefix geometry through the actual game adapter for paused/reopened/history/Take back states", () => {
   const initial = { ...chessJson, moves: { root: { label: "Starting position", numbering: "Known history" }, entries: [], last_action: action }, paused: true } as unknown as ChessSnapshot;
   const command = vi.fn(), props = { disabled: false, inspectionDisabled: false, command };
   const { rerender } = render(<GameBoard {...props} snapshot={initial} />);

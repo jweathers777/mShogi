@@ -117,7 +117,7 @@ fn resize_verification_window(
         .map_err(|error| error.to_string())?;
     window.unmaximize().map_err(|error| error.to_string())?;
     window.set_size(size).map_err(|error| error.to_string())?;
-    // A subsequent native Resized event updates this after deferred OS changes.
+    // A subsequent Resized event updates this after deferred OS changes.
     update_verification_window_title(app).map_err(|error| error.to_string())
 }
 fn ensure_product_mode(_app: &AppHandle) -> Result<(), String> {
@@ -220,7 +220,7 @@ impl PendingAdmission {
         match self {
             Self::Command(receipt) => receipt.completion(),
             Self::File(id) if snapshot.io.id != *id => {
-                Some(Err("Native file operation superseded.".into()))
+                Some(Err("File operation superseded.".into()))
             }
             Self::File(_) => match snapshot.io.phase {
                 IoPhase::Complete => Some(Ok(())),
@@ -228,7 +228,7 @@ impl PendingAdmission {
                     .io
                     .message
                     .clone()
-                    .unwrap_or_else(|| "Native file operation failed.".into()))),
+                    .unwrap_or_else(|| "File operation failed.".into()))),
                 _ => None,
             },
         }
@@ -294,7 +294,7 @@ async fn admit_command(
 async fn game_command(app: AppHandle, command_json: String) -> Result<SharedSnapshot, String> {
     ensure_product_mode(&app)?;
     let command = mshogi_desktop_session::SharedDesktopCommand::from_json(&command_json)?;
-    admit_command(app, "Native admission waiter", |controller| {
+    admit_command(app, "Game admission waiter", |controller| {
         controller.shared_command_with_receipt(command)
     })
     .await
@@ -308,12 +308,12 @@ async fn game_file(
     expected: SharedOpenToken,
 ) -> Result<SharedSnapshot, String> {
     if !matches!(action.as_str(), "save" | "save_as" | "open") {
-        return Err("Unknown native file operation.".into());
+        return Err("Unknown file operation.".into());
     }
     ensure_product_mode(&app)?;
     let reservation =
         with_app_controller(&app, |controller| controller.lifecycle().reserve_file())??;
-    admit_and_wait(app, reservation, "Native document waiter", move |app| {
+    admit_and_wait(app, reservation, "Document waiter", move |app| {
         let id = admit_game_file(app, &action, expected)?;
         Ok(PendingAdmission::File(id))
     })
@@ -394,7 +394,7 @@ fn queue_game_file(
     match action {
         "open" => controller.queue_product_open(path, expected),
         "save" | "save_as" => controller.queue_shared_save(path),
-        _ => Err("Unknown native file operation.".into()),
+        _ => Err("Unknown file operation.".into()),
     }
 }
 
@@ -402,7 +402,7 @@ fn queue_game_file(
 async fn game_new(
     app: AppHandle,
     game: mshogi_desktop_session::GameKind,
-    human: mshogi_desktop_session::NativeSide,
+    human: mshogi_desktop_session::TaggedSide,
     profile: mshogi_desktop_session::RulesProfile,
     play_mode: mshogi_desktop_session::PlayMode,
     expected: mshogi_desktop_session::SharedOpenToken,
@@ -439,13 +439,13 @@ fn with_controller<T>(
     }
     let mut controller = controller
         .lock()
-        .map_err(|_| "Native session lock unavailable".to_string())?;
+        .map_err(|_| "Game session lock unavailable".to_string())?;
     if shutdown.started.load(Ordering::Acquire) || controller.lifecycle().close_approved() {
         return Err("The application is closing; no further game commands are accepted.".into());
     }
     Ok(operation(&mut controller))
 }
-// Native lifecycle owns document reservations; the host owns only event-loop cleanup.
+// Lifecycle owns document reservations; the host owns only event-loop cleanup.
 fn app_lifecycle(app: &AppHandle) -> Arc<ApplicationLifecycle> {
     app.state::<Arc<ApplicationLifecycle>>().inner().clone()
 }
@@ -610,7 +610,7 @@ fn desktop_menu(app: &AppHandle) -> tauri::Result<Menu<tauri::Wry>> {
             #[cfg(target_os = "macos")]
             &PredefinedMenuItem::show_all(app, None)?,
             // Cocoa's predefined item calls NSApplication::terminate:, like
-            // Dock Quit. Keep this native-route probe out of normal packages.
+            // Dock Quit. Keep this route probe out of normal packages.
             #[cfg(all(feature = "desktop-verification", target_os = "macos"))]
             &PredefinedMenuItem::quit(app, Some("Native Cocoa Quit (verification)"))?,
             &quit,
@@ -706,7 +706,7 @@ fn signal_shutdown(app: &AppHandle, shutdown: &ShutdownState) -> bool {
     if let Ok(mut controller) = app.state::<Mutex<DesktopController>>().lock() {
         controller.begin_shutdown();
     } else {
-        eprintln!("Native shutdown: session lock unavailable; cleanup is uncertain.");
+        eprintln!("Shutdown: session lock unavailable; cleanup is uncertain.");
     }
     true
 }
@@ -730,7 +730,7 @@ fn observe_shutdown(app: &AppHandle, shutdown: &ShutdownState) {
     }
     if !acknowledged {
         eprintln!(
-            "Native shutdown: cleanup was not acknowledged within two seconds; process cleanup is uncertain."
+            "Shutdown: cleanup was not acknowledged within two seconds; process cleanup is uncertain."
         );
     }
 }
@@ -836,7 +836,7 @@ fn main() {
                     worker_app.exit(0);
                 })
             {
-                eprintln!("Native shutdown: cannot start cleanup observer ({error}); observing during final teardown.");
+                eprintln!("Shutdown: cannot start cleanup observer ({error}); observing during final teardown.");
                 // The final Exit event below still waits for supervision.
                 shutdown.ready.store(true, Ordering::Release);
                 app.exit(0);
@@ -977,7 +977,7 @@ mod tests {
     }
 
     #[test]
-    fn native_file_reservation_blocks_close_then_approval_blocks_every_host_entry() {
+    fn file_reservation_blocks_close_then_approval_blocks_every_host_entry() {
         let controller = controller();
         let shutdown = ShutdownState::default();
         let (token, lifecycle) = {
@@ -1003,12 +1003,12 @@ mod tests {
         );
         assert!(
             !shutdown.started.load(Ordering::Acquire),
-            "native approval must leave technical cleanup available"
+            "approval must leave technical cleanup available"
         );
     }
 
     #[test]
-    fn native_command_reservation_releases_after_rejection_and_excludes_file_work() {
+    fn command_reservation_releases_after_rejection_and_excludes_file_work() {
         let controller = controller();
         let lifecycle = controller.lock().unwrap().lifecycle();
         let first = lifecycle.reserve_command().unwrap();
@@ -1236,7 +1236,7 @@ mod tests {
 
     #[cfg(feature = "desktop-verification")]
     #[test]
-    fn all_chu_visual_roots_use_the_same_stopped_native_controller() {
+    fn all_chu_visual_roots_use_the_same_stopped_controller() {
         for fixture in [
             "chu-standard",
             "chu-gote",
@@ -1292,7 +1292,7 @@ mod tests {
         controller.lifecycle().cancel_close().unwrap();
 
         let invalid = file_path("invalid-load");
-        std::fs::write(&invalid, b"not a native desktop document").unwrap();
+        std::fs::write(&invalid, b"not a desktop document").unwrap();
         let token = controller.shared_open_token();
         assert!(complete_file_operation(controller, "open", invalid.clone(), token).is_err());
         assert_eq!(controller.shared_snapshot().io.phase, IoPhase::Failed);
@@ -1305,7 +1305,7 @@ mod tests {
         assert_eq!(std::fs::read(&path).unwrap(), bytes);
 
         // A filesystem failure cannot replace the valid path or bless a newer
-        // revision. Atomic writer fault-injection coverage lives in native tests.
+        // revision. Atomic writer fault-injection coverage lives in tests.
         let missing_parent = file_path("missing-parent").join("game.mshogi");
         assert!(complete_file_operation(controller, "save", missing_parent, token).is_err());
         let failed = controller.shared_snapshot();
@@ -1326,7 +1326,7 @@ mod tests {
 
     #[cfg(feature = "desktop-verification")]
     #[test]
-    fn all_native_games_preserve_picker_source_and_file_completion_authority() {
+    fn all_games_preserve_picker_source_and_file_completion_authority() {
         for fixture in ["standard", "shogi-standard", "xiangqi-standard"] {
             let mut controller =
                 DesktopController::verification(PathBuf::from("unused-test-engine"), fixture)
@@ -1334,14 +1334,14 @@ mod tests {
             assert_picker_source_authority(&mut controller);
             assert_file_completion_authority(&mut controller);
 
-            // Even an identical new standard diagram has fresh native authority.
+            // Even an identical new standard diagram has fresh session authority.
             // A delayed Save/Load/close from the old document cannot target it.
             let obsolete = controller.shared_open_token();
             let (_, receipt) = controller
                 .shared_new_game(
                     obsolete,
                     mshogi_desktop_session::RulesProfile::ShogiCsa36V1,
-                    mshogi_desktop_session::NativeSide::Shogi(
+                    mshogi_desktop_session::TaggedSide::Shogi(
                         mshogi_desktop_session::ShogiSide::Sente,
                     ),
                 )
@@ -1375,7 +1375,7 @@ mod tests {
 
     #[test]
     fn shogi_product_close_uses_current_document_identity_and_stops_execution() {
-        use mshogi_desktop_session::{GameKind, NativeSide, ShogiSide};
+        use mshogi_desktop_session::{GameKind, ShogiSide, TaggedSide};
         let controller = controller();
         let shutdown = ShutdownState::default();
         let initial = controller.lock().unwrap().shared_open_token();
@@ -1383,22 +1383,22 @@ mod tests {
             c.shared_new_game(
                 c.shared_open_token(),
                 mshogi_desktop_session::RulesProfile::ShogiCsa36V1,
-                NativeSide::Shogi(ShogiSide::Sente),
+                TaggedSide::Shogi(ShogiSide::Sente),
             )
         })
         .unwrap()
         .unwrap()
         .1;
-        let native = wait_in_test(PendingAdmission::Command(receipt), || {
+        let game = wait_in_test(PendingAdmission::Command(receipt), || {
             with_controller(&controller, &shutdown, DesktopController::shared_snapshot)
         })
         .unwrap();
-        assert_eq!(native.game, GameKind::Shogi);
+        assert_eq!(game.game, GameKind::Shogi);
         assert!(
-            native.chess.is_none(),
+            game.chess.is_none(),
             "no Chess projection or dormant game for Shogi"
         );
-        assert!(native.document.dirty);
+        assert!(game.document.dirty);
         let paused = with_controller(&controller, &shutdown, |c| {
             c.lifecycle().request_close().unwrap();
             c.application_pause_for_close()
@@ -1421,7 +1421,7 @@ mod tests {
 
     #[cfg(feature = "desktop-verification")]
     #[test]
-    fn synthetic_mutations_share_native_close_ownership_without_a_product_game_alias() {
+    fn synthetic_mutations_share_close_ownership_without_a_product_game_alias() {
         let controller = controller();
         let shutdown = ShutdownState::default();
         let verification = VerificationState::new("synthetic".into());

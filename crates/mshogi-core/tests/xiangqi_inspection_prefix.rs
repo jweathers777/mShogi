@@ -1,4 +1,4 @@
-//! MSH-98 native read-only inspection and atomic historical replay boundaries.
+//! MSH-98 read-only inspection and atomic historical replay boundaries.
 use mshogi_core::xiangqi::{
     ClaimPolicy, Conclusion, DrawReason, Game, GameCommand, GameError, GameRecord, GameRequest,
     Position, PositionRoot, Side,
@@ -27,7 +27,7 @@ fn submit(game: &mut Game, actor: Side, command: GameCommand) {
 }
 
 #[test]
-fn inspection_reuses_frozen_independent_board_facts_for_both_native_owners() {
+fn inspection_reuses_frozen_independent_board_facts_for_both_owners() {
     let fixtures: Value =
         serde_json::from_str(include_str!("../../../tests/fixtures/xiangqi/board.json")).unwrap();
     for case in fixtures["fixtures"].as_array().unwrap() {
@@ -78,7 +78,7 @@ fn inspection_reuses_frozen_independent_board_facts_for_both_native_owners() {
         // Inspection may be queried repeatedly for both participants without
         // rewriting the actual side, counters, board or repetition identity.
         names(&position, position.side_to_move().opponent());
-        assert_eq!(position, before, "{id}: inspection changed native position");
+        assert_eq!(position, before, "{id}: inspection changed position");
     }
 }
 
@@ -140,7 +140,7 @@ fn committed_history_preserves_prefix_context_without_future_warnings_or_command
     assert_eq!(game.warnings().len(), 1);
     assert_eq!(game.events().len(), 11, "2 claim + 8 actions + warning");
     let before_resign_ply = game.event_prefix(game.events().len()).unwrap().board_ply;
-    // Black is not the mover; terminal command semantics remain native.
+    // Black is not the mover; terminal command semantics remain.
     submit(&mut game, Side::Black, GameCommand::Resign);
     assert_eq!(game.events().len(), 13);
     assert_eq!(game.event_prefix(13).unwrap().board_ply, before_resign_ply);
@@ -153,7 +153,7 @@ fn committed_history_preserves_prefix_context_without_future_warnings_or_command
                 let mut prefix = game.committed_prefix(count).unwrap();
                 assert_eq!(prefix.root(), &root);
                 assert_eq!(prefix.claim_policy(), ClaimPolicy::Explicit);
-                assert_eq!(record(&prefix), *expected, "native complete prefix {count}");
+                assert_eq!(record(&prefix), *expected, "complete prefix {count}");
                 assert_ne!(prefix.context(), source_context, "fresh runtime identity");
                 assert_eq!(prefix.events(), &game.events()[..count]);
                 if count < 11 {

@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { fakeSession, renderApplication } from "../testing/helpers";
-import type { ShogiSnapshot as GameSnapshot, SearchView } from "../native";
+import type { ShogiSnapshot as GameSnapshot, SearchView } from "../sessionTypes";
 import { afterEach, expect, it } from "vitest";
 import { cleanup, fireEvent, screen, within } from "@testing-library/react";
 import { ApplicationView as ShogiApp } from "./ApplicationView";
@@ -8,7 +8,7 @@ import { ApplicationView as ShogiApp } from "./ApplicationView";
 import standardJson from "../__fixtures__/shared-shogi-standard.json";
 afterEach(cleanup);
 const standard = standardJson as GameSnapshot;
-it("uses disk-aware document labels, supplied play budget and native selected board ply", () => {
+it("uses disk-aware document labels, supplied play budget and selected board ply", () => {
   const snapshot = { ...standard, document: { ...standard.document, path: null, dirty: false }, play_limits: { depth: 3, nodes: 1234 } };
   const { container, props, rerender } = app(snapshot);
   fireEvent.click(screen.getByRole("button", { name: "Play details" }));
@@ -67,7 +67,7 @@ it("keeps engine-turn cancellation distinct from analysis and invents no progres
   expect(session.command).toHaveBeenCalledExactlyOnceWith(snapshot, { kind: "cancel" });
 });
 it("selects exact history event identities and requires explicit Return to live and Resume", () => {
-  // Presentation-only DTO states: same board ply, distinct native event indices.
+  // Presentation-only DTO states: same board ply, distinct game event indices.
   const snapshot = { ...standard, events: [{ index: 1, board_ply: 0, label: "Sente resigned" }, { index: 2, board_ply: 0, label: "Recorded command" }], event_index: 1, historical: true, paused: true, capabilities: { ...standard.capabilities, board_action: false } };
   const { session, props, rerender } = app(snapshot);
   expect(screen.getByRole("region", { name: "Historical shogi position" })).toBeTruthy();
@@ -96,7 +96,7 @@ it("formats only supplied observations with position, perspective and incomplete
   expect(document.querySelector(".shogi-analysis > .shogi-search-observation")).toBeNull();
   expect(screen.getByText("Historical observation · event 0")).toBeTruthy();
 });
-it("requires native declaration capability plus a formal confirmation and preserves captured authority", () => {
+it("requires game declaration capability plus a formal confirmation and preserves captured authority", () => {
   const { props, session, rerender } = app();
   expect(screen.queryByRole("button", { name: "Declare entering king…" })).toBeNull();
   const eligible = { ...standard, capabilities: { ...standard.capabilities, declaration: true } };
@@ -135,7 +135,7 @@ it("presents failures as recoverable execution problems, never as a chess result
   fireEvent.click(screen.getByRole("button", { name: "Retry engine turn" })); expect(session.command).toHaveBeenCalledExactlyOnceWith(snapshot, { kind: "retry" });
 });
 
-it("uses native Take back availability and one complete shared command, never raw Undo", () => {
+it("uses Take back availability and one complete shared command, never raw Undo", () => {
   const snapshot = { ...standard, capabilities: { ...standard.capabilities, take_back: true } };
   const { session, props, rerender } = app(snapshot);
   const control = screen.getByRole("button", { name: "Take back" });

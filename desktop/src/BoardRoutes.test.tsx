@@ -1,14 +1,14 @@
 // @vitest-environment jsdom
 import { renderBoard, square } from "./testing/helpers";
 import type { BoardGeometry } from "./testing/TestBoard";
-import type { SyntheticSnapshot } from "./native";
+import type { SyntheticSnapshot } from "./sessionTypes";
 import { afterEach, expect, it } from "vitest";
 import { cleanup, fireEvent, screen } from "@testing-library/react";
 import { TestBoard as Board, displayedSquares } from "./testing/TestBoard";
 
-import nativeJson from "./__fixtures__/synthetic.json";
+import snapshotJson from "./__fixtures__/synthetic.json";
 
-const fixture = nativeJson as SyntheticSnapshot;
+const fixture = snapshotJson as SyntheticSnapshot;
 const geometry: BoardGeometry = { ...fixture.geometry, initialFocus: fixture.geometry.initial_focus };
 afterEach(cleanup);
 
@@ -17,7 +17,7 @@ function board() {
     version: fixture.version, contextKey: fixture.profile, geometry,
     orientation: "white" as const, glyphs: { strider: "S", stone: "●" } });
 }
-it("uses native geometry for all 256 squares, full two-digit ranks and orientation", () => {
+it("uses board geometry for all 256 squares, full two-digit ranks and orientation", () => {
   const { props, rerender } = board();
   expect(screen.getAllByRole("button")).toHaveLength(256);
   expect(square("p16")).toBeTruthy();
@@ -33,7 +33,7 @@ it("uses native geometry for all 256 squares, full two-digit ranks and orientati
   fireEvent.keyDown(square("p15"), { key: "ArrowUp" });
   expect(document.activeElement).toBe(square("p14"));
 });
-it("preserves distinct native routes sharing origin and endpoint without committing a prefix", () => {
+it("preserves distinct routes sharing origin and endpoint without committing a prefix", () => {
   const { props, rerender, onPlay } = board();
   fireEvent.click(square("i9"));
   fireEvent.click(square("j10"));
@@ -50,7 +50,7 @@ it("preserves distinct native routes sharing origin and endpoint without committ
   expect(onPlay).toHaveBeenLastCalledWith("136>135>136");
   expect(onPlay).toHaveBeenCalledTimes(2);
 });
-it("requires explicit completion of a terminal prefix and submits the supplied short native choice", () => {
+it("requires explicit completion of a terminal prefix and submits the supplied short game choice", () => {
   const { onPlay } = board();
   fireEvent.click(square("i9"));
   fireEvent.click(square("j10"));
@@ -83,7 +83,7 @@ it("cancels stages by Escape or Cancel and restores source focus without an acti
   expect(document.activeElement).toBe(square("i9"));
   expect(onPlay).not.toHaveBeenCalled();
 });
-it("retires partial routes on native version, profile, disabled state and orientation changes", () => {
+it("retires partial routes on version, profile, disabled state and orientation changes", () => {
   const { props, rerender, onPlay } = board();
   fireEvent.click(square("i9")); fireEvent.click(square("j10"));
   rerender(<Board {...props} version={props.version + 1} />);

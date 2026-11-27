@@ -1,4 +1,4 @@
-use mshogi_core::{chess::Color, native::NativeSide};
+use mshogi_core::{chess::Color, game::TaggedSide};
 use mshogi_desktop_session::{
     ChessPresentation, DesktopController, SessionOperation, SessionToken, SharedDesktopCommand,
     SharedOpenToken, SharedSnapshot,
@@ -28,7 +28,7 @@ pub fn command(c: &mut DesktopController, operation: SessionOperation) -> Shared
     }
 }
 pub fn chess(snapshot: &SharedSnapshot) -> &ChessPresentation {
-    snapshot.chess.as_ref().expect("native Chess capabilities")
+    snapshot.chess.as_ref().expect("Chess capabilities")
 }
 pub fn history(snapshot: &SharedSnapshot) -> Vec<String> {
     live_game(snapshot)
@@ -41,13 +41,13 @@ pub fn fen(snapshot: &SharedSnapshot) -> String {
     live_game(snapshot).position().to_fen()
 }
 pub fn side_to_move(snapshot: &SharedSnapshot) -> Color {
-    let NativeSide::Chess(side) = snapshot.turn.id else {
+    let TaggedSide::Chess(side) = snapshot.turn.id else {
         panic!("Chess turn")
     };
     side
 }
 pub fn human(snapshot: &SharedSnapshot) -> Color {
-    let NativeSide::Chess(side) = snapshot.human.id else {
+    let TaggedSide::Chess(side) = snapshot.human.id else {
         panic!("Chess human")
     };
     side
@@ -92,8 +92,8 @@ impl SettledCommand for DesktopController {
     fn fresh(&mut self, expected: SharedOpenToken, human: Color) -> Result<SharedSnapshot, String> {
         let (snapshot, receipt) = self.shared_new_game(
             expected,
-            mshogi_core::native::RulesProfile::ChessMatchV1,
-            NativeSide::Chess(human),
+            mshogi_core::game::RulesProfile::ChessMatchV1,
+            TaggedSide::Chess(human),
         )?;
         complete(self, snapshot, receipt)
     }

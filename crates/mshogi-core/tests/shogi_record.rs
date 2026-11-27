@@ -1,4 +1,4 @@
-//! Native record rejection and replay contracts. Governing rule expectations
+//! Game record rejection and replay contracts. Governing rule expectations
 //! come from the independently constructed MSH-67 history corpus, not this codec.
 
 use mshogi_core::shogi::{
@@ -203,7 +203,7 @@ fn root_category_origin_and_counter_provenance_are_enforced() {
 }
 
 #[test]
-fn obsolete_derived_fields_are_rejected_and_native_commands_are_validated() {
+fn obsolete_derived_fields_are_rejected_and_commands_are_validated() {
     let mut game = Game::new();
     play(&mut game, "7g7f");
     play(&mut game, "3c3d");

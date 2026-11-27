@@ -1,6 +1,6 @@
-//! Common finite paired-match settings. Native game code supplies the root.
+//! Common finite paired-match settings. Game code supplies the root.
 use super::positions::{self, Result};
-use mshogi_core::native::RulesProfile;
+use mshogi_core::game::RulesProfile;
 use mshogi_engine::WorkLimits;
 use mshogi_runner::experiments::{
     Config, FischerClock, Opening, Player, ProfileLimits, SCHEMA, Split,
@@ -53,7 +53,7 @@ impl Args {
         assert_eq!(
             values.len(),
             positional,
-            "expected native config positional arguments"
+            "expected config positional arguments"
         );
         assert_eq!(
             base.is_some(),
@@ -107,7 +107,7 @@ impl Args {
             (
                 json!({}),
                 format!("seed-{seed}"),
-                format!("Standard root plus {plies} seeded native legal actions"),
+                format!("Standard root plus {plies} seeded legal actions"),
                 plies,
             )
         };
@@ -166,7 +166,7 @@ impl Args {
             schema: SCHEMA,
             id: format!("strength-{id}"),
             protocol: format!(
-                "Paired predecessor comparison. Native rules control outcomes. Opening provenance is recorded below. Mode: {}. Not a rating.",
+                "Paired predecessor comparison. Rules control outcomes. Opening provenance is recorded below. Mode: {}. Not a rating.",
                 if self.clock.is_some() {
                     "Fischer wall clock with finite search safety caps"
                 } else {

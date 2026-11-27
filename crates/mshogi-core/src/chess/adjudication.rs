@@ -210,7 +210,7 @@ impl Game {
     fn claims_with_actions(&self, actions: &[Action]) -> Vec<ClaimRequest> {
         // One intended action adds at most one halfmove and one occurrence.
         // Without either prerequisite, neither current nor intended claims
-        // can qualify. Keep native claim order and checked transitions for every
+        // can qualify. Keep claim order and checked transitions for every
         // other case, including imported counters and reachable repetitions.
         let repetition_possible = self.has_repeated_identity();
         let fifty_possible = self.position().halfmove_clock() >= 99;

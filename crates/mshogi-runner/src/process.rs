@@ -1,4 +1,4 @@
-//! Bounded native subprocess transport. No shell commands or unbounded pipe joins.
+//! Bounded subprocess transport. No shell commands or unbounded pipe joins.
 use crate::{Diagnostic, EngineConfig, EngineObservation, IoLimits, ProcessExit};
 use std::{
     io::{self, BufRead, BufReader, Read, Write},

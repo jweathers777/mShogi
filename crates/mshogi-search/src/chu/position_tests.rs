@@ -1,4 +1,4 @@
-//! Independent profile fixtures plus native local differential verification.
+//! Independent profile fixtures plus local differential verification.
 use super::position::ChuPosition;
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
 use mshogi_core::chu::{
@@ -52,24 +52,24 @@ fn action(v: &Value) -> Action {
 fn actions(p: &mut ChuPosition) -> BTreeSet<Action> {
     p.legal_moves()
         .into_iter()
-        .map(|m| p.to_native(m))
+        .map(|m| p.to_action(m))
         .collect()
 }
-fn compare_state(p: &ChuPosition, native: &LocalPosition) {
-    assert_eq!(p.side_to_move(), native.position().side_to_move());
+fn compare_state(p: &ChuPosition, rules_position: &LocalPosition) {
+    assert_eq!(p.side_to_move(), rules_position.position().side_to_move());
     for at in Square::all() {
-        assert_eq!(p.piece(at), native.position().piece(at), "{at}");
+        assert_eq!(p.piece(at), rules_position.position().piece(at), "{at}");
     }
-    assert_eq!(p.protection(), *native.protection());
+    assert_eq!(p.protection(), *rules_position.protection());
     assert_eq!(p.hash(), p.hash_from_scratch());
-    let fresh = ChuPosition::from_local(native);
+    let fresh = ChuPosition::from_local(rules_position);
     assert_eq!(p.hash(), fresh.hash());
     assert_eq!(p.evaluate(), fresh.evaluate());
     assert_eq!(p.in_check(), fresh.in_check());
 }
-fn compare(p: &mut ChuPosition, native: &LocalPosition) {
-    compare_state(p, native);
-    let legal = native.legal_actions();
+fn compare(p: &mut ChuPosition, rules_position: &LocalPosition) {
+    compare_state(p, rules_position);
+    let legal = rules_position.legal_actions();
     assert_eq!(actions(p), legal.into_iter().collect());
     let mut pseudo = Vec::new();
     p.generate(Stage::Tactical, &mut pseudo);
@@ -79,24 +79,30 @@ fn compare(p: &mut ChuPosition, native: &LocalPosition) {
     for (i, &m) in pseudo.iter().enumerate() {
         assert!(seen.insert(m), "duplicate {m:?}");
         assert_eq!(p.is_tactical(m), i < split);
-        assert_eq!(p.find(&p.to_native(m)), Some(m));
+        assert_eq!(p.find(&p.to_action(m)), Some(m));
         assert_eq!(p.decode(ChuPosition::encode(m)), Some(m));
     }
     assert!(p.decode(0).is_none());
     assert!(p.decode(u32::MAX).is_none());
 }
-fn probe(p: &mut ChuPosition, native: &mut LocalPosition, a: &Action, expected: bool, id: &str) {
+fn probe(
+    p: &mut ChuPosition,
+    rules_position: &mut LocalPosition,
+    a: &Action,
+    expected: bool,
+    id: &str,
+) {
     let before_hash = p.hash();
-    let native_before = native.clone();
-    let native_result = native.apply(a);
-    assert_eq!(native_result.is_ok(), expected, "native {id}: {a:?}");
+    let before = rules_position.clone();
+    let engine_result = rules_position.apply(a);
+    assert_eq!(engine_result.is_ok(), expected, "{id}: {a:?}");
     let accepted = p.find(a).is_some_and(|m| p.make(m));
     assert_eq!(accepted, expected, "search {id}: {a:?}");
     if !accepted {
         assert_eq!(p.hash(), before_hash);
-        assert_eq!(*native, native_before);
+        assert_eq!(*rules_position, before);
     }
-    compare(p, native);
+    compare(p, rules_position);
 }
 #[test]
 fn all_independent_local_profile_fixtures_agree() {
@@ -115,9 +121,9 @@ fn all_independent_local_profile_fixtures_agree() {
             continue;
         }
         let id = f["id"].as_str().unwrap();
-        let mut native = root(&f["given"]["root"]);
-        let mut p = ChuPosition::from_local(&native);
-        compare(&mut p, &native);
+        let mut rules_position = root(&f["given"]["root"]);
+        let mut p = ChuPosition::from_local(&rules_position);
+        compare(&mut p, &rules_position);
         count += 1;
         lion += usize::from(id.starts_with("CHU-LION"));
         if f["given"]["actor"].is_array() {
@@ -148,7 +154,7 @@ fn all_independent_local_profile_fixtures_agree() {
             ("illegal_probe", "illegal_probe_admitted"),
         ] {
             if f["given"][field].is_object() {
-                let mut n = native.clone();
+                let mut n = rules_position.clone();
                 let mut q = p.clone();
                 probe(
                     &mut q,
@@ -163,7 +169,7 @@ fn all_independent_local_profile_fixtures_agree() {
             && let Some(expected) = f["expected"]["admitted"].as_bool()
         {
             let a = action(&f["given"]["action"]);
-            probe(&mut p, &mut native, &a, expected, id);
+            probe(&mut p, &mut rules_position, &a, expected, id);
             if expected && let Some(piece) = f["expected"]["result_piece"].as_str() {
                 assert_eq!(p.piece(a.to().unwrap()).unwrap().code(), piece, "{id}");
             }
@@ -186,7 +192,7 @@ fn all_independent_local_profile_fixtures_agree() {
                 let Some(expected) = expected else {
                     break;
                 };
-                probe(&mut p, &mut native, &action(command), expected, id);
+                probe(&mut p, &mut rules_position, &action(command), expected, id);
                 if i == 0 {
                     for field in [
                         "protected_lions_after_first",
@@ -217,7 +223,7 @@ fn all_independent_local_profile_fixtures_agree() {
     assert!(lion >= 15, "{lion}");
 }
 #[test]
-fn independent_remote_perft_and_native_compound_perft_agree() {
+fn independent_remote_perft_and_compound_perft_agree() {
     let fs = fixtures();
     for id in [
         "CHU-PERFT-REMOTE",
@@ -227,21 +233,25 @@ fn independent_remote_perft_and_native_compound_perft_agree() {
         "CHU-LION-NONLION-Ki",
     ] {
         let f = fs.iter().find(|f| f["id"] == id).unwrap();
-        let native = root(&f["given"]["root"]);
-        let mut p = ChuPosition::from_local(&native);
+        let rules_position = root(&f["given"]["root"]);
+        let mut p = ChuPosition::from_local(&rules_position);
         for depth in 1..=2 {
-            let n = perft(&native, depth, 1_000_000, || false).unwrap().leaves;
+            let n = perft(&rules_position, depth, 1_000_000, || false)
+                .unwrap()
+                .leaves;
             assert_eq!(p.perft(depth), n, "{id} depth {depth}");
             if id == "CHU-PERFT-REMOTE" {
                 assert_eq!(n, if depth == 1 { 7 } else { 42 });
             }
         }
     }
-    let native = LocalPosition::standard();
-    let mut p = ChuPosition::from_local(&native);
+    let rules_position = LocalPosition::standard();
+    let mut p = ChuPosition::from_local(&rules_position);
     assert_eq!(
         p.perft(2),
-        perft(&native, 2, 1_000_000, || false).unwrap().leaves
+        perft(&rules_position, 2, 1_000_000, || false)
+            .unwrap()
+            .leaves
     );
 }
 fn next(state: &mut u64) -> u64 {
@@ -251,24 +261,24 @@ fn next(state: &mut u64) -> u64 {
     *state
 }
 #[test]
-fn random_native_actions_positions_protection_hashes_and_undo_agree() {
+fn random_actions_positions_protection_hashes_and_undo_agree() {
     let (mut positions, mut captures, mut compounds, mut promotions) = (0, 0, 0, 0);
     for seed in 1..=20u64 {
         let mut rng = seed.wrapping_mul(0x9e3779b97f4a7c15) | 1;
-        let mut native = LocalPosition::standard();
-        let mut p = ChuPosition::from_local(&native);
+        let mut rules_position = LocalPosition::standard();
+        let mut p = ChuPosition::from_local(&rules_position);
         for _ in 0..120 {
-            compare(&mut p, &native);
+            compare(&mut p, &rules_position);
             positions += 1;
             if [Side::Sente, Side::Gote].iter().any(|&s| {
-                !native
+                !rules_position
                     .position()
                     .pieces()
                     .any(|(_, p)| p.side == s && p.is_royal())
             }) {
                 break;
             }
-            let legal = native.legal_actions();
+            let legal = rules_position.legal_actions();
             if legal.is_empty() {
                 break;
             }
@@ -278,8 +288,8 @@ fn random_native_actions_positions_protection_hashes_and_undo_agree() {
                     a.promote
                         || a.route.iter().any(|&to| {
                             to != a.from
-                                && native.position().piece(to).is_some_and(|piece| {
-                                    piece.side != native.position().side_to_move()
+                                && rules_position.position().piece(to).is_some_and(|piece| {
+                                    piece.side != rules_position.position().side_to_move()
                                 })
                         })
                 })
@@ -299,9 +309,9 @@ fn random_native_actions_positions_protection_hashes_and_undo_agree() {
             let evaluation = p.evaluate();
             let protection = p.protection();
             assert!(p.make(m));
-            let (effects, _) = native.apply(&a).unwrap();
+            let (effects, _) = rules_position.apply(&a).unwrap();
             captures += effects.captures.len();
-            compare_state(&p, &native);
+            compare_state(&p, &rules_position);
             p.unmake();
             assert_eq!(p.hash(), hash);
             assert_eq!(p.evaluate(), evaluation);
@@ -331,7 +341,7 @@ fn two_royal_capture_and_threat_are_complete_action_based() {
             .unwrap(),
         )
     };
-    let native = local(
+    let rules_position = local(
         &[
             (1, 12, Side::Sente, "K"),
             (6, 6, Side::Sente, "Ln"),
@@ -340,9 +350,9 @@ fn two_royal_capture_and_threat_are_complete_action_based() {
         ],
         Side::Gote,
     );
-    let p = ChuPosition::from_local(&native);
+    let p = ChuPosition::from_local(&rules_position);
     assert!(p.in_check(), "one Lion action captures both royals");
-    let mut native = local(
+    let mut rules_position = local(
         &[
             (1, 12, Side::Sente, "K"),
             (6, 6, Side::Sente, "Ln"),
@@ -351,15 +361,21 @@ fn two_royal_capture_and_threat_are_complete_action_based() {
         ],
         Side::Sente,
     );
-    let mut p = ChuPosition::from_local(&native);
+    let mut p = ChuPosition::from_local(&rules_position);
     let a = Action {
         from: sq(6, 6),
         route: vec![sq(6, 5), sq(5, 5)],
         promote: false,
     };
-    probe(&mut p, &mut native, &a, true, "double royal capture");
+    probe(
+        &mut p,
+        &mut rules_position,
+        &a,
+        true,
+        "double royal capture",
+    );
     assert_eq!(p.rule_score(), Some(-MATE_SCORE + 1));
-    let native = local(
+    let rules_position = local(
         &[
             (1, 12, Side::Sente, "K"),
             (3, 6, Side::Sente, "R"),
@@ -370,12 +386,12 @@ fn two_royal_capture_and_threat_are_complete_action_based() {
         Side::Gote,
     );
     assert!(
-        !ChuPosition::from_local(&native).in_check(),
+        !ChuPosition::from_local(&rules_position).in_check(),
         "separate actions do not capture both"
     );
 }
 #[test]
-fn native_root_restriction_excludes_complete_routes_and_null_is_disabled() {
+fn root_restriction_excludes_complete_routes_and_null_is_disabled() {
     let game = Game::standard();
     let legal = game.legal_actions();
     let selected = legal[0].clone();
@@ -391,41 +407,41 @@ fn native_root_restriction_excludes_complete_routes_and_null_is_disabled() {
 }
 #[test]
 #[ignore = "bounded representation comparison; run explicitly in release mode"]
-fn benchmark_against_native_local_generation() {
+fn benchmark_against_local_generation() {
     let fs = fixtures();
     let f = fs.iter().find(|f| f["id"] == "CHU-LION-C2-3").unwrap();
     let mut tactical = root(&f["given"]["root"]);
     tactical.apply(&action(&f["given"]["commands"][0])).unwrap();
-    for (name, native) in [
+    for (name, rules_position) in [
         ("initial", LocalPosition::standard()),
         ("lion-window", tactical),
     ] {
-        let mut p = ChuPosition::from_local(&native);
+        let mut p = ChuPosition::from_local(&rules_position);
         let rounds = 2_000;
         let start = std::time::Instant::now();
-        let mut native_count = 0;
+        let mut rules_count = 0;
         for _ in 0..rounds {
-            native_count += std::hint::black_box(native.legal_actions()).len();
+            rules_count += std::hint::black_box(rules_position.legal_actions()).len();
         }
-        let native_time = start.elapsed();
+        let time = start.elapsed();
         let start = std::time::Instant::now();
         let mut fast_count = 0;
         for _ in 0..rounds {
             fast_count += std::hint::black_box(p.legal_moves()).len();
         }
         let fast_time = start.elapsed();
-        assert_eq!(fast_count, native_count);
+        assert_eq!(fast_count, rules_count);
         eprintln!(
-            "Chu {name} legal generation: rounds={rounds}, actions={native_count}, native_us={}, fast_us={}, speedup={:.2}",
-            native_time.as_micros(),
+            "Chu {name} legal generation: rounds={rounds}, actions={rules_count}, us={}, fast_us={}, speedup={:.2}",
+            time.as_micros(),
             fast_time.as_micros(),
-            native_time.as_secs_f64() / fast_time.as_secs_f64()
+            time.as_secs_f64() / fast_time.as_secs_f64()
         );
     }
 }
 
 #[test]
-fn native_history_reconstruction_and_must_vary_root_filter() {
+fn history_reconstruction_and_must_vary_root_filter() {
     let fs = fixtures();
     for id in ["CHU-REP-QUIET", "CHU-REP-PASSES"] {
         let f = fs.iter().find(|f| f["id"] == id).unwrap();
@@ -459,23 +475,29 @@ fn native_history_reconstruction_and_must_vary_root_filter() {
 fn lion_window_changes_hash_and_rejected_capture_preserves_every_field() {
     let fs = fixtures();
     let f = fs.iter().find(|f| f["id"] == "CHU-LION-NONLION-R").unwrap();
-    let mut native = root(&f["given"]["root"]);
-    let mut p = ChuPosition::from_local(&native);
+    let mut rules_position = root(&f["given"]["root"]);
+    let mut p = ChuPosition::from_local(&rules_position);
     let first = action(&f["given"]["commands"][0]);
     let second = action(&f["given"]["commands"][1]);
-    probe(&mut p, &mut native, &first, true, "create protection");
-    let fresh = ChuPosition::from_position(native.position());
+    probe(
+        &mut p,
+        &mut rules_position,
+        &first,
+        true,
+        "create protection",
+    );
+    let fresh = ChuPosition::from_position(rules_position.position());
     assert_ne!(fresh.hash(), p.hash());
     let (hash, eval, protection) = (p.hash(), p.evaluate(), p.protection());
     assert!(!p.make(p.find(&second).unwrap()));
     assert_eq!(p.hash(), hash);
     assert_eq!(p.evaluate(), eval);
     assert_eq!(p.protection(), protection);
-    compare(&mut p, &native);
+    compare(&mut p, &rules_position);
 }
 
 #[test]
-fn narrow_material_fixtures_and_prince_recapture_keep_native_timing() {
+fn narrow_material_fixtures_and_prince_recapture_keep_timing() {
     let fs = fixtures();
     for f in fs
         .iter()
@@ -485,8 +507,8 @@ fn narrow_material_fixtures_and_prince_recapture_keep_native_timing() {
             continue;
         }
         let id = f["id"].as_str().unwrap();
-        let native = root(&f["given"]["root"]);
-        let p = ChuPosition::from_local(&native);
+        let rules_position = root(&f["given"]["root"]);
+        let p = ChuPosition::from_local(&rules_position);
         if f["expected"].get("material_winner").is_some() {
             let expected = f["expected"]["material_winner"].as_str().map(|s| {
                 if (s == "sente") == (p.side_to_move() == Side::Sente) {
@@ -499,10 +521,10 @@ fn narrow_material_fixtures_and_prince_recapture_keep_native_timing() {
                 assert_eq!(p.rule_score(), expected, "{id}");
             } else {
                 // Independently prove any distance-one win by a complete
-                // native action, not separate attacks on the royal squares.
-                let victim = native.position().side_to_move().opponent();
-                let capture_all = native.legal_actions().iter().any(|a| {
-                    let mut after = native.clone();
+                // action, not separate attacks on the royal squares.
+                let victim = rules_position.position().side_to_move().opponent();
+                let capture_all = rules_position.legal_actions().iter().any(|a| {
+                    let mut after = rules_position.clone();
                     after.apply(a).unwrap();
                     !after
                         .position()
@@ -523,8 +545,8 @@ fn narrow_material_fixtures_and_prince_recapture_keep_native_timing() {
         "CHU-MATERIAL-DECLINE-COUNTERCAPTURE",
     ] {
         let f = fs.iter().find(|f| f["id"] == id).unwrap();
-        let mut native = root(&f["given"]["root"]);
-        let mut p = ChuPosition::from_local(&native);
+        let mut rules_position = root(&f["given"]["root"]);
+        let mut p = ChuPosition::from_local(&rules_position);
         assert_eq!(
             p.rule_score(),
             if id == "CHU-MATERIAL-COUNTERWIN" {
@@ -545,7 +567,7 @@ fn narrow_material_fixtures_and_prince_recapture_keep_native_timing() {
                 p.exchange_at_least(m, 0),
                 "material terminal/equalizer must remain: {id}"
             );
-            probe(&mut p, &mut native, &action(&command), true, id);
+            probe(&mut p, &mut rules_position, &action(&command), true, id);
             if id == "CHU-MATERIAL-RECAPTURE" {
                 assert_eq!(
                     p.rule_score(),
@@ -591,7 +613,7 @@ fn distance_one_royal_capture_proof_preserves_lion_rights_for_both_sides() {
             RootMetadata::diagram(0),
         )
         .unwrap();
-        let native = LocalPosition::from_parts(
+        let rules_position = LocalPosition::from_parts(
             position,
             LionProtection {
                 owner: Some(owner(Side::Gote)),
@@ -599,7 +621,7 @@ fn distance_one_royal_capture_proof_preserves_lion_rights_for_both_sides() {
             },
         )
         .unwrap();
-        let mut p = ChuPosition::from_local(&native);
+        let mut p = ChuPosition::from_local(&rules_position);
         let before = (p.hash(), p.evaluate(), p.protection());
         // The rook may capture the royal on its file, but not the protected
         // Lion on its rank. The proof cannot consume the Lion window.
@@ -610,7 +632,7 @@ fn distance_one_royal_capture_proof_preserves_lion_rights_for_both_sides() {
         assert!(!p.exchange_at_least(p.find(&forbidden).unwrap(), 0));
         assert!(!p.make(p.find(&forbidden).unwrap()));
         assert_eq!((p.hash(), p.evaluate(), p.protection()), before);
-        compare(&mut p, &native);
+        compare(&mut p, &rules_position);
         let win = Action::single(transform(6, 8), transform(6, 1));
         assert!(p.exchange_at_least(p.find(&win).unwrap(), 100_000));
         assert!(p.make(p.find(&win).unwrap()));
@@ -778,14 +800,14 @@ fn bounded_exchange_keeps_free_and_recovered_captures_but_rejects_defended_loss(
             (true, false, false),
             (true, true, true),
         ] {
-            let native = build(defender, recovery, false);
-            let mut p = ChuPosition::from_local(&native);
+            let rules_position = build(defender, recovery, false);
+            let mut p = ChuPosition::from_local(&rules_position);
             let a = Action {
                 from: at(6, 7),
                 route: vec![at(6, 6)],
                 promote: false,
             };
-            assert!(native.legal_actions().contains(&a));
+            assert!(rules_position.legal_actions().contains(&a));
             let m = p.find(&a).unwrap();
             let before = (p.hash(), p.evaluate(), actions(&mut p));
             assert_eq!(
@@ -799,18 +821,18 @@ fn bounded_exchange_keeps_free_and_recovered_captures_but_rejects_defended_loss(
                 assert!(!p.exchange_at_least(m, gain + 1));
             }
             assert_eq!(before, (p.hash(), p.evaluate(), actions(&mut p)));
-            compare_state(&p, &native);
+            compare_state(&p, &rules_position);
         }
         // The Lion returns to its source. A rook attacking the victim's square
         // cannot recapture the Lion there after this admitted igui action.
-        let native = build(true, false, true);
-        let p = ChuPosition::from_local(&native);
+        let rules_position = build(true, false, true);
+        let p = ChuPosition::from_local(&rules_position);
         let a = Action {
             from: at(6, 7),
             route: vec![at(6, 6), at(6, 7)],
             promote: false,
         };
-        assert!(native.legal_actions().contains(&a));
+        assert!(rules_position.legal_actions().contains(&a));
         let m = p.find(&a).unwrap();
         assert!(p.exchange_at_least(m, p.tactical_gain(m)));
     }
@@ -841,17 +863,17 @@ fn exchange_counts_promotion_and_both_compound_victims() {
                 .iter()
                 .map(|&s| (s, Piece::from_code(Side::Gote, "P").unwrap())),
         );
-        let native = LocalPosition::admit(
+        let rules_position = LocalPosition::admit(
             Position::from_diagram(&pieces, Side::Sente, RootMetadata::diagram(0)).unwrap(),
         );
-        let p = ChuPosition::from_local(&native);
+        let p = ChuPosition::from_local(&rules_position);
         let a = Action {
             from: source,
             route,
             promote,
         };
-        assert!(native.legal_actions().contains(&a));
-        let mut after = native.clone();
+        assert!(rules_position.legal_actions().contains(&a));
+        let mut after = rules_position.clone();
         after.apply(&a).unwrap();
         let balance = |n: &LocalPosition| {
             n.position()
@@ -862,19 +884,19 @@ fn exchange_counts_promotion_and_both_compound_victims() {
                 })
                 .sum::<i32>()
         };
-        let gain = balance(&after) - balance(&native);
+        let gain = balance(&after) - balance(&rules_position);
         let m = p.find(&a).unwrap();
         assert_eq!(p.tactical_gain(m), gain);
         assert!(p.exchange_at_least(m, gain));
         assert!(!p.exchange_at_least(m, gain + 1));
-        compare_state(&p, &native);
+        compare_state(&p, &rules_position);
     }
 }
 
 #[test]
-fn search_routes_preserve_exact_successors_and_native_root_restrictions() {
-    fn check(native: &LocalPosition, restricted: Option<&[Action]>) -> usize {
-        let mut p = ChuPosition::from_local(native);
+fn search_routes_preserve_exact_successors_and_root_restrictions() {
+    fn check(rules_position: &LocalPosition, restricted: Option<&[Action]>) -> usize {
+        let mut p = ChuPosition::from_local(rules_position);
         if let Some(allowed) = restricted {
             p.restrict_root(allowed);
         }
@@ -889,9 +911,9 @@ fn search_routes_preserve_exact_successors_and_native_root_restrictions() {
             p.generate_search(stage, &mut again);
             assert_eq!(selected, again, "stable first representative");
             let effect = |a: &Action| {
-                let mut next = native.clone();
+                let mut next = rules_position.clone();
                 next.apply(a).unwrap();
-                // Native full state is the independent equality oracle.
+                // Full state is the independent equality oracle.
                 format!(
                     "{:?}|{:?}|{:?}",
                     next.position().side_to_move(),
@@ -901,17 +923,17 @@ fn search_routes_preserve_exact_successors_and_native_root_restrictions() {
                     next.protection()
                 )
             };
-            let admitted = native.legal_actions();
+            let admitted = rules_position.legal_actions();
             let full_effects: BTreeSet<_> = full
                 .iter()
-                .map(|&m| p.to_native(m))
+                .map(|&m| p.to_action(m))
                 .filter(|a| admitted.contains(a))
                 .map(|a| effect(&a))
                 .collect();
             let chosen_effects: BTreeSet<_> = selected
                 .iter()
                 .map(|&m| {
-                    let a = p.to_native(m);
+                    let a = p.to_action(m);
                     assert!(admitted.contains(&a));
                     if let Some(allowed) = restricted {
                         assert!(allowed.contains(&a));
@@ -928,22 +950,22 @@ fn search_routes_preserve_exact_successors_and_native_root_restrictions() {
             reduced += full.len().saturating_sub(selected.len());
         }
         assert_eq!(before, (p.hash(), p.evaluate(), p.protection()));
-        compare_state(&p, native);
+        compare_state(&p, rules_position);
         reduced
     }
     let mut reduced = 0;
     for f in fixtures() {
         if f["given"]["root"].is_object() && !f["id"].as_str().unwrap().starts_with("CHU-MATERIAL")
         {
-            let native = root(&f["given"]["root"]);
-            reduced += check(&native, None);
-            let allowed: Vec<_> = native
+            let rules_position = root(&f["given"]["root"]);
+            reduced += check(&rules_position, None);
+            let allowed: Vec<_> = rules_position
                 .legal_actions()
                 .into_iter()
                 .rev()
                 .step_by(2)
                 .collect();
-            reduced += check(&native, Some(&allowed));
+            reduced += check(&rules_position, Some(&allowed));
         }
     }
     let fs = fixtures();
@@ -954,18 +976,20 @@ fn search_routes_preserve_exact_successors_and_native_root_restrictions() {
         .unwrap();
     assert!(!active.protection().squares.is_empty());
     reduced += check(&active, None);
-    let mut native = LocalPosition::standard();
+    let mut rules_position = LocalPosition::standard();
     let mut seed = 0x1825eeu64;
     for _ in 0..80 {
-        reduced += check(&native, None);
-        let legal = native.legal_actions();
+        reduced += check(&rules_position, None);
+        let legal = rules_position.legal_actions();
         if legal.is_empty() {
             break;
         }
         seed ^= seed << 13;
         seed ^= seed >> 7;
         seed ^= seed << 17;
-        native.apply(&legal[seed as usize % legal.len()]).unwrap();
+        rules_position
+            .apply(&legal[seed as usize % legal.len()])
+            .unwrap();
     }
     assert!(
         reduced > 100,
@@ -984,7 +1008,7 @@ fn exchange_recapturing_lion_can_return_away_from_the_original_target() {
         (6, 6, Side::Gote, "P"),
         (5, 5, Side::Gote, "Ln"),
     ];
-    let mut native = LocalPosition::admit(
+    let mut rules_position = LocalPosition::admit(
         Position::from_diagram(
             &entries
                 .iter()
@@ -995,24 +1019,24 @@ fn exchange_recapturing_lion_can_return_away_from_the_original_target() {
         )
         .unwrap(),
     );
-    let p = ChuPosition::from_local(&native);
+    let p = ChuPosition::from_local(&rules_position);
     let initial = Action::single(at(6, 7), at(6, 6));
     assert!(!p.exchange_at_least(p.find(&initial).unwrap(), 0));
-    native.apply(&initial).unwrap();
+    rules_position.apply(&initial).unwrap();
     let recapture = Action {
         from: at(5, 5),
         route: vec![at(6, 6), at(5, 5)],
         promote: false,
     };
-    assert!(native.legal_actions().contains(&recapture));
-    native.apply(&recapture).unwrap();
-    assert!(native.position().piece(at(6, 6)).is_none());
+    assert!(rules_position.legal_actions().contains(&recapture));
+    rules_position.apply(&recapture).unwrap();
+    assert!(rules_position.position().piece(at(6, 6)).is_none());
     assert_eq!(
-        native.position().piece(at(5, 5)).unwrap().face(),
+        rules_position.position().piece(at(5, 5)).unwrap().face(),
         mshogi_core::chu::Face::Lion
     );
     assert!(
-        !native
+        !rules_position
             .legal_actions()
             .iter()
             .any(|a| a.route.contains(&at(5, 5)))
@@ -1114,7 +1138,7 @@ fn exposed_seed20_midgame_completes_with_bounded_quiescence() {
 }
 
 #[test]
-fn single_royal_threat_matches_native_captures_for_every_piece_identity() {
+fn single_royal_threat_matches_captures_for_every_piece_identity() {
     use mshogi_core::chu::Base;
     let target: Square = "6f".parse().unwrap();
     let remote: Square = "12l".parse().unwrap();
@@ -1144,20 +1168,24 @@ fn single_royal_threat_matches_native_captures_for_every_piece_identity() {
                         if blocked {
                             pieces.push((block, Piece::new(victim, Base::Pawn, false).unwrap()));
                         }
-                        let native = LocalPosition::admit(
+                        let rules_position = LocalPosition::admit(
                             Position::from_diagram(&pieces, victim, RootMetadata::diagram(0))
                                 .unwrap(),
                         );
-                        let expected = native.legal_actions_for(attacker).iter().any(|action| {
-                            native
-                                .preview_for(attacker, action)
-                                .unwrap()
-                                .captures
+                        let expected =
+                            rules_position
+                                .legal_actions_for(attacker)
                                 .iter()
-                                .any(|capture| capture.square == target)
-                        });
+                                .any(|action| {
+                                    rules_position
+                                        .preview_for(attacker, action)
+                                        .unwrap()
+                                        .captures
+                                        .iter()
+                                        .any(|capture| capture.square == target)
+                                });
                         assert_eq!(
-                            ChuPosition::from_local(&native).in_check(),
+                            ChuPosition::from_local(&rules_position).in_check(),
                             expected,
                             "{attacker:?} {base:?} promoted={promoted} origin={origin} blocked={blocked}"
                         );

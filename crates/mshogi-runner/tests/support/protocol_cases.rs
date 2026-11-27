@@ -1,8 +1,8 @@
 // The same fresh-process failure contract is exercised through both adapters.
 macro_rules! protocol_failure_cases {
-    ($native:ident, [$($mode:literal => $kind:ident),* $(,)?], $check:expr) => {
+    ($game:ident, [$($mode:literal => $kind:ident),* $(,)?], $check:expr) => {
         #[test]
-        fn protocol_failures_preserve_the_native_prefix_and_reap_children() {
+        fn protocol_failures_preserve_the_prefix_and_reap_children() {
             for (mode, kind) in [
                 ("malformed", FailureKind::MalformedReply),
                 ("illegal", FailureKind::IllegalAction),
@@ -12,7 +12,7 @@ macro_rules! protocol_failure_cases {
                 ("duplicate", FailureKind::LateReply),
                 $(($mode, FailureKind::$kind),)*
             ] {
-                let report = $native::run(&config(mode)).unwrap();
+                let report = $game::run(&config(mode)).unwrap();
                 for game in &report.games {
                     assert_eq!(game.stop, Stop::Failure, "{mode}");
                     assert_eq!(game.failure.as_ref().unwrap().kind, kind, "{mode}: {:?}", game.failure);

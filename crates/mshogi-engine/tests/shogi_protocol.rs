@@ -1,6 +1,7 @@
-//! Concrete native shogi admission/result boundaries; no second rules engine.
+//! Concrete shogi admission/result boundaries; no second rules engine.
 mod support;
-use mshogi_core::{native::*, shogi::*};
+use mshogi_core::shogi::GameCommand;
+use mshogi_core::{game::*, shogi::*};
 use mshogi_engine::*;
 use mshogi_search::shogi as search;
 use serde_json::{Value, json};
@@ -34,8 +35,8 @@ fn target(c: &ExecutionContext, side: Side) -> ExecutionTarget {
         event_index: c.game.event_count() as u64,
         board_ply: c.game.known_board_actions() as u64,
         session_version: c.session_version,
-        label: "Native shogi prefix".into(),
-        turn: NativeSide::Shogi(side),
+        label: "Shogi prefix".into(),
+        turn: TaggedSide::Shogi(side),
     }
 }
 fn raw(text: &str) -> std::io::Result<Vec<u8>> {
@@ -63,7 +64,7 @@ fn run(c: ExecutionContext) -> ExecutionObservation {
     response
 }
 #[test]
-fn real_native_choices_conclusions_and_score_perspective_roundtrip() {
+fn real_choices_conclusions_and_score_perspective_roundtrip() {
     for (sfen, expected) in [
         (
             "8k/9/9/4p4/4R4/9/9/9/K8 b - 1",
@@ -128,7 +129,7 @@ fn real_native_choices_conclusions_and_score_perspective_roundtrip() {
     }
 }
 #[test]
-fn analysis_is_read_only_and_bound_to_native_side_and_same_ply_terminal_prefix() {
+fn analysis_is_read_only_and_bound_to_side_and_same_ply_terminal_prefix() {
     let mut game = Game::new();
     game.submit(GameRequest {
         expected: game.context(),
@@ -277,7 +278,7 @@ fn shogi_result_families_do_not_match_a_chess_context() {
     assert!(!forged.matches(&c));
 }
 #[test]
-fn strict_result_parsing_and_native_observation_acceptance() {
+fn strict_result_parsing_and_observation_acceptance() {
     let c = request(&Game::new());
     let response = run(c.clone());
     let text = serde_json::to_string(&response).unwrap();
@@ -337,7 +338,7 @@ fn strict_result_parsing_and_native_observation_acceptance() {
     }
 }
 #[test]
-fn raw_request_routing_keeps_native_duplicates_and_unknowns_visible() {
+fn raw_request_routing_keeps_duplicates_and_unknowns_visible() {
     let c = request(&Game::new());
     let text = serde_json::to_string(&c).unwrap();
     for (a, b) in [

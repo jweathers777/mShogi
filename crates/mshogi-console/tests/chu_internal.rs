@@ -1,6 +1,6 @@
-//! Actual native Chu subprocess and sole desktop controller; no packaged GUI claim.
+//! Actual Chu subprocess and sole desktop controller; no packaged GUI claim.
 mod support;
-use mshogi_core::{chu as c, native::*};
+use mshogi_core::{chu as c, game::*};
 use mshogi_desktop_session::{DesktopController, SessionOperation, SharedSnapshot};
 use mshogi_engine::*;
 use std::{
@@ -10,7 +10,7 @@ use std::{
 use support::bridge::{started, wait};
 use support::desktop::command as send;
 use support::desktop::wait_file;
-// These tests need one complete native iteration, not production playing depth.
+// These tests need one complete iteration, not production playing depth.
 // The standard root completes depth one in 38 nodes; 512 leaves room for the
 // tested opening/history prefixes. Normal Resume limits are checked separately.
 const CONTRACT_LIMITS: WorkLimits = WorkLimits {
@@ -32,7 +32,7 @@ fn request(id: u64, g: &c::Game, analysis: bool) -> ExecutionRequest {
                         board_ply: game.known_board_actions() as u64,
                         session_version: 2,
                         label: "Chu exact prefix".into(),
-                        turn: NativeSide::Chu(g.position().side_to_move()),
+                        turn: TaggedSide::Chu(g.position().side_to_move()),
                     },
                 }
             } else {
@@ -86,7 +86,7 @@ fn actual_child_executes_complete_chu_choices_for_full_known_history_and_purpose
         assert!(r.matches(&req));
         assert_eq!(r.observation.context.game, req.context.game);
         let ExecutionResult::Chu { result } = &r.observation.result else {
-            panic!("actual native Chu result required: {r:?}")
+            panic!("actual Chu result required: {r:?}")
         };
         result.validate(&g).unwrap();
         let ChuResult::Choice {
@@ -143,12 +143,12 @@ fn clocked_child_admits_suffixes_and_resets_after_takeback() {
 #[test]
 fn actual_controller_readonly_analysis_save_reopen_and_stale_identity_retirement() {
     let mut ctl = DesktopController::new(env!("CARGO_BIN_EXE_mshogi").into()).unwrap();
-    let native = CanonicalRecord::chu(c::GameRecord::from_game(&c::Game::standard()).unwrap());
+    let record = CanonicalRecord::chu(c::GameRecord::from_game(&c::Game::standard()).unwrap());
     send(
         &mut ctl,
         SessionOperation::Replace {
-            record: native.clone(),
-            human: NativeSide::Chu(c::Side::Sente),
+            record: record.clone(),
+            human: TaggedSide::Chu(c::Side::Sente),
         },
     );
     let submitted = ctl.verify_chu_execution(CONTRACT_LIMITS, true).unwrap();
@@ -191,7 +191,7 @@ fn actual_controller_readonly_analysis_save_reopen_and_stale_identity_retirement
         assert!(Instant::now() < end);
         thread::sleep(Duration::from_millis(1));
     };
-    assert_eq!(observed.context, native);
+    assert_eq!(observed.context, record);
     assert!(observed.search_observations[0].score.is_some());
     assert!(
         observed.search_observations[0]
@@ -218,7 +218,7 @@ fn actual_controller_readonly_analysis_save_reopen_and_stale_identity_retirement
     // Engine results are not saved (MSH-228).
     assert!(reopened.observations.is_empty());
     assert!(!ctl.accept_shared(failure(submitted)));
-    assert_eq!(reopened.context, native);
+    assert_eq!(reopened.context, record);
     std::fs::remove_file(path).unwrap();
     let retired = ctl
         .verify_chu_execution(
@@ -251,7 +251,7 @@ fn actual_controller_readonly_analysis_save_reopen_and_stale_identity_retirement
         SessionOperation::play(serde_json::to_string(&action).unwrap()),
     );
     send(&mut ctl, SessionOperation::TakeBack {});
-    assert_eq!(ctl.shared_snapshot().context, native);
+    assert_eq!(ctl.shared_snapshot().context, record);
     assert!(!ctl.accept_shared(failure(retired)));
     let retired = ctl
         .verify_chu_execution(
@@ -284,7 +284,7 @@ fn actual_controller_readonly_analysis_save_reopen_and_stale_identity_retirement
                 )
                 .record(),
             ),
-            human: NativeSide::Chess(mshogi_core::chess::Color::White),
+            human: TaggedSide::Chess(mshogi_core::chess::Color::White),
         },
     );
     assert!(!ctl.accept_shared(failure(retired)));
@@ -296,7 +296,7 @@ fn controller(human: c::Side) -> DesktopController {
         &mut ctl,
         SessionOperation::Replace {
             record: CanonicalRecord::chu(c::GameRecord::from_game(&c::Game::standard()).unwrap()),
-            human: NativeSide::Chu(human),
+            human: TaggedSide::Chu(human),
         },
     );
     ctl
@@ -358,7 +358,7 @@ fn engine_turns_for_both_player_assignments(production_limits: bool) {
             after.context.known_board_actions(),
             base.context.known_board_actions() + 1
         );
-        assert_eq!(after.turn.id, NativeSide::Chu(human));
+        assert_eq!(after.turn.id, TaggedSide::Chu(human));
         let observation = &after.observations[0].observation;
         assert_eq!(observation.context.game, base.context);
         assert_eq!(observation.context.limits, expected_limits);
@@ -430,14 +430,14 @@ fn actual_slow_child_cancellation_replacement_cross_game_and_cleanup_are_bounded
         c::RootMetadata::imported(format!("msh43-controller-{}", std::process::id()), 0).unwrap(),
     )
     .unwrap();
-    let native = CanonicalRecord::chu(
+    let record = CanonicalRecord::chu(
         c::GameRecord::from_game(&c::Game::from_root(position).unwrap()).unwrap(),
     );
     send(
         &mut ctl,
         SessionOperation::Replace {
-            record: native.clone(),
-            human: NativeSide::Chu(c::Side::Sente),
+            record: record.clone(),
+            human: TaggedSide::Chu(c::Side::Sente),
         },
     );
     let slow = ctl
@@ -454,7 +454,7 @@ fn actual_slow_child_cancellation_replacement_cross_game_and_cleanup_are_bounded
     let at = Instant::now();
     send(&mut ctl, SessionOperation::Cancel {});
     assert!(at.elapsed() < Duration::from_secs(5));
-    assert_eq!(ctl.shared_snapshot().context, native);
+    assert_eq!(ctl.shared_snapshot().context, record);
     assert!(!ctl.accept_shared(failure(slow.clone())));
     std::fs::remove_file(first).unwrap();
     let replacement = ctl
@@ -478,7 +478,7 @@ fn actual_slow_child_cancellation_replacement_cross_game_and_cleanup_are_bounded
                 )
                 .record(),
             ),
-            human: NativeSide::Chess(mshogi_core::chess::Color::White),
+            human: TaggedSide::Chess(mshogi_core::chess::Color::White),
         },
     );
     assert!(!ctl.accept_shared(failure(replacement)));

@@ -26,10 +26,10 @@ any fixed-memory engine before selecting it; do not change its rated source.
 No external tablebases. Each game gets one `c3-standard-4` VM in `us-central1`.
 Request eight workers, never more. Record actual allocation and CPU model.
 
-The native runner owns legality, history, automatic claim handling and outcomes.
+The runner owns legality, history, automatic claim handling and outcomes.
 Use `auto_claim`, consistent with accepted historical evidence. Each result must
-pass native replay. Retain technical failures, capped games, truncated streams,
-cleanup failures and any harness-caused time loss as unscored. Genuine native
+pass game replay. Retain technical failures, capped games, truncated streams,
+cleanup failures and any harness-caused time loss as unscored. Genuine
 clock losses can be scored after checking the timing path. Do not infer that a
 replay success alone proves timing fairness. Inspect effective `go` commands,
 engine identity/options and process health. Keep all attempts.

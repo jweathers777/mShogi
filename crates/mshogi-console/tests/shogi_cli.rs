@@ -1,6 +1,6 @@
 //! Actual executable journeys, with facts from the independent MSH-64/67 corpus.
 mod support;
-use mshogi_core::{native::*, shogi::*};
+use mshogi_core::{game::CanonicalRecord, shogi::*};
 use std::{fs, process::Output};
 use support::cli::{Dir, stdout as text, success};
 fn run(input: &str) -> Output {
@@ -78,7 +78,7 @@ fn same_piece_destinations_have_explicit_sources_and_illegal_batches_are_atomic(
     assert!(errors.contains("MissingPromotion"));
 }
 #[test]
-fn declarations_queries_and_resignation_preserve_native_terminal_semantics() {
+fn declarations_queries_and_resignation_preserve_terminal_semantics() {
     let root = "K8/1RB6/1+P+P+P+P+P+P+P+P/9/9/9/9/9/8k b B5P 1";
     let out = run(&format!(
         "position sfen reduced {root}\nrecord print\neligibility sente\nrecord print\ndeclare sente\nhistory\nundo\nposition startpos\ndeclare gote\nhistory\nundo\nmove 7g7f 3c3d\nresign sente\nhistory\nundo\nstatus\n"
@@ -150,10 +150,10 @@ fn complete_canonical_save_load_replay_and_restored_undo() {
     assert!(s.contains("counter Some(Supplied)"));
     assert!(s.contains("b - 17"));
     assert!(s.contains("sfen 8k/9/4+R4/9/9/9/9/9/K8 w P 18"));
-    let CanonicalRecord::Shogi(native) = CanonicalRecord::from_json(records[0]).unwrap() else {
+    let CanonicalRecord::Shogi(game) = CanonicalRecord::from_json(records[0]).unwrap() else {
         panic!()
     };
-    let game = native.to_game().unwrap();
+    let game = game.to_game().unwrap();
     assert_eq!(game.events().len(), 2);
     assert_eq!(
         game.conclusion(),
@@ -240,7 +240,7 @@ fn large_pretty_record_file_loads() {
     let value: serde_json::Value =
         serde_json::from_str(&fs::read_to_string(&path).unwrap()).unwrap();
     let pretty = serde_json::to_string_pretty(&value).unwrap();
-    // Legal JSON whitespace makes a large file without changing the native history.
+    // Legal JSON whitespace makes a large file without changing the game history.
     let pretty = format!("{pretty}{}", " ".repeat(4097));
     fs::write(&path, pretty).unwrap();
     let out = run(&format!(
@@ -248,7 +248,7 @@ fn large_pretty_record_file_loads() {
         path.display()
     ));
     let s = text(&out);
-    assert!(s.contains("loaded complete native record"));
+    assert!(s.contains("loaded complete game record"));
     assert!(s.contains("Draw(Fourfold"));
     assert!(s.contains("perft-local 0 1"));
 }

@@ -1,7 +1,7 @@
 //! Authoritative Tori history and admission; local board rules remain in LocalPosition.
 use super::*;
-use crate::native::history::{GameHistory, Snapshot};
-pub use crate::native::{
+use crate::game::history::{GameHistory, Snapshot};
+pub use crate::game::{
     GameContext,
     history::{CapacityUsage, GameUndo},
 };
@@ -9,7 +9,7 @@ use crate::repetition::RepetitionIndex;
 use serde::{Deserialize, Serialize};
 use std::hash::{Hash, Hasher};
 
-/// Identity for repetition only: every native face/owner, both hands and turn.
+/// Identity for repetition only: every face/owner, both hands and turn.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct RepetitionKey {
     board: [Option<Piece>; 49],
@@ -74,12 +74,12 @@ impl Repetition {
 pub enum Conclusion {
     /// Checked Phoenix with no local action.
     Checkmate {
-        /// Native winner.
+        /// Winner.
         winner: Side,
     },
     /// Quiet no-action is a loss under T05.
     StalemateLoss {
-        /// Immobile native side.
+        /// Immobile game side.
         loser: Side,
     },
     /// All local departures repeat one of the forbidden choices.
@@ -93,7 +93,7 @@ pub enum Conclusion {
         winner: Side,
     },
 }
-/// Native participant/administrative command. Unsupported declarations remain explicit refusals.
+/// Participant/administrative command. Unsupported declarations remain explicit refusals.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum GameCommand {
@@ -117,17 +117,17 @@ pub struct GameEvent {
     pub index: usize,
     /// Accepted board actions (not the declared imported counter).
     pub board_ply: usize,
-    /// Native command actor, even when not the side to move.
+    /// Game command actor, even when not the side to move.
     pub actor: Side,
     /// Original complete submitted command.
     pub command: GameCommand,
-    /// Native board effects; null for non-board events.
+    /// Game board effects; null for non-board events.
     pub effects: Option<Effects>,
     /// All known occurrences of the current board key (at most two: a third
     /// occurrence is refused). The restriction they imply is derived on replay,
     /// not stored.
     pub occurrences: Vec<usize>,
-    /// Actual native conclusion only.
+    /// Actual game conclusion only.
     pub conclusion: Option<Conclusion>,
 }
 /// Immutable historical data; no action application or playable branch method.
@@ -149,29 +149,29 @@ pub struct HistorySnapshot {
     pub conclusion: Option<Conclusion>,
 }
 impl HistorySnapshot {
-    /// Exact native logical state. External callers cannot replace this admitted
+    /// Exact logical state. External callers cannot replace this admitted
     /// state with an unvalidated diagram or construct forged history views.
     pub fn state(&self) -> &StructuralState {
         &self.state
     }
     /// Read-only local choices/inspection are available without creating a playable Game.
     pub fn local_position(&self) -> LocalPosition {
-        // Already admitted native state; historical moving-side check is permitted.
+        // Already admitted game state; historical moving-side check is permitted.
         LocalPosition::admit(Position::install(self.state.clone()))
             .expect("accepted historical state")
     }
 }
 /// Context-checked complete request.
-pub type GameRequest = crate::native::history::Request<Side, GameCommand>;
-/// Exhausted native resource, never an illegal move or a game outcome.
+pub type GameRequest = crate::game::history::Request<Side, GameCommand>;
+/// Exhausted resource, never an illegal move or a game outcome.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Resource {
-    /// Encoded native root bytes at admission.
+    /// Encoded game root bytes at admission.
     EncodedBytes,
     /// Declared board counter.
     Counter,
 }
-/// Atomic native admission/reversal error; failures do not commit audit events.
+/// Atomic game admission/reversal error; failures do not commit audit events.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum GameError {
     /// T07 local root failure.
@@ -180,11 +180,11 @@ pub enum GameError {
     NotRoot,
     /// Wrong history or retired runtime.
     StaleContext,
-    /// Board action actor differs from native turn.
+    /// Board action actor differs from game turn.
     WrongActor,
     /// Selected profile has no agreement/impasse declaration.
     UnsupportedCommand,
-    /// An actual native conclusion already exists.
+    /// An actual game conclusion already exists.
     Concluded,
     /// This complete board action would create a third occurrence (T06).
     ThirdOccurrence,
@@ -371,11 +371,11 @@ impl Game {
     pub fn standard() -> Self {
         Self::from_root(Position::standard()).expect("standard root")
     }
-    /// Current native position and provenance.
+    /// Current position and provenance.
     pub fn position(&self) -> &Position {
         self.local.position()
     }
-    /// Actual concluded native result.
+    /// Actual concluded engine result.
     pub fn conclusion(&self) -> Option<Conclusion> {
         self.snapshot().conclusion
     }
@@ -387,7 +387,7 @@ impl Game {
     pub fn occurrences(&self) -> &[usize] {
         &self.snapshot().occurrences
     }
-    /// Complete permitted native choices; concluded games have none even if local choices exist.
+    /// Complete permitted game choices; concluded games have none even if local choices exist.
     pub fn legal_actions(&self) -> Vec<Action> {
         if self.conclusion().is_some() {
             return vec![];
@@ -401,7 +401,7 @@ impl Game {
     /// Complete canonical history at an exact committed event prefix, for read-only
     /// historical analysis/inspection. Future commands and obligations are absent.
     /// This does not branch, rewind or replace the live Game; restoring the record
-    /// later always creates fresh native authority.
+    /// later always creates fresh session authority.
     pub fn record_prefix(&self, count: usize) -> Result<GameRecord, RecordError> {
         if count > self.events.len() {
             return Err(RecordError::Prefix);

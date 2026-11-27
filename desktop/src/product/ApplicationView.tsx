@@ -1,10 +1,10 @@
 import { tenjikuProfiles } from "../games";
-import type { GameSnapshot, Operation } from "../native";
+import type { GameSnapshot, Operation } from "../sessionTypes";
 import { useEffect, useState } from "react";
 import { ApplicationShell, DocumentState, HistoricalNotice, LiveGameHeading } from "./ApplicationShell";
 import { GameBoard } from "./GameBoard";
 import { GameActions, type Confirmation } from "./GameCapabilities";
-import { NativeAnalysis, NativeHistory, NativeRecovery, nativeCapacityReached } from "./NativeSessionPanels";
+import { GameAnalysis, GameHistory, GameRecovery, gameCapacityReached } from "./GameSessionPanels";
 import { Dialog } from "./Dialog";
 import { useApplicationFocus } from "./useApplicationFocus";
 
@@ -24,7 +24,7 @@ export function ApplicationView({ snapshot, session, onNewGame, onOpen, blocked 
   const focus = useApplicationFocus(blocked || confirmation !== null || supportOpen);
   useEffect(() => { if (blocked) { setConfirmation(null); setSupportOpen(false); } }, [blocked]);
   const command = (operation: Operation) => session.command(snapshot, operation);
-  const capacity = nativeCapacityReached(snapshot);
+  const capacity = gameCapacityReached(snapshot);
   const status = sessionStatus(snapshot);
   const settings = snapshot.document.settings;
   const orientation = settings.orientation.side;
@@ -47,12 +47,12 @@ export function ApplicationView({ snapshot, session, onNewGame, onOpen, blocked 
       <p>Your live game is unchanged.</p></HistoricalNotice>}
     board={<GameBoard snapshot={snapshot} disabled={disabled || capacity || !snapshot.capabilities.board_action}
       inspectionDisabled={disabled} command={command} />}
-    notices={<NativeRecovery snapshot={snapshot} error={session.error} disabled={disabled} command={command} />}
-    analysis={<NativeAnalysis snapshot={snapshot} defaults={settings.analysis_defaults} disabled={disabled || capacity} command={command}
+    notices={<GameRecovery snapshot={snapshot} error={session.error} disabled={disabled} command={command} />}
+    analysis={<GameAnalysis snapshot={snapshot} defaults={settings.analysis_defaults} disabled={disabled || capacity} command={command}
       maxDepth={snapshot.game === "chess" ? 8 : 64}
       maxNodes={5000000} minNodes={snapshot.game === "chess" ? 0 : 1}
       unavailable={!exactPrefix ? "Analysis is unavailable between a move and its following event. Select a completed event or return to live." : undefined} />}
-    history={<NativeHistory snapshot={snapshot} disabled={disabled} command={command} />}
+    history={<GameHistory snapshot={snapshot} disabled={disabled} command={command} />}
     gameActions={<GameActions snapshot={snapshot} disabled={disabled || capacity} resignDisabled={disabled} command={command} confirm={setConfirmation} />}
     support={<button className="support-trigger" data-support-trigger aria-label="About mShogi" title="About mShogi" disabled={disabled} onClick={() => setSupportOpen(true)}><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.6" /><path d="M12 10v7" fill="none" stroke="currentColor" strokeWidth="1.8" /><circle cx="12" cy="7" r="1" fill="currentColor" /></svg></button>}
     overlays={<>{!blocked && supportOpen && <SupportDialog snapshot={snapshot} session={session} close={() => setSupportOpen(false)} />}{!blocked && confirmation && <Dialog title={confirmation.title} cancel={() => { if (!busy) setConfirmation(null); }}>

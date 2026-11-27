@@ -1,9 +1,9 @@
-//! One request token for the native games that admit context-bound commands.
+//! One request token for the games that admit context-bound commands.
 use std::sync::atomic::{AtomicU64, Ordering};
 
 static NEXT_INSTANCE: AtomicU64 = AtomicU64::new(1);
 
-/// Runtime request token of one native game instance; never saved in a record.
+/// Runtime request token of one game instance; never saved in a record.
 ///
 /// The instance is new for each game, copy, fork and replay. The revision
 /// advances at each accepted command, undo and retirement, and never goes back.
@@ -23,7 +23,7 @@ impl GameContext {
             revision: 0,
         }
     }
-    /// Advance after a command, undo or retirement. A native runtime cannot
+    /// Advance after a command, undo or retirement. A runtime cannot
     /// perform 2^64 operations in the lifetime of the process.
     pub(crate) fn advance(&mut self) {
         self.revision += 1;

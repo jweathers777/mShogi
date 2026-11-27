@@ -406,7 +406,7 @@ fn history_is_rules_owned_and_import_resets_known_repetitions() {
 fn exported_record_restores_position_history_policy_and_undo_in_a_fresh_process() {
     use mshogi_core::{
         chess::{ClaimPolicy, Game},
-        native::CanonicalRecord,
+        game::CanonicalRecord,
     };
     let first = shell(b"move g1f3 g8f6 f3g1 f6g8\nrecord print\n");
     success(&first);
@@ -440,7 +440,7 @@ fn exported_record_restores_position_history_policy_and_undo_in_a_fresh_process(
 
 #[test]
 fn invalid_or_observation_bearing_records_never_replace_the_diagnostic_game() {
-    use mshogi_core::{chess::*, native::CanonicalRecord};
+    use mshogi_core::{chess::*, game::CanonicalRecord};
     let mut record = Game::new(ClaimPolicy::ExplicitOnly).record();
     record.push_event(RecordEvent {
         ply: 0,

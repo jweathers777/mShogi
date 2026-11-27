@@ -9,9 +9,9 @@ use std::{error::Error, fmt};
 pub const MAX_DEPTH: u16 = 64;
 /// Maximum total visits, including partial iterations.
 pub const MAX_NODES: u64 = 5_000_000;
-/// Maximum number of native choices in a reported continuation.
+/// Maximum number of game choices in a reported continuation.
 pub const MAX_LINE: usize = 8;
-/// Root terminal win, less distance in native actions or commands.
+/// Root terminal win, less distance in actions or commands.
 pub const WIN_SCORE: i32 = alphabeta::MATE_SCORE;
 
 /// Mandatory deterministic work limits.
@@ -29,7 +29,7 @@ impl Limits {
     }
 }
 
-/// Native choice or an existing rules-owned conclusion.
+/// Game choice or an existing rules-owned conclusion.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Decision<C, F> {
     /// A move or formal command.
@@ -66,25 +66,25 @@ impl From<alphabeta::Status> for Status {
 pub struct SearchResult<C, F, S, P, A> {
     /// Last completed decision, or a legal fallback in supported timed searches.
     pub decision: Option<Decision<C, F>>,
-    /// Heuristic or native terminal distance.
+    /// Heuristic or terminal distance.
     pub score: Option<i32>,
-    /// Native side to move at the root.
+    /// Game side to move at the root.
     pub perspective: S,
     /// Fully completed depth.
     pub completed_depth: u16,
     /// Visits including partial iterations.
     pub nodes: u64,
-    /// Native continuation from the selected decision.
+    /// Continuation from the selected decision.
     pub principal_variation: Vec<C>,
     /// Completion or interruption reason.
     pub status: Status,
-    /// Required native adjudication, if any.
+    /// Required adjudication, if any.
     pub unresolved: Option<P>,
-    /// Native root assessment for games that report one.
+    /// Game root assessment for games that report one.
     pub assessment: A,
 }
 
-/// Errors are unscored and retain native transition diagnostics.
+/// Errors are unscored and retain transition diagnostics.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum SearchError<E> {
     /// Unsupported finite work limits.
@@ -93,7 +93,7 @@ pub enum SearchError<E> {
     Transition(E),
     /// The live root has no admitted board continuation.
     NoBoardActions,
-    /// The private search disagreed with the native game.
+    /// The private search disagreed with the game.
     Invariant,
 }
 impl<E: fmt::Debug> fmt::Display for SearchError<E> {
@@ -104,7 +104,7 @@ impl<E: fmt::Debug> fmt::Display for SearchError<E> {
 impl<E: fmt::Debug> Error for SearchError<E> {}
 
 type Move<G> = <<G as RootGame>::Position as SearchPosition>::Move;
-/// Native observations for a specific game.
+/// Engine observations for a specific game.
 pub type ResultFor<G> = SearchResult<
     <G as RootGame>::Choice,
     <G as RootGame>::Conclusion,
@@ -114,40 +114,40 @@ pub type ResultFor<G> = SearchResult<
 >;
 type Failure<G> = SearchError<<G as RootGame>::GameError>;
 
-/// Native operations and policy used by the shared root search.
+/// Game operations and policy used by the shared root search.
 pub trait RootGame: Sized {
     /// Private search position.
     type Position: SearchPosition;
-    /// Native board action.
+    /// Game board action.
     type Action: PartialEq;
     /// Board action or formal command.
     type Choice: Clone + PartialEq + From<Self::Action>;
-    /// Native side to move.
+    /// Game side to move.
     type Side: Copy + Eq;
-    /// Native conclusion.
+    /// Game conclusion.
     type Conclusion: Copy;
-    /// Native request error.
+    /// Request error.
     type GameError: fmt::Debug;
     /// Required adjudication (uninhabited in games without it).
     type Pending: Clone;
-    /// Native no-win assessment, or unit.
+    /// No-win assessment, or unit.
     type Assessment;
     /// Megabytes in a fresh search table.
     const TABLE_MB: usize = 16;
-    /// A deadline can return a native root-order move before an iteration completes.
+    /// A deadline can return a game root-order move before an iteration completes.
     const TIMED_FALLBACK: bool = false;
     /// Observe a terminal result or timed fallback even with no visits available.
     const TIMED_ZERO_NODES: bool = false;
-    /// A first-action native conclusion overrides the private score.
+    /// A first-action game conclusion overrides the private score.
     const SCORE_FIRST_CONCLUSION: bool = false;
 
-    /// Native side to move.
+    /// Game side to move.
     fn side(&self) -> Self::Side;
     /// Committed conclusion, if play has ended.
     fn finished(&self) -> Option<Self::Conclusion>;
-    /// Winner of the native conclusion, or none for a draw.
+    /// Winner of the game conclusion, or none for a draw.
     fn winner(conclusion: Self::Conclusion) -> Option<Self::Side>;
-    /// Isolated game for replay with native admission.
+    /// Isolated game for replay with game admission.
     fn copy_for_replay(&self) -> Self;
     /// Root assessment, including on interrupted requests.
     fn assessment(&self) -> Self::Assessment;
@@ -165,12 +165,12 @@ pub trait RootGame: Sized {
     ) -> Result<bool, Failure<Self>> {
         Ok(false)
     }
-    /// Legal board actions in native order. None indicates cooperative cancellation.
+    /// Legal board actions in order. None indicates cooperative cancellation.
     fn legal(
         &self,
         stop: &mut dyn FnMut() -> bool,
     ) -> Result<Option<Vec<Self::Action>>, Failure<Self>>;
-    /// Build the private position with any native root restrictions.
+    /// Build the private position with any game root restrictions.
     fn position_for_search(&self, legal: &[Self::Action]) -> Self::Position;
     /// Convert a private move at the current replay position.
     fn action(position: &Self::Position, m: Move<Self>) -> Self::Action;
@@ -187,11 +187,11 @@ pub trait RootGame: Sized {
         choice: &Self::Choice,
         stop: &mut dyn FnMut() -> bool,
     ) -> Result<(), Self::GameError>;
-    /// A cancellation reported by native admission.
+    /// A cancellation reported by game admission.
     fn stopped(_error: &Self::GameError) -> bool {
         false
     }
-    /// Check cancellation before starting costly native replay.
+    /// Check cancellation before starting costly game replay.
     fn stop_before_replay(_stop: &mut dyn FnMut() -> bool) -> bool {
         false
     }
@@ -203,7 +203,7 @@ pub trait RootGame: Sized {
     fn replay_action(position: &mut Self::Position, m: Move<Self>) -> Option<Self::Action> {
         Some(Self::action(position, m))
     }
-    /// Advance a state-dependent decoder after native admission.
+    /// Advance a state-dependent decoder after game admission.
     fn advance(_position: &mut Self::Position, _m: Move<Self>) -> Result<(), Failure<Self>> {
         Ok(())
     }
@@ -233,7 +233,7 @@ pub fn search_with_stop<G: RootGame>(
     search_with_state(game, limits, None, &mut Searcher::new(G::TABLE_MB), stop)
 }
 
-/// Search with caller-owned state. The native game remains the authority on
+/// Search with caller-owned state. The game remains the authority on
 /// root decisions and on each action of the reported line.
 pub fn search_with_state<G: RootGame>(
     game: &G,
@@ -307,11 +307,11 @@ pub fn search_with_state<G: RootGame>(
     };
     result.completed_depth = outcome.depth;
     if let Some(choice) = draw_claim.filter(|_| outcome.score.is_some_and(|score| score <= 0)) {
-        let mut native = game.copy_for_replay();
-        native
+        let mut rules_position = game.copy_for_replay();
+        rules_position
             .play(&choice, &mut stop)
             .map_err(SearchError::Transition)?;
-        let conclusion = native.finished().ok_or(SearchError::Invariant)?;
+        let conclusion = rules_position.finished().ok_or(SearchError::Invariant)?;
         if G::winner(conclusion).is_some() {
             return Err(SearchError::Invariant);
         }
@@ -329,11 +329,13 @@ pub fn search_with_state<G: RootGame>(
         result.completed_depth = 0;
         return Ok(result);
     }
-    let mut native = game.copy_for_replay();
+    let mut rules_position = game.copy_for_replay();
     let mut first_score = None;
     for &m in outcome.pv.iter().take(MAX_LINE) {
         let first = result.principal_variation.is_empty();
-        if (!first && timing.expired()) || native.finished().is_some() || native.pending().is_some()
+        if (!first && timing.expired())
+            || rules_position.finished().is_some()
+            || rules_position.pending().is_some()
         {
             break;
         }
@@ -341,7 +343,7 @@ pub fn search_with_state<G: RootGame>(
             break;
         };
         let choice = G::Choice::from(action);
-        match native.play(&choice, &mut stop) {
+        match rules_position.play(&choice, &mut stop) {
             Ok(()) => {}
             Err(error) if G::stopped(&error) => {
                 result.status = Status::Stopped;
@@ -356,7 +358,9 @@ pub fn search_with_state<G: RootGame>(
         }
         G::advance(&mut position, m)?;
         if first && G::SCORE_FIRST_CONCLUSION {
-            first_score = native.finished().map(|c| terminal_score::<G>(c, side, 1));
+            first_score = rules_position
+                .finished()
+                .map(|c| terminal_score::<G>(c, side, 1));
         }
         result.principal_variation.push(choice);
     }
@@ -382,11 +386,11 @@ macro_rules! root_api {
         pub const DEFAULT_TABLE_MB: usize = <Game as RootGame>::TABLE_MB;
         /// Persistent private search state.
         pub type Engine = crate::alphabeta::Searcher<<Game as RootGame>::Position>;
-        /// Native choice or conclusion for this game.
+        /// Game choice or conclusion for this game.
         pub type Decision = crate::root::Decision<<Game as RootGame>::Choice, Conclusion>;
-        /// Native observations from one request.
+        /// Engine observations from one request.
         pub type SearchResult = crate::root::ResultFor<Game>;
-        /// Search or native admission failure.
+        /// Search or game admission failure.
         pub type SearchError = crate::root::SearchError<GameError>;
         /// Start with an empty table and move statistics.
         pub fn new_engine() -> Engine {
@@ -414,7 +418,7 @@ macro_rules! root_api {
         ) -> Result<SearchResult, SearchError> {
             crate::root::search_with_state(game, limits, time, engine, stop)
         }
-        /// Terminal score in native command distance.
+        /// Terminal score in game command distance.
         pub fn terminal_score(c: Conclusion, side: Side, distance: u16) -> i32 {
             crate::root::terminal_score::<Game>(c, side, distance)
         }
@@ -422,8 +426,8 @@ macro_rules! root_api {
 }
 pub(crate) use root_api;
 
-// The five rule modules expose these operations with the same native shape.
-macro_rules! native_types {
+// The five rule modules expose these operations with the same shape.
+macro_rules! types {
     ($pos:ty, $choice:ty, $copy:ident, $action:ident) => {
         type Position = $pos;
         type Action = Action;
@@ -445,7 +449,7 @@ macro_rules! native_types {
         }
     };
 }
-pub(crate) use native_types;
+pub(crate) use types;
 
 macro_rules! no_adjudication {
     () => {
@@ -471,7 +475,7 @@ macro_rules! restricted_board {
 }
 pub(crate) use restricted_board;
 
-// Both timed protocols need the first native legal move, even at depth zero.
+// Both timed protocols need the first legal move, even at depth zero.
 // Their compact moves also need the current private position to decode the PV.
 macro_rules! timed_moves {
     ($pos:ty) => {

@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { deferred, renderBoard, square } from "./testing/helpers";
-import type { ChessSnapshot } from "./native";
+import type { ChessSnapshot } from "./sessionTypes";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { TestBoard as Board } from "./testing/TestBoard";
@@ -19,8 +19,8 @@ function board(snapshot = standard) {
     version: snapshot.version, orientation: "white" as const, promotion: true });
 }
 
-describe("native complete choice selection", () => {
-  it("sends only a supplied native action, not an unavailable destination", () => {
+describe("complete choice selection", () => {
+  it("sends only a supplied action, not an unavailable destination", () => {
     const { onPlay } = board();
     fireEvent.click(square("e2"));
     expect(square("e4").getAttribute("aria-label")).toContain(
@@ -31,7 +31,7 @@ describe("native complete choice selection", () => {
     fireEvent.click(square("e4"));
     expect(onPlay).toHaveBeenCalledExactlyOnceWith("e2e4");
   });
-  it("shows four native promotion choices and commits only the explicitly selected piece", () => {
+  it("shows four promotion choices and commits only the explicitly selected piece", () => {
     const { onPlay } = board(promotion);
     fireEvent.click(square("a7"));
     fireEvent.click(square("a8"));
@@ -103,7 +103,7 @@ describe("native complete choice selection", () => {
       "Chess board, black at bottom",
     );
   });
-  it("clears partial selection on a newer native session and rejects disabled clicks", () => {
+  it("clears partial selection on a newer game session and rejects disabled clicks", () => {
     const { onPlay, rerender, props } = board();
     fireEvent.click(square("e2"));
     rerender(<Board {...props} version={props.version + 1} disabled />);
@@ -115,7 +115,7 @@ describe("native complete choice selection", () => {
 });
 
 // These supplied inspection replies exercise presentation dispatch, not a second
-// movement oracle. Native rules/session tests establish the returned legality.
+// movement oracle. Rules/session tests establish the returned legality.
 const inspectedPawn = {
   game: "chess" as const, token: { document: 1, version: 0, revision: 0, selection: 0 },
   origin: "e7", side: { id: { game_kind: "chess" as const, side: "black" as const }, key: "black", label: "Black", first_mover: false },
@@ -196,7 +196,7 @@ it("keeps live inspection help in the shell footer without changing board select
   expect(onPlay).not.toHaveBeenCalled();
 });
 
-it("retires completion focus to the board but never steals an unrelated input on native context changes", () => {
+it("retires completion focus to the board but never steals an unrelated input on game context changes", () => {
   const { props, rerender } = board(promotion);
   fireEvent.click(square("a7")); fireEvent.click(square("a8"));
   expect(document.activeElement).toBe(screen.getByRole("button", { name: "queen" }));
@@ -217,10 +217,10 @@ it("keeps completed-history geometry separate from current selection and inspect
   fireEvent.click(square("e4")); expect(onPlay).toHaveBeenCalledExactlyOnceWith("e2e4");
 });
 
-it("preserves existing Chess square and coordinate geometry without the optional native frame", () => {
+it("preserves existing Chess square and coordinate geometry without the optional frame", () => {
   const { container } = board();
   expect(container.querySelector("svg")?.getAttribute("viewBox")).toBe("0 0 840 840");
   expect(square("a8").getAttribute("transform")).toBe("translate(20, 20)");
   expect(square("a8").querySelector(".coordinate")?.textContent).toBe("8");
-  expect(container.querySelector(".native-coordinate-frame")).toBeNull();
+  expect(container.querySelector(".coordinate-frame")).toBeNull();
 });

@@ -86,9 +86,9 @@ fn deep_perft_counts_equal_published_values() {
     }
 }
 
-fn same_board(fast: &ChessPosition, native: &Position) {
+fn same_board(fast: &ChessPosition, rules_position: &Position) {
     for sq in 0..64 {
-        let expected = native.piece_at(square(sq)).map(|piece| {
+        let expected = rules_position.piece_at(square(sq)).map(|piece| {
             (
                 usize::from(piece.color == Color::Black),
                 kind_index(piece.kind),
@@ -98,11 +98,11 @@ fn same_board(fast: &ChessPosition, native: &Position) {
             fast.kind_at(sq),
             expected,
             "square {sq} in {}",
-            native.to_fen()
+            rules_position.to_fen()
         );
     }
-    assert_eq!(fast.side_to_move(), native.side_to_move());
-    let rights = native.castling_rights();
+    assert_eq!(fast.side_to_move(), rules_position.side_to_move());
+    let rights = rules_position.castling_rights();
     assert_eq!(
         fast.castling,
         u8::from(rights.kingside(Color::White))
@@ -112,14 +112,14 @@ fn same_board(fast: &ChessPosition, native: &Position) {
     );
     assert_eq!(
         fast.en_passant,
-        native
+        rules_position
             .en_passant_target()
             .map_or(NO_SQUARE, |sq| index(sq) as u8)
     );
-    assert_eq!(u32::from(fast.halfmove), native.halfmove_clock());
-    assert_eq!(fast.in_check(), native.in_check());
-    // Incremental state equals a rebuild from the native position.
-    let rebuilt = ChessPosition::from_position(native);
+    assert_eq!(u32::from(fast.halfmove), rules_position.halfmove_clock());
+    assert_eq!(fast.in_check(), rules_position.in_check());
+    // Incremental state equals a rebuild from the position.
+    let rebuilt = ChessPosition::from_position(rules_position);
     assert_eq!(fast.hash, rebuilt.hash);
     assert_eq!(fast.hash, fast.computed_hash());
     assert_eq!(fast.material, rebuilt.material);
@@ -133,7 +133,7 @@ fn same_board(fast: &ChessPosition, native: &Position) {
 /// Walk random legal games in both implementations and compare legal moves,
 /// resulting positions, pseudo-legality answers and exact take-back.
 #[test]
-fn random_walks_agree_with_native_rules() {
+fn random_walks_agree_with_rules() {
     let mut rng = TestRng(0x5EED_1234_ABCD_0001);
     let starts = [
         "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
@@ -144,17 +144,17 @@ fn random_walks_agree_with_native_rules() {
     ];
     let mut positions = 0;
     for game in 0..60 {
-        let mut native = Position::from_fen(starts[game % starts.len()]).unwrap();
-        let mut fast = ChessPosition::from_position(&native);
+        let mut rules_position = Position::from_fen(starts[game % starts.len()]).unwrap();
+        let mut fast = ChessPosition::from_position(&rules_position);
         for _ in 0..120 {
-            same_board(&fast, &native);
-            let mut expected = native.legal_actions();
+            same_board(&fast, &rules_position);
+            let mut expected = rules_position.legal_actions();
             let legal = fast.legal_moves();
             let mut actual: Vec<_> = legal.iter().map(|&m| fast.action(m)).collect();
             let key = |a: &Action| (index(a.from), index(a.to), a.promotion.map(|p| p as u8));
             expected.sort_by_key(key);
             actual.sort_by_key(key);
-            assert_eq!(actual, expected, "{}", native.to_fen());
+            assert_eq!(actual, expected, "{}", rules_position.to_fen());
             // Pseudo-legality of arbitrary encodings equals membership in the
             // generated pseudo-legal set.
             let mut pseudo = Vec::new();
@@ -166,9 +166,9 @@ fn random_walks_agree_with_native_rules() {
                     fast.is_tactical(m),
                     i < tactical,
                     "{m:?} {}",
-                    native.to_fen()
+                    rules_position.to_fen()
                 );
-                assert!(fast.is_pseudo_legal(m), "{m:?} {}", native.to_fen());
+                assert!(fast.is_pseudo_legal(m), "{m:?} {}", rules_position.to_fen());
                 assert_eq!(pseudo.iter().filter(|&&other| other == m).count(), 1);
             }
             // The check without a change of the position agrees with make.
@@ -182,7 +182,7 @@ fn random_walks_agree_with_native_rules() {
                         fast.quiet_piece_move_is_legal(m),
                         legal_by_make,
                         "{m:?} {}",
-                        native.to_fen()
+                        rules_position.to_fen()
                     );
                 }
             }
@@ -192,7 +192,7 @@ fn random_walks_agree_with_native_rules() {
                     fast.is_pseudo_legal(m),
                     pseudo.contains(&m),
                     "{m:?} {}",
-                    native.to_fen()
+                    rules_position.to_fen()
                 );
             }
             if legal.is_empty() {
@@ -221,10 +221,10 @@ fn random_walks_agree_with_native_rules() {
                 );
             }
             let m = legal[(rng.next() % legal.len() as u64) as usize];
-            native.apply(fast.action(m)).unwrap();
+            rules_position.apply(fast.action(m)).unwrap();
             assert!(fast.make(m));
             positions += 1;
-            if native.halfmove_clock() >= 100 {
+            if rules_position.halfmove_clock() >= 100 {
                 break;
             }
         }

@@ -1,8 +1,8 @@
-//! Shared clock ledger, native turn execution and persistent process lifecycle.
+//! Shared clock ledger, game turn execution and persistent process lifecycle.
 use crate::{
     clocked::Outcome,
     process::{Engine, escaped},
-    protocol::{self, End, Native},
+    protocol::{self, End, ProtocolGame},
     protocol::{Failure, Process, Traffic},
     transport::{Dialect, Transport},
     *,
@@ -15,11 +15,11 @@ use std::time::{Duration, Instant};
 pub struct ClockedTurn<S> {
     /// Engine index.
     pub engine: usize,
-    /// Native event count before the reply.
+    /// Game event count before the reply.
     pub version: usize,
-    /// Canonical native prefix digest.
+    /// Canonical prefix digest.
     pub context_sha256: String,
-    /// Native side to move.
+    /// Game side to move.
     pub actor: S,
     /// Position command with the complete known history.
     pub position: String,
@@ -27,7 +27,7 @@ pub struct ClockedTurn<S> {
     pub go: String,
     /// Accepted bestmove line.
     pub reply: String,
-    /// Remaining time for the two native sides before the reply.
+    /// Remaining time for the two game sides before the reply.
     pub clock_before_ms: [u64; 2],
     /// Wall time from the written go to the bestmove line (rounded up).
     pub elapsed_ms: u64,
@@ -41,7 +41,7 @@ pub struct ClockedTurn<S> {
 pub struct Exhaustion<S> {
     /// Engine index.
     pub engine: usize,
-    /// Native side to move.
+    /// Game side to move.
     pub actor: S,
     /// Remaining time of the mover.
     pub remaining_ms: u64,
@@ -63,11 +63,11 @@ pub struct MatchReport<C, S, O> {
     pub platform: String,
     /// Advertised `id` lines of each engine.
     pub engine_ids: [Vec<String>; 2],
-    /// Canonical native game record.
+    /// Canonical game record.
     pub game: String,
-    /// Native conclusion, checked on replay.
+    /// Game conclusion, checked on replay.
     pub conclusion: Option<O>,
-    /// Half points of engine 0 and engine 1, only for native conclusions.
+    /// Half points of engine 0 and engine 1, only for game conclusions.
     pub engine_score: Option<[u8; 2]>,
     /// Stop reason.
     pub stop: MatchStop,
@@ -87,7 +87,7 @@ pub struct MatchReport<C, S, O> {
     pub elapsed_ns: u64,
 }
 
-pub(crate) trait MatchNative: Native {
+pub(crate) trait MatchInternal: ProtocolGame {
     type Wire: Copy;
     fn dialect(wire: Self::Wire) -> Dialect;
     fn position_for(wire: Self::Wire, game: &Self::Game) -> String;
@@ -101,7 +101,7 @@ pub(crate) trait MatchNative: Native {
         None
     }
 }
-pub(crate) struct Settings<'a, G: MatchNative> {
+pub(crate) struct Settings<'a, G: MatchInternal> {
     pub engines: &'a [EngineConfig; 2],
     pub watchdogs: Watchdogs,
     pub io: IoLimits,
@@ -112,12 +112,12 @@ pub(crate) struct Settings<'a, G: MatchNative> {
     pub increment: [u64; 2],
     pub wire: [G::Wire; 2],
 }
-impl<G: MatchNative> Settings<'_, G> {
+impl<G: MatchInternal> Settings<'_, G> {
     fn engine_for(&self, side: G::Side) -> usize {
         engine_for(self.first, G::side(side))
     }
     fn score(&self, stop: MatchStop, conclusion: Option<G::Conclusion>) -> Option<[u8; 2]> {
-        if stop != MatchStop::NativeConclusion {
+        if stop != MatchStop::GameConclusion {
             return None;
         }
         let points = G::score(conclusion?);
@@ -131,9 +131,9 @@ pub(crate) fn engine_for(first: usize, side: usize) -> usize {
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum MatchStop {
-    /// Native conclusion; the game is scored.
-    NativeConclusion,
-    /// Native adjudication is pending (for example a chase question); unscored.
+    /// Game conclusion; the game is scored.
+    GameConclusion,
+    /// Adjudication is pending (for example a chase question); unscored.
     Unresolved,
     /// A side's clock ran out; unscored.
     ClockExhausted,
@@ -143,7 +143,7 @@ pub enum MatchStop {
     Failure,
 }
 
-pub(crate) struct Completed<G: MatchNative> {
+pub(crate) struct Completed<G: MatchInternal> {
     pub game: G::Game,
     pub stop: MatchStop,
     pub identities: [EngineIdentity; 2],
@@ -156,7 +156,7 @@ pub(crate) struct Completed<G: MatchNative> {
     pub processes: Vec<Process>,
     pub elapsed_ns: u64,
 }
-pub(crate) fn run_report<C: Clone + Serialize, G: MatchNative>(
+pub(crate) fn run_report<C: Clone + Serialize, G: MatchInternal>(
     config: &C,
     settings: Settings<'_, G>,
     game: G::Game,
@@ -186,7 +186,7 @@ pub(crate) fn run_report<C: Clone + Serialize, G: MatchNative>(
     crate::common::ReportBudget::FULL.check(&report)?;
     Ok(report)
 }
-pub(crate) fn run<G: MatchNative>(
+pub(crate) fn run<G: MatchInternal>(
     config: &Settings<'_, G>,
     mut game: G::Game,
     budget: crate::common::ReportBudget,
@@ -245,9 +245,9 @@ pub(crate) fn run<G: MatchNative>(
         loop {
             if let Some(end) = G::end(&game) {
                 break match end {
-                    End::NativeConclusion => MatchStop::NativeConclusion,
+                    End::GameConclusion => MatchStop::GameConclusion,
                     End::Unresolved => MatchStop::Unresolved,
-                    _ => unreachable!("native terminal state"),
+                    _ => unreachable!("terminal state"),
                 };
             }
             if Instant::now() >= deadline {
@@ -354,7 +354,7 @@ pub(crate) fn run<G: MatchNative>(
         elapsed_ns: crate::common::elapsed_ns(host.start),
     })
 }
-pub(crate) fn replay<G: MatchNative>(
+pub(crate) fn replay<G: MatchInternal>(
     c: &Settings<'_, G>,
     game: &mut G::Game,
     turns: &[ClockedTurn<G::Side>],
@@ -364,9 +364,7 @@ pub(crate) fn replay<G: MatchNative>(
     let mut clock = c.clock;
     for turn in turns {
         if G::end(game).is_some() {
-            return Err(RunnerError(
-                "turn after native conclusion or pending".into(),
-            ));
+            return Err(RunnerError("turn after game conclusion or pending".into()));
         }
         let actor = G::actor(game);
         let side = G::side(actor);
@@ -404,7 +402,7 @@ pub(crate) fn replay<G: MatchNative>(
     Ok(clock)
 }
 
-pub(crate) fn replay_report<G: MatchNative, C>(
+pub(crate) fn replay_report<G: MatchInternal, C>(
     report: &MatchReport<C, G::Side, G::Conclusion>,
     settings: Settings<'_, G>,
     mut game: G::Game,
@@ -417,7 +415,7 @@ pub(crate) fn replay_report<G: MatchNative, C>(
     let conclusion = G::conclusion(&game);
     let end = G::end(&game);
     let consistent = match report.stop {
-        MatchStop::NativeConclusion => end == Some(End::NativeConclusion),
+        MatchStop::GameConclusion => end == Some(End::GameConclusion),
         MatchStop::Unresolved => end == Some(End::Unresolved),
         MatchStop::ClockExhausted => {
             end.is_none()

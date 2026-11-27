@@ -1,9 +1,9 @@
-# Native record admission
+# Game record admission
 
 Games have no synthetic history-work budget and no command, event, ply or
-byte limit. Native records, saved documents, console input lines, engine
+byte limit. Game records, saved documents, console input lines, engine
 requests and engine replies have no size limit (MSH-268). Rule-based endings
-remain native rules, including Standard Shogi's selected move-count rule.
+remain rules, including Standard Shogi's selected move-count rule.
 Operational cancellation or resource refusal is not a result.
 
 Tori, Chu and Tenjiku store an immutable root followed by actor/command pairs.

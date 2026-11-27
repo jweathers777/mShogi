@@ -1,11 +1,11 @@
 // @vitest-environment jsdom
 // Successful telemetry comes only from Rust snapshots generated through the real
 // Chu subprocess. Explicit status/error constructions below test presentation
-// intents; they are not additional native execution or rule-conformance evidence.
-import type { ChuSnapshot } from "../native";
+// intents; they are not additional execution or rule-conformance evidence.
+import type { ChuSnapshot } from "../sessionTypes";
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
-import { NativeAnalysis, NativeRecovery } from "./NativeSessionPanels";
+import { GameAnalysis, GameRecovery } from "./GameSessionPanels";
 import { GameActions } from "./GameCapabilities";
 
 import completeJson from "../__fixtures__/shared-chu-analysis-complete.json";
@@ -16,7 +16,7 @@ afterEach(cleanup);
 function analysis(snapshot = complete) {
   const command = vi.fn();
   const props = { snapshot, defaults: snapshot.play_limits, disabled: false, command, maxDepth: 64, maxNodes: 5000000, minNodes: 1 };
-  const view = render(<NativeAnalysis {...props} />);
+  const view = render(<GameAnalysis {...props} />);
   fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
   return { ...view, props, command };
 }
@@ -25,7 +25,7 @@ function currentObservation(container: HTMLElement) {
   if (!node) throw new Error("Missing selected analysis observation");
   return within(node);
 }
-it("renders the actual Chu root-side completed observation, exact target and native continuation", () => {
+it("renders the actual Chu root-side completed observation, exact target and continuation", () => {
   const selected = complete.search_observations.find(view => view.selected)!;
   const { container, command } = analysis();const observation = currentObservation(container);
   expect(screen.getByText(`Selected event ${complete.event_index} · ${complete.turn.label} perspective`)).toBeTruthy();
@@ -81,26 +81,26 @@ it("replaces and cancels analysis with distinct read-only operations and no synt
   expect(screen.queryByRole("progressbar")).toBeNull();expect(container.querySelector(".shogi-pv")?.textContent).toContain(complete.search_observations[0]!.variation[0]);
 });
 it("keeps Resume and Retry engine-turn intents distinct from analysis cancellation", () => {
-  const command = vi.fn();const { rerender } = render(<NativeRecovery snapshot={complete} error="" disabled={false} command={command} />);
+  const command = vi.fn();const { rerender } = render(<GameRecovery snapshot={complete} error="" disabled={false} command={command} />);
   fireEvent.click(screen.getByRole("button", { name: "Resume play" }));expect(command).toHaveBeenNthCalledWith(1, { kind: "resume" });
   // Deliberate error-state construction for recovery wording and routing only.
   const engineTurn: ChuSnapshot = { ...complete, paused: false, human: complete.sides.find(side => side.key !== complete.turn.key)!, phase: "failed", execution_purpose: "engine_turn",
     observations: [{ ...complete.observations[0]!, observation: { ...complete.observations[0]!.observation, result: { kind: "failure", failure: { kind: "search", message: "Explicit frontend search-error probe" } } } }] };
-  rerender(<NativeRecovery snapshot={engineTurn} error="" disabled={false} command={command} />);
+  rerender(<GameRecovery snapshot={engineTurn} error="" disabled={false} command={command} />);
   expect(screen.getByRole("heading", { name: "Engine search could not complete" })).toBeTruthy();
   expect(screen.queryByText("Engine connection failed")).toBeNull();
   fireEvent.click(screen.getByRole("button", { name: "Retry engine turn" }));expect(command).toHaveBeenNthCalledWith(2, { kind: "retry" });
-  rerender(<NativeRecovery snapshot={{ ...engineTurn, execution_purpose: "move_analysis" }} error="" disabled={false} command={command} />);
+  rerender(<GameRecovery snapshot={{ ...engineTurn, execution_purpose: "move_analysis" }} error="" disabled={false} command={command} />);
   expect(screen.queryByRole("button", { name: "Retry engine turn" })).toBeNull();
 });
-it("uses native draw commands without an actor and retains the shared direct resign intent", () => {
+it("uses draw commands without an actor and retains the shared direct resign intent", () => {
   const command = vi.fn().mockResolvedValue(null), confirm = vi.fn();
   const { rerender } = render(<GameActions snapshot={complete} disabled={false} command={command} confirm={confirm} />);
   fireEvent.click(screen.getByRole("button", { name: "Offer draw…" }));
   expect(confirm).toHaveBeenLastCalledWith(expect.objectContaining({ source: complete, operation: { kind: "command", command: { kind: "offer_draw" } } }));
   expect(command).not.toHaveBeenCalled();
   // Construct only the authoritative presentation field for a pending Gote offer;
-  // native offer legality and actual agreement are verified by controller tests.
+  // offer legality and actual agreement are verified by controller tests.
   const offered: ChuSnapshot = { ...complete, chu: { ...complete.chu, live: { ...complete.chu.live, draw_offer: "gote" } } };
   rerender(<GameActions snapshot={offered} disabled={false} command={command} confirm={confirm} />);
   fireEvent.click(screen.getByRole("button", { name: "Accept draw…" }));
@@ -108,6 +108,6 @@ it("uses native draw commands without an actor and retains the shared direct res
   fireEvent.click(screen.getByRole("button", { name: "Decline draw" }));
   expect(command).toHaveBeenNthCalledWith(1, { kind: "command", command: { kind: "decline_draw" } });
   fireEvent.click(screen.getByRole("button", { name: "Resign" }));
-  // Generic shared intent; the native runtime supplies the current human actor.
+  // Generic shared intent; the runtime supplies the current human actor.
   expect(command).toHaveBeenNthCalledWith(2, { kind: "resign" });
 });

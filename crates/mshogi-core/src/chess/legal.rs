@@ -74,7 +74,7 @@ impl Position {
     }
 
     /// Complete legal captures ending on `target`, including EP and all capture
-    /// promotions. Target-centric native attack maps enumerate only possible
+    /// promotions. Target-centric attack maps enumerate only possible
     /// capturers, then the same checked resolver/effects enforce king safety.
     /// Quiet moves are intentionally excluded.
     pub fn legal_captures_to(&self, target: Square) -> Vec<Action> {
@@ -91,7 +91,7 @@ impl Position {
         while origins != 0 {
             let from = Square(origins.trailing_zeros() as u8);
             origins &= origins - 1;
-            let piece = base.piece_at(from).expect("native attacker occupied");
+            let piece = base.piece_at(from).expect("attacker occupied");
             if base.piece_at(target).is_none() && piece.kind != PieceKind::Pawn {
                 continue;
             }
@@ -132,7 +132,7 @@ impl Position {
         actions
     }
 
-    /// Whether any rule-legal action exists, using the same native checked
+    /// Whether any rule-legal action exists, using the same checked
     /// candidate pipeline as `legal_actions` and stopping at its first witness.
     /// Counters remain representation-independent, just as for the full list.
     pub fn has_legal_action(&self) -> bool {

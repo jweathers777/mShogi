@@ -16,7 +16,7 @@ means Adams main chapters1/3; M means Muller's Tenjiku page/table; S identifies
 our narrow deterministic completion. Sources/precise differences are in
 [sources.md](sources.md). AppendixA does not silently override A's main rules.
 [Machine-readable data](profile.json), [fixtures](fixtures.json), handoff.
-No native rules, engine, console or product implementation exists from83.
+No rules, engine, console or product implementation exists from83.
 
 ## T01 — board, sides, setup and identity
 
@@ -74,11 +74,11 @@ supplements for profile2; M's linked Chu introduction does not import Chu's rule
 ## T03 — complete routes and special movement
 
 A complete choice includes original square, every **actual** visited landing,
-any stationary capture target, and promotion choice. Native resolution supplies
+any stationary capture target, and promotion choice. Resolution supplies
 captures/effects. No client victim/cause list. Distinguish a direct jump from a
 two-leg path with the same endpoints; never conflate route identity with endpoint.
 Repeated landings may be represented when these rules allow them. Partial UI
-entry is not a partial native turn. Intermediate occupancy is evaluated after
+entry is not a partial game turn. Intermediate occupancy is evaluated after
 preceding leg effects; origin is vacated while moving and can be revisited.
 
 **Lion:** A §3.7 p19. One adjacent King step; direct jump to any Chebyshev-distance2
@@ -136,7 +136,7 @@ causes one mover-destruction event.
 
 **Profile1 A §1.2.4:** active Demon burns enemy non-Demon bystanders **before**
 its own demise beside an enemy Demon. **Profile2 M footnote:** if the moving
-Demon dies, it produces no bystander burns. All such differences remain native,
+Demon dies, it produces no bystander burns. All such differences remain,
 not renderer or evaluation settings.
 
 Resolve one atomic action using these phases; S labels serialization/underspecification
@@ -157,7 +157,7 @@ completion rather than claiming the source prints an algorithm:
    Buffalo becoming Demon burns **nothing on that turn**, A p4/M footnote. It
    cannot resurrect after dying next to an enemy Demon. Its new aura matters for
    later actions, not immediate removal of already adjacent unmoved opponents.
-6. Update native history/rights and assess outcomes on the complete resulting
+6. Update game history/rights and assess outcomes on the complete resulting
    state. Both final royal sets destroyed => draw by explicit simultaneous-royal
    convention (**S**); exactly one side retains royals => that side wins.
 
@@ -219,7 +219,7 @@ unobserved pre-root play. Zone occupancy alone does not reconstruct prior refusa
 ## T07 — legality, discarded pieces and turn progression
 
 Movement domain, occupancy, complete choice, mandatory promotion, current actor,
-royal/ending state and T09 history together define native Game LegalAll. No true
+royal/ending state and T09 history together define Game LegalAll. No true
 check/self-check filter exists (A §1.2.1): royal exposure and capturing an enemy
 royal with one's own subsequently burned piece are permitted. Geometric threats
 alone are advisory, not automatic mate. One complete accepted board action advances
@@ -264,14 +264,14 @@ retroactively promoted. This permits honestly labelled no-action diagnostics.
 
 Resign concludes loss for actual actor; draw requires real opposing offer and
 acceptance, not self-consent or inferred exhaustion. Decline/ordinary play clears
-the opposing offer. Operational interruptions stay in session memory and add no native event or outcome.
+the opposing offer. Operational interruptions stay in session memory and add no game event or outcome.
 These untimed command spellings/offer protocol are **S**, not a published A/M event
 standard. No100-move/250move/points claim, evaluation resignation or automatic
 agreement is selected. Concluded game rejects further board play.
 
 ## T09 — repetition, provenance and three distinct identities
 
-A §1.2.7 forbids recreating any known complete board+next-side position. Native
+A §1.2.7 forbids recreating any known complete board+next-side position. Game
 admission rejects the **first** such continuation, preserving state/history;
 no fourth-repeat forfeit/claim/draw and no Chu must-vary responsibility analysis.
 Root counts once; imported diagrams fabricate no earlier positions. Administrative
@@ -295,9 +295,9 @@ records even when repetition treats their final boards as equal.
 
 Apply/undo must restore every logical state/cache/right/effect/history/conclusion;
 private undo layout never becomes public save schema. Rewind/reopen assign fresh
-runtime authority and cannot revive old requests. Native record fixes profile ID,
+runtime authority and cannot revive old requests. Game record fixes profile ID,
 edition/schema, root/provenance, actual commands/complete actions and
-per-original rights. Schema 3 stores the whole profile in the root. Native replay
+per-original rights. Schema 3 stores the whole profile in the root. Game replay
 restores ordered effect phases and derived outcomes. Strict parse rejects
 duplicate, unknown and conflicting/missing identities; records cannot supply
 their own effects or outcomes. One profile's record must never be interpreted
@@ -308,12 +308,12 @@ fails explicitly; switching profiles means a fresh root/game, not mutating histo
 
 `fixtures.json` contains source-diagram exact geometry sets, independently constructed
 special-case/action/effect/history/negative cases and hand-counted4/16 perft/divide.
-Geometry sets are not automatically full-game LegalAll: native87 must separately
+Geometry sets are not automatically full-game LegalAll: rules87 must separately
 admit turns, rights, history and endings. Source equations are finite empty-diagram
 fixture authoring, not a prospective arbitrary-position move generator. Rotations
 exchange owners/coordinates180°; no horizontal setup symmetry is presumed.
 
-Strict data validation and review do not execute native Tenjiku. Native assertions
+Strict data validation and review do not execute Tenjiku. Assertions
 are **0 executed/0 passed**, with all relevant observations pending87. Consumer
 requirements are separate79/44 obligations. Preserve independent expected values;
 never populate observations by echoing expectations or another engine's answer.
@@ -321,9 +321,9 @@ never populate observations by echoing expectations or another engine's answer.
 ## T12 — current shared architecture and selection
 
 New Game exposes two meaningful named profiles under Tenjiku when finished44
-makes it playable. Native creation chooses profile before root; records, requests,
+makes it playable. Creation chooses profile before root; records, requests,
 observations, inspection contexts and presentation keys preserve that selection.
-Existing `shared_new_game` infers profile from game and `side(NativeSide)` constructs
+Existing `shared_new_game` infers profile from game and `side(TaggedSide)` constructs
 profile-qualified presentation keys from one profile per game:79 must extend these
 real consumers for two profiles. It must not mutate existing games or introduce
 separate controllers/envelopes/shells. Current document/version/selection tokens

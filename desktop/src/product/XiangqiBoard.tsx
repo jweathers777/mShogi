@@ -1,8 +1,8 @@
-import type { CompletedActionGeometry, XiangqiSnapshot } from "../native";
+import type { CompletedActionGeometry, XiangqiSnapshot } from "../sessionTypes";
 import type { InspectMovement } from "./movementInspection";
 import { useId } from "react";
 
-import { gridNeighbor, useNativeChoiceController } from "../interaction/useNativeChoiceController";
+import { gridNeighbor, useBoardChoiceController } from "../interaction/useBoardChoiceController";
 import { BoardFooter, CompletionDialog, pointLabel } from "../BoardControls";
 
 import { bottomSide } from "../sessionState";
@@ -11,7 +11,7 @@ import { CompletedActionCue } from "../CompletedActionCue";
 import "../movement-inspection.css";
 import "./xiangqi.css";
 
-// Artwork only: kind, owner, coordinates and complete choices remain native.
+// Artwork only: kind, owner, coordinates and complete choices remain.
 export function xiangqiGlyph(kind: string, red: boolean): string {
   const glyphs: Record<string, [string, string]> = {
     general: ["帥", "將"], advisor: ["仕", "士"], elephant: ["相", "象"],
@@ -32,7 +32,7 @@ export function XiangqiBoard({ snapshot, disabled, onPlay, onInspect, inspection
   const orientation = snapshot.orientations.find(o => o.side.key === bottom.key)!;
   const points = orientation.ranks.flatMap((rank) => orientation.files.map((file) => `${file}${rank}`));
   const columns = orientation.files.length;
-  const interaction = useNativeChoiceController({
+  const interaction = useBoardChoiceController({
     contextKey: JSON.stringify([snapshot.game, snapshot.profile, snapshot.edition, snapshot.token, bottom.key]),
     choices: snapshot.choices,
     origins: snapshot.pieces.map((piece) => ({ key: piece.square, label: piece.label, owner: piece.owner, inspectable: true })),
@@ -41,7 +41,7 @@ export function XiangqiBoard({ snapshot, disabled, onPlay, onInspect, inspection
     neighbor: (key, direction) => gridNeighbor(points, columns, key, direction),
   });
   const { selected, focused, inspection, inspectionPending: loading, destinations } = interaction;
-  if (!topology) return <p role="alert">The native intersection board is unavailable.</p>;
+  if (!topology) return <p role="alert">The snapshot intersection board is unavailable.</p>;
 
   const position = (point: string): [number, number] => {
     const index = points.indexOf(point);

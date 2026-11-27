@@ -68,14 +68,14 @@ def run():
                     stderr = result.stderr.decode('utf-8', errors='replace')[-2000:]
                     raise ValueError(f'probe exit={result.returncode}, stderr={stderr}')
                 response = strict_json(result.stdout.decode('utf-8'))
-                native_divide = {e['action']: e['nodes'] for e in response['divide']}
-                if len(native_divide) != len(response['divide']):
+                rules_divide = {e['action']: e['nodes'] for e in response['divide']}
+                if len(rules_divide) != len(response['divide']):
                     raise ValueError('duplicate divide entry')
                 if response['perft'] != total:
-                    errors.append({'count': {'reference': total, 'native': response['perft']}})
-                differing = {text: {'reference': divide.get(text), 'native': native_divide.get(text)}
-                             for text in sorted(divide.keys() | native_divide.keys())
-                             if divide.get(text) != native_divide.get(text)}
+                    errors.append({'count': {'reference': total, 'mshogi': response['perft']}})
+                differing = {text: {'reference': divide.get(text), 'mshogi': rules_divide.get(text)}
+                             for text in sorted(divide.keys() | rules_divide.keys())
+                             if divide.get(text) != rules_divide.get(text)}
                 if differing:
                     errors.append({'divide': differing})
                 if response['undo_restored'] is not True:

@@ -26,7 +26,7 @@ impl PerftPosition for LocalPosition {
     ) -> Result<LocalUndo, TraversalError> {
         self.apply(*action)
             .map(|(_, undo)| undo)
-            .map_err(TraversalError::native)
+            .map_err(TraversalError::rules_error)
     }
 
     fn perft_undo(&mut self, mut undo: LocalUndo) -> Result<(), String> {

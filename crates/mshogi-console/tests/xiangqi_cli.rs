@@ -1,6 +1,6 @@
 //! Actual subprocess journeys using independently established MSH-92/94 facts.
 mod support;
-use mshogi_core::{native::CanonicalRecord, xiangqi as x};
+use mshogi_core::{game::CanonicalRecord, xiangqi as x};
 use serde_json::Value;
 use std::{fs, process::Output};
 use support::cli::{Dir, run, stdout as text, success, tagged};
@@ -32,7 +32,7 @@ fn explicit_selection_profile_initial_choices_and_local_diagnostics() {
     );
     success(&out);
     let s = text(&out);
-    // Owner-selected compact case convention; native coordinates/river survive.
+    // Owner-selected compact case convention; coordinates/river survive.
     let board = "9 r n b a k a b n r\n8 . . . . . . . . .\n7 . c . . . . . c .\n6 p . p . p . p . p\n5 . . . . . . . . .\n  ----- river -----\n4 . . . . . . . . .\n3 P . P . P . P . P\n2 . C . . . . . C .\n1 . . . . . . . . .\n0 R N B A K A B N R\n  a b c d e f g h i (intersections)\n";
     assert!(s.contains(board), "{s}");
     assert!(
@@ -134,7 +134,7 @@ fn advisory_count_claims_are_claimant_specific_and_terminal_commands_preserve_pl
     assert_eq!(
         g[2].conclusion(),
         None,
-        "invalid claim retains its native rejection audit"
+        "invalid claim retains its rejection audit"
     );
     assert!(g[2].events().len() > g[1].events().len());
     assert_eq!(
@@ -173,7 +173,7 @@ fn agreement_and_off_turn_resignation_are_not_board_actions() {
 }
 
 #[test]
-fn offer_windows_and_decline_keep_native_admission_and_atomic_refusal() {
+fn offer_windows_and_decline_keep_admission_and_atomic_refusal() {
     // Documented minimal untimed offer window: after one's own move, once per
     // window. Declining does not permit a repeated offer at the same board ply.
     let out = shell(

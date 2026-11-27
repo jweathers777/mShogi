@@ -6,7 +6,7 @@ use super::{
 };
 use mshogi_conformance::{
     Corpus, Fixture,
-    assertions::{self, Assertion, NativeAdapter},
+    assertions::{self, Assertion, RulesAdapter},
     properties,
 };
 use serde_json::{Map, Value, json};
@@ -15,7 +15,7 @@ pub(super) fn face(code: &str) -> Face {
     Face::ALL
         .into_iter()
         .find(|f| f.code() == code)
-        .expect("audited native fixture kind")
+        .expect("audited rules fixture kind")
 }
 pub(super) fn sq(s: &str) -> Square {
     s.parse().unwrap()
@@ -116,7 +116,7 @@ pub(super) fn snapshot(p: &Position) -> Value {
     json!({"profile":p.profile_id(),"edition":p.profile_edition(),"board":board(p),"hands":hands(p),"side":name(p.side_to_move()),"root":format!("{:?}",p.root()),"accepted_plies":p.accepted_plies(),"declared_total":p.declared_total_plies()})
 }
 pub(super) struct StructuralAdapter;
-impl NativeAdapter for StructuralAdapter {
+impl RulesAdapter for StructuralAdapter {
     fn observe(&self, f: &Fixture, a: &Assertion) -> Result<Option<Value>, String> {
         if a.owner != "MSH-127" {
             return Ok(None);
@@ -186,7 +186,7 @@ impl NativeAdapter for StructuralAdapter {
                         .map(|v| sq(v.as_str().unwrap()).rotated().to_string())
                         .collect::<Vec<_>>()
                 ),
-                "native_handed_kind_unchanged" => {
+                "handed_kind_unchanged" => {
                     json!([Face::LeftQuail, Face::RightQuail].into_iter().all(|f| {
                         Piece {
                             side: Side::Gote,

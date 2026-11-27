@@ -1,6 +1,6 @@
 //! Texel fitting of the Shogi classical evaluation with the shared tool.
 //! fit TRAIN VALIDATION OUTPUT [SECONDS]; check FROZEN HELDOUT OUTPUT;
-//! stats FILE.... Rows use the `sfen` field and Sente's native outcome.
+//! stats FILE.... Rows use the `sfen` field and Sente's game outcome.
 //! Positions that are not quiet (in check, or with a capture or promotion
 //! that wins material by static exchange) are skipped and counted.
 use mshogi_search::shogi::eval::ShogiTexel;
@@ -26,12 +26,12 @@ mod tests {
             "2+P3snr/6lkl/4+P2p1/2p5P/3p2p+bS/7G1/1P4PPG/2g+n1+s1sK/7N1 w B5Prgn2l3p 216",
             "4k4/9/4P4/9/9/9/9/9/4K4 b Np 1",
         ] {
-            let native = Position::from_sfen(sfen).unwrap();
-            let p = ShogiPosition::from_position(&native);
+            let rules_position = Position::from_sfen(sfen).unwrap();
+            let p = ShogiPosition::from_position(&rules_position);
             let Some(prepared) = ShogiTexel::prepare(sfen).unwrap() else {
                 continue;
             };
-            let sign = if native.side_to_move() == Side::Sente {
+            let sign = if rules_position.side_to_move() == Side::Sente {
                 1
             } else {
                 -1

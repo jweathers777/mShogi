@@ -1,4 +1,4 @@
-//! Independent board fixtures plus exact native state/reversal checks.
+//! Independent board fixtures plus exact game state/reversal checks.
 use mshogi_core::perft::{PerftError, divide, perft};
 use mshogi_core::shogi::{Action, ActionError, PieceKind, Position, Side, Square};
 use serde_json::Value;
@@ -234,10 +234,10 @@ fn deterministic_sequences_restore_every_prefix_and_material() {
 }
 
 #[test]
-fn structural_diagrams_outside_reference_domain_still_use_native_king_safety() {
+fn structural_diagrams_outside_reference_domain_still_use_king_safety() {
     // Original SH-F022 v1 had both kings checked. It is a structural diagram,
     // but cshogi's incremental check state assumes the nonmoving king is safe.
-    // Keep its independently derived native behavior; never match that helper's
+    // Keep its independently derived game behavior; never match that helper's
     // unsupported result. Reference fixtures v2 relocate the far king instead.
     let mut p = Position::from_sfen("8k/9/4b4/5B3/9/9/K8/9/9 b - 1").unwrap();
     let root = p.clone();

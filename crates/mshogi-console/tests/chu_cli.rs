@@ -1,7 +1,7 @@
 //! Real human console boundary. Expected routes follow independently established
 //! central-Lion capture/return geometry from the accepted Chu local fixtures.
 mod support;
-use mshogi_core::{chu as c, native::CanonicalRecord};
+use mshogi_core::{chu as c, game::CanonicalRecord};
 use std::{fs, process::Output};
 use support::cli::{Dir, records, run, stdout as output, success};
 fn shell(text: &str) -> Output {
@@ -141,7 +141,7 @@ fn atomic_canonical_save_and_strict_load_preserve_existing_files_and_live_game()
     assert_eq!(record.to_game().unwrap().snapshot().board_ply, 1);
 }
 #[test]
-fn promotion_and_terminal_action_remain_native_not_display_inference() {
+fn promotion_and_terminal_action_remain_not_display_inference() {
     let p = c::Position::from_diagram(
         &[
             ("12l", c::Side::Sente, "K"),

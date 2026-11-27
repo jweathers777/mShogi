@@ -1,8 +1,8 @@
-//! Complete native actions, derived effects and exact local reversal.
+//! Complete actions, derived effects and exact local reversal.
 use super::{Counters, Intersection, Piece, PieceKind, Position, Side};
 use std::{error::Error, fmt, str::FromStr};
 
-/// One complete native board action. Effects are derived, never client-supplied.
+/// One complete game board action. Effects are derived, never client-supplied.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
 pub struct Action {
     /// Origin intersection.
@@ -47,24 +47,24 @@ impl<'de> serde::Deserialize<'de> for Action {
         text.parse().map_err(serde::de::Error::custom)
     }
 }
-/// Native derived effect of one complete action.
+/// Derived effect of one complete action.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ActionEffects {
     /// Applied complete player choice.
     pub action: Action,
-    /// Moving piece, with its native identity preserved.
+    /// Moving piece, with its game identity preserved.
     pub moving: Piece,
     /// Destination victim if captured. No hand resource is created.
     pub captured: Option<Piece>,
 }
-/// Atomic native action rejection, distinct from outcomes and representation limits.
+/// Atomic action rejection, distinct from outcomes and representation limits.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum ActionError {
     /// Origin equals destination.
     SameIntersection,
     /// No piece at origin.
     EmptySource,
-    /// The source belongs to the other native owner.
+    /// The source belongs to the opposing side.
     WrongSide,
     /// Destination has a friendly piece.
     FriendlyDestination,
@@ -87,8 +87,8 @@ impl fmt::Display for ActionError {
     }
 }
 impl Error for ActionError {}
-/// A private native resolution tied to its exact before-state.
-/// Only native legal resolution constructs this value; no public unchecked path.
+/// A private resolution tied to its exact before-state.
+/// Only legal resolution constructs this value; no public unchecked path.
 #[derive(Debug)]
 pub struct ResolvedAction {
     pub(crate) before: Position,

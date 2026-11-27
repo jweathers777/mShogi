@@ -1,4 +1,4 @@
-//! Display-only JSA notation over admitted native choices and known history.
+//! Display-only JSA notation over admitted game choices and known history.
 //!
 //! Source: https://www.shogi.or.jp/faq/kihuhyouki/ (basic matters and ambiguity
 //! diagrams). Numeric file/rank are the JSA recording convention. This adapter
@@ -25,7 +25,7 @@ pub(super) fn notation(position: &Position, action: Action, previous: Option<Squ
     text.push_str(piece_name(kind, promoted));
 
     // Complete legal alternatives, including both promotion choices and check
-    // evasions, come from native rules. Deduplicate sources: two promotion
+    // evasions, come from rules. Deduplicate sources: two promotion
     // choices of one piece are not two pieces for JSA disambiguation.
     let mut origins = Vec::new();
     for candidate in &legal {
@@ -76,7 +76,7 @@ pub(super) fn notation(position: &Position, action: Action, previous: Option<Squ
 }
 
 fn digit(value: u8) -> char {
-    char::from_u32(u32::from('０') + u32::from(value)).expect("bounded native coordinate")
+    char::from_u32(u32::from('０') + u32::from(value)).expect("bounded coordinate")
 }
 
 fn piece_name(kind: PieceKind, promoted: bool) -> &'static str {
@@ -123,7 +123,7 @@ fn ambiguity(
     {
         return movement.to_owned();
     }
-    // JSA's Dragon/Horse diagrams explicitly forbid 直. Their two native
+    // JSA's Dragon/Horse diagrams explicitly forbid 直. Their two
     // pieces use the relative left/right source, including a straight path.
     let horse_or_dragon = promoted && matches!(kind, PieceKind::Bishop | PieceKind::Rook);
     let relative = |source: Square| {
@@ -169,7 +169,7 @@ mod tests {
         let action = usi.parse().unwrap();
         assert!(
             position.legal_actions().contains(&action),
-            "fixture action {usi} must be native legal"
+            "fixture action {usi} must be legal"
         );
         assert_eq!(
             notation(
@@ -252,7 +252,7 @@ mod tests {
     #[test]
     fn pinned_pseudo_alternative_does_not_invent_disambiguation() {
         // The 5h Gold has a geometric path to 4g but exposes its King to the
-        // 5a Rook. Only the native-legal 4h Gold is a candidate.
+        // 5a Rook. Only the legal 4h Gold is a candidate.
         expect("4r3k/9/9/9/9/9/9/4GG3/4K4 b - 1", "4h4g", None, "４７金");
     }
 

@@ -1,13 +1,13 @@
 //! Read-only educational local movement, separate from executable session choices.
 use super::*;
 
-/// Strict, bounded read-only query bound to one exact native selection.
+/// Strict, bounded read-only query bound to one exact game selection.
 #[derive(Clone, Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct MovementInspectionQuery {
     /// Exact runtime and historical selection identity.
     pub expected: SessionToken,
-    /// Opaque board or native hand origin from the selected snapshot.
+    /// Opaque board or hand origin from the selected snapshot.
     pub origin: String,
 }
 impl MovementInspectionQuery {
@@ -24,16 +24,16 @@ impl MovementInspectionQuery {
 pub struct MovementInspection {
     /// Exact selection for which these choices were computed.
     pub token: SessionToken,
-    /// Native game family.
+    /// Game family.
     pub game: GameKind,
     /// Explicit whole profile where the game has multiple selectable profiles.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub profile: Option<RulesProfile>,
     /// Queried opaque origin.
     pub origin: String,
-    /// Native owner of the selected piece/resource.
+    /// Rules owner of the selected piece/resource.
     pub side: PresentedSide,
-    /// Native semantic readable piece/resource description.
+    /// Game semantic readable piece/resource description.
     pub label: String,
     /// Complete locally legal actions on the owner's hypothetical turn.
     pub choices: Vec<PresentedChoice>,
@@ -41,7 +41,7 @@ pub struct MovementInspection {
     pub read_only: bool,
 }
 impl DesktopController {
-    /// Inspect a selected native position without polling, accepting, retiring or
+    /// Inspect a selected position without polling, accepting, retiring or
     /// starting execution. The immutable receiver protects all session state.
     pub fn shared_inspection(
         &self,
@@ -75,7 +75,7 @@ impl DesktopController {
         })
     }
 }
-pub(super) type Inspected = (GameKind, NativeSide, String, Vec<PresentedChoice>);
+pub(super) type Inspected = (GameKind, TaggedSide, String, Vec<PresentedChoice>);
 fn inspect_chess(position: &Position, origin: &str) -> Result<Inspected, String> {
     let bytes = origin.as_bytes();
     let square = if bytes.len() == 2
@@ -89,7 +89,7 @@ fn inspect_chess(position: &Position, origin: &str) -> Result<Inspected, String>
     let piece = position
         .piece_at(square)
         .ok_or("No piece at this origin.")?;
-    let owner = NativeSide::Chess(piece.color);
+    let owner = TaggedSide::Chess(piece.color);
     let label = format!(
         "{} {}",
         side(RulesProfile::ChessMatchV1, owner).label,
@@ -128,8 +128,8 @@ fn inspect_shogi(position: &s::Position, origin: &str) -> Result<Inspected, Stri
                         == format!(
                             "hand:{}:{}",
                             side(
-                                mshogi_core::native::RulesProfile::ShogiCsa36V1,
-                                NativeSide::Shogi(actor)
+                                mshogi_core::game::RulesProfile::ShogiCsa36V1,
+                                TaggedSide::Shogi(actor)
                             )
                             .key,
                             shogi::piece_text(kind)
@@ -143,7 +143,7 @@ fn inspect_shogi(position: &s::Position, origin: &str) -> Result<Inspected, Stri
         }
         (resource.0, resource.1, false, None)
     };
-    let owner = NativeSide::Shogi(actor);
+    let owner = TaggedSide::Shogi(actor);
     let label = format!(
         "{} {}{}{}",
         side(RulesProfile::ShogiCsa36V1, owner).label,
@@ -217,7 +217,7 @@ mod tests {
             origin: origin.into(),
         })
     }
-    fn native_shogi(c: &mut DesktopController, sfen: &str) {
+    fn shogi(c: &mut DesktopController, sfen: &str) {
         let game = if sfen == s::INITIAL_SFEN {
             s::Game::new()
         } else {
@@ -233,12 +233,12 @@ mod tests {
         c.replace_game::<Shogi>(s::GameRecord::from_game(&game), s::Side::Sente)
             .unwrap();
         while c.admission_token.is_some() {
-            c.poll_native_admission();
+            c.poll_admission();
             std::thread::sleep(std::time::Duration::from_millis(1));
         }
     }
     #[test]
-    fn exact_native_chess_query_is_not_a_snapshot_poll_or_mutation() {
+    fn exact_chess_query_is_not_a_snapshot_poll_or_mutation() {
         let c = controller();
         let before = serde_json::to_string(&c.game_snapshot::<Chess>()).unwrap();
         let token = c.shared_token();
@@ -302,9 +302,9 @@ mod tests {
         );
     }
     #[test]
-    fn selected_shogi_owner_promotions_hands_and_pending_work_stay_native() {
+    fn shogi_inspection_shows_promotions_and_hands_without_changing_pending_work() {
         let mut c = controller();
-        native_shogi(&mut c, "4k4/9/9/4P4/9/9/9/9/4K4 b p 17");
+        shogi(&mut c, "4k4/9/9/4P4/9/9/9/9/4K4 b p 17");
         c.start_game_work::<Shogi>(
             WorkLimits {
                 time_ms: None,
@@ -334,8 +334,8 @@ mod tests {
         let origin = format!(
             "hand:{}:P",
             side(
-                mshogi_core::native::RulesProfile::ShogiCsa36V1,
-                NativeSide::Shogi(s::Side::Gote)
+                mshogi_core::game::RulesProfile::ShogiCsa36V1,
+                TaggedSide::Shogi(s::Side::Gote)
             )
             .key
         );
@@ -351,7 +351,7 @@ mod tests {
     #[test]
     fn exact_historical_selection_and_conclusion_are_read_only() {
         let mut c = controller();
-        native_shogi(&mut c, s::INITIAL_SFEN);
+        shogi(&mut c, s::INITIAL_SFEN);
         let state = c.session.shogi_mut().unwrap();
         let prefix = state.game.clone();
         let request = s::GameRequest {

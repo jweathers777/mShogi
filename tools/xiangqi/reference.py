@@ -41,7 +41,7 @@ def fen_domain(fen, *, root=True):
 
     The upstream parser additionally rejects a non-moving General already
     attacked by the moving side. Source-audited material/placement restrictions
-    deliberately exclude some useful native structural diagnostics.
+    deliberately exclude some useful structural diagnostics.
     """
     if not isinstance(fen, str) or not fen.isascii() or len(fen) > 200:
         raise ValueError('reference-domain: FEN must be bounded ASCII')
@@ -86,7 +86,7 @@ def fen_domain(fen, *, root=True):
         red = piece.isupper()
         normalized = (file, rank if red else 9 - rank)
         if piece.upper() == 'K' and not (3 <= normalized[0] <= 5 and 0 <= normalized[1] <= 2):
-            raise ValueError('reference-domain: General outside native palace')
+            raise ValueError('reference-domain: General outside palace')
         if piece.upper() == 'A' and normalized not in advisor:
             raise ValueError('reference-domain: Advisor on unreachable color-complex intersection')
         if piece.upper() == 'B' and normalized not in elephant:

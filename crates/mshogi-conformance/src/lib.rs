@@ -11,13 +11,13 @@ use sha2::{Digest, Sha256};
 use std::collections::{BTreeMap, BTreeSet};
 
 /// Audited MSH-81 bytes, not generated from implementation output.
-pub const CORPUS_SHA256: &str = "65322c80eec34a28bb6cac0d382b32f299ff67f335f7dd4c66c600384de7d597";
+pub const CORPUS_SHA256: &str = "475400ea3ad0f01fdd95ce989454f4b175b83db4e3575aca02781e9777a6138e";
 /// Exact selected profile.
 pub const PROFILE: &str = "mshogi.tori.modern.v1";
-/// Audited native fixture specification bytes.
+/// Audited rules fixture specification bytes.
 pub const FIXTURES: &str = include_str!("../../../docs/m4/tori/fixtures.json");
-/// Complete native and later consumer ownership.
-pub const OWNERSHIP: &str = include_str!("../../../docs/m4/tori/native-fixture-ownership.json");
+/// Complete and later consumer ownership.
+pub const OWNERSHIP: &str = include_str!("../../../docs/m4/tori/rules-fixture-ownership.json");
 /// Bound each input; serde also enforces its normal nesting limit.
 pub const MAX_INPUT_BYTES: usize = 512 * 1024;
 
@@ -41,7 +41,7 @@ struct WireCorpus {
     revision: String,
     profile: String,
     profile_status: String,
-    native_conformance_executed: bool,
+    rules_conformance_executed: bool,
     fixture_schema: String,
     notation: Value,
     source_ids: Vec<String>,
@@ -61,10 +61,10 @@ pub struct CheckOwner {
 pub struct Ownership {
     pub fixture_id: String,
     pub corpus_owner: String,
-    pub primary_native_owner: String,
-    pub native_boundary: String,
+    pub primary_rules_owner: String,
+    pub rules_boundary: String,
     pub expected_fields: Vec<String>,
-    pub supplementary_native_checks: Vec<CheckOwner>,
+    pub supplementary_rules_checks: Vec<CheckOwner>,
     pub later_consumer_checks: Vec<CheckOwner>,
 }
 #[derive(Deserialize)]
@@ -77,7 +77,7 @@ struct WireOwnership {
     corpus_unchanged: bool,
     coordinator: String,
     corpus_owner: String,
-    native_components: Vec<String>,
+    game_components: Vec<String>,
     policy: String,
     fixtures: Vec<Ownership>,
 }
@@ -112,7 +112,7 @@ impl Corpus {
             || wire.fixture_schema != anchor.fixture_schema
             || wire.revision != anchor.revision
             || wire.profile_status != anchor.profile_status
-            || wire.native_conformance_executed
+            || wire.rules_conformance_executed
             || wire.notation != anchor.notation
             || wire.source_ids != anchor.source_ids
             || wire.preserved_seed_ids != anchor.preserved_seed_ids
@@ -132,7 +132,7 @@ impl Corpus {
             || !owners.corpus_unchanged
             || owners.coordinator != "MSH-85"
             || owners.corpus_owner != "MSH-126"
-            || owners.native_components != owner_anchor.native_components
+            || owners.game_components != owner_anchor.game_components
             || owners.policy != owner_anchor.policy
         {
             return Err("conflicting ownership identity".into());
@@ -171,7 +171,7 @@ impl Corpus {
     pub fn fixtures(&self) -> &[Fixture] {
         &self.fixtures
     }
-    /// Full native/supplementary/later-consumer ownership, not a completion claim.
+    /// Rules, supplementary and later consumer ownership, not a completion claim.
     pub fn owner(&self, id: &str) -> Option<&Ownership> {
         self.ownership.get(id)
     }

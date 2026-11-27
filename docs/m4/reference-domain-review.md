@@ -1,7 +1,7 @@
 # MSH-64 independent reference-domain correction review
 
 Date: 2026-10-26. Reviewer: fresh Codex review agent, separate from the fixture,
-reference harness and native implementation authors. This is an independent
+reference harness and implementation authors. This is an independent
 agent review, not a human review. Worktree: `next-task`, branch
 `codex/shogi-board`, review base `368c613348b07dd37f05415ded63bedb6ee26b29`.
 The corrected files were working changes at review time. Only this supplement
@@ -44,7 +44,7 @@ rule answer was rewritten to match engine output.
 
 Ran a separate geometric audit using an independently written SFEN parser and
 side-relative step/jump/ray rules with occupancy blockers. It did not import
-cshogi, call the native product, use cached check status or infer expected
+cshogi, call the product, use cached check status or infer expected
 facts from either program. It included kings, golds, silvers, pawns, knights,
 lances, bishops, rooks, all promoted minors, horse and dragon.
 
@@ -84,7 +84,7 @@ also protect the raw feature method's fixed hand-feature buffers. The supplied
 next-ply and reserved continuation must fit cshogi's signed-int32 range.
 These are explicitly named reference-domain restrictions; they do not change
 the product's separately specified analysis-input/u32 contract or declare
-unsupported diagrams to be native match outcomes.
+unsupported diagrams to be match outcomes.
 
 `replay` invokes this admission before its first snapshot/LegalAll enumeration
 or push; `seeded_path` uses it with the requested continuation budget. The
@@ -117,7 +117,7 @@ Results: **101 current fixtures pass, zero fail, 13 domain-rejection sentinels,
 four API-gap sentinels and four intentional mismatch/failure demonstrations**;
 the separate completeness run passes all 68 fixtures, the same 13 domain
 rejections and four API-gap sentinels. Both outputs are byte-identical to their
-retained current reference reports. Native comparison sequences are zero in
+retained current reference reports. Comparison sequences are zero in
 these particular admission runs.
 
 Also ran the revised harness directly against `board-rules-v1.json`. It exits
@@ -134,7 +134,7 @@ but omitted its own traversal depth from signed-counter headroom. The root
 author added the combined prefix-plus-depth preflight. Independently reran a
 quiet root at next-ply 2147483647 through depth-2 comparison: it exits 1 with
 the signed-int32 domain diagnostic, creates no report and never invokes the
-sentinel native probe. Existing corpus counters were unaffected; this fixes
+sentinel probe. Existing corpus counters were unaffected; this fixes
 the generic tool-entry boundary. `git diff --check` passes.
 
 ## Preserved and current byte identities
@@ -154,9 +154,9 @@ The first three preserved files match the hashes in the original independent
 review. The current report binds the corrected fixture, expanded admission
 manifest and revised harness hashes. Historical passing observations are not
 relabelled as a sound admission of the old bad roots. The separately retained
-initial native/perft domain-failure evidence remains diagnostic history.
+initial perft domain-failure evidence remains diagnostic history.
 
 This correction supports re-admitting and integrating the bounded MSH-64
-deliverable. It does not itself close MSH-66, certify native conformance or
+deliverable. It does not itself close MSH-66, certify rules conformance or
 assign any history-dependent result. Those tasks retain their independent
 runtime/implementation review and closure requirements.

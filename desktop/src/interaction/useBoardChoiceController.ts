@@ -1,5 +1,5 @@
 import { cycleTabFocus } from "./focus";
-import type { BoardChoice, MovementInspection } from "../native";
+import type { BoardChoice, MovementInspection } from "../sessionTypes";
 import type { InspectMovement } from "../product/movementInspection";
 import { useLayoutEffect, useRef, useState, type FocusEvent, type KeyboardEvent } from "react";
 
@@ -42,9 +42,9 @@ export function gridNeighbor(keys: string[], columns: number, origin: string, di
 }
 
 /** One selection/route/inspection/completion/focus lifetime for every renderer. */
-export function useNativeChoiceController(options: ChoiceControllerOptions) {
+export function useBoardChoiceController(options: ChoiceControllerOptions) {
   const { contextKey, choices, origins, disabled, inspectionDisabled, onInspect, humanOwner, initialFocus, boardKeys, handGroups = [] } = options;
-  // Native snapshots may be freshly allocated on every poll. Semantic equality
+  // Session snapshots may be freshly allocated on every poll. Semantic equality
   // preserves selection; any changed capability/complete choice retires it.
   const context = JSON.stringify([contextKey, choices, origins, humanOwner, disabled, inspectionDisabled, initialFocus, boardKeys, handGroups]);
   const [stored, setStored] = useState<State>(() => empty(context));
@@ -85,7 +85,7 @@ export function useNativeChoiceController(options: ChoiceControllerOptions) {
     }
     if (!boardKeys.includes(focused) && !handGroups.some(group => group.includes(focused))) setFocused(initialFocus);
     return () => { lifetimeNow.mounted = false; lifetimeNow.generation++; };
-  // Fresh callback identity can replace the native query provider as well.
+  // Fresh callback identity can replace the game query provider as well.
   }, [context, onInspect]);
   useLayoutEffect(() => {
     if (state.completions.length) completionRef.current?.querySelector<HTMLButtonElement>("button:not(:disabled)")?.focus();
@@ -109,9 +109,9 @@ export function useNativeChoiceController(options: ChoiceControllerOptions) {
   function submit(choice: BoardChoice, route: string[], origin: string | null) {
     if (!currentSelection() || lifetime.current.submitted || disabled || state.inspection || state.inspectionPending
       || choice.from !== origin || choice.steps.length !== route.length || !route.every((step, i) => step === choice.steps[i])
-      || !choices.some(native => JSON.stringify(native) === JSON.stringify(choice))) return;
+      || !choices.some(candidate => JSON.stringify(candidate) === JSON.stringify(choice))) return;
     lifetime.current.submitted = true;
-    clear("Complete native action submitted."); focus(returnFocus.current);
+    clear("Complete action submitted."); focus(returnFocus.current);
     options.onPlay(choice.action);
   }
   function finish(matches: BoardChoice[], route = state.prefix, origin = state.selected) {
@@ -139,7 +139,7 @@ export function useNativeChoiceController(options: ChoiceControllerOptions) {
       clear(); returnFocus.current = key;
       transition({ ...empty(context), selected: key, announcement: `${origins.find(origin => origin.key === key)?.label ?? key} selected. Choose a highlighted destination.` });
     }
-    // Complete native routes take precedence over occupied enemy inspection and
+    // Complete routes take precedence over occupied enemy inspection and
     // toggling the origin (a valid route may return to that very origin).
     const next = candidates.filter(choice => choice.steps[state.prefix.length] === key);
     if (next.length) {
@@ -211,4 +211,4 @@ export function useNativeChoiceController(options: ChoiceControllerOptions) {
     canInteractOrigin,
   };
 }
-export type NativeChoiceController = ReturnType<typeof useNativeChoiceController>;
+export type BoardChoiceController = ReturnType<typeof useBoardChoiceController>;

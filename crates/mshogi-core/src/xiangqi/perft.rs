@@ -8,7 +8,7 @@ impl PerftPosition for Position {
     const MAX_DEPTH: u32 = 3;
 
     fn perft_copy(&self) -> Result<Self, TraversalError> {
-        self.validate_local().map_err(TraversalError::native)?;
+        self.validate_local().map_err(TraversalError::rules_error)?;
         let mut position = self.clone();
         position.counters = Counters::new(Some(0), Some(1)).expect("normalized");
         Ok(position)
@@ -18,7 +18,7 @@ impl PerftPosition for Position {
         &self,
         _stop: &mut impl FnMut() -> bool,
     ) -> Result<Vec<Action>, TraversalError> {
-        self.legal_actions().map_err(TraversalError::native)
+        self.legal_actions().map_err(TraversalError::rules_error)
     }
 
     fn perft_apply(
@@ -26,7 +26,7 @@ impl PerftPosition for Position {
         action: &Action,
         _stop: &mut impl FnMut() -> bool,
     ) -> Result<Undo, TraversalError> {
-        self.apply(*action).map_err(TraversalError::native)
+        self.apply(*action).map_err(TraversalError::rules_error)
     }
 
     fn perft_undo(&mut self, undo: Undo) -> Result<(), String> {

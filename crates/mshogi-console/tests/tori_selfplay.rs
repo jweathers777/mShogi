@@ -1,6 +1,6 @@
 //! Reproducible bounded real-subprocess Tori self-play, not strength measurement.
 mod support;
-use mshogi_core::{native::CanonicalRecord, tori as t};
+use mshogi_core::{game::CanonicalRecord, tori as t};
 use mshogi_engine::*;
 const NODES: u64 = 1_024;
 fn bounded(game: t::Game, maximum_plies: usize) -> support::selfplay::Trace<t::Action> {
@@ -35,7 +35,7 @@ fn actual_standard_selfplay_is_deterministic_bounded_and_unscored_at_work_stop()
 
 fn mate_root() -> t::Game {
     // TORI-O-MATE's independently reviewed terminal diagram, one predecessor
-    // earlier. Ea4c-4b checks 4a; Pt4d protects 4b; native Gote 3a/5a/3b/5b
+    // earlier. Ea4c-4b checks 4a; Pt4d protects 4b; Gote 3a/5a/3b/5b
     // blockers leave no king escape or defense. No evaluator expectation oracle.
     let pieces = [
         ("7g", t::Side::Sente, t::Face::Phoenix),
@@ -59,7 +59,7 @@ fn mate_root() -> t::Game {
     .unwrap()
 }
 #[test]
-fn actual_complete_custom_game_reaches_independently_expected_native_checkmate() {
+fn actual_complete_custom_game_reaches_independently_expected_checkmate() {
     let first = bounded(mate_root(), 4);
     let second = bounded(mate_root(), 4);
     assert_eq!(first, second);

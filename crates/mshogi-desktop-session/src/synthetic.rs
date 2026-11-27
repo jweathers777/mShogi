@@ -15,19 +15,19 @@ use fixture::{Board, CompoundAction, Kind, Piece, Sq};
 pub const SYNTHETIC_PROFILE: &str = "mshogi.synthetic.strider16.v1";
 const INITIAL_FIXTURE: &str = "strider16-capture-and-return-v1";
 
-/// Native geometry consumed by the shared board presentation.
+/// Board geometry consumed by the shared board presentation.
 #[derive(Clone, Debug, Serialize)]
 pub struct SyntheticGeometry {
-    /// Files in their native ascending order.
+    /// Files in their ascending order.
     pub files: Vec<String>,
-    /// Ranks in their native ascending order.
+    /// Ranks in their ascending order.
     pub ranks: Vec<String>,
     /// Accessible board name, explicitly identifying invented development rules.
     pub label: &'static str,
     /// Coordinate initially focused by the shared board.
     pub initial_focus: &'static str,
 }
-/// One complete native player choice. The ordered route is part of its identity.
+/// One complete player choice. The ordered route is part of its identity.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct SyntheticChoice {
     /// Opaque canonical identity, carrying origin and complete route only.
@@ -52,44 +52,44 @@ pub struct SyntheticRecord {
     /// Complete canonical action identities, with no caller-supplied effects.
     pub actions: Vec<String>,
 }
-/// Immutable native fixture view; one action completes the demonstration.
+/// Immutable rules fixture view; one action completes the demonstration.
 #[derive(Clone, Debug, Serialize)]
 pub struct SyntheticSnapshot {
-    /// Native completed route; partial selections never change it.
+    /// Completed route; partial selections never change it.
     pub last_action: Option<crate::CompletedActionGeometry>,
     /// Explicit invented profile, distinct from chess and actual variants.
     pub profile: &'static str,
     /// Monotonic session identity, preserved across Reset.
     pub version: u64,
-    /// Native 16 by 16 geometry.
+    /// 16 by 16 board geometry.
     pub geometry: SyntheticGeometry,
-    /// Native pieces in the existing shared presentation shape.
+    /// Pieces in the existing shared presentation shape.
     pub pieces: Vec<BoardPiece>,
-    /// Complete native choices; prefixes alone are presentation state.
+    /// Complete game choices; prefixes alone are presentation state.
     pub choices: Vec<SyntheticChoice>,
     /// Exact distinct record of the demonstration.
     pub record: SyntheticRecord,
     /// True after one completed action; Reset begins another demonstration.
     pub complete: bool,
 }
-/// Only complete opaque choices and explicit Reset cross the native boundary.
+/// Only complete opaque choices and explicit Reset cross the rules boundary.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum SyntheticCommand {
-    /// Submit one complete canonical native fixture choice.
+    /// Submit one complete canonical rules fixture choice.
     Play {
-        /// Expected current native version.
+        /// Expected current version.
         version: u64,
-        /// Complete action identity supplied by the native snapshot.
+        /// Complete action identity supplied by the session snapshot.
         action: String,
     },
     /// Reset the invented arrangement without resetting version protection.
     Reset {
-        /// Expected current native version.
+        /// Expected current version.
         version: u64,
     },
 }
-/// Native development controller; no engine, chess outcome, or archive behavior.
+/// Development controller; no engine, chess outcome, or archive behavior.
 pub struct SyntheticController {
     board: Board,
     version: u64,
@@ -139,7 +139,7 @@ impl SyntheticController {
                 .last()
                 .and_then(|id| fixture::decode(id))
                 .map(|action| crate::CompletedActionGeometry {
-                    native_effects: None,
+                    ordered_effects: None,
                     action: fixture::encode(&action),
                     event_index: self.actions.len(),
                     origin: crate::ChoiceOrigin::Board {
@@ -182,7 +182,7 @@ impl SyntheticController {
             }
         };
         if expected != self.version {
-            return Err("The synthetic fixture changed. Use its current native version.".into());
+            return Err("The synthetic fixture changed. Use its current version.".into());
         }
         if self.version >= MAX_SAFE_ID {
             return Err(
@@ -193,7 +193,7 @@ impl SyntheticController {
         match command {
             SyntheticCommand::Play { action, .. } => {
                 let choice = self.choices().into_iter().find(|choice| fixture::encode(choice) == action)
-                    .ok_or("Choose one complete canonical native synthetic action. A route prefix or effect annotation is not a submitted action.")?;
+                    .ok_or("Choose one complete canonical synthetic action. A route prefix or effect annotation is not a submitted action.")?;
                 let mut candidate = self.board.clone();
                 candidate.apply(&choice).map_err(|error| {
                     format!("Synthetic fixture rejected the complete choice: {error:?}")
@@ -289,7 +289,7 @@ mod tests {
         serde_json::to_value(controller.snapshot()).unwrap()
     }
     #[test]
-    fn native_geometry_and_complete_choices_include_distinct_return_routes() {
+    fn geometry_and_complete_choices_include_distinct_return_routes() {
         let controller = SyntheticController::new();
         let snapshot = controller.snapshot();
         assert_eq!(snapshot.profile, "mshogi.synthetic.strider16.v1");

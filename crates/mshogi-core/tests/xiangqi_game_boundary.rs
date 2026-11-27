@@ -1,4 +1,4 @@
-//! Native history admission and strict canonical boundary, independent of consumers.
+//! Game history admission and strict canonical boundary, independent of consumers.
 use mshogi_core::xiangqi::*;
 use serde_json::{Value, json};
 fn submit(game: &mut Game, actor: Side, command: GameCommand) -> Result<Submission, GameError> {
@@ -177,7 +177,7 @@ fn natural_win_witness_includes_stalemate_but_excludes_f002_penalty_award() {
 }
 
 #[test]
-fn every_record_field_is_required_and_native_raw_payloads_reject_duplicates() {
+fn every_record_field_is_required_and_raw_payloads_reject_duplicates() {
     let mut game = Game::standard(ClaimPolicy::Explicit).unwrap();
     submit(
         &mut game,
@@ -212,7 +212,7 @@ fn every_record_field_is_required_and_native_raw_payloads_reject_duplicates() {
         let malformed = format!("{}{}{}", &text[..start], duplicate, &text[end..]);
         assert!(
             GameRecord::from_json(&malformed).is_err(),
-            "duplicate native {tag}"
+            "duplicate {tag}"
         );
     }
     for (key, val) in [
@@ -238,7 +238,7 @@ fn every_record_field_is_required_and_native_raw_payloads_reject_duplicates() {
         .unwrap()
         .remove("actor");
     assert!(GameRecord::from_json(&missing.to_string()).is_err());
-    // All native parsers must run before any harmless key-order normalization.
+    // All record parsers must run before any harmless key-order normalization.
     let pretty = serde_json::to_string_pretty(&value).unwrap();
     assert_eq!(GameRecord::from_json(&pretty).unwrap().to_json(), text);
 }
@@ -305,7 +305,7 @@ fn multi_step_semantic_undo_does_not_reactivate_abandoned_branch_tokens() {
 }
 
 #[test]
-fn agreement_offer_admission_preserves_native_actor_order_without_tournament_penalties() {
+fn agreement_offer_admission_preserves_actor_order_without_tournament_penalties() {
     let mut game = Game::standard(ClaimPolicy::Explicit).unwrap();
     assert_eq!(
         submit(&mut game, Side::Red, GameCommand::OfferDraw).unwrap_err(),

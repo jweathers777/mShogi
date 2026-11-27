@@ -2,7 +2,7 @@
 import type { ReactNode } from "react";
 import "./tori-birds.css";
 
-// Original presentation artwork. These are native faces, not promotion rules or
+// Original presentation artwork. These are faces, not promotion rules or
 // movement diagrams. The controller supplies the face, promotion flag and owner.
 const faces = ["Ph", "Fa", "Ea", "Cr", "Pt", "LQ", "RQ", "Sw", "Go"] as const;
 type ToriFace = typeof faces[number];
@@ -69,7 +69,7 @@ const identityMarks: Record<ToriFace, string> = { Ph: "PH", Fa: "FA", Ea: "EA", 
 
 export function ToriBirdPiece({ kind, promoted = false, rotated = false }: { kind: string; promoted?: boolean; rotated?: boolean }) {
   const face = faces.find(candidate => candidate === kind);
-  // Unknown native data must never silently become another bird or a Debug label.
+  // Unknown data must never silently become another bird or a Debug label.
   if (!face) return null;
   return <g className={`tori-bird-piece${promoted ? " promoted" : ""}`} data-tori-bird-face={face} transform={rotated ? "rotate(180 50 50)" : undefined} aria-hidden="true">
     <path className="tori-bird-piece-shadow" d="M50 5 83 28 91 96 9 96 17 28Z" transform="translate(0 2)" />

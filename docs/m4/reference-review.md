@@ -4,12 +4,12 @@ Date: 2026-10-26. Reviewer: fresh Codex review agent, separate from the fixture,
 harness and product authors. This is an independent agent review, not a human
 review. Worktree: `next-task`, branch `codex/shogi-board`; final review base HEAD
 `826cd2f14b9740985e3d263042e7299c20def041`. The reviewed reference changes were
-uncommitted working files. Concurrent native state/legality work was outside
+uncommitted working files. Concurrent game state/legality work was outside
 this review.
 
 **Verdict: PASS for MSH-64's bounded independently expected board corpus and
 pinned reference admission/harness. No material findings remain.** Actual
-reference execution was required and completed before this verdict. Native
+reference execution was required and completed before this verdict.
 mShogi differential comparison is not run here and belongs to MSH-66. This
 does not close MSH-41, certify historical reachability, complete the SH-F001–055
 inventory, or establish match/history outcomes.
@@ -63,7 +63,7 @@ king per owner and bounded material, not proven full-game reachable positions.
   hand piece; two identical rooks do not create two distinct USI choices.
   Empty final-rank pawn/lance and final-two-rank knight exclusions cover both
   sides. Occupied targets, absent resources, wrong-owner moves and same-square
-  moves are absent. Those membership checks do not establish native atomic
+  moves are absent. Those membership checks do not establish atomic
   rejection or state preservation for invalid product requests.
 - Nifu uses an own unpromoted pawn on that file. An own tokin and an opposing
   pawn do not trigger it. Both orientations' asserted alternatives are safe
@@ -144,7 +144,7 @@ Independently executed from this worktree:
 ```
 
 Final result: **101 fixtures passed, 0 failed; 4 API-gap sentinels; 4 diagnostic
-demonstrations; 0 native comparison sequences**. The review output is identical
+demonstrations; 0 comparison sequences**. The review output is identical
 to the retained `docs/m4/reference/reference-run.json`.
 
 Also independently reran `--admit-source /private/tmp/msh62-cshogi-audit
@@ -194,8 +194,8 @@ reference.
 | `docs/m4/reference/rule-source-manifest.json` | `5b846cc9778eb3e014e64f11db817840b9077bc6fbef3673fe62979070b3a3a7` |
 
 The accepted result is a usable complete-board-choice reference harness and
-independently reviewed concrete subset, not native product conformance.
-MSH-66 must supply actual native probe/differential evidence and remaining
+independently reviewed concrete subset, not product conformance.
+MSH-66 must supply actual probe/differential evidence and remaining
 movement coverage. MSH-67 still owns history/adjudication, declarations and
 outcome-dependent fixtures; adapters, search, runner and application integration
 retain their later owners. Task completion/integration remains the integrator's

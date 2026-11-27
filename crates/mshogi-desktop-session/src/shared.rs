@@ -1,12 +1,12 @@
-//! Concrete native desktop consumer boundary. Native games remain authoritative.
-//! Native-specific capability data composes into the one application contract.
+//! Concrete desktop consumer boundary. Games remain authoritative.
+//! Game-specific capability data composes into the one application contract.
 use super::*;
 #[path = "shared_archive.rs"]
 pub(super) mod archive;
 pub use archive::{SharedDocumentState, SharedOpenToken};
-#[path = "native_session.rs"]
+#[path = "game_session.rs"]
 #[macro_use]
-pub(super) mod native_session;
+pub(super) mod game_session;
 #[path = "shared_chess.rs"]
 pub(super) mod chess;
 #[path = "shared_chu.rs"]
@@ -23,18 +23,18 @@ pub(super) mod tori;
 mod transaction;
 #[path = "shared_xiangqi.rs"]
 pub(super) mod xiangqi;
-use crate::native_game::NativeGame;
+use crate::game_adapter::GameAdapter;
+use game_session::SessionGame;
 pub use inspection::{MovementInspection, MovementInspectionQuery};
-pub use mshogi_core::native::{GameKind, NativeSide, RulesProfile};
+pub use mshogi_core::game::{GameKind, RulesProfile, TaggedSide};
 pub use mshogi_core::shogi::Side as ShogiSide;
-use mshogi_core::{native::CanonicalRecord, shogi as s};
+use mshogi_core::{game::CanonicalRecord, shogi as s};
 #[cfg(test)]
 use mshogi_engine::OBSERVATION_SCHEMA_VERSION;
 use mshogi_engine::{
     ExecutionContext, ExecutionObservation, ExecutionPurpose, ExecutionRequest, ExecutionResponse,
     ExecutionResult, ExecutionTarget,
 };
-use native_session::SessionGame;
 pub use xiangqi::{IntersectionTopology, Palace, XiangqiPresentation};
 
 /// Exact UI precondition; neither board ply nor semantic undo restores this token.
@@ -50,33 +50,33 @@ pub struct SessionToken {
     /// Monotonic historical/live selection identity.
     pub selection: u64,
 }
-/// Native-qualified side with presentation-ready labels.
+/// Game-tagged side with presentation-ready labels.
 #[derive(Clone, Debug, Serialize)]
 pub struct PresentedSide {
-    /// Native game-qualified side identity.
-    pub id: NativeSide,
+    /// Game-qualified side identity.
+    pub id: TaggedSide,
     /// Profile-qualified stable presentation key.
     pub key: String,
-    /// Native human-readable description.
+    /// Human-readable description.
     pub label: String,
-    /// Whether this is the native first-moving side.
+    /// Whether this is the first-moving side.
     pub first_mover: bool,
 }
-pub(super) fn side(profile: RulesProfile, id: NativeSide) -> PresentedSide {
+pub(super) fn side(profile: RulesProfile, id: TaggedSide) -> PresentedSide {
     debug_assert_eq!(profile.game(), id.game());
     let (name, first) = match id {
-        NativeSide::Chess(Color::White) => ("White", true),
-        NativeSide::Chess(Color::Black) => ("Black", false),
-        NativeSide::Xiangqi(mshogi_core::xiangqi::Side::Red) => ("Red", true),
-        NativeSide::Xiangqi(mshogi_core::xiangqi::Side::Black) => ("Black", false),
-        NativeSide::Shogi(s::Side::Sente)
-        | NativeSide::Tori(mshogi_core::tori::Side::Sente)
-        | NativeSide::Chu(mshogi_core::chu::Side::Sente)
-        | NativeSide::Tenjiku(mshogi_core::tenjiku::Side::Sente) => ("Sente", true),
-        NativeSide::Shogi(s::Side::Gote)
-        | NativeSide::Tori(mshogi_core::tori::Side::Gote)
-        | NativeSide::Chu(mshogi_core::chu::Side::Gote)
-        | NativeSide::Tenjiku(mshogi_core::tenjiku::Side::Gote) => ("Gote", false),
+        TaggedSide::Chess(Color::White) => ("White", true),
+        TaggedSide::Chess(Color::Black) => ("Black", false),
+        TaggedSide::Xiangqi(mshogi_core::xiangqi::Side::Red) => ("Red", true),
+        TaggedSide::Xiangqi(mshogi_core::xiangqi::Side::Black) => ("Black", false),
+        TaggedSide::Shogi(s::Side::Sente)
+        | TaggedSide::Tori(mshogi_core::tori::Side::Sente)
+        | TaggedSide::Chu(mshogi_core::chu::Side::Sente)
+        | TaggedSide::Tenjiku(mshogi_core::tenjiku::Side::Sente) => ("Sente", true),
+        TaggedSide::Shogi(s::Side::Gote)
+        | TaggedSide::Tori(mshogi_core::tori::Side::Gote)
+        | TaggedSide::Chu(mshogi_core::chu::Side::Gote)
+        | TaggedSide::Tenjiku(mshogi_core::tenjiku::Side::Gote) => ("Gote", false),
     };
     PresentedSide {
         id,
@@ -85,45 +85,45 @@ pub(super) fn side(profile: RulesProfile, id: NativeSide) -> PresentedSide {
         first_mover: first,
     }
 }
-/// Semantic native piece presentation; glyphs are optional.
+/// Semantic piece presentation; glyphs are optional.
 #[derive(Clone, Debug, Serialize)]
 pub struct PresentedPiece {
-    /// Native board coordinate, used only as an opaque presentation key.
+    /// Game board coordinate, used only as an opaque presentation key.
     pub square: String,
     /// Profile-qualified piece/resource owner key.
     pub owner: String,
-    /// Native semantic piece kind, or tagged operation category.
+    /// Game semantic piece kind, or tagged operation category.
     pub kind: String,
-    /// Native current promoted state; never inferred from a glyph.
+    /// Current promoted state; never inferred from a glyph.
     pub promoted: bool,
-    /// Readable semantic piece abbreviation, including native promotion.
+    /// Readable semantic piece abbreviation, including promotion.
     pub text: String,
-    /// Native human-readable description.
+    /// Human-readable description.
     pub label: String,
 }
-/// Native hand resource with actual count and opaque selection identity.
+/// Hand resource with actual count and opaque selection identity.
 #[derive(Clone, Debug, Serialize)]
 pub struct PresentedHand {
-    /// Native board/hand origin category or opaque hand selection key.
+    /// Game board/hand origin category or opaque hand selection key.
     pub origin: String,
     /// Profile-qualified piece/resource owner key.
     pub owner: String,
-    /// Native semantic piece kind, or tagged operation category.
+    /// Game semantic piece kind, or tagged operation category.
     pub kind: String,
-    /// Actual native hand inventory count, including zero.
+    /// Actual hand inventory count, including zero.
     pub count: u8,
-    /// Readable semantic piece abbreviation, including native promotion.
+    /// Readable semantic piece abbreviation, including promotion.
     pub text: String,
-    /// Native human-readable description.
+    /// Human-readable description.
     pub label: String,
 }
 /// Complete actions have opaque identity, an origin (board or hand), ordered route
 /// and explicit completion. Distinct actions can share every route coordinate.
 #[derive(Clone, Debug, Serialize)]
 pub struct PresentedChoice {
-    /// Native board/hand origin category or opaque hand selection key.
+    /// Game board/hand origin category or opaque hand selection key.
     pub origin: ChoiceOrigin,
-    /// Opaque complete native action identifier.
+    /// Opaque complete action identifier.
     pub action: String,
     /// Opaque board/hand selection key; not a partial command.
     pub from: String,
@@ -132,72 +132,72 @@ pub struct PresentedChoice {
     /// Tenjiku selection shape keeps stationary targets distinct from movement.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub tenjiku: Option<tenjiku::TenjikuChoiceShape>,
-    /// Native explicit completion choice, including promotion or decline.
+    /// Explicit completion choice, including promotion or decline.
     pub completion: Option<Completion>,
 }
-/// Native origin category; opaque selection keys do not determine its meaning.
+/// Origin category; opaque selection keys do not determine its meaning.
 #[derive(Clone, Debug, Serialize)]
 #[serde(tag = "kind", rename_all = "snake_case")]
 pub enum ChoiceOrigin {
-    /// Native intersection occupied by the moving piece (not a square cell).
+    /// Intersection occupied by the moving piece (not a square cell).
     Intersection {
-        /// Native intersection coordinate.
+        /// Intersection coordinate.
         point: String,
     },
     /// Board square occupied by the moving piece.
     Board {
-        /// Native board coordinate.
+        /// Game board coordinate.
         square: String,
     },
-    /// Native hand resource owned by a qualified side.
+    /// Hand resource owned by a qualified side.
     Hand {
         /// Profile-qualified hand owner.
         owner: String,
-        /// Unpromoted native hand piece kind.
+        /// Unpromoted hand piece kind.
         piece_kind: String,
     },
 }
-/// Explicit native action completion option.
+/// Explicit action completion option.
 #[derive(Clone, Debug, Serialize)]
 pub struct Completion {
-    /// Native human-readable description.
+    /// Human-readable description.
     pub label: String,
     /// Optional decorative glyph; the label is always available.
     pub glyph: Option<String>,
 }
-/// Native geometry metadata; no rules or coordinate parsing in the webview.
+/// Board geometry metadata; no rules or coordinate parsing in the webview.
 #[derive(Clone, Debug, Serialize)]
 pub struct BoardDescriptor {
-    /// Explicit native intersection geometry where applicable; absent for existing square games.
+    /// Explicit intersection geometry where applicable; absent for existing square games.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub intersections: Option<IntersectionTopology>,
     /// File coordinates in display order.
     pub files: Vec<String>,
     /// Rank coordinates in display order.
     pub ranks: Vec<String>,
-    /// Native human-readable description.
+    /// Human-readable description.
     pub label: String,
-    /// Native initial keyboard focus coordinate.
+    /// Initial keyboard focus coordinate.
     pub initial_focus: String,
 }
-/// Native coordinate order for a named side at the bottom.
+/// Coordinate order for a named side at the bottom.
 #[derive(Clone, Debug, Serialize)]
 pub struct Orientation {
-    /// Native side and presentation labels for this orientation.
+    /// Game side and presentation labels for this orientation.
     pub side: PresentedSide,
     /// File coordinates in display order.
     pub files: Vec<String>,
     /// Rank coordinates in display order.
     pub ranks: Vec<String>,
 }
-/// Native-owned operation availability; never inferred from board dimensions.
+/// Operation availability from the rules library; never inferred from board dimensions.
 #[derive(Clone, Debug, Serialize)]
 pub struct CommandCapabilities {
     /// Whether the current live human can submit a complete board action.
     pub board_action: bool,
-    /// Whether native complete actions support hand drops.
+    /// Whether complete actions support hand drops.
     pub drops: bool,
-    /// Whether native choices support promotion completion.
+    /// Whether game choices support promotion completion.
     pub promotion: bool,
     /// Whether an atomic playable human decision can be restored.
     pub take_back: bool,
@@ -207,73 +207,73 @@ pub struct CommandCapabilities {
     pub engine_turn: bool,
     /// Whether bounded read-only ordinary analysis is supported.
     pub move_analysis: bool,
-    /// Whether native optional draw claims are currently available.
+    /// Whether optional draw claims are currently available.
     pub claims: bool,
-    /// Whether a formal native declaration may be submitted; eligibility is advisory.
+    /// Whether a formal game declaration may be submitted; eligibility is advisory.
     pub declaration: bool,
-    /// Whether a native resignation may currently be submitted.
+    /// Whether a resignation may currently be submitted.
     pub resign: bool,
-    /// Native hand-resource presentation or capability.
+    /// Hand-resource presentation or capability.
     pub hands: bool,
     /// Whether exact event-prefix inspection is supported.
     pub history: bool,
     /// Whether this active game has desktop archive support.
     pub save: bool,
 }
-/// Native complete event boundary with independent board-action count.
+/// Complete event boundary with independent board-action count.
 #[derive(Clone, Debug, Serialize)]
 pub struct PresentedEvent {
-    /// Native event boundary, separate from board ply.
+    /// Game event boundary, separate from board ply.
     pub index: usize,
     /// Known board-action count, excluding terminal command edges.
     pub board_ply: usize,
-    /// Native human-readable description.
+    /// Human-readable description.
     pub label: String,
 }
-/// Advisory native CSA eligibility; formal commands remain distinct.
+/// Advisory CSA eligibility; formal commands remain distinct.
 #[derive(Clone, Debug, Serialize)]
 pub struct DeclarationAdvice {
-    /// Native command actor; terminal commands retain their native turn semantics.
+    /// Game command actor; terminal commands retain their game turn semantics.
     pub actor: PresentedSide,
     /// Advisory declaration prerequisite result; does not commit a declaration.
     pub eligible: bool,
     /// Whether the declarer has the move.
     pub own_turn: bool,
-    /// Whether the king occupies the native opposing camp.
+    /// Whether the king occupies the opposing camp.
     pub king_in_camp: bool,
     /// Other owned pieces in the opposing camp.
     pub camp_pieces: u8,
-    /// Native camp and hand declaration points.
+    /// Camp and hand declaration points.
     pub points: u16,
-    /// Native side-specific declaration threshold.
+    /// Game side-specific declaration threshold.
     pub required_points: u16,
-    /// Whether the native king is unattacked.
+    /// Whether the king is unattacked.
     pub not_in_check: bool,
 }
-/// Native selected-event status, separate from process and incomplete work.
+/// Selected-event status, separate from process and incomplete work.
 #[derive(Clone, Debug, Serialize)]
 pub struct PresentedStatus {
-    /// Whether native adjudication has concluded this selected event prefix.
+    /// Whether adjudication has concluded this selected event prefix.
     pub concluded: bool,
-    /// Native human-readable description.
+    /// Human-readable description.
     pub label: String,
-    /// Native first/second-side score in half points, absent for unscored work.
+    /// First/second-side score in half points, absent for unscored work.
     pub score_half_points: Option<[u8; 2]>,
 }
-/// Actual observation retains the exact native execution context. A score is never
-/// reinterpreted as chess mate; declaration distance counts native command edges.
+/// Actual observation retains the exact execution context. A score is never
+/// reinterpreted as chess mate; declaration distance counts game command edges.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct PresentedObservation {
-    /// Exact submitted context and actual native result.
+    /// Exact submitted context and actual engine result.
     pub observation: ExecutionObservation,
-    /// Native command admission diagnostic, separate from a game outcome.
+    /// Game command admission diagnostic, separate from a game outcome.
     #[serde(deserialize_with = "archive::required_option")]
     pub application_error: Option<String>,
     /// True after reopening; evidence never resumes execution.
     pub historical: bool,
 }
-/// Native-derived display of a retained observation. The exact original response
+/// Display of a retained observation. The exact original response
 /// remains available separately for diagnostics and archival provenance.
 #[derive(Clone, Debug, Serialize)]
 pub struct PresentedSearchObservation {
@@ -281,15 +281,15 @@ pub struct PresentedSearchObservation {
     pub observation_index: usize,
     /// Explicit execution purpose: engine_turn or move_analysis.
     pub purpose: &'static str,
-    /// Native complete event target, independent of board ply.
+    /// Complete event target, independent of board ply.
     pub event_index: usize,
-    /// Native known board-action count at the target.
+    /// Known board-action count at the target.
     pub board_ply: usize,
-    /// Named native root-side evaluation perspective.
+    /// Named game root-side evaluation perspective.
     pub perspective: String,
     /// Actual bundled engine identity in player-facing form.
     pub engine: &'static str,
-    /// Native heuristic or terminal-command distance presentation.
+    /// Heuristic or terminal-command distance presentation.
     pub score: Option<String>,
     /// Actual last completed iteration, absent for process failure.
     pub completed_depth: Option<u16>,
@@ -299,7 +299,7 @@ pub struct PresentedSearchObservation {
     pub selective_depth: Option<u16>,
     /// Actual admitted visits, absent for process failure.
     pub nodes: Option<u64>,
-    /// Readable native complete continuation choices.
+    /// Readable complete continuation choices.
     pub variation: Vec<String>,
     /// Execution completion/resource stop/failure, separate from game outcome.
     pub status: &'static str,
@@ -371,8 +371,8 @@ fn display_chess_observation(
         event_index,
         board_ply,
         perspective: side(
-            mshogi_core::native::RulesProfile::ChessMatchV1,
-            NativeSide::Chess(root_side),
+            mshogi_core::game::RulesProfile::ChessMatchV1,
+            TaggedSide::Chess(root_side),
         )
         .label,
         engine: "mShogi",
@@ -401,26 +401,26 @@ fn display_chess_observation(
             && current.is_some_and(|c| c.observation == observation.observation),
     }
 }
-/// Typed shared desktop view with exact runtime identity and native context.
+/// Typed shared desktop view with exact runtime identity and game context.
 #[derive(Clone, Debug, Serialize)]
 pub struct SharedSnapshot {
-    /// Native standard notation, exact move/event mapping and selected cue.
+    /// Standard notation, exact move/event mapping and selected cue.
     pub moves: MovesProjection,
-    /// Native Xiangqi-only warnings, claims and assessment; no square-game inference.
+    /// Xiangqi-only warnings, claims and assessment; no square-game inference.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub xiangqi: Option<XiangqiPresentation>,
-    /// Tori-native exact prefix, outcome and provenance; no cross-game inference.
+    /// Tori exact prefix, outcome and provenance; no cross-game inference.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub tori: Option<tori::ToriPresentation>,
-    /// Native Chu royal, Lion-right, repetition and complete-effect metadata.
+    /// Chu royal, Lion-right, repetition and complete-effect metadata.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub chu: Option<chu::ChuPresentation>,
-    /// Native two-profile Tenjiku facts and ordered effect phases.
+    /// Two-profile Tenjiku facts and ordered effect phases.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub tenjiku: Option<tenjiku::TenjikuPresentation>,
-    /// Exact native replacement precondition for New Game and Open.
+    /// Exact replacement precondition for New Game and Open.
     pub open_token: SharedOpenToken,
-    /// Authoritative document metadata and game-native settings.
+    /// Authoritative document metadata and game settings.
     pub document: SharedDocumentState,
     /// Off-path document operation.
     pub io: IoState,
@@ -428,9 +428,9 @@ pub struct SharedSnapshot {
     pub capacity: CapacityState,
     /// Exact runtime snapshot and selection precondition.
     pub token: SessionToken,
-    /// Explicit native game identity.
+    /// Explicit game identity.
     pub game: GameKind,
-    /// Immutable selected native rules profile identity.
+    /// Immutable selected rules profile identity.
     pub profile: RulesProfile,
     /// Immutable rules/source edition.
     pub edition: &'static str,
@@ -440,31 +440,31 @@ pub struct SharedSnapshot {
     pub local_actor: PresentedSide,
     /// Fixed human/orientation anchor.
     pub human: PresentedSide,
-    /// Native side to move at the selected event.
+    /// Game side to move at the selected event.
     pub turn: PresentedSide,
-    /// Native side identities and labels in first-mover order.
+    /// Game side identities and labels in first-mover order.
     pub sides: Vec<PresentedSide>,
-    /// Native geometry descriptor; explicit intersection topology where applicable.
+    /// Board geometry descriptor; explicit intersection topology where applicable.
     pub board: BoardDescriptor,
-    /// Native display ordering for each side at the bottom.
+    /// Display ordering for each side at the bottom.
     pub orientations: Vec<Orientation>,
-    /// Native semantic piece presentation at the selected event.
+    /// Game semantic piece presentation at the selected event.
     pub pieces: Vec<PresentedPiece>,
-    /// Native hand-resource presentation or capability.
+    /// Hand-resource presentation or capability.
     pub hands: Vec<PresentedHand>,
-    /// Complete native legal actions; capability gates live submission.
+    /// Complete legal actions; capability gates live submission.
     pub choices: Vec<PresentedChoice>,
-    /// Native-owned supported commands and features.
+    /// Supported game commands and features.
     pub capabilities: CommandCapabilities,
-    /// Native selected-event conclusion or turn status.
+    /// Selected-event conclusion or turn status.
     pub status: PresentedStatus,
-    /// Native event timeline, including same-board-ply terminal commands.
+    /// Game event timeline, including same-board-ply terminal commands.
     pub events: Vec<PresentedEvent>,
     /// Selected complete event prefix, not a board move number.
     pub event_index: usize,
     /// Known board actions at the selected prefix, distinct from terminal events.
     pub board_ply: u64,
-    /// Actual native budget used for ordinary engine turns, not analysis defaults.
+    /// Actual budget used for ordinary engine turns, not analysis defaults.
     pub play_limits: WorkLimits,
     /// Whether viewing a read-only earlier event prefix.
     pub historical: bool,
@@ -472,32 +472,32 @@ pub struct SharedSnapshot {
     pub paused: bool,
     /// Native close guard distinguishes an unsaved document from its stop-only journal.
     pub close_requires_save: bool,
-    /// Execution lifecycle, independent of native game outcome.
+    /// Execution lifecycle, independent of game outcome.
     pub phase: EnginePhase,
     /// Actual currently owned request purpose, never inferred from turn or pause.
     pub execution_purpose: Option<&'static str>,
     /// Bounded execution/application diagnostic, never a chess or shogi result.
     pub diagnostic: Option<String>,
-    /// Read-only eligibility evidence for each native side.
+    /// Read-only eligibility evidence for each game side.
     pub declaration_advice: Vec<DeclarationAdvice>,
-    /// Authoritative native canonical record. Xiangqi additionally distinguishes an immutable
-    /// intra-command selection from a committed canonical prefix in its native presentation.
+    /// Authoritative canonical record. Xiangqi additionally distinguishes an immutable
+    /// intra-command selection from a committed canonical prefix in its presentation.
     pub context: CanonicalRecord,
     /// Read-only observation bound to its exact selected target.
     pub analysis: Option<PresentedObservation>,
     /// Accepted historical observations with their exact contexts.
     pub observations: Vec<PresentedObservation>,
-    /// Readable actual search observations, with native score/continuation meaning.
+    /// Readable actual search observations, with reported score/continuation meaning.
     pub search_observations: Vec<PresentedSearchObservation>,
-    /// Native evaluation perspective and terminal-distance interpretation.
+    /// Evaluation perspective and terminal-distance interpretation.
     pub score_meaning: &'static str,
-    /// Native Chess capability details; common application state lives above.
+    /// Chess capability details; common application state lives above.
     pub chess: Option<ChessPresentation>,
     /// Complete authoritative Chess match record, including clock/policy/events.
-    /// Native GameRecord context above remains separately authoritative for rules/search.
+    /// GameRecord context above remains separately authoritative for rules/search.
     pub chess_match: Option<MatchRecord>,
 }
-/// Native Chess capability information, without a second application snapshot.
+/// Chess capability information, without a second application snapshot.
 #[derive(Clone, Debug, Serialize)]
 pub struct ChessPresentation {
     /// Current optional claims. An intended action is not played by claiming.
@@ -506,11 +506,11 @@ pub struct ChessPresentation {
     pub live_conclusion: Option<MatchConclusion>,
     /// Conclusion at the selected exact event prefix.
     pub selected_conclusion: Option<MatchConclusion>,
-    /// Native check status at the selected position.
+    /// Check status at the selected position.
     pub in_check: bool,
     /// Actual read-only analysis and its exact context.
     pub analysis: AnalysisState,
-    /// Latest actual engine result, with native score meaning.
+    /// Latest actual engine result, with reported score meaning.
     pub last_engine_result: Option<ChessResult>,
     /// Side whose position was searched for the latest engine result.
     pub last_engine_turn: Option<Color>,
@@ -523,7 +523,7 @@ pub struct ChessPresentation {
 pub struct SharedDesktopCommand {
     /// Complete current runtime precondition, required for every shared command.
     pub expected: SessionToken,
-    /// Explicit native game identity.
+    /// Explicit game identity.
     pub game: GameKind,
     /// Game-neutral operation; the active game admits its payload.
     pub operation: SessionOperation,
@@ -537,7 +537,7 @@ impl SharedDesktopCommand {
         parsed.map_err(|mut message| {
             let mut end = message
                 .len()
-                .min(mshogi_core::native::MAX_RECORD_DIAGNOSTIC_BYTES);
+                .min(mshogi_core::game::MAX_RECORD_DIAGNOSTIC_BYTES);
             while !message.is_char_boundary(end) {
                 end -= 1;
             }
@@ -551,42 +551,42 @@ impl SharedDesktopCommand {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum SessionOperation {
-    /// Load a native record as a new unsaved document. Verification fixtures
+    /// Load a game record as a new unsaved document. Verification fixtures
     /// and tests only; the application opens documents through files.
     #[serde(skip_deserializing)]
     Replace {
-        /// Strict authoritative native canonical record; not a desktop archive.
+        /// Strict authoritative canonical record; not a desktop archive.
         record: CanonicalRecord,
-        /// Native side controlled by the human.
-        human: NativeSide,
+        /// Game side controlled by the human.
+        human: TaggedSide,
     },
-    /// Play the complete native action of a presented choice for the local player.
+    /// Play the complete action of a presented choice for the local player.
     Play {
         /// Opaque action identifier of a presented choice.
         action: String,
     },
-    /// Submit a complete native command of the active game for the local player.
+    /// Submit a complete game command of the active game for the local player.
     Command {
-        /// The native command, as the game's records spell it.
+        /// The game command, as the game's records spell it.
         command: serde_json::Value,
     },
     /// Save the orientation and analysis defaults; the play mode stays the document's.
     Preferences {
         /// Settings of the active game.
-        settings: crate::game_document::GameSettings<NativeSide>,
+        settings: crate::game_document::GameSettings<TaggedSide>,
     },
-    /// Submit native human resignation.
+    /// Submit human resignation.
     Resign {},
-    /// Undo the last accepted native event while retiring all execution work.
+    /// Undo the last accepted game event while retiring all execution work.
     Undo {},
     /// Restore the preceding human decision while retiring all execution work.
     TakeBack {},
-    /// Select a read-only native event prefix.
+    /// Select a read-only game event prefix.
     Inspect {
         /// Selected complete event prefix, not a board move number.
         event_index: usize,
     },
-    /// Return to live, restoring only native browse-suspended running intent.
+    /// Return to live, restoring only browse-suspended running intent.
     ReturnLive {},
     /// Replace execution with bounded read-only analysis of the selected prefix.
     Analyze {
@@ -601,10 +601,10 @@ pub enum SessionOperation {
     Retry {},
 }
 impl SessionOperation {
-    /// A native command operation.
+    /// A game command operation.
     pub fn command(command: &impl Serialize) -> Self {
         Self::Command {
-            command: serde_json::to_value(command).expect("native command serializes"),
+            command: serde_json::to_value(command).expect("game command serializes"),
         }
     }
     /// A play operation for the presented choice identifier `action`.
@@ -644,23 +644,23 @@ impl DesktopController {
             selection: self.session.selection_id,
         }
     }
-    /// Start a standard game through persistence admission. Native-qualified human
+    /// Start a standard game through persistence admission. Game-tagged human
     /// assignment is recorded; orientation initially places that player at bottom.
     /// The exact replacement token is checked before retiring any accepted state.
     pub fn shared_new_game(
         &mut self,
         expected: SharedOpenToken,
         profile: RulesProfile,
-        human: NativeSide,
+        human: TaggedSide,
     ) -> Result<(SharedSnapshot, AdmissionReceipt), String> {
         self.shared_new_game_with_mode(expected, profile, human, PlayMode::HumanEngine)
     }
-    /// Create a native document with durable local participant ownership.
+    /// Create a document with durable local participant ownership.
     pub fn shared_new_game_with_mode(
         &mut self,
         expected: SharedOpenToken,
         profile: RulesProfile,
-        human: NativeSide,
+        human: TaggedSide,
         play_mode: PlayMode,
     ) -> Result<(SharedSnapshot, AdmissionReceipt), String> {
         let game = profile.game();
@@ -683,7 +683,7 @@ impl DesktopController {
             let human = G::side_of(human).expect("side of this game");
             let record = G::new_record(profile).map_err(|e| e.to_string())?;
             self.queue_game_candidate::<G>(
-                native_session::RuntimeSeed::Record {
+                game_session::RuntimeSeed::Record {
                     record: Box::new(record),
                     human,
                     play_mode,
@@ -696,7 +696,7 @@ impl DesktopController {
         Ok((self.shared_snapshot(), receipt))
     }
 
-    /// Apply a native-qualified operation. Cancellation/replacement is processed
+    /// Apply a qualified operation. Cancellation/replacement is processed
     /// before polling, so an already completed retired response cannot win a race.
     pub fn shared_command(
         &mut self,
@@ -709,12 +709,12 @@ impl DesktopController {
         }
         if command.expected != self.shared_token() {
             return Err(
-                "The session or selected event changed; use its current native snapshot.".into(),
+                "The session or selected event changed; use its current session snapshot.".into(),
             );
         }
         let active = self.session.kind();
         if command.game != active {
-            return Err("Command game does not match the active native session.".into());
+            return Err("Command game does not match the active game session.".into());
         }
         self.ensure_runtime_capacity()?;
         if self.session.document_epoch >= MAX_SAFE_ID - 64 {
@@ -732,7 +732,7 @@ impl DesktopController {
         }
         with_game!(active, G => self.game_command::<G>(command.operation))
     }
-    /// Exact acceptance, separate read-only observation path and native command admission.
+    /// Exact acceptance, separate read-only observation path and game command admission.
     pub fn accept_shared(&mut self, response: ExecutionResponse) -> bool {
         if response.protocol != mshogi_engine::PROTOCOL_VERSION {
             return false;
@@ -742,9 +742,9 @@ impl DesktopController {
     pub(crate) fn accept_observation(&mut self, response: ExecutionObservation) -> bool {
         with_game!(self.session.kind(), G => self.accept_game_observation::<G>(response))
     }
-    /// Poll only the active game and return its native presentation and provenance.
+    /// Poll only the active game and return its presentation and provenance.
     pub fn shared_snapshot(&mut self) -> SharedSnapshot {
-        self.poll_native_admission();
+        self.poll_admission();
         self.poll_files();
         with_game!(self.session.kind(), G => self.poll_game::<G>())
     }
@@ -811,7 +811,7 @@ impl DesktopController {
         };
         let wait = |c: &mut Self, receipt: AdmissionReceipt| -> Result<(), String> {
             while receipt.completion().is_none() {
-                c.poll_native_admission();
+                c.poll_admission();
                 std::thread::sleep(std::time::Duration::from_millis(1));
             }
             receipt.completion().expect("completed fixture admission")
@@ -819,7 +819,7 @@ impl DesktopController {
         let record = s::GameRecord::from_game(&game);
         // There is no control journal any more; the control-capacity fixture
         // is the standard game (MSH-228).
-        let seed = native_session::RuntimeSeed::Record {
+        let seed = game_session::RuntimeSeed::Record {
             record: Box::new(record),
             human,
             play_mode: PlayMode::HumanEngine,
@@ -836,7 +836,7 @@ impl DesktopController {
                 depth: 1,
                 nodes: 1,
             };
-            for _ in 0..native_session::KEPT_RESULTS - 1 {
+            for _ in 0..game_session::KEPT_RESULTS - 1 {
                 self.start_game_work::<Shogi>(limits, true)
                     .map_err(|e| e.diagnostic)?;
                 let request = self
@@ -886,7 +886,7 @@ fn decode_execution_observation(bytes: &[u8], context: &ExecutionContext) -> Exe
 
 impl DesktopController {
     pub(super) fn present_moves(&self, selected: usize) -> MovesProjection {
-        // Native identity is monotonic across undo/reopen; this transient cache
+        // Game identity is monotonic across undo/reopen; this transient cache
         // owns no live/canonical state. Polling never replays game adjudication.
         let key = (self.session.document_epoch, self.session.version);
         self.shared

@@ -1,12 +1,12 @@
-//! Native root and commands for the shared compact record.
+//! Game root and commands for the shared compact record.
 use super::*;
 use crate::record::compact::{self, Compact, compact_types};
 pub use compact::RecordError;
-/// Native schema of the saved game.
+/// Record schema of the saved game.
 pub const GAME_RECORD_SCHEMA_VERSION: u32 = 3;
-/// Complete validated native record.
+/// Complete validated game record.
 pub type GameRecord = compact::CompactRecord<HistorySnapshot>;
-/// New native events following an exact retained base.
+/// New game events following an exact retained base.
 pub type GameDelta = compact::CompactDelta<HistorySnapshot>;
 impl Compact for HistorySnapshot {
     compact_types!();
@@ -16,7 +16,7 @@ impl Compact for HistorySnapshot {
         root.profile().edition()
     }
     fn root(game: &Game) -> Self::Root {
-        game.native_root().clone()
+        game.game_root().clone()
     }
     fn install(root: Self::Root, stop: &mut impl FnMut() -> bool) -> Result<Game, RecordError> {
         let position = Position::install(root).map_err(|_| RecordError::Root)?;
@@ -54,7 +54,7 @@ mod compact_bounds {
     fn maximal_wire_fields_fit_compact_bounds() {
         for profile in Profile::ALL {
             let game = Game::standard(profile);
-            let mut root = game.native_root().clone();
+            let mut root = game.game_root().clone();
             root.root = RootMetadata::imported("\0".repeat(1024), u64::MAX).unwrap();
             // Deliberately overfill material/identities to bound every valid root.
             for base in Base::ALL {

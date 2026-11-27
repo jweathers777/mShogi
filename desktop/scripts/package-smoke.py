@@ -100,7 +100,7 @@ result = observation['result']['result']
 assert result['kind'] == 'move', result
 # The package contract is a legal complete result within the requested bounds.
 # Search ordering, exact node counts, scores and the selected legal move can
-# change when the search is improved; native correctness suites test that layer.
+# change when the search is improved; correctness suites test that layer.
 def check_chess_choice(value):
     assert value['kind'] == 'move', value
     assert value['action'] in initial_chess_actions, value
@@ -121,18 +121,18 @@ analysis_request['context'].update(request_id=2,
 analysis_response = query(analysis_request)
 check_chess_choice(analysis_response['observation']['result']['result'])
 # Each selected Tenjiku profile is exercised through its real bundled engine.
-# Inputs are native-generated independent diagram documents, external to the
+# Inputs are generated independent diagram documents, external to the
 # normal package; this is process/transport evidence, not host GUI evidence.
 tenjiku_responses = []
 for index, profile in enumerate(('adams', 'muller')):
     source = Path(__file__).with_name('fixtures') / f'tenjiku-{profile}-royal-engine.mshogi'
     document = json.loads(source.read_text(encoding='utf-8'))
-    native = {'envelope_version': 2, 'game_kind': 'tenjiku', 'payload': document['payload']['record']}
-    turn = native['payload']['root']['side']
-    assert turn == 'sente' and native['payload']['events'] == []
+    record = {'envelope_version': 2, 'game_kind': 'tenjiku', 'payload': document['payload']['record']}
+    turn = record['payload']['root']['side']
+    assert turn == 'sente' and record['payload']['events'] == []
     ctx = {'purpose': {'kind': 'engine_turn'}, 'request_id': 100 + index * 2,
         'session_version': 1,
-        'game': native, 'limits': {'depth': 1, 'nodes': 1024}}
+        'game': record, 'limits': {'depth': 1, 'nodes': 1024}}
     move_request = {'protocol': request['protocol'], 'context': ctx}
     move = query(move_request, 'tenjiku')
     result = move['observation']['result']['result']; telemetry = result['telemetry']
@@ -146,7 +146,7 @@ for index, profile in enumerate(('adams', 'muller')):
             'label':'Packaged Tenjiku independent royal diagram','turn':{'game_kind':'tenjiku','side':turn}}})
     analyzed = query(analysis, 'tenjiku')
     assert analyzed['observation']['result']['result']['choice'] == result['choice']
-    tenjiku_responses.append({'profile':native['payload']['root']['profile'],'source_fixture':str(source),
+    tenjiku_responses.append({'profile':record['payload']['root']['profile'],'source_fixture':str(source),
         'source_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'engine_turn':move,'analysis':analyzed})
 report = {
     'package_root': str(args.package_root),
@@ -161,17 +161,17 @@ report = {
     'files': [str(path.relative_to(args.package_root)) for path in files],
     'scope': 'Package inventory and actual UCI, engine-turn and move-analysis queries. Both Tenjiku whole profiles additionally execute real diagram engine-turn and read-only analysis queries. Host acceptance and installed UI interaction are separate evidence.',
 }
-# Replay the real returned actions/PVs through the public native owner. This
+# Replay the real returned actions/PVs through the public rules owner. This
 # external development verifier is not a packaged executable or Python rules
 # model; score alone cannot distinguish royal capture from a tied bare-royal win.
-with tempfile.TemporaryDirectory(prefix='mshogi-package-native-replay-') as directory:
+with tempfile.TemporaryDirectory(prefix='mshogi-package-replay-') as directory:
     source_report = Path(directory) / 'observations.json'
     source_report.write_text(json.dumps(report), encoding='utf-8')
-    native_replay = subprocess.run(['cargo', 'run', '--release', '--locked', '-q',
+    replay = subprocess.run(['cargo', 'run', '--release', '--locked', '-q',
         '-p', 'mshogi-desktop-session', '--example', 'write_tenjiku_gui_fixtures', '--',
         '--verify-package-report', str(source_report)],
         cwd=Path(__file__).resolve().parents[2], check=True, capture_output=True,
         text=True, timeout=300)
-    report['tenjiku_native_replay'] = json.loads(native_replay.stdout)
+    report['tenjiku_replay'] = json.loads(replay.stdout)
 args.report.write_text(json.dumps(report, indent=2) + '\n')
 print(json.dumps(report, indent=2))

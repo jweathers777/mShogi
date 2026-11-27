@@ -34,7 +34,7 @@ pub const MAX_STDERR_BYTES: usize = 4096;
 #[serde(deny_unknown_fields)]
 pub struct WorkLimits {
     /// Maximum nominal completed depth; selective continuations have their own
-    /// recorded native path bound.
+    /// recorded path bound.
     pub depth: u16,
     /// Maximum attempted node visits, including discarded iterations.
     pub nodes: u64,
@@ -43,7 +43,7 @@ pub struct WorkLimits {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_ms: Option<u64>,
 }
-/// Serializable native draw claim, including an optional unplayed intended move.
+/// Serializable draw claim, including an optional unplayed intended move.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct EngineClaim {
@@ -78,12 +78,12 @@ impl From<EngineClaim> for ClaimRequest {
 pub enum EngineChoice {
     /// Complete legal board action.
     Move {
-        /// Native complete action.
+        /// Complete action.
         action: Action,
     },
     /// Claim remains separate from moving its intended action.
     Claim {
-        /// Exact native claim request.
+        /// Exact claim request.
         claim: EngineClaim,
     },
 }
@@ -97,7 +97,7 @@ impl From<SearchChoice> for EngineChoice {
         }
     }
 }
-/// Actual native execution stop reason, not a chess outcome.
+/// Actual execution stop reason, not a chess outcome.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum StopReason {
@@ -120,12 +120,12 @@ impl From<SearchStatus> for StopReason {
         }
     }
 }
-/// Observations from the last fully completed native iteration.
+/// Observations from the last fully completed iteration.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Telemetry {
     /// Root side-to-move heuristic perspective in centipawn units (pawn=100).
-    /// Mate scores use the native MATE_SCORE distance convention.
+    /// Mate scores use the MATE_SCORE distance convention.
     pub score: Option<i32>,
     /// Last completed depth; zero means no completed iteration.
     pub completed_depth: u16,
@@ -139,7 +139,7 @@ pub struct Telemetry {
     pub status: StopReason,
 }
 impl Telemetry {
-    /// Admitted board-ply bound for a continuation, absent beyond the native
+    /// Admitted board-ply bound for a continuation, absent beyond the
     /// path limit. A terminal claim may add one command without playing its
     /// intended move.
     pub fn variation_depth_bound(&self) -> Option<u16> {
@@ -176,17 +176,17 @@ impl Telemetry {
             && (self.completed_depth > 0 || self.principal_variation.is_empty())
     }
 }
-/// Explicit process, transport, context or native-search failure.
+/// Explicit process, transport, context or search failure.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum FailureKind {
     /// Invalid version, identity, limits or game history.
     InvalidRequest,
-    /// Native search failed without publishing a partial score.
+    /// Search failed without publishing a partial score.
     Search,
     /// Child executable could not be launched.
     Start,
-    /// A pipe or native transport operation failed.
+    /// A pipe or transport operation failed.
     Io,
     /// Child exited unsuccessfully.
     UnexpectedExit,
@@ -210,20 +210,20 @@ pub struct EngineFailure {
     /// Bounded diagnostic message.
     pub message: String,
 }
-/// Lossless native decision or explicit lack of a usable decision.
+/// Lossless decision or explicit lack of a usable decision.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum ChessResult {
     /// Apply this complete board action through the authoritative host.
     Move {
-        /// Native action.
+        /// Action.
         action: Action,
         /// Real search observations.
         telemetry: Telemetry,
     },
     /// Apply this claim through the authoritative host, not its intended move.
     Claim {
-        /// Native claim.
+        /// Claim.
         claim: EngineClaim,
         /// Real search observations.
         telemetry: Telemetry,

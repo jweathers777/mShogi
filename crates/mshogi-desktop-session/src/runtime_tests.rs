@@ -1,6 +1,6 @@
-//! The R3 application contract is exercised through real native documents.
+//! The R3 application contract is exercised through real documents.
 use super::*;
-use mshogi_core::native::{GameKind, NativeSide};
+use mshogi_core::game::{GameKind, TaggedSide};
 fn controller() -> DesktopController {
     let mut controller = DesktopController::new("/unused/r3-engine".into()).unwrap();
     controller.shared.manual_engine = true;
@@ -16,13 +16,13 @@ fn settle(controller: &mut DesktopController, receipt: &AdmissionReceipt) {
     receipt.completion().unwrap().unwrap();
 }
 #[test]
-fn exactly_one_native_document_and_uniform_metadata_survive_cross_game_replacement() {
+fn exactly_one_document_and_uniform_metadata_survive_cross_game_replacement() {
     let mut c = controller();
     let mut previous = c.shared_token();
     for human in [
-        NativeSide::Shogi(mshogi_core::shogi::Side::Gote),
-        NativeSide::Xiangqi(mshogi_core::xiangqi::Side::Red),
-        NativeSide::Chess(Color::White),
+        TaggedSide::Shogi(mshogi_core::shogi::Side::Gote),
+        TaggedSide::Xiangqi(mshogi_core::xiangqi::Side::Red),
+        TaggedSide::Chess(Color::White),
     ] {
         let (_, receipt) = c
             .shared_new_game(
@@ -42,7 +42,7 @@ fn exactly_one_native_document_and_uniform_metadata_survive_cross_game_replaceme
             (ActiveDocument::Chess { .. }, GameKind::Chess)
             | (ActiveDocument::Shogi { .. }, GameKind::Shogi)
             | (ActiveDocument::Xiangqi { .. }, GameKind::Xiangqi) => {}
-            _ => panic!("exactly one authoritative native variant must match the public contract"),
+            _ => panic!("exactly one authoritative game variant must match the public contract"),
         }
         assert_eq!(c.session.document_epoch, snapshot.token.document);
         assert_eq!(c.session.document_revision, snapshot.document.revision);
@@ -120,7 +120,7 @@ fn rejected_chess_worker_command_is_not_capacity_engine_failure_or_outcome() {
     assert_ne!(after.phase, EnginePhase::Failed);
 }
 #[test]
-fn close_authority_rejects_all_native_replacement_commands_and_open_but_keeps_save_available() {
+fn close_authority_rejects_all_replacement_commands_and_open_but_keeps_save_available() {
     let mut c = controller();
     let expected = c.shared_open_token();
     c.lifecycle.request_close().unwrap();
@@ -132,8 +132,8 @@ fn close_authority_rejects_all_native_replacement_commands_and_open_but_keeps_sa
     assert!(
         c.shared_new_game(
             expected,
-            mshogi_core::native::RulesProfile::ChessMatchV1,
-            NativeSide::Chess(Color::White)
+            mshogi_core::game::RulesProfile::ChessMatchV1,
+            TaggedSide::Chess(Color::White)
         )
         .is_err()
     );
@@ -152,7 +152,7 @@ fn close_authority_rejects_all_native_replacement_commands_and_open_but_keeps_sa
 }
 
 #[test]
-fn direct_identity_refusals_publish_native_facts_without_mutating_the_game() {
+fn direct_identity_refusals_publish_facts_without_mutating_the_game() {
     let mut c = controller();
     let before = c.shared_snapshot().context;
     c.io_state.id = MAX_SAFE_ID - 1;
@@ -171,7 +171,7 @@ fn direct_identity_refusals_publish_native_facts_without_mutating_the_game() {
         c.test_chess_operation(SessionOperation::Preferences {
             settings: crate::game_document::GameSettings {
                 play_mode: PlayMode::HumanEngine,
-                orientation: NativeSide::Chess(Color::Black),
+                orientation: TaggedSide::Chess(Color::Black),
                 analysis_defaults: AnalysisOperation { depth: 1, nodes: 1 },
             },
         })
@@ -202,9 +202,9 @@ fn reopened_all_game_identities_exceed_runtime_only_revisions_without_spending_s
     }
     let mut c = controller();
     for (index, human) in [
-        NativeSide::Chess(Color::White),
-        NativeSide::Shogi(mshogi_core::shogi::Side::Sente),
-        NativeSide::Xiangqi(mshogi_core::xiangqi::Side::Red),
+        TaggedSide::Chess(Color::White),
+        TaggedSide::Shogi(mshogi_core::shogi::Side::Sente),
+        TaggedSide::Xiangqi(mshogi_core::xiangqi::Side::Red),
     ]
     .into_iter()
     .enumerate()
@@ -308,7 +308,7 @@ fn chess_claim_keeps_the_intended_action_unplayed() {
 }
 
 #[test]
-fn current_chess_presentation_has_native_capabilities_without_a_second_application_snapshot() {
+fn current_chess_presentation_has_capabilities_without_a_second_application_snapshot() {
     let mut c = controller();
     let value = serde_json::to_value(c.shared_snapshot()).unwrap();
     for field in [
@@ -340,7 +340,7 @@ fn current_chess_presentation_has_native_capabilities_without_a_second_applicati
     ] {
         assert!(
             value["chess"].get(field).is_some(),
-            "native Chess capability {field} remains available"
+            "Chess capability {field} remains available"
         );
     }
 }

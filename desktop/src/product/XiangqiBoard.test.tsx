@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { deferred, renderBoard, square as point } from "../testing/helpers";
-import type { XiangqiSnapshot as GameSnapshot, MovementInspection } from "../native";
+import type { XiangqiSnapshot as GameSnapshot, MovementInspection } from "../sessionTypes";
 import { afterEach, expect, it, vi } from "vitest";
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { XiangqiBoard } from "./XiangqiBoard";
@@ -8,7 +8,7 @@ import { XiangqiBoard } from "./XiangqiBoard";
 import standardJson from "../__fixtures__/shared-xiangqi-standard.json";
 import inspectionJson from "../__fixtures__/shared-xiangqi-inspection.json";
 
-// Both payloads are emitted by the native fixture generator. Expected legal
+// Both payloads are emitted by the rules fixture generator. Expected legal
 // actions below are selected from those payloads, never calculated in JS.
 const standard = standardJson as unknown as GameSnapshot;
 const inspection = inspectionJson as MovementInspection;
@@ -20,7 +20,7 @@ function flipped(snapshot = standard) {
 const board = (snapshot = standard) =>
   renderBoard(XiangqiBoard, { snapshot, onInspect: vi.fn().mockResolvedValue(inspection), inspectionDisabled: false });
 
-it("renders all native intersections, river and palace diagonals without square cells or foreign game controls", () => {
+it("renders all intersections, river and palace diagonals without square cells or foreign game controls", () => {
   const { container } = board();
   expect(container.querySelectorAll(".xiangqi-point")).toHaveLength(90);
   expect([...container.querySelectorAll(".xiangqi-point")].map((node) => node.getAttribute("data-intersection"))).toEqual(standard.board.intersections!.points);
@@ -39,13 +39,13 @@ it("renders all native intersections, river and palace diagonals without square 
   expect(screen.queryByRole("dialog")).toBeNull();
 });
 
-it("uses approved differentiated piece art while semantic names and ownership stay native in both orientations", () => {
+it("uses approved differentiated piece art while semantic names and ownership stay in both orientations", () => {
   const { props, rerender, container } = board();
   const art = { a0: "俥", b0: "傌", c0: "相", d0: "仕", e0: "帥", b2: "炮", a3: "兵", a9: "車", b9: "馬", c9: "象", d9: "士", e9: "將", b7: "砲", a6: "卒" };
   for (const [origin, glyph] of Object.entries(art)) {
-    const native = standard.pieces.find((piece) => piece.square === origin)!;
+    const snapshot = standard.pieces.find((piece) => piece.square === origin)!;
     expect(point(origin).querySelector(".xiangqi-piece text")?.textContent).toBe(glyph);
-    expect(point(origin).getAttribute("aria-label")).toContain(native.kind);
+    expect(point(origin).getAttribute("aria-label")).toContain(snapshot.kind);
     expect(point(origin).querySelector(".xiangqi-piece")?.getAttribute("transform")).toBeNull();
   }
   expect(screen.getByRole("group", { name: "Xiangqi board, Red at bottom" })).toBeTruthy();
@@ -58,7 +58,7 @@ it("uses approved differentiated piece art while semantic names and ownership st
   expect(point("e9").querySelector("text")?.textContent).toBe("將");
 });
 
-it("submits exactly the native complete move, preserving capture precedence over opponent inspection", () => {
+it("submits exactly the complete move, preserving capture precedence over opponent inspection", () => {
   const { props } = board();
   const capture = standard.choices.find((choice) => choice.action === "b2b9")!;
   expect(capture).toBeTruthy();
@@ -88,7 +88,7 @@ it.each(["red", "black"])("supports keyboard navigation, focus and Escape withou
   expect(props.onPlay).toHaveBeenCalledExactlyOnceWith(standard.choices.find((choice) => choice.from === "e3")!.action);
 });
 
-it.each(["red", "black"])("presents native read-only inspection with hollow and occupied markers in %s orientation", async (orientation) => {
+it.each(["red", "black"])("presents read-only inspection with hollow and occupied markers in %s orientation", async (orientation) => {
   const { props, container } = board(orientation === "black" ? flipped() : standard);
   fireEvent.click(point(inspection.origin));
   const status = await screen.findByText("Inspecting Black cannon · Esc clears");
@@ -108,7 +108,7 @@ it.each(["red", "black"])("presents native read-only inspection with hollow and 
   expect(container.querySelectorAll(".inspection-marker")).toHaveLength(0);
 });
 
-it.each(["context", "orientation", "origin", "friendly", "cancel"])("retires a deferred native inspection after %s changes", async (change) => {
+it.each(["context", "orientation", "origin", "friendly", "cancel"])("retires a deferred inspection after %s changes", async (change) => {
   let pending = deferred<MovementInspection>();
   const onInspect = vi.fn().mockImplementation(() => { pending = deferred<MovementInspection>(); return pending.promise; });
   const props = { snapshot: standard, disabled: false, onPlay: vi.fn(), onInspect, inspectionDisabled: false };
@@ -128,7 +128,7 @@ it.each(["context", "orientation", "origin", "friendly", "cancel"])("retires a d
   if (change === "origin") expect(point("h7").getAttribute("aria-label")).toContain("loading movement inspection");
 });
 
-it("allows native inspection of a historical position while all game actions remain disabled", async () => {
+it("allows inspection of a historical position while all game actions remain disabled", async () => {
   const snapshot = { ...standard, historical: true, capabilities: { ...standard.capabilities, board_action: false } };
   const onPlay = vi.fn(), onInspect = vi.fn().mockResolvedValue(inspection);
   render(<XiangqiBoard snapshot={snapshot} disabled onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} />);
@@ -137,9 +137,9 @@ it("allows native inspection of a historical position while all game actions rem
   expect(document.querySelector("[data-position-status]")?.textContent).toContain("History · return to live");
 });
 
-// Renderer contract probes, not additional Xiangqi rules: complete native choice
+// Renderer contract probes, not additional Xiangqi rules: complete game choice
 // identifiers and ordered routes must survive presentation without interpretation.
-it("preserves ordered routes, terminal-prefix alternatives and native completion identities", () => {
+it("preserves ordered routes, terminal-prefix alternatives and completion identities", () => {
   const snapshot: GameSnapshot = { ...standard, choices: [
     { action: "contract-short-A", from: "a3", origin: { kind: "intersection", point: "a3" }, steps: ["a4"], completion: { label: "Finish A", glyph: null } },
     { action: "contract-short-B", from: "a3", origin: { kind: "intersection", point: "a3" }, steps: ["a4"], completion: { label: "Finish B", glyph: null } },
@@ -156,7 +156,7 @@ it("preserves ordered routes, terminal-prefix alternatives and native completion
   expect(props.onPlay).not.toHaveBeenCalled(); fireEvent.click(point("a3"));
   expect(props.onPlay).toHaveBeenCalledExactlyOnceWith("contract-long");
 });
-it("keeps different native routes with identical endpoints distinct", () => {
+it("keeps different routes with identical endpoints distinct", () => {
   const snapshot: GameSnapshot = { ...standard, choices: [
     { action: "contract-via-a4", from: "a3", origin: { kind: "intersection", point: "a3" }, steps: ["a4", "b4"], completion: null },
     { action: "contract-via-b3", from: "a3", origin: { kind: "intersection", point: "a3" }, steps: ["b3", "b4"], completion: null },

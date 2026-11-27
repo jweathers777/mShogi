@@ -13,7 +13,7 @@ from pathlib import Path
 from tools.experiments.core import digest, encode, file_hash
 from . import texel_data
 from .common import DATA, engine_identity, game_options, load_json, profile, write_new
-from .native_match import telemetry
+from .internal_match import telemetry
 
 
 def positive(value):
@@ -33,16 +33,16 @@ def inputs(path, field, selected):
     return rows
 
 
-def native(args, operation, payload, *settings):
+def run_experiment(args, operation, payload, *settings):
     command = [args.helper, operation, *map(str, settings)]
     result = subprocess.run(command, input=encode(payload), capture_output=True, timeout=75)
     if result.returncode:
-        raise ValueError(result.stderr.decode(errors='replace').strip() or 'native helper failed')
+        raise ValueError(result.stderr.decode(errors='replace').strip() or 'helper failed')
     return json.loads(result.stdout)
 
 
 def position(args, row, *, seed=0, plies=0, prove=False):
-    return native(args, 'position', row, profile(args.game, args.profile), seed, plies,
+    return run_experiment(args, 'position', row, profile(args.game, args.profile), seed, plies,
                   'prove' if prove else 'prepare')
 
 
@@ -50,7 +50,7 @@ def search(args, record, engine=None, depth=None):
     limits = [depth or args.depth, args.nodes]
     if getattr(args, 'movetime', None):
         limits.append(args.movetime)
-    result = native(args, 'search', record, engine or args.engine, *limits)
+    result = run_experiment(args, 'search', record, engine or args.engine, *limits)
     if result['kind'] != args.game:
         raise ValueError(f"engine returned {result['kind']} for {args.game}")
     return result['result']
@@ -138,7 +138,7 @@ def suite(args):
         boards.add(key)
         rows.append({'id': item['id'], 'group': group, 'split': part, 'record': row['root']['record'],
                      'answers': row['answers'], 'proof': item.get('proof') or item.get('source')
-                     if args.proof == 'supplied' else 'every native board move ending in a win for its mover'})
+                     if args.proof == 'supplied' else 'every game board move ending in a win for its mover'})
     if {r['split'] for r in rows} != {'development', 'held-out'}:
         raise ValueError('suite requires independently grouped development and held-out rows')
     write_new(args.out, {'profile': selected, 'source_sha256': file_hash(args.source), 'positions': rows,
@@ -163,13 +163,13 @@ def probe(args):
         verdict = 'listed' if passed else 'incorrect'
         if not passed and choice is not None and 'checking_answers' in item and args.game == 'tori':
             payload = {'diagram': item['diagram'], 'action': choice}
-            spelling = native(args, 'unlisted-tori', payload, item['mate_plies'], 0)['token']
+            spelling = run_experiment(args, 'unlisted-tori', payload, item['mate_plies'], 0)['token']
             key = digest(encode(item['diagram']).rstrip(b'\n'))
             cached = proofs.get(f"{key}|{spelling}|{item['mate_plies']}|20000000|tori-mate-proof-v2")
             if cached and cached['verdict'] != 'unknown':
                 verdict = cached['verdict']
             else:
-                proof = native(args, 'unlisted-tori', payload, item['mate_plies'], args.proof_visits)
+                proof = run_experiment(args, 'unlisted-tori', payload, item['mate_plies'], args.proof_visits)
                 verdict = {None: 'unknown', False: 'refuted', True: 'proved_win'}[proof['win']]
             passed = verdict == 'proved_win'
         rows.append({'id': item['id'], 'choice': choice, 'passed': passed, 'verdict': verdict,
@@ -224,7 +224,7 @@ def probability(result):
     score = result.get('telemetry', {}).get('score')
     if score is None:
         return None
-    # Stable logistic function, including the native engines' mate-distance scores.
+    # Stable logistic function, including the mShogi engines' mate-distance scores.
     exp = math.exp(-abs(score) / 600)
     return 1 / (1 + exp) if score >= 0 else exp / (1 + exp)
 
@@ -336,7 +336,7 @@ def options(sub):
         ('openings', openings, 'screen seeded or supplied openings at fixed depth'),
         ('suite', suite, 'construct a grouped tactical suite with independent answers'),
         ('probe', probe, 'score one partition of a tactical suite'),
-        ('export', export, 'export native self-play reports and split by opening'),
+        ('export', export, 'export self-play reports and split by opening'),
         ('judge', judge, 'judge sampled moves with larger fixed work'),
         ('signature', signature, 'compare fixed-depth observations from two engines'),
     ]:
@@ -349,7 +349,7 @@ def options(sub):
             p.add_argument('--depth', type=positive, required=func != bench)
             p.add_argument('--nodes', type=positive, required=True)
         if func in (judge, export):
-            p.add_argument('reports', nargs='+', type=Path, help='native reports, optionally gzip compressed')
+            p.add_argument('reports', nargs='+', type=Path, help='match reports, optionally gzip compressed')
         if func in (openings, suite, signature, bench):
             p.add_argument('--source', required=func != openings)
         if func == bench:
@@ -357,17 +357,17 @@ def options(sub):
         elif func == blunders:
             p.add_argument('--suite', required=True)
             p.add_argument('--split', choices=['development', 'held-out'])
-            p.add_argument('--movetime', type=positive, help='native move budget in milliseconds')
+            p.add_argument('--movetime', type=positive, help='move budget in milliseconds')
         elif func == openings:
             p.add_argument('--seed', type=int, default=1)
             p.add_argument('--plies', type=int, default=8)
             p.add_argument('--count', type=positive, required=True)
             p.add_argument('--attempts', type=positive, required=True)
-            p.add_argument('--balance', type=int, required=True, help='maximum absolute score in native hundredths')
+            p.add_argument('--balance', type=int, required=True, help='maximum absolute score in hundredths')
         elif func == suite:
             p.add_argument('--proof', choices=['one-ply', 'supplied'], required=True)
         elif func == probe:
-            p.add_argument('--proof-visits', type=positive, default=20000, help='maximum native visits for an unlisted Tori move')
+            p.add_argument('--proof-visits', type=positive, default=20000, help='maximum visits for an unlisted Tori move')
             p.add_argument('--suite', required=True)
             p.add_argument('--split', required=True, choices=['development', 'held-out'])
         elif func == export:

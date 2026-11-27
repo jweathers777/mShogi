@@ -1,4 +1,4 @@
-import type { GameSnapshot, NativeCommand, Operation } from "../native";
+import type { GameSnapshot, GameCommand, Operation } from "../sessionTypes";
 import { useRef, useState } from "react";
 import { claimName } from "../presentation";
 import { TakeBackControl } from "./TakeBackControl";
@@ -17,7 +17,7 @@ export function GameActions({ snapshot, disabled, resignDisabled = disabled, com
     finally { resigning.current = false; }
   }
   // The session derives each command's actor: the local player or the opponent of a draw offer.
-  const ask = (command: NativeCommand, title: string, action: string, meaning: string) => confirm({ source: snapshot, operation: { kind: "command", command }, title, action, meaning });
+  const ask = (command: GameCommand, title: string, action: string, meaning: string) => confirm({ source: snapshot, operation: { kind: "command", command }, title, action, meaning });
   const terminal = snapshot.game === "xiangqi" ? snapshot.xiangqi.terminal_actions : null;
   const claims = snapshot.game === "chess" ? snapshot.chess.claims : [];
   const claim = claims[claimIndex] ?? claims[0];
@@ -46,7 +46,7 @@ export function GameActions({ snapshot, disabled, resignDisabled = disabled, com
     {terminal?.offer_draw && <button className="quiet" disabled={disabled} onClick={() => ask({ kind: "offer_draw" }, snapshot.play_mode === "two_humans" ? `${offerName}?` : "Offer a draw?", offerName, "An offer alone does not end the game. Your opponent must accept it.")}>{offerName}…</button>}
     {terminal?.accept_draw && <button className="secondary" disabled={disabled} onClick={() => ask({ kind: "accept_draw" }, snapshot.play_mode === "two_humans" ? `${responseName}?` : "Accept the draw?", responseName, "Accepting the outstanding offer ends this game as a draw.")}>{responseName}…</button>}
     {terminal?.decline_draw && <button className="quiet" disabled={disabled} onClick={() => ask({ kind: "decline_draw" }, snapshot.play_mode === "two_humans" ? `${declineName}?` : "Decline the draw?", declineName, "The game will continue without this offer.")}>{declineName}…</button>}
-    {(snapshot.game === "chu" || snapshot.game === "tenjiku") && !snapshot.historical && !snapshot.status.concluded && <NativeDrawControls
+    {(snapshot.game === "chu" || snapshot.game === "tenjiku") && !snapshot.historical && !snapshot.status.concluded && <GameDrawControls
       offeredBy={snapshot.game === "chu" ? snapshot.chu.live.draw_offer : snapshot.tenjiku.live.draw_offer}
       human={drawResponder.id.side} disabled={disabled}
       offer={() => ask({ kind: "offer_draw" }, "Offer a draw?", "Offer draw", "An offer alone does not end the game. Your opponent must accept it.")}
@@ -56,7 +56,7 @@ export function GameActions({ snapshot, disabled, resignDisabled = disabled, com
   </section>;
 }
 
-function NativeDrawControls({ offeredBy, human, disabled, offer, accept, decline }: {
+function GameDrawControls({ offeredBy, human, disabled, offer, accept, decline }: {
   offeredBy: string | null; human: string; disabled: boolean; offer: () => void; accept: () => void; decline: () => void;
 }) {
   return <>{offeredBy === null && <button className="quiet" disabled={disabled} onClick={offer}>Offer draw…</button>}{offeredBy !== null && offeredBy !== human && <><button className="secondary" disabled={disabled} onClick={accept}>Accept draw…</button><button className="quiet" disabled={disabled} onClick={decline}>Decline draw</button></>}</>;

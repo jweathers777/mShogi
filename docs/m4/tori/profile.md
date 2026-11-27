@@ -3,7 +3,7 @@
 **Identity: `mshogi.tori.modern.v1`, edition MSH208-MODERN-2026-11-20.** The
 earlier edition MSH81-MODERN-2026-11-01 differed only in T06 (see T06).
 This is the complete rules contract selected by the recorded 2026-11-01
-modern-playing decision. Native support and delivered consumers are recorded in
+modern-playing decision. Support and delivered consumers are recorded in
 the delivery review. The earlier reserved `mshogi.tori.bunsei11.v1` was never
 adopted and is not an alias. Preserve the historical checkpoint;
 its acquisition questions no longer gate this profile.
@@ -27,14 +27,14 @@ meaning. A rule change requires a new profile version and fixture review.
 
 Seven files × seven ranks of squares. Files7→1 run left→right when viewed from
 Sente's side; ranks a→g run top→bottom. Sente moves first, toward decreasing rank;
-Gote faces the opposite way. Names are native Tori sides, not Chess colors.
+Gote faces the opposite way. Names are Tori sides, not Chess colors.
 Each side has Phoenix1, Falcon1, Crane2, Pheasant2, LeftQuail1, RightQuail1,
 Swallow8. Hands start empty. Lower home rank7g→1g is LQ,Pt,Cr,Ph,Cr,Pt,RQ;
 Falcon4f; Swallows1e..7e and3d. Rotate the complete arrangement180° and exchange
 owner for Gote (extra Swallow5d). Thirty-two pieces total. T-M5 Setup, T-M3p2,
 T-M4 diagram agree; T-H1img4 is supporting evidence only.
 
-## T02 — native identities and movement
+## T02 — identities and movement
 
 Use immutable kind names Phoenix鵬, Falcon鷹, Eagle鵰, Crane鶴, Pheasant雉,
 LeftQuail左鶉, RightQuail右鶉, Swallow燕, Goose鴈 (historical鳫 is a display alias).
@@ -67,7 +67,7 @@ labelled pair in the other sources. No optional Tori+ pieces.
 
 One turn is one ordinary move or one drop, never pass. A move supplies origin,
 destination and the resulting face required by this profile (the Rust spelling
-may derive the forced face). Native authority determines capture/effects; reject
+may derive the forced face). Session authority determines capture/effects; reject
 invented victims, extra routes, optional nonpromotion or promotion of other kinds.
 A capture transfers the victim into the mover's hand: Eagle→Falcon, Goose→Swallow,
 all other nonroyal kinds unchanged, including LeftQuail/RightQuail. Ownership
@@ -109,7 +109,7 @@ use royal-safety/drop legal replies before history enforcement (**S**, separatio
 of board legality from repetition sanction). Mate by another dropped kind is
 legal. T-M5 Drops; T-M3p1; T-M4 rules; T-M2 narrow two/three corroboration.
 
-## T05 — royal safety and native termination
+## T05 — royal safety and termination
 
 Exactly one Phoenix per side in an admitted live diagram. No move may leave its
 own Phoenix attacked. An attack means capture geometry and blockers of the
@@ -136,7 +136,7 @@ out of turn, while live; resignation ends the game as the opponent's win without
 incrementing board ply. Once concluded, further actions/terminal commands reject
 atomically. No timed games in initial delivery. Administrative stop, resource
 exhaustion, engine failure or exhausted experiment limit is incomplete/unscored,
-never a native win, draw or proof of mating possibility.
+never a win, draw or proof of mating possibility.
 
 ## T06 — repetition: third occurrence refused (decided)
 
@@ -151,7 +151,7 @@ pieces in hand are part of the position; not a draw as in Shogi), and Okano,
 禽将棋 (2008, Osaka University of Commerce bulletin 10), cited by the Japanese
 Abstract Games Museum as "third occurrence; change the repeating move".
 
-- Repetition key: every board square's owner/native face, both hands by distinct
+- Repetition key: every board square's owner/face, both hands by distinct
   unpromoted kind/count, and side to move. Exclude counters, observations and
   runtime identity. Saved context still includes all those additional semantics.
 - The positions compared are all positions of the known history, wherever they
@@ -199,39 +199,39 @@ Declared completed-ply counters are immutable nonnegative root metadata. Track
 accepted board plies separately from zero; current declared total, if displayed,
 is root counter plus accepted board plies. Terminal/control events add neither.
 These counters are not proof of
-prior moves, a repetition occurrence count or a move-clock adjudication. Native
+prior moves, a repetition occurrence count or a move-clock adjudication. Game
 record schema and transport version are separate explicit identities, chosen by
-the native consumer owner, not dictated by a Shogi SFEN-shaped string.
+the consumer owner, not dictated by a Shogi SFEN-shaped string.
 
-Canonical native record requirements: game=tori; immutable profile/edition;
-native schema; standard or explicit diagram root; root provenance (including
+Canonical game record requirements: game=tori; immutable profile/edition;
+record schema; standard or explicit diagram root; root provenance (including
 missing earlier history/counter meaning); complete ordered board and match events;
 actor and complete action. Schema 4 reconstructs effects, conclusions, event
-prefixes and board-ply mapping by native replay instead of storing copies. Resign
+prefixes and board-ply mapping by game replay instead of storing copies. Resign
 does not masquerade as a board move or repetition. Operational interruptions
-stay in session memory and add no native event.
-Strict outer dispatch must retain duplicate fields for native rejection; reject
+stay in session memory and add no game event.
+Strict outer dispatch must retain duplicate fields for rejection; reject
 unknown/conflicting profiles, schema, fields, malformed actions, unavailable hand
 pieces, illegal geometry/safety, stale identity and resource violations atomically.
 
 Apply/undo must restore board, hands, face, side, declared metadata, event/board
 indices, occurrence ledger, obligation, conclusion and incremental caches exactly.
 Undo/history/reopen cannot revive retired execution identities. Saved observations
-retain exact target history, purpose, limits, native score perspective and proof
+retain exact target history, purpose, limits, reported score perspective and proof
 provenance where relevant; they are historical data, not pending work. Records
 have no byte or event limit (MSH-268); compact root and command sizes stay
 bounded, so every event prefix stays saveable.
 
 ## T08 — notation and consumer boundaries (S)
 
-Native complete actions are authority. A future human adapter may use explicit
+Complete actions are authority. A future human adapter may use explicit
 `Fa4c-4b+`, `LQ4d-2f`, capture `x`, drop `Sw*4b`, with side labels and exact source
 square where needed. Coordinates are7×7 and quails remain distinct; no generic
-9×9 SFEN/USI compatibility claim. Complete native record, not the display string,
+9×9 SFEN/USI compatibility claim. Complete game record, not the display string,
 is replay authority. Two-column Moves contains board actions only; associate
 obligations/conclusions with their exact selected event prefix.
 
-Initial functional native search uses the full selected history/obligations and
+Initial functional search uses the full selected history/obligations and
 reports real results, incomplete/cancelled/failure unscored. No new exact graph
 analysis/dead-position proof is required for this profile. Functional M4 engine
 and measured M5 strength remain distinct. See handoff for actual
@@ -244,10 +244,10 @@ R1–R6 consumers and minimum required dispatch extensions.
 | P01 / C historical edition | Modern identity;1828/1833 publication relation not a gameplay dependency. Prior research preserved, no unread text represented as read. |
 | P02 / apparent A wording | Explicit Wikipedia compulsory origin-or-destination-zone rule, corroborated contemporary compulsory descriptions; Hamburg ambiguous verb does not establish a coherent contrary optional rule. TORI-P-ENTRY/DROP-EXIT/DROP-OTHER/HEAD. |
 | P03 / B rare cycles | T06 departure responsibility/count/sanction/forced-cycle convention explicit; not Fairy-Stockfish/Shokidoki equivalence. TORI-H-COUNT/INITIATOR/CHECK and forced/overlap tests. |
-| P04 / B edge endings/digital policy | T05 mate stop, quiet immobility loss, no impasse/agreement, native resignation and unscored administration. TORI-O-* tests. |
+| P04 / B edge endings/digital policy | T05 mate stop, quiet immobility loss, no impasse/agreement, resignation and unscored administration. TORI-O-* tests. |
 | P05 / B software boundary | T07/T08 root/counter/strict canonical semantics, no reachability or protocol fiction. TORI-C-* and rejection/replay tests. |
 | P06 / ordinary modern agreement | T02/T03 demotion/owner/handed-kind and nonjumping Eagle. TORI-CAPTURE-* and geometry fixtures. |
 
 No remaining material project decision or source acquisition blocks this complete
-planning profile. Implementation, actual native conformance, engine execution,
+planning profile. Implementation, actual rules conformance, engine execution,
 archive capacity measurements and packaged integration remain future obligations.

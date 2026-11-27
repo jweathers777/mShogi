@@ -1,7 +1,7 @@
 {
   "format": "mshogi.shogi.history-fixtures.v1",
   "rules_profile": "mshogi.shogi.csa36.v1",
-  "established_method": "Independent Codex AI agent hand construction from pinned primary clauses and explicit board geometry/arithmetic, before native adjudication comparison; no reference search-cycle outcome oracle. See docs/m4/history-fixture-derivations.md.",
+  "established_method": "Independent Codex AI agent hand construction from pinned primary clauses and explicit board geometry/arithmetic, before adjudication comparison; no reference search-cycle outcome oracle. See docs/m4/history-fixture-derivations.md.",
   "sources": {
     "CSA-36": "https://www.computer-shogi.org/wcsc36/rule.pdf",
     "JSA-R": "https://www.shogi.or.jp/match/taikyoku_rules/taikyoku_rules.pdf",

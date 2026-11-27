@@ -1,6 +1,6 @@
 //! Reproducible bounded real-subprocess Tenjiku self-play, not strength measurement.
 mod support;
-use mshogi_core::{native::CanonicalRecord, tenjiku as t};
+use mshogi_core::{game::CanonicalRecord, tenjiku as t};
 use mshogi_engine::*;
 fn bounded(game: t::Game, maximum_plies: usize) -> support::selfplay::Trace<t::Action> {
     support::selfplay::bounded::<game::Tenjiku>(
@@ -59,7 +59,7 @@ fn actual_selfplay_is_deterministic_bounded_and_unscored_at_work_stop() {
             record
                 .to_game()
                 .unwrap()
-                .native_root()
+                .game_root()
                 .board()
                 .iter()
                 .flatten()
@@ -119,7 +119,7 @@ fn royal_root(profile: t::Profile) -> t::Game {
     .unwrap()
 }
 #[test]
-fn actual_complete_custom_game_captures_both_independently_expected_native_royals() {
+fn actual_complete_custom_game_captures_both_independently_expected_royals() {
     for profile in t::Profile::ALL {
         let first = bounded(royal_root(profile), 4);
         let second = bounded(royal_root(profile), 4);

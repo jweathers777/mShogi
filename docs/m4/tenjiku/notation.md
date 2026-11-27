@@ -1,7 +1,7 @@
-# Native Tenjiku human action notation
+# Tenjiku human action notation
 
 MSH-44 provides a compact **mShogi adapter**, not a claim of historical standard
-notation. It serves both immutable whole profiles. Native complete actions,
+notation. It serves both immutable whole profiles. Complete actions,
 ordered effects and canonical game history remain authoritative. Parsing selects
 an actual local choice; `Game.submit` separately enforces full history, actor,
 profile, terminal state and fresh context.
@@ -9,22 +9,22 @@ profile, terminal state and fresh context.
 Travel grammar: `original[+]source(separator landing){1,3}[^]`, without spaces.
 Stationary igui grammar: `original[+]source!xtarget`.
 
-- `original` is the original native `Base.code()`. `+` means that original has
+- `original` is the original `Base.code()`. `+` means that original has
   already promoted. `ChS+` moves as Heavenly Tetrarch (`HT`); it is not an
   original HT. `WBf+` moves as Fire Demon and remains a promoted Water Buffalo.
 - Coordinates are file 1–16 followed by rank a–p. Both owners use the same
-  absolute coordinates; Sente/Gote comes from native position and event history.
+  absolute coordinates; Sente/Gote comes from position and event history.
 - `-` marks an actual quiet landing and `x` an actual direct capture landing.
   All landings occur in order; crossed or jumped-over squares are absent.
   A return to the vacated origin is quiet. Different routes remain different
   complete choices even when their endpoints match.
 - Final `^` requests this action's once-only promotion. Its absence selects no
-  flip and does not assert promotion availability. Native effects determine
+  flip and does not assert promotion availability. Game effects determine
   whether the mover survives to promote.
 - `!x` marks stationary igui with its exact target. There is no movement from the source;
-  later native effects may destroy the mover. The target is not a travel landing. Igui has no route or promotion suffix.
+  later game effects may destroy the mover. The target is not a travel landing. Igui has no route or promotion suffix.
 
-| Native choice at an appropriate root | Label |
+| Game choice at an appropriate root | Label |
 | --- | --- |
 | Lion jumps and captures at 8f | `Ln8hx8f` |
 | Lion captures at 8g then 8f | `Ln8hx8gx8f` |
@@ -36,33 +36,33 @@ Stationary igui grammar: `original[+]source!xtarget`.
 | Corresponding unflipped choice | `P12f-12e` |
 
 Capture labels describe direct route occupancy. Fire collateral, mover death and
-surviving promotion are **derived native phases**, separate from the player's
+surviving promotion are **derived phases**, separate from the player's
 input. A Demon action keeps the same label when the two profiles produce different
-burn/death effects. Console history and the native desktop completed-action
+burn/death effects. Console history and the desktop completed-action
 projection retain those exact phases; no client-supplied victim list is accepted.
-Historical labels use each event's exact preceding native prefix.
+Historical labels use each event's exact preceding prefix.
 
 The core `notation::format_effects(&Effects)` formatter supplies readable effect
 text for accessible Moves descriptions and other human consumers. It reads only
-native action/phase facts, with no board query or victim inference. English names
+action/phase facts, with no board query or victim inference. English names
 come from the shared `notation::face_name(Face)` map, checked against the ratified
 profile's forty-four source-aligned names. A promoted victim retains its original
 identity: `Gote Gold General (promoted Pawn)` differs from an original Gold
-General. Promotion names both the native before/after identities and location.
+General. Promotion names both the before/after identities and location.
 
-Phases retain their exact native order. `Burned together:` groups one simultaneous
-batch and lists all supplied victims in native order. `destroyed at` describes
+Phases retain their exact order. `Burned together:` groups one simultaneous
+batch and lists all supplied victims in order. `destroyed at` describes
 mover death separately from enemy captures. For the same Demon route
 `8j → 7i → 7h → 8h` in the source-derived dying-Demon root, Adams describes
 `Burned together: Gote Pawn at 8g; Sente Fire Demon destroyed at 8h`; Muller
-describes `Sente Fire Demon destroyed at 8h`. These are native profile differences,
+describes `Sente Fire Demon destroyed at 8h`. These are profile differences,
 not alternate spellings or omitted victims.
 
 Igui text explicitly says `Stationary capture at 9h; stationary origin 8h; Captured
 Gote Pawn at 9h`. The origin wording describes absence of movement, without
 claiming survival: another enemy Fire Demon can destroy the stationary mover at
-that origin, and its native destruction phase is described afterwards. A quiet
-action with no native phases says exactly
+that origin, and its destruction phase is described afterwards. A quiet
+action with no phases says exactly
 `No captures or other effects.` This text accompanies the complete action label;
 it is not a replacement canonical event or a new legality/admission boundary.
 
@@ -87,14 +87,14 @@ installs that record's profile without reinterpretation; a later fresh start
 keeps the loaded profile. There is no rules switch within a game.
 
 `help`, `show`, `status`, `legal`, `move`, `undo` and `history` expose complete
-native choices, original/promoted identity, royal sets, root provenance, known
+game choices, original/promoted identity, royal sets, root provenance, known
 history, bare-reply state and actual conclusions.
 `move` batches commit only when every complete action is admitted; readable
-native effect descriptions are published after that whole-batch success. `history`
+effect descriptions are published after that whole-batch success. `history`
 uses the same core effect formatter for exact admitted event phases. Rejected
 batches publish neither partial action confirmations nor partial effect text.
 `undo` reverses
-native events, including non-move events. `offer-draw`, `accept-draw`,
+game events, including non-move events. `offer-draw`, `accept-draw`,
 `decline-draw` and `resign` use an explicit Sente/Gote actor.
 
 `record load-file` and `record load-json` accept strict canonical standard/custom
@@ -102,16 +102,16 @@ roots. They share the existing bounded file adapter with `record print` and
 `record save`. Save requires a new path and preserves an existing
 file; strict complete replay succeeds before Load replaces the current session.
 Records preserve profile/edition, original identities/rights, complete actions,
-native effects and match history. Human labels never replace canonical semantics.
+game effects and match history. Human labels never replace canonical semantics.
 
-`perft` and `divide` use the **full native Game**, including history and endings:
+`perft` and `divide` use the **full Game**, including history and endings:
 depth 0–3 for perft and 1–3 for divide. The default and maximum budget is
 1,000,000 visits for the whole request, including the root. An incomplete
-traversal returns an explicit error. `analyze [depth nodes]` uses bounded native history-aware search on a
+traversal returns an explicit error. `analyze [depth nodes]` uses bounded game history-aware search on a
 private copy; it leaves the live record unchanged. Zero work has no fallback move
-or score. Current native search limits apply, independently of diagnostic bounds.
+or score. Current search limits apply, independently of diagnostic bounds.
 
-Board cells use lowercase `s`/`g` ownership prefixes and original native codes,
+Board cells use lowercase `s`/`g` ownership prefixes and original piece codes,
 with `+` for already promoted originals. There are no captured-piece hands.
 Human shell output is separate from structured `internal-search`; Tenjiku is not
 advertised through Chess UCI, standard Shogi USI or SFEN.

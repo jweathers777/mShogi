@@ -13,7 +13,7 @@ pub enum Profile {
     MullerCompleted,
 }
 impl Profile {
-    /// All delivered native profile choices.
+    /// All delivered profile choices.
     pub const ALL: [Self; 2] = [Self::AdamsModern, Self::MullerCompleted];
     /// Exact canonical identity, never inferred from dimensions.
     pub const fn id(self) -> &'static str {
@@ -30,7 +30,7 @@ impl Profile {
         }
     }
 }
-/// Native owners; Sente moves first and toward decreasing rank.
+/// Rules owners; Sente moves first and toward decreasing rank.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Ord, PartialOrd, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Side {
@@ -40,7 +40,7 @@ pub enum Side {
     Gote,
 }
 impl Side {
-    /// Other native owner.
+    /// Opposing side.
     pub const fn opponent(self) -> Self {
         match self {
             Self::Sente => Self::Gote,
@@ -80,11 +80,11 @@ impl Square {
             None
         }
     }
-    /// Native file 1..16.
+    /// File 1..16.
     pub const fn file(self) -> u8 {
         (self.0 % 16 + 1) as u8
     }
-    /// Native rank 1..16, a..p in human notation.
+    /// Rank 1..16, a..p in human notation.
     pub const fn rank(self) -> u8 {
         (self.0 / 16 + 1) as u8
     }
@@ -137,14 +137,14 @@ macro_rules! kinds {
     ($($base:ident),+; $($only:ident),+) => {
         /// Original piece identity. A promoted piece retains this value forever.
         #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Ord, PartialOrd, Serialize, Deserialize)]
-        pub enum Base { $(#[doc=concat!("Original native ",stringify!($base)," identity.")] $base),+ }
+        pub enum Base { $(#[doc=concat!("Original ",stringify!($base)," identity.")] $base),+ }
         /// Current movement face, distinct from original identity/promotability.
         #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Ord, PartialOrd, Serialize, Deserialize)]
-        pub enum Face { $(#[doc=concat!("Native ",stringify!($base)," movement face.")] $base),+, $(#[doc=concat!("Promoted-only ",stringify!($only)," movement face.")] $only),+ }
+        pub enum Face { $(#[doc=concat!("Base ",stringify!($base)," movement face.")] $base),+, $(#[doc=concat!("Promoted-only ",stringify!($only)," movement face.")] $only),+ }
         impl Base {
-            /// All 36 original native identities.
+            /// All 36 original identities.
             pub const ALL: [Self;36] = [$(Self::$base),+];
-            /// Native source abbreviation.
+            /// Game source abbreviation.
             pub const fn code(self) -> &'static str { match self { $(Self::$base => stringify!($base)),+ } }
             /// Original movement before promotion.
             pub const fn face(self) -> Face { match self { $(Self::$base => Face::$base),+ } }
@@ -152,7 +152,7 @@ macro_rules! kinds {
         impl Face {
             /// All 44 movement faces.
             pub const ALL: [Self;44] = [$(Self::$base),+, $(Self::$only),+];
-            /// Native source abbreviation.
+            /// Game source abbreviation.
             pub const fn code(self) -> &'static str { match self { $(Self::$base => stringify!($base)),+, $(Self::$only => stringify!($only)),+ } }
         }
     }
@@ -244,7 +244,7 @@ pub enum PromotionRight {
     /// The one-time restriction is spent, or the piece cannot promote further.
     Consumed,
 }
-/// An original native participant, including stable identity and private-to-rules rights.
+/// An original participant, including stable identity and private-to-rules rights.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Ord, PartialOrd, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Piece {
@@ -285,7 +285,7 @@ impl Piece {
             self.base.face()
         }
     }
-    /// King and promoted Elephant are the two possible native royals.
+    /// King and promoted Elephant are the two possible royals.
     pub const fn is_royal(self) -> bool {
         matches!(self.base, Base::K) || matches!(self.base, Base::DE) && self.promoted
     }
@@ -525,13 +525,12 @@ impl Position {
             for (rank, row) in rows {
                 for (i, base) in row.iter().enumerate() {
                     if let Some(base) = base {
-                        let mut s = Square::new(16 - i as u8, rank).expect("fixed native setup");
+                        let mut s = Square::new(16 - i as u8, rank).expect("fixed setup");
                         if side == Side::Gote {
                             s = s.rotated()
                         }
-                        board[s.index()] = Some(
-                            Piece::new(id, side, *base, false).expect("original native piece"),
-                        );
+                        board[s.index()] =
+                            Some(Piece::new(id, side, *base, false).expect("original piece"));
                         id += 1;
                     }
                 }

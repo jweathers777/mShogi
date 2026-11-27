@@ -1,6 +1,6 @@
-//! Native Xiangqi ordinary execution, strict context and bounded transport.
+//! Xiangqi ordinary execution, strict context and bounded transport.
 mod support;
-use mshogi_core::{chess as c, native::*, xiangqi as x};
+use mshogi_core::{chess as c, game::*, xiangqi as x};
 use mshogi_engine::*;
 use serde_json::{Value, json};
 use std::io::Cursor;
@@ -49,16 +49,16 @@ fn request(g: &x::Game) -> ExecutionContext {
     }
 }
 fn target(context: &ExecutionContext) -> ExecutionTarget {
-    let CanonicalRecord::Xiangqi(native) = &context.game else {
+    let CanonicalRecord::Xiangqi(record) = &context.game else {
         panic!()
     };
     ExecutionTarget {
         selection_id: 3,
-        event_index: native.event_count() as u64,
-        board_ply: native.known_board_actions() as u64,
+        event_index: record.event_count() as u64,
+        board_ply: record.known_board_actions() as u64,
         session_version: context.session_version,
-        label: "Exact native event prefix".into(),
-        turn: NativeSide::Xiangqi(native.side_to_move()),
+        label: "Exact game event prefix".into(),
+        turn: TaggedSide::Xiangqi(record.side_to_move()),
     }
 }
 fn raw(text: &str) -> std::io::Result<Vec<u8>> {
@@ -90,7 +90,7 @@ fn failure(response: &ExecutionObservation, kind: FailureKind) {
 }
 
 #[test]
-fn actual_xiangqi_execution_returns_native_choices() {
+fn actual_xiangqi_execution_returns_choices() {
     let g = warned();
     let before = x::GameRecord::from_game(&g).unwrap();
     let mut context = request(&g);
@@ -140,12 +140,12 @@ fn actual_xiangqi_execution_returns_native_choices() {
         }
     ));
 }
-fn command_result(g: &mut x::Game, native: x::GameCommand) {
-    command(g, g.position().side_to_move(), native);
+fn command_result(g: &mut x::Game, record: x::GameCommand) {
+    command(g, g.position().side_to_move(), record);
 }
 
 #[test]
-fn ordinary_limits_and_zero_work_remain_distinct_from_native_conclusions() {
+fn ordinary_limits_and_zero_work_remain_distinct_from_conclusions() {
     let mut context = request(&warned());
     context.limits.nodes = 0;
     let response = run(&context);
@@ -178,7 +178,7 @@ fn ordinary_limits_and_zero_work_remain_distinct_from_native_conclusions() {
 }
 
 #[test]
-fn response_acceptance_requires_every_identity_setting_and_full_native_history() {
+fn response_acceptance_requires_every_identity_setting_and_full_history() {
     let g = warned();
     let mut context = request(&g);
     context.purpose = ExecutionPurpose::MoveAnalysis {
@@ -269,12 +269,12 @@ fn malformed_or_wrong_target_context_is_invalid_rather_than_an_unsupported_succe
     let ExecutionPurpose::MoveAnalysis { target } = &mut wrong.purpose else {
         panic!()
     };
-    target.turn = NativeSide::Chess(c::Color::White);
+    target.turn = TaggedSide::Chess(c::Color::White);
     failure(&run(&wrong), FailureKind::InvalidRequest);
 }
 
 #[test]
-fn strict_raw_request_envelope_native_and_response_boundaries_preserve_duplicates() {
+fn strict_raw_request_envelope_and_response_boundaries_preserve_duplicates() {
     let mut context = request(&warned());
     context.purpose = ExecutionPurpose::MoveAnalysis {
         target: target(&context),
@@ -333,15 +333,15 @@ fn strict_raw_request_envelope_native_and_response_boundaries_preserve_duplicate
 }
 
 #[test]
-fn long_native_audit_ledger_request_finishes_and_echoes_its_context() {
+fn long_audit_ledger_request_finishes_and_echoes_its_context() {
     let mut g = game();
     for _ in 0..511 {
         command(&mut g, x::Side::Black, x::GameCommand::ClaimNaturalCount);
     }
     command(&mut g, x::Side::Black, x::GameCommand::Resign);
-    let native = x::GameRecord::from_game(&g).unwrap();
-    assert_eq!(native.event_count(), 1024);
-    assert_eq!(native.known_board_actions(), 0);
+    let record = x::GameRecord::from_game(&g).unwrap();
+    assert_eq!(record.event_count(), 1024);
+    assert_eq!(record.known_board_actions(), 0);
     let context = request(&g);
     let response = run(&context);
     assert!(matches!(
@@ -354,7 +354,7 @@ fn long_native_audit_ledger_request_finishes_and_echoes_its_context() {
 }
 
 #[test]
-fn native_telemetry_family_limits_perspective_and_required_fields_are_checked() {
+fn telemetry_family_limits_perspective_and_required_fields_are_checked() {
     let context = request(&warned());
     let response = run(&context);
     assert!(response.matches(&context));

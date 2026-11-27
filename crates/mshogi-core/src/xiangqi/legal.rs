@@ -7,7 +7,7 @@ use std::{error::Error, fmt};
 /// Structural diagrams may be useful without being admissible local live roots.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum LocalPositionError {
-    /// A piece occupies an impossible home/geography point for its native kind.
+    /// A piece occupies an impossible home/geography point for its kind.
     PieceGeography {
         /// Off-domain occupied intersection.
         at: Intersection,
@@ -39,7 +39,7 @@ pub enum LocalStatus {
         /// Geometric check on the player to move.
         in_check: bool,
     },
-    /// No local action; preserve the native reason for the later game owner.
+    /// No local action; preserve the reason for the later game owner.
     NoLegalAction {
         /// Checked versus unchecked local no-action reason.
         reason: NoActionReason,
@@ -205,7 +205,7 @@ impl Position {
         self.validate_local()?;
         Ok(self.legal_unchecked().collect())
     }
-    /// Read-only complete movement inspection for either native participant.
+    /// Read-only complete movement inspection for either participant.
     ///
     /// This is a hypothetical local movement query, not permission to submit an
     /// out-of-turn action or bypass game history/adjudication. The actual diagram
@@ -235,7 +235,7 @@ impl Position {
             Ok(LocalStatus::Ongoing { in_check: checked })
         }
     }
-    /// Resolve a complete action against native rules and the exact current value.
+    /// Resolve a complete action against rules and the exact current value.
     /// Representation exhaustion is separate from illegal movement or outcomes.
     pub fn resolve_action(&self, action: Action) -> Result<ResolvedAction, ActionError> {
         self.validate_local()

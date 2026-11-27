@@ -1,5 +1,5 @@
 import { sideLabel } from "./games";
-import type { ChessOutcome, Claim, DrawReason, MatchConclusion } from "./native";
+import type { ChessOutcome, Claim, DrawReason, MatchConclusion } from "./sessionTypes";
 
 export function claimName(claim: Claim): string {
   const rule =

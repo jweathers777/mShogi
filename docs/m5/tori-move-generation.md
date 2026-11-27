@@ -1,7 +1,7 @@
 # Tori move generation in the search
 
 How the Tori search position (`crates/mshogi-search/src/tori/position.rs`)
-generates and tries moves, and why. The native Tori rules
+generates and tries moves, and why. The Tori rules
 (`mshogi-core`) stay the authority; the search position is a private, faster
 copy that must agree with them (perft and differential tests in
 `tori/position_tests.rs`).
@@ -80,11 +80,11 @@ Depth-6 search speed on game positions rose by 22%. In a game test at
 
 ## Checks that protect it
 
-- `random_games_agree_with_the_native_rules`: legal sets, check flag, hash and
+- `random_games_agree_with_the_rules`: legal sets, check flag, hash and
   encoding at every visited position of 48 random games.
-- `check_after_every_legal_move_agrees_with_the_native_rules`: the check flag
+- `check_after_every_legal_move_agrees_with_the_rules`: the check flag
   after every legal move of every visited position (more than 50,000 children).
-- `perft_agrees_with_the_native_perft` and the Swallow drop rule tests for
+- `perft_agrees_with_the_perft` and the Swallow drop rule tests for
   both sides.
 
 Each new path (pins, discovered checks, Swallow answers by ray captures) was

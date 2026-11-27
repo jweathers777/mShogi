@@ -1,4 +1,4 @@
-//! Native intersection-board state for `mshogi.xiangqi.wxf2018.v1`.
+//! Intersection-board state for `mshogi.xiangqi.wxf2018.v1`.
 //!
 //! Position codecs describe diagrams and declared counters, not prior moves,
 //! reachability or WXF history/adjudication. Local board legality is separate
@@ -30,11 +30,11 @@ pub use legal::{LocalPositionError, LocalStatus, NoActionReason};
 #[cfg(test)]
 mod tests;
 
-/// Selected immutable native rules-profile identity; not a delivery claim.
+/// Selected immutable rules-profile identity; not a delivery claim.
 pub const PROFILE_ID: &str = "mshogi.xiangqi.wxf2018.v1";
 /// Governing bilingual publication and selected software interpretation edition.
 pub const PROFILE_EDITION: &str = "WXF-2018+XIANGQI-P1-2026-10-27";
-/// Native root-position document schema; this is not a canonical full game.
+/// Game root-position document schema; this is not a canonical full game.
 pub const POSITION_SCHEMA_ID: &str = "mshogi.xiangqi.position.v1";
 /// Number of files of intersections, not a count of square cells.
 pub const FILES: u8 = 9;
@@ -42,7 +42,7 @@ pub const FILES: u8 = 9;
 pub const RANKS: u8 = 10;
 /// The river separates these two zero-based ranks.
 pub const RIVER_BETWEEN_RANKS: (u8, u8) = (4, 5);
-/// Standard initial position in the scoped native FEN dialect (Red = `w`).
+/// Standard initial position in the scoped FEN dialect (Red = `w`).
 pub const INITIAL_FEN: &str =
     "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1";
 
@@ -56,7 +56,7 @@ pub enum Side {
     Black,
 }
 impl Side {
-    /// The opposing native owner.
+    /// The opposing side.
     pub const fn opponent(self) -> Self {
         match self {
             Self::Red => Self::Black,
@@ -114,11 +114,11 @@ impl Intersection {
     pub const fn rank(self) -> u8 {
         self.0 / FILES
     }
-    /// Native rank-major storage index, not a shared board encoding.
+    /// Rank-major storage index, not a shared board encoding.
     pub const fn index(self) -> usize {
         self.0 as usize
     }
-    /// Every native intersection in rank-major order.
+    /// Every intersection in rank-major order.
     pub fn all() -> impl Iterator<Item = Self> {
         (0..FILES * RANKS).map(Self)
     }
@@ -139,7 +139,7 @@ impl FromStr for Intersection {
     }
 }
 
-/// Native piece identities; none promotes or becomes a hand resource.
+/// Piece identities; none promotes or becomes a hand resource.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
 pub enum PieceKind {
     /// Palace-confined royal.
@@ -201,16 +201,16 @@ impl PieceKind {
     }
 }
 
-/// An owned native piece; no redundant promotion/drop fields.
+/// An owned piece; no redundant promotion/drop fields.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
 pub struct Piece {
-    /// Native owner.
+    /// Rules owner.
     pub side: Side,
-    /// Native unchanging kind.
+    /// Unchanging kind.
     pub kind: PieceKind,
 }
 impl Piece {
-    /// Construct a native piece.
+    /// Construct a piece.
     pub const fn new(side: Side, kind: PieceKind) -> Self {
         Self { side, kind }
     }
@@ -253,7 +253,7 @@ impl Counters {
     }
 }
 
-/// A structurally admitted native diagram and turn, without a game history.
+/// A structurally admitted diagram and turn, without a game history.
 ///
 /// Exactly one General per side and inventory bounds are required. Off-home
 /// diagnostic placements are allowed; construction is not live-root admission
@@ -337,7 +337,7 @@ impl Position {
     pub fn initial() -> Self {
         Self::from_fen(INITIAL_FEN).expect("constant initial Xiangqi FEN")
     }
-    /// Current native owner to move.
+    /// Side to move.
     pub const fn side_to_move(&self) -> Side {
         self.side
     }
@@ -349,7 +349,7 @@ impl Position {
     pub const fn counters(&self) -> Counters {
         self.counters
     }
-    /// All currently occupied intersections, in native rank-major order.
+    /// All currently occupied intersections, in rank-major order.
     pub fn pieces(&self) -> impl Iterator<Item = (Intersection, Piece)> + '_ {
         Intersection::all().filter_map(|point| self.piece(point).map(|piece| (point, piece)))
     }

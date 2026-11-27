@@ -9,7 +9,7 @@
 
 .completed-action-capture { stroke: #fff1c4; stroke-width: 4; paint-order: stroke; }
 
-.completed-native-burn { fill:#faaa2830; stroke:#bc6612; stroke-width:3; }
-.completed-native-destruction { fill:#9b302020; stroke:#923121; stroke-width:3; }
-.completed-native-promotion { fill:none; stroke:#9a3331; stroke-width:4; stroke-dasharray:6 4; }
-.completed-native-stationary { fill:none; stroke:#435b8e; stroke-width:3; stroke-dasharray:3 5; }
+.completed-burn { fill:#faaa2830; stroke:#bc6612; stroke-width:3; }
+.completed-destruction { fill:#9b302020; stroke:#923121; stroke-width:3; }
+.completed-promotion { fill:none; stroke:#9a3331; stroke-width:4; stroke-dasharray:6 4; }
+.completed-stationary { fill:none; stroke:#435b8e; stroke-width:3; stroke-dasharray:3 5; }

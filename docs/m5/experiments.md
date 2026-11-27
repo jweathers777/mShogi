@@ -1,4 +1,4 @@
-# Reproducible native experiments (MSH-48)
+# Reproducible experiments (MSH-48)
 
 Current use follows the [selected strength roadmap](strength-roadmap.md)
 and AGENTS.md: engineering tests/tactics/profiling and small development matches
@@ -12,7 +12,7 @@ is stopped; preserve its evidence rather than resume it.
 The existing `mshogi-match` runner now supports offline experiments with mShogi's
 actual supervised internal-search executable. It does not add a second rules
 engine, engine protocol, application runtime or Python dependency. The concrete
-native Game owners admit every complete action. Chess additionally retains the
+Game owners admit every complete action. Chess additionally retains the
 untimed M2 MatchRecord; Full and timed internal matches are explicitly refused.
 
 ## Running and replaying
@@ -36,7 +36,7 @@ catalog; it runs no engines. Edit the generated config before executing a study.
 
 The strict version1 config names candidate/player0 and one to three baselines,
 absolute executable paths, caller-declared build provenance, effective depth and
-node limits per whole profile, complete native openings, source/rights rationale,
+node limits per whole profile, complete openings, source/rights rationale,
 lineage groups and Train/Validation/Test splits. It records the question and
 hardware conditions in `protocol`. Observed executable SHA256, OS, architecture,
 logical parallelism and harness build/compiler/target/flags accompany the report.
@@ -55,38 +55,38 @@ learned evaluator is claimed here; that lifecycle belongs to MSH-55.
 
 The seed selects a SHA256 counter/rejection permutation of the finite opening
 catalog each cycle. Every opening is visited once per cycle against every
-baseline, in two adjacent games with reversed native sides. It is a reproducible
+baseline, in two adjacent games with reversed game sides. It is a reproducible
 catalog schedule, not independent sampling from a population or a search seed.
-Related roots must share an authored group. Automatic immutable-native-root
+Related roots must share an authored group. Automatic immutable-root
 lineage grouping also refuses cross-split descendants. This conservative grouping
 is data provenance, never a rules, repetition or transposition identity. Callers
 remain responsible for detecting related diagrams imported as distinct roots.
 
-## Native protocol matrix
+## Protocol matrix
 
-| Game / whole profile | Native choices and conclusions | Score interpretation / independent-opponent status |
+| Game / whole profile | Game choices and conclusions | Score interpretation / independent-opponent status |
 | --- | --- | --- |
-| Chess `mshogi.chess.match.v1` | Native moves/claims in an untimed M2 match | Root-side static-evaluation/mate-distance telemetry; actual UCI adapter also supports existing clocked matches. Current own evaluator adds positional terms to material. |
-| Shogi `mshogi.shogi.csa36.v1` | Moves/drops/promotions and formal declaration | Native root-side heuristic/command-edge win distance; existing actual USI adapter available |
-| Xiangqi `mshogi.xiangqi.wxf2018.v1` | Moves, claims, native pending adjudication | Native root-side score; pending stays unscored; existing actual Xiangqi UCI0–9 adapter available |
-| Tori `mshogi.tori.modern.v1` | Complete native actions and conclusions | Native perspective/score retained; compatible independent opponent not established |
-| Chu `mshogi.chu.jcsa2019.v1` | Complete ordered Lion routes, effects, promotions and native outcomes | Native perspective/score retained; NoBoardActions stays unscored; compatible independent opponent not established |
-| Tenjiku `mshogi.tenjiku.adams1999-modern.v1` | Complete routes, Lion Hawk/jumping/Fire Demon effects, exact selected profile/history | Native perspective/score retained; NoBoardActions stays unscored; compatible independent opponent not established |
+| Chess `mshogi.chess.match.v1` | Moves/claims in an untimed M2 match | Root-side static-evaluation/mate-distance telemetry; actual UCI adapter also supports existing clocked matches. Current own evaluator adds positional terms to material. |
+| Shogi `mshogi.shogi.csa36.v1` | Moves/drops/promotions and formal declaration | Game root-side heuristic/command-edge win distance; existing actual USI adapter available |
+| Xiangqi `mshogi.xiangqi.wxf2018.v1` | Moves, claims, pending adjudication | Game root-side score; pending stays unscored; existing actual Xiangqi UCI0–9 adapter available |
+| Tori `mshogi.tori.modern.v1` | Complete actions and conclusions | Perspective/score retained; compatible independent opponent not established |
+| Chu `mshogi.chu.jcsa2019.v1` | Complete ordered Lion routes, effects, promotions and game outcomes | Perspective/score retained; NoBoardActions stays unscored; compatible independent opponent not established |
+| Tenjiku `mshogi.tenjiku.adams1999-modern.v1` | Complete routes, Lion Hawk/jumping/Fire Demon effects, exact selected profile/history | Perspective/score retained; NoBoardActions stays unscored; compatible independent opponent not established |
 | Tenjiku `mshogi.tenjiku.muller-completed.v1` | Same authoritative API under the distinct accepted whole profile | Never pooled with Adams histories/results; compatible independent opponent not established |
 
-The exact profile IDs are authoritative in generated config/native records. The
-native result alone determines a score. Experimental action/wall/artifact caps,
+The exact profile IDs are authoritative in generated config/game records. The
+engine result alone determines a score. Experimental action/wall/artifact caps,
 cancellation, process failure and incomplete first iterations are unscored, never
 draws or losses. A completed prior iteration is usable only where its existing
-native result contract permits it. No fallback move or score is fabricated.
+engine result contract permits it. No fallback move or score is fabricated.
 Observations precede accepted actions and preserve exact request, purpose,
 participant, session, limits, history and profile identities.
-All native continuations, including compound routes and claims, replay through
-native owners. Replay consistency is not proof of optimal or honest search.
+All continuations, including compound routes and claims, replay through
+rules owners. Replay consistency is not proof of optimal or honest search.
 
 The `experiment-external uci|usi|xiangqi-uci09 CONFIG REPORT` command invokes the
 existing actual external adapter; `experiment-external-replay REPORT` checks its
-complete nested report and native replay. These preserve existing adapter
+complete nested report and game replay. These preserve existing adapter
 options, model fingerprints, work/watchdogs, protocol transcripts and failures.
 They do not reinterpret external protocol seeds or manufacture unsupported
 variant translations. The shared wrapper adds observed harness provenance.
@@ -97,8 +97,8 @@ real opponents and protocol semantics differ.
 ## Evidence, data and bounds
 
 Reports retain the whole scheduled sample, including games never attempted after
-a budget stop, complete final native histories and actual work observations.
-Native re-admission checks both replay and proposed effects. Imported observations use
+a budget stop, complete final histories and actual work observations.
+Re-admission checks both replay and proposed effects. Imported observations use
 the existing duplicate-aware bounded decoder. Profiles/history are never reduced
 to board-only identities.
 
@@ -106,7 +106,7 @@ The operator chooses the positive whole-run wall budget in milliseconds and the
 accepted step count per game. Zero steps produces a replayable opening-only
 sample. A batch can have up to 16 roots, 4 participants, 16 cycles and 128
 games. These bounds control the sample size. Each game can use the full step
-budget. Native search retains its own work limits.
+budget. Search retains its own work limits.
 
 The 1 MiB configuration metadata budget excludes opening histories. The 128 MiB
 report budget limits storage for a batch. The runner allows for the scheduled
@@ -118,33 +118,33 @@ no alternate supervisor is introduced. Cancellation is polled before/while child
 work. Cleanup acknowledgement indicates supervisor termination, not an independent
 OS-process audit; missing acknowledgement is recorded. Bridge cleanup errors
 remain actual execution diagnostics. Wall time is a cooperative soft whole-run
-budget; synchronous native validation, serialization and bounded cleanup can
+budget; synchronous rules validation, serialization and bounded cleanup can
 extend elapsed time. Parsing/replay is byte/count bounded, not hard real time.
 Request timings include transport, search and receipt, plus launch when a child
 must start. They are not pure search speed. The shared bridge can keep a child
 between requests; this report change does not alter its lifetime or cleanup.
 
-MSH-184 (Native Report Replay Cost) removes repeated whole-report validation from
+MSH-184 (Match report Replay Cost) removes repeated whole-report validation from
 export and summary after a successful check. `run` and `run_with_stop` return an
 owned immutable `ValidatedReport`. Its JSON export and summary methods reuse
 that validation. `ValidatedReport::from_json` still performs strict bounded
-parsing and complete native validation. There is no deserializer or mutable
+parsing and complete rules validation. There is no deserializer or mutable
 access for the validated type. `into_report` discards its validated status;
 ordinary mutable `Report` methods always validate again. No validation flag is
-stored in a file, and no hash substitutes for native admission.
+stored in a file, and no hash substitutes for game admission.
 
-JSONL projection still replays native transitions to construct before/after
+JSONL projection still replays transitions to construct before/after
 states. It reuses the validated report for its source digest and does not repeat
 whole-report validation. See measurements and review.
 
 JSONL rows bind the exact source-report SHA/config identity, participant/executable,
-opening/pair/split/lineage, before/after complete native roots, actual request and
+opening/pair/split/lineage, before/after complete game roots, actual request and
 observation, admission/failure and terminal label availability. Compound actions
-and history remain typed native data, not abbreviated move strings. Applied
+and history remain typed data, not abbreviated move strings. Applied
 commands may be action targets; only genuinely concluded games have terminal
 value labels. Failed or capped games keep null value labels. Zero-step games have
 no JSONL rows: their attrition exists in the mandatory referenced full report.
-Export/replay is sufficient for this native data consumer; a Python/PyTorch
+Export/replay is sufficient for this data consumer; a Python/PyTorch
 binding is deferred until a concrete training consumer requires it. Do not split
 color pairs or trajectory prefixes across training and evaluation.
 
@@ -161,7 +161,7 @@ these small finite diagnostic pilots. [Stockfish's primary Fishtest mathematics]
 provides a research basis for future paired inference; its model is not blindly
 applied to censored games or unequal-work comparisons here.
 
-Rules conformance continues to use independently established native expectations,
+Rules conformance continues to use independently established expectations,
 property/negative checks and review, not opponent agreement. Search correctness
 uses completed-iteration/no-fallback/restoration tests. Performance measures
 actual work/time and overhead. Playing strength requires a separately justified
@@ -198,7 +198,7 @@ The 56-game main pilot compared depth 1 / 512 visits against depth 1 / 128 and
 depth 2 / 512, with two accepted commands/game, a 120 s cooperative whole-run budget,
 15 s request watchdog and 250 ms cleanup interval. Preliminary debug standard-turn
 measurements at depth 1 / 512 ranged 13.59–7373.18 ms, supporting these conservative
-work caps before the release run. The release pilot recorded 20 native conclusions,
+work caps before the release run. The release pilot recorded 20 game conclusions,
 28 unscored action caps and 8 unscored Tenjiku first-iteration exhaustions. All 84
 actual observations were retained. Its 76 accepted commands generated 76 action
 targets; only 20 rows have terminal value labels. No capped game was called a draw.
@@ -220,13 +220,13 @@ in the replayable reports; descriptive aggregates are in
 pilot-metrics.json.
 
 Because 128/512 visits did not finish the selected Tenjiku tactical iteration, an
-explicit eight-game supplement used the existing 2,000 visit native ceiling with
+explicit eight-game supplement used the existing 2,000 visit ceiling with
 one-command cap. Candidate and peer requested depth 1; the third baseline requested
-depth 2. All eight games reached genuine native royal-capture conclusions in both
+depth 2. All eight games reached genuine royal-capture conclusions in both
 profiles and reversed assignments. Six searches completed depth 1 at 619 visits;
 two exhausted 2,000 visits during the later iteration and retained the earlier
 completed depth 1 choice exactly as permitted by the existing result contract.
-The initial incomplete report remains preserved. Neither native defaults nor
+The initial incomplete report remains preserved. Neither defaults nor
 production limits changed.
 
 A second full 56-game run reproduced pairings, requests, observations, accepted

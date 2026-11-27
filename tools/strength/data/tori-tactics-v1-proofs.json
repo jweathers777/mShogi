@@ -1,5 +1,5 @@
 {
- "rule": "native full-width prover; verdict proved_win | refuted | unknown (visit bound)",
+ "rule": "full-width prover; verdict proved_win | refuted | unknown (visit bound)",
  "visit_bound": 20000000,
  "prover": "tori-mate-proof-v2",
  "proofs": {

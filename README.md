@@ -1,8 +1,8 @@
 # mShogi
 
-mShogi is a native multi-game engine, console and desktop application. It supports
+mShogi is a multi-game engine, console and desktop application. It supports
 Chess, standard Shogi, Xiangqi, Tori Shogi, Chu Shogi and Tenjiku Shogi. Tenjiku has
-two separately identified rules profiles: Adams and Muller. The native rules own
+two separately identified rules profiles: Adams and Muller. The rules own
 legal complete actions, history and game results for every client.
 
 The Tauri desktop provides untimed human-versus-engine and local two-human play,
@@ -17,7 +17,7 @@ work. Functional game support does not establish competitive playing strength.
 ## Start here
 
 - [Desktop build, launch and play](desktop/README.md).
-- [Native development, CI and platform prerequisites](docs/development.md).
+- [Development, CI and platform prerequisites](docs/development.md).
 - [Accepted product and architecture](docs/design.md).
 - [Current search core](docs/m5/shared-search-core.md), [Chess evaluation](docs/evaluation.md)
   and [strength roadmap](docs/m5/strength-roadmap.md).
@@ -26,7 +26,7 @@ work. Functional game support does not establish competitive playing strength.
 
 ## Build and check
 
-The native workspace pins stable Rust **1.99.1**. Install Rust and the host linker
+The Rust workspace pins stable Rust **1.99.1**. Install Rust and the host linker
 as described in the development guide. From a clean checkout of `main`:
 
 ```sh
@@ -45,27 +45,27 @@ npm ci
 npm run desktop:dev
 ```
 
-The desktop builds and supervises the native engine. Python is not a product
+The desktop builds and supervises the mShogi engine. Python is not a product
 runtime dependency. Required fonts and their notices are bundled.
 
 ## Console and engine interfaces
 
 Select a game explicitly: `mshogi --game chess shell`, or use `shogi`, `xiangqi`,
 `tori`, `chu` or `tenjiku` in place of `chess`. Type `help` for the selected game's
-commands and supported bounds. Each console uses the same native rules as the
+commands and supported bounds. Each console uses the same rules as the
 desktop. Canonical records preserve complete actions and known history; board
 notation alone is not a complete saved game.
 
 The [UCI adapter](docs/uci.md) serves Chess. The [USI adapter](docs/m4/usi.md)
-serves standard Shogi. The structured internal-search interface supports native
+serves standard Shogi. The structured internal-search interface supports
 engine execution across all six games. The [match runner](docs/match-runner.md)
 and shared experiment runner retain replayable records, executable identities,
 resource bounds and failures. Their available protocol adapters are explicit;
 not every game supports every external protocol.
 
 Chess and Tori use the game-independent classical search core. The other games
-retain their functional native search paths while shared-core adoption continues.
-The native rules remain authoritative for the real game even where private
+retain their functional search paths while shared-core adoption continues.
+The rules remain authoritative for the real game even where private
 search uses approximate history-dependent analysis. Speed, correctness and playing
 strength are separate measurements.
 
@@ -79,7 +79,7 @@ is used. [BSD-LICENSE](BSD-LICENSE) and third-party notices remain applicable.
 
 Mini Shogi, the old custom `.pgn`-named file format and legacy search/Force
 controls are not current requirements. Local two-human desktop play uses the same
-native actions and saved history as human-versus-engine play. See
+actions and saved history as human-versus-engine play. See
 [two-human play](docs/desktop/two-human-play.md). The optional frozen legacy Chu
 opponent and runner adapters are tracked separately by MSH-173 through MSH-176; they are not
 product or conformance dependencies.

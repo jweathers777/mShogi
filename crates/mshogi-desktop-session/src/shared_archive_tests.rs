@@ -24,7 +24,7 @@ fn imported(sfen: &str) -> s::Game {
         .unwrap(),
     )
 }
-fn native_command(g: &mut s::Game, actor: s::Side, command: s::GameCommand) {
+fn command(g: &mut s::Game, actor: s::Side, command: s::GameCommand) {
     g.submit(s::GameRequest {
         expected: g.context(),
         actor,
@@ -34,7 +34,7 @@ fn native_command(g: &mut s::Game, actor: s::Side, command: s::GameCommand) {
 }
 fn moves(g: &mut s::Game, moves: &[&str]) {
     for action in moves {
-        native_command(
+        command(
             g,
             g.position().side_to_move(),
             s::GameCommand::Play(action.parse().unwrap()),
@@ -72,7 +72,7 @@ fn replace(c: &mut DesktopController, g: &s::Game, human: s::Side) {
         c,
         SessionOperation::Replace {
             record: CanonicalRecord::shogi(s::GameRecord::from_game(g)),
-            human: NativeSide::Shogi(human),
+            human: TaggedSide::Shogi(human),
         },
     )
     .unwrap();
@@ -123,7 +123,7 @@ fn run(context: ExecutionContext) -> ExecutionObservation {
     decode_execution_observation(&bytes, &context)
 }
 #[test]
-fn canonical_fixture_roundtrips_preserve_native_root_history_and_all_outcomes() {
+fn canonical_fixture_roundtrips_preserve_root_history_and_all_outcomes() {
     let mut fixtures = vec![
         ("standard", s::Game::new()),
         ("imported", imported("8k/9/9/9/9/9/9/9/K8 b 2RBGSNLP 17")),
@@ -150,11 +150,11 @@ fn canonical_fixture_roundtrips_preserve_native_root_history_and_all_outcomes() 
         let mut g = imported(&format!(
             "K8/1RB6/1+P+P+P+P+P+P+P+P/9/9/9/9/9/8k b {hand} 1"
         ));
-        native_command(&mut g, s::Side::Sente, s::GameCommand::DeclareEnteringKing);
+        command(&mut g, s::Side::Sente, s::GameCommand::DeclareEnteringKing);
         fixtures.push((name, g));
     }
     let mut resigned = s::Game::new();
-    native_command(&mut resigned, s::Side::Gote, s::GameCommand::Resign);
+    command(&mut resigned, s::Side::Gote, s::GameCommand::Resign);
     fixtures.push(("resigned", resigned));
     for (name, g) in fixtures {
         let mut c = controller();
@@ -318,7 +318,7 @@ fn current_chess_preserves_semantics_and_development_formats_reject() {
     }
 }
 #[test]
-fn interrupted_and_failed_native_saves_preserve_file_and_dirty_state() {
+fn interrupted_and_failed_saves_preserve_file_and_dirty_state() {
     let mut c = controller();
     replace(&mut c, &s::Game::new(), s::Side::Sente);
     let file = path("atomic");
@@ -350,12 +350,12 @@ fn stale_open_and_cross_game_save_completion_never_replace_current_state() {
     let file = path("stale");
     save(&mut c, &file);
     let token = c.shared_open_token();
-    let opened = native_session::open::<Shogi>(&fs::read(&file).unwrap(), &mut || false).unwrap();
+    let opened = game_session::open::<Shogi>(&fs::read(&file).unwrap(), &mut || false).unwrap();
     let old_id = c.session.document_identity;
     send(&mut c, SessionOperation::Resign {}).unwrap();
     let expected = record(&c);
     assert!(
-        c.finish_native_file(NativeCompleted::Opened {
+        c.finish_file(GameCompleted::Opened {
             game: opened,
             path: file.clone(),
             token
@@ -370,12 +370,12 @@ fn stale_open_and_cross_game_save_completion_never_replace_current_state() {
             record: CanonicalRecord::chess(
                 AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record(),
             ),
-            human: NativeSide::Chess(Color::White),
+            human: TaggedSide::Chess(Color::White),
         },
     )
     .unwrap();
     let current_path = c.session.document_path.clone();
-    c.finish_native_file(NativeCompleted::Saved {
+    c.finish_file(GameCompleted::Saved {
         path: file.clone(),
         revision: 0,
         identity: old_id,
@@ -405,7 +405,7 @@ fn concurrent_save_as_keeps_new_admission_dirty_and_open_retires_it() {
             expected: c.shared_token(),
             game: GameKind::Shogi,
             operation: SessionOperation::Preferences {
-                settings: settings.map(NativeSide::Shogi),
+                settings: settings.map(TaggedSide::Shogi),
             },
         })
         .unwrap();
@@ -446,7 +446,7 @@ fn concurrent_save_as_keeps_new_admission_dirty_and_open_retires_it() {
     assert_eq!(c.io_state.phase, IoPhase::Complete);
     assert!(receipt.completion().unwrap().is_err());
     c.admissions.hold_results_for_test(false);
-    c.poll_native_admission();
+    c.poll_admission();
     assert!(c.session.shogi().unwrap().game.conclusion().is_none());
     assert!(!c.shared_document().dirty);
     for p in [original, copy] {
@@ -477,7 +477,7 @@ fn persisted_preferences_keep_exact_pending_execution_and_original_limits() {
     send(
         &mut c,
         SessionOperation::Preferences {
-            settings: settings.map(NativeSide::Shogi),
+            settings: settings.map(TaggedSide::Shogi),
         },
     )
     .unwrap();
@@ -494,7 +494,7 @@ fn persisted_preferences_keep_exact_pending_execution_and_original_limits() {
 }
 
 #[test]
-fn inability_to_start_native_execution_is_a_capacity_pause_not_engine_failure() {
+fn inability_to_start_execution_is_a_capacity_pause_not_engine_failure() {
     let mut c = controller();
     replace(&mut c, &s::Game::new(), s::Side::Gote);
     send(&mut c, SessionOperation::Resume {}).unwrap();
@@ -520,13 +520,13 @@ fn inability_to_start_native_execution_is_a_capacity_pause_not_engine_failure() 
 }
 
 #[test]
-fn product_new_game_archive_reopens_native_human_orientation_stopped_and_fresh() {
+fn product_new_game_archive_reopens_human_orientation_stopped_and_fresh() {
     let mut c = controller();
     let (_, receipt) = c
         .shared_new_game(
             c.shared_open_token(),
-            mshogi_core::native::RulesProfile::ShogiCsa36V1,
-            NativeSide::Shogi(s::Side::Gote),
+            mshogi_core::game::RulesProfile::ShogiCsa36V1,
+            TaggedSide::Shogi(s::Side::Gote),
         )
         .unwrap();
     settle(&mut c);
@@ -536,14 +536,14 @@ fn product_new_game_archive_reopens_native_human_orientation_stopped_and_fresh()
     let file = path("product-new-gote");
     save(&mut c, &file);
     let reopened = open(&mut c, &file).unwrap();
-    assert_eq!(reopened.human.id, NativeSide::Shogi(s::Side::Gote));
+    assert_eq!(reopened.human.id, TaggedSide::Shogi(s::Side::Gote));
     assert_eq!(reopened.context, before.context);
     assert!(reopened.paused);
     assert!(reopened.token.document > before.token.document);
     assert!(reopened.token.version > pending.session_version);
     assert_eq!(
         reopened.document.settings.orientation,
-        NativeSide::Shogi(s::Side::Gote)
+        TaggedSide::Shogi(s::Side::Gote)
     );
     assert!(c.session.shogi().unwrap().pending.is_none());
     let old_response = run(pending);
@@ -629,12 +629,12 @@ fn every_committed_gui_fixture_document_opens() {
         let envelope = crate::document::DocumentEnvelope::parse(&bytes).unwrap();
         let stop = &mut || false;
         let result = match envelope.game_kind {
-            GameKind::Chess => native_session::open::<Chess>(&bytes, stop).map(|_| ()),
-            GameKind::Shogi => native_session::open::<Shogi>(&bytes, stop).map(|_| ()),
-            GameKind::Xiangqi => native_session::open::<Xiangqi>(&bytes, stop).map(|_| ()),
-            GameKind::Tori => native_session::open::<Tori>(&bytes, stop).map(|_| ()),
-            GameKind::Chu => native_session::open::<Chu>(&bytes, stop).map(|_| ()),
-            GameKind::Tenjiku => native_session::open::<Tenjiku>(&bytes, stop).map(|_| ()),
+            GameKind::Chess => game_session::open::<Chess>(&bytes, stop).map(|_| ()),
+            GameKind::Shogi => game_session::open::<Shogi>(&bytes, stop).map(|_| ()),
+            GameKind::Xiangqi => game_session::open::<Xiangqi>(&bytes, stop).map(|_| ()),
+            GameKind::Tori => game_session::open::<Tori>(&bytes, stop).map(|_| ()),
+            GameKind::Chu => game_session::open::<Chu>(&bytes, stop).map(|_| ()),
+            GameKind::Tenjiku => game_session::open::<Tenjiku>(&bytes, stop).map(|_| ()),
         };
         assert!(
             result.is_ok(),

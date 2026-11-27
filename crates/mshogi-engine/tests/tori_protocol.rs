@@ -1,6 +1,6 @@
-//! Actual native Tori result contract through the real one-shot transport.
+//! Actual Tori result contract through the real one-shot transport.
 mod support;
-use mshogi_core::{native::*, tori as t};
+use mshogi_core::{game::*, tori as t};
 use mshogi_engine::*;
 use mshogi_search::tori as search;
 use serde_json::{Value, json};
@@ -95,7 +95,7 @@ fn game_with(turn: t::Side, prey: t::Face) -> t::Game {
     .unwrap()
 }
 #[test]
-fn actual_choices_admit_and_scores_purpose_and_identity_remain_native() {
+fn tori_results_keep_legal_choices_score_perspective_and_request_identity() {
     // A Crane, not a Swallow: taking it is clearly the best action.
     let mut game = game_with(t::Side::Sente, t::Face::Crane);
     for side in [t::Side::Sente, t::Side::Gote] {
@@ -143,7 +143,7 @@ fn actual_choices_admit_and_scores_purpose_and_identity_remain_native() {
                             board_ply: wrong.game.known_board_actions() as u64,
                             session_version: wrong.session_version,
                             label: "selected root".into(),
-                            turn: NativeSide::Tori(side),
+                            turn: TaggedSide::Tori(side),
                         },
                     }
                 }
@@ -167,7 +167,7 @@ fn actual_choices_admit_and_scores_purpose_and_identity_remain_native() {
             board_ply: c.game.known_board_actions() as u64,
             session_version: c.session_version,
             label: "exact Tori selected event".into(),
-            turn: NativeSide::Tori(game.position().side_to_move()),
+            turn: TaggedSide::Tori(game.position().side_to_move()),
         },
     };
     let before = game.snapshot().clone();
@@ -176,7 +176,7 @@ fn actual_choices_admit_and_scores_purpose_and_identity_remain_native() {
     assert_eq!(game.snapshot().clone(), before);
 }
 #[test]
-fn native_terminal_and_no_completed_work_are_distinct() {
+fn terminal_and_no_completed_work_are_distinct() {
     let mut g = game(t::Side::Sente);
     g.submit(t::GameRequest {
         expected: g.context(),
@@ -246,7 +246,7 @@ fn malformed_telemetry_complete_pv_and_terminal_mismatches_refuse() {
                     result_face: t::Face::Phoenix,
                 }
             }
-            // A line that the native game refuses after its first action.
+            // A line that the game refuses after its first action.
             8 => telemetry.principal_variation = vec![*action, *action],
             // A choice that claims a win at its own root.
             9 => telemetry.score = Some(search::WIN_SCORE),
@@ -261,9 +261,9 @@ fn malformed_telemetry_complete_pv_and_terminal_mismatches_refuse() {
         } else {
             assert!(
                 obs.matches(&c),
-                "replay of the line belongs to the bounded native worker"
+                "replay of the line belongs to the bounded worker"
             );
-            assert!(result.validate(&g).is_err(), "native validation case {n}");
+            assert!(result.validate(&g).is_err(), "rules validation case {n}");
         }
     }
     let bytes = serde_json::to_string(&good).unwrap();
@@ -320,7 +320,7 @@ fn limits_are_bounded() {
 }
 
 #[test]
-fn same_board_full_history_and_forbidden_departure_require_native_worker_validation() {
+fn same_board_full_history_and_forbidden_departure_require_worker_validation() {
     let root = t::Position::from_diagram(
         &[
             (

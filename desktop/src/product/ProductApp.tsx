@@ -1,5 +1,5 @@
 import { games, tenjikuProfiles, type TenjikuProfile, type GameKind } from "../games";
-import type { GameSnapshot, NativeSide, OpenToken, PlayMode } from "../native";
+import type { GameSnapshot, TaggedSide, OpenToken, PlayMode } from "../sessionTypes";
 import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { ApplicationView } from "./ApplicationView";
 import { Dialog } from "./Dialog";
@@ -27,7 +27,7 @@ export function ProductApp({ verificationControls }: { verificationControls?: ((
   function begin(intent: "new" | "open" | "quit", source = snapshot) {
     if (!source) return; setMessage("");
     // New/Load are deliberate replacement requests. Merely opening either
-    // chooser leaves the current native document installed until admission.
+    // chooser leaves the current document installed until admission.
     if (intent === "new") { setChoice({ source, game: source.game, playMode: source.play_mode, side: source.human.first_mover ? "first" : "second", tenjikuProfile: source.game === "tenjiku" ? source.profile : tenjikuProfiles[0].id }); return; }
     if (intent === "open") { void session.file(source, "open"); return; }
     if (source.close_requires_save) setPending({ source });
@@ -62,11 +62,11 @@ export function ProductApp({ verificationControls }: { verificationControls?: ((
     if (!choice || !snapshot || session.busy || !same(choice.source.open_token, snapshot.open_token)) return;
     const first = choice.side === "random" ? (crypto.getRandomValues(new Uint8Array(1))[0]! & 1) === 0 : choice.side === "first";
     const { side } = games[choice.game].sides[first ? 0 : 1];
-    const human = { game_kind: choice.game, side } as NativeSide;
+    const human = { game_kind: choice.game, side } as TaggedSide;
     const next = await session.newGame(choice.source.open_token, choice.game, human, choice.game === "tenjiku" ? choice.tenjikuProfile : games[choice.game].profile, choice.playMode);
     if (next) setChoice(null);
   }
-  if (!snapshot) return <main className="loading"><h1>mShogi</h1><p role="status">Opening your game…</p>{session.error && <p role="alert">The native application could not connect.</p>}</main>;
+  if (!snapshot) return <main className="loading"><h1>mShogi</h1><p role="status">Opening your game…</p>{session.error && <p role="alert">The snapshot application could not connect.</p>}</main>;
   const blocked = pending !== null || choice !== null;
   const selectedGame = games[choice?.game ?? snapshot.game];
   return <>{verificationControls?.({ snapshot, session, blocked })}<div inert={blocked}><ApplicationView key={snapshot.token.document} snapshot={snapshot} session={session} onNewGame={() => begin("new")} onOpen={() => begin("open")} blocked={blocked} /></div>

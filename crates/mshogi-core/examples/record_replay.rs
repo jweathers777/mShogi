@@ -1,5 +1,5 @@
-//! Measure canonical record size and native replay on caller-supplied records.
-use mshogi_core::native::CanonicalRecord;
+//! Measure canonical record size and game replay on caller-supplied records.
+use mshogi_core::game::CanonicalRecord;
 use std::{hint::black_box, time::Instant};
 
 fn main() {

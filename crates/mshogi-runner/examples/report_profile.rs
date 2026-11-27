@@ -1,4 +1,4 @@
-//! Measure native report stages separately. Run under an external wall-time bound.
+//! Measure match report stages separately. Run under an external wall-time bound.
 use mshogi_runner::experiments::Report;
 use sha2::{Digest, Sha256};
 use std::{error::Error, fs, time::Instant};
@@ -24,9 +24,9 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
     let text = fs::read_to_string(&path)?;
     if text.len() > mshogi_runner::experiments::MAX_BYTES {
-        return Err("report exceeds native experiment bound".into());
+        return Err("report exceeds experiment bound".into());
     }
-    // Native record deserialization itself performs admission work. No output
+    // Game record deserialization itself performs admission work. No output
     // is trusted before the report's complete consistency validation below.
     let (report, parse): (Report, _) = measured("raw_parse", || Ok(serde_json::from_str(&text)?))?;
     let historical_request_seconds = report
@@ -42,14 +42,14 @@ fn main() -> Result<(), Box<dyn Error>> {
         .map(|game| game.steps.len())
         .sum::<usize>();
     let (validation, encoded, export, summary, summaries) = if mode.is_some() {
-        let (report, validation) = measured("native_validation", || Ok(report.into_validated()?))?;
+        let (report, validation) = measured("validation", || Ok(report.into_validated()?))?;
         let (encoded, export) = measured("json_export", || Ok(report.to_json()?))?;
         let (summary, summaries) = measured("summary", || {
             Ok(serde_json::to_string(&report.summaries()?)?)
         })?;
         (validation, encoded, export, summary, summaries)
     } else {
-        let (_, validation) = measured("native_validation", || Ok(report.validate()?))?;
+        let (_, validation) = measured("validation", || Ok(report.validate()?))?;
         let (encoded, export) = measured("json_export", || Ok(report.to_json()?))?;
         let (summary, summaries) = measured("summary", || {
             Ok(serde_json::to_string(&report.summaries()?)?)
@@ -63,7 +63,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             "input": path,
             "input_bytes": text.len(),
             "input_sha256": format!("{:x}", Sha256::digest(text.as_bytes())),
-            "stages_seconds": {"raw_parse": parse, "native_validation": validation, "json_export": export, "summary": summaries},
+            "stages_seconds": {"raw_parse": parse, "validation": validation, "json_export": export, "summary": summaries},
             "historical_request_seconds": historical_request_seconds,
             "games": games,
             "steps": steps,

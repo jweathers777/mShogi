@@ -8,7 +8,7 @@ use crate::{
     diagnostics, record_io,
     shell::{HumanSession, diagnostic, empty as no_args, number, separator},
 };
-use mshogi_core::native::CanonicalRecord;
+use mshogi_core::game::CanonicalRecord;
 use std::fmt::Write as _;
 
 use mshogi_core::chess::{

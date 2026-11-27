@@ -1,4 +1,4 @@
-# Native Xiangqi position/action API
+# Xiangqi position/action API
 
 MSH-92 foundation for selected `mshogi.xiangqi.wxf2018.v1`, governing edition
 `WXF-2018+XIANGQI-P1-2026-10-27`. Rust module `mshogi_core::xiangqi` is independent
@@ -7,11 +7,11 @@ document distinguishes the state foundation from the verified MSH-93 local
 legal-action boundary in local-legality.md; neither is
 complete-game delivery evidence.
 
-## Native state and construction domains
+## Game state and construction domains
 
 `Intersection` is one of90 intersections: files a–i/ranks0–9 with Red at the
 bottom. `Side::{Red,Black}` owns forward direction, palace membership and river
-crossing. Palaces are d–f/ranks0–2 and7–9; the river separates4/5. These are native
+crossing. Palaces are d–f/ranks0–2 and7–9; the river separates4/5. These are
 rule geometry, not decorative chess metadata. The seven `PieceKind` identities
 are General, Advisor, Elephant, Horse, Rook, Cannon and Soldier. `Piece` has only
 owner/kind; no dummy promotion, hands, drops or declaration fields exist.
@@ -40,15 +40,15 @@ legal-action queries into a false mate/stalemate.
 
 - Ranks9→0, files a→i; uppercase Red, lowercase Black.
 - `k/a/b/n/r/c/p` mean General/Advisor/Elephant/Horse/Rook/Cannon/Soldier.
-  The external letters do not rename native types; h/e aliases are rejected.
-- Active `w` means **Red**, `b` Black; there is no native White side.
+  The external letters do not rename game types; h/e aliases are rejected.
+- Active `w` means **Red**, `b` Black; there is no White side.
 - Literal `- -` fields carry no castling/en-passant rules.
 - Last fields are raw no-capture plies and positive fullmove number. Canonical
   single spaces/empty runs, bounded ASCII and strict unsigned syntax apply.
 
 FEN is limited to256bytes (maximum valid board99bytes plus bounded fields is
 well below that). Missing counters cannot be invented: `to_fen` returns
-`UnknownCounters`; use native root JSON to preserve explicit unknown values.
+`UnknownCounters`; use game root JSON to preserve explicit unknown values.
 
 `PositionRoot` retains an immutable root and `RootOrigin::{StandardInitial,
 ImportedFen,AnalysisDiagram}`. Clone its position for private local work; moving
@@ -58,8 +58,8 @@ the exact initial board/turn/counters; imported-FEN provenance requires supplied
 counters; diagnostic roots may have explicit unknown counters. Root provenance
 is construction metadata, not a claim that a structural diagram is playable.
 
-`PositionRoot::to_json`/`from_json` scope native **root-position** documents under
-`mshogi.xiangqi.position.v1`, with explicit profile, edition, origin, board, native
+`PositionRoot::to_json`/`from_json` scope **root-position** documents under
+`mshogi.xiangqi.position.v1`, with explicit profile, edition, origin, board,
 side, nullable counters and `history:"starts_at_this_position"`. This is not the
 MSH-94 canonical full-game record, shared envelope, archive or saved observation.
 Moves/events/claims are unknown fields and reject. Direct typed Serde parsing
@@ -72,7 +72,7 @@ The4KiB byte bound covers valid documents (under512bytes) and bounds hostile inp
 
 `Action { from,to }` is a complete ordinary board choice, encoded as four a0–i9
 bytes. No partial route, victim list, suffix or terminal command is admitted.
-`ActionEffects` is derived from native state: action, moving owned piece and
+`ActionEffects` is derived from game state: action, moving owned piece and
 optional captured piece. General capture is not a playable continuation under
 WXF2.8; captures never create a hand resource or change the mover's kind.
 
@@ -82,7 +82,7 @@ derive atomic state changes, but **do not establish movement legality**. There i
 no public unchecked action preparation/commit API. MSH-93 supplies the complete
 verified geometry/General-safety boundary through public resolve/apply methods.
 
-`ResolvedAction` privately binds a before-state, after-state and native effects;
+`ResolvedAction` privately binds a before-state, after-state and game effects;
 the commit guard rejects a different complete before-state. `Undo` stores exact
 before/after values and only restores its complete matching post-state. Stale or
 out-of-order rejection leaves the position untouched. This is local value-level

@@ -1,4 +1,4 @@
-/* Native board/piece/hand presentation only. Shared chrome lives in shell.css. */
+/* Game board/piece/hand presentation only. Shared chrome lives in shell.css. */
 .shogi-hand { display:flex; justify-content:flex-end; align-items:center; gap:3px; min-height:40px; }
 .empty-hand { color:#53634f; font-size:10px; font-style:italic; }
 .hand-piece { position:relative; padding:0!important; border-radius:4px; width:31px; height:38px; background:transparent; border:1px solid transparent; flex-shrink:0; }

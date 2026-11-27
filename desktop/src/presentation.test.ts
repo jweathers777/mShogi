@@ -1,5 +1,5 @@
-import type { ChessSnapshot } from "./native";
-import { nativeSnapshotIsNewer } from "./sessionState";
+import type { ChessSnapshot } from "./sessionTypes";
+import { gameSnapshotIsNewer } from "./sessionState";
 import { describe, expect, it } from "vitest";
 
 import { claimName, conclusionName } from "./presentation";
@@ -9,8 +9,8 @@ import checkmateJson from "./__fixtures__/shared-chess-checkmate.json";
 const standard = standardJson as ChessSnapshot;
 const claim = claimJson as ChessSnapshot;
 const checkmate = checkmateJson as unknown as ChessSnapshot;
-describe("real native snapshot semantics", () => {
-  it("recognizes actual native external enum shapes and keeps claims separate from conclusions", () => {
+describe("real session snapshot semantics", () => {
+  it("recognizes actual external enum shapes and keeps claims separate from conclusions", () => {
     expect(standard.status.label).toBe("White to move");
     expect(conclusionName(checkmate.chess.live_conclusion!)).toBe("Checkmate — Black wins");
     expect(claim.chess.live_conclusion).toBeNull();
@@ -26,7 +26,7 @@ describe("real native snapshot semantics", () => {
   });
   it("keeps the newer snapshot when an older async response arrives", () => {
     const newer = { ...standard, token: { ...standard.token, revision: standard.token.revision + 2 } };
-    expect(nativeSnapshotIsNewer(newer, standard)).toBe(false);
-    expect(nativeSnapshotIsNewer(standard, newer)).toBe(true);
+    expect(gameSnapshotIsNewer(newer, standard)).toBe(false);
+    expect(gameSnapshotIsNewer(standard, newer)).toBe(true);
   });
 });

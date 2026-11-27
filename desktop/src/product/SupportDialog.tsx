@@ -1,4 +1,4 @@
-import type { GameSnapshot } from "../native";
+import type { GameSnapshot } from "../sessionTypes";
 import { games } from "../games";
 import { Dialog } from "./Dialog";
 import { useState } from "react";

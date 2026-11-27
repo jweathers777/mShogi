@@ -2,7 +2,7 @@
 
 MSH-164 (Shared Search Core) replaced the Chess search with a game-independent
 classical search core and a search-internal Chess position. This document
-describes the structure, the boundary with the native rules, and how to add a
+describes the structure, the boundary with the rules, and how to add a
 game. Results and evidence are in `evidence/msh164/`.
 
 ## Result
@@ -37,31 +37,31 @@ says nothing about other opponents.
 | `coordination.rs` | One worker thread that owns the `ChessEngine` between requests | Chess |
 | `tori/position.rs` | Tori Shogi search position: 49-bit bitboards, hands, drops, compulsory promotion, the Swallow drop rules, repetition on the path | Tori |
 | `tori/eval.rs` | Tori evaluation weights (Texel-fitted), feature layout and Texel model | Tori |
-| `tori.rs` | Adapter between a native Tori `Game` and the core | Tori |
+| `tori.rs` | Adapter between a Tori `Game` and the core | Tori |
 | `shogi/position.rs` | Shogi position, hands, drops, promotion, history and classical evaluation | Shogi |
-| `shogi.rs` | Native Shogi root/declaration and continuation adapter | Shogi |
+| `shogi.rs` | Shogi root/declaration and continuation adapter | Shogi |
 | `xiangqi/position.rs` | Xiangqi board, movement, private history and classical evaluation | Xiangqi |
-| `xiangqi.rs` | Native Xiangqi outcome, count-claim and continuation adapter | Xiangqi |
-| `chu/position.rs`, `chu.rs` | Chu board, compound moves, Lion rights and native adapter | Chu Shogi |
-| `tenjiku/position.rs`, `tenjiku.rs` | Tenjiku board, ranked jumps, Demon effects, both profiles and native adapter | Tenjiku Shogi |
+| `xiangqi.rs` | Xiangqi outcome, count-claim and continuation adapter | Xiangqi |
+| `chu/position.rs`, `chu.rs` | Chu board, compound moves, Lion rights and adapter | Chu Shogi |
+| `tenjiku/position.rs`, `tenjiku.rs` | Tenjiku board, ranked jumps, Demon effects, both profiles and adapter | Tenjiku Shogi |
 
 The core contains no type of a specific game. `alphabeta/tests.rs` runs it on a
 subtraction game, and all six target games use it through the same trait.
 
-## Authority of the native rules
+## Authority of the rules
 
-The search is private analysis. The native rules in `mshogi_core` decide the
+The search is private analysis. The rules in `mshogi_core` decide the
 real game:
 
-- A concluded root returns its native outcome. No search runs.
+- A concluded root returns its game outcome. No search runs.
 - Draw claims at the root come from `AdjudicatedGame::available_claims`.
   `AutoClaim` takes a claim at once. An optional claim is preferred to a move
   whose score is not above zero. A consumer that cannot claim always gets a move.
-- The adapter returns a move only if the native legal actions contain it, and
-  it reports a native representation error (for example a move counter overflow)
+- The adapter returns a move only if the legal actions contain it, and
+  it reports a representation error (for example a move counter overflow)
   before it searches.
-- A line with score zero is reported with the native claim that ends it, when
-  the native rules make a claim available there.
+- A line with score zero is reported with the claim that ends it, when
+  the rules make a claim available there.
 
 Inside the tree the search uses approximations, as classical engines do
 (design A-03, owner clarification of 2026-11-13):
@@ -100,7 +100,7 @@ and both Tenjiku profiles. Each adapter exposes caller-owned search state; one
 server slot mechanism retains it only for timed, exact history continuations.
 Fixed-limit requests use fresh state and leave the retained state unchanged.
 The core owns clock allocation and iteration timing. Non-Chess adapters use
-shared `RequestTime` accounting for setup and native result work. Chess keeps
+shared `RequestTime` accounting for setup and engine result work. Chess keeps
 its earlier fixed search-time semantics. See the [protocol contract](../desktop/internal-execution-v4.md)
 and verification. Desktop defaults do not change.
 
@@ -118,7 +118,7 @@ Tables that fit retain their complete dense index and the same update arithmetic
 This includes Chess, Tori, Shogi and Xiangqi. Chu uses the capped table. Above the cap, continuation history
 mixes the previous and current slots separately into a fixed table. Basic history
 uses the low 16 bits above its cap. Collisions share ordering statistics; they
-cannot admit moves or decide native outcomes. Bonus, penalty, clear and basic
+cannot admit moves or decide game outcomes. Bonus, penalty, clear and basic
 history decay remain unchanged. Continuation history is still kept between
 searches and cleared at a new game. Sizing uses checked multiplication, so even
 an extreme slot count cannot cause a quadratic allocation or integer overflow.
@@ -150,9 +150,9 @@ counts or PVs. It must keep:
 
 - `chess_bitboard::tests`: published perft counts, and random walks that compare
   legal moves, resulting positions, hashes and incremental state with the
-  native rules.
+  rules.
 - `chess_engine::tests`: forced mates with exact distance, concluded roots,
-  claim policy, repetition choice, limits and native legality of each move.
+  claim policy, repetition choice, limits and legality of each move.
 
 ## How to add a game
 
@@ -162,10 +162,10 @@ counts or PVs. It must keep:
 2. Implement `SearchPosition` for it. The position owns its hash history, so it
    applies the game's own repetition and move-count rules in `rule_score` and
    `draw_claimable`. Drops are ordinary moves of the quiet or tactical stage.
-3. Prove it against the game's native rules with perft counts and random-walk
+3. Prove it against the game's rules with perft counts and random-walk
    comparison, as `chess_bitboard::tests` does.
 4. Write an adapter like `chess_engine.rs` that takes root outcomes and special
-   commands from the native rules and checks the chosen move against them.
+   commands from the rules and checks the chosen move against them.
 
 Do not add a search loop for a game. If a game needs a search behavior that the
 core does not have, add it to the core behind a method of the trait.
@@ -175,19 +175,19 @@ core does not have, add it to the core behind a method of the trait.
 MSH-165 (Tori Search Core Adoption) moved Tori Shogi to the core and removed
 its private full-width minimax. The trait and the core did not change.
 
-- The search position agrees with the native Tori rules on perft counts and
+- The search position agrees with the Tori rules on perft counts and
   on random games: legal moves and drops, resulting boards and hands, check
   status, hash and move encoding (`tori/position_tests.rs`).
-- Native authority: a concluded root returns its native conclusion. The chosen
+- Session authority: a concluded root returns its game conclusion. The chosen
   action must be in `Game::legal_actions`, which excludes the departures that
   the repetition rule forbids. The reported line is replayed in a private
-  native game and cut where that game refuses an action or concludes.
-- The native rule forbids a move that would create a third occurrence of a
+  game and cut where that game refuses an action or concludes.
+- The rule forbids a move that would create a third occurrence of a
   position. In search, that move scores as a loss for the mover. A second
   occurrence scores level if the earlier position is on the search path,
   including its root. Standard Shogi and Tori search back to the most recent
   capture, drop or search-only null move. This can miss a board-and-hand cycle
-  that crosses a capture or drop. The native rules use the complete history.
+  that crosses a capture or drop. The rules use the complete history.
 - Limits: depth 1 to 64 and at most 5,000,000 nodes. The desktop plays with
   300,000 nodes. Requests without a time budget start with an empty table
   and equal requests give equal results. Timed requests use the shared session
@@ -212,7 +212,7 @@ its private full-width minimax. The trait and the core did not change.
   still use the earlier fixed piece values. The evaluator identity is
   unchanged.
 
-Result (Apple M1 Pro, engine binaries through the internal protocol, native
+Result (Apple M1 Pro, engine binaries through the internal protocol,
 Tori game as controller, eight seeded openings with both colors for each
 seed; files and commands in `evidence/msh165/verification.json`):
 
@@ -238,19 +238,19 @@ incremental material and board/hand hash, and reversible in-place updates.
 All promotion choices and legal drops are generated, including Pawn-file,
 dead-rank and Pawn-drop-mate restrictions. Perft and randomized differential
 tests compare legal actions, resulting boards/hands, hashes and restoration
-against the native rules.
+against the rules.
 
-The adapter checks native root outcomes and entering-king declarations, admits
-only a native legal chosen action, and replays the reported line through a
-private native game. A refused or concluded continuation ends the reported
-line. Native rules remain the authority for actual play and saved history.
+The adapter checks game root outcomes and entering-king declarations, admits
+only a legal chosen action, and replays the reported line through a
+private game. A refused or concluded continuation ends the reported
+line. Rules remain the authority for actual play and saved history.
 
 Private analysis uses these approximations:
 
 - The table is keyed by board, hands and turn, without history or move count.
 - A repeated position on the search path scores as a draw, or a loss for a
   side that checked on every move in the cycle. Pre-root history requires four
-  occurrences. Search stops at the last capture, drop or null move. The native
+  occurrences. Search stops at the last capture, drop or null move. The
   game still recognizes fourfold repetitions across captures and drops.
 - At 320 completed actions, the position is drawn unless it has no legal move,
   which takes priority. Null moves do not advance this count.
@@ -280,15 +280,15 @@ statistics. Timed internal and USI requests use the shared session policy above.
 USI accepts bounded `movetime`; full game clocks, ponder and tsume remain
 unsupported. New game resets the retained state, and incompatible history
 prefixes reset it through the shared slot policy. Exact comparison of validated
-Shogi records avoids replay solely to establish cache-prefix identity; native
+Shogi records avoids replay solely to establish cache-prefix identity;
 request admission still validates the history. Earlier saved play
 observations remain readable.
 
-MSH-189 (Shogi Request Overhead) adds an incremental native session below the
-search slot. `native::incremental::Session<R>` owns a rules-authoritative game;
+MSH-189 (Shogi Request Overhead) adds an incremental game session below the
+search slot. `game::incremental::Session<R>` owns a rules-authoritative game;
 the record adapter reconstructs a full reset and admits a typed event suffix
 atomically. `incremental::SessionServer<A>` owns the shared transport lifecycle.
-The adapter supplies native types, supported limits and target checks. Shogi is
+The adapter supplies game types, supported limits and target checks. Shogi is
 the first adapter; other games use these same lifecycle implementations.
 
 Each child first receives an ordinary full request. A full response can advertise
@@ -296,21 +296,21 @@ an exact prepared endpoint. Only then does the bridge send compact suffixes,
 bound to the acknowledged request, generation, host version and event count.
 Older engines without the capability continue to receive full requests. A count
 alone is never history identity. The host checks the complete validated prefix;
-the child applies each new command through native rules and checks every derived
+the child applies each new command through rules and checks every derived
 event and final result. Invalid suffixes roll back. A wrong base requires a full
 reset. Takeback, imported or incompatible roots reset; process retirement drops
-both the native endpoint and search state. Fixed-work probes leave timed state
+both the endpoint and search state. Fixed-work probes leave timed state
 alone. Compact responses echo the exact metadata and endpoint; only after those
 checks does the bridge attach its original immutable context. Saved observations
-and native record formats remain unchanged.
+and game record formats remain unchanged.
 
-Timed Shogi requests also keep one native legal root-order move available through
+Timed Shogi requests also keep one legal root-order move available through
 the shared `search_with_timed_fallback` entry point. If time or the node safety
 limit stops the first iteration, the result has a legal choice, depth zero, no
 score, actual visited nodes and a one-move unsearched continuation. This includes
 zero-node timed requests. Explicit cancellation suppresses fallback. Already
-concluded roots return the native result; declaration choices remain distinct.
-Mandatory native root checks can exceed a minimum time budget. Fixed-work search
+concluded roots return the engine result; declaration choices remain distinct.
+Mandatory game root checks can exceed a minimum time budget. Fixed-work search
 keeps its prior incomplete-result semantics. No evaluation or selectivity policy
 changes are part of this task.
 
@@ -330,18 +330,18 @@ search. The core and trait are unchanged. A 90-square array and u128 piece
 sets support blocked Horse legs, Elephant eyes and river restrictions, palace
 moves, Cannon screens, Soldier river movement and facing Generals. Hash,
 material and placement are updated in place. Existing independently specified
-board fixtures and perft, randomized native comparisons and history tests
+board fixtures and perft, randomized comparisons and history tests
 verify the boundary.
 
-Native authority stays at the root and the application boundary. A concluded
+Session authority stays at the root and the application boundary. A concluded
 root reports its conclusion. A root with pending adjudication stays unscored.
-The result carries the native sound fast root assessment; an existential win
+The result carries the sound fast root assessment; an existential win
 witness is not a forced-win score. A valid count
 claim is chosen after a completed search if the move score is no better than
 zero. The adapter never claims for the nonmoving player. The selected action
-must be locally legal and must pass native submission in a private copy. The
-reported line is replayed natively and ends at conclusion, pending adjudication
-or a refused action. Native resource failures on the chosen action remain errors.
+must be locally legal and must pass submission in a private copy. The
+reported line is replayed by the rules library and ends at conclusion, pending adjudication
+or a refused action. Resource failures on the chosen action remain errors.
 
 Private approximations are explicit:
 
@@ -349,12 +349,12 @@ Private approximations are explicit:
 - A search-path repetition is scored at its second occurrence; earlier game
   history needs three occurrences. A continuous checker loses; other cycles,
   including chase cycles, score as a draw. This does not replace the selected
-  native WXF warning, chase, exchange or fourth-occurrence rules.
-- Captures and null moves bound the repetition scan. Non-board native events
-  are not turns. Full native board history initializes the private position.
+  WXF warning, chase, exchange or fourth-occurrence rules.
+- Captures and null moves bound the repetition scan. Non-board game events
+  are not turns. Full game board history initializes the private position.
 - No-legal-action loss, including unchecked stalemate, is tested before draw
   approximations. Bare Generals draw. No other no-win proof runs inside the
-  tree. Count claims are native root options only.
+  tree. Count claims are game root options only.
 - The exchange test is a one-step estimate. Evaluation uses material, Soldier
   advancement and centralization/development placement with a tempo bonus.
   It is not a rules adjudication or a learned evaluator.
@@ -377,51 +377,51 @@ array and three-word occupancy sets support complete single- and double-landing 
 material, placement, original identity, promotion, royal sets, Lion protection
 and hash; a small undo record restores up to two captured pieces.
 
-The position implements native movement geometry and complete-action rules:
+The position implements movement geometry and complete-action rules:
 Lion jumps, double captures, igui and quiet returns; Soaring Eagle and Horned
 Falcon special routes; optional promotion opportunities; defended-distance Lion
 capture, qualifying intermediate victims, and next-turn Lion protection.
-Public native movement descriptors supply geometry facts. The private position
-performs its own route generation and state updates. Native fixtures, perft and
+Public movement descriptors supply geometry facts. The private position
+performs its own route generation and state updates. Rules fixtures, perft and
 randomized action/result/hash/undo comparisons verify that boundary.
 
-The adapter supplies the native legal root list, including must-vary restrictions.
-Native conclusions are reported exactly; a live root without board actions stays
-unscored. A selected action must pass native submission. The reported line is
-replayed natively and stops at a conclusion or refusal; a refusal of its first
-action is an error. A native one-action conclusion replaces a private score.
+The adapter supplies the legal root list, including must-vary restrictions.
+Game conclusions are reported exactly; a live root without board actions stays
+unscored. A selected action must pass submission. The reported line is
+replayed by the rules library and stops at a conclusion or refusal; a refusal of its first
+action is an error. A one-action conclusion replaces a private score.
 
-Private analysis remains separate from native adjudication:
+Private analysis remains separate from adjudication:
 
 - The hash includes original identity, promotion, turn and active Lion rights,
   but not the complete known history or counters.
 - Path repetition at the second occurrence scores zero; pre-root repetition
   requires a third occurrence. Captures and promotion bound the scan. This is
-  not the native same-sequence must-vary algorithm, and never declares a real
-  draw. Native root admission and PV replay enforce that algorithm.
+  not the same-sequence must-vary algorithm, and never declares a real
+  draw. Game root admission and PV replay enforce that algorithm.
 - Real compound passes remain legal complete moves. Null-move pruning is
   disabled. No Chess self-check filter is added.
 - A threat means one admitted complete action can capture all surviving royals.
   Separate attacks on King and Prince do not become a one-action loss.
-- Actual last-royal loss is terminal. The full native finite immediate-mate
-  procedure is not called at each private node. Native conclusions retain
+- Actual last-royal loss is terminal. The full finite immediate-mate
+  procedure is not called at each private node. Game conclusions retain
   priority at the application boundary.
 - A locally admitted complete action that can capture every opposing royal
   scores a win one action ahead. This cuts known losing replies without removing
   any legal move. The reported selective line can stop before that capture;
-  an actual win still requires native submission. Two separate royal attacks
+  an actual win still requires submission. Two separate royal attacks
   do not qualify for this shortcut.
 - The private C08 material award counts only the narrow three-piece case,
   excluding dead unpromoted Pawn/Lance from that count while retaining their
   occupancy. The bare side can make an immediate royal-capture or equalizing
-  reply. These reply probes use local admission, without full native must-vary
-  obligations, and do not run native immediate-mate precedence. Native root
+  reply. These reply probes use local admission, without full must-vary
+  obligations, and do not run immediate-mate precedence. Game root
   conclusions and line replay remain authoritative. No general bare-royal draw
   or material-exhaustion draw is added.
 - An internal position with no move scores zero as a private approximation;
-  the native root still returns an unscored error, not a draw.
+  the game root still returns an unscored error, not a draw.
 - Classical evaluation uses unchanged material values plus placement and tempo.
-  Capture ordering accounts for both victims. It is not a native outcome.
+  Capture ordering accounts for both victims. It is not a game outcome.
 - The exchange filter uses a bounded local material-recapture model. It counts
   both victims and promotion gain, and follows each capturing piece to its
   actual final square, including Lion return routes. Complete local admission
@@ -431,7 +431,7 @@ Private analysis remains separate from native adjudication:
   unresolved work limits retain the move. The core bypasses the exchange filter
   when the current node is threatened. Equal recapture successors require equal board,
   turn, Lion rights and next target, not merely an equal hash. The filter changes
-  private selective search only; full legal generation and native admission stay
+  private selective search only; full legal generation and game admission stay
   unchanged.
 - Chu limits quiescence to eight additional plies, counted from each tactical
   search entry. The shared trait's default retains the existing absolute-ply
@@ -440,16 +440,16 @@ Private analysis remains separate from native adjudication:
   evasions and do not stand pat before the horizon. At the horizon, a threatened
   position receives an uncertain zero estimate; other positions use static
   evaluation. This follows the existing absolute-ply horizon convention and
-  never declares a native draw. Long tactical chains can be missed.
+  never declares a draw. Long tactical chains can be missed.
 - Bounded quiescence stores negative elapsed tactical depth in the table.
   A near-horizon result cannot replace a fresh tactical query: score cutoffs
   require sufficient stored depth. Quiescence entries do not replace a current
   main-search entry. Other games retain zero-depth quiescence entries.
 - Search generation keeps one admitted complete route for each equal successor
   within a stage. Equality includes all piece identities and promotions, turn
-  and active Lion rights. Native root restrictions apply before this reduction.
+  and active Lion rights. Game root restrictions apply before this reduction.
   Full `generate`, legal actions and perft retain every route. This avoids
-  repeated analysis of equivalent Lion routes without changing native actions.
+  repeated analysis of equivalent Lion routes without changing actions.
 
 Nominal depth is 1–64, with at most 5,000,000 nodes. Default play uses depth 64
 and 300,000 nodes. A reported line contains at most eight complete actions.
@@ -470,18 +470,18 @@ An undo record has a count and space for twelve changed squares: the source,
 three landings and eight burn neighbours. It restores captures, mover death,
 promotion rights, material, placement and both hashes.
 
-Both native profiles supply the immutable rules identity. Private geometry
+Both profiles supply the immutable rules identity. Private geometry
 implements all 44 faces, including ranked jumps, profile-specific post-jump
 victims, area routes, compound captures and Heavenly Tetrarch igui. Complete
 effects apply direct captures, Demon hazards and burns, mover death, then
 surviving promotion. Adams burns before a moving Demon dies; Muller suppresses
 that burn. A newly promoted Demon does not burn on its promotion action.
-Tests compare full actions and states with native rules in both profiles.
+Tests compare full actions and states with rules in both profiles.
 
-The adapter obtains exact native root conclusions and legal actions, including
+The adapter obtains exact game root conclusions and legal actions, including
 repetition admission. It checks the selected action and replays the reported
-line through native submission. A refused first action is an error; a later
-refusal clips the line. A native first-action conclusion replaces the private
+line through submission. A refused first action is an error; a later
+refusal clips the line. A first-action conclusion replaces the private
 score.
 
 Private analysis has these limits:
@@ -489,9 +489,9 @@ Private analysis has these limits:
 - The search hash includes profile, turn, original identities, promotion and
   refusal rights, but omits full history and counters. The repetition hash
   omits physical piece IDs and refusal rights, but retains original kind and
-  promotion, as native board repetition does. Known board actions are replayed
+  promotion, as game board repetition does. Known board actions are replayed
   once to seed that history. A private
-  repeated board scores zero; it does not declare a draw. Native Tenjiku
+  repeated board scores zero; it does not declare a draw. Tenjiku
   forbids the first known recurrence, not Chu's same-sequence must-vary rule.
 - Complete loss of both royal sets scores zero. A one-action win shortcut
   requires a complete local action that removes every enemy royal while an
@@ -499,10 +499,10 @@ Private analysis has these limits:
 - The bare-royal calculation uses Tenjiku's local pending reply: capture all
   enemy royals or equalize to two bare royals. It does not use Chu's narrow
   material award or dead-piece exclusion. These private replies do not apply
-  full native history admission. Native root and replay remain authoritative.
+  full game history admission. Game root and replay remain authoritative.
 - No Chess self-check filter or Chu protected-Lion rule is added. Null-move
   pruning is disabled. An internal position with no move scores zero; a live
-  native root without board actions remains an unscored error.
+  game root without board actions remains an unscored error.
 - Material values are unchanged. Placement and tempo supplement them. Move
   gain includes all direct and burn victims, promotion and mover suicide.
   The exchange filter follows complete local recaptures of the last mover,
@@ -514,14 +514,14 @@ Private analysis has these limits:
 - Quiescence uses a four-ply bound and the shared signed tactical table depth.
   Before the horizon it searches quiet evasions when threatened. At the
   horizon a threatened position receives an uncertain zero estimate; other
-  positions use static evaluation. This does not establish a native result.
+  positions use static evaluation. This does not establish a engine result.
   Longer exchanges, repeated threats and delayed burn effects can be missed.
   The initial eight-ply setting exhausted even 100,000 nodes before completing
   an iteration on an ordinary game position. The shorter bound controls that
   cost; its playing effect is assessed separately through predecessor games.
 - Search generation retains one route for each exactly equal successor in
   each stage. Equality includes every cell's original identity and rights;
-  turn and profile are fixed within a stage. Native root admission precedes
+  turn and profile are fixed within a stage. Game root admission precedes
   this reduction. Full legal generation and perft retain all complete routes.
 
 Nominal depth is 1–64, with at most 5,000,000 nodes and eight reported actions.
@@ -562,7 +562,7 @@ list at ply zero.
   a request incomplete. It was rejected; future work must measure that cost.
 - *Exchange test.* Tori uses a one-step estimate in `exchange_at_least`. A
   full exchange evaluation needs a list of attackers of a square for each game.
-- *Root restrictions.* If a second game needs a root filter from its native
+- *Root restrictions.* If a second game needs a root filter from its
   rules, move the filter from the position to the core.
 
 **Needs of each game:**
@@ -573,15 +573,15 @@ list at ply zero.
   occurrence is a draw, but a loss for a side that gave check each time; the
   search can score a path repetition as a draw (an approximation: the
   capture-and-drop limit of the Tori scan does not hold in a drop game) and treat perpetual check as a
-  loss, with the native rules as the authority at the root. Entering-king
-  declarations are root commands from the native rules, as Chess claims are.
+  loss, with the rules as the authority at the root. Entering-king
+  declarations are root commands from the rules, as Chess claims are.
 - *Xiangqi (90 squares).* A 128-bit square set. No drops and no promotion.
   Blocked Horse and Elephant moves, the Cannon screen, the facing-Generals
   rule in the legality test. The perpetual check and perpetual chase rules
   depend on history; the search needs an approximation in `rule_score`
-  (repetition with check is a loss for the checking side) and the native
+  (repetition with check is a loss for the checking side) and the
   rules for the root. Draw claims of the selected profile come from the
-  native rules at the root.
+  rules at the root.
 - *Chu Shogi (144 squares).* A multi-word square set or an array board with
   piece lists; measure before the choice. Lion moves have two steps and can
   capture two pieces or return to the source (igui, pass): the move needs a
@@ -601,7 +601,7 @@ list at ply zero.
   occupancy by rank. Lower-ranked occupancy still affects quiet paths and
   whether a capture is before or after a jump. Two
   rule profiles exist, and they differ in what a general can capture after a
-  jump; the position takes the profile from the native game.
+  jump; the position takes the profile from the game.
 
 **The same work for each adapter.** The engine protocol of each game checks a
 saved observation against its search identity (`mshogi-engine/src/<game>.rs`).
@@ -617,7 +617,7 @@ of these games moves, not in a copy for each game.
   improving modifier to the shared core for Chess and Tori. The combined set
   passed its sequential predecessor test (+40 -3 =17) and improved the development
   blunder result from 86 to 98 of 146. See evidence.
-  Static pruning remains a private approximation; native roots and real outcomes
+  Static pruning remains a private approximation; game roots and real outcomes
   retain their authority. Low-material LMR remains enabled.
 - MSH-167 (Engine Time Management) adds shared clock allocation and adaptive
   soft targets, with a hard response budget. Chess UCI uses it; fixed move-time

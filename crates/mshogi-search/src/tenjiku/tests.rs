@@ -44,7 +44,7 @@ fn royal_values_match_and_material_stays_below_the_terminal_band() {
     assert!(Face::ALL.into_iter().map(piece_value).max().unwrap() * 156 < WIN_SCORE);
 }
 #[test]
-fn royal_capture_is_a_native_win_with_full_root_restoration() {
+fn royal_capture_is_a_win_with_full_root_restoration() {
     for profile in Profile::ALL {
         // The adjacent opposing King can be captured by our King. Exposure is legal.
         let mut g = diagram(
@@ -134,7 +134,7 @@ fn zero_partial_stop_and_later_interruption_publish_only_completed_work() {
         assert_eq!(later.decision, first.decision);
         assert_eq!(later.score, first.score);
         assert_eq!(later.principal_variation, first.principal_variation);
-        // Stop well inside native replay/generation/admission, rather than only before search.
+        // Stop well inside game replay/generation/admission, rather than only before search.
         for after in [2, 20, 200] {
             let mut polls = 0;
             let r = search_with_stop(
@@ -179,8 +179,8 @@ fn same_board_history_repetition_is_not_a_search_cache_key() {
         assert!(fresh.legal_actions().contains(&forbidden));
         assert!(!g.legal_actions().contains(&forbidden));
         assert_ne!(
-            (g.native_root(), g.events()),
-            (fresh.native_root(), fresh.events())
+            (g.game_root(), g.events()),
+            (fresh.game_root(), fresh.events())
         );
         let r = search(
             &g,
@@ -199,7 +199,7 @@ fn same_board_history_repetition_is_not_a_search_cache_key() {
 }
 #[test]
 fn sourced_no_action_root_is_unscored() {
-    // MSH-83 TEN-NO-ACTIONS-CONCRETE: independently deduced before native implementation.
+    // MSH-83 TEN-NO-ACTIONS-CONCRETE: independently deduced before implementation.
     for profile in Profile::ALL {
         let g = diagram(
             profile,
@@ -290,7 +290,7 @@ fn genuine_terminal_and_runtime_retirement_are_distinct() {
     );
 }
 #[test]
-fn ordered_lion_route_captures_both_native_royals_in_one_complete_action() {
+fn ordered_lion_route_captures_both_royals_in_one_complete_action() {
     for profile in Profile::ALL {
         let mut g = diagram(
             profile,
@@ -332,7 +332,7 @@ fn ordered_lion_route_captures_both_native_royals_in_one_complete_action() {
     }
 }
 #[test]
-fn dying_demon_leaf_uses_selected_profile_and_native_effect_order() {
+fn dying_demon_leaf_uses_selected_profile_and_effect_order() {
     // MSH-83 TEN-BURN-DYING: Adams burns enemy bystanders before destruction;
     // Muller suppresses that collateral. Here the bystander is the last enemy King.
     for profile in Profile::ALL {

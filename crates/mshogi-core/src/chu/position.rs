@@ -1,8 +1,8 @@
-//! Native structural state; no public structural mutation bypasses local admission.
+//! Structural state; no public structural mutation bypasses local admission.
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::{error::Error, fmt, str::FromStr};
 
-/// Native player and orientation.
+/// Player and orientation.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Ord, PartialOrd, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Side {
@@ -19,7 +19,7 @@ impl Side {
             Self::Gote => Self::Sente,
         }
     }
-    /// Native two-player array index.
+    /// Two-player array index.
     pub const fn index(self) -> usize {
         match self {
             Self::Sente => 0,
@@ -41,7 +41,7 @@ impl Side {
         }
     }
 }
-/// A bounded native 12×12 square, canonical order rank 1..12/file 12..1.
+/// A bounded 12×12 square, canonical order rank 1..12/file 12..1.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Ord, PartialOrd)]
 pub struct Square(u8);
 impl Square {
@@ -53,11 +53,11 @@ impl Square {
             None
         }
     }
-    /// Native file.
+    /// File.
     pub const fn file(self) -> u8 {
         12 - self.0 % 12
     }
-    /// Native rank.
+    /// Rank.
     pub const fn rank(self) -> u8 {
         self.0 / 12 + 1
     }
@@ -79,7 +79,7 @@ impl Square {
         let r = i16::from(self.rank()) + i16::from(dr) * sign;
         Self::new(u8::try_from(f).ok()?, u8::try_from(r).ok()?)
     }
-    /// Chebyshev distance, used only for native Lion geometry.
+    /// Chebyshev distance, used only for Lion geometry.
     pub fn distance(self, other: Self) -> u8 {
         self.file()
             .abs_diff(other.file())
@@ -98,7 +98,7 @@ impl<'de> Deserialize<'de> for Square {
             .ok_or_else(|| serde::de::Error::custom("Chu square coordinates must be 1..12"))
     }
 }
-/// Invalid native square spelling.
+/// Invalid square spelling.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct SquareError;
 impl fmt::Display for SquareError {
@@ -408,7 +408,7 @@ impl Face {
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Piece {
-    /// Native owner.
+    /// Rules owner.
     pub side: Side,
     /// Original identity.
     pub base: Base,
@@ -593,7 +593,7 @@ pub enum RootError {
     InvalidProvenance,
     /// Standard identity cannot relabel a custom diagram.
     StandardRootNotDiagram,
-    /// Native board length must be 144.
+    /// Game board length must be 144.
     BoardLength,
     /// Counter addition overflows.
     Counter,
@@ -799,7 +799,7 @@ impl Position {
     pub fn pieces(&self) -> impl Iterator<Item = (Square, Piece)> + '_ {
         Square::all().filter_map(|s| self.piece(s).map(|p| (s, p)))
     }
-    /// Native side to move.
+    /// Game side to move.
     pub const fn side_to_move(&self) -> Side {
         self.state.side
     }

@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
 import { deferred } from "../testing/helpers";
-import type { GameSnapshot, ChessSnapshot, MovementInspection } from "../native";
+import type { GameSnapshot, ChessSnapshot, MovementInspection } from "../sessionTypes";
 import { afterEach, expect, it, vi } from "vitest";
 import { act, cleanup, renderHook } from "@testing-library/react";
-import { gridNeighbor, useNativeChoiceController, type ChoiceControllerOptions } from "./useNativeChoiceController";
+import { gridNeighbor, useBoardChoiceController, type ChoiceControllerOptions } from "./useBoardChoiceController";
 
 import chessJson from "../__fixtures__/shared-chess-standard.json";
 import promotionJson from "../__fixtures__/shared-chess-promotion.json";
@@ -34,9 +34,9 @@ it.each([
   [chessJson, "e2", "e4", "e2e4"],
   [shogiJson, "7g", "7f", "7g7f"],
   [xiangqiJson, "e3", "e4", "e3e4"],
-] as const)("submits exactly one supplied %j complete native action", (json, from, to, action) => {
+] as const)("submits exactly one supplied %j complete action", (json, from, to, action) => {
   const props = options(json as GameSnapshot), play = vi.mocked(props.onPlay);
-  const { result } = renderHook(() => useNativeChoiceController(props));
+  const { result } = renderHook(() => useBoardChoiceController(props));
   act(() => result.current.select(from)); expect(play).not.toHaveBeenCalled();
   const destinationHandler = result.current.select;
   act(() => { destinationHandler(to); destinationHandler(to); });
@@ -44,9 +44,9 @@ it.each([
   act(() => { result.current.select(from); result.current.select(to); });
   expect(play).toHaveBeenCalledTimes(1);
 });
-it("retains current selection on semantically identical polling, retires changed native complete choices", () => {
+it("retains current selection on semantically identical polling, retires changed complete choices", () => {
   const props = options();
-  const { result, rerender } = renderHook(value => useNativeChoiceController(value), { initialProps: props });
+  const { result, rerender } = renderHook(value => useBoardChoiceController(value), { initialProps: props });
   act(() => result.current.select("e2"));
   rerender({ ...props, choices: structuredClone(props.choices), origins: structuredClone(props.origins), boardKeys: [...props.boardKeys] });
   expect(result.current.selected).toBe("e2"); expect(result.current.destinations).toContain("e4");
@@ -56,7 +56,7 @@ it("retains current selection on semantically identical polling, retires changed
 });
 it("does not revive a retired promotion completion handler after cancellation or a different origin", () => {
   const props = options(promotionJson as ChessSnapshot);
-  const { result } = renderHook(() => useNativeChoiceController(props));
+  const { result } = renderHook(() => useBoardChoiceController(props));
   act(() => result.current.select("a7")); act(() => result.current.select("a8"));
   expect(result.current.completions.map(c => c.action)).toEqual(["a7a8q", "a7a8r", "a7a8b", "a7a8n"]);
   const retired = result.current.chooseCompletion;
@@ -67,9 +67,9 @@ it("does not revive a retired promotion completion handler after cancellation or
   act(() => { current("a7a8n"); current("a7a8q"); });
   expect(props.onPlay).toHaveBeenCalledExactlyOnceWith("a7a8n");
 });
-it.each(["document", "version", "revision", "selection"] as const)("retires a pending query and old handlers after native %s changes", async field => {
+it.each(["document", "version", "revision", "selection"] as const)("retires a pending query and old handlers after %s changes", async field => {
   const pending = deferred<MovementInspection>(), props = { ...options(), onInspect: vi.fn(() => pending.promise) };
-  const { result, rerender } = renderHook(value => useNativeChoiceController(value), { initialProps: props });
+  const { result, rerender } = renderHook(value => useBoardChoiceController(value), { initialProps: props });
   act(() => result.current.select("e7")); const oldSelect = result.current.select;
   rerender({ ...props, contextKey: JSON.stringify({ ...chess.token, [field]: chess.token[field] + 1 }) });
   await act(async () => pending.resolve(inspection));
@@ -78,7 +78,7 @@ it.each(["document", "version", "revision", "selection"] as const)("retires a pe
 });
 it.each(["orientation", "disabled", "inspectionDisabled", "provider", "owner", "origins"] as const)("retires query/selection on changed %s", async change => {
   const pending = deferred<MovementInspection>(), props = { ...options(), onInspect: vi.fn(() => pending.promise) };
-  const { result, rerender } = renderHook(value => useNativeChoiceController(value), { initialProps: props });
+  const { result, rerender } = renderHook(value => useBoardChoiceController(value), { initialProps: props });
   act(() => result.current.select("e7"));
   const next = { ...props };
   if (change === "orientation") next.boardKeys = [...props.boardKeys].reverse();
@@ -94,7 +94,7 @@ it("keeps a pending query through identical polls but retires superseded origins
   const first = deferred<MovementInspection>(), second = deferred<MovementInspection>();
   const onInspect = vi.fn().mockReturnValueOnce(first.promise).mockReturnValueOnce(second.promise);
   const props = { ...options(), onInspect };
-  const { result, rerender, unmount } = renderHook(value => useNativeChoiceController(value), { initialProps: props });
+  const { result, rerender, unmount } = renderHook(value => useBoardChoiceController(value), { initialProps: props });
   act(() => result.current.select("e7")); rerender({ ...props, choices: structuredClone(props.choices) });
   expect(result.current.inspectionPending).toBe(true);
   act(() => result.current.select("d7"));
@@ -110,22 +110,22 @@ it.each(["read_only", "origin", "choice_origin"] as const)("never accepts a malf
   if (difference === "origin") reply.origin = "d7";
   if (difference === "choice_origin") reply.choices[0]!.from = "d7";
   const props = { ...options(), onInspect: vi.fn(async () => reply) };
-  const { result } = renderHook(() => useNativeChoiceController(props));
+  const { result } = renderHook(() => useBoardChoiceController(props));
   await act(async () => result.current.select("e7"));
   expect(result.current.inspection).toBeNull(); expect(result.current.selected).toBeNull(); expect(props.onPlay).not.toHaveBeenCalled();
 });
 it("contains rejected inspection and preserves historical read-only route traversal", async () => {
-  const onInspect = vi.fn().mockRejectedValueOnce(new Error("native capacity")).mockResolvedValue(inspection);
+  const onInspect = vi.fn().mockRejectedValueOnce(new Error("capacity")).mockResolvedValue(inspection);
   const props = { ...options(), disabled: true, onInspect };
-  const { result } = renderHook(() => useNativeChoiceController(props));
+  const { result } = renderHook(() => useBoardChoiceController(props));
   await act(async () => result.current.select("e7")); expect(result.current.inspectionPending).toBe(false);
   await act(async () => result.current.select("e7")); expect(result.current.inspection?.read_only).toBe(true);
   act(() => result.current.select("e6")); expect(props.onPlay).not.toHaveBeenCalled(); expect(result.current.completions).toEqual([]);
 });
 
-it("uses an optional native display label only for announcements, preserving opaque action identity and coordinate fallback", () => {
+it("uses an optional display label only for announcements, preserving opaque action identity and coordinate fallback", () => {
   const props = options();
-  const { result, rerender } = renderHook(value => useNativeChoiceController(value), { initialProps: props });
+  const { result, rerender } = renderHook(value => useBoardChoiceController(value), { initialProps: props });
   act(() => result.current.select("e2"));
   expect(result.current.announcement).toBe("e2 selected. Choose a highlighted destination.");
   rerender({ ...props, origins: props.origins.map(origin => origin.key === "e2" ? { ...origin, label: "White pawn" } : origin) });

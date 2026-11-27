@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
-// Transport identities may be forged for negative cases; native choices are never invented.
+// Transport identities may be forged for negative cases; game choices are never invented.
 import { deferred } from "../testing/helpers";
 import { inspectionContextKey } from "./movementInspection";
-import type { MovementInspection, GameSnapshot, TenjikuSnapshot } from "../native";
-import { nativeSnapshotIsNewer } from "../sessionState";
+import type { MovementInspection, GameSnapshot, TenjikuSnapshot } from "../sessionTypes";
+import { gameSnapshotIsNewer } from "../sessionState";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { act, cleanup, renderHook } from "@testing-library/react";
 import { invoke } from "@tauri-apps/api/core";
@@ -11,7 +11,7 @@ import { listen } from "@tauri-apps/api/event";
 import { useGameSession } from "./useGameSession";
 import { useMovementInspection } from "./useMovementInspection";
 
-import { gridNeighbor, useNativeChoiceController } from "../interaction/useNativeChoiceController";
+import { gridNeighbor, useBoardChoiceController } from "../interaction/useBoardChoiceController";
 
 import adamsStandard from "../__fixtures__/shared-tenjiku-adams-standard.json";
 import mullerStandard from "../__fixtures__/shared-tenjiku-muller-standard.json";
@@ -32,12 +32,12 @@ const flush = async () => { await act(async () => { await Promise.resolve(); });
 beforeEach(() => { vi.useFakeTimers(); vi.mocked(invoke).mockReset(); vi.mocked(listen).mockReset().mockResolvedValue(() => {}); });
 afterEach(() => { cleanup(); vi.useRealTimers(); });
 
-it("accepts actual native fresh New profile epochs and resetting to the first profile", async () => {
+it("accepts actual fresh New profile epochs and resetting to the first profile", async () => {
   expect(muller.token.document).toBeGreaterThan(adams.token.document);
   expect(reset.token.document).toBeGreaterThan(muller.token.document);
   expect(reset.profile).toBe(adams.profile);
-  expect(nativeSnapshotIsNewer(adams, muller)).toBe(true);
-  expect(nativeSnapshotIsNewer(muller, reset)).toBe(true);
+  expect(gameSnapshotIsNewer(adams, muller)).toBe(true);
+  expect(gameSnapshotIsNewer(muller, reset)).toBe(true);
   vi.mocked(invoke).mockResolvedValueOnce(adams).mockResolvedValueOnce(muller).mockResolvedValueOnce(reset);
   const { result } = renderHook(() => useGameSession()); await flush();
   await act(async () => { expect(await result.current.newGame(adams.open_token, "tenjiku", adams.human.id, muller.profile)).toBe(muller); });
@@ -48,9 +48,9 @@ it("accepts actual native fresh New profile epochs and resetting to the first pr
   expect(result.current.snapshot).toBe(reset);
 });
 
-it.each(cases)("rejects a same-epoch $source.profile response carrying the other native profile", async ({ source, other }) => {
+it.each(cases)("rejects a same-epoch $source.profile response carrying the other profile", async ({ source, other }) => {
   const forged = { ...other, token: { ...other.token, document: source.token.document, revision: source.token.revision + 1 } };
-  expect(nativeSnapshotIsNewer(source, forged)).toBe(false);
+  expect(gameSnapshotIsNewer(source, forged)).toBe(false);
   vi.mocked(invoke).mockResolvedValueOnce(source).mockResolvedValueOnce(forged);
   const { result } = renderHook(() => useGameSession()); await flush();
   await act(async () => { expect(await result.current.command(source, { kind: "resume" })).toBeNull(); });
@@ -80,7 +80,7 @@ it.each(cases)("does not let a delayed $source.profile receipt restore an earlie
   expect(result.current.snapshot).toBe(fresh);
 });
 
-it.each(cases)("validates exact native $source.profile history inspection including profile identity", async ({ selected, foreign, reply }) => {
+it.each(cases)("validates exact $source.profile history inspection including profile identity", async ({ selected, foreign, reply }) => {
   expect(reply.profile).toBe(selected.profile);
   expect(reply.token).toEqual(selected.token);
   vi.mocked(invoke).mockResolvedValueOnce(reply).mockResolvedValueOnce({ ...reply, profile: foreign.profile });
@@ -97,14 +97,14 @@ it.each(cases)("validates exact native $source.profile history inspection includ
 function useHistoricalInspection(source: TenjikuSnapshot, play: () => void) {
   const inspect = useMovementInspection(source), orientation = source.orientations[0]!;
   const keys = orientation.ranks.flatMap(rank => orientation.files.map(file => `${file}${rank}`));
-  return useNativeChoiceController({ contextKey: inspectionContextKey(source), choices: source.choices,
+  return useBoardChoiceController({ contextKey: inspectionContextKey(source), choices: source.choices,
     origins: source.pieces.map(piece => ({ key: piece.square, owner: piece.owner, inspectable: true })),
     humanOwner: source.human.key, disabled: true, inspectionDisabled: false, onInspect: inspect, onPlay: play,
     initialFocus: source.board.initial_focus, boardKeys: keys,
     neighbor: (key, direction) => gridNeighbor(keys, orientation.files.length, key, direction) });
 }
 
-it.each(cases)("retires pending $source.profile inspection on native history/profile change without creating actions", async ({ selected, foreign, reply }) => {
+it.each(cases)("retires pending $source.profile inspection on game history/profile change without creating actions", async ({ selected, foreign, reply }) => {
   const pending = deferred<MovementInspection>(), play = vi.fn();
   vi.mocked(invoke).mockReturnValueOnce(pending.promise);
   const { result, rerender } = renderHook(({ source }) => useHistoricalInspection(source, play), { initialProps: { source: selected } });

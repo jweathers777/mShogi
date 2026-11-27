@@ -1,4 +1,4 @@
-//! Chu adapter for the shared search core. Native Game owns actual play.
+//! Chu adapter for the shared search core. Game owns actual play.
 pub mod eval;
 pub mod position;
 #[cfg(test)]
@@ -21,7 +21,7 @@ pub const fn piece_value(face: Face) -> i32 {
 root::root_api!(300_000);
 
 impl RootGame for Game {
-    root::native_types!(ChuPosition, Action, fork, to_native);
+    root::types!(ChuPosition, Action, fork, to_action);
     root::no_adjudication!();
     root::restricted_board!(ChuPosition);
     fn play(&mut self, action: &Action, _stop: &mut dyn FnMut() -> bool) -> Result<(), GameError> {

@@ -3215,7 +3215,7 @@
           "JSA-B5"
         ],
         "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
-        "derivation": "Pawn absent from hand cannot drop; silver cannot drop on own pawn5d; opposing king cannot be moved; same-square rook action is unavailable. Board exclusion is reference-observable. Native atomic rejection/state preservation belongs to MSH-65/66 product tests and is not established by permissive upstream request APIs.",
+        "derivation": "Pawn absent from hand cannot drop; silver cannot drop on own pawn5d; opposing king cannot be moved; same-square rook action is unavailable. Board exclusion is reference-observable. Atomic rejection/state preservation belongs to MSH-65/66 product tests and is not established by permissive upstream request APIs.",
         "established_by": "hand-derived geometry and resource accounting before reference run; not reference-generated",
         "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
       },
@@ -3246,7 +3246,7 @@
           "JSA-B5"
         ],
         "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
-        "derivation": "Pawn absent from hand cannot drop; silver cannot drop on own pawn5d; opposing king cannot be moved; same-square rook action is unavailable. Board exclusion is reference-observable. Native atomic rejection/state preservation belongs to MSH-65/66 product tests and is not established by permissive upstream request APIs. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "derivation": "Pawn absent from hand cannot drop; silver cannot drop on own pawn5d; opposing king cannot be moved; same-square rook action is unavailable. Board exclusion is reference-observable. Atomic rejection/state preservation belongs to MSH-65/66 product tests and is not established by permissive upstream request APIs. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
         "established_by": "hand-derived geometry and resource accounting before reference run; not reference-generated",
         "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
       },

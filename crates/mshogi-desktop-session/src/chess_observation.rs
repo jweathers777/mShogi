@@ -1,4 +1,4 @@
-//! Validate native Chess search evidence.
+//! Validate Chess search evidence.
 use super::*;
 use crate::persistence::check;
 
@@ -25,7 +25,7 @@ pub(crate) fn validate_result(
     };
     let bound = telemetry
         .variation_depth_bound()
-        .ok_or("Search selective depth exceeds its native bound.")?;
+        .ok_or("Search selective depth exceeds its bound.")?;
     let board_plies = telemetry
         .principal_variation
         .iter()
@@ -63,7 +63,7 @@ pub(crate) fn validate_result(
         ChessResult::Finished { outcome, .. }
             if game.outcome() != Some(*outcome) || !telemetry.principal_variation.is_empty() =>
         {
-            return Err("Finished observation disagrees with native root outcome.".into());
+            return Err("Finished observation disagrees with game root outcome.".into());
         }
         _ => {}
     }
@@ -91,7 +91,7 @@ pub(crate) fn validate_result(
 mod tests {
     use super::*;
     #[test]
-    fn minimax_continuations_are_native() {
+    fn accepts_the_matching_legal_continuation() {
         let game =
             AdjudicatedGame::from_fen("7k/8/5KQ1/8/8/8/8/8 w - - 0 1", ClaimPolicy::ExplicitOnly)
                 .unwrap();

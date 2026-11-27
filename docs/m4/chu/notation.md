@@ -1,14 +1,14 @@
-# Native Chu human action notation
+# Chu human action notation
 
 MSH-43 supplies a compact mShogi display/input adapter. This is **not a claim of
 standard JCSA notation** and does not change the selected playing profile or
-canonical record schema. The canonical native action and exact game history
-remain authoritative. The console selects an actual native local choice, then
+canonical record schema. The canonical action and exact game history
+remain authoritative. The console selects an actual local choice, then
 submits the complete action through `Game` with its current context.
 
 Grammar: `piece source (separator landing){1,2} [^]`, without spaces.
 
-- `piece` is the original native code: P, GB, L, RC, Cu, Si, G, FL, BT, DE, K,
+- `piece` is the original piece code: P, GB, L, RC, Cu, Si, G, FL, BT, DE, K,
   Ki, Ph, SM, VM, R, B, DH, DK, Ln or FK. A trailing `+` means that original
   identity has already promoted. For example `DE+` is the Prince and `Ki+` is a
   promoted Kirin moving as a Lion; they are not relabelled as original pieces.
@@ -19,7 +19,7 @@ Grammar: `piece source (separator landing){1,2} [^]`, without spaces.
 - The final `^` means this action promotes at its final landing. Without `^`,
   the action does not flip. Absence does not assert that promotion was available.
 
-Examples, against the appropriate native positions:
+Examples, against the appropriate positions:
 
 | Complete action | Display |
 | --- | --- |
@@ -34,10 +34,10 @@ Examples, against the appropriate native positions:
 The formatter preserves all landings, capture order, original identity and final
 promotion choice. It does not grant legality. Parsing is exact and case-sensitive;
 partial routes, incidental whitespace, wrong capture markers, collapsed endpoints,
-wrong original identities and unavailable flips cannot match a native choice.
+wrong original identities and unavailable flips cannot match a game choice.
 The live game separately applies Lion rights, repetition obligations, terminal
 state, actor and context admission. Historical formatting uses the exact preceding
-native event prefix, including the original capture occupancy.
+game event prefix, including the original capture occupancy.
 
 ## Console
 
@@ -45,13 +45,13 @@ Run `cargo run --release --locked --bin mshogi -- --game chu shell`, then `help`
 The console accepts standard roots and strict canonical custom roots through
 `record load-file`/`record load-json`. It does not invent SFEN, USI or a second
 machine protocol. Compound moves are entered as complete labels; `legal` prints
-each label with its native JSON action. A `move` batch commits only if every
+each label with its JSON action. A `move` batch commits only if every
 complete action is admitted.
 
-`history` includes all native events and obligation/outcome metadata; `undo` is
-one-event native reversal. Actual `offer-draw`, `accept-draw` and `decline-draw`
+`history` includes all game events and obligation/outcome metadata; `undo` is
+one-event reversal. Actual `offer-draw`, `accept-draw` and `decline-draw`
 commands retain the chosen actor and do not pretend an offer is consent.
-`analyze` is read-only history-aware native search.
+`analyze` is read-only history-aware search.
 Perft and divide count local legal actions, with depths 0–2 for perft and 1–2 for
 divide. The default and maximum budget is 1,000,000 visits, including the root.
 Budget exhaustion returns an error and leaves the live session untouched. There are no captured-piece hands in Chu.
@@ -59,4 +59,4 @@ Budget exhaustion returns an error and leaves the live session untouched. There 
 Canonical Save uses the existing bounded atomic no-replacement publisher. A save
 to an existing path fails while preserving that file; strict replay must succeed
 before Load replaces the current session. Human labels are never saved in place
-of complete native canonical semantics.
+of complete canonical semantics.

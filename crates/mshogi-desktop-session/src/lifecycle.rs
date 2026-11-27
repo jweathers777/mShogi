@@ -11,14 +11,14 @@ struct State {
     close_guard: Option<(SharedOpenToken, bool)>,
 }
 
-/// Shared native lifecycle authority owned by the application controller.
+/// Shared lifecycle authority owned by the application controller.
 /// Hosts hold handles, never independent copies of document-operation flags.
 #[derive(Default)]
 pub struct ApplicationLifecycle {
     state: Mutex<State>,
 }
 
-/// A bounded host waiter retains this native reservation until it completes.
+/// A bounded host waiter retains this reservation until it completes.
 /// Dropping a failed or cancelled operation releases exactly its own slot.
 pub struct OperationReservation {
     owner: Arc<ApplicationLifecycle>,
@@ -100,7 +100,7 @@ impl ApplicationLifecycle {
         Ok(())
     }
 
-    /// Approve only the exact currently accepted native document after all
+    /// Approve only the exact currently accepted document after all
     /// command/file waiters release their reservations. Call under controller
     /// serialization so authority cannot change between comparison and approval.
     pub fn approve_close(
@@ -126,7 +126,7 @@ impl ApplicationLifecycle {
     }
 
     /// The close stop may journal execution retirement, but must not manufacture
-    /// a warning for an otherwise saved document. Exempt only that exact native
+    /// a warning for an otherwise saved document. Exempt only that exact
     /// stop token; never mark its new canonical control as saved on disk.
     pub(crate) fn record_close_guard(&self, token: SharedOpenToken, dirty_before_stop: bool) {
         self.state

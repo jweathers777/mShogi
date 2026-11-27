@@ -36,7 +36,7 @@ fn execute() -> Result<(), String> {
         }
         [_, command, input] if command == "experiment-replay" => {
             let r=mshogi_runner::experiments::ValidatedReport::from_json(&read(input,mshogi_runner::experiments::MAX_BYTES as u64)?).map_err(|e|e.to_string())?;
-            println!("replayed {} native experiment games",r.games.len());Ok(())
+            println!("replayed {} experiment games",r.games.len());Ok(())
         }
         [_, command, input, output] if command == "experiment-data" => {
             let r=mshogi_runner::experiments::ValidatedReport::from_json(&read(input,mshogi_runner::experiments::MAX_BYTES as u64)?).map_err(|e|e.to_string())?;
@@ -58,7 +58,7 @@ fn execute() -> Result<(), String> {
             let encoded = report.to_json().map_err(|e| e.to_string())?;
             write_new(output, &encoded)?;
             for (i, game) in report.games.iter().enumerate() {
-                println!("game {i}: {:?} native {:?} score {:?}", game.stop, game.conclusion, game.score);
+                println!("game {i}: {:?} {:?} score {:?}", game.stop, game.conclusion, game.score);
             }
             Ok(())
         }
@@ -75,7 +75,7 @@ fn execute() -> Result<(), String> {
             let encoded = report.to_json().map_err(|e| e.to_string())?;
             write_new(output, &encoded)?;
             for (i, game) in report.games.iter().enumerate() {
-                println!("game {i}: {:?} native {:?} score {:?}", game.stop, game.conclusion, game.score);
+                println!("game {i}: {:?} {:?} score {:?}", game.stop, game.conclusion, game.score);
             }
             Ok(())
         }

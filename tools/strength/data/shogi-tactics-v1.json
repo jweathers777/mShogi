@@ -2,7 +2,7 @@
   "name": "shogi-tactics-v1",
   "profile": "mshogi.shogi.csa36.v1",
   "license": "CC0-1.0",
-  "status": "v1 records frozen; all roots and prefixes passed native validation; tactical bounded answer sets matched where applicable; final file-hash validation pending",
+  "status": "v1 records frozen; all roots and prefixes passed rules validation; tactical bounded answer sets matched where applicable; final file-hash validation pending",
   "metric": "all checking first moves forcing mate within mate_plies; not all winning moves",
   "independent_geometries": 6,
   "positions": [

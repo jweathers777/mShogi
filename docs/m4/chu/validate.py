@@ -71,7 +71,7 @@ def board_root(value, where, inventory):
         occupied.add(at)
         counts[p["side"], code.removesuffix("+")] += 1
     require(all(n <= inventory[k] for k, n in counts.items()),
-            where + ": exceeds original native inventory (not a reachability proof)")
+            where + ": exceeds original inventory (not a reachability proof)")
 
 
 def rotate(value, key=None):
@@ -110,13 +110,13 @@ def validate(profile, corpus):
             len(profile["pieces"]) == 29 and
             {p["face"] for p in profile["pieces"]} == FACES, "piece/promotion coverage")
     require(set(corpus) == {"schema", "revision", "profile", "profile_status",
-            "native_conformance_executed", "source_ids", "notation", "fixtures"},
+            "rules_conformance_executed", "source_ids", "notation", "fixtures"},
             "corpus: missing/unknown field")
     require(corpus["schema"] == "mshogi.chu.fixtures.v1" and
             corpus["profile"] == PROFILE and
             corpus["profile_status"] == profile["status"] and
             corpus["revision"] == "MSH82-2026-11-02", "corpus identity")
-    require(corpus["native_conformance_executed"] is False, "no native execution exists")
+    require(corpus["rules_conformance_executed"] is False, "no execution exists")
     rows = corpus["fixtures"]
     require(isinstance(rows, list), "fixtures list")
     ids = [f.get("id") for f in rows]
@@ -128,7 +128,7 @@ def validate(profile, corpus):
         where = f["id"]
         require(set(f) in (FIXTURE_KEYS, FIXTURE_KEYS | {"rotation_of"}),
                 where + ": missing/unknown fixture field")
-        require(f["scope"] in {"native", "consumer"} and f["requires_owner_decisions"] == [],
+        require(f["scope"] in {"rules", "consumer"} and f["requires_owner_decisions"] == [],
                 where + ": unresolved/unknown scope")
         require(isinstance(f["expected"], dict) and f["expected"] and
                 isinstance(f["given"], dict) and f["sources"] and f["expectation_method"],
@@ -138,7 +138,7 @@ def validate(profile, corpus):
         clauses.update(f["clauses"])
         if "root" in f["given"]:
             board_root(f["given"]["root"], where, inventory)
-        for field in {"fixture_ref", "native_fixture_ref"} & f["given"].keys():
+        for field in {"fixture_ref", "rules_fixture_ref"} & f["given"].keys():
             require(f["given"][field] in by_id, where + ": dangling fixture reference")
         if "rotation_of" in f:
             require(f["rotation_of"] in by_id and
@@ -155,8 +155,8 @@ def validate(profile, corpus):
             "rotated_rows": sum("rotation_of" in f for f in rows),
             "consumer_rows": sum(f["scope"] == "consumer" for f in rows),
             "expected_top_level_fields": sum(len(f["expected"]) for f in rows),
-            "native_executed": 0, "native_passed": 0,
-            "pending_native_owner": "MSH-86", "pending_consumer_owners": ["MSH-78", "MSH-43"]}
+            "rules_executed": 0, "rules_passed": 0,
+            "pending_rules_owner": "MSH-86", "pending_consumer_owners": ["MSH-78", "MSH-43"]}
 
 
 def main():

@@ -1,5 +1,5 @@
-//! Real native core consumer: no fake desktop/session or engine implementation.
-use mshogi_core::{native::*, tori as t};
+//! Real core consumer: no fake desktop/session or engine implementation.
+use mshogi_core::{game::*, tori as t};
 use serde_json::{Value, json};
 fn play(g: &mut t::Game, action: t::Action) -> Box<t::GameUndo> {
     let request = t::GameRequest {
@@ -7,23 +7,23 @@ fn play(g: &mut t::Game, action: t::Action) -> Box<t::GameUndo> {
         actor: g.position().side_to_move(),
         command: t::GameCommand::Play { action },
     };
-    let NativeReply::Tori(result) = dispatch_command(
-        NativeCommandTarget::Tori(g),
-        NativeCommand::Tori(Box::new(request)),
+    let GameReply::Tori(result) = dispatch_command(
+        GameCommandTarget::Tori(g),
+        GameCommand::Tori(Box::new(request)),
     )
     .unwrap() else {
         panic!("wrong reply")
     };
     result.unwrap()
 }
-fn record(g: &t::Game) -> CanonicalRecord {
+fn canonical_record(g: &t::Game) -> CanonicalRecord {
     CanonicalRecord::tori(t::GameRecord::from_game(g).unwrap())
 }
 #[test]
-fn actual_core_consumer_uses_native_choices_effects_history_inspection_context_and_records() {
+fn actual_core_consumer_uses_choices_effects_history_inspection_context_and_records() {
     let mut g = t::Game::standard();
     let before = g.context();
-    let before_record = record(&g);
+    let before_record = canonical_record(&g);
     let a = g.legal_actions()[0];
     let mut u = play(&mut g, a);
     assert_eq!(g.events().len(), 1);
@@ -34,20 +34,20 @@ fn actual_core_consumer_uses_native_choices_effects_history_inspection_context_a
         .inspect(t::InspectionOrigin::Board("4g".parse().unwrap()));
     assert!(!inspection.is_empty());
     assert_ne!(g.context(), before);
-    let r = record(&g);
+    let r = canonical_record(&g);
     assert_eq!(r.game_kind(), GameKind::Tori);
     assert_eq!(r.profile(), RulesProfile::ToriModernV1);
     assert_eq!(r.profile().edition(), t::PROFILE_EDITION);
-    assert_eq!(r.native_schema(), NativeSchema::ToriV4);
+    assert_eq!(r.record_schema(), RecordSchema::ToriV4);
     assert_eq!(r.known_board_actions(), 1);
     assert_eq!(r.event_count(), 1);
     let text = r.to_json().unwrap();
     assert_eq!(CanonicalRecord::from_json(&text).unwrap(), r);
     assert_eq!(serde_json::from_str::<CanonicalRecord>(&text).unwrap(), r);
-    let CanonicalRecord::Tori(native) = r else {
+    let CanonicalRecord::Tori(record) = r else {
         panic!()
     };
-    let mut restored = native.to_game().unwrap();
+    let mut restored = record.to_game().unwrap();
     assert_eq!(restored.events(), g.events());
     assert_ne!(g.context(), restored.context());
     assert_eq!(
@@ -66,7 +66,7 @@ fn actual_core_consumer_uses_native_choices_effects_history_inspection_context_a
     assert!(historical.conclusion.is_none());
     assert!(!historical.local_position().legal_actions().is_empty());
     g.undo(&mut u).unwrap();
-    assert_eq!(record(&g), before_record);
+    assert_eq!(canonical_record(&g), before_record);
     assert_ne!(g.context(), before);
     play(&mut g, a);
     let actor = t::Side::Sente;
@@ -75,9 +75,9 @@ fn actual_core_consumer_uses_native_choices_effects_history_inspection_context_a
         actor,
         command: t::GameCommand::Resign,
     };
-    let NativeReply::Tori(result) = dispatch_command(
-        NativeCommandTarget::Tori(&mut g),
-        NativeCommand::Tori(Box::new(request)),
+    let GameReply::Tori(result) = dispatch_command(
+        GameCommandTarget::Tori(&mut g),
+        GameCommand::Tori(Box::new(request)),
     )
     .unwrap() else {
         panic!()
@@ -89,12 +89,12 @@ fn actual_core_consumer_uses_native_choices_effects_history_inspection_context_a
             winner: t::Side::Gote
         })
     );
-    assert_eq!(record(&g).event_count(), 2);
-    assert_eq!(record(&g).known_board_actions(), 1);
+    assert_eq!(canonical_record(&g).event_count(), 2);
+    assert_eq!(canonical_record(&g).known_board_actions(), 1);
     for side in [t::Side::Sente, t::Side::Gote] {
-        let side = NativeSide::Tori(side);
+        let side = TaggedSide::Tori(side);
         assert_eq!(
-            serde_json::from_str::<NativeSide>(&serde_json::to_string(&side).unwrap()).unwrap(),
+            serde_json::from_str::<TaggedSide>(&serde_json::to_string(&side).unwrap()).unwrap(),
             side
         );
         assert_eq!(side.game(), GameKind::Tori);
@@ -105,14 +105,14 @@ fn raw_outer_and_nested_identity_duplicates_unknown_missing_conflicts_never_fall
     let mut g = t::Game::standard();
     let a = g.legal_actions()[0];
     play(&mut g, a);
-    let text = record(&g).to_json().unwrap();
+    let text = canonical_record(&g).to_json().unwrap();
     let original: Value = serde_json::from_str(&text).unwrap();
     for (field, value) in [
         ("game_kind", json!("shogi")),
         ("rules_profile", json!("mshogi.shogi.csa36.v1")),
         ("profile_edition", json!("other")),
-        ("native_schema_version", json!(1)),
-        ("native_schema_version", json!(99)),
+        ("record_schema_version", json!(1)),
+        ("record_schema_version", json!(99)),
         ("envelope_version", json!(99)),
         ("unknown", json!(1)),
     ] {
@@ -158,14 +158,14 @@ fn raw_outer_and_nested_identity_duplicates_unknown_missing_conflicts_never_fall
     };
     assert!(
         dispatch_command(
-            NativeCommandTarget::Chess(&mut chess),
-            NativeCommand::Tori(Box::new(request))
+            GameCommandTarget::Chess(&mut chess),
+            GameCommand::Tori(Box::new(request))
         )
         .is_err()
     );
     assert_eq!(g.context(), before);
     let unknownside = json!({"game_kind":"tori","side":"red"}).to_string();
-    assert!(serde_json::from_str::<NativeSide>(&unknownside).is_err());
+    assert!(serde_json::from_str::<TaggedSide>(&unknownside).is_err());
 }
 
 #[test]
@@ -197,7 +197,7 @@ fn imported_complete_history_through_real_envelope_preserves_obligation_and_root
     )
     .unwrap();
     let mut g = t::Game::from_root(root).unwrap();
-    let root_record = record(&g);
+    let root_record = canonical_record(&g);
     let root_key = g.repetition_key().clone();
     for (from, to) in [("4g", "5g"), ("4a", "5a"), ("5g", "4g"), ("5a", "4a")]
         .into_iter()
@@ -217,12 +217,12 @@ fn imported_complete_history_through_real_envelope_preserves_obligation_and_root
     assert_ne!(g.repetition_key(), &root_key);
     assert_eq!(g.occurrences(), [3, 7]);
     assert_eq!(g.repetition().unwrap().side, t::Side::Gote);
-    assert_ne!(root_record, record(&g));
-    let encoded = record(&g).to_json().unwrap();
-    let CanonicalRecord::Tori(native) = CanonicalRecord::from_json(&encoded).unwrap() else {
+    assert_ne!(root_record, canonical_record(&g));
+    let encoded = canonical_record(&g).to_json().unwrap();
+    let CanonicalRecord::Tori(record) = CanonicalRecord::from_json(&encoded).unwrap() else {
         panic!()
     };
-    let replay = native.to_game().unwrap();
+    let replay = record.to_game().unwrap();
     assert_eq!(replay.events(), g.events());
     assert_eq!(replay.repetition(), g.repetition());
     assert_eq!(replay.position().root(), g.position().root());
@@ -243,7 +243,7 @@ fn imported_complete_history_through_real_envelope_preserves_obligation_and_root
 }
 
 #[test]
-fn operational_stop_is_not_a_current_native_command() {
+fn operational_stop_is_not_a_current_command() {
     let command = r#"{"kind":"stop","reason":"cancelled"}"#;
     assert!(mshogi_core::tori::GameCommand::from_json(command).is_err());
     assert!(mshogi_core::chu::GameCommand::from_json(command).is_err());

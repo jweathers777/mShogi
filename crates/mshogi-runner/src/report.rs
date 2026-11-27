@@ -34,11 +34,11 @@ pub struct EngineIdentity {
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct ProcessExit {
-    /// Native exit code when supplied by the platform.
+    /// Exit code when supplied by the platform.
     pub code: Option<i32>,
     /// Terminating signal on Unix, otherwise None.
     pub signal: Option<i32>,
-    /// Whether the native status was successful.
+    /// Whether the status was successful.
     pub success: bool,
     /// Platform-provided descriptive status.
     pub description: String,
@@ -141,7 +141,7 @@ pub struct EngineObservation {
     pub retirement_failure: Option<crate::protocol::Failure>,
     /// Configuration engine index.
     pub engine: usize,
-    /// Native process ID, not a reproducibility identity.
+    /// Process ID, not a reproducibility identity.
     pub process_id: u32,
     /// Advertised UCI id lines.
     pub uci_identity: Vec<String>,
@@ -226,7 +226,7 @@ pub struct ExperimentReport {
     pub runner_version: String,
     /// Native OS name; this is evidence for this platform only.
     pub os: String,
-    /// Native architecture.
+    /// Architecture.
     pub arch: String,
     /// Conditional eligibility; never a proof of an engine's deterministic behavior.
     pub deterministic_rerun_eligible: bool,

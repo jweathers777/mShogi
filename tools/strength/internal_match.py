@@ -1,4 +1,4 @@
-"""Paired native-game predecessor tests through the native experiment controller.
+"""Paired game predecessor tests through the experiment controller.
 
 The Rust runner owns all rules, histories, scores and report validation. This
 module schedules complete color pairs and applies the existing pentanomial SPRT.
@@ -33,7 +33,7 @@ def telemetry(value):
 
 
 def summarize(report):
-    """Use only native concluded scores; never convert a cutoff to a draw."""
+    """Use only concluded scores; never convert a cutoff to a draw."""
     games = report['games']
     if len(games) != 2 or [g['pairing']['swapped'] for g in games] != [False, True]:
         raise ValueError('expected one complete ordered color pair')
@@ -41,7 +41,7 @@ def summarize(report):
     turns = [[], []]
     for game in games:
         if game.get('cleanup'):
-            raise ValueError('native engine cleanup failed; retained report is unscored')
+            raise ValueError('mShogi engine cleanup failed; retained report is unscored')
         score = game['score_first_twice']
         scores.append(None if score is None else (2 - score if game['pairing']['swapped'] else score))
         for ply, step in enumerate(game['steps']):
@@ -136,7 +136,7 @@ def run_pair(args, seed, out):
 
 # Rule fixed before any MSH-204 (Tori Strength Harness) result, 2026-11-20,
 # as proposed to John: a Tori pair in which a game reaches the step limit
-# without a native result is excluded from the test and counted; every other
+# without a engine result is excluded from the test and counted; every other
 # unscored stop still stops the campaign; the campaign also stops when more
 # than LENGTH_LIMIT_SHARE of at least LENGTH_LIMIT_MIN_PAIRS pairs are excluded.
 LENGTH_LIMIT_SHARE = 0.10
@@ -145,13 +145,13 @@ LENGTH_LIMIT_MIN_PAIRS = 20
 
 def length_limited(args, row):
     return (args.game == 'tori' and row['pair_score'] is None
-            and all(stop in ('native_concluded', 'step_limit') for stop in row['stops'])
+            and all(stop in ('game_concluded', 'step_limit') for stop in row['stops'])
             and 'step_limit' in row['stops'])
 
 
 def calibration_failure(rows):
     for row in rows:
-        if (row['plies'] != [1, 1] or any(stop not in ('native_concluded', 'step_limit') for stop in row['stops'])
+        if (row['plies'] != [1, 1] or any(stop not in ('game_concluded', 'step_limit') for stop in row['stops'])
                 or any(len(turns) != 1 or not turns[0]['applied'] for turns in row['turns'])):
             return f"pair {row['seed']}: calibration requires one accepted move by each engine"
     return None
@@ -210,7 +210,7 @@ def options(parser, *, selfplay=False):
     parser.add_argument('--late-ply', type=int, default=40, help='first post-opening ply for late-depth statistics')
     parser.add_argument('--workers', type=int, default=4)
     parser.add_argument('--max-pairs', type=int, default=600)
-    parser.add_argument('--max-steps', type=int, help='positive native event budget per game; unfinished games stay unscored')
+    parser.add_argument('--max-steps', type=int, help='positive game event budget per game; unfinished games stay unscored')
     parser.add_argument('--min-pairs', type=int, default=30)
     parser.add_argument('--first-seed', type=int, default=1)
     parser.add_argument('--wall-seconds', type=int, default=1800)
@@ -254,7 +254,7 @@ def campaign(args):
         if not 1 <= args.candidate_time_factor <= 8:
             parser.error('--candidate-time-factor must be 1..8')
         if args.candidate_nodes is not None or args.baseline_nodes is not None or args.baseline_depth is not None:
-            parser.error('clock mode uses symmetric native safety caps; do not supply fixed work')
+            parser.error('clock mode uses symmetric safety caps; do not supply fixed work')
         args.candidate_nodes = args.baseline_nodes = 5_000_000
         args.baseline_depth = 8 if args.game == 'chess' else 64
     elif args.candidate_nodes is None or args.increment != 0:
@@ -291,7 +291,7 @@ def campaign(args):
               'settings': {k:v for k,v in vars(args).items() if k != 'func'}, 'environment': environment(),
               'candidate': engine_identity(args.candidate), 'baseline': engine_identity(args.baseline),
               'runner': engine_identity(args.runner), 'helper': engine_identity(args.helper),
-              'timing': 'native runner request/launch/search/receipt, including process overhead',
+              'timing': 'runner request/launch/search/receipt, including process overhead',
               'sampling': ('fixed catalog index (seed-1) modulo count; both colors; source frozen before play'
                            if args.openings else 'one seeded opening per pair; no discarded unfinished pairs'),
               'stopping': 'check SPRT in seed order after each worker batch; all launched pairs retained'})
@@ -325,10 +325,10 @@ def campaign(args):
                         raise RuntimeError(reason)
                     continue
                 if args.selfplay:
-                    if any(stop not in ('native_concluded', 'step_limit', 'wall_budget',
-                                        'native_pending_adjudication', 'native_no_board_actions', 'artifact_limit') for
+                    if any(stop not in ('game_concluded', 'step_limit', 'wall_budget',
+                                        'pending_adjudication', 'no_board_actions', 'artifact_limit') for
                            row in rows for stop in row['stops']):
-                        raise RuntimeError('self-play encountered an unexpected stop; see native reports')
+                        raise RuntimeError('self-play encountered an unexpected stop; see match reports')
                     continue
                 reason = unfinished(args, rows)
                 if reason:

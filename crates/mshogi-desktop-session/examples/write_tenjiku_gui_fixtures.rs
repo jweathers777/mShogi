@@ -1,7 +1,7 @@
-//! Independent native diagrams for ordinary packaged Tenjiku Load journeys.
+//! Independent diagrams for ordinary packaged Tenjiku Load journeys.
 //! Development-only writer; archives and writer are never application assets.
 use mshogi_core::tenjiku as t;
-use mshogi_desktop_session::{game_document::ValidatedGameDocument, native_game::Tenjiku};
+use mshogi_desktop_session::{game_adapter::Tenjiku, game_document::ValidatedGameDocument};
 use serde_json::{Value, json};
 use std::path::PathBuf;
 
@@ -60,7 +60,7 @@ fn fixture(profile: t::Profile, id: &str, royal_engine_extension: bool) -> t::Ga
             &pieces,
             serde_json::from_value(root["turn"].clone()).unwrap(),
             t::RootMetadata::imported(
-                format!("MSH44 packaged native source fixture {id}{}; earlier history unproved",if royal_engine_extension { "; explicit diagram extension: remote Gote Pawn id5 at 1a excludes the alternative one-ply bare-royal win" } else { "" }),
+                format!("MSH44 packaged game source fixture {id}{}; earlier history unproved",if royal_engine_extension { "; explicit diagram extension: remote Gote Pawn id5 at 1a excludes the alternative one-ply bare-royal win" } else { "" }),
                 0,
             )
             .unwrap(),
@@ -125,7 +125,7 @@ fn main() {
                 "royal-engine",
                 "TEN-BURN-ENEMY-ROYAL",
                 t::Side::Gote,
-                json!({"engine_to_move":"sente","conclusion":{"kind":"royal_capture","winner":"sente"},"qualification":"Actual UI Resume must obtain a real engine choice and commit a native terminal game, not a fabricated observation."}),
+                json!({"engine_to_move":"sente","conclusion":{"kind":"royal_capture","winner":"sente"},"qualification":"Actual UI Resume must obtain a real engine choice and commit a terminal game, not a fabricated observation."}),
             ),
             (
                 "simultaneous",
@@ -211,7 +211,7 @@ fn main() {
             println!("{}", path.display());
         }
     }
-    std::fs::write(directory.join("tenjiku-native-fixtures.json"),serde_json::to_string_pretty(&json!({"schema":"mshogi.tenjiku.packaged-fixtures.v1","generator":"write_tenjiku_gui_fixtures","source_sha256":"2005e098b507f73248b8f9bd442f7ffe0c2c0c5ae205428d9a3d2371a7c08e82","source":"docs/m4/tenjiku/fixtures.json frozen MSH-83/87 independently authored roots and expectations","qualification":"Current native desktop documents admitted/replayed by public Rust APIs. Unproved diagrams, no fabricated observations, no normal host fixture/IPC activation.","cases":cases})).unwrap()+"\n").unwrap();
+    std::fs::write(directory.join("tenjiku-game-fixtures.json"),serde_json::to_string_pretty(&json!({"schema":"mshogi.tenjiku.packaged-fixtures.v1","generator":"write_tenjiku_gui_fixtures","source_sha256":"f824ff81a49c01a504879087323f5b8c7bcc98b50468073120fd9f33f0bda577","source":"docs/m4/tenjiku/fixtures.json frozen MSH-83/87 independently authored roots and expectations","qualification":"Current desktop documents admitted/replayed by public Rust APIs. Unproved diagrams, no fabricated observations, no normal host fixture/IPC activation.","cases":cases})).unwrap()+"\n").unwrap();
 }
 
 fn verify_package_report(path: PathBuf) {
@@ -255,6 +255,6 @@ fn verify_package_report(path: PathBuf) {
     }
     println!(
         "{}",
-        json!({"verification":"Actual packaged engine action/PV admitted through public native Game APIs; independently expected RoyalCapture Sente", "replays":replays})
+        json!({"verification":"Actual packaged engine action/PV admitted through public Game APIs; independently expected RoyalCapture Sente", "replays":replays})
     );
 }

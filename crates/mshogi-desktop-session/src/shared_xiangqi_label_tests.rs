@@ -11,7 +11,7 @@ fn label(actor: Option<x::Side>, event: x::EventKind) -> String {
 }
 
 #[test]
-fn native_action_labels_distinguish_quiet_capture_and_check_without_debug_payloads() {
+fn action_labels_distinguish_quiet_capture_and_check_without_debug_payloads() {
     for (actor, action, captured_id, gave_check, expected) in [
         (x::Side::Red, "a3a4", None, false, "Red: a3–a4"),
         (x::Side::Black, "a6a5", None, false, "Black: a6–a5"),
@@ -41,7 +41,7 @@ fn native_action_labels_distinguish_quiet_capture_and_check_without_debug_payloa
 }
 
 #[test]
-fn native_non_board_events_keep_claimant_warning_pending_and_conclusion_distinct() {
+fn non_board_events_keep_claimant_warning_pending_and_conclusion_distinct() {
     let evidence = x::NaturalCountEligibility {
         claimant: x::Side::Black,
         known_plies: 100,

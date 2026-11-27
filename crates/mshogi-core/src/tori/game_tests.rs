@@ -1,4 +1,4 @@
-//! Independent native history, authority, replay, mutation and resource evidence.
+//! Independent game history, authority, replay, mutation and resource evidence.
 use super::{
     conformance::{action, root, sq},
     game_conformance::{play, sequence, submit},
@@ -153,7 +153,7 @@ fn repetition_equality_and_semantic_context_are_distinct_and_root_counters_are_n
     assert_ne!(record(&a), record(&imported));
 }
 #[test]
-fn native_commands_are_atomic_out_of_turn_resignation_preserve_board_identity() {
+fn commands_are_atomic_out_of_turn_resignation_preserve_board_identity() {
     let mut g = Game::standard();
     let before = record(&g);
     rejection(
@@ -186,7 +186,7 @@ fn native_commands_are_atomic_out_of_turn_resignation_preserve_board_identity() 
         },
         GameError::Action(ActionError::InvalidDropFace),
     );
-    // Player resignation remains a reversible native event, without a board ply.
+    // Player resignation remains a reversible game event, without a board ply.
     let key = g.repetition_key().clone();
     let old = g.context();
     let mut undo = submit(&mut g, Side::Gote, GameCommand::Resign).unwrap();
@@ -220,7 +220,7 @@ fn native_commands_are_atomic_out_of_turn_resignation_preserve_board_identity() 
     assert_eq!(record(&g), before);
 }
 #[test]
-fn exact_reversal_every_prefix_replay_and_selection_never_restore_native_authority() {
+fn exact_reversal_every_prefix_replay_and_selection_never_restore_authority() {
     let given = fixture("TORI-H-CAPTURE-DROP");
     let mut g = Game::from_root(root(&given["root"]).unwrap()).unwrap();
     let mut undos = vec![];
@@ -313,7 +313,7 @@ fn rotate_action(a: Action) -> Action {
     }
 }
 #[test]
-fn native_rotation_metamorphism_preserves_repetition_responsibility_and_forced_loss() {
+fn rotation_metamorphism_preserves_repetition_responsibility_and_forced_loss() {
     for id in ["TORI-H-FORCED-FULL", "TORI-H-CAPTURE-DROP"] {
         let f = fixture(id);
         let original = root(&f["root"]).unwrap();

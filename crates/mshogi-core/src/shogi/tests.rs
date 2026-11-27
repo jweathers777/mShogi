@@ -507,7 +507,7 @@ fn rejected_choices_are_atomic_and_undo_requires_exact_context() {
 }
 
 #[test]
-fn drop_resources_nifu_and_dead_ranks_are_native_for_both_sides() {
+fn drop_resources_nifu_and_dead_ranks_are_for_both_sides() {
     for side in [Side::Sente, Side::Gote] {
         let hand = Hand::from_counts(&[
             (PieceKind::Pawn, 2),

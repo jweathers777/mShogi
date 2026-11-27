@@ -1,20 +1,20 @@
 > Historical MSH-82 preimplementation accounting below is preserved: its
-> zero-execution numbers describe that source/data checkpoint. Actual native86
-> acceptance is 1,069 checks across239 native rows.
+> zero-execution numbers describe that source/data checkpoint. Actual rules86
+> acceptance is 1,069 checks across239 rows.
 > The ten shared/product obligations are reconciled in the current
 > MSH-43 coverage matrix.
 
 # Independent Chu fixture accounting
 
 The [corpus](fixtures.json) contains **249 rows:220 authored and29 explicitly
-owner-exchanged180° rotations**.239 belong to native86;10 record future shared/
+owner-exchanged180° rotations**.239 belong to rules86;10 record future shared/
 product obligations for78/43. There are1134 top-level expected fields, including
 explanations and future assertions: this is **not1134 executed assertions**,249
-unique positions or native conformance. Native Chu: **0 executed,0 passed**.
+unique positions or rules conformance. Chu: **0 executed,0 passed**.
 
 Expectations precede implementation. C1/C2/C3 diagrams and prose, the selected
 [profile](profile.md), hand enumeration and independently reviewed examples
-supply facts. No native/legacy/external-engine output supplies expected values.
+supply facts. No mShogi, legacy or external engine output supplies expected values.
 `expectation_method` and source/clause references identify each derivation.
 Source diagrams completed with remote royals/pawns or a promoted Kirin origin
 are labeled constructions, not claims that the source printed those pieces.
@@ -35,14 +35,14 @@ Rows can cover several clauses; these counts overlap.
 | C08 |13|Narrow three-piece threshold, exclusions/dead blockers, immediate equalizer/counterwin, current-turn imports, actual draw consent/refusal |
 | C09 |7|Exact private reversal, complete sequence/replay, imported provenance/counter,7/42 perft/divide |
 | C10 |14|Strict/malformed/conflicting records, ordered events and paths, history identity, atomic refusal and retired execution |
-| C11 |10|Real native consumer requirements: codec/admission, choices/inspection/history, bounded engine, notation and finished12×12 UI |
+| C11 |10|Real consumer requirements: codec/admission, choices/inspection/history, bounded engine, notation and finished12×12 UI |
 
 The complete empty-center actor sets preserve **actions**, not only destinations:
 Lion8 single steps+16 outer jumps+8×8 two-step routes=88; SE33 ordinary ray
 actions+2×4 restricted actions=41; HF38 rays+4 restricted actions=42. Empty
 routes sharing endpoints remain distinct. Source-derived geometry probes are
 not automatically the full-game LegalAll set:86 must also admit the correct
-turn, Lion law, native history obligations and conclusions.
+turn, Lion law, game history obligations and conclusions.
 
 The remote kings/golds/pawn case has7 Sente actions, each followed by6 Gote
 actions: perft1=7, perft2=42,7 divide entries of6. Hand enumeration was separately
@@ -53,16 +53,16 @@ reviewed; no general perft expectations are guessed from future engine output.
 `given` separates imported diagrams, actual ordered commands, action probes,
 geometry queries and future consumer scenarios. The development `[file,rank]`
 grammar is a fixture notation, not a frozen Rust API or public protocol. Adapt
-it to the actual native types; derive victims/effects in native code. Deliberately
+it to the actual game types; derive victims/effects in the rules library. Deliberately
 malformed requests remain raw negatives rather than being sanitized by an adapter.
-Explanatory expected fields need explicit traceability to native assertions or
+Explanatory expected fields need explicit traceability to assertions or
 reviewed derivations, never a generic expected-value echo.
 
 Run exact sets for applicable LegalAll tests, not a convenient selected move;
 compare actual ordered intermediate/final effects and complete routes. Exercise
 full Game history separately from local geometry/transition helpers. Royal mate
 and repetition admission must not recursively adjudicate mate or silently use
-a Chess check filter. Replay from the native root and verify duplicated facts.
+a Chess check filter. Replay from the game root and verify duplicated facts.
 
 Add deterministic admitted sequences, apply/undo restoration of all logical
 state/caches, canonical roundtrips, rejected-request atomicity, capture/discard
@@ -70,10 +70,10 @@ accounting and meaningful adversarial mutations. Rotation exchanges owners and
 rotates all squares180°; an imported Gote-to-move rotation is not called the
 standard starting game. Do not assume horizontal mirror symmetry of the actual
 asymmetric setup. Test all144 coordinates and exact route reversal where valid;
-do not claim every transformed outcome is valid without the corresponding native
+do not claim every transformed outcome is valid without the corresponding
 semantics/history transformation.
 
-## Development validation, not native execution
+## Development validation, not execution
 
 `python3 docs/m4/chu/validate.py` strictly admits data, checks identities, source/
 fixture links, setup inventories, coverage, rotations and reviewed data hashes.

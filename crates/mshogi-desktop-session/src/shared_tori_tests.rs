@@ -1,4 +1,4 @@
-//! Actual sole-controller acceptance, distinct from native rules and GUI acceptance.
+//! Actual sole-controller acceptance, distinct from rules and GUI acceptance.
 use super::*;
 use crate::game_document::GameSettings;
 use mshogi_engine::EngineGame;
@@ -114,13 +114,13 @@ fn replace(c: &mut DesktopController, game: &t::Game, human: t::Side) {
             game: game_kind,
             operation: SessionOperation::Replace {
                 record: CanonicalRecord::tori(t::GameRecord::from_game(game).unwrap()),
-                human: NativeSide::Tori(human),
+                human: TaggedSide::Tori(human),
             },
         })
         .unwrap();
     settle(c, r).unwrap();
 }
-fn native(c: &DesktopController) -> t::GameRecord {
+fn game_record(c: &DesktopController) -> t::GameRecord {
     t::GameRecord::from_game(&current(c).game).unwrap()
 }
 fn exact(c: &DesktopController) -> Vec<u8> {
@@ -177,7 +177,7 @@ fn context(c: &DesktopController, n: u64, analysis: bool) -> ExecutionContext {
                     board_ply: game.known_board_actions() as u64,
                     session_version: c.session.version,
                     label: "Constructed negative-test target".into(),
-                    turn: NativeSide::Tori(state.selected().position().side_to_move()),
+                    turn: TaggedSide::Tori(state.selected().position().side_to_move()),
                 },
             }
         } else {
@@ -222,13 +222,13 @@ fn check_board(position: &t::Position, entry: &str, present: bool) {
     assert_eq!(position.piece(sq) == Some(piece), present, "{entry}");
 }
 #[test]
-fn actual_controller_seventy_native_admission_cases_and_rotations() {
+fn actual_controller_seventy_admission_cases_and_rotations() {
     let mut ids = vec![];
     for f in fixtures()["fixtures"]
         .as_array()
         .unwrap()
         .iter()
-        .filter(|f| f["scope"].as_str().unwrap().starts_with("native_admission"))
+        .filter(|f| f["scope"].as_str().unwrap().starts_with("game_admission"))
     {
         let id = f["id"].as_str().unwrap();
         let v = &f["given"];
@@ -241,9 +241,9 @@ fn actual_controller_seventy_native_admission_cases_and_rotations() {
         let mut c = controller();
         replace(&mut c, &g, actor);
         let before = exact(&c);
-        let before_native = native(&c);
+        let before_snapshot = game_record(&c);
         let token = c.shared_token();
-        // Native inspection is a read-only operation; may expose the opposing owner.
+        // Inspection is a read-only operation; may expose the opposing owner.
         let origin = t::Square::all()
             .find(|sq| current(&c).game.position().piece(*sq).is_some())
             .unwrap()
@@ -265,7 +265,7 @@ fn actual_controller_seventy_native_admission_cases_and_rotations() {
         );
         if result.is_err() {
             assert_eq!(exact(&c), before, "{id}");
-            assert_eq!(native(&c), before_native);
+            assert_eq!(game_record(&c), before_snapshot);
             assert_eq!(c.session.version, token.version);
             assert!(c.session.capacity.resource.is_none());
         } else {
@@ -315,20 +315,20 @@ fn actual_controller_seventy_native_admission_cases_and_rotations() {
                     delta as usize
                 );
             }
-            let after = native(&c);
+            let after = game_record(&c);
             let stale_context = context(&c, 1000, true);
             c.session.tori_mut().unwrap().pending = Some(stale_context.clone());
             send(&mut c, SessionOperation::Undo {}).unwrap();
-            assert_eq!(native(&c), before_native, "{id} exact semantic undo");
+            assert_eq!(game_record(&c), before_snapshot, "{id} exact semantic undo");
             assert!(!submit_observation(&mut c, response(stale_context)));
             // Complete action reapplication uses new authority, not an old request.
             send(&mut c, SessionOperation::command(&command(&v["command"]))).unwrap();
             assert_eq!(
-                native(&c),
+                game_record(&c),
                 after,
                 "{id} replay same authoritative transition"
             );
-            crate::game_document::ValidatedGameDocument::<crate::native_game::Tori>::decode(
+            crate::game_document::ValidatedGameDocument::<crate::game_adapter::Tori>::decode(
                 current(&c).document.bytes(),
                 &mut || false,
             )
@@ -356,7 +356,7 @@ fn history_prefix_obligations_takeback_and_reopen_are_exact_and_fresh() {
     };
     let mut c = controller();
     replace(&mut c, &a, t::Side::Gote);
-    let record_a = native(&c);
+    let record_a = game_record(&c);
     let board_a = current(&c).game.repetition_key().clone();
     send(
         &mut c,
@@ -364,14 +364,14 @@ fn history_prefix_obligations_takeback_and_reopen_are_exact_and_fresh() {
     )
     .unwrap();
     send(&mut c, SessionOperation::Undo {}).unwrap();
-    assert_eq!(native(&c), record_a);
+    assert_eq!(game_record(&c), record_a);
 
     let old = context(&c, 100, true);
     c.session.tori_mut().unwrap().pending = Some(old.clone());
     replace(&mut c, &g, t::Side::Gote);
     assert!(!submit_observation(&mut c, response(old.clone())));
     assert_eq!(current(&c).game.repetition_key(), &board_a);
-    assert_ne!(native(&c), record_a);
+    assert_ne!(game_record(&c), record_a);
     assert_eq!(current(&c).game.repetition().unwrap().side, t::Side::Gote);
     let before = exact(&c);
     assert!(
@@ -411,19 +411,19 @@ fn history_prefix_obligations_takeback_and_reopen_are_exact_and_fresh() {
     let id = c.queue_shared_save(path.clone()).unwrap();
     assert!(matches!(wait_file(&mut c, id).io.phase, IoPhase::Complete));
     assert!(!c.shared_document().dirty);
-    let expected = native(&c);
+    let expected = game_record(&c);
     let token = c.shared_token();
     let id = c.queue_shared_open(path, c.shared_open_token()).unwrap();
     let reopened = wait_file(&mut c, id);
     assert!(matches!(reopened.io.phase, IoPhase::Complete));
-    assert_eq!(native(&c), expected);
+    assert_eq!(game_record(&c), expected);
     assert!(reopened.paused);
     assert!(c.session.version > token.version);
     assert!(c.session.selection_id > token.selection);
     assert!(current(&c).pending.is_none());
     assert!(!submit_observation(&mut c, response(old.clone())));
     // Reopening itself stops work. Explicit Resume/Retry and bounded analysis
-    // now use actual native execution; they do not restore any old pending ID.
+    // now use actual execution; they do not restore any old pending ID.
     send(&mut c, SessionOperation::Resume {}).unwrap();
     assert_ne!(current(&c).pending.as_ref(), Some(&old));
     send(&mut c, SessionOperation::Cancel {}).unwrap();
@@ -486,7 +486,7 @@ fn all_identity_dimensions_wrong_game_and_return_to_same_diagram_reject() {
                 0 => target.event_index += 1,
                 1 => target.board_ply += 1,
                 2 => target.session_version += 1,
-                3 => target.turn = NativeSide::Tori(t::Side::Gote),
+                3 => target.turn = TaggedSide::Tori(t::Side::Gote),
                 _ => target.label.push_str(" changed"),
             }
         }
@@ -505,7 +505,7 @@ fn all_identity_dimensions_wrong_game_and_return_to_same_diagram_reject() {
     .unwrap();
     send(&mut c, SessionOperation::Undo {}).unwrap();
     assert_eq!(
-        native(&c),
+        game_record(&c),
         t::GameRecord::from_game(&t::Game::standard()).unwrap()
     );
     assert!(!submit_observation(&mut c, response(good.clone())));
@@ -544,9 +544,9 @@ fn session_cancel_and_unsupported_commands_are_unscored() {
         let g = t::Game::from_root(root(&given("TORI-O-ADMIN")["root"])).unwrap();
         replace(&mut c, &g, t::Side::Sente);
         let before = current(&c).game.position().state().clone();
-        let record_before = native(&c);
+        let record_before = game_record(&c);
         send(&mut c, SessionOperation::Cancel {}).unwrap();
-        assert_eq!(native(&c), record_before);
+        assert_eq!(game_record(&c), record_before);
         assert!(current(&c).game.conclusion().is_none());
         assert_eq!(current(&c).game.position().state(), &before);
         let s = c.shared_snapshot();
@@ -554,12 +554,12 @@ fn session_cancel_and_unsupported_commands_are_unscored() {
         assert!(!s.status.concluded);
         assert!(s.search_observations.is_empty());
         let before = exact(&c);
-        let native = native(&c);
+        let game_record = game_record(&c);
         for command in [t::GameCommand::AgreeDraw, t::GameCommand::DeclareImpasse] {
             assert!(send(&mut c, SessionOperation::command(&command)).is_err());
             assert_eq!(exact(&c), before);
         }
-        assert_eq!(self::native(&c), native);
+        assert_eq!(self::game_record(&c), game_record);
     }
 }
 fn raw_root(v: &Value) -> Value {
@@ -600,9 +600,9 @@ fn seven_reject_fixtures_actual_open_preserves_live_document_and_execution() {
         SessionOperation::Preferences {
             settings: GameSettings {
                 play_mode: PlayMode::HumanEngine,
-                orientation: NativeSide::Tori(t::Side::Gote),
+                orientation: TaggedSide::Tori(t::Side::Gote),
                 analysis_defaults:
-                    <crate::native_game::Tori as crate::native_game::NativeGame>::ANALYSIS_DEFAULTS,
+                    <crate::game_adapter::Tori as crate::game_adapter::GameAdapter>::ANALYSIS_DEFAULTS,
             },
         },
     )
@@ -694,7 +694,7 @@ fn seven_reject_fixtures_actual_open_preserves_live_document_and_execution() {
         assert_ne!(raw, valid);
         assert!(SharedDesktopCommand::from_json(&raw).is_err(), "{raw}");
     }
-    // The active game parses its payload: an unknown native command is refused.
+    // The active game parses its payload: an unknown game command is refused.
     let before = exact(&c);
     let unknown = SessionOperation::Command {
         command: json!({"kind": "offer_draw"}),
@@ -725,7 +725,7 @@ fn stale_and_cancelled_open_and_save_receipts_never_replace_or_clean_newer_conte
     let id = c
         .queue_shared_open(path.clone(), c.shared_open_token())
         .unwrap();
-    c.retire_native_files().unwrap();
+    c.retire_files().unwrap();
     assert_ne!(c.io_state.id, id);
     std::thread::sleep(Duration::from_millis(30));
     c.shared_snapshot();
@@ -747,16 +747,16 @@ fn stale_and_cancelled_open_and_save_receipts_never_replace_or_clean_newer_conte
         SessionOperation::Preferences {
             settings: GameSettings {
                 play_mode: PlayMode::HumanEngine,
-                orientation: NativeSide::Tori(t::Side::Gote),
+                orientation: TaggedSide::Tori(t::Side::Gote),
                 analysis_defaults:
-                    <crate::native_game::Tori as crate::native_game::NativeGame>::ANALYSIS_DEFAULTS,
+                    <crate::game_adapter::Tori as crate::game_adapter::GameAdapter>::ANALYSIS_DEFAULTS,
             },
         },
     )
     .unwrap();
     let after = exact(&c);
-    let persistence::Completed::Native(completed) = completed;
-    assert!(c.finish_native_file(*completed).is_err());
+    let persistence::Completed::Archive(completed) = completed;
+    assert!(c.finish_file(*completed).is_err());
     assert_eq!(exact(&c), after);
     let failed = c
         .queue_shared_save(dir.join("missing-parent").join("no.mshogi"))
@@ -774,14 +774,14 @@ fn stale_and_cancelled_open_and_save_receipts_never_replace_or_clean_newer_conte
         SessionOperation::Preferences {
             settings: GameSettings {
                 play_mode: PlayMode::HumanEngine,
-                orientation: NativeSide::Tori(t::Side::Sente),
+                orientation: TaggedSide::Tori(t::Side::Sente),
                 analysis_defaults:
-                    <crate::native_game::Tori as crate::native_game::NativeGame>::ANALYSIS_DEFAULTS,
+                    <crate::game_adapter::Tori as crate::game_adapter::GameAdapter>::ANALYSIS_DEFAULTS,
             },
         },
     )
     .unwrap();
-    c.finish_native_file(archive::NativeCompleted::Saved {
+    c.finish_file(archive::GameCompleted::Saved {
         path: path.clone(),
         revision: rev,
         identity,
@@ -793,8 +793,8 @@ fn stale_and_cancelled_open_and_save_receipts_never_replace_or_clean_newer_conte
         .unwrap();
     assert!(matches!(wait_file(&mut c, id).io.phase, IoPhase::Complete));
     assert_eq!(
-        native(&c),
-        crate::game_document::ValidatedGameDocument::<crate::native_game::Tori>::decode(
+        game_record(&c),
+        crate::game_document::ValidatedGameDocument::<crate::game_adapter::Tori>::decode(
             &before,
             &mut || false
         )
@@ -809,7 +809,7 @@ fn stale_and_cancelled_open_and_save_receipts_never_replace_or_clean_newer_conte
     assert!(opened.paused && current(&c).pending.is_none());
     assert_eq!(
         current(&c).document.record(),
-        crate::game_document::ValidatedGameDocument::<crate::native_game::Tori>::decode(
+        crate::game_document::ValidatedGameDocument::<crate::game_adapter::Tori>::decode(
             &before,
             &mut || false
         )
@@ -819,13 +819,13 @@ fn stale_and_cancelled_open_and_save_receipts_never_replace_or_clean_newer_conte
     fs::remove_dir_all(dir).unwrap();
 }
 #[test]
-fn history_identity_distinguishes_native_owners_hands_handed_faces_and_counter_provenance() {
+fn history_identity_distinguishes_owners_hands_handed_faces_and_counter_provenance() {
     let given = given("TORI-H-IDENTITY");
     let base = t::Game::from_root(root(&given["base"])).unwrap();
     let mut c = controller();
     replace(&mut c, &base, t::Side::Sente);
     let key = current(&c).game.repetition_key().clone();
-    let canonical = native(&c);
+    let canonical = game_record(&c);
     for diff in given["differences"].as_array().unwrap() {
         let mut v = given["base"].clone();
         if let Some(turn) = diff.get("side_to_move") {
@@ -870,14 +870,14 @@ fn history_identity_distinguishes_native_owners_hands_handed_faces_and_counter_p
         let game = t::Game::from_root(root(&v)).unwrap();
         replace(&mut c, &game, t::Side::Sente);
         assert_ne!(current(&c).game.repetition_key(), &key);
-        assert_ne!(native(&c), canonical);
+        assert_ne!(game_record(&c), canonical);
     }
     let mut counter = given["base"].clone();
     counter["declared_completed_plies"] = json!(99);
     let game = t::Game::from_root(root(&counter)).unwrap();
     replace(&mut c, &game, t::Side::Sente);
     assert_eq!(current(&c).game.repetition_key(), &key);
-    assert_ne!(native(&c), canonical);
+    assert_ne!(game_record(&c), canonical);
     let before = current(&c).game.repetition_key().clone();
     let ctx = context(&c, 1000, true);
     c.session.tori_mut().unwrap().pending = Some(ctx.clone());
@@ -899,8 +899,9 @@ fn typed_identity_refusal_and_interrupted_save_keep_complete_accepted_document_d
             SessionOperation::Preferences {
                 settings: GameSettings {
                     play_mode: PlayMode::HumanEngine,
-                    orientation: NativeSide::Tori(t::Side::Gote),
-                    analysis_defaults: <Tori as crate::native_game::NativeGame>::ANALYSIS_DEFAULTS,
+                    orientation: TaggedSide::Tori(t::Side::Gote),
+                    analysis_defaults:
+                        <Tori as crate::game_adapter::GameAdapter>::ANALYSIS_DEFAULTS,
                 }
             }
         )
@@ -929,8 +930,8 @@ fn typed_identity_refusal_and_interrupted_save_keep_complete_accepted_document_d
         c.session.document_identity,
         path.clone(),
     );
-    let work = archive::NativeWork::Game(Box::new(move |stopped| {
-        native_session::save(&document, &target, revision, identity, &mut || stopped())
+    let work = archive::GameWork::Game(Box::new(move |stopped| {
+        game_session::save(&document, &target, revision, identity, &mut || stopped())
     }));
     let mut observed_temporary = false;
     let result = archive::execute(work, &mut || {
@@ -968,7 +969,7 @@ fn forced_conclusion_and_capture_drop_restriction_are_derived_by_final_controlle
             SessionOperation::play(serde_json::to_string(&action).unwrap()),
         )
         .unwrap();
-        assert_eq!(native(&c), t::GameRecord::from_game(&full).unwrap());
+        assert_eq!(game_record(&c), t::GameRecord::from_game(&full).unwrap());
         assert_eq!(after.event_index, count);
         assert_eq!(after.board_ply, count as u64);
         if id == "TORI-H-FORCED-FULL" {
@@ -986,7 +987,7 @@ fn forced_conclusion_and_capture_drop_restriction_are_derived_by_final_controlle
             assert_eq!(current(&c).game.repetition().unwrap().side, t::Side::Gote);
             assert!(!after.status.concluded);
         }
-        let live = native(&c);
+        let live = game_record(&c);
         send(&mut c, SessionOperation::Inspect { event_index: 4 }).unwrap();
         let expected: &[usize] = if id == "TORI-H-FORCED-FULL" {
             &[0, 4]
@@ -997,9 +998,9 @@ fn forced_conclusion_and_capture_drop_restriction_are_derived_by_final_controlle
         assert!(current(&c).selected().repetition().is_none());
         assert!(current(&c).selected().conclusion().is_none());
         send(&mut c, SessionOperation::ReturnLive {}).unwrap();
-        assert_eq!(native(&c), live);
+        assert_eq!(game_record(&c), live);
         send(&mut c, SessionOperation::TakeBack {}).unwrap();
-        assert_eq!(native(&c), t::GameRecord::from_game(&prefix).unwrap());
+        assert_eq!(game_record(&c), t::GameRecord::from_game(&prefix).unwrap());
     }
 }
 #[test]
@@ -1020,7 +1021,7 @@ fn rejected_outgoing_replacements_preserve_tori_document_and_accepted_execution(
                 record: CanonicalRecord::chess(
                     AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record()
                 ),
-                human: NativeSide::Chess(Color::White)
+                human: TaggedSide::Chess(Color::White)
             }
         )
         .is_err()
@@ -1033,7 +1034,7 @@ fn rejected_outgoing_replacements_preserve_tori_document_and_accepted_execution(
     // preferences inject candidate failure before swap, not a fake completion.
     let receipt = c
         .queue_game_candidate::<Shogi>(
-            native_session::RuntimeSeed::<Shogi>::Record {
+            game_session::RuntimeSeed::<Shogi>::Record {
                 play_mode: PlayMode::HumanEngine,
                 record: Box::new(s::GameRecord::from_game(&s::Game::new())),
                 human: s::Side::Sente,
@@ -1041,7 +1042,7 @@ fn rejected_outgoing_replacements_preserve_tori_document_and_accepted_execution(
             Some(SessionOperation::Preferences {
                 settings: GameSettings {
                     play_mode: PlayMode::HumanEngine,
-                    orientation: NativeSide::Shogi(s::Side::Gote),
+                    orientation: TaggedSide::Shogi(s::Side::Gote),
                     analysis_defaults: AnalysisOperation {
                         depth: 99,
                         nodes: 100,
@@ -1060,7 +1061,7 @@ fn rejected_outgoing_replacements_preserve_tori_document_and_accepted_execution(
     let record = mshogi_core::xiangqi::GameRecord::from_game(&game).unwrap();
     let receipt = c
         .queue_game_candidate::<Xiangqi>(
-            native_session::RuntimeSeed::<Xiangqi>::Record {
+            game_session::RuntimeSeed::<Xiangqi>::Record {
                 record: Box::new(record),
                 human: mshogi_core::xiangqi::Side::Red,
                 play_mode: PlayMode::HumanEngine,
@@ -1068,7 +1069,7 @@ fn rejected_outgoing_replacements_preserve_tori_document_and_accepted_execution(
             Some(SessionOperation::Preferences {
                 settings: GameSettings {
                     play_mode: PlayMode::HumanEngine,
-                    orientation: NativeSide::Xiangqi(mshogi_core::xiangqi::Side::Black),
+                    orientation: TaggedSide::Xiangqi(mshogi_core::xiangqi::Side::Black),
                     analysis_defaults: AnalysisOperation {
                         depth: 99,
                         nodes: 100,
@@ -1121,7 +1122,7 @@ fn actual_engine_turns_both_assignments_and_exact_historical_analysis_have_separ
         let pending = current(&c).pending.clone().unwrap();
         assert!(matches!(pending.purpose, ExecutionPurpose::EngineTurn {}));
         assert_eq!(pending.limits, mshogi_engine::game::Tori::PLAY_LIMITS);
-        let before = native(&c);
+        let before = game_record(&c);
         let result = searched(pending.clone());
         assert!(matches!(
             result.result,
@@ -1131,12 +1132,12 @@ fn actual_engine_turns_both_assignments_and_exact_historical_analysis_have_separ
         ));
         assert!(submit_observation(&mut c, result.clone()));
         assert_eq!(
-            native(&c).known_board_actions(),
+            game_record(&c).known_board_actions(),
             before.known_board_actions() + 1
         );
         assert_eq!(current(&c).game.position().side_to_move(), human);
         assert!(!submit_observation(&mut c, result));
-        let after = native(&c);
+        let after = game_record(&c);
         send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
         send(
             &mut c,
@@ -1154,7 +1155,7 @@ fn actual_engine_turns_both_assignments_and_exact_historical_analysis_have_separ
         assert!(!submit_observation(&mut c, wrong));
         let observation = searched(old.clone());
         assert!(submit_observation(&mut c, observation.clone()));
-        assert_eq!(native(&c), after); // analysis cannot apply the selected action
+        assert_eq!(game_record(&c), after); // analysis cannot apply the selected action
         let snapshot = c.shared_snapshot();
         assert!(snapshot.historical);
         assert_eq!(snapshot.event_index, 0);
@@ -1180,7 +1181,7 @@ fn actual_engine_turns_both_assignments_and_exact_historical_analysis_have_separ
         send(&mut c, SessionOperation::ReturnLive {}).unwrap();
         assert!(current(&c).analysis.is_none());
         assert!(!submit_observation(&mut c, observation));
-        assert_eq!(native(&c), after);
+        assert_eq!(game_record(&c), after);
         let retained = current(&c).observations.to_vec();
         let retired_reply = searched(pending);
         send(
@@ -1203,10 +1204,10 @@ fn actual_engine_turns_both_assignments_and_exact_historical_analysis_have_separ
                 .iter()
                 .all(|view| view.historical && !view.selected)
         );
-        let exact_rewind = native(&c);
+        let exact_rewind = game_record(&c);
         assert!(!submit_observation(&mut c, retired_reply));
-        assert_eq!(native(&c), exact_rewind);
-        crate::game_document::ValidatedGameDocument::<crate::native_game::Tori>::decode(
+        assert_eq!(game_record(&c), exact_rewind);
+        crate::game_document::ValidatedGameDocument::<crate::game_adapter::Tori>::decode(
             current(&c).document.bytes(),
             &mut || false,
         )
@@ -1232,7 +1233,7 @@ fn real_completed_choice_cancel_replace_and_worker_refusal_cannot_mutate_current
             },
     } = &mut bad.result
     {
-        // A line that the native game refuses after its first action.
+        // A line that the game refuses after its first action.
         telemetry.principal_variation = vec![*action, *action];
     }
     let before = exact(&c);
@@ -1244,7 +1245,7 @@ fn real_completed_choice_cancel_replace_and_worker_refusal_cannot_mutate_current
     let old = searched(current(&c).pending.clone().unwrap());
     replace(&mut c, &t::Game::standard(), t::Side::Sente);
     assert!(!submit_observation(&mut c, old));
-    assert_eq!(native(&c).event_count(), 0);
+    assert_eq!(game_record(&c).event_count(), 0);
 }
 
 #[test]
@@ -1262,7 +1263,7 @@ fn consumed_real_response_admission_identity_refusal_retires_thinking_and_preser
     assert!(matches!(current(&c).phase, EnginePhase::Paused));
     assert!(c.session.capacity.resource.is_some());
     assert!(!c.accept_observation(response));
-    crate::game_document::ValidatedGameDocument::<crate::native_game::Tori>::decode(
+    crate::game_document::ValidatedGameDocument::<crate::game_adapter::Tori>::decode(
         current(&c).document.bytes(),
         &mut || false,
     )
@@ -1288,7 +1289,7 @@ fn reopened_human_turn_manual_action_cannot_resume_engine_until_explicit_resume(
     .unwrap();
     assert!(current(&c).paused);
     assert!(current(&c).pending.is_none());
-    assert_eq!(native(&c).known_board_actions(), 1);
+    assert_eq!(game_record(&c).known_board_actions(), 1);
     for _ in 0..3 {
         c.shared_snapshot();
         assert!(current(&c).pending.is_none());
@@ -1309,8 +1310,8 @@ fn normal_tori_browse_return_preserves_running_intent_but_never_revives_work() {
         let (_, receipt) = c
             .shared_new_game(
                 c.shared_open_token(),
-                mshogi_core::native::RulesProfile::ToriModernV1,
-                NativeSide::Tori(human),
+                mshogi_core::game::RulesProfile::ToriModernV1,
+                TaggedSide::Tori(human),
             )
             .unwrap();
         let initial = settle(&mut c, receipt).unwrap();
@@ -1361,8 +1362,8 @@ fn tori_historical_analysis_preserves_only_browse_intent_and_explicit_stops_win(
             1 => {
                 send(&mut c, SessionOperation::Cancel {}).unwrap();
             }
-            2 => c.pause_native_failure("native operation failed".into()),
-            3 => c.pause_native_capacity("Application capacity: no observation slot".into()),
+            2 => c.pause_failure("game operation failed".into()),
+            3 => c.pause_capacity("Application capacity: no observation slot".into()),
             _ => {} // Still-running historical analysis must retire on Return.
         }
         let live = send(&mut c, SessionOperation::ReturnLive {}).unwrap();

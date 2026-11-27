@@ -10,10 +10,10 @@ pub struct SharedDocumentState {
     pub revision: u64,
     /// True until the exact accepted revision is successfully saved.
     pub dirty: bool,
-    /// Native path of the current document, if any.
+    /// Path of the current document, if any.
     pub path: Option<String>,
     /// Document settings, the same shape in every game.
-    pub settings: crate::game_document::GameSettings<NativeSide>,
+    pub settings: crate::game_document::GameSettings<TaggedSide>,
 }
 /// Stable replacement precondition, unaffected by I/O progress snapshots.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -33,8 +33,8 @@ pub(crate) fn required_option<'de, D: serde::Deserializer<'de>, T: Deserialize<'
 }
 /// A generic game's runtime or save job on the worker.
 pub(crate) type GameJob =
-    Box<dyn FnOnce(&mut dyn FnMut() -> bool) -> Result<NativeCompleted, OperationFailure> + Send>;
-pub(crate) enum NativeWork {
+    Box<dyn FnOnce(&mut dyn FnMut() -> bool) -> Result<GameCompleted, OperationFailure> + Send>;
+pub(crate) enum GameWork {
     /// Runtime admission or save of a game on the generic session.
     Game(GameJob),
     Open {
@@ -42,7 +42,7 @@ pub(crate) enum NativeWork {
         token: SharedOpenToken,
     },
 }
-pub(crate) enum OpenedNative {
+pub(crate) enum OpenedGame {
     Chess(Box<chess::ChessSession>),
     Tenjiku(Box<tenjiku::TenjikuSession>),
     Chu(Box<chu::ChuSession>),
@@ -50,7 +50,7 @@ pub(crate) enum OpenedNative {
     Xiangqi(Box<xiangqi::XiangqiSession>),
     Shogi(Box<shogi::ShogiSession>),
 }
-impl OpenedNative {
+impl OpenedGame {
     /// A generic game's session still holds pending work.
     pub(crate) fn has_pending_work(&self) -> bool {
         match self {
@@ -63,10 +63,10 @@ impl OpenedNative {
         }
     }
 }
-pub(crate) enum NativeCompleted {
+pub(crate) enum GameCompleted {
     /// A generic game's session after runtime admission.
     Runtime {
-        state: OpenedNative,
+        state: OpenedGame,
         replacement: bool,
         durable: bool,
     },
@@ -76,7 +76,7 @@ pub(crate) enum NativeCompleted {
         identity: u64,
     },
     Opened {
-        game: OpenedNative,
+        game: OpenedGame,
         path: PathBuf,
         token: SharedOpenToken,
     },
@@ -118,18 +118,17 @@ fn read(
     Ok(bytes)
 }
 pub(crate) fn execute(
-    work: NativeWork,
+    work: GameWork,
     stopped: &mut impl FnMut() -> bool,
-) -> Result<NativeCompleted, OperationFailure> {
+) -> Result<GameCompleted, OperationFailure> {
     match work {
-        NativeWork::Game(job) => job(stopped),
-        NativeWork::Open { path, token } => {
+        GameWork::Game(job) => job(stopped),
+        GameWork::Open { path, token } => {
             let bytes = read(&path, stopped)?;
             let value = crate::document::DocumentEnvelope::parse(&bytes)?;
-            let game =
-                with_game!(value.game_kind, G => native_session::open::<G>(&bytes, stopped)?);
+            let game = with_game!(value.game_kind, G => game_session::open::<G>(&bytes, stopped)?);
             persistence::check(stopped)?;
-            Ok(NativeCompleted::Opened { game, path, token })
+            Ok(GameCompleted::Opened { game, path, token })
         }
     }
 }
@@ -144,10 +143,10 @@ impl DesktopController {
     }
     pub(crate) fn shared_document(&self) -> SharedDocumentState {
         let settings = with_game!(self.session.kind(), G => G::state(&self.session)
-            .expect("native owner")
+            .expect("rules owner")
             .document
             .settings()
-            .map(G::native_side));
+            .map(G::tagged_side));
         SharedDocumentState {
             revision: self.session.document_revision,
             dirty: self.session.document_revision != self.session.saved_revision,
@@ -159,11 +158,11 @@ impl DesktopController {
             settings,
         }
     }
-    /// Queue a complete current-format document using native payload encoding.
+    /// Queue a complete current-format document using game payload encoding.
     pub fn queue_shared_save(&mut self, path: PathBuf) -> Result<u64, String> {
         with_game!(self.session.kind(), G => self.queue_game_save::<G>(path))
     }
-    /// Queue strict current-envelope native dispatch. Open never installs resumable work.
+    /// Queue strict current-envelope game dispatch. Open never installs resumable work.
     pub fn queue_shared_open(
         &mut self,
         path: PathBuf,
@@ -171,7 +170,7 @@ impl DesktopController {
     ) -> Result<u64, String> {
         self.queue_open_admission(path, token)
     }
-    /// Product Open uses the same strict native dispatch and stopped restoration.
+    /// Product Open uses the same strict game dispatch and stopped restoration.
     pub fn queue_product_open(
         &mut self,
         path: PathBuf,
@@ -190,13 +189,13 @@ impl DesktopController {
         if token != self.shared_open_token() {
             return Err("Stale Open: review the current document again.".into());
         }
-        let id = self.next_native_io(IoPhase::Opening)?;
+        let id = self.next_io(IoPhase::Opening)?;
         self.files
-            .submit(id, Work::Native(Box::new(NativeWork::Open { path, token })));
+            .submit(id, Work::Archive(Box::new(GameWork::Open { path, token })));
         Ok(id)
     }
 
-    pub(crate) fn next_native_io(&mut self, phase: IoPhase) -> Result<u64, String> {
+    pub(crate) fn next_io(&mut self, phase: IoPhase) -> Result<u64, String> {
         if self.io_state.id >= MAX_SAFE_ID - 1 || self.session.revision >= MAX_SAFE_ID - 2 {
             let (count, limit) = if self.io_state.id >= MAX_SAFE_ID - 1 {
                 (self.io_state.id, MAX_SAFE_ID - 2)
@@ -221,8 +220,8 @@ impl DesktopController {
         Ok(self.io_state.id)
     }
     #[cfg(test)]
-    pub(crate) fn retire_native_files(&mut self) -> Result<(), String> {
-        self.next_native_io(IoPhase::Idle)?;
+    pub(crate) fn retire_files(&mut self) -> Result<(), String> {
+        self.next_io(IoPhase::Idle)?;
         self.files.cancel();
         Ok(())
     }
@@ -236,15 +235,12 @@ impl DesktopController {
         .max()
         .unwrap()
     }
-    pub(crate) fn finish_native_file(
-        &mut self,
-        completed: NativeCompleted,
-    ) -> Result<String, String> {
+    pub(crate) fn finish_file(&mut self, completed: GameCompleted) -> Result<String, String> {
         match completed {
-            NativeCompleted::Runtime { .. } => {
+            GameCompleted::Runtime { .. } => {
                 unreachable!("dedicated admission worker")
             }
-            NativeCompleted::Saved {
+            GameCompleted::Saved {
                 path,
                 revision,
                 identity,
@@ -255,17 +251,17 @@ impl DesktopController {
                         self.session.saved_revision = revision;
                     }
                 }
-                Ok("Saved complete native desktop archive.".into())
+                Ok("Saved complete desktop archive.".into())
             }
-            NativeCompleted::Opened { game, path, token } => {
+            GameCompleted::Opened { game, path, token } => {
                 if token != self.shared_open_token() {
-                    return Err("Stale Open: current native session preserved.".into());
+                    return Err("Stale Open: current game session preserved.".into());
                 }
                 self.install_document(game, path)
             }
         }
     }
-    pub(crate) fn poll_native_admission(&mut self) {
+    pub(crate) fn poll_admission(&mut self) {
         if self.shared.admission.is_none() {
             return;
         }
@@ -284,18 +280,18 @@ impl DesktopController {
         let receipt = self.admission_receipt.take();
         if token != Some(self.open_token()) || epoch != self.session.document_epoch {
             if let Some(r) = receipt {
-                r.finish(Err("Native admission superseded by document change.".into()));
+                r.finish(Err("Game admission superseded by document change.".into()));
             }
             return;
         }
         match result {
-            Ok(Completed::Native(value)) => match *value {
-                NativeCompleted::Runtime {
+            Ok(Completed::Archive(value)) => match *value {
+                GameCompleted::Runtime {
                     state,
                     replacement,
                     durable,
                 } => {
-                    self.finish_native_transaction(
+                    self.finish_transaction(
                         state,
                         replacement,
                         durable,
@@ -330,7 +326,7 @@ impl DesktopController {
                     };
                     self.session.revision += 1;
                 } else if error.resource.is_some() {
-                    self.pause_native_capacity(error.diagnostic.clone());
+                    self.pause_capacity(error.diagnostic.clone());
                     self.session.capacity.resource = error.resource.clone();
                 } else {
                     self.session.capacity = CapacityState {
@@ -345,10 +341,10 @@ impl DesktopController {
             }
         }
     }
-    pub(crate) fn pause_native_failure(&mut self, error: OperationFailure) {
+    pub(crate) fn pause_failure(&mut self, error: OperationFailure) {
         self.session.clear_browse_intent();
         if error.resource.is_some() {
-            self.pause_native_capacity(error.diagnostic);
+            self.pause_capacity(error.diagnostic);
             self.session.capacity.resource = error.resource;
         } else {
             self.bridge.cancel();
@@ -364,7 +360,7 @@ impl DesktopController {
             }
         }
     }
-    pub(crate) fn pause_native_capacity(&mut self, error: String) {
+    pub(crate) fn pause_capacity(&mut self, error: String) {
         self.session.clear_browse_intent();
         self.bridge.cancel();
 

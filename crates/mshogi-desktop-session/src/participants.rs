@@ -1,4 +1,4 @@
-//! Shared participant ownership. Native games still admit every complete command.
+//! Shared participant ownership. Games still admit every complete command.
 use serde::{Deserialize, Serialize};
 
 /// Durable local desktop participant arrangement.
@@ -8,7 +8,7 @@ pub enum PlayMode {
     /// One assigned human and an automatic engine opponent.
     #[default]
     HumanEngine,
-    /// Both native sides are controlled locally by humans.
+    /// Both game sides are controlled locally by humans.
     TwoHumans,
 }
 impl PlayMode {

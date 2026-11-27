@@ -3,7 +3,7 @@ use super::{Base, Face, Piece, Position, Profile, PromotionRight, RootError, Sid
 use serde::{Deserialize, Serialize};
 use std::{collections::BTreeSet, error::Error, fmt, sync::Arc};
 
-/// The two native complete-action shapes.
+/// The two complete-action shapes.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Ord, PartialOrd, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ActionKind {
@@ -16,7 +16,7 @@ pub enum ActionKind {
 #[derive(Clone, Debug, Eq, PartialEq, Hash, Ord, PartialOrd, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Action {
-    /// Native action shape; fields must agree with this tag.
+    /// Action shape; fields must agree with this tag.
     pub kind: ActionKind,
     /// Actual original square.
     pub from: Square,
@@ -95,7 +95,7 @@ impl Action {
         }
     }
 }
-/// An exact native victim; captures never change this original identity.
+/// An exact victim; captures never change this original identity.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Capture {
@@ -104,13 +104,13 @@ pub struct Capture {
     /// Victim before removal.
     pub piece: Piece,
 }
-/// Ordered native phases; one Burn batch is simultaneous, irrespective of list order.
+/// Ordered phases; one Burn batch is simultaneous, irrespective of list order.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "phase", rename_all = "snake_case", deny_unknown_fields)]
 pub enum EffectPhase {
     /// Direct landing/stationary capture, in route order.
     Capture {
-        /// Native removed victim.
+        /// Removed victim.
         victim: Capture,
     },
     /// Simultaneous bystanders in absolute rank/file canonical order.
@@ -135,7 +135,7 @@ pub enum EffectPhase {
         after: Piece,
     },
 }
-/// Complete native-derived effects from one accepted local turn.
+/// Complete derived effects from one accepted local turn.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Effects {
@@ -151,7 +151,7 @@ pub struct Effects {
     pub phases: Vec<EffectPhase>,
 }
 impl Effects {
-    /// Native enemy removals in phase order; mover suicide is separate.
+    /// Enemy removals in phase order; mover suicide is separate.
     pub fn captures(&self) -> impl Iterator<Item = &Capture> {
         self.phases.iter().flat_map(|p| match p {
             EffectPhase::Capture { victim } => std::slice::from_ref(victim).iter(),
@@ -169,7 +169,7 @@ pub enum ActionError {
     WrongOwner,
     /// Incorrect shape/tag/route length/target.
     InvalidRoute,
-    /// Native movement/blocking/capture rule does not admit the route.
+    /// Movement/blocking/capture rule does not admit the route.
     Geometry,
     /// An actual landing/stationary target has a friendly occupant.
     FriendlyDestination,
@@ -219,7 +219,7 @@ pub struct InspectedChoice {
     pub origin: Square,
     /// Complete local choice on this piece owner's hypothetical turn.
     pub action: Action,
-    /// Actual hypothetical native effects.
+    /// Actual hypothetical game effects.
     pub effects: Effects,
 }
 /// Local rules owner, independent of game history, repetition and endings.
@@ -256,7 +256,7 @@ impl LocalPosition {
     pub fn admit(position: Position) -> Result<Self, RootError> {
         Ok(Self::install(Position::install(position.state.clone())?))
     }
-    /// Full native initial local board.
+    /// Full initial local board.
     pub fn standard(profile: Profile) -> Self {
         Self::install(Position::standard(profile))
     }
@@ -267,7 +267,7 @@ impl LocalPosition {
     /// Complete local actual-turn actions, including promotion choices.
     pub fn legal_actions(&self) -> Vec<Action> {
         self.legal_actions_with_stop(|| false)
-            .expect("finite native local query")
+            .expect("finite local query")
     }
     /// Cancellable complete local action set; no partial result after stop.
     pub fn legal_actions_with_stop(
@@ -291,7 +291,7 @@ impl LocalPosition {
     /// Actual-turn local choices for one owned source.
     pub fn choices_from(&self, from: Square) -> Vec<Action> {
         self.choices_from_with_stop(from, || false)
-            .expect("finite native origin query")
+            .expect("finite origin query")
     }
     /// Cancellable actual-turn origin query.
     pub fn choices_from_with_stop(
@@ -307,7 +307,7 @@ impl LocalPosition {
     /// Iguis require an enemy target; promotion/turn/history/conclusions do not prune this set.
     pub fn geometry_actions_from(&self, from: Square) -> Vec<Action> {
         self.geometry_actions_from_with_stop(from, || false)
-            .expect("finite native geometry query")
+            .expect("finite board geometry query")
     }
     /// Cancellable exact geometry set; rights/counters are not permission filters.
     pub fn geometry_actions_from_with_stop(
@@ -322,7 +322,7 @@ impl LocalPosition {
     /// Read-only hypothetical full local choices/effects for either owner's piece.
     pub fn inspection(&self, from: Square) -> Vec<InspectedChoice> {
         self.inspection_with_stop(from, || false)
-            .expect("finite native inspection")
+            .expect("finite inspection")
     }
     /// Cancellable inspection without mutating counters, rights or local authority.
     pub fn inspection_with_stop(
@@ -406,7 +406,7 @@ impl LocalPosition {
         let (p, e) = resolve(&self.position, action, false, true, &mut w)?;
         Ok((Self::install(p), e))
     }
-    /// Atomically apply a complete native local action.
+    /// Atomically apply a complete local action.
     pub fn apply(&mut self, action: &Action) -> Result<(Effects, LocalUndo), ActionError> {
         self.apply_with_stop(action, || false)
     }

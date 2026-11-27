@@ -1,23 +1,23 @@
-//! Native Xiangqi diagnostic consumer. No local rules or evaluator are implemented here.
+//! Xiangqi diagnostic consumer. No local rules or evaluator are implemented here.
 use crate::{
     diagnostics,
     shell::{self, Variant, diagnostic},
 };
 use mshogi_core::perft::PerftPosition;
-use mshogi_core::{native::CanonicalRecord, xiangqi::*};
+use mshogi_core::{game::CanonicalRecord, xiangqi::*};
 use std::fmt::Write as _;
 const HELP: &str = "Untimed Xiangqi diagnostic console (not UCCI/UCI protocol):
   position [explicit|auto_valid_claims] startpos|fen <FEN>|json <root-JSON>
   fen | show | status | legal | history | warnings
-  move <a0a1>...                     Atomic complete native actions
-  undo [n]                          Native commands, including same-ply claims
+  move <a0a1>...                     Atomic complete actions
+  undo [n]                          Game commands, including same-ply claims
   eligibility red|black             Advisory claimant-specific natural count
   claim|resign|offer-draw|accept-draw|decline-draw red|black
   record print|save <path>|load-file <path>|load-json <JSON>
   perft <0..3> [visits] | divide <1..3> [visits]  Local board counts, not match outcomes
-  nowin fast                        Scoped native fast assessment
+  nowin fast                        Scoped fast assessment
   help | quit
-Native coordinate dialect: files a-i from Red left, ranks 0-9 from Red baseline;
+Coordinate dialect: files a-i from Red left, ranks 0-9 from Red baseline;
 Show uses uppercase Red/lowercase Black, K A B N R C P (B=Elephant), dots for empty.
 FEN import starts known history; it never restores earlier warnings/claims.
 Use the canonical envelope for full restoration. Saves require a new path.
@@ -29,8 +29,8 @@ impl Variant for Game {
     const NAME: &'static str = "xiangqi";
     const HELP: &'static str = HELP;
     const MOVE_SYNTAX: &'static str = "a0a1";
-    const LOADED: &'static str = "loaded complete native record; fresh runtime";
-    shell::native_record!(xiangqi, Xiangqi);
+    const LOADED: &'static str = "loaded complete game record; fresh runtime";
+    shell::game_record!(xiangqi, Xiangqi);
     fn position_command(&self, rest: &str) -> Result<Self, String> {
         let (policy, body) = match shell::words(rest) {
             ("auto_valid_claims", body) => (ClaimPolicy::AutoValidClaims, body),

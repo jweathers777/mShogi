@@ -5,7 +5,7 @@ use super::{Action, ActionError, Hand, Piece, PieceKind, Position, Side, Square,
 /// Exact board/hand/turn repetition identity, without counters or root provenance.
 ///
 /// Equality alone counts no occurrences and concludes no match. This is an
-/// opaque native key, not a portable record encoding or a promised hash format.
+/// opaque key, not a portable record encoding or a promised hash format.
 #[derive(Clone, Debug, Eq, PartialEq, Hash)]
 pub struct RepetitionIdentity {
     board: [Option<Piece>; 81],
@@ -15,7 +15,7 @@ pub struct RepetitionIdentity {
 
 impl Position {
     /// Read-only complete local movement/drop choices for an owner's hypothetical
-    /// turn. Uses native king safety, promotion and drop restrictions on a private
+    /// turn. Uses king safety, promotion and drop restrictions on a private
     /// copy; does not establish a game outcome or permission to commit a command.
     pub fn inspection_actions(&self, side: Side) -> Vec<Action> {
         let mut copy = self.clone();
@@ -58,7 +58,7 @@ impl Position {
     ///
     /// These check geometry, ownership, resources, promotion, nifu and dead
     /// ranks, but omit king safety and pawn-drop mate. They are deliberately
-    /// named candidates, never an alternative action-acceptance boundary.
+    /// named candidates, never an alteraction-acceptance boundary.
     /// Counters and game/history conclusions do not prune these choices.
     pub fn pseudo_legal_actions(&self) -> Vec<Action> {
         let working = self.normalized_for_board_queries();
@@ -118,7 +118,7 @@ impl Position {
 
     /// Atomically commit one complete local legal board action.
     ///
-    /// All capture/promotion/hand effects are native. Rejection preserves every
+    /// All capture/promotion/hand effects are. Rejection preserves every
     /// field, including counter and root provenance. Match/session request
     /// admission and history-dependent outcomes belong to the game layer.
     pub fn apply(&mut self, action: Action) -> Result<Undo, ActionError> {

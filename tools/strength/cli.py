@@ -1,4 +1,4 @@
-"""Measure playing strength with native rules, reproducible inputs and bounded work."""
+"""Measure playing strength with rules, reproducible inputs and bounded work."""
 import argparse
 import json
 import os
@@ -49,9 +49,9 @@ def main(argv=None):
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest='command', required=True)
 
-    from . import native_match, workflow, batch
-    native_match.options(sub.add_parser('match', help='paired predecessor or time-odds match'))
-    native_match.options(sub.add_parser('selfplay', help='collect paired native games with one frozen engine'), selfplay=True)
+    from . import internal_match, workflow, batch
+    internal_match.options(sub.add_parser('match', help='paired predecessor or time-odds match'))
+    internal_match.options(sub.add_parser('selfplay', help='collect paired games with one frozen engine'), selfplay=True)
     workflow.options(sub)
     fit = sub.add_parser('texel', help='run the shared fitter for a game with an evaluation model')
     fit.add_argument('--game', choices=['chess','shogi','xiangqi','tori','chu'], required=True)

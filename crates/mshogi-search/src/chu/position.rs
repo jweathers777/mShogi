@@ -1,5 +1,5 @@
 //! Private Chu board and complete routes for the shared search core.
-//! Native movement descriptors are geometry data; generation, projection,
+//! Movement descriptors are geometry data; generation, projection,
 //! Lion protection and restoration below are independent search operations.
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
 use crate::repetition::{cycle_start, earlier_occurrences};
@@ -671,7 +671,7 @@ impl Board {
         self.restore_board(undo);
     }
     /// An admitted one-action capture of all surviving royals. This is a search
-    /// threat, not a Chess self-check rule or an adjudicated native mate.
+    /// threat, not a Chess self-check rule or an adjudicated mate.
     fn threatened(&self, victim: usize) -> bool {
         let mut victims = self.royals[victim];
         let count = victims.count();
@@ -748,11 +748,11 @@ impl ChuPosition {
     pub fn from_position(position: &Position) -> Self {
         Self::from_local(&LocalPosition::admit(position.clone()))
     }
-    /// Copy a native local board and its transient Lion rights.
+    /// Copy a local board and its transient Lion rights.
     pub fn from_local(local: &LocalPosition) -> Self {
-        let native = local.position();
-        let mut board = Board::empty(native.side_to_move().index());
-        for (at, p) in native.pieces() {
+        let rules_position = local.position();
+        let mut board = Board::empty(rules_position.side_to_move().index());
+        for (at, p) in rules_position.pieces() {
             board.put(piece_code(p), at.index());
         }
         let mut protection = Protection::default();
@@ -775,32 +775,32 @@ impl ChuPosition {
             root_allowed: None,
         }
     }
-    /// Replay only board events once. The caller must install the native root
-    /// legal actions with `restrict_root` before a search of a native game.
+    /// Replay only board events once. The caller must install the game root
+    /// legal actions with `restrict_root` before a search of a game.
     pub fn from_game(game: &Game) -> Self {
-        let root = game.event_prefix(0).expect("native root").local_position();
+        let root = game.event_prefix(0).expect("game root").local_position();
         let mut p = Self::from_local(&root);
         for event in game.events() {
             if let GameCommand::Play { action } = &event.command {
-                let m = p.find(action).expect("native action encodes");
-                assert!(p.make(m), "native action is legal");
+                let m = p.find(action).expect("action encodes");
+                assert!(p.make(m), "action is legal");
             }
         }
         p.stack.clear();
         p.root = p.keys.len() - 1;
         p
     }
-    /// Restrict the root to the native must-vary admission list.
+    /// Restrict the root to the must-vary admission list.
     pub fn restrict_root(&mut self, actions: &[Action]) {
         self.root_allowed = Some(
             actions
                 .iter()
-                .map(|a| self.find(a).expect("native legal root action"))
+                .map(|a| self.find(a).expect("legal root action"))
                 .collect(),
         );
     }
     /// Convert the entire chosen route, including optional promotion.
-    pub fn to_native(&self, m: Move) -> Action {
+    pub fn to_action(&self, m: Move) -> Action {
         Action {
             from: square(m.from()),
             route: if m.is_double() {
@@ -811,7 +811,7 @@ impl ChuPosition {
             promote: m.promotes(),
         }
     }
-    /// Encode a complete pseudo-legal native action.
+    /// Encode a complete pseudo-legal action.
     pub fn find(&self, action: &Action) -> Option<Move> {
         let m = match action.route.as_slice() {
             [to] => Move::single(action.from.index(), to.index()),
@@ -821,7 +821,7 @@ impl ChuPosition {
         let m = if action.promote { m.promoted() } else { m };
         self.is_pseudo_legal(m).then_some(m)
     }
-    /// All legal local actions (or the native restricted root when installed).
+    /// All legal local actions (or the restricted root when installed).
     pub fn legal_moves(&mut self) -> Vec<Move> {
         let mut moves = Vec::new();
         self.generate(Stage::Tactical, &mut moves);
@@ -849,7 +849,7 @@ impl ChuPosition {
         }
         total
     }
-    /// Native side to move.
+    /// Game side to move.
     pub fn side_to_move(&self) -> Side {
         side(self.board.side)
     }
@@ -858,7 +858,7 @@ impl ChuPosition {
         let c = self.board.cells[at.index()];
         (c != 0).then(|| meta(c).piece)
     }
-    /// Native form of the transient Lion right.
+    /// Form of the transient Lion right.
     pub fn protection(&self) -> LionProtection {
         let mut set = self.board.protection.squares;
         let mut squares = Vec::new();
@@ -917,7 +917,7 @@ impl SearchPosition for ChuPosition {
     }
     fn generate_search(&self, stage: Stage, moves: &mut Vec<Move>) {
         let mut routes = Vec::new();
-        // Native root restrictions are applied before choosing representatives.
+        // Game root restrictions are applied before choosing representatives.
         self.generate(stage, &mut routes);
         let mut seen: Vec<Board> = Vec::new();
         for m in routes {

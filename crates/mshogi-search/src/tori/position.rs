@@ -1,12 +1,12 @@
 //! Tori Shogi search position for the shared search core.
 //!
-//! A private fast copy of a native Tori position: 49-bit bitboards, hands,
+//! A private fast copy of a Tori position: 49-bit bitboards, hands,
 //! and incremental hash and material. It applies the position-local rules of
 //! `mshogi.tori.modern.v1` (compulsory promotion, the Swallow file, last-rank
-//! and drop-mate rules, no move into check). The native `mshogi_core::tori`
+//! and drop-mate rules, no move into check). The `mshogi_core::tori`
 //! rules stay the authority; `position_tests` compares this position with them.
 //!
-//! Squares use the native index: `row * 7 + column`, row 0 is rank `a`, and
+//! Squares use the index: `row * 7 + column`, row 0 is rank `a`, and
 //! Sente moves toward row 0.
 use super::eval;
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
@@ -329,7 +329,7 @@ pub struct ToriPosition {
     keys: Vec<u64>,
     /// Index in `keys` of the search root.
     root: usize,
-    /// Departures that the native repetition rule forbids at the root.
+    /// Departures that the repetition rule forbids at the root.
     root_forbidden: Vec<Move>,
 }
 
@@ -342,7 +342,7 @@ fn decode_piece(code: u8) -> (usize, usize) {
 }
 
 impl ToriPosition {
-    /// Copy a native position. The copy has no earlier history.
+    /// Copy a position. The copy has no earlier history.
     pub fn from_position(position: &Position) -> Self {
         let mut p = Self {
             board: [0; SQUARES],
@@ -379,7 +379,7 @@ impl ToriPosition {
         p
     }
 
-    /// Copy the current position of a native game with the hashes of its
+    /// Copy the current position of a game with the hashes of its
     /// earlier positions and the departures that its repetition rule forbids.
     pub fn from_game(game: &Game) -> Self {
         let mut p = Self::from_position(game.position());
@@ -417,7 +417,7 @@ impl ToriPosition {
         p
     }
 
-    /// The native action of a move in this position.
+    /// The action of a move in this position.
     pub fn action(&self, m: Move) -> Action {
         let to = square(m.to());
         if m.is_drop() {
@@ -434,7 +434,7 @@ impl ToriPosition {
             }
         }
     }
-    /// The move of a native action, if it is pseudo-legal here.
+    /// The move of a action, if it is pseudo-legal here.
     pub fn find(&self, action: Action) -> Option<Move> {
         let m = match action {
             Action::Move {
@@ -1263,7 +1263,7 @@ impl SearchPosition for ToriPosition {
         // cycle without progress and scores level. The scan looks back only to
         // the last capture or drop; in a drop game a position can also come
         // back through a capture and a drop, so the search can miss a
-        // repetition. The root uses the exact native restriction.
+        // repetition. The root uses the exact restriction.
         let mut occurrences = self.reversible.occurrences(&self.keys);
         let latest = occurrences.next()?;
         if occurrences.next().is_some() {

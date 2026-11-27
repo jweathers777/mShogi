@@ -6,7 +6,7 @@
 //! transposition table, move ordering, selectivity and limits. It contains no
 //! type or rule of a specific game.
 //!
-//! The search is private analysis. The game's native rules stay the authority
+//! The search is private analysis. The game's rules stay the authority
 //! for real results, claims and histories; the caller checks the chosen move
 //! against them.
 mod history;
@@ -191,7 +191,7 @@ pub enum Status {
 /// Result of one search.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Outcome<M> {
-    /// Best move, or an explicitly enabled native legal timed fallback.
+    /// Best move, or an explicitly enabled legal timed fallback.
     pub best: Option<M>,
     /// Score of the best move from the side to move.
     pub score: Option<i32>,
@@ -360,8 +360,8 @@ impl<P: SearchPosition> Searcher<P> {
     /// Search with a caller-admitted legal root move available for timed play.
     ///
     /// Only a timed, interrupted search without a completed iteration can use
-    /// `fallback`. The caller supplies it in native root order and must retain
-    /// native authority over legality and terminal results. No extra iteration
+    /// `fallback`. The caller supplies it in game root order and must retain
+    /// session authority over legality and terminal results. No extra iteration
     /// runs after the deadline: fallback has no score, depth zero, the actual
     /// node count and stop status, and a one-move (unsearched) continuation.
     /// Explicit cancellation suppresses fallback. Untimed behavior is unchanged.

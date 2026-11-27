@@ -7,27 +7,27 @@ pub use synthetic::*;
 macro_rules! with_game {
     ($kind:expr, $g:ident => $body:expr) => {
         match $kind {
-            mshogi_core::native::GameKind::Chess => {
+            mshogi_core::game::GameKind::Chess => {
                 type $g = crate::Chess;
                 $body
             }
-            mshogi_core::native::GameKind::Shogi => {
+            mshogi_core::game::GameKind::Shogi => {
                 type $g = crate::Shogi;
                 $body
             }
-            mshogi_core::native::GameKind::Xiangqi => {
+            mshogi_core::game::GameKind::Xiangqi => {
                 type $g = crate::Xiangqi;
                 $body
             }
-            mshogi_core::native::GameKind::Tori => {
+            mshogi_core::game::GameKind::Tori => {
                 type $g = crate::Tori;
                 $body
             }
-            mshogi_core::native::GameKind::Chu => {
+            mshogi_core::game::GameKind::Chu => {
                 type $g = crate::Chu;
                 $body
             }
-            mshogi_core::native::GameKind::Tenjiku => {
+            mshogi_core::game::GameKind::Tenjiku => {
                 type $g = crate::Tenjiku;
                 $body
             }
@@ -41,20 +41,20 @@ pub use shared::*;
 mod moves;
 pub use moves::{
     CapturedPiece, CompletedActionGeometry, MoveEffect, MovesProjection, MovesRoot,
-    NativeCompletedEffects, PresentedMove, TenjikuEffectPhase, TenjikuEffectPiece,
+    OrderedActionEffects, PresentedMove, TenjikuEffectPhase, TenjikuEffectPiece,
 };
 mod capacity;
 pub use capacity::*;
+mod chess_adapter;
 mod chess_observation;
 /// Minimal accepted-command Chess records for desktop persistence.
 pub mod chess_record;
 mod document;
-/// Generic native document of the games behind `native_game::NativeGame`.
-pub mod game_document;
-mod native_chess;
 /// Per-game boundary of the generic document and session.
-pub mod native_game;
-pub(crate) use native_game::{Chess, Chu, Shogi, Tenjiku, Tori, Xiangqi};
+pub mod game_adapter;
+/// Generic document of the games behind `game_adapter::GameAdapter`.
+pub mod game_document;
+pub(crate) use game_adapter::{Chess, Chu, Shogi, Tenjiku, Tori, Xiangqi};
 mod resource;
 pub use resource::*;
 mod lifecycle;
@@ -65,7 +65,7 @@ mod analysis;
 mod takeback;
 pub use analysis::*;
 use mshogi_core::chess::*;
-use mshogi_core::native::CanonicalRecord;
+use mshogi_core::game::CanonicalRecord;
 use mshogi_engine::{
     ChessResult, EngineBridge, EngineClaim, ExecutionContext, ExecutionObservation,
     ExecutionResult, WorkLimits,
@@ -75,7 +75,7 @@ use mshogi_engine::{ExecutionRequest, ExecutionResponse};
 use serde::{Deserialize, Serialize};
 use std::{io, path::PathBuf, time::Instant};
 
-// A Chess presentation retains native Chess meanings; this is a domain
+// A Chess presentation retains Chess meanings; this is a domain
 // projection, never a second execution or compatibility transport.
 fn chess_observation_result(observation: &ExecutionObservation) -> Option<ChessResult> {
     match &observation.result {
@@ -91,14 +91,14 @@ const MAX_SAFE_ID: u64 = 9_007_199_254_740_991;
 /// largest integer preserved exactly by the JSON/JavaScript desktop boundary;
 /// no supported timed search can practically exhaust it.
 pub const PLAY_NODE_CEILING: u64 = MAX_SAFE_ID;
-/// Time-primary Chess play. Depth 128 remains the native recursion safeguard;
+/// Time-primary Chess play. Depth 128 remains the recursion safeguard;
 /// both technical ceilings are recorded in the exact request identity.
 pub const PLAY_LIMITS: WorkLimits = WorkLimits {
     time_ms: Some(1_000),
     depth: 128,
     nodes: PLAY_NODE_CEILING,
 };
-/// Native piece presentation; coordinates are ordinary chess square names.
+/// Piece presentation; coordinates are ordinary chess square names.
 #[derive(Clone, Debug, Serialize)]
 pub struct BoardPiece {
     /// Square occupied by the piece.
@@ -128,7 +128,7 @@ pub enum EnginePhase {
     Incomplete,
 }
 /// Pure serialized rules/session state; the controller supplies process results.
-/// Monotonic runtime identity and document lifecycle metadata. Native game state is
+/// Monotonic runtime identity and document lifecycle metadata. Game state is
 /// held only by the selected `ActiveDocument` variant.
 #[derive(Clone)]
 pub struct RuntimeMetadata {
@@ -150,13 +150,13 @@ struct BrowseStop {
     phase: EnginePhase,
     diagnostic: Option<String>,
 }
-/// Exactly one authoritative native game/document is installed at a time.
+/// Exactly one authoritative game/document is installed at a time.
 pub(crate) enum ActiveDocument {
     Chess {
         runtime: RuntimeMetadata,
         state: Box<shared::chess::ChessSession>,
     },
-    /// Native Shogi game journal and observations.
+    /// Shogi game journal and observations.
     Shogi {
         runtime: RuntimeMetadata,
         state: Box<shared::shogi::ShogiSession>,
@@ -166,7 +166,7 @@ pub(crate) enum ActiveDocument {
         runtime: RuntimeMetadata,
         state: Box<shared::tori::ToriSession>,
     },
-    /// Native Chu game and immutable admitted current document.
+    /// Chu game and immutable admitted current document.
     Chu {
         runtime: RuntimeMetadata,
         state: Box<shared::chu::ChuSession>,
@@ -176,7 +176,7 @@ pub(crate) enum ActiveDocument {
         runtime: RuntimeMetadata,
         state: Box<shared::tenjiku::TenjikuSession>,
     },
-    /// Native Xiangqi WXF game journal and observations.
+    /// Xiangqi WXF game journal and observations.
     Xiangqi {
         runtime: RuntimeMetadata,
         state: Box<shared::xiangqi::XiangqiSession>,
@@ -209,7 +209,7 @@ impl std::ops::DerefMut for ActiveDocument {
 }
 impl ActiveDocument {
     /// The game of the installed document.
-    fn kind(&self) -> mshogi_core::native::GameKind {
+    fn kind(&self) -> mshogi_core::game::GameKind {
         self.profile().game()
     }
     fn chess(&self) -> Option<&shared::chess::ChessSession> {
@@ -277,8 +277,8 @@ impl ActiveDocument {
             None
         }
     }
-    fn profile(&self) -> mshogi_core::native::RulesProfile {
-        use mshogi_core::native::RulesProfile;
+    fn profile(&self) -> mshogi_core::game::RulesProfile {
+        use mshogi_core::game::RulesProfile;
         match self {
             Self::Chess { .. } => RulesProfile::ChessMatchV1,
             Self::Shogi { .. } => RulesProfile::ShogiCsa36V1,
@@ -417,7 +417,7 @@ impl RuntimeMetadata {
 }
 
 /// Authoritative native application runtime. The host serializes short operations;
-/// native mutation, replay and admission run on bounded workers.
+/// mutation, replay and admission run on bounded workers.
 pub struct DesktopController {
     shared: shared::SharedState,
     session: ActiveDocument,
@@ -473,7 +473,7 @@ impl DesktopController {
             last_command_receipt: None,
         })
     }
-    /// Construct difficult native sessions for a separately labeled QA package.
+    /// Construct difficult game sessions for a separately labeled QA package.
     /// This API and its fixture names do not exist in normal distributables.
     /// Incomplete work is produced by the actual child with a zero-node budget;
     /// explicit retry restores ordinary play limits and launches fresh work.
@@ -516,7 +516,7 @@ impl DesktopController {
                         mshogi_core::tenjiku::GameRecord::from_game(&game)
                             .map_err(|e| e.to_string())?,
                     ),
-                    human: NativeSide::Tenjiku(if matches!(scenario, "gote" | "engine-played") {
+                    human: TaggedSide::Tenjiku(if matches!(scenario, "gote" | "engine-played") {
                         mshogi_core::tenjiku::Side::Gote
                     } else {
                         mshogi_core::tenjiku::Side::Sente
@@ -599,7 +599,7 @@ impl DesktopController {
                 if !matches!(result,mshogi_engine::ExecutionResult::Tenjiku {result:mshogi_engine::TenjikuResult::Choice{telemetry,..}} if telemetry.completed_depth==1 && telemetry.score.is_some())
                 {
                     return Err(format!(
-                        "Tenjiku checkpoint requires completed native engine work: {result:?}"
+                        "Tenjiku checkpoint requires completed mShogi engine work: {result:?}"
                     ));
                 }
                 let expected_ply = usize::from(scenario == "engine-played");
@@ -607,8 +607,7 @@ impl DesktopController {
                     || (scenario == "engine-played" && snapshot.turn.id != snapshot.human.id)
                 {
                     return Err(
-                        "Tenjiku checkpoint action/analysis state disagrees with native work"
-                            .into(),
+                        "Tenjiku checkpoint action/analysis state disagrees with work".into(),
                     );
                 }
                 if scenario == "analysis"
@@ -620,7 +619,7 @@ impl DesktopController {
                             .map_err(|e| e.to_string())?,
                         )
                 {
-                    return Err("Read-only Tenjiku checkpoint changed the native game".into());
+                    return Err("Read-only Tenjiku checkpoint changed the game".into());
                 }
             }
         }
@@ -682,7 +681,7 @@ impl DesktopController {
                         mshogi_core::chu::GameRecord::from_game(&game)
                             .map_err(|e| e.to_string())?,
                     ),
-                    human: NativeSide::Chu(if fixture == "chu-gote" {
+                    human: TaggedSide::Chu(if fixture == "chu-gote" {
                         mshogi_core::chu::Side::Gote
                     } else {
                         mshogi_core::chu::Side::Sente
@@ -709,7 +708,7 @@ impl DesktopController {
                         mshogi_core::tori::GameRecord::from_game(&game)
                             .map_err(|e| e.to_string())?,
                     ),
-                    human: NativeSide::Tori(mshogi_core::tori::Side::Sente),
+                    human: TaggedSide::Tori(mshogi_core::tori::Side::Sente),
                 },
             })?;
             while receipt.completion().is_none() {
@@ -726,7 +725,7 @@ impl DesktopController {
         }
         if fixture == "shared-contract" {
             use mshogi_core::{
-                native::{CanonicalRecord, GameKind, NativeSide},
+                game::{CanonicalRecord, GameKind, TaggedSide},
                 shogi,
             };
             let (_, receipt) = controller.shared_command_with_receipt(SharedDesktopCommand {
@@ -736,7 +735,7 @@ impl DesktopController {
                     record: CanonicalRecord::shogi(shogi::GameRecord::from_game(
                         &shogi::Game::new(),
                     )),
-                    human: NativeSide::Shogi(shogi::Side::Sente),
+                    human: TaggedSide::Shogi(shogi::Side::Sente),
                 },
             })?;
             while receipt.completion().is_none() {
@@ -817,13 +816,13 @@ impl DesktopController {
                 game: self.session.profile().game(),
                 operation: SessionOperation::Replace {
                     record: CanonicalRecord::chess(record),
-                    human: NativeSide::Chess(human),
+                    human: TaggedSide::Chess(human),
                 },
             })
             .unwrap();
         let deadline = Instant::now() + std::time::Duration::from_secs(10);
         while receipt.completion().is_none() {
-            self.poll_native_admission();
+            self.poll_admission();
             assert!(Instant::now() < deadline);
             std::thread::sleep(std::time::Duration::from_millis(1));
         }

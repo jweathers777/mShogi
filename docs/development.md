@@ -31,13 +31,13 @@ package outside it.
 
 | Crate | Role |
 | --- | --- |
-| `mshogi-core` | Native rules, positions, histories and records of all six games |
+| `mshogi-core` | Rules, positions, histories and records of all six games |
 | `mshogi-conformance` | Development-only conformance machinery for the fixtures; no rules |
 | `mshogi-search` | Shared alpha-beta core and per-game search positions and evaluation |
 | `mshogi-engine` | Internal engine protocol and process |
 | `mshogi-console` | The `mshogi` binary: shell, UCI and other adapters |
 | `mshogi-runner` | `mshogi-match`: recorded and clocked engine matches and experiments |
-| `mshogi-desktop-session` | Desktop session state between the native rules and the UI |
+| `mshogi-desktop-session` | Desktop session state between the rules and the UI |
 
 Rules and search must not depend on UI, console I/O or Python. Product code
 forbids `unsafe`; Clippy treats warnings as errors.

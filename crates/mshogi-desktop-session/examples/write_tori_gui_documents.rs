@@ -1,7 +1,7 @@
 //! Rules-admitted current-envelope files for ordinary packaged GUI Load journeys.
 //! Development example only: neither the generator nor documents are bundled.
 use mshogi_core::{
-    native::{CanonicalRecord, NativeSide},
+    game::{CanonicalRecord, TaggedSide},
     tori as t,
 };
 use mshogi_desktop_session::{DesktopController, IoPhase, SessionOperation, SharedDesktopCommand};
@@ -92,7 +92,7 @@ fn save(output: &Path, name: &str, game: &t::Game) {
             game: snapshot.game,
             operation: SessionOperation::Replace {
                 record: CanonicalRecord::tori(t::GameRecord::from_game(game).unwrap()),
-                human: NativeSide::Tori(game.position().side_to_move()),
+                human: TaggedSide::Tori(game.position().side_to_move()),
             },
         })
         .unwrap();
@@ -105,7 +105,7 @@ fn save(output: &Path, name: &str, game: &t::Game) {
         }
         assert!(
             Instant::now() < deadline,
-            "native fixture admission timed out"
+            "rules fixture admission timed out"
         );
         std::thread::sleep(Duration::from_millis(1));
     }
@@ -116,11 +116,11 @@ fn save(output: &Path, name: &str, game: &t::Game) {
         if snapshot.io.id == id {
             match snapshot.io.phase {
                 IoPhase::Complete => break,
-                IoPhase::Failed => panic!("native save: {:?}", snapshot.io.message),
+                IoPhase::Failed => panic!("save: {:?}", snapshot.io.message),
                 _ => {}
             }
         }
-        assert!(Instant::now() < deadline, "native fixture save timed out");
+        assert!(Instant::now() < deadline, "rules fixture save timed out");
         std::thread::sleep(Duration::from_millis(1));
     }
     println!("{}", path.display());

@@ -53,7 +53,7 @@ fn ordinary_replay_retains_no_undo_but_explicit_replay_returns_real_lifo_handles
             game.undo(undo).unwrap();
         }
         assert!(game.events().is_empty());
-        assert_eq!(game.position().state(), source.native_root());
+        assert_eq!(game.position().state(), source.game_root());
         assert_eq!(
             game.snapshot().conclusion,
             source.root_snapshot().conclusion
@@ -219,7 +219,7 @@ fn complete_records_encode_after_board_controls_and_reversal() {
 
 #[test]
 fn retained_suffix_checks_both_profiles_and_preserves_the_base_on_refusal() {
-    use crate::native::incremental::Session;
+    use crate::game::incremental::Session;
     for profile in Profile::ALL {
         let root = GameRecord::from_game(&Game::standard(profile)).unwrap();
         let other = Profile::ALL.into_iter().find(|p| *p != profile).unwrap();

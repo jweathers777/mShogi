@@ -1,6 +1,6 @@
-//! Native Chu completed-route and exact-context contracts via the real line server.
+//! Chu completed-route and exact-context contracts via the real line server.
 mod support;
-use mshogi_core::{chu as c, native::*};
+use mshogi_core::{chu as c, game::*};
 use mshogi_engine::*;
 use std::io::Cursor;
 fn game() -> c::Game {
@@ -69,7 +69,7 @@ fn execute(c: &ExecutionContext) -> ExecutionObservation {
     .observation
 }
 #[test]
-fn compound_result_native_replay_and_atomic_validation() {
+fn compound_result_replay_and_atomic_validation() {
     let g = game();
     let before = c::GameRecord::from_game(&g).unwrap();
     let ctx = context(&g);
@@ -175,8 +175,8 @@ fn full_context_purpose_history_and_limits_are_never_interchangeable() {
                         event_index: 0,
                         board_ply: 0,
                         session_version: c.session_version,
-                        label: "analyzed native root".into(),
-                        turn: NativeSide::Chu(c::Side::Sente),
+                        label: "analyzed game root".into(),
+                        turn: TaggedSide::Chu(c::Side::Sente),
                     },
                 }
             }
@@ -201,7 +201,7 @@ fn full_context_purpose_history_and_limits_are_never_interchangeable() {
             board_ply: 0,
             session_version: c.session_version,
             label: "historical prefix".into(),
-            turn: NativeSide::Chu(c::Side::Sente),
+            turn: TaggedSide::Chu(c::Side::Sente),
         },
     };
     let obs = execute(&c);
@@ -213,7 +213,7 @@ fn full_context_purpose_history_and_limits_are_never_interchangeable() {
     assert_eq!(g.events().len(), 0);
 }
 #[test]
-fn zero_budget_incomplete_and_native_agreement_are_distinct() {
+fn zero_budget_incomplete_and_agreement_are_distinct() {
     let mut g = game();
     let mut c = context(&g);
     c.limits.nodes = 0;
@@ -290,7 +290,7 @@ fn bounded_standard_progression_has_both_sides_real_legal_choices_and_exact_reco
             }
         );
         let mut c = context(&g);
-        // This checks twelve native transitions and record/observation replay,
+        // This checks twelve transitions and record/observation replay,
         // not playing strength. One completed iteration is sufficient; the
         // console Resume test separately executes the production play budget.
         c.limits = WorkLimits {
@@ -326,7 +326,7 @@ fn bounded_standard_progression_has_both_sides_real_legal_choices_and_exact_reco
     let round: Vec<ExecutionObservation> = serde_json::from_slice(&bytes).unwrap();
     assert_eq!(round, observations);
     eprintln!(
-        "12-ply standard Chu smoke: native_bytes={} observation_bytes={}",
+        "12-ply standard Chu smoke: payload_bytes={} observation_bytes={}",
         c::GameRecord::from_game(&g).unwrap().as_json().len(),
         bytes.len()
     );

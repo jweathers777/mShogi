@@ -1,10 +1,10 @@
-import type { GameSnapshot, Side } from "../native";
+import type { GameSnapshot, Side } from "../sessionTypes";
 import type { FocusEventHandler, ReactNode } from "react";
 import { bottomSide, sessionStatus } from "../sessionState";
 import { GameArea, GamePositionStatus, PlayerArea } from "./ApplicationShell";
 
-// Application-owned player/status placement; hands and board help remain native
-// renderer content. The shared native-choice controller owns board interaction;
+// Application-owned player/status placement; hands and board help remain
+// renderer content. The shared choice controller owns board interaction;
 // this frame owns no selection, inspection or completion state.
 export function GameFrame({ snapshot, board, help, upperContent, lowerContent, className = "", onFocusCapture, onBlurCapture }: {
   snapshot: GameSnapshot; board: ReactNode; help: ReactNode;

@@ -333,5 +333,5 @@
   ],
   "historical_acquisition_required": false,
   "external_engine_required": false,
-  "initial_failed_probe": "First acquisition helper assumed cp932 and failed decoding UTF-8 C3 before diagrams. Corrected to declared HTTP/meta UTF-8, successful acquisition/inspection follows. No failed HTTP or native conformance claim."
+  "initial_failed_probe": "First acquisition helper assumed cp932 and failed decoding UTF-8 C3 before diagrams. Corrected to declared HTTP/meta UTF-8, successful acquisition/inspection follows. No failed HTTP or rules conformance claim."
 }

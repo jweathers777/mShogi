@@ -1337,7 +1337,7 @@
   "analysis": null,
   "observations": [],
   "search_observations": [],
-  "score_meaning": "Native Red/Black root-side hundredths of soldier. Terminal distances count command edges; heuristic evaluation and existential win witnesses never establish a forced win. Ordinary analysis uses sound_fast_only; Unknown is unscored evidence, not proof of win capability.",
+  "score_meaning": "Red/Black root-side hundredths of soldier. Terminal distances count command edges; heuristic evaluation and existential win witnesses never establish a forced win. Ordinary analysis uses sound_fast_only; Unknown is unscored evidence, not proof of win capability.",
   "chess": null,
   "chess_match": null
 }

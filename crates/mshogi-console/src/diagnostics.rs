@@ -32,7 +32,7 @@ pub fn execute<P: PerftPosition>(
         Style::Game => (
             "perft-game",
             "total-game",
-            Some("full native history/endings"),
+            Some("full game history/endings"),
         ),
     };
     let report = if command == "perft" {

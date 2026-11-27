@@ -1,6 +1,6 @@
-import type { GameSnapshot, Operation, SearchView, AnalysisOperation } from "../native";
+import type { GameSnapshot, Operation, SearchView, AnalysisOperation } from "../sessionTypes";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { AnalysisActions, InspectorSwitch, NativeEnginePanel } from "./ApplicationShell";
+import { AnalysisActions, InspectorSwitch, GameEnginePanel } from "./ApplicationShell";
 
 import { resourceExplanation } from "./resourcePresentation";
 import { ChessAnalysisContent, ChessSessionEvidence } from "./ChessAnalysisContent";
@@ -11,8 +11,8 @@ import { revealInViewport } from "../interaction/focus";
 import { sessionStatus } from "../sessionState";
 import { conclusionName } from "../presentation";
 
-// Only native state/facts establish capacity; command errors remain unclassified.
-export function nativeCapacityReached(snapshot: GameSnapshot) {
+// Only game state/facts establish capacity; command errors remain unclassified.
+export function gameCapacityReached(snapshot: GameSnapshot) {
   return snapshot.capacity.status === "paused" || Boolean(snapshot.capacity.resource);
 }
 export function publicSessionError(_message: string) {
@@ -29,7 +29,7 @@ export function Observation({ view, game = "shogi", rejected = false }: { view: 
     {view.purpose === "move_analysis" && <p className="analysis-readonly">{(game === "tori" || game === "chu" || game === "tenjiku") ? "No move was played." : `No move or ${game === "shogi" ? "declaration" : "claim"} was played.`}</p>}
   </div>;
 }
-export function NativeHistory({ snapshot, disabled, command }: { snapshot: GameSnapshot; disabled: boolean; command: (op: Operation) => unknown }) {
+export function GameHistory({ snapshot, disabled, command }: { snapshot: GameSnapshot; disabled: boolean; command: (op: Operation) => unknown }) {
   const { root, entries } = snapshot.moves;
   const moveScroll = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
@@ -50,7 +50,7 @@ export function NativeHistory({ snapshot, disabled, command }: { snapshot: GameS
         if (!entry) return <td key={column} />;
         const associated = details.filter(event => event.index > entry.command_start && event.index <= entry.command_end);
         return <td key={column} data-associated-selection={associated.some(event => event.index === snapshot.event_index) || undefined}>
-          <button data-event={entry.event_index} data-native-action={entry.action} aria-current={snapshot.event_index === entry.event_index ? "step" : undefined} disabled={disabled} onClick={() => select(entry.event_index)} title={entry.effects_description} aria-label={`${number}. ${column === 0 ? first.label : second.label}: ${entry.notation}${entry.effects_description ? `; ${entry.effects_description}` : ""}`}>{entry.notation}</button>
+          <button data-event={entry.event_index} data-action={entry.action} aria-current={snapshot.event_index === entry.event_index ? "step" : undefined} disabled={disabled} onClick={() => select(entry.event_index)} title={entry.effects_description} aria-label={`${number}. ${column === 0 ? first.label : second.label}: ${entry.notation}${entry.effects_description ? `; ${entry.effects_description}` : ""}`}>{entry.notation}</button>
           {associated.length > 0 && <span className="move-event-count" title={associated.map(event => event.label).join(" · ")} aria-label={`${associated.length} associated position ${associated.length === 1 ? "event" : "events"}; available in Position events`}>*</span>}
         </td>;
       })}</tr>)}
@@ -61,8 +61,8 @@ export function NativeHistory({ snapshot, disabled, command }: { snapshot: GameS
     })}</ol></details>}
   </section>;
 }
-export function NativeRecovery({ snapshot, error, disabled, command, pending = false }: { snapshot: GameSnapshot; error: string; disabled: boolean; command: (op: Operation) => unknown; pending?: boolean }) {
-  const capacity = nativeCapacityReached(snapshot);
+export function GameRecovery({ snapshot, error, disabled, command, pending = false }: { snapshot: GameSnapshot; error: string; disabled: boolean; command: (op: Operation) => unknown; pending?: boolean }) {
+  const capacity = gameCapacityReached(snapshot);
   const adjudicationPending = pending || (snapshot.game === "xiangqi" && snapshot.xiangqi.pending !== null);
   const explanation = resourceExplanation(snapshot.capacity.resource);
   const elapsedBudget = snapshot.capacity.resource?.fact.category === "validation_budget";
@@ -87,12 +87,12 @@ export function NativeRecovery({ snapshot, error, disabled, command, pending = f
     {["failed", "incomplete", "cancelled"].includes(snapshot.phase) && !capacity && <section className="shogi-notice" role="status"><h3>{snapshot.phase === "failed" ? searchFailed ? "Engine search could not complete" : "Engine connection failed" : snapshot.phase === "incomplete" ? "Search incomplete" : "Search stopped"}</h3><p>{snapshot.phase === "failed" ? "The current game is intact. No game result is implied." : (snapshot.game === "tori" || snapshot.game === "chu" || snapshot.game === "tenjiku") ? "No uncompleted move was played." : `No uncompleted move or ${snapshot.game === "shogi" ? "declaration" : "claim"} was played.`}</p>{snapshot.capabilities.engine_turn && !snapshot.historical && !snapshot.status.concluded && !adjudicationPending && !(snapshot.game === "chess" && snapshot.chess.analysis.status !== "idle") && snapshot.execution_purpose !== "move_analysis" && snapshot.turn.key !== snapshot.human.key && <button data-focus-after="engine" disabled={disabled} onClick={() => { void command({ kind: "retry" }); }}>Retry engine turn</button>}</section>}
     {snapshot.paused && !snapshot.historical && (!snapshot.status.concluded || snapshot.game === "chess" && snapshot.chess.analysis.status !== "idle") && (!analyzing || snapshot.game === "chess") && !capacity && !adjudicationPending && <section className="shogi-resume play-paused"><p role="status">{snapshot.status.concluded ? "The game remains concluded. Finishing analysis does not reopen it." : snapshot.diagnostic === "Position restored. Resume play when ready." ? snapshot.diagnostic : "Play is paused."}</p><button data-focus-after="board" className="primary" disabled={disabled} onClick={() => { void command({ kind: "resume" }); }}>{snapshot.status.concluded ? "Finish analysis" : "Resume play"}</button></section>}
     {snapshot.game === "tori" && snapshot.tori.selected.repetition && !snapshot.status.concluded && <section className="shogi-notice" role="status"><h3>Repetition limit</h3><p>Repetition limit: {sideLabel("tori", snapshot.tori.selected.repetition.side)} cannot play a move that makes a position occur for the third time. The game continues.</p></section>}
-    {snapshot.game === "chu" && snapshot.chu.selected.obligations.length > 0 && !snapshot.status.concluded && <section className="shogi-notice" role="status"><h3>Repetition obligation</h3><p>The responsible player must vary the native continuation before the fourth occurrence. The game remains ongoing.</p></section>}
-    {snapshot.game === "tenjiku" && snapshot.tenjiku.selected.pending_bare && !snapshot.status.concluded && <section className="shogi-notice" role="status"><h3>Bare royal reply</h3><p>The native game requires an immediate qualifying reply. No win or draw is inferred by the interface.</p></section>}
+    {snapshot.game === "chu" && snapshot.chu.selected.obligations.length > 0 && !snapshot.status.concluded && <section className="shogi-notice" role="status"><h3>Repetition obligation</h3><p>The responsible player must vary the snapshot continuation before the fourth occurrence. The game remains ongoing.</p></section>}
+    {snapshot.game === "tenjiku" && snapshot.tenjiku.selected.pending_bare && !snapshot.status.concluded && <section className="shogi-notice" role="status"><h3>Bare royal reply</h3><p>The snapshot game requires an immediate qualifying reply. No win or draw is inferred by the interface.</p></section>}
     {thinking && <section className="shogi-notice" role="status"><h3>mShogi is thinking</h3><p>The engine is choosing a move within its work limits.</p><button data-focus-after="engine" disabled={disabled} onClick={() => { void command({ kind: "cancel" }); }}>Cancel search</button></section>}
   </>;
 }
-export function NativeAnalysis({ snapshot, defaults, disabled, command, maxDepth, maxNodes, minNodes, unavailable }: {
+export function GameAnalysis({ snapshot, defaults, disabled, command, maxDepth, maxNodes, minNodes, unavailable }: {
   snapshot: GameSnapshot; defaults: AnalysisOperation; disabled: boolean; command: (op: Operation) => unknown;
   maxDepth: number; maxNodes: number; minNodes: number; unavailable?: string | undefined;
 }) {
@@ -113,6 +113,6 @@ export function NativeAnalysis({ snapshot, defaults, disabled, command, maxDepth
       {snapshot.game === "chess" ? <ChessAnalysisContent snapshot={snapshot} /> : current && <Observation view={current} game={game} rejected={Boolean(snapshot.observations[current.observation_index]?.application_error)} />}
       {snapshot.game === "chess" && snapshot.observations.length > 0 && <details className="recorded-chess-evidence"><summary>Session analysis evidence ({snapshot.observations.length})</summary>{snapshot.observations.map((entry, index) => <article key={index}><ChessSessionEvidence observation={entry.observation} rejected={entry.application_error !== null} /></article>)}</details>}
       {snapshot.search_observations.length > 0 && <details className="recorded-searches"><summary>Recorded searches ({snapshot.search_observations.length})</summary>{snapshot.search_observations.map((v) => <article key={v.observation_index}><Observation view={v} game={game} rejected={Boolean(snapshot.observations[v.observation_index]?.application_error)} /></article>)}</details>}
-    </> : snapshot.play_mode === "two_humans" ? <p className="muted">Both players are local. Engine analysis starts only on request.</p> : <NativeEnginePanel limits={snapshot.play_limits} status={thinking ? "Searching" : snapshot.paused ? "Play paused" : snapshot.game === "tori" && snapshot.phase === "paused" && snapshot.execution_purpose === null ? "Ready" : snapshot.phase}>{lastEngine ? <Observation view={lastEngine} game={game} rejected={Boolean(snapshot.observations[lastEngine.observation_index]?.application_error)} /> : <p className="muted">{snapshot.search_observations.some(view => view.purpose === "engine_turn") ? "Earlier engine searches are retained as historical observations." : "No engine search has completed in this game."}</p>}</NativeEnginePanel>}
+    </> : snapshot.play_mode === "two_humans" ? <p className="muted">Both players are local. Engine analysis starts only on request.</p> : <GameEnginePanel limits={snapshot.play_limits} status={thinking ? "Searching" : snapshot.paused ? "Play paused" : snapshot.game === "tori" && snapshot.phase === "paused" && snapshot.execution_purpose === null ? "Ready" : snapshot.phase}>{lastEngine ? <Observation view={lastEngine} game={game} rejected={Boolean(snapshot.observations[lastEngine.observation_index]?.application_error)} /> : <p className="muted">{snapshot.search_observations.some(view => view.purpose === "engine_turn") ? "Earlier engine searches are retained as historical observations." : "No engine search has completed in this game."}</p>}</GameEnginePanel>}
   </section>{snapshot.game === "xiangqi" && <XiangqiAssessment snapshot={snapshot} />}</>;
 }

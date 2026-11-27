@@ -1,11 +1,11 @@
-import type { CompletedActionGeometry, GameSnapshot, Operation } from "../native";
+import type { CompletedActionGeometry, GameSnapshot, Operation } from "../sessionTypes";
 
 import { ShogiBoard } from "./ShogiBoard";
 import { SquareBoard } from "./SquareBoard";
 import { XiangqiBoard } from "./XiangqiBoard";
 import { useMovementInspection } from "./useMovementInspection";
 
-// Every game plays the opaque action of a native choice; the renderers differ
+// Every game plays the opaque action of a game choice; the renderers differ
 // only in artwork, hands and the Xiangqi intersection board.
 export function GameBoard({ snapshot, disabled, inspectionDisabled, command, completedAction }: {
   snapshot: GameSnapshot; disabled: boolean; inspectionDisabled: boolean; command: (operation: Operation) => unknown;

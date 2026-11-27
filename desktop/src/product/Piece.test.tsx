@@ -24,7 +24,7 @@ const tenjiku = {
   Dg: "犬", P: "歩兵",
 };
 
-it("letters Shogi pieces by native kind, promotion and the first player's king", () => {
+it("letters Shogi pieces by kind, promotion and the first player's king", () => {
   render(<svg><Piece game="shogi" face="king" /><Piece game="shogi" face="rook" promoted /><Piece game="shogi" face="pawn" promoted /><Piece game="shogi" face="gold" promoted /></svg>);
   expect([...document.querySelectorAll(".piece-tile")].map(node => node.textContent)).toEqual(["玉将", "龍王", "と金", "金将"]);
   cleanup();
@@ -64,7 +64,7 @@ it("keeps the complete Heavenly Tetrarch name in three ordered glyphs and the Do
   expect(piece("Dg").classList.contains("glyphs-1")).toBe(true);
   expect(piece("Dg").textContent).toBe("犬");
 });
-it("takes every once-promoted native identity directly and keeps its original base", () => {
+it("takes every once-promoted game identity directly and keeps its original base", () => {
   const pairs = Object.entries(tenjikuProfile.promotion);
   expect(pairs).toHaveLength(30);
   render(<svg>{pairs.map(([base, face]) => <Piece key={base} game="tenjiku" base={base} face={face} promoted />)}</svg>);

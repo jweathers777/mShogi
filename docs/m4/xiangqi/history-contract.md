@@ -1,4 +1,4 @@
-# Native Xiangqi history and canonical game contract (MSH-94)
+# Xiangqi history and canonical game contract (MSH-94)
 
 Selected rules: `mshogi.xiangqi.wxf2018.v1`, governing WXF2018 edition;
 see [sources](sources.md), owner decisions and
@@ -8,11 +8,11 @@ shared transport, archive or desktop consumer. Those existing task owners remain
 
 ## Admission, history and outcomes
 
-`Game::from_root` preserves the native `PositionRoot`, provenance and declared
+`Game::from_root` preserves the `PositionRoot`, provenance and declared
 counters. Imported/analysis roots establish the beginning of known history;
 a diagram is not proof of prior reachability. Root-assigned persistent piece
 identities survive moves and are removed on capture. Board repetition equality
-uses placement, native owner/type and turn, not counters or interchangeable IDs.
+uses placement, rules owner/type and turn, not counters or interchangeable IDs.
 Pursuit uses persistent IDs, so two equal pieces are not one victim.
 
 `GameRequest` binds an expected `GameContext`, actor and `GameCommand`. The
@@ -26,10 +26,10 @@ admission are distinct refusals, with no partial mutation.
 
 Events distinguish board actions, warnings/retirements, submitted/rejected/
 accepted count claims, draw offers, resignation, agreement, pending adjudication
-and conclusions. A native win names its winner and reason explicitly: local
+and conclusions. A win names its winner and reason explicitly: local
 no-action (checkmate or stalemate), continued repetition fault, or resignation.
 Draw reasons are repetition, a valid count claim, agreement or a proven
-neither-can-win result. Process failure is not a native win/draw reason.
+neither-can-win result. Process failure is not a win/draw reason.
 
 An agreement offer is admitted after that actor's own move, with no outstanding
 offer and at most once in that after-own-move window. The opponent may accept
@@ -54,13 +54,13 @@ their obligations.
 
 Responsibility is a consequence-relevant quotient of WXF19/20/chapter5, not a
 public universal move-nature telemetry API. All-check takes priority; mutual
-all-check is equal fault. Chase uses causal native legal capture/recapture
+all-check is equal fault. Chase uses causal legal capture/recapture
 facts, opponent responses and persistent victims. A moved pursuer or newly
 enabled discovered attack counts; an unchanged stationary attack does not.
 Real/fake roots, reciprocal same-kind capture and pinned/blocked pieces,
 Horse/Cannon versus protected Rook, General/Soldier combinations, uncrossed
 Soldier targets, changing victims and actual two-to-one counter-chase frequency
-retain their native consequences. Simultaneous mating-threat/chase uses chase;
+retain their consequences. Simultaneous mating-threat/chase uses chase;
 alternation is different. Permitted mate-threat/offer/exchange/block/idle and
 capture-after-check families have no independent prohibited consequence. Their
 absence of fault is not mislabeled as an exact Idle or mate-search observation.
@@ -112,14 +112,14 @@ no-win assessment; no exact graph search is available or required.
 
 ## Canonical record, undo and bounded saveability
 
-`GameRecord` schema 2 stores the complete native root, claim policy and ordered
-actor/command pairs. The root carries profile and edition. Native replay restores
+`GameRecord` schema 2 stores the complete game root, claim policy and ordered
+actor/command pairs. The root carries profile and edition. Game replay restores
 command results, event boundaries, derived events, current position, conclusion,
 pending state and target-specific assessment. Runtime execution tokens are not
 canonical data. Unsupported identities and schemas are refused, not downgraded.
 
 Strict decoding rejects duplicates and unknown fields before normalization.
-Root JSON remains `RawValue` through the native parser. Every command is replayed,
+Root JSON remains `RawValue` through the record parser. Every command is replayed,
 including admitted rejected claims. A final equality/presence check rejects
 omitted nullable fields while allowing key order and whitespace. FEN alone never
 restores this record. Reopen allocates fresh runtime identity; a saved record is
@@ -127,7 +127,7 @@ not resumable pending execution.
 
 `event_prefix` is immutable historical inspection, including separate board and
 same-ply warning/conclusion states. It is not a new resumable command boundary.
-Semantic LIFO undo restores exact native state and canonical history, while
+Semantic LIFO undo restores exact game state and canonical history, while
 runtime revision never rewinds, and newly admitted branches receive fresh
 command lineage IDs. Returning to the same board
 or record cannot revive old requests or undo handles from a different reopen.
@@ -136,4 +136,4 @@ Admission constructs a private candidate before committing. Records have no
 command, event or byte limit (MSH-268); audited rejected claims are kept like
 other commands and no accepted history is dropped.
 Later shared envelope/archive owners must measure their own additional overhead
-and preserve MSH-61; this native limit is not approval of future desktop limits.
+and preserve MSH-61; this limit is not approval of future desktop limits.

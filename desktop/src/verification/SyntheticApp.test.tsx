@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { square } from "../testing/helpers";
-import type { SyntheticSnapshot, GameSnapshot } from "../native";
+import type { SyntheticSnapshot, GameSnapshot } from "../sessionTypes";
 import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { SyntheticApp } from "./SyntheticApp";
@@ -41,7 +41,7 @@ async function open() {
   await screen.findByRole("heading", { name: "Choose a complete route" });
   square("i9");
 }
-it("keeps staged selection local, then submits the exact complete native route", async () => {
+it("keeps staged selection local, then submits the exact complete route", async () => {
   await open();
   fireEvent.click(square("i9"));
   fireEvent.click(square("j10"));
@@ -69,7 +69,7 @@ it("uses the intercepted native close Cancel route and retains the synthetic rec
   expect(screen.getByText("Version 1 · Accepted actions 0")).toBeTruthy();
   expect(bridge.invoke.mock.calls.filter(([name]) => name === "synthetic_command")).toHaveLength(0);
 });
-it("finishes native close with the exact hidden native Open token", async () => {
+it("finishes native close with the exact hidden Open token", async () => {
   await open();
   await act(async () => closeListener({ payload: standardJson as GameSnapshot }));
   fireEvent.click(screen.getByRole("button", { name: "Close fixture" }));

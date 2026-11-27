@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { fakeSession } from "../testing/helpers";
-import type { GameSnapshot } from "../native";
+import type { GameSnapshot } from "../sessionTypes";
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { DiagnosticText, DIAGNOSTIC_PAGE_CHARACTERS } from "./DiagnosticText";
@@ -40,15 +40,15 @@ it("captures one complete diagnostic snapshot on disclosure and refreshes only a
   const session = fakeSession(chess as GameSnapshot, { error: "first" });
   const props = { snapshot: chess as GameSnapshot, session, close: vi.fn() };
   const { container, rerender } = render(<SupportDialog {...props} />);
-  expect(container.querySelector("pre[data-native-diagnostics]")).toBeNull();
+  expect(container.querySelector("pre[data-session-diagnostics]")).toBeNull();
   const summary = screen.getByText("Diagnostics");
   fireEvent.click(summary);
-  await waitFor(() => expect(container.querySelector("[data-native-diagnostics]")).toBeTruthy());
-  const first = container.querySelector("[data-native-diagnostics]")!.textContent;
+  await waitFor(() => expect(container.querySelector("[data-session-diagnostics]")).toBeTruthy());
+  const first = container.querySelector("[data-session-diagnostics]")!.textContent;
   rerender(<SupportDialog {...props} session={{ ...session, error: "new observation" }} />);
-  expect(container.querySelector("[data-native-diagnostics]")!.textContent).toBe(first);
+  expect(container.querySelector("[data-session-diagnostics]")!.textContent).toBe(first);
   fireEvent.click(summary);
-  await waitFor(() => expect(container.querySelector("[data-native-diagnostics]")).toBeNull());
+  await waitFor(() => expect(container.querySelector("[data-session-diagnostics]")).toBeNull());
   fireEvent.click(summary);
-  await waitFor(() => expect(container.querySelector("[data-native-diagnostics]")!.textContent).toContain("new observation"));
+  await waitFor(() => expect(container.querySelector("[data-session-diagnostics]")!.textContent).toContain("new observation"));
 });

@@ -51,8 +51,8 @@ transitions and authoritative record replay enforce those assumptions. Broad
 structural `Position` analysis is preserved outside that live-game admission.
 
 Consequently both continuous-check flags cannot be true in an admitted history.
-If a cache defect or corruption nevertheless computes that condition, native
-code returns `GameError::MutualCheckInvariant` with complete candidate context,
+If a cache defect or corruption nevertheless computes that condition, the rules
+library returns `GameError::MutualCheckInvariant` with complete candidate context,
 SFEN, occurrences and interval observations. It commits no candidate and assigns
 no score or game outcome. Prefix and canonical replay retain internal diagnostics
 instead of collapsing them into ordinary malformed-input errors. Private unit

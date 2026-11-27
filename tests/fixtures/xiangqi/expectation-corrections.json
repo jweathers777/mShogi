@@ -1,7 +1,7 @@
 {
   "format": "mshogi.xiangqi.fixture-corrections.v1",
   "original_corpus_sha256": "bf945517e4ea8a3627d2914d7206ab80f1394c571a30c29f65b3db9b84f63ad9",
-  "corrected_corpus_sha256": "a0724cf66703a63256efd77fe67313259ca8ce0062095155d85286d1f1b4ed4d",
+  "corrected_corpus_sha256": "ace9f3c9ad72a66b267e75a2d10836d6d64838927176bd52e7bb8baebcbca33d",
   "trigger": "First admitted-reference differential run reported extra actions; original independently expected lists and mismatch are preserved, not overwritten as reference observations.",
   "source": "WXF2018 Articles2.5,2.9,2.10",
   "review_method": "Fixture author and separate boundary reviewer independently re-examined explicit piece geometry; both acknowledged overlooking the interposing Horse in the original review.",

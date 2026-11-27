@@ -3,9 +3,9 @@
 The desktop uses Tauri 2.12.5, React 19.3.1, strict TypeScript 7.0.2 and
 Vite 8.3.5. npm and Cargo lockfiles are committed. Node 24.19.0 is pinned in
 `.node-version`. The desktop host has its own lockfile and
-rust-toolchain.toml; both it and the native engine workspace pin Rust 1.99.1.
+rust-toolchain.toml; both it and the mShogi engine workspace pin Rust 1.99.1.
 
-Install the [native prerequisites](https://v2.tauri.app/start/prerequisites/):
+Install the [prerequisites](https://v2.tauri.app/start/prerequisites/):
 Xcode command line tools on macOS, Visual Studio C++ build tools and WebView2 on
 Windows, or WebKitGTK 4.1 development dependencies on Linux. Tauri 2.12 requires
 Rust 1.90 or newer. From the repository root:
@@ -25,36 +25,36 @@ require a web server.
 ## Playing all six games
 
 Press **New game**, choose one of the six supported games, then choose your
-native side (White/Black, Sente/Gote or Red/Black), or Random. Games are untimed.
+game side (White/Black, Sente/Gote or Red/Black), or Random. Games are untimed.
 Your side starts at the bottom; **Flip board** remains explicit. The initial
-application opens Chess; the same normal application loads each game's native archive.
+application opens Chess; the same normal application loads each game's archive.
 
-Tori Shogi uses the approved traditional kanji, a complete 7×7 board and native
+Tori Shogi uses the approved traditional kanji, a complete 7×7 board and
 hands/promotion. Its shared-core engine defaults to depth 64 /300,000 nodes,
 with a maximum node limit of 5,000,000. These are search bounds, not a
 competitive-strength claim. See the current [shared search core](../docs/m5/shared-search-core.md). Read-only analysis,
-cancellation/Retry, exact history, Take back, native outcomes and Save/Load share
+cancellation/Retry, exact history, Take back, game outcomes and Save/Load share
 the existing owners. Load stops work until explicit **Resume play**. The desktop
-exposes Take back; one-event Undo remains in the native API and console.
+exposes Take back; one-event Undo remains in the API and console.
 MSH-42 acceptance records actual normal
 macOS/Windows/Linux gameplay, separate QA instrumentation and exact limits.
 
 Chu Shogi uses the approved traditional kanji, King/Prince identities and
 complete 12×12 board in the same shell, without board scrolling or zoom. Select
 **Chu Shogi** in the ordinary dropdown and Sente, Gote or Random. Lion routes
-use native highlighted stages: select a second landing, or **Complete action
+use highlighted stages: select a second landing, or **Complete action
 here** when offered. Escape cancels an uncommitted selection. The game has no
-hands. Actual native engine play uses depth 1 /512 visits; ordinary read-only
+hands. Actual mShogi engine play uses depth 1 /512 visits; ordinary read-only
 analysis is capped at depth 2 /2,000. This is a functional baseline, not a strength
-claim. Load retains complete native history and observations and stops work
+claim. Load retains complete game history and observations and stops work
 until **Resume play**. Take back retires execution and preserves its historical
-observations; native/console Undo remains separate. Capacity refusals preserve
+observations; console Undo remains separate. Capacity refusals preserve
 a complete save path and never imply a chess result. See the
 Chu visual approval,
 engine contract and
-[native notation](../docs/m4/chu/notation.md).
+[game notation](../docs/m4/chu/notation.md).
 
-Tenjiku Shogi uses a complete 16×16 board, traditional kanji and complete native
+Tenjiku Shogi uses a complete 16×16 board, traditional kanji and complete
 routes and effects. Choose the Adams or Muller rules profile when starting a
 new game; the profile remains bound to its saved history. The same shell provides
 engine play, analysis, stopped Open, history and Take back. See the
@@ -64,7 +64,7 @@ passed the M4 integration milestone. Current
 promotion evidence is recorded separately at its actual source revision.
 
 For chess:
-Click a piece and a highlighted destination. Promotion opens explicit native
+Click a piece and a highlighted destination. Promotion opens explicit
 choices. On the focused board, arrows move focus, Enter/Space selects, and
 Escape clears selection. **Flip board** changes only orientation.
 The window defaults to 1180 × 820 logical content pixels and supports a minimum
@@ -75,13 +75,13 @@ Chess replies through the bundled engine with a one-second primary time budget;
 depth 128 and the exact JSON integer node ceiling are technical guards, not
 ordinary effort limits. The shared bridge keeps an engine process between
 successful searches; timed Chess can retain search state across moves. Cancellation
-and failure retire that process. See [engine sessions](../docs/desktop/internal-execution-v4.md). The engine panel shows only final native observations, labeled with their
+and failure retire that process. See [engine sessions](../docs/desktop/internal-execution-v4.md). The engine panel shows only final engine observations, labeled with their
 searched version and score perspective. **Cancel search** applies no fallback
-move; **Retry engine turn** explicitly restarts paused work. Native claim
+move; **Retry engine turn** explicitly restarts paused work. Claim
 buttons distinguish current claims from intended moves, which are not played.
 
 **Resign game…** opens a version-bound confirmation. Resignation ends play;
-the native M2 proof limits can leave the outcome **unresolved and unscored**.
+the M2 proof limits can leave the outcome **unresolved and unscored**.
 An engine failure, incomplete search or cancellation instead pauses the ongoing
 game without adding a move or result; explicit Retry preserves its history.
 
@@ -102,26 +102,26 @@ verdict and the next planning boundary.
 
 Shogi has its own warm grid, pentagonal kanji pieces and counted hands beside
 each player. The bundled licensed [mShogi Pieces font](../docs/m4/shogi-font.md)
-needs no Japanese font installation. Select a hand piece and a native highlighted
+needs no Japanese font installation. Select a hand piece and a highlighted
 square to drop; arrows move focus from the hand into the board, and Enter/Space
 commits a complete action. Optional promotion opens a contextual choice;
-mandatory promotion commits the sole native action without a redundant prompt.
+mandatory promotion commits the sole action without a redundant prompt.
 Escape cancels partial selection. Formal entering-king declaration appears only
-when the native capability allows it and still requires explicit confirmation.
+when the capability allows it and still requires explicit confirmation.
 
 Shogi play uses depth 2 / 5,000-node work limits. Side-panel **Analysis** is read-only,
 with explicit depth 1–4 and 0–20,000-node limits; it pauses play, reports actual
 completed work and never plays a move or declaration. Cancel/Replace act on that
-analysis purpose. History selects exact native event boundaries; **Return to
-live** and **Resume play** are separate. Archives preserve complete native
+analysis purpose. History selects exact game event boundaries; **Return to
+live** and **Resume play** are separate. Archives preserve complete
 semantics, settings and historical observations. An application-capacity pause
 retains the complete save path and cannot be reset by reopening the same file.
 Timed restoration remains unsupported for shogi.
 
 All six games use the same document labels: **Unsaved** before the first save,
 **Unmodified** when identical to the saved/opened file, and **Unsaved changes**
-after modification. Native file-operation and unsaved-change guards remain in
-force. Play details displays the actual native play budget; the common bottom
+after modification. File-operation and unsaved-change guards remain in
+force. Play details displays the actual play budget; the common bottom
 status row distinguishes live play, exact historical position, pause and conclusion.
 
 MSH-74's product evidence and screenshot review (task record MSH-74)
@@ -152,10 +152,10 @@ bundle; production distribution signing and minimum OS release policy remain
 MSH-58 work in M6.
 
 `npm run check` checks strict TypeScript; `npm test` runs focused interaction
-tests against native-generated snapshots. `npm run build` builds embedded web
+tests against generated snapshots. `npm run build` builds embedded web
 assets. In `src-tauri`, `cargo fmt --all -- --check`,
 `cargo clippy --locked --all-targets -- -D warnings` and `cargo test --locked`
-verify the native host. Native CI builds the normal packages on Windows,
+verify the desktop host. CI builds the normal packages on Windows,
 macOS and Linux, extracts/installs them and runs their actual bundled engine
 through UCI and the structured internal interface with bounded initial-position
 searches. Its artifact
@@ -172,7 +172,7 @@ MSH-74; package construction alone does not establish GUI behavior.
 Normal Quit/Cmd-Q, window close and macOS Dock Quit first resolve unsaved changes.
 The narrowly patched native Quit route is documented in
 [macOS quit handling](../docs/desktop/macos-quit.md).
-After approval, a native shutdown gate stops commands and cancels obsolete
+After approval, a shutdown gate stops commands and cancels obsolete
 engine work. An off-path observer waits for the supervisor's
 cleanup acknowledgement. macOS Cocoa termination can bypass an exit request;
 the final event-loop teardown therefore has a fallback that observes the same
@@ -204,20 +204,20 @@ and fixed launch paths even when source is built in a temporary worktree.
 The separate application name, identifier and window title label test state.
 Fixture names are `standard`, `claim` (intended fifty-move claim), `current-claim`,
 `concluded`, `incomplete`, `promotion` and `capacity`. `promotion` uses a real
-chess position with four native a7–a8 promotion choices. `incomplete` uses an actual zero-node
+chess position with four a7–a8 promotion choices. `incomplete` uses an actual zero-node
 engine request; Retry uses ordinary play limits. `capacity` starts with 255
-genuine native zero-node analysis observations so the next accepted analysis
+genuine zero-node analysis observations so the next accepted analysis
 reaches 256 and subsequent work demonstrates the application limit. These
 observations remain in saved documents. Close before launching another fixture.
 Use `python3 scripts/macos-verification.py prepare synthetic`, then
 `python3 scripts/macos-verification.py select synthetic synthetic`, for the fixed
 separately labeled invented 16-by-16 strider fixture. It uses the shared board and selector, with
-native complete choices and a separate temporary record. Select `i9 → j10 → i9`
+complete choices and a separate temporary record. Select `i9 → j10 → i9`
 to capture and return, or Reset and select `i9 → h9 → i9` to return without that
 capture. A valid short prefix requires **Complete action here**; selecting it
 alone submits nothing. Escape cancels from the board or route controls. Flip
 changes orientation; arrow keys move board focus. One complete
-action ends the demonstration; Reset advances the native version and clears its
+action ends the demonstration; Reset advances the version and clears its
 temporary record. This is development infrastructure, not another real game.
 
 Normal frontend builds force verification off even if its environment flag was
@@ -228,11 +228,11 @@ This build is QA infrastructure, not a normal distributable. The external packag
 verifier checks that a normal host contains no fixture initializer marker.
 The verification application menu has **Verification window size** presets for
 760 × 650 and 1180 × 820 logical content pixels. Its title reports the measured
-native content size after resizing, separately from screenshot pixels.
+content size after resizing, separately from screenshot pixels.
 On macOS its application menu also has **Native Cocoa Quit (verification)**.
-Clicking that predefined native item exercises Cocoa's `terminate:` entry,
+Clicking that predefined item exercises Cocoa's `terminate:` entry,
 including the same interception used for Dock Quit. It is absent from normal
-packages. Evidence records this as a native Cocoa termination test rather than
+packages. Evidence records this as a Cocoa termination test rather than
 claiming an actual Dock click.
 
 
@@ -247,7 +247,7 @@ tabs alone neither starts analysis nor resumes play.
 
 Evaluation is shown in pawn units from the named analyzed side's perspective,
 or as a named side's mate distance. Zero evaluation is not a draw. Position,
-requested budgets and actual final depth/nodes/PV are labeled; native request,
+requested budgets and actual final depth/nodes/PV are labeled; request,
 process and session identities plus raw encodings remain in technical details.
 There is no simulated live progress.
 
@@ -263,7 +263,7 @@ board orientation, analysis defaults and accepted engine observations with their
 exact request contexts. It is not an interchange FEN or PGN. See the
 [archive contract](../docs/desktop/archive-v1.md) for format and resource limits.
 
-Games and documents have no size, event or byte limit. The native controller
+Games and documents have no size, event or byte limit. The controller
 checks each candidate document before it accepts a change. Only runtime
 identity headroom and the validation time budget can pause work with
 **Application limit reached**; the complete accepted document stays saveable.
@@ -271,7 +271,7 @@ A resource pause is separate from chess outcomes and engine failures.
 
 Save writes an exclusive same-directory temporary file and replaces the target
 only after a complete flushed write. A failed or cancelled save keeps the prior
-file and leaves unsaved changes unsaved. Open validates on a bounded native
+file and leaves unsaved changes unsaved. Open validates on a bounded
 worker; corrupt, unsupported or resource-limited documents leave the current
 game intact. Timed matches are rejected explicitly, without changing their
 clocks. No automatic crash recovery is promised.
@@ -296,7 +296,7 @@ Computer Use approvals are owned by the user/platform, not this helper.
 ## Historical MSH-72 shared chess/shogi contract development surface
 
 The normal application remains the delivered chess desktop. The separately
-labeled `shared-contract` verification fixture exercises the native shogi session,
+labeled `shared-contract` verification fixture exercises the shogi session,
 hands/complete-choice selection and read-only analysis boundary. It has no shogi
 archive support and is not the finished shogi application. See the
 [contract and launch instructions](../docs/m4/desktop-session.md) and

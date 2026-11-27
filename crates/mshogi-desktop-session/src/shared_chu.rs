@@ -1,17 +1,17 @@
-//! Chu in the sole desktop runtime: the generic native session (`native_session`)
-//! with the Chu presentation. Rules and persistence stay native-owned.
-use super::native_session::*;
+//! Chu in the sole desktop runtime: the generic game session (`game_session`)
+//! with the Chu presentation. Rules and persistence stay rules-owned.
+use super::game_session::*;
 use super::*;
-pub(crate) use crate::native_game::Chu;
+pub(crate) use crate::game_adapter::Chu;
 use mshogi_core::chu as c;
 
 /// The Chu session.
-pub(crate) type ChuSession = NativeSession<Chu>;
+pub(crate) type ChuSession = GameSession<Chu>;
 
 large_shogi_session!(Chu, chu,
 state: chu, chu_mut, field: chu,
     board: 12, "Chu Shogi 12×12 board", "6g",
-    score_meaning: "Native root-side evaluation in hundredths of a Pawn. Win/loss distances count complete board actions, not necessarily mate. Failures and incomplete work are unscored.",
+    score_meaning: "Game root-side evaluation in hundredths of a Pawn. Win/loss distances count complete board actions, not necessarily mate. Failures and incomplete work are unscored.",
 pv: |a| format!(
     "{}→{}{}",
     a.from,
@@ -20,7 +20,7 @@ pv: |a| format!(
 ));
 
 impl DesktopController {
-    /// Verification entry into the real native Chu request path.
+    /// Verification entry into the real Chu request path.
     #[cfg(any(test, feature = "desktop-verification"))]
     pub fn verify_chu_execution(
         &mut self,
@@ -69,11 +69,11 @@ mod failure_observation_tests {
                 ExecutionResult::Failure {
                     failure: mshogi_engine::EngineFailure {
                         kind,
-                        message: "Native failure".into(),
+                        message: "Failure".into(),
                     },
                 },
             );
-            let doc = crate::game_document::ValidatedGameDocument::<crate::native_game::Chu>::new(
+            let doc = crate::game_document::ValidatedGameDocument::<crate::game_adapter::Chu>::new(
                 record.clone(),
                 c::Side::Sente,
             )
@@ -138,31 +138,31 @@ mod stop_tests {
     /// The stop is checked during replay: a longer history has more checks.
     #[test]
     fn chu_restore_checks_the_stop_per_replayed_event() {
-        let checks = |n| {
-            let document =
-                crate::game_document::ValidatedGameDocument::<crate::native_game::Chu>::new(
-                    played_n(n),
-                    c::Side::Sente,
-                )
+        let checks =
+            |n| {
+                let document = crate::game_document::ValidatedGameDocument::<
+                    crate::game_adapter::Chu,
+                >::new(played_n(n), c::Side::Sente)
                 .unwrap();
-            let mut calls = 0;
-            ChuSession::restore(document, &mut || {
-                calls += 1;
-                false
-            })
-            .unwrap();
-            calls
-        };
+                let mut calls = 0;
+                ChuSession::restore(document, &mut || {
+                    calls += 1;
+                    false
+                })
+                .unwrap();
+                calls
+            };
         assert!(checks(8) >= checks(2) + 6);
     }
 
     #[test]
     fn chu_restore_and_browse_stop_at_every_check() {
-        let document = crate::game_document::ValidatedGameDocument::<crate::native_game::Chu>::new(
-            played(),
-            c::Side::Sente,
-        )
-        .unwrap();
+        let document =
+            crate::game_document::ValidatedGameDocument::<crate::game_adapter::Chu>::new(
+                played(),
+                c::Side::Sente,
+            )
+            .unwrap();
         stops_everywhere(|stop| {
             ChuSession::restore(document.clone(), &mut || stop())
                 .map(|_| ())

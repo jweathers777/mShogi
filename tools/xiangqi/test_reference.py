@@ -129,10 +129,10 @@ class LocalSentinels(unittest.TestCase):
                 reference.bounded_run([sys.executable, '-c', script], b'')
             self.assertEqual(caught.exception.kind, 'output_limit')
 
-    def test_malformed_native_responses_remain_failures(self):
+    def test_malformed_responses_remain_failures(self):
         for raw in ['{}', '{"fen":1,"fen":2}', 'no JSON']:
             with self.subTest(raw=raw), self.assertRaises(reference.ProbeFailure):
-                compare.native_query([sys.executable, '-c', f'print({raw!r})'], {'root_fen': INITIAL}, 2)
+                compare.query([sys.executable, '-c', f'print({raw!r})'], {'root_fen': INITIAL}, 2)
 
     def test_wrong_binary_identity_rejected(self):
         harness = Path(reference.__file__).with_name('pikafish_board_probe.cpp')

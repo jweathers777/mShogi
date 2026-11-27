@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import type { TenjikuSnapshot } from "../native";
+import type { TenjikuSnapshot } from "../sessionTypes";
 import { cleanup, render } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 import { SquareBoard } from "./SquareBoard";
@@ -11,7 +11,7 @@ import mullerFaces from "../__fixtures__/shared-tenjiku-muller-all-faces.json";
 import profile from "../../../docs/m4/tenjiku/profile.json";
 
 afterEach(cleanup);
-it.each([adams, muller])("uses selected native $profile identities and leaves accessible labels on the shared squares", value => {
+it.each([adams, muller])("uses selected $profile identities and leaves accessible labels on the shared squares", value => {
   const snapshot = structuredClone(value) as unknown as TenjikuSnapshot;
   const hawk = snapshot.pieces.find(piece => piece.square === "8h")!;
   // Technical diagnostic lettering is deliberately not the artwork's source.
@@ -33,7 +33,7 @@ it.each([adams, muller])("uses selected native $profile identities and leaves ac
   expect(square.querySelector('[data-face="LHk"]')?.getAttribute("transform")).toBe("rotate(180 50 50)");
 });
 
-it.each([adamsFaces, mullerFaces])("renders all sourced $profile identities from the explicitly imported native artwork diagram", value => {
+it.each([adamsFaces, mullerFaces])("renders all sourced $profile identities from the explicitly imported artwork diagram", value => {
   const snapshot = value as unknown as TenjikuSnapshot;
   const identities = snapshot.tenjiku.selected.identities;
   expect(snapshot.tenjiku.root).toMatchObject({ kind: "imported", source: "Artwork inspection diagram: all 44 faces and 30 once-promoted identities, not reached play" });

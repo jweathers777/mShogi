@@ -5,7 +5,7 @@ import { ToriBirdPiece } from "./ToriBirdPiece";
 
 afterEach(cleanup);
 const faces = ["Ph", "Fa", "Ea", "Cr", "Pt", "LQ", "RQ", "Sw", "Go"];
-it("gives all nine native faces their own original engraving and font-independent identity aid", () => {
+it("gives all nine faces their own original engraving and font-independent identity aid", () => {
   const { container } = render(<svg>{faces.map(kind => <ToriBirdPiece key={kind} kind={kind} />)}</svg>);
   const pieces = [...container.querySelectorAll(".tori-bird-piece")];
   expect(pieces).toHaveLength(9);
@@ -39,7 +39,7 @@ it("keeps left and right quail distinct independently of owner orientation", () 
   expect(right.querySelector(".tori-bird-identity")?.getAttribute("data-tori-bird-mark")).toBe("RQ");
   expect(left.getAttribute("transform")).toBe(right.getAttribute("transform"));
 });
-it.each(["pawn", "king", "__proto__", "unknown-face"])("does not invent an identity for unsupported native face %s", kind => {
+it.each(["pawn", "king", "__proto__", "unknown-face"])("does not invent an identity for unsupported face %s", kind => {
   const { container } = render(<svg><ToriBirdPiece kind={kind} /></svg>);
   expect(container.querySelector(".tori-bird-piece")).toBeNull();
   expect(container.textContent).toBe("");

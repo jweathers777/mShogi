@@ -432,7 +432,7 @@ fn counter_exhaustion_is_a_resource_refusal_and_preserves_everything() {
 }
 
 #[test]
-fn opponent_inspection_uses_native_owner_and_cannot_mutate_or_consume_rights() {
+fn opponent_inspection_uses_owner_and_cannot_mutate_or_consume_rights() {
     let mut p = local(
         &[
             (4, 4, Side::Sente, "Ki"),

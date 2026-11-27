@@ -1,4 +1,4 @@
-//! An external consumer of the public native handoff, without shared/product dispatch.
+//! An external consumer of the public handoff, without shared/product dispatch.
 use mshogi_core::tenjiku::{
     Action, Base, EffectPhase, Game, GameCommand, GameError, GameRecord, GameRequest, Piece,
     Position, Profile, RecordError, RootMetadata, Side, Square,
@@ -19,11 +19,11 @@ struct ConsumerPayload {
 
 fn consume(text: &str) -> Result<Game, String> {
     let payload: ConsumerPayload = serde_json::from_str(text).map_err(|e| e.to_string())?;
-    let native = GameRecord::from_json(payload.record.get()).map_err(|e| e.to_string())?;
-    if payload.profile != native.profile() {
-        return Err("outer/native profile conflict".into());
+    let game = GameRecord::from_json(payload.record.get()).map_err(|e| e.to_string())?;
+    if payload.profile != game.profile() {
+        return Err("outer/profile conflict".into());
     }
-    native.to_game().map_err(|e| e.to_string())
+    game.to_game().map_err(|e| e.to_string())
 }
 
 fn game(profile: Profile) -> Game {
@@ -50,7 +50,7 @@ fn game(profile: Profile) -> Game {
             profile,
             &entries,
             Side::Sente,
-            RootMetadata::imported("public-native-consumer".into(), 120).unwrap(),
+            RootMetadata::imported("public-consumer".into(), 120).unwrap(),
         )
         .unwrap(),
     )
@@ -102,10 +102,7 @@ fn public_complete_effects_history_replay_inspection_and_fresh_authority() {
         assert_eq!(GameRecord::from_game(&restored).unwrap(), accepted);
         assert_ne!(game.context(), restored.context());
         assert_eq!(restored.profile(), profile);
-        assert_eq!(
-            restored.position().root().source(),
-            Some("public-native-consumer")
-        );
+        assert_eq!(restored.position().root().source(), Some("public-consumer"));
         assert_eq!(restored.position().accepted_plies(), 1);
         assert_eq!(restored.position().root().declared_completed_plies(), 120);
         let prefix = restored.record_prefix(0).unwrap();

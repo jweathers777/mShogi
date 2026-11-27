@@ -44,9 +44,9 @@ pub trait Dialect:
     fn terminal_move(game: &Self::Game, conclusion: Self::Conclusion) -> Option<&'static str>;
 }
 
-// All positions start from a native root and contain only admitted board moves.
+// All positions start from a game root and contain only admitted board moves.
 // Each dialect has a fixed claim policy. Together, root and moves identify
-// the complete native history, including automatic events.
+// the complete game history, including automatic events.
 struct History<D: Dialect> {
     root: D::Root,
     moves: Vec<D::Action>,
@@ -97,7 +97,7 @@ impl<D: Dialect> Position<D> {
         for (i, &action) in history.moves.iter().enumerate().skip(offset) {
             let actor = D::side_to_move(&game);
             D::submit(&mut game, actor, D::play(action), &mut || false)
-                .map_err(|e| format!("move {} native rejection: {e}", i + 1))?;
+                .map_err(|e| format!("move {} rejection: {e}", i + 1))?;
         }
         Ok(Self {
             game,
@@ -241,7 +241,7 @@ struct Request<D: Dialect> {
     started: Instant,
 }
 // Keep only the history needed to check the next timed search. The worker
-// can release the old native game as soon as it finishes the request.
+// can release the old game as soon as it finishes the request.
 struct TimedTable<D: Dialect> {
     engine: Searcher<D::Position>,
     hash: usize,
@@ -583,9 +583,9 @@ impl<D: Dialect> Adapter<D> {
             }
             EngineResult::Finished { conclusion, .. } => {
                 let Some(token) = D::terminal_move(game, conclusion) else {
-                    writeln!(out, "info string mshogi native_terminal {conclusion:?}")?;
+                    writeln!(out, "info string mshogi terminal {conclusion:?}")?;
                     return Err(io::Error::other(
-                        "native_terminal: host must adjudicate before search",
+                        "terminal: host must adjudicate before search",
                     ));
                 };
                 token.into()
@@ -626,7 +626,7 @@ fn report<D: Dialect>(
     writeln!(out)?;
     writeln!(
         out,
-        "info string mshogi native_score {:?} perspective {:?} status {:?} distance_units command_edges{}",
+        "info string mshogi reported_score {:?} perspective {:?} status {:?} distance_units command_edges{}",
         t.score,
         t.perspective,
         t.status,

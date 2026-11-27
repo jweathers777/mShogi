@@ -1,26 +1,26 @@
-//! Native root and commands for the shared compact record.
-use super::game::NativeRoot;
+//! Game root and commands for the shared compact record.
+use super::game::GameRoot;
 use super::*;
 use crate::record::compact::{self, Compact, compact_types};
 pub use compact::RecordError;
-/// Native schema of the saved game.
+/// Record schema of the saved game.
 pub const GAME_RECORD_SCHEMA_VERSION: u32 = 3;
-/// Complete validated native record.
+/// Complete validated game record.
 pub type GameRecord = compact::CompactRecord<HistorySnapshot>;
-/// New native events following an exact retained base.
+/// New game events following an exact retained base.
 pub type GameDelta = compact::CompactDelta<HistorySnapshot>;
 impl Compact for HistorySnapshot {
     compact_types!();
-    type Root = NativeRoot;
+    type Root = GameRoot;
     const PROFILE: Option<&'static str> = Some(PROFILE_ID);
     fn edition(_: &Self::Root) -> &'static str {
         PROFILE_EDITION
     }
     fn root(game: &Game) -> Self::Root {
-        game.native_root()
+        game.game_root()
     }
     fn install(root: Self::Root, _stop: &mut impl FnMut() -> bool) -> Result<Game, RecordError> {
-        Game::from_native_root(root).map_err(|e| Self::error(e, RecordError::Root))
+        Game::from_record_root(root).map_err(|e| Self::error(e, RecordError::Root))
     }
     fn error(error: GameError, fallback: RecordError) -> RecordError {
         match error {
@@ -49,7 +49,7 @@ mod compact_bounds {
 
     #[test]
     fn maximal_wire_fields_fit_compact_bounds() {
-        // Overfilled board/protection bound every admitted native root.
+        // Overfilled board/protection bound every admitted game root.
         let mut wire = compact::Wire::new::<HistorySnapshot>(
             HistorySnapshot::root(&Game::standard()),
             Vec::<GameEvent>::new(),
@@ -74,7 +74,7 @@ mod compact_bounds {
 #[cfg(test)]
 mod incremental_tests {
     use super::*;
-    use crate::native::incremental::Session;
+    use crate::game::incremental::Session;
 
     #[test]
     fn suffix_admission_matches_replay_and_refusal_is_atomic() {

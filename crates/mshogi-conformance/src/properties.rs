@@ -1,7 +1,7 @@
 //! Snapshot and valid 7x7 data transformations; no game legality or state transitions.
 use serde_json::{Value, json};
 
-/// Exercise actual native apply/undo closures against a complete state projection.
+/// Exercise actual apply/undo closures against a complete state projection.
 /// Project logical state/caches; test never-rewound runtime lineage separately.
 pub fn round_trip<S, V: PartialEq, U, E: std::fmt::Debug>(
     state: &mut S,
@@ -37,7 +37,7 @@ pub fn rejection<S, V: PartialEq, T, E>(
 }
 
 /// Supply actual complete before/undo or source/replayed snapshots.
-/// Native callers include authoritative caches for internal restoration checks.
+/// Callers include authoritative caches for internal restoration checks.
 pub fn snapshots(before: &Value, after: &Value) -> Value {
     json!({"before":before,"after":after})
 }
@@ -49,7 +49,7 @@ pub fn equivalent(before: &Value, after: &Value) -> Result<(), String> {
         Err("authoritative snapshots differ".into())
     }
 }
-/// Compare a native-provided normalized material inventory; never demote pieces here.
+/// Compare a supplied normalized material inventory; never demote pieces here.
 pub fn preserves_material(before: &Value, after: &Value) -> Result<(), String> {
     equivalent(before, after)
 }
@@ -89,7 +89,7 @@ fn rotate_text(s: &str) -> String {
     }
 }
 /// Rotate fixture board/hand coordinate data and exchange owners, preserving event order.
-/// Descriptive prose is untouched. Native adapters must rotate native state independently.
+/// Descriptive prose is untouched. Adapters must rotate game state independently.
 pub fn rotate_data(v: &Value) -> Value {
     match v {
         Value::String(s) => Value::String(rotate_text(s)),

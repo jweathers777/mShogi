@@ -1,5 +1,5 @@
-//! Actual Chu payload routing; rule expectations remain in the independent native corpus.
-use mshogi_core::{chu as c, native::*};
+//! Actual Chu payload routing; rule expectations remain in the independent corpus.
+use mshogi_core::{chu as c, game::*};
 use serde_json::{Value, json};
 fn game() -> c::Game {
     let entries = [
@@ -53,21 +53,21 @@ fn real_chu_identity_history_commands_and_duplicate_preserving_routing() {
         let expected = g.context();
         assert!(matches!(
             dispatch_command(
-                NativeCommandTarget::Chu(&mut g),
-                NativeCommand::Chu(Box::new(c::GameRequest {
+                GameCommandTarget::Chu(&mut g),
+                GameCommand::Chu(Box::new(c::GameRequest {
                     expected,
                     actor,
                     command
                 }))
             )
             .unwrap(),
-            NativeReply::Chu(Ok(_))
+            GameReply::Chu(Ok(_))
         ));
     }
     let r = CanonicalRecord::chu(c::GameRecord::from_game(&g).unwrap());
     assert_eq!(r.game_kind(), GameKind::Chu);
     assert_eq!(r.profile(), RulesProfile::ChuJcsa2019V1);
-    assert_eq!(r.native_schema(), NativeSchema::ChuV3);
+    assert_eq!(r.record_schema(), RecordSchema::ChuV3);
     assert_eq!(r.event_count(), 3);
     assert_eq!(r.known_board_actions(), 2);
     let raw = r.to_json().unwrap();
@@ -90,7 +90,7 @@ fn real_chu_identity_history_commands_and_duplicate_preserving_routing() {
         "game_kind",
         "rules_profile",
         "profile_edition",
-        "native_schema_version",
+        "record_schema_version",
         "envelope_version",
     ] {
         let old = v.get(field).cloned();
@@ -109,15 +109,15 @@ fn real_chu_identity_history_commands_and_duplicate_preserving_routing() {
     );
     assert_ne!(duplicate, raw);
     assert!(CanonicalRecord::from_json(&duplicate).is_err());
-    assert!(serde_json::from_str::<NativeSide>(r#"{"game_kind":"chu","side":"white"}"#).is_err());
+    assert!(serde_json::from_str::<TaggedSide>(r#"{"game_kind":"chu","side":"white"}"#).is_err());
     let before = c::GameRecord::from_game(&g).unwrap();
     let mut other = mshogi_core::tori::Game::standard();
-    let wrong = NativeCommand::Tori(Box::new(mshogi_core::tori::GameRequest {
+    let wrong = GameCommand::Tori(Box::new(mshogi_core::tori::GameRequest {
         expected: other.context(),
         actor: mshogi_core::tori::Side::Sente,
         command: mshogi_core::tori::GameCommand::Resign,
     }));
-    assert!(dispatch_command(NativeCommandTarget::Chu(&mut g), wrong).is_err());
+    assert!(dispatch_command(GameCommandTarget::Chu(&mut g), wrong).is_err());
     assert_eq!(c::GameRecord::from_game(&g).unwrap(), before);
     other.retire_context().unwrap();
 }

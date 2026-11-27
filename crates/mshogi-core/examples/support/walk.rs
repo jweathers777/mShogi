@@ -1,4 +1,4 @@
-//! Deterministic nonterminal native histories for measurements, not rules oracles.
+//! Deterministic nonterminal histories for measurements, not rules oracles.
 use std::error::Error;
 pub type Failure = Box<dyn Error>;
 

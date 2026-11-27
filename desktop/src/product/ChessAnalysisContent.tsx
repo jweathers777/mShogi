@@ -1,4 +1,4 @@
-import type { AnalysisState, ExecutionObservation, GameSnapshot } from "../native";
+import type { AnalysisState, ExecutionObservation, GameSnapshot } from "../sessionTypes";
 import { useEffect, useRef, useState } from "react";
 import { choiceDescription, readableAction, resultTelemetry, scoreDescription } from "../analysisPresentation";
 import { sideLabel } from "../games";

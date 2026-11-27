@@ -126,5 +126,5 @@
       "source": "Original MSH-186 benchmark composition; no asserted best move."
     }
   ],
-  "status": "v1 roots and depths frozen; native root validation passed; final file-hash validation and baseline pending"
+  "status": "v1 roots and depths frozen; game root validation passed; final file-hash validation and baseline pending"
 }

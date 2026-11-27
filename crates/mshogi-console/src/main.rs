@@ -148,26 +148,26 @@ Usage: mshogi [--game chess|shogi|xiangqi|tori|chu|tenjiku] [--profile adams|mul
   --profile     Required Tenjiku whole profile: adams or muller (no default)
   --help, -h     Show selected-game help
   --version, -V  Show the application version
-  profile        Show the selected native rules profile and actual coverage
+  profile        Show the selected rules profile and actual coverage
   shell          Read {game} commands from standard input, one per line
   uci            Selected Chess UCI or Xiangqi UCI0-9 adapter (rejects shogi)
   usi            Time- or work-limited USI shogi adapter (bare usi selects shogi)
-  internal-search  Structured native search, one request line per search until end of input; request supplies game, no --game
+  internal-search  Structured search, one request line per search until end of input; request supplies game, no --game
 
-Use 'mshogi --game {game}{profile_option} shell' and type 'help' for native commands.
+Use 'mshogi --game {game}{profile_option} shell' and type 'help' for game commands.
 The shell is a diagnostic console, not a UCI engine. Results go to stdout;
 errors to stderr as 'error: line N: ...'. A failed command changes nothing.
 Exit status: 0 success, 1 any shell failure, 2 invalid program arguments.
 Chess: FEN, position-only status, known move history, perft/divide depth 0..4.
-Shogi: SFEN, hands, complete native event history/conclusions, advisory eligibility,
+Shogi: SFEN, hands, complete game event history/conclusions, advisory eligibility,
 formal entering-king declaration and resignation; perft/divide depth 0..2.
-Xiangqi: native intersections/FEN, Red/Black history/warnings/claims/outcomes,
+Xiangqi: intersections/FEN, Red/Black history/warnings/claims/outcomes,
 canonical replay, local perft/divide 0..3 and explicit bounded cancellable no-win diagnostics.
-Tori: native 7x7 board/hands, complete history/T06 third-occurrence rule, readable complete
+Tori: 7x7 board/hands, complete history/T06 third-occurrence rule, readable complete
 actions, canonical standard/custom roots, bounded search and local diagnostics.
-Chu: native 12x12 board without hands, King/Prince, complete compound routes,
+Chu: 12x12 board without hands, King/Prince, complete compound routes,
 ordered captures and returns, actual draw agreements, canonical history and bounded search.
-Tenjiku: explicit whole profile, native 16x16 original/promoted identities, ordered
+Tenjiku: explicit whole profile, 16x16 original/promoted identities, ordered
 travel and stationary igui, full-history bounded perft/divide and search.
 All: position/show/legal/move/undo/history/status; canonical envelope record
 print/save/load-file/load-json. Saves require a new file.
@@ -196,28 +196,28 @@ fn main() -> ExitCode {
                 println!("Target rules profile: {}", mshogi_core::shogi::PROFILE_ID);
                 println!("Edition: {}", mshogi_core::shogi::PROFILE_EDITION);
                 println!(
-                    "Coverage: untimed native SFEN/game/events, complete legal moves/drops/promotions, hands, advisory eligibility, formal declarations/resignation, conclusions, event undo and canonical envelope records; local perft/divide depth 0..2. Earlier imported history is unknown. USI is available in separate usi mode."
+                    "Coverage: untimed SFEN/game/events, complete legal moves/drops/promotions, hands, advisory eligibility, formal declarations/resignation, conclusions, event undo and canonical envelope records; local perft/divide depth 0..2. Earlier imported history is unknown. USI is available in separate usi mode."
                 );
             }
             Game::Xiangqi => {
                 println!("Target rules profile: {}", mshogi_core::xiangqi::PROFILE_ID);
                 println!("Edition: {}", mshogi_core::xiangqi::PROFILE_EDITION);
                 println!(
-                    "Coverage: untimed native intersection board, complete legal actions/undo, known history/WXF warnings/claims/conclusions, strict canonical envelopes, local perft/divide 0..3, sound fast no-win assessment (Unknown is not a result). Bounded native engine-turn and read-only move-analysis execution are available through internal-search; time- or work-limited Pikafish-compatible UCI0-9 is available via --game xiangqi uci."
+                    "Coverage: untimed intersection board, complete legal actions/undo, known history/WXF warnings/claims/conclusions, strict canonical envelopes, local perft/divide 0..3, sound fast no-win assessment (Unknown is not a result). Bounded mShogi engine-turn and read-only move-analysis execution are available through internal-search; time- or work-limited Pikafish-compatible UCI0-9 is available via --game xiangqi uci."
                 );
             }
             Game::Tori => {
                 println!("Target rules profile: {}", mshogi_core::tori::PROFILE_ID);
                 println!("Edition: {}", mshogi_core::tori::PROFILE_EDITION);
                 println!(
-                    "Coverage: untimed native 7x7 complete moves/drops/compulsory promotion, distinct handed quails, known history/T06 third-occurrence rule, native outcomes, resignation, exact event undo, readable action notation and strict canonical standard/custom records. Local diagnostics depth 0..3 with explicit visits; bounded native search/structured internal-search. No SFEN/USI adapter or competitive-strength claim."
+                    "Coverage: untimed 7x7 complete moves/drops/compulsory promotion, distinct handed quails, known history/T06 third-occurrence rule, game outcomes, resignation, exact event undo, readable action notation and strict canonical standard/custom records. Local diagnostics depth 0..3 with explicit visits; bounded search/structured internal-search. No SFEN/USI adapter or competitive-strength claim."
                 );
             }
             Game::Chu => {
                 println!("Target rules profile: {}", mshogi_core::chu::PROFILE_ID);
                 println!("Edition: {}", mshogi_core::chu::PROFILE_EDITION);
                 println!(
-                    "Coverage: untimed native 12x12 complete one/two-stage actions, ordered captures/returns, promotion, King/Prince survival, Lion protection, pre-fourth repetition admission, native conclusions and actual draw agreements; exact event undo, strict canonical standard/custom records, bounded history-aware search and local perft/divide 0..2. No hands, USI/SFEN or competitive-strength claim."
+                    "Coverage: untimed 12x12 complete one/two-stage actions, ordered captures/returns, promotion, King/Prince survival, Lion protection, pre-fourth repetition admission, game conclusions and actual draw agreements; exact event undo, strict canonical standard/custom records, bounded history-aware search and local perft/divide 0..2. No hands, USI/SFEN or competitive-strength claim."
                 );
             }
             Game::Tenjiku => {
@@ -225,7 +225,7 @@ fn main() -> ExitCode {
                 println!("Target rules profile: {}", profile.id());
                 println!("Edition: {}", profile.edition());
                 println!(
-                    "Coverage: untimed native 16x16, complete ordered travel/returns/stationary igui, original identities and once-only promotion, native burn/death phases, royal/bare/repetition history and actual draw agreements; exact event undo, strict canonical standard/custom records, read-only bounded history-aware search and full-Game perft/divide 0..3. No hands, USI/SFEN or competitive-strength claim."
+                    "Coverage: untimed 16x16, complete ordered travel/returns/stationary igui, original identities and once-only promotion, burn/death phases, royal/bare/repetition history and actual draw agreements; exact event undo, strict canonical standard/custom records, read-only bounded history-aware search and full-Game perft/divide 0..3. No hands, USI/SFEN or competitive-strength claim."
                 );
             }
         },

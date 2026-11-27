@@ -1,6 +1,6 @@
 import { expect, it } from "vitest";
 import { readableAction, scoreDescription } from "./analysisPresentation";
-it("converts native material scores to signed pawn units with the recorded perspective", () => {
+it("converts material scores to signed pawn units with the recorded perspective", () => {
   expect(scoreDescription(137, "white")).toBe(
     "+1.37 pawns from White perspective",
   );

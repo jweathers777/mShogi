@@ -9,7 +9,7 @@ pub enum NoWinAssessment {
     ProvenNeitherCanWin,
     /// A concrete finite natural board-win witness, not a forced-win claim.
     ProvenNaturalWin {
-        /// Native side with the witness.
+        /// Game side with the witness.
         winner: Side,
         /// Complete local actions; zero length for an already terminal board.
         witness: Vec<Action>,

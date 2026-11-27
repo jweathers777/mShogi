@@ -7197,7 +7197,7 @@
   "analysis": null,
   "observations": [],
   "search_observations": [],
-  "score_meaning": "Native shogi root-side hundredths of pawn; terminal win distance counts complete command edges, including declarations. Not a chess mate score.",
+  "score_meaning": "Shogi root-side hundredths of pawn; terminal win distance counts complete command edges, including declarations. Not a chess mate score.",
   "chess": null,
   "chess_match": null
 }

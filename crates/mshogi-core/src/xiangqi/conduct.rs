@@ -1,6 +1,6 @@
-//! WXF conduct responsibility over an explicit, contiguous native history witness.
+//! WXF conduct responsibility over an explicit, contiguous game history witness.
 //!
-//! This is not a second move generator or a mating-search implementation. Native
+//! This is not a second move generator or a mating-search implementation. The rules library
 //! legal capture/recapture probes establish pursuit and real protection. The
 //! permitted non-chase labels (mate threat, offer, block, exchange and idle) need
 //! not be collapsed to "idle" to establish that no perpetual-check/chase fault
@@ -9,13 +9,13 @@
 use super::{Action, Counters, Intersection, Piece, PieceKind, Position, Side};
 use std::{collections::BTreeSet, error::Error, fmt};
 
-/// Native prohibited-conduct reason, separate from a locally legal board action.
+/// Prohibited-conduct reason, separate from a locally legal board action.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, serde::Serialize, serde::Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum FaultKind {
     /// WXF20.1: every move by the responsible player checks.
     PerpetualCheck,
-    /// WXF19.10/20: persistent prohibited pursuit of the same native victim.
+    /// WXF19.10/20: persistent prohibited pursuit of the same victim.
     PerpetualChase,
 }
 
@@ -74,11 +74,11 @@ fn captures(
     let query = normalized(position, actor);
     query
         .legal_actions()
-        .map_err(|_| ConductError::Invariant("capture probe is not a legal native turn"))?
+        .map_err(|_| ConductError::Invariant("capture probe is not a legal game turn"))?
         .into_iter()
         .filter_map(|action| {
             let target = query.piece(action.to)?;
-            let piece = query.piece(action.from).expect("native action source");
+            let piece = query.piece(action.from).expect("action source");
             Some(
                 ids[action.from.index()]
                     .zip(ids[action.to.index()])
@@ -89,7 +89,7 @@ fn captures(
                         piece,
                         target,
                     })
-                    .ok_or(ConductError::Invariant("missing native piece identity")),
+                    .ok_or(ConductError::Invariant("missing piece identity")),
             )
         })
         .collect()
@@ -106,10 +106,10 @@ fn real_root(position: &Position, capture: Capture) -> Result<bool, ConductError
     let mut after = normalized(position, capture.piece.side);
     after
         .apply(capture.action)
-        .map_err(|_| ConductError::Invariant("admitted capture failed native application"))?;
+        .map_err(|_| ConductError::Invariant("could not apply admitted capture"))?;
     Ok(after
         .legal_actions()
-        .map_err(|_| ConductError::Invariant("recapture probe is not a legal native turn"))?
+        .map_err(|_| ConductError::Invariant("recapture probe is not a legal game turn"))?
         .into_iter()
         .any(|reply| reply.to == capture.action.to))
 }
@@ -122,7 +122,7 @@ fn reciprocal_capture(position: &Position, capture: Capture) -> Result<bool, Con
     };
     Ok(query
         .legal_actions()
-        .map_err(|_| ConductError::Invariant("reciprocal probe is not a legal native turn"))?
+        .map_err(|_| ConductError::Invariant("reciprocal probe is not a legal game turn"))?
         .contains(&reciprocal))
 }
 
@@ -170,7 +170,7 @@ fn validate_steps(steps: &[Step], require_closed: bool) -> Result<(), ConductErr
     for (index, step) in steps.iter().enumerate() {
         if step.before.side_to_move() != step.actor {
             return Err(ConductError::Invariant(
-                "step actor disagrees with native turn",
+                "step actor disagrees with game turn",
             ));
         }
         if index > 0
@@ -182,11 +182,9 @@ fn validate_steps(steps: &[Step], require_closed: bool) -> Result<(), ConductErr
         let mut replay = step.before.clone();
         replay
             .apply(step.action)
-            .map_err(|_| ConductError::Invariant("illegal native witness action"))?;
+            .map_err(|_| ConductError::Invariant("illegal witness action"))?;
         if replay != step.after {
-            return Err(ConductError::Invariant(
-                "native witness post-state disagreement",
-            ));
+            return Err(ConductError::Invariant("witness post-state disagreement"));
         }
         let mut expected = step.ids_before;
         let moving = expected[step.action.from.index()]
@@ -195,7 +193,7 @@ fn validate_steps(steps: &[Step], require_closed: bool) -> Result<(), ConductErr
         expected[step.action.to.index()] = Some(moving);
         if expected != step.ids_after {
             return Err(ConductError::Invariant(
-                "native witness identity transition disagreement",
+                "witness identity transition disagreement",
             ));
         }
         let mut identities = BTreeSet::new();
@@ -208,7 +206,7 @@ fn validate_steps(steps: &[Step], require_closed: bool) -> Result<(), ConductErr
             if let Some(id) = step.ids_before[at.index()]
                 && !identities.insert(id)
             {
-                return Err(ConductError::Invariant("duplicate native piece identity"));
+                return Err(ConductError::Invariant("duplicate piece identity"));
             }
         }
     }
@@ -254,7 +252,7 @@ fn chasing(steps: &[Step], side: Side, close_cycle: bool) -> Result<bool, Conduc
             }
             if first.before.board != step.after.board || first.before.side != step.after.side {
                 return Err(ConductError::Unresolved(
-                    "witness does not close at the same native board/turn",
+                    "witness does not close at the same game board/turn",
                 ));
             }
             let mut projected = normalized(&step.after, first.actor);
@@ -276,7 +274,7 @@ fn chasing(steps: &[Step], side: Side, close_cycle: bool) -> Result<bool, Conduc
         for capture in after {
             // Diagram 110 excludes a stationary, continuously present attack.
             // Moving the pursuer, or changing a screen/leg/root to enable a
-            // different native legal capture, supplies the causal link.
+            // different legal capture, supplies the causal link.
             let prohibited = prohibited_capture(&step.after, capture)?;
             let causal =
                 moving_id == Some(capture.attacker) || matching_pair(&before, capture).is_none();
@@ -307,7 +305,7 @@ fn chasing(steps: &[Step], side: Side, close_cycle: bool) -> Result<bool, Conduc
         });
     }
     let Some(mut common) = common else {
-        return Err(ConductError::Invariant("witness omits one native side"));
+        return Err(ConductError::Invariant("witness omits one game side"));
     };
     for victim in exempt_pursuers {
         common.remove(&victim);
@@ -534,7 +532,7 @@ mod tests {
     }
 
     #[test]
-    fn check_priority_and_contiguous_history_are_native() {
+    fn check_priority_requires_contiguous_history() {
         let fen = "4R4/5k3/9/9/9/9/9/9/9/3K5 w - - 0 1";
         let steps = witness(fen, "e9f9 f8e8 f9e9 e8f8");
         assert_eq!(
@@ -576,7 +574,7 @@ mod tests {
     }
 
     #[test]
-    fn real_roots_require_actual_native_recapture() {
+    fn real_roots_require_actual_recapture() {
         let fake = witness(
             "R1r2k3/9/9/9/2n6/4R4/9/9/9/3K5 w - - 0 1",
             "e4c4 c5e6 c4e4 e6c5",

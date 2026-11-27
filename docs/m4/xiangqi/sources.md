@@ -43,8 +43,7 @@ ambiguity; future AXF/CXA profiles remain separately named.
 Articles19–20 and the chapter5 diagrams remain normative obligations for a
 complete selected profile. Mating-threat resolution, legal roots, pinned and
 blocked pieces, multiple threats and causal pursuit need exact definitions
-grounded in examples. Research inventory is not a verified algorithm. Native
-local legal moves and history-permitted continuation are separate contracts.
+grounded in examples. Research inventory is not a verified algorithm. Local legal moves and history-permitted continuation are separate contracts.
 
 ## Individual selected interpretations and scoped remaining gates
 
@@ -69,7 +68,7 @@ using both texts and WXF context, with predecessor evidence kept separate:
   overlap; resolve/review or obtain project decision before affected implementation.
 - **R-CLASS /94:** instantiate applicable19/20 and chapter5 families; their source
   definitions remain required. This is not an all-family prerequisite for91/92.
-- **G-NOWIN /94/105:** define3.2A proof quantifier and eligible native win events
+- **G-NOWIN /94/105:** define3.2A proof quantifier and eligible win events
   with full history/claim/warning context before recognizer/exact implementation.
   Older AXF English uses force-a-win language, useful comparison evidence but not
   authority to choose forced-win semantics for WXF. Resignation or clock/foul
@@ -86,7 +85,7 @@ remain independent of unavailable unrelated alternative corpora.
 ## MSH-94 source/fixture resolution (supersedes the planning gates above)
 
 G-CYCLE/R-CLASS now have independent bilingual/pixel review, concrete legal
-histories and completed native-boundary review. See
+histories and completed boundary review. See
 [contract](history-contract.md), evidence, and preserved
 source review. This retains the
 correction trail for diagrams109/110, protected-Rook geometry and open-prefix

@@ -3,7 +3,7 @@
 MSH-74 uses **mShogi Pieces Regular**, a 9,128-byte WOFF2 subset of
 Noto Serif CJK JP Regular 2.003. The Japanese serif shapes are bundled so piece
 rendering does not depend on a Japanese language pack being installed on Windows,
-macOS or Linux. Native piece kind, promotion and ownership remain the semantic
+macOS or Linux. Piece kind, promotion and ownership remain the semantic
 identity; the font only renders the selected glyph. Accessible names use normal
 application text. This subset is intended for piece faces, not general Japanese
 text.

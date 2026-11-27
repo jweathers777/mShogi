@@ -484,7 +484,7 @@ fn terminal_commands_keep_actor_semantics_and_board_ply_separate() {
 }
 
 #[test]
-fn draw_advice_matches_native_admission_and_same_ply_reoffer_restriction() {
+fn draw_advice_matches_admission_and_same_ply_reoffer_restriction() {
     let mut game = Game::standard(ClaimPolicy::Explicit).unwrap();
     let before = canonical(&game);
     assert!(!game.can_offer_draw(Side::Red));
@@ -523,7 +523,7 @@ fn draw_advice_matches_native_admission_and_same_ply_reoffer_restriction() {
 }
 
 #[test]
-fn native_command_refusals_are_atomic_and_unknown_no_win_is_not_a_result() {
+fn command_refusals_are_atomic_and_unknown_no_win_is_not_a_result() {
     let mut game = Game::standard(ClaimPolicy::Explicit).unwrap();
     assert_eq!(game.no_win_assessment(), NoWinAssessment::Unknown);
     assert_eq!(game.conclusion(), None);

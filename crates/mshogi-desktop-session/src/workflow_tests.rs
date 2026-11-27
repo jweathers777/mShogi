@@ -1,4 +1,4 @@
-//! MSH-125 native lifecycle expectations. No UI rules, fake results or board equality authority.
+//! MSH-125 lifecycle expectations. No UI rules, fake results or board equality authority.
 use super::*;
 use mshogi_core::xiangqi as x;
 use std::sync::atomic::{AtomicU64, Ordering};
@@ -14,7 +14,7 @@ fn peek(c: &DesktopController) -> SharedSnapshot {
     }
 }
 fn pump(c: &mut DesktopController) {
-    c.poll_native_admission();
+    c.poll_admission();
     c.poll_files();
 }
 fn settle(c: &mut DesktopController, receipt: &AdmissionReceipt) -> Result<(), String> {
@@ -47,17 +47,17 @@ fn running(game: GameKind, engine_turn: bool) -> DesktopController {
         GameKind::Tori | GameKind::Chu | GameKind::Tenjiku => {
             unreachable!("This fixture covers the original three games")
         }
-        GameKind::Chess => NativeSide::Chess(if engine_turn {
+        GameKind::Chess => TaggedSide::Chess(if engine_turn {
             Color::Black
         } else {
             Color::White
         }),
-        GameKind::Shogi => NativeSide::Shogi(if engine_turn {
+        GameKind::Shogi => TaggedSide::Shogi(if engine_turn {
             s::Side::Gote
         } else {
             s::Side::Sente
         }),
-        GameKind::Xiangqi => NativeSide::Xiangqi(if engine_turn {
+        GameKind::Xiangqi => TaggedSide::Xiangqi(if engine_turn {
             x::Side::Black
         } else {
             x::Side::Red
@@ -75,7 +75,7 @@ fn running(game: GameKind, engine_turn: bool) -> DesktopController {
     c
 }
 fn pending(c: &mut DesktopController) -> ExecutionContext {
-    c.shared_snapshot(); // Manual mode allocates native work without a process submission.
+    c.shared_snapshot(); // Manual mode allocates work without a process submission.
     if let Some(s) = c.session.chess() {
         s.pending.clone().unwrap()
     } else if let Some(s) = c.session.shogi() {
@@ -194,7 +194,7 @@ fn historical_analysis_is_retired_before_return_but_cancel_and_failure_override_
         }
         let mut c = running(game, false);
         send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
-        c.pause_native_failure("native operation failed".into());
+        c.pause_failure("game operation failed".into());
         send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
         assert!(
             send(&mut c, SessionOperation::ReturnLive {})
@@ -266,7 +266,7 @@ fn takeback_and_capacity_stops_cannot_be_overridden_by_browsing() {
         retired(&mut c, old);
         send(&mut c, SessionOperation::Resume {}).unwrap();
         send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
-        c.pause_native_capacity("Application capacity: no slot available".into());
+        c.pause_capacity("Application capacity: no slot available".into());
         let live = send(&mut c, SessionOperation::ReturnLive {}).unwrap();
         assert!(live.paused);
         assert!(live.status.score_half_points.is_none());
@@ -339,7 +339,7 @@ fn failed_or_cancelled_engine_turn_keeps_explicit_recovery_after_history_navigat
             assert!(returned.execution_purpose.is_none());
             assert_eq!(returned.context, stopped.context);
             assert_eq!(returned.diagnostic, stopped.diagnostic);
-            // Native explicit Retry remains valid, with fresh identities only.
+            // Explicit Retry remains valid, with fresh identities only.
             send(&mut c, SessionOperation::Retry {}).unwrap();
             let fresh = pending(&mut c);
             assert!(fresh.request_id > 0);
@@ -347,7 +347,7 @@ fn failed_or_cancelled_engine_turn_keeps_explicit_recovery_after_history_navigat
     }
 }
 #[test]
-fn concluded_return_is_view_only_and_resignation_retains_native_unscored_chess_meaning() {
+fn concluded_return_is_view_only_and_resignation_retains_unscored_chess_meaning() {
     for game in GAMES {
         let mut c = running(game, false);
         let ended = send(&mut c, SessionOperation::Resign {}).unwrap();

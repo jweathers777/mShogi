@@ -4,14 +4,14 @@ The current envelope is **`mshogi.desktop.document.v2`**. All six games save onl
 in its payload. Development-era desktop archives are not supported. There is
 no compatibility reader or converter; see design A-09.
 
-## Envelope and native records
+## Envelope and game records
 
 The envelope has three required fields: `format`, `game_kind` and `payload`.
-Unknown and duplicate fields reject. The game tag selects the native parser;
-the native record carries the profile, edition and schema. `payload` is a raw JSON value,
-so its original bytes reach the strict parser and native replay.
+Unknown and duplicate fields reject. The game tag selects the record parser;
+the game record carries the profile, edition and schema. `payload` is a raw JSON value,
+so its original bytes reach the strict parser and game replay.
 
-| Game | Selected profile | Native record schema |
+| Game | Selected profile | Game record schema |
 | --- | --- | --- |
 | Chess | `mshogi.chess.match.v1` | 1, M2 untimed match |
 | Shogi | `mshogi.shogi.csa36.v1` | 2 |
@@ -22,46 +22,46 @@ so its original bytes reach the strict parser and native replay.
 | Tenjiku Shogi | `mshogi.tenjiku.muller-completed.v1` | 3 |
 
 Operational interruptions are session state. Cancellation, engine failure and
-work limits add no game command and do not change a saved record. Current native
+work limits add no game command and do not change a saved record. Current
 records have no Stop command or incomplete field. Development-era formats,
 including Tori schema 1, are unsupported. The product has not been released;
 there is no migration reader for those formats.
 
 Tori schema 4, Chu schema 3 and Tenjiku schema 3 store their profile, edition,
-schema version, complete native root and ordered actor/command pairs. Chu roots
+schema version, complete game root and ordered actor/command pairs. Chu roots
 include Lion protection. Tenjiku roots hold the whole profile and original-piece
 rights; the record does not repeat the profile outside the root. Effects, current
-position, offers, obligations and conclusions are reconstructed by native replay.
+position, offers, obligations and conclusions are reconstructed by game replay.
 
 Shogi schema 2 keeps the root category, SFEN and counter source, followed by
 actor/command pairs. Xiangqi schema 2 keeps its complete PositionRoot, claim
-policy and all actor/command pairs, including admitted rejected claims. Native
+policy and all actor/command pairs, including admitted rejected claims. Game
 replay restores declaration evidence, warnings, claim results and conclusions.
 
-The document stores each non-Chess native record directly. Engine contexts use
+The document stores each non-Chess game record directly. Engine contexts use
 a separate canonical wrapper with `envelope_version: 2`, `game_kind` and `payload`.
-Only the current wrapper is accepted. Chess native
+Only the current wrapper is accepted. Chess
 history schema 1 bytes and schema 2 adjudication settings are unchanged.
 
-The edition is the exact native `RulesProfile::edition()` value. A different
+The edition is the exact `RulesProfile::edition()` value. A different
 whole profile rejects; no rule toggle migrates an existing document.
 
-Chess stores an initial native GameRecord string and an ordered list of
-accepted player commands, each with its actor. Native replay restores moves,
+Chess stores an initial GameRecord string and an ordered list of
+accepted player commands, each with its actor. Game replay restores moves,
 claims, draw offers and conclusions. A claim with an intended move does not
 play that move. Untimed replay supplies deterministic request versions and
 zero timestamps. Start, Observe, rejected requests, clocks and controller
 identities are not saved commands. Timed and witnessed resignation
 restoration remain unsupported.
 
-The other games store their native record. Complete moves, drops and promotion
-decisions remain recorded inputs; native replay derives effects and conclusions.
+The other games store their game record. Complete moves, drops and promotion
+decisions remain recorded inputs; game replay derives effects and conclusions.
 Chess needs a match command list because a board GameRecord alone cannot retain
 player draw offers and match conclusions. It uses the same document envelope,
 file worker, admission receipts, session lifecycle and history controls.
 
 Settings have the same shape in every game: `play_mode` (`human_engine` or
-`two_humans`), `orientation` (the native side at the bottom) and
+`two_humans`), `orientation` (the game side at the bottom) and
 `analysis_defaults` (`depth`, `nodes`), which Analyze updates. Display
 preferences cannot change ownership during a game.
 
@@ -74,7 +74,7 @@ evidence.
 Take back cuts the command list. It retains the current session's results as
 historical observations. Abandoned continuations, history selection, pending
 work, request identities and diagnostics are not saved. Chess history indices
-count initial native events and accepted player commands, without Start or
+count initial game events and accepted player commands, without Start or
 Observe. Browsing can inspect an imported root's history; Take back does not
 remove that immutable root.
 
@@ -83,9 +83,9 @@ and execution stopped. Return to live and Resume remain separate actions.
 
 ## Resource and file guarantees
 
-Documents and native records have no byte, event or game-length limit
-(MSH-268). No history is truncated. Compact native command admission uses the
-[root and command bounds](../native-resource-admission.md); it does not
+Documents and game records have no byte, event or game-length limit
+(MSH-268). No history is truncated. Compact game command admission uses the
+[root and command bounds](../game-resource-admission.md); it does not
 serialize hypothetical endings. A very large or damaged file can use much
 memory; validation stays cancellable.
 
@@ -101,10 +101,10 @@ for never-saved or dirty documents.
 
 `cargo run --locked -p mshogi-desktop-session --example write_document_fixtures -- desktop/scripts/fixtures`
 reconstructs the GUI hand-inspection document through the current writer.
-`write_frontend_fixtures` builds current native snapshots for frontend tests.
+`write_frontend_fixtures` builds current session snapshots for frontend tests.
 Neither generator is part of the product application.
 
-Retained protocol regression fixtures use the current native record encoding.
+Retained protocol regression fixtures use the current game record encoding.
 Their canonical-prefix hashes identify those encoded bytes. An encoding update
 changes those hashes, but does not change engine traffic, accepted commands,
 outcomes or timing observations. Git retains the original captured files.

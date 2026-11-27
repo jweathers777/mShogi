@@ -1,4 +1,4 @@
-//! Explicit native-game dispatch; native rules and record formats remain authoritative.
+//! Explicit game dispatch; rules and record formats remain authoritative.
 //!
 //! Chess history observations are data, not commands to execute. Complete chess
 //! match admission still belongs to `ChessMatch`; shogi admission belongs to `Game`.
@@ -9,25 +9,25 @@ pub(crate) mod history;
 pub mod incremental;
 pub use context::GameContext;
 
-/// Refusal of a native compact record or retained suffix.
+/// Refusal of a compact record or retained suffix.
 pub use crate::record::compact::RecordError;
 use crate::{chess, chu, shogi, tenjiku, tori, xiangqi};
 use serde::{Deserialize, Serialize, Serializer};
 use serde_json::value::RawValue;
 use std::{error::Error, fmt};
 
-/// This wrapper's version, independent of native schemas and engine transport.
+/// This wrapper's version, independent of record schemas and engine transport.
 pub const RECORD_ENVELOPE_VERSION: u32 = 2;
 /// Maximum retained shared-record diagnostic bytes.
 pub const MAX_RECORD_DIAGNOSTIC_BYTES: usize = 4096;
 /// The source edition accepted by the existing chess match profile.
 pub const CHESS_PROFILE_EDITION: &str = "FIDE-2023-01-01+mshogi.chess.match.v1";
 
-/// Actual native game; this does not advertise execution support.
+/// Actual game; this does not advertise execution support.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum GameKind {
-    /// Orthodox chess under the existing native profile.
+    /// Orthodox chess under the existing profile.
     Chess,
     /// Standard shogi under the approved CSA profile.
     Shogi,
@@ -94,7 +94,7 @@ impl RulesProfile {
             Self::TenjikuAdamsModernV1 | Self::TenjikuMullerCompletedV1 => GameKind::Tenjiku,
         }
     }
-    /// Exact native Tenjiku choice; other games have no implicit Tenjiku default.
+    /// Exact Tenjiku choice; other games have no implicit Tenjiku default.
     pub const fn tenjiku(self) -> Option<tenjiku::Profile> {
         match self {
             Self::TenjikuAdamsModernV1 => Some(tenjiku::Profile::AdamsModern),
@@ -126,29 +126,29 @@ impl<'de> Deserialize<'de> for RulesProfile {
             chu::PROFILE_ID => Ok(Self::ChuJcsa2019V1),
             "mshogi.tenjiku.adams1999-modern.v1" => Ok(Self::TenjikuAdamsModernV1),
             "mshogi.tenjiku.muller-completed.v1" => Ok(Self::TenjikuMullerCompletedV1),
-            _ => Err(serde::de::Error::custom("unsupported native rules profile")),
+            _ => Err(serde::de::Error::custom("unsupported rules profile")),
         }
     }
 }
 
-/// Native schema meaning, rather than an unqualified number shared across games.
+/// Record schema meaning, rather than an unqualified number shared across games.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum NativeSchema {
+pub enum RecordSchema {
     /// Chess history schema one.
     ChessV1,
     /// Approved Shogi command history schema two.
     ShogiV2,
-    /// Xiangqi native command history schema two.
+    /// Xiangqi game command history schema two.
     XiangqiV2,
     /// Complete modern Tori command history schema four.
     ToriV4,
-    /// Complete native Chu command history schema three.
+    /// Complete Chu command history schema three.
     ChuV3,
     /// Tenjiku command history schema three, qualified by either whole profile.
     TenjikuV3,
 }
-impl NativeSchema {
-    /// Native wire number, scoped to the game/profile.
+impl RecordSchema {
+    /// Wire number, scoped to the game/profile.
     pub const fn version(self) -> u32 {
         match self {
             Self::ChessV1 => chess::CHESS_RECORD_SCHEMA_VERSION,
@@ -161,7 +161,7 @@ impl NativeSchema {
     }
 }
 
-/// Complete native records. Metadata is derived, so mutable outer tags cannot drift.
+/// Complete game records. Metadata is derived, so mutable outer tags cannot drift.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum CanonicalRecord {
     /// Chess history/observation record; not an implicitly reconstructed match.
@@ -170,23 +170,23 @@ pub enum CanonicalRecord {
     Shogi(Box<shogi::GameRecord>),
     /// Complete authoritative Xiangqi history, warnings, claims and conclusions.
     Xiangqi(Box<xiangqi::GameRecord>),
-    /// Authoritative complete native Tori history and derived outcomes.
+    /// Authoritative complete Tori history and derived outcomes.
     Tori(Box<tori::GameRecord>),
-    /// Authoritative native Chu routes, rights, obligations and outcomes.
+    /// Authoritative Chu routes, rights, obligations and outcomes.
     Chu(Box<chu::GameRecord>),
-    /// Authoritative native Tenjiku profile, routes, ordered effects and history.
+    /// Authoritative Tenjiku profile, routes, ordered effects and history.
     Tenjiku(Box<tenjiku::GameRecord>),
 }
 impl CanonicalRecord {
-    /// Wrap the actual native chess payload without changing historical observations.
+    /// Wrap the actual chess payload without changing historical observations.
     pub fn chess(record: chess::GameRecord) -> Self {
         Self::Chess(Box::new(record))
     }
-    /// Wrap the actual native shogi ledger without losing root/history provenance.
+    /// Wrap the actual shogi ledger without losing root/history provenance.
     pub fn shogi(record: shogi::GameRecord) -> Self {
         Self::Shogi(Box::new(record))
     }
-    /// Wrap the native Xiangqi ledger without changing its semantics or wire encoding.
+    /// Wrap the Xiangqi ledger without changing its semantics or wire encoding.
     pub fn xiangqi(record: xiangqi::GameRecord) -> Self {
         Self::Xiangqi(Box::new(record))
     }
@@ -198,11 +198,11 @@ impl CanonicalRecord {
     pub fn chu(record: chu::GameRecord) -> Self {
         Self::Chu(Box::new(record))
     }
-    /// Wrap the actual immutable native Tenjiku record without advertising execution.
+    /// Wrap the actual immutable Tenjiku record without advertising execution.
     pub fn tenjiku(record: tenjiku::GameRecord) -> Self {
         Self::Tenjiku(Box::new(record))
     }
-    /// Exact native profile.
+    /// Exact profile.
     pub fn profile(&self) -> RulesProfile {
         match self {
             Self::Chess(_) => RulesProfile::ChessMatchV1,
@@ -244,31 +244,31 @@ impl CanonicalRecord {
         }
     }
     /// Schema derived from the authoritative payload.
-    pub fn native_schema(&self) -> NativeSchema {
+    pub fn record_schema(&self) -> RecordSchema {
         match self {
-            Self::Chess(_) => NativeSchema::ChessV1,
-            Self::Shogi(_) => NativeSchema::ShogiV2,
-            Self::Xiangqi(_) => NativeSchema::XiangqiV2,
-            Self::Tori(_) => NativeSchema::ToriV4,
-            Self::Chu(_) => NativeSchema::ChuV3,
-            Self::Tenjiku(_) => NativeSchema::TenjikuV3,
+            Self::Chess(_) => RecordSchema::ChessV1,
+            Self::Shogi(_) => RecordSchema::ShogiV2,
+            Self::Xiangqi(_) => RecordSchema::XiangqiV2,
+            Self::Tori(_) => RecordSchema::ToriV4,
+            Self::Chu(_) => RecordSchema::ChuV3,
+            Self::Tenjiku(_) => RecordSchema::TenjikuV3,
         }
     }
-    /// Serialize the complete wrapper. Native encoding is unchanged.
+    /// Serialize the complete wrapper. Encoding is unchanged.
     pub fn to_json(&self) -> Result<String, EnvelopeError> {
         encode_envelope(self, &self.payload_json()?)
     }
-    /// Strict outer parsing followed by the selected strict native parser.
+    /// Strict outer parsing followed by the selected strict record parser.
     pub fn from_json(text: &str) -> Result<Self, EnvelopeError> {
         Self::from_json_with_stop(text, &mut || false)
     }
-    /// Strict duplicate-preserving parsing with native Tenjiku replay cancellation.
+    /// Strict duplicate-preserving parsing with Tenjiku replay cancellation.
     /// Chess, Shogi and Xiangqi parsers check cancellation only before and after parsing.
     pub fn from_json_with_stop(
         text: &str,
         stop: &mut impl FnMut() -> bool,
     ) -> Result<Self, EnvelopeError> {
-        Self::from_json_with_native_parser(text, stop, |kind, payload, stop| {
+        Self::from_json_with_parser(text, stop, |kind, payload, stop| {
             let record = match kind {
                 GameKind::Chess => Self::chess(
                     chess::GameRecord::from_json(payload).map_err(EnvelopeError::encoding)?,
@@ -296,10 +296,10 @@ impl CanonicalRecord {
         })
         .map(|(record, ())| record)
     }
-    /// Validate the shared envelope around a caller-selected strict native parser.
+    /// Validate the shared envelope around a caller-selected strict record parser.
     /// The parser can retain its reconstructed game alongside the validated record,
     /// so consumers need not replay the same commands a second time.
-    pub fn from_json_with_native_parser<T, F: FnMut() -> bool>(
+    pub fn from_json_with_parser<T, F: FnMut() -> bool>(
         text: &str,
         stop: &mut F,
         parse: impl FnOnce(GameKind, &str, &mut F) -> Result<(Self, T), EnvelopeError>,
@@ -370,7 +370,7 @@ struct WireRecord {
 impl<'de> Deserialize<'de> for CanonicalRecord {
     fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
         // Capture all wrapper bytes: no intermediate map or tagged-enum buffer
-        // may erase duplicate outer or nested native fields.
+        // may erase duplicate outer or nested fields.
         let raw = Box::<RawValue>::deserialize(deserializer)?;
         Self::from_json(raw.get()).map_err(serde::de::Error::custom)
     }
@@ -378,13 +378,13 @@ impl<'de> Deserialize<'de> for CanonicalRecord {
 /// Explicit unsupported identity, malformed input or resource rejection.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum EnvelopeError {
-    /// A native record field or root exceeds its representation.
+    /// A game record field or root exceeds its representation.
     Capacity,
-    /// Cooperative native replay/parser stop; no partial record is published.
+    /// Cooperative game replay/parser stop; no partial record is published.
     Stopped,
-    /// Envelope, game, profile, edition or native schema disagree.
+    /// Envelope, game, profile, edition or record schema disagree.
     Identity,
-    /// Strict outer/native syntax rejection, with bounded diagnostics.
+    /// Strict outer/syntax rejection, with bounded diagnostics.
     Encoding(String),
 }
 impl EnvelopeError {
@@ -402,28 +402,28 @@ impl EnvelopeError {
 }
 impl fmt::Display for EnvelopeError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "native record envelope rejected: {self:?}")
+        write!(f, "game record envelope rejected: {self:?}")
     }
 }
 impl Error for EnvelopeError {}
 
-/// Game-qualified sides retain native interpretation; no White/Sente coercion.
+/// Game-qualified sides retain interpretation; no White/Sente coercion.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum NativeSide {
+pub enum TaggedSide {
     /// Chess White or Black.
     Chess(chess::Color),
     /// Shogi Sente or Gote.
     Shogi(shogi::Side),
     /// Xiangqi Red or Black, never Chess Black.
     Xiangqi(xiangqi::Side),
-    /// Tori Sente/Gote are game-qualified native owners.
+    /// Tori Sente/Gote are game-tagged sides.
     Tori(tori::Side),
-    /// Chu Sente/Gote retain their own native identity.
+    /// Chu Sente/Gote retain their own game identity.
     Chu(chu::Side),
     /// Tenjiku owner; the whole selected profile remains explicit in its record/context.
     Tenjiku(tenjiku::Side),
 }
-impl NativeSide {
+impl TaggedSide {
     /// Side's game, for validating purpose metadata without replay.
     pub const fn game(self) -> GameKind {
         match self {
@@ -442,7 +442,7 @@ struct WireSide {
     game_kind: GameKind,
     side: String,
 }
-impl Serialize for NativeSide {
+impl Serialize for TaggedSide {
     fn serialize<S: Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
         WireSide {
             game_kind: self.game(),
@@ -465,7 +465,7 @@ impl Serialize for NativeSide {
         .serialize(s)
     }
 }
-impl<'de> Deserialize<'de> for NativeSide {
+impl<'de> Deserialize<'de> for TaggedSide {
     fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
         let w = WireSide::deserialize(d)?;
         match (w.game_kind, w.side.as_str()) {
@@ -489,24 +489,24 @@ impl<'de> Deserialize<'de> for NativeSide {
 }
 
 /// Borrow an existing authoritative owner; no match is fabricated from a history record.
-pub enum NativeCommandTarget<'a> {
-    /// Complete chess match, including clocks, offers and native version admission.
+pub enum GameCommandTarget<'a> {
+    /// Complete chess match, including clocks, offers and version admission.
     Chess(&'a mut chess::ChessMatch),
     /// Authoritative untimed shogi game and accepted command ledger.
     Shogi(&'a mut shogi::Game),
-    /// Authoritative untimed Xiangqi game; native command admission owns all rules.
+    /// Authoritative untimed Xiangqi game; game command admission owns all rules.
     Xiangqi(&'a mut xiangqi::Game),
-    /// Real Tori native game, not a reconstructed consumer.
+    /// Real Tori game, not a reconstructed consumer.
     Tori(&'a mut tori::Game),
-    /// Native Chu owner admits commands with its own actor semantics.
+    /// Chu owner admits commands with its own actor semantics.
     Chu(&'a mut chu::Game),
     /// Authoritative two-profile Tenjiku owner.
     Tenjiku(&'a mut tenjiku::Game),
 }
-/// Native commands keep game-specific actors, actions and preconditions.
+/// Game commands keep game-specific actors, actions and preconditions.
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub enum NativeCommand {
-    /// Chess command, with native timestamp/version and optional claim intention.
+pub enum GameCommand {
+    /// Chess command, with timestamp/version and optional claim intention.
     Chess(chess::MatchRequest),
     /// Shogi action, formal declaration or resignation with its request token.
     Shogi(Box<shogi::GameRequest>),
@@ -514,53 +514,53 @@ pub enum NativeCommand {
     Xiangqi(Box<xiangqi::GameRequest>),
     /// Complete context-bound Tori board/terminal/administrative command.
     Tori(Box<tori::GameRequest>),
-    /// Complete native Chu command with its request token.
+    /// Complete Chu command with its request token.
     Chu(Box<chu::GameRequest>),
-    /// Exact native Tenjiku command and request token; a token of another game is refused.
+    /// Exact Tenjiku command and request token; a token of another game is refused.
     Tenjiku(Box<tenjiku::GameRequest>),
 }
-/// Native admission result, preserving rules-owned semantics and errors.
+/// Game admission result, preserving rules-owned semantics and errors.
 #[derive(Debug)]
-pub enum NativeReply {
+pub enum GameReply {
     /// Complete chess acceptance/rejection, clock and conclusion observations.
     Chess(chess::MatchReply),
-    /// Exact shogi reversal token or atomic native rejection/internal diagnostic.
+    /// Exact shogi reversal token or atomic rejection/internal diagnostic.
     Shogi(Result<Box<shogi::GameUndo>, shogi::GameError>),
-    /// Preserve admitted/rejected-claim audit result AND exact native reversal.
+    /// Preserve admitted/rejected-claim audit result AND exact reversal.
     Xiangqi(Result<Box<xiangqi::Submission>, xiangqi::GameError>),
-    /// Exact Tori full-game reversal or atomic native refusal.
+    /// Exact Tori full-game reversal or atomic refusal.
     Tori(Result<Box<tori::GameUndo>, tori::GameError>),
-    /// Native Chu exact reversal or atomic typed refusal.
+    /// Chu exact reversal or atomic typed refusal.
     Chu(Result<Box<chu::GameUndo>, chu::GameError>),
-    /// Native Tenjiku reversal or typed atomic native refusal.
+    /// Tenjiku reversal or typed atomic refusal.
     Tenjiku(Result<Box<tenjiku::GameUndo>, tenjiku::GameError>),
 }
-/// A wrong-game command is rejected before either native owner is touched.
+/// A wrong-game command is rejected before either rules owner is touched.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct DispatchMismatch;
-/// Dispatch only by typed game tag. All actor, turn and command admission is native.
+/// Dispatch only by typed game tag. All actor, turn and command admission is.
 pub fn dispatch_command(
-    target: NativeCommandTarget<'_>,
-    command: NativeCommand,
-) -> Result<NativeReply, DispatchMismatch> {
+    target: GameCommandTarget<'_>,
+    command: GameCommand,
+) -> Result<GameReply, DispatchMismatch> {
     match (target, command) {
-        (NativeCommandTarget::Chess(game), NativeCommand::Chess(request)) => {
-            Ok(NativeReply::Chess(game.submit(request)))
+        (GameCommandTarget::Chess(game), GameCommand::Chess(request)) => {
+            Ok(GameReply::Chess(game.submit(request)))
         }
-        (NativeCommandTarget::Shogi(game), NativeCommand::Shogi(request)) => {
-            Ok(NativeReply::Shogi(game.submit(*request).map(Box::new)))
+        (GameCommandTarget::Shogi(game), GameCommand::Shogi(request)) => {
+            Ok(GameReply::Shogi(game.submit(*request).map(Box::new)))
         }
-        (NativeCommandTarget::Xiangqi(game), NativeCommand::Xiangqi(request)) => {
-            Ok(NativeReply::Xiangqi(game.submit(*request).map(Box::new)))
+        (GameCommandTarget::Xiangqi(game), GameCommand::Xiangqi(request)) => {
+            Ok(GameReply::Xiangqi(game.submit(*request).map(Box::new)))
         }
-        (NativeCommandTarget::Tori(game), NativeCommand::Tori(request)) => {
-            Ok(NativeReply::Tori(game.submit(*request).map(Box::new)))
+        (GameCommandTarget::Tori(game), GameCommand::Tori(request)) => {
+            Ok(GameReply::Tori(game.submit(*request).map(Box::new)))
         }
-        (NativeCommandTarget::Chu(game), NativeCommand::Chu(request)) => {
-            Ok(NativeReply::Chu(game.submit(*request).map(Box::new)))
+        (GameCommandTarget::Chu(game), GameCommand::Chu(request)) => {
+            Ok(GameReply::Chu(game.submit(*request).map(Box::new)))
         }
-        (NativeCommandTarget::Tenjiku(game), NativeCommand::Tenjiku(request)) => {
-            Ok(NativeReply::Tenjiku(game.submit(*request).map(Box::new)))
+        (GameCommandTarget::Tenjiku(game), GameCommand::Tenjiku(request)) => {
+            Ok(GameReply::Tenjiku(game.submit(*request).map(Box::new)))
         }
         _ => Err(DispatchMismatch),
     }

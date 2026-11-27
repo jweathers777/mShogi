@@ -1,6 +1,6 @@
-//! Native routing and actual bounded Chu execution retain complete identities.
+//! Routing and actual bounded Chu execution retain complete identities.
 mod support;
-use mshogi_core::{chu as t, native::*};
+use mshogi_core::{chu as t, game::*};
 use mshogi_engine::*;
 use std::io::Cursor;
 fn context() -> ExecutionContext {
@@ -50,8 +50,8 @@ fn real_internal_entry_point_supports_bounded_chu() {
                     event_index: 0,
                     board_ply: 0,
                     session_version: c.session_version,
-                    label: "Native Chu root".into(),
-                    turn: NativeSide::Chu(t::Side::Sente),
+                    label: "Chu root".into(),
+                    turn: TaggedSide::Chu(t::Side::Sente),
                 },
             };
         }
@@ -102,8 +102,8 @@ fn typed_chu_selection_cannot_borrow_shogi_turn_or_future_history() {
             event_index: 0,
             board_ply: 0,
             session_version: c.session_version,
-            label: "Native root".into(),
-            turn: NativeSide::Shogi(mshogi_core::shogi::Side::Sente),
+            label: "Game root".into(),
+            turn: TaggedSide::Shogi(mshogi_core::shogi::Side::Sente),
         },
     };
     assert!(!c.valid_limits());
@@ -119,12 +119,12 @@ fn typed_chu_selection_cannot_borrow_shogi_turn_or_future_history() {
     let ExecutionPurpose::MoveAnalysis { target } = &mut c.purpose else {
         unreachable!()
     };
-    target.turn = NativeSide::Chu(t::Side::Gote);
+    target.turn = TaggedSide::Chu(t::Side::Gote);
     assert!(!c.valid_limits());
     let ExecutionPurpose::MoveAnalysis { target } = &mut c.purpose else {
         unreachable!()
     };
-    target.turn = NativeSide::Chu(t::Side::Sente);
+    target.turn = TaggedSide::Chu(t::Side::Sente);
     target.event_index = 1;
     assert!(!c.valid_limits());
 }

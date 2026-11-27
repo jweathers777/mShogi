@@ -1,4 +1,4 @@
-//! Atomic human-versus-engine decision restoration; native records remain authoritative.
+//! Atomic human-versus-engine decision restoration; game records remain authoritative.
 use super::*;
 
 pub(super) fn target_mode(game: &ChessMatch, human: Color, mode: PlayMode) -> Option<usize> {

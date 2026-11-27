@@ -1,4 +1,4 @@
-//! Actual native USI subprocess lifecycle, using accepted MSH-64/67/70 fixtures.
+//! Actual USI subprocess lifecycle, using accepted MSH-64/67/70 fixtures.
 mod support;
 use std::{process::Command, time::Duration};
 use support::protocol::Engine;
@@ -34,7 +34,7 @@ fn handshake_options_readiness_defaults_alias_and_incompatible_selection() {
         e.send("go");
         let result = e.until("bestmove");
         assert!(result.iter().any(|s| s.starts_with("info depth ")));
-        assert_native_best(&result, &mshogi_core::shogi::Position::initial());
+        assert_best(&result, &mshogi_core::shogi::Position::initial());
         assert_eq!(e.finish(true).0, 0);
     }
     let out = Command::new(env!("CARGO_BIN_EXE_mshogi"))
@@ -56,14 +56,14 @@ fn supplied_history_changes_search_without_invented_pre_root_history() {
     assert_eq!(e.until("bestmove").last().unwrap(), "bestmove 4a5a");
     e.send("position sfen 5k3/9/5R3/9/9/9/9/9/K8 w - 12");
     e.send("go depth 1 nodes 5000");
-    assert_native_best(
+    assert_best(
         &e.until("bestmove"),
         &mshogi_core::shogi::Position::from_sfen("5k3/9/5R3/9/9/9/9/9/K8 w - 12").unwrap(),
     );
     assert_eq!(e.finish(true).0, 0);
 }
 #[test]
-fn promotion_drop_declaration_and_pv_mapping_are_native() {
+fn promotion_drop_declaration_and_pv_use_usi_notation() {
     let mut e = engine();
     for (root, expected) in [
         // Sente's King on its castled square: a corner King step is worth
@@ -83,7 +83,7 @@ fn promotion_drop_declaration_and_pv_mapping_are_native() {
     e.send("position sfen K8/1RB6/1+P+P+P+P+P+P+P+P/9/9/9/9/9/8k w B5P 1");
     e.send("go depth 1 nodes 5000");
     let lines = e.until("bestmove");
-    assert_native_best(
+    assert_best(
         &lines,
         &mshogi_core::shogi::Position::from_sfen("K8/1RB6/1+P+P+P+P+P+P+P+P/9/9/9/9/9/8k w B5P 1")
             .unwrap(),
@@ -111,33 +111,33 @@ fn zero_or_insufficient_work_never_becomes_resignation_or_fallback() {
     e.send("go depth 1 nodes 5000");
     let lines = e.until("bestmove");
     assert!(lines.iter().any(|s| s.starts_with("info depth 1 nodes ")));
-    assert_native_best(&lines, &mshogi_core::shogi::Position::initial());
+    assert_best(&lines, &mshogi_core::shogi::Position::initial());
     assert_eq!(e.finish(true).0, 0);
 }
 #[test]
 fn stop_keeps_completed_result_and_readiness_stays_responsive() {
     let mut e = engine();
     e.send("go infinite depth 1 nodes 5000");
-    e.until("info string mshogi native_score");
+    e.until("info string mshogi reported_score");
     assert!(e.lines.recv_timeout(Duration::from_millis(30)).is_err());
     e.send("isready");
     assert_eq!(e.until("readyok"), vec!["readyok"]);
     e.send("stop");
-    assert_native_best(
+    assert_best(
         &e.until("bestmove"),
         &mshogi_core::shogi::Position::initial(),
     );
     assert_eq!(e.finish(true).0, 0);
     // An active stop may precede the first completed iteration. It must then
     // fail explicitly, rather than inventing a searched action. No timing-based
-    // assumption about how much native work this machine can finish is made.
+    // assumption about how much work this machine can finish is made.
     let mut e = engine();
     e.send("position sfen 8k/9/9/9/9/9/9/9/K8 b RBGSNLPrbgsnlp 1");
     e.send("go infinite depth 4 nodes 20000");
     e.send("isready");
     e.until("readyok");
     e.send("stop");
-    let first = e.until("info string mshogi native_score");
+    let first = e.until("info string mshogi reported_score");
     let depth = first[0]
         .split_ascii_whitespace()
         .nth(2)
@@ -156,20 +156,20 @@ fn stop_keeps_completed_result_and_readiness_stays_responsive() {
 fn replacement_newgame_gameover_and_quit_retire_old_observations() {
     let mut e = engine();
     e.send("go infinite depth 1 nodes 5000");
-    e.until("info string mshogi native_score");
+    e.until("info string mshogi reported_score");
     e.send("position startpos moves 7g7f");
     e.send("go depth 1 nodes 5000");
-    assert_native_best(&e.until("bestmove"), &after_7g7f());
+    assert_best(&e.until("bestmove"), &after_7g7f());
     e.send("go infinite depth 1 nodes 5000");
-    e.until("info string mshogi native_score");
+    e.until("info string mshogi reported_score");
     e.send("usinewgame");
     e.send("go depth 1 nodes 5000");
-    assert_native_best(
+    assert_best(
         &e.until("bestmove"),
         &mshogi_core::shogi::Position::initial(),
     );
     e.send("go infinite depth 1 nodes 5000");
-    e.until("info string mshogi native_score");
+    e.until("info string mshogi reported_score");
     e.send("gameover draw");
     e.send("isready");
     assert_eq!(e.until("readyok"), vec!["readyok"]);
@@ -199,19 +199,19 @@ fn malformed_positions_controls_and_options_are_atomic_and_explicit() {
     e.send("isready");
     e.until("readyok");
     e.send("go depth 1 nodes 5000");
-    assert_native_best(&e.until("bestmove"), &after_7g7f());
+    assert_best(&e.until("bestmove"), &after_7g7f());
     let (code, errors, _) = e.finish(true);
     assert_eq!(code, 0);
     assert_eq!(errors.lines().count(), 8, "{errors}");
 }
 #[test]
-fn native_terminal_handling_does_not_turn_draw_or_nonmate_into_resignation() {
+fn terminal_handling_does_not_turn_draw_or_nonmate_into_resignation() {
     let mut e = engine();
     e.send("position sfen k6r1/9/9/9/9/9/9/r8/8K b - 321");
     e.send("go depth 1 nodes 5000");
     let lines = e.until("info string mshogi execution_failure");
     assert!(!lines.iter().any(|s| s.starts_with("bestmove")));
-    assert!(lines.iter().any(|s| s.contains("native_terminal")));
+    assert!(lines.iter().any(|s| s.contains("terminal")));
     assert_eq!(e.finish(false).0, 1);
     let mut e = engine();
     e.send("position sfen 4k4/9/5R3/9/9/9/9/9/K8 b - 321");
@@ -223,7 +223,7 @@ fn native_terminal_handling_does_not_turn_draw_or_nonmate_into_resignation() {
 }
 
 #[test]
-fn checked_native_no_action_root_has_the_protocol_mandated_resignation() {
+fn checked_no_action_root_has_the_protocol_mandated_resignation() {
     let mut e = engine();
     e.send("position sfen k6rr/9/9/9/9/9/9/9/8K b - 322");
     e.send("go depth 1 nodes 5000");
@@ -234,39 +234,39 @@ fn checked_native_no_action_root_has_the_protocol_mandated_resignation() {
 fn same_context_request_replacement_and_failed_position_retire_held_results() {
     let mut e = engine();
     e.send("go infinite depth 1 nodes 5000");
-    e.until("info string mshogi native_score");
+    e.until("info string mshogi reported_score");
     e.send("go depth 1 nodes 5000");
-    assert_native_best(
+    assert_best(
         &e.until("bestmove"),
         &mshogi_core::shogi::Position::initial(),
     );
     e.send("position startpos moves 7g7f");
     e.send("go infinite depth 1 nodes 5000");
-    e.until("info string mshogi native_score");
+    e.until("info string mshogi reported_score");
     e.send("position invalid");
     e.send("isready");
     assert_eq!(e.until("readyok"), vec!["readyok"]);
     e.send("go depth 1 nodes 5000");
-    assert_native_best(&e.until("bestmove"), &after_7g7f());
+    assert_best(&e.until("bestmove"), &after_7g7f());
     let (code, error, _) = e.finish(true);
     assert_eq!(code, 0);
     assert!(error.contains("position requires"));
 }
 
 #[test]
-fn tsume_request_has_standard_notimplemented_reply_without_native_work() {
+fn tsume_request_has_standard_notimplemented_reply_without_work() {
     let mut e = engine();
     e.send("go mate 100");
     assert_eq!(e.until("checkmate"), vec!["checkmate notimplemented"]);
     e.send("go depth 1 nodes 5000");
-    assert_native_best(
+    assert_best(
         &e.until("bestmove"),
         &mshogi_core::shogi::Position::initial(),
     );
     assert_eq!(e.finish(true).0, 0);
 }
 
-fn assert_native_best(lines: &[String], position: &mshogi_core::shogi::Position) {
+fn assert_best(lines: &[String], position: &mshogi_core::shogi::Position) {
     let action = lines
         .last()
         .unwrap()
@@ -283,11 +283,11 @@ fn after_7g7f() -> mshogi_core::shogi::Position {
 }
 
 #[test]
-fn bounded_movetime_and_fixed_options_keep_native_moves_and_reproducible_probes() {
+fn bounded_movetime_and_fixed_options_keep_moves_and_reproducible_probes() {
     let mut e = engine();
     e.send("position startpos");
     e.send("go movetime 250");
-    assert_native_best(
+    assert_best(
         &e.until("bestmove"),
         &mshogi_core::shogi::Position::initial(),
     );
@@ -295,7 +295,7 @@ fn bounded_movetime_and_fixed_options_keep_native_moves_and_reproducible_probes(
     e.send("setoption name Nodes value 5000");
     e.send("go");
     let first = e.until("bestmove");
-    assert_native_best(&first, &mshogi_core::shogi::Position::initial());
+    assert_best(&first, &mshogi_core::shogi::Position::initial());
     e.send("go");
     let second = e.until("bestmove");
     assert_eq!(first.last(), second.last());
@@ -316,12 +316,12 @@ fn bounded_movetime_and_fixed_options_keep_native_moves_and_reproducible_probes(
     assert_eq!(e.finish(true).0, 0);
 }
 #[test]
-fn fischer_clock_go_returns_a_native_legal_move_within_the_allocation() {
+fn fischer_clock_go_returns_a_legal_move_within_the_allocation() {
     let mut e = engine();
     e.send("position startpos moves 7g7f");
     let started = std::time::Instant::now();
     e.send("go btime 3000 wtime 2000 binc 100 winc 100");
-    assert_native_best(&e.until("bestmove"), &after_7g7f());
+    assert_best(&e.until("bestmove"), &after_7g7f());
     // Gote's allocation from 2 s + 0.1 s is far below one second.
     assert!(started.elapsed() < std::time::Duration::from_millis(1500));
     assert_eq!(e.finish(true).0, 0);

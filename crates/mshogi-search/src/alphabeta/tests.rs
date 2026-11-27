@@ -4,7 +4,7 @@
 use super::*;
 
 #[test]
-fn timed_native_fallback_is_unscored_and_does_not_override_cancellation_or_fixed_work() {
+fn timed_fallback_is_unscored_and_does_not_override_cancellation_or_fixed_work() {
     let root = Counters {
         left: 12,
         path: vec![],

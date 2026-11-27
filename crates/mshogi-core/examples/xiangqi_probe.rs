@@ -107,7 +107,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
 }
 fn main() {
     if let Err(error) = run() {
-        eprintln!("native board probe refused: {error}");
+        eprintln!("game board probe refused: {error}");
         std::process::exit(1);
     }
 }

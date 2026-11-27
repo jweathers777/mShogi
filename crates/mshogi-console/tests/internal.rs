@@ -1,8 +1,8 @@
-//! Actual native executable and portable supervised pipe/process fixtures.
+//! Actual executable and portable supervised pipe/process fixtures.
 mod support;
 use mshogi_core::{
     chess::{AdjudicatedGame, ClaimPolicy},
-    native::CanonicalRecord,
+    game::CanonicalRecord,
 };
 use mshogi_engine::*;
 use std::{thread, time::Duration};

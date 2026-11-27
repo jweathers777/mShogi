@@ -8,7 +8,7 @@ fn request(game: &AdjudicatedGame) -> ExecutionContext {
         purpose: ExecutionPurpose::EngineTurn {},
         request_id: 1,
         session_version: 7,
-        game: mshogi_core::native::CanonicalRecord::chess(game.record()),
+        game: mshogi_core::game::CanonicalRecord::chess(game.record()),
         limits: WorkLimits {
             time_ms: None,
             depth: 1,
@@ -30,7 +30,7 @@ fn run(context: ExecutionContext) -> ChessResult {
     match response.observation.result {
         ExecutionResult::Chess { result } => result,
         ExecutionResult::Failure { failure } => ChessResult::Failure { failure },
-        other => panic!("unexpected native family: {other:?}"),
+        other => panic!("unexpected family: {other:?}"),
     }
 }
 #[test]
@@ -157,7 +157,7 @@ fn invalid_settings_and_search_failure_have_no_score() {
 }
 
 #[test]
-fn native_record_duplicate_fields_are_not_collapsed_before_strict_validation() {
+fn record_duplicate_fields_are_not_collapsed_before_strict_validation() {
     let context = request(&AdjudicatedGame::new(ClaimPolicy::ExplicitOnly));
     let text = serde_json::to_string(&context).unwrap();
     let text = text.replace(
@@ -173,8 +173,8 @@ fn analysis_target(game: &AdjudicatedGame) -> ExecutionTarget {
         board_ply: game.history().ply_count() as u64,
         event_index: game.record().events().len() as u64,
         session_version: 7,
-        label: "Native protocol target".into(),
-        turn: mshogi_core::native::NativeSide::Chess(game.position().side_to_move()),
+        label: "Protocol target".into(),
+        turn: mshogi_core::game::TaggedSide::Chess(game.position().side_to_move()),
     }
 }
 #[test]

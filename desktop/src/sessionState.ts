@@ -1,6 +1,6 @@
-import type { GameSnapshot, Side } from "./native";
+import type { GameSnapshot, Side } from "./sessionTypes";
 
-export function nativeSnapshotIsNewer(current: GameSnapshot | null, incoming: GameSnapshot): boolean {
+export function gameSnapshotIsNewer(current: GameSnapshot | null, incoming: GameSnapshot): boolean {
   if (current === null) return true;
   return incoming.token.document > current.token.document || (incoming.token.document === current.token.document && incoming.game === current.game && incoming.profile === current.profile && incoming.token.revision > current.token.revision);
 }

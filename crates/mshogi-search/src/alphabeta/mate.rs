@@ -11,7 +11,7 @@
 //! A position that a game rule already decides (`rule_score`), including a
 //! repetition or a perpetual-check cycle, is not a mate. Such results depend
 //! on the path, so they are kept out of the table. A proof is private
-//! analysis; the native rules still admit the move and decide the result.
+//! analysis; the rules still admit the move and decide the result.
 use super::{SearchPosition, Stage};
 use std::time::Instant;
 

@@ -1,15 +1,15 @@
 # MSH-66 independent completeness-fixture expected-fact review
 
 Date: 2026-10-26. Reviewer: fresh Codex review agent, separate from the fixture
-and native legality authors. This is an independent agent review, not a human
+and legality authors. This is an independent agent review, not a human
 review. Only this report and the separately requested reference-domain review
 supplement are owned by this reviewer.
 
 **Verdict: PASS for the 68 independently expected records in
 `tests/fixtures/shogi/legal-completeness.json`.** Approval was sent to the author
-before reference or native execution of these records. No expected answer was
+before reference or execution of these records. No expected answer was
 derived from either implementation's output. This approves concrete expected
-board facts; actual execution, native legality and MSH-66 acceptance remain
+board facts; actual execution, legality and MSH-66 acceptance remain
 separate evidence.
 
 ## Provenance and method
@@ -27,7 +27,7 @@ counts, promotion additions, auxiliary king moves and 30-by-30 start-tree proof.
 Then compared every exact array against independently handwritten target maps;
 a separate review script expanded those maps into USI choices and their
 180-degree ownership-reversed counterparts. This script did not import cshogi,
-call the native library or read an implementation's move output. The six
+call the library or read an implementation's move output. The six
 blocker records and four empty-set records were checked by explicit ray,
 occupancy, attack and escape/capture reasoning.
 
@@ -173,8 +173,8 @@ are covered by the separate supplement, preserving historical evidence.
 
 The author was authorized to run the admitted reference only after this
 expected-fact review approval. Reference results must stay separate from these
-expected arrays and totals. Native complete-action comparison, all-prefix
+expected arrays and totals. Complete-action comparison, all-prefix
 state transitions, apply/undo restoration, request atomicity, additional
 king-safety/pawn-drop edge cases and MSH-66 closure belong to the integrator's
-native test/runtime evidence and fresh implementation review. History and
+test/runtime evidence and fresh implementation review. History and
 outcome semantics remain MSH-67.

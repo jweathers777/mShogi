@@ -3,12 +3,12 @@
 //! Each engine keeps one process for the whole game. The controller owns a
 //! Fischer clock per side: it sends `go wtime btime winc binc` (Red is white),
 //! measures the wall time from the written `go` to the `bestmove` line, charges
-//! it to the mover and then adds the increment. Native admission with
-//! `auto_valid_claims` decides every reply and every result. A native pending
+//! it to the mover and then adds the increment. Game admission with
+//! `auto_valid_claims` decides every reply and every result. A pending
 //! adjudication is an unscored stop, and so is clock exhaustion: the accepted
-//! profile has no time-loss rule. Every report replays against the native
+//! profile has no time-loss rule. Every report replays against the
 //! rules, and its clock ledger is recomputed from the recorded elapsed times.
-use crate::protocol_match::MatchNative;
+use crate::protocol_match::MatchInternal;
 use crate::xiangqi::Adapter;
 use crate::{
     FischerClock as Clock,
@@ -31,7 +31,7 @@ pub enum Protocol {
 }
 
 /// How one engine's commands and replies are written on the wire. The
-/// controller translates; native rules still decide every move.
+/// controller translates; rules still decide every move.
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Wire {
@@ -54,7 +54,7 @@ pub struct Wire {
 pub struct MatchConfig {
     /// Config version, one.
     pub schema_version: u32,
-    /// Exact native rules profile.
+    /// Exact rules profile.
     pub profile: String,
     /// Experiment label.
     pub id: String,
@@ -157,13 +157,13 @@ impl MatchConfig {
     }
 }
 
-/// Accepted reply and native-side clock ledger.
+/// Accepted reply and side clock ledger.
 pub type ClockedTurn = crate::protocol_match::ClockedTurn<Side>;
 /// Unscored clock exhaustion evidence.
 pub type Exhaustion = crate::protocol_match::Exhaustion<Side>;
 
 pub use crate::protocol_match::MatchStop;
-/// Complete native clocked game evidence, with the recorded game-specific schema.
+/// Complete clocked game evidence, with the recorded game-specific schema.
 pub type MatchReport = crate::protocol_match::MatchReport<MatchConfig, Side, Conclusion>;
 
 fn go(clock: [u64; 2], increment: [u64; 2]) -> String {
@@ -225,7 +225,7 @@ fn position_for(wire: Wire, game: &Game) -> String {
         Some((head, moves)) => {
             let shifted: Vec<String> = moves
                 .split(' ')
-                .map(|m| shift_move(m, i32::from(wire.rank_offset)).expect("native action"))
+                .map(|m| shift_move(m, i32::from(wire.rank_offset)).expect("action"))
                 .collect();
             format!("{head} moves {}", shifted.join(" "))
         }
@@ -233,8 +233,8 @@ fn position_for(wire: Wire, game: &Game) -> String {
     }
 }
 
-/// Native command of a reply line on the wire. UCCI may end a reply with
-/// `resign` (a native resignation; the move is not played) or `draw` (a draw
+/// Game command of a reply line on the wire. UCCI may end a reply with
+/// `resign` (a resignation; the move is not played) or `draw` (a draw
 /// offer, which this board-only protocol cannot carry: ignored, the move is
 /// played).
 fn reply_for(wire: Wire, line: &str) -> Result<GameCommand, String> {
@@ -279,7 +279,7 @@ fn side_index(side: Side) -> usize {
 }
 
 impl MatchReport {
-    /// Decode and verify the native history and clock ledger.
+    /// Decode and verify the game history and clock ledger.
     pub fn from_json(text: &str) -> Result<Self, RunnerError> {
         let report: Self = common::decode(text, common::REPORT_BYTES)?;
         report.replay()?;
@@ -289,7 +289,7 @@ impl MatchReport {
     pub fn to_json(&self) -> Result<String, RunnerError> {
         common::encode_report(self)
     }
-    /// Replay the native history and verify stop, score and clock receipts.
+    /// Replay the game history and verify stop, score and clock receipts.
     pub fn replay(&self) -> Result<Game, RunnerError> {
         self.config.validate()?;
         crate::protocol_match::replay_report(
@@ -299,7 +299,7 @@ impl MatchReport {
         )
     }
 }
-/// Play and verify one clocked native game.
+/// Play and verify one clocked game.
 pub fn run(config: &MatchConfig) -> Result<MatchReport, RunnerError> {
     config.validate()?;
     let report =
@@ -308,7 +308,7 @@ pub fn run(config: &MatchConfig) -> Result<MatchReport, RunnerError> {
     Ok(report)
 }
 
-impl MatchNative for Adapter {
+impl MatchInternal for Adapter {
     type Wire = Wire;
     fn dialect(wire: Wire) -> Dialect {
         dialect(wire)
@@ -329,7 +329,7 @@ impl MatchNative for Adapter {
         let kind = if matches!(command, GameCommand::Play { .. }) {
             FailureKind::IllegalAction
         } else {
-            FailureKind::Native
+            FailureKind::GameAdmission
         };
         submit(game, command).map_err(|e| (kind, "admission", e))
     }

@@ -1,10 +1,10 @@
-# Native desktop archives (MSH-73)
+# Desktop archives (MSH-73)
 
 This describes the retired journal archive. Current saves use the
 [minimal game document](../desktop/document-v1.md). The journal quotas and
 synthetic replay-work budget below are historical, not current requirements.
 
-This extends [the desktop session contract](desktop-session.md). Native chess
+This extends [the desktop session contract](desktop-session.md). Chess
 and shogi records remain authoritative; this is concrete dispatch, not a shared
 rules model. The selected shogi profile remains `mshogi.shogi.csa36.v1`, with its
 immutable CSA edition and untimed software policy. MSH-74 owns product UI and
@@ -22,7 +22,7 @@ restrictions apply unchanged.
 New shogi saves use **v2**, with required, explicit `schema_version:2`,
 `format:mshogi.desktop.archive.v2`, `game_kind`, `rules_profile`,
 `profile_edition`, and a game-specific `payload`. These are distinct from the
-native record envelope/schema and engine transport versions. A v2 chess payload
+game record envelope/schema and engine transport versions. A v2 chess payload
 is exactly the original strict v1 archive (accepted by both chess and shared
 Open); saving chess continues to produce v1 for compatibility. The old chess
 endpoint refuses v2 shogi explicitly. Shared Open dispatches only the named game;
@@ -37,18 +37,18 @@ Outer wrong-game/profile/version messages are distinct from corrupt replay and
 
 ## Shogi payload and reconstruction
 
-The payload contains initial and current **native canonical records**, the native
+The payload contains initial and current **canonical records**, the
 human side, initial/current shogi preferences, ordered accepted desktop controls,
 complete observations, and a retired execution high-water mark. Initial/current
 records are journal base and validation target; the desktop does not duplicate
 pieces, hands or conclusions in a lossy position model.
 
-The native records preserve profile/edition/schema, canonical root/category,
+The game records preserve profile/edition/schema, canonical root/category,
 SFEN declared counter and its provenance, known/unknown earlier history,
 complete moves/drop/promotion/capture effects, actors and order, board ply,
-repetition/check evidence, declaration and resignation events and native
-conclusions. Undo reconstructs a native prefix. Controls preserve accepted
-semantic commands and observation ordering, including retired branches. Native
+repetition/check evidence, declaration and resignation events and
+conclusions. Undo reconstructs a prefix. Controls preserve accepted
+semantic commands and observation ordering, including retired branches. Game
 replay must equal the current record and final preferences; serialized conclusions
 are never trusted independently. Declaration advice is not a committed event.
 Unsupported chess Full/claims are rejected as shogi operations.
@@ -56,14 +56,14 @@ Unsupported chess Full/claims are rejected as shogi operations.
 Historical selection is intentionally document state: Inspect/Return-to-live
 controls retain the exact event prefix, including before/after a terminal event
 at the same board ply. Partial board/hand selection is transient. Saved analysis
-retains exact native history/target/purpose, side, event/board-ply distinction,
+retains exact game history/target/purpose, side, event/board-ply distinction,
 request/session/process/selection IDs, work limits and actual result. Observations
 on undone branches remain evidence about those branches, never current analysis.
-Settings currently retain native orientation and ordinary depth/node defaults;
+Settings currently retain orientation and ordinary depth/node defaults;
 actual observations keep their original limits even after defaults change.
 
 Open runs through the off-path bounded worker, validates the entire journal and
-native targets/PV, and atomically installs only against the approved document,
+targets/PV, and atomically installs only against the approved document,
 session version and accepted-content revision. It allocates fresh runtime
 identities above current runtime and saved issued-execution floors, clears pending
 work/current analysis, marks observations historical, and pauses play. **Resume
@@ -75,35 +75,35 @@ Save. Historical selection and Undo cannot revive retired requests.
 
 Every shogi command and engine/analysis completion is first applied to a private
 candidate, then admitted off-path using a stable receipt. Complete encoded bytes
-and counts are checked before accepted contents change. Invalid native commands,
+and counts are checked before accepted contents change. Invalid game commands,
 resource refusal, incomplete search, process failure and chess/shogi outcomes
 remain distinct. Capacity refusal retains accepted history/observations and pauses
 execution: save the complete current document, then start a new document. Merely
 saving/reopening does not reset limits, and retrying the same impossible save is
 not offered as a remedy. No history or observation is dropped.
 
-MSH-268 removed every byte and event limit on documents, native records and
+MSH-268 removed every byte and event limit on documents, game records and
 engine requests and replies. The selected Shogi game policy normally concludes
 after 320 board actions (terminal commands remain separate events); that is a
 game rule, not a size limit.
 
 A potentially active journal reserves one control and1024 encoded bytes for
-native stop/close, and budgets maximum-width future identity fields. A private
+stop/close, and budgets maximum-width future identity fields. A private
 journal-derived reservation survives the runtime pause on Open; preferences
 cannot accidentally release it. Close consumes the reserved slot. Historical
 observation flags are budgeted at their longer encoding before admission.
 The archive's conservative **16,000 journal replay-action work budget** charges
-each native event at4 work units (including initial/current records and
-observation histories); Undo/Inspect reserve the full native321-event maximum
+each game event at4 work units (including initial/current records and
+observation histories); Undo/Inspect reserve the full rules321-event maximum
 at that weight, observations add8, and other controls cost1. One replay action is reserved for stop/close whenever active. This bounds repeated reconstruction;
 it is an additional, game-specific admission policy, not an increased constant.
 
 Parsing has a separate bounded cost: a raw first stage rejects excessive counts
-before native parsing, then probes native event counts and conservative journal work before
-authoritative validation. At most258 native records (initial/current plus256
+before parsing, then probes game event counts and conservative journal work before
+authoritative validation. At most258 game records (initial/current plus256
 contexts) remain possible within the16,000-work total. Cancellation
-checks separate records, observations and controls. Each individual native record
-validation is atomic; it does not check cancellation at every native event.
+checks separate records, observations and controls. Each individual game record
+validation is atomic; it does not check cancellation at every game event.
 Control replay has its own stop/deadline checkpoints. This is a bounded worker,
 not a hard real-time latency promise. The existing worker deadline can reject an
 Open without touching live state. Diagnostics are UTF-8-safe and bounded4KiB.
@@ -118,11 +118,11 @@ update the same document's path without overwriting newer settings/content.
 Completion from a replaced document cannot claim its path or saved revision.
 
 Corrupt, unsupported, over-budget, cancelled or stale Open leaves the current
-accepted native document intact. A successful Open retires pending admissions and
-old process work. Native replacement tokens and frontend document epochs prevent
+accepted document intact. A successful Open retires pending admissions and
+old process work. Replacement tokens and frontend document epochs prevent
 ABA/stale snapshots across games. Host operations retain bounded command/file
-reservations; dialogs and disk/native replay never hold the controller lock.
-Close/quit retains native unsaved-change approval and child cleanup. Cancelling
+reservations; dialogs and disk/game replay never hold the controller lock.
+Close/quit retains unsaved-change approval and child cleanup. Cancelling
 Save in Save-and-close or Save-then-Open cannot discard dirty work.
 
 ## MSH-73 verification
@@ -134,9 +134,9 @@ for the current verification build and fixture setup.
 
 ## Xiangqi extension (MSH-99)
 
-The Xiangqi native archive contract adds an explicit
+The Xiangqi archive contract adds an explicit
 Xiangqi payload to the existing v2 dispatcher. It preserves the frozen Chessv1
-writer and existing Chess/Shogiv2 payloads. Its measured native replay admission,
+writer and existing Chess/Shogiv2 payloads. Its measured game replay admission,
 and complete event prefixes remain game-specific;
 this addition does not claim finished Xiangqi product UI. The original MSH-73
 verification narrative above remains historical evidence.

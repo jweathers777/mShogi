@@ -202,7 +202,7 @@ impl Game {
         Ok(())
     }
 
-    // Only native checked resolution/prepared tokens supply `after`.
+    // Only checked resolution/prepared tokens supply `after`.
     pub(super) fn commit_after(&mut self, action: Action, after: Position) {
         let identity = after.repetition_identity();
         let irreversible =

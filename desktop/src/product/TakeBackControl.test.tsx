@@ -3,7 +3,7 @@ import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { TakeBackControl } from "./TakeBackControl";
 afterEach(cleanup);
-it("admits one native transaction and restores focus only after a new accepted context", async () => {
+it("admits one transaction and restores focus only after a new accepted context", async () => {
   const restore = vi.fn().mockResolvedValue({});
   const props = { available: true, disabled: false, contextKey: "before", restore };
   const view = (next = props) => <><h2 data-game-status tabIndex={-1}>Your turn</h2><TakeBackControl {...next} /></>;
@@ -24,7 +24,7 @@ it("disables unavailable and busy work, with no confirmation or history reconstr
   fireEvent.click(screen.getByRole("button")); expect(restore).not.toHaveBeenCalled();
   expect(screen.queryByRole("dialog")).toBeNull();
 });
-it("does not move focus after native refusal even when a later snapshot arrives", async () => {
+it("does not move focus after refusal even when a later snapshot arrives", async () => {
   const restore = vi.fn().mockResolvedValue(null);
   const { rerender } = render(<><h2 data-game-status tabIndex={-1}>Your turn</h2><TakeBackControl available disabled={false} contextKey="a" restore={restore} /></>);
   const button = screen.getByRole("button"); button.focus(); fireEvent.click(button); await Promise.resolve();

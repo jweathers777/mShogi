@@ -1,12 +1,12 @@
 import { inspectionStatus } from "./product/movementInspection";
 import { useId } from "react";
-import type { NativeChoiceController } from "./interaction/useNativeChoiceController";
+import type { BoardChoiceController } from "./interaction/useBoardChoiceController";
 
 // The controls that every board shares: one help line, route controls, live
 // announcement, completion dialog and square state wording.
 
-/** Accessible name of a board point: its native label plus the selection state. */
-export function pointLabel(key: string, piece: { label: string } | undefined, interaction: NativeChoiceController) {
+/** Accessible name of a board point: its label plus the selection state. */
+export function pointLabel(key: string, piece: { label: string } | undefined, interaction: BoardChoiceController) {
   const { selected, inspection, inspectionPending, prefix, destinations } = interaction;
   const base = piece?.label ?? `${key}, empty`;
   const target = destinations.includes(key);
@@ -14,7 +14,7 @@ export function pointLabel(key: string, piece: { label: string } | undefined, in
 }
 
 /** Help line, partial-route controls and the live announcement under a board. */
-export function BoardFooter({ interaction, disabled }: { interaction: NativeChoiceController; disabled: boolean }) {
+export function BoardFooter({ interaction, disabled }: { interaction: BoardChoiceController; disabled: boolean }) {
   const { inspection, inspectionPending, selectedLabel, selected, prefix } = interaction;
   return <div className="shell-board-help">
     <p className={`board-help${inspection || inspectionPending ? " movement-inspection-status" : selectedLabel ? " selected-piece-status" : ""}`}>{inspection ? inspectionStatus(inspection.label) : inspectionPending ? "Loading read-only movement inspection…" : selectedLabel ? `Selected ${selectedLabel} · Esc clears` : "Arrows: move focus · Enter/Space: select · Esc: cancel"}</p>
@@ -28,7 +28,7 @@ export function BoardFooter({ interaction, disabled }: { interaction: NativeChoi
 }
 
 /** Choice between complete actions that share a route; a promotion in Chess and Shogi. */
-export function CompletionDialog({ interaction, promotion }: { interaction: NativeChoiceController; promotion: boolean }) {
+export function CompletionDialog({ interaction, promotion }: { interaction: BoardChoiceController; promotion: boolean }) {
   const title = useId();
   if (!interaction.completions.length) return null;
   return <div className="modal-backdrop"><div className="promotion-dialog" role="dialog" aria-modal="true" aria-labelledby={title}

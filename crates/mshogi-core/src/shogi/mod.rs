@@ -1,4 +1,4 @@
-//! Native state for `mshogi.shogi.csa36.v1`.
+//! Game state for `mshogi.shogi.csa36.v1`.
 //!
 //! SFEN admits locally valid analysis diagrams, including sparse material. It
 //! does not establish reachability, repetition, prior checks or match outcomes.
@@ -27,7 +27,7 @@ pub use game::{
 
 /// Approved standard-shogi rules profile identity.
 pub const PROFILE_ID: &str = "mshogi.shogi.csa36.v1";
-/// Immutable source/software edition already encoded by native schema v1.
+/// Immutable source/software edition already encoded by record schema v1.
 pub const PROFILE_EDITION: &str = "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026";
 /// Independently specified even-game initial SFEN.
 pub const INITIAL_SFEN: &str = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1";
@@ -320,7 +320,7 @@ impl fmt::Display for PositionError {
 }
 impl Error for PositionError {}
 
-/// Complete native local state. No prior repetition or match result is inferred.
+/// Complete local state. No prior repetition or match result is inferred.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Position {
     board: [Option<Piece>; 81],

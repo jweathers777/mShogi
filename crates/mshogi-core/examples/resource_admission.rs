@@ -1,4 +1,4 @@
-//! Native admission/replay measurements; generated walks are workloads, not rules oracles.
+//! Game admission/replay measurements; generated walks are workloads, not rules oracles.
 #[path = "support/walk.rs"]
 mod walk;
 use std::{error::Error, hint::black_box, time::Instant};

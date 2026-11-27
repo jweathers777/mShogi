@@ -1,7 +1,7 @@
 //! Actual production-child experiment evidence, separate from playing strength.
 use mshogi_core::{
     chess, chu,
-    native::{CanonicalRecord, RulesProfile},
+    game::{CanonicalRecord, RulesProfile},
     shogi, tenjiku, tori, xiangqi,
 };
 use mshogi_runner::experiments::{
@@ -20,12 +20,12 @@ fn add(config: &mut Config, record: CanonicalRecord, source: &str) {
     let profile = record.profile();
     config.openings.push(Opening {
         id: format!("tactical-{}", profile.id()),
-        group: format!("native-experiment-regression:{}:{source}", profile.id()),
+        group: format!("experiment-regression:{}:{source}", profile.id()),
         root: fresh_root(record).unwrap(),
         split: Split::Test,
         provenance: format!(
-            "Project-authored native diagnostic from {source}; Test-only regression lineage. \
-             Native ending is independently established by the cited existing fixture/test; \
+            "Project-authored diagnostic from {source}; Test-only regression lineage. \
+             Ending is independently established by the cited existing fixture/test; \
              no external training corpus or inferred licensing grant."
         ),
     });
@@ -39,16 +39,16 @@ fn fixture(config: &mut Config, text: &str, source: &str, profile: RulesProfile)
 
 fn tactical_config() -> Config {
     let mut config = template(env!("CARGO_BIN_EXE_mshogi")).unwrap();
-    config.id = "actual-seven-profile-native-experiment-regression".into();
-    config.protocol = "Actual production internal-search executable; one native command from \
+    config.id = "actual-seven-profile-experiment-regression".into();
+    config.protocol = "Actual production internal-search executable; one game command from \
         seven independently established tactical predecessors, paired sides and two identical \
-        embedded baselines. This checks native infrastructure and bounded execution only, \
+        embedded baselines. This checks infrastructure and bounded execution only, \
         without a playing-strength claim. All diagnostic lineages remain Test-only."
         .into();
     config.players.truncate(2);
     for p in &mut config.players {
         p.build_provenance = "Actual CARGO_BIN_EXE_mshogi from this Cargo integration-test build; \
-            observed executable SHA256 retained in report. Embedded native baseline; no model load."
+            observed executable SHA256 retained in report. Embedded baseline; no model load."
             .into();
         for limits in &mut p.limits {
             limits.work.depth = 1;
@@ -98,30 +98,30 @@ fn tactical_config() -> Config {
     add(
         &mut config,
         CanonicalRecord::xiangqi(xiangqi::GameRecord::from_game(&xiangqi).unwrap()),
-        "crates/mshogi-search/tests/xiangqi.rs::immediate_stalemate_is_a_native_win_for_each_side",
+        "crates/mshogi-search/tests/xiangqi.rs::immediate_stalemate_is_a_win_for_each_side",
     );
     fixture(
         &mut config,
         include_str!("../../../desktop/scripts/fixtures/tori-mate-in-one.mshogi"),
-        "desktop/scripts/fixtures/tori-mate-in-one.mshogi#payload.record (native root prefix)",
+        "desktop/scripts/fixtures/tori-mate-in-one.mshogi#payload.record (game root prefix)",
         RulesProfile::ToriModernV1,
     );
     fixture(
         &mut config,
         include_str!("../../../desktop/scripts/fixtures/chu-complete-royal-engine.mshogi"),
-        "desktop/scripts/fixtures/chu-complete-royal-engine.mshogi#payload.record (native root prefix)",
+        "desktop/scripts/fixtures/chu-complete-royal-engine.mshogi#payload.record (game root prefix)",
         RulesProfile::ChuJcsa2019V1,
     );
     fixture(
         &mut config,
         include_str!("../../../desktop/scripts/fixtures/tenjiku-adams-royal-engine.mshogi"),
-        "desktop/scripts/fixtures/tenjiku-adams-royal-engine.mshogi#payload.record (native root prefix)",
+        "desktop/scripts/fixtures/tenjiku-adams-royal-engine.mshogi#payload.record (game root prefix)",
         RulesProfile::TenjikuAdamsModernV1,
     );
     fixture(
         &mut config,
         include_str!("../../../desktop/scripts/fixtures/tenjiku-muller-royal-engine.mshogi"),
-        "desktop/scripts/fixtures/tenjiku-muller-royal-engine.mshogi#payload.record (native root prefix)",
+        "desktop/scripts/fixtures/tenjiku-muller-royal-engine.mshogi#payload.record (game root prefix)",
         RulesProfile::TenjikuMullerCompletedV1,
     );
     config.validate().unwrap();
@@ -129,7 +129,7 @@ fn tactical_config() -> Config {
 }
 
 fn expected_outcome(profile: RulesProfile) -> Value {
-    // Native facts come from the authored positions cited above, independently
+    // Facts come from the authored positions cited above, independently
     // of the actual observed search scores/decisions in this experiment.
     match profile {
         RulesProfile::ChessMatchV1 => serde_json::to_value(chess::MatchConclusion::Chess(
@@ -175,7 +175,7 @@ fn rejected(report: &Report, change: impl FnOnce(&mut Value)) {
 }
 
 #[test]
-fn actual_seven_profile_games_replay_export_native_labels_and_reject_corruption() {
+fn actual_seven_profile_games_replay_export_labels_and_reject_corruption() {
     let _journey = JOURNEY.lock().unwrap_or_else(|e| e.into_inner());
     let config = tactical_config();
     let report = run(&config).unwrap();
@@ -202,8 +202,8 @@ fn actual_seven_profile_games_replay_export_native_labels_and_reject_corruption(
         let observation = step.observation.as_ref().expect("actual production result");
         assert!(observation.matches(&step.request));
         assert_eq!(step.request.game, opening.root.record);
-        assert_eq!(game.stop, "native_concluded");
-        assert_eq!(game.native_outcome, Some(expected_outcome(profile)));
+        assert_eq!(game.stop, "game_concluded");
+        assert_eq!(game.outcome, Some(expected_outcome(profile)));
         assert_eq!(game.score_first_twice, Some(2));
         assert_eq!(game.final_root.record.profile(), profile);
         assert_eq!(
@@ -243,15 +243,10 @@ fn actual_seven_profile_games_replay_export_native_labels_and_reject_corruption(
         let opening = &config.openings[game.pairing.opening];
         assert_eq!(row["split"], "test");
         assert_eq!(row["group"], opening.group);
-        assert!(
-            row["native_lineage"]
-                .as_str()
-                .unwrap()
-                .starts_with("native-root-v1:")
-        );
+        assert!(row["lineage"].as_str().unwrap().starts_with("root-v1:"));
         assert_eq!(row["source_report_sha256"], digest(&encoded));
         assert_eq!(row["config_sha256"], report.config_sha256);
-        assert_eq!(row["native_outcome"], game.native_outcome.clone().unwrap());
+        assert_eq!(row["outcome"], game.outcome.clone().unwrap());
         assert_eq!(row["terminal_value_available"], true);
         assert_eq!(row["usable_action_target"], true);
         assert_eq!(row["score_first_twice"], 2);
@@ -286,7 +281,7 @@ fn actual_seven_profile_games_replay_export_native_labels_and_reject_corruption(
         r["games"][0]["steps"][0]["request"]["limits"]["nodes"] = json!(0)
     });
     rejected(&report, |r| r["games"][0]["score_first_twice"] = json!(0));
-    rejected(&report, |r| r["games"][0]["native_outcome"] = Value::Null);
+    rejected(&report, |r| r["games"][0]["outcome"] = Value::Null);
     let tori = report
         .games
         .iter()
@@ -299,17 +294,17 @@ fn actual_seven_profile_games_replay_export_native_labels_and_reject_corruption(
     });
     let mut leaked = config.clone();
     let mut duplicate = leaked.openings[0].clone();
-    duplicate.id = "same-native-lineage-different-declared-group".into();
+    duplicate.id = "same-lineage-different-declared-group".into();
     duplicate.group = "different-declared-group".into();
     duplicate.split = Split::Train;
     leaked.openings.push(duplicate);
     assert!(
         leaked.validate().is_err(),
-        "same native lineage cannot cross Test/Train labels"
+        "same lineage cannot cross Test/Train labels"
     );
     println!(
         "EXPERIMENT-ACTUAL-TACTICAL {}",
-        json!({"profiles":7,"paired_games":14,"native_concluded":14,"summaries":summaries})
+        json!({"profiles":7,"paired_games":14,"game_concluded":14,"summaries":summaries})
     );
 }
 
@@ -338,7 +333,7 @@ fn actual_zero_work_has_no_fallback_outcome_or_training_label() {
         assert!(!game.steps[0].applied);
         assert!(game.steps[0].observation.is_some());
         assert_eq!(game.final_root, config.openings[0].root);
-        assert_eq!(game.native_outcome, None);
+        assert_eq!(game.outcome, None);
         assert_eq!(game.score_first_twice, None);
     }
     let summary = &report.summaries().unwrap()[0];
@@ -377,7 +372,7 @@ fn cancellation_after_submission_retains_request_and_never_invents_response() {
     for game in &report.games {
         assert_eq!(game.stop, "cancelled");
         assert_eq!(game.final_root, config.openings[0].root);
-        assert_eq!(game.native_outcome, None);
+        assert_eq!(game.outcome, None);
         assert_eq!(game.score_first_twice, None);
     }
     let lines = report.data_jsonl().unwrap();

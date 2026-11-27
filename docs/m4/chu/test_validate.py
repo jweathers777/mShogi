@@ -1,4 +1,4 @@
-"""Data-admission mutation tests, not native Chu rule tests."""
+"""Data-admission mutation tests, not Chu rule tests."""
 import copy
 import importlib.util
 from pathlib import Path
@@ -20,10 +20,10 @@ class Admission(unittest.TestCase):
         with self.assertRaises(ValueError):
             DATA.validate(self.profile, self.corpus)
 
-    def test_valid_reports_zero_native_execution(self):
+    def test_valid_reports_zero_execution(self):
         report = DATA.validate(self.profile, self.corpus)
-        self.assertEqual(report["native_executed"], 0)
-        self.assertEqual(report["native_passed"], 0)
+        self.assertEqual(report["rules_executed"], 0)
+        self.assertEqual(report["rules_passed"], 0)
 
     def test_duplicate_outer_and_nested(self):
         for raw in [b'{"a":1,"a":2}', b'{"a":{"x":1,"x":2}}']:
@@ -34,7 +34,7 @@ class Admission(unittest.TestCase):
         self.reject(lambda p, c: c.update(unknown=True))
 
     def test_missing_outer(self):
-        self.reject(lambda p, c: c.pop("native_conformance_executed"))
+        self.reject(lambda p, c: c.pop("rules_conformance_executed"))
 
     def test_wrong_profile(self):
         self.reject(lambda p, c: p.update(profile="mshogi.tori.modern.v1"))
@@ -42,8 +42,8 @@ class Admission(unittest.TestCase):
     def test_wrong_edition(self):
         self.reject(lambda p, c: p.update(edition="unreviewed"))
 
-    def test_fabricated_native_pass(self):
-        self.reject(lambda p, c: c.update(native_conformance_executed=True))
+    def test_fabricated_pass(self):
+        self.reject(lambda p, c: c.update(rules_conformance_executed=True))
 
     def test_duplicate_id(self):
         self.reject(lambda p, c: c["fixtures"].append(copy.deepcopy(c["fixtures"][0])))

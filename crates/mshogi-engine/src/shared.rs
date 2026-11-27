@@ -3,10 +3,10 @@ use crate::{
     ChessResult, EngineFailure, EngineGame, FailureKind, MAX_ANALYSIS_DEPTH, MAX_ANALYSIS_NODES,
     MAX_STDERR_BYTES, WorkLimits, adapter::for_game,
 };
-use mshogi_core::native::{CanonicalRecord, GameKind, NativeSide};
+use mshogi_core::game::{CanonicalRecord, GameKind, TaggedSide};
 use serde::{Deserialize, Serialize};
 
-/// Exact historical-selection provenance alongside the full native record.
+/// Exact historical-selection provenance alongside the full game record.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct ExecutionTarget {
@@ -16,19 +16,19 @@ pub struct ExecutionTarget {
     pub event_index: u64,
     /// Known board actions, not an imported FEN/SFEN counter.
     pub board_ply: u64,
-    /// Host revision at selection, never restored by native semantic undo.
+    /// Host revision at selection, never restored by game semantic undo.
     pub session_version: u64,
-    /// Bounded native-readable target label.
+    /// Bounded readable target label.
     pub label: String,
-    /// Native game-qualified perspective; White and Sente are not synonyms.
-    pub turn: NativeSide,
+    /// Game-qualified perspective; White and Sente are not synonyms.
+    pub turn: TaggedSide,
 }
 impl ExecutionTarget {
     pub(crate) fn matches(
         &self,
         version: u64,
         (events, plies): (usize, usize),
-        turn: NativeSide,
+        turn: TaggedSide,
     ) -> bool {
         self.selection_id > 0
             && self.session_version == version
@@ -47,7 +47,7 @@ pub enum ExecutionPurpose {
     EngineTurn {},
     /// Read-only bounded move analysis of the exact supplied prefix.
     MoveAnalysis {
-        /// Native target provenance.
+        /// Target provenance.
         target: ExecutionTarget,
     },
 }
@@ -61,13 +61,13 @@ pub struct ExecutionContext {
     pub request_id: u64,
     /// Host-owned session version, independent of board ply and semantic undo.
     pub session_version: u64,
-    /// Actual canonical native history, policies and root provenance.
+    /// Actual canonical game history, policies and root provenance.
     pub game: CanonicalRecord,
     /// Complete deterministic ordinary-search limits.
     pub limits: WorkLimits,
 }
 impl ExecutionContext {
-    /// Cheap bounded static admission. Native live replay stays in the supervised child.
+    /// Cheap bounded static admission. Live replay stays in the supervised child.
     pub fn valid_limits(&self) -> bool {
         if self.limits.time_ms.is_some_and(|ms| ms > 60_000) {
             return false;
@@ -76,7 +76,7 @@ impl ExecutionContext {
         let kind = self.game.game_kind();
         let target_valid = |target: &ExecutionTarget| {
             let turn = for_game!(kind, G => G::record(&self.game)
-                .map(|record| G::native_side(G::record_side(record))), chess => Some(target.turn));
+                .map(|record| G::tagged_side(G::record_side(record))), chess => Some(target.turn));
             target.turn.game() == kind
                 && turn.is_some_and(|turn| {
                     target.matches(
@@ -103,41 +103,41 @@ impl ExecutionContext {
     }
 }
 
-/// Actual native result families; scores and conclusions retain native meaning.
+/// Actual engine result families; scores and conclusions retain meaning.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum ExecutionResult {
     /// Actual full-history Tenjiku search under its immutable selected profile.
     Tenjiku {
-        /// Native complete-route decision, conclusion or incomplete observation.
+        /// Complete-route decision, conclusion or incomplete observation.
         result: crate::TenjikuResult,
     },
-    /// Actual native Chu complete-route search observations.
+    /// Actual Chu complete-route search observations.
     Chu {
         /// Chu-owned result; no Chess mate or drop adaptation.
         result: crate::ChuResult,
     },
-    /// Actual native Tori complete action, conclusion or incomplete observation.
+    /// Actual Tori complete action, conclusion or incomplete observation.
     Tori {
         /// Tori-owned result and score interpretation.
         result: crate::ToriResult,
     },
-    /// Real chess result, retaining native action/claim/outcome/incomplete distinctions.
+    /// Real chess result, retaining action/claim/outcome/incomplete distinctions.
     Chess {
-        /// Existing native chess result and score interpretation.
+        /// Existing chess result and score interpretation.
         result: ChessResult,
     },
-    /// Actual native shogi result, never a chess score.
+    /// Actual shogi result, never a chess score.
     Shogi {
-        /// Native board/declaration choice, conclusion or incomplete observation.
+        /// Game board/declaration choice, conclusion or incomplete observation.
         result: crate::ShogiResult,
     },
-    /// Actual native Xiangqi choice, conclusion, incomplete work or unresolved history.
+    /// Actual Xiangqi choice, conclusion, incomplete work or unresolved history.
     Xiangqi {
-        /// Native Red/Black observations.
+        /// Red/Black observations.
         result: crate::XiangqiResult,
     },
-    /// Unscored unsupported/invalid/process failure, independent of native game outcomes.
+    /// Unscored unsupported/invalid/process failure, independent of game outcomes.
     Failure {
         /// Bounded categorized diagnostic.
         failure: EngineFailure,
@@ -157,20 +157,20 @@ impl ExecutionResult {
 pub struct ExecutionObservation {
     /// Durable observation schema, independent of current transport version.
     pub schema_version: u32,
-    /// Exact original native context, with no game-specific wire adaptation.
+    /// Exact original game context, with no game-specific wire adaptation.
     pub context: ExecutionContext,
-    /// Distinct native execution result or explicit unscored failure.
+    /// Distinct execution result or explicit unscored failure.
     pub result: ExecutionResult,
 }
 /// Current durable semantic observation schema.
 pub const OBSERVATION_SCHEMA_VERSION: u32 = 1;
-/// Strict observation decoding preserves native resource and cancellation failures.
+/// Strict observation decoding preserves resource and cancellation failures.
 #[derive(Debug)]
 pub enum ObservationDecodeError {
     /// Cooperative decoding was interrupted before acceptance.
     Stopped,
-    /// The embedded native record rejected admission.
-    Native(mshogi_core::native::EnvelopeError),
+    /// The embedded game record rejected admission.
+    Record(mshogi_core::game::EnvelopeError),
     /// The observation wire shape or version is invalid.
     Invalid(String),
 }
@@ -178,7 +178,7 @@ impl std::fmt::Display for ObservationDecodeError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::Stopped => f.write_str("Execution observation parsing stopped"),
-            Self::Native(error) => error.fmt(f),
+            Self::Record(error) => error.fmt(f),
             Self::Invalid(error) => f.write_str(error),
         }
     }
@@ -195,8 +195,8 @@ impl From<&str> for ObservationDecodeError {
     }
 }
 impl ExecutionObservation {
-    /// Parse a durable observation without buffering its native record into a map
-    /// or replaying Tenjiku twice. Native facts remain subject to `matches` and
+    /// Parse a durable observation without buffering its game record into a map
+    /// or replaying Tenjiku twice. Facts remain subject to `matches` and
     /// the owning document's target/result admission after this strict parse.
     pub fn from_json_with_stop(
         text: &str,
@@ -204,16 +204,16 @@ impl ExecutionObservation {
     ) -> Result<Self, String> {
         Self::from_json_with_stop_typed(text, stop).map_err(|error| error.to_string())
     }
-    /// Decode without erasing the embedded native record's typed admission failure.
+    /// Decode without erasing the embedded game record's typed admission failure.
     pub fn from_json_with_stop_typed(
         text: &str,
         stop: &mut impl FnMut() -> bool,
     ) -> Result<Self, ObservationDecodeError> {
         Self::decode(text, None, stop)
     }
-    /// Decode an observation whose context omits its native record, with the
+    /// Decode an observation whose context omits its game record, with the
     /// caller's already admitted record (MSH-204: experiment reports omit the
-    /// record that native replay restores). An encoded record is refused.
+    /// record that game replay restores). An encoded record is refused.
     pub fn from_json_with_record(
         text: &str,
         game: CanonicalRecord,
@@ -279,13 +279,13 @@ impl ExecutionObservation {
         let game = match (context.game, supplied) {
             (Some(raw), None) => CanonicalRecord::from_json_with_stop(raw.get(), stop).map_err(
                 |error| match error {
-                    mshogi_core::native::EnvelopeError::Stopped => ObservationDecodeError::Stopped,
-                    error => ObservationDecodeError::Native(error),
+                    mshogi_core::game::EnvelopeError::Stopped => ObservationDecodeError::Stopped,
+                    error => ObservationDecodeError::Record(error),
                 },
             )?,
             (None, Some(game)) => game,
             (None, None) => {
-                return Err("Execution observation context has no native record.".into());
+                return Err("Execution observation context has no game record.".into());
             }
             (Some(_), Some(_)) => {
                 return Err("Execution observation context repeats the supplied record.".into());
@@ -306,7 +306,7 @@ impl ExecutionObservation {
             result,
         })
     }
-    /// Preserve exact context and native result under the current durable schema.
+    /// Preserve exact context and engine result under the current durable schema.
     pub fn new(context: ExecutionContext, result: ExecutionResult) -> Self {
         Self {
             schema_version: OBSERVATION_SCHEMA_VERSION,
@@ -314,7 +314,7 @@ impl ExecutionObservation {
             result,
         }
     }
-    /// Full context and purpose/family acceptance. The host still owns native command
+    /// Full context and purpose/family acceptance. The host still owns game command
     /// admission; read-only analysis is never applied as an engine-turn command here.
     pub fn matches(&self, submitted: &ExecutionContext) -> bool {
         if self.schema_version != OBSERVATION_SCHEMA_VERSION
@@ -456,7 +456,7 @@ pub(crate) fn reject_observation_duplicates(
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct ExecutionRequest {
-    /// Transport identity, distinct from native record/profile schema.
+    /// Transport identity, distinct from game record/profile schema.
     pub protocol: u32,
     /// Complete submitted execution semantics.
     pub context: ExecutionContext,

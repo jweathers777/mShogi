@@ -1,4 +1,4 @@
-//! Shared fresh-process runner. Native adapters own notation and rules admission;
+//! Shared fresh-process runner. Adapters own notation and rules admission;
 //! this module owns request generations, bounded traffic and process retirement.
 use crate::{process::Engine, *};
 use serde::{Deserialize, Serialize};
@@ -28,7 +28,7 @@ pub struct Traffic {
     pub engine: usize,
     /// Fresh process/request identity.
     pub generation: u64,
-    /// Native event-prefix version at dispatch.
+    /// Game event-prefix version at dispatch.
     pub version: usize,
     /// Controller-relative monotonic observation time.
     pub at_ns: u64,
@@ -41,7 +41,7 @@ pub struct Traffic {
     /// Command write/flush completed; absent on response.
     pub written: Option<bool>,
 }
-/// One accepted result bound to a retained native history prefix.
+/// One accepted result bound to a retained game history prefix.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Turn<S> {
@@ -49,11 +49,11 @@ pub struct Turn<S> {
     pub engine: usize,
     /// Unique request/process identity within the report.
     pub generation: u64,
-    /// Native prefix including opening events, before result acceptance.
+    /// Prefix including opening events, before result acceptance.
     pub version: usize,
     /// Full canonical-prefix digest, not a board-only identity.
     pub context_sha256: String,
-    /// Captured native actor.
+    /// Captured actor.
     pub actor: S,
     /// Actual position command with complete known history.
     pub position: String,
@@ -68,7 +68,7 @@ pub struct Turn<S> {
 pub struct Process {
     /// Unique request/process generation within this report.
     pub generation: u64,
-    /// Actual bounded native child observation.
+    /// Actual bounded child observation.
     pub observation: EngineObservation,
 }
 pub(crate) fn option_value(advertised: &str, value: &str) -> bool {
@@ -151,13 +151,13 @@ impl Settings<'_> {
         Ok(())
     }
 }
-/// Why this experiment stopped; distinct from the native conclusion.
+/// Why this experiment stopped; distinct from the game conclusion.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum End {
-    /// Native authoritative conclusion.
-    NativeConclusion,
-    /// Native adjudication is pending.
+    /// Authoritative conclusion.
+    GameConclusion,
+    /// Adjudication is pending.
     Unresolved,
     /// Accepted-action cap.
     ActionLimit,
@@ -171,7 +171,7 @@ pub(crate) struct Rejection {
     pub phase: &'static str,
     pub detail: String,
 }
-pub(crate) trait Native {
+pub(crate) trait ProtocolGame {
     type Game: Clone;
     type Side: Copy + Eq + Serialize;
     type Conclusion: Copy + PartialEq + Serialize;
@@ -191,10 +191,10 @@ pub(crate) trait Native {
     fn position(game: &Self::Game) -> String;
     fn admit_turn(game: &mut Self::Game, reply: &str) -> Result<Option<String>, Rejection>;
 }
-pub(crate) fn digest<G: Native>(game: &G::Game) -> Result<String, RunnerError> {
+pub(crate) fn digest<G: ProtocolGame>(game: &G::Game) -> Result<String, RunnerError> {
     Ok(crate::common::sha256(G::canonical(game)?))
 }
-pub(crate) struct Completed<G: Native> {
+pub(crate) struct Completed<G: ProtocolGame> {
     pub game: G::Game,
     pub stop: End,
     pub failure: Option<Failure>,
@@ -204,7 +204,7 @@ pub(crate) struct Completed<G: Native> {
     pub processes: Vec<Process>,
     pub elapsed_ns: u64,
 }
-pub(crate) fn run_game<G: Native>(
+pub(crate) fn run_game<G: ProtocolGame>(
     config: Settings<'_>,
     mut game: G::Game,
     assignment: [usize; 2],
@@ -284,7 +284,7 @@ pub(crate) fn run_game<G: Native>(
         elapsed_ns: crate::common::elapsed_ns(host.start),
     })
 }
-fn turn<G: Native>(
+fn turn<G: ProtocolGame>(
     host: &mut crate::transport::Transport<Vec<Traffic>>,
     config: &Settings<'_>,
     processes: &mut Vec<Process>,
@@ -368,13 +368,13 @@ fn turn<G: Native>(
     }
 }
 
-pub(crate) struct Replay<'a, G: Native> {
+pub(crate) struct Replay<'a, G: ProtocolGame> {
     pub turns: &'a [Turn<G::Side>],
     pub traffic: &'a [Traffic],
     pub processes: &'a [Process],
     pub elapsed_ns: u64,
 }
-pub(crate) fn replay<G: Native>(
+pub(crate) fn replay<G: ProtocolGame>(
     config: Settings<'_>,
     entry: Replay<'_, G>,
     game: &mut G::Game,
@@ -468,7 +468,7 @@ pub(crate) fn validate_traffic(io: IoLimits, traffic: &[Traffic]) -> Result<(), 
 
 /// Validate the actual accepted-generation protocol, not merely the existence
 /// of a matching bestmove somewhere in a contradictory transcript.
-fn replay_traffic<G: Native>(
+fn replay_traffic<G: ProtocolGame>(
     events: &[&Traffic],
     turn: &Turn<G::Side>,
     config: &EngineConfig,

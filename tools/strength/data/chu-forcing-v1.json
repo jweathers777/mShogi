@@ -1,5 +1,5 @@
 {
-  "answer_rule": "Every first action forcing a native win within three plies, over all native defender replies; no one-ply win; complete full-width answer set or omitted on 200000-visit proof bound",
+  "answer_rule": "Every first action forcing a win within three plies, over all defender replies; no one-ply win; complete full-width answer set or omitted on 200000-visit proof bound",
   "license": "BSD-LICENSE",
   "limitation": "Constructed three-ply Lion material wins; shared templates across splits, held-out placements only; no claim of representative game difficulty",
   "name": "chu-forcing-v1",
@@ -17548,6 +17548,6 @@
     }
   ],
   "profile": "mshogi.chu.jcsa2019.v1",
-  "source": "Constructed native diagrams with varied royal and tactical placements; not claimed reachable from standard play",
+  "source": "Constructed diagrams with varied royal and tactical placements; not claimed reachable from standard play",
   "split_rule": "Construction offset modulo 5 equals zero is held-out; fixed before probing"
 }

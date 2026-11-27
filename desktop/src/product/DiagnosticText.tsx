@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-// Bound browser text layout, independently of the complete native archive limits.
+// Bound browser text layout, independently of the complete archive limits.
 export const DIAGNOSTIC_PAGE_CHARACTERS = 64 * 1024;
 
 function pageEnds(text: string): number[] {
@@ -27,6 +27,6 @@ export function DiagnosticText({ text }: { text: string }) {
       <span role="status">Page {current + 1} of {count}</span>
       <button className="quiet" disabled={current + 1 === count} onClick={() => setPage(current + 1)}>Next diagnostics page</button>
     </div>
-    <pre data-native-diagnostics data-diagnostics-page={current} data-diagnostics-pages={count}>{text.slice(ends[current], ends[current + 1])}</pre>
+    <pre data-session-diagnostics data-diagnostics-page={current} data-diagnostics-pages={count}>{text.slice(ends[current], ends[current + 1])}</pre>
   </>;
 }

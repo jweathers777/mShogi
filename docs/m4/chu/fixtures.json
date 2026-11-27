@@ -3,7 +3,7 @@
   "revision": "MSH82-2026-11-02",
   "profile": "mshogi.chu.jcsa2019.v1",
   "profile_status": "ratified",
-  "native_conformance_executed": false,
+  "rules_conformance_executed": false,
   "source_ids": [
     "C1",
     "C2",
@@ -16,7 +16,7 @@
   ],
   "notation": {
     "squares": "[file,rank] in1..12; Sente forward rank-1",
-    "promoted_piece": "native_base+; no chained promotion",
+    "promoted_piece": "base+; no chained promotion",
     "route": "ordered1or2actual destinations; jump skips intermediate; two-step includes it",
     "physical_diagram_origin": "explicit completion, not historical reachability proof"
   },
@@ -31,7 +31,7 @@
         "C3:setup",
         "H1:p214"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": "standard_start"
       },
@@ -790,7 +790,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -899,7 +899,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -1010,7 +1010,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -1123,7 +1123,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -1238,7 +1238,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -1359,7 +1359,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -1482,7 +1482,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -1607,7 +1607,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -1734,7 +1734,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -1863,7 +1863,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -1994,7 +1994,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -2123,7 +2123,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -2254,7 +2254,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -2387,7 +2387,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -2522,7 +2522,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -2655,7 +2655,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -2790,7 +2790,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -2919,7 +2919,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -3050,7 +3050,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -3187,7 +3187,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -3326,7 +3326,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -3464,7 +3464,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -3604,7 +3604,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -3742,7 +3742,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -3882,7 +3882,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -3991,7 +3991,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -4102,7 +4102,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -4215,7 +4215,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -4330,7 +4330,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -4452,7 +4452,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -4576,7 +4576,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -4698,7 +4698,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -4822,7 +4822,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -4943,7 +4943,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -5066,7 +5066,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -5187,7 +5187,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -5310,7 +5310,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -5448,7 +5448,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -5588,7 +5588,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -5726,7 +5726,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -5866,7 +5866,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -6003,7 +6003,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -6142,7 +6142,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -6263,7 +6263,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -6386,7 +6386,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -6507,7 +6507,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -6630,7 +6630,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -6768,7 +6768,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -6908,7 +6908,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -7037,7 +7037,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -7168,7 +7168,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -7297,7 +7297,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -7428,7 +7428,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -7558,7 +7558,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -7690,7 +7690,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -7824,7 +7824,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -7960,7 +7960,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -8065,7 +8065,7 @@
       "sources": [
         "C3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -8173,7 +8173,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -8256,7 +8256,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -8339,7 +8339,7 @@
         "C1:VI.2a",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -8421,7 +8421,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -8504,7 +8504,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -8587,7 +8587,7 @@
         "C1:VI.2a",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -8669,7 +8669,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -8752,7 +8752,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -8835,7 +8835,7 @@
         "C1:VI.2a",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -8917,7 +8917,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -9000,7 +9000,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -9083,7 +9083,7 @@
         "C1:VI.2a",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -9165,7 +9165,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -9248,7 +9248,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -9331,7 +9331,7 @@
         "C1:VI.2a",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -9413,7 +9413,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -9496,7 +9496,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -9579,7 +9579,7 @@
         "C1:VI.2a",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -9661,7 +9661,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -9744,7 +9744,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -9827,7 +9827,7 @@
         "C1:VI.2a",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -9909,7 +9909,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -9992,7 +9992,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -10075,7 +10075,7 @@
         "C1:VI.2a",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -10157,7 +10157,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -10240,7 +10240,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -10323,7 +10323,7 @@
         "C1:VI.2a",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -10405,7 +10405,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -10488,7 +10488,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -10571,7 +10571,7 @@
         "C1:VI.2a",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -10653,7 +10653,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -10736,7 +10736,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -10819,7 +10819,7 @@
         "C1:VI.2a",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -10901,7 +10901,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -10984,7 +10984,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -11067,7 +11067,7 @@
         "C1:VI.2a",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -11149,7 +11149,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -11232,7 +11232,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -11315,7 +11315,7 @@
         "C1:VI.2a",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -11397,7 +11397,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -11480,7 +11480,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -11563,7 +11563,7 @@
         "C1:VI.2a",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -11645,7 +11645,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -11728,7 +11728,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -11811,7 +11811,7 @@
         "C1:VI.2a",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -11893,7 +11893,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -11976,7 +11976,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -12059,7 +12059,7 @@
         "C1:VI.2a",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -12141,7 +12141,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -12224,7 +12224,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -12307,7 +12307,7 @@
         "C1:VI.2a",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -12389,7 +12389,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -12472,7 +12472,7 @@
         "C1:IV.1",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -12555,7 +12555,7 @@
         "C1:VI.2a",
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -12636,7 +12636,7 @@
       "sources": [
         "C1:IV.1-2"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -12716,7 +12716,7 @@
       "sources": [
         "C1:IV.2"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -12798,7 +12798,7 @@
       "sources": [
         "C1:IV.2"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -12870,7 +12870,7 @@
       "sources": [
         "C1:IV.2"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -12943,7 +12943,7 @@
         "C1:IV.3-5",
         "C2:1"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -13025,7 +13025,7 @@
         "C1:IV.3-5",
         "C2:1"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -13107,7 +13107,7 @@
         "C1:IV.3-5",
         "C2:1"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -13189,7 +13189,7 @@
         "C1:IV.3-5",
         "C2:1"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -13271,7 +13271,7 @@
         "C1:IV.3-5",
         "C2:1"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -13353,7 +13353,7 @@
         "C1:IV.3-5",
         "C2:1"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -13434,7 +13434,7 @@
       "sources": [
         "C1:IV.2"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -13544,7 +13544,7 @@
       "sources": [
         "C2:2"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -13688,7 +13688,7 @@
       "sources": [
         "C2:2"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -13809,7 +13809,7 @@
       "sources": [
         "C2:2"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -13971,7 +13971,7 @@
       "sources": [
         "C2:2"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -14075,7 +14075,7 @@
       "sources": [
         "C2:2"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -14187,7 +14187,7 @@
       "sources": [
         "C1:VII.3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -14293,7 +14293,7 @@
       "sources": [
         "C1:VII.3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -14391,7 +14391,7 @@
       "sources": [
         "C1:VII.1-3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -14489,7 +14489,7 @@
       "sources": [
         "C1:VII.1-3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -14587,7 +14587,7 @@
       "sources": [
         "C1:VII.5"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -14697,7 +14697,7 @@
       "sources": [
         "C1:VII.5"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -14807,7 +14807,7 @@
       "sources": [
         "C1:VII.5"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -14917,7 +14917,7 @@
       "sources": [
         "C1:VII.4"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -15044,7 +15044,7 @@
       "sources": [
         "C1:VII.4"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -15175,7 +15175,7 @@
       "sources": [
         "C1:VII.4"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -15316,7 +15316,7 @@
       "sources": [
         "C1:VII.4;C2:3.6"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -15420,7 +15420,7 @@
       "sources": [
         "C1:VIII"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -15511,7 +15511,7 @@
       "sources": [
         "C1:VIII"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -15610,7 +15610,7 @@
       "sources": [
         "C1:VIII"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -15709,7 +15709,7 @@
       "sources": [
         "C3:lion_powers"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -15800,7 +15800,7 @@
       "sources": [
         "C3:lion_powers"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -15891,7 +15891,7 @@
       "sources": [
         "C1:VIII"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -15982,7 +15982,7 @@
       "sources": [
         "C1:VIII"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -16081,7 +16081,7 @@
       "sources": [
         "C1:VIII"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -16180,7 +16180,7 @@
       "sources": [
         "C3:lion_powers"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -16271,7 +16271,7 @@
       "sources": [
         "C3:lion_powers"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -16362,7 +16362,7 @@
       "sources": [
         "C1:VIII"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -16453,7 +16453,7 @@
       "sources": [
         "C1:VIII"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -16552,7 +16552,7 @@
       "sources": [
         "C1:VIII"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -16651,7 +16651,7 @@
       "sources": [
         "C3:lion_powers"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -16742,7 +16742,7 @@
       "sources": [
         "C3:lion_powers"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -16833,7 +16833,7 @@
       "sources": [
         "C3:SE"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -16919,7 +16919,7 @@
       "sources": [
         "C3:HF"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -17005,7 +17005,7 @@
       "sources": [
         "C3:lion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -17115,7 +17115,7 @@
       "sources": [
         "C1:II.1-2"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -17211,7 +17211,7 @@
       "sources": [
         "C1:II;owner:CHU-P1"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -17285,7 +17285,7 @@
       "sources": [
         "C1:II;owner:CHU-P1"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -17359,7 +17359,7 @@
       "sources": [
         "owner:CHU-P1"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -17434,7 +17434,7 @@
       "sources": [
         "C1:II.2;C2:2"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -17547,7 +17547,7 @@
       "sources": [
         "owner:CHU-P1"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -17636,7 +17636,7 @@
       "sources": [
         "owner:CHU-P1"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -17704,7 +17704,7 @@
       "sources": [
         "C1:IX:image005"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -17813,7 +17813,7 @@
       "sources": [
         "C1:II.4;owner:CHU-P3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -17871,7 +17871,7 @@
       "sources": [
         "owner:CHU-P3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -17938,7 +17938,7 @@
       "sources": [
         "C1:II.4-5;owner:CHU-P3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -17987,7 +17987,7 @@
       "sources": [
         "C1:II.4-5;owner:CHU-P3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -18036,7 +18036,7 @@
       "sources": [
         "C1:II.4-5;owner:CHU-P3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -18085,7 +18085,7 @@
       "sources": [
         "C1:II.4-5;owner:CHU-P3"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -18134,7 +18134,7 @@
       "sources": [
         "C1:VI.1c;owner:CHU-P2"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -18371,7 +18371,7 @@
       "sources": [
         "C1:VI;owner:CHU-P2"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -18546,7 +18546,7 @@
       "sources": [
         "software:known_history"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -18606,7 +18606,7 @@
       "sources": [
         "owner:CHU-P2"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -18713,7 +18713,7 @@
       "sources": [
         "C3:K,G,P"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -18901,7 +18901,7 @@
       "sources": [
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -18973,7 +18973,7 @@
       "sources": [
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -19053,7 +19053,7 @@
       "sources": [
         "C3:promotion"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -19133,7 +19133,7 @@
       "sources": [
         "C3:ray_blockers"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -19225,7 +19225,7 @@
       "sources": [
         "C3:ray_blockers"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -19317,7 +19317,7 @@
       "sources": [
         "C3:ray_blockers"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -19409,7 +19409,7 @@
       "sources": [
         "C3:ray_blockers"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -19501,7 +19501,7 @@
       "sources": [
         "C3:ray_blockers"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -19593,7 +19593,7 @@
       "sources": [
         "C3:ray_blockers"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -19685,7 +19685,7 @@
       "sources": [
         "C3:ray_blockers"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -19777,7 +19777,7 @@
       "sources": [
         "C3:ray_blockers"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -19869,7 +19869,7 @@
       "sources": [
         "C3:ray_blockers"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -19961,7 +19961,7 @@
       "sources": [
         "C3:ray_blockers"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -20053,7 +20053,7 @@
       "sources": [
         "C3:ray_blockers"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -20145,7 +20145,7 @@
       "sources": [
         "C3:ray_blockers"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -20237,7 +20237,7 @@
       "sources": [
         "C3:ray_blockers"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -20329,7 +20329,7 @@
       "sources": [
         "C3:ray_blockers"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -20421,7 +20421,7 @@
       "sources": [
         "C3:ray_blockers"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -20513,7 +20513,7 @@
       "sources": [
         "C3:ray_blockers"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -20605,7 +20605,7 @@
       "sources": [
         "C3:ray_blockers"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -20717,7 +20717,7 @@
       "sources": [
         "C1:VI.1a;owner:CHU-P2"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -20959,7 +20959,7 @@
       "sources": [
         "C1:VI.1b;owner:CHU-P2"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -21194,7 +21194,7 @@
       "sources": [
         "owner:CHU-P2"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -21429,7 +21429,7 @@
       "sources": [
         "C1:VI.1d;VIII;owner:CHU-P2"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -21620,7 +21620,7 @@
         "owner:CHU-P2",
         "software:known_history"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -21840,7 +21840,7 @@
         "same_current_board_and_turn": true,
         "known_occurrences_A": 3,
         "known_occurrences_B": 1,
-        "next_cycle_A": "move11_native_must_vary_refusal",
+        "next_cycle_A": "move11_must_vary_refusal",
         "next_cycle_B": "ongoing",
         "same_search_context": false
       },
@@ -21856,7 +21856,7 @@
         "C1:VII.4",
         "software:known_history"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "fixture_ref": "CHU-LION-NONLION-R",
         "prefix_commands": 1,
@@ -21892,7 +21892,7 @@
       "sources": [
         "C1:II.1-2;owner:CHU-P1"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -21981,7 +21981,7 @@
       "sources": [
         "owner:CHU-P1"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -22041,7 +22041,7 @@
       "sources": [
         "owner:CHU-P1"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -22114,7 +22114,7 @@
       "sources": [
         "C1:VII.4"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -22227,7 +22227,7 @@
       "sources": [
         "C1:II.2;owner:CHU-P1"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -22325,7 +22325,7 @@
       "sources": [
         "C1:VI.1a;owner:CHU-P2"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -22560,7 +22560,7 @@
       "sources": [
         "C1:VI.1d;VIII;owner:CHU-P2"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -22746,7 +22746,7 @@
       "sources": [
         "C1:II.4;IX;software:root_current_turn"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -22797,7 +22797,7 @@
       "sources": [
         "C1:II.4;IX;software:root_current_turn"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -22848,7 +22848,7 @@
       "sources": [
         "C1:IX"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -22926,7 +22926,7 @@
       "sources": [
         "C1:II.6;IX"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -22970,7 +22970,7 @@
         "offer_alone_concludes": false,
         "final_outcome": "agreed_draw",
         "board_plies": 0,
-        "native_event_count": 2
+        "event_count": 2
       },
       "expectation_method": "Independent source transcription and explicit hand-worked example; no engine output",
       "requires_owner_decisions": []
@@ -22983,7 +22983,7 @@
       "sources": [
         "C1:II.4-5"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -23059,7 +23059,7 @@
       "sources": [
         "C1:II.6"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -23110,7 +23110,7 @@
         "C3:lion_powers",
         "software:lossless_route_identity"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -24672,7 +24672,7 @@
         "C3:lion_powers",
         "software:lossless_route_identity"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -25336,7 +25336,7 @@
         "C3:lion_powers",
         "software:lossless_route_identity"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -26006,7 +26006,7 @@
         "C1:VI.2",
         "software:atomic"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -26082,7 +26082,7 @@
         "C1:VI.2",
         "software:atomic"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -26159,7 +26159,7 @@
         "C1:VI.2",
         "software:atomic"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -26249,7 +26249,7 @@
         "C1:VI.2",
         "software:atomic"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -26331,7 +26331,7 @@
         "C1:VI.2",
         "software:atomic"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -26419,7 +26419,7 @@
         "C1:VI.2",
         "software:atomic"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -26504,7 +26504,7 @@
         "C1:VI.2",
         "software:atomic"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "root": {
           "origin": "imported_diagram",
@@ -26585,7 +26585,7 @@
       "sources": [
         "software:exact_reversal"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "fixture_ref": "CHU-LION-C2-1"
       },
@@ -26604,7 +26604,7 @@
       "sources": [
         "software:exact_reversal"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "fixture_ref": "CHU-LION-C2-3"
       },
@@ -26623,7 +26623,7 @@
       "sources": [
         "software:exact_reversal"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "fixture_ref": "CHU-RETURN-Ln-enemy"
       },
@@ -26642,7 +26642,7 @@
       "sources": [
         "software:exact_reversal"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "fixture_ref": "CHU-PROMOTE-Ki-YES"
       },
@@ -26659,9 +26659,9 @@
         "C10"
       ],
       "sources": [
-        "software:strict_native_replay"
+        "software:strict_replay"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "fixture_ref": "CHU-LION-C2-3",
         "mutation": "duplicate_nested_field"
@@ -26680,9 +26680,9 @@
         "C10"
       ],
       "sources": [
-        "software:strict_native_replay"
+        "software:strict_replay"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "fixture_ref": "CHU-LION-C2-3",
         "mutation": "unknown_profile"
@@ -26701,9 +26701,9 @@
         "C10"
       ],
       "sources": [
-        "software:strict_native_replay"
+        "software:strict_replay"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "fixture_ref": "CHU-LION-C2-3",
         "mutation": "conflicting_profile_edition"
@@ -26717,17 +26717,17 @@
       "requires_owner_decisions": []
     },
     {
-      "id": "CHU-RECORD-WRONG_NATIVE_SCHEMA",
+      "id": "CHU-RECORD-WRONG_RECORD_SCHEMA",
       "clauses": [
         "C10"
       ],
       "sources": [
-        "software:strict_native_replay"
+        "software:strict_replay"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "fixture_ref": "CHU-LION-C2-3",
-        "mutation": "wrong_native_schema"
+        "mutation": "wrong_record_schema"
       },
       "expected": {
         "replay_admitted": false,
@@ -26743,9 +26743,9 @@
         "C10"
       ],
       "sources": [
-        "software:strict_native_replay"
+        "software:strict_replay"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "fixture_ref": "CHU-LION-C2-3",
         "mutation": "tampered_capture_effect"
@@ -26764,9 +26764,9 @@
         "C10"
       ],
       "sources": [
-        "software:strict_native_replay"
+        "software:strict_replay"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "fixture_ref": "CHU-LION-C2-3",
         "mutation": "tampered_conclusion"
@@ -26785,9 +26785,9 @@
         "C10"
       ],
       "sources": [
-        "software:strict_native_replay"
+        "software:strict_replay"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "fixture_ref": "CHU-LION-C2-3",
         "mutation": "event_reorder"
@@ -26806,9 +26806,9 @@
         "C10"
       ],
       "sources": [
-        "software:strict_native_replay"
+        "software:strict_replay"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "fixture_ref": "CHU-LION-C2-3",
         "mutation": "missing_root_provenance"
@@ -26827,15 +26827,15 @@
         "C10"
       ],
       "sources": [
-        "software:strict_native_replay"
+        "software:strict_replay"
       ],
-      "scope": "native",
+      "scope": "rules",
       "given": {
         "fixture_ref": "CHU-LION-C2-3"
       },
       "expected": {
         "roundtrip": "same_root_provenance_ordered_routes_effects_lion_rights_history_counters",
-        "derive_facts_from_native_replay": true
+        "derive_facts_from_replay": true
       },
       "expectation_method": "Independent source transcription and explicit hand-worked example; no engine output",
       "requires_owner_decisions": []
@@ -26850,12 +26850,12 @@
       ],
       "scope": "consumer",
       "given": {
-        "native_fixture_ref": "CHU-LION-C2-3",
+        "rules_fixture_ref": "CHU-LION-C2-3",
         "case": "same_board_different_history"
       },
       "expected": {
         "obligation": "same_board_different_history",
-        "native_authority": true,
+        "session_authority": true,
         "no_frontend_legality": true
       },
       "expectation_method": "Independent source transcription and explicit hand-worked example; no engine output",
@@ -26871,12 +26871,12 @@
       ],
       "scope": "consumer",
       "given": {
-        "native_fixture_ref": "CHU-LION-C2-3",
+        "rules_fixture_ref": "CHU-LION-C2-3",
         "case": "stale_request"
       },
       "expected": {
         "obligation": "stale_request",
-        "native_authority": true,
+        "session_authority": true,
         "no_frontend_legality": true
       },
       "expectation_method": "Independent source transcription and explicit hand-worked example; no engine output",
@@ -26892,12 +26892,12 @@
       ],
       "scope": "consumer",
       "given": {
-        "native_fixture_ref": "CHU-LION-C2-3",
+        "rules_fixture_ref": "CHU-LION-C2-3",
         "case": "wrong_purpose"
       },
       "expected": {
         "obligation": "wrong_purpose",
-        "native_authority": true,
+        "session_authority": true,
         "no_frontend_legality": true
       },
       "expectation_method": "Independent source transcription and explicit hand-worked example; no engine output",
@@ -26913,12 +26913,12 @@
       ],
       "scope": "consumer",
       "given": {
-        "native_fixture_ref": "CHU-LION-C2-3",
+        "rules_fixture_ref": "CHU-LION-C2-3",
         "case": "wrong_process_generation"
       },
       "expected": {
         "obligation": "wrong_process_generation",
-        "native_authority": true,
+        "session_authority": true,
         "no_frontend_legality": true
       },
       "expectation_method": "Independent source transcription and explicit hand-worked example; no engine output",
@@ -26934,12 +26934,12 @@
       ],
       "scope": "consumer",
       "given": {
-        "native_fixture_ref": "CHU-LION-C2-3",
+        "rules_fixture_ref": "CHU-LION-C2-3",
         "case": "historical_prefix_without_future"
       },
       "expected": {
         "obligation": "historical_prefix_without_future",
-        "native_authority": true,
+        "session_authority": true,
         "no_frontend_legality": true
       },
       "expectation_method": "Independent source transcription and explicit hand-worked example; no engine output",
@@ -26955,12 +26955,12 @@
       ],
       "scope": "consumer",
       "given": {
-        "native_fixture_ref": "CHU-LION-C2-3",
+        "rules_fixture_ref": "CHU-LION-C2-3",
         "case": "save_reopen_stopped"
       },
       "expected": {
         "obligation": "save_reopen_stopped",
-        "native_authority": true,
+        "session_authority": true,
         "no_frontend_legality": true
       },
       "expectation_method": "Independent source transcription and explicit hand-worked example; no engine output",
@@ -26976,12 +26976,12 @@
       ],
       "scope": "consumer",
       "given": {
-        "native_fixture_ref": "CHU-LION-C2-3",
+        "rules_fixture_ref": "CHU-LION-C2-3",
         "case": "reserved_close_headroom"
       },
       "expected": {
         "obligation": "reserved_close_headroom",
-        "native_authority": true,
+        "session_authority": true,
         "no_frontend_legality": true
       },
       "expectation_method": "Independent source transcription and explicit hand-worked example; no engine output",
@@ -26997,12 +26997,12 @@
       ],
       "scope": "consumer",
       "given": {
-        "native_fixture_ref": "CHU-LION-C2-3",
+        "rules_fixture_ref": "CHU-LION-C2-3",
         "case": "complete_route_partial_selection"
       },
       "expected": {
         "obligation": "complete_route_partial_selection",
-        "native_authority": true,
+        "session_authority": true,
         "no_frontend_legality": true
       },
       "expectation_method": "Independent source transcription and explicit hand-worked example; no engine output",
@@ -27018,12 +27018,12 @@
       ],
       "scope": "consumer",
       "given": {
-        "native_fixture_ref": "CHU-LION-C2-3",
+        "rules_fixture_ref": "CHU-LION-C2-3",
         "case": "no_normal_unsupported_chooser"
       },
       "expected": {
         "obligation": "no_normal_unsupported_chooser",
-        "native_authority": true,
+        "session_authority": true,
         "no_frontend_legality": true
       },
       "expectation_method": "Independent source transcription and explicit hand-worked example; no engine output",
@@ -27039,12 +27039,12 @@
       ],
       "scope": "consumer",
       "given": {
-        "native_fixture_ref": "CHU-LION-C2-3",
+        "rules_fixture_ref": "CHU-LION-C2-3",
         "case": "full_board_without_scrolling"
       },
       "expected": {
         "obligation": "full_board_without_scrolling",
-        "native_authority": true,
+        "session_authority": true,
         "no_frontend_legality": true
       },
       "expectation_method": "Independent source transcription and explicit hand-worked example; no engine output",

@@ -128,5 +128,5 @@
     "source": "Original USI transcription and selection of conventional structures; JT Shogi Japan Series guide08 provides style definitions: https://www.jti.co.jp/culture/shogi/guide/08/index.html",
     "selection": "Six short initial-position prefixes, varied static/ranging rook and exchange structures. Every root must be paired with engine colors reversed. No certified equal-evaluation or professional-game claim. No source commentary or diagrams copied."
   },
-  "status": "v1 records frozen; all roots and prefixes passed native validation; tactical bounded answer sets matched where applicable; final file-hash validation pending"
+  "status": "v1 records frozen; all roots and prefixes passed rules validation; tactical bounded answer sets matched where applicable; final file-hash validation pending"
 }

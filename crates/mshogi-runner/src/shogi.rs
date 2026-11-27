@@ -1,10 +1,10 @@
 //! Untimed USI experiments. A fresh child per turn gives USI's untagged replies
 //! an unambiguous execution generation; retired output can never serve a later go.
 use crate::{
-    protocol::{self, End, Native, Rejection},
+    protocol::{self, End, ProtocolGame, Rejection},
     *,
 };
-use mshogi_core::{native::CanonicalRecord, shogi::*};
+use mshogi_core::{game::CanonicalRecord, shogi::*};
 use serde::{Deserialize, Serialize};
 
 /// One known-history root and supplied legal board prefix.
@@ -34,7 +34,7 @@ impl Opening {
                 ),
                 r => r,
             }
-            .map_err(|e| RunnerError(format!("native root: {e:?}")))?;
+            .map_err(|e| RunnerError(format!("game root: {e:?}")))?;
             Game::from_root(root)
         } else {
             Game::new()
@@ -52,7 +52,7 @@ impl Opening {
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct NoPolicy {}
-/// Finite-work games using this native adapter.
+/// Finite-work games using this adapter.
 pub type Config = crate::recorded::Config<Opening, NoPolicy>;
 impl Config {
     /// Strict, bounded input parsing.
@@ -83,10 +83,10 @@ pub use crate::{
     FailureKind,
     protocol::{Failure, Process, Traffic},
 };
-/// Accepted external reply with this game's native actor.
+/// Accepted external reply with this game's actor.
 pub type Turn = protocol::Turn<Side>;
 pub use crate::recorded::Stop;
-/// One native game and its bounded process observations.
+/// One game and its bounded process observations.
 pub type GameReport = crate::recorded::GameReport<Side, Conclusion, ()>;
 /// Recorded games with their effective configuration and executable identities.
 pub type Report = crate::recorded::Report<Config, Side, Conclusion, ()>;
@@ -152,7 +152,7 @@ impl crate::recorded::Opening for Opening {
     }
 }
 impl Report {
-    /// Decode bounded evidence and verify the native history.
+    /// Decode bounded evidence and verify the game history.
     pub fn from_json(text: &str) -> Result<Self, RunnerError> {
         let report: Self = common::decode(text, common::REPORT_BYTES)?;
         report.replay()?;
@@ -168,7 +168,7 @@ impl Report {
         crate::recorded::replay(self, self.config.schedule())
     }
 }
-/// Run each opening and engine assignment through the native protocol adapter.
+/// Run each opening and engine assignment through the protocol adapter.
 pub fn run(config: &Config) -> Result<Report, RunnerError> {
     config.validate()?;
     let report = crate::recorded::run(config, config.schedule())?;
@@ -177,7 +177,7 @@ pub fn run(config: &Config) -> Result<Report, RunnerError> {
 }
 
 pub(crate) struct Adapter;
-impl Native for Adapter {
+impl ProtocolGame for Adapter {
     type Game = Game;
     type Side = Side;
     type Conclusion = Conclusion;
@@ -202,7 +202,7 @@ impl Native for Adapter {
         game.events().len()
     }
     fn end(game: &Game) -> Option<End> {
-        game.conclusion().map(|_| End::NativeConclusion)
+        game.conclusion().map(|_| End::GameConclusion)
     }
     fn canonical(game: &Game) -> Result<String, RunnerError> {
         canonical(game)
@@ -221,7 +221,7 @@ impl Native for Adapter {
             kind: if matches!(command, GameCommand::Play(_)) {
                 FailureKind::IllegalAction
             } else {
-                FailureKind::Native
+                FailureKind::GameAdmission
             },
             phase: "admission",
             detail,

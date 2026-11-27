@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef } from "react";
 
-// Presentation only: native admission owns the decision point and transaction.
+// Presentation only: game admission owns the decision point and transaction.
 export function TakeBackControl({ available, disabled, contextKey, restore }: {
   available: boolean; disabled: boolean; contextKey: string; restore: () => Promise<unknown>;
 }) {

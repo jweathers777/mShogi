@@ -1,12 +1,12 @@
-//! Tori in the sole desktop runtime: the generic native session (`native_session`)
-//! with the Tori presentation. Rules and persistence stay native-owned.
-use super::native_session::*;
+//! Tori in the sole desktop runtime: the generic game session (`game_session`)
+//! with the Tori presentation. Rules and persistence stay rules-owned.
+use super::game_session::*;
 use super::*;
-pub(crate) use crate::native_game::Tori;
+pub(crate) use crate::game_adapter::Tori;
 use mshogi_core::tori as t;
 
 /// The Tori session.
-pub(crate) type ToriSession = NativeSession<Tori>;
+pub(crate) type ToriSession = GameSession<Tori>;
 
 impl SessionGame for Tori {
     type Presentation = ToriPresentation;
@@ -14,7 +14,7 @@ impl SessionGame for Tori {
     const BOARD_SIZE: u8 = 7;
     const BOARD_LABEL: &'static str = "Tori Shogi 7×7 board";
     const INITIAL_FOCUS: &'static str = "4e";
-    const SCORE_MEANING: &'static str = "Native root-side evaluation in hundredths of a Swallow. Win/loss distances count board actions; failures and incomplete work are unscored.";
+    const SCORE_MEANING: &'static str = "Game root-side evaluation in hundredths of a Swallow. Win/loss distances count board actions; failures and incomplete work are unscored.";
 
     session_wiring!(Tori, state: tori, tori_mut, field: tori);
 
@@ -54,13 +54,12 @@ impl SessionGame for Tori {
         stop: &mut impl FnMut() -> bool,
     ) -> Result<Vec<t::Action>, String> {
         if stop() {
-            return Err("Native operation stopped before acceptance.".into());
+            return Err("Game operation stopped before acceptance.".into());
         }
         Ok(game.legal_actions())
     }
     fn retire_context(game: &mut t::Game) {
-        game.retire_context()
-            .expect("bounded native runtime identity");
+        game.retire_context().expect("bounded runtime identity");
     }
     fn event(game: &t::Game, index: usize) -> (t::Side, CommandKind) {
         let event = &game.events()[index];
@@ -74,9 +73,9 @@ impl SessionGame for Tori {
         }
     }
     fn telemetry(result: &mshogi_engine::ToriResult) -> TelemetryView {
-        // Complete native encodings remain honest technical continuation
+        // Complete encodings remain honest technical continuation
         // data; readable action notation is projected by the Moves adapter.
-        engine_telemetry(result, |a| serde_json::to_string(a).expect("native action"))
+        engine_telemetry(result, |a| serde_json::to_string(a).expect("action"))
     }
     fn incomplete(result: &mshogi_engine::ToriResult) -> bool {
         engine_incomplete(result)
@@ -144,13 +143,13 @@ impl SessionGame for Tori {
 
 fn tori_side(side: t::Side) -> PresentedSide {
     shared::side(
-        mshogi_core::native::RulesProfile::ToriModernV1,
-        NativeSide::Tori(side),
+        mshogi_core::game::RulesProfile::ToriModernV1,
+        TaggedSide::Tori(side),
     )
 }
 
 impl DesktopController {
-    /// Verification entry into the real native Tori request path.
+    /// Verification entry into the real Tori request path.
     #[cfg(any(test, feature = "desktop-verification"))]
     pub fn verify_tori_execution(
         &mut self,
@@ -212,7 +211,7 @@ pub(super) fn choice(action: t::Action, actor: t::Side, position: &t::Position) 
     PresentedChoice {
         tenjiku: None,
         origin,
-        action: serde_json::to_string(&action).expect("native action"),
+        action: serde_json::to_string(&action).expect("action"),
         from,
         steps: vec![to.to_string()],
         completion,
@@ -222,11 +221,11 @@ fn hand_origin(actor: t::Side, face: t::Face) -> String {
     format!("hand:{}:{}", tori_side(actor).key, face.code())
 }
 pub(super) fn inspect(game: &t::Game, origin: &str) -> Result<inspection::Inspected, String> {
-    let (native, actor, face) = if let Ok(square) = origin.parse::<t::Square>() {
+    let (inspection_origin, actor, face) = if let Ok(square) = origin.parse::<t::Square>() {
         let piece = game
             .position()
             .piece(square)
-            .ok_or("No native piece at this origin.")?;
+            .ok_or("No piece at this origin.")?;
         (t::InspectionOrigin::Board(square), piece.side, piece.face)
     } else {
         let (actor, face) = [t::Side::Sente, t::Side::Gote]
@@ -243,18 +242,18 @@ pub(super) fn inspect(game: &t::Game, origin: &str) -> Result<inspection::Inspec
     };
     let choices = game
         .local_position()
-        .inspect(native)
+        .inspect(inspection_origin)
         .into_iter()
         .map(|c| choice(c.action, actor, game.position()))
         .collect();
     Ok((
         GameKind::Tori,
-        NativeSide::Tori(actor),
+        TaggedSide::Tori(actor),
         format!(
             "{} {}{}",
             tori_side(actor).label,
             face_name(face),
-            if matches!(native, t::InspectionOrigin::Hand { .. }) {
+            if matches!(inspection_origin, t::InspectionOrigin::Hand { .. }) {
                 " in hand"
             } else {
                 ""

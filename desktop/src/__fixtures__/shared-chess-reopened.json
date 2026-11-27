@@ -31,7 +31,7 @@
   "io": {
     "id": 2,
     "phase": "complete",
-    "message": "Opened complete native document with fresh runtime identities and work stopped.",
+    "message": "Opened complete document with fresh runtime identities and work stopped.",
     "resource": null
   },
   "capacity": {
@@ -490,7 +490,7 @@
   "analysis": null,
   "observations": [],
   "search_observations": [],
-  "score_meaning": "Chess root-side centipawns; native mate distance remains distinct (see chess analysis).",
+  "score_meaning": "Chess root-side centipawns; mate distance remains distinct (see chess analysis).",
   "chess": {
     "claims": [],
     "live_conclusion": {

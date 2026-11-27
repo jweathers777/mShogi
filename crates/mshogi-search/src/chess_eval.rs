@@ -1,7 +1,7 @@
 //! Classical Chess evaluation on the search-internal bitboard position.
 //!
 //! The arithmetic is the conventional tapered evaluation that the earlier
-//! native-position evaluator defined: material, placement, pawn structure,
+//! position evaluator defined: material, placement, pawn structure,
 //! mobility, king safety, threats, conversion and a few specialized endings.
 //! Material, placement and phase are kept incrementally by the position. The
 //! other terms use the current attack geometry. All coefficients are original,
@@ -674,7 +674,7 @@ fn specialized(
             .unwrap_or(0);
         let approach = 7 - distance(f.kings[strong], defender);
         // Not a win certificate: hanging pieces, stalemate and the fifty-move
-        // rule are the search's and the native rules' work.
+        // rule are the search's and the rules' work.
         return Some((
             EndgameKind::BishopKnightConversion,
             strong,

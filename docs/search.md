@@ -2,7 +2,7 @@
 
 The Chess engine runs on the shared search core of MSH-164 (Shared Search Core).
 [Shared search core](m5/shared-search-core.md) describes the structure, the
-authority of the native rules, the state that lasts for a game, and how to add a
+authority of the rules, the state that lasts for a game, and how to add a
 game. This page gives the public Chess search contract.
 
 ## Components
@@ -14,7 +14,7 @@ game. This page gives the public Chess search contract.
 | `chess_eval.rs` | Static evaluation, see [evaluation](evaluation.md) |
 | `coordination.rs` | `SearchCoordinator`: one worker thread that owns the `ChessEngine`, request identity and stale-result checks. See [search coordination](search-coordination.md) |
 
-UCI, the native engine process and the desktop use the coordinator.
+UCI, the mShogi engine process and the desktop use the coordinator.
 
 ## Request
 
@@ -32,12 +32,12 @@ of `game` and does not change it.
 
 ## Result
 
-- A concluded root gives `SearchDecision::Finished` with the native outcome.
+- A concluded root gives `SearchDecision::Finished` with the game outcome.
   No search runs.
 - Otherwise the decision is a move or a draw claim (`SearchChoice`). Under
   `AutoClaim` an available claim is returned at once. An optional claim is
   preferred to a move whose score is not above zero.
-- Each returned move is in the native legal actions. A native representation
+- Each returned move is in the legal actions. A representation
   error, for example a move counter overflow, gives
   `SearchError::Transition`.
 - Scores are centipawns from the side to move at the root. Draws are zero. A
@@ -45,17 +45,17 @@ of `game` and does not change it.
 - Only a completed iteration supplies the decision, score and principal
   variation. If the search stops before the first iteration completes, there
   is no decision. The engine does not invent a result. If the core proposes a
-  move that the native rules do not list (a defect; debug builds stop), a
-  release build returns the first native legal move with no score.
+  move that the rules do not list (a defect; debug builds stop), a
+  release build returns the first legal move with no score.
 - `completed_depth` is the last completed nominal depth. `EngineResult` also
   gives the selective depth and the table fill (`hashfull`).
 
 ## Correctness tests
 
 - `chess_bitboard::tests`: published perft counts, and random walks that compare
-  legal moves, positions, hashes and incremental state with the native rules.
+  legal moves, positions, hashes and incremental state with the rules.
 - `chess_engine::tests`: forced mates with exact distance, concluded roots, claim
-  policy, repetition choice, limits and native legality of each move.
+  policy, repetition choice, limits and legality of each move.
 - `alphabeta::tests`: the core on a subtraction game whose theory is known.
 
 These tests establish correctness. They do not establish playing strength.

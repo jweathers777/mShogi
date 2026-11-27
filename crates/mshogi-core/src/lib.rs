@@ -17,22 +17,22 @@ pub const CHESS_MATCH_PROFILE_ID: &str = "mshogi.chess.match.v1";
 
 pub mod chess;
 
-/// Native standard-shogi state and complete actions, with explicit coverage limits.
+/// Standard-shogi state and complete actions, with explicit coverage limits.
 pub mod shogi;
 
-/// Native Xiangqi position/action foundation; coverage is explicitly game-owned.
+/// Xiangqi position/action foundation; coverage is explicitly game-owned.
 pub mod xiangqi;
 
-/// Shared tagged native-record and command dispatch for all six games.
-pub mod native;
+/// Shared tagged record and command dispatch for all six games.
+pub mod game;
 
-/// Native Tori rules, history, inspection and complete-game consumer contracts.
+/// Tori rules, history, inspection and complete-game consumer contracts.
 pub mod tori;
 
-/// Native modern JCSA Chu Shogi rules and complete-action admission.
+/// Modern JCSA Chu Shogi rules and complete-action admission.
 pub mod chu;
 
-/// Complete native Tenjiku state, actions, ordered effects and profile-qualified histories.
+/// Complete Tenjiku state, actions, ordered effects and profile-qualified histories.
 pub mod tenjiku;
 
 pub mod perft;

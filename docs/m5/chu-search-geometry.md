@@ -1,8 +1,8 @@
 # Chu search movement and attack tests
 
 The private search position uses a 144-square array, three-word occupancy sets
-and complete moves with one or two landings. Native movement descriptors supply
-piece geometry. Native rules remain the authority for root actions and played
+and complete moves with one or two landings. Movement descriptors supply
+piece geometry. Rules remain the authority for root actions and played
 moves. The search has no Chess self-check filter.
 
 Generation emits ordinary steps, jumps and rays. A Lion also emits two adjacent
@@ -34,7 +34,7 @@ is not a Lion, no intermediate victim is required, and there is no self-check
 filter. This case needs no scratch projection. With King and Prince, the search
 still generates and admits a complete action capturing both. Separate attacks
 on King and Prince do not qualify. Full generation and perft
-retain every route. Search generation first applies native root restrictions,
+retain every route. Search generation first applies game root restrictions,
 then retains the first route for each exactly equal successor, including Lion
 rights. It checks full state when hashes match.
 
@@ -46,7 +46,7 @@ Alpha-beta handles those capture threats. Selectivity margins use one Pawn
 (100 evaluation units); captured pieces do not also enter a hand.
 
 For fixed-depth comparisons, run the [strength harness](strength-harness.md)
-on frozen native records with fresh engine state. For cost attribution,
+on frozen game records with fresh engine state. For cost attribution,
 measure generation/admission, make/threat checks, unmake, rule/threat
 checks and exchange evaluation separately. Compare the instrumented and
 uninstrumented decisions and node counts. These coarse categories include

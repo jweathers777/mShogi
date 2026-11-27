@@ -262,7 +262,7 @@ no-legal-action** case by a separate stalemate clause. CSA27(1)(i) does, which
 is part of option A's recommendation. Do not fabricate a JSA citation or reuse
 chess's draw rule. Captured promoted-piece base-kind normalization and attack
 semantics for pinned defenders should receive independently reasoned fixtures;
-these formalization checks do not authorize alternative rules by convenience.
+these formalization checks do not authorize alterrules by convenience.
 
 ## Acceptance handoff
 
@@ -276,7 +276,7 @@ history/conclusion/command/timing/runner evidence. Pinned external engines are
 bounded comparison tools, not rules authorities. The full standard-shogi scope
 remains MSH-41; this profile and a passing kernel test cannot close it.
 
-Current MSH-67 evidence: the native game/history contract
+Current MSH-67 evidence: the game/history contract
 implements the selected untimed conclusions and strict canonical game/match
 records. [The independently reviewed impossibility argument](mutual-check-resolution.md)
 resolves the mutual-check research obligation for admitted live roots without

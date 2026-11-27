@@ -1,7 +1,7 @@
-//! Actual retained native Xiangqi matches replay without opponent artifacts on every OS.
+//! Actual retained Xiangqi matches replay without opponent artifacts on every OS.
 use mshogi_runner::xiangqi::{Report, Stop};
 #[test]
-fn actual_selfplay_independent_opponent_and_repeat_have_native_replay_evidence() {
+fn actual_selfplay_independent_opponent_and_repeat_have_replay_evidence() {
     let records = [
         include_str!("../../../docs/m4/xiangqi/protocol/selfplay.report.json"),
         include_str!("../../../docs/m4/xiangqi/protocol/opponent.report.json"),
@@ -17,7 +17,7 @@ fn actual_selfplay_independent_opponent_and_repeat_have_native_replay_evidence()
             assert_eq!(entry.conclusion, game.conclusion());
             assert_eq!(entry.pending, game.pending_adjudication().cloned());
             accepted += entry.turns.len();
-            if entry.stop == Stop::NativeConclusion {
+            if entry.stop == Stop::GameConclusion {
                 conclusions += 1;
                 assert_eq!(entry.score, Some([2, 0]));
             } else {

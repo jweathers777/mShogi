@@ -1,13 +1,13 @@
-//! Generic native session in the sole desktop runtime (MSH-217). Rules and
-//! persistence stay native-owned; each game supplies its presentation, limits
+//! Generic game session in the sole desktop runtime (MSH-217). Rules and
+//! persistence stay rules-owned; each game supplies its presentation, limits
 //! and the wrappers of the shared runtime enums through [`SessionGame`].
 use super::*;
+use crate::game_adapter::{GameAdapter, analysis_limits, validate_limits};
 use crate::game_document::{GameSettings, SettingsOf, ValidatedGameDocument};
-use crate::native_game::{NativeGame, analysis_limits, validate_limits};
 use mshogi_engine::{EngineGame, EngineResult};
 use std::sync::Arc;
 
-/// Kind of a native command, as the session needs it.
+/// Kind of a game command, as the session needs it.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) enum CommandKind {
     Play,
@@ -17,7 +17,7 @@ pub(crate) enum CommandKind {
 }
 
 /// A change of the saved document.
-enum Change<G: NativeGame> {
+enum Change<G: GameAdapter> {
     Command { actor: G::Side, command: G::Command },
     Settings(SettingsOf<G>),
     Rewind(usize),
@@ -33,8 +33,8 @@ pub(crate) struct TelemetryView {
     pub(crate) status: &'static str,
 }
 
-/// The session-side differences of a native game.
-pub(crate) trait SessionGame: NativeGame {
+/// The session-side differences of a game.
+pub(crate) trait SessionGame: GameAdapter {
     /// Frontend presentation of the selected and live games.
     type Presentation: Clone;
     const FINISH_CONCLUDED_ANALYSIS: bool = false;
@@ -56,7 +56,7 @@ pub(crate) trait SessionGame: NativeGame {
         game: &Self::Game,
         stop: &mut impl FnMut() -> bool,
     ) -> Result<Vec<Self::Action>, String>;
-    /// Retire the native runtime context; a restored record never recovers it.
+    /// Retire the runtime context; a restored record never recovers it.
     fn retire_context(game: &mut Self::Game);
     /// Actor and command kind of event `index`.
     fn event(game: &Self::Game, index: usize) -> (Self::Side, CommandKind);
@@ -66,9 +66,9 @@ pub(crate) trait SessionGame: NativeGame {
     fn incomplete(result: &Self::EngineResult) -> bool;
 
     /// A restored session as an opened document.
-    fn opened(state: Box<NativeSession<Self>>) -> archive::OpenedNative;
-    fn state(session: &ActiveDocument) -> Option<&NativeSession<Self>>;
-    fn state_mut(session: &mut ActiveDocument) -> Option<&mut NativeSession<Self>>;
+    fn opened(state: Box<GameSession<Self>>) -> archive::OpenedGame;
+    fn state(session: &ActiveDocument) -> Option<&GameSession<Self>>;
+    fn state_mut(session: &mut ActiveDocument) -> Option<&mut GameSession<Self>>;
 
     /// Event index that Take back restores, if a human decision is available.
     fn take_back_target(game: &Self::Game, human: Self::Side, two_humans: bool) -> Option<usize> {
@@ -97,7 +97,7 @@ pub(crate) trait SessionGame: NativeGame {
         local
     }
     /// Add game-specific snapshot fields after the generic ones.
-    fn finish_snapshot(_snapshot: &mut SharedSnapshot, _state: &NativeSession<Self>) {}
+    fn finish_snapshot(_snapshot: &mut SharedSnapshot, _state: &GameSession<Self>) {}
     /// Advisory declaration facts of both sides, for a game with declarations.
     fn declaration_advice(_game: &Self::Game) -> Vec<DeclarationAdvice> {
         vec![]
@@ -125,17 +125,17 @@ pub(crate) trait SessionGame: NativeGame {
     fn present_in(snapshot: &mut SharedSnapshot, presentation: Self::Presentation);
 }
 
-fn record_text(e: crate::native_game::RecordFailure) -> String {
+fn record_text(e: crate::game_adapter::RecordFailure) -> String {
     match e {
-        crate::native_game::RecordFailure::Stopped => {
-            "Native operation stopped before acceptance.".into()
+        crate::game_adapter::RecordFailure::Stopped => {
+            "Game operation stopped before acceptance.".into()
         }
-        crate::native_game::RecordFailure::Capacity(d)
-        | crate::native_game::RecordFailure::Invalid(d) => d,
+        crate::game_adapter::RecordFailure::Capacity(d)
+        | crate::game_adapter::RecordFailure::Invalid(d) => d,
     }
 }
 
-pub(crate) struct NativeSession<G: SessionGame> {
+pub(crate) struct GameSession<G: SessionGame> {
     pub(crate) document: Arc<ValidatedGameDocument<G>>,
     pub(crate) game: G::Game,
     viewed: Option<G::Game>,
@@ -155,7 +155,7 @@ pub(crate) struct NativeSession<G: SessionGame> {
     choices: Vec<PresentedChoice>,
     status: PresentedStatus,
 }
-impl<G: SessionGame> NativeSession<G> {
+impl<G: SessionGame> GameSession<G> {
     pub(crate) fn restore(
         document: ValidatedGameDocument<G>,
         stopped: &mut impl FnMut() -> bool,
@@ -195,7 +195,7 @@ impl<G: SessionGame> NativeSession<G> {
     /// Canonical record of the selected game.
     #[cfg(test)]
     pub(crate) fn record(&self) -> CanonicalRecord {
-        G::context(self.selected()).expect("admitted native record")
+        G::context(self.selected()).expect("admitted game record")
     }
     /// Select a history position directly, for tests.
     #[cfg(test)]
@@ -213,7 +213,7 @@ impl<G: SessionGame> NativeSession<G> {
         self.cancelled_analysis = None;
         self.browse_stop = None;
         self.phase = EnginePhase::Paused;
-        // The native context is never recovered by restoring a canonical record.
+        // The game context is never recovered by restoring a canonical record.
         G::retire_context(&mut self.game);
     }
     /// Install fresh identities while preserving New Game's running intent.
@@ -264,12 +264,12 @@ impl<G: SessionGame> NativeSession<G> {
         stopped: &mut impl FnMut() -> bool,
     ) -> Result<(), OperationFailure> {
         G::submit(&mut self.game, actor, command, stopped)
-            .map_err(crate::game_document::Errors::<G>::native)?;
+            .map_err(crate::game_document::Errors::<G>::from_game_failure)?;
         self.document = Arc::new(self.document.with_game(&self.game)?);
         Ok(())
     }
 
-    /// Admit a command of `actor` before the native game's own admission.
+    /// Admit a command of `actor` before the game's own admission.
     fn command(
         &mut self,
         actor: G::Side,
@@ -289,7 +289,7 @@ impl<G: SessionGame> NativeSession<G> {
         if !play_mode.owns(self.document.human(), actor) {
             return Err("This command belongs to the other player.".into());
         }
-        // Actor/turn/terminal/draw admission belongs to the native Game.
+        // Actor/turn/terminal/draw admission belongs to the Game.
         // The immutable document candidate admits the complete command below.
         if kind == CommandKind::Terminal {
             self.paused = true;
@@ -436,9 +436,7 @@ impl<G: SessionGame> NativeSession<G> {
                 return Ok(false);
             }
             SessionOperation::Replace { .. } => {
-                return Err(
-                    format!("Unsupported operation for the native {} profile.", G::NAME).into(),
-                );
+                return Err(format!("Unsupported operation for the {} profile.", G::NAME).into());
             }
         };
         match change {
@@ -542,11 +540,11 @@ pub(crate) struct RuntimeWork<G: SessionGame> {
 pub(crate) fn execute<G: SessionGame>(
     work: RuntimeWork<G>,
     stopped: &mut impl FnMut() -> bool,
-) -> Result<archive::NativeCompleted, OperationFailure> {
+) -> Result<archive::GameCompleted, OperationFailure> {
     persistence::check(stopped)?;
     let mut state = match work.seed {
         RuntimeSeed::Current(draft) => {
-            let mut state = Box::new(NativeSession::restore((*draft.document).clone(), stopped)?);
+            let mut state = Box::new(GameSession::restore((*draft.document).clone(), stopped)?);
             state.browse_stop = draft.browse_stop;
             state.pending = draft.pending;
             state.phase = draft.phase;
@@ -568,7 +566,7 @@ pub(crate) fn execute<G: SessionGame>(
             record,
             human,
             play_mode,
-        } => Box::new(NativeSession::restore(
+        } => Box::new(GameSession::restore(
             ValidatedGameDocument::new_with_mode(*record, human, play_mode, stopped)?,
             stopped,
         )?),
@@ -644,7 +642,7 @@ pub(crate) fn execute<G: SessionGame>(
     state.status = status;
     state.choices = choices;
     persistence::check(stopped)?;
-    Ok(archive::NativeCompleted::Runtime {
+    Ok(archive::GameCompleted::Runtime {
         state: G::opened(state),
         replacement: work.replacement,
         durable,
@@ -652,20 +650,20 @@ pub(crate) fn execute<G: SessionGame>(
 }
 
 /// The worker job of a runtime admission.
-fn runtime_job<G: SessionGame>(work: RuntimeWork<G>) -> archive::NativeWork
+fn runtime_job<G: SessionGame>(work: RuntimeWork<G>) -> archive::GameWork
 where
     RuntimeWork<G>: Send,
 {
-    archive::NativeWork::Game(Box::new(move |stopped| execute(work, &mut || stopped())))
+    archive::GameWork::Game(Box::new(move |stopped| execute(work, &mut || stopped())))
 }
 
 /// Open on the file worker: decode, validate and restore a saved document.
 pub(crate) fn open<G: SessionGame>(
     bytes: &[u8],
     stopped: &mut impl FnMut() -> bool,
-) -> Result<archive::OpenedNative, OperationFailure> {
+) -> Result<archive::OpenedGame, OperationFailure> {
     let (document, game) = ValidatedGameDocument::<G>::decode_with_game(bytes, stopped)?;
-    Ok(G::opened(Box::new(NativeSession::from_replayed_game(
+    Ok(G::opened(Box::new(GameSession::from_replayed_game(
         document, game, stopped,
     )?)))
 }
@@ -679,15 +677,15 @@ fn keep_newest<T>(list: &mut Vec<T>, item: T) -> Option<T> {
 }
 
 /// Save on the file worker: write the accepted document atomically.
-pub(crate) fn save<G: NativeGame>(
+pub(crate) fn save<G: GameAdapter>(
     document: &ValidatedGameDocument<G>,
     path: &std::path::Path,
     revision: u64,
     identity: u64,
     stopped: &mut impl FnMut() -> bool,
-) -> Result<archive::NativeCompleted, OperationFailure> {
+) -> Result<archive::GameCompleted, OperationFailure> {
     persistence::atomic_write(path, document.bytes(), stopped)?;
-    Ok(archive::NativeCompleted::Saved {
+    Ok(archive::GameCompleted::Saved {
         path: path.to_path_buf(),
         revision,
         identity,
@@ -707,7 +705,7 @@ impl DesktopController {
         if replacement {
             self.retire_admission();
         }
-        self.queue_native_transaction(
+        self.queue_transaction(
             runtime_job(RuntimeWork {
                 seed,
                 operation,
@@ -767,7 +765,7 @@ impl DesktopController {
         if matches!(operation, SessionOperation::Cancel {}) {
             self.retire_admission();
             self.bridge.cancel();
-            let state = G::state_mut(&mut self.session).expect("native owner");
+            let state = G::state_mut(&mut self.session).expect("rules owner");
             state.cancel();
             self.session.version += 1;
             self.session.selection_id += 1;
@@ -792,7 +790,7 @@ impl DesktopController {
             analysis_limits::<G>(*operation)?;
         }
 
-        let state = G::state(&self.session).expect("native owner");
+        let state = G::state(&self.session).expect("rules owner");
         if matches!(operation, SessionOperation::TakeBack {})
             && (state.viewed.is_some() || state.take_back_target().is_none())
         {
@@ -809,18 +807,18 @@ impl DesktopController {
     }
     pub(crate) fn queue_game_save<G: SessionGame>(&mut self, path: PathBuf) -> Result<u64, String> {
         if self.admission_token.is_some() {
-            return Err("Wait for native document admission before Save.".into());
+            return Err("Wait for document admission before Save.".into());
         }
         let document = G::state(&self.session)
-            .expect("native owner")
+            .expect("rules owner")
             .document
             .clone();
         let revision = self.session.document_revision;
         let identity = self.session.document_identity;
-        let id = self.next_native_io(IoPhase::Saving)?;
+        let id = self.next_io(IoPhase::Saving)?;
         self.files.submit(
             id,
-            persistence::Work::Native(Box::new(archive::NativeWork::Game(Box::new(
+            persistence::Work::Archive(Box::new(archive::GameWork::Game(Box::new(
                 move |stopped| save(&document, &path, revision, identity, &mut || stopped()),
             )))),
         );
@@ -830,7 +828,7 @@ impl DesktopController {
         &mut self,
         response: ExecutionObservation,
     ) -> bool {
-        let state = G::state(&self.session).expect("native owner");
+        let state = G::state(&self.session).expect("rules owner");
         let Some(pending) = &state.pending else {
             return false;
         };
@@ -852,7 +850,7 @@ impl DesktopController {
             // headroom refusal must not leave Thinking with no deliverable work.
             self.bridge.cancel();
             let capacity = self.session.capacity.resource.is_some();
-            let state = G::state_mut(&mut self.session).expect("native owner");
+            let state = G::state_mut(&mut self.session).expect("rules owner");
             state.retire();
             state.paused = true;
             state.phase = if capacity {
@@ -888,7 +886,7 @@ impl DesktopController {
             validate_limits::<G>(limits)?;
         }
         self.ensure_runtime_capacity()?;
-        let state = G::state(&self.session).expect("native owner");
+        let state = G::state(&self.session).expect("rules owner");
         let game = G::context(state.selected()).map_err(record_text)?;
         let turn = G::side_to_move(state.selected());
         let historical = state.viewed.is_some();
@@ -906,7 +904,7 @@ impl DesktopController {
                         game.event_count(),
                         if historical { " (history)" } else { " (live)" }
                     ),
-                    turn: G::native_side(turn),
+                    turn: G::tagged_side(turn),
                 };
                 ExecutionPurpose::MoveAnalysis { target }
             } else {
@@ -917,7 +915,7 @@ impl DesktopController {
             game,
             limits,
         };
-        let state = G::state_mut(&mut self.session).expect("native owner");
+        let state = G::state_mut(&mut self.session).expect("rules owner");
         state.pending = Some(context);
         state.submitted = false;
         state.phase = EnginePhase::Thinking;
@@ -933,7 +931,7 @@ impl DesktopController {
             && !self.lifecycle.close_requested()
             && self.session.capacity.status != CapacityPhase::Paused
         {
-            let state = G::state_mut(&mut self.session).expect("native owner");
+            let state = G::state_mut(&mut self.session).expect("rules owner");
             let analysis = state.requested_analysis.take();
             let play = state.pending.is_none()
                 && !state.paused
@@ -949,18 +947,18 @@ impl DesktopController {
                     .map_err(OperationFailure::from)
                     .and_then(|limits| self.start_game_operation::<G>(limits, Some(operation)));
                 if let Err(e) = started {
-                    self.pause_native_failure(e);
+                    self.pause_failure(e);
                 }
             } else if play && let Err(e) = self.start_game_work::<G>(G::PLAY_LIMITS, false) {
-                self.pause_native_failure(e);
+                self.pause_failure(e);
             }
-            let state = G::state(&self.session).expect("native owner");
+            let state = G::state(&self.session).expect("rules owner");
             if self.shared.auto_submit()
                 && let Some(context) = state.pending.clone()
                 && !state.submitted
             {
                 G::state_mut(&mut self.session)
-                    .expect("native owner")
+                    .expect("rules owner")
                     .submitted = true;
                 if let Err(e) = self.bridge.submit(execution_request(context.clone())) {
                     self.accept_game_observation::<G>(ExecutionObservation::new(
@@ -968,7 +966,7 @@ impl DesktopController {
                         ExecutionResult::Failure {
                             failure: mshogi_engine::EngineFailure {
                                 kind: mshogi_engine::FailureKind::Start,
-                                message: format!("Cannot start native work: {e:?}"),
+                                message: format!("Cannot start work: {e:?}"),
                             },
                         },
                     ));
@@ -977,7 +975,7 @@ impl DesktopController {
         }
         self.game_snapshot::<G>()
     }
-    /// Verification entry into the same real native supervised request path.
+    /// Verification entry into the same real supervised request path.
     #[cfg(any(test, feature = "desktop-verification"))]
     pub(crate) fn verify_game_execution<G: SessionGame>(
         &mut self,
@@ -985,7 +983,7 @@ impl DesktopController {
         analysis: bool,
     ) -> Result<ExecutionContext, String> {
         if self.admission_token.is_some() || self.lifecycle.close_requested() {
-            return Err("Wait for native operation/close.".into());
+            return Err("Wait for game operation/close.".into());
         }
         // The Chess QA incomplete fixture sends a real zero-node request.
         // Normal product work still uses the validated positive play limits.
@@ -1001,22 +999,22 @@ impl DesktopController {
         .map_err(|e| e.diagnostic)?;
         if zero_chess {
             G::state_mut(&mut self.session)
-                .expect("native owner")
+                .expect("rules owner")
                 .pending
                 .as_mut()
                 .expect("started work")
                 .limits = limits;
         }
         let context = G::state(&self.session)
-            .expect("native owner")
+            .expect("rules owner")
             .pending
             .clone()
             .expect("started work");
         self.bridge
             .submit(execution_request(context.clone()))
-            .map_err(|e| format!("Cannot submit native work: {e:?}"))?;
+            .map_err(|e| format!("Cannot submit work: {e:?}"))?;
         G::state_mut(&mut self.session)
-            .expect("native owner")
+            .expect("rules owner")
             .submitted = true;
         Ok(context)
     }
@@ -1025,7 +1023,7 @@ impl DesktopController {
     pub(crate) fn verify_game_pause_play<G: SessionGame>(&mut self) -> Result<(), String> {
         self.bridge.cancel();
         let state = G::state_mut(&mut self.session)
-            .ok_or_else(|| format!("Requires native {} document.", G::NAME))?;
+            .ok_or_else(|| format!("Requires {} document.", G::NAME))?;
         state.retire();
         state.paused = true;
         Ok(())
@@ -1050,7 +1048,7 @@ impl DesktopController {
         file: bool,
     ) -> Result<SharedSnapshot, String> {
         if G::state(&self.session).is_none() || self.admission_token.is_some() {
-            return Err(format!("Requires an idle native {} document.", G::NAME));
+            return Err(format!("Requires an idle {} document.", G::NAME));
         }
         let failure = persistence::verification_deadline_failure();
         if file {
@@ -1075,7 +1073,7 @@ impl DesktopController {
         }
         // Stop all work; closing never changes the saved document.
         self.bridge.cancel();
-        let state = G::state_mut(&mut self.session).expect("native owner");
+        let state = G::state_mut(&mut self.session).expect("rules owner");
         state.retire();
         state.paused = true;
         self.session.version += 1;
@@ -1086,11 +1084,11 @@ impl DesktopController {
 
 impl DesktopController {
     pub(crate) fn game_snapshot<G: SessionGame>(&self) -> SharedSnapshot {
-        let state = G::state(&self.session).expect("native owner");
+        let state = G::state(&self.session).expect("rules owner");
         let game = state.selected();
         let profile = G::game_profile(game);
         let turn = G::side_to_move(game);
-        let sides: Vec<_> = G::SIDES.map(|s| side(profile, G::native_side(s))).into();
+        let sides: Vec<_> = G::SIDES.map(|s| side(profile, G::tagged_side(s))).into();
         let files: Vec<_> = (1..=G::BOARD_SIZE).rev().map(|n| n.to_string()).collect();
         let ranks: Vec<_> = (b'a'..b'a' + G::BOARD_SIZE)
             .map(|n| char::from(n).to_string())
@@ -1116,10 +1114,10 @@ impl DesktopController {
             play_mode: settings.play_mode,
             local_actor: side(
                 profile,
-                G::native_side(settings.play_mode.actor(human, turn)),
+                G::tagged_side(settings.play_mode.actor(human, turn)),
             ),
-            human: side(profile, G::native_side(human)),
-            turn: side(profile, G::native_side(turn)),
+            human: side(profile, G::tagged_side(human)),
+            turn: side(profile, G::tagged_side(turn)),
             sides: sides.clone(),
             board: BoardDescriptor {
                 intersections: None,
@@ -1178,7 +1176,7 @@ impl DesktopController {
             }),
             diagnostic: state.diagnostic.clone(),
             declaration_advice: G::declaration_advice(game),
-            context: G::context(game).expect("admitted native record"),
+            context: G::context(game).expect("admitted game record"),
             analysis: state.analysis.as_ref().map(|o| PresentedObservation {
                 observation: o.clone(),
                 historical: false,
@@ -1244,7 +1242,7 @@ pub(crate) fn engine_incomplete<E: EngineGame>(result: &EngineResult<E>) -> bool
 pub(crate) fn display_observation<G: SessionGame>(
     index: usize,
     o: &ExecutionObservation,
-    state: &NativeSession<G>,
+    state: &GameSession<G>,
 ) -> PresentedSearchObservation {
     let record = &o.context.game;
     let telemetry = G::engine_result(&o.result).map(G::telemetry);
@@ -1258,12 +1256,12 @@ pub(crate) fn display_observation<G: SessionGame>(
         },
         event_index: record.event_count(),
         board_ply: o.context.game.known_board_actions(),
-        perspective: side(record.profile(), G::native_side(G::context_side(record))).label,
+        perspective: side(record.profile(), G::tagged_side(G::context_side(record))).label,
         engine: "mShogi",
         score: telemetry.as_ref().and_then(|t| t.score.clone()),
         completed_depth: telemetry.as_ref().map(|t| t.completed_depth),
         nodes: telemetry.as_ref().map(|t| t.nodes),
-        // Native complete route strings retain every landing and promotion; exact typed PV remains in Technical Details.
+        // Complete route strings retain every landing and promotion; exact typed PV remains in Technical Details.
         variation: telemetry
             .as_ref()
             .map_or_else(Vec::new, |t| t.variation.clone()),
@@ -1287,13 +1285,13 @@ pub(crate) fn display_observation<G: SessionGame>(
 /// active-document variant and snapshot field.
 macro_rules! session_wiring {
     ($game:ident, state: $state:ident, $state_mut:ident $(, field: $field:ident)?) => {
-        fn opened(state: Box<NativeSession<Self>>) -> archive::OpenedNative {
-            archive::OpenedNative::$game(state)
+        fn opened(state: Box<GameSession<Self>>) -> archive::OpenedGame {
+            archive::OpenedGame::$game(state)
         }
-        fn state(session: &ActiveDocument) -> Option<&NativeSession<Self>> {
+        fn state(session: &ActiveDocument) -> Option<&GameSession<Self>> {
             session.$state()
         }
-        fn state_mut(session: &mut ActiveDocument) -> Option<&mut NativeSession<Self>> {
+        fn state_mut(session: &mut ActiveDocument) -> Option<&mut GameSession<Self>> {
             session.$state_mut()
         }
         #[allow(unused_variables)]
@@ -1350,7 +1348,7 @@ macro_rules! large_shogi_session {
             }
             fn retire_context(game: &mut c::Game) {
                 game.retire_context()
-                    .expect("bounded native runtime identity");
+                    .expect("bounded runtime identity");
             }
             fn event(game: &c::Game, index: usize) -> (c::Side, CommandKind) {
                 let event = &game.events()[index];
@@ -1392,7 +1390,7 @@ macro_rules! large_shogi_session {
 #[cfg(test)]
 mod retention_tests {
     use super::*;
-    use crate::native_game::Tori;
+    use crate::game_adapter::Tori;
     use mshogi_core::tori;
 
     #[test]
@@ -1401,7 +1399,7 @@ mod retention_tests {
         let document =
             ValidatedGameDocument::<Tori>::new(record.clone(), tori::Side::Sente).unwrap();
         let saved = document.bytes().to_vec();
-        let mut state = Box::new(NativeSession::<Tori>::restore(document, &mut || false).unwrap());
+        let mut state = Box::new(GameSession::<Tori>::restore(document, &mut || false).unwrap());
         for id in 1..=(KEPT_RESULTS as u64 + 4) {
             let context = ExecutionContext {
                 purpose: ExecutionPurpose::EngineTurn {},
@@ -1434,8 +1432,8 @@ mod retention_tests {
                 &mut || false,
             )
             .unwrap();
-            let archive::NativeCompleted::Runtime {
-                state: archive::OpenedNative::Tori(next),
+            let archive::GameCompleted::Runtime {
+                state: archive::OpenedGame::Tori(next),
                 durable,
                 ..
             } = completed

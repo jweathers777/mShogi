@@ -10,7 +10,7 @@ use std::collections::{BTreeMap, BTreeSet};
 /// Exact MSH-82 ratified profile identity.
 pub const PROFILE: &str = "mshogi.chu.jcsa2019.v1";
 /// Independently reviewed immutable corpus digest from MSH-82's audit lock.
-pub const CORPUS_SHA256: &str = "1f9ec75af36ad7aecaa1dded27acee913e73a39a3f17979c9f435b4e8092976a";
+pub const CORPUS_SHA256: &str = "9f5004235378dc0d403b982af07d0ad9f10a5ef1f96be0145cd74710d18a584d";
 /// Independently expected input; never implementation observations.
 pub const FIXTURES: &str = include_str!("../../../docs/m4/chu/fixtures.json");
 /// Development-only input bound for this fixture corpus; it is not a game record.
@@ -39,7 +39,7 @@ struct WireCorpus {
     revision: String,
     profile: String,
     profile_status: String,
-    native_conformance_executed: bool,
+    rules_conformance_executed: bool,
     source_ids: Vec<String>,
     notation: Value,
     fixtures: Vec<Fixture>,
@@ -60,7 +60,7 @@ impl Corpus {
             || wire.revision != "MSH82-2026-11-02"
             || wire.profile != PROFILE
             || wire.profile_status != "ratified"
-            || wire.native_conformance_executed
+            || wire.rules_conformance_executed
             || wire.source_ids.len() != 8
             || !wire.notation.is_object()
         {
@@ -72,7 +72,7 @@ impl Corpus {
                 return Err(format!("duplicate fixture ID: {}", fixture.id));
             }
             if !fixture.requires_owner_decisions.is_empty()
-                || !matches!(fixture.scope.as_str(), "native" | "consumer")
+                || !matches!(fixture.scope.as_str(), "rules" | "consumer")
             {
                 return Err(format!(
                     "unresolved or unknown fixture scope: {}",
@@ -81,9 +81,9 @@ impl Corpus {
             }
         }
         if wire.fixtures.len() != 249
-            || wire.fixtures.iter().filter(|f| f.scope == "native").count() != 239
+            || wire.fixtures.iter().filter(|f| f.scope == "rules").count() != 239
         {
-            return Err("expected 239 native and 10 consumer Chu fixtures".into());
+            return Err("expected 239 and 10 consumer Chu fixtures".into());
         }
         let digest = format!("{:x}", Sha256::digest(input.as_bytes()));
         if digest != CORPUS_SHA256 {
@@ -96,7 +96,7 @@ impl Corpus {
             fixtures: wire.fixtures,
         })
     }
-    /// Immutable fixtures, including later consumers rather than invented native passes.
+    /// Immutable fixtures, including later consumers rather than invented passes.
     pub fn fixtures(&self) -> &[Fixture] {
         &self.fixtures
     }
@@ -176,10 +176,10 @@ pub fn plan(corpus: &Corpus) -> Vec<Assertion> {
                 .filter(|(field, _)| !documentary(field))
                 .map(|(field, expected)| Assertion {
                     fixture_id: f.id.clone(),
-                    // These source explanations do not promise a verbose native
+                    // These source explanations do not promise a verbose
                     // diagnostic. Execute its authoritative error class separately.
                     field: if explanatory_lion_reason(field, expected) {
-                        "native_refusal_kind".into()
+                        "refusal_kind".into()
                     } else {
                         field.clone()
                     },
@@ -201,8 +201,8 @@ pub fn plan(corpus: &Corpus) -> Vec<Assertion> {
         .collect()
 }
 /// Actual production projections only; absence remains pending.
-pub trait NativeAdapter {
-    /// Compute from inputs and native operations. Never copy expected values.
+pub trait RulesAdapter {
+    /// Compute from inputs and game operations. Never copy expected values.
     fn observe(&self, fixture: &Fixture, assertion: &Assertion) -> Result<Option<Value>, String>;
 }
 /// Counts distinguish rows, assertions, annotations and later consumer obligations.
@@ -212,11 +212,11 @@ pub struct Report {
     pub profile: String,
     pub corpus_sha256: String,
     pub fixtures_validated: usize,
-    pub native_fixture_rows: usize,
-    pub native_rows_executed: usize,
-    pub native_rows_passed: usize,
-    pub native_rows_failed: usize,
-    pub native_rows_pending: usize,
+    pub rules_fixture_rows: usize,
+    pub rules_rows_executed: usize,
+    pub rules_rows_passed: usize,
+    pub rules_rows_failed: usize,
+    pub rules_rows_pending: usize,
     pub executed: usize,
     pub passed: usize,
     pub failed: usize,
@@ -226,16 +226,16 @@ pub struct Report {
     pub later_consumer_requirements: Vec<Value>,
 }
 /// Run all assertions; one failure does not hide later mismatches.
-pub fn run_adapter(corpus: &Corpus, adapter: &impl NativeAdapter) -> Report {
+pub fn run_adapter(corpus: &Corpus, adapter: &impl RulesAdapter) -> Report {
     let mut report = Report {
         profile: PROFILE.into(),
         corpus_sha256: CORPUS_SHA256.into(),
         fixtures_validated: corpus.fixtures.len(),
-        native_fixture_rows: 240,
-        native_rows_executed: 0,
-        native_rows_passed: 0,
-        native_rows_failed: 0,
-        native_rows_pending: 0,
+        rules_fixture_rows: 240,
+        rules_rows_executed: 0,
+        rules_rows_passed: 0,
+        rules_rows_failed: 0,
+        rules_rows_pending: 0,
         executed: 0,
         passed: 0,
         failed: 0,
@@ -301,20 +301,20 @@ pub fn run_adapter(corpus: &Corpus, adapter: &impl NativeAdapter) -> Report {
             diagnostic,
         });
     }
-    for f in corpus.fixtures.iter().filter(|f| f.scope == "native") {
+    for f in corpus.fixtures.iter().filter(|f| f.scope == "rules") {
         let rows: Vec<_> = report
             .assertions
             .iter()
             .filter(|a| a.fixture_id == f.id)
             .collect();
         if rows.iter().any(|a| a.status == Status::Failed) {
-            report.native_rows_failed += 1;
-            report.native_rows_executed += 1;
+            report.rules_rows_failed += 1;
+            report.rules_rows_executed += 1;
         } else if rows.is_empty() || rows.iter().any(|a| a.status == Status::Pending) {
-            report.native_rows_pending += 1;
+            report.rules_rows_pending += 1;
         } else {
-            report.native_rows_passed += 1;
-            report.native_rows_executed += 1;
+            report.rules_rows_passed += 1;
+            report.rules_rows_executed += 1;
         }
     }
     report.executed = report.passed + report.failed;
@@ -328,7 +328,7 @@ fn clip(v: &Value) -> String {
 mod tests {
     use super::*;
     struct Pending;
-    impl NativeAdapter for Pending {
+    impl RulesAdapter for Pending {
         fn observe(&self, _: &Fixture, _: &Assertion) -> Result<Option<Value>, String> {
             Ok(None)
         }
@@ -338,8 +338,8 @@ mod tests {
         let corpus = Corpus::embedded().unwrap();
         let report = run_adapter(&corpus, &Pending);
         assert_eq!(report.fixtures_validated, 249);
-        assert_eq!(report.native_rows_pending, 239);
-        assert_eq!(report.native_rows_executed, 0);
+        assert_eq!(report.rules_rows_pending, 239);
+        assert_eq!(report.rules_rows_executed, 0);
         assert_eq!(report.later_consumer_requirements.len(), 10);
         assert_eq!(report.passed, 0);
         assert_eq!(crate::MAX_INPUT_BYTES, 512 * 1024);
@@ -368,14 +368,14 @@ mod tests {
     #[test]
     fn wrong_actual_value_has_bounded_actionable_diagnostic() {
         struct Wrong;
-        impl NativeAdapter for Wrong {
+        impl RulesAdapter for Wrong {
             fn observe(&self, f: &Fixture, a: &Assertion) -> Result<Option<Value>, String> {
                 Ok((f.id == "CHU-SETUP" && a.field == "piece_count").then(|| json!(91)))
             }
         }
         let report = run_adapter(&Corpus::embedded().unwrap(), &Wrong);
         assert_eq!(report.failed, 1);
-        assert_eq!(report.native_rows_failed, 1);
+        assert_eq!(report.rules_rows_failed, 1);
         let failure = report
             .assertions
             .iter()

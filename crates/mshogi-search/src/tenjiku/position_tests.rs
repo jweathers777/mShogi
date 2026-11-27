@@ -1,4 +1,4 @@
-//! Independent profile expectations and differential private/native projections.
+//! Independent profile expectations and differential private/projections.
 use super::position::TenjikuPosition;
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
 use mshogi_core::perft::perft;
@@ -69,7 +69,7 @@ fn face_piece(id: u16, side: Side, face: Face) -> Piece {
 fn actions(p: &mut TenjikuPosition) -> BTreeSet<Action> {
     p.legal_moves()
         .into_iter()
-        .map(|m| p.to_native(m))
+        .map(|m| p.to_action(m))
         .collect()
 }
 fn state(p: &TenjikuPosition, n: &Position) {
@@ -149,7 +149,7 @@ fn all_44_faces_match_independent_complete_geometry_for_both_profiles_and_sides(
     assert_eq!(count, 176);
 }
 #[test]
-fn independent_concrete_routes_and_sequences_match_native_full_effects() {
+fn independent_concrete_routes_and_sequences_match_full_effects() {
     let fs = fixtures();
     let mut roots = 0;
     let mut steps = 0;
@@ -202,7 +202,7 @@ fn independent_concrete_routes_and_sequences_match_native_full_effects() {
     assert!(steps >= 200, "{steps}");
 }
 #[test]
-fn independent_remote_perft_and_initial_native_counts() {
+fn independent_remote_perft_and_initial_counts() {
     for profile in Profile::ALL {
         let pos = Position::from_diagram(
             profile,
@@ -232,7 +232,7 @@ fn independent_remote_perft_and_initial_native_counts() {
     }
 }
 #[test]
-fn randomized_native_projection_hash_and_complete_undo() {
+fn randomized_projection_hash_and_complete_undo() {
     let fs = fixtures();
     let mut seed = 0x183f1deu64;
     let mut visited = 0;
@@ -264,7 +264,7 @@ fn randomized_native_projection_hash_and_complete_undo() {
                 seed ^= seed >> 7;
                 seed ^= seed << 17;
                 let m = moves[seed as usize % moves.len()];
-                let a = p.to_native(m);
+                let a = p.to_action(m);
                 let (next, e) = n.simulate(&a).unwrap();
                 removals += e.captures().count();
                 compounds += usize::from(a.route.len() > 1);
@@ -293,7 +293,7 @@ fn randomized_native_projection_hash_and_complete_undo() {
 }
 
 #[test]
-fn burn_phase_expectations_and_native_bare_royal_results_are_preserved() {
+fn burn_phase_expectations_and_bare_royal_results_are_preserved() {
     let fs = fixtures();
     for profile in Profile::ALL {
         for f in fs
@@ -401,7 +401,7 @@ fn burn_phase_expectations_and_native_bare_royal_results_are_preserved() {
     }
 }
 #[test]
-fn full_identity_rights_profile_and_native_history_are_distinct() {
+fn full_identity_rights_profile_and_history_are_distinct() {
     let fs = fixtures();
     for profile in Profile::ALL {
         let f = fs
@@ -468,7 +468,7 @@ fn full_identity_rights_profile_and_native_history_are_distinct() {
     );
 }
 #[test]
-fn search_representatives_preserve_exact_native_successors() {
+fn search_representatives_preserve_exact_successors() {
     let fs = fixtures();
     let mut removed = 0;
     for profile in Profile::ALL {
@@ -476,9 +476,9 @@ fn search_representatives_preserve_exact_native_successors() {
             .iter()
             .filter(|f| f["given"]["root"].is_object() && f["given"]["route"].is_array())
         {
-            let native = LocalPosition::admit(root(&f["given"]["root"], profile)).unwrap();
-            let mut p = TenjikuPosition::from_local(&native);
-            let admitted = native.legal_actions();
+            let rules_position = LocalPosition::admit(root(&f["given"]["root"], profile)).unwrap();
+            let mut p = TenjikuPosition::from_local(&rules_position);
+            let admitted = rules_position.legal_actions();
             for restrict in [false, true] {
                 if restrict {
                     p.restrict_root(
@@ -500,9 +500,9 @@ fn search_representatives_preserve_exact_native_successors() {
                     p.generate_search(stage, &mut repeated);
                     assert_eq!(selected, repeated);
                     let effect = |m| {
-                        let a = p.to_native(m);
+                        let a = p.to_action(m);
                         assert!(admitted.contains(&a));
-                        let (next, _) = native.simulate(&a).unwrap();
+                        let (next, _) = rules_position.simulate(&a).unwrap();
                         format!("{:?}", next.position().state())
                     };
                     let expected: BTreeSet<_> = full.iter().copied().map(effect).collect();
@@ -511,7 +511,7 @@ fn search_representatives_preserve_exact_native_successors() {
                     assert_eq!(actual.len(), selected.len());
                     removed += full.len() - selected.len();
                     assert_eq!(before, p.hash());
-                    state(&p, native.position());
+                    state(&p, rules_position.position());
                 }
             }
         }
@@ -662,10 +662,10 @@ fn exchange_accounts_for_off_target_demon_burn_and_mover_suicide() {
 }
 #[test]
 #[ignore = "manual release representation benchmark; run without other builds"]
-fn benchmark_native_and_private_generation() {
+fn benchmark_and_private_generation() {
     let fs = fixtures();
     for profile in Profile::ALL {
-        for (name, native) in [
+        for (name, rules_position) in [
             ("initial", LocalPosition::standard(profile)),
             (
                 "area-burn",
@@ -676,14 +676,14 @@ fn benchmark_native_and_private_generation() {
                 .unwrap(),
             ),
         ] {
-            let fast = TenjikuPosition::from_local(&native);
+            let fast = TenjikuPosition::from_local(&rules_position);
             let iterations = 300;
             let start = std::time::Instant::now();
-            let mut native_count = 0;
+            let mut rules_count = 0;
             for _ in 0..iterations {
-                native_count += std::hint::black_box(native.legal_actions()).len();
+                rules_count += std::hint::black_box(rules_position.legal_actions()).len();
             }
-            let native_us = start.elapsed().as_micros();
+            let us = start.elapsed().as_micros();
             let start = std::time::Instant::now();
             let mut fast_count = 0;
             for _ in 0..iterations {
@@ -693,10 +693,10 @@ fn benchmark_native_and_private_generation() {
                 fast_count += std::hint::black_box(v).len();
             }
             let fast_us = start.elapsed().as_micros();
-            assert_eq!(native_count, fast_count);
+            assert_eq!(rules_count, fast_count);
             eprintln!(
-                "{profile:?} {name}: rounds={iterations},actions={native_count},native_us={native_us},fast_us={fast_us},speedup={:.2}",
-                native_us as f64 / fast_us as f64
+                "{profile:?} {name}: rounds={iterations},actions={rules_count},us={us},fast_us={fast_us},speedup={:.2}",
+                us as f64 / fast_us as f64
             );
         }
     }
@@ -732,7 +732,7 @@ fn complete_compound_perft_two_agrees_for_both_profiles() {
     }
 }
 #[test]
-fn private_repeat_approximation_never_changes_native_root_admission() {
+fn private_repeat_approximation_never_changes_root_admission() {
     let fs = fixtures();
     for profile in Profile::ALL {
         for id in ["TEN-REPETITION-CONCRETE", "TEN-REPETITION-RIGHTS-CONCRETE"] {

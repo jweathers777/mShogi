@@ -313,7 +313,7 @@ fn pinned_enemy_rook_still_geometrically_controls_general_destination() {
     // d0-d9 line, so it is pinned to its own General. Nonetheless it attacks
     // e2 geometrically; General safety must not recursively ask whether that
     // enemy rook could legally move d2-e2 and expose its own General. There is
-    // no actual General-capture continuation in this test or native contract.
+    // no actual General-capture continuation in this test or contract.
     let mut position = Position::from_fen("3k5/9/9/9/9/9/9/3r5/4K4/3R5 w - - 0 1").unwrap();
     let before = position.clone();
     let action: Action = "e1e2".parse().unwrap();
@@ -480,9 +480,9 @@ fn exhaustive_independent_palace_universes_match_legal_actions_and_transitions()
             );
             for (a, next) in expected {
                 assert!(universe.contains(&next));
-                let mut native = p.clone();
-                native.apply(a).unwrap();
-                assert_eq!(native, next.position());
+                let mut game = p.clone();
+                game.apply(a).unwrap();
+                assert_eq!(game, next.position());
             }
         }
     }

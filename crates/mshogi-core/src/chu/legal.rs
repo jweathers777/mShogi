@@ -8,7 +8,7 @@ use std::{collections::BTreeSet, error::Error, fmt, sync::Arc};
 #[derive(Clone, Debug, Eq, PartialEq, Hash, Ord, PartialOrd, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Action {
-    /// Exact native origin.
+    /// Exact origin.
     pub from: Square,
     /// One or two ordered actual landings.
     pub route: Vec<Square>,
@@ -42,7 +42,7 @@ pub struct Capture {
 #[derive(Clone, Debug, Default, Eq, PartialEq, Hash, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct LionProtection {
-    /// Protected native owner, absent when no rights exist.
+    /// Protected side, absent when no rights exist.
     pub owner: Option<Side>,
     /// Canonically sorted defended Lion squares.
     pub squares: Vec<Square>,
@@ -140,12 +140,12 @@ struct LogicalState {
     position: Position,
     protection: LionProtection,
 }
-/// Read-only complete native movement choice, never game admission authority.
+/// Read-only complete movement choice, never game admission authority.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct InspectedChoice {
-    /// Exact inspected native origin.
+    /// Exact inspected origin.
     pub origin: Square,
-    /// Whole native action.
+    /// Whole action.
     pub action: Action,
     /// Derived hypothetical effects.
     pub effects: Effects,
@@ -219,7 +219,7 @@ impl LocalPosition {
     pub fn position(&self) -> &Position {
         &self.position
     }
-    /// Active native next-turn right.
+    /// Active next-turn right.
     pub fn protection(&self) -> &LionProtection {
         &self.protection
     }
@@ -257,7 +257,7 @@ impl LocalPosition {
         }
         out.into_iter().collect()
     }
-    /// Read-only local choices on either native player's hypothetical turn.
+    /// Read-only local choices on either player's hypothetical turn.
     /// A protection right constrains its opponent only, never its owning side.
     pub fn legal_actions_for(&self, side: Side) -> Vec<Action> {
         let mut copy = self.clone();
@@ -267,7 +267,7 @@ impl LocalPosition {
         }
         copy.legal_actions()
     }
-    /// Resolve one complete action on a private native-side turn, without
+    /// Resolve one complete action on a private side turn, without
     /// counters, game permission, history events or mutation of the live state.
     pub fn preview_for(&self, side: Side, action: &Action) -> Result<Effects, ActionError> {
         let mut copy = self.clone();
@@ -284,7 +284,7 @@ impl LocalPosition {
         let (next, effects) = self.resolve(action, false)?;
         Ok((Self::install(next.position, next.protection), effects))
     }
-    /// Native actual capture relations under complete local action admission.
+    /// Actual capture relations under complete local action admission.
     /// Duplicate relations across routes/promotion alternatives are collapsed.
     pub fn capture_influence(&self, side: Side) -> Vec<(Square, Square)> {
         let mut copy = self.clone();
@@ -307,7 +307,7 @@ impl LocalPosition {
     pub fn geometric_defenders(&self, side: Side, square: Square) -> Vec<Square> {
         geometric_defenders_on(&self.position, side, square)
     }
-    /// Native read-only inspection of either player's actual piece.
+    /// Read-only inspection of either player's actual piece.
     pub fn inspection(&self, origin: Square) -> Vec<InspectedChoice> {
         let Some(piece) = self.position.piece(origin) else {
             return Vec::new();
@@ -519,7 +519,7 @@ pub enum SpecialMovement {
     /// Straight forward, no turn on leg 2.
     Forward,
 }
-/// Native source movement geometry. Offsets are Sente file/rank deltas; Gote
+/// Game source movement geometry. Offsets are Sente file/rank deltas; Gote
 /// rotates both. These are geometry facts, not complete legal-action choices.
 #[derive(Clone, Copy, Debug)]
 pub struct Movement {

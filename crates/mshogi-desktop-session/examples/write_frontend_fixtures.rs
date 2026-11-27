@@ -1,8 +1,8 @@
-//! Native current-contract fixtures; the example's child mode invokes the real engine.
+//! Current-contract fixtures; the example's child mode invokes the real engine.
 //! Neither this example nor its fixture initializer is bundled with the application.
 use mshogi_core::{
     chess::*,
-    native::{CanonicalRecord, NativeSide},
+    game::{CanonicalRecord, TaggedSide},
 };
 use mshogi_desktop_session::{
     AnalysisOperation, AnalysisPhase, DesktopController, IoPhase, SessionOperation,
@@ -157,7 +157,7 @@ fn main() {
     }
 }
 // Only frontend fixture output receives a deterministic untimed schedule.
-// The product/controller retains its real monotonic timestamps. Native replay
+// The product/controller retains its real monotonic timestamps. Game replay
 // checks that changing these fixture timestamps changes no accepted command,
 // derived reply, canonical history or outcome; timed records are never normalized.
 fn normalized_untimed_fixture_match(record: &MatchRecord) -> Result<MatchRecord, String> {
@@ -174,7 +174,7 @@ fn normalized_untimed_fixture_match(record: &MatchRecord) -> Result<MatchRecord,
         request.at_ns = u64::try_from(index).map_err(|_| "Fixture event index exceeds u64")?;
         if normalized.submit(request) != *expected {
             return Err(format!(
-                "Untimed fixture normalization changed event {index}'s native reply."
+                "Untimed fixture normalization changed event {index}'s game reply."
             ));
         }
     }
@@ -183,7 +183,7 @@ fn normalized_untimed_fixture_match(record: &MatchRecord) -> Result<MatchRecord,
         || normalized.active() != original.active()
         || normalized.remaining_ns() != original.remaining_ns()
     {
-        return Err("Untimed fixture normalization changed native game semantics.".into());
+        return Err("Untimed fixture normalization changed game semantics.".into());
     }
     Ok(normalized.record().clone())
 }
@@ -208,7 +208,7 @@ fn chess_controller(fen: &str) -> DesktopController {
         &mut c,
         SessionOperation::Replace {
             record: CanonicalRecord::chess(game.record()),
-            human: NativeSide::Chess(Color::White),
+            human: TaggedSide::Chess(Color::White),
         },
     );
     c
@@ -240,7 +240,7 @@ fn wait_document(c: &mut DesktopController, id: u64) -> SharedSnapshot {
 
 fn write_shared_fixtures(directory: &std::path::Path) {
     use mshogi_core::{
-        native::{CanonicalRecord, GameKind, NativeSide},
+        game::{CanonicalRecord, GameKind, TaggedSide},
         shogi as s, xiangqi as x,
     };
     use mshogi_desktop_session::{SessionOperation, SharedDesktopCommand};
@@ -278,7 +278,7 @@ fn write_shared_fixtures(directory: &std::path::Path) {
                 },
                 operation: SessionOperation::Replace {
                     record: CanonicalRecord::shogi(s::GameRecord::from_game(&game)),
-                    human: NativeSide::Shogi(s::Side::Sente),
+                    human: TaggedSide::Shogi(s::Side::Sente),
                 },
             },
         )
@@ -307,7 +307,7 @@ fn write_shared_fixtures(directory: &std::path::Path) {
             game: GameKind::Shogi,
             operation: SessionOperation::Replace {
                 record: CanonicalRecord::xiangqi(x::GameRecord::from_game(&game).unwrap()),
-                human: NativeSide::Xiangqi(x::Side::Red),
+                human: TaggedSide::Xiangqi(x::Side::Red),
             },
         },
     )
@@ -355,7 +355,7 @@ fn write_shared_fixtures(directory: &std::path::Path) {
         )
         .unwrap();
     }
-    // Real native capture/recapture ledger, not fabricated frontend event labels.
+    // Real capture/recapture ledger, not fabricated frontend event labels.
     let mut game = x::Game::standard(x::ClaimPolicy::Explicit).unwrap();
     for action in ["b2b9", "a9b9"] {
         game.submit(x::GameRequest {
@@ -374,7 +374,7 @@ fn write_shared_fixtures(directory: &std::path::Path) {
             game: GameKind::Xiangqi,
             operation: SessionOperation::Replace {
                 record: CanonicalRecord::xiangqi(x::GameRecord::from_game(&game).unwrap()),
-                human: NativeSide::Xiangqi(x::Side::Red),
+                human: TaggedSide::Xiangqi(x::Side::Red),
             },
         },
     )
@@ -407,7 +407,7 @@ fn shared_command(
 mod fixture_tests {
     use super::*;
     #[test]
-    fn untimed_fixture_schedule_preserves_native_claim_resignation_and_complete_context() {
+    fn untimed_fixture_schedule_preserves_claim_resignation_and_complete_context() {
         for (fen, command) in [
             (
                 "7k/8/8/8/8/8/R7/K7 w - - 99 1",

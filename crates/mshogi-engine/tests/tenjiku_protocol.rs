@@ -1,6 +1,6 @@
 //! Independently constructed terminal tactics and forged real-result admission.
 mod support;
-use mshogi_core::{native::*, tenjiku as t};
+use mshogi_core::{game::*, tenjiku as t};
 use mshogi_engine::*;
 use std::io::Cursor;
 fn game(profile: t::Profile) -> t::Game {
@@ -55,7 +55,7 @@ fn run(ctx: ExecutionContext) -> ExecutionObservation {
     response.observation
 }
 #[test]
-fn actual_royal_capture_score_and_native_pv_validation_for_both_profiles() {
+fn actual_royal_capture_score_and_pv_validation_for_both_profiles() {
     for profile in t::Profile::ALL {
         let g = game(profile);
         let before = t::GameRecord::from_game(&g).unwrap();

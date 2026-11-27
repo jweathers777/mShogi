@@ -4,13 +4,13 @@ The sections below record the development of the shared desktop interface in
 MSH-72 through MSH-74. See the [current execution contract](../desktop/internal-execution-v4.md)
 for the six-game application.
 
-MSH-72 established a concrete two-game native boundary, using the existing Rust chess
+MSH-72 established a concrete two-game rules boundary, using the existing Rust chess
 match/session and selected standard-shogi `mshogi.shogi.csa36.v1` game. It does
 not deliver shogi desktop archives (MSH-73) or claim the completed shogi desktop
 application (MSH-74). M2/M3 and their chess evidence remain closed. MSH-41–47
 remain complete-delivery obligations, and M4 remains open.
 
-## Native API and compatibility
+## API and compatibility
 
 `DesktopController::shared_command(SharedDesktopCommand)` and
 `shared_snapshot()` extend the same controller and single `EngineBridge` used
@@ -21,8 +21,8 @@ controller requires exclusive mutable access for the same operations.
 
 Each command supplies an explicit `GameKind` and exact `SessionToken`:
 `document`, `version`, `revision`, `selection`. `Replace` identifies the **current**
-game in that outer precondition and supplies an independently tagged native
-canonical record and native human side for the replacement. Native record
+game in that outer precondition and supplies an independently tagged
+canonical record and human side for the replacement. Game record
 profile/edition/schema checks and side/game agreement are mandatory. Replacement
 is an explicit approval to replace exactly that document; callers must provide
 unsaved-change confirmation before issuing it. Runtime identities are fresh;
@@ -38,12 +38,12 @@ canonical chess context is the rules-owned history record, not a replacement
 for the complete match/archive ledger; terminal match events and conclusions
 remain in the legacy snapshot/timeline and archive.
 
-Shogi replacement accepts the authoritative native record, root provenance,
+Shogi replacement accepts the authoritative game record, root provenance,
 supplied counters and complete history. It starts paused. `Resume`, complete
 `Play`, formal `Declare`, `Resign`, semantic event `Undo`, `Inspect`,
-`ReturnLive`, bounded `Analyze`, `Cancel` and `Retry` are concrete native
+`ReturnLive`, bounded `Analyze`, `Cancel` and `Retry` are concrete
 operations. Board actions require a resumed human live turn. Terminal commands
-retain native admission: a wrong-turn or ineligible formal declaration is an
+retain game admission: a wrong-turn or ineligible formal declaration is an
 accepted false-declaration loss; an eligibility query only supplies advice.
 Resignation does not acquire a board-action turn restriction. None of these
 changes the accepted shogi rules, mutual-check resolution or fixture expectations.
@@ -60,23 +60,23 @@ is claimed for it here. MSH-61 admission/save guarantees for chess remain intact
 ## Presentation and complete choices
 
 `SharedSnapshot` explicitly supplies game, immutable profile/edition,
-profile-qualified sides, first-mover labels, native human and turn identities,
+profile-qualified sides, first-mover labels, human and turn identities,
 square geometry and both orientations. Chess is White/Black; shogi is Sente/Gote.
-A board does not decide game identity from dimensions or notation. Native shogi
+A board does not decide game identity from dimensions or notation. Shogi
 ordering is top-left **9a** for Sente at bottom, **1i** for Gote at bottom.
 
-Semantic pieces carry owner, base kind, promoted flag, readable text and native
+Semantic pieces carry owner, base kind, promoted flag, readable text and
 accessible label. Shogi uses K/R/B/G/S/N/L/P and + for promotion. Both hands
-include counts (including zero), native labels and opaque origin keys. Captured
-promoted pieces demote into native hands; the frontend performs no inventory,
+include counts (including zero), game labels and opaque origin keys. Captured
+promoted pieces demote into hands; the frontend performs no inventory,
 nifu, dead-rank, king-safety, promotion or outcome calculations.
 
 A `PresentedChoice` contains a typed `ChoiceOrigin::Board` or `Hand`, an opaque
-complete native action, ordered `steps` and optional explicit completion. The
+complete action, ordered `steps` and optional explicit completion. The
 same endpoints need not mean the same route/action. Optional promotion supplies
 both Promote/Do not promote choices; compulsory promotion supplies only Promote.
 The shared `Board` retains the M3 synthetic route/complete-action handling and
-adds native coordinate order. `SquareBoard` (Chess, Chu, Tenjiku), `ShogiBoard`
+adds coordinate order. `SquareBoard` (Chess, Chu, Tenjiku), `ShogiBoard`
 (Shogi, Tori, with hands) and `XiangqiBoard` adapt only DTO presentation and
 share one footer, completion dialog and square label (`BoardControls`). Click, arrows, Enter/Space, Escape and completion-dialog focus
 operate over supplied choices. A selected hand, route prefix or promotion dialog
@@ -84,8 +84,8 @@ is never a committed action. Game/document/version/selection/orientation changes
 retire partial choices. No Chu/Tenjiku interaction implementation is claimed.
 
 History selects **complete event prefixes**, including terminal commands with
-unchanged board ply. The selected native record never includes future moves or
-repetition information. `ReturnLive` is explicit and remains paused. Native
+unchanged board ply. The selected game record never includes future moves or
+repetition information. `ReturnLive` is explicit and remains paused. Game
 capabilities distinguish complete actions, drops, promotion, undo, engine turns,
 analysis, chess Full, claims, declarations, resignation, hands, history and Save.
 Formal declaration availability is deliberately distinct from advisory eligibility.
@@ -93,7 +93,7 @@ Formal declaration availability is deliberately distinct from advisory eligibili
 ## Execution and bounds
 
 Chess continues through its established v2 play, analysis and explicit bounded
-Full paths. Shogi uses the existing v3 native engine consumer, ordinary play
+Full paths. Shogi uses the existing v3 mShogi engine consumer, ordinary play
 limits depth 2 / 5,000 nodes, and explicit analysis depth 1–4 / at most 20,000
 nodes (zero nodes is a supported incomplete-work experiment). Chess Full and
 claims explicitly reject for shogi. There is no shogi tsume operation here.
@@ -101,23 +101,23 @@ claims explicitly reject for shogi. There is no shogi tsume operation here.
 There is one execution resource. Starting/replacing analysis retires engine-turn
 work and pauses play; Cancel retires publication without a move/outcome; Resume
 retires analysis before live work. Every accepted result equals the complete
-pending request: native root/history/profile, purpose, request ID, session version,
+pending request: game root/history/profile, purpose, request ID, session version,
 work limits and historical target/selection. Request counters increase across
 chess/shogi/chess. Analysis only
-records observations and cannot pass through native move/declaration admission.
-Engine-turn choices are separately admitted by the native game. Conclusions,
+records observations and cannot pass through move/declaration admission.
+Engine-turn choices are separately admitted by the game. Conclusions,
 incomplete work, process failures, and rejected choices remain distinct. Retry
-keeps native history and uses new identities. All accepted observations retain
+keeps game history and uses new identities. All accepted observations retain
 exact contexts and real telemetry; no live progress is invented.
 
-Shogi scores retain root-side hundredths-of-pawn meaning. Native terminal win
+Shogi scores retain root-side hundredths-of-pawn meaning. Terminal win
 distance includes declaration command edges and must not be labeled chess mate.
-Full raw native result/context and score interpretation remain available in
+Full raw engine result/context and score interpretation remain available in
 technical details. Shared chess analysis stays in its typed compatibility view
 with its existing score/perspective and Full meaning.
 
 Existing bridge watchdog, bounded queues, cancellation and child cleanup remain.
-Engine requests, replies, shared desktop commands and native envelopes have no
+Engine requests, replies, shared desktop commands and record envelopes have no
 byte limit (MSH-268); diagnostics stay 4 KiB.
 `SharedDesktopCommand::from_json` refuses duplicate fields anywhere, including
 the game payloads, before the operation is parsed.
@@ -129,13 +129,13 @@ documents preserve the game history.
 
 ## MSH-72 verification
 
-MSH-72 exercised native board and hand choices, orientation, bounded analysis,
+MSH-72 exercised game board and hand choices, orientation, bounded analysis,
 event inspection, Return to live, Undo, declaration, resignation and close guards.
 The early Shogi verification layout preceded the product design delivered in MSH-74.
 See [desktop development](../../desktop/README.md#isolated-verification-application)
 for the current verification build and fixture setup.
 
-The DTO's `kind`, `promoted`, `owner`, geometry, native orientations and hand
+The DTO's `kind`, `promoted`, `owner`, geometry, orientations and hand
 resources are authoritative semantics; `text`/labels are readable fallbacks for
 verification and accessibility, not required piece artwork. Clients can render
 appropriate game-specific pieces using those fields. Coordinates and ordered
@@ -163,7 +163,7 @@ requirements. This clarification neither reopens M3 nor implements MSH-74.
 ## MSH-73 archive extension
 
 The historical MSH-72 evidence and its then-missing Save/Open limitation above
-remain a record of that revision. MSH-73 now adds native shared Save/Open via the
+remain a record of that revision. MSH-73 now adds shared Save/Open via the
 versioned [archive contract](desktop-archive.md), including strict chess v1
 compatibility, shogi v2 lossless replay, pre-commit capacity and fresh stopped
 reopen. The early verification surface exercised file operations and close guards.

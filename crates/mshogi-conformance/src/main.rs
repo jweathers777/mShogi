@@ -24,7 +24,7 @@ fn execute() -> Result<bool, String> {
         match a.as_str() {
             "--help" => {
                 println!(
-                    "mshogi-conformance [--corpus FILE] [--ownership FILE] [--observations FILE] [--require-complete] [--require-owner MSH-N]\nNo observations: validate data and report native assertions pending. No external engine required."
+                    "mshogi-conformance [--corpus FILE] [--ownership FILE] [--observations FILE] [--require-complete] [--require-owner MSH-N]\nNo observations: validate data and report assertions pending. No external engine required."
                 );
                 return Ok(true);
             }

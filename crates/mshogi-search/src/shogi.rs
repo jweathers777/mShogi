@@ -13,14 +13,14 @@ pub const EVALUATOR_ID: &str = "mshogi.shogi.material-placement.v1";
 /// Shared alpha-beta search identity.
 pub const SEARCH_ID: &str = "mshogi.shogi.shared-core.v1";
 
-/// Native complete action versus explicit terminal declaration choice.
+/// Complete action versus explicit terminal declaration choice.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Choice {
     /// A complete legal board move/drop/promotion.
     Move(Action),
-    /// Formal entering-king declaration for the native actor; not a board action.
+    /// Formal entering-king declaration for the actor; not a board action.
     Declare {
-        /// Native declarer; submitting a declaration does not change board turn.
+        /// Declarer; submitting a declaration does not change board turn.
         actor: Side,
     },
 }
@@ -30,7 +30,7 @@ impl From<Action> for Choice {
     }
 }
 impl Choice {
-    /// Retain native command semantics; admission still belongs to Game::submit.
+    /// Retain game command semantics; admission still belongs to Game::submit.
     pub const fn command(self) -> GameCommand {
         match self {
             Self::Move(action) => GameCommand::Play(action),
@@ -41,7 +41,7 @@ impl Choice {
 root::root_api!(300_000);
 
 impl RootGame for Game {
-    root::native_types!(ShogiPosition, Choice, clone, action);
+    root::types!(ShogiPosition, Choice, clone, action);
     root::no_adjudication!();
     root::timed_moves!(ShogiPosition);
     fn legal(&self, _: &mut dyn FnMut() -> bool) -> Result<Option<Vec<Action>>, SearchError> {
@@ -73,11 +73,11 @@ impl RootGame for Game {
                 return Ok(true);
             }
             let choice = Choice::Declare { actor: root_side };
-            let mut native = self.clone();
-            native
+            let mut rules_position = self.clone();
+            rules_position
                 .play(&choice, stop)
                 .map_err(SearchError::Transition)?;
-            let conclusion = native.conclusion().ok_or(SearchError::Invariant)?;
+            let conclusion = rules_position.conclusion().ok_or(SearchError::Invariant)?;
             result.decision = Some(Decision::Choose(choice));
             result.score = Some(terminal_score(conclusion, root_side, 1));
             result.completed_depth = 1;

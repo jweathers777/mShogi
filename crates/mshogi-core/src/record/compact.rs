@@ -1,6 +1,6 @@
-//! Compact native records for games with one event per accepted command.
+//! Compact game records for games with one event per accepted command.
 use super::{RecordedCommand, reject_duplicates, serialize_json};
-use crate::native::{
+use crate::game::{
     history::{AppendGame, GameHistory, GameUndo, Request, Snapshot},
     incremental::IncrementalRecord,
 };
@@ -17,22 +17,22 @@ pub enum RecordError {
     Json,
     /// Unsupported profile, edition or schema.
     Identity,
-    /// Invalid native root.
+    /// Invalid game root.
     Root,
-    /// Refused native command at this index.
+    /// Refused game command at this index.
     Command(usize),
-    /// Internal native replay invariant at this command.
+    /// Internal game replay invariant at this command.
     Invariant(usize),
     /// Missing prefix or incomplete command boundary.
     Prefix,
-    /// Declared facts differ from native admission.
+    /// Declared facts differ from game admission.
     Derived,
     /// Caller stopped reconstruction.
     Stopped,
 }
 impl fmt::Display for RecordError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "native record refused: {self:?}")
+        write!(f, "game record refused: {self:?}")
     }
 }
 impl std::error::Error for RecordError {}
@@ -100,7 +100,7 @@ fn encode_root<S: Compact>(root: S::Root, events: &[S::Event]) -> Result<String,
 pub(crate) fn encode<S: Compact>(game: &GameHistory<S>) -> Result<String, RecordError> {
     encode_root::<S>(S::root(game), game.events())
 }
-/// Canonical native bytes and the validated history used to identify exact suffixes.
+/// Canonical bytes and the validated history used to identify exact suffixes.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct CompactRecord<S: Compact> {
     json: String,
@@ -157,11 +157,11 @@ impl<S: Compact> CompactRecord<S> {
     pub fn known_board_actions(&self) -> usize {
         self.board_plies
     }
-    /// Native turn at this prefix.
+    /// Game turn at this prefix.
     pub fn side_to_move(&self) -> S::Side {
         self.side
     }
-    /// Native conclusion at this prefix.
+    /// Game conclusion at this prefix.
     pub fn conclusion(&self) -> Option<S::Conclusion> {
         self.conclusion
     }
@@ -199,7 +199,7 @@ impl<S: Compact> CompactRecord<S> {
     ) -> Result<GameHistory<S>, RecordError> {
         Self::replay(&self.json, false, stop).map(|(g, _)| g)
     }
-    /// Reconstruct native LIFO reversal handles for the complete game.
+    /// Reconstruct LIFO reversal handles for the complete game.
     pub fn to_game_with_undo(&self) -> Result<(GameHistory<S>, Vec<GameUndo>), RecordError> {
         Self::replay(&self.json, true, &mut || false)
     }
@@ -289,7 +289,7 @@ struct DeltaFields<E, C> {
     events: Vec<E>,
     conclusion: Option<C>,
 }
-/// Strict native events for an already authenticated session base.
+/// Strict game events for an already authenticated session base.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 #[serde(transparent, bound = "")]
 pub struct CompactDelta<S: Compact>(DeltaFields<S::Event, S::Conclusion>);
@@ -302,7 +302,7 @@ impl<S: Compact> CompactDelta<S> {
     pub fn event_count(&self) -> usize {
         self.0.events.len()
     }
-    /// Decode syntax and require all redundant fields before native admission.
+    /// Decode syntax and require all redundant fields before game admission.
     pub fn from_json(text: &str) -> Result<Self, RecordError> {
         let delta = Self(parse(text)?);
         delta

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Independent fixture arithmetic, not a second product rules implementation.
 
-Only the reviewed Rook/General histories are supported. No native/reference
+Only the reviewed Rook/General histories are supported. No mShogi or reference
 outcome is used. Optional --output retains the diagnostic observations.
 """
 import argparse
@@ -56,7 +56,7 @@ for f in data['fixtures']:
         assert captures==f['expected']['captures']
         assert max(occurrence.values())==f['expected']['repetition_max_occurrences']
     if 'capture_ply' in f['expected']:assert captures==[f['expected']['capture_ply']]
-    reports.append({'id':f['id'],'method':'independent placement-only replay and straight-line Rook check/capture/count arithmetic; no native or reference calls','red_check_plies':checks['red'],'black_check_plies':checks['black'],'capture_plies':captures,'maximum_position_occurrences':max(occurrence.values()),'claim_boundaries':observed,'status':'pass'})
+    reports.append({'id':f['id'],'method':'independent placement-only replay and straight-line Rook check/capture/count arithmetic; no or reference calls','red_check_plies':checks['red'],'black_check_plies':checks['black'],'capture_plies':captures,'maximum_position_occurrences':max(occurrence.values()),'claim_boundaries':observed,'status':'pass'})
 if args.output:
     args.output.write_text(json.dumps(reports,indent=2)+'\n')
 print('PASS: four source-count fixtures; independent placement/check/count arithmetic; no history outcome engine used')

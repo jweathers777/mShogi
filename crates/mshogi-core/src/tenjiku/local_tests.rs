@@ -593,7 +593,7 @@ fn cancellation_counter_refusal_and_inspection_preserve_every_live_field() {
 }
 
 #[test]
-fn native_sequence_rotates_and_restores_exact_state_without_assuming_rules_oracles() {
+fn sequence_rotates_and_restores_exact_state_without_assuming_rules_oracles() {
     for profile in Profile::ALL {
         let mut l = local(
             profile,

@@ -5,7 +5,7 @@
 //! validation of a reported line are the same for every game. Chess keeps its
 //! own adapter (`ChessResult`).
 use crate::{ExecutionContext, ExecutionResult, MAX_STDERR_BYTES, StopReason, WorkLimits};
-use mshogi_core::native::{CanonicalRecord, GameKind, NativeSide};
+use mshogi_core::game::{CanonicalRecord, GameKind, TaggedSide};
 use mshogi_search::alphabeta::{MATE_BOUND, SearchPosition, Searcher, timing::TimeBudget};
 use mshogi_search::root::{self, RootGame};
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
@@ -55,7 +55,7 @@ pub trait EngineGame: Copy + Debug + Eq + 'static {
     type Game: Clone
         + RootGame<Position = Self::Position, Side = Self::Side, Conclusion = Self::Conclusion>;
     /// Canonical game record.
-    type Record: mshogi_core::native::incremental::IncrementalRecord<
+    type Record: mshogi_core::game::incremental::IncrementalRecord<
             Game = Self::Game,
             Error: std::fmt::Display,
         >;
@@ -71,7 +71,7 @@ pub trait EngineGame: Copy + Debug + Eq + 'static {
     /// Wrap a result of this game.
     fn wrap(result: EngineResult<Self>) -> ExecutionResult;
     /// Game-qualified player.
-    fn native_side(side: Self::Side) -> NativeSide;
+    fn tagged_side(side: Self::Side) -> TaggedSide;
     /// Player to move at the end of a record.
     fn record_side(record: &Self::Record) -> Self::Side;
     /// Conclusion at the end of a record.
@@ -89,7 +89,7 @@ pub trait EngineGame: Copy + Debug + Eq + 'static {
     /// Select this game's suffix from a transport request.
     fn delta(
         delta: &crate::incremental::Delta,
-    ) -> Option<&<Self::Record as mshogi_core::native::incremental::IncrementalRecord>::Delta>;
+    ) -> Option<&<Self::Record as mshogi_core::game::incremental::IncrementalRecord>::Delta>;
     /// Event and board-action counts in the retained game.
     fn progress(game: &Self::Game) -> (usize, usize);
     /// Player to move.
@@ -421,24 +421,24 @@ impl<G: EngineGame> EngineResult<G> {
 macro_rules! for_game {
     ($kind:expr, $G:ident => $body:expr, chess => $chess:expr) => {
         match $kind {
-            mshogi_core::native::GameKind::Chess => $chess,
-            mshogi_core::native::GameKind::Shogi => {
+            mshogi_core::game::GameKind::Chess => $chess,
+            mshogi_core::game::GameKind::Shogi => {
                 type $G = $crate::game::Shogi;
                 $body
             }
-            mshogi_core::native::GameKind::Xiangqi => {
+            mshogi_core::game::GameKind::Xiangqi => {
                 type $G = $crate::game::Xiangqi;
                 $body
             }
-            mshogi_core::native::GameKind::Tori => {
+            mshogi_core::game::GameKind::Tori => {
                 type $G = $crate::game::Tori;
                 $body
             }
-            mshogi_core::native::GameKind::Chu => {
+            mshogi_core::game::GameKind::Chu => {
                 type $G = $crate::game::Chu;
                 $body
             }
-            mshogi_core::native::GameKind::Tenjiku => {
+            mshogi_core::game::GameKind::Tenjiku => {
                 type $G = $crate::game::Tenjiku;
                 $body
             }
@@ -553,7 +553,7 @@ mod tests {
         t.score = Some(Xiangqi::WIN_SCORE - 20);
         assert_eq!(
             t.score_label().as_deref(),
-            Some("Win in 20 native command edges")
+            Some("Win in 20 game command edges")
         );
     }
 
@@ -642,7 +642,7 @@ mod tests {
     }
 
     #[test]
-    fn timed_zero_node_terminal_observes_native_result_without_search() {
+    fn timed_zero_node_terminal_observes_result_without_search() {
         let mut game = shogi::Game::new();
         game.submit(shogi::GameRequest {
             expected: game.context(),

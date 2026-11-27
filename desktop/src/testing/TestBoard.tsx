@@ -1,4 +1,4 @@
-import type { Color } from "../native";
+import type { Color } from "../sessionTypes";
 // Test support only: renders the shared Board from colour pieces and a geometry,
 // as the Chess snapshot fixtures and the synthetic fixture supply them.
 import type { ComponentProps } from "react";

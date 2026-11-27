@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
-// Native-generated controller snapshots supply every complete action and effect.
+// Generated controller snapshots supply every complete action and effect.
 // These tests establish frontend consumption, not new rules or search conformance.
 import { renderBoard, square } from "../testing/helpers";
-import type { TenjikuSnapshot, MovementInspection } from "../native";
+import type { TenjikuSnapshot, MovementInspection } from "../sessionTypes";
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { SquareBoard } from "./SquareBoard";
@@ -64,7 +64,7 @@ it.each(fixtures)("renders the actual $label 16×16 board in both orientations w
   expect(container.querySelectorAll("svg [role=button]")).toHaveLength(256);
   expect(container.querySelector("svg")?.getAttribute("viewBox")).toBe("0 0 1680 1680");
   expect(container.querySelector("svg [role=button]")?.getAttribute("aria-label")).toMatch(/^16a,/);
-  expect(container.querySelectorAll(".native-coordinate-frame .coordinate")).toHaveLength(32);
+  expect(container.querySelectorAll(".coordinate-frame .coordinate")).toHaveLength(32);
   expect(container.querySelectorAll(".square .coordinate")).toHaveLength(0);
   expect(container.querySelector('[data-game-slot="footer"] [data-position-status]')).toBeTruthy();
   expect(container.querySelector('[data-game-slot="upper-player"]')?.textContent).toContain("mShogi");
@@ -84,7 +84,7 @@ it.each(fixtures)("renders the actual $label 16×16 board in both orientations w
   expect(props.onPlay).not.toHaveBeenCalled();
 });
 
-it.each(fixtures)("selects different native $label captures returning to the same endpoint by pointer and keyboard", fixture => {
+it.each(fixtures)("selects different $label captures returning to the same endpoint by pointer and keyboard", fixture => {
   const source = snapshot(fixture.compound);
   const returns = returningChoices(source).filter(choice => ["8g", "9g"].includes(choice.steps[0]!));
   expect(new Set(returns.map(choice => choice.steps[0])).size).toBeGreaterThan(1);
@@ -103,7 +103,7 @@ it.each(fixtures)("selects different native $label captures returning to the sam
   }
 });
 
-it.each(fixtures)("requires explicit completion of a native $label terminal prefix and recovers focus on Escape", fixture => {
+it.each(fixtures)("requires explicit completion of a $label terminal prefix and recovers focus on Escape", fixture => {
   const source = snapshot(fixture.compound), route = returningChoices(source)[0]!;
   const short = source.choices.find(choice => choice.from === route.from && choice.steps.length === 1 && choice.steps[0] === route.steps[0])!;
   expect(short).toBeTruthy();
@@ -113,7 +113,7 @@ it.each(fixtures)("requires explicit completion of a native $label terminal pref
   fireEvent.click(screen.getByRole("button", { name: "Complete action here" }));
   expect(props.onPlay).toHaveBeenCalledExactlyOnceWith(short.action);
   expect(document.activeElement).toBe(square(route.steps[0]!));
-  // A changed native selection retires old submission authority; actions remain
+  // A changed game selection retires old submission authority; actions remain
   // the exact generated choices, with no local movement reconstruction.
   rerender(<SquareBoard {...props} snapshot={{ ...source, token: { ...source.token, selection: source.token.selection + 1 } }} />);
   fireEvent.keyDown(square(route.from), { key: "Enter" }); fireEvent.keyDown(square(route.steps[0]!), { key: " " });
@@ -125,7 +125,7 @@ it.each(fixtures)("requires explicit completion of a native $label terminal pref
   expect(props.onPlay).toHaveBeenCalledTimes(1);
 });
 
-it.each(fixtures)("keeps $label promotion and decline as explicit complete native actions", fixture => {
+it.each(fixtures)("keeps $label promotion and decline as explicit complete actions", fixture => {
   const source = snapshot(fixture.promotion);
   const promote = source.choices.find(choice => choice.completion?.label === "Promote")!;
   const decline = source.choices.find(choice => choice.from === promote.from && JSON.stringify(choice.steps) === JSON.stringify(promote.steps) && choice.completion?.label === "Do not promote")!;
@@ -144,7 +144,7 @@ it.each(fixtures)("keeps $label promotion and decline as explicit complete nativ
   expect(rights.some(identity => identity.piece.right === "first_declined_next_move" && !identity.piece.promoted)).toBe(true);
 });
 
-it.each(fixtures)("commits $label promotion only on its selected native completion", fixture => {
+it.each(fixtures)("commits $label promotion only on its selected completion", fixture => {
   const source = snapshot(fixture.promotion), promote = source.choices.find(choice => choice.completion?.label === "Promote")!;
   const command = vi.fn();
   render(<GameBoard snapshot={source} disabled={false} inspectionDisabled={false} command={command} />);
@@ -172,7 +172,7 @@ it.each(fixtures)("selects a $label stationary target without creating a movemen
 it.each(fixtures)("decorates source-correct $label burn/death phases independently of the actual mover route", fixture => {
   const source = snapshot(fixture.burned);
   const { container } = render(<SquareBoard snapshot={source} disabled inspectionDisabled={false} onPlay={vi.fn()} onInspect={vi.fn()} completedAction={source.moves.last_action} />);
-  const phases = [...container.querySelectorAll("[data-native-effect-phase]")].map(node => [node.getAttribute("data-native-effect-phase"), node.getAttribute("data-effect-phase-index"), node.getAttribute("data-location")]);
+  const phases = [...container.querySelectorAll("[data-effect-phase]")].map(node => [node.getAttribute("data-effect-phase"), node.getAttribute("data-effect-phase-index"), node.getAttribute("data-location")]);
   expect(phases).toEqual(fixture.label === "Adams Modern" ? [["burn", "1", "8g"], ["mover_dies", "2", "8h"]] : [["mover_dies", "1", "8h"]]);
   expect(container.querySelector("[data-route]")).toBeNull();
   expect(container.querySelector('[data-last-move="origin"]')?.getAttribute("data-location")).toBe("8j");
@@ -187,23 +187,23 @@ it.each(fixtures)("retains $label compound, promotion and stationary completed g
     if (value === fixture.played) {
       expect(action.steps).toHaveLength(2);
       expect(container.querySelector("[data-route]")?.getAttribute("data-route")).toBe(`${action.origin.kind === "board" ? action.origin.square : ""}>${action.steps.join(">")}`);
-      expect(container.querySelectorAll('[data-native-effect-phase="capture"]').length).toBeGreaterThan(0);
+      expect(container.querySelectorAll('[data-effect-phase="capture"]').length).toBeGreaterThan(0);
     } else if (value === fixture.promoted) {
-      expect(container.querySelectorAll('[data-native-effect-phase="promotion"]')).toHaveLength(1);
-      expect(container.querySelector('[data-native-effect-phase="promotion"]')?.getAttribute("data-location")).toBe(action.steps.at(-1));
+      expect(container.querySelectorAll('[data-effect-phase="promotion"]')).toHaveLength(1);
+      expect(container.querySelector('[data-effect-phase="promotion"]')?.getAttribute("data-location")).toBe(action.steps.at(-1));
       expect(container.querySelector("[data-route]")).toBeNull();
     } else {
       expect(action.steps).toEqual([]);
       expect(container.querySelector("[data-route]")).toBeNull();
       expect(container.querySelector('[data-last-move="destination"]')).toBeNull();
-      expect(container.querySelector("[data-native-stationary-target]")?.getAttribute("data-native-stationary-target")).toBe("9h");
-      expect(container.querySelector('[data-native-effect-phase="capture"]')?.getAttribute("data-location")).toBe("9h");
+      expect(container.querySelector("[data-stationary-target]")?.getAttribute("data-stationary-target")).toBe("9h");
+      expect(container.querySelector('[data-effect-phase="capture"]')?.getAttribute("data-location")).toBe("9h");
     }
     unmount();
   }
 });
 
-it.each(fixtures)("keeps exact native $label historical inspection visibly read-only", async fixture => {
+it.each(fixtures)("keeps exact $label historical inspection visibly read-only", async fixture => {
   const source = snapshot(fixture.selected), response = fixture.inspection as unknown as MovementInspection;
   expect(source.historical).toBe(true);
   expect(response.token).toEqual(source.token);
@@ -220,7 +220,7 @@ it.each(fixtures)("keeps exact native $label historical inspection visibly read-
   expect(container.querySelectorAll(".inspection-marker")).toHaveLength(0);
 });
 
-it.each(fixtures)("consumes native $label Lion Hawk and promoted-Lion complete two-capture choices", fixture => {
+it.each(fixtures)("consumes $label Lion Hawk and promoted-Lion complete two-capture choices", fixture => {
   for (const value of [fixture.hawk, fixture.promotedHawk]) {
     const source = snapshot(value), choice = source.choices.find(choice => choice.from === "8h" && JSON.stringify(choice.steps) === JSON.stringify(["9h", "10h"]))!;
     expect(choice).toBeTruthy();
@@ -243,10 +243,10 @@ it.each(fixtures)("consumes native $label Lion Hawk and promoted-Lion complete t
   }
   const source = snapshot(fixture.hawkPlayed);
   const { container } = render(<SquareBoard snapshot={source} disabled inspectionDisabled={false} onPlay={vi.fn()} onInspect={vi.fn()} completedAction={source.moves.last_action} />);
-  expect([...container.querySelectorAll('[data-native-effect-phase="capture"]')].map(node => node.getAttribute("data-location"))).toEqual(["9h", "10h"]);
+  expect([...container.querySelectorAll('[data-effect-phase="capture"]')].map(node => node.getAttribute("data-location"))).toEqual(["9h", "10h"]);
 });
 
-it.each(fixtures)("submits the complete native $label Area 3 route only after all three landings", fixture => {
+it.each(fixtures)("submits the complete $label Area 3 route only after all three landings", fixture => {
   const source = snapshot(fixture.area), completed = snapshot(fixture.areaPlayed).moves.last_action!;
   const choice = source.choices.find(choice => choice.action === completed.action)!;
   expect(choice).toBeTruthy(); expect(choice.steps).toEqual(["7h", "7g", "6g"]);
@@ -259,7 +259,7 @@ it.each(fixtures)("submits the complete native $label Area 3 route only after al
   expect(props.onPlay).toHaveBeenCalledExactlyOnceWith(choice.action);
 });
 
-it.each(fixtures)("keeps a native $label ranked jump as one landing and never exposes the blocked jump as an action", fixture => {
+it.each(fixtures)("keeps a $label ranked jump as one landing and never exposes the blocked jump as an action", fixture => {
   const source = snapshot(fixture.jump), played = snapshot(fixture.jumpPlayed), choice = source.choices.find(choice => choice.action === played.moves.last_action!.action)!;
   expect(choice).toBeTruthy(); expect(choice.from).toBe("8h"); expect(choice.steps).toEqual(["11e"]);
   const { props, unmount } = board(source);
@@ -272,7 +272,7 @@ it.each(fixtures)("keeps a native $label ranked jump as one landing and never ex
   unmount();
   const rendered = render(<SquareBoard snapshot={played} disabled inspectionDisabled={false} onPlay={vi.fn()} onInspect={vi.fn()} completedAction={played.moves.last_action} />);
   expect(rendered.container.querySelector("[data-route]")).toBeNull();
-  expect(rendered.container.querySelector('[data-native-capture="11e"]')).toBeTruthy();
+  expect(rendered.container.querySelector('[data-capture="11e"]')).toBeTruthy();
   expect(rendered.container.querySelector('[data-last-move="destination"]')?.getAttribute("data-location")).toBe("11e");
   expect(played.pieces.some(piece => piece.square === "9g")).toBe(true);
   rendered.unmount();
@@ -283,12 +283,12 @@ it.each(fixtures)("keeps a native $label ranked jump as one landing and never ex
   expect(blockedBoard.props.onPlay).not.toHaveBeenCalled();
 });
 
-it.each(fixtures)("plays the native $label first quiet return and keeps historical traversal read-only", async fixture => {
+it.each(fixtures)("plays the $label first quiet return and keeps historical traversal read-only", async fixture => {
   const source = snapshot(fixture.selected), response = fixture.inspection as unknown as MovementInspection;
   const quiet = response.choices.find(choice => choice.from === "8h" && JSON.stringify(choice.steps) === JSON.stringify(["7h", "8h"]))!;
   expect(quiet).toBeTruthy();
   // Repetition includes the side to move: this first quiet return is a complete
-  // native choice, even though the physical board returns to its prior layout.
+  // game choice, even though the physical board returns to its prior layout.
   expect(snapshot(fixture.compound).choices.some(choice => choice.action === quiet.action)).toBe(true);
   const live = board(fixture.compound);
   fireEvent.click(square("8h")); fireEvent.click(square("7h"));

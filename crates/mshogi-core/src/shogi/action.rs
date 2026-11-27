@@ -69,7 +69,7 @@ impl fmt::Display for Action {
         }
     }
 }
-// The execution transport uses exactly the already scoped native USI primitive;
+// The execution transport uses exactly the already scoped USI primitive;
 // this does not add declarations/resignation to the board-action parser.
 impl serde::Serialize for Action {
     fn serialize<S: serde::Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {

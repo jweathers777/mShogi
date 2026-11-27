@@ -1,7 +1,7 @@
 //! Actual Tenjiku console adapter. Expected geometry/effects are specified from
 //! the accepted Lion/Tetrarch/fire profile fixtures, never copied console output.
 mod support;
-use mshogi_core::{native::CanonicalRecord, tenjiku as t};
+use mshogi_core::{game::CanonicalRecord, tenjiku as t};
 use std::{fs, process::Output};
 use support::cli::{Dir, records, run, stdout as output, success};
 fn profile(p: t::Profile) -> &'static str {
@@ -282,7 +282,7 @@ fn promotion_derived_profile_specific_burn_and_mover_death_are_lossless() {
             "Sente Fire Demon destroyed at 8h"
         };
         // One readable description after the committed move, and one on its
-        // exact native history row. No victim list is reconstructed by the CLI.
+        // exact game history row. No victim list is reconstructed by the CLI.
         assert_eq!(output(&o).matches(expected).count(), 2);
         if p == t::Profile::MullerCompleted {
             assert!(!output(&o).contains("Burned together:"));
@@ -323,7 +323,7 @@ fn canonical_save_load_profile_identity_existing_file_and_repetition_admission()
     }
 }
 #[test]
-fn actual_draw_resignation_and_terminal_diagnostics_remain_native() {
+fn draw_resignation_and_terminal_diagnostics_use_game_results() {
     for p in t::Profile::ALL {
         let o = shell(
             p,

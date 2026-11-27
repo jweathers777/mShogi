@@ -1,6 +1,6 @@
-//! Shared human command loop and atomic native-game sessions.
+//! Shared human command loop and atomic game sessions.
 use crate::{Game, record_io, session};
-use mshogi_core::{chu, native::CanonicalRecord, shogi, tenjiku, tori, xiangqi};
+use mshogi_core::{chu, game::CanonicalRecord, shogi, tenjiku, tori, xiangqi};
 use std::{
     fmt::{Display, Write as _},
     io::{self, Write},
@@ -117,7 +117,7 @@ pub trait HumanSession {
     }
 }
 
-/// Keep undo tokens with the native game instance that issued them.
+/// Keep undo tokens with the game instance that issued them.
 pub struct Session<G: Variant> {
     game: G,
     undo: Vec<G::Undo>,
@@ -135,7 +135,7 @@ impl<G: Variant> Session<G> {
         out: &mut String,
         apply: impl FnOnce(&mut Self, &mut String) -> Result<(), String>,
     ) -> Result<(), String> {
-        // Native undo restores the exact command prefix, including the validity
+        // Undo restores the exact command prefix, including the validity
         // of older undo tokens. Keep the batch private until export succeeds.
         let mark = self.undo.len();
         let mut pending = String::new();
@@ -308,7 +308,7 @@ pub fn shogi_board(out: &mut String, size: u8, width: usize, cell: impl Fn(u8, u
     writeln!(out).unwrap();
 }
 
-// The native modules expose distinct request, record and result types with the
+// The modules expose distinct request, record and result types with the
 // same operations. Keep that wiring here, next to the shared session.
 macro_rules! sides {
     ($first:ident => $a:literal, $second:ident => $b:literal) => {
@@ -341,7 +341,7 @@ macro_rules! draw_command {
 }
 pub(crate) use draw_command;
 
-macro_rules! native_record {
+macro_rules! game_record {
     ($game:ident, $kind:ident) => {
         fn record(&self) -> Result<CanonicalRecord, String> {
             Ok(CanonicalRecord::$game(
@@ -356,15 +356,15 @@ macro_rules! native_record {
         }
     };
 }
-pub(crate) use native_record;
+pub(crate) use game_record;
 
 macro_rules! variant_actions {
     ($parse:expr, $rule:literal $(, $effects:ident)?) => {
         fn legal(&self, out: &mut String) -> Result<(), String> {
             let actions = self.legal_actions();
-            writeln!(out, "legal-game {} (complete native choices; {})", actions.len(), $rule).unwrap();
+            writeln!(out, "legal-game {} (complete game choices; {})", actions.len(), $rule).unwrap();
             for action in actions {
-                let json = serde_json::to_string(&action).expect("native action");
+                let json = serde_json::to_string(&action).expect("action");
                 let label = notation::format_action(self.position(), action).map_err(diagnostic)?;
                 writeln!(out, "{label} {json}").unwrap();
             }

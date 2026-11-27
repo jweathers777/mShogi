@@ -1,4 +1,4 @@
-//! Replay actual macOS experiments on every native CI host without opponents.
+//! Replay actual macOS experiments on every CI host without opponents.
 use mshogi_core::chess::{ChessOutcome, DrawClaim, DrawReason, MatchConclusion};
 use mshogi_runner::{ExperimentReport, FailureKind, GameStop, TransportDirection};
 

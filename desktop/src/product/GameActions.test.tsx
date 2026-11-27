@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { deferred, fakeSession, renderApplication } from "../testing/helpers";
-import type { GameSnapshot } from "../native";
+import type { GameSnapshot } from "../sessionTypes";
 import { afterEach, expect, it, vi } from "vitest";
 import { act, cleanup, fireEvent, screen } from "@testing-library/react";
 import { ApplicationView } from "./ApplicationView";
@@ -14,7 +14,7 @@ afterEach(cleanup);
 function app(snapshot: GameSnapshot) {
   return renderApplication(snapshot, fakeSession(snapshot, { command: vi.fn().mockResolvedValue(null) }));
 }
-it.each([chess, shogi, xiangqi])("submits $game Resign directly once with captured native authority and preserves a refused game", async fixture => {
+it.each([chess, shogi, xiangqi])("submits $game Resign directly once with captured session authority and preserves a refused game", async fixture => {
   const source = fixture as GameSnapshot; const { session } = app(source);
   const receipt = deferred<GameSnapshot | null>(); vi.mocked(session.command).mockReturnValue(receipt.promise);
   const resign = screen.getByRole("button", { name: "Resign" });
@@ -35,7 +35,7 @@ it("presents actual unresolved Chess resignation without inventing a winner or s
   const outcome = screen.getByRole("region", { name: "Game outcome" });
   expect(outcome.textContent).toContain("Unresolved — unscored");
   expect(outcome.textContent).toContain("resigned"); expect(outcome.textContent).toContain("no score is assigned");
-  expect(outcome.textContent).not.toMatch(/wins|White loses|Black loses|native rules determine/);
+  expect(outcome.textContent).not.toMatch(/wins|White loses|Black loses|rules determine/);
   expect(screen.queryByRole("button", { name: "Resign" })).toBeNull();
 });
 it("presents the actual Xiangqi resignation conclusion rather than an optimistic local result", () => {

@@ -1,5 +1,5 @@
 //! Private Tenjiku board and complete-action projection for the shared core.
-//! Native Game remains authoritative for actual history, admission and outcomes.
+//! Game remains authoritative for actual history, admission and outcomes.
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
 use crate::repetition::earlier_occurrences;
 use crate::square_set::SquareSet;
@@ -92,7 +92,7 @@ fn repeat_hash(c: u32, at: usize) -> u64 {
         | at as u64)
 }
 /// Source/first/second squares, a third-step direction, route length and flags.
-/// Three-landing native routes always have an adjacent final leg.
+/// Three-landing routes always have an adjacent final leg.
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Ord, PartialOrd)]
 pub struct Move(u32);
 impl Move {
@@ -967,7 +967,7 @@ impl Board {
         false
     }
     // Full action proof, including simultaneous burn/suicide. Geometric attacks
-    // never establish a native outcome, and losing both royal sets is not a win.
+    // never establish a game outcome, and losing both royal sets is not a win.
     fn can_win(&self, attacker: usize) -> bool {
         if self.royals[attacker].count() == 0 || self.royals[attacker ^ 1].count() == 0 {
             return false;
@@ -1168,7 +1168,7 @@ impl Board {
         }
     }
 }
-/// Fast private board. Native root action admission and native PV validation
+/// Fast private board. Game root action admission and PV validation
 /// remain outside this type; deeper repetition is a board-keyed approximation.
 #[derive(Clone)]
 pub struct TenjikuPosition {
@@ -1179,7 +1179,7 @@ pub struct TenjikuPosition {
     root_allowed: Option<Vec<Move>>,
 }
 impl TenjikuPosition {
-    /// Build private state from one checked native board.
+    /// Build private state from one checked game board.
     pub fn from_position(p: &Position) -> Self {
         let mut board = Board::empty(p.profile(), p.side_to_move().index());
         for (s, p) in p.pieces() {
@@ -1194,18 +1194,18 @@ impl TenjikuPosition {
             root_allowed: None,
         }
     }
-    /// Build private state from native local rules.
+    /// Build private state from local rules.
     pub fn from_local(p: &LocalPosition) -> Self {
         Self::from_position(p.position())
     }
-    /// Replay known native board actions once; no native Game is used below root.
+    /// Replay known game board actions once; no Game is used below root.
     pub fn from_game(game: &Game) -> Self {
-        let root = game.event_prefix(0).expect("native root").local_position();
+        let root = game.event_prefix(0).expect("game root").local_position();
         let mut p = Self::from_local(&root);
         for event in game.events() {
             if let GameCommand::Play { action } = &event.command {
-                let m = p.action_move(action).expect("native action shape");
-                p.board.make(m).expect("native admitted complete action");
+                let m = p.action_move(action).expect("action shape");
+                p.board.make(m).expect("admitted complete action");
                 p.keys.push(p.board.repeat);
             }
         }
@@ -1227,8 +1227,8 @@ impl TenjikuPosition {
         }
         Some(Move::travel(a.from.index(), &path, a.promote))
     }
-    /// Convert the complete private route into a native action.
-    pub fn to_native(&self, m: Move) -> Action {
+    /// Convert the complete private route into a action.
+    pub fn to_action(&self, m: Move) -> Action {
         if m.igui_flag() {
             Action::igui(square(m.from()), square(m.first()))
         } else {
@@ -1241,26 +1241,26 @@ impl TenjikuPosition {
             }
         }
     }
-    /// Decode a native action if its local geometry is available.
+    /// Decode a action if its local geometry is available.
     pub fn find(&self, a: &Action) -> Option<Move> {
         let m = self.action_move(a)?;
         self.is_pseudo_legal(m).then_some(m)
     }
-    /// Apply exact native root admission before search representatives.
+    /// Apply exact game root admission before search representatives.
     pub fn restrict_root(&mut self, actions: &[Action]) {
         self.root_allowed = Some(
             actions
                 .iter()
-                .map(|a| self.action_move(a).expect("native action"))
+                .map(|a| self.action_move(a).expect("action"))
                 .collect(),
         );
     }
-    /// Read the complete native identity and promotion right at a square.
+    /// Read the complete game identity and promotion right at a square.
     pub fn piece(&self, at: Square) -> Option<Piece> {
         let c = self.board.cells[at.index()];
         (c != 0).then(|| piece(c))
     }
-    /// Current native owner.
+    /// Current rules owner.
     pub fn side_to_move(&self) -> Side {
         side(self.board.side)
     }
@@ -1292,7 +1292,7 @@ impl TenjikuPosition {
         }
         b.hash
     }
-    /// Complete local action set, or exact installed native root actions.
+    /// Complete local action set, or exact installed game root actions.
     pub fn legal_moves(&mut self) -> Vec<Move> {
         let mut out = Vec::new();
         self.generate(Stage::Tactical, &mut out);

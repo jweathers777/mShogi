@@ -1,5 +1,5 @@
 //! Private Xiangqi board and classical evaluation for the shared search core.
-//! Real move admission and WXF adjudication remain native responsibilities.
+//! Real move admission and WXF adjudication remain responsibilities.
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
 use crate::repetition::{cycle_start, earlier_occurrences};
 use mshogi_core::xiangqi::{
@@ -43,7 +43,7 @@ const DIRECTIONS: [(i8, i8); 4] = [(1, 0), (-1, 0), (0, 1), (0, -1)];
 fn owner(side: Side) -> usize {
     if side == Side::Red { 0 } else { 1 }
 }
-fn native_side(side: usize) -> Side {
+fn tagged_side(side: usize) -> Side {
     if side == 0 { Side::Red } else { Side::Black }
 }
 fn kind_index(kind: PieceKind) -> usize {
@@ -369,14 +369,14 @@ pub struct XiangqiPosition {
     reversible: usize,
 }
 impl XiangqiPosition {
-    /// Copy the native board. No earlier history is available.
-    pub fn from_position(native: &Position) -> Self {
+    /// Copy the game board. No earlier history is available.
+    pub fn from_position(rules_position: &Position) -> Self {
         let mut p = Self {
             board: [0; N],
             pieces: [[0; 7]; 2],
             occupied: [0; 2],
             files: [0; 9],
-            side: owner(native.side_to_move()),
+            side: owner(rules_position.side_to_move()),
             hash: 0,
             material: [0; 2],
             accumulated: [0; 2],
@@ -389,7 +389,7 @@ impl XiangqiPosition {
             root: 0,
             reversible: 0,
         };
-        for (at, piece) in native.pieces() {
+        for (at, piece) in rules_position.pieces() {
             p.put(owner(piece.side), kind_index(piece.kind), at.index());
         }
         if p.side == 1 {
@@ -408,8 +408,8 @@ impl XiangqiPosition {
         p.track_chases = true;
         for event in game.events() {
             if let EventKind::BoardAction { action, .. } = event.event {
-                let m = p.find(action).expect("native action is pseudo-legal");
-                assert!(p.make(m), "native action is legal");
+                let m = p.find(action).expect("action is pseudo-legal");
+                assert!(p.make(m), "action is legal");
             }
         }
         p.stack.clear();
@@ -417,14 +417,14 @@ impl XiangqiPosition {
         p.root = p.keys.len() - 1;
         p
     }
-    /// Complete native action of a compact move.
+    /// Complete action of a compact move.
     pub fn action(&self, m: Move) -> Action {
         Action {
             from: point(m.from()),
             to: point(m.to()),
         }
     }
-    /// Encode a pseudo-legal native action.
+    /// Encode a pseudo-legal action.
     pub fn find(&self, action: Action) -> Option<Move> {
         let m = Move::new(action.from.index(), action.to.index());
         self.is_pseudo_legal(m).then_some(m)
@@ -460,15 +460,15 @@ impl XiangqiPosition {
         }
         leaves
     }
-    /// Native side to move.
+    /// Game side to move.
     pub fn side_to_move(&self) -> Side {
-        native_side(self.side)
+        tagged_side(self.side)
     }
     /// Piece at an intersection.
     pub fn piece(&self, at: Intersection) -> Option<Piece> {
         (self.board[at.index()] != 0).then(|| {
             let (s, k) = piece_parts(self.board[at.index()]);
-            Piece::new(native_side(s), KINDS[k])
+            Piece::new(tagged_side(s), KINDS[k])
         })
     }
     /// Material without placement terms.
@@ -1404,7 +1404,7 @@ impl SearchPosition for XiangqiPosition {
         if let Some(index) = cycle_start(occurrences, self.root, 2) {
             // Approximate WXF conduct. A side whose every move in the
             // cycle checks loses; otherwise a side whose every move
-            // checks or chases loses; both or neither: draw. Native
+            // checks or chases loses; both or neither: draw. The rules library
             // rules adjudicate the real game.
             let moves_of = |side: usize| {
                 (index + 1..=current).filter(move |&i| self.side ^ ((current - i) & 1) ^ 1 == side)

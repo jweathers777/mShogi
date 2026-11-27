@@ -23,7 +23,7 @@ impl PerftPosition for Position {
         action: &Action,
         _stop: &mut impl FnMut() -> bool,
     ) -> Result<Undo, TraversalError> {
-        self.apply(*action).map_err(TraversalError::native)
+        self.apply(*action).map_err(TraversalError::rules_error)
     }
 
     fn perft_undo(&mut self, undo: Undo) -> Result<(), String> {

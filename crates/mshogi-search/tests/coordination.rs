@@ -1,4 +1,4 @@
-//! Real native-worker tests, with event/predicate waits instead of race sleeps.
+//! Real worker tests, with event/predicate waits instead of race sleeps.
 use mshogi_core::chess::{AdjudicatedGame, ClaimPolicy};
 use mshogi_search::{coordination::*, search::*};
 use std::time::{Duration, Instant};
@@ -14,7 +14,7 @@ fn wait_for<T>(mut observe: impl FnMut() -> Option<T>) -> T {
         }
         assert!(
             Instant::now() < deadline,
-            "native worker did not acknowledge within test deadline"
+            "worker did not acknowledge within test deadline"
         );
         std::thread::sleep(Duration::from_millis(1));
     }

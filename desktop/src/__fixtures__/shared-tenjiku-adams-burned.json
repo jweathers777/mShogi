@@ -27,7 +27,7 @@
       "steps": [
         "8h"
       ],
-      "native_effects": {
+      "ordered_effects": {
         "kind": "tenjiku",
         "stationary_target": null,
         "phases": [
@@ -14696,7 +14696,7 @@
   "analysis": null,
   "observations": [],
   "search_observations": [],
-  "score_meaning": "Transparent material evaluation in Pawns from the analyzed native side; native terminal wins use board-action distance. Operational failures and absence of board actions remain unscored.",
+  "score_meaning": "Transparent material evaluation in Pawns from the analyzed game side; terminal wins use board-action distance. Operational failures and absence of board actions remain unscored.",
   "chess": null,
   "chess_match": null
 }

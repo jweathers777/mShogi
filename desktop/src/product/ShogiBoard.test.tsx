@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { deferred, renderBoard, square } from "../testing/helpers";
-import type { ShogiSnapshot as GameSnapshot } from "../native";
+import type { ShogiSnapshot as GameSnapshot } from "../sessionTypes";
 import { afterEach, expect, it, vi } from "vitest";
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -15,7 +15,7 @@ afterEach(cleanup);
 const standard = standardJson as GameSnapshot;
 
 const board = (snapshot = standard) => renderBoard(ShogiBoard, { snapshot });
-it("renders native identities independently of Japanese decoration and flips ownership correctly", () => {
+it("renders identities independently of Japanese decoration and flips ownership correctly", () => {
   const { props, rerender } = board();
   expect(document.querySelectorAll(".shogi-square")).toHaveLength(81);
   expect(screen.getByRole("group", { name: "Shogi board, Sente at bottom" })).toBeTruthy();
@@ -33,7 +33,7 @@ it("renders native identities independently of Japanese decoration and flips own
   expect(square("5i").querySelector(".piece-tile")?.getAttribute("transform")).toBe("rotate(180 50 50)");
   fireEvent.keyDown(square("5g"), { key: "ArrowDown" }); expect(document.activeElement).toBe(square("5f"));
 });
-it("submits exactly the native board choice and cancels partial keyboard selection", () => {
+it("submits exactly the game board choice and cancels partial keyboard selection", () => {
   const { onPlay } = board();
   square("7g").focus(); fireEvent.keyDown(square("7g"), { key: "Enter" });
   expect(square("7f").getAttribute("aria-label")).toContain("legal destination");
@@ -58,7 +58,7 @@ it("commits a sole compulsory-promotion action without a redundant chooser", () 
   fireEvent.click(square("5b")); fireEvent.click(square("5a"));
   expect(screen.queryByRole("dialog")).toBeNull(); expect(onPlay).toHaveBeenCalledExactlyOnceWith("5b5a+");
 });
-it("uses native nonzero hands/counts and keyboard drop selection without frontend legality", async () => {
+it("uses nonzero hands/counts and keyboard drop selection without frontend legality", async () => {
   const { onPlay } = board(dropsJson as GameSnapshot); const user = userEvent.setup();
   expect(screen.queryByRole("button", { name: /Gote .* in hand/ })).toBeNull();
   expect(screen.getByRole("button", { name: "Sente rook in hand, 2" })).toBeTruthy();
@@ -71,7 +71,7 @@ it("uses native nonzero hands/counts and keyboard drop selection without fronten
   expect(onPlay).not.toHaveBeenCalled(); await user.keyboard("{Enter}");
   fireEvent.click(square("5e")); expect(onPlay).toHaveBeenCalledExactlyOnceWith("P*5e");
 });
-it("retires a pending selection when native context changes or interaction is disabled", () => {
+it("retires a pending selection when game context changes or interaction is disabled", () => {
   const { props, rerender, onPlay } = board(promotionJson as GameSnapshot);
   fireEvent.click(square("5d")); fireEvent.click(square("5c"));
   const snapshot = { ...props.snapshot, token: { ...props.snapshot.token, selection: props.snapshot.token.selection + 1 } };
@@ -81,7 +81,7 @@ it("retires a pending selection when native context changes or interaction is di
   fireEvent.click(square("5d")); fireEvent.click(square("5c")); expect(onPlay).not.toHaveBeenCalled();
 });
 
-// Mock native query replies test read-only presentation. Native/session tests own
+// Mock game query replies test read-only presentation. Rules and session tests own
 // movement/drop expectations; these tests do not implement shogi legality.
 const gote = standard.sides.find((side) => side.id.side === "gote")!;
 const inspectionReply = { game: "shogi" as const, token: standard.token, origin: "3c", side: gote, label: "Gote pawn", read_only: true as const, choices: [{ action: "3c3d", from: "3c", steps: ["3d"], completion: null }] };
@@ -117,7 +117,7 @@ it("inspects available opponent hand drops by keyboard during historical viewing
   fireEvent.click(square("5e")); expect(onPlay).not.toHaveBeenCalled();
   fireEvent.keyDown(square("5e"), { key: "Escape" }); expect(document.activeElement).toBe(pawn); expect(screen.queryByText(/Inspecting Gote pawn in hand · Esc clears/)).toBeNull();
 });
-it("retires asynchronous inspection after friendly switching and native historical selection", async () => {
+it("retires asynchronous inspection after friendly switching and historical selection", async () => {
   const { promise, resolve } = deferred<typeof inspectionReply>();
   const onInspect = vi.fn().mockReturnValue(promise), onPlay = vi.fn();
   const props = { snapshot: standard, disabled: false, onPlay, onInspect, inspectionDisabled: false };
@@ -128,7 +128,7 @@ it("retires asynchronous inspection after friendly switching and native historic
   rerender(<ShogiBoard {...props} snapshot={{ ...standard, historical: true, token: { ...standard.token, selection: standard.token.selection + 1 } }} disabled />);
   expect(screen.queryByText(/Inspecting Gote pawn · Esc clears/)).toBeNull(); expect(onPlay).not.toHaveBeenCalled();
 });
-it("keeps occupied native inspection destinations readable and never prompts to play promotion", async () => {
+it("keeps occupied inspection destinations readable and never prompts to play promotion", async () => {
   const onPlay = vi.fn(), onInspect = vi.fn().mockResolvedValue({ ...inspectionReply, origin: "5a", label: "Gote king", choices: [
     { action: "synthetic-route-a", from: "5a", steps: ["5b", "5i"], completion: { label: "Promote", glyph: null } },
     { action: "synthetic-route-b", from: "5a", steps: ["5b", "5i"], completion: { label: "Do not promote", glyph: null } },
@@ -138,7 +138,7 @@ it("keeps occupied native inspection destinations readable and never prompts to 
   expect(square("5i").querySelector(".piece-tile")).toBeTruthy(); expect(square("5i").querySelector(".inspection-marker")?.getAttribute("r")).toBe("46");
   fireEvent.click(square("5i")); expect(onPlay).not.toHaveBeenCalled(); expect(screen.queryByRole("dialog")).toBeNull(); expect(screen.getByRole("status").textContent).toContain("Promote or Do not promote");
 });
-it("uses the shared player/board/footer slots while retaining native hands and keyboard focus", async () => {
+it("uses the shared player/board/footer slots while retaining hands and keyboard focus", async () => {
   const snapshot = dropsJson as GameSnapshot;
   const onPlay = vi.fn(); const props = { snapshot, disabled: false, onPlay };
   const { rerender } = render(<ShogiBoard {...props} />);
@@ -161,7 +161,7 @@ it("uses the shared player/board/footer slots while retaining native hands and k
   movedPawn.focus(); await userEvent.setup().keyboard("{Enter}"); fireEvent.keyDown(movedPawn, { key: "ArrowDown" });
   expect(document.activeElement).toBe(square("5g")); fireEvent.click(square("5e")); expect(onPlay).toHaveBeenCalledExactlyOnceWith("P*5e");
 });
-it("keeps rendered read-only completed geometry separate from the pending native choice", () => {
+it("keeps rendered read-only completed geometry separate from the pending game choice", () => {
   const { props, rerender, onPlay } = board(); fireEvent.click(square("7g"));
   rerender(<ShogiBoard {...props} completedAction={{ action: "P*3d", event_index: 1, effects: [], origin: { kind: "hand", owner: gote.key, piece_kind: "pawn" }, steps: ["3d"] }} />);
   expect(square("7f").getAttribute("aria-label")).toContain("legal destination");

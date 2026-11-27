@@ -1,4 +1,4 @@
-//! Actual native history/record adapter. Expected fixture answers are never execution data.
+//! Actual game history/record adapter. Expected fixture answers are never execution data.
 use super::{
     conformance::{action, root, side, sq},
     local_conformance::{LocalAdapter, action_value},
@@ -6,7 +6,7 @@ use super::{
 };
 use mshogi_conformance::{
     Corpus, Fixture,
-    assertions::{self, Assertion, NativeAdapter, Status},
+    assertions::{self, Assertion, RulesAdapter, Status},
     properties,
 };
 use serde_json::{Value, json};
@@ -51,7 +51,7 @@ fn conclusion(c: Option<Conclusion>) -> Value {
         None => Value::Null,
     }
 }
-fn native_command(v: &Value) -> GameCommand {
+fn command(v: &Value) -> GameCommand {
     match v["kind"].as_str().unwrap() {
         "resign" => GameCommand::Resign,
         "agree_draw" => GameCommand::AgreeDraw,
@@ -69,13 +69,13 @@ fn forbidden(r: &Repetition) -> Value {
     )
 }
 struct GameAdapter;
-impl NativeAdapter for GameAdapter {
+impl RulesAdapter for GameAdapter {
     fn observe(&self, f: &Fixture, a: &Assertion) -> Result<Option<Value>, String> {
         if a.owner != "MSH-129" {
             return LocalAdapter.observe(f, a);
         }
         let field = a.field.as_str();
-        if f.scope.starts_with("native_admission") {
+        if f.scope.starts_with("game_admission") {
             let mut g = Game::from_root(root(&f.given["root"]).map_err(|e| e.to_string())?)
                 .map_err(|e| e.to_string())?;
             let actor = f.given["command"]["actor"]
@@ -86,7 +86,7 @@ impl NativeAdapter for GameAdapter {
             let context = g.context();
             let before_ply = g.snapshot().board_ply;
             let before_occ = g.occurrences().len();
-            let result = submit(&mut g, actor, native_command(&f.given["command"]));
+            let result = submit(&mut g, actor, command(&f.given["command"]));
             return Ok(Some(match field {
                 "accepted" => json!(result.is_ok()),
                 "reason" => json!(match result {
@@ -112,7 +112,7 @@ impl NativeAdapter for GameAdapter {
                         ),
                     }
                 }
-                _ => return Err(format!("unhandled native admission field {field}")),
+                _ => return Err(format!("unhandled game admission field {field}")),
             }));
         }
         if f.scope == "terminal_position" {
@@ -169,7 +169,7 @@ impl NativeAdapter for GameAdapter {
                 }
                 "undo_at6_repetition"
                 | "resubmit_at7_repetition_side"
-                | "all_native_fields_and_caches_exactly_restored" => {
+                | "all_fields_and_caches_exactly_restored" => {
                     let before = g.cache_snapshot();
                     let (mut replay, mut undos) = GameRecord::from_game(&g)
                         .unwrap()
@@ -311,7 +311,7 @@ impl NativeAdapter for GameAdapter {
                     )
                 }
                 "seven_file_coordinate_roundtrip" => {
-                    let a = action(&f.given["native"]);
+                    let a = action(&f.given["rules"]);
                     let Action::Move { from, to, .. } = a else {
                         unreachable!()
                     };
@@ -343,7 +343,7 @@ impl NativeAdapter for GameAdapter {
     }
 }
 #[test]
-fn actual_complete_native_fixture_observations() {
+fn actual_complete_fixture_observations() {
     let corpus = Corpus::embedded().unwrap();
     let report = assertions::run_adapter(&corpus, &GameAdapter);
     for a in &report.assertions {
@@ -372,7 +372,7 @@ fn actual_complete_native_fixture_observations() {
         (591, 591, 14, 0)
     );
     eprintln!(
-        "MSH-129 Tori actual native: 591 executed/591 passed/14 pending/0 failed; {} later consumer requirements pending",
+        "MSH-129 Tori actual: 591 executed/591 passed/14 pending/0 failed; {} later consumer requirements pending",
         report.later_consumer_requirements.len()
     );
 }

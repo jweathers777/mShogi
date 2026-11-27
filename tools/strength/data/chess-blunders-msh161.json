@@ -86,7 +86,7 @@
     "alternative": "f1d1"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-01/jobs/d99759ec1a4d7007b3b3bf85939bfb6dc8a8c74a41de1ea921d7a134506ff0a8/attempts/08d66d2331c049838a4f8d37fbfcc17f/artifacts/pair/report.json.gz",
     "sha256": "d05bbe53e8c28f21e9dabbf7b90784e9838539f6966006e87c44a1a09cd78baf"
    },
@@ -220,7 +220,7 @@
     "alternative": "d3g3"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-01/jobs/d99759ec1a4d7007b3b3bf85939bfb6dc8a8c74a41de1ea921d7a134506ff0a8/attempts/08d66d2331c049838a4f8d37fbfcc17f/artifacts/pair/report.json.gz",
     "sha256": "d05bbe53e8c28f21e9dabbf7b90784e9838539f6966006e87c44a1a09cd78baf"
    },
@@ -358,7 +358,7 @@
     "alternative": "c7b7"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-01/jobs/d99759ec1a4d7007b3b3bf85939bfb6dc8a8c74a41de1ea921d7a134506ff0a8/attempts/08d66d2331c049838a4f8d37fbfcc17f/artifacts/pair/report.json.gz",
     "sha256": "d05bbe53e8c28f21e9dabbf7b90784e9838539f6966006e87c44a1a09cd78baf"
    },
@@ -455,7 +455,7 @@
     "alternative": "d2c3"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-01/jobs/b9087e5c3ac434014361e3d4c72f5e4ba787edcaf8df8125f3186c2fb8eaefe3/attempts/5b4793566bd6471f9d8e10ecce1ba739/artifacts/pair/report.json.gz",
     "sha256": "d9c3b97c901be28c39e45a58e49c1b2a486981a23f118b15c37d85958ec58700"
    },
@@ -524,7 +524,7 @@
     "alternative": "e3c1"
    },
    "game_result_for_mshogi": "wins",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-01/jobs/4540ba9a1cdf2f187c35647cbe5b3b4da8edaa9d71ddfdb7c1b7cbe2d878d78a/attempts/350cc3e7c49246c9bf9c9f0392f341f7/artifacts/pair/report.json.gz",
     "sha256": "6e4870170143e9a9d51c6a086e5cb49cfec5adb1e51eda63c950cce321f69a98"
    },
@@ -645,7 +645,7 @@
     "alternative": "g1f2"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-01/jobs/d290b2dd421122f6815e70982b5a09e04cf5f1b24c0c4ee6cf6a514820eaae9d/attempts/8ae1cde5b79e49d49d1732c67990a38c/artifacts/pair/report.json.gz",
     "sha256": "c01bf9cc200b705390482b7e8bebe7f6f32595fcb8d37e519f70522745170236"
    },
@@ -711,7 +711,7 @@
     "alternative": "f6h5"
    },
    "game_result_for_mshogi": "wins",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-01/jobs/ccbeca98cf75bafb275db73d1fd40955bea0a67be0837a1843380f9b13f85d55/attempts/02ac9ec3459e412ab7d3e5d7a73577ec/artifacts/pair/report.json.gz",
     "sha256": "a3b349c7be04a1654dec5cee11fdaf691eb8c2149c45d63bd222a8250d5f9921"
    },
@@ -811,7 +811,7 @@
     "alternative": "g8f7"
    },
    "game_result_for_mshogi": "wins",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-01/jobs/ccbeca98cf75bafb275db73d1fd40955bea0a67be0837a1843380f9b13f85d55/attempts/02ac9ec3459e412ab7d3e5d7a73577ec/artifacts/pair/report.json.gz",
     "sha256": "a3b349c7be04a1654dec5cee11fdaf691eb8c2149c45d63bd222a8250d5f9921"
    },
@@ -924,7 +924,7 @@
     "alternative": "a5d2"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
     "sha256": "f381cb88a9e6366d660ac76c9ef19a9c48c2aa49cc1193ca423f3a02c3d10222"
    },
@@ -1012,7 +1012,7 @@
     "alternative": "f8f6"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
     "sha256": "f381cb88a9e6366d660ac76c9ef19a9c48c2aa49cc1193ca423f3a02c3d10222"
    },
@@ -1082,7 +1082,7 @@
     "alternative": "c7c5"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
     "sha256": "7b5c7e09808eaf034216beec1fd6dcf82cc9905db21040b3986c1e3867dcbb32"
    },
@@ -1160,7 +1160,7 @@
     "alternative": "d5a2"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
     "sha256": "7b5c7e09808eaf034216beec1fd6dcf82cc9905db21040b3986c1e3867dcbb32"
    },
@@ -1304,7 +1304,7 @@
     "alternative": "d1e1"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
     "sha256": "7b5c7e09808eaf034216beec1fd6dcf82cc9905db21040b3986c1e3867dcbb32"
    },
@@ -1387,7 +1387,7 @@
     "alternative": "d5f7"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
     "sha256": "10f2d1213fcfc0ef90c0de02e25c352034c1f9a340092c058f6ef2f10b9a671c"
    },
@@ -1474,7 +1474,7 @@
     "alternative": "g1h1"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
     "sha256": "10f2d1213fcfc0ef90c0de02e25c352034c1f9a340092c058f6ef2f10b9a671c"
    },
@@ -1587,7 +1587,7 @@
     "alternative": "f6h5"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-02/jobs/b3f6611bd0f56a26dd5913402ef00d9d52644caad8151137e535cc0fcac5f784/attempts/bf77a810ea874838a94ad2949fb04d65/artifacts/pair/report.json.gz",
     "sha256": "a67d54901892206a0ede5c8462e427f22b363f8c9c53b8ff671821678ad2b86d"
    },
@@ -1718,7 +1718,7 @@
     "alternative": "f7f6"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-02/jobs/b3f6611bd0f56a26dd5913402ef00d9d52644caad8151137e535cc0fcac5f784/attempts/bf77a810ea874838a94ad2949fb04d65/artifacts/pair/report.json.gz",
     "sha256": "a67d54901892206a0ede5c8462e427f22b363f8c9c53b8ff671821678ad2b86d"
    },
@@ -1783,7 +1783,7 @@
     "alternative": "c2c3"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-02/jobs/ef1e68048ab7fdf137b7dd7530a5240c0d7067e18ecad2fd409acebe577dce35/attempts/24d4891aef6e44538b057bd4e378efe8/artifacts/pair/report.json.gz",
     "sha256": "2039d5a179b8315aa7a35f16060baecaa2966ce01237f893dfcd483701f7a111"
    },
@@ -1897,7 +1897,7 @@
     "alternative": "f7f5"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-02/jobs/ef1e68048ab7fdf137b7dd7530a5240c0d7067e18ecad2fd409acebe577dce35/attempts/24d4891aef6e44538b057bd4e378efe8/artifacts/pair/report.json.gz",
     "sha256": "2039d5a179b8315aa7a35f16060baecaa2966ce01237f893dfcd483701f7a111"
    },
@@ -1954,7 +1954,7 @@
     "alternative": "e2e3"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
     "sha256": "56eb9e99f264e416153ad5beb10e76349792894c5f762c7537a24aa9fff144a4"
    },
@@ -2019,7 +2019,7 @@
     "alternative": "g5f6"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
     "sha256": "56eb9e99f264e416153ad5beb10e76349792894c5f762c7537a24aa9fff144a4"
    },
@@ -2160,7 +2160,7 @@
     "alternative": "g4g5"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
     "sha256": "5533b1e2df0ddda8795b7a000f09552d661c280a7a5b2fc35449624a407fb947"
    },
@@ -2214,7 +2214,7 @@
     "alternative": "b7b5"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
     "sha256": "5533b1e2df0ddda8795b7a000f09552d661c280a7a5b2fc35449624a407fb947"
    },
@@ -2282,7 +2282,7 @@
     "alternative": "f7f6"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
     "sha256": "5533b1e2df0ddda8795b7a000f09552d661c280a7a5b2fc35449624a407fb947"
    },
@@ -2388,7 +2388,7 @@
     "alternative": "d6b5"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
     "sha256": "5533b1e2df0ddda8795b7a000f09552d661c280a7a5b2fc35449624a407fb947"
    },
@@ -2457,7 +2457,7 @@
     "alternative": "g5d2"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
     "sha256": "3f3768c011bc3e52af6ab316b6164d29a77a1327fdcfef6705b5c98ff28ca2f8"
    },
@@ -2530,7 +2530,7 @@
     "alternative": "f4g3"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
     "sha256": "3f3768c011bc3e52af6ab316b6164d29a77a1327fdcfef6705b5c98ff28ca2f8"
    },
@@ -2595,7 +2595,7 @@
     "alternative": "c3e2"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-03/jobs/46ce5379c8c3a9a679223d3b71d109935051531ee5f3d49e6be80b8ad15e3abb/attempts/5dd0217831144b278a939957577cbc05/artifacts/pair/report.json.gz",
     "sha256": "98b21986e14abdf7eab80b789c29e1bd93bdae7d8f325633091ffaabee1c97ba"
    },
@@ -2662,7 +2662,7 @@
     "alternative": "c3e2"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-03/jobs/46ce5379c8c3a9a679223d3b71d109935051531ee5f3d49e6be80b8ad15e3abb/attempts/5dd0217831144b278a939957577cbc05/artifacts/pair/report.json.gz",
     "sha256": "98b21986e14abdf7eab80b789c29e1bd93bdae7d8f325633091ffaabee1c97ba"
    },
@@ -2763,7 +2763,7 @@
     "alternative": "a3a4"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-03/jobs/46ce5379c8c3a9a679223d3b71d109935051531ee5f3d49e6be80b8ad15e3abb/attempts/5dd0217831144b278a939957577cbc05/artifacts/pair/report.json.gz",
     "sha256": "98b21986e14abdf7eab80b789c29e1bd93bdae7d8f325633091ffaabee1c97ba"
    },
@@ -2849,7 +2849,7 @@
     "alternative": "a8a7"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-03/jobs/aa1396b8befca4439060ddf3f8db6259f97474a5d8cfcb24e73943d799fe4415/attempts/b1f6395aff314503a6aa183901564806/artifacts/pair/report.json.gz",
     "sha256": "46c0cc010d7d6e8265f89cca655e76c8c18b15e4b8debecd67ebd0cffc7083af"
    },
@@ -2966,7 +2966,7 @@
     "alternative": "g1g2"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-03/jobs/049f39316ba8207dc014812645e87e0f6ed24b1e3f8976b5bc08d6e98f32ac1a/attempts/fcb82035ab7c4ce6984d78922331f673/artifacts/pair/report.json.gz",
     "sha256": "aa4784e0f35f052c4358b364ed7b79f3d2fb5c2e1820ac16ff515ac705813645"
    },
@@ -3026,7 +3026,7 @@
     "alternative": "d5c4"
    },
    "game_result_for_mshogi": "wins",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-03/jobs/049f39316ba8207dc014812645e87e0f6ed24b1e3f8976b5bc08d6e98f32ac1a/attempts/fcb82035ab7c4ce6984d78922331f673/artifacts/pair/report.json.gz",
     "sha256": "aa4784e0f35f052c4358b364ed7b79f3d2fb5c2e1820ac16ff515ac705813645"
    },
@@ -3087,7 +3087,7 @@
     "alternative": "h1e1"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz",
     "sha256": "791399b92c8847dd6b99aaa9c91460c6954b73855780ebba9db0dc14c61ef2b0"
    },
@@ -3159,7 +3159,7 @@
     "alternative": "f6d7"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz",
     "sha256": "791399b92c8847dd6b99aaa9c91460c6954b73855780ebba9db0dc14c61ef2b0"
    },
@@ -3235,7 +3235,7 @@
     "alternative": "b6b5"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz",
     "sha256": "791399b92c8847dd6b99aaa9c91460c6954b73855780ebba9db0dc14c61ef2b0"
    },
@@ -3315,7 +3315,7 @@
     "alternative": "c6e8"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz",
     "sha256": "791399b92c8847dd6b99aaa9c91460c6954b73855780ebba9db0dc14c61ef2b0"
    },
@@ -3461,7 +3461,7 @@
     "alternative": "e6g7"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz",
     "sha256": "74794fbce360b7ec8f07416938eccb85005a49b6f9f5d41324126becbf427db2"
    },
@@ -3565,7 +3565,7 @@
     "alternative": "c6b5"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz",
     "sha256": "466136043da6866b327d3cf2987e3a3e36dd06684c8a51eab28363132d7ffdaa"
    },
@@ -3689,7 +3689,7 @@
     "alternative": "g6g5"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz",
     "sha256": "466136043da6866b327d3cf2987e3a3e36dd06684c8a51eab28363132d7ffdaa"
    },
@@ -3817,7 +3817,7 @@
     "alternative": "f2f1"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz",
     "sha256": "466136043da6866b327d3cf2987e3a3e36dd06684c8a51eab28363132d7ffdaa"
    },
@@ -3873,7 +3873,7 @@
     "alternative": "b7b5"
    },
    "game_result_for_mshogi": "wins",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz",
     "sha256": "fc1a8ca372cd054f54c0e514023bfd05c63efde71e58b006fbac844d76a88700"
    },
@@ -3945,7 +3945,7 @@
     "alternative": "c6d4"
    },
    "game_result_for_mshogi": "wins",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz",
     "sha256": "fc1a8ca372cd054f54c0e514023bfd05c63efde71e58b006fbac844d76a88700"
    },
@@ -4006,7 +4006,7 @@
     "alternative": "e3g5"
    },
    "game_result_for_mshogi": "wins",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz",
     "sha256": "781cc880c5caa80bf34cb17f98df2a220689edd29ee9d930b97f2c466c02cd9f"
    },
@@ -4082,7 +4082,7 @@
     "alternative": "c8d8"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz",
     "sha256": "781cc880c5caa80bf34cb17f98df2a220689edd29ee9d930b97f2c466c02cd9f"
    },
@@ -4147,7 +4147,7 @@
     "alternative": "e2e3"
    },
    "game_result_for_mshogi": "wins",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz",
     "sha256": "5f3ee07e9cc84ae0faa4f3191e2838bf61f29257bdb0d5996c377b5dd75abaa0"
    },
@@ -4220,7 +4220,7 @@
     "alternative": "g1g2"
    },
    "game_result_for_mshogi": "wins",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz",
     "sha256": "5f3ee07e9cc84ae0faa4f3191e2838bf61f29257bdb0d5996c377b5dd75abaa0"
    },
@@ -4344,7 +4344,7 @@
     "alternative": "d7g4"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz",
     "sha256": "5f3ee07e9cc84ae0faa4f3191e2838bf61f29257bdb0d5996c377b5dd75abaa0"
    },
@@ -4524,7 +4524,7 @@
     "alternative": "e5c6"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz",
     "sha256": "a4e0de582f088b1cd51260037849b8cd3bec11214eaba4d1b84f509311eeb528"
    },
@@ -4582,7 +4582,7 @@
     "alternative": "a5b4"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-04/jobs/b1964ae51a1cb251065395c32ae5f4405779e657f0b14342068c66585f09e03e/attempts/6ea608aa4e7b431fb71572b39514b327/artifacts/pair/report.json.gz",
     "sha256": "4d5ad5164d5e26438ba1321e46fa7ee58d07b0e7ce2ef2dbeea3d7b0dfa358d5"
    },
@@ -4666,7 +4666,7 @@
     "alternative": "c8b6"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-04/jobs/b1964ae51a1cb251065395c32ae5f4405779e657f0b14342068c66585f09e03e/attempts/6ea608aa4e7b431fb71572b39514b327/artifacts/pair/report.json.gz",
     "sha256": "4d5ad5164d5e26438ba1321e46fa7ee58d07b0e7ce2ef2dbeea3d7b0dfa358d5"
    },
@@ -4756,7 +4756,7 @@
     "alternative": "c7a7"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-04/jobs/b1964ae51a1cb251065395c32ae5f4405779e657f0b14342068c66585f09e03e/attempts/6ea608aa4e7b431fb71572b39514b327/artifacts/pair/report.json.gz",
     "sha256": "4d5ad5164d5e26438ba1321e46fa7ee58d07b0e7ce2ef2dbeea3d7b0dfa358d5"
    },
@@ -4856,7 +4856,7 @@
     "alternative": "a3a7"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz",
     "sha256": "1322798234a988cf22e0389dba577809cdbd8df75773af77415428fc61098698"
    },
@@ -4925,7 +4925,7 @@
     "alternative": "a7f2"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-04/jobs/43e3811c141d9b58548098eaad409eafa36ba88b00c9209ae9db3537233171b1/attempts/f34dc679e55849ee9ff400c0d72cc95f/artifacts/pair/report.json.gz",
     "sha256": "f1883adeb6fcc2153ebce108d0c37dbca41787915ee86826e7ebdc2986689480"
    },
@@ -4998,7 +4998,7 @@
     "alternative": "a7f2"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-04/jobs/43e3811c141d9b58548098eaad409eafa36ba88b00c9209ae9db3537233171b1/attempts/f34dc679e55849ee9ff400c0d72cc95f/artifacts/pair/report.json.gz",
     "sha256": "f1883adeb6fcc2153ebce108d0c37dbca41787915ee86826e7ebdc2986689480"
    },
@@ -5083,7 +5083,7 @@
     "alternative": "g1f1"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-04/jobs/43e3811c141d9b58548098eaad409eafa36ba88b00c9209ae9db3537233171b1/attempts/f34dc679e55849ee9ff400c0d72cc95f/artifacts/pair/report.json.gz",
     "sha256": "f1883adeb6fcc2153ebce108d0c37dbca41787915ee86826e7ebdc2986689480"
    },
@@ -5197,7 +5197,7 @@
     "alternative": "d7c7"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-04/jobs/dfc7f4142635672b1c504bc786001a3218f9c474fe2e1c69a85e637939b99e35/attempts/eed6deebf4fd4424bf39ca1b29138a2e/artifacts/pair/report.json.gz",
     "sha256": "9b1f167fa08dc76e4bc76c3ec4a64492f623412d49c8a6814ccdbf36d82212ea"
    },
@@ -5286,7 +5286,7 @@
     "alternative": "e1e2"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-04/jobs/3c93cc2f8dea9f42f3f79b122ba987ea8b014c57bf60f3c747f690699334b86a/attempts/3b65e3f73d384b18aa842d80a46c6847/artifacts/pair/report.json.gz",
     "sha256": "6b693239bd3f4475196daa32cda564e9fb1a5630c9f1617378126bd8dedf7b4c"
    },
@@ -5381,7 +5381,7 @@
     "alternative": "b1c1"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-04/jobs/3c93cc2f8dea9f42f3f79b122ba987ea8b014c57bf60f3c747f690699334b86a/attempts/3b65e3f73d384b18aa842d80a46c6847/artifacts/pair/report.json.gz",
     "sha256": "6b693239bd3f4475196daa32cda564e9fb1a5630c9f1617378126bd8dedf7b4c"
    },
@@ -5439,7 +5439,7 @@
     "alternative": "d5c4"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-04/jobs/7fa838ef857d6935bb1aeb507cdaa15e0ece8633418a729fe77ec48e2bb00d9b/attempts/f6100666022b45a9bd52aaa99479538d/artifacts/pair/report.json.gz",
     "sha256": "7a56805630cd9cc03562fca6098c36b310f1579e98830d6f193a139380ebd3fb"
    },
@@ -5577,7 +5577,7 @@
     "alternative": "c5e6"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-04/jobs/7fa838ef857d6935bb1aeb507cdaa15e0ece8633418a729fe77ec48e2bb00d9b/attempts/f6100666022b45a9bd52aaa99479538d/artifacts/pair/report.json.gz",
     "sha256": "7a56805630cd9cc03562fca6098c36b310f1579e98830d6f193a139380ebd3fb"
    },
@@ -5644,7 +5644,7 @@
     "alternative": "c2e2"
    },
    "game_result_for_mshogi": "wins",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-05/jobs/a0f99e9b8e72bc96ae38210fe072695bbdc477ff74af6ef78e475c91a171c603/attempts/62188c1f1c674410aa3d5e693f6b0478/artifacts/pair/report.json.gz",
     "sha256": "a54907d107be46fb426fd4ab5fe4b851df83d0851c54c5124057bc8a1f3746e0"
    },
@@ -5725,7 +5725,7 @@
     "alternative": "e4g3"
    },
    "game_result_for_mshogi": "wins",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-05/jobs/a0f99e9b8e72bc96ae38210fe072695bbdc477ff74af6ef78e475c91a171c603/attempts/62188c1f1c674410aa3d5e693f6b0478/artifacts/pair/report.json.gz",
     "sha256": "a54907d107be46fb426fd4ab5fe4b851df83d0851c54c5124057bc8a1f3746e0"
    },
@@ -5814,7 +5814,7 @@
     "alternative": "b1b2"
    },
    "game_result_for_mshogi": "wins",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-05/jobs/a0f99e9b8e72bc96ae38210fe072695bbdc477ff74af6ef78e475c91a171c603/attempts/62188c1f1c674410aa3d5e693f6b0478/artifacts/pair/report.json.gz",
     "sha256": "a54907d107be46fb426fd4ab5fe4b851df83d0851c54c5124057bc8a1f3746e0"
    },
@@ -5917,7 +5917,7 @@
     "alternative": "e4f2"
    },
    "game_result_for_mshogi": "wins",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-05/jobs/a0f99e9b8e72bc96ae38210fe072695bbdc477ff74af6ef78e475c91a171c603/attempts/62188c1f1c674410aa3d5e693f6b0478/artifacts/pair/report.json.gz",
     "sha256": "a54907d107be46fb426fd4ab5fe4b851df83d0851c54c5124057bc8a1f3746e0"
    },
@@ -5982,7 +5982,7 @@
     "alternative": "c1d2"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-05/jobs/29ae5784d398253cdd7fbe407a5b91872216dc8f842529ecfbf987221d179bdb/attempts/79a131b76cb14349bb6c7d84901be3d8/artifacts/pair/report.json.gz",
     "sha256": "f6d861ed2b33e28af9baa9a36451599048523b3b514a11262e869f430ec625a1"
    },
@@ -6044,7 +6044,7 @@
     "alternative": "c6d4"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-05/jobs/29ae5784d398253cdd7fbe407a5b91872216dc8f842529ecfbf987221d179bdb/attempts/79a131b76cb14349bb6c7d84901be3d8/artifacts/pair/report.json.gz",
     "sha256": "f6d861ed2b33e28af9baa9a36451599048523b3b514a11262e869f430ec625a1"
    },
@@ -6104,7 +6104,7 @@
     "alternative": "e6h3"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-05/jobs/d00d63735c34b41168f1010df1d251592313e8e40620c848a7c5527c1f990a5a/attempts/2ed3021d048c43da9fafa97d74c310e4/artifacts/pair/report.json.gz",
     "sha256": "2fc0d4305349056d04e296e91756c9f47a5c1c0cc95d95667e29d78df79110b1"
    },
@@ -6187,7 +6187,7 @@
     "alternative": "a3b4"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-05/jobs/2a9ff0ceb6223df8f0443a71c7358c40e90cdbfff041ecc5625112173368a495/attempts/78aba04cf7f94fe283a512b725ced1fa/artifacts/pair/report.json.gz",
     "sha256": "d1756b6d8c26d1823b5c5628de9207917c342e4f52799e471a9e129030a64163"
    },
@@ -6328,7 +6328,7 @@
     "alternative": "f4h6"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-05/jobs/2a9ff0ceb6223df8f0443a71c7358c40e90cdbfff041ecc5625112173368a495/attempts/78aba04cf7f94fe283a512b725ced1fa/artifacts/pair/report.json.gz",
     "sha256": "d1756b6d8c26d1823b5c5628de9207917c342e4f52799e471a9e129030a64163"
    },
@@ -6471,7 +6471,7 @@
     "alternative": "e3h6"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-05/jobs/2a9ff0ceb6223df8f0443a71c7358c40e90cdbfff041ecc5625112173368a495/attempts/78aba04cf7f94fe283a512b725ced1fa/artifacts/pair/report.json.gz",
     "sha256": "d1756b6d8c26d1823b5c5628de9207917c342e4f52799e471a9e129030a64163"
    },
@@ -6613,7 +6613,7 @@
     "alternative": "a8f8"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-05/jobs/2a9ff0ceb6223df8f0443a71c7358c40e90cdbfff041ecc5625112173368a495/attempts/78aba04cf7f94fe283a512b725ced1fa/artifacts/pair/report.json.gz",
     "sha256": "d1756b6d8c26d1823b5c5628de9207917c342e4f52799e471a9e129030a64163"
    },
@@ -6679,7 +6679,7 @@
     "alternative": "d4e5"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-05/jobs/0feb598999a64b281ea48160b3595b6d014ca2552ab1d5c026b3a8d562147d12/attempts/c505ff700dc34f49b8acef935c4d4cb2/artifacts/pair/report.json.gz",
     "sha256": "f9a93e5d797b77e4ffacd51eb3c52748e207ef99a5f9f07ad3b8b2d223591b6c"
    },
@@ -6759,7 +6759,7 @@
     "alternative": "e5e2"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-05/jobs/0feb598999a64b281ea48160b3595b6d014ca2552ab1d5c026b3a8d562147d12/attempts/c505ff700dc34f49b8acef935c4d4cb2/artifacts/pair/report.json.gz",
     "sha256": "f9a93e5d797b77e4ffacd51eb3c52748e207ef99a5f9f07ad3b8b2d223591b6c"
    },
@@ -6880,7 +6880,7 @@
     "alternative": "c3e4"
    },
    "game_result_for_mshogi": "wins",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-06/jobs/53007e95a1198baed7a590dbaed06f79e1927bbc08a450dc3fe7f25c61d7c419/attempts/f4ccfdf4fc95467c9f4b57d80e23ef9b/artifacts/pair/report.json.gz",
     "sha256": "68f0cbb6a1607d3fcc6926e3d28306602b91c31a9d9c277e205a8fb96909fccd"
    },
@@ -6968,7 +6968,7 @@
     "alternative": "d4c6"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-06/jobs/53007e95a1198baed7a590dbaed06f79e1927bbc08a450dc3fe7f25c61d7c419/attempts/f4ccfdf4fc95467c9f4b57d80e23ef9b/artifacts/pair/report.json.gz",
     "sha256": "68f0cbb6a1607d3fcc6926e3d28306602b91c31a9d9c277e205a8fb96909fccd"
    },
@@ -7048,7 +7048,7 @@
     "alternative": "f6g4"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-06/jobs/20b683473baf21de0cc4cd400197434d179295c6c1372993092d6c275de2e9b6/attempts/b44176e1a3fe48a08c7dbf9ec6dcb729/artifacts/pair/report.json.gz",
     "sha256": "64fd4e9c16ad7d1d60dd4538e3caa4752e3cd1608b37f6190ec40606fe29a6f2"
    },
@@ -7192,7 +7192,7 @@
     "alternative": "c7a7"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-06/jobs/20b683473baf21de0cc4cd400197434d179295c6c1372993092d6c275de2e9b6/attempts/b44176e1a3fe48a08c7dbf9ec6dcb729/artifacts/pair/report.json.gz",
     "sha256": "64fd4e9c16ad7d1d60dd4538e3caa4752e3cd1608b37f6190ec40606fe29a6f2"
    },
@@ -7291,7 +7291,7 @@
     "alternative": "f6g6"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-06/jobs/b8c6e9579aca16e018409a3971dd17d67b885f10fe1ab8bcddbbffb0f8593aff/attempts/0a320151280842c3ae9a66521f71f7cb/artifacts/pair/report.json.gz",
     "sha256": "ec93bddf70b5d3ce918d58b16e5fb1d9da068fd4f238f7d1bb9bcfee66c24ea0"
    },
@@ -7369,7 +7369,7 @@
     "alternative": "d8f6"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-06/jobs/8defad724d09be1da841b4851b3921bcd61f3f0c59d4bca49838b42608a4b75c/attempts/a55be1442dbd45f6b161217efd92004f/artifacts/pair/report.json.gz",
     "sha256": "8e25aa5a4af0db2efd623e68db0cad369e266e838e127dbde136c3408f7274c3"
    },
@@ -7462,7 +7462,7 @@
     "alternative": "f2f4"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-06/jobs/97c2be641abf858913bc5c2910f81a81f2747508d5c6e006d59a166e3262d4cf/attempts/3639987d382d4213b16f4dec7485adc7/artifacts/pair/report.json.gz",
     "sha256": "daf2e1cbd55a45c32b05a74f5c429e732e33c76132f2e8ddf7c25e4a706b3591"
    },
@@ -7550,7 +7550,7 @@
     "alternative": "e8d7"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-06/jobs/97c2be641abf858913bc5c2910f81a81f2747508d5c6e006d59a166e3262d4cf/attempts/3639987d382d4213b16f4dec7485adc7/artifacts/pair/report.json.gz",
     "sha256": "daf2e1cbd55a45c32b05a74f5c429e732e33c76132f2e8ddf7c25e4a706b3591"
    },
@@ -7640,7 +7640,7 @@
     "alternative": "e6h3"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-06/jobs/97c2be641abf858913bc5c2910f81a81f2747508d5c6e006d59a166e3262d4cf/attempts/3639987d382d4213b16f4dec7485adc7/artifacts/pair/report.json.gz",
     "sha256": "daf2e1cbd55a45c32b05a74f5c429e732e33c76132f2e8ddf7c25e4a706b3591"
    },
@@ -7870,7 +7870,7 @@
     "alternative": "h4h3"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-06/jobs/95ee9991fdd883a3d168afa0af0723d6c79b96887150e72be7e8682c453bfdb7/attempts/72c05185ea704f4ca7d1a4e2e2ba1cea/artifacts/pair/report.json.gz",
     "sha256": "2ce1158536be8da66e0dc51654c61cde835317be5918f8a2539142fdbda61899"
    },
@@ -7948,7 +7948,7 @@
     "alternative": "h5g4"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-06/jobs/d48c91b60522b12e277c9593bfa657ba6dafd936ae05d66469402f1ddd321747/attempts/7bd64d98e0a4477680842008f5afc5d1/artifacts/pair/report.json.gz",
     "sha256": "17a8878c95d00a7e7c503bcbebb309616047761c452b3df7d6bd2bb936aff6fc"
    },
@@ -8088,7 +8088,7 @@
     "alternative": "g6h6"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-06/jobs/d48c91b60522b12e277c9593bfa657ba6dafd936ae05d66469402f1ddd321747/attempts/7bd64d98e0a4477680842008f5afc5d1/artifacts/pair/report.json.gz",
     "sha256": "17a8878c95d00a7e7c503bcbebb309616047761c452b3df7d6bd2bb936aff6fc"
    },
@@ -8230,7 +8230,7 @@
     "alternative": "f3f2"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-06/jobs/d48c91b60522b12e277c9593bfa657ba6dafd936ae05d66469402f1ddd321747/attempts/7bd64d98e0a4477680842008f5afc5d1/artifacts/pair/report.json.gz",
     "sha256": "17a8878c95d00a7e7c503bcbebb309616047761c452b3df7d6bd2bb936aff6fc"
    },
@@ -8311,7 +8311,7 @@
     "alternative": "f3d4"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-06/jobs/326678f9bb8ed54fa8a5b39ccce1ae766f1833247bbafad7973ea810d3e2bade/attempts/af4238a4346a4902bccfd158b348d580/artifacts/pair/report.json.gz",
     "sha256": "a2792f34b2663913e9c6e55bcaec8472736be937fef6c1f0a176864f607ff20f"
    },
@@ -8410,7 +8410,7 @@
     "alternative": "h2h4"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-06/jobs/326678f9bb8ed54fa8a5b39ccce1ae766f1833247bbafad7973ea810d3e2bade/attempts/af4238a4346a4902bccfd158b348d580/artifacts/pair/report.json.gz",
     "sha256": "a2792f34b2663913e9c6e55bcaec8472736be937fef6c1f0a176864f607ff20f"
    },
@@ -8529,7 +8529,7 @@
     "alternative": "g2f3"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-07/jobs/b8e47a9921a98cbf358eec8c6af54079fdf8d278e5c5c6a3c96c367c7b92b69a/attempts/383501b42fd741bd8c27f31138932fc1/artifacts/pair/report.json.gz",
     "sha256": "674b7e5cd45d21f15fe9dfe216631b2968966f6771a400fc2af9eb24c2e7024e"
    },
@@ -8595,7 +8595,7 @@
     "alternative": "f6e4"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-07/jobs/e8ccfeafddf1ab8b8477f1a1373d1867241b1ebe877e73a59b2b775e29750b0f/attempts/a6c0296cadd841fca0e60fbd0ab3b520/artifacts/pair/report.json.gz",
     "sha256": "bb610f7bf43f800c198ae20fb6e3303d8282e401bd3a9686c25ac085d203af6a"
    },
@@ -8670,7 +8670,7 @@
     "alternative": "g2g3"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-07/jobs/d2dd1174ce74ca476f328c43ecd9ecaccddc13e043bfc4b64b2854db422fe943/attempts/1e54c0fb16c14ee68f17404f62c8e633/artifacts/pair/report.json.gz",
     "sha256": "59ab1d6035aa0374f118d67bcf7432af1546b2ab2a5129d6e053c6dae2c90097"
    },
@@ -8744,7 +8744,7 @@
     "alternative": "b5c4"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-07/jobs/11fdb05acdc2a33cc5effd7ab0367501ce8a008c979731e9510a947e5ef16a21/attempts/8da502f1079b4d48ab98dca7bdf1b3a9/artifacts/pair/report.json.gz",
     "sha256": "2cbf0eaf0d66cbc40ffa473867e20f1a4d0c821bd4f41770bdba8b856a55acc8"
    },
@@ -8819,7 +8819,7 @@
     "alternative": "g3f1"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-07/jobs/1b5aab832a71daba8db7a5b9f2b346915edda73ddb076c1bde8f4fabac38162b/attempts/fca815ec13724e3e809218a76c615b23/artifacts/pair/report.json.gz",
     "sha256": "4cbaacd779f53f8f731ad680a2cdbc3e6b97b3de24a4c347fa42b58d047980ea"
    },
@@ -8875,7 +8875,7 @@
     "alternative": "d8f6"
    },
    "game_result_for_mshogi": "wins",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-07/jobs/1b5aab832a71daba8db7a5b9f2b346915edda73ddb076c1bde8f4fabac38162b/attempts/fca815ec13724e3e809218a76c615b23/artifacts/pair/report.json.gz",
     "sha256": "4cbaacd779f53f8f731ad680a2cdbc3e6b97b3de24a4c347fa42b58d047980ea"
    },
@@ -8929,7 +8929,7 @@
     "alternative": "c6b4"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-07/jobs/59979c45071e7d68aaf8ef6672dd78f84abec852cd7c3863192bd1fae6538889/attempts/480a797be7604cf9b85645b8999d43fd/artifacts/pair/report.json.gz",
     "sha256": "08ce87b81f9154296aaa630d40427570b9fca1af3fbeb72b022fc9d66363d157"
    },
@@ -9017,7 +9017,7 @@
     "alternative": "a2a4"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-08/jobs/0987f826779daab941154d7a473d57b331c0ad1a29232f60dc0f8a9a11f9a890/attempts/df6d15f0924a4953b233107e08004c38/artifacts/pair/report.json.gz",
     "sha256": "dc598a13989ef99be1809b886d68476e85d08737f0f1876b835bf61061a52b92"
    },
@@ -9082,7 +9082,7 @@
     "alternative": "e2g3"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-08/jobs/7f4d88cde8f771bafc89c5f8e366ee9e42fdad2ec3884e54b139deaaa143e789/attempts/d0296090189a4262bf40c8bd42928279/artifacts/pair/report.json.gz",
     "sha256": "d2fa3b05f83df018819e9cada4f138ea85bfc3fbc9e73a09c45e85d82ce00ce6"
    },
@@ -9144,7 +9144,7 @@
     "alternative": "b4b3"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-08/jobs/7f4d88cde8f771bafc89c5f8e366ee9e42fdad2ec3884e54b139deaaa143e789/attempts/d0296090189a4262bf40c8bd42928279/artifacts/pair/report.json.gz",
     "sha256": "d2fa3b05f83df018819e9cada4f138ea85bfc3fbc9e73a09c45e85d82ce00ce6"
    },
@@ -9214,7 +9214,7 @@
     "alternative": "h8e8"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-08/jobs/7f4d88cde8f771bafc89c5f8e366ee9e42fdad2ec3884e54b139deaaa143e789/attempts/d0296090189a4262bf40c8bd42928279/artifacts/pair/report.json.gz",
     "sha256": "d2fa3b05f83df018819e9cada4f138ea85bfc3fbc9e73a09c45e85d82ce00ce6"
    },
@@ -9320,7 +9320,7 @@
     "alternative": "h8f8"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-08/jobs/704d56d2241e711a5928f423bfbf1aefc44056ba79f43a56d9b28784e9c5c2c7/attempts/4a7abf93af5341d58b5edc53665e52d9/artifacts/pair/report.json.gz",
     "sha256": "2889bad2cce90b5efef39251c8918be02452bd85db0f4864b156906f0456c0f3"
    },
@@ -9430,7 +9430,7 @@
     "alternative": "h3h1"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-08/jobs/704d56d2241e711a5928f423bfbf1aefc44056ba79f43a56d9b28784e9c5c2c7/attempts/4a7abf93af5341d58b5edc53665e52d9/artifacts/pair/report.json.gz",
     "sha256": "2889bad2cce90b5efef39251c8918be02452bd85db0f4864b156906f0456c0f3"
    },
@@ -9517,7 +9517,7 @@
     "alternative": "a4c5"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-08/jobs/a20375cf736edb3b97bfae7d9d31b68c3ce6209381814fbadf5dc792e37305c3/attempts/22a79c687be044108553d70a5e5f4d5d/artifacts/pair/report.json.gz",
     "sha256": "88755c2cd19f9a1ffaee3379a80b13bf380674dc520e80f37e2dd8f54d4ef678"
    },
@@ -9601,7 +9601,7 @@
     "alternative": "e8e5"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-08/jobs/a20375cf736edb3b97bfae7d9d31b68c3ce6209381814fbadf5dc792e37305c3/attempts/22a79c687be044108553d70a5e5f4d5d/artifacts/pair/report.json.gz",
     "sha256": "88755c2cd19f9a1ffaee3379a80b13bf380674dc520e80f37e2dd8f54d4ef678"
    },
@@ -9662,7 +9662,7 @@
     "alternative": "d4f3"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-08/jobs/5d754a0203acac3034306bfbbf76065a68dee7e06841a1af3c83f9a325c67077/attempts/661d65bc917b40b3a83ba4358fd87ec8/artifacts/pair/report.json.gz",
     "sha256": "9707e7ec59611b6a5fb3084a5cfa3f9bc8f6218bab3ce658e60eec7ee4b493df"
    },
@@ -9773,7 +9773,7 @@
     "alternative": "e4a8"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-08/jobs/5d754a0203acac3034306bfbbf76065a68dee7e06841a1af3c83f9a325c67077/attempts/661d65bc917b40b3a83ba4358fd87ec8/artifacts/pair/report.json.gz",
     "sha256": "9707e7ec59611b6a5fb3084a5cfa3f9bc8f6218bab3ce658e60eec7ee4b493df"
    },
@@ -9886,7 +9886,7 @@
     "alternative": "g1h2"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-08/jobs/5d754a0203acac3034306bfbbf76065a68dee7e06841a1af3c83f9a325c67077/attempts/661d65bc917b40b3a83ba4358fd87ec8/artifacts/pair/report.json.gz",
     "sha256": "9707e7ec59611b6a5fb3084a5cfa3f9bc8f6218bab3ce658e60eec7ee4b493df"
    },
@@ -10001,7 +10001,7 @@
     "alternative": "f4f5"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-08/jobs/5d754a0203acac3034306bfbbf76065a68dee7e06841a1af3c83f9a325c67077/attempts/661d65bc917b40b3a83ba4358fd87ec8/artifacts/pair/report.json.gz",
     "sha256": "9707e7ec59611b6a5fb3084a5cfa3f9bc8f6218bab3ce658e60eec7ee4b493df"
    },
@@ -10062,7 +10062,7 @@
     "alternative": "a2a4"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-08/jobs/6a6271bfa60217b785592ae4b6be8878999e479958b1b3508ef878db61fa2c4e/attempts/44903e3a593a4e0b8f21356954e4dc26/artifacts/pair/report.json.gz",
     "sha256": "f7d351f7d7b6eb4e4cd0a89ac7101af233b55caffffd1a57cbe2440349ed9afe"
    },
@@ -10187,7 +10187,7 @@
     "alternative": "g2g6"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-08/jobs/6a6271bfa60217b785592ae4b6be8878999e479958b1b3508ef878db61fa2c4e/attempts/44903e3a593a4e0b8f21356954e4dc26/artifacts/pair/report.json.gz",
     "sha256": "f7d351f7d7b6eb4e4cd0a89ac7101af233b55caffffd1a57cbe2440349ed9afe"
    },
@@ -10334,7 +10334,7 @@
     "alternative": "e2d2"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-08/jobs/6a6271bfa60217b785592ae4b6be8878999e479958b1b3508ef878db61fa2c4e/attempts/44903e3a593a4e0b8f21356954e4dc26/artifacts/pair/report.json.gz",
     "sha256": "f7d351f7d7b6eb4e4cd0a89ac7101af233b55caffffd1a57cbe2440349ed9afe"
    },
@@ -10487,7 +10487,7 @@
     "alternative": "d3d2"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-08/jobs/6a6271bfa60217b785592ae4b6be8878999e479958b1b3508ef878db61fa2c4e/attempts/44903e3a593a4e0b8f21356954e4dc26/artifacts/pair/report.json.gz",
     "sha256": "f7d351f7d7b6eb4e4cd0a89ac7101af233b55caffffd1a57cbe2440349ed9afe"
    },
@@ -10557,7 +10557,7 @@
     "alternative": "h7h6"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-08/jobs/6a6271bfa60217b785592ae4b6be8878999e479958b1b3508ef878db61fa2c4e/attempts/44903e3a593a4e0b8f21356954e4dc26/artifacts/pair/report.json.gz",
     "sha256": "f7d351f7d7b6eb4e4cd0a89ac7101af233b55caffffd1a57cbe2440349ed9afe"
    },
@@ -10635,7 +10635,7 @@
     "alternative": "b6d8"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-08/jobs/6a6271bfa60217b785592ae4b6be8878999e479958b1b3508ef878db61fa2c4e/attempts/44903e3a593a4e0b8f21356954e4dc26/artifacts/pair/report.json.gz",
     "sha256": "f7d351f7d7b6eb4e4cd0a89ac7101af233b55caffffd1a57cbe2440349ed9afe"
    },
@@ -10741,7 +10741,7 @@
     "alternative": "c5e6"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-08/jobs/6a6271bfa60217b785592ae4b6be8878999e479958b1b3508ef878db61fa2c4e/attempts/44903e3a593a4e0b8f21356954e4dc26/artifacts/pair/report.json.gz",
     "sha256": "f7d351f7d7b6eb4e4cd0a89ac7101af233b55caffffd1a57cbe2440349ed9afe"
    },
@@ -10865,7 +10865,7 @@
     "alternative": "f6d5"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-08/jobs/6a6271bfa60217b785592ae4b6be8878999e479958b1b3508ef878db61fa2c4e/attempts/44903e3a593a4e0b8f21356954e4dc26/artifacts/pair/report.json.gz",
     "sha256": "f7d351f7d7b6eb4e4cd0a89ac7101af233b55caffffd1a57cbe2440349ed9afe"
    },
@@ -10946,7 +10946,7 @@
     "alternative": "f1d1"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-08/jobs/4f9bc3299b59b0902418a7627ce1ac17fd2e1813336ef71c4cc51013d75c6070/attempts/33a2c29dd57742df88b7b71b4bd03e30/artifacts/pair/report.json.gz",
     "sha256": "9305c867b192dc0e544f4a301d0bc39d05a28cc1b9add1131fbd08ec1d8992d2"
    },
@@ -11043,7 +11043,7 @@
     "alternative": "c3e4"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-08/jobs/4f9bc3299b59b0902418a7627ce1ac17fd2e1813336ef71c4cc51013d75c6070/attempts/33a2c29dd57742df88b7b71b4bd03e30/artifacts/pair/report.json.gz",
     "sha256": "9305c867b192dc0e544f4a301d0bc39d05a28cc1b9add1131fbd08ec1d8992d2"
    },
@@ -11143,7 +11143,7 @@
     "alternative": "a5c4"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-08/jobs/4f9bc3299b59b0902418a7627ce1ac17fd2e1813336ef71c4cc51013d75c6070/attempts/33a2c29dd57742df88b7b71b4bd03e30/artifacts/pair/report.json.gz",
     "sha256": "9305c867b192dc0e544f4a301d0bc39d05a28cc1b9add1131fbd08ec1d8992d2"
    },
@@ -11280,7 +11280,7 @@
     "alternative": "g3f2"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-08/jobs/c469f3f45ac765205a9a24d382af1c0e8340f1a433893b32bc05108946770ff6/attempts/a748f34fb76c4e3daad932abafcb6a6c/artifacts/pair/report.json.gz",
     "sha256": "5a3685fb61fff15483b8cc2925a30d05f5688971f08565218565c6fef5e00e8b"
    },
@@ -11366,7 +11366,7 @@
     "alternative": "b5c4"
    },
    "game_result_for_mshogi": "wins",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-08/jobs/c469f3f45ac765205a9a24d382af1c0e8340f1a433893b32bc05108946770ff6/attempts/a748f34fb76c4e3daad932abafcb6a6c/artifacts/pair/report.json.gz",
     "sha256": "5a3685fb61fff15483b8cc2925a30d05f5688971f08565218565c6fef5e00e8b"
    },
@@ -11427,7 +11427,7 @@
     "alternative": "f3h4"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-09/jobs/759ee6b4db8d20f30409ee6dacf6bb92b447304c2292282f88e1c712dcc5c554/attempts/7fbe4e48ed224b6e8b586e43f0898ba7/artifacts/pair/report.json.gz",
     "sha256": "30f9c3c6d5106c8252fc63669832df452308925a22292a7511948f8d3b00b51e"
    },
@@ -11496,7 +11496,7 @@
     "alternative": "d2f4"
    },
    "game_result_for_mshogi": "wins",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-09/jobs/34a05d80d93f9c935ae91cbb94304aba985d508636cb74c2cce110871a38275b/attempts/c186af9205724ac5b75f48aaad0716de/artifacts/pair/report.json.gz",
     "sha256": "adf17521f6e8493d5756f7627c31849f0c4a475054e4db7b24dbddc54dd25781"
    },
@@ -11646,7 +11646,7 @@
     "alternative": "f7e7"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-09/jobs/34a05d80d93f9c935ae91cbb94304aba985d508636cb74c2cce110871a38275b/attempts/c186af9205724ac5b75f48aaad0716de/artifacts/pair/report.json.gz",
     "sha256": "adf17521f6e8493d5756f7627c31849f0c4a475054e4db7b24dbddc54dd25781"
    },
@@ -11723,7 +11723,7 @@
     "alternative": "c4c5"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-09/jobs/59b663d5464cc86342c0d3826ced2347d4de6cc8ef9e74f1157f7982756ebeba/attempts/4fed86fc04a54d1c8d28e695c9141f5b/artifacts/pair/report.json.gz",
     "sha256": "2de1fef9b82d97bb0ca1c2d4c7c186b6241294cb196edfcfcea7800cb7341a86"
    },
@@ -11787,7 +11787,7 @@
     "alternative": "b6d5"
    },
    "game_result_for_mshogi": "wins",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-09/jobs/59b663d5464cc86342c0d3826ced2347d4de6cc8ef9e74f1157f7982756ebeba/attempts/4fed86fc04a54d1c8d28e695c9141f5b/artifacts/pair/report.json.gz",
     "sha256": "2de1fef9b82d97bb0ca1c2d4c7c186b6241294cb196edfcfcea7800cb7341a86"
    },
@@ -11922,7 +11922,7 @@
     "alternative": "g1h1"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-09/jobs/3bc5ea704c8f31edb3a50b9f2069b224a52dfa993584de6900c0f2d627c9c0c0/attempts/85a665332a494159a5475a6c2c9d1fc1/artifacts/pair/report.json.gz",
     "sha256": "a16fd11587ac3bce59608bd94a6c9236d548275702b58a6da62609c9b4758c16"
    },
@@ -12053,7 +12053,7 @@
     "alternative": "d4c5"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-09/jobs/e609a5d42b6d3bbd6f3bb261b6712a53cbef593cb8474153797d340146d787fb/attempts/2c516ce37956435a8738fbfec7961281/artifacts/pair/report.json.gz",
     "sha256": "8b3dd86e12345933433a9c9f56aa874eab61ef728182712032c7142b181e0fd9"
    },
@@ -12131,7 +12131,7 @@
     "alternative": "e6f4"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-10/jobs/6f65907bb5d8d1b30d79db5be499c9f9c798c4244b185ee1ab0db29b4aa7b12c/attempts/94f174a284be40339197c100d0a2c1c8/artifacts/pair/report.json.gz",
     "sha256": "3c31759b96581101132bf4d602d649d1c60cb3ef8847e8d5ea122ecdbdbe7ee3"
    },
@@ -12252,7 +12252,7 @@
     "alternative": "c5d3"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-10/jobs/b17c907f7ad10bee1a29f76d0a9b382f0f8c0cd177a2472b00a30c26cc150f47/attempts/7c9529203da54d62a486d6c9007bdccd/artifacts/pair/report.json.gz",
     "sha256": "3269e5d0401a16f37e165a67f1df9ab126efe93135244243ad8418b09378a381"
    },
@@ -12379,7 +12379,7 @@
     "alternative": "c8f8"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-10/jobs/b17c907f7ad10bee1a29f76d0a9b382f0f8c0cd177a2472b00a30c26cc150f47/attempts/7c9529203da54d62a486d6c9007bdccd/artifacts/pair/report.json.gz",
     "sha256": "3269e5d0401a16f37e165a67f1df9ab126efe93135244243ad8418b09378a381"
    },
@@ -12512,7 +12512,7 @@
     "alternative": "d7b5"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-10/jobs/b17c907f7ad10bee1a29f76d0a9b382f0f8c0cd177a2472b00a30c26cc150f47/attempts/7c9529203da54d62a486d6c9007bdccd/artifacts/pair/report.json.gz",
     "sha256": "3269e5d0401a16f37e165a67f1df9ab126efe93135244243ad8418b09378a381"
    },
@@ -12709,7 +12709,7 @@
     "alternative": "e5f6"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-10/jobs/b17c907f7ad10bee1a29f76d0a9b382f0f8c0cd177a2472b00a30c26cc150f47/attempts/7c9529203da54d62a486d6c9007bdccd/artifacts/pair/report.json.gz",
     "sha256": "3269e5d0401a16f37e165a67f1df9ab126efe93135244243ad8418b09378a381"
    },
@@ -12936,7 +12936,7 @@
     "alternative": "e6f8"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-10/jobs/b17c907f7ad10bee1a29f76d0a9b382f0f8c0cd177a2472b00a30c26cc150f47/attempts/7c9529203da54d62a486d6c9007bdccd/artifacts/pair/report.json.gz",
     "sha256": "3269e5d0401a16f37e165a67f1df9ab126efe93135244243ad8418b09378a381"
    },
@@ -13079,7 +13079,7 @@
     "alternative": "d3e2"
    },
    "game_result_for_mshogi": "draws",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-10/jobs/ef872b25b5d0460ab55535eb2641cea0acb94fe40ec83e72d01830a2810c18ca/attempts/51ed19e30bb1431894646f1613f8aff3/artifacts/pair/report.json.gz",
     "sha256": "aefa845e49f8da50e4efdbde57a65d9074896e7d6d3e7c9ae30c66e185716447"
    },
@@ -13146,7 +13146,7 @@
     "alternative": "g3h3"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-10/jobs/6a1e342ccfcfb8ca4a46375593935535dd712a5ab706970f4713500bb3a2bd08/attempts/97b5577d8b83476db244cd4f1ed0e639/artifacts/pair/report.json.gz",
     "sha256": "9239024f45ca2d80fd048bbad462a6ebb4d81652fdba988d60da697524a874af"
    },
@@ -13214,7 +13214,7 @@
     "alternative": "f6h5"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-10/jobs/6a1e342ccfcfb8ca4a46375593935535dd712a5ab706970f4713500bb3a2bd08/attempts/97b5577d8b83476db244cd4f1ed0e639/artifacts/pair/report.json.gz",
     "sha256": "9239024f45ca2d80fd048bbad462a6ebb4d81652fdba988d60da697524a874af"
    },
@@ -13284,7 +13284,7 @@
     "alternative": "g4e6"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-10/jobs/6a1e342ccfcfb8ca4a46375593935535dd712a5ab706970f4713500bb3a2bd08/attempts/97b5577d8b83476db244cd4f1ed0e639/artifacts/pair/report.json.gz",
     "sha256": "9239024f45ca2d80fd048bbad462a6ebb4d81652fdba988d60da697524a874af"
    },
@@ -13404,7 +13404,7 @@
     "alternative": "d7f7"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-10/jobs/b14538fbd68342c5039c162595549c9a7118251d13b0990a3acc4df7f3d6bba3/attempts/4e0b81421f0b4aec8d944d01cbbc74ca/artifacts/pair/report.json.gz",
     "sha256": "715ab42af61be8439754cd7d3d16ae6a29b32efa943971cfe2e50aea6c979bf9"
    },
@@ -13538,7 +13538,7 @@
     "alternative": "d7d3"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-10/jobs/b14538fbd68342c5039c162595549c9a7118251d13b0990a3acc4df7f3d6bba3/attempts/4e0b81421f0b4aec8d944d01cbbc74ca/artifacts/pair/report.json.gz",
     "sha256": "715ab42af61be8439754cd7d3d16ae6a29b32efa943971cfe2e50aea6c979bf9"
    },
@@ -13682,7 +13682,7 @@
     "alternative": "d6f5"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-10/jobs/b14538fbd68342c5039c162595549c9a7118251d13b0990a3acc4df7f3d6bba3/attempts/4e0b81421f0b4aec8d944d01cbbc74ca/artifacts/pair/report.json.gz",
     "sha256": "715ab42af61be8439754cd7d3d16ae6a29b32efa943971cfe2e50aea6c979bf9"
    },
@@ -13834,7 +13834,7 @@
     "alternative": "a3c2"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-10/jobs/b14538fbd68342c5039c162595549c9a7118251d13b0990a3acc4df7f3d6bba3/attempts/4e0b81421f0b4aec8d944d01cbbc74ca/artifacts/pair/report.json.gz",
     "sha256": "715ab42af61be8439754cd7d3d16ae6a29b32efa943971cfe2e50aea6c979bf9"
    },
@@ -13903,7 +13903,7 @@
     "alternative": "d3d4"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-10/jobs/074f1eb480303892ec203031083ca42f412b386e3a41bd557effb5066feb828f/attempts/28985f9da0424419983c714a6cdce89c/artifacts/pair/report.json.gz",
     "sha256": "57ad03e46933e0bd16221f4727dd8e75b6c0314cbfc6056897c601f58ea4d84e"
    },
@@ -14018,7 +14018,7 @@
     "alternative": "e1c1"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-10/jobs/074f1eb480303892ec203031083ca42f412b386e3a41bd557effb5066feb828f/attempts/28985f9da0424419983c714a6cdce89c/artifacts/pair/report.json.gz",
     "sha256": "57ad03e46933e0bd16221f4727dd8e75b6c0314cbfc6056897c601f58ea4d84e"
    },
@@ -14172,7 +14172,7 @@
     "alternative": "f6e7"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-10/jobs/074f1eb480303892ec203031083ca42f412b386e3a41bd557effb5066feb828f/attempts/28985f9da0424419983c714a6cdce89c/artifacts/pair/report.json.gz",
     "sha256": "57ad03e46933e0bd16221f4727dd8e75b6c0314cbfc6056897c601f58ea4d84e"
    },
@@ -14332,7 +14332,7 @@
     "alternative": "f6c3"
    },
    "game_result_for_mshogi": "losses",
-   "native_report": {
+   "match_report": {
     "key": "msh161-primary-v1-batch-10/jobs/074f1eb480303892ec203031083ca42f412b386e3a41bd557effb5066feb828f/attempts/28985f9da0424419983c714a6cdce89c/artifacts/pair/report.json.gz",
     "sha256": "57ad03e46933e0bd16221f4727dd8e75b6c0314cbfc6056897c601f58ea4d84e"
    },

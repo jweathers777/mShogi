@@ -3,7 +3,7 @@
 The Chess engine uses `chess_eval::evaluate` in `crates/mshogi-search`. Its
 identity is `mshogi.chess.conventional-tapered.v1`. It evaluates the
 search-internal bitboard position (`chess_bitboard::ChessPosition`), not the
-native rules position. [Chess search](search.md) describes the engine.
+rules position. [Chess search](search.md) describes the engine.
 
 ## Score
 
@@ -38,7 +38,7 @@ attacks.
 Some endings replace the general terms (`EndgameKind`):
 
 - King and pawn against king: the win/draw bitbase in `chess_kpk.rs`.
-  `examples/generate_chess_kpk.rs` generates its table from the native legal
+  `examples/generate_chess_kpk.rs` generates its table from the legal
   actions.
 - Wrong-colored bishop with a rook pawn.
 - Bishop and knight against a bare king.
@@ -49,7 +49,7 @@ Some endings replace the general terms (`EndgameKind`):
 ## Limits
 
 All coefficients are original, transparent and untrained. They are not
-measured exchange values. A static score never decides a game: the native rules
+measured exchange values. A static score never decides a game: the rules
 and the search handle outcomes and claims first. A score of zero does not prove
 a draw, and a large score does not prove a win.
 

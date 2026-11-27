@@ -1,4 +1,4 @@
-//! The Tori search position against the native Tori rules, which are the
+//! The Tori search position against the Tori rules, which are the
 //! authority: legal actions (moves and drops), resulting state, check status,
 //! hash and move encoding.
 use super::eval;
@@ -55,19 +55,23 @@ fn diagram(entries: &[(&str, Side, Face)], hands: [Hand; 2], turn: Side) -> Game
     )
     .unwrap()
 }
-/// Compare one search position with the native position of `game`.
+/// Compare one search position with the position of `game`.
 fn compare(position: &mut ToriPosition, game: &Game) {
-    let native = game.position();
+    let rules_position = game.position();
     let local = game.local_position();
-    assert_eq!(position.side_to_move(), native.side_to_move());
+    assert_eq!(position.side_to_move(), rules_position.side_to_move());
     for square in Square::all() {
-        assert_eq!(position.piece(square), native.piece(square), "{square}");
+        assert_eq!(
+            position.piece(square),
+            rules_position.piece(square),
+            "{square}"
+        );
     }
     for side in [Side::Sente, Side::Gote] {
         for face in Face::HANDS {
             assert_eq!(
                 position.hand_count(side, face),
-                native.hand(side).count(face)
+                rules_position.hand(side).count(face)
             );
         }
     }
@@ -76,7 +80,7 @@ fn compare(position: &mut ToriPosition, game: &Game) {
     assert_eq!(position.hash(), position.hash_from_scratch());
     assert_eq!(
         position.in_check(),
-        local.is_in_check(native.side_to_move())
+        local.is_in_check(rules_position.side_to_move())
     );
     // Legal actions without the history rule: the position-local rules.
     let legal = position.legal_moves();
@@ -107,7 +111,7 @@ fn compare(position: &mut ToriPosition, game: &Game) {
 }
 
 #[test]
-fn random_games_agree_with_the_native_rules() {
+fn random_games_agree_with_the_rules() {
     let mut positions = 0;
     let mut drops = 0;
     let mut captures = 0;
@@ -158,7 +162,7 @@ fn random_games_agree_with_the_native_rules() {
                         usize::from(game.position().piece(from).unwrap().face != result_face);
                 }
             }
-            let m = position.find(action).expect("native action exists");
+            let m = position.find(action).expect("action exists");
             let before = position.hash();
             assert!(position.make(m));
             position.unmake();
@@ -188,13 +192,13 @@ fn generated_checks(position: &ToriPosition) -> Vec<Move> {
     candidates
 }
 
-/// The check flag after every legal move agrees with the native rules. The
+/// The check flag after every legal move agrees with the rules. The
 /// search position derives it from the moved piece and the rays that its
 /// departure opens (MSH-200), so each child is checked, not only the path.
 /// The check generator gives every checking move, and in check the search
 /// generator keeps every legal move.
 #[test]
-fn checks_check_generation_and_evasions_agree_with_the_native_rules() {
+fn checks_check_generation_and_evasions_agree_with_the_rules() {
     let mut children = 0;
     let mut checks = 0;
     let mut ray_pieces = 0;
@@ -284,14 +288,18 @@ fn checks_check_generation_and_evasions_agree_with_the_native_rules() {
 }
 
 #[test]
-fn perft_agrees_with_the_native_perft() {
+fn perft_agrees_with_the_perft() {
     let game = Game::standard();
     let mut position = ToriPosition::from_game(&game);
     for depth in 1..=3u8 {
-        let native = perft(game.local_position(), u32::from(depth), 1_000_000, || false)
+        let rules_position = perft(game.local_position(), u32::from(depth), 1_000_000, || false)
             .unwrap()
             .leaves;
-        assert_eq!(position.perft(u32::from(depth)), native, "depth {depth}");
+        assert_eq!(
+            position.perft(u32::from(depth)),
+            rules_position,
+            "depth {depth}"
+        );
     }
     // A position with drops for both sides, reached by fixed exchanges.
     let mut game = Game::standard();
@@ -323,15 +331,19 @@ fn perft_agrees_with_the_native_perft() {
     );
     let mut position = ToriPosition::from_game(&game);
     for depth in 1..=2u8 {
-        let native = perft(game.local_position(), u32::from(depth), 1_000_000, || false)
+        let rules_position = perft(game.local_position(), u32::from(depth), 1_000_000, || false)
             .unwrap()
             .leaves;
-        assert_eq!(position.perft(u32::from(depth)), native, "depth {depth}");
+        assert_eq!(
+            position.perft(u32::from(depth)),
+            rules_position,
+            "depth {depth}"
+        );
     }
 }
 
 #[test]
-fn swallow_drop_rules_agree_with_the_native_rules() {
+fn swallow_drop_rules_agree_with_the_rules() {
     let drop = |to: &str| Action::Drop {
         face: Face::Swallow,
         to: to.parse().unwrap(),
@@ -395,9 +407,9 @@ fn swallow_drop_rules_agree_with_the_native_rules() {
 }
 
 #[test]
-fn the_root_excludes_departures_that_the_native_repetition_rule_forbids() {
+fn the_root_excludes_departures_that_the_repetition_rule_forbids() {
     // Both sides move a Phoenix out and back until the start position occurs
-    // for the third time. The native rule then forbids the earlier departures.
+    // for the third time. The rule then forbids the earlier departures.
     let mut game = diagram(
         &[
             ("4g", Side::Sente, Face::Phoenix),
@@ -543,7 +555,7 @@ fn history_keys_survive_runtime_retirement_between_actions() {
 }
 
 #[test]
-fn gote_swallow_drop_rules_agree_with_the_native_rules() {
+fn gote_swallow_drop_rules_agree_with_the_rules() {
     // The Sente drop-mate position of the test above, turned for Gote.
     let drop = |to: &str| Action::Drop {
         face: Face::Swallow,
@@ -658,13 +670,13 @@ fn mate_search_finds_a_drop_mate_and_respects_the_swallow_rule() {
     let MateResult::Mate(line) = result else {
         panic!("no mate found");
     };
-    let mut native = game.local_position().clone();
+    let mut rules_position = game.local_position().clone();
     for &m in &line {
-        native.apply(position.action(m)).unwrap();
+        rules_position.apply(position.action(m)).unwrap();
         assert!(position.make(m));
     }
-    let defender = native.position().side_to_move();
-    assert!(native.legal_actions().is_empty() && native.is_in_check(defender));
+    let defender = rules_position.position().side_to_move();
+    assert!(rules_position.legal_actions().is_empty() && rules_position.is_in_check(defender));
     // The same drop with a Swallow is illegal: no mate.
     let (_, _, result) = search(Hand::from_counts(&[(Swallow, 1)]).unwrap());
     assert!(!matches!(result, MateResult::Mate(_)));

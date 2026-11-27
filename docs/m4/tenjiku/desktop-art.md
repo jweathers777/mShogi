@@ -19,7 +19,7 @@ some cases. Around 960×1000 is a recommended playing size when the display
 permits, not a new minimum. No glyph, artwork, zoom or minimum-size change is
 part of this continuation.
 
-The existing footer now identifies the selected piece using the native label
+The existing footer now identifies the selected piece using the label
 across all six games, and retains it through compound selection. Occupied legal
 capture destinations have decorative outlined markers painted above the piece
 artwork; the markers ignore pointer events. Inspection remains distinct from a
@@ -54,7 +54,7 @@ also supplies modern 鉄将 and 竪兵 spelling. This naming evidence does not
 replace either selected rules profile. Differences in those authors' movement
 or promotion descriptions are not imported into the product.
 
-Adams's English face names and the native `Face` codes are identified in
+Adams's English face names and the `Face` codes are identified in
 `profile.json.pieces`; [sources.md](sources.md) identifies the inspected English
 sources. The following lettering aligns those identities with the Japanese
 names. Existing Chu spelling is preserved, including 龍, 酔, 鯨鯢 and 奔猪;
@@ -62,7 +62,7 @@ Onuma's 雜将 is retained with U+96DC 雜 rather than silently normalized to �
 The named modern sources do not prove the exact lettering of an unacquired
 historical witness.
 
-| Native face | English identity | Lettering |
+| Face | English identity | Lettering |
 |---|---|---|
 | K | King | 玉将 |
 | FiD | Fire Demon | 火鬼 |
@@ -109,21 +109,21 @@ historical witness.
 | Dg | Dog | 犬 |
 | P | Pawn | 歩兵 |
 
-## Native ownership and rendering
+## Game ownership and rendering
 
 `SquareBoard.tsx` draws Tenjiku, like Chu, on the shared `Board` inside the
-accepted `GameFrame`. It reads `tenjiku.selected.identities` by square; native
-`face` supplies lettering while native original `base` and `promoted` remain
+accepted `GameFrame`. It reads `tenjiku.selected.identities` by square;
+`face` supplies lettering while original `base` and `promoted` remain
 separate. The shared `Piece.tsx` tile holds the face table. No frontend promotion
 table, movement rule, check filter, second controller, hands or alternate shell
-is introduced. The two immutable profiles use the same lettering; their native
+is introduced. The two immutable profiles use the same lettering; their
 choices and effects remain distinct.
 
 This matters for original LHk and promoted Ln→LHk, original FEg and promoted
 FK→FEg, and every other shared movement face. Promoted engraving is dark red
 with two corner chevrons, retaining a non-color distinction. King 玉将 and
 Prince 太子 retain different names. Ownership rotates the entire pentagonal
-tile and engraving 180 degrees. Native square labels remain the accessible
+tile and engraving 180 degrees. Square labels remain the accessible
 names; decorative SVG is hidden from assistive technology. Unknown faces render
 no substitute piece or raw diagnostic abbreviation.
 
@@ -137,7 +137,7 @@ those baselines have nonoverlapping vertical bounds and remain within the
 
 Selected squares, destinations, pending routes, completed origin/destination,
 stationary capture, burn, promotion and mover destruction keep the existing
-native-choice/effect architecture. Tenjiku-scoped CSS uses the accepted Chu
+choice/effect architecture. Tenjiku-scoped CSS uses the accepted Chu
 target and route colors and compacts the existing route controls into the
 shared footer. No board scrolling, zoom, minimum-window change, or separate
 interaction architecture is introduced.
@@ -200,19 +200,19 @@ abbreviating source names requires an project decision.
 
 Actual macOS verification must use the fixed QA slot and primary-checkout helper
 from [packaged-gui-verification.md](../../desktop/packaged-gui-verification.md),
-selecting the external fixture while stopped. The native QA menu establishes
+selecting the external fixture while stopped. The QA menu establishes
 1180×820, 960×720 and 760×650 content sizes and records measured content/frame
 dimensions in its title. Retain real screenshots and accessibility observations
 for both orientations, standard density, all faces, promotions, both royals,
 ordered routes, stationary capture, burns and mover destruction.
 
-For native WebDriver campaigns, reuse the actual resize, shared shell and
+For WebDriver campaigns, reuse the actual resize, shared shell and
 256-position ancestor-clipping measurement patterns in
 `desktop/scripts/gui-smoke.py`: record actual viewport, board/cell rectangles,
 all 256 visible targets, ancestor overflow and scroll positions, footer/control
 visibility, font loaded state and glyph bounds. The current shared completed
 route numbers are 12 SVG units and are also a minimum-size legibility risk.
-Measurements must distinguish content size, native frame size and Retina scale.
+Measurements must distinguish content size, frame size and Retina scale.
 No native UI evidence is claimed by jsdom component tests.
 
 ## Bounded implementation evidence
@@ -220,12 +220,12 @@ No native UI evidence is claimed by jsdom component tests.
 `Piece.test.tsx` checks all forty-four source-aligned face names, reused
 Chu spelling, full three-character ordering, original/promoted identities with
 the same face, non-color promotion marks, whole-piece rotation and unknown-face
-rejection. `TenjikuArtwork.test.tsx` checks both native profiles, authoritative
+rejection. `TenjikuArtwork.test.tsx` checks both profiles, authoritative
 selected identities despite conflicting diagnostic presentation fields,
 accessible square-label preservation, 256 targets, shared footer and
 orientation.
 
-The existing native-generated board tests continue to exercise complete routes,
+The existing generated board tests continue to exercise complete routes,
 promotion, igui, profile-specific effects, ranked jumps, historical inspection
 and cancellation. Component/font verification is recorded separately from the
 subsequent actual visual checkpoint and broader task verification record.
@@ -236,7 +236,7 @@ MSH-44 implementation; no future integration hash is implied. Node was selected
 from the existing Codex runtime dependency directory. An earlier run also
 passed on the shell's Node 23.11.0; supported Node 24 evidence follows.
 
-- `npm --prefix desktop test -- src/product/TenjikuPiece.test.tsx src/product/TenjikuArtwork.test.tsx src/product/TenjikuBoard.test.tsx src/product/TenjikuRender.test.tsx`: **41 passed in four files** on Node 24.22.1 after native fixture regeneration (earlier 39-test pass retained as prior evidence). Includes all thirty native once-promoted identities and both native all-faces diagrams: 67 original physical identities, 44 movement faces, 30 promotion marks and three surviving royal identities. The existing board test now expects mShogi and actual engine/analysis capabilities after functional engine integration.
+- `npm --prefix desktop test -- src/product/TenjikuPiece.test.tsx src/product/TenjikuArtwork.test.tsx src/product/TenjikuBoard.test.tsx src/product/TenjikuRender.test.tsx`: **41 passed in four files** on Node 24.22.1 after rules fixture regeneration (earlier 39-test pass retained as prior evidence). Includes all thirty once-promoted identities and both all-faces diagrams: 67 original physical identities, 44 movement faces, 30 promotion marks and three surviving royal identities. The existing board test now expects mShogi and actual engine/analysis capabilities after functional engine integration.
 - `npm --prefix desktop run check`: **passed** on Node 24.22.1.
 - Two `subset-tenjiku.py` runs using the pinned source and temporary Brotli path, followed by `cmp`: **passed**, byte-identical output with the hash above.
 - Direct fontTools inspection: **passed**. All forty-four component labels match exactly the subset's fifty-two codepoints; every outline is nonempty, CFF family/PostScript identity is renamed, OFL metadata remains, and full 四天王 outline bounds at 32 units are `[8.872,34.376]`, `[37.272,65.624]`, `[67.016,93.960]` vertically within the tile.
@@ -249,12 +249,12 @@ The primary MSH-44 verifier subsequently launched the real fixed-slot macOS app.
 The genuine gallery,
 artifact provenance and single
 product record distinguish the component assignment
-above from actual native rendering and interaction. The final reviewed production
+above from actual rendering and interaction. The final reviewed production
 source for that working checkpoint is `2c00e2107ac74334bce5d55813e5be25666d7c46`; the captured package
 hashes equal the exact postcommit rebuild. Earlier all-faces/tall comparisons
 retain their explicitly recorded source scope.
 
-| Native preset | Actual WebView | Board | Cell | Minimum all-faces em |
+| Preset | Actual WebView | Board | Cell | Minimum all-faces em |
 |---|---|---:|---:|---:|
 | 1180×820 | 1180×788 | 399px | 23.750px | 7.600px |
 | 960×720 | 960×688 | 350px | 20.833px | 6.667px |
@@ -269,12 +269,12 @@ At that QA checkpoint this was an unresolved owner product decision; the
 5 November decision above retains the original minimum and recommends the taller
 playing size. No minimum, three-character name,
 no-scroll/no-zoom requirement or shared layout architecture has changed. The
-QA-only tall native preset permits review without implementing that policy.
+QA-only tall preset permits review without implementing that policy.
 
-Actual pointer/keyboard compound capture, stationary capture, native promotion
+Actual pointer/keyboard compound capture, stationary capture, promotion
 choice/refusal, paired profile-specific Fire Demon burns/mover destruction, engine
 reply, read-only analysis, history and file/recovery controls are represented in
-the gallery. Native readable effect descriptions accompany accessible Moves,
+the gallery. Readable effect descriptions accompany accessible Moves,
 including simultaneous burn batches and promotion/original identity. Canonical
 actions, effects and outcomes still come only from Rust. Visual approval
 and normal selector activation were pending at that checkpoint; the continuation

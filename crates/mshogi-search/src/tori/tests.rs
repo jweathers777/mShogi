@@ -1,4 +1,4 @@
-//! The Tori adapter: native authority at the root, limits, forced wins with
+//! The Tori adapter: session authority at the root, limits, forced wins with
 //! exact distance, and the reported line.
 use super::*;
 use mshogi_core::tori::{Face, Hand, Piece, Position, RootMetadata};
@@ -199,7 +199,7 @@ fn independently_expected_terminal_and_t06_history_not_board_only() {
     assert!(cycle.repetition().unwrap().permits(a));
 }
 #[test]
-fn independently_proved_native_mate_in_one_uses_descendant_terminal_distance() {
+fn independently_proved_mate_in_one_uses_descendant_terminal_distance() {
     // TORI-O-MATE's independently reviewed final diagram is reached by Ea4c-4b.
     // Gote 3a/5a/3b/5b blockers and Pt4d protect Ea4b, leaving no defense.
     let g = diagram(
@@ -239,7 +239,7 @@ fn independently_proved_native_mate_in_one_uses_descendant_terminal_distance() {
 }
 
 #[test]
-fn a_capture_with_compulsory_promotion_and_a_drop_are_complete_native_actions() {
+fn a_capture_with_compulsory_promotion_and_a_drop_are_complete_actions() {
     let g = diagram(
         &[
             ("4g", Side::Sente, Face::Phoenix),
@@ -415,7 +415,7 @@ fn a_forced_win_and_a_forced_loss_have_their_exact_distance() {
     )
     .unwrap();
     assert_eq!(r.score, Some(-WIN_SCORE + 2));
-    // The reported line is playable in the native game and ends in its mate.
+    // The reported line is playable in the game and ends in its mate.
     for action in r.principal_variation.clone() {
         play(&mut lost, action);
     }
@@ -428,7 +428,7 @@ fn a_forced_win_and_a_forced_loss_have_their_exact_distance() {
 }
 
 #[test]
-fn self_play_gives_only_native_legal_actions_and_native_playable_lines() {
+fn self_play_gives_only_legal_actions_and_playable_lines() {
     let mut g = Game::standard();
     for _ in 0..40 {
         if g.conclusion().is_some() {

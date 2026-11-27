@@ -1,8 +1,8 @@
-//! The public desktop controller driving actual native engine subprocesses.
+//! The public desktop controller driving actual mShogi engine subprocesses.
 //! GUI/package interaction evidence is separate; these tests use no Tauri hooks.
 mod support;
 use mshogi_core::chess::{AdjudicatedGame, ClaimPolicy, Color};
-use mshogi_core::native::CanonicalRecord;
+use mshogi_core::game::CanonicalRecord;
 use mshogi_desktop_session::{DesktopController, EnginePhase, PLAY_LIMITS, SharedSnapshot};
 use mshogi_desktop_session::{SessionOperation, SharedOpenToken};
 use mshogi_engine::{
@@ -116,7 +116,7 @@ fn real_observations(snapshot: &SharedSnapshot, perspective: Color, searched_ver
 }
 
 #[test]
-fn human_white_plays_two_turns_against_actual_bounded_native_replies() {
+fn human_white_plays_two_turns_against_actual_bounded_replies() {
     let mut controller = controller(env!("CARGO_BIN_EXE_mshogi"));
     let initial = controller.shared_snapshot();
     assert_eq!(human(&initial), Color::White);
@@ -155,7 +155,7 @@ fn human_white_plays_two_turns_against_actual_bounded_native_replies() {
 }
 
 #[test]
-fn human_black_gets_an_automatic_native_opening_and_can_answer_it() {
+fn human_black_gets_an_automatic_opening_and_can_answer_it() {
     let mut controller = controller(env!("CARGO_BIN_EXE_mshogi"));
     let initial = controller.shared_snapshot();
     let thinking = controller

@@ -1,6 +1,6 @@
 use super::{Action, ActionError, Game, GameCommand, GameError, GameRequest, LocalPosition};
 use crate::{
-    native::history::GameUndo,
+    game::history::GameUndo,
     perft::{PerftPosition, STANDARD_VISIT_LIMIT, TraversalError},
 };
 
@@ -48,7 +48,7 @@ impl PerftPosition for Game {
 fn game_error(error: GameError) -> TraversalError {
     match error {
         GameError::Stopped => TraversalError::Stopped,
-        error => TraversalError::native(error),
+        error => TraversalError::rules_error(error),
     }
 }
 
@@ -85,7 +85,7 @@ impl PerftPosition for LocalPosition {
 fn local_error(error: ActionError) -> TraversalError {
     match error {
         ActionError::Stopped => TraversalError::Stopped,
-        error => TraversalError::native(error),
+        error => TraversalError::rules_error(error),
     }
 }
 

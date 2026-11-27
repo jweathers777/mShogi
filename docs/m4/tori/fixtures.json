@@ -2,7 +2,7 @@
   "revision": "MSH208-MODERN-2026-11-20",
   "profile": "mshogi.tori.modern.v1",
   "profile_status": "selected_modern_planning_contract",
-  "native_conformance_executed": false,
+  "rules_conformance_executed": false,
   "fixture_schema": "mshogi.tori.fixture-spec.v1",
   "notation": {
     "s": "sente",
@@ -600,7 +600,7 @@
           "5f",
           "3c"
         ],
-        "native_handed_kind_unchanged": true
+        "handed_kind_unchanged": true
       },
       "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
@@ -612,7 +612,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -654,7 +654,7 @@
           "s:Cr:4d"
         ],
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -668,7 +668,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -704,7 +704,7 @@
           "g:Cr:4d"
         ],
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -718,7 +718,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -763,7 +763,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -797,7 +797,7 @@
         "accepted": true,
         "reason": "admitted",
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -811,7 +811,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -857,7 +857,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -892,7 +892,7 @@
         "accepted": true,
         "reason": "admitted",
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -906,7 +906,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -941,7 +941,7 @@
         "accepted": true,
         "reason": "admitted",
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -955,7 +955,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -1000,7 +1000,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -1055,7 +1055,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -1101,7 +1101,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -1141,7 +1141,7 @@
         "side_to_move": "gote",
         "promotion_timer": null,
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -1155,7 +1155,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -1193,7 +1193,7 @@
           "s:Fa:4c"
         ],
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -1207,7 +1207,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -1245,7 +1245,7 @@
           "s:Fa:4b"
         ],
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -1259,7 +1259,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -1296,7 +1296,7 @@
         ],
         "promotion_timer": null,
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -1310,7 +1310,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -1346,7 +1346,7 @@
         ],
         "no_extra_promotion_privilege": true,
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -1648,7 +1648,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -1689,7 +1689,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -1731,7 +1731,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -1928,7 +1928,7 @@
       ],
       "scope": "notation_contract",
       "given": {
-        "native": {
+        "rules": {
           "kind": "move",
           "from": "4c",
           "to": "4b",
@@ -1936,7 +1936,7 @@
         },
         "display": "Fa4c-4b+",
         "profile": "mshogi.tori.modern.v1",
-        "native_schema": "future_explicit_version",
+        "record_schema": "future_explicit_version",
         "transport": "future_explicit_version"
       },
       "expected": {
@@ -1959,7 +1959,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -2002,7 +2002,7 @@
           "s:Cr": 1
         },
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -2017,7 +2017,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -2060,7 +2060,7 @@
           "s:Fa": 1
         },
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -2075,7 +2075,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -2118,7 +2118,7 @@
           "s:LQ": 1
         },
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -2132,7 +2132,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -2167,7 +2167,7 @@
           "s:Ea:3b"
         ],
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -2181,7 +2181,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -2225,7 +2225,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -2261,7 +2261,7 @@
         ],
         "resulting_goose_does_not_attack_straight_forward_one": true,
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -2275,7 +2275,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -2311,7 +2311,7 @@
           "s:Sw": 1
         },
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -2326,7 +2326,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -2360,13 +2360,13 @@
         "board_added": [
           "s:LQ:4d"
         ],
-        "native_movement_probes": {
+        "movement_probes": {
           "4d2f": true,
           "4d6f": false,
           "4d5e": true
         },
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -2381,7 +2381,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -2425,7 +2425,7 @@
         },
         "conclusion": null,
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -2486,7 +2486,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -2520,7 +2520,7 @@
         "own_phoenix_in_check_before": true,
         "own_phoenix_in_check_after": false,
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -2534,7 +2534,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -2580,7 +2580,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -2620,7 +2620,7 @@
           "g:Pt:4c"
         ],
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -2634,7 +2634,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -2680,7 +2680,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -2725,7 +2725,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -2767,7 +2767,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -2812,7 +2812,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission",
+      "scope": "game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -2847,7 +2847,7 @@
         "board_ply_delta": 0,
         "repetition_occurrence_delta": 0,
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -2891,7 +2891,7 @@
         ]
       },
       "expected": {
-        "native_conclusion": null,
+        "game_conclusion": null,
         "scored": false,
         "record_reason_separately": true
       },
@@ -3167,7 +3167,7 @@
           }
         ],
         "operations": [
-          "encode_native_record",
+          "encode_record",
           "strict_replay",
           "undo_last",
           "resubmit_last",
@@ -3188,7 +3188,7 @@
           3,
           7
         ],
-        "all_native_fields_and_caches_exactly_restored": true,
+        "all_fields_and_caches_exactly_restored": true,
         "runtime_work_never_revived": true
       },
       "expectation_method": "Hand-derived from T06 as decided by John (MSH-208, 2026-11-20): a key is board, both hands and side to move; an action whose resulting key already occurred twice in the known history is refused. Not engine output."
@@ -3696,7 +3696,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -3738,7 +3738,7 @@
           "g:Cr:4d"
         ],
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -3753,7 +3753,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -3789,7 +3789,7 @@
           "s:Cr:4d"
         ],
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -3804,7 +3804,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -3850,7 +3850,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -3884,7 +3884,7 @@
         "accepted": true,
         "reason": "admitted",
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -3899,7 +3899,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -3946,7 +3946,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -3981,7 +3981,7 @@
         "accepted": true,
         "reason": "admitted",
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -3996,7 +3996,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4031,7 +4031,7 @@
         "accepted": true,
         "reason": "admitted",
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -4046,7 +4046,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4092,7 +4092,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4142,7 +4142,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4189,7 +4189,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4229,7 +4229,7 @@
         "side_to_move": "sente",
         "promotion_timer": null,
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -4244,7 +4244,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4282,7 +4282,7 @@
           "g:Fa:4e"
         ],
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -4297,7 +4297,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4335,7 +4335,7 @@
           "g:Fa:4f"
         ],
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -4350,7 +4350,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4387,7 +4387,7 @@
         ],
         "promotion_timer": null,
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -4402,7 +4402,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4438,7 +4438,7 @@
         ],
         "no_extra_promotion_privilege": true,
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -4453,7 +4453,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4495,7 +4495,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4538,7 +4538,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4583,7 +4583,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4626,7 +4626,7 @@
           "g:Cr": 1
         },
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -4642,7 +4642,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4685,7 +4685,7 @@
           "g:Fa": 1
         },
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -4701,7 +4701,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4744,7 +4744,7 @@
           "g:LQ": 1
         },
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -4759,7 +4759,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4794,7 +4794,7 @@
           "g:Ea:5f"
         ],
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -4809,7 +4809,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4854,7 +4854,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4890,7 +4890,7 @@
         ],
         "resulting_goose_does_not_attack_straight_forward_one": true,
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -4905,7 +4905,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4941,7 +4941,7 @@
           "g:Sw": 1
         },
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -4957,7 +4957,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -4992,7 +4992,7 @@
           "g:LQ:4d"
         ],
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -5008,7 +5008,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -5052,7 +5052,7 @@
         },
         "conclusion": null,
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -5067,7 +5067,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -5101,7 +5101,7 @@
         "own_phoenix_in_check_before": true,
         "own_phoenix_in_check_after": false,
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -5116,7 +5116,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -5163,7 +5163,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -5203,7 +5203,7 @@
           "s:Pt:4e"
         ],
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },
@@ -5218,7 +5218,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -5265,7 +5265,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -5311,7 +5311,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -5354,7 +5354,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -5400,7 +5400,7 @@
       "sources": [
         "T-M5"
       ],
-      "scope": "native_admission_rotated",
+      "scope": "rotated_game_admission",
       "given": {
         "root": {
           "root_kind": "diagram",
@@ -5435,7 +5435,7 @@
         "board_ply_delta": 0,
         "repetition_occurrence_delta": 0,
         "reversal_contract": {
-          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "apply_then_undo": "byte_or_semantic_exact_original_state_and_history_including_caches",
           "retired_execution": "not_revived"
         }
       },

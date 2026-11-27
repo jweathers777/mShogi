@@ -1,7 +1,7 @@
 //! Actual internal entrypoint and separately labeled cross-game process fixtures.
-//! Actual child establishes ordinary native execution; separate fixtures establish supervision.
+//! Actual child establishes ordinary execution; separate fixtures establish supervision.
 mod support;
-use mshogi_core::{chess, native::*, xiangqi as xq};
+use mshogi_core::{chess, game::*, xiangqi as xq};
 use mshogi_engine::*;
 use std::{thread, time::Duration};
 use support::bridge::{bridge, stop, wait};
@@ -35,7 +35,7 @@ fn request(id: u64, game: &xq::Game) -> ExecutionRequest {
             request_id: id,
             session_version: 19,
             game: CanonicalRecord::xiangqi(xq::GameRecord::from_game(game).unwrap()),
-            // Measured native Xiangqi ordinary-search limits.
+            // Measured Xiangqi ordinary-search limits.
             limits: WorkLimits {
                 time_ms: None,
                 depth: 1,
@@ -51,7 +51,7 @@ fn target(request: &ExecutionRequest, selection_id: u64) -> ExecutionTarget {
         board_ply: request.context.game.known_board_actions() as u64,
         session_version: request.context.session_version,
         label: "Known Xiangqi prefix with WXF warning".into(),
-        turn: NativeSide::Xiangqi(xq::Side::Red),
+        turn: TaggedSide::Xiangqi(xq::Side::Red),
     }
 }
 fn chess_request(id: u64) -> ExecutionRequest {
@@ -86,11 +86,11 @@ fn assert_failure(response: &ExecutionResponse, expected: FailureKind) {
 }
 
 #[test]
-fn real_entrypoint_executes_native_play_and_readonly_analysis_with_full_context() {
+fn real_entrypoint_executes_play_and_readonly_analysis_with_full_context() {
     let bridge = bridge(env!("CARGO_BIN_EXE_mshogi"), Duration::from_secs(15));
     let mut game = game();
     for id in [1, 2, 4] {
-        // A formal native resignation adds events while preserving board ply.
+        // A formal resignation adds events while preserving board ply.
         if id == 4 {
             let ply = xq::GameRecord::from_game(&game)
                 .unwrap()
@@ -224,7 +224,7 @@ fn one_supervisor_replaces_sleeping_work_in_both_game_directions() {
 }
 
 #[test]
-fn native_undo_reopen_and_reselected_identical_history_cannot_revive_retired_work() {
+fn undo_reopen_and_reselected_identical_history_cannot_revive_retired_work() {
     let bridge = bridge(
         env!("CARGO_BIN_EXE_mshogi-internal-fixture"),
         Duration::from_secs(15),
@@ -286,7 +286,7 @@ fn timeout_is_a_bounded_process_failure_and_does_not_conclude_the_game() {
 }
 
 #[test]
-fn actual_child_zero_work_and_same_board_different_history_retain_native_meaning() {
+fn actual_child_zero_work_and_same_board_different_history_retain_meaning() {
     let bridge = bridge(env!("CARGO_BIN_EXE_mshogi"), Duration::from_secs(15));
     let mut historical = game();
     for text in ["e9f9", "f8e8", "f9e9", "e8f8"] {
@@ -358,7 +358,7 @@ fn real_child_cancellation_and_cross_game_replacement_retire_search_work() {
     let bridge = bridge(env!("CARGO_BIN_EXE_mshogi"), Duration::from_secs(15));
     let game = xq::Game::standard(xq::ClaimPolicy::Explicit).unwrap();
     let before = xq::GameRecord::from_game(&game).unwrap();
-    // First complete an actual child handshake, then cancel maximal native work.
+    // First complete an actual child handshake, then cancel maximal work.
     let warm = request(40, &game);
     bridge.submit(warm.clone()).unwrap();
     assert!(wait(&bridge).matches(&warm));
@@ -381,7 +381,7 @@ fn real_child_cancellation_and_cross_game_replacement_retire_search_work() {
         response.observation.result,
         ExecutionResult::Chess { .. }
     ));
-    // Replace actual Chess work with native Xiangqi analysis; target remains exact.
+    // Replace actual Chess work with Xiangqi analysis; target remains exact.
     let mut retired = chess_request(43);
     retired.context.limits = WorkLimits {
         time_ms: None,

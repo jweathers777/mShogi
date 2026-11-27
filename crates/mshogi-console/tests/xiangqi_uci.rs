@@ -1,4 +1,4 @@
-//! Actual UCI0-9 processes; native MSH-94/97/105 expectations remain independent.
+//! Actual UCI0-9 processes; MSH-94/97/105 expectations remain independent.
 mod support;
 use std::time::{Duration, Instant};
 use support::protocol::Engine;
@@ -112,7 +112,7 @@ fn infinite_is_still_bounded_and_stop_publishes_only_completed_work() {
     let mut e = engine();
     e.send(&format!("position fen {TACTIC}"));
     e.send("go infinite depth 1 nodes 128");
-    let actual = e.until("info string mshogi native_score");
+    let actual = e.until("info string mshogi reported_score");
     assert!(actual.iter().all(|s| !s.starts_with("bestmove")));
     e.send("isready");
     assert_eq!(e.until("readyok"), vec!["readyok"]);
@@ -125,7 +125,7 @@ fn position_replacement_retires_held_result_and_quit_cancels_work() {
     let mut e = engine();
     e.send(&format!("position fen {TACTIC}"));
     e.send("go infinite");
-    e.until("info string mshogi native_score");
+    e.until("info string mshogi reported_score");
     e.send("position fen 3k5/9/9/9/9/9/9/4r4/9/5K3 b - - 0 1");
     e.send("go");
     let lines = e.until("bestmove");
@@ -149,7 +149,7 @@ fn zero_work_and_actual_terminal_never_invent_a_bestmove_or_score() {
         let (code, err, _) = e.finish(false);
         assert_eq!(code, 1);
         assert!(
-            err.contains("incomplete:") || err.contains("native_terminal:"),
+            err.contains("incomplete:") || err.contains("terminal:"),
             "{err}"
         );
     }
@@ -251,7 +251,7 @@ fn incremental_position_handles_takeback_divergence_new_roots_and_errors() {
     assert_ne!(best, "a0a9");
     let (code, err, _) = e.finish(true);
     assert_eq!(code, 0, "{err}");
-    assert!(err.contains("native rejection"), "{err}");
+    assert!(err.contains("rejection"), "{err}");
 }
 #[test]
 fn hash_option_is_bounded_and_a_new_size_is_used_for_the_next_search() {

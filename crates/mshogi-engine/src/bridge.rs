@@ -150,7 +150,7 @@ impl EngineBridge {
         drop(retired);
     }
     /// Consume one current completion. Host must recheck the full context and
-    /// native choice legality under its serialized authoritative session lock.
+    /// game choice legality under its serialized authoritative session lock.
     pub fn poll(&self) -> Option<ExecutionResponse> {
         self.shared
             .state
@@ -594,7 +594,7 @@ mod tests {
                 purpose: ExecutionPurpose::EngineTurn {},
                 request_id: id,
                 session_version: 0,
-                game: mshogi_core::native::CanonicalRecord::chess(
+                game: mshogi_core::game::CanonicalRecord::chess(
                     AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record(),
                 ),
                 limits: WorkLimits {

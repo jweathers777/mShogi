@@ -1,5 +1,5 @@
-//! Real MSH-94 records crossing the shared boundary; expected rules stay native.
-use mshogi_core::{chess as c, native::*, shogi as s, xiangqi as x};
+//! Real MSH-94 records crossing the shared boundary; expected rules stay.
+use mshogi_core::{chess as c, game::*, shogi as s, xiangqi as x};
 use serde_json::{Value, json};
 
 const ROOT: &str = "4R4/5k3/9/9/9/9/9/9/9/3K5 w - - 0 1";
@@ -11,7 +11,7 @@ fn game() -> x::Game {
     )
     .unwrap()
 }
-fn record(g: &x::Game) -> CanonicalRecord {
+fn canonical_record(g: &x::Game) -> CanonicalRecord {
     CanonicalRecord::xiangqi(x::GameRecord::from_game(g).unwrap())
 }
 fn submit(g: &mut x::Game, actor: x::Side, command: x::GameCommand) -> x::Submission {
@@ -20,12 +20,12 @@ fn submit(g: &mut x::Game, actor: x::Side, command: x::GameCommand) -> x::Submis
         actor,
         command,
     };
-    let NativeReply::Xiangqi(reply) = dispatch_command(
-        NativeCommandTarget::Xiangqi(g),
-        NativeCommand::Xiangqi(Box::new(request)),
+    let GameReply::Xiangqi(reply) = dispatch_command(
+        GameCommandTarget::Xiangqi(g),
+        GameCommand::Xiangqi(Box::new(request)),
     )
     .unwrap() else {
-        panic!("wrong native reply")
+        panic!("wrong game reply")
     };
     *reply.unwrap()
 }
@@ -46,10 +46,10 @@ fn real_records_keep_profiles_roots_counters_history_and_cached_target_metadata(
         play(&mut g, action);
     }
     assert_eq!(g.warnings().len(), 1);
-    let r = record(&g);
+    let r = canonical_record(&g);
     assert_eq!(r.game_kind(), GameKind::Xiangqi);
     assert_eq!(r.profile(), RulesProfile::XiangqiWxf2018V1);
-    assert_eq!(r.native_schema(), NativeSchema::XiangqiV2);
+    assert_eq!(r.record_schema(), RecordSchema::XiangqiV2);
     assert_eq!(r.known_board_actions(), 8);
     assert_eq!(r.event_count(), 9); // eight actions plus third-occurrence warning
     let text = r.to_json().unwrap();
@@ -68,16 +68,16 @@ fn real_records_keep_profiles_roots_counters_history_and_cached_target_metadata(
     let parsed = CanonicalRecord::from_json(&text).unwrap();
     assert_eq!(parsed, r);
     assert_eq!(serde_json::from_str::<CanonicalRecord>(&text).unwrap(), r);
-    let CanonicalRecord::Xiangqi(native) = parsed else {
+    let CanonicalRecord::Xiangqi(game_record) = parsed else {
         panic!()
     };
-    assert_eq!(native.side_to_move(), x::Side::Red);
-    assert_eq!(native.event_count(), 9);
-    let mut restored = native.to_game().unwrap();
+    assert_eq!(game_record.side_to_move(), x::Side::Red);
+    assert_eq!(game_record.event_count(), 9);
+    let mut restored = game_record.to_game().unwrap();
     assert_eq!(restored.events(), g.events());
     assert_eq!(restored.warnings(), g.warnings());
     assert_eq!(restored.root(), g.root());
-    assert_eq!(record(&restored), r);
+    assert_eq!(canonical_record(&restored), r);
     assert_eq!(
         restored
             .submit(x::GameRequest {
@@ -95,9 +95,9 @@ fn real_records_keep_profiles_roots_counters_history_and_cached_target_metadata(
     )
     .unwrap();
     assert_eq!(fresh.position(), g.position());
-    assert_ne!(record(&fresh), r);
-    assert_eq!(record(&fresh).known_board_actions(), 0);
-    assert_eq!(record(&fresh).event_count(), 0);
+    assert_ne!(canonical_record(&fresh), r);
+    assert_eq!(canonical_record(&fresh).known_board_actions(), 0);
+    assert_eq!(canonical_record(&fresh).event_count(), 0);
     for action in C {
         play(&mut g, action);
     }
@@ -110,20 +110,20 @@ fn real_records_keep_profiles_roots_counters_history_and_cached_target_metadata(
             },
         })
     );
-    let terminal = record(&g);
-    let CanonicalRecord::Xiangqi(native) =
+    let terminal = canonical_record(&g);
+    let CanonicalRecord::Xiangqi(record) =
         CanonicalRecord::from_json(&terminal.to_json().unwrap()).unwrap()
     else {
         panic!()
     };
-    assert_eq!(native.to_game().unwrap().conclusion(), g.conclusion());
-    assert_eq!(native.to_game().unwrap().events(), g.events());
+    assert_eq!(record.to_game().unwrap().conclusion(), g.conclusion());
+    assert_eq!(record.to_game().unwrap().events(), g.events());
 }
 
 #[test]
-fn shared_dispatch_preserves_audit_result_native_actor_admission_undo_and_atomic_refusal() {
+fn shared_dispatch_preserves_audit_result_actor_admission_undo_and_atomic_refusal() {
     let mut g = game();
-    let original = record(&g);
+    let original = canonical_record(&g);
     let stale = g.context();
     // Black has no board turn, but may submit its own count claim. It is invalid,
     // not a board error or a win/loss, and the separate admitted audit is retained.
@@ -134,15 +134,15 @@ fn shared_dispatch_preserves_audit_result_native_actor_admission_undo_and_atomic
     ));
     assert_eq!(g.position(), g.root().position());
     assert_eq!(g.conclusion(), None);
-    assert_eq!(record(&g).known_board_actions(), 0);
-    assert_eq!(record(&g).event_count(), 2);
-    let audited = record(&g);
+    assert_eq!(canonical_record(&g).known_board_actions(), 0);
+    assert_eq!(canonical_record(&g).event_count(), 2);
+    let audited = canonical_record(&g);
     assert_eq!(
         CanonicalRecord::from_json(&audited.to_json().unwrap()).unwrap(),
         audited
     );
     g.undo(audit.undo).unwrap();
-    assert_eq!(record(&g), original);
+    assert_eq!(canonical_record(&g), original);
     assert_ne!(g.context(), stale);
     let before = g.context();
     let request = x::GameRequest {
@@ -152,16 +152,16 @@ fn shared_dispatch_preserves_audit_result_native_actor_admission_undo_and_atomic
             action: "f8e8".parse().unwrap(),
         },
     };
-    let NativeReply::Xiangqi(Err(error)) = dispatch_command(
-        NativeCommandTarget::Xiangqi(&mut g),
-        NativeCommand::Xiangqi(Box::new(request)),
+    let GameReply::Xiangqi(Err(error)) = dispatch_command(
+        GameCommandTarget::Xiangqi(&mut g),
+        GameCommand::Xiangqi(Box::new(request)),
     )
     .unwrap() else {
         panic!()
     };
     assert_eq!(error, x::GameError::WrongActor);
     assert_eq!(g.context(), before);
-    assert_eq!(record(&g), original);
+    assert_eq!(canonical_record(&g), original);
     let resign = submit(&mut g, x::Side::Black, x::GameCommand::Resign);
     assert_eq!(resign.result, x::CommandResult::Accepted);
     assert_eq!(g.position().side_to_move(), x::Side::Red);
@@ -172,10 +172,10 @@ fn shared_dispatch_preserves_audit_result_native_actor_admission_undo_and_atomic
             reason: x::WinReason::Resignation
         })
     );
-    assert_eq!(record(&g).known_board_actions(), 0);
-    assert_eq!(record(&g).event_count(), 2);
+    assert_eq!(canonical_record(&g).known_board_actions(), 0);
+    assert_eq!(canonical_record(&g).event_count(), 2);
     g.undo(resign.undo).unwrap();
-    assert_eq!(record(&g), original);
+    assert_eq!(canonical_record(&g), original);
 
     let shogi_request = s::GameRequest {
         expected: s::Game::new().context(),
@@ -184,12 +184,12 @@ fn shared_dispatch_preserves_audit_result_native_actor_admission_undo_and_atomic
     };
     assert!(
         dispatch_command(
-            NativeCommandTarget::Xiangqi(&mut g),
-            NativeCommand::Shogi(Box::new(shogi_request))
+            GameCommandTarget::Xiangqi(&mut g),
+            GameCommand::Shogi(Box::new(shogi_request))
         )
         .is_err()
     );
-    assert_eq!(record(&g), original);
+    assert_eq!(canonical_record(&g), original);
     let mut shogi = s::Game::new();
     let shogi_before = s::GameRecord::from_game(&shogi);
     let request = x::GameRequest {
@@ -199,8 +199,8 @@ fn shared_dispatch_preserves_audit_result_native_actor_admission_undo_and_atomic
     };
     assert!(
         dispatch_command(
-            NativeCommandTarget::Shogi(&mut shogi),
-            NativeCommand::Xiangqi(Box::new(request))
+            GameCommandTarget::Shogi(&mut shogi),
+            GameCommand::Xiangqi(Box::new(request))
         )
         .is_err()
     );
@@ -208,7 +208,7 @@ fn shared_dispatch_preserves_audit_result_native_actor_admission_undo_and_atomic
 }
 
 #[test]
-fn claimant_specific_full_history_and_same_ply_conclusions_survive_native_handoff() {
+fn claimant_specific_full_history_and_same_ply_conclusions_survive_handoff() {
     let fixtures: Value = serde_json::from_str(include_str!(
         "../../../tests/fixtures/xiangqi/natural-count.json"
     ))
@@ -249,15 +249,15 @@ fn claimant_specific_full_history_and_same_ply_conclusions_survive_native_handof
             reason: x::DrawReason::NaturalCount
         })
     );
-    let r = record(&g);
+    let r = canonical_record(&g);
     assert_eq!(r.known_board_actions(), 100);
     assert_eq!(r.event_count(), 105); // 100 board, 2 rejected audit, 3 accepted claim/result
-    let CanonicalRecord::Xiangqi(native) =
+    let CanonicalRecord::Xiangqi(record) =
         CanonicalRecord::from_json(&r.to_json().unwrap()).unwrap()
     else {
         panic!()
     };
-    let restored = native.to_game().unwrap();
+    let restored = record.to_game().unwrap();
     assert_eq!(restored.events(), g.events());
     assert_eq!(
         restored.natural_count_eligibility(x::Side::Red),
@@ -268,7 +268,7 @@ fn claimant_specific_full_history_and_same_ply_conclusions_survive_native_handof
 
 #[test]
 fn raw_outer_and_nested_rejections_never_fall_through_to_another_game() {
-    let text = record(&game()).to_json().unwrap();
+    let text = canonical_record(&game()).to_json().unwrap();
     let baseline: Value = serde_json::from_str(&text).unwrap();
     for field in ["envelope_version", "game_kind", "payload"] {
         let mut missing = baseline.clone();
@@ -329,16 +329,16 @@ fn raw_outer_and_nested_rejections_never_fall_through_to_another_game() {
     let mut extra = baseline.clone();
     extra["unknown"] = json!(1);
     assert!(CanonicalRecord::from_json(&extra.to_string()).is_err());
-    // A genuine other native payload also cannot be relabeled as Xiangqi.
+    // A genuine other game payload also cannot be relabeled as Xiangqi.
     let chess =
         CanonicalRecord::chess(c::AdjudicatedGame::new(c::ClaimPolicy::ExplicitOnly).record());
-    let mut wrong_native_parser: Value = serde_json::from_str(&chess.to_json().unwrap()).unwrap();
-    wrong_native_parser["payload"] = baseline["payload"].clone();
-    assert!(CanonicalRecord::from_json(&wrong_native_parser.to_string()).is_err());
+    let mut wrong_record_parser: Value = serde_json::from_str(&chess.to_json().unwrap()).unwrap();
+    wrong_record_parser["payload"] = baseline["payload"].clone();
+    assert!(CanonicalRecord::from_json(&wrong_record_parser.to_string()).is_err());
     let shogi = CanonicalRecord::shogi(s::GameRecord::from_game(&s::Game::new()));
-    let mut wrong_native_parser: Value = serde_json::from_str(&shogi.to_json().unwrap()).unwrap();
-    wrong_native_parser["payload"] = baseline["payload"].clone();
-    assert!(CanonicalRecord::from_json(&wrong_native_parser.to_string()).is_err());
+    let mut wrong_record_parser: Value = serde_json::from_str(&shogi.to_json().unwrap()).unwrap();
+    wrong_record_parser["payload"] = baseline["payload"].clone();
+    assert!(CanonicalRecord::from_json(&wrong_record_parser.to_string()).is_err());
     let mut wrong = baseline;
     wrong["payload"] =
         serde_json::from_str::<Value>(&chess.to_json().unwrap()).unwrap()["payload"].clone();
@@ -348,14 +348,14 @@ fn raw_outer_and_nested_rejections_never_fall_through_to_another_game() {
 #[test]
 fn side_qualification_does_not_conflate_black_or_admit_unknown_side_fields() {
     for side in [x::Side::Red, x::Side::Black] {
-        let native = NativeSide::Xiangqi(side);
-        let text = serde_json::to_string(&native).unwrap();
-        assert_eq!(serde_json::from_str::<NativeSide>(&text).unwrap(), native);
-        assert_eq!(native.game(), GameKind::Xiangqi);
+        let record = TaggedSide::Xiangqi(side);
+        let text = serde_json::to_string(&record).unwrap();
+        assert_eq!(serde_json::from_str::<TaggedSide>(&text).unwrap(), record);
+        assert_eq!(record.game(), GameKind::Xiangqi);
     }
     assert_ne!(
-        NativeSide::Xiangqi(x::Side::Black),
-        NativeSide::Chess(c::Color::Black)
+        TaggedSide::Xiangqi(x::Side::Black),
+        TaggedSide::Chess(c::Color::Black)
     );
     for text in [
         r#"{"game_kind":"xiangqi","side":"white"}"#,
@@ -365,6 +365,6 @@ fn side_qualification_does_not_conflate_black_or_admit_unknown_side_fields() {
         r#"{"game_kind":"xiangqi","side":"black","unknown":1}"#,
         r#"{"game_kind":"xiangqi"}"#,
     ] {
-        assert!(serde_json::from_str::<NativeSide>(text).is_err(), "{text}");
+        assert!(serde_json::from_str::<TaggedSide>(text).is_err(), "{text}");
     }
 }

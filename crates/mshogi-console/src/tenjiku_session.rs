@@ -1,21 +1,21 @@
-//! Human Tenjiku adapter. Native Game alone owns rules, history and admission.
+//! Human Tenjiku adapter. Game alone owns rules, history and admission.
 use crate::{
     diagnostics,
     shell::{self, Variant, diagnostic},
 };
 use mshogi_core::perft::PerftPosition;
-use mshogi_core::{native::CanonicalRecord, tenjiku::*};
+use mshogi_core::{game::CanonicalRecord, tenjiku::*};
 use std::fmt::Write as _;
 const MAX_DIAGNOSTIC_DEPTH: u32 = Game::MAX_DEPTH;
 const HELP: &str = "Untimed Tenjiku Shogi diagnostic console (not USI/SFEN):
   position startpos                Standard root with complete known history
-  show | status                    Board, native royal status and exact history
-  legal                            Complete history-permitted native actions
+  show | status                    Board, royal status and exact history
+  legal                            Complete history-permitted actions
   move <Tenjiku-action>...          Atomic batch, complete routes only
   resign sente|gote                 Actual resignation, independent of board turn
   offer-draw sente|gote             Actual draw offer; not an automatic result
   accept-draw sente|gote | decline-draw sente|gote
-  undo [n] | history               Exact native events and event reversal
+  undo [n] | history               Exact game events and event reversal
   record print | record save <path> | record load-file <path> | record load-json <JSON>
   perft <0..3> [visits] | divide <1..3> [visits]  Bounded full-history diagnostics
   analyze [depth nodes]             Read-only bounded history-aware search
@@ -23,8 +23,8 @@ const HELP: &str = "Untimed Tenjiku Shogi diagnostic console (not USI/SFEN):
 Tenjiku actions: Ln8hx8gx8f ordered captures; Ln8hx8g-8h capture-return;
 VGn4h-4g-5g-5f three actual landings; ChS+8h!x9h stationary igui;
 P12f-12e^ requests promotion. Original code+ retains original identity.
-Burn/death are native derived effects, never input choices. No captured hands.
-Perft/divide uses full native history/endings, depth 0..3 (divide 1..3).
+Burn/death are derived effects, never input choices. No captured hands.
+Perft/divide uses full game history/endings, depth 0..3 (divide 1..3).
 Saves require a new path; strict canonical records preserve the selected profile.";
 
 impl Variant for Game {
@@ -33,14 +33,14 @@ impl Variant for Game {
     const NAME: &'static str = "Tenjiku";
     const HELP: &'static str = HELP;
     const MOVE_SYNTAX: &'static str = "Tenjiku-action";
-    const LOADED: &'static str = "loaded complete native Tenjiku record";
-    shell::native_record!(tenjiku, Tenjiku);
+    const LOADED: &'static str = "loaded complete Tenjiku record";
+    shell::game_record!(tenjiku, Tenjiku);
     fn position_command(&self, rest: &str) -> Result<Self, String> {
         shell::startpos(rest, || Game::standard(self.profile()))
     }
     shell::variant_actions!(
         |game: &Game, label| notation::parse_local_action(game.local_position(), label),
-        "first recurrence forbidden by native history",
+        "first recurrence forbidden by game history",
         print_effects
     );
     fn actor_command(command: &str) -> Option<GameCommand> {
@@ -87,7 +87,7 @@ impl Variant for Game {
         }
         writeln!(
             out,
-            "native-status {:?} draw-offer {:?}",
+            "royal-status {:?} draw-offer {:?}",
             self.status(),
             self.snapshot().draw_offer
         )
@@ -154,7 +154,7 @@ fn print_effects(game: &Game, out: &mut String) {
             game.events()
                 .last()
                 .and_then(|event| event.effects.as_ref())
-                .expect("admitted Play has native effects")
+                .expect("admitted Play has game effects")
         )
     )
     .unwrap();

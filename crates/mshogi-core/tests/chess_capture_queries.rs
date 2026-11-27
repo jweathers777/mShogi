@@ -1,5 +1,5 @@
 //! Target-only legal capture query, checked against independent expectations
-//! and against the full native legal-action list.
+//! and against the full legal-action list.
 use mshogi_core::chess::{PieceKind, Position, STANDARD_START_FEN, Square};
 
 #[test]
@@ -34,7 +34,7 @@ fn direct_capture_target_queries_have_independent_pin_ep_and_promotion_expectati
     }
 }
 #[test]
-fn capture_query_equals_full_native_list_at_every_square_along_real_walks() {
+fn capture_query_equals_full_list_at_every_square_along_real_walks() {
     for fen in [
         STANDARD_START_FEN,
         "r3k2r/1P6/8/3pP3/8/8/8/R3K2R w KQkq d6 0 9",

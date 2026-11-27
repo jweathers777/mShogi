@@ -14,11 +14,11 @@ and returns `NSTerminateCancel`. The callback neither destroys windows nor calls
 application/frontend handlers synchronously. The integer window IDs are checked
 against the runtime's window map when dispatched. Native dialogs and other
 non-Tao windows are excluded. If no Tao document window exists, termination may
-proceed normally. Repeated native requests are safe: the host/frontend retain a
+proceed normally. Repeated requests are safe: the host/frontend retain a
 single pending close decision.
 
 The host prevents window destruction, pauses pending work, and emits the paused
-current native snapshot with `game-close-requested`. The single frontend owner
+current session snapshot with `game-close-requested`. The single frontend owner
 fetches that authoritative paused state and presents its shared guard. Its exact
 Open-token check (document, version and document revision) and command-blocking
 close approval occur under the same controller lock. After
@@ -41,9 +41,9 @@ reaches Tauri, remove the patch entry.
 The separate macOS `desktop-verification` build includes a predefined menu item
 labeled `Native Cocoa Quit (verification)`. Unlike the application's custom
 Quit item, this predefined Cocoa item invokes `NSApplication::terminate:` and
-therefore exercises `applicationShouldTerminate:` through the same native
+therefore exercises `applicationShouldTerminate:` through the same
 termination entry point as Dock Quit. It is compiled out of normal packages.
-This probe permits precise native-route evidence when automation cannot bind
+This probe permits precise route evidence when automation cannot bind
 the Dock; it does not establish that the Dock UI itself was clicked.
 
 References: [Tao 0.37.2 source](https://docs.rs/crate/tao/0.37.2/source/src/platform_impl/macos/app_delegate.rs),

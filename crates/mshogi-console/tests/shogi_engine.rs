@@ -1,6 +1,7 @@
-//! Real supervised native child play/analysis; separate tests, never packaged.
+//! Real supervised child play/analysis; separate tests, never packaged.
 mod support;
-use mshogi_core::{native::*, shogi::*};
+use mshogi_core::shogi::GameCommand;
+use mshogi_core::{game::*, shogi::*};
 use mshogi_engine::*;
 use mshogi_search::shogi as search;
 use serde_json::json;
@@ -29,7 +30,7 @@ fn wait(bridge: &EngineBridge) -> ExecutionResponse {
     support::bridge::wait_for(bridge, Duration::from_secs(35))
 }
 #[test]
-fn actual_child_plays_both_assignments_with_native_admission_and_recorded_observations() {
+fn actual_child_plays_both_assignments_with_admission_and_recorded_observations() {
     let mut evidence = vec![];
     for human in [Side::Sente, Side::Gote] {
         let bridge = bridge();
@@ -76,7 +77,7 @@ fn actual_child_plays_both_assignments_with_native_admission_and_recorded_observ
     }
     println!(
         "SHOGI_PROCESS_EVIDENCE {}",
-        json!({"format":"mshogi.shogi.engine-smoke.v1","method":"actual internal-search child, EngineBridge, native Game::submit","cases":evidence})
+        json!({"format":"mshogi.shogi.engine-smoke.v1","method":"actual internal-search child, EngineBridge, Game::submit","cases":evidence})
     );
 }
 #[test]
@@ -98,7 +99,7 @@ fn actual_analysis_declaration_incomplete_and_history_contexts_remain_distinct()
             board_ply: 0,
             session_version: 1,
             label: "Declaration target".into(),
-            turn: NativeSide::Shogi(Side::Sente),
+            turn: TaggedSide::Shogi(Side::Sente),
         },
     };
     bridge.submit(c.clone()).unwrap();
@@ -184,7 +185,7 @@ fn actual_cross_game_cancel_replacement_and_historical_selection_retire_old_work
             board_ply: 0,
             session_version: 2,
             label: "Replacement selection".into(),
-            turn: NativeSide::Shogi(Side::Sente),
+            turn: TaggedSide::Shogi(Side::Sente),
         },
     };
     analysis.context.limits = WorkLimits {
@@ -280,7 +281,7 @@ fn timed_incremental_child_survives_continuations_takeback_and_process_retiremen
     };
     bridge.submit(c.clone()).unwrap();
     assert!(wait(&bridge).matches(&c));
-    // A cancelled idle process loses both its search table and native endpoint.
+    // A cancelled idle process loses both its search table and endpoint.
     bridge.cancel();
     let mut next = c.clone();
     next.context.request_id = id;

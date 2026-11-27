@@ -1,5 +1,5 @@
-//! Two real native payloads, strict raw boundaries and native command authority.
-use mshogi_core::{chess as c, native::*, shogi as s};
+//! Two real game payloads, strict raw boundaries and game command authority.
+use mshogi_core::{chess as c, game::*, shogi as s};
 use serde_json::{Value, json};
 
 fn shogi_game() -> s::Game {
@@ -22,7 +22,7 @@ fn shogi_game() -> s::Game {
 }
 
 #[test]
-fn actual_native_payloads_round_trip_with_derived_identity_and_provenance() {
+fn actual_payloads_round_trip_with_derived_identity_and_provenance() {
     let mut chess = c::AdjudicatedGame::new(c::ClaimPolicy::ExplicitOnly);
     chess.apply("e2e4".parse().unwrap()).unwrap();
     let mut record = chess.record();
@@ -34,24 +34,24 @@ fn actual_native_payloads_round_trip_with_derived_identity_and_provenance() {
         }),
     });
     let shogi = shogi_game();
-    for native in [
+    for record in [
         CanonicalRecord::chess(record.clone()),
         CanonicalRecord::shogi(s::GameRecord::from_game(&shogi)),
     ] {
-        let text = native.to_json().unwrap();
-        assert_eq!(CanonicalRecord::from_json(&text).unwrap(), native);
+        let text = record.to_json().unwrap();
+        assert_eq!(CanonicalRecord::from_json(&text).unwrap(), record);
         assert_eq!(
             serde_json::from_str::<CanonicalRecord>(&text).unwrap(),
-            native
+            record
         );
         let wire: Value = serde_json::from_str(&text).unwrap();
         assert_eq!(wire["envelope_version"], 2);
         assert_eq!(wire.as_object().unwrap().len(), 3);
-        match native {
-            CanonicalRecord::Tenjiku(_) => unreachable!("covered by native_tenjiku_envelope"),
-            CanonicalRecord::Chu(_) => unreachable!("covered by native_chu_envelope"),
-            CanonicalRecord::Tori(_) => unreachable!("covered by native_tori_envelope"),
-            CanonicalRecord::Xiangqi(_) => unreachable!("covered by native_xiangqi_envelope"),
+        match record {
+            CanonicalRecord::Tenjiku(_) => unreachable!("covered by tenjiku_record_envelope"),
+            CanonicalRecord::Chu(_) => unreachable!("covered by chu_record_envelope"),
+            CanonicalRecord::Tori(_) => unreachable!("covered by tori_record_envelope"),
+            CanonicalRecord::Xiangqi(_) => unreachable!("covered by xiangqi_record_envelope"),
             CanonicalRecord::Chess(r) => {
                 assert_eq!(wire["payload"]["rules_profile"], "mshogi.chess.match.v1");
                 assert_eq!(
@@ -84,9 +84,9 @@ fn actual_native_payloads_round_trip_with_derived_identity_and_provenance() {
 }
 
 #[test]
-fn outer_and_native_duplicates_unknown_missing_and_cross_identities_reject() {
-    let native = CanonicalRecord::shogi(s::GameRecord::from_game(&shogi_game()));
-    let text = native.to_json().unwrap();
+fn outer_and_duplicates_unknown_missing_and_cross_identities_reject() {
+    let record = CanonicalRecord::shogi(s::GameRecord::from_game(&shogi_game()));
+    let text = record.to_json().unwrap();
     for key in ["envelope_version", "game_kind", "payload"] {
         let mut value: Value = serde_json::from_str(&text).unwrap();
         value.as_object_mut().unwrap().remove(key);
@@ -107,7 +107,7 @@ fn outer_and_native_duplicates_unknown_missing_and_cross_identities_reject() {
             "\"schema_version\":2,\"schema_version\":2",
             1,
         ),
-        text.replacen("\"root\":", "\"extra_native\":true,\"root\":", 1),
+        text.replacen("\"root\":", "\"extra\":true,\"root\":", 1),
         text.replacen(
             "\"counter_source\":",
             "\"counter_source\":\"supplied\",\"counter_source\":",
@@ -125,7 +125,7 @@ fn outer_and_native_duplicates_unknown_missing_and_cross_identities_reject() {
         ("game_kind", json!("chess")),
         ("rules_profile", json!("mshogi.chess.match.v1")),
         ("profile_edition", json!("unreviewed")),
-        ("native_schema_version", json!(2)),
+        ("record_schema_version", json!(2)),
     ] {
         let before = value.get(key).cloned();
         value[key] = bad;
@@ -141,7 +141,7 @@ fn outer_and_native_duplicates_unknown_missing_and_cross_identities_reject() {
     }
     value["rules_profile"] = json!("mshogi.other.v1");
     assert!(CanonicalRecord::from_json(&value.to_string()).is_err());
-    // The dispatch tag must agree with the native payload.
+    // The dispatch tag must agree with the game payload.
     value = serde_json::from_str(&text).unwrap();
     value["game_kind"] = json!("chess");
     assert!(CanonicalRecord::from_json(&value.to_string()).is_err());
@@ -196,7 +196,7 @@ fn known_history_and_same_ply_terminal_events_do_not_collapse() {
 }
 
 #[test]
-fn native_owners_admit_claims_declarations_and_resignation_without_shared_turn_rules() {
+fn owners_admit_claims_declarations_and_resignation_without_shared_turn_rules() {
     let mut shogi = s::Game::new();
     let before = shogi.clone();
     assert!(!shogi.declaration_eligibility(s::Side::Gote).eligible());
@@ -207,11 +207,11 @@ fn native_owners_admit_claims_declarations_and_resignation_without_shared_turn_r
         command: s::GameCommand::DeclareEnteringKing,
     };
     let reply = dispatch_command(
-        NativeCommandTarget::Shogi(&mut shogi),
-        NativeCommand::Shogi(Box::new(request)),
+        GameCommandTarget::Shogi(&mut shogi),
+        GameCommand::Shogi(Box::new(request)),
     )
     .unwrap();
-    let NativeReply::Shogi(Ok(undo)) = reply else {
+    let GameReply::Shogi(Ok(undo)) = reply else {
         panic!("formal declaration should be admitted")
     };
     assert_eq!(shogi.position(), before.position());
@@ -230,11 +230,11 @@ fn native_owners_admit_claims_declarations_and_resignation_without_shared_turn_r
     };
     assert!(matches!(
         dispatch_command(
-            NativeCommandTarget::Shogi(&mut shogi),
-            NativeCommand::Shogi(Box::new(request))
+            GameCommandTarget::Shogi(&mut shogi),
+            GameCommand::Shogi(Box::new(request))
         )
         .unwrap(),
-        NativeReply::Shogi(Ok(_))
+        GameReply::Shogi(Ok(_))
     ));
     assert_eq!(
         shogi.conclusion(),
@@ -258,11 +258,11 @@ fn native_owners_admit_claims_declarations_and_resignation_without_shared_turn_r
     };
     assert!(matches!(
         dispatch_command(
-            NativeCommandTarget::Chess(&mut chess),
-            NativeCommand::Chess(req)
+            GameCommandTarget::Chess(&mut chess),
+            GameCommand::Chess(req)
         )
         .unwrap(),
-        NativeReply::Chess(c::MatchReply {
+        GameReply::Chess(c::MatchReply {
             rejection: None,
             ..
         })
@@ -276,9 +276,9 @@ fn native_owners_admit_claims_declarations_and_resignation_without_shared_turn_r
             intended: Some("h8h7".parse().unwrap()),
         },
     };
-    let NativeReply::Chess(reply) = dispatch_command(
-        NativeCommandTarget::Chess(&mut chess),
-        NativeCommand::Chess(request),
+    let GameReply::Chess(reply) = dispatch_command(
+        GameCommandTarget::Chess(&mut chess),
+        GameCommand::Chess(request),
     )
     .unwrap() else {
         panic!()
@@ -303,8 +303,8 @@ fn native_owners_admit_claims_declarations_and_resignation_without_shared_turn_r
     let before = chess.record().to_json();
     assert!(
         dispatch_command(
-            NativeCommandTarget::Chess(&mut chess),
-            NativeCommand::Shogi(Box::new(wrong))
+            GameCommandTarget::Chess(&mut chess),
+            GameCommand::Shogi(Box::new(wrong))
         )
         .is_err()
     );
@@ -324,9 +324,9 @@ fn long_record_roundtrips_and_diagnostic_bound_is_explicit() {
             }),
         });
     }
-    let native = CanonicalRecord::chess(record.clone());
-    let text = native.to_json().unwrap();
-    assert_eq!(CanonicalRecord::from_json(&text).unwrap(), native);
+    let record = CanonicalRecord::chess(record.clone());
+    let text = record.to_json().unwrap();
+    assert_eq!(CanonicalRecord::from_json(&text).unwrap(), record);
     let mut wire: Value = serde_json::from_str(&text).unwrap();
     wire.as_object_mut()
         .unwrap()
@@ -340,7 +340,7 @@ fn long_record_roundtrips_and_diagnostic_bound_is_explicit() {
 }
 
 #[test]
-fn pretty_serialization_preserves_existing_outer_fields_and_raw_native_payloads() {
+fn pretty_serialization_preserves_existing_outer_fields_and_raw_payloads() {
     use mshogi_core::{chu, tenjiku, tori, xiangqi};
     let records = [
         CanonicalRecord::chess(c::AdjudicatedGame::new(c::ClaimPolicy::ExplicitOnly).record()),

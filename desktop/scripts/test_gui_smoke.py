@@ -32,7 +32,7 @@ class CrossGameProcessEvidenceTests(unittest.TestCase):
 
 class ReplacementAnalysisAuthorityTests(unittest.TestCase):
     def source(self, game='chess'):
-        return {'token': {'document': 7, 'version': 8}, 'context': {'native_history': [1, 2]},
+        return {'token': {'document': 7, 'version': 8}, 'context': {'game_history': [1, 2]},
                 'analysis': {'context': {'purpose': {'kind': 'move_analysis'}, 'request_id': 10,
                              'session_version': 8}}}
 
@@ -52,7 +52,7 @@ class ReplacementAnalysisAuthorityTests(unittest.TestCase):
             before = self.source(game); after = copy.deepcopy(before)
             after['token']['version'] += 1; after['analysis']['context']['request_id'] += 1
             self.assertTrue(module.replacement_analysis_accepted(game, before, after, True))
-            after['context']['native_history'].append(3)
+            after['context']['game_history'].append(3)
             self.assertFalse(module.replacement_analysis_accepted(game, before, after, True))
             after = copy.deepcopy(before); after['token']['document'] += 1; after['token']['version'] += 1
             self.assertFalse(module.replacement_analysis_accepted(game, before, after, True))
@@ -142,7 +142,7 @@ class PendingResumeAnalysisPreconditionTests(unittest.TestCase):
 class XiangqiImmutableWarningPrefixTests(unittest.TestCase):
     def pair(self):
         events = [{'event': {'kind': 'board_action', 'action': f'independent-{i}'}} for i in range(8)]
-        context = {'native_record': 'complete live command history through warning 9'}
+        context = {'game_record': 'complete live command history through warning 9'}
         earlier = {'token': {'document': 7, 'selection': 8}, 'context': copy.deepcopy(context),
             'xiangqi': {'selected_events': events, 'selected_position': 'same diagram and counters',
                        'canonical_context_scope': 'live_with_immutable_selection',
@@ -154,7 +154,7 @@ class XiangqiImmutableWarningPrefixTests(unittest.TestCase):
              warnings=[{'active': True, 'side': 'red', 'fault': 'perpetual_check'}])
         return earlier, warned
 
-    def test_shared_live_canonical_does_not_erase_native_immutable_selection(self):
+    def test_shared_live_canonical_does_not_erase_immutable_selection(self):
         earlier, warned = self.pair()
         self.assertTrue(module.warning_prefix_transition(earlier, warned))
         earlier['xiangqi']['selected_canonical'] = copy.deepcopy(earlier['context'])
@@ -170,10 +170,10 @@ class XiangqiImmutableWarningPrefixTests(unittest.TestCase):
             self.assertFalse(module.warning_prefix_transition(earlier, warned))
 
 
-class NativePendingTakebackArchiveTests(unittest.TestCase):
-    def test_saved_native_takeback_is_only_the_restored_game(self):
+class PendingTakebackArchiveTests(unittest.TestCase):
+    def test_saved_takeback_is_only_the_restored_game(self):
         for game in ('shogi', 'xiangqi', 'tori', 'chu', 'tenjiku'):
-            record = {'game_kind': game, 'payload': {'root': {'native_root': game}, 'events': []}}
+            record = {'game_kind': game, 'payload': {'root': {'game_root': game}, 'events': []}}
             body = {'record': copy.deepcopy(record['payload']), 'human': 'first', 'settings': {}}
             self.assertTrue(module.retained_pending_takeback(game, body, record))
             changed = copy.deepcopy(body)
@@ -184,7 +184,7 @@ class NativePendingTakebackArchiveTests(unittest.TestCase):
 
 
 class SharedPresentationTests(unittest.TestCase):
-    def test_inspection_status_uses_exact_shared_copy_and_native_labels(self):
+    def test_inspection_status_uses_exact_shared_copy_and_labels(self):
         for label in ('Black pawn', 'Gote pawn', 'Gote pawn in hand', 'Black cannon'):
             with self.subTest(label=label):
                 self.assertTrue(module.inspection_status_matches(f'Inspecting {label} · Esc clears', label))
@@ -200,12 +200,12 @@ class SharedPresentationTests(unittest.TestCase):
         self.assertTrue(module.play_limit_matches('Play limit: depth 2 · 20000 nodes', 2, 20000))
 
     def test_wrong_or_missing_budget_is_not_accepted(self):
-        for value in ('Untimed · bounded native search', 'Play limit: depth 3 · 5,000 nodes',
+        for value in ('Untimed · bounded search', 'Play limit: depth 3 · 5,000 nodes',
                       'Play limit: depth 2 · 5,001 nodes', 'Play limit: depth 2 · 20,000 nodes', None):
             with self.subTest(value=value):
                 self.assertFalse(module.play_limit_matches(value, 2, 5000))
 
-    def test_native_footer_accepts_singular_and_plural_in_live_and_history(self):
+    def test_footer_accepts_singular_and_plural_in_live_and_history(self):
         journey = object.__new__(module.Journey)
         journey.web = Mock()
         for count, historical, actual in (
@@ -226,7 +226,7 @@ class CompletedCueEvidenceTests(unittest.TestCase):
                 "origins": ["e2"] if origins is None else origins, "destinations": destinations,
                 "destinationSignatures": ["double-underline"] * len(destinations), "route": route}
 
-    def test_exact_native_identity_and_nonactionable_signature_are_required(self):
+    def test_exact_identity_and_nonactionable_signature_are_required(self):
         cue = self.cue()
         self.assertTrue(module.completed_action_matches(cue, "e2e4", 2, ["e2"], ["e4"]))
         for field, value in (("action", "e2e3"), ("event", "3"), ("origins", []),
@@ -238,7 +238,7 @@ class CompletedCueEvidenceTests(unittest.TestCase):
 
     def test_actual_linux_and_windows_tori_action_member_order_is_not_identity(self):
         # Exact expected/observed member orders retained from failed cb1e162
-        # Linux and Windows GUI reports. These were native-identical actions.
+        # Linux and Windows GUI reports. These were identical actions.
         expected = ('{"result_face":"swallow","from":"3d","kind":"move","to":"3c"}',
                     '{"from":"3d","kind":"move","result_face":"swallow","to":"3c"}')
         observed = '{"kind":"move","from":"3d","to":"3c","result_face":"swallow"}'
@@ -256,8 +256,8 @@ class CompletedCueEvidenceTests(unittest.TestCase):
             self.assertFalse(module.completed_action_matches({**cue,"action":changed}, expected[0], 1, ["3d"], ["3c"]))
         for malformed in ('{"kind":"move","from":"3d","to":"3c","result_face":"swallow","to":"3c"}',
                           '{"kind":"move","from":"3d","to":"3c"}', '["3d","3c"]', '{broken'):
-            self.assertFalse(module.native_action_identity_matches(malformed, expected[0]))
-            self.assertFalse(module.native_action_identity_matches(observed, malformed))
+            self.assertFalse(module.action_identity_matches(malformed, expected[0]))
+            self.assertFalse(module.action_identity_matches(observed, malformed))
 
     def test_complete_drop_identity_preserves_face_without_invented_origin(self):
         expected = '{"to":"3d","face":"swallow","kind":"drop"}'
@@ -266,9 +266,9 @@ class CompletedCueEvidenceTests(unittest.TestCase):
         for changed in ({"kind":"drop","face":"falcon","to":"3d"},
                         {"kind":"drop","face":"swallow","to":"4d"},
                         {"kind":"drop","face":"swallow","to":"3d","from":"3c"}):
-            self.assertFalse(module.native_action_identity_matches(json.dumps(changed), expected))
-        self.assertFalse(module.native_action_identity_matches('e2e4', 'e2e3'))
-        self.assertTrue(module.native_action_identity_matches('e2e4', 'e2e4'))
+            self.assertFalse(module.action_identity_matches(json.dumps(changed), expected))
+        self.assertFalse(module.action_identity_matches('e2e4', 'e2e3'))
+        self.assertTrue(module.action_identity_matches('e2e4', 'e2e4'))
 
     def test_drop_requires_no_invented_origin_and_equal_endpoint_routes_remain_distinct(self):
         self.assertTrue(module.completed_action_matches(self.cue("P*5e", 3, [], ["5e"]), "P*5e", 3, [], ["5e"]))
@@ -390,7 +390,7 @@ class XiangqiBoardGeometryTests(unittest.TestCase):
                 with self.assertRaises(AssertionError):
                     self.journey(geometry).xiangqi_board_fits()
 
-    def test_missing_native_palaces_or_river_fail_the_geometry_probe(self):
+    def test_missing_palaces_or_river_fail_the_geometry_probe(self):
         for change in (lambda data: data.update(palaceSides=[]),
                        lambda data: data.update(river="ordinary chess board")):
             geometry = self.geometry()
@@ -452,7 +452,7 @@ class SyntheticFullBoardEvidenceTests(unittest.TestCase):
         return {"schema_version": 1, "rules_profile": "mshogi.synthetic.strider16.v1",
                 "initial_fixture": "strider16-capture-and-return-v1", "actions": actions}
 
-    def test_partial_or_cancelled_selection_requires_exactly_zero_native_actions(self):
+    def test_partial_or_cancelled_selection_requires_exactly_zero_actions(self):
         journey = self.journey(self.record([]))
         journey.web.text.return_value = "Version 1 · Accepted actions 0"
         self.assertEqual(journey.synthetic_record([]), self.record([]))
@@ -467,7 +467,7 @@ class SyntheticFullBoardEvidenceTests(unittest.TestCase):
         self.assertEqual(journey.web.read.call_count, 2)
         journey.web.command.assert_not_called()
 
-    def test_equal_endpoint_routes_remain_distinct_in_native_acceptance(self):
+    def test_equal_endpoint_routes_remain_distinct_in_acceptance(self):
         journey = self.journey(None)
         journey.web.read.side_effect = [self.record(["136>153>136"]), self.record(["136>135>136"])]
         journey.web.text.return_value = "Version 4 · Accepted actions 1"
@@ -481,7 +481,7 @@ class SyntheticFullBoardEvidenceTests(unittest.TestCase):
             with self.subTest(field=field):
                 record = self.record([])
                 record[field] = value
-                with self.assertRaisesRegex(ValueError, "Unexpected synthetic native record identity"):
+                with self.assertRaisesRegex(ValueError, "Unexpected synthetic game record identity"):
                     self.journey(record).synthetic_record([])
 
     def test_displayed_count_must_agree_exactly_without_accepting_a_numeric_prefix(self):
@@ -496,17 +496,17 @@ class CurrentDocumentInspectionTests(unittest.TestCase):
         return {"format": "mshogi.desktop.document.v2", "game_kind": game,
                 "payload": {"record": {}, "human": "white" if game == "chess" else "sente", "settings": {}}}
 
-    def test_current_envelopes_expose_native_payload_without_reconstruction(self):
+    def test_current_envelopes_expose_payload_without_reconstruction(self):
         for game in ("chess", "shogi", "xiangqi", "tori", "chu"):
             with self.subTest(game=game):
                 document = self.document(game)
                 self.assertIs(module.desktop_document_payload(document, game), document["payload"])
 
-    def test_native_profile_and_save_inspection_use_current_fixture_shapes(self):
+    def test_profile_and_save_inspection_use_current_fixture_shapes(self):
         snapshots = Path(__file__).parents[1] / 'src' / '__fixtures__'
         for name in ('chess', 'shogi', 'xiangqi', 'tori', 'chu', 'tenjiku-adams', 'tenjiku-muller'):
             snapshot = json.loads((snapshots / ('shared-chu-routes.json' if name == 'chu' else f'shared-{name}-standard.json')).read_text())
-            self.assertEqual(module.native_record_profile(snapshot['context']), snapshot['profile'])
+            self.assertEqual(module.record_profile(snapshot['context']), snapshot['profile'])
         for game in ('shogi', 'xiangqi', 'tori', 'chu', 'tenjiku'):
             with tempfile.TemporaryDirectory() as directory:
                 path = Path(directory) / 'saved.mshogi'
@@ -517,14 +517,14 @@ class CurrentDocumentInspectionTests(unittest.TestCase):
                 journey = object.__new__(module.Journey)
                 journey.save_current = Mock(return_value=document)
                 journey.record = Mock()
-                self.assertEqual(journey.save_native_game(path, game), document)
-                self.assertEqual(journey.record.call_args.args[1]['native_commands'], 0)
+                self.assertEqual(journey.save_game(path, game), document)
+                self.assertEqual(journey.record.call_args.args[1]['commands'], 0)
 
     def test_old_or_conflicting_envelopes_are_not_accepted_as_gui_evidence(self):
         for game in ("chess", "shogi", "xiangqi", "tori", "chu"):
             for field, value in (("envelope_version", 2), ("format", "mshogi.desktop.archive.v2"),
                                  ("game_kind", "unknown"), ("rules_profile", "unapproved"),
-                                 ("profile_edition", "unapproved"), ("native_schema_version", 2),
+                                 ("profile_edition", "unapproved"), ("record_schema_version", 2),
                                  ("payload", []), ("schema_version", 2), ("profile", "legacy")):
                 with self.subTest(game=game, field=field):
                     document = self.document(game)
@@ -546,7 +546,7 @@ class XiangqiRuntimeEvidenceTests(unittest.TestCase):
         return {key: copy.deepcopy(snapshot[key]) for key in
                 ('token', 'profile', 'context', 'xiangqi', 'document', 'io', 'observations')}
 
-    def test_r6_keeps_prior_campaign_and_requires_real_game_native_capabilities(self):
+    def test_r6_keeps_prior_campaign_and_requires_real_game_capabilities(self):
         previous = [None, 'normal-shogi', 'normal-shogi-reopened', 'normal-xiangqi',
                     'standard', 'promotion', 'claim', 'capacity', 'synthetic', 'shogi-hands',
                     'shogi-promotion', 'shogi-forced', 'shogi-declaration', 'shogi-concluded', 'shogi-capacity']
@@ -560,21 +560,21 @@ class XiangqiRuntimeEvidenceTests(unittest.TestCase):
             'xiangqi-offer', 'xiangqi-agreed', 'xiangqi-fast-proof', 'xiangqi-resigned',
             'xiangqi-capacity', 'xiangqi-failure'})
         self.assertTrue(set(xiangqi) <= set(actual))
-        self.assertEqual(module.selected_gui_phases('normal'), previous[:4] + ['normal-tori', 'normal-tori-native', 'normal-chu', 'normal-chu-native', 'normal-tenjiku-adams', 'normal-tenjiku-adams-native', 'normal-tenjiku-muller', 'normal-tenjiku-muller-native', 'normal-cross-game'])
-        self.assertEqual(module.selected_gui_phases('normal-tori'), ['normal-tori', 'normal-tori-native'])
+        self.assertEqual(module.selected_gui_phases('normal'), previous[:4] + ['normal-tori', 'normal-tori-rules', 'normal-chu', 'normal-chu-rules', 'normal-tenjiku-adams', 'normal-tenjiku-adams-rules', 'normal-tenjiku-muller', 'normal-tenjiku-muller-rules', 'normal-cross-game'])
+        self.assertEqual(module.selected_gui_phases('normal-tori'), ['normal-tori', 'normal-tori-rules'])
         self.assertEqual(module.selected_gui_phases('verification-tori'), ['pending-tori', 'tori-recovery'])
         self.assertEqual(module.selected_gui_phases('normal-shogi'), previous[1:3])
         self.assertEqual(module.selected_gui_phases('normal-xiangqi'), ['normal-xiangqi'])
         self.assertEqual(set(module.selected_gui_phases('verification')), set(actual) - set(module.selected_gui_phases('normal')))
 
-    def test_rejected_open_may_report_io_failure_without_changing_native_authority(self):
+    def test_rejected_open_may_report_io_failure_without_changing_authority(self):
         before = self.diagnostics()
         after = copy.deepcopy(before)
         after['token']['revision'] += 1
         after['io'] = {'id': before['io']['id'] + 1, 'phase': 'failed', 'message': 'Malformed document'}
         self.assertEqual(module.xiangqi_retained_state(before), module.xiangqi_retained_state(after))
 
-    def test_failed_open_comparison_detects_native_history_settings_and_identity_changes(self):
+    def test_failed_open_comparison_detects_history_settings_and_identity_changes(self):
         before = self.diagnostics()
         changes = [
             lambda data: data['context']['payload']['commands'].pop(),
@@ -594,7 +594,7 @@ class XiangqiRuntimeEvidenceTests(unittest.TestCase):
                 change(after)
                 self.assertNotEqual(module.xiangqi_retained_state(before), module.xiangqi_retained_state(after))
 
-    def test_native_comparison_rejects_wrong_game_or_profile(self):
+    def test_comparison_rejects_wrong_game_or_profile(self):
         for field, value in (('profile', 'mshogi.shogi.csa36.v1'), ('game_kind', 'shogi'),
                              ('rules_profile', 'mshogi.shogi.csa36.v1')):
             with self.subTest(field=field):
@@ -608,7 +608,7 @@ class XiangqiRuntimeEvidenceTests(unittest.TestCase):
                 with self.assertRaises(AssertionError):
                     module.xiangqi_retained_state(data)
 
-    def test_normal_native_error_field_is_wrapped_outside_w3c_error_shape(self):
+    def test_normal_error_field_is_wrapped_outside_w3c_error_shape(self):
         journey = object.__new__(module.Journey)
         journey.web = Mock()
         journey.record = Mock()
@@ -662,7 +662,7 @@ class SaveAcceptanceTests(unittest.TestCase):
         self.expected = '/games/new.mshogi'
         self.observation = {
             'path': self.expected, 'dirty': 'UNMODIFIED', 'statuses': [],
-            'io': {'id': 8, 'phase': 'complete', 'message': 'Saved complete native desktop archive.'},
+            'io': {'id': 8, 'phase': 'complete', 'message': 'Saved complete desktop archive.'},
             'buttons': [{'label': label, 'enabled': True}
                         for label in ('New game', 'Save', 'Load')]}
 
@@ -687,7 +687,7 @@ class SaveAcceptanceTests(unittest.TestCase):
                 self.observation['statuses'] = [status]
                 self.assertFalse(module.saved_document_accepted(self.observation, self.expected))
 
-    def test_prior_native_receipt_cannot_accept_a_new_file_operation(self):
+    def test_prior_receipt_cannot_accept_a_new_file_operation(self):
         self.observation['after_io_id']=8
         self.assertFalse(module.saved_document_accepted(self.observation,self.expected))
         self.observation['io']['id']=9
@@ -701,14 +701,14 @@ class SaveAcceptanceTests(unittest.TestCase):
 
     def test_open_requires_actual_current_receipt_and_settled_correct_document(self):
         # Actual R3 packaged failure screenshot/DOM: Open succeeded with this
-        # new native receipt, while the verifier waited for an obsolete phrase.
+        # new receipt, while the verifier waited for an obsolete phrase.
         self.observation['io'] = {'id':9,'phase':'complete','message':
-            'Opened complete native document with fresh runtime identities and work stopped.'}
+            'Opened complete document with fresh runtime identities and work stopped.'}
         self.assertTrue(module.opened_document_accepted(self.observation, self.expected))
         for change in (
-                lambda state: state.update(io={'id':9,'phase':'complete','message':'Saved complete native desktop archive.'}),
-                lambda state: state.update(io={'id':0,'phase':'complete','message':'Opened complete native document with work stopped.'}),
-                lambda state: state.update(io={'id':9,'phase':'failed','message':'Opened complete native document with work stopped.'}),
+                lambda state: state.update(io={'id':9,'phase':'complete','message':'Saved complete desktop archive.'}),
+                lambda state: state.update(io={'id':0,'phase':'complete','message':'Opened complete document with work stopped.'}),
+                lambda state: state.update(io={'id':9,'phase':'failed','message':'Opened complete document with work stopped.'}),
                 lambda state: state.update(statuses=['Opening your game…']),
                 lambda state: state.update(io={'id':10,'phase':'failed','message':'Open failed; current game retained.'}),
                 lambda state: state.update(path='/games/old.mshogi'),
@@ -722,16 +722,16 @@ class SaveAcceptanceTests(unittest.TestCase):
 class CurrentFileWorkflowTests(unittest.TestCase):
     def journey(self, path=None):
         journey = object.__new__(module.Journey)
-        journey.native_diagnostics = Mock(return_value={'document': {'path': path}, 'io': {'id': 4}})
+        journey.session_diagnostics = Mock(return_value={'document': {'path': path}, 'io': {'id': 4}})
         journey.file, journey.wait_saved, journey.web, journey.record = Mock(), Mock(), Mock(), Mock()
         return journey
 
     def test_first_save_uses_picker_then_requires_actual_accepted_path(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'first.mshogi'
-            path.write_text('{"complete":"native evidence"}')
+            path.write_text('{"complete":"evidence"}')
             journey = self.journey()
-            self.assertEqual(journey.save_current(path), {'complete': 'native evidence'})
+            self.assertEqual(journey.save_current(path), {'complete': 'evidence'})
             journey.file.assert_called_once_with('save', path)
             journey.wait_saved.assert_called_once_with(path)
             journey.web.button.assert_not_called()
@@ -739,7 +739,7 @@ class CurrentFileWorkflowTests(unittest.TestCase):
     def test_subsequent_save_uses_current_path_and_labels_external_copy_honestly(self):
         with tempfile.TemporaryDirectory() as directory:
             actual, evidence = Path(directory) / 'current.mshogi', Path(directory) / 'evidence.mshogi'
-            actual.write_text('{"complete":"accepted current native archive"}')
+            actual.write_text('{"complete":"accepted current archive"}')
             journey = self.journey(str(actual))
             journey.save_current(evidence)
             journey.file.assert_not_called()
@@ -753,24 +753,24 @@ class CurrentFileWorkflowTests(unittest.TestCase):
             actual, evidence = Path(directory) / 'old.mshogi', Path(directory) / 'not-written.mshogi'
             actual.write_text('{"old":"valid"}')
             journey = self.journey(str(actual))
-            journey.wait_saved.side_effect = AssertionError('native Save failed')
-            with self.assertRaisesRegex(AssertionError, 'native Save failed'):
+            journey.wait_saved.side_effect = AssertionError('Save failed')
+            with self.assertRaisesRegex(AssertionError, 'Save failed'):
                 journey.save_current(evidence)
             self.assertFalse(evidence.exists())
 
-    def test_never_saved_startup_requires_native_close_authority_even_when_internally_clean(self):
+    def test_never_saved_startup_requires_close_authority_even_when_internally_clean(self):
         for dirty in (False, True):
             with self.subTest(dirty=dirty):
-                native = {'document': {'path': None, 'dirty': dirty}, 'close_requires_save': True}
-                self.assertTrue(module.never_saved_close_source(native))
+                snapshot = {'document': {'path': None, 'dirty': dirty}, 'close_requires_save': True}
+                self.assertTrue(module.never_saved_close_source(snapshot))
                 for wrong in (
-                        {**native, 'close_requires_save': False},
-                        {'document': native['document']},
-                        {**native, 'document': {'path': '/games/saved.mshogi', 'dirty': dirty}},
-                        {**native, 'document': {'path': None, 'dirty': None}}):
+                        {**snapshot, 'close_requires_save': False},
+                        {'document': snapshot['document']},
+                        {**snapshot, 'document': {'path': '/games/saved.mshogi', 'dirty': dirty}},
+                        {**snapshot, 'document': {'path': None, 'dirty': None}}):
                     self.assertFalse(module.never_saved_close_source(wrong))
 
-    def test_replacement_comparison_preserves_native_history_and_runtime_authority(self):
+    def test_replacement_comparison_preserves_history_and_runtime_authority(self):
         for fixture in ('shared-chess-standard.json', 'shared-shogi-standard.json', 'shared-xiangqi-played.json'):
             path = Path(__file__).parents[1] / 'src' / '__fixtures__' / fixture
             self.assertTrue(path.exists(), path)
@@ -1097,9 +1097,9 @@ class InspectionDiagnosticsTests(unittest.TestCase):
     def test_failure_retains_exact_before_and_after(self):
         journey = module.Journey(None, {})
         journey.record = Mock()
-        before = {'nativeToken': {'revision': 3}, 'history': 'event 2'}
+        before = {'sessionToken': {'revision': 3}, 'history': 'event 2'}
         after = copy.deepcopy(before)
-        after['nativeToken']['revision'] = 4
+        after['sessionToken']['revision'] = 4
         journey.inspection_state = Mock(return_value=after)
         with self.assertRaises(AssertionError):
             journey.assert_inspection_unchanged(before, 'hand invariant')
@@ -1109,7 +1109,7 @@ class InspectionDiagnosticsTests(unittest.TestCase):
     def test_unchanged_comparison_retains_both_objects(self):
         journey = module.Journey(None, {})
         journey.record = Mock()
-        before = {'nativeToken': {'revision': 3}}
+        before = {'sessionToken': {'revision': 3}}
         journey.inspection_state = Mock(return_value=copy.deepcopy(before))
         journey.assert_inspection_unchanged(before, 'board invariant')
         self.assertTrue(journey.record.call_args.args[1]['unchanged'])
@@ -1191,12 +1191,12 @@ class ShellFocusEvidenceTests(unittest.TestCase):
 
 
 class PublicSupportDiagnosticsTests(unittest.TestCase):
-    def test_retry_wait_reads_live_move_idle_dom_then_observes_native_once(self):
+    def test_retry_wait_reads_live_move_idle_dom_then_observes_once(self):
         journey=object.__new__(module.Journey);journey.web=Mock();journey.record=Mock()
         journey.web.read.side_effect=[False,True]
-        native={'moves':{'entries':[{'native_action':'b2b9'}]}}
-        journey.xiangqi_diagnostics=Mock(return_value=native)
-        self.assertEqual(journey.completed_xiangqi_retry(),native)
+        snapshot={'moves':{'entries':[{'action':'b2b9'}]}}
+        journey.xiangqi_diagnostics=Mock(return_value=snapshot)
+        self.assertEqual(journey.completed_xiangqi_retry(),snapshot)
         self.assertEqual(journey.web.read.call_count,2)
         journey.xiangqi_diagnostics.assert_called_once()
         expression=journey.web.read.call_args.args[0]
@@ -1204,7 +1204,7 @@ class PublicSupportDiagnosticsTests(unittest.TestCase):
             self.assertIn(required,expression)
         journey.web.click.assert_not_called()
 
-    def test_retry_dom_cannot_substitute_for_native_completed_move_evidence(self):
+    def test_retry_dom_cannot_substitute_for_completed_move_evidence(self):
         journey=object.__new__(module.Journey);journey.web=Mock();journey.record=Mock()
         journey.web.read.return_value=True
         journey.xiangqi_diagnostics=Mock(return_value={'moves':{'entries':[]}})
@@ -1212,12 +1212,12 @@ class PublicSupportDiagnosticsTests(unittest.TestCase):
         journey.xiangqi_diagnostics.assert_called_once()
         journey.record.assert_not_called()
 
-    def test_native_diagnostics_require_public_actual_input_and_always_close(self):
+    def test_diagnostics_require_public_actual_input_and_always_close(self):
         journey=object.__new__(module.Journey);journey.web=Mock();journey.record=Mock()
-        native={'token':{'document':7},'context':{'game_kind':'shogi'}}
-        journey.web.read.side_effect=[True,{'text':json.dumps(native),'page':0,'pages':1},True,True]
+        snapshot={'token':{'document':7},'context':{'game_kind':'shogi'}}
+        journey.web.read.side_effect=[True,{'text':json.dumps(snapshot),'page':0,'pages':1},True,True]
         journey.web.has.side_effect=[True,True,False,False]
-        self.assertEqual(journey.native_diagnostics(),native)
+        self.assertEqual(journey.session_diagnostics(),snapshot)
         journey.web.keyboard_activate.assert_called_once_with('.support-dialog details:first-of-type summary')
         self.assertEqual(journey.web.click.call_args_list,[unittest.mock.call('[data-support-trigger]'),unittest.mock.call('.support-dialog details summary')])
         journey.web.key.assert_called_once_with('\ue00c')
@@ -1229,27 +1229,27 @@ class PublicSupportDiagnosticsTests(unittest.TestCase):
         journey=object.__new__(module.Journey);journey.web=Mock();journey.record=Mock()
         for text,error in (('null',AssertionError),('{',json.JSONDecodeError)):
             journey.web=Mock();journey.web.read.side_effect=[True,{'text':text,'page':0,'pages':1},True,True];journey.web.has.side_effect=[True,True,False,False]
-            with self.assertRaises(error):journey.native_diagnostics()
+            with self.assertRaises(error):journey.session_diagnostics()
             self.assertEqual(journey.web.keyboard_activate.call_args_list[-1],unittest.mock.call('.support-dialog details:first-of-type summary'))
             journey.web.key.assert_called_once_with('\ue00c');self.assertEqual(journey.web.click.call_count,2)
 
     def test_closed_reader_records_body_or_disabled_invoker_without_requiring_stable_keyboard_focus(self):
-        native={'token':{'document':7},'context':{'game_kind':'chess'}}
+        snapshot={'token':{'document':7},'context':{'game_kind':'chess'}}
         for disabled in (False,True):
             focus={'tag':'BODY','about':False,'aboutDisabled':disabled,'dialog':False}
             journey=object.__new__(module.Journey);journey.web=Mock();journey.record=Mock()
-            journey.web.read.side_effect=[True,{'text':json.dumps(native),'page':0,'pages':1},True,focus]
+            journey.web.read.side_effect=[True,{'text':json.dumps(snapshot),'page':0,'pages':1},True,focus]
             journey.web.has.side_effect=[True,True,False,False]
-            self.assertEqual(journey.native_diagnostics(),native)
+            self.assertEqual(journey.session_diagnostics(),snapshot)
             self.assertEqual(journey.record.call_args.args[1],focus)
             journey.web.keyboard_activate.assert_called_once_with('.support-dialog details:first-of-type summary')
             journey.web.key.assert_called_once_with('\ue00c');self.assertEqual(journey.web.click.call_count,2)
 
     def test_diagnostic_cleanup_failure_propagates_without_replaying_any_input(self):
-        native={'token':{'document':7},'context':{'game_kind':'tenjiku'}}
+        snapshot={'token':{'document':7},'context':{'game_kind':'tenjiku'}}
         for failure in ('summary','collapse','escape'):
             journey=object.__new__(module.Journey);journey.web=Mock();journey.record=Mock()
-            journey.web.read.side_effect=[True,{'text':json.dumps(native),'page':0,'pages':1},failure!='collapse']
+            journey.web.read.side_effect=[True,{'text':json.dumps(snapshot),'page':0,'pages':1},failure!='collapse']
             journey.web.has.side_effect=[True,True,False,False]
             if failure=='summary':journey.web.keyboard_activate.side_effect=RuntimeError('summary delivery unknown')
             if failure=='escape':journey.web.key.side_effect=RuntimeError('Escape delivery unknown')
@@ -1258,19 +1258,19 @@ class PublicSupportDiagnosticsTests(unittest.TestCase):
                 if not value:raise AssertionError('required observation absent')
                 return value
             with patch.object(module,'wait',side_effect=required),self.assertRaises((RuntimeError,AssertionError)):
-                journey.native_diagnostics()
+                journey.session_diagnostics()
             self.assertEqual(journey.web.click.call_count,2)
             self.assertEqual(journey.web.keyboard_activate.call_count,1)
             self.assertEqual(journey.web.key.call_count,1 if failure=='escape' else 0)
 
     def test_public_diagnostic_pages_reconstruct_exact_context_through_real_buttons(self):
         journey=object.__new__(module.Journey);journey.web=Mock();journey.record=Mock()
-        native={'token':{'document':7},'context':{'game_kind':'chu','history':['same board','different history']}}
-        text=json.dumps(native);split=len(text)//2
+        snapshot={'token':{'document':7},'context':{'game_kind':'chu','history':['same board','different history']}}
+        text=json.dumps(snapshot);split=len(text)//2
         journey.web.read.side_effect=[True,{'text':text[:split],'page':0,'pages':2},1,
             {'text':text[split:],'page':1,'pages':2},True,True]
         journey.web.has.side_effect=[True,True,False,False]
-        self.assertEqual(journey.native_diagnostics(),native)
+        self.assertEqual(journey.session_diagnostics(),snapshot)
         journey.web.button.assert_called_once_with('Next diagnostics page')
         journey.web.key.assert_called_once_with('\ue00c');self.assertEqual(journey.web.click.call_count,2)
 
@@ -1284,7 +1284,7 @@ class PublicSupportDiagnosticsTests(unittest.TestCase):
         self.assertEqual({(case['profile'],case['captured_field']) for case in captured['cases']},
                          {('adams','before'),('adams','reopened'),('muller','before'),('muller','reopened')})
         for case in captured['cases']:
-            native=case['native'];text=json.dumps(native,ensure_ascii=False,separators=(',',':'))
+            snapshot=case['snapshot'];text=json.dumps(snapshot,ensure_ascii=False,separators=(',',':'))
             self.assertEqual(hashlib.sha256(text.encode()).hexdigest(),case['canonical_public_json_sha256'])
             self.assertEqual(len(text.encode('utf-16-le'))//2,case['utf16_units'])
             self.assertTrue(all(ord(c)<=65535 for c in text)) # These actual captures contain no surrogate pairs.
@@ -1297,7 +1297,7 @@ class PublicSupportDiagnosticsTests(unittest.TestCase):
             reads.extend([True,{'tag':'BODY','about':False,'aboutDisabled':True,'dialog':False}])
             journey=object.__new__(module.Journey);journey.web=Mock();journey.record=Mock()
             journey.web.read.side_effect=reads;journey.web.has.side_effect=[True,True,False,False]
-            self.assertEqual(journey.native_diagnostics(),native)
+            self.assertEqual(journey.session_diagnostics(),snapshot)
             self.assertEqual(journey.web.click.call_args_list,[unittest.mock.call('[data-support-trigger]'),unittest.mock.call('.support-dialog details summary')])
             journey.web.keyboard_activate.assert_called_once_with('.support-dialog details:first-of-type summary')
             journey.web.button.assert_called_once_with('Next diagnostics page')
@@ -1310,20 +1310,20 @@ class PublicSupportDiagnosticsTests(unittest.TestCase):
                      {'text':'{}','page':0,'pages':513}):
             journey=object.__new__(module.Journey);journey.web=Mock();journey.record=Mock()
             journey.web.read.side_effect=[True,page,True,True];journey.web.has.side_effect=[True,True,False,False]
-            with self.assertRaises(AssertionError):journey.native_diagnostics()
+            with self.assertRaises(AssertionError):journey.session_diagnostics()
             journey.web.button.assert_not_called()
             journey.web.key.assert_called_once_with('\ue00c');self.assertEqual(journey.web.click.call_count,2)
 
-    def test_lightweight_inspection_observer_never_opens_support_or_invents_native_token(self):
+    def test_lightweight_inspection_observer_never_opens_support_or_invents_token(self):
         journey=object.__new__(module.Journey);journey.web=Mock()
         journey.inspection_state()
         expression=journey.web.read.call_args.args[0]
-        self.assertNotIn('nativeToken',expression);self.assertNotIn('data-native-diagnostics',expression)
+        self.assertNotIn('sessionToken',expression);self.assertNotIn('data-session-diagnostics',expression)
         journey.web.click.assert_not_called();journey.web.key.assert_not_called()
 
 
 class CurrentShellCopyEvidenceTests(unittest.TestCase):
-    def test_historical_copy_requires_native_selected_prefix_and_return_control(self):
+    def test_historical_copy_requires_selected_prefix_and_return_control(self):
         observed={'heading':'Historical position','meaning':'Your live game is unchanged.',
                   'historical':'true','event':'2','returnLiveEnabled':True}
         self.assertTrue(module.historical_notice_matches(observed,2))
@@ -1336,7 +1336,7 @@ class CurrentShellCopyEvidenceTests(unittest.TestCase):
         for count in (255,256):
             self.assertTrue(module.session_chess_evidence_count(f'Session analysis evidence ({count})',count))
             self.assertFalse(module.session_chess_evidence_count(f'Session analysis evidence ({count+1})',count))
-            self.assertFalse(module.session_chess_evidence_count(f'Recorded native evidence ({count})',count))
+            self.assertFalse(module.session_chess_evidence_count(f'Recorded evidence ({count})',count))
         self.assertFalse(module.session_chess_evidence_count(None,256))
 
 
@@ -1350,38 +1350,38 @@ class ChuNormalProductEvidenceTests(unittest.TestCase):
                and node.args and isinstance(node.args[0],ast.Constant) and node.args[0].value=='.moves-table button[data-event="1"]']
         self.assertEqual([node.func.attr for node in calls],['keyboard_activate'])
 
-    def test_native_action_card_content_can_grow_without_moving_shared_anchors_or_gaps(self):
+    def test_action_card_content_can_grow_without_moving_shared_anchors_or_gaps(self):
         def cards(action_height):
             return [{'name':'analysis','rect':{'left':860,'top':116,'width':292,'height':218}},
                     {'name':'actions','rect':{'left':860,'top':348,'width':292,'height':action_height}},
                     {'name':'history','rect':{'left':860,'top':362+action_height,'width':292,'height':236}}]
         previous=cards(90);current=cards(126)
-        module.assert_shared_native_card_flow(current,previous)
-        module.assert_shared_native_card_flow(previous,current)
+        module.assert_shared_card_flow(current,previous)
+        module.assert_shared_card_flow(previous,current)
         for index,axis in ((0,'top'),(0,'height'),(1,'top'),(1,'left'),(2,'width'),(2,'top'),(2,'height')):
             altered=copy.deepcopy(current);altered[index]['rect'][axis]+=10
             with self.subTest(index=index,axis=axis):
-                with self.assertRaises(AssertionError):module.assert_shared_native_card_flow(altered,previous)
+                with self.assertRaises(AssertionError):module.assert_shared_card_flow(altered,previous)
         altered=copy.deepcopy(current);altered[1]['rect']['height']=0
-        with self.assertRaises(AssertionError):module.assert_shared_native_card_flow(altered,previous)
-        with self.assertRaises(AssertionError):module.assert_shared_native_card_flow(list(reversed(current)),previous)
+        with self.assertRaises(AssertionError):module.assert_shared_card_flow(altered,previous)
+        with self.assertRaises(AssertionError):module.assert_shared_card_flow(list(reversed(current)),previous)
 
-    def test_chu_reopen_uses_actual_native_saved_path_once_and_checks_evidence_bytes(self):
+    def test_chu_reopen_uses_actual_saved_path_once_and_checks_evidence_bytes(self):
         with tempfile.TemporaryDirectory() as temp:
             actual=Path(temp)/'ordinary-saved.mshogi';evidence=Path(temp)/'external-evidence.mshogi'
-            actual.write_bytes(b'exact native saved archive');evidence.write_bytes(actual.read_bytes())
-            before={'document':{'path':str(actual)}};after={'native':'fresh stopped document'}
-            journey=object.__new__(module.Journey);journey.native_diagnostics=Mock(side_effect=[before,after])
+            actual.write_bytes(b'exact saved archive');evidence.write_bytes(actual.read_bytes())
+            before={'document':{'path':str(actual)}};after={'snapshot':'fresh stopped document'}
+            journey=object.__new__(module.Journey);journey.session_diagnostics=Mock(side_effect=[before,after])
             journey.file=Mock();journey.wait_opened=Mock();journey.record=Mock()
             self.assertEqual(journey.chu_reopen_saved(evidence),after)
             journey.file.assert_called_once_with('open',actual);journey.wait_opened.assert_called_once_with(actual)
             self.assertEqual(journey.record.call_args.args[1]['evidence_copy'],str(evidence))
             evidence.write_bytes(b'different archive')
-            journey.native_diagnostics=Mock(return_value=before);journey.file.reset_mock();journey.wait_opened.reset_mock()
+            journey.session_diagnostics=Mock(return_value=before);journey.file.reset_mock();journey.wait_opened.reset_mock()
             with self.assertRaises(AssertionError):journey.chu_reopen_saved(evidence)
             journey.file.assert_not_called();journey.wait_opened.assert_not_called()
         source=ast.parse(Path(module.__file__).read_text())
-        for name,expected in (('normal_chu',1),('normal_chu_native',1)):
+        for name,expected in (('normal_chu',1),('normal_chu_rules',1)):
             method=next(node for node in ast.walk(source) if isinstance(node,ast.FunctionDef) and node.name==name)
             reopens=[node for node in ast.walk(method) if isinstance(node,ast.Call) and isinstance(node.func,ast.Attribute) and node.func.attr=='chu_reopen_saved']
             self.assertEqual(len(reopens),expected)
@@ -1408,33 +1408,33 @@ class ChuNormalProductEvidenceTests(unittest.TestCase):
             journey.web.read.return_value={**layout,'gameLabel':label}
             with self.assertRaises(AssertionError):journey.shared_shell('chu')
 
-    def test_chu_royal_survivor_selects_native_no_promotion_before_committing(self):
+    def test_chu_royal_survivor_selects_no_promotion_before_committing(self):
         journey=object.__new__(module.Journey);journey.web=Mock()
         journey.chu_square=lambda square:square;journey.chu_events=Mock()
         journey.assert_chu_promotion_choices=Mock();journey.assert_completed_cue=Mock()
         action={'from':[12,10],'route':[[12,12]],'promote':False}
-        native={'context':{'payload':{'events':[{'command':{'action':action}}]}}}
-        journey.native_diagnostics=Mock(return_value=native)
+        snapshot={'context':{'payload':{'events':[{'command':{'action':action}}]}}}
+        journey.session_diagnostics=Mock(return_value=snapshot)
         sequence=[]
         journey.web.button.side_effect=lambda label:sequence.append(('choice',label))
         journey.chu_events.side_effect=lambda count:sequence.append(('committed',count))
         with patch.object(module,'wait',side_effect=lambda check,label:check()):
-            self.assertEqual(journey.chu_action('12j',['12l'],1,promote=False),native)
+            self.assertEqual(journey.chu_action('12j',['12l'],1,promote=False),snapshot)
         self.assertEqual(sequence,[('choice','Do not promote'),('committed',1)])
         journey.assert_chu_promotion_choices.assert_called_once()
         self.assertEqual(journey.web.click.call_args_list,[unittest.mock.call('12j'),unittest.mock.call('12l')])
         journey.web.button.assert_called_once_with('Do not promote')
         source=ast.parse(Path(module.__file__).read_text())
-        method=next(node for node in ast.walk(source) if isinstance(node,ast.FunctionDef) and node.name=='normal_chu_native')
+        method=next(node for node in ast.walk(source) if isinstance(node,ast.FunctionDef) and node.name=='normal_chu_rules')
         call=next(node for node in ast.walk(method) if isinstance(node,ast.Call) and isinstance(node.func,ast.Attribute)
                   and node.func.attr=='chu_action' and node.args and isinstance(node.args[0],ast.Constant) and node.args[0].value=='12j')
         self.assertTrue(any(keyword.arg=='promote' and isinstance(keyword.value,ast.Constant) and keyword.value.value is False for keyword in call.keywords))
 
     def test_all_default_phases_include_normal_chu_and_actual_pending_recovery(self):
-        self.assertEqual(module.selected_gui_phases('normal-chu'), ['normal-chu','normal-chu-native'])
+        self.assertEqual(module.selected_gui_phases('normal-chu'), ['normal-chu','normal-chu-rules'])
         self.assertEqual(module.selected_gui_phases('verification-chu'), ['pending-chu','chu-recovery'])
-        self.assertTrue({'normal-chu','normal-chu-native','pending-chu','chu-recovery'} <= set(module.selected_gui_phases('all')))
-        for method,product in ((module.Journey.normal_chu,'chu'),(module.Journey.normal_chu_native,'chu-native')):
+        self.assertTrue({'normal-chu','normal-chu-rules','pending-chu','chu-recovery'} <= set(module.selected_gui_phases('all')))
+        for method,product in ((module.Journey.normal_chu,'chu'),(module.Journey.normal_chu_rules,'chu-rules')):
             journey=object.__new__(module.Journey);journey.start=Mock(side_effect=RuntimeError('launch boundary'))
             with self.assertRaisesRegex(RuntimeError,'launch boundary'): method(journey)
             journey.start.assert_called_once_with(product=product)
@@ -1443,13 +1443,13 @@ class ChuNormalProductEvidenceTests(unittest.TestCase):
         expected={'from':[6,6],'route':[[7,5],[6,6]],'promote':False}
         text=json.dumps(expected)
         reordered=json.dumps({'promote':False,'route':[[7,5],[6,6]],'from':[6,6]})
-        self.assertTrue(module.native_action_identity_matches(reordered,text))
+        self.assertTrue(module.action_identity_matches(reordered,text))
         for change in ({'route':[[6,6],[7,5]]},{'route':[[7,5]]},{'promote':True},{'promote':0},
                        {'from':[True,6]},{'route':[]},{'route':[[7,5],[6,6],[7,5]]},{'unknown':'victim'}):
-            self.assertFalse(module.native_action_identity_matches(json.dumps({**expected,**change}),text),change)
-        self.assertFalse(module.native_action_identity_matches('{"from":[6,6],"route":[[7,5],[6,6]],"promote":false,"promote":false}',text))
+            self.assertFalse(module.action_identity_matches(json.dumps({**expected,**change}),text),change)
+        self.assertFalse(module.action_identity_matches('{"from":[6,6],"route":[[7,5],[6,6]],"promote":false,"promote":false}',text))
 
-    def test_chu_optional_promotion_observes_native_labels_despite_capitalized_innertext(self):
+    def test_chu_optional_promotion_observes_labels_despite_capitalized_innertext(self):
         journey=object.__new__(module.Journey);journey.web=Mock();journey.record=Mock()
         journey.web.text.return_value='Promote Do Not Promote Cancel Selection'
         journey.web.read.return_value=['Promote','Do not promote']
@@ -1463,20 +1463,20 @@ class ChuNormalProductEvidenceTests(unittest.TestCase):
             journey.web.read.return_value=labels
             with self.assertRaises(AssertionError):journey.assert_chu_promotion_choices()
 
-    def test_native_generated_archives_and_manifest_preserve_exact_adjudication_context(self):
+    def test_generated_archives_and_manifest_preserve_exact_adjudication_context(self):
         fixtures=Path(__file__).with_name('fixtures')
-        manifest=json.loads((fixtures/'chu-native-fixtures.json').read_text())
+        manifest=json.loads((fixtures/'chu-game-fixtures.json').read_text())
         self.assertEqual(manifest['profile'],'mshogi.chu.jcsa2019.v1')
         self.assertEqual(len(manifest['cases']),16)
         bodies={case['file']:module.desktop_document_payload(json.loads((fixtures/case['file']).read_text()),'chu') for case in manifest['cases']}
-        # Documents contain inputs only. The native corpus and the normal GUI
+        # Documents contain inputs only. The corpus and the normal GUI
         # journey check independently specified effects and conclusions after replay.
         for body in bodies.values():
             self.assertEqual(set(body), {'record', 'human', 'settings'})
-            native=body['record']
-            self.assertEqual(set(native), {'profile','edition','schema_version','root','events'})
-            self.assertEqual(native['schema_version'],3)
-            for event in native['events']:
+            snapshot=body['record']
+            self.assertEqual(set(snapshot), {'profile','edition','schema_version','root','events'})
+            self.assertEqual(snapshot['schema_version'],3)
+            for event in snapshot['events']:
                 self.assertEqual(set(event), {'actor','command'})
         obligation=bodies['chu-repetition10.mshogi']['record']
         self.assertEqual(len(obligation['events']),10)
@@ -1492,7 +1492,7 @@ class ChuNormalProductEvidenceTests(unittest.TestCase):
     def test_chu_geometry_observer_requires_all144_squares_font_and_no_hands(self):
         journey=object.__new__(module.Journey);journey.web=Mock();journey.record=Mock()
         geometry={'allVisible':True,'boardVisible':True,'hands':0,'minimumSquareWidth':24,
-            'uniqueSquares':144,'nativeOrientation':'sente','orientation':'Chu board, Sente at bottom',
+            'uniqueSquares':144,'gameOrientation':'sente','orientation':'Chu board, Sente at bottom',
             'kanjiTexts':[{'pixels':11,'text':'歩'}],'pageWidth':760,'viewport':{'width':760}}
         for change in ({},{'allVisible':False},{'hands':1},{'uniqueSquares':143},{'orientation':'Chu board, Gote at bottom'},{'minimumSquareWidth':20},{'kanjiTexts':[]},{'kanjiTexts':[{'pixels':8}]}):
             journey.web.read.side_effect=[True,{**geometry,**change}]
@@ -1511,18 +1511,18 @@ class ToriNormalProductEvidenceTests(unittest.TestCase):
     """Observer tests only; actual packaged journeys are separate CI evidence."""
     def test_normal_tori_phases_use_normal_package_not_qa_activation(self):
         self.assertEqual(module.selected_gui_phases('normal-tori'),
-                         ['normal-tori', 'normal-tori-native'])
+                         ['normal-tori', 'normal-tori-rules'])
         for method, product in ((module.Journey.normal_tori, 'tori'),
-                                (module.Journey.normal_tori_native, 'tori-native')):
+                                (module.Journey.normal_tori_rules, 'tori-rules')):
             journey = object.__new__(module.Journey)
             journey.start = Mock(side_effect=RuntimeError('launch boundary'))
             with self.assertRaisesRegex(RuntimeError, 'launch boundary'):
                 method(journey)
             journey.start.assert_called_once_with(product=product)
-        self.assertTrue({'normal-tori', 'normal-tori-native', 'pending-tori',
+        self.assertTrue({'normal-tori', 'normal-tori-rules', 'pending-tori',
                          'tori-recovery'} <= set(module.selected_gui_phases('all')))
 
-    def test_native_generated_normal_documents_retain_native_roots_and_commands(self):
+    def test_generated_normal_documents_retain_roots_and_commands(self):
         fixtures = Path(__file__).with_name('fixtures')
         bodies = {name: module.desktop_document_payload(json.loads(
             (fixtures / f'tori-{name}.mshogi').read_text()), 'tori')
@@ -1531,7 +1531,7 @@ class ToriNormalProductEvidenceTests(unittest.TestCase):
             self.assertEqual(set(body), {'record', 'human', 'settings'})
             self.assertFalse(body['record']['root']['historical_reachability_proven'])
             self.assertTrue(body['record']['root']['earlier_history_unknown'])
-        # Native replay derives occurrences and conclusions from the complete commands.
+        # Game replay derives occurrences and conclusions from the complete commands.
         forced = bodies['forced-prefix6']['record']
         self.assertEqual(len(forced['events']), 6)
         self.assertEqual(forced['events'][-1]['command']['action'],
@@ -1570,7 +1570,7 @@ class ToriDirtyCloseAdmissionTests(unittest.TestCase):
                 'flipEnabled':True, 'supportEnabled':True, 'fileControlsEnabled':True,
                 'checkingCapacity':False}
 
-    def native(self):
+    def snapshot(self):
         before = {'document':{'path':'current.mshogi','dirty':False,'revision':14,
                    'settings':{'play_mode':'human_engine','orientation':{'game_kind':'tori','side':'sente'},'analysis_defaults':{'depth':64,'nodes':300000}}},
                   'context':{'payload':{'events':[{'exact':i} for i in range(3)],
@@ -1583,11 +1583,11 @@ class ToriDirtyCloseAdmissionTests(unittest.TestCase):
         after['close_requires_save']=True
         return before, after
 
-    def journey(self, observations, native=None):
+    def journey(self, observations, snapshot=None):
         journey = object.__new__(module.Journey)
-        journey.web, journey.record, journey.native = Mock(), Mock(), Mock()
+        journey.web, journey.record, journey.platform_ui = Mock(), Mock(), Mock()
         journey.web.read.side_effect=observations
-        journey.native_diagnostics=Mock(side_effect=self.native() if native is None else native)
+        journey.session_diagnostics=Mock(side_effect=self.snapshot() if snapshot is None else snapshot)
         return journey
 
     def test_clean_and_busy_snapshots_cannot_establish_accepted_dirty_close_source(self):
@@ -1606,17 +1606,17 @@ class ToriDirtyCloseAdmissionTests(unittest.TestCase):
         pending = {**ready,'supportEnabled':False}
         journey = self.journey([clean,busy,pending,ready])
         with patch.object(module.time,'sleep'):
-            self.assertEqual(journey.dirty_tori_close_source(),self.native()[1])
+            self.assertEqual(journey.dirty_tori_close_source(),self.snapshot()[1])
         journey.web.click.assert_called_once_with('.flip-button')
         self.assertEqual(journey.web.read.call_count,4)
-        self.assertEqual(journey.native_diagnostics.call_count,2)
-        journey.native.close_window.assert_not_called()
+        self.assertEqual(journey.session_diagnostics.call_count,2)
+        journey.platform_ui.close_window.assert_not_called()
         expression=journey.web.read.call_args.args[0]
         for mutation in ('invoke(', 'dispatchEvent(', '.click(', '.focus(', 'scrollIntoView('):
             self.assertNotIn(mutation,expression)
 
-    def test_visible_dirty_without_authoritative_native_admission_cannot_pass(self):
-        before,after=self.native()
+    def test_visible_dirty_without_authoritative_admission_cannot_pass(self):
+        before,after=self.snapshot()
         for mutate in (lambda a:a['document'].update(dirty=False),
                        lambda a:a.update(close_requires_save=False),
                        lambda a:a['token'].update(version=40),
@@ -1628,7 +1628,7 @@ class ToriDirtyCloseAdmissionTests(unittest.TestCase):
             journey=self.journey([self.controls()],[before,changed])
             with self.assertRaises(AssertionError):
                 journey.dirty_tori_close_source()
-            journey.native.close_window.assert_not_called()
+            journey.platform_ui.close_window.assert_not_called()
 
     def test_unknown_input_delivery_is_never_replayed(self):
         journey=self.journey([self.controls()])
@@ -1637,25 +1637,25 @@ class ToriDirtyCloseAdmissionTests(unittest.TestCase):
             journey.dirty_tori_close_source()
         journey.web.click.assert_called_once_with('.flip-button')
         journey.web.read.assert_not_called()
-        journey.native.close_window.assert_not_called()
+        journey.platform_ui.close_window.assert_not_called()
 
 
 class TenjikuPackagedEvidenceTests(unittest.TestCase):
     """Observer/input integrity tests; genuine installed GUI runs remain required."""
     def test_both_normal_profiles_and_real_pending_recovery_are_mandatory(self):
-        normal=['normal-tenjiku-adams','normal-tenjiku-adams-native','normal-tenjiku-muller','normal-tenjiku-muller-native']
+        normal=['normal-tenjiku-adams','normal-tenjiku-adams-rules','normal-tenjiku-muller','normal-tenjiku-muller-rules']
         verification=['pending-tenjiku-adams','recovery-tenjiku-adams','pending-tenjiku-muller','recovery-tenjiku-muller']
         self.assertEqual(module.selected_gui_phases('normal-tenjiku'),normal)
         self.assertEqual(module.selected_gui_phases('verification-tenjiku'),verification)
         self.assertTrue(set(normal+verification)<=set(module.selected_gui_phases('all')))
         for profile in ('adams','muller'):
-            for method,suffix in ((module.Journey.normal_tenjiku,''),(module.Journey.normal_tenjiku_native,'-native')):
+            for method,suffix in ((module.Journey.normal_tenjiku,''),(module.Journey.normal_tenjiku_rules,'-rules')):
                 journey=object.__new__(module.Journey);journey.start=Mock(side_effect=RuntimeError('normal launch'))
                 with self.assertRaisesRegex(RuntimeError,'normal launch'):method(journey,profile)
                 journey.start.assert_called_once_with(product=f'tenjiku-{profile}{suffix}')
 
-    def test_native_documents_keep_both_profiles_exact_and_have_no_fabricated_observations(self):
-        directory=Path(__file__).with_name('fixtures');manifest=json.loads((directory/'tenjiku-native-fixtures.json').read_text())
+    def test_documents_keep_both_profiles_exact_and_have_no_fabricated_observations(self):
+        directory=Path(__file__).with_name('fixtures');manifest=json.loads((directory/'tenjiku-game-fixtures.json').read_text())
         self.assertEqual(len(manifest['cases']),20)
         for case in manifest['cases']:
             document=json.loads((directory/case['file']).read_text());body=module.desktop_document_payload(document,'tenjiku')
@@ -1675,23 +1675,23 @@ class TenjikuPackagedEvidenceTests(unittest.TestCase):
         travel={'kind':'travel','from':[8,10],'route':[[7,9],[7,8],[8,8]],'promote':False}
         igui={'kind':'igui','from':[8,8],'route':[],'promote':False,'target':[9,8]}
         for expected in (travel,igui):
-            self.assertTrue(module.native_action_identity_matches(json.dumps(expected),json.dumps(expected)))
+            self.assertTrue(module.action_identity_matches(json.dumps(expected),json.dumps(expected)))
             for changed in ({**expected,'promote':True},{**expected,'from':[17,8]},{**expected,'route':[] if expected['kind']=='travel' else [[9,8]]},{**expected,'victims':['invented']}):
-                self.assertFalse(module.native_action_identity_matches(json.dumps(changed),json.dumps(expected)))
+                self.assertFalse(module.action_identity_matches(json.dumps(changed),json.dumps(expected)))
         changed=copy.deepcopy(travel);changed['route'][0:2]=reversed(changed['route'][0:2])
-        self.assertFalse(module.native_action_identity_matches(json.dumps(changed),json.dumps(travel)))
+        self.assertFalse(module.action_identity_matches(json.dumps(changed),json.dumps(travel)))
         for bad in ({**travel,'target':None},{**igui,'target':None},{**travel,'from':[True,8]}):
-            self.assertFalse(module.native_action_identity_matches(json.dumps(bad),json.dumps(bad)))
+            self.assertFalse(module.action_identity_matches(json.dumps(bad),json.dumps(bad)))
 
     def test_repeated_analysis_requires_new_observation_fresh_identity_and_exact_selected_prefix(self):
         action={'kind':'travel','from':[1,3],'route':[[1,4]],'promote':False}
-        native={'game_kind':'tenjiku','rules_profile':'mshogi.tenjiku.adams1999-modern.v1','payload':{'events':[{'native':'prefix1'}]}}
+        snapshot={'game_kind':'tenjiku','rules_profile':'mshogi.tenjiku.adams1999-modern.v1','payload':{'events':[{'snapshot':'prefix1'}]}}
         old={'schema_version':1,'context':{'request_id':5},'result':{'kind':'retained-prior-analysis'}}
-        before={'profile':native['rules_profile'],'context':native,'token':{'document':4,'version':8,'revision':8},'tenjiku':{'selected':{'event_index':1,'board_ply':1,'repetition_key':{'side':'gote'}},'live':{'event_index':2,'identities':'native-live'}},'moves':{'entries':[{'native':'event1'},{'native':'event2'}]},'observations':[{'observation':old}]}
-        observation={'schema_version':1,'context':{'request_id':10,'session_version':8,'game':copy.deepcopy(native),'limits':{'depth':1,'nodes':1024},'purpose':{'kind':'move_analysis','target':{'event_index':1,'board_ply':1,'session_version':8,'turn':{'game_kind':'tenjiku','side':'gote'}}}},'result':{'kind':'tenjiku','result':{'kind':'choice','choice':action,'telemetry':{'completed_depth':1,'perspective':'gote','score':0,'nodes':5,'principal_variation':[action],'evaluator_id':'mshogi.tenjiku.material-placement.v1','search_id':'mshogi.tenjiku.shared-core.v1'}}}}
+        before={'profile':snapshot['rules_profile'],'context':snapshot,'token':{'document':4,'version':8,'revision':8},'tenjiku':{'selected':{'event_index':1,'board_ply':1,'repetition_key':{'side':'gote'}},'live':{'event_index':2,'identities':'live'}},'moves':{'entries':[{'snapshot':'event1'},{'snapshot':'event2'}]},'observations':[{'observation':old}]}
+        observation={'schema_version':1,'context':{'request_id':10,'session_version':8,'game':copy.deepcopy(snapshot),'limits':{'depth':1,'nodes':1024},'purpose':{'kind':'move_analysis','target':{'event_index':1,'board_ply':1,'session_version':8,'turn':{'game_kind':'tenjiku','side':'gote'}}}},'result':{'kind':'tenjiku','result':{'kind':'choice','choice':action,'telemetry':{'completed_depth':1,'perspective':'gote','score':0,'nodes':5,'principal_variation':[action],'evaluator_id':'mshogi.tenjiku.material-placement.v1','search_id':'mshogi.tenjiku.shared-core.v1'}}}}
         after=copy.deepcopy(before);after['token']['revision']=10;after['observations'].append({'observation':observation});after['analysis']={'observation':observation}
         self.assertTrue(module.completed_tenjiku_analysis(before,after,5))
-        self.assertFalse(module.completed_tenjiku_analysis(before,before,5),'old available UI/status/native result is insufficient')
+        self.assertFalse(module.completed_tenjiku_analysis(before,before,5),'old available UI/status/engine result is insufficient')
         for mutate in (lambda a:a['token'].update(revision=8),lambda a:a['token'].update(version=9),lambda a:a['observations'].pop(),lambda a:a['observations'][0]['observation'].update(result={'rewritten':'prior result'}),
                        lambda a:a['analysis']['observation']['context'].update(request_id=5),
                        lambda a:(a['analysis']['observation']['context'].update(session_version=9),a['analysis']['observation']['context']['purpose']['target'].update(session_version=9)),
@@ -1708,11 +1708,11 @@ class TenjikuPackagedEvidenceTests(unittest.TestCase):
     def tenjiku_public_diagnostics(self, name):
         snapshot=json.loads((Path(__file__).parents[1]/'src'/'__fixtures__'/f'shared-tenjiku-{name}.json').read_text())
         # Exact public About projection, also observed in Linux source 0a2.
-        # Its shape deliberately differs from the complete native snapshot.
+        # Its shape deliberately differs from the complete session snapshot.
         keys=('token','profile','document','close_requires_save','context','moves','capacity','diagnostic','io','analysis','observations','tenjiku')
         return {**{key:snapshot[key] for key in keys},'error':''}
 
-    def test_real_native_analysis_projection_has_no_full_snapshot_only_top_level_fields(self):
+    def test_real_analysis_projection_has_no_full_snapshot_only_top_level_fields(self):
         for profile in ('adams','muller'):
             before=self.tenjiku_public_diagnostics(f'{profile}-standard');after=self.tenjiku_public_diagnostics(f'{profile}-analysis')
             self.assertEqual(set(before),{'token','profile','document','close_requires_save','context','moves','capacity','diagnostic','io','analysis','observations','tenjiku','error'})
@@ -1728,7 +1728,7 @@ class TenjikuPackagedEvidenceTests(unittest.TestCase):
             self.assertTrue(module.completed_tenjiku_analysis(before,after,0))
             self.assertFalse(module.completed_tenjiku_analysis(before,before,0))
             journey=object.__new__(module.Journey);journey.web=Mock();journey.record=Mock()
-            journey.native_diagnostics=Mock(side_effect=[before,after]);journey.web.has.return_value=True
+            journey.session_diagnostics=Mock(side_effect=[before,after]);journey.web.has.return_value=True
             journey.web.text.side_effect=['Analysis result available','No move was played.']
             with patch.object(module,'wait',side_effect=lambda check,*args:check()):
                 self.assertEqual(journey.tenjiku_analysis(),after)
@@ -1746,7 +1746,7 @@ class TenjikuPackagedEvidenceTests(unittest.TestCase):
                     self.assertFalse(module.reopened_tenjiku_document_stopped(before,after,{**ui,field:value}))
                 for mutate in (lambda a:a['token'].update(document=before['token']['document']),lambda a:a['token'].update(version=before['token']['version']),
                                lambda a:a['token'].update(selection=before['token']['selection']),lambda a:a['document'].update(dirty=True),
-                               lambda a:a['document'].update(path='different-native-file'),lambda a:a['context']['payload'].update(conclusion={'kind':'agreement'}),
+                               lambda a:a['document'].update(path='different-file'),lambda a:a['context']['payload'].update(conclusion={'kind':'agreement'}),
                                lambda a:a['tenjiku']['selected'].update(event_index=999),lambda a:a['tenjiku']['live'].update(event_index=999),
                                lambda a:a['moves']['entries'].append({'invented':'event'}),lambda a:a.update(analysis={'stale':'pending-analysis'})):
                     changed=copy.deepcopy(after);mutate(changed)
@@ -1826,15 +1826,15 @@ class CurrentEngineVerifierTests(unittest.TestCase):
     def test_deferred_executable_removal_follows_observed_process_cleanup(self):
         journey = module.Journey(None, {})
         journey.phase_report = {}
-        native = Mock()
-        native.alive.return_value = False
-        native.processes.return_value = []
-        native.events = []
+        snapshot = Mock()
+        snapshot.alive.return_value = False
+        snapshot.processes.return_value = []
+        snapshot.events = []
         calls = []
-        native.cleanup.side_effect = lambda: calls.append('process cleanup')
+        snapshot.cleanup.side_effect = lambda: calls.append('process cleanup')
         path = Mock()
         path.unlink.side_effect = lambda **kwargs: calls.append('unlink')
-        journey.native = native
+        journey.platform_ui = snapshot
         journey.deferred_file_removals.append(path)
         with patch.object(module, 'wait', side_effect=lambda predicate, *args: predicate()):
             journey.cleanup()
@@ -1844,12 +1844,12 @@ class CurrentEngineVerifierTests(unittest.TestCase):
     def test_uncertain_process_cleanup_does_not_remove_executable(self):
         journey = module.Journey(None, {})
         journey.phase_report = {}
-        native = Mock()
-        native.alive.return_value = False
-        native.processes.return_value = [{'pid': 123, 'path': '/still-running-engine'}]
-        native.events = []
+        snapshot = Mock()
+        snapshot.alive.return_value = False
+        snapshot.processes.return_value = [{'pid': 123, 'path': '/still-running-engine'}]
+        snapshot.events = []
         path = Mock()
-        journey.native = native
+        journey.platform_ui = snapshot
         journey.deferred_file_removals.append(path)
         def require_isolation(predicate, *args):
             if not predicate():

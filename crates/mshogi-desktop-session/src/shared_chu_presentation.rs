@@ -1,20 +1,20 @@
-//! Native facts and technical complete actions, not the finished MSH-43 renderer.
+//! Facts and technical complete actions, not the finished MSH-43 renderer.
 use super::*;
 
-/// Exact Chu identity at a native coordinate. Promotion does not erase its origin.
+/// Exact Chu identity at a coordinate. Promotion does not erase its origin.
 #[derive(Clone, Debug, Serialize)]
 pub struct ChuPieceIdentity {
-    /// Opaque native coordinate.
+    /// Opaque coordinate.
     pub square: String,
-    /// Original native piece, including native owner and one-flip state.
+    /// Original piece, including rules owner and one-flip state.
     pub piece: c::Piece,
-    /// Exact current movement face, supplied by the native piece.
+    /// Exact current movement face, supplied by the piece.
     pub face: c::Face,
 }
 /// King/Prince identity and local capture threat; this is not Chess self-check.
 #[derive(Clone, Debug, Serialize)]
 pub struct ChuRoyal {
-    /// Exact native original/promoted royal identity.
+    /// Exact original/promoted royal identity.
     pub identity: ChuPieceIdentity,
     /// Hypothetical opposing local capture influence, not a legal-response permit.
     pub local_capture_threat: bool,
@@ -28,17 +28,17 @@ pub struct ChuHistory {
     pub board_ply: usize,
     /// Exact declared counter at this prefix, distinct from known board history.
     pub declared_total_plies: String,
-    /// Every original/promoted native identity.
+    /// Every original/promoted game identity.
     pub identities: Vec<ChuPieceIdentity>,
     /// All surviving King/Prince pieces.
     pub royals: Vec<ChuRoyal>,
-    /// Per first/second defending side, native has_capture_all: whether an opposing
-    /// complete action can capture all its royals. Native history admission applies
+    /// Per first/second defending side, has_capture_all: whether an opposing
+    /// complete action can capture all its royals. Game history admission applies
     /// when that attacker is the actual mover; otherwise this is advisory local
     /// geometry. This is never permission to move or a forced-mate proof. None
-    /// means the bounded native query could not establish it.
+    /// means the bounded game query could not establish it.
     pub capture_all_royals_threat: [Option<bool>; 2],
-    /// Bounded native threat-query refusals, never converted into false or mate.
+    /// Bounded threat-query refusals, never converted into false or mate.
     pub threat_diagnostics: Vec<String>,
     /// Actual Lion-law rights at this prefix.
     pub lion_rights: c::LionProtection,
@@ -46,7 +46,7 @@ pub struct ChuHistory {
     pub occurrences: Vec<usize>,
     /// Full must-vary witnesses and progress.
     pub obligations: Vec<c::Obligation>,
-    /// Exact native conclusion, independent of evaluation and process state.
+    /// Exact game conclusion, independent of evaluation and process state.
     pub conclusion: Option<c::Conclusion>,
     /// Actual current opposing draw offer, not a concluded draw.
     pub draw_offer: Option<c::Side>,
@@ -73,7 +73,7 @@ impl ChuHistory {
             .iter()
             .filter(|i| matches!(i.face, c::Face::King | c::Face::Prince))
             .map(|i| {
-                let at: c::Square = i.square.parse().expect("native coordinate");
+                let at: c::Square = i.square.parse().expect("coordinate");
                 let index = usize::from(i.piece.side == c::Side::Gote);
                 ChuRoyal {
                     identity: i.clone(),
@@ -107,23 +107,23 @@ impl ChuHistory {
         }
     }
 }
-/// Native Chu root provenance and visibly separate selected/live facts.
+/// Chu root provenance and visibly separate selected/live facts.
 #[derive(Clone, Debug, Serialize)]
 pub struct Presentation {
-    /// Native root category, declared counters and known-history provenance.
+    /// Game root category, declared counters and known-history provenance.
     pub root: c::RootMetadata,
     /// Exact declared root counter as decimal text for JavaScript consumers.
     /// This is not a claim of known moves before the imported root.
     pub declared_root_plies: String,
-    /// Native provenance fact; consumers need not infer history from root labels.
+    /// Provenance fact; consumers need not infer history from root labels.
     pub earlier_history_unknown: bool,
-    /// Only native established reachability, never diagram admissibility.
+    /// Only established reachability, never diagram admissibility.
     pub historical_reachability_proven: bool,
     /// Exact viewed history with no future knowledge.
     pub selected: ChuHistory,
     /// Current authoritative live history.
     pub live: ChuHistory,
-    /// Functional native execution for the ordinary Chu product.
+    /// Functional execution for the ordinary Chu product.
     pub execution_supported: bool,
 }
 impl Presentation {
@@ -174,7 +174,7 @@ pub(super) fn choice(action: c::Action, alternatives: &[c::Action]) -> Presented
         },
         from: action.from.to_string(),
         steps: action.route.iter().map(ToString::to_string).collect(),
-        action: serde_json::to_string(&action).expect("native action"),
+        action: serde_json::to_string(&action).expect("action"),
         completion,
     }
 }
@@ -183,7 +183,7 @@ pub(super) fn inspect(game: &c::Game, origin: &str) -> Result<inspection::Inspec
     let piece = game
         .position()
         .piece(square)
-        .ok_or("No native piece at this origin.")?;
+        .ok_or("No piece at this origin.")?;
     let choices = game
         .local_position()
         .inspection(square)
@@ -197,12 +197,12 @@ pub(super) fn inspect(game: &c::Game, origin: &str) -> Result<inspection::Inspec
                 },
                 from: origin.into(),
                 steps: action.route.iter().map(ToString::to_string).collect(),
-                action: serde_json::to_string(&action).expect("native action"),
+                action: serde_json::to_string(&action).expect("action"),
                 completion: Some(Completion {
                     label: if action.promote {
                         "Promote"
                     } else {
-                        "Complete native route"
+                        "Complete route"
                     }
                     .into(),
                     glyph: None,
@@ -212,12 +212,12 @@ pub(super) fn inspect(game: &c::Game, origin: &str) -> Result<inspection::Inspec
         .collect();
     Ok((
         GameKind::Chu,
-        NativeSide::Chu(piece.side),
+        TaggedSide::Chu(piece.side),
         format!(
             "{} {}",
             side(
-                mshogi_core::native::RulesProfile::ChuJcsa2019V1,
-                NativeSide::Chu(piece.side)
+                mshogi_core::game::RulesProfile::ChuJcsa2019V1,
+                TaggedSide::Chu(piece.side)
             )
             .label,
             piece_name(piece)
@@ -227,8 +227,8 @@ pub(super) fn inspect(game: &c::Game, origin: &str) -> Result<inspection::Inspec
 }
 fn event_label(event: &c::GameEvent) -> String {
     let actor = side(
-        mshogi_core::native::RulesProfile::ChuJcsa2019V1,
-        NativeSide::Chu(event.actor),
+        mshogi_core::game::RulesProfile::ChuJcsa2019V1,
+        TaggedSide::Chu(event.actor),
     )
     .label;
     match &event.command {
@@ -257,8 +257,8 @@ pub(super) fn status(game: &c::Game, _has_board_actions: bool) -> PresentedStatu
             format!(
                 "{} wins by {reason}",
                 side(
-                    mshogi_core::native::RulesProfile::ChuJcsa2019V1,
-                    NativeSide::Chu(outcome.winner().unwrap())
+                    mshogi_core::game::RulesProfile::ChuJcsa2019V1,
+                    TaggedSide::Chu(outcome.winner().unwrap())
                 )
                 .label
             )
@@ -269,8 +269,8 @@ pub(super) fn status(game: &c::Game, _has_board_actions: bool) -> PresentedStatu
         None => format!(
             "{} to move",
             side(
-                mshogi_core::native::RulesProfile::ChuJcsa2019V1,
-                NativeSide::Chu(game.position().side_to_move())
+                mshogi_core::game::RulesProfile::ChuJcsa2019V1,
+                TaggedSide::Chu(game.position().side_to_move())
             )
             .label
         ),
@@ -289,18 +289,18 @@ pub(super) fn edition(_game: &c::Game) -> &'static str {
     c::PROFILE_EDITION
 }
 pub(super) fn pieces(game: &c::Game) -> Vec<PresentedPiece> {
-    let profile = <super::Chu as crate::native_game::NativeGame>::game_profile(game);
+    let profile = <super::Chu as crate::game_adapter::GameAdapter>::game_profile(game);
     game.position()
         .pieces()
         .map(|(square, p)| PresentedPiece {
             square: square.to_string(),
-            owner: side(profile, NativeSide::Chu(p.side)).key,
+            owner: side(profile, TaggedSide::Chu(p.side)).key,
             kind: p.base.code().into(),
             promoted: p.promoted,
             text: p.code(),
             label: format!(
                 "{square}, {} {}",
-                side(profile, NativeSide::Chu(p.side)).label,
+                side(profile, TaggedSide::Chu(p.side)).label,
                 piece_name(p)
             ),
         })

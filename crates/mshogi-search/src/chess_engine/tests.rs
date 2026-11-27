@@ -41,7 +41,7 @@ fn finds_forced_mates_with_exact_distance() {
         if let Some(first) = first {
             assert_eq!(chosen(&result), first.parse().unwrap(), "{fen}");
         }
-        // The principal variation is a legal native line that ends in mate.
+        // The principal variation is a legal line that ends in mate.
         let mut replay = g.clone();
         for choice in &result.principal_variation {
             match choice {
@@ -58,7 +58,7 @@ fn finds_forced_mates_with_exact_distance() {
 }
 
 #[test]
-fn concluded_roots_return_the_native_outcome() {
+fn concluded_roots_return_the_outcome() {
     let mut engine = ChessEngine::new(1);
     let mated = game("R3k3/8/4K3/8/8/8/8/8 b - - 0 1");
     let result = run(&mut engine, &mated, depth(4));
@@ -236,7 +236,7 @@ fn limits_validation_and_table_reuse() {
 }
 
 #[test]
-fn each_returned_move_is_a_native_legal_action() {
+fn each_returned_move_is_a_legal_action() {
     let mut rng = TestRng(0xC0FF_EE00_1234_0001);
     let mut engine = ChessEngine::new(8);
     let mut searched = 0;

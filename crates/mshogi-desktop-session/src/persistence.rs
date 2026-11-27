@@ -46,14 +46,14 @@ pub struct IoState {
     pub phase: IoPhase,
     /// Plain completion/failure detail.
     pub message: Option<String>,
-    /// Native resource facts when the failed file operation establishes them.
+    /// Resource facts when the failed file operation establishes them.
     pub resource: Option<ResourceFailure>,
 }
 pub(super) enum Work {
-    Native(Box<shared::archive::NativeWork>),
+    Archive(Box<shared::archive::GameWork>),
 }
 pub(super) enum Completed {
-    Native(Box<shared::archive::NativeCompleted>),
+    Archive(Box<shared::archive::GameCompleted>),
 }
 struct Job {
     id: u64,
@@ -198,10 +198,9 @@ fn finish_validation_budget(
     // subsequently become a failed Save because scheduling crossed the budget.
     // atomic_write checks the deadline/cancellation predicate before that point.
     let committed_save = match &result {
-        Ok(Completed::Native(value)) => matches!(
-            value.as_ref(),
-            shared::archive::NativeCompleted::Saved { .. }
-        ),
+        Ok(Completed::Archive(value)) => {
+            matches!(value.as_ref(), shared::archive::GameCompleted::Saved { .. })
+        }
         _ => false,
     };
     if !committed_save && !cancelled && elapsed >= budget {
@@ -214,7 +213,7 @@ fn finish_validation_budget(
                 ResourceScope::Application,
                 ResourceUnit::Milliseconds,
             ),
-            "Application capacity: native document validation exceeded its bounded 15-second budget. The accepted current document is preserved.",
+            "Application capacity: document validation exceeded its bounded 15-second budget. The accepted current document is preserved.",
         ))
     } else {
         result
@@ -241,8 +240,8 @@ pub(super) fn check(stopped: &mut impl FnMut() -> bool) -> Result<(), String> {
     }
 }
 fn execute(work: Work, mut stopped: impl FnMut() -> bool) -> Result<Completed, OperationFailure> {
-    let Work::Native(work) = work;
-    shared::archive::execute(*work, &mut stopped).map(|value| Completed::Native(Box::new(value)))
+    let Work::Archive(work) = work;
+    shared::archive::execute(*work, &mut stopped).map(|value| Completed::Archive(Box::new(value)))
 }
 pub(super) fn atomic_write(
     path: &std::path::Path,
@@ -312,7 +311,7 @@ impl DesktopController {
             return;
         }
         let result = match result {
-            Ok(Completed::Native(value)) => self.finish_native_file(*value),
+            Ok(Completed::Archive(value)) => self.finish_file(*value),
             Err(error) => {
                 self.session.clear_browse_intent();
                 self.io_state.resource = error.resource;
@@ -328,14 +327,14 @@ impl DesktopController {
         self.session.revision += 1;
     }
     /// The sole current-document installation authority. Every payload has already
-    /// passed strict native replay on the bounded document worker. This method
+    /// passed strict game replay on the bounded document worker. This method
     /// assigns fresh identities and stops execution before the atomic owner swap.
     pub(crate) fn install_document(
         &mut self,
-        opened: shared::archive::OpenedNative,
+        opened: shared::archive::OpenedGame,
         path: PathBuf,
     ) -> Result<String, String> {
-        use shared::archive::OpenedNative;
+        use shared::archive::OpenedGame;
         let next = self
             .runtime_floor()
             .max(self.session.revision)
@@ -371,27 +370,27 @@ impl DesktopController {
             capacity: CapacityState::default(),
         };
         let candidate = match opened {
-            OpenedNative::Chess(mut state) => {
+            OpenedGame::Chess(mut state) => {
                 state.prepare_install();
                 ActiveDocument::Chess { runtime, state }
             }
-            OpenedNative::Shogi(mut state) => {
+            OpenedGame::Shogi(mut state) => {
                 state.prepare_install();
                 ActiveDocument::Shogi { runtime, state }
             }
-            OpenedNative::Tenjiku(mut state) => {
+            OpenedGame::Tenjiku(mut state) => {
                 state.prepare_install();
                 ActiveDocument::Tenjiku { runtime, state }
             }
-            OpenedNative::Chu(mut state) => {
+            OpenedGame::Chu(mut state) => {
                 state.prepare_install();
                 ActiveDocument::Chu { runtime, state }
             }
-            OpenedNative::Tori(mut state) => {
+            OpenedGame::Tori(mut state) => {
                 state.prepare_install();
                 ActiveDocument::Tori { runtime, state }
             }
-            OpenedNative::Xiangqi(mut state) => {
+            OpenedGame::Xiangqi(mut state) => {
                 state.prepare_install();
                 ActiveDocument::Xiangqi { runtime, state }
             }
@@ -400,12 +399,9 @@ impl DesktopController {
         self.last_command_receipt = None;
         self.bridge.cancel();
         self.session = candidate;
-        Ok(
-            "Opened complete native document with fresh runtime identities and work stopped."
-                .into(),
-        )
+        Ok("Opened complete document with fresh runtime identities and work stopped.".into())
     }
-    /// Stop the actual native document before host close confirmation. No other
+    /// Stop the actual document before host close confirmation. No other
     /// game is constructed and no result is invented.
     pub fn application_pause_for_close(&mut self) -> SharedSnapshot {
         // Repeated close must retain an existing exact stop-only exemption.
@@ -434,7 +430,7 @@ mod tests {
             (15001, false, true),
         ] {
             let error = finish_validation_budget(
-                Err("Native operation stopped".into()),
+                Err("Game operation stopped".into()),
                 std::time::Duration::from_millis(elapsed),
                 budget,
                 cancelled,
@@ -450,7 +446,7 @@ mod tests {
                 assert_eq!(fact.unit, Some(ResourceUnit::Milliseconds));
             }
         }
-        let saved = Completed::Native(Box::new(shared::archive::NativeCompleted::Saved {
+        let saved = Completed::Archive(Box::new(shared::archive::GameCompleted::Saved {
             path: "committed.mshogi".into(),
             revision: 7,
             identity: 9,

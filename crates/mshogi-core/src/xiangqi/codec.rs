@@ -5,7 +5,7 @@ use super::{
 };
 use serde::{Deserialize, Serialize};
 
-/// Maximum native root-position JSON bytes. Valid documents are under 512 bytes;
+/// Maximum game root-position JSON bytes. Valid documents are under 512 bytes;
 /// the 4KiB bound limits hostile parsing without imposing a future record limit.
 pub const MAX_POSITION_BYTES: usize = 4096;
 /// Maximum six-field position FEN bytes (no history or extra fields).
@@ -99,7 +99,7 @@ impl PositionRoot {
     pub const fn origin(&self) -> RootOrigin {
         self.origin
     }
-    /// Position-only native JSON, preserving explicit unknown counters/provenance.
+    /// Position-only JSON, preserving explicit unknown counters/provenance.
     /// Not an alternative canonical full-game schema or a desktop save file.
     pub fn to_json(&self) -> String {
         let wire = RootWire {
@@ -113,7 +113,7 @@ impl PositionRoot {
             no_capture_plies: NullableCounter(self.position.counters.no_capture_plies()),
             fullmove_number: NullableCounter(self.position.counters.fullmove_number()),
         };
-        serde_json::to_string(&wire).expect("fixed native position fields serialize")
+        serde_json::to_string(&wire).expect("fixed position fields serialize")
     }
     /// Strict bounded direct typed parsing: duplicate fields survive until Serde
     /// rejects them; unknown/missing/unsupported identities never fall through.
@@ -179,7 +179,7 @@ impl Position {
         Self::from_board(parse_board(fields[0])?, side, counters)
     }
     /// Canonical scoped position FEN. Missing declared counters are an explicit
-    /// error; use the native position-root JSON to preserve unknown values.
+    /// error; use the position-root JSON to preserve unknown values.
     pub fn to_fen(&self) -> Result<String, PositionError> {
         let count = self
             .counters

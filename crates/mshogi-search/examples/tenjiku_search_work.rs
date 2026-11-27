@@ -53,8 +53,8 @@ fn wide(profile: Profile) -> Result<Game, Box<dyn Error>> {
     )?)?)
 }
 fn retained(profile: Profile) -> Result<Game, Box<dyn Error>> {
-    // Same reproducible 156-piece quiet workload as the accepted native example.
-    // Native Game still owns repetition and complete transition admission.
+    // Same reproducible 156-piece quiet workload as the accepted example.
+    // Game still owns repetition and complete transition admission.
     let mut game = Game::standard(profile);
     let mut seed = 0x87_2026u64;
     for _ in 0..128 {

@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
-// Native-generated inputs exercise shared presentation, never a rules oracle.
+// Generated inputs exercise shared presentation, never a rules oracle.
 // SVG child order is asserted on the rendered DOM. Actual WebView pixel/hit-test
 // evidence is supplied separately by the packaged GUI campaign.
 import { renderGameBoard, square } from "./testing/helpers";
-import type { GameSnapshot, MovementInspection } from "./native";
+import type { GameSnapshot, MovementInspection } from "./sessionTypes";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { GameBoard } from "./product/GameBoard";
@@ -77,14 +77,14 @@ it.each([cast(chuJson), cast(adamsCompound), cast(mullerCompound)])("retains the
   fireEvent.click(square(route.steps[1]!, container));
   expect(command).toHaveBeenCalledTimes(1);
   expect(container.querySelector(".selected-piece-status")).toBeNull();
-  expect(within(container).getByRole("status").textContent).toBe("Complete native action submitted.");
+  expect(within(container).getByRole("status").textContent).toBe("Complete action submitted.");
 });
 
 it.each([
   { source: cast(toriJson), square: "7f", name: "7f, Sente Eagle (promoted Falcon)" },
   { source: cast(adamsPromoted), square: "8h", name: "8h, Sente Lion Hawk (promoted Lion)" },
   { source: cast(mullerPromoted), square: "8h", name: "8h, Sente Lion Hawk (promoted Lion)" },
-])("keeps the native $source.profile promoted name and original identity", ({ source, square: coordinate, name }) => {
+])("keeps the $source.profile promoted name and original identity", ({ source, square: coordinate, name }) => {
   const { container, command } = renderGameBoard(source);
   fireEvent.click(square(coordinate, container));
   expect(help(container)?.textContent).toBe(`Selected ${name} · Esc clears`);
@@ -107,7 +107,7 @@ it.each([
 });
 
 it.each(cases)("keeps $label enemy and immobile friendly identification read-only", async ({ source: playingSource }) => {
-  // Native Xiangqi agreement and Chu's opponent-to-move prefix also retain
+  // Xiangqi agreement and Chu's opponent-to-move prefix also retain
   // inspectable friendly pieces while publishing no actions for those pieces.
   const source = playingSource.game === "xiangqi" ? cast(xiangqiAgreed) : playingSource.game === "chu" ? cast(chuCaptured) : playingSource;
   const { container, command } = renderGameBoard(source);
@@ -133,7 +133,7 @@ it.each(cases)("keeps $label enemy and immobile friendly identification read-onl
   expect(command).not.toHaveBeenCalled();
 });
 
-it("retires the computed name on a changed native context and after an ordinary completed move", () => {
+it("retires the computed name on a changed game context and after an ordinary completed move", () => {
   const source = cast(chessJson), command = vi.fn();
   const { container, rerender } = render(<GameBoard snapshot={source} disabled={false} inspectionDisabled={false} command={command} />);
   fireEvent.click(square("e2", container));
@@ -158,7 +158,7 @@ it.each([
   { label: "Chu lion", source: cast(chuJson), from: "6f", destination: "7e", art: ".piece-tile", marker: ".capture-marker" },
   { label: "Adams dense Great General", source: cast(adamsJson), from: "9m", destination: "9d", art: ".piece-tile", marker: ".capture-marker" },
   { label: "Muller dense Great General", source: cast(mullerJson), from: "9m", destination: "9d", art: ".piece-tile", marker: ".capture-marker" },
-])("paints the $label capture outline after the occupied native piece without taking pointer events", ({ source, from, destination, art, marker, contract }) => {
+])("paints the $label capture outline after the occupied piece without taking pointer events", ({ source, from, destination, art, marker, contract }) => {
   // These two adapters isolate the plain-text Chess and Shogi art paths. Their
   // supplied choices test paint/hit dispatch only, not game-rule correctness.
   const input = contract ? { ...source, choices: [{ action: "capture-paint-contract", from, origin: { kind: "board" as const, square: from }, steps: [destination], completion: null }] } : source;
@@ -176,8 +176,8 @@ it.each([
   expect(destinationSquare.getAttribute("aria-label")).toContain("legal destination");
   expect(destinationSquare.querySelector(".inspection-marker")).toBeNull();
   fireEvent.click(destinationSquare);
-  // Depending on native complete-route alternatives this enters a prefix,
-  // completes immediately, or opens a native completion dialog. None inspects.
+  // Depending on complete-route alternatives this enters a prefix,
+  // completes immediately, or opens a completion dialog. None inspects.
   expect(inspect).not.toHaveBeenCalled();
   expect(destinationSquare.getAttribute("aria-label")?.includes("route step") || command.mock.calls.length > 0 || screen.queryByRole("dialog")).toBeTruthy();
 });

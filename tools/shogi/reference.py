@@ -87,7 +87,7 @@ def normalized_sfen(sfen):
     if len(fields) != 4 or fields[1] not in ['b', 'w'] or not fields[3].isdigit() or int(fields[3]) < 1:
         raise ValueError('reference-domain: invalid SFEN fields')
     if int(fields[3]) > 2147483647:
-        raise ValueError('reference-domain: next-ply exceeds cshogi signed-int32 domain; native u32 contract is separate')
+        raise ValueError('reference-domain: next-ply exceeds cshogi signed-int32 domain; u32 contract is separate')
     rows = fields[0].split('/')
     if len(rows) != 9:
         raise ValueError('SFEN requires nine ranks')
@@ -307,7 +307,7 @@ def audit_gap_sentinels(cshogi):
     cycle = ['9i9h', '1a1b', '9h9i', '1b1a']
     for count in [1, 3]:
         board, prefixes = replay(cshogi, root, cycle * count)
-        helper = board.is_draw()  # Deliberate gap observation; no native outcome inferred.
+        helper = board.is_draw()  # Deliberate gap observation; no game outcome inferred.
         if helper != cshogi.REPETITION_DRAW or not legal(board, cshogi):
             raise AssertionError('pinned repetition helper/board-query scope changed')
         verify_reversal(board, prefixes, cshogi)

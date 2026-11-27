@@ -1,4 +1,4 @@
-//! Retained native USI evidence replays without external executables on every OS.
+//! Retained USI evidence replays without external executables on every OS.
 use mshogi_runner::shogi::{Report, Stop};
 #[test]
 fn recorded_games_and_intentional_retirement_regression_have_explicit_verdicts() {
@@ -19,7 +19,7 @@ fn recorded_games_and_intentional_retirement_regression_have_explicit_verdicts()
         total += games.len();
         for (entry, game) in report.games.iter().zip(games) {
             assert_eq!(entry.conclusion, game.conclusion());
-            if entry.stop != Stop::NativeConclusion {
+            if entry.stop != Stop::GameConclusion {
                 assert!(entry.score.is_none());
             }
         }
@@ -31,16 +31,15 @@ fn recorded_games_and_intentional_retirement_regression_have_explicit_verdicts()
         "an incomplete retirement capture must never establish accepted work"
     );
     let value: serde_json::Value = serde_json::from_str(before).unwrap();
-    let canonical = mshogi_core::native::CanonicalRecord::from_json(
-        value["games"][0]["game"].as_str().unwrap(),
-    )
-    .unwrap();
-    let mshogi_core::native::CanonicalRecord::Shogi(record) = canonical else {
+    let canonical =
+        mshogi_core::game::CanonicalRecord::from_json(value["games"][0]["game"].as_str().unwrap())
+            .unwrap();
+    let mshogi_core::game::CanonicalRecord::Shogi(record) = canonical else {
         panic!()
     };
     assert_eq!(
         record.to_game().unwrap().events().len(),
         1,
-        "the retained pre-fix native history itself remains inspectable"
+        "the retained pre-fix game history itself remains inspectable"
     );
 }

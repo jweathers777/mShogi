@@ -150,7 +150,7 @@ impl Prepared {
             bare_conversion,
         }
     }
-    /// Fixed native-material blend phase.
+    /// Fixed material blend phase.
     pub fn phase(&self) -> i32 {
         self.raw.middle_phase
     }
@@ -238,9 +238,11 @@ impl crate::texel::TexelModel for ChessTexel {
             .join(" ")
     }
     fn prepare(position: &str) -> Result<Option<Prepared>, String> {
-        let native =
+        let rules_position =
             mshogi_core::chess::Position::from_fen(position).map_err(|e| format!("{e:?}"))?;
-        Ok(Some(Prepared::new(&ChessPosition::from_position(&native))))
+        Ok(Some(Prepared::new(&ChessPosition::from_position(
+            &rules_position,
+        ))))
     }
     fn score(prepared: &Prepared, weights: &[i32]) -> i32 {
         prepared.score(&Weights(weights.try_into().expect("chess weight count")))

@@ -2,7 +2,7 @@
 use super::{Action, Face, Piece, Position, Side, Square, transition};
 use std::{error::Error, fmt};
 
-/// Native effects from a checked local move/drop; captures are derived, never supplied.
+/// Game effects from a checked local move/drop; captures are derived, never supplied.
 pub use super::transition::Effects;
 /// Failed complete local action; no outcome or execution failure is implied.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -19,7 +19,7 @@ pub enum ActionError {
     RoyalCapture,
     /// Impossible movement or an obstructed ray.
     Geometry,
-    /// Requested resulting face contradicts compulsory promotion/native identity.
+    /// Requested resulting face contradicts compulsory promotion/game identity.
     ResultFace,
     /// Royal/promoted face cannot be dropped.
     InvalidDropFace,
@@ -96,11 +96,11 @@ pub enum LocalStatus {
 /// Exact board or captured-resource origin for advisory read-only inspection.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum InspectionOrigin {
-    /// Ownership comes from the native piece on this square.
+    /// Ownership comes from the piece on this square.
     Board(Square),
     /// Inspect this owner's resource on a private hypothetical turn.
     Hand {
-        /// Native owner, not the actual turn.
+        /// Rules owner, not the actual turn.
         side: Side,
         /// Exact base hand identity; no promoted/royal resources.
         face: Face,
@@ -111,9 +111,9 @@ pub enum InspectionOrigin {
 pub struct InspectedChoice {
     /// Exact supplied inspection origin.
     pub origin: InspectionOrigin,
-    /// Native complete move/drop including compulsory resulting face.
+    /// Complete move/drop including compulsory resulting face.
     pub action: Action,
-    /// Native effects on the hypothetical turn (no game/history events).
+    /// Game effects on the hypothetical turn (no game/history events).
     pub effects: Effects,
 }
 /// Single-use local reversal token; fields are private and no structural caller can forge it.
@@ -204,7 +204,7 @@ impl LocalPosition {
     pub fn position(&self) -> &Position {
         &self.position
     }
-    /// Geometric native attackers, including pinned pieces and defended endpoints.
+    /// Geometric attackers, including pinned pieces and defended endpoints.
     /// This is a threat observation, not permission to move the attacker.
     pub fn attackers(&self, target: Square, by: Side) -> Vec<Square> {
         attackers(&self.position, target, by)
@@ -227,7 +227,7 @@ impl LocalPosition {
         )
         .is_ok()
     }
-    /// Atomically commit one complete local choice using MSH-127's native transition.
+    /// Atomically commit one complete local choice using MSH-127's transition.
     /// Requires separate MSH-129 permission in a real Game. Capacity failure is explicit.
     pub fn apply(&mut self, action: Action) -> Result<(Effects, LocalUndo), ActionError> {
         resolve_legal(
@@ -253,7 +253,7 @@ impl LocalPosition {
             (false, false) => LocalStatus::QuietNoAction,
         }
     }
-    /// Read-only complete board/hand inspection for either native owner. Empty or
+    /// Read-only complete board/hand inspection for either side. Empty or
     /// unavailable/invalid origins have no choices. The actual turn, metadata,
     /// counters and reversal identities are untouched. Inspection of an opponent
     /// never authorizes a live action and never re-admits a hypothetical root.

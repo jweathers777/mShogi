@@ -1,6 +1,6 @@
 //! Actual console entrypoint plus separately labeled supervisor instrumentation.
 mod support;
-use mshogi_core::{chess::*, native::*, shogi};
+use mshogi_core::{chess::*, game::*, shogi};
 use mshogi_engine::*;
 use std::{
     thread,
@@ -31,7 +31,7 @@ fn bridge(path: &str) -> EngineBridge {
     support::bridge::bridge(path, Duration::from_secs(15))
 }
 #[test]
-fn real_entrypoint_executes_both_native_games() {
+fn real_entrypoint_executes_both_games() {
     let bridge = bridge(env!("CARGO_BIN_EXE_mshogi"));
     let chess = context(1, false);
     bridge.submit(chess.clone()).unwrap();
@@ -112,7 +112,7 @@ fn forged_purpose_history_limits_selection_and_identities_never_publish_as_valid
                 board_ply: 0,
                 session_version: 2,
                 label: "Live prefix".into(),
-                turn: NativeSide::Chess(Color::White),
+                turn: TaggedSide::Chess(Color::White),
             },
         };
         bridge.submit(request.clone()).unwrap();
@@ -154,7 +154,7 @@ fn one_owner_retires_work_across_games_selection_and_semantic_undo() {
         .unwrap();
     game.undo(undo).unwrap();
     assert_eq!(game, root);
-    // Native semantic equality cannot reset the host request/generation ledger.
+    // Game semantic equality cannot reset the host request/generation ledger.
     let mut retired = context(8, true);
     retired.context.game = CanonicalRecord::shogi(shogi::GameRecord::from_game(&game));
     assert_eq!(bridge.submit(retired), Err(SubmitError::IdentityReused));

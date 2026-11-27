@@ -42,7 +42,7 @@ def tooling_affected(paths):
 def changed_paths(event, cwd=None):
     base = event.get("pull_request", {}).get("base", {}).get("sha") or event.get("before")
     # New branches and unavailable old commits conservatively check both areas.
-    # Native Git has no GitHub API's 300-file limit. --no-renames retains an old
+    # Git has no GitHub API's 300-file limit. --no-renames retains an old
     # relevant path when a file moves into a documentation directory.
     if not base or set(base) == {"0"}:
         return None
@@ -66,7 +66,7 @@ def plan(kind, event_name, event, paths=None):
         raise ValueError("Unknown workflow kind")
     if event_name == "workflow_dispatch":
         if inputs.get("suite", "configuration") not in SUITES:
-            raise ValueError("Unsupported native suite")
+            raise ValueError("Unsupported suite")
         return {"matrix": {"os": platforms(inputs.get("platform", PLATFORMS[0]))},
                 "rust": False, "frontend": False, "tooling": False, "scripts": False}
     if event_name not in ("push", "pull_request"):

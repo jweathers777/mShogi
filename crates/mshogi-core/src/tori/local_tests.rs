@@ -229,7 +229,7 @@ fn pinned_attackers_still_defend_squares_and_discovered_self_check_rejects() {
     }
 }
 #[test]
-fn source_derived_attack_tables_match_native_threats_for_all_faces_and_owners() {
+fn source_derived_attack_tables_match_threats_for_all_faces_and_owners() {
     let c = Corpus::embedded().unwrap();
     for f in c
         .fixtures()
@@ -462,7 +462,7 @@ fn local_root_checks_preserve_custom_provenance_and_allow_moving_side_check() {
     }
 }
 #[test]
-fn terminal_root_observations_are_native_not_match_conclusions() {
+fn terminal_root_observations_are_not_match_conclusions() {
     for (id, status) in [
         ("TORI-O-MATE", LocalStatus::Checkmate),
         ("TORI-O-QUIET", LocalStatus::QuietNoAction),
@@ -713,7 +713,7 @@ fn deterministic_legal_sequences_restore_every_prefix_and_inspection_is_nonmutat
     assert_eq!(run(), run());
 }
 #[test]
-fn bounded_perft_and_divide_use_independent_counts_and_preserve_native_paths() {
+fn bounded_perft_and_divide_use_independent_counts_and_preserve_paths() {
     let p = LocalPosition::admit(diagram(
         &[
             ("1a", Side::Sente, Face::Phoenix),

@@ -1,4 +1,4 @@
-"""Split native outcome-labelled self-play data by source family and board identity."""
+"""Split game outcome-labelled self-play data by source family and board identity."""
 import argparse
 import collections
 import hashlib
@@ -95,7 +95,7 @@ def split(root, manifest_path, game='chess', allow_empty=False, by_opening=False
         outputs[part] = {'path': str(path), 'sha256': digest(path),
                          'positions': counts[mask], 'games': len(selected_games[part])}
     manifest = {
-        'schema': 1, 'game': game, 'profile': profile, 'source': 'Fresh mShogi self-play; native final outcomes',
+        'schema': 1, 'game': game, 'profile': profile, 'source': 'Fresh mShogi self-play; final outcomes',
         'training_ready': all(counts[mask] for mask in masks.values()),
         'allow_empty_demonstration': allow_empty,
         'use': 'User-authorized internal classical tuning; no imported corpus',

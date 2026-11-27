@@ -103,7 +103,7 @@ fn two_profiles_contexts_cannot_cross_even_equal_boards() {
         a.position().pieces().collect::<Vec<_>>(),
         b.position().pieces().collect::<Vec<_>>()
     );
-    assert_ne!(a.native_root(), b.native_root());
+    assert_ne!(a.game_root(), b.game_root());
     assert_ne!(a.repetition_key(), b.repetition_key());
     assert_eq!(
         a.submit(GameRequest {
@@ -423,7 +423,7 @@ fn deterministic_admitted_sequences_preserve_capture_accounting_reversal_and_rep
     }
 }
 #[test]
-fn native_counter_refusal_is_capacity_and_not_a_game_outcome() {
+fn counter_refusal_is_capacity_and_not_a_game_outcome() {
     let profile = Profile::AdamsModern;
     let p = corner(profile).position().clone();
     let entries = p.pieces().collect::<Vec<_>>();

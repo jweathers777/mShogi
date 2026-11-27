@@ -1,9 +1,9 @@
 //! Chess engine on the shared search core.
 //!
-//! The native rules decide everything about the real game: a concluded root,
+//! The rules decide everything about the real game: a concluded root,
 //! the draw claims that are available, and which actions are legal. The shared
 //! core searches a private bitboard copy of the position and proposes a move;
-//! this adapter checks that move against the native legal actions before it
+//! this adapter checks that move against the legal actions before it
 //! returns it.
 use crate::{
     alphabeta::{self, Limits, Searcher, Status},
@@ -90,7 +90,7 @@ impl ChessEngine {
 
     /// Search the current position of `game`. The game is not changed.
     ///
-    /// A concluded root returns its native outcome. Under `AutoClaim` an
+    /// A concluded root returns its game outcome. Under `AutoClaim` an
     /// available claim is returned at once. An optional claim is preferred to a
     /// move whose score is not above zero. The stop callback must be cheap.
     pub fn search(
@@ -153,7 +153,7 @@ impl ChessEngine {
             result.principal_variation = vec![SearchChoice::Claim(claim)];
             return finish(result, 0, 0);
         }
-        // The search board has no fullmove counter. If the native game cannot
+        // The search board has no fullmove counter. If the game cannot
         // represent a move from this root, report that at once and do not search.
         let legal = game.position().legal_actions();
         if let Some(&first) = legal.first() {
@@ -190,10 +190,10 @@ impl ChessEngine {
                 .iter()
                 .map(|&m| SearchChoice::Move(position.action(m)))
                 .collect();
-            // The native rules are the authority: a move that they do not list
+            // The rules are the authority: a move that they do not list
             // is never returned.
             if !legal.contains(&action) {
-                debug_assert!(false, "search proposed a move that the native rules reject");
+                debug_assert!(false, "search proposed a move that the rules reject");
                 match legal.first() {
                     Some(&first) => {
                         action = first;
@@ -203,7 +203,7 @@ impl ChessEngine {
                     None => return finish(result, outcome.selective_depth, 0),
                 }
             }
-            // A drawn line can end with a draw claim that the native rules make
+            // A drawn line can end with a draw claim that the rules make
             // available there. Report that claim as the last command of the line;
             // the intended move of a claim is not played.
             if score == Some(0) {

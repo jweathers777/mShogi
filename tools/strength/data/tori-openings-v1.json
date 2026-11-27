@@ -2,7 +2,7 @@
  "name": "tori-openings-v1",
  "license": "CC0-1.0",
  "profile": "mshogi.tori.modern.v1",
- "notation": "native Tori notation (mshogi_core::tori::notation), from the standard root",
+ "notation": "Tori notation (mshogi_core::tori::notation), from the standard root",
  "provenance": "Project-generated (MSH-204, Tori Strength Harness); no copied game record or book line; CC0-1.0",
  "generation": "8 plies from the standard root; each ply chooses uniformly (xorshift seed 204) among legal actions whose depth-6 search score (mover's view) is within 50 of the best; distinct final positions only; 300 attempts; generator crates/mshogi-search/examples/tori_openings.rs",
  "balance": "admitted when the mShogi Tori search at commit 6c7be47a (shared core, mshogi.tori.material-placement.v1) scored the final position (side to move) within +-100 Swallow hundredths at fixed depth 12; rule fixed before screening; paired colors; not a certified equal-evaluation claim",

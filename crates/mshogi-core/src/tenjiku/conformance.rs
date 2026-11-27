@@ -1,4 +1,4 @@
-//! Test-only projections from production native APIs into the frozen independent corpus.
+//! Test-only projections from production APIs into the frozen independent corpus.
 use super::*;
 use mshogi_conformance::{
     Fixture,
@@ -124,22 +124,22 @@ fn observe(f: &Fixture, profile: Profile) -> Result<Option<Value>, String> {
     cases::observe(&f.id, g, profile)
 }
 #[test]
-fn both_profiles_execute_every_applicable_frozen_native_expectation() {
+fn both_profiles_execute_every_applicable_frozen_expectation() {
     let corpus = mshogi_conformance::tenjiku::Corpus::embedded().unwrap();
     for profile in Profile::ALL {
         let mut rows = 0;
         let mut assertions = 0;
         let mut failures = vec![];
-        for f in corpus.fixtures().iter().filter(|f| f.scope == "native") {
+        for f in corpus.fixtures().iter().filter(|f| f.scope == "rules") {
             rows += 1;
             let observed = match observe(f, profile) {
                 Ok(Some(v)) => v,
                 Ok(None) => {
-                    failures.push(format!("{} UNIMPLEMENTED native adapter", f.id));
+                    failures.push(format!("{} UNIMPLEMENTED adapter", f.id));
                     continue;
                 }
                 Err(e) => {
-                    failures.push(format!("{} native error {e}", f.id));
+                    failures.push(format!("{} error {e}", f.id));
                     continue;
                 }
             };
@@ -179,7 +179,7 @@ fn both_profiles_execute_every_applicable_frozen_native_expectation() {
             }
         }
         eprintln!(
-            "TENJIKU_CONFORMANCE profile={} native_rows={rows} executed={assertions} failed={} documentary_rows=129 later_consumer_rows=17",
+            "TENJIKU_CONFORMANCE profile={} rules_rows={rows} executed={assertions} failed={} documentary_rows=129 later_consumer_rows=17",
             profile.id(),
             failures.len()
         );

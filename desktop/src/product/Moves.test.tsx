@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
-import type { GameSnapshot, MovesPresentation } from "../native";
+import type { GameSnapshot, MovesPresentation } from "../sessionTypes";
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { NativeHistory } from "./NativeSessionPanels";
+import { GameHistory } from "./GameSessionPanels";
 
 import shogiJson from "../__fixtures__/shared-shogi-standard.json";
 import chessJson from "../__fixtures__/shared-chess-standard.json";
@@ -16,13 +16,13 @@ it.each([
   ["Adams dying Demon", adamsBurned, "Burned together: Gote Pawn at 8g; Sente Fire Demon destroyed at 8h"],
   ["Muller dying Demon", mullerBurned, "Sente Fire Demon destroyed at 8h"],
   ["stationary capture", mullerIguied, "Stationary capture at 9h; stationary origin 8h; Captured Gote Pawn at 9h"],
-])("makes native %s effects accessible while selecting the exact completed action", (_name, fixture, description) => {
+])("makes %s effects accessible while selecting the exact completed action", (_name, fixture, description) => {
   const state = fixture as unknown as GameSnapshot, entry = state.moves.entries[0]!, command = vi.fn();
-  render(<NativeHistory snapshot={state} disabled={false} command={command} />);
+  render(<GameHistory snapshot={state} disabled={false} command={command} />);
   const move = screen.getByRole("button", { name: `1. Sente: ${entry.notation}; ${description}` });
   expect(move.textContent).toBe(entry.notation);
   expect(move.getAttribute("title")).toBe(description);
-  expect(move.getAttribute("data-native-action")).toBe(entry.action);
+  expect(move.getAttribute("data-action")).toBe(entry.action);
   fireEvent.click(move);
   expect(command).toHaveBeenCalledExactlyOnceWith({ kind: "inspect", event_index: entry.event_index });
 });
@@ -41,8 +41,8 @@ function snapshot(extra: Partial<GameSnapshot> = {}): GameSnapshot {
     { index: 7, board_ply: 2, label: "Draw offered" },
   ], ...extra } as unknown as GameSnapshot;
 }
-it("uses native pair numbers and side columns without inventing an absent first-player move", () => {
-  const command = vi.fn(); render(<NativeHistory snapshot={snapshot()} disabled={false} command={command} />);
+it("uses pair numbers and side columns without inventing an absent first-player move", () => {
+  const command = vi.fn(); render(<GameHistory snapshot={snapshot()} disabled={false} command={command} />);
   const rows = screen.getAllByRole("row");
   expect(rows).toHaveLength(3); expect(within(rows[0]!).getAllByRole("columnheader").map(node => node.textContent)).toEqual(["Move number", "Red", "Black"]);
   expect(within(rows[1]!).getAllByRole("cell")[0]?.textContent).toBe("");
@@ -54,7 +54,7 @@ it("uses native pair numbers and side columns without inventing an absent first-
 });
 it("selects action and warning as exact different prefixes, never their shared board ply or command end", async () => {
   const command = vi.fn(), state = snapshot({ event_index: 5 });
-  const { rerender } = render(<NativeHistory snapshot={state} disabled={false} command={command} />);
+  const { rerender } = render(<GameHistory snapshot={state} disabled={false} command={command} />);
   const warning = screen.getByRole("button", { name: /Black repetition warning/ });
   expect(warning.getAttribute("aria-current")).toBe("step");
   expect(screen.getByRole("button", { name: "23. Black: H8+7" }).getAttribute("aria-current")).toBeNull();
@@ -64,18 +64,18 @@ it("selects action and warning as exact different prefixes, never their shared b
   expect(command).toHaveBeenLastCalledWith({ kind: "inspect", event_index: 5 });
   fireEvent.click(screen.getByRole("button", { name: "23. Black: H8+7" }));
   expect(command).toHaveBeenLastCalledWith({ kind: "inspect", event_index: 4 });
-  rerender(<NativeHistory snapshot={{ ...state, event_index: 6 }} disabled={false} command={command} />);
+  rerender(<GameHistory snapshot={{ ...state, event_index: 6 }} disabled={false} command={command} />);
   expect(screen.getByRole("button", { name: "24. Red: C2=5" }).getAttribute("aria-current")).toBe("step");
   fireEvent.click(screen.getByRole("button", { name: "Starting position" })); expect(command).toHaveBeenLastCalledWith({ kind: "inspect", event_index: 0 });
 });
-it.each([["chess", chessJson, "White", "Black"], ["shogi", shogiJson, "Sente", "Gote"], ["xiangqi", xiangqiJson, "Red", "Black"]])("shares the empty Moves structure with native %s side labels", (_game, value, first, second) => {
-  render(<NativeHistory snapshot={{ ...value, events: [], moves: { root: { label: "Starting position", numbering: "Known history only." }, entries: [], last_action: null } } as unknown as GameSnapshot} disabled={false} command={vi.fn()} />);
+it.each([["chess", chessJson, "White", "Black"], ["shogi", shogiJson, "Sente", "Gote"], ["xiangqi", xiangqiJson, "Red", "Black"]])("shares the empty Moves structure with %s side labels", (_game, value, first, second) => {
+  render(<GameHistory snapshot={{ ...value, events: [], moves: { root: { label: "Starting position", numbering: "Known history only." }, entries: [], last_action: null } } as unknown as GameSnapshot} disabled={false} command={vi.fn()} />);
   expect(screen.getByRole("region", { name: "Moves" })).toBeTruthy();
   expect(screen.getAllByRole("columnheader").map(node => node.textContent)).toEqual(["Move number", first, second]);
   expect(screen.getByText("No moves in known history.")).toBeTruthy();
 });
-it("keeps native events selectable without creating move rows and disables every target during an operation", () => {
-  const command = vi.fn(); render(<NativeHistory snapshot={snapshot()} disabled command={command} />);
+it("keeps game events selectable without creating move rows and disables every target during an operation", () => {
+  const command = vi.fn(); render(<GameHistory snapshot={snapshot()} disabled command={command} />);
   expect(screen.getAllByRole("row")).toHaveLength(3);
   expect(screen.getByText("Position events (2)")).toBeTruthy();
   for (const button of screen.getAllByRole("button", { hidden: true })) { expect((button as HTMLButtonElement).disabled).toBe(true); fireEvent.click(button); }

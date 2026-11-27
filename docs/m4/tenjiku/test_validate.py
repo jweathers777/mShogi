@@ -1,4 +1,4 @@
-"""Negative/mutation checks for data admission; no native Tenjiku tests."""
+"""Negative/mutation checks for data admission; no Tenjiku tests."""
 import copy
 import json
 import unittest
@@ -17,7 +17,7 @@ class Admission(unittest.TestCase):
             v.validate(self.p, self.c)
 
     def test_admits_review_input(self):
-        self.assertEqual(v.validate(self.p, self.c)['native_passed'], 0)
+        self.assertEqual(v.validate(self.p, self.c)['rules_passed'], 0)
 
     def test_duplicate_nested_rejected_before_map(self):
         with self.assertRaises(ValueError):
@@ -42,11 +42,11 @@ class Admission(unittest.TestCase):
     def test_one_profile_cannot_replace_two(self):
         self.reject(lambda p,c: c.update(profiles=[v.IDS[0]]))
 
-    def test_native_execution_claim_rejects(self):
-        self.reject(lambda p,c: c.update(native_conformance_executed=True))
+    def test_execution_claim_rejects(self):
+        self.reject(lambda p,c: c.update(rules_conformance_executed=True))
 
     def test_unknown_schema_field_rejects(self):
-        self.reject(lambda p,c: c.update(native_passed=348))
+        self.reject(lambda p,c: c.update(rules_passed=348))
 
     def test_duplicate_fixture_id(self):
         self.reject(lambda p,c: c['fixtures'].append(copy.deepcopy(c['fixtures'][0])))

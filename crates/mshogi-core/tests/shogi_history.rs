@@ -1,4 +1,4 @@
-//! Rule-derived ledgers are maintained separately from native observations.
+//! Rule-derived ledgers are maintained separately from engine observations.
 use mshogi_core::shogi::{
     Action, Conclusion, CounterSource, DeclarationEligibility, DrawReason, Game, GameCommand,
     GameError, GameRequest, GameRoot, HistoryOrigin, Position, RootCategory, RootError, Side,

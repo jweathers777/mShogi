@@ -121,7 +121,7 @@ fn actual_incompatible_child_failure_is_retained_unscored() {
         && !g.steps[0].applied
         && g.steps[0].observation.is_some()
         && g.score_first_twice.is_none()
-        && g.native_outcome.is_none()
+        && g.outcome.is_none()
         && g.cleanup.is_empty()));
     Report::from_json(&r.to_json().unwrap()).unwrap();
     for row in r.data_jsonl().unwrap().lines() {
@@ -146,7 +146,7 @@ fn whole_run_deadline_preserves_unscored_scheduled_games() {
     assert_eq!(r.games.len(), 2);
     assert!(r.games.iter().all(|g| g.stop == "wall_budget"
         && g.steps.is_empty()
-        && g.native_outcome.is_none()
+        && g.outcome.is_none()
         && g.score_first_twice.is_none()));
     Report::from_json(&r.to_json().unwrap()).unwrap();
 }

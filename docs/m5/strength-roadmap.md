@@ -22,7 +22,7 @@ Each step is one bounded task. Skip a step only with a recorded reason.
 
 1. **Harness.** At least 100 balanced openings; a tactical suite of at least
    200 positions with independently established answers and a held-out part; a
-   clocked, persistent-process match route with native admission of every
+   clocked, persistent-process match route with game admission of every
    reply; a game-test control at which the median late-game depth is at least
    8; a self-play export for Texel data.
 2. **Speed.** Profile where search time goes (generation, make/unmake,
@@ -70,7 +70,7 @@ Each step is one bounded task. Skip a step only with a recorded reason.
   Record the fixed-depth comparison instead.
 - Keep a change only with evidence. Report null results and revert them.
 - Pruning and evaluation inside the tree may be approximate (design A-03). Do
-  not add work at each node to make a pruned score exact; the native rules
+  not add work at each node to make a pruned score exact; the rules
   decide the real game.
 - A shared-core change must keep the tests of every game on the core passing.
   Switch a technique off for a game where it is clearly worse.
@@ -111,7 +111,7 @@ Steps 5 and 6 change accordingly.
 | Chu Shogi | Baseline accepted 2026-11-25 (MSH-52.3): 2x time about +370 to +600 Elo; 0 clear blunders in 512 sampled moves (same-family judge). | Final criteria: MSH-52 |
 | Tenjiku Shogi | Not started. Next: harness, then speed. | MSH-214 (harness), MSH-202 (speed); final criteria MSH-53 |
 
-## Clock allocation of the native experiment runner
+## Clock allocation of the experiment runner
 
 In a clocked experiment, every game uses one policy. For each request, the
 runner takes the normal share of the engine's remaining clock (the soft budget

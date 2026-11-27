@@ -100,7 +100,7 @@ fn zero_and_partial_work_never_supply_a_fallback() {
     assert_eq!(g.events().len(), 0);
 }
 #[test]
-fn native_conclusions_and_draws_have_native_terminal_scores() {
+fn conclusions_and_draws_have_terminal_scores() {
     for conclusion in [
         Conclusion::RoyalCapture {
             winner: Side::Sente,
@@ -191,7 +191,7 @@ fn fixture_action(v: &serde_json::Value) -> Action {
     }
 }
 #[test]
-fn selected_fixture_mate_and_prince_response_remain_native() {
+fn chu_search_detects_mate_and_preserves_prince_response() {
     // CHU-MATE independently expects Gote mate, while a complete Elephant flip
     // in CHU-MATE-PRINCE-RESPONSE creates the second royal and prevents mate.
     let g = fixture_game("CHU-MATE");
@@ -300,7 +300,7 @@ fn incomplete_later_iteration_retains_only_last_complete_pv() {
     assert_eq!(r.principal_variation, first.principal_variation);
 }
 #[test]
-fn native_counter_resource_failure_never_becomes_legal_choice_or_outcome() {
+fn counter_resource_failure_never_becomes_legal_choice_or_outcome() {
     let g = Game::from_root(
         Position::from_diagram(
             &[
@@ -354,7 +354,7 @@ fn independently_specified_no_action_root_stays_unscored() {
     assert_eq!(GameRecord::from_game(&game).unwrap(), before);
 }
 #[test]
-fn search_uses_prince_promotion_to_escape_the_native_mate_fixture() {
+fn search_uses_prince_promotion_to_escape_the_mate_fixture() {
     let mut game = fixture_game("CHU-MATE-PRINCE-RESPONSE");
     let result = search(
         &game,

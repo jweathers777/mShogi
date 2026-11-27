@@ -2,7 +2,7 @@
   "format": "mshogi.xiangqi.board-fixtures.v1",
   "profile": "mshogi.xiangqi.wxf2018.v1",
   "coordinates": "Red-bottom files a-i, ranks 0-9; n=Horse,b=Elephant; w=Red,b=Black",
-  "expectation_provenance": "Independently reasoned from WXF2018 Articles1/2 and previously reviewed MSH80 F001/F002 before any native/reference execution. Rotations only transcribe explicit side-relative rule geometry.",
+  "expectation_provenance": "Independently reasoned from WXF2018 Articles1/2 and previously reviewed MSH80 F001/F002 before any mShogi or reference execution. Rotations only transcribe explicit side-relative rule geometry.",
   "fixtures": [
     {
       "id": "XQ-F001-red",

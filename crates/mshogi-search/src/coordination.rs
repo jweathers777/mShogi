@@ -1,4 +1,4 @@
-//! One bounded native search worker, request identity and stale-result checking.
+//! One bounded search worker, request identity and stale-result checking.
 use crate::{
     chess_engine::{ChessEngine, SearchOptions, TimeBudget},
     search::{SearchError, SearchLimits, SearchResult},
@@ -76,7 +76,7 @@ impl SearchCompletion {
     pub const fn result(&self) -> &Result<SearchResult, SearchError> {
         &self.result
     }
-    /// Deepest attempted native board ply, including selective continuation.
+    /// Deepest attempted game board ply, including selective continuation.
     pub const fn selective_depth(&self) -> Option<u16> {
         self.selective_depth
     }
@@ -146,7 +146,7 @@ struct Shared {
     exited: AtomicBool,
 }
 
-/// A single native worker. Storage is bounded to one pending request, one
+/// A single worker. Storage is bounded to one pending request, one
 /// executing request and one completion, with no progress stream or I/O.
 /// Submission/cancellation never join a worker or wait for search completion.
 /// Short metadata mutex sections still depend on OS scheduling.
@@ -154,7 +154,7 @@ pub struct SearchCoordinator {
     shared: Arc<Shared>,
 }
 impl SearchCoordinator {
-    /// Start one named native worker. Thread creation failures are explicit.
+    /// Start one named worker. Thread creation failures are explicit.
     pub fn new() -> Result<Self, std::io::Error> {
         let shared = Arc::new(Shared {
             state: Mutex::new(State::default()),
@@ -181,7 +181,7 @@ impl SearchCoordinator {
         self.submit_with_time(game, version, limits, None)
     }
 
-    /// Submit ordinary native work with an optional exact soft/hard time budget.
+    /// Submit ordinary work with an optional exact soft/hard time budget.
     /// Time is part of the immutable request identity and stale-result checks.
     pub fn submit_with_time(
         &self,

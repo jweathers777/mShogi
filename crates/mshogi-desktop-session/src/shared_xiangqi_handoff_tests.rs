@@ -1,4 +1,4 @@
-//! Aggregate MSH-76 journeys across existing native boundaries, not GUI evidence.
+//! Aggregate MSH-76 journeys across existing boundaries, not GUI evidence.
 use super::*;
 
 fn warned_game() -> x::Game {
@@ -44,14 +44,14 @@ fn wait_file(c: &mut DesktopController, id: u64) -> SharedSnapshot {
 }
 
 #[test]
-fn warning_inspection_archive_reopen_and_resume_preserve_one_native_context() {
+fn warning_inspection_archive_reopen_and_resume_preserve_one_context() {
     let mut c = controller();
     let game = warned_game();
     replace(&mut c, &game, x::Side::Black);
-    let canonical = native(&c);
+    let canonical = game_record(&c);
     let observed = execute(&analyze(&mut c, 128));
     assert!(accept(&mut c, observed.clone()));
-    assert_eq!(native(&c), canonical, "analysis is read-only");
+    assert_eq!(game_record(&c), canonical, "analysis is read-only");
     let late = execute(&analyze(&mut c, 128));
     // Analysis remembers its submitted limits; set the desired document defaults last.
     let settings = crate::game_document::GameSettings {
@@ -65,7 +65,7 @@ fn warning_inspection_archive_reopen_and_resume_preserve_one_native_context() {
     send(
         &mut c,
         SessionOperation::Preferences {
-            settings: settings.map(NativeSide::Xiangqi),
+            settings: settings.map(TaggedSide::Xiangqi),
         },
     )
     .unwrap();
@@ -98,7 +98,7 @@ fn warning_inspection_archive_reopen_and_resume_preserve_one_native_context() {
         &mut c,
         SessionOperation::Replace {
             record: CanonicalRecord::shogi(s::GameRecord::from_game(&s::Game::new())),
-            human: NativeSide::Shogi(s::Side::Sente),
+            human: TaggedSide::Shogi(s::Side::Sente),
         },
     )
     .unwrap();
@@ -110,7 +110,7 @@ fn warning_inspection_archive_reopen_and_resume_preserve_one_native_context() {
     let reopened = wait_file(&mut c, open);
     assert_ne!(reopened.token, selected.token);
     assert!(c.session.next_request > floor);
-    assert_eq!(native(&c), canonical);
+    assert_eq!(game_record(&c), canonical);
     assert_eq!(reopened.game, GameKind::Xiangqi);
     assert_eq!(reopened.profile.id(), x::PROFILE_ID);
     assert!(!reopened.historical && reopened.paused);
@@ -182,7 +182,7 @@ fn same_board_history_cancel_and_cross_game_replacement_cannot_revive_results() 
         &mut c,
         SessionOperation::Replace {
             record: CanonicalRecord::shogi(s::GameRecord::from_game(&s::Game::new())),
-            human: NativeSide::Shogi(s::Side::Sente),
+            human: TaggedSide::Shogi(s::Side::Sente),
         },
     )
     .unwrap();
@@ -190,10 +190,10 @@ fn same_board_history_cancel_and_cross_game_replacement_cannot_revive_results() 
     replace(&mut c, &warned, x::Side::Black);
     assert!(!accept(&mut c, warned_response));
     assert!(!accept(&mut c, valid_response));
-    let live = native(&c);
+    let live = game_record(&c);
     let current = analyze(&mut c, 128);
     assert_eq!(current.game, live);
     assert!(accept(&mut c, execute(&current)));
-    assert_eq!(native(&c), live);
+    assert_eq!(game_record(&c), live);
     assert_eq!(c.shared_snapshot().xiangqi.unwrap().warnings.len(), 1);
 }

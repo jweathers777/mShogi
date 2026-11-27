@@ -1,5 +1,5 @@
-// Shared persistent-runner contracts. Each caller supplies its native config,
-// fixture, report and stop types; native notation and outcome tests stay local.
+// Shared persistent-runner contracts. Each caller supplies its config,
+// fixture, report and stop types; game notation and outcome tests stay local.
 macro_rules! clocked_failure_cases {
     ($command:literal) => {
         #[test]

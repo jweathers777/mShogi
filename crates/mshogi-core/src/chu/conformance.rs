@@ -1,10 +1,10 @@
-//! Production-native fixture projections. Expected answers are only read by the
-//! shared comparator; the adapter uses fixture inputs and admitted native APIs.
+//! Production fixture projections. Expected answers are only read by the
+//! shared comparator; the adapter uses fixture inputs and admitted APIs.
 use super::*;
 use crate::perft::{divide, perft};
 use mshogi_conformance::{
     assertions::Assertion,
-    chu::{Fixture, NativeAdapter},
+    chu::{Fixture, RulesAdapter},
 };
 use serde_json::{Value, json};
 use std::collections::{BTreeMap, BTreeSet};
@@ -13,7 +13,7 @@ pub(super) fn sq(v: &Value) -> Square {
     serde_json::from_value(v.clone()).expect("audited fixture square")
 }
 pub(super) fn side(v: &Value) -> Side {
-    serde_json::from_value(v.clone()).expect("audited native owner")
+    serde_json::from_value(v.clone()).expect("audited side")
 }
 pub(super) fn root(v: &Value) -> Result<Position, RootError> {
     if v == "standard_start" {
@@ -65,7 +65,7 @@ type ProjectionCache =
 pub(super) struct LocalAdapter {
     cache: ProjectionCache,
 }
-impl NativeAdapter for LocalAdapter {
+impl RulesAdapter for LocalAdapter {
     fn observe(&self, f: &Fixture, a: &Assertion) -> Result<Option<Value>, String> {
         if !self.cache.borrow().contains_key(&f.id) {
             self.cache.borrow_mut().insert(f.id.clone(), project(f));
@@ -82,7 +82,7 @@ impl NativeAdapter for LocalAdapter {
 fn put(m: &mut BTreeMap<String, Value>, key: &str, value: impl serde::Serialize) {
     m.insert(
         key.into(),
-        serde_json::to_value(value).expect("native observation serialization"),
+        serde_json::to_value(value).expect("engine observation serialization"),
     );
 }
 fn commands(f: &Fixture) -> Vec<Action> {
@@ -121,7 +121,7 @@ fn project(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
         let counts =
             [Side::Sente, Side::Gote].map(|s| p.pieces().filter(|(_, v)| v.side == s).count());
         if counts[0] != counts[1] {
-            return Err("native setup has unequal side inventories".into());
+            return Err("setup has unequal side inventories".into());
         }
         put(&mut out, "pieces_per_side", counts[0]);
         // Chu has no hand state, no hand choice and no drop action type.
@@ -344,7 +344,7 @@ fn project(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
             put(&mut out, "reason", "already_promoted");
         }
         if let Some(Some(ActionError::LionLaw)) = errors.first() {
-            put(&mut out, "native_refusal_kind", "lion_law");
+            put(&mut out, "refusal_kind", "lion_law");
         }
         if let Some(first) = first {
             put(
@@ -429,7 +429,7 @@ fn project(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
         let preserved = blockers
             .into_iter()
             .find(|at| p.piece(*at) == current.position().piece(*at))
-            .ok_or("native blocker disappeared")?;
+            .ok_or("blocker disappeared")?;
         put(&mut out, "blocker_preserved", preserved);
     }
     if f.id == "CHU-RAY-FIRST-CAPTURE" {
@@ -446,7 +446,7 @@ fn project(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
             .collect();
         if choices.len() != 1 {
             return Err(format!(
-                "expected one native first-blocker capture, observed {}",
+                "expected one first-blocker capture, observed {}",
                 choices.len()
             ));
         }
@@ -463,7 +463,7 @@ fn project(f: &Fixture) -> Result<BTreeMap<String, Value>, String> {
         let capture_route = alternatives
             .into_iter()
             .find(|b| p.piece(b.route[0]).is_some())
-            .ok_or("native missing two-step capture route")?;
+            .ok_or("missing two-step capture route")?;
         let mut other = local.clone();
         let (e, _) = other.apply(&capture_route).map_err(|e| e.to_string())?;
         put(
@@ -507,8 +507,8 @@ fn local_independently_expected_corpus() {
         serde_json::to_string_pretty(&failures).unwrap()
     );
     eprintln!(
-        "Chu local projections: {} passed fields, {} passed rows; remaining native history/record fields {}",
-        report.passed, report.native_rows_passed, report.pending
+        "Chu local projections: {} passed fields, {} passed rows; remaining game history/record fields {}",
+        report.passed, report.rules_rows_passed, report.pending
     );
 }
 
@@ -536,9 +536,9 @@ fn every_geometry_choice_rotates_and_reverses_exactly() {
         )
         .unwrap();
         let actor = sq(&fixture.given["actor"]);
-        let native = LocalPosition::admit(original);
-        let rotated_native = LocalPosition::admit(rotated);
-        let choices = native.choices_from(actor);
+        let rules = LocalPosition::admit(original);
+        let rotated_game = LocalPosition::admit(rotated);
+        let choices = rules.choices_from(actor);
         let expected_rotation: BTreeSet<_> = choices
             .iter()
             .map(|a| Action {
@@ -547,13 +547,13 @@ fn every_geometry_choice_rotates_and_reverses_exactly() {
                 promote: a.promote,
             })
             .collect();
-        let actual_rotation: BTreeSet<_> = rotated_native
+        let actual_rotation: BTreeSet<_> = rotated_game
             .choices_from(actor.rotated())
             .into_iter()
             .collect();
         assert_eq!(expected_rotation, actual_rotation, "{}", fixture.id);
         for action in choices {
-            let mut subject = native.clone();
+            let mut subject = rules.clone();
             let before = snapshot(&subject);
             let (_, mut undo) = subject.apply(&action).unwrap();
             subject.undo(&mut undo).unwrap();
@@ -564,9 +564,9 @@ fn every_geometry_choice_rotates_and_reverses_exactly() {
     }
     assert!(
         checked > 500,
-        "all 29 movement families must exercise complete native choices"
+        "all 29 movement families must exercise complete game choices"
     );
     eprintln!(
-        "Chu rotation and exact reversal covered {checked} actual native choices across 29 faces"
+        "Chu rotation and exact reversal covered {checked} actual game choices across 29 faces"
     );
 }

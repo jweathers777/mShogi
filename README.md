@@ -63,8 +63,8 @@ and shared experiment runner retain replayable records, executable identities,
 resource bounds and failures. Their available protocol adapters are explicit;
 not every game supports every external protocol.
 
-Chess and Tori use the game-independent classical search core. The other games
-retain their functional search paths while shared-core adoption continues.
+All six games use the shared classical alpha-beta search core with
+game-specific search positions.
 The rules remain authoritative for the real game even where private
 search uses approximate history-dependent analysis. Speed, correctness and playing
 strength are separate measurements.

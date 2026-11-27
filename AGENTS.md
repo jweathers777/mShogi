@@ -52,13 +52,13 @@ must be able to start the next task without chat history and without help.
 
 ## Engineering quality
 
-- Do not repeat yourself. This applies to all code, not only to code shared
-  between games. When two places do the same thing, put it in one function,
-  type or generic implementation behind a trait. When you touch duplicated
-  code, prefer to extract a common shared piece of code.
-- Use judgment. Do not force an abstraction that makes a hot path slower or the
-  code harder to read. Search code can keep a specialized form when a
-  measurement shows that it matters.
+- Share behavior when doing so reduces the cost of future changes. Use a
+  common function, type or implementation when it makes ownership clearer.
+  Introduce layers, traits or macros only when they serve a purpose beyond
+  removing superficial repetition.
+- Simplify or remove abstractions that add more complexity than they remove.
+  Keep specialized implementations where correctness, game-specific semantics
+  or measured performance justify them.
 - Write code that is consistent with the code around it: naming, module
   layout, error handling, test style and documentation comments. Read the
   nearby code before you write. Do not copy a pattern that this file says to
@@ -89,8 +89,11 @@ Also, by type of change:
 - **Rules (`mshogi-core`):** run perft and tests whose expected results come
   from the rules, not from running the code. External engines are not rules
   oracles.
-- **Search-side positions:** run perft and differential tests against the
-  rules.
+- **Rules and search consistency:** changes to either the authoritative rules
+  positions or the optimized search positions require the applicable perft and
+  differential checks before integration. Add targeted regression coverage when
+  movement or transition semantics change. Preserve documented search-only
+  approximations and distinguish them from unintended rules divergence.
 - **Engine strength:** run the blunder suite and an SPRT match against the
   frozen predecessor at a fast time control. This match has standing
   authorization. Keep a change only when it wins, or when it is neutral and
@@ -127,12 +130,15 @@ while a required check is unresolved.
 
 ## Finish
 
-1. Merge `main` into the branch. Complete the required checks on the code to be
+1. Merge `main` into the branch. Before integration, review the final diff
+   against the relevant design, rules, architecture and user documentation.
+   Update affected documentation. Review only the applicable documents and
+   keep task reports in Backlog. Complete the required checks on the code to be
    integrated, reusing earlier results where subsequent changes have not
    invalidated them. Then merge the branch into `main` and push.
 2. Check the acceptance criteria that have evidence. Write a final summary of a
    few lines: what changed, why, results, follow-up tasks. Set the status to
-   Done.
+   Done only when the applicable documentation is correct.
 3. Clean up everything that you created: your feature branch, your worktree
    with its build output, temporary files, local run data and local caches.
    Disk space must not grow silently. Keep temporary files in one place that

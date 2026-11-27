@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-27T00:38:00Z'
+updated_date: '2026-11-27T00:41:00Z'
 labels:
   - desktop
   - tauri
@@ -30,10 +30,20 @@ desktop/src-tauri/src/main.rs (1,499 lines) repeats the reserve, receipt and 15 
 - [ ] #2 Host tests use shared helpers; the Tauri tests pass, and the host CI passes on the affected operating systems.
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Keep controller admission and file picker reservations at their current boundaries. Share the asynchronous waiter and operation completion polling.
+2. Route equivalent fixtures to the same product mode and use the controls prop to render Tenjiku verification controls.
+3. Reuse host polling, stale-token and file test helpers, then run the shared checks and all affected host CI jobs.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
 
 Claimed on codex/msh-265-tauri-admission. Next: combine the host admission waits and verification entry points, refactor the host tests, and run affected host CI.
+
+Shared the host waiter and snapshot path, consolidated product verification modes, and made the host tests use common admission, stale-token, and file helpers. Next: run the integration checks and desktop host CI for Linux, macOS, and Windows.
 <!-- SECTION:NOTES:END -->

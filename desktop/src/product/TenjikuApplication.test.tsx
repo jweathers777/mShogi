@@ -54,7 +54,7 @@ it.each([adams, muller])("allows a deliberate other-profile fresh game from $pro
 
 it.each([adams, muller])("sends both explicit QA profile New/reset requests from exact $profile replacement authority", source => {
   session.snapshot = source;
-  render(<ProductApp verification verificationControls={TenjikuControls} />);
+  render(<ProductApp verificationControls={TenjikuControls} />);
   expect(useGameSession).toHaveBeenCalledWith();
   const qa = screen.getByRole("complementary", { name: "Tenjiku contract verification" });
   for (const [label, profile] of [["Adams 1999 Modern", "mshogi.tenjiku.adams1999-modern.v1"], ["Muller Completed", "mshogi.tenjiku.muller-completed.v1"]] as const) {
@@ -69,7 +69,7 @@ it("retires board selection after an actual native fresh-document profile replac
   expect(muller.token.document).toBeGreaterThan(adams.token.document);
   session.snapshot = adams;
   vi.mocked(session.newGame).mockResolvedValue(muller);
-  const { container, rerender } = render(<ProductApp verification verificationControls={TenjikuControls} />);
+  const { container, rerender } = render(<ProductApp verificationControls={TenjikuControls} />);
   const first = adams.choices[0]!;
   expect(first).toBeTruthy();
   const origin = container.querySelector<SVGGElement>(`svg [role="button"][aria-label^="${first.from},"]`)!;
@@ -78,7 +78,7 @@ it("retires board selection after an actual native fresh-document profile replac
   fireEvent.click(screen.getByRole("button", { name: "New Muller Completed game" }));
   await waitFor(() => expect(session.newGame).toHaveBeenCalledExactlyOnceWith(adams.open_token, "tenjiku", { game_kind: "tenjiku", side: adams.human.id.side }, muller.profile));
   session = { ...session, snapshot: muller };
-  rerender(<ProductApp verification verificationControls={TenjikuControls} />);
+  rerender(<ProductApp verificationControls={TenjikuControls} />);
   expect(container.querySelector('svg [aria-label*=", selected"]')).toBeNull();
   expect(container.querySelectorAll("svg [role=button]")).toHaveLength(256);
   expect(screen.getByRole("complementary", { name: "Tenjiku contract verification" }).textContent).toContain("Muller Completed");
@@ -86,7 +86,7 @@ it("retires board selection after an actual native fresh-document profile replac
 
 it.each([adams, muller])("blocks $profile QA replacement while a modal or native operation owns admission", source => {
   session.snapshot = source;
-  const { rerender } = render(<ProductApp verification verificationControls={TenjikuControls} />);
+  const { rerender } = render(<ProductApp verificationControls={TenjikuControls} />);
   fireEvent.click(screen.getByRole("button", { name: "New game" }));
   const qa = screen.getByRole("complementary", { name: "Tenjiku contract verification" });
   for (const button of within(qa).getAllByRole("button")) expect((button as HTMLButtonElement).disabled).toBe(true);
@@ -94,7 +94,7 @@ it.each([adams, muller])("blocks $profile QA replacement while a modal or native
   expect(session.newGame).not.toHaveBeenCalled();
   fireEvent.keyDown(screen.getByRole("dialog"), { key: "Escape" });
   session = { ...session, busy: true };
-  rerender(<ProductApp verification verificationControls={TenjikuControls} />);
+  rerender(<ProductApp verificationControls={TenjikuControls} />);
   for (const button of within(screen.getByRole("complementary", { name: "Tenjiku contract verification" })).getAllByRole("button")) expect((button as HTMLButtonElement).disabled).toBe(true);
 });
 

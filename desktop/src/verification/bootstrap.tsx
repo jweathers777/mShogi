@@ -7,6 +7,13 @@ import { TenjikuControls } from "./TenjikuControls";
 
 export async function mountVerification(root: Root) {
   const mode = await invoke<string>("desktop_verification_mode");
-  if (mode !== "chess" && mode !== "synthetic" && mode !== "shared-contract" && mode !== "product" && mode !== "tenjiku-contract") throw new Error("Unknown verification session mode");
-  root.render(<StrictMode>{mode === "synthetic" ? <SyntheticApp /> : mode === "tenjiku-contract" ? <ProductApp verification verificationControls={TenjikuControls} /> : <ProductApp />}</StrictMode>);
+  if (mode !== "synthetic" && mode !== "product" && mode !== "tenjiku-contract") {
+    throw new Error("Unknown verification session mode");
+  }
+  const controls = mode === "tenjiku-contract" ? TenjikuControls : undefined;
+  root.render(
+    <StrictMode>
+      {mode === "synthetic" ? <SyntheticApp /> : <ProductApp verificationControls={controls} />}
+    </StrictMode>,
+  );
 }

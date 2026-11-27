@@ -1,8 +1,8 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use mshogi_desktop_session::{
-    ApplicationLifecycle, DesktopController, IoPhase, OperationReservation, SharedOpenToken,
-    SharedSnapshot,
+    AdmissionReceipt, ApplicationLifecycle, DesktopController, IoPhase, OperationReservation,
+    SharedOpenToken, SharedSnapshot,
 };
 #[cfg(feature = "desktop-verification")]
 use mshogi_desktop_session::{SyntheticCommand, SyntheticController, SyntheticSnapshot};
@@ -154,16 +154,8 @@ fn desktop_verification_mode(verification: State<'_, VerificationState>) -> &'st
         "synthetic"
     } else if verification.fixture.starts_with("tenjiku-") {
         "tenjiku-contract"
-    } else if verification.fixture == "shared-contract" || verification.fixture.starts_with("chu-")
-    {
-        "shared-contract"
-    } else if verification.fixture.starts_with("shogi-")
-        || verification.fixture.starts_with("xiangqi-")
-        || verification.fixture.starts_with("tori-")
-    {
-        "product"
     } else {
-        "chess"
+        "product"
     }
 }
 #[cfg(feature = "desktop-verification")]
@@ -210,137 +202,181 @@ fn inspect_game(
     })?
 }
 #[tauri::command]
-fn game_snapshot(
-    controller: State<'_, Mutex<DesktopController>>,
-    shutdown: State<'_, Arc<ShutdownState>>,
-) -> Result<mshogi_desktop_session::SharedSnapshot, String> {
-    with_controller(&controller, &shutdown, DesktopController::shared_snapshot)
+fn game_snapshot(app: AppHandle) -> Result<SharedSnapshot, String> {
+    app_snapshot(&app)
 }
-#[tauri::command]
-async fn game_command(
+
+fn app_snapshot(app: &AppHandle) -> Result<SharedSnapshot, String> {
+    with_app_controller(app, DesktopController::shared_snapshot)
+}
+
+enum PendingAdmission {
+    Command(AdmissionReceipt),
+    File(u64),
+}
+
+impl PendingAdmission {
+    fn completion(&self, snapshot: &SharedSnapshot) -> Option<Result<(), String>> {
+        match self {
+            Self::Command(receipt) => receipt.completion(),
+            Self::File(id) if snapshot.io.id != *id => {
+                Some(Err("Native file operation superseded.".into()))
+            }
+            Self::File(_) => match snapshot.io.phase {
+                IoPhase::Complete => Some(Ok(())),
+                IoPhase::Failed => Some(Err(snapshot
+                    .io
+                    .message
+                    .clone()
+                    .unwrap_or_else(|| "Native file operation failed.".into()))),
+                _ => None,
+            },
+        }
+    }
+}
+
+fn wait_for_admission(
+    admission: PendingAdmission,
+    mut snapshot: impl FnMut() -> Result<SharedSnapshot, String>,
+    mut pause: impl FnMut(),
+) -> Result<SharedSnapshot, String> {
+    loop {
+        let snapshot = snapshot()?;
+        if let Some(result) = admission.completion(&snapshot) {
+            result?;
+            return Ok(snapshot);
+        }
+        pause();
+    }
+}
+
+async fn admit_and_wait(
     app: AppHandle,
-    command_json: String,
-) -> Result<mshogi_desktop_session::SharedSnapshot, String> {
-    ensure_product_mode(&app)?;
-    let command = mshogi_desktop_session::SharedDesktopCommand::from_json(&command_json)?;
-    let shutdown = app.state::<Arc<ShutdownState>>().inner().clone();
-    let (initial, receipt, reservation) = with_controller(
-        &app.state::<Mutex<DesktopController>>(),
-        &shutdown,
-        |controller| {
-            let reservation = controller.lifecycle().reserve_command()?;
-            let (initial, receipt) = controller.shared_command_with_receipt(command)?;
-            Ok::<_, String>((initial, receipt, reservation))
-        },
-    )??;
+    reservation: OperationReservation,
+    waiter: &'static str,
+    admit: impl FnOnce(&AppHandle) -> Result<PendingAdmission, String> + Send + 'static,
+) -> Result<SharedSnapshot, String> {
+    tauri::async_runtime::spawn_blocking(move || {
+        let _reservation = reservation;
+        wait_for_admission(
+            admit(&app)?,
+            || app_snapshot(&app),
+            || {
+                thread::sleep(Duration::from_millis(15));
+            },
+        )
+    })
+    .await
+    .map_err(|e| format!("{waiter} failed: {e}"))?
+}
+
+async fn admit_command(
+    app: AppHandle,
+    waiter: &'static str,
+    command: impl FnOnce(&mut DesktopController) -> Result<(SharedSnapshot, AdmissionReceipt), String>,
+) -> Result<SharedSnapshot, String> {
+    let (initial, receipt, reservation) = with_app_controller(&app, |controller| {
+        let reservation = controller.lifecycle().reserve_command()?;
+        let (initial, receipt) = command(controller)?;
+        Ok::<_, String>((initial, receipt, reservation))
+    })??;
     if let Some(result) = receipt.completion() {
         result?;
         return Ok(initial);
     }
-    tauri::async_runtime::spawn_blocking(move || {
-        let _reservation = reservation;
-        loop {
-            let snapshot = current_contract_snapshot(&app)?;
-            if let Some(result) = receipt.completion() {
-                result?;
-                return Ok(snapshot);
-            }
-            thread::sleep(Duration::from_millis(15));
-        }
+    admit_and_wait(app, reservation, waiter, |_| {
+        Ok(PendingAdmission::Command(receipt))
     })
     .await
-    .map_err(|e| format!("Native admission waiter failed: {e}"))?
 }
-fn current_contract_snapshot(
-    app: &AppHandle,
-) -> Result<mshogi_desktop_session::SharedSnapshot, String> {
-    with_controller(
-        &app.state::<Mutex<DesktopController>>(),
-        &app.state::<Arc<ShutdownState>>(),
-        DesktopController::shared_snapshot,
-    )
+
+#[tauri::command]
+async fn game_command(app: AppHandle, command_json: String) -> Result<SharedSnapshot, String> {
+    ensure_product_mode(&app)?;
+    let command = mshogi_desktop_session::SharedDesktopCommand::from_json(&command_json)?;
+    admit_command(app, "Native admission waiter", |controller| {
+        controller.shared_command_with_receipt(command)
+    })
+    .await
 }
+
 // All games share native pickers, the bounded archive worker and atomic writer.
 #[tauri::command]
 async fn game_file(
     app: AppHandle,
     action: String,
-    expected: mshogi_desktop_session::SharedOpenToken,
-) -> Result<mshogi_desktop_session::SharedSnapshot, String> {
+    expected: SharedOpenToken,
+) -> Result<SharedSnapshot, String> {
     if !matches!(action.as_str(), "save" | "save_as" | "open") {
         return Err("Unknown native file operation.".into());
     }
-    let reservation = reserve_file_operation(&app)?;
-    tauri::async_runtime::spawn_blocking(move || {
-        let _reservation = reservation;
-        let actual = with_controller(
-            &app.state::<Mutex<DesktopController>>(),
-            &app.state::<Arc<ShutdownState>>(),
-            |c| c.shared_open_token(),
-        )?;
-        if actual != expected {
-            return Err("The document changed. Try the operation again.".into());
-        }
-        if app_lifecycle(&app).close_requested() && action == "open" {
-            return Err("Finish or cancel the close request before opening.".into());
-        }
-        let snapshot = current_contract_snapshot(&app)?;
-        let path = if action == "save" && snapshot.document.path.is_some() {
-            snapshot.document.path.map(PathBuf::from)
-        } else {
-            let picker = app.dialog().file().add_filter("mShogi game", &["mshogi"]);
-            let selected = if action == "open" {
-                picker.set_title("Load mShogi game").blocking_pick_file()
-            } else {
-                picker
-                    .set_title("Save mShogi game")
-                    .set_file_name(match snapshot.game {
-                        mshogi_desktop_session::GameKind::Chess => "chess.mshogi",
-                        mshogi_desktop_session::GameKind::Shogi => "shogi.mshogi",
-                        mshogi_desktop_session::GameKind::Xiangqi => "xiangqi.mshogi",
-                        mshogi_desktop_session::GameKind::Tori => "tori.mshogi",
-                        mshogi_desktop_session::GameKind::Chu => "chu.mshogi",
-                        mshogi_desktop_session::GameKind::Tenjiku => "tenjiku.mshogi",
-                    })
-                    .blocking_save_file()
-            };
-            selected
-                .map(|p| p.into_path().map_err(|e| e.to_string()))
-                .transpose()?
-        };
-        let Some(path) = path else {
-            // Cancellation is not a successful Save receipt and cannot authorize
-            // a pending close, even if a newer snapshot happens to be clean.
-            return Err(if action == "open" {
-                "Load cancelled.".into()
-            } else {
-                "Save cancelled.".into()
-            });
-        };
-        let id = with_controller(
-            &app.state::<Mutex<DesktopController>>(),
-            &app.state::<Arc<ShutdownState>>(),
-            |c| queue_game_file(c, &action, path, expected),
-        )??;
-        loop {
-            let snapshot = current_contract_snapshot(&app)?;
-            if snapshot.io.id != id {
-                return Err("Native file operation superseded.".into());
-            }
-            match snapshot.io.phase {
-                IoPhase::Complete => return Ok(snapshot),
-                IoPhase::Failed => {
-                    return Err(snapshot
-                        .io
-                        .message
-                        .unwrap_or_else(|| "Native file operation failed.".into()));
-                }
-                _ => thread::sleep(Duration::from_millis(15)),
-            }
-        }
+    ensure_product_mode(&app)?;
+    let reservation =
+        with_app_controller(&app, |controller| controller.lifecycle().reserve_file())??;
+    admit_and_wait(app, reservation, "Native document waiter", move |app| {
+        let id = admit_game_file(app, &action, expected)?;
+        Ok(PendingAdmission::File(id))
     })
     .await
-    .map_err(|e| format!("Native document waiter failed: {e}"))?
+}
+
+fn check_file_source(
+    controller: &DesktopController,
+    action: &str,
+    expected: SharedOpenToken,
+) -> Result<(), String> {
+    if controller.shared_open_token() != expected {
+        return Err("The document changed. Try the operation again.".into());
+    }
+    if action == "open" && controller.lifecycle().close_requested() {
+        return Err("Finish or cancel the close request before opening.".into());
+    }
+    Ok(())
+}
+
+fn admit_game_file(
+    app: &AppHandle,
+    action: &str,
+    expected: SharedOpenToken,
+) -> Result<u64, String> {
+    with_app_controller(app, |controller| {
+        check_file_source(controller, action, expected)
+    })??;
+    let snapshot = app_snapshot(app)?;
+    let path = if action == "save" && snapshot.document.path.is_some() {
+        snapshot.document.path.map(PathBuf::from)
+    } else {
+        let picker = app.dialog().file().add_filter("mShogi game", &["mshogi"]);
+        let selected = if action == "open" {
+            picker.set_title("Load mShogi game").blocking_pick_file()
+        } else {
+            picker
+                .set_title("Save mShogi game")
+                .set_file_name(match snapshot.game {
+                    mshogi_desktop_session::GameKind::Chess => "chess.mshogi",
+                    mshogi_desktop_session::GameKind::Shogi => "shogi.mshogi",
+                    mshogi_desktop_session::GameKind::Xiangqi => "xiangqi.mshogi",
+                    mshogi_desktop_session::GameKind::Tori => "tori.mshogi",
+                    mshogi_desktop_session::GameKind::Chu => "chu.mshogi",
+                    mshogi_desktop_session::GameKind::Tenjiku => "tenjiku.mshogi",
+                })
+                .blocking_save_file()
+        };
+        selected
+            .map(|p| p.into_path().map_err(|e| e.to_string()))
+            .transpose()?
+    };
+    let Some(path) = path else {
+        // Cancellation cannot authorize a pending close.
+        return Err(if action == "open" {
+            "Load cancelled.".into()
+        } else {
+            "Save cancelled.".into()
+        });
+    };
+    with_app_controller(app, |controller| {
+        queue_game_file(controller, action, path, expected)
+    })?
 }
 
 // Called after native picker completion under controller serialization. The
@@ -354,16 +390,9 @@ fn queue_game_file(
     // The engine/close callback may change authoritative content while the OS
     // picker is open. A path grants no authority to save that newer document.
     // Check every operation again under the same lock as capture/queueing.
-    if expected != controller.shared_open_token() {
-        return Err("The document changed. Try the operation again.".into());
-    }
+    check_file_source(controller, action, expected)?;
     match action {
-        "open" => {
-            if controller.lifecycle().close_requested() {
-                return Err("Finish or cancel the close request before opening.".into());
-            }
-            controller.queue_product_open(path, expected)
-        }
+        "open" => controller.queue_product_open(path, expected),
         "save" | "save_as" => controller.queue_shared_save(path),
         _ => Err("Unknown native file operation.".into()),
     }
@@ -382,34 +411,10 @@ async fn game_new(
     if profile.game() != game || human.game() != game {
         return Err("New Game profile, game and side disagree.".into());
     }
-    let shutdown = app.state::<Arc<ShutdownState>>().inner().clone();
-    let (initial, receipt, reservation) = with_controller(
-        &app.state::<Mutex<DesktopController>>(),
-        &shutdown,
-        |controller| {
-            let reservation = controller.lifecycle().reserve_command()?;
-            let (initial, receipt) =
-                controller.shared_new_game_with_mode(expected, profile, human, play_mode)?;
-            Ok::<_, String>((initial, receipt, reservation))
-        },
-    )??;
-    if let Some(result) = receipt.completion() {
-        result?;
-        return Ok(initial);
-    }
-    tauri::async_runtime::spawn_blocking(move || {
-        let _reservation = reservation;
-        loop {
-            let snapshot = current_contract_snapshot(&app)?;
-            if let Some(result) = receipt.completion() {
-                result?;
-                return Ok(snapshot);
-            }
-            thread::sleep(Duration::from_millis(15));
-        }
+    admit_command(app, "New game admission waiter", |controller| {
+        controller.shared_new_game_with_mode(expected, profile, human, play_mode)
     })
     .await
-    .map_err(|e| format!("New game admission waiter failed: {e}"))?
 }
 
 fn engine_path() -> io::Result<PathBuf> {
@@ -444,15 +449,15 @@ fn with_controller<T>(
 fn app_lifecycle(app: &AppHandle) -> Arc<ApplicationLifecycle> {
     app.state::<Arc<ApplicationLifecycle>>().inner().clone()
 }
-/// Picker and completion are reserved under the native application owner.
-fn reserve_file_operation(app: &AppHandle) -> Result<OperationReservation, String> {
-    ensure_product_mode(app)?;
-    let shutdown = app.state::<Arc<ShutdownState>>();
+fn with_app_controller<T>(
+    app: &AppHandle,
+    operation: impl FnOnce(&mut DesktopController) -> T,
+) -> Result<T, String> {
     with_controller(
         &app.state::<Mutex<DesktopController>>(),
-        &shutdown,
-        |controller| controller.lifecycle().reserve_file(),
-    )?
+        &app.state::<Arc<ShutdownState>>(),
+        operation,
+    )
 }
 // The one current native close contract serves every selected game.
 fn request_close(app: &AppHandle) -> Result<(), String> {
@@ -960,20 +965,7 @@ mod tests {
             .lifecycle()
             .request_close()
             .unwrap();
-        for stale in [
-            SharedOpenToken {
-                document: token.document + 1,
-                ..token
-            },
-            SharedOpenToken {
-                version: token.version + 1,
-                ..token
-            },
-            SharedOpenToken {
-                document_revision: token.document_revision + 1,
-                ..token
-            },
-        ] {
+        for stale in stale_open_tokens(token) {
             assert!(
                 with_controller(&controller, &shutdown, |c| approve_close(c, stale))
                     .unwrap()
@@ -1088,21 +1080,17 @@ mod tests {
                 DesktopController::verification(PathBuf::from("unused-test-engine"), fixture)
                     .unwrap();
             let token = source.shared_open_token();
-            let id = queue_game_file(&mut source, "save", path.clone(), token).unwrap();
-            wait_file(&mut source, id).unwrap();
+            complete_file_operation(&mut source, "save", path.clone(), token).unwrap();
             let saved_bytes = std::fs::read(&path).unwrap();
             let mut normal = DesktopController::new(PathBuf::from("unused-test-engine")).unwrap();
             let before = normal.shared_snapshot();
-            let id = queue_game_file(&mut normal, "open", path.clone(), before.open_token).unwrap();
-            let opened = wait_file(&mut normal, id).unwrap();
-            assert_eq!(opened.game, GameKind::Tenjiku);
+            let opened =
+                complete_file_operation(&mut normal, "open", path.clone(), before.open_token)
+                    .unwrap();
+            assert_stopped_file(&opened, GameKind::Tenjiku, before.open_token);
             assert_eq!(opened.profile, profile);
             assert_eq!(opened.play_limits.depth, 64);
             assert_eq!(opened.play_limits.nodes, 50_000);
-            assert!(opened.paused);
-            assert!(opened.capabilities.engine_turn && opened.capabilities.move_analysis);
-            assert!(opened.observations.is_empty());
-            assert_ne!(opened.open_token.document, before.open_token.document);
             assert_eq!(std::fs::read(&path).unwrap(), saved_bytes);
             std::fs::remove_file(path).unwrap();
         }
@@ -1115,19 +1103,44 @@ mod tests {
         );
     }
 
-    fn wait_file(controller: &mut DesktopController, id: u64) -> Result<SharedSnapshot, String> {
+    fn wait_in_test(
+        admission: PendingAdmission,
+        snapshot: impl FnMut() -> Result<SharedSnapshot, String>,
+    ) -> Result<SharedSnapshot, String> {
         let deadline = Instant::now() + Duration::from_secs(20);
-        loop {
-            let snapshot = controller.shared_snapshot();
-            assert_eq!(snapshot.io.id, id, "unexpected superseding file work");
-            match snapshot.io.phase {
-                IoPhase::Complete => return Ok(snapshot),
-                IoPhase::Failed => return Err(snapshot.io.message.unwrap_or_default()),
-                _ => {}
-            }
-            assert!(Instant::now() < deadline, "host file work did not complete");
+        wait_for_admission(admission, snapshot, || {
+            assert!(Instant::now() < deadline, "host operation did not complete");
             thread::sleep(Duration::from_millis(1));
-        }
+        })
+    }
+
+    fn complete_file_operation(
+        controller: &mut DesktopController,
+        action: &str,
+        path: PathBuf,
+        expected: SharedOpenToken,
+    ) -> Result<SharedSnapshot, String> {
+        let id = queue_game_file(controller, action, path, expected).unwrap();
+        wait_in_test(PendingAdmission::File(id), || {
+            Ok(controller.shared_snapshot())
+        })
+    }
+
+    fn stale_open_tokens(current: SharedOpenToken) -> [SharedOpenToken; 3] {
+        [
+            SharedOpenToken {
+                document: current.document + 1,
+                ..current
+            },
+            SharedOpenToken {
+                version: current.version + 1,
+                ..current
+            },
+            SharedOpenToken {
+                document_revision: current.document_revision + 1,
+                ..current
+            },
+        ]
     }
 
     fn assert_picker_source_authority(controller: &mut DesktopController) {
@@ -1135,20 +1148,7 @@ mod tests {
         let before = controller.shared_snapshot();
         // Each component independently rejects: same board/ply is not authority
         // to save or replace an obsolete document or content revision.
-        for stale in [
-            SharedOpenToken {
-                document: expected.document + 1,
-                ..expected
-            },
-            SharedOpenToken {
-                version: expected.version + 1,
-                ..expected
-            },
-            SharedOpenToken {
-                document_revision: expected.document_revision + 1,
-                ..expected
-            },
-        ] {
+        for stale in stale_open_tokens(expected) {
             for action in ["save", "save_as", "open"] {
                 let path = file_path("obsolete-picker");
                 let error = queue_game_file(controller, action, path.clone(), stale).unwrap_err();
@@ -1171,77 +1171,67 @@ mod tests {
 
     #[cfg(feature = "desktop-verification")]
     #[test]
-    fn normal_tori_file_commands_use_the_same_worker_and_preserve_source_and_close_authority() {
+    fn tori_and_chu_file_routes_reopen_stopped_with_fresh_document_authority() {
         use mshogi_desktop_session::GameKind;
-        let path = file_path("tori-contract");
-        let mut fixture =
-            DesktopController::verification(PathBuf::from("unused-test-engine"), "tori-standard")
-                .unwrap();
-        let token = fixture.shared_open_token();
-        let id = queue_game_file(&mut fixture, "save", path.clone(), token).unwrap();
-        wait_file(&mut fixture, id).unwrap();
-        let mut c = DesktopController::new(PathBuf::from("unused-test-engine")).unwrap();
-        let before = c.shared_open_token();
-        let id = queue_game_file(&mut c, "open", path.clone(), before).unwrap();
-        let opened = wait_file(&mut c, id).unwrap();
-        assert_eq!(opened.game, GameKind::Tori);
-        assert!(opened.paused);
-        assert_ne!(opened.open_token.document, before.document);
-        assert!(opened.observations.is_empty());
-        assert!(opened.capabilities.engine_turn);
-        assert!(queue_game_file(&mut c, "open", path.clone(), before).is_err());
-        let id = queue_game_file(&mut c, "save", path.clone(), opened.open_token).unwrap();
-        let saved = wait_file(&mut c, id).unwrap();
-        assert!(!saved.document.dirty);
-        c.lifecycle().request_close().unwrap();
-        assert!(
-            queue_game_file(&mut c, "open", path.clone(), saved.open_token)
-                .unwrap_err()
-                .contains("close request")
-        );
-        std::fs::remove_file(path).unwrap();
+
+        for (fixture, game) in [
+            ("tori-standard", GameKind::Tori),
+            ("chu-contract", GameKind::Chu),
+        ] {
+            let path = file_path(fixture);
+            let mut source =
+                DesktopController::verification(PathBuf::from("unused-test-engine"), fixture)
+                    .unwrap();
+            let before = source.shared_open_token();
+            let saved = complete_file_operation(&mut source, "save", path.clone(), before).unwrap();
+            if game == GameKind::Chu {
+                let reopened =
+                    complete_file_operation(&mut source, "open", path.clone(), saved.open_token)
+                        .unwrap();
+                assert_stopped_file(&reopened, game, before);
+                assert_eq!(
+                    (reopened.play_limits.depth, reopened.play_limits.nodes),
+                    (64, 300_000)
+                );
+            }
+
+            let mut normal = DesktopController::new(PathBuf::from("unused-test-engine")).unwrap();
+            let expected = normal.shared_open_token();
+            let opened =
+                complete_file_operation(&mut normal, "open", path.clone(), expected).unwrap();
+            assert_stopped_file(&opened, game, expected);
+            assert!(queue_game_file(&mut normal, "open", path.clone(), expected).is_err());
+            let current = if game == GameKind::Tori {
+                let saved =
+                    complete_file_operation(&mut normal, "save", path.clone(), opened.open_token)
+                        .unwrap();
+                assert!(!saved.document.dirty);
+                saved.open_token
+            } else {
+                opened.open_token
+            };
+            normal.lifecycle().request_close().unwrap();
+            assert!(
+                queue_game_file(&mut normal, "open", path.clone(), current)
+                    .unwrap_err()
+                    .contains("close request")
+            );
+            std::fs::remove_file(path).unwrap();
+        }
     }
 
     #[cfg(feature = "desktop-verification")]
-    #[test]
-    fn chu_normal_file_route_reopens_stopped_with_native_execution_and_fresh_authority() {
-        use mshogi_desktop_session::GameKind;
-        let path = file_path("chu-contract");
-        let mut qa =
-            DesktopController::verification(PathBuf::from("unused-test-engine"), "chu-contract")
-                .unwrap();
-        let before = qa.shared_open_token();
-        let id = queue_game_file(&mut qa, "save", path.clone(), before).unwrap();
-        let saved = wait_file(&mut qa, id).unwrap();
-        let id = queue_game_file(&mut qa, "open", path.clone(), saved.open_token).unwrap();
-        let opened = wait_file(&mut qa, id).unwrap();
-        assert_eq!(opened.game, GameKind::Chu);
+    fn assert_stopped_file(
+        opened: &SharedSnapshot,
+        game: mshogi_desktop_session::GameKind,
+        previous: SharedOpenToken,
+    ) {
+        assert_eq!(opened.game, game);
         assert!(opened.paused);
         assert!(opened.capabilities.engine_turn && opened.capabilities.move_analysis);
         assert_eq!(opened.execution_purpose, None);
-        assert_eq!(
-            (opened.play_limits.depth, opened.play_limits.nodes),
-            (64, 300_000)
-        );
-        assert!(opened.open_token.document > before.document);
-        let mut normal = DesktopController::new(PathBuf::from("unused-test-engine")).unwrap();
-        let expected = normal.shared_open_token();
-        let id = queue_game_file(&mut normal, "open", path.clone(), expected).unwrap();
-        let opened = wait_file(&mut normal, id).unwrap();
-        assert_eq!(opened.game, GameKind::Chu);
-        assert!(opened.paused);
-        assert!(opened.capabilities.engine_turn && opened.capabilities.move_analysis);
-        assert_eq!(opened.execution_purpose, None);
-        assert!(opened.open_token.document > expected.document);
         assert!(opened.observations.is_empty());
-        assert!(queue_game_file(&mut normal, "open", path.clone(), expected).is_err());
-        normal.lifecycle().request_close().unwrap();
-        assert!(
-            queue_game_file(&mut normal, "open", path.clone(), opened.open_token)
-                .unwrap_err()
-                .contains("close request")
-        );
-        std::fs::remove_file(path).unwrap();
+        assert!(opened.open_token.document > previous.document);
     }
 
     #[cfg(feature = "desktop-verification")]
@@ -1275,16 +1265,15 @@ mod tests {
         let token = controller.shared_open_token();
         let before = controller.shared_snapshot();
         let invalid_first = file_path("missing-first-parent").join("game.mshogi");
-        let id = queue_game_file(controller, "save", invalid_first, token).unwrap();
-        assert!(wait_file(controller, id).is_err());
+        assert!(complete_file_operation(controller, "save", invalid_first, token).is_err());
         let failed = controller.shared_snapshot();
+        assert_eq!(failed.io.phase, IoPhase::Failed);
         assert_eq!(failed.open_token, token);
         assert_eq!(failed.document.dirty, before.document.dirty);
         assert_eq!(failed.document.path, before.document.path);
         assert!(!path.exists());
 
-        let id = queue_game_file(controller, "save", path.clone(), token).unwrap();
-        let saved = wait_file(controller, id).unwrap();
+        let saved = complete_file_operation(controller, "save", path.clone(), token).unwrap();
         assert!(!saved.document.dirty);
         assert_eq!(saved.document.path.as_deref(), path.to_str());
         let bytes = std::fs::read(&path).unwrap();
@@ -1295,8 +1284,7 @@ mod tests {
         controller.lifecycle().request_close().unwrap();
         let reservation = controller.lifecycle().reserve_file().unwrap();
         let token = controller.shared_open_token();
-        let id = queue_game_file(controller, "save", path.clone(), token).unwrap();
-        let saved = wait_file(controller, id).unwrap();
+        let saved = complete_file_operation(controller, "save", path.clone(), token).unwrap();
         assert!(!saved.document.dirty);
         assert_eq!(std::fs::read(&path).unwrap(), bytes);
         assert!(approve_close(controller, saved.open_token).is_err());
@@ -1306,8 +1294,8 @@ mod tests {
         let invalid = file_path("invalid-load");
         std::fs::write(&invalid, b"not a native desktop document").unwrap();
         let token = controller.shared_open_token();
-        let id = queue_game_file(controller, "open", invalid.clone(), token).unwrap();
-        assert!(wait_file(controller, id).is_err());
+        assert!(complete_file_operation(controller, "open", invalid.clone(), token).is_err());
+        assert_eq!(controller.shared_snapshot().io.phase, IoPhase::Failed);
         assert_eq!(controller.shared_open_token(), token);
         assert!(!controller.shared_snapshot().document.dirty);
         assert_eq!(
@@ -1319,9 +1307,9 @@ mod tests {
         // A filesystem failure cannot replace the valid path or bless a newer
         // revision. Atomic writer fault-injection coverage lives in native tests.
         let missing_parent = file_path("missing-parent").join("game.mshogi");
-        let id = queue_game_file(controller, "save", missing_parent, token).unwrap();
-        assert!(wait_file(controller, id).is_err());
+        assert!(complete_file_operation(controller, "save", missing_parent, token).is_err());
         let failed = controller.shared_snapshot();
+        assert_eq!(failed.io.phase, IoPhase::Failed);
         assert_eq!(failed.open_token, token);
         assert!(!failed.document.dirty);
         assert_eq!(failed.document.path.as_deref(), path.to_str());
@@ -1358,14 +1346,11 @@ mod tests {
                     ),
                 )
                 .unwrap();
-            let deadline = Instant::now() + Duration::from_secs(20);
-            while receipt.completion().is_none() {
-                controller.shared_snapshot();
-                assert!(Instant::now() < deadline);
-                thread::sleep(Duration::from_millis(1));
-            }
-            receipt.completion().unwrap().unwrap();
-            let current = controller.shared_open_token();
+            let current = wait_in_test(PendingAdmission::Command(receipt), || {
+                Ok(controller.shared_snapshot())
+            })
+            .unwrap()
+            .open_token;
             assert_ne!(current.document, obsolete.document);
             let id = controller.shared_snapshot().io.id;
             for action in ["save", "open"] {
@@ -1404,22 +1389,16 @@ mod tests {
         .unwrap()
         .unwrap()
         .1;
-        let deadline = Instant::now() + Duration::from_secs(20);
-        while receipt.completion().is_none() {
-            with_controller(&controller, &shutdown, DesktopController::shared_snapshot).unwrap();
-            assert!(Instant::now() < deadline);
-            thread::sleep(Duration::from_millis(1));
-        }
-        receipt.completion().unwrap().unwrap();
-        let native =
-            with_controller(&controller, &shutdown, DesktopController::shared_snapshot).unwrap();
+        let native = wait_in_test(PendingAdmission::Command(receipt), || {
+            with_controller(&controller, &shutdown, DesktopController::shared_snapshot)
+        })
+        .unwrap();
         assert_eq!(native.game, GameKind::Shogi);
         assert!(
             native.chess.is_none(),
             "no Chess projection or dormant game for Shogi"
         );
         assert!(native.document.dirty);
-        assert_eq!(native.game, GameKind::Shogi);
         let paused = with_controller(&controller, &shutdown, |c| {
             c.lifecycle().request_close().unwrap();
             c.application_pause_for_close()

@@ -1,10 +1,11 @@
 ---
 id: MSH-241
 title: Replace Unclear Uses of Native in Names
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-25T10:40:00Z'
-updated_date: '2026-11-26T11:55:00Z'
+updated_date: '2026-11-27T01:47:00Z'
 labels:
   - cleanup
   - model:medium

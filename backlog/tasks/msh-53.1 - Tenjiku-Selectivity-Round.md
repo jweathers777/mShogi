@@ -1,9 +1,11 @@
 ---
 id: MSH-53.1
 title: Tenjiku Selectivity Round
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-27T15:26:00Z'
+updated_date: '2026-11-27T15:27:00Z'
 labels:
   - tenjiku
   - search
@@ -31,3 +33,9 @@ Run the classical selectivity round for both accepted Tenjiku profiles using the
 - [ ] #2 Freeze the predecessor and record the test method, reachable depth, caps and decision threshold before trials. Kept changes pass applicable perft, differential and tactical checks and qualify in a clocked predecessor test when search behavior changes. Record rejected or inconclusive trials and unscored games.
 - [ ] #3 Required checks pass, affected durable documentation is current, and task notes record revisions, settings, measurements, costs, run paths and cleanup.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Claimed on codex/msh-53.1-tenjiku-selectivity. Freeze af4a48c as the predecessor. Next: inspect existing profiles, prior round results and shared search gates, then freeze trial settings before running either profile.
+<!-- SECTION:NOTES:END -->

@@ -1,10 +1,10 @@
 ---
 id: MSH-53
 title: Establish and meet measured tenjiku shogi engine strength criteria
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-25T11:47:00Z'
+updated_date: '2026-11-27T15:26:00Z'
 labels:
   - model:medium
   - effort:medium
@@ -64,4 +64,6 @@ Move generation discussion slot: MSH-202 (Tenjiku Move Generation Deep Dive).
 2026-11-25 (John): the October criteria (independent opponent pool, release targets met in matches) are replaced by the strength program criteria above. Next steps: MSH-214 (Tenjiku Strength Harness), then MSH-202 (Tenjiku Search Speed).
 
 John, 2026-11-25: use the game-independent strength tool of MSH-243 (Game-Independent Strength Tool); do not write new Tenjiku-only copies. MSH-240 removed the earlier per-game tools; MSH-243 records where to read them.
+
+2026-11-27 (John): Released MSH-53 to Ready. The current authorization is the Tenjiku selectivity round tracked in MSH-53.1. Later steps and the baseline stop decision remain separate. MSH-277 through MSH-283 remain deferred.
 <!-- SECTION:NOTES:END -->

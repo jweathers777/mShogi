@@ -77,6 +77,8 @@ def run_pair(args, seed, out):
     command = [args.helper, 'config', args.candidate, args.baseline, str(seed),
                str(args.candidate_nodes), str(args.baseline_depth), str(args.baseline_nodes),
                '1' if args.calibrate else str(args.max_steps), str(args.pair_wall_ms), str(config)]
+    if getattr(args, 'depth', None) is not None:
+        command.extend(['--candidate-depth', str(args.depth)])
     if getattr(args, 'base', None) is not None:
         command.extend(['--clock-base-ms', str(round(args.base * 1000)),
                         '--clock-increment-ms', str(round(args.increment * 1000))])
@@ -194,6 +196,7 @@ def options(parser, *, selfplay=False):
     game_options(parser)
     if selfplay:
         parser.add_argument('--engine', required=True)
+        parser.add_argument('--depth', type=int, help='fixed search depth for both self-play participants')
     else:
         parser.add_argument('--candidate', required=True)
         parser.add_argument('--baseline', required=True)
@@ -233,9 +236,12 @@ def campaign(args):
         args.candidate = args.baseline = args.engine
         if args.baseline_nodes is not None or args.baseline_depth is not None or args.candidate_time_factor != 1:
             parser.error('self-play uses identical work for both participants')
+        max_depth = 8 if args.game == 'chess' else 64
+        if args.depth is not None and (args.base is not None or not 1 <= args.depth <= max_depth):
+            parser.error(f'--depth requires fixed-work self-play and a depth in 1..{max_depth}')
         if args.base is None:
             args.baseline_nodes = args.candidate_nodes
-            args.baseline_depth = 8 if args.game == 'chess' else 64
+            args.baseline_depth = args.depth if args.depth is not None else max_depth
     if args.random_plies and (not args.openings or not 0 <= args.random_plies <= 128):
         parser.error('--random-plies requires a catalog and at most 128 plies')
     if (args.game == 'tenjiku') != (args.profile is not None):

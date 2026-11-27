@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-27T16:53:00Z'
-updated_date: '2026-11-27T17:34:00Z'
+updated_date: '2026-11-27T17:47:00Z'
 labels:
   - tenjiku
   - evaluation
@@ -64,4 +64,6 @@ First available eight-pair production groups measured without fitting: Adams 678
 Separate clocked data pilot d6274cb vs itself (60 s + 1.5 s, 1200 s pair cap): Adams 2 concluded / 4 wall stops, 386 unique quiet rows (196/0/190); Muller 3 concluded /3 wall stops, 844 quiet rows (215/391/238). No complete pair in either profile. All six reports had matching hashes and native replays, wall stops supplied zero labels and neither these nor the depth-one pilot samples enter production. Frozen engine solved all 144 development/72 heldout tactical rows for each profile. The three pilot jobs and fitter build have zero remaining jobs/VMs/disks, total VM upper bound $0.756869. Production continues. Next: finish both planned corpus stages as needed, verify full split and data size, then fit and qualify the candidate only through the declared conditions.
 
 First eight pairs of every production lane (128 per profile; 32 lanes total): Adams retained 11382 unique quiet boards/45782 raw boards in 3801.89 lane-seconds, Muller 10134/41506 in 3705.21. Values are a prespecified slice of production, not extra data or heldout loss. At 17:33 UTC the job had exported 293614 raw boards from 840 completed pairs. Estimated generation plus export cost remains about $2.44 for 500000 quiet boards under full concurrent use. Eight production workers are active, first batch deadline 18:11 UTC. Next: finish the first batch, use fresh seeds 4197+ for the predeclared second batch if needed, then global split and fit. Branch codex/msh-53.2-tenjiku-evaluation.
+
+Added a symmetric --depth option to the existing fixed-work selfplay CLI so the production route remains reproducible from the repository. It sets the same depth for both participants and rejects clock/depth combinations. Both profiles passed native first-move calibration via the normal selfplay entry point with four random plies, depth 1 and 500000 nodes; the generated config showed those exact limits on both sides. All 58 strength driver tests passed. The generation worker remains frozen at its original equivalent depth settings. Branch codex/msh-53.2-tenjiku-evaluation; next: finish production and split, fit, and apply the existing gates.
 <!-- SECTION:NOTES:END -->

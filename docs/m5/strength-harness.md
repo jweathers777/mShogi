@@ -129,7 +129,10 @@ python3 -m tools.strength.cli export --game chess --every 4 --out runs/TASK/corp
 python3 -m tools.strength.cli judge --game chess --engine JUDGE --depth 12 --nodes 2000000 --samples 16 --out runs/TASK/quality.json runs/TASK/selfplay/*.report.json.gz
 ```
 
-Self-play gives both participants the same engine and budget. Export replays
+Self-play gives both participants the same engine and budget. For fixed-work
+self-play, `--depth` sets the depth for both colors. The Tenjiku production
+corpus used `--depth 1 --candidate-nodes 500000 --random-plies 4` on each
+profile's opening catalog, with `--max-steps 768`. Export replays
 each report before extracting board moves and first-player outcomes. Unfinished
 games remain in the corpus with no samples. Both colors and seeded continuations
 of the same opening stay together. The splitter removes cross-partition board

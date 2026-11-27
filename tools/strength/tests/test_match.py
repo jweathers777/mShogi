@@ -68,6 +68,29 @@ class PairScoring(unittest.TestCase):
 
 
 class ClockDispatch(unittest.TestCase):
+    def test_selfplay_depth_sets_both_work_limits_and_rejects_clocks(self):
+        with tempfile.TemporaryDirectory() as directory:
+            out = Path(directory) / 'selfplay'
+            args = ['strength', 'selfplay', '--game', 'tenjiku', '--profile', 'adams',
+                    '--engine', 'engine', '--depth', '1', '--out', str(out), '--max-pairs', '1']
+            with mock.patch('sys.argv', args + ['--base', '60']), contextlib.redirect_stderr(io.StringIO()):
+                with self.assertRaises(SystemExit):
+                    cli.main()
+            report = PairScoring().report(2, 0)
+            for game in report['games']:
+                game['stop'] = 'game_concluded'
+            result = summarize(report)
+            result['wall_seconds'] = 1
+            with mock.patch('sys.argv', args + ['--candidate-nodes', '500000']), \
+                 mock.patch.object(internal_match, 'environment', return_value={}), \
+                 mock.patch.object(internal_match, 'engine_identity', return_value={}), \
+                 mock.patch.object(internal_match, 'run_pair', return_value=result) as play, \
+                 contextlib.redirect_stdout(io.StringIO()):
+                cli.main()
+            settings = play.call_args.args[0]
+            self.assertEqual((settings.depth, settings.baseline_depth), (1, 1))
+            self.assertEqual((settings.candidate_nodes, settings.baseline_nodes), (500000, 500000))
+
     def test_operator_can_schedule_an_hour_long_pair(self):
         with tempfile.TemporaryDirectory() as directory:
             out = Path(directory) / 'campaign'

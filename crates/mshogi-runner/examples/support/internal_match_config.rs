@@ -15,6 +15,7 @@ pub struct Args {
     pub opening_index: usize,
     /// Seeded random legal plies appended to a catalog opening (self-play corpora).
     pub random_plies: usize,
+    candidate_depth: Option<u16>,
     clock: Option<FischerClock>,
     /// The candidate's clock is this multiple of the shared clock (time odds).
     candidate_time_factor: u64,
@@ -25,6 +26,7 @@ impl Args {
         let mut openings = None;
         let mut opening_index = 0;
         let mut random_plies = 0;
+        let mut candidate_depth = None;
         let mut base = None;
         let mut increment = None;
         let mut candidate_time_factor = 1;
@@ -42,6 +44,7 @@ impl Args {
                 "--openings" => openings = Some(value),
                 "--opening-index" => opening_index = value.parse().unwrap(),
                 "--random-plies" => random_plies = value.parse().unwrap(),
+                "--candidate-depth" => candidate_depth = Some(value.parse().unwrap()),
                 "--clock-base-ms" => base = Some(value.parse().unwrap()),
                 "--clock-increment-ms" => increment = Some(value.parse().unwrap()),
                 "--candidate-time-factor" => candidate_time_factor = value.parse().unwrap(),
@@ -72,6 +75,7 @@ impl Args {
                 openings,
                 opening_index,
                 random_plies,
+                candidate_depth,
                 clock,
                 candidate_time_factor,
             },
@@ -186,11 +190,12 @@ impl Args {
                     ..player(
                         "candidate",
                         &self.values[1],
-                        if profile == RulesProfile::ChessMatchV1 {
-                            mshogi_engine::MAX_ANALYSIS_DEPTH
-                        } else {
-                            64
-                        },
+                        self.candidate_depth
+                            .unwrap_or(if profile == RulesProfile::ChessMatchV1 {
+                                mshogi_engine::MAX_ANALYSIS_DEPTH
+                            } else {
+                                64
+                            }),
                         self.values[4].parse().unwrap(),
                     )
                 },

@@ -69,6 +69,38 @@ fn resignation_and_false_declaration_are_native_conclusions_not_transport_failur
     }
 }
 #[test]
+fn position_history_and_transcript_can_outgrow_one_exchange() {
+    use mshogi_core::shogi::{Game, GameCommand, GameRequest};
+    let mut c = config("resign");
+    c.paired = false;
+    c.max_actions = usize::MAX;
+    c.io.command_bytes = 32;
+    c.io.line_bytes = 128;
+    c.io.transcript_bytes = 1_200;
+    let mut game = Game::new();
+    for ply in 0..104 {
+        let moves = game.position().legal_actions();
+        let action = moves[(ply * 37 + 11) % moves.len()];
+        game.submit(GameRequest {
+            expected: game.context(),
+            actor: game.position().side_to_move(),
+            command: GameCommand::Play(action),
+        })
+        .unwrap();
+        c.openings[0].moves.push(action.to_string());
+    }
+    let report = shogi::run(&c).unwrap();
+    let entry = &report.games[0];
+    assert_eq!(entry.stop, Stop::NativeConclusion);
+    assert!(entry.turns[0].position.len() > 4 * c.io.line_bytes);
+    assert!(serde_json::to_vec(&entry.traffic).unwrap().len() > c.io.transcript_bytes);
+    shogi::Report::from_json(&report.to_json().unwrap()).unwrap();
+    let mut altered = report;
+    altered.config.io.transcript_bytes = 0;
+    assert!(altered.replay().is_err());
+}
+
+#[test]
 fn valid_entering_king_declaration_uses_accepted_28point_fixture() {
     let mut c = config("win");
     c.openings[0].sfen = Some("K8/1RB6/1+P+P+P+P+P+P+P+P/9/9/9/9/9/8k b B5P 1".into());

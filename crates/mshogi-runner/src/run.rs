@@ -510,7 +510,20 @@ pub fn run_experiment(config: &ExperimentConfig) -> Result<ExperimentReport, Run
     config.validate()?;
     let engine_identities = crate::common::identities(&config.engines);
     let deterministic_rerun_eligible = crate::common::rerun_eligible(config, &engine_identities);
-    let mut games = Vec::new();
+    let mut report = ExperimentReport {
+        schema_version: 1,
+        config: config.clone(),
+        config_sha256: config_digest(config),
+        engine_identities,
+        runner_version: env!("CARGO_PKG_VERSION").into(),
+        os: std::env::consts::OS.into(),
+        arch: std::env::consts::ARCH.into(),
+        deterministic_rerun_eligible,
+        games: vec![],
+        summaries: vec![],
+    };
+    let mut budget = crate::common::ReportBudget::FULL;
+    budget.include(&report)?;
     for (opening_index, opening) in config.openings.iter().enumerate() {
         for pairing in 0..if config.paired { 2 } else { 1 } {
             let game = ChessMatch::new(config.opening_game(opening)?, config.time_control)
@@ -522,11 +535,12 @@ pub fn run_experiment(config: &ExperimentConfig) -> Result<ExperimentReport, Run
                 last_match_ns: 0,
                 log: Transport::new(config.watchdogs, config.io, None, Transcript::new()),
             };
+            run.log.report_budget = budget;
             let engines_by_color = if pairing == 0 { [0, 1] } else { [1, 0] };
             let (stop, mut failure, mut diagnostic_failures) = run.play(engines_by_color);
             let engines = run.cleanup(failure.as_mut().or_else(|| diagnostic_failures.first_mut()));
             run.log.journal.truncated |= !run.log.complete;
-            games.push(GameReport {
+            let entry = GameReport {
                 opening_index,
                 opening_id: opening.id.clone(),
                 pairing,
@@ -538,22 +552,16 @@ pub fn run_experiment(config: &ExperimentConfig) -> Result<ExperimentReport, Run
                 match_record_json: run.game.record().to_json(),
                 transcript: run.log.journal,
                 engines,
-            });
+            };
+            budget.charge(
+                crate::common::encoded_len(&entry)? + usize::from(!report.games.is_empty()),
+            )?;
+            report.games.push(entry);
         }
     }
-    let summaries = summaries(config, &games);
-    Ok(ExperimentReport {
-        schema_version: 1,
-        config: config.clone(),
-        config_sha256: config_digest(config),
-        engine_identities,
-        runner_version: env!("CARGO_PKG_VERSION").into(),
-        os: std::env::consts::OS.into(),
-        arch: std::env::consts::ARCH.into(),
-        deterministic_rerun_eligible,
-        games,
-        summaries,
-    })
+    report.summaries = summaries(config, &report.games);
+    crate::common::ReportBudget::FULL.check(&report)?;
+    Ok(report)
 }
 
 #[cfg(test)]

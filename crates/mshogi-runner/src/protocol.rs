@@ -173,9 +173,9 @@ pub(crate) struct Rejection {
 }
 pub(crate) trait Native {
     type Game: Clone;
-    type Side: Copy + Eq;
-    type Conclusion: Copy + PartialEq;
-    type Pending: PartialEq;
+    type Side: Copy + Eq + Serialize;
+    type Conclusion: Copy + PartialEq + Serialize;
+    type Pending: PartialEq + Serialize;
     fn conclusion(game: &Self::Game) -> Option<Self::Conclusion>;
     fn pending(game: &Self::Game) -> Option<Self::Pending>;
     fn score(conclusion: Self::Conclusion) -> [u8; 2];
@@ -209,6 +209,7 @@ pub(crate) fn run_game<G: Native>(
     mut game: G::Game,
     assignment: [usize; 2],
     generation: &mut u64,
+    budget: crate::common::ReportBudget,
 ) -> Result<Completed<G>, RunnerError> {
     let mut host = crate::transport::Transport::new(
         config.watchdogs,
@@ -216,6 +217,7 @@ pub(crate) fn run_game<G: Native>(
         Some(config.max_game_ms),
         Vec::new(),
     );
+    host.report_budget = budget;
     host.generation = *generation;
     let mut processes = Vec::new();
     let mut turns = Vec::new();
@@ -257,6 +259,9 @@ pub(crate) fn run_game<G: Native>(
             context,
         ) {
             Ok(turn) => {
+                host.report_budget.include(&turn)?;
+                host.report_budget
+                    .include(processes.last().expect("completed turn has a process"))?;
                 game = candidate;
                 turns.push(turn);
             }
@@ -380,6 +385,7 @@ pub(crate) fn replay<G: Native>(
         return Err(RunnerError("report collection bounds exceeded".into()));
     }
     let mut previous = 0;
+    validate_traffic(config.io, entry.traffic)?;
     for event in entry.traffic {
         if event.at_ns < previous
             || event.at_ns > entry.elapsed_ns
@@ -434,16 +440,32 @@ pub(crate) fn replay<G: Native>(
         replay_traffic::<G>(&traffic, turn, &config.engines[engine], notice)?;
         *generation = turn.generation;
     }
-    if entry.processes.iter().any(|p| p.observation.engine > 1)
-        || entry
-            .traffic
-            .iter()
-            .any(|t| t.engine > 1 || t.text.len() > config.io.line_bytes * 4)
-    {
+    if entry.processes.iter().any(|p| p.observation.engine > 1) {
         return Err(RunnerError("invalid process/traffic bounds".into()));
     }
     Ok(())
 }
+pub(crate) fn validate_traffic(io: IoLimits, traffic: &[Traffic]) -> Result<(), RunnerError> {
+    let mut remaining = io.transcript_bytes;
+    for event in traffic {
+        let command = event.written.is_some();
+        if (command && !io.admits_command(&event.phase, &event.text))
+            || (!command && event.text.len() > io.line_bytes * 4)
+            || !io.charge_entry(
+                &mut remaining,
+                command,
+                &event.phase,
+                crate::common::encoded_len(event)? + 1,
+            )
+        {
+            return Err(RunnerError(
+                "traffic exceeds configured exchange bounds".into(),
+            ));
+        }
+    }
+    Ok(())
+}
+
 /// Validate the actual accepted-generation protocol, not merely the existence
 /// of a matching bestmove somewhere in a contradictory transcript.
 fn replay_traffic<G: Native>(

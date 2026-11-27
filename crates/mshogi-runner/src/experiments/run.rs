@@ -39,22 +39,24 @@ pub fn run_with_stop(
         identities,
         games: vec![],
     };
-    // Reserve room for final roots/diagnostics before any work; observations are
-    // charged by their actual encoding. These are experiment, not native limits.
-    let mut charged = serde_json::to_vec(&report).map_err(err)?.len();
+    // Size the report with an accepted opening for every scheduled game. Allow
+    // for an unacknowledged shutdown from every supervisor until cleanup finishes.
     for pairing in config.schedule() {
-        charged = charged.saturating_add(
-            serde_json::to_vec(
-                &native::NativeState::from_root(&config.openings[pairing.opening].root)
-                    .map_err(err)?
-                    .root()
-                    .map_err(err)?,
-            )
-            .map_err(err)?
-            .len()
-                + 8192,
-        );
+        let root = &config.openings[pairing.opening].root;
+        let state = native::NativeState::from_root(root).map_err(err)?;
+        report.games.push(Game {
+            pairing,
+            steps: vec![],
+            final_root: state.root().map_err(err)?,
+            native_outcome: state.outcome(),
+            score_first_twice: state.score_first_twice(),
+            stop: state
+                .stop_reason()
+                .unwrap_or_else(|| "artifact_limit".into()),
+            cleanup: (0..config.players.len()).map(cleanup_diagnostic).collect(),
+        });
     }
+    let mut charged = crate::common::encoded_len(&report)?;
     if charged > MAX_BYTES {
         return Err(err(
             "scheduled opening evidence exceeds the 128 MiB report budget",
@@ -63,21 +65,14 @@ pub fn run_with_stop(
     let started = Instant::now();
     let wall_budget = Duration::from_millis(config.wall_budget_ms);
     let mut id = 0u64;
-    for pairing in config.schedule() {
-        let opening = &config.openings[pairing.opening];
-        let mut state = native::NativeState::from_root(&opening.root).map_err(err)?;
-        let initial = state.root().map_err(err)?;
-        // The opening root is reserved before the schedule; charge only growth.
-        let mut root_len = serde_json::to_vec(&initial).map_err(err)?.len();
-        let mut game = Game {
-            pairing,
-            steps: vec![],
-            final_root: initial,
-            native_outcome: None,
-            score_first_twice: None,
-            stop: "step_limit".into(),
-            cleanup: vec![],
-        };
+    for game in &mut report.games {
+        let mut state = native::NativeState::from_root(&game.final_root).map_err(err)?;
+        let mut ending_bytes = ending_size(
+            &game.final_root,
+            &game.native_outcome,
+            game.score_first_twice,
+            &game.stop,
+        )?;
         let bridge_options = BridgeOptions {
             watchdog: Duration::from_millis(config.watchdog_ms),
             cleanup: Duration::from_millis(config.cleanup_ms),
@@ -106,6 +101,7 @@ pub fn run_with_stop(
                 break;
             }
             if game.steps.len() >= config.max_steps {
+                game.stop = "step_limit".into();
                 break;
             }
             let before = state.root().map_err(err)?;
@@ -185,23 +181,27 @@ pub fn run_with_stop(
                 applied: matches!(decision, native::Admission::Applied),
             };
             let after = candidate.root().map_err(err)?;
-            // Charge the encoded (record-elided) step and the final-root growth,
-            // so the charge is linear in game length (MSH-204).
-            let after_len = serde_json::to_vec(&after).map_err(err)?.len();
-            let cost = serde_json::to_vec(&super::encoded_step(&step)?)
-                .map_err(err)?
-                .len()
-                + after_len.saturating_sub(root_len)
+            let outcome = candidate.outcome();
+            let score = candidate.score_first_twice();
+            let stop = candidate.stop_reason().or_else(|| stop_for(decision));
+            let reserved_stop = stop.as_deref().unwrap_or("artifact_limit");
+            let new_ending = ending_size(&after, &outcome, score, reserved_stop)?;
+            let next_charge = charged - ending_bytes
+                + new_ending
+                + crate::common::encoded_len(&encoded_step(&step)?)?
                 + usize::from(!game.steps.is_empty());
-            root_len = root_len.max(after_len);
-            if cost > MAX_BYTES - charged {
+            if next_charge > MAX_BYTES {
                 game.stop = "artifact_limit".into();
                 break;
             }
-            charged += cost;
+            charged = next_charge;
+            ending_bytes = new_ending;
             state = candidate;
             game.steps.push(step);
-            if let Some(reason) = state.stop_reason().or_else(|| stop_for(decision)) {
+            game.final_root = after;
+            game.native_outcome = outcome;
+            game.score_first_twice = score;
+            if let Some(reason) = stop {
                 game.stop = reason;
                 break;
             }
@@ -215,17 +215,35 @@ pub fn run_with_stop(
         {
             thread::sleep(Duration::from_millis(1));
         }
-        for (i, b) in bridges.iter().enumerate() {
-            if !b.shutdown_acknowledged() {
-                game.cleanup.push(format!(
-                    "participant {i} supervisor shutdown unacknowledged; cleanup not proven"
-                ));
-            }
-        }
-        game.final_root = state.root().map_err(err)?;
-        game.native_outcome = state.outcome();
-        game.score_first_twice = state.score_first_twice();
-        report.games.push(game);
+        let reserved_cleanup = crate::common::encoded_len(&game.cleanup)?;
+        game.cleanup = bridges
+            .iter()
+            .enumerate()
+            .filter(|(_, b)| !b.shutdown_acknowledged())
+            .map(|(i, _)| cleanup_diagnostic(i))
+            .collect();
+        charged = charged - ending_bytes - reserved_cleanup
+            + ending_size(
+                &game.final_root,
+                &game.native_outcome,
+                game.score_first_twice,
+                &game.stop,
+            )?
+            + crate::common::encoded_len(&game.cleanup)?;
     }
     report.into_validated()
+}
+
+fn cleanup_diagnostic(player: usize) -> String {
+    format!("participant {player} supervisor shutdown unacknowledged; cleanup not proven")
+}
+
+// Constant tuple punctuation cancels when replacing an ending in the report.
+fn ending_size(
+    root: &Root,
+    outcome: &Option<serde_json::Value>,
+    score: Option<u8>,
+    stop: &str,
+) -> Result<usize, RunnerError> {
+    crate::common::encoded_len(&(root, outcome, score, stop))
 }

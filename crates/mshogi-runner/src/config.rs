@@ -99,6 +99,31 @@ pub struct IoLimits {
     /// Maximum bytes for a control command, including LF. Position commands carry full history.
     pub command_bytes: usize,
 }
+impl IoLimits {
+    /// Charge wire evidence within one exchange. A new command starts a fresh budget.
+    pub(crate) fn charge_entry(
+        &self,
+        remaining: &mut usize,
+        command: bool,
+        phase: &str,
+        cost: usize,
+    ) -> bool {
+        if command {
+            *remaining = self.transcript_bytes;
+            if phase == "position" {
+                return true;
+            }
+        }
+        let fits = cost <= *remaining;
+        *remaining = remaining.saturating_sub(cost);
+        fits
+    }
+
+    pub(crate) fn admits_command(&self, phase: &str, text: &str) -> bool {
+        phase == "position" || text.len() < self.command_bytes // includes the final LF
+    }
+}
+
 impl Default for IoLimits {
     fn default() -> Self {
         Self {

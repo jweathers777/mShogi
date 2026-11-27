@@ -68,6 +68,24 @@ class PairScoring(unittest.TestCase):
 
 
 class NativeClockDispatch(unittest.TestCase):
+    def test_operator_can_schedule_an_hour_long_pair(self):
+        with tempfile.TemporaryDirectory() as directory:
+            out = Path(directory) / 'campaign'
+            command = ['native_match', '--candidate', 'new', '--baseline', 'old',
+                       '--candidate-nodes', '512', '--out', str(out),
+                       '--pair-wall-ms', '3600001', '--wall-seconds', '3800',
+                       '--max-steps', '100000', '--max-pairs', '1']
+            row = summarize(PairScoring().report(2, 0))
+            row['wall_seconds'] = 1
+            with mock.patch('sys.argv', command), mock.patch.object(native_match, 'environment', return_value={}), \
+                 mock.patch.object(native_match, 'engine_identity', return_value={}), \
+                 mock.patch.object(native_match, 'run_pair', return_value=row) as play, \
+                 contextlib.redirect_stdout(io.StringIO()):
+                native_match.main()
+            args = play.call_args.args[0]
+            self.assertEqual((args.pair_wall_ms, args.max_steps), (3600001, 100000))
+            self.assertEqual(json.loads((out / 'summary.json').read_text())['scored_pairs'], 1)
+
     def test_pair_replays_before_scoring_and_selects_fixed_opening(self):
         report = PairScoring().report(2, 0)
         with tempfile.TemporaryDirectory() as directory:

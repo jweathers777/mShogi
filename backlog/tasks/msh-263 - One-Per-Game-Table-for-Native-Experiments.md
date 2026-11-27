@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-26T23:55:00Z'
+updated_date: '2026-11-27T00:00:00Z'
 labels:
   - runner
   - refactor
@@ -71,4 +71,6 @@ Backlog consolidation, 2026-11-26: the dependency fields and current acceptance 
 Claimed by Codex on codex/msh-263-experiment-budgets from eb3f697. Next: inventory dispatch and budgets, implement, verify and integrate.
 
 Checkpoint on codex/msh-263-experiment-budgets: dispatch and replay now share admission and player selection. Removed game-length and pair-duration ceilings, updated CLI/driver entry points and guides. Runner all-target compilation passed before final boundary tests. Next: finish review, resolve findings, verify platform and workspace checks, then integrate.
+
+Independent review of f530814 found four issues: replay applied the stdout limit to position commands; replay did not enforce per-exchange evidence; external runs could accumulate oversized reports; native sizing omitted long escaped stop reasons. Corrected all four. External traffic and completed games now consume a shared report allowance, and native transitions account for the encoded final outcome/stop and cleanup. Regression coverage includes a 104-action opening and an exchange reset. All runner suites passed after the fixes; final workspace and platform verification in progress.
 <!-- SECTION:NOTES:END -->

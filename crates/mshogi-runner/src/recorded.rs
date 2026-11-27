@@ -219,7 +219,7 @@ pub(crate) fn check_canonical<G: Native>(record: &str, game: &G::Game) -> Result
     Ok(())
 }
 
-pub(crate) fn run<C: Clone, G: Native, O: Opening<Adapter = G>>(
+pub(crate) fn run<C: Clone + Serialize, G: Native, O: Opening<Adapter = G>>(
     config: &C,
     schedule: Schedule<'_, O>,
 ) -> Result<Evidence<C, G>, RunnerError> {
@@ -230,6 +230,8 @@ pub(crate) fn run<C: Clone, G: Native, O: Opening<Adapter = G>>(
         platform: platform(),
         games: Vec::new(),
     };
+    let mut budget = ReportBudget::FULL;
+    budget.include(&report)?;
     let mut generation = 0;
     for (index, assignment, opening) in schedule.games() {
         let outcome = protocol::run_game::<G>(
@@ -237,10 +239,11 @@ pub(crate) fn run<C: Clone, G: Native, O: Opening<Adapter = G>>(
             opening.open()?,
             assignment,
             &mut generation,
+            budget,
         )?;
         let game = outcome.game;
         let conclusion = G::conclusion(&game);
-        report.games.push(GameReport {
+        let entry = GameReport {
             opening: index,
             assignment,
             game: G::canonical(&game)?,
@@ -256,7 +259,9 @@ pub(crate) fn run<C: Clone, G: Native, O: Opening<Adapter = G>>(
             traffic_complete: outcome.traffic_complete,
             processes: outcome.processes,
             elapsed_ns: outcome.elapsed_ns,
-        });
+        };
+        budget.charge(encoded_len(&entry)? + usize::from(!report.games.is_empty()))?;
+        report.games.push(entry);
     }
     replay::<C, G, O>(&report, schedule)?;
     Ok(report)

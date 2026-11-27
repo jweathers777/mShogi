@@ -113,6 +113,7 @@ pub(crate) struct Transport<J: Journal> {
     pub watchdogs: Watchdogs,
     io: IoLimits,
     bytes_left: usize,
+    pub report_budget: crate::common::ReportBudget,
     deadline: Option<Instant>,
 }
 impl<J: Journal> Transport<J> {
@@ -129,6 +130,7 @@ impl<J: Journal> Transport<J> {
             watchdogs,
             io,
             bytes_left: io.transcript_bytes,
+            report_budget: crate::common::ReportBudget::FULL,
             deadline: game_ms.map(|ms| start + Duration::from_millis(ms)),
         }
     }
@@ -155,10 +157,6 @@ impl<J: Journal> Transport<J> {
         written: Option<bool>,
         at_ns: u64,
     ) -> Result<(), Failure> {
-        if written.is_some() {
-            self.bytes_left = self.io.transcript_bytes;
-        }
-        let is_position = written.is_some() && phase == "position";
         let length = text.len();
         let entry = self.journal.entry(Traffic {
             engine,
@@ -175,13 +173,11 @@ impl<J: Journal> Transport<J> {
             text,
             written,
         });
-        let cost = if is_position {
-            0
-        } else {
-            serde_json::to_vec(&entry).expect("finite event").len() + 1
-        };
-        if cost > self.bytes_left {
-            self.bytes_left = 0;
+        let size = crate::common::encoded_len(&entry).expect("finite protocol entry") + 1;
+        if !self
+            .io
+            .charge_entry(&mut self.bytes_left, written.is_some(), phase, size)
+        {
             self.complete = false;
             self.journal.dropped(length);
             return Err(self.failure(
@@ -191,7 +187,11 @@ impl<J: Journal> Transport<J> {
                 "command and reply transcript limit reached",
             ));
         }
-        self.bytes_left -= cost;
+        if let Err(e) = self.report_budget.charge(size) {
+            self.complete = false;
+            self.journal.dropped(length);
+            return Err(self.failure(engine, FailureKind::ResourceLimit, phase, e.to_string()));
+        }
         self.journal.retain(entry);
         Ok(())
     }
@@ -213,7 +213,7 @@ impl<J: Journal> Transport<J> {
     ) -> (bool, Result<(), Failure>) {
         self.observed = elapsed_ns(self.start);
         self.phase_budget = (at, timeout.as_millis() as u64);
-        if phase != "position" && line.len() + 1 > self.io.command_bytes {
+        if !self.io.admits_command(phase, line) {
             return (
                 false,
                 Err(self.failure(
@@ -641,5 +641,27 @@ impl<J: Journal> Transport<J> {
         }
         observation.retirement_failure = failure.clone();
         (observation, failure)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn new_command_restarts_only_the_exchange_budget() {
+        let mut host = Transport::new(Watchdogs::default(), IoLimits::default(), None, Vec::new());
+        host.report_budget
+            .charge(crate::common::REPORT_BYTES - 512)
+            .unwrap();
+        host.log(0, "position", "position ".repeat(32), Some(true), 1)
+            .unwrap();
+        let failure = host
+            .log(0, "position", "position ".repeat(32), Some(true), 2)
+            .unwrap_err();
+        assert_eq!(failure.kind, FailureKind::ResourceLimit);
+        assert!(failure.detail.contains("128 MiB"));
+        assert!(!host.complete);
+        assert_eq!(host.journal.len(), 1);
     }
 }

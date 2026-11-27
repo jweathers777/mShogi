@@ -369,7 +369,18 @@ impl ExperimentReport {
                     at,
                 ));
             }
+            let mut remaining = self.config.io.transcript_bytes;
             for entry in &g.transcript.entries {
+                if !self.config.io.charge_entry(
+                    &mut remaining,
+                    entry.direction == TransportDirection::Command,
+                    &entry.phase,
+                    crate::common::encoded_len(entry)? + 1,
+                ) {
+                    return Err(RunnerError(
+                        "transcript exchange exceeds configured budget".into(),
+                    ));
+                }
                 if entry.engine > 1 {
                     return Err(RunnerError("transport engine index invalid".into()));
                 }

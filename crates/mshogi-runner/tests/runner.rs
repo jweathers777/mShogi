@@ -381,7 +381,14 @@ fn all_stream_and_metadata_buffers_are_bounded_with_truncation_markers() {
     assert_eq!(g.stop, GameStop::Failure);
     assert_eq!(g.failure.as_ref().unwrap().kind, FailureKind::ResourceLimit);
     assert!(g.transcript.truncated);
-    assert!(g.transcript.entries.len() < 10);
+    assert!(
+        g.transcript
+            .entries
+            .iter()
+            .filter(|e| e.phase == "handshake")
+            .count()
+            < 10
+    );
     assert!(g.transcript.observed_entries > g.transcript.entries.len() as u64);
     let mut c = config("id_flood");
     c.io.transcript_bytes = 1_048_576;

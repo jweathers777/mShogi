@@ -156,14 +156,16 @@ pub(crate) struct Completed<G: MatchNative> {
     pub processes: Vec<Process>,
     pub elapsed_ns: u64,
 }
-pub(crate) fn run_report<C: Clone, G: MatchNative>(
+pub(crate) fn run_report<C: Clone + Serialize, G: MatchNative>(
     config: &C,
     settings: Settings<'_, G>,
     game: G::Game,
 ) -> Result<MatchReport<C, G::Side, G::Conclusion>, RunnerError> {
-    let completed = run::<G>(&settings, game)?;
+    let mut budget = crate::common::ReportBudget::FULL;
+    budget.include(config)?;
+    let completed = run::<G>(&settings, game, budget)?;
     let conclusion = G::conclusion(&completed.game);
-    Ok(MatchReport {
+    let report = MatchReport {
         schema_version: 1,
         config: config.clone(),
         identities: completed.identities,
@@ -180,11 +182,14 @@ pub(crate) fn run_report<C: Clone, G: MatchNative>(
         traffic_complete: completed.traffic_complete,
         processes: completed.processes,
         elapsed_ns: completed.elapsed_ns,
-    })
+    };
+    crate::common::ReportBudget::FULL.check(&report)?;
+    Ok(report)
 }
 pub(crate) fn run<G: MatchNative>(
     config: &Settings<'_, G>,
     mut game: G::Game,
+    budget: crate::common::ReportBudget,
 ) -> Result<Completed<G>, RunnerError> {
     let identities = crate::common::identities(config.engines);
     let mut host = Transport::new(
@@ -193,6 +198,7 @@ pub(crate) fn run<G: MatchNative>(
         Some(config.max_game_ms),
         Vec::new(),
     );
+    host.report_budget = budget;
     host.version = G::events(&game);
     let mut engines: Vec<Engine> = Vec::new();
     let mut failure = None;
@@ -282,12 +288,22 @@ pub(crate) fn run<G: MatchNative>(
                     }
                     clock[side] =
                         crate::common::balance_after(clock[side], elapsed, config.increment[side]);
-                    turns.push(ClockedTurn {
+                    let turn = ClockedTurn {
                         reply: line,
                         elapsed_ms: elapsed,
                         info_lines: info,
                         ..context
-                    });
+                    };
+                    turns.push(turn);
+                    if let Err(e) = host.report_budget.include(turns.last().unwrap()) {
+                        failure = Some(host.failure(
+                            index,
+                            FailureKind::ResourceLimit,
+                            "report",
+                            e.to_string(),
+                        ));
+                        break MatchStop::Failure;
+                    }
                 }
                 Ok(Outcome::Watchdog) => break MatchStop::TimeLimit,
                 Ok(Outcome::Exhausted(elapsed)) => {
@@ -344,6 +360,7 @@ pub(crate) fn replay<G: MatchNative>(
     turns: &[ClockedTurn<G::Side>],
     traffic: &[Traffic],
 ) -> Result<[u64; 2], RunnerError> {
+    protocol::validate_traffic(c.io, traffic)?;
     let mut clock = c.clock;
     for turn in turns {
         if G::end(game).is_some() {

@@ -124,6 +124,41 @@ pub(crate) fn decode<T: DeserializeOwned>(text: &str, cap: usize) -> Result<T, R
     serde_json::from_str(text).map_err(|e| RunnerError(e.to_string()))
 }
 
+/// Count compact JSON bytes without allocating a second copy of a report.
+pub(crate) fn encoded_len(value: &impl Serialize) -> Result<usize, RunnerError> {
+    struct Counter(usize);
+    impl std::io::Write for Counter {
+        fn write(&mut self, bytes: &[u8]) -> std::io::Result<usize> {
+            self.0 = self.0.saturating_add(bytes.len());
+            Ok(bytes.len())
+        }
+        fn flush(&mut self) -> std::io::Result<()> {
+            Ok(())
+        }
+    }
+    let mut count = Counter(0);
+    serde_json::to_writer(&mut count, value).map_err(|e| RunnerError(e.to_string()))?;
+    Ok(count.0)
+}
+
+#[derive(Clone, Copy)]
+pub(crate) struct ReportBudget(usize);
+impl ReportBudget {
+    pub const FULL: Self = Self(REPORT_BYTES);
+    pub fn check(mut self, value: &impl Serialize) -> Result<(), RunnerError> {
+        self.include(value)
+    }
+    pub fn charge(&mut self, bytes: usize) -> Result<(), RunnerError> {
+        self.0 = self
+            .0
+            .checked_sub(bytes)
+            .ok_or_else(|| RunnerError("report exceeds 128 MiB".into()))?;
+        Ok(())
+    }
+    pub fn include(&mut self, value: &impl Serialize) -> Result<(), RunnerError> {
+        self.charge(encoded_len(value)?)
+    }
+}
 pub(crate) fn encode_report<T: Serialize>(value: &T) -> Result<String, RunnerError> {
     let text = serde_json::to_string(value).map_err(|e| RunnerError(e.to_string()))?;
     if text.len() > REPORT_BYTES {

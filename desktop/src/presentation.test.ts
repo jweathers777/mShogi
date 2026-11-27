@@ -8,7 +8,7 @@ import claimJson from "./__fixtures__/shared-chess-claim.json";
 import checkmateJson from "./__fixtures__/shared-chess-checkmate.json";
 const standard = standardJson as ChessSnapshot;
 const claim = claimJson as ChessSnapshot;
-const checkmate = checkmateJson as ChessSnapshot;
+const checkmate = checkmateJson as unknown as ChessSnapshot;
 describe("real native snapshot semantics", () => {
   it("recognizes actual native external enum shapes and keeps claims separate from conclusions", () => {
     expect(standard.status.label).toBe("White to move");

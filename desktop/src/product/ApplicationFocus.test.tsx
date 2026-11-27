@@ -50,7 +50,7 @@ it("recovers engine cancellation to Retry, then to the board after the control d
 it("focuses the readable native conclusion when claiming removes its control", () => {
   const { props, rerender } = app(claimJson as ChessSnapshot);
   const claim = screen.getByRole("button", { name: "Claim selected draw" }); claim.focus(); fireEvent.click(claim);
-  rerender(<ApplicationView {...props} snapshot={claimedJson as ChessSnapshot} />);
+  rerender(<ApplicationView {...props} snapshot={claimedJson as unknown as ChessSnapshot} />);
   expect(document.activeElement).toBe(document.querySelector("[data-game-status]"));
   expect(document.activeElement?.textContent).toContain("Draw");
 });

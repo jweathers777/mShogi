@@ -10,6 +10,9 @@ export type WorkLimits = AnalysisOperation & { time_ms?: number };
 export type Purpose = "engine_turn" | "move_analysis";
 type CanonicalRecord = { envelope_version: number; game_kind: GameKind; payload: unknown };
 type XiangqiPending = { reason: string; occurrences: number[] };
+type XiangqiAssessment =
+  | { kind: "proven_neither_can_win" | "unknown" | "failure" }
+  | { kind: "proven_natural_win"; winner: GameSide<"xiangqi">; witness: string[] };
 export type DrawClaim = "threefold" | "fifty_move";
 export interface Claim {
   actor: Color;
@@ -65,6 +68,8 @@ export type FailureKind =
   | "context_mismatch"
   | "cleanup";
 
+type EngineFailure = { kind: FailureKind; message: string };
+
 export interface AnalysisOperation {
   depth: number;
   nodes: number;
@@ -101,7 +106,7 @@ export type ChessResult =
   | { kind: "claim"; claim: Claim; telemetry: Telemetry }
   | { kind: "finished"; outcome: ChessOutcome; telemetry: Telemetry }
   | { kind: "incomplete"; telemetry: Telemetry }
-  | { kind: "failure"; failure: { kind: FailureKind; message: string } };
+  | { kind: "failure"; failure: EngineFailure };
 // Native choices and conclusions remain opaque where the UI uses the native
 // search projection. Only Xiangqi has an unresolved result with a pending witness.
 type NativeResult<K extends GameKind> =
@@ -112,7 +117,7 @@ type NativeResult<K extends GameKind> =
 export type ExecutionResult =
   | { kind: "chess"; result: ChessResult }
   | { [K in Exclude<GameKind, "chess">]: { kind: K; result: NativeResult<K> } }[Exclude<GameKind, "chess">]
-  | { kind: "failure"; failure: { kind: FailureKind; message: string } };
+  | { kind: "failure"; failure: EngineFailure };
 export interface ExecutionObservation {
   schema_version: number;
   context: ExecutionContext;
@@ -187,7 +192,9 @@ export interface MovesPresentation {
   entries: { event_index: number; board_ply: number; number: number; column: 0 | 1; notation: string; effects_description?: string; action: string; command_start: number; command_end: number }[];
   last_action: CompletedActionGeometry | null;
 }
-interface GameSnapshotBase {
+interface GameSnapshotBase<K extends GameKind = GameKind> {
+  game: K;
+  chess: K extends "chess" ? ChessPresentation : null;
   token: SessionToken;
   profile: RulesProfile;
   board: { files: string[]; ranks: string[]; label: string; initial_focus: string;
@@ -232,17 +239,9 @@ export interface ChessPresentation {
   last_engine_turn: Color | null;
   searched_version: number | null;
 }
-export type ChessSnapshot = GameSnapshotBase & {
-  game: "chess";
-  chess: ChessPresentation;
-};
-export type ShogiSnapshot = GameSnapshotBase & {
-  game: "shogi";
-  chess: null;
-};
-export type XiangqiSnapshot = GameSnapshotBase & {
-  game: "xiangqi";
-  chess: null;
+export type ChessSnapshot = GameSnapshotBase<"chess">;
+export type ShogiSnapshot = GameSnapshotBase<"shogi">;
+export type XiangqiSnapshot = GameSnapshotBase<"xiangqi"> & {
   xiangqi: {
     terminal_actions: { offer_actor: Side; response_actor: Side; offer_draw: boolean; accept_draw: boolean; decline_draw: boolean };
     canonical_context_scope: "selected_committed" | "live_with_immutable_selection";
@@ -252,7 +251,7 @@ export type XiangqiSnapshot = GameSnapshotBase & {
     warnings: { side: GameSide<"xiangqi">; fault: "perpetual_check" | "perpetual_chase"; active: boolean; event_index: number; occurrences: number[] }[];
     offered_by: GameSide<"xiangqi"> | null;
     conclusion: unknown | null; pending: XiangqiPending | null;
-    no_win_assessment: { kind: "proven_neither_can_win" | "proven_natural_win" | "unknown" | "failure"; winner?: GameSide<"xiangqi">; witness?: string[] };
+    no_win_assessment: XiangqiAssessment;
   };
 };
 export type ToriFace = "phoenix" | "falcon" | "eagle" | "crane" | "pheasant" | "left_quail" | "right_quail" | "swallow" | "goose";
@@ -263,9 +262,7 @@ export interface ToriHistory {
   repetition: { side: ShogiSide; forbidden: ToriAction[] } | null;
   conclusion: ToriConclusion | null;
 }
-export type ToriSnapshot = GameSnapshotBase & {
-  game: "tori";
-  chess: null;
+export type ToriSnapshot = GameSnapshotBase<"tori"> & {
   tori: { root_kind: "standard" | "diagram" | "imported"; root_source: string | null; declared_root_plies: string;
     earlier_history_unknown: boolean; historical_reachability_proven: boolean; selected: ToriHistory; live: ToriHistory };
 };
@@ -278,9 +275,7 @@ export interface ChuHistory {
   lion_rights: unknown; occurrences: number[]; obligations: unknown[];
   conclusion: unknown | null; draw_offer: ShogiSide | null; last_effects: unknown | null;
 }
-export type ChuSnapshot = GameSnapshotBase & {
-  game: "chu";
-  chess: null;
+export type ChuSnapshot = GameSnapshotBase<"chu"> & {
   chu: { root: unknown; declared_root_plies: string; earlier_history_unknown: boolean; historical_reachability_proven: boolean; selected: ChuHistory; live: ChuHistory; execution_supported: boolean };
 };
 export interface TenjikuPieceIdentity {
@@ -294,9 +289,8 @@ export interface TenjikuHistory {
   pending_bare: ShogiSide | null; conclusion: unknown | null; draw_offer: ShogiSide | null;
   last_effects: unknown | null;
 }
-export type TenjikuSnapshot = GameSnapshotBase & {
-  game: "tenjiku";
-  chess: null; profile: TenjikuProfile;
+export type TenjikuSnapshot = GameSnapshotBase<"tenjiku"> & {
+  profile: TenjikuProfile;
   tenjiku: { profile: TenjikuProfile; edition: string; root: unknown; declared_root_plies: string;
     earlier_history_unknown: boolean; historical_reachability_proven: boolean;
     selected: TenjikuHistory; live: TenjikuHistory; execution_supported: boolean };

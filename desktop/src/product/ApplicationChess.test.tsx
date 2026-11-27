@@ -33,7 +33,7 @@ it("persists orientation independently of the human side and displays the readab
   const { session, props, rerender } = app();
   fireEvent.click(screen.getByRole("button", { name: /Flip board/ }));
   expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "preferences", settings: { ...standard.document.settings, orientation: { game_kind: "chess", side: "black" } } });
-  rerender(<ApplicationView {...props} snapshot={claimedJson as ChessSnapshot} />);
+  rerender(<ApplicationView {...props} snapshot={claimedJson as unknown as ChessSnapshot} />);
   expect(document.querySelector("[data-game-status]")?.textContent).toContain("Draw — claimed");
 });
 it.each([standardJson, shogiJson, xiangqiJson])("uses the same actual common section and board-slot ownership", fixture => {

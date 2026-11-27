@@ -124,7 +124,7 @@ the game payloads, before the operation is parsed.
 Diagnostics truncate at a valid UTF-8 boundary.
 Shogi history and reconstruction follow the 320-action move-count rule.
 The current application keeps the newest 256 engine results in memory.
-When a new result fills the list, it replaces the oldest result. Saved game
+Once the list is full, each new result replaces the oldest. Saved game
 documents preserve the game history.
 
 ## MSH-72 verification

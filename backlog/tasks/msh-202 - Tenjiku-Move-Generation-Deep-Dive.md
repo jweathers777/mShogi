@@ -1,11 +1,11 @@
 ---
 id: MSH-202
 title: Tenjiku Search Speed
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-19T07:12:00Z'
-updated_date: '2026-11-27T14:50:00Z'
+updated_date: '2026-11-27T15:12:00Z'
 labels:
   - tenjiku
   - search
@@ -31,7 +31,7 @@ Native rules stay the authority. A faster search-side position must agree with t
 <!-- AC:BEGIN -->
 - [x] #1 Baseline and final speed are recorded on the same machine and positions: nodes per second and time to a fixed depth, with the cost profile that guided the changes
 - [x] #2 Tenjiku perft and differential tests against the native rules pass
-- [ ] #3 Each kept change passed the blunder suite and a game test against the frozen predecessor; rejected changes are recorded with their result
+- [x] #3 Each kept change passed the blunder suite and a game test against the frozen predecessor; rejected changes are recorded with their result
 - [x] #4 A short design note in docs/ explains how the unusual pieces are generated and checked in search
 <!-- AC:END -->
 
@@ -61,4 +61,14 @@ c3-standard-4, one VM per profile, both binaries timed sequentially in alternati
 Muller opening-clock diagnosis: all four pairs had one unscored predecessor move. The predecessor stopped before completing depth 1 at 2245, 2362, 2501 and 2720 ms. The four other games yielded 2 candidate wins and 2 losses, zero complete pairs. Preserve this entire run; it cannot qualify a paired strength result. Supplemental protocol fixed before either control is run: for both profiles take the three full-opening histories already frozen for the benchmark (catalog indices 1..3), each on its own c3-standard-4 VM. Use 60 s + 3 s for both engines to increase the budget for the first iteration, one pair per VM, H0=0 H1=15, 768 plies and 1200 s per pair. Separately, run one 60 s + 1.5 s endgame pair per profile at the original clock: take the first concluded game with at least 24 post-opening board plies in MSH-214 control2 equal-clock reports, ordered by seed then color, and truncate the native history exactly 12 board plies before its recorded ending. No root substitutions or imputed outcomes. Endgames test full-game admission from those histories and do not estimate full-opening strength. Review all results together with exact signatures. No external opponents.
 
 Original 60 s + 1.5 s run completed. Adams 4 wins, 0 draws, 2 losses, 2 unscored (one depth-zero search by either engine), 3/4 complete pairs, pentanomial [0,0,2,0,1]. Muller 2 wins, 0 draws, 2 losses, 4 unscored (all predecessor depth zero), 0/4 complete pairs. Both campaigns returned nonzero for incomplete pairs. No SPRT or Elo result. Verified the native replay logs and report hashes. The comparison job, VMs and disks are gone; VM upper bound $0.394. Full python3 tools/checks.py run --base origin/main passed formatting, Clippy and 1175 tests, 10 ignored. Next: collect separate controls from strength-msh202-supplement at gs://mshogi-experiments-216675633801/runs/msh-202/supplement/, verify cleanup and document the decision. Its manifests are frozen, including independent Adams ply-178 and Muller ply-89 endgame histories from the prior control2 job. Branch codex/msh-202-tenjiku-speed.
+
+Supplemental full openings on dedicated c3-standard-4 VMs, 60 s + 3 s: Adams 1 win, 0 draws, 0 losses, 5 unscored (one incomplete candidate search and four wall-budget stops), 0/3 complete pairs. Muller 2 wins, 0 draws, 1 loss, 3 unscored (wall budget), 1/3 complete pairs. Muller opening-214007 concluded in both colors at 160/192 plies with one win per engine. The separate historical endgames at 60 s + 1.5 s each completed both colors, one win per engine: Adams 18/20 plies; Muller 12/12. All 16 original and supplemental pair reports have matching SHA-256 values and native replay receipts. The capped campaigns deliberately exited nonzero on unfinished pairs. No scores imputed, controls not pooled, no SPRT decision or Elo estimate claimed. The speed-only candidate passed its predeclared retention conditions: faster on every fixed root, exact fixed-depth signatures, full tactical scores, and completed native full-opening pairs for both profiles. One optimization tested and retained, none rejected. The roadmap exact-search exemption applies to strength qualification.
+
+All four capped Batch jobs have verified deletion of jobs, VMs and disks. Conservative VM upper bounds: frozen build $0.01687, candidate build $0.01631, comparison $0.39387, supplemental $0.59339. Overall upper bound $1.021 excluding incidental storage; no new container image. Reproduction commands, all raw measurements, replay logs, compiler and binary identities, sample stacks, and operator cleanup receipts are under gs://mshogi-experiments-216675633801/runs/msh-202/. Product candidate d6274cb and predecessor ba6cee4. No change to rules, evaluation or deferred tasks. Next program step: Tenjiku selectivity under MSH-53, pending John.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Tenjiku search now looks up single-landing geometry by displacement and scans only the intervening squares for rays. Across six fixed roots per profile, depth-3 time fell 38.0% for Adams and 27.4% for Muller, with identical nodes, moves, scores and principal variations on all 12 roots. Both profiles passed perft, differential tests, every tactical position and completed color-swapped predecessor games. Many clocked opening games were unscored, so no strength gain is claimed. Independent review and the shared checks passed. The design note explains unusual moves and attack tests. Next is the selectivity step when John releases it.
+<!-- SECTION:FINAL_SUMMARY:END -->

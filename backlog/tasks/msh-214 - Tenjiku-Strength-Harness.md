@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-20T22:51:00Z'
-updated_date: '2026-11-27T13:01:00Z'
+updated_date: '2026-11-27T13:04:00Z'
 labels:
   - tenjiku
   - search
@@ -30,6 +30,14 @@ Goal: the harness step of the per-game classical strength program (docs/m5/stren
 - [ ] #3 A game-test control at which the median late-game depth is at least 8, or a lower target with its reason and cost recorded; a game test against a frozen predecessor runs end to end in the cloud
 - [ ] #4 A self-play export for Texel data with a split, and a time-odds measurement (2x time) recorded
 <!-- AC:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Freeze 2e4b9ad as baseline and unchanged candidate. For each profile separately, standard start plus four seeded uniformly indexed legal actions from the shared openings generator. Four shards start at seeds 214000, 215000, 216000 and 217000. In each take the first 25 distinct live boards with a completed depth-2 search, at most 500000 nodes and absolute score at most 100 pawn hundredths. Up to 1000 attempts per shard. Deduplicate across shards and replace duplicates with the next eligible seed under the same rule. Record all attempts. No opening scores have been seen.
+Compose at least 200 diagrams per profile in families for active Fire Demon burns, ranked jumps that bare the opponent, and complete Lion moves. Keep entire geometry/motif groups within one partition; freeze the rows and split before either baseline probe. Use suite --proof one-ply to exhaustively try every legal move through Game and accept only terminal wins. Probe both partitions at depth 2 and 500000 nodes. Record the population and limitations.
+Use separate cloud c3-standard-4 measurements for both profiles. Calibrate clock budgets with the native runner. Equal clocks on frozen engine against itself certify the route; 2x both base and increment measures time odds. Pair colors, no cutoff scores. Use post-opening ply 40 onward for late-game depth. Export concluded equal-clock self-play into all three opening-separated partitions. Bound jobs, record incomplete games, cost and cleanup, compare achieved depth with 8, and check shared sources and documentation before integration.
+<!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
 

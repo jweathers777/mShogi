@@ -1,10 +1,10 @@
 ---
 id: MSH-202
 title: Tenjiku Search Speed
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-11-19T07:12:00Z'
-updated_date: '2026-11-25T09:15:00Z'
+updated_date: '2026-11-27T14:15:00Z'
 labels:
   - tenjiku
   - search
@@ -42,4 +42,6 @@ Native rules stay the authority. A faster search-side position must agree with t
 Harness blocker is now the dependency MSH-214 (Tenjiku Strength Harness).
 
 2026-11-25 (John): Tenjiku comes last, after the codebase cleanup; follows MSH-214.
+
+2026-11-27 (John): Released MSH-202 for implementation after MSH-214. The architectural tasks MSH-277 through MSH-283 remain deferred and do not block this work.
 <!-- SECTION:NOTES:END -->

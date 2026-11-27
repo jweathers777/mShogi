@@ -1,11 +1,11 @@
 ---
 id: MSH-266
 title: Desktop Scripts and Reproducible Fixtures
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-27T06:48:00Z'
+updated_date: '2026-11-27T07:01:00Z'
 labels:
   - desktop
   - scripts
@@ -30,11 +30,11 @@ Make all six games' committed frontend and GUI fixtures reproducible with the fi
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 One font subset script with a table of fonts makes the same font files as before, or the changed font files are regenerated and checked.
-- [ ] #2 gui-smoke.py and the platform drivers use shared helpers that take the game as a parameter, one event shape and one fixture list; the desktop script tests pass; line counts before and after are recorded.
-- [ ] #3 The Chu GUI document generator runs to completion with the current code, and the cause of the 9 vs 1 assertion is fixed or the assertion is corrected with a recorded reason.
-- [ ] #4 The committed frontend and GUI fixtures for all six games are regenerated with the final code and names; a second run makes no change.
-- [ ] #5 desktop/scripts/fixtures/CHU.md and the Tenjiku notes still describe the generators correctly
+- [x] #1 One font subset script with a table of fonts makes the same font files as before, or the changed font files are regenerated and checked.
+- [x] #2 gui-smoke.py and the platform drivers use shared helpers that take the game as a parameter, one event shape and one fixture list; the desktop script tests pass; line counts before and after are recorded.
+- [x] #3 The Chu GUI document generator runs to completion with the current code, and the cause of the 9 vs 1 assertion is fixed or the assertion is corrected with a recorded reason.
+- [x] #4 The committed frontend and GUI fixtures for all six games are regenerated with the final code and names; a second run makes no change.
+- [x] #5 desktop/scripts/fixtures/CHU.md and the Tenjiku notes still describe the generators correctly
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -66,4 +66,14 @@ Checkpoint: consolidated script, fixture and font helpers are implemented on cod
 Historical Chu failure reproduced with the documented release command at c0f67d7. Its completed-depth assertion at line 330 got 9 from CHU_PLAY_LIMITS and expected 1. MSH-228 commit 133fff5 replaced that interactive preset with an untimed depth-1/512-visit fixture request. The generator now uses one FIXTURE_LIMITS constant for requests, assertions and manifest values. Current debug and release generation both complete. Fresh agent review restored the Tenjiku archive profile assertion, made the mocked Linux/macOS path tests portable, and routed release CI through the same fixture check.
 
 Line counts (cb89ef1 to this change): gui-smoke.py 3689 to 3625, gui_linux.py 490 to 480, gui_windows.py 755 to 749, macos-verification.py 175 to 163, shared gui_support.py 0 to 56. Together 5109 to 5073. Five font scripts totaled 289 lines; the combined script has 88. Shared hyphenated test loader adds 12 lines and removes repeated setup in six tests.
+
+Checks on 809f3e2: python3 tools/checks.py run --base origin/main passed (Rust format, Clippy, workspace tests, TypeScript, frontend tests, tooling, 178 desktop script tests). Changed Chu example also passed focused Clippy, all six release tests and release generation, which matched all 17 Chu outputs. Two current regenerations verified all 115 frontend snapshots, 42 ordinary Load documents and 2 manifests byte for byte. CI passed on Linux, macOS and Windows: desktop host and script tests https://github.com/jweathers777/mShogi/actions/runs/45954330905, targeted fixtures https://github.com/jweathers777/mShogi/actions/runs/45954326646. Routine and tooling CI passed at https://github.com/jweathers777/mShogi/actions/runs/45954295544. Release-only packaged GUI suite was outside this check scope. Backlog doctor and documentation links passed.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Consolidated font generation, GUI journey helpers, QA fixture selection, native event records and test script loading. All five bundled fonts still reproduce byte for byte.
+Pinned the Chu fixture probes and used one reproducibility check for the 159 current desktop outputs. Historical GUI recordings keep their original provenance.
+Local checks, independent review and Linux, macOS and Windows CI passed. Next task is MSH-235 (Reconcile and Prune Durable Documentation).
+<!-- SECTION:FINAL_SUMMARY:END -->

@@ -1,9 +1,11 @@
 ---
 id: MSH-53.3
 title: Tenjiku Reference Ladder and Blunder Screen
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-27T21:36:00Z'
+updated_date: '2026-11-27T21:37:00Z'
 labels:
   - tenjiku
   - strength
@@ -32,3 +34,9 @@ Measure how the accepted classical Tenjiku engine scales with search resources a
 - [ ] #2 Freeze the sampling, deeper judge protocol, blunder rule and classes before inspecting results. Report blunders per 100 moves and mean win-probability loss for each profile with coverage and limits; preserve reproducible blunder positions and apply the roadmap follow-up rule.
 - [ ] #3 Record exact commands, revisions, inputs, run evidence, costs, and cleanup. Relevant checks pass and the parent task and roadmap reflect the evidence. Leave the baseline stop decision to John.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Claimed on codex/msh-53.3-tenjiku-assessment. Next freeze the paired ladder and deeper judge protocol from the accepted evaluation and shared harness, then run both authorized measurements.
+<!-- SECTION:NOTES:END -->

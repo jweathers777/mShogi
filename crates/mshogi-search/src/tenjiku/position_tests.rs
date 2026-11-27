@@ -548,43 +548,6 @@ fn diagram(profile: Profile, entries: &[(u8, u8, Side, Base, bool)], turn: Side)
     .unwrap()
 }
 #[test]
-fn quiet_discovery_respects_profile_and_root_admission() {
-    for profile in Profile::ALL {
-        let root = diagram(
-            profile,
-            &[
-                (16, 16, Side::Sente, Base::K, false),
-                (8, 6, Side::Sente, Base::R, false),
-                (6, 6, Side::Sente, Base::P, false),
-                (4, 6, Side::Gote, Base::K, false),
-                (15, 2, Side::Gote, Base::P, false),
-            ],
-            Side::Sente,
-        );
-        let mut pos = TenjikuPosition::from_position(&root);
-        let discovery = Action::single(Square::new(6, 6).unwrap(), Square::new(6, 5).unwrap());
-        let m = pos.find(&discovery).unwrap();
-        assert!(!pos.is_tactical(m));
-        let mut checks = Vec::new();
-        pos.generate_checks(&mut checks);
-        assert!(checks.contains(&m));
-        assert!(pos.make(m));
-        assert!(pos.in_check());
-        pos.unmake();
-        let allowed: Vec<_> = LocalPosition::admit(root)
-            .unwrap()
-            .legal_actions()
-            .into_iter()
-            .filter(|action| action != &discovery)
-            .collect();
-        pos.restrict_root(&allowed);
-        checks.clear();
-        pos.generate_checks(&mut checks);
-        assert!(!checks.contains(&m));
-    }
-}
-
-#[test]
 fn free_eagle_diagonal_turn_threat_and_exchange_survive_straight_ray_blocker() {
     for profile in Profile::ALL {
         let pos = diagram(

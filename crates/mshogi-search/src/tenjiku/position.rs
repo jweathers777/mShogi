@@ -906,11 +906,7 @@ impl Board {
                 c != 0 && meta(c).piece.side.index() != owner && self.cells[at] != c
             })
     }
-    fn generate_filtered(
-        &self,
-        out: &mut Vec<Move>,
-        mut include: impl FnMut(&Board, Move, &Undo) -> bool,
-    ) {
+    fn generate(&self, stage: Stage, out: &mut Vec<Move>) {
         let mut pieces = self.occupied[self.side];
         let mut scratch = *self;
         while let Some(from) = pieces.pop() {
@@ -922,7 +918,7 @@ impl Board {
                     }
                     let m = if promote { m.promoted() } else { m };
                     if let Some(u) = scratch.make(m) {
-                        if include(&scratch, m, &u) {
+                        if scratch.tactical_after(m, &u) == (stage == Stage::Tactical) {
                             out.push(m);
                         }
                         scratch.unmake(&u);
@@ -1312,7 +1308,6 @@ impl TenjikuPosition {
 impl SearchPosition for TenjikuPosition {
     type Move = Move;
     const QUIESCENCE_PLIES: usize = 4;
-    const QUIESCENCE_CHECKS: usize = 8;
     const HISTORY_SLOTS: usize = 2 * 44 * N;
     fn hash(&self) -> u64 {
         self.board.hash
@@ -1331,9 +1326,7 @@ impl SearchPosition for TenjikuPosition {
                     .filter(|&m| self.is_tactical(m) == (stage == Stage::Tactical)),
             );
         } else {
-            self.board.generate_filtered(out, |board, m, undo| {
-                board.tactical_after(m, undo) == (stage == Stage::Tactical)
-            });
+            self.board.generate(stage, out);
         }
     }
     fn generate_search(&self, stage: Stage, out: &mut Vec<Move>) {
@@ -1352,36 +1345,6 @@ impl SearchPosition for TenjikuPosition {
                 }
                 scratch.unmake(&u);
             }
-        }
-    }
-    fn generate_checks(&self, out: &mut Vec<Move>) {
-        let mut seen = Vec::new();
-        let mut include = |board: &Board, m, undo: &Undo| {
-            // Tactical candidates are a permitted superset. The core removes them
-            // at the quiet frontier. Count equivalent quiet threats only once.
-            if board.tactical_after(m, undo) {
-                return true;
-            }
-            if !board.can_win(board.side ^ 1) || seen.contains(&(board.hash, board.cells)) {
-                return false;
-            }
-            seen.push((board.hash, board.cells));
-            true
-        };
-        if self.stack.is_empty()
-            && let Some(allowed) = &self.root_allowed
-        {
-            let mut scratch = self.board;
-            for &m in allowed {
-                if let Some(undo) = scratch.make(m) {
-                    if include(&scratch, m, &undo) {
-                        out.push(m);
-                    }
-                    scratch.unmake(&undo);
-                }
-            }
-        } else {
-            self.board.generate_filtered(out, include);
         }
     }
     fn make(&mut self, m: Move) -> bool {
@@ -1448,10 +1411,6 @@ impl SearchPosition for TenjikuPosition {
     fn tactical_gain(&self, m: Move) -> i32 {
         let mut b = self.board;
         b.make(m).map_or(0, |u| u.gain)
-    }
-    fn quiet_order(&self, m: Move) -> i32 {
-        let piece = self.board.cells[m.from()];
-        16 * (Board::placement(piece, m.to()) - Board::placement(piece, m.from()))
     }
     fn tactical_order(&self, m: Move) -> i32 {
         self.tactical_gain(m) * 16 - meta(self.board.cells[m.from()]).value / 16

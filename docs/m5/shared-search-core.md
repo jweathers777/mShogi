@@ -1,27 +1,8 @@
 # Shared search core
 
-MSH-164 (Shared Search Core) replaced the Chess search with a game-independent
-classical search core and a search-internal Chess position. This document
-describes the structure, the boundary with the rules, and how to add a
-game. Results and evidence are in `evidence/msh164/`.
-
-## Result
-
-Measured on an Apple M1 Pro. The predecessor is the frozen engine 65887fb0.
-Exact revisions, commands and files are in `evidence/msh164/verification.json`.
-
-| Measure | Predecessor | Shared core |
-|---|---|---|
-| Nodes per second (benchmark median) | 0.30 million | 1.38 million |
-| Nodes for the fixed benchmark depths | 5.43 million | 0.86 million |
-| Depth at five seconds, middlegame | 8 to 9 | 14 to 16 |
-| Depth at five seconds, endgame | 8 to 13 | 20 to 24 |
-| Blunder suite at 1000 ms, avoided of 146 | 47 | 85 |
-| Game test at 200 ms per move | — | 55 wins, 0 losses, 5 draws against the predecessor |
-
-The game test is self-play against the predecessor with exposed openings. It
-shows that the new engine is stronger than the old one. It is not a rating and
-says nothing about other opponents.
+The game-independent classical search loop uses a private position for
+each game. The rules library owns the real game and the adapter admits
+a search choice against it.
 
 ## Structure
 
@@ -192,7 +173,7 @@ its private full-width minimax. The trait and the core did not change.
   300,000 nodes. Requests without a time budget start with an empty table
   and equal requests give equal results. Timed requests use the shared session
   policy above. The reported line has at
-  most eight actions, because a saved document keeps and replays each line.
+  most eight actions.
 - Observations: the new search has the identities `mshogi.tori.shared-core.v1`
   and `mshogi.tori.material-placement.v1`. Its score is not the static value
   of the end of its line, so no exact score check applies to it. Observation
@@ -202,32 +183,8 @@ its private full-width minimax. The trait and the core did not change.
   each piece, Phoenix safety (own and attacked neighbors, enemy pieces near
   it, drop threats), Eagle and Quail mobility, and tempo. Board, hand and
   table terms are kept incrementally; Phoenix safety and mobility are computed
-  per node. `INITIAL` is the earlier evaluation. The corpus is cloud self-play
-  of the predecessor (6,400 pairs at 2 s + 0.05 s, about 778,000 quiet
-  positions, split by opening). Only about 38% of Tori game positions are
-  quiet, so a corpus needs about twice the games of Xiangqi. The static fit
-  won about +255 Elo against the predecessor; the per-node terms, fitted
-  separately and tested against the static fit, won about +99 Elo more. Unlike
-  Xiangqi, the per-node terms are kept. Exchange (SEE) and ordering values
-  still use the earlier fixed piece values. The evaluator identity is
-  unchanged.
-
-Result (Apple M1 Pro, engine binaries through the internal protocol,
-Tori game as controller, eight seeded openings with both colors for each
-seed; files and commands in `evidence/msh165/verification.json`):
-
-| Measure | Earlier search | Shared core |
-|---|---|---|
-| Median completed depth at the desktop setting | 2 | 10 (300,000 nodes) |
-| Median time for one move, equal-time test | 92 ms (depth 2, 2,000 nodes) | 89 ms (150,000 nodes) |
-| Game test, equal time | — | 40 wins, 0 losses, 0 draws; 8 games not scored |
-| Game test against the largest earlier setting (depth 3, 10,000 nodes) | — | 26 wins, 0 losses, 0 draws; 22 games not scored (175 ms against 674 ms for one move) |
-
-The game tests show that the new search is stronger than the earlier one. They
-are not a rating. A game is not scored when the report of its run reaches the
-size limit of the experiment runner: the runner then stops the current game
-and does not start the later games of that run. This depends on the order and
-length of the games, not on their results.
+  per node. Exchange evaluation and move
+  ordering use fixed piece values.
 
 ## Shogi on the core
 
@@ -277,32 +234,9 @@ Limits are depth 1–64 and at most 5,000,000 nodes. Desktop play and bare USI
 `go` use 1,000 ms with those depth/node safety ceilings; a reported line has at
 most eight actions. Explicit fixed-limit requests start with empty tables and
 statistics. Timed internal and USI requests use the shared session policy above.
-USI accepts bounded `movetime`; full game clocks, ponder and tsume remain
-unsupported. New game resets the retained state, and incompatible history
-prefixes reset it through the shared slot policy. Exact comparison of validated
-Shogi records avoids replay solely to establish cache-prefix identity;
-request admission still validates the history. Earlier saved play
-observations remain readable.
-
-MSH-189 (Shogi Request Overhead) adds an incremental game session below the
-search slot. `game::incremental::Session<R>` owns a rules-authoritative game;
-the record adapter reconstructs a full reset and admits a typed event suffix
-atomically. `incremental::SessionServer<A>` owns the shared transport lifecycle.
-The adapter supplies game types, supported limits and target checks. Shogi is
-the first adapter; other games use these same lifecycle implementations.
-
-Each child first receives an ordinary full request. A full response can advertise
-an exact prepared endpoint. Only then does the bridge send compact suffixes,
-bound to the acknowledged request, generation, host version and event count.
-Older engines without the capability continue to receive full requests. A count
-alone is never history identity. The host checks the complete validated prefix;
-the child applies each new command through rules and checks every derived
-event and final result. Invalid suffixes roll back. A wrong base requires a full
-reset. Takeback, imported or incompatible roots reset; process retirement drops
-both the endpoint and search state. Fixed-work probes leave timed state
-alone. Compact responses echo the exact metadata and endpoint; only after those
-checks does the bridge attach its original immutable context. Saved observations
-and game record formats remain unchanged.
+See the [USI adapter](../m4/usi.md) for clock and move-time controls. New game
+and incompatible history reset retained state. The engine validates the game
+history and the selected analysis target under the [internal protocol](../desktop/internal-execution-v4.md).
 
 Timed Shogi requests also keep one legal root-order move available through
 the shared `search_with_timed_fallback` entry point. If time or the node safety
@@ -317,11 +251,6 @@ changes are part of this task.
 The identities are `mshogi.shogi.shared-core.v1` and
 `mshogi.shogi.material-placement.v1`. Observation admission accepts only the
 current identities; selective lines can extend beyond nominal depth.
-
-Verification and the predecessor comparison are recorded in
-evidence/msh180/README.md. The later search round's
-before/after probes, game-test decision and limits are in
-Shogi strength round.
 
 ## Xiangqi on the core
 
@@ -532,93 +461,20 @@ slots use 90,112 bytes of basic history and the capped 32 MiB continuation
 table. Timed requests use the shared session policy above. Current identities are `mshogi.tenjiku.shared-core.v1` and
 `mshogi.tenjiku.material-placement.v1`.
 
-## What Tori showed, and what the other games need
+## Shared search position duties
 
-Findings from the second game, recorded for the later tasks of Shogi, Xiangqi,
-Chu Shogi and Tenjiku Shogi. These are the findings at the Tori checkpoint;
-the Shogi and Xiangqi implementations above record the later decisions.
-
-**The trait was sufficient.** Drops are ordinary moves of the quiet stage.
-A loss without a legal move is `no_move_score`. A game without draw claims
-returns false from `draw_claimable`. A history rule that restricts the root
-(the Tori forbidden departures) fits in the position: it filters its own move
-list at ply zero.
-
-**Points to change in the core before a larger game uses it:**
-
-- *Continuation history memory.* The table has `HISTORY_SLOTS` squared
-  entries of four bytes. With slots of side, piece type and target square this
-  is 2 MB for Chess and 3 MB for Tori, about 20 MB for Shogi and 6 MB for
-  Xiangqi, but about 430 MB for Chu Shogi and more than 2 GB for Tenjiku
-  Shogi. MSH-178 (Search Core History Scaling) resolves this limit with the capped
-  dense/hashed table documented above; these are the earlier rough estimates.
-- *Score scale.* The margins of the core (futility 150, 300 and 450,
-  aspiration 30, quiescence 200) assume that the smallest piece is worth about
-  100. Each game must use that scale, or the margins must come from the trait.
-- *Checks in quiescence.* Quiescence searches the tactical stage only. In
-  the drop games a quiet drop can give check or mate. Tori relies on the check
-  extension of the main search. The first Shogi checking-stage experiment in
-  MSH-187 (Shogi Strength Round) increased first-iteration work enough to leave
-  a request incomplete. It was rejected; future work must measure that cost.
-- *Exchange test.* Tori uses a one-step estimate in `exchange_at_least`. A
-  full exchange evaluation needs a list of attackers of a square for each game.
-- *Root restrictions.* If a second game needs a root filter from its
-  rules, move the filter from the position to the core.
-
-**Needs of each game:**
-
-- *Shogi (81 squares).* A 128-bit square set. Drops with the Pawn file,
-  last-rank and drop-mate rules, as Tori has for the Swallow. Optional
-  promotion: two moves for one source and target. Repetition: the fourth
-  occurrence is a draw, but a loss for a side that gave check each time; the
-  search can score a path repetition as a draw (an approximation: the
-  capture-and-drop limit of the Tori scan does not hold in a drop game) and treat perpetual check as a
-  loss, with the rules as the authority at the root. Entering-king
-  declarations are root commands from the rules, as Chess claims are.
-- *Xiangqi (90 squares).* A 128-bit square set. No drops and no promotion.
-  Blocked Horse and Elephant moves, the Cannon screen, the facing-Generals
-  rule in the legality test. The perpetual check and perpetual chase rules
-  depend on history; the search needs an approximation in `rule_score`
-  (repetition with check is a loss for the checking side) and the
-  rules for the root. Draw claims of the selected profile come from the
-  rules at the root.
-- *Chu Shogi (144 squares).* A multi-word square set or an array board with
-  piece lists; measure before the choice. Lion moves have two steps and can
-  capture two pieces or return to the source (igui, pass): the move needs a
-  wider encoding than 16 bits (`encode` already gives 32). A real pass exists,
-  so `null_move_safe` and the null move need care. The Lion capture rules and
-  optional promotion with its history condition belong to the position.
-  Repetition is forbidden for the side that repeats, as in Tori. The
-  bounded continuation history described above is now available.
-- *Tenjiku Shogi (256 squares).* As Chu Shogi, with the Fire Demon burn, which
-  removes several pieces in one move: make and unmake need a variable-length
-  capture record, and the evaluation of a move's gain must include burned
-  pieces. The four jumping generals (Great General rank 3, Vice General rank 2,
-  Rook and Bishop General rank 1; royals rank 4) jump along their lines over
-  any number of lower-ranked pieces of either side. Only a piece of equal or
-  higher rank stops them, and after a jump they cannot capture a royal piece.
-  Move generation, attack detection and exchange estimates therefore need
-  occupancy by rank. Lower-ranked occupancy still affects quiet paths and
-  whether a capture is before or after a jump. Two
-  rule profiles exist, and they differ in what a general can capture after a
-  jump; the position takes the profile from the game.
-
-**The same work for each adapter.** The engine protocol of each game checks a
-saved observation against its search identity (`mshogi-engine/src/<game>.rs`).
-A game that moves to the core needs the same split as Tori: the earlier
-identity keeps its exact checks, and the shared-core identity has checks that
-fit a selective search. Put that split in one shared helper when the second
-of these games moves, not in a copy for each game.
+Drops are quiet moves unless the game classifies them as tactical. A game
+supplies its no-move score and any applicable draw claims. A game can
+restrict root moves using its known history, as Tori does for forbidden
+repetition departures.
 
 ## Present limits
 
 - MSH-166 (Search Selectivity Completion) adds reverse futility, razoring,
   late-move pruning, internal iterative reduction, singular extensions and an
   improving modifier to the shared core for Chess and Tori. The combined set
-  passed its sequential predecessor test (+40 -3 =17) and improved the development
-  blunder result from 86 to 98 of 146. See evidence.
-  Static pruning remains a private approximation; game roots and real outcomes
-  retain their authority. Low-material LMR remains enabled.
+  uses private static pruning. The rules library decides root outcomes.
+  Low-material LMR is enabled.
 - MSH-167 (Engine Time Management) adds shared clock allocation and adaptive
   soft targets, with a hard response budget. Chess UCI uses it; fixed move-time
   diagnostics and desktop defaults retain their policy. See the

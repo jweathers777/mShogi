@@ -1,6 +1,6 @@
-# MSH-82 bounded source research — 2026-10-27
+# Chu Shogi source observations
 
-Research only, prepared independently of product implementation at repository revision `14b9643`, primary checkout `codex/rewrite`. No profile is adopted, no acceptance criterion is declared complete, and no source gap blocks MSH-80. Root is the durable integrator. Backlog 1.55.0 was used only for reads; recorded project baseline is 1.55.1. Existing dirty task records were preserved.
+See the [selected profile](../chu/profile.md) for adopted modern rules.
 
 ## Evidence acquired and its authority
 
@@ -53,14 +53,14 @@ First-pass reading of p217's prince paragraph: prince moves like king; when a pr
 Setup seed, H1 p214: columns below run **file 12 to file 1**, rows named by the modern board's ranks as a convenience; Black moves toward decreasing ranks. The historical coordinate system instead uses zodiac files, shown on p212. Do not silently call this transcription historical notation.
 
 ```
-rank12: L  FL C  S  G  K  DE G  S  C  FL L
-rank11: RC .  B  .  BT Ki Ph BT .  B  .  RC
-rank10: SM VM R  DH DK Ln FK DK DH R  VM SM
+rank 12: L  FL C  S  G  K  DE G  S  C  FL L
+rank 11: RC .  B  .  BT Ki Ph BT .  B  .  RC
+rank 10: SM VM R  DH DK Ln FK DK DH R  VM SM
 rank 9: P  P  P  P  P  P  P  P  P  P  P  P
 rank 8: .  .  .  GB .  .  .  .  GB .  .  .
 rank 7: empty
 rank 6: empty
-rank 5: opposing GB at files9 and4
+rank 5: opposing GB at files 9 and 4
 rank 4..1: opposite side rotated 180 degrees
 ```
 
@@ -100,19 +100,3 @@ Movement seed inventory transcribed from H1 pp216–217 (forward is owner-relati
 | Horned falcon | seven rays excluding forward; restricted two-step/jump/capture-return there | none |
 
 H1 p217's pawn text separately describes last-rank rescue; its prince text separately describes royal succession. Exact promotion conditions and special lion capture law must not be replaced with the above movement summary. H1 p216 includes prose explanatory additions whose typography/parenthetical treatment should be checked against the underlying original printing before attributing every explanatory word to 1703.
-
-## Material decisions/gaps for the owning task
-
-These are proposals/questions, not owner decisions. Recommend discussing an explicitly **JCSA association** profile using C1 with specifically enumerated compatible C2/C3 clauses. Keep any Okazaki or historical reconstruction separate. Do not call it universal historical Chu.
-
-1. **Acquisition/translation:** retain H1's exact reprint identity. Acquire the actual identified *指南抄* original/copy and *全集* rule-volume pages before asserting those books agree. *絹篩* originals and Okazaki booklet edition remain unacquired. T1 is useful but unverified transcription. Have a separate reader check Japanese translation and fixture diagrams.
-2. **Royal safety / no-action:** C1 II and H1 p217 do not completely specify whether a sole royal may deliberately enter attack, ignore attack, remain attacked, or how a last royal trapped without an attack ends. A chess self-check filter and a capture-only generator produce different legal sets; neither is justified merely by absence of announcement. Ask for a sourced explicit ruling or ratified adaptation. Test one/two royals, loss of each, simultaneous threats, last-royal mate and capture separately.
-3. **Material termination:** formalize C1 II.4 versus IX before implementing an automatic predicate. The immediate-recapture example rules out a naive piece-count trigger. Unclear coverage includes side-to-move dependence, other forced exchanges, multiple princes, promoted GB and dead pieces. Obtain ruling or enumerate and ratify a sound bounded adaptation; generic chess insufficient-material logic is unsuitable.
-4. **Repetition:** the Japanese identity phrase includes placement and move sequence; define cycle matching, start/length, transient lion rights, promotion eligibility, and responsibility when categories overlap. Decide whether prevented/rejected fourth recurrence or a committed foul/adjudication models the competition rule. No automatic neutral draw should be inferred. Board-only keys cannot encode every history question.
-5. **Complete-action timing:** C2 case 4 provides firm anti-subturn evidence, but full promotion timing through enter/exit/return paths, defended-lion assessment with removed blockers, multi-lion protection target(s), and a kirin becoming lion still need explicit full-board fixtures. Do not project a single-lion assumption into multi-lion cases.
-6. **Physical rules/software:** recommend atomic invalid-input rejection for product actions, with a clearly named adaptation for touch-move/foul recovery and agreement commands. This proposal is not source adoption. Correspondence lance rescue versus ordinary play is a real profile choice; do not apply it merely because play is software-mediated.
-7. **Notation/consumer:** source uses ordered multi-captures and historical zodiac coordinates. Recommend records preserve source/target/intermediate route, promotion decision, original piece identity, necessary history and versioned profile; effects remain rules-derived. Adapter notation is not selected here. Rules and shared consumer extension work stays MSH-86/MSH-78; no speculative implementation was performed.
-
-Useful next verification: independent reconstruction of C2's five images, C1 IX images, and C3 movement diagrams against H1; then a bounded profile discussion presenting only unresolved material choices. This pass supplies acquisition evidence and supported seeds. It does not finish MSH-82 AC1–4, approve a profile, or satisfy independent profile/fixture review.
-
-Acquisition evidence is in `chu-provenance.json`: 32 public GETs returned HTTP200, including exact C1/C2/C3 pages, transcription, setup, linked diagrams, official IIIF manifest and three historical images. It records SHA256 of original response bytes, content types, byte lengths and UTC retrieval times. Bytes were read in memory and not retained; a successful GET is not a claim that each image was visually interpreted. Browser screenshots were used to read H1 and C3 setup. Repository tests were not run because no implementation changed. No institution was contacted.

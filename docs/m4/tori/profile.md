@@ -28,7 +28,7 @@ meaning. A rule change requires a new profile version and fixture review.
 Seven files × seven ranks of squares. Files7→1 run left→right when viewed from
 Sente's side; ranks a→g run top→bottom. Sente moves first, toward decreasing rank;
 Gote faces the opposite way. Names are Tori sides, not Chess colors.
-Each side has Phoenix1, Falcon 1, Crane2, Pheasant2, LeftQuail1, RightQuail1,
+Each side has Phoenix 1, Falcon 1, Crane 2, Pheasant 2, Left Quail 1, Right Quail 1,
 Swallow 8. Hands start empty. Lower home rank 7g→1g is LQ,Pt,Cr,Ph,Cr,Pt,RQ;
 Falcon 4f; Swallows 1e..7e and 3d. Rotate the complete arrangement 180° and exchange
 owner for Gote (extra Swallow 5d). Thirty-two pieces total. T-M5 Setup, T-M3p2,

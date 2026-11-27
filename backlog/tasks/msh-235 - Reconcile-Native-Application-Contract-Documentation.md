@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-23T17:53:00Z'
-updated_date: '2026-11-27T07:13:00Z'
+updated_date: '2026-11-27T07:18:00Z'
 labels:
   - documentation
   - model:medium
@@ -58,4 +58,6 @@ Initial inventory: current runner replay tests include 15 run reports by path. K
 The retired files and original run narratives are archived under gs://mshogi-experiments-216675633801/runs/msh-235/. Before pruning, verified downloaded SHA-256: retired-docs-5b5c35f.tar.gz 4804ab1f731419ee83a6b6099becc4245dbf3c1f6e3ec7075cfaf96148b6bb5d; retired-run-narratives-5b5c35f.tar.gz b7a0a1c4d7dce7d992712f1139bdeb7d3bda2a247678cc4ab101631f5b1bf386. Source 5b5c35f retains the original paths in Git history.
 
 Rewrote current desktop contracts and kept the independent Shogi derivations. Moved 15 required replay inputs and two reference manifests byte for byte. All four runner replay tests and the repository Markdown link scan passed. Next on codex/msh-235-durable-docs: finish the shared check run and content audit, then integrate.
+
+Final prose sweep removed dated search result tables and retained the current design notes, independent rules derivations and reproducible methods. The original search material is in retired-search-results-5b5c35f.tar.gz under the same GCS path, downloaded SHA-256 38d398da129a6c45c2ce7560238209a22b20b1af59f69d0bed42d69dc2390580. The Chu data validator and Shogi geometry comparison passed. The optional standalone Tenjiku validator fails identically against unmodified main 5b5c35f; its projection bookkeeping defect is MSH-276.
 <!-- SECTION:NOTES:END -->

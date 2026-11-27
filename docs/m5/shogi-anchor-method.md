@@ -40,9 +40,6 @@ reproducible open-source rated engine was found near 2950 from a third author:
 `komadokun_depth*` has no known source, Bonanza N100 builds and YSS are closed,
 and NNUE 1000k entries are above 3400. The study therefore has two families.
 
-A local calibration scout (development only, not rated games) gave mShogi 4-0
-vs depth 1, 3-1 vs depth 3, 3-1 vs depth 5 and 1-3 vs depth 7.
-
 ## Conditions
 
 60 s + 1 s Fischer for both sides through the runner's clocked mode
@@ -86,11 +83,6 @@ and failure. The number is a conditional floodgate-referenced index, not an
 official floodgate rating.
 
 ## Addendum before the main phase (2026-11-18, after bracketing, before any main game)
-
-Bracketing stopped after eight rounds at half-width 88.68 (estimate 2794.63;
-64 scored games, no failures, 0.66 campaign hours). Within ±150 of the estimate
-the only admitted anchor is gikou-d5 (2790); gikou-d3 is 158 below. The only
-other reproducible family, elmo-1000k (3131), is 336 above, as is gikou-d7.
 
 Main-phase rule as applied: each batch alternates pairs between gikou-d5 and
 elmo-1000k (the second family), so both families get equal pair counts. The

@@ -1,4 +1,4 @@
-# MSH-83 bounded Tenjiku source acquisition handoff
+# Tenjiku source reconciliation research
 
 Research date: 2026-10-27 UTC. Researcher: `msh83_research`; root@codex remains sole integrator. Repository context read at `14b9643dac70f09394ccc60aea8b0f8c5bbd5b03`. This is independent research only, with no profile adoption, product implementation, task completion or change to the provisional Xiangqi → Tori → Chu → Tenjiku delivery order. It supplies partial evidence for MSH-83 AC1 and concrete choices for AC2; AC1–4 remain unfinished. No institution was contacted.
 
@@ -54,19 +54,3 @@ Two useful **conditional comparison seeds**, with sparse coordinates `(file,rank
 2. A water buffalo promotes at `(8,8)` beside an enemy pawn `(8,9)`, with no enemy demon nearby. Check the selected convention's same-turn burn policy, then a later demon move. Keep promotion-zone geometry explicit in the eventual full fixture.
 
 These are research test designs, not ready conformance fixtures: legal pre-position/action details and independently reviewed expectations still need recording. Once H1696 is obtained, lower-ambiguity setup/promotion observations should become the first historical cases; reserve contested ordering cases for a recorded owner decision.
-
-## Recommended owner options and concrete unblock steps
-
-1. **Historical reconciliation first (recommended for the promised sourced profile):** acquire the complete relevant first volume of **199-0411**, including cover, title/preface, contents, Tenjiku setup, promotion and movement spreads, explanatory clauses and colophon. Preserve image numbers and recto/verso locators, lawful hashes and copy identity. Have an independent reader check transcription and translation. Obtain the Kyoto copy independently and establish whether it belongs to the translated textual family. Investigate the 1694 witness through edition bibliographies without conflating a preface date with a publication date. Acquisition requests/contact are a future owner-authorized step, not performed here.
-2. **Named modern reconstruction:** explicitly select Adams's second-edition traditional/modern alternative as a reconstruction, or a fully specified Muller convention after clarifying its gaps. Record each consequential repair rather than claiming historical agreement. This requires an owner product/rules decision and a complete supplemental policy for clauses not settled by the selected source. It does not satisfy a requirement to acquire/reconcile the historical text by itself.
-
-Recommendation: retain the historical acquisition/translation obligations and use modern sources now to make the dispute ledger concrete. Do not select semantics merely for engine availability or presumed balance. Continue unaffected MSH-80 Xiangqi work; nothing here demonstrates a reason to reorder delivery or add an MSH-83 dependency to Xiangqi.
-
-## Verification and reproducibility
-
-- `backlog instructions overview`, read-only `backlog task view MSH-83 --plain`, AGENTS.md, relevant design principles and later-game inventory read. No Backlog mutations.
-- Institutional site search for `諸象戯図式` returned the single 199-0411 record; detail and “all information” views inspected. No full-volume viewer was exposed. This observation is narrower than “not digitized anywhere.”
-- Bounded public web searches covered Japanese/English title variants, National Archives, NIJL, NDL/CiNii and Harvard leads. No additional complete 1694/1696 Tenjiku facsimile was verified. Derivative sites remained discovery aids.
-- Public PDF retrieval: `curl -L --max-time 30 -f -o <temporary-pdf> 'http://history.chess.free.fr/papers/Tenjiku-Colin%20Adams.pdf'`, succeeded with 1,000,783 bytes. Web-fetch 502 was not a persistent availability conclusion.
-- Rendering: `pdftoppm -f <first> -l <last> -scale-to 1600 -png <temporary-pdf> <temporary-prefix>` (edition/appendix also inspected at 1300/1700). The bundled runtime version was 26.1017.22136. This was source inspection, not software rules verification, platform verification or a test pass.
-- SHA256s and retrieval statuses are in `tenjiku-provenance.json`. Only the requested Markdown/JSON handoff is retained; downloaded source/rendering intermediates were removed. Re-fetch public URLs to reproduce. No repository/task/code edits or commits were made by this worker.

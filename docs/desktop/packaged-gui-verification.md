@@ -85,6 +85,9 @@ real W3C pointer input at observed viewport coordinates, checked against painted
 descendants; the large-board journey uses the shared keyboard controls. The verifier does
 not call Tauri IPC, inject input events, replace rules or supply engine replies.
 This follows Tauri's [WebDriver CI approach](https://v2.tauri.app/develop/tests/webdriver/ci/).
+The driver can retry a transient proxy failure once for read-only DOM
+observations, screenshots and element lookups. Input and general script
+commands use one attempt.
 
 The Linux adapter uses an X11 display, Openbox and focused XTEST keyboard input
 for actual GTK file pickers, Alt-F4 and Ctrl-Q. The normal Debian package is

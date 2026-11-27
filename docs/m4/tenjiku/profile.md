@@ -1,7 +1,7 @@
 # Two selected modern Tenjiku playing profiles
 
 MSH-83,4November2026; selected under the approved instruction to support choosing
-options 1or2. Ratified after independent source/rules/fixture and data/contract review. The two whole
+options 1 or 2. Ratified after independent source/rules/fixture and data/contract review. The two whole
 profiles are selectable **when starting a new game** and immutable thereafter:
 
 | Selection | Profile identity | Edition |
@@ -15,7 +15,7 @@ Adams's general setup/promotion/history/ending contract where M gives none. A
 means Adams main chapters 1/3; M means Muller's Tenjiku page/table; S identifies
 our narrow deterministic completion. Sources/precise differences are in
 [sources.md](sources.md). AppendixA does not silently override A's main rules.
-[Machine-readable data](profile.json), [fixtures](fixtures.json), handoff.
+[Machine-readable data](profile.json), [fixtures](fixtures.json).
 No rules, engine, console or product implementation exists from83.
 
 ## T01 — board, sides, setup and identity
@@ -119,7 +119,7 @@ ignoring only the adjacent square's occupant, plus sideways distance 2 jump or
 sideways distance 3 if distance 2 is empty; no vertical movement. Profile 2 M:
 the same sideways 2/3 and igui, with skipped-adjacent rays in both vertical and
 all diagonal directions. After the skipped square, ordinary ray blocking/capture
-applies. The sideways 3 path skips 1 but cannot cross occupied2. A stationary
+applies. The sideways 3 path skips 1 but cannot cross occupied square 2. A stationary
 igui has no movement path or implicit promotion; HT cannot promote.
 
 ## T04 — Fire Demon and deterministic ordered effects
@@ -304,32 +304,17 @@ their own effects or outcomes. One profile's record must never be interpreted
 as the other merely because board/sides/topology match. Unsupported conversion
 fails explicitly; switching profiles means a fresh root/game, not mutating history.
 
-## T11 — independent expectations and pending implementation
+## T11 — Independent expectations
 
-`fixtures.json` contains source-diagram exact geometry sets, independently constructed
-special-case/action/effect/history/negative cases and hand-counted 4/16 perft/divide.
-Geometry sets are not automatically full-game LegalAll: rules 87 must separately
-admit turns, rights, history and endings. Source equations are finite empty-diagram
-fixture authoring, not a prospective arbitrary-position move generator. Rotations
-exchange owners/coordinates 180°; no horizontal setup symmetry is presumed.
+The [fixture corpus](fixtures.md) covers source-diagram geometry, complete
+actions, effects, history, invalid records, and independently derived perft
+and divide counts. Full legal choice generation also depends on turn,
+rights, history and outcome. Rotation exchanges owners and rotates every
+coordinate 180°. The asymmetric setup has no horizontal mirror symmetry.
 
-Strict data validation and review do not execute Tenjiku. Assertions
-are **0 executed/0 passed**, with all relevant observations pending 87. Consumer
-requirements are separate 79/44 obligations. Preserve independent expected values;
-never populate observations by echoing expectations or another engine's answer.
+## T12 — Profile selection
 
-## T12 — current shared architecture and selection
-
-New Game exposes two meaningful named profiles under Tenjiku when finished44
-makes it playable. Creation chooses profile before root; records, requests,
-observations, inspection contexts and presentation keys preserve that selection.
-Existing `shared_new_game` infers profile from game and `side(TaggedSide)` constructs
-profile-qualified presentation keys from one profile per game:79 must extend these
-real consumers for two profiles. It must not mutate existing games or introduce
-separate controllers/envelopes/shells. Current document/version/selection tokens
-remain safe through immutable binding and exact context admission; representation
-of any new token field remains an implementer choice.
-
-Detailed87/79/44 handoff and MSH-107 replay/cancellation/inspection measurement
-obligations are inhandoff.md. No refactor, higher capacity constant,
-competitive-strength optimization or implementation is authorized by 83.
+New game offers both named profiles. A profile is selected before the game
+root is created and remains bound to the record, request, observation and
+presentation. The [desktop contract](../../desktop/native-application.md)
+describes the shared session and its admission checks.

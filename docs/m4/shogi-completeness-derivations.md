@@ -99,3 +99,56 @@ Consequently every one of the 30 first actions has exactly 30 replies: perft
 depth 1 is 30, each depth-2 divide entry is 30, and depth 2 is **900**.
 Ownership reversal and board rotation prove the white-to-move version with
 the same total. No deeper perft total is invented or approved by this report.
+
+## Selected board-rule fixtures
+
+These cases are in the [board-rule corpus](../../tests/fixtures/shogi/board-rules.json).
+
+- The standard start's 30 choices follow its blocked placement: nine pawn,
+  two lance, four silver, six gold, three king and six rook moves. Knights and
+  bishop have no available destination.
+- Side-relative movement and promotion assertions use sente's a–c and gote's
+  g–i camps. Entry, movement within and exit permit both flags where the piece
+  remains live; pawn/lance on the last rank and knight on the last two require
+  promotion. The lance rank-three/rank-two nonpromotion and P/L/N/B/R check
+  evasions remain complete choices. Moves wholly outside camp cannot promote;
+  promoted P/L/N/S use gold movement and cannot promote again.
+- Rook rays stop before the friendly pawn and on the capturable opposing
+  silver. Knight jumps survive intervening own pieces. Mirrored cases reverse
+  forward direction, ownership and camp without changing these facts.
+- Capturing each of the six promoted kinds with a promoting rook leaves a
+  dragon on the destination and exactly that captured base kind in the correct
+  hand. Every listed drop creates an unpromoted owned piece and spends one
+  hand piece; two identical rooks do not create two distinct USI choices.
+  Empty final-rank pawn/lance and final-two-rank knight exclusions cover both
+  sides. Occupied targets, absent resources, wrong-owner moves and same-square
+  moves are absent. Those membership checks do not establish atomic
+  rejection or state preservation for invalid product requests.
+- Nifu uses an own unpromoted pawn on that file. An own tokin and an opposing
+  pawn do not trigger it. Both orientations' asserted alternatives are safe
+  from unrelated king checks.
+- In SH-F015, dropping P5b checks K5a; its four other adjacent destinations are
+  occupied, G5c protects 5b, and no defending piece can capture that pawn.
+  Removing L6a permits king escape; removing G5c permits king capture; replacing
+  P4b by G4b permits a defending capture. Adding B3c pins that G4b to K5a, so
+  its proposed capture exposes the king and no longer saves the pawn drop.
+  Existing-pawn advance and gold-drop mates remain legal board actions. The
+  rotated gote constructions preserve each escape/capture proof.
+- SH-F018 permits a pinned gold to stay on the checking rook's file and
+  excludes leaving it. Single-check cases separately admit king escape,
+  checker capture with either promotion flag, interposition and a blocking
+  drop; irrelevant actions remain absent. Double-check interpositions still
+  leave the other line open. Capturing a bishop-defended rook with the king is
+  forbidden.
+- BOARD-PIN's origin x-ray is explicit: with K5h/R5a, moving K5h to 5i empties
+  the origin and leaves the complete rook ray open, while 6i is off it. In the
+  pinned-attacker contrast, S4c geometrically attacks 5d although moving that
+  silver would expose its K4a to R4i; K5e may therefore not enter 5d under the
+  selected geometric-influence contract. K5e–6e is safe. This is the profile's
+  stated operational interpretation supported by independently checked
+  geometry, not a claim that JSA explicitly names this rare configuration.
+- The nested sequence captures a tokin into a base-pawn hand, shuffles the
+  opposite king, spends the pawn on a drop, then moves the already promoted
+  rook without demoting it. Both final SFEN strings and next-ply 6 were checked
+  independently. No earlier history or outcome follows from the supplied
+  counter.

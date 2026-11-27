@@ -43,7 +43,7 @@ asymmetric. [Machine setup and piece table](profile.json) specify all 92 squares
 C1 I/III and actual C3 setup agree with H1p214.
 
 Retain original/base identity and a once-only promotion bit. Twenty-one
-initial kinds plus 18 promoted-origin states give39 identity states but only 29
+initial kinds plus 18 promoted-origin states give 39 identity states but only 29
 movement faces, as counted by C1. A Pawn promoted to Gold cannot become Rook;
 Gold can. Go-between→Elephant cannot become Prince. There is no ownership
 change or demotion on capture; preserve the discarded victim's original identity
@@ -297,15 +297,7 @@ stored in the record. Duplicate fields must reach the strict record parser
 through RawValue dispatch, before any map can erase them. Resource/parse/illegal/
 unsupported/incomplete failures remain distinct and unscored.
 
-## C11 — real consumers and verification boundary
-
-Handoff preserves 86 rules, 78 shared and 43 functional product cases
-ownership. Current execution envelope/context/controller/document/interaction
-owners suffice with explicit Chu dispatch. Add only specific state,
-actions/effects, royal/status metadata and a12×12 renderer; no universal rules
-framework or second frontend rules engine. Functional search is full-history,
-bounded and cancellable; playing strength remains 52/M5. Exact-context, purpose,
-session/request/process generation and work limits remain acceptance authority.
+## C11 — Consumer boundaries
 
 Console must preserve complete paths and terminology. Use unambiguous
 file 1..12/rank a..l diagnostics; human notation can display JCSA numeric-file/
@@ -315,9 +307,5 @@ or substitutes a rules parser. Finished UI uses actual traditional Chu kanji,
 both orientations and complete board at normal/minimum supported sizes, without
 board scrolling/zoom. Retain shared shell and exact two-player Moves/event mapping.
 
-The [independently expected corpus](fixtures.json) precedes implementation.
-Its validation/review is not execution of rules.86 must provide actual
-adapters, complete LegalAll comparisons, transition/replay/undo, properties,
-valid 180° transformations, adversarial checks and hand-established perft/divide.
-78/43 must separately execute real consumer/product obligations. External engines
-are optional investigations under [conformance policy](../../testing/conformance-policy.md).
+The [fixture corpus](fixtures.md) gives independent rule and consumer
+expectations. See the [conformance policy](../../testing/conformance-policy.md).

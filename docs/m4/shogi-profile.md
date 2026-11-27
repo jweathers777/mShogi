@@ -264,24 +264,8 @@ chess's draw rule. Captured promoted-piece base-kind normalization and attack
 semantics for pinned defenders should receive independently reasoned fixtures;
 these formalization checks do not authorize alterrules by convenience.
 
-## Acceptance handoff
+## Independent expectations
 
-MSH-63 records the actual SHOGI-P1 selection and focused independent review. MSH-64 pins retained
-source bytes/checksums and independent expected positions; this research
-inspected live primary sources but does not claim an archived byte snapshot.
-MSH-64–66's source/board/state/legality work can proceed independently of the
-bundle decision; outcome/history work in MSH-67 depends on MSH-63. Conformance
-must separate board legality from
-history/conclusion/command/timing/runner evidence. Pinned external engines are
-bounded comparison tools, not rules authorities. The full standard-shogi scope
-remains MSH-41; this profile and a passing kernel test cannot close it.
-
-Current MSH-67 evidence: the game/history contract
-implements the selected untimed conclusions and strict canonical game/match
-records. [The independently reviewed impossibility argument](mutual-check-resolution.md)
-resolves the mutual-check research obligation for admitted live roots without
-adding an outcome or changing this profile. The original incomplete review,
-source research and failed proof repairs remain traceable. Exact implementation
-verification/integration is recorded in history validation
-and the task record. Later engine, console, shared and desktop consumers remain
-separate delivery obligations.
+See the [completeness derivations](shogi-completeness-derivations.md),
+[history fixture derivations](history-fixture-derivations.md), and
+[mutual-check invariant](mutual-check-resolution.md).

@@ -169,4 +169,6 @@ distribution, opponent pool, fair resource conditions, sample/stopping rule and
 budget. An equal-executable depth/node ablation is not an independent opponent
 or evidence that one evaluator improved. The pilot measures infrastructure only.
 
-The [strength roadmap](strength-roadmap.md) defines the per-game comparison and training work.
+Record the exact binary, model or network file, provenance and license for
+each external opponent. The [strength roadmap](strength-roadmap.md) defines
+the per-game comparison and training work.

@@ -1,18 +1,15 @@
-# Xiangqi diagnostic console (MSH-96)
+# Xiangqi diagnostic console
 
-Run from the primary `codex/rewrite` checkout:
+From the repository root:
 
 ```
 cargo run --locked --bin mshogi -- --game xiangqi profile
 cargo run --locked --bin mshogi -- --game xiangqi shell
 ```
 
-This is an independently usable console for
-`mshogi.xiangqi.wxf2018.v1`, not an external UCCI/UCI adapter or a new engine.
-The [consumer contract](rules-consumer-contract.md) and all accepted
-rules/history/record/proof semantics remain authoritative. MSH-97 owns evaluator,
-search and actual structured engine execution. MSH-100 owns external protocols
-and match consumers; MSH-45/M4 remain open.
+The console uses `mshogi.xiangqi.wxf2018.v1`. The
+[consumer contract](rules-consumer-contract.md) describes game authority.
+See the [external protocol](protocol.md) for `--game xiangqi uci`.
 
 ## Commands and notation
 
@@ -32,8 +29,7 @@ quit
 ```
 
 - Explicit `--game xiangqi` selects the console/profile. Chess remains the default;
-  existing Chess/Shogi aliases and UCI/USI modes are preserved. Xiangqi is refused
-  by those external protocol modes rather than routed to another game's engine.
+  `--game xiangqi uci` selects the separate Xiangqi UCI adapter.
 - Input is complete origin/destination `a0a1`: files a–i from Red's left,
   ranks 0–9 from Red's baseline. It has no promotion/drop/declaration fields.
   `show` prints rank 9 first, uppercase Red/lowercase Black piece letters and river;
@@ -48,7 +44,7 @@ quit
   full game root provenance and event JSON, including same-ply warning/claim/
   conclusion events. `legal-local` is not permission to bypass game admission.
 - `move <action>...` is one atomic batch: all game commands must admit and the
-  actual final canonical envelope must fit before the session is replaced.
+  final position and history replace the session after all actions admit.
   A failed batch does not change the current game.
 - `eligibility red|black` is advisory. `claim`, `resign`, `offer-draw`,
   `accept-draw`, `decline-draw` submit actual game commands with the specified actor. Claims use

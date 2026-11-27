@@ -1,9 +1,11 @@
 ---
 id: MSH-53.2
 title: Tenjiku Evaluation Round
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-27T16:53:00Z'
+updated_date: '2026-11-27T16:54:00Z'
 labels:
   - tenjiku
   - evaluation
@@ -32,3 +34,9 @@ Run the classical evaluation round for both accepted Tenjiku profiles using the 
 - [ ] #3 Keep weights only with qualifying clocked evidence against the frozen predecessor, using the predeclared method and H1 around 10 Elo. Record incomplete games and unsupported candidates and revert unqualified weights.
 - [ ] #4 Required checks and applicable review pass. Update relevant durable documentation and record revisions, measurement settings, costs, run paths and cleanup in Backlog.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Claimed on codex/msh-53.2-tenjiku-evaluation from b0ab5ac. The frozen predecessor is the accepted MSH-202 product at d6274cb. Next: freeze the sampling, fitting and qualification gates before looking at pilot outcomes.
+<!-- SECTION:NOTES:END -->

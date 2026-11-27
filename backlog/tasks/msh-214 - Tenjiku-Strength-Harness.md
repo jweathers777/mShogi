@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-20T22:51:00Z'
-updated_date: '2026-11-27T13:47:00Z'
+updated_date: '2026-11-27T13:54:00Z'
 labels:
   - tenjiku
   - search
@@ -25,7 +25,7 @@ Goal: the harness step of the per-game classical strength program (docs/m5/stren
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 At least 100 balanced openings, with their source and the balance rule fixed before screening
+- [x] #1 At least 100 balanced openings, with their source and the balance rule fixed before screening
 - [x] #2 A tactical suite of at least 200 positions with independently established answers (for example from a native mate prover) and a held-out part, with the baseline score
 - [ ] #3 A game-test control at which the median late-game depth is at least 8, or a lower target with its reason and cost recorded; a game test against a frozen predecessor runs end to end in the cloud
 - [ ] #4 A self-play export for Texel data with a split, and a time-odds measurement (2x time) recorded
@@ -65,4 +65,6 @@ Pilot1 finished on c3-standard-4. All 24 games remained in evidence: at equal 30
 The shared suite builder retained explicit partitions correctly but described every output as a hash split. Corrected the descriptive metadata for future runs; the frozen Tenjiku files state their three exact held-out families. Board records, partitions, winning actions and engine results are unchanged from the cloud proofs. All 56 strength-tool tests passed.
 
 Depth-cost cross-check frozen before its searches: for each of the three equal-clock pilot openings per profile, choose the first color game reaching 40 post-opening plies, truncate the native history after exactly 40, and request fixed depth 8 with a 250000-node cap on c3-standard-4. Use the shared signature command with the same frozen engine on both sides. A missed depth is an explicitly incomplete fixed-depth observation. The target decision also uses all late-game accepted turns and the clocked pair wall cost.
+
+Consolidated cross-shard re-screen through the shared native tool accepted all 100 of 100 source rows in each profile. The current board de-duplication, four-ply records, scores, order and IDs compare equal to the committed catalogs. Evidence control2/tasks/{1/adams,5/muller}-all-verified.json in the task GCS prefix.
 <!-- SECTION:NOTES:END -->

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-20T22:51:00Z'
-updated_date: '2026-11-27T13:04:00Z'
+updated_date: '2026-11-27T13:14:00Z'
 labels:
   - tenjiku
   - search
@@ -51,4 +51,6 @@ Backlog consolidation, 2026-11-26: MSH-235 is the final cleanup prerequisite and
 2026-11-27 (John): Released MSH-214 for implementation. The architectural tasks MSH-277 through MSH-283 remain deferred and do not block this work.
 
 Claimed on codex/msh-214-tenjiku-harness from 2e4b9ad. Next: freeze the opening design and tactical proof protocol before screening. No compute spend yet.
+
+Frozen engine/runner/helper from 2e4b9ad built in 169 s on one c3-standard-4. Build VM/disks/job deleted, conservative VM cost $0.0166. The corrected measurement worker is pinned to sha256:37596ae339ac4dd92b9ab29c3597d1598783e41451e9e8cbfedb632011853f7e (Cloud Build 470d5397); initial worker-layer build failed at the redundant system pip install. Tactical sources and composition recipe frozen under gs://mshogi-experiments-216675633801/runs/msh-214/inputs/. Nine whole motif groups, 24 authored positions each per profile; three entire families reserved for held-out. Shared screen/proof run strength-msh214-screen1 dispatched under a $0.81 VM ceiling. Next: inspect proofs, baseline and opening counts, then run color-swapped clock trials. Branch codex/msh-214-tenjiku-harness.
 <!-- SECTION:NOTES:END -->

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-27T16:53:00Z'
-updated_date: '2026-11-27T18:10:00Z'
+updated_date: '2026-11-27T18:37:00Z'
 labels:
   - tenjiku
   - evaluation
@@ -70,4 +70,6 @@ Added a symmetric --depth option to the existing fixed-work selfplay CLI so the 
 Production1: all eight worker receipts show complete; 3042 seed attempts, one opening ended during its four-ply continuation. Adams 2684 rules-concluded games and 242 unlabelled 768-ply stops (520854 raw rows); Muller 2944 concluded and 212 unlabelled ply stops (540252 rows). Total 1061106 raw, before board deduplication and quiet screening. The second eight pairs per lane yielded 10526/12302 quiet Adams/Muller, consistent with about 260000 quiet boards for this batch. The outer controller reached its cleanup reserve before receiving the terminal notification. Independent complete worker receipts and zero remaining job, VMs or disks were verified. To allow the second job to publish its terminal state within the original one-hour limit, stop starting pairs eight minutes before deadline instead of six; reserve seven minutes for export and cleanup when limiting the final pair wall. All search settings, split rules, seed order and native labels stay fixed. Next: compute the strict first-batch bound, then use only seeds 4197+ in batch two if needed. Final shared checks after the CLI change: formatting, Clippy, 1175 Rust tests passed with 10 ignored and 58 strength tests passed. Branch codex/msh-53.2-tenjiku-evaluation.
 
 Production1 verified VM upper bound $1.512388; cumulative completed VM bound $2.269257. First eight pairs on every lane plus exact paired-trajectory collapse gave an upper bound of 508425. Applying the frozen filter to the next eight pairs on every lane tightened it to 484227: use their actual quiet counts, then generously treat every remaining board as quiet after collapsing only byte-identical pair trajectories. This establishes the shortfall directly. Production2 submitted as corpus-msh532-production2, non-overlapping seeds starting 4197, same native engine, openings and search. Maximum additional VM cost $1.613. Reproduction scripts, bound evidence and both pinned worker images are recorded in GCS operator/. Next: verify production2, global opening split and dedup across both batches, exact quiet count and frozen fit. Branch codex/msh-53.2-tenjiku-evaluation.
+
+Audited all 3041 archived production1 native reports against their SHA256 values, fixed work settings and original catalog family. Both profiles cover all 100 families. Shared split/quiet worker passed a small end-to-end check of duplicate collapse, split coverage and reassembled chunk hashes on both profiles. At 18:36 UTC production2 had completed 1536 pairs, supplying 540254 raw rows; 2860 games concluded, 210 reached 768 plies, and two Adams games stopped at the 500000-node limit. The stopped games supplied zero samples. No production fit has run. Next: complete batch 2, audit reports, run the joint opening split and frozen fitter; GCS operator/ stores the scripts and evidence. Branch codex/msh-53.2-tenjiku-evaluation.
 <!-- SECTION:NOTES:END -->

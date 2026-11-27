@@ -1,11 +1,11 @@
 ---
 id: MSH-263
 title: Shared Experiment Dispatch and Operator Budgets
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-27T00:00:00Z'
+updated_date: '2026-11-27T00:17:00Z'
 labels:
   - runner
   - refactor
@@ -35,14 +35,14 @@ John decided on 2026-11-26: the developer runners keep the stop settings that th
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Per-game experiment behavior comes from one trait or table; arms of the same shape are merged; the run and the validation share one decision function.
-- [ ] #2 Experiment tests and recorded-report replay pass; production line counts before and after are recorded.
-- [ ] #3 The native experiment runner and match driver accept positive representable caller-chosen durations above ten minutes without another arbitrary duration ceiling.
-- [ ] #4 The configured deadline still stops work and records unfinished games as unscored; game rules and product search behavior are unchanged.
-- [ ] #5 Current callers, tests and measurement documentation use the same duration contract; required checks pass.
-- [ ] #6 max_steps, max_plies, max_actions and the 128 MiB report budget stay as experiment budgets; max_steps, max_plies and max_actions have no fixed upper bound, and no fixed schedule cap limits the length of one game.
-- [ ] #7 No runner refuses or stops a game because of a byte cap that grows with game length: the position command, the transcript, the report replay entry and the opening records; the 128 MiB report budget is the one exception.
-- [ ] #8 Tests and documents match; the documents say which experiment budgets stay and why; workspace and Python checks pass.
+- [x] #1 Per-game experiment behavior comes from one trait or table; arms of the same shape are merged; the run and the validation share one decision function.
+- [x] #2 Experiment tests and recorded-report replay pass; production line counts before and after are recorded.
+- [x] #3 The native experiment runner and match driver accept positive representable caller-chosen durations above ten minutes without another arbitrary duration ceiling.
+- [x] #4 The configured deadline still stops work and records unfinished games as unscored; game rules and product search behavior are unchanged.
+- [x] #5 Current callers, tests and measurement documentation use the same duration contract; required checks pass.
+- [x] #6 max_steps, max_plies, max_actions and the 128 MiB report budget stay as experiment budgets; max_steps, max_plies and max_actions have no fixed upper bound, and no fixed schedule cap limits the length of one game.
+- [x] #7 No runner refuses or stops a game because of a byte cap that grows with game length: the position command, the transcript, the report replay entry and the opening records; the 128 MiB report budget is the one exception.
+- [x] #8 Tests and documents match; the documents say which experiment budgets stay and why; workspace and Python checks pass.
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -73,4 +73,14 @@ Claimed by Codex on codex/msh-263-experiment-budgets from eb3f697. Next: invento
 Checkpoint on codex/msh-263-experiment-budgets: dispatch and replay now share admission and player selection. Removed game-length and pair-duration ceilings, updated CLI/driver entry points and guides. Runner all-target compilation passed before final boundary tests. Next: finish review, resolve findings, verify platform and workspace checks, then integrate.
 
 Independent review of f530814 found four issues: replay applied the stdout limit to position commands; replay did not enforce per-exchange evidence; external runs could accumulate oversized reports; native sizing omitted long escaped stop reasons. Corrected all four. External traffic and completed games now consume a shared report allowance, and native transitions account for the encoded final outcome/stop and cleanup. Regression coverage includes a 104-action opening and an exchange reset. All runner suites passed after the fixes; final workspace and platform verification in progress.
+
+Production physical line counts, eb3f697 to f79bce0: experiments/native.rs 609 to 417, experiments/mod.rs 960 to 863, experiments/run.rs 249 to 249, experiments/evidence.rs 266 to 263 (2084 to 1792 combined). Across all changed runner src modules and native_match.py, 7107 to 6953. Counts include comments and blank lines, exclude tests.rs and trailing Rust test modules. Direct release CLI replay of the six-game recorded USI fixture with its first canonical entry padded to 1,049,372 bytes passed. No strength or cloud Batch experiment was needed.
+
+Integrated implementation f79bce0 into main. On macOS arm64, CARGO_BUILD_JOBS=2 RUST_TEST_THREADS=2 python3 tools/checks.py run --base origin/main passed workspace formatting, Clippy, 1,175 Rust tests (10 ignored by the existing suites), and all 63 Python tests, including a real engine pair. The 1 ms stop stayed unscored, the CLI accepted u64::MAX milliseconds and the driver scheduled a 3,600,001 ms pair. GitHub push checks passed in run 45914208498. Targeted process CI passed Ubuntu 24.04, macOS 15 and Windows 2022 in https://github.com/jweathers777/mShogi/actions/runs/45914208728. The superseded run was cancelled. No game-rule or product search files changed.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Native experiments use one per-game dispatch table and the same turn decision for execution and replay. The operator controls wall time and game length. Long histories can pass through configuration, protocol transport and replay under the 128 MiB report budget. All eight criteria passed, including independent review and three-platform process checks. Next eligible task: MSH-264 (Frontend Consistency and Desktop Cleanup).
+<!-- SECTION:FINAL_SUMMARY:END -->

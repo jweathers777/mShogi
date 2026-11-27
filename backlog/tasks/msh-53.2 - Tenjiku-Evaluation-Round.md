@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-27T16:53:00Z'
-updated_date: '2026-11-27T17:08:00Z'
+updated_date: '2026-11-27T17:12:00Z'
 labels:
   - tenjiku
   - evaluation
@@ -56,4 +56,6 @@ Unchanged accepted engine passes 21 release Tenjiku tests (2 manual timing tests
 
 Depth-one native control: all six pairs concluded and replayed. Adams produced 302 unique quiet boards in 48.182 pair-seconds; Muller 189 in 27.738. Within each fixed-work pair the two colors have the same trajectory. Measured generation-only projection for 500000 on four concurrent lanes per c3-standard-4 is $1.083 at $0.201608/VM-hour. Actual production also needs random continuation, replay, export, storage and split. This is feasible enough to test. Pilot data is excluded from production fitting.
 Production frozen before generation: both players use d6274cb, depth 1, 500000-node safety cap, 768 plies, 600 s per pair. Cycle the full MSH-214 100-opening catalogs separately by scope seed; add four reproducible random legal plies using the shared helper and keep the original catalog family. Per profile use seeds starting at 101, assigned round robin to 16 lanes. Start with up to 4096 pairs per profile, stop starting pairs six minutes before a 60-minute campaign deadline; retain all already launched results and saves every completed game with its exact native conclusion. Four workers per c3-standard-4, 8 VMs (4/profile); one additional bounded batch of new unused seeds only if yield justifies it. Preserve unscored cutoffs. Each board ply of every concluded game; use existing shared exporter, split/dedup/filter across all production inputs. Whole-catalog opening hash split frozen earlier. For at least 500000 unique quiet positions with both profiles fit once; report individual heldout losses, then enforce the frozen tactical and 0/10 clock qualification. No external opponent. Reserve at least $3 for qualification; hard $10 task ceiling. Branch codex/msh-53.2-tenjiku-evaluation. Next: launch bounded production and measure realized yield.
+
+Production1 launched as corpus-msh532-production1. The project Cloud Build image is digest-pinned in production1/manifest.json and the local intent (the manifest pins all binaries and catalogs, the intent pins the worker). Cloud Build receipts and the operator are archived in GCS operator/. Source 5308d41 supplies the exact fitter; build-msh532-fit builds its Linux binary on one c3-standard-4. Native release perft/differential and 3 fitter tests pass. Shared workflow selected workspace fmt, all-target Clippy, 1175 Rust tests passed (10 ignored) and 57 strength tests passed. Next: monitor production progress and verified cleanup, measure true unique quiet coverage, run frozen fit and qualification gates. Branch codex/msh-53.2-tenjiku-evaluation.
 <!-- SECTION:NOTES:END -->

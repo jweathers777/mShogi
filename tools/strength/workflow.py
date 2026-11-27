@@ -142,7 +142,9 @@ def suite(args):
     if {r['split'] for r in rows} != {'development', 'held-out'}:
         raise ValueError('suite requires independently grouped development and held-out rows')
     write_new(args.out, {'profile': selected, 'source_sha256': file_hash(args.source), 'positions': rows,
-                         'proof': args.proof, 'split_rule': 'sha256(group) first byte modulo 4; 0 held-out'})
+                         'proof': args.proof,
+                         'split_rule': 'Use the explicit source split when present. Otherwise the first byte '
+                                       'of SHA-256(group) modulo 4 selects held-out for 0.'})
 
 
 def probe(args):

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-20T22:51:00Z'
-updated_date: '2026-11-27T13:36:00Z'
+updated_date: '2026-11-27T13:38:00Z'
 labels:
   - tenjiku
   - search
@@ -61,4 +61,6 @@ Screen/proof job strength-msh214-screen1 complete and cleanup verified (no remai
 The 30 s + 0.5 s pilot exposed incomplete first iterations at 608 to 1231 ms, including both colors of a Muller odds pair. Both profiles also completed full equal-clock pairs; typical late depth was 3 to 4. Calibration consequence fixed before the next run: increase to 60 s + 1.5 s, double both terms for time odds, play the same three Texel-stratified openings at equal clocks and all 12 additional catalog openings (indices 4 to 15, 1-based) at 2x. Keep unfinished pairs and do not use them to decide an SPRT. Use all six equal-clock pilot games per profile for export, with zero samples from unscored games. Re-screen each consolidated catalog to verify cross-shard board uniqueness. Per-pair wall budget 1200 s; no more than four pairs per c3-standard-4.
 
 Pilot1 finished on c3-standard-4. All 24 games remained in evidence: at equal 30 s + 0.5 s, Adams 5/6 and Muller 4/6 games concluded, with 2/3 and 1/3 complete predecessor pairs. Median depth from post-opening ply 40 was 4 for each profile (960 and 1551 accepted turns, including retained prefixes). At 2x, Adams 4 wins and 2 unfinished, Muller 3 wins, 1 loss and 2 unfinished for the longer clock. Pilot1 is a calibration failure: incomplete first iterations and 768-ply step limits, no SPRT decision. VM upper bound $0.461 and verified zero remaining resources. The next run, strength-msh214-control2, uses the already frozen 60 s + 1.5 s control and twelve further odds pairs, plus export/uniqueness checks. Branch codex/msh-214-tenjiku-harness.
+
+The shared suite builder retained explicit partitions correctly but described every output as a hash split. Corrected the descriptive metadata for future runs; the frozen Tenjiku files state their three exact held-out families. Board records, partitions, winning actions and engine results are unchanged from the cloud proofs. All 56 strength-tool tests passed.
 <!-- SECTION:NOTES:END -->

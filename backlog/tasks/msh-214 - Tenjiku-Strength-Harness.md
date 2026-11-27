@@ -1,11 +1,11 @@
 ---
 id: MSH-214
 title: Tenjiku Strength Harness
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-20T22:51:00Z'
-updated_date: '2026-11-27T14:00:00Z'
+updated_date: '2026-11-27T14:04:00Z'
 labels:
   - tenjiku
   - search
@@ -27,7 +27,7 @@ Goal: the harness step of the per-game classical strength program (docs/m5/stren
 <!-- AC:BEGIN -->
 - [x] #1 At least 100 balanced openings, with their source and the balance rule fixed before screening
 - [x] #2 A tactical suite of at least 200 positions with independently established answers (for example from a native mate prover) and a held-out part, with the baseline score
-- [ ] #3 A game-test control at which the median late-game depth is at least 8, or a lower target with its reason and cost recorded; a game test against a frozen predecessor runs end to end in the cloud
+- [x] #3 A game-test control at which the median late-game depth is at least 8, or a lower target with its reason and cost recorded; a game test against a frozen predecessor runs end to end in the cloud
 - [x] #4 A self-play export for Texel data with a split, and a time-odds measurement (2x time) recorded
 <!-- AC:END -->
 
@@ -71,4 +71,14 @@ Consolidated cross-shard re-screen through the shared native tool accepted all 1
 Control2: equal 60 s + 1.5 s on three prespecified stratified opening pairs per profile, 3 pairs in parallel per c3-standard-4. Adams 5/6 games and 2/3 pairs concluded. Muller 3/6 games and 1/3 pairs concluded. In concluded games median late depth was 5 by pooled turns (Adams 1104, Muller 289) and by game in both profiles. Only 37 and 13 late turns reached depth 8. Completed pairs took 856 s and 1161 s Adams, 616 s Muller, at <=$0.0651/VM for the longest pair even if it alone occupied the machine.
 Fixed 2x time odds, 12 pairs/profile, 4 concurrent pairs per c3-standard-4, same frozen binary, seeds 4..15, 120 s + 3 s vs 60 s + 1.5 s. Adams: 10 wins, 0 draws, 2 losses, 12 unfinished (9 depth-zero, 3 wall limit). Three complete pairs, pentanomial [0,0,0,0,3]. Muller: 10 wins, 0 draws, 3 losses, 11 unfinished (10 depth-zero, 1 wall limit). Four complete pairs [0,0,1,0,3]. Worst/best scores over all 24 scheduled games: Adams 41.7% to 91.7%, Muller 41.7% to 87.5%. Time odds inconclusive: no Elo or SPRT claim, no imputed game results, no pooling. All original report files and native replay receipts are in control2/tasks/.
 Self-play export: shared export, every fourth board move, six equal-clock pilot games/profile. Only concluded games supplied samples; the manifests retain all stops. Adams train/validation/heldout 74/78/121; Muller 117/42/65. All three partitions populated with disjoint opening groups and no cross-split duplicate diagrams. Control2 Batch VM upper bound $0.606, jobs/VMs/disks removed. Next: inspect the fixed depth-8 cost check, run shared final checks, integrate. Branch codex/msh-214-tenjiku-harness.
+
+Depth8 native search cost: on the six frozen ply-40 histories the identical binary twice reached depths 6/5/6 (Adams) and 7/5/5 (Muller). Each of the twelve searches used all 250000 nodes and missed depth 8. Worker elapsed time including both passes through the three roots was 72.8 s Adams and 65.9 s Muller. Use measured median late depth 5 at 60 s + 1.5 s until the speed step. The spot-check command exited nonzero as expected for missed depth. The clock trials also exited nonzero on unscored pairs, as the protocol requires.
+Checks on the final source: python3 tools/checks.py run --base origin/main passed all 56 selected strength tests; git diff --check passed. Compared all 432 published proof rows with the frozen native output, verified catalog-order and score equality for all 200 boards, rehashed every export partition, and checked all 497 exported boards and all opening families for split leakage. Product rules/search and platform-specific code did not change. MSH-276 does not block these native runs. No external opponents.
+All five Batch jobs have verified zero remaining jobs, VMs and disks. Total conservative VM cost <= $1.238 (build $0.017, screen $0.131, pilot $0.461, control $0.606, depth probe $0.025, values individually rounded up). Two Cloud Build image steps took 54.4 seconds in total; an additional $0.10 was reserved for builds, separate from the VM ceiling. Billing and incidental storage charges are not metered by the controller. All native runs, inputs and operator-evidence.tar.gz are under gs://mshogi-experiments-216675633801/runs/msh-214/. The worker image remains pinned for reproduction. Next task MSH-202 (Tenjiku Search Speed) remains To Do.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Added separate Adams and Muller opening and tactical catalogs. Each profile has 100 balanced standard-start histories and 216 one-ply proof positions, including 72 held out. Both baselines solved all 216. The shared native cloud route completed frozen-predecessor pairs and exported 273 Adams and 224 Muller positions with disjoint training, validation and held-out families. Median late-game depth was 5 at 60 s + 1.5 s. The 2x-clock study was inconclusive because 12 of 24 Adams games and 11 of 24 Muller games remained unscored. All selected checks passed, all Batch resources were cleaned up, and the VM cost upper bound was $1.238. MSH-202 (Tenjiku Search Speed) is the next strength step.
+<!-- SECTION:FINAL_SUMMARY:END -->

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-27T21:36:00Z'
-updated_date: '2026-11-27T21:50:00Z'
+updated_date: '2026-11-27T21:54:00Z'
 labels:
   - tenjiku
   - strength
@@ -55,4 +55,6 @@ Pre-dispatch controller setup failure in strength-msh533-16k-4k: a missing local
 First 16000/4000 block: 32/32 raw pairs replayed and verified. Adams 0/32 native scores, Muller 1 higher-work win/32; no complete pairs. Node-limit stops 32/31, mostly on the 4000-node side. Keep this failed measurement and all prefixes. Spending bound through two cleaned allocations is recorded in operator receipts. Continue both remaining frozen node edges without change.
 Supplement, frozen independently before clock or judge results: a separate Fischer clock curve on fresh catalog indices 41..46, both colors and same engine. Compare 60+1.5 vs 30+0.75 and 120+3 vs 60+1.5. Two bins of three concurrent pairs per profile per edge, c3-standard-4 only. Same 768 events/game, 1200 s/pair, 1260 s/bin, depth-64/5M safety limits, no substitution, no early decision, same independent scoring, late depth and censor bounds. The clocks inherit the accepted 60+1.5 control, and avoid a small hard node limit in difficult positions. Four cells, six openings each, limited precision. This is an independent supplement, not replacement games.
 To make room INSIDE the original seven allocations, three-and-a-half hours and $6.65 total bound: judge in two blocks of eight successive openings/profile (1..8 and 9..16), two independent report lanes per VM. Preserve the same 512000-node/depth-64 native helper, all eight frozen midpoint samples and unchanged criteria. The pre-dispatch scheduler groups only reports; no scored sample has been inspected. A thin Cloud Build layer on the existing worker permits two concurrent shared judge calls and records individual missing searches (original 60 s native watchdog), including if the cleanup reserve precludes a call. Preserve worker errors, unjudged histories, and a cluster sensitivity by coverage. Reserve the seventh 30-minute allocation for both supplemental edges. Carry all previous costs and retain $1 for incidental services. Next complete remaining node blocks, both judge blocks, clock supplement, then audit.
+
+The accepted workflow passes its 58 strength tests. The two-lane operator Cloud Build 73e25cba-d4bf-4aa3-9f2f-800c824652dc succeeded in 31.34 seconds, pinned worker sha256:1ac7359e852b8c9d7a2ffef7d07ffc19bc1bba40d0cf8189d089d46047b8261e on top of the existing worker sha256:37596ae339ac4dd92b9ab29c3597d1598783e41451e9e8cbfedb632011853f7e. Native engine, search limits, source sampling and scoring are identical on both report lanes. The original failed setup and first completed node-edge cleanup receipts give cumulative VM bound $0.10592. Next: audit 64000/16000, then 64000/4000; judge first-edge prefixes and fresh-opening clocks under previously recorded budgets.
 <!-- SECTION:NOTES:END -->

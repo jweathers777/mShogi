@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-27T21:36:00Z'
-updated_date: '2026-11-27T21:58:00Z'
+updated_date: '2026-11-27T22:04:00Z'
 labels:
   - tenjiku
   - strength
@@ -59,4 +59,6 @@ To make room INSIDE the original seven allocations, three-and-a-half hours and $
 The accepted workflow passes its 58 strength tests. The two-lane operator Cloud Build 73e25cba-d4bf-4aa3-9f2f-800c824652dc succeeded in 31.34 seconds, pinned worker sha256:1ac7359e852b8c9d7a2ffef7d07ffc19bc1bba40d0cf8189d089d46047b8261e on top of the existing worker sha256:37596ae339ac4dd92b9ab29c3597d1598783e41451e9e8cbfedb632011853f7e. Native engine, search limits, source sampling and scoring are identical on both report lanes. The original failed setup and first completed node-edge cleanup receipts give cumulative VM bound $0.10592. Next: audit 64000/16000, then 64000/4000; judge first-edge prefixes and fresh-opening clocks under previously recorded budgets.
 
 64000/16000: all 32 pairs passed exact config, binary, native replay, hash and independent score checks. No complete pairs. Adams 1W/0D/5L with 26 unscored; Muller 3W/0D/2L with 27 unscored. All 53 stopped at the 16000-node player. Bounds over all games 3.1..84.4% Adams and 9.4..93.8% Muller. Both late medians 4 vs 3. The worker returned nonzero for incomplete games as specified. No residual job/VM/disk. Next: finish 64000/4000, judge the frozen prefixes and run the separate clock supplement. The new worker image and exact task-owned layers and source are retained in operator/images; its staging source generation is verified absent.
+
+64000/4000: every one of 64 games stopped at the lower side’s node budget. All native reports and cleanup verified. Late depths Adams 5/2 and Muller 4.5/2. Across three edges, no complete color pair (12/192 individual games concluded), so no fixed-node Elo estimate. Four allocations checked empty; VM cost ceiling $0.529025. The first edge has 924 Adams and 860 Muller played moves, 256 frozen judge positions per profile, with only eight per profile at or beyond post-opening ply 40. The independent 512000-node first judge block is submitted at judge-1/. Next: its second block judge-9/, then clocks/, preserving split membership, limits and receipts.
 <!-- SECTION:NOTES:END -->

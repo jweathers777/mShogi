@@ -5,7 +5,7 @@ status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-27T15:03:00Z'
-updated_date: '2026-10-28T16:21:00Z'
+updated_date: '2026-11-27T07:13:00Z'
 labels:
   - m4
   - owner-msh-46
@@ -19,7 +19,7 @@ documentation:
   - docs/m4/xiangqi/fixtures.md
   - docs/m4/xiangqi/handoff.md
   - docs/m4/xiangqi/desktop-archive.md
-  - docs/m4/xiangqi/session-contract.md
+  - docs/desktop/native-application.md
 ordinal: 99000
 ---
 

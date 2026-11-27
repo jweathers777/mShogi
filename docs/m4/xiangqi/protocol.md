@@ -1,9 +1,9 @@
-# Xiangqi external protocol and bounded matches (MSH-100)
+# Xiangqi external protocol and bounded matches
 
-This consumer uses `mshogi.xiangqi.wxf2018.v1`, edition
-`WXF-2018+XIANGQI-P1-2026-10-27`. Rules, known history, warnings,
-claimant-specific counts and canonical records remain authoritative. It does
-not implement desktop UI, archives, new rules or strength measurement. MSH-98 is an independent desktop-session consumer.
+This adapter uses `mshogi.xiangqi.wxf2018.v1`, edition
+`WXF-2018+XIANGQI-P1-2026-10-27`. The rules library owns the known history,
+warnings, claimant-specific counts and canonical records. The desktop uses
+the [internal engine protocol](../../desktop/internal-execution-v4.md).
 
 ## Selected external dialect
 
@@ -13,8 +13,8 @@ built immutable-release Pikafish `4c17cee11f888ae1d48a9494f2e2239f019f0a1f`. The
 Bare `mshogi uci` remains Chess; Shogi still uses USI. Neither UCCI nor Fairy's
 generic UCI1-10 dialect is advertised or silently converted.
 
-- Files a–i, ranks0–9, Red at the bottom; complete actions such as `a3a4`.
-- Six-field FEN: rank9 first, `k/a/b/n/r/c/p`, uppercase Red/lowercase Black;
+- Files a–i, ranks 0–9, Red at the bottom; complete actions such as `a3a4`.
+- Six-field FEN: rank 9 first, `k/a/b/n/r/c/p`, uppercase Red/lowercase Black;
   active `w` means **Red**, `b` Black; literal `- -`, declared no-capture
   counter and positive fullmove number. Strict parsing rejects aliases,
   malformed/extra fields and invalid live-domain roots atomically.
@@ -41,22 +41,18 @@ generic UCI1-10 dialect is advertised or silently converted.
   as a participant resignation; mShogi does not choose heuristic
   resignations or evaluation-based draws.
 
-The unchanged source audit distinguishes Pikafish's
-UCI0-9 from Fairy generic UCI1-10/UCCI0-9. Its planning-only verdict is
-historical; the MSH-100 admission evidence
-records the new actual playing-engine build/network and runtime admission.
-Pikafish's banner before `id` is accepted only during handshake, retained in
-traffic, and bounded with all other handshake lines.
+Pikafish's banner before `id` is accepted during handshake. The runner
+retains and bounds it with the other handshake lines.
 
 ## Supervision and match authority
 
 `mshogi-match xiangqi-run CONFIG.json REPORT.json` is a separate Xiangqi
 runner. `xiangqi-replay REPORT.json` validates without launching any engine.
-Configuration is strict schema1, selected profile/dialect, `untimed`,
+Configuration is strict schema 1, selected profile/dialect, `untimed`,
 `fresh_per_turn`, and **`auto_valid_claims`**. Every engine has explicit
 executable/arguments/options/model identity and finite depth/visit limits.
 Clocks and different claim policies reject rather than downgrade. UCI has no
-optional claim channel; the desktop host exercises eligible claims under
+optional claim channel; the match runner exercises eligible claims under
 this recorded policy. It does not infer claims or conclusions from engine
 scores. Sound-fast-only root/current evidence is restored by game replay;
 a fast miss is not a winnability proof or an automatic draw.
@@ -69,8 +65,8 @@ record containing same-ply non-board commands, or analysis-diagram provenance,
 cannot be losslessly represented by this dialect and rejects explicitly; use
 the existing structured mShogi engine boundary for such contexts. No commands
 or observations are silently discarded. Live imported-root counter bounds are
-also restricted to pinned Pikafish's admitted no-capture0..119 and
-fullmove1..100000; game records outside that subset remain valid under the game rules and
+also restricted to pinned Pikafish's admitted no-capture 0..119 and
+fullmove 1..100000; game records outside that subset remain valid under the game rules and
 are never normalized. All actual engine positions retain the root and entire
 board prefix, not only the latest FEN. Warning and claim events are
 replay-derived and fully retained in the canonical game.
@@ -141,7 +137,4 @@ cargo test --locked -p mshogi-runner --test xiangqi_runner --test xiangqi_record
 The deliberately named `mshogi-xiangqi-fixture` is a separate Cargo test child,
 not a normal desktop/console distributable. It produces hostile/late/incomplete
 replies for actual process tests. Normal packages still select only their
-production binaries. Focused tests reuse independently established
-MSH-94 claimant/repetition and MSH-105/97 stalemate expectations; test fixtures
-are not rules oracles. Source/review/CI revisions and actual commands are
-recorded in MSH-100 and the evidence below.
+production binaries.

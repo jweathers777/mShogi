@@ -8,12 +8,12 @@ engine or treat software agreement as rules authority.
 
 | ID | Primary/source identity | Role and actual inspection |
 | --- | --- | --- |
-| C1 | JCSA [general rules2019](https://www.chushogi-renmei.com/kouza/rule2007.htm), corrected2019-09-14 | Adopted modern authority, I–IX Japanese text; source URL year2007 is not edition. Lion diagrams and IX example independently inspected. |
-| C2 | JCSA [supplement](https://www.chushogi-renmei.com/kouza/rule_hosoku2004.htm), updated2004-06-06 | Compatible explanations and exception priority. All five §2 images reconstructed; §1/3/4/5 checked. Earlier date does not give blanket precedence over C1. |
-| C3 | JCSA [setup/movement](https://www.chushogi-renmei.com/kouza/koma.htm), revised2004-04-22 | All11 actual images inspected by integrator, including full setup and every movement/promotion family; Lion/SE/HF separately cross-reviewed. |
-| H1 | NDL DOI[10.11501/1869566](https://doi.org/10.11501/1869566), *雑芸叢書第一*,1915, pp212–217/images121–123 | Previously directly inspected historical typeset witness and source of original seeds. Not original1703 printing; no historical-conformance claim requires it to be one. |
-| T1 | JCSA [Okazaki transcription](https://www.chushogi-renmei.com/kouza/Okazaki.htm), web2001-02-14 | Corroborates compatible restricted forward jumps/return and two-royal treatment. Not an inspected original booklet or authority for superseded Lion rules. |
-| L1 | [Lishogi's own Chu rules](https://lishogi.org/variant/chushogi), retrieved2026-11-02 | Named modern alternative and primary description of that service. No source/binary audit, comparator admission, execution or parity claim. |
+| C1 | JCSA [general rules 2019](https://www.chushogi-renmei.com/kouza/rule2007.htm), corrected 2019-09-14 | Adopted modern authority, I–IX Japanese text; source URL year 2007 is not edition. Lion diagrams and IX example independently inspected. |
+| C2 | JCSA [supplement](https://www.chushogi-renmei.com/kouza/rule_hosoku2004.htm), updated 2004-06-06 | Compatible explanations and exception priority. All five §2 images reconstructed; §1/3/4/5 checked. Earlier date does not give blanket precedence over C1. |
+| C3 | JCSA [setup/movement](https://www.chushogi-renmei.com/kouza/koma.htm), revised 2004-04-22 | All 11 actual images inspected by integrator, including full setup and every movement/promotion family; Lion/SE/HF separately cross-reviewed. |
+| H1 | NDL DOI[10.11501/1869566](https://doi.org/10.11501/1869566), *雑芸叢書第一*,1915, pp212–217/images 121–123 | Previously directly inspected historical typeset witness and source of original seeds. Not original 1703 printing; no historical-conformance claim requires it to be one. |
+| T1 | JCSA [Okazaki transcription](https://www.chushogi-renmei.com/kouza/Okazaki.htm), web 2001-02-14 | Corroborates compatible restricted forward jumps/return and two-royal treatment. Not an inspected original booklet or authority for superseded Lion rules. |
+| L1 | [Lishogi's own Chu rules](https://lishogi.org/variant/chushogi), retrieved 2026-11-02 | Named modern alternative and primary description of that service. No source/binary audit, comparator admission, execution or parity claim. |
 
 These are working Japanese interpretations independently checked by separate
 agents against actual text and diagrams, not certified human translations. The
@@ -25,7 +25,7 @@ between researchers or software is substituted for source evidence.
 | Issue | Current contract and supporting evidence |
 | --- | --- |
 | Initial central asymmetry | C3 actual setup/H1p214: Sente K7十二/DE6十二, Ln7十/FK6十, Ki7十一/Ph6十一. Count12+8+12+12+2=46 per side. |
-| 29 versus39 identities | C1 counts movement faces. Eighteen original promotion mappings plus21 originals require39 identity states; once-promoted origins never chain. C3 diagrams/prose and L1's explicit example agree on one flip. |
+| 29 versus 39 identities | C1 counts movement faces. Eighteen original promotion mappings plus 21 originals require 39 identity states; once-promoted origins never chain. C3 diagrams/prose and L1's explicit example agree on one flip. |
 | Distant defended Lion | C1 VII.2–3 includes defense exposed by vacating the attacking Lion. Intermediate adjacency does not waive the restriction (C2§2case4/companion). |
 | Extra capture/recapture | C2§2cases1–3/§3 explicitly establish qualifying extra capture above protection and no new protection after Lion takes Lion. Pawn/GB are excluded extras. |
 | Sole defender removed | C2case4 rejects removing the sole defending GB and then treating the target as newly undefended. Full action is one turn. Companion Pawn example rejects the newly-adjacent argument. |
@@ -36,7 +36,7 @@ between researchers or software is substituted for source evidence.
 | Royal admission | C1 II/C2§5 allow capture/no announcement; owner selects capture-based admission without Chess self-check. C1 IX actually shows King capture while Prince survives. |
 | Mate | Published immediate mate implemented by C06's finite actual-threat/complete-response test. No forced-mate tree. Prince rescue/all-royals-in-one-action fixture challenges a false single-royal filter. |
 | Quiet no action | No extra JCSA clause established. Report unresolved/unscored blocked board, preserving terminal commands, rather than add a loss/draw. |
-| Repetition | C1 VI requires the responsible party to vary before4. The selected decision rejects automatic forfeit proposal. C07 last-opportunity refusal preserves prefixes and targets the correct party; VIII's first passer is actual streak origin, not rotated anchor. |
+| Repetition | C1 VI requires the responsible party to vary before 4. The selected decision rejects automatic forfeit proposal. C07 last-opportunity refusal preserves prefixes and targets the correct party; VIII's first passer is actual streak origin, not rotated anchor. |
 | Action versus cycle identity | Keep every route. Compare specified semantic complete-turn transitions for repetition; equivalent empty returns remain jitto and cannot evade VIII. No inter-leg occurrence. |
 | Material | C1 II.4–5 narrow count, III royal classification and IX actual immediate recapture. Live P/GB count but cannot be winning extra; dead P/L ignored for counting only. L1 broader bare-royal rule not selected. |
 | Draw | II.6 requires agreement; IX supplies the exhaustion example. Preserve eligibility/offer/consent/concluded draw separately; no automatic bare-royal result. |

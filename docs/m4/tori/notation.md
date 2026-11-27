@@ -9,7 +9,7 @@ There is no SFEN/USI compatibility claim.
 | Element | Convention | Independently checked example |
 | --- | --- | --- |
 | Coordinates | Files1–7, ranks a–g, fixed Sente perspective | `7c`, `1g` |
-| Current face | `Ph Fa Ea Cr Pt LQ RQ Sw Go` | `Fa7c` identifies Falcon on7c |
+| Current face | `Ph Fa Ea Cr Pt LQ RQ Sw Go` | `Fa7c` identifies Falcon on 7c |
 | Quiet board move | current face + origin + `-` + destination | `Ph4g-4f` |
 | Capture | current face + origin + `x` + destination | `Fa7cx7b=Ea` |
 | Changed compulsory result | `=Ea` or `=Go`, after the destination | `Sw3d-3c` keeps Swallow; `Sw3c-3b=Go` becomes Goose |
@@ -21,8 +21,8 @@ rename either quail. `Ph` is never a hand resource. The source square disambigua
 pieces sharing a destination. Both game sides use the same coordinate system;
 the separately shown actor is Sente or Gote.
 
-`Fa7cx7b=Ea` is an independently hand-checked example: a Sente Falcon on7c
-captures an opposing Swallow on7b and must become Eagle because it enters the
+`Fa7cx7b=Ea` is an independently hand-checked example: a Sente Falcon on 7c
+captures an opposing Swallow on 7b and must become Eagle because it enters the
 two-rank promotion zone. Omitting `=Ea`, substituting quiet `-`, or using the
 other hand's quail is rejected when it does not identify a local choice.
 T08's older `Fa4c-4b+` illustration is not a required literal interchange token
@@ -61,8 +61,8 @@ Human shell output and errors remain separate from structured `internal-search`.
 
 Run `cargo test --release --locked -p mshogi-console --test tori_selfplay --
 --nocapture`. This invokes the real `mshogi internal-search` process for each
-turn, with explicit depth1/nodes256, exact canonical history, fresh request/
-session/process identities and an independent20-second process watchdog. The
+turn, with explicit depth 1/nodes 256, exact canonical history, fresh request/
+session/process identities and an independent 20-second process watchdog. The
 two fixed scenarios each run twice and compare actions, complete observations
 and canonical records:
 

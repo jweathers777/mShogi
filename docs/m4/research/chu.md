@@ -32,7 +32,7 @@ The following is a compressed first-pass translation, not an adopted executable 
 
 ## C2 reconciliation and directly expected lion seeds
 
-§1 retains pawn rescue, removes analogous go-between treatment, and limits proposed lance rescue to correspondence. §2 case1: `▲33 Lion ×22 Gold ×12 Lion`, then `▽21 Gold ×12 Lion` is allowed despite protection. Case2: `▲33 Lion ×22 Lion ×12 Lion` is allowed despite both defenders. Case3: after `▲14 Rook ×11 Lion`, `▽32 Lion ×43 Silver ×54 Lion` is allowed: extra capture outranks immediate protection; ensuing lion capture is allowed. Case4 rejects taking a sole defending go-between and then its distant lion: evaluate one complete action, not newly adjacent intermediate subturns. The companion pawn illustration also rejects that adjacency argument. Exact full-board reconstruction requires the linked diagrams.
+§1 retains pawn rescue, removes analogous go-between treatment, and limits proposed lance rescue to correspondence. §2 case 1: `▲33 Lion ×22 Gold ×12 Lion`, then `▽21 Gold ×12 Lion` is allowed despite protection. Case 2: `▲33 Lion ×22 Lion ×12 Lion` is allowed despite both defenders. Case 3: after `▲14 Rook ×11 Lion`, `▽32 Lion ×43 Silver ×54 Lion` is allowed: extra capture outranks immediate protection; ensuing lion capture is allowed. Case 4 rejects taking a sole defending go-between and then its distant lion: evaluate one complete action, not newly adjacent intermediate subturns. The companion pawn illustration also rejects that adjacency argument. Exact full-board reconstruction requires the linked diagrams.
 
 §3 says JCSA moved from Okazaki interpretation toward *全集/指南抄*, with extra-capture priority its own addition; it acknowledges potentially different historical go-between treatment. §4 rejects quiet return through occupied/offboard intermediate squares. Capture-return remains distinct. §5 explains why JCSA did not adopt a historical twenty-move announcement condition. §6 adds competition handling.
 
@@ -42,7 +42,7 @@ The following is a compressed first-pass translation, not an adopted executable 
 
 C3 lists all promotion relationships; lion, king/prince and free king have no further promotion. An already-promoted identity must not be promoted again merely because that movement type also occurs initially. Its lion explanation permits up to two king steps, a jump to the outer ring, and capture-return. Soaring eagle restricts lion-like directions to forward diagonals; horned falcon restricts them to forward. C3 explicitly allows jumping a friendly intermediate piece on these two-step forward directions. Quiet return restrictions must be read with C1 VIII/C2 §4. [C3, 大走り and 獅子 paragraphs](https://www.chushogi-renmei.com/kouza/koma.htm).
 
-Initial setup image: [rule/game1.jpg](https://www.chushogi-renmei.com/kouza/rule/game1.jpg). It agrees visually with H1 p214 on the central asymmetric pairs. A machine manifest has not been independently checked. The complete setup transcription below is grounded additionally in H1 p214, which was inspected at readable scale.
+Initial setup image: [rule/game 1.jpg](https://www.chushogi-renmei.com/kouza/rule/game1.jpg). It agrees visually with H1 p214 on the central asymmetric pairs. A machine manifest has not been independently checked. The complete setup transcription below is grounded additionally in H1 p214, which was inspected at readable scale.
 
 ## H1 direct historical text observations
 
@@ -50,7 +50,7 @@ H1 p213 contains the opening rules, promotion/decline passage, lion law, and twe
 
 First-pass reading of p217's prince paragraph: prince moves like king; when a prince exists the king may be captured, with the prince then treated as king. This directly supports continued play after loss of one royal, but does **not** itself define all self-exposure or mate cases. The p213 twenty-move passage concerns overlooking a running-piece attack and capture victory; no executable twenty-move rule is proposed from it. The promotion wording and several archaic lion expressions need independent Japanese review before precise historical-profile claims.
 
-Setup seed, H1 p214: columns below run **file12 to file1**, rows named by the modern board's ranks as a convenience; Black moves toward decreasing ranks. The historical coordinate system instead uses zodiac files, shown on p212. Do not silently call this transcription historical notation.
+Setup seed, H1 p214: columns below run **file 12 to file 1**, rows named by the modern board's ranks as a convenience; Black moves toward decreasing ranks. The historical coordinate system instead uses zodiac files, shown on p212. Do not silently call this transcription historical notation.
 
 ```
 rank12: L  FL C  S  G  K  DE G  S  C  FL L
@@ -64,7 +64,7 @@ rank 5: opposing GB at files9 and4
 rank 4..1: opposite side rotated 180 degrees
 ```
 
-Count independently: 12+8+12+12+2=46/side. Abbreviations: L lance, FL ferocious leopard, C copper, S silver, G gold, K king, DE drunk elephant, RC reverse chariot, B bishop, BT blind tiger, Ki kirin, Ph phoenix, SM side mover, VM vertical mover, R rook, DH dragon horse, DK dragon king, Ln lion, FK free king, P pawn, GB go-between. P214 shows Black king file7 and elephant file6; p214 shows lion file7 and free king file6 on rank10.
+Count independently: 12+8+12+12+2=46/side. Abbreviations: L lance, FL ferocious leopard, C copper, S silver, G gold, K king, DE drunk elephant, RC reverse chariot, B bishop, BT blind tiger, Ki kirin, Ph phoenix, SM side mover, VM vertical mover, R rook, DH dragon horse, DK dragon king, Ln lion, FK free king, P pawn, GB go-between. P214 shows Black king file 7 and elephant file 6; p214 shows lion file 7 and free king file 6 on rank 10.
 
 Movement seed inventory transcribed from H1 pp216–217 (forward is owner-relative; `step` means one square; `slide` means an unobstructed ray; these shorthand semantics are the researcher's translation). These are independent-of-code expectations pending diagram cross-check, not an implemented profile:
 
@@ -109,7 +109,7 @@ These are proposals/questions, not owner decisions. Recommend discussing an expl
 2. **Royal safety / no-action:** C1 II and H1 p217 do not completely specify whether a sole royal may deliberately enter attack, ignore attack, remain attacked, or how a last royal trapped without an attack ends. A chess self-check filter and a capture-only generator produce different legal sets; neither is justified merely by absence of announcement. Ask for a sourced explicit ruling or ratified adaptation. Test one/two royals, loss of each, simultaneous threats, last-royal mate and capture separately.
 3. **Material termination:** formalize C1 II.4 versus IX before implementing an automatic predicate. The immediate-recapture example rules out a naive piece-count trigger. Unclear coverage includes side-to-move dependence, other forced exchanges, multiple princes, promoted GB and dead pieces. Obtain ruling or enumerate and ratify a sound bounded adaptation; generic chess insufficient-material logic is unsuitable.
 4. **Repetition:** the Japanese identity phrase includes placement and move sequence; define cycle matching, start/length, transient lion rights, promotion eligibility, and responsibility when categories overlap. Decide whether prevented/rejected fourth recurrence or a committed foul/adjudication models the competition rule. No automatic neutral draw should be inferred. Board-only keys cannot encode every history question.
-5. **Complete-action timing:** C2 case4 provides firm anti-subturn evidence, but full promotion timing through enter/exit/return paths, defended-lion assessment with removed blockers, multi-lion protection target(s), and a kirin becoming lion still need explicit full-board fixtures. Do not project a single-lion assumption into multi-lion cases.
+5. **Complete-action timing:** C2 case 4 provides firm anti-subturn evidence, but full promotion timing through enter/exit/return paths, defended-lion assessment with removed blockers, multi-lion protection target(s), and a kirin becoming lion still need explicit full-board fixtures. Do not project a single-lion assumption into multi-lion cases.
 6. **Physical rules/software:** recommend atomic invalid-input rejection for product actions, with a clearly named adaptation for touch-move/foul recovery and agreement commands. This proposal is not source adoption. Correspondence lance rescue versus ordinary play is a real profile choice; do not apply it merely because play is software-mediated.
 7. **Notation/consumer:** source uses ordered multi-captures and historical zodiac coordinates. Recommend records preserve source/target/intermediate route, promotion decision, original piece identity, necessary history and versioned profile; effects remain rules-derived. Adapter notation is not selected here. Rules and shared consumer extension work stays MSH-86/MSH-78; no speculative implementation was performed.
 

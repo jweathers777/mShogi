@@ -3,14 +3,14 @@ use mshogi_runner::shogi::{Report, Stop};
 #[test]
 fn recorded_games_and_intentional_retirement_regression_have_explicit_verdicts() {
     let records = [
-        include_str!("../../../docs/m4/usi/selfplay.report.json"),
-        include_str!("../../../docs/m4/usi/opponent.report.json"),
-        include_str!("../../../docs/m4/usi/selfplay-repeat.report.json"),
-        include_str!("../../../docs/m4/usi/no-result.report.json"),
-        include_str!("../../../docs/m4/usi/late-fixture.report.json"),
-        include_str!("../../../docs/m4/usi/retirement-fixture.report.json"),
-        include_str!("../../../docs/m4/usi/exploratory/selfplay.report.json"),
-        include_str!("../../../docs/m4/usi/exploratory/opponent.report.json"),
+        include_str!("fixtures/recorded/shogi/selfplay.report.json"),
+        include_str!("fixtures/recorded/shogi/opponent.report.json"),
+        include_str!("fixtures/recorded/shogi/selfplay-repeat.report.json"),
+        include_str!("fixtures/recorded/shogi/no-result.report.json"),
+        include_str!("fixtures/recorded/shogi/late-fixture.report.json"),
+        include_str!("fixtures/recorded/shogi/retirement-fixture.report.json"),
+        include_str!("fixtures/recorded/shogi/exploratory/selfplay.report.json"),
+        include_str!("fixtures/recorded/shogi/exploratory/opponent.report.json"),
     ];
     let mut total = 0;
     for text in records {
@@ -25,7 +25,7 @@ fn recorded_games_and_intentional_retirement_regression_have_explicit_verdicts()
         }
     }
     assert_eq!(total, 36);
-    let before = include_str!("../../../docs/m4/usi/review-findings/cleanup-before-fix.json");
+    let before = include_str!("fixtures/recorded/shogi/review-findings/cleanup-before-fix.json");
     assert!(
         Report::from_json(before).is_err(),
         "an incomplete retirement capture must never establish accepted work"

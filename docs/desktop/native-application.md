@@ -1,177 +1,86 @@
-# Current native desktop application contract
+# Desktop application contract
 
-MSH-118/R3 replaced the always-present Chess session and optional Shogi/Xiangqi
-overlays. Subsequent delivered games extend the same owner; the
-current six-game map records their accepted
-adaptations. Rules, profiles, histories, actions and results remain owned
-by their existing game implementations. Historical R3/R4/R5 staging references
-below retain their original source scope.
+`DesktopController` owns one active, game-tagged document and one supervised
+engine bridge. The six games share the desktop lifecycle, document envelope,
+command dispatch and result admission. Each game adapter supplies its own
+rules profile, commands, history, choices and outcomes. Tenjiku Shogi uses one
+of two immutable profiles per game.
 
-## State and authority
+The active session owns the validated document, current game, history selection
+and recent engine observations. `RuntimeMetadata` owns the document identity,
+version, revision, selection and request counters, saved revision, path and
+capacity state. See the [document format](document-v1.md) for the saved
+fields and the [internal execution contract](internal-execution-v4.md) for
+engine request identity.
 
-The application controller holds exactly one `ActiveDocument` variant: Chess,
-Shogi, Xiangqi, Tori, Chu or Tenjiku (with one of two immutable profiles).
-Only that variant's match/game, settings, journal,
-observations, retained Take back branches and historical selection exist in the
-accepted live state. Other games do not retain a dormant Chess game.
+## Host operations
 
-`RuntimeMetadata` owns common document/session/selection revisions, document
-epoch and identity, monotonic request floor, saved/content revisions, path and
-capacity. Execution contexts retain complete game history, purpose,
-request/session identities and limits. A saved identity is provenance, never
-permission to resume old work. The single supervisor's cancellation remains
-authoritative across game replacement.
-
-The controller captures a candidate and exact operation authority under
-serialization. Bounded worker execution performs game command application,
-reconstruction, replay, encoding and admission. Failed, cancelled or stale
-candidates do not replace the accepted complete document. Receipts identify the
-specific operation rather than whatever a later snapshot happens to report.
-
-Current-file validation returns game typed data. One `install_document`
-transaction checks authority and identity headroom, retires old execution,
-assigns fresh runtime identity and installs the validated game variant stopped.
-Saved observations become historical evidence. Loaded and Take back sessions
-require explicit Resume. MSH-125 adds the browse-origin policy below;
-neither historical selection nor Take back revives retired work.
-
-## Current host surface
-
-Raw command strings reach strict parsing before controller admission;
-duplicate fields must not disappear through an intermediate object map.
-
-| Host operation | Contract |
+| IPC | Contract |
 | --- | --- |
-| `game_snapshot` | Game-tagged snapshot, exact token, game-specific geometry/capabilities/history/results, document state, file state and resource facts |
-| `game_command` | Exact rendered `SessionToken`, explicit game and typed game or shared operation; stable admission receipt |
-| `game_new` | Exact `SharedOpenToken`, explicit immutable rules profile and qualified human side; derived game/edition must agree, replacement admission |
-| `game_inspection` | Read-only complete movement inspection with exact selection authority |
-| `game_file` | Product Save/Load via internal save/save_as/open operations, native pickers, bounded validation and atomic replacement |
-| `game_request_close` | Request unsaved confirmation and stop the active game without inventing a result |
-| `game_cancel_close` | Clear confirmation while leaving stopped execution stopped |
-| `game_finish_close` | Approve only the complete current `SharedOpenToken`, after command/file reservations release |
+| `game_snapshot` | Get the game-tagged session, including choice and history data, capabilities, execution and file state. |
+| `game_command` | Submit an operation for the game under the exact rendered `SessionToken`. |
+| `game_new` | Submit a game, matching rules profile and qualified side, participant mode and exact `SharedOpenToken`. |
+| `game_inspection` | Query complete read-only movement choices under the exact selection token. |
+| `game_file` | Request `save`, `save_as` or `open` under the exact `SharedOpenToken`. The product exposes Save and Load. |
+| `game_request_close` | Start close handling and stop active work. |
+| `game_cancel_close` | Clear the close guard. The stopped game stays stopped. |
+| `game_finish_close` | Approve close under the exact current Open token after operation reservations release. |
 
-Chess keeps current/intended claims, match command history, ordinary read-only
-analysis with cancellation/failure, preferences,
-telemetry, unresolved outcomes and Take back. Its actual observations and
-MatchRecord are available through the current snapshot, not empty placeholders.
-Shogi keeps drops/promotions/declarations and advisory eligibility.
-Xiangqi keeps exact event prefixes, WXF warnings/obligations/claimants/offers,
-the sound fast no-win assessment and explicit Unknown. No frontend rules or common outcome reinterpretation
-is introduced.
+Commands and inspection requests reach the strict Rust parsers as JSON text.
+The session resolves the actor and applies a complete choice or a typed game
+command. Preferences share one settings shape across all games. The frontend
+uses one `useGameSession` owner and `ApplicationView` for all games. The
+shared board choice controller handles selection, completion and cancellation
+with game-specific geometry and choices supplied by the active game.
 
-## Lifecycle and file guarantees
+The controller captures operation authority before starting a private
+admission job. The host holds one exclusive lifecycle reservation through its
+command wait or native picker and file wait. A command receipt or file
+operation ID identifies the completion being awaited. Failed, cancelled and
+stale candidates preserve the current accepted document.
 
-`ApplicationLifecycle` is owned by the controller; the host holds a shared
-handle. Exclusive RAII reservations cover the complete command waiter or
-picker/file operation. Failure and cancellation release their own reservation.
-The host retains technical event-loop shutdown observation, not a second set of
-document-operation or close flags.
+## New game, Save, Load and Quit
 
-The native menu, window close, preventable Quit, final Exit and recorded Tao
-macOS termination patch retain their cleanup paths and provenance. Close approval
-requires the exact current document/version/content revision and no outstanding
-operation. Save is permitted during confirmation. Open rechecks close authority
-after the picker: an unchanged token alone cannot authorize replacing a document
-whose close guard opened while the picker was visible.
+First Save selects a path. Later Saves use the accepted path. Load and New
+game replace the document on successful admission. The current game remains
+installed while the chooser is open or the candidate is checked. The host
+checks the document identity, version and document revision again after
+a picker returns. Load also checks that close handling is clear. Successful
+Load installs the replayed game with fresh runtime identities and stops play
+until **Resume play**. New game starts with its new play intent.
 
-The [current document envelope](document-v1.md) and its atomic Save/Open contract
-remain unchanged. Failed Save preserves the prior valid file and dirty state;
-invalid, inconsistent, stale or resource-limited Open preserves the
-current accepted document. All histories and observations remain lossless.
+Window close and menu Quit first stop work and send `game-close-requested`.
+The frontend shows Save / Discard / Cancel for a dirty or never-saved game.
+Save is allowed while the guard is open. Close approval checks the current
+Open token and the absence of active reservations. Cancel keeps the game open
+and paused. See [macOS Quit interception](macos-quit.md) for the Dock route.
 
-## Authoritative resource facts
+## History and execution
 
-Capacity and file snapshots carry optional `ResourceFailure` metadata, separate
-from bounded technical diagnostics. A check supplies the category,
-measurement basis, actual measured count, separate operation/mandatory reserve, limit,
-scope and units it can establish. Combined observation facts retain ordinary and
-exact components without pretending each is a separately exhausted allowance.
+Moves shows complete board actions. Warning, claim and other non-move events
+belong to their command. History selection stops at complete command
+boundaries. It retires pending work and shows a read-only position. Analysis
+uses that position's exact history prefix. Resign submits directly under the
+rendered token and displays the rules outcome or unscored uncertainty.
 
-`measurement: candidate` describes proposed usage, including a rejected257th
-observation; it is not a claim that257 observations were accepted.
-`measurement: accepted` describes retained current state, such as all256 slots
-already occupied before starting work. Unknown facts contain no fabricated
-count. Multiple established causes remain explicit; bounded omission is reported.
-Categories are never inferred from a number or phrase in a diagnostic.
+**Return to live** clears the selection and retires historical analysis. A live
+game suspended only for browsing runs a fresh Resume admission. Load,
+[Take back](take-back.md), cancellation, failure and capacity stops require
+explicit Resume or Retry. A concluded game remains concluded.
+Engine results stay in memory. Each session keeps its newest 256 observations,
+and a new observation evicts the oldest at capacity.
 
-Categories distinguish game root bytes, identity headroom, validation budget
-and unknown causes. Illegal commands, engine failures and game outcomes remain
-separate. Documents, records, engine requests and replies have no byte or event
-limit (MSH-268).
+## Resource diagnostics
 
-R4 consumes these facts in one shared notice/recovery implementation. The
-truthful generic fallback remains appropriate whenever the exact cause cannot
-be established. Technical Details retain facts and
-diagnostics. Reopening is not presented as a structural-capacity reset.
+A capacity or file state can report one `ResourceFailure`, with a `fact` and
+a technical `diagnostic` bounded to 4,096 UTF-8 bytes. The fact category is
+`game_root_bytes`, `identity_headroom`, `validation_budget` or `unknown`.
+Its measurement can describe the accepted state, the proposed candidate, or
+an unknown state. The count, reserve, limit, scope and unit are optional.
+The shared notice uses the category supplied by the check. An unknown cause
+uses the generic notice. Diagnostics preserve the details supplied by the host.
 
-## Current frontend and host contract
-
-MSH-119/R4 deletes the finite R3 frontend forwarder and its consumers.
-`ProductApp` mounts one `useGameSession` and renders all games through the same
-`ApplicationView`, common sections and `GameFrame` player/board/footer slots.
-Chess supplies `ChessPresentation` capability details rather than a second
-application snapshot. Every game uses the same operations under the complete
-outer token: `play` carries the opaque action of a presented choice, `command`
-carries a game command of the active game (the session derives the actor and
-refuses a command for a side that no local human owns), and `preferences`
-carries the document settings, which have the same shape in every game.
-
-Only `game_snapshot`, `game_command`, `game_file`, `game_new` and the current
-inspection/close routes are product IPC. Old `desktop_*` snapshot/command/file/
-close routes, `desktop-close-requested`, the embedded Chess Snapshot, nested old
-command DTO and QA `contract_*` aliases are removed. The synthetic QA
-harness also uses the current native close authority. The one product guard
-subscribes to `game-close-requested` and approves `game_finish_close` with the
-exact Open token. Reservations, dirty receipts, replay and stopped
-installation are unchanged. See the R4 contract/evidence.
-Board selection/inspection-state consolidation remains separately owned by R5.
-
-## Evidence
-
-Source, tests, independent review, exact package identities and actual platform
-results are recorded in the MSH-118 task and completion evidence. R6 owns
-final integrated Chess/Shogi/Xiangqi packaged GUI acceptance on all three systems;
-tests or package construction do not establish that later criterion.
-
-## MSH-125 game workflow refinement
-
-Ordinary document controls are New game, Save and Load. First Save selects a
-path; later Save uses the accepted current path. Cancelled Save/Load pickers
-return cancellation, never successful receipts. The exact document/version/
-content token is checked again after every picker, including Save. New and Load
-are intentional replacements with no extra dirty confirmation; the existing
-accepted document stays installed until bounded validation and atomic
-admission succeed. Cancellation, rejection or stale authority does not discard
-it. The current envelope and all histories/observations/Take back lineages,
-limits and stop/close reserves are unchanged.
-
-Each game session carries transient browse-only running intent and, when
-already stopped, its recovery meaning. Inspect retires execution and records
-that intent only on entry from live play. Repeated exact-prefix navigation
-does not grant new authority. ReturnLive retires historical analysis and clears
-the selection. Only a game suspended solely by browsing restores running intent;
-its restart is recorded with the normal Resume control within the same bounded
-candidate admission, including complete journal and reserved close capacity.
-A later engine turn allocates fresh request and version identities. No stored request, saved observation or expensive exact operation
-is resumed.
-
-Load, Take back, explicit cancellation, failed/incomplete work, conclusion and
-capacity stops do not acquire browse-only permission. A newer cancellation or
-failed historical analysis supersedes older stopped-state recovery. Reopen
-clears all browse intent and stops work. Return from a concluded game is
-view-only; explicitly finishing existing Chess analysis retires
-analysis without changing its conclusion or permitting a board action.
-
-Native close first stops execution. `close_requires_save` distinguishes the
-current document's dirty or never-saved state from a stop-only close journal: an otherwise
-saved game may close without an unnecessary prompt only at that exact
-post-stop token. This never marks new canonical controls as saved or writes
-the file. A never-saved path, newer dirty token, cancelled guard or genuine unsaved document
-requires protection. Save/Discard/Cancel retain exact receipt/reservation
-checks, native menu/window/macOS termination handling and bounded shutdown.
-Resign submits one complete action under the rendered token, without
-a frontend confirmation or inferred outcome. Other confirmations remain.
-
-Implementation verification and final package acceptance are recorded with
-MSH-125; this contract update alone does not claim GUI or platform success.
+Resource refusals are separate from illegal commands, engine failures and game
+outcomes. Observation retention is a memory policy, so reaching 256 results
+does not refuse work. The [record admission rules](../game-resource-admission.md)
+describe the remaining fixed bounds and the validation deadline.

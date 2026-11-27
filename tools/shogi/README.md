@@ -108,7 +108,7 @@ used only for its raw geometric attack planes. The source calls
 root where the moving side already attacks the nonmoving king. It does not
 use cached incremental check state or parser/is_legal acceptance for this
 guard. The source audit and correction are recorded in
-[reference-domain-review.md](../../docs/m4/reference-domain-review.md).
+[reference-domain-review.md](https://github.com/jweathers777/mShogi/blob/5b5c35f/docs/m4/reference-domain-review.md).
 
 The original MSH-64 corpus had two bishop-evasion diagrams outside this
 reference domain. Longer seeded play exposed their invalid prior-opponent

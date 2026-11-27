@@ -14,7 +14,7 @@ or proof-key helpers. Related public types have deliberately different roles:
 
 | Consumer operation | Entry point / returned authority | Boundary |
 | --- | --- | --- |
-| Identify the game and rules | `PROFILE_ID`, `PROFILE_EDITION`; `GameKind::Xiangqi`, `RulesProfile::XiangqiWxf2018V1` | Profile identity/edition is immutable; record schema, envelope1 and shared transport3 are separate identities. |
+| Identify the game and rules | `PROFILE_ID`, `PROFILE_EDITION`; `GameKind::Xiangqi`, `RulesProfile::XiangqiWxf2018V1` | Profile identity/edition is immutable; record schema, envelope1 and shared transport 3 are separate identities. |
 | Describe a board | `Position`, `Intersection`, `Piece`, `PieceKind`, `Side`, `FILES`, `RANKS`, `RIVER_BETWEEN_RANKS` |90 intersections, not squares. Red/Black, river and palace geometry remain. No promotions, hands, drops, declarations or compound routes apply to this selected game. |
 | Admit a root | `PositionRoot::{standard,from_fen,analysis}`, `Position::validate_local`, `Game::from_root` | Structural inventory/General-count admission is weaker than local geography/turn safety; neither proves prior reachability. Imported roots begin known history; supplied counters do not invent it. |
 | Obtain complete local choices | `game.position().legal_actions()`, `local_status()` | No General capture action; includes check evasions. `Ongoing` means local actions exist, not that a full WXF game may continue or no-win proof completed. |
@@ -109,17 +109,6 @@ a ply.
 | Execution/invariant failure | `GameError::Invariant`, fast `Failure` | Separate failure; no manufactured win/loss/draw or positive proof. |
 | Strict record rejection | `RecordError` / `EnvelopeError` | Duplicate/unknown/missing/conflicting/unsupported/capacity or replay inconsistency; never normalize through a map before strict parsing. |
 
-Position/FEN limits are4096/256bytes. Games, records, the shared
+Position/FEN limits are 4096/256 bytes. Games, records, the shared
 envelope and engine transport have no command, event or byte limit (MSH-268).
 No accepted history or observation is discarded.
-
-## Verification and remaining owners
-
-The MSH-84 evidence maps focused integrated journeys
-and reused independently reviewed fixtures/references to this contract. No
-production refactor or shared framework was necessary. MSH-96 owns the real
-console; MSH-97 owns functional evaluator/search/child execution and its
-adjudication consumption; MSH-98/99 own session/presentation and archives;
-MSH-100–103 own protocol/matches and product/complete-game journeys. MSH-106
-starts only after complete MSH-45 delivery, not this handoff. MSH-45/M4
-remain open and all completed Chess/Shogi evidence remains intact.

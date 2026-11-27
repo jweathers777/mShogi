@@ -15,7 +15,7 @@ coordinates, rules and complete actions.
 Shogi examples: `P`, `p`, `+P`, `+p`. Every Shogi diagram reserves the promotion
 column even if no piece is currently promoted. Piece letters, empty dots and
 file labels therefore stay aligned when a promotion occurs. Shogi ranks a–i,
-files9–1 and hands remain. Xiangqi retains ranks9–0, files a–i,
+files 9–1 and hands remain. Xiangqi retains ranks 9–0, files a–i,
 intersections and the river; `B/b` means Elephant and `N/n` means Horse.
 Chess remains byte-compatible with its existing board diagram.
 
@@ -40,7 +40,7 @@ structured engine requests, game records and desktop rendering are unchanged.
 
 MSH-42 applies the multi-character convention to Tori's real human console:
 `sPh gPh sFa gEa sLQ gRQ`, with three-character right-aligned cells and
-files7–1/ranks a–g. Promoted faces have their own exact identities (`Ea`, `Go`);
+files 7–1/ranks a–g. Promoted faces have their own exact identities (`Ea`, `Go`);
 quails retain their handed identities when captured. Hands show counts
 separately. The [Tori action notation](m4/tori/notation.md) uses complete sources,
 capture/drop markers and compulsory result identity; board abbreviations do not

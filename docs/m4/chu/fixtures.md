@@ -1,16 +1,8 @@
-> Historical MSH-82 preimplementation accounting below is preserved: its
-> zero-execution numbers describe that source/data checkpoint. Actual rules86
-> acceptance is 1,069 checks across239 rows.
-> The ten shared/product obligations are reconciled in the current
-> MSH-43 coverage matrix.
-
 # Independent Chu fixture accounting
 
-The [corpus](fixtures.json) contains **249 rows:220 authored and29 explicitly
-owner-exchanged180° rotations**.239 belong to rules86;10 record future shared/
-product obligations for78/43. There are1134 top-level expected fields, including
-explanations and future assertions: this is **not1134 executed assertions**,249
-unique positions or rules conformance. Chu: **0 executed,0 passed**.
+The [corpus](fixtures.json) has 249 rows. There are 220 authored rows,
+29 owner-exchanged rotations and 10 rows for actual consumer behavior
+within the total. Explanatory fields give the reason for an expectation.
 
 Expectations precede implementation. C1/C2/C3 diagrams and prose, the selected
 [profile](profile.md), hand enumeration and independently reviewed examples
@@ -26,9 +18,9 @@ Rows can cover several clauses; these counts overlap.
 | Clause | Rows | Concrete boundary |
 | --- | ---: | --- |
 | C01 |1|92-piece asymmetric original setup,46/side, base identity |
-| C02 |75|All29 movement faces, source-derived landing sets/counts,29 rotations; complete empty-center Lion88/SE41/HF42 action sets |
+| C02 |75|All 29 movement faces, source-derived landing sets/counts,29 rotations; complete empty-center Lion88/SE41/HF42 action sets |
 | C03 |21|Actual one/two-leg routes, jump versus intermediate capture, quiet/capture return, friendly/offboard/turn rejection, two victims |
-| C04 |68|All18 promotions: accept/decline/no-chain; camp entry, capture/exit, reentry, Pawn rescue, no ordinary Lance/GB rescue |
+| C04 |68|All 18 promotions: accept/decline/no-chain; camp entry, capture/exit, reentry, Pawn rescue, no ordinary Lance/GB rescue |
 | C05 |18|Five supplement cases, hidden defense pair, distance/adjacency, P/GB exclusions, old/new Kirin-Lion protection, override/expiry |
 | C06 |11|Royal exposure, ignore/counterwin, surviving Prince, capture of both royals, finite mate, Prince rescue, unresolved quiet immobility |
 | C07 |11|Same-board history, quiet/check/attack responsibility, both-jitto/first actual passer, equivalent routes, last own opportunity before fourth |
@@ -41,14 +33,14 @@ The complete empty-center actor sets preserve **actions**, not only destinations
 Lion8 single steps+16 outer jumps+8×8 two-step routes=88; SE33 ordinary ray
 actions+2×4 restricted actions=41; HF38 rays+4 restricted actions=42. Empty
 routes sharing endpoints remain distinct. Source-derived geometry probes are
-not automatically the full-game LegalAll set:86 must also admit the correct
+not automatically the full-game LegalAll set. The game also checks
 turn, Lion law, game history obligations and conclusions.
 
-The remote kings/golds/pawn case has7 Sente actions, each followed by6 Gote
-actions: perft1=7, perft2=42,7 divide entries of6. Hand enumeration was separately
+The remote kings/golds/pawn case has 7 Sente actions, each followed by 6 Gote
+actions: perft 1=7, perft 2=42,7 divide entries of 6. Hand enumeration was separately
 reviewed; no general perft expectations are guessed from future engine output.
 
-## Execution contract for86
+## Fixture execution
 
 `given` separates imported diagrams, actual ordered commands, action probes,
 geometry queries and future consumer scenarios. The development `[file,rank]`
@@ -67,9 +59,9 @@ a Chess check filter. Replay from the game root and verify duplicated facts.
 Add deterministic admitted sequences, apply/undo restoration of all logical
 state/caches, canonical roundtrips, rejected-request atomicity, capture/discard
 accounting and meaningful adversarial mutations. Rotation exchanges owners and
-rotates all squares180°; an imported Gote-to-move rotation is not called the
+rotates all squares 180°; an imported Gote-to-move rotation is not called the
 standard starting game. Do not assume horizontal mirror symmetry of the actual
-asymmetric setup. Test all144 coordinates and exact route reversal where valid;
+asymmetric setup. Test all 144 coordinates and exact route reversal where valid;
 do not claim every transformed outcome is valid without the corresponding
 semantics/history transformation.
 
@@ -80,9 +72,5 @@ fixture links, setup inventories, coverage, rotations and reviewed data hashes.
 `python3 -m unittest discover -s docs/m4/chu -p 'test_validate.py'` exercises
 negative data admission. These implement **no Chu move generator or adjudicator**.
 
-This separate validator uses a1MiB development-data limit for the corpus file;
-it is not a game record limit.86 should reuse the conformance
-crate's generic assertions/property infrastructure with an actual Chu corpus/
-adapter boundary. The existing Tori corpus is not relabeled as Chu evidence.
-No reference engine is a build/test/
-milestone prerequisite under the [conformance policy](../../testing/conformance-policy.md).
+The validator uses a 1 MiB development-data limit. See the
+[conformance policy](../../testing/conformance-policy.md).

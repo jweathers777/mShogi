@@ -10,7 +10,7 @@ its acquisition questions no longer gate this profile.
 
 ## Basis and decision authority
 
-Start from [Wikipedia revision1373875456](https://en.wikipedia.org/w/index.php?title=Tori_shogi&oldid=1373875456)
+Start from [Wikipedia revision 1373875456](https://en.wikipedia.org/w/index.php?title=Tori_shogi&oldid=1373875456)
 (2026-09-08), cross-checked against actual Hamburg2019 and Kanare2022 sheets,
 Kanare's publisher explanation, and the Evans/Bodlaender modern rules page.
 See [source ledger](sources.md) for exact copies/read limits. Wikipedia is a
@@ -28,10 +28,10 @@ meaning. A rule change requires a new profile version and fixture review.
 Seven files × seven ranks of squares. Files7→1 run left→right when viewed from
 Sente's side; ranks a→g run top→bottom. Sente moves first, toward decreasing rank;
 Gote faces the opposite way. Names are Tori sides, not Chess colors.
-Each side has Phoenix1, Falcon1, Crane2, Pheasant2, LeftQuail1, RightQuail1,
-Swallow8. Hands start empty. Lower home rank7g→1g is LQ,Pt,Cr,Ph,Cr,Pt,RQ;
-Falcon4f; Swallows1e..7e and3d. Rotate the complete arrangement180° and exchange
-owner for Gote (extra Swallow5d). Thirty-two pieces total. T-M5 Setup, T-M3p2,
+Each side has Phoenix1, Falcon 1, Crane2, Pheasant2, LeftQuail1, RightQuail1,
+Swallow 8. Hands start empty. Lower home rank 7g→1g is LQ,Pt,Cr,Ph,Cr,Pt,RQ;
+Falcon 4f; Swallows 1e..7e and 3d. Rotate the complete arrangement 180° and exchange
+owner for Gote (extra Swallow 5d). Thirty-two pieces total. T-M5 Setup, T-M3p2,
 T-M4 diagram agree; T-H1img4 is supporting evidence only.
 
 ## T02 — identities and movement
@@ -41,7 +41,7 @@ LeftQuail左鶉, RightQuail右鶉, Swallow燕, Goose鴈 (historical鳫 is a disp
 Only Falcon/Eagle and Swallow/Goose are promotion pairs. Quail handedness is
 neither ownership nor promotion and survives capture.
 
-Local offsets `(x,f)` mean mover-right and mover-forward; rotate180° for Gote.
+Local offsets `(x,f)` mean mover-right and mover-forward; rotate 180° for Gote.
 Steps listed are exact endpoints. A ray stops before a friendly blocker or at its
 first enemy capture. A jump ignores intermediate occupancy without capturing it.
 No action captures more than its destination victim. Eagle's two-step diagonal
@@ -49,14 +49,14 @@ is a limited ray, never a jump or a two-capture route.
 
 | Kind | Steps | Jumps | Rays |
 | --- | --- | --- | --- |
-| Phoenix | all8 adjacent | none | none |
+| Phoenix | all 8 adjacent | none | none |
 | Crane | (−1,±1),(0,±1),(1,±1) | none | none |
 | Pheasant | (±1,−1) | (0,2) | none |
 | LeftQuail | (−1,−1) | none | (0,1),(1,−1) |
 | RightQuail | (1,−1) | none | (0,1),(−1,−1) |
 | Falcon | all adjacent except(0,−1) | none | none |
 | Swallow | (0,1) | none | none |
-| Eagle | (0,1),(±1,0) | none | (±1,1),(0,−1); limited(±1,−1) length1..2 |
+| Eagle | (0,1),(±1,0) | none | (±1,1),(0,−1); limited(±1,−1) length 1..2 |
 | Goose | none | (±2,2),(0,−2) | none |
 
 T-M5 Individual pieces, T-M3p2, T-M4 pieces/publisher prose. The Kanare quail
@@ -80,7 +80,7 @@ then capture, then forced promotion, then assess the resulting attacks. No
 out-of-zone capture or 'in front of Phoenix' promotion privilege. Drops never
 promote. A zone-dropped Falcon remains Falcon while some other piece moves;
 on its own next move within or out of the zone it becomes Eagle. A zone-dropped
-Swallow4b→4a becomes Goose. There is no hidden next-turn promotion timer.
+Swallow 4b→4a becomes Goose. There is no hidden next-turn promotion timer.
 T-M5 Promotion/Drops is explicit on these cases; T-M4 compulsory entry and
 T-M6 wholly/partly-zone language corroborate. Hamburg's *kann* is ambiguous
 wording, not the selected optional-promotion rule.
@@ -120,7 +120,7 @@ checkmate rather than ask a user to play a suicide or capture the royal.
 
 On root installation and after each board action: evaluate board-legal replies
 before repetition. An imported mate/stalemate diagram installs its immediate
-conclusion; its root counts as occurrence1 and creates no inferred earlier cycle. Check
+conclusion; its root counts as occurrence 1 and creates no inferred earlier cycle. Check
 with no safety/drop-legal reply is checkmate, a win for the mover. No check and
 no such reply is **stalemate loss for the immobile side (S)**, not Chess draw.
 Checkmate terminology T-M5/T-M3/T-M4 supports stopping at the inevitable royal
@@ -185,7 +185,7 @@ earlier session derived that convention, it was never decided by John. That deve
 
 ## T07 — admission, roots, records and exact reversal (S)
 
-A structurally admissible root has49 unique squares, exactly one Phoenix each,
+A structurally admissible root has 49 unique squares, exactly one Phoenix each,
 valid owners/kinds, nonnegative hand counts of base nonroyal kinds, at most the
 initial total of each base kind across board+hands (Ph2,Fa2,Cr4,Pt4,LQ2,RQ2,Sw16),
 no unpromoted Swallow stranded on its last rank or more than two own unpromoted
@@ -226,7 +226,7 @@ bounded, so every event prefix stays saveable.
 
 Complete actions are authority. A future human adapter may use explicit
 `Fa4c-4b+`, `LQ4d-2f`, capture `x`, drop `Sw*4b`, with side labels and exact source
-square where needed. Coordinates are7×7 and quails remain distinct; no generic
+square where needed. Coordinates are 7×7 and quails remain distinct; no generic
 9×9 SFEN/USI compatibility claim. Complete game record, not the display string,
 is replay authority. Two-column Moves contains board actions only; associate
 obligations/conclusions with their exact selected event prefix.

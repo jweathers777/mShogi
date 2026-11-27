@@ -21,5 +21,4 @@ play stopped. History inspection is read-only. Return to live before changing
 the game. Analysis is optional, starts only on request and does not play its
 suggested action. New game, Open and Take back retire old execution contexts.
 
-This mode is local and untimed. It adds no network play, clock or automatic
-engine-versus-engine setup.
+This mode is local and untimed.

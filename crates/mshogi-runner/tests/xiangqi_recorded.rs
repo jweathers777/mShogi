@@ -3,9 +3,9 @@ use mshogi_runner::xiangqi::{Report, Stop};
 #[test]
 fn actual_selfplay_independent_opponent_and_repeat_have_replay_evidence() {
     let records = [
-        include_str!("../../../docs/m4/xiangqi/protocol/selfplay.report.json"),
-        include_str!("../../../docs/m4/xiangqi/protocol/opponent.report.json"),
-        include_str!("../../../docs/m4/xiangqi/protocol/selfplay-repeat.report.json"),
+        include_str!("fixtures/recorded/xiangqi/selfplay.report.json"),
+        include_str!("fixtures/recorded/xiangqi/opponent.report.json"),
+        include_str!("fixtures/recorded/xiangqi/selfplay-repeat.report.json"),
     ];
     let mut conclusions = 0;
     let mut accepted = 0;
@@ -62,7 +62,7 @@ fn actual_selfplay_independent_opponent_and_repeat_have_replay_evidence() {
 #[test]
 fn failed_incompatible_network_is_preserved_as_unscored_failure_not_admission() {
     let report = Report::from_json(include_str!(
-        "../../../docs/m4/xiangqi/protocol/exploratory/incompatible-network.report.json"
+        "fixtures/recorded/xiangqi/exploratory/incompatible-network.report.json"
     ))
     .unwrap();
     assert_eq!(
@@ -89,7 +89,7 @@ fn failed_incompatible_network_is_preserved_as_unscored_failure_not_admission() 
     );
     report.replay().unwrap();
     Report::from_json(include_str!(
-        "../../../docs/m4/xiangqi/protocol/exploratory/pre-review-selfplay.report.json"
+        "fixtures/recorded/xiangqi/exploratory/pre-review-selfplay.report.json"
     ))
     .unwrap()
     .replay()
@@ -99,7 +99,7 @@ fn failed_incompatible_network_is_preserved_as_unscored_failure_not_admission() 
 #[test]
 fn actual_own_engine_zero_work_remains_incomplete_and_unscored() {
     let report = Report::from_json(include_str!(
-        "../../../docs/m4/xiangqi/protocol/no-work.report.json"
+        "fixtures/recorded/xiangqi/no-work.report.json"
     ))
     .unwrap();
     assert_eq!(report.games.len(), 2);

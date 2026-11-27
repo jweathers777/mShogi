@@ -1,19 +1,19 @@
-# Current desktop document contract
+# Desktop document format
 
-The current envelope is **`mshogi.desktop.document.v2`**. All six games save only `record`, `human` and `settings`
-in its payload. Development-era desktop archives are not supported. There is
-no compatibility reader or converter; see design A-09.
+The envelope is **`mshogi.desktop.document.v2`**. All six games save
+`record`, `human` and `settings` in its payload. See
+[design A-09](../design.md#a-09-pre-release-internal-compatibility) for the
+pre-release compatibility policy.
 
 ## Envelope and game records
 
 The envelope has three required fields: `format`, `game_kind` and `payload`.
-Unknown and duplicate fields reject. The game tag selects the record parser;
-the game record carries the profile, edition and schema. `payload` is a raw JSON value,
-so its original bytes reach the strict parser and game replay.
+Unknown and duplicate fields reject. The game tag selects the record parser. Each game record preserves its
+rules identity. The original payload bytes reach the strict parser and replay.
 
 | Game | Selected profile | Game record schema |
 | --- | --- | --- |
-| Chess | `mshogi.chess.match.v1` | 1, M2 untimed match |
+| Chess | `mshogi.chess.match.v1` | Untimed match commands and an initial Chess game record |
 | Shogi | `mshogi.shogi.csa36.v1` | 2 |
 | Xiangqi | `mshogi.xiangqi.wxf2018.v1` | 2 |
 | Tori Shogi | `mshogi.tori.modern.v1` | 4 |
@@ -22,15 +22,11 @@ so its original bytes reach the strict parser and game replay.
 | Tenjiku Shogi | `mshogi.tenjiku.muller-completed.v1` | 3 |
 
 Operational interruptions are session state. Cancellation, engine failure and
-work limits add no game command and do not change a saved record. Current
-records have no Stop command or incomplete field. Development-era formats,
-including Tori schema 1, are unsupported. The product has not been released;
-there is no migration reader for those formats.
+work limits add no game command. Rules effects and outcomes come from replay.
 
-Tori schema 4, Chu schema 3 and Tenjiku schema 3 store their profile, edition,
-schema version, complete game root and ordered actor/command pairs. Chu roots
-include Lion protection. Tenjiku roots hold the whole profile and original-piece
-rights; the record does not repeat the profile outside the root. Effects, current
+Tori, Chu and Tenjiku store the complete game root, edition, schema version
+and ordered actor/command pairs. Chu roots include Lion protection. Tenjiku
+roots contain the whole profile and original-piece rights. Effects, current
 position, offers, obligations and conclusions are reconstructed by game replay.
 
 Shogi schema 2 keeps the root category, SFEN and counter source, followed by
@@ -40,8 +36,7 @@ replay restores declaration evidence, warnings, claim results and conclusions.
 
 The document stores each non-Chess game record directly. Engine contexts use
 a separate canonical wrapper with `envelope_version: 2`, `game_kind` and `payload`.
-Only the current wrapper is accepted. Chess
-history schema 1 bytes and schema 2 adjudication settings are unchanged.
+Chess initial history can carry its adjudication settings.
 
 The edition is the exact `RulesProfile::edition()` value. A different
 whole profile rejects; no rule toggle migrates an existing document.
@@ -54,12 +49,6 @@ zero timestamps. Start, Observe, rejected requests, clocks and controller
 identities are not saved commands. Timed and witnessed resignation
 restoration remain unsupported.
 
-The other games store their game record. Complete moves, drops and promotion
-decisions remain recorded inputs; game replay derives effects and conclusions.
-Chess needs a match command list because a board GameRecord alone cannot retain
-player draw offers and match conclusions. It uses the same document envelope,
-file worker, admission receipts, session lifecycle and history controls.
-
 Settings have the same shape in every game: `play_mode` (`human_engine` or
 `two_humans`), `orientation` (the game side at the bottom) and
 `analysis_defaults` (`depth`, `nodes`), which Analyze updates. Display
@@ -67,19 +56,12 @@ preferences cannot change ownership during a game.
 
 ## Session state and history
 
-Engine observations stay in session memory. The list retains its newest 256
-results. They are not saved. Open does not restore or verify old analysis
-evidence.
-
-Take back cuts the command list. It retains the current session's results as
-historical observations. Abandoned continuations, history selection, pending
-work, request identities and diagnostics are not saved. Chess history indices
-count initial game events and accepted player commands, without Start or
-Observe. Browsing can inspect an imported root's history; Take back does not
-remove that immutable root.
-
-Open restores the live game with fresh runtime identities, empty result lists
-and execution stopped. Return to live and Resume remain separate actions.
+Open restores the live game with fresh runtime identities and stopped play.
+The history selection, pending work, diagnostics and engine observations belong
+to the open session. Take back and Undo cut the command list at a command
+boundary. A surviving document can retain an immutable imported root. See the
+[session contract](native-application.md#history-and-execution) and
+[Take back](take-back.md).
 
 ## Resource and file guarantees
 
@@ -101,8 +83,3 @@ for never-saved or dirty documents.
 
 See [desktop fixture regeneration](../../desktop/src/__fixtures__/README.md)
 for the current frontend snapshots and ordinary Load documents.
-
-Retained protocol regression fixtures use the current game record encoding.
-Their canonical-prefix hashes identify those encoded bytes. An encoding update
-changes those hashes, but does not change engine traffic, accepted commands,
-outcomes or timing observations. Git retains the original captured files.

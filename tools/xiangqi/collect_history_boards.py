@@ -44,7 +44,7 @@ def main():
     from rules_check_helpers import git, sha, strict_json
 
     rules_probe = (args.rules_probe or repo / 'target/debug/examples/xiangqi_probe').resolve()
-    manifest = (args.manifest or repo / 'docs/m4/xiangqi/reference/pikafish-admission.json').resolve()
+    manifest = (args.manifest or repo / 'tools/xiangqi/pikafish-admission.json').resolve()
     if not 0 < args.timeout <= 120:
         raise ValueError('bounded timeout must be greater than 0 and at most 120 seconds')
     engine_sha = sha(rules_probe)

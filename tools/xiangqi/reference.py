@@ -23,7 +23,7 @@ sys.path.insert(0, str(ROOT / 'tools'))
 from rules_check_helpers import sha, strict_json
 
 PIN = '9d7833aa113626b3ea63ad83f49fb9b456bd5839'
-MANIFEST = ROOT / 'docs/m4/xiangqi/reference/pikafish-admission.json'
+MANIFEST = ROOT / 'tools/xiangqi/pikafish-admission.json'
 MOVE = re.compile(r'[a-i][0-9][a-i][0-9]\Z')
 MAX_REQUEST = 4096
 MAX_RESPONSE = 65536

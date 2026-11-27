@@ -5,7 +5,7 @@ status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-10-27T12:36:00Z'
+updated_date: '2026-11-27T07:13:00Z'
 labels:
   - m4
   - owner-msh-41
@@ -21,8 +21,8 @@ references:
 documentation:
   - docs/m4/implementation-map.md
   - docs/m4/delivery-plan.md
-  - docs/m4/desktop-session.md
   - docs/m4/shogi-desktop-product.md
+  - docs/desktop/native-application.md
 type: task
 ordinal: 74000
 ---

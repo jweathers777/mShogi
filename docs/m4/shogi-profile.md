@@ -32,8 +32,8 @@ URL changes.
 
 | Label | Primary source and edition | Critical locators |
 | --- | --- | --- |
-| JSA-R | [JSA 対局規則, PDF](https://www.shogi.or.jp/match/taikyoku_rules/taikyoku_rules.pdf), enacted 2024-06-07, revised 2024-10-01 and 2025-01-01, corrected 2025-10-01; 14 PDF pages | Printed pp.1–7, Arts.2–6: board/play; p.8 Art.8: repetition; pp.8–9 Art.9: entering king; pp.9–11 Art.10: fouls; p.13: revision footer. PDF page index is printed page number here, because index0 is the unnumbered cover. |
-| JSA-E | [2025-10-01 correction](https://www.shogi.or.jp/match/taikyoku_rules/taikyoku_rules_revision.pdf), one page | Corrects Art.9(5), condition4's cross-reference to Art.9(4)(i); retains 31/24 thresholds. |
+| JSA-R | [JSA 対局規則, PDF](https://www.shogi.or.jp/match/taikyoku_rules/taikyoku_rules.pdf), enacted 2024-06-07, revised 2024-10-01 and 2025-01-01, corrected 2025-10-01; 14 PDF pages | Printed pp.1–7, Arts.2–6: board/play; p.8 Art.8: repetition; pp.8–9 Art.9: entering king; pp.9–11 Art.10: fouls; p.13: revision footer. PDF page index is printed page number here, because index 0 is the unnumbered cover. |
+| JSA-E | [2025-10-01 correction](https://www.shogi.or.jp/match/taikyoku_rules/taikyoku_rules_revision.pdf), one page | Corrects Art.9(5), condition 4's cross-reference to Art.9(4)(i); retains 31/24 thresholds. |
 | JSA-I | [Current official rules index](https://www.shogi.or.jp/match/taikyoku_rules/), retrieved edition headed 2025-10-01 | Entry point to JSA-R/JSA-E; HTML is incomplete, notably omitting Art.10(2–7). Prefer the dated PDF. |
 | JSA-B1 | [JSA 本将棋: placement](https://www.shogi.or.jp/knowledge/shogi/01.php), undated | Initial-position diagram and coordinate explanation. |
 | JSA-B2 | [JSA 本将棋: moving/capturing/dropping](https://www.shogi.or.jp/knowledge/shogi/02.php), undated | Five common principles; promotion on leaving the camp. |
@@ -122,7 +122,7 @@ proof that its preceding moves occurred.
 | Resignation | JSA-R6(1): opponent wins. A match command, not a board action. |
 | Declared entering king | CSA-36 25: own turn; king in enemy camp; ≥10 other owned camp pieces; no check; camp+hand points ≥28 sente / ≥27 gote; time remaining. Rook/bishop=5, others=1, king=0, regardless of promotion. |
 | Declaration procedure | CSA-36 25(2): explicit declaration; not automatic on crossing a material threshold. A formal declaration failing any prerequisite loses. Advisory eligibility queries do not declare. |
-| Length | CSA-36 27(3): 320 plies → draw only absent another loss or repetition; no-action loss on ply320 takes precedence. No JSA500 checking extension is added. |
+| Length | CSA-36 27(3): 320 plies → draw only absent another loss or repetition; no-action loss on ply 320 takes precedence. No JSA500 checking extension is added. |
 | Scoring | CSA-36 22: draw=0.5 win/0.5 loss. Store the game reason independently of that competition score. |
 
 Formal declaration and resignation preserve the board and finish the game.
@@ -151,7 +151,7 @@ approved in **SHOGI-P1 / MSH-63**, not an additional open owner question:
   limit, while exposing its match classification. Starting/continuing live play
   from a diagram applies no-action loss first and then the length conclusion:
   `n >= 321` is already terminal by the declared counter and admits no further
-  board action. At `n = 320`, the next action completes ply320 and triggers the
+  board action. At `n = 320`, the next action completes ply 320 and triggers the
   normal loss/repetition/length ordering. Do not silently reset the number to
   gain playable turns. Resuming post-limit analysis as a new live game requires
   a separately recorded new root and counter.

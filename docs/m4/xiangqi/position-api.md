@@ -9,9 +9,9 @@ complete-game delivery evidence.
 
 ## Game state and construction domains
 
-`Intersection` is one of90 intersections: files a–i/ranks0–9 with Red at the
+`Intersection` is one of 90 intersections: files a–i/ranks 0–9 with Red at the
 bottom. `Side::{Red,Black}` owns forward direction, palace membership and river
-crossing. Palaces are d–f/ranks0–2 and7–9; the river separates4/5. These are
+crossing. Palaces are d–f/ranks 0–2 and 7–9; the river separates 4/5. These are
 rule geometry, not decorative chess metadata. The seven `PieceKind` identities
 are General, Advisor, Elephant, Horse, Rook, Cannon and Soldier. `Piece` has only
 owner/kind; no dummy promotion, hands, drops or declaration fields exist.
@@ -26,10 +26,10 @@ than manufacture a no-action outcome from an invalid diagram.
 
 `Counters` contains explicitly known/unknown raw capture-free plies and fullmove
 number. A supplied fullmove number is positive; values fitu32. These are declared
-notation values, not evidence of omitted capture/check history, WXF Article8
+notation values, not evidence of omitted capture/check history, WXF Article 8
 eligibility or any repetition/outcome. Ordinary transitions increment raw
 capture-free plies on every quiet action (including check and Soldier movement),
-reset to0 on an observed capture and increment known fullmove number after
+reset to 0 on an observed capture and increment known fullmove number after
 Black. Unknown values stay unknown unless an observed capture establishes0.
 Overflow is an explicit representation failure and must not prune later board
 legal-action queries into a false mate/stalemate.
@@ -38,7 +38,7 @@ legal-action queries into a false mate/stalemate.
 
 `Position::from_fen`/`to_fen` use a strict six-field dialect:
 
-- Ranks9→0, files a→i; uppercase Red, lowercase Black.
+- Ranks 9→0, files a→i; uppercase Red, lowercase Black.
 - `k/a/b/n/r/c/p` mean General/Advisor/Elephant/Horse/Rook/Cannon/Soldier.
   The external letters do not rename game types; h/e aliases are rejected.
 - Active `w` means **Red**, `b` Black; there is no White side.
@@ -46,7 +46,7 @@ legal-action queries into a false mate/stalemate.
 - Last fields are raw no-capture plies and positive fullmove number. Canonical
   single spaces/empty runs, bounded ASCII and strict unsigned syntax apply.
 
-FEN is limited to256bytes (maximum valid board99bytes plus bounded fields is
+FEN is limited to 256 bytes (maximum valid board 99 bytes plus bounded fields is
 well below that). Missing counters cannot be invented: `to_fen` returns
 `UnknownCounters`; use game root JSON to preserve explicit unknown values.
 
@@ -66,7 +66,7 @@ Moves/events/claims are unknown fields and reject. Direct typed Serde parsing
 preserves duplicates until rejection; no intermediate map erases malformed input.
 All fields, including explicit-null counters, are required. Missing, duplicate,
 unknown, conflicting identities, unsupported values and trailing JSON reject.
-The4KiB byte bound covers valid documents (under512bytes) and bounds hostile input.
+The 4 KiB byte bound covers valid documents (under 512 bytes) and bounds hostile input.
 
 ## Complete actions and exact local reversal
 
@@ -93,4 +93,4 @@ retired-execution protections; local undo cannot authorize reviving engine work.
 No WXF third-warning/fourth adjudication, chase responsibility, natural-count
 claim, impossible-to-win recognition, console, search, protocol, archive or desktop
 consumer is implemented by this foundation. Those boundaries remain assigned
-to their existing later tickets, especially94/105 and95–103.
+to their existing later tickets, especially94/105 and 95–103.

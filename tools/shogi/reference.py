@@ -25,7 +25,7 @@ from rules_check_helpers import git, run_json_probe, sha, strict_json
 
 PIN = '6985fe5b516c34072e27c63cf429847f03193522'
 FIXTURES = ROOT / 'tests/fixtures/shogi/board-rules.json'
-MANIFEST = ROOT / 'docs/m4/reference/cshogi-admission.json'
+MANIFEST = ROOT / 'tools/shogi/cshogi-admission.json'
 USI = re.compile(r'(?:[1-9][a-i][1-9][a-i]\+?|[PLNSGBR]\*[1-9][a-i])\Z')
 
 

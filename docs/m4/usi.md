@@ -1,11 +1,8 @@
-# Shogi USI and untimed experiments (MSH-71)
+# Shogi USI and untimed experiments
 
-This implements the selected `mshogi.shogi.csa36.v1` profile's mShogi engine
-through a separate USI process. Game/history, complete legal actions and
-MSH-70 search remain authoritative. The human consoles, shared canonical record
-commands, compact board, chess UCI and structured v2/v3 entry point keep their
-existing contracts. Shogi desktop sessions and archives remain MSH-72 onward;
-functional interoperability makes no MSH-50 strength claim.
+The USI adapter uses the selected `mshogi.shogi.csa36.v1` profile.
+The rules library admits the full supplied game history and complete actions.
+The desktop uses the [internal engine protocol](../desktop/internal-execution-v4.md).
 
 Primary protocol references are the [Shogidokoro specification](https://shogidokoro2.stars.ne.jp/usi.html)
 and [original USI specification with depth/node extensions](https://hgm.nubati.net/usi.html).
@@ -20,7 +17,7 @@ cargo build --locked --release --bin mshogi --bin mshogi-match
 ./target/release/mshogi --game shogi usi
 ```
 
-Bare `mshogi usi` selects shogi. Explicit `--game chess usi` rejects with exit2
+Bare `mshogi usi` selects shogi. Explicit `--game chess usi` rejects with exit 2
 and stderr only. Human help/boards never appear on protocol stdout. `internal-search`
 continues to take its game from the structured request and rejects `--game`.
 
@@ -55,7 +52,7 @@ unknown option/value diagnostics never change the profile. Valid option changes
 retire old work. Unknown option commands do not alter current work or settings.
 
 ASCII CR/LF input lines have no byte limit, so a long position command is
-accepted (MSH-268). There are32 pending input events. One persistent worker has one replaceable
+accepted (MSH-268). There are 32 pending input events. One persistent worker has one replaceable
 pending job and one completion slot. No unbounded progress stream is created.
 Each result must match the active request, including its position, time and work limits,
 table size and game generation. A new game, position or search retires the old request.
@@ -64,7 +61,7 @@ table size and game generation. A new game, position or search retires the old r
 
 SFEN's declared counter is retained. It cannot establish repetitions/checks
 before import. SFEN material classification is derived and then checked by
-`GameRoot::import`: all40 pieces means full diagram, otherwise reduced.
+`GameRoot::import`: all 40 pieces means full diagram, otherwise reduced.
 Neither label proves historical reachability. Even the initial diagram imported
 as SFEN remains an imported root, distinct from `startpos` complete history.
 Every supplied move/drop/promotion is parsed and admitted by the game;
@@ -79,7 +76,7 @@ search or live node telemetry. It remains independently terminable by stop/quit.
 
 Only actual observations are emitted: completed depth, admitted nodes, elapsed
 request time, root-side perspective and completed PV. Small-valued reported scores
-(including a searched draw value0) use `score cp`, pawn100. Decisive reported scores
+(including a searched draw value 0) use `score cp`, pawn 100. Decisive reported scores
 are emitted only in `info string mshogi reported_score ...`: they may mean entering
 king or continuous-check loss rather than checkmate. Distance counts
 command edges and is **not** reported as USI `score mate`. PV contains only the
@@ -98,7 +95,7 @@ fabricated bestmove; a desktop host checks conclusions before requesting search.
 
 USI has no standard unscored no-result bestmove. Zero/insufficient/stopped work
 without a complete iteration, or failure, emits bounded
-`info string mshogi execution_failure ...` plus stderr, then exits1. It never
+`info string mshogi execution_failure ...` plus stderr, then exits 1. It never
 substitutes resignation, declaration, score or a lexically chosen legal move.
 Completed iterations survive later node exhaustion/stop. `info` and `gameover`
 are observations/notifications; neither overrides game outcomes or awards points.
@@ -106,13 +103,11 @@ are observations/notifications; neither overrides game outcomes or awards points
 ## Experiment host
 
 ```sh
-./target/release/mshogi-match shogi-run docs/m4/usi/selfplay.config.json /tmp/msh71-selfplay-new.json
-./target/release/mshogi-match shogi-replay /tmp/msh71-selfplay-new.json
-./target/release/mshogi-match shogi-run docs/m4/usi/opponent.config.json /tmp/msh71-opponent-new.json
-./target/release/mshogi-match shogi-replay /tmp/msh71-opponent-new.json
+./target/release/mshogi-match shogi-run CONFIG.json REPORT.json
+./target/release/mshogi-match shogi-replay REPORT.json
 ```
 
-Choose fresh report paths; existing files are never overwritten. CLI exit0 means
+Choose fresh report paths; existing files are never overwritten. CLI exit 0 means
 a report was produced/replayed, not that every experiment finished or scored.
 Each printed/report entry names game conclusion, experiment stop and optional
 score separately. A failure report is useful output, not a chess result.
@@ -135,15 +130,14 @@ Experiments are untimed: work bounds and wall-clock process/experiment watchdogs
 are not chess clocks. The operator-selected positive action budget and overall time limit stop unfinished
 experiments without awarding a draw or loss. Overall deadlines also cap reads
 and writes; cleanup has a separate total deadline including commands/draining/
-kill/reap. CSA length320 is unchanged. Up to4 openings may be paired;
+kill/reap. CSA length 320 is unchanged. Up to 4 openings may be paired;
 configuration metadata can use 1 MiB, excluding opening histories. A stdout
 line or control command can use 4096 bytes. The queue holds 32 output events.
 A command and its replies can use 1 MiB including event overhead. Position
 commands carry the full history. Stderr can use 4096 bytes per child. The
 128 MiB report budget covers all games and their evidence.
 Resource failures stop admission. Incomplete/oversized/failed retirement capture
-sets `traffic_complete=false`; stderr truncation is separately explicit. Normal
-retained runs have complete traffic. No accepted game history is dropped.
+sets `traffic_complete=false`; stderr truncation is separately explicit. No accepted game history is dropped.
 
 Reports retain executable/model SHA256, engine options and actual advertisements,
 root provenance, complete protocol commands/responses, work, observations,
@@ -155,97 +149,3 @@ conclusion, stop and score. Duplicates remain visible to strict raw parsers.
 Scores are half-point units ordered Sente/Gote: win[2,0]/[0,2], draw[1,1]. Failed
 or unfinished experiments have no competition score. No administrative foul or
 engine-failure penalty is silently invented.
-
-## Admitted external opponent and actual runs
-
-The exact candidate was admitted, without replacement:
-
-- YaneuraOu `0f421391ae311df9df57dcfcb2b4a78a1972bdf8`, source tree
-  `0844b429c4fb89e0c4f9160aa65447dcc17bcd58`.
-- Unmodified materiallevel1, APPLEM1, Apple Clang21, macOS27.0.1 arm64.
-- Actual identity `YaneuraOu MaterialLv1 9.80git 64APPLEM1`.
-- Binary SHA256 `74eded93711841dbdef41c0d38c8b85de9af77b9925274269c7b42a6d3987f86`.
-- GPLv3 external verification process; no opponent implementation or binary is bundled.
-
-Rebuild at a fresh path matching the supplied opponent config:
-
-```sh
-git clone https://github.com/yaneurao/YaneuraOu.git /private/tmp/msh71-yaneuraou
-git -C /private/tmp/msh71-yaneuraou checkout --detach 0f421391ae311df9df57dcfcb2b4a78a1972bdf8
-make -C /private/tmp/msh71-yaneuraou/source -j4 YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1 TARGET_CPU=APPLEM1 COMPILER=clang++
-```
-
-Admission retains compiler/build flags, license hash,
-actual complete handshake/options and readiness/search traffic. The initial
-sandbox DNS-denied fetch and successful authorized fetch are retained; the
-unmodified build succeeded first attempt with an obsolete linker `-s` warning.
-Supplement records additional controls,
-actual stop/quit and the known valid declaration fixture. An admission-only
-`gameover draw` probe is explicitly a notice, not an adjudicated game.
-
-Every configured setting was actually advertised: Threads1, USI_Hash64,
-USI_Ponder=false, Stochastic_Ponder=false, MultiPV1, USI_OwnBook=false,
-BookFile=no_book, BookMoves0, GenerateAllLegalMoves=true, EnteringKingRule=CSARule27,
-MaxMovesToDraw0, ResignValue99999, DrawValueBlack/White0. MaxMovesToDraw0 uses an
-upstream100000 sentinel; mShogi still owns length320 and all conclusions. The
-material opponent uses no external learned network. Ponder suffixes may be
-observed despite pondering disabled; they are syntax-checked predictions, never
-accepted board actions. Full legal-action conformance remains MSH-64/66 evidence.
-
-The final [self-play report](usi/selfplay.report.json) and
-[opponent report](usi/opponent.report.json) each contain6 actual games:
-
-| Opening, paired engine assignments | Self-play | External opponent |
-| --- | --- | --- |
-| Standard root,8-command experiment cap | 2 unfinished, unscored | 2 unfinished, unscored |
-| Independently expected mating Gold drop | 2 Sente no-action/checkmate wins | 2 Sente no-action/checkmate wins |
-| Independently expected CSA28 declaration | 2 Sente entering-king wins | 2 Sente entering-king wins |
-
-These artificial decisive roots test both engine assignments; they are not fair
-strength comparisons. The [repeat run](usi/selfplay-repeat.report.json)
-reproduced all6 canonical games under the recorded deterministic finite settings.
-Traffic timestamps/PIDs/elapsed time are observations and differ. No identical
-fresh external-engine rerun is promised: source draw jitter/hash/search details
-can affect external decisions even with controlled options. Deterministic
-record replay is a separate claim and passed on all retained reports.
-
-[Zero-work report](usi/no-result.report.json) retains2 actual USI failures,
-with no move/score/conclusion. [Late-reply report](usi/late-fixture.report.json)
-retains2 separately labeled injected watchdog/retired-reply failures from the
-verification executable; it is excluded from normal packages. Earlier exploratory
-success reports remain under `usi/exploratory/`. The
-execution manifest identifies actual source-file,
-engine/runner/fixture binary and report hashes, environment and scope. These
-opponent/experiment executions occurred on macOS arm64 only. Three-platform CI
-executes product/fixtures and packages; it does not imply three-platform opponent
-execution. Exact integrated revisions, CI and independent review are in MSH-71.
-
-## Independent review findings and retained regression evidence
-
-The protocol/fixture audit used primary specifications and accepted
-fixtures before implementation. The separate implementation reviewer rebuilt
-and executed real subprocesses, rather than treating an author reread as review.
-It found two material boundary defects, both corrected with actual-process tests:
-
-1. An accepted trailing TAB was preserved raw in the result but escaped in the
-   transcript. Replay now compares the escaped representation correctly while
-   retaining the exact raw reply.
-2. A duplicate reply could arrive after the retirement drain but before a clean
-   child exit. Acceptance now requires observed retirement EOF within the capture
-   budget; incomplete capture is an explicit unscored resource failure even if
-   the child subsequently exits0. The [injected report](usi/retirement-fixture.report.json)
-   retains2 rejected candidates with their games unchanged.
-
-The independent [pre-fix reproduction](usi/review-findings/cleanup-before-fix.json)
-and external probe preserve the failed check.
-That old full experiment report is deliberately rejected by final replay; its
-underlying accepted game record remains inspectable. It is a regression
-counterexample, not current successful experiment evidence. All8 supported
-`.report.json` files replay offline (36 games including exploratory and labeled
-failures). CI exercises that replay without launching the external opponent.
-An early stop test's machine-speed assumption was also corrected: stopping before
-a full iteration legitimately yields incomplete work, not an expected move.
-
-Normal package inspection already rejects paths containing fixture/test-driver
-markers. The new `mshogi-usi-fixture` is a separate verification executable and
-is never selected as a bundled production engine.

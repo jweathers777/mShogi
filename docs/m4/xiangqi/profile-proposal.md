@@ -34,7 +34,7 @@ names, source editions and project decisions.
 ## Repetition, warnings and continued conduct
 
 1. Repetition equality is the same piece types/owners on all intersections
-   and the same side to move. Known root counts as occurrence1. Declared counters,
+   and the same side to move. Known root counts as occurrence 1. Declared counters,
    warning events and runtime identifiers do not change this board equality;
    actual piece identity remains available to classify pursuit/history.
 2. At the **third occurrence**, identify/classify the repeating cycle. If WXF's
@@ -65,8 +65,8 @@ names, source editions and project decisions.
 Initial local play is **untimed**. Advisory eligibility and committed requests
 are separate. A participant may request an explicit manual/desktop claim
 at a serialized command boundary; terminal-command actor admission is distinct
-from board-action turn validation. Under Art8 count100 total no-capture plies,
-deducting only the requesting side's checks above10 in that capture-free window.
+from board-action turn validation. Under Art8 count 100 total no-capture plies,
+deducting only the requesting side's checks above 10 in that capture-free window.
 No pawn-progress reset, inferred pre-import checks or shared global check
 subtraction. Supplied counters remain declared; insufficient known history cannot
 prove eligibility. Exact100 is eligible under the individually reconciled source
@@ -129,7 +129,7 @@ A positive witness is a finite admitted ordinary board-action continuation to
 WXF3.1A checkmate or no-legal-action/stalemate loss. It is not a forced-win test.
 Exclude repetition/prohibited-conduct penalties, resignation, agreement,
 time/lateness, administrative/technical faults, invalid claims, misconduct and
-the no-win draw itself. Article3 separates natural board losses from later
+the no-win draw itself. Article 3 separates natural board losses from later
 penalty clauses. Full history still governs actual game outcomes; a penalty
 award cannot prove intrinsic natural winning capability. F002's possible Black
 repetition award is specifically not a positive Black natural-win witness.
@@ -147,14 +147,14 @@ uninstantiated source families and decision-dependent expected outcomes.
 
 | Area / governing clauses | Obligation and consumer implication |
 | --- | --- |
-| Setup, board, sides —1 | Ninety **intersections**, nine files/ten ranks; river between ranks4/5, palaces d–f/ranks0–2 and7–9 in the Red-bottom diagnostic coordinate convention. Red/Black game sides, Red first,32 starting pieces. Geometry metadata represents lines, intersections, palace diagonals and river; no chess-square semantics. |
+| Setup, board, sides —1 | Ninety **intersections**, nine files/ten ranks; river between ranks 4/5, palaces d–f/ranks 0–2 and 7–9 in the Red-bottom diagnostic coordinate convention. Red/Black game sides, Red first,32 starting pieces. Geometry metadata represents lines, intersections, palace diagonals and river; no chess-square semantics. |
 | Pieces and complete actions —2 | General/king orthogonal palace step; advisor diagonal palace step; elephant two-diagonal with eye blocker, own half only; horse orthogonal leg then diagonal destination; chariot orthogonal sliding; cannon quiet sliding or capture over exactly one screen; soldier owner-relative forward and sideways after crossing river, never backward. Capture removes one destination victim. No promotions, hands, drops, castling or declaration is imported. Complete action is origin+destination; derived capture/check effects are rules-owned. |
 | Board legality —2/3 | Reject own-piece landing, malformed/off-board requests, moving wrong side, exposing own general, and unobstructed facing generals. General capture is not a playable continuation API. Check evasions must enumerate **all** legal choices, including removing/adding cannon screens and horse-leg interpositions. Empty legal set loses whether checked or not; retain mate versus stalemate reason. |
-| History classifications —19/20 and5 | Preserve complete known actions and identity of relevant pieces. Classify all-check, mating threat, chase, exchange, block, offer, idle and mixtures; same victim versus changing victims; real/fake protection, pinned/blocked same-type targets, cannon/horse against protected chariot, own king/soldier and uncrossed victim exceptions, two-to-one counter-chase frequency, overlapping labels and responsibility precedence. No attack-set-only substitute. |
+| History classifications —19/20 and 5 | Preserve complete known actions and identity of relevant pieces. Classify all-check, mating threat, chase, exchange, block, offer, idle and mixtures; same victim versus changing victims; real/fake protection, pinned/blocked same-type targets, cannon/horse against protected chariot, own king/soldier and uncrossed victim exceptions, two-to-one counter-chase frequency, overlapping labels and responsibility precedence. No attack-set-only substitute. |
 | Match events —3/8/19/20 | Resignation, agreement offer/accept, count claims, warning/refusal under XIANGQI-P1, board-terminal outcomes and neither-can-win 3.2A by sound fast recognition only. Event actor/turn semantics belong to adapter; board-ply checks must not reject legitimate terminal commands merely because actor is not side to move. Availability is not conclusion. Preserve claim denials, unresolved assessment, failures and cancellations as different categories; invalid claims preserve semantic game state while the separately admitted request/rejection audit is retained. |
 | Imported roots and identities | Structural diagram admissibility differs from proven historical reachability. Preserve root provenance, declared counters, unavailable prefix, capture/check/pursuit history and warning state. Separate board equality, rules-history identity, saved-document identity and search reuse identity. Repetition starts with known root; no invented earlier occurrence. |
 | Exact transition/reversal | Validate atomically, apply complete action/events once, undo exact board/material/side/counters/history/classification. Semantic undo changes game state, never revives old engine execution identities. Canonical commands and accepted events replay exactly. |
-| Notation / records | Selected diagnostic coordinate dialect: files a–i from Red's left, ranks0–9 from Red baseline, e.g. `a0a1`; name/pin dialect explicitly. ICCS/UCI/UCCI/Chinese notation are adapters, **not a canonical record**. FEN-like import must pin piece alphabet, active-color meaning, unused fields/counters and strict parsing; preserve unsupported fields or reject, never guess. Pure board FEN cannot restore full history. Schema/version/strict duplicate rejection and encoded size limits use the existing envelope boundary. |
+| Notation / records | Selected diagnostic coordinate dialect: files a–i from Red's left, ranks 0–9 from Red baseline, e.g. `a0a1`; name/pin dialect explicitly. ICCS/UCI/UCCI/Chinese notation are adapters, **not a canonical record**. FEN-like import must pin piece alphabet, active-color meaning, unused fields/counters and strict parsing; preserve unsupported fields or reject, never guess. Pure board FEN cannot restore full history. Schema/version/strict duplicate rejection and encoded size limits use the existing envelope boundary. |
 | mShogi engine and evaluation | M4 delivers own functional evaluator/search using full context, local legality and selected history/event policy. Red/Black score perspective explicit; no borrowed Chess Full operation or Shogi declaration. Requests/results bind purpose, profile/game record, exact target prefix, request/session/process identity and limits. Board action, committed claim, conclusion, incomplete search and failure remain tagged distinct results. |
 | Console, runner and desktop | Own console diagnostics and bounded interoperability; external reply checked by adapter and runner owns selected adjudication. Common accepted mShogi dark shell and stable controls/sidebar. Xiangqi-specific intersection SVG/river/palaces/pieces, whole board visible at supported normal/minimum sizes, read-only enemy inspection. Preserve click/keyboard/orientation, analysis provenance, cancellation, history/live distinction, Save/Open and lossless capacity admission. |
 

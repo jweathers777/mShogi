@@ -1,14 +1,8 @@
-# MSH-67 independent history and outcome fixture derivations
+# Shogi history and outcome fixture derivations
 
-Fixture source: [history-outcomes.json](../../tests/fixtures/shogi/history-outcomes.json).
-Prepared 2026-10-26 by a separate Codex AI fixture/research agent from the
-history implementer. This is AI derivation and board corroboration, not a claim
-of human rules review. The first fixture review is retained with the then-unmerged implementation at
-`f259bb23834d6156f21aeec53db9ee00ef7242e4` on `codex/shogi-history`.
-That partial implementation and its reviews remain historical evidence. The
-subsequent [complete-chain and supplement resolution](mutual-check-resolution.md)
-now discharges the mutual-check gate. Final verification and integration
-are recorded separately in MSH-67 and history validation.
+These derivations describe the expected outcomes in the
+[history fixtures](../../tests/fixtures/shogi/history-outcomes.json).
+See also the [mutual-check invariant](mutual-check-resolution.md).
 
 ## Authority, editions and method
 
@@ -44,11 +38,11 @@ Source-to-expectation map:
 
 ## HIST-INTERVAL concrete ledgers
 
-Take Sente king9i, Gote king5a and Sente rook4c. The four actions
+Take Sente king 9i, Gote king 5a and Sente rook4c. The four actions
 `4c5c 5a4a 5c4c 4a5a` restore board, hands and turn. On Sente's actions
-1 and3 the rook occupies the king's file on rankc with no intervening piece;
+1 and 3 the rook occupies the king's file on rankc with no intervening piece;
 Gote's evasion removes that attack. Three cycles therefore produce root
-occurrences0,4,8,12 and six Sente checks. The fourth root is check-relieved.
+occurrences 0,4,8,12 and six Sente checks. The fourth root is check-relieved.
 Sente loses even though Gote made the final action. Starting instead with rook5c,
 Gote to move, and cycling `5a4a 5c4c 4a5a 4c5c` makes the fourth root checked,
 with the same loser. The 180-degree owner-exchanged pairs prove Gote's checking
@@ -59,19 +53,19 @@ its first Sente action does not check. Three quiet cycles are ordinary repetitio
 One quiet cycle followed by two all-check cycles also draws: an implementation
 must inspect the whole first-to-fourth interval instead of just the latest cycle.
 Conversely, the prefix `4d4c 6a5a` reaches that root for its first occurrence
-at2. A noncheck at1 is outside the selected interval2–14 and does not interrupt
-the subsequent six checks. That fixture loses for Sente at14.
+at 2. A noncheck at 1 is outside the selected interval 2–14 and does not interrupt
+the subsequent six checks. That fixture loses for Sente at 14.
 
 The overlapping fixture uses the eight-action walk
 `4c5c 5a4a 5c4c 4a3a 4c3c 3a4a 3c4c 4a5a`.
-The supplied root returns at8, but the intermediate checked state rook4c/king4a
-occurs at3,7,11,15. It therefore concludes at15 before a fourth supplied-root
+The supplied root returns at 8, but the intermediate checked state rook4c/king 4a
+occurs at 3,7,11,15. It therefore concludes at 15 before a fourth supplied-root
 return. Other shifted identities also recur; the JSON records their partial
 occurrence sets. Every Sente action in(3,15] checks. This prevents algorithms
 that track only the supplied root or assume nonoverlapping uniform cycles.
 
-The fresh imported root at SFEN counter13 has exactly the same board, hands,
-turn and counter as the concluded12-action history. Its known occurrence list is
+The fresh imported root at SFEN counter 13 has exactly the same board, hands,
+turn and counter as the concluded 12-action history. Its known occurrence list is
 only[0]. Earlier checks/repetitions are unknown, so it is live; an SFEN counter
 is not an event log. This is the same-position/different-history witness.
 
@@ -87,8 +81,8 @@ The obvious argument that every countercheck captures a piece is invalid:
 interpositions and discovered checks need not capture. Nor does a drop/capture
 pair monotonically reduce board material. The published
 [2008 attempted proof](https://yaneurao.hatenadiary.com/entry/20080604/p1) and its
-[part2](https://yaneurao.hatenadiary.com/entry/20080607/p1)/
-[part3](https://yaneurao.hatenadiary.com/entry/20080608/p1) contain retracted
+[part 2](https://yaneurao.hatenadiary.com/entry/20080607/p1)/
+[part 3](https://yaneurao.hatenadiary.com/entry/20080608/p1) contain retracted
 lemmas and expressly identify remaining cases. The author's
 [2024-01-29 retrospective](https://yaneuraou.yaneu.com/2024/01/29/sennichite-involving-a-reverse-check/)
 still described an incomplete proof. A
@@ -109,22 +103,22 @@ global impossibility proof.
 
 ## DECL-BOUNDARY arithmetic and isolated prerequisite failures
 
-The Sente base diagram has K9a, R8b, B7b, and eight promoted pawns8c through1c.
-There are ten other owned camp pieces. Their points are5+5+8=18. The hand B5P
-adds5+5=10 for28; B4P instead gives27 and fails Sente28. Rotating and exchanging
-owners gives Gote camp18; hand b4p gives27 and succeeds, while b3p gives26 and
+The Sente base diagram has K9a, R8b, B7b, and eight promoted pawns 8c through 1c.
+There are ten other owned camp pieces. Their points are 5+5+8=18. The hand B5P
+adds 5+5=10 for28; B4P instead gives 27 and fails Sente28. Rotating and exchanging
+owners gives Gote camp 18; hand b4p gives 27 and succeeds, while b3p gives 26 and
 fails. Promoting the rook/bishop retains five points each. Every diagram has
 exactly two kings and no inventory exceeds the standard total; the nonmoving
 king is unattacked. Hand pieces contribute points but do not count as camp pieces.
 
 The independently isolated failures are:
 
-- Move only K9a to9d: king camp condition fails; ten other camp pieces/28 points
+- Move only K9a to 9d: king camp condition fails; ten other camp pieces/28 points
   remain.
-- Move +P1c to1d and add a hand pawn: camp pieces fall to9, while camp17 plus
-  hand11 remains28. The outside promoted pawn contributes no declaration points.
-- Add Gote rook9c: the clear9b line checks K9a; the other requirements remain.
-  K9a can evade to8a, so this is a live checked root, not a terminal diagram.
+- Move +P1c to 1d and add a hand pawn: camp pieces fall to 9, while camp 17 plus
+  hand 11 remains 28. The outside promoted pawn contributes no declaration points.
+- Add Gote rook9c: the clear 9b line checks K9a; the other requirements remain.
+  K9a can evade to 8a, so this is a live checked root, not a terminal diagram.
 - Change turn to Gote while retaining Sente as the formal declaring actor:
   own-turn fails; all board/material conditions remain.
 - Remove one hand pawn at each side's threshold: only the point prerequisite
@@ -147,48 +141,26 @@ undo and same-board-ply event-prefix distinctions require game record tests.
 
 ## IMPORT-LENGTH counter and precedence constructions
 
-Supplied n320 means319 declared completed actions. A legal rook move produces320
-and a length draw. A checking move with legal king evasions still draws at320;
+Supplied n320 means 319 declared completed actions. A legal rook move produces 320
+and a length draw. A checking move with legal king evasions still draws at 320;
 the selected CSA cap has no JSA checking extension. Supplied n321, n322 and n999
 start terminal by length when legal board actions otherwise exist. Supplied n1
 and explicitly defaulted n1 both mean zero completed actions but retain distinct
 provenance. Strict SFEN remains four-field; defaulting is an adapter operation.
 
-At n309, twelve known actions add to308 declared prior actions and reach320.
+At n309, twelve known actions add to 308 declared prior actions and reach 320.
 The quiet loop concludes with repetition reason; the continuous-check loop
 concludes with Sente's loss. Neither is relabeled as a cap draw.
 
 For no-check/no-action precedence, Sente has only K1i; Gote has k9a, r2a and r9h.
-K1i is not attacked, but1h is attacked by r9h,2i by r2a, and2h by both.
+K1i is not attacked, but 1h is attacked by r9h,2i by r2a, and 2h by both.
 There is no Sente hand or other piece. This is a loss at imported n321.
 Replacing r9h by r1a checks K1i, while r2a denies2h/2i and r1a denies1h;
 the checked no-action root at n322 loses too. Both defeat length precedence.
 
-The action320 mate reuses the established SH-F017 geometry with an on-board
-pawn, not a forbidden mating pawn drop. `5c5b` checks k5a, G4c protects5b,
-and Gote's lances4a/6a and pawns4b/6b occupy the other king exits. No other Gote
+The action 320 mate reuses the established SH-F017 geometry with an on-board
+pawn, not a forbidden mating pawn drop. `5c5b` checks k5a, G4c protects 5b,
+and Gote's lances 4a/6a and pawns 4b/6b occupy the other king exits. No other Gote
 action removes the pawn attack. The root is locally safe for the nonmoving king;
 the resulting no-action loss precedes the cap. Reachability before the imported
 root is not asserted.
-
-## Board-only corroboration evidence
-
-Environment: macOS27.0.1 build26A434; stable rustc1.89.0; Python3.14.7.
-Board-core source revision: `986a5277f26fe2f41c671bc0f14d2da5f749a156`.
-The outcome fixture expectations were prepared without reading game history
-adjudication code. Commands used:
-
-```text
-cargo build -p mshogi-core --example shogi_probe --target-dir /private/tmp/msh67-fixture-target
-python3 /private/tmp/msh67-create-fixtures.py
-shasum -a 256 /private/tmp/msh64-rule-sources/CSA-36.pdf /private/tmp/msh64-rule-sources/JSA-R.pdf
-```
-
-The temporary script serialized the explicitly constructed diagrams and ledgers,
-then submitted each of158 prefixes to the existing `shogi_probe`. All legal
-transitions, declared check flags, specified zero-action finals and reversal
-checks passed. Raw local corroboration output is
-`/private/tmp/msh67-fixture-board-corroboration.json`. Temporary scripts/evidence
-are developer-local corroboration, not product dependencies or an outcome oracle.
-Adjudication, strict replay, rejection and independent fixture review
-results must be recorded separately; this document does not infer them.

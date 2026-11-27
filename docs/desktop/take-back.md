@@ -1,65 +1,30 @@
 # Desktop Take back
 
-MSH-113 adds the approved **Take back** action to Game Actions for Chess,
-Shogi and Xiangqi. The game session selects a human decision point and restores
-it in one admitted transaction. The frontend neither counts moves nor reconstructs
-rules or history. The following decision-point policy applies to human-versus-engine play. In
-[two-human play](two-human-play.md), Take back restores the position before the
-last complete game command, including a terminal command. Existing low-level
-Undo contracts retain their separate meanings.
+**Take back** is available in Game Actions for all six games. The game session
+finds the target and restores the exact command prefix in one admitted
+transaction. Return to live before using Take back from a historical view.
 
-After a completed human move and engine reply, both are taken back. With a reply
-pending, that execution is retired and the human move is taken back. For a human
-playing second, the engine's initial opening is retained. Repeated Take back
-walks earlier human decisions. Actor identity and complete command
-boundaries determine the target; one command may have several events.
+In human-versus-engine play, Take back returns to the latest eligible human
+decision. A completed human move and its engine reply are removed together.
+With the reply pending, Take back retires it and removes the human move. The
+engine's opening move stays when the human plays second. Repeated Take back
+walks earlier eligible human decisions. A terminal decision by the human on
+their turn can restore the preceding decision point, including at the root.
+An off-turn resignation returns to the latest eligible human board move
+when one exists.
 
-Concluded games allow restoration when game history establishes a playable
-human decision point. A terminal human decision taken on a playable human turn
-(such as resignation or a valid claim) restores the preceding decision point,
-including a terminal-only decision at the root. An off-turn resignation instead
-returns before the latest human board move. No inferred pre-import history is
-created. At the beginning, or when no eligible target exists, Take back is
-disabled. Historical viewing must first explicitly Return to live.
+In [two-human play](two-human-play.md), Take back restores the prefix before
+the last complete game command, including a terminal command. A command can
+produce multiple events. For example, Xiangqi warnings stay grouped with their
+causing command. Chess uses accepted match command actors and preserves
+known position history in the imported root.
 
-Restoration pauses play and announces **Position restored. Resume play when
-ready.** Resume explicitly re-enables the existing lifecycle; the old
-engine reply is never automatically reapplied. Take back retires engine-turn and
-analysis execution and invalidates request, process and selection identities.
-Obsolete action selection and read-only inspection markers clear with the
-new context. Keyboard focus returns to the live status heading after acceptance.
-No confirmation dialog is added.
+The accepted restoration cuts the command list and pauses play. It clears
+obsolete selection and inspection, retires engine turns and analysis, and
+focuses the live status. Select **Resume play** to start fresh work.
+Take back is disabled when the record has no eligible target.
 
-## Boundaries and persistence
-
-Chess uses its canonical match command actors and replayed match prefixes. Shogi
-uses its accepted game command events. Xiangqi uses committed command boundaries,
-not raw event counts, preserving warning/claim and multi-event adjudication
-semantics. Rules profiles, counters, known history, root provenance and
-outcomes remain owned by each game.
-
-Take back and Undo cut the game's command list; the removed commands are not
-kept (MSH-228). Engine results of the open session stay visible as history, but
-they never become pending execution or a game outcome, and they are not saved.
-Save/Open keeps the game, sides and settings; successful Open starts stopped and
-requires explicit Resume. Failed admission and file operations preserve the
-accepted game and its save path.
-
-## Scope
-
-The common shell, game-specific boards and pieces, inspection wording and
-movement inspection are unchanged. This feature adds no variation editor,
-computer-versus-computer control, timed suspension policy or rules generalization.
-A concrete architectural-health observation for future MSH-106 is that legacy
-Chess commands still coexist with the shared token-bound dispatch. Product Take
-back deliberately uses the latter; changing unrelated Chess commands is outside
-this task.
-
-The low-level Chess `from_record` constructor treats supplied pre-session
-`GameRecord` history as an immutable imported root: those events lack desktop
-match-request ownership. Take back does not cross that boundary. Normal desktop
-New Game and Save/Open retain the complete actor-qualified `MatchRecord` and
-preserve the human decisions described above. Shogi and Xiangqi initial
-records already carry accepted command actors. This adds no new import feature.
-
-MSH-42 owner clarification (2026-11-02): preserve the shared desktop Take back control; one-event Undo remains available through the game session and console. Tori activation does not add a separate desktop Undo control.
+Session observations remain visible as historical results while the document
+is open. The [saved document](document-v1.md) contains the surviving game
+history and settings. A failed admission preserves the current game and
+save path.

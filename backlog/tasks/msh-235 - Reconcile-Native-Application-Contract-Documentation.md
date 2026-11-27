@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-23T17:53:00Z'
-updated_date: '2026-11-27T07:03:00Z'
+updated_date: '2026-11-27T07:13:00Z'
 labels:
   - documentation
   - model:medium
@@ -15,6 +15,8 @@ dependencies:
   - MSH-266
 documentation:
   - docs/desktop/native-application.md
+  - docs/desktop/document-v1.md
+  - docs/desktop/internal-execution-v4.md
 priority: low
 ordinal: 10000
 ---
@@ -52,4 +54,8 @@ Backlog consolidation, 2026-11-26: the dependency fields and current acceptance 
 Claimed on codex/msh-235-durable-docs. Next: verify desktop contracts against the code and inventory evidence under docs/.
 
 Initial inventory: current runner replay tests include 15 run reports by path. Keep their exact bytes as runner test inputs outside docs/ and update the test paths. The Shogi mutual-check chain contains a durable proof. Preserve the proof, and archive generated results and verification narratives.
+
+The retired files and original run narratives are archived under gs://mshogi-experiments-216675633801/runs/msh-235/. Before pruning, verified downloaded SHA-256: retired-docs-5b5c35f.tar.gz 4804ab1f731419ee83a6b6099becc4245dbf3c1f6e3ec7075cfaf96148b6bb5d; retired-run-narratives-5b5c35f.tar.gz b7a0a1c4d7dce7d992712f1139bdeb7d3bda2a247678cc4ab101631f5b1bf386. Source 5b5c35f retains the original paths in Git history.
+
+Rewrote current desktop contracts and kept the independent Shogi derivations. Moved 15 required replay inputs and two reference manifests byte for byte. All four runner replay tests and the repository Markdown link scan passed. Next on codex/msh-235-durable-docs: finish the shared check run and content audit, then integrate.
 <!-- SECTION:NOTES:END -->

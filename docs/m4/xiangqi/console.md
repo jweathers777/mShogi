@@ -35,9 +35,9 @@ quit
   existing Chess/Shogi aliases and UCI/USI modes are preserved. Xiangqi is refused
   by those external protocol modes rather than routed to another game's engine.
 - Input is complete origin/destination `a0a1`: files a–i from Red's left,
-  ranks0–9 from Red's baseline. It has no promotion/drop/declaration fields.
-  `show` prints rank9 first, uppercase Red/lowercase Black piece letters and river;
-  the board is90 intersections. Diagnostic B means Elephant, N Horse; it does not
+  ranks 0–9 from Red's baseline. It has no promotion/drop/declaration fields.
+  `show` prints rank 9 first, uppercase Red/lowercase Black piece letters and river;
+  the board is 90 intersections. Diagnostic B means Elephant, N Horse; it does not
   rename the kinds or select an external dialect.
 - `position [explicit|auto_valid_claims] startpos|fen <FEN>|json <root-JSON>`
   starts a new known-history segment. FEN counters/provenance are preserved;
@@ -88,7 +88,7 @@ is a read-only getter for the actual recorded policy. Neither changes canonical
 schema, rules, outcomes, default replay behavior or existing game compatibility.
 
 Commands produce common tagged text/JSON on stdout, bounded escaped diagnostics
-on stderr (`error: line N:`). Exit status0 means success,1 any shell error,2 invalid
+on stderr (`error: line N:`). Exit status 0 means success,1 any shell error,2 invalid
 program arguments. Input lines have no byte limit.
 Game admission, resource refusal, audited claim rejection and execution failure
 remain distinct. Internal invariant failures are explicit; no result is invented.
@@ -103,19 +103,3 @@ nowin fast
 `status` prints the same value. `unknown` is a fast miss, not a possible win or
 a draw. There is no exact no-win analysis. This is not general practical WXF
 completeness.
-
-## Verification
-
-Actual subprocess fixtures in `tests/xiangqi_cli.rs` exercise initial44actions,
-perft/divide, atomic refusal, third-warning/fourth-loss, claimant99/100
-counts, admitted audits, agreement/resignation, canonical Save/Open and restored
-undo, strict/bounded/UTF8/foreign-record rejection, the read-only fast no-win
-assessment. Existing common console tests now use a genuinely
-unknown game spelling instead of rejecting the newly delivered Xiangqi selection.
-
-Initial test expectations were corrected from game history-contract.md, not
-from an outcome comparator: additional anchors can warn after root occurrence3;
-draw offers follow the offering side's own move. A compile-time missing borrow
-was fixed before verification. Independent review, actual full regression/CI,
-source revisions and limitations are recorded in MSH-96 and the accompanying
-review evidence. No MSH-97 evaluator/search or external protocol work is claimed.

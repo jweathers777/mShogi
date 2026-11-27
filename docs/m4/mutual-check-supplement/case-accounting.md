@@ -76,10 +76,10 @@ endpoints. They occupy different endpoints, and neither can be captured.
 Neither can move because its only other endpoint is occupied by the other
 persistent bishop. Intervening direct checks cannot free either endpoint.
 
-## Integration checks for the preceding argument
+## Assumptions from the full derivation
 
-The new lemma and enumeration do not replace the earlier reduction. A fresh
-review should explicitly connect them and retain the following proof hygiene.
+The finite calculation uses these steps from the
+[full derivation](../mutual-check-derivation.md).
 
 1. With fixed kings, a legal continuation cannot face an unevadable double
    check. A nonking move cannot capture or interpose two independent checks
@@ -104,25 +104,10 @@ review should explicitly connect them and retain the following proof hygiene.
    initial placement. Structural analysis diagrams with an already attacked
    nonmoving king remain outside the live-root domain.
 
-These are review obligations for the whole proof chain, not new game rules.
 
-## Executed checks and limitations
+## Geometry check
 
-The two geometry scripts were written independently by the root review and a
-separate mathematics reviewer. A third mathematics reviewer derived the new
-mixed-radius lemma, and the geometry reviewer checked its written argument.
-All reviewers were AI agents. No human expert review is claimed.
-
-`verify_geometry.py` executes both enumerators, compares exact candidate tuples,
-checks the inventory above and the mixed-case symmetry, and prints the result.
-The retained JSON records the initial successful cross-check. The scripts use
-neither mShogi's move generator nor cshogi, so their agreement does not reuse
-either product's local-legality assumptions.
-
-The calculation exhausts a small conditional geometric domain. It is not a
-search of all legal shogi positions, a formal proof certificate, or evidence
-that a mutual-check cycle was found. Human-readable arguments provide the
-exclusions after the candidate calculation.
-
-The appropriate acceptance step is a fresh review of the integrated chain,
-followed by the existing MSH-67 implementation verification and integration.
+`verify_geometry.py` compares exact candidate tuples from both enumerators,
+checks the inventory and the mixed-case symmetry, and prints the result.
+The enumerators use the necessary geometric constraints above. The derivation
+supplies the exclusions after this calculation.

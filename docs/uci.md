@@ -28,7 +28,7 @@ A conventional controller sends `stop`, waits for its bestmove, then replaces th
 
 ## Work, time and claim policy
 
-UCI has no standard current-position or intended-move draw-claim channel. Its search therefore treats optional claims as **unavailable at every node**, including main-search leaves and quiescence. Threefold/fourfold repetition and the50-move claim threshold do not by themselves stop UCI search or install a draw-score floor. The rules-owned fivefold/75-move automatic outcomes, checkmate, stalemate and dead positions remain authoritative; checkmate retains precedence at the75-move boundary.
+UCI has no standard current-position or intended-move draw-claim channel. Its search therefore treats optional claims as **unavailable at every node**, including main-search leaves and quiescence. Threefold/fourfold repetition and the 50-move claim threshold do not by themselves stop UCI search or install a draw-score floor. The rules-owned fivefold/75-move automatic outcomes, checkmate, stalemate and dead positions remain authoritative; checkmate retains precedence at the 75-move boundary.
 
 The existing custom `ClaimPolicy explicit`/`auto` option remains accepted for game record/context compatibility, with `explicit` the default. Neither value enables optional claims in UCI search. Ordinary internal and manual search callers retain their claim-capable defaults, and manual claims remain available outside UCI. A completed UCI search returns its actual searched board move/PV; an unexpected claim result is an engine error, never an arbitrary claim-induced legal fallback. `bestmove 0000` represents a concluded game, including mandatory draws.
 
@@ -47,8 +47,8 @@ The shared core reduces its iteration target to 60% after three stable best-move
 transitions. A changed best move or an ordinary score fall of at least 30 units
 raises the target to 150%, always capped by the hard limit. A single legal move
 can stop after one complete iteration if there is no draw-claim alternative.
-Clock requests charge queue and setup time and leave up to 10ms (at most
-half the budget) for response delivery. Their search polls every128 nodes.
+Clock requests charge queue and setup time and leave up to 10 ms (at most
+half the budget) for response delivery. Their search polls every 128 nodes.
 `movetime` overrides clock allocation and retains the fixed-time policy: it does
 not use these adaptive targets or clock-specific deductions. Desktop defaults
 are unchanged. See MSH-167 evidence.
@@ -69,7 +69,7 @@ its source/evaluator/context identity as described in [search.md](search.md).
 
 ## Channels and bounds
 
-Protocol stdout contains only `id`, `option`, `uciok`, `readyok`, one final bounded `info` line per completed search, and `bestmove`. Every message is newline terminated and flushed. Scores use UCI centipawns or mate distances in moves; a mate-distance search score is converted from plies. Final info preserves nominal completed `depth`, actual deepest attempted `seldepth`, attempted nodes, elapsed milliseconds and the board-action PV. Extensions and quiescence can make the PV longer than nominal depth, within the128-ply bound. Diagnostic errors and fallback explanations go to stderr. No human shell prompts, command echoes or rules dumps enter stdout.
+Protocol stdout contains only `id`, `option`, `uciok`, `readyok`, one final bounded `info` line per completed search, and `bestmove`. Every message is newline terminated and flushed. Scores use UCI centipawns or mate distances in moves; a mate-distance search score is converted from plies. Final info preserves nominal completed `depth`, actual deepest attempted `seldepth`, attempted nodes, elapsed milliseconds and the board-action PV. Extensions and quiescence can make the PV longer than nominal depth, within the 128-ply bound. Diagnostic errors and fallback explanations go to stderr. No human shell prompts, command echoes or rules dumps enter stdout.
 
 One input-reader thread feeds a `sync_channel(32)`; lines have no byte limit, so a long `position ... moves` command is accepted. Non-ASCII/control-byte input is rejected and the next line remains usable. One search worker has one pending and one result slot, with no progress stream. The event loop processes commands while thinking and owns all protocol output. A normal final variation contains at most 128 actions, bounding each final info line. As with any pipe protocol, the controller must drain stdout/stderr; a blocked OS pipe can block its writer. Quit/EOF do not wait for the stdin reader or search thread to join.
 

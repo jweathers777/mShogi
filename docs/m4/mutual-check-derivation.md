@@ -1,14 +1,9 @@
-# Independent complete-chain mutual-check review
+# Shogi mutual-check impossibility derivation
 
-Reviewed 2026-10-26 by the fresh `proof_chain_review` AI research session for
-MSH-67. **Accepted:** no nonempty closed sequence of legal ordinary shogi
-board actions can give check on every action by both sides in the live-root
-domain below. This accepts the reconstructed argument here, including the
-supplement, rather than treating Nanka's published proof or earlier AI reviews
-as authority. It does not certify the implementation or close MSH-67 by itself.
-The original incomplete review remains historical evidence.
+No nonempty closed sequence of legal ordinary shogi board actions can give
+check on every action by both sides in the live-root domain below.
 
-## Domain and inspected identities
+## Domain
 
 The domain is a 9 by 9 ordinary shogi board with exactly one king per side,
 standard combined board/hand base-piece stock bounds (in particular at most
@@ -18,37 +13,9 @@ king is unattacked; its moving king may be checked. Missing material and
 unknown prehistory are allowed. No initial-placement reachability assumption
 is used. The broader structural analysis-position API is outside this claim.
 
-The source revision reviewed was
-`0d1631db8fe4adac3ac0a9e5aa6956a863a3ba1c`, preserving product implementation
-`f259bb23834d6156f21aeec53db9ee00ef7242e4`. Inspected requirements were
-`AGENTS.md`, `docs/design.md`, `docs/m4/shogi-profile.md`, the current MSH-67
-record and the owner's supplied continuation instruction. Mathematical inputs:
-
-- Nanka, third edition dated 2024-03-09, *将棋およびチェスにおいて双方連続王手の千日手が成立しないことの証明*,
-  [author-linked PDF](https://drive.google.com/file/d/112O0pL7sObJCkxaviVEEHNerLvTwpXCD/view).
-  Inspected `/tmp/mshogi-mutual-check-proof.pdf`, SHA-256
-  `cd5f987133d89a32bd6de8391015354b16d066a97cea7f719b67a5089275e065`.
-  All rendered pages 2-11, covering sections 2-5 and Table 1, were visually read;
-  the incomplete Japanese text extraction was not substituted for those pages.
-- `mutual-check-proof-review.md`: historical incomplete result, including its
-  concrete mixed-radius candidate and failed source-inventory arguments.
-- `mutual-check-supplement/mixed-radius-lemma.md`, SHA-256
-  `6654d34fb114a97b625c47fb59ac51d9abd023c0803c3e30bccdcfabb069e7cf`;
-  `case-accounting.md`, SHA-256
-  `4f62fff2e7c73986912233d4754c8bbf2a4172b2d36d6343be57e74f5554fc88`.
-- The two independent geometry implementations, `directed_geometry.py`
-  (`d9cb38bb360ede68a8424e1c8036180f1b0ece79ce25712d60bf4bd7560c69cc`)
-  and `independent_geometry.py`
-  (`218e13fcd6578725a65a3f8edfbe98809d2044bd10f5bd8f6d55cb7f91eba4d2`),
-  and their comparison script `verify_geometry.py`
-  (`599dc02322a15ee45769695430628939395a4acfdbee3ef00c488b09c838221b`).
-
-Method: reconstruct each implication from movement and occupancy, inspect the
-published diagrams and case table, check the supplement line by line, inspect
-both scripts' filters and cycle handling, run their comparison, and audit the
-live-root/replay assumption boundary in the preserved source. No engine's
-repetition heuristic, attachment review assertion or game-state search was
-used as mathematical authority.
+The derivation follows the fixed-king and discovery reductions in
+[Nanka's third edition](https://drive.google.com/file/d/112O0pL7sObJCkxaviVEEHNerLvTwpXCD/view)
+and uses the [geometry and mixed-radius supplement](mutual-check-supplement/README.md).
 
 ## Closed interval and fixed kings
 
@@ -339,42 +306,3 @@ Horizontal reflection preserves forward directions. Exchanging sides and
 applying `(x,y)->(1-x,-2-y)` produces S radius-two endpoints `(2,0),(0,-2)`
 and T radius-one endpoints `(0,-2),(1,-1)`, while preserving the required
 opposite forward directions. This is precisely the other mixed pairing.
-
-## Boundary audit, executed checks and conclusion
-
-At the inspected preserved revision, `Position::validate` requires one king
-each, valid promotion and combined standard stock bounds; it permits reduced
-material. `GameRoot::import` checks the nonmoving king is unattacked, permits
-the moving king to be checked, records full/reduced imported categories and
-explicit counter provenance, and does not assert reachability. `GameRecord`
-rebuilds such roots through this admission function and replays commands
-through authoritative game operations. Local legality uses geometric king
-safety (including pinned attackers), consistent with this argument. This was
-a source-boundary audit, not fresh implementation testing or a replacement
-for final code review. Structural diagrams with an attacked nonmoving king
-remain available for analysis and are not required to obey this theorem as
-live histories.
-
-Executed in the macOS worktree at the revision above:
-
-- `shasum -a 256 /tmp/mshogi-mutual-check-proof.pdf`: matched the exact PDF
-  identity recorded above.
-- `shasum -a 256 -c SHA256SUMS` in the supplement directory: all seven entries
-  passed.
-- `python3 docs/m4/mutual-check-supplement/verify_geometry.py`: passed with
-  agreement, 23 normalized pairings, 20 offsets, 46 reflected pairings,
-  two-endpoint cycles and verified mixed-case side exchange.
-- Rendered PDF pages 2-11 and both enumerator sources: inspected manually;
-  all five old contradictions and both new mixed cases reconstructed above.
-
-No unresolved failed mathematical implication or counterexample was found.
-The result excludes the mutual-check history pattern for every admitted live
-root, including roots with unknown prehistory. Fourfold repetition would
-contain the prohibited closed all-checking interval, so the HIST-INTERVAL
-impossibility obligation is discharged by this reviewed chain. The finite
-calculation covers conditional geometry, **not all legal shogi states**.
-This is an independently performed AI mathematical review, not formal proof
-assistant certification or human expert review. No additional game outcome,
-tournament penalty, root reachability requirement or rules-profile change is
-introduced. Implementation invariant diagnostics and their focused tests
-still require the separate implementation review and integration evidence.

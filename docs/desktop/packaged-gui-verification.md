@@ -5,20 +5,15 @@
 About → Diagnostics captures one complete compact JSON snapshot when expanded.
 It renders at most 65,536 UTF-16 units at once, with Unicode-safe Previous/Next
 pages. Closing and reopening refreshes the capture; polling cannot mix versions
-or rebuild a multi-megabyte text layout. This presentation bound does not change
-archive limits, omit observations or truncate the captured diagnostic text.
+or rebuild a multi-megabyte text layout. Pages expose the complete captured diagnostic text.
 
 The external observer uses real public page buttons, checks contiguous page
 identity and stable count, and reconstructs the complete JSON before validating
 game context. It bounds each response and the total collection; it must not
 parse just page one or substitute a historical archive for current runtime
-identity. Keep this observer synchronized with the ordinary support surface.
-The Chu product evidence preserves the
-actual Windows renderer OOM that motivated this correction, its screenshot,
-independent review and subsequent platform results. Do not relabel that failure
-as a mere driver timeout or infer its resolution from component tests.
+identity. Keep the observer synchronized with the public support surface.
 
-## Current macOS identity and approval discipline (MSH-121)
+## macOS launch identities
 
 Use at most three reusable application launch identities. Never add a fixture, task ID,
 commit hash, timestamp or random suffix to a bundle ID or launch path.
@@ -72,42 +67,14 @@ record its real bundled-engine and gate identities. Never replace a running
 bundle or change a running session by rewriting its selector.
 
 Bind input/capture helpers to the explicit slot's app handle and verify the
-observed app identity. A helper captured from the normal slot is not a QA helper
-after another variable is reassigned. MSH-88 preserves and excludes that actual
-observer mistake. After native Quit, establish process absence with a separate
-OS observation; refreshing the stopped app handle can relaunch it.
-
-Computer Use's saved app approvals and macOS Accessibility/Screen Recording
-permissions are separate. The read-only R6 investigation found actual saved
-`approvedBundleIdentifiers` in the CUAService app-approval record, including the
-individual per-fixture IDs that caused repeated requests. No approval or
-security configuration was changed. The original twenty application copies had
-twenty IDs: normal, base QA and eighteen per-fixture clones. The base QA and
-clones shared the same function code, despite different signature hashes.
-The per-fixture identities were unnecessary.
+observed app identity. After native Quit, establish process absence with a separate OS observation.
+Refreshing a stopped app handle can relaunch it.
 
 Ad-hoc signing has no TeamIdentifier in these local builds; observed designated
 requirements include an exact code hash. Bundle ID alone therefore does not
 establish that every policy layer will reuse an approval after rebuilding. The
-helper records actual signing and resource verification, and the acceptance
-evidence must record real unchanged relaunch, changed-build reuse and selector
-changes. A platform-controlled prompt can still occur; do not promise otherwise,
-edit the saved allow list, disable checks or self-approve a request. Report any
-remaining limitation explicitly. The base Tauri linker signatures and a fully
-resource-sealed staged QA signature are different evidence; do not conflate
-them with Developer ID signing or notarization.
-
-Official references: [Computer Use approvals](https://learn.chatgpt.com/docs/computer-use)
-and [macOS application policy](https://learn.chatgpt.com/docs/config-file/config-reference).
-The local saved-record observations and rebuild experiment are recorded with
-the R6 evidence; unrelated application approvals are not copied into the repo.
-
-## Historical M3 campaign and continuing platform methods
-
-MSH-38 verifies actual installed or packaged applications. Normal package
-construction, inventory and bundled-engine protocol reports are separate
-supporting evidence. M3 stays open until Windows, macOS and Linux interaction
-requirements and the independent MSH-39 review pass.
+helper records signing and resource integrity. Record the exact launch and
+any approval prompt with the package identity.
 
 ## Execution and provenance
 
@@ -138,24 +105,22 @@ application dependencies. Driver version, registry observations, official
 source URL, signature and hashes are retained in `webview-driver.json`.
 
 macOS uses actual CUA interaction with the normal `.app` and separately named
-verification `.app`. MSH-37's exact-source evidence is reused where MSH-38 changes
-only external verification tools. The narrow Tao patch and its original
-provenance remain in [macos-quit.md](macos-quit.md). Cocoa `terminate:` probe
+verification `.app`. The narrow Tao patch is documented in [macos-quit.md](macos-quit.md). Cocoa `terminate:` probe
 results are identified as that entry, not as an actual Dock click.
 
 ## Required journeys
 
 The installed normal application exercises a human move and real engine reply,
-unsaved replacement cancellation, demonstrably active analysis cancellation,
+picker cancellation, demonstrably active analysis cancellation,
 replacement with a bounded read-only suggestion, Save/Open, stopped
 reopening, exact historical-prefix analysis, Return to live, separate Resume,
-and protected native window close and Quit. The canonical saved archive is read
+and protected native window close and Quit. The saved document is read
 externally to verify the actual persisted context, not used to alter the UI.
 
 Separately labeled verification applications exercise genuine missing-sidecar
 failure and retry without losing history, promotion cancellation and complete
-underpromotion, an optional intended-move claim, observation 256 accepted and
-257 rejected while the complete archive remains saveable, and the shared
+underpromotion, an optional intended-move claim, the rolling
+256-observation retention policy and minimal saved document, and the shared
 synthetic board's cancelled prefix and distinct same-endpoint complete routes.
 The writable QA sidecar is restored in `finally` and checked against its original
 hash. The actually installed Linux application keeps its original permissions.
@@ -196,180 +161,5 @@ GDK_BACKEND=x11 WEBKIT_DISABLE_COMPOSITING_MODE=1 dbus-run-session -- xvfb-run -
 The Windows workflow contains the corresponding actual NSIS installation,
 matching-driver preparation and Python invocation. Ordinary application
 launch/build instructions remain in [desktop/README.md](../../desktop/README.md).
-CI artifacts retain full reports and packages temporarily; selected reports,
-screenshots and exact CI references are committed with final task evidence.
-
-## Final MSH-38 result
-
-The required application journeys passed. The exact integrated source is
-`2f0e4cee3e1cc05df99ff51178eb4be810fbcb44`, built from desktop revision
-`01865e9996f586bb91c0f0ed3c39fa4d88ecf462`. Both
-[desktop CI 40234257669](https://github.com/jweathers777/mShogi/actions/runs/40234257669)
-and [Rust CI 40234257686](https://github.com/jweathers777/mShogi/actions/runs/40234257686)
-passed on all three systems. Formatting, Clippy, tests and verification
-feature checks are distinct from package inventory/protocol checks and actual
-GUI interaction. The frontend run passed 78 tests in 13 files.
-
-| Actual application environment | Package and interaction evidence | Result |
-| --- | --- | --- |
-| Ubuntu 24.04.5 amd64, GTK 3.24.41, WebKitGTK 2.52.6; X11/Xvfb 1440 × 1100, Openbox, recorded software-compositing override | Linux report, identities and retained-file hashes; apt-installed normal Debian package, separately extracted labeled verification package | All six phases passed; Save/Open, window-close Cancel and Quit verified. Host and engine absent before teardown in every phase. |
-| Windows Server 2022 interactive Default desktop, installed WebView2 and matching signed driver recorded in report | Windows report, identities and retained-file hashes; actual normal and separate verification NSIS installations | All six phases passed, including native pickers, window-close Cancel and actual mouse selection of native Quit. Host and engine absent before teardown in every phase. |
-| macOS 27.0.1 build 26A434, arm64, WKWebView | Final normal package, capacity visibility/save regression, completed-message regression, broader current normal journey, and unchanged earlier complete journeys | Actual normal and labeled QA application interaction passed. Final normal package played human Black; clean guarded Quit was checked by separate process inspection. Earlier play, analysis, recovery, history, claims, promotion and synthetic evidence is reused with its original source/package identities. |
-
-Linux and Windows each completed normal play, active analysis cancellation and
-replacement, complete Save/Open, exact historical-prefix analysis, Return to
-live, explicit Resume and unsaved-change protection. Separate QA phases passed
-genuine engine failure/retry, promotion cancellation and Knight choice, optional
-intended-move claim, observation 256 accepted/257 rejected with a complete
-256-observation save, and both synthetic same-endpoint routes with prefix
-cancellation. New capacity pauses are visibly explained and focused. OS screenshots show no bundled-engine console stealing Windows focus.
-
-The final macOS normal host SHA-256 is
-`00c92dad60a3a5e5c6d2b99a86e4fa7a0b678a0858d42ce78f8809fe8de41611`;
-its engine SHA-256 is
-`45d264831e806ea81b426b4fbbb94f2ecbcba384d23696a5c87537acca555ba5`.
-The latest QA capacity package uses product revision `4e1e9d4`; product paths
-are unchanged between that revision, `01865e9` and integrated `2f0e4cee`.
-The other MSH-38 product changes were Windows-only supervised launch flags and
-past-tense completed I/O messages; each has focused tests and applicable
-application evidence. Earlier evidence is reused only for unaffected behavior.
-
-These results establish the recorded environments, rather than every OS version,
-Linux compositor or assistive technology. macOS 15 CI constructs and checks the
-normal package; the actual macOS GUI evidence is from 27.0.1. Screen-reader audio,
-formal accessibility certification, actual Dock clicking, release signing and
-notarization are not claimed. The [Tao patch provenance and termination
-regression](macos-quit.md) remain intact. MSH-39 independently determines the
-complete M3 milestone verdict.
-
-## Retained earlier attempts and corrections
-
-First external Windows/Linux run: source
-`9b7a2a6b29c30b8d417d75cb4393dd6ba43f6ad0`,
-[desktop CI 40228382037](https://github.com/jweathers777/mShogi/actions/runs/40228382037).
-The first Linux attempt failed on SVG group interactability and produced a blank
-native window under Xvfb with DRI3 warnings. Its failed evidence
-is retained, separately from any corrected rerun. Real W3C pointer input and a
-recorded CI-only `WEBKIT_DISABLE_COMPOSITING_MODE=1` override address these
-observed issues; [WebKit documents the override](https://trac.webkit.org/wiki/EnvironmentVariables).
-These are failed attempts, not GUI passes. Later results are recorded separately. Earlier macOS actual interaction
-is recorded in the completion-batch evidence.
-
-
-The first Windows attempt established actual NSIS-installed play on an
-interactive desktop. It then exposed a verifier input problem: Element Clear
-left React's previous node-budget state, so typing appended to it and the
-frontend correctly rejected the invalid budget. The failed attempt
-is preserved. The correction uses real Ctrl-A/Backspace/typing and checks the
-observed field value; it does not set DOM values or bypass validation.
-
-The second Linux attempt at `41866a3c5c30efd88d72584140510c8d1806e902`
-([run 40229968153](https://github.com/jweathers777/mShogi/actions/runs/40229968153))
-confirmed a readable desktop, real bundled-engine play, active analysis
-cancellation and bounded replacement. Its Save wrote the complete
-archive, but the verifier left GTK's default extension after the supplied name,
-producing `normal-complete.mshogi.mshogi`. The exact-path check correctly failed;
-the partial attempt remains
-failed. The adapter now selects the entire path field, captures it before
-acceptance and requires the exact requested file. The next attempt reran this correction; the doubled-extension file was never accepted as the target.
-
-The second Windows attempt in that run also passed real play, active analysis
-cancellation and bounded replacement, then saved the picker's default
-`game.mshogi` instead of the requested path. Its failed evidence
-also exposed a genuine product focus defect: a newly spawned bundled engine
-created a visible Windows console during analysis. The supervised internal
-engine launch now uses Windows `CREATE_NO_WINDOW` with its existing pipes;
-standalone console/UCI invocation is unchanged. This uses Rust's
-[Windows process flags](https://doc.rust-lang.org/std/os/windows/process/trait.CommandExt.html#tymethod.creation_flags)
-and Microsoft's [documented console-free launch flag](https://learn.microsoft.com/en-us/windows/win32/procthread/process-creation-flags).
-Windows verification must reject a visible console belonging to the
-exact bundled engine and validate foreground focus at capture time. The picker
-adapter also needs exact-PID ownerless-modal handling and observed real filename
-input. These findings led to the subsequent corrected packaged application runs.
-
-The current-source macOS normal package was rebuilt and exercised separately;
-its report records the
-exact package hashes, real play/cancellation, complete Save, clean Quit, fresh
-Open, history, Return to live/Resume and guarded native window close. It reuses
-the unchanged earlier macOS QA journeys explicitly. Fresh process inspection is
-separate from app-bound automation observations, which can reactivate an app.
-
-That interaction exposed stale present-tense file-operation messages after
-Return to live and Resume. Completed Open/reconstruction messages now describe
-the past operation; the authoritative live/history banner and paused controls
-describe current state. The correction changes no session or admission
-semantics. Focused and frontend history/document checks passed; the
-subsequent package journeys verify the correction.
-
-The third Linux attempt at `f0c8dd654cb151621ea95582bdce1b1b374faaa9`
-([run 40231293207](https://github.com/jweathers777/mShogi/actions/runs/40231293207))
-saved the exact requested complete archive successfully. The GTK Open
-picker then retained the correctly entered absolute path after Return, with its
-Open button enabled. The failed partial evidence
-is preserved. The adapter now uses the actual Open mnemonic after a bounded
-wait when Return only resolves the location, parallel to its existing Save
-mnemonic. It records the pre-accept screen and key; controller restoration,
-history and lifecycle results are recorded in the later runs.
-
-The completed-message correction was also checked in a new normal macOS build;
-its focused actual GUI report
-records Open, historical inspection, Return to live, Resume and guarded
-Quit with separate process absence. This supplements the earlier broader macOS
-journeys rather than relabeling their source or package identities.
-
-The third Windows attempt in the same run also saved the exact requested
-complete archive. Its nine captures recorded no visible bundled-engine
-console, and the ownerless native pickers remained readable in the foreground.
-Open then found three UIA controls named Open: two dropdowns and the uniquely
-identified acceptance button. The failed partial evidence
-remains failed. The corrected adapter prioritizes the unique title/ID
-intersection; replaying the actual captured UIA tree selected button ID `1`.
-Actual Open/history/lifecycle and fixture results are recorded in the later runs.
-
-Each isolated phase now retains its own failure and traceback and attempts the
-next phase only after successful cleanup. Any failed required phase keeps the
-whole run failed and nonzero. Cleanup failure aborts further phases and still
-writes a failed report. Three isolated verifier-control-flow checks establish
-these reporting rules; they are not application GUI evidence.
-
-The fourth run at `e313ef011d7b62c6ee32748b605b013b8771c935`
-([40232694201](https://github.com/jweathers777/mShogi/actions/runs/40232694201))
-retains Linux and
-Windows phase verdicts.
-Linux standard recovery, promotion and capacity passed including exit
-before teardown. Normal Save/Open/history/Resume/close Cancel passed, but final
-Quit's click closed the webview before its HTTP reply; claim had the same final
-transport race. Synthetic startup encountered a transient driver connection
-closure. The corrected verifier records narrowly recognized transport closure only
-after dispatching the resolved final guard action, then still requires
-desktop host and engine absence before teardown. Startup retries are separately
-bounded and abort if the driver exits.
-
-Windows reached the expected interaction results in all six phases, including
-the synthetic routes, but its Ctrl-Q automation failed to trigger the final
-Quit guard. The cause remains unestablished; a VK_PACKET explanation was
-disproved by the pinned pywinauto source. The corrected adapter clicks the observed
-native Quit menu item with real mouse input and retains its menu metadata and
-screen. Failure cleanup is never substituted for either platform's Quit proof.
-
-The Linux capacity screenshot also exposed an offscreen explanation above the
-disabled work controls. New capacity pauses now focus their alert once,
-revealing it without stealing later focus on unchanged polls. The current
-macOS packaged regression
-visibly verifies that behavior and a complete 256-observation Save. The corrected
-Windows/Linux journeys require a focused, visible alert. Screenshots
-follow webview capture and a bounded 150 ms presentation settle; the full raw
-desktop is retained even when webview capture fails. Earlier stale-frame or
-offscreen captures are explicitly qualified in their failed-attempt records.
-
-### Linux filename acceptance
-
-The external X11 adapter requires `xclip` in the isolated verification desktop.
-Before accepting Save/Load it validates a bounded absolute filename and confirms
-the actual entry through Copy and exact clipboard readback. A fresh,
-confirmed marker prevents stale clipboard content from counting as the entry.
-Only a positively observed missing-prefix suffix permits one replacement, then
-an exact second readback; any other mismatch fails before acceptance. Screenshot
-text may be horizontally clipped and is not proof of the entry value. These
-tools and checks are external to normal distributables and do not change product
-permissions or application identities.
+CI artifacts retain full reports and packages temporarily. Task records point
+to the relevant run and package identities.

@@ -12,22 +12,22 @@ and agreed draws. [Decision record](decisions.md) distinguishes that direction
 from withdrawn proposals. No unrestricted forced-mate search, automatic
 repetition forfeiture, general bare-king award or quiet immobility loss is added.
 
-Authority: **C1**, JCSA general rules, 2019 edition corrected2019-09-14;
-**C2**, JCSA supplement updated2004-06-06, for compatible detailed cases;
-**C3**, movement/setup companion revised2004-04-22. [Sources](sources.md) retain
+Authority: **C1**, JCSA general rules, 2019 edition corrected 2019-09-14;
+**C2**, JCSA supplement updated 2004-06-06, for compatible detailed cases;
+**C3**, movement/setup companion revised 2004-04-22. [Sources](sources.md) retain
 exact URLs, inspection and hashes. C2 supplies explicit exception precedence;
-it does not silently supersede C1. H1 is the previously inspected1915 witness,
-not an original1703 facsimile. T1 is the association's Okazaki transcription:
+it does not silently supersede C1. H1 is the previously inspected 1915 witness,
+not an original 1703 facsimile. T1 is the association's Okazaki transcription:
 use compatible movement corroboration, not its superseded Lion interpretation.
 Lishogi is a separately identified modern alternative, not an oracle. No new
 historical acquisition or external-engine dependency is required.
 
 ## C01 — board and original identities
 
-12×12 squares, files12→1 left→right from Sente's view, ranks1→12 top→bottom.
-Sente starts and moves toward decreasing ranks; Gote is the180° owner-exchanged
+12×12 squares, files 12→1 left→right from Sente's view, ranks 1→12 top→bottom.
+Sente starts and moves toward decreasing ranks; Gote is the 180° owner-exchanged
 position. Captures are discarded; there are no hands or drops. Forty-six pieces
-per side,92 total. In the following Sente rows, columns are files12 through1:
+per side,92 total. In the following Sente rows, columns are files 12 through 1:
 
 ```text
 12 L  FL Cu Si G  K  DE G  Si Cu FL L
@@ -37,13 +37,13 @@ per side,92 total. In the following Sente rows, columns are files12 through1:
  8 .  .  .  GB .  .  .  .  GB .  .  .
 ```
 
-Rows7/6 are empty; Gote occupies the rotation, including GB files9/4 on rank5.
+Rows 7/6 are empty; Gote occupies the rotation, including GB files 9/4 on rank 5.
 In particular Sente King7十二/Elephant6十二 and Lion7十/FreeKing6十 are
-asymmetric. [Machine setup and piece table](profile.json) specify all92 squares.
+asymmetric. [Machine setup and piece table](profile.json) specify all 92 squares.
 C1 I/III and actual C3 setup agree with H1p214.
 
 Retain original/base identity and a once-only promotion bit. Twenty-one
-initial kinds plus18 promoted-origin states give39 identity states but only29
+initial kinds plus 18 promoted-origin states give39 identity states but only 29
 movement faces, as counted by C1. A Pawn promoted to Gold cannot become Rook;
 Gold can. Go-between→Elephant cannot become Prince. There is no ownership
 change or demotion on capture; preserve the discarded victim's original identity
@@ -96,8 +96,8 @@ Phoenix, Eagle, quail or promotion rule carries over merely by an English name.
 
 ## C03 — complete compound actions
 
-Lion may take one adjacent King step; jump directly to any of the16 outer-ring
-squares at Chebyshev distance2; or take two adjacent King steps, each landing
+Lion may take one adjacent King step; jump directly to any of the 16 outer-ring
+squares at Chebyshev distance 2; or take two adjacent King steps, each landing
 legally under evolving occupancy. Either leg may capture; up to two distinct
 victims. The second step may turn, finish adjacent to the start, or return to it.
 The start is vacated, so capture-return removes the adjacent enemy and restores
@@ -125,7 +125,7 @@ exists: initial Lion cannot promote; Kirin-Lion/SE/HF have already flipped once.
 
 ## C04 — promotion
 
-Enemy camp is ranks1–4 for Sente,9–12 for Gote. Every promotion in C02 is optional
+Enemy camp is ranks 1–4 for Sente,9–12 for Gote. Every promotion in C02 is optional
 and once only. An original promotable piece may flip after entering from outside
 to inside; or after capturing in camp or from camp while leaving. A quiet move
 wholly inside, or quiet departure, does not renew promotion. Leave and re-enter
@@ -151,7 +151,7 @@ Only actual Lion movement faces (Lion or promoted Kirin) receive the Lion
 exchange rules; SE/HF Lion-like movement does not make them Lions.
 
 1. Lion may capture an **initially adjacent** enemy Lion irrespective of defense.
-2. A distance2 Lion cannot capture a defended Lion, including a sliding defense
+2. A distance 2 Lion cannot capture a defended Lion, including a sliding defense
    revealed when the attacking Lion vacates its origin. Evaluate the complete
    action, not a newly adjacent intermediate subturn.
 3. A qualifying intermediate enemy capture, other than unpromoted Pawn or
@@ -162,7 +162,7 @@ exchange rules; SE/HF Lion-like movement does not make them Lions.
    a capturing Kirin that promotes and is defended, cannot be captured on the
    opponent's immediately following turn. Undefended Lions gain no window.
    Protection expires after that actual opponent turn; a rejected request does
-   not consume it. Qualifying extra capture can override it under point3.
+   not consume it. Qualifying extra capture can override it under point 3.
 
 Defense is actual capture influence in the relevant hypothetical final geometry,
 including hidden sliding defense, not a Chess pinned-piece/self-check test. Retain
@@ -194,7 +194,7 @@ two-royal positions continue to actual capture/survival rather than being
 declared mated by a one-king filter. C1 does not publish this algorithm; it is the
 explicit finite implementation of its immediate mate wording, selected by the
 owner's capture-based/narrow-mate direction. Complete capture/mate fixtures and
-Prince rescue must independently verify it in86.
+Prince rescue must independently verify it in 86.
 
 No actual royal threat plus no complete board action is **not** a sourced loss
 or draw. Report `no_board_actions` with unresolved/unscored status;
@@ -236,13 +236,13 @@ expected continuation and progress. Responsibility follows C1:
 
 Preserve legal prefixes. Reject the responsible side's **last continuing action
 before** the prospective fourth occurrence, including every effect-equivalent
-route, not necessarily its first action after occurrence3. Rejecting only the
+route, not necessarily its first action after occurrence 3. Rejecting only the
 closing mover is wrong when responsibility belongs to the other player. An
 actual deviation breaks that prospective cycle; independent overlapping cycle
 obligations remain enforced. Do not commit the fourth occurrence, append a
 forfeit, silently draw, or delete history. A rejected request changes nothing.
-Quiet4-ply fixture: accept moves9/10, reject Sente's move11, before Gote would
-close move12. Both-jitto: reject the first passer's next jitto, including an
+Quiet4-ply fixture: accept moves 9/10, reject Sente's move 11, before Gote would
+close move 12. Both-jitto: reject the first passer's next jitto, including an
 alternative empty path. This is a bounded game history/admission algorithm,
 not a new outcome rule. Legal-choice queries/search use the same obligations.
 
@@ -304,11 +304,11 @@ ownership. Current execution envelope/context/controller/document/interaction
 owners suffice with explicit Chu dispatch. Add only specific state,
 actions/effects, royal/status metadata and a12×12 renderer; no universal rules
 framework or second frontend rules engine. Functional search is full-history,
-bounded and cancellable; playing strength remains52/M5. Exact-context, purpose,
+bounded and cancellable; playing strength remains 52/M5. Exact-context, purpose,
 session/request/process generation and work limits remain acceptance authority.
 
 Console must preserve complete paths and terminology. Use unambiguous
-file1..12/rank a..l diagnostics; human notation can display JCSA numeric-file/
+file 1..12/rank a..l diagnostics; human notation can display JCSA numeric-file/
 Japanese-rank and ordered captures, explicit promotion/decline and piece
 names. Canonical actions are authoritative; short notation never loses a path
 or substitutes a rules parser. Finished UI uses actual traditional Chu kanji,
@@ -318,6 +318,6 @@ board scrolling/zoom. Retain shared shell and exact two-player Moves/event mappi
 The [independently expected corpus](fixtures.json) precedes implementation.
 Its validation/review is not execution of rules.86 must provide actual
 adapters, complete LegalAll comparisons, transition/replay/undo, properties,
-valid180° transformations, adversarial checks and hand-established perft/divide.
+valid 180° transformations, adversarial checks and hand-established perft/divide.
 78/43 must separately execute real consumer/product obligations. External engines
 are optional investigations under [conformance policy](../../testing/conformance-policy.md).

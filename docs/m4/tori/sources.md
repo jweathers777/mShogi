@@ -26,9 +26,9 @@ The institution labels images CC BY 4.0; retain attribution when reusing them.
 Useful **image locators**, not invented folio numbers: 4 setup (board printed
 sideways); 5 royal/crane/pheasant; 6 quails/falcon; 7 eagle/swallow; 8 right goose,
 8 left beginning of play rules; 9 right continuation, 9 left promotion/date;
-10 author. The researcher inspected all15; root inspected4–9 and the independent
-reviewer4–10. The later literary appendix was visually inspected, not fully translated;
-no game transcript is established by this acquired15-image set. The raw manifest/image hashes permit exact future review.
+10 author. The researcher inspected all 15; root inspected 4–9 and the independent
+reviewer 4–10. The later literary appendix was visually inspected, not fully translated;
+no game transcript is established by this acquired 15-image set. The raw manifest/image hashes permit exact future review.
 
 **T-H2 — 1833 metadata/physical holding only.** Kagawa 神原文庫 catalogue
 [*禽象戯* entry](https://opac.lib.kagawa-u.ac.jp/KMBR/mokuroku/KCCC1_W7.html),
@@ -59,11 +59,11 @@ request made. Do not relabel this as the Kagawa1833 witness.
 アミューズメント産業研究所紀要10 (2008-03), pp.241–265; ISSN1881-1949;
 [NDL9501307](https://ndlsearch.ndl.go.jp/books/R000000004-I9501307), call Z71-C554,
 Kansai item1200800536862. Exact NDL metadata and
-[publisher issue10 contents](https://ouc.daishodai.ac.jp/ams_labo/publication/bulletin/info2004-2008.html#amu10)
+[publisher issue 10 contents](https://ouc.daishodai.ac.jp/ams_labo/publication/bulletin/info2004-2008.html#amu10)
 were acquired, **zero article pages read**. The
 [publisher bulletin policy](https://ouc.daishodai.ac.jp/ams_labo/publication/bulletin/)
-starts repository availability at issue16/June2014 and directs acquisition
-inquiries to the institute. Repository requests also returned429/503 in this
+starts repository availability at issue 16/June2014 and directs acquisition
+inquiries to the institute. Repository requests also returned 429/503 in this
 pass. This explains the missing promised link, not proof that no lawful copy
 exists elsewhere. Relationship to T-H1/H2, transcriptions and interpretations
 remain unknown until article access. Owner-authorized institute inquiry or
@@ -77,10 +77,10 @@ profile. Broader file/owner/promoted counting requires the other passages.
 
 **T-M3 — named modern German presentation.** Fabian Krahe for Shôgi Hamburg,
 [author post](https://www.shogihamburg.de/2019/09/06/tori-shogi-%E7%A6%BD%E5%B0%86%E6%A3%8B-spielregeln/)
-2019-09-06, web update2020-05-02; actual
+2019-09-06, web update 2020-05-02; actual
 [two-page PDF](https://www.shogihamburg.de/wp-content/uploads/2019/09/Tori-Sh%C3%B4gi-Spielregeln-Sh%C3%B4gi-Hamburg.pdf)
 425899 bytes, SHA256 `50438753f012b01cd4b6eb905e9efaf61bd30ce2d26c3deb1abed758d128d9c5`.
-PDF metadata/footer are2019; do not infer a2020 PDF revision from the web date.
+PDF metadata/footer are 2019; do not infer a2020 PDF revision from the web date.
 Both pages visually read by the modern researcher. No historical copy cited.
 Promotion uses *kann* without an explicit compulsory clause, and includes
 entering/within/leaving the zone. This is **ambiguous**, not definitive evidence
@@ -108,7 +108,7 @@ those are **outside** this ordinary Tori research/profile.
 Wikipedia, software pages and secondary bibliographies were discovery aids,
 not expectation oracles. An old Roger Hare leaflet/book lead remains unacquired;
 no claim to have read Hodges1979/1984 or Brandl/Croke2013/2019/2022 books. Current
-torishogi.com pages are not the books: the inspected overview even says32pieces
+torishogi.com pages are not the books: the inspected overview even says 32 pieces
 per player, so its URL/name cannot authenticate the older book's contents.
 No existing Tori engine was admitted as a comparator, built or executed.
 
@@ -120,7 +120,7 @@ reads. Some institutional web-reader opens also failed even though researchers
 acquired the actual public HTML/images; those tool failures are not claims of
 institutional access restrictions. Initial combined shell discovery stopped at missing `pdftotext`; direct
 Python retrieval and pypdf then succeeded. Tohoku image acquisition's `status:0`
-is **curl process exit**, not HTTP status0. Modern/metadata status/hash ledgers
+is **curl process exit**, not HTTP status 0. Modern/metadata status/hash ledgers
 retain errors and derivatives separately. Public local acquisitions are under
 `/private/tmp/msh81-{historical,modern,root}`; manifests below are durable even if
 those temporary files are later cleared. No broad rules, build or GUI suite ran.
@@ -139,8 +139,8 @@ playing convention, not historical reconstruction. No rule currently depends on
 acquiring T-H2 or T-M1. They remain unread, not failed delivery requirements.
 
 **T-M5 — initial selected modern description.** Wikipedia contributors,
-[Tori shogi, revision1373875456](https://en.wikipedia.org/w/index.php?title=Tori_shogi&oldid=1373875456),
-last edited2026-09-08 13:21UTC, ordinary page retrieved2026-11-01. The web reader
+[Tori shogi, revision 1373875456](https://en.wikipedia.org/w/index.php?title=Tori_shogi&oldid=1373875456),
+last edited 2026-09-08 13:21 UTC, ordinary page retrieved 2026-11-01. The web reader
 exposed the exact oldid/date in its live rendering; direct oldid cache fetch
 failed in the researcher's tool, so do not claim a separately acquired oldid HTML.
 Sections Setup, Movement and capture, Promotion, Individual pieces, Drops,
@@ -151,7 +151,7 @@ specifications in profile/fixtures do not reproduce the article wholesale.
 
 **T-M6 — independent modern rule description.** Steve Evans/Hans Bodlaender,
 [Chess Variant Pages Tori](https://www.chessvariants.org/shogivariants.dir/tori.html),
-created1997-11-13, displayed file timestamp2023-02-13. Actual page read by the
+created 1997-11-13, displayed file timestamp 2023-02-13. Actual page read by the
 independent modern researcher; root web reader returned an access error, not a
 successful second retrieval. Explicit compulsory zone promotion, delayed zone-drop
 promotion and nonjumping Eagle corroborate T-M5. Color wording is inconsistent
@@ -167,7 +167,7 @@ requiring historical reconstruction. All four modern PDF hashes were rechecked
 against the previous manifests; bytes unchanged.
 
 **T-S1 — comparator source audit only.** Fairy-Stockfish source commit
-`53c1f2bd14a2d3b685904ccf8ec9dec8401800ff`, inspected2026-11-01 in isolated
+`53c1f2bd14a2d3b685904ccf8ec9dec8401800ff`, inspected 2026-11-01 in isolated
 `/private/tmp/msh81-comparator-fairy`. Actual config and implementation were read;
 see audit. No build, run, reference admission or differential
 result is claimed. PyChess's FAQ identifies this engine as its rules dependency,

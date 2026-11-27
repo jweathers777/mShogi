@@ -1,50 +1,9 @@
-# MSH-66 independent completeness-fixture expected-fact review
+# Shogi completeness fixture derivations
 
-Date: 2026-10-26. Reviewer: fresh Codex review agent, separate from the fixture
-and legality authors. This is an independent agent review, not a human
-review. Only this report and the separately requested reference-domain review
-supplement are owned by this reviewer.
-
-**Verdict: PASS for the 68 independently expected records in
-`tests/fixtures/shogi/legal-completeness.json`.** Approval was sent to the author
-before reference or execution of these records. No expected answer was
-derived from either implementation's output. This approves concrete expected
-board facts; actual execution, legality and MSH-66 acceptance remain
-separate evidence.
-
-## Provenance and method
-
-Read the active MSH-66 criteria and selected `mshogi.shogi.csa36.v1` contract,
-the prior inventory/coverage and reference review, and every new fixture record.
-The rule sources remain the primary JSA movement, promotion, check/mate and
-prohibited-play material whose retrieved bytes are fingerprinted by MSH-64.
-The source interpretations and independent reasoning are continuous with
-`reference-review.md`; the late old-root admission correction is recorded
-separately in `reference-domain-review.md`.
-
-Before opening the new candidate, independently derived the central/edge move
-counts, promotion additions, auxiliary king moves and 30-by-30 start-tree proof.
-Then compared every exact array against independently handwritten target maps;
-a separate review script expanded those maps into USI choices and their
-180-degree ownership-reversed counterparts. This script did not import cshogi,
-call the library or read an implementation's move output. The six
-blocker records and four empty-set records were checked by explicit ray,
-occupancy, attack and escape/capture reasoning.
-
-The first approved 68-record candidate's full SHA-256 was
-`1bd1b58375ce289221d45c6a33e4cf549617162a3d16a73f4dc71b23c43c8792`.
-Its review fields were still pending at that snapshot. Review metadata and
-observations may change the file's whole-byte hash without changing the
-approved facts. The canonical JSON projection of each of these 68 cases'
-`id`, `version`, `rules_profile`, `root_sfen`, `moves`, and `expected`, preserving
-case order and using sorted keys with compact separators, has SHA-256
-`0f7a5c3e64e8b8143d98d1decc1e2e5fce83a361bb1ac90f8568865e9ac3435d`.
-The two temporary F022 safe-root duplicates are excluded from this projection;
-they belong to the separately corrected MSH-64 corpus.
-The final 68-case file, after approval metadata and removal of those temporary
-duplicates, has SHA-256
-`a562a265da4c49ca09702b14c2ca16b1a9eb7db9b779f426d0da3cd782cfc902`;
-the canonical expected-fact projection remains identical.
+These derivations establish expected actions for the
+[completeness fixtures](../../tests/fixtures/shogi/legal-completeness.json).
+They use the movements, promotion and king safety rules of the
+[selected profile](shogi-profile.md).
 
 ## Exact central/edge sets
 
@@ -140,41 +99,3 @@ Consequently every one of the 30 first actions has exactly 30 replies: perft
 depth 1 is 30, each depth-2 divide entry is 30, and depth 2 is **900**.
 Ownership reversal and board rotation prove the white-to-move version with
 the same total. No deeper perft total is invented or approved by this report.
-
-## Subsequent reference corroboration
-
-After sending the independent expected-fact approval, the reviewer executed:
-
-```sh
-/private/tmp/msh64-reference-venv/bin/python tools/shogi/reference.py \
-  --fixtures tests/fixtures/shogi/legal-completeness.json \
-  --report /private/tmp/msh66-completeness-review-current.json
-```
-
-Result: 68 fixtures passed, zero failed, with 13 reference-domain rejection
-sentinels and four API-gap sentinels. The output is byte-identical to retained
-`docs/m4/reference/completeness-reference-run.json`. This command checks board
-assertions; perft/divide expectations are separately checked by the perft tool.
-
-The reviewer also independently enumerated LegalAll at both reviewed start
-roots, with a reserved two-ply reference counter budget. For each of their 30
-first actions, pushed the enumerated integer, counted the opponent's LegalAll
-set, popped and compared the complete reference snapshot. Both yielded exactly
-30 first choices, 30 replies per choice and 900 depth-2 nodes, matching every
-independently expected divide entry and restoring the root exactly. This is
-subsequent corroboration, not the source of the expected 900 or 30 values.
-
-## Remaining evidence boundary
-
-An independent geometric root audit found no already-attacked nonmoving king
-among these 68 records. That audit found a separate defect in two historical
-MSH-64 bishop-evasion roots; their correction and reference-domain admission
-are covered by the separate supplement, preserving historical evidence.
-
-The author was authorized to run the admitted reference only after this
-expected-fact review approval. Reference results must stay separate from these
-expected arrays and totals. Complete-action comparison, all-prefix
-state transitions, apply/undo restoration, request atomicity, additional
-king-safety/pawn-drop edge cases and MSH-66 closure belong to the integrator's
-test/runtime evidence and fresh implementation review. History and
-outcome semantics remain MSH-67.

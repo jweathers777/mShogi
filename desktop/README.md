@@ -24,110 +24,28 @@ require a web server.
 
 ## Playing all six games
 
-Press **New game**, choose one of the six supported games, then choose your
-game side (White/Black, Sente/Gote or Red/Black), or Random. Games are untimed.
-Your side starts at the bottom; **Flip board** remains explicit. The initial
-application opens Chess; the same normal application loads each game's archive.
+Press **New game**, choose a game and set **Players** to **Human against mShogi**
+or **Two humans**. In human-versus-engine play, choose your side or Random. Choose
+Adams or Muller when starting Tenjiku Shogi. Both profiles use the same board
+and retain their own rules. Tenjiku fits at the application's 760 × 650 minimum.
+Use about 960 × 1000 for more comfortable reading if your display permits.
 
-Tori Shogi uses the approved traditional kanji, a complete 7×7 board and
-hands/promotion. Its shared-core engine defaults to depth 64 /300,000 nodes,
-with a maximum node limit of 5,000,000. These are search bounds, not a
-competitive-strength claim. See the current [shared search core](../docs/m5/shared-search-core.md). Read-only analysis,
-cancellation/Retry, exact history, Take back, game outcomes and Save/Load share
-the existing owners. Load stops work until explicit **Resume play**. The desktop
-exposes Take back; one-event Undo remains in the API and console.
-MSH-42 acceptance records actual normal
-macOS/Windows/Linux gameplay, separate QA instrumentation and exact limits.
+Select a piece, then one of the highlighted choices. Game-specific choices
+include drops, promotion and compound routes. When offered, **Complete action
+here** commits the selected route. Arrow keys move board focus, Enter or Space
+selects, and Escape clears an uncommitted selection. **Flip board** changes
+orientation. The Xiangqi board uses intersections. Shogi-family games use
+[bundled kanji](../docs/m4/shogi-font.md).
 
-Chu Shogi uses the approved traditional kanji, King/Prince identities and
-complete 12×12 board in the same shell, without board scrolling or zoom. Select
-**Chu Shogi** in the ordinary dropdown and Sente, Gote or Random. Lion routes
-use highlighted stages: select a second landing, or **Complete action
-here** when offered. Escape cancels an uncommitted selection. The game has no
-hands. Actual mShogi engine play uses depth 1 /512 visits; ordinary read-only
-analysis is capped at depth 2 /2,000. This is a functional baseline, not a strength
-claim. Load retains complete game history and observations and stops work
-until **Resume play**. Take back retires execution and preserves its historical
-observations; console Undo remains separate. Capacity refusals preserve
-a complete save path and never imply a chess result. See the
-Chu visual approval,
-engine contract and
-[game notation](../docs/m4/chu/notation.md).
+Use **Save** and **Load** for .mshogi documents. First Save asks for a path.
+Load and New game replace the current document after successful admission.
+Load starts stopped. Select **Resume play** to continue. Quit asks
+Save / Discard / Cancel for dirty or never-saved games.
 
-Tenjiku Shogi uses a complete 16×16 board, traditional kanji and complete
-routes and effects. Choose the Adams or Muller rules profile when starting a
-new game; the profile remains bound to its saved history. The same shell provides
-engine play, analysis, stopped Open, history and Take back. See the
-Tenjiku product coverage and
-[notation](../docs/m4/tenjiku/notation.md). All six games and both Tenjiku profiles
-passed the M4 integration milestone. Current
-promotion evidence is recorded separately at its actual source revision.
+For the shared workflow, see the [desktop application contract](../docs/desktop/native-application.md),
+[Take back](../docs/desktop/take-back.md), and [two-human play](../docs/desktop/two-human-play.md).
 
-For chess:
-Click a piece and a highlighted destination. Promotion opens explicit
-choices. On the focused board, arrows move focus, Enter/Space selects, and
-Escape clears selection. **Flip board** changes only orientation.
-The window defaults to 1180 × 820 logical content pixels and supports a minimum
-of 760 × 650. The inspector scrolls; Tab/Shift-Tab reveal focused controls.
-The board uses one keyboard stop with arrow navigation between squares.
-
-Chess replies through the bundled engine with a one-second primary time budget;
-depth 128 and the exact JSON integer node ceiling are technical guards, not
-ordinary effort limits. The shared bridge keeps an engine process between
-successful searches; timed Chess can retain search state across moves. Cancellation
-and failure retire that process. See [engine sessions](../docs/desktop/internal-execution-v4.md). The engine panel shows only final engine observations, labeled with their
-searched version and score perspective. **Cancel search** applies no fallback
-move; **Retry engine turn** explicitly restarts paused work. Claim
-buttons distinguish current claims from intended moves, which are not played.
-
-**Resign game…** opens a version-bound confirmation. Resignation ends play;
-the M2 proof limits can leave the outcome **unresolved and unscored**.
-An engine failure, incomplete search or cancellation instead pauses the ongoing
-game without adding a move or result; explicit Retry preserves its history.
-
-Use **Save**, **Save as…** and **Open…** for complete `.mshogi` documents.
-New game, Open and ordinary Quit protect unsaved changes with Save/Discard/Cancel.
-Reopened untimed games remain paused until **Resume play**. Saved observations
-are labeled historical and never restart pending engine work. Earlier positions
-are read-only; **Return to live** explicitly leaves history inspection.
-
-The synthetic large-board fixture is available in the isolated verification build.
-The integrated macOS interaction assessment covers keyboard/focus, status
-semantics, contrast and layouts at both supported sizes; screen-reader audio and
-formal accessibility conformance have not been tested. Actual Windows, macOS
-and Linux packaged GUI journeys passed MSH-38; see the
-[platform evidence and exact environment limits](../docs/desktop/packaged-gui-verification.md).
-The M3 integration review records the milestone
-verdict and the next planning boundary.
-
-Shogi has its own warm grid, pentagonal kanji pieces and counted hands beside
-each player. The bundled licensed [mShogi Pieces font](../docs/m4/shogi-font.md)
-needs no Japanese font installation. Select a hand piece and a highlighted
-square to drop; arrows move focus from the hand into the board, and Enter/Space
-commits a complete action. Optional promotion opens a contextual choice;
-mandatory promotion commits the sole action without a redundant prompt.
-Escape cancels partial selection. Formal entering-king declaration appears only
-when the capability allows it and still requires explicit confirmation.
-
-Shogi play uses depth 2 / 5,000-node work limits. Side-panel **Analysis** is read-only,
-with explicit depth 1–4 and 0–20,000-node limits; it pauses play, reports actual
-completed work and never plays a move or declaration. Cancel/Replace act on that
-analysis purpose. History selects exact game event boundaries; **Return to
-live** and **Resume play** are separate. Archives preserve complete
-semantics, settings and historical observations. An application-capacity pause
-retains the complete save path and cannot be reset by reopening the same file.
-Timed restoration remains unsupported for shogi.
-
-All six games use the same document labels: **Unsaved** before the first save,
-**Unmodified** when identical to the saved/opened file, and **Unsaved changes**
-after modification. File-operation and unsaved-change guards remain in
-force. Play details displays the actual play budget; the common bottom
-status row distinguishes live play, exact historical position, pause and conclusion.
-
-MSH-74's product evidence and screenshot review (task record MSH-74)
-record the exact revision, actual platform journeys, independent reviews and
-the recorded approval. This historical game-specific evidence is supplemented
-by the completed M4 delivery gate.
+## Building packages
 
 Build a normal distributable with the platform's supported bundle format:
 
@@ -165,9 +83,8 @@ SHA-256 and actual search observations.
 `desktop/scripts/package-smoke.py` is an external verifier. Tests and fixtures
 are not resources or sidecars; only the `mshogi` engine is listed as
 `externalBin`. No instrumentation or test driver is compiled into the normal
-host. MSH-38's recorded M3 interaction evidence remains applicable to unchanged chess
-behavior. Current shogi packaged interactions are recorded separately under
-MSH-74; package construction alone does not establish GUI behavior.
+host. See the [packaged GUI guide](../docs/desktop/packaged-gui-verification.md)
+for actual application checks.
 
 Normal Quit/Cmd-Q, window close and macOS Dock Quit first resolve unsaved changes.
 The narrowly patched native Quit route is documented in
@@ -205,10 +122,10 @@ The separate application name, identifier and window title label test state.
 Fixture names are `standard`, `claim` (intended fifty-move claim), `current-claim`,
 `concluded`, `incomplete`, `promotion` and `capacity`. `promotion` uses a real
 chess position with four a7–a8 promotion choices. `incomplete` uses an actual zero-node
-engine request; Retry uses ordinary play limits. `capacity` starts with 255
-genuine zero-node analysis observations so the next accepted analysis
-reaches 256 and subsequent work demonstrates the application limit. These
-observations remain in saved documents. Close before launching another fixture.
+engine request; Retry uses ordinary play limits. The `capacity` fixture
+starts with 255 session observations. It exercises
+retention of the newest 256 observations across further searches. Close before
+launching another fixture.
 Use `python3 scripts/macos-verification.py prepare synthetic`, then
 `python3 scripts/macos-verification.py select synthetic synthetic`, for the fixed
 separately labeled invented 16-by-16 strider fixture. It uses the shared board and selector, with
@@ -245,43 +162,18 @@ paused, replacement retires old work, and **Resume play** explicitly returns the
 single supervised resource to the engine turn or human play. Changing inspector
 tabs alone neither starts analysis nor resumes play.
 
-Evaluation is shown in pawn units from the named analyzed side's perspective,
-or as a named side's mate distance. Zero evaluation is not a draw. Position,
-requested budgets and actual final depth/nodes/PV are labeled; request,
-process and session identities plus raw encodings remain in technical details.
-There is no simulated live progress.
-
-The [current execution contract](../docs/desktop/internal-execution-v4.md) documents
-purpose-specific acceptance, retained engine sessions and limits. The batch evidence
-distinguishes controller, frontend and actual packaged GUI verification.
+Analysis shows the selected position, score perspective and actual final
+depth, nodes and principal variation when available. A score uses the active
+game's units. The [execution contract](../docs/desktop/internal-execution-v4.md)
+defines the search and result admission.
 
 ## Saving and inspecting games
 
-A document preserves the canonical match and game records, policy and known
-history, claims and conclusions, commands/events, modes and limits, human color,
-board orientation, analysis defaults and accepted engine observations with their
-exact request contexts. It is not an interchange FEN or PGN. See the
-[archive contract](../docs/desktop/archive-v1.md) for format and resource limits.
-
-Games and documents have no size, event or byte limit. The controller
-checks each candidate document before it accepts a change. Only runtime
-identity headroom and the validation time budget can pause work with
-**Application limit reached**; the complete accepted document stays saveable.
-A resource pause is separate from chess outcomes and engine failures.
-
-Save writes an exclusive same-directory temporary file and replaces the target
-only after a complete flushed write. A failed or cancelled save keeps the prior
-file and leaves unsaved changes unsaved. Open validates on a bounded
-worker; corrupt, unsupported or resource-limited documents leave the current
-game intact. Timed matches are rejected explicitly, without changing their
-clocks. No automatic crash recovery is promised.
-
-The history inspector includes nonmove events such as a claim or resignation.
-Selecting an earlier event pauses play and displays a read-only board. Analysis
-uses only that event's known history prefix, with no future moves or claims.
-Selecting another event retires prior analysis. **Return to live** restores the
-live board; **Resume play** is a separate action. Branching and variation editing
-are outside this batch.
+The [document format](../docs/desktop/document-v1.md) records the game,
+human side and settings. It also describes atomic Save and guarded Load.
+History inspection and engine results belong to the open session. Browsing
+selects complete game commands and shows a read-only board. **Return to live**
+restores the live board, with fresh admission if browsing alone suspended play.
 
 ## macOS verification identities
 
@@ -292,12 +184,3 @@ Do not copy, rename or re-sign an application for each fixture. Fixture selectio
 is an external startup file and must be changed while the app is stopped.
 Normal app launches continue to use the primary checkout's normal package.
 Computer Use approvals are owned by the user/platform, not this helper.
-
-## Historical MSH-72 shared chess/shogi contract development surface
-
-The normal application remains the delivered chess desktop. The separately
-labeled `shared-contract` verification fixture exercises the shogi session,
-hands/complete-choice selection and read-only analysis boundary. It has no shogi
-archive support and is not the finished shogi application. See the
-[contract and launch instructions](../docs/m4/desktop-session.md) and
-scoped evidence.

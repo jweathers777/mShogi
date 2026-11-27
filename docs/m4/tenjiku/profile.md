@@ -1,7 +1,7 @@
 # Two selected modern Tenjiku playing profiles
 
 MSH-83,4November2026; selected under the approved instruction to support choosing
-options1or2. Ratified after independent source/rules/fixture and data/contract review. The two whole
+options 1or2. Ratified after independent source/rules/fixture and data/contract review. The two whole
 profiles are selectable **when starting a new game** and immutable thereafter:
 
 | Selection | Profile identity | Edition |
@@ -9,10 +9,10 @@ profiles are selectable **when starting a new game** and immutable thereafter:
 |1 Adams1999 Modern | `mshogi.tenjiku.adams1999-modern.v1` | `ADAMS1999-MODERN+MSH83-2026-11-04` |
 |2 Muller, explicitly completed | `mshogi.tenjiku.muller-completed.v1` | `MULLER+ADAMS-COMPLETION+MSH83-2026-11-04` |
 
-These are not independent switches or claims of historical consensus. Profile2
+These are not independent switches or claims of historical consensus. Profile 2
 uses Muller's Tenjiku movement/effect description, **explicitly supplemented** by
 Adams's general setup/promotion/history/ending contract where M gives none. A
-means Adams main chapters1/3; M means Muller's Tenjiku page/table; S identifies
+means Adams main chapters 1/3; M means Muller's Tenjiku page/table; S identifies
 our narrow deterministic completion. Sources/precise differences are in
 [sources.md](sources.md). AppendixA does not silently override A's main rules.
 [Machine-readable data](profile.json), [fixtures](fixtures.json), handoff.
@@ -20,13 +20,13 @@ No rules, engine, console or product implementation exists from83.
 
 ## T01 — board, sides, setup and identity
 
-16files×16ranks of squares,156pieces/78per side,36 original kinds and44 movement
+16 files×16 ranks of squares,156 pieces/78 per side,36 original kinds and 44 movement
 faces. Files16→1 left→right from Sente; ranks a→p top→bottom; Sente moves first
-and toward decreasing rank. Gote rotates directions180°. Fixture coordinates are
+and toward decreasing rank. Gote rotates directions 180°. Fixture coordinates are
 [file,rank]1..16, not a promised Rust/public notation encoding. A §1.4 pp6–7 gives
-the exact initial table; `profile.json.initial_board` lists all156 placements.
+the exact initial table; `profile.json.initial_board` lists all 156 placements.
 
-Sente's rows left→right, files16→1:
+Sente's rows left→right, files 16→1:
 
 ```
 p L N FL I C S G K DE G S C I FL N L
@@ -37,7 +37,7 @@ l P P P P P P P P P P P P P P P P
 k . . . . Dg . . . . . . Dg . . . .
 ```
 
-Gote is the complete180° rotation/owner exchange, not a horizontal mirror.
+Gote is the complete 180° rotation/owner exchange, not a horizontal mirror.
 Original King9p/Elephant8p, Lion9o/FreeKing8o, LionHawk9n/FreeEagle8n,
 GreatGeneral9m/ViceGeneral8m distinguish central asymmetry. All other squares empty.
 Original/promoted identity remains separate from movement face; original
@@ -45,14 +45,14 @@ unpromotable FEg/LHk coexist with promoted FK/Ln of the same movement.
 
 ## T02 — every movement face
 
-The44 source-diagram entries in `profile.json.pieces` are normative for profile1,
-with the profile2 overrides below. Offsets are Sente-relative `(file_delta,
-rank_delta)`; F=(0,-1), B=(0,+1), L/R=(±1,0), D=all4 diagonals, O=orthogonals,
-A=all8 directions. Rotate for Gote. A steps/rays/jumps legend p11/PDF22 governs:
+The 44 source-diagram entries in `profile.json.pieces` are normative for profile 1,
+with the profile 2 overrides below. Offsets are Sente-relative `(file_delta,
+rank_delta)`; F=(0,-1), B=(0,+1), L/R=(±1,0), D=all 4 diagonals, O=orthogonals,
+A=all 8 directions. Rotate for Gote. A steps/rays/jumps legend p11/PDF22 governs:
 
 - Step reaches the listed adjacent square. A ray stops before friend or at first
   enemy capture; nothing beyond. A jump ignores intermediate occupancy without
-  capturing interveners. Limited ray1..2 is straight, blocked at1 and captures
+  capturing interveners. Limited ray 1..2 is straight, blocked at 1 and captures
   only its chosen final victim, not a two-capture action.
 - K/CP stepA; G stepsO+forwardD; DE stepsA exceptB; BT stepsA exceptF;
   FL stepsF/B+D; S stepsF+D; C stepsF/B+forwardD; I stepsF+forwardD;
@@ -61,15 +61,15 @@ A=all8 directions. Rotate for Gote. A steps/rays/jumps legend p11/PDF22 governs:
   RC raysF/B; L raysF; VM raysF/B+stepsL/R; SM raysL/R+stepsF/B;
   FO raysF/B+D; FB raysL/R+D; WH raysF/B+forwardD; W raysF/B+backwardD;
   MGn raysF+backwardD; FS raysF/B+stepsL/R+D.
-- Ky stepsD+jumps2O; Ph stepsO+jumps2D. WBf raysL/R+D+limited2F/B;
-  ChS raysF/B+D+limited2L/R; VSo rayF+limited2L/R+stepB;
-  SSo raysL/R+limited2F+stepB.
+- Ky stepsD+jumps 2O; Ph stepsO+jumps 2D. WBf raysL/R+D+limited 2F/B;
+  ChS raysF/B+D+limited 2L/R; VSo rayF+limited 2L/R+stepB;
+  SSo raysL/R+limited 2F+stepB.
 - Ln and LHk, HF/SE, FiD/VGn, FEg, HT and ranked generals use T03–T05.
 
 There are no hands or drops. Captured/burned pieces are permanently discarded;
 royals are never transferred to a hand. No source supports importing Shogi drop,
 self-check, impasse or pawn-drop-mate rules. These common clauses are A-sourced
-supplements for profile2; M's linked Chu introduction does not import Chu's rules.
+supplements for profile 2; M's linked Chu introduction does not import Chu's rules.
 
 ## T03 — complete routes and special movement
 
@@ -81,13 +81,13 @@ Repeated landings may be represented when these rules allow them. Partial UI
 entry is not a partial game turn. Intermediate occupancy is evaluated after
 preceding leg effects; origin is vacated while moving and can be revisited.
 
-**Lion:** A §3.7 p19. One adjacent King step; direct jump to any Chebyshev-distance2
+**Lion:** A §3.7 p19. One adjacent King step; direct jump to any Chebyshev-distance 2
 square; or two adjacent King steps with independent directions. Each actual
 landing may capture one enemy. Friendly occupied landing rejects, including on
 an intermediate leg. Return to origin is permitted; capture-return is igui.
 Empty return is a complete pass-like route, subject to T09. There is no JCSA Chu
 Lion-exchange/protected-Lion restriction. **Modern Lion Hawk**, both profiles,
-adds Bishop rays to this complete Lion ability; A Traditional area2 is not selected.
+adds Bishop rays to this complete Lion ability; A Traditional area 2 is not selected.
 
 **Horned Falcon:** ordinary raysB/L/R+D; restricted Lion movement only alongF:
 one step, direct two-square jump, two forward steps, or first step then return.
@@ -105,21 +105,21 @@ does not separately discuss area passes). FiD also has ordinary vertical/diagona
 also has ranked diagonal capture-rays. A pp11–14, M area explanation. No burns
 occur merely because an intermediate square is visited (T04 S).
 
-**Free Eagle:** profile1 A p21: Queen rays plus direct orthogonal distance2 jumps;
+**Free Eagle:** profile 1 A p21: Queen rays plus direct orthogonal distance 2 jumps;
 its diagonal open-circle marks are redundant unobstructed travel, not Lion power.
-Profile2 M: Queen rays plus one/two adjacent diagonal steps with free choice of
+Profile 2 M: Queen rays plus one/two adjacent diagonal steps with free choice of
 second diagonal and capture at each actual landing, including return/igui.
-There is no added profile2 orthogonal jump through a blocker. Overlapping
+There is no added profile 2 orthogonal jump through a blocker. Overlapping
 single-landing identical choices are emitted once; distinct routes remain distinct.
 
 **Heavenly Tetrarchs:** cannot land on any adjacent square. May instead capture
 one adjacent enemy while staying put: stationary `igui` target, **not** an actual
-landing on that forbidden square. Profile1 A p23: diagonal rays starting distance2,
-ignoring only the adjacent square's occupant, plus sideways distance2 jump or
-sideways distance3 if distance2 is empty; no vertical movement. Profile2 M:
-the same sideways2/3 and igui, with skipped-adjacent rays in both vertical and
+landing on that forbidden square. Profile 1 A p23: diagonal rays starting distance 2,
+ignoring only the adjacent square's occupant, plus sideways distance 2 jump or
+sideways distance 3 if distance 2 is empty; no vertical movement. Profile 2 M:
+the same sideways 2/3 and igui, with skipped-adjacent rays in both vertical and
 all diagonal directions. After the skipped square, ordinary ray blocking/capture
-applies. The sideways3 path skips1 but cannot cross occupied2. A stationary
+applies. The sideways 3 path skips 1 but cannot cross occupied2. A stationary
 igui has no movement path or implicit promotion; HT cannot promote.
 
 ## T04 — Fire Demon and deterministic ordered effects
@@ -134,8 +134,8 @@ pieces or recursive death-triggered explosion exists. An enemy Demon can thus
 kill a moving Demon while surviving itself. More than one enemy Demon still
 causes one mover-destruction event.
 
-**Profile1 A §1.2.4:** active Demon burns enemy non-Demon bystanders **before**
-its own demise beside an enemy Demon. **Profile2 M footnote:** if the moving
+**Profile 1 A §1.2.4:** active Demon burns enemy non-Demon bystanders **before**
+its own demise beside an enemy Demon. **Profile 2 M footnote:** if the moving
 Demon dies, it produces no bystander burns. The rules profile determines
 these differences.
 
@@ -148,7 +148,7 @@ completion rather than claiming the source prints an algorithm:
    No intermediate-landing aura burn (**S**, complete-turn interpretation of end
    of move/destination; source is ambiguous on Lion component wording).
 3. Active mover's burn batch: all enemy non-Demons adjacent to final square,
-   using profile1 always/profile2 only if mover survives. Determine victims from
+   using profile 1 always/profile 2 only if mover survives. Determine victims from
    one common phase snapshot, remove them simultaneously. Canonical listing sorts
    by absolute rank then file (**S**, serialization only, no gameplay priority).
 4. Remove hazardous mover once. Stationary enemy Demons do not die or trigger
@@ -169,17 +169,17 @@ same effects. Rejection exposes no intermediate state or partial effects.
 
 ## T05 — ranked jumping generals
 
-Rank0 ordinary pieces (including Fire Demon/LionHawk/FreeEagle),1 BGn/RGn,
-2 VGn,3 GGn,4 King/Prince. Prince rank4 is explicit royal completion **S**;
+Rank 0 ordinary pieces (including Fire Demon/LionHawk/FreeEagle),1 BGn/RGn,
+2 VGn,3 GGn,4 King/Prince. Prince rank 4 is explicit royal completion **S**;
 A's rank paragraph names King and M's footnote excludes royalty.
-BGn/VGn use diagonal lines; RGn orthogonal; GGn all8. A jump-capture must cross
+BGn/VGn use diagonal lines; RGn orthogonal; GGn all 8. A jump-capture must cross
 at least one piece, of either owner, and end at an enemy victim. Every intervening
 piece must rank strictly below mover. Equal/higher pieces block in both profiles,
 even if friendly or separated by ordinary pieces. Uncaptured interveners survive.
 Quiet movement beyond any blocker is prohibited.
 
-Profile1 A p4: jumped-to victim must also be strictly lower ranked.
-Profile2 M: any **nonroyal** enemy may be the jumped-to victim. This is an explicit
+Profile 1 A p4: jumped-to victim must also be strictly lower ranked.
+Profile 2 M: any **nonroyal** enemy may be the jumped-to victim. This is an explicit
 interpretation **S-M** of M's separate blocker/royalty wording, not a claim M
 expressly lists every higher-ranked general target. Both reject jumped King/Prince.
 Ordinary unobstructed ray capture of a King/Prince or higher/equal general is
@@ -187,20 +187,20 @@ legal. VGn Area3 uses ordinary captures rather than ranked-jump restrictions.
 
 ## T06 — original/promoted identities and promotion rights
 
-A §1.2.2 p4 and individual piece sections; explicit A supplement for profile2.
-All30 promotion pairs are enumerated in `profile.json.promotion`; K,FiD,GGn,VGn,
+A §1.2.2 p4 and individual piece sections; explicit A supplement for profile 2.
+All 30 promotion pairs are enumerated in `profile.json.promotion`; K,FiD,GGn,VGn,
 FEg,LHk originals do not promote. Only once per original piece: promoted Ky moving
 asLion cannot promote again toLionHawk; promoted HF moving asBGn cannot becomeVGn.
 Preserve original identity even when its current face matches another original.
 
-Zone is farthest5 ranks:1..5 Sente,12..16 Gote. A piece is eligible if a component
+Zone is farthest 5 ranks:1..5 Sente,12..16 Gote. A piece is eligible if a component
 of its actual move begins or ends in zone; an actual Lion leg entering then returning
 can qualify, a jump/ray merely passing across a zone square without landing cannot.
 Resolve movement with old face, promotion after survival (T04). Never promote
 an enemy victim or a stationary HT; neither it nor other unpromotables gains a choice.
 
 Promotion is normally optional, except P/L/I on their farthest rank and N on its
-farthest2 ranks, where otherwise it would have no possible geometric future move.
+farthest 2 ranks, where otherwise it would have no possible geometric future move.
 Occupancy/blockage does not by itself force promotion. Dead-mobility test ignores
 other pieces. All four kinds must promote if eligible and surviving there.
 
@@ -307,15 +307,15 @@ fails explicitly; switching profiles means a fresh root/game, not mutating histo
 ## T11 — independent expectations and pending implementation
 
 `fixtures.json` contains source-diagram exact geometry sets, independently constructed
-special-case/action/effect/history/negative cases and hand-counted4/16 perft/divide.
-Geometry sets are not automatically full-game LegalAll: rules87 must separately
+special-case/action/effect/history/negative cases and hand-counted 4/16 perft/divide.
+Geometry sets are not automatically full-game LegalAll: rules 87 must separately
 admit turns, rights, history and endings. Source equations are finite empty-diagram
 fixture authoring, not a prospective arbitrary-position move generator. Rotations
-exchange owners/coordinates180°; no horizontal setup symmetry is presumed.
+exchange owners/coordinates 180°; no horizontal setup symmetry is presumed.
 
 Strict data validation and review do not execute Tenjiku. Assertions
-are **0 executed/0 passed**, with all relevant observations pending87. Consumer
-requirements are separate79/44 obligations. Preserve independent expected values;
+are **0 executed/0 passed**, with all relevant observations pending 87. Consumer
+requirements are separate 79/44 obligations. Preserve independent expected values;
 never populate observations by echoing expectations or another engine's answer.
 
 ## T12 — current shared architecture and selection
@@ -332,4 +332,4 @@ of any new token field remains an implementer choice.
 
 Detailed87/79/44 handoff and MSH-107 replay/cancellation/inspection measurement
 obligations are inhandoff.md. No refactor, higher capacity constant,
-competitive-strength optimization or implementation is authorized by83.
+competitive-strength optimization or implementation is authorized by 83.

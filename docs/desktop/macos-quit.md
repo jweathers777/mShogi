@@ -17,9 +17,9 @@ non-Tao windows are excluded. If no Tao document window exists, termination may
 proceed normally. Repeated requests are safe: the host/frontend retain a
 single pending close decision.
 
-The host prevents window destruction, pauses pending work, and emits the paused
-current session snapshot with `game-close-requested`. The single frontend owner
-fetches that authoritative paused state and presents its shared guard. Its exact
+The host prevents window destruction, pauses pending work and sends
+`game-close-requested`. The frontend owner fetches the paused session
+snapshot for the shared close guard. Its exact
 Open-token check (document, version and document revision) and command-blocking
 close approval occur under the same controller lock. After
 Save or Discard, `AppHandle::exit` follows Tauri's `Message::RequestExit` path,

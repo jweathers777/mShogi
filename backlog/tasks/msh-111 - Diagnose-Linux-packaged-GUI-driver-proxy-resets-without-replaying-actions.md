@@ -5,7 +5,7 @@ status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-28T13:58:00Z'
-updated_date: '2026-10-28T14:56:00Z'
+updated_date: '2026-11-27T07:13:00Z'
 labels:
   - ci
   - verification
@@ -15,8 +15,8 @@ references:
   - https://github.com/jweathers777/mShogi/actions/runs/40692691108
   - https://github.com/jweathers777/mShogi/actions/runs/40698788452
 documentation:
-  - docs/m4/xiangqi/session-contract.md
   - docs/desktop/linux-gui-proxy.md
+  - docs/desktop/packaged-gui-verification.md
 ordinal: 111000
 ---
 

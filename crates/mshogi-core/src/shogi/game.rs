@@ -603,7 +603,7 @@ impl Game {
             let sente = continuous(Side::Sente);
             let gote = continuous(Side::Gote);
             if sente && gote {
-                // The reviewed chain in docs/m4/mutual-check-chain-review.md excludes
+                // The reviewed chain in docs/m4/mutual-check-derivation.md excludes
                 // this for every admitted root and checked local continuation. Preserve
                 // the complete candidate for diagnosing corrupted caches or a defect.
                 let candidate_commands = self

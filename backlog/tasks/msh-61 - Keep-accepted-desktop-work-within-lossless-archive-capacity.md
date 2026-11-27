@@ -5,14 +5,14 @@ status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-25T17:48:00Z'
-updated_date: '2026-10-25T18:28:00Z'
+updated_date: '2026-11-27T07:13:00Z'
 labels: []
 milestone: m-3
 dependencies:
   - MSH-35
 documentation:
   - docs/desktop/m3-design.md
-  - docs/desktop/archive-v1.md
+  - docs/desktop/document-v1.md
 ordinal: 61000
 ---
 

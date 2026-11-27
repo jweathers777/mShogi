@@ -15,7 +15,7 @@ turned into historical-acquisition requirements.
 | Area | Project direction | Faithful deterministic implementation |
 | --- | --- | --- |
 | CHU-P1 | Capture-based movement, no Chess self-check, narrow actual-threat/complete-response mate, no unrestricted forced-mate search | C06 tests finite complete responses and next-turn captures. Prince promotion can escape if no one action captures both royals. Quiet no-action without a sourced ending stays unresolved/unscored, not a new loss/draw. |
-| CHU-P2 | Responsible side varies **before** fourth occurrence through game admission | C07 derives prospective-cycle witnesses at occurrence3, admits still-changeable prefixes and rejects the culprit's last continuing opportunity. No fourth occurrence or forfeit. Both-jitto uses the actual first passer; alternative empty routes cannot evade it. |
+| CHU-P2 | Responsible side varies **before** fourth occurrence through game admission | C07 derives prospective-cycle witnesses at occurrence 3, admits still-changeable prefixes and rejects the culprit's last continuing opportunity. No fourth occurrence or forfeit. Both-jitto uses the actual first passer; alternative empty routes cannot evade it. |
 | CHU-P3 | Narrow exhaustion, exclusions, immediate response and agreement-based draws | C08 counts only the express configuration, permits actual immediate countercapture, and requires consent for draw. The C1 IX Prince-recapture sequence fixes timing; imported roots use explicit current turn without invented earlier play. |
 
 C1 VI.1a does not contain VI.1b's sole-side qualification. Applying(a) to both

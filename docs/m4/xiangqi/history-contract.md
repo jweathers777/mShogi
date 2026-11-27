@@ -34,8 +34,8 @@ neither-can-win result. Process failure is not a win/draw reason.
 An agreement offer is admitted after that actor's own move, with no outstanding
 offer and at most once in that after-own-move window. The opponent may accept
 or decline; a subsequent board action clears it. There is no immediate offeror
-withdrawal. WXF17.3H prohibits repeated offering (EN PDF40/printed32, ZH
-PDF25/printed24); this specific window is an explicit minimal untimed software
+withdrawal. WXF17.3H prohibits repeated offering (EN PDF40/printed 32, ZH
+PDF25/printed 24); this specific window is an explicit minimal untimed software
 admission adaptation, not a source-prescribed numeric harassment rule. No clock,
 foul or tournament penalty is invented.
 
@@ -52,7 +52,7 @@ applies. Actual earliest terminal events end play; a later anchor cannot overwri
 an earlier outcome. Captures make the old board anchors unreachable and retire
 their obligations.
 
-Responsibility is a consequence-relevant quotient of WXF19/20/chapter5, not a
+Responsibility is a consequence-relevant quotient of WXF19/20/chapter 5, not a
 public universal move-nature telemetry API. All-check takes priority; mutual
 all-check is equal fault. Chase uses causal legal capture/recapture
 facts, opponent responses and persistent victims. A moved pursuer or newly

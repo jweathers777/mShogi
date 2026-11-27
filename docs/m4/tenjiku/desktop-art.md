@@ -1,11 +1,6 @@
 # Tenjiku desktop lettering and visual contract
 
-MSH-44, 4 November 2026. Implementation starts from `84d7aa8` on
-`codex/rewrite`. This document records artwork naming, asset provenance and
-the bounded verification scope. The original component/QA evidence below retains
-its source and date. The 5 November continuation records subsequent owner visual
-approval and normal activation; final product acceptance remains separate from
-asset approval and historical-facsimile agreement.
+This note describes Tenjiku artwork, board presentation and bundled lettering.
 
 <a id="current-owner-approved-continuation--5-november-2026"></a>
 
@@ -25,20 +20,6 @@ capture destinations have decorative outlined markers painted above the piece
 artwork; the markers ignore pointer events. Inspection remains distinct from a
 playable selection. The normal sixth-game chooser exposes both named immutable
 profiles and normal Load preserves the saved profile.
-
-Actual normal macOS Adams capture targets,
-Muller capture targets
-and partial-route identification
-supplement the earlier QA gallery. At final tested source
-`eca9f9cfd43cf83ff4e3489292f6c25f8951bb30`, all six required Rust/Desktop jobs
-passed on Linux, macOS and Windows; Linux and Windows each passed all 47 installed
-normal/QA phases. Those campaigns include both profiles' dense standard capture
-pixel/paint-order/hit-test checks and actual minimum-window/compound-footer
-measurements. The genuine local normal macOS package is
-byte-identical to the final rebuilt package.
-The single product record carries exact platform,
-artifact, source and acceptance receipts. These results support the retained
-approved presentation, including its documented small-window limitations.
 
 ## Traditional names and source alignment
 
@@ -179,104 +160,3 @@ Brotli directory `/private/tmp/msh42-font-python`; neither is a runtime
 dependency or a repository asset. The font is bundled locally without system
 installation or remote requests. The existing font license and appended
 `NOTICE.txt` entry accompany it.
-
-## Responsive risk and actual measurement
-
-Source-derived upper bounds in the current shared shell are approximately:
-
-| Logical content | Board | Cell | Two-character engraving | Three-character engraving |
-|---|---:|---:|---:|---:|
-| 1180×820 | 462 px | 27.5 px | 12.9 px | 8.8 px |
-| 960×720 | 381 px | 22.7 px | 10.7 px | 7.3 px |
-| 760×650 | 343 px | 20.4 px | 9.6 px | 6.5 px |
-
-These are calculations, not application observations. Additional historical
-notices or a verification banner may reduce space. `Board.tsx` gives the 16×16
-board a 1680-unit viewBox including outside coordinates. Minimum-size density,
-particularly 四天王 and complex names such as 獅鷹 and 鯨鯢, is a material
-reading-comfort risk. Fit and glyph coverage alone do not establish usability.
-Actual captures must make any problem reviewable; changing the minimum size or
-abbreviating source names requires an project decision.
-
-Actual macOS verification must use the fixed QA slot and primary-checkout helper
-from [packaged-gui-verification.md](../../desktop/packaged-gui-verification.md),
-selecting the external fixture while stopped. The QA menu establishes
-1180×820, 960×720 and 760×650 content sizes and records measured content/frame
-dimensions in its title. Retain real screenshots and accessibility observations
-for both orientations, standard density, all faces, promotions, both royals,
-ordered routes, stationary capture, burns and mover destruction.
-
-For WebDriver campaigns, reuse the actual resize, shared shell and
-256-position ancestor-clipping measurement patterns in
-`desktop/scripts/gui-smoke.py`: record actual viewport, board/cell rectangles,
-all 256 visible targets, ancestor overflow and scroll positions, footer/control
-visibility, font loaded state and glyph bounds. The current shared completed
-route numbers are 12 SVG units and are also a minimum-size legibility risk.
-Measurements must distinguish content size, frame size and Retina scale.
-No native UI evidence is claimed by jsdom component tests.
-
-## Bounded implementation evidence
-
-`Piece.test.tsx` checks all forty-four source-aligned face names, reused
-Chu spelling, full three-character ordering, original/promoted identities with
-the same face, non-color promotion marks, whole-piece rotation and unknown-face
-rejection. `TenjikuArtwork.test.tsx` checks both profiles, authoritative
-selected identities despite conflicting diagnostic presentation fields,
-accessible square-label preservation, 256 targets, shared footer and
-orientation.
-
-The existing generated board tests continue to exercise complete routes,
-promotion, igui, profile-specific effects, ranked jumps, historical inspection
-and cancellation. Component/font verification is recorded separately from the
-subsequent actual visual checkpoint and broader task verification record.
-
-Local checks on 4 November 2026 used macOS arm64, Node 24.22.1, Python 3.11.0,
-fontTools 4.47.2 and Brotli 1.1.0. The base is `84d7aa8` plus the uncommitted
-MSH-44 implementation; no future integration hash is implied. Node was selected
-from the existing Codex runtime dependency directory. An earlier run also
-passed on the shell's Node 23.11.0; supported Node 24 evidence follows.
-
-- `npm --prefix desktop test -- src/product/TenjikuPiece.test.tsx src/product/TenjikuArtwork.test.tsx src/product/TenjikuBoard.test.tsx src/product/TenjikuRender.test.tsx`: **41 passed in four files** on Node 24.22.1 after rules fixture regeneration (earlier 39-test pass retained as prior evidence). Includes all thirty once-promoted identities and both all-faces diagrams: 67 original physical identities, 44 movement faces, 30 promotion marks and three surviving royal identities. The existing board test now expects mShogi and actual engine/analysis capabilities after functional engine integration.
-- `npm --prefix desktop run check`: **passed** on Node 24.22.1.
-- Two `subset.py tenjiku` runs using the pinned source and temporary Brotli path, followed by `cmp`: **passed**, byte-identical output with the hash above.
-- Direct fontTools inspection: **passed**. All forty-four component labels match exactly the subset's fifty-two codepoints; every outline is nonempty, CFF family/PostScript identity is renamed, OFL metadata remains, and full 四天王 outline bounds at 32 units are `[8.872,34.376]`, `[37.272,65.624]`, `[67.016,93.960]` vertically within the tile.
-- Existing Shogi/Chu/Tori/Xiangqi WOFF2 files and `OFL.txt`: **unchanged** in Git.
-- Actual native window rendering, minimum-size comfort, all-platform visual verification and explicit approval: **not run by this component/asset assignment**. They remain part of the primary MSH-44 checkpoint and verification record.
-
-## Actual application checkpoint supersedes size estimates
-
-The primary MSH-44 verifier subsequently launched the real fixed-slot macOS app.
-The genuine gallery,
-artifact provenance and single
-product record distinguish the component assignment
-above from actual rendering and interaction. The final reviewed production
-source for that working checkpoint is `2c00e2107ac74334bce5d55813e5be25666d7c46`; the captured package
-hashes equal the exact postcommit rebuild. Earlier all-faces/tall comparisons
-retain their explicitly recorded source scope.
-
-| Preset | Actual WebView | Board | Cell | Minimum all-faces em |
-|---|---|---:|---:|---:|
-| 1180×820 | 1180×788 | 399px | 23.750px | 7.600px |
-| 960×720 | 960×688 | 350px | 20.833px | 6.667px |
-| 760×650 | 760×618 | 278px | 16.548px | 5.295px |
-| Proposed960×1000, live | 960×968 | 598px | 35.595px | 11.390px |
-| Proposed960×1000, History | 960×968 | 534px | 31.786px | 10.171px |
-
-Each measured view retains all256 cells and the bundled font. Independent visual
-review found the current minimum insufficient for comfortable dense-kanji reading;
-it found the concrete taller proposal materially clearer in both orientations.
-At that QA checkpoint this was an unresolved owner product decision; the
-5 November decision above retains the original minimum and recommends the taller
-playing size. No minimum, three-character name,
-no-scroll/no-zoom requirement or shared layout architecture has changed. The
-QA-only tall preset permits review without implementing that policy.
-
-Actual pointer/keyboard compound capture, stationary capture, promotion
-choice/refusal, paired profile-specific Fire Demon burns/mover destruction, engine
-reply, read-only analysis, history and file/recovery controls are represented in
-the gallery. Readable effect descriptions accompany accessible Moves,
-including simultaneous burn batches and promotion/original identity. Canonical
-actions, effects and outcomes still come only from Rust. Visual approval
-and normal selector activation were pending at that checkpoint; the continuation
-above supersedes those status statements and supplies the final platform/product
-technical evidence. This preserves the earlier captures' exact source scope.

@@ -8,7 +8,7 @@ default.
 `mshogi --game chess profile` and `mshogi --game shogi profile` identify actual
 coverage; `--game <game> --help` and shell `help` explain capabilities.
 Unknown games, missing selector values, repeated selectors and extra modes fail
-with exit2 and stderr only. Selectors may precede or follow the one mode.
+with exit 2 and stderr only. Selectors may precede or follow the one mode.
 `mshogi --game chess uci` and the default `mshogi uci` preserve UCI. An explicit
 shogi/UCI combination rejects; [USI](usi.md) uses `--game shogi usi`. `mshogi internal-search`
 accepts no `--game`: structured requests supply authoritative identity. Human
@@ -24,7 +24,7 @@ do not prove historical reachability. Earlier checks and repetitions are unknown
 The counter is preserved, not expanded into invented events. Defaulted counter
 provenance from an existing canonical record is retained on load.
 
-`show` prints ranks a–i, files9–1, case-qualified piece identities, both hands,
+`show` prints ranks a–i, files 9–1, case-qualified piece identities, both hands,
 SFEN, current side, declared completed count, known event count and
 conclusion. `hands`, `sfen` and `status` are shorter inspections. `history` prints
 the immutable profile edition, original root/category/counter provenance, full
@@ -56,7 +56,7 @@ Chess `status` is **position-only** quiet/check/checkmate/stalemate; its `histor
 reports known move count, root origin, stored claim policy and repetitions. It
 is not full match adjudication and has no hands or declaration commands. Shogi
 `status`/`history` include accepted events and conclusions as above.
-Perft is local legality in both games, capped at chess4 and shogi2 (divide >=1).
+Perft is local legality in both games, capped at chess4 and shogi 2 (divide >=1).
 
 ## Compact board
 
@@ -64,7 +64,7 @@ Only `show` uses short tokens: uppercase `K R B G S N L P` for Sente,
 lowercase `k r b g s n l p` for Gote, and a leading `+` for promotion (`+P`,
 `+r`, `+B`). Two-character right-aligned cells reserve the promotion column
 throughout the game; piece letters, empty dots and file labels remain aligned
-at a three-character stride. Ranks run a–i, files9–1. Hands and status
+at a three-character stride. Ranks run a–i, files 9–1. Hands and status
 follow the diagram. This selected MSH-110 convention supersedes the
 MSH-90 owner-colon display; its completed evidence remains historical.
 See [common console presentation](../console-presentation.md) for the current
@@ -96,8 +96,8 @@ standard western notation. Input remains exact existing USI: `7g7f`, `5c5b+`,
 
 | Meaning | Label |
 | --- | --- |
-| Sente silver4e to5d, retaining identity | `S:Silver[4e->5d;keep]` |
-| Different silver6e to same5d | `S:Silver[6e->5d;keep]` |
+| Sente silver 4e to 5d, retaining identity | `S:Silver[4e->5d;keep]` |
+| Different silver 6e to same 5d | `S:Silver[6e->5d;keep]` |
 | Optional/mandatory promotion selected | `S:Pawn[5c->5b;promote]` |
 | Optional nonpromotion selected | `S:Pawn[5d->5c;keep]` |
 | Already promoted pawn moving | `S:+Pawn[5e->5d;keep]` |
@@ -116,7 +116,7 @@ An already concluded game can still have local actions; game admission rejects
 further play. `perft`/`divide` are also position-level diagnostics, not search or
 game-tree outcome counting. They ignore repetition, length and declarations,
 normalize counters privately as documented by the API, and never mutate
-the live game. Perft0 is1 even at a terminal position; divide0 rejects.
+the live game. Perft 0 is 1 even at a terminal position; divide 0 rejects.
 
 ## Bounded records and failure behavior
 
@@ -169,52 +169,13 @@ EOF
 ```
 
 After capture, Sente has a promoted rook5c and one unpromoted pawn in hand.
-Resignation concludes a Sente win at event2 with only one known board action;
+Resignation concludes a Sente win at event 2 with only one known board action;
 undo restores the live post-capture prefix. Saving again to the same path
 explicitly fails; use a new path.
 
-## Diagnostic limit evidence and verification
+## Perft and divide
 
-The initial console cap is depth2 (divide1–2). Local release measurements on
-macOS27 arm64/Rust1.89, three process launches each, include startup and
-root admission. The standard first launch was cold248.384ms; the table reports
-the median rather than hiding it as warm search work. These are measurements,
-not performance/strength guarantees or independent perft expectations for the
-drop diagrams.
-
-| Root | Perft1 observed | Perft2 observed | Median depth2 process ms |
-| --- | ---: | ---: | ---: |
-| Standard initial | 30 | 900 | 6.285 |
-| Kings9i/1a, Sente hand `2RBGSNLP` | 523 | 1,446 | 4.950 |
-| Same kings, both hands `RBGSNLPrbgsnlp` | 523 | 251,223 | 107.912 |
-
-The drop roots are `8k/9/9/9/9/9/9/9/K8 b <hands> 1` and explicitly imported
-reduced-material diagrams. Depth2 already demonstrates substantial branching;
-deeper diagnostics stay in the library rather than silently blocking an
-interactive request for an exponential depth chosen for chess.
-
-`crates/mshogi-console/tests/shogi_cli.rs` executes the actual binary. Facts reuse
-the independently established SH-F003/005/010/011 board fixtures and SH-F028/029,
-034/037 game history/declaration corpus. A separate read-only fixture auditor
-supplied the new two-silver ambiguity diagram: silvers4e/6e each have five free
-moves, king9i has three, giving13 legal actions; both can move5d with distinct
-source labels. Expectations were derived before product execution. Tests cover
-actual outputs, exact SFENs/hands, atomic rejection, harmless query vs admitted
-false declaration, same-ply resignation, repetition/perpetual-check conclusions,
-unknown imported prehistory, canonical byte-equivalent re-export, undo after
-reopening, hostile replacement failure and a valid record larger than4KiB.
-Existing chess, UCI, internal-process and desktop subprocess tests remain in the
-console suite. No rule, fixture expectation, mutual-check proof, game record
-encoding or MSH-61 desktop persistence guarantee changed.
-
-MSH-70 supplies shogi search and actual structured execution; MSH-71
-supplies the separate [USI adapter and experiment host](usi.md). This human console does not advertise either engine
-or protocol support by itself. MSH-41–47 and M4 remain open.
-
-
-MSH-90 adds `tests/common_console.rs`: actual canonical subprocess journeys,
-selected help/profile/argument failures, UCI stdout isolation, both-game shared
-file/JSON roundtrips, restored undo/provenance, wrong-game/strict nested failures,
-unsupported chess observations/Full, no-clobber saves, exact
-owner-supplied board and promoted alignment. Earlier MSH-68/70 evidence is
-preserved; MSH-71/72 remain unstarted by this follow-up.
+Console perft supports depth 0–2. Divide supports depth 1–2. Both use
+the game rules and known history. The [completeness derivations](shogi-completeness-derivations.md)
+give the independently expected starting totals. The [USI guide](usi.md)
+describes machine protocol play.

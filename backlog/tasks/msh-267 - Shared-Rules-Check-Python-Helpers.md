@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-25T12:23:00Z'
-updated_date: '2026-11-27T00:52:00Z'
+updated_date: '2026-11-27T00:53:00Z'
 labels:
   - tools
   - refactor
@@ -29,8 +29,18 @@ The rules-check tools outside tools/strength repeat helpers. tools/check_chess_*
 - [ ] #2 compare_perft.py is removed or documented; the Python tests of these tools run in CI, or the notes record why not.
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Share Chess fixture and oracle checks while preserving each fixture family’s assertions and command.
+2. Share Shogi and Xiangqi developer probe helpers while preserving game admission and process limits. Document the Shogi perft command and run the dependency-free Xiangqi sentinels in CI.
+3. Compare before and after results on committed fixtures with the pinned oracles and run integration checks.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 Backlog consolidation, 2026-11-26: the dependency fields and current acceptance criteria supersede earlier scheduling prose and obsolete requirements in historical notes. Ready means approved for implementation, even when an unfinished dependency blocks work. The --ready filter excludes blocked tasks until their dependencies are satisfied; no manual status promotion is needed. No implementation has started.
+
+Branch codex/msh-267-rules-check-helpers. Claim pushed. Next establish reference runs, extract the common code, and verify parity. No fixture or rules changes planned.
 <!-- SECTION:NOTES:END -->

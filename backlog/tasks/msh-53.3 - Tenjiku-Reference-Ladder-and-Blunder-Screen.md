@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-27T21:36:00Z'
-updated_date: '2026-11-27T21:37:00Z'
+updated_date: '2026-11-27T21:40:00Z'
 labels:
   - tenjiku
   - strength
@@ -34,6 +34,16 @@ Measure how the accepted classical Tenjiku engine scales with search resources a
 - [ ] #2 Freeze the sampling, deeper judge protocol, blunder rule and classes before inspecting results. Report blunders per 100 moves and mean win-probability loss for each profile with coverage and limits; preserve reproducible blunder positions and apply the roadmap follow-up rule.
 - [ ] #3 Record exact commands, revisions, inputs, run evidence, costs, and cleanup. Relevant checks pass and the parent task and roadmap reflect the evidence. Leave the baseline stop decision to John.
 <!-- AC:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Frozen before play. Accepted engine 0bbfd9c68abb18b424bb82f2b4aa118c5a22ce5a. Reuse its qualified Linux executable from 6855d62, SHA256 84fb903bb5c1320166fdae80407f43ff68a76be9f53571407fa11a4496eede83. Between these revisions the crate diffs are tests/fixtures only. The hash-pinned shared helper, native runner, both 100-opening catalogs and Cloud Build worker image come from the MSH-53.2 games-1 manifest and intent. No new image or product changes.
+1. Separate fixed-node round robin for Adams and Muller. Compare 16000 vs 4000, 64000 vs 16000, and 64000 vs 4000 nodes/turn, depth ceiling 64, both colors of catalog indices 1..16 for every edge. Fixed nodes avoid known first-iteration clock variability. Four pairs in parallel per c3-standard-4, 8 VMs per block, one block per edge, no SPRT early exit, retries or substitutes. Max 768 events/game, 1200 s/pair, 1260 s/bin, default fixed-work watchdog. Keep all unscored/partial pairs. Report higher-rung W/D/L, unscored reasons, complete-pair pentanomial scores and shared approximate 95% interval, late depths at ply 40 and worst/best score bounds for all scheduled games. Direct edge estimates only, no assumption of additive Elo.
+2. Judge both colors and both players in ALL available 16000 vs 4000 reports, including incomplete prefixes. Shared evenly spaced midpoints up to eight applied board moves/game (256 moves/profile maximum). A 512000-node fresh accepted engine, depth 64, on each full native history before and after; native terminal score overrides after. Keep failed or missing samples visible. Report combined and by player budget for each profile; record actual depths, nodes and paired depth deltas. Qualify as materially deeper for the full sample only if median depth gain >=2 and >=75% deeper before; show the deeper-only sensitivity. Same-family fixed-work results only. Cluster bootstrap the opening pairs, 2000 replicates with seed 533, for rate and mean. Report observable coverage and limits for rare/zero events.
+3. Frozen scoring: shared logistic p=1/(1+exp(-cp/600)); mover loss=max(0,p_before-p_after); clear if p_before>=.30 and loss>=.30. First-match symptoms: same chosen move (unstable estimate), opponent terminal/forced win within 9 plies, missed own forced win within 9 plies, missed promotion, missed stationary/multi-landing alternative, opponent stationary/multi-landing reply, opponent promotion reply, other. A move missed is one where only the judge alternative has that property. No score-driven sampling. Preserve all clear histories, played/reference actions and opening-group SHA256 split. A follow-up needs a single diagnosed general mechanism for >=30% of clear errors in a profile with corroborating lines from independent openings. Broad classes or shared-search disagreement alone do not establish a mechanism. Record eligible follow-up, leave fixes and baseline decision separate.
+4. At most seven sequential 30-minute Batch allocations: three ladder blocks plus four judge blocks (four consecutive openings/profile/block). Aggregate campaign allocation wall <=3 h 30 min including controller cleanup reserves, no simultaneous campaigns, <=8 VMs, no retries. $0.201608/c3-standard-4-hour from MSH-53.2 gives <=$5.65 VM cap; reserve $1 for incidental services, total <=$6.65 and always <=John’s $10. No replacement samples. Carry prior resource bounds, stop on unreconciled resources or exhausted caps. Archive manifests, reports, summaries, judge positions, work identities and receipts in the expiring msh-53.3 prefix; verify jobs/VMs/disks removed after each block. Update parent, roadmap and final checks.
+<!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
 

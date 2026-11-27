@@ -331,11 +331,90 @@ fn movement(face: Face, profile: Profile) -> Movement {
         special,
     }
 }
+// A single landing depends on its displacement and, for rays, the pieces between
+// its endpoints. Store displacements from Sente's perspective and rotate for Gote.
+#[derive(Clone, Copy, Eq, PartialEq)]
+enum Direct {
+    Unreachable,
+    Leap,
+    Ray,
+    RankedRay,
+    SkipAdjacent,
+}
+const DELTAS: usize = 31 * 31;
+fn delta_index(file: i8, rank: i8) -> usize {
+    (rank + 15) as usize * 31 + (file + 15) as usize
+}
+static DIRECT: LazyLock<[[[Direct; DELTAS]; Face::ALL.len()]; Profile::ALL.len()]> =
+    LazyLock::new(|| Profile::ALL.map(|profile| Face::ALL.map(|face| direct_moves(face, profile))));
+
+fn direct_moves(face: Face, profile: Profile) -> [Direct; DELTAS] {
+    use Direct::*;
+    let data = movement(face, profile);
+    let mut table = [Unreachable; DELTAS];
+    let mut put = |file, rank, kind| table[delta_index(file, rank)] = kind;
+    let ray = if matches!(data.special, Special::Ranked | Special::RankedArea) {
+        RankedRay
+    } else {
+        Ray
+    };
+    for &(f, r) in data.rays {
+        for n in 1..=15 {
+            put(f * n, r * n, ray);
+        }
+    }
+    for &(f, r) in data.limited {
+        put(f, r, Leap);
+        put(f * 2, r * 2, Ray);
+    }
+    // A direct jump needs no empty intermediate square, even on a common ray.
+    for &(f, r) in data.steps.iter().chain(data.jumps) {
+        put(f, r, Leap);
+    }
+    match data.special {
+        Special::Lion => {
+            for f in -2..=2 {
+                for r in -2..=2 {
+                    if f != 0 || r != 0 {
+                        put(f, r, Leap);
+                    }
+                }
+            }
+        }
+        Special::ForwardLion | Special::DiagonalLion => {
+            let dirs: &[(i8, i8)] = if matches!(data.special, Special::ForwardLion) {
+                &[(0, -1)]
+            } else {
+                &[(-1, -1), (1, -1)]
+            };
+            for &(f, r) in dirs {
+                put(f, r, Leap);
+                put(f * 2, r * 2, Leap);
+            }
+        }
+        Special::Area | Special::RankedArea => {
+            for &(f, r) in A {
+                put(f, r, Leap);
+            }
+        }
+        Special::Tetrarch => {
+            for &(f, r) in A {
+                let limit = if r == 0 { 3 } else { 15 };
+                if f != 0 || profile == Profile::MullerCompleted {
+                    for n in 2..=limit {
+                        put(f * n, r * n, SkipAdjacent);
+                    }
+                }
+            }
+        }
+        Special::None | Special::Ranked | Special::DiagonalDouble => {}
+    }
+    table
+}
 #[derive(Clone, Copy)]
 struct Board {
     cells: [u32; N],
     occupied: [Set; 2],
-    ranks: [Set; 5],
     royals: [Set; 2],
     demons: [Set; 2],
     side: usize,
@@ -373,7 +452,6 @@ impl Board {
         Self {
             cells: [0; N],
             occupied: [Set::default(); 2],
-            ranks: [Set::default(); 5],
             royals: [Set::default(); 2],
             demons: [Set::default(); 2],
             side,
@@ -405,7 +483,6 @@ impl Board {
             let m = meta(old);
             let s = m.piece.side.index();
             self.occupied[s].remove(at);
-            self.ranks[m.rank].remove(at);
             if m.royal {
                 self.royals[s].remove(at);
             }
@@ -422,7 +499,6 @@ impl Board {
             let m = meta(c);
             let s = m.piece.side.index();
             self.occupied[s].add(at);
-            self.ranks[m.rank].add(at);
             if m.royal {
                 self.royals[s].add(at);
             }
@@ -469,59 +545,42 @@ impl Board {
         }
         false
     }
-    fn aligned(from: usize, to: usize, owner: usize, df: i8, dr: i8) -> Option<usize> {
-        let sign = if owner == 0 { 1 } else { -1 };
-        let f = to as i32 % 16 - from as i32 % 16;
-        let r = to as i32 / 16 - from as i32 / 16;
-        let fdir = i32::from(df) * sign;
-        let rdir = i32::from(dr) * sign;
-        let n = if fdir != 0 {
-            f / fdir
-        } else if rdir != 0 {
-            r / rdir
+    fn direct(&self, c: u32, from: usize, to: usize) -> bool {
+        let mover = meta(c);
+        let df = (to % 16) as i8 - (from % 16) as i8;
+        let dr = (to / 16) as i8 - (from / 16) as i8;
+        let delta = if mover.piece.side == Side::Sente {
+            delta_index(df, dr)
         } else {
-            return None;
+            delta_index(-df, -dr)
         };
-        (n > 0 && n <= 15 && f == fdir * n && r == rdir * n).then_some(n as usize)
-    }
-    fn ray(
-        &self,
-        c: u32,
-        from: usize,
-        to: usize,
-        dirs: &[(i8, i8)],
-        ranked: bool,
-        skip: bool,
-    ) -> bool {
-        let owner = meta(c).piece.side.index();
-        for &(f, r) in dirs {
-            if let Some(n) = Self::aligned(from, to, owner, f, r) {
-                let mut crossed = false;
-                for i in 1..n {
-                    if skip && i == 1 {
-                        continue;
-                    }
-                    let at = offset(from, owner, f * i as i8, r * i as i8).unwrap();
-                    let q = self.cells[at];
-                    if q != 0 {
-                        if !ranked
-                            || self.ranks[meta(c).rank..]
-                                .iter()
-                                .any(|set| set.contains(at))
-                        {
-                            return false;
-                        }
-                        crossed = true;
-                    }
-                }
-                return !crossed
-                    || (self.enemy(to, owner)
-                        && meta(self.cells[to]).rank != 4
-                        && (self.profile == Profile::MullerCompleted
-                            || meta(self.cells[to]).rank < meta(c).rank));
-            }
+        let kind = DIRECT[self.profile as usize][mover.face as usize][delta];
+        match kind {
+            Direct::Unreachable => return false,
+            Direct::Leap => return true,
+            _ => {}
         }
-        false
+        let stride = isize::from(df.signum()) + 16 * isize::from(dr.signum());
+        let mut at = from as isize + stride;
+        if kind == Direct::SkipAdjacent {
+            at += stride;
+        }
+        let mut jumped = false;
+        while at != to as isize {
+            let blocker = self.cells[at as usize];
+            if blocker != 0 {
+                if kind != Direct::RankedRay || meta(blocker).rank >= mover.rank {
+                    return false;
+                }
+                jumped = true;
+            }
+            at += stride;
+        }
+        !jumped
+            || (self.enemy(to, mover.piece.side.index())
+                && meta(self.cells[to]).rank != 4
+                && (self.profile == Profile::MullerCompleted
+                    || meta(self.cells[to]).rank < mover.rank))
     }
     fn geometry(&self, m: Move) -> bool {
         if m.0 >> 31 != 0 || m.len() > 3 {
@@ -531,6 +590,9 @@ impl Board {
         let c = self.cells[from];
         if c == 0 || meta(c).piece.side.index() != self.side {
             return false;
+        }
+        if m.len() == 1 {
+            return self.direct(c, from, m.first());
         }
         let data = movement(meta(c).face, self.profile);
         let owner = self.side;
@@ -543,75 +605,6 @@ impl Board {
         let path = m.path();
         if path[..m.len()].iter().any(|&s| s >= N) {
             return false;
-        }
-        if m.len() == 1 {
-            let to = path[0];
-            if from == to {
-                return false;
-            }
-            if data
-                .steps
-                .iter()
-                .chain(data.jumps)
-                .any(|&(f, r)| offset(from, owner, f, r) == Some(to))
-            {
-                return true;
-            }
-            if self.ray(
-                c,
-                from,
-                to,
-                data.rays,
-                matches!(data.special, Special::Ranked | Special::RankedArea),
-                false,
-            ) {
-                return true;
-            }
-            if data.limited.iter().any(|&(f, r)| {
-                Self::aligned(from, to, owner, f, r).is_some_and(|n| n <= 2)
-                    && self.ray(c, from, to, &[(f, r)], false, false)
-            }) {
-                return true;
-            }
-            match data.special {
-                Special::Lion => {
-                    if distance(from, to) <= 2 {
-                        return true;
-                    }
-                }
-                Special::ForwardLion | Special::DiagonalLion => {
-                    let dirs: &[(i8, i8)] = if matches!(data.special, Special::ForwardLion) {
-                        &[(0, -1)]
-                    } else {
-                        &[(-1, -1), (1, -1)]
-                    };
-                    if dirs.iter().any(|&(f, r)| {
-                        (1..=2).any(|n| offset(from, owner, f * n, r * n) == Some(to))
-                    }) {
-                        return true;
-                    }
-                }
-                Special::Tetrarch => {
-                    if distance(from, to) < 2 {
-                        return false;
-                    }
-                    if from / 16 == to / 16 {
-                        let n = (from % 16).abs_diff(to % 16);
-                        return n == 2
-                            || (n == 3
-                                && self.cells
-                                    [((from as i32) + (if to > from { 2 } else { -2 })) as usize]
-                                    == 0);
-                    }
-                    let dirs = if self.profile == Profile::AdamsModern {
-                        D
-                    } else {
-                        &[(0, -1), (0, 1), (-1, -1), (1, -1), (-1, 1), (1, 1)]
-                    };
-                    return self.ray(c, from, to, dirs, false, true);
-                }
-                _ => {}
-            }
         }
         if matches!(data.special, Special::Area | Special::RankedArea) {
             let mut at = from;
@@ -949,7 +942,7 @@ impl Board {
         {
             return true;
         }
-        if self.geometry(Move::travel(from, &[target], false)) {
+        if self.direct(c, from, target) {
             return true;
         }
         if meta(c).face == Face::HT && distance(from, target) == 1 {
@@ -958,7 +951,7 @@ impl Board {
         if meta(c).face == Face::FiD {
             for &(f, r) in A {
                 if let Some(to) = offset(target, 0, f, r)
-                    && (distance(from, to) <= 3 || self.geometry(Move::travel(from, &[to], false)))
+                    && (distance(from, to) <= 3 || self.direct(c, from, to))
                 {
                     return true;
                 }
@@ -1283,7 +1276,6 @@ impl TenjikuPosition {
         #[cfg(test)]
         {
             assert_eq!(b.occupied, self.board.occupied);
-            assert_eq!(b.ranks, self.board.ranks);
             assert_eq!(b.royals, self.board.royals);
             assert_eq!(b.demons, self.board.demons);
             assert_eq!(b.material, self.board.material);

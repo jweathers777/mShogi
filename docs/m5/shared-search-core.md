@@ -392,20 +392,38 @@ Current identities are `mshogi.chu.shared-core.v1` and
 MSH-183 (Tenjiku Search Core Adoption) replaces the private full-width loop
 with the same shared searcher. No Tenjiku branch is added to the core. Chu
 and Tenjiku share a small fixed-word square-set implementation. Tenjiku uses
-four words for 256 squares, with cached owner, rank, royal and Fire Demon sets.
+four words for 256 squares, with cached owner, royal and Fire Demon sets.
 The board retains original identities, base pieces, promotion and refusal
 rights. A 32-bit move retains up to three landings or a stationary igui action.
 An undo record has a count and space for twelve changed squares: the source,
 three landings and eight burn neighbours. It restores captures, mover death,
 promotion rights, material, placement and both hashes.
 
-Both profiles supply the immutable rules identity. Private geometry
-implements all 44 faces, including ranked jumps, profile-specific post-jump
-victims, area routes, compound captures and Heavenly Tetrarch igui. Complete
-effects apply direct captures, Demon hazards and burns, mover death, then
-surviving promotion. Adams burns before a moving Demon dies; Muller suppresses
-that burn. A newly promoted Demon does not burn on its promotion action.
-Tests compare full actions and states with rules in both profiles.
+Search uses the same single-landing geometry check for candidate moves and attack
+tests. Each profile has one table per movement face, indexed by file and rank
+displacement from the mover's perspective. A step or direct jump needs only a
+lookup. For a ray, search scans the intervening squares in the indicated
+direction. A ranked general can jump lower ranks to capture. After a jump,
+Adams requires a lower-ranked victim. Muller permits any nonroyal enemy.
+A Heavenly Tetrarch ray skips its adjacent square. Its sideways travel stops
+at distance three, and only Muller permits vertical rays. To capture an
+adjacent enemy, the Tetrarch uses a stationary igui action.
+
+Lion and Lion Hawk routes record both actual landings and can capture twice
+or return to the source. The Horned Falcon and Soaring Eagle use restricted
+directions. Muller's Free Eagle can take two diagonal steps. For the Fire
+Demon and Vice General, generation follows up to three adjacent steps and
+stops a route at its first capture. On a complete route, search applies
+landing captures and checks the final square for surviving enemy Demons.
+Adams lets a moving Demon burn adjacent enemy non-Demons before it dies.
+Muller suppresses its burn if it dies. Only survivors promote. A newly
+promoted Demon gains its aura for later turns.
+
+The attack test uses geometry to find pieces that could remove a royal.
+It then applies complete moves, including captures and burns, to prove that
+all enemy royals disappear and an own royal survives. Tests compare complete
+actions and successor states with the rules for both profiles.
+See the [Tenjiku rules profile](../m4/tenjiku/profile.md).
 
 The adapter obtains exact game root conclusions and legal actions, including
 repetition admission. It checks the selected action and replays the reported

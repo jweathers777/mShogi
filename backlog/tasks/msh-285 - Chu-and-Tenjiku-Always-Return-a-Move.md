@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-28T10:01:00Z'
-updated_date: '2026-11-28T10:48:00Z'
+updated_date: '2026-11-28T10:51:00Z'
 labels:
   - chu
   - tenjiku
@@ -53,4 +53,8 @@ Search and engine suites passed before the final consumer fixture update, includ
 Local checks passed: workspace format, Clippy and 1,175 Rust tests (10 ignored), including existing search, independent Chu/Tenjiku perft, differential checks and real-console admission. Desktop type checking and all 578 frontend tests passed with Node 24.19.0. The native runner applied and replayed both one-node fallbacks for Chu, Adams and Muller in three local calibration pairs. A frozen-main regeneration proved the four completed Tenjiku snapshots already differed from their generator. Filed MSH-289 and kept these four snapshots outside the fix.
 
 Handoff: Product candidate b0acbf0 with consumer test checkpoints on codex/msh-285-always-return-move. Linux candidate and frozen 2ccc003 built on c3-standard-4. Both build cleanups verified. Next: compare blunders and clocked SPRT, then integrate only after AC3 resolves. Cloud evidence: gs://mshogi-experiments-216675633801/runs/msh-285/.
+
+b0acbf0 vs 2ccc003, c3-standard-4: tools.strength.cli blunders at depth 3, Chu 300K nodes and Adams/Muller 500K nodes, using MSH-52.3 and MSH-53.3 suites. All 43 positions match in choices, scores and nodes. Both Linux builds and the screen cost at most $0.0725 combined VM compute, with no jobs, VMs or disks left. GCS gs://mshogi-experiments-216675633801/runs/msh-285/blunders/.
+
+Apply the roadmap search SPRT (0/15 Elo, alpha=beta=.05, minimum 30 scored pairs independently for Chu, Adams and Muller) before the first timed match. Use the established fast clocks. Next: Chu, then the two Tenjiku profiles on branch codex/msh-285-always-return-move.
 <!-- SECTION:NOTES:END -->

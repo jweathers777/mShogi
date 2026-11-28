@@ -1,11 +1,11 @@
 ---
 id: MSH-288
 title: Shogi Blunders in Time Trouble
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-28T10:14:00Z'
-updated_date: '2026-11-28T19:21:00Z'
+updated_date: '2026-11-28T20:30:00Z'
 labels:
   - shogi
   - time-management
@@ -31,30 +31,36 @@ In the MSH-193 Shogi blunder screen (304 MSH-191 games at 60 s + 1 s against ext
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [x] #1 From the MSH-191 game records, measure clock use per move and identify where the time-trouble positions come from
-- [ ] #2 A fix for the measured cause wins an SPRT against the predecessor in Shogi at 60 s + 1 s, or the task records why no candidate won
-- [ ] #3 Results, cost and GCS path recorded; shared clock documentation updated if the policy changes
+- [x] #2 A fix for the measured cause wins an SPRT against the predecessor in Shogi at 60 s + 1 s, or the task records why no candidate won
+- [x] #3 Results, cost and GCS path recorded; shared clock documentation updated if the policy changes
 <!-- AC:END -->
 
 ## Implementation Plan
 
 <!-- SECTION:PLAN:BEGIN -->
-Audit the 304 MSH-191 USI game ledgers and join each MSH-193 blunder to its clock charge. Compare a smaller hard cutoff with the frozen predecessor through the native clocked USI route at 60+1. Run the timed blunder suite and use the 0/+15 Elo SPRT to decide whether to keep the shared protocol change. Keep the fixed-time experiment runner on its 30-move share.
+Measure clock use in the MSH-191 USI ledgers. Test a lower shared protocol cutoff against the predecessor at 60+1 and rerun the MSH-193 blunder suite. Keep the candidate only if it wins the SPRT.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
-Historical MSH-191 protocol ledgers: 304 games, 15,805 mShogi moves, all 226 MSH-193 labels matched. Median charge was 2.622/2.070/1.361/1.000 s for own moves 1–15/16–30/31–45/46 onward. Median final balance 4.155 s. 187 games first reached <2 s at median own move 41; 2,782 moves met that clock threshold. These contained 64 clear blunders (2.30 per 100 vs 1.24 at higher balances, with game phase confounding that comparison). The median time-trouble blunder had 1.098 s left and used 1.000 s. 67.7% of moves exceeded the nominal budget, with 8,232 s gross excess in the first 30 own moves across 304 games. Median position-to-go transport was 0.021 ms; the old logs have no internal timing breakdown. MSH-192 tested a larger move count only with new King weights at 15+0.25 and was inconclusive. MSH-287 tested a fixed-move-time runner, which cannot use the USI hard headroom invoked in MSH-191. Use the same nominal share and increment as the predecessor, but cap the shared protocol hard budget at 1.5 times nominal, which preserves the largest adaptive target and limits overshoot. No VM cost for this analysis.
+MSH-191 historical ledgers at 60+1 through USI: 304 games and 15,805 mShogi moves. All 226 MSH-193 positions matched. Median charges for own moves 1–15, 16–30, 31–45 and 46 onward were 2.622, 2.070, 1.361 and 1.000 s. The median balance after own move 30 was 11.7 s, and the final balance was 4.155 s. A total of 187 games reached less than 2 s, at median own move 41. The 2,782 low-clock moves contained 64 clear blunders (2.30 per 100, against 1.24 at higher balances). Game phase differs between the groups. For the median low-clock blunder, mShogi had 1.098 s and spent 1.000 s. 67.7% of moves exceeded the nominal share, with 8,232 s gross excess in the first 30 own moves. Position-to-go transport median was 0.021 ms. The old logs do not measure engine setup separately. Historical analysis and charges are at gs://mshogi-experiments-216675633801/runs/msh-288/historical/. No VM cost.
 
-Handoff: historical ledger analysis complete on codex/msh-288-shogi-clock. Next, run the matched USI comparison and timed blunder suite.
+MSH-192 tested a larger move count with new King weights at 15+0.25. MSH-287 measured the fixed-time runner, which gives the engine the nominal share without the USI hard headroom. The new candidate kept the nominal share and cut the shared protocol hard cutoff from 3× to 1.5× nominal. The feasibility check used depth 64, 5M nodes per request and the native 320-ply ceiling. Both clocks can charge 440 s plus at most 160 s of grace, within 682 s including setup. Eight c3-standard-4 tasks of 32 pairs with four concurrent games each plus their suite searches allowed an 11,182 s task limit. Projected total compute was under $5.30.
 
-Feasibility before Batch: both sides have 60 s + 1 s, depth 64 and 5M nodes per request, with the native 320-ply ceiling. Both clocks can charge 440 s before grace; even a full 0.5 s grace on each of 320 plies adds at most 160 s, leaving about 82 s of the 682 s game watchdog for protocol setup and cleanup. Eight c3-standard-4 bins of 32 pairs at four games per VM take at most 16 game waves per task, about 11,032 s with staging, plus provisioning and cleanup. Upper bound about $5.3 including the two builds and the comparison image, within $10. Use the same 0/+15 Elo SPRT as MSH-287, alpha/beta 0.05, at least 30 pairs and at most 256, in catalog order. Build the frozen predecessor 097b11b and the one-line candidate separately; use the current native shogi-match and verify replay.
+Build and calibration: predecessor 097b11b and candidate 10ed038 built with Rust 1.99.1 on c3-standard-4. The first Cloud Build attempt named an unavailable prior worker image. The retry used the pinned builder-v2 base. Four 60+1 calibration games replayed, longest 419 s. Build and calibration VM time cost at most $0.063. Calibration reports: gs://mshogi-experiments-216675633801/runs/msh-288/calibration/.
 
-Historical analysis script, output and per-move charges: gs://mshogi-experiments-216675633801/runs/msh-288/historical/. Original ledgers: gs://mshogi-experiments-216675633801/msh191/. The old blunder report is in Git history at 0656276; the archived suite remains in tools/strength/data/shogi-blunders-v1.json. On the recorded clock paths, 3,834 of the first 9,066 moves exceeded the proposed 1.5× cutoff, compared with 343 of 2,782 moves under 2 s.
+Match at 60+1: 256 openings, two independent colors, eight c3-standard-4 VMs. Use the archived USI operator with `submit --manifest M --config C --image I --job strength-msh288-shogi --out DIR`. All 512 games scored and replayed. No search hit the node cap. Longest game 421 s. The 0/+15 Elo SPRT first reached H0 at pair 226 (LLR −3.021, limits ±2.944). The full sample was 218 wins, 22 draws, 272 losses, about −36.8 Elo (approximate 95% interval −66.2 to −7.9). The candidate had 291 low-clock turns in 20 games, compared with 7,634 in 405 games for the predecessor. Median final balances were 10.330 and 4.410 s. The 90th-percentile charge on own moves 1–15 fell from 4.879 to 3.622 s. The cutoff shortened the longest early searches and saved time for later moves. The strength result rejected that trade-off. Median charge beyond reported search was 1 ms for both engines.
 
-Cloud Build worker setup: the prior Xiangqi worker image digest was missing from Artifact Registry. Retried with the available builder-v2 digest and current cloud transport modules. Native local smoke passed with one 3+0.1 game replay and one timed suite probe.
+The same campaign reran the 226 MSH-193 positions in fresh processes with their original histories and clocks. Candidate and predecessor avoided the recorded move in 76 and 65 positions, 24 and 22 of 62 held-out positions, and 18 and 19 of 64 time-trouble positions. No fresh judging. Match VM upper bound $1.818. Total estimated compute under $1.94 including both builds and calibration. All Batch jobs, VMs and disks were verified absent. Reports: gs://mshogi-experiments-216675633801/runs/msh-288/shogi/. Reproduction code, summaries and cleanup records are in the operator directory of the same prefix.
 
-Checkpoint on codex/msh-288-shogi-clock: the 1.5× candidate builds from 10ed038. The next commit updates two UCI cutoff assertions. Candidate formatter, Clippy and workspace tests passed on macOS (1,176 passed, 10 ignored). Both Linux release builds finished and their Batch jobs, VMs and disks were verified absent. A four-game 60+1 calibration is underway. After all four games replay, run the 256-pair USI comparison and 226-position suite in the same Batch campaign.
-
-Calibration on c3-standard-4 at 60+1 (097b11b vs 10ed038): all four games passed native replay with no failures or node-cap hits. Longest game 419 s, median 269 s. Calibration VM upper bound $0.032, with resources verified absent. Reports: gs://mshogi-experiments-216675633801/runs/msh-288/calibration/. Handoff: full Batch job strength-msh288-shogi is running on codex/msh-288-shogi-clock. Review the seed-ordered SPRT boundary, suite and clock use, verify cleanup, and integrate only the qualifying product change. Operator scripts are in the task GCS prefix.
+The experimental cutoff and its UCI assertions were reverted on codex/msh-288-shogi-clock. Candidate format, Clippy and workspace checks passed (1,176 tests, 10 ignored). The final Backlog-only diff passed whitespace, link and task checks. No follow-up task.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+In 304 historical games, mShogi exceeded its nominal USI share on 68% of turns and reached less than 2 s in 187 games. A tighter cutoff reduced low-clock turns in current 60+1 self-play from 7,634 to 291.
+
+The candidate lost about 37 Elo over 512 replayed games and crossed the SPRT rejection boundary at pair 226. The timed suite was mixed. The existing clock policy stays in use. Estimated compute was under $1.94. All Batch resources were removed. No follow-up task.
+<!-- SECTION:FINAL_SUMMARY:END -->

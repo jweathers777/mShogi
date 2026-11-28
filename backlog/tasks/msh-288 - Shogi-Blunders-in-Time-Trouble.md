@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-28T10:14:00Z'
-updated_date: '2026-11-28T19:00:00Z'
+updated_date: '2026-11-28T19:06:00Z'
 labels:
   - shogi
   - time-management
@@ -16,8 +16,8 @@ milestone: m-5
 dependencies:
   - MSH-287
 documentation:
-  - docs/m5/shogi-blunder-screen.md
   - docs/m5/strength-roadmap.md
+  - docs/m5/shogi-anchor-method.md
 priority: medium
 ordinal: 266000
 ---
@@ -49,4 +49,8 @@ Historical MSH-191 protocol ledgers: 304 games, 15,805 mShogi moves, all 226 MSH
 Handoff: historical ledger analysis complete on codex/msh-288-shogi-clock. Next, run the matched USI comparison and timed blunder suite.
 
 Feasibility before Batch: both sides have 60 s + 1 s, depth 64 and 5M nodes per request, with the native 320-ply ceiling. Both clocks can charge 440 s before grace; even a full 0.5 s grace on each of 320 plies adds at most 160 s, leaving about 82 s of the 682 s game watchdog for protocol setup and cleanup. Eight c3-standard-4 bins of 32 pairs at four games per VM take at most 16 game waves per task, about 11,032 s with staging, plus provisioning and cleanup. Upper bound about $5.3 including the two builds and the comparison image, within $10. Use the same 0/+15 Elo SPRT as MSH-287, alpha/beta 0.05, at least 30 pairs and at most 256, in catalog order. Build the frozen predecessor 097b11b and the one-line candidate separately; use the current native shogi-match and verify replay.
+
+Historical analysis script, output and per-move charges: gs://mshogi-experiments-216675633801/runs/msh-288/historical/. Original ledgers: gs://mshogi-experiments-216675633801/msh191/. The old blunder report is in Git history at 0656276; the archived suite remains in tools/strength/data/shogi-blunders-v1.json. On the recorded clock paths, 3,834 of the first 9,066 moves exceeded the proposed 1.5× cutoff, compared with 343 of 2,782 moves under 2 s.
+
+Cloud Build worker setup: the prior Xiangqi worker image digest was missing from Artifact Registry. Retried with the available builder-v2 digest and current cloud transport modules. Native local smoke passed with one 3+0.1 game replay and one timed suite probe.
 <!-- SECTION:NOTES:END -->

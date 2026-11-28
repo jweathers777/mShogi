@@ -1,10 +1,11 @@
 ---
 id: MSH-288
 title: Shogi Blunders in Time Trouble
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-28T10:14:00Z'
-updated_date: '2026-11-28T11:50:00Z'
+updated_date: '2026-11-28T18:55:00Z'
 labels:
   - shogi
   - time-management

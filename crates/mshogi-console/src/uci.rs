@@ -524,14 +524,14 @@ mod tests {
         )
         .unwrap();
         assert_eq!(go.time.unwrap().soft, Duration::from_millis(413));
-        assert_eq!(go.budget, Some(Duration::from_millis(750)));
+        assert_eq!(go.budget, Some(Duration::from_millis(619)));
         let go = parse_go(
             &["wtime", "10000", "winc", "100", "movestogo", "10"],
             Color::White,
         )
         .unwrap();
         assert_eq!(go.time.unwrap().soft, Duration::from_millis(1070));
-        assert_eq!(go.budget, Some(Duration::from_millis(3210)));
+        assert_eq!(go.budget, Some(Duration::from_millis(1605)));
         let go = parse_go(&["wtime", "0"], Color::White).unwrap();
         assert_eq!(go.budget, Some(Duration::ZERO));
         assert_eq!(go.limits.nodes, Some(0));

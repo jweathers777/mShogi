@@ -1,10 +1,11 @@
 ---
 id: MSH-289
 title: Refresh completed Tenjiku desktop snapshots
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-28T10:46:00Z'
-updated_date: '2026-11-28T20:54:00Z'
+updated_date: '2026-11-28T20:59:00Z'
 labels:
   - tenjiku
   - desktop
@@ -29,3 +30,9 @@ Four completed Tenjiku frontend snapshots, the analysis and engine-played snapsh
 - [ ] #1 The four completed Tenjiku snapshots match the current generator output.
 - [ ] #2 The affected frontend tests and desktop fixture regeneration check pass.
 <!-- AC:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Regenerate the desktop fixtures and retain the four completed Tenjiku snapshots. 2. Run the fixture regeneration check, affected frontend tests, and shared checks; integrate and clean up.
+<!-- SECTION:PLAN:END -->

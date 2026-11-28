@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-28T10:01:00Z'
-updated_date: '2026-11-28T12:18:00Z'
+updated_date: '2026-11-28T12:33:00Z'
 labels:
   - harness
   - strength
@@ -15,6 +15,7 @@ milestone: m-5
 dependencies: []
 documentation:
   - docs/m5/strength-harness.md
+  - docs/m4/xiangqi/protocol.md
 priority: high
 ordinal: 263000
 ---
@@ -42,4 +43,6 @@ Also remove the fixed job length: tools/strength/batch.py sets SECONDS = 1800 fo
 Checkpoint (codex/msh-286-color-games): Independent one-color reports, per-game clock wall defaults, projected Batch runtimes, and updated guides are implemented. The initial strength suite passed. Next: finish shared checks, verify the CLI with native engine processes, run affected-OS CI, obtain review, and integrate.
 
 Review checkpoint (codex/msh-286-color-games): Fresh review found missing catalog diagnostics, a successful exit when every game failed to replay, and evidence upload that could outlive a short Batch task watchdog. Fixed all three and added regressions. Native Tenjiku calibration replayed both colors; two native Chess pairs retained all four wall stops and continued. Next: verify the reviewed candidate on Linux, macOS, and Windows, then integrate.
+
+Validation checkpoint (codex/msh-286-color-games): The shared check passed with Node 24.19.0, including 1,176 Rust tests, 578 frontend tests, 57 strength tests and 25 tooling tests. Linux and macOS process checks passed on 5f2a173. Windows is running in GitHub Actions 46143993677. Updated the Xiangqi protocol guide for the six-hour limit. Next: verify Windows, then integrate.
 <!-- SECTION:NOTES:END -->

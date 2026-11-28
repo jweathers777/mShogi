@@ -98,10 +98,10 @@ The runner uses the existing supervised process transport unchanged: bounded
 stdin writes/acknowledgements, stdout queue, escaped diagnostic capture,
 watchdogs, quit/kill/reap and pipe cleanup. Configuration metadata can use 1 MiB. Opening histories are excluded.
 The operator can pair up to four openings, choose a positive action budget
-and set the overall game watchdog up to 600000 ms. Stdout lines can use 4096
-bytes, the output queue holds 32 events, a command and its replies can use
-1 MiB, and stderr can use 4096 bytes per child. A position command carries
-the full history. The 128 MiB report budget counts all encoded traffic and
+and set the overall game watchdog up to six hours (21,600,000 ms). Stdout
+lines can use 4096 bytes, the output queue holds 32 events, and a command
+and its replies can use 1 MiB. Stderr can use 4096 bytes per child. A position
+command carries the full history. The 128 MiB report budget counts all encoded traffic and
 game records. Retention failures pause before the
 candidate action commits and preserve the accepted prefix.
 

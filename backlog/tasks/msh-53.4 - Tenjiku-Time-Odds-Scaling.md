@@ -4,6 +4,7 @@ title: Tenjiku Time-Odds Scaling
 status: Ready
 assignee: []
 created_date: '2026-11-28T10:02:00Z'
+updated_date: '2026-11-28T10:19:00Z'
 labels:
   - tenjiku
   - strength
@@ -17,6 +18,7 @@ documentation:
   - docs/m5/strength-roadmap.md
   - docs/m5/strength-harness.md
 parent_task_id: MSH-53
+priority: high
 ordinal: 264000
 ---
 

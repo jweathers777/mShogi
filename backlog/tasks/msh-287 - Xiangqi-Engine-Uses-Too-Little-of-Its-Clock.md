@@ -4,6 +4,7 @@ title: Xiangqi Engine Uses Too Little of Its Clock
 status: Ready
 assignee: []
 created_date: '2026-11-28T10:14:00Z'
+updated_date: '2026-11-28T10:19:00Z'
 labels:
   - xiangqi
   - time-management
@@ -15,6 +16,7 @@ dependencies: []
 documentation:
   - docs/m5/xiangqi-blunder-screen.md
   - docs/m5/strength-roadmap.md
+priority: medium
 ordinal: 265000
 ---
 

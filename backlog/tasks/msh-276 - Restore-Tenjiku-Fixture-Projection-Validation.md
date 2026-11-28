@@ -1,7 +1,7 @@
 ---
 id: MSH-276
 title: Restore Tenjiku Fixture Projection Validation
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-27T07:17:00Z'
@@ -26,8 +26,8 @@ The standalone Tenjiku data validator fails with "profile expectation digest cha
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 The standalone Tenjiku validator and its negative data-admission tests pass.
-- [ ] #2 The new projection digests are traceable to the scope terminology change. Independently derived rules expectations and validation checks are preserved.
+- [x] #1 The standalone Tenjiku validator and its negative data-admission tests pass.
+- [x] #2 The new projection digests are traceable to the scope terminology change. Independently derived rules expectations and validation checks are preserved.
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -41,3 +41,9 @@ The standalone Tenjiku data validator fails with "profile expectation digest cha
 <!-- SECTION:NOTES:BEGIN -->
 Compared cadca34^ fixture bytes and both projections with their predecessor locks. After the terminology renames in cadca34, both complete predecessor projections equal the current projections; independently derived values are unchanged. Updated the two projection locks. Next: run checks and integrate. Branch: codex/msh-276-fixture-projections.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Restored both reviewed profile projection locks after verifying the cadca34 terminology changes against the predecessor data and locks. The standalone validator and all 25 negative admission tests pass; shared changed-path checks pass. MSH-289 is the separate next task.
+<!-- SECTION:FINAL_SUMMARY:END -->

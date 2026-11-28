@@ -115,7 +115,7 @@ it.each([adamsIncomplete, mullerIncomplete])("shows an unscored $profile node-li
   expect(screen.getAllByText("No completed evaluation").length).toBeGreaterThan(0);
   expect(screen.getByRole("button", { name: "Start move analysis" })).toBeTruthy();
   expect(container.querySelector(".shogi-pv")?.textContent).toContain(selected.variation[0]);
-  expect(screen.getByText("No move was played.")).toBeTruthy();
+  expect(container.querySelector(".shogi-analysis > .shogi-search-observation .analysis-readonly")?.textContent).toBe("No move was played.");
   expect(screen.queryByRole("region", { name: "Game outcome" })).toBeNull();
   expect(command).not.toHaveBeenCalled();
 });

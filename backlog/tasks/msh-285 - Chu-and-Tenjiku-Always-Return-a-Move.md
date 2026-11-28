@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-28T10:01:00Z'
-updated_date: '2026-11-28T10:42:00Z'
+updated_date: '2026-11-28T10:48:00Z'
 labels:
   - chu
   - tenjiku
@@ -29,7 +29,7 @@ Chu and Tenjiku search use restricted_board! in crates/mshogi-search (chu.rs, te
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [x] #1 A timed or node-limited Chu or Tenjiku search that stops before depth 1 completes returns a legal move (best partial-iteration root move when one is scored, else the first ordered legal move); explicit cancellation still returns no move
-- [ ] #2 Focused tests cover a stop before the first completed iteration for both games; rules perft and existing search tests pass
+- [x] #2 Focused tests cover a stop before the first completed iteration for both games; rules perft and existing search tests pass
 - [ ] #3 Tenjiku and Chu each pass an SPRT against the frozen predecessor at their normal fast control (or are neutral with simpler code); results, cost and GCS path recorded
 <!-- AC:END -->
 
@@ -49,4 +49,8 @@ Feasibility: Freeze main at 2ccc003 for both comparisons. Use c3-standard-4 with
 Handoff: Candidate b0acbf0 on codex/msh-285-always-return-move. Search and structured engine fallback implemented with specific tests. Next: finish workspace checks, run Linux blunder and predecessor checks, and integrate after acceptance.
 
 Search and engine suites passed before the final consumer fixture update, including both Tenjiku profiles, Chu, perft and differential tests. Updated console integration tests and the three desktop snapshots that cover first-iteration node exhaustion. Full workspace and frontend checks are running. The Linux builds compare b0acbf0 with 2ccc003. Subsequent edits so far are test or verification-fixture only.
+
+Local checks passed: workspace format, Clippy and 1,175 Rust tests (10 ignored), including existing search, independent Chu/Tenjiku perft, differential checks and real-console admission. Desktop type checking and all 578 frontend tests passed with Node 24.19.0. The native runner applied and replayed both one-node fallbacks for Chu, Adams and Muller in three local calibration pairs. A frozen-main regeneration proved the four completed Tenjiku snapshots already differed from their generator. Filed MSH-289 and kept these four snapshots outside the fix.
+
+Handoff: Product candidate b0acbf0 with consumer test checkpoints on codex/msh-285-always-return-move. Linux candidate and frozen 2ccc003 built on c3-standard-4. Both build cleanups verified. Next: compare blunders and clocked SPRT, then integrate only after AC3 resolves. Cloud evidence: gs://mshogi-experiments-216675633801/runs/msh-285/.
 <!-- SECTION:NOTES:END -->

@@ -47,7 +47,7 @@ it("shows an unscored node-limited suggestion and keeps earlier observations his
   expect(observation.getByText(`${selected.perspective} perspective · ${selected.status}`)).toBeTruthy();
   expect(observation.queryByText(/Pawns|wins|draw|mate/i)).toBeNull();
   expect(observation.getByText("Continuation")).toBeTruthy();
-  expect(observation.getByText(selected.variation[0])).toBeTruthy();
+  expect(observation.getByText(selected.variation.join(" · "))).toBeTruthy();
   expect(observation.getByText("No move was played.")).toBeTruthy();
   expect(container.querySelector(".recorded-searches summary")?.textContent).toBe(`Recorded searches (${incomplete.search_observations.length})`);
   expect(command).not.toHaveBeenCalled();

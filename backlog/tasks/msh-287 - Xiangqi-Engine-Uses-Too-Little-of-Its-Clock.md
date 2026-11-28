@@ -1,10 +1,11 @@
 ---
 id: MSH-287
 title: Xiangqi Engine Uses Too Little of Its Clock
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-28T10:14:00Z'
-updated_date: '2026-11-28T11:55:00Z'
+updated_date: '2026-11-28T15:46:00Z'
 labels:
   - xiangqi
   - time-management

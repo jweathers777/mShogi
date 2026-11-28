@@ -4,6 +4,7 @@ title: Independent Color Games in the Strength Harness
 status: Ready
 assignee: []
 created_date: '2026-11-28T10:01:00Z'
+updated_date: '2026-11-28T10:10:00Z'
 labels:
   - harness
   - strength
@@ -29,3 +30,9 @@ tools/strength/internal_match.py runs both color games of a pair in sequence und
 - [ ] #2 Default per-game wall comes from the clock: base + (max plies / 2) * increment for each side plus a margin; default Batch max_run_seconds comes from the projected campaign need
 - [ ] #3 Strength tests pass; docs/m5/strength-harness.md describes the new behavior and drops the shared-wall caveat
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Also covers archived MSH-238 (Remove the fixed ten-minute experiment cap): crates/mshogi-runner/src/protocol.rs still limits max_game_ms to 600000, while shogi_match.rs and xiangqi_match.rs allow 21600000.
+<!-- SECTION:NOTES:END -->

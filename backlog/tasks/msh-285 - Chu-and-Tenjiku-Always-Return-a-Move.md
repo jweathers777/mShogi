@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-28T10:01:00Z'
-updated_date: '2026-11-28T10:37:00Z'
+updated_date: '2026-11-28T10:38:00Z'
 labels:
   - chu
   - tenjiku
@@ -44,9 +44,7 @@ Chu and Tenjiku search use restricted_board! in crates/mshogi-search (chu.rs, te
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
-Handoff: Claimed on branch codex/msh-285-always-return-move. Next: inspect root search and verify the fallback in both games.
+Feasibility: Freeze main at 2ccc003 for both comparisons. Use c3-standard-4 with the prior normal clocks and default 5M-node and depth-64 safety caps. Chu at 10+0.1 can charge at most 240 s per 1,000-ply color pair before overhead, within the prior 600 s limit. Tenjiku at 60+1.5 scored 72/80 pairs in MSH-53.2 with 768 plies per game, a 1,200 s pair limit, two concurrent pairs per VM and a 1,260 s command within the 1,800 s job. Three of 160 games hit the wall, so retain every cutoff as unscored. At $0.201608 per VM-hour, a full eight-VM block reserves $0.81, earlier Tenjiku blocks cost $0.32–$0.61, and two Linux builds reserve $0.41. The builds, blunder screen and the first block for each game/profile fit under $4. Continue within the $10 task cap.
 
-Feasibility: Freeze main at 2ccc003 for both comparisons. Use c3-standard-4 and the prior normal-clock method with the default 5M-node and depth-64 safety caps. Chu at 10+0.1 can charge at most 240 s per 1,000-ply color pair before overhead, within its prior 600 s limit. At Tenjiku 60+1.5, MSH-53.2 scored 72/80 pairs within 768 plies per game and 1,200 s per pair, with only three wall stops across 160 games. Double-color total can exceed that for unusually long games. Use two concurrent pairs per VM and the proven 1,260 s command within the 1,800 s job. Keep all reports and treat any cutoffs as unscored. The rate is /bin/zsh.201608 per VM-hour. A full eight-VM match block costs at most /bin/zsh.81, earlier Tenjiku blocks cost /bin/zsh.32–/bin/zsh.61, and the two Linux builds reserve at most /bin/zsh.41 combined. Initial builds, blunder screen and the first block for each game/profile fit under  before further blocks. Stop at SPRT decision or before the  task cap.
-
-Handoff: Implemented and locally checked search and structured engine fallback for Chu and both Tenjiku profiles. Branch codex/msh-285-always-return-move. Next: finish the shared workspace checks and run cloud blunder and predecessor checks.
+Handoff: Candidate b0acbf0 on codex/msh-285-always-return-move. Search and structured engine fallback implemented with specific tests. Next: finish workspace checks, run Linux blunder and predecessor checks, and integrate after acceptance.
 <!-- SECTION:NOTES:END -->

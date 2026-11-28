@@ -42,9 +42,13 @@ Each step is one bounded task. Skip a step only with a recorded reason.
    "Measurement without a rating list". No public servers and no published
    games. Never invent a rating.
 6. **Blunder screen.** Judge mShogi's moves with a much stronger engine (a
-   measurement tool only). Fix the blunder rule, the classes and the fix rule
-   (one mechanism of at least 30% that maps to a general change) before looking
-   at the results. Keep the blunder positions as a reusable suite.
+   measurement tool only). Fix the blunder rule and the classes before looking
+   at the results. Classify errors by cause where the data permits (for
+   example time use, search depth, a piece or move type), not only by symptom.
+   Any measured cause that maps to a general change gets a fix round, whatever
+   its share; a longer-time rerun that avoids many errors is such evidence.
+   Keep a fix only when it wins an SPRT match against the predecessor. Keep the
+   blunder positions as a reusable suite.
 7. **Stop or continue.** John decides whether the game is at its baseline. A
    further round needs a specific weakness with evidence.
 

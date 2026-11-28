@@ -1,11 +1,11 @@
 ---
 id: MSH-285
 title: Chu and Tenjiku Always Return a Move
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-28T10:01:00Z'
-updated_date: '2026-11-28T11:55:00Z'
+updated_date: '2026-11-28T11:56:00Z'
 labels:
   - chu
   - tenjiku
@@ -60,3 +60,9 @@ Corrected Chu: tools.strength.cli match, 10+0.1, 2,000 plies, 750 s pair wall. A
 
 Total VM compute upper bound $1.6343. All six Batch jobs, VMs and disks were removed. One Cloud Build produced the worker image in 34.4 s. The operator archive under operator/ preserves the commands and build inputs.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Chu and both Tenjiku profiles return a legal move when time or nodes run out before depth one. Search prefers its best scored partial root move and uses the first ordered legal action if no move was scored. Explicit cancellation suppresses the fallback. Local and native checks passed, all 43 blunder observations matched, and the corrected Chu result favored the candidate. MSH-286 tracks match timing and independent color games. MSH-289 tracks older completed Tenjiku snapshots.
+<!-- SECTION:FINAL_SUMMARY:END -->

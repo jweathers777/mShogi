@@ -1,11 +1,11 @@
 ---
 id: MSH-53.3
 title: Tenjiku Reference Ladder and Blunder Screen
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-27T21:36:00Z'
-updated_date: '2026-11-27T23:05:00Z'
+updated_date: '2026-11-28T10:02:00Z'
 labels:
   - tenjiku
   - strength
@@ -30,9 +30,8 @@ Measure how the accepted classical Tenjiku engine scales with search resources a
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Freeze the accepted revision, resource rungs, paired sampling and scoring method, and time and dollar limits before the campaign. Report the same-family scaling curve separately for Adams and Muller, with uncertainty, incomplete results and limitations.
-- [x] #2 Freeze the sampling, deeper judge protocol, blunder rule and classes before inspecting results. Report blunders per 100 moves and mean win-probability loss for each profile with coverage and limits; preserve reproducible blunder positions and apply the roadmap follow-up rule.
-- [x] #3 Record exact commands, revisions, inputs, run evidence, costs, and cleanup. Relevant checks pass and the parent task and roadmap reflect the evidence. Leave the baseline stop decision to John.
+- [x] #1 Freeze the sampling, deeper judge protocol, blunder rule and classes before inspecting results. Report blunders per 100 moves and mean win-probability loss for each profile with coverage and limits; preserve reproducible blunder positions and apply the roadmap follow-up rule.
+- [x] #2 Record exact commands, revisions, inputs, run evidence, costs, and cleanup. Relevant checks pass and the parent task and roadmap reflect the evidence. Leave the baseline stop decision to John.
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -88,4 +87,12 @@ Ordinary error locators in the archived MSH-53.2 reports (1-based catalog seed, 
 Campaign close and resumable handoff: AC2 and AC3 verified, AC1 open. MSH-53.3 stays In Progress on codex/msh-53.3-tenjiku-assessment. The only remaining criterion is an estimable per-profile same-family ladder. Use the independent-color feasibility protocol above under a new release; do not repeat the artificial fixed-node or shared-wall tests. Parent MSH-53 stays open for John. All 29 low-work and ordinary-clock clear positions are preserved as four profile/cohort suites; ordinary-clock results have different source and budgets. The game engine and rules are unchanged.
 Reproduction: gs://mshogi-experiments-216675633801/runs/msh-53.3/ contains original matched native reports, full-history judge outputs, and every manifest. operator-final.tar.gz (SHA256 94a09e40183c9d614187527e9bfee67fd6fae92e7c7d988b5b1da4a83a28ed45) holds the exact CLI argument lists, clocks, work limits, immutable source and binary identities, input hashes, task-local controllers and audits. campaign.py, pilot.py and ordinary_launch.py drive the shared Batch route. audit_ladder.py, node_stops.py, pilot_gate.py, audit_judge.py and audit_ordinary.py reproduce the reported figures. The weighted ordinary screen is from two midpoint samples per occupied game/phase, with weights eligible/sampled. Native sampled positions, game-level coverage and qualified depth checks are in ordinary-sample.json and ordinary-audit.json. Reusable suites are in quality/; the native reports used as ordinary sources are preserved in ordinary-inputs/. The archive and each suite were downloaded and verified against their SHA256 before cleanup.
 Seven allocated jobs, including the pre-dispatch setup failure, have verified absence of jobs, VMs and disks. Combined allocation-to-cleanup wall was 4440.60s (74.01 min). Conservative VM upper bound $1.671296 on c3-standard-4 at $0.201608/VM-hour. Two Cloud Builds ran 65.30s total. Allowing $1 for unmetered build/storage/transfer gives a task estimate below $2.68, inside the frozen $6.65 and John’s $10 cap. Both added image versions and staging source generations were removed after their exact content was preserved, and the shared base image was verified present. All 58 shared strength tests passed, native replay and report/hash/score/config/phase checks passed, Markdown links and Backlog doctor passed. The required python3 tools/checks.py run --base origin/main selected no product suites for the Backlog/documentation-only integration; no new product build, predecessor SPRT or operating-system CI was required. No further Batch work is running.
+
+2026-11-28 (Claude, with John): the fixed-node ladder and shared-wall clock pilot could not give an estimate by design. Causes: node rungs below the known depth-1 cost (MSH-53.2 already showed 2000 nodes fails), Chu/Tenjiku give no move when stopped before depth 1, and a shared 1280 s pair wall for games that can need about 1908 s each. John moved the scaling criterion to MSH-53.4 (Tenjiku Time-Odds Scaling), which depends on MSH-285 (Chu and Tenjiku Always Return a Move) and MSH-286 (Independent Color Games in the Strength Harness).
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Ordinary-clock blunder screen (60+1.5, judge 3 plies deeper): Adams 1/72, Muller 2/72 clear blunders; no single general mechanism. Low-work fixed-node screen kept as a suite only. Scaling criterion moved to MSH-53.4 because the fixed-node and shared-wall runs produced no estimate (VM cost about $1.67). Engine and rules unchanged. Follow-ups: MSH-285, MSH-286, MSH-53.4, MSH-284.
+<!-- SECTION:FINAL_SUMMARY:END -->

@@ -109,7 +109,7 @@ Steps 5 and 6 change accordingly.
 | Xiangqi | Baseline accepted 2026-11-19. Ladder and blunder screen: MSH-197, MSH-198. | Final criteria: MSH-54 |
 | Tori Shogi | Baseline accepted 2026-11-21 (MSH-207): 2x time about +260 to +350 Elo; 0.49 clear blunders per 100 moves (same-family judge). | Final criteria: MSH-51 |
 | Chu Shogi | Baseline accepted 2026-11-25 (MSH-52.3): 2x time about +370 to +600 Elo; 0 clear blunders in 512 sampled moves (same-family judge). | Final criteria: MSH-52 |
-| Tenjiku Shogi | The accepted evaluation is `0bbfd9c`. A deeper same-family search found 1 clear blunder in 72 ordinary-clock Adams moves and 2 in 72 Muller moves. MSH-53.3 gives the sampling weights and uncertainty. The paired scaling curve remains unresolved. The next ladder needs a separate wall allowance for each color game. John’s baseline decision remains open. | MSH-214 (harness), MSH-202 (speed), MSH-53.1 (selectivity), MSH-53.2 (evaluation), MSH-53.3 (measurement), MSH-53 (final criteria) |
+| Tenjiku Shogi | The accepted evaluation is `0bbfd9c`. A deeper same-family search found 1 clear blunder in 72 ordinary-clock Adams moves and 2 in 72 Muller moves. MSH-53.3 gives the sampling weights and uncertainty. The scaling curve is MSH-53.4 (2x against 1x clock), after MSH-285 and MSH-286. John’s baseline decision remains open. | MSH-214 (harness), MSH-202 (speed), MSH-53.1 (selectivity), MSH-53.2 (evaluation), MSH-53.3 (blunder screen), MSH-53.4 (scaling), MSH-53 (final criteria) |
 
 ## Clock allocation of the experiment runner
 

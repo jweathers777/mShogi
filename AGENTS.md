@@ -128,6 +128,29 @@ while a required check is unresolved.
   the machine, the result (for example SPRT wins/losses/draws and Elo
   estimate), the cost and the GCS path.
 
+## Keep experiments simple
+
+- Before a cloud campaign, write one short feasibility check in the task: from
+  earlier runs or arithmetic, show that each game can finish within its node,
+  clock, ply, wall and job limits, and give the projected cost. Do not start a
+  run that this check cannot pass.
+- Use the tool defaults and the method of the earlier games (for example
+  Tori and Chu). Add a limit only when data shows that it is needed. Do not
+  shorten a limit to fit a self-chosen schedule.
+- The only fixed gates are the spending cap and the SPRT parameters. Do not add
+  protocol freezes, sentinels, rendezvous waits, receipt files, per-allocation
+  cost bounds, allocation counts or other process. "No score-based selection"
+  is the only result-integrity rule.
+- If a run fails because of a setting, correct the setting and run again. Keep
+  the failed run in the notes in one line. Do not treat a wrong setting as a
+  result.
+- If the engine or the harness causes the failure (for example no move, or a
+  game that cannot start), it is a bug. Fix the code or create a task. Do not
+  document the defect as a caveat, and do not design the measurement around it.
+- Keep task notes short: one entry per run with the fields above, a handoff,
+  and the final summary. Do not record hashes, receipts or reconciliation
+  details that `runs/` or GCS already hold.
+
 ## Finish
 
 1. Merge `main` into the branch. Before integration, review the final diff

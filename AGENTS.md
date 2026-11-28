@@ -23,8 +23,9 @@ must be able to start the next task without chat history and without help.
    - your own task that is In Progress;
    - the first task from `backlog task list --status Ready --ready --plain`
      that has no assignee and no `needs-john` label. Highest priority first.
-3. Claim it before you change code: set yourself as assignee, set the status to
-   In Progress, create the branch and push it. Skip any task that another worker
+3. Claim it before you change code: create the local branch, set yourself as
+   assignee, set the status to In Progress, and commit the claim on that branch.
+   Check active local branches for claims. Skip any task that another worker
    claimed.
 4. Read the task, the code that it changes, and the parts of `docs/design.md`
    that apply. Also read every document that John, the task or the design
@@ -35,6 +36,9 @@ must be able to start the next task without chat history and without help.
 - Branch from `main` as `<agent-name>/<task-id>-<short-name>`, for example
   `claude/msh-205-tori-selectivity` or `codex/msh-205-tori-selectivity`. A
   small documentation change can go directly on `main`.
+- Commit claims, checkpoints, and handoffs locally. Push a task branch only
+  when a required step needs the commit on the remote, such as a GitHub Actions
+  check. Push `main` after integration.
 - Make engineering decisions yourself. Use measurements to decide. Do not write
   option papers or wait for John on an engineering choice.
 - Ask John only about: game rules or product behavior, spending above the cap
@@ -44,9 +48,9 @@ must be able to start the next task without chat history and without help.
   - If John is active in your conversation, ask him there. Record the question
     and his answer in the task notes.
   - If he is not active, or does not answer: write the question and your
-    recommendation in the task notes, add the label `needs-john`, push, and
-    send a notification if your environment can. Then continue with other
-    work.
+    recommendation in the task notes, add the label `needs-john`, commit the
+    update locally, and send a notification if your environment can. Then
+    continue with other work.
 - If you find work outside the task, create a new task. Do not expand the
   current task.
 
@@ -80,9 +84,9 @@ fast staged checks, with no builds or tests. Setup, prerequisites, explicit suit
 and CI use are in [docs/development.md](docs/development.md#checks-and-git-hooks).
 
 During implementation, use focused checks after meaningful changes. Do not repeat
-checks after every save, commit or checkpoint push. Reuse earlier results when
-later changes have not invalidated them. Documentation-only and Backlog-only
-changes need content, link and task checks, not product builds or tests.
+checks after every save or commit. Reuse earlier results when later changes have
+not invalidated them. Documentation-only and Backlog-only changes need content,
+link and task checks, not product builds or tests.
 
 Also, by type of change:
 
@@ -167,11 +171,10 @@ while a required check is unresolved.
    Disk space must not grow silently. Keep temporary files in one place that
    you can delete (`runs/` or your tool's scratch directory).
 
-If you stop before the task is done, for any reason, write a handoff note:
-what is done, what is next, and the branch name. Push the branch and leave the
-task In Progress. A stop can come without warning (for example when your
-context or usage capacity runs out), so update the handoff note at each
-checkpoint, not only at the end.
+At each checkpoint, commit the work and a handoff note on the local task
+branch. In the note, record what is done, what is next, and the branch name.
+If you stop before the task is done, commit the latest handoff and leave the
+task In Progress.
 
 ## Tasks
 

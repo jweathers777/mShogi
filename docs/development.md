@@ -65,8 +65,8 @@ staging is checked correctly and neither the index nor working files are changed
 A root manifest, toolchain or formatting configuration change checks all packages.
 The hook performs no builds, tests or dependency installation. Cargo runs offline
 and automatic toolchain installation is disabled; install the pinned formatter
-during setup before committing Rust changes. There is no pre-push
-hook: unfinished checkpoints and handoffs can be pushed normally. CI also checks
+during setup before committing Rust changes. There is no pre-push hook. Follow
+the [push policy in AGENTS.md](../AGENTS.md#do-the-work). CI also checks
 formatting, since local hooks can be bypassed or not installed.
 
 Before integration, from any directory inside the checkout:

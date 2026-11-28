@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-28T10:14:00Z'
-updated_date: '2026-11-28T19:11:00Z'
+updated_date: '2026-11-28T19:21:00Z'
 labels:
   - shogi
   - time-management
@@ -55,4 +55,6 @@ Historical analysis script, output and per-move charges: gs://mshogi-experiments
 Cloud Build worker setup: the prior Xiangqi worker image digest was missing from Artifact Registry. Retried with the available builder-v2 digest and current cloud transport modules. Native local smoke passed with one 3+0.1 game replay and one timed suite probe.
 
 Checkpoint on codex/msh-288-shogi-clock: the 1.5× candidate builds from 10ed038. The next commit updates two UCI cutoff assertions. Candidate formatter, Clippy and workspace tests passed on macOS (1,176 passed, 10 ignored). Both Linux release builds finished and their Batch jobs, VMs and disks were verified absent. A four-game 60+1 calibration is underway. After all four games replay, run the 256-pair USI comparison and 226-position suite in the same Batch campaign.
+
+Calibration on c3-standard-4 at 60+1 (097b11b vs 10ed038): all four games passed native replay with no failures or node-cap hits. Longest game 419 s, median 269 s. Calibration VM upper bound $0.032, with resources verified absent. Reports: gs://mshogi-experiments-216675633801/runs/msh-288/calibration/. Handoff: full Batch job strength-msh288-shogi is running on codex/msh-288-shogi-clock. Review the seed-ordered SPRT boundary, suite and clock use, verify cleanup, and integrate only the qualifying product change. Operator scripts are in the task GCS prefix.
 <!-- SECTION:NOTES:END -->

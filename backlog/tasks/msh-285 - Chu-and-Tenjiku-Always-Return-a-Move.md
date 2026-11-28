@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-28T10:01:00Z'
-updated_date: '2026-11-28T10:51:00Z'
+updated_date: '2026-11-28T11:11:00Z'
 labels:
   - chu
   - tenjiku
@@ -57,4 +57,8 @@ Handoff: Product candidate b0acbf0 with consumer test checkpoints on codex/msh-2
 b0acbf0 vs 2ccc003, c3-standard-4: tools.strength.cli blunders at depth 3, Chu 300K nodes and Adams/Muller 500K nodes, using MSH-52.3 and MSH-53.3 suites. All 43 positions match in choices, scores and nodes. Both Linux builds and the screen cost at most $0.0725 combined VM compute, with no jobs, VMs or disks left. GCS gs://mshogi-experiments-216675633801/runs/msh-285/blunders/.
 
 Apply the roadmap search SPRT (0/15 Elo, alpha=beta=.05, minimum 30 scored pairs independently for Chu, Adams and Muller) before the first timed match. Use the established fast clocks. Next: Chu, then the two Tenjiku profiles on branch codex/msh-285-always-return-move.
+
+Chu b0acbf0 vs 2ccc003, c3-standard-4, tools.strength.cli match at 10+0.1: the inherited 1,000-ply setting capped five games in 116 replayed pairs. One predecessor stopped before depth one, and the candidate applied two depth-zero choices. Preserve the cap-affected block as a setting failure. VM upper bound $0.4955; no Batch resources remain. gs://mshogi-experiments-216675633801/runs/msh-285/chu-1/.
+
+Handoff: Adams and Muller are running at 60+1.5 in strength-msh285-tenjiku-1. Next: after verified cleanup, repeat Chu with 2,000 plies per game and a 750 s pair wall. The first five capped pairs completed their recorded work in 202–250 s. For 2,000 plies the pair clock bound is 440 s, plus 193 s extrapolated at the highest observed non-request overhead (49 ms per ply). The 750 s wall fits the existing 1,500 s command and 1,800 s job. Keep the engines, control, openings, concurrency and SPRT hypotheses. Task branch codex/msh-285-always-return-move.
 <!-- SECTION:NOTES:END -->

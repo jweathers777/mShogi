@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-28T10:14:00Z'
-updated_date: '2026-11-28T18:55:00Z'
+updated_date: '2026-11-28T18:58:00Z'
 labels:
   - shogi
   - time-management
@@ -34,3 +34,17 @@ In the MSH-193 Shogi blunder screen (304 MSH-191 games at 60 s + 1 s against ext
 - [ ] #2 A fix for the measured cause wins an SPRT against the predecessor in Shogi at 60 s + 1 s, or the task records why no candidate won
 - [ ] #3 Results, cost and GCS path recorded; shared clock documentation updated if the policy changes
 <!-- AC:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Audit the 304 MSH-191 USI game ledgers and join each MSH-193 blunder to its clock charge. Compare a smaller hard cutoff with the frozen predecessor through the native clocked USI route at 60+1. Run the timed blunder suite and use the 0/+15 Elo SPRT to decide whether to keep the shared protocol change. Keep the fixed-time experiment runner on its 30-move share.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Historical MSH-191 protocol ledgers: 304 games, 15,805 mShogi moves, all 226 MSH-193 labels matched. Median charge was 2.622/2.070/1.361/1.000 s for own moves 1–15/16–30/31–45/46 onward. Median final balance 4.155 s. 187 games first reached <2 s at median own move 41; 2,782 moves met that clock threshold. These contained 64 clear blunders (2.30 per 100 vs 1.24 at higher balances, with game phase confounding that comparison). The median time-trouble blunder had 1.098 s left and used 1.000 s. 67.7% of moves exceeded the nominal budget, with 8,232 s gross excess in the first 30 own moves across 304 games. Median position-to-go transport was 0.021 ms; the old logs have no internal timing breakdown. MSH-192 tested a larger move count only with new King weights at 15+0.25 and was inconclusive. MSH-287 tested a fixed-move-time runner, which cannot use the USI hard headroom invoked in MSH-191. Use the same nominal share and increment as the predecessor, but cap the shared protocol hard budget at 1.5 times nominal, which preserves the largest adaptive target and limits overshoot. No VM cost for this analysis.
+
+Handoff: historical ledger analysis complete on codex/msh-288-shogi-clock. Next, run the matched USI comparison and timed blunder suite.
+<!-- SECTION:NOTES:END -->

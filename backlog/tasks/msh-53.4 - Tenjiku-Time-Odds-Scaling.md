@@ -1,10 +1,11 @@
 ---
 id: MSH-53.4
 title: Tenjiku Time-Odds Scaling
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-28T10:02:00Z'
-updated_date: '2026-11-28T10:19:00Z'
+updated_date: '2026-11-28T13:37:00Z'
 labels:
   - tenjiku
   - strength

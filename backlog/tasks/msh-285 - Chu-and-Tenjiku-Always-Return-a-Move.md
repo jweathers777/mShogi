@@ -1,9 +1,11 @@
 ---
 id: MSH-285
 title: Chu and Tenjiku Always Return a Move
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-28T10:01:00Z'
+updated_date: '2026-11-28T10:28:00Z'
 labels:
   - chu
   - tenjiku
@@ -30,3 +32,9 @@ Chu and Tenjiku search use restricted_board! in crates/mshogi-search (chu.rs, te
 - [ ] #2 Focused tests cover a stop before the first completed iteration for both games; rules perft and existing search tests pass
 - [ ] #3 Tenjiku and Chu each pass an SPRT against the frozen predecessor at their normal fast control (or are neutral with simpler code); results, cost and GCS path recorded
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Handoff: Claimed on branch codex/msh-285-always-return-move. Next: inspect root search and verify the fallback in both games.
+<!-- SECTION:NOTES:END -->

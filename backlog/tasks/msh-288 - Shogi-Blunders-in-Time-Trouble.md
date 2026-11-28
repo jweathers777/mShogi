@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-28T10:14:00Z'
-updated_date: '2026-11-28T19:06:00Z'
+updated_date: '2026-11-28T19:11:00Z'
 labels:
   - shogi
   - time-management
@@ -30,7 +30,7 @@ In the MSH-193 Shogi blunder screen (304 MSH-191 games at 60 s + 1 s against ext
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 From the MSH-191 game records, measure clock use per move and identify where the time-trouble positions come from
+- [x] #1 From the MSH-191 game records, measure clock use per move and identify where the time-trouble positions come from
 - [ ] #2 A fix for the measured cause wins an SPRT against the predecessor in Shogi at 60 s + 1 s, or the task records why no candidate won
 - [ ] #3 Results, cost and GCS path recorded; shared clock documentation updated if the policy changes
 <!-- AC:END -->
@@ -53,4 +53,6 @@ Feasibility before Batch: both sides have 60 s + 1 s, depth 64 and 5M nodes per 
 Historical analysis script, output and per-move charges: gs://mshogi-experiments-216675633801/runs/msh-288/historical/. Original ledgers: gs://mshogi-experiments-216675633801/msh191/. The old blunder report is in Git history at 0656276; the archived suite remains in tools/strength/data/shogi-blunders-v1.json. On the recorded clock paths, 3,834 of the first 9,066 moves exceeded the proposed 1.5× cutoff, compared with 343 of 2,782 moves under 2 s.
 
 Cloud Build worker setup: the prior Xiangqi worker image digest was missing from Artifact Registry. Retried with the available builder-v2 digest and current cloud transport modules. Native local smoke passed with one 3+0.1 game replay and one timed suite probe.
+
+Checkpoint on codex/msh-288-shogi-clock: the 1.5× candidate builds from 10ed038. The next commit updates two UCI cutoff assertions. Candidate formatter, Clippy and workspace tests passed on macOS (1,176 passed, 10 ignored). Both Linux release builds finished and their Batch jobs, VMs and disks were verified absent. A four-game 60+1 calibration is underway. After all four games replay, run the 256-pair USI comparison and 226-position suite in the same Batch campaign.
 <!-- SECTION:NOTES:END -->

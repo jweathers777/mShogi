@@ -1,10 +1,11 @@
 ---
 id: MSH-286
 title: Independent Color Games in the Strength Harness
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-28T10:01:00Z'
-updated_date: '2026-11-28T11:46:00Z'
+updated_date: '2026-11-28T12:08:00Z'
 labels:
   - harness
   - strength

@@ -46,7 +46,9 @@ fn config(mode: &str) -> shogi::Config {
 #[test]
 fn resignation_and_false_declaration_are_conclusions_not_transport_failures() {
     for (mode, reason) in [("resign", "Resignation"), ("win", "FalseDeclaration")] {
-        let report = shogi::run(&config(mode)).unwrap();
+        let mut settings = config(mode);
+        settings.max_game_ms = 21_600_000;
+        let report = shogi::run(&settings).unwrap();
         assert_eq!(report.games.len(), 2);
         for game in &report.games {
             assert_eq!(game.stop, Stop::GameConclusion);

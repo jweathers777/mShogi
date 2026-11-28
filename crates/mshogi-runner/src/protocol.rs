@@ -118,7 +118,7 @@ impl Settings<'_> {
             || id.len() > 128
             || !(1..=4).contains(&openings)
             || self.max_actions == 0
-            || !(1..=600_000).contains(&self.max_game_ms)
+            || !(1..=21_600_000).contains(&self.max_game_ms)
         {
             return Err(RunnerError("unsupported experiment bounds".into()));
         }

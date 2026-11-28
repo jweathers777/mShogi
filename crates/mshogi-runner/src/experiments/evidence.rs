@@ -67,7 +67,8 @@ impl Report {
     }
     fn summaries_validated(&self) -> Vec<Summary> {
         let mut groups: BTreeMap<(String, String), Summary> = BTreeMap::new();
-        for pair in self.games.as_chunks::<2>().0 {
+        let paired = self.config.swapped.is_none();
+        for pair in self.games.chunks(if paired { 2 } else { 1 }) {
             let a = &pair[0];
             let profile = self.config.openings[a.pairing.opening]
                 .root
@@ -83,7 +84,6 @@ impl Report {
                     baseline,
                     ..Summary::default()
                 });
-            s.scheduled_pairs += 1;
             let mut scores = vec![];
             let mut diagnostic = false;
             for g in pair {
@@ -107,6 +107,10 @@ impl Report {
                     s.unscored_games += 1;
                 }
             }
+            if !paired {
+                continue;
+            }
+            s.scheduled_pairs += 1;
             if scores.len() != 2 {
                 s.unscored_pairs += 1;
             } else if diagnostic {

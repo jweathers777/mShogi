@@ -50,7 +50,7 @@ pub fn template(executable: &str) -> Result<Config, RunnerError> {
             })
         })
         .collect::<Result<_, RunnerError>>()?;
-    let config=Config{schema:SCHEMA,id:"diagnostic-template".into(),protocol:"Finite standard-root diagnostic only; unequal-work baseline ablation, not competitive strength. Supply hardware/build/rights/target-distribution protocol before inference.".into(),seed:48,rounds:1,max_steps:2,wall_budget_ms:120_000,watchdog_ms:15_000,cleanup_ms:250,clock:None,players,openings};
+    let config=Config{schema:SCHEMA,id:"diagnostic-template".into(),protocol:"Finite standard-root diagnostic only; unequal-work baseline ablation, not competitive strength. Supply hardware/build/rights/target-distribution protocol before inference.".into(),seed:48,rounds:1,swapped:None,max_steps:2,wall_budget_ms:120_000,watchdog_ms:15_000,cleanup_ms:250,clock:None,players,openings};
     config.validate()?;
     Ok(config)
 }
@@ -121,6 +121,9 @@ pub struct Config {
     pub seed: u64,
     /// Complete seeded catalog cycles; every opening is used in each cycle.
     pub rounds: u16,
+    /// Optional color selection. When absent, schedule both colors.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub swapped: Option<bool>,
     /// Accepted engine commands per game; exhaustion is unscored, never a draw.
     pub max_steps: usize,
     /// Whole-run soft wall budget, checked before/while child work.
@@ -296,9 +299,15 @@ impl Config {
         }
         Ok(())
     }
-    /// Deterministic complete color pairs, with each cycle visiting every opening.
+    /// Deterministic opening order, with each cycle visiting every opening.
     pub fn schedule(&self) -> Vec<Pairing> {
         let mut result = Vec::new();
+        let colors = self.swapped.as_slice();
+        let colors = if colors.is_empty() {
+            &[false, true]
+        } else {
+            colors
+        };
         for cycle in 0..self.rounds {
             let mut order: Vec<_> = (0..self.openings.len()).collect();
             let mut counter = 0u64;
@@ -318,8 +327,8 @@ impl Config {
             }
             for opening in order {
                 for baseline in 1..self.players.len() {
-                    let pair = result.len() / 2;
-                    for swapped in [false, true] {
+                    let pair = result.len() / colors.len();
+                    for &swapped in colors {
                         result.push(Pairing {
                             pair,
                             cycle,

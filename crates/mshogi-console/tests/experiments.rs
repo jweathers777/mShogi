@@ -318,6 +318,43 @@ fn single_chess() -> Config {
 }
 
 #[test]
+fn independent_colors_replay_with_the_same_opening_and_time_odds() {
+    let _journey = JOURNEY.lock().unwrap_or_else(|e| e.into_inner());
+    let mut config = single_chess();
+    config.clock = Some(mshogi_runner::FischerClock {
+        base_ms: 5_000,
+        increment_ms: 100,
+    });
+    config.players[0].clock = Some(mshogi_runner::FischerClock {
+        base_ms: 10_000,
+        increment_ms: 200,
+    });
+    config.wall_budget_ms = 1_399_200;
+    for swapped in [false, true] {
+        config.swapped = Some(swapped);
+        let report = run(&config).unwrap();
+        let decoded = Report::from_json(&report.to_json().unwrap()).unwrap();
+        let [game] = decoded.games.as_slice() else {
+            panic!("expected one color game");
+        };
+        assert_eq!(game.pairing.swapped, swapped);
+        assert_eq!(game.stop, "step_limit");
+        assert_eq!(game.steps.len(), 1);
+        let step = &game.steps[0];
+        assert!(step.applied);
+        assert_eq!(step.request.game, config.openings[0].root.record);
+        assert_eq!(step.player, usize::from(swapped));
+        assert_eq!(
+            step.clock.as_ref().unwrap().before_ms,
+            if swapped { 5_000 } else { 10_000 }
+        );
+        let summary = &decoded.summaries().unwrap()[0];
+        assert_eq!(summary.scheduled_pairs, 0);
+        assert_eq!(summary.unscored_games, 1);
+    }
+}
+
+#[test]
 fn actual_zero_work_has_no_fallback_outcome_or_training_label() {
     let _journey = JOURNEY.lock().unwrap_or_else(|e| e.into_inner());
     let mut config = single_chess();

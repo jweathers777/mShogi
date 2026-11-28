@@ -1,4 +1,4 @@
-//! Common finite paired-match settings. Game code supplies the root.
+//! Common finite strength-game settings. Game code supplies the root.
 use super::positions::{self, Result};
 use mshogi_core::game::RulesProfile;
 use mshogi_engine::WorkLimits;
@@ -16,6 +16,7 @@ pub struct Args {
     /// Seeded random legal plies appended to a catalog opening (self-play corpora).
     pub random_plies: usize,
     candidate_depth: Option<u16>,
+    swapped: bool,
     clock: Option<FischerClock>,
     /// The candidate's clock is this multiple of the shared clock (time odds).
     candidate_time_factor: u64,
@@ -27,6 +28,7 @@ impl Args {
         let mut opening_index = 0;
         let mut random_plies = 0;
         let mut candidate_depth = None;
+        let mut swapped = None;
         let mut base = None;
         let mut increment = None;
         let mut candidate_time_factor = 1;
@@ -45,6 +47,7 @@ impl Args {
                 "--opening-index" => opening_index = value.parse().unwrap(),
                 "--random-plies" => random_plies = value.parse().unwrap(),
                 "--candidate-depth" => candidate_depth = Some(value.parse().unwrap()),
+                "--swapped" => swapped = Some(value.parse().unwrap()),
                 "--clock-base-ms" => base = Some(value.parse().unwrap()),
                 "--clock-increment-ms" => increment = Some(value.parse().unwrap()),
                 "--candidate-time-factor" => candidate_time_factor = value.parse().unwrap(),
@@ -76,6 +79,7 @@ impl Args {
                 opening_index,
                 random_plies,
                 candidate_depth,
+                swapped: swapped.expect("color selection required"),
                 clock,
                 candidate_time_factor,
             },
@@ -168,7 +172,10 @@ impl Args {
         };
         let config = Config {
             schema: SCHEMA,
-            id: format!("strength-{id}"),
+            id: format!(
+                "strength-{id}-{}",
+                if self.swapped { "second" } else { "first" }
+            ),
             protocol: format!(
                 "Paired predecessor comparison. Rules control outcomes. Opening provenance is recorded below. Mode: {}. Not a rating.",
                 if self.clock.is_some() {
@@ -179,6 +186,7 @@ impl Args {
             ),
             seed: self.seed,
             rounds: 1,
+            swapped: Some(self.swapped),
             max_steps: self.values[7].parse().unwrap(),
             wall_budget_ms: self.values[8].parse().unwrap(),
             watchdog_ms: self.watchdog_ms,

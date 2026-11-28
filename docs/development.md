@@ -120,7 +120,8 @@ gh workflow run 393975947 --ref main -f suite=process -f platform=all
 gh workflow run 395991468 --ref main -f operation=host -f platform=ubuntu-24.04
 ```
 
-Use them for platform-sensitive changes on the affected systems. The full
+Use them for platform-sensitive changes on the affected systems. The process
+suite includes the strength harness script tests and Rust subprocess tests. The full
 three-platform `suite=full` and `operation=package` runs are for releases.
 A skipped or configured-only job is not a pass.
 

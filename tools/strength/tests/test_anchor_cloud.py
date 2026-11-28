@@ -7,7 +7,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
-from tools.strength import anchor_cloud as controller
+from tools.strength import anchor_cloud as controller, batch
 
 POLICY = controller.CampaignPolicy('test', 21600, 15, 'tools.strength.test_worker', ('worker',))
 
@@ -33,7 +33,7 @@ class CloudControllerTests(unittest.TestCase):
                                image='registry/image@sha256:' + 'a'*64,
                                subscription='projects/mshogi/subscriptions/completion')
 
-    def run_fake(self, args, store, submit_failure=False, cleanup_failure=False):
+    def run_fake(self, args, store, submit_failure=False, cleanup_failure=False, **options):
         events = []
         def cloud(command):
             events.append(command[:3])
@@ -51,7 +51,7 @@ class CloudControllerTests(unittest.TestCase):
              patch.object(controller.gcp, 'GCSStore', return_value=store), \
              patch.object(controller.gcp, 'wait_for_completion', return_value={'job': {'status': 'SUCCEEDED'}}):
             try:
-                controller.run(args, policy=POLICY, manifest_validator=accept)
+                controller.run(args, **(dict(policy=POLICY, manifest_validator=accept) | options))
             except RuntimeError:
                 pass
         return events, cleanup_mock
@@ -66,6 +66,50 @@ class CloudControllerTests(unittest.TestCase):
             self.assertEqual(commands[:3], ['-m', 'tools.strength.test_worker', 'worker'])
             self.assertIn('test-owner', request['labels'])
             self.assertEqual(cleanup.call_args.kwargs['owner_label'], 'test-owner')
+
+    def test_match_projects_batch_runtime_and_deadline_beyond_thirty_minutes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            args = self.prepare(Path(directory))
+            manifest = json.loads(Path(args.manifest).read_text())
+            manifest.pop('deadline_epoch')
+            command = ['match', '--game', 'tenjiku', '--profile', 'adams', '--candidate', './new',
+                       '--baseline', './old', '--base', '60', '--increment', '1.5',
+                       '--max-steps', '768', '--max-pairs', '2', '--workers', '2', '--out', 'adams']
+            manifest.update(schema=1, files={}, bins=[[command], [command, command]])
+            Path(args.manifest).write_text(json.dumps(manifest))
+            store = Mock()
+            store.put.return_value = True
+            store.list.return_value = []
+            args.job = 'strength-long-clock'
+            self.run_fake(args, store, policy=batch.POLICY, manifest_validator=batch.validate,
+                          project_runtime=batch.projected_runtime)
+            request = json.loads((Path(args.out)/'batch-request.json').read_text())
+            runtime = request['taskGroups'][0]['taskSpec']['maxRunDuration']
+            self.assertEqual(runtime, '6650s')
+            resolved = json.loads((Path(args.out)/'manifest.json').read_text())
+            intent = json.loads((Path(args.out)/'intent.json').read_text())
+            self.assertEqual(resolved['deadline_epoch'] - intent['started_epoch'], 7070)
+
+    def test_explicit_batch_runtime_can_extend_match_projection(self):
+        with tempfile.TemporaryDirectory() as directory:
+            args = self.prepare(Path(directory))
+            manifest = json.loads(Path(args.manifest).read_text())
+            manifest.pop('deadline_epoch')
+            command = ['selfplay', '--game', 'chess', '--engine', './engine', '--candidate-nodes', '10',
+                       '--max-pairs', '1', '--out', 'selfplay']
+            manifest.update(schema=1, files={}, bins=[[command]])
+            Path(args.manifest).write_text(json.dumps(manifest))
+            config = json.loads(Path(args.config).read_text())
+            config['max_run_seconds'] = 3600
+            Path(args.config).write_text(json.dumps(config))
+            store = Mock()
+            store.put.return_value = True
+            store.list.return_value = []
+            args.job = 'strength-long-config'
+            self.run_fake(args, store, policy=batch.POLICY, manifest_validator=batch.validate,
+                          project_runtime=batch.projected_runtime)
+            request = json.loads((Path(args.out)/'batch-request.json').read_text())
+            self.assertEqual(request['taskGroups'][0]['taskSpec']['maxRunDuration'], '3600s')
 
     def test_storage_list_failure_cannot_bypass_cleanup_or_resources(self):
         with tempfile.TemporaryDirectory() as directory:

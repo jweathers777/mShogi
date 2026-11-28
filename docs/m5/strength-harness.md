@@ -88,16 +88,13 @@ python3 -m tools.strength.cli probe --game tenjiku --profile muller --suite tool
 ```
 
 For a clocked Tenjiku comparison, start with 60 s + 1.5 s per move
-(`--base 60 --increment 1.5`). MSH-214 used a 768-ply game limit,
-a 1,200-second pair limit and the shared late-depth boundary of
-40 post-opening plies. The attained late-game target is depth 5 on
-`c3-standard-4` at this control. Use the same machine type and pair
-concurrency on both sides of a comparison. An interrupted first iteration in
-Chu or Tenjiku can supply a legal move at depth zero. Search prefers its best
-scored root move from that iteration, or the first action in the ordered legal
-list if there is no scored move. The match driver stops on an unfinished pair.
-Keep its report and diagnose the stop before continuing a strength test. MSH-214 records the calibration, paired
-time-odds results and their limits for both profiles.
+(`--base 60 --increment 1.5`). MSH-214 used a 768-ply game limit and
+measured from 40 post-opening plies. The attained late-game target is depth 5 on
+`c3-standard-4` at this control. Use the same machine type and game concurrency
+on both sides of a comparison. Chu and Tenjiku can return a legal move at depth
+zero. Search uses its best scored root move from the interrupted first
+iteration, or the first ordered legal action when it has no scored move.
+MSH-214 records the calibration and time-odds results for both profiles.
 
 ## Comparisons and time odds
 
@@ -105,27 +102,41 @@ time-odds results and their limits for both profiles.
 python3 -m tools.strength.cli match --game chess --candidate NEW --baseline FROZEN --openings runs/TASK/openings.json --base 5 --increment .05 --out runs/TASK/comparison
 ```
 
-The runner plays each opening twice with the colors reversed. Catalog order
-cycles from `--first-seed`. A fixed-work comparison can instead set
+The harness schedules two independent games for each opening and assigns
+opposite colors to the candidate. Catalog order cycles from `--first-seed`.
+`--workers` limits concurrent games. A fixed-work comparison can set
 `--candidate-nodes`, `--baseline-nodes` and `--baseline-depth`. Record the
-chosen limits and hypotheses before play. `--candidate-time-factor 2` doubles
-the candidate's base and increment. Use the same executable on both sides for
-an internal time-odds curve. `--calibrate` requests one turn per color per game.
-The driver retains the match reports, both binary identities, timing and depth,
-median accepted depth from `--late-ply` onward, the five pair-score counts, Elo interval and SPRT decision. A cutoff supplies
-no game score. An unfinished match pair stops the campaign, except for the
-predeclared Tori step-limit exclusion (see MSH-204).
+limits and hypotheses before play. `--candidate-time-factor 2` doubles the
+candidate's base and increment. Use the same executable on both sides to
+measure a time-odds curve. `--calibrate` requests one turn per game, with
+opposite players to move from the same root.
 
-`--max-pairs`, `--max-steps`, `--pair-wall-ms` and `--wall-seconds` bound the
-campaign. Both color games run in sequence and share the pair wall limit. A
-long first game can leave the swapped game with zero turns. A full-game
-pilot at the intended machine and concurrency shows how many games actually
-start and conclude, whether a player misses its first iteration, and how
-much wall time remains after the swap. The driver reserves another 45
-seconds per pair for shutdown. The runner also enforces its report-size
-budget. `bench` measures fixed-depth wall time and nodes on a positions file,
-including cold process and transport cost.
-`signature` compares full fixed-depth engine observations for an opening catalog.
+Each game has its own configuration, wall timer, log and replayed report. The
+harness pairs the scores by seed after both games finish. Its summary records
+each stop, the individual wins, draws and losses, the five pair-score counts,
+the Elo interval and the SPRT decision. Unscored games count in the report.
+Only pairs with two verified scores enter the SPRT. After an unscored game,
+the campaign continues within the scheduled limits. Replay or runner failures
+retain the available logs and raw report. A calibration with a missing or
+unaccepted turn reports a failure after its scheduled games finish.
+
+`--max-pairs` and `--max-steps` bound the number of openings and the number
+of plies per game. The default clocked game wall sums both initial balances
+and the increments available through the ply limit, then adds 10 percent or
+30 seconds, whichever is longer. This calculation includes time odds and
+gives the larger clock the extra increment when the ply limit is odd. At
+60 + 1.5 with 768 plies, the default game wall is 1,399.2 seconds. For fixed
+work it is 180 seconds. To set it explicitly, use `--game-wall-ms`.
+
+The default campaign wall allows every scheduled game to finish under these
+bounds at the configured concurrency. It includes time for configuration,
+runner shutdown, replay and writing evidence. Use `--wall-seconds` to set an
+explicit campaign bound. The harness starts only batches that fit the
+remaining budget. The runner also enforces its report-size budget. Use a
+full-game pilot on the intended machine to measure time use and game completion.
+`bench` measures fixed-depth wall time and nodes on a positions file, including
+cold process and transport cost. `signature` compares full fixed-depth engine
+observations for an opening catalog.
 
 ## Self-play, tuning and deeper judging
 
@@ -187,19 +198,23 @@ Use explicit relative executable paths such as `./engine`, `./helper` and
 ```json
 {
   "schema": 1,
-  "campaign_started_epoch": 1800000000,
-  "deadline_epoch": 1800001800,
   "estimated_compute_before_usd": 0,
   "files": {
+    "runner": {"uri": "gs://BUCKET/PREFIX/runner", "sha256": "RUNNER_SHA256", "executable": true},
     "engine": {"uri": "gs://BUCKET/PREFIX/engine", "sha256": "ENGINE_SHA256", "executable": true},
     "helper": {"uri": "gs://BUCKET/PREFIX/strength", "sha256": "HELPER_SHA256", "executable": true}
   },
-  "bins": [[["openings", "--game", "tenjiku", "--profile", "adams", "--engine", "./engine", "--helper", "./helper", "--depth", "2", "--nodes", "500000", "--balance", "100", "--count", "1", "--attempts", "5", "--out", "openings.json"]]]
+  "bins": [[["selfplay", "--game", "tenjiku", "--profile", "adams", "--engine", "./engine", "--helper", "./helper", "--runner", "./runner", "--base", "60", "--increment", "1.5", "--max-steps", "768", "--max-pairs", "4", "--out", "adams"]]]
 }
 ```
 
-Replace the example timestamps with the original campaign start and a deadline
-1,800 seconds later. Include prior task compute in the estimate. Submit with
+For bins containing only `match` or `selfplay`, Batch uses the longest bin to
+set its default `max_run_seconds`. It adds the command budgets in that bin
+and includes input and evidence handling time. The default campaign deadline
+also allows for each wave of VM provisioning and for resource cleanup.
+Supply a later `deadline_epoch` or a larger `max_run_seconds` to give the
+job more time. When a bin uses another command, supply a UTC `deadline_epoch`
+in seconds. Include any prior task compute in `estimated_compute_before_usd`. Submit with
 `cloud-submit --manifest M --config C --image IMAGE@sha256:DIGEST --job strength-NAME --out DIR`.
 Use the project Batch configuration with one machine type, a reviewed hourly
 rate, up to eight concurrent workers and zero retries. The controller reserves

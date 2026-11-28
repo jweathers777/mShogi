@@ -1,7 +1,7 @@
 """Paired game predecessor tests through the experiment controller.
 
 The Rust runner owns all rules, histories, scores and report validation. This
-module schedules complete color pairs and applies the existing pentanomial SPRT.
+module schedules independent color games and pairs their scores for the pentanomial SPRT.
 Use --calibrate for one move by each engine from each identical opening root.
 """
 import argparse
@@ -32,35 +32,48 @@ def telemetry(value):
     return None
 
 
-def summarize(report):
-    """Use only concluded scores; never convert a cutoff to a draw."""
+CONFIG_SECONDS = 120
+REPLAY_SECONDS = 60
+RUNNER_GRACE_MS = 45_000
+KILL_GRACE_SECONDS = 10
+EVIDENCE_SECONDS = 5
+
+
+def summarize_game(report, swapped):
+    """Use only a replayed game's concluded score."""
     games = report['games']
-    if len(games) != 2 or [g['pairing']['swapped'] for g in games] != [False, True]:
-        raise ValueError('expected one complete ordered color pair')
-    scores = []
+    if len(games) != 1 or games[0]['pairing']['swapped'] != swapped:
+        raise ValueError('expected one game with the scheduled color')
+    game = games[0]
+    if game.get('cleanup'):
+        raise ValueError('mShogi engine cleanup failed')
+    score = game['score_first_twice']
     turns = [[], []]
-    for game in games:
-        if game.get('cleanup'):
-            raise ValueError('mShogi engine cleanup failed; retained report is unscored')
-        score = game['score_first_twice']
-        scores.append(None if score is None else (2 - score if game['pairing']['swapped'] else score))
-        for ply, step in enumerate(game['steps']):
-            t = telemetry(step['observation'])
-            if t is not None:
-                turns[step['player']].append({
-                    'ply_after_opening': ply, 'seconds': step['elapsed_ns'] / 1e9,
-                    'depth': t['completed_depth'], 'nodes': t['nodes'],
-                    'search_id': t.get('search_id'), 'applied': step['applied'],
-                })
-    return {'scores_twice': scores,
+    for ply, step in enumerate(game['steps']):
+        t = telemetry(step['observation'])
+        if t is not None:
+            turns[step['player']].append({
+                'ply_after_opening': ply, 'seconds': step['elapsed_ns'] / 1e9,
+                'depth': t['completed_depth'], 'nodes': t['nodes'],
+                'search_id': t.get('search_id'), 'applied': step['applied'],
+            })
+    return {'score_twice': 2 - score if swapped and score is not None else score,
+            'stop': game['stop'], 'turns': turns, 'plies': len(game['steps'])}
+
+
+def score_pair(seed, games):
+    scores = [game['score_twice'] for game in games]
+    return {'seed': seed, 'scores_twice': scores,
             'pair_score': None if None in scores else sum(scores) / 4,
-            'stops': [g['stop'] for g in games], 'turns': turns,
-            'plies': [len(g['steps']) for g in games]}
+            'stops': [game['stop'] for game in games],
+            'turns': [games[0]['turns'][player] + games[1]['turns'][player] for player in range(2)],
+            'plies': [game['plies'] for game in games],
+            'games': [{k: v for k, v in game.items() if k != 'turns'} for game in games]}
 
 
-def wait_for_pair(process, pair_wall_ms):
+def wait_for_game(process, game_wall_ms):
     # OS wait calls may have narrower timeout types than the experiment budget.
-    deadline = time.monotonic_ns() + (pair_wall_ms + 45_000) * 1_000_000
+    deadline = time.monotonic_ns() + (game_wall_ms + RUNNER_GRACE_MS) * 1_000_000
     while True:
         remaining_ns = deadline - time.monotonic_ns()
         try:
@@ -70,85 +83,89 @@ def wait_for_pair(process, pair_wall_ms):
                 raise
 
 
-def run_pair(args, seed, out):
-    config = out / f'pair-{seed:04d}.config.json'
-    report_path = out / f'pair-{seed:04d}.report.json'
+def signal_group(pid, sig):
+    try:
+        os.killpg(pid, sig)
+    except ProcessLookupError:
+        pass
+
+
+def stop_game(process):
+    if os.name == 'nt':
+        subprocess.run(['taskkill', '/F', '/T', '/PID', str(process.pid)], check=False,
+                       timeout=KILL_GRACE_SECONDS // 2)
+    else:
+        signal_group(process.pid, signal.SIGTERM)
+    try:
+        process.wait(timeout=KILL_GRACE_SECONDS // 2)
+    except subprocess.TimeoutExpired:
+        pass
+    finally:
+        if os.name == 'posix':
+            # The runner can exit before an engine in its group does.
+            signal_group(process.pid, signal.SIGKILL)
+    process.wait(timeout=KILL_GRACE_SECONDS // 2)
+
+
+def run_game(args, seed, swapped, out):
+    name = f'game-{seed:04d}-{"second" if swapped else "first"}'
+    config = out / f'{name}.config.json'
+    report_path = out / f'{name}.report.json'
     start = time.monotonic()
     command = [args.helper, 'config', args.candidate, args.baseline, str(seed),
                str(args.candidate_nodes), str(args.baseline_depth), str(args.baseline_nodes),
-               '1' if args.calibrate else str(args.max_steps), str(args.pair_wall_ms), str(config)]
+               '1' if args.calibrate else str(args.max_steps), str(args.game_wall_ms), str(config),
+               '--swapped', str(swapped).lower()]
     if getattr(args, 'depth', None) is not None:
         command.extend(['--candidate-depth', str(args.depth)])
-    if getattr(args, 'base', None) is not None:
+    if args.base is not None:
         command.extend(['--clock-base-ms', str(round(args.base * 1000)),
                         '--clock-increment-ms', str(round(args.increment * 1000))])
-        if getattr(args, 'candidate_time_factor', 1) != 1:
+        if args.candidate_time_factor != 1:
             command.extend(['--candidate-time-factor', str(args.candidate_time_factor)])
-    if getattr(args, 'openings', None):
+    if args.openings:
         command.extend(['--openings', args.openings, '--opening-index',
                         str((seed - 1) % args.opening_count)])
-        if getattr(args, 'random_plies', 0):
+        if args.random_plies:
             command.extend(['--random-plies', str(args.random_plies)])
     command.extend(['--profile', profile(args.game, args.profile)])
     if args.watchdog_ms is not None:
         command.extend(['--watchdog-ms', str(args.watchdog_ms)])
-    with open(out / f'pair-{seed:04d}.config.log', 'x') as log:
-        subprocess.run(command, check=True, stdout=log, stderr=subprocess.STDOUT, timeout=120)
-    command = [args.runner, 'experiment-run', str(config), str(report_path)]
-    with open(out / f'pair-{seed:04d}.log', 'x') as log:
-        # The Batch worker owns its entire command group, including every pair.
-        batch_group = os.name == 'posix' and os.environ.get('MSHOGI_STRENGTH_BATCH') == '1' and os.getpid() == os.getpgrp()
-        process = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT,
-                                   start_new_session=os.name == 'posix' and not batch_group)
-        try:
-            code = wait_for_pair(process, args.pair_wall_ms)
-        except BaseException:
-            # The runner owns its children. At the outer hard watchdog, stop
-            # the entire session so a child cannot survive a killed controller.
-            if os.name == 'nt':
-                subprocess.run(['taskkill', '/F', '/T', '/PID', str(process.pid)], check=False)
-                process.wait(timeout=5)
-                raise
-            if batch_group:
-                # The controller records the failed command and collects its evidence.
-                os.killpg(os.getpgrp(), signal.SIGKILL)
-            os.killpg(process.pid, signal.SIGTERM)
+    try:
+        with open(out / f'{name}.config.log', 'x') as log:
+            subprocess.run(command, check=True, stdout=log, stderr=subprocess.STDOUT,
+                           timeout=CONFIG_SECONDS)
+        command = [args.runner, 'experiment-run', str(config), str(report_path)]
+        with open(out / f'{name}.log', 'x') as log:
+            # Each POSIX runner has its own group. On Batch it stays within
+            # the enclosing command's session for the worker's outer watchdog.
+            process_options = {'process_group': 0} if os.name == 'posix' else {}
+            process = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT,
+                                       **process_options)
             try:
-                process.wait(timeout=5)
-            except subprocess.TimeoutExpired:
-                os.killpg(process.pid, signal.SIGKILL)
-                process.wait(timeout=5)
-            raise
-    if code != 0:
-        raise RuntimeError(f'pair {seed}: runner exit {code}; see retained log')
-    with open(out / f'pair-{seed:04d}.replay.log', 'x') as log:
-        subprocess.run([args.runner, 'experiment-replay', str(report_path)], check=True,
-                       stdout=log, stderr=subprocess.STDOUT, timeout=60)
-    raw = report_path.read_bytes()
-    result = summarize(json.loads(raw))
-    result.update({'seed': seed, 'wall_seconds': time.monotonic() - start,
-                   'report_sha256': hashlib.sha256(raw).hexdigest(),
-                   'report': report_path.name + '.gz'})
-    with gzip.open(str(report_path) + '.gz', 'xb') as stream:
-        stream.write(raw)
-    report_path.unlink()
-    write_new(out / f'pair-{seed:04d}.summary.json', result)
+                code = wait_for_game(process, args.game_wall_ms)
+            except BaseException:
+                stop_game(process)
+                raise
+        if code != 0:
+            if os.name == 'posix':
+                signal_group(process.pid, signal.SIGKILL)
+            raise RuntimeError(f'runner exit {code}; see {name}.log')
+        with open(out / f'{name}.replay.log', 'x') as log:
+            subprocess.run([args.runner, 'experiment-replay', str(report_path)], check=True,
+                           stdout=log, stderr=subprocess.STDOUT, timeout=REPLAY_SECONDS)
+        raw = report_path.read_bytes()
+        result = summarize_game(json.loads(raw), swapped)
+        with gzip.open(str(report_path) + '.gz', 'xb') as stream:
+            stream.write(raw)
+        report_path.unlink()
+        result.update(report_sha256=hashlib.sha256(raw).hexdigest(), report=report_path.name + '.gz')
+    except (OSError, subprocess.SubprocessError, ValueError, RuntimeError) as error:
+        result = {'score_twice': None, 'stop': 'runner_error', 'turns': [[], []], 'plies': 0,
+                  'error': str(error), 'report': report_path.name if report_path.is_file() else None}
+    result.update(swapped=swapped, wall_seconds=time.monotonic() - start)
+    write_new(out / f'{name}.summary.json', result)
     return result
-
-
-# Rule fixed before any MSH-204 (Tori Strength Harness) result, 2026-11-20,
-# as proposed to John: a Tori pair in which a game reaches the step limit
-# without a engine result is excluded from the test and counted; every other
-# unscored stop still stops the campaign; the campaign also stops when more
-# than LENGTH_LIMIT_SHARE of at least LENGTH_LIMIT_MIN_PAIRS pairs are excluded.
-LENGTH_LIMIT_SHARE = 0.10
-LENGTH_LIMIT_MIN_PAIRS = 20
-
-
-def length_limited(args, row):
-    return (args.game == 'tori' and row['pair_score'] is None
-            and all(stop in ('game_concluded', 'step_limit') for stop in row['stops'])
-            and 'step_limit' in row['stops'])
 
 
 def calibration_failure(rows):
@@ -156,16 +173,6 @@ def calibration_failure(rows):
         if (row['plies'] != [1, 1] or any(stop not in ('game_concluded', 'step_limit') for stop in row['stops'])
                 or any(len(turns) != 1 or not turns[0]['applied'] for turns in row['turns'])):
             return f"pair {row['seed']}: calibration requires one accepted move by each engine"
-    return None
-
-
-def unfinished(args, rows):
-    """The reason to stop the campaign, or None."""
-    if any(row['pair_score'] is None and not length_limited(args, row) for row in rows):
-        return 'unfinished pair: stop and diagnose; no score-based exclusion'
-    limited = sum(length_limited(args, row) for row in rows)
-    if len(rows) >= LENGTH_LIMIT_MIN_PAIRS and limited > LENGTH_LIMIT_SHARE * len(rows):
-        return f'length-limited pairs {limited} of {len(rows)} exceed {LENGTH_LIMIT_SHARE:.0%}: stop and diagnose'
     return None
 
 
@@ -183,12 +190,12 @@ def summary(args, rows, start, failure=None):
                         'total_request_seconds': sum(t['seconds'] for t in turns)})
     scores = [s for row in rows for s in row['scores_twice'] if s is not None]
     return {'pairs': len(rows), 'scored_pairs': sum(counts), 'pentanomial': counts,
-            'length_limited_pairs': sum(length_limited(args, row) for row in rows),
+            'unscored_games': sum(s is None for row in rows for s in row['scores_twice']),
             'decision': 'calibration' if args.calibrate else 'data collection' if args.selfplay else sprt.status(counts)['decision'] or 'no decision',
             'wins_draws_losses': [scores.count(2), scores.count(1), scores.count(0)],
             'sprt': sprt.status(counts), 'estimate': stats.estimate(counts),
             'wall_seconds': time.monotonic() - start,
-            'sum_pair_wall_seconds': sum(row['wall_seconds'] for row in rows),
+            'sum_game_wall_seconds': sum(game['wall_seconds'] for row in rows for game in row['games']),
             'players': players, 'failure': failure, 'rows': rows}
 
 
@@ -216,8 +223,8 @@ def options(parser, *, selfplay=False):
     parser.add_argument('--max-steps', type=int, help='positive game event budget per game; unfinished games stay unscored')
     parser.add_argument('--min-pairs', type=int, default=30)
     parser.add_argument('--first-seed', type=int, default=1)
-    parser.add_argument('--wall-seconds', type=int, default=1800)
-    parser.add_argument('--pair-wall-ms', type=int, default=180000)
+    parser.add_argument('--wall-seconds', type=int, help='campaign budget; default fits all scheduled games')
+    parser.add_argument('--game-wall-ms', type=int, help='per-game wall; default uses the clock or 180 seconds for fixed work')
     parser.add_argument('--elo0', type=float, default=0)
     parser.add_argument('--elo1', type=float, default=15)
     parser.add_argument('--alpha', type=float, default=.05)
@@ -228,8 +235,18 @@ def options(parser, *, selfplay=False):
     parser.set_defaults(func=campaign, selfplay=selfplay)
 
 
-def campaign(args):
-    parser = argparse.ArgumentParser(prog="strength match")
+def game_slot_ms(args):
+    overhead = CONFIG_SECONDS + REPLAY_SECONDS + KILL_GRACE_SECONDS + EVIDENCE_SECONDS
+    return args.game_wall_ms + RUNNER_GRACE_MS + overhead * 1000
+
+
+def projected_seconds(args):
+    batches = (2 * args.max_pairs + args.workers - 1) // args.workers
+    return (batches * game_slot_ms(args) + 999) // 1000 + 1
+
+
+def configure(args, parser):
+    """Resolve settings identically for play and Batch planning."""
     if args.late_ply < 0:
         parser.error('--late-ply must be nonnegative')
     if args.selfplay:
@@ -259,6 +276,9 @@ def campaign(args):
             parser.error('clock mode requires base 0.001..600 and increment 0..60 seconds')
         if not 1 <= args.candidate_time_factor <= 8:
             parser.error('--candidate-time-factor must be 1..8')
+        if (round(args.base * 1000) * args.candidate_time_factor > 3_600_000
+                or round(args.increment * 1000) * args.candidate_time_factor > 60_000):
+            parser.error('time odds exceed the runner clock limits')
         if args.candidate_nodes is not None or args.baseline_nodes is not None or args.baseline_depth is not None:
             parser.error('clock mode uses symmetric safety caps; do not supply fixed work')
         args.candidate_nodes = args.baseline_nodes = 5_000_000
@@ -271,12 +291,30 @@ def campaign(args):
         args.baseline_depth = depth
     if args.baseline_nodes is None:
         args.baseline_nodes = nodes
+    if args.game_wall_ms is None:
+        args.game_wall_ms = 180_000
+        if args.base is not None:
+            plies = 1 if args.calibrate else args.max_steps
+            factor = args.candidate_time_factor
+            # Either participant can move first from the opening. For odd
+            # limits, give the larger clock the extra increment.
+            increments = (plies // 2) * (1 + factor) + (plies % 2) * factor
+            charge = round(args.base * 1000) * (1 + factor) + round(args.increment * 1000) * increments
+            args.game_wall_ms = charge + max(30_000, (charge + 9) // 10)
     if not (1 <= args.workers <= 8 and 1 <= args.max_pairs <= 10000
-            and args.wall_seconds > 0 and 0 < args.pair_wall_ms < 2**64):
+            and 0 < args.game_wall_ms < 2**64):
         parser.error('invalid finite campaign bounds')
+    if args.wall_seconds is None:
+        args.wall_seconds = projected_seconds(args)
+    if args.wall_seconds * 1000 < ((2 + args.workers - 1) // args.workers) * game_slot_ms(args):
+        parser.error('campaign budget is too short for both colors of one opening')
     if args.watchdog_ms is not None and not 1 <= args.watchdog_ms <= 60000:
         parser.error('watchdog must be within 1..60000 ms')
     stats.Sprt(args.elo0, args.elo1, args.alpha, args.beta, args.min_pairs)
+
+
+def campaign(args):
+    configure(args, argparse.ArgumentParser(prog='strength ' + args.command))
     out = Path(args.out).resolve()
     out.mkdir(parents=True, exist_ok=False)
     if args.openings:
@@ -293,57 +331,42 @@ def campaign(args):
         with frozen.open('xb') as stream:
             stream.write(raw)
         args.openings = str(frozen)
-    write_new(out / 'manifest.json', {'kind': f'{args.game}-paired-predecessor', 'schema': 1,
+    write_new(out / 'manifest.json', {'kind': f'{args.game}-paired-predecessor', 'schema': 2,
               'settings': {k:v for k,v in vars(args).items() if k != 'func'}, 'environment': environment(),
               'candidate': engine_identity(args.candidate), 'baseline': engine_identity(args.baseline),
               'runner': engine_identity(args.runner), 'helper': engine_identity(args.helper),
               'timing': 'runner request/launch/search/receipt, including process overhead',
               'sampling': ('fixed catalog index (seed-1) modulo count; both colors; source frozen before play'
                            if args.openings else 'one seeded opening per pair; no discarded unfinished pairs'),
-              'stopping': 'check SPRT in seed order after each worker batch; all launched pairs retained'})
+              'stopping': 'check SPRT after each seed-ordered batch; all launched games retained'})
     start = time.monotonic()
     rows = []
     failure = None
-    # Batches avoid unobserved running work after a decision. The last batch can
-    # contain up to workers-1 pairs beyond the first crossing; all are reported.
+    # Retain deterministic batches and wait for their evidence before a decision.
+    # Workers each run one game at a time, independent of its opposite color.
     try:
         with concurrent.futures.ThreadPoolExecutor(max_workers=args.workers) as pool:
-            for offset in range(0, args.max_pairs, args.workers):
-                if args.wall_seconds * 1000 - int((time.monotonic() - start) * 1000) < args.pair_wall_ms + 45_000:
+            while len(rows) < args.max_pairs:
+                remaining_ms = args.wall_seconds * 1000 - int((time.monotonic() - start) * 1000)
+                available_waves = remaining_ms // game_slot_ms(args)
+                count = min(args.max_pairs - len(rows), args.workers, available_waves * args.workers // 2)
+                if count < 1:
                     break
-                seeds = range(args.first_seed + offset,
-                              args.first_seed + min(offset + args.workers, args.max_pairs))
-                futures = [(seed, pool.submit(run_pair, args, seed, out)) for seed in seeds]
-                errors = []
-                for seed, future in futures:
-                    try:
-                        rows.append(future.result())
-                    except Exception as error:
-                        errors.append(f'pair {seed}: {error}')
-                if errors:
-                    raise RuntimeError('; '.join(errors))
+                seeds = range(args.first_seed + len(rows), args.first_seed + len(rows) + count)
+                games = {(seed, swapped): pool.submit(run_game, args, seed, swapped, out)
+                         for seed in seeds for swapped in (False, True)}
+                rows.extend(score_pair(seed, [games[seed, swapped].result() for swapped in (False, True)])
+                            for seed in seeds)
                 result = summary(args, rows, start)
                 write_new(out / f'checkpoint-{len(rows):04d}.json', result)
                 print(json.dumps({k: result[k] for k in ('pairs', 'wins_draws_losses', 'sprt', 'wall_seconds')}), flush=True)
-                if args.calibrate:
-                    reason = calibration_failure(rows)
-                    if reason:
-                        raise RuntimeError(reason)
-                    continue
-                if args.selfplay:
-                    if any(stop not in ('game_concluded', 'step_limit', 'wall_budget',
-                                        'pending_adjudication', 'no_board_actions', 'artifact_limit') for
-                           row in rows for stop in row['stops']):
-                        raise RuntimeError('self-play encountered an unexpected stop; see match reports')
-                    continue
-                reason = unfinished(args, rows)
-                if reason:
-                    raise RuntimeError(reason)
-                if result['sprt']['decision']:
+                if not (args.calibrate or args.selfplay) and result['sprt']['decision']:
                     break
     except Exception as error:
         failure = str(error)
+    if args.calibrate and failure is None:
+        failure = calibration_failure(rows)
     result = summary(args, rows, start, failure)
     write_new(out / 'summary.json', result)
     if failure or not rows:
-        raise SystemExit(failure or 'campaign budget allowed no pairs')
+        raise SystemExit(failure or 'campaign budget allowed no games')

@@ -24,11 +24,15 @@ from tools.experiments.core import decode, encode, digest, environment
 from .common import write_new as save
 
 
+CLEANUP_SECONDS = 300
+PROVISION_SECONDS = 120
+
+
 @dataclass(frozen=True)
 class CampaignPolicy:
     """Reviewed fixed policy; callers cannot set it from a cloud manifest."""
     prefix: str
-    seconds: int
+    seconds: int | None
     compute_usd: float
     worker_module: str
     worker_arguments: tuple = ()
@@ -156,12 +160,13 @@ def cleanup(job, region, owner, out, submission_confirmed, *, owner_label, campa
         save(out/'cleanup.json', receipt)
 
 
-def run(args, *, policy, manifest_validator):
+def run(args, *, policy, manifest_validator, project_runtime=None):
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=False)
     manifest = json.loads(Path(args.manifest).read_text())
     manifest_validator(manifest)
-    config = gcp.validate_config(json.loads(Path(args.config).read_text()))
+    raw_config = json.loads(Path(args.config).read_text())
+    config = gcp.validate_config(raw_config)
     if config['project'] != 'mshogi' or config['machine_type'] != 'c3-standard-4' or config['parallelism'] > 8:
         raise ValueError('The approved project, machine and at most eight workers are required')
     if config['max_retries'] != 0 or not 1 <= len(manifest['bins']) <= 8:
@@ -174,13 +179,32 @@ def run(args, *, policy, manifest_validator):
         raise ValueError('Approved region and existing notification topic required')
     gcp._pubsub_name(args.subscription, config['project'], 'subscriptions')
     start = time.time()
-    deadline = manifest['deadline_epoch']
-    if not start < deadline <= start + policy.seconds:
-        raise ValueError('Invalid campaign deadline')
-    if deadline - start <= 300:
+    workers = min(len(manifest['bins']), config['parallelism'])
+    if policy.seconds is None:
+        projected = project_runtime(manifest)
+        waves = (len(manifest['bins']) + workers - 1) // workers
+        deadline = manifest.get('deadline_epoch')
+        if projected is None and deadline is None:
+            raise ValueError('Set deadline_epoch for bins with operations other than match or selfplay')
+        runtime = raw_config.get('max_run_seconds')
+        if runtime is None:
+            runtime = projected if projected is not None else int(deadline - start - CLEANUP_SECONDS)
+        if projected is not None and runtime < projected:
+            raise ValueError(f'Batch max_run_seconds must be at least {projected}s for this match plan')
+        config = gcp.validate_config(dict(raw_config, max_run_seconds=runtime))
+        need = waves * (runtime + PROVISION_SECONDS) + CLEANUP_SECONDS
+        if deadline is None:
+            deadline = start + need
+        if projected is not None and deadline < start + need:
+            raise ValueError(f'Campaign deadline needs at least {need}s for this match plan')
+        manifest.setdefault('campaign_started_epoch', start)
+        manifest['deadline_epoch'] = deadline
+    else:
+        deadline = manifest['deadline_epoch']
+        if deadline != manifest['campaign_started_epoch'] + policy.seconds:
+            raise ValueError('Deadline must retain the original campaign start')
+    if deadline - start <= CLEANUP_SECONDS:
         raise ValueError('Campaign deadline leaves no time beyond cleanup reserve')
-    if deadline != manifest['campaign_started_epoch'] + policy.seconds:
-        raise ValueError('Deadline must retain the original campaign start')
     before = manifest['estimated_compute_before_usd']
     if type(before) not in (int, float) or not math.isfinite(before) or not 0 <= before < policy.compute_usd:
         raise ValueError('Compute cap reached')
@@ -189,7 +213,6 @@ def run(args, *, policy, manifest_validator):
     if 'vm_hourly_usd' not in config:
         raise ValueError('Recorded VM hourly rate required')
     # At most eight VMs for the entire remaining campaign: a conservative reserve.
-    workers = min(len(manifest['bins']), config['parallelism'])
     reserve = workers * (deadline - start) / 3600 * config['vm_hourly_usd']
     if manifest['estimated_compute_before_usd'] + reserve > policy.compute_usd:
         raise ValueError('Remaining maximum allocation would exceed compute cap')
@@ -229,7 +252,7 @@ def run(args, *, policy, manifest_validator):
             except BaseException as exc:
                 result.put((False, getattr(exc, 'result', {'error': repr(exc)})))
         threading.Thread(target=wait, daemon=True).start()
-        ok, terminal = result.get(timeout=max(1, deadline-time.time()-300))
+        ok, terminal = result.get(timeout=max(1, deadline-time.time()-CLEANUP_SECONDS))
         save(out/'terminal.json', terminal)
         if not ok:
             raise RuntimeError('Batch failed; see terminal.json')

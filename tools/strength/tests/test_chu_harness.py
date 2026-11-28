@@ -4,34 +4,12 @@ import io
 import json
 from pathlib import Path
 import tempfile
-from types import SimpleNamespace
 import unittest
-from unittest.mock import patch
 
-from tools.strength import internal_match, texel_data
+from tools.strength import texel_data
 
 
 class ChuHarnessTests(unittest.TestCase):
-    def test_clocked_catalog_pair_retains_time_odds(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            out = Path(tmp)
-            report = {'games': [dict(pairing={'swapped': swap}, score_first_twice=2,
-                                     steps=[], stop='game_concluded') for swap in (False, True)]}
-            (out / 'pair-0001.report.json').write_text(json.dumps(report))
-            args = SimpleNamespace(helper='writer', profile=None, candidate='candidate', baseline='baseline',
-                candidate_nodes=5_000_000, baseline_depth=64, baseline_nodes=5_000_000,
-                calibrate=False, max_steps=500, pair_wall_ms=180000, base=5, increment=.1,
-                game='chu', candidate_time_factor=2, openings='openings.json', opening_count=100,
-                watchdog_ms=None, runner='runner')
-            with patch.object(internal_match.subprocess, 'run') as run, patch.object(internal_match.subprocess, 'Popen') as proc:
-                proc.return_value.wait.return_value = 0
-                result = internal_match.run_pair(args, 1, out)
-            command = run.call_args_list[0].args[0]
-            self.assertEqual(command[command.index('--candidate-time-factor') + 1], '2')
-            self.assertEqual(command[command.index('--opening-index') + 1], '0')
-            self.assertEqual(result['scores_twice'], [2, 0])
-            self.assertEqual(result['pair_score'], .5)
-
     def test_cloud_run_uses_only_manifested_tools(self):
         from tools.strength.batch import validate
         manifest = dict(schema=1, campaign_started_epoch=0, deadline_epoch=1800,
@@ -43,11 +21,6 @@ class ChuHarnessTests(unittest.TestCase):
             manifest['bins'] = [[command]]
             with self.assertRaises(ValueError):
                 validate(manifest)
-
-    def test_chu_unfinished_pairs_stop_instead_of_becoming_draws(self):
-        args = SimpleNamespace(game='chu')
-        self.assertIsNotNone(internal_match.unfinished(args, [
-            {'pair_score': None, 'stops': ['game_concluded', 'step_limit']}]))
 
     def test_chu_split_keeps_pair_together_and_has_no_unfinished_labels(self):
         with tempfile.TemporaryDirectory() as tmp:

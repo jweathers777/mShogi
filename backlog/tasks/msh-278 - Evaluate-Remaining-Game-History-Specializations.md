@@ -1,9 +1,10 @@
 ---
 id: MSH-278
 title: Evaluate Remaining Game History Specializations
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-11-27T12:34:00Z'
+updated_date: '2026-11-28T20:54:00Z'
 labels:
   - technical-debt
   - model:large
@@ -12,7 +13,7 @@ dependencies: []
 documentation:
   - docs/design.md
 priority: medium
-ordinal: 252000
+ordinal: 250400
 ---
 
 ## Description

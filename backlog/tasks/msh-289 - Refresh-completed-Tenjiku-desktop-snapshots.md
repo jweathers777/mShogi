@@ -1,9 +1,10 @@
 ---
 id: MSH-289
 title: Refresh completed Tenjiku desktop snapshots
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-11-28T10:46:00Z'
+updated_date: '2026-11-28T20:54:00Z'
 labels:
   - tenjiku
   - desktop
@@ -12,9 +13,9 @@ labels:
 dependencies: []
 references:
   - MSH-285
-priority: low
+priority: high
 type: chore
-ordinal: 267000
+ordinal: 250200
 ---
 
 ## Description

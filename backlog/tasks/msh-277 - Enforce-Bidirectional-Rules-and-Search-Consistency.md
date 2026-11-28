@@ -1,9 +1,10 @@
 ---
 id: MSH-277
 title: Enforce Bidirectional Rules and Search Consistency
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-11-27T12:34:00Z'
+updated_date: '2026-11-28T20:54:00Z'
 labels:
   - technical-debt
   - model:large
@@ -13,7 +14,7 @@ documentation:
   - docs/design.md
   - docs/development.md
 priority: high
-ordinal: 251000
+ordinal: 250300
 ---
 
 ## Description

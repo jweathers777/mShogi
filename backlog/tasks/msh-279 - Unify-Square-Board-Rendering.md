@@ -1,9 +1,10 @@
 ---
 id: MSH-279
 title: Unify Square-Board Rendering
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-11-27T12:34:00Z'
+updated_date: '2026-11-28T20:54:00Z'
 labels:
   - technical-debt
   - model:large
@@ -13,7 +14,7 @@ documentation:
   - docs/design.md
   - desktop/README.md
 priority: medium
-ordinal: 253000
+ordinal: 250600
 ---
 
 ## Description

@@ -1,9 +1,10 @@
 ---
 id: MSH-281
 title: Decompose Large Modules by Responsibility
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-11-27T12:34:00Z'
+updated_date: '2026-11-28T20:54:00Z'
 labels:
   - technical-debt
   - model:large
@@ -11,8 +12,8 @@ labels:
 dependencies: []
 documentation:
   - docs/design.md
-priority: low
-ordinal: 255000
+priority: medium
+ordinal: 250700
 ---
 
 ## Description

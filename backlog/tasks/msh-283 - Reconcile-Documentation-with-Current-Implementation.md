@@ -1,9 +1,10 @@
 ---
 id: MSH-283
 title: Reconcile Documentation with Current Implementation
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-11-27T12:34:00Z'
+updated_date: '2026-11-28T20:54:00Z'
 labels:
   - technical-debt
   - model:medium
@@ -14,7 +15,7 @@ documentation:
   - docs/design.md
   - docs/development.md
 priority: low
-ordinal: 257000
+ordinal: 250900
 ---
 
 ## Description

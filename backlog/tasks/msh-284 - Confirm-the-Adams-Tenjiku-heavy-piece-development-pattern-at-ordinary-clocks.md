@@ -1,10 +1,10 @@
 ---
 id: MSH-284
 title: Confirm the Adams Tenjiku heavy-piece development pattern at ordinary clocks
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-11-27T22:25:00Z'
-updated_date: '2026-11-27T23:04:00Z'
+updated_date: '2026-11-28T20:54:00Z'
 labels:
   - tenjiku
   - strength
@@ -14,7 +14,8 @@ dependencies: []
 documentation:
   - docs/m5/strength-roadmap.md
   - docs/m5/strength-harness.md
-ordinal: 261000
+priority: low
+ordinal: 251100
 ---
 
 ## Description
@@ -33,5 +34,7 @@ MSH-53.3 found 14 of 18 clear errors in the shallow Adams sample where a quiet c
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
-MSH-53.3 later screened 72 accepted 60+1.5 Adams moves from eight distinct archive openings, disjoint from the weak fixed-node source. The one clear ordinary-clock error, on a held-out opening, missed a Vice General multi-landing alternative. No ordinary-clock clear error repeated the central pawn pattern, so the shallow pattern is not established as a normal-playing defect. Keep this proposed confirmation work unstarted.
+MSH-53.3 screened 72 accepted Adams moves at 60+1.5 from eight archive openings outside the shallow sample. The one clear ordinary-clock error, on a held-out opening, missed a Vice General multi-landing alternative. No clear ordinary-clock error repeated the central pawn pattern.
+
+John released this confirmation task to Ready on 2026-11-28. Use the accepted baseline revision 747e7db for the confirmation. Any proposed evaluation change requires separate approval.
 <!-- SECTION:NOTES:END -->

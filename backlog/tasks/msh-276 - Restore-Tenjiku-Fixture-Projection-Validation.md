@@ -1,9 +1,10 @@
 ---
 id: MSH-276
 title: Restore Tenjiku Fixture Projection Validation
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-11-27T07:17:00Z'
+updated_date: '2026-11-28T20:54:00Z'
 labels:
   - documentation
   - model:small
@@ -11,9 +12,9 @@ labels:
 dependencies: []
 documentation:
   - docs/m4/tenjiku/fixtures.md
-priority: low
+priority: high
 type: bug
-ordinal: 250000
+ordinal: 250100
 ---
 
 ## Description

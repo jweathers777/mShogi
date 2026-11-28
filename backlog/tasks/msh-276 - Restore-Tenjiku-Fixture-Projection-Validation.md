@@ -1,10 +1,11 @@
 ---
 id: MSH-276
 title: Restore Tenjiku Fixture Projection Validation
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-27T07:17:00Z'
-updated_date: '2026-11-28T20:54:00Z'
+updated_date: '2026-11-28T20:56:00Z'
 labels:
   - documentation
   - model:small

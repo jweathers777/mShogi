@@ -4,7 +4,7 @@ title: Xiangqi Engine Uses Too Little of Its Clock
 status: Ready
 assignee: []
 created_date: '2026-11-28T10:14:00Z'
-updated_date: '2026-11-28T10:19:00Z'
+updated_date: '2026-11-28T11:50:00Z'
 labels:
   - xiangqi
   - time-management
@@ -12,7 +12,8 @@ labels:
   - model:medium
   - effort:medium
 milestone: m-5
-dependencies: []
+dependencies:
+  - MSH-286
 documentation:
   - docs/m5/xiangqi-blunder-screen.md
   - docs/m5/strength-roadmap.md
@@ -28,7 +29,13 @@ In the MSH-198 blunder screen (MSH-197 ladder, 60 s + 1 s), mShogi used a median
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Measure how the engine's own time manager spends a 60 s + 1 s clock in Xiangqi (time per move by phase, unused clock at game end)
-- [ ] #2 A changed shared allocation (for example a larger share, or extra time when the best move or score is unstable) wins an SPRT against the predecessor in Xiangqi at 60 s + 1 s with the engine managing its own clock, or the task records why no candidate won
+- [ ] #1 Measure how the engine spends a 60 s + 1 s clock in Xiangqi (time per move by phase, unused clock at game end)
+- [ ] #2 A changed shared allocation (for example a larger share, or extra time when the best move or score is unstable) wins an SPRT against the predecessor in Xiangqi at 60 s + 1 s, or the task records why no candidate won
 - [ ] #3 A kept change does not lose in a short SPRT in the other games that use the shared policy; results, cost and GCS path recorded
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+The experiment runner uses the same shared allocation (soft budget for 30 moves, docs/m5/strength-roadmap.md 'Clock allocation of the experiment runner'), so a change here also changes the runner policy that John decided on 2026-11-25. Depends on MSH-286 so its matches do not hit the shared pair wall or the fixed 1800 s job.
+<!-- SECTION:NOTES:END -->

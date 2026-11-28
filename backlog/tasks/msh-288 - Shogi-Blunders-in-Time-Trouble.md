@@ -4,7 +4,7 @@ title: Shogi Blunders in Time Trouble
 status: Ready
 assignee: []
 created_date: '2026-11-28T10:14:00Z'
-updated_date: '2026-11-28T10:19:00Z'
+updated_date: '2026-11-28T11:50:00Z'
 labels:
   - shogi
   - time-management
@@ -30,6 +30,6 @@ In the MSH-193 Shogi blunder screen (304 MSH-191 games at 60 s + 1 s against ext
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [ ] #1 From the MSH-191 game records, measure clock use per move and identify where the time-trouble positions come from
-- [ ] #2 A fix for the measured cause wins an SPRT against the predecessor in Shogi at 60 s + 1 s with the engine managing its own clock, or the task records why no candidate won
+- [ ] #2 A fix for the measured cause wins an SPRT against the predecessor in Shogi at 60 s + 1 s, or the task records why no candidate won
 - [ ] #3 Results, cost and GCS path recorded; shared clock documentation updated if the policy changes
 <!-- AC:END -->

@@ -23,10 +23,9 @@ must be able to start the next task without chat history and without help.
    - your own task that is In Progress;
    - the first task from `backlog task list --status Ready --ready --plain`
      that has no assignee and no `needs-john` label. Highest priority first.
-3. Claim it before you change code: create the local branch, set yourself as
-   assignee, set the status to In Progress, and commit the claim on that branch.
-   Check active local branches for claims. Skip any task that another worker
-   claimed.
+3. Claim it before you change code: on `main`, set yourself as assignee, set
+   the status to In Progress, commit the claim and push `main`. Then create the
+   task branch from that commit. Skip any task that another worker claimed.
 4. Read the task, the code that it changes, and the parts of `docs/design.md`
    that apply. Also read every document that John, the task or the design
    tells you to read. You do not have to read all of `docs/`.
@@ -36,9 +35,9 @@ must be able to start the next task without chat history and without help.
 - Branch from `main` as `<agent-name>/<task-id>-<short-name>`, for example
   `claude/msh-205-tori-selectivity` or `codex/msh-205-tori-selectivity`. A
   small documentation change can go directly on `main`.
-- Commit claims, checkpoints, and handoffs locally. Push a task branch only
-  when a required step needs the commit on the remote, such as a GitHub Actions
-  check. Push `main` after integration.
+- Commit checkpoints and handoffs locally on the task branch. Push a task
+  branch only when a required step needs the commit on the remote, such as a
+  GitHub Actions check. Push `main` after integration.
 - Make engineering decisions yourself. Use measurements to decide. Do not write
   option papers or wait for John on an engineering choice.
 - Ask John only about: game rules or product behavior, spending above the cap

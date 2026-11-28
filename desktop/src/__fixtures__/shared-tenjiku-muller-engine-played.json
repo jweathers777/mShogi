@@ -10,29 +10,70 @@
         "board_ply": 1,
         "number": 1,
         "column": 0,
-        "notation": "Dg5k-5j",
-        "action": "{\"kind\":\"travel\",\"from\":[5,11],\"route\":[[5,10]],\"promote\":false}",
+        "notation": "GGn9mx9d",
+        "effects_description": "Captured Gote Vice General at 9d; Sente Great General destroyed at 9d",
+        "action": "{\"kind\":\"travel\",\"from\":[9,13],\"route\":[[9,4]],\"promote\":false}",
         "command_start": 0,
         "command_end": 1
       }
     ],
     "last_action": {
-      "action": "{\"kind\":\"travel\",\"from\":[5,11],\"route\":[[5,10]],\"promote\":false}",
+      "action": "{\"kind\":\"travel\",\"from\":[9,13],\"route\":[[9,4]],\"promote\":false}",
       "event_index": 1,
       "origin": {
         "kind": "board",
-        "square": "5k"
+        "square": "9m"
       },
       "steps": [
-        "5j"
+        "9d"
       ],
       "ordered_effects": {
         "kind": "tenjiku",
         "stationary_target": null,
-        "phases": []
+        "phases": [
+          {
+            "phase": "capture",
+            "victim": {
+              "square": "9d",
+              "piece": {
+                "id": 130,
+                "side": "gote",
+                "base": "VGn",
+                "promoted": false,
+                "right": "consumed"
+              },
+              "face": "VGn"
+            }
+          },
+          {
+            "phase": "mover_dies",
+            "mover": {
+              "square": "9d",
+              "piece": {
+                "id": 51,
+                "side": "sente",
+                "base": "GGn",
+                "promoted": false,
+                "right": "consumed"
+              },
+              "face": "GGn"
+            }
+          }
+        ]
       },
       "effects": [],
-      "captures": []
+      "captures": [
+        {
+          "square": "9d",
+          "owner": {
+            "game_kind": "tenjiku",
+            "side": "gote"
+          },
+          "original_kind": "VGn",
+          "movement_face": "VGn",
+          "promoted": false
+        }
+      ]
     }
   },
   "tenjiku": {
@@ -624,17 +665,6 @@
           "face": "GGn"
         },
         {
-          "square": "9d",
-          "piece": {
-            "id": 130,
-            "side": "gote",
-            "base": "VGn",
-            "promoted": false,
-            "right": "consumed"
-          },
-          "face": "VGn"
-        },
-        {
           "square": "10d",
           "piece": {
             "id": 131,
@@ -910,7 +940,7 @@
           "face": "Dg"
         },
         {
-          "square": "5j",
+          "square": "5k",
           "piece": {
             "id": 77,
             "side": "sente",
@@ -1194,17 +1224,6 @@
             "right": "consumed"
           },
           "face": "VGn"
-        },
-        {
-          "square": "9m",
-          "piece": {
-            "id": 51,
-            "side": "sente",
-            "base": "GGn",
-            "promoted": false,
-            "right": "consumed"
-          },
-          "face": "GGn"
         },
         {
           "square": "10m",
@@ -2060,11 +2079,7 @@
             "GGn",
             false
           ],
-          [
-            "gote",
-            "VGn",
-            false
-          ],
+          null,
           [
             "gote",
             "RGn",
@@ -2256,27 +2271,27 @@
           null,
           null,
           null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
           [
             "sente",
             "Dg",
             false
           ],
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
           null,
           null,
           null,
@@ -2412,11 +2427,7 @@
             "VGn",
             false
           ],
-          [
-            "sente",
-            "GGn",
-            false
-          ],
+          null,
           [
             "sente",
             "RGn",
@@ -2688,32 +2699,57 @@
         "action": {
           "kind": "travel",
           "from": [
-            5,
-            11
+            9,
+            13
           ],
           "route": [
             [
-              5,
-              10
+              9,
+              4
             ]
           ],
           "promote": false
         },
         "mover_before": {
-          "id": 77,
+          "id": 51,
           "side": "sente",
-          "base": "Dg",
+          "base": "GGn",
           "promoted": false,
-          "right": "unseen"
+          "right": "consumed"
         },
-        "mover_after": {
-          "id": 77,
-          "side": "sente",
-          "base": "Dg",
-          "promoted": false,
-          "right": "unseen"
-        },
-        "phases": []
+        "mover_after": null,
+        "phases": [
+          {
+            "phase": "capture",
+            "victim": {
+              "square": [
+                9,
+                4
+              ],
+              "piece": {
+                "id": 130,
+                "side": "gote",
+                "base": "VGn",
+                "promoted": false,
+                "right": "consumed"
+              }
+            }
+          },
+          {
+            "phase": "mover_dies",
+            "square": [
+              9,
+              4
+            ],
+            "piece": {
+              "id": 51,
+              "side": "sente",
+              "base": "GGn",
+              "promoted": false,
+              "right": "consumed"
+            }
+          }
+        ]
       }
     },
     "live": {
@@ -3294,17 +3330,6 @@
           "face": "GGn"
         },
         {
-          "square": "9d",
-          "piece": {
-            "id": 130,
-            "side": "gote",
-            "base": "VGn",
-            "promoted": false,
-            "right": "consumed"
-          },
-          "face": "VGn"
-        },
-        {
           "square": "10d",
           "piece": {
             "id": 131,
@@ -3580,7 +3605,7 @@
           "face": "Dg"
         },
         {
-          "square": "5j",
+          "square": "5k",
           "piece": {
             "id": 77,
             "side": "sente",
@@ -3864,17 +3889,6 @@
             "right": "consumed"
           },
           "face": "VGn"
-        },
-        {
-          "square": "9m",
-          "piece": {
-            "id": 51,
-            "side": "sente",
-            "base": "GGn",
-            "promoted": false,
-            "right": "consumed"
-          },
-          "face": "GGn"
         },
         {
           "square": "10m",
@@ -4730,11 +4744,7 @@
             "GGn",
             false
           ],
-          [
-            "gote",
-            "VGn",
-            false
-          ],
+          null,
           [
             "gote",
             "RGn",
@@ -4926,27 +4936,27 @@
           null,
           null,
           null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
           [
             "sente",
             "Dg",
             false
           ],
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
           null,
           null,
           null,
@@ -5082,11 +5092,7 @@
             "VGn",
             false
           ],
-          [
-            "sente",
-            "GGn",
-            false
-          ],
+          null,
           [
             "sente",
             "RGn",
@@ -5358,32 +5364,57 @@
         "action": {
           "kind": "travel",
           "from": [
-            5,
-            11
+            9,
+            13
           ],
           "route": [
             [
-              5,
-              10
+              9,
+              4
             ]
           ],
           "promote": false
         },
         "mover_before": {
-          "id": 77,
+          "id": 51,
           "side": "sente",
-          "base": "Dg",
+          "base": "GGn",
           "promoted": false,
-          "right": "unseen"
+          "right": "consumed"
         },
-        "mover_after": {
-          "id": 77,
-          "side": "sente",
-          "base": "Dg",
-          "promoted": false,
-          "right": "unseen"
-        },
-        "phases": []
+        "mover_after": null,
+        "phases": [
+          {
+            "phase": "capture",
+            "victim": {
+              "square": [
+                9,
+                4
+              ],
+              "piece": {
+                "id": 130,
+                "side": "gote",
+                "base": "VGn",
+                "promoted": false,
+                "right": "consumed"
+              }
+            }
+          },
+          {
+            "phase": "mover_dies",
+            "square": [
+              9,
+              4
+            ],
+            "piece": {
+              "id": 51,
+              "side": "sente",
+              "base": "GGn",
+              "promoted": false,
+              "right": "consumed"
+            }
+          }
+        ]
       }
     },
     "execution_supported": true
@@ -6032,14 +6063,6 @@
       "label": "8d, Gote Great General"
     },
     {
-      "square": "9d",
-      "owner": "mshogi.tenjiku.muller-completed.v1:gote",
-      "kind": "VGn",
-      "promoted": false,
-      "text": "VGn",
-      "label": "9d, Gote Vice General"
-    },
-    {
       "square": "10d",
       "owner": "mshogi.tenjiku.muller-completed.v1:gote",
       "kind": "RGn",
@@ -6240,12 +6263,12 @@
       "label": "12f, Gote Dog"
     },
     {
-      "square": "5j",
+      "square": "5k",
       "owner": "mshogi.tenjiku.muller-completed.v1:sente",
       "kind": "Dg",
       "promoted": false,
       "text": "Dg",
-      "label": "5j, Sente Dog"
+      "label": "5k, Sente Dog"
     },
     {
       "square": "12k",
@@ -6446,14 +6469,6 @@
       "promoted": false,
       "text": "VGn",
       "label": "8m, Sente Vice General"
-    },
-    {
-      "square": "9m",
-      "owner": "mshogi.tenjiku.muller-completed.v1:sente",
-      "kind": "GGn",
-      "promoted": false,
-      "text": "GGn",
-      "label": "9m, Sente Great General"
     },
     {
       "square": "10m",
@@ -7085,6 +7100,24 @@
     {
       "origin": {
         "kind": "board",
+        "square": "8b"
+      },
+      "action": "{\"kind\":\"travel\",\"from\":[8,2],\"route\":[[9,4]],\"promote\":false}",
+      "from": "8b",
+      "steps": [
+        "9d"
+      ],
+      "tenjiku": {
+        "kind": "travel",
+        "route": [
+          "9d"
+        ]
+      },
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
         "square": "11b"
       },
       "action": "{\"kind\":\"travel\",\"from\":[11,2],\"route\":[[12,2]],\"promote\":false}",
@@ -7222,6 +7255,122 @@
         "kind": "travel",
         "route": [
           "5b"
+        ]
+      },
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "8c"
+      },
+      "action": "{\"kind\":\"travel\",\"from\":[8,3],\"route\":[[9,4]],\"promote\":false}",
+      "from": "8c",
+      "steps": [
+        "9d"
+      ],
+      "tenjiku": {
+        "kind": "travel",
+        "route": [
+          "9d"
+        ]
+      },
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "8c"
+      },
+      "action": "{\"kind\":\"travel\",\"from\":[8,3],\"route\":[[9,4],[8,3]],\"promote\":false}",
+      "from": "8c",
+      "steps": [
+        "9d",
+        "8c"
+      ],
+      "tenjiku": {
+        "kind": "travel",
+        "route": [
+          "9d",
+          "8c"
+        ]
+      },
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "9c"
+      },
+      "action": "{\"kind\":\"travel\",\"from\":[9,3],\"route\":[[9,4]],\"promote\":false}",
+      "from": "9c",
+      "steps": [
+        "9d"
+      ],
+      "tenjiku": {
+        "kind": "travel",
+        "route": [
+          "9d"
+        ]
+      },
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "10c"
+      },
+      "action": "{\"kind\":\"travel\",\"from\":[10,3],\"route\":[[9,4]],\"promote\":false}",
+      "from": "10c",
+      "steps": [
+        "9d"
+      ],
+      "tenjiku": {
+        "kind": "travel",
+        "route": [
+          "9d"
+        ]
+      },
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "10c"
+      },
+      "action": "{\"kind\":\"travel\",\"from\":[10,3],\"route\":[[9,4],[10,3]],\"promote\":false}",
+      "from": "10c",
+      "steps": [
+        "9d",
+        "10c"
+      ],
+      "tenjiku": {
+        "kind": "travel",
+        "route": [
+          "9d",
+          "10c"
+        ]
+      },
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "10c"
+      },
+      "action": "{\"kind\":\"travel\",\"from\":[10,3],\"route\":[[9,4],[10,3],[9,4]],\"promote\":false}",
+      "from": "10c",
+      "steps": [
+        "9d",
+        "10c",
+        "9d"
+      ],
+      "tenjiku": {
+        "kind": "travel",
+        "route": [
+          "9d",
+          "10c",
+          "9d"
         ]
       },
       "completion": null
@@ -7585,6 +7734,24 @@
         "kind": "board",
         "square": "8d"
       },
+      "action": "{\"kind\":\"travel\",\"from\":[8,4],\"route\":[[9,4]],\"promote\":false}",
+      "from": "8d",
+      "steps": [
+        "9d"
+      ],
+      "tenjiku": {
+        "kind": "travel",
+        "route": [
+          "9d"
+        ]
+      },
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "8d"
+      },
       "action": "{\"kind\":\"travel\",\"from\":[8,4],\"route\":[[8,12]],\"promote\":false}",
       "from": "8d",
       "steps": [
@@ -7691,17 +7858,17 @@
     {
       "origin": {
         "kind": "board",
-        "square": "9d"
+        "square": "10d"
       },
-      "action": "{\"kind\":\"travel\",\"from\":[9,4],\"route\":[[1,12]],\"promote\":false}",
-      "from": "9d",
+      "action": "{\"kind\":\"travel\",\"from\":[10,4],\"route\":[[9,4]],\"promote\":false}",
+      "from": "10d",
       "steps": [
-        "1l"
+        "9d"
       ],
       "tenjiku": {
         "kind": "travel",
         "route": [
-          "1l"
+          "9d"
         ]
       },
       "completion": null
@@ -7789,24 +7956,6 @@
         "label": "Promote",
         "glyph": null
       }
-    },
-    {
-      "origin": {
-        "kind": "board",
-        "square": "11d"
-      },
-      "action": "{\"kind\":\"travel\",\"from\":[11,4],\"route\":[[5,10]],\"promote\":false}",
-      "from": "11d",
-      "steps": [
-        "5j"
-      ],
-      "tenjiku": {
-        "kind": "travel",
-        "route": [
-          "5j"
-        ]
-      },
-      "completion": null
     },
     {
       "origin": {
@@ -8301,7 +8450,7 @@
     {
       "index": 1,
       "board_ply": 1,
-      "label": "Sente · Dg5k-5j"
+      "label": "Sente · GGn9mx9d"
     }
   ],
   "event_index": 1,
@@ -8317,7 +8466,7 @@
   "execution_purpose": null,
   "diagnostic": null,
   "declaration_advice": [],
-  "context": {"envelope_version":2,"game_kind":"tenjiku","payload":{"edition":"MULLER+ADAMS-COMPLETION+MSH83-2026-11-04","schema_version":3,"root":{"board":[{"id":78,"side":"gote","base":"L","promoted":false,"right":"unseen"},{"id":79,"side":"gote","base":"N","promoted":false,"right":"unseen"},{"id":80,"side":"gote","base":"FL","promoted":false,"right":"unseen"},{"id":81,"side":"gote","base":"I","promoted":false,"right":"unseen"},{"id":82,"side":"gote","base":"C","promoted":false,"right":"unseen"},{"id":83,"side":"gote","base":"S","promoted":false,"right":"unseen"},{"id":84,"side":"gote","base":"G","promoted":false,"right":"unseen"},{"id":85,"side":"gote","base":"K","promoted":false,"right":"consumed"},{"id":86,"side":"gote","base":"DE","promoted":false,"right":"unseen"},{"id":87,"side":"gote","base":"G","promoted":false,"right":"unseen"},{"id":88,"side":"gote","base":"S","promoted":false,"right":"unseen"},{"id":89,"side":"gote","base":"C","promoted":false,"right":"unseen"},{"id":90,"side":"gote","base":"I","promoted":false,"right":"unseen"},{"id":91,"side":"gote","base":"FL","promoted":false,"right":"unseen"},{"id":92,"side":"gote","base":"N","promoted":false,"right":"unseen"},{"id":93,"side":"gote","base":"L","promoted":false,"right":"unseen"},{"id":94,"side":"gote","base":"RC","promoted":false,"right":"unseen"},null,{"id":95,"side":"gote","base":"ChS","promoted":false,"right":"unseen"},{"id":96,"side":"gote","base":"ChS","promoted":false,"right":"unseen"},null,{"id":97,"side":"gote","base":"BT","promoted":false,"right":"unseen"},{"id":98,"side":"gote","base":"Ky","promoted":false,"right":"unseen"},{"id":99,"side":"gote","base":"Ln","promoted":false,"right":"unseen"},{"id":100,"side":"gote","base":"FK","promoted":false,"right":"unseen"},{"id":101,"side":"gote","base":"Ph","promoted":false,"right":"unseen"},{"id":102,"side":"gote","base":"BT","promoted":false,"right":"unseen"},null,{"id":103,"side":"gote","base":"ChS","promoted":false,"right":"unseen"},{"id":104,"side":"gote","base":"ChS","promoted":false,"right":"unseen"},null,{"id":105,"side":"gote","base":"RC","promoted":false,"right":"unseen"},{"id":106,"side":"gote","base":"SSo","promoted":false,"right":"unseen"},{"id":107,"side":"gote","base":"VSo","promoted":false,"right":"unseen"},{"id":108,"side":"gote","base":"B","promoted":false,"right":"unseen"},{"id":109,"side":"gote","base":"DH","promoted":false,"right":"unseen"},{"id":110,"side":"gote","base":"DK","promoted":false,"right":"unseen"},{"id":111,"side":"gote","base":"WBf","promoted":false,"right":"unseen"},{"id":112,"side":"gote","base":"FiD","promoted":false,"right":"consumed"},{"id":113,"side":"gote","base":"LHk","promoted":false,"right":"consumed"},{"id":114,"side":"gote","base":"FEg","promoted":false,"right":"consumed"},{"id":115,"side":"gote","base":"FiD","promoted":false,"right":"consumed"},{"id":116,"side":"gote","base":"WBf","promoted":false,"right":"unseen"},{"id":117,"side":"gote","base":"DK","promoted":false,"right":"unseen"},{"id":118,"side":"gote","base":"DH","promoted":false,"right":"unseen"},{"id":119,"side":"gote","base":"B","promoted":false,"right":"unseen"},{"id":120,"side":"gote","base":"VSo","promoted":false,"right":"unseen"},{"id":121,"side":"gote","base":"SSo","promoted":false,"right":"unseen"},{"id":122,"side":"gote","base":"SM","promoted":false,"right":"unseen"},{"id":123,"side":"gote","base":"VM","promoted":false,"right":"unseen"},{"id":124,"side":"gote","base":"R","promoted":false,"right":"unseen"},{"id":125,"side":"gote","base":"HF","promoted":false,"right":"unseen"},{"id":126,"side":"gote","base":"SE","promoted":false,"right":"unseen"},{"id":127,"side":"gote","base":"BGn","promoted":false,"right":"unseen"},{"id":128,"side":"gote","base":"RGn","promoted":false,"right":"unseen"},{"id":129,"side":"gote","base":"GGn","promoted":false,"right":"consumed"},{"id":130,"side":"gote","base":"VGn","promoted":false,"right":"consumed"},{"id":131,"side":"gote","base":"RGn","promoted":false,"right":"unseen"},{"id":132,"side":"gote","base":"BGn","promoted":false,"right":"unseen"},{"id":133,"side":"gote","base":"SE","promoted":false,"right":"unseen"},{"id":134,"side":"gote","base":"HF","promoted":false,"right":"unseen"},{"id":135,"side":"gote","base":"R","promoted":false,"right":"unseen"},{"id":136,"side":"gote","base":"VM","promoted":false,"right":"unseen"},{"id":137,"side":"gote","base":"SM","promoted":false,"right":"unseen"},{"id":138,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":139,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":140,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":141,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":142,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":143,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":144,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":145,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":146,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":147,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":148,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":149,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":150,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":151,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":152,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":153,"side":"gote","base":"P","promoted":false,"right":"unseen"},null,null,null,null,{"id":154,"side":"gote","base":"Dg","promoted":false,"right":"unseen"},null,null,null,null,null,null,{"id":155,"side":"gote","base":"Dg","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":77,"side":"sente","base":"Dg","promoted":false,"right":"unseen"},null,null,null,null,null,null,{"id":76,"side":"sente","base":"Dg","promoted":false,"right":"unseen"},null,null,null,null,{"id":75,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":74,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":73,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":72,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":71,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":70,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":69,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":68,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":67,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":66,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":65,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":64,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":63,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":62,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":61,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":60,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":59,"side":"sente","base":"SM","promoted":false,"right":"unseen"},{"id":58,"side":"sente","base":"VM","promoted":false,"right":"unseen"},{"id":57,"side":"sente","base":"R","promoted":false,"right":"unseen"},{"id":56,"side":"sente","base":"HF","promoted":false,"right":"unseen"},{"id":55,"side":"sente","base":"SE","promoted":false,"right":"unseen"},{"id":54,"side":"sente","base":"BGn","promoted":false,"right":"unseen"},{"id":53,"side":"sente","base":"RGn","promoted":false,"right":"unseen"},{"id":52,"side":"sente","base":"VGn","promoted":false,"right":"consumed"},{"id":51,"side":"sente","base":"GGn","promoted":false,"right":"consumed"},{"id":50,"side":"sente","base":"RGn","promoted":false,"right":"unseen"},{"id":49,"side":"sente","base":"BGn","promoted":false,"right":"unseen"},{"id":48,"side":"sente","base":"SE","promoted":false,"right":"unseen"},{"id":47,"side":"sente","base":"HF","promoted":false,"right":"unseen"},{"id":46,"side":"sente","base":"R","promoted":false,"right":"unseen"},{"id":45,"side":"sente","base":"VM","promoted":false,"right":"unseen"},{"id":44,"side":"sente","base":"SM","promoted":false,"right":"unseen"},{"id":43,"side":"sente","base":"SSo","promoted":false,"right":"unseen"},{"id":42,"side":"sente","base":"VSo","promoted":false,"right":"unseen"},{"id":41,"side":"sente","base":"B","promoted":false,"right":"unseen"},{"id":40,"side":"sente","base":"DH","promoted":false,"right":"unseen"},{"id":39,"side":"sente","base":"DK","promoted":false,"right":"unseen"},{"id":38,"side":"sente","base":"WBf","promoted":false,"right":"unseen"},{"id":37,"side":"sente","base":"FiD","promoted":false,"right":"consumed"},{"id":36,"side":"sente","base":"FEg","promoted":false,"right":"consumed"},{"id":35,"side":"sente","base":"LHk","promoted":false,"right":"consumed"},{"id":34,"side":"sente","base":"FiD","promoted":false,"right":"consumed"},{"id":33,"side":"sente","base":"WBf","promoted":false,"right":"unseen"},{"id":32,"side":"sente","base":"DK","promoted":false,"right":"unseen"},{"id":31,"side":"sente","base":"DH","promoted":false,"right":"unseen"},{"id":30,"side":"sente","base":"B","promoted":false,"right":"unseen"},{"id":29,"side":"sente","base":"VSo","promoted":false,"right":"unseen"},{"id":28,"side":"sente","base":"SSo","promoted":false,"right":"unseen"},{"id":27,"side":"sente","base":"RC","promoted":false,"right":"unseen"},null,{"id":26,"side":"sente","base":"ChS","promoted":false,"right":"unseen"},{"id":25,"side":"sente","base":"ChS","promoted":false,"right":"unseen"},null,{"id":24,"side":"sente","base":"BT","promoted":false,"right":"unseen"},{"id":23,"side":"sente","base":"Ph","promoted":false,"right":"unseen"},{"id":22,"side":"sente","base":"FK","promoted":false,"right":"unseen"},{"id":21,"side":"sente","base":"Ln","promoted":false,"right":"unseen"},{"id":20,"side":"sente","base":"Ky","promoted":false,"right":"unseen"},{"id":19,"side":"sente","base":"BT","promoted":false,"right":"unseen"},null,{"id":18,"side":"sente","base":"ChS","promoted":false,"right":"unseen"},{"id":17,"side":"sente","base":"ChS","promoted":false,"right":"unseen"},null,{"id":16,"side":"sente","base":"RC","promoted":false,"right":"unseen"},{"id":15,"side":"sente","base":"L","promoted":false,"right":"unseen"},{"id":14,"side":"sente","base":"N","promoted":false,"right":"unseen"},{"id":13,"side":"sente","base":"FL","promoted":false,"right":"unseen"},{"id":12,"side":"sente","base":"I","promoted":false,"right":"unseen"},{"id":11,"side":"sente","base":"C","promoted":false,"right":"unseen"},{"id":10,"side":"sente","base":"S","promoted":false,"right":"unseen"},{"id":9,"side":"sente","base":"G","promoted":false,"right":"unseen"},{"id":8,"side":"sente","base":"DE","promoted":false,"right":"unseen"},{"id":7,"side":"sente","base":"K","promoted":false,"right":"consumed"},{"id":6,"side":"sente","base":"G","promoted":false,"right":"unseen"},{"id":5,"side":"sente","base":"S","promoted":false,"right":"unseen"},{"id":4,"side":"sente","base":"C","promoted":false,"right":"unseen"},{"id":3,"side":"sente","base":"I","promoted":false,"right":"unseen"},{"id":2,"side":"sente","base":"FL","promoted":false,"right":"unseen"},{"id":1,"side":"sente","base":"N","promoted":false,"right":"unseen"},{"id":0,"side":"sente","base":"L","promoted":false,"right":"unseen"}],"profile":"mshogi.tenjiku.muller-completed.v1","side":"sente","root":{"kind":"standard","source":null,"declared_completed_plies":0},"accepted_plies":0},"events":[{"actor":"sente","command":{"kind":"play","action":{"kind":"travel","from":[5,11],"route":[[5,10]],"promote":false}}}]}},
+  "context": {"envelope_version":2,"game_kind":"tenjiku","payload":{"edition":"MULLER+ADAMS-COMPLETION+MSH83-2026-11-04","schema_version":3,"root":{"board":[{"id":78,"side":"gote","base":"L","promoted":false,"right":"unseen"},{"id":79,"side":"gote","base":"N","promoted":false,"right":"unseen"},{"id":80,"side":"gote","base":"FL","promoted":false,"right":"unseen"},{"id":81,"side":"gote","base":"I","promoted":false,"right":"unseen"},{"id":82,"side":"gote","base":"C","promoted":false,"right":"unseen"},{"id":83,"side":"gote","base":"S","promoted":false,"right":"unseen"},{"id":84,"side":"gote","base":"G","promoted":false,"right":"unseen"},{"id":85,"side":"gote","base":"K","promoted":false,"right":"consumed"},{"id":86,"side":"gote","base":"DE","promoted":false,"right":"unseen"},{"id":87,"side":"gote","base":"G","promoted":false,"right":"unseen"},{"id":88,"side":"gote","base":"S","promoted":false,"right":"unseen"},{"id":89,"side":"gote","base":"C","promoted":false,"right":"unseen"},{"id":90,"side":"gote","base":"I","promoted":false,"right":"unseen"},{"id":91,"side":"gote","base":"FL","promoted":false,"right":"unseen"},{"id":92,"side":"gote","base":"N","promoted":false,"right":"unseen"},{"id":93,"side":"gote","base":"L","promoted":false,"right":"unseen"},{"id":94,"side":"gote","base":"RC","promoted":false,"right":"unseen"},null,{"id":95,"side":"gote","base":"ChS","promoted":false,"right":"unseen"},{"id":96,"side":"gote","base":"ChS","promoted":false,"right":"unseen"},null,{"id":97,"side":"gote","base":"BT","promoted":false,"right":"unseen"},{"id":98,"side":"gote","base":"Ky","promoted":false,"right":"unseen"},{"id":99,"side":"gote","base":"Ln","promoted":false,"right":"unseen"},{"id":100,"side":"gote","base":"FK","promoted":false,"right":"unseen"},{"id":101,"side":"gote","base":"Ph","promoted":false,"right":"unseen"},{"id":102,"side":"gote","base":"BT","promoted":false,"right":"unseen"},null,{"id":103,"side":"gote","base":"ChS","promoted":false,"right":"unseen"},{"id":104,"side":"gote","base":"ChS","promoted":false,"right":"unseen"},null,{"id":105,"side":"gote","base":"RC","promoted":false,"right":"unseen"},{"id":106,"side":"gote","base":"SSo","promoted":false,"right":"unseen"},{"id":107,"side":"gote","base":"VSo","promoted":false,"right":"unseen"},{"id":108,"side":"gote","base":"B","promoted":false,"right":"unseen"},{"id":109,"side":"gote","base":"DH","promoted":false,"right":"unseen"},{"id":110,"side":"gote","base":"DK","promoted":false,"right":"unseen"},{"id":111,"side":"gote","base":"WBf","promoted":false,"right":"unseen"},{"id":112,"side":"gote","base":"FiD","promoted":false,"right":"consumed"},{"id":113,"side":"gote","base":"LHk","promoted":false,"right":"consumed"},{"id":114,"side":"gote","base":"FEg","promoted":false,"right":"consumed"},{"id":115,"side":"gote","base":"FiD","promoted":false,"right":"consumed"},{"id":116,"side":"gote","base":"WBf","promoted":false,"right":"unseen"},{"id":117,"side":"gote","base":"DK","promoted":false,"right":"unseen"},{"id":118,"side":"gote","base":"DH","promoted":false,"right":"unseen"},{"id":119,"side":"gote","base":"B","promoted":false,"right":"unseen"},{"id":120,"side":"gote","base":"VSo","promoted":false,"right":"unseen"},{"id":121,"side":"gote","base":"SSo","promoted":false,"right":"unseen"},{"id":122,"side":"gote","base":"SM","promoted":false,"right":"unseen"},{"id":123,"side":"gote","base":"VM","promoted":false,"right":"unseen"},{"id":124,"side":"gote","base":"R","promoted":false,"right":"unseen"},{"id":125,"side":"gote","base":"HF","promoted":false,"right":"unseen"},{"id":126,"side":"gote","base":"SE","promoted":false,"right":"unseen"},{"id":127,"side":"gote","base":"BGn","promoted":false,"right":"unseen"},{"id":128,"side":"gote","base":"RGn","promoted":false,"right":"unseen"},{"id":129,"side":"gote","base":"GGn","promoted":false,"right":"consumed"},{"id":130,"side":"gote","base":"VGn","promoted":false,"right":"consumed"},{"id":131,"side":"gote","base":"RGn","promoted":false,"right":"unseen"},{"id":132,"side":"gote","base":"BGn","promoted":false,"right":"unseen"},{"id":133,"side":"gote","base":"SE","promoted":false,"right":"unseen"},{"id":134,"side":"gote","base":"HF","promoted":false,"right":"unseen"},{"id":135,"side":"gote","base":"R","promoted":false,"right":"unseen"},{"id":136,"side":"gote","base":"VM","promoted":false,"right":"unseen"},{"id":137,"side":"gote","base":"SM","promoted":false,"right":"unseen"},{"id":138,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":139,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":140,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":141,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":142,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":143,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":144,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":145,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":146,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":147,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":148,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":149,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":150,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":151,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":152,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":153,"side":"gote","base":"P","promoted":false,"right":"unseen"},null,null,null,null,{"id":154,"side":"gote","base":"Dg","promoted":false,"right":"unseen"},null,null,null,null,null,null,{"id":155,"side":"gote","base":"Dg","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":77,"side":"sente","base":"Dg","promoted":false,"right":"unseen"},null,null,null,null,null,null,{"id":76,"side":"sente","base":"Dg","promoted":false,"right":"unseen"},null,null,null,null,{"id":75,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":74,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":73,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":72,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":71,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":70,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":69,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":68,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":67,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":66,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":65,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":64,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":63,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":62,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":61,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":60,"side":"sente","base":"P","promoted":false,"right":"unseen"},{"id":59,"side":"sente","base":"SM","promoted":false,"right":"unseen"},{"id":58,"side":"sente","base":"VM","promoted":false,"right":"unseen"},{"id":57,"side":"sente","base":"R","promoted":false,"right":"unseen"},{"id":56,"side":"sente","base":"HF","promoted":false,"right":"unseen"},{"id":55,"side":"sente","base":"SE","promoted":false,"right":"unseen"},{"id":54,"side":"sente","base":"BGn","promoted":false,"right":"unseen"},{"id":53,"side":"sente","base":"RGn","promoted":false,"right":"unseen"},{"id":52,"side":"sente","base":"VGn","promoted":false,"right":"consumed"},{"id":51,"side":"sente","base":"GGn","promoted":false,"right":"consumed"},{"id":50,"side":"sente","base":"RGn","promoted":false,"right":"unseen"},{"id":49,"side":"sente","base":"BGn","promoted":false,"right":"unseen"},{"id":48,"side":"sente","base":"SE","promoted":false,"right":"unseen"},{"id":47,"side":"sente","base":"HF","promoted":false,"right":"unseen"},{"id":46,"side":"sente","base":"R","promoted":false,"right":"unseen"},{"id":45,"side":"sente","base":"VM","promoted":false,"right":"unseen"},{"id":44,"side":"sente","base":"SM","promoted":false,"right":"unseen"},{"id":43,"side":"sente","base":"SSo","promoted":false,"right":"unseen"},{"id":42,"side":"sente","base":"VSo","promoted":false,"right":"unseen"},{"id":41,"side":"sente","base":"B","promoted":false,"right":"unseen"},{"id":40,"side":"sente","base":"DH","promoted":false,"right":"unseen"},{"id":39,"side":"sente","base":"DK","promoted":false,"right":"unseen"},{"id":38,"side":"sente","base":"WBf","promoted":false,"right":"unseen"},{"id":37,"side":"sente","base":"FiD","promoted":false,"right":"consumed"},{"id":36,"side":"sente","base":"FEg","promoted":false,"right":"consumed"},{"id":35,"side":"sente","base":"LHk","promoted":false,"right":"consumed"},{"id":34,"side":"sente","base":"FiD","promoted":false,"right":"consumed"},{"id":33,"side":"sente","base":"WBf","promoted":false,"right":"unseen"},{"id":32,"side":"sente","base":"DK","promoted":false,"right":"unseen"},{"id":31,"side":"sente","base":"DH","promoted":false,"right":"unseen"},{"id":30,"side":"sente","base":"B","promoted":false,"right":"unseen"},{"id":29,"side":"sente","base":"VSo","promoted":false,"right":"unseen"},{"id":28,"side":"sente","base":"SSo","promoted":false,"right":"unseen"},{"id":27,"side":"sente","base":"RC","promoted":false,"right":"unseen"},null,{"id":26,"side":"sente","base":"ChS","promoted":false,"right":"unseen"},{"id":25,"side":"sente","base":"ChS","promoted":false,"right":"unseen"},null,{"id":24,"side":"sente","base":"BT","promoted":false,"right":"unseen"},{"id":23,"side":"sente","base":"Ph","promoted":false,"right":"unseen"},{"id":22,"side":"sente","base":"FK","promoted":false,"right":"unseen"},{"id":21,"side":"sente","base":"Ln","promoted":false,"right":"unseen"},{"id":20,"side":"sente","base":"Ky","promoted":false,"right":"unseen"},{"id":19,"side":"sente","base":"BT","promoted":false,"right":"unseen"},null,{"id":18,"side":"sente","base":"ChS","promoted":false,"right":"unseen"},{"id":17,"side":"sente","base":"ChS","promoted":false,"right":"unseen"},null,{"id":16,"side":"sente","base":"RC","promoted":false,"right":"unseen"},{"id":15,"side":"sente","base":"L","promoted":false,"right":"unseen"},{"id":14,"side":"sente","base":"N","promoted":false,"right":"unseen"},{"id":13,"side":"sente","base":"FL","promoted":false,"right":"unseen"},{"id":12,"side":"sente","base":"I","promoted":false,"right":"unseen"},{"id":11,"side":"sente","base":"C","promoted":false,"right":"unseen"},{"id":10,"side":"sente","base":"S","promoted":false,"right":"unseen"},{"id":9,"side":"sente","base":"G","promoted":false,"right":"unseen"},{"id":8,"side":"sente","base":"DE","promoted":false,"right":"unseen"},{"id":7,"side":"sente","base":"K","promoted":false,"right":"consumed"},{"id":6,"side":"sente","base":"G","promoted":false,"right":"unseen"},{"id":5,"side":"sente","base":"S","promoted":false,"right":"unseen"},{"id":4,"side":"sente","base":"C","promoted":false,"right":"unseen"},{"id":3,"side":"sente","base":"I","promoted":false,"right":"unseen"},{"id":2,"side":"sente","base":"FL","promoted":false,"right":"unseen"},{"id":1,"side":"sente","base":"N","promoted":false,"right":"unseen"},{"id":0,"side":"sente","base":"L","promoted":false,"right":"unseen"}],"profile":"mshogi.tenjiku.muller-completed.v1","side":"sente","root":{"kind":"standard","source":null,"declared_completed_plies":0},"accepted_plies":0},"events":[{"actor":"sente","command":{"kind":"play","action":{"kind":"travel","from":[9,13],"route":[[9,4]],"promote":false}}}]}},
   "analysis": null,
   "observations": [
     {
@@ -8342,13 +8491,13 @@
             "choice": {
               "kind": "travel",
               "from": [
-                5,
-                11
+                9,
+                13
               ],
               "route": [
                 [
-                  5,
-                  10
+                  9,
+                  4
                 ]
               ],
               "promote": false
@@ -8357,20 +8506,34 @@
               "evaluator_id": "mshogi.tenjiku.material-placement.v1",
               "search_id": "mshogi.tenjiku.shared-core.v1",
               "perspective": "sente",
-              "score": -6,
+              "score": 42,
               "completed_depth": 1,
-              "nodes": 99,
+              "nodes": 96,
               "principal_variation": [
                 {
                   "kind": "travel",
                   "from": [
-                    5,
-                    11
+                    9,
+                    13
                   ],
                   "route": [
                     [
-                      5,
-                      10
+                      9,
+                      4
+                    ]
+                  ],
+                  "promote": false
+                },
+                {
+                  "kind": "travel",
+                  "from": [
+                    8,
+                    4
+                  ],
+                  "route": [
+                    [
+                      8,
+                      13
                     ]
                   ],
                   "promote": false
@@ -8393,11 +8556,12 @@
       "board_ply": 0,
       "perspective": "Sente",
       "engine": "mShogi",
-      "score": "-0.06 Pawns",
+      "score": "+0.42 Pawns",
       "completed_depth": 1,
-      "nodes": 99,
+      "nodes": 96,
       "variation": [
-        "5k→5j"
+        "9m→9d",
+        "8d→8m"
       ],
       "status": "Complete",
       "historical": false,

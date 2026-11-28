@@ -8153,13 +8153,13 @@
           "choice": {
             "kind": "travel",
             "from": [
-              5,
-              11
+              9,
+              13
             ],
             "route": [
               [
-                5,
-                10
+                9,
+                4
               ]
             ],
             "promote": false
@@ -8168,20 +8168,34 @@
             "evaluator_id": "mshogi.tenjiku.material-placement.v1",
             "search_id": "mshogi.tenjiku.shared-core.v1",
             "perspective": "sente",
-            "score": -6,
+            "score": 42,
             "completed_depth": 1,
-            "nodes": 91,
+            "nodes": 92,
             "principal_variation": [
               {
                 "kind": "travel",
                 "from": [
-                  5,
-                  11
+                  9,
+                  13
                 ],
                 "route": [
                   [
-                    5,
-                    10
+                    9,
+                    4
+                  ]
+                ],
+                "promote": false
+              },
+              {
+                "kind": "travel",
+                "from": [
+                  8,
+                  4
+                ],
+                "route": [
+                  [
+                    8,
+                    13
                   ]
                 ],
                 "promote": false
@@ -8229,13 +8243,13 @@
             "choice": {
               "kind": "travel",
               "from": [
-                5,
-                11
+                9,
+                13
               ],
               "route": [
                 [
-                  5,
-                  10
+                  9,
+                  4
                 ]
               ],
               "promote": false
@@ -8244,20 +8258,34 @@
               "evaluator_id": "mshogi.tenjiku.material-placement.v1",
               "search_id": "mshogi.tenjiku.shared-core.v1",
               "perspective": "sente",
-              "score": -6,
+              "score": 42,
               "completed_depth": 1,
-              "nodes": 91,
+              "nodes": 92,
               "principal_variation": [
                 {
                   "kind": "travel",
                   "from": [
-                    5,
-                    11
+                    9,
+                    13
                   ],
                   "route": [
                     [
-                      5,
-                      10
+                      9,
+                      4
+                    ]
+                  ],
+                  "promote": false
+                },
+                {
+                  "kind": "travel",
+                  "from": [
+                    8,
+                    4
+                  ],
+                  "route": [
+                    [
+                      8,
+                      13
                     ]
                   ],
                   "promote": false
@@ -8280,11 +8308,12 @@
       "board_ply": 0,
       "perspective": "Sente",
       "engine": "mShogi",
-      "score": "-0.06 Pawns",
+      "score": "+0.42 Pawns",
       "completed_depth": 1,
-      "nodes": 91,
+      "nodes": 92,
       "variation": [
-        "5k→5j"
+        "9m→9d",
+        "8d→8m"
       ],
       "status": "Complete",
       "historical": false,

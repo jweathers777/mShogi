@@ -32,7 +32,8 @@ impl TimeBudget {
             .min(spendable);
         Self {
             soft: Duration::from_millis(soft),
-            hard: Duration::from_millis(soft.saturating_mul(3).min(spendable)),
+            // Allow the full instability target without spending three nominal shares.
+            hard: Duration::from_millis(soft.saturating_add(soft / 2).min(spendable)),
             clock: true,
         }
     }

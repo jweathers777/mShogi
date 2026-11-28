@@ -1,14 +1,13 @@
 ---
 id: MSH-53
 title: Establish and meet measured tenjiku shogi engine strength criteria
-status: Ready
+status: Done
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-28T10:19:00Z'
+updated_date: '2026-11-28T15:35:00Z'
 labels:
   - model:medium
   - effort:medium
-  - needs-john
 milestone: m-5
 dependencies:
   - MSH-48
@@ -32,17 +31,17 @@ Bring the Tenjiku Shogi engine to its classical baseline through the per-game st
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 The program steps in docs/m5/strength-roadmap.md are done, or skipped with a recorded reason.
-- [ ] #2 John's stop decision is recorded, with the accepted baseline revision.
-- [ ] #3 The evidence and its limits are recorded in the step tasks; no target or rating is invented.
+- [x] #1 The program steps in docs/m5/strength-roadmap.md are done, or skipped with a recorded reason.
+- [x] #2 John's stop decision is recorded, with the accepted baseline revision.
+- [x] #3 The evidence and its limits are recorded in the step tasks; no target or rating is invented.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Notes
@@ -73,4 +72,14 @@ John authorized the Tenjiku same-family reference ladder and deeper blunder scre
 MSH-53.3 measured accepted revision 0bbfd9c separately for Adams and Muller. The deeper ordinary-clock screen found 1/72 and 2/72 clear blunders. Phase-weighted rates were 0.93 and 13.04 per 100 eligible moves; the latter is dominated by one late case representing 154 turns. Full uncertainty, low-work source limitations and all reusable cases are in MSH-53.3. No multi-rung curve could be estimated: zero fully scored fixed-node pairs and one fully scored clock pair per profile. The clock pilot failed the completion gates. MSH-53.3 remains In Progress for a new independently budgeted color-game ladder, subject to a separate feasibility pilot and release. MSH-284 records a shallow Adams development pattern for later confirmation. John has not made a baseline decision.
 
 2026-11-28: needs-john added so workers skip this parent; it closes with John's baseline decision after MSH-53.4.
+
+Decision, 2026-11-28 (John): Accept the classical Tenjiku baseline for Adams and Muller at 747e7db. This measured revision contains the accepted evaluation at 0bbfd9c. Stop the classical baseline program for both profiles.
+
+Completion evidence: MSH-214 and MSH-202 completed the harness and speed work, including the independent speed review. MSH-53.1 recorded the selectivity outcomes, and MSH-53.2 qualified the evaluation in separate predecessor tests. MSH-53.3 completed the ordinary-clock blunder screen. MSH-53.4 replaced its inconclusive ladder pilots with a completed same-engine time-odds match for both profiles. These measurements use the same-family method John approved in place of an external anchor. MSH-284 retains the shallow Adams development finding for possible confirmation. The Muller weighted blunder estimate remains sensitive to one late case, as recorded in MSH-53.3.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+John accepted the classical Tenjiku baseline for Adams and Muller at 747e7db on 2026-11-28. The strength roadmap records the revision, ordinary-clock blunder results, and same-engine time-odds estimates. The classical program is complete. MSH-55 and MSH-135 remain separate follow-ups.
+<!-- SECTION:FINAL_SUMMARY:END -->

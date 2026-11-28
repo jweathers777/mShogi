@@ -358,7 +358,7 @@
     "TEN-CONSUMER-FRESH-NEW-OTHER-PROFILE": "consumer"
   },
   "profile_expectations": {
-    "mshogi.tenjiku.adams1999-modern.v1": "40d21a56cd670630af14aab0f673f25a6d040d9e506e8aef4145b432b73ea2e5",
-    "mshogi.tenjiku.muller-completed.v1": "6024f042af5d61b80e00624baff287b51856ec11236f9ebc40272bca20582255"
+    "mshogi.tenjiku.adams1999-modern.v1": "9505ca175ca75a952d269db644f6d2cd92d5a1f9e6a741ee8901a7af5d644c16",
+    "mshogi.tenjiku.muller-completed.v1": "d5a1595878f6d203b3c71d91b43beaa6075ab3ece1fb26643f78cb15f8d296a5"
   }
 }

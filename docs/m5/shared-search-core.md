@@ -239,7 +239,7 @@ and incompatible history reset retained state. The engine validates the game
 history and the selected analysis target under the [internal protocol](../desktop/internal-execution-v4.md).
 
 Timed Shogi requests also keep one legal root-order move available through
-the shared `search_with_timed_fallback` entry point. If time or the node safety
+the shared `search_with_fallback` entry point. If time or the node safety
 limit stops the first iteration, the result has a legal choice, depth zero, no
 score, actual visited nodes and a one-move unsearched continuation. This includes
 zero-node timed requests. Explicit cancellation suppresses fallback. Already
@@ -317,8 +317,15 @@ randomized action/result/hash/undo comparisons verify that boundary.
 The adapter supplies the legal root list, including must-vary restrictions.
 Game conclusions are reported exactly; a live root without board actions stays
 unscored. A selected action must pass submission. The reported line is
-replayed by the rules library and stops at a conclusion or refusal; a refusal of its first
-action is an error. A one-action conclusion replaces a private score.
+replayed by the rules library and stops at a conclusion or refusal. A refusal of
+the first action is an error. A one-action conclusion replaces the score of a
+completed search iteration.
+
+If a time or node limit stops the first iteration, the adapter uses the best
+root move that search scored. If search scored no move, it uses the first
+action in the game's ordered legal list. The result reports depth zero, no
+score, the actual node count and only the selected move. Explicit cancellation
+suppresses this fallback.
 
 Private analysis remains separate from adjudication:
 
@@ -428,8 +435,9 @@ See the [Tenjiku rules profile](../m4/tenjiku/profile.md).
 The adapter obtains exact game root conclusions and legal actions, including
 repetition admission. It checks the selected action and replays the reported
 line through submission. A refused first action is an error; a later
-refusal clips the line. A first-action conclusion replaces the private
-score.
+refusal clips the line. A first-action conclusion replaces the score of a
+completed search iteration. The depth-zero fallback follows the same policy
+as Chu, using the selected Tenjiku profile's legal action list.
 
 Private analysis has these limits:
 

@@ -75,6 +75,13 @@ fn royal_capture_is_a_win_with_full_root_restoration() {
         };
         assert_eq!(action, Action::single(sq(8, 8), sq(9, 8)));
         assert_eq!(r.principal_variation, vec![action.clone()]);
+        assert_ne!(g.legal_actions()[0], action);
+        let partial = search(&g, Limits { depth: 1, nodes: 2 }).unwrap();
+        assert_eq!(partial.status, SearchStatus::NodeLimit);
+        assert_eq!(partial.completed_depth, 0);
+        assert_eq!(partial.score, None);
+        assert_eq!(partial.decision, Some(Decision::Choose(action.clone())));
+        assert_eq!(partial.principal_variation, [action.clone()]);
         assert_eq!(GameRecord::from_game(&g).unwrap(), before);
         assert_eq!(g.context(), ctx);
         assert_eq!(g.snapshot(), &snapshot);
@@ -88,18 +95,20 @@ fn royal_capture_is_a_win_with_full_root_restoration() {
     }
 }
 #[test]
-fn zero_partial_stop_and_later_interruption_publish_only_completed_work() {
+fn node_limit_uses_legal_fallback_and_cancellation_has_no_move() {
     for profile in Profile::ALL {
         let g = corner(profile);
         let before = GameRecord::from_game(&g).unwrap();
         let ctx = g.context();
-        for n in [0, 1, 2] {
+        let first = g.legal_actions_with_stop(&mut || false).unwrap()[0].clone();
+        for n in [0, 1] {
             let r = search(&g, Limits { depth: 1, nodes: n }).unwrap();
             assert_eq!(r.nodes, n);
             assert_eq!(r.status, SearchStatus::NodeLimit);
-            assert_eq!(r.decision, None);
+            assert_eq!(r.completed_depth, 0);
+            assert_eq!(r.decision, Some(Decision::Choose(first.clone())));
             assert_eq!(r.score, None);
-            assert!(r.principal_variation.is_empty());
+            assert_eq!(r.principal_variation, [first.clone()]);
         }
         let r = search_with_stop(
             &g,

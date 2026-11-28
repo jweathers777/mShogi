@@ -1243,6 +1243,9 @@ impl TenjikuPosition {
         let m = self.action_move(a)?;
         self.is_pseudo_legal(m).then_some(m)
     }
+    pub(super) fn first_root_move(&self) -> Option<Move> {
+        self.root_allowed.as_ref()?.first().copied()
+    }
     /// Apply exact game root admission before search representatives.
     pub fn restrict_root(&mut self, actions: &[Action]) {
         self.root_allowed = Some(

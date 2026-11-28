@@ -92,12 +92,11 @@ For a clocked Tenjiku comparison, start with 60 s + 1.5 s per move
 a 1,200-second pair limit and the shared late-depth boundary of
 40 post-opening plies. The attained late-game target is depth 5 on
 `c3-standard-4` at this control. Use the same machine type and pair
-concurrency on both sides of a comparison. Tenjiku can play the best move
-from its last completed iteration when a node or time limit interrupts a
-later iteration. If the first iteration does not finish, it can return no
-move and the game stays unscored. The match driver stops on an unfinished
-pair. Keep its report and diagnose the stop before
-continuing a strength test. MSH-214 records the calibration, paired
+concurrency on both sides of a comparison. An interrupted first iteration in
+Chu or Tenjiku can supply a legal move at depth zero. Search prefers its best
+scored root move from that iteration, or the first action in the ordered legal
+list if there is no scored move. The match driver stops on an unfinished pair.
+Keep its report and diagnose the stop before continuing a strength test. MSH-214 records the calibration, paired
 time-odds results and their limits for both profiles.
 
 ## Comparisons and time odds

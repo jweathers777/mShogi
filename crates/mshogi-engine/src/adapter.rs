@@ -352,11 +352,16 @@ impl<G: EngineGame> EngineResult<G> {
                     && (t.status != StopReason::Complete
                         || t.completed_depth == limits.depth
                         || t.score.is_some_and(|s| s >= MATE_BOUND));
-                // A timed search can return its first legal move unsearched.
-                let fallback = limits.time_ms.is_some()
-                    && unscored
-                    && t.status != StopReason::Complete
-                    && t.principal_variation.len() == 1;
+                // A supported search can publish one move at depth zero.
+                let fallback = unscored
+                    && t.principal_variation.len() == 1
+                    && match t.status {
+                        StopReason::Stopped => limits.time_ms.is_some(),
+                        StopReason::NodeLimit => {
+                            G::Game::LIMIT_FALLBACK || limits.time_ms.is_some()
+                        }
+                        _ => false,
+                    };
                 open && t.principal_variation.first() == Some(choice)
                     && match G::command_shape(choice, t) {
                         Some(valid) => valid && completed,
@@ -364,14 +369,13 @@ impl<G: EngineGame> EngineResult<G> {
                     }
             }
             Self::Finished { conclusion, .. } => {
-                // A timed request with no node budget observes the conclusion
-                // without a visit.
+                // Supported zero-node requests observe the conclusion without a visit.
                 G::record_conclusion(record) == Some(*conclusion)
                     && t.status == StopReason::Complete
                     && t.principal_variation.is_empty()
                     && t.score == Some(G::terminal_score(*conclusion, t.perspective))
                     && ((t.completed_depth == 1 && t.nodes == 1)
-                        || (limits.time_ms.is_some()
+                        || ((G::Game::LIMIT_FALLBACK || limits.time_ms.is_some())
                             && limits.nodes == 0
                             && t.completed_depth == 0
                             && t.nodes == 0))

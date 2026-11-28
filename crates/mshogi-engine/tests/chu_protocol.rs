@@ -213,21 +213,32 @@ fn full_context_purpose_history_and_limits_are_never_interchangeable() {
     assert_eq!(g.events().len(), 0);
 }
 #[test]
-fn zero_budget_incomplete_and_agreement_are_distinct() {
+fn zero_budget_choice_and_agreement_are_distinct() {
     let mut g = game();
     let mut c = context(&g);
-    c.limits.nodes = 0;
-    let obs = execute(&c);
-    assert!(obs.matches(&c));
-    let ExecutionResult::Chu {
-        result: ChuResult::Incomplete { telemetry },
-    } = &obs.result
-    else {
-        panic!("{obs:?}")
-    };
-    assert_eq!(telemetry.score, None);
-    assert_eq!(telemetry.nodes, 0);
-    assert_eq!(telemetry.status, StopReason::NodeLimit);
+    let first = &g.legal_actions()[0];
+    for (nodes, time_ms, status) in [
+        (0, None, StopReason::NodeLimit),
+        (512, Some(0), StopReason::Stopped),
+    ] {
+        c.limits.nodes = nodes;
+        c.limits.time_ms = time_ms;
+        let obs = execute(&c);
+        assert!(obs.matches(&c));
+        let ExecutionResult::Chu { result } = &obs.result else {
+            panic!("{obs:?}")
+        };
+        let ChuResult::Choice { choice, telemetry } = result else {
+            panic!("{obs:?}")
+        };
+        assert_eq!(choice, first);
+        assert_eq!(telemetry.principal_variation, std::slice::from_ref(first));
+        assert_eq!(telemetry.score, None);
+        assert_eq!(telemetry.completed_depth, 0);
+        assert_eq!(telemetry.nodes, 0);
+        assert_eq!(telemetry.status, status);
+        result.validate(&g).unwrap();
+    }
     for (actor, command) in [
         (c::Side::Sente, c::GameCommand::OfferDraw),
         (c::Side::Gote, c::GameCommand::AcceptDraw),

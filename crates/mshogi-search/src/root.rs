@@ -64,7 +64,7 @@ impl From<alphabeta::Status> for Status {
 /// Observations from the captured root side, including incomplete requests.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct SearchResult<C, F, S, P, A> {
-    /// Last completed decision, or a legal fallback in supported timed searches.
+    /// Last completed decision, or a legal choice from an interrupted first iteration.
     pub decision: Option<Decision<C, F>>,
     /// Heuristic or terminal distance.
     pub score: Option<i32>,
@@ -136,6 +136,8 @@ pub trait RootGame: Sized {
     const TABLE_MB: usize = 16;
     /// A deadline can return a game root-order move before an iteration completes.
     const TIMED_FALLBACK: bool = false;
+    /// A time or node limit can return a legal move from an incomplete first iteration.
+    const LIMIT_FALLBACK: bool = false;
     /// Observe a terminal result or timed fallback even with no visits available.
     const TIMED_ZERO_NODES: bool = false;
     /// A first-action game conclusion overrides the private score.
@@ -174,7 +176,7 @@ pub trait RootGame: Sized {
     fn position_for_search(&self, legal: &[Self::Action]) -> Self::Position;
     /// Convert a private move at the current replay position.
     fn action(position: &Self::Position, m: Move<Self>) -> Self::Action;
-    /// Convert the first legal action for games that publish timed fallbacks.
+    /// Convert the first legal action for games that publish a fallback.
     fn fallback(
         _position: &Self::Position,
         _action: &Self::Action,
@@ -243,7 +245,7 @@ pub fn search_with_state<G: RootGame>(
     mut stop: impl FnMut() -> bool,
 ) -> Result<ResultFor<G>, Failure<G>> {
     let timing = RequestTime::new(time);
-    let mut stop = || stop() || (!G::TIMED_FALLBACK && timing.expired());
+    let mut stop = || stop() || (!(G::TIMED_FALLBACK || G::LIMIT_FALLBACK) && timing.expired());
     if !limits.valid() {
         return Err(SearchError::InvalidLimits);
     }
@@ -263,7 +265,7 @@ pub fn search_with_state<G: RootGame>(
         result.status = Status::Stopped;
         return Ok(result);
     }
-    if limits.nodes == 0 && !(G::TIMED_ZERO_NODES && time.is_some()) {
+    if limits.nodes == 0 && !(G::LIMIT_FALLBACK || G::TIMED_ZERO_NODES && time.is_some()) {
         result.status = Status::NodeLimit;
         return Ok(result);
     }
@@ -290,14 +292,16 @@ pub fn search_with_state<G: RootGame>(
     let first = legal.first().ok_or(SearchError::NoBoardActions)?;
     let draw_claim = game.draw_claim();
     let mut position = game.position_for_search(&legal);
-    let fallback = if time.is_some() {
+    let fallback = if G::LIMIT_FALLBACK || time.is_some() {
         G::fallback(&position, first)?
     } else {
         None
     };
     let budget = timing.limits(limits.depth, Some(limits.nodes));
     let outcome = match fallback {
-        Some(m) => engine.search_with_timed_fallback(&mut position, budget, &mut stop, m),
+        Some(m) => {
+            engine.search_with_fallback(&mut position, budget, &mut stop, m, G::LIMIT_FALLBACK)
+        }
         None => engine.search(&mut position, budget, &mut stop),
     };
     result.nodes = outcome.nodes;
@@ -357,7 +361,7 @@ pub fn search_with_state<G: RootGame>(
             Err(_) => break,
         }
         G::advance(&mut position, m)?;
-        if first && G::SCORE_FIRST_CONCLUSION {
+        if first && outcome.depth > 0 && G::SCORE_FIRST_CONCLUSION {
             first_score = rules_position
                 .finished()
                 .map(|c| terminal_score::<G>(c, side, 1));
@@ -463,6 +467,7 @@ pub(crate) use no_adjudication;
 macro_rules! restricted_board {
     ($pos:ty) => {
         const SCORE_FIRST_CONCLUSION: bool = true;
+        const LIMIT_FALLBACK: bool = true;
         fn winner(c: Conclusion) -> Option<Side> {
             c.winner()
         }
@@ -470,6 +475,15 @@ macro_rules! restricted_board {
             let mut pos = <$pos>::from_game(self);
             pos.restrict_root(legal);
             pos
+        }
+        fn fallback(
+            pos: &Self::Position,
+            _action: &Action,
+        ) -> Result<Option<position::Move>, SearchError> {
+            Ok(pos.first_root_move())
+        }
+        fn stop_before_replay(stop: &mut dyn FnMut() -> bool) -> bool {
+            stop()
         }
     };
 }

@@ -82,14 +82,21 @@ state_case!(
     mshogi_core::xiangqi::Game::standard(mshogi_core::xiangqi::ClaimPolicy::Explicit).unwrap(),
     true
 );
-state_case!(chu_state_and_time, chu, mshogi_core::chu::Game::standard());
+state_case!(
+    chu_state_and_time,
+    chu,
+    mshogi_core::chu::Game::standard(),
+    true
+);
 state_case!(
     tenjiku_adams_state_and_time,
     tenjiku,
-    mshogi_core::tenjiku::Game::standard(mshogi_core::tenjiku::Profile::AdamsModern)
+    mshogi_core::tenjiku::Game::standard(mshogi_core::tenjiku::Profile::AdamsModern),
+    true
 );
 state_case!(
     tenjiku_muller_state_and_time,
     tenjiku,
-    mshogi_core::tenjiku::Game::standard(mshogi_core::tenjiku::Profile::MullerCompleted)
+    mshogi_core::tenjiku::Game::standard(mshogi_core::tenjiku::Profile::MullerCompleted),
+    true
 );

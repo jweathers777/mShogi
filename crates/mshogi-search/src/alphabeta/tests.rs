@@ -20,7 +20,7 @@ fn timed_fallback_is_unscored_and_does_not_override_cancellation_or_fixed_work()
         let mut bounds = limits(40);
         bounds.nodes = nodes;
         bounds.hard = Some(hard);
-        let result = s.search_with_timed_fallback(&mut p, bounds, &mut || false, 2);
+        let result = s.search_with_fallback(&mut p, bounds, &mut || false, 2, false);
         assert_eq!(
             (result.best, result.score, result.depth),
             (Some(2), None, 0)
@@ -30,13 +30,13 @@ fn timed_fallback_is_unscored_and_does_not_override_cancellation_or_fixed_work()
         assert!(result.nodes <= nodes.unwrap());
         assert_eq!(p.left, root.left);
         assert!(p.path.is_empty());
-        let cancelled = s.search_with_timed_fallback(&mut p, bounds, &mut || true, 2);
+        let cancelled = s.search_with_fallback(&mut p, bounds, &mut || true, 2, false);
         assert!(cancelled.best.is_none());
         assert!(cancelled.pv.is_empty());
         bounds.hard = None;
         let original = Searcher::new(1).search(&mut p, bounds, &mut || false);
         let opted_in =
-            Searcher::new(1).search_with_timed_fallback(&mut p, bounds, &mut || false, 2);
+            Searcher::new(1).search_with_fallback(&mut p, bounds, &mut || false, 2, false);
         assert_eq!(original, opted_in);
     }
 }

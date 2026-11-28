@@ -60,16 +60,32 @@ fn complete_compound_capture_search_restores_exact_context() {
     assert_eq!(g.snapshot(), &snapshot);
 }
 #[test]
-fn zero_and_partial_work_never_supply_a_fallback() {
+fn node_limit_uses_root_fallback_and_cancellation_has_no_move() {
     let g = tactical();
-    for n in [0, 1, 2] {
+    let first = g.legal_actions()[0].clone();
+    for n in [0, 1] {
         let r = search(&g, Limits { depth: 1, nodes: n }).unwrap();
         assert_eq!(r.status, SearchStatus::NodeLimit);
-        assert_eq!(r.decision, None);
+        assert_eq!(r.completed_depth, 0);
+        assert_eq!(r.decision, Some(Decision::Choose(first.clone())));
         assert_eq!(r.score, None);
-        assert!(r.principal_variation.is_empty());
+        assert_eq!(r.principal_variation, [first.clone()]);
         assert_eq!(r.nodes, n);
     }
+    let partial = search(&g, Limits { depth: 1, nodes: 2 }).unwrap();
+    let Some(Decision::Choose(best)) = partial.decision else {
+        panic!("{partial:?}");
+    };
+    assert_eq!(partial.status, SearchStatus::NodeLimit);
+    assert_eq!(partial.completed_depth, 0);
+    assert_eq!(partial.score, None);
+    assert_ne!(best, first);
+    assert_eq!(best.from, "6f".parse().unwrap());
+    assert_eq!(best.route.len(), 2);
+    assert!(best.route.contains(&"6e".parse().unwrap()));
+    assert!(best.route.contains(&"5e".parse().unwrap()));
+    assert_eq!(partial.principal_variation, [best]);
+
     let r = search_with_stop(
         &g,
         Limits {
@@ -97,6 +113,17 @@ fn zero_and_partial_work_never_supply_a_fallback() {
     .unwrap();
     assert_eq!(r.status, SearchStatus::Stopped);
     assert_eq!(r.decision, None);
+
+    let mut polls = 0;
+    let r = search_with_stop(&g, Limits { depth: 1, nodes: 2 }, || {
+        polls += 1;
+        polls >= 3
+    })
+    .unwrap();
+    assert_eq!(r.nodes, 2);
+    assert_eq!(r.status, SearchStatus::Stopped);
+    assert_eq!(r.decision, None);
+    assert!(r.principal_variation.is_empty());
     assert_eq!(g.events().len(), 0);
 }
 #[test]

@@ -108,8 +108,9 @@ game effects and match history. Human labels never replace canonical semantics.
 depth 0–3 for perft and 1–3 for divide. The default and maximum budget is
 1,000,000 visits for the whole request, including the root. An incomplete
 traversal returns an explicit error. `analyze [depth nodes]` uses bounded game history-aware search on a
-private copy; it leaves the live record unchanged. Zero work has no fallback move
-or score. Current search limits apply, independently of diagnostic bounds.
+private copy and leaves the live record unchanged. A node limit before the
+first iteration completes can return a legal move with no score. Current search
+limits apply, independently of diagnostic bounds.
 
 Board cells use lowercase `s`/`g` ownership prefixes and original piece codes,
 with `+` for already promoted originals. There are no captured-piece hands.

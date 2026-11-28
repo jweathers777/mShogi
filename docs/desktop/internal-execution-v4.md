@@ -51,9 +51,10 @@ The result is game-tagged or a typed unscored failure. Chess can return a
 move, a current or intended-move claim, a concluded root, or incomplete work
 with actual telemetry. An intended-move claim does not play the move. The
 other adapters can return a game choice, a conclusion or incomplete work.
-Xiangqi can also report unresolved rule adjudication. A timed adapter can
-report a legal choice without a completed iteration or score if its search
-supports that result. See the [shared search core](../m5/shared-search-core.md).
+Xiangqi can also report unresolved rule adjudication. Chu and Tenjiku can
+report a legal choice at depth zero after a time or node limit, with no score
+and one action in the variation. Shogi and Xiangqi support a similar fallback
+for timed requests. See the [shared search core](../m5/shared-search-core.md).
 
 A live choice must pass the game rules under the current pending context before
 the desktop commits the command. Analysis validates the exact selected prefix

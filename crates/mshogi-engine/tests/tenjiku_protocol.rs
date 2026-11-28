@@ -155,18 +155,31 @@ fn actual_royal_capture_score_and_pv_validation_for_both_profiles() {
     }
 }
 #[test]
-fn no_completed_iteration_publishes_no_fallback_and_limits_are_enforced() {
+fn zero_budget_publishes_a_legal_choice_and_limits_are_enforced() {
     for profile in t::Profile::ALL {
         let g = game(profile);
         let mut ctx = context(&g);
-        ctx.limits.nodes = 0;
-        let ExecutionResult::Tenjiku { result } = run(ctx.clone()).result else {
-            panic!()
-        };
-        assert!(
-            matches!(&result,TenjikuResult::Incomplete{telemetry} if telemetry.score.is_none() && telemetry.nodes==0 && telemetry.principal_variation.is_empty())
-        );
-        result.validate(&g).unwrap();
+        let first = &g.legal_actions_with_stop(&mut || false).unwrap()[0];
+        for (nodes, time_ms, status) in [
+            (0, None, StopReason::NodeLimit),
+            (512, Some(0), StopReason::Stopped),
+        ] {
+            ctx.limits.nodes = nodes;
+            ctx.limits.time_ms = time_ms;
+            let ExecutionResult::Tenjiku { result } = run(ctx.clone()).result else {
+                panic!()
+            };
+            let TenjikuResult::Choice { choice, telemetry } = &result else {
+                panic!("{result:?}")
+            };
+            assert_eq!(choice, first);
+            assert_eq!(telemetry.principal_variation, std::slice::from_ref(first));
+            assert_eq!(telemetry.score, None);
+            assert_eq!(telemetry.completed_depth, 0);
+            assert_eq!(telemetry.nodes, 0);
+            assert_eq!(telemetry.status, status);
+            result.validate(&g).unwrap();
+        }
         ctx.limits.depth = game::Tenjiku::MAX_DEPTH + 1;
         assert!(!ctx.valid_limits());
         let refused = run(ctx.clone());

@@ -790,6 +790,9 @@ impl ChuPosition {
         p.root = p.keys.len() - 1;
         p
     }
+    pub(super) fn first_root_move(&self) -> Option<Move> {
+        self.root_allowed.as_ref()?.first().copied()
+    }
     /// Restrict the root to the must-vary admission list.
     pub fn restrict_root(&mut self, actions: &[Action]) {
         self.root_allowed = Some(

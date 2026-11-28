@@ -191,7 +191,7 @@ pub enum Status {
 /// Result of one search.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Outcome<M> {
-    /// Best move, or an explicitly enabled legal timed fallback.
+    /// Best move, or an explicitly enabled legal fallback.
     pub best: Option<M>,
     /// Score of the best move from the side to move.
     pub score: Option<i32>,
@@ -201,7 +201,7 @@ pub struct Outcome<M> {
     pub selective_depth: u16,
     /// Node visits, including quiescence.
     pub nodes: u64,
-    /// Continuation that starts with `best`; one unsearched move for fallback.
+    /// Continuation that starts with `best`; one move at depth zero.
     pub pv: Vec<M>,
     /// End condition.
     pub status: Status,
@@ -336,6 +336,15 @@ impl<P: SearchPosition> Searcher<P> {
         limits: Limits,
         stop: &mut dyn FnMut() -> bool,
     ) -> Outcome<P::Move> {
+        self.search_internal(position, limits, stop).0
+    }
+
+    fn search_internal(
+        &mut self,
+        position: &mut P,
+        limits: Limits,
+        stop: &mut dyn FnMut() -> bool,
+    ) -> (Outcome<P::Move>, Option<P::Move>) {
         self.table.new_search();
         self.static_evals.fill(None);
         self.excluded.fill(None);
@@ -354,40 +363,44 @@ impl<P: SearchPosition> Searcher<P> {
             root_move: None,
             root_count: 0,
         };
-        run.iterate()
+        let outcome = run.iterate();
+        (outcome, run.root_move.map(|(m, _)| m))
     }
 
-    /// Search with a caller-admitted legal root move available for timed play.
-    ///
-    /// Only a timed, interrupted search without a completed iteration can use
-    /// `fallback`. The caller supplies it in game root order and must retain
-    /// session authority over legality and terminal results. No extra iteration
-    /// runs after the deadline: fallback has no score, depth zero, the actual
-    /// node count and stop status, and a one-move (unsearched) continuation.
-    /// Explicit cancellation suppresses fallback. Untimed behavior is unchanged.
-    pub fn search_with_timed_fallback(
+    /// Publish a legal choice after a time or node stop at depth zero.
+    /// With `keep_partial_root`, a scored partial root move takes precedence
+    /// over the unsearched move and the policy also applies to untimed searches.
+    /// A depth-zero choice has no published score and a one-move continuation.
+    /// Explicit cancellation suppresses the fallback.
+    pub(crate) fn search_with_fallback(
         &mut self,
         position: &mut P,
         limits: Limits,
         stop: &mut dyn FnMut() -> bool,
         fallback: P::Move,
+        keep_partial_root: bool,
     ) -> Outcome<P::Move> {
+        if limits.hard.is_none() && !keep_partial_root {
+            return self.search(position, limits, stop);
+        }
         let mut cancelled = false;
-        let mut outcome = self.search(position, limits, &mut || {
+        let (mut outcome, partial) = self.search_internal(position, limits, &mut || {
             let requested = stop();
             cancelled |= requested;
             requested
         });
-        if limits.hard.is_some()
-            && outcome.best.is_none()
-            && outcome.depth == 0
-            && outcome.status != Status::Complete
-            && !cancelled
-            && !stop()
-        {
-            outcome.best = Some(fallback);
-            outcome.score = None;
-            outcome.pv = vec![fallback];
+        if outcome.depth == 0 && outcome.status != Status::Complete {
+            if cancelled || stop() {
+                outcome.status = Status::Stopped;
+            } else {
+                let chosen = if keep_partial_root {
+                    partial.unwrap_or(fallback)
+                } else {
+                    fallback
+                };
+                outcome.best = Some(chosen);
+                outcome.pv = vec![chosen];
+            }
         }
         outcome
     }
@@ -472,7 +485,6 @@ impl<P: SearchPosition> Run<'_, P> {
             if self.abort {
                 // A root move that raised alpha in the stopped iteration is at
                 // least as good as the earlier best move at this larger depth.
-                // Without one complete iteration there is no result to improve.
                 if outcome.depth >= 1
                     && let Some((m, s)) = self.root_move
                 {

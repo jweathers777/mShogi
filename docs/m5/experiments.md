@@ -76,9 +76,9 @@ remain responsible for detecting related diagrams imported as distinct roots.
 
 The exact profile IDs are authoritative in generated config/game records. The
 engine result alone determines a score. Experimental action/wall/artifact caps,
-cancellation, process failure and incomplete first iterations are unscored, never
-draws or losses. A completed prior iteration is usable only where its existing
-engine result contract permits it. No fallback move or score is fabricated.
+cancellation, process failure and incomplete results end a game without a
+score. The runner can admit a legal move at depth zero when the engine result
+contract permits it. Such a move has no search score and play continues.
 Observations precede accepted actions and preserve exact request, purpose,
 participant, session, limits, history and profile identities.
 All continuations, including compound routes and claims, replay through

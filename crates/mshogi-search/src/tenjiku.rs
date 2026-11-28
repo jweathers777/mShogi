@@ -76,9 +76,6 @@ impl RootGame for Game {
     fn stopped(error: &GameError) -> bool {
         matches!(error, GameError::Stopped)
     }
-    fn stop_before_replay(stop: &mut dyn FnMut() -> bool) -> bool {
-        stop()
-    }
 }
 #[cfg(test)]
 mod tests;

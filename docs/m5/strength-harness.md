@@ -117,7 +117,9 @@ each stop, the individual wins, draws and losses, the five pair-score counts,
 the Elo interval and the SPRT decision. Unscored games count in the report.
 Only pairs with two verified scores enter the SPRT. After an unscored game,
 the campaign continues within the scheduled limits. Replay or runner failures
-retain the available logs and raw report. A calibration with a missing or
+retain the available logs and raw report. If every game fails to produce
+a replayed report, the command reports a failure after the campaign.
+A calibration with a missing or
 unaccepted turn reports a failure after its scheduled games finish.
 
 `--max-pairs` and `--max-steps` bound the number of openings and the number

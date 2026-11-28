@@ -285,6 +285,11 @@ def configure(args, parser):
         args.baseline_depth = 8 if args.game == 'chess' else 64
     elif args.candidate_nodes is None or args.increment != 0:
         parser.error('fixed-work mode requires --candidate-nodes; increment requires --base')
+    if any(nodes is not None and not 0 <= nodes < 2**64
+           for nodes in (args.candidate_nodes, args.baseline_nodes)):
+        parser.error('node limits must be unsigned 64-bit counts')
+    if args.baseline_depth is not None and not 1 <= args.baseline_depth <= (8 if args.game == 'chess' else 64):
+        parser.error('baseline depth exceeds the runner depth range')
     if not 0 <= args.first_seed <= 2**64 - args.max_pairs:
         parser.error('seed range exceeds unsigned 64-bit values')
     if args.baseline_depth is None:
@@ -314,7 +319,8 @@ def configure(args, parser):
 
 
 def campaign(args):
-    configure(args, argparse.ArgumentParser(prog='strength ' + args.command))
+    parser = argparse.ArgumentParser(prog='strength ' + args.command)
+    configure(args, parser)
     out = Path(args.out).resolve()
     out.mkdir(parents=True, exist_ok=False)
     if args.openings:
@@ -364,6 +370,8 @@ def campaign(args):
                     break
     except Exception as error:
         failure = str(error)
+    if failure is None and rows and all(stop == 'runner_error' for row in rows for stop in row['stops']):
+        failure = 'no scheduled game produced a verified report; see game logs'
     if args.calibrate and failure is None:
         failure = calibration_failure(rows)
     result = summary(args, rows, start, failure)

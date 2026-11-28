@@ -29,6 +29,24 @@ class PairScoring(unittest.TestCase):
                     cli.main(common + extra)
                 self.assertEqual(raised.exception.code, 2)
 
+    def test_invalid_catalog_reports_a_cli_error(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            catalog = root / 'catalog.json'
+            command = ['match', '--game', 'chess', '--candidate', 'new', '--baseline', 'old',
+                       '--candidate-nodes', '512', '--openings', str(catalog)]
+            for index, (contents, error) in enumerate([
+                ({'profile': 'mshogi.chu.jcsa2019.v1'}, 'another profile'),
+                ({'openings': []}, 'nonempty unique records'),
+                ({'openings': [{'id': 'same'}, {'id': 'same'}]}, 'nonempty unique records'),
+            ]):
+                stderr = io.StringIO()
+                catalog.write_text(json.dumps(contents))
+                with contextlib.redirect_stderr(stderr), self.assertRaises(SystemExit) as raised:
+                    cli.main(command + ['--out', str(root / f'out-{index}')])
+                self.assertEqual(raised.exception.code, 2)
+                self.assertIn(error, stderr.getvalue())
+
     def test_colors_are_reversed_before_pair_statistics(self):
         for first, second, scores, pair in [
             (2, 0, [2, 2], 1), (0, 2, [0, 0], 0),
@@ -99,6 +117,22 @@ class ClockDispatch(unittest.TestCase):
             self.assertEqual((result['pairs'], result['scored_pairs'], result['unscored_games']), (2, 1, 1))
             self.assertEqual(result['wins_draws_losses'], [1, 0, 2])
             self.assertEqual(result['rows'][0]['stops'], ['runner_error', 'game_concluded'])
+
+    def test_all_runner_failures_are_retained_and_return_a_campaign_error(self):
+        with tempfile.TemporaryDirectory() as directory:
+            out = Path(directory) / 'campaign'
+            command = ['match', '--game', 'chess', '--candidate', 'new', '--baseline', 'old',
+                       '--candidate-nodes', '20', '--max-pairs', '2', '--out', str(out)]
+            with mock.patch.object(internal_match, 'environment', return_value={}), \
+                 mock.patch.object(internal_match, 'engine_identity', return_value={}), \
+                 mock.patch.object(internal_match.subprocess, 'run',
+                                   side_effect=subprocess.CalledProcessError(1, 'config')), \
+                 contextlib.redirect_stdout(io.StringIO()), self.assertRaises(SystemExit) as raised:
+                cli.main(command)
+            self.assertIn('no scheduled game produced a verified report', str(raised.exception))
+            result = json.loads((out / 'summary.json').read_text())
+            self.assertEqual((result['pairs'], result['unscored_games']), (2, 4))
+            self.assertEqual(len(list(out.glob('game-*.config.log'))), 4)
 
     def settings(self, options):
         parser = argparse.ArgumentParser()

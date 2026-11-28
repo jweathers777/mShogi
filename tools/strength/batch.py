@@ -74,7 +74,10 @@ def stop_session(process):
 
 
 def worker(args):
+    started = time.monotonic()
     with controller.worker_task(args.manifest, args.store, validate) as (m, store, receipt):
+        task_deadline = started + m['task_runtime_seconds']
+        campaign_deadline = m['deadline_epoch'] - controller.CLEANUP_SECONDS
         index = receipt['task_index']
         prefix = f'tasks/{index}/'
         receipt['commands'] = []
@@ -88,8 +91,9 @@ def worker(args):
                     (root / name).chmod(0o755)
             try:
                 for i, argv in enumerate(m['bins'][index]):
-                    remaining = m['deadline_epoch'] - time.time() - controller.CLEANUP_SECONDS - UPLOAD_SECONDS
-                    controller.require(remaining > 0, 'campaign deadline')
+                    remaining = min(task_deadline - time.monotonic(),
+                                    campaign_deadline - time.time()) - UPLOAD_SECONDS
+                    controller.require(remaining > 0, 'Batch task or campaign deadline')
                     with (root / f'command-{i}.log').open('x') as log:
                         process = subprocess.Popen([sys.executable, '-m', 'tools.strength.cli', *argv],
                             cwd=root, env=dict(os.environ, PYTHONPATH='/opt/mshogi'),

@@ -218,6 +218,9 @@ def run(args, *, policy, manifest_validator, project_runtime=None):
         raise ValueError('Remaining maximum allocation would exceed compute cap')
     if jobs_named(args.job, config['region']):
         raise ValueError('Job already exists; reconcile instead of rerunning')
+    runtime = min(config['max_run_seconds'], int(deadline - start))
+    if policy.seconds is None:
+        manifest['task_runtime_seconds'] = runtime
     store = gcp.GCSStore(config['store_uri'])
     key = 'manifest.json'
     data = encode(manifest)
@@ -230,7 +233,7 @@ def run(args, *, policy, manifest_validator, project_runtime=None):
     spec['labels'][policy.owner_label] = owner
     spec['allocationPolicy']['labels'] = {policy.owner_label: owner}
     # VM runtime bound supplements the absolute worker deadline and local watchdog.
-    spec['taskGroups'][0]['taskSpec']['maxRunDuration'] = str(min(config['max_run_seconds'], int(deadline-start))) + 's'
+    spec['taskGroups'][0]['taskSpec']['maxRunDuration'] = str(runtime) + 's'
     save(out / 'batch-request.json', spec)
     save(out / 'manifest.json', manifest)
     save(out / 'intent.json', {'job': args.job, 'manifest_sha256': digest(data), 'started_epoch': start,

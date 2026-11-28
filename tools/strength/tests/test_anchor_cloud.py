@@ -3,6 +3,7 @@ import json
 import tempfile
 import time
 import unittest
+from contextlib import contextmanager
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
@@ -89,6 +90,7 @@ class CloudControllerTests(unittest.TestCase):
             resolved = json.loads((Path(args.out)/'manifest.json').read_text())
             intent = json.loads((Path(args.out)/'intent.json').read_text())
             self.assertEqual(resolved['deadline_epoch'] - intent['started_epoch'], 7070)
+            self.assertEqual(resolved['task_runtime_seconds'], 6650)
 
     def test_explicit_batch_runtime_can_extend_match_projection(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -241,6 +243,29 @@ class CloudControllerTests(unittest.TestCase):
 
 
 class WorkerHelperTests(unittest.TestCase):
+    def test_worker_starts_upload_before_the_shorter_batch_task_deadline(self):
+        receipt = {}
+        command = ['bench', '--source', 'input', '--out', 'out']
+        manifest = {'task_runtime_seconds': 600, 'deadline_epoch': 8_200,
+                    'files': {}, 'bins': [[command]]}
+
+        @contextmanager
+        def worker_task(*args):
+            yield manifest, Mock(), receipt
+
+        child = Mock()
+        child.wait.return_value = 0
+        args = SimpleNamespace(manifest='manifest', store='store')
+        with patch.object(controller, 'worker_task', side_effect=worker_task), \
+             patch.object(controller, 'put_new'), \
+             patch.object(batch.time, 'time', return_value=1_000), \
+             patch.object(batch.time, 'monotonic', side_effect=[100, 110]), \
+             patch.object(batch.subprocess, 'Popen', return_value=child):
+            receipt['task_index'] = 0
+            batch.worker(args)
+        child.wait.assert_called_once_with(timeout=500)
+        self.assertEqual(receipt['commands'], [{'argv': command, 'exit': 0}])
+
     def test_cloud_region_checked_from_observed_zone(self):
         class Reply:
             def __init__(self, value):

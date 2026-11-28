@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-28T10:01:00Z'
-updated_date: '2026-11-28T11:35:00Z'
+updated_date: '2026-11-28T11:49:00Z'
 labels:
   - chu
   - tenjiku
@@ -30,15 +30,15 @@ Chu and Tenjiku search use restricted_board! in crates/mshogi-search (chu.rs, te
 <!-- AC:BEGIN -->
 - [x] #1 A timed or node-limited Chu or Tenjiku search that stops before depth 1 completes returns a legal move (best partial-iteration root move when one is scored, else the first ordered legal move); explicit cancellation still returns no move
 - [x] #2 Focused tests cover a stop before the first completed iteration for both games; rules perft and existing search tests pass
-- [ ] #3 Tenjiku and Chu each pass an SPRT against the frozen predecessor at their normal fast control (or are neutral with simpler code); results, cost and GCS path recorded
+- [ ] #3 All 43 blunder-suite observations match the frozen predecessor and native replays verify that the fallback is legal. The corrected Chu comparison at its established fast control shows no strength loss against the frozen predecessor. Record every outcome, cost and GCS path.
 <!-- AC:END -->
 
 ## Implementation Plan
 
 <!-- SECTION:PLAN:BEGIN -->
-1. Enable root fallback for Chu and both Tenjiku profiles at time and node limits. Reuse the shared root search to keep the best scored partial move, or the first rules-ordered legal move when none was scored.
-2. Preserve cancellation, legality and completed-depth telemetry. Check search, structured engine admission and rules perft, then update the applicable documentation.
-3. Run the blunder screen and fast-control predecessor SPRTs on Cloud Batch after recording feasibility and cost. Integrate after checks pass.
+1. Enable time and node limit fallbacks for Chu and both Tenjiku profiles, preferring the best scored root move from the partial first iteration.
+2. Check cancellation, legality, completed-depth telemetry, structured engine admission, console and desktop behavior, and rules perft. Update the applicable documentation.
+3. Compare all 43 archived blunder positions, verify native fallback replay, and assess the corrected Chu fast-control comparison for a strength loss. Record all stops, expense and GCS evidence. Integrate when the revised criteria are met.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
@@ -67,4 +67,6 @@ Tenjiku b0acbf0 vs 2ccc003, c3-standard-4, tools.strength.cli match at 60+1.5: a
 Tenjiku blocker: gcp.py accepts longer VM duration, but tools/strength/batch.py fixes the match manifest to 1,800 s and anchor_cloud.py begins cleanup 300 s earlier. Increasing max_run_seconds does not extend the 1,500 s controller window. Muller seed 6 consumed 1,196.348 s of request time through 737 plies in its first game and the swapped game did not start. Two full 768-ply color games can charge 2,544 s before overhead. MSH-286 tracks independent color games.
 
 Handoff: Corrected Chu is running in strength-msh285-chu-1-2000 at 10+0.1, 2,000 plies, and 750 s per pair. Next: verify terminal result and cleanup, then record the remaining strength check on local branch codex/msh-285-always-return-move.
+
+John revised AC3 on 2026-11-28. Accept the 43 identical blunder observations, native legal fallback replays, and corrected Chu at its normal fast control if the scored comparison shows no loss. An SPRT win is unnecessary because the fallback acts too rarely to demonstrate an Elo gain. The remaining shared-wall and 1,800 s Batch duration work belongs to MSH-286. Use this decision in place of the old strength gate.
 <!-- SECTION:NOTES:END -->

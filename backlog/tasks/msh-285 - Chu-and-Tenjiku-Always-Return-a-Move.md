@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-28T10:01:00Z'
-updated_date: '2026-11-28T10:38:00Z'
+updated_date: '2026-11-28T10:42:00Z'
 labels:
   - chu
   - tenjiku
@@ -28,7 +28,7 @@ Chu and Tenjiku search use restricted_board! in crates/mshogi-search (chu.rs, te
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 A timed or node-limited Chu or Tenjiku search that stops before depth 1 completes returns a legal move (best partial-iteration root move when one is scored, else the first ordered legal move); explicit cancellation still returns no move
+- [x] #1 A timed or node-limited Chu or Tenjiku search that stops before depth 1 completes returns a legal move (best partial-iteration root move when one is scored, else the first ordered legal move); explicit cancellation still returns no move
 - [ ] #2 Focused tests cover a stop before the first completed iteration for both games; rules perft and existing search tests pass
 - [ ] #3 Tenjiku and Chu each pass an SPRT against the frozen predecessor at their normal fast control (or are neutral with simpler code); results, cost and GCS path recorded
 <!-- AC:END -->
@@ -47,4 +47,6 @@ Chu and Tenjiku search use restricted_board! in crates/mshogi-search (chu.rs, te
 Feasibility: Freeze main at 2ccc003 for both comparisons. Use c3-standard-4 with the prior normal clocks and default 5M-node and depth-64 safety caps. Chu at 10+0.1 can charge at most 240 s per 1,000-ply color pair before overhead, within the prior 600 s limit. Tenjiku at 60+1.5 scored 72/80 pairs in MSH-53.2 with 768 plies per game, a 1,200 s pair limit, two concurrent pairs per VM and a 1,260 s command within the 1,800 s job. Three of 160 games hit the wall, so retain every cutoff as unscored. At $0.201608 per VM-hour, a full eight-VM block reserves $0.81, earlier Tenjiku blocks cost $0.32–$0.61, and two Linux builds reserve $0.41. The builds, blunder screen and the first block for each game/profile fit under $4. Continue within the $10 task cap.
 
 Handoff: Candidate b0acbf0 on codex/msh-285-always-return-move. Search and structured engine fallback implemented with specific tests. Next: finish workspace checks, run Linux blunder and predecessor checks, and integrate after acceptance.
+
+Search and engine suites passed before the final consumer fixture update, including both Tenjiku profiles, Chu, perft and differential tests. Updated console integration tests and the three desktop snapshots that cover first-iteration node exhaustion. Full workspace and frontend checks are running. The Linux builds compare b0acbf0 with 2ccc003. Subsequent edits so far are test or verification-fixture only.
 <!-- SECTION:NOTES:END -->

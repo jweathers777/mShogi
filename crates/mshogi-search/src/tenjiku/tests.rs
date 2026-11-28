@@ -81,7 +81,7 @@ fn royal_capture_is_a_win_with_full_root_restoration() {
         assert_eq!(partial.completed_depth, 0);
         assert_eq!(partial.score, None);
         assert_eq!(partial.decision, Some(Decision::Choose(action.clone())));
-        assert_eq!(partial.principal_variation, [action.clone()]);
+        assert_eq!(partial.principal_variation, std::slice::from_ref(&action));
         assert_eq!(GameRecord::from_game(&g).unwrap(), before);
         assert_eq!(g.context(), ctx);
         assert_eq!(g.snapshot(), &snapshot);
@@ -108,7 +108,7 @@ fn node_limit_uses_legal_fallback_and_cancellation_has_no_move() {
             assert_eq!(r.completed_depth, 0);
             assert_eq!(r.decision, Some(Decision::Choose(first.clone())));
             assert_eq!(r.score, None);
-            assert_eq!(r.principal_variation, [first.clone()]);
+            assert_eq!(r.principal_variation, std::slice::from_ref(&first));
         }
         let r = search_with_stop(
             &g,

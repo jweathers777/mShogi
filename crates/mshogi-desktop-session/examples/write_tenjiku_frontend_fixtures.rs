@@ -163,8 +163,10 @@ fn main() {
                     assert!(matches!(
                         &observation.result,
                         mshogi_engine::ExecutionResult::Tenjiku {
-                            result: mshogi_engine::TenjikuResult::Incomplete { .. }
-                        }
+                            result: mshogi_engine::TenjikuResult::Choice { choice, telemetry }
+                        } if telemetry.completed_depth == 0
+                            && telemetry.score.is_none()
+                            && telemetry.principal_variation == std::slice::from_ref(choice)
                     ));
                 }
                 write(&dir, &format!("{label}-{scenario}"), &snapshot);

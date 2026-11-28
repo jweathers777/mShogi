@@ -1677,9 +1677,9 @@
   "historical": false,
   "paused": true,
   "close_requires_save": true,
-  "phase": "incomplete",
+  "phase": "paused",
   "execution_purpose": null,
-  "diagnostic": "Incomplete search. No move, score or game outcome was created.",
+  "diagnostic": null,
   "declaration_advice": [],
   "context": {"envelope_version":2,"game_kind":"chu","payload":{"profile":"mshogi.chu.jcsa2019.v1","edition":"JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02","schema_version":3,"root":{"state":{"board":[{"side":"gote","base":"K","promoted":false},{"side":"gote","base":"P","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"side":"gote","base":"P","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,{"side":"sente","base":"Ln","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"side":"sente","base":"K","promoted":false},null,null,null,null,null,null,null,null,null,{"side":"sente","base":"P","promoted":false},null],"side":"sente","root":{"kind":"diagram","source":null,"declared_completed_plies":0},"accepted_plies":0},"protection":{"owner":null,"squares":[]}},"events":[]}},
   "analysis": {
@@ -1711,7 +1711,20 @@
       "result": {
         "kind": "chu",
         "result": {
-          "kind": "incomplete",
+          "kind": "choice",
+          "choice": {
+            "from": [
+              6,
+              6
+            ],
+            "route": [
+              [
+                8,
+                4
+              ]
+            ],
+            "promote": false
+          },
           "telemetry": {
             "evaluator_id": "mshogi.chu.material-placement.v1",
             "search_id": "mshogi.chu.shared-core.v1",
@@ -1719,7 +1732,21 @@
             "score": null,
             "completed_depth": 0,
             "nodes": 1,
-            "principal_variation": [],
+            "principal_variation": [
+              {
+                "from": [
+                  6,
+                  6
+                ],
+                "route": [
+                  [
+                    8,
+                    4
+                  ]
+                ],
+                "promote": false
+              }
+            ],
             "status": "node_limit"
           }
         }
@@ -1831,7 +1858,20 @@
         "result": {
           "kind": "chu",
           "result": {
-            "kind": "incomplete",
+            "kind": "choice",
+            "choice": {
+              "from": [
+                6,
+                6
+              ],
+              "route": [
+                [
+                  8,
+                  4
+                ]
+              ],
+              "promote": false
+            },
             "telemetry": {
               "evaluator_id": "mshogi.chu.material-placement.v1",
               "search_id": "mshogi.chu.shared-core.v1",
@@ -1839,7 +1879,21 @@
               "score": null,
               "completed_depth": 0,
               "nodes": 1,
-              "principal_variation": [],
+              "principal_variation": [
+                {
+                  "from": [
+                    6,
+                    6
+                  ],
+                  "route": [
+                    [
+                      8,
+                      4
+                    ]
+                  ],
+                  "promote": false
+                }
+              ],
               "status": "node_limit"
             }
           }
@@ -1877,7 +1931,9 @@
       "score": null,
       "completed_depth": 0,
       "nodes": 1,
-      "variation": [],
+      "variation": [
+        "6f→8d"
+      ],
       "status": "Node limit reached",
       "historical": false,
       "selected": true

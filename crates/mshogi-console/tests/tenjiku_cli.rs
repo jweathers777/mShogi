@@ -196,11 +196,12 @@ fn full_history_diagnostics_have_independent_corner_counts_and_analysis_is_read_
     // Each side has three corner King moves and one remote Pawn move. Two
     // plies have 4*4=16 leaves, with 1+4+16=21 visited nodes.
     for p in t::Profile::ALL {
+        let game = root(p, &[]);
         let o = shell(
             p,
             &format!(
                 "record load-json {}\nrecord print\nperft 0 1\nperft 1 5\nperft 2 21\ndivide 2 21\nanalyze 1 512\nrecord print\nanalyze 1 0\nrecord print\n",
-                encode(&root(p, &[]))
+                encode(&game)
             ),
         );
         success(&o);
@@ -213,10 +214,13 @@ fn full_history_diagnostics_have_independent_corner_counts_and_analysis_is_read_
             "K16p-15o 4",
             "P16n-16m 4",
             "analysis-read-only perspective Sente",
-            "decision None score None completed-depth 0 visited 0",
         ] {
             assert!(text.contains(expected), "{expected}\n{text}");
         }
+        let first = &game.legal_actions_with_stop(&mut || false).unwrap()[0];
+        assert!(text.contains(&format!(
+            "decision Some(Choose({first:?})) score None completed-depth 0 visited 0"
+        )));
         let r = records(&o);
         assert_eq!(r.len(), 3);
         assert!(r.iter().all(|x| x == &r[0]));

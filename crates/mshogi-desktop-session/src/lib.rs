@@ -567,7 +567,7 @@ impl DesktopController {
                 let deadline = Instant::now() + std::time::Duration::from_secs(20);
                 while controller.shared_snapshot().observations.len() == before {
                     if Instant::now() >= deadline {
-                        return Err("Tenjiku incomplete observation did not complete".into());
+                        return Err("Tenjiku node-limited observation did not arrive".into());
                     }
                     std::thread::sleep(std::time::Duration::from_millis(1));
                 }

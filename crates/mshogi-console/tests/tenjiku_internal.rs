@@ -431,7 +431,7 @@ fn actual_engine_turns_for_both_player_assignments_admit_observation_then_action
     }
 }
 #[test]
-fn actual_child_incomplete_work_has_no_fallback_score_or_conclusion() {
+fn actual_child_node_limit_returns_a_legal_move_without_a_score() {
     let _journey = JOURNEY.lock().unwrap_or_else(|e| e.into_inner());
     for profile in c::Profile::ALL {
         let bridge = EngineBridge::new(env!("CARGO_BIN_EXE_mshogi").into()).unwrap();
@@ -442,7 +442,7 @@ fn actual_child_incomplete_work_has_no_fallback_score_or_conclusion() {
         let response = wait(&bridge);
         assert!(response.matches(&req));
         let ExecutionResult::Tenjiku {
-            result: TenjikuResult::Incomplete { telemetry },
+            result: TenjikuResult::Choice { choice, telemetry },
         } = &response.observation.result
         else {
             panic!("{response:?}")
@@ -450,7 +450,11 @@ fn actual_child_incomplete_work_has_no_fallback_score_or_conclusion() {
         assert_eq!(telemetry.completed_depth, 0);
         assert_eq!(telemetry.nodes, 1);
         assert_eq!(telemetry.score, None);
-        assert!(telemetry.principal_variation.is_empty());
+        assert_eq!(
+            choice,
+            &game.legal_actions_with_stop(&mut || false).unwrap()[0]
+        );
+        assert_eq!(telemetry.principal_variation, std::slice::from_ref(choice));
         assert_eq!(game.conclusion(), None);
         bridge.shutdown();
         let deadline = Instant::now() + Duration::from_secs(5);

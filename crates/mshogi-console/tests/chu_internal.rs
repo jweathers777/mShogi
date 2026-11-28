@@ -393,7 +393,7 @@ fn engine_turns_for_both_player_assignments(production_limits: bool) {
     }
 }
 #[test]
-fn actual_child_incomplete_work_has_no_fallback_score_or_conclusion() {
+fn actual_child_node_limit_returns_a_legal_move_without_a_score() {
     let bridge = EngineBridge::new(env!("CARGO_BIN_EXE_mshogi").into()).unwrap();
     let game = c::Game::standard();
     let mut req = request(80, &game, true);
@@ -402,7 +402,7 @@ fn actual_child_incomplete_work_has_no_fallback_score_or_conclusion() {
     let response = wait(&bridge);
     assert!(response.matches(&req));
     let ExecutionResult::Chu {
-        result: ChuResult::Incomplete { telemetry },
+        result: ChuResult::Choice { choice, telemetry },
     } = &response.observation.result
     else {
         panic!("{response:?}")
@@ -410,7 +410,8 @@ fn actual_child_incomplete_work_has_no_fallback_score_or_conclusion() {
     assert_eq!(telemetry.completed_depth, 0);
     assert_eq!(telemetry.nodes, 1);
     assert_eq!(telemetry.score, None);
-    assert!(telemetry.principal_variation.is_empty());
+    assert_eq!(choice, &game.legal_actions()[0]);
+    assert_eq!(telemetry.principal_variation, std::slice::from_ref(choice));
     assert_eq!(game.conclusion(), None);
     bridge.shutdown();
     let deadline = Instant::now() + Duration::from_secs(5);

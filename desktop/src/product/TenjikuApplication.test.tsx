@@ -98,20 +98,24 @@ it.each([adams, muller])("blocks $profile QA replacement while a modal or game o
   for (const button of within(screen.getByRole("complementary", { name: "Tenjiku contract verification" })).getAllByRole("button")) expect((button as HTMLButtonElement).disabled).toBe(true);
 });
 
-it.each([adamsIncomplete, mullerIncomplete])("shows actual $profile incomplete observations without a fabricated score or PV", value => {
+it.each([adamsIncomplete, mullerIncomplete])("shows an unscored $profile node-limited suggestion without changing the game", value => {
   const source = value as unknown as TenjikuSnapshot, command = vi.fn();
   expect(source.observations.length).toBeGreaterThan(0);
-  expect(source.observations.at(-1)!.observation.result).toMatchObject({ kind: "tenjiku", result: { kind: "incomplete", telemetry: { score: null, completed_depth: 0, principal_variation: [] } } });
+  const observation = source.observations.at(-1)!.observation.result;
+  expect(observation).toMatchObject({ kind: "tenjiku", result: { kind: "choice", telemetry: { score: null, completed_depth: 0 } } });
+  const selected = source.search_observations.find(view => view.selected)!;
+  expect(selected.variation).toHaveLength(1);
   expect(source.status.concluded).toBe(false);
   expect(source.status.score_half_points).toBeNull();
   const { container } = render(<><GameRecovery snapshot={source} error="" disabled={false} command={command} />
     <GameAnalysis snapshot={source} defaults={source.play_limits} disabled={false} command={command} maxDepth={64} minNodes={1} maxNodes={5000000} /></>);
-  expect(screen.getByText("Search incomplete")).toBeTruthy();
+  expect(screen.queryByText("Search incomplete")).toBeNull();
   expect(screen.queryByRole("button", { name: "Retry engine turn" })).toBeNull();
   fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
   expect(screen.getAllByText("No completed evaluation").length).toBeGreaterThan(0);
   expect(screen.getByRole("button", { name: "Start move analysis" })).toBeTruthy();
-  expect(container.querySelector(".shogi-pv")).toBeNull();
+  expect(container.querySelector(".shogi-pv")?.textContent).toContain(selected.variation[0]);
+  expect(screen.getByText("No move was played.")).toBeTruthy();
   expect(screen.queryByRole("region", { name: "Game outcome" })).toBeNull();
   expect(command).not.toHaveBeenCalled();
 });

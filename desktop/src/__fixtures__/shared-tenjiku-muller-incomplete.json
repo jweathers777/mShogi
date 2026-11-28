@@ -1199,9 +1199,9 @@
   "historical": true,
   "paused": true,
   "close_requires_save": true,
-  "phase": "incomplete",
+  "phase": "paused",
   "execution_purpose": null,
-  "diagnostic": "Incomplete search. No move, score or game outcome was created.",
+  "diagnostic": null,
   "declaration_advice": [],
   "context": {"envelope_version":2,"game_kind":"tenjiku","payload":{"edition":"MULLER+ADAMS-COMPLETION+MSH83-2026-11-04","schema_version":3,"root":{"board":[{"id":2,"side":"gote","base":"K","promoted":false,"right":"consumed"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":3,"side":"gote","base":"P","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":5,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":6,"side":"gote","base":"P","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":4,"side":"sente","base":"Ln","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":1,"side":"sente","base":"P","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":0,"side":"sente","base":"K","promoted":false,"right":"consumed"}],"profile":"mshogi.tenjiku.muller-completed.v1","side":"sente","root":{"kind":"diagram","source":null,"declared_completed_plies":0},"accepted_plies":0},"events":[]}},
   "analysis": {
@@ -1233,7 +1233,21 @@
       "result": {
         "kind": "tenjiku",
         "result": {
-          "kind": "incomplete",
+          "kind": "choice",
+          "choice": {
+            "kind": "travel",
+            "from": [
+              8,
+              8
+            ],
+            "route": [
+              [
+                6,
+                6
+              ]
+            ],
+            "promote": false
+          },
           "telemetry": {
             "evaluator_id": "mshogi.tenjiku.material-placement.v1",
             "search_id": "mshogi.tenjiku.shared-core.v1",
@@ -1241,7 +1255,22 @@
             "score": null,
             "completed_depth": 0,
             "nodes": 1,
-            "principal_variation": [],
+            "principal_variation": [
+              {
+                "kind": "travel",
+                "from": [
+                  8,
+                  8
+                ],
+                "route": [
+                  [
+                    6,
+                    6
+                  ]
+                ],
+                "promote": false
+              }
+            ],
             "status": "node_limit"
           }
         }
@@ -1280,7 +1309,21 @@
         "result": {
           "kind": "tenjiku",
           "result": {
-            "kind": "incomplete",
+            "kind": "choice",
+            "choice": {
+              "kind": "travel",
+              "from": [
+                8,
+                8
+              ],
+              "route": [
+                [
+                  6,
+                  6
+                ]
+              ],
+              "promote": false
+            },
             "telemetry": {
               "evaluator_id": "mshogi.tenjiku.material-placement.v1",
               "search_id": "mshogi.tenjiku.shared-core.v1",
@@ -1288,7 +1331,22 @@
               "score": null,
               "completed_depth": 0,
               "nodes": 1,
-              "principal_variation": [],
+              "principal_variation": [
+                {
+                  "kind": "travel",
+                  "from": [
+                    8,
+                    8
+                  ],
+                  "route": [
+                    [
+                      6,
+                      6
+                    ]
+                  ],
+                  "promote": false
+                }
+              ],
               "status": "node_limit"
             }
           }
@@ -1309,7 +1367,9 @@
       "score": null,
       "completed_depth": 0,
       "nodes": 1,
-      "variation": [],
+      "variation": [
+        "8h→6f"
+      ],
       "status": "Node limit reached",
       "historical": false,
       "selected": true

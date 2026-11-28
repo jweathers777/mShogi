@@ -39,14 +39,15 @@ it("renders the actual Chu root-side completed observation, exact target and con
   expect(container.querySelector("[data-search-purpose=move_analysis]")).toBeTruthy();
   expect(command).not.toHaveBeenCalled();
 });
-it("shows actual incomplete work unscored while keeping earlier successful observations historical", () => {
+it("shows an unscored node-limited suggestion and keeps earlier observations historical", () => {
   const selected = incomplete.search_observations.find(view => view.selected)!;
-  expect(selected.score).toBeNull();expect(selected.completed_depth).toBe(0);expect(selected.variation).toEqual([]);
+  expect(selected.score).toBeNull();expect(selected.completed_depth).toBe(0);expect(selected.variation).toHaveLength(1);
   const { container, command } = analysis(incomplete);const observation = currentObservation(container);
   expect(observation.getByText("No completed evaluation")).toBeTruthy();
   expect(observation.getByText(`${selected.perspective} perspective · ${selected.status}`)).toBeTruthy();
   expect(observation.queryByText(/Pawns|wins|draw|mate/i)).toBeNull();
-  expect(observation.queryByText("Continuation")).toBeNull();
+  expect(observation.getByText("Continuation")).toBeTruthy();
+  expect(observation.getByText(selected.variation[0])).toBeTruthy();
   expect(observation.getByText("No move was played.")).toBeTruthy();
   expect(container.querySelector(".recorded-searches summary")?.textContent).toBe(`Recorded searches (${incomplete.search_observations.length})`);
   expect(command).not.toHaveBeenCalled();

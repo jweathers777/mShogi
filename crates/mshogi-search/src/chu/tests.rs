@@ -69,7 +69,7 @@ fn node_limit_uses_root_fallback_and_cancellation_has_no_move() {
         assert_eq!(r.completed_depth, 0);
         assert_eq!(r.decision, Some(Decision::Choose(first.clone())));
         assert_eq!(r.score, None);
-        assert_eq!(r.principal_variation, [first.clone()]);
+        assert_eq!(r.principal_variation, std::slice::from_ref(&first));
         assert_eq!(r.nodes, n);
     }
     let partial = search(&g, Limits { depth: 1, nodes: 2 }).unwrap();

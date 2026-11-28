@@ -217,7 +217,7 @@ fn accepted_repetition_fixture_keeps_obligation_admission_and_refusal_atomic() {
 }
 
 #[test]
-fn real_bounded_analysis_is_read_only_and_never_fabricates_zero_work_choice() {
+fn real_bounded_analysis_is_read_only_and_returns_a_legal_zero_work_choice() {
     let o = shell("record print\nanalyze 1 512\nrecord print\nanalyze 1 0\nrecord print\n");
     success(&o);
     let r = records(&o);
@@ -233,7 +233,10 @@ fn real_bounded_analysis_is_read_only_and_never_fabricates_zero_work_choice() {
     assert!(lines[0].contains("completed-depth 1"));
     assert!(lines[0].contains("Sente"));
     assert!(
-        lines[1].contains("decision None score None completed-depth 0 visited 0"),
+        lines[1].contains(&format!(
+            "decision Some(Choose({:?})) score None completed-depth 0 visited 0",
+            c::Game::standard().legal_actions()[0]
+        )),
         "{}",
         lines[1]
     );

@@ -4,7 +4,7 @@ title: Reconcile Documentation with Current Implementation
 status: Ready
 assignee: []
 created_date: '2026-11-27T12:34:00Z'
-updated_date: '2026-11-28T20:54:00Z'
+updated_date: '2026-11-28T20:55:00Z'
 labels:
   - technical-debt
   - model:medium
@@ -31,3 +31,9 @@ Follow up MSH-235 by auditing remaining architectural, development, protocol, an
 - [ ] #3 Preserve durable rules derivations and design rationale. Keep task reports, historical verification narratives, and generated run data out of durable documentation.
 - [ ] #4 Verify applicable documentation links and executable examples.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Audit the resulting implementation after MSH-277 through MSH-282. Reuse the documentation and checks updated by those tasks, then address the remaining cross-cutting gaps.
+<!-- SECTION:NOTES:END -->

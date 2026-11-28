@@ -4,7 +4,7 @@ title: Unify Square-Board Rendering
 status: Ready
 assignee: []
 created_date: '2026-11-27T12:34:00Z'
-updated_date: '2026-11-28T20:54:00Z'
+updated_date: '2026-11-28T20:55:00Z'
 labels:
   - technical-debt
   - model:large
@@ -31,3 +31,9 @@ Follow up MSH-239 and MSH-264 by evaluating duplication among Board, SquareBoard
 - [ ] #4 Preserve approved appearance, keyboard navigation, movement inspection, promotion, and compound-action behavior across all games.
 - [ ] #5 Verify frontend behavior and appearance at supported window sizes.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Use the refreshed Tenjiku analysis and engine-play snapshots from MSH-289 as the starting point for frontend verification. Consolidate square-board presentation before MSH-282 migrates the surviving components to generated wire types.
+<!-- SECTION:NOTES:END -->

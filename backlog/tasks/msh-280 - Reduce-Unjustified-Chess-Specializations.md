@@ -4,7 +4,7 @@ title: Reduce Unjustified Chess Specializations
 status: Ready
 assignee: []
 created_date: '2026-11-27T12:34:00Z'
-updated_date: '2026-11-28T20:54:00Z'
+updated_date: '2026-11-28T20:55:00Z'
 labels:
   - technical-debt
   - model:large
@@ -30,3 +30,9 @@ Review Chess exceptions across rules history, search roots, execution adapters, 
 - [ ] #3 Verify correctness, supported protocol behavior, and playing strength with the applicable checks and measurements.
 - [ ] #4 Record the justification for remaining significant differences.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Start from the history interfaces and specialization decisions left by MSH-278. Recheck the Chess-specific history inventory against those results before adding or extracting shared behavior. Use the rules and search checks from MSH-277 where applicable.
+<!-- SECTION:NOTES:END -->
